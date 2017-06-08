@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:38:31 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:57722 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:39:02 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:36447 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993973AbdFHN1vdwZuT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:27:51 +0200
+        by eddie.linux-mips.org with ESMTP id S23993978AbdFHN16GKYeT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:27:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=0wrZqfiUxzIjsMIP+kvG0ZcUFokN2jOk2GMWGR62hvY=; b=Udfuh7CiLVwNIiC/Fgt2z9emo
-        WzabRtEQULAaySpysY7GiMg2bBz03srRUIG5jlUSZOvdrl9bV7BwA5YXMQZUqdS8KeKd/m5BgIT9d
-        T6/nQARzzq48PnEKtPRAACUplYHICmY51fC06ggLmspnviuQMBlySMRx0gg9g2u0OJDt26Hdh3yGO
-        eEo6qHzMRQvwWt6xy4e7p+r2LE7xRO+znPrFOvm1RAx3aIT+gW487L8rKCp1i/88mUPp5GazjK2tG
-        S2mEYE+a19mWRkDkdJ58hGY/SCm8QgtNsdLgO9lqj+rpgfyZ6m6sO83q3ufGjTJR6L9/G4ILM+G5o
-        2Lzm5AhsQ==;
+         bh=/hV/3mVXpVDCJ/R2hYg6OruqzMha5mJkHSK85bOIfwg=; b=mL91aWsEzI32++bfOJ+SJNumd
+        ZWkAPuWR74D2pQNWWc5KuiphvcPBbjw+CDYWz2zOsKt62dVaxwOMEcQuOwWKnfmLyFFNczLJWEITb
+        Pnc3pkEsTVSqNFfdDwz6W2HqlhWlz/UCTgAlRM0O4EZF8b3YTpqgxCYFEAQtfIVHMmv/crTqe/8Xd
+        tYuirK2NIQg51FJZDj2nYx0b6V2tL8VW9iyk5UdQK5B/Csq8KZTtt8C/kwHLyTDInDg/drX6lv7eW
+        gNoOAcYy4cPiMkMYvIrk3N3OQ6olH87w6snVvQs1MF2oUZLnLVxm3SLJD0N2pAkhE21gxYBsxJwxU
+        EbXarVPrQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxTS-0006gb-4k; Thu, 08 Jun 2017 13:27:42 +0000
+        id 1dIxTZ-0006q8-Jb; Thu, 08 Jun 2017 13:27:50 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 22/44] x86/pci-nommu: implement ->mapping_error
-Date:   Thu,  8 Jun 2017 15:25:47 +0200
-Message-Id: <20170608132609.32662-23-hch@lst.de>
+Subject: [PATCH 24/44] x86: remove DMA_ERROR_CODE
+Date:   Thu,  8 Jun 2017 15:25:49 +0200
+Message-Id: <20170608132609.32662-25-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170608132609.32662-1-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58332
+X-archive-position: 58333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,52 +58,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DMA_ERROR_CODE is going to go away, so don't rely on it.
+All dma_map_ops instances now handle their errors through
+->mapping_error.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/x86/kernel/pci-nommu.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/dma-mapping.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/kernel/pci-nommu.c b/arch/x86/kernel/pci-nommu.c
-index a88952ef371c..085fe6ce4049 100644
---- a/arch/x86/kernel/pci-nommu.c
-+++ b/arch/x86/kernel/pci-nommu.c
-@@ -11,6 +11,8 @@
- #include <asm/iommu.h>
- #include <asm/dma.h>
+diff --git a/arch/x86/include/asm/dma-mapping.h b/arch/x86/include/asm/dma-mapping.h
+index 08a0838b83fb..c35d228aa381 100644
+--- a/arch/x86/include/asm/dma-mapping.h
++++ b/arch/x86/include/asm/dma-mapping.h
+@@ -19,8 +19,6 @@
+ # define ISA_DMA_BIT_MASK DMA_BIT_MASK(32)
+ #endif
  
-+#define NOMMU_MAPPING_ERROR		0
-+
- static int
- check_addr(char *name, struct device *hwdev, dma_addr_t bus, size_t size)
- {
-@@ -33,7 +35,7 @@ static dma_addr_t nommu_map_page(struct device *dev, struct page *page,
- 	dma_addr_t bus = page_to_phys(page) + offset;
- 	WARN_ON(size == 0);
- 	if (!check_addr("map_single", dev, bus, size))
--		return DMA_ERROR_CODE;
-+		return NOMMU_MAPPING_ERROR;
- 	flush_write_buffers();
- 	return bus;
- }
-@@ -88,6 +90,11 @@ static void nommu_sync_sg_for_device(struct device *dev,
- 	flush_write_buffers();
- }
- 
-+static int nommu_mapping_error(struct device *dev, dma_addr_t dma_addr)
-+{
-+	return dma_addr == NOMMU_MAPPING_ERROR;
-+}
-+
- const struct dma_map_ops nommu_dma_ops = {
- 	.alloc			= dma_generic_alloc_coherent,
- 	.free			= dma_generic_free_coherent,
-@@ -96,4 +103,5 @@ const struct dma_map_ops nommu_dma_ops = {
- 	.sync_single_for_device = nommu_sync_single_for_device,
- 	.sync_sg_for_device	= nommu_sync_sg_for_device,
- 	.is_phys		= 1,
-+	.mapping_error		= nommu_mapping_error,
- };
+-#define DMA_ERROR_CODE	0
+-
+ extern int iommu_merge;
+ extern struct device x86_dma_fallback_dev;
+ extern int panic_on_overflow;
 -- 
 2.11.0

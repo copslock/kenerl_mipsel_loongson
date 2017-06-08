@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:41:44 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:36945 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:42:22 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:56323 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993984AbdFHN2N6MjTT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:28:13 +0200
+        by eddie.linux-mips.org with ESMTP id S23993985AbdFHN2OjqDpT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:28:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=5hRE+CxrAGAlzjGrXGdRrrKB4ccuoo3Leesz29S/h0o=; b=il2LCZOZiT+fzFkvXWbZtz58W
-        eushir9nOEc7s3jZ7vzKPyd0kdIKGbxDFbdlgdfH7jFpJmAeoe5DJISprlsZjLmEuM3Yb75vRTIPP
-        NFTnl/B03jUB97Hk4Ewkni7SwwWZLLmtvXiOq+w5co22BPnNpmoWc8gcBXyJCwZXsfpHWRd40f/Sm
-        dUIhCIuQ9JFJEJNQi1SEVMqX5Htvs0Psm149icF8lCijJuj8RsM21YAbDdw81bspbfcdo+ftemfgH
-        N4ThjX2rCM5jshZ8CSLNO5LwaJKMkrBPPVd7BNqg81MvoXP1FRsg3z9VWB5hLnS9cQa8jqjontYSB
-        C+WspVvKQ==;
+         bh=XSYdmvQJNFdXK+xuL8ZHUwT5syGePJpAphlsCPfTcOw=; b=Exnc82WFSkoJmc3h9O7+Td8Cb
+        siiwj6QSN9nmktz/D8wWqMUtxiDvJJm5oQ2Imo+jh/n4mRY0KBE4GDEIXSgKlh8OILDnShUnPZMQ/
+        crA72vkHD6X0JjUdiGExNjswaZo9jsJOits0xSGOv03e1I8N7WE0vn3IOOgeM98/36ONHj6eyHsPH
+        mZbyA9rPWNLlldkhUTQcNVUbBS+sbODQie5KG+UN+0DfBSYQPKSIlMbszk8v3xTxu5XKXtHNhE17v
+        Gnk+Y1wWuBDxp7ahKLq2KWAuI6OhYld1bPDPvilYQUKVbzjABukd2t1pfxv0dtCF8IAjk1lWllLXa
+        NycS9T/qw==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxTn-0007B3-Nz; Thu, 08 Jun 2017 13:28:04 +0000
+        id 1dIxTr-0007FX-3t; Thu, 08 Jun 2017 13:28:07 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 28/44] sparc: remove arch specific dma_supported implementations
-Date:   Thu,  8 Jun 2017 15:25:53 +0200
-Message-Id: <20170608132609.32662-29-hch@lst.de>
+Subject: [PATCH 29/44] dma-noop: remove dma_supported and mapping_error methods
+Date:   Thu,  8 Jun 2017 15:25:54 +0200
+Message-Id: <20170608132609.32662-30-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170608132609.32662-1-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58338
+X-archive-position: 58339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,182 +58,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Usually dma_supported decisions are done by the dma_map_ops instance.
-Switch sparc to that model by providing a ->dma_supported instance for
-sbus that always returns false, and implementations tailored to the sun4u
-and sun4v cases for sparc64, and leave it unimplemented for PCI on
-sparc32, which means always supported.
+These just duplicate the default behavior if no method is provided.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/sparc/include/asm/dma-mapping.h |  3 ---
- arch/sparc/kernel/iommu.c            | 40 +++++++++++++++---------------------
- arch/sparc/kernel/ioport.c           | 22 ++++++--------------
- arch/sparc/kernel/pci_sun4v.c        | 17 +++++++++++++++
- 4 files changed, 39 insertions(+), 43 deletions(-)
+ lib/dma-noop.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/arch/sparc/include/asm/dma-mapping.h b/arch/sparc/include/asm/dma-mapping.h
-index 98da9f92c318..60bf1633d554 100644
---- a/arch/sparc/include/asm/dma-mapping.h
-+++ b/arch/sparc/include/asm/dma-mapping.h
-@@ -5,9 +5,6 @@
- #include <linux/mm.h>
- #include <linux/dma-debug.h>
- 
--#define HAVE_ARCH_DMA_SUPPORTED 1
--int dma_supported(struct device *dev, u64 mask);
--
- static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 				  enum dma_data_direction dir)
- {
-diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
-index dafa316d978d..fcbcc031f615 100644
---- a/arch/sparc/kernel/iommu.c
-+++ b/arch/sparc/kernel/iommu.c
-@@ -746,6 +746,21 @@ static int dma_4u_mapping_error(struct device *dev, dma_addr_t dma_addr)
- 	return dma_addr == SPARC_MAPPING_ERROR;
+diff --git a/lib/dma-noop.c b/lib/dma-noop.c
+index de26c8b68f34..643a074f139d 100644
+--- a/lib/dma-noop.c
++++ b/lib/dma-noop.c
+@@ -54,23 +54,11 @@ static int dma_noop_map_sg(struct device *dev, struct scatterlist *sgl, int nent
+ 	return nents;
  }
  
-+static int dma_4u_supported(struct device *dev, u64 device_mask)
-+{
-+	struct iommu *iommu = dev->archdata.iommu;
-+
-+	if (device_mask > DMA_BIT_MASK(32))
-+		return 0;
-+	if ((device_mask & iommu->dma_addr_mask) == iommu->dma_addr_mask)
-+		return 1;
-+#ifdef CONFIG_PCI
-+	if (dev_is_pci(dev))
-+		return pci64_dma_supported(to_pci_dev(dev), device_mask);
-+#endif
-+	return 0;
-+}
-+
- static const struct dma_map_ops sun4u_dma_ops = {
- 	.alloc			= dma_4u_alloc_coherent,
- 	.free			= dma_4u_free_coherent,
-@@ -755,32 +770,9 @@ static const struct dma_map_ops sun4u_dma_ops = {
- 	.unmap_sg		= dma_4u_unmap_sg,
- 	.sync_single_for_cpu	= dma_4u_sync_single_for_cpu,
- 	.sync_sg_for_cpu	= dma_4u_sync_sg_for_cpu,
-+	.dma_supported		= dma_4u_supported,
- 	.mapping_error		= dma_4u_mapping_error,
- };
- 
- const struct dma_map_ops *dma_ops = &sun4u_dma_ops;
- EXPORT_SYMBOL(dma_ops);
--
--int dma_supported(struct device *dev, u64 device_mask)
+-static int dma_noop_mapping_error(struct device *dev, dma_addr_t dma_addr)
 -{
--	struct iommu *iommu = dev->archdata.iommu;
--	u64 dma_addr_mask = iommu->dma_addr_mask;
--
--	if (device_mask > DMA_BIT_MASK(32)) {
--		if (iommu->atu)
--			dma_addr_mask = iommu->atu->dma_addr_mask;
--		else
--			return 0;
--	}
--
--	if ((device_mask & dma_addr_mask) == dma_addr_mask)
--		return 1;
--
--#ifdef CONFIG_PCI
--	if (dev_is_pci(dev))
--		return pci64_dma_supported(to_pci_dev(dev), device_mask);
--#endif
--
 -	return 0;
 -}
--EXPORT_SYMBOL(dma_supported);
-diff --git a/arch/sparc/kernel/ioport.c b/arch/sparc/kernel/ioport.c
-index dd081d557609..12894f259bea 100644
---- a/arch/sparc/kernel/ioport.c
-+++ b/arch/sparc/kernel/ioport.c
-@@ -401,6 +401,11 @@ static void sbus_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
- 	BUG();
- }
- 
-+static int sbus_dma_supported(struct device *dev, u64 mask)
-+{
-+	return 0;
-+}
-+
- static const struct dma_map_ops sbus_dma_ops = {
- 	.alloc			= sbus_alloc_coherent,
- 	.free			= sbus_free_coherent,
-@@ -410,6 +415,7 @@ static const struct dma_map_ops sbus_dma_ops = {
- 	.unmap_sg		= sbus_unmap_sg,
- 	.sync_sg_for_cpu	= sbus_sync_sg_for_cpu,
- 	.sync_sg_for_device	= sbus_sync_sg_for_device,
-+	.dma_supported		= sbus_dma_supported,
- };
- 
- static int __init sparc_register_ioport(void)
-@@ -655,22 +661,6 @@ EXPORT_SYMBOL(pci32_dma_ops);
- const struct dma_map_ops *dma_ops = &sbus_dma_ops;
- EXPORT_SYMBOL(dma_ops);
- 
 -
--/*
-- * Return whether the given PCI device DMA address mask can be
-- * supported properly.  For example, if your device can only drive the
-- * low 24-bits during PCI bus mastering, then you would pass
-- * 0x00ffffff as the mask to this function.
-- */
--int dma_supported(struct device *dev, u64 mask)
+-static int dma_noop_supported(struct device *dev, u64 mask)
 -{
--	if (dev_is_pci(dev))
--		return 1;
--
--	return 0;
+-	return 1;
 -}
--EXPORT_SYMBOL(dma_supported);
 -
- #ifdef CONFIG_PROC_FS
- 
- static int sparc_io_proc_show(struct seq_file *m, void *v)
-diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
-index 8e2a56f4c03a..24f21c726dfa 100644
---- a/arch/sparc/kernel/pci_sun4v.c
-+++ b/arch/sparc/kernel/pci_sun4v.c
-@@ -24,6 +24,7 @@
- 
- #include "pci_impl.h"
- #include "iommu_common.h"
-+#include "kernel.h"
- 
- #include "pci_sun4v.h"
- 
-@@ -669,6 +670,21 @@ static void dma_4v_unmap_sg(struct device *dev, struct scatterlist *sglist,
- 	local_irq_restore(flags);
- }
- 
-+static int dma_4v_supported(struct device *dev, u64 device_mask)
-+{
-+	struct iommu *iommu = dev->archdata.iommu;
-+	u64 dma_addr_mask;
-+
-+	if (device_mask > DMA_BIT_MASK(32) && iommu->atu)
-+		dma_addr_mask = iommu->atu->dma_addr_mask;
-+	else
-+		dma_addr_mask = iommu->dma_addr_mask;
-+
-+	if ((device_mask & dma_addr_mask) == dma_addr_mask)
-+		return 1;
-+	return pci64_dma_supported(to_pci_dev(dev), device_mask);
-+}
-+
- static int dma_4v_mapping_error(struct device *dev, dma_addr_t dma_addr)
- {
- 	return dma_addr == SPARC_MAPPING_ERROR;
-@@ -681,6 +697,7 @@ static const struct dma_map_ops sun4v_dma_ops = {
- 	.unmap_page			= dma_4v_unmap_page,
- 	.map_sg				= dma_4v_map_sg,
- 	.unmap_sg			= dma_4v_unmap_sg,
-+	.dma_supported			= dma_4v_supported,
- 	.mapping_error			= dma_4v_mapping_error,
+ const struct dma_map_ops dma_noop_ops = {
+ 	.alloc			= dma_noop_alloc,
+ 	.free			= dma_noop_free,
+ 	.map_page		= dma_noop_map_page,
+ 	.map_sg			= dma_noop_map_sg,
+-	.mapping_error		= dma_noop_mapping_error,
+-	.dma_supported		= dma_noop_supported,
  };
  
+ EXPORT_SYMBOL(dma_noop_ops);
 -- 
 2.11.0

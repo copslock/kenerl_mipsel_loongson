@@ -1,68 +1,79 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Tue, 6 Jun 2017 14:16:30 +0200
-Subject: mips: sgi-ip22: ecard: use dev_groups and not dev_attrs for bus_type
-Message-ID: <20170606121630.em93OJTHpkk0wKxScx-0UGU77z5f9upRpCV69NU_Ti0@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jun 2017 11:27:32 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48152 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991957AbdFIJ1NsDjNA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jun 2017 11:27:13 +0200
+Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DD0B7B7A;
+        Fri,  9 Jun 2017 09:27:06 +0000 (UTC)
+Date:   Fri, 9 Jun 2017 11:26:59 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Aleksa Sarai <asarai@suse.de>
+Cc:     Jiri Slaby <jslaby@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Valentin Rothberg <vrothberg@suse.com>
+Subject: Re: [PATCH v4 2/2] tty: add TIOCGPTPEER ioctl
+Message-ID: <20170609092659.GA26933@kroah.com>
+References: <20170603141515.9529-1-asarai@suse.de>
+ <20170603141515.9529-3-asarai@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170603141515.9529-3-asarai@suse.de>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 58377
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-The dev_attrs field has long been "depreciated" and is finally being
-removed, so move the driver to use the "correct" dev_groups field
-instead for struct bus_type.
+On Sun, Jun 04, 2017 at 12:15:15AM +1000, Aleksa Sarai wrote:
+> When opening the slave end of a PTY, it is not possible for userspace to
+> safely ensure that /dev/pts/$num is actually a slave (in cases where the
+> mount namespace in which devpts was mounted is controlled by an
+> untrusted process). In addition, there are several unresolvable
+> race conditions if userspace were to attempt to detect attacks through
+> stat(2) and other similar methods [in addition it is not clear how
+> userspace could detect attacks involving FUSE].
+> 
+> Resolve this by providing an interface for userpace to safely open the
+> "peer" end of a PTY file descriptor by using the dentry cached by
+> devpts. Since it is not possible to have an open master PTY without
+> having its slave exposed in /dev/pts this interface is safe. This
+> interface currently does not provide a way to get the master pty (since
+> it is not clear whether such an interface is safe or even useful).
+> 
+> Cc: Christian Brauner <christian.brauner@ubuntu.com>
+> Cc: Valentin Rothberg <vrothberg@suse.com>
+> Signed-off-by: Aleksa Sarai <asarai@suse.de>
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/sgi-ip22/ip22-gio.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Is this going to be documented anywhere?  Is there a man page update
+that also goes along with this?  What userspace program wants to use
+this?
 
-diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
-index cdf187600010..b225033aade6 100644
---- a/arch/mips/sgi-ip22/ip22-gio.c
-+++ b/arch/mips/sgi-ip22/ip22-gio.c
-@@ -169,6 +169,7 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
- 
- 	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
- }
-+static DEVICE_ATTR_RO(modalias);
- 
- static ssize_t name_show(struct device *dev,
- 			 struct device_attribute *attr, char *buf)
-@@ -178,6 +179,7 @@ static ssize_t name_show(struct device *dev,
- 	giodev = to_gio_device(dev);
- 	return sprintf(buf, "%s", giodev->name);
- }
-+static DEVICE_ATTR_RO(name);
- 
- static ssize_t id_show(struct device *dev,
- 		       struct device_attribute *attr, char *buf)
-@@ -187,13 +189,15 @@ static ssize_t id_show(struct device *dev,
- 	giodev = to_gio_device(dev);
- 	return sprintf(buf, "%x", giodev->id.id);
- }
-+static DEVICE_ATTR_RO(id);
- 
--static struct device_attribute gio_dev_attrs[] = {
--	__ATTR_RO(modalias),
--	__ATTR_RO(name),
--	__ATTR_RO(id),
--	__ATTR_NULL,
-+static struct attribute *gio_dev_attrs[] = {
-+	&dev_attr_modalias.attr,
-+	&dev_attr_name.attr,
-+	&dev_attr_id.attr,
-+	NULL,
- };
-+ATTRIBUTE_GROUPS(gio_dev);
- 
- static int gio_device_uevent(struct device *dev, struct kobj_uevent_env *env)
- {
-@@ -374,7 +378,7 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
- 
- static struct bus_type gio_bus_type = {
- 	.name	   = "gio",
--	.dev_attrs = gio_dev_attrs,
-+	.dev_groups = gio_dev_groups,
- 	.match	   = gio_bus_match,
- 	.probe	   = gio_device_probe,
- 	.remove	   = gio_device_remove,
--- 
-2.13.1
+I'm not objecting to this, I just want to know that people will use
+this, and that they can find out information about it if they want to.
+
+thanks,
+
+greg k-h

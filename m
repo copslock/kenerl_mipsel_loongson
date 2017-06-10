@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jun 2017 02:28:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50578 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jun 2017 02:29:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56697 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993963AbdFJA2RXORut (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Jun 2017 02:28:17 +0200
+        with ESMTP id S23993958AbdFJA2fQbN5t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Jun 2017 02:28:35 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id A521D45833300;
-        Sat, 10 Jun 2017 01:28:09 +0100 (IST)
+        by Forcepoint Email with ESMTP id 8D091618713D0;
+        Sat, 10 Jun 2017 01:28:27 +0100 (IST)
 Received: from localhost (10.20.1.33) by HHMAIL01.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 10 Jun 2017 01:28:11
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 10 Jun 2017 01:28:29
  +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 04/11] MIPS: cmpxchg: Error out on unsupported xchg() calls
-Date:   Fri, 9 Jun 2017 17:26:36 -0700
-Message-ID: <20170610002644.8434-5-paul.burton@imgtec.com>
+Subject: [PATCH 05/11] MIPS: cmpxchg: Drop __xchg_u{32,64} functions
+Date:   Fri, 9 Jun 2017 17:26:37 -0700
+Message-ID: <20170610002644.8434-6-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.13.1
 In-Reply-To: <20170610002644.8434-1-paul.burton@imgtec.com>
 References: <20170610002644.8434-1-paul.burton@imgtec.com>
@@ -26,7 +26,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58393
+X-archive-position: 58394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,81 +43,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-xchg() has up until now simply returned the x parameter in cases where
-it is called with a pointer to a value of an unsupported size. This will
-often cause the calling code to hit a failure path, presuming that the
-value of x differs from the content of the memory pointed at by ptr, but
-we can do better by producing a compile-time or link-time error such
-that unsupported calls to xchg() are detectable earlier than runtime.
+The __xchg_u32() & __xchg_u64() functions now add very little value.
+This patch therefore removes them, by:
 
-This patch does this in the same was as is already done for cmpxchg(),
-using a call to a missing function annotated with __compiletime_error().
+  - Moving memory barriers out of them & into xchg(), which also removes
+    the duplication & readies us to support xchg_relaxed() if we wish to.
+
+  - Calling __xchg_asm() directly from __xchg().
+
+  - Performing the check for CONFIG_64BIT being enabled in the size=8
+    case of __xchg().
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/include/asm/cmpxchg.h | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ arch/mips/include/asm/cmpxchg.h | 48 +++++++++++++++--------------------------
+ 1 file changed, 17 insertions(+), 31 deletions(-)
 
 diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-index ee0214e00ab1..fe652c3e5d8c 100644
+index fe652c3e5d8c..e9c1e97bc29d 100644
 --- a/arch/mips/include/asm/cmpxchg.h
 +++ b/arch/mips/include/asm/cmpxchg.h
-@@ -24,6 +24,21 @@
- # define __scbeqz "beqz"
- #endif
- 
-+/*
-+ * These functions doesn't exist, so if they are called you'll either:
-+ *
-+ * - Get an error at compile-time due to __compiletime_error, if supported by
-+ *   your compiler.
-+ *
-+ * or:
-+ *
-+ * - Get an error at link-time due to the call to the missing function.
-+ */
-+extern void __cmpxchg_called_with_bad_pointer(void)
-+	__compiletime_error("Bad argument size for cmpxchg");
-+extern unsigned long __xchg_called_with_bad_pointer(void)
-+	__compiletime_error("Bad argument size for xchg");
-+
- #define __xchg_asm(ld, st, m, val)					\
- ({									\
- 	__typeof(*(m)) __ret;						\
-@@ -89,9 +104,9 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
- 		return __xchg_u32(ptr, x);
- 	case 8:
- 		return __xchg_u64(ptr, x);
-+	default:
-+		return __xchg_called_with_bad_pointer();
- 	}
--
--	return x;
- }
- 
- #define xchg(ptr, x)							\
-@@ -136,19 +151,6 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+@@ -70,40 +70,18 @@ extern unsigned long __xchg_called_with_bad_pointer(void)
  	__ret;								\
  })
  
--/*
-- * This function doesn't exist, so if it is called you'll either:
-- *
-- * - Get an error at compile-time due to __compiletime_error, if supported by
-- *   your compiler.
-- *
-- * or:
-- *
-- * - Get an error at link-time due to the call to the missing function.
-- */
--extern void __cmpxchg_called_with_bad_pointer(void)
--	__compiletime_error("Bad argument size for cmpxchg");
+-static inline unsigned long __xchg_u32(volatile int * m, unsigned int val)
+-{
+-	__u32 retval;
 -
- #define __cmpxchg(ptr, old, new, pre_barrier, post_barrier)		\
+-	smp_mb__before_llsc();
+-	retval = __xchg_asm("ll", "sc", m, val);
+-	smp_llsc_mb();
+-
+-	return retval;
+-}
+-
+-#ifdef CONFIG_64BIT
+-static inline __u64 __xchg_u64(volatile __u64 * m, __u64 val)
+-{
+-	__u64 retval;
+-
+-	smp_mb__before_llsc();
+-	retval = __xchg_asm("lld", "scd", m, val);
+-	smp_llsc_mb();
+-
+-	return retval;
+-}
+-#else
+-extern __u64 __xchg_u64_unsupported_on_32bit_kernels(volatile __u64 * m, __u64 val);
+-#define __xchg_u64 __xchg_u64_unsupported_on_32bit_kernels
+-#endif
+-
+ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int size)
+ {
+ 	switch (size) {
+ 	case 4:
+-		return __xchg_u32(ptr, x);
++		return __xchg_asm("ll", "sc", (volatile u32 *)ptr, x);
++
+ 	case 8:
+-		return __xchg_u64(ptr, x);
++		if (!IS_ENABLED(CONFIG_64BIT))
++			return __xchg_called_with_bad_pointer();
++
++		return __xchg_asm("lld", "scd", (volatile u64 *)ptr, x);
++
+ 	default:
+ 		return __xchg_called_with_bad_pointer();
+ 	}
+@@ -111,10 +89,18 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+ 
+ #define xchg(ptr, x)							\
  ({									\
- 	__typeof__(ptr) __ptr = (ptr);					\
++	__typeof__(*(ptr)) __res;					\
++									\
+ 	BUILD_BUG_ON(sizeof(*(ptr)) & ~0xc);				\
+ 									\
+-	((__typeof__(*(ptr)))						\
+-		__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))));	\
++	smp_mb__before_llsc();						\
++									\
++	__res = (__typeof__(*(ptr)))					\
++		__xchg((unsigned long)(x), (ptr), sizeof(*(ptr)));	\
++									\
++	smp_llsc_mb();							\
++									\
++	__res;								\
+ })
+ 
+ #define __cmpxchg_asm(ld, st, m, old, new)				\
 -- 
 2.13.1

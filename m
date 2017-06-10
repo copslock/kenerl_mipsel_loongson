@@ -1,118 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jun 2017 18:44:20 +0200 (CEST)
-Received: from mail-wr0-f194.google.com ([209.85.128.194]:33323 "EHLO
-        mail-wr0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993886AbdFJQoLoYCpq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Jun 2017 18:44:11 +0200
-Received: by mail-wr0-f194.google.com with SMTP id v104so13026447wrb.0;
-        Sat, 10 Jun 2017 09:44:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RYXNVC0gz1XGTuCcbcpCZnif+AWJ1e8zcm44B/zPWRg=;
-        b=Abt5vRQw5+uak7QAxqBTLtxbKzu2e4fFJ8+QRh5jVX0GP77C+88WJRREKL0lXx5nsV
-         h60QCAbaQJALFZxgmtAWofe9cqUMhew6MSghJuU1/bH0NkBWwiWmM6Qt8NF0w/KMufDN
-         zhKiuefWrkDHP41G98wLoUdwbqGrOuBGS77sTfv7HRC18qNEGNAc9aLylxqPUhQKWDBO
-         a/bv7KWPHiaY0C8K/IfDW7pYIdKN1K9YMmesSZ5WGbAZ3x4B+aDqj3//N0idl+s45Y0R
-         p5CtmpyD5joJDCzXpgNgH4ZNkfwwNJ82V6T35FcOV0ukpew8pgE1KDIe4nW69yf8/9jG
-         SAdA==
-X-Gm-Message-State: AKS2vOy6yT+Xv2dse2E/0NDLXVv01QrdwwEj/251rKTljIvNtaPc944Q
-        f0aF/Z0Tgw1GqA==
-X-Received: by 10.80.207.7 with SMTP id c7mr1384881edk.59.1497113046455;
-        Sat, 10 Jun 2017 09:44:06 -0700 (PDT)
-Received: from kozik-lap (pub082136089155.dh-hfc.datazug.ch. [82.136.89.155])
-        by smtp.googlemail.com with ESMTPSA id r28sm2409099edd.33.2017.06.10.09.43.53
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 10 Jun 2017 09:44:05 -0700 (PDT)
-Date:   Sat, 10 Jun 2017 18:43:51 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <kernel@pengutronix.de>,
-        Kukjin Kim <kgene@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, Steven Miao <realmz6@gmail.com>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        David Howells <dhowells@redhat.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Chen Liqin <liqin.linux@gmail.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        linux-alpha@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>, linux-omap@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        linux-am33-list@redhat.com,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>, openrisc@lists.librecores.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-sh@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net
-Subject: Re: [PATCH 00/35] defconfig: Cleanup from old entries
-Message-ID: <20170610164351.7sxzvj4ojj3fbc7h@kozik-lap>
-References: <20170608160836.12196-1-krzk@kernel.org>
- <CAK8P3a3bUeC3H2oNfdBedVY4UTCe8OgKbWmv46d5xfu8tC7tAg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jun 2017 01:26:08 +0200 (CEST)
+Received: from resqmta-ch2-04v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:36]:58164
+        "EHLO resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992078AbdFJX0AEyeLD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jun 2017 01:26:00 +0200
+Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
+        by resqmta-ch2-04v.sys.comcast.net with SMTP
+        id JplCd0nmnscBPJplWd33cm; Sat, 10 Jun 2017 23:25:58 +0000
+Received: from [192.168.1.13] ([76.106.92.144])
+        by resomta-ch2-16v.sys.comcast.net with SMTP
+        id JplUd2f2X9isyJplVd5iiJ; Sat, 10 Jun 2017 23:25:58 +0000
+Subject: Re: [PATCH 01/11] MIPS: cmpxchg: Unify R10000_LLSC_WAR &
+ non-R10000_LLSC_WAR cases
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>
+References: <20170610002644.8434-1-paul.burton@imgtec.com>
+ <20170610002644.8434-2-paul.burton@imgtec.com>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <66c7456a-0ae6-5442-2b12-a442055f36d1@gentoo.org>
+Date:   Sat, 10 Jun 2017 19:25:30 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
+In-Reply-To: <20170610002644.8434-2-paul.burton@imgtec.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a3bUeC3H2oNfdBedVY4UTCe8OgKbWmv46d5xfu8tC7tAg@mail.gmail.com>
-User-Agent: Mutt/1.6.2-neo (2016-08-21)
-Return-Path: <k.kozlowski.k@gmail.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfLop5oXs1JpoXUOWH8YvbOybPhCF1yjYP9X3BQsAYN896BSbPXfupUOUA+ISLOJtfUPHNxCccq28njfNd/LyFtFuqsozg43sgPmlGD89jixrbwJB+2Tl
+ NdfJQbXGOHufeduso9xfCYKf26Mpm25mU398+wjCnwIP0aawsVzpJnjwXYPdLe6wEgtx//FqB2LeuoBApZa4QA/I0qDKBlaWPM1rS9tKCIOOGE7raydJRuEK
+ 7Bff4uhfqoS4WsOx1X4+gA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58401
+X-archive-position: 58402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krzk@kernel.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -125,29 +49,208 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 09, 2017 at 09:59:48PM +0200, Arnd Bergmann wrote:
-> On Thu, Jun 8, 2017 at 6:08 PM, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > Hi,
-> >
-> > While cleaning Samsung ARM defconfigs with savedefconfig, I encountered
-> > similar obsolete entries in other files.
-> >
-> > Except the ARM, no dependencies.
-> > For ARM, the rest of patches depend on the first change (otherwise
-> > it might not apply cleanly).
+On 06/09/2017 20:26, Paul Burton wrote:
+> Prior to this patch the xchg & cmpxchg functions have duplicated code
+> which is for all intents & purposes identical apart from use of a
+> branch-likely instruction in the R10000_LLSC_WAR case & a regular branch
+> instruction in the non-R10000_LLSC_WAR case.
 > 
-> Great work!
+> This patch removes the duplication, declaring a __scbeqz macro to select
+> the branch instruction suitable for use when checking the result of an
+> sc instruction & making use of it to unify the 2 cases.
 > 
-> I looked at all the ARM patches, and everything looks good to me (the
-> changlog linewrapping may be suboptimal for readability in some cases,
-> if I had to say anything negative ;-) ).
+> In __xchg_u{32,64}() this means writing the branch in asm, where it was
+> previously being done in C as a do...while loop for the
+> non-R10000_LLSC_WAR case. As this is a single instruction, and adds
+> consistency with the R10000_LLSC_WAR cases & the cmpxchg() code, this
+> seems worthwhile.
+
+IMHO, a good cleanup.  I'll test shortly on my Octane once I get some things
+moved around and a new kernel tree set up.  That said, there are a number of
+locations where R10000_LLSC_WAR is used in this manner, and I think this change
+should be broken out into its own patch series, with the macro that selects
+normal branch over branch-likely, placed into a main MIPS header file
+somewhere, and the same change made to all locations at once.  That'll give
+some consistency to everything.
+
+I don't think any of my SGI systems have the specific R10K revision that's
+affected.  I've been building kernels for a while now with a patch that splits
+the R10K CPU selection up into vanilla R10K, and then R12K/R14K/R16K, and using
+the non-R10000_LLSC_WAR path for R12K and up, as many of my SGI systems have at
+least R12K processors.  My IP28 might have the older, affected R10K, but I
+haven't tested that out since 4.4 (it didn't survive for very long, either).
+
+I also wonder if "__scbeqz" is a descriptive-enough name.  It works in this
+case because the macro definition is at the top, but if moved to a different
+header file, perhaps something more like "__r10k_b_insn" or such may clue
+casual readers in some more?
+
+--J
+
+
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> ---
 > 
-> Please add my Acked-by to the ARM patches and send a pull request.
+>  arch/mips/include/asm/cmpxchg.h | 80 ++++++++++++-----------------------------
+>  1 file changed, 22 insertions(+), 58 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
+> index b71ab4a5fd50..0582c01d229d 100644
+> --- a/arch/mips/include/asm/cmpxchg.h
+> +++ b/arch/mips/include/asm/cmpxchg.h
+> @@ -13,44 +13,38 @@
+>  #include <asm/compiler.h>
+>  #include <asm/war.h>
+>  
+> +/*
+> + * Using a branch-likely instruction to check the result of an sc instruction
+> + * works around a bug present in R10000 CPUs prior to revision 3.0 that could
+> + * cause ll-sc sequences to execute non-atomically.
+> + */
+> +#if R10000_LLSC_WAR
+> +# define __scbeqz "beqzl"
+> +#else
+> +# define __scbeqz "beqz"
+> +#endif
+> +
+>  static inline unsigned long __xchg_u32(volatile int * m, unsigned int val)
+>  {
+>  	__u32 retval;
+>  
+>  	smp_mb__before_llsc();
+>  
+> -	if (kernel_uses_llsc && R10000_LLSC_WAR) {
+> +	if (kernel_uses_llsc) {
+>  		unsigned long dummy;
+>  
+>  		__asm__ __volatile__(
+> -		"	.set	arch=r4000				\n"
+> +		"	.set	" MIPS_ISA_ARCH_LEVEL "			\n"
+>  		"1:	ll	%0, %3			# xchg_u32	\n"
+>  		"	.set	mips0					\n"
+>  		"	move	%2, %z4					\n"
+> -		"	.set	arch=r4000				\n"
+> +		"	.set	" MIPS_ISA_ARCH_LEVEL "			\n"
+>  		"	sc	%2, %1					\n"
+> -		"	beqzl	%2, 1b					\n"
+> +		"\t" __scbeqz "	%2, 1b					\n"
+>  		"	.set	mips0					\n"
+>  		: "=&r" (retval), "=" GCC_OFF_SMALL_ASM() (*m), "=&r" (dummy)
+>  		: GCC_OFF_SMALL_ASM() (*m), "Jr" (val)
+>  		: "memory");
+> -	} else if (kernel_uses_llsc) {
+> -		unsigned long dummy;
+> -
+> -		do {
+> -			__asm__ __volatile__(
+> -			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"
+> -			"	ll	%0, %3		# xchg_u32	\n"
+> -			"	.set	mips0				\n"
+> -			"	move	%2, %z4				\n"
+> -			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"
+> -			"	sc	%2, %1				\n"
+> -			"	.set	mips0				\n"
+> -			: "=&r" (retval), "=" GCC_OFF_SMALL_ASM() (*m),
+> -			  "=&r" (dummy)
+> -			: GCC_OFF_SMALL_ASM() (*m), "Jr" (val)
+> -			: "memory");
+> -		} while (unlikely(!dummy));
+>  	} else {
+>  		unsigned long flags;
+>  
+> @@ -72,34 +66,19 @@ static inline __u64 __xchg_u64(volatile __u64 * m, __u64 val)
+>  
+>  	smp_mb__before_llsc();
+>  
+> -	if (kernel_uses_llsc && R10000_LLSC_WAR) {
+> +	if (kernel_uses_llsc) {
+>  		unsigned long dummy;
+>  
+>  		__asm__ __volatile__(
+> -		"	.set	arch=r4000				\n"
+> +		"	.set	" MIPS_ISA_ARCH_LEVEL "			\n"
+>  		"1:	lld	%0, %3			# xchg_u64	\n"
+>  		"	move	%2, %z4					\n"
+>  		"	scd	%2, %1					\n"
+> -		"	beqzl	%2, 1b					\n"
+> +		"\t" __scbeqz "	%2, 1b					\n"
+>  		"	.set	mips0					\n"
+>  		: "=&r" (retval), "=" GCC_OFF_SMALL_ASM() (*m), "=&r" (dummy)
+>  		: GCC_OFF_SMALL_ASM() (*m), "Jr" (val)
+>  		: "memory");
+> -	} else if (kernel_uses_llsc) {
+> -		unsigned long dummy;
+> -
+> -		do {
+> -			__asm__ __volatile__(
+> -			"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"
+> -			"	lld	%0, %3		# xchg_u64	\n"
+> -			"	move	%2, %z4				\n"
+> -			"	scd	%2, %1				\n"
+> -			"	.set	mips0				\n"
+> -			: "=&r" (retval), "=" GCC_OFF_SMALL_ASM() (*m),
+> -			  "=&r" (dummy)
+> -			: GCC_OFF_SMALL_ASM() (*m), "Jr" (val)
+> -			: "memory");
+> -		} while (unlikely(!dummy));
+>  	} else {
+>  		unsigned long flags;
+>  
+> @@ -142,24 +121,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+>  ({									\
+>  	__typeof(*(m)) __ret;						\
+>  									\
+> -	if (kernel_uses_llsc && R10000_LLSC_WAR) {			\
+> -		__asm__ __volatile__(					\
+> -		"	.set	push				\n"	\
+> -		"	.set	noat				\n"	\
+> -		"	.set	arch=r4000			\n"	\
+> -		"1:	" ld "	%0, %2		# __cmpxchg_asm \n"	\
+> -		"	bne	%0, %z3, 2f			\n"	\
+> -		"	.set	mips0				\n"	\
+> -		"	move	$1, %z4				\n"	\
+> -		"	.set	arch=r4000			\n"	\
+> -		"	" st "	$1, %1				\n"	\
+> -		"	beqzl	$1, 1b				\n"	\
+> -		"2:						\n"	\
+> -		"	.set	pop				\n"	\
+> -		: "=&r" (__ret), "=" GCC_OFF_SMALL_ASM() (*m)		\
+> -		: GCC_OFF_SMALL_ASM() (*m), "Jr" (old), "Jr" (new)		\
+> -		: "memory");						\
+> -	} else if (kernel_uses_llsc) {					\
+> +	if (kernel_uses_llsc) {						\
+>  		__asm__ __volatile__(					\
+>  		"	.set	push				\n"	\
+>  		"	.set	noat				\n"	\
+> @@ -170,7 +132,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+>  		"	move	$1, %z4				\n"	\
+>  		"	.set	"MIPS_ISA_ARCH_LEVEL"		\n"	\
+>  		"	" st "	$1, %1				\n"	\
+> -		"	beqz	$1, 1b				\n"	\
+> +		"\t" __scbeqz "	$1, 1b				\n"	\
+>  		"	.set	pop				\n"	\
+>  		"2:						\n"	\
+>  		: "=&r" (__ret), "=" GCC_OFF_SMALL_ASM() (*m)		\
+> @@ -245,4 +207,6 @@ extern void __cmpxchg_called_with_bad_pointer(void);
+>  #define cmpxchg64(ptr, o, n) cmpxchg64_local((ptr), (o), (n))
+>  #endif
+>  
+> +#undef __scbeqz
+> +
+>  #endif /* __ASM_CMPXCHG_H */
+> 
 
-Thanks, I'll send you ARM part in pull request.
 
-As for the rest, I think respective arch/platform maintainers should
-take it.
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
 
-Best regards,
-Krzysztof
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

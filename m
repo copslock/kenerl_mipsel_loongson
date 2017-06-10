@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jun 2017 02:30:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:1549 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Jun 2017 02:31:19 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16518 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993969AbdFJA327hPgt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Jun 2017 02:29:28 +0200
+        with ESMTP id S23993975AbdFJA3qTpNbt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Jun 2017 02:29:46 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2CB5B7EE94A09;
-        Sat, 10 Jun 2017 01:29:21 +0100 (IST)
+        by Forcepoint Email with ESMTPS id D75A75E637AB0;
+        Sat, 10 Jun 2017 01:29:38 +0100 (IST)
 Received: from localhost (10.20.1.33) by HHMAIL01.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 10 Jun 2017 01:29:22
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 10 Jun 2017 01:29:40
  +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 08/11] MIPS: cmpxchg: Implement 1 byte & 2 byte cmpxchg()
-Date:   Fri, 9 Jun 2017 17:26:40 -0700
-Message-ID: <20170610002644.8434-9-paul.burton@imgtec.com>
+Subject: [PATCH 09/11] MIPS: cmpxchg: Rearrange __xchg() arguments to match xchg()
+Date:   Fri, 9 Jun 2017 17:26:41 -0700
+Message-ID: <20170610002644.8434-10-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.13.1
 In-Reply-To: <20170610002644.8434-1-paul.burton@imgtec.com>
 References: <20170610002644.8434-1-paul.burton@imgtec.com>
@@ -26,7 +26,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58397
+X-archive-position: 58398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,108 +43,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implement support for 1 & 2 byte cmpxchg() using read-modify-write atop
-a 4 byte cmpxchg(). This allows us to support these atomic operations
-despite the MIPS ISA only providing 4 & 8 byte atomic operations.
-
-This is required in order to support queued rwlocks (qrwlock) in a later
-patch, since these make use of a 1 byte cmpxchg() in their slow path.
+The __xchg() function declares its first 2 arguments in reverse order
+compared to the xchg() macro, which is confusing & serves no purpose.
+Reorder the arguments such that __xchg() & xchg() match.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/include/asm/cmpxchg.h |  7 +++++
- arch/mips/kernel/cmpxchg.c      | 57 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
+ arch/mips/include/asm/cmpxchg.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-index a633bf845689..a633f61c5545 100644
+index a633f61c5545..903f3bf48419 100644
 --- a/arch/mips/include/asm/cmpxchg.h
 +++ b/arch/mips/include/asm/cmpxchg.h
-@@ -142,10 +142,17 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
- 	__ret;								\
- })
+@@ -73,7 +73,8 @@ extern unsigned long __xchg_called_with_bad_pointer(void)
+ extern unsigned long __xchg_small(volatile void *ptr, unsigned long val,
+ 				  unsigned int size);
  
-+extern unsigned long __cmpxchg_small(volatile void *ptr, unsigned long old,
-+				     unsigned long new, unsigned int size);
-+
- static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
- 				      unsigned long new, unsigned int size)
+-static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int size)
++static inline unsigned long __xchg(volatile void *ptr, unsigned long x,
++				   int size)
  {
  	switch (size) {
-+	case 1:
-+	case 2:
-+		return __cmpxchg_small(ptr, old, new, size);
-+
- 	case 4:
- 		return __cmpxchg_asm("ll", "sc", (volatile u32 *)ptr, old, new);
- 
-diff --git a/arch/mips/kernel/cmpxchg.c b/arch/mips/kernel/cmpxchg.c
-index 5acfbf9fb2c5..7730f1d3434f 100644
---- a/arch/mips/kernel/cmpxchg.c
-+++ b/arch/mips/kernel/cmpxchg.c
-@@ -50,3 +50,60 @@ unsigned long __xchg_small(volatile void *ptr, unsigned long val, unsigned int s
- 
- 	return (load32 & mask) >> shift;
- }
-+
-+unsigned long __cmpxchg_small(volatile void *ptr, unsigned long old,
-+			      unsigned long new, unsigned int size)
-+{
-+	u32 mask, old32, new32, load32;
-+	volatile u32 *ptr32;
-+	unsigned int shift;
-+	u8 load;
-+
-+	/* Check that ptr is naturally aligned */
-+	WARN_ON((unsigned long)ptr & (size - 1));
-+
-+	/* Mask inputs to the correct size. */
-+	mask = GENMASK((size * BITS_PER_BYTE) - 1, 0);
-+	old &= mask;
-+	new &= mask;
-+
-+	/*
-+	 * Calculate a shift & mask that correspond to the value we wish to
-+	 * compare & exchange within the naturally aligned 4 byte integer
-+	 * that includes it.
-+	 */
-+	shift = (unsigned long)ptr & 0x3;
-+	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-+		shift ^= sizeof(u32) - size;
-+	shift *= BITS_PER_BYTE;
-+	mask <<= shift;
-+
-+	/*
-+	 * Calculate a pointer to the naturally aligned 4 byte integer that
-+	 * includes our byte of interest, and load its value.
-+	 */
-+	ptr32 = (volatile u32 *)((unsigned long)ptr & ~0x3);
-+	load32 = *ptr32;
-+
-+	while (true) {
-+		/*
-+		 * Ensure the byte we want to exchange matches the expected
-+		 * old value, and if not then bail.
-+		 */
-+		load = (load32 & mask) >> shift;
-+		if (load != old)
-+			return load;
-+
-+		/*
-+		 * Calculate the old & new values of the naturally aligned
-+		 * 4 byte integer that include the byte we want to exchange.
-+		 * Attempt to exchange the old value for the new value, and
-+		 * return if we succeed.
-+		 */
-+		old32 = (load32 & ~mask) | (old << shift);
-+		new32 = (load32 & ~mask) | (new << shift);
-+		load32 = cmpxchg(ptr32, old32, new32);
-+		if (load32 == old32)
-+			return old;
-+	}
-+}
+ 	case 1:
+@@ -101,7 +102,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+ 	smp_mb__before_llsc();						\
+ 									\
+ 	__res = (__typeof__(*(ptr)))					\
+-		__xchg((unsigned long)(x), (ptr), sizeof(*(ptr)));	\
++		__xchg((ptr), (unsigned long)(x), sizeof(*(ptr)));	\
+ 									\
+ 	smp_llsc_mb();							\
+ 									\
 -- 
 2.13.1

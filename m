@@ -1,41 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jun 2017 04:39:22 +0200 (CEST)
-Received: from resqmta-ch2-01v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:33]:53198
-        "EHLO resqmta-ch2-01v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991965AbdFKCjOdc48T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jun 2017 04:39:14 +0200
-Received: from resomta-ch2-19v.sys.comcast.net ([69.252.207.115])
-        by resqmta-ch2-01v.sys.comcast.net with SMTP
-        id JsmKdHbvfO3QoJsmXd2rKu; Sun, 11 Jun 2017 02:39:13 +0000
-Received: from [192.168.1.13] ([76.106.92.144])
-        by resomta-ch2-19v.sys.comcast.net with SMTP
-        id JsmVd4pJQngy3JsmWdRrFT; Sun, 11 Jun 2017 02:39:13 +0000
-Subject: Re: [PATCH] MIPS: Hardcode cpu_has_* where known at compile time due
- to ISA
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>
-References: <20170610002130.7898-1-paul.burton@imgtec.com>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <43f9a0a3-bc2b-b3c5-7ee9-e8dcb6ff90e8@gentoo.org>
-Date:   Sat, 10 Jun 2017 22:38:43 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jun 2017 12:33:50 +0200 (CEST)
+Received: from mail-ua0-x243.google.com ([IPv6:2607:f8b0:400c:c08::243]:36657
+        "EHLO mail-ua0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992160AbdFKKdoLSbaj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Jun 2017 12:33:44 +0200
+Received: by mail-ua0-x243.google.com with SMTP id f14so6972343uaa.3;
+        Sun, 11 Jun 2017 03:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=p+UMki/ox/ziaUOme1o6XQK0oS7d4dotcPfd7xj9yEI=;
+        b=FGYEK+FC9yeyFStQoSwujIPd0fVzgqFzhHlUw/tSgt5PsDgNfTigvQMTVW41OMcGgZ
+         Rn/2h6UHKdUzlkMXmwCrs54DFx3ry/7UWf5Ml1d1Mb7DdviNImwPiQPx8ZwtH6rA8E2e
+         W5uIUGKX9PmYUKDOQGECZCstBgUDL4fprZKTW33OerfVJeqrmYPcAADwDfIwBuwPzqhg
+         DybS4qpUGSnAnxVIVGk1ttmHuDOYA7nEqMZr/OOgtjEqpoBdQ68lHiqjnElyA4QTtZT8
+         LpVkmiTbcPHfpULrXx/oTQuDLcrUxc6LDRpMXnOhZ92FClS2Qoap3K+qXRRT8CHB4j8p
+         d+kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=p+UMki/ox/ziaUOme1o6XQK0oS7d4dotcPfd7xj9yEI=;
+        b=BKfkCOcMg8GawQ/9VleUW51jEarFVi1Xneyoh3H/t7rx5eYsfyFeQRRnKx/OiQK2c7
+         7P4+RM0U08Nq7xuwvX9TpvBtqqPj140xrOOdKVgLqrOg8P1zamyGMjrjgxXqh8JwvLRa
+         m7YKmkGVOZ8ooRErjoXHbcvl9WmIUNEe6apPn5PAw4RrzG3V4klLFKZzzIKT3xTPLX32
+         LPJW7JFJ4hw0yzC4PpNop9hpHP3J26dOCM4O964VBtLXaOCgEFzmoGfWwSl7Dg/jGQKc
+         7lbknK/vzVhKyHaA+yizGvDuWkR41eRlrYMJPeJAe/BLD8QVxR1YFlU514KPAP9KTYCv
+         hxPg==
+X-Gm-Message-State: AODbwcD6Q+s71BGtPP251WCbYZsDT0yfk9CGt9cTLWP9JmUs+Z0c2bBV
+        aEz/M+NJQrsxtXvklkIzCMRJ9OTIWQ==
+X-Received: by 10.176.81.4 with SMTP id e4mr30299691uaa.33.1497177218395; Sun,
+ 11 Jun 2017 03:33:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20170610002130.7898-1-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfDpDDKCoXH2ILkTHP/qFsFp5OgL8bB8vfYYz0d4f3FHoor0dOv91q2dZ1Ojr2ivoRlVjmfaRYE5JeiIfyyqxAt0/1+L07Z6k/RjqB6AtNkHD8bH7maEn
- MsZADvjI+lO1x7GbyfKXCtnxUEN0z11KliHSwaSh0ZnqkA3CwPTv7eF4gzt7t6My9ij8BQ54n5Jt0qe99cygONb2JgvONAtCOACH/r0mN43GRIB0IZOP2Q7n
- DoWd7jj8g3z9W0tCcLGX6Q==
-Return-Path: <kumba@gentoo.org>
+Received: by 10.176.64.135 with HTTP; Sun, 11 Jun 2017 03:33:18 -0700 (PDT)
+In-Reply-To: <2d887f2f-b83b-3540-37dd-182aeed1fc0e@caviumnetworks.com>
+References: <1496776596-5045-1-git-send-email-andrea.merello@gmail.com>
+ <fd8ad5f4-ab71-e8fc-a7ee-5177877cfb74@gmail.com> <2d887f2f-b83b-3540-37dd-182aeed1fc0e@caviumnetworks.com>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Sun, 11 Jun 2017 12:33:18 +0200
+Message-ID: <CAOiHx=mocjOMDk4_p6=epCJgMmH1QFay1oq6Eo1uwiV-oG6ZkQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: fix boot with DT passed via UHI
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Andrea Merello <andrea.merello@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58406
+X-archive-position: 58407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,439 +68,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/09/2017 20:21, Paul Burton wrote:
-> Many architectural features have over time moved from being optional to
-> either be required or removed by newer architecture releases. This means
-> that in many cases we can know at compile time whether a feature will be
-> supported or not purely due to the knowledge we have about the ISA the
-> kernel build is targeting.
-> 
-> This patch introduces a bunch of utility macros for checking for
-> supported options, ASEs & combinations of those with ISA revisions. It
-> then makes use of these in the default definitions of cpu_has_* macros.
-> The result is that many of the macros become compile-time constant,
-> allowing more optimisation opportunities for the compiler - particularly
-> with kernels built for later ISA revisions.
-> 
-> To demonstrate the effect of this patch, the following table shows the
-> size in bytes of the kernel binary as reported by scripts/bloat-o-meter
-> for v4.12-rc4 maltasmvp_defconfig kernels with & without this patch. A
-> variant of maltasmvp_defconfig with CONFIG_CPU_MIPS32_R6 selected is
-> also shown, to demonstrate that MIPSr6 systems benefit more due to extra
-> features becoming required by that architecture revision. Builds of
-> pistachio_defconfig are also shown, as although this is a MIPSr2
-> platform it doesn't hardcode any features in a machine-specific
-> cpu-feature-overrides.h, which allows it to gain more from this patch
-> than the equivalent Malta r2 build.
-> 
->      Config         | Before  | After   |  Change
->     ----------------|---------|---------|---------
->      maltasmvp      | 7248316 | 7247714 |    -602
->      maltasmvp + r6 | 6955595 | 6950777 |   -4818
->      pistachio      | 8650977 | 8363898 | -287079
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> ---
-> 
->  arch/mips/include/asm/cpu-features.h | 164 +++++++++++++++++++++--------------
->  1 file changed, 101 insertions(+), 63 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-> index 494d38274142..46c669e370d3 100644
-> --- a/arch/mips/include/asm/cpu-features.h
-> +++ b/arch/mips/include/asm/cpu-features.h
-> @@ -13,39 +13,77 @@
->  #include <asm/cpu-info.h>
->  #include <cpu-feature-overrides.h>
->  
-> +#define __ase(ase)			(cpu_data[0].ases & (ase))
-> +#define __opt(opt)			(cpu_data[0].options & (opt))
-> +
-> +/*
-> + * Check if __mips_isa_rev is >= isa *and* an option or ASE is detected during
-> + * boot (typically by cpu_probe()).
-> + *
-> + * Note that these should only be used in cases where a kernel built for an
-> + * older ISA *cannot* run on a CPU which supports the feature in question. For
-> + * example this may be used for features introduced with MIPSr6, since a kernel
-> + * built for an older ISA cannot run on a MIPSr6 CPU. This should not be used for
-> + * MIPSr2 features however, since a MIPSr1 or earlier kernel might run on a
-> + * MIPSr2 CPU.
-> + */
-> +#define __isa_ge_and_ase(isa, ase)	((__mips_isa_rev >= (isa)) && __ase(ase))
-> +#define __isa_ge_and_opt(isa, opt)	((__mips_isa_rev >= (isa)) && __opt(opt))
-> +
-> +/*
-> + * Check if __mips_isa_rev is >= isa *or* an option or ASE is detected during
-> + * boot (typically by cpu_probe()).
-> + *
-> + * These are for use with features that are optional up until a particular ISA
-> + * revision & then become required.
-> + */
-> +#define __isa_ge_or_ase(isa, ase)	((__mips_isa_rev >= (isa)) || __ase(ase))
-> +#define __isa_ge_or_opt(isa, opt)	((__mips_isa_rev >= (isa)) || __opt(opt))
-> +
-> +/*
-> + * Check if __mips_isa_rev is < isa *and* an option or ASE is detected during
-> + * boot (typically by cpu_probe()).
-> + *
-> + * These are for use with features that are optional up until a particular ISA
-> + * revision & are then removed - ie. no longer present in any CPU implementing
-> + * the given ISA revision.
-> + */
-> +#define __isa_lt_and_ase(isa, ase)	((__mips_isa_rev < (isa)) && __ase(ase))
-> +#define __isa_lt_and_opt(isa, opt)	((__mips_isa_rev < (isa)) && __opt(opt))
-> +
->  /*
->   * SMP assumption: Options of CPU 0 are a superset of all processors.
->   * This is true for all known MIPS systems.
->   */
->  #ifndef cpu_has_tlb
-> -#define cpu_has_tlb		(cpu_data[0].options & MIPS_CPU_TLB)
-> +#define cpu_has_tlb		__opt(MIPS_CPU_TLB)
->  #endif
->  #ifndef cpu_has_ftlb
-> -#define cpu_has_ftlb		(cpu_data[0].options & MIPS_CPU_FTLB)
-> +#define cpu_has_ftlb		__opt(MIPS_CPU_FTLB)
->  #endif
->  #ifndef cpu_has_tlbinv
-> -#define cpu_has_tlbinv		(cpu_data[0].options & MIPS_CPU_TLBINV)
-> +#define cpu_has_tlbinv		__opt(MIPS_CPU_TLBINV)
->  #endif
->  #ifndef cpu_has_segments
-> -#define cpu_has_segments	(cpu_data[0].options & MIPS_CPU_SEGMENTS)
-> +#define cpu_has_segments	__opt(MIPS_CPU_SEGMENTS)
->  #endif
->  #ifndef cpu_has_eva
-> -#define cpu_has_eva		(cpu_data[0].options & MIPS_CPU_EVA)
-> +#define cpu_has_eva		__opt(MIPS_CPU_EVA)
->  #endif
->  #ifndef cpu_has_htw
-> -#define cpu_has_htw		(cpu_data[0].options & MIPS_CPU_HTW)
-> +#define cpu_has_htw		__opt(MIPS_CPU_HTW)
->  #endif
->  #ifndef cpu_has_ldpte
-> -#define cpu_has_ldpte		(cpu_data[0].options & MIPS_CPU_LDPTE)
-> +#define cpu_has_ldpte		__opt(MIPS_CPU_LDPTE)
->  #endif
->  #ifndef cpu_has_rixiex
-> -#define cpu_has_rixiex		(cpu_data[0].options & MIPS_CPU_RIXIEX)
-> +#define cpu_has_rixiex		__isa_ge_or_opt(6, MIPS_CPU_RIXIEX)
->  #endif
->  #ifndef cpu_has_maar
-> -#define cpu_has_maar		(cpu_data[0].options & MIPS_CPU_MAAR)
-> +#define cpu_has_maar		__opt(MIPS_CPU_MAAR)
->  #endif
->  #ifndef cpu_has_rw_llb
-> -#define cpu_has_rw_llb		(cpu_data[0].options & MIPS_CPU_RW_LLB)
-> +#define cpu_has_rw_llb		__isa_ge_or_opt(6, MIPS_CPU_RW_LLB)
->  #endif
->  
->  /*
-> @@ -58,18 +96,18 @@
->  #define cpu_has_3kex		(!cpu_has_4kex)
->  #endif
->  #ifndef cpu_has_4kex
-> -#define cpu_has_4kex		(cpu_data[0].options & MIPS_CPU_4KEX)
-> +#define cpu_has_4kex		__isa_ge_or_opt(1, MIPS_CPU_4KEX)
->  #endif
->  #ifndef cpu_has_3k_cache
-> -#define cpu_has_3k_cache	(cpu_data[0].options & MIPS_CPU_3K_CACHE)
-> +#define cpu_has_3k_cache	__isa_lt_and_opt(1, MIPS_CPU_3K_CACHE)
->  #endif
->  #define cpu_has_6k_cache	0
->  #define cpu_has_8k_cache	0
->  #ifndef cpu_has_4k_cache
-> -#define cpu_has_4k_cache	(cpu_data[0].options & MIPS_CPU_4K_CACHE)
-> +#define cpu_has_4k_cache	__isa_ge_or_opt(1, MIPS_CPU_4K_CACHE)
->  #endif
->  #ifndef cpu_has_tx39_cache
-> -#define cpu_has_tx39_cache	(cpu_data[0].options & MIPS_CPU_TX39_CACHE)
-> +#define cpu_has_tx39_cache	__opt(MIPS_CPU_TX39_CACHE)
->  #endif
->  #ifndef cpu_has_octeon_cache
->  #define cpu_has_octeon_cache	0
-> @@ -82,89 +120,89 @@
->  #define raw_cpu_has_fpu		cpu_has_fpu
->  #endif
->  #ifndef cpu_has_32fpr
-> -#define cpu_has_32fpr		(cpu_data[0].options & MIPS_CPU_32FPR)
-> +#define cpu_has_32fpr		__isa_ge_or_opt(1, MIPS_CPU_32FPR)
->  #endif
->  #ifndef cpu_has_counter
-> -#define cpu_has_counter		(cpu_data[0].options & MIPS_CPU_COUNTER)
-> +#define cpu_has_counter		__opt(MIPS_CPU_COUNTER)
->  #endif
->  #ifndef cpu_has_watch
-> -#define cpu_has_watch		(cpu_data[0].options & MIPS_CPU_WATCH)
-> +#define cpu_has_watch		__opt(MIPS_CPU_WATCH)
->  #endif
->  #ifndef cpu_has_divec
-> -#define cpu_has_divec		(cpu_data[0].options & MIPS_CPU_DIVEC)
-> +#define cpu_has_divec		__isa_ge_or_opt(1, MIPS_CPU_DIVEC)
->  #endif
->  #ifndef cpu_has_vce
-> -#define cpu_has_vce		(cpu_data[0].options & MIPS_CPU_VCE)
-> +#define cpu_has_vce		__opt(MIPS_CPU_VCE)
->  #endif
->  #ifndef cpu_has_cache_cdex_p
-> -#define cpu_has_cache_cdex_p	(cpu_data[0].options & MIPS_CPU_CACHE_CDEX_P)
-> +#define cpu_has_cache_cdex_p	__opt(MIPS_CPU_CACHE_CDEX_P)
->  #endif
->  #ifndef cpu_has_cache_cdex_s
-> -#define cpu_has_cache_cdex_s	(cpu_data[0].options & MIPS_CPU_CACHE_CDEX_S)
-> +#define cpu_has_cache_cdex_s	__opt(MIPS_CPU_CACHE_CDEX_S)
->  #endif
->  #ifndef cpu_has_prefetch
-> -#define cpu_has_prefetch	(cpu_data[0].options & MIPS_CPU_PREFETCH)
-> +#define cpu_has_prefetch	__isa_ge_or_opt(1, MIPS_CPU_PREFETCH)
->  #endif
->  #ifndef cpu_has_mcheck
-> -#define cpu_has_mcheck		(cpu_data[0].options & MIPS_CPU_MCHECK)
-> +#define cpu_has_mcheck		__isa_ge_or_opt(1, MIPS_CPU_MCHECK)
->  #endif
->  #ifndef cpu_has_ejtag
-> -#define cpu_has_ejtag		(cpu_data[0].options & MIPS_CPU_EJTAG)
-> +#define cpu_has_ejtag		__opt(MIPS_CPU_EJTAG)
->  #endif
->  #ifndef cpu_has_llsc
-> -#define cpu_has_llsc		(cpu_data[0].options & MIPS_CPU_LLSC)
-> +#define cpu_has_llsc		__isa_ge_or_opt(1, MIPS_CPU_LLSC)
->  #endif
->  #ifndef cpu_has_bp_ghist
-> -#define cpu_has_bp_ghist	(cpu_data[0].options & MIPS_CPU_BP_GHIST)
-> +#define cpu_has_bp_ghist	__opt(MIPS_CPU_BP_GHIST)
->  #endif
->  #ifndef kernel_uses_llsc
->  #define kernel_uses_llsc	cpu_has_llsc
->  #endif
->  #ifndef cpu_has_guestctl0ext
-> -#define cpu_has_guestctl0ext	(cpu_data[0].options & MIPS_CPU_GUESTCTL0EXT)
-> +#define cpu_has_guestctl0ext	__opt(MIPS_CPU_GUESTCTL0EXT)
->  #endif
->  #ifndef cpu_has_guestctl1
-> -#define cpu_has_guestctl1	(cpu_data[0].options & MIPS_CPU_GUESTCTL1)
-> +#define cpu_has_guestctl1	__opt(MIPS_CPU_GUESTCTL1)
->  #endif
->  #ifndef cpu_has_guestctl2
-> -#define cpu_has_guestctl2	(cpu_data[0].options & MIPS_CPU_GUESTCTL2)
-> +#define cpu_has_guestctl2	__opt(MIPS_CPU_GUESTCTL2)
->  #endif
->  #ifndef cpu_has_guestid
-> -#define cpu_has_guestid		(cpu_data[0].options & MIPS_CPU_GUESTID)
-> +#define cpu_has_guestid		__opt(MIPS_CPU_GUESTID)
->  #endif
->  #ifndef cpu_has_drg
-> -#define cpu_has_drg		(cpu_data[0].options & MIPS_CPU_DRG)
-> +#define cpu_has_drg		__opt(MIPS_CPU_DRG)
->  #endif
->  #ifndef cpu_has_mips16
-> -#define cpu_has_mips16		(cpu_data[0].ases & MIPS_ASE_MIPS16)
-> +#define cpu_has_mips16		__isa_lt_and_ase(6, MIPS_ASE_MIPS16)
->  #endif
->  #ifndef cpu_has_mdmx
-> -#define cpu_has_mdmx		(cpu_data[0].ases & MIPS_ASE_MDMX)
-> +#define cpu_has_mdmx		__isa_lt_and_ase(6, MIPS_ASE_MDMX)
->  #endif
->  #ifndef cpu_has_mips3d
-> -#define cpu_has_mips3d		(cpu_data[0].ases & MIPS_ASE_MIPS3D)
-> +#define cpu_has_mips3d		__isa_lt_and_ase(6, MIPS_ASE_MIPS3D)
->  #endif
->  #ifndef cpu_has_smartmips
-> -#define cpu_has_smartmips	(cpu_data[0].ases & MIPS_ASE_SMARTMIPS)
-> +#define cpu_has_smartmips	__isa_lt_and_ase(6, MIPS_ASE_SMARTMIPS)
->  #endif
->  
->  #ifndef cpu_has_rixi
-> -#define cpu_has_rixi		(cpu_data[0].options & MIPS_CPU_RIXI)
-> +#define cpu_has_rixi		__isa_ge_or_opt(6, MIPS_CPU_RIXI)
->  #endif
->  
->  #ifndef cpu_has_mmips
->  # ifdef CONFIG_SYS_SUPPORTS_MICROMIPS
-> -#  define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
-> +#  define cpu_has_mmips		__opt(MIPS_CPU_MICROMIPS)
->  # else
->  #  define cpu_has_mmips		0
->  # endif
->  #endif
->  
->  #ifndef cpu_has_lpa
-> -#define cpu_has_lpa		(cpu_data[0].options & MIPS_CPU_LPA)
-> +#define cpu_has_lpa		__opt(MIPS_CPU_LPA)
->  #endif
->  #ifndef cpu_has_mvh
-> -#define cpu_has_mvh		(cpu_data[0].options & MIPS_CPU_MVH)
-> +#define cpu_has_mvh		__opt(MIPS_CPU_MVH)
->  #endif
->  #ifndef cpu_has_xpa
->  #define cpu_has_xpa		(cpu_has_lpa && cpu_has_mvh)
-> @@ -334,32 +372,32 @@
->  #endif
->  
->  #ifndef cpu_has_dsp
-> -#define cpu_has_dsp		(cpu_data[0].ases & MIPS_ASE_DSP)
-> +#define cpu_has_dsp		__ase(MIPS_ASE_DSP)
->  #endif
->  
->  #ifndef cpu_has_dsp2
-> -#define cpu_has_dsp2		(cpu_data[0].ases & MIPS_ASE_DSP2P)
-> +#define cpu_has_dsp2		__ase(MIPS_ASE_DSP2P)
->  #endif
->  
->  #ifndef cpu_has_dsp3
-> -#define cpu_has_dsp3		(cpu_data[0].ases & MIPS_ASE_DSP3)
-> +#define cpu_has_dsp3		__ase(MIPS_ASE_DSP3)
->  #endif
->  
->  #ifndef cpu_has_mipsmt
-> -#define cpu_has_mipsmt		(cpu_data[0].ases & MIPS_ASE_MIPSMT)
-> +#define cpu_has_mipsmt		__isa_lt_and_ase(6, MIPS_ASE_MIPSMT)
->  #endif
->  
->  #ifndef cpu_has_vp
-> -#define cpu_has_vp		(cpu_data[0].options & MIPS_CPU_VP)
-> +#define cpu_has_vp		__isa_ge_and_opt(6, MIPS_CPU_VP)
->  #endif
->  
->  #ifndef cpu_has_userlocal
-> -#define cpu_has_userlocal	(cpu_data[0].options & MIPS_CPU_ULRI)
-> +#define cpu_has_userlocal	__isa_ge_or_opt(6, MIPS_CPU_ULRI)
->  #endif
->  
->  #ifdef CONFIG_32BIT
->  # ifndef cpu_has_nofpuex
-> -# define cpu_has_nofpuex	(cpu_data[0].options & MIPS_CPU_NOFPUEX)
-> +# define cpu_has_nofpuex	__isa_lt_and_opt(1, MIPS_CPU_NOFPUEX)
->  # endif
->  # ifndef cpu_has_64bits
->  # define cpu_has_64bits		(cpu_data[0].isa_level & MIPS_CPU_ISA_64BIT)
-> @@ -401,19 +439,19 @@
->  #endif
->  
->  #if defined(CONFIG_CPU_MIPSR2_IRQ_VI) && !defined(cpu_has_vint)
-> -# define cpu_has_vint		(cpu_data[0].options & MIPS_CPU_VINT)
-> +# define cpu_has_vint		__opt(MIPS_CPU_VINT)
->  #elif !defined(cpu_has_vint)
->  # define cpu_has_vint			0
->  #endif
->  
->  #if defined(CONFIG_CPU_MIPSR2_IRQ_EI) && !defined(cpu_has_veic)
-> -# define cpu_has_veic		(cpu_data[0].options & MIPS_CPU_VEIC)
-> +# define cpu_has_veic		__opt(MIPS_CPU_VEIC)
->  #elif !defined(cpu_has_veic)
->  # define cpu_has_veic			0
->  #endif
->  
->  #ifndef cpu_has_inclusive_pcaches
-> -#define cpu_has_inclusive_pcaches	(cpu_data[0].options & MIPS_CPU_INCLUSIVE_CACHES)
-> +#define cpu_has_inclusive_pcaches	__opt(MIPS_CPU_INCLUSIVE_CACHES)
->  #endif
->  
->  #ifndef cpu_dcache_line_size
-> @@ -431,60 +469,60 @@
->  #endif
->  
->  #ifndef cpu_has_perf_cntr_intr_bit
-> -#define cpu_has_perf_cntr_intr_bit	(cpu_data[0].options & MIPS_CPU_PCI)
-> +#define cpu_has_perf_cntr_intr_bit	__opt(MIPS_CPU_PCI)
->  #endif
->  
->  #ifndef cpu_has_vz
-> -#define cpu_has_vz		(cpu_data[0].ases & MIPS_ASE_VZ)
-> +#define cpu_has_vz		__ase(MIPS_ASE_VZ)
->  #endif
->  
->  #if defined(CONFIG_CPU_HAS_MSA) && !defined(cpu_has_msa)
-> -# define cpu_has_msa		(cpu_data[0].ases & MIPS_ASE_MSA)
-> +# define cpu_has_msa		__ase(MIPS_ASE_MSA)
->  #elif !defined(cpu_has_msa)
->  # define cpu_has_msa		0
->  #endif
->  
->  #ifndef cpu_has_ufr
-> -# define cpu_has_ufr		(cpu_data[0].options & MIPS_CPU_UFR)
-> +# define cpu_has_ufr		__opt(MIPS_CPU_UFR)
->  #endif
->  
->  #ifndef cpu_has_fre
-> -# define cpu_has_fre		(cpu_data[0].options & MIPS_CPU_FRE)
-> +# define cpu_has_fre		__opt(MIPS_CPU_FRE)
->  #endif
->  
->  #ifndef cpu_has_cdmm
-> -# define cpu_has_cdmm		(cpu_data[0].options & MIPS_CPU_CDMM)
-> +# define cpu_has_cdmm		__opt(MIPS_CPU_CDMM)
->  #endif
->  
->  #ifndef cpu_has_small_pages
-> -# define cpu_has_small_pages	(cpu_data[0].options & MIPS_CPU_SP)
-> +# define cpu_has_small_pages	__opt(MIPS_CPU_SP)
->  #endif
->  
->  #ifndef cpu_has_nan_legacy
-> -#define cpu_has_nan_legacy	(cpu_data[0].options & MIPS_CPU_NAN_LEGACY)
-> +#define cpu_has_nan_legacy	__isa_lt_and_opt(6, MIPS_CPU_NAN_LEGACY)
->  #endif
->  #ifndef cpu_has_nan_2008
-> -#define cpu_has_nan_2008	(cpu_data[0].options & MIPS_CPU_NAN_2008)
-> +#define cpu_has_nan_2008	__isa_ge_or_opt(6, MIPS_CPU_NAN_2008)
->  #endif
->  
->  #ifndef cpu_has_ebase_wg
-> -# define cpu_has_ebase_wg	(cpu_data[0].options & MIPS_CPU_EBASE_WG)
-> +# define cpu_has_ebase_wg	__opt(MIPS_CPU_EBASE_WG)
->  #endif
->  
->  #ifndef cpu_has_badinstr
-> -# define cpu_has_badinstr	(cpu_data[0].options & MIPS_CPU_BADINSTR)
-> +# define cpu_has_badinstr	__isa_ge_or_opt(6, MIPS_CPU_BADINSTR)
->  #endif
->  
->  #ifndef cpu_has_badinstrp
-> -# define cpu_has_badinstrp	(cpu_data[0].options & MIPS_CPU_BADINSTRP)
-> +# define cpu_has_badinstrp	__isa_ge_or_opt(6, MIPS_CPU_BADINSTRP)
->  #endif
->  
->  #ifndef cpu_has_contextconfig
-> -# define cpu_has_contextconfig	(cpu_data[0].options & MIPS_CPU_CTXTC)
-> +# define cpu_has_contextconfig	__opt(MIPS_CPU_CTXTC)
->  #endif
->  
->  #ifndef cpu_has_perf
-> -# define cpu_has_perf		(cpu_data[0].options & MIPS_CPU_PERF)
-> +# define cpu_has_perf		__opt(MIPS_CPU_PERF)
->  #endif
->  
->  /*
+On 8 June 2017 at 00:47, David Daney <ddaney@caviumnetworks.com> wrote:
+> On 06/07/2017 06:16 AM, Daniel Schwierzeck wrote:
+>>
+>>
+>>
+>> Am 06.06.2017 um 21:16 schrieb Andrea Merello:
+>>>
+>>> commit 15f37e158892 ("MIPS: store the appended dtb address in a
+>>> variable")
+>>> seems to have introduced code that relies on delay slots after branch,
+>>> however it seems that, since no directive ".set noreorder" is present,
+>>> the
+>>> AS already fills delay slots with NOPs.
+>>>
+>>> This caused failure in assigning proper DT blob address to fw_passed_dtb
+>>> variable, causing failure when booting passing DT via UHI; this has been
+>>> seen on a Lantiq VR9 SoC (Fritzbox 3370) and u-boot as bootloader.
+>>>
+>>> [    0.000000] Linux version 4.12.0-fritz+ (andrea@horizon) (gcc version
+>>> 4.9.0 (GCC) ) #29 SMP Tue Jun 6 20:49:59 CEST 2017
+>>> [    0.000000] SoC: xRX200 rev 1.2
+>>> [    0.000000] bootconsole [early0] enabled
+>>> [    0.000000] CPU0 revision is: 00019556 (MIPS 34Kc)
+>>> [    0.000000] Determined physical RAM map:
+>>> [    0.000000]  memory: 00696000 @ 00002000 (usable)
+>>> [    0.000000]  memory: 00038000 @ 00698000 (usable after init)
+>>> [    0.000000] Wasting 64 bytes for tracking 2 unused pages
+>>> [    0.000000] Kernel panic - not syncing: No memory area to place a
+>>> bootmap bitmap
+>>> [    0.000000] Rebooting in 1 seconds..
+>>> [    0.000000] Reboot failed -- System halted
+>>>
+>>> This patch moves the instruction meant to be placed in the delay slot
+>>> before the preceding BEQ instruction, while the delay slot will be
+>>> filled with a NOP by the AS.
+>>>
+>>> After this patch the kernel fetches the DR correctly
+>>>
+>>> [    0.000000] Linux version 4.12.0-fritz+ (andrea@horizon) (gcc version
+>>> 4.9.0 (GCC) ) #30 SMP
+>>> Tue Jun 6 20:52:40 CEST 2017
+>>> [    0.000000] SoC: xRX200 rev 1.2
+>>> [    0.000000] bootconsole [early0] enabled
+>>> [    0.000000] CPU0 revision is: 00019556 (MIPS 34Kc)
+>>> [    0.000000] MIPS: machine is FRITZ3370 - Fritz!Box WLAN 3370
+>>> [    0.000000] Determined physical RAM map:
+>>> [    0.000000]  memory: 08000000 @ 00000000 (usable)
+>>> [    0.000000] Detected 1 available secondary CPU(s)
+>>> [    0.000000] Primary instruction cache 32kB, VIPT, 4-way, linesize 32
+>>> bytes.
+>>> [    0.000000] Primary data cache 32kB, 4-way, VIPT, cache aliases,
+>>> linesize 32 bytes
+>>> [    0.000000] Zone ranges:
+>>> [    0.000000]   Normal   [mem 0x0000000000000000-0x0000000007ffffff]
+>>> [    0.000000] Movable zone start for each node
+>>> [    0.000000] Early memory node ranges
+>>> [    0.000000]   node   0: [mem 0x0000000000000000-0x0000000007ffffff]
+>>> [    0.000000] Initmem setup node 0 [mem
+>>> 0x0000000000000000-0x0000000007ffffff]
+>>> [    0.000000] percpu: Embedded 15 pages/cpu @8110c000 s30176 r8192
+>>> d23072 u61440
+>>> [    0.000000] Built 1 zonelists in Zone order, mobility grouping on.
+>>> Total pages: 32512
+>>> [    0.000000] Kernel command line: rootwait root=/dev/sda1
+>>> console=ttyLTQ0
+>>> ...
+>>>
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Cc: Jonas Gorski <jogo@openwrt.org>
+>>> Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+>>> Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
+>>>
+>>> diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+>>> index cf05220..d1bb506 100644
+>>> --- a/arch/mips/kernel/head.S
+>>> +++ b/arch/mips/kernel/head.S
+>>> @@ -106,8 +106,8 @@ NESTED(kernel_entry, 16, sp)                        #
+>>> kernel entry point
+>>>         beq             t0, t1, dtb_found
+>>>   #endif
+>>>         li              t1, -2
+>>> -       beq             a0, t1, dtb_found
+>>>         move            t2, a1
+>>> +       beq             a0, t1, dtb_found
+>>>         li              t2, 0
+>>>   dtb_found:
+>>>
+>>
+>> The fix looks correct. Without ".set noreorder" one should not
+>
+>
+> s/should/must/
+>
+>> manually
+>> put instructions in the delay slot. This should be left to the AS as an
+>> option for optimization.
+>
+>
+> By definition, it is what the assembler does.  When ".set noreorder" is not
+> in effect, the source code *must* be written as if branch delay slots do not
+> exist.  There is no option here.
 
-Getting a build error for a kernel for an SGI machine with this patch:
-In file included from ./arch/mips/include/asm/bitops.h:21:0,
-                 from ./include/linux/bitops.h:36,
-                 from ./include/linux/kernel.h:10,
-                 from arch/mips/kernel/cpu-probe.c:15:
-arch/mips/kernel/cpu-probe.c: In function 'cpu_set_nan_2008':
-./arch/mips/include/asm/cpu-features.h:52:38: error: '__mips_isa_rev'
-undeclared (first use in this function); did you mean '__mips_set_bit'?
- #define __isa_lt_and_opt(isa, opt) ((__mips_isa_rev < (isa)) && __opt(opt))
-                                      ^
+My assembly knowledge is mostly from reading disassembled code where
+delay slots always matter, so when writing this code it didn't even
+cross my mind that the the assembler might do that.
 
-My guess is the older platforms don't define __mips_isa_rev anywhere.  A lot of
-other uses first use 'defined()' to check for its presence, but in this case,
-it's being used to setup the '__isa_ge_and_ase' and '__isa_ge_and_opt' macros.
-Not sure of a clean workaround to test this patch at the moment.  Also am not
-seeing where this macro is even defined.  Is it a compiler intrinsic?
+So thanks for fixing it!
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
 
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Regards
+Jonas

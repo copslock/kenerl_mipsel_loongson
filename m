@@ -1,40 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 10:41:11 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41216 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991129AbdFMIlDl9qgW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Jun 2017 10:41:03 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5D8ex7G008092;
-        Tue, 13 Jun 2017 10:40:59 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5D8evMX008091;
-        Tue, 13 Jun 2017 10:40:57 +0200
-Date:   Tue, 13 Jun 2017 10:40:57 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V4 2/9] MIPS: c-r4k: Add r4k_blast_scache_node for
- Loongson-3
-Message-ID: <20170613084057.GA31492@linux-mips.org>
-References: <1496718888-18324-1-git-send-email-chenhc@lemote.com>
- <1496718888-18324-2-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 11:23:58 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29671 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993867AbdFMJXvL0Sfd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2017 11:23:51 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 728ED14156413;
+        Tue, 13 Jun 2017 10:23:42 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 13 Jun 2017 10:23:44 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH] MIPS: perf: add I6500 handling
+Date:   Tue, 13 Jun 2017 11:23:39 +0200
+Message-ID: <1497345819-27779-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1496718888-18324-2-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58417
+X-archive-position: 58418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,153 +40,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 06, 2017 at 11:14:41AM +0800, Huacai Chen wrote:
+Add a definition of the perf registers for the new I6500 core.
 
-> For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
-> only flush Node-0's scache. So we add r4k_blast_scache_node() by using
-> (CAC_BASE | (node_id << 44)) instead of CKSEG0 as the start address.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  arch/mips/include/asm/r4kcache.h | 26 ++++++++++++++++++++++++++
->  arch/mips/mm/c-r4k.c             | 33 ++++++++++++++++++++++++++++++++-
->  2 files changed, 58 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-> index 7f12d7e..aa615e3 100644
-> --- a/arch/mips/include/asm/r4kcache.h
-> +++ b/arch/mips/include/asm/r4kcache.h
-> @@ -747,4 +747,30 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
->  __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
->  __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
->  
-> +#ifdef CONFIG_CPU_LOONGSON3
-> +#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
-> +static inline void blast_##pfx##cache##lsize##_node(long node)		\
-> +{									\
-> +	unsigned long start = CAC_BASE | (node << 44);			\
-> +	unsigned long end = start + current_cpu_data.desc.waysize;	\
-> +	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
-> +	unsigned long ws_end = current_cpu_data.desc.ways <<		\
-> +			       current_cpu_data.desc.waybit;		\
-> +	unsigned long ws, addr;						\
-> +									\
-> +	__##pfx##flush_prologue						\
-> +									\
-> +	for (ws = 0; ws < ws_end; ws += ws_inc)				\
-> +		for (addr = start; addr < end; addr += lsize * 32)	\
-> +			cache##lsize##_unroll32(addr|ws, indexop);	\
-> +									\
-> +	__##pfx##flush_epilogue						\
-> +}
-> +
-> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
-> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
-> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
-> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
-> +#endif
+Since I6500 has the same event definitions as I6400, re-use the existing
+i6400 map structures by renaming them to a slightly more generic
+'i6x00_***_map'.
 
-This all expand to just inline functions which generate no code if they're
-unused, so you can drop the #ifdef.
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-However a comment explaining why this function is only required for
-Loongson 3 would be great!
+---
+This patch applies onto current -next and requires
+https://patchwork.linux-mips.org/patch/16190/
+to be applied
 
-> +
->  #endif /* _ASM_R4KCACHE_H */
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 3fe99cb..0a49af0 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -459,11 +459,29 @@ static void r4k_blast_scache_setup(void)
->  		r4k_blast_scache = blast_scache128;
->  }
->  
-> +static void (* r4k_blast_scache_node)(long node);
-> +
-> +static void r4k_blast_scache_node_setup(void)
-> +{
-> +	unsigned long sc_lsize = cpu_scache_line_size();
-> +
-> +	r4k_blast_scache_node = (void *)cache_noop;
-> +#ifdef CONFIG_CPU_LOONGSON3
-> +	if (sc_lsize == 16)
-> +		r4k_blast_scache_node = blast_scache16_node;
-> +	else if (sc_lsize == 32)
-> +		r4k_blast_scache_node = blast_scache32_node;
-> +	else if (sc_lsize == 64)
-> +		r4k_blast_scache_node = blast_scache64_node;
-> +	else if (sc_lsize == 128)
-> +		r4k_blast_scache_node = blast_scache128_node;
-> +#endif
+---
+ arch/mips/kernel/perf_event_mipsxx.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-No #idefs please.  Instead you can check the CPU type with something like
-
-	if (current_cpu_type() = CPU_LOONGSON3) {
-		...
-	}
-
-__get_cpu_type() in include/asm/cpu-type.h will then ensure that GCC
-knows it can optimize things for the CPU type(s) in use.
-
-> +
->  static inline void local_r4k___flush_cache_all(void * args)
->  {
->  	switch (current_cpu_type()) {
->  	case CPU_LOONGSON2:
-> -	case CPU_LOONGSON3:
->  	case CPU_R4000SC:
->  	case CPU_R4000MC:
->  	case CPU_R4400SC:
-> @@ -480,6 +498,10 @@ static inline void local_r4k___flush_cache_all(void * args)
->  		r4k_blast_scache();
->  		break;
->  
-> +	case CPU_LOONGSON3:
-> +		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
-> +		break;
-> +
->  	case CPU_BMIPS5000:
->  		r4k_blast_scache();
->  		__sync();
-> @@ -840,7 +862,11 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
->  	preempt_disable();
->  	if (cpu_has_inclusive_pcaches) {
->  		if (size >= scache_size)
-> +#ifndef CONFIG_CPU_LOONGSON3
->  			r4k_blast_scache();
-> +#else
-> +			r4k_blast_scache_node((addr >> 44) & 0xF);
-> +#endif
-
-Ditto.
-
->  		else
->  			blast_scache_range(addr, addr + size);
->  		preempt_enable();
-> @@ -873,7 +899,11 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
->  	preempt_disable();
->  	if (cpu_has_inclusive_pcaches) {
->  		if (size >= scache_size)
-> +#ifndef CONFIG_CPU_LOONGSON3
->  			r4k_blast_scache();
-> +#else
-> +			r4k_blast_scache_node((addr >> 44) & 0xF);
-> +#endif
-
-Ditto.
-
->  		else {
->  			/*
->  			 * There is no clearly documented alignment requirement
-> @@ -1903,6 +1933,7 @@ void r4k_cache_init(void)
->  	r4k_blast_scache_page_setup();
->  	r4k_blast_scache_page_indexed_setup();
->  	r4k_blast_scache_setup();
-> +	r4k_blast_scache_node_setup();
->  #ifdef CONFIG_EVA
->  	r4k_blast_dcache_user_page_setup();
->  	r4k_blast_icache_user_page_setup();
-
-  Ralf
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index f3e301f..9e6c74b 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -814,7 +814,7 @@ static const struct mips_perf_event mipsxxcore_event_map2
+ 	[PERF_COUNT_HW_BRANCH_MISSES] = { 0x27, CNTR_ODD, T },
+ };
+ 
+-static const struct mips_perf_event i6400_event_map[PERF_COUNT_HW_MAX] = {
++static const struct mips_perf_event i6x00_event_map[PERF_COUNT_HW_MAX] = {
+ 	[PERF_COUNT_HW_CPU_CYCLES]          = { 0x00, CNTR_EVEN | CNTR_ODD },
+ 	[PERF_COUNT_HW_INSTRUCTIONS]        = { 0x01, CNTR_EVEN | CNTR_ODD },
+ 	/* These only count dcache, not icache */
+@@ -1014,7 +1014,7 @@ static const struct mips_perf_event mipsxxcore_cache_map2
+ },
+ };
+ 
+-static const struct mips_perf_event i6400_cache_map
++static const struct mips_perf_event i6x00_cache_map
+ 				[PERF_COUNT_HW_CACHE_MAX]
+ 				[PERF_COUNT_HW_CACHE_OP_MAX]
+ 				[PERF_COUNT_HW_CACHE_RESULT_MAX] = {
+@@ -1610,6 +1610,7 @@ static const struct mips_perf_event *mipsxx_pmu_map_raw_event(u64 config)
+ #endif
+ 		break;
+ 	case CPU_I6400:
++	case CPU_I6500:
+ 		/* 8-bit event numbers */
+ 		base_id = config & 0xff;
+ 		raw_event.cntr_mask = CNTR_EVEN | CNTR_ODD;
+@@ -1770,8 +1771,13 @@ init_hw_perf_events(void)
+ 		break;
+ 	case CPU_I6400:
+ 		mipspmu.name = "mips/I6400";
+-		mipspmu.general_event_map = &i6400_event_map;
+-		mipspmu.cache_event_map = &i6400_cache_map;
++		mipspmu.general_event_map = &i6x00_event_map;
++		mipspmu.cache_event_map = &i6x00_cache_map;
++		break;
++	case CPU_I6500:
++		mipspmu.name = "mips/I6500";
++		mipspmu.general_event_map = &i6x00_event_map;
++		mipspmu.cache_event_map = &i6x00_cache_map;
+ 		break;
+ 	case CPU_1004K:
+ 		mipspmu.name = "mips/1004K";
+-- 
+2.7.4

@@ -1,45 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 18:48:49 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:2731 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993911AbdFMQsmzPXt5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2017 18:48:42 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 7EDD741F8E51;
-        Tue, 13 Jun 2017 18:57:59 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 13 Jun 2017 18:57:59 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 13 Jun 2017 18:57:59 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 7AC651D6D16C7;
-        Tue, 13 Jun 2017 17:48:33 +0100 (IST)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 13 Jun
- 2017 17:48:37 +0100
-Received: from np-p-burton.localnet (10.20.1.33) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 13 Jun
- 2017 09:48:35 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 19:02:01 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:61591 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993911AbdFMRByts0x5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2017 19:01:54 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTP id B39B87592322;
+        Tue, 13 Jun 2017 18:01:44 +0100 (IST)
+Received: from localhost (10.20.1.33) by HHMAIL01.hh.imgtec.org (10.100.10.21)
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 13 Jun 2017 18:01:48
+ +0100
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     Rahul Bedarkar <rahulbedarkar89@gmail.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "Rahul Bedarkar" <rahul.bedarkar@imgtec.com>
-Subject: Re: [PATCH v4 3/4] MIPS: DTS: img: Don't attempt to build-in all .dtb files
-Date:   Tue, 13 Jun 2017 09:48:34 -0700
-Message-ID: <1699079.Kf0ib7BVPQ@np-p-burton>
-Organization: Imagination Technologies
-In-Reply-To: <CA+NV+V=gUdcu_tRKnyLrSauuge88Bou1CB4Q+n75A48d+MqJyg@mail.gmail.com>
-References: <20170602182003.16269-1-paul.burton@imgtec.com> <20170602182003.16269-4-paul.burton@imgtec.com> <CA+NV+V=gUdcu_tRKnyLrSauuge88Bou1CB4Q+n75A48d+MqJyg@mail.gmail.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Bryan O'Donoghue <Bryan.ODonoghue@imgtec.com>,
+        Ed Blake <ed.blake@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2] MIPS: Perform post-DMA cache flushes on systems with MAARs
+Date:   Tue, 13 Jun 2017 10:01:08 -0700
+Message-ID: <20170613170108.15875-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20170612214218.25370-1-paul.burton@imgtec.com>
+References: <20170612214218.25370-1-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2070560.9WQ2B9pHYu";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.20.1.33]
-X-ESG-ENCRYPT-TAG: 1b7d744b
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58423
+X-archive-position: 58424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,95 +46,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart2070560.9WQ2B9pHYu
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Recent CPUs from Imagination Technologies such as the I6400 or P6600 are
+able to speculatively fetch data from memory into caches. This means
+that if used in a system with non-coherent DMA they require that caches
+be invalidated after a device performs DMA, and before the CPU reads the
+DMA'd data, in order to ensure that stale values weren't speculatively
+prefetched.
 
-Hi Rahul,
+Such CPUs also introduced Memory Accessibility Attribute Registers
+(MAARs) in order to control the regions in which they are allowed to
+speculate. Thus we can use the presence of MAARs as a good indication
+that the CPU requires the above cache maintenance. Use the presence of
+MAARs to determine the result of cpu_needs_post_dma_flush() in the
+default case, in order to handle these recent CPUs correctly.
 
-On Tuesday, 13 June 2017 09:13:12 PDT Rahul Bedarkar wrote:
-> Hi Paul,
-> 
-> On Fri, Jun 2, 2017 at 11:50 PM, Paul Burton <paul.burton@imgtec.com> wrote:
-> > When building a FIT image we may want the kernel to build multiple .dtb
-> > files, but we don't want to build them all into the kernel binary as
-> > object files since they'll instead be included in the FIT image.
-> > 
-> > Commit daa10170da27 ("MIPS: DTS: img: add device tree for Marduk board")
-> > however created arch/mips/boot/dts/img/Makefile with a line that builds
-> > any enabled .dtb files into the kernel. Remove this & build the
-> > pistachio object specifically, in preparation for adding .dtb targets
-> > which we don't want to build into the kernel.
-> > 
-> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> > Cc: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > 
-> > ---
-> > 
-> > Changes in v4:
-> > - New patch.
-> > 
-> > Changes in v3: None
-> > Changes in v2: None
-> > 
-> >  arch/mips/boot/dts/img/Makefile | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> It looks good to me.
-> 
-> Reviewed-by: Rahul Bedarkar <rahulbedarkar89@gmail.com>
+Note that the return type of cpu_needs_post_dma_flush() is changed to
+bool, such that it's clearer what's happening when cpu_has_maar is cast
+to bool for the return value. If this patch were backported to a
+pre-v4.7 kernel then MIPS_CPU_MAAR was 1ull<<34, so when cast to an int
+we would incorrectly return 0. It so happens that MIPS_CPU_MAAR is
+currently 1ull<<30, so when truncated to an int gives a non-zero value
+anyway, but even so the implicit conversion from long long int to bool
+makes it clearer to understand what will happen than the implicit
+conversion from long long int to int would. The bool return type also
+fits this usage better semantically, so seems like an all-round win.
 
-Thanks for reviewing :)
+Thanks to Ed for spotting the issue for pre-v4.7 kernels & suggesting
+the return type change.
 
-> > diff --git a/arch/mips/boot/dts/img/Makefile
-> > b/arch/mips/boot/dts/img/Makefile index 69a65f0f82d2..c178cf56f5b8 100644
-> > --- a/arch/mips/boot/dts/img/Makefile
-> > +++ b/arch/mips/boot/dts/img/Makefile
-> > @@ -1,6 +1,5 @@
-> > 
-> >  dtb-$(CONFIG_MACH_PISTACHIO)   += pistachio_marduk.dtb
-> > 
-> > -
-> > -obj-y                          += $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-> 
-> It was probably copy/paste from other board Makefiles. But If I
-> understand it correctly, please correct me if I am wrong, linking of
-> object file of device tree to kernel image is useful if boot loader
-> doesn't support loading external device tree and in that case kernel
-> can use inbuilt device tree.
-> 
-> Thanks,
-> Rahul
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Bryan O'Donoghue <Bryan.ODonoghue@imgtec.com>
+Cc: Ed Blake <ed.blake@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
 
-Yes, it can be useful & there's nothing wrong with building in the .dtb for a 
-platform like pistachio. For the generic kernel however we put the various 
-device tree binaries into the FIT image so that the bootloader can pick out 
-the right one, so building them into the kernel is unnecessary.
+---
 
-Thanks,
-    Paul
---nextPart2070560.9WQ2B9pHYu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Changes in v2:
+- Change cpu_needs_post_dma_flush() return type to bool.
+- Comment explaining the default cpu_has_maar case.
 
------BEGIN PGP SIGNATURE-----
+ arch/mips/mm/dma-default.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAllAF2IACgkQgiDZ+mk8
-HGX7jQ//dffaC/wdXkWuTlIUNA1Y/Zs7Xnfu/ThpkN7b7DSaJCNopMRHLx2bLSUu
-pjZbYL/3opfDBVSTZuHH8jpJkoPXIGmU2QPUydwFq8DIp14IjhC5rL9bmVHIkGjR
-BpOcvQdIG7Zu2DKHhp5GcLc2+J61CqgOZ3xa9l0AeS26Xtx0+AtSeyrWvM2u5WHl
-j8Gy3/X6TdS0db0fJuqaeVr+5FJM7czJGMbKAH2Gnlz0He31RFDHJ75swXRkUIaY
-/j+5z2Jjmbm+Rzs3dyH6hyW1eXIcdwFxP6ZyYib006traJQxgzrIIAKp2/vAwnY3
-5GqUj9RFFonuCKOfYjzE6fNTwUB4ANARDXzBzrndiW67ilSEuZcaNVqA9eh/6tqq
-9QWZFNX6qXUC2KCR0PxQSsDBirDKYkhCQOQAoW0llX0oaEtPK0aA0+pjtF1vKGCu
-IbxgOH5Mj+68xwXMPaMDpRYG25Sz9CX0NfLjzB9pTbOHIbGXrC5WSv4n8iLS8p8t
-IrWqizYStb1VD6B4Dcq2V6afuX6eULq1k9ZPZ7zCEZrWQUPkthodq2+eGBTEfM9l
-BXSbhv5UGIGabP3eJ/rQW95v3uKxKfwOHWPhHonDd6i/e3OyovKFVO16NdXHm1j0
-7BoT7/WS0Bsj5X3OLhKqrAuNfqdfDq6LcSeMacZIJgjclnlx6uc=
-=7w/F
------END PGP SIGNATURE-----
-
---nextPart2070560.9WQ2B9pHYu--
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index fe8df14b6169..e08598c70b3e 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -68,12 +68,25 @@ static inline struct page *dma_addr_to_page(struct device *dev,
+  * systems and only the R10000 and R12000 are used in such systems, the
+  * SGI IP28 Indigo² rsp. SGI IP32 aka O2.
+  */
+-static inline int cpu_needs_post_dma_flush(struct device *dev)
++static inline bool cpu_needs_post_dma_flush(struct device *dev)
+ {
+-	return !plat_device_is_coherent(dev) &&
+-	       (boot_cpu_type() == CPU_R10000 ||
+-		boot_cpu_type() == CPU_R12000 ||
+-		boot_cpu_type() == CPU_BMIPS5000);
++	if (plat_device_is_coherent(dev))
++		return false;
++
++	switch (boot_cpu_type()) {
++	case CPU_R10000:
++	case CPU_R12000:
++	case CPU_BMIPS5000:
++		return true;
++
++	default:
++		/*
++		 * Presence of MAARs suggests that the CPU supports
++		 * speculatively prefetching data, and therefore requires
++		 * the post-DMA flush/invalidate.
++		 */
++		return cpu_has_maar;
++	}
+ }
+ 
+ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+-- 
+2.13.1

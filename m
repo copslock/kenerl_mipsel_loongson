@@ -1,48 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 00:48:06 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:16111 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991346AbdFLWrxTQexK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2017 00:47:53 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id E403541F8D43;
-        Tue, 13 Jun 2017 00:57:07 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 13 Jun 2017 00:57:07 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 13 Jun 2017 00:57:07 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 1715F5B0EA4CA;
-        Mon, 12 Jun 2017 23:47:43 +0100 (IST)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 12 Jun
- 2017 23:47:47 +0100
-Received: from np-p-burton.localnet (10.20.1.33) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 12 Jun
- 2017 15:47:45 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 00/11] MIPS: cmpxchg(), xchg() fixes & queued locks
-Date:   Mon, 12 Jun 2017 15:47:38 -0700
-Message-ID: <1611645.sZenGtTiCG@np-p-burton>
-Organization: Imagination Technologies
-In-Reply-To: <20170612082742.GA5642@linux-mips.org>
-References: <20170610002644.8434-1-paul.burton@imgtec.com> <20170612082742.GA5642@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 10:41:11 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41216 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991129AbdFMIlDl9qgW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Jun 2017 10:41:03 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5D8ex7G008092;
+        Tue, 13 Jun 2017 10:40:59 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5D8evMX008091;
+        Tue, 13 Jun 2017 10:40:57 +0200
+Date:   Tue, 13 Jun 2017 10:40:57 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V4 2/9] MIPS: c-r4k: Add r4k_blast_scache_node for
+ Loongson-3
+Message-ID: <20170613084057.GA31492@linux-mips.org>
+References: <1496718888-18324-1-git-send-email-chenhc@lemote.com>
+ <1496718888-18324-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3870649.uKXU0NXBdv";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.20.1.33]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1496718888-18324-2-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58416
+X-archive-position: 58417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,89 +47,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart3870649.uKXU0NXBdv
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+On Tue, Jun 06, 2017 at 11:14:41AM +0800, Huacai Chen wrote:
 
-Hi Ralf,
-
-On Monday, 12 June 2017 01:27:42 PDT Ralf Baechle wrote:
-> On Fri, Jun 09, 2017 at 05:26:32PM -0700, Paul Burton wrote:
-> > This series makes a bunch of cleanups & improvements to the cmpxchg() &
-> > xchg() macros & functions, allowing them to be used on values smaller
-> > than 4 bytes, then switches MIPS over to use generic queued spinlocks &
-> > queued read/write locks.
+> For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
+> only flush Node-0's scache. So we add r4k_blast_scache_node() by using
+> (CAC_BASE | (node_id << 44)) instead of CKSEG0 as the start address.
 > 
-> A number of nice cleanups there!
-
-Thanks!
-
-> I'm wondering, have you tested the kernel size with and without this
-> series applied?  GCC claims since 25 years or so that inlines are as
-> efficient as macros but in reality macros have always been superior
-> which mattered for things that are expanded very often.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/asm/r4kcache.h | 26 ++++++++++++++++++++++++++
+>  arch/mips/mm/c-r4k.c             | 33 ++++++++++++++++++++++++++++++++-
+>  2 files changed, 58 insertions(+), 1 deletion(-)
 > 
-> More recent GCCs have claimed improvments so it'd be interested to see
-> actual numbers - and possibly get rid of many more unmaintainable macros.
+> diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+> index 7f12d7e..aa615e3 100644
+> --- a/arch/mips/include/asm/r4kcache.h
+> +++ b/arch/mips/include/asm/r4kcache.h
+> @@ -747,4 +747,30 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
+>  __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
+>  __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+>  
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
+> +static inline void blast_##pfx##cache##lsize##_node(long node)		\
+> +{									\
+> +	unsigned long start = CAC_BASE | (node << 44);			\
+> +	unsigned long end = start + current_cpu_data.desc.waysize;	\
+> +	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
+> +	unsigned long ws_end = current_cpu_data.desc.ways <<		\
+> +			       current_cpu_data.desc.waybit;		\
+> +	unsigned long ws, addr;						\
+> +									\
+> +	__##pfx##flush_prologue						\
+> +									\
+> +	for (ws = 0; ws < ws_end; ws += ws_inc)				\
+> +		for (addr = start; addr < end; addr += lsize * 32)	\
+> +			cache##lsize##_unroll32(addr|ws, indexop);	\
+> +									\
+> +	__##pfx##flush_epilogue						\
+> +}
+> +
+> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
+> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
+> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
+> +__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
+> +#endif
 
-If I build a pistachio_defconfig v4.12-rc4 kernel, with ftrace disabled (same 
-config mentioned in the 2 locking patches) and with my "MIPS: Hardcode 
-cpu_has_* where known at compile time due to ISA" patch applied in all cases 
-then I see:
+This all expand to just inline functions which generate no code if they're
+unused, so you can drop the #ifdef.
 
-   Configuration                  |  Size
-  --------------------------------|---------
-   v4.12-rc4                      | 7161133
-   v4.12-rc4 + cmpxchg cleanups   | 7165597
-   v4.12-rc4 + whole series       | 7166600
+However a comment explaining why this function is only required for
+Loongson 3 would be great!
 
-The cmpxchg cleanups row applies patches 1-9 of this series but leaves off the 
-2 queued locking patches, so is a direct look at just the cmpxchg/xchg 
-changes.
+> +
+>  #endif /* _ASM_R4KCACHE_H */
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index 3fe99cb..0a49af0 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -459,11 +459,29 @@ static void r4k_blast_scache_setup(void)
+>  		r4k_blast_scache = blast_scache128;
+>  }
+>  
+> +static void (* r4k_blast_scache_node)(long node);
+> +
+> +static void r4k_blast_scache_node_setup(void)
+> +{
+> +	unsigned long sc_lsize = cpu_scache_line_size();
+> +
+> +	r4k_blast_scache_node = (void *)cache_noop;
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +	if (sc_lsize == 16)
+> +		r4k_blast_scache_node = blast_scache16_node;
+> +	else if (sc_lsize == 32)
+> +		r4k_blast_scache_node = blast_scache32_node;
+> +	else if (sc_lsize == 64)
+> +		r4k_blast_scache_node = blast_scache64_node;
+> +	else if (sc_lsize == 128)
+> +		r4k_blast_scache_node = blast_scache128_node;
+> +#endif
 
-Sizes are as reported by scripts/bloat-o-meter. The toolchain used was 
-Codescape 2016.05-06 (gcc 4.9.2, binutils 2.24.90) as found here:
+No #idefs please.  Instead you can check the CPU type with something like
 
-http://codescape-mips-sdk.imgtec.com/components/toolchain/2016.05-06/
+	if (current_cpu_type() = CPU_LOONGSON3) {
+		...
+	}
 
-So the cmpxchg patches cost us 4464 bytes, of which __cmpxchg_small() & 
-__xchg_small() make up 444 bytes:
+__get_cpu_type() in include/asm/cpu-type.h will then ensure that GCC
+knows it can optimize things for the CPU type(s) in use.
 
-function                                     old     new   delta
-__cmpxchg_small                                -     236    +236
-__xchg_small                                   -     208    +208
+> +
+>  static inline void local_r4k___flush_cache_all(void * args)
+>  {
+>  	switch (current_cpu_type()) {
+>  	case CPU_LOONGSON2:
+> -	case CPU_LOONGSON3:
+>  	case CPU_R4000SC:
+>  	case CPU_R4000MC:
+>  	case CPU_R4400SC:
+> @@ -480,6 +498,10 @@ static inline void local_r4k___flush_cache_all(void * args)
+>  		r4k_blast_scache();
+>  		break;
+>  
+> +	case CPU_LOONGSON3:
+> +		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
+> +		break;
+> +
+>  	case CPU_BMIPS5000:
+>  		r4k_blast_scache();
+>  		__sync();
+> @@ -840,7 +862,11 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+>  	preempt_disable();
+>  	if (cpu_has_inclusive_pcaches) {
+>  		if (size >= scache_size)
+> +#ifndef CONFIG_CPU_LOONGSON3
+>  			r4k_blast_scache();
+> +#else
+> +			r4k_blast_scache_node((addr >> 44) & 0xF);
+> +#endif
 
-The rest is all small changes one way or the other to various functions 
-throughout the tree, making up a little under 4KiB cost to the cmpxchg() & 
-xchg() cleanups. Not zero (which actually surprises me..!) but hopefully not 
-too much.
+Ditto.
 
-The generic queued locks then cost us a further ~1KiB but I'd argue offer 
-enough benefits to outweigh that (if nothing else look at asm/spinlock.h 
-afterwards :p).
+>  		else
+>  			blast_scache_range(addr, addr + size);
+>  		preempt_enable();
+> @@ -873,7 +899,11 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+>  	preempt_disable();
+>  	if (cpu_has_inclusive_pcaches) {
+>  		if (size >= scache_size)
+> +#ifndef CONFIG_CPU_LOONGSON3
+>  			r4k_blast_scache();
+> +#else
+> +			r4k_blast_scache_node((addr >> 44) & 0xF);
+> +#endif
 
-Thanks,
-    Paul
---nextPart3870649.uKXU0NXBdv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Ditto.
 
------BEGIN PGP SIGNATURE-----
+>  		else {
+>  			/*
+>  			 * There is no clearly documented alignment requirement
+> @@ -1903,6 +1933,7 @@ void r4k_cache_init(void)
+>  	r4k_blast_scache_page_setup();
+>  	r4k_blast_scache_page_indexed_setup();
+>  	r4k_blast_scache_setup();
+> +	r4k_blast_scache_node_setup();
+>  #ifdef CONFIG_EVA
+>  	r4k_blast_dcache_user_page_setup();
+>  	r4k_blast_icache_user_page_setup();
 
-iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAlk/GgoACgkQgiDZ+mk8
-HGXaBxAAoe037ZDRuTlB0PPSkVVD6m93etEpcLuzVr9Eb/WWnjbUB33F+ijI5hi9
-A/3sCf8iLvtmpnjvuymVXw/LwFk46qiOH6PWujqFDH71Nt23WgIgIitcTKefqK5L
-4GbRhYG2TaUn1RWHY1Es7VjmT/bvfWb9tgDNnJYYK3X/WXnJuPiqI7E/4kMlDyxs
-Ly7C88MvsZp8Tt//uDOwWNWRJmgLXfg6MYAWoxRNwTvnRLHzC5yJHRwmJEtkGk0c
-tFNPbyH3SWN1h6PgsU/1OQbtCZSz9l2S3oqblm+RGPiWckvOFzBeQ6+OGM06JOuA
-HwMjX0rMlI9D8zKeF4w0qjpTb0ixpNTqjYa8kbNJw0ultaVyO08yr08ABeJnN+lp
-XgbZrKfo0hvT74W5EAV+XKzO438zz/CqgCbXG42minzVu+0KF754w1zzoOHjqitf
-cwfhuzL4B+htynsNSZhwtaqh/Y2GqGOkQPFtu6eiRJEKLsz575L/sGgXHclFFtVN
-XOmx8Fz67rSkcuxH1n5VHTvipJDWa2s+OuO2KdbzRDLxC7sVWiGWewEgv/ExNrQM
-eprVEOzPQpj/TdZTJiSWbHOnWURVEfceHNBpwBWT/XHhZ+sR0QRnBE/nMYX5Vx+w
-Hy7SuR5uh4M8G1H73ccJEBFONvYHZtDxWaqjwmpYdSpnbK6P0yM=
-=I9xf
------END PGP SIGNATURE-----
-
---nextPart3870649.uKXU0NXBdv--
+  Ralf

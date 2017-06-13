@@ -1,73 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 14:35:53 +0200 (CEST)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:36407
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993977AbdFMMfpeCQ2w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2017 14:35:45 +0200
-Received: by mail-wr0-x244.google.com with SMTP id e23so29759171wre.3
-        for <linux-mips@linux-mips.org>; Tue, 13 Jun 2017 05:35:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2017 18:13:45 +0200 (CEST)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:33274
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994231AbdFMQNi4U7My (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2017 18:13:38 +0200
+Received: by mail-qt0-x244.google.com with SMTP id w1so35521267qtg.0;
+        Tue, 13 Jun 2017 09:13:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=IIywL1N/tukcaRGkITD1/xdg8tXcloFz1Z6qg1hejGw=;
-        b=JCXsmJs0pMpJ7oTrajaO1lCH51GGxq05xjrhtVaskuBW7GiJn5ghJ4RGLcsHO8Vldv
-         wnXEpQbVqJSRvUbI7QohavYAsXp4VG6xAgfHONgDThjRqlG/tBIjp6qJinLfZIxNLcPO
-         NRmT4Wi6FGF1x5Zl3MiwiBjHLrPnM0SoS6mMRAGpg3bVvodpOU8CUHKpBRNs7w3+c54n
-         b60RyTOb1pekXScpPLj2uJ1n3E/KQ9cZxbUtz7aHG8J0oiRU2hriDiuli0ZSHaQoj8BW
-         JjGGXZdUuyb1pfep2y3DZXw7UJ1TebOpr+vrKipxk6Wtb8E0irMAbZie7GzpeFpBjOBs
-         yeug==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=wwzp4pJhR5TfmdtMlSh8RHO6uv80YK1H4TXBu6bZLNs=;
+        b=VjJx26ROZGYKkJ/4bTZOAFFiNOgy/koNwzYcvY3GykK4bR8Sx6gL/Y5bzGVgH+rs3Z
+         U7jtZRK41k8IKA7dkpxgGgoStvTVBIHRBc7jRmCaU9ia/ycT7qMbPdFJvsNLUcTyD/C/
+         yVdGTjng9/WBw6M3kGvhx2fW3lQE4ghKLyvzyGD1yIsP7Ku6hugTDvf4pvMEZur/s9q5
+         bdPReY58ok8OfTYbOdczaiSdS7AMhY/MV9ZgZOXeMzo/yV5W7J6AlO3Pky7OeDxXIqhU
+         uuO+stHIlS3salisvxBqsn8Nl02CShB4TJUjZK68Kp7GONlh6icFTRXjKoiNPjyzW+H1
+         qOUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=IIywL1N/tukcaRGkITD1/xdg8tXcloFz1Z6qg1hejGw=;
-        b=S16RmtpB6moOH3D/EnUAZjByMERn8veYt5/drxG6YAAhGeCxQkR9xILCoFujdmAWgn
-         n5W4eCOBSlmhxfP2ww9D0NwkEs5X67ctSQnp5mVuMYus2txN0r/MKRMZXoiZiV8Q2ohm
-         PlW9zVZBauEn6cu1asdUyTO38fNNa42CYl/Orc4qlJy23qpW1CASVJOPZwrVrnwGVW79
-         MBc1nyqWx5zpVua62qgJ7AdFR/Gc2Zuf3lpZlewUchx2t8JhRylwj6rnugm5crenlXRq
-         pjoVP1w4VxOhbNCtBjBeB27WkOpzj5mExO4OqL8dmEypEuw4MKJejeG7AV3JT5TDmGKv
-         1TUA==
-X-Gm-Message-State: AKS2vOx2Puv+uYtPmhbd04qlgofA2cQtEx+hPoWgdC88J/JZ2Z0kRIKo
-        S9A3zWdmdVd9eQ==
-X-Received: by 10.223.138.188 with SMTP id y57mr2929988wry.93.1497357340226;
-        Tue, 13 Jun 2017 05:35:40 -0700 (PDT)
-Received: from localhost (p200300E41BCE240033EA1446C9951F9C.dip0.t-ipconnect.de. [2003:e4:1bce:2400:33ea:1446:c995:1f9c])
-        by smtp.gmail.com with ESMTPSA id y2sm13208249wme.12.2017.06.13.05.35.38
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 13 Jun 2017 05:35:39 -0700 (PDT)
-Date:   Tue, 13 Jun 2017 14:35:38 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/44] firmware/ivc: use dma_mapping_error
-Message-ID: <20170613123538.GB16758@ulmo.fritz.box>
-References: <20170608132609.32662-1-hch@lst.de>
- <20170608132609.32662-2-hch@lst.de>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=wwzp4pJhR5TfmdtMlSh8RHO6uv80YK1H4TXBu6bZLNs=;
+        b=LjjOVtRy8Ey2r1InPL23KiYRy7IDflp+bb3ucVSj0rrLzQc0w1arfFR2jgaEpdc8Lg
+         YJwJAsfOCl75fdPWR1xtG7ySTC+CF0xsu6gCgM92IfKPh3dPVvVBtrGrBoLHCeqIBH+7
+         M6GGdwpBwxEDb3HCIa3YLV5n5GhKiYt+wXbUGTWWWkjMS87SoH0SNCXGnwWipGGdUw0G
+         yU2O6eJAjbHjMdd09zHTAMgrhX0UIOaYCTsvSavpcfUZvFVLTBAOIOpn4SFMMf5/ImSt
+         RqTi0oq4SNOD5Lb1UVR1OCqkdTsJRM6R8mtPIJoydaSd3e/nOc1B0N3kc5XQAil+Sbiz
+         gm8w==
+X-Gm-Message-State: AKS2vOwTmW5J3iJw7AKsSsOMkxUEG3hPE1Yfoo4kTmSajmMpE/xv0mbp
+        CvkVMc1nxGhvbcPWpHMms4cBxyQChA==
+X-Received: by 10.55.210.193 with SMTP id f184mr935809qkj.76.1497370412928;
+ Tue, 13 Jun 2017 09:13:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2B/JsCI69OhZNC5r"
-Content-Disposition: inline
-In-Reply-To: <20170608132609.32662-2-hch@lst.de>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <thierry.reding@gmail.com>
+Received: by 10.140.84.180 with HTTP; Tue, 13 Jun 2017 09:13:12 -0700 (PDT)
+In-Reply-To: <20170602182003.16269-4-paul.burton@imgtec.com>
+References: <20170602182003.16269-1-paul.burton@imgtec.com> <20170602182003.16269-4-paul.burton@imgtec.com>
+From:   Rahul Bedarkar <rahulbedarkar89@gmail.com>
+Date:   Tue, 13 Jun 2017 21:43:12 +0530
+X-Google-Sender-Auth: HMjOyfA8aSIK1Lppkz5-1snlmTk
+Message-ID: <CA+NV+V=gUdcu_tRKnyLrSauuge88Bou1CB4Q+n75A48d+MqJyg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] MIPS: DTS: img: Don't attempt to build-in all .dtb files
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <rpal143@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58421
+X-archive-position: 58422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: rahulbedarkar89@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,40 +65,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Paul,
 
---2B/JsCI69OhZNC5r
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jun 08, 2017 at 03:25:26PM +0200, Christoph Hellwig wrote:
-> DMA_ERROR_CODE is not supposed to be used by drivers.
->=20
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Fri, Jun 2, 2017 at 11:50 PM, Paul Burton <paul.burton@imgtec.com> wrote:
+> When building a FIT image we may want the kernel to build multiple .dtb
+> files, but we don't want to build them all into the kernel binary as
+> object files since they'll instead be included in the FIT image.
+>
+> Commit daa10170da27 ("MIPS: DTS: img: add device tree for Marduk board")
+> however created arch/mips/boot/dts/img/Makefile with a line that builds
+> any enabled .dtb files into the kernel. Remove this & build the
+> pistachio object specifically, in preparation for adding .dtb targets
+> which we don't want to build into the kernel.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+>
 > ---
->  drivers/firmware/tegra/ivc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> Changes in v4:
+> - New patch.
+>
+> Changes in v3: None
+> Changes in v2: None
+>
+>  arch/mips/boot/dts/img/Makefile | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
 
-Acked-by: Thierry Reding <treding@nvidia.com>
+It looks good to me.
 
---2B/JsCI69OhZNC5r
-Content-Type: application/pgp-signature; name="signature.asc"
+Reviewed-by: Rahul Bedarkar <rahulbedarkar89@gmail.com>
 
------BEGIN PGP SIGNATURE-----
+> diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Makefile
+> index 69a65f0f82d2..c178cf56f5b8 100644
+> --- a/arch/mips/boot/dts/img/Makefile
+> +++ b/arch/mips/boot/dts/img/Makefile
+> @@ -1,6 +1,5 @@
+>  dtb-$(CONFIG_MACH_PISTACHIO)   += pistachio_marduk.dtb
+> -
+> -obj-y                          += $(patsubst %.dtb, %.dtb.o, $(dtb-y))
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlk/3BoACgkQ3SOs138+
-s6HPehAAsPH3WCVEat0HG8XtDXXMKUx9atqqkjijlfz3wzr3Yu8oeWJkmauxBI2J
-xWvBLcQSO632cLKWDXp9sfnjUN9McgOQi4LbbEnJZ3Wzovtn86aaPUXEtbrUImTw
-P57+RXkSbiFiGp8LlUECzxlshCYZHbzvOmqvdxpBqOTjQfv7fehxm+SVPJgkRflE
-EUuCItQsdBhnqBOtq743sf7Ck4QJ3Kz4pLGgntIDINnwiPxWjpMpI06SeVnvK2st
-d5lq46pyBdS3dliCsRcn6jukf79HzS/jStxG8r5YCEkRfCPvw0au5ds8iywvCZrZ
-hJYP0tumPW9j/x0ZC35a6j4dIbotmuhqCE2mYJUjG2mKDtAtdqZKVBvwKUmxzGok
-H7YKQDZN54UOBVg4Rzsbu80eyYc2jFZEWIhICrQUYVM534Psw7LGnA6hMiv5X8aS
-J4T7cOnL+71/iwE9Ey5EdvTbV22/mcx711OcyPbZ7q5Dv4AZE9HdJrPTF1rf1TeA
-WDqgA3BbY6JNflUayq5in0OxeyN8/qKbJr9ozhXgCNKNUUH5nihjT4LZxENEWV2p
-pRCppkKHw9Wmze/9cDuINms2Ef1DlEzxJ9BqE5mtiFFsCq1mn9EUxgMt4vbbfMqC
-Ynk0gIB134Hm0HIXoJcwdQ/27Ltko3nyeRm+28ka/gS8GVgYtec=
-=jGwQ
------END PGP SIGNATURE-----
+It was probably copy/paste from other board Makefiles. But If I
+understand it correctly, please correct me if I am wrong, linking of
+object file of device tree to kernel image is useful if boot loader
+doesn't support loading external device tree and in that case kernel
+can use inbuilt device tree.
 
---2B/JsCI69OhZNC5r--
+Thanks,
+Rahul

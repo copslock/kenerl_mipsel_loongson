@@ -1,62 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 11:14:31 +0200 (CEST)
-Received: from mail-it0-x232.google.com ([IPv6:2607:f8b0:4001:c0b::232]:38273
-        "EHLO mail-it0-x232.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991786AbdFNJOXDRpRW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Jun 2017 11:14:23 +0200
-Received: by mail-it0-x232.google.com with SMTP id l6so43735598iti.1;
-        Wed, 14 Jun 2017 02:14:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=cjPghfWGc5drGosuge0puul1LpDxfbMYVJnAOJuzxp4=;
-        b=nH92GCEdi5kAaRv/OnbxcOReyq6kWaoITv/+yVKhm7VqvKKXq1neqsc7bPX+UaNxfV
-         /WvoMYvSDQ8QWq3Zz1OBpzvB/t7t6jzv+poJmEXQf8tAsxk20xCbJcG/B34C0/BfR638
-         c5i7d59SMuak6SyW0TsjSxbrvmAXw3kxvhHKKmN5dCnxMJBphZGJ8ZujNljGfjzbkdTH
-         wJUgeGyAB0vlMzwwBDiMmo77vIOw9dl50Puvw3zm03rvWUJ8p7Y5z2GntZ9OIxenjy6s
-         pllz2rxrbbzJpVC7kbqujTD9NbYBL28BzJMHuPk2ze8o5OaIdxR+3a0CNddeQHQ1gMTm
-         YQCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=cjPghfWGc5drGosuge0puul1LpDxfbMYVJnAOJuzxp4=;
-        b=RksHCGPoeHvOxLZR3BcFHL3BA39rJEcGBIdBIA5MZWhDdUe5rr5fQ+Rh5VnxaroI7t
-         CmEnWJUf3Ek6E3sS7m/92H0IXYIEodpYw+1Yy4mPnfmeEK/c55/ZQQtzqMI34WdymdSG
-         eiGSMZiC4k2JNKanAf3pyYFFIBaL2k3KQEf8mBdvI6MZbGarTU6sJvz+hRnWnqBOviah
-         OJaX8w3DxudasDqpioNCMWl8DLMGAUt2Sp3NRdht/EcSGr8xdW6Ygm5icytVFAAcTYJA
-         o6Jron76ZgyFL0/f6eLE7Kiv+32lIUFd8aJk1tU3CateCs5Typz6gK9tKC/k5zPMbRel
-         alOw==
-X-Gm-Message-State: AKS2vOwr68FIABX2+g1GVIFjJBVQJuOyK6RMno2T5W9ANEMX1LGuSizc
-        98CNKScbq7A0R/L8Nlt8UWHlRKyA9DsE
-X-Received: by 10.36.120.136 with SMTP id p130mr211965itc.73.1497431657018;
- Wed, 14 Jun 2017 02:14:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 11:17:38 +0200 (CEST)
+Received: from ozlabs.org ([IPv6:2401:3900:2:1::2]:55301 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991786AbdFNJRbfsp6W (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Jun 2017 11:17:31 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 3wngyH6PzWz9s76;
+        Wed, 14 Jun 2017 19:17:27 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+        Alistair Popple <apopple@au1.ibm.com>
+Cc:     linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 21/44] powerpc: implement ->mapping_error
+In-Reply-To: <20170608132609.32662-22-hch@lst.de>
+References: <20170608132609.32662-1-hch@lst.de> <20170608132609.32662-22-hch@lst.de>
+User-Agent: Notmuch/0.21 (https://notmuchmail.org)
+Date:   Wed, 14 Jun 2017 19:17:27 +1000
+Message-ID: <87vanz2ajc.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Received: by 10.107.144.85 with HTTP; Wed, 14 Jun 2017 02:14:16 -0700 (PDT)
-In-Reply-To: <20170613094525.GB31492@linux-mips.org>
-References: <1496718888-18324-1-git-send-email-chenhc@lemote.com>
- <1496718888-18324-4-git-send-email-chenhc@lemote.com> <20170613094525.GB31492@linux-mips.org>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Wed, 14 Jun 2017 17:14:16 +0800
-X-Google-Sender-Auth: ixpO0nCs35s2H-H6SXRcEk8m3sM
-Message-ID: <CAAhV-H7pXq_a-JuzdyWL_2yCo9HWXB5C7PyFyuXeV4ZStoYfAA@mail.gmail.com>
-Subject: Re: [PATCH V4 4/9] MIPS: Loongson-3: Support 4 packages in CPU Hwmon driver
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@cavium.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <chenhuacai@gmail.com>
+Content-Type: text/plain
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58444
+X-archive-position: 58445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,24 +51,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 13, 2017 at 5:45 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Tue, Jun 06, 2017 at 11:14:43AM +0800, Huacai Chen wrote:
->
-> (Fixing the Steven.Hill@imgtec.com address on cc, this email address is
-> stale since a long time.  Steven is now Steven.Hill@cavium.com.
->
->> Loongson-3 machines may have as many as 4 physical packages.
->
-> Any reason why not dynamically allocating all structures, static allocations
-> just won't scale to many packages nor are they very maintenance friendly.
+Christoph Hellwig <hch@lst.de> writes:
 
-Loongson-3 will no more than 4 packages, so we needn't allocating all
-structures dynamically. However, I'll improve maintenability by
-unifying get_cpu0_temp/get_cpu1_temp/get_cpu2_temp/get_cpu3_temp and
-cpu0_temp_label/cpu_temp1_label/cpu2_temp_label/cpu3_temp_label.
-
-Huacai
-
+> DMA_ERROR_CODE is going to go away, so don't rely on it.  Instead
+> define a ->mapping_error method for all IOMMU based dma operation
+> instances.  The direct ops don't ever return an error and don't
+> need a ->mapping_error method.
 >
->   Ralf
->
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/powerpc/include/asm/dma-mapping.h |  4 ----
+>  arch/powerpc/include/asm/iommu.h       |  4 ++++
+>  arch/powerpc/kernel/dma-iommu.c        |  6 ++++++
+>  arch/powerpc/kernel/iommu.c            | 28 ++++++++++++++--------------
+>  arch/powerpc/platforms/cell/iommu.c    |  1 +
+>  arch/powerpc/platforms/pseries/vio.c   |  3 ++-
+>  6 files changed, 27 insertions(+), 19 deletions(-)
+
+I also see:
+
+  arch/powerpc/kernel/dma.c:const struct dma_map_ops dma_direct_ops = {
+
+Which you mentioned can't fail.
+
+  arch/powerpc/platforms/pseries/ibmebus.c:static const struct dma_map_ops ibmebus_dma_ops = {
+
+Which can't fail.
+
+And:
+
+  arch/powerpc/platforms/powernv/npu-dma.c:static const struct dma_map_ops dma_npu_ops = {
+  arch/powerpc/platforms/ps3/system-bus.c:static const struct dma_map_ops ps3_sb_dma_ops = {
+  arch/powerpc/platforms/ps3/system-bus.c:static const struct dma_map_ops ps3_ioc0_dma_ops = {
+
+All of which look like they definitely can fail, but return 0 on error
+and don't implement ->mapping_error.
+
+So I guess I'm acking this and adding a TODO to fix up the NPU code at
+least, the ps3 code is probably better left alone these days.
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+
+cheers

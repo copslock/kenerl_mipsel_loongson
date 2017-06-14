@@ -1,35 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 13:18:06 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:57774 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 13:26:26 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58226 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993904AbdFNLR7YDELi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Jun 2017 13:17:59 +0200
+        id S23993873AbdFNL0TPkclT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Jun 2017 13:26:19 +0200
 Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5EBHtS3006496;
-        Wed, 14 Jun 2017 13:17:56 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5EBQDhp007320;
+        Wed, 14 Jun 2017 13:26:13 +0200
 Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5EBHsUk006495;
-        Wed, 14 Jun 2017 13:17:54 +0200
-Date:   Wed, 14 Jun 2017 13:17:54 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5EBQCVs007319;
+        Wed, 14 Jun 2017 13:26:12 +0200
+Date:   Wed, 14 Jun 2017 13:26:12 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] clk: boston: Add a driver for MIPS Boston board
- clocks
-Message-ID: <20170614111754.GD31492@linux-mips.org>
-References: <20170602182003.16269-1-paul.burton@imgtec.com>
- <20170602182003.16269-3-paul.burton@imgtec.com>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-remoteproc@vger.kernel.org,
+        lisa.parratt@imgtec.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 3/4] remoteproc/MIPS: Add a remoteproc driver for MIPS
+Message-ID: <20170614112612.GE31492@linux-mips.org>
+References: <1490287037-31885-1-git-send-email-matt.redfearn@imgtec.com>
+ <1490287037-31885-4-git-send-email-matt.redfearn@imgtec.com>
+ <95ec7c9a-f954-1a66-20c3-99e1fa4b49f7@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170602182003.16269-3-paul.burton@imgtec.com>
+In-Reply-To: <95ec7c9a-f954-1a66-20c3-99e1fa4b49f7@imgtec.com>
 User-Agent: Mutt/1.8.0 (2017-02-23)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58447
+X-archive-position: 58448
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,214 +48,726 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ping?
+ping again ...
 
-   Ralf
+  Ralf
 
-On Fri, Jun 02, 2017 at 11:20:01AM -0700, Paul Burton wrote:
+On Mon, Apr 03, 2017 at 11:11:04AM +0100, Matt Redfearn wrote:
 
-> Add a driver for the clocks provided by the MIPS Boston board from
-> Imagination Technologies. 2 clocks are provided - the system clock & the
-> CPU clock - and each is a simple fixed rate clock whose frequency can be
-> determined by reading a register provided by the board.
+> Hi Bjorn,
 > 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Stephen Boyd <sboyd@codeaurora.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
+> Please could you provide any comments / review on this driver?
 > 
-> ---
+> Thanks,
 > 
-> Changes in v4:
-> - Adjust to expect the parent node to be the syscon.
-> - Update MAINTAINERS entry.
+> Matt
 > 
-> Changes in v3: None
 > 
-> Changes in v2:
-> - Support BOSTON_CLK_INPUT.
-> - Register clocks with clk_register_fixed_rate during boot, removing need for clk_ops.
-> - s/uint32_t/u32/.
-> - Move driver to a vendor directory.
-> 
->  MAINTAINERS                     |   1 +
->  drivers/clk/Kconfig             |   1 +
->  drivers/clk/Makefile            |   1 +
->  drivers/clk/imgtec/Kconfig      |  10 ++++
->  drivers/clk/imgtec/Makefile     |   1 +
->  drivers/clk/imgtec/clk-boston.c | 101 ++++++++++++++++++++++++++++++++++++++++
->  6 files changed, 115 insertions(+)
->  create mode 100644 drivers/clk/imgtec/Kconfig
->  create mode 100644 drivers/clk/imgtec/Makefile
->  create mode 100644 drivers/clk/imgtec/clk-boston.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 481fc6d54ca4..75284ef8d06c 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8504,6 +8504,7 @@ M:	Paul Burton <paul.burton@imgtec.com>
->  L:	linux-mips@linux-mips.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/clock/img,boston-clock.txt
-> +F:	drivers/clk/imgtec/clk-boston.c
->  F:	include/dt-bindings/clock/boston-clock.h
->  
->  MIROSOUND PCM20 FM RADIO RECEIVER DRIVER
-> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-> index 36cfea38135f..251a22139e73 100644
-> --- a/drivers/clk/Kconfig
-> +++ b/drivers/clk/Kconfig
-> @@ -219,6 +219,7 @@ config COMMON_CLK_VC5
->  
->  source "drivers/clk/bcm/Kconfig"
->  source "drivers/clk/hisilicon/Kconfig"
-> +source "drivers/clk/imgtec/Kconfig"
->  source "drivers/clk/mediatek/Kconfig"
->  source "drivers/clk/meson/Kconfig"
->  source "drivers/clk/mvebu/Kconfig"
-> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-> index c19983afcb81..a4a7c5df8b93 100644
-> --- a/drivers/clk/Makefile
-> +++ b/drivers/clk/Makefile
-> @@ -59,6 +59,7 @@ obj-y					+= bcm/
->  obj-$(CONFIG_ARCH_BERLIN)		+= berlin/
->  obj-$(CONFIG_H8300)			+= h8300/
->  obj-$(CONFIG_ARCH_HISI)			+= hisilicon/
-> +obj-y					+= imgtec/
->  obj-$(CONFIG_ARCH_MXC)			+= imx/
->  obj-$(CONFIG_MACH_INGENIC)		+= ingenic/
->  obj-$(CONFIG_COMMON_CLK_KEYSTONE)	+= keystone/
-> diff --git a/drivers/clk/imgtec/Kconfig b/drivers/clk/imgtec/Kconfig
-> new file mode 100644
-> index 000000000000..c2ea745928e4
-> --- /dev/null
-> +++ b/drivers/clk/imgtec/Kconfig
-> @@ -0,0 +1,10 @@
-> +config COMMON_CLK_BOSTON
-> +	bool "Clock driver for MIPS Boston boards"
-> +	depends on MIPS || COMPILE_TEST
-> +	depends on OF
-> +	select MFD_SYSCON
-> +	---help---
-> +	  Enable this to support the system & CPU clocks on the MIPS Boston
-> +	  development board from Imagination Technologies. These are simple
-> +	  fixed rate clocks whose rate is determined by reading a platform
-> +	  provided register.
-> diff --git a/drivers/clk/imgtec/Makefile b/drivers/clk/imgtec/Makefile
-> new file mode 100644
-> index 000000000000..ac779b8c22f2
-> --- /dev/null
-> +++ b/drivers/clk/imgtec/Makefile
-> @@ -0,0 +1 @@
-> +obj-$(CONFIG_COMMON_CLK_BOSTON)		+= clk-boston.o
-> diff --git a/drivers/clk/imgtec/clk-boston.c b/drivers/clk/imgtec/clk-boston.c
-> new file mode 100644
-> index 000000000000..98bb0b764d15
-> --- /dev/null
-> +++ b/drivers/clk/imgtec/clk-boston.c
-> @@ -0,0 +1,101 @@
-> +/*
-> + * Copyright (C) 2016-2017 Imagination Technologies
-> + * Author: Paul Burton <paul.burton@imgtec.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/clk-provider.h>
-> +#include <linux/kernel.h>
-> +#include <linux/of.h>
-> +#include <linux/regmap.h>
-> +#include <linux/slab.h>
-> +#include <linux/mfd/syscon.h>
-> +
-> +#include <dt-bindings/clock/boston-clock.h>
-> +
-> +#define BOSTON_PLAT_MMCMDIV		0x30
-> +# define BOSTON_PLAT_MMCMDIV_CLK0DIV	(0xff << 0)
-> +# define BOSTON_PLAT_MMCMDIV_INPUT	(0xff << 8)
-> +# define BOSTON_PLAT_MMCMDIV_MUL	(0xff << 16)
-> +# define BOSTON_PLAT_MMCMDIV_CLK1DIV	(0xff << 24)
-> +
-> +#define BOSTON_CLK_COUNT 3
-> +
-> +struct clk_boston_state {
-> +	struct clk *clks[BOSTON_CLK_COUNT];
-> +	struct clk_onecell_data onecell_data;
-> +};
-> +
-> +static u32 ext_field(u32 val, u32 mask)
-> +{
-> +	return (val & mask) >> (ffs(mask) - 1);
-> +}
-> +
-> +static void __init clk_boston_setup(struct device_node *np)
-> +{
-> +	unsigned long in_freq, cpu_freq, sys_freq;
-> +	uint mmcmdiv, mul, cpu_div, sys_div;
-> +	struct clk_boston_state *state;
-> +	struct regmap *regmap;
-> +	struct clk *clk;
-> +	int err;
-> +
-> +	regmap = syscon_node_to_regmap(np->parent);
-> +	if (IS_ERR(regmap)) {
-> +		pr_err("failed to find regmap\n");
-> +		return;
-> +	}
-> +
-> +	err = regmap_read(regmap, BOSTON_PLAT_MMCMDIV, &mmcmdiv);
-> +	if (err) {
-> +		pr_err("failed to read mmcm_div register: %d\n", err);
-> +		return;
-> +	}
-> +
-> +	in_freq = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_INPUT) * 1000000;
-> +	mul = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_MUL);
-> +
-> +	sys_div = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_CLK0DIV);
-> +	sys_freq = mult_frac(in_freq, mul, sys_div);
-> +
-> +	cpu_div = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_CLK1DIV);
-> +	cpu_freq = mult_frac(in_freq, mul, cpu_div);
-> +
-> +	state = kzalloc(sizeof(*state), GFP_KERNEL);
-> +	if (!state)
-> +		return;
-> +
-> +	clk = clk_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
-> +	if (IS_ERR(clk)) {
-> +		pr_err("failed to register input clock: %ld\n", PTR_ERR(clk));
-> +		return;
-> +	}
-> +	state->clks[BOSTON_CLK_INPUT] = clk;
-> +
-> +	clk = clk_register_fixed_rate(NULL, "sys", "input", 0, sys_freq);
-> +	if (IS_ERR(clk)) {
-> +		pr_err("failed to register sys clock: %ld\n", PTR_ERR(clk));
-> +		return;
-> +	}
-> +	state->clks[BOSTON_CLK_SYS] = clk;
-> +
-> +	clk = clk_register_fixed_rate(NULL, "cpu", "input", 0, cpu_freq);
-> +	if (IS_ERR(clk)) {
-> +		pr_err("failed to register cpu clock: %ld\n", PTR_ERR(clk));
-> +		return;
-> +	}
-> +	state->clks[BOSTON_CLK_CPU] = clk;
-> +
-> +	state->onecell_data.clks = state->clks;
-> +	state->onecell_data.clk_num = BOSTON_CLK_COUNT;
-> +
-> +	err = of_clk_add_provider(np, of_clk_src_onecell_get,
-> +				  &state->onecell_data);
-> +	if (err)
-> +		pr_err("failed to add DT provider: %d\n", err);
-> +}
-> +CLK_OF_DECLARE(clk_boston, "img,boston-clock", clk_boston_setup);
-> -- 
-> 2.13.0
+> On 23/03/17 16:37, Matt Redfearn wrote:
+> > This driver allows a MIPS processor offlined from Linux to be used as a
+> > remote processor. The processor can then handle real-time tasks or
+> > perform coprocessing while remaining processors are available to Linux,
+> > effectively making the system hybrid of SMP Linux and AMP.
+> > 
+> > A sysfs interface is provided to allow control of which system CPUs may
+> > be acquired by the driver when offlined from Linux.
+> > 
+> > Coprocessor firmware must abide by the remoteproc standard, i.e.
+> > implement the resource table containing memory layouts and virtio device
+> > descriptions, and additionally abide by the MIPS UHI coprocessor boot
+> > protocol in the startup code.
+> > 
+> > Example firmware and host executables to test them are located at [1].
+> > 
+> > [1] https://github.com/MIPS/mips-rproc-example
+> > 
+> > Signed-off-by: Lisa Parratt <lisa.parratt@imgtec.com>
+> > Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> > 
+> > ---
+> > 
+> > Changes in v6:
+> > Change to set_current_state() as set_task_state has been removed.
+> > 
+> > Changes in v5:
+> > Depend on !64bit since this driver only works with 32bit kernels
+> > Set mproc->tsk state to TASK_DEAD before freeing it to avoid warning
+> > Flush icache of each carveout so that icache sees latest data written
+> > 
+> > Changes in v4:
+> > Have a single mips-rproc device to be parent to each CPU's rproc device.
+> > Support per-device coherence introduced in v4.9
+> > Add a sysfs interface to control the mask of cpus available to rproc
+> > 
+> > Changes in v3:
+> > Update MIPS remoteproc driver to use CPU hotplug state machine
+> > Remove sysfs interface from MIPS rproc driver, now provided by the core.
+> > Drop patches that Ralf has already merged to mips-next
+> > 
+> > Changes in v2: None
+> > 
+> >   Documentation/ABI/testing/sysfs-devices-mips-rproc |  13 +
+> >   drivers/remoteproc/Kconfig                         |  11 +
+> >   drivers/remoteproc/Makefile                        |   1 +
+> >   drivers/remoteproc/mips_remoteproc.c               | 599 +++++++++++++++++++++
+> >   4 files changed, 624 insertions(+)
+> >   create mode 100644 Documentation/ABI/testing/sysfs-devices-mips-rproc
+> >   create mode 100644 drivers/remoteproc/mips_remoteproc.c
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-devices-mips-rproc b/Documentation/ABI/testing/sysfs-devices-mips-rproc
+> > new file mode 100644
+> > index 000000000000..b06f6671807a
+> > --- /dev/null
+> > +++ b/Documentation/ABI/testing/sysfs-devices-mips-rproc
+> > @@ -0,0 +1,13 @@
+> > +What:		/sys/devices/mips-rproc/cpus
+> > +Date:		October 2016
+> > +Contact:	Matt Redfearn <matt.redfearn@imgtec.com>
+> > +Description:
+> > +		CPU topology file describing which CPUs may be used by the
+> > +		MIPS remote processor driver when offline from Linux.
+> > +
+> > +		This can be read to observe the current setting, or written to
+> > +		change the allowed CPUs.
+> > +
+> > +		The format is compatible with cpulist_parse()
+> > +		[see <linux/cpumask.h>], for example to enable the MIPS remote
+> > +		processor driver on CPUs 1,2 & 3, write "1-3" into this file.
+> > diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
+> > index 65f86bc24c07..558b67184723 100644
+> > --- a/drivers/remoteproc/Kconfig
+> > +++ b/drivers/remoteproc/Kconfig
+> > @@ -71,6 +71,17 @@ config DA8XX_REMOTEPROC
+> >   	  It's safe to say n here if you're not interested in multimedia
+> >   	  offloading.
+> > +config MIPS_REMOTEPROC
+> > +	tristate "MIPS remoteproc support"
+> > +	depends on MIPS_CPS && HAS_DMA && !64BIT
+> > +	depends on REMOTEPROC
+> > +	select CMA
+> > +	select MIPS_CPU_STEAL
+> > +	help
+> > +	  Say y here to support using offline cores/VPEs as remote processors
+> > +	  via the remote processor framework.
+> > +	  If unsure say N.
+> > +
+> >   config QCOM_ADSP_PIL
+> >   	tristate "Qualcomm ADSP Peripheral Image Loader"
+> >   	depends on OF && ARCH_QCOM
+> > diff --git a/drivers/remoteproc/Makefile b/drivers/remoteproc/Makefile
+> > index ffc5e430df27..9525debba686 100644
+> > --- a/drivers/remoteproc/Makefile
+> > +++ b/drivers/remoteproc/Makefile
+> > @@ -11,6 +11,7 @@ remoteproc-y				+= remoteproc_elf_loader.o
+> >   obj-$(CONFIG_OMAP_REMOTEPROC)		+= omap_remoteproc.o
+> >   obj-$(CONFIG_WKUP_M3_RPROC)		+= wkup_m3_rproc.o
+> >   obj-$(CONFIG_DA8XX_REMOTEPROC)		+= da8xx_remoteproc.o
+> > +obj-$(CONFIG_MIPS_REMOTEPROC)		+= mips_remoteproc.o
+> >   obj-$(CONFIG_QCOM_ADSP_PIL)		+= qcom_adsp_pil.o
+> >   obj-$(CONFIG_QCOM_RPROC_COMMON)		+= qcom_common.o
+> >   obj-$(CONFIG_QCOM_Q6V5_PIL)		+= qcom_q6v5_pil.o
+> > diff --git a/drivers/remoteproc/mips_remoteproc.c b/drivers/remoteproc/mips_remoteproc.c
+> > new file mode 100644
+> > index 000000000000..9a0e5e06c0b1
+> > --- /dev/null
+> > +++ b/drivers/remoteproc/mips_remoteproc.c
+> > @@ -0,0 +1,599 @@
+> > +/*
+> > + * MIPS Remote Processor driver
+> > + *
+> > + * Copyright (C) 2016 Imagination Technologies
+> > + * Lisa Parratt <lisa.parratt@imgtec.com>
+> > + * Matt Redfearn <matt.redfearn@imgtec.com>
+> > + *
+> > + * This program is free software; you can redistribute it and/or modify it
+> > + * under the terms of the GNU General Public License as published by the
+> > + * Free Software Foundation;  either version 2 of the  License, or (at your
+> > + * option) any later version.
+> > + */
+> > +
+> > +#include <linux/cpu.h>
+> > +#include <linux/dma-mapping.h>
+> > +#include <linux/interrupt.h>
+> > +#include <linux/io.h>
+> > +#include <linux/irq.h>
+> > +#include <linux/module.h>
+> > +#include <linux/of_irq.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/remoteproc.h>
+> > +#include <linux/sched/task.h>
+> > +
+> > +#include <asm/cacheflush.h>
+> > +#include <asm/smp-cps.h>
+> > +#include <asm/tlbflush.h>
+> > +#include <asm/tlbmisc.h>
+> > +
+> > +#include "remoteproc_internal.h"
+> > +
+> > +struct mips_rproc {
+> > +	char			name[16];
+> > +	struct rproc		*rproc;
+> > +	struct task_struct	*tsk;
+> > +	unsigned int		cpu;
+> > +	int			ipi_linux;
+> > +	int			ipi_remote;
+> > +};
+> > +
+> > +/* Parent device for MIPS remoteproc */
+> > +static struct device mips_rproc_dev;
+> > +
+> > +/* Array of allocated MIPS remote processor instances */
+> > +static struct mips_rproc *mips_rprocs[NR_CPUS];
+> > +
+> > +/* Bitmap used to identify which CPUs are available to rproc */
+> > +static cpumask_var_t mips_rproc_cpumask;
+> > +
+> > +/* Dynamic CPU hotplug state associated with this driver */
+> > +static int cpuhp_state;
+> > +
+> > +/* Add wired entry to map a device address to physical memory */
+> > +static void mips_map_page(unsigned long da, unsigned long pa, int c,
+> > +			  unsigned long pagesize)
+> > +{
+> > +	unsigned long pa2 = pa + (pagesize / 2);
+> > +	unsigned long entryhi, entrylo0, entrylo1;
+> > +	unsigned long pagemask = pagesize - 0x2000;
+> > +
+> > +	pa = (pa >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
+> > +	pa2 = (pa2 >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
+> > +	entryhi = da & 0xfffffe000;
+> > +	entrylo0 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa;
+> > +	entrylo1 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa2;
+> > +
+> > +	pr_debug("Create wired entry %d, CCA %d\n", read_c0_wired(), c);
+> > +	pr_debug(" EntryHi: 0x%016lx\n", entryhi);
+> > +	pr_debug(" EntryLo0: 0x%016lx\n", entrylo0);
+> > +	pr_debug(" EntryLo1: 0x%016lx\n", entrylo1);
+> > +	pr_debug(" Pagemask: 0x%016lx\n", pagemask);
+> > +	pr_debug("\n");
+> > +
+> > +	add_wired_entry(entrylo0, entrylo1, entryhi, pagemask);
+> > +}
+> > +
+> > +/* Compute the largest page mask a physical address can be mapped with */
+> > +static unsigned long mips_rproc_largest_pm(unsigned long pa,
+> > +					   unsigned long maxmask)
+> > +{
+> > +	unsigned long mask;
+> > +	/* Find address bits limiting alignment */
+> > +	unsigned long shift = ffs(pa);
+> > +
+> > +	/* Obey MIPS restrictions on page sizes */
+> > +	if (pa) {
+> > +		if (shift & 1)
+> > +			shift -= 2;
+> > +		else
+> > +			shift--;
+> > +	}
+> > +	mask = ULONG_MAX << shift;
+> > +	return maxmask & ~mask;
+> > +}
+> > +
+> > +/* Compute the page mask one step larger than a given page mask */
+> > +static unsigned long mips_rproc_next_pm(unsigned long pm, unsigned long maxmask)
+> > +{
+> > +#define PM_SHIFT 13
+> > +	return ((pm << 2) | (0x3 << PM_SHIFT)) & maxmask;
+> > +}
+> > +
+> > +/*
+> > + * Add mappings to the TLB such that memory allocated by the kernel for a
+> > + * firmware component appears at the right virtual address
+> > + */
+> > +static inline void mips_rproc_map(unsigned long da, unsigned long pa, int c,
+> > +				  unsigned long size, unsigned long maxmask)
+> > +{
+> > +	/* minimum mappable size is 2 * 4k pages */
+> > +	const unsigned long min_map_sz = 0x2000;
+> > +	unsigned long bigmask, nextmask;
+> > +	unsigned long distance, target;
+> > +	unsigned long page2_size; /* Size of the 2 buddy pages */
+> > +
+> > +	do {
+> > +		/* Compute the current largest page mask */
+> > +		bigmask = mips_rproc_largest_pm(pa, maxmask);
+> > +		/* Compute the next largest pagesize */
+> > +		nextmask = mips_rproc_next_pm(bigmask, maxmask);
+> > +		/*
+> > +		 * Compute the distance from our current physical address to
+> > +		 * the next page boundary.
+> > +		 */
+> > +		distance = (nextmask + min_map_sz) - (pa & nextmask);
+> > +		/*
+> > +		 * Decide between searching to get to the next highest page
+> > +		 * boundary or finishing.
+> > +		 */
+> > +		target = distance < size ? distance : size;
+> > +		while (target) {
+> > +			/* Find the largest supported page size that will fit */
+> > +			for (page2_size = maxmask + min_map_sz;
+> > +			    (page2_size > min_map_sz) && (page2_size > target);
+> > +			     page2_size /= 4) {
+> > +			}
+> > +			/* Emit it */
+> > +			mips_map_page(da, pa, c, page2_size);
+> > +			/* Move to next step */
+> > +			size -= page2_size;
+> > +			da += page2_size;
+> > +			pa += page2_size;
+> > +			target -= page2_size;
+> > +		}
+> > +	} while (size);
+> > +}
+> > +
+> > +static int mips_rproc_carveouts(struct rproc *rproc, int max_pagemask)
+> > +{
+> > +	struct rproc_mem_entry *carveout;
+> > +
+> > +	list_for_each_entry(carveout, &rproc->carveouts, node) {
+> > +		int c = CONF_CM_CACHABLE_COW;
+> > +
+> > +		dev_dbg(&rproc->dev,
+> > +			"carveout mapping da 0x%x -> %pad length 0x%x, CCA %d",
+> > +			carveout->da, &carveout->dma, carveout->len, c);
+> > +
+> > +		mips_rproc_map(carveout->da, carveout->dma, c,
+> > +				carveout->len, max_pagemask);
+> > +		flush_icache_range((unsigned long)carveout->va,
+> > +				   (unsigned long)carveout->va + carveout->len);
+> > +	}
+> > +	return 0;
+> > +}
+> > +
+> > +static int mips_rproc_vdevs(struct rproc *rproc, int max_pagemask)
+> > +{
+> > +	struct rproc_vdev *rvdev;
+> > +
+> > +	list_for_each_entry(rvdev, &rproc->rvdevs, node) {
+> > +		int i, size;
+> > +
+> > +		for (i = 0; i < ARRAY_SIZE(rvdev->vring); i++) {
+> > +			struct rproc_vring *vring = &rvdev->vring[i];
+> > +			unsigned long pa = vring->dma;
+> > +			int c;
+> > +
+> > +			if (plat_device_is_coherent(&mips_rproc_dev)) {
+> > +				/*
+> > +				 * The DMA API will allocate cacheable buffers
+> > +				 * for shared resources, so the firmware should
+> > +				 * also access those buffers cached
+> > +				 */
+> > +				c = (_page_cachable_default >> _CACHE_SHIFT);
+> > +			} else {
+> > +				/*
+> > +				 * Otherwise, shared buffers should be accessed
+> > +				 * uncached
+> > +				 */
+> > +				c = CONF_CM_UNCACHED;
+> > +			}
+> > +
+> > +			/* actual size of vring (in bytes) */
+> > +			size = PAGE_ALIGN(vring_size(vring->len, vring->align));
+> > +
+> > +			dev_dbg(&rproc->dev,
+> > +				"vring mapping da %pad -> %pad length 0x%x, CCA %d",
+> > +				&vring->dma, &vring->dma, size, c);
+> > +
+> > +			mips_rproc_map(pa, pa, c, size, max_pagemask);
+> > +		}
+> > +	}
+> > +	return 0;
+> > +}
+> > +
+> > +static void mips_rproc_cpu_entry(void)
+> > +{
+> > +	struct mips_rproc *mproc = mips_rprocs[smp_processor_id()];
+> > +	struct rproc *rproc = mproc->rproc;
+> > +	int ipi_to_remote = ipi_get_hwirq(mproc->ipi_remote, mproc->cpu);
+> > +	int ipi_from_remote = ipi_get_hwirq(mproc->ipi_linux, 0);
+> > +	unsigned long old_pagemask, max_pagemask;
+> > +	void (*fw_entry)(int, int ipi_to_remote, int ipi_from_remote, int);
+> > +
+> > +	dev_info(&rproc->dev, "%s booting firmware %s\n",
+> > +		 rproc->name, rproc->firmware);
+> > +
+> > +	/* Get the maximum pagemask supported on this CPU */
+> > +	old_pagemask = read_c0_pagemask();
+> > +	write_c0_pagemask(~0);
+> > +	back_to_back_c0_hazard();
+> > +	max_pagemask = read_c0_pagemask();
+> > +	write_c0_pagemask(old_pagemask);
+> > +	back_to_back_c0_hazard();
+> > +
+> > +	/* Start with no wired entries */
+> > +	write_c0_wired(0);
+> > +
+> > +	/* Flush all previous TLB entries */
+> > +	local_flush_tlb_all();
+> > +
+> > +	/* Set ASID 0 */
+> > +	write_c0_entryhi(0);
+> > +
+> > +	/* Map firmware resources into virtual memory */
+> > +	mips_rproc_carveouts(rproc, max_pagemask);
+> > +	mips_rproc_vdevs(rproc, max_pagemask);
+> > +
+> > +	dev_dbg(&rproc->dev, "IPI to remote: %d\n", ipi_to_remote);
+> > +	dev_dbg(&rproc->dev, "IPI from remote: %d\n", ipi_from_remote);
+> > +
+> > +	/* Hand off the CPU to the firmware */
+> > +	dev_dbg(&rproc->dev, "Jumping to firmware at 0x%x\n", rproc->bootaddr);
+> > +
+> > +	/* We're done with the task struct that provided the stack we've used */
+> > +	set_current_state(TASK_DEAD);
+> > +
+> > +	/* Jump into the firmware, obeying the firmware protocol. */
+> > +	fw_entry = (void *)rproc->bootaddr;
+> > +	fw_entry(-3, ipi_to_remote, ipi_from_remote, 0);
+> > +}
+> > +
+> > +static irqreturn_t mips_rproc_ipi_handler(int irq, void *dev_id)
+> > +{
+> > +	/* Synthetic interrupts shouldn't need acking */
+> > +	return IRQ_WAKE_THREAD;
+> > +}
+> > +
+> > +static irqreturn_t mips_rproc_vq_int(int irq, void *p)
+> > +{
+> > +	struct rproc *rproc = (struct rproc *)p;
+> > +	void *entry;
+> > +	int id;
+> > +
+> > +	/* We don't have a mailbox, so iterate over all vqs and kick them. */
+> > +	idr_for_each_entry(&rproc->notifyids, entry, id)
+> > +		rproc_vq_interrupt(rproc, id);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> > +/* Helper function to find the IPI domain */
+> > +static struct irq_domain *ipi_domain(void)
+> > +{
+> > +	struct device_node *node = of_irq_find_parent(of_root);
+> > +	struct irq_domain *ipidomain;
+> > +
+> > +	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
+> > +	/*
+> > +	 * Some platforms have half DT setup. So if we found irq node but
+> > +	 * didn't find an ipidomain, try to search for one that is not in the
+> > +	 * DT.
+> > +	 */
+> > +	if (node && !ipidomain)
+> > +		ipidomain = irq_find_matching_host(NULL, DOMAIN_BUS_IPI);
+> > +
+> > +	return ipidomain;
+> > +}
+> > +
+> > +int mips_rproc_op_start(struct rproc *rproc)
+> > +{
+> > +	struct mips_rproc *mproc = rproc->priv;
+> > +	int err;
+> > +	int cpu = mproc->cpu;
+> > +
+> > +	/* Create task for the CPU to use before handing off to firmware */
+> > +	mproc->tsk = fork_idle(cpu);
+> > +	if (IS_ERR(mproc->tsk)) {
+> > +		dev_err(&rproc->dev, "fork_idle() failed for CPU%d\n", cpu);
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	/* We won't be needing the Linux IPIs anymore */
+> > +	if (mips_smp_ipi_free(get_cpu_mask(cpu))) {
+> > +		dev_err(&rproc->dev, "Failed to reserve incoming kick\n");
+> > +		goto exit_free_tsk;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Direct IPIs from the remote processor to CPU0 since that can't be
+> > +	 * offlined while the remote CPU is running.
+> > +	 */
+> > +	mproc->ipi_linux = irq_reserve_ipi(ipi_domain(), get_cpu_mask(0));
+> > +	if (!mproc->ipi_linux) {
+> > +		dev_err(&rproc->dev, "Failed to reserve incoming kick\n");
+> > +		goto exit_restore_ipi;
+> > +	}
+> > +
+> > +	mproc->ipi_remote = irq_reserve_ipi(ipi_domain(), get_cpu_mask(cpu));
+> > +	if (!mproc->ipi_remote) {
+> > +		dev_err(&rproc->dev, "Failed to reserve outgoing kick\n");
+> > +		goto exit_destroy_ipi_linux;
+> > +	}
+> > +
+> > +	/* register incoming ipi */
+> > +	err = request_threaded_irq(mproc->ipi_linux, mips_rproc_ipi_handler,
+> > +				   mips_rproc_vq_int, 0,
+> > +				   "mips-rproc IPI in", rproc);
+> > +	if (err) {
+> > +		dev_err(&rproc->dev, "Failed to register incoming kick: %d\n",
+> > +			err);
+> > +		goto exit_destroy_ipi_remote;
+> > +	}
+> > +
+> > +	if (mips_cps_steal_cpu_and_execute(cpu, &mips_rproc_cpu_entry,
+> > +						mproc->tsk)) {
+> > +		dev_err(&rproc->dev, "Failed to steal CPU%d for remote\n", cpu);
+> > +		goto exit_free_irq;
+> > +	}
+> > +
+> > +	return 0;
+> > +
+> > +exit_free_irq:
+> > +	free_irq(mproc->ipi_linux, rproc);
+> > +exit_destroy_ipi_remote:
+> > +	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(cpu));
+> > +exit_destroy_ipi_linux:
+> > +	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
+> > +exit_restore_ipi:
+> > +	/* Set up the Linux IPIs again */
+> > +	mips_smp_ipi_allocate(get_cpu_mask(cpu));
+> > +exit_free_tsk:
+> > +	free_task(mproc->tsk);
+> > +
+> > +	return -EINVAL;
+> > +}
+> > +
+> > +int mips_rproc_op_stop(struct rproc *rproc)
+> > +{
+> > +	struct mips_rproc *mproc = rproc->priv;
+> > +
+> > +	free_irq(mproc->ipi_linux, rproc);
+> > +
+> > +	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
+> > +	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(mproc->cpu));
+> > +
+> > +	/* Set up the Linux IPIs again */
+> > +	mips_smp_ipi_allocate(get_cpu_mask(mproc->cpu));
+> > +
+> > +	free_task(mproc->tsk);
+> > +
+> > +	return mips_cps_halt_and_return_cpu(mproc->cpu);
+> > +}
+> > +
+> > +void mips_rproc_op_kick(struct rproc *rproc, int vqid)
+> > +{
+> > +	struct mips_rproc *mproc = rproc->priv;
+> > +
+> > +	if (rproc->state == RPROC_RUNNING)
+> > +		ipi_send_single(mproc->ipi_remote, mproc->cpu);
+> > +}
+> > +
+> > +static const struct rproc_ops mips_rproc_proc_ops = {
+> > +	.start	= mips_rproc_op_start,
+> > +	.stop	= mips_rproc_op_stop,
+> > +	.kick	= mips_rproc_op_kick,
+> > +};
+> > +
+> > +/* Create an rproc instance in response to CPU down */
+> > +static int mips_rproc_device_register(unsigned int cpu)
+> > +{
+> > +	char *template = "mips-cpu%u";
+> > +	struct rproc *rproc;
+> > +	struct mips_rproc *mproc;
+> > +	int err;
+> > +
+> > +	if (!cpumask_test_cpu(cpu, mips_rproc_cpumask))
+> > +		/* The CPU is not in the mask, so don't register rproc on it */
+> > +		return 0;
+> > +
+> > +	pr_debug("Allocating MIPS rproc for cpu%d\n", cpu);
+> > +
+> > +	if (mips_rprocs[cpu]) {
+> > +		dev_err(&mips_rproc_dev, "CPU%d in use\n", cpu);
+> > +		return 0;
+> > +	}
+> > +
+> > +	mproc = kzalloc(sizeof(struct mips_rproc), GFP_KERNEL);
+> > +	if (!mproc) {
+> > +		err = -ENOMEM;
+> > +		goto exit;
+> > +	}
+> > +
+> > +	snprintf(mproc->name, sizeof(mproc->name), template, cpu);
+> > +	mproc->cpu = cpu;
+> > +
+> > +	rproc = rproc_alloc(&mips_rproc_dev, mproc->name,
+> > +			    &mips_rproc_proc_ops, NULL,
+> > +			    sizeof(struct mips_rproc *));
+> > +	if (!rproc) {
+> > +		dev_err(&mips_rproc_dev, "Error allocating rproc\n");
+> > +		err = -ENOMEM;
+> > +		goto exit_free_mproc;
+> > +	}
+> > +
+> > +	mproc->rproc = rproc;
+> > +	rproc->priv = (void *)mproc;
+> > +
+> > +	err = rproc_add(rproc);
+> > +	if (err) {
+> > +		dev_err(&mips_rproc_dev, "Failed to add rproc: %d\n", err);
+> > +		goto exit_free_rproc;
+> > +	}
+> > +
+> > +	mips_rprocs[cpu] = mproc;
+> > +	return 0;
+> > +
+> > +exit_free_rproc:
+> > +	rproc_free(rproc);
+> > +exit_free_mproc:
+> > +	kfree(mproc);
+> > +exit:
+> > +	return err;
+> > +}
+> > +
+> > +/* Destroy rproc instance in response to CPU up */
+> > +static int mips_rproc_device_unregister(unsigned int cpu)
+> > +{
+> > +	struct mips_rproc *mproc = mips_rprocs[cpu];
+> > +
+> > +	if (!mproc)
+> > +		/* No rproc instance has been created for this CPU */
+> > +		return 0;
+> > +
+> > +	pr_debug("Deallocating MIPS rproc for cpu%d\n", cpu);
+> > +
+> > +	rproc_del(mproc->rproc);
+> > +	rproc_put(mproc->rproc);
+> > +	kfree(mproc);
+> > +
+> > +	mips_rprocs[cpu] = NULL;
+> > +	return 0;
+> > +}
+> > +
+> > +/* Show MIPS CPUs available to rproc */
+> > +static ssize_t cpus_show(struct device *dev, struct device_attribute *attr,
+> > +			  char *buf)
+> > +{
+> > +	return cpumap_print_to_pagebuf(true, buf, mips_rproc_cpumask);
+> > +}
+> > +
+> > +/* Allow MIPS CPUs to be made available to rproc */
+> > +static ssize_t cpus_store(struct device *dev,
+> > +			      struct device_attribute *attr,
+> > +			      const char *buf, size_t count)
+> > +{
+> > +	static cpumask_var_t new_mask;
+> > +	int err, cpu;
+> > +
+> > +	err = cpulist_parse(buf, new_mask);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	/* Prevent CPU hotplug on/offlining CPUs while we do this */
+> > +	get_online_cpus();
+> > +
+> > +	for_each_possible_cpu(cpu) {
+> > +		if (cpumask_test_cpu(cpu, mips_rproc_cpumask) &&
+> > +		    !cpumask_test_cpu(cpu, new_mask)) {
+> > +			/* CPU no longer allowed. Release any instance on it */
+> > +			cpumask_clear_cpu(cpu, mips_rproc_cpumask);
+> > +			mips_rproc_device_unregister(cpu);
+> > +
+> > +		} else if (!cpumask_test_cpu(cpu, mips_rproc_cpumask) &&
+> > +			   cpumask_test_cpu(cpu, new_mask)) {
+> > +			/* If the CPU isn't online, start an instance */
+> > +			cpumask_set_cpu(cpu, mips_rproc_cpumask);
+> > +			if (!cpu_online(cpu))
+> > +				mips_rproc_device_register(cpu);
+> > +		}
+> > +	}
+> > +	put_online_cpus();
+> > +	return count;
+> > +}
+> > +static DEVICE_ATTR_RW(cpus);
+> > +
+> > +static struct attribute *mips_rproc_attrs[] = {
+> > +	&dev_attr_cpus.attr,
+> > +	NULL
+> > +};
+> > +
+> > +static const struct attribute_group mips_rproc_devgroup = {
+> > +	.attrs = mips_rproc_attrs
+> > +};
+> > +
+> > +static const struct attribute_group *mips_rproc_devgroups[] = {
+> > +	&mips_rproc_devgroup,
+> > +	NULL
+> > +};
+> > +static struct device_type mips_rproc_type = {
+> > +	.groups = mips_rproc_devgroups,
+> > +};
+> > +
+> > +static struct platform_driver mips_rproc_driver = {
+> > +	.driver = {
+> > +		.name = "mips-rproc",
+> > +	},
+> > +};
+> > +
+> > +static int __init mips_rproc_init(void)
+> > +{
+> > +	int err;
+> > +
+> > +	if ((!cpu_has_mipsmt) && (!cpu_has_vp)) {
+> > +		pr_debug("MIPS rproc not supported on this cpu\n");
+> > +		return -EIO;
+> > +	}
+> > +
+> > +	mips_rproc_dev.driver = &mips_rproc_driver.driver;
+> > +	mips_rproc_dev.type = &mips_rproc_type;
+> > +	dev_set_name(&mips_rproc_dev, "mips-rproc");
+> > +
+> > +	/* Set device to have coherent DMA ops */
+> > +	arch_setup_dma_ops(&mips_rproc_dev, 0, 0, NULL, 1);
+> > +
+> > +	err = device_register(&mips_rproc_dev);
+> > +	if (err) {
+> > +		dev_err(&mips_rproc_dev, "Error adding MIPS rproc: %d\n", err);
+> > +		return err;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Register with the cpu hotplug state machine.
+> > +	 * This driver requires opposite sense to "normal" drivers, since the
+> > +	 * driver is activated for offline CPUs via the teardown callback and
+> > +	 * deactivated via the online callback.
+> > +	 */
+> > +	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "MIPS:REMOTEPROC",
+> > +				mips_rproc_device_unregister,
+> > +				mips_rproc_device_register);
+> > +	if (err < 0) {
+> > +		device_unregister(&mips_rproc_dev);
+> > +		return err;
+> > +	}
+> > +
+> > +	cpuhp_state = err;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static void __exit mips_rproc_exit(void)
+> > +{
+> > +	int cpu;
+> > +
+> > +	if (cpuhp_state) {
+> > +		/*
+> > +		 * Unregister with the cpu hotplug state machine, but don't call
+> > +		 * the teardown callback, since that would try to start the
+> > +		 * remote processor device.
+> > +		 */
+> > +		__cpuhp_remove_state(cpuhp_state, false);
+> > +		cpuhp_state = 0;
+> > +	}
+> > +
+> > +	get_online_cpus();
+> > +	/* Unregister devices created for any offline CPUs */
+> > +	for_each_possible_cpu(cpu)
+> > +		mips_rproc_device_unregister(cpu);
+> > +	put_online_cpus();
+> > +}
+> > +
+> > +late_initcall(mips_rproc_init);
+> > +module_exit(mips_rproc_exit);
+> > +
+> > +module_platform_driver(mips_rproc_driver);
+> > +
+> > +MODULE_LICENSE("GPL v2");
+> > +MODULE_DESCRIPTION("MIPS Remote Processor control driver");

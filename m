@@ -1,44 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 11:17:38 +0200 (CEST)
-Received: from ozlabs.org ([IPv6:2401:3900:2:1::2]:55301 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991786AbdFNJRbfsp6W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Jun 2017 11:17:31 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 3wngyH6PzWz9s76;
-        Wed, 14 Jun 2017 19:17:27 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        Alistair Popple <apopple@au1.ibm.com>
-Cc:     linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 21/44] powerpc: implement ->mapping_error
-In-Reply-To: <20170608132609.32662-22-hch@lst.de>
-References: <20170608132609.32662-1-hch@lst.de> <20170608132609.32662-22-hch@lst.de>
-User-Agent: Notmuch/0.21 (https://notmuchmail.org)
-Date:   Wed, 14 Jun 2017 19:17:27 +1000
-Message-ID: <87vanz2ajc.fsf@concordia.ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 11:49:16 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55478 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992213AbdFNJtFAsjF3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Jun 2017 11:49:05 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5E9mxHZ003214;
+        Wed, 14 Jun 2017 11:49:00 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5E9mw1j003213;
+        Wed, 14 Jun 2017 11:48:58 +0200
+Date:   Wed, 14 Jun 2017 11:48:58 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <david.daney@cavium.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>
+Subject: Re: [PATCH v2 0/5] MIPS: Implement eBPF JIT.
+Message-ID: <20170614094858.GC31492@linux-mips.org>
+References: <20170613222847.7122-1-david.daney@cavium.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170613222847.7122-1-david.daney@cavium.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58445
+X-archive-position: 58446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,45 +46,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Christoph Hellwig <hch@lst.de> writes:
+On Tue, Jun 13, 2017 at 03:28:42PM -0700, David Daney wrote:
 
-> DMA_ERROR_CODE is going to go away, so don't rely on it.  Instead
-> define a ->mapping_error method for all IOMMU based dma operation
-> instances.  The direct ops don't ever return an error and don't
-> need a ->mapping_error method.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/include/asm/dma-mapping.h |  4 ----
->  arch/powerpc/include/asm/iommu.h       |  4 ++++
->  arch/powerpc/kernel/dma-iommu.c        |  6 ++++++
->  arch/powerpc/kernel/iommu.c            | 28 ++++++++++++++--------------
->  arch/powerpc/platforms/cell/iommu.c    |  1 +
->  arch/powerpc/platforms/pseries/vio.c   |  3 ++-
->  6 files changed, 27 insertions(+), 19 deletions(-)
+> Changes in v2:
+> 
+>   - Squash a couple of the uasm cleanups.
+> 
+>   - Make insn_table_MM const (suggested by Matt Redfearn)
+> 
+>   - Put the eBPF in its own source file (should fix build
+>     warnings/errors on 32-bit kernel builds).
+> 
+>   - Use bpf_jit_binary_alloc() (suggested by Daniel Borkmann)
+> 
+>   - Implement tail calls.
+> 
+>   - Fix system call tracing to extract arguments for
+>     kprobe/__seccomp_filter() tracing (perhaps not really part the the
+>     JIT, but necessary to have fun with the samples/bpf programs).
+> 
+> Most things in samples/bpf work, still working on the incantations to
+> build tools/testing/selftests/bpf/ ... 
+> 
+> 
+> >From v1:
+> 
+> The first three patches improve MIPS uasm in preparation for use by
+> the JIT.  Then the eBPF JIT implementation.
+> 
+> I am CCing netdev@ and the BPF maintainers for their comments, but
+> would expect Ralf to merge via the MIPS tree if and when it all looks
+> good.
 
-I also see:
+Thanks, applied after fixing a minor conflict in arch/mips/Kconfig.
 
-  arch/powerpc/kernel/dma.c:const struct dma_map_ops dma_direct_ops = {
-
-Which you mentioned can't fail.
-
-  arch/powerpc/platforms/pseries/ibmebus.c:static const struct dma_map_ops ibmebus_dma_ops = {
-
-Which can't fail.
-
-And:
-
-  arch/powerpc/platforms/powernv/npu-dma.c:static const struct dma_map_ops dma_npu_ops = {
-  arch/powerpc/platforms/ps3/system-bus.c:static const struct dma_map_ops ps3_sb_dma_ops = {
-  arch/powerpc/platforms/ps3/system-bus.c:static const struct dma_map_ops ps3_ioc0_dma_ops = {
-
-All of which look like they definitely can fail, but return 0 on error
-and don't implement ->mapping_error.
-
-So I guess I'm acking this and adding a TODO to fix up the NPU code at
-least, the ps3 code is probably better left alone these days.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-
-cheers
+  Ralf

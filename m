@@ -1,47 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 10:29:06 +0200 (CEST)
-Received: from mga04.intel.com ([192.55.52.120]:18120 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991786AbdFNI24LQ4HW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Jun 2017 10:28:56 +0200
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2017 01:28:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.39,340,1493708400"; 
-   d="scan'208";a="1182282826"
-Received: from vkoul-udesk7.iind.intel.com (HELO localhost) ([10.223.84.143])
-  by fmsmga002.fm.intel.com with ESMTP; 14 Jun 2017 01:28:47 -0700
-Date:   Wed, 14 Jun 2017 14:01:27 +0530
-From:   Vinod Koul <vinod.koul@intel.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/44] dmaengine: ioat: don't use DMA_ERROR_CODE
-Message-ID: <20170614083127.GJ13020@localhost>
-References: <20170608132609.32662-1-hch@lst.de>
- <20170608132609.32662-4-hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 11:14:31 +0200 (CEST)
+Received: from mail-it0-x232.google.com ([IPv6:2607:f8b0:4001:c0b::232]:38273
+        "EHLO mail-it0-x232.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991786AbdFNJOXDRpRW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Jun 2017 11:14:23 +0200
+Received: by mail-it0-x232.google.com with SMTP id l6so43735598iti.1;
+        Wed, 14 Jun 2017 02:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=cjPghfWGc5drGosuge0puul1LpDxfbMYVJnAOJuzxp4=;
+        b=nH92GCEdi5kAaRv/OnbxcOReyq6kWaoITv/+yVKhm7VqvKKXq1neqsc7bPX+UaNxfV
+         /WvoMYvSDQ8QWq3Zz1OBpzvB/t7t6jzv+poJmEXQf8tAsxk20xCbJcG/B34C0/BfR638
+         c5i7d59SMuak6SyW0TsjSxbrvmAXw3kxvhHKKmN5dCnxMJBphZGJ8ZujNljGfjzbkdTH
+         wJUgeGyAB0vlMzwwBDiMmo77vIOw9dl50Puvw3zm03rvWUJ8p7Y5z2GntZ9OIxenjy6s
+         pllz2rxrbbzJpVC7kbqujTD9NbYBL28BzJMHuPk2ze8o5OaIdxR+3a0CNddeQHQ1gMTm
+         YQCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=cjPghfWGc5drGosuge0puul1LpDxfbMYVJnAOJuzxp4=;
+        b=RksHCGPoeHvOxLZR3BcFHL3BA39rJEcGBIdBIA5MZWhDdUe5rr5fQ+Rh5VnxaroI7t
+         CmEnWJUf3Ek6E3sS7m/92H0IXYIEodpYw+1Yy4mPnfmeEK/c55/ZQQtzqMI34WdymdSG
+         eiGSMZiC4k2JNKanAf3pyYFFIBaL2k3KQEf8mBdvI6MZbGarTU6sJvz+hRnWnqBOviah
+         OJaX8w3DxudasDqpioNCMWl8DLMGAUt2Sp3NRdht/EcSGr8xdW6Ygm5icytVFAAcTYJA
+         o6Jron76ZgyFL0/f6eLE7Kiv+32lIUFd8aJk1tU3CateCs5Typz6gK9tKC/k5zPMbRel
+         alOw==
+X-Gm-Message-State: AKS2vOwr68FIABX2+g1GVIFjJBVQJuOyK6RMno2T5W9ANEMX1LGuSizc
+        98CNKScbq7A0R/L8Nlt8UWHlRKyA9DsE
+X-Received: by 10.36.120.136 with SMTP id p130mr211965itc.73.1497431657018;
+ Wed, 14 Jun 2017 02:14:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170608132609.32662-4-hch@lst.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <vinod.koul@intel.com>
+Received: by 10.107.144.85 with HTTP; Wed, 14 Jun 2017 02:14:16 -0700 (PDT)
+In-Reply-To: <20170613094525.GB31492@linux-mips.org>
+References: <1496718888-18324-1-git-send-email-chenhc@lemote.com>
+ <1496718888-18324-4-git-send-email-chenhc@lemote.com> <20170613094525.GB31492@linux-mips.org>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Wed, 14 Jun 2017 17:14:16 +0800
+X-Google-Sender-Auth: ixpO0nCs35s2H-H6SXRcEk8m3sM
+Message-ID: <CAAhV-H7pXq_a-JuzdyWL_2yCo9HWXB5C7PyFyuXeV4ZStoYfAA@mail.gmail.com>
+Subject: Re: [PATCH V4 4/9] MIPS: Loongson-3: Support 4 packages in CPU Hwmon driver
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@cavium.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58443
+X-archive-position: 58444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vinod.koul@intel.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,11 +69,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 08, 2017 at 03:25:28PM +0200, Christoph Hellwig wrote:
-> DMA_ERROR_CODE is not a public API and will go away.  Instead properly
-> unwind based on the loop counter.
+On Tue, Jun 13, 2017 at 5:45 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Tue, Jun 06, 2017 at 11:14:43AM +0800, Huacai Chen wrote:
+>
+> (Fixing the Steven.Hill@imgtec.com address on cc, this email address is
+> stale since a long time.  Steven is now Steven.Hill@cavium.com.
+>
+>> Loongson-3 machines may have as many as 4 physical packages.
+>
+> Any reason why not dynamically allocating all structures, static allocations
+> just won't scale to many packages nor are they very maintenance friendly.
 
-Acked-By: Vinod Koul <vinod.koul@intel.com>
+Loongson-3 will no more than 4 packages, so we needn't allocating all
+structures dynamically. However, I'll improve maintenability by
+unifying get_cpu0_temp/get_cpu1_temp/get_cpu2_temp/get_cpu3_temp and
+cpu0_temp_label/cpu_temp1_label/cpu2_temp_label/cpu3_temp_label.
 
--- 
-~Vinod
+Huacai
+
+>
+>   Ralf
+>

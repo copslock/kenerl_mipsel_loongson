@@ -1,39 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 02:22:53 +0200 (CEST)
-Received: from www62.your-server.de ([213.133.104.62]:49433 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994625AbdFNAWoYezSW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Jun 2017 02:22:44 +0200
-Received: from [92.105.166.74] (helo=localhost.localdomain)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-SHA:256)
-        (Exim 4.85_2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1dKw4x-0002Iw-CT; Wed, 14 Jun 2017 02:22:35 +0200
-Message-ID: <594081CA.3060801@iogearbox.net>
-Date:   Wed, 14 Jun 2017 02:22:34 +0200
-From:   Daniel Borkmann <daniel@iogearbox.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
-MIME-Version: 1.0
-To:     David Daney <david.daney@cavium.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 10:29:06 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:18120 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991786AbdFNI24LQ4HW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Jun 2017 10:28:56 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2017 01:28:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.39,340,1493708400"; 
+   d="scan'208";a="1182282826"
+Received: from vkoul-udesk7.iind.intel.com (HELO localhost) ([10.223.84.143])
+  by fmsmga002.fm.intel.com with ESMTP; 14 Jun 2017 01:28:47 -0700
+Date:   Wed, 14 Jun 2017 14:01:27 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 0/4] bpf: Changes needed (or desired) for MIPS support
-References: <20170613234938.4823-1-david.daney@cavium.com>
-In-Reply-To: <20170613234938.4823-1-david.daney@cavium.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.99.2/23471/Tue Jun 13 22:11:53 2017)
-Return-Path: <daniel@iogearbox.net>
+Subject: Re: [PATCH 03/44] dmaengine: ioat: don't use DMA_ERROR_CODE
+Message-ID: <20170614083127.GJ13020@localhost>
+References: <20170608132609.32662-1-hch@lst.de>
+ <20170608132609.32662-4-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170608132609.32662-4-hch@lst.de>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58442
+X-archive-position: 58443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@iogearbox.net
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,30 +54,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/14/2017 01:49 AM, David Daney wrote:
-> This is a grab bag of changes to the bpf testing infrastructure I
-> developed working on MIPS eBPF JIT support.  The change to
-> bpf_jit_disasm is probably universally beneficial, the others are more
-> MIPS specific.
+On Thu, Jun 08, 2017 at 03:25:28PM +0200, Christoph Hellwig wrote:
+> DMA_ERROR_CODE is not a public API and will go away.  Instead properly
+> unwind based on the loop counter.
 
-I think these could go independently through net-next tree?
+Acked-By: Vinod Koul <vinod.koul@intel.com>
 
-Thanks,
-Daniel
-
-> David Daney (4):
->    tools: bpf_jit_disasm:  Handle large images.
->    test_bpf: Add test to make conditional jump cross a large number of
->      insns.
->    bpf: Add MIPS support to samples/bpf.
->    samples/bpf: Fix tracex5 to work with MIPS syscalls.
->
->   lib/test_bpf.c             | 32 ++++++++++++++++++++++++++++++++
->   samples/bpf/Makefile       | 13 +++++++++++++
->   samples/bpf/bpf_helpers.h  | 13 +++++++++++++
->   samples/bpf/syscall_nrs.c  | 12 ++++++++++++
->   samples/bpf/tracex5_kern.c | 11 ++++++++---
->   tools/net/bpf_jit_disasm.c | 37 ++++++++++++++++++++++++++-----------
->   6 files changed, 104 insertions(+), 14 deletions(-)
->   create mode 100644 samples/bpf/syscall_nrs.c
->
+-- 
+~Vinod

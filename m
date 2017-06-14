@@ -1,41 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 13:26:26 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58226 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993873AbdFNL0TPkclT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Jun 2017 13:26:19 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5EBQDhp007320;
-        Wed, 14 Jun 2017 13:26:13 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5EBQCVs007319;
-        Wed, 14 Jun 2017 13:26:12 +0200
-Date:   Wed, 14 Jun 2017 13:26:12 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, linux-remoteproc@vger.kernel.org,
-        lisa.parratt@imgtec.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 3/4] remoteproc/MIPS: Add a remoteproc driver for MIPS
-Message-ID: <20170614112612.GE31492@linux-mips.org>
-References: <1490287037-31885-1-git-send-email-matt.redfearn@imgtec.com>
- <1490287037-31885-4-git-send-email-matt.redfearn@imgtec.com>
- <95ec7c9a-f954-1a66-20c3-99e1fa4b49f7@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95ec7c9a-f954-1a66-20c3-99e1fa4b49f7@imgtec.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 14:41:47 +0200 (CEST)
+Received: from mail-wr0-x229.google.com ([IPv6:2a00:1450:400c:c0c::229]:36490
+        "EHLO mail-wr0-x229.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994071AbdFNMliJAwrN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Jun 2017 14:41:38 +0200
+Received: by mail-wr0-x229.google.com with SMTP id 36so66288834wry.3
+        for <linux-mips@linux-mips.org>; Wed, 14 Jun 2017 05:41:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=ChgtLbcrG5fluNojIbIj0a3e98+XObM31T9QZ1orJFg=;
+        b=AXpZc/ayCOT1PjnTI5PEteBRleYkw8qPrhg5lUHN9gXAWnq73J82Ysz8uQ/FrhBmrw
+         EUQxQVkTNx9hyg7Bd4MjE3SYzoqk4U6z6jX4Zw9fZyekfcDjjOpcpSo8+Grrw1YE7xs/
+         dl92NfD01z7WdTKK9gRdpRVo96KuONnBNcKWQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=ChgtLbcrG5fluNojIbIj0a3e98+XObM31T9QZ1orJFg=;
+        b=isOltwbtTLQ3N5BwzxQmV248br8rbJEjxBndUE8eFdEuA4YqE35Vu6/0TPDycIcB9U
+         9yn93ucMYoESwF8i8JS6HbVhroGNcgfhEEdowN6DAIg/ar14SOm4Xo80/iJqqcnOKuXB
+         yHjjByTInFlOnpMm2X/arVRtz3ikh6KPwX9r/lGsqE3q+XwZ+HYRaB12bx/Mq4mr5O8K
+         A9E02ommtespm7Ous7tlpvx9SW4jigr0iL2qNRXhS3oBDh53dlvxMlGADdErXVFd1J1h
+         AX8hr0HfHWmRHmHOP/ciFXy6evN82Oa2lCCfoFhddYknbKqzG3UdQXeOs2z31WPWNDbv
+         EhNA==
+X-Gm-Message-State: AKS2vOxyqf7VGBEuvSAKmY+IIvgwwYHuUH7zrl7y5FJk1V+uh5lj3PN7
+        ZjxJY7++QYti8ChV
+X-Received: by 10.28.97.8 with SMTP id v8mr974162wmb.72.1497444091692;
+        Wed, 14 Jun 2017 05:41:31 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e35:879a:6cd0:19a:b336:54d7:46e9])
+        by smtp.gmail.com with ESMTPSA id 80sm1457015wmg.17.2017.06.14.05.41.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 14 Jun 2017 05:41:30 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     tglx@linutronix.de
+Cc:     linux-kernel@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com (maintainer:BROADCOM BCM281XX...),
+        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <kernel@pengutronix.de>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Tony Prisk <linux@prisktech.co.nz>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Richard Cochran <rcochran@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-mips@linux-mips.org (open list:RALINK MIPS ARCHI...),
+        nios2-dev@lists.rocketboards.org (moderated list:NIOS2 ARCHITECTURE),
+        linux-snps-arc@lists.infradead.org (open list:SYNOPSYS ARC ARCH...),
+        kernel@stlinux.com (open list:ARM/STI ARCHITECTURE),
+        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
+        BCM2835...),
+        linux-samsung-soc@vger.kernel.org (moderated list:ARM/SAMSUNG EXYNO...),
+        uclinux-h8-devel@lists.sourceforge.jp (moderated list:H8/300
+        ARCHITECTURE),
+        linux-amlogic@lists.infradead.org (open list:ARM/Amlogic Meson...),
+        linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC...),
+        linux-rockchip@lists.infradead.org (open list:ARM/Rockchip SoC...),
+        linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTUR...),
+        linux-oxnas@lists.tuxfamily.org (moderated list:ARM/OXNAS platfor...)
+Subject: [PATCH 12/23] clocksource/drivers: Rename CLOCKSOURCE_OF_DECLARE to TIMER_OF_DECLARE
+Date:   Wed, 14 Jun 2017 14:39:33 +0200
+Message-Id: <1497443984-12371-12-git-send-email-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1497443984-12371-1-git-send-email-daniel.lezcano@linaro.org>
+References: <20170614123800.GH2261@mai>
+ <1497443984-12371-1-git-send-email-daniel.lezcano@linaro.org>
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58448
+X-archive-position: 58449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,726 +126,921 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ping again ...
+The CLOCKSOURCE_OF_DECLARE macro is used widely for the timers to declare the
+clocksource at early stage. However, this macro is also used to initialize
+the clockevent if any, or the clockevent only.
 
-  Ralf
+It was originally suggested to declare another macro to initialize a
+clockevent, so in order to separate the two entities even they belong to the
+same IP. This was not accepted because of the impact on the DT where splitting
+a clocksource/clockevent definition does not make sense as it is a Linux
+concept not a hardware description.
 
-On Mon, Apr 03, 2017 at 11:11:04AM +0100, Matt Redfearn wrote:
+On the other side, the clocksource has not interrupt declared while the
+clockevent has, so it is easy from the driver to know if the description is
+for a clockevent or a clocksource, IOW it could be implemented at the driver
+level.
 
-> Hi Bjorn,
-> 
-> Please could you provide any comments / review on this driver?
-> 
-> Thanks,
-> 
-> Matt
-> 
-> 
-> On 23/03/17 16:37, Matt Redfearn wrote:
-> > This driver allows a MIPS processor offlined from Linux to be used as a
-> > remote processor. The processor can then handle real-time tasks or
-> > perform coprocessing while remaining processors are available to Linux,
-> > effectively making the system hybrid of SMP Linux and AMP.
-> > 
-> > A sysfs interface is provided to allow control of which system CPUs may
-> > be acquired by the driver when offlined from Linux.
-> > 
-> > Coprocessor firmware must abide by the remoteproc standard, i.e.
-> > implement the resource table containing memory layouts and virtio device
-> > descriptions, and additionally abide by the MIPS UHI coprocessor boot
-> > protocol in the startup code.
-> > 
-> > Example firmware and host executables to test them are located at [1].
-> > 
-> > [1] https://github.com/MIPS/mips-rproc-example
-> > 
-> > Signed-off-by: Lisa Parratt <lisa.parratt@imgtec.com>
-> > Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-> > 
-> > ---
-> > 
-> > Changes in v6:
-> > Change to set_current_state() as set_task_state has been removed.
-> > 
-> > Changes in v5:
-> > Depend on !64bit since this driver only works with 32bit kernels
-> > Set mproc->tsk state to TASK_DEAD before freeing it to avoid warning
-> > Flush icache of each carveout so that icache sees latest data written
-> > 
-> > Changes in v4:
-> > Have a single mips-rproc device to be parent to each CPU's rproc device.
-> > Support per-device coherence introduced in v4.9
-> > Add a sysfs interface to control the mask of cpus available to rproc
-> > 
-> > Changes in v3:
-> > Update MIPS remoteproc driver to use CPU hotplug state machine
-> > Remove sysfs interface from MIPS rproc driver, now provided by the core.
-> > Drop patches that Ralf has already merged to mips-next
-> > 
-> > Changes in v2: None
-> > 
-> >   Documentation/ABI/testing/sysfs-devices-mips-rproc |  13 +
-> >   drivers/remoteproc/Kconfig                         |  11 +
-> >   drivers/remoteproc/Makefile                        |   1 +
-> >   drivers/remoteproc/mips_remoteproc.c               | 599 +++++++++++++++++++++
-> >   4 files changed, 624 insertions(+)
-> >   create mode 100644 Documentation/ABI/testing/sysfs-devices-mips-rproc
-> >   create mode 100644 drivers/remoteproc/mips_remoteproc.c
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-devices-mips-rproc b/Documentation/ABI/testing/sysfs-devices-mips-rproc
-> > new file mode 100644
-> > index 000000000000..b06f6671807a
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-devices-mips-rproc
-> > @@ -0,0 +1,13 @@
-> > +What:		/sys/devices/mips-rproc/cpus
-> > +Date:		October 2016
-> > +Contact:	Matt Redfearn <matt.redfearn@imgtec.com>
-> > +Description:
-> > +		CPU topology file describing which CPUs may be used by the
-> > +		MIPS remote processor driver when offline from Linux.
-> > +
-> > +		This can be read to observe the current setting, or written to
-> > +		change the allowed CPUs.
-> > +
-> > +		The format is compatible with cpulist_parse()
-> > +		[see <linux/cpumask.h>], for example to enable the MIPS remote
-> > +		processor driver on CPUs 1,2 & 3, write "1-3" into this file.
-> > diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-> > index 65f86bc24c07..558b67184723 100644
-> > --- a/drivers/remoteproc/Kconfig
-> > +++ b/drivers/remoteproc/Kconfig
-> > @@ -71,6 +71,17 @@ config DA8XX_REMOTEPROC
-> >   	  It's safe to say n here if you're not interested in multimedia
-> >   	  offloading.
-> > +config MIPS_REMOTEPROC
-> > +	tristate "MIPS remoteproc support"
-> > +	depends on MIPS_CPS && HAS_DMA && !64BIT
-> > +	depends on REMOTEPROC
-> > +	select CMA
-> > +	select MIPS_CPU_STEAL
-> > +	help
-> > +	  Say y here to support using offline cores/VPEs as remote processors
-> > +	  via the remote processor framework.
-> > +	  If unsure say N.
-> > +
-> >   config QCOM_ADSP_PIL
-> >   	tristate "Qualcomm ADSP Peripheral Image Loader"
-> >   	depends on OF && ARCH_QCOM
-> > diff --git a/drivers/remoteproc/Makefile b/drivers/remoteproc/Makefile
-> > index ffc5e430df27..9525debba686 100644
-> > --- a/drivers/remoteproc/Makefile
-> > +++ b/drivers/remoteproc/Makefile
-> > @@ -11,6 +11,7 @@ remoteproc-y				+= remoteproc_elf_loader.o
-> >   obj-$(CONFIG_OMAP_REMOTEPROC)		+= omap_remoteproc.o
-> >   obj-$(CONFIG_WKUP_M3_RPROC)		+= wkup_m3_rproc.o
-> >   obj-$(CONFIG_DA8XX_REMOTEPROC)		+= da8xx_remoteproc.o
-> > +obj-$(CONFIG_MIPS_REMOTEPROC)		+= mips_remoteproc.o
-> >   obj-$(CONFIG_QCOM_ADSP_PIL)		+= qcom_adsp_pil.o
-> >   obj-$(CONFIG_QCOM_RPROC_COMMON)		+= qcom_common.o
-> >   obj-$(CONFIG_QCOM_Q6V5_PIL)		+= qcom_q6v5_pil.o
-> > diff --git a/drivers/remoteproc/mips_remoteproc.c b/drivers/remoteproc/mips_remoteproc.c
-> > new file mode 100644
-> > index 000000000000..9a0e5e06c0b1
-> > --- /dev/null
-> > +++ b/drivers/remoteproc/mips_remoteproc.c
-> > @@ -0,0 +1,599 @@
-> > +/*
-> > + * MIPS Remote Processor driver
-> > + *
-> > + * Copyright (C) 2016 Imagination Technologies
-> > + * Lisa Parratt <lisa.parratt@imgtec.com>
-> > + * Matt Redfearn <matt.redfearn@imgtec.com>
-> > + *
-> > + * This program is free software; you can redistribute it and/or modify it
-> > + * under the terms of the GNU General Public License as published by the
-> > + * Free Software Foundation;  either version 2 of the  License, or (at your
-> > + * option) any later version.
-> > + */
-> > +
-> > +#include <linux/cpu.h>
-> > +#include <linux/dma-mapping.h>
-> > +#include <linux/interrupt.h>
-> > +#include <linux/io.h>
-> > +#include <linux/irq.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of_irq.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/remoteproc.h>
-> > +#include <linux/sched/task.h>
-> > +
-> > +#include <asm/cacheflush.h>
-> > +#include <asm/smp-cps.h>
-> > +#include <asm/tlbflush.h>
-> > +#include <asm/tlbmisc.h>
-> > +
-> > +#include "remoteproc_internal.h"
-> > +
-> > +struct mips_rproc {
-> > +	char			name[16];
-> > +	struct rproc		*rproc;
-> > +	struct task_struct	*tsk;
-> > +	unsigned int		cpu;
-> > +	int			ipi_linux;
-> > +	int			ipi_remote;
-> > +};
-> > +
-> > +/* Parent device for MIPS remoteproc */
-> > +static struct device mips_rproc_dev;
-> > +
-> > +/* Array of allocated MIPS remote processor instances */
-> > +static struct mips_rproc *mips_rprocs[NR_CPUS];
-> > +
-> > +/* Bitmap used to identify which CPUs are available to rproc */
-> > +static cpumask_var_t mips_rproc_cpumask;
-> > +
-> > +/* Dynamic CPU hotplug state associated with this driver */
-> > +static int cpuhp_state;
-> > +
-> > +/* Add wired entry to map a device address to physical memory */
-> > +static void mips_map_page(unsigned long da, unsigned long pa, int c,
-> > +			  unsigned long pagesize)
-> > +{
-> > +	unsigned long pa2 = pa + (pagesize / 2);
-> > +	unsigned long entryhi, entrylo0, entrylo1;
-> > +	unsigned long pagemask = pagesize - 0x2000;
-> > +
-> > +	pa = (pa >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-> > +	pa2 = (pa2 >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-> > +	entryhi = da & 0xfffffe000;
-> > +	entrylo0 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa;
-> > +	entrylo1 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa2;
-> > +
-> > +	pr_debug("Create wired entry %d, CCA %d\n", read_c0_wired(), c);
-> > +	pr_debug(" EntryHi: 0x%016lx\n", entryhi);
-> > +	pr_debug(" EntryLo0: 0x%016lx\n", entrylo0);
-> > +	pr_debug(" EntryLo1: 0x%016lx\n", entrylo1);
-> > +	pr_debug(" Pagemask: 0x%016lx\n", pagemask);
-> > +	pr_debug("\n");
-> > +
-> > +	add_wired_entry(entrylo0, entrylo1, entryhi, pagemask);
-> > +}
-> > +
-> > +/* Compute the largest page mask a physical address can be mapped with */
-> > +static unsigned long mips_rproc_largest_pm(unsigned long pa,
-> > +					   unsigned long maxmask)
-> > +{
-> > +	unsigned long mask;
-> > +	/* Find address bits limiting alignment */
-> > +	unsigned long shift = ffs(pa);
-> > +
-> > +	/* Obey MIPS restrictions on page sizes */
-> > +	if (pa) {
-> > +		if (shift & 1)
-> > +			shift -= 2;
-> > +		else
-> > +			shift--;
-> > +	}
-> > +	mask = ULONG_MAX << shift;
-> > +	return maxmask & ~mask;
-> > +}
-> > +
-> > +/* Compute the page mask one step larger than a given page mask */
-> > +static unsigned long mips_rproc_next_pm(unsigned long pm, unsigned long maxmask)
-> > +{
-> > +#define PM_SHIFT 13
-> > +	return ((pm << 2) | (0x3 << PM_SHIFT)) & maxmask;
-> > +}
-> > +
-> > +/*
-> > + * Add mappings to the TLB such that memory allocated by the kernel for a
-> > + * firmware component appears at the right virtual address
-> > + */
-> > +static inline void mips_rproc_map(unsigned long da, unsigned long pa, int c,
-> > +				  unsigned long size, unsigned long maxmask)
-> > +{
-> > +	/* minimum mappable size is 2 * 4k pages */
-> > +	const unsigned long min_map_sz = 0x2000;
-> > +	unsigned long bigmask, nextmask;
-> > +	unsigned long distance, target;
-> > +	unsigned long page2_size; /* Size of the 2 buddy pages */
-> > +
-> > +	do {
-> > +		/* Compute the current largest page mask */
-> > +		bigmask = mips_rproc_largest_pm(pa, maxmask);
-> > +		/* Compute the next largest pagesize */
-> > +		nextmask = mips_rproc_next_pm(bigmask, maxmask);
-> > +		/*
-> > +		 * Compute the distance from our current physical address to
-> > +		 * the next page boundary.
-> > +		 */
-> > +		distance = (nextmask + min_map_sz) - (pa & nextmask);
-> > +		/*
-> > +		 * Decide between searching to get to the next highest page
-> > +		 * boundary or finishing.
-> > +		 */
-> > +		target = distance < size ? distance : size;
-> > +		while (target) {
-> > +			/* Find the largest supported page size that will fit */
-> > +			for (page2_size = maxmask + min_map_sz;
-> > +			    (page2_size > min_map_sz) && (page2_size > target);
-> > +			     page2_size /= 4) {
-> > +			}
-> > +			/* Emit it */
-> > +			mips_map_page(da, pa, c, page2_size);
-> > +			/* Move to next step */
-> > +			size -= page2_size;
-> > +			da += page2_size;
-> > +			pa += page2_size;
-> > +			target -= page2_size;
-> > +		}
-> > +	} while (size);
-> > +}
-> > +
-> > +static int mips_rproc_carveouts(struct rproc *rproc, int max_pagemask)
-> > +{
-> > +	struct rproc_mem_entry *carveout;
-> > +
-> > +	list_for_each_entry(carveout, &rproc->carveouts, node) {
-> > +		int c = CONF_CM_CACHABLE_COW;
-> > +
-> > +		dev_dbg(&rproc->dev,
-> > +			"carveout mapping da 0x%x -> %pad length 0x%x, CCA %d",
-> > +			carveout->da, &carveout->dma, carveout->len, c);
-> > +
-> > +		mips_rproc_map(carveout->da, carveout->dma, c,
-> > +				carveout->len, max_pagemask);
-> > +		flush_icache_range((unsigned long)carveout->va,
-> > +				   (unsigned long)carveout->va + carveout->len);
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> > +static int mips_rproc_vdevs(struct rproc *rproc, int max_pagemask)
-> > +{
-> > +	struct rproc_vdev *rvdev;
-> > +
-> > +	list_for_each_entry(rvdev, &rproc->rvdevs, node) {
-> > +		int i, size;
-> > +
-> > +		for (i = 0; i < ARRAY_SIZE(rvdev->vring); i++) {
-> > +			struct rproc_vring *vring = &rvdev->vring[i];
-> > +			unsigned long pa = vring->dma;
-> > +			int c;
-> > +
-> > +			if (plat_device_is_coherent(&mips_rproc_dev)) {
-> > +				/*
-> > +				 * The DMA API will allocate cacheable buffers
-> > +				 * for shared resources, so the firmware should
-> > +				 * also access those buffers cached
-> > +				 */
-> > +				c = (_page_cachable_default >> _CACHE_SHIFT);
-> > +			} else {
-> > +				/*
-> > +				 * Otherwise, shared buffers should be accessed
-> > +				 * uncached
-> > +				 */
-> > +				c = CONF_CM_UNCACHED;
-> > +			}
-> > +
-> > +			/* actual size of vring (in bytes) */
-> > +			size = PAGE_ALIGN(vring_size(vring->len, vring->align));
-> > +
-> > +			dev_dbg(&rproc->dev,
-> > +				"vring mapping da %pad -> %pad length 0x%x, CCA %d",
-> > +				&vring->dma, &vring->dma, size, c);
-> > +
-> > +			mips_rproc_map(pa, pa, c, size, max_pagemask);
-> > +		}
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> > +static void mips_rproc_cpu_entry(void)
-> > +{
-> > +	struct mips_rproc *mproc = mips_rprocs[smp_processor_id()];
-> > +	struct rproc *rproc = mproc->rproc;
-> > +	int ipi_to_remote = ipi_get_hwirq(mproc->ipi_remote, mproc->cpu);
-> > +	int ipi_from_remote = ipi_get_hwirq(mproc->ipi_linux, 0);
-> > +	unsigned long old_pagemask, max_pagemask;
-> > +	void (*fw_entry)(int, int ipi_to_remote, int ipi_from_remote, int);
-> > +
-> > +	dev_info(&rproc->dev, "%s booting firmware %s\n",
-> > +		 rproc->name, rproc->firmware);
-> > +
-> > +	/* Get the maximum pagemask supported on this CPU */
-> > +	old_pagemask = read_c0_pagemask();
-> > +	write_c0_pagemask(~0);
-> > +	back_to_back_c0_hazard();
-> > +	max_pagemask = read_c0_pagemask();
-> > +	write_c0_pagemask(old_pagemask);
-> > +	back_to_back_c0_hazard();
-> > +
-> > +	/* Start with no wired entries */
-> > +	write_c0_wired(0);
-> > +
-> > +	/* Flush all previous TLB entries */
-> > +	local_flush_tlb_all();
-> > +
-> > +	/* Set ASID 0 */
-> > +	write_c0_entryhi(0);
-> > +
-> > +	/* Map firmware resources into virtual memory */
-> > +	mips_rproc_carveouts(rproc, max_pagemask);
-> > +	mips_rproc_vdevs(rproc, max_pagemask);
-> > +
-> > +	dev_dbg(&rproc->dev, "IPI to remote: %d\n", ipi_to_remote);
-> > +	dev_dbg(&rproc->dev, "IPI from remote: %d\n", ipi_from_remote);
-> > +
-> > +	/* Hand off the CPU to the firmware */
-> > +	dev_dbg(&rproc->dev, "Jumping to firmware at 0x%x\n", rproc->bootaddr);
-> > +
-> > +	/* We're done with the task struct that provided the stack we've used */
-> > +	set_current_state(TASK_DEAD);
-> > +
-> > +	/* Jump into the firmware, obeying the firmware protocol. */
-> > +	fw_entry = (void *)rproc->bootaddr;
-> > +	fw_entry(-3, ipi_to_remote, ipi_from_remote, 0);
-> > +}
-> > +
-> > +static irqreturn_t mips_rproc_ipi_handler(int irq, void *dev_id)
-> > +{
-> > +	/* Synthetic interrupts shouldn't need acking */
-> > +	return IRQ_WAKE_THREAD;
-> > +}
-> > +
-> > +static irqreturn_t mips_rproc_vq_int(int irq, void *p)
-> > +{
-> > +	struct rproc *rproc = (struct rproc *)p;
-> > +	void *entry;
-> > +	int id;
-> > +
-> > +	/* We don't have a mailbox, so iterate over all vqs and kick them. */
-> > +	idr_for_each_entry(&rproc->notifyids, entry, id)
-> > +		rproc_vq_interrupt(rproc, id);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> > +/* Helper function to find the IPI domain */
-> > +static struct irq_domain *ipi_domain(void)
-> > +{
-> > +	struct device_node *node = of_irq_find_parent(of_root);
-> > +	struct irq_domain *ipidomain;
-> > +
-> > +	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
-> > +	/*
-> > +	 * Some platforms have half DT setup. So if we found irq node but
-> > +	 * didn't find an ipidomain, try to search for one that is not in the
-> > +	 * DT.
-> > +	 */
-> > +	if (node && !ipidomain)
-> > +		ipidomain = irq_find_matching_host(NULL, DOMAIN_BUS_IPI);
-> > +
-> > +	return ipidomain;
-> > +}
-> > +
-> > +int mips_rproc_op_start(struct rproc *rproc)
-> > +{
-> > +	struct mips_rproc *mproc = rproc->priv;
-> > +	int err;
-> > +	int cpu = mproc->cpu;
-> > +
-> > +	/* Create task for the CPU to use before handing off to firmware */
-> > +	mproc->tsk = fork_idle(cpu);
-> > +	if (IS_ERR(mproc->tsk)) {
-> > +		dev_err(&rproc->dev, "fork_idle() failed for CPU%d\n", cpu);
-> > +		return -ENOMEM;
-> > +	}
-> > +
-> > +	/* We won't be needing the Linux IPIs anymore */
-> > +	if (mips_smp_ipi_free(get_cpu_mask(cpu))) {
-> > +		dev_err(&rproc->dev, "Failed to reserve incoming kick\n");
-> > +		goto exit_free_tsk;
-> > +	}
-> > +
-> > +	/*
-> > +	 * Direct IPIs from the remote processor to CPU0 since that can't be
-> > +	 * offlined while the remote CPU is running.
-> > +	 */
-> > +	mproc->ipi_linux = irq_reserve_ipi(ipi_domain(), get_cpu_mask(0));
-> > +	if (!mproc->ipi_linux) {
-> > +		dev_err(&rproc->dev, "Failed to reserve incoming kick\n");
-> > +		goto exit_restore_ipi;
-> > +	}
-> > +
-> > +	mproc->ipi_remote = irq_reserve_ipi(ipi_domain(), get_cpu_mask(cpu));
-> > +	if (!mproc->ipi_remote) {
-> > +		dev_err(&rproc->dev, "Failed to reserve outgoing kick\n");
-> > +		goto exit_destroy_ipi_linux;
-> > +	}
-> > +
-> > +	/* register incoming ipi */
-> > +	err = request_threaded_irq(mproc->ipi_linux, mips_rproc_ipi_handler,
-> > +				   mips_rproc_vq_int, 0,
-> > +				   "mips-rproc IPI in", rproc);
-> > +	if (err) {
-> > +		dev_err(&rproc->dev, "Failed to register incoming kick: %d\n",
-> > +			err);
-> > +		goto exit_destroy_ipi_remote;
-> > +	}
-> > +
-> > +	if (mips_cps_steal_cpu_and_execute(cpu, &mips_rproc_cpu_entry,
-> > +						mproc->tsk)) {
-> > +		dev_err(&rproc->dev, "Failed to steal CPU%d for remote\n", cpu);
-> > +		goto exit_free_irq;
-> > +	}
-> > +
-> > +	return 0;
-> > +
-> > +exit_free_irq:
-> > +	free_irq(mproc->ipi_linux, rproc);
-> > +exit_destroy_ipi_remote:
-> > +	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(cpu));
-> > +exit_destroy_ipi_linux:
-> > +	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-> > +exit_restore_ipi:
-> > +	/* Set up the Linux IPIs again */
-> > +	mips_smp_ipi_allocate(get_cpu_mask(cpu));
-> > +exit_free_tsk:
-> > +	free_task(mproc->tsk);
-> > +
-> > +	return -EINVAL;
-> > +}
-> > +
-> > +int mips_rproc_op_stop(struct rproc *rproc)
-> > +{
-> > +	struct mips_rproc *mproc = rproc->priv;
-> > +
-> > +	free_irq(mproc->ipi_linux, rproc);
-> > +
-> > +	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-> > +	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(mproc->cpu));
-> > +
-> > +	/* Set up the Linux IPIs again */
-> > +	mips_smp_ipi_allocate(get_cpu_mask(mproc->cpu));
-> > +
-> > +	free_task(mproc->tsk);
-> > +
-> > +	return mips_cps_halt_and_return_cpu(mproc->cpu);
-> > +}
-> > +
-> > +void mips_rproc_op_kick(struct rproc *rproc, int vqid)
-> > +{
-> > +	struct mips_rproc *mproc = rproc->priv;
-> > +
-> > +	if (rproc->state == RPROC_RUNNING)
-> > +		ipi_send_single(mproc->ipi_remote, mproc->cpu);
-> > +}
-> > +
-> > +static const struct rproc_ops mips_rproc_proc_ops = {
-> > +	.start	= mips_rproc_op_start,
-> > +	.stop	= mips_rproc_op_stop,
-> > +	.kick	= mips_rproc_op_kick,
-> > +};
-> > +
-> > +/* Create an rproc instance in response to CPU down */
-> > +static int mips_rproc_device_register(unsigned int cpu)
-> > +{
-> > +	char *template = "mips-cpu%u";
-> > +	struct rproc *rproc;
-> > +	struct mips_rproc *mproc;
-> > +	int err;
-> > +
-> > +	if (!cpumask_test_cpu(cpu, mips_rproc_cpumask))
-> > +		/* The CPU is not in the mask, so don't register rproc on it */
-> > +		return 0;
-> > +
-> > +	pr_debug("Allocating MIPS rproc for cpu%d\n", cpu);
-> > +
-> > +	if (mips_rprocs[cpu]) {
-> > +		dev_err(&mips_rproc_dev, "CPU%d in use\n", cpu);
-> > +		return 0;
-> > +	}
-> > +
-> > +	mproc = kzalloc(sizeof(struct mips_rproc), GFP_KERNEL);
-> > +	if (!mproc) {
-> > +		err = -ENOMEM;
-> > +		goto exit;
-> > +	}
-> > +
-> > +	snprintf(mproc->name, sizeof(mproc->name), template, cpu);
-> > +	mproc->cpu = cpu;
-> > +
-> > +	rproc = rproc_alloc(&mips_rproc_dev, mproc->name,
-> > +			    &mips_rproc_proc_ops, NULL,
-> > +			    sizeof(struct mips_rproc *));
-> > +	if (!rproc) {
-> > +		dev_err(&mips_rproc_dev, "Error allocating rproc\n");
-> > +		err = -ENOMEM;
-> > +		goto exit_free_mproc;
-> > +	}
-> > +
-> > +	mproc->rproc = rproc;
-> > +	rproc->priv = (void *)mproc;
-> > +
-> > +	err = rproc_add(rproc);
-> > +	if (err) {
-> > +		dev_err(&mips_rproc_dev, "Failed to add rproc: %d\n", err);
-> > +		goto exit_free_rproc;
-> > +	}
-> > +
-> > +	mips_rprocs[cpu] = mproc;
-> > +	return 0;
-> > +
-> > +exit_free_rproc:
-> > +	rproc_free(rproc);
-> > +exit_free_mproc:
-> > +	kfree(mproc);
-> > +exit:
-> > +	return err;
-> > +}
-> > +
-> > +/* Destroy rproc instance in response to CPU up */
-> > +static int mips_rproc_device_unregister(unsigned int cpu)
-> > +{
-> > +	struct mips_rproc *mproc = mips_rprocs[cpu];
-> > +
-> > +	if (!mproc)
-> > +		/* No rproc instance has been created for this CPU */
-> > +		return 0;
-> > +
-> > +	pr_debug("Deallocating MIPS rproc for cpu%d\n", cpu);
-> > +
-> > +	rproc_del(mproc->rproc);
-> > +	rproc_put(mproc->rproc);
-> > +	kfree(mproc);
-> > +
-> > +	mips_rprocs[cpu] = NULL;
-> > +	return 0;
-> > +}
-> > +
-> > +/* Show MIPS CPUs available to rproc */
-> > +static ssize_t cpus_show(struct device *dev, struct device_attribute *attr,
-> > +			  char *buf)
-> > +{
-> > +	return cpumap_print_to_pagebuf(true, buf, mips_rproc_cpumask);
-> > +}
-> > +
-> > +/* Allow MIPS CPUs to be made available to rproc */
-> > +static ssize_t cpus_store(struct device *dev,
-> > +			      struct device_attribute *attr,
-> > +			      const char *buf, size_t count)
-> > +{
-> > +	static cpumask_var_t new_mask;
-> > +	int err, cpu;
-> > +
-> > +	err = cpulist_parse(buf, new_mask);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	/* Prevent CPU hotplug on/offlining CPUs while we do this */
-> > +	get_online_cpus();
-> > +
-> > +	for_each_possible_cpu(cpu) {
-> > +		if (cpumask_test_cpu(cpu, mips_rproc_cpumask) &&
-> > +		    !cpumask_test_cpu(cpu, new_mask)) {
-> > +			/* CPU no longer allowed. Release any instance on it */
-> > +			cpumask_clear_cpu(cpu, mips_rproc_cpumask);
-> > +			mips_rproc_device_unregister(cpu);
-> > +
-> > +		} else if (!cpumask_test_cpu(cpu, mips_rproc_cpumask) &&
-> > +			   cpumask_test_cpu(cpu, new_mask)) {
-> > +			/* If the CPU isn't online, start an instance */
-> > +			cpumask_set_cpu(cpu, mips_rproc_cpumask);
-> > +			if (!cpu_online(cpu))
-> > +				mips_rproc_device_register(cpu);
-> > +		}
-> > +	}
-> > +	put_online_cpus();
-> > +	return count;
-> > +}
-> > +static DEVICE_ATTR_RW(cpus);
-> > +
-> > +static struct attribute *mips_rproc_attrs[] = {
-> > +	&dev_attr_cpus.attr,
-> > +	NULL
-> > +};
-> > +
-> > +static const struct attribute_group mips_rproc_devgroup = {
-> > +	.attrs = mips_rproc_attrs
-> > +};
-> > +
-> > +static const struct attribute_group *mips_rproc_devgroups[] = {
-> > +	&mips_rproc_devgroup,
-> > +	NULL
-> > +};
-> > +static struct device_type mips_rproc_type = {
-> > +	.groups = mips_rproc_devgroups,
-> > +};
-> > +
-> > +static struct platform_driver mips_rproc_driver = {
-> > +	.driver = {
-> > +		.name = "mips-rproc",
-> > +	},
-> > +};
-> > +
-> > +static int __init mips_rproc_init(void)
-> > +{
-> > +	int err;
-> > +
-> > +	if ((!cpu_has_mipsmt) && (!cpu_has_vp)) {
-> > +		pr_debug("MIPS rproc not supported on this cpu\n");
-> > +		return -EIO;
-> > +	}
-> > +
-> > +	mips_rproc_dev.driver = &mips_rproc_driver.driver;
-> > +	mips_rproc_dev.type = &mips_rproc_type;
-> > +	dev_set_name(&mips_rproc_dev, "mips-rproc");
-> > +
-> > +	/* Set device to have coherent DMA ops */
-> > +	arch_setup_dma_ops(&mips_rproc_dev, 0, 0, NULL, 1);
-> > +
-> > +	err = device_register(&mips_rproc_dev);
-> > +	if (err) {
-> > +		dev_err(&mips_rproc_dev, "Error adding MIPS rproc: %d\n", err);
-> > +		return err;
-> > +	}
-> > +
-> > +	/*
-> > +	 * Register with the cpu hotplug state machine.
-> > +	 * This driver requires opposite sense to "normal" drivers, since the
-> > +	 * driver is activated for offline CPUs via the teardown callback and
-> > +	 * deactivated via the online callback.
-> > +	 */
-> > +	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "MIPS:REMOTEPROC",
-> > +				mips_rproc_device_unregister,
-> > +				mips_rproc_device_register);
-> > +	if (err < 0) {
-> > +		device_unregister(&mips_rproc_dev);
-> > +		return err;
-> > +	}
-> > +
-> > +	cpuhp_state = err;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static void __exit mips_rproc_exit(void)
-> > +{
-> > +	int cpu;
-> > +
-> > +	if (cpuhp_state) {
-> > +		/*
-> > +		 * Unregister with the cpu hotplug state machine, but don't call
-> > +		 * the teardown callback, since that would try to start the
-> > +		 * remote processor device.
-> > +		 */
-> > +		__cpuhp_remove_state(cpuhp_state, false);
-> > +		cpuhp_state = 0;
-> > +	}
-> > +
-> > +	get_online_cpus();
-> > +	/* Unregister devices created for any offline CPUs */
-> > +	for_each_possible_cpu(cpu)
-> > +		mips_rproc_device_unregister(cpu);
-> > +	put_online_cpus();
-> > +}
-> > +
-> > +late_initcall(mips_rproc_init);
-> > +module_exit(mips_rproc_exit);
-> > +
-> > +module_platform_driver(mips_rproc_driver);
-> > +
-> > +MODULE_LICENSE("GPL v2");
-> > +MODULE_DESCRIPTION("MIPS Remote Processor control driver");
+So instead of dealing with a named clocksource macro, let's use a more generic
+one: TIMER_OF_DECLARE.
+
+The patch has not functional changes.
+
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Matthias Brugger <matthias.bgg@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ arch/arm/kernel/smp_twd.c                 |  6 +++---
+ arch/microblaze/kernel/timer.c            |  2 +-
+ arch/mips/ralink/cevt-rt3352.c            |  2 +-
+ arch/nios2/kernel/time.c                  |  2 +-
+ drivers/clocksource/arc_timer.c           |  6 +++---
+ drivers/clocksource/arm_arch_timer.c      |  6 +++---
+ drivers/clocksource/arm_global_timer.c    |  2 +-
+ drivers/clocksource/armv7m_systick.c      |  2 +-
+ drivers/clocksource/asm9260_timer.c       |  2 +-
+ drivers/clocksource/bcm2835_timer.c       |  2 +-
+ drivers/clocksource/bcm_kona_timer.c      |  4 ++--
+ drivers/clocksource/cadence_ttc_timer.c   |  2 +-
+ drivers/clocksource/clksrc-dbx500-prcmu.c |  2 +-
+ drivers/clocksource/clksrc_st_lpc.c       |  2 +-
+ drivers/clocksource/clps711x-timer.c      |  2 +-
+ drivers/clocksource/dw_apb_timer_of.c     |  8 ++++----
+ drivers/clocksource/exynos_mct.c          |  4 ++--
+ drivers/clocksource/fsl_ftm_timer.c       |  2 +-
+ drivers/clocksource/h8300_timer16.c       |  2 +-
+ drivers/clocksource/h8300_timer8.c        |  2 +-
+ drivers/clocksource/h8300_tpu.c           |  2 +-
+ drivers/clocksource/jcore-pit.c           |  2 +-
+ drivers/clocksource/meson6_timer.c        |  2 +-
+ drivers/clocksource/mips-gic-timer.c      |  2 +-
+ drivers/clocksource/mps2-timer.c          |  2 +-
+ drivers/clocksource/mtk_timer.c           |  2 +-
+ drivers/clocksource/mxs_timer.c           |  2 +-
+ drivers/clocksource/nomadik-mtu.c         |  2 +-
+ drivers/clocksource/pxa_timer.c           |  2 +-
+ drivers/clocksource/qcom-timer.c          |  4 ++--
+ drivers/clocksource/renesas-ostm.c        |  2 +-
+ drivers/clocksource/rockchip_timer.c      |  4 ++--
+ drivers/clocksource/samsung_pwm_timer.c   |  8 ++++----
+ drivers/clocksource/sun4i_timer.c         |  2 +-
+ drivers/clocksource/tango_xtal.c          |  2 +-
+ drivers/clocksource/tegra20_timer.c       |  4 ++--
+ drivers/clocksource/time-armada-370-xp.c  |  6 +++---
+ drivers/clocksource/time-efm32.c          |  4 ++--
+ drivers/clocksource/time-lpc32xx.c        |  2 +-
+ drivers/clocksource/time-orion.c          |  2 +-
+ drivers/clocksource/time-pistachio.c      |  2 +-
+ drivers/clocksource/timer-atlas7.c        |  2 +-
+ drivers/clocksource/timer-atmel-pit.c     |  2 +-
+ drivers/clocksource/timer-atmel-st.c      |  2 +-
+ drivers/clocksource/timer-digicolor.c     |  2 +-
+ drivers/clocksource/timer-fttmr010.c      | 10 +++++-----
+ drivers/clocksource/timer-imx-gpt.c       | 24 ++++++++++++------------
+ drivers/clocksource/timer-integrator-ap.c |  2 +-
+ drivers/clocksource/timer-keystone.c      |  2 +-
+ drivers/clocksource/timer-nps.c           |  6 +++---
+ drivers/clocksource/timer-oxnas-rps.c     |  4 ++--
+ drivers/clocksource/timer-prima2.c        |  2 +-
+ drivers/clocksource/timer-sp804.c         |  4 ++--
+ drivers/clocksource/timer-stm32.c         |  2 +-
+ drivers/clocksource/timer-sun5i.c         |  4 ++--
+ drivers/clocksource/timer-ti-32k.c        |  2 +-
+ drivers/clocksource/timer-u300.c          |  2 +-
+ drivers/clocksource/versatile.c           |  4 ++--
+ drivers/clocksource/vf_pit_timer.c        |  2 +-
+ drivers/clocksource/vt8500_timer.c        |  2 +-
+ drivers/clocksource/zevio-timer.c         |  2 +-
+ include/linux/clocksource.h               |  2 +-
+ 62 files changed, 103 insertions(+), 103 deletions(-)
+
+diff --git a/arch/arm/kernel/smp_twd.c b/arch/arm/kernel/smp_twd.c
+index 895ae51..b30eafe 100644
+--- a/arch/arm/kernel/smp_twd.c
++++ b/arch/arm/kernel/smp_twd.c
+@@ -403,7 +403,7 @@ static int __init twd_local_timer_of_register(struct device_node *np)
+ 	WARN(err, "twd_local_timer_of_register failed (%d)\n", err);
+ 	return err;
+ }
+-CLOCKSOURCE_OF_DECLARE(arm_twd_a9, "arm,cortex-a9-twd-timer", twd_local_timer_of_register);
+-CLOCKSOURCE_OF_DECLARE(arm_twd_a5, "arm,cortex-a5-twd-timer", twd_local_timer_of_register);
+-CLOCKSOURCE_OF_DECLARE(arm_twd_11mp, "arm,arm11mp-twd-timer", twd_local_timer_of_register);
++TIMER_OF_DECLARE(arm_twd_a9, "arm,cortex-a9-twd-timer", twd_local_timer_of_register);
++TIMER_OF_DECLARE(arm_twd_a5, "arm,cortex-a5-twd-timer", twd_local_timer_of_register);
++TIMER_OF_DECLARE(arm_twd_11mp, "arm,arm11mp-twd-timer", twd_local_timer_of_register);
+ #endif
+diff --git a/arch/microblaze/kernel/timer.c b/arch/microblaze/kernel/timer.c
+index 9990661..873a1cc 100644
+--- a/arch/microblaze/kernel/timer.c
++++ b/arch/microblaze/kernel/timer.c
+@@ -333,5 +333,5 @@ static int __init xilinx_timer_init(struct device_node *timer)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(xilinx_timer, "xlnx,xps-timer-1.00.a",
++TIMER_OF_DECLARE(xilinx_timer, "xlnx,xps-timer-1.00.a",
+ 		       xilinx_timer_init);
+diff --git a/arch/mips/ralink/cevt-rt3352.c b/arch/mips/ralink/cevt-rt3352.c
+index b8a1376..92f284d 100644
+--- a/arch/mips/ralink/cevt-rt3352.c
++++ b/arch/mips/ralink/cevt-rt3352.c
+@@ -152,4 +152,4 @@ static int __init ralink_systick_init(struct device_node *np)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(systick, "ralink,cevt-systick", ralink_systick_init);
++TIMER_OF_DECLARE(systick, "ralink,cevt-systick", ralink_systick_init);
+diff --git a/arch/nios2/kernel/time.c b/arch/nios2/kernel/time.c
+index 6e2bdc9..2954b66 100644
+--- a/arch/nios2/kernel/time.c
++++ b/arch/nios2/kernel/time.c
+@@ -353,4 +353,4 @@ void __init time_init(void)
+ 	clocksource_probe();
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(nios2_timer, ALTR_TIMER_COMPATIBLE, nios2_time_init);
++TIMER_OF_DECLARE(nios2_timer, ALTR_TIMER_COMPATIBLE, nios2_time_init);
+diff --git a/drivers/clocksource/arc_timer.c b/drivers/clocksource/arc_timer.c
+index 2164973..4927355 100644
+--- a/drivers/clocksource/arc_timer.c
++++ b/drivers/clocksource/arc_timer.c
+@@ -99,7 +99,7 @@ static int __init arc_cs_setup_gfrc(struct device_node *node)
+ 
+ 	return clocksource_register_hz(&arc_counter_gfrc, arc_timer_freq);
+ }
+-CLOCKSOURCE_OF_DECLARE(arc_gfrc, "snps,archs-timer-gfrc", arc_cs_setup_gfrc);
++TIMER_OF_DECLARE(arc_gfrc, "snps,archs-timer-gfrc", arc_cs_setup_gfrc);
+ 
+ #define AUX_RTC_CTRL	0x103
+ #define AUX_RTC_LOW	0x104
+@@ -158,7 +158,7 @@ static int __init arc_cs_setup_rtc(struct device_node *node)
+ 
+ 	return clocksource_register_hz(&arc_counter_rtc, arc_timer_freq);
+ }
+-CLOCKSOURCE_OF_DECLARE(arc_rtc, "snps,archs-timer-rtc", arc_cs_setup_rtc);
++TIMER_OF_DECLARE(arc_rtc, "snps,archs-timer-rtc", arc_cs_setup_rtc);
+ 
+ #endif
+ 
+@@ -333,4 +333,4 @@ static int __init arc_of_timer_init(struct device_node *np)
+ 
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(arc_clkevt, "snps,arc-timer", arc_of_timer_init);
++TIMER_OF_DECLARE(arc_clkevt, "snps,arc-timer", arc_of_timer_init);
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index 4bed671..bc60cd7 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -1194,8 +1194,8 @@ static int __init arch_timer_of_init(struct device_node *np)
+ 
+ 	return arch_timer_common_init();
+ }
+-CLOCKSOURCE_OF_DECLARE(armv7_arch_timer, "arm,armv7-timer", arch_timer_of_init);
+-CLOCKSOURCE_OF_DECLARE(armv8_arch_timer, "arm,armv8-timer", arch_timer_of_init);
++TIMER_OF_DECLARE(armv7_arch_timer, "arm,armv7-timer", arch_timer_of_init);
++TIMER_OF_DECLARE(armv8_arch_timer, "arm,armv8-timer", arch_timer_of_init);
+ 
+ static u32 __init
+ arch_timer_mem_frame_get_cntfrq(struct arch_timer_mem_frame *frame)
+@@ -1382,7 +1382,7 @@ static int __init arch_timer_mem_of_init(struct device_node *np)
+ 	kfree(timer_mem);
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(armv7_arch_timer_mem, "arm,armv7-timer-mem",
++TIMER_OF_DECLARE(armv7_arch_timer_mem, "arm,armv7-timer-mem",
+ 		       arch_timer_mem_of_init);
+ 
+ #ifdef CONFIG_ACPI_GTDT
+diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
+index 123ed20..095bb96 100644
+--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -339,5 +339,5 @@ static int __init global_timer_of_register(struct device_node *np)
+ }
+ 
+ /* Only tested on r2p2 and r3p0  */
+-CLOCKSOURCE_OF_DECLARE(arm_gt, "arm,cortex-a9-global-timer",
++TIMER_OF_DECLARE(arm_gt, "arm,cortex-a9-global-timer",
+ 			global_timer_of_register);
+diff --git a/drivers/clocksource/armv7m_systick.c b/drivers/clocksource/armv7m_systick.c
+index a315491..ac046d6 100644
+--- a/drivers/clocksource/armv7m_systick.c
++++ b/drivers/clocksource/armv7m_systick.c
+@@ -82,5 +82,5 @@ static int __init system_timer_of_register(struct device_node *np)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(arm_systick, "arm,armv7m-systick",
++TIMER_OF_DECLARE(arm_systick, "arm,armv7m-systick",
+ 			system_timer_of_register);
+diff --git a/drivers/clocksource/asm9260_timer.c b/drivers/clocksource/asm9260_timer.c
+index c678083..38cd2fe 100644
+--- a/drivers/clocksource/asm9260_timer.c
++++ b/drivers/clocksource/asm9260_timer.c
+@@ -238,5 +238,5 @@ static int __init asm9260_timer_init(struct device_node *np)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(asm9260_timer, "alphascale,asm9260-timer",
++TIMER_OF_DECLARE(asm9260_timer, "alphascale,asm9260-timer",
+ 		asm9260_timer_init);
+diff --git a/drivers/clocksource/bcm2835_timer.c b/drivers/clocksource/bcm2835_timer.c
+index dce4430..82828d3 100644
+--- a/drivers/clocksource/bcm2835_timer.c
++++ b/drivers/clocksource/bcm2835_timer.c
+@@ -148,5 +148,5 @@ static int __init bcm2835_timer_init(struct device_node *node)
+ 	iounmap(base);
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(bcm2835, "brcm,bcm2835-system-timer",
++TIMER_OF_DECLARE(bcm2835, "brcm,bcm2835-system-timer",
+ 			bcm2835_timer_init);
+diff --git a/drivers/clocksource/bcm_kona_timer.c b/drivers/clocksource/bcm_kona_timer.c
+index fda5e147..5c40be9 100644
+--- a/drivers/clocksource/bcm_kona_timer.c
++++ b/drivers/clocksource/bcm_kona_timer.c
+@@ -198,9 +198,9 @@ static int __init kona_timer_init(struct device_node *node)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(brcm_kona, "brcm,kona-timer", kona_timer_init);
++TIMER_OF_DECLARE(brcm_kona, "brcm,kona-timer", kona_timer_init);
+ /*
+  * bcm,kona-timer is deprecated by brcm,kona-timer
+  * being kept here for driver compatibility
+  */
+-CLOCKSOURCE_OF_DECLARE(bcm_kona, "bcm,kona-timer", kona_timer_init);
++TIMER_OF_DECLARE(bcm_kona, "bcm,kona-timer", kona_timer_init);
+diff --git a/drivers/clocksource/cadence_ttc_timer.c b/drivers/clocksource/cadence_ttc_timer.c
+index 44e5e95..a144dfc 100644
+--- a/drivers/clocksource/cadence_ttc_timer.c
++++ b/drivers/clocksource/cadence_ttc_timer.c
+@@ -539,4 +539,4 @@ static int __init ttc_timer_init(struct device_node *timer)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(ttc, "cdns,ttc", ttc_timer_init);
++TIMER_OF_DECLARE(ttc, "cdns,ttc", ttc_timer_init);
+diff --git a/drivers/clocksource/clksrc-dbx500-prcmu.c b/drivers/clocksource/clksrc-dbx500-prcmu.c
+index c69e277..c1b96dc 100644
+--- a/drivers/clocksource/clksrc-dbx500-prcmu.c
++++ b/drivers/clocksource/clksrc-dbx500-prcmu.c
+@@ -86,5 +86,5 @@ static int __init clksrc_dbx500_prcmu_init(struct device_node *node)
+ #endif
+ 	return clocksource_register_hz(&clocksource_dbx500_prcmu, RATE_32K);
+ }
+-CLOCKSOURCE_OF_DECLARE(dbx500_prcmu, "stericsson,db8500-prcmu-timer-4",
++TIMER_OF_DECLARE(dbx500_prcmu, "stericsson,db8500-prcmu-timer-4",
+ 		       clksrc_dbx500_prcmu_init);
+diff --git a/drivers/clocksource/clksrc_st_lpc.c b/drivers/clocksource/clksrc_st_lpc.c
+index 03cc492..a1d01eb 100644
+--- a/drivers/clocksource/clksrc_st_lpc.c
++++ b/drivers/clocksource/clksrc_st_lpc.c
+@@ -132,4 +132,4 @@ static int __init st_clksrc_of_register(struct device_node *np)
+ 
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(ddata, "st,stih407-lpc", st_clksrc_of_register);
++TIMER_OF_DECLARE(ddata, "st,stih407-lpc", st_clksrc_of_register);
+diff --git a/drivers/clocksource/clps711x-timer.c b/drivers/clocksource/clps711x-timer.c
+index 24db6d6..fc9e025 100644
+--- a/drivers/clocksource/clps711x-timer.c
++++ b/drivers/clocksource/clps711x-timer.c
+@@ -119,5 +119,5 @@ static int __init clps711x_timer_init(struct device_node *np)
+ 		return -EINVAL;
+ 	}
+ }
+-CLOCKSOURCE_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
++TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
+ #endif
+diff --git a/drivers/clocksource/dw_apb_timer_of.c b/drivers/clocksource/dw_apb_timer_of.c
+index aee6c0d..69866cd 100644
+--- a/drivers/clocksource/dw_apb_timer_of.c
++++ b/drivers/clocksource/dw_apb_timer_of.c
+@@ -167,7 +167,7 @@ static int __init dw_apb_timer_init(struct device_node *timer)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(pc3x2_timer, "picochip,pc3x2-timer", dw_apb_timer_init);
+-CLOCKSOURCE_OF_DECLARE(apb_timer_osc, "snps,dw-apb-timer-osc", dw_apb_timer_init);
+-CLOCKSOURCE_OF_DECLARE(apb_timer_sp, "snps,dw-apb-timer-sp", dw_apb_timer_init);
+-CLOCKSOURCE_OF_DECLARE(apb_timer, "snps,dw-apb-timer", dw_apb_timer_init);
++TIMER_OF_DECLARE(pc3x2_timer, "picochip,pc3x2-timer", dw_apb_timer_init);
++TIMER_OF_DECLARE(apb_timer_osc, "snps,dw-apb-timer-osc", dw_apb_timer_init);
++TIMER_OF_DECLARE(apb_timer_sp, "snps,dw-apb-timer-sp", dw_apb_timer_init);
++TIMER_OF_DECLARE(apb_timer, "snps,dw-apb-timer", dw_apb_timer_init);
+diff --git a/drivers/clocksource/exynos_mct.c b/drivers/clocksource/exynos_mct.c
+index 670ff0f..7a244b6 100644
+--- a/drivers/clocksource/exynos_mct.c
++++ b/drivers/clocksource/exynos_mct.c
+@@ -610,5 +610,5 @@ static int __init mct_init_ppi(struct device_node *np)
+ {
+ 	return mct_init_dt(np, MCT_INT_PPI);
+ }
+-CLOCKSOURCE_OF_DECLARE(exynos4210, "samsung,exynos4210-mct", mct_init_spi);
+-CLOCKSOURCE_OF_DECLARE(exynos4412, "samsung,exynos4412-mct", mct_init_ppi);
++TIMER_OF_DECLARE(exynos4210, "samsung,exynos4210-mct", mct_init_spi);
++TIMER_OF_DECLARE(exynos4412, "samsung,exynos4412-mct", mct_init_ppi);
+diff --git a/drivers/clocksource/fsl_ftm_timer.c b/drivers/clocksource/fsl_ftm_timer.c
+index 738515b..3121e2d 100644
+--- a/drivers/clocksource/fsl_ftm_timer.c
++++ b/drivers/clocksource/fsl_ftm_timer.c
+@@ -369,4 +369,4 @@ static int __init ftm_timer_init(struct device_node *np)
+ 	kfree(priv);
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(flextimer, "fsl,ftm-timer", ftm_timer_init);
++TIMER_OF_DECLARE(flextimer, "fsl,ftm-timer", ftm_timer_init);
+diff --git a/drivers/clocksource/h8300_timer16.c b/drivers/clocksource/h8300_timer16.c
+index 5b27fb9..dfbd4f8 100644
+--- a/drivers/clocksource/h8300_timer16.c
++++ b/drivers/clocksource/h8300_timer16.c
+@@ -187,5 +187,5 @@ static int __init h8300_16timer_init(struct device_node *node)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(h8300_16bit, "renesas,16bit-timer",
++TIMER_OF_DECLARE(h8300_16bit, "renesas,16bit-timer",
+ 			   h8300_16timer_init);
+diff --git a/drivers/clocksource/h8300_timer8.c b/drivers/clocksource/h8300_timer8.c
+index 804c489..f6ffb0c 100644
+--- a/drivers/clocksource/h8300_timer8.c
++++ b/drivers/clocksource/h8300_timer8.c
+@@ -207,4 +207,4 @@ static int __init h8300_8timer_init(struct device_node *node)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(h8300_8bit, "renesas,8bit-timer", h8300_8timer_init);
++TIMER_OF_DECLARE(h8300_8bit, "renesas,8bit-timer", h8300_8timer_init);
+diff --git a/drivers/clocksource/h8300_tpu.c b/drivers/clocksource/h8300_tpu.c
+index 72e1cf2..45a8d17 100644
+--- a/drivers/clocksource/h8300_tpu.c
++++ b/drivers/clocksource/h8300_tpu.c
+@@ -154,4 +154,4 @@ static int __init h8300_tpu_init(struct device_node *node)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(h8300_tpu, "renesas,tpu", h8300_tpu_init);
++TIMER_OF_DECLARE(h8300_tpu, "renesas,tpu", h8300_tpu_init);
+diff --git a/drivers/clocksource/jcore-pit.c b/drivers/clocksource/jcore-pit.c
+index 7c61226..5d3d88e0f 100644
+--- a/drivers/clocksource/jcore-pit.c
++++ b/drivers/clocksource/jcore-pit.c
+@@ -246,4 +246,4 @@ static int __init jcore_pit_init(struct device_node *node)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(jcore_pit, "jcore,pit", jcore_pit_init);
++TIMER_OF_DECLARE(jcore_pit, "jcore,pit", jcore_pit_init);
+diff --git a/drivers/clocksource/meson6_timer.c b/drivers/clocksource/meson6_timer.c
+index 39d21f6..92f2099 100644
+--- a/drivers/clocksource/meson6_timer.c
++++ b/drivers/clocksource/meson6_timer.c
+@@ -174,5 +174,5 @@ static int __init meson6_timer_init(struct device_node *node)
+ 					1, 0xfffe);
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(meson6, "amlogic,meson6-timer",
++TIMER_OF_DECLARE(meson6, "amlogic,meson6-timer",
+ 		       meson6_timer_init);
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index 3f52ee2..e31e083 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -200,5 +200,5 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(mips_gic_timer, "mti,gic-timer",
++TIMER_OF_DECLARE(mips_gic_timer, "mti,gic-timer",
+ 		       gic_clocksource_of_init);
+diff --git a/drivers/clocksource/mps2-timer.c b/drivers/clocksource/mps2-timer.c
+index 3e4431e..aa4d63af 100644
+--- a/drivers/clocksource/mps2-timer.c
++++ b/drivers/clocksource/mps2-timer.c
+@@ -274,4 +274,4 @@ static int __init mps2_timer_init(struct device_node *np)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(mps2_timer, "arm,mps2-timer", mps2_timer_init);
++TIMER_OF_DECLARE(mps2_timer, "arm,mps2-timer", mps2_timer_init);
+diff --git a/drivers/clocksource/mtk_timer.c b/drivers/clocksource/mtk_timer.c
+index 9065949..f9b724f 100644
+--- a/drivers/clocksource/mtk_timer.c
++++ b/drivers/clocksource/mtk_timer.c
+@@ -265,4 +265,4 @@ static int __init mtk_timer_init(struct device_node *node)
+ 
+ 	return -EINVAL;
+ }
+-CLOCKSOURCE_OF_DECLARE(mtk_mt6577, "mediatek,mt6577-timer", mtk_timer_init);
++TIMER_OF_DECLARE(mtk_mt6577, "mediatek,mt6577-timer", mtk_timer_init);
+diff --git a/drivers/clocksource/mxs_timer.c b/drivers/clocksource/mxs_timer.c
+index 99b77af..a03434e 100644
+--- a/drivers/clocksource/mxs_timer.c
++++ b/drivers/clocksource/mxs_timer.c
+@@ -293,4 +293,4 @@ static int __init mxs_timer_init(struct device_node *np)
+ 
+ 	return setup_irq(irq, &mxs_timer_irq);
+ }
+-CLOCKSOURCE_OF_DECLARE(mxs, "fsl,timrot", mxs_timer_init);
++TIMER_OF_DECLARE(mxs, "fsl,timrot", mxs_timer_init);
+diff --git a/drivers/clocksource/nomadik-mtu.c b/drivers/clocksource/nomadik-mtu.c
+index 7d44de3..8e4ddb9 100644
+--- a/drivers/clocksource/nomadik-mtu.c
++++ b/drivers/clocksource/nomadik-mtu.c
+@@ -284,5 +284,5 @@ static int __init nmdk_timer_of_init(struct device_node *node)
+ 
+ 	return nmdk_timer_init(base, irq, pclk, clk);
+ }
+-CLOCKSOURCE_OF_DECLARE(nomadik_mtu, "st,nomadik-mtu",
++TIMER_OF_DECLARE(nomadik_mtu, "st,nomadik-mtu",
+ 		       nmdk_timer_of_init);
+diff --git a/drivers/clocksource/pxa_timer.c b/drivers/clocksource/pxa_timer.c
+index a10fa667..08cd6eaf 100644
+--- a/drivers/clocksource/pxa_timer.c
++++ b/drivers/clocksource/pxa_timer.c
+@@ -216,7 +216,7 @@ static int __init pxa_timer_dt_init(struct device_node *np)
+ 
+ 	return pxa_timer_common_init(irq, clk_get_rate(clk));
+ }
+-CLOCKSOURCE_OF_DECLARE(pxa_timer, "marvell,pxa-timer", pxa_timer_dt_init);
++TIMER_OF_DECLARE(pxa_timer, "marvell,pxa-timer", pxa_timer_dt_init);
+ 
+ /*
+  * Legacy timer init for non device-tree boards.
+diff --git a/drivers/clocksource/qcom-timer.c b/drivers/clocksource/qcom-timer.c
+index ee358cd..89816f8 100644
+--- a/drivers/clocksource/qcom-timer.c
++++ b/drivers/clocksource/qcom-timer.c
+@@ -254,5 +254,5 @@ static int __init msm_dt_timer_init(struct device_node *np)
+ 
+ 	return msm_timer_init(freq, 32, irq, !!percpu_offset);
+ }
+-CLOCKSOURCE_OF_DECLARE(kpss_timer, "qcom,kpss-timer", msm_dt_timer_init);
+-CLOCKSOURCE_OF_DECLARE(scss_timer, "qcom,scss-timer", msm_dt_timer_init);
++TIMER_OF_DECLARE(kpss_timer, "qcom,kpss-timer", msm_dt_timer_init);
++TIMER_OF_DECLARE(scss_timer, "qcom,scss-timer", msm_dt_timer_init);
+diff --git a/drivers/clocksource/renesas-ostm.c b/drivers/clocksource/renesas-ostm.c
+index c76f576..6cffd7c 100644
+--- a/drivers/clocksource/renesas-ostm.c
++++ b/drivers/clocksource/renesas-ostm.c
+@@ -262,4 +262,4 @@ static int __init ostm_init(struct device_node *np)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(ostm, "renesas,ostm", ostm_init);
++TIMER_OF_DECLARE(ostm, "renesas,ostm", ostm_init);
+diff --git a/drivers/clocksource/rockchip_timer.c b/drivers/clocksource/rockchip_timer.c
+index 49c02be..c27f4c8 100644
+--- a/drivers/clocksource/rockchip_timer.c
++++ b/drivers/clocksource/rockchip_timer.c
+@@ -303,5 +303,5 @@ static int __init rk_timer_init(struct device_node *np)
+ 	return -EINVAL;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(rk3288_timer, "rockchip,rk3288-timer", rk_timer_init);
+-CLOCKSOURCE_OF_DECLARE(rk3399_timer, "rockchip,rk3399-timer", rk_timer_init);
++TIMER_OF_DECLARE(rk3288_timer, "rockchip,rk3288-timer", rk_timer_init);
++TIMER_OF_DECLARE(rk3399_timer, "rockchip,rk3399-timer", rk_timer_init);
+diff --git a/drivers/clocksource/samsung_pwm_timer.c b/drivers/clocksource/samsung_pwm_timer.c
+index a68e653..21cd72c 100644
+--- a/drivers/clocksource/samsung_pwm_timer.c
++++ b/drivers/clocksource/samsung_pwm_timer.c
+@@ -466,7 +466,7 @@ static int __init s3c2410_pwm_clocksource_init(struct device_node *np)
+ {
+ 	return samsung_pwm_alloc(np, &s3c24xx_variant);
+ }
+-CLOCKSOURCE_OF_DECLARE(s3c2410_pwm, "samsung,s3c2410-pwm", s3c2410_pwm_clocksource_init);
++TIMER_OF_DECLARE(s3c2410_pwm, "samsung,s3c2410-pwm", s3c2410_pwm_clocksource_init);
+ 
+ static const struct samsung_pwm_variant s3c64xx_variant = {
+ 	.bits		= 32,
+@@ -479,7 +479,7 @@ static int __init s3c64xx_pwm_clocksource_init(struct device_node *np)
+ {
+ 	return samsung_pwm_alloc(np, &s3c64xx_variant);
+ }
+-CLOCKSOURCE_OF_DECLARE(s3c6400_pwm, "samsung,s3c6400-pwm", s3c64xx_pwm_clocksource_init);
++TIMER_OF_DECLARE(s3c6400_pwm, "samsung,s3c6400-pwm", s3c64xx_pwm_clocksource_init);
+ 
+ static const struct samsung_pwm_variant s5p64x0_variant = {
+ 	.bits		= 32,
+@@ -492,7 +492,7 @@ static int __init s5p64x0_pwm_clocksource_init(struct device_node *np)
+ {
+ 	return samsung_pwm_alloc(np, &s5p64x0_variant);
+ }
+-CLOCKSOURCE_OF_DECLARE(s5p6440_pwm, "samsung,s5p6440-pwm", s5p64x0_pwm_clocksource_init);
++TIMER_OF_DECLARE(s5p6440_pwm, "samsung,s5p6440-pwm", s5p64x0_pwm_clocksource_init);
+ 
+ static const struct samsung_pwm_variant s5p_variant = {
+ 	.bits		= 32,
+@@ -505,5 +505,5 @@ static int __init s5p_pwm_clocksource_init(struct device_node *np)
+ {
+ 	return samsung_pwm_alloc(np, &s5p_variant);
+ }
+-CLOCKSOURCE_OF_DECLARE(s5pc100_pwm, "samsung,s5pc100-pwm", s5p_pwm_clocksource_init);
++TIMER_OF_DECLARE(s5pc100_pwm, "samsung,s5pc100-pwm", s5p_pwm_clocksource_init);
+ #endif
+diff --git a/drivers/clocksource/sun4i_timer.c b/drivers/clocksource/sun4i_timer.c
+index 4452d5c..3e4bc64 100644
+--- a/drivers/clocksource/sun4i_timer.c
++++ b/drivers/clocksource/sun4i_timer.c
+@@ -233,5 +233,5 @@ static int __init sun4i_timer_init(struct device_node *node)
+ 
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(sun4i, "allwinner,sun4i-a10-timer",
++TIMER_OF_DECLARE(sun4i, "allwinner,sun4i-a10-timer",
+ 		       sun4i_timer_init);
+diff --git a/drivers/clocksource/tango_xtal.c b/drivers/clocksource/tango_xtal.c
+index 12fcef8..c4e1c2e 100644
+--- a/drivers/clocksource/tango_xtal.c
++++ b/drivers/clocksource/tango_xtal.c
+@@ -53,4 +53,4 @@ static int __init tango_clocksource_init(struct device_node *np)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(tango, "sigma,tick-counter", tango_clocksource_init);
++TIMER_OF_DECLARE(tango, "sigma,tick-counter", tango_clocksource_init);
+diff --git a/drivers/clocksource/tegra20_timer.c b/drivers/clocksource/tegra20_timer.c
+index b9990b9..c337a81 100644
+--- a/drivers/clocksource/tegra20_timer.c
++++ b/drivers/clocksource/tegra20_timer.c
+@@ -237,7 +237,7 @@ static int __init tegra20_init_timer(struct device_node *np)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(tegra20_timer, "nvidia,tegra20-timer", tegra20_init_timer);
++TIMER_OF_DECLARE(tegra20_timer, "nvidia,tegra20-timer", tegra20_init_timer);
+ 
+ static int __init tegra20_init_rtc(struct device_node *np)
+ {
+@@ -261,4 +261,4 @@ static int __init tegra20_init_rtc(struct device_node *np)
+ 
+ 	return register_persistent_clock(NULL, tegra_read_persistent_clock64);
+ }
+-CLOCKSOURCE_OF_DECLARE(tegra20_rtc, "nvidia,tegra20-rtc", tegra20_init_rtc);
++TIMER_OF_DECLARE(tegra20_rtc, "nvidia,tegra20-rtc", tegra20_init_rtc);
+diff --git a/drivers/clocksource/time-armada-370-xp.c b/drivers/clocksource/time-armada-370-xp.c
+index aea4380..edf1a46 100644
+--- a/drivers/clocksource/time-armada-370-xp.c
++++ b/drivers/clocksource/time-armada-370-xp.c
+@@ -351,7 +351,7 @@ static int __init armada_xp_timer_init(struct device_node *np)
+ 
+ 	return armada_370_xp_timer_common_init(np);
+ }
+-CLOCKSOURCE_OF_DECLARE(armada_xp, "marvell,armada-xp-timer",
++TIMER_OF_DECLARE(armada_xp, "marvell,armada-xp-timer",
+ 		       armada_xp_timer_init);
+ 
+ static int __init armada_375_timer_init(struct device_node *np)
+@@ -389,7 +389,7 @@ static int __init armada_375_timer_init(struct device_node *np)
+ 
+ 	return armada_370_xp_timer_common_init(np);
+ }
+-CLOCKSOURCE_OF_DECLARE(armada_375, "marvell,armada-375-timer",
++TIMER_OF_DECLARE(armada_375, "marvell,armada-375-timer",
+ 		       armada_375_timer_init);
+ 
+ static int __init armada_370_timer_init(struct device_node *np)
+@@ -412,5 +412,5 @@ static int __init armada_370_timer_init(struct device_node *np)
+ 
+ 	return armada_370_xp_timer_common_init(np);
+ }
+-CLOCKSOURCE_OF_DECLARE(armada_370, "marvell,armada-370-timer",
++TIMER_OF_DECLARE(armada_370, "marvell,armada-370-timer",
+ 		       armada_370_timer_init);
+diff --git a/drivers/clocksource/time-efm32.c b/drivers/clocksource/time-efm32.c
+index ce0f97b..257e810 100644
+--- a/drivers/clocksource/time-efm32.c
++++ b/drivers/clocksource/time-efm32.c
+@@ -283,5 +283,5 @@ static int __init efm32_timer_init(struct device_node *np)
+ 
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(efm32compat, "efm32,timer", efm32_timer_init);
+-CLOCKSOURCE_OF_DECLARE(efm32, "energymicro,efm32-timer", efm32_timer_init);
++TIMER_OF_DECLARE(efm32compat, "efm32,timer", efm32_timer_init);
++TIMER_OF_DECLARE(efm32, "energymicro,efm32-timer", efm32_timer_init);
+diff --git a/drivers/clocksource/time-lpc32xx.c b/drivers/clocksource/time-lpc32xx.c
+index 9649cfd..d51a62a 100644
+--- a/drivers/clocksource/time-lpc32xx.c
++++ b/drivers/clocksource/time-lpc32xx.c
+@@ -311,4 +311,4 @@ static int __init lpc32xx_timer_init(struct device_node *np)
+ 
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(lpc32xx_timer, "nxp,lpc3220-timer", lpc32xx_timer_init);
++TIMER_OF_DECLARE(lpc32xx_timer, "nxp,lpc3220-timer", lpc32xx_timer_init);
+diff --git a/drivers/clocksource/time-orion.c b/drivers/clocksource/time-orion.c
+index b9b97f6..1220206 100644
+--- a/drivers/clocksource/time-orion.c
++++ b/drivers/clocksource/time-orion.c
+@@ -189,4 +189,4 @@ static int __init orion_timer_init(struct device_node *np)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(orion_timer, "marvell,orion-timer", orion_timer_init);
++TIMER_OF_DECLARE(orion_timer, "marvell,orion-timer", orion_timer_init);
+diff --git a/drivers/clocksource/time-pistachio.c b/drivers/clocksource/time-pistachio.c
+index 3710e4d..a2dd85d 100644
+--- a/drivers/clocksource/time-pistachio.c
++++ b/drivers/clocksource/time-pistachio.c
+@@ -214,5 +214,5 @@ static int __init pistachio_clksrc_of_init(struct device_node *node)
+ 	sched_clock_register(pistachio_read_sched_clock, 32, rate);
+ 	return clocksource_register_hz(&pcs_gpt.cs, rate);
+ }
+-CLOCKSOURCE_OF_DECLARE(pistachio_gptimer, "img,pistachio-gptimer",
++TIMER_OF_DECLARE(pistachio_gptimer, "img,pistachio-gptimer",
+ 		       pistachio_clksrc_of_init);
+diff --git a/drivers/clocksource/timer-atlas7.c b/drivers/clocksource/timer-atlas7.c
+index 50300ee..62c4bbc 100644
+--- a/drivers/clocksource/timer-atlas7.c
++++ b/drivers/clocksource/timer-atlas7.c
+@@ -283,4 +283,4 @@ static int __init sirfsoc_of_timer_init(struct device_node *np)
+ 
+ 	return sirfsoc_atlas7_timer_init(np);
+ }
+-CLOCKSOURCE_OF_DECLARE(sirfsoc_atlas7_timer, "sirf,atlas7-tick", sirfsoc_of_timer_init);
++TIMER_OF_DECLARE(sirfsoc_atlas7_timer, "sirf,atlas7-tick", sirfsoc_of_timer_init);
+diff --git a/drivers/clocksource/timer-atmel-pit.c b/drivers/clocksource/timer-atmel-pit.c
+index cc11235..ec8a437 100644
+--- a/drivers/clocksource/timer-atmel-pit.c
++++ b/drivers/clocksource/timer-atmel-pit.c
+@@ -255,5 +255,5 @@ static int __init at91sam926x_pit_dt_init(struct device_node *node)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(at91sam926x_pit, "atmel,at91sam9260-pit",
++TIMER_OF_DECLARE(at91sam926x_pit, "atmel,at91sam9260-pit",
+ 		       at91sam926x_pit_dt_init);
+diff --git a/drivers/clocksource/timer-atmel-st.c b/drivers/clocksource/timer-atmel-st.c
+index be4ac76..d2e660f 100644
+--- a/drivers/clocksource/timer-atmel-st.c
++++ b/drivers/clocksource/timer-atmel-st.c
+@@ -260,5 +260,5 @@ static int __init atmel_st_timer_init(struct device_node *node)
+ 	/* register clocksource */
+ 	return clocksource_register_hz(&clk32k, sclk_rate);
+ }
+-CLOCKSOURCE_OF_DECLARE(atmel_st_timer, "atmel,at91rm9200-st",
++TIMER_OF_DECLARE(atmel_st_timer, "atmel,at91rm9200-st",
+ 		       atmel_st_timer_init);
+diff --git a/drivers/clocksource/timer-digicolor.c b/drivers/clocksource/timer-digicolor.c
+index 94a161e..1e984a4 100644
+--- a/drivers/clocksource/timer-digicolor.c
++++ b/drivers/clocksource/timer-digicolor.c
+@@ -203,5 +203,5 @@ static int __init digicolor_timer_init(struct device_node *node)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(conexant_digicolor, "cnxt,cx92755-timer",
++TIMER_OF_DECLARE(conexant_digicolor, "cnxt,cx92755-timer",
+ 		       digicolor_timer_init);
+diff --git a/drivers/clocksource/timer-fttmr010.c b/drivers/clocksource/timer-fttmr010.c
+index d96190e..a21020c 100644
+--- a/drivers/clocksource/timer-fttmr010.c
++++ b/drivers/clocksource/timer-fttmr010.c
+@@ -364,8 +364,8 @@ static __init int fttmr010_timer_init(struct device_node *np)
+ 	return fttmr010_common_init(np, false);
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(fttmr010, "faraday,fttmr010", fttmr010_timer_init);
+-CLOCKSOURCE_OF_DECLARE(gemini, "cortina,gemini-timer", fttmr010_timer_init);
+-CLOCKSOURCE_OF_DECLARE(moxart, "moxa,moxart-timer", fttmr010_timer_init);
+-CLOCKSOURCE_OF_DECLARE(ast2400, "aspeed,ast2400-timer", aspeed_timer_init);
+-CLOCKSOURCE_OF_DECLARE(ast2500, "aspeed,ast2500-timer", aspeed_timer_init);
++TIMER_OF_DECLARE(fttmr010, "faraday,fttmr010", fttmr010_timer_init);
++TIMER_OF_DECLARE(gemini, "cortina,gemini-timer", fttmr010_timer_init);
++TIMER_OF_DECLARE(moxart, "moxa,moxart-timer", fttmr010_timer_init);
++TIMER_OF_DECLARE(ast2400, "aspeed,ast2400-timer", aspeed_timer_init);
++TIMER_OF_DECLARE(ast2500, "aspeed,ast2500-timer", aspeed_timer_init);
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index f595460..6ec6d79 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -545,15 +545,15 @@ static int __init imx6dl_timer_init_dt(struct device_node *np)
+ 	return mxc_timer_init_dt(np, GPT_TYPE_IMX6DL);
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(imx1_timer, "fsl,imx1-gpt", imx1_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx21_timer, "fsl,imx21-gpt", imx21_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx27_timer, "fsl,imx27-gpt", imx21_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx31_timer, "fsl,imx31-gpt", imx31_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx25_timer, "fsl,imx25-gpt", imx31_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx50_timer, "fsl,imx50-gpt", imx31_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx51_timer, "fsl,imx51-gpt", imx31_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx53_timer, "fsl,imx53-gpt", imx31_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx6q_timer, "fsl,imx6q-gpt", imx31_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx6dl_timer, "fsl,imx6dl-gpt", imx6dl_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx6sl_timer, "fsl,imx6sl-gpt", imx6dl_timer_init_dt);
+-CLOCKSOURCE_OF_DECLARE(imx6sx_timer, "fsl,imx6sx-gpt", imx6dl_timer_init_dt);
++TIMER_OF_DECLARE(imx1_timer, "fsl,imx1-gpt", imx1_timer_init_dt);
++TIMER_OF_DECLARE(imx21_timer, "fsl,imx21-gpt", imx21_timer_init_dt);
++TIMER_OF_DECLARE(imx27_timer, "fsl,imx27-gpt", imx21_timer_init_dt);
++TIMER_OF_DECLARE(imx31_timer, "fsl,imx31-gpt", imx31_timer_init_dt);
++TIMER_OF_DECLARE(imx25_timer, "fsl,imx25-gpt", imx31_timer_init_dt);
++TIMER_OF_DECLARE(imx50_timer, "fsl,imx50-gpt", imx31_timer_init_dt);
++TIMER_OF_DECLARE(imx51_timer, "fsl,imx51-gpt", imx31_timer_init_dt);
++TIMER_OF_DECLARE(imx53_timer, "fsl,imx53-gpt", imx31_timer_init_dt);
++TIMER_OF_DECLARE(imx6q_timer, "fsl,imx6q-gpt", imx31_timer_init_dt);
++TIMER_OF_DECLARE(imx6dl_timer, "fsl,imx6dl-gpt", imx6dl_timer_init_dt);
++TIMER_OF_DECLARE(imx6sl_timer, "fsl,imx6sl-gpt", imx6dl_timer_init_dt);
++TIMER_OF_DECLARE(imx6sx_timer, "fsl,imx6sx-gpt", imx6dl_timer_init_dt);
+diff --git a/drivers/clocksource/timer-integrator-ap.c b/drivers/clocksource/timer-integrator-ap.c
+index 04ad306..2ff64d9 100644
+--- a/drivers/clocksource/timer-integrator-ap.c
++++ b/drivers/clocksource/timer-integrator-ap.c
+@@ -232,5 +232,5 @@ static int __init integrator_ap_timer_init_of(struct device_node *node)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(integrator_ap_timer, "arm,integrator-timer",
++TIMER_OF_DECLARE(integrator_ap_timer, "arm,integrator-timer",
+ 		       integrator_ap_timer_init_of);
+diff --git a/drivers/clocksource/timer-keystone.c b/drivers/clocksource/timer-keystone.c
+index ab68a47..0eee032 100644
+--- a/drivers/clocksource/timer-keystone.c
++++ b/drivers/clocksource/timer-keystone.c
+@@ -226,5 +226,5 @@ static int __init keystone_timer_init(struct device_node *np)
+ 	return error;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(keystone_timer, "ti,keystone-timer",
++TIMER_OF_DECLARE(keystone_timer, "ti,keystone-timer",
+ 			   keystone_timer_init);
+diff --git a/drivers/clocksource/timer-nps.c b/drivers/clocksource/timer-nps.c
+index e74ea17..7b6bb0d 100644
+--- a/drivers/clocksource/timer-nps.c
++++ b/drivers/clocksource/timer-nps.c
+@@ -110,9 +110,9 @@ static int __init nps_setup_clocksource(struct device_node *node)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(ezchip_nps400_clksrc, "ezchip,nps400-timer",
++TIMER_OF_DECLARE(ezchip_nps400_clksrc, "ezchip,nps400-timer",
+ 		       nps_setup_clocksource);
+-CLOCKSOURCE_OF_DECLARE(ezchip_nps400_clk_src, "ezchip,nps400-timer1",
++TIMER_OF_DECLARE(ezchip_nps400_clk_src, "ezchip,nps400-timer1",
+ 		       nps_setup_clocksource);
+ 
+ #ifdef CONFIG_EZNPS_MTM_EXT
+@@ -279,6 +279,6 @@ static int __init nps_setup_clockevent(struct device_node *node)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(ezchip_nps400_clk_evt, "ezchip,nps400-timer0",
++TIMER_OF_DECLARE(ezchip_nps400_clk_evt, "ezchip,nps400-timer0",
+ 		       nps_setup_clockevent);
+ #endif /* CONFIG_EZNPS_MTM_EXT */
+diff --git a/drivers/clocksource/timer-oxnas-rps.c b/drivers/clocksource/timer-oxnas-rps.c
+index d630bf4..eed6fef 100644
+--- a/drivers/clocksource/timer-oxnas-rps.c
++++ b/drivers/clocksource/timer-oxnas-rps.c
+@@ -293,7 +293,7 @@ static int __init oxnas_rps_timer_init(struct device_node *np)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(ox810se_rps,
++TIMER_OF_DECLARE(ox810se_rps,
+ 		       "oxsemi,ox810se-rps-timer", oxnas_rps_timer_init);
+-CLOCKSOURCE_OF_DECLARE(ox820_rps,
++TIMER_OF_DECLARE(ox820_rps,
+ 		       "oxsemi,ox820se-rps-timer", oxnas_rps_timer_init);
+diff --git a/drivers/clocksource/timer-prima2.c b/drivers/clocksource/timer-prima2.c
+index b4122ed..20ff33b 100644
+--- a/drivers/clocksource/timer-prima2.c
++++ b/drivers/clocksource/timer-prima2.c
+@@ -245,5 +245,5 @@ static int __init sirfsoc_prima2_timer_init(struct device_node *np)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(sirfsoc_prima2_timer,
++TIMER_OF_DECLARE(sirfsoc_prima2_timer,
+ 	"sirf,prima2-tick", sirfsoc_prima2_timer_init);
+diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
+index 2d575a8c..3ac9dec 100644
+--- a/drivers/clocksource/timer-sp804.c
++++ b/drivers/clocksource/timer-sp804.c
+@@ -287,7 +287,7 @@ static int __init sp804_of_init(struct device_node *np)
+ 	iounmap(base);
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(sp804, "arm,sp804", sp804_of_init);
++TIMER_OF_DECLARE(sp804, "arm,sp804", sp804_of_init);
+ 
+ static int __init integrator_cp_of_init(struct device_node *np)
+ {
+@@ -335,4 +335,4 @@ static int __init integrator_cp_of_init(struct device_node *np)
+ 	iounmap(base);
+ 	return ret;
+ }
+-CLOCKSOURCE_OF_DECLARE(intcp, "arm,integrator-cp-timer", integrator_cp_of_init);
++TIMER_OF_DECLARE(intcp, "arm,integrator-cp-timer", integrator_cp_of_init);
+diff --git a/drivers/clocksource/timer-stm32.c b/drivers/clocksource/timer-stm32.c
+index 1b2574c..174d1243 100644
+--- a/drivers/clocksource/timer-stm32.c
++++ b/drivers/clocksource/timer-stm32.c
+@@ -187,4 +187,4 @@ static int __init stm32_clockevent_init(struct device_node *np)
+ 	return ret;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(stm32, "st,stm32-timer", stm32_clockevent_init);
++TIMER_OF_DECLARE(stm32, "st,stm32-timer", stm32_clockevent_init);
+diff --git a/drivers/clocksource/timer-sun5i.c b/drivers/clocksource/timer-sun5i.c
+index 2e9c830..a4ebc8f 100644
+--- a/drivers/clocksource/timer-sun5i.c
++++ b/drivers/clocksource/timer-sun5i.c
+@@ -358,7 +358,7 @@ static int __init sun5i_timer_init(struct device_node *node)
+ 
+ 	return sun5i_setup_clockevent(node, timer_base, clk, irq);
+ }
+-CLOCKSOURCE_OF_DECLARE(sun5i_a13, "allwinner,sun5i-a13-hstimer",
++TIMER_OF_DECLARE(sun5i_a13, "allwinner,sun5i-a13-hstimer",
+ 			   sun5i_timer_init);
+-CLOCKSOURCE_OF_DECLARE(sun7i_a20, "allwinner,sun7i-a20-hstimer",
++TIMER_OF_DECLARE(sun7i_a20, "allwinner,sun7i-a20-hstimer",
+ 			   sun5i_timer_init);
+diff --git a/drivers/clocksource/timer-ti-32k.c b/drivers/clocksource/timer-ti-32k.c
+index 6240677..880a861 100644
+--- a/drivers/clocksource/timer-ti-32k.c
++++ b/drivers/clocksource/timer-ti-32k.c
+@@ -124,5 +124,5 @@ static int __init ti_32k_timer_init(struct device_node *np)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(ti_32k_timer, "ti,omap-counter32k",
++TIMER_OF_DECLARE(ti_32k_timer, "ti,omap-counter32k",
+ 		ti_32k_timer_init);
+diff --git a/drivers/clocksource/timer-u300.c b/drivers/clocksource/timer-u300.c
+index 704e40c..be34b11 100644
+--- a/drivers/clocksource/timer-u300.c
++++ b/drivers/clocksource/timer-u300.c
+@@ -458,5 +458,5 @@ static int __init u300_timer_init_of(struct device_node *np)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(u300_timer, "stericsson,u300-apptimer",
++TIMER_OF_DECLARE(u300_timer, "stericsson,u300-apptimer",
+ 		       u300_timer_init_of);
+diff --git a/drivers/clocksource/versatile.c b/drivers/clocksource/versatile.c
+index 220b490..39725d3 100644
+--- a/drivers/clocksource/versatile.c
++++ b/drivers/clocksource/versatile.c
+@@ -38,7 +38,7 @@ static int __init versatile_sched_clock_init(struct device_node *node)
+ 
+ 	return 0;
+ }
+-CLOCKSOURCE_OF_DECLARE(vexpress, "arm,vexpress-sysreg",
++TIMER_OF_DECLARE(vexpress, "arm,vexpress-sysreg",
+ 		       versatile_sched_clock_init);
+-CLOCKSOURCE_OF_DECLARE(versatile, "arm,versatile-sysreg",
++TIMER_OF_DECLARE(versatile, "arm,versatile-sysreg",
+ 		       versatile_sched_clock_init);
+diff --git a/drivers/clocksource/vf_pit_timer.c b/drivers/clocksource/vf_pit_timer.c
+index e0849e2..0f92089 100644
+--- a/drivers/clocksource/vf_pit_timer.c
++++ b/drivers/clocksource/vf_pit_timer.c
+@@ -201,4 +201,4 @@ static int __init pit_timer_init(struct device_node *np)
+ 
+ 	return pit_clockevent_init(clk_rate, irq);
+ }
+-CLOCKSOURCE_OF_DECLARE(vf610, "fsl,vf610-pit", pit_timer_init);
++TIMER_OF_DECLARE(vf610, "fsl,vf610-pit", pit_timer_init);
+diff --git a/drivers/clocksource/vt8500_timer.c b/drivers/clocksource/vt8500_timer.c
+index d02b510..e0f7489 100644
+--- a/drivers/clocksource/vt8500_timer.c
++++ b/drivers/clocksource/vt8500_timer.c
+@@ -165,4 +165,4 @@ static int __init vt8500_timer_init(struct device_node *np)
+ 	return 0;
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(vt8500, "via,vt8500-timer", vt8500_timer_init);
++TIMER_OF_DECLARE(vt8500, "via,vt8500-timer", vt8500_timer_init);
+diff --git a/drivers/clocksource/zevio-timer.c b/drivers/clocksource/zevio-timer.c
+index 9a53f5e..a6a0338 100644
+--- a/drivers/clocksource/zevio-timer.c
++++ b/drivers/clocksource/zevio-timer.c
+@@ -215,4 +215,4 @@ static int __init zevio_timer_init(struct device_node *node)
+ 	return zevio_timer_add(node);
+ }
+ 
+-CLOCKSOURCE_OF_DECLARE(zevio_timer, "lsi,zevio-timer", zevio_timer_init);
++TIMER_OF_DECLARE(zevio_timer, "lsi,zevio-timer", zevio_timer_init);
+diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
+index f2b10d9..a86b65f 100644
+--- a/include/linux/clocksource.h
++++ b/include/linux/clocksource.h
+@@ -249,7 +249,7 @@ extern int clocksource_mmio_init(void __iomem *, const char *,
+ 
+ extern int clocksource_i8253_init(void);
+ 
+-#define CLOCKSOURCE_OF_DECLARE(name, compat, fn) \
++#define TIMER_OF_DECLARE(name, compat, fn) \
+ 	OF_DECLARE_1_RET(clksrc, name, compat, fn)
+ 
+ #ifdef CONFIG_CLKSRC_PROBE
+-- 
+2.7.4

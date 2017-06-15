@@ -1,48 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 18:38:03 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60976 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23994786AbdFOQh4F2thI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 18:37:56 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 0542F41F8DF9;
-        Thu, 15 Jun 2017 18:47:18 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 15 Jun 2017 18:47:18 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 15 Jun 2017 18:47:18 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id BDFFAFD519A3D;
-        Thu, 15 Jun 2017 17:37:46 +0100 (IST)
-Received: from [10.150.130.85] (10.150.130.85) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 15 Jun
- 2017 17:37:50 +0100
-Subject: Re: [PATCH v2 4/5] MIPS: Add support for eBPF JIT.
-To:     <ralf@linux-mips.org>
-References: <20170613222847.7122-1-david.daney@cavium.com>
- <20170613222847.7122-5-david.daney@cavium.com>
-CC:     <linux-mips@linux-mips.org>
-From:   James Cowgill <James.Cowgill@imgtec.com>
-Message-ID: <1d9025c9-7e4a-551e-9937-a2439e11a852@imgtec.com>
-Date:   Thu, 15 Jun 2017 17:37:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 18:40:02 +0200 (CEST)
+Received: from mail-by2nam03on0083.outbound.protection.outlook.com ([104.47.42.83]:38656
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993887AbdFOQjy4xCvI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Jun 2017 18:39:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=YxtHSgQKUUMtlGOE7EGpi2cRQxrnyBs0Be22ewE9PHk=;
+ b=hhOZ4gvfMrSOMJIG89L8duYk/ve6RllDCe44XV5cSkeEXwOP/81aUE9JeG5HrqwdPRLGBM+KWs9TD+QH0jOuAxx2V9Uu6MJl6PbHXtr3myure+KfIeXZMkYIBbK9wAjpptVi9+1i35n0/kmiTSBFjU8A24Pjkb0GVLo+t3z2T+w=
+Authentication-Results: linux-mips.org; dkim=none (message not signed)
+ header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
+Received: from [10.0.0.4] (173.18.42.219) by
+ CY4PR07MB3208.namprd07.prod.outlook.com (10.172.115.150) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1157.12; Thu, 15 Jun 2017 16:39:58 +0000
+Subject: Re: [PATCH] MIPS: Octeon: Remove unused L2C types and macros.
+To:     James Cowgill <James.Cowgill@imgtec.com>, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org
+References: <1489068855-9670-1-git-send-email-steven.hill@cavium.com>
+ <92415d13-3c66-76e7-8db3-ee0110c0611b@imgtec.com>
+From:   "Steven J. Hill" <Steven.Hill@cavium.com>
+Message-ID: <cc285382-246c-a5f1-de39-1343578de47a@cavium.com>
+Date:   Thu, 15 Jun 2017 11:39:37 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-In-Reply-To: <20170613222847.7122-5-david.daney@cavium.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature";
-        boundary="UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O"
-X-Originating-IP: [10.150.130.85]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Cowgill@imgtec.com>
+In-Reply-To: <92415d13-3c66-76e7-8db3-ee0110c0611b@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [173.18.42.219]
+X-ClientProxiedBy: MWHPR22CA0008.namprd22.prod.outlook.com (10.172.163.146) To
+ CY4PR07MB3208.namprd07.prod.outlook.com (10.172.115.150)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PR07MB3208:
+X-MS-Office365-Filtering-Correlation-Id: ae02eed9-411f-4270-366b-08d4b40d2997
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(201703131423075)(201703031133081);SRVR:CY4PR07MB3208;
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3208;3:oidy6+szX2TUJP6v+ejys+UxauHWaWe84ljSwzPaaxUDBJfCGMzS+Q1YAqg/56RIGY7j9/jhkQlC3nZS1LfEf2d3PyB0BouEeCNLAcUKMLQW4mse/b6xIj7SgZzeS5sv1rSDbIzjNwWelq412biMfVWMOhzO4sJXEPpA+2O/glKX8gHKj2yCMzObnP6kYf5/395Vk9L67LLWeTdWHbehApmAL5NFbRff/4NrL188XeB4QG4EDsXPX+etmpjVqbZVsWKGLc+p6zgO58A2EXHnAVowENgf4qi3o1FxFfdP6Xx+WG3IfbrKQewX+F9hqU5y7rMWzOzZDS5LkRQz9KeQhQ==;25:lEymenlrKC7o7+rVVlHuN1cP1bFrtoNu//lm2ifeqXaOP1dUGuLXodwWjznCh2AmL6TOJ8BoT7lpq79c0ZMP93SpIiKuuaCaUURTVOhnDGNBDuUr9gvSxd2ILFPswEk/hCchTekN+6xxn8RJUUy7B9PpvTol/7TM2mHpXNU0O+d4HcM6adZZb4Mgu0xRH2gkg0H0U8aqe9IGoQeeVOvg4vtyWJbGHScL1kZs4fXt5vzvsHIr7clEuuGk9miAFY9XaUz13KKCYpV/d2Y0Ec4QNQQJoQATUgNmhjShCBGgQ/4HhBab0999s42b/5In71TgsZRDtGaVgJ7oJAgFm/5709CcsRw3+rLYvsoDcyhIwy1N+Rsx6t8uDgVHFIbcj+9fG+5HBlQjKqhK465EMYFUe83wI+Lolo8J/qWdczyEnBWjvutAVooRrZeQtf5zQIkzoBYnPc4fY1If+dXV6C6kPdWfCGxo9eRwrn8Lb+csIV0=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3208;31:3epK4Fshpt3M7PA76KVNc//NlIAltNgZM8pqYuQHDcBcKdOl05hJ2poA5hU+eg8/7gunsdxuTDCJiQC17eDY04rxrRrmNFSDoBdY68AAOFLchBxLPMciRNdC4gP4ebmVYR+0pwGVXbkAw5S+EAZmact2FJWXKKsQC85L2qWWCES2ygwlUf4rzT0choQI57TypdVJr4VXq811XkxCBNLyuwEPpRU2fxDb3W7qxK5sY3sXljg+miJP+wV4mPsJWHqSVFdkLiDIQh5VBeW7WbOakw==;20:6hRhIcNLdcfHRNW7/szpGrTqulZ8jaSGoD1O9gSAYGwrbFt+PLFmwoTTxJo1tS9sVdkdS3egS/xv+Ki23vS6jegQz4DjqkPutdyE1ThnTCuefqJSoFmiDGTM0ii/thfSIBBc39D8+5Tz2QghImK8U6XwmuQNIs9QGH/wbPtm7R4/+66wXphhViwG2yTUi8gYZq/3ayXW5+tpG/Kza92S9gMoj/9bK4egQje3hoIDTGrdNQPTbgvH2i+JdR9xLz1tGJHIpRqTsNrNk3B7bk4CX1vZV6llc5ZU5iK9PNots318zKasNVaoG+Ljm9POwruUyHUbbu3Pu9p8myi/sJc2Va8/pxGAF/DWNRlAVGj7PfQKHlcffFnbaFM85elf5+PxHdVKRkKBpM3DOjPgvIZUWKJKHnK9qt+ke6PmVFMO9UVOHkhAlTYmW6YJtHLEancwQCeZT6kgfwJCb3i0Vi4926v/+iD2G2YGE7MwcsMPlMnqDehwr6Cq/fIhd02bAt4H
+X-Microsoft-Antispam-PRVS: <CY4PR07MB3208D8CB49C0F3440DA01B5180C00@CY4PR07MB3208.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(5005006)(8121501046)(100000703101)(100105400095)(10201501046)(3002001)(93006095)(93001095)(6041248)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123564025)(20161123560025)(20161123555025)(20161123558100)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:CY4PR07MB3208;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:CY4PR07MB3208;
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtDWTRQUjA3TUIzMjA4OzQ6UVF0aGlZc3BVR3BKbERNQ2gzQTBleEVYcVN3?=
+ =?utf-8?B?dEVkZ1FmMEd2ZFR1Mk96Nk5ncVkrS3d3YjBxMndIS3RDRFVFUkpxRW9lcEUr?=
+ =?utf-8?B?ODJVT1ROREphN0xGYmFXOVlhY25VY0FpVy9CZWlNNnNMVWtNanBMYzhqUTlU?=
+ =?utf-8?B?RTJEMXJZNlpHeFZBeWhaSmZBRG1CYXFWWU5SK3AzSEhxc3FFbGhaOEFyL2pi?=
+ =?utf-8?B?R0hTSG9HT2VXN2R1RnhzWTU3NDZXZHRnY3JYNktsSVFmOGdpRlkvR0o3QXpy?=
+ =?utf-8?B?MlBnbFJlU2RxWEQ4dk9kSTR2cWMzc0F5TE9uMHNKSHowa016Ym5pdnNtc1dG?=
+ =?utf-8?B?dTRBZnhEcE1lcldsMGFsck5KR3VqUFZFVlNlRGdTeExITGMveC9JRTNWbGFF?=
+ =?utf-8?B?YXc1eFk4cUUxT29SNnlmS0JUSXdXdGVtcjMvZU9SVEduK2tIa0YxdklLczBa?=
+ =?utf-8?B?NWM5TkUxM05sak15MGJ3NHpzdUl0dVpzMG0rSFpDbDNrVC9xcFVGcW13Tjd6?=
+ =?utf-8?B?SEx3UXNiWGdjTHlIaEF4TFRmQTVwbi9yM2Vxc0xmUCtTSTRDbk81bXN6OGw0?=
+ =?utf-8?B?VFc2a0FoSW5YWmpEMU9iWUcvWmg1QkNwa1p3UDRaSzNqZDVGK0R0RU5PMlo0?=
+ =?utf-8?B?bHQzSUp2anpZNlRvUkk2Z1BUckE2VXJ5R1kzdVNqQ2VHaE5Ealc2WHZ0dTZM?=
+ =?utf-8?B?UHVWZTBLQWpBMVhCOFpUOHdNSk02cnVJblhucEJYMFBOOXF1Tll3bjd5YUVu?=
+ =?utf-8?B?eUNmaVpEWmExYVJjSElmQkRWYkRMWmYzTG5RWG9HdW92WEkzMnlIdEdhRUhF?=
+ =?utf-8?B?RmlDN052U2Zqell5TytxdnBBWTEvMnY0a1U2M3g0SWtSdzhYclpmL253MDB2?=
+ =?utf-8?B?MWFURkFiSkxyUFdab1JCV3FJN2lmNXBJY3RRNWQ5UlVWdkpNMC9sQWM0OGI0?=
+ =?utf-8?B?NGdGWHl0NGFWOWJiS090V3dsNVJscDFyaThIajllME9mSlFKSG55aW1QQzdQ?=
+ =?utf-8?B?QU80NjI1QUxpelpOZWFlUHZ1U2wrM2F3Y2tLSGdqWTZPTktsNVJSWmd6L1Fv?=
+ =?utf-8?B?RG1GNjUxcXlncFdDaE9YRWNJRVoyelVXTnpwRUhWcXJtVzFodEVrMmNUQjVI?=
+ =?utf-8?B?dmtaQ0luRnhNdmgwWXNzOGVJMTZJNGVYa29WUGQ0dlZoam00b2FrbzUwZndt?=
+ =?utf-8?B?VnJ5b1ZscXhmSjAyaUVuK0ZLSkRtTFZFdTN4MmZIZUg2UGRVS3NRUC9OV0R2?=
+ =?utf-8?B?bHJZMGtmWVFxV044Z0t3MFQ3RE1qRTMrd2tsaVBpSHBQd3JiNkhyZnJOMzZY?=
+ =?utf-8?B?Z0NxM1hNSEFDTUMzZVVwTXVTMjZ6NjQ1TzdsQytWZXBtYjlBdUVmR2QyQVJW?=
+ =?utf-8?B?Umt2ZlN5cWJRSmxoT1d3dHhEdWJBSnBqMnJ1SFA4dWQxcGxLWENNZkhUMklm?=
+ =?utf-8?B?QjR1cXU1VDNocUVGVkFrcUpsTU8veFM0c0l4eEt1Tis0SFc1SkZMNFBTNE9J?=
+ =?utf-8?Q?xPyyju1y+Spz3dEBZqZNXP/4mweAYevaIhf8GpMze3bFX?=
+X-Forefront-PRVS: 0339F89554
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6049001)(6009001)(39400400002)(39850400002)(39410400002)(39450400003)(39840400002)(24454002)(377454003)(42186005)(5660300001)(31686004)(77096006)(53546009)(33646002)(54356999)(86362001)(81166006)(8676002)(478600001)(6306002)(4326008)(189998001)(25786009)(47776003)(50466002)(66066001)(966005)(6486002)(72206003)(38730400002)(4001350100001)(90366009)(53936002)(2950100002)(83506001)(23676002)(2906002)(6246003)(6666003)(6116002)(110136004)(50986999)(3846002)(76176999)(31696002)(230700001)(229853002)(7736002)(305945005)(36756003);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3208;H:[10.0.0.4];FPR:;SPF:None;MLV:sfv;LANG:en;
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtDWTRQUjA3TUIzMjA4OzIzOmFxZjVXLyt3M1hZdDRXVFY2QWNiZk14Q2Vt?=
+ =?utf-8?B?WVhtWndUMVA3ZkFXQ2FIdmsrUDJMYktxZzJUU05PZFBDWmxTUlBwTDVQOEFG?=
+ =?utf-8?B?RGxKWTlHQ0VjZi9xVE00UjhUU3VrTGJZZ2Y0Y2UwZzNhSkVXc0tWVjB4eUZT?=
+ =?utf-8?B?MWNUUWl3cE1NZ1A2SXpsNWptTERrRDVlNWVabnZNNVJmL3hKMnQrWXVOaDNu?=
+ =?utf-8?B?K1FBbEpGYkdLT2hYeWZFTzJjc1B1UmlmNVM4WjVocmJYU1VnenJsaXRYQ0tn?=
+ =?utf-8?B?a1VZVGJoQXE1SWlsV3FJcEFMMTVDeVppcFBETnRzWEE4UVp5MTRYVTNoYnhi?=
+ =?utf-8?B?TXRaSDdmZWxYUndiRC9udk1WSTRBbTQzT0ZPcWRhU0g2MUJPUTlVY1owaG1K?=
+ =?utf-8?B?KzFEME1PajV3T0lsOWRscHJITUdjVFo5bUtKck15M1cxNzcrSmRYSWJSYmR3?=
+ =?utf-8?B?TWxDQTFpazhvZUZxc1RsWlBKWGR3UjZIYjRya1JHakt0bkV4R0dydUMyQmtE?=
+ =?utf-8?B?TnVkSVZLTDFuVGU3Y1BxUVVTbWZ0cW03bS8rZ29EY2YrKytzS1YwUlRVWGxU?=
+ =?utf-8?B?eko0ME96ZjRmWncrcXYwN0tqdFV2dzRNQ3Q3akIwMlZlbXBxR0NQZ0tLbis5?=
+ =?utf-8?B?TTJ6ald0YlhCbW9RTktER090KzV0a1JtZjlNbkdWTDRGQm50WlVvWWtTSDNr?=
+ =?utf-8?B?VXVCYy9vY2ZIRllmQ0pJS29YRmhXcVdNa0QwKy8yREdIZHNCL0I2TFJvRkFa?=
+ =?utf-8?B?Z3VGSWNaVnBOWG5lSjlIbkpLZDVodnh3cFQ2Z1Z3U2o3ZlN3VTgveXNSaHow?=
+ =?utf-8?B?a2FqYUZOdUhYOWtxU2NlQkJsUFA2ZEUwT21aczZoSk92YkpmSjlGSVZWLzVQ?=
+ =?utf-8?B?bFdaaFZ4TjQ5alFCRmZDVCtNV203OVNkcER6MXZ3YVBTNCsvZW5Ld3QwSUM0?=
+ =?utf-8?B?clF6R3dOVFlRcFQ0SGpPME9OTlU0UGZZeFZlMDYwZTRVVUZFdlN5emxNbmpH?=
+ =?utf-8?B?aFN1a09zajdNMGtmT0RkQ040NVExWGFaVU9rQXVkVmphY0Rwbm9nMmN4dHBp?=
+ =?utf-8?B?VXJZVTFjdkRWMmRKcjl4c1pxWlR4SEpDbmUxeEZkRXM5RmZuR2dpMnJaSWNC?=
+ =?utf-8?B?VHcvaVVIYU10d0NGdFpPS0dzd2tTVlRQNjlHRXdHNWhsWEMyZVNHSi9WdW1n?=
+ =?utf-8?B?SkpSRTFTUmxjZ3QwVno2RFBNZ0I3anBpSVg4T2xOVE9OdnEzMXE5WlltZnp3?=
+ =?utf-8?B?bjhpRDBlUWNrU2VOdU81ZlZGNGFucllKRnFQRTd5TDhjcTRyWU1aajBsaU11?=
+ =?utf-8?B?U3pFaEJvQ0FkaCs2aTdPT0NMMThQekxhdHdvc21lR0NJN2ZES2hraHg0dy8x?=
+ =?utf-8?B?R3lOU2hQQmk4U1BmcWFsRVEwK09LcWRuVEpjOEh1S1FnMkFMeEoxVm1nV2tp?=
+ =?utf-8?B?enVoUmZ3V2dobXUxZENxbm1kbzc0aFFGS3NPdWwxSWh3UjV5NnRYUm00TWxq?=
+ =?utf-8?B?OTB6bkM2Y3JJY0NLMDBReDFJUFM3alhpMkd4UFMvSkRNYWJwQ0ZiM1M0eWZD?=
+ =?utf-8?B?TXBnNWNYR1pmWHhrQ1lCSkp5SUV4Q2pUNWVTM1Q5Z3VnUzhQUy94dDBjVzhy?=
+ =?utf-8?B?N0ZsN2R0dnRlbkVlaitjT3QwdG9xK3hZbVZLWkg5QVR6V21DZzFlYmRmcDFj?=
+ =?utf-8?B?M29NYnBpaWpxQ05YWlZUM29VMlllZWEweXhRZHlDOXZ5MVVpYU5kSms4SDUr?=
+ =?utf-8?B?R0M1T3AvVnp6UmxUYmNCdz09?=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3208;6:tLy8qM81JdehiTWaX9r0ruAT/AMNidNWslInCCU/y5oWKZ/nVc9n0qBiDpyf8FbTg4kODlTGWmfBrOT64OxplbfMVrEhxEImvC5H5qcV/Oqg8/wpDPNewTu1f3RWNsSTvgG+hNncWvgNepXb4rkXssBri/pLpuLvl4oTBq3vQfzwcYOxqsuH2/epjbil0aV60ZJcpmmNUX2MIfqq2JtxREJCCbRkEtJZbeaBr+IsrXUMlZ0eC8FrEPLFxYtpDmPSPhmX6hdwJFtw/jfM4PP3HYL4huup3Erpwc8N0cVyu9ygBOpWpSzMlvoINKIYltSCWOPkvTl9GuSroJbOXEFoBxJlTEipAEAFbBZgvFxG060SBQPjWR0EYdJroHaWhr0z3MFTIiSABqz7XoVrBLOuCt3lloiYMiAmekGbU41KbJeerkwMG/wqWEuoTmxsGikNdutlxs2DXz9SdMORysI05MN9fE8v3/jF6GOn3r27HVIM3Flk6UZ89Na4zz2dQp2Ggdr+ibSEz10l4L/ovoW+3w==
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3208;5:nnRbirq51/ruD3JKUpx3fFFghJ20AudsXjb23bNZDij0x3ahRgvxOtaEeP1limbJVO0qnH3vD0vXaZgGlwnVL611uPL54EoeiOO6saGEizbOdo6xXfXBXm3ykate3TdZhFyLO5MuMmWHGeHF5JjE6iG2vd7OvDIEK4tXM4zktTAUbmtmn40tUNmiK93moAh7OCzDR6YHEifrCaYXeNhHQ04eirqWLPK7TwY06lmW2z/dPRviUKik/2XuENSb7Wq59ZqB5g6DAvAV4OpTwuYHoFRGHhEBnowV42+e6NliBr6qNvHBnuBzf0x0n5bZxiWbKZ1i3Hr8jzs1IgyI0pBQjasPMZFsdEUiU3uiTpQe1fmIxSxH0hnP1Kb96mBOs9a4V1BoH69i2SbkMCWSVNxjL1u5+7EqupKiwvMbg+wbcihBGm8MGNP6vp43dSF6u1+te3gbw+sZsZyvGqkp8yFlxn8Ydrz6fD3FblAduOvdv8xfeLkNlItJtpRFquyTMGf2;24:oWXwlGpCQTN/QGWr0DP8jHzMlBZubRMQx/KtTBktSc59tY0k/Pw4mzb/NpLL+KQJNJcBZ95AeLHaE2rdrWbRA+ryFMySYe1I5c6L1Pp/DJQ=
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3208;7:luzfIL6M7v7sMyre0Wu6Yv1EYTafcLBrvvgmtkwW+DjVCmsDxBxPdKVcQk2dCgZal1RIaXO+97Gigs67RphYAsheAzMmn517MslH5xhjGs47f+jRi50XjFyYZTBQ+JTqXFooXDB03zhrPdQp9pNVacrw9QExHDHssX9OqbYYYcm4b+l+VPHO77sZcMOwEYuVKom9Q1ihMpw2tS9VNhNTnybcKhSgX50OyycudnciUgbrzV2GYRjIayg+3TD5aXwG3aNgaFZFnBXJ929cFnxWL03waEaIuXMWpE2DAIct5sZuQ1vmA7CXGci7HryMwYjz462Xa/G5aG2KaJoHpb/2hw==
+X-OriginatorOrg: cavium.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2017 16:39:58.6745 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3208
+Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58474
+X-archive-position: 58475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Cowgill@imgtec.com
+X-original-sender: Steven.Hill@cavium.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,102 +130,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O
-Content-Type: multipart/mixed; boundary="R5MJXauersSJCxMISOHLObXXcbs5gmemn";
- protected-headers="v1"
-From: James Cowgill <James.Cowgill@imgtec.com>
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Message-ID: <1d9025c9-7e4a-551e-9937-a2439e11a852@imgtec.com>
-Subject: Re: [PATCH v2 4/5] MIPS: Add support for eBPF JIT.
-References: <20170613222847.7122-1-david.daney@cavium.com>
- <20170613222847.7122-5-david.daney@cavium.com>
-In-Reply-To: <20170613222847.7122-5-david.daney@cavium.com>
+On 06/15/2017 09:16 AM, James Cowgill wrote:
+> 
+> This patch broke the EDAC_OCTEON_L2C driver which apparently uses some
+> of these "unused" structures. I therefore think this patch (or the
+> relevant parts of it which are still used) should be reverted for 4.12.
+> 
+Yeah, I posted the fix for 4.12 and apparently it was ignored.
 
---R5MJXauersSJCxMISOHLObXXcbs5gmemn
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-Hi Ralf,
-
-On 13/06/17 23:28, David Daney wrote:
-> Since the eBPF machine has 64-bit registers, we only support this in
-> 64-bit kernels.  As of the writing of this commit log test-bpf is showi=
-ng:
->=20
->   test_bpf: Summary: 316 PASSED, 0 FAILED, [308/308 JIT'ed]
->=20
-> All current test cases are successfully compiled.
->=20
-> Many examples in samples/bpf are usable, specifically tracex5 which
-> uses tail calls works.
->=20
-> Signed-off-by: David Daney <david.daney@cavium.com>
-
-I think you've misapplied this patch to upstream-sfr. I see the
-following commit, but it's missing the ebpf_jit.c file.
-
-commit bb45edc82b3c1608026b5a7aeb0876ec31735359
-Author: David Daney <david.daney@cavium.com>
-Date:   Tue Jun 13 15:28:46 2017 -0700
-
-    MIPS: Add support for eBPF JIT.
-   =20
-    Since the eBPF machine has 64-bit registers, we only support this in
-    64-bit kernels.  As of the writing of this commit log test-bpf is sho=
-wing:
-   =20
-      test_bpf: Summary: 316 PASSED, 0 FAILED, [308/308 JIT'ed]
-   =20
-    All current test cases are successfully compiled.
-   =20
-    Many examples in samples/bpf are usable, specifically tracex5 which
-    uses tail calls works.
-   =20
-    Signed-off-by: David Daney <david.daney@cavium.com>
-    Cc: Alexei Starovoitov <ast@kernel.org>
-    Cc: Daniel Borkmann <daniel@iogearbox.net>
-    Cc: Markos Chandras <markos.chandras@imgtec.com>
-    Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-    Cc: netdev@vger.kernel.org
-    Cc: linux-kernel@vger.kernel.org
-    Cc: linux-mips@linux-mips.org
-    Patchwork: https://patchwork.linux-mips.org/patch/16369/
-    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/Kconfig      | 12 +++++++++++-
- arch/mips/net/Makefile |  3 ++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
-
-This is causing my builds to fail with:
-make[4]: *** No rule to make target 'arch/mips/net/ebpf_jit.o', needed by=
- 'arch/mips/net/built-in.o'.  Stop.
-
-James
-
-
---R5MJXauersSJCxMISOHLObXXcbs5gmemn--
-
---UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE+Ixt5DaZ6POztUwQx/FnbeotAe8FAllCt9kACgkQx/Fnbeot
-Ae/C3xAAo6I7z9xUYiq1c6fKMXuEECSyiU2lqFOm9dwOssNwO43zd+NKZ1CJWENn
-LeDLSsrLj43XYFoKoB7wCk6KnDccNELStOa1TRYVTHMwjw8ngCMxO5m8eO277WZY
-/2LhNHKd1YtEwPES4DzjGotvYNfKw67ZbEUP5uuoTDm/Acrxq9rQhEplKmtTiDOr
-nxUiOR9BUVgU6rVwDSIZIq1UHqkKUPrrq5DHuE5Ng0Zk6Ha+xcNy841cnkUubXsu
-Fe4nEBNbQ1rTF3/5Ucet3C+SNGy6dHtIiPCGeP2Cjc2ozIMolopDuK3ftAyJjrLz
-tBKTxlJ4M+rQCkQlcRwUibIdxJYYqD3/+P4aX/91pe5tjr7nZz10K5uW8SWSAENP
-WMIZxEySCEA2EFn2fuBF+DuBFZ9ryUCqPPUtVXY0I6QUFNG10Go7HqvTDcP434f8
-ktr/9Q2Sh5SQDVAMwKw2bMn0n+CaynOlZzdl4bNbNzGnyR4YmkTm773B4fYBe8sP
-btvxL9EDRFa7vyYZxxnjlI89KzBbaxTPwEkdjd15Xpp/LYCOE2OiqGHJQn6MG1/4
-2UTdqtE3fv4nMgatGrlSu8JI4n5+Sd0x3bQcXch8nMhWipC8bybnZGoBanc77Q2O
-cjbyAd7eLXrv/lrHiKFuZpUoPN+ilCf5OqpB3MEu8N2ISAqWbco=
-=4jcg
------END PGP SIGNATURE-----
-
---UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O--
+https://patchwork.linux-mips.org/patch/16153/

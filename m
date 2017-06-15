@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 15:15:40 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:49512 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993156AbdFONPbqjnDS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 15 Jun 2017 15:15:31 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA75380D;
-        Thu, 15 Jun 2017 06:15:22 -0700 (PDT)
-Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 242683F581;
-        Thu, 15 Jun 2017 06:15:21 -0700 (PDT)
-Subject: Re: [PATCH V5 6/9] MIPS: Loongson-3: support irq_set_affinity() in
- i8259 chip
-To:     Ralf Baechle <ralf@linux-mips.org>, Huacai Chen <chenhc@lemote.com>
-References: <1497492952-23877-1-git-send-email-chenhc@lemote.com>
- <1497493868-2446-1-git-send-email-chenhc@lemote.com>
- <20170615114156.GA4304@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <47616d54-283b-b661-3d10-8693b8251c56@arm.com>
-Date:   Thu, 15 Jun 2017 14:15:19 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 16:16:44 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49697 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992800AbdFOOQe1LmqS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 16:16:34 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 36E3641F8DF9;
+        Thu, 15 Jun 2017 16:25:56 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 15 Jun 2017 16:25:56 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 15 Jun 2017 16:25:56 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 95EEF9C16FF31;
+        Thu, 15 Jun 2017 15:16:25 +0100 (IST)
+Received: from [10.150.130.85] (10.150.130.85) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 15 Jun
+ 2017 15:16:28 +0100
+Subject: Re: [PATCH] MIPS: Octeon: Remove unused L2C types and macros.
+To:     "Steven J. Hill" <steven.hill@cavium.com>, <ralf@linux-mips.org>
+References: <1489068855-9670-1-git-send-email-steven.hill@cavium.com>
+From:   James Cowgill <James.Cowgill@imgtec.com>
+CC:     <linux-mips@linux-mips.org>
+Message-ID: <92415d13-3c66-76e7-8db3-ee0110c0611b@imgtec.com>
+Date:   Thu, 15 Jun 2017 15:16:22 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <20170615114156.GA4304@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+In-Reply-To: <1489068855-9670-1-git-send-email-steven.hill@cavium.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature";
+        boundary="ho62ndgCPjpLUXEBQwfa6sFWILHlbf6f9"
+X-Originating-IP: [10.150.130.85]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Cowgill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58470
+X-archive-position: 58471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: James.Cowgill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,90 +54,149 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Thanks Ralf.
+--ho62ndgCPjpLUXEBQwfa6sFWILHlbf6f9
+Content-Type: multipart/mixed; boundary="HiICR3gpOVC7bKoJAocRomcNgPIPDVGOG";
+ protected-headers="v1"
+From: James Cowgill <James.Cowgill@imgtec.com>
+To: "Steven J. Hill" <steven.hill@cavium.com>, ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Message-ID: <92415d13-3c66-76e7-8db3-ee0110c0611b@imgtec.com>
+Subject: Re: [PATCH] MIPS: Octeon: Remove unused L2C types and macros.
+References: <1489068855-9670-1-git-send-email-steven.hill@cavium.com>
+In-Reply-To: <1489068855-9670-1-git-send-email-steven.hill@cavium.com>
 
-On 15/06/17 12:41, Ralf Baechle wrote:
-> On Thu, Jun 15, 2017 at 10:31:05AM +0800, Huacai Chen wrote:
-> 
->> With this patch we can set irq affinity via procfs, so as to improve
->> network performance.
->>
->> Signed-off-by: Huacai Chen <chenhc@lemote.com>
->> ---
->>  arch/mips/include/asm/irq.h           |  3 ++
->>  arch/mips/loongson64/loongson-3/irq.c | 62 +++++++++++++++++++++++++++--------
->>  drivers/irqchip/irq-i8259.c           |  3 ++
->>  3 files changed, 55 insertions(+), 13 deletions(-)
-> 
-> You didn't cc the IRQCHIP maintainers:
-> 
-> IRQCHIP DRIVERS
-> M:      Thomas Gleixner <tglx@linutronix.de>
-> M:      Jason Cooper <jason@lakedaemon.net>
-> M:      Marc Zyngier <marc.zyngier@arm.com>
-> L:      linux-kernel@vger.kernel.org
-> S:      Maintained
-> T:      git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
-> T:      git git://git.infradead.org/users/jcooper/linux.git irqchip/core
-> F:      Documentation/devicetree/bindings/interrupt-controller/
-> F:      drivers/irqchip/
-> 
->   Ralf
-> 
-> 
->> diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
->> index ddd1c91..47ff7c6 100644
->> --- a/arch/mips/include/asm/irq.h
->> +++ b/arch/mips/include/asm/irq.h
->> @@ -53,6 +53,7 @@ static inline int irq_canonicalize(int irq)
->>  #define irq_canonicalize(irq) (irq)	/* Sane hardware, sane code ... */
->>  #endif
->>  
->> +struct irq_data;
->>  asmlinkage void plat_irq_dispatch(void);
->>  
->>  extern void do_IRQ(unsigned int irq);
->> @@ -63,6 +64,8 @@ extern void spurious_interrupt(void);
->>  extern int allocate_irqno(void);
->>  extern void alloc_legacy_irqno(void);
->>  extern void free_irqno(unsigned int irq);
->> +extern int plat_set_irq_affinity(struct irq_data *d,
->> +				 const struct cpumask *affinity, bool force);
->>  
->>  /*
->>   * Before R2 the timer and performance counter interrupts were both fixed to
->> diff --git a/arch/mips/loongson64/loongson-3/irq.c b/arch/mips/loongson64/loongson-3/irq.c
->> index 2e6e205..e8b7a47 100644
->> --- a/arch/mips/loongson64/loongson-3/irq.c
->> +++ b/arch/mips/loongson64/loongson-3/irq.c
+--HiICR3gpOVC7bKoJAocRomcNgPIPDVGOG
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-[...]
+Hi,
 
-Not going to comment on the Loongson-specific code which doesn't make
-much sense to me (the patch doesn't explain anything about what it is
-actually doing), but...
+On 09/03/17 14:14, Steven J. Hill wrote:
+> From: "Steven J. Hill" <Steven.Hill@cavium.com>
+>=20
+> Remove all unused bitfields and macros. Convert the remaining
+> bitfields to use __BITFIELD_FIELD instead of #ifdef.
+>=20
+> Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+> Acked-by: David Daney <david.daney@cavium.com>
 
->> diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
->> index 1aec12c..95d21e3 100644
->> --- a/drivers/irqchip/irq-i8259.c
->> +++ b/drivers/irqchip/irq-i8259.c
->> @@ -46,6 +46,9 @@ static struct irq_chip i8259A_chip = {
->>  	.irq_disable		= disable_8259A_irq,
->>  	.irq_unmask		= enable_8259A_irq,
->>  	.irq_mask_ack		= mask_and_ack_8259A,
->> +#ifdef CONFIG_CPU_LOONGSON3
->> +	.irq_set_affinity	= plat_set_irq_affinity,
->> +#endif
->>  };
+This patch broke the EDAC_OCTEON_L2C driver which apparently uses some
+of these "unused" structures. I therefore think this patch (or the
+relevant parts of it which are still used) should be reverted for 4.12.
 
-... that's a pretty horrible way of hooking up inside a random driver.
+drivers/edac/octeon_edac-l2c.c: In function =E2=80=98octeon_l2c_poll_oct1=
+=E2=80=99:
+drivers/edac/octeon_edac-l2c.c:26:21: error: storage size of =E2=80=98l2d=
+_err=E2=80=99 isn=E2=80=99t known
+  union cvmx_l2d_err l2d_err, l2d_err_reset;
+                     ^~~~~~~
+drivers/edac/octeon_edac-l2c.c:26:30: error: storage size of =E2=80=98l2d=
+_err_reset=E2=80=99 isn=E2=80=99t known
+  union cvmx_l2d_err l2d_err, l2d_err_reset;
+                              ^~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:44:30: error: =E2=80=98CVMX_L2D_ERR=E2=80=99=
+ undeclared (first use in this function)
+  l2d_err.u64 =3D cvmx_read_csr(CVMX_L2D_ERR);
+                              ^~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:44:30: note: each undeclared identifier is=
+ reported only once for each function it appears in
+drivers/edac/octeon_edac-l2c.c:26:30: warning: unused variable =E2=80=98l=
+2d_err_reset=E2=80=99 [-Wunused-variable]
+  union cvmx_l2d_err l2d_err, l2d_err_reset;
+                              ^~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:26:21: warning: unused variable =E2=80=98l=
+2d_err=E2=80=99 [-Wunused-variable]
+  union cvmx_l2d_err l2d_err, l2d_err_reset;
+                     ^~~~~~~
+drivers/edac/octeon_edac-l2c.c: In function =E2=80=98_octeon_l2c_poll_oct=
+2=E2=80=99:
+drivers/edac/octeon_edac-l2c.c:62:26: error: storage size of =E2=80=98err=
+_tdtx=E2=80=99 isn=E2=80=99t known
+  union cvmx_l2c_err_tdtx err_tdtx, err_tdtx_reset;
+                          ^~~~~~~~
+drivers/edac/octeon_edac-l2c.c:62:36: error: storage size of =E2=80=98err=
+_tdtx_reset=E2=80=99 isn=E2=80=99t known
+  union cvmx_l2c_err_tdtx err_tdtx, err_tdtx_reset;
+                                    ^~~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:63:26: error: storage size of =E2=80=98err=
+_ttgx=E2=80=99 isn=E2=80=99t known
+  union cvmx_l2c_err_ttgx err_ttgx, err_ttgx_reset;
+                          ^~~~~~~~
+drivers/edac/octeon_edac-l2c.c:63:36: error: storage size of =E2=80=98err=
+_ttgx_reset=E2=80=99 isn=E2=80=99t known
+  union cvmx_l2c_err_ttgx err_ttgx, err_ttgx_reset;
+                                    ^~~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:68:31: error: implicit declaration of func=
+tion =E2=80=98CVMX_L2C_ERR_TDTX=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+  err_tdtx.u64 =3D cvmx_read_csr(CVMX_L2C_ERR_TDTX(tad));
+                               ^~~~~~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:103:31: error: implicit declaration of fun=
+ction =E2=80=98CVMX_L2C_ERR_TTGX=E2=80=99 [-Werror=3Dimplicit-function-de=
+claration]
+  err_ttgx.u64 =3D cvmx_read_csr(CVMX_L2C_ERR_TTGX(tad));
+                               ^~~~~~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:63:36: warning: unused variable =E2=80=98e=
+rr_ttgx_reset=E2=80=99 [-Wunused-variable]
+  union cvmx_l2c_err_ttgx err_ttgx, err_ttgx_reset;
+                                    ^~~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:63:26: warning: unused variable =E2=80=98e=
+rr_ttgx=E2=80=99 [-Wunused-variable]
+  union cvmx_l2c_err_ttgx err_ttgx, err_ttgx_reset;
+                          ^~~~~~~~
+drivers/edac/octeon_edac-l2c.c:62:36: warning: unused variable =E2=80=98e=
+rr_tdtx_reset=E2=80=99 [-Wunused-variable]
+  union cvmx_l2c_err_tdtx err_tdtx, err_tdtx_reset;
+                                    ^~~~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:62:26: warning: unused variable =E2=80=98e=
+rr_tdtx=E2=80=99 [-Wunused-variable]
+  union cvmx_l2c_err_tdtx err_tdtx, err_tdtx_reset;
+                          ^~~~~~~~
+drivers/edac/octeon_edac-l2c.c: In function =E2=80=98octeon_l2c_probe=E2=80=
+=99:
+drivers/edac/octeon_edac-l2c.c:155:22: error: storage size of =E2=80=98l2=
+d_err=E2=80=99 isn=E2=80=99t known
+   union cvmx_l2d_err l2d_err;
+                      ^~~~~~~
+drivers/edac/octeon_edac-l2c.c:162:31: error: =E2=80=98CVMX_L2D_ERR=E2=80=
+=99 undeclared (first use in this function)
+   l2d_err.u64 =3D cvmx_read_csr(CVMX_L2D_ERR);
+                               ^~~~~~~~~~~~
+drivers/edac/octeon_edac-l2c.c:155:22: warning: unused variable =E2=80=98=
+l2d_err=E2=80=99 [-Wunused-variable]
+   union cvmx_l2d_err l2d_err;
+                      ^~~~~~~
+  CC      arch/mips/math-emu/sp_tint.o
+cc1: some warnings being treated as errors
+scripts/Makefile.build:308: recipe for target 'drivers/edac/octeon_edac-l=
+2c.o' failed
+make[4]: *** [drivers/edac/octeon_edac-l2c.o] Error 1
 
-Doesn't MIPS have some form of multi-platform kernel? If you need to add
-something like this, it'd be better to set it at runtime, once you've
-made sure that you're on the relevant HW (and preferably using an accessor).
+James
 
-Thanks,
 
-	M.
--- 
-Jazz is not dead. It just smells funny...
+--HiICR3gpOVC7bKoJAocRomcNgPIPDVGOG--
+
+--ho62ndgCPjpLUXEBQwfa6sFWILHlbf6f9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE+Ixt5DaZ6POztUwQx/FnbeotAe8FAllClrYACgkQx/Fnbeot
+Ae+pfxAAhoVvBxzzujz4f1LIe5LRv3xucREKQHFXcbx8yqekHECX2SKcFxVue+Tf
+jxWzcZDVudDAq07zkdf05hT2RiEBPj6+I6XD1YjWkqVZfJVZR4uTnxWeDaHQvIXD
+IyQw7z2xYO6ckESga5bNckNwotMc/0v/ljToMEE6DtU5wvZ+z7VbKqHinxAY1/Nc
+tLjLcZ5IHJREvS7pUiq6kzjeKHuudO2MbttMyiSlIL//Vogl0G5mPdtPAPCaE49l
+5aCuSG2YCwW6MCfzszBXDrVbZ4e6BYQTUk4Uhj6TTzet+9GRyZMEfWZKcWYrUnZj
+MvDL1MxL4F/HdN4sQONZIjTrP/84mVCh4RTiu+bIJDe195lP4vxtACqzrCYu3dNg
+eLi+Ya7SvyauhoTeFvNzycxDQDq0Sz7o8ZNNxqh345ajPn80xJLJ8awyUD6ebB/i
+4JkFb8z3KoccDpVG0zDHhRYpCu1+MracMnG3pbELnLCTP3HFoOHXtGDeYAq/CXlY
+5Qg+myVDwT8KiW8T7Co/hQaqUFXr3P5rPRNMcOIVFYJuYpVI4IvJltzRCsGKaxxb
+sDDvVEKTMYjHP/zDOiT9b9qqb/kRYJkOgmjvmvifpRI0w0u+hCDedRvAxZQn4hYT
+jla2zKFg4UaoKwnB/rZyw3cpeLwxl3AAxi5zZDWc4TLlSIlh5YM=
+=xzXr
+-----END PGP SIGNATURE-----
+
+--ho62ndgCPjpLUXEBQwfa6sFWILHlbf6f9--

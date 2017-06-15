@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2017 21:04:11 +0200 (CEST)
-Received: from shards.monkeyblade.net ([184.105.139.130]:54236 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994765AbdFNTEEuPie5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Jun 2017 21:04:04 +0200
-Received: from localhost (unknown [38.140.131.194])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7848B13429CA8;
-        Wed, 14 Jun 2017 11:22:17 -0700 (PDT)
-Date:   Wed, 14 Jun 2017 15:03:57 -0400 (EDT)
-Message-Id: <20170614.150357.632035401955794047.davem@davemloft.net>
-To:     ddaney@caviumnetworks.com
-Cc:     daniel@iogearbox.net, david.daney@cavium.com, ast@kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 0/4] bpf: Changes needed (or desired) for MIPS support
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <e17ffbca-f11f-5617-3188-a7eb82b03ed3@caviumnetworks.com>
-References: <20170613234938.4823-1-david.daney@cavium.com>
-        <594081CA.3060801@iogearbox.net>
-        <e17ffbca-f11f-5617-3188-a7eb82b03ed3@caviumnetworks.com>
-X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 14 Jun 2017 11:22:18 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 04:16:40 +0200 (CEST)
+Received: from smtpbgau2.qq.com ([54.206.34.216]:50184 "EHLO smtpbgau2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992028AbdFOCQc128-e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Jun 2017 04:16:32 +0200
+X-QQ-mid: bizesmtp9t1497492947tewg02cw5
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Thu, 15 Jun 2017 10:15:27 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FL92B00A0000000
+X-QQ-FEAT: 7NEolFwWs8WLHorM5wUX287RFNy0nzX85rHkmiNkT0wHMX8yIryWjUnxIHqRJ
+        YP0ZY20Oo5clw5jWQi1DcDR9Zw4/SRax94QN2x53+Bq+/pL0kFsQs4Z89RTj/1/TpFktIet
+        KfefFjhSFzaV8H2SuAb/qQKl1b2WIGNHbnvIXMef34VJ51ztTenLkFIdyxDYH2vV++Q/HH8
+        BiNQxMaYPqFbSJFD+U9ZshZa9UXhYbcNEqSSSR3b8Mqctx+STCReyG2gjxje8utmH1mLF/H
+        QPbeVYo28jDf9JYzLFJ6zQBqFAp1uXiSinEg==
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V5 0/9] MIPS: Loongson: feature and performance improvements
+Date:   Thu, 15 Jun 2017 10:15:43 +0800
+Message-Id: <1497492952-23877-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58455
+X-archive-position: 58456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,18 +48,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <ddaney@caviumnetworks.com>
-Date: Wed, 14 Jun 2017 08:54:03 -0700
+This patchset is is prepared for the next 4.13 release for Linux/MIPS.
+It adds Loongson-3A R3 and Loongson's NMI handler support, adds a
+"model name" knob in /proc/cpuinfo which is needed by some userspace
+tools, improves I/O performance by IRQ balancing and IRQ affinity
+setting, fixes indexed scache flushing for Loongson-3, and introduces
+LOONGSON_LLSC_WAR to improve stability.
 
-> On 06/13/2017 05:22 PM, Daniel Borkmann wrote:
->> On 06/14/2017 01:49 AM, David Daney wrote:
->>> This is a grab bag of changes to the bpf testing infrastructure I
->>> developed working on MIPS eBPF JIT support.  The change to
->>> bpf_jit_disasm is probably universally beneficial, the others are more
->>> MIPS specific.
->> I think these could go independently through net-next tree?
-> 
-> Yes, if davem is happy with them, I think that makes sense that he
-> take them via net-next.
+V1 -> V2:
+1, Add Loongson-3A R3 basic support.
+2, Sync the code to upstream.
 
-Series applied to net-next, thanks!
+V2 -> V3:
+1, Add r4k_blast_scache_node for Loongson-3.
+2, Update the last patch to avoid miscompilation.
+3, Sync the code to upstream.
+
+V3 -> V4:
+1, Support 4 packages in CPU Hwmon driver.
+2, ICT is dropped in cpu name, and cpu name can be overwritten by BIOS.
+3, Sync the code to upstream.
+
+V4 -> V5:
+1, Drop some #ifdefs in the 2nd patch.
+2, Improve maintainability of the 45h patch.
+3, Sync the code to upstream.
+
+Huacai Chen(9):
+ MIPS: Loongson: Add Loongson-3A R3 basic support.
+ MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3.
+ MIPS: Loongson: Add NMI handler support.
+ MIPS: Loongson-3: Support 4 packages in CPU Hwmon driver.
+ MIPS: Loongson-3: IRQ balancing for PCI devices.
+ MIPS: Loongson-3: support irq_set_affinity() in i8259 chip.
+ MIPS: Loogson: Make enum loongson_cpu_type more clear.
+ MIPS: Add __cpu_full_name[] to make CPU names more human-readable.
+ MIPS: Loongson: Introduce and use LOONGSON_LLSC_WAR.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/atomic.h                     | 107 ++++++++
+ arch/mips/include/asm/bitops.h                     | 273 ++++++++++++++++-----
+ arch/mips/include/asm/cmpxchg.h                    |  54 ++++
+ arch/mips/include/asm/cpu-info.h                   |   2 +
+ arch/mips/include/asm/cpu.h                        |   1 +
+ arch/mips/include/asm/edac.h                       |  33 ++-
+ arch/mips/include/asm/futex.h                      |  62 +++++
+ arch/mips/include/asm/irq.h                        |   3 +
+ arch/mips/include/asm/local.h                      |  34 +++
+ arch/mips/include/asm/mach-cavium-octeon/war.h     |   1 +
+ arch/mips/include/asm/mach-generic/war.h           |   1 +
+ arch/mips/include/asm/mach-ip22/war.h              |   1 +
+ arch/mips/include/asm/mach-ip27/war.h              |   1 +
+ arch/mips/include/asm/mach-ip28/war.h              |   1 +
+ arch/mips/include/asm/mach-ip32/war.h              |   1 +
+ arch/mips/include/asm/mach-loongson64/boot_param.h |  23 +-
+ arch/mips/include/asm/mach-loongson64/war.h        |  26 ++
+ arch/mips/include/asm/mach-malta/war.h             |   1 +
+ arch/mips/include/asm/mach-pmcs-msp71xx/war.h      |   1 +
+ arch/mips/include/asm/mach-rc32434/war.h           |   1 +
+ arch/mips/include/asm/mach-rm/war.h                |   1 +
+ arch/mips/include/asm/mach-sibyte/war.h            |   1 +
+ arch/mips/include/asm/mach-tx49xx/war.h            |   1 +
+ arch/mips/include/asm/pgtable.h                    |  19 ++
+ arch/mips/include/asm/r4kcache.h                   |  30 +++
+ arch/mips/include/asm/spinlock.h                   | 142 +++++++++++
+ arch/mips/include/asm/war.h                        |   8 +
+ arch/mips/kernel/cpu-probe.c                       |  29 ++-
+ arch/mips/kernel/proc.c                            |   4 +
+ arch/mips/kernel/syscall.c                         |  34 +++
+ arch/mips/loongson64/Platform                      |   3 +
+ arch/mips/loongson64/common/env.c                  |  30 ++-
+ arch/mips/loongson64/common/init.c                 |  13 +
+ arch/mips/loongson64/loongson-3/irq.c              |  53 +++-
+ arch/mips/loongson64/loongson-3/smp.c              |  23 +-
+ arch/mips/mm/c-r4k.c                               |  42 +++-
+ arch/mips/mm/tlbex.c                               |  17 ++
+ drivers/irqchip/irq-i8259.c                        |   3 +
+ drivers/platform/mips/cpu_hwmon.c                  | 136 +++++-----
+ 39 files changed, 1059 insertions(+), 157 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson64/war.h
+--
+2.7.0

@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 04:54:46 +0200 (CEST)
-Received: from smtpbguseast2.qq.com ([54.204.34.130]:38350 "EHLO
-        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993411AbdFOCyj51diH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 04:54:39 +0200
-X-QQ-mid: bizesmtp9t1497495231tk9al3r35
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 15 Jun 2017 10:53:46 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FL92000A0000000
-X-QQ-FEAT: uoJOjed1PCFMJKhXka76SWxBC4sOgv82IAaLZVbKjEfqG+8kcGc/PYbVf4yps
-        W27VNv+X6t8+In7rqWEVz8HTYX4bay2UD1Ihrz5vfwJa6u0fHLq8JCvhgGhXkkQDoQULNIJ
-        8QfFCdzFFGZbHCt2qwprZmDVnymWn9YptKxTZnw+7jPEv9ss5V4z0/LUaf/C7IdMhjPTwT8
-        HF2bCNH+hkd0UH+TziyWp42dN49nWFrBINgjPDZLduvkTxBd0vCLAzrVJ+aab37RouJEYFE
-        T+RfezQ4VjpbFseK3W0Zksk6keJlQSwUcoWQuepuQussBw
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 11:59:52 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:60654 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991726AbdFOJ7pj917T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Jun 2017 11:59:45 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v5F9xeWI004287;
+        Thu, 15 Jun 2017 11:59:40 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v5F9xcZC004271;
+        Thu, 15 Jun 2017 11:59:38 +0200
+Date:   Thu, 15 Jun 2017 11:59:38 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Huacai Chen <chenhc@lemote.com>
 Cc:     John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V5 7/9] MIPS: Loogson: Make enum loongson_cpu_type more clear
-Date:   Thu, 15 Jun 2017 10:54:15 +0800
-Message-Id: <1497495255-11394-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1497492952-23877-1-git-send-email-chenhc@lemote.com>
+        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V5 2/9] MIPS: c-r4k: Add r4k_blast_scache_node for
+ Loongson-3
+Message-ID: <20170615095938.GA1391@linux-mips.org>
 References: <1497492952-23877-1-git-send-email-chenhc@lemote.com>
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+ <1497492952-23877-3-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1497492952-23877-3-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58467
+X-archive-position: 58468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,84 +47,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Sort enum loongson_cpu_type in a more reasonable manner, this makes the
-CPU names more clear and extensible. Those already defined enum values
-are renamed to Legacy_* for compatibility.
+On Thu, Jun 15, 2017 at 10:15:45AM +0800, Huacai Chen wrote:
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/mach-loongson64/boot_param.h | 22 ++++++++++++++++------
- arch/mips/loongson64/common/env.c                  | 11 ++++++++---
- 2 files changed, 24 insertions(+), 9 deletions(-)
+> For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
+> only flush Node-0's scache. So we add r4k_blast_scache_node() by using
+> (CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
+> start address.
+> 
+> Maybe all MIPS CPUs need r4k_blast_scache_node() to support cc-NUMA,
+> but I don't know how to implement it for non-Loongson CPUs.
 
-diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
-index d3f3258..9f9bb9c 100644
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -27,12 +27,22 @@ struct efi_memory_map_loongson {
- } __packed;
- 
- enum loongson_cpu_type {
--	Loongson_2E = 0,
--	Loongson_2F = 1,
--	Loongson_3A = 2,
--	Loongson_3B = 3,
--	Loongson_1A = 4,
--	Loongson_1B = 5
-+	Legacy_2E = 0x0,
-+	Legacy_2F = 0x1,
-+	Legacy_3A = 0x2,
-+	Legacy_3B = 0x3,
-+	Legacy_1A = 0x4,
-+	Legacy_1B = 0x5,
-+	Legacy_2G = 0x6,
-+	Legacy_2H = 0x7,
-+	Loongson_1A = 0x100,
-+	Loongson_1B = 0x101,
-+	Loongson_2E = 0x200,
-+	Loongson_2F = 0x201,
-+	Loongson_2G = 0x202,
-+	Loongson_2H = 0x203,
-+	Loongson_3A = 0x300,
-+	Loongson_3B = 0x301
- };
- 
- /*
-diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
-index 4707abf..1e8a955 100644
---- a/arch/mips/loongson64/common/env.c
-+++ b/arch/mips/loongson64/common/env.c
-@@ -90,7 +90,9 @@ void __init prom_init_env(void)
- 
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
--	if (ecpu->cputype == Loongson_3A) {
-+	switch (ecpu->cputype) {
-+	case Legacy_3A:
-+	case Loongson_3A:
- 		loongson_sysconf.cores_per_node = 4;
- 		loongson_sysconf.cores_per_package = 4;
- 		smp_group[0] = 0x900000003ff01000;
-@@ -111,7 +113,9 @@ void __init prom_init_env(void)
- 		loongson_freqctrl[3] = 0x900030001fe001d0;
- 		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
- 		loongson_sysconf.workarounds = WORKAROUND_CPUFREQ;
--	} else if (ecpu->cputype == Loongson_3B) {
-+		break;
-+	case Legacy_3B:
-+	case Loongson_3B:
- 		loongson_sysconf.cores_per_node = 4; /* One chip has 2 nodes */
- 		loongson_sysconf.cores_per_package = 8;
- 		smp_group[0] = 0x900000003ff01000;
-@@ -132,7 +136,8 @@ void __init prom_init_env(void)
- 		loongson_freqctrl[3] = 0x900060001fe001d0;
- 		loongson_sysconf.ht_control_base = 0x90001EFDFB000000;
- 		loongson_sysconf.workarounds = WORKAROUND_CPUHOTPLUG;
--	} else {
-+		break;
-+	default:
- 		loongson_sysconf.cores_per_node = 1;
- 		loongson_sysconf.cores_per_package = 1;
- 		loongson_chipcfg[0] = 0x900000001fe00180;
--- 
-2.7.0
+There other MIPS ccNUMA systems handle caches in hardware fully transparent
+to software so no changes are required.  These systems are SGI's SN
+(Origin, Onyx) and BCM1480 (ccNUMA support out of tree, but no sw support
+required)).
+
+  Ralf

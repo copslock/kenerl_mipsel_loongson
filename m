@@ -1,114 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 18:02:18 +0200 (CEST)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:33428
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994780AbdFOQCKY02Ix (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 18:02:10 +0200
-Received: by mail-wm0-x242.google.com with SMTP id f90so620741wmh.0;
-        Thu, 15 Jun 2017 09:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=SmVgIARh1dK7QxCwgkT6u2Mk86zhhjO2n29HXGF3d2w=;
-        b=FV0IlckV07tDs0yGoVNs0b1a/50pzQk8p6UKfnkk3h6kqWNN3lM7RGQA47P26dDly+
-         L0/W4DVSE5Xt9/77Sdohr3IlLG0yszMjN9nvmyTRJF4IaOG0YiKXs2erj+/ketCScRUe
-         Puwi4Yg7vJWO8PCyCfYDymxvu+NP8KAqR9GkqZtsVJvrwYZzJhGw6nYyYuMoGfESYHsp
-         XQ9iyjJtKcUzqWLOfabZliMurTcqdLa3VRUIgPaQ4K81P0gl8UtntBRHJKLIAOiTsfSW
-         z+DgyX2n2+HMnIra5tZctRRp8R+LSZUrGphltPKCiIXv7obd3rdQ69X/3kEQOydBNg8g
-         GlhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=SmVgIARh1dK7QxCwgkT6u2Mk86zhhjO2n29HXGF3d2w=;
-        b=hvPbWrs8DrpqKzqgvM9TQ8bV9PfN2F4RqNdOCT2c2pz+siqvHdkyRYJfiUcl8XS2Uy
-         xfNiiSwj0NJ/zplTb4A3pTmEGhiWJMeRChbo/J6+sdyNLrUjrVSURiM7UnRFnT/+kcWi
-         omHtg3Oh2wOHKxchnmLc4VcuXotwqyDQzEehb/uNWxjWwkGpW51sUW3zyCHYLrH2rTQj
-         ehNhSQvbME71xH07M0l2lmKPdTTN0y6OxTd82bhMRdQyFONZZY8ic8bujzCsK7NYlYsl
-         D4Hh++m/LT/7ll+atIuE9dJqoI78iZYkdl1m/o1afW4D0rTqifxHc0wFbq+14QsoNiyl
-         ZqBg==
-X-Gm-Message-State: AKS2vOyoUhZLnV9G84rE1mbM+oE809zSGcp+qhf6EESlC4PIz/4AU2oR
-        Ih+hfC+vdZKn2g==
-X-Received: by 10.28.19.11 with SMTP id 11mr4148389wmt.123.1497542524193;
-        Thu, 15 Jun 2017 09:02:04 -0700 (PDT)
-Received: from linux-gy6r.site (214.10.133.37.dynamic.jazztel.es. [37.133.10.214])
-        by smtp.gmail.com with ESMTPSA id f15sm526703wmf.22.2017.06.15.09.02.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 15 Jun 2017 09:02:03 -0700 (PDT)
-Subject: Re: [PATCH 13/23] clocksource/drivers: Rename clocksource_probe to
- timer_probe
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
-Cc:     linux-kernel@vger.kernel.org,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Lindgren <tony@atomide.com>,
-        Simon Horman <horms@verge.net.au>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hartley <james.hartley@imgtec.com>,
-        Ionela Voinescu <ionela.voinescu@imgtec.com>,
-        John Crispin <john@phrozen.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Rich Felker <dalias@libc.org>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Vlad Zakharov <Vladislav.Zakharov@synopsys.com>,
-        Rob Herring <robh@kernel.org>, Noam Camus <noamc@ezchip.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <jroedel@suse.de>,
-        "open list:SYNOPSYS ARC ARCH..." <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:OMAP2+ SUPPORT" <linux-omap@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        "open list:ARM/SHMOBILE ARM..." <linux-renesas-soc@vger.kernel.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "open list:MIPS" <linux-mips@linux-mips.org>,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:TENSILICA XTENSA..." <linux-xtensa@linux-xtensa.org>
-References: <20170614123800.GH2261@mai>
- <1497443984-12371-1-git-send-email-daniel.lezcano@linaro.org>
- <1497443984-12371-13-git-send-email-daniel.lezcano@linaro.org>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-Message-ID: <a6614bcf-5552-b168-eee9-a1d604673494@gmail.com>
-Date:   Thu, 15 Jun 2017 18:02:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 18:38:03 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60976 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994786AbdFOQh4F2thI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 18:37:56 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 0542F41F8DF9;
+        Thu, 15 Jun 2017 18:47:18 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 15 Jun 2017 18:47:18 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 15 Jun 2017 18:47:18 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id BDFFAFD519A3D;
+        Thu, 15 Jun 2017 17:37:46 +0100 (IST)
+Received: from [10.150.130.85] (10.150.130.85) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 15 Jun
+ 2017 17:37:50 +0100
+Subject: Re: [PATCH v2 4/5] MIPS: Add support for eBPF JIT.
+To:     <ralf@linux-mips.org>
+References: <20170613222847.7122-1-david.daney@cavium.com>
+ <20170613222847.7122-5-david.daney@cavium.com>
+CC:     <linux-mips@linux-mips.org>
+From:   James Cowgill <James.Cowgill@imgtec.com>
+Message-ID: <1d9025c9-7e4a-551e-9937-a2439e11a852@imgtec.com>
+Date:   Thu, 15 Jun 2017 17:37:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <1497443984-12371-13-git-send-email-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <matthias.bgg@gmail.com>
+In-Reply-To: <20170613222847.7122-5-david.daney@cavium.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature";
+        boundary="UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O"
+X-Originating-IP: [10.150.130.85]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Cowgill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58473
+X-archive-position: 58474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matthias.bgg@gmail.com
+X-original-sender: James.Cowgill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -121,28 +55,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+--UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O
+Content-Type: multipart/mixed; boundary="R5MJXauersSJCxMISOHLObXXcbs5gmemn";
+ protected-headers="v1"
+From: James Cowgill <James.Cowgill@imgtec.com>
+To: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Message-ID: <1d9025c9-7e4a-551e-9937-a2439e11a852@imgtec.com>
+Subject: Re: [PATCH v2 4/5] MIPS: Add support for eBPF JIT.
+References: <20170613222847.7122-1-david.daney@cavium.com>
+ <20170613222847.7122-5-david.daney@cavium.com>
+In-Reply-To: <20170613222847.7122-5-david.daney@cavium.com>
+
+--R5MJXauersSJCxMISOHLObXXcbs5gmemn
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi Ralf,
+
+On 13/06/17 23:28, David Daney wrote:
+> Since the eBPF machine has 64-bit registers, we only support this in
+> 64-bit kernels.  As of the writing of this commit log test-bpf is showi=
+ng:
+>=20
+>   test_bpf: Summary: 316 PASSED, 0 FAILED, [308/308 JIT'ed]
+>=20
+> All current test cases are successfully compiled.
+>=20
+> Many examples in samples/bpf are usable, specifically tracex5 which
+> uses tail calls works.
+>=20
+> Signed-off-by: David Daney <david.daney@cavium.com>
+
+I think you've misapplied this patch to upstream-sfr. I see the
+following commit, but it's missing the ebpf_jit.c file.
+
+commit bb45edc82b3c1608026b5a7aeb0876ec31735359
+Author: David Daney <david.daney@cavium.com>
+Date:   Tue Jun 13 15:28:46 2017 -0700
+
+    MIPS: Add support for eBPF JIT.
+   =20
+    Since the eBPF machine has 64-bit registers, we only support this in
+    64-bit kernels.  As of the writing of this commit log test-bpf is sho=
+wing:
+   =20
+      test_bpf: Summary: 316 PASSED, 0 FAILED, [308/308 JIT'ed]
+   =20
+    All current test cases are successfully compiled.
+   =20
+    Many examples in samples/bpf are usable, specifically tracex5 which
+    uses tail calls works.
+   =20
+    Signed-off-by: David Daney <david.daney@cavium.com>
+    Cc: Alexei Starovoitov <ast@kernel.org>
+    Cc: Daniel Borkmann <daniel@iogearbox.net>
+    Cc: Markos Chandras <markos.chandras@imgtec.com>
+    Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+    Cc: netdev@vger.kernel.org
+    Cc: linux-kernel@vger.kernel.org
+    Cc: linux-mips@linux-mips.org
+    Patchwork: https://patchwork.linux-mips.org/patch/16369/
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/Kconfig      | 12 +++++++++++-
+ arch/mips/net/Makefile |  3 ++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+This is causing my builds to fail with:
+make[4]: *** No rule to make target 'arch/mips/net/ebpf_jit.o', needed by=
+ 'arch/mips/net/built-in.o'.  Stop.
+
+James
 
 
-On 14/06/17 14:39, Daniel Lezcano wrote:
-> The function name is now renamed to 'timer_probe' for consistency with
-> the CLOCKSOURCE_OF_DECLARE => TIMER_OF_DECLARE change.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Acked-by: Heiko Stuebner <heiko@sntech.de>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-[...]
-> diff --git a/arch/arm/mach-mediatek/mediatek.c b/arch/arm/mach-mediatek/mediatek.c
-> index a6e3c98..c3cf215 100644
-> --- a/arch/arm/mach-mediatek/mediatek.c
-> +++ b/arch/arm/mach-mediatek/mediatek.c
-> @@ -41,7 +41,7 @@ static void __init mediatek_timer_init(void)
->   	}
->   
->   	of_clk_init(NULL);
-> -	clocksource_probe();
-> +	timer_probe();
->   };
+--R5MJXauersSJCxMISOHLObXXcbs5gmemn--
 
-Acked-by: Matthias Brugger <matthias.bgg@gmail.com>
+--UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE+Ixt5DaZ6POztUwQx/FnbeotAe8FAllCt9kACgkQx/Fnbeot
+Ae/C3xAAo6I7z9xUYiq1c6fKMXuEECSyiU2lqFOm9dwOssNwO43zd+NKZ1CJWENn
+LeDLSsrLj43XYFoKoB7wCk6KnDccNELStOa1TRYVTHMwjw8ngCMxO5m8eO277WZY
+/2LhNHKd1YtEwPES4DzjGotvYNfKw67ZbEUP5uuoTDm/Acrxq9rQhEplKmtTiDOr
+nxUiOR9BUVgU6rVwDSIZIq1UHqkKUPrrq5DHuE5Ng0Zk6Ha+xcNy841cnkUubXsu
+Fe4nEBNbQ1rTF3/5Ucet3C+SNGy6dHtIiPCGeP2Cjc2ozIMolopDuK3ftAyJjrLz
+tBKTxlJ4M+rQCkQlcRwUibIdxJYYqD3/+P4aX/91pe5tjr7nZz10K5uW8SWSAENP
+WMIZxEySCEA2EFn2fuBF+DuBFZ9ryUCqPPUtVXY0I6QUFNG10Go7HqvTDcP434f8
+ktr/9Q2Sh5SQDVAMwKw2bMn0n+CaynOlZzdl4bNbNzGnyR4YmkTm773B4fYBe8sP
+btvxL9EDRFa7vyYZxxnjlI89KzBbaxTPwEkdjd15Xpp/LYCOE2OiqGHJQn6MG1/4
+2UTdqtE3fv4nMgatGrlSu8JI4n5+Sd0x3bQcXch8nMhWipC8bybnZGoBanc77Q2O
+cjbyAd7eLXrv/lrHiKFuZpUoPN+ilCf5OqpB3MEu8N2ISAqWbco=
+=4jcg
+-----END PGP SIGNATURE-----
+
+--UQmGoB0P2dsTTWeItqoSdcNN5kTEH031O--

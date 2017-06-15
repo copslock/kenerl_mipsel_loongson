@@ -1,68 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 17:39:43 +0200 (CEST)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:33039
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994768AbdFOPjaK4cNx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 17:39:30 +0200
-Received: by mail-it0-x244.google.com with SMTP id l6so2286205iti.0;
-        Thu, 15 Jun 2017 08:39:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 18:02:18 +0200 (CEST)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:33428
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994780AbdFOQCKY02Ix (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 18:02:10 +0200
+Received: by mail-wm0-x242.google.com with SMTP id f90so620741wmh.0;
+        Thu, 15 Jun 2017 09:02:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=JNrEgg2cxvgprkYoQnsSepUZS+rgCTz7JGF9uQ+/kIM=;
-        b=Bfnv00dofhLOF7X9CNaIOddsOSu1ba9njuZRqqJ+98n723Zp6OCC0c2z3P/+oqqiyA
-         rVWW+N36V2oxaDkL8uw7EZflWZgcOMmcSFGyHbTkcW4DcqxMyHDxHbEmFbNFije38uMp
-         MYQP5hJxNSkrS/qbbum9QrTfOsNTgdlRb/R4dqHFvCUm+krw8VdtJqXgCV9k6HgTQ3L3
-         v1bM0grIxxDR7lHhtHCj3hlvjX465H+1Yu47BYnuw47AJTChOC7fXmvFL2NTuZ6nKaPY
-         VGdwj3KkdWMq1lIUFpXpsX169I5xHOkx0kQOF8iClVSZnALsEubOPmsZ72GF9O7k2jyC
-         dLUQ==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SmVgIARh1dK7QxCwgkT6u2Mk86zhhjO2n29HXGF3d2w=;
+        b=FV0IlckV07tDs0yGoVNs0b1a/50pzQk8p6UKfnkk3h6kqWNN3lM7RGQA47P26dDly+
+         L0/W4DVSE5Xt9/77Sdohr3IlLG0yszMjN9nvmyTRJF4IaOG0YiKXs2erj+/ketCScRUe
+         Puwi4Yg7vJWO8PCyCfYDymxvu+NP8KAqR9GkqZtsVJvrwYZzJhGw6nYyYuMoGfESYHsp
+         XQ9iyjJtKcUzqWLOfabZliMurTcqdLa3VRUIgPaQ4K81P0gl8UtntBRHJKLIAOiTsfSW
+         z+DgyX2n2+HMnIra5tZctRRp8R+LSZUrGphltPKCiIXv7obd3rdQ69X/3kEQOydBNg8g
+         GlhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=JNrEgg2cxvgprkYoQnsSepUZS+rgCTz7JGF9uQ+/kIM=;
-        b=N7AU3yN8NOO4TxW/UiQf+lsvODLm/COxICE4wNnftBcwCynP0LzUoTgqxC6oCaWUNu
-         YnLaOoUtwR5rcXo+tCovGbUSFIRVOdub9HG4I23jlyvbZr57cVRI9dYN/NBB4dxiIQwQ
-         qkGRBmSUsqbPa22vOT88JPGenhW6zN8meWnsY3EqgahzMYBfOM6mUMgUQEgLJ4hTHVxW
-         lN2qe+sg26V4imf7KXaBySqV79uDAtI3fngJhylY7UFcFEZ5I/ijfjLdwiUTgFI9Si0K
-         wizr0LSvtu5D7IqhQ9/ikgcSoAuAjPzKshnTJJtZ1Imd8BhzNigLhzbfl9eMGIFrIQ5I
-         xXBg==
-X-Gm-Message-State: AKS2vOySgQza8C9jwJk9cMX2RuiZNZX9VTEghWdadLjzPEHBua4rBycj
-        amFKEAIJhIpjR6bLVwMtstpH+Fz9aA==
-X-Received: by 10.36.87.147 with SMTP id u141mr5917172ita.72.1497541164249;
- Thu, 15 Jun 2017 08:39:24 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.144.85 with HTTP; Thu, 15 Jun 2017 08:39:23 -0700 (PDT)
-In-Reply-To: <47616d54-283b-b661-3d10-8693b8251c56@arm.com>
-References: <1497492952-23877-1-git-send-email-chenhc@lemote.com>
- <1497493868-2446-1-git-send-email-chenhc@lemote.com> <20170615114156.GA4304@linux-mips.org>
- <47616d54-283b-b661-3d10-8693b8251c56@arm.com>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Thu, 15 Jun 2017 23:39:23 +0800
-X-Google-Sender-Auth: FhR_X6ESzZMmqVfZnurcqVa8B70
-Message-ID: <CAAhV-H4DH+UScmye6s5CYPWmofDxhvyzRvO6eASLLaE6jAgqRQ@mail.gmail.com>
-Subject: Re: [PATCH V5 6/9] MIPS: Loongson-3: support irq_set_affinity() in
- i8259 chip
-To:     Marc Zyngier <marc.zyngier@arm.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SmVgIARh1dK7QxCwgkT6u2Mk86zhhjO2n29HXGF3d2w=;
+        b=hvPbWrs8DrpqKzqgvM9TQ8bV9PfN2F4RqNdOCT2c2pz+siqvHdkyRYJfiUcl8XS2Uy
+         xfNiiSwj0NJ/zplTb4A3pTmEGhiWJMeRChbo/J6+sdyNLrUjrVSURiM7UnRFnT/+kcWi
+         omHtg3Oh2wOHKxchnmLc4VcuXotwqyDQzEehb/uNWxjWwkGpW51sUW3zyCHYLrH2rTQj
+         ehNhSQvbME71xH07M0l2lmKPdTTN0y6OxTd82bhMRdQyFONZZY8ic8bujzCsK7NYlYsl
+         D4Hh++m/LT/7ll+atIuE9dJqoI78iZYkdl1m/o1afW4D0rTqifxHc0wFbq+14QsoNiyl
+         ZqBg==
+X-Gm-Message-State: AKS2vOyoUhZLnV9G84rE1mbM+oE809zSGcp+qhf6EESlC4PIz/4AU2oR
+        Ih+hfC+vdZKn2g==
+X-Received: by 10.28.19.11 with SMTP id 11mr4148389wmt.123.1497542524193;
+        Thu, 15 Jun 2017 09:02:04 -0700 (PDT)
+Received: from linux-gy6r.site (214.10.133.37.dynamic.jazztel.es. [37.133.10.214])
+        by smtp.gmail.com with ESMTPSA id f15sm526703wmf.22.2017.06.15.09.02.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 15 Jun 2017 09:02:03 -0700 (PDT)
+Subject: Re: [PATCH 13/23] clocksource/drivers: Rename clocksource_probe to
+ timer_probe
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
+Cc:     linux-kernel@vger.kernel.org,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Lindgren <tony@atomide.com>,
+        Simon Horman <horms@verge.net.au>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Ionela Voinescu <ionela.voinescu@imgtec.com>,
         John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <chenhuacai@gmail.com>
+        Ley Foon Tan <lftan@altera.com>,
+        Rich Felker <dalias@libc.org>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Vlad Zakharov <Vladislav.Zakharov@synopsys.com>,
+        Rob Herring <robh@kernel.org>, Noam Camus <noamc@ezchip.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <jroedel@suse.de>,
+        "open list:SYNOPSYS ARC ARCH..." <linux-snps-arc@lists.infradead.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:OMAP2+ SUPPORT" <linux-omap@vger.kernel.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        "open list:ARM/SHMOBILE ARM..." <linux-renesas-soc@vger.kernel.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        "open list:MIPS" <linux-mips@linux-mips.org>,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:TENSILICA XTENSA..." <linux-xtensa@linux-xtensa.org>
+References: <20170614123800.GH2261@mai>
+ <1497443984-12371-1-git-send-email-daniel.lezcano@linaro.org>
+ <1497443984-12371-13-git-send-email-daniel.lezcano@linaro.org>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Message-ID: <a6614bcf-5552-b168-eee9-a1d604673494@gmail.com>
+Date:   Thu, 15 Jun 2017 18:02:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
+MIME-Version: 1.0
+In-Reply-To: <1497443984-12371-13-git-send-email-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <matthias.bgg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58472
+X-archive-position: 58473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: matthias.bgg@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,96 +121,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-OK, I'll update my patch and set it at runtime.
 
-Huacai
 
-On Thu, Jun 15, 2017 at 9:15 PM, Marc Zyngier <marc.zyngier@arm.com> wrote:
-> Thanks Ralf.
->
-> On 15/06/17 12:41, Ralf Baechle wrote:
->> On Thu, Jun 15, 2017 at 10:31:05AM +0800, Huacai Chen wrote:
->>
->>> With this patch we can set irq affinity via procfs, so as to improve
->>> network performance.
->>>
->>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
->>> ---
->>>  arch/mips/include/asm/irq.h           |  3 ++
->>>  arch/mips/loongson64/loongson-3/irq.c | 62 +++++++++++++++++++++++++++--------
->>>  drivers/irqchip/irq-i8259.c           |  3 ++
->>>  3 files changed, 55 insertions(+), 13 deletions(-)
->>
->> You didn't cc the IRQCHIP maintainers:
->>
->> IRQCHIP DRIVERS
->> M:      Thomas Gleixner <tglx@linutronix.de>
->> M:      Jason Cooper <jason@lakedaemon.net>
->> M:      Marc Zyngier <marc.zyngier@arm.com>
->> L:      linux-kernel@vger.kernel.org
->> S:      Maintained
->> T:      git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
->> T:      git git://git.infradead.org/users/jcooper/linux.git irqchip/core
->> F:      Documentation/devicetree/bindings/interrupt-controller/
->> F:      drivers/irqchip/
->>
->>   Ralf
->>
->>
->>> diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
->>> index ddd1c91..47ff7c6 100644
->>> --- a/arch/mips/include/asm/irq.h
->>> +++ b/arch/mips/include/asm/irq.h
->>> @@ -53,6 +53,7 @@ static inline int irq_canonicalize(int irq)
->>>  #define irq_canonicalize(irq) (irq) /* Sane hardware, sane code ... */
->>>  #endif
->>>
->>> +struct irq_data;
->>>  asmlinkage void plat_irq_dispatch(void);
->>>
->>>  extern void do_IRQ(unsigned int irq);
->>> @@ -63,6 +64,8 @@ extern void spurious_interrupt(void);
->>>  extern int allocate_irqno(void);
->>>  extern void alloc_legacy_irqno(void);
->>>  extern void free_irqno(unsigned int irq);
->>> +extern int plat_set_irq_affinity(struct irq_data *d,
->>> +                             const struct cpumask *affinity, bool force);
->>>
->>>  /*
->>>   * Before R2 the timer and performance counter interrupts were both fixed to
->>> diff --git a/arch/mips/loongson64/loongson-3/irq.c b/arch/mips/loongson64/loongson-3/irq.c
->>> index 2e6e205..e8b7a47 100644
->>> --- a/arch/mips/loongson64/loongson-3/irq.c
->>> +++ b/arch/mips/loongson64/loongson-3/irq.c
->
-> [...]
->
-> Not going to comment on the Loongson-specific code which doesn't make
-> much sense to me (the patch doesn't explain anything about what it is
-> actually doing), but...
->
->>> diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
->>> index 1aec12c..95d21e3 100644
->>> --- a/drivers/irqchip/irq-i8259.c
->>> +++ b/drivers/irqchip/irq-i8259.c
->>> @@ -46,6 +46,9 @@ static struct irq_chip i8259A_chip = {
->>>      .irq_disable            = disable_8259A_irq,
->>>      .irq_unmask             = enable_8259A_irq,
->>>      .irq_mask_ack           = mask_and_ack_8259A,
->>> +#ifdef CONFIG_CPU_LOONGSON3
->>> +    .irq_set_affinity       = plat_set_irq_affinity,
->>> +#endif
->>>  };
->
-> ... that's a pretty horrible way of hooking up inside a random driver.
->
-> Doesn't MIPS have some form of multi-platform kernel? If you need to add
-> something like this, it'd be better to set it at runtime, once you've
-> made sure that you're on the relevant HW (and preferably using an accessor).
->
-> Thanks,
->
->         M.
-> --
-> Jazz is not dead. It just smells funny...
->
+On 14/06/17 14:39, Daniel Lezcano wrote:
+> The function name is now renamed to 'timer_probe' for consistency with
+> the CLOCKSOURCE_OF_DECLARE => TIMER_OF_DECLARE change.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Acked-by: Heiko Stuebner <heiko@sntech.de>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+[...]
+> diff --git a/arch/arm/mach-mediatek/mediatek.c b/arch/arm/mach-mediatek/mediatek.c
+> index a6e3c98..c3cf215 100644
+> --- a/arch/arm/mach-mediatek/mediatek.c
+> +++ b/arch/arm/mach-mediatek/mediatek.c
+> @@ -41,7 +41,7 @@ static void __init mediatek_timer_init(void)
+>   	}
+>   
+>   	of_clk_init(NULL);
+> -	clocksource_probe();
+> +	timer_probe();
+>   };
+
+Acked-by: Matthias Brugger <matthias.bgg@gmail.com>

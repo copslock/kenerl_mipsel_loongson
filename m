@@ -1,36 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 19:27:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42448 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993887AbdFOR1v1D6li (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 19:27:51 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E4C4EFCE3C069;
-        Thu, 15 Jun 2017 18:27:40 +0100 (IST)
-Received: from [10.20.78.209] (10.20.78.209) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 15 Jun 2017
- 18:27:43 +0100
-Date:   Thu, 15 Jun 2017 18:27:34 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 5/6] MIPS: tlbex: Use ErrorEPC as scratch when KScratch
- isn't available
-In-Reply-To: <20170602223806.5078-6-paul.burton@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1706151806310.23046@tp.orcam.me.uk>
-References: <20170602223806.5078-1-paul.burton@imgtec.com> <20170602223806.5078-6-paul.burton@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2017 19:49:49 +0200 (CEST)
+Received: from mail-yb0-x22c.google.com ([IPv6:2607:f8b0:4002:c09::22c]:33258
+        "EHLO mail-yb0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993887AbdFORtmi2dci (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2017 19:49:42 +0200
+Received: by mail-yb0-x22c.google.com with SMTP id 84so6161553ybe.0
+        for <linux-mips@linux-mips.org>; Thu, 15 Jun 2017 10:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=BZSzYAycHpgUUVsHpFyI8l+8OQOyR5IEINOmLXdArfo=;
+        b=tu9iKfybNzs4GahbOrA+wT2FbhVaQwBYL0I6Bb6YJHPBxfyRdgboItp1Ft632lJ70+
+         q5AL1o9JCb5oSXzkR+Cl8dYSjjGpnyVZYixvPUBjoKMKNo17Xrqv3UXn16eiyqObjd8D
+         bf61uJxY1G8x3ioM8XmTc5aY+m4G5BKZBcPNRIR4zf1AAy4tkSxDdO1+XSnpCm0ewtp5
+         XEVaI2E4Sy5NmZeRObIbXDujnGvCv+Grut5Li8FT1aT/S24QrOMy4yLWX215l2QUE2N4
+         +21zu4/HOFqnef+k9Np6EX73CAr9mosHn07mK45Cc8l/UfZUfxWeVyjX91Zo+PGlJyLn
+         th8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=BZSzYAycHpgUUVsHpFyI8l+8OQOyR5IEINOmLXdArfo=;
+        b=NzDLR8DJNufWvJG7Q51gJwf4MiE3pPum45rieHLp8tNaYA8oR7Rx2/HlcuiNHHXCwe
+         D7qtq6+p0T+kTJfM0T/2OYNIgCMdF4rFNagU4eealdwbhB+kBZGjctB4BQcw7jw+Rgjp
+         77wvTpcRV1LwHwchbIJSNB3Jg0umcGd55OJvyvalxLKcIMqT0a+nrx1HtLFr735mwkyE
+         osWIK0gGxdmzRo+DK3JEXEconmd/bmeud72OZ6gTNdkEn7SvFXj2C+st0/xCTYIwFoyy
+         jYEpPR0gb10KHi+7ZdGzlAUW6xvyvGXVcZFrtKOJCfme1Q8+Z0++TSJzHsRKTMMoCSkx
+         k8Ww==
+X-Gm-Message-State: AKS2vOyaDUd/se8AQTxLj1w1Ek4jjEQeyDbebjaT9J8jVs/pxz2h1/Dc
+        drkJt8K3cf9XQAx2QdcX0nq/S1xorA==
+X-Received: by 10.37.218.5 with SMTP id n5mr5617391ybf.83.1497548976589; Thu,
+ 15 Jun 2017 10:49:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.209]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: by 10.37.128.200 with HTTP; Thu, 15 Jun 2017 10:49:16 -0700 (PDT)
+In-Reply-To: <ba54aeb4-3b6d-c959-93a4-b94328865dd3@bethel-hill.org>
+References: <ba54aeb4-3b6d-c959-93a4-b94328865dd3@bethel-hill.org>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Thu, 15 Jun 2017 10:49:16 -0700
+Message-ID: <CAEdQ38HXhD29HSb3TJerPYqadQw6pKt7xRgo9kLFpWDVZkJJcQ@mail.gmail.com>
+Subject: Re: Free MIPS hardware....you pay shipping.
+To:     "Steven J. Hill" <sjhill@bethel-hill.org>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        port-sgimips@netbsd.org, port-mips@netbsd.org,
+        port-hpcmips@netbsd.org, sibyte-users@bitmover.com,
+        sibyte-users <sibyte-users@mcvoy.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <mattst88@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58477
+X-archive-position: 58478
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,28 +66,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2 Jun 2017, Paul Burton wrote:
+On Thu, Jun 15, 2017 at 10:02 AM, Steven J. Hill <sjhill@bethel-hill.org> wrote:
+> Hello.
+>
+> It is time to get rid of more hardware. If you pay shipping, you
+> can have it. Here is the first batch:
+>
+>   (1) SiByte SWARM board in ATX case
+>   (1) R8000 SGI Indigo2
+>   (4) Philips Nino (Windows CE) handheld PCs. Three of them are
+>       the monochrome units and one of them is color.
+>
+> I have a ton, in the literal sense, of more SGI hardware that I
+> need to go through in the next couple of months. Email me if
+> interested.
 
-> This patch changes this such that when KScratch registers aren't
-> implemented we use the coprocessor 0 ErrorEPC register as scratch
-> instead. The only downside to this is that we will need to ensure that
-> TLB exceptions don't occur whilst handling error exceptions, or at least
-> before the handlers for such exceptions have read the ErrorEPC register.
-> As the kernel always runs unmapped, or using a wired TLB entry for
-> certain SGI ip27 configurations, this constraint is currently always
-> satisfied. In the future should the kernel become mapped we will need to
-> cover exception handling code with a wired entry anyway such that TLB
-> exception handlers don't themselves trigger TLB exceptions, so the
-> constraint should be satisfied there too.
+I'm interested. My SWARM had been doing lots of Gentoo things, but has
+become unstable.
 
- All error exception handlers run from (C)KSEG1 and with (X)KUSEG forcibly 
-unmapped, so a TLB exception could only ever happen with an access to the 
-kernel stack or static data located in (C)KSEG2 or XKSEG.  I think this 
-can be easily avoided, and actually should, to avoid cascading errors.
+I'll email you off list.
 
- Isn't the reverse a problem though, i.e. getting an error exception while 
-running a TLB exception handler and consequently getting the value stashed 
-in CP0.ErrorEPC clobbered?  Or do we assume all error exceptions are fatal 
-and the kernel shall panic without ever getting back?
-
-  Maciej
+Thanks!

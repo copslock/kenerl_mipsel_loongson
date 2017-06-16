@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 14:23:08 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:23374 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994811AbdFPMXBnJlHl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 14:23:01 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 95A0163D36211;
-        Fri, 16 Jun 2017 13:22:51 +0100 (IST)
-Received: from LDT-J-COWGILL.le.imgtec.org (10.150.130.85) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 16 Jun 2017 13:22:54 +0100
-From:   James Cowgill <James.Cowgill@imgtec.com>
-To:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>, James Cowgill <James.Cowgill@imgtec.com>
-Subject: [PATCH] KVM: MIPS: Fix maybe-uninitialized build failure
-Date:   Fri, 16 Jun 2017 13:05:02 +0100
-Message-ID: <20170616120502.2660-1-James.Cowgill@imgtec.com>
-X-Mailer: git-send-email 2.11.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 15:27:08 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:33132 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994817AbdFPN1BWsQH7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Jun 2017 15:27:01 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 8AAD41A4AA7;
+        Fri, 16 Jun 2017 15:26:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkn153 (rtrkn153.domain.local [192.168.236.145])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 718D21A4A3F;
+        Fri, 16 Jun 2017 15:26:54 +0200 (CEST)
+From:   "Petar Jovanovic" <petar.jovanovic@rt-rk.com>
+To:     "'Maciej W. Rozycki'" <macro@imgtec.com>,
+        "'David Daney'" <ddaney@caviumnetworks.com>
+Cc:     "'Petar Jovanovic'" <Petar.Jovanovic@imgtec.com>,
+        <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        <david.daney@cavium.com>
+References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com> <001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org> <002c01d2c80f$52e66060$f8b32120$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org> <alpine.DEB.2.00.1705210223180.2590@tp.orcam.me.uk> <22c5e59d-fb87-9dbf-1285-2a5ff3b62497@caviumnetworks.com> <alpine.DEB.2.00.1705221846340.2590@tp.orcam.me.uk>
+In-Reply-To: <alpine.DEB.2.00.1705221846340.2590@tp.orcam.me.uk>
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and mips64r1
+Date:   Fri, 16 Jun 2017 15:26:54 +0200
+Message-ID: <000a01d2e6a4$38a8fe70$a9fafb50$@rt-rk.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.150.130.85]
-Return-Path: <James.Cowgill@imgtec.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 15.0
+Content-Language: en-us
+Thread-Index: AQFk0u1L5Xxe++MwOaWf1NpDgdbVAQD+Q8JBAi8P7/cBht+ufgJrlzj2AtLLO/IBy5iamAEgIZO+opyv4RA=
+Return-Path: <petar.jovanovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58525
+X-archive-position: 58526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Cowgill@imgtec.com
+X-original-sender: petar.jovanovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,53 +49,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This commit fixes a "maybe-uninitialized" build failure in
-arch/mips/kvm/tlb.c when KVM, DYNAMIC_DEBUG and JUMP_LABEL are all
-enabled. The failure is:
+Can this change be applied now?
 
-In file included from ./include/linux/printk.h:329:0,
-                 from ./include/linux/kernel.h:13,
-                 from ./include/asm-generic/bug.h:15,
-                 from ./arch/mips/include/asm/bug.h:41,
-                 from ./include/linux/bug.h:4,
-                 from ./include/linux/thread_info.h:11,
-                 from ./include/asm-generic/current.h:4,
-                 from ./arch/mips/include/generated/asm/current.h:1,
-                 from ./include/linux/sched.h:11,
-                 from arch/mips/kvm/tlb.c:13:
-arch/mips/kvm/tlb.c: In function ‘kvm_mips_host_tlb_inv’:
-./include/linux/dynamic_debug.h:126:3: error: ‘idx_kernel’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
-   __dynamic_pr_debug(&descriptor, pr_fmt(fmt), \
-   ^~~~~~~~~~~~~~~~~~
-arch/mips/kvm/tlb.c:169:16: note: ‘idx_kernel’ was declared here
-  int idx_user, idx_kernel;
-                ^~~~~~~~~~
+Thanks.
 
-There is a similar error relating to "idx_user".
-
-As far as I can tell, it is impossible for either idx_user or idx_kernel
-to be uninitialized when they are later read in the calls to kvm_debug,
-but to satisfy the compiler, add zero initializers to both variables.
-
-Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-Fixes: 57e3869cfaae ("KVM: MIPS/TLB: Generalise host TLB invalidate to kernel ASID")
-Cc: <stable@vger.kernel.org> # 4.11+
----
- arch/mips/kvm/tlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
-index 7c6336dd2638..41d239269988 100644
---- a/arch/mips/kvm/tlb.c
-+++ b/arch/mips/kvm/tlb.c
-@@ -166,7 +166,7 @@ static int _kvm_mips_host_tlb_inv(unsigned long entryhi)
- int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long va,
- 			  bool user, bool kernel)
- {
--	int idx_user, idx_kernel;
-+	int idx_user = 0, idx_kernel = 0;
- 	unsigned long flags, old_entryhi;
- 
- 	local_irq_save(flags);
--- 
-2.11.0
+Regards,
+Petar

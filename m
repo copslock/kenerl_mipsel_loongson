@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:18:54 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:38023 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:19:18 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:44482 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994838AbdFPSMMOZdeW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:12:12 +0200
+        by eddie.linux-mips.org with ESMTP id S23994853AbdFPSMQMUAjW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:12:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=vynTVxaIEUq4+vT5R9f4m3sikcjmjIuPh1Afbfc+ngA=; b=tmfRjxgvTbnfLchrtcD+O3+7r
-        gx1TCXK+KEAv1JiP7gRHaGY6c1QeWv1H5LqkxTUBiorjC6paQl5OgKJ5c1JOxcKQel89WetICv7oV
-        1u+9osY5eGJO4MlIYtz0yEAl/FgfhIuqMbMb4pKSTRAxM6HCkCNPGMy45AmcUp26pR7opLnzUq6tr
-        Rq9I9O9YPBj3ys6tn+Ifl5pF+01xEXvGqS1DZ5JkB5aecpLMC9YuMWgiooXlRXjzwAaUeO4EOly7u
-        7WuhY9mGP03ggHDRwp3NVOobKGtGpc47MUunRnpV81b4ic8iJA4BY0CU7kLlz0ejnm4aNe+5I6OL6
-        40kerCH/Q==;
+         bh=1dtxUOxP7ZlKqBs8WTsw3wVNwLvNEAwp0in+GBgczaI=; b=EPMyhyQjO/q0CE6xKavgOu/N0
+        I7rfI+HdFYeoTkqQ4EYHVg9y+u2Z0ndkfugoYAD28vwvAUDgreApM7RGBhQ4/923Rno+qfETucUm6
+        oYhdaXhekcXCTHW6DhmVzUE8JPSAiW98vUF8IQE4Ckm+CWniRxAmE18WWcHQXdivls5sj0kHtSBRb
+        bBrsfOfkYlNBPmT6fxfSgFebEThI3ZzsKbdfoc8DwIZMQQi0si336d0E5qpPOG46uxXuHa1KnkfgS
+        dEd7KdSmifgmVynoloWcfg7v0lhm8fwVfHlmXg1TNmg2HWuhzRDS3J4HDinQoZJGAZ0kTjV9M9pAy
+        s9UQjg7qw==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dLvj6-0005OU-3g; Fri, 16 Jun 2017 18:12:08 +0000
+        id 1dLvj9-0005Pq-5y; Fri, 16 Jun 2017 18:12:11 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 17/44] hexagon: switch to use ->mapping_error for error reporting
-Date:   Fri, 16 Jun 2017 20:10:32 +0200
-Message-Id: <20170616181059.19206-18-hch@lst.de>
+Subject: [PATCH 18/44] iommu/amd: implement ->mapping_error
+Date:   Fri, 16 Jun 2017 20:10:33 +0200
+Message-Id: <20170616181059.19206-19-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170616181059.19206-1-hch@lst.de>
 References: <20170616181059.19206-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58548
+X-archive-position: 58549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,85 +58,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Richard Kuo <rkuo@codeaurora.org>
----
- arch/hexagon/include/asm/dma-mapping.h |  2 --
- arch/hexagon/kernel/dma.c              | 12 +++++++++---
- arch/hexagon/kernel/hexagon_ksyms.c    |  1 -
- 3 files changed, 9 insertions(+), 6 deletions(-)
+DMA_ERROR_CODE is going to go away, so don't rely on it.
 
-diff --git a/arch/hexagon/include/asm/dma-mapping.h b/arch/hexagon/include/asm/dma-mapping.h
-index d3a87bd9b686..00e3f10113b0 100644
---- a/arch/hexagon/include/asm/dma-mapping.h
-+++ b/arch/hexagon/include/asm/dma-mapping.h
-@@ -29,8 +29,6 @@
- #include <asm/io.h>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/iommu/amd_iommu.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
+index 63cacf5d6cf2..d41280e869de 100644
+--- a/drivers/iommu/amd_iommu.c
++++ b/drivers/iommu/amd_iommu.c
+@@ -54,6 +54,8 @@
+ #include "amd_iommu_types.h"
+ #include "irq_remapping.h"
  
- struct device;
--extern int bad_dma_address;
--#define DMA_ERROR_CODE bad_dma_address
- 
- extern const struct dma_map_ops *dma_ops;
- 
-diff --git a/arch/hexagon/kernel/dma.c b/arch/hexagon/kernel/dma.c
-index e74b65009587..71269dc0f225 100644
---- a/arch/hexagon/kernel/dma.c
-+++ b/arch/hexagon/kernel/dma.c
-@@ -25,11 +25,11 @@
- #include <linux/module.h>
- #include <asm/page.h>
- 
-+#define HEXAGON_MAPPING_ERROR	0
++#define AMD_IOMMU_MAPPING_ERROR	0
 +
- const struct dma_map_ops *dma_ops;
- EXPORT_SYMBOL(dma_ops);
+ #define CMD_SET_TYPE(cmd, t) ((cmd)->data[1] |= ((t) << 28))
  
--int bad_dma_address;  /*  globals are automatically initialized to zero  */
--
- static inline void *dma_addr_to_virt(dma_addr_t dma_addr)
- {
- 	return phys_to_virt((unsigned long) dma_addr);
-@@ -181,7 +181,7 @@ static dma_addr_t hexagon_map_page(struct device *dev, struct page *page,
- 	WARN_ON(size == 0);
+ #define LOOP_TIMEOUT	100000
+@@ -2394,7 +2396,7 @@ static dma_addr_t __map_single(struct device *dev,
+ 	paddr &= PAGE_MASK;
  
- 	if (!check_addr("map_single", dev, bus, size))
--		return bad_dma_address;
-+		return HEXAGON_MAPPING_ERROR;
+ 	address = dma_ops_alloc_iova(dev, dma_dom, pages, dma_mask);
+-	if (address == DMA_ERROR_CODE)
++	if (address == AMD_IOMMU_MAPPING_ERROR)
+ 		goto out;
  
- 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
- 		dma_sync(dma_addr_to_virt(bus), size, dir);
-@@ -203,6 +203,11 @@ static void hexagon_sync_single_for_device(struct device *dev,
- 	dma_sync(dma_addr_to_virt(dma_handle), size, dir);
+ 	prot = dir2prot(direction);
+@@ -2431,7 +2433,7 @@ static dma_addr_t __map_single(struct device *dev,
+ 
+ 	dma_ops_free_iova(dma_dom, address, pages);
+ 
+-	return DMA_ERROR_CODE;
++	return AMD_IOMMU_MAPPING_ERROR;
  }
  
-+static int hexagon_mapping_error(struct device *dev, dma_addr_t dma_addr)
+ /*
+@@ -2483,7 +2485,7 @@ static dma_addr_t map_page(struct device *dev, struct page *page,
+ 	if (PTR_ERR(domain) == -EINVAL)
+ 		return (dma_addr_t)paddr;
+ 	else if (IS_ERR(domain))
+-		return DMA_ERROR_CODE;
++		return AMD_IOMMU_MAPPING_ERROR;
+ 
+ 	dma_mask = *dev->dma_mask;
+ 	dma_dom = to_dma_ops_domain(domain);
+@@ -2560,7 +2562,7 @@ static int map_sg(struct device *dev, struct scatterlist *sglist,
+ 	npages = sg_num_pages(dev, sglist, nelems);
+ 
+ 	address = dma_ops_alloc_iova(dev, dma_dom, npages, dma_mask);
+-	if (address == DMA_ERROR_CODE)
++	if (address == AMD_IOMMU_MAPPING_ERROR)
+ 		goto out_err;
+ 
+ 	prot = dir2prot(direction);
+@@ -2683,7 +2685,7 @@ static void *alloc_coherent(struct device *dev, size_t size,
+ 	*dma_addr = __map_single(dev, dma_dom, page_to_phys(page),
+ 				 size, DMA_BIDIRECTIONAL, dma_mask);
+ 
+-	if (*dma_addr == DMA_ERROR_CODE)
++	if (*dma_addr == AMD_IOMMU_MAPPING_ERROR)
+ 		goto out_free;
+ 
+ 	return page_address(page);
+@@ -2732,6 +2734,11 @@ static int amd_iommu_dma_supported(struct device *dev, u64 mask)
+ 	return check_device(dev);
+ }
+ 
++static int amd_iommu_mapping_error(struct device *dev, dma_addr_t dma_addr)
 +{
-+	return dma_addr == HEXAGON_MAPPING_ERROR;
++	return dma_addr == AMD_IOMMU_MAPPING_ERROR;
 +}
 +
- const struct dma_map_ops hexagon_dma_ops = {
- 	.alloc		= hexagon_dma_alloc_coherent,
- 	.free		= hexagon_free_coherent,
-@@ -210,6 +215,7 @@ const struct dma_map_ops hexagon_dma_ops = {
- 	.map_page	= hexagon_map_page,
- 	.sync_single_for_cpu = hexagon_sync_single_for_cpu,
- 	.sync_single_for_device = hexagon_sync_single_for_device,
-+	.mapping_error	= hexagon_mapping_error;
- 	.is_phys	= 1,
+ static const struct dma_map_ops amd_iommu_dma_ops = {
+ 	.alloc		= alloc_coherent,
+ 	.free		= free_coherent,
+@@ -2740,6 +2747,7 @@ static const struct dma_map_ops amd_iommu_dma_ops = {
+ 	.map_sg		= map_sg,
+ 	.unmap_sg	= unmap_sg,
+ 	.dma_supported	= amd_iommu_dma_supported,
++	.mapping_error	= amd_iommu_mapping_error,
  };
  
-diff --git a/arch/hexagon/kernel/hexagon_ksyms.c b/arch/hexagon/kernel/hexagon_ksyms.c
-index 00bcad9cbd8f..aa248f595431 100644
---- a/arch/hexagon/kernel/hexagon_ksyms.c
-+++ b/arch/hexagon/kernel/hexagon_ksyms.c
-@@ -40,7 +40,6 @@ EXPORT_SYMBOL(memset);
- /* Additional variables */
- EXPORT_SYMBOL(__phys_offset);
- EXPORT_SYMBOL(_dflt_cache_att);
--EXPORT_SYMBOL(bad_dma_address);
- 
- #define DECLARE_EXPORT(name)     \
- 	extern void name(void); EXPORT_SYMBOL(name)
+ static int init_reserved_iova_ranges(void)
 -- 
 2.11.0

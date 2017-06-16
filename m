@@ -1,68 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 19:45:22 +0200 (CEST)
-Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:32985
-        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994825AbdFPRpQAVQWW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 19:45:16 +0200
-Received: by mail-qt0-x244.google.com with SMTP id w1so11827135qtg.0;
-        Fri, 16 Jun 2017 10:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=dToX9QnETfn5zhRp6jo+t9x9arbjBPdpY2iBGgvn9pc=;
-        b=Ih+jrH4J6qS/pTcRIujVWSJ/ID9hftiP6nQVfcYKE1COU97tfhqT9qIiwmtsZdKGH0
-         7Bq2HQwDLbAdDTmkvsheOt+DtDQda9dkhqYARKkn3R7L4hWdIBnwuUlVUO0UhliEUiFC
-         AyXCJQ8eeR4Xyz5enMWMc+jHQFZDfnX9+AblacXzJVQiudrjBn2QQZ2XDhZCTCHvdrHW
-         Zvn+iOLTUhRo7OWrHQiWzJ5JsHnqi5PD0EXQYzD+P+MI6lO8JQrr9lQ2WutYHNUCM8UA
-         kC1hFiJ64KTGkvfbUkWoD9dE6XQxcLLU4H1uxa9QrQEeVwRHcCWmf1MgLZPh7/gtbA5y
-         Bu4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=dToX9QnETfn5zhRp6jo+t9x9arbjBPdpY2iBGgvn9pc=;
-        b=KW1Z2eZLy1DYeCXAqKwODeie+bw6JxNzaUy2QlbKESLKHwpw0L/OsLbLCTeBVa4HZX
-         LyILDKFBGDVrfDa1oyoKzmDipK/bXCtbnEmatoWvr8k/9hb/U9/bV7eMwbfQID9YohHe
-         AZiS0hRnqeW8aVAM255cS+A+wcmn1tE6SwcyUy0jVNkjaHzJpd1EkMktcb+zXvVpkQvi
-         MkUWOGYF0hwc1dG1j9STjRGdhLZqzmO0d0M7L2/CPDO8Fo3ixW/WAB4OfTngc7hNM3l/
-         Ppk1YMCYqAu4i20MKs6rwi2jLgYSI/A0dBxw/ViySRLui0YScdGB7aagd+UnKoRTUJkf
-         6Izg==
-X-Gm-Message-State: AKS2vOyOsOLQLR1AIpSA3kZpuoKcxbrMmpGn3Mp7V+iiBuD3OZwCecSe
-        45X1yiDn3ASAUw==
-X-Received: by 10.55.127.199 with SMTP id a190mr14897424qkd.100.1497635110213;
-        Fri, 16 Jun 2017 10:45:10 -0700 (PDT)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id x78sm1865682qkb.44.2017.06.16.10.45.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 16 Jun 2017 10:45:09 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: Make individual platforms select
- ARCH_MIGHT_HAVE_PC_SERIO
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     linux-mips@linux-mips.org, msalter@redhat.com,
-        dmitry.torokhov@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20170605171033.15008-1-f.fainelli@gmail.com>
- <alpine.DEB.2.00.1706160249370.23046@tp.orcam.me.uk>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <1ccd3748-9b52-2b23-f686-df86d8be050d@gmail.com>
-Date:   Fri, 16 Jun 2017 10:45:05 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
-MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.00.1706160249370.23046@tp.orcam.me.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:11:17 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:50639 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994824AbdFPSLKQbC3W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:11:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=41KyiF2F2DWxIRbSvuXvB+YeQ1lQaKy72q70xwqtfwY=; b=jvwxIOJNuTIbiA+Bvx9+xA5YP
+        hm9SWuBM21AkR4HkfU3qGsSsnbHIfzD3V+zzFV8+SIv5ZTA6diCkZ2LKOBfLLxaIxB4kLw525b/jC
+        0C2IxfI/RFHJ7gLyyOQ+PYsYXSN9FfcPQ4mgv0h3uW+WbtIRUCnQpvirj+1kQPJmzbJQfM/062Tjs
+        C8fDBhq6FSyB2lWQ1tP8eERVm8ZPnQOCv5VBB4uzczF92Q8g99m1cUumT3Wu77BCi6TqOspLxtfUg
+        ZAzIUxQbtw0FbDc5NQLm8fjAS0czt2dhQjE+U+PG2kFwkdCGR3T4k3J/bUw6UfMIBV/hYBfP1kFBD
+        n4ULYpqoA==;
+Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
+        id 1dLvi2-00043r-UL; Fri, 16 Jun 2017 18:11:03 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: clean up and modularize arch dma_mapping interface V2
+Date:   Fri, 16 Jun 2017 20:10:15 +0200
+Message-Id: <20170616181059.19206-1-hch@lst.de>
+X-Mailer: git-send-email 2.11.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58530
+X-archive-position: 58531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,25 +56,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/15/2017 06:56 PM, Maciej W. Rozycki wrote:
-> On Mon, 5 Jun 2017, Florian Fainelli wrote:
-> 
->> Out of the many MIPS platforms only 3 appear to be actually using an
->> I8042 keyboard controller: SGI, JAZZ and LOOGSON64, remove
->> ARCH_MIGHT_HAVE_PC_SERIO from the top-level MIPS Kconfig symbol and move
->> it down to those platforms that need it.
-> 
->  How did you determine that?  Malta for one not only has an SMSC FDC37M817 
-> Super I/O Controller featuring an 8042-compatible core, but actual PS/2 
-> keyboard and mouse connectors as well.
+Hi all,
 
-I was just grepping for i8042 in platform code to determine that, this
-came after having SERIO accidentally enabled on my platform
-(BMIPS_GENERIC) and seeing that it crashed badly and it annoyed the crap
-out of me that MIPS had ARCH_MIGHT_HAVE_PC_SERIO for platforms that
-don't need it.
+for a while we have a generic implementation of the dma mapping routines
+that call into per-arch or per-device operations.  But right now there
+still are various bits in the interfaces where don't clearly operate
+on these ops.  This series tries to clean up a lot of those (but not all
+yet, but the series is big enough).  It gets rid of the DMA_ERROR_CODE
+way of signaling failures of the mapping routines from the
+implementations to the generic code (and cleans up various drivers that
+were incorrectly using it), and gets rid of the ->set_dma_mask routine
+in favor of relying on the ->dma_capable method that can be used in
+the same way, but which requires less code duplication.
 
-Will come up with a v2 that includes malta, any other platforms for
-which it's not obvious?
--- 
-Florian
+I've got a good number of reviews last time, but a few are still missing.
+I'd love to not have to re-spam everyone with this patchbomb, so early
+ACKs (or complaints) are welcome.
+
+I plan to create a new dma-mapping tree to collect all this work.
+Any volunteers for co-maintainers, especially from the iommu gang?
+
+The whole series is also available in git:
+
+    git://git.infradead.org/users/hch/misc.git dma-map
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-map
+
+Changes since V1:
+ - remove two lines of code from arm dmabounce
+ - a few commit message tweaks
+ - lots of ACKs

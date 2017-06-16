@@ -1,56 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 13:03:25 +0200 (CEST)
-Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:33950
-        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994805AbdFPLDS6eye2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 13:03:18 +0200
-Received: by mail-pg0-x243.google.com with SMTP id j186so5570114pge.1;
-        Fri, 16 Jun 2017 04:03:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=KX0MN6WlTzhUNELLNw31bPZI7AcRXIxyPMeWzTmB+zg=;
-        b=EGKc+adhiT5XtCYuhhvT1dsysSol0RZxWUEqAUy4YIsseTj4dlwmiUSgrLG0wIgaGa
-         gK4Uhfauu2I7YCwlYFeCHCKBv0nDAfIri53Hc/9lNxzBl35cr+e7CZZ95GUpkyPMmU+e
-         HcbU26WbAqkZx8yfOsYTWvjPLZqKhXJo/Ga9/iDqsEa22mcoaRaIXpv4iB65Mkon5fq2
-         SelyX+p2VIW14Wi8vjzC/eJV/6Iln+u5PcQX80zaStZt2epMsuAorAsXI3isRBc7abBi
-         s6QYQP6EjwgOTV7wL3dmRxrEi+b9fADcEGiehoZdn/CVK32abfKJI4i7GK6LB8B5MH4h
-         stQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=KX0MN6WlTzhUNELLNw31bPZI7AcRXIxyPMeWzTmB+zg=;
-        b=nmiiTLVGK5bnWoZ2ToYVpxwfbhMf99o5fvUCr930c94HqXl/Dzi3bjlnlhLe6j/q10
-         HZy0fmQhqvs419we5VptVUR2jCSKItvNyuBZil44Npq+DOny8hZlbuel06VhZ4513lt8
-         7ib0mmqiLPyYFswuwF572HXr4svm2syF6ho2bEr+u2/DEUIh0koK9CjVLvSdZWv7EiuQ
-         DHdCDdD6kHeyRE8XZ7VGu07RTGsB/o7aQOPhEAeBSgEm3TY9p7vqepHg1xzj61t2SnUl
-         07aWPwVqglu7kYlmbBONmbMfxnYD0ayn+Z7Ldq5o9RCH9KA2XJONXlXv7ouK/nO814wS
-         WojA==
-X-Gm-Message-State: AKS2vOynkXhPKwrWOGFxhix4rEbFXdtWHghyUy0TIgLBYSZMAtrZg6/J
-        kBxUSFAHYOrxjoXwwDA=
-X-Received: by 10.99.44.67 with SMTP id s64mr10768327pgs.111.1497610992596;
-        Fri, 16 Jun 2017 04:03:12 -0700 (PDT)
-Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id x6sm3976224pfk.22.2017.06.16.04.03.09
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 16 Jun 2017 04:03:11 -0700 (PDT)
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
-        Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH] MIPS: BMIPS: Fix missing cbr address
-Date:   Fri, 16 Jun 2017 20:03:01 +0900
-Message-Id: <20170616110301.38103-1-jaedon.shin@gmail.com>
-X-Mailer: git-send-email 2.13.1
-Return-Path: <jaedon.shin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 14:23:08 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:23374 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994811AbdFPMXBnJlHl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 14:23:01 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 95A0163D36211;
+        Fri, 16 Jun 2017 13:22:51 +0100 (IST)
+Received: from LDT-J-COWGILL.le.imgtec.org (10.150.130.85) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 16 Jun 2017 13:22:54 +0100
+From:   James Cowgill <James.Cowgill@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <kvm@vger.kernel.org>, James Cowgill <James.Cowgill@imgtec.com>
+Subject: [PATCH] KVM: MIPS: Fix maybe-uninitialized build failure
+Date:   Fri, 16 Jun 2017 13:05:02 +0100
+Message-ID: <20170616120502.2660-1-James.Cowgill@imgtec.com>
+X-Mailer: git-send-email 2.11.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.150.130.85]
+Return-Path: <James.Cowgill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58524
+X-archive-position: 58525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: James.Cowgill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,31 +44,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fixes NULL pointer access in BMIPS3300 RAC flush.
+This commit fixes a "maybe-uninitialized" build failure in
+arch/mips/kvm/tlb.c when KVM, DYNAMIC_DEBUG and JUMP_LABEL are all
+enabled. The failure is:
 
-Fixes: 738a3f79027b ("MIPS: BMIPS: Add early CPU initialization code")
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+In file included from ./include/linux/printk.h:329:0,
+                 from ./include/linux/kernel.h:13,
+                 from ./include/asm-generic/bug.h:15,
+                 from ./arch/mips/include/asm/bug.h:41,
+                 from ./include/linux/bug.h:4,
+                 from ./include/linux/thread_info.h:11,
+                 from ./include/asm-generic/current.h:4,
+                 from ./arch/mips/include/generated/asm/current.h:1,
+                 from ./include/linux/sched.h:11,
+                 from arch/mips/kvm/tlb.c:13:
+arch/mips/kvm/tlb.c: In function ‘kvm_mips_host_tlb_inv’:
+./include/linux/dynamic_debug.h:126:3: error: ‘idx_kernel’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
+   __dynamic_pr_debug(&descriptor, pr_fmt(fmt), \
+   ^~~~~~~~~~~~~~~~~~
+arch/mips/kvm/tlb.c:169:16: note: ‘idx_kernel’ was declared here
+  int idx_user, idx_kernel;
+                ^~~~~~~~~~
+
+There is a similar error relating to "idx_user".
+
+As far as I can tell, it is impossible for either idx_user or idx_kernel
+to be uninitialized when they are later read in the calls to kvm_debug,
+but to satisfy the compiler, add zero initializers to both variables.
+
+Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
+Fixes: 57e3869cfaae ("KVM: MIPS/TLB: Generalise host TLB invalidate to kernel ASID")
+Cc: <stable@vger.kernel.org> # 4.11+
 ---
- arch/mips/kernel/smp-bmips.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kvm/tlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 1b070a76fcdd..5e0d87f4958f 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -589,11 +589,11 @@ void __init bmips_cpu_setup(void)
+diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
+index 7c6336dd2638..41d239269988 100644
+--- a/arch/mips/kvm/tlb.c
++++ b/arch/mips/kvm/tlb.c
+@@ -166,7 +166,7 @@ static int _kvm_mips_host_tlb_inv(unsigned long entryhi)
+ int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long va,
+ 			  bool user, bool kernel)
+ {
+-	int idx_user, idx_kernel;
++	int idx_user = 0, idx_kernel = 0;
+ 	unsigned long flags, old_entryhi;
  
- 		/* Flush and enable RAC */
- 		cfg = __raw_readl(cbr + BMIPS_RAC_CONFIG);
--		__raw_writel(cfg | 0x100, BMIPS_RAC_CONFIG);
-+		__raw_writel(cfg | 0x100, cbr + BMIPS_RAC_CONFIG);
- 		__raw_readl(cbr + BMIPS_RAC_CONFIG);
- 
- 		cfg = __raw_readl(cbr + BMIPS_RAC_CONFIG);
--		__raw_writel(cfg | 0xf, BMIPS_RAC_CONFIG);
-+		__raw_writel(cfg | 0xf, cbr + BMIPS_RAC_CONFIG);
- 		__raw_readl(cbr + BMIPS_RAC_CONFIG);
- 
- 		cfg = __raw_readl(cbr + BMIPS_RAC_ADDRESS_RANGE);
+ 	local_irq_save(flags);
 -- 
-2.13.1
+2.11.0

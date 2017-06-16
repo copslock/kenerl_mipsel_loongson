@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:25:08 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:60639 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:25:32 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:44624 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994893AbdFPSNIjM2CW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:08 +0200
+        by eddie.linux-mips.org with ESMTP id S23994897AbdFPSNPvWkqW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=/YMzv2usr3T651rHR5jW5DWvfbn0sPoYwrpjuefSYlQ=; b=qhz94I4dC6cv5YDWIKykqDosA
-        j8gxdvQDDkCcHDZP6Oa6txpzjoOoV/HYx7yROy6SBa/lOMZTaBc0DAfUs2lks+Izdd/fc9p9Mu0L8
-        0eXbi20t2Bav96B3ndMnQQLj+B7RBbaHbT+j2keBKljI4mv+oF4PzeS85p6fsgnZOcDPZxhOZrqIi
-        g7igcylDUe9JGD5Z4dj1T4cueJ1rUipBxMiAmJ7Tyjp41QeGw1BqZoTU2k5svhmV2eHr9biOsd8if
-        qCLQTxSGS2RGYMG8ksW4s7ssWn7UsGXrgGNnYXt2DMJ9BPeS5qmPNu/PgkEo42LdfBEP35HhXTbNY
-        KynIlavVQ==;
+         bh=BFYucj0uhSvBXnl0FMA4pFkMoYOOqPqumvJauQHEeVk=; b=ivoRv5J5td1CfyWX5rSU4y4xz
+        3NlpwoCCfAQaJLEjYNUIXAn0f1CutARqwY1nRbya9opS+g9Fd1PNY7M2Mz4OeN9MBCt5feRbTwZMm
+        A+PFj+lS27YekXQ04BSBCiWrYPksGtC9PVft5sfioQeoim55Bt7Jng2lgwT4/npbWd8/ulvz0vV3T
+        WCFRp7SW/1B98RNWYmItGb9YZKDSxWos5YQFWJSeiiOvsiTNNp25kQxwWIbQpOQRNcWJ9fQdbT6D3
+        VMDXjw/Y1RsErTrV/2zNIs9WBR70D6/YplgY4wykaWJTyoSjPoPzGz+2IFgrc1axAVWv0y2A93cdg
+        rAD20L/oQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dLvjz-0006YD-9u; Fri, 16 Jun 2017 18:13:03 +0000
+        id 1dLvk2-0006bp-Sg; Fri, 16 Jun 2017 18:13:07 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 32/44] hexagon: remove the unused dma_is_consistent prototype
-Date:   Fri, 16 Jun 2017 20:10:47 +0200
-Message-Id: <20170616181059.19206-33-hch@lst.de>
+Subject: [PATCH 33/44] openrisc: remove arch-specific dma_supported implementation
+Date:   Fri, 16 Jun 2017 20:10:48 +0200
+Message-Id: <20170616181059.19206-34-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170616181059.19206-1-hch@lst.de>
 References: <20170616181059.19206-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58563
+X-archive-position: 58564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,22 +58,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This implementation is simply bogus - openrisc only has a simple
+direct mapped DMA implementation and thus doesn't care about the
+address.
+
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/hexagon/include/asm/dma-mapping.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/openrisc/include/asm/dma-mapping.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/hexagon/include/asm/dma-mapping.h b/arch/hexagon/include/asm/dma-mapping.h
-index 9c15cb5271a6..463dbc18f853 100644
---- a/arch/hexagon/include/asm/dma-mapping.h
-+++ b/arch/hexagon/include/asm/dma-mapping.h
-@@ -37,7 +37,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return dma_ops;
+diff --git a/arch/openrisc/include/asm/dma-mapping.h b/arch/openrisc/include/asm/dma-mapping.h
+index a4ea139c2ef9..f41bd3cb76d9 100644
+--- a/arch/openrisc/include/asm/dma-mapping.h
++++ b/arch/openrisc/include/asm/dma-mapping.h
+@@ -33,11 +33,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ 	return &or1k_dma_map_ops;
  }
  
--extern int dma_is_consistent(struct device *dev, dma_addr_t dma_handle);
- extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 			   enum dma_data_direction direction);
- 
+-#define HAVE_ARCH_DMA_SUPPORTED 1
+-static inline int dma_supported(struct device *dev, u64 dma_mask)
+-{
+-	/* Support 32 bit DMA mask exclusively */
+-	return dma_mask == DMA_BIT_MASK(32);
+-}
+-
+ #endif	/* __ASM_OPENRISC_DMA_MAPPING_H */
 -- 
 2.11.0

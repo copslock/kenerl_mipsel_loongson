@@ -1,51 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:29:54 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:52285 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994907AbdFPSNuBZ64W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=eZHE6yUSAfMLSefbu18rbdpTGXQMlt8s3PB24r4P6cc=; b=JZoNONjpQ2Ds2v9rfZzYVfYuO
-        +z6UHFCnaQMmtWOC0qXuglDEcIpuDvYO2PoRcJUQfw2YwoncyaP3UdtJRHliGSe6q0dnBoyJlVnQf
-        p/K9Eb5i+H8ePY2+REFkworj2km4DW2FKAzU7aYS3+NEL2wJeRJZOVn/PsIOJVqIkJUdN8R7ua+T3
-        D0ytt191cZxz5rpJmuuy7ZUoG3aLZ+fGyhUL8LvmPdQpR0ivDcml9qNKvWZ2TKUbKQqp0Dm0flxiN
-        yTqyRzDqZg+UPGvn5POkplGvzsWdAtaX1RiD8nskOY8nyWbiXE7srYD5ImHpoBhxXw1Lq6ldYKChP
-        GLHaKb6Fw==;
-Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dLvkc-0007Mv-Ii; Fri, 16 Jun 2017 18:13:43 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 44/44] powerpc: merge __dma_set_mask into dma_set_mask
-Date:   Fri, 16 Jun 2017 20:10:59 +0200
-Message-Id: <20170616181059.19206-45-hch@lst.de>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170616181059.19206-1-hch@lst.de>
-References: <20170616181059.19206-1-hch@lst.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 21:51:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25244 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994843AbdFPTvKERFDV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 21:51:10 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 7304491FE2230;
+        Fri, 16 Jun 2017 20:50:58 +0100 (IST)
+Received: from [10.20.78.219] (10.20.78.219) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 16 Jun 2017
+ 20:51:01 +0100
+Date:   Fri, 16 Jun 2017 20:50:50 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 0/5] MIPS: FP cleanup & no-FP support
+In-Reply-To: <3803102.5EWcPJmQIq@np-p-burton>
+Message-ID: <alpine.DEB.2.00.1706162029030.23046@tp.orcam.me.uk>
+References: <20170605182131.16853-1-paul.burton@imgtec.com> <alpine.DEB.2.00.1706160348450.23046@tp.orcam.me.uk> <3803102.5EWcPJmQIq@np-p-burton>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.219]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58575
+X-archive-position: 58576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,54 +42,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/include/asm/dma-mapping.h |  1 -
- arch/powerpc/kernel/dma.c              | 13 ++++---------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+Paul,
 
-diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
-index 73aedbe6c977..eaece3d3e225 100644
---- a/arch/powerpc/include/asm/dma-mapping.h
-+++ b/arch/powerpc/include/asm/dma-mapping.h
-@@ -112,7 +112,6 @@ static inline void set_dma_offset(struct device *dev, dma_addr_t off)
- #define HAVE_ARCH_DMA_SET_MASK 1
- extern int dma_set_mask(struct device *dev, u64 dma_mask);
- 
--extern int __dma_set_mask(struct device *dev, u64 dma_mask);
- extern u64 __dma_get_required_mask(struct device *dev);
- 
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
-diff --git a/arch/powerpc/kernel/dma.c b/arch/powerpc/kernel/dma.c
-index 466c9f07b288..4194bbbbdb10 100644
---- a/arch/powerpc/kernel/dma.c
-+++ b/arch/powerpc/kernel/dma.c
-@@ -314,14 +314,6 @@ EXPORT_SYMBOL(dma_set_coherent_mask);
- 
- #define PREALLOC_DMA_DEBUG_ENTRIES (1 << 16)
- 
--int __dma_set_mask(struct device *dev, u64 dma_mask)
--{
--	if (!dev->dma_mask || !dma_supported(dev, dma_mask))
--		return -EIO;
--	*dev->dma_mask = dma_mask;
--	return 0;
--}
--
- int dma_set_mask(struct device *dev, u64 dma_mask)
- {
- 	if (ppc_md.dma_set_mask)
-@@ -334,7 +326,10 @@ int dma_set_mask(struct device *dev, u64 dma_mask)
- 			return phb->controller_ops.dma_set_mask(pdev, dma_mask);
- 	}
- 
--	return __dma_set_mask(dev, dma_mask);
-+	if (!dev->dma_mask || !dma_supported(dev, dma_mask))
-+		return -EIO;
-+	*dev->dma_mask = dma_mask;
-+	return 0;
- }
- EXPORT_SYMBOL(dma_set_mask);
- 
--- 
-2.11.0
+> > > Paul Burton (5):
+> > >   MIPS: Remove unused R6000 support
+> > >   MIPS: Move r4k FP code from r4k_switch.S to r4k_fpu.S
+> > >   MIPS: Move r2300 FP code from r2300_switch.S to r2300_fpu.S
+> > >   MIPS: Remove unused ST_OFF from r2300_switch.S
+> > >   MIPS: Allow floating point support to be disabled
+> > 
+> > Doesn't ptrace(2) require suitable updates for requests that deal with
+> > the FP context?
+> 
+> I mentioned in the commit message for patch 5 that removing the actual context 
+> fields & ptrace access to them could be done as a further improvement.
+
+ Somehow I missed that, sorry, but in any case I don't find it acceptable.
+
+> > Preferably along with the last change (or maybe ahead of
+> > it) so that we don't have a kernel revision that presents rubbish to the
+> > userland (of course tools like GDB will have to be updated accordingly to
+> > cope, but that's out of scope for Linux itself).
+> 
+> Well, as-is ptrace would still let you read & write to FP registers if you 
+> try, it's just those values will never be used. Are you opposed to that 
+> behaviour? If we do later remove the context entirely then presumably ptrace 
+> would either read 0 or return an error, and ignore writes or return an error - 
+> I suppose if we want to ensure consistent behaviour for that potential future 
+> change then we could choose one of those options & do that here.
+> 
+> In practice I'm not sure I see much benefit - if a debugger wants to write to 
+> context corresponding to registers that just aren't there then letting it 
+> doesn't seem like a big problem. Do you disagree? Note that we already allow 
+> this for hi & lo registers on r6 for example - ptrace will freely read/write 
+> the context even though the registers don't exist.
+
+ I think there must be -EIO for access to any inexistent resource, just as 
+we already do for missing DSP registers.  The client can then handle this 
+appropriately.  (ENXIO would probably be more accurate, however EIO has 
+already been embedded in GDB and changing it would be problematic).
+
+ I wasn't aware about the HI/LO case with R6 -- it clearly looks like a 
+bug to me.  Of course it means more work for GDB and other such software 
+maintainers, but I find it unacceptable if we present users with resources 
+which are not there.
+
+> > Also how about those prctl(2) calls that also operate on FP state?
+> 
+> Patch 5 has them return -EOPNOTSUPP, which is consistent with behaviour when 
+> attempting to set an unsupported mode.
+
+ I missed that, sorry.  I'm not sure if -EOPNOTSUPP (-EINVAL?) or -EIO 
+(-ENXIO?) would be the right code here, i.e. unrecognised vs unsupported, 
+but I can see the existing code does not tell these two cases apart, so I 
+think I'd accept your proposal here as it stands, although this may have 
+to be eventually fixed.  Also glibc code will have to be audited for 
+correct error handling here.
+
+  Maciej

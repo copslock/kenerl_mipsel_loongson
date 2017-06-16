@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:27:31 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:33701 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:27:55 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:60052 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994828AbdFPSNa4ec9W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:30 +0200
+        by eddie.linux-mips.org with ESMTP id S23994855AbdFPSNePWfuW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=E0zgYZLX6gDb+kYRhTS0MocvUIJAc2rXyR9KKyFs6H0=; b=qdp9a3ZPzfh6mYmgfhXItwjRT
-        Wmrap00CPMJd5bD9s11mFcjr8Uw565FOG1dEpjA5IEbg/kbpnalSyj7u2NdcEgFPVMeSUKM9dDHpA
-        moy7Jp7hEbqaU6JRu/9aF3ic/qZ8KL9rBFRPylmmulOf7ogjNqPk3XwdPCyNdy3GFfMPfG69931Lq
-        B1jsDKR899HmTUjrQtM3E4/R4IyWCAbGq1m1TewOV5EZhD0FN/vd1EWaxvTwGQVje4D4FetG/jb6S
-        6wleOvD8deUuPXltqr03AuzdFaDLTHRI+KIy5pKxSIzl5zmJed9YEiBoFetrl3/JhRc+RGMQt4gYv
-        Bo/+ytMhg==;
+         bh=YP1GlHzuDHzeCHOaI6bMloC7cS7wXS8NaF48ukdIL/w=; b=LO6ojfDUbLUUnXvFhYNJ3y4q7
+        aeLSARhC6ku1j+Xdc8A4Kca3q18Bv94hu0j14Uxv4P30g/QjY7oJWPgWwS0j1w+cl1aAxWWTHwFNn
+        xaW93dyqwgCHE9S6KvsxlVaI7QL1Abmc4HqYOVDUOTId/Y3k2QmN3bYf2Od46CsO7YLoMZxZEDaxM
+        /CgfjDItBvqkeaYmVFXod4onjhQnPW7M+aoHcRQbEFy2ZpvTG852+7rsR5y2XfTwbJUliNlqOzy+v
+        OqAGJ2htSZcrCuY1Z5y6GGhodIe34MEvCN45fj6NOSP1t/Vq6iM8dY/8JouR13iocJ6AMFZZEwHiy
+        /4EiqClng==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dLvkJ-0006wp-Sp; Fri, 16 Jun 2017 18:13:24 +0000
+        id 1dLvkN-00070m-09; Fri, 16 Jun 2017 18:13:27 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 38/44] arm: implement ->dma_supported instead of ->set_dma_mask
-Date:   Fri, 16 Jun 2017 20:10:53 +0200
-Message-Id: <20170616181059.19206-39-hch@lst.de>
+Subject: [PATCH 39/44] xen-swiotlb: remove xen_swiotlb_set_dma_mask
+Date:   Fri, 16 Jun 2017 20:10:54 +0200
+Message-Id: <20170616181059.19206-40-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170616181059.19206-1-hch@lst.de>
 References: <20170616181059.19206-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58569
+X-archive-position: 58570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,42 +58,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Same behavior, less code duplication.
+This just duplicates the generic implementation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/arm/common/dmabounce.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/xen/swiotlb-xen.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/arch/arm/common/dmabounce.c b/arch/arm/common/dmabounce.c
-index 6ecd5be5d37e..9a92de63426f 100644
---- a/arch/arm/common/dmabounce.c
-+++ b/arch/arm/common/dmabounce.c
-@@ -445,12 +445,12 @@ static void dmabounce_sync_for_device(struct device *dev,
- 	arm_dma_ops.sync_single_for_device(dev, handle, size, dir);
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index c3a04b2d7532..82fc54f8eb77 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -661,17 +661,6 @@ xen_swiotlb_dma_supported(struct device *hwdev, u64 mask)
+ 	return xen_virt_to_bus(xen_io_tlb_end - 1) <= mask;
  }
  
--static int dmabounce_set_mask(struct device *dev, u64 dma_mask)
-+static int dmabounce_dma_supported(struct device *dev, u64 dma_mask)
- {
- 	if (dev->archdata.dmabounce)
- 		return 0;
- 
--	return arm_dma_ops.set_dma_mask(dev, dma_mask);
-+	return arm_dma_ops.dma_supported(dev, dma_mask);
- }
- 
- static int dmabounce_mapping_error(struct device *dev, dma_addr_t dma_addr)
-@@ -471,9 +471,8 @@ static const struct dma_map_ops dmabounce_ops = {
- 	.unmap_sg		= arm_dma_unmap_sg,
- 	.sync_sg_for_cpu	= arm_dma_sync_sg_for_cpu,
- 	.sync_sg_for_device	= arm_dma_sync_sg_for_device,
--	.set_dma_mask		= dmabounce_set_mask,
-+	.dma_supported		= dmabounce_dma_supported,
- 	.mapping_error		= dmabounce_mapping_error,
--	.dma_supported		= arm_dma_supported,
- };
- 
- static int dmabounce_init_pool(struct dmabounce_pool *pool, struct device *dev,
+-static int
+-xen_swiotlb_set_dma_mask(struct device *dev, u64 dma_mask)
+-{
+-	if (!dev->dma_mask || !xen_swiotlb_dma_supported(dev, dma_mask))
+-		return -EIO;
+-
+-	*dev->dma_mask = dma_mask;
+-
+-	return 0;
+-}
+-
+ /*
+  * Create userspace mapping for the DMA-coherent memory.
+  * This function should be called with the pages from the current domain only,
+@@ -734,7 +723,6 @@ const struct dma_map_ops xen_swiotlb_dma_ops = {
+ 	.map_page = xen_swiotlb_map_page,
+ 	.unmap_page = xen_swiotlb_unmap_page,
+ 	.dma_supported = xen_swiotlb_dma_supported,
+-	.set_dma_mask = xen_swiotlb_set_dma_mask,
+ 	.mmap = xen_swiotlb_dma_mmap,
+ 	.get_sgtable = xen_swiotlb_get_sgtable,
+ 	.mapping_error	= xen_swiotlb_mapping_error,
 -- 
 2.11.0

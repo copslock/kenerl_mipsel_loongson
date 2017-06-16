@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 11:32:34 +0200 (CEST)
-Received: from smtpproxy19.qq.com ([184.105.206.84]:42417 "EHLO
-        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993910AbdFPJcZ0aEhh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 11:32:25 +0200
-X-QQ-mid: bizesmtp9t1497605510t5sfirg8d
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 11:33:35 +0200 (CEST)
+Received: from smtpbg65.qq.com ([103.7.28.233]:46582 "EHLO smtpbg65.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994808AbdFPJd2xlgph (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Jun 2017 11:33:28 +0200
+X-QQ-mid: bizesmtp9t1497605585t12o7y4wj
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Fri, 16 Jun 2017 17:30:37 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FL92B00A0000000
-X-QQ-FEAT: 3GtnPQ8BMmZ04GCOXXlZObL4m5ac+2peaWmdh9WQwGsFlGnvAWQmeB4dbRQyu
-        K8UCKPc4m9U/1x0d64HkSlYf/S61zSF0B6zGbhsxZi8SWEIIZug3yxsRpIoRFcTzEbSEaWz
-        geStobWwXoXZMgMtQROjlZarcGsmfNCqtWiryJmU/ZNPq1w7F5Po7GZf0/XNwMDIPjHGsQN
-        N/jBzV8fKWF2U8PrJ4ZzI2LfSSYCitN+lGVD5jJej2nDWoyZ/3wXyxIbUxFriqzQMvqgKlv
-        4NpSb1++0z6U1WeEYDL3RWN+LSXqJHyZLcRAov/+1KQ+Pv
+        id ; Fri, 16 Jun 2017 17:31:51 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FL92000A0000000
+X-QQ-FEAT: HqsAE+iGIGgJyU1QyYyLxaMefEEZfmcJk894Xf8wubYK+QqGbEyg9JC/K9y7v
+        hBs8Wq5UJw5nWMS4Zsqfi0Rwrl9tk4cXNuzf8MAc1O8S6yAm7n4BuOce8CcKkDOZWFn3B/n
+        dPuW2+aWSBFd9lvxVIzgTCjtlLyF11HPgzHhVolQpx7P5CDPxkdX+w84iVe3/cZRstLJttv
+        YGL4eCDWkZGG1GtB8X7s6tFyjV3l10zfd0o12i4wWWZho8RRPHwR1jVlbAmRf2g8SgFu1mG
+        TmER0h9TXM0XtLeGEpTEjb0w0UbuTAkAdp1LIJuCOaSqXb
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,9 +21,9 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V6 3/9] MIPS: Loongson: Add NMI handler support
-Date:   Fri, 16 Jun 2017 17:28:56 +0800
-Message-Id: <1497605342-5030-4-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V6 4/9] MIPS: Loongson-3: Support 4 packages in CPU Hwmon driver
+Date:   Fri, 16 Jun 2017 17:28:57 +0800
+Message-Id: <1497605342-5030-5-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1497605342-5030-1-git-send-email-chenhc@lemote.com>
 References: <1497605342-5030-1-git-send-email-chenhc@lemote.com>
@@ -33,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58516
+X-archive-position: 58517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,51 +50,186 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Loongson-3 machines may have as many as 4 physical packages.
+
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson64/common/init.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/platform/mips/cpu_hwmon.c | 119 +++++++++++++++++++-------------------
+ 1 file changed, 58 insertions(+), 61 deletions(-)
 
-diff --git a/arch/mips/loongson64/common/init.c b/arch/mips/loongson64/common/init.c
-index 9b987fe..6ef1712 100644
---- a/arch/mips/loongson64/common/init.c
-+++ b/arch/mips/loongson64/common/init.c
-@@ -10,13 +10,25 @@
- 
- #include <linux/bootmem.h>
- #include <asm/bootinfo.h>
-+#include <asm/traps.h>
- #include <asm/smp-ops.h>
-+#include <asm/cacheflush.h>
- 
- #include <loongson.h>
- 
- /* Loongson CPU address windows config space base address */
- unsigned long __maybe_unused _loongson_addrwincfg_base;
- 
-+static void __init mips_nmi_setup(void)
-+{
-+	void *base;
-+	extern char except_vec_nmi;
-+
-+	base = (void *)(CAC_BASE + 0x380);
-+	memcpy(base, &except_vec_nmi, 0x80);
-+	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
-+}
-+
- void __init prom_init(void)
- {
- #ifdef CONFIG_CPU_SUPPORTS_ADDRWINCFG
-@@ -40,6 +52,7 @@ void __init prom_init(void)
- 	/*init the uart base address */
- 	prom_init_uart_base();
- 	register_smp_ops(&loongson3_smp_ops);
-+	board_nmi_handler_setup = mips_nmi_setup;
+diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+index 46ab7d86..322de58 100644
+--- a/drivers/platform/mips/cpu_hwmon.c
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -37,6 +37,7 @@ int loongson3_cpu_temp(int cpu)
+ 	return (int)reg * 1000;
  }
  
- void __init prom_free_prom_memory(void)
++static int nr_packages;
+ static struct device *cpu_hwmon_dev;
+ 
+ static ssize_t get_hwmon_name(struct device *dev,
+@@ -60,88 +61,74 @@ static ssize_t get_hwmon_name(struct device *dev,
+ 	return sprintf(buf, "cpu-hwmon\n");
+ }
+ 
+-static ssize_t get_cpu0_temp(struct device *dev,
++static ssize_t get_cpu_temp(struct device *dev,
+ 			struct device_attribute *attr, char *buf);
+-static ssize_t get_cpu1_temp(struct device *dev,
+-			struct device_attribute *attr, char *buf);
+-static ssize_t cpu0_temp_label(struct device *dev,
+-			struct device_attribute *attr, char *buf);
+-static ssize_t cpu1_temp_label(struct device *dev,
++static ssize_t cpu_temp_label(struct device *dev,
+ 			struct device_attribute *attr, char *buf);
+ 
+-static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, get_cpu0_temp, NULL, 1);
+-static SENSOR_DEVICE_ATTR(temp1_label, S_IRUGO, cpu0_temp_label, NULL, 1);
+-static SENSOR_DEVICE_ATTR(temp2_input, S_IRUGO, get_cpu1_temp, NULL, 2);
+-static SENSOR_DEVICE_ATTR(temp2_label, S_IRUGO, cpu1_temp_label, NULL, 2);
+-
+-static const struct attribute *hwmon_cputemp1[] = {
+-	&sensor_dev_attr_temp1_input.dev_attr.attr,
+-	&sensor_dev_attr_temp1_label.dev_attr.attr,
+-	NULL
+-};
+-
+-static const struct attribute *hwmon_cputemp2[] = {
+-	&sensor_dev_attr_temp2_input.dev_attr.attr,
+-	&sensor_dev_attr_temp2_label.dev_attr.attr,
+-	NULL
++static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, get_cpu_temp, NULL, 1);
++static SENSOR_DEVICE_ATTR(temp1_label, S_IRUGO, cpu_temp_label, NULL, 1);
++static SENSOR_DEVICE_ATTR(temp2_input, S_IRUGO, get_cpu_temp, NULL, 2);
++static SENSOR_DEVICE_ATTR(temp2_label, S_IRUGO, cpu_temp_label, NULL, 2);
++static SENSOR_DEVICE_ATTR(temp3_input, S_IRUGO, get_cpu_temp, NULL, 3);
++static SENSOR_DEVICE_ATTR(temp3_label, S_IRUGO, cpu_temp_label, NULL, 3);
++static SENSOR_DEVICE_ATTR(temp4_input, S_IRUGO, get_cpu_temp, NULL, 4);
++static SENSOR_DEVICE_ATTR(temp4_label, S_IRUGO, cpu_temp_label, NULL, 4);
++
++static const struct attribute *hwmon_cputemp[4][3] = {
++	{
++		&sensor_dev_attr_temp1_input.dev_attr.attr,
++		&sensor_dev_attr_temp1_label.dev_attr.attr,
++		NULL
++	},
++	{
++		&sensor_dev_attr_temp2_input.dev_attr.attr,
++		&sensor_dev_attr_temp2_label.dev_attr.attr,
++		NULL
++	},
++	{
++		&sensor_dev_attr_temp3_input.dev_attr.attr,
++		&sensor_dev_attr_temp3_label.dev_attr.attr,
++		NULL
++	},
++	{
++		&sensor_dev_attr_temp4_input.dev_attr.attr,
++		&sensor_dev_attr_temp4_label.dev_attr.attr,
++		NULL
++	}
+ };
+ 
+-static ssize_t cpu0_temp_label(struct device *dev,
++static ssize_t cpu_temp_label(struct device *dev,
+ 			struct device_attribute *attr, char *buf)
+ {
+-	return sprintf(buf, "CPU 0 Temperature\n");
++	int id = (to_sensor_dev_attr(attr))->index - 1;
++	return sprintf(buf, "CPU %d Temperature\n", id);
+ }
+ 
+-static ssize_t cpu1_temp_label(struct device *dev,
++static ssize_t get_cpu_temp(struct device *dev,
+ 			struct device_attribute *attr, char *buf)
+ {
+-	return sprintf(buf, "CPU 1 Temperature\n");
+-}
+-
+-static ssize_t get_cpu0_temp(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	int value = loongson3_cpu_temp(0);
+-	return sprintf(buf, "%d\n", value);
+-}
+-
+-static ssize_t get_cpu1_temp(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	int value = loongson3_cpu_temp(1);
++	int id = (to_sensor_dev_attr(attr))->index - 1;
++	int value = loongson3_cpu_temp(id);
+ 	return sprintf(buf, "%d\n", value);
+ }
+ 
+ static int create_sysfs_cputemp_files(struct kobject *kobj)
+ {
+-	int ret;
+-
+-	ret = sysfs_create_files(kobj, hwmon_cputemp1);
+-	if (ret)
+-		goto sysfs_create_temp1_fail;
+-
+-	if (loongson_sysconf.nr_cpus <= loongson_sysconf.cores_per_package)
+-		return 0;
+-
+-	ret = sysfs_create_files(kobj, hwmon_cputemp2);
+-	if (ret)
+-		goto sysfs_create_temp2_fail;
++	int i, ret = 0;
+ 
+-	return 0;
++	for (i=0; i<nr_packages; i++)
++		ret = sysfs_create_files(kobj, hwmon_cputemp[i]);
+ 
+-sysfs_create_temp2_fail:
+-	sysfs_remove_files(kobj, hwmon_cputemp1);
+-
+-sysfs_create_temp1_fail:
+-	return -1;
++	return ret;
+ }
+ 
+ static void remove_sysfs_cputemp_files(struct kobject *kobj)
+ {
+-	sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp1);
++	int i;
+ 
+-	if (loongson_sysconf.nr_cpus > loongson_sysconf.cores_per_package)
+-		sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp2);
++	for (i=0; i<nr_packages; i++)
++		sysfs_remove_files(kobj, hwmon_cputemp[i]);
+ }
+ 
+ #define CPU_THERMAL_THRESHOLD 90000
+@@ -149,8 +136,15 @@ static struct delayed_work thermal_work;
+ 
+ static void do_thermal_timer(struct work_struct *work)
+ {
+-	int value = loongson3_cpu_temp(0);
+-	if (value <= CPU_THERMAL_THRESHOLD)
++	int i, value, temp_max = 0;
++
++	for (i=0; i<nr_packages; i++) {
++		value = loongson3_cpu_temp(i);
++		if (value > temp_max)
++			temp_max = value;
++	}
++
++	if (temp_max <= CPU_THERMAL_THRESHOLD)
+ 		schedule_delayed_work(&thermal_work, msecs_to_jiffies(5000));
+ 	else
+ 		orderly_poweroff(true);
+@@ -169,6 +163,9 @@ static int __init loongson_hwmon_init(void)
+ 		goto fail_hwmon_device_register;
+ 	}
+ 
++	nr_packages = loongson_sysconf.nr_cpus /
++		loongson_sysconf.cores_per_package;
++
+ 	ret = sysfs_create_group(&cpu_hwmon_dev->kobj,
+ 				&cpu_hwmon_attribute_group);
+ 	if (ret) {
 -- 
 2.7.0
-
-
-rt

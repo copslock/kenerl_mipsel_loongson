@@ -1,35 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 04:56:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:56545 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993859AbdFPCznPpmgY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 04:55:43 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 5DAD141BF4EF5;
-        Fri, 16 Jun 2017 03:55:35 +0100 (IST)
-Received: from [10.20.78.215] (10.20.78.215) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 16 Jun 2017
- 03:55:35 +0100
-Date:   Fri, 16 Jun 2017 03:55:26 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 0/5] MIPS: FP cleanup & no-FP support
-In-Reply-To: <20170605182131.16853-1-paul.burton@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1706160348450.23046@tp.orcam.me.uk>
-References: <20170605182131.16853-1-paul.burton@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.215]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 09:12:41 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:45706 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993859AbdFPHMepBb5t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 09:12:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:To:From:
+        Sender:Reply-To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=cEahlGQ8eVDkeRnRX0ftFCMxy/F3gIvnm8O8gzZkJjE=; b=giV0uV/DbPLe9PHg6DO7+FBbB
+        KUiD6rTEwz3nXKowtPUlDpInCGxQ+S3mRWO43ZeivGdjiT15N/L9kMkDxOqhU3WNPEeWCjlcJnbKB
+        1p2k2gye1BlBrgHBQ5audEVx4IaaZxPqH98MV4ASDNXPNbZtJTgNjgPtxQuxloP1bztbXA8sJ0gJ6
+        //zxpalmr9oh5GGeb9RuAmdDH/0SfzAOcVHP9ftEtuJGY9qDqeELFKxjJ31lV4gz7Dopyn2vroy1v
+        FGAn4p4klWL1wvgeh13brVjO1yEZehgRH8mExbZ2GbJVgYr12FrWjvmMskVyzEdJyqNWGUXX4yW6R
+        lEtbOmeRQ==;
+Received: from 178.114.185.122.wireless.dyn.drei.com ([178.114.185.122] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
+        id 1dLlQm-0006D1-7d; Fri, 16 Jun 2017 07:12:32 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH] mips: consolidate coherent and non-coherent dma_alloc code
+Date:   Fri, 16 Jun 2017 09:12:29 +0200
+Message-Id: <20170616071229.16954-1-hch@lst.de>
+X-Mailer: git-send-email 2.11.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58506
+X-archive-position: 58507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,32 +46,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 5 Jun 2017, Paul Burton wrote:
+Besides eliminating lots of duplication this also allows allocations with
+the DMA_ATTR_NON_CONSISTENT to use the CMA allocator.
 
-> This series tidies up support for floating point a little, then
-> introduces support for disabling it via Kconfig. The end result is that
-> it becomes possible to compile a kernel which does not include any
-> support for userland which makes use of floating point instructions -
-> meaning that it never enables an FPU & does not include the FPU
-> emulator. The benefit of this is that if you know your userland code
-> will not use FP instructions then you can shrink the kernel by around
-> 65KiB.
-> 
-> Applies atop v4.12-rc4.
-> 
-> Paul Burton (5):
->   MIPS: Remove unused R6000 support
->   MIPS: Move r4k FP code from r4k_switch.S to r4k_fpu.S
->   MIPS: Move r2300 FP code from r2300_switch.S to r2300_fpu.S
->   MIPS: Remove unused ST_OFF from r2300_switch.S
->   MIPS: Allow floating point support to be disabled
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
 
- Doesn't ptrace(2) require suitable updates for requests that deal with 
-the FP context?  Preferably along with the last change (or maybe ahead of 
-it) so that we don't have a kernel revision that presents rubbish to the 
-userland (of course tools like GDB will have to be updated accordingly to 
-cope, but that's out of scope for Linux itself).
+Note: compile tested only.
 
- Also how about those prctl(2) calls that also operate on FP state?
+ arch/mips/mm/dma-default.c | 42 +++---------------------------------------
+ 1 file changed, 3 insertions(+), 39 deletions(-)
 
-  Maciej
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index fe8df14b6169..9e0faaf9f96f 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -114,23 +114,6 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+ 	return gfp | dma_flag;
+ }
+ 
+-static void *mips_dma_alloc_noncoherent(struct device *dev, size_t size,
+-	dma_addr_t * dma_handle, gfp_t gfp)
+-{
+-	void *ret;
+-
+-	gfp = massage_gfp_flags(dev, gfp);
+-
+-	ret = (void *) __get_free_pages(gfp, get_order(size));
+-
+-	if (ret != NULL) {
+-		memset(ret, 0, size);
+-		*dma_handle = plat_map_dma_mem(dev, ret, size);
+-	}
+-
+-	return ret;
+-}
+-
+ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+ {
+@@ -138,13 +121,6 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	struct page *page = NULL;
+ 	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+ 
+-	/*
+-	 * XXX: seems like the coherent and non-coherent implementations could
+-	 * be consolidated.
+-	 */
+-	if (attrs & DMA_ATTR_NON_CONSISTENT)
+-		return mips_dma_alloc_noncoherent(dev, size, dma_handle, gfp);
+-
+ 	gfp = massage_gfp_flags(dev, gfp);
+ 
+ 	if (IS_ENABLED(CONFIG_DMA_CMA) && gfpflags_allow_blocking(gfp))
+@@ -159,7 +135,8 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	ret = page_address(page);
+ 	memset(ret, 0, size);
+ 	*dma_handle = plat_map_dma_mem(dev, ret, size);
+-	if (!plat_device_is_coherent(dev)) {
++	if (!(attrs & DMA_ATTR_NON_CONSISTENT) &&
++	    !plat_device_is_coherent(dev)) {
+ 		dma_cache_wback_inv((unsigned long) ret, size);
+ 		ret = UNCAC_ADDR(ret);
+ 	}
+@@ -167,14 +144,6 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	return ret;
+ }
+ 
+-
+-static void mips_dma_free_noncoherent(struct device *dev, size_t size,
+-		void *vaddr, dma_addr_t dma_handle)
+-{
+-	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
+-	free_pages((unsigned long) vaddr, get_order(size));
+-}
+-
+ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	dma_addr_t dma_handle, unsigned long attrs)
+ {
+@@ -182,14 +151,9 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+ 	struct page *page = NULL;
+ 
+-	if (attrs & DMA_ATTR_NON_CONSISTENT) {
+-		mips_dma_free_noncoherent(dev, size, vaddr, dma_handle);
+-		return;
+-	}
+-
+ 	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
+ 
+-	if (!plat_device_is_coherent(dev))
++	if (!(attrs & DMA_ATTR_NON_CONSISTENT) && !plat_device_is_coherent(dev))
+ 		addr = CAC_ADDR(addr);
+ 
+ 	page = virt_to_page((void *) addr);
+-- 
+2.11.0

@@ -1,22 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 21:51:18 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25244 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 22:19:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57744 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994843AbdFPTvKERFDV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 21:51:10 +0200
+        with ESMTP id S23994874AbdFPUTOVUFRV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 22:19:14 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7304491FE2230;
-        Fri, 16 Jun 2017 20:50:58 +0100 (IST)
+        by Forcepoint Email with ESMTPS id CBE47C509857D;
+        Fri, 16 Jun 2017 21:19:03 +0100 (IST)
 Received: from [10.20.78.219] (10.20.78.219) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 16 Jun 2017
- 20:51:01 +0100
-Date:   Fri, 16 Jun 2017 20:50:50 +0100
+ 21:19:07 +0100
+Date:   Fri, 16 Jun 2017 21:18:56 +0100
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 0/5] MIPS: FP cleanup & no-FP support
-In-Reply-To: <3803102.5EWcPJmQIq@np-p-burton>
-Message-ID: <alpine.DEB.2.00.1706162029030.23046@tp.orcam.me.uk>
-References: <20170605182131.16853-1-paul.burton@imgtec.com> <alpine.DEB.2.00.1706160348450.23046@tp.orcam.me.uk> <3803102.5EWcPJmQIq@np-p-burton>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <msalter@redhat.com>,
+        <dmitry.torokhov@gmail.com>, Ralf Baechle <ralf@linux-mips.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Make individual platforms select
+ ARCH_MIGHT_HAVE_PC_SERIO
+In-Reply-To: <1ccd3748-9b52-2b23-f686-df86d8be050d@gmail.com>
+Message-ID: <alpine.DEB.2.00.1706162110010.23046@tp.orcam.me.uk>
+References: <20170605171033.15008-1-f.fainelli@gmail.com> <alpine.DEB.2.00.1706160249370.23046@tp.orcam.me.uk> <1ccd3748-9b52-2b23-f686-df86d8be050d@gmail.com>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -25,7 +28,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58576
+X-archive-position: 58577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,61 +45,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Paul,
+On Fri, 16 Jun 2017, Florian Fainelli wrote:
 
-> > > Paul Burton (5):
-> > >   MIPS: Remove unused R6000 support
-> > >   MIPS: Move r4k FP code from r4k_switch.S to r4k_fpu.S
-> > >   MIPS: Move r2300 FP code from r2300_switch.S to r2300_fpu.S
-> > >   MIPS: Remove unused ST_OFF from r2300_switch.S
-> > >   MIPS: Allow floating point support to be disabled
-> > 
-> > Doesn't ptrace(2) require suitable updates for requests that deal with
-> > the FP context?
+> >  How did you determine that?  Malta for one not only has an SMSC FDC37M817 
+> > Super I/O Controller featuring an 8042-compatible core, but actual PS/2 
+> > keyboard and mouse connectors as well.
 > 
-> I mentioned in the commit message for patch 5 that removing the actual context 
-> fields & ptrace access to them could be done as a further improvement.
-
- Somehow I missed that, sorry, but in any case I don't find it acceptable.
-
-> > Preferably along with the last change (or maybe ahead of
-> > it) so that we don't have a kernel revision that presents rubbish to the
-> > userland (of course tools like GDB will have to be updated accordingly to
-> > cope, but that's out of scope for Linux itself).
+> I was just grepping for i8042 in platform code to determine that, this
+> came after having SERIO accidentally enabled on my platform
+> (BMIPS_GENERIC) and seeing that it crashed badly and it annoyed the crap
+> out of me that MIPS had ARCH_MIGHT_HAVE_PC_SERIO for platforms that
+> don't need it.
 > 
-> Well, as-is ptrace would still let you read & write to FP registers if you 
-> try, it's just those values will never be used. Are you opposed to that 
-> behaviour? If we do later remove the context entirely then presumably ptrace 
-> would either read 0 or return an error, and ignore writes or return an error - 
-> I suppose if we want to ensure consistent behaviour for that potential future 
-> change then we could choose one of those options & do that here.
-> 
-> In practice I'm not sure I see much benefit - if a debugger wants to write to 
-> context corresponding to registers that just aren't there then letting it 
-> doesn't seem like a big problem. Do you disagree? Note that we already allow 
-> this for hi & lo registers on r6 for example - ptrace will freely read/write 
-> the context even though the registers don't exist.
+> Will come up with a v2 that includes malta, any other platforms for
+> which it's not obvious?
 
- I think there must be -EIO for access to any inexistent resource, just as 
-we already do for missing DSP registers.  The client can then handle this 
-appropriately.  (ENXIO would probably be more accurate, however EIO has 
-already been embedded in GDB and changing it would be problematic).
-
- I wasn't aware about the HI/LO case with R6 -- it clearly looks like a 
-bug to me.  Of course it means more work for GDB and other such software 
-maintainers, but I find it unacceptable if we present users with resources 
-which are not there.
-
-> > Also how about those prctl(2) calls that also operate on FP state?
-> 
-> Patch 5 has them return -EOPNOTSUPP, which is consistent with behaviour when 
-> attempting to set an unsupported mode.
-
- I missed that, sorry.  I'm not sure if -EOPNOTSUPP (-EINVAL?) or -EIO 
-(-ENXIO?) would be the right code here, i.e. unrecognised vs unsupported, 
-but I can see the existing code does not tell these two cases apart, so I 
-think I'd accept your proposal here as it stands, although this may have 
-to be eventually fixed.  Also glibc code will have to be audited for 
-correct error handling here.
+ I don't know offhand, but in principle anything that has PCI and a 
+southbridge (not all PCI platforms have one, e.g. Broadcom SWARM and 
+BigSur are legacy-free) can have an 8042 wired.  Ideally probing for 8042 
+hardware should be done by platform code and the driver's init code would 
+not be called at all if there's no 8042 present, similarly to how e.g. RTC 
+is usually registered.
 
   Maciej

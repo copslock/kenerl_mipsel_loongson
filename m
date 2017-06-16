@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:27:55 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:60052 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2017 20:28:21 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:46930 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994855AbdFPSNePWfuW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23994899AbdFPSNfMIgMW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2017 20:13:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=YP1GlHzuDHzeCHOaI6bMloC7cS7wXS8NaF48ukdIL/w=; b=LO6ojfDUbLUUnXvFhYNJ3y4q7
-        aeLSARhC6ku1j+Xdc8A4Kca3q18Bv94hu0j14Uxv4P30g/QjY7oJWPgWwS0j1w+cl1aAxWWTHwFNn
-        xaW93dyqwgCHE9S6KvsxlVaI7QL1Abmc4HqYOVDUOTId/Y3k2QmN3bYf2Od46CsO7YLoMZxZEDaxM
-        /CgfjDItBvqkeaYmVFXod4onjhQnPW7M+aoHcRQbEFy2ZpvTG852+7rsR5y2XfTwbJUliNlqOzy+v
-        OqAGJ2htSZcrCuY1Z5y6GGhodIe34MEvCN45fj6NOSP1t/Vq6iM8dY/8JouR13iocJ6AMFZZEwHiy
-        /4EiqClng==;
+         bh=WCFl8gyLH+Dtw1N5AT1LVFwtyWKYQDQAq3hDiEm/z10=; b=LJCyDbOAqQaFPBNAC0qvo7rHc
+        Ev/zMXWdT1NXdD0vPwP+kOHG50RjJa34AoAefWqWNq8FC5v9lH3QXILfXeNaU/Jn2ILHdvT2sJTaf
+        kegnuPLZNvq5lTEdj1vIam/9iYws67W1Yf/txjl4dcJhcq4rnxJAImTf1Y/m9nO1odOwyboK1WOWL
+        lPewq9n3vkI1T9XBLDbbz7ybAvGXeNuq+EH2bln5UN2FP+eL244IwNmmGdbOmK538xcwUdJ8Dntpm
+        1BHq1XjNAFdn+drvZRqM0cxHUYzhkb06ZvbLq4t5W2kGH1hZsDoCTj/z4O7bAZqcrUK4qFieZMy25
+        EUcvqXsuQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dLvkN-00070m-09; Fri, 16 Jun 2017 18:13:27 +0000
+        id 1dLvkQ-00075O-4K; Fri, 16 Jun 2017 18:13:30 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 39/44] xen-swiotlb: remove xen_swiotlb_set_dma_mask
-Date:   Fri, 16 Jun 2017 20:10:54 +0200
-Message-Id: <20170616181059.19206-40-hch@lst.de>
+Subject: [PATCH 40/44] tile: remove dma_supported and mapping_error methods
+Date:   Fri, 16 Jun 2017 20:10:55 +0200
+Message-Id: <20170616181059.19206-41-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170616181059.19206-1-hch@lst.de>
 References: <20170616181059.19206-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+48ca1ab4adaecdf09dc3+5045+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58570
+X-archive-position: 58571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,42 +58,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This just duplicates the generic implementation.
+These just duplicate the default behavior if no method is provided.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/xen/swiotlb-xen.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/tile/kernel/pci-dma.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index c3a04b2d7532..82fc54f8eb77 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -661,17 +661,6 @@ xen_swiotlb_dma_supported(struct device *hwdev, u64 mask)
- 	return xen_virt_to_bus(xen_io_tlb_end - 1) <= mask;
+diff --git a/arch/tile/kernel/pci-dma.c b/arch/tile/kernel/pci-dma.c
+index 569bb6dd154a..f2abedc8a080 100644
+--- a/arch/tile/kernel/pci-dma.c
++++ b/arch/tile/kernel/pci-dma.c
+@@ -317,18 +317,6 @@ static void tile_dma_sync_sg_for_device(struct device *dev,
+ 	}
  }
  
--static int
--xen_swiotlb_set_dma_mask(struct device *dev, u64 dma_mask)
+-static inline int
+-tile_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
 -{
--	if (!dev->dma_mask || !xen_swiotlb_dma_supported(dev, dma_mask))
--		return -EIO;
--
--	*dev->dma_mask = dma_mask;
--
 -	return 0;
 -}
 -
- /*
-  * Create userspace mapping for the DMA-coherent memory.
-  * This function should be called with the pages from the current domain only,
-@@ -734,7 +723,6 @@ const struct dma_map_ops xen_swiotlb_dma_ops = {
- 	.map_page = xen_swiotlb_map_page,
- 	.unmap_page = xen_swiotlb_unmap_page,
- 	.dma_supported = xen_swiotlb_dma_supported,
--	.set_dma_mask = xen_swiotlb_set_dma_mask,
- 	.mmap = xen_swiotlb_dma_mmap,
- 	.get_sgtable = xen_swiotlb_get_sgtable,
- 	.mapping_error	= xen_swiotlb_mapping_error,
+-static inline int
+-tile_dma_supported(struct device *dev, u64 mask)
+-{
+-	return 1;
+-}
+-
+ static const struct dma_map_ops tile_default_dma_map_ops = {
+ 	.alloc = tile_dma_alloc_coherent,
+ 	.free = tile_dma_free_coherent,
+@@ -340,8 +328,6 @@ static const struct dma_map_ops tile_default_dma_map_ops = {
+ 	.sync_single_for_device = tile_dma_sync_single_for_device,
+ 	.sync_sg_for_cpu = tile_dma_sync_sg_for_cpu,
+ 	.sync_sg_for_device = tile_dma_sync_sg_for_device,
+-	.mapping_error = tile_dma_mapping_error,
+-	.dma_supported = tile_dma_supported
+ };
+ 
+ const struct dma_map_ops *tile_dma_map_ops = &tile_default_dma_map_ops;
+@@ -504,18 +490,6 @@ static void tile_pci_dma_sync_sg_for_device(struct device *dev,
+ 	}
+ }
+ 
+-static inline int
+-tile_pci_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+-{
+-	return 0;
+-}
+-
+-static inline int
+-tile_pci_dma_supported(struct device *dev, u64 mask)
+-{
+-	return 1;
+-}
+-
+ static const struct dma_map_ops tile_pci_default_dma_map_ops = {
+ 	.alloc = tile_pci_dma_alloc_coherent,
+ 	.free = tile_pci_dma_free_coherent,
+@@ -527,8 +501,6 @@ static const struct dma_map_ops tile_pci_default_dma_map_ops = {
+ 	.sync_single_for_device = tile_pci_dma_sync_single_for_device,
+ 	.sync_sg_for_cpu = tile_pci_dma_sync_sg_for_cpu,
+ 	.sync_sg_for_device = tile_pci_dma_sync_sg_for_device,
+-	.mapping_error = tile_pci_dma_mapping_error,
+-	.dma_supported = tile_pci_dma_supported
+ };
+ 
+ const struct dma_map_ops *gx_pci_dma_map_ops = &tile_pci_default_dma_map_ops;
+@@ -578,8 +550,6 @@ static const struct dma_map_ops pci_hybrid_dma_ops = {
+ 	.sync_single_for_device = tile_pci_dma_sync_single_for_device,
+ 	.sync_sg_for_cpu = tile_pci_dma_sync_sg_for_cpu,
+ 	.sync_sg_for_device = tile_pci_dma_sync_sg_for_device,
+-	.mapping_error = tile_pci_dma_mapping_error,
+-	.dma_supported = tile_pci_dma_supported
+ };
+ 
+ const struct dma_map_ops *gx_legacy_pci_dma_map_ops = &pci_swiotlb_dma_ops;
 -- 
 2.11.0

@@ -1,32 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jun 2017 22:55:33 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35751 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994913AbdFQUzH0s-FF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jun 2017 22:55:07 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id A8B6A2AB5D706;
-        Sat, 17 Jun 2017 21:54:55 +0100 (IST)
-Received: from localhost (10.20.78.225) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 17 Jun
- 2017 21:54:59 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jun 2017 22:56:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53938 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994918AbdFQU4GRlVgF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jun 2017 22:56:06 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 365DE41F8DC5;
+        Sat, 17 Jun 2017 23:05:34 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Sat, 17 Jun 2017 23:05:34 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Sat, 17 Jun 2017 23:05:34 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id E4005A9D4B39E;
+        Sat, 17 Jun 2017 21:55:55 +0100 (IST)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 17 Jun
+ 2017 21:56:00 +0100
+Received: from np-p-burton.localnet (10.20.78.225) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Sat, 17 Jun
+ 2017 13:55:58 -0700
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v5 4/4] MIPS: generic: Support MIPS Boston development boards
-Date:   Sat, 17 Jun 2017 13:52:49 -0700
-Message-ID: <20170617205249.1391-5-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.13.1
-In-Reply-To: <20170617205249.1391-1-paul.burton@imgtec.com>
-References: <20170617205249.1391-1-paul.burton@imgtec.com>
+To:     Stephen Boyd <sboyd@codeaurora.org>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "Michael Turquette" <mturquette@baylibre.com>,
+        <linux-clk@vger.kernel.org>
+Subject: Re: [PATCH v4 2/4] clk: boston: Add a driver for MIPS Boston board clocks
+Date:   Sat, 17 Jun 2017 13:55:53 -0700
+Message-ID: <3561131.ErLRrgaNh5@np-p-burton>
+Organization: Imagination Technologies
+In-Reply-To: <20170614160106.GY20170@codeaurora.org>
+References: <20170602182003.16269-1-paul.burton@imgtec.com> <20170602182003.16269-3-paul.burton@imgtec.com> <20170614160106.GY20170@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="nextPart1610435.VxNgIZDhlI";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 X-Originating-IP: [10.20.78.225]
+X-ESG-ENCRYPT-TAG: 1b7d744b
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58596
+X-archive-position: 58597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,415 +57,192 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for the MIPS Boston development board to generic kernels,
-which essentially amounts to:
+--nextPart1610435.VxNgIZDhlI
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-  - Adding the device tree source for the MIPS Boston board.
+Hi Stephen,
 
-  - Adding a Kconfig fragment which enables the appropriate drivers for
-    the MIPS Boston board.
+On Wednesday, 14 June 2017 09:01:06 PDT Stephen Boyd wrote:
+> On 06/02, Paul Burton wrote:
+> > diff --git a/drivers/clk/imgtec/Kconfig b/drivers/clk/imgtec/Kconfig
+> > new file mode 100644
+> > index 000000000000..c2ea745928e4
+> > --- /dev/null
+> > +++ b/drivers/clk/imgtec/Kconfig
+> > @@ -0,0 +1,10 @@
+> > +config COMMON_CLK_BOSTON
+> > +	bool "Clock driver for MIPS Boston boards"
+> > +	depends on MIPS || COMPILE_TEST
+> > +	depends on OF
+> 
+> What's the OF build dependency?
 
-With these changes in place generic kernels will support the board by
-default, and kernels with only the drivers needed for Boston enabled can
-be configured by setting BOARDS=boston during configuration. For
-example:
+Dropped for v5, though the driver won't actually be used on systems without 
+CONFIG_OF.
 
-  $ make ARCH=mips 64r6el_defconfig BOARDS=boston
+> > +	select MFD_SYSCON
+> > +	---help---
+> > +	  Enable this to support the system & CPU clocks on the MIPS Boston
+> > +	  development board from Imagination Technologies. These are simple
+> > +	  fixed rate clocks whose rate is determined by reading a platform
+> > +	  provided register.
+> > diff --git a/drivers/clk/imgtec/Makefile b/drivers/clk/imgtec/Makefile
+> > new file mode 100644
+> > index 000000000000..ac779b8c22f2
+> > --- /dev/null
+> > +++ b/drivers/clk/imgtec/Makefile
+> > @@ -0,0 +1 @@
+> > +obj-$(CONFIG_COMMON_CLK_BOSTON)		+= clk-boston.o
+> > diff --git a/drivers/clk/imgtec/clk-boston.c
+> > b/drivers/clk/imgtec/clk-boston.c new file mode 100644
+> > index 000000000000..98bb0b764d15
+> > --- /dev/null
+> > +++ b/drivers/clk/imgtec/clk-boston.c
+> > @@ -0,0 +1,101 @@
+> > +/*
+> > + * Copyright (C) 2016-2017 Imagination Technologies
+> > + * Author: Paul Burton <paul.burton@imgtec.com>
+> > + *
+> > + * This program is free software; you can redistribute it and/or modify
+> > it
+> > + * under the terms of the GNU General Public License as published by the
+> > + * Free Software Foundation;  either version 2 of the  License, or (at
+> > your + * option) any later version.
+> > + */
+> > +
+> > +#include <linux/clk-provider.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/of.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/mfd/syscon.h>
+> > +
+> > +#include <dt-bindings/clock/boston-clock.h>
+> > +
+> > +#define BOSTON_PLAT_MMCMDIV		0x30
+> > +# define BOSTON_PLAT_MMCMDIV_CLK0DIV	(0xff << 0)
+> > +# define BOSTON_PLAT_MMCMDIV_INPUT	(0xff << 8)
+> > +# define BOSTON_PLAT_MMCMDIV_MUL	(0xff << 16)
+> > +# define BOSTON_PLAT_MMCMDIV_CLK1DIV	(0xff << 24)
+> > +
+> > +#define BOSTON_CLK_COUNT 3
+> > +
+> > +struct clk_boston_state {
+> > +	struct clk *clks[BOSTON_CLK_COUNT];
+> > +	struct clk_onecell_data onecell_data;
+> > +};
+> > +
+> > +static u32 ext_field(u32 val, u32 mask)
+> > +{
+> > +	return (val & mask) >> (ffs(mask) - 1);
+> > +}
+> > +
+> > +static void __init clk_boston_setup(struct device_node *np)
+> > +{
+> > +	unsigned long in_freq, cpu_freq, sys_freq;
+> > +	uint mmcmdiv, mul, cpu_div, sys_div;
+> > +	struct clk_boston_state *state;
+> > +	struct regmap *regmap;
+> > +	struct clk *clk;
+> > +	int err;
+> > +
+> > +	regmap = syscon_node_to_regmap(np->parent);
+> > +	if (IS_ERR(regmap)) {
+> > +		pr_err("failed to find regmap\n");
+> > +		return;
+> > +	}
+> > +
+> > +	err = regmap_read(regmap, BOSTON_PLAT_MMCMDIV, &mmcmdiv);
+> > +	if (err) {
+> > +		pr_err("failed to read mmcm_div register: %d\n", err);
+> > +		return;
+> > +	}
+> > +
+> > +	in_freq = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_INPUT) * 1000000;
+> > +	mul = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_MUL);
+> > +
+> > +	sys_div = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_CLK0DIV);
+> > +	sys_freq = mult_frac(in_freq, mul, sys_div);
+> > +
+> > +	cpu_div = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_CLK1DIV);
+> > +	cpu_freq = mult_frac(in_freq, mul, cpu_div);
+> > +
+> > +	state = kzalloc(sizeof(*state), GFP_KERNEL);
+> > +	if (!state)
+> > +		return;
+> > +
+> > +	clk = clk_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
+> 
+> Please use the clk_hw_register_*() APIs instead so that this
+> driver only deals in clk_hw pointers.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+OK, done in v5.
 
----
+> > +	if (IS_ERR(clk)) {
+> > +		pr_err("failed to register input clock: %ld\n", PTR_ERR(clk));
+> > +		return;
+> > +	}
+> > +	state->clks[BOSTON_CLK_INPUT] = clk;
+> > +
+> > +	clk = clk_register_fixed_rate(NULL, "sys", "input", 0, sys_freq);
+> > +	if (IS_ERR(clk)) {
+> > +		pr_err("failed to register sys clock: %ld\n", PTR_ERR(clk));
+> > +		return;
+> > +	}
+> > +	state->clks[BOSTON_CLK_SYS] = clk;
+> > +
+> > +	clk = clk_register_fixed_rate(NULL, "cpu", "input", 0, cpu_freq);
+> > +	if (IS_ERR(clk)) {
+> > +		pr_err("failed to register cpu clock: %ld\n", PTR_ERR(clk));
+> > +		return;
+> > +	}
+> > +	state->clks[BOSTON_CLK_CPU] = clk;
+> > +
+> > +	state->onecell_data.clks = state->clks;
+> > +	state->onecell_data.clk_num = BOSTON_CLK_COUNT;
+> > +
+> > +	err = of_clk_add_provider(np, of_clk_src_onecell_get,
+> > +				  &state->onecell_data);
+> 
+> Same for here, of_clk_add_hw_provider()
 
-Changes in v5:
-- Adjust interrupt-map to match pcie-xilinx driver patchset changes.
+Done in v5.
 
-Changes in v4:
-- Most of the series already went in, rebase on v4.12-rc3.
-- Adjust DT to move img,boston-clock under the plat_regs syscon node.
-- Enable CONFIG_BLK_DEV_SD in board-boston.cfg to SATA disk access.
-- Enable CONFIG_GPIOLIB so that the GPIO driver is actually enabled.
-- Update MAINTAINERS entry.
+> > +	if (err)
+> > +		pr_err("failed to add DT provider: %d\n", err);
+> > +}
+> > +CLK_OF_DECLARE(clk_boston, "img,boston-clock", clk_boston_setup);
+> 
+> Can this be a platform driver? The syscon mfd can populate child
+> nodes and this could be a driver that binds to the clock child
+> node.
 
-Changes in v3: None
-Changes in v2: None
+Sadly no, it can't. This driver provides the CPU frequency which we need early 
+on. I've added a comment to that effect in v5.
 
- MAINTAINERS                                   |   2 +
- arch/mips/boot/dts/img/Makefile               |   2 +
- arch/mips/boot/dts/img/boston.dts             | 224 ++++++++++++++++++++++++++
- arch/mips/configs/generic/board-boston.config |  48 ++++++
- arch/mips/generic/Kconfig                     |  12 ++
- arch/mips/generic/vmlinux.its.S               |  25 +++
- 6 files changed, 313 insertions(+)
- create mode 100644 arch/mips/boot/dts/img/boston.dts
- create mode 100644 arch/mips/configs/generic/board-boston.config
+Thanks,
+    Paul
+--nextPart1610435.VxNgIZDhlI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2749877a4574..70acd8ee18ea 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8503,6 +8503,8 @@ M:	Paul Burton <paul.burton@imgtec.com>
- L:	linux-mips@linux-mips.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/clock/img,boston-clock.txt
-+F:	arch/mips/boot/dts/img/boston.dts
-+F:	arch/mips/configs/generic/board-boston.config
- F:	drivers/clk/imgtec/clk-boston.c
- F:	include/dt-bindings/clock/boston-clock.h
- 
-diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Makefile
-index c178cf56f5b8..3d70958d0f5a 100644
---- a/arch/mips/boot/dts/img/Makefile
-+++ b/arch/mips/boot/dts/img/Makefile
-@@ -1,3 +1,5 @@
-+dtb-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+= boston.dtb
-+
- dtb-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb
- obj-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb.o
- 
-diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
-new file mode 100644
-index 000000000000..53bfa29a7093
---- /dev/null
-+++ b/arch/mips/boot/dts/img/boston.dts
-@@ -0,0 +1,224 @@
-+/dts-v1/;
-+
-+#include <dt-bindings/clock/boston-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/interrupt-controller/mips-gic.h>
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "img,boston";
-+
-+	chosen {
-+		stdout-path = "uart0:115200";
-+	};
-+
-+	aliases {
-+		uart0 = &uart0;
-+	};
-+
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "img,mips";
-+			reg = <0>;
-+			clocks = <&clk_boston BOSTON_CLK_CPU>;
-+		};
-+	};
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x00000000 0x10000000>;
-+	};
-+
-+	pci0: pci@10000000 {
-+		compatible = "xlnx,axi-pcie-host-1.00.a";
-+		device_type = "pci";
-+		reg = <0x10000000 0x2000000>;
-+
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&gic>;
-+		interrupts = <GIC_SHARED 2 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		ranges = <0x02000000 0 0x40000000
-+			  0x40000000 0 0x40000000>;
-+
-+		interrupt-map-mask = <0 0 0 7>;
-+		interrupt-map = <0 0 0 1 &pci0_intc 1>,
-+				<0 0 0 2 &pci0_intc 2>,
-+				<0 0 0 3 &pci0_intc 3>,
-+				<0 0 0 4 &pci0_intc 4>;
-+
-+		pci0_intc: interrupt-controller {
-+			interrupt-controller;
-+			#address-cells = <0>;
-+			#interrupt-cells = <1>;
-+		};
-+	};
-+
-+	pci1: pci@12000000 {
-+		compatible = "xlnx,axi-pcie-host-1.00.a";
-+		device_type = "pci";
-+		reg = <0x12000000 0x2000000>;
-+
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&gic>;
-+		interrupts = <GIC_SHARED 1 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		ranges = <0x02000000 0 0x20000000
-+			  0x20000000 0 0x20000000>;
-+
-+		interrupt-map-mask = <0 0 0 7>;
-+		interrupt-map = <0 0 0 1 &pci1_intc 1>,
-+				<0 0 0 2 &pci1_intc 2>,
-+				<0 0 0 3 &pci1_intc 3>,
-+				<0 0 0 4 &pci1_intc 4>;
-+
-+		pci1_intc: interrupt-controller {
-+			interrupt-controller;
-+			#address-cells = <0>;
-+			#interrupt-cells = <1>;
-+		};
-+	};
-+
-+	pci2: pci@14000000 {
-+		compatible = "xlnx,axi-pcie-host-1.00.a";
-+		device_type = "pci";
-+		reg = <0x14000000 0x2000000>;
-+
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&gic>;
-+		interrupts = <GIC_SHARED 0 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		ranges = <0x02000000 0 0x16000000
-+			  0x16000000 0 0x100000>;
-+
-+		interrupt-map-mask = <0 0 0 7>;
-+		interrupt-map = <0 0 0 1 &pci2_intc 1>,
-+				<0 0 0 2 &pci2_intc 2>,
-+				<0 0 0 3 &pci2_intc 3>,
-+				<0 0 0 4 &pci2_intc 4>;
-+
-+		pci2_intc: interrupt-controller {
-+			interrupt-controller;
-+			#address-cells = <0>;
-+			#interrupt-cells = <1>;
-+		};
-+
-+		pci2_root@0,0,0 {
-+			compatible = "pci10ee,7021";
-+			reg = <0x00000000 0 0 0 0>;
-+
-+			#address-cells = <3>;
-+			#size-cells = <2>;
-+			#interrupt-cells = <1>;
-+
-+			eg20t_bridge@1,0,0 {
-+				compatible = "pci8086,8800";
-+				reg = <0x00010000 0 0 0 0>;
-+
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				#interrupt-cells = <1>;
-+
-+				eg20t_mac@2,0,1 {
-+					compatible = "pci8086,8802";
-+					reg = <0x00020100 0 0 0 0>;
-+					phy-reset-gpios = <&eg20t_gpio 6
-+							   GPIO_ACTIVE_LOW>;
-+				};
-+
-+				eg20t_gpio: eg20t_gpio@2,0,2 {
-+					compatible = "pci8086,8803";
-+					reg = <0x00020200 0 0 0 0>;
-+
-+					gpio-controller;
-+					#gpio-cells = <2>;
-+				};
-+
-+				eg20t_i2c@2,12,2 {
-+					compatible = "pci8086,8817";
-+					reg = <0x00026200 0 0 0 0>;
-+
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					rtc@0x68 {
-+						compatible = "st,m41t81s";
-+						reg = <0x68>;
-+					};
-+				};
-+			};
-+		};
-+	};
-+
-+	gic: interrupt-controller@16120000 {
-+		compatible = "mti,gic";
-+		reg = <0x16120000 0x20000>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <3>;
-+
-+		timer {
-+			compatible = "mti,gic-timer";
-+			interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
-+			clocks = <&clk_boston BOSTON_CLK_CPU>;
-+		};
-+	};
-+
-+	cdmm@16140000 {
-+		compatible = "mti,mips-cdmm";
-+		reg = <0x16140000 0x8000>;
-+	};
-+
-+	cpc@16200000 {
-+		compatible = "mti,mips-cpc";
-+		reg = <0x16200000 0x8000>;
-+	};
-+
-+	plat_regs: system-controller@17ffd000 {
-+		compatible = "img,boston-platform-regs", "syscon";
-+		reg = <0x17ffd000 0x1000>;
-+
-+		clk_boston: clock {
-+			compatible = "img,boston-clock";
-+			#clock-cells = <1>;
-+		};
-+	};
-+
-+	reboot: syscon-reboot {
-+		compatible = "syscon-reboot";
-+		regmap = <&plat_regs>;
-+		offset = <0x10>;
-+		mask = <0x10>;
-+	};
-+
-+	uart0: uart@17ffe000 {
-+		compatible = "ns16550a";
-+		reg = <0x17ffe000 0x1000>;
-+		reg-shift = <2>;
-+
-+		interrupt-parent = <&gic>;
-+		interrupts = <GIC_SHARED 3 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		clocks = <&clk_boston BOSTON_CLK_SYS>;
-+	};
-+
-+	lcd: lcd@17fff000 {
-+		compatible = "img,boston-lcd";
-+		reg = <0x17fff000 0x8>;
-+	};
-+};
-diff --git a/arch/mips/configs/generic/board-boston.config b/arch/mips/configs/generic/board-boston.config
-new file mode 100644
-index 000000000000..19560a45b683
---- /dev/null
-+++ b/arch/mips/configs/generic/board-boston.config
-@@ -0,0 +1,48 @@
-+CONFIG_FIT_IMAGE_FDT_BOSTON=y
-+
-+CONFIG_ATA=y
-+CONFIG_SATA_AHCI=y
-+CONFIG_SCSI=y
-+CONFIG_BLK_DEV_SD=y
-+
-+CONFIG_AUXDISPLAY=y
-+CONFIG_IMG_ASCII_LCD=y
-+
-+CONFIG_COMMON_CLK_BOSTON=y
-+
-+CONFIG_DMADEVICES=y
-+CONFIG_PCH_DMA=y
-+
-+CONFIG_GPIOLIB=y
-+CONFIG_GPIO_SYSFS=y
-+CONFIG_GPIO_PCH=y
-+
-+CONFIG_I2C=y
-+CONFIG_I2C_EG20T=y
-+
-+CONFIG_MMC=y
-+CONFIG_MMC_SDHCI=y
-+CONFIG_MMC_SDHCI_PCI=y
-+
-+CONFIG_NETDEVICES=y
-+CONFIG_PCH_GBE=y
-+
-+CONFIG_PCI=y
-+CONFIG_PCI_MSI=y
-+CONFIG_PCIE_XILINX=y
-+
-+CONFIG_PCH_PHUB=y
-+
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_M41T80=y
-+
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+
-+CONFIG_SPI=y
-+CONFIG_SPI_TOPCLIFF_PCH=y
-+
-+CONFIG_USB=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_OHCI_HCD=y
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index a606b3f9196c..3b74d4ed9140 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -9,6 +9,8 @@ config LEGACY_BOARDS
- 	  kernel is booted without being provided with an FDT via the UHI
- 	  boot protocol.
- 
-+comment "Legacy (non-UHI/non-FIT) Boards"
-+
- config LEGACY_BOARD_SEAD3
- 	bool "Support MIPS SEAD-3 boards"
- 	select LEGACY_BOARDS
-@@ -16,4 +18,14 @@ config LEGACY_BOARD_SEAD3
- 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
- 	  development boards, which boot using a legacy boot protocol.
- 
-+comment "FIT/UHI Boards"
-+
-+config FIT_IMAGE_FDT_BOSTON
-+	bool "Include FDT for MIPS Boston boards"
-+	help
-+	  Enable this to include the FDT for the MIPS Boston development board
-+	  from Imagination Technologies in the FIT kernel image. You should
-+	  enable this if you wish to boot on a MIPS Boston board, as it is
-+	  expected by the bootloader.
-+
- endif
-diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.its.S
-index f67fbf1c8541..3390e2f80b80 100644
---- a/arch/mips/generic/vmlinux.its.S
-+++ b/arch/mips/generic/vmlinux.its.S
-@@ -29,3 +29,28 @@
- 		};
- 	};
- };
-+
-+#ifdef CONFIG_FIT_IMAGE_FDT_BOSTON
-+/ {
-+	images {
-+		fdt@boston {
-+			description = "img,boston Device Tree";
-+			data = /incbin/("boot/dts/img/boston.dtb");
-+			type = "flat_dt";
-+			arch = "mips";
-+			compression = "none";
-+			hash@0 {
-+				algo = "sha1";
-+			};
-+		};
-+	};
-+
-+	configurations {
-+		conf@boston {
-+			description = "Boston Linux kernel";
-+			kernel = "kernel@0";
-+			fdt = "fdt@boston";
-+		};
-+	};
-+};
-+#endif /* CONFIG_FIT_IMAGE_FDT_BOSTON */
--- 
-2.13.1
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAllFl1kACgkQgiDZ+mk8
+HGW9dxAAoBK+xi40YgsJoejABQ76y05D2uzYJ6+9EK2jKnyD0cqD64uYC+CuVWxk
+yhnXavwEFiW2nEtqXcQG3QZVpD39OGG/FmjtZnhJXyt8otn6OO0UQ2R2HEd35jNE
+kSUf1zIkOhDmD7uUxw+bfKR2z/0mjbxT8N/T+/RpbRzU2BNWfDvNx3j2EdH6XlY0
+Qvo+U279nJku+AuYLEOJwoL0aJIVSZmlHNIX34eOpFfMa6ur/P9iF/qX8FNKCCeH
+ZxXHTVVjJZECwyWqPXiEINNL4OrCUADBDBeGo0ypY2TYXIOckaB3SrhhmKvcOET9
+Q9livLPBT9IWcT04XDa01nahR2wnM6dF+BgYyVncPaBNoKSs+52sp1HitFRx839a
+qo9a8bHv9QfdSf9D2HBJ6sezM0+1a6x4P1WqkOboIjapaPzpXiDcBn4CJIRigICp
+KhLnTTDfBRZcfv9fKBmp8nIRd+rQO4wnA8jlLmWtR+/RIr8A0jsEgHK2FYs8CDcn
+V2wro2W7TFm1uhizyw1Ykuu4t7I6t9RygQMCmpIjPVFuEgOnjFgOODh5l2+5L0cn
+qG4Co4C7d/w05R8dsZqVDot3IKdnP/dmJpVWHtByOlgpO76IbkbZ5w3xN1ze/MuR
+9EBvqQdMgDrReeqe7Gcy0qD+FiHN+Pfr1nwphjyadv2sAS0MBk4=
+=2doe
+-----END PGP SIGNATURE-----
+
+--nextPart1610435.VxNgIZDhlI--

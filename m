@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:54:36 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:58850 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:55:05 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:58853 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993868AbdFSPuJEUjQH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993870AbdFSPuJKdV4H (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 19 Jun 2017 17:50:09 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id A914B1A4719;
+        by mail.rt-rk.com (Postfix) with ESMTP id BA24D1A4670;
         Mon, 19 Jun 2017 17:50:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.ba.imgtec.org (unknown [82.117.201.26])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 858691A4670;
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 96B191A46EF;
         Mon, 19 Jun 2017 17:50:03 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
@@ -16,15 +16,17 @@ To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
 Cc:     Raghu.Gandham@imgtec.com, Leonid.Yegoshin@imgtec.com,
         Douglas.Leung@imgtec.com, Petar.Jovanovic@imgtec.com,
         Miodrag.Dinic@imgtec.com, Goran.Ferenc@imgtec.com
-Subject: [PATCH 0/4] MIPS: Fix several VDSO-related issues
-Date:   Mon, 19 Jun 2017 17:49:54 +0200
-Message-Id: <1497887398-13772-1-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH 1/4] MIPS: VDSO: Fix conversions in do_monotonic()/do_monotonic_coarse()
+Date:   Mon, 19 Jun 2017 17:49:55 +0200
+Message-Id: <1497887398-13772-2-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1497887398-13772-1-git-send-email-aleksandar.markovic@rt-rk.com>
+References: <1497887398-13772-1-git-send-email-aleksandar.markovic@rt-rk.com>
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58621
+X-archive-position: 58622
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,41 +43,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+From: Goran Ferenc <goran.ferenc@imgtec.com>
 
-The patches in this series all deal with VDSO, and all originate from
-the develpoment of Android emulator for Mips..
+Fix incorrect calculation in do_monotonic() and do_monotonic_coarse()
+function that in turn caused incorrect values returned by the vdso
+version of system call clock_gettime() on mips64 if its system clock
+ID parameter was CLOCK_MONOTONIC or CLOCK_MONOTONIC_COARSE.
 
-The first patch is a fix for incorrect time values returned under
-certain conditions.
+Consider these variables and their types on mips32 and mips64:
 
-The second and third patches provide fallback mechanism for
-clock_gettime() and gettimeofday() system calls within kernel VDSO
-code. This actually brings Mips code to be in sync with other major
-platforms (intel, arm, and others) (with respect to the division of
-responsibility between glibc and kernel regarding VDSO functions
-fallbacks). It seems to us that proposed organization is simpler
-and easier for maintenance in the long run. However, since it affects
-interaction between glibc and kernel, it needs to be communicated to
-and reviewed by Mips glibc developers.
+tk->wall_to_monotonic.tv_sec  s64, s64   (kernel/vdso.c)
+vdso_data.wall_to_mono_sec    u32, u32   (kernel/vdso.c)
+to_mono_sec                   u32, u32   (vdso/gettimeofday.c)
+ts->tv_sec                    s32, s64   (vdso/gettimeofday.c)
 
-The fourth patch is just a correction of a comment.
+For mips64 case, u32 vdso_data.wall_to_mono_sec variable is updated
+from the 64-bit signed variable tk->wall_to_monotonic.tv_sec
+(kernel/vdso.c:76) which is a negative number holding the time passed
+from 1970-01-01 to the time boot started. This 64-bit signed value is
+currently around 47+ years, in seconds. For instance, let this value
+be:
 
-Checkpatch script reports a false positive related to commit message
-for the first patch. It is going to be reported to the checkpatch
-maintainer.
+-1489757461
 
-Aleksandar Markovic (1):
-  MIPS: VDSO: Fix a mismatch between comment and preprocessor constant
+or
 
-Goran Ferenc (3):
-  MIPS: VDSO: Fix conversions in do_monotonic()/do_monotonic_coarse()
-  MIPS: VDSO: Add implementation of clock_gettime() fallback
-  MIPS: VDSO: Add implementation of gettimeofday() fallback
+11111111111111111111111111111111 10100111001101000001101011101011
 
- arch/mips/include/asm/vdso.h  |  4 +--
- arch/mips/vdso/gettimeofday.c | 59 ++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 52 insertions(+), 11 deletions(-)
+By updating 32-bit vdso_data.wall_to_mono_sec variable, we lose upper
+32 bits (signed 1's).
 
+to_mono_sec variable is a parameter of do_monotonic() and
+do_monotonic_coarse() functions which holds vdso_data.wall_to_mono_sec
+value. Its value needs to be added (or subtracted considering it holds
+negative value from the tk->wall_to_monotonic.tv_sec) to the current
+time passed from 1970-01-01 (ts->tv_sec), which is again something like
+47+ years, but increased by the time passed from the boot to the
+current time. ts->tv_sec is 32-bit long in case of 32-bit architecture
+and 64-bit long in case of 64-bit architecture. Consider the update of
+ts->tv_sec (vdso/gettimeofday.c:55 & 167):
+
+ts->tv_sec += to_mono_sec;
+
+mips32 case: This update will be performed correctly, since both
+ts->tv_sec and to_mono_sec are 32-bit long and the sign in to_mono_sec
+is preserved. Implicit conversion from u32 to s32 will be done
+correctly.
+
+mips64 case: This update will be wrong, since the implicit conversion
+will not be done correctly. The reason is that the conversion will be
+from u32 to s64. This is because to_mono_sec is 32-bit long for both
+mips32 and mips64 cases and s64..33 bits of converted to_mono_sec
+variable will be zeros.
+
+So, in order to make MIPS64 implementation work properly for
+MONOTONIC and MONOTONIC_COARSE clock ids on mips64, the size of
+wall_to_mono_sec variable in mips_vdso_data union and respective
+parameters in do_monotonic() and do_monotonic_coarse() functions
+should be changed from u32 to u64. Because of consistency, this
+size change from u32 and u64 is also done for wall_to_mono_nsec
+variable and corresponding function parameters.
+
+As far as similar situations for other architectures are concerned,
+let's take a look at arm. Arm has two distinct vdso_data structures
+for 32-bit & 64-bit cases, and arm's wall_to_mono_sec and
+wall_to_mono_nsec are u32 for 32-bit and u64 for 64-bit cases.
+On the other hand, MIPS has only one structure (mips_vdso_data),
+hence the need for changing the size of above mentioned parameters.
+
+Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
+Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+---
+ arch/mips/include/asm/vdso.h  | 4 ++--
+ arch/mips/vdso/gettimeofday.c | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/include/asm/vdso.h b/arch/mips/include/asm/vdso.h
+index 8f4ca5d..b7cd6cf 100644
+--- a/arch/mips/include/asm/vdso.h
++++ b/arch/mips/include/asm/vdso.h
+@@ -79,8 +79,8 @@ union mips_vdso_data {
+ 	struct {
+ 		u64 xtime_sec;
+ 		u64 xtime_nsec;
+-		u32 wall_to_mono_sec;
+-		u32 wall_to_mono_nsec;
++		u64 wall_to_mono_sec;
++		u64 wall_to_mono_nsec;
+ 		u32 seq_count;
+ 		u32 cs_shift;
+ 		u8 clock_mode;
+diff --git a/arch/mips/vdso/gettimeofday.c b/arch/mips/vdso/gettimeofday.c
+index ce89c9e..fd7d433 100644
+--- a/arch/mips/vdso/gettimeofday.c
++++ b/arch/mips/vdso/gettimeofday.c
+@@ -39,8 +39,8 @@ static __always_inline int do_monotonic_coarse(struct timespec *ts,
+ 					       const union mips_vdso_data *data)
+ {
+ 	u32 start_seq;
+-	u32 to_mono_sec;
+-	u32 to_mono_nsec;
++	u64 to_mono_sec;
++	u64 to_mono_nsec;
+ 
+ 	do {
+ 		start_seq = vdso_data_read_begin(data);
+@@ -148,8 +148,8 @@ static __always_inline int do_monotonic(struct timespec *ts,
+ {
+ 	u32 start_seq;
+ 	u64 ns;
+-	u32 to_mono_sec;
+-	u32 to_mono_nsec;
++	u64 to_mono_sec;
++	u64 to_mono_nsec;
+ 
+ 	do {
+ 		start_seq = vdso_data_read_begin(data);
 -- 
 2.7.4

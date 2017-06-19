@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 00:27:50 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 00:28:12 +0200 (CEST)
 Received: from hauke-m.de ([5.39.93.123]:44231 "EHLO mail.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992143AbdFSW02PjNfi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992181AbdFSW024vKqi (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 20 Jun 2017 00:26:28 +0200
 Received: from hauke-desktop.lan (p4FD9730E.dip0.t-ipconnect.de [79.217.115.14])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id D55B91001E1;
-        Tue, 20 Jun 2017 00:26:26 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 489C61001E2;
+        Tue, 20 Jun 2017 00:26:28 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -14,9 +14,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v4 04/16] watchdog: lantiq: access boot cause register through regmap
-Date:   Tue, 20 Jun 2017 00:25:56 +0200
-Message-Id: <20170619222608.13344-5-hauke@hauke-m.de>
+Subject: [PATCH v4 05/16] watchdog: lantiq: add device tree binding documentation
+Date:   Tue, 20 Jun 2017 00:25:57 +0200
+Message-Id: <20170619222608.13344-6-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170619222608.13344-1-hauke@hauke-m.de>
 References: <20170619222608.13344-1-hauke@hauke-m.de>
@@ -24,7 +24,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58640
+X-archive-position: 58641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,141 +41,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch avoids accessing the function ltq_reset_cause() and directly
-accesses the register given over the syscon interface. The syscon
-interface will be implemented for the xway SoCs for the falcon SoCs the
-ltq_reset_cause() function never worked, because a wrong offset was used.
+The binding was not documented before, add the documentation now.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Guenter Roeck <linux@reck-us.net>
 ---
- drivers/watchdog/lantiq_wdt.c | 73 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 68 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
 
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-index e0823677d8c1..20e2dae71144 100644
---- a/drivers/watchdog/lantiq_wdt.c
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -4,6 +4,7 @@
-  *  by the Free Software Foundation.
-  *
-  *  Copyright (C) 2010 John Crispin <john@phrozen.org>
-+ *  Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
-  *  Based on EP93xx wdt driver
-  */
- 
-@@ -17,9 +18,20 @@
- #include <linux/uaccess.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-+#include <linux/regmap.h>
-+#include <linux/mfd/syscon.h>
- 
- #include <lantiq_soc.h>
- 
-+#define LTQ_XRX_RCU_RST_STAT		0x0014
-+#define LTQ_XRX_RCU_RST_STAT_WDT	BIT(31)
+diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+new file mode 100644
+index 000000000000..1d41142ca55f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+@@ -0,0 +1,22 @@
++Lantiq WTD watchdog binding
++============================
 +
-+/* CPU0 Reset Source Register */
-+#define LTQ_FALCON_SYS1_CPU0RS		0x0040
-+/* reset cause mask */
-+#define LTQ_FALCON_SYS1_CPU0RS_MASK	0x0007
-+#define LTQ_FALCON_SYS1_CPU0RS_WDT	0x02
++This describes the binding of the Lantiq watchdog driver.
 +
- /*
-  * Section 3.4 of the datasheet
-  * The password sequence protects the WDT control register from unintended
-@@ -186,16 +198,69 @@ static struct miscdevice ltq_wdt_miscdev = {
- 	.fops	= &ltq_wdt_fops,
- };
- 
-+typedef int (*ltq_wdt_bootstatus_set)(struct platform_device *pdev);
++-------------------------------------------------------------------------------
++Required properties:
++- compatible		: Should be one of
++				"lantiq,wdt"
++				"lantiq,xrx100-wdt"
++				"lantiq,falcon-wdt"
++- regmap		: A phandle to the RCU syscon (required for
++			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
 +
-+static int ltq_wdt_bootstatus_xrx(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regmap *rcu_regmap;
-+	u32 val;
-+	int err;
++-------------------------------------------------------------------------------
++Example for the watchdog on the xRX200 SoCs:
++		watchdog@803f0 {
++			compatible = "lantiq,xrx100-wdt";
++			reg = <0x803f0 0x10>;
 +
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
-+	if (IS_ERR(rcu_regmap))
-+		return PTR_ERR(rcu_regmap);
-+
-+	err = regmap_read(rcu_regmap, LTQ_XRX_RCU_RST_STAT, &val);
-+	if (err)
-+		return err;
-+
-+	if (val & LTQ_XRX_RCU_RST_STAT_WDT)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
-+
-+	return 0;
-+}
-+
-+static int ltq_wdt_bootstatus_falcon(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regmap *rcu_regmap;
-+	u32 val;
-+	int err;
-+
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
-+	if (IS_ERR(rcu_regmap))
-+		return PTR_ERR(rcu_regmap);
-+
-+	err = regmap_read(rcu_regmap, LTQ_FALCON_SYS1_CPU0RS, &val);
-+	if (err)
-+		return err;
-+
-+	if ((val & LTQ_FALCON_SYS1_CPU0RS_MASK) == LTQ_FALCON_SYS1_CPU0RS_WDT)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
-+
-+	return 0;		
-+}
-+
- static int
- ltq_wdt_probe(struct platform_device *pdev)
- {
- 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	struct clk *clk;
-+	ltq_wdt_bootstatus_set ltq_wdt_bootstatus_set;
-+	int ret;
- 
- 	ltq_wdt_membase = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(ltq_wdt_membase))
- 		return PTR_ERR(ltq_wdt_membase);
- 
-+	ltq_wdt_bootstatus_set = of_device_get_match_data(&pdev->dev);
-+	if (ltq_wdt_bootstatus_set) {
-+		ret = ltq_wdt_bootstatus_set(pdev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* we do not need to enable the clock as it is always running */
- 	clk = clk_get_io();
- 	if (IS_ERR(clk)) {
-@@ -205,10 +270,6 @@ ltq_wdt_probe(struct platform_device *pdev)
- 	ltq_io_region_clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
- 
--	/* find out if the watchdog caused the last reboot */
--	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
--		ltq_wdt_bootstatus = WDIOF_CARDRESET;
--
- 	dev_info(&pdev->dev, "Init done\n");
- 	return misc_register(&ltq_wdt_miscdev);
- }
-@@ -222,7 +283,9 @@ ltq_wdt_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id ltq_wdt_match[] = {
--	{ .compatible = "lantiq,wdt" },
-+	{ .compatible = "lantiq,wdt", .data = NULL},
-+	{ .compatible = "lantiq,xrx100-wdt", .data =&ltq_wdt_bootstatus_xrx },
-+	{ .compatible = "lantiq,falcon-wdt", .data =&ltq_wdt_bootstatus_falcon },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, ltq_wdt_match);
++			regmap = <&rcu0>;
++		};
 -- 
 2.11.0

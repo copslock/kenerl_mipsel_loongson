@@ -1,67 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 16:38:04 +0200 (CEST)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:32825
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991948AbdFSOh5RJL6Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jun 2017 16:37:57 +0200
-Received: by mail-qt0-x242.google.com with SMTP id w1so19482674qtg.0
-        for <linux-mips@linux-mips.org>; Mon, 19 Jun 2017 07:37:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=greyhouse-net.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=2Im6SeFA7p6i7B9c+I+TeMpwObs0yTeoACAL2KFq3+Q=;
-        b=wlDxV3me/mycCnRGNwprHPX0uF6qXJiZbQOBg194lxHe5IdXI9Pq37f26k9Le2d4e8
-         Oo+gJiRZRBGYJbP7dVp2Kf6epLiXDyukX5OWyHs00kejH7ofhLb8PmsPhHGSmOgts9u4
-         heO21Wg0SHCUggebgM4McHr6zjP+OtFJ9u7X+DkCR0uQd4ORH26S8MEHSm/uzUdBn1CS
-         tKdIYcbVHUttxlr/hSkScKToAcJgfQgriygqz5pZscaSmhbjx3NcXZTBnulaL/Cvzs+p
-         GXhS850wQvnfcy1C+tPtf+cfPg7Yca6FeWZNNzo1IAcNBhjNliVwjzxHADEw3pumOU97
-         Ejnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=2Im6SeFA7p6i7B9c+I+TeMpwObs0yTeoACAL2KFq3+Q=;
-        b=lZVa94c5HBPYWLaTkTDXTp8H+Q40kfY9pbN8I2bmjcrqWfBva7IuxztsalBzKLuefy
-         oXhkNi2y3CBsUywWDaFIR0faGbGwpZoJBrSZS5wuE7EGit6k20EIU+YlpgqzuPXq0idE
-         23hJshkb4YCyUTtDE9K4tgI47x6P493E/+vQO/kfVSZFScKx0oXS60pQqOpGr+Kp3csn
-         Jt23fc81qb7kQ/McsRPmxlfmf2ib1jROjybMtvAH7q5txyoM3e+p5iZhDLTyj6Nm4Rr/
-         RAhRbmHorJbOVX1B4fDD1BMNqQZnPvkytW/7Veb2ve7CqmJMPxmzyUmLh4zGtcal6puV
-         NNsw==
-X-Gm-Message-State: AKS2vOyvvfYdKav3ptMLmwG6sxTaL+ENTqAES/m37DoCpiINbkwYtEPh
-        A6o6yCLunrl1o9vI
-X-Received: by 10.237.59.147 with SMTP id r19mr27317707qte.47.1497883071381;
-        Mon, 19 Jun 2017 07:37:51 -0700 (PDT)
-Received: from C02RW35GFVH8.dhcp.broadcom.net ([192.19.231.250])
-        by smtp.gmail.com with ESMTPSA id q90sm3752416qki.11.2017.06.19.07.37.50
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Jun 2017 07:37:50 -0700 (PDT)
-Date:   Mon, 19 Jun 2017 10:37:47 -0400
-From:   Andy Gospodarek <andy@greyhouse.net>
-To:     David Daney <david.daney@cavium.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 2/3] samples/bpf: Add define __EMITTING_BPF__ when
- building BPF
-Message-ID: <20170619143747.GA20370@C02RW35GFVH8.dhcp.broadcom.net>
-References: <20170615223543.22867-3-david.daney@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:12:53 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:55712 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991957AbdFSPMqC09LZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Jun 2017 17:12:46 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98DAD80D;
+        Mon, 19 Jun 2017 08:12:38 -0700 (PDT)
+Received: from [10.1.210.46] (e110467-lin.cambridge.arm.com [10.1.210.46])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FD093F41F;
+        Mon, 19 Jun 2017 08:12:34 -0700 (PDT)
+Subject: Re: [PATCH 06/44] iommu/dma: don't rely on DMA_ERROR_CODE
+To:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+References: <20170616181059.19206-1-hch@lst.de>
+ <20170616181059.19206-7-hch@lst.de>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <18ff1d49-4a13-3dea-8a4d-fb778aec37dc@arm.com>
+Date:   Mon, 19 Jun 2017 16:12:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170615223543.22867-3-david.daney@cavium.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <andy@greyhouse.net>
+In-Reply-To: <20170616181059.19206-7-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <robin.murphy@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58603
+X-archive-position: 58604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy@greyhouse.net
+X-original-sender: robin.murphy@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,57 +55,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 15, 2017 at 03:35:42PM -0700, David Daney wrote:
-> ... this allows gating of inline assembly code that causes llvm to
-> fail when emitting BPF.
+On 16/06/17 19:10, Christoph Hellwig wrote:
+> DMA_ERROR_CODE is not a public API and will go away soon.  dma dma-iommu
+> driver already implements a proper ->mapping_error method, so it's only
+> using the value internally.  Add a new local define using the value
+> that arm64 which is the only current user of dma-iommu.
 
-I floated essentially the same patch in Feb without much luck:
+I was angling at just open-coding 0/!dma_addr/etc. for simplicity rather
+than having anything #defined at all - nothing except the 4th and final
+hunks actually have any relevance to  dma_mapping_error(), and I reckon
+it's plenty clear enough in context. The rest is just proactively
+blatting address arguments with "arbitrary definitely-invalid value",
+which is more paranoia than anything else (and arguably unnecessary).
 
-http://lists.infradead.org/pipermail/linux-arm-kernel/2017-March/492758.html
+It's not the biggest deal, though, so either way:
 
-Many of the folks on the cc-list here had objections then and I suspect they
-unfortunately still object.  I like the fact that this fix allowed
-architectures that are currently problematic to move forward before there is a
-possibly mythical "fix in llvm" to address this problem.
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
-When talking about this in one of the IOVisor calls it was also discussed that
-this needs to be fixed for tracing, so there are more than just the BPF
-use-case where this is important.
-
-I wasn't sure there was buy-in from the ARM developers, but my thought had been
-that a cleaner solution to this would be to reorganize sysreg.h into multiple
-files.  The inline assembly would be the only thing in sysreg-asm.h (that was
-actually the only thing originally in sysreg.h) and the rest of the code would
-be in sysreg.h.
-
-That is not what Dave suggested, but it would be a good starting point for a
-custom asm/ layer for BPF/tracing.  I'm with Dave and think a specialized set
-of asm/ files for tracing/BPF to avoid these issues all-together and let arch
-developers to do whatever they want in their code.
-
-> Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  samples/bpf/Makefile | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/iommu/dma-iommu.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
 > 
-> diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-> index a0561dc762fe..4979e6b56662 100644
-> --- a/samples/bpf/Makefile
-> +++ b/samples/bpf/Makefile
-> @@ -193,12 +193,12 @@ $(src)/*.c: verify_target_bpf
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 62618e77bedc..9403336f1fa6 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -31,6 +31,8 @@
+>  #include <linux/scatterlist.h>
+>  #include <linux/vmalloc.h>
 >  
->  $(obj)/tracex5_kern.o: $(obj)/syscall_nrs.h
+> +#define IOMMU_MAPPING_ERROR	0
+> +
+>  struct iommu_dma_msi_page {
+>  	struct list_head	list;
+>  	dma_addr_t		iova;
+> @@ -500,7 +502,7 @@ void iommu_dma_free(struct device *dev, struct page **pages, size_t size,
+>  {
+>  	__iommu_dma_unmap(iommu_get_domain_for_dev(dev), *handle, size);
+>  	__iommu_dma_free_pages(pages, PAGE_ALIGN(size) >> PAGE_SHIFT);
+> -	*handle = DMA_ERROR_CODE;
+> +	*handle = IOMMU_MAPPING_ERROR;
+>  }
 >  
-> -# asm/sysreg.h - inline assembly used by it is incompatible with llvm.
-> -# But, there is no easy way to fix it, so just exclude it since it is
-> -# useless for BPF samples.
-> +# __EMITTING_BPF__ used to exclude inline assembly, which cannot be
-> +# emitted in BPF code.
->  $(obj)/%.o: $(src)/%.c
->  	$(CLANG) $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(EXTRA_CFLAGS) \
-> -		-D__KERNEL__ -D__ASM_SYSREG_H -Wno-unused-value -Wno-pointer-sign \
-> +		-D__KERNEL__ -D__EMITTING_BPF__ \
-> +		-Wno-unused-value -Wno-pointer-sign \
->  		-Wno-compare-distinct-pointer-types \
->  		-Wno-gnu-variable-sized-type-not-at-end \
->  		-Wno-address-of-packed-member -Wno-tautological-compare \
+>  /**
+> @@ -533,7 +535,7 @@ struct page **iommu_dma_alloc(struct device *dev, size_t size, gfp_t gfp,
+>  	dma_addr_t iova;
+>  	unsigned int count, min_size, alloc_sizes = domain->pgsize_bitmap;
+>  
+> -	*handle = DMA_ERROR_CODE;
+> +	*handle = IOMMU_MAPPING_ERROR;
+>  
+>  	min_size = alloc_sizes & -alloc_sizes;
+>  	if (min_size < PAGE_SIZE) {
+> @@ -627,11 +629,11 @@ static dma_addr_t __iommu_dma_map(struct device *dev, phys_addr_t phys,
+>  
+>  	iova = iommu_dma_alloc_iova(domain, size, dma_get_mask(dev), dev);
+>  	if (!iova)
+> -		return DMA_ERROR_CODE;
+> +		return IOMMU_MAPPING_ERROR;
+>  
+>  	if (iommu_map(domain, iova, phys - iova_off, size, prot)) {
+>  		iommu_dma_free_iova(cookie, iova, size);
+> -		return DMA_ERROR_CODE;
+> +		return IOMMU_MAPPING_ERROR;
+>  	}
+>  	return iova + iova_off;
+>  }
+> @@ -671,7 +673,7 @@ static int __finalise_sg(struct device *dev, struct scatterlist *sg, int nents,
+>  
+>  		s->offset += s_iova_off;
+>  		s->length = s_length;
+> -		sg_dma_address(s) = DMA_ERROR_CODE;
+> +		sg_dma_address(s) = IOMMU_MAPPING_ERROR;
+>  		sg_dma_len(s) = 0;
+>  
+>  		/*
+> @@ -714,11 +716,11 @@ static void __invalidate_sg(struct scatterlist *sg, int nents)
+>  	int i;
+>  
+>  	for_each_sg(sg, s, nents, i) {
+> -		if (sg_dma_address(s) != DMA_ERROR_CODE)
+> +		if (sg_dma_address(s) != IOMMU_MAPPING_ERROR)
+>  			s->offset += sg_dma_address(s);
+>  		if (sg_dma_len(s))
+>  			s->length = sg_dma_len(s);
+> -		sg_dma_address(s) = DMA_ERROR_CODE;
+> +		sg_dma_address(s) = IOMMU_MAPPING_ERROR;
+>  		sg_dma_len(s) = 0;
+>  	}
+>  }
+> @@ -836,7 +838,7 @@ void iommu_dma_unmap_resource(struct device *dev, dma_addr_t handle,
+>  
+>  int iommu_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+>  {
+> -	return dma_addr == DMA_ERROR_CODE;
+> +	return dma_addr == IOMMU_MAPPING_ERROR;
+>  }
+>  
+>  static struct iommu_dma_msi_page *iommu_dma_get_msi_page(struct device *dev,
+> 

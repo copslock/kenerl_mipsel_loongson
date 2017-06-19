@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:59:41 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:58937 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 20:34:15 +0200 (CEST)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:51800 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994787AbdFSPuaobqCH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Jun 2017 17:50:30 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 05B9A1A45F2;
-        Mon, 19 Jun 2017 17:50:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw197-lin.ba.imgtec.org (unknown [82.117.201.26])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id D8DE71A46A7;
-        Mon, 19 Jun 2017 17:50:19 +0200 (CEST)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
-        Paul.Burton@imgtec.com
-Cc:     Raghu.Gandham@imgtec.com, Leonid.Yegoshin@imgtec.com,
-        Douglas.Leung@imgtec.com, Petar.Jovanovic@imgtec.com,
-        Miodrag.Dinic@imgtec.com, Goran.Ferenc@imgtec.com
-Subject: [PATCH 6/8] input: goldfish: Fix multitouch event handling
-Date:   Mon, 19 Jun 2017 17:50:13 +0200
-Message-Id: <1497887415-13825-7-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1497887415-13825-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1497887415-13825-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+        id S23991532AbdFSSeHHu6SP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Jun 2017 20:34:07 +0200
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id v5JIY2tJ015122;
+        Mon, 19 Jun 2017 20:34:02 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux@roeck-us.net
+Cc:     Corey Minyard <cminyard@mvista.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Jiri Slaby <jslaby@suse.cz>, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 256/268] MIPS: Fix crash registers on non-crashing CPUs
+Date:   Mon, 19 Jun 2017 20:32:35 +0200
+Message-Id: <1497897167-14556-257-git-send-email-w@1wt.eu>
+X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
+In-Reply-To: <1497897167-14556-1-git-send-email-w@1wt.eu>
+References: <1497897167-14556-1-git-send-email-w@1wt.eu>
+Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58634
+X-archive-position: 58635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: w@1wt.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,96 +41,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Lingfeng Yang <lfy@google.com>
+From: Corey Minyard <cminyard@mvista.com>
 
-Register Goldfish Events device properly as a multitouch device,
-and send SYN_REPORT event in appropriate cases only.
+commit c80e1b62ffca52e2d1d865ee58bc79c4c0c55005 upstream.
 
-If SYN_REPORT is sent on every single multitouch event, it breaks
-the multitouch. The multitouch becomes janky and having to click
-2-3 times to do stuff (plus randomly activating notification bars
-when not clicking). If these SYN_REPORT events are supressed,
-multitouch will work fine, plus the events will have a protocol
-that looks nice.
+As part of handling a crash on an SMP system, an IPI is send to
+all other CPUs to save their current registers and stop.  It was
+using task_pt_regs(current) to get the registers, but that will
+only be accurate if the CPU was interrupted running in userland.
+Instead allow the architecture to pass in the registers (all
+pass NULL now, but allow for the future) and then use get_irq_regs()
+which should be accurate as we are in an interrupt.  Fall back to
+task_pt_regs(current) if nothing else is available.
 
-In addition, Goldfish Events device needs to be registerd as a
-multitouch device by issuing input_mt_init_slots. Otherwise,
-input_handle_abs_event in drivers/input/input.c will silently drop
-all ABS_MT_SLOT events, casusing touches with more than one finger
-not to work properly.
-
-Signed-off-by: Lingfeng Yang <lfy@google.com>
-Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Cc: David Daney <ddaney@caviumnetworks.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/13050/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Julia Lawall <julia.lawall@lip6.fr>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- drivers/input/keyboard/goldfish_events.c | 33 +++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ arch/mips/kernel/crash.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/keyboard/goldfish_events.c b/drivers/input/keyboard/goldfish_events.c
-index f6e643b..6e0b8bb 100644
---- a/drivers/input/keyboard/goldfish_events.c
-+++ b/drivers/input/keyboard/goldfish_events.c
-@@ -17,6 +17,7 @@
- #include <linux/interrupt.h>
- #include <linux/types.h>
- #include <linux/input.h>
-+#include <linux/input/mt.h>
- #include <linux/kernel.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-@@ -24,6 +25,8 @@
- #include <linux/io.h>
- #include <linux/acpi.h>
+diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
+index 93aa302..c683129 100644
+--- a/arch/mips/kernel/crash.c
++++ b/arch/mips/kernel/crash.c
+@@ -15,12 +15,22 @@ static int crashing_cpu = -1;
+ static cpumask_t cpus_in_crash = CPU_MASK_NONE;
  
-+#define GOLDFISH_MAX_FINGERS 5
-+
- enum {
- 	REG_READ        = 0x00,
- 	REG_SET_PAGE    = 0x00,
-@@ -52,7 +55,22 @@ static irqreturn_t events_interrupt(int irq, void *dev_id)
- 	value = __raw_readl(edev->addr + REG_READ);
+ #ifdef CONFIG_SMP
+-static void crash_shutdown_secondary(void *ignore)
++static void crash_shutdown_secondary(void *passed_regs)
+ {
+-	struct pt_regs *regs;
++	struct pt_regs *regs = passed_regs;
+ 	int cpu = smp_processor_id();
  
- 	input_event(edev->input, type, code, value);
--	input_sync(edev->input);
-+
+-	regs = task_pt_regs(current);
 +	/*
-+	 * Send an extra (EV_SYN, SYN_REPORT, 0x0) event if a key
-+	 * was pressed. Some keyboard device drivers may only send
-+	 * the EV_KEY event and not EV_SYN.
-+	 *
-+	 * Note that sending an extra SYN_REPORT is not necessary
-+	 * nor correct protocol with other devices such as
-+	 * touchscreens, which will send their own SYN_REPORT's
-+	 * when sufficient event information has been collected
-+	 * (e.g., for touchscreens, when pressure and X/Y coordinates
-+	 * have been received). Hence, we will only send this extra
-+	 * SYN_REPORT if type == EV_KEY.
++	 * If we are passed registers, use those.  Otherwise get the
++	 * regs from the last interrupt, which should be correct, as
++	 * we are in an interrupt.  But if the regs are not there,
++	 * pull them from the top of the stack.  They are probably
++	 * wrong, but we need something to keep from crashing again.
 +	 */
-+	if (type == EV_KEY)
-+		input_sync(edev->input);
- 	return IRQ_HANDLED;
- }
++	if (!regs)
++		regs = get_irq_regs();
++	if (!regs)
++		regs = task_pt_regs(current);
  
-@@ -155,6 +173,19 @@ static int events_probe(struct platform_device *pdev)
- 	input_dev->name = edev->name;
- 	input_dev->id.bustype = BUS_HOST;
- 
-+	/*
-+	 * Set the Goldfish Device to be multitouch.
-+	 *
-+	 * In the Ranchu kernel, there is multitouch-specific code
-+	 * for handling ABS_MT_SLOT events (see
-+	 * drivers/input/input.c:input_handle_abs_event).
-+	 * If we do not issue input_mt_init_slots, the kernel will
-+	 * filter out needed ABS_MT_SLOT events when we touch the
-+	 * screen in more than one place, preventing multitouch with
-+	 * more than one finger from working.
-+	 */
-+	input_mt_init_slots(input_dev, GOLDFISH_MAX_FINGERS, 0);
-+
- 	events_import_bits(edev, input_dev->evbit, EV_SYN, EV_MAX);
- 	events_import_bits(edev, input_dev->keybit, EV_KEY, KEY_MAX);
- 	events_import_bits(edev, input_dev->relbit, EV_REL, REL_MAX);
+ 	if (!cpu_online(cpu))
+ 		return;
 -- 
-2.7.4
+2.8.0.rc2.1.gbe9624a

@@ -1,66 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 01:30:11 +0200 (CEST)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:34628
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992036AbdFSXaEhcYBQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 01:30:04 +0200
-Received: by mail-wm0-x244.google.com with SMTP id f134so2002941wme.1;
-        Mon, 19 Jun 2017 16:30:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=8v/6nlpyI3L/gCnIWp5qdz9AjKKWmg8f46TglaU1Clw=;
-        b=QkesucAPezPZnqH0wa7cytooQ2bg7oz+csia4XuKAG7YCsDFXCZVvoyXMn0Id6MQxx
-         YO0L7cKnO79maEjtOMVLfyoRyRVfOfDO0wm38YztTSRlx1vP/bIyzdtqN3QZdOhSnhnK
-         CNztU/5LdxcBf9/u38uopNrxNJnKbfudviK2pi78C4LoHmRL/DCl4sR1aUFg76DbhQzK
-         53S0GDcC+DVqqT+kbUt5bz/7OQkgBpiosssVG5lCre+wAH1wGloyu3gMXHDJt+cJ9PHP
-         vtqtN12GCeSAQsdg0mYYBs4w0fGxnhYYTCvsG5ukXmeS4NBRhcN+AsoYlvGv1bkGmnba
-         spig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=8v/6nlpyI3L/gCnIWp5qdz9AjKKWmg8f46TglaU1Clw=;
-        b=ki7rsETBYOyYJdzqh6zBcqtLtDZV8sp2DS43AO6/aXJ30VV7G1+ZiU04EluII0narL
-         skWLR4r9RU0htXQT4IRAQ/fJ3J1vrEAedA1DE4ZHo0qG8LDVeGmly8VrJy7Ru25ZqVz0
-         M/P/VBmwyFcB5vLkLXel9WKjIXtHDZr90Ma4UfDZCydF3WWMB0Km6VWFJYNxalRBm30E
-         ZMnngVgp4My+pAIAg1W889D76q/tzSkZ8NCdSiR4HI4jV7bOHcY2qjpr59HTRgQ1cP4Y
-         panXIdXGLD84o06O9ayRs0DWxysxwFvT4bLtdVu0Po7X9NO9c/ghiSHdBeICx/AHnIKi
-         69iA==
-X-Gm-Message-State: AKS2vOzk/KGFTBWowT69HjanWG5Rb2yEJdEoqqhyC4uFmkj2KP/wIGn7
-        +GdJIg6QglxgN/sdYgKhbv+7jIbJOA==
-X-Received: by 10.28.101.87 with SMTP id z84mr701104wmb.72.1497914999104; Mon,
- 19 Jun 2017 16:29:59 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.223.172.246 with HTTP; Mon, 19 Jun 2017 16:29:58 -0700 (PDT)
-In-Reply-To: <20170619222608.13344-11-hauke@hauke-m.de>
-References: <20170619222608.13344-1-hauke@hauke-m.de> <20170619222608.13344-11-hauke@hauke-m.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 20 Jun 2017 02:29:58 +0300
-Message-ID: <CAHp75Vc+UGCat0QcVeDuxEugc9r=yB5HNPnHuzAdmQnkK2=hGg@mail.gmail.com>
-Subject: Re: [PATCH v4 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-To:     Hauke Mehrtens <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 01:34:45 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:60012 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992036AbdFSXeihzQzQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 01:34:38 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id A6BCF6080B; Mon, 19 Jun 2017 23:34:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1497915276;
+        bh=SUb1+sBqwRFD8iGfJsRQXDKk1wEpTd1KJLdiqlxwGzA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QPFwWoljkO4oraAVSXOpG/2mOkDwIaC0INv2gZ3viZ6gFHiqiC6HnxYl0mNW9JqBj
+         guswOyf8GvaP1Kv12JH2lLj4gB4xwbkR/pysA3lZ18bNvOYTmWQWKKVQjz2NuCo61P
+         S3QjrUR+F9mNRSq/xPfpdtOrZ9Sp5CDfMAPx+xrA=
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6438260870;
+        Mon, 19 Jun 2017 23:34:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1497915275;
+        bh=SUb1+sBqwRFD8iGfJsRQXDKk1wEpTd1KJLdiqlxwGzA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dGhwkjAs5/oBUSqRAEEHfccbueKyX0A2oaim5KqPL/ftofsaTb1iDT3wPzYyvF4uI
+         lKo8rHJ+2/pyWQGNVWe8457vVsYpqBMOPJ7E3SSuAqnYAaRPN7dTiEG/5OLME+Ai3g
+         XtuO08E7H7f8ud942nYPJAXWR388YpsN6JZuddYo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6438260870
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
+Date:   Mon, 19 Jun 2017 16:34:34 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Binbin Zhou <zhoubb@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
-        linux-watchdog@vger.kernel.org,
-        devicetree <devicetree@vger.kernel.org>,
-        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
-        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
-        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <andy.shevchenko@gmail.com>
+        James Hogan <james.hogan@imgtec.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Yang Ling <gnaygnil@gmail.com>,
+        =?utf-8?B?6LCi6Ie06YKm?= <Yeking@Red54.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        HuaCai Chen <chenhc@lemote.com>
+Subject: Re: [PATCH v7 7/8] clk: Loongson: Add Loongson-1A clock support
+Message-ID: <20170619233434.GQ20170@codeaurora.org>
+References: <1497581573-17258-1-git-send-email-zhoubb@lemote.com>
+ <1497581573-17258-8-git-send-email-zhoubb@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1497581573-17258-8-git-send-email-zhoubb@lemote.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58654
+X-archive-position: 58655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.shevchenko@gmail.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,334 +74,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 20, 2017 at 1:26 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->
-> The reset controllers (on xRX200 and newer SoCs have two of them) are
-> provided by the RCU module. This was initially implemented as a simple
-> reset controller. However, the RCU module provides more functionality
-> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> The old reset controller driver implementation from
-> arch/mips/lantiq/xway/reset.c did not honor this fact.
->
-> For some devices the request and the status bits are different.
->
-
-FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-One nit below.
-
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
->  .../devicetree/bindings/reset/lantiq,reset.txt     |  29 +++
->  drivers/reset/Kconfig                              |   6 +
->  drivers/reset/Makefile                             |   1 +
->  drivers/reset/reset-lantiq.c                       | 215 +++++++++++++++++++++
->  4 files changed, 251 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
->  create mode 100644 drivers/reset/reset-lantiq.c
->
-> diff --git a/Documentation/devicetree/bindings/reset/lantiq,reset.txt b/Documentation/devicetree/bindings/reset/lantiq,reset.txt
+On 06/16, Binbin Zhou wrote:
+> diff --git a/drivers/clk/loongson1/clk-loongson1a.c b/drivers/clk/loongson1/clk-loongson1a.c
 > new file mode 100644
-> index 000000000000..bf62669b2b96
+> index 0000000..263a82c
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reset/lantiq,reset.txt
-> @@ -0,0 +1,29 @@
-> +Lantiq XWAY SoC RCU reset controller binding
-> +============================================
-> +
-> +This binding describes a reset-controller found on the RCU module on Lantiq
-> +XWAY SoCs.
-> +
-> +This driver has to be a sub node of the Lantiq RCU block.
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties:
-> +- compatible           : Should be one of
-> +                               "lantiq,danube-reset"
-> +                               "lantiq,xrx200-reset"
-> +- offset-set           : Offset of the reset set register
-> +- offset-status                : Offset of the reset status register
-> +- #reset-cells         : Specifies the number of cells needed to encode the
-> +                         reset line, should be 2.
-> +                         The first cell takes the reset set bit and the
-> +                         second cell takes the status bit.
-> +
-> +-------------------------------------------------------------------------------
-> +Example for the reset-controllers on the xRX200 SoCs:
-> +       reset0: reset-controller@0 {
-> +               compatible = "lantiq,xrx200-reset";
-> +
-> +               offset-set = <0x10>;
-> +               offset-status = <0x14>;
-> +               #reset-cells = <2>;
-> +       };
-> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> index d21c07ccc94e..1742c2293bc3 100644
-> --- a/drivers/reset/Kconfig
-> +++ b/drivers/reset/Kconfig
-> @@ -41,6 +41,12 @@ config RESET_IMX7
->         help
->           This enables the reset controller driver for i.MX7 SoCs.
->
-> +config RESET_LANTIQ
-> +       bool "Lantiq XWAY Reset Driver" if COMPILE_TEST
-> +       default SOC_TYPE_XWAY
-> +       help
-> +         This enables the reset controller driver for Lantiq / Intel XWAY SoCs.
-> +
->  config RESET_LPC18XX
->         bool "LPC18xx/43xx Reset Driver" if COMPILE_TEST
->         default ARCH_LPC18XX
-> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> index 02a74db94339..112dba1db6b9 100644
-> --- a/drivers/reset/Makefile
-> +++ b/drivers/reset/Makefile
-> @@ -6,6 +6,7 @@ obj-$(CONFIG_RESET_A10SR) += reset-a10sr.o
->  obj-$(CONFIG_RESET_ATH79) += reset-ath79.o
->  obj-$(CONFIG_RESET_BERLIN) += reset-berlin.o
->  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-> +obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
->  obj-$(CONFIG_RESET_LPC18XX) += reset-lpc18xx.o
->  obj-$(CONFIG_RESET_MESON) += reset-meson.o
->  obj-$(CONFIG_RESET_OXNAS) += reset-oxnas.o
-> diff --git a/drivers/reset/reset-lantiq.c b/drivers/reset/reset-lantiq.c
-> new file mode 100644
-> index 000000000000..f4e7dfec477a
-> --- /dev/null
-> +++ b/drivers/reset/reset-lantiq.c
-> @@ -0,0 +1,215 @@
+> +++ b/drivers/clk/loongson1/clk-loongson1a.c
+> @@ -0,0 +1,75 @@
 > +/*
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
+> + * Copyright (c) 2012-2016 Binbin Zhou <zhoubb@lemote.com>
 > + *
-> + *  Copyright (C) 2010 John Crispin <blogic@phrozen.org>
-> + *  Copyright (C) 2013-2015 Lantiq Beteiligungs-GmbH & Co.KG
-> + *  Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> + *  Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
+> + * This program is free software; you can redistribute  it and/or modify it
+> + * under  the terms of  the GNU General  Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
 > + */
 > +
-> +#include <linux/mfd/syscon.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/reset-controller.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
+> +#include <linux/clkdev.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/io.h>
+> +#include <linux/err.h>
 > +
-> +#define LANTIQ_RCU_RESET_TIMEOUT       10000
+> +#include <loongson1.h>
+> +#include "clk.h"
 > +
-> +struct lantiq_rcu_reset_priv {
-> +       struct reset_controller_dev rcdev;
-> +       struct device *dev;
-> +       struct regmap *regmap;
-> +       u32 reset_offset;
-> +       u32 status_offset;
-> +};
+> +#define OSC		(33 * 1000000)
+> +#define DIV_APB		2
 > +
-> +static struct lantiq_rcu_reset_priv *to_lantiq_rcu_reset_priv(
-> +       struct reset_controller_dev *rcdev)
-> +{
-> +       return container_of(rcdev, struct lantiq_rcu_reset_priv, rcdev);
-> +}
-> +
-> +static int lantiq_rcu_reset_status(struct reset_controller_dev *rcdev,
-> +                                  unsigned long id)
-> +{
-> +       struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
-> +       unsigned int status = (id >> 8) & 0x1f;
-> +       u32 val;
-> +       int ret;
-> +
-> +       ret = regmap_read(priv->regmap, priv->status_offset, &val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return !!(val & BIT(status));
-> +}
-> +
-> +static int lantiq_rcu_reset_status_timeout(struct reset_controller_dev *rcdev,
-> +                                          unsigned long id, bool assert)
-> +{
-> +       int ret;
-> +       int retry = LANTIQ_RCU_RESET_TIMEOUT;
-> +
-> +       do {
-> +               ret = lantiq_rcu_reset_status(rcdev, id);
-> +               if (ret < 0)
-> +                       return ret;
+> +static DEFINE_SPINLOCK(_lock);
 
-> +               if (ret == assert)
-> +                       break;
-
-return 0;
-
-> +               usleep_range(20, 40);
-> +       } while (--retry);
-> +
-
-> +       return retry ? 0 : -ETIMEDOUT;
-
-return -ETIMEDOUT;
-
-> +}
-> +
-> +static int lantiq_rcu_reset_update(struct reset_controller_dev *rcdev,
-> +                                  unsigned long id, bool assert)
-> +{
-> +       struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
-> +       unsigned int set = id & 0x1f;
-> +       int ret;
-> +       u32 val;
-> +
-> +       if (assert)
-> +               val = BIT(set);
-> +       else
-> +               val = 0;
-> +
-> +       ret = regmap_update_bits(priv->regmap, priv->reset_offset, BIT(set),
-> +                                val);
-> +       if (ret) {
-> +               dev_err(priv->dev, "Failed to set reset bit %u\n", set);
-> +               return ret;
-> +       }
-> +
-> +
-> +       ret = lantiq_rcu_reset_status_timeout(rcdev, id, assert);
-> +       if (ret)
-> +               dev_err(priv->dev, "Failed to %s bit %u\n",
-> +                       assert ? "assert" : "deassert", set);
-> +
-> +       return ret;
-> +}
-> +
-> +static int lantiq_rcu_reset_assert(struct reset_controller_dev *rcdev,
-> +                            unsigned long id)
-> +{
-> +       return lantiq_rcu_reset_update(rcdev, id, true);
-> +}
-> +
-> +static int lantiq_rcu_reset_deassert(struct reset_controller_dev *rcdev,
-> +                              unsigned long id)
-> +{
-> +       return lantiq_rcu_reset_update(rcdev, id, false);
-> +}
-> +
-> +static int lantiq_rcu_reset_reset(struct reset_controller_dev *rcdev,
-> +                           unsigned long id)
-> +{
-> +       int ret;
-> +
-> +       ret = lantiq_rcu_reset_assert(rcdev, id);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return lantiq_rcu_reset_deassert(rcdev, id);
-> +}
-> +
-> +static const struct reset_control_ops lantiq_rcu_reset_ops = {
-> +       .assert = lantiq_rcu_reset_assert,
-> +       .deassert = lantiq_rcu_reset_deassert,
-> +       .status = lantiq_rcu_reset_status,
-> +       .reset  = lantiq_rcu_reset_reset,
-> +};
-> +
-> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
-> +                              struct lantiq_rcu_reset_priv *priv)
-> +{
-> +       struct device *dev = &pdev->dev;
-> +       int ret;
-> +
-> +       priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
-> +       if (IS_ERR(priv->regmap)) {
-> +               dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
-> +               return PTR_ERR(priv->regmap);
-> +       }
-> +
-> +       ret = device_property_read_u32(dev, "offset-set", &priv->reset_offset);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret = device_property_read_u32(dev, "offset-status",
-> +                                      &priv->status_offset);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "Failed to get RCU status offset\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int lantiq_rcu_reset_xlate(struct reset_controller_dev *rcdev,
-> +                                 const struct of_phandle_args *reset_spec)
-> +{
-> +       unsigned int status, set;
-> +
-> +       set = reset_spec->args[0];
-> +       status = reset_spec->args[1];
-> +
-> +       if (set >= rcdev->nr_resets || status >= rcdev->nr_resets)
-> +               return -EINVAL;
-> +
-> +       return (status << 8) | set;
-> +}
-> +
-> +static int lantiq_rcu_reset_probe(struct platform_device *pdev)
-> +{
-> +       struct lantiq_rcu_reset_priv *priv;
-> +       int err;
-> +
-> +       priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> +       if (!priv)
-> +               return -ENOMEM;
-> +
-> +       priv->dev = &pdev->dev;
-> +       platform_set_drvdata(pdev, priv);
-> +
-> +       err = lantiq_rcu_reset_of_probe(pdev, priv);
-> +       if (err)
-> +               return err;
-> +
-> +       priv->rcdev.ops = &lantiq_rcu_reset_ops;
-> +       priv->rcdev.owner = THIS_MODULE;
-> +       priv->rcdev.of_node = pdev->dev.of_node;
-> +       priv->rcdev.nr_resets = 32;
-> +       priv->rcdev.of_xlate = lantiq_rcu_reset_xlate;
-> +       priv->rcdev.of_reset_n_cells = 2;
-> +
-> +       return reset_controller_register(&priv->rcdev);
-> +}
-> +
-> +static const struct of_device_id lantiq_rcu_reset_dt_ids[] = {
-> +       { .compatible = "lantiq,danube-reset", },
-> +       { .compatible = "lantiq,xrx200-reset", },
-> +       { },
-> +};
-> +MODULE_DEVICE_TABLE(of, lantiq_rcu_reset_dt_ids);
-> +
-> +static struct platform_driver lantiq_rcu_reset_driver = {
-> +       .probe  = lantiq_rcu_reset_probe,
-> +       .driver = {
-> +               .name           = "lantiq-reset",
-> +               .of_match_table = lantiq_rcu_reset_dt_ids,
-> +       },
-> +};
-> +module_platform_driver(lantiq_rcu_reset_driver);
-> +
-> +MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-> +MODULE_DESCRIPTION("Lantiq XWAY RCU Reset Controller Driver");
-> +MODULE_LICENSE("GPL");
-> --
-> 2.11.0
->
-
-
+I know the other loongson1*.c files also call it "_lock", but
+that's not a very good name for something that may show up in
+lockdep debugging error messages. How about something a bit more
+descriptive, loongson1x_clk_lock?
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

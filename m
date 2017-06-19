@@ -1,49 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 23:20:15 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20272 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991957AbdFSVUJjBVLm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jun 2017 23:20:09 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 23FF941F8E5F;
-        Mon, 19 Jun 2017 23:29:43 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 19 Jun 2017 23:29:43 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 19 Jun 2017 23:29:43 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E8B46D496C2DF;
-        Mon, 19 Jun 2017 22:19:58 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 19 Jun
- 2017 22:20:03 +0100
-Date:   Mon, 19 Jun 2017 22:20:03 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     James Cowgill <James.Cowgill@imgtec.com>
-CC:     Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH] KVM: MIPS: Fix maybe-uninitialized build failure
-Message-ID: <20170619212003.GQ6973@jhogan-linux.le.imgtec.org>
-References: <20170616120502.2660-1-James.Cowgill@imgtec.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HSfddtAs2KjjielS"
-Content-Disposition: inline
-In-Reply-To: <20170616120502.2660-1-James.Cowgill@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 00:26:30 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:44205 "EHLO mail.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992036AbdFSW0YBbIOi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Jun 2017 00:26:24 +0200
+Received: from hauke-desktop.lan (p4FD9730E.dip0.t-ipconnect.de [79.217.115.14])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id D64041001DD;
+        Tue, 20 Jun 2017 00:26:22 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+        martin.blumenstingl@googlemail.com, john@phrozen.org,
+        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
+        robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v4 00/16] MIPS: lantiq: handle RCU register by separate drivers
+Date:   Tue, 20 Jun 2017 00:25:52 +0200
+Message-Id: <20170619222608.13344-1-hauke@hauke-m.de>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58636
+X-archive-position: 58637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,98 +39,140 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---HSfddtAs2KjjielS
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The RCU (Reset controller Unit) register block provides many different 
+functionalities. Before they were handed by the code in arch/mips/lantiq
+/xway/reset.c, now there are separate drivers for the functionality.
+This block provides support for reset controller, GPHY firmware 
+loading, USB PHY initialization and cross bar configuration. 
 
-On Fri, Jun 16, 2017 at 01:05:02PM +0100, James Cowgill wrote:
-> This commit fixes a "maybe-uninitialized" build failure in
-> arch/mips/kvm/tlb.c when KVM, DYNAMIC_DEBUG and JUMP_LABEL are all
-> enabled. The failure is:
->=20
-> In file included from ./include/linux/printk.h:329:0,
->                  from ./include/linux/kernel.h:13,
->                  from ./include/asm-generic/bug.h:15,
->                  from ./arch/mips/include/asm/bug.h:41,
->                  from ./include/linux/bug.h:4,
->                  from ./include/linux/thread_info.h:11,
->                  from ./include/asm-generic/current.h:4,
->                  from ./arch/mips/include/generated/asm/current.h:1,
->                  from ./include/linux/sched.h:11,
->                  from arch/mips/kvm/tlb.c:13:
-> arch/mips/kvm/tlb.c: In function =E2=80=98kvm_mips_host_tlb_inv=E2=80=99:
-> ./include/linux/dynamic_debug.h:126:3: error: =E2=80=98idx_kernel=E2=80=
-=99 may be used uninitialized in this function [-Werror=3Dmaybe-uninitializ=
-ed]
->    __dynamic_pr_debug(&descriptor, pr_fmt(fmt), \
->    ^~~~~~~~~~~~~~~~~~
-> arch/mips/kvm/tlb.c:169:16: note: =E2=80=98idx_kernel=E2=80=99 was declar=
-ed here
->   int idx_user, idx_kernel;
->                 ^~~~~~~~~~
->=20
-> There is a similar error relating to "idx_user".
->=20
-> As far as I can tell, it is impossible for either idx_user or idx_kernel
-> to be uninitialized when they are later read in the calls to kvm_debug,
-> but to satisfy the compiler, add zero initializers to both variables.
+These changes are making the old device tree incompatible with the 
+current kernel. The upstream Linux kernel supports loading the device 
+tree blob from the boot loader since about one year, the latest 
+released vendor kernel does not support loading the device tree from a 
+bot loader.
 
-Stupid compiler (or maybe its too smart for its own good).
+I would prefer if this would go through the mips tree.
+There are more patches planed which would convert the Lantiq code 
+to the common clock framework.
 
->=20
-> Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-> Fixes: 57e3869cfaae ("KVM: MIPS/TLB: Generalise host TLB invalidate to ke=
-rnel ASID")
-> Cc: <stable@vger.kernel.org> # 4.11+
-> ---
->  arch/mips/kvm/tlb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
-> index 7c6336dd2638..41d239269988 100644
-> --- a/arch/mips/kvm/tlb.c
-> +++ b/arch/mips/kvm/tlb.c
-> @@ -166,7 +166,7 @@ static int _kvm_mips_host_tlb_inv(unsigned long entry=
-hi)
->  int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long va,
->  			  bool user, bool kernel)
->  {
-> -	int idx_user, idx_kernel;
-> +	int idx_user =3D 0, idx_kernel =3D 0;
+This is based on patches from Martin Blumenstingl and is a preparation 
+to convert the Lantiq target to the common clock framework which was 
+also started by Martin Blumenstingl.
 
-Can you add a quick comment here to say this is to workaround a bogus
-maybe-initialized warning, and the rough compiler version?
+Changelog:
+v4:
+ * rename compatible strings to lantiq,<soc>-<core>
+ * removed rcu from most compatible string names, these components are 
+   only on the RCU register range in these SoCs
+ * removed big-endian attribute from fpi-bus.txt and hard code it to 
+   that value
+ * make gphy driver use reg directly, this register is used exclusively 
+   by the gphy firmware loader driver
+ * make drivers fetch the regmap from the parent node
+ * hard code offset and mask of the boot status registers in the 
+   watchdog driver depending on the compatible string probed
+ * handle errors in the usb phy device tree parsing
+ * use of_device_get_match_data() in multiple drivers
+ * extract lantiq_rcu_reset_status_timeout() from the reset driver set 
+   function
 
-Thanks
-James
+v3:
+ * renamed xbar driver into fpi-bus driver and make it manage the bus,
+   this way we make sure it is initialized before the child drivers.
+ * converted the lantiq,rcu-syscon into a "regmap" and an "offset"
+   property, this way we have a offset property for each register we
+   want to access on the regmap.
+ * make the gphy PUM clock mandatory.
+ * renamed the lantiq,rcu-reset to lantiq,reset-xrx200
+ * add binding description for watchdog driver
+ * make watchdog driver use offset and mask to find the correct
+   register to get the watchdog reset cause bit.
+ * use of_platform_default_populate() instead of of_platform_populate()
+ * use device_property_read_u32() instead of
+   of_property_read_u32_index()
+ * changed John's email address to blogic@phrozen.org
+ * check the reset bit numbers in the xlate function
+ * use platform_get_resource() in FPI bus driver
+ * make it possible to unload the GPHY driver
 
->  	unsigned long flags, old_entryhi;
-> =20
->  	local_irq_save(flags);
-> --=20
-> 2.11.0
->=20
+v2:
+ * remove the rcu_ prefix for device names in device tree
+ * add both clocks to the gphy driver documentation
+ * use 2 cells for the reset controller, one for the status bit and one
+   for the set bit, they are different for some reset bits.
+   reset-status and reset-request attribute were removed then.
+ * remove the documentation of the not existing sub nodes of the usb phy
+ * remove manual gpio vbus handling in the usb phy driver and use the
+   generic phy regulator now.
+ * do not check if the usb phy reset is not null, the reset framework does this.
+ * do not print an error message when -EPROBE_DEFER was returned
 
---HSfddtAs2KjjielS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
+Hauke Mehrtens (10):
+  mtd: lantiq-flash: drop check of boot select
+  mtd: spi-falcon: drop check of boot select
+  watchdog: lantiq: access boot cause register through regmap
+  watchdog: lantiq: add device tree binding documentation
+  MIPS: lantiq: Convert the fpi bus driver to a platform_driver
+  MIPS: lantiq: remove ltq_reset_cause() and ltq_boot_select()
+  MIPS: lantiq: remove old reset controller implementation
+  MIPS: lantiq: remove old GPHY loader code
+  phy: Add an USB PHY driver for the Lantiq SoCs using the RCU module
+  MIPS: lantiq: remove old USB PHY initialisation
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAllIQAIACgkQbAtpk944
-dnrfZw//VcHhPTthSipGDxy+19mRYs/MiCac8MDqbin3M2H64TN6NvnzvUU1+Jpr
-Q4NABj4hJTmOM0Mhx76pyoL2DRb0wbMgnUCOayvxKb1lVnfXXIqCB347ZBOcmKcj
-pA+8TLHzkGw3+2are97HX9l6t72LOPleWwGGqDKBFxqYI72BZTxR7HGTRVyh8Fvo
-f/nJTKdanUJLXBjV2sfZMD/+jiyoXcWHBGAQqDBvgCbb/r4EuH0UY+2Q2qwTBkkD
-+aOGkuwa0uVWQXVU++lAdap46jj2uHuyZkw+bklS7l971JbC+weoQvE3FhaTYPOJ
-kTtiV8khp/2KYWyfShzIhIT/g4sIbCrXw/MOEiyFZb3DJ2j08HYT7gWzZXZLa+QX
-PzHwavkEJIbvmo3hI3JMcfLBRYHaRoY1Z9fe1t/XLb5dWgSuLLjdHkq94N4JHJJR
-yqimFe5SMBwmwmPUBKsJ09t9cs3PfWJSip7fUtculFncpfqltVKpm1rm/k0v2BeT
-GdV/f/EvM4bdS6lwlgf8MwA6AhYZFKBWuTOi1qrhCVAJBipDlEUAG3FbCbzDf+X6
-kMdCYRG1Dz7MiAwm7PaLwrgYFJ9zzOzR3b3o4rUUv/eQ/RLVJApnRFY7rfYoP3m0
-Z7XFPV46bsyDE01fuupAFlXntB4blcHYvDZYXRtn6yCgvZHUtDU=
-=MrKi
------END PGP SIGNATURE-----
+Martin Blumenstingl (6):
+  MIPS: lantiq: Use of_platform_default_populate instead of
+    __dt_register_buses
+  MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD
+  Documentation: DT: MIPS: lantiq: Add docs for the RCU bindings
+  reset: Add a reset controller driver for the Lantiq XWAY based SoCs
+  MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd
+  MIPS: lantiq: Remove the arch/mips/lantiq/xway/reset.c implementation
 
---HSfddtAs2KjjielS--
+ .../devicetree/bindings/mips/lantiq/fpi-bus.txt    |  31 ++
+ .../devicetree/bindings/mips/lantiq/rcu-gphy.txt   |  36 ++
+ .../devicetree/bindings/mips/lantiq/rcu.txt        |  95 +++++
+ .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  41 +++
+ .../devicetree/bindings/reset/lantiq,reset.txt     |  29 ++
+ .../devicetree/bindings/watchdog/lantiq-wdt.txt    |  22 ++
+ MAINTAINERS                                        |   1 +
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |   4 -
+ arch/mips/lantiq/Kconfig                           |   2 +
+ arch/mips/lantiq/falcon/reset.c                    |  22 --
+ arch/mips/lantiq/prom.c                            |   2 +-
+ arch/mips/lantiq/xway/Makefile                     |   4 +-
+ arch/mips/lantiq/xway/reset.c                      | 387 ---------------------
+ arch/mips/lantiq/xway/sysctrl.c                    |  71 +---
+ arch/mips/lantiq/xway/xrx200_phy_fw.c              | 113 ------
+ drivers/mtd/maps/lantiq-flash.c                    |   6 -
+ drivers/phy/Kconfig                                |   8 +
+ drivers/phy/Makefile                               |   1 +
+ drivers/phy/phy-lantiq-rcu-usb2.c                  | 272 +++++++++++++++
+ drivers/reset/Kconfig                              |   6 +
+ drivers/reset/Makefile                             |   1 +
+ drivers/reset/reset-lantiq.c                       | 215 ++++++++++++
+ drivers/soc/Makefile                               |   1 +
+ drivers/soc/lantiq/Makefile                        |   2 +
+ drivers/soc/lantiq/fpi-bus.c                       |  85 +++++
+ drivers/soc/lantiq/gphy.c                          | 261 ++++++++++++++
+ drivers/spi/spi-falcon.c                           |   5 -
+ drivers/watchdog/lantiq_wdt.c                      |  73 +++-
+ include/dt-bindings/mips/lantiq_rcu_gphy.h         |  15 +
+ 29 files changed, 1210 insertions(+), 601 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu-gphy.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+ create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+ create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
+ create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+ delete mode 100644 arch/mips/lantiq/xway/reset.c
+ delete mode 100644 arch/mips/lantiq/xway/xrx200_phy_fw.c
+ create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
+ create mode 100644 drivers/reset/reset-lantiq.c
+ create mode 100644 drivers/soc/lantiq/Makefile
+ create mode 100644 drivers/soc/lantiq/fpi-bus.c
+ create mode 100644 drivers/soc/lantiq/gphy.c
+ create mode 100644 include/dt-bindings/mips/lantiq_rcu_gphy.h
+
+-- 
+2.11.0

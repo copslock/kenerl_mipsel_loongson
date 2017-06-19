@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:55:05 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:58853 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:55:26 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:58857 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993870AbdFSPuJKdV4H (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993879AbdFSPuJNjpMH (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 19 Jun 2017 17:50:09 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id BA24D1A4670;
+        by mail.rt-rk.com (Postfix) with ESMTP id CE7BA1A4923;
         Mon, 19 Jun 2017 17:50:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.ba.imgtec.org (unknown [82.117.201.26])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 96B191A46EF;
+        by mail.rt-rk.com (Postfix) with ESMTPSA id AA63F1A4879;
         Mon, 19 Jun 2017 17:50:03 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
@@ -16,9 +16,9 @@ To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
 Cc:     Raghu.Gandham@imgtec.com, Leonid.Yegoshin@imgtec.com,
         Douglas.Leung@imgtec.com, Petar.Jovanovic@imgtec.com,
         Miodrag.Dinic@imgtec.com, Goran.Ferenc@imgtec.com
-Subject: [PATCH 1/4] MIPS: VDSO: Fix conversions in do_monotonic()/do_monotonic_coarse()
-Date:   Mon, 19 Jun 2017 17:49:55 +0200
-Message-Id: <1497887398-13772-2-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH 2/4] MIPS: VDSO: Add implementation of clock_gettime() fallback
+Date:   Mon, 19 Jun 2017 17:49:56 +0200
+Message-Id: <1497887398-13772-3-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1497887398-13772-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1497887398-13772-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -26,7 +26,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58622
+X-archive-position: 58623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,120 +45,77 @@ X-list: linux-mips
 
 From: Goran Ferenc <goran.ferenc@imgtec.com>
 
-Fix incorrect calculation in do_monotonic() and do_monotonic_coarse()
-function that in turn caused incorrect values returned by the vdso
-version of system call clock_gettime() on mips64 if its system clock
-ID parameter was CLOCK_MONOTONIC or CLOCK_MONOTONIC_COARSE.
+This patch adds clock_gettime_fallback() function that wraps assembly
+invocation of clock_gettime() syscall using __NR_clock_gettime.
 
-Consider these variables and their types on mips32 and mips64:
+This function is used if pure VDSO implementation of clock_gettime()
+does not succeed for any reason. For example, it is called if the
+clkid parameter of clock_gettime() is not one of the clkids listed
+in the switch-case block of the function __vdso_clock_gettime()
+(one such case for clkid is CLOCK_BOOTIME).
 
-tk->wall_to_monotonic.tv_sec  s64, s64   (kernel/vdso.c)
-vdso_data.wall_to_mono_sec    u32, u32   (kernel/vdso.c)
-to_mono_sec                   u32, u32   (vdso/gettimeofday.c)
-ts->tv_sec                    s32, s64   (vdso/gettimeofday.c)
-
-For mips64 case, u32 vdso_data.wall_to_mono_sec variable is updated
-from the 64-bit signed variable tk->wall_to_monotonic.tv_sec
-(kernel/vdso.c:76) which is a negative number holding the time passed
-from 1970-01-01 to the time boot started. This 64-bit signed value is
-currently around 47+ years, in seconds. For instance, let this value
-be:
-
--1489757461
-
-or
-
-11111111111111111111111111111111 10100111001101000001101011101011
-
-By updating 32-bit vdso_data.wall_to_mono_sec variable, we lose upper
-32 bits (signed 1's).
-
-to_mono_sec variable is a parameter of do_monotonic() and
-do_monotonic_coarse() functions which holds vdso_data.wall_to_mono_sec
-value. Its value needs to be added (or subtracted considering it holds
-negative value from the tk->wall_to_monotonic.tv_sec) to the current
-time passed from 1970-01-01 (ts->tv_sec), which is again something like
-47+ years, but increased by the time passed from the boot to the
-current time. ts->tv_sec is 32-bit long in case of 32-bit architecture
-and 64-bit long in case of 64-bit architecture. Consider the update of
-ts->tv_sec (vdso/gettimeofday.c:55 & 167):
-
-ts->tv_sec += to_mono_sec;
-
-mips32 case: This update will be performed correctly, since both
-ts->tv_sec and to_mono_sec are 32-bit long and the sign in to_mono_sec
-is preserved. Implicit conversion from u32 to s32 will be done
-correctly.
-
-mips64 case: This update will be wrong, since the implicit conversion
-will not be done correctly. The reason is that the conversion will be
-from u32 to s64. This is because to_mono_sec is 32-bit long for both
-mips32 and mips64 cases and s64..33 bits of converted to_mono_sec
-variable will be zeros.
-
-So, in order to make MIPS64 implementation work properly for
-MONOTONIC and MONOTONIC_COARSE clock ids on mips64, the size of
-wall_to_mono_sec variable in mips_vdso_data union and respective
-parameters in do_monotonic() and do_monotonic_coarse() functions
-should be changed from u32 to u64. Because of consistency, this
-size change from u32 and u64 is also done for wall_to_mono_nsec
-variable and corresponding function parameters.
-
-As far as similar situations for other architectures are concerned,
-let's take a look at arm. Arm has two distinct vdso_data structures
-for 32-bit & 64-bit cases, and arm's wall_to_mono_sec and
-wall_to_mono_nsec are u32 for 32-bit and u64 for 64-bit cases.
-On the other hand, MIPS has only one structure (mips_vdso_data),
-hence the need for changing the size of above mentioned parameters.
+If syscall invocation via __NR_clock_gettime fails, register a3 will
+be set. So, after the syscall, register a3 is tested and the return
+value is negated if it's set.
 
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/include/asm/vdso.h  | 4 ++--
- arch/mips/vdso/gettimeofday.c | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/vdso/gettimeofday.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/vdso.h b/arch/mips/include/asm/vdso.h
-index 8f4ca5d..b7cd6cf 100644
---- a/arch/mips/include/asm/vdso.h
-+++ b/arch/mips/include/asm/vdso.h
-@@ -79,8 +79,8 @@ union mips_vdso_data {
- 	struct {
- 		u64 xtime_sec;
- 		u64 xtime_nsec;
--		u32 wall_to_mono_sec;
--		u32 wall_to_mono_nsec;
-+		u64 wall_to_mono_sec;
-+		u64 wall_to_mono_nsec;
- 		u32 seq_count;
- 		u32 cs_shift;
- 		u8 clock_mode;
 diff --git a/arch/mips/vdso/gettimeofday.c b/arch/mips/vdso/gettimeofday.c
-index ce89c9e..fd7d433 100644
+index fd7d433..5f63375 100644
 --- a/arch/mips/vdso/gettimeofday.c
 +++ b/arch/mips/vdso/gettimeofday.c
-@@ -39,8 +39,8 @@ static __always_inline int do_monotonic_coarse(struct timespec *ts,
- 					       const union mips_vdso_data *data)
- {
- 	u32 start_seq;
--	u32 to_mono_sec;
--	u32 to_mono_nsec;
-+	u64 to_mono_sec;
-+	u64 to_mono_nsec;
+@@ -20,6 +20,24 @@
+ #include <asm/unistd.h>
+ #include <asm/vdso.h>
  
- 	do {
- 		start_seq = vdso_data_read_begin(data);
-@@ -148,8 +148,8 @@ static __always_inline int do_monotonic(struct timespec *ts,
++static __always_inline long clock_gettime_fallback(clockid_t _clkid,
++					   struct timespec *_ts)
++{
++	register struct timespec *ts asm("a1") = _ts;
++	register clockid_t clkid asm("a0") = _clkid;
++	register long ret asm("v0");
++	register long nr asm("v0") = __NR_clock_gettime;
++	register long error asm("a3");
++
++	asm volatile(
++	"       syscall\n"
++	: "=r" (ret), "=r" (error)
++	: "r" (clkid), "r" (ts), "r" (nr)
++	: "memory");
++
++	return error ? -ret : ret;
++}
++
+ static __always_inline int do_realtime_coarse(struct timespec *ts,
+ 					      const union mips_vdso_data *data)
  {
- 	u32 start_seq;
- 	u64 ns;
--	u32 to_mono_sec;
--	u32 to_mono_nsec;
-+	u64 to_mono_sec;
-+	u64 to_mono_nsec;
+@@ -207,7 +225,7 @@ int __vdso_gettimeofday(struct timeval *tv, struct timezone *tz)
+ int __vdso_clock_gettime(clockid_t clkid, struct timespec *ts)
+ {
+ 	const union mips_vdso_data *data = get_vdso_data();
+-	int ret;
++	int ret = -1;
  
- 	do {
- 		start_seq = vdso_data_read_begin(data);
+ 	switch (clkid) {
+ 	case CLOCK_REALTIME_COARSE:
+@@ -223,10 +241,11 @@ int __vdso_clock_gettime(clockid_t clkid, struct timespec *ts)
+ 		ret = do_monotonic(ts, data);
+ 		break;
+ 	default:
+-		ret = -ENOSYS;
+ 		break;
+ 	}
+ 
+-	/* If we return -ENOSYS libc should fall back to a syscall. */
++	if (ret)
++		ret = clock_gettime_fallback(clkid, ts);
++
+ 	return ret;
+ }
 -- 
 2.7.4

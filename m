@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:58:08 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:58922 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 17:58:31 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:58936 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993910AbdFSPuZT3e0H (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Jun 2017 17:50:25 +0200
+        id S23993949AbdFSPuaNy9sH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Jun 2017 17:50:30 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id D50F01A45F9;
+        by mail.rt-rk.com (Postfix) with ESMTP id E7DF91A4670;
         Mon, 19 Jun 2017 17:50:19 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.ba.imgtec.org (unknown [82.117.201.26])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id B05C01A4670;
+        by mail.rt-rk.com (Postfix) with ESMTPSA id C75741A45F2;
         Mon, 19 Jun 2017 17:50:19 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
@@ -16,9 +16,9 @@ To:     linux-mips@linux-mips.org, James.Hogan@imgtec.com,
 Cc:     Raghu.Gandham@imgtec.com, Leonid.Yegoshin@imgtec.com,
         Douglas.Leung@imgtec.com, Petar.Jovanovic@imgtec.com,
         Miodrag.Dinic@imgtec.com, Goran.Ferenc@imgtec.com
-Subject: [PATCH 4/8] MIPS: unaligned: Add DSP lwx & lhx missaligned access support
-Date:   Mon, 19 Jun 2017 17:50:11 +0200
-Message-Id: <1497887415-13825-5-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH 5/8] MIPS: math-emu: Handle zero accumulator case in MADDF and MSUBF separately
+Date:   Mon, 19 Jun 2017 17:50:12 +0200
+Message-Id: <1497887415-13825-6-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1497887415-13825-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1497887415-13825-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -26,7 +26,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58630
+X-archive-position: 58631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,245 +43,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@imgtec.com>
+From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Add handling of missaligned access for DSP load instructions
-lwx & lhx.
-
-Since DSP instructions share SPECIAL3 opcode with other non-DSP
-instructions, necessary logic was inserted for distinguishing
-between instructions with SPECIAL3 opcode. For that purpose,
-the instruction format for DSP instructions is added to
-arch/mips/include/uapi/asm/inst.h.
+If accumulator value is zero, just return the value of previously
+calculated product. This brings logic in MADDf/MSUBF implementation
+closer to the logic in ADD/SUB case.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtech.com>
+Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/include/uapi/asm/inst.h |  11 +++
- arch/mips/kernel/unaligned.c      | 174 ++++++++++++++++++++++----------------
- 2 files changed, 111 insertions(+), 74 deletions(-)
+ arch/mips/math-emu/dp_maddf.c | 5 ++++-
+ arch/mips/math-emu/sp_maddf.c | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index b5e46ae..302ad9a 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -755,6 +755,16 @@ struct msa_mi10_format {		/* MSA MI10 */
- 	;))))))
- };
+diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
+index 4a2d03c..caa62f2 100644
+--- a/arch/mips/math-emu/dp_maddf.c
++++ b/arch/mips/math-emu/dp_maddf.c
+@@ -54,7 +54,7 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 		return ieee754dp_nanxcpt(z);
+ 	case IEEE754_CLASS_DNORM:
+ 		DPDNORMZ;
+-	/* QNAN is handled separately below */
++	/* QNAN and ZERO cases are handled separately below */
+ 	}
  
-+struct dsp_format {		/* SPEC3 DSP format instructions */
-+	__BITFIELD_FIELD(unsigned int opcode : 6,
-+	__BITFIELD_FIELD(unsigned int base : 5,
-+	__BITFIELD_FIELD(unsigned int index : 5,
-+	__BITFIELD_FIELD(unsigned int rd : 5,
-+	__BITFIELD_FIELD(unsigned int op : 5,
-+	__BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
+ 	switch (CLPAIR(xc, yc)) {
+@@ -210,6 +210,9 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 	}
+ 	assert(rm & (DP_HIDDEN_BIT << 3));
+ 
++	if (zc == IEEE754_CLASS_ZERO)
++		return ieee754dp_format(rs, re, rm);
 +
- struct spec3_format {   /* SPEC3 */
- 	__BITFIELD_FIELD(unsigned int opcode:6,
- 	__BITFIELD_FIELD(unsigned int rs:5,
-@@ -1046,6 +1056,7 @@ union mips_instruction {
- 	struct b_format b_format;
- 	struct ps_format ps_format;
- 	struct v_format v_format;
-+	struct dsp_format dsp_format;
- 	struct spec3_format spec3_format;
- 	struct fb_format fb_format;
- 	struct fp0_format fp0_format;
-diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
-index f806ee5..67946bb 100644
---- a/arch/mips/kernel/unaligned.c
-+++ b/arch/mips/kernel/unaligned.c
-@@ -939,88 +939,114 @@ static void emulate_load_store_insn(struct pt_regs *regs,
- 		 * The remaining opcodes are the ones that are really of
- 		 * interest.
- 		 */
--#ifdef CONFIG_EVA
- 	case spec3_op:
--		/*
--		 * we can land here only from kernel accessing user memory,
--		 * so we need to "switch" the address limit to user space, so
--		 * address check can work properly.
--		 */
--		seg = get_fs();
--		set_fs(USER_DS);
--		switch (insn.spec3_format.func) {
--		case lhe_op:
--			if (!access_ok(VERIFY_READ, addr, 2)) {
--				set_fs(seg);
--				goto sigbus;
--			}
--			LoadHWE(addr, value, res);
--			if (res) {
--				set_fs(seg);
--				goto fault;
--			}
--			compute_return_epc(regs);
--			regs->regs[insn.spec3_format.rt] = value;
--			break;
--		case lwe_op:
--			if (!access_ok(VERIFY_READ, addr, 4)) {
--				set_fs(seg);
--				goto sigbus;
-+		if (insn.dsp_format.func == lx_op) {
-+			switch (insn.dsp_format.op) {
-+			case lwx_op:
-+				if (!access_ok(VERIFY_READ, addr, 4))
-+					goto sigbus;
-+				LoadW(addr, value, res);
-+				if (res)
-+					goto fault;
-+				compute_return_epc(regs);
-+				regs->regs[insn.dsp_format.rd] = value;
-+				break;
-+			case lhx_op:
-+				if (!access_ok(VERIFY_READ, addr, 2))
-+					goto sigbus;
-+				LoadHW(addr, value, res);
-+				if (res)
-+					goto fault;
-+				compute_return_epc(regs);
-+				regs->regs[insn.dsp_format.rd] = value;
-+				break;
-+			default:
-+				goto sigill;
- 			}
-+		}
-+#ifdef CONFIG_EVA
-+		else {
-+			/*
-+			 * we can land here only from kernel accessing user
-+			 * memory, so we need to "switch" the address limit to
-+			 * user space, so that address check can work properly.
-+			 */
-+			seg = get_fs();
-+			set_fs(USER_DS);
-+			switch (insn.spec3_format.func) {
-+			case lhe_op:
-+				if (!access_ok(VERIFY_READ, addr, 2)) {
-+					set_fs(seg);
-+					goto sigbus;
-+				}
-+				LoadHWE(addr, value, res);
-+				if (res) {
-+					set_fs(seg);
-+					goto fault;
-+				}
-+				compute_return_epc(regs);
-+				regs->regs[insn.spec3_format.rt] = value;
-+				break;
-+			case lwe_op:
-+				if (!access_ok(VERIFY_READ, addr, 4)) {
-+					set_fs(seg);
-+					goto sigbus;
-+				}
- 				LoadWE(addr, value, res);
--			if (res) {
--				set_fs(seg);
--				goto fault;
--			}
--			compute_return_epc(regs);
--			regs->regs[insn.spec3_format.rt] = value;
--			break;
--		case lhue_op:
--			if (!access_ok(VERIFY_READ, addr, 2)) {
--				set_fs(seg);
--				goto sigbus;
--			}
--			LoadHWUE(addr, value, res);
--			if (res) {
--				set_fs(seg);
--				goto fault;
--			}
--			compute_return_epc(regs);
--			regs->regs[insn.spec3_format.rt] = value;
--			break;
--		case she_op:
--			if (!access_ok(VERIFY_WRITE, addr, 2)) {
--				set_fs(seg);
--				goto sigbus;
--			}
--			compute_return_epc(regs);
--			value = regs->regs[insn.spec3_format.rt];
--			StoreHWE(addr, value, res);
--			if (res) {
--				set_fs(seg);
--				goto fault;
--			}
--			break;
--		case swe_op:
--			if (!access_ok(VERIFY_WRITE, addr, 4)) {
--				set_fs(seg);
--				goto sigbus;
--			}
--			compute_return_epc(regs);
--			value = regs->regs[insn.spec3_format.rt];
--			StoreWE(addr, value, res);
--			if (res) {
-+				if (res) {
-+					set_fs(seg);
-+					goto fault;
-+				}
-+				compute_return_epc(regs);
-+				regs->regs[insn.spec3_format.rt] = value;
-+				break;
-+			case lhue_op:
-+				if (!access_ok(VERIFY_READ, addr, 2)) {
-+					set_fs(seg);
-+					goto sigbus;
-+				}
-+				LoadHWUE(addr, value, res);
-+				if (res) {
-+					set_fs(seg);
-+					goto fault;
-+				}
-+				compute_return_epc(regs);
-+				regs->regs[insn.spec3_format.rt] = value;
-+				break;
-+			case she_op:
-+				if (!access_ok(VERIFY_WRITE, addr, 2)) {
-+					set_fs(seg);
-+					goto sigbus;
-+				}
-+				compute_return_epc(regs);
-+				value = regs->regs[insn.spec3_format.rt];
-+				StoreHWE(addr, value, res);
-+				if (res) {
-+					set_fs(seg);
-+					goto fault;
-+				}
-+				break;
-+			case swe_op:
-+				if (!access_ok(VERIFY_WRITE, addr, 4)) {
-+					set_fs(seg);
-+					goto sigbus;
-+				}
-+				compute_return_epc(regs);
-+				value = regs->regs[insn.spec3_format.rt];
-+				StoreWE(addr, value, res);
-+				if (res) {
-+					set_fs(seg);
-+					goto fault;
-+				}
-+				break;
-+			default:
- 				set_fs(seg);
--				goto fault;
-+				goto sigill;
- 			}
--			break;
--		default:
- 			set_fs(seg);
--			goto sigill;
- 		}
--		set_fs(seg);
--		break;
- #endif
-+		break;
- 	case lh_op:
- 		if (!access_ok(VERIFY_READ, addr, 2))
- 			goto sigbus;
+ 	/* And now the addition */
+ 	assert(zm & DP_HIDDEN_BIT);
+ 
+diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
+index a8cd8b4..c91d5e5 100644
+--- a/arch/mips/math-emu/sp_maddf.c
++++ b/arch/mips/math-emu/sp_maddf.c
+@@ -54,7 +54,7 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 		return ieee754sp_nanxcpt(z);
+ 	case IEEE754_CLASS_DNORM:
+ 		SPDNORMZ;
+-	/* QNAN is handled separately below */
++	/* QNAN and ZERO cases are handled separately below */
+ 	}
+ 
+ 	switch (CLPAIR(xc, yc)) {
+@@ -203,6 +203,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 	}
+ 	assert(rm & (SP_HIDDEN_BIT << 3));
+ 
++	if (zc == IEEE754_CLASS_ZERO)
++		return ieee754sp_format(rs, re, rm);
++
+ 	/* And now the addition */
+ 
+ 	assert(zm & SP_HIDDEN_BIT);
 -- 
 2.7.4

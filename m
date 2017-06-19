@@ -1,47 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jun 2017 11:55:09 +0200 (CEST)
-Received: from gate.crashing.org ([63.228.1.57]:39161 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992196AbdFRJzCaS9tP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 18 Jun 2017 11:55:02 +0200
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id v5I9s36V030171;
-        Sun, 18 Jun 2017 04:54:05 -0500
-Message-ID: <1497779642.31581.6.camel@kernel.crashing.org>
-Subject: Re: [PATCH 42/44] powerpc/cell: use the dma_supported method for
- ops switching
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 18 Jun 2017 19:54:02 +1000
-In-Reply-To: <20170618071344.GB18526@infradead.org>
-References: <20170616181059.19206-1-hch@lst.de>
-         <20170616181059.19206-43-hch@lst.de>
-         <1497732627.2897.128.camel@kernel.crashing.org>
-         <20170618071344.GB18526@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-2.fc25) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2017 16:38:04 +0200 (CEST)
+Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:32825
+        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991948AbdFSOh5RJL6Z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jun 2017 16:37:57 +0200
+Received: by mail-qt0-x242.google.com with SMTP id w1so19482674qtg.0
+        for <linux-mips@linux-mips.org>; Mon, 19 Jun 2017 07:37:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=greyhouse-net.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2Im6SeFA7p6i7B9c+I+TeMpwObs0yTeoACAL2KFq3+Q=;
+        b=wlDxV3me/mycCnRGNwprHPX0uF6qXJiZbQOBg194lxHe5IdXI9Pq37f26k9Le2d4e8
+         Oo+gJiRZRBGYJbP7dVp2Kf6epLiXDyukX5OWyHs00kejH7ofhLb8PmsPhHGSmOgts9u4
+         heO21Wg0SHCUggebgM4McHr6zjP+OtFJ9u7X+DkCR0uQd4ORH26S8MEHSm/uzUdBn1CS
+         tKdIYcbVHUttxlr/hSkScKToAcJgfQgriygqz5pZscaSmhbjx3NcXZTBnulaL/Cvzs+p
+         GXhS850wQvnfcy1C+tPtf+cfPg7Yca6FeWZNNzo1IAcNBhjNliVwjzxHADEw3pumOU97
+         Ejnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2Im6SeFA7p6i7B9c+I+TeMpwObs0yTeoACAL2KFq3+Q=;
+        b=lZVa94c5HBPYWLaTkTDXTp8H+Q40kfY9pbN8I2bmjcrqWfBva7IuxztsalBzKLuefy
+         oXhkNi2y3CBsUywWDaFIR0faGbGwpZoJBrSZS5wuE7EGit6k20EIU+YlpgqzuPXq0idE
+         23hJshkb4YCyUTtDE9K4tgI47x6P493E/+vQO/kfVSZFScKx0oXS60pQqOpGr+Kp3csn
+         Jt23fc81qb7kQ/McsRPmxlfmf2ib1jROjybMtvAH7q5txyoM3e+p5iZhDLTyj6Nm4Rr/
+         RAhRbmHorJbOVX1B4fDD1BMNqQZnPvkytW/7Veb2ve7CqmJMPxmzyUmLh4zGtcal6puV
+         NNsw==
+X-Gm-Message-State: AKS2vOyvvfYdKav3ptMLmwG6sxTaL+ENTqAES/m37DoCpiINbkwYtEPh
+        A6o6yCLunrl1o9vI
+X-Received: by 10.237.59.147 with SMTP id r19mr27317707qte.47.1497883071381;
+        Mon, 19 Jun 2017 07:37:51 -0700 (PDT)
+Received: from C02RW35GFVH8.dhcp.broadcom.net ([192.19.231.250])
+        by smtp.gmail.com with ESMTPSA id q90sm3752416qki.11.2017.06.19.07.37.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 19 Jun 2017 07:37:50 -0700 (PDT)
+Date:   Mon, 19 Jun 2017 10:37:47 -0400
+From:   Andy Gospodarek <andy@greyhouse.net>
+To:     David Daney <david.daney@cavium.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC 2/3] samples/bpf: Add define __EMITTING_BPF__ when
+ building BPF
+Message-ID: <20170619143747.GA20370@C02RW35GFVH8.dhcp.broadcom.net>
+References: <20170615223543.22867-3-david.daney@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170615223543.22867-3-david.daney@cavium.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <andy@greyhouse.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58602
+X-archive-position: 58603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: andy@greyhouse.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,53 +74,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 2017-06-18 at 00:13 -0700, Christoph Hellwig wrote:
-> On Sun, Jun 18, 2017 at 06:50:27AM +1000, Benjamin Herrenschmidt wrote:
-> > What is your rationale here ? (I have missed patch 0 it seems).
-> 
-> Less code duplication, more modular dma_map_ops insteance.
-> 
-> > dma_supported() was supposed to be pretty much a "const" function
-> > simply informing whether a given setup is possible. Having it perform
-> > an actual switch of ops seems to be pushing it...
-> 
-> dma_supported() is already gone from the public DMA API as it doesn't
-> make sense to be called separately from set_dma_mask.  It will be
-> entirely gone in the next series after this one.
+On Thu, Jun 15, 2017 at 03:35:42PM -0700, David Daney wrote:
+> ... this allows gating of inline assembly code that causes llvm to
+> fail when emitting BPF.
 
-Ah ok, in that case it makes much more sense, we can rename it then.
+I floated essentially the same patch in Feb without much luck:
 
-> > What if a driver wants to test various dma masks and then pick one ?
-> > 
-> > Where does the API documents that if a driver calls dma_supported() it
-> > then *must* set the corresponding mask and use that ?
+http://lists.infradead.org/pipermail/linux-arm-kernel/2017-March/492758.html
+
+Many of the folks on the cc-list here had objections then and I suspect they
+unfortunately still object.  I like the fact that this fix allowed
+architectures that are currently problematic to move forward before there is a
+possibly mythical "fix in llvm" to address this problem.
+
+When talking about this in one of the IOVisor calls it was also discussed that
+this needs to be fixed for tracing, so there are more than just the BPF
+use-case where this is important.
+
+I wasn't sure there was buy-in from the ARM developers, but my thought had been
+that a cleaner solution to this would be to reorganize sysreg.h into multiple
+files.  The inline assembly would be the only thing in sysreg-asm.h (that was
+actually the only thing originally in sysreg.h) and the rest of the code would
+be in sysreg.h.
+
+That is not what Dave suggested, but it would be a good starting point for a
+custom asm/ layer for BPF/tracing.  I'm with Dave and think a specialized set
+of asm/ files for tracing/BPF to avoid these issues all-together and let arch
+developers to do whatever they want in their code.
+
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> ---
+>  samples/bpf/Makefile | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> Where is the API document for _any_ of the dma routines? (A: work in
-> progress by me, but I need to clean up the mess of arch hooks before
-> it can make any sense)
-
-Heh fair enough.
-
-> > I don't like a function that is a "boolean query" like this one to have
-> > such a major side effect.
-> > 
-> > > From an API standpoint, dma_set_mask() is when the mask is established,
-> > 
-> > and thus when the ops switch should happen.
-> 
-> And that's exactly what happens at the driver API level.  It just turns
-> out the dma_capable method is they way better place to actually
-> implement it, as the ->set_dma_mask method requires lots of code
-> duplication while not offering any actual benefit over ->dma_capable.
-> And because of that it's gone after this series.
-> 
-> In theory we could rename ->dma_capable now, but it would require a
-> _lot_ of churn.  Give me another merge window or two and we should
-> be down to be about 2 handful of dma_map_ops instance, at which point
-> we could do all this gratious renaming a lot more easily :)
-
-Sure, I get it now, as long as it's not publicly exposed to drivers
-we are fine.
-
-Cheers,
-Ben.
+> diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+> index a0561dc762fe..4979e6b56662 100644
+> --- a/samples/bpf/Makefile
+> +++ b/samples/bpf/Makefile
+> @@ -193,12 +193,12 @@ $(src)/*.c: verify_target_bpf
+>  
+>  $(obj)/tracex5_kern.o: $(obj)/syscall_nrs.h
+>  
+> -# asm/sysreg.h - inline assembly used by it is incompatible with llvm.
+> -# But, there is no easy way to fix it, so just exclude it since it is
+> -# useless for BPF samples.
+> +# __EMITTING_BPF__ used to exclude inline assembly, which cannot be
+> +# emitted in BPF code.
+>  $(obj)/%.o: $(src)/%.c
+>  	$(CLANG) $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(EXTRA_CFLAGS) \
+> -		-D__KERNEL__ -D__ASM_SYSREG_H -Wno-unused-value -Wno-pointer-sign \
+> +		-D__KERNEL__ -D__EMITTING_BPF__ \
+> +		-Wno-unused-value -Wno-pointer-sign \
+>  		-Wno-compare-distinct-pointer-types \
+>  		-Wno-gnu-variable-sized-type-not-at-end \
+>  		-Wno-address-of-packed-member -Wno-tautological-compare \

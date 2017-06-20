@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 17:25:11 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:36968 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 17:25:33 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:36978 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993905AbdFTPTiCStsi (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993906AbdFTPTivheDi (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 17:19:38 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -13,9 +13,9 @@ Cc:     Paul Burton <paul.burton@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 02/17] clk: ingenic: Fix recalc_rate for clocks with fixed divider
-Date:   Tue, 20 Jun 2017 17:18:40 +0200
-Message-Id: <20170620151855.19399-2-paul@crapouillou.net>
+Subject: [PATCH v2 03/17] clk: ingenic: support PLLs with no bypass bit
+Date:   Tue, 20 Jun 2017 17:18:41 +0200
+Message-Id: <20170620151855.19399-3-paul@crapouillou.net>
 In-Reply-To: <20170620151855.19399-1-paul@crapouillou.net>
 References: <20170607200439.24450-2-paul@crapouillou.net>
  <20170620151855.19399-1-paul@crapouillou.net>
@@ -23,7 +23,7 @@ Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58706
+X-archive-position: 58707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,32 +40,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Previously, the clocks with a fixed divider would report their rate
-as being the same as the one of their parent, independently of the
-divider in use. This commit fixes this behaviour.
-
-This went unnoticed as neither the jz4740 nor the jz4780 CGU code
-have clocks with fixed dividers yet.
+The second PLL of the JZ4770 does not have a bypass bit.
+This commit makes it possible to support it with the current common CGU
+code.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/clk/ingenic/cgu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/ingenic/cgu.c | 3 ++-
+ drivers/clk/ingenic/cgu.h | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
- v2: No changes
+ v2: No change
 
 diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
-index e8248f9185f7..eb9002ccf3fc 100644
+index eb9002ccf3fc..75b083ba294c 100644
 --- a/drivers/clk/ingenic/cgu.c
 +++ b/drivers/clk/ingenic/cgu.c
-@@ -328,6 +328,8 @@ ingenic_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 		div *= clk_info->div.div;
+@@ -100,7 +100,8 @@ ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	n += pll_info->n_offset;
+ 	od_enc = ctl >> pll_info->od_shift;
+ 	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
+-	bypass = !!(ctl & BIT(pll_info->bypass_bit));
++	bypass = !pll_info->no_bypass_bit &&
++		 !!(ctl & BIT(pll_info->bypass_bit));
+ 	enable = !!(ctl & BIT(pll_info->enable_bit));
  
- 		rate /= div;
-+	} else if (clk_info->type & CGU_CLK_FIXDIV) {
-+		rate /= clk_info->fixdiv.div;
- 	}
+ 	if (bypass)
+diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
+index da448b0cac18..21420b455985 100644
+--- a/drivers/clk/ingenic/cgu.h
++++ b/drivers/clk/ingenic/cgu.h
+@@ -48,6 +48,7 @@
+  * @bypass_bit: the index of the bypass bit in the PLL control register
+  * @enable_bit: the index of the enable bit in the PLL control register
+  * @stable_bit: the index of the stable bit in the PLL control register
++ * @no_bypass_bit: if set, the PLL has no bypass functionality
+  */
+ struct ingenic_cgu_pll_info {
+ 	unsigned reg;
+@@ -58,6 +59,7 @@ struct ingenic_cgu_pll_info {
+ 	u8 bypass_bit;
+ 	u8 enable_bit;
+ 	u8 stable_bit;
++	bool no_bypass_bit;
+ };
  
- 	return rate;
+ /**
 -- 
 2.11.0

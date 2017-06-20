@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 17:20:48 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 17:21:10 +0200 (CEST)
 Received: from outils.crapouillou.net ([89.234.176.41]:36744 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992155AbdFTPTM7NwDi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 17:19:12 +0200
+        by eddie.linux-mips.org with ESMTP id S23992170AbdFTPTOBGa8i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 17:19:14 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
@@ -13,9 +13,9 @@ Cc:     Paul Burton <paul.burton@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 07/17] serial: 8250_ingenic: Add support for the JZ4770 SoC
-Date:   Tue, 20 Jun 2017 17:18:45 +0200
-Message-Id: <20170620151855.19399-7-paul@crapouillou.net>
+Subject: [PATCH v2 08/17] serial: 8250_ingenic: Parse earlycon options
+Date:   Tue, 20 Jun 2017 17:18:46 +0200
+Message-Id: <20170620151855.19399-8-paul@crapouillou.net>
 In-Reply-To: <20170620151855.19399-1-paul@crapouillou.net>
 References: <20170607200439.24450-2-paul@crapouillou.net>
  <20170620151855.19399-1-paul@crapouillou.net>
@@ -23,7 +23,7 @@ Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58695
+X-archive-position: 58696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,59 +40,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The JZ4770 SoC's UART is no different from the other JZ SoCs, so this
-commit simply adds the ingenic,jz4770-uart compatible string.
+In the devicetree, it is possible to specify the baudrate, parity,
+bits, flow of the early console, by passing a configuration string like
+this:
+
+aliases {
+	serial0 = &uart0;
+};
+
+chosen {
+	stdout-path = "serial0:57600n8";
+};
+
+This, for instance, will configure the early console for a baudrate of
+57600 bps, no parity, and 8 bits per baud.
+
+This patches implements parsing of this configuration string in the
+8250_ingenic driver, which previously just ignored it.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/ingenic,uart.txt | 8 ++++++--
- drivers/tty/serial/8250/8250_ingenic.c                    | 5 +++++
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_ingenic.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
- v2: List one compatible entry per line
+ v2: Don't create temp. buffer, now that uart_parse_options takes a const char*
 
-diff --git a/Documentation/devicetree/bindings/serial/ingenic,uart.txt b/Documentation/devicetree/bindings/serial/ingenic,uart.txt
-index 02cb7fe59cb7..c3c6406d5cfe 100644
---- a/Documentation/devicetree/bindings/serial/ingenic,uart.txt
-+++ b/Documentation/devicetree/bindings/serial/ingenic,uart.txt
-@@ -1,8 +1,12 @@
- * Ingenic SoC UART
- 
- Required properties:
--- compatible : "ingenic,jz4740-uart", "ingenic,jz4760-uart",
--	"ingenic,jz4775-uart" or "ingenic,jz4780-uart"
-+- compatible : One of:
-+  - "ingenic,jz4740-uart",
-+  - "ingenic,jz4760-uart",
-+  - "ingenic,jz4770-uart",
-+  - "ingenic,jz4775-uart",
-+  - "ingenic,jz4780-uart".
- - reg : offset and length of the register set for the device.
- - interrupts : should contain uart interrupt.
- - clocks : phandles to the module & baud clocks.
 diff --git a/drivers/tty/serial/8250/8250_ingenic.c b/drivers/tty/serial/8250/8250_ingenic.c
-index 4d9dc10e265c..b31b2ca552d1 100644
+index b31b2ca552d1..be4a07a24342 100644
 --- a/drivers/tty/serial/8250/8250_ingenic.c
 +++ b/drivers/tty/serial/8250/8250_ingenic.c
-@@ -133,6 +133,10 @@ EARLYCON_DECLARE(jz4740_uart, ingenic_early_console_setup);
- OF_EARLYCON_DECLARE(jz4740_uart, "ingenic,jz4740-uart",
- 		    ingenic_early_console_setup);
+@@ -99,14 +99,22 @@ static int __init ingenic_early_console_setup(struct earlycon_device *dev,
+ 					      const char *opt)
+ {
+ 	struct uart_port *port = &dev->port;
+-	unsigned int baud, divisor;
++	unsigned int divisor;
++	int baud = 115200;
  
-+EARLYCON_DECLARE(jz4770_uart, ingenic_early_console_setup);
-+OF_EARLYCON_DECLARE(jz4770_uart, "ingenic,jz4770-uart",
-+		    ingenic_early_console_setup);
+ 	if (!dev->port.membase)
+ 		return -ENODEV;
+ 
++	if (opt) {
++		unsigned int parity, bits, flow; /* unused for now */
 +
- EARLYCON_DECLARE(jz4775_uart, ingenic_early_console_setup);
- OF_EARLYCON_DECLARE(jz4775_uart, "ingenic,jz4775-uart",
- 		    ingenic_early_console_setup);
-@@ -327,6 +331,7 @@ static const struct ingenic_uart_config jz4780_uart_config = {
- static const struct of_device_id of_match[] = {
- 	{ .compatible = "ingenic,jz4740-uart", .data = &jz4740_uart_config },
- 	{ .compatible = "ingenic,jz4760-uart", .data = &jz4760_uart_config },
-+	{ .compatible = "ingenic,jz4770-uart", .data = &jz4760_uart_config },
- 	{ .compatible = "ingenic,jz4775-uart", .data = &jz4760_uart_config },
- 	{ .compatible = "ingenic,jz4780-uart", .data = &jz4780_uart_config },
- 	{ /* sentinel */ }
++		uart_parse_options(opt, &baud, &parity, &bits, &flow);
++	}
++
+ 	ingenic_early_console_setup_clock(dev);
+ 
+-	baud = dev->baud ?: 115200;
++	if (dev->baud)
++		baud = dev->baud;
+ 	divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * baud);
+ 
+ 	early_out(port, UART_IER, 0);
 -- 
 2.11.0

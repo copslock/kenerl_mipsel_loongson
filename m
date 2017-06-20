@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 10:58:31 +0200 (CEST)
-Received: from smtpbg327.qq.com ([14.17.43.158]:59722 "EHLO smtpbg327.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 10:58:54 +0200 (CEST)
+Received: from smtpbg328.qq.com ([14.17.43.160]:48750 "EHLO smtpbg328.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992127AbdFTI52bBgx2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Jun 2017 10:57:28 +0200
-X-QQ-mid: bizesmtp2t1497949007t5fhzadsy
+        id S23992155AbdFTI5b2w1k2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Jun 2017 10:57:31 +0200
+X-QQ-mid: bizesmtp2t1497948999t068w2x8a
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 20 Jun 2017 16:56:46 +0800 (CST)
-X-QQ-SSF: 01100000008000F0FIF1000A0000000
-X-QQ-FEAT: uPKj8ga2w7GC7blcksfoo3GIR+JD7gX3gUi4CewFSd8gCjl+XYCXOsbrTkldm
-        hyB9DKpHXBHizWaOd/Lj1fHfb+0+tYbRniSUDDiIcca+dBc0wx4SDcZrnQl/G8OGDYat688
-        v5R4rXNS//Ds3Mk1gnm5u+c1JckGvyvqxlqpl2i9jBQ7SegqHlJa3Ny6Ts6noOXijll3/RU
-        IGRTweQ6+TPVFZ7QM4EPgyEfSootbIkVqKnNQxbL2VvVx468z8h+cW/+4JfGMfnTuj2973p
-        XNC384oBh2j0gEwvbo6Zqgjjm103S4vpkk4V+kkrNZoXPEA5uVbMximWI=
+        id ; Tue, 20 Jun 2017 16:56:38 +0800 (CST)
+X-QQ-SSF: 01100000008000F0FI91000A0000000
+X-QQ-FEAT: Dh0h8S2M+VbEmMAkiLBQrZGTn3nQEjWDs2KOrMsiRl8CracLHI1YP5A2CMVkk
+        rzI31geup4QWwyOerWReiZNraMw5TneoBQMPzTboCkC4ZTdzb02STRoOJBx9e8DczsG4nJo
+        k2i30Um4c1rfKA0htKtmUUQ4LIe4j6axKJox2RbJkdvNFpSW4EMsXvQOSD6xDDjLTwmZl8W
+        oHNs1Lp4lj0Mwi5pXvxq7u2PCr+aCIfnHKmNky46upXHX+vBZHiPdyfzLVhzlHHaXIbau28
+        4S4ZX/LNNulWpoKA18BeqRO5rckAArs/IrcMmilk7caDU+5JpjwH5RZSE=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v8 4/9] MIPS: Loongson: Add Loongson-1A Kconfig options
-Date:   Tue, 20 Jun 2017 16:57:02 +0800
-Message-Id: <1497949027-10988-5-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v8 1/9] MIPS: Loongson: Merge PRID macro for Loongson-1A/1B/1C
+Date:   Tue, 20 Jun 2017 16:56:59 +0800
+Message-Id: <1497949027-10988-2-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
 References: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
@@ -41,7 +41,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58673
+X-archive-position: 58674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,78 +58,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Added Kconfig options include: Loongson-1A CPU and machine definition,
-CPU cache features, 32-bit kernel and early printk support.
+The Loongson-1 series CPUs(1A/1B/1C) share the same PRID macro.
 
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- arch/mips/Kconfig            | 12 ++++++++++++
- arch/mips/loongson32/Kconfig | 20 ++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ arch/mips/include/asm/cpu.h         | 3 +--
+ arch/mips/kernel/cpu-probe.c        | 4 +++-
+ arch/mips/loongson32/common/setup.c | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9891a12..6a4373a8 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1424,6 +1424,15 @@ config CPU_LOONGSON2F
- 	  have a similar programming interface with FPGA northbridge used in
- 	  Loongson2E.
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 3069359..71c624d 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -240,8 +240,7 @@
+ #define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
+ #define PRID_REV_VR4130		0x0080
+ #define PRID_REV_34K_V1_0_2	0x0022
+-#define PRID_REV_LOONGSON1B	0x0020
+-#define PRID_REV_LOONGSON1C	0x0020	/* Same as Loongson-1B */
++#define PRID_REV_LOONGSON1ABC	0x0020
+ #define PRID_REV_LOONGSON2E	0x0002
+ #define PRID_REV_LOONGSON2F	0x0003
+ #define PRID_REV_LOONGSON3A_R1	0x0005
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 353ade2..25f729c 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1513,8 +1513,10 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_LOONGSON1;
  
-+config CPU_LOONGSON1A
-+	bool "Loongson 1A"
-+	depends on SYS_HAS_CPU_LOONGSON1A
-+	select CPU_LOONGSON1
-+	select LEDS_GPIO_REGISTER
-+	help
-+	  The Loongson 1A is a 32-bit SoC, which implements the MIPS32
-+	  release 2 instruction set.
-+
- config CPU_LOONGSON1B
- 	bool "Loongson 1B"
- 	depends on SYS_HAS_CPU_LOONGSON1B
-@@ -1891,6 +1900,9 @@ config SYS_HAS_CPU_LOONGSON2F
- 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
- 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 		switch (c->processor_id & PRID_REV_MASK) {
+-		case PRID_REV_LOONGSON1B:
++		case PRID_REV_LOONGSON1ABC:
++#ifdef CONFIG_CPU_LOONGSON1B
+ 			__cpu_name[cpu] = "Loongson 1B";
++#endif
+ 			break;
+ 		}
  
-+config SYS_HAS_CPU_LOONGSON1A
-+	bool
-+
- config SYS_HAS_CPU_LOONGSON1B
- 	bool
+diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
+index 1640744..c8e8b3e 100644
+--- a/arch/mips/loongson32/common/setup.c
++++ b/arch/mips/loongson32/common/setup.c
+@@ -21,7 +21,7 @@ const char *get_system_type(void)
+ 	unsigned int processor_id = (&current_cpu_data)->processor_id;
  
-diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
-index 3c0c2f2..6e0f6ec 100644
---- a/arch/mips/loongson32/Kconfig
-+++ b/arch/mips/loongson32/Kconfig
-@@ -1,8 +1,28 @@
- if MACH_LOONGSON32
- 
-+config ZONE_DMA
-+	prompt "Zone DMA"
-+	bool
-+
- choice
- 	prompt "Machine Type"
- 
-+config LOONGSON1_LS1A
-+	bool "Loongson LS1A board"
-+	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
-+	select CSRC_R4K if !MIPS_EXTERNAL_TIMER
-+	select SYS_HAS_CPU_LOONGSON1A
-+	select DMA_NONCOHERENT
-+	select BOOT_ELF32
-+	select IRQ_MIPS_CPU
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HIGHMEM
-+	select SYS_SUPPORTS_MIPS16
-+	select SYS_HAS_EARLY_PRINTK
-+	select USE_GENERIC_EARLY_PRINTK_8250
-+	select COMMON_CLK
-+
- config LOONGSON1_LS1B
- 	bool "Loongson LS1B board"
- 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
+ 	switch (processor_id & PRID_REV_MASK) {
+-	case PRID_REV_LOONGSON1B:
++	case PRID_REV_LOONGSON1ABC:
+ #if defined(CONFIG_LOONGSON1_LS1B)
+ 		return "LOONGSON LS1B";
+ #elif defined(CONFIG_LOONGSON1_LS1C)
 -- 
 2.9.4

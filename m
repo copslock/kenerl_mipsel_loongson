@@ -1,14 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 14:41:49 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:53279 "EHLO newverein.lst.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 15:04:20 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:48435 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992036AbdFTMllbTh6n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Jun 2017 14:41:41 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id D580168D47; Tue, 20 Jun 2017 14:41:40 +0200 (CEST)
-Date:   Tue, 20 Jun 2017 14:41:40 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+        id S23992111AbdFTNEIIHnNn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Jun 2017 15:04:08 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 3wsShx45kdz9s76;
+        Tue, 20 Jun 2017 23:04:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1497963842;
+        bh=wlHkiX12XnsDMOSH4ngby4fr2WSQxdaJ/XP3NPTud/c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=CgD1OIrpngvvYnVAekEguSgkYD7SvZB15QUTLdjsXjWiNdZy/RrNvqe3dJXuvWzw7
+         M1lPtJRR2bG2sX9WtzmR7mjHTjKzf/hA2wM5ISA5PJBuATUKLJxSRabE0gz5WSiHW6
+         IUfZtyVVgWw4vXsv3ZXdqPhi5BLAMJg6HNcVvvol2Xv7mcO5oO2oM1MS2EwWSNjezT
+         gt95a5hVyA6vz3agGZlWSFqDSr0tihmLdsUW5UVQhASbQ/RXV8bbCVDiDHvJ4sYo29
+         NNVv8+QgNFFRyTrEJJpJlCzhTpf8EaaiyO9gHjEg1KyaDEwPLmtHeqrLDo0eP0K260
+         BehdKF8cI6fjQ==
+Date:   Tue, 20 Jun 2017 23:04:00 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
         linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
         linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
@@ -18,25 +31,28 @@ To:     Stephen Rothwell <sfr@canb.auug.org.au>,
         linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
         linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: new dma-mapping tree, was Re: clean up and modularize arch
-        dma_mapping interface V2
-Message-ID: <20170620124140.GA27163@lst.de>
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>
+Subject: Re: new dma-mapping tree, was Re: clean up and modularize arch
+ dma_mapping interface V2
+Message-ID: <20170620230400.1a5ae889@canb.auug.org.au>
+In-Reply-To: <20170620124140.GA27163@lst.de>
+References: <20170616181059.19206-1-hch@lst.de>
+        <20170620124140.GA27163@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170616181059.19206-1-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58683
+X-archive-position: 58684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,64 +65,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 16, 2017 at 08:10:15PM +0200, Christoph Hellwig wrote:
-> I plan to create a new dma-mapping tree to collect all this work.
-> Any volunteers for co-maintainers, especially from the iommu gang?
+Hi Christoph,
 
-Ok, I've created the new tree:
+On Tue, 20 Jun 2017 14:41:40 +0200 Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Fri, Jun 16, 2017 at 08:10:15PM +0200, Christoph Hellwig wrote:
+> > I plan to create a new dma-mapping tree to collect all this work.
+> > Any volunteers for co-maintainers, especially from the iommu gang?  
+> 
+> Ok, I've created the new tree:
+> 
+>    git://git.infradead.org/users/hch/dma-mapping.git for-next
+> 
+> Gitweb:
+> 
+>    http://git.infradead.org/users/hch/dma-mapping.git/shortlog/refs/heads/for-next
+> 
+> And below is the patch to add the MAINTAINERS entry, additions welcome.
+> 
+> Stephen, can you add this to linux-next?
 
-   git://git.infradead.org/users/hch/dma-mapping.git for-next
+Added from tomorrow.
 
-Gitweb:
+I have another tree called dma-mapping:
 
-   http://git.infradead.org/users/hch/dma-mapping.git/shortlog/refs/heads/for-next
+git://git.linaro.org/people/mszyprowski/linux-dma-mapping.git#dma-mapping-next
 
-And below is the patch to add the MAINTAINERS entry, additions welcome.
+Contacts: Marek Szyprowski and Kyungmin Park (cc'd)
 
-Stephen, can you add this to linux-next?
+I have called your tree dma-mapping-hch for now.  The other tree has
+not been updated since 4.9-rc1 and I am not sure how general it is.
+Marek, Kyungmin, any comments?
 
----
-From 335979c41912e6c101a20b719862b2d837370df1 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Tue, 20 Jun 2017 11:17:30 +0200
-Subject: MAINTAINERS: add entry for dma mapping helpers
-Content-Length: 1124
-Lines: 38
+Thanks for adding your subsystem tree as a participant of linux-next.  As
+you may know, this is not a judgement of your code.  The purpose of
+linux-next is for integration testing and to lower the impact of
+conflicts between subsystems in the next merge window. 
 
-This code has been spread between getting in through arch trees, the iommu
-tree, -mm and the drivers tree.  There will be a lot of work in this area,
-including consolidating various arch implementations into more common
-code, so ensure we have a proper git tree that facilitates cooperation with
-the architecture maintainers.
+You will need to ensure that the patches/commits in your tree/series have
+been:
+     * submitted under GPL v2 (or later) and include the Contributor's
+        Signed-off-by,
+     * posted to the relevant mailing list,
+     * reviewed by you (or another maintainer of your subsystem tree),
+     * successfully unit tested, and 
+     * destined for the current or next Linux merge window.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- MAINTAINERS | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Basically, this should be just what you would send to Linus (or ask him
+to fetch).  It is allowed to be rebased if you deem it necessary.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 09b5ab6a8a5c..56859d53a424 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2595,6 +2595,19 @@ S:	Maintained
- F:	net/bluetooth/
- F:	include/net/bluetooth/
- 
-+DMA MAPPING HELPERS
-+M:	Christoph Hellwig <hch@lst.de>
-+L:	linux-kernel@vger.kernel.org
-+T:	git git://git.infradead.org/users/hch/dma-mapping.git
-+W:	http://git.infradead.org/users/hch/dma-mapping.git
-+S:	Supported
-+F:	lib/dma-debug.c
-+F:	lib/dma-noop.c
-+F:	lib/dma-virt.c
-+F:	drivers/base/dma-mapping.c
-+F:	drivers/base/dma-coherent.c
-+F:	include/linux/dma-mapping.h
-+
- BONDING DRIVER
- M:	Jay Vosburgh <j.vosburgh@gmail.com>
- M:	Veaceslav Falico <vfalico@gmail.com>
 -- 
-2.11.0
+Cheers,
+Stephen Rothwell 
+sfr@canb.auug.org.au

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 10:58:54 +0200 (CEST)
-Received: from smtpbg328.qq.com ([14.17.43.160]:48750 "EHLO smtpbg328.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 10:59:16 +0200 (CEST)
+Received: from smtpbg321.qq.com ([14.17.32.30]:33820 "EHLO smtpbg321.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992155AbdFTI5b2w1k2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Jun 2017 10:57:31 +0200
-X-QQ-mid: bizesmtp2t1497948999t068w2x8a
+        id S23992143AbdFTI5cEnan2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Jun 2017 10:57:32 +0200
+X-QQ-mid: bizesmtp2t1497949015t2kxwugwk
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 20 Jun 2017 16:56:38 +0800 (CST)
-X-QQ-SSF: 01100000008000F0FI91000A0000000
-X-QQ-FEAT: Dh0h8S2M+VbEmMAkiLBQrZGTn3nQEjWDs2KOrMsiRl8CracLHI1YP5A2CMVkk
-        rzI31geup4QWwyOerWReiZNraMw5TneoBQMPzTboCkC4ZTdzb02STRoOJBx9e8DczsG4nJo
-        k2i30Um4c1rfKA0htKtmUUQ4LIe4j6axKJox2RbJkdvNFpSW4EMsXvQOSD6xDDjLTwmZl8W
-        oHNs1Lp4lj0Mwi5pXvxq7u2PCr+aCIfnHKmNky46upXHX+vBZHiPdyfzLVhzlHHaXIbau28
-        4S4ZX/LNNulWpoKA18BeqRO5rckAArs/IrcMmilk7caDU+5JpjwH5RZSE=
+        id ; Tue, 20 Jun 2017 16:56:54 +0800 (CST)
+X-QQ-SSF: 01100000008000F0FJF1000A0000000
+X-QQ-FEAT: lm51M56XDGxdGXWwjf5Rb1sqwz0h2KICwFU2+TdbJcZWu+BxGUBtIDYDS3gLh
+        U290WY0wVCSZ1oPR8vJaZsq6AAchDD9GxLuTxdc58rhwS4dgBvScekvuMH+5oqXCGoaV7u1
+        k0hQZIqSXmlNqdqY4mhHmSi6acyYJ9YdOCuzpKgtSyPlZK03ayQ+F450OmZTtytTXAJt//1
+        JqQrHb6HJhgBkerC24quaVEYS9oWUsm+NFfahGkkOE7WQmjhmIthlepQVN0LnS4SwHHElLP
+        f2qGn2dx9qbbQZ8u51qbvcKRfHuIAJUQcKSttvuIboehbYYTFYspBdqAc+4/dX7N/UlQ==
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v8 1/9] MIPS: Loongson: Merge PRID macro for Loongson-1A/1B/1C
-Date:   Tue, 20 Jun 2017 16:56:59 +0800
-Message-Id: <1497949027-10988-2-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v8 8/9] clk: Loongson: Add Loongson-1A clock support
+Date:   Tue, 20 Jun 2017 16:57:06 +0800
+Message-Id: <1497949027-10988-9-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
 References: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
@@ -41,7 +41,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58674
+X-archive-position: 58675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,58 +58,151 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson-1 series CPUs(1A/1B/1C) share the same PRID macro.
+This patch adds clock support to Loongson-1A SoC.
+
+Unfortunately, The Loongson-1A's PLL register is written only,
+so we just set it with a fixed value.
 
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@codeaurora.org>
+Cc: linux-clk@vger.kernel.org
 ---
- arch/mips/include/asm/cpu.h         | 3 +--
- arch/mips/kernel/cpu-probe.c        | 4 +++-
- arch/mips/loongson32/common/setup.c | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/mach-loongson32/regs-clk.h | 30 +++++++++-
+ drivers/clk/loongson1/Makefile                   |  1 +
+ drivers/clk/loongson1/clk-loongson1a.c           | 73 ++++++++++++++++++++++++
+ 3 files changed, 103 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/loongson1/clk-loongson1a.c
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 3069359..71c624d 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -240,8 +240,7 @@
- #define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
- #define PRID_REV_VR4130		0x0080
- #define PRID_REV_34K_V1_0_2	0x0022
--#define PRID_REV_LOONGSON1B	0x0020
--#define PRID_REV_LOONGSON1C	0x0020	/* Same as Loongson-1B */
-+#define PRID_REV_LOONGSON1ABC	0x0020
- #define PRID_REV_LOONGSON2E	0x0002
- #define PRID_REV_LOONGSON2F	0x0003
- #define PRID_REV_LOONGSON3A_R1	0x0005
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 353ade2..25f729c 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1513,8 +1513,10 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->cputype = CPU_LOONGSON1;
+diff --git a/arch/mips/include/asm/mach-loongson32/regs-clk.h b/arch/mips/include/asm/mach-loongson32/regs-clk.h
+index e5e8f11..d8278a4 100644
+--- a/arch/mips/include/asm/mach-loongson32/regs-clk.h
++++ b/arch/mips/include/asm/mach-loongson32/regs-clk.h
+@@ -18,7 +18,35 @@
+ #define LS1X_CLK_PLL_FREQ		LS1X_CLK_REG(0x0)
+ #define LS1X_CLK_PLL_DIV		LS1X_CLK_REG(0x4)
  
- 		switch (c->processor_id & PRID_REV_MASK) {
--		case PRID_REV_LOONGSON1B:
-+		case PRID_REV_LOONGSON1ABC:
-+#ifdef CONFIG_CPU_LOONGSON1B
- 			__cpu_name[cpu] = "Loongson 1B";
-+#endif
- 			break;
- 		}
- 
-diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
-index 1640744..c8e8b3e 100644
---- a/arch/mips/loongson32/common/setup.c
-+++ b/arch/mips/loongson32/common/setup.c
-@@ -21,7 +21,7 @@ const char *get_system_type(void)
- 	unsigned int processor_id = (&current_cpu_data)->processor_id;
- 
- 	switch (processor_id & PRID_REV_MASK) {
--	case PRID_REV_LOONGSON1B:
-+	case PRID_REV_LOONGSON1ABC:
- #if defined(CONFIG_LOONGSON1_LS1B)
- 		return "LOONGSON LS1B";
- #elif defined(CONFIG_LOONGSON1_LS1C)
+-#if defined(CONFIG_LOONGSON1_LS1B)
++#if defined(CONFIG_LOONGSON1_LS1A)
++/* write only */
++#define CORE_PLL_CFG		0x1fe78030
++#define CPU_MUL			GENMASK(2, 0)
++#define CPU_CFG_EN		BIT(3)
++#define DDR_MUL			GENMASK(6, 4)
++#define DDR_CFG_EN		BIT(7)
++#define CPU_CFG_W_EN		BIT(11)
++#define DDR_CFG_W_EN		BIT(15)
++
++#define VGA_PLL_CFG		0x1fd00410
++#define VGA_M			GENMASK(7, 0)
++#define VGA_N			GENMASK(11, 8)
++#define VGA_OD			GENMASK(13, 12)
++#define VGA_FRAC		GENMASK(31, 14)
++
++#define LCD_PLL_CFG		0x1fd00410
++#define LCD_M			GENMASK(7, 0)
++#define LCD_N			GENMASK(11, 8)
++#define LCD_OD			GENMASK(13, 12)
++#define LCD_FRAC		GENMASK(31, 14)
++
++#define GPU_PLL_CFG		0x1fd00414
++#define GPU_M			GENMASK(7, 0)
++#define GPU_N			GENMASK(11, 8)
++#define GPU_OD			GENMASK(13, 12)
++#define GPU_FRAC		GENMASK(31, 14)
++
++#elif defined(CONFIG_LOONGSON1_LS1B)
+ /* Clock PLL Divisor Register Bits */
+ #define DIV_DC_EN			BIT(31)
+ #define DIV_DC_RST			BIT(30)
+diff --git a/drivers/clk/loongson1/Makefile b/drivers/clk/loongson1/Makefile
+index b7f6a16..da7b2dd 100644
+--- a/drivers/clk/loongson1/Makefile
++++ b/drivers/clk/loongson1/Makefile
+@@ -1,3 +1,4 @@
+ obj-y				+= clk.o
++obj-$(CONFIG_LOONGSON1_LS1A)	+= clk-loongson1a.o
+ obj-$(CONFIG_LOONGSON1_LS1B)	+= clk-loongson1b.o
+ obj-$(CONFIG_LOONGSON1_LS1C)	+= clk-loongson1c.o
+diff --git a/drivers/clk/loongson1/clk-loongson1a.c b/drivers/clk/loongson1/clk-loongson1a.c
+new file mode 100644
+index 0000000..680bf1b
+--- /dev/null
++++ b/drivers/clk/loongson1/clk-loongson1a.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright (c) 2012-2016 Binbin Zhou <zhoubb@lemote.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/clkdev.h>
++#include <linux/clk-provider.h>
++#include <linux/io.h>
++#include <linux/err.h>
++
++#include <loongson1.h>
++#include "clk.h"
++
++#define OSC		(33 * 1000000)
++#define DIV_APB		2
++
++static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
++					unsigned long parent_rate)
++{
++	/* Workaround, loongson-1A pll register is written only */
++	return OSC * 8;
++}
++
++static const struct clk_ops ls1x_pll_clk_ops = {
++	.recalc_rate = ls1x_pll_recalc_rate,
++};
++
++void __init ls1x_clk_init(void)
++{
++	struct clk_hw *hw;
++
++	hw = clk_hw_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
++	clk_hw_register_clkdev(hw, "osc_clk", NULL);
++
++	/* clock from 33 MHz OSC clk */
++	hw = clk_hw_register_pll(NULL, "pll_clk", "osc_clk",
++				&ls1x_pll_clk_ops, 0);
++	clk_hw_register_clkdev(hw, "pll_clk", NULL);
++
++	/* cpu clk */
++	hw = clk_hw_register_fixed_factor(NULL, "cpu_clk", "pll_clk",
++					0, 1, 1);
++	clk_hw_register_clkdev(hw, "cpu_clk", NULL);
++
++	/* dc clk */
++	hw = clk_hw_register_fixed_factor(NULL, "ddr_clk", "pll_clk",
++					0, 1, 1);
++	clk_hw_register_clkdev(hw, "ddr_clk", NULL);
++
++	/* ahb clk */
++	hw = clk_hw_register_fixed_factor(NULL, "ahb_clk", "pll_clk",
++					0, 1, 2);
++	clk_hw_register_clkdev(hw, "ahb_clk", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-dma", NULL);
++	clk_hw_register_clkdev(hw, "stmmaceth", NULL);
++
++	/* clock derived from AHB clk */
++	/* APB clk is always half of the AHB clk */
++	hw = clk_hw_register_fixed_factor(NULL, "apb_clk", "ahb_clk",
++					0, 1, DIV_APB);
++	clk_hw_register_clkdev(hw, "apb_clk", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-ac97", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-i2c", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-nand", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-pwmtimer", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-spi", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-wdt", NULL);
++	clk_hw_register_clkdev(hw, "serial8250", NULL);
++}
 -- 
 2.9.4

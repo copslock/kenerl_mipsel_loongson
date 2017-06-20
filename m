@@ -1,51 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 11:00:48 +0200 (CEST)
-Received: from SMTPBG19.QQ.COM ([183.60.61.236]:52027 "EHLO smtpbg320.qq.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992517AbdFTI54cVb72 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Jun 2017 10:57:56 +0200
-X-QQ-mid: bizesmtp2t1497949017tfhwmfa5r
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 20 Jun 2017 16:56:56 +0800 (CST)
-X-QQ-SSF: 01100000008000F0FJF1000A0000000
-X-QQ-FEAT: 9NFkmNiL4hdOblBZCINBVRU54EdHp+MmkNwyVefORyZNd2cTRmuoR1KGO7buD
-        PrcllHr0dY8r9M4dQ2cfQGgbp+hbAY/LHStmh/6i8j4Rp3cCUKslgIlgD3T5HjEYxbtuzna
-        czJAQO52/WzEjCpIxhMYJYnlh5tO7dDSKt/GO7N101MYspf7Za/GX+2QSUsQps4r2Guhi1z
-        DiEYvssnmu9EJKyWr1o20y1Zf3qG2x5B5W4FM/+TDK7DJkcENov47HGAF6cQThFjN+IRes/
-        5s3FU0j3ZGNEcWWpsGO9xvL/WNiuf6fVIlDbTFSNh26QI475Cbo8emwcw=
-X-QQ-GoodBg: 0
-From:   Binbin Zhou <zhoubb@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Yang Ling <gnaygnil@gmail.com>,
-        =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6?= <Yeking@Red54.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        Binbin Zhou <zhoubb@lemote.com>,
-        HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v8 9/9] MIPS: Loongson: Add Loongson-1A default config file
-Date:   Tue, 20 Jun 2017 16:57:07 +0800
-Message-Id: <1497949027-10988-10-git-send-email-zhoubb@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
-References: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
-X-QQ-SENDSIZE: 520
-Return-Path: <zhoubb@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 11:19:22 +0200 (CEST)
+Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:36153
+        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbdFTJTLs1352 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 11:19:11 +0200
+Received: by mail-wr0-x242.google.com with SMTP id 77so16546688wrb.3
+        for <linux-mips@linux-mips.org>; Tue, 20 Jun 2017 02:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RT8xhX7Kl/bRpb+ZIQXTuflmmK0MiiKKO1tsrc1ezAA=;
+        b=CMk7dKePtws7BOKRA9LJPaR8ZrsscuASSh6iuT3KAgHD99jGd+xIqzKAh35lSsx7/X
+         ODzUd2NXf7G9EvYMkDfzuGm2eC2KTh4Qa3m9K33wlCee6PTe04oN+fkzfKvBE+SYqrb5
+         /04+wz+0CJIfluJV2uyTJmkiGOaPC+KOMPBf8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=RT8xhX7Kl/bRpb+ZIQXTuflmmK0MiiKKO1tsrc1ezAA=;
+        b=kjpETgIyuWCLdNLiAp+COn6+MQXN6A3JE1fZAY3p+eySo3YzxY0p+SOD6LtKQGBVD2
+         6vJ8UdEoCXC/7amPXVcS//kDXDcIKVTRhemenm7mJr/N/9NLOHP41/AIDopl4wmgCW1S
+         GQU2aPYlhSKRSyNxP+UP8YnOspsNZff5eWK5TbDOsW/EqTGyKqJxPfFIDoTGl+b1tY0F
+         1bPLERJO4dFdN8/4hTgT3jrYCs3erKnf9x4hEAJ9P9AtLyPQsOiaCSHf9bGigqgEhZPG
+         K1F5lkqx7YgRoxmwwl1wk7COVFjMns8i3eDrXr+J0SIivJT0s7USp/rvOuwTviJGgIzL
+         82ew==
+X-Gm-Message-State: AKS2vOzWcwGrGxk+5kBmINp5d7JKIWDmj0+ohOx19sCQ+Sg/zCFK35MQ
+        F5UUolBBtO/15ffq
+X-Received: by 10.223.145.78 with SMTP id j72mr18440561wrj.7.1497950346256;
+        Tue, 20 Jun 2017 02:19:06 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:5640:0:960b:2678:e223:c1c6])
+        by smtp.gmail.com with ESMTPSA id y9sm16890744wry.32.2017.06.20.02.19.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 20 Jun 2017 02:19:05 -0700 (PDT)
+Date:   Tue, 20 Jun 2017 11:19:02 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: clean up and modularize arch dma_mapping interface
+Message-ID: <20170620091902.2dldmf43vhazq6yh@phenom.ffwll.local>
+Mail-Followup-To: Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20170608132609.32662-1-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170608132609.32662-1-hch@lst.de>
+X-Operating-System: Linux phenom 4.9.0-2-amd64 
+User-Agent: NeoMutt/20170306 (1.8.0)
+Return-Path: <daniel@ffwll.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58679
+X-archive-position: 58680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhoubb@lemote.com
+X-original-sender: daniel@ffwll.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,148 +88,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
-Signed-off-by: HuaCai Chen <chenhc@lemote.com>
----
- arch/mips/configs/loongson1a_defconfig | 130 +++++++++++++++++++++++++++++++++
- 1 file changed, 130 insertions(+)
- create mode 100644 arch/mips/configs/loongson1a_defconfig
+On Thu, Jun 08, 2017 at 03:25:25PM +0200, Christoph Hellwig wrote:
+> Hi all,
+> 
+> for a while we have a generic implementation of the dma mapping routines
+> that call into per-arch or per-device operations.  But right now there
+> still are various bits in the interfaces where don't clearly operate
+> on these ops.  This series tries to clean up a lot of those (but not all
+> yet, but the series is big enough).  It gets rid of the DMA_ERROR_CODE
+> way of signaling failures of the mapping routines from the
+> implementations to the generic code (and cleans up various drivers that
+> were incorrectly using it), and gets rid of the ->set_dma_mask routine
+> in favor of relying on the ->dma_capable method that can be used in
+> the same way, but which requires less code duplication.
+> 
+> Btw, we don't seem to have a tree every-growing amount of common dma
+> mapping code, and given that I have a fair amount of all over the tree
+> work in that area in my plate I'd like to start one.  Any good reason
+> to that?  Anyone willing to volunteer as co maintainer?
+> 
+> The whole series is also available in git:
+> 
+>     git://git.infradead.org/users/hch/misc.git dma-map
 
-diff --git a/arch/mips/configs/loongson1a_defconfig b/arch/mips/configs/loongson1a_defconfig
-new file mode 100644
-index 0000000..1a8545e
---- /dev/null
-+++ b/arch/mips/configs/loongson1a_defconfig
-@@ -0,0 +1,130 @@
-+CONFIG_MACH_LOONGSON32=y
-+CONFIG_ZONE_DMA=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_HIGHMEM=y
-+CONFIG_HZ_1000=y
-+CONFIG_PREEMPT_VOLUNTARY=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_CGROUPS=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CPUSETS=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_EXPERT=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_IOSCHED_DEADLINE is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+CONFIG_BRIDGE=y
-+# CONFIG_BRIDGE_IGMP_SNOOPING is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_NFTL=y
-+CONFIG_NFTL_RW=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_SPI_NOR=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+# CONFIG_SCSI_PROC_FS is not set
-+CONFIG_BLK_DEV_SD=y
-+# CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_ATA=y
-+# CONFIG_SATA_PMP is not set
-+CONFIG_SATA_AHCI_PLATFORM=y
-+# CONFIG_ATA_SFF is not set
-+CONFIG_NETDEVICES=y
-+CONFIG_NETCONSOLE=y
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_SAMSUNG is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+CONFIG_STMMAC_ETH=y
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+CONFIG_REALTEK_PHY=y
-+# CONFIG_USB_NET_DRIVERS is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_I2C=y
-+CONFIG_SPI=y
-+# CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_XHCI_HCD=m
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_HCD_PLATFORM=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_GADGET=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_PCF8563=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_VFAT_FS=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_PRINTK_TIME=y
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_FTRACE is not set
-+CONFIG_XZ_DEC=y
+Ack for the 2 drm patches, but I can also pick them up through drm-misc if
+you prefer that (but then it'll be 4.14).
+-Daniel
+
+> 
+> Gitweb:
+> 
+>     http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-map
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
 -- 
-2.9.4
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

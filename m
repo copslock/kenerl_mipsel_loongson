@@ -1,47 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 17:08:15 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:46556 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992143AbdFTPIHdOiri (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Jun 2017 17:08:07 +0200
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E64B93DBEB;
-        Tue, 20 Jun 2017 15:08:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com E64B93DBEB
-Authentication-Results: ext-mx06.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx06.extmail.prod.ext.phx2.redhat.com; spf=pass smtp.mailfrom=rkrcmar@redhat.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.redhat.com E64B93DBEB
-Received: from potion (unknown [10.43.2.65])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 08F7358858;
-        Tue, 20 Jun 2017 15:07:57 +0000 (UTC)
-Received: by potion (sSMTP sendmail emulation); Tue, 20 Jun 2017 17:07:57 +0200
-Date:   Tue, 20 Jun 2017 17:07:57 +0200
-From:   Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     James Cowgill <James.Cowgill@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: MIPS: Fix maybe-uninitialized build failure
-Message-ID: <20170620150756.GE10325@potion>
-References: <20170620095751.5443-1-James.Cowgill@imgtec.com>
- <20170620145432.GV6973@jhogan-linux.le.imgtec.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170620145432.GV6973@jhogan-linux.le.imgtec.org>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Tue, 20 Jun 2017 15:08:01 +0000 (UTC)
-Return-Path: <rkrcmar@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2017 17:19:15 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:36686 "EHLO
+        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992036AbdFTPTHJv1ai (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2017 17:19:07 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v2 01/17] clk: ingenic: Use const pointer to clk_ops in struct
+Date:   Tue, 20 Jun 2017 17:18:39 +0200
+Message-Id: <20170620151855.19399-1-paul@crapouillou.net>
+In-Reply-To: <20170607200439.24450-2-paul@crapouillou.net>
+References: <20170607200439.24450-2-paul@crapouillou.net>
+Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58690
+X-archive-position: 58691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rkrcmar@redhat.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,9 +39,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2017-06-20 15:54+0100, James Hogan:
-> Acked-by: James Hogan <james.hogan@imgtec.com>
-> 
-> Paolo / Radim: is it okay for one of you to pick this one up for 4.12?
+The CGU common code does not modify the pointed clk_ops structure, so it
+should be marked as const.
 
-It's in, thanks!
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+---
+ drivers/clk/ingenic/cgu.h        | 2 +-
+ drivers/clk/ingenic/jz4780-cgu.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+ v2: New patch in this series
+
+diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
+index 09700b2c555d..da448b0cac18 100644
+--- a/drivers/clk/ingenic/cgu.h
++++ b/drivers/clk/ingenic/cgu.h
+@@ -120,7 +120,7 @@ struct ingenic_cgu_gate_info {
+  * @clk_ops: custom clock operation callbacks
+  */
+ struct ingenic_cgu_custom_info {
+-	struct clk_ops *clk_ops;
++	const struct clk_ops *clk_ops;
+ };
+ 
+ /**
+diff --git a/drivers/clk/ingenic/jz4780-cgu.c b/drivers/clk/ingenic/jz4780-cgu.c
+index b35d6d9dd5aa..a21698fb202c 100644
+--- a/drivers/clk/ingenic/jz4780-cgu.c
++++ b/drivers/clk/ingenic/jz4780-cgu.c
+@@ -203,7 +203,7 @@ static int jz4780_otg_phy_set_rate(struct clk_hw *hw, unsigned long req_rate,
+ 	return 0;
+ }
+ 
+-static struct clk_ops jz4780_otg_phy_ops = {
++static const struct clk_ops jz4780_otg_phy_ops = {
+ 	.get_parent = jz4780_otg_phy_get_parent,
+ 	.set_parent = jz4780_otg_phy_set_parent,
+ 
+-- 
+2.11.0

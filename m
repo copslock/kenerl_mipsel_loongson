@@ -1,149 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2017 10:14:42 +0200 (CEST)
-Received: from mail-co1nam03on0069.outbound.protection.outlook.com ([104.47.40.69]:59168
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2017 13:53:36 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:37898 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990644AbdFUIOegAnk0 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jun 2017 10:14:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mscc365.onmicrosoft.com; s=selector1-microsemi-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=SqeBwcql8p7cYMQYBS4M0V388dA2DwSFDkbG1brdu8s=;
- b=d5mPeOoQLf/TA7rQy5E8ImMBp3r1auhpG94gCmdUxGdErShxLUSrOe9DOmwbAy+3Ee8gk7PN8Eno/jrFXMzRvo4nljk0SnFdxIaXUF2l2tVwWWBPq3abYAgmPxF6lxpS5LtLatyVcJMVI1k9y15whLr4fX7HvQDGHxJJN/U8rkw=
-Received: from MWHPR02CA0053.namprd02.prod.outlook.com (10.164.133.42) by
- BN6PR02MB2532.namprd02.prod.outlook.com (10.173.142.7) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1199.15; Wed, 21 Jun 2017 08:14:26 +0000
-Received: from BN1AFFO11FD007.protection.gbl (2a01:111:f400:7c10::141) by
- MWHPR02CA0053.outlook.office365.com (2603:10b6:301:60::42) with Microsoft
- SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1178.14 via
- Frontend Transport; Wed, 21 Jun 2017 08:14:25 +0000
-Authentication-Results: spf=neutral (sender IP is 208.19.100.21)
- smtp.mailfrom=microsemi.com; linux-mips.org; dkim=none (message not signed)
- header.d=none;linux-mips.org; dmarc=none action=none
- header.from=microsemi.com;
-Received-SPF: Neutral (protection.outlook.com: 208.19.100.21 is neither
- permitted nor denied by domain of microsemi.com)
-Received: from avsrvexchhts1.microsemi.net (208.19.100.21) by
- BN1AFFO11FD007.mail.protection.outlook.com (10.58.52.67) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384) id
- 15.1.1178.14 via Frontend Transport; Wed, 21 Jun 2017 08:14:24 +0000
-Received: from AVSRVEXCHMBX1.microsemi.net ([fe80::950f:17ba:a56d:40e6]) by
- avsrvexchhts1.microsemi.net ([::1]) with mapi id 14.03.0351.000; Wed, 21 Jun
- 2017 01:14:23 -0700
-From:   Rene Nielsen <rene.nielsen@microsemi.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: clock_gettime() may return timestamps out of order
-Thread-Topic: clock_gettime() may return timestamps out of order
-Thread-Index: AdLqZk/zZ9/OsV2LQt+Nh9z9S3yvrA==
-Date:   Wed, 21 Jun 2017 08:14:22 +0000
-Message-ID: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.100.34.10]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:208.19.100.21;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(6009001)(39410400002)(39400400002)(39850400002)(39860400002)(39840400002)(39450400003)(2980300002)(45984002)(199003)(189002)(9170700003)(356003)(305945005)(55846006)(6116002)(102836003)(3846002)(2501003)(8746002)(104016004)(5250100002)(8936002)(86362001)(478600001)(47776003)(110136004)(9686003)(33656002)(8676002)(81166006)(2920100001)(50466002)(2900100001)(23756003)(50986999)(54356999)(6916009)(5640700003)(7696004)(189998001)(38730400002)(53936002)(53416004)(5660300001)(106466001)(7736002)(105586002)(2351001);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR02MB2532;H:avsrvexchhts1.microsemi.net;FPR:;SPF:Neutral;MLV:sfv;A:1;MX:1;LANG:en;
-X-Microsoft-Exchange-Diagnostics: 1;BN1AFFO11FD007;1:raeDL9GnBXy7GrF2lJdC0b51KvvdXdcg58HmJP9KNev/TFKPnwt46fgXwZoMg3YR3bHOF2NamK5dmZxTSZqvTOG4wHiYHLgffko9cKgDpc3iMigzk/3FPswBklgmfGFAuSfpUyKyGO/gD+MPCuJ7IeWtAWjnG+6QODePrfpbYvH6E6WpQYi0XIyf2YNCLwmApU+nvdP57lcinTzv/9+NvvXWhvlI9ovzZ06R1uqD//uTcfnlP9l2ajtgDEPRtjMNtEJOOeXoByQRAJVDrBNPA5O9dKzV5mXi+OH83ivGINh1VW8vGTmjH4z7Jnad+CJDhgCnpQmwye3VmaFGXmrdznSeXZ6HpTzcZLL2E8jbAV/mUwVIwaI0PDBJvv2zmfoaDQGVUDgcLpusuJymliXNQTuPXJYpW7xKINom4RkeoeitktDsd1gvXoyyq7FOFePzEB/RYdKTi6aB5uJXV9CY8VRNo6d0dVbHAnfUJ51zLoBHZSfBp4GKTiMCsCHJ5h9rnG98cjdxYpjEbabK/TpjF2smVSHqfZxcnRXFRnCQsT0TDdet14IdaSXSckMnfcrDwTm5FfzFUc4vyqFkuX0Q1Wvh6iP/A1RUi83hD57M8xYxqEvp+SYXfY1rkm9UaBDsPxbU6MvsUjQexhKzUMmzuGT6STNGj8+w/IzhzKJbWmUOrSkIa6qKPFSDyLGtEJZNYnyeNldPpv9EGPEFT0IpO/UYFKacCpiR/PAMbYTTAVNQR3o8pKEpGG1o2+y+gK3OXhas0P7guEEr93fPNsBQaQy8e0ta+iGynDluqcQmV+K5+Es4QSSiDL2nWD8o7Alerw1KFxOnfT/hLapFMVN7CG5pruXtY/pDNfQvCWabEAM=
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ae546468-ce29-4e16-0fc9-08d4b87d8790
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500055)(300135000095)(300000501055)(300135300095)(22001)(300000502055)(300135100095)(2017030254075)(300000503055)(300135400095)(201703131423075)(201703031133081)(201702281549075)(300000504055)(300135200095)(300000505055)(300135600095);SRVR:BN6PR02MB2532;
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR02MB2532;3:d3oKGRO16q8cpq21y9vkhfM8AQMiGVk8z0EIAHFZ5fjeQ0Tcenr5FIks1LvLXOQjW4eNrQ66iHqFI8J8B0NJlC6gm09Jp4WTm5pEGTiU807fO0GcRef1r2vT+qXat/51yBvIUdz2tPnsE8fhDTL/Uy5zXykn7TKDeFecLwDXP1tRgZy9XSBzOHJ+wbVm+AXOu4nI0gpNSmdG7+0ekq4B2x5JRtlkjirDxH4gKegUs/x5t+4bXNUWAPCjGJJJjNkoo1WxDCuBYa1V4jk1R7dNskHzGq3rN5IEcxSwQEEc5uLsrE9yny8fUCiR7UpT3jqjZVNaR4vzhjeIcrmvFSh8w9LTlixy7A2G5h51RkqEbcRK1ntzGKjBZ/YkIwnhxax7cbPks3a0eNvdyP9lJri0Hvo37HtIYNvz+Tkujg3nGiQlQFyL+BQ1TgBYCDTX+GOY/ISL2ECPoBewI6rvKyTK8g6eWFIa5K3DbcSosCtqlwdLFHEKjW7cErHWEsTR+j7JRAuIsa6LVTxF4iLE0EsD/Fs+88Y/tBnbe2/ARhibg595LkY+dIJH+AN1Xg1J8ZGT/hFHhU0r0gagSzvTd4G7UbjOREZBIsg2+ScN6d7vCm86xWGC/LW9fmeE9FVNw8npSQFi7HUBB9VJl8w4fBY4tk4CgrIcn0Id2Y/Rlkk83ajiqc0IfZDA24x7I1Apa6cUHP/UvvX+FZ2GMWhxNaSElE+ECXpMpuw0UDrfohd8iziIvziGNBuev2BAYCVGyPkrEjSdT1BJP/58hYd1qiACyqOctPRqKnrR0adOeLRMNib4o0NSdiDzRt4/XdGFKRzfd304tfAdDTOTpkdfMdyWTzqKhsWvQAz4rXKlgNxH/9U=
-X-MS-TrafficTypeDiagnostic: BN6PR02MB2532:
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR02MB2532;25:LQpj8XIXzCx4E6YyFDLBKGr0oHauXIOeZXicxcSRAydEVl3gU+phQbzJ1HN/qRSkX1JSwbj0wfoYkL3LCoEyGhrQ3NLVq6SNP4mKDU/KxemDamF7/t74lFYH50nQxTwa0SqFi+jSFdtAfNwBr1zpi6aLkRDW5k2UApGhXmJB6zQIrthg/UOOLmujx1SeFAMOh4NyOnMdL4CGQU/CWdKsujBcwiOrGngQXE8VIxpYHqg7XiMnPcCXt0eYsHviP1W5+6CmaItVmS9tcd+2bK+utqUtkJ7aolRTB28GkV2UbGVBAwzkxHf+VHjgEb8CUA+uhjCbDq0agiCytarmclVU6wXRB9lRAtHrrjgnejMsEt6Hz5PhpokOATFJcBtIJpgwXf+eX82V3+rjz4mMhrDEua1AKpksTJ0wKUJ6LVgXL1iGMkJi9xOZosFXaBNmp7W5stylNWKVVhm8SrIVg0VoIDEWQrjdtKH4XyQly6QmFZ0S9EKQHV/LNhKwtHJQ1YMQ12XxfuVhjv8JDWRY6Lzt6DZ/sJxdo04ZW+b3T5tKtH16EFFt1f8NpCyZU5zqehFIdk40Q9oqHjug089uW2+CQ1nKhQ6nU4Uu0y5v0ekES5vgAZpFMm0ovHi2IcGS3rEfixVrALKKVm4kkB8+bGf6kePdQCkLDAaU2D9DzqcivzVh9R4mzraClQLpgmJ/4M1XOtm3m3wOLmErQ4iMew151vVAOVofulZWvsuccYykd2/R8vKTIqgy1QfqcMn+8mdnv3UxIfum6hCgheDW+kQAC216unQwx5fX7HvQvhQVX7GcnkZhnkUlqfFvtuJbeti5yKosBg/QUUuPzSiYYIGwJr3bRUQYbIT4q8+9xHwQILFsbDXClx/0gGJVl51K9cGWZigT4eCdeQJkQn1U0Xnphc4cTVKU7DkEVGt59OgXGm0=
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR02MB2532;31:v90BTzeU834UG9+ZscaJ5xZisTgBm1NC4LGeEhB1H+nTKcUS7UbQxeIUJzHa1ga8cgT2iHKBvANg/5bNiQu9NmY4S2H89T/34y8+TF8RV5SeFfiYjsd6LmM5EO2cpTDPIAgph5YUZMFWXvB1dc7rQXM3D6g7OoILxhZjXzat183twSZY8Xptp6R2k+7wv9AV19RAl4QjY18l7zQiwwNSRNwzHg8GsTKSWuZNOVNAH/GC6SV3QEJXalSeEv189OjFhcc4Js/dXWJYESdX1RUs45F2PdH3bpp2zKW1MEPX7c53JWQ55sftfcChA/2Igv+8gO3KAz40T9mv0XzlasNjpL0t1wnvPABEeS/24Gv8fbANt1plWHK0NifyWkpHAvy7TBAxyMXJnDTWSgwreMeYbm5HdysJhhQhvAFf+PpuYidllBrgIIw1k4NIi5fDrZqTkWMEQNsnKeC0PSY2h8QqxxuUz/ZkscycNnF3sHitEc31FyV5Fxc9o5LpuhDjq7q+XfT8YRALrepJ+Pxgxgba4oSzk9vepHEreqHvlqQgXAoQdaGmLQ+nTwyut++DQ/wJBWNn2KPtbdKNeQEjs/HMlNSsptYUJlEwsifew3T+coI7wU8j6h+oGWrXmjddPp+galUzt70hNsn3qvjJS+xXkiR64Q8P5AxFzd0NBX6HfPxrGnzh/bgs/cB2L3UYDVxNdKEuFDRJ5TRiS6K96ivoIA==
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR02MB2532;20:L0q99QitzpfgRWahjevBC38GNwyGj/v1hCr3GuKzLQ00GlsAW8cah1Stvtv62deA5Q3McqKdqiWLcuz8Csq85rBLkv7eskeeEwU6KiuDswxrBSZhmpMExc9711k/ap0KwIgvpyTzeZv+K7u2jeDD98xxf5FW52LT7hjOJNb5Imor8RLWMplX1kr9eWVuuqcpm8YSMLEPGLF+vFmYv+LpIjIRhSsnh7o1APtQ1zQbVVKqmzpX5eEAV3m8lzMvn0JbRwNzNq5PvU2gK6xqGV4n+dNKIYJK1U4dy73UYNAeo+AavsYYztQYfswLOy9Y0IMGqeK3czej/PE3QHoyzkiMvISJb3dXQeQVZ8PF6qBf+Z2PA/gE+9G1ZCYMtaz3er9yx9Hu0L0ec9g+1FrsZPwCD+NXBmO49izU9EQq4m4KCP90kzvdtDR9E00iPUXfj+ydG940dU8Z502QcZ2zH931loWklT1CmJbg9I8kQ9KO9fdg0d9V+DZtZksnv3+435rz
-X-Microsoft-Antispam-PRVS: <BN6PR02MB2532FBA01B4FDF7AB64767B599DA0@BN6PR02MB2532.namprd02.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(8121501046)(5005006)(13016025)(13018025)(10201501046)(3002001)(100000703101)(100105400095)(93006095)(93001095)(6055026)(6041248)(20161123562025)(20161123555025)(20161123560025)(20161123564025)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:BN6PR02MB2532;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:BN6PR02MB2532;
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;BN6PR02MB2532;4:VQDVSNqQBk3yv0jTfxz375Y5yv+MfXvQ8XyTaouH?=
- =?iso-8859-1?Q?GeWAM7v64cj9Dg5npdLmh1xC2g0y+bXEmBMCcXQIGnblwabPmy1XRP7gs3?=
- =?iso-8859-1?Q?3hhHJBwG+AzTkXo/urjYyuErQSCOtnIBD2vLITqM/NjNiGtFCOi59tnk3Z?=
- =?iso-8859-1?Q?NT3glnvk7O61l25JA6I1tjHXVG5ivsMHXLBhf6tXNvtZNtd9VtmN7wuGDa?=
- =?iso-8859-1?Q?71V//UuUCuejWHvtj0ulbcju9ZSOVgtzwmkmjtE0+GOrftltbkiDApyusv?=
- =?iso-8859-1?Q?J2fLD1kXCcJj9Y3e1zBT24VxNzUIBuKxjMaMSIjSkUjDDL50mInHWyyIqx?=
- =?iso-8859-1?Q?XHqV5u9ogzFGvpXJjECx4cnOYXr2fM8DSmNFhHw/ffdDDkpoIdvCT0qt7M?=
- =?iso-8859-1?Q?A9FGJQz+u/2lpzXwceqTr1CmeJ4C+Rtwko04AcfI3RY1q/POHzDwGm7YlI?=
- =?iso-8859-1?Q?zZ3srOQoH/zGZtFycmYTU3qVzoiIjfKFcPo8WEokZV/q6nFajUwIhkNpfR?=
- =?iso-8859-1?Q?9KX7fJM3RfJCZUb7OJYL5w7nz3NX7zx8Y3j2CZc8MAxxdnUpzPyttEODOL?=
- =?iso-8859-1?Q?bo7NFHREHm+7taVT0LCH+StByXfT6ZnBdaMGdRN5BcrV1IFe8aChAx2IQg?=
- =?iso-8859-1?Q?y/4yhbj1pgOp/xzoy8+onszPzbtf05QH8VgRfqqfhx9G/PJc0YUX2wIKLr?=
- =?iso-8859-1?Q?oWUf9XxukfAWUT6cQ2HGoOcSpSZpHTkOsQhmPATAY1EeIPZa4aG2hQn8LV?=
- =?iso-8859-1?Q?VkDoKevZ4hyZTLSmOPBarGLXBkLTKmLtmZyVtbOM5xsIPkvJqwnZ+wO37U?=
- =?iso-8859-1?Q?sYuwjDI8MQPWw8ZZFadajsfEbAWRJi4Cjie72WKhkAYN58Hv3v+7XSFzwC?=
- =?iso-8859-1?Q?+jxUV6o8fkonLI53/Ryz41yLQA5q0EpaVN7evxtD2xCgVOHfZkQcO3OUG0?=
- =?iso-8859-1?Q?uIZEH7sCyK9VMWi0MGOqlPc1m7AIqAmtiHc5v1JUsHzdtrk/5LmD/7gdg5?=
- =?iso-8859-1?Q?S4/F0/7YMFywLCZpy15eGL2RQmQwxMs7db9S2G/QxWnPnkUDNwU9LJf7JU?=
- =?iso-8859-1?Q?MdpxqmBFAarZaMTke1wJTVl3aWc79rHTSSnvjl4EAX+3guxPJZkEyqPgK0?=
- =?iso-8859-1?Q?G7wHkEMKoSYStU2V75EDexj/r5Ue7fOgW9cMqIWOYnSBPEshnxSQV/4TF3?=
- =?iso-8859-1?Q?H5n+LylzkRRA5uf9camar5cNtHqh5nVtgXtdpJiE1DkLbCade6zzKFyIuz?=
- =?iso-8859-1?Q?et3ZxRe4pU5t6SJR?=
-X-Forefront-PRVS: 0345CFD558
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;BN6PR02MB2532;23:f8ftbUB8L2r0jyLq5+6lYfvCvjZD3GWJPJDgYFL?=
- =?iso-8859-1?Q?xQK4niNVIXnh+ewdSCzkRLsFn9/pgL9B6clDXr2RLeOmDJdpF1TNdf+qye?=
- =?iso-8859-1?Q?LIxsqVrWCDyQzVy202c67nBykfll4BiLu+lJhA7VDZsv0bBdH1lk+VR0wn?=
- =?iso-8859-1?Q?mrvX4Nu55qm5uagEXm1Zu0+txHCCDM0P0SS2A+ml9vFlQWarXpzlJnJnN1?=
- =?iso-8859-1?Q?z6e2DSI7D3FC2oLnF/TOaNByrWjNpr69rCyZvApPXkCW3rtS0ve9veghvt?=
- =?iso-8859-1?Q?2eFgabZorl6Vlp3hZ8ruWMFRBwHMgoyC3qZ9uDVACrdoWktmBCBzrdLcxY?=
- =?iso-8859-1?Q?Eq++r6VN4ZwRoJLJNZiCrvEHt9GT650mbYLSxMQWQEnUSrcTRFStH12Lue?=
- =?iso-8859-1?Q?CEk5bCQ1ShtSfAJl22X83dYsFEipG2ByfZqO20IUJHvvJdd1iYupceWtiN?=
- =?iso-8859-1?Q?O5z5E1wbsdMwmFqvs0EUsgXH6U2P/FiYioPi4OjJiXMOweIO4pT0QVoHiE?=
- =?iso-8859-1?Q?OoAQlX2CMsi1dW2qYX4AmYbv5u0IFP4gDfsD/Zxw/ApI+qKowMJ1ygL3ou?=
- =?iso-8859-1?Q?a5tv+T9Wk7CpyfGtzJaFxtwKYJEeFREDr3baA+HIbOocsls3nZCoqDGrye?=
- =?iso-8859-1?Q?UfZ+DIoMQYFb9J5uP0TEasoU0/MWKr15TiKQte5PGeX8zsb9OIGa5VMTfT?=
- =?iso-8859-1?Q?FXaF0iIat1iqRBsR7hBGPc6/puoF3fS8OPgrXdk1Q5lInkH85FaaByqZzr?=
- =?iso-8859-1?Q?ItBiHRDyFYYWAmpmcC7V7jY3BHp2SgAiLrvP7MjwS1D20V5piElPURa3C3?=
- =?iso-8859-1?Q?0xwIvJCXrelMa51871s9bIp4Zmgq/wMUy7SHoZOWFw0K2HUId2Fl4YhpY5?=
- =?iso-8859-1?Q?OZBgeNszwsMyMJbR7fQLjR+jValpzZeHBhGpDoMy6bBtURvC8BFkkMxPNg?=
- =?iso-8859-1?Q?tzgauTYCUQARwG8GzWZWSy6xx2oVo/FM3hWh/DxFyxv5GOFtDYcavRy3M/?=
- =?iso-8859-1?Q?oRffEhNIJGqDcMep8CHq7AD98RTv28INhpK57BFK9bs22kWjj+bLqolbGQ?=
- =?iso-8859-1?Q?+YyIhztQGecDlIrtHPXK+wBsyaDhxp0SDeLhbp8tXkcNlgvoWQAqQXGSFS?=
- =?iso-8859-1?Q?c7D2fCRt0tW8h2NtWnD/4PI8IbmSfTyXT/FKTre9YGmYFjx1cFlBC/7qSV?=
- =?iso-8859-1?Q?68Ahnpn7P8qpXg4Q2PbJtD/2TuYWuCVJBirWebl+iSrJEge5Zeky/qGzq0?=
- =?iso-8859-1?Q?Z9q6vWYtvtLqhjr4n?=
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;BN6PR02MB2532;6:7tzxkonwUvD7Tj23t+ElVef2/2YrlleS9Njyg0OW?=
- =?iso-8859-1?Q?cAdT/JxZ43Rz2GpWp0TIY/dc+w6myOSmVvSJWNWf5peAxsBpQBYTCQnP/k?=
- =?iso-8859-1?Q?4APDbmLuiOzGhiKLOEL2IvLgbHREG2CeCMzmh8daAcE0l9pPBttsIO0SHn?=
- =?iso-8859-1?Q?34itFyFhEDA+AvpDYpkL6yduTo6scw+vZkxhoXBXFxJn+aqUIFhMnHOZD4?=
- =?iso-8859-1?Q?bQbvbBa+XNE9Y4dWUK4X0rr2K5e4O+iWyQI3+pJy8Yq7TYkz1jK5Bu4Q5W?=
- =?iso-8859-1?Q?6ti4Y3rzQJ6OyG8l72qNK9HT1CrNrR90MQslp/60O7Jz/9HGHmIMG+Fyd4?=
- =?iso-8859-1?Q?Z5GwmBc9EQd6+DLdU1mfHmmsDKgKhGRccaVli76xOaytmHWd4nIGAO2yJM?=
- =?iso-8859-1?Q?BIU+GVqIOx+JQg4znjkJZ+evtmlj01z0S6yuntAwEOx6qWR1F+VtslYKPc?=
- =?iso-8859-1?Q?zbk0wfRm0Va5RswOWhsyoRXiKZs7Y2xSicVU7nYrmkePaA9x3qZomksH47?=
- =?iso-8859-1?Q?BsJakjMgyWTh9RRdxYjfTzkf3bJgLVMD2TPSeQFalwpiVepPuWzxOVvzND?=
- =?iso-8859-1?Q?xTLudNCtBDBsINnevPNn8CvvRz+zaitNY8mciWU/0Qic81FTuMB3LaOLn1?=
- =?iso-8859-1?Q?iJJj8Y2I88+l031wG3FvMDXwMgoDx9H8ZSPdZgMPOAOUplHA1FcKqMNNGD?=
- =?iso-8859-1?Q?rX/QC4VXeBcsL/PuG3aR3/3ZqFfiyhYMXp+gTiidwUnJl5onDT9UUYufuC?=
- =?iso-8859-1?Q?3REqwMY5B+1+9X0n08Jvx6zYebSPdubgTScph2dcCCqeiMiFrbl1EGI0VH?=
- =?iso-8859-1?Q?QEGRZvEYE8QXXWYfutWsLuT9X7Aa6tAkQ1runuyIHlrF8OQ9+v2miJIk+s?=
- =?iso-8859-1?Q?ffTK3yYaKICLmU0tOxuTnXr5aGQHr3MWF6loVgicaNbgdE9Vuzxlbnz5f9?=
- =?iso-8859-1?Q?GLxLPWEuhzD0BXHLLUBHaa2D8eW95qWO/F9qYaNeAS96r7lW+oTh/WCQbY?=
- =?iso-8859-1?Q?kGyAvfj6DVBykGQHLeNrqSbJkUJGp6GsH/WVcE3HH8CQJGYFz9Bi43Wu?=
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR02MB2532;5:fIroJyijj8w0DQm4Sgzk/T0hctPsf+7R0ocTq+9LSAdBN1exbSehMgxHIBV0g9KCtA3AAEry/cY1vJFIyjk4+tItirYwNg0jQS/Kn29hGnXNso5TTSNUyQfiHXaAoKSx0jTALtoRhXSSTjpI7LuCknPSVzXvazzR6Euto1V+nJfcaKtduVBXH/C1avKPMqNchB+Ok6wzEL7V/Vg9Yvnj0SeBGaEP7LQ1Cp89VBYRbGqkESegcQP/J8nA0Itzd+hdc4bk8DbgD88x2sU0PoMqdi8c2Y49Y0CFRC4GzfLi/pQ4OW2jXkQdRJGeZbJYa+84pjBeRs03ART9hkJ5Uw1d4ROv/j5DHY0j+Kq9CDc6qGhMgRtF9XuVRTiTdKLiR6eVmoW1qysxDgtoq63j5lVkSLnf702X/lSBTlj2MIoVk2E/qFVmv10I2tFRNBfuCgkO061i0mzdfr4JNp61cHd6NDqlBbVPJpwi8An3g6QKwVjb7M/5bfyiU8q2zRCQmVoA;24:KAa+E50xhsi3ECXLi8fhjZMkCwdaJnJLJQL9ObkH8j2v7Y2A23RbMu4PmiofN4ptkbtcHsTSW5g3nypX3ZFrDkkLju4pSh3ECiFkck/u3uo=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR02MB2532;7:mxk8abDIrBOX26gy95bWkpLII3igEBUuzAWscyf2rw6MAqVadizXbHtewuLtnZRwRyUhAKvPD67/6/7Qh2Q4m9Xd3yWtLYPyzSi1OMe4gNxu6Ag0mthzS+7o1A40jKNSfzZIwSvQ+TRRJV+xN5zvPV32S7Kr7StFNaR4Q2gfydz3Rjx725N8HlkmatDM1761WWFrjee8DAk58QSzNI/d2f1wFnptGSRPIhccvktPrSpiD9oy3NvPvhCLs+G9eZJ30wIbQnl5sOz1wYeQNCeGWkxR1DNzdoZSV1jDVnlW+C2QmyhORka+xXiMV9C9kgsreMua0E5KZV+uhosNOl4mlEqAUeKMKEDK9B5Z/YEatmKkP/KD/DdMSck/NcZ5+BM18YpWNZsooACCvNKKzlAxLeL+416rUj9Y+bHnX3mmQaCQ3WPdQ7fwqP8P9hFcOD/3Lreq5sKJQBwYRyE7dR5sAZnLE3jk4Tnhl+OMtaIhePF3kMDB0Djp4sEur+lMUhM09C+U9/ScROq9VhcSw+bLaqndrgaR0CW3OM3isq5Jp7Fv6URm45IJWAzOl0c2tNQ2C/3Qoogwg8GjfdqqISVfe7SU2WiqfKHMHSrjRvmVWdvkXqrVUjvPKbVAt58w2gv5VdSn/X8znbamJk70gRnKjC3h6I8+QGzUyOO3K3aE+Km0h8OuuZmJh+LnKSmsBiXnhyH2tu5OuHbsMzvCTnW1oOWuroL6RBsXZXBbYOOCNI03jVSTV7ouCZqR6DhxFpkIP9/wEBNO8UfHqKYzaykawKTBZi/FOVLq/UZ3HX89+gk=
-X-OriginatorOrg: microsemi.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2017 08:14:24.7594
- (UTC)
-X-MS-Exchange-CrossTenant-Id: f267a5c8-86d8-4cc9-af71-1fd2c67c8fad
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f267a5c8-86d8-4cc9-af71-1fd2c67c8fad;Ip=[208.19.100.21];Helo=[avsrvexchhts1.microsemi.net]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR02MB2532
-Return-Path: <rene.nielsen@microsemi.com>
+        id S23990845AbdFULxZkez7y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Jun 2017 13:53:25 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 33A60AB09;
+        Wed, 21 Jun 2017 11:53:24 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     tglx@linutronix.de
+Cc:     mingo@redhat.com, peterz@infradead.org, dvhart@infradead.org,
+        linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+Subject: [PATCH 1/1] futex: remove duplicated code and fix UB
+Date:   Wed, 21 Jun 2017 13:53:18 +0200
+Message-Id: <20170621115318.2781-1-jslaby@suse.cz>
+X-Mailer: git-send-email 2.13.1
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58733
+X-archive-position: 58734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rene.nielsen@microsemi.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -156,44 +69,1179 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi folks,
+There is code duplicated over all architecture's headers for
+futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
+and comparison of the result.
 
-Let me go straight into the problem:
-We have a multi-threaded application that runs on a MIPS 24KEc using glibc v.
-2.24 under kernel v. 4.9.29 both compiled with gcc v. 6.3.0.
-Our 24KEc has a 4-way 32 KBytes dcache (and similar icache), so it's prone to cache
-aliasing (don't know if this matters...).
+Remove this duplication and leave up to the arches only the needed
+assembly which is now in arch_futex_atomic_op_inuser.
 
-We want to be able to do stack backtraces from a signal handler in case our
-application makes a glibc call that results in an assert(). The stack
-backtracing is made within the signal handler with calls to _Unwind_Backtrace().
-With the default set of glibc compiler flags, we can't trace through signal
-handlers. Not so long ago, we used uclibc rather than glibc, and experienced the
-same problem, but we got it to work by enabling the
-'-fasynchronous-unwind-tables' gcc flag during compilation of uclibc.
-Using the same flag during compilation of glibc causes unexpected runtime
-problems:
+This effectively distributes the Will Deacon's arm64 fix for undefined
+behaviour reported by UBSAN to all architectures. The fix was done in
+commit 5f16a046f8e1 (arm64: futex: Fix undefined behaviour with
+FUTEX_OP_OPARG_SHIFT usage).  Look there for an example dump.
 
-Many of the threads in our application call clock_gettime(CLOCK_MONOTONIC) many
-times per second, so we greatly appreciate the existence and utilization of the
-VDSO.
+Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
+remove pointless access_ok() checks") as access_ok there returns true.
+We introduce it back to the helper for the sake of simplicity (it gets
+optimized away anyway).
 
-Occassionally, however, clock_gettime(CLOCK_MONOTONIC) returns timestamps out of
-order on the same thread. It's not that the returned timestamps seem wrong (they
-are mostly off by some hundred microseconds), but they simply appear out of
-order.
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: Richard Henderson <rth@twiddle.net>
+Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Acked-by: Russell King <rmk+kernel@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Richard Kuo <rkuo@codeaurora.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Michal Simek <monstr@monstr.eu>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Cc: Stafford Horne <shorne@gmail.com>
+Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com> [s390]
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Acked-by: Chris Metcalf <cmetcalf@mellanox.com> [for tile]
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: <x86@kernel.org>
+Cc: <linux-alpha@vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>
+Cc: <linux-snps-arc@lists.infradead.org>
+Cc: <linux-arm-kernel@lists.infradead.org>
+Cc: <linux-hexagon@vger.kernel.org>
+Cc: <linux-ia64@vger.kernel.org>
+Cc: <linux-mips@linux-mips.org>
+Cc: <openrisc@lists.librecores.org>
+Cc: <linux-parisc@vger.kernel.org>
+Cc: <linuxppc-dev@lists.ozlabs.org>
+Cc: <linux-s390@vger.kernel.org>
+Cc: <linux-sh@vger.kernel.org>
+Cc: <sparclinux@vger.kernel.org>
+Cc: <linux-xtensa@linux-xtensa.org>
+Cc: <linux-arch@vger.kernel.org>
+---
+ arch/alpha/include/asm/futex.h      | 26 ++++---------------
+ arch/arc/include/asm/futex.h        | 40 ++++-------------------------
+ arch/arm/include/asm/futex.h        | 26 +++----------------
+ arch/arm64/include/asm/futex.h      | 26 +++----------------
+ arch/frv/include/asm/futex.h        |  3 ++-
+ arch/frv/kernel/futex.c             | 27 +++-----------------
+ arch/hexagon/include/asm/futex.h    | 38 +++-------------------------
+ arch/ia64/include/asm/futex.h       | 25 +++----------------
+ arch/microblaze/include/asm/futex.h | 38 +++-------------------------
+ arch/mips/include/asm/futex.h       | 25 +++----------------
+ arch/openrisc/include/asm/futex.h   | 39 +++--------------------------
+ arch/parisc/include/asm/futex.h     | 26 +++----------------
+ arch/powerpc/include/asm/futex.h    | 26 ++++---------------
+ arch/s390/include/asm/futex.h       | 23 ++++-------------
+ arch/sh/include/asm/futex.h         | 26 +++----------------
+ arch/sparc/include/asm/futex_64.h   | 26 ++++---------------
+ arch/tile/include/asm/futex.h       | 40 ++++-------------------------
+ arch/x86/include/asm/futex.h        | 40 ++++-------------------------
+ arch/xtensa/include/asm/futex.h     | 27 ++++----------------
+ include/asm-generic/futex.h         | 50 +++++++------------------------------
+ kernel/futex.c                      | 36 ++++++++++++++++++++++++++
+ 21 files changed, 127 insertions(+), 506 deletions(-)
 
-Since glibc utilizes VDSO (and uclibc doesn't), my guess is that there's
-something wrong in the interface between the two, but I can't figure out what.
-Other glibc calls seem OK (I don't know whether there's a problem with the other
-VDSO function, gettimeofday(), though). If not compiled with the infamous flag,
-we don't see this problem.
-
-I have tried with a single-threaded test-app, but haven't been able to
-reproduce.
-
-Any help is highly appreciated. Don't hesitate to asking questions, if needed.
-
-Thank you very much in advance,
-Best regards,
-René Nielsen
+diff --git a/arch/alpha/include/asm/futex.h b/arch/alpha/include/asm/futex.h
+index fb01dfb760c2..05a70edd57b6 100644
+--- a/arch/alpha/include/asm/futex.h
++++ b/arch/alpha/include/asm/futex.h
+@@ -25,18 +25,10 @@
+ 	:	"r" (uaddr), "r"(oparg)				\
+ 	:	"memory")
+ 
+-static inline int futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -62,17 +54,9 @@ static inline int futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/arc/include/asm/futex.h b/arch/arc/include/asm/futex.h
+index 11e1b1f3acda..eb887dd13e74 100644
+--- a/arch/arc/include/asm/futex.h
++++ b/arch/arc/include/asm/futex.h
+@@ -73,20 +73,11 @@
+ 
+ #endif
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(int)))
+-		return -EFAULT;
+-
+ #ifndef CONFIG_ARC_HAS_LLSC
+ 	preempt_disable();	/* to guarantee atomic r-m-w of futex op */
+ #endif
+@@ -118,30 +109,9 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 	preempt_enable();
+ #endif
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ:
+-			ret = (oldval == cmparg);
+-			break;
+-		case FUTEX_OP_CMP_NE:
+-			ret = (oldval != cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LT:
+-			ret = (oldval < cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GE:
+-			ret = (oldval >= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LE:
+-			ret = (oldval <= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GT:
+-			ret = (oldval > cmparg);
+-			break;
+-		default:
+-			ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/arm/include/asm/futex.h b/arch/arm/include/asm/futex.h
+index 6795368ad023..cc414382dab4 100644
+--- a/arch/arm/include/asm/futex.h
++++ b/arch/arm/include/asm/futex.h
+@@ -128,20 +128,10 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ #endif /* !SMP */
+ 
+ static inline int
+-futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret, tmp;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ #ifndef CONFIG_SMP
+ 	preempt_disable();
+ #endif
+@@ -172,17 +162,9 @@ futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+ 	preempt_enable();
+ #endif
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/arm64/include/asm/futex.h b/arch/arm64/include/asm/futex.h
+index f32b42e8725d..5bb2fd4674e7 100644
+--- a/arch/arm64/include/asm/futex.h
++++ b/arch/arm64/include/asm/futex.h
+@@ -48,20 +48,10 @@ do {									\
+ } while (0)
+ 
+ static inline int
+-futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (int)(encoded_op << 8) >> 20;
+-	int cmparg = (int)(encoded_op << 20) >> 20;
+ 	int oldval = 0, ret, tmp;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1U << (oparg & 0x1f);
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ 	pagefault_disable();
+ 
+ 	switch (op) {
+@@ -91,17 +81,9 @@ futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/frv/include/asm/futex.h b/arch/frv/include/asm/futex.h
+index 2e1da71e27a4..ab346f5f8820 100644
+--- a/arch/frv/include/asm/futex.h
++++ b/arch/frv/include/asm/futex.h
+@@ -7,7 +7,8 @@
+ #include <asm/errno.h>
+ #include <linux/uaccess.h>
+ 
+-extern int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr);
++extern int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr);
+ 
+ static inline int
+ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+diff --git a/arch/frv/kernel/futex.c b/arch/frv/kernel/futex.c
+index d155ca9e5098..37f7b2bf7f73 100644
+--- a/arch/frv/kernel/futex.c
++++ b/arch/frv/kernel/futex.c
+@@ -186,20 +186,10 @@ static inline int atomic_futex_op_xchg_xor(int oparg, u32 __user *uaddr, int *_o
+ /*
+  * do the futex operations
+  */
+-int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++int arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ 	pagefault_disable();
+ 
+ 	switch (op) {
+@@ -225,18 +215,9 @@ int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS; break;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
+ 
+ 	return ret;
+ 
+-} /* end futex_atomic_op_inuser() */
++} /* end arch_futex_atomic_op_inuser() */
+diff --git a/arch/hexagon/include/asm/futex.h b/arch/hexagon/include/asm/futex.h
+index 7e597f8434da..c607b77c8215 100644
+--- a/arch/hexagon/include/asm/futex.h
++++ b/arch/hexagon/include/asm/futex.h
+@@ -31,18 +31,9 @@
+ 
+ 
+ static inline int
+-futex_atomic_op_inuser(int encoded_op, int __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(int)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -72,30 +63,9 @@ futex_atomic_op_inuser(int encoded_op, int __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ:
+-			ret = (oldval == cmparg);
+-			break;
+-		case FUTEX_OP_CMP_NE:
+-			ret = (oldval != cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LT:
+-			ret = (oldval < cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GE:
+-			ret = (oldval >= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LE:
+-			ret = (oldval <= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GT:
+-			ret = (oldval > cmparg);
+-			break;
+-		default:
+-			ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/ia64/include/asm/futex.h b/arch/ia64/include/asm/futex.h
+index 76acbcd5c060..6d67dc1eaf2b 100644
+--- a/arch/ia64/include/asm/futex.h
++++ b/arch/ia64/include/asm/futex.h
+@@ -45,18 +45,9 @@ do {									\
+ } while (0)
+ 
+ static inline int
+-futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -84,17 +75,9 @@ futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/microblaze/include/asm/futex.h b/arch/microblaze/include/asm/futex.h
+index 01848f056f43..a9dad9e5e132 100644
+--- a/arch/microblaze/include/asm/futex.h
++++ b/arch/microblaze/include/asm/futex.h
+@@ -29,18 +29,9 @@
+ })
+ 
+ static inline int
+-futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -66,30 +57,9 @@ futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ:
+-			ret = (oldval == cmparg);
+-			break;
+-		case FUTEX_OP_CMP_NE:
+-			ret = (oldval != cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LT:
+-			ret = (oldval < cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GE:
+-			ret = (oldval >= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LE:
+-			ret = (oldval <= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GT:
+-			ret = (oldval > cmparg);
+-			break;
+-		default:
+-			ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
+index 1de190bdfb9c..a9e61ea54ca9 100644
+--- a/arch/mips/include/asm/futex.h
++++ b/arch/mips/include/asm/futex.h
+@@ -83,18 +83,9 @@
+ }
+ 
+ static inline int
+-futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -125,17 +116,9 @@ futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/openrisc/include/asm/futex.h b/arch/openrisc/include/asm/futex.h
+index 778087341977..8fed278a24b8 100644
+--- a/arch/openrisc/include/asm/futex.h
++++ b/arch/openrisc/include/asm/futex.h
+@@ -30,20 +30,10 @@
+ })
+ 
+ static inline int
+-futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ 	pagefault_disable();
+ 
+ 	switch (op) {
+@@ -68,30 +58,9 @@ futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ:
+-			ret = (oldval == cmparg);
+-			break;
+-		case FUTEX_OP_CMP_NE:
+-			ret = (oldval != cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LT:
+-			ret = (oldval < cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GE:
+-			ret = (oldval >= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LE:
+-			ret = (oldval <= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GT:
+-			ret = (oldval > cmparg);
+-			break;
+-		default:
+-			ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/parisc/include/asm/futex.h b/arch/parisc/include/asm/futex.h
+index 0ba14300cd8e..c601aab2fb36 100644
+--- a/arch/parisc/include/asm/futex.h
++++ b/arch/parisc/include/asm/futex.h
+@@ -32,22 +32,12 @@ _futex_spin_unlock_irqrestore(u32 __user *uaddr, unsigned long int *flags)
+ }
+ 
+ static inline int
+-futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+ {
+ 	unsigned long int flags;
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval, ret;
+ 	u32 tmp;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(*uaddr)))
+-		return -EFAULT;
+-
+ 	_futex_spin_lock_irqsave(uaddr, &flags);
+ 	pagefault_disable();
+ 
+@@ -85,17 +75,9 @@ futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+ 	pagefault_enable();
+ 	_futex_spin_unlock_irqrestore(uaddr, &flags);
+ 
+-	if (ret == 0) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/powerpc/include/asm/futex.h b/arch/powerpc/include/asm/futex.h
+index eaada6c92344..719ed9b61ea7 100644
+--- a/arch/powerpc/include/asm/futex.h
++++ b/arch/powerpc/include/asm/futex.h
+@@ -29,18 +29,10 @@
+ 	: "b" (uaddr), "i" (-EFAULT), "r" (oparg) \
+ 	: "cr0", "memory")
+ 
+-static inline int futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -66,17 +58,9 @@ static inline int futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/s390/include/asm/futex.h b/arch/s390/include/asm/futex.h
+index a4811aa0304d..8f8eec9e1198 100644
+--- a/arch/s390/include/asm/futex.h
++++ b/arch/s390/include/asm/futex.h
+@@ -21,17 +21,12 @@
+ 		: "0" (-EFAULT), "d" (oparg), "a" (uaddr),		\
+ 		  "m" (*uaddr) : "cc");
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, newval, ret;
+ 
+ 	load_kernel_asce();
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+ 
+ 	pagefault_disable();
+ 	switch (op) {
+@@ -60,17 +55,9 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 	}
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/sh/include/asm/futex.h b/arch/sh/include/asm/futex.h
+index 8e26e0ddc872..38a889edc3a6 100644
+--- a/arch/sh/include/asm/futex.h
++++ b/arch/sh/include/asm/futex.h
+@@ -27,21 +27,12 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 	return atomic_futex_op_cmpxchg_inatomic(uval, uaddr, oldval, newval);
+ }
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	u32 oparg = (encoded_op << 8) >> 20;
+-	u32 cmparg = (encoded_op << 20) >> 20;
+ 	u32 oldval, newval, prev;
+ 	int ret;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ 	pagefault_disable();
+ 
+ 	do {
+@@ -77,17 +68,8 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = ((int)oldval < (int)cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = ((int)oldval >= (int)cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = ((int)oldval <= (int)cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = ((int)oldval > (int)cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
+ 
+ 	return ret;
+ }
+diff --git a/arch/sparc/include/asm/futex_64.h b/arch/sparc/include/asm/futex_64.h
+index 4e899b0dabf7..1cfd89d92208 100644
+--- a/arch/sparc/include/asm/futex_64.h
++++ b/arch/sparc/include/asm/futex_64.h
+@@ -29,22 +29,14 @@
+ 	: "r" (uaddr), "r" (oparg), "i" (-EFAULT)	\
+ 	: "memory")
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret, tem;
+ 
+-	if (unlikely(!access_ok(VERIFY_WRITE, uaddr, sizeof(u32))))
+-		return -EFAULT;
+ 	if (unlikely((((unsigned long) uaddr) & 0x3UL)))
+ 		return -EINVAL;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+ 	pagefault_disable();
+ 
+ 	switch (op) {
+@@ -69,17 +61,9 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/tile/include/asm/futex.h b/arch/tile/include/asm/futex.h
+index e64a1b75fc38..83c1e639b411 100644
+--- a/arch/tile/include/asm/futex.h
++++ b/arch/tile/include/asm/futex.h
+@@ -106,12 +106,9 @@
+ 	lock = __atomic_hashed_lock((int __force *)uaddr)
+ #endif
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int uninitialized_var(val), ret;
+ 
+ 	__futex_prolog();
+@@ -119,12 +116,6 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 	/* The 32-bit futex code makes this assumption, so validate it here. */
+ 	BUILD_BUG_ON(sizeof(atomic_t) != sizeof(int));
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ 	pagefault_disable();
+ 	switch (op) {
+ 	case FUTEX_OP_SET:
+@@ -148,30 +139,9 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 	}
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ:
+-			ret = (val == cmparg);
+-			break;
+-		case FUTEX_OP_CMP_NE:
+-			ret = (val != cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LT:
+-			ret = (val < cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GE:
+-			ret = (val >= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LE:
+-			ret = (val <= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GT:
+-			ret = (val > cmparg);
+-			break;
+-		default:
+-			ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = val;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/x86/include/asm/futex.h b/arch/x86/include/asm/futex.h
+index b4c1f5453436..f4dc9b63bdda 100644
+--- a/arch/x86/include/asm/futex.h
++++ b/arch/x86/include/asm/futex.h
+@@ -41,20 +41,11 @@
+ 		       "+m" (*uaddr), "=&r" (tem)		\
+ 		     : "r" (oparg), "i" (-EFAULT), "1" (0))
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret, tem;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+-
+ 	pagefault_disable();
+ 
+ 	switch (op) {
+@@ -80,30 +71,9 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ:
+-			ret = (oldval == cmparg);
+-			break;
+-		case FUTEX_OP_CMP_NE:
+-			ret = (oldval != cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LT:
+-			ret = (oldval < cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GE:
+-			ret = (oldval >= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_LE:
+-			ret = (oldval <= cmparg);
+-			break;
+-		case FUTEX_OP_CMP_GT:
+-			ret = (oldval > cmparg);
+-			break;
+-		default:
+-			ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/xtensa/include/asm/futex.h b/arch/xtensa/include/asm/futex.h
+index b39531babec0..eaaf1ebcc7a4 100644
+--- a/arch/xtensa/include/asm/futex.h
++++ b/arch/xtensa/include/asm/futex.h
+@@ -44,18 +44,10 @@
+ 	: "r" (uaddr), "I" (-EFAULT), "r" (oparg)	\
+ 	: "memory")
+ 
+-static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
++		u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ #if !XCHAL_HAVE_S32C1I
+ 	return -ENOSYS;
+@@ -89,19 +81,10 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (ret)
+-		return ret;
++	if (!ret)
++		*oval = oldval;
+ 
+-	switch (cmp) {
+-	case FUTEX_OP_CMP_EQ: return (oldval == cmparg);
+-	case FUTEX_OP_CMP_NE: return (oldval != cmparg);
+-	case FUTEX_OP_CMP_LT: return (oldval < cmparg);
+-	case FUTEX_OP_CMP_GE: return (oldval >= cmparg);
+-	case FUTEX_OP_CMP_LE: return (oldval <= cmparg);
+-	case FUTEX_OP_CMP_GT: return (oldval > cmparg);
+-	}
+-
+-	return -ENOSYS;
++	return ret;
+ }
+ 
+ static inline int
+diff --git a/include/asm-generic/futex.h b/include/asm-generic/futex.h
+index bf2d34c9d804..f0d8b1c51343 100644
+--- a/include/asm-generic/futex.h
++++ b/include/asm-generic/futex.h
+@@ -13,7 +13,7 @@
+  */
+ 
+ /**
+- * futex_atomic_op_inuser() - Atomic arithmetic operation with constant
++ * arch_futex_atomic_op_inuser() - Atomic arithmetic operation with constant
+  *			  argument and comparison of the previous
+  *			  futex value with another constant.
+  *
+@@ -25,18 +25,11 @@
+  * <0 - On error
+  */
+ static inline int
+-futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval, ret;
+ 	u32 tmp;
+ 
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+ 	preempt_disable();
+ 	pagefault_disable();
+ 
+@@ -74,17 +67,9 @@ futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+ 	pagefault_enable();
+ 	preempt_enable();
+ 
+-	if (ret == 0) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (ret == 0)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+@@ -126,18 +111,9 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 
+ #else
+ static inline int
+-futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
++arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval, u32 __user *uaddr)
+ {
+-	int op = (encoded_op >> 28) & 7;
+-	int cmp = (encoded_op >> 24) & 15;
+-	int oparg = (encoded_op << 8) >> 20;
+-	int cmparg = (encoded_op << 20) >> 20;
+ 	int oldval = 0, ret;
+-	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+-		oparg = 1 << oparg;
+-
+-	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
+-		return -EFAULT;
+ 
+ 	pagefault_disable();
+ 
+@@ -153,17 +129,9 @@ futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+ 
+ 	pagefault_enable();
+ 
+-	if (!ret) {
+-		switch (cmp) {
+-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+-		default: ret = -ENOSYS;
+-		}
+-	}
++	if (!ret)
++		*oval = oldval;
++
+ 	return ret;
+ }
+ 
+diff --git a/kernel/futex.c b/kernel/futex.c
+index b8ae87d227da..0b6e298d1e4c 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -1546,6 +1546,42 @@ futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
+ 	return ret;
+ }
+ 
++static int futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
++{
++	int op = (encoded_op >> 28) & 7;
++	int cmp = (encoded_op >> 24) & 15;
++	int oparg = (int)(encoded_op << 8) >> 20;
++	int cmparg = (int)(encoded_op << 20) >> 20;
++	int oldval, ret;
++
++	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
++		oparg = 1U << (oparg & 0x1f);
++
++	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
++		return -EFAULT;
++
++	ret = arch_futex_atomic_op_inuser(op, oparg, &oldval, uaddr);
++	if (ret)
++		return ret;
++
++	switch (cmp) {
++	case FUTEX_OP_CMP_EQ:
++		return oldval == cmparg;
++	case FUTEX_OP_CMP_NE:
++		return oldval != cmparg;
++	case FUTEX_OP_CMP_LT:
++		return oldval < cmparg;
++	case FUTEX_OP_CMP_GE:
++		return oldval >= cmparg;
++	case FUTEX_OP_CMP_LE:
++		return oldval <= cmparg;
++	case FUTEX_OP_CMP_GT:
++		return oldval > cmparg;
++	default:
++		return -ENOSYS;
++	}
++}
++
+ /*
+  * Wake up all waiters hashed on the physical page that is mapped
+  * to this virtual address:
+-- 
+2.13.1

@@ -1,67 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2017 19:49:29 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:38472 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993870AbdFURtSv2CFs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jun 2017 19:49:18 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 12FFF60A4F; Wed, 21 Jun 2017 17:49:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1498067357;
-        bh=O4RVu9AKpjlW0Cj9JoFKb6Y5biN7GJ6kSVGKxd5wvJ0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CL9zdy3/C3KDoq4cchuQgbwoKCFwW5mzHV+cKy1iDP+UrDvmZqkMMxoVH17AJ3SQl
-         uVp32EHDac/CcuzDD3jrSKcH1FnKAKobeeF0npGP1YByiAi2OWDnQwn0FUEFjaFiNC
-         dOjBU/kFckId3DhBy7XFiqTxmSc9dOuV5pA0j4TY=
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1913260854;
-        Wed, 21 Jun 2017 17:49:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1498067355;
-        bh=O4RVu9AKpjlW0Cj9JoFKb6Y5biN7GJ6kSVGKxd5wvJ0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Aal1/BcDm1RGw5XhXZqWTXdzrCSVYM7KQov2GRYSN9DJkEX8ClELLfEFUO0wfV/E0
-         zkGKmONJ/wjmWCBv2ptWrBt/kwcZ+4OVDgavij1Dbbtmv/Qs3uRWF9aVAyPbqBeXoE
-         5H7ocgQFc411aPVKc/dmZfqTDPhJoCl3wz4nfuf8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1913260854
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
-Date:   Wed, 21 Jun 2017 10:49:14 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Binbin Zhou <zhoubb@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Yang Ling <gnaygnil@gmail.com>,
-        =?utf-8?B?6LCi6Ie06YKm?= <Yeking@Red54.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        HuaCai Chen <chenhc@lemote.com>
-Subject: Re: [PATCH v8 8/9] clk: Loongson: Add Loongson-1A clock support
-Message-ID: <20170621174914.GE4493@codeaurora.org>
-References: <1497949027-10988-1-git-send-email-zhoubb@lemote.com>
- <1497949027-10988-9-git-send-email-zhoubb@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2017 21:24:58 +0200 (CEST)
+Received: from userp1040.oracle.com ([156.151.31.81]:40539 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993879AbdFUTYvDABXb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jun 2017 21:24:51 +0200
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id v5LJObIl016994
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Jun 2017 19:24:37 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userv0021.oracle.com (8.14.4/8.14.4) with ESMTP id v5LJOZZL015528
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Wed, 21 Jun 2017 19:24:35 GMT
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id v5LJOTd2019196;
+        Wed, 21 Jun 2017 19:24:31 GMT
+Received: from [10.159.250.9] (/10.159.250.9)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 21 Jun 2017 12:24:29 -0700
+Subject: Re: clean up and modularize arch dma_mapping interface V2
+To:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+References: <20170616181059.19206-1-hch@lst.de>
+From:   tndave <tushar.n.dave@oracle.com>
+Message-ID: <162d7932-5766-4c29-5471-07d1b699190a@oracle.com>
+Date:   Wed, 21 Jun 2017 12:24:28 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1497949027-10988-9-git-send-email-zhoubb@lemote.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sboyd@codeaurora.org>
+In-Reply-To: <20170616181059.19206-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
+Return-Path: <tushar.n.dave@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58736
+X-archive-position: 58737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: tushar.n.dave@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,21 +63,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/20, Binbin Zhou wrote:
-> This patch adds clock support to Loongson-1A SoC.
-> 
-> Unfortunately, The Loongson-1A's PLL register is written only,
-> so we just set it with a fixed value.
-> 
-> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
-> Signed-off-by: HuaCai Chen <chenhc@lemote.com>
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Stephen Boyd <sboyd@codeaurora.org>
-> Cc: linux-clk@vger.kernel.org
-> ---
 
-Acked-by: Stephen Boyd <sboyd@codeaurora.org>
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+On 06/16/2017 11:10 AM, Christoph Hellwig wrote:
+> Hi all,
+> 
+> for a while we have a generic implementation of the dma mapping routines
+> that call into per-arch or per-device operations.  But right now there
+> still are various bits in the interfaces where don't clearly operate
+> on these ops.  This series tries to clean up a lot of those (but not all
+> yet, but the series is big enough).  It gets rid of the DMA_ERROR_CODE
+> way of signaling failures of the mapping routines from the
+> implementations to the generic code (and cleans up various drivers that
+> were incorrectly using it), and gets rid of the ->set_dma_mask routine
+> in favor of relying on the ->dma_capable method that can be used in
+> the same way, but which requires less code duplication.
+Chris,
+
+Thanks for doing this.
+So archs can still have their own definition for dma_set_mask() if 
+HAVE_ARCH_DMA_SET_MASK is y?
+(and similarly for dma_set_coherent_mask() when 
+CONFIG_ARCH_HAS_DMA_SET_COHERENT_MASK is y)
+Any plan to change these?
+
+I'm in a process of making some changes to SPARC iommu so it would be 
+good to know. Thanks.
+
+-Tushar
+
+> 
+> I've got a good number of reviews last time, but a few are still missing.
+> I'd love to not have to re-spam everyone with this patchbomb, so early
+> ACKs (or complaints) are welcome.
+> 
+> I plan to create a new dma-mapping tree to collect all this work.
+> Any volunteers for co-maintainers, especially from the iommu gang?
+> 
+> The whole series is also available in git:
+> 
+>      git://git.infradead.org/users/hch/misc.git dma-map
+> 
+> Gitweb:
+> 
+>      http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-map
+> 
+> Changes since V1:
+>   - remove two lines of code from arm dmabounce
+>   - a few commit message tweaks
+>   - lots of ACKs
+> 

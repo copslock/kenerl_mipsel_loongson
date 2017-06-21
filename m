@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2017 08:52:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32729 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2017 09:03:44 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64524 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990522AbdFUGwnZ1qXY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jun 2017 08:52:43 +0200
+        with ESMTP id S23990506AbdFUHDhqH1KY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Jun 2017 09:03:37 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 17D57C1EE9092;
-        Wed, 21 Jun 2017 07:52:35 +0100 (IST)
-Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 21 Jun
- 2017 07:52:36 +0100
-Subject: Re: [PATCH] Partially revert "MIPS: Remove old core dump functions"
-To:     <minyard@acm.org>, Ralf Baechle <ralf@linux-mips.org>,
-        Alex Smith <alex@alex-smith.me.uk>
-CC:     <linux-mips@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        Corey Minyard <cminyard@mvista.com>
-References: <1497991165-31361-1-git-send-email-minyard@acm.org>
+        by Forcepoint Email with ESMTPS id D7340C501165F;
+        Wed, 21 Jun 2017 08:03:29 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 21 Jun 2017 08:03:31 +0100
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <e21ffb18-e44d-4e8a-f9ec-8dd042b68edc@imgtec.com>
-Date:   Wed, 21 Jun 2017 08:52:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Meyer <thomas@m3y3r.de>, Ingo Molnar <mingo@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH] kernel/extable.c: mark core_kernel_text notrace
+Date:   Wed, 21 Jun 2017 09:03:26 +0200
+Message-ID: <1498028607-6765-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <1497991165-31361-1-git-send-email-minyard@acm.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [10.80.2.5]
 Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58731
+X-archive-position: 58732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,83 +49,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Corey,
+core_kernel_text is used by MIPS in its function graph trace processing,
+so having this method traced leads to an infinite set of recursive calls
+such as:
 
-On 20.06.2017 22:39, minyard@acm.org wrote:
-> From: Corey Minyard <cminyard@mvista.com>
-> 
-> This reverts part of commit 30852ad0039b4a54b5062efd66877125e519dc30,
-> which removed some ELF coredump functions from MIPS.  They are no
-> longer needed for normal coredumps, but they are still needed for
-> kdump.  The kernel crashes when doing a kdump shutdown because
-> elf_core_copy_kernel_regs() needs a MIPS-specific version and the
-> reverted commit removes it.
-> 
-> This change adds back in ELF_CORE_COPY_REGS() and the required
-> support for it.
+[    2.972075] Call Trace:
+[    2.972111]
+[    2.976731] [<80506584>] ftrace_return_to_handler+0x50/0x128
+[    2.983379] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    2.989146] [<804119b8>] prepare_ftrace_return+0x6c/0x114
+[    2.995402] [<80411b2c>] ftrace_graph_caller+0x20/0x44
+[    3.001362] [<80411b60>] return_to_handler+0x10/0x30
+[    3.007159] [<80411b50>] return_to_handler+0x0/0x30
+[    3.012827] [<80411b50>] return_to_handler+0x0/0x30
+[    3.018621] [<804e589c>] ftrace_ops_no_ops+0x114/0x1bc
+[    3.024602] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.030377] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.036140] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.041915] [<804e589c>] ftrace_ops_no_ops+0x114/0x1bc
+[    3.047923] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.053682] [<804119b8>] prepare_ftrace_return+0x6c/0x114
+[    3.059938] [<80411b2c>] ftrace_graph_caller+0x20/0x44
+(...)
 
+Mark the function notrace to avoid it being traced.
 
-A similar fix has been merged some time ago already:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=39a3cb27c123df8e8461291cc9e86f1ac3f0ea06
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+---
+ kernel/extable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Marcin
-
-
-> Signed-off-by: Corey Minyard <cminyard@mvista.com>
-> ---
->   arch/mips/include/asm/elf.h |  7 +++++++
->   arch/mips/kernel/process.c  | 22 ++++++++++++++++++++++
->   2 files changed, 29 insertions(+)
-> 
-> diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-> index 2b3dc29..600db7b 100644
-> --- a/arch/mips/include/asm/elf.h
-> +++ b/arch/mips/include/asm/elf.h
-> @@ -414,6 +414,13 @@ do {									\
->   
->   #endif /* CONFIG_64BIT */
->   
-> +struct pt_regs;
-> +
-> +extern void elf_dump_regs(elf_greg_t *, struct pt_regs *regs);
-> +
-> +#define ELF_CORE_COPY_REGS(elf_regs, regs)                     \
-> +       elf_dump_regs((elf_greg_t *)&(elf_regs), regs);
-> +
->   #define CORE_DUMP_USE_REGSET
->   #define ELF_EXEC_PAGESIZE	PAGE_SIZE
->   
-> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-> index fbbf5fc..0d63aa1 100644
-> --- a/arch/mips/kernel/process.c
-> +++ b/arch/mips/kernel/process.c
-> @@ -180,6 +180,28 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
->   	return 0;
->   }
->   
-> +void elf_dump_regs(elf_greg_t *gp, struct pt_regs *regs)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < EF_R0; i++)
-> +		gp[i] = 0;
-> +	gp[EF_R0] = 0;
-> +	for (i = 1; i <= 31; i++)
-> +		gp[EF_R0 + i] = regs->regs[i];
-> +	gp[EF_R26] = 0;
-> +	gp[EF_R27] = 0;
-> +	gp[EF_LO] = regs->lo;
-> +	gp[EF_HI] = regs->hi;
-> +	gp[EF_CP0_EPC] = regs->cp0_epc;
-> +	gp[EF_CP0_BADVADDR] = regs->cp0_badvaddr;
-> +	gp[EF_CP0_STATUS] = regs->cp0_status;
-> +	gp[EF_CP0_CAUSE] = regs->cp0_cause;
-> +#ifdef EF_UNUSED0
-> +	gp[EF_UNUSED0] = 0;
-> +#endif
-> +}
-> +
->   #ifdef CONFIG_CC_STACKPROTECTOR
->   #include <linux/stackprotector.h>
->   unsigned long __stack_chk_guard __read_mostly;
-> 
+diff --git a/kernel/extable.c b/kernel/extable.c
+index 2676d7f..4efaf26 100644
+--- a/kernel/extable.c
++++ b/kernel/extable.c
+@@ -70,7 +70,7 @@ static inline int init_kernel_text(unsigned long addr)
+ 	return 0;
+ }
+ 
+-int core_kernel_text(unsigned long addr)
++int notrace core_kernel_text(unsigned long addr)
+ {
+ 	if (addr >= (unsigned long)_stext &&
+ 	    addr < (unsigned long)_etext)
+-- 
+2.7.4

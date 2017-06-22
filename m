@@ -1,62 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jun 2017 23:53:22 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:36065 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2017 00:11:02 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:49318 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991978AbdFVVxPpDnDa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Jun 2017 23:53:15 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        id S23992186AbdFVWKz3nata (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Jun 2017 00:10:55 +0200
+Received: from gandalf.local.home (cpe-67-246-153-56.stny.res.rr.com [67.246.153.56])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 3wtwLY732Hz9s9Y;
-        Fri, 23 Jun 2017 07:53:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1498168390;
-        bh=ywXrzY6bUrluSNE/4Wv2oLZ9q/yfzIcJiVfp+kW3Bm8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K2q1nx3zGvlp4s3hl4RWhsuaNhYeX31vFbRXw6OKYj2ZN3QQbrt6t/Ia2EqJupiTO
-         Utfw2kM6UlkFT1KXUS8E7ZWJwo1qAJXpLyDrA2VeFDXmRGf68mBhIANbLRO9/wQ3yk
-         zClY5fQILPDASsPz0cj5eq7zRxPOvyxFcWYVbrs+CVWcru9VOrAR3wRqqD9/JcztRD
-         /h/2octFNxg1tv0b6c+fM+giJ+nswmuvtMeI4dzkD+zlcPbZXreoTQwJSiVw9cYU6l
-         3qf7domfYqdqP5P2p3cLgGAlgPJkxW9zAmq20eAzQmE8Qza6HSJUvpC1fvM9m+rdNW
-         MnzL5eFfA25lw==
-Date:   Fri, 23 Jun 2017 07:53:09 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>
-Subject: Re: new dma-mapping tree, was Re: clean up and modularize arch
- dma_mapping interface V2
-Message-ID: <20170623075309.1e679168@canb.auug.org.au>
-In-Reply-To: <5425587c-73e8-e24a-86a3-8a65a7791dcb@samsung.com>
-References: <20170616181059.19206-1-hch@lst.de>
-        <20170620124140.GA27163@lst.de>
-        <20170620230400.1a5ae889@canb.auug.org.au>
-        <CGME20170620131628epcas1p4f21d821bd414cba7e2d49abcbe414365@epcas1p4.samsung.com>
-        <20170620131623.GB30769@lst.de>
-        <5425587c-73e8-e24a-86a3-8a65a7791dcb@samsung.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 73EC32170D;
+        Thu, 22 Jun 2017 22:10:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 73EC32170D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=rostedt@goodmis.org
+Date:   Thu, 22 Jun 2017 18:10:50 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Meyer <thomas@m3y3r.de>, Ingo Molnar <mingo@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] kernel/extable.c: mark core_kernel_text notrace
+Message-ID: <20170622181050.220c23a3@gandalf.local.home>
+In-Reply-To: <1498028607-6765-1-git-send-email-marcin.nowakowski@imgtec.com>
+References: <1498028607-6765-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sfr@canb.auug.org.au>
+Return-Path: <SRS0=sOnO=53=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58758
+X-archive-position: 58759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,32 +51,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+On Wed, 21 Jun 2017 09:03:26 +0200
+Marcin Nowakowski <marcin.nowakowski@imgtec.com> wrote:
 
-On Wed, 21 Jun 2017 15:32:39 +0200 Marek Szyprowski <m.szyprowski@samsung.com> wrote:
->
-> On 2017-06-20 15:16, Christoph Hellwig wrote:
-> > On Tue, Jun 20, 2017 at 11:04:00PM +1000, Stephen Rothwell wrote:  
-> >> git://git.linaro.org/people/mszyprowski/linux-dma-mapping.git#dma-mapping-next
-> >>
-> >> Contacts: Marek Szyprowski and Kyungmin Park (cc'd)
-> >>
-> >> I have called your tree dma-mapping-hch for now.  The other tree has
-> >> not been updated since 4.9-rc1 and I am not sure how general it is.
-> >> Marek, Kyungmin, any comments?  
-> > I'd be happy to join efforts - co-maintainers and reviers are always
-> > welcome.  
+> core_kernel_text is used by MIPS in its function graph trace processing,
+> so having this method traced leads to an infinite set of recursive calls
+> such as:
 > 
-> I did some dma-mapping unification works in the past and my tree in 
-> linux-next
-> was a side effect of that. I think that for now it can be dropped in 
-> favor of
-> Christoph's tree. I can also do some review and help in maintainers work if
-> needed, although I was recently busy with other stuff.
+> [    2.972075] Call Trace:
+> [    2.972111]
+> [    2.976731] [<80506584>] ftrace_return_to_handler+0x50/0x128
+> [    2.983379] [<8045478c>] core_kernel_text+0x10/0x1b8
+> [    2.989146] [<804119b8>] prepare_ftrace_return+0x6c/0x114
+> [    2.995402] [<80411b2c>] ftrace_graph_caller+0x20/0x44
+> [    3.001362] [<80411b60>] return_to_handler+0x10/0x30
+> [    3.007159] [<80411b50>] return_to_handler+0x0/0x30
+> [    3.012827] [<80411b50>] return_to_handler+0x0/0x30
+> [    3.018621] [<804e589c>] ftrace_ops_no_ops+0x114/0x1bc
+> [    3.024602] [<8045478c>] core_kernel_text+0x10/0x1b8
+> [    3.030377] [<8045478c>] core_kernel_text+0x10/0x1b8
+> [    3.036140] [<8045478c>] core_kernel_text+0x10/0x1b8
+> [    3.041915] [<804e589c>] ftrace_ops_no_ops+0x114/0x1bc
+> [    3.047923] [<8045478c>] core_kernel_text+0x10/0x1b8
+> [    3.053682] [<804119b8>] prepare_ftrace_return+0x6c/0x114
+> [    3.059938] [<80411b2c>] ftrace_graph_caller+0x20/0x44
+> (...)
+> 
+> Mark the function notrace to avoid it being traced.
+> 
+> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+> ---
+>  kernel/extable.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/extable.c b/kernel/extable.c
+> index 2676d7f..4efaf26 100644
+> --- a/kernel/extable.c
+> +++ b/kernel/extable.c
+> @@ -70,7 +70,7 @@ static inline int init_kernel_text(unsigned long addr)
+>  	return 0;
+>  }
+>  
+> -int core_kernel_text(unsigned long addr)
+> +int notrace core_kernel_text(unsigned long addr)
 
-OK, so I have dropped the dma-mapping tree and renamed dma-mapping-hch
-to dma-mapping.
+Is mips the only one with this issue. I hate adding notrace to general
+functions if it is only an issue with a single arch.
 
--- 
-Cheers,
-Stephen Rothwell
+Can we add a: mips_notrace? where we have:
+
+#ifdef CONFIG_MIPS
+# define mips_notrace notrace
+#else 
+# define mips_notrace
+#endif
+
+??
+
+-- Steve
+
+
+>  {
+>  	if (addr >= (unsigned long)_stext &&
+>  	    addr < (unsigned long)_etext)

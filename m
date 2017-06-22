@@ -1,76 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jun 2017 05:54:17 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:60832 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991111AbdFVDyIc6dP0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jun 2017 05:54:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=b05FC68tubOZn95RCJNLkD2h2DMt0SqBIzgdXq6zJ60=; b=TakSec7YKcm35aTQWkjREqxwu
-        YoK+JVYXCVeVCNgYo1Y4jr/mwaz5a2zFgBggLnrRlC6hqUOZEFNGzzCiVbtRugsJfT+R2n/o+ahQL
-        bOlsBtHmJm3L5wP3kkI2NQiYxfss983jWnTMOqyTq0pyXoUog+l+aOMRrryaYmX9VhnLBFjM00iyk
-        DAUXo42Rtgy6xWdR6cf81o1iSJRiSZkgzgwqrL2fvuyn1jguqblpYFjaIg+mWWtTNCOASxK+JDBuD
-        k/1aSMtznUMj5ZacMEPC8U1vecoA8hnbISYh/Z6ZI7cwkShq4b1kQMDIY5TwgYA08xAKVAOk2/HOx
-        uZLyDQ1/Q==;
-Received: from dvhart by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1dNtBb-0006Dy-65; Thu, 22 Jun 2017 03:53:39 +0000
-Date:   Wed, 21 Jun 2017 20:53:37 -0700
-From:   Darren Hart <dvhart@infradead.org>
-To:     Jiri Slaby <jslaby@suse.cz>
-Cc:     tglx@linutronix.de, mingo@redhat.com, peterz@infradead.org,
-        linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jun 2017 09:21:16 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43724 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990519AbdFVHVKIBAki (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jun 2017 09:21:10 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 8F8F539930753;
+        Thu, 22 Jun 2017 08:21:00 +0100 (IST)
+Received: from [10.80.2.5] (10.80.2.5) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 22 Jun
+ 2017 08:21:03 +0100
+Subject: Re: [PATCH v2 15/17] MIPS: JZ4770: Workaround for corrupted DMA
+ transfers
+To:     Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/1] futex: remove duplicated code and fix UB
-Message-ID: <20170622035337.GF25900@fury>
-References: <20170621115318.2781-1-jslaby@suse.cz>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux-clk@vger.kernel.org>
+References: <20170607200439.24450-2-paul@crapouillou.net>
+ <20170620151855.19399-1-paul@crapouillou.net>
+ <20170620151855.19399-15-paul@crapouillou.net>
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Message-ID: <ca37b50d-951c-2264-fa37-cca7149ed4ba@imgtec.com>
+Date:   Thu, 22 Jun 2017 09:21:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170621115318.2781-1-jslaby@suse.cz>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <dvhart@infradead.org>
+In-Reply-To: <20170620151855.19399-15-paul@crapouillou.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58739
+X-archive-position: 58740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvhart@infradead.org
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,30 +55,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 21, 2017 at 01:53:18PM +0200, Jiri Slaby wrote:
-> There is code duplicated over all architecture's headers for
-> futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
-> and comparison of the result.
+Hi Paul, Maarten,
+
+On 20.06.2017 17:18, Paul Cercueil wrote:
+> From: Maarten ter Huurne <maarten@treewalker.org>
 > 
-> Remove this duplication and leave up to the arches only the needed
-> assembly which is now in arch_futex_atomic_op_inuser.
+> We have seen MMC DMA transfers read corrupted data from SDRAM when
+> a burst interval ends at physical address 0x10000000. To avoid this
+> problem, we remove the final page of low memory from the memory map.
 > 
-> This effectively distributes the Will Deacon's arm64 fix for undefined
-> behaviour reported by UBSAN to all architectures. The fix was done in
-> commit 5f16a046f8e1 (arm64: futex: Fix undefined behaviour with
-> FUTEX_OP_OPARG_SHIFT usage).  Look there for an example dump.
+> Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+> ---
+>   arch/mips/jz4740/setup.c | 24 ++++++++++++++++++++++++
+>   arch/mips/kernel/setup.c |  8 ++++++++
+>   2 files changed, 32 insertions(+)
 > 
-> Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
-> remove pointless access_ok() checks") as access_ok there returns true.
-> We introduce it back to the helper for the sake of simplicity (it gets
-> optimized away anyway).
+>   v2: No change
+> 
+> diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+> index afd84ee966e8..6948b133a15d 100644
+> --- a/arch/mips/jz4740/setup.c
+> +++ b/arch/mips/jz4740/setup.c
+> @@ -23,6 +23,7 @@
+>   
+>   #include <asm/bootinfo.h>
+>   #include <asm/mips_machine.h>
+> +#include <asm/page.h>
+>   #include <asm/prom.h>
+>   
+>   #include <asm/mach-jz4740/base.h>
+> @@ -102,6 +103,29 @@ void __init arch_init_irq(void)
+>   	irqchip_init();
+>   }
+>   
+> +/*
+> + * We have seen MMC DMA transfers read corrupted data from SDRAM when a burst
+> + * interval ends at physical address 0x10000000. To avoid this problem, we
+> + * remove the final page of low memory from the memory map.
+> + */
+> +void __init jz4770_reserve_unsafe_for_dma(void)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < boot_mem_map.nr_map; i++) {
+> +		struct boot_mem_map_entry *entry = boot_mem_map.map + i;
+> +
+> +		if (entry->type != BOOT_MEM_RAM)
+> +			continue;
+> +
+> +		if (entry->addr + entry->size != 0x10000000)
+> +			continue;
+> +
+> +		entry->size -= PAGE_SIZE;
+> +		break;
+> +	}
+> +}
+> +
+>   static int __init jz4740_machine_setup(void)
+>   {
+>   	mips_machine_setup();
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 89785600fde4..cccfd7ba89fe 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -838,6 +838,14 @@ static void __init arch_mem_init(char **cmdline_p)
+>   
+>   	parse_early_param();
+>   
+> +#ifdef CONFIG_MACH_JZ4770
+> +	if (current_cpu_type() == CPU_JZRISC &&
+> +				mips_machtype == MACH_INGENIC_JZ4770) {
+> +		extern void __init jz4770_reserve_unsafe_for_dma(void);
+> +		jz4770_reserve_unsafe_for_dma();
+> +	}
+> +#endif
+> +
+
+This part doesn't look good in the platform-agnostic code ... is there a 
+reason why you wouldn't do that from within plat_mem_setup()?
+
+
+>   	if (usermem) {
+>   		pr_info("User-defined physical RAM map:\n");
+>   		print_memory_map();
 > 
 
-This required a minor manual merge for ARM on the tip of Linus' tree today. The
-reduced duplication is a welcome improvement.
 
-Reviewed-by: Darren Hart (VMware) <dvhart@infradead.org>
-
--- 
-Darren Hart
-VMware Open Source Technology Center
+Marcin

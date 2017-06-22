@@ -1,33 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jun 2017 21:32:44 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:47297 "EHLO mail.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991672AbdFVTchYI5Vk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Jun 2017 21:32:37 +0200
-Received: from [192.168.10.172] (p57978943.dip0.t-ipconnect.de [87.151.137.67])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 4210B1001DD;
-        Thu, 22 Jun 2017 21:32:34 +0200 (CEST)
-Subject: Re: clock_gettime() may return timestamps out of order
-To:     Rene Nielsen <rene.nielsen@microsemi.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-References: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <1bd4bad1-5574-7b76-0cd7-d0334c08667f@hauke-m.de>
-Date:   Thu, 22 Jun 2017 21:32:33 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jun 2017 22:57:09 +0200 (CEST)
+Received: from mail-yb0-f195.google.com ([209.85.213.195]:33320 "EHLO
+        mail-yb0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991957AbdFVU5CgIqtg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Jun 2017 22:57:02 +0200
+Received: by mail-yb0-f195.google.com with SMTP id 84so1331150ybe.0;
+        Thu, 22 Jun 2017 13:57:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Z0SARoKHoMclC31zITIqtV+Bzvp8RLwz8TSW9EvIZ8w=;
+        b=mPvXD+PaiaD5cKLO41Ljw3ULjN7QSSXKhUQ8AkxNsEj24ud4egLfAIwdZvwFLZ3gq4
+         Eai9jpMy4aZfkRcUTvCGQTClAlkriXSrhbF+cZn3odbCVmcz980BcgCYUGN5Ob5G3KYi
+         HzyhC+w0mGNZBa4ovU/aEl2NOAw8fX00KTRskRwssnoWPE/5ciMYtex29R6l6C7W7ucm
+         JLpaEhtEBGU/swXD19Ej54zwM2T38sz4r1j8WmASlpx9VuE9cSN0aHRHZdsVOEtDbuFH
+         qHqdmcF0sYXdUpMgUN3ZuCHtSqR8My11Xf6Vs2uxkZ7x3iLwewM6wN2wwyHnHfac7BKN
+         Bfnw==
+X-Gm-Message-State: AKS2vOyh+FqHYJgVkrnaeP3zAikMZg6NX2OKdJTb9Jv1v7+9/46DkPMq
+        VQMTC+HyX1owXQ==
+X-Received: by 10.37.175.75 with SMTP id c11mr3374698ybj.47.1498165016629;
+        Thu, 22 Jun 2017 13:56:56 -0700 (PDT)
+Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
+        by smtp.gmail.com with ESMTPSA id p68sm990256ywd.52.2017.06.22.13.56.55
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 22 Jun 2017 13:56:56 -0700 (PDT)
+Date:   Thu, 22 Jun 2017 15:56:55 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        devicetree@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH v5 1/4] dt-bindings: Document img,boston-clock binding
+Message-ID: <20170622205655.2sp2v3hva3jtsuay@rob-hp-laptop>
+References: <20170617205249.1391-1-paul.burton@imgtec.com>
+ <20170617205249.1391-2-paul.burton@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170617205249.1391-2-paul.burton@imgtec.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58755
+X-archive-position: 58756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,62 +62,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/21/2017 10:14 AM, Rene Nielsen wrote:
-> Hi folks,
+On Sat, Jun 17, 2017 at 01:52:46PM -0700, Paul Burton wrote:
+> Add device tree binding documentation for the clocks provided by the
+> MIPS Boston development board from Imagination Technologies, and a
+> header file describing the available clocks for use by device trees &
+> driver.
 > 
-> Let me go straight into the problem:
-> We have a multi-threaded application that runs on a MIPS 24KEc using glibc v.
-> 2.24 under kernel v. 4.9.29 both compiled with gcc v. 6.3.0.
-> Our 24KEc has a 4-way 32 KBytes dcache (and similar icache), so it's prone to cache
-> aliasing (don't know if this matters...).
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Stephen Boyd <sboyd@codeaurora.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
 > 
-> We want to be able to do stack backtraces from a signal handler in case our
-> application makes a glibc call that results in an assert(). The stack
-> backtracing is made within the signal handler with calls to _Unwind_Backtrace().
-> With the default set of glibc compiler flags, we can't trace through signal
-> handlers. Not so long ago, we used uclibc rather than glibc, and experienced the
-> same problem, but we got it to work by enabling the
-> '-fasynchronous-unwind-tables' gcc flag during compilation of uclibc.
-> Using the same flag during compilation of glibc causes unexpected runtime
-> problems:
+> ---
 > 
-> Many of the threads in our application call clock_gettime(CLOCK_MONOTONIC) many
-> times per second, so we greatly appreciate the existence and utilization of the
-> VDSO.
-> 
-> Occassionally, however, clock_gettime(CLOCK_MONOTONIC) returns timestamps out of
-> order on the same thread. It's not that the returned timestamps seem wrong (they
-> are mostly off by some hundred microseconds), but they simply appear out of
-> order.
-> 
-> Since glibc utilizes VDSO (and uclibc doesn't), my guess is that there's
-> something wrong in the interface between the two, but I can't figure out what.
-> Other glibc calls seem OK (I don't know whether there's a problem with the other
-> VDSO function, gettimeofday(), though). If not compiled with the infamous flag,
-> we don't see this problem.
-> 
-> I have tried with a single-threaded test-app, but haven't been able to
-> reproduce.
-> 
-> Any help is highly appreciated. Don't hesitate to asking questions, if needed.
-> 
-> Thank you very much in advance,
-> Best regards,
-> René Nielsen
+> Changes in v5: None
 
+I reviewed v4. Please add acks/reviewed-by when posting new versions.
 
-Hi Rene
-
-I had a problem with the clock_gettime() call over VDSO on a MIPS BE
-34Kc CPU, see this:
-https://www.linux-mips.org/archives/linux-mips/2016-01/msg00727.html
-It was sometimes off by 1 second.
-
-It is gone in the current version of LEDE (former OpenWrt), but when I
-used git bisect to find the place where it was fixed, I found a place
-which has nothing to do with MIPS internal or libc stuff.
-
-Makeing some pages uncached or flushing them help, but caused
-performance problems, I have never found the root cause of the problem.
-
-Hauke
+> 
+> Changes in v4:
+> - Move img,boston-clock node under platform register syscon node.
+> - Add MAINTAINERS entry.
+> 
+> Changes in v3: None
+> 
+> Changes in v2:
+> - Add BOSTON_CLK_INPUT to expose the input clock.
+> 
+>  .../devicetree/bindings/clock/img,boston-clock.txt | 31 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  7 +++++
+>  include/dt-bindings/clock/boston-clock.h           | 14 ++++++++++
+>  3 files changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/img,boston-clock.txt
+>  create mode 100644 include/dt-bindings/clock/boston-clock.h

@@ -1,59 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2017 23:52:28 +0200 (CEST)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:36760
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993869AbdFWVwWV1Gx- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2017 23:52:22 +0200
-Received: by mail-wr0-x241.google.com with SMTP id 77so15515388wrb.3;
-        Fri, 23 Jun 2017 14:52:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=+RXVjPIsqgmCOaHCcVSwih/yB0O8hlrdJPzXbUNO+oA=;
-        b=vRvguOqxL068Uuy7+CjxwRB4LwKrMM4VbVuMJvzLHfUX2Hc1kNTkPj0DUSLV+MlrJV
-         QL6pUhOxy+4+/p17XYyaNvpQJt3fF/9Bd3iQYUZ070cuSoIUY+Cf/uzg07Bc5Bs9LFpy
-         mEkKD2CcdL4+Oz6nvvuD9isqTi9EHQtBstwXYzbLvoeX31AFieBf+j1IeHN5efOn2W20
-         rGcDYVsEjdT5sYmbwUt+Yh3a0KcF7xJUpav5n6GLQFqYU7OqwDjnQvbPhSgbKGExQ7WO
-         koSMV2L7va6c6ZoTGX7BNjPK9JHUnZwznZjteauARek8KTHjGu+9tLLPAW+l08UOXlE4
-         gbpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=+RXVjPIsqgmCOaHCcVSwih/yB0O8hlrdJPzXbUNO+oA=;
-        b=hAeqsjXdrn88SgkPT3RDr+qiRbXqKDROqHugFGZtQWHZ/f2vPqPZ+t2FwBQFnZVtOB
-         Szm60SHIfKGl8XwUU7yzp6Snn96nZxmahszrVpn8ziol2/legJN6Hg3NsKXBMDGWUx2n
-         5SIM2uYcARb9NFqCLz/aF3h87QyoIM6fB+i4rYmciVeIi+ZNamKEXFc491Jl9kHLYm0U
-         dd+S1Qv2DbO8LqZfd4ogYBKeuse4hVeE+5yjXCvuf2JztuvMXnt/NoOkVCUHatFg1V0Q
-         gIZmtGyzcZfH4RkBYlfH9y6PImVJgFnfiCcyhoZASdoOt3670f53VKum4WPFAmo5Ykhk
-         Esvg==
-X-Gm-Message-State: AKS2vOzuD9d4i+ZAQHL/TH7HrhobHLsntwzdA9cVXIYYJs/h8pphfXED
-        6VhpBu/lPBntag==
-X-Received: by 10.223.135.154 with SMTP id b26mr6791354wrb.48.1498254736772;
-        Fri, 23 Jun 2017 14:52:16 -0700 (PDT)
-Received: from localhost.localdomain (cpc101300-bagu16-2-0-cust362.1-3.cable.virginm.net. [86.21.41.107])
-        by smtp.gmail.com with ESMTPSA id p8sm4536892wrd.57.2017.06.23.14.52.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 23 Jun 2017 14:52:16 -0700 (PDT)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH] MIPS: perf: fix build failure
-Date:   Fri, 23 Jun 2017 22:52:11 +0100
-Message-Id: <1498254731-5248-1-git-send-email-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <sudipm.mukherjee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 00:01:17 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29039 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993853AbdFWWBK55o5- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jun 2017 00:01:10 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id E195341F8D8B;
+        Sat, 24 Jun 2017 00:10:55 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Sat, 24 Jun 2017 00:10:55 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Sat, 24 Jun 2017 00:10:55 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 20EA2BB5D493A;
+        Fri, 23 Jun 2017 23:01:00 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 23 Jun
+ 2017 23:01:05 +0100
+Date:   Fri, 23 Jun 2017 23:01:04 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Palmer Dabbelt <palmer@dabbelt.com>
+CC:     <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <vgupta@synopsys.com>,
+        <linux@armlinux.org.uk>, <catalin.marinas@arm.com>,
+        <will.deacon@arm.com>, <geert@linux-m68k.org>,
+        <ralf@linux-mips.org>, <ysato@users.sourceforge.jp>,
+        <dalias@libc.org>, <davem@davemloft.net>, <cmetcalf@mellanox.com>,
+        <gxt@mprc.pku.edu.cn>, <bhelgaas@google.com>,
+        <viro@zeniv.linux.org.uk>, <akpm@linux-foundation.org>,
+        <linux-alpha@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-snps-arc@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-m68k@lists.linux-m68k.org>, <linux-mips@linux-mips.org>,
+        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <hch@infradead.org>
+Subject: Re: [PATCH] pci:  Add and use PCI_GENERIC_SETUP Kconfig entry
+Message-ID: <20170623220104.GE31455@jhogan-linux.le.imgtec.org>
+References: <20170623214538.25967-1-palmer@dabbelt.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lteA1dqeVaWQ9QQl"
+Content-Disposition: inline
+In-Reply-To: <20170623214538.25967-1-palmer@dabbelt.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58772
+X-archive-position: 58773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,38 +66,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The build of gpr_defconfig is failing with the error:
-arch/mips/kernel/perf_event_mipsxx.c:
-	In function 'mipsxx_pmu_map_raw_event':
-arch/mips/kernel/perf_event_mipsxx.c:1614:2:
-	error: duplicate case value
+--lteA1dqeVaWQ9QQl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Patch - f7a31b5e7874 ("MIPS: perf: Remove incorrect odd/even counter
-handling for I6400") removed the previous case and added it as a
-separate case. But patch dd71e57bacb5 ("MIPS: perf: add I6500 handling")
-added it back to its old location and thus giving us two duplicate case.
+On Fri, Jun 23, 2017 at 02:45:38PM -0700, Palmer Dabbelt wrote:
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 4c1a35f15838..86872246951c 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -96,6 +96,7 @@ config ARM
+>  	select PERF_USE_VMALLOC
+>  	select RTC_LIB
+>  	select SYS_SUPPORTS_APM_EMULATION
+> +	select PCI_GENERIC_SETUP
+>  	# Above selects are sorted alphabetically; please add new ones
+>  	# according to that.  Thanks.
 
-Fixes: dd71e57bacb5 ("MIPS: perf: add I6500 handling")
-Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
----
+This comment seems to suggest PCI_GENERIC_SETUP should be added a few
+lines up to preserve the alphabetical sorting.
 
-The build log is available at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/246092909
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index b2024db225a9..6c684d8c8816 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -115,6 +115,7 @@ config ARM64
+>  	select SPARSE_IRQ
+>  	select SYSCTL_EXCEPTION_TRACE
+>  	select THREAD_INFO_IN_TASK
+> +	select PCI_GENERIC_SETUP
 
- arch/mips/kernel/perf_event_mipsxx.c | 1 -
- 1 file changed, 1 deletion(-)
+Here too.
 
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 4b93cc0..733b612 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -1597,7 +1597,6 @@ static const struct mips_perf_event *mipsxx_pmu_map_raw_event(u64 config)
- 		break;
- 	case CPU_P5600:
- 	case CPU_P6600:
--	case CPU_I6400:
- 	case CPU_I6500:
- 		/* 8-bit event numbers */
- 		raw_id = config & 0x1ff;
--- 
-1.9.1
+> diff --git a/arch/tile/Kconfig b/arch/tile/Kconfig
+> index 4583c0320059..6679af85a882 100644
+> --- a/arch/tile/Kconfig
+> +++ b/arch/tile/Kconfig
+> @@ -33,6 +33,7 @@ config TILE
+>  	select USER_STACKTRACE_SUPPORT
+>  	select USE_PMC if PERF_EVENTS
+>  	select VIRT_TO_BUS
+> +	select PCI_GENERIC_SETUP
+
+and here
+
+Otherwise
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+
+Cheers
+James
+
+--lteA1dqeVaWQ9QQl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAllNj58ACgkQbAtpk944
+dnqhdg//SJAI7UamQnmPRbqhd0gYMgcMzrRPh0vqsiV9afGNrHMYVzth2hX+OeJ9
+edYIVIlz0ky02rwtw0eW17nxowjc6kDgFJjMDCwXZkhtOUKaCZ8iZ2hzs9tDm0a9
+iY1/8aSk71HagWfO0GX0zAPERIGzXsdTb+UL/+KCO9vAd5xYKeAcof7U55cs8M/O
+YA8AeyTGBVZTzsgFZAb/1Pd63z7oMq99RNyBHMP4fGB0qIiXbL8vpWEN2cXOmZP+
+ERBA+AqvywLTp8PM1CZGQNgJzPmYHrRycWg0JWpsTc+ZejIniBTsVR+AWMn7Oef+
+yz5qJso9DGjVKcK/5U0xZ4Lmm51mvrvsGj9lM8PPZTnMJnHPPDrL+R5NyL3/jhpO
+bd+E3hNT2sZxwiWxGaeuY2w/Hejx/basnBXvVH82TceRIKnbOPpuS+kym2UEoCQ8
+uRGqvNs04Mq5eqOlZIMaFsPuLS+QLEL6iWA1yid1hozNkqX4+T36nx/7qHmk0cgB
+mrqu+BraxA8nQJaTTMCxgiYOKT4cCNV64EqUVn4OhEenCkSxdIK+0wY+mC9L158r
+NA8CAsgLdX/MCkNJrpAcbhJWrnELFK4eRXr3qSj3hKVt1pSuwdgt9ZU9ZV4gNY8j
+UKx0brQlyfUFAZQLqGqceX7fipZ/xFyJ7cF5ztcLNDMvffqQBm0=
+=0daY
+-----END PGP SIGNATURE-----
+
+--lteA1dqeVaWQ9QQl--

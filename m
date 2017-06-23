@@ -1,87 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2017 22:09:01 +0200 (CEST)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:35477
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993853AbdFWUIz2VBpL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2017 22:08:55 +0200
-Received: by mail-wr0-x241.google.com with SMTP id z45so15055784wrb.2;
-        Fri, 23 Jun 2017 13:08:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=XXMHEFtqescakFEXS+ka7gsNCMAGoic+1trKkQvPrk8=;
-        b=aveAxdfEYoU3pLxHhBrkeBkzVOD4IVE0SJaoi0dwzwGCkGh2VUcgTVmpnJgpvJrGJk
-         uaZoCnvSj2AV4Q5TW8gDIh+wqQSEcHIsRzeBW6+FGMMnV8W7n1ZCMkqT+iw5hGMz2IOv
-         L6jRAK113u9hSVLhN4U0XR8UvE8G/X7Y34C0awg91t719hk7BVV2151Aaqtf5Glqn4ED
-         miv1tYPXCN7or+KGAo/9qAjd0wH6DSRZ/h8qM2HHN5B9JnE6E1kzQ7rXGyq5ANocMm2o
-         wtOwYswayoF6DDDzJZDQVEh912Evl1NLAXxamgWiOaYEXRfdCAb9vOetWdFFw25cKhMf
-         tOoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=XXMHEFtqescakFEXS+ka7gsNCMAGoic+1trKkQvPrk8=;
-        b=sg+tLtvDTScnq3xtnpdnR2LaEEh6mIn2e9AzA+aPTRDOTzLga/mPTfZN26RzcDlNjs
-         B+ydGg10+pe9mtrCWWHqvEtlJOLt3m4OcKUJ8KLJqgrLFe0fa6zPDxoBDJmriI9TRoHZ
-         hS1KWoo2Jacibvkyrkv3CSa955/ys8yhl6kMhjrS0HelzeMtAg6n1jGynpaDWv5JVHyn
-         LGx1IQ5zzOsayIQFyAxbgvBxZtpM7vqp/VDhUzKD4woZbNbmYVMbCa22+K+Fyt0FM1dp
-         zmlH+WcL4TLDi8fgDCfe9dQrtNpuXmFD/Podddu9Va3hOj7cViT145XtuVFFb0NH2aAu
-         EL7g==
-X-Gm-Message-State: AKS2vOzrw8Jgs9E1zLx3WafyBtJRsn/2R9w1UGoBHEAZZiY1CMhYSqOm
-        YhrQO/WArJoRdw==
-X-Received: by 10.223.131.162 with SMTP id 31mr3049403wre.161.1498248529892;
-        Fri, 23 Jun 2017 13:08:49 -0700 (PDT)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id l46sm6764879wrl.15.2017.06.23.13.08.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 23 Jun 2017 13:08:49 -0700 (PDT)
-Subject: Re: [PATCH 4/5] dt-bindings: Document MIPS Broadcom STB power
- management nodes
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-arm-kernel@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>, Eric Anholt <eric@anholt.net>,
-        Justin Chen <justinpopo6@gmail.com>,
-        Doug Berger <opendmb@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM BCM47XX MIPS ARCHITECTURE" 
-        <linux-mips@linux-mips.org>, linux-pm@vger.kernerl.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-References: <20170616213703.21487-1-f.fainelli@gmail.com>
- <20170616213703.21487-5-f.fainelli@gmail.com>
- <20170623200229.p6pp4g2hvkei4doj@rob-hp-laptop>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <e21d2356-4096-a53c-2d55-7f3b8f09ff0a@gmail.com>
-Date:   Fri, 23 Jun 2017 13:08:43 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2017 23:33:47 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47176 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993853AbdFWVdcZDv0- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2017 23:33:32 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 1DB3E41F8EC3;
+        Fri, 23 Jun 2017 23:43:17 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 23 Jun 2017 23:43:17 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 23 Jun 2017 23:43:17 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 794CCE84469E0;
+        Fri, 23 Jun 2017 22:33:21 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 23 Jun
+ 2017 22:33:26 +0100
+Date:   Fri, 23 Jun 2017 22:33:26 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+CC:     Rene Nielsen <rene.nielsen@microsemi.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: clock_gettime() may return timestamps out of order
+Message-ID: <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
+References: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
+ <1bd4bad1-5574-7b76-0cd7-d0334c08667f@hauke-m.de>
 MIME-Version: 1.0
-In-Reply-To: <20170623200229.p6pp4g2hvkei4doj@rob-hp-laptop>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2iBwrppp/7QCDedR"
+Content-Disposition: inline
+In-Reply-To: <1bd4bad1-5574-7b76-0cd7-d0334c08667f@hauke-m.de>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58769
+X-archive-position: 58770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,127 +55,171 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/23/2017 01:02 PM, Rob Herring wrote:
-> On Fri, Jun 16, 2017 at 02:37:02PM -0700, Florian Fainelli wrote:
->> Document the different nodes required for supporting S2/S3/S5 suspend
->> states on MIPS-based Broadcom STB SoCs.
->>
->> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
->> ---
->>  .../devicetree/bindings/mips/brcm/soc.txt          | 77 ++++++++++++++++++++++
->>  1 file changed, 77 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
->> index e4e1cd91fb1f..f7413168d938 100644
->> --- a/Documentation/devicetree/bindings/mips/brcm/soc.txt
->> +++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
->> @@ -11,3 +11,80 @@ Required properties:
->>  
->>  The experimental -viper variants are for running Linux on the 3384's
->>  BMIPS4355 cable modem CPU instead of the BMIPS5000 application processor.
->> +
->> +Power management
->> +----------------
->> +
->> +For power management (particularly, S2/S3/S5 system suspend), the following SoC
->> +components are needed:
->> +
->> += Always-On control block (AON CTRL)
->> +
->> +This hardware provides control registers for the "always-on" (even in low-power
->> +modes) hardware, such as the Power Management State Machine (PMSM).
->> +
->> +Required properties:
->> +- compatible     : should contain "brcm,brcmstb-aon-ctrl"
-> 
-> Exact same block on all SoCs?
+--2iBwrppp/7QCDedR
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Not quite exactly the same, I will put something more SoC-specific in
-the binding here.
+On Thu, Jun 22, 2017 at 09:32:33PM +0200, Hauke Mehrtens wrote:
+> On 06/21/2017 10:14 AM, Rene Nielsen wrote:
+> > Hi folks,
+> >=20
+> > Let me go straight into the problem:
+> > We have a multi-threaded application that runs on a MIPS 24KEc using gl=
+ibc v.
+> > 2.24 under kernel v. 4.9.29 both compiled with gcc v. 6.3.0.
+> > Our 24KEc has a 4-way 32 KBytes dcache (and similar icache), so it's pr=
+one to cache
+> > aliasing (don't know if this matters...).
+> >=20
+> > We want to be able to do stack backtraces from a signal handler in case=
+ our
+> > application makes a glibc call that results in an assert(). The stack
+> > backtracing is made within the signal handler with calls to _Unwind_Bac=
+ktrace().
+> > With the default set of glibc compiler flags, we can't trace through si=
+gnal
+> > handlers. Not so long ago, we used uclibc rather than glibc, and experi=
+enced the
+> > same problem, but we got it to work by enabling the
+> > '-fasynchronous-unwind-tables' gcc flag during compilation of uclibc.
+> > Using the same flag during compilation of glibc causes unexpected runti=
+me
+> > problems:
+> >=20
+> > Many of the threads in our application call clock_gettime(CLOCK_MONOTON=
+IC) many
+> > times per second, so we greatly appreciate the existence and utilizatio=
+n of the
+> > VDSO.
+> >=20
+> > Occassionally, however, clock_gettime(CLOCK_MONOTONIC) returns timestam=
+ps out of
+> > order on the same thread. It's not that the returned timestamps seem wr=
+ong (they
+> > are mostly off by some hundred microseconds), but they simply appear ou=
+t of
+> > order.
+> >=20
+> > Since glibc utilizes VDSO (and uclibc doesn't), my guess is that there's
+> > something wrong in the interface between the two, but I can't figure ou=
+t what.
+> > Other glibc calls seem OK (I don't know whether there's a problem with =
+the other
+> > VDSO function, gettimeofday(), though). If not compiled with the infamo=
+us flag,
+> > we don't see this problem.
+> >=20
+> > I have tried with a single-threaded test-app, but haven't been able to
+> > reproduce.
+> >=20
+> > Any help is highly appreciated. Don't hesitate to asking questions, if =
+needed.
+> >=20
+> > Thank you very much in advance,
+> > Best regards,
+> > Ren=C3=A9 Nielsen
+>=20
+>=20
+> Hi Rene
+>=20
+> I had a problem with the clock_gettime() call over VDSO on a MIPS BE
+> 34Kc CPU, see this:
+> https://www.linux-mips.org/archives/linux-mips/2016-01/msg00727.html
+> It was sometimes off by 1 second.
+>=20
+> It is gone in the current version of LEDE (former OpenWrt), but when I
+> used git bisect to find the place where it was fixed, I found a place
+> which has nothing to do with MIPS internal or libc stuff.
+>=20
+> Makeing some pages uncached or flushing them help, but caused
+> performance problems, I have never found the root cause of the problem.
 
-> 
->> +- reg            : the register start and length for the AON CTRL block
->> +
->> +Example:
->> +
->> +aon-ctrl@410000 {
-> 
-> syscon@...
-> 
->> +	compatible = "brcm,brcmstb-aon-ctrl";
->> +	reg = <0x410000 0x400>;
->> +};
->> +
->> += Memory controllers
->> +
->> +A Broadcom STB SoC typically has a number of independent memory controllers,
->> +each of which may have several associated hardware blocks, which are versioned
->> +independently (control registers, DDR PHYs, etc.). One might consider
->> +describing these controllers as a parent "memory controllers" block, which
->> +contains N sub-nodes (one for each controller in the system), each of which is
->> +associated with a number of hardware register resources (e.g., its PHY). See
->> +the example device tree snippet below.
-> 
-> What example?
+Hauke: Did that platform have aliasing dcache too?
 
-Whoops, that's indeed missing.
+I notice that the mips_vdso_data is updated by update_vsyscall() via
+kseg0, however userland will be accessing it via the mapping 1 page
+below the VDSO.
 
-> 
->> +
->> +== MEMC (MEMory Controller)
->> +
->> +Represents a single memory controller instance.
->> +
->> +Required properties:
->> +- compatible     : should contain "brcm,brcmstb-memc" and "simple-bus"
-> 
-> No registers for the controller?
+If the kernel data happened to be placed such that the mips_vdso_data in
+kseg0 and the user mapping had different page colours then you could
+easily hit aliasing issues. A couple of well placed flushes or some more
+careful placement of the VDSO data might well fix it, as could some
+random patch changing the positioning of the data such that it
+coincidentally lined up on the same colour.
 
-There are indeed registers, thanks for catching that.
+Rene: Would you be able to try the following?
+1) report the values of data_addr and &vdso_data in
+arch_setup_additional_pages() (arch/mips/kernel/vdso.c)
+2) apply the (completely untested) patch below and see if it helps
+3) report those two values with the patch applied to check it has worked
+as expected
 
-> 
->> +
->> +Should contain subnodes for any of the following relevant hardware resources:
->> +
->> +== DDR PHY control
->> +
->> +Control registers for this memory controller's DDR PHY.
->> +
->> +Required properties:
->> +- compatible     : should contain one of these
->> +	"brcm,brcmstb-ddr-phy-v64.5"
->> +	"brcm,brcmstb-ddr-phy"
->> +
->> +- reg            : the DDR PHY register range
->> +
->> +== MEMC Arbiter
->> +
->> +The memory controller arbiter is responsible for memory clients allocation
->> +(bandwidth, priorities etc.) and needs to have its contents restored during
->> +deep sleep states (S3).
->> +
->> +Required properties:
->> +
->> +- compatible	: should contain one of these
->> +	"brcm,brcmstb-memc-arb-v10.0.0.0"
->> +	"brcm,brcmstb-memc-arb"
->> +
->> +- reg		: the DDR Arbiter register range
->> +
->> +== Timers
->> +
->> +The Broadcom STB chips contain a timer block with several general purpose
->> +timers that can be used.
->> +
->> +Required properties:
->> +
->> +- compatible	: should contain "brcm,brcmstb-timers"
->> +- reg		: the timers register range
->> +
->> -- 
->> 2.9.3
->>
+The patch unfortunately hacks arch_get_unmapped_area_common so that it
+does the colour alignment on non-shared anonymous pages, as long as
+non-zero pgoff is provided. Hopefully no userland code would try
+mmap'ing anonymous memory with a file offset, and so it should be
+harmless.
 
+It doesn't look like we can just pass MAP_SHARED to avoid the hack as
+then pgoff will get cleared by get_unmapped_area()).
 
--- 
-Florian
+Thanks
+James
+
+diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+index 093517e85a6c..4840b20a3756 100644
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -129,7 +129,12 @@ int arch_setup_additional_pages(struct linux_binprm *b=
+prm, int uses_interp)
+ 	vvar_size =3D gic_size + PAGE_SIZE;
+ 	size =3D vvar_size + image->size;
+=20
+-	base =3D get_unmapped_area(NULL, 0, size, 0, 0);
++	/*
++	 * Hack to get the user mapping of the VDSO data page matching the cache
++	 * colour of its kseg0 address.
++	 */
++	base =3D get_unmapped_area(NULL, 0, size,
++			(virt_to_phys(&vdso_data) - gic_size) >> PAGE_SHIFT, 0);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret =3D base;
+ 		goto out;
+diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+index 64dd8bdd92c3..872cf1fd1744 100644
+--- a/arch/mips/mm/mmap.c
++++ b/arch/mips/mm/mmap.c
+@@ -81,7 +81,7 @@ static unsigned long arch_get_unmapped_area_common(struct=
+ file *filp,
+ 	}
+=20
+ 	do_color_align =3D 0;
+-	if (filp || (flags & MAP_SHARED))
++	if (filp || (flags & MAP_SHARED) || pgoff)
+ 		do_color_align =3D 1;
+=20
+ 	/* requesting a specific address */
+
+--2iBwrppp/7QCDedR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAllNiRkACgkQbAtpk944
+dnpifg/9F7xQqSTRjHum/cspA1XN/5mcUz8FJTXH4WLffAxDEgNO+kNHCHbqamle
+MuG/tIZGlatGq6rZdlpsOfSfgCqLxv74R3mFgsa8vOUcMFS475DBRBjf2oIGAntg
+qxuAFr7xnlW6tLH7rp4oLZ1Tb68TaEIT/z9VuyS3jL/9H+45TKRYf8SmybYMFOa3
+4c1VmI7N+CSrmconCct3kGRPsqkCDk1VfHYfREBrottGPZxmp35T1WWfnhoct3Pm
+OD42zHjIU92Ym2CczkLOomPNYiLJQqK8fUIGznMz3+PtUgnjWoDbuJjiLb9Ur2Xn
+WklvxzeIXa1kHgEkEuAT24B4OrwY1YtWVBfn614fPD5OHzFprCakTdG8B/TTE20N
+KrKzlhDuaaSjJ8+KI9a+2EkhR2oRsIFE/yW0EDqi5OaHABWdW0/lId0y7oVIwb3o
+YjssfEg1hKJLIcqkW6zm2EF2rjoy/7nNXzZ7wT/iveLhsYF6mAe81VaMW/KMqzRq
+AqBfvEiSCa/kPvuyUhW6pQKgM2vdiUQCrT6degSEM+/vhwJS6Ql7n/i+7kZkBbfE
+LuuWb3n/I+BItb1PtWvzsStiUWEqFE0llpgL3rVUx8slS2DWy2J/oeZQB+rbRj0U
+OoxadSzV8gEXnQ8Ko2wTKLzyMHtry9EIVBOC7pBMkxI1EfIrMjk=
+=Eqwc
+-----END PGP SIGNATURE-----
+
+--2iBwrppp/7QCDedR--

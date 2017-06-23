@@ -1,66 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2017 09:53:07 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:51948 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991786AbdFWHw7HTcax (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2017 09:52:59 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1dOJMM-000864-Ll; Fri, 23 Jun 2017 09:50:30 +0200
-Date:   Fri, 23 Jun 2017 09:51:23 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Jiri Slaby <jslaby@suse.cz>
-cc:     mingo@redhat.com, peterz@infradead.org, dvhart@infradead.org,
-        linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/1] futex: remove duplicated code and fix UB
-In-Reply-To: <20170621115318.2781-1-jslaby@suse.cz>
-Message-ID: <alpine.DEB.2.20.1706230017520.2221@nanos>
-References: <20170621115318.2781-1-jslaby@suse.cz>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2017 16:55:07 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54589 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992974AbdFWOzBkcuZp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2017 16:55:01 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 339D341F8EC3;
+        Fri, 23 Jun 2017 17:04:44 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 23 Jun 2017 17:04:44 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 23 Jun 2017 17:04:44 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 5ACA96A064256;
+        Fri, 23 Jun 2017 15:54:50 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 23 Jun
+ 2017 15:54:54 +0100
+Date:   Fri, 23 Jun 2017 15:54:53 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V7 9/9] MIPS: Loongson: Introduce and use
+ LOONGSON_LLSC_WAR
+Message-ID: <20170623145453.GB31455@jhogan-linux.le.imgtec.org>
+References: <1498144016-9111-1-git-send-email-chenhc@lemote.com>
+ <1498144016-9111-10-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <tglx@linutronix.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="eAbsdosE1cNLO4uF"
+Content-Disposition: inline
+In-Reply-To: <1498144016-9111-10-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58762
+X-archive-position: 58763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,62 +59,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 21 Jun 2017, Jiri Slaby wrote:
-> diff --git a/arch/arm64/include/asm/futex.h b/arch/arm64/include/asm/futex.h
-> index f32b42e8725d..5bb2fd4674e7 100644
-> --- a/arch/arm64/include/asm/futex.h
-> +++ b/arch/arm64/include/asm/futex.h
-> @@ -48,20 +48,10 @@ do {									\
->  } while (0)
->  
->  static inline int
-> -futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
+--eAbsdosE1cNLO4uF
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-That unsigned int seems to be a change from the arm64 tree in next. It's
-not upstream and it'll cause a (easy to resolve) conflict.
+On Thu, Jun 22, 2017 at 11:06:56PM +0800, Huacai Chen wrote:
+> diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+> index 0ab176b..e0002c58 100644
+> --- a/arch/mips/include/asm/atomic.h
+> +++ b/arch/mips/include/asm/atomic.h
+> @@ -56,6 +56,22 @@ static __inline__ void atomic_##op(int i, atomic_t * v)			      \
+>  		"	.set	mips0					\n"   \
+>  		: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)	      \
+>  		: "Ir" (i));						      \
+> +	} else if (kernel_uses_llsc && LOONGSON_LLSC_WAR) {		      \
+> +		int temp;						      \
+> +									      \
+> +		do {							      \
+> +			__asm__ __volatile__(				      \
+> +			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+> +			__WEAK_LLSC_MB					      \
+> +			"	ll	%0, %1		# atomic_" #op "\n"   \
+> +			"	" #asm_op " %0, %2			\n"   \
+> +			"	sc	%0, %1				\n"   \
+> +			"	.set	mips0				\n"   \
+> +			: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)      \
+> +			: "Ir" (i));					      \
+> +		} while (unlikely(!temp));				      \
 
-> +static int futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
-> +{
-> +	int op = (encoded_op >> 28) & 7;
-> +	int cmp = (encoded_op >> 24) & 15;
-> +	int oparg = (int)(encoded_op << 8) >> 20;
-> +	int cmparg = (int)(encoded_op << 20) >> 20;
+Can loongson use the common versions of all these bits of assembly by
+adding a LOONGSON_LLSC_WAR dependent smp_mb__before_llsc()-like macro
+before the asm?
 
-So this is really bad. We have implicit and explicit type casting to
-int. And while we are at it can we please stop proliferating the existing
-mess.
+It would save a lot of duplication, avoid potential bitrot and
+divergence, and make the patch much easier to review.
 
-'op' and 'cmp' definitly can be unsigned int. There is no reason to cast
-them to int.
+Cheers
+James
 
-oparg, cmparg and oldval are more interesting.
+--eAbsdosE1cNLO4uF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-The logic here is "documented" in uapi/linux/futex.h
+-----BEGIN PGP SIGNATURE-----
 
-/* FUTEX_WAKE_OP will perform atomically
-   int oldval = *(int *)UADDR2;
-   *(int *)UADDR2 = oldval OP OPARG;
-   if (oldval CMP CMPARG)
-       wake UADDR2;  */
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAllNK7IACgkQbAtpk944
+dnq9vxAAqy/3vGH4UL1RaL2CP26MAm9SvrArghceQK55eL09YLIHmj12BvLyGCSd
+sVPSJ9e53hoKB1onnBk2V1uk8TLtBqamq2JKJgeFaH7p2ft2FLoL/B7qcrxRdedH
+Q6UEG2b9Ig2VYa9/P33pCLVaw8qWLd6r4c5qo8alrmMqKa1JR0Znp4rtEW3r1h7h
+W+cw7ntNw269qYyBrHPL/EIUrQR7D9y71AoO3oa+uMtYoYItuhKJif9IVdVgNLu6
+xleNYGlZNbO8+jrL3Pq9sz4iLl49PSdSf8rQmB2BfsOYhTfVnXMSLmG05Zyqi435
+7z5c0mUCVtpOlOBuom38+q+cwsEtBygc4i1C2UYmRK5SQ0po0OOZQYfbwSi0PBYk
+EbwViHJ5SZGY6TaRcxhZGaCDlQKKOrcfSXSsIZUKCbqVVtB8PV1SjksXQOI6bkuR
+J9LEm9Kwr7xoPcNGt9REPDRxLF8ZJkGhTTVKQ1hf58BmvhPaECFHxUlh6EmpnFNg
+fOlG8cVA226UmSzHItpFYXt26cOHkXTWlhawffbwS/E4jhLvmj4Gb83xUc26S7l3
+7xeAxQewSw0TrlRqR+pZOfnK8NBrFZVNTvG61WSv/f42tE4qlLYwvVxRFPsCGWwT
+Q8Y572SjEPDObNP+/BI15vt5NSttJFrc+LTnwiZQkRzTqivrc9w=
+=NNDp
+-----END PGP SIGNATURE-----
 
-Now the FUTEX_OP macro which is supposed to compose the encoded_up does:
-
-#define FUTEX_OP(op, oparg, cmp, cmparg) \
-  (((op & 0xf) << 28) | ((cmp & 0xf) << 24)             \
-   | ((oparg & 0xfff) << 12) | (cmparg & 0xfff))
-
-Of course this all is not typed, undocumented and completely ill
-defined.
-
-> +	int oparg = (int)(encoded_op << 8) >> 20;
-> +	int cmparg = (int)(encoded_op << 20) >> 20;
-
-So in fact we sign expand the 12 bits of oparg and cmparg. Really
-intuitive.
-
-Yes, we probably can't change that anymore, but at least we should make it
-very explicit and add a comment to that effect.
-
-Thanks,
-
-	tglx
+--eAbsdosE1cNLO4uF--

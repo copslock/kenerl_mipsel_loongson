@@ -1,48 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 00:28:52 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33286 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992936AbdFWW2pnTbd4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jun 2017 00:28:45 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id CE07F41F8DBB;
-        Sat, 24 Jun 2017 00:38:30 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Sat, 24 Jun 2017 00:38:30 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Sat, 24 Jun 2017 00:38:30 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 030B033C75823;
-        Fri, 23 Jun 2017 23:28:35 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 23 Jun
- 2017 23:28:40 +0100
-Date:   Fri, 23 Jun 2017 23:28:39 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v5 4/4] MIPS: generic: Support MIPS Boston development
- boards
-Message-ID: <20170623222839.GG31455@jhogan-linux.le.imgtec.org>
-References: <20170617205249.1391-1-paul.burton@imgtec.com>
- <20170617205249.1391-5-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 00:29:25 +0200 (CEST)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:56535 "EHLO
+        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993869AbdFWW3S5mx04 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jun 2017 00:29:18 +0200
+Received: from [IPv6:2003:86:2804:5500:5c4b:6402:6e3d:b83b] (p20030086280455005C4B64026E3DB83B.dip0.t-ipconnect.de [IPv6:2003:86:2804:5500:5c4b:6402:6e3d:b83b])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id DDE0F1001DD;
+        Sat, 24 Jun 2017 00:29:14 +0200 (CEST)
+Subject: Re: clock_gettime() may return timestamps out of order
+To:     James Hogan <james.hogan@imgtec.com>
+References: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
+ <1bd4bad1-5574-7b76-0cd7-d0334c08667f@hauke-m.de>
+ <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
+Cc:     Rene Nielsen <rene.nielsen@microsemi.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <61651815-2650-30f0-8240-7cb1c3d20e23@hauke-m.de>
+Date:   Sat, 24 Jun 2017 00:29:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
+In-Reply-To: <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oOB74oR0WcNeq9Zb"
-Content-Disposition: inline
-In-Reply-To: <20170617205249.1391-5-paul.burton@imgtec.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+ protocol="application/pgp-signature";
+ boundary="34NP37de5e4uCfkgovQtvowRD08FOI00R"
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58781
+X-archive-position: 58782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,458 +44,205 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---oOB74oR0WcNeq9Zb
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--34NP37de5e4uCfkgovQtvowRD08FOI00R
+Content-Type: multipart/mixed; boundary="WRVeBubGGd1goe5ro7JhNHcA80vqCAEgr";
+ protected-headers="v1"
+From: Hauke Mehrtens <hauke@hauke-m.de>
+To: James Hogan <james.hogan@imgtec.com>
+Cc: Rene Nielsen <rene.nielsen@microsemi.com>,
+ "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Message-ID: <61651815-2650-30f0-8240-7cb1c3d20e23@hauke-m.de>
+Subject: Re: clock_gettime() may return timestamps out of order
+References: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
+ <1bd4bad1-5574-7b76-0cd7-d0334c08667f@hauke-m.de>
+ <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
+
+--WRVeBubGGd1goe5ro7JhNHcA80vqCAEgr
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 17, 2017 at 01:52:49PM -0700, Paul Burton wrote:
-> Add support for the MIPS Boston development board to generic kernels,
-> which essentially amounts to:
->=20
->   - Adding the device tree source for the MIPS Boston board.
->=20
->   - Adding a Kconfig fragment which enables the appropriate drivers for
->     the MIPS Boston board.
->=20
-> With these changes in place generic kernels will support the board by
-> default, and kernels with only the drivers needed for Boston enabled can
-> be configured by setting BOARDS=3Dboston during configuration. For
-> example:
->=20
->   $ make ARCH=3Dmips 64r6el_defconfig BOARDS=3Dboston
->=20
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+On 06/23/2017 11:33 PM, James Hogan wrote:
+> On Thu, Jun 22, 2017 at 09:32:33PM +0200, Hauke Mehrtens wrote:
+>> On 06/21/2017 10:14 AM, Rene Nielsen wrote:
+>>> Hi folks,
+>>>
+>>> Let me go straight into the problem:
+>>> We have a multi-threaded application that runs on a MIPS 24KEc using =
+glibc v.
+>>> 2.24 under kernel v. 4.9.29 both compiled with gcc v. 6.3.0.
+>>> Our 24KEc has a 4-way 32 KBytes dcache (and similar icache), so it's =
+prone to cache
+>>> aliasing (don't know if this matters...).
+>>>
+>>> We want to be able to do stack backtraces from a signal handler in ca=
+se our
+>>> application makes a glibc call that results in an assert(). The stack=
 
-LGTM
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+>>> backtracing is made within the signal handler with calls to _Unwind_B=
+acktrace().
+>>> With the default set of glibc compiler flags, we can't trace through =
+signal
+>>> handlers. Not so long ago, we used uclibc rather than glibc, and expe=
+rienced the
+>>> same problem, but we got it to work by enabling the
+>>> '-fasynchronous-unwind-tables' gcc flag during compilation of uclibc.=
 
-Cheers
-James
+>>> Using the same flag during compilation of glibc causes unexpected run=
+time
+>>> problems:
+>>>
+>>> Many of the threads in our application call clock_gettime(CLOCK_MONOT=
+ONIC) many
+>>> times per second, so we greatly appreciate the existence and utilizat=
+ion of the
+>>> VDSO.
+>>>
+>>> Occassionally, however, clock_gettime(CLOCK_MONOTONIC) returns timest=
+amps out of
+>>> order on the same thread. It's not that the returned timestamps seem =
+wrong (they
+>>> are mostly off by some hundred microseconds), but they simply appear =
+out of
+>>> order.
+>>>
+>>> Since glibc utilizes VDSO (and uclibc doesn't), my guess is that ther=
+e's
+>>> something wrong in the interface between the two, but I can't figure =
+out what.
+>>> Other glibc calls seem OK (I don't know whether there's a problem wit=
+h the other
+>>> VDSO function, gettimeofday(), though). If not compiled with the infa=
+mous flag,
+>>> we don't see this problem.
+>>>
+>>> I have tried with a single-threaded test-app, but haven't been able t=
+o
+>>> reproduce.
+>>>
+>>> Any help is highly appreciated. Don't hesitate to asking questions, i=
+f needed.
+>>>
+>>> Thank you very much in advance,
+>>> Best regards,
+>>> Ren=C3=A9 Nielsen
+>>
+>>
+>> Hi Rene
+>>
+>> I had a problem with the clock_gettime() call over VDSO on a MIPS BE
+>> 34Kc CPU, see this:
+>> https://www.linux-mips.org/archives/linux-mips/2016-01/msg00727.html
+>> It was sometimes off by 1 second.
+>>
+>> It is gone in the current version of LEDE (former OpenWrt), but when I=
 
+>> used git bisect to find the place where it was fixed, I found a place
+>> which has nothing to do with MIPS internal or libc stuff.
+>>
+>> Makeing some pages uncached or flushing them help, but caused
+>> performance problems, I have never found the root cause of the problem=
+=2E
 >=20
-> ---
+> Hauke: Did that platform have aliasing dcache too?
+
+Yes my platform has an aliasing 32 KByte, 4-way associative dcache too.
+
+> I notice that the mips_vdso_data is updated by update_vsyscall() via
+> kseg0, however userland will be accessing it via the mapping 1 page
+> below the VDSO.
 >=20
-> Changes in v5:
-> - Adjust interrupt-map to match pcie-xilinx driver patchset changes.
+> If the kernel data happened to be placed such that the mips_vdso_data i=
+n
+> kseg0 and the user mapping had different page colours then you could
+> easily hit aliasing issues. A couple of well placed flushes or some mor=
+e
+> careful placement of the VDSO data might well fix it, as could some
+> random patch changing the positioning of the data such that it
+> coincidentally lined up on the same colour.
 >=20
-> Changes in v4:
-> - Most of the series already went in, rebase on v4.12-rc3.
-> - Adjust DT to move img,boston-clock under the plat_regs syscon node.
-> - Enable CONFIG_BLK_DEV_SD in board-boston.cfg to SATA disk access.
-> - Enable CONFIG_GPIOLIB so that the GPIO driver is actually enabled.
-> - Update MAINTAINERS entry.
+> Rene: Would you be able to try the following?
+> 1) report the values of data_addr and &vdso_data in
+> arch_setup_additional_pages() (arch/mips/kernel/vdso.c)
+> 2) apply the (completely untested) patch below and see if it helps
+> 3) report those two values with the patch applied to check it has worke=
+d
+> as expected
 >=20
-> Changes in v3: None
-> Changes in v2: None
+> The patch unfortunately hacks arch_get_unmapped_area_common so that it
+> does the colour alignment on non-shared anonymous pages, as long as
+> non-zero pgoff is provided. Hopefully no userland code would try
+> mmap'ing anonymous memory with a file offset, and so it should be
+> harmless.
 >=20
->  MAINTAINERS                                   |   2 +
->  arch/mips/boot/dts/img/Makefile               |   2 +
->  arch/mips/boot/dts/img/boston.dts             | 224 ++++++++++++++++++++=
-++++++
->  arch/mips/configs/generic/board-boston.config |  48 ++++++
->  arch/mips/generic/Kconfig                     |  12 ++
->  arch/mips/generic/vmlinux.its.S               |  25 +++
->  6 files changed, 313 insertions(+)
->  create mode 100644 arch/mips/boot/dts/img/boston.dts
->  create mode 100644 arch/mips/configs/generic/board-boston.config
+> It doesn't look like we can just pass MAP_SHARED to avoid the hack as
+> then pgoff will get cleared by get_unmapped_area()).
 >=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2749877a4574..70acd8ee18ea 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8503,6 +8503,8 @@ M:	Paul Burton <paul.burton@imgtec.com>
->  L:	linux-mips@linux-mips.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/clock/img,boston-clock.txt
-> +F:	arch/mips/boot/dts/img/boston.dts
-> +F:	arch/mips/configs/generic/board-boston.config
->  F:	drivers/clk/imgtec/clk-boston.c
->  F:	include/dt-bindings/clock/boston-clock.h
+> Thanks
+> James
+>=20
+> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+> index 093517e85a6c..4840b20a3756 100644
+> --- a/arch/mips/kernel/vdso.c
+> +++ b/arch/mips/kernel/vdso.c
+> @@ -129,7 +129,12 @@ int arch_setup_additional_pages(struct linux_binpr=
+m *bprm, int uses_interp)
+>  	vvar_size =3D gic_size + PAGE_SIZE;
+>  	size =3D vvar_size + image->size;
 > =20
-> diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Mak=
-efile
-> index c178cf56f5b8..3d70958d0f5a 100644
-> --- a/arch/mips/boot/dts/img/Makefile
-> +++ b/arch/mips/boot/dts/img/Makefile
-> @@ -1,3 +1,5 @@
-> +dtb-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+=3D boston.dtb
-> +
->  dtb-$(CONFIG_MACH_PISTACHIO)	+=3D pistachio_marduk.dtb
->  obj-$(CONFIG_MACH_PISTACHIO)	+=3D pistachio_marduk.dtb.o
+> -	base =3D get_unmapped_area(NULL, 0, size, 0, 0);
+> +	/*
+> +	 * Hack to get the user mapping of the VDSO data page matching the ca=
+che
+> +	 * colour of its kseg0 address.
+> +	 */
+> +	base =3D get_unmapped_area(NULL, 0, size,
+> +			(virt_to_phys(&vdso_data) - gic_size) >> PAGE_SHIFT, 0);
+>  	if (IS_ERR_VALUE(base)) {
+>  		ret =3D base;
+>  		goto out;
+> diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+> index 64dd8bdd92c3..872cf1fd1744 100644
+> --- a/arch/mips/mm/mmap.c
+> +++ b/arch/mips/mm/mmap.c
+> @@ -81,7 +81,7 @@ static unsigned long arch_get_unmapped_area_common(st=
+ruct file *filp,
+>  	}
 > =20
-> diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/b=
-oston.dts
-> new file mode 100644
-> index 000000000000..53bfa29a7093
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/img/boston.dts
-> @@ -0,0 +1,224 @@
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/clock/boston-clock.h>
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/interrupt-controller/irq.h>
-> +#include <dt-bindings/interrupt-controller/mips-gic.h>
-> +
-> +/ {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <1>;
-> +	compatible =3D "img,boston";
-> +
-> +	chosen {
-> +		stdout-path =3D "uart0:115200";
-> +	};
-> +
-> +	aliases {
-> +		uart0 =3D &uart0;
-> +	};
-> +
-> +	cpus {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +
-> +		cpu@0 {
-> +			device_type =3D "cpu";
-> +			compatible =3D "img,mips";
-> +			reg =3D <0>;
-> +			clocks =3D <&clk_boston BOSTON_CLK_CPU>;
-> +		};
-> +	};
-> +
-> +	memory@0 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x00000000 0x10000000>;
-> +	};
-> +
-> +	pci0: pci@10000000 {
-> +		compatible =3D "xlnx,axi-pcie-host-1.00.a";
-> +		device_type =3D "pci";
-> +		reg =3D <0x10000000 0x2000000>;
-> +
-> +		#address-cells =3D <3>;
-> +		#size-cells =3D <2>;
-> +		#interrupt-cells =3D <1>;
-> +
-> +		interrupt-parent =3D <&gic>;
-> +		interrupts =3D <GIC_SHARED 2 IRQ_TYPE_LEVEL_HIGH>;
-> +
-> +		ranges =3D <0x02000000 0 0x40000000
-> +			  0x40000000 0 0x40000000>;
-> +
-> +		interrupt-map-mask =3D <0 0 0 7>;
-> +		interrupt-map =3D <0 0 0 1 &pci0_intc 1>,
-> +				<0 0 0 2 &pci0_intc 2>,
-> +				<0 0 0 3 &pci0_intc 3>,
-> +				<0 0 0 4 &pci0_intc 4>;
-> +
-> +		pci0_intc: interrupt-controller {
-> +			interrupt-controller;
-> +			#address-cells =3D <0>;
-> +			#interrupt-cells =3D <1>;
-> +		};
-> +	};
-> +
-> +	pci1: pci@12000000 {
-> +		compatible =3D "xlnx,axi-pcie-host-1.00.a";
-> +		device_type =3D "pci";
-> +		reg =3D <0x12000000 0x2000000>;
-> +
-> +		#address-cells =3D <3>;
-> +		#size-cells =3D <2>;
-> +		#interrupt-cells =3D <1>;
-> +
-> +		interrupt-parent =3D <&gic>;
-> +		interrupts =3D <GIC_SHARED 1 IRQ_TYPE_LEVEL_HIGH>;
-> +
-> +		ranges =3D <0x02000000 0 0x20000000
-> +			  0x20000000 0 0x20000000>;
-> +
-> +		interrupt-map-mask =3D <0 0 0 7>;
-> +		interrupt-map =3D <0 0 0 1 &pci1_intc 1>,
-> +				<0 0 0 2 &pci1_intc 2>,
-> +				<0 0 0 3 &pci1_intc 3>,
-> +				<0 0 0 4 &pci1_intc 4>;
-> +
-> +		pci1_intc: interrupt-controller {
-> +			interrupt-controller;
-> +			#address-cells =3D <0>;
-> +			#interrupt-cells =3D <1>;
-> +		};
-> +	};
-> +
-> +	pci2: pci@14000000 {
-> +		compatible =3D "xlnx,axi-pcie-host-1.00.a";
-> +		device_type =3D "pci";
-> +		reg =3D <0x14000000 0x2000000>;
-> +
-> +		#address-cells =3D <3>;
-> +		#size-cells =3D <2>;
-> +		#interrupt-cells =3D <1>;
-> +
-> +		interrupt-parent =3D <&gic>;
-> +		interrupts =3D <GIC_SHARED 0 IRQ_TYPE_LEVEL_HIGH>;
-> +
-> +		ranges =3D <0x02000000 0 0x16000000
-> +			  0x16000000 0 0x100000>;
-> +
-> +		interrupt-map-mask =3D <0 0 0 7>;
-> +		interrupt-map =3D <0 0 0 1 &pci2_intc 1>,
-> +				<0 0 0 2 &pci2_intc 2>,
-> +				<0 0 0 3 &pci2_intc 3>,
-> +				<0 0 0 4 &pci2_intc 4>;
-> +
-> +		pci2_intc: interrupt-controller {
-> +			interrupt-controller;
-> +			#address-cells =3D <0>;
-> +			#interrupt-cells =3D <1>;
-> +		};
-> +
-> +		pci2_root@0,0,0 {
-> +			compatible =3D "pci10ee,7021";
-> +			reg =3D <0x00000000 0 0 0 0>;
-> +
-> +			#address-cells =3D <3>;
-> +			#size-cells =3D <2>;
-> +			#interrupt-cells =3D <1>;
-> +
-> +			eg20t_bridge@1,0,0 {
-> +				compatible =3D "pci8086,8800";
-> +				reg =3D <0x00010000 0 0 0 0>;
-> +
-> +				#address-cells =3D <3>;
-> +				#size-cells =3D <2>;
-> +				#interrupt-cells =3D <1>;
-> +
-> +				eg20t_mac@2,0,1 {
-> +					compatible =3D "pci8086,8802";
-> +					reg =3D <0x00020100 0 0 0 0>;
-> +					phy-reset-gpios =3D <&eg20t_gpio 6
-> +							   GPIO_ACTIVE_LOW>;
-> +				};
-> +
-> +				eg20t_gpio: eg20t_gpio@2,0,2 {
-> +					compatible =3D "pci8086,8803";
-> +					reg =3D <0x00020200 0 0 0 0>;
-> +
-> +					gpio-controller;
-> +					#gpio-cells =3D <2>;
-> +				};
-> +
-> +				eg20t_i2c@2,12,2 {
-> +					compatible =3D "pci8086,8817";
-> +					reg =3D <0x00026200 0 0 0 0>;
-> +
-> +					#address-cells =3D <1>;
-> +					#size-cells =3D <0>;
-> +
-> +					rtc@0x68 {
-> +						compatible =3D "st,m41t81s";
-> +						reg =3D <0x68>;
-> +					};
-> +				};
-> +			};
-> +		};
-> +	};
-> +
-> +	gic: interrupt-controller@16120000 {
-> +		compatible =3D "mti,gic";
-> +		reg =3D <0x16120000 0x20000>;
-> +
-> +		interrupt-controller;
-> +		#interrupt-cells =3D <3>;
-> +
-> +		timer {
-> +			compatible =3D "mti,gic-timer";
-> +			interrupts =3D <GIC_LOCAL 1 IRQ_TYPE_NONE>;
-> +			clocks =3D <&clk_boston BOSTON_CLK_CPU>;
-> +		};
-> +	};
-> +
-> +	cdmm@16140000 {
-> +		compatible =3D "mti,mips-cdmm";
-> +		reg =3D <0x16140000 0x8000>;
-> +	};
-> +
-> +	cpc@16200000 {
-> +		compatible =3D "mti,mips-cpc";
-> +		reg =3D <0x16200000 0x8000>;
-> +	};
-> +
-> +	plat_regs: system-controller@17ffd000 {
-> +		compatible =3D "img,boston-platform-regs", "syscon";
-> +		reg =3D <0x17ffd000 0x1000>;
-> +
-> +		clk_boston: clock {
-> +			compatible =3D "img,boston-clock";
-> +			#clock-cells =3D <1>;
-> +		};
-> +	};
-> +
-> +	reboot: syscon-reboot {
-> +		compatible =3D "syscon-reboot";
-> +		regmap =3D <&plat_regs>;
-> +		offset =3D <0x10>;
-> +		mask =3D <0x10>;
-> +	};
-> +
-> +	uart0: uart@17ffe000 {
-> +		compatible =3D "ns16550a";
-> +		reg =3D <0x17ffe000 0x1000>;
-> +		reg-shift =3D <2>;
-> +
-> +		interrupt-parent =3D <&gic>;
-> +		interrupts =3D <GIC_SHARED 3 IRQ_TYPE_LEVEL_HIGH>;
-> +
-> +		clocks =3D <&clk_boston BOSTON_CLK_SYS>;
-> +	};
-> +
-> +	lcd: lcd@17fff000 {
-> +		compatible =3D "img,boston-lcd";
-> +		reg =3D <0x17fff000 0x8>;
-> +	};
-> +};
-> diff --git a/arch/mips/configs/generic/board-boston.config b/arch/mips/co=
-nfigs/generic/board-boston.config
-> new file mode 100644
-> index 000000000000..19560a45b683
-> --- /dev/null
-> +++ b/arch/mips/configs/generic/board-boston.config
-> @@ -0,0 +1,48 @@
-> +CONFIG_FIT_IMAGE_FDT_BOSTON=3Dy
-> +
-> +CONFIG_ATA=3Dy
-> +CONFIG_SATA_AHCI=3Dy
-> +CONFIG_SCSI=3Dy
-> +CONFIG_BLK_DEV_SD=3Dy
-> +
-> +CONFIG_AUXDISPLAY=3Dy
-> +CONFIG_IMG_ASCII_LCD=3Dy
-> +
-> +CONFIG_COMMON_CLK_BOSTON=3Dy
-> +
-> +CONFIG_DMADEVICES=3Dy
-> +CONFIG_PCH_DMA=3Dy
-> +
-> +CONFIG_GPIOLIB=3Dy
-> +CONFIG_GPIO_SYSFS=3Dy
-> +CONFIG_GPIO_PCH=3Dy
-> +
-> +CONFIG_I2C=3Dy
-> +CONFIG_I2C_EG20T=3Dy
-> +
-> +CONFIG_MMC=3Dy
-> +CONFIG_MMC_SDHCI=3Dy
-> +CONFIG_MMC_SDHCI_PCI=3Dy
-> +
-> +CONFIG_NETDEVICES=3Dy
-> +CONFIG_PCH_GBE=3Dy
-> +
-> +CONFIG_PCI=3Dy
-> +CONFIG_PCI_MSI=3Dy
-> +CONFIG_PCIE_XILINX=3Dy
-> +
-> +CONFIG_PCH_PHUB=3Dy
-> +
-> +CONFIG_RTC_CLASS=3Dy
-> +CONFIG_RTC_DRV_M41T80=3Dy
-> +
-> +CONFIG_SERIAL_8250=3Dy
-> +CONFIG_SERIAL_8250_CONSOLE=3Dy
-> +CONFIG_SERIAL_OF_PLATFORM=3Dy
-> +
-> +CONFIG_SPI=3Dy
-> +CONFIG_SPI_TOPCLIFF_PCH=3Dy
-> +
-> +CONFIG_USB=3Dy
-> +CONFIG_USB_EHCI_HCD=3Dy
-> +CONFIG_USB_OHCI_HCD=3Dy
-> diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-> index a606b3f9196c..3b74d4ed9140 100644
-> --- a/arch/mips/generic/Kconfig
-> +++ b/arch/mips/generic/Kconfig
-> @@ -9,6 +9,8 @@ config LEGACY_BOARDS
->  	  kernel is booted without being provided with an FDT via the UHI
->  	  boot protocol.
+>  	do_color_align =3D 0;
+> -	if (filp || (flags & MAP_SHARED))
+> +	if (filp || (flags & MAP_SHARED) || pgoff)
+>  		do_color_align =3D 1;
 > =20
-> +comment "Legacy (non-UHI/non-FIT) Boards"
-> +
->  config LEGACY_BOARD_SEAD3
->  	bool "Support MIPS SEAD-3 boards"
->  	select LEGACY_BOARDS
-> @@ -16,4 +18,14 @@ config LEGACY_BOARD_SEAD3
->  	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
->  	  development boards, which boot using a legacy boot protocol.
-> =20
-> +comment "FIT/UHI Boards"
-> +
-> +config FIT_IMAGE_FDT_BOSTON
-> +	bool "Include FDT for MIPS Boston boards"
-> +	help
-> +	  Enable this to include the FDT for the MIPS Boston development board
-> +	  from Imagination Technologies in the FIT kernel image. You should
-> +	  enable this if you wish to boot on a MIPS Boston board, as it is
-> +	  expected by the bootloader.
-> +
->  endif
-> diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.=
-its.S
-> index f67fbf1c8541..3390e2f80b80 100644
-> --- a/arch/mips/generic/vmlinux.its.S
-> +++ b/arch/mips/generic/vmlinux.its.S
-> @@ -29,3 +29,28 @@
->  		};
->  	};
->  };
-> +
-> +#ifdef CONFIG_FIT_IMAGE_FDT_BOSTON
-> +/ {
-> +	images {
-> +		fdt@boston {
-> +			description =3D "img,boston Device Tree";
-> +			data =3D /incbin/("boot/dts/img/boston.dtb");
-> +			type =3D "flat_dt";
-> +			arch =3D "mips";
-> +			compression =3D "none";
-> +			hash@0 {
-> +				algo =3D "sha1";
-> +			};
-> +		};
-> +	};
-> +
-> +	configurations {
-> +		conf@boston {
-> +			description =3D "Boston Linux kernel";
-> +			kernel =3D "kernel@0";
-> +			fdt =3D "fdt@boston";
-> +		};
-> +	};
-> +};
-> +#endif /* CONFIG_FIT_IMAGE_FDT_BOSTON */
-> --=20
-> 2.13.1
->=20
+>  	/* requesting a specific address */
 >=20
 
---oOB74oR0WcNeq9Zb
+
+
+--WRVeBubGGd1goe5ro7JhNHcA80vqCAEgr--
+
+--34NP37de5e4uCfkgovQtvowRD08FOI00R
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAllNlhYACgkQbAtpk944
-dnom4w//em9QGXZgvEarnXMO8kwiyMTR8BjBAeAIFMsvUB7StCJPRtU7pIh0iooA
-t/OPqSBcO3r+S9LeE6Mebcz1m+9EfuTgsW4QdFSN+NB9GMRc8wdrl/vwXrGSVdsu
-ka6OKdHktVvzauFLUBpqZwG3cIWUE0VqdwFvRzYJXYyQyNkp/dK82eLBp0JRARRQ
-p6IDvIurSbyCQxBFH0wPtLiHxa0Sj/0UQboCSefwmO5YtR6PIZ+aOZ8s4LR7SWuy
-H634lZ8Eqz4ahnIMkLigQsT/9c5oa7yMtYGY0lPlD3cmUpaQcVpz4TPBJIluavRC
-cc4iRgIlnoqhfYkrN/StmUkqKmPQcLJgRA9U1+8AWFmpkRGRJzKPYbAdO9rFZeYv
-1smjBf7rU+VFvCa1V/wbRvKCUj6UVv2wQ/d/AdSZPcnTLbqejGt5Gx+rHZr/pWCH
-RVynrbiSr/xlcx/KcDjLmpqEHPb3qTKnmprOxP1Gq0oj1BMhcqtNRAAw+eWsFexa
-fpV+edR5LS1OB1J4+Kt8SE5UCTmLEIbAyklJMqbS8toEMqwifIFOiAGDdn36dHD5
-nOR74w2O9ZEBSlL821saOKVF+9jafLaMov+sV2Jm6KxKcxLwRtcV7jnHxQ0dIpB+
-kejXo7nAPo4hV6vTXWiujBVqT9ysJm8/Um0Si9d6N339/cp6D+k=
-=JYUN
+iQJFBAEBCAAvFiEEyByTt/kEznHNdZethnSnH1g9EzIFAllNljkRHGhhdWtlQGhh
+dWtlLW0uZGUACgkQhnSnH1g9EzI+Bw//b6FCerSsPxiLeIZOScrPjgItvd7/wsZ+
+/wI4efeDZnSNUwH3iZXzdwTL9Armo+qrTn2TL0eRcqxGo113u+vu0NVS4Do8ezJh
+fOhnX0ZW1wj6n77KEpVk/4VFwNzkD4JvLLqfZ2Nw4LrTMr6aFpWehlwawBx8v37P
+zzZCg//T556W27TqTfx3w2LUnSvoZM6g+JUPcqdtijSVviaO2DL9FeSASAFe7WOb
+GIEL6QP2m5QAQg8ClaMsNcLi3vSQTXQhoM3Lwes6K6PdF6OF4MFHkUB9GlIAWtQf
+cmlZ935D+hmWumw18pCKHHg7O3wZZXClbd3vmCP1VzSnJkCMdBnb8LeKroALwKOB
++zVE4ZpwPHmZ5eEfEtkFDhrbr1lDpqG7nwEiaTDpS3PlNO6yfWfJNEHzu6tgWNXd
+Xo/RkITBY88lPIWRPWvvN9jznfMnbl7noQqOZ7f3at4Q1i3HNJrW4h+1fA8IzF0l
+AsH1GfZ6kMUb2K4eZoTfAgpGhGKVJzE4arF2GuXIEOHIsgHfMJQXSj2iMkXcm1I3
+skvIfuXWPiHcegih/uD/YnkMQcCCLXsUClN3I+P5fNk65PheNVhvPFWCU7Q2ItL5
+eez//OsYEpp4y1Xn1cEZRSPqROMSCDcygksNXySHr/Bu1/EhWnEZSs49v+d7f7VO
+Pit0Y7PuuSc=
+=0rkS
 -----END PGP SIGNATURE-----
 
---oOB74oR0WcNeq9Zb--
+--34NP37de5e4uCfkgovQtvowRD08FOI00R--

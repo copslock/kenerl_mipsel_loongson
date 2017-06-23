@@ -1,57 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 00:05:22 +0200 (CEST)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:33186 "EHLO
-        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993853AbdFWWFPdlHm- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jun 2017 00:05:15 +0200
-Received: by mail-pf0-f193.google.com with SMTP id w12so9168642pfk.0;
-        Fri, 23 Jun 2017 15:05:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 00:09:16 +0200 (CEST)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:34348
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993867AbdFWWJJgzHQ- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jun 2017 00:09:09 +0200
+Received: by mail-pf0-x241.google.com with SMTP id d5so9185435pfe.1
+        for <linux-mips@linux-mips.org>; Fri, 23 Jun 2017 15:09:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to:to
+         :to:to:to:to:to:to:subject:date:message-id:in-reply-to:references;
+        bh=BbbXQ9TxIFSlaYQfNVciTNl5Rer90HRKrh8uRVHMC+Q=;
+        b=AX0ppT5JiQR2/Mpx9ScIYJZqxzFq5QAJCulcUhouSRavqi8c3f7ycrRiYN4uZv3ZUP
+         E20242wvkc+7HDUuycDbG+0k3A1mBT8ddvM0hg50xe2STgV40RPpJvPlSUkjwjGYIqHp
+         6fuMJML/uJihaAnIiVWkJY70LYhzkp3D48mAeMzz+XIj0myWorOwqTWofl1jY0UxRSbn
+         qytAMDES7MQcInCliYrAFZr/3mc1u2HFzV9b8k3shCcGlV85fSoUGn0ontRYHptiZM8T
+         9VO9F76cxFi9IrSKhNAC4mR96vOCAAoDne7U0epuJhL9TiK2ls67CQQDQIl4N63LGuUJ
+         ZvJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mqg76eOTqrfBzpEAkMAUFHroRak3f8mLLNrK/wcIiH0=;
-        b=AtJLD7FurUN1lKOAcOqIZbjcU60hbDZgxuDuUrogzV1IYFjmsRBb25jdT+b/eg5UsJ
-         nhJLVb8Ug6lAIRym97EUgN2cILvQ1q6N5TY8SeDYzD/xLDCqw1nZVJxFQpplusUXG7Bk
-         oIBM1i9uLHaaeobNbRggMvOFbJPn3rfZBDbdD38kwQebdem42gqWz/+F+/r2QAbex97K
-         2532ZRHp2umzIUV1NUd5xINUANX3yl/FeKfI3hLBEEhAZ/z90qmFumKUdj4a8EP6dTqo
-         gffh6GlMUliClF992ZpvKjqjQ3oK2zFKt+n0BEBVlY2vNgRQdRC218BxfvmFwiAwbLP1
-         xKxQ==
-X-Gm-Message-State: AKS2vOxaa3lWmYpR33mVIed/70U7n6iZ+1dPx2zFJUmAGSvxwZHtm18i
-        l0xZeoiBc6g7Og==
-X-Received: by 10.99.161.25 with SMTP id b25mr10163918pgf.26.1498255509677;
-        Fri, 23 Jun 2017 15:05:09 -0700 (PDT)
-Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.gmail.com with ESMTPSA id z4sm10956536pfg.91.2017.06.23.15.05.08
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 23 Jun 2017 15:05:09 -0700 (PDT)
-Date:   Fri, 23 Jun 2017 17:05:08 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
-        p.zabel@pengutronix.de
-Subject: Re: [PATCH v5 05/16] watchdog: lantiq: add device tree binding
- documentation
-Message-ID: <20170623220508.2kgxfadjeee76eqt@rob-hp-laptop>
-References: <20170620223743.13735-1-hauke@hauke-m.de>
- <20170620223743.13735-6-hauke@hauke-m.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170620223743.13735-6-hauke@hauke-m.de>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <robherring2@gmail.com>
+        h=x-gm-message-state:from:to:to:to:to:to:to:to:to:to:to:to:to:to:to
+         :to:to:to:to:to:to:to:to:to:to:to:to:to:subject:date:message-id
+         :in-reply-to:references;
+        bh=BbbXQ9TxIFSlaYQfNVciTNl5Rer90HRKrh8uRVHMC+Q=;
+        b=MyGzZkVe7NMXzVE40PzUSpdAvEezjFGDi4TRR9+e3RZji3v4UhrgAPmifZytfY4hnk
+         sF8l8lSX935mW5SXEd0Zi3r7vJQ3KVr7J+yBYW/6FW8nYJuOLO1NdoiAqul5zXSWcYnC
+         Zk/n7SACsPJSBQKvYUEXJBwWdVQhngcWRYhEXcpf7T5b3blui+OIt0JCQ5p0S3QfP9cf
+         oj3B7YqTIkA+wUR5QPiW1+QfUUz1uy7j/OZ/8QD2xvCwhOhykM+R0WoG8CGg6X5qP3S0
+         P4CKl5JD+uLG7NQ1NgdmTZ9qkcEiC3zWUm7TfKZ3NNhXjrZJ9QGn0n01MPnQeRtdHOqF
+         xk2A==
+X-Gm-Message-State: AKS2vOwR9BmyjwFXr9zDWje8bCAO5mHbL42PL+wAr/ww7dIltK18Bqax
+        LgANijox2KbilSLT
+X-Received: by 10.98.30.65 with SMTP id e62mr10391690pfe.127.1498255743624;
+        Fri, 23 Jun 2017 15:09:03 -0700 (PDT)
+Received: from localhost ([216.38.154.21])
+        by smtp.gmail.com with ESMTPSA id c75sm13824545pga.38.2017.06.23.15.09.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 23 Jun 2017 15:09:02 -0700 (PDT)
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     rth@twiddle.net
+To:     ink@jurassic.park.msu.ru
+To:     mattst88@gmail.com
+To:     vgupta@synopsys.com
+To:     linux@armlinux.org.uk
+To:     catalin.marinas@arm.com
+To:     will.deacon@arm.com
+To:     geert@linux-m68k.org
+To:     ralf@linux-mips.org
+To:     ysato@users.sourceforge.jp
+To:     dalias@libc.org
+To:     davem@davemloft.net
+To:     cmetcalf@mellanox.com
+To:     gxt@mprc.pku.edu.cn
+To:     bhelgaas@google.com
+To:     viro@zeniv.linux.org.uk
+To:     akpm@linux-foundation.org
+To:     linux-alpha@vger.kernel.org
+To:     linux-kernel@vger.kernel.org
+To:     linux-snps-arc@lists.infradead.org
+To:     linux-arm-kernel@lists.infradead.org
+To:     linux-m68k@lists.linux-m68k.org
+To:     linux-mips@linux-mips.org
+To:     linux-sh@vger.kernel.org
+To:     sparclinux@vger.kernel.org
+To:     linux-pci@vger.kernel.org
+To:     hch@infradead.org
+Subject: Re: [PATCH] pci:  Add and use PCI_GENERIC_SETUP Kconfig entry
+Date:   Fri, 23 Jun 2017 15:08:56 -0700
+Message-Id: <20170623220857.28774-1-palmer@dabbelt.com>
+X-Mailer: git-send-email 2.13.0
+In-Reply-To: <20170623220104.GE31455@jhogan-linux.le.imgtec.org>
+References: <20170623220104.GE31455@jhogan-linux.le.imgtec.org>
+Return-Path: <palmer@dabbelt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58774
+X-archive-position: 58775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: palmer@dabbelt.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,50 +91,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 21, 2017 at 12:37:32AM +0200, Hauke Mehrtens wrote:
-> The binding was not documented before, add the documentation now.
-> 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-> new file mode 100644
-> index 000000000000..1d41142ca55f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-> @@ -0,0 +1,22 @@
-> +Lantiq WTD watchdog binding
-> +============================
-> +
-> +This describes the binding of the Lantiq watchdog driver.
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties:
-> +- compatible		: Should be one of
-> +				"lantiq,wdt"
-> +				"lantiq,xrx100-wdt"
-> +				"lantiq,falcon-wdt"
-> +- regmap		: A phandle to the RCU syscon (required for
-> +			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
+On Fri, 23 Jun 2017 15:01:04 PDT (-0700), james.hogan@imgtec.com wrote:
+> On Fri, Jun 23, 2017 at 02:45:38PM -0700, Palmer Dabbelt wrote:
+>> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+>> index 4c1a35f15838..86872246951c 100644
+>> --- a/arch/arm/Kconfig
+>> +++ b/arch/arm/Kconfig
+>> @@ -96,6 +96,7 @@ config ARM
+>>      select PERF_USE_VMALLOC
+>>      select RTC_LIB
+>>      select SYS_SUPPORTS_APM_EMULATION
+>> +    select PCI_GENERIC_SETUP
+>>      # Above selects are sorted alphabetically; please add new ones
+>>      # according to that.  Thanks.
+>
+> This comment seems to suggest PCI_GENERIC_SETUP should be added a few
+> lines up to preserve the alphabetical sorting.
+>
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index b2024db225a9..6c684d8c8816 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -115,6 +115,7 @@ config ARM64
+>>      select SPARSE_IRQ
+>>      select SYSCTL_EXCEPTION_TRACE
+>>      select THREAD_INFO_IN_TASK
+>> +    select PCI_GENERIC_SETUP
+>
+> Here too.
+>
+>> diff --git a/arch/tile/Kconfig b/arch/tile/Kconfig
+>> index 4583c0320059..6679af85a882 100644
+>> --- a/arch/tile/Kconfig
+>> +++ b/arch/tile/Kconfig
+>> @@ -33,6 +33,7 @@ config TILE
+>>      select USER_STACKTRACE_SUPPORT
+>>      select USE_PMC if PERF_EVENTS
+>>      select VIRT_TO_BUS
+>> +    select PCI_GENERIC_SETUP
+>
+> and here
+>
+> Otherwise
+> Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-regmap is a Linuxism. I'd suggest "lantiq,rcu" instead.
-
-> +
-> +-------------------------------------------------------------------------------
-> +Example for the watchdog on the xRX200 SoCs:
-> +		watchdog@803f0 {
-> +			compatible = "lantiq,xrx100-wdt";
-
-Why did you remove the xrx200 compatible? You should add it to the 
-compatible list (with the fallback).
-
-> +			reg = <0x803f0 0x10>;
-> +
-> +			regmap = <&rcu0>;
-> +		};
-> -- 
-> 2.11.0
-> 
+Whoops -- I guess I was just on autopilot after seeing the first one not be
+alphabetized.  A fixed patch is in a threaded message.

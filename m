@@ -1,66 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 11:24:06 +0200 (CEST)
-Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:33428
-        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992028AbdFXJX6esB9A convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 24 Jun 2017 11:23:58 +0200
-Received: by mail-it0-x242.google.com with SMTP id x12so8623795itb.0;
-        Sat, 24 Jun 2017 02:23:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2017 17:09:01 +0200 (CEST)
+Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:35838
+        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993901AbdFXPIxFcV7W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Jun 2017 17:08:53 +0200
+Received: by mail-pf0-x243.google.com with SMTP id s66so11673020pfs.2;
+        Sat, 24 Jun 2017 08:08:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=HVRzzzp3Yx4lI7QkPN8rnJ8clwMXp0/xJbBOpFMfXEg=;
-        b=lHJtE0jnQe0nCpzYuBLNlhVpBzf0DuwbwuXal5m53e9DHICmFy3dofUfaz2AqS+zww
-         LfFKyNcxPz5Jh57gPHbOyyBgLPveNbojRxRY0ZI0PpJ3u7/N7/3xXUvjbsgPrBvzzmr9
-         zABW9YKtTQqYY82Tu8sG977QO+f/lXVjsJU29nEhvmG4PMto525WqIJai2gO285yG8Bk
-         cMqpKQ3vClZptiXH1/WAyFQin21cHR6rpgaFmG4w93H5XcJaSECWCsAH6yLG56q98cZs
-         Vu+LZPRuE4KPGorOHjRl8JIoIS23LwaxL0nH/QahfaZHUfw4Cyk9YYT5w/zUbAGelC9t
-         YRIQ==
+        h=sender:subject:to:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=16E7wkPxU7ZP5kdFTxJFcC88q0K4sDxq6OIOk+zXe6w=;
+        b=EHtY9aBXF7Z0sLX6FYXbOw0aEl2lSx+g7SpgaurTuAM+I0UmwTyI/CwB/YovI30sox
+         6JCO0lpkLCaX+M/BKgL8kD0z4An7cBFZrAW3O/D1nX/FiGZ1WTUC6TjXzIM1CeZ1/WPj
+         CxfMmX41qNGDv/XnZ5VavHxiG9KOx4p1BQWnfPN1lepaqrgHnFE4OaNxImYy4yjJ2faM
+         yIR9cAweSnEzA6muYfZ+pIveBVIuo5Lx81WE49Qmp7173cNLMZxBOEO2pIQQSoUbN9yn
+         1Bw8QMxWdso92f7HqiDlWOOUaNyVdhYn6EE25lQWBkI05fWTp+io/vn7EkygsT6Yr9Dg
+         iYuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=HVRzzzp3Yx4lI7QkPN8rnJ8clwMXp0/xJbBOpFMfXEg=;
-        b=KEfXpwjI2YfKN3LZ20fjR9WZRRVIRHK5wKvldd1UmhrtY0E9dT3yo8l6XDj9Y+2Sox
-         CbQZutX/oAZ7QznaB1rSydGx/LBKMkPhse14j2uWvV+02GJCwsstMSDEvPfea4FW18kN
-         yuQ9wGpZGjuCQCHMWFBC8O8O45Bb1mSFPLvTF6Vl5wtZJ5Wj0qMjn4xLh/SsaEYhOQq4
-         sEhTCnK8v/1xUqmuy8BmDIiS/P7RPmPjTuJRyO2w6Sq9jQZDjDq6BxTfLfPYLI1cInMM
-         hO+iVl57S/1+gRJufqcEJEFTZHBe1zEboIb+ZUcxyoyCkdsDsTk5QGZ2cK5TBlNJ5hSQ
-         ho3g==
-X-Gm-Message-State: AKS2vOwgWI/ubydKZyqaSZzmPKIAkKHn6qAduYe/8xvhLX2XJHyBhxFo
-        infhIGV3f5b2Elm4IWVZnxjTJBqJHg==
-X-Received: by 10.36.219.132 with SMTP id c126mr12129395itg.73.1498296232691;
- Sat, 24 Jun 2017 02:23:52 -0700 (PDT)
+        h=x-gm-message-state:sender:subject:to:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=16E7wkPxU7ZP5kdFTxJFcC88q0K4sDxq6OIOk+zXe6w=;
+        b=gLzRLUnTRToHk4GJokFzvUYQut1kPYrA9ep4/FrQgbM52SSeMIcSk9qbmEUy67J53t
+         wzA+4DUGDnTHvXfmA0pemNuGNJgDukpztZzy4MRDeQbx87Tx+uOZ+Of6BM/tMYvy3SKC
+         Fs6iMUJCvAfhLYh1COoYrhcx6PluBqcuv32z+UFS5sPn/80T2pDuRzL3ArOZY57yfhGf
+         tTkCn78L7UJ2y6RsLVjuHyuzO1hygJYZkm0NhcSuAKwpd9V7LDbwnXMSiSzYLteORIbr
+         V5UoJ3YcaYNPUs1jZpUcAXk7X8D7gOWAxHPslncHOOPPlDoA+jg8WDjI2DBDqliPE+ya
+         B0Bg==
+X-Gm-Message-State: AKS2vOx4AY4UkBtTieajAiFQ1W9Z6EOHRdT5qRMKkmtqxGbUxtonMUo8
+        1LDrhEn+ry02Yg==
+X-Received: by 10.99.97.146 with SMTP id v140mr13586994pgb.62.1498316926968;
+        Sat, 24 Jun 2017 08:08:46 -0700 (PDT)
+Received: from bigtime.twiddle.net (97-113-165-157.tukw.qwest.net. [97.113.165.157])
+        by smtp.googlemail.com with ESMTPSA id w190sm20998096pgb.30.2017.06.24.08.08.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 24 Jun 2017 08:08:45 -0700 (PDT)
+Subject: Re: [PATCH] pci: Add and use PCI_GENERIC_SETUP Kconfig entry
+To:     Palmer Dabbelt <palmer@dabbelt.com>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@synopsys.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, geert@linux-m68k.org,
+        ralf@linux-mips.org, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, cmetcalf@mellanox.com, gxt@mprc.pku.edu.cn,
+        bhelgaas@google.com, viro@zeniv.linux.org.uk,
+        akpm@linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-m68k@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        hch@infradead.org
+References: <20170623220104.GE31455@jhogan-linux.le.imgtec.org>
+ <20170623220857.28774-1-palmer@dabbelt.com>
+ <20170623220857.28774-2-palmer@dabbelt.com>
+From:   Richard Henderson <rth@twiddle.net>
+Message-ID: <60bd9a54-0220-5d52-8843-ea3a654020a6@twiddle.net>
+Date:   Sat, 24 Jun 2017 08:08:43 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
-Received: by 10.107.144.85 with HTTP; Sat, 24 Jun 2017 02:23:52 -0700 (PDT)
-In-Reply-To: <1B97A9D2-5753-4143-AB56-389280FDBA64@imgtec.com>
-References: <1498144016-9111-1-git-send-email-chenhc@lemote.com>
- <1498144016-9111-10-git-send-email-chenhc@lemote.com> <20170623145453.GB31455@jhogan-linux.le.imgtec.org>
- <CAAhV-H5NO1otR1YmyobZMk5Sw_GpgATVWMn5rNwmaMFOUFuctQ@mail.gmail.com> <1B97A9D2-5753-4143-AB56-389280FDBA64@imgtec.com>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Sat, 24 Jun 2017 17:23:52 +0800
-X-Google-Sender-Auth: IvocJZptBxdTV3GqIGoBskw4XIw
-Message-ID: <CAAhV-H4=D0QqKA=M48e8r+3x2N3SXEDTYLawxU5+sYndJ1fZ9Q@mail.gmail.com>
-Subject: Re: [PATCH V7 9/9] MIPS: Loongson: Introduce and use LOONGSON_LLSC_WAR
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <chenhuacai@gmail.com>
+In-Reply-To: <20170623220857.28774-2-palmer@dabbelt.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <rth7680@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58789
+X-archive-position: 58790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: rth@twiddle.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,85 +83,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-You are right, but it seems like __WEAK_LLSC_MB is already the best
-name for this case. Maybe I define a macro named __VERY_WEAK_LLSC_MB
-to expand a "sync" on Loongson?
+On 06/23/2017 03:08 PM, Palmer Dabbelt wrote:
+> We wanted to add RISC-V to the list of architectures that used the
+> generic PCI setup-irq.o inside the Makefile and it was suggested that
+> instead we define a Kconfig entry and use that.
+> 
+> I've done very minimal testing on this: I just checked to see that
+> an aarch64 defconfig still build setup-irq.o with the patch applied.
+> The intention is that this patch doesn't change the behavior of any
+> build.
+> 
+> Signed-off-by: Palmer Dabbelt<palmer@dabbelt.com>
+> Reviewed-by: James Hogan<james.hogan@imgtec.com>
+> ---
+>   arch/alpha/Kconfig     |  1 +
 
-Huacai
+Acked-by: Richard Henderson <rth@twiddle.net>
 
-On Sat, Jun 24, 2017 at 5:02 PM, James Hogan <james.hogan@imgtec.com> wrote:
-> On 24 June 2017 09:55:14 BST, Huacai Chen <chenhc@lemote.com> wrote:
->>Hi, James,
->>
->>smp_mb__before_llsc() can not be used in all cases, e.g., in
->>arch/mips/include/asm/spinlock.h and other similar cases which has a
->>label before ll/lld. So, I think it is better to keep it as is to keep
->>consistency.
->
-> I know. I didn't mean use smp_mb_before_llsc directly, i just meant use something similar directly before the ll that would expand to nothing on non loongson kernels and still avoid the mass duplication of inline asm which leads to divergence, bitrot, and maintenance problems.
->
-> cheers
-> James
->
->>
->>Huacai
->>
->>On Fri, Jun 23, 2017 at 10:54 PM, James Hogan <james.hogan@imgtec.com>
->>wrote:
->>> On Thu, Jun 22, 2017 at 11:06:56PM +0800, Huacai Chen wrote:
->>>> diff --git a/arch/mips/include/asm/atomic.h
->>b/arch/mips/include/asm/atomic.h
->>>> index 0ab176b..e0002c58 100644
->>>> --- a/arch/mips/include/asm/atomic.h
->>>> +++ b/arch/mips/include/asm/atomic.h
->>>> @@ -56,6 +56,22 @@ static __inline__ void atomic_##op(int i,
->>atomic_t * v)                          \
->>>>               "       .set    mips0
->> \n"   \
->>>>               : "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)
->>       \
->>>>               : "Ir" (i));
->>       \
->>>> +     } else if (kernel_uses_llsc && LOONGSON_LLSC_WAR) {
->>       \
->>>> +             int temp;
->>       \
->>>> +
->>       \
->>>> +             do {
->>       \
->>>> +                     __asm__ __volatile__(
->>       \
->>>> +                     "       .set    "MIPS_ISA_LEVEL"
->> \n"   \
->>>> +                     __WEAK_LLSC_MB
->>       \
->>>> +                     "       ll      %0, %1          # atomic_" #op
->>"\n"   \
->>>> +                     "       " #asm_op " %0, %2
->> \n"   \
->>>> +                     "       sc      %0, %1
->> \n"   \
->>>> +                     "       .set    mips0
->> \n"   \
->>>> +                     : "=&r" (temp), "+" GCC_OFF_SMALL_ASM()
->>(v->counter)      \
->>>> +                     : "Ir" (i));
->>       \
->>>> +             } while (unlikely(!temp));
->>       \
->>>
->>> Can loongson use the common versions of all these bits of assembly by
->>> adding a LOONGSON_LLSC_WAR dependent smp_mb__before_llsc()-like macro
->>> before the asm?
->>>
->>> It would save a lot of duplication, avoid potential bitrot and
->>> divergence, and make the patch much easier to review.
->>>
->>> Cheers
->>> James
->
->
-> --
-> James Hogan
->
+
+r~

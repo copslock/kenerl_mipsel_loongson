@@ -1,64 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jun 2017 11:38:28 +0200 (CEST)
-Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:33214
-        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993876AbdFZJiUeOALK convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 26 Jun 2017 11:38:20 +0200
-Received: by mail-it0-x241.google.com with SMTP id x12so12003095itb.0;
-        Mon, 26 Jun 2017 02:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=Lmvl/JCWqHPo+HnIsI6fYu1WHXcx2l0W7kzI93Jm4jA=;
-        b=pHsTYIX1CGIKiWz4dJej6UeIaqtA5bqUky+G9+3GdFMfYdxnYWwpg/2uvSLb0lADrY
-         We9CPxqQY86PEhvXvK+D+qYxFzlaGNGfk5sGfFnfoRrObimiQgequ9piIOCO0IEa4HY2
-         xyyNi1aeKJScwB3sP8Bsj8IPf0qWFZfR3AtI4zHayIYx/rOhKl3/3LicTtEe0TE21Oio
-         a7tRA2XHqQ/QPLfA7qXqdZOe2PoSMUp4qH/r3VKD+DTg5k794F7sWHDfilT1dUynp5TZ
-         8iW9thYwZp7eHd/S8Ml0NLq22u2PcZMCDLfQzUjd49dFv0Lu/vNWgwHCSJsvKm3ydIr9
-         /G/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=Lmvl/JCWqHPo+HnIsI6fYu1WHXcx2l0W7kzI93Jm4jA=;
-        b=Vuz1jVazLFmNjQfNNZEfUE4MN1CEbdUoUi+llE6xCNS3b+bX3FdysBirOU0wiBpWxB
-         PfB/1/WV+IGGFU9i0Gf3TmvXKhjZBEg19ap4B1/h5Grf5RWP0Ai9FR3va7NCi+L7dSDz
-         gKhOi/JERHfkE3svC38g9Rh+0Ys+e8mGHacfB8mMEBX/3CQzTUB6x+tZziYpzdgimLiK
-         o73bZ/EfwTqw0IEnO/9BGxHHkHefa15VUJ0BByA+4DJXIU1Z8Io6ywqqLNGu+A04RRgw
-         YeSsL4WatA00pWNeEXcujsQAMIGyg4YhmNoQbXTYs8mtX8d6TURg275+gu6FH66lMTz3
-         f0mg==
-X-Gm-Message-State: AKS2vOyF33Z+6RAY5QVIc8epNcRBYvCLytsRWT72Kbl/hGPmM7tw4K4B
-        Y1evpc5uGiBPH3z1O6aJsE43RtQ/kw==
-X-Received: by 10.36.219.132 with SMTP id c126mr22507745itg.73.1498469894784;
- Mon, 26 Jun 2017 02:38:14 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.144.85 with HTTP; Mon, 26 Jun 2017 02:38:14 -0700 (PDT)
-In-Reply-To: <20170626082637.GE6973@jhogan-linux.le.imgtec.org>
-References: <1498144016-9111-1-git-send-email-chenhc@lemote.com>
- <1498144016-9111-10-git-send-email-chenhc@lemote.com> <20170623145453.GB31455@jhogan-linux.le.imgtec.org>
- <CAAhV-H5NO1otR1YmyobZMk5Sw_GpgATVWMn5rNwmaMFOUFuctQ@mail.gmail.com>
- <1B97A9D2-5753-4143-AB56-389280FDBA64@imgtec.com> <CAAhV-H4=D0QqKA=M48e8r+3x2N3SXEDTYLawxU5+sYndJ1fZ9Q@mail.gmail.com>
- <20170626082637.GE6973@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jun 2017 11:42:04 +0200 (CEST)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:46416 "EHLO smtpbgbr2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993876AbdFZJlzalHrK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Jun 2017 11:41:55 +0200
+X-QQ-mid: bizesmtp16t1498470057tqcsjz43
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Mon, 26 Jun 2017 17:40:51 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FMF0C00A0000000
+X-QQ-FEAT: X/bTw5V+V7VEW/iDmo6kJLnKD0XrXbQ1XwVBWvCzV4xMKUcTJGIC4k3zDfBRI
+        hrbzMmz6IFNLnv1BqDd0I0b5iDmxj9KTbmbUsaCFtZ5/ZmFV1lzqgSbrLEomoLzCvRJeEei
+        wk/KOJQzhiI+T/oD0SDmzG1vVOibVRcazwF3KK0+js/tBmLGaAuC8D1gwb6gEtZYJVX2+zN
+        NoAY6pnaZ0ijLxjBJIH6AKzFEHRyPGrVOsJu+evdBevbWuj75n2eJwHD1n//FIRa7sQyHtf
+        sy9OehkYcvkfaghRuBnJsXeOledY47q2oHWcr5l/w2cZ9G
+X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
-Date:   Mon, 26 Jun 2017 17:38:14 +0800
-X-Google-Sender-Auth: VKMZbQkgVQjgC3mjSnUz1BO9g74
-Message-ID: <CAAhV-H7-Y6K5T6HVWqL7sfUoDdAr9j4NECbATQdBAAa-4Ty4Lg@mail.gmail.com>
-Subject: Re: [PATCH V7 9/9] MIPS: Loongson: Introduce and use LOONGSON_LLSC_WAR
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <chenhuacai@gmail.com>
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V8 8/9] MIPS: Add __cpu_full_name[] to make CPU names more human-readable
+Date:   Mon, 26 Jun 2017 17:41:42 +0800
+Message-Id: <1498470103-7631-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58799
+X-archive-position: 58800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,103 +48,237 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-OK, I have reworked patch 8 and patch 9.
+In /proc/cpuinfo, we keep "cpu model" as is, since GCC should use it
+for -march=native. Besides, we add __cpu_full_name[] to describe the
+processor in a more human-readable manner. The full name is displayed
+as "model name" in cpuinfo, which is needed by some userspace tools
+such as gnome-system-monitor.
 
-Huacai
+The CPU frequency in "model name" is the default value (highest), and
+there is also a "CPU MHz" whose value can be changed by cpufreq.
 
-On Mon, Jun 26, 2017 at 4:26 PM, James Hogan <james.hogan@imgtec.com> wrote:
-> Hi Huacai,
->
-> On Sat, Jun 24, 2017 at 05:23:52PM +0800, Huacai Chen wrote:
->> You are right, but it seems like __WEAK_LLSC_MB is already the best
->> name for this case. Maybe I define a macro named __VERY_WEAK_LLSC_MB
->> to expand a "sync" on Loongson?
->
-> I suppose so.
->
-> Can you clarify what very weak ordering means in this context? I.e. in
-> what case is it insufficient to have the sync before the label rather
-> than before every ll in the retry loop?
->
-> Cheers
-> James
->
->>
->> Huacai
->>
->> On Sat, Jun 24, 2017 at 5:02 PM, James Hogan <james.hogan@imgtec.com> wrote:
->> > On 24 June 2017 09:55:14 BST, Huacai Chen <chenhc@lemote.com> wrote:
->> >>Hi, James,
->> >>
->> >>smp_mb__before_llsc() can not be used in all cases, e.g., in
->> >>arch/mips/include/asm/spinlock.h and other similar cases which has a
->> >>label before ll/lld. So, I think it is better to keep it as is to keep
->> >>consistency.
->> >
->> > I know. I didn't mean use smp_mb_before_llsc directly, i just meant use something similar directly before the ll that would expand to nothing on non loongson kernels and still avoid the mass duplication of inline asm which leads to divergence, bitrot, and maintenance problems.
->> >
->> > cheers
->> > James
->> >
->> >>
->> >>Huacai
->> >>
->> >>On Fri, Jun 23, 2017 at 10:54 PM, James Hogan <james.hogan@imgtec.com>
->> >>wrote:
->> >>> On Thu, Jun 22, 2017 at 11:06:56PM +0800, Huacai Chen wrote:
->> >>>> diff --git a/arch/mips/include/asm/atomic.h
->> >>b/arch/mips/include/asm/atomic.h
->> >>>> index 0ab176b..e0002c58 100644
->> >>>> --- a/arch/mips/include/asm/atomic.h
->> >>>> +++ b/arch/mips/include/asm/atomic.h
->> >>>> @@ -56,6 +56,22 @@ static __inline__ void atomic_##op(int i,
->> >>atomic_t * v)                          \
->> >>>>               "       .set    mips0
->> >> \n"   \
->> >>>>               : "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)
->> >>       \
->> >>>>               : "Ir" (i));
->> >>       \
->> >>>> +     } else if (kernel_uses_llsc && LOONGSON_LLSC_WAR) {
->> >>       \
->> >>>> +             int temp;
->> >>       \
->> >>>> +
->> >>       \
->> >>>> +             do {
->> >>       \
->> >>>> +                     __asm__ __volatile__(
->> >>       \
->> >>>> +                     "       .set    "MIPS_ISA_LEVEL"
->> >> \n"   \
->> >>>> +                     __WEAK_LLSC_MB
->> >>       \
->> >>>> +                     "       ll      %0, %1          # atomic_" #op
->> >>"\n"   \
->> >>>> +                     "       " #asm_op " %0, %2
->> >> \n"   \
->> >>>> +                     "       sc      %0, %1
->> >> \n"   \
->> >>>> +                     "       .set    mips0
->> >> \n"   \
->> >>>> +                     : "=&r" (temp), "+" GCC_OFF_SMALL_ASM()
->> >>(v->counter)      \
->> >>>> +                     : "Ir" (i));
->> >>       \
->> >>>> +             } while (unlikely(!temp));
->> >>       \
->> >>>
->> >>> Can loongson use the common versions of all these bits of assembly by
->> >>> adding a LOONGSON_LLSC_WAR dependent smp_mb__before_llsc()-like macro
->> >>> before the asm?
->> >>>
->> >>> It would save a lot of duplication, avoid potential bitrot and
->> >>> divergence, and make the patch much easier to review.
->> >>>
->> >>> Cheers
->> >>> James
->> >
->> >
->> > --
->> > James Hogan
->> >
+This is only used by Loongson now (ICT is dropped in cpu name, and cpu
+name can be overwritten by BIOS).
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/cpu-info.h                   |  2 ++
+ arch/mips/include/asm/mach-loongson64/boot_param.h |  1 +
+ arch/mips/include/asm/time.h                       |  2 ++
+ arch/mips/kernel/cpu-probe.c                       | 25 ++++++++++++++++------
+ arch/mips/kernel/proc.c                            |  6 ++++++
+ arch/mips/kernel/time.c                            |  2 ++
+ arch/mips/loongson64/common/env.c                  | 25 ++++++++++++++++++++++
+ 7 files changed, 57 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+index cd6efb0..8a8a414 100644
+--- a/arch/mips/include/asm/cpu-info.h
++++ b/arch/mips/include/asm/cpu-info.h
+@@ -121,7 +121,9 @@ extern void cpu_probe(void);
+ extern void cpu_report(void);
+ 
+ extern const char *__cpu_name[];
++extern const char *__cpu_full_name[];
+ #define cpu_name_string()	__cpu_name[raw_smp_processor_id()]
++#define cpu_full_name_string()	__cpu_full_name[raw_smp_processor_id()]
+ 
+ struct seq_file;
+ struct notifier_block;
+diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
+index 9f9bb9c..b7ed31b 100644
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -57,6 +57,7 @@ struct efi_cpuinfo_loongson {
+ 	u16 reserved_cores_mask;
+ 	u32 cpu_clock_freq; /* cpu_clock */
+ 	u32 nr_cpus;
++	char cpuname[64];
+ } __packed;
+ 
+ #define MAX_UARTS 64
+diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
+index 17d4cd2..efbfc48 100644
+--- a/arch/mips/include/asm/time.h
++++ b/arch/mips/include/asm/time.h
+@@ -35,6 +35,8 @@ extern int rtc_mips_set_mmss(unsigned long);
+  */
+ extern void plat_time_init(void);
+ 
++extern unsigned int mips_cpu_frequency;
++
+ /*
+  * mips_hpt_frequency - must be set if you intend to use an R4k-compatible
+  * counter as a timer interrupt source.
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 09462bb..e1df437 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1474,30 +1474,40 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 		switch (c->processor_id & PRID_REV_MASK) {
+ 		case PRID_REV_LOONGSON2E:
+ 			c->cputype = CPU_LOONGSON2;
+-			__cpu_name[cpu] = "ICT Loongson-2";
++			__cpu_name[cpu] = "Loongson-2";
+ 			set_elf_platform(cpu, "loongson2e");
+ 			set_isa(c, MIPS_CPU_ISA_III);
+ 			c->fpu_msk31 |= FPU_CSR_CONDX;
++			__cpu_full_name[cpu] = "Loongson-2E";
+ 			break;
+ 		case PRID_REV_LOONGSON2F:
+ 			c->cputype = CPU_LOONGSON2;
+-			__cpu_name[cpu] = "ICT Loongson-2";
++			__cpu_name[cpu] = "Loongson-2";
+ 			set_elf_platform(cpu, "loongson2f");
+ 			set_isa(c, MIPS_CPU_ISA_III);
+ 			c->fpu_msk31 |= FPU_CSR_CONDX;
++			__cpu_full_name[cpu] = "Loongson-2F";
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R1:
+ 			c->cputype = CPU_LOONGSON3;
+-			__cpu_name[cpu] = "ICT Loongson-3";
++			__cpu_name[cpu] = "Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			__cpu_full_name[cpu] = "Loongson-3A R1 (Loongson-3A1000)";
+ 			break;
+ 		case PRID_REV_LOONGSON3B_R1:
++			c->cputype = CPU_LOONGSON3;
++			__cpu_name[cpu] = "Loongson-3";
++			set_elf_platform(cpu, "loongson3b");
++			set_isa(c, MIPS_CPU_ISA_M64R1);
++			__cpu_full_name[cpu] = "Loongson-3B R1 (Loongson-3B1000)";
++			break;
+ 		case PRID_REV_LOONGSON3B_R2:
+ 			c->cputype = CPU_LOONGSON3;
+-			__cpu_name[cpu] = "ICT Loongson-3";
++			__cpu_name[cpu] = "Loongson-3";
+ 			set_elf_platform(cpu, "loongson3b");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			__cpu_full_name[cpu] = "Loongson-3B R2 (Loongson-3B1500)";
+ 			break;
+ 		}
+ 
+@@ -1832,15 +1842,17 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ 		switch (c->processor_id & PRID_REV_MASK) {
+ 		case PRID_REV_LOONGSON3A_R2:
+ 			c->cputype = CPU_LOONGSON3;
+-			__cpu_name[cpu] = "ICT Loongson-3";
++			__cpu_name[cpu] = "Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
++			__cpu_full_name[cpu] = "Loongson-3A R2 (Loongson-3A2000)";
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R3:
+ 			c->cputype = CPU_LOONGSON3;
+-			__cpu_name[cpu] = "ICT Loongson-3";
++			__cpu_name[cpu] = "Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
++			__cpu_full_name[cpu] = "Loongson-3A R3 (Loongson-3A3000)";
+ 			break;
+ 		}
+ 
+@@ -1960,6 +1972,7 @@ EXPORT_SYMBOL(__ua_limit);
+ #endif
+ 
+ const char *__cpu_name[NR_CPUS];
++const char *__cpu_full_name[NR_CPUS];
+ const char *__elf_platform;
+ 
+ void cpu_probe(void)
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 4eff2ae..946ffee 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -14,6 +14,7 @@
+ #include <asm/mipsregs.h>
+ #include <asm/processor.h>
+ #include <asm/prom.h>
++#include <asm/time.h>
+ 
+ unsigned int vced_count, vcei_count;
+ 
+@@ -62,6 +63,11 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	seq_printf(m, fmt, __cpu_name[n],
+ 		      (version >> 4) & 0x0f, version & 0x0f,
+ 		      (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
++	if (__cpu_full_name[n])
++		seq_printf(m, "model name\t\t: %s\n", __cpu_full_name[n]);
++	if (mips_cpu_frequency)
++		seq_printf(m, "CPU MHz\t\t\t: %u.%02u\n",
++		      mips_cpu_frequency / 1000000, (mips_cpu_frequency / 10000) % 100);
+ 	seq_printf(m, "BogoMIPS\t\t: %u.%02u\n",
+ 		      cpu_data[n].udelay_val / (500000/HZ),
+ 		      (cpu_data[n].udelay_val / (5000/HZ)) % 100);
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index c036157..7350944 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -69,6 +69,8 @@ EXPORT_SYMBOL(perf_irq);
+  * 2) calculate a couple of cached variables for later usage
+  */
+ 
++unsigned int mips_cpu_frequency;
++EXPORT_SYMBOL_GPL(mips_cpu_frequency);
+ unsigned int mips_hpt_frequency;
+ EXPORT_SYMBOL_GPL(mips_hpt_frequency);
+ 
+diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
+index 1e8a955..016f668 100644
+--- a/arch/mips/loongson64/common/env.c
++++ b/arch/mips/loongson64/common/env.c
+@@ -18,6 +18,7 @@
+  * option) any later version.
+  */
+ #include <linux/export.h>
++#include <asm/time.h>
+ #include <asm/bootinfo.h>
+ #include <loongson.h>
+ #include <boot_param.h>
+@@ -25,6 +26,7 @@
+ 
+ u32 cpu_clock_freq;
+ EXPORT_SYMBOL(cpu_clock_freq);
++static char cpu_full_name[64];
+ struct efi_memory_map_loongson *loongson_memmap;
+ struct loongson_system_configuration loongson_sysconf;
+ 
+@@ -151,6 +153,8 @@ void __init prom_init_env(void)
+ 	loongson_sysconf.nr_nodes = (loongson_sysconf.nr_cpus +
+ 		loongson_sysconf.cores_per_node - 1) /
+ 		loongson_sysconf.cores_per_node;
++	if (!strncmp(ecpu->cpuname, "Loongson", 8))
++		strncpy(cpu_full_name, ecpu->cpuname, sizeof(cpu_full_name));
+ 
+ 	loongson_sysconf.pci_mem_start_addr = eirq_source->pci_mem_start_addr;
+ 	loongson_sysconf.pci_mem_end_addr = eirq_source->pci_mem_end_addr;
+@@ -210,5 +214,26 @@ void __init prom_init_env(void)
+ 			break;
+ 		}
+ 	}
++	mips_cpu_frequency = cpu_clock_freq;
+ 	pr_info("CpuClock = %u\n", cpu_clock_freq);
+ }
++
++static int __init overwrite_cpu_fullname(void)
++{
++	int cpu;
++	char freq[12];
++
++	if (cpu_full_name[0] == 0)
++		strcpy(cpu_full_name, __cpu_full_name[0]);
++
++	/* Append default cpu frequency with round-off */
++	sprintf(freq, " @ %uMHz", (cpu_clock_freq + 500000) / 1000000);
++	strncat(cpu_full_name, freq, sizeof(cpu_full_name));
++
++	for (cpu = 0; cpu < NR_CPUS; cpu++)
++		__cpu_full_name[cpu] = cpu_full_name;
++
++	return 0;
++}
++
++core_initcall(overwrite_cpu_fullname);
+-- 
+2.7.0

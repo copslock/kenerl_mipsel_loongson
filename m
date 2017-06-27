@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2017 14:50:23 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46522 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2017 14:51:17 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:47346 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993942AbdF0MuPsZOSI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Jun 2017 14:50:15 +0200
+        by eddie.linux-mips.org with ESMTP id S23993938AbdF0MvKNSX3I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Jun 2017 14:51:10 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 586E697A;
-        Tue, 27 Jun 2017 12:50:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E540596F;
+        Tue, 27 Jun 2017 12:51:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 3.18 11/16] of: Add check to of_scan_flat_dt() before accessing initial_boot_params
-Date:   Tue, 27 Jun 2017 14:49:48 +0200
-Message-Id: <20170627124438.404511682@linuxfoundation.org>
+Subject: [PATCH 4.4 19/26] of: Add check to of_scan_flat_dt() before accessing initial_boot_params
+Date:   Tue, 27 Jun 2017 14:49:56 +0200
+Message-Id: <20170627124531.558809383@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.2
-In-Reply-To: <20170627124436.634493038@linuxfoundation.org>
-References: <20170627124436.634493038@linuxfoundation.org>
+In-Reply-To: <20170627124528.581163327@linuxfoundation.org>
+References: <20170627124528.581163327@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58824
+X-archive-position: 58825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -69,7 +69,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/of/fdt.c
 +++ b/drivers/of/fdt.c
-@@ -585,9 +585,12 @@ int __init of_scan_flat_dt(int (*it)(uns
+@@ -632,9 +632,12 @@ int __init of_scan_flat_dt(int (*it)(uns
  	const char *pathp;
  	int offset, rc = 0, depth = -1;
  

@@ -1,51 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2017 21:11:38 +0200 (CEST)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:35067
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991087AbdF0TLbPcRbb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Jun 2017 21:11:31 +0200
-Received: by mail-wm0-x241.google.com with SMTP id 131so7517800wmq.2
-        for <linux-mips@linux-mips.org>; Tue, 27 Jun 2017 12:11:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2017 21:22:36 +0200 (CEST)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:34136
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991087AbdF0TW3s3vQb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Jun 2017 21:22:29 +0200
+Received: by mail-wr0-x244.google.com with SMTP id k67so32581937wrc.1;
+        Tue, 27 Jun 2017 12:22:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
         bh=zs/ATCTxbVlDzVulIz2C60TJ9Ws/43H4YuQo/To5we0=;
-        b=MIIEhCx5DwKp3ywYmEJk0QAzdBydLjXDbBgqHWCSkKqEUM5841i7RHW6l9umYrS0RB
-         5G+SjrktT8TDBWIUNUCDJuBY496qNxM0ypfvkIM4iS/6/tr9HRJXO43pQX7PpB6hgQTX
-         Y4E49Anf7XHAm+eqDS0q8ARyvUgPx4d6zXxyUmKllXbs751W6zHFyJtchOc9gvk5J4Th
-         y4Fp2IcK+8XozAQegsUl94VhkWjC3rk5J/HtYZOW/QeqIhCT8dkTiyC9M6CMJBWHlceM
-         eKUCZp1VxGc9n7dZ8e5JuGi/NreTKlkaCAEOjn5btcaEMbwKy424XAdcBc5Kz/Dn0h/g
-         C4KA==
+        b=c30PmWjZhHTc0m5i1tum68gL7wQvfuNLezhgvy2gAa9dudOWHbp+65HIWFh8+n+Vsr
+         n/VmIw8ULKq47hxDJWIywhA49Zz4uYdLUeTRY++YUBZ++8LWisgjMGo76jr/DDz8DALm
+         cE7M4RfWeF4a/dBa1/7SFgs7P1uJoIH1eIw4myuz/CGroHk+js+PRWNoZV9vOZEhk7TL
+         4QIYxRwaNQA+stVarAFW0hs14DlUyGsC4tu6LJKD9N2euF2R+xjVpcmxLhejDxIPWqog
+         hjVsPdCVXDrYapXxxgA0NWk3oQ+GKUNk1xbKbLj3oz86kfVQBxxe7MLBzT3dawmNgG1z
+         od3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
         bh=zs/ATCTxbVlDzVulIz2C60TJ9Ws/43H4YuQo/To5we0=;
-        b=G93W9qVn9IIa+2qKBMT58/9WeWtZaleUdxoKCmdZhRF82Yo2q9lyQbJt7Nu9TCgyJ1
-         kVIkrkkQkUFDFTPX9TQnH9fzjsUNUwc0n9dKPL8k1/NExsGDD6P1T0NzQiNCB4499k6K
-         aqi6AGKKqUoq0s3KTPl7Tq1MBs787KM6ZnqH4uZ3vGJFYE2ftCXF1/ry2/QHSGWyQG4z
-         BKIAJygheukik/r7MWZl6bUikJL6UHvtJrd7eEpsBB8Xl2RYFU89uTaGUDcBttZQmOCW
-         lv3HMO6XczbnHCDNp7E4PieB71X4XkDv7Hj8SVwKhvLyjsTrFqFzomMgKgVFhN0449hS
-         JsAQ==
-X-Gm-Message-State: AKS2vOx/Ms0PNywFoYZ6GuvxFq+C+5QonasLJ3+SnkZFDtfeGSJnTeoD
-        KFRw9WKf/sgCXz8N
-X-Received: by 10.28.103.132 with SMTP id b126mr4826038wmc.10.1498590683913;
-        Tue, 27 Jun 2017 12:11:23 -0700 (PDT)
+        b=uUMXxk8zDn3eCxiTS0XvZDQ7wZ9+MVM6uOhjd8bTCkJGL6QcRYzEpwSouoMLZdj/rN
+         HlJKYM3FpZyIakaV1bHuZU0IztyEyKBXYpMxjRA2IleMwzO26qrhqI/Lhl84qvFSAZhm
+         ygbiAtmsGT8fS+/pbwewh+4iC6ZBgEiGGmn2eGoOVNNdCd3fgJjPMBUzAcNk/5MscRFm
+         IsaZhXEy7ZeR/io4coEMFGUkz/2MmDsrwij4BbGv6CJqD0m9xWHv5LZ5eZwfz1h+NK7X
+         ZfAGKkLhqMg08ys/o1JkCm+8O7jXiQZgD61hFFfGoJ/t4S2o5ONs2DsH6b0ntXJfe4Pt
+         4WqQ==
+X-Gm-Message-State: AKS2vOwd/8Rh2SX5Ks1dYe+EQm0tHZJzhotXRJ5qmiOU/qoZivVum0om
+        b7QKrarBLlVd9xHn
+X-Received: by 10.223.171.69 with SMTP id r5mr18933021wrc.57.1498591344145;
+        Tue, 27 Jun 2017 12:22:24 -0700 (PDT)
 Received: from localhost.localdomain (ppp-seco21parth2-46-193-165-19.wb.wifirst.net. [46.193.165.19])
-        by smtp.gmail.com with ESMTPSA id t8sm32968wrc.28.2017.06.27.12.11.22
+        by smtp.gmail.com with ESMTPSA id j13sm40182wra.56.2017.06.27.12.22.22
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Jun 2017 12:11:23 -0700 (PDT)
+        Tue, 27 Jun 2017 12:22:22 -0700 (PDT)
 From:   Karl Beldan <karl.beldan@gmail.com>
 X-Google-Original-From: Karl Beldan <karl.beldan+oss@gmail.com>
 To:     linux-mips@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: head: Reorder instructions missing a delay slot
-Date:   Tue, 27 Jun 2017 19:11:09 +0000
-Message-Id: <20170627191109.28917-1-karl.beldan+oss@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Karl Beldan <karl.beldan+oss@gmail.com>,
+        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Gorski <jogo@openwrt.org>
+Subject: [RESEND PATCH] MIPS: head: Reorder instructions missing a delay slot
+Date:   Tue, 27 Jun 2017 19:22:16 +0000
+Message-Id: <20170627192216.29364-1-karl.beldan+oss@gmail.com>
 X-Mailer: git-send-email 2.10.1
 Return-Path: <karl.beldan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58832
+X-archive-position: 58833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

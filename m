@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 18:00:39 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:56472 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993989AbdF1P53jWp58 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jun 2017 17:57:29 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 3A41C1A480B;
-        Wed, 28 Jun 2017 17:57:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 1D5B41A480A;
-        Wed, 28 Jun 2017 17:57:24 +0200 (CEST)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 18:28:16 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:47076 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992675AbdF1Q2FC2PpS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Jun 2017 18:28:05 +0200
+Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D5755728;
+        Wed, 28 Jun 2017 16:27:57 +0000 (UTC)
+Date:   Wed, 28 Jun 2017 18:27:56 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+Cc:     linux-mips@linux-mips.org,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
         Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Douglas Leung <douglas.leung@imgtec.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Jiri Slaby <jslaby@suse.com>, linux-kernel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>
-Subject: [PATCH v2 7/7] tty: goldfish: Implement support for kernel 'earlycon' parameter
-Date:   Wed, 28 Jun 2017 17:56:31 +0200
-Message-Id: <1498665399-29007-8-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1498665399-29007-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1498665399-29007-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v2 10/10] MIPS: generic: Add optional support for Android
+ kernel
+Message-ID: <20170628162756.GA16759@kroah.com>
+References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1498664922-28493-11-git-send-email-aleksandar.markovic@rt-rk.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1498664922-28493-11-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58883
+X-archive-position: 58884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,99 +54,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@imgtec.com>
+On Wed, Jun 28, 2017 at 05:47:03PM +0200, Aleksandar Markovic wrote:
+> From: Miodrag Dinic <miodrag.dinic@imgtec.com>
+> 
+> This commit adds new android.config configuration file including
+> the most common prerequisites for running Android operating system.
+> 
+> The selected set of platform independent configuration parameters
+> have been taken from the official Android kernel repo:
+> https://android.googlesource.com/kernel/common/+
+> /android-4.4/android/configs/android-base.cfg
+> 
+> android.config will be merged with the selected generic kernel
+> configuration only if explicitly specified through environment
+> variable OS=android.
+> 
+> Example:
+> make ARCH=mips 64r6el_defconfig BOARDS="list of boards" OS=android
+> 
+> android.config file should be occasionally revisited and updated
+> with latest requirements from Google.
+> 
+> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
+> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+> ---
+>  MAINTAINERS                              |   1 +
+>  arch/mips/Makefile                       |   8 +-
+>  arch/mips/configs/generic/android.config | 173 +++++++++++++++++++++++++++++++
 
-Add early console functionality to the Goldfish tty driver.
+Why is this a MIPS config file?  What about the "generic" android
+configs we already have?  Shouldn't they work just as well here?
 
-When 'earlycon' kernel command line parameter is used with no options,
-the early console is determined by the 'stdout-path' property in device
-tree's 'chosen' node. This is illustrated in the following device tree
-source example:
+And finally, does this config file fragment pass the latest tests that
+Google has for kernel config requirements?
 
-Device tree example:
+thanks,
 
-    chosen {
-        stdout-path = "/goldfish_tty@1f004000";
-    };
-
-    goldfish_tty@1f004000 {
-        interrupts = <0xc>;
-        reg = <0x1f004000 0x0 0x1000>;
-        compatible = "google,goldfish-tty", "generic,goldfish-tty";
-    };
-
-Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
----
- drivers/tty/Kconfig    |  3 +++
- drivers/tty/goldfish.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
-
-diff --git a/drivers/tty/Kconfig b/drivers/tty/Kconfig
-index 9510305..873e0ba 100644
---- a/drivers/tty/Kconfig
-+++ b/drivers/tty/Kconfig
-@@ -392,6 +392,9 @@ config PPC_EARLY_DEBUG_EHV_BC_HANDLE
- config GOLDFISH_TTY
- 	tristate "Goldfish TTY Driver"
- 	depends on GOLDFISH
-+	select SERIAL_CORE
-+	select SERIAL_CORE_CONSOLE
-+	select SERIAL_EARLYCON
- 	help
- 	  Console and system TTY driver for the Goldfish virtual platform.
- 
-diff --git a/drivers/tty/goldfish.c b/drivers/tty/goldfish.c
-index acd50fa..22b7ad5 100644
---- a/drivers/tty/goldfish.c
-+++ b/drivers/tty/goldfish.c
-@@ -1,6 +1,7 @@
- /*
-  * Copyright (C) 2007 Google, Inc.
-  * Copyright (C) 2012 Intel, Inc.
-+ * Copyright (C) 2017 Imagination Technologies Ltd.
-  *
-  * This software is licensed under the terms of the GNU General Public
-  * License version 2, as published by the Free Software Foundation, and
-@@ -24,6 +25,7 @@
- #include <linux/goldfish.h>
- #include <linux/mm.h>
- #include <linux/dma-mapping.h>
-+#include <linux/serial_core.h>
- 
- enum {
- 	GOLDFISH_TTY_PUT_CHAR       = 0x00,
-@@ -427,6 +429,30 @@ static int goldfish_tty_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static void gf_early_console_putchar(struct uart_port *port, int ch)
-+{
-+	__raw_writel(ch, port->membase);
-+}
-+
-+static void gf_early_write(struct console *con, const char *s, unsigned int n)
-+{
-+	struct earlycon_device *dev = con->data;
-+
-+	uart_console_write(&dev->port, s, n, gf_early_console_putchar);
-+}
-+
-+static int __init gf_earlycon_setup(struct earlycon_device *device,
-+					const char *opt)
-+{
-+	if (!device->port.membase)
-+		return -ENODEV;
-+
-+	device->con->write = gf_early_write;
-+	return 0;
-+}
-+
-+OF_EARLYCON_DECLARE(early_gf_tty, "google,goldfish-tty", gf_earlycon_setup);
-+
- static const struct of_device_id goldfish_tty_of_match[] = {
- 	{ .compatible = "google,goldfish-tty", },
- 	{},
--- 
-2.7.4
+greg k-h

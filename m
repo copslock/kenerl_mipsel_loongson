@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:52:34 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:55506 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:52:56 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:55553 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993976AbdF1PwOiK1F8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jun 2017 17:52:14 +0200
+        id S23993978AbdF1PwfN9l-8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Jun 2017 17:52:35 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id C2F831A479E;
-        Wed, 28 Jun 2017 17:52:08 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id C26751A4803;
+        Wed, 28 Jun 2017 17:52:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id A124F1A4795;
-        Wed, 28 Jun 2017 17:52:08 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id A13E01A4801;
+        Wed, 28 Jun 2017 17:52:29 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
-Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
+        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         "David S. Miller" <davem@davemloft.net>,
         Douglas Leung <douglas.leung@imgtec.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org, Marc Zyngier <marc.zyngier@arm.com>,
+        linux-kernel@vger.kernel.org,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH v2 04/10] MIPS: ranchu: Add Goldfish PIC driver
-Date:   Wed, 28 Jun 2017 17:46:57 +0200
-Message-Id: <1498664922-28493-5-git-send-email-aleksandar.markovic@rt-rk.com>
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2 05/10] MIPS: ranchu: Add Ranchu as a new generic-based board
+Date:   Wed, 28 Jun 2017 17:46:58 +0200
+Message-Id: <1498664922-28493-6-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -37,7 +37,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58864
+X-archive-position: 58865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,238 +54,190 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+From: Miodrag Dinic <miodrag.dinic@imgtec.com>
 
-Add device driver for a virtual programmable interrupt controller
-
-The virtual PIC is designed as a device tree-based interrupt controller.
-
-The compatible string used by OS for binding the driver is
-"google,goldfish-pic".
+Provide amendments to the Mips generic platform framework so that
+the new generic-based board Ranchu can be chosen to be built.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- MAINTAINERS                        |   1 +
- drivers/irqchip/Kconfig            |   9 ++
- drivers/irqchip/Makefile           |   1 +
- drivers/irqchip/irq-goldfish-pic.c | 169 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 180 insertions(+)
- create mode 100644 drivers/irqchip/irq-goldfish-pic.c
+ MAINTAINERS                                   |  6 ++
+ arch/mips/configs/generic/board-ranchu.config | 25 ++++++++
+ arch/mips/generic/Kconfig                     | 11 ++++
+ arch/mips/generic/Makefile                    |  1 +
+ arch/mips/generic/board-ranchu.c              | 83 +++++++++++++++++++++++++++
+ 5 files changed, 126 insertions(+)
+ create mode 100644 arch/mips/configs/generic/board-ranchu.config
+ create mode 100644 arch/mips/generic/board-ranchu.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 85da9f0..fb4c6ea 100644
+index fb4c6ea..35dfdd0 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -845,6 +845,7 @@ ANDROID GOLDFISH PIC DRIVER
- M:	Miodrag Dinic <miodrag.dinic@imgtec.com>
- S:	Supported
- F:	Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
-+F:	drivers/irqchip/irq-goldfish-pic.c
+@@ -10678,6 +10678,12 @@ S:	Maintained
+ F:	Documentation/blockdev/ramdisk.txt
+ F:	drivers/block/brd.c
  
- ANDROID GOLDFISH RTC DRIVER
- M:	Miodrag Dinic <miodrag.dinic@imgtec.com>
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 478f8ac..6c2f924 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -301,3 +301,12 @@ config QCOM_IRQ_COMBINER
- 	help
- 	  Say yes here to add support for the IRQ combiner devices embedded
- 	  in Qualcomm Technologies chips.
++RANCHU VIRTUAL BOARD FOR MIPS
++M:	Miodrag Dinic <miodrag.dinic@imgtec.com>
++L:	linux-mips@linux-mips.org
++S:	Supported
++F:	arch/mips/generic/board-ranchu.c
 +
-+config GOLDFISH_PIC
-+	bool "Goldfish programmable interrupt controller"
-+	depends on MIPS
-+	depends on GOLDFISH
-+	select IRQ_DOMAIN
-+	help
-+	  Say yes here to enable Goldfish interrupt controller driver used
-+	  for Goldfish based virtual platforms.
-diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-index b64c59b..5e73932 100644
---- a/drivers/irqchip/Makefile
-+++ b/drivers/irqchip/Makefile
-@@ -76,3 +76,4 @@ obj-$(CONFIG_EZNPS_GIC)			+= irq-eznps.o
- obj-$(CONFIG_ARCH_ASPEED)		+= irq-aspeed-vic.o
- obj-$(CONFIG_STM32_EXTI) 		+= irq-stm32-exti.o
- obj-$(CONFIG_QCOM_IRQ_COMBINER)		+= qcom-irq-combiner.o
-+obj-$(CONFIG_GOLDFISH_PIC) 		+= irq-goldfish-pic.o
-diff --git a/drivers/irqchip/irq-goldfish-pic.c b/drivers/irqchip/irq-goldfish-pic.c
+ RANDOM NUMBER DRIVER
+ M:	"Theodore Ts'o" <tytso@mit.edu>
+ S:	Maintained
+diff --git a/arch/mips/configs/generic/board-ranchu.config b/arch/mips/configs/generic/board-ranchu.config
 new file mode 100644
-index 0000000..d0e4c2d
+index 0000000..63bac23
 --- /dev/null
-+++ b/drivers/irqchip/irq-goldfish-pic.c
-@@ -0,0 +1,169 @@
-+/* drivers/irqchip/irq-goldfish-pic.c
-+ *
-+ * Copyright (C) 2007 Google, Inc.
++++ b/arch/mips/configs/generic/board-ranchu.config
+@@ -0,0 +1,25 @@
++CONFIG_VIRT_BOARD_RANCHU=y
++
++CONFIG_BATTERY_GOLDFISH=y
++CONFIG_FB_GOLDFISH=y
++CONFIG_GOLDFISH=y
++CONFIG_GOLDFISH_AUDIO=y
++CONFIG_GOLDFISH_PIC=y
++CONFIG_GOLDFISH_PIPE=y
++CONFIG_GOLDFISH_TTY=y
++CONFIG_RTC_DRV_GOLDFISH=y
++
++CONFIG_INPUT_EVDEV=y
++CONFIG_INPUT_KEYBOARD=y
++CONFIG_KEYBOARD_GOLDFISH_EVENTS=y
++
++CONFIG_POWER_SUPPLY=y
++CONFIG_POWER_RESET=y
++CONFIG_POWER_RESET_SYSCON=y
++CONFIG_POWER_RESET_SYSCON_POWEROFF=y
++
++CONFIG_VIRTIO_BLK=y
++CONFIG_VIRTIO_CONSOLE=y
++CONFIG_VIRTIO_MMIO=y
++CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
++CONFIG_VIRTIO_NET=y
+diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
+index a606b3f..15be3f9 100644
+--- a/arch/mips/generic/Kconfig
++++ b/arch/mips/generic/Kconfig
+@@ -16,4 +16,15 @@ config LEGACY_BOARD_SEAD3
+ 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
+ 	  development boards, which boot using a legacy boot protocol.
+ 
++config VIRT_BOARD_RANCHU
++	bool "Ranchu platform for Android emulator"
++	select LEGACY_BOARDS
++	help
++	  This enables support for the platform used by Android emulator.
++
++	  Ranchu platform consists of a set of virtual devices. This platform
++	  enables emulation of variety of virtual configurations while using
++	  Android emulator. Android emulator is based on Qemu, and contains
++	  the support for the same set of virtual devices.
++
+ endif
+diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
+index acb9b6d..4ae52f3 100644
+--- a/arch/mips/generic/Makefile
++++ b/arch/mips/generic/Makefile
+@@ -13,4 +13,5 @@ obj-y += irq.o
+ obj-y += proc.o
+ 
+ obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
++obj-$(CONFIG_VIRT_BOARD_RANCHU)	+= board-ranchu.o
+ obj-$(CONFIG_KEXEC)			+= kexec.o
+diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
+new file mode 100644
+index 0000000..5dc96e5
+--- /dev/null
++++ b/arch/mips/generic/board-ranchu.c
+@@ -0,0 +1,83 @@
++/*
 + * Copyright (C) 2017 Imagination Technologies Ltd.
++ * Author: Miodrag Dinic <miodrag.dinic@imgtec.com>
 + *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
 + */
 +
-+#include <linux/interrupt.h>
-+#include <linux/irqchip.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
++#include <asm/machine.h>
++#include <asm/time.h>
 +
-+#include <asm/setup.h>
++#define GOLDFISH_TIMER_LOW		0x00
++#define GOLDFISH_TIMER_HIGH		0x04
++#define GOLDFISH_TIMER_BASE		0x1f005000
 +
-+/* 0..7 MIPS CPU interrupts */
-+#define GOLDFISH_CPU_IRQ_PIC		(MIPS_CPU_IRQ_BASE + 2)
-+#define GOLDFISH_CPU_IRQ_FIQ		(MIPS_CPU_IRQ_BASE + 3) /* Not used? */
-+#define GOLDFISH_CPU_IRQ_COMPARE	(MIPS_CPU_IRQ_BASE + 7)
-+
-+#define GOLDFISH_NR_IRQS		40
-+/* 8..39 Cascaded Goldfish PIC interrupts */
-+#define GOLDFISH_IRQ_OFFSET		8
-+
-+#define GOLDFISH_PIC_NUMBER		0x04
-+#define GOLDFISH_PIC_DISABLE_ALL	0x08
-+#define GOLDFISH_PIC_DISABLE		0x0c
-+#define GOLDFISH_PIC_ENABLE		0x10
-+
-+static struct irq_domain *goldfish_pic_domain;
-+static void __iomem *goldfish_pic_base;
-+
-+void goldfish_mask_irq(struct irq_data *d)
++static __init uint64_t read_rtc_time(void __iomem *base)
 +{
-+	writel(d->irq - GOLDFISH_IRQ_OFFSET,
-+	       goldfish_pic_base + GOLDFISH_PIC_DISABLE);
++	uint64_t time_low;
++	uint64_t time_high;
++	uint64_t time_high_prev;
++
++	time_high = readl(base + GOLDFISH_TIMER_HIGH);
++	do {
++		time_high_prev = time_high;
++		time_low = readl(base + GOLDFISH_TIMER_LOW);
++		time_high = readl(base + GOLDFISH_TIMER_HIGH);
++	} while (time_high != time_high_prev);
++
++	return ((int64_t)time_high << 32) | time_low;
 +}
 +
-+void goldfish_unmask_irq(struct irq_data *d)
++static __init unsigned int ranchu_measure_hpt_freq(void)
 +{
-+	writel(d->irq - GOLDFISH_IRQ_OFFSET,
-+	       goldfish_pic_base + GOLDFISH_PIC_ENABLE);
-+}
++	uint64_t rtc_start, rtc_current, rtc_delta;
++	unsigned int start, count;
++	unsigned int prid = read_c0_prid() & 0xffff00;
++	void __iomem *rtc_base = ioremap(GOLDFISH_TIMER_BASE, 0x1000);
 +
-+static struct irq_chip goldfish_irq_chip = {
-+	.name	= "goldfish",
-+	.irq_mask	= goldfish_mask_irq,
-+	.irq_mask_ack	= goldfish_mask_irq,
-+	.irq_unmask	= goldfish_unmask_irq,
-+};
-+
-+void goldfish_irq_dispatch(void)
-+{
-+	uint32_t irq;
++	if (!rtc_base)
++		panic("%s(): Failed to ioremap Goldfish timer base %p!",
++			__func__, (void *)GOLDFISH_TIMER_BASE);
 +
 +	/*
-+	 * Disable all interrupt sources
++	 * poll the nanosecond resolution RTC for 1 second
++	 * to calibrate the CPU frequency
 +	 */
-+	irq = readl(goldfish_pic_base + GOLDFISH_PIC_NUMBER);
-+	do_IRQ(GOLDFISH_IRQ_OFFSET + irq);
++
++	rtc_start = read_rtc_time(rtc_base);
++	start = read_c0_count();
++
++	do {
++		rtc_current = read_rtc_time(rtc_base);
++		rtc_delta = rtc_current - rtc_start;
++	} while (rtc_delta < NSEC_PER_SEC);
++
++	count = read_c0_count() - start;
++
++	mips_hpt_frequency = count;
++	if ((prid != (PRID_COMP_MIPS | PRID_IMP_20KC)) &&
++		(prid != (PRID_COMP_MIPS | PRID_IMP_25KF)))
++		count *= 2;
++
++	count += 5000;	/* round */
++	count -= count%10000;
++
++	return count;
 +}
 +
-+void goldfish_fiq_dispatch(void)
-+{
-+	panic("goldfish_fiq_dispatch");
-+}
++static const struct of_device_id ranchu_of_match[];
 +
-+static void goldfish_ip2_irq_dispatch(struct irq_desc *desc)
-+{
-+	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
-+
-+	if (pending & CAUSEF_IP2)
-+		goldfish_irq_dispatch();
-+	else if (pending & CAUSEF_IP3)
-+		goldfish_fiq_dispatch();
-+	else if (pending & CAUSEF_IP7)
-+		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
-+	else
-+		spurious_interrupt();
-+}
-+
-+static struct irqaction cascade = {
-+	.handler	= no_action,
-+	.flags		= IRQF_NO_THREAD,
-+	.name		= "cascade",
++MIPS_MACHINE(ranchu) = {
++	.matches = ranchu_of_match,
++	.measure_hpt_freq = ranchu_measure_hpt_freq,
 +};
 +
-+static void mips_timer_dispatch(void)
-+{
-+	do_IRQ(MIPS_CPU_IRQ_BASE + GOLDFISH_CPU_IRQ_COMPARE);
-+}
-+
-+static int goldfish_pic_map(struct irq_domain *d, unsigned int irq,
-+				irq_hw_number_t hw)
-+{
-+	struct irq_chip *chip = &goldfish_irq_chip;
-+
-+	if (hw < GOLDFISH_IRQ_OFFSET)
-+		return 0;
-+
-+	irq_set_chip_and_handler(hw, chip, handle_level_irq);
-+
-+	return 0;
-+}
-+
-+static const struct irq_domain_ops irq_domain_ops = {
-+	.xlate = irq_domain_xlate_onetwocell,
-+	.map = goldfish_pic_map,
++static const struct of_device_id ranchu_of_match[] = {
++	{
++		.compatible = "mti,ranchu",
++		.data = &__mips_mach_ranchu,
++	},
 +};
-+
-+int __init goldfish_pic_of_init(struct device_node *node,
-+				struct device_node *parent)
-+{
-+	struct resource res;
-+
-+	if (of_address_to_resource(node, 0, &res)) {
-+		pr_err("%s(): Failed to get icu memory range", __func__);
-+		return -ENODEV;
-+	}
-+
-+	if (request_mem_region(res.start, resource_size(&res),
-+				res.name) < 0) {
-+		pr_err("%s(): Failed to request icu memory", __func__);
-+		return -ENOMEM;
-+	}
-+
-+	goldfish_pic_base = ioremap_nocache(res.start, resource_size(&res));
-+	if (!goldfish_pic_base) {
-+		pr_err("%s(): Failed to remap icu memory", __func__);
-+		release_mem_region(res.start, resource_size(&res));
-+		return -ENOMEM;
-+	}
-+
-+	/*
-+	 * Disable all interrupt sources
-+	 */
-+	writel(1, goldfish_pic_base + GOLDFISH_PIC_DISABLE_ALL);
-+
-+	if (cpu_has_vint) {
-+		pr_info("Setting up vectored interrupts\n");
-+		set_vi_handler(GOLDFISH_CPU_IRQ_PIC, goldfish_irq_dispatch);
-+		set_vi_handler(GOLDFISH_CPU_IRQ_FIQ, goldfish_fiq_dispatch);
-+		set_vi_handler(GOLDFISH_CPU_IRQ_COMPARE, mips_timer_dispatch);
-+	} else {
-+		irq_set_chained_handler(GOLDFISH_CPU_IRQ_PIC,
-+				goldfish_ip2_irq_dispatch);
-+	}
-+
-+	setup_irq(MIPS_CPU_IRQ_BASE+GOLDFISH_CPU_IRQ_PIC, &cascade);
-+	setup_irq(MIPS_CPU_IRQ_BASE+GOLDFISH_CPU_IRQ_FIQ, &cascade);
-+
-+	goldfish_pic_domain = irq_domain_add_linear(node, GOLDFISH_NR_IRQS,
-+							&irq_domain_ops, 0);
-+	if (!goldfish_pic_domain)
-+		panic("Failed to add IRQ domain");
-+
-+	return 0;
-+}
-+
-+IRQCHIP_DECLARE(google_goldfish_pic, "google,goldfish-pic",
-+		goldfish_pic_of_init);
 -- 
 2.7.4

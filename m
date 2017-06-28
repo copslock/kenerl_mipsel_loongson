@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:58:22 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:56396 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:58:46 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:56407 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994022AbdF1P45NE148 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jun 2017 17:56:57 +0200
+        id S23994030AbdF1P5Agyb-8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Jun 2017 17:57:00 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id B3E971A4824;
-        Wed, 28 Jun 2017 17:56:51 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 34BF01A47F4;
+        Wed, 28 Jun 2017 17:56:55 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 962D61A4821;
-        Wed, 28 Jun 2017 17:56:51 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 02A101A47F1;
+        Wed, 28 Jun 2017 17:56:55 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
@@ -17,15 +17,13 @@ Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         Douglas Leung <douglas.leung@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>, linux-kernel@vger.kernel.org,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+        linux-kernel@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 1/7] MIPS: cmdline: Add support for 'memmap' parameter
-Date:   Wed, 28 Jun 2017 17:56:25 +0200
-Message-Id: <1498665399-29007-2-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v2 2/7] MIPS: build: Fix "-modd-spreg" switch usage when compiling for mips32r6
+Date:   Wed, 28 Jun 2017 17:56:26 +0200
+Message-Id: <1498665399-29007-3-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1498665399-29007-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1498665399-29007-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -33,7 +31,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58877
+X-archive-position: 58878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,95 +50,51 @@ X-list: linux-mips
 
 From: Miodrag Dinic <miodrag.dinic@imgtec.com>
 
-Implement support for parsing 'memmap' kernel command line parameter.
+Add "-modd-spreg" when compiling the kernel for mips32r6 target.
 
-This patch covers parsing of the following two formats for 'memmap'
-parameter values:
+This makes sure the kernel builds properly even with toolchains that
+use "-mno-odd-spreg" by default. This is the case with Android gcc.
+Prior to this patch, kernel builds using gcc for Android failed with
+following error messages, if target architecture is set to mips32r6:
 
-  - nn[KMG]@ss[KMG]
-  - nn[KMG]$ss[KMG]
-
-  ([KMG] = K M or G (kilo, mega, giga))
-
-These two allowed formats for parameter value are already documented
-in file kernel-parameters.txt in Documentation/admin-guide folder.
-Some architectures already support them, but Mips did not prior to
-this patch.
-
-Excerpt from Documentation/admin-guide/kernel-parameters.txt:
-
-memmap=nn[KMG]@ss[KMG]
-    [KNL] Force usage of a specific region of memory.
-    Region of memory to be used is from ss to ss+nn.
-
-memmap=nn[KMG]$ss[KMG]
-    Mark specific memory as reserved.
-    Region of memory to be reserved is from ss to ss+nn.
-    Example: Exclude memory from 0x18690000-0x1869ffff
-        memmap=64K$0x18690000
-        or
-        memmap=0x10000$0x18690000
-
-There is no need to update this documentation file with respect to
-this patch.
+arch/mips/kernel/r4k_switch.S: Assembler messages:
+.../r4k_switch.S:210: Error: float register should be even, was 1
+.../r4k_switch.S:212: Error: float register should be even, was 3
+.../r4k_switch.S:214: Error: float register should be even, was 5
+.../r4k_switch.S:216: Error: float register should be even, was 7
+.../r4k_switch.S:218: Error: float register should be even, was 9
+.../r4k_switch.S:220: Error: float register should be even, was 11
+.../r4k_switch.S:222: Error: float register should be even, was 13
+.../r4k_switch.S:224: Error: float register should be even, was 15
+.../r4k_switch.S:226: Error: float register should be even, was 17
+.../r4k_switch.S:228: Error: float register should be even, was 19
+.../r4k_switch.S:230: Error: float register should be even, was 21
+.../r4k_switch.S:232: Error: float register should be even, was 23
+.../r4k_switch.S:234: Error: float register should be even, was 25
+.../r4k_switch.S:236: Error: float register should be even, was 27
+.../r4k_switch.S:238: Error: float register should be even, was 29
+.../r4k_switch.S:240: Error: float register should be even, was 31
+make[2]: *** [arch/mips/kernel/r4k_switch.o] Error 1
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/kernel/setup.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index ccea90f..5a86da93 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -713,6 +713,46 @@ static int __init early_parse_mem(char *p)
- }
- early_param("mem", early_parse_mem);
- 
-+static int __init early_parse_memmap(char *p)
-+{
-+	char *oldp;
-+	u64 start_at, mem_size;
-+
-+	if (!p)
-+		return -EINVAL;
-+
-+	if (!strncmp(p, "exactmap", 8)) {
-+		pr_err("\"memmap=exactmap\" invalid on MIPS\n");
-+		return 0;
-+	}
-+
-+	oldp = p;
-+	mem_size = memparse(p, &p);
-+	if (p == oldp)
-+		return -EINVAL;
-+
-+	if (*p == '@') {
-+		start_at = memparse(p+1, &p);
-+		add_memory_region(start_at, mem_size, BOOT_MEM_RAM);
-+	} else if (*p == '#') {
-+		pr_err("\"memmap=nn#ss\" (force ACPI data) invalid on MIPS\n");
-+		return -EINVAL;
-+	} else if (*p == '$') {
-+		start_at = memparse(p+1, &p);
-+		add_memory_region(start_at, mem_size, BOOT_MEM_RESERVED);
-+	} else {
-+		pr_err("\"memmap\" invalid format!\n");
-+		return -EINVAL;
-+	}
-+
-+	if (*p == '\0') {
-+		usermem = 1;
-+		return 0;
-+	} else
-+		return -EINVAL;
-+}
-+early_param("memmap", early_parse_memmap);
-+
- #ifdef CONFIG_PROC_VMCORE
- unsigned long setup_elfcorehdr, setup_elfcorehdr_size;
- static int __init early_parse_elfcorehdr(char *p)
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index bc96c39..1c0ec36 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -160,7 +160,7 @@ cflags-$(CONFIG_CPU_MIPS32_R1)	+= $(call cc-option,-march=mips32,-mips32 -U_MIPS
+ 			-Wa,-mips32 -Wa,--trap
+ cflags-$(CONFIG_CPU_MIPS32_R2)	+= $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
+ 			-Wa,-mips32r2 -Wa,--trap
+-cflags-$(CONFIG_CPU_MIPS32_R6)	+= -march=mips32r6 -Wa,--trap
++cflags-$(CONFIG_CPU_MIPS32_R6)	+= -march=mips32r6 -Wa,--trap -modd-spreg
+ cflags-$(CONFIG_CPU_MIPS64_R1)	+= $(call cc-option,-march=mips64,-mips64 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
+ 			-Wa,-mips64 -Wa,--trap
+ cflags-$(CONFIG_CPU_MIPS64_R2)	+= $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
 -- 
 2.7.4

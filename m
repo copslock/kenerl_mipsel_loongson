@@ -1,31 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:54:02 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:55641 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:54:24 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:55658 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993977AbdF1PxQUseB8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jun 2017 17:53:16 +0200
+        id S23993978AbdF1Px322kK8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Jun 2017 17:53:29 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 95CF71A47F3;
-        Wed, 28 Jun 2017 17:53:09 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 0E70B1A47FB;
+        Wed, 28 Jun 2017 17:53:24 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 3F3221A47F1;
-        Wed, 28 Jun 2017 17:53:09 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 97AB01A47C6;
+        Wed, 28 Jun 2017 17:53:23 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
         Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Douglas Leung <douglas.leung@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>, linux-kernel@vger.kernel.org,
+        Jonas Gorski <jogo@openwrt.org>, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Marcos Paulo de Souza <marcos.souza.org@gmail.com>,
         Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 08/10] MIPS: Introduce check_legacy_ioport() interface
-Date:   Wed, 28 Jun 2017 17:47:01 +0200
-Message-Id: <1498664922-28493-9-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v2 09/10] MIPS: i8042: Probe this device only if it exists
+Date:   Wed, 28 Jun 2017 17:47:02 +0200
+Message-Id: <1498664922-28493-10-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -33,7 +36,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58868
+X-archive-position: 58869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,79 +55,105 @@ X-list: linux-mips
 
 From: Miodrag Dinic <miodrag.dinic@imgtec.com>
 
-Some drivers may try to probe some I/O ports which can lead to kernel
-panic if the device is not present and mapped. This function should be
-used to check for existence of such devices and return 0 for MIPS
-boards which implement them, otherwise it should return -ENODEV and
-the affected device driver should never try to read/write the
-requested I/O port.
+ARCH_MIGHT_HAVE_PC_SERIO is selected by default for MIPS platforms.
+As a consequence SERIO_I8042 would be automatically selected for any
+MIPS board which wants to enable input support like keyboard
+(INPUT_KEYBOARD) regardless of i8042 controller existence.
 
-This is particularly useful for multiplaform kernels which are board
-agnostic and this interface can be used to match drivers against
-available devices on a specific board in runtime.
+The dependency is as follows :
 
-This patch just adds a no-op check_legacy_ioport() function which will
-be enriched with logic in a later patch.
+config ARCH_MIGHT_HAVE_PC_SERIO [=y]
+    Defined at drivers/input/serio/Kconfig:19
+    Depends on: !UML
+    Selected by: MIPS [=y]
+
+config SERIO
+    Defined at drivers/input/serio/Kconfig:4
+    default y
+    Depends on: !UML
+    Selected by: KEYBOARD_ATKBD [=y] && !UML && INPUT [=y] &&
+                 INPUT_KEYBOARD [=y]
+
+config SERIO_I8042
+    Defined at drivers/input/serio/Kconfig:28
+    tristate "i8042 PC Keyboard controller"
+    default y
+    Depends on: !UML && SERIO [=y] && ARCH_MIGHT_HAVE_PC_SERIO [=y]
+    Selected by: KEYBOARD_ATKBD [=y] && !UML && INPUT [=y] &&
+                 INPUT_KEYBOARD [=y] && ARCH_MIGHT_HAVE_PC_SERIO [=y]
+
+If this driver probes the I8042_DATA_REG not knowing if the device
+exists it can cause a kernel to crash. Using check_legacy_ioport()
+interface we can selectively enable this driver only for the MIPS
+boards which actually have the i8042 controller.
+
+New "Ranchu" virtual platform does not support i8042 controller
+so it's added to the blacklist match table.
+
+Each MIPS machine should update this table with it's compatible strings
+if it does not support i8042 controller.
+
+In order to utilize this mechanism, each MIPS machine that do not
+have i8042 controller should update the blacklist table with its
+compatible strings.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/include/asm/io.h |  5 +++++
- arch/mips/kernel/setup.c   | 25 +++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ arch/mips/kernel/setup.c       | 16 ++++++++++++++++
+ drivers/input/serio/i8042-io.h |  2 +-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index ecabc00..62b9f89 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -78,6 +78,11 @@ static inline void set_io_port_base(unsigned long base)
- }
- 
- /*
-+ * Check for existence of legacy devices
-+ */
-+extern int check_legacy_ioport(unsigned long base_port);
-+
-+/*
-  * Thanks to James van Artsdalen for a better timing-fix than
-  * the two short jumps: using outb's to a nonexistent port seems
-  * to guarantee better timings even on fast machines.
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 01d1dbd..c22cde8 100644
+index c22cde8..c3e0d2b 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -78,6 +78,31 @@ static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
- const unsigned long mips_io_port_base = -1;
+@@ -79,6 +79,15 @@ const unsigned long mips_io_port_base = -1;
  EXPORT_SYMBOL(mips_io_port_base);
  
-+/*
-+ * Check for existence of legacy devices
-+ *
-+ * Some drivers may try to probe some I/O ports which can lead to
-+ * kernel panic if the device is not present and mapped. This method
-+ * should check for existence of such devices and return 0 for MIPS
-+ * boards which actually have them, otherwise it will return -ENODEV
-+ * and the affected device driver should never try to read/write the
-+ * requested I/O port.
+ /*
++ * Here we blacklist all MIPS boards which do not have i8042 controller
 + */
-+int check_legacy_ioport(unsigned long base_port)
-+{
-+	int ret = 0;
++static const struct of_device_id i8042_blacklist_of_match[] = {
++	{ .compatible = "mti,ranchu", },
++	{},
++};
++#define I8042_DATA_REG	0x60
 +
-+	switch (base_port) {
-+	default:
-+		/* We will assume that the I/O device port exists if
-+		 * not explicitly added to the blacklist match table
-+		 */
-+		break;
-+	}
-+	return ret;
-+}
-+EXPORT_SYMBOL(check_legacy_ioport);
-+
- static struct resource code_resource = { .name = "Kernel code", };
- static struct resource data_resource = { .name = "Kernel data", };
++/*
+  * Check for existence of legacy devices
+  *
+  * Some drivers may try to probe some I/O ports which can lead to
+@@ -90,9 +99,16 @@ EXPORT_SYMBOL(mips_io_port_base);
+  */
+ int check_legacy_ioport(unsigned long base_port)
+ {
++	struct device_node *np;
+ 	int ret = 0;
  
+ 	switch (base_port) {
++	case I8042_DATA_REG:
++		np = of_find_matching_node(NULL, i8042_blacklist_of_match);
++		if (np)
++			ret = -ENODEV;
++		of_node_put(np);
++		break;
+ 	default:
+ 		/* We will assume that the I/O device port exists if
+ 		 * not explicitly added to the blacklist match table
+diff --git a/drivers/input/serio/i8042-io.h b/drivers/input/serio/i8042-io.h
+index 34da81c..ec5fe9e 100644
+--- a/drivers/input/serio/i8042-io.h
++++ b/drivers/input/serio/i8042-io.h
+@@ -72,7 +72,7 @@ static inline int i8042_platform_init(void)
+  * On some platforms touching the i8042 data register region can do really
+  * bad things. Because of this the region is always reserved on such boxes.
+  */
+-#if defined(CONFIG_PPC)
++#if defined(CONFIG_PPC) || defined(CONFIG_MIPS)
+ 	if (check_legacy_ioport(I8042_DATA_REG))
+ 		return -ENODEV;
+ #endif
 -- 
 2.7.4

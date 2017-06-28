@@ -1,28 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:40:33 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:52138 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:50:51 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:55267 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993983AbdF1PgthrqG8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jun 2017 17:36:49 +0200
+        id S23993982AbdF1PunZWQy8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Jun 2017 17:50:43 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 8B7501A47E0
-        for <linux-mips@linux-mips.org>; Wed, 28 Jun 2017 17:36:38 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 188C61A4733;
+        Wed, 28 Jun 2017 17:50:37 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 5AEB41A47EC
-        for <linux-mips@linux-mips.org>; Wed, 28 Jun 2017 17:36:38 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id EF0AF1A46B7;
+        Wed, 28 Jun 2017 17:50:36 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
-Subject: [PATCH v2 09/10] MIPS: i8042: Probe this device only if it exists
-Date:   Wed, 28 Jun 2017 17:36:26 +0200
-Message-Id: <1498664187-27995-10-git-send-email-aleksandar.markovic@rt-rk.com>
+Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2 00/10] MIPS: Add virtual Ranchu board as a generic-based board
+Date:   Wed, 28 Jun 2017 17:46:53 +0200
+Message-Id: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1498664187-27995-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1498664187-27995-1-git-send-email-aleksandar.markovic@rt-rk.com>
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58859
+X-archive-position: 58860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,107 +51,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@imgtec.com>
+From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-ARCH_MIGHT_HAVE_PC_SERIO is selected by default for MIPS platforms.
-As a consequence SERIO_I8042 would be automatically selected for any
-MIPS board which wants to enable input support like keyboard
-(INPUT_KEYBOARD) regardless of i8042 controller existence.
+v1->v2:
 
-The dependency is as follows :
+    - patch on RTC driver cleaned up
+    - added drivers for virtio console and net to the Ranchu board
+    - minor improvements in commit messages
+    - updated recipient lists using get_maintainer.pl
+    - rebased to the latest code
 
-config ARCH_MIGHT_HAVE_PC_SERIO [=y]
-    Defined at drivers/input/serio/Kconfig:19
-    Depends on: !UML
-    Selected by: MIPS [=y]
+This series adds Mips Ranchu virtual machine used by Android emulator.
+The board relies on the concept of Mips generic boards, and utilizes
+generic board framework for build and device organization.
 
-config SERIO
-    Defined at drivers/input/serio/Kconfig:4
-    default y
-    Depends on: !UML
-    Selected by: KEYBOARD_ATKBD [=y] && !UML && INPUT [=y] &&
-                 INPUT_KEYBOARD [=y]
+The Ranchu board is intended to be used by Android emulator.The name
+"Ranchu" originates from Android development community. "Goldfish" and
+"Ranchu" are names for two generations of virtual boards used by
+Android emulator. "Ranchu" is a newer one among the two, and this
+series deals with Ranchu. However, for historical reasons, some file,
+device, and variable names in this series still contain the word
+"Goldfish".
 
-config SERIO_I8042
-    Defined at drivers/input/serio/Kconfig:28
-    tristate "i8042 PC Keyboard controller"
-    default y
-    Depends on: !UML && SERIO [=y] && ARCH_MIGHT_HAVE_PC_SERIO [=y]
-    Selected by: KEYBOARD_ATKBD [=y] && !UML && INPUT [=y] &&
-                 INPUT_KEYBOARD [=y] && ARCH_MIGHT_HAVE_PC_SERIO [=y]
+Mips Ranchu machine includes a number of Goldfish devices. The
+support for Virtio devices is also included. Ranchu board supports
+up to 16 virtio devices which can be attached using virtio MMIO Bus.
+This is summarized in the following picture:
 
-If this driver probes the I8042_DATA_REG not knowing if the device
-exists it can cause a kernel to crash. Using check_legacy_ioport()
-interface we can selectively enable this driver only for the MIPS
-boards which actually have the i8042 controller.
+       ABUS
+        ||----MIPS CPU
+        ||       |                    IRQs
+        ||----Goldfish PIC------------(32)--------
+        ||                     | | | | | | | | |
+        ||----Goldfish TTY------ | | | | | | | |
+        ||                       | | | | | | | |
+        ||----Goldfish RTC-------- | | | | | | |
+        ||                         | | | | | | |
+        ||----Goldfish FB----------- | | | | | |
+        ||                           | | | | | |
+        ||----Goldfish Events--------- | | | | |
+        ||                             | | | | |
+        ||----Goldfish Audio------------ | | | |
+        ||                               | | | |
+        ||----Goldfish Battery------------ | | |
+        ||                                 | | |
+        ||----Android PIPE------------------ | |
+        ||                                   | |
+        ||----Virtio MMIO Bus                | |
+        ||    |    |    |                    | |
+        ||    |    |   (virtio-block)--------- |
+        ||   (16)  |                           |
+        ||    |   (virtio-net)------------------
 
-New "Ranchu" virtual platform does not support i8042 controller
-so it's added to the blacklist match table.
 
-Each MIPS machine should update this table with it's compatible strings
-if it does not support i8042 controller.
+Device Tree is created on the QEMU side based on the information about
+devices IO map and IRQ numbers. Kernel will load this DTB using UHI
+boot protocol.
 
-In order to utilize this mechanism, each MIPS machine that do not
-have i8042 controller should update the blacklist table with its
-compatible strings.
+Checkpatch script outputs a small number of warnings if applied to
+this series. We did not correct the code, since we think the code is
+correct for those particular cases of checkpatch warnings.
 
-Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
----
- arch/mips/kernel/setup.c       | 16 ++++++++++++++++
- drivers/input/serio/i8042-io.h |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+Aleksandar Markovic (6):
+  Documentation: Add device tree binding for Goldfish RTC driver
+  MIPS: ranchu: Add Goldfish RTC driver
+  Documentation: Add device tree binding for Goldfish PIC driver
+  MIPS: ranchu: Add Goldfish PIC driver
+  Documentation: Add device tree binding for Goldfish FB driver
+  video: goldfishfb: Add support for device tree bindings
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index c22cde8..c3e0d2b 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -79,6 +79,15 @@ const unsigned long mips_io_port_base = -1;
- EXPORT_SYMBOL(mips_io_port_base);
- 
- /*
-+ * Here we blacklist all MIPS boards which do not have i8042 controller
-+ */
-+static const struct of_device_id i8042_blacklist_of_match[] = {
-+	{ .compatible = "mti,ranchu", },
-+	{},
-+};
-+#define I8042_DATA_REG	0x60
-+
-+/*
-  * Check for existence of legacy devices
-  *
-  * Some drivers may try to probe some I/O ports which can lead to
-@@ -90,9 +99,16 @@ EXPORT_SYMBOL(mips_io_port_base);
-  */
- int check_legacy_ioport(unsigned long base_port)
- {
-+	struct device_node *np;
- 	int ret = 0;
- 
- 	switch (base_port) {
-+	case I8042_DATA_REG:
-+		np = of_find_matching_node(NULL, i8042_blacklist_of_match);
-+		if (np)
-+			ret = -ENODEV;
-+		of_node_put(np);
-+		break;
- 	default:
- 		/* We will assume that the I/O device port exists if
- 		 * not explicitly added to the blacklist match table
-diff --git a/drivers/input/serio/i8042-io.h b/drivers/input/serio/i8042-io.h
-index 34da81c..ec5fe9e 100644
---- a/drivers/input/serio/i8042-io.h
-+++ b/drivers/input/serio/i8042-io.h
-@@ -72,7 +72,7 @@ static inline int i8042_platform_init(void)
-  * On some platforms touching the i8042 data register region can do really
-  * bad things. Because of this the region is always reserved on such boxes.
-  */
--#if defined(CONFIG_PPC)
-+#if defined(CONFIG_PPC) || defined(CONFIG_MIPS)
- 	if (check_legacy_ioport(I8042_DATA_REG))
- 		return -ENODEV;
- #endif
+Miodrag Dinic (4):
+  MIPS: ranchu: Add Ranchu as a new generic-based board
+  MIPS: Introduce check_legacy_ioport() interface
+  MIPS: i8042: Probe this device only if it exists
+  MIPS: generic: Add optional support for Android kernel
+
+ .../bindings/goldfish/google,goldfish-fb.txt       |  18 +++
+ .../interrupt-controller/google,goldfish-pic.txt   |  18 +++
+ .../bindings/rtc/google,goldfish-rtc.txt           |  17 ++
+ MAINTAINERS                                        |  19 +++
+ arch/mips/Makefile                                 |   8 +-
+ arch/mips/configs/generic/android.config           | 173 +++++++++++++++++++++
+ arch/mips/configs/generic/board-ranchu.config      |  25 +++
+ arch/mips/generic/Kconfig                          |  11 ++
+ arch/mips/generic/Makefile                         |   1 +
+ arch/mips/generic/board-ranchu.c                   |  83 ++++++++++
+ arch/mips/include/asm/io.h                         |   5 +
+ arch/mips/kernel/setup.c                           |  41 +++++
+ drivers/input/serio/i8042-io.h                     |   2 +-
+ drivers/irqchip/Kconfig                            |   9 ++
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-goldfish-pic.c                 | 169 ++++++++++++++++++++
+ drivers/rtc/Kconfig                                |   6 +
+ drivers/rtc/Makefile                               |   1 +
+ drivers/rtc/rtc-goldfish.c                         | 136 ++++++++++++++++
+ drivers/video/fbdev/goldfishfb.c                   |   8 +-
+ 20 files changed, 747 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/goldfish/google,goldfish-fb.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+ create mode 100644 Documentation/devicetree/bindings/rtc/google,goldfish-rtc.txt
+ create mode 100644 arch/mips/configs/generic/android.config
+ create mode 100644 arch/mips/configs/generic/board-ranchu.config
+ create mode 100644 arch/mips/generic/board-ranchu.c
+ create mode 100644 drivers/irqchip/irq-goldfish-pic.c
+ create mode 100644 drivers/rtc/rtc-goldfish.c
+
 -- 
 2.7.4

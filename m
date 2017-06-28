@@ -1,29 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:59:31 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:56439 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2017 17:59:55 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:56450 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993986AbdF1P5NyE8k8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Jun 2017 17:57:13 +0200
+        id S23994231AbdF1P5UA1qE8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Jun 2017 17:57:20 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 823B31A480B;
-        Wed, 28 Jun 2017 17:57:08 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 4E2181A4805;
+        Wed, 28 Jun 2017 17:57:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 659B01A480A;
-        Wed, 28 Jun 2017 17:57:08 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 2EDE41A47F4;
+        Wed, 28 Jun 2017 17:57:14 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
-Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+Cc:     Lingfeng Yang <lfy@google.com>,
         Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
+        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Douglas Leung <douglas.leung@imgtec.com>,
+        Henrik Rydberg <rydberg@bitmath.org>,
         James Hogan <james.hogan@imgtec.com>,
-        linux-kernel@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 4/7] MIPS: math-emu: Handle zero accumulator case in MADDF and MSUBF separately
-Date:   Wed, 28 Jun 2017 17:56:28 +0200
-Message-Id: <1498665399-29007-5-git-send-email-aleksandar.markovic@rt-rk.com>
+        Raghu Gandham <raghu.gandham@imgtec.com>
+Subject: [PATCH v2 5/7] input: goldfish: Fix multitouch event handling
+Date:   Wed, 28 Jun 2017 17:56:29 +0200
+Message-Id: <1498665399-29007-6-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1498665399-29007-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1498665399-29007-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -31,7 +34,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58880
+X-archive-position: 58881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,65 +51,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+From: Lingfeng Yang <lfy@google.com>
 
-If accumulator value is zero, just return the value of previously
-calculated product. This brings logic in MADDf/MSUBF implementation
-closer to the logic in ADD/SUB case.
+Register Goldfish Events device properly as a multitouch device,
+and send SYN_REPORT event in appropriate cases only.
 
+If SYN_REPORT is sent on every single multitouch event, it breaks
+the multitouch. The multitouch becomes janky and having to click
+2-3 times to do stuff (plus randomly activating notification bars
+when not clicking). If these SYN_REPORT events are supressed,
+multitouch will work fine, plus the events will have a protocol
+that looks nice.
+
+In addition, Goldfish Events device needs to be registerd as a
+multitouch device by issuing input_mt_init_slots. Otherwise,
+input_handle_abs_event in drivers/input/input.c will silently drop
+all ABS_MT_SLOT events, casusing touches with more than one finger
+not to work properly.
+
+Signed-off-by: Lingfeng Yang <lfy@google.com>
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/math-emu/dp_maddf.c | 5 ++++-
- arch/mips/math-emu/sp_maddf.c | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/input/keyboard/goldfish_events.c | 33 +++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-index 4a2d03c..caa62f2 100644
---- a/arch/mips/math-emu/dp_maddf.c
-+++ b/arch/mips/math-emu/dp_maddf.c
-@@ -54,7 +54,7 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 		return ieee754dp_nanxcpt(z);
- 	case IEEE754_CLASS_DNORM:
- 		DPDNORMZ;
--	/* QNAN is handled separately below */
-+	/* QNAN and ZERO cases are handled separately below */
- 	}
+diff --git a/drivers/input/keyboard/goldfish_events.c b/drivers/input/keyboard/goldfish_events.c
+index f6e643b..6e0b8bb 100644
+--- a/drivers/input/keyboard/goldfish_events.c
++++ b/drivers/input/keyboard/goldfish_events.c
+@@ -17,6 +17,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/types.h>
+ #include <linux/input.h>
++#include <linux/input/mt.h>
+ #include <linux/kernel.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+@@ -24,6 +25,8 @@
+ #include <linux/io.h>
+ #include <linux/acpi.h>
  
- 	switch (CLPAIR(xc, yc)) {
-@@ -210,6 +210,9 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 	}
- 	assert(rm & (DP_HIDDEN_BIT << 3));
- 
-+	if (zc == IEEE754_CLASS_ZERO)
-+		return ieee754dp_format(rs, re, rm);
++#define GOLDFISH_MAX_FINGERS 5
 +
- 	/* And now the addition */
- 	assert(zm & DP_HIDDEN_BIT);
+ enum {
+ 	REG_READ        = 0x00,
+ 	REG_SET_PAGE    = 0x00,
+@@ -52,7 +55,22 @@ static irqreturn_t events_interrupt(int irq, void *dev_id)
+ 	value = __raw_readl(edev->addr + REG_READ);
  
-diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
-index a8cd8b4..c91d5e5 100644
---- a/arch/mips/math-emu/sp_maddf.c
-+++ b/arch/mips/math-emu/sp_maddf.c
-@@ -54,7 +54,7 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
- 		return ieee754sp_nanxcpt(z);
- 	case IEEE754_CLASS_DNORM:
- 		SPDNORMZ;
--	/* QNAN is handled separately below */
-+	/* QNAN and ZERO cases are handled separately below */
- 	}
- 
- 	switch (CLPAIR(xc, yc)) {
-@@ -203,6 +203,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
- 	}
- 	assert(rm & (SP_HIDDEN_BIT << 3));
- 
-+	if (zc == IEEE754_CLASS_ZERO)
-+		return ieee754sp_format(rs, re, rm);
+ 	input_event(edev->input, type, code, value);
+-	input_sync(edev->input);
 +
- 	/* And now the addition */
++	/*
++	 * Send an extra (EV_SYN, SYN_REPORT, 0x0) event if a key
++	 * was pressed. Some keyboard device drivers may only send
++	 * the EV_KEY event and not EV_SYN.
++	 *
++	 * Note that sending an extra SYN_REPORT is not necessary
++	 * nor correct protocol with other devices such as
++	 * touchscreens, which will send their own SYN_REPORT's
++	 * when sufficient event information has been collected
++	 * (e.g., for touchscreens, when pressure and X/Y coordinates
++	 * have been received). Hence, we will only send this extra
++	 * SYN_REPORT if type == EV_KEY.
++	 */
++	if (type == EV_KEY)
++		input_sync(edev->input);
+ 	return IRQ_HANDLED;
+ }
  
- 	assert(zm & SP_HIDDEN_BIT);
+@@ -155,6 +173,19 @@ static int events_probe(struct platform_device *pdev)
+ 	input_dev->name = edev->name;
+ 	input_dev->id.bustype = BUS_HOST;
+ 
++	/*
++	 * Set the Goldfish Device to be multitouch.
++	 *
++	 * In the Ranchu kernel, there is multitouch-specific code
++	 * for handling ABS_MT_SLOT events (see
++	 * drivers/input/input.c:input_handle_abs_event).
++	 * If we do not issue input_mt_init_slots, the kernel will
++	 * filter out needed ABS_MT_SLOT events when we touch the
++	 * screen in more than one place, preventing multitouch with
++	 * more than one finger from working.
++	 */
++	input_mt_init_slots(input_dev, GOLDFISH_MAX_FINGERS, 0);
++
+ 	events_import_bits(edev, input_dev->evbit, EV_SYN, EV_MAX);
+ 	events_import_bits(edev, input_dev->keybit, EV_KEY, KEY_MAX);
+ 	events_import_bits(edev, input_dev->relbit, EV_REL, REL_MAX);
 -- 
 2.7.4

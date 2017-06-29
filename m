@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 23:45:40 +0200 (CEST)
-Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:33335 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 23:46:06 +0200 (CEST)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:33367 "EHLO
         mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994624AbdF2VkXtSzWl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jun 2017 23:40:23 +0200
+        with ESMTP id S23994626AbdF2Vk0Ato4l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jun 2017 23:40:26 +0200
 Received: from hauke-desktop.lan (p2003008628204200CF7ED62A161325E0.dip0.t-ipconnect.de [IPv6:2003:86:2820:4200:cf7e:d62a:1613:25e0])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 08CAF1001E8;
-        Thu, 29 Jun 2017 23:40:21 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 458021001EC;
+        Thu, 29 Jun 2017 23:40:25 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -14,9 +14,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v6 11/16] MIPS: lantiq: remove old reset controller implementation
-Date:   Thu, 29 Jun 2017 23:39:46 +0200
-Message-Id: <20170629213951.31176-12-hauke@hauke-m.de>
+Subject: [PATCH v6 15/16] MIPS: lantiq: remove old USB PHY initialisation
+Date:   Thu, 29 Jun 2017 23:39:50 +0200
+Message-Id: <20170629213951.31176-16-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170629213951.31176-1-hauke@hauke-m.de>
 References: <20170629213951.31176-1-hauke@hauke-m.de>
@@ -24,7 +24,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58924
+X-archive-position: 58925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,92 +41,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This code is now replaced by a reset controller in drivers/reset/reset-
-lantiq-rcu.c. The old code was never used anyway.
+This is now done in a PHY driver.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/lantiq/xway/reset.c | 68 -------------------------------------------
- 1 file changed, 68 deletions(-)
+ arch/mips/lantiq/xway/reset.c | 43 -------------------------------------------
+ 1 file changed, 43 deletions(-)
 
 diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index 2dedcf939901..5cb9309b0047 100644
+index be5fd29de523..04cd9a7c04a3 100644
 --- a/arch/mips/lantiq/xway/reset.c
 +++ b/arch/mips/lantiq/xway/reset.c
-@@ -194,74 +194,6 @@ int xrx200_gphy_boot(struct device *dev, unsigned int id, dma_addr_t dev_addr)
- 	return 0;
+@@ -114,45 +114,6 @@ static void ltq_machine_power_off(void)
+ 	unreachable();
  }
  
--/* reset a io domain for u micro seconds */
--void ltq_reset_once(unsigned int module, ulong u)
+-static void ltq_usb_init(void)
 -{
--	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) | module, RCU_RST_REQ);
--	udelay(u);
--	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) & ~module, RCU_RST_REQ);
+-	/* Power for USB cores 1 & 2 */
+-	ltq_pmu_enable(PMU_AHBM);
+-	ltq_pmu_enable(PMU_USB0);
+-	ltq_pmu_enable(PMU_USB1);
+-
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_CFG1A) | BIT(0), RCU_CFG1A);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_CFG1B) | BIT(0), RCU_CFG1B);
+-
+-	/* Enable USB PHY power for cores 1 & 2 */
+-	ltq_pmu_enable(PMU_USB0_P);
+-	ltq_pmu_enable(PMU_USB1_P);
+-
+-	/* Configure cores to host mode */
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USB1CFG) & ~RCU_USBCFG_HDSEL_BIT,
+-		RCU_USB1CFG);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USB2CFG) & ~RCU_USBCFG_HDSEL_BIT,
+-		RCU_USB2CFG);
+-
+-	/* Select DMA endianness (Host-endian: big-endian) */
+-	ltq_rcu_w32((ltq_rcu_r32(RCU_USB1CFG) & ~RCU_USBCFG_SLV_END_BIT)
+-		| RCU_USBCFG_HOST_END_BIT, RCU_USB1CFG);
+-	ltq_rcu_w32(ltq_rcu_r32((RCU_USB2CFG) & ~RCU_USBCFG_SLV_END_BIT)
+-		| RCU_USBCFG_HOST_END_BIT, RCU_USB2CFG);
+-
+-	/* Hard reset USB state machines */
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET) | USBRESET_BIT, RCU_USBRESET);
+-	udelay(50 * 1000);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET) & ~USBRESET_BIT, RCU_USBRESET);
+-
+-	/* Soft reset USB state machines */
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET2)
+-		| USB1RESET_BIT | USB2RESET_BIT, RCU_USBRESET2);
+-	udelay(50 * 1000);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET2)
+-		& ~(USB1RESET_BIT | USB2RESET_BIT), RCU_USBRESET2);
 -}
 -
--static int ltq_assert_device(struct reset_controller_dev *rcdev,
--				unsigned long id)
--{
--	u32 val;
--
--	if (id < 8)
--		return -1;
--
--	val = ltq_rcu_r32(RCU_RST_REQ);
--	val |= BIT(id);
--	ltq_rcu_w32(val, RCU_RST_REQ);
--
--	return 0;
--}
--
--static int ltq_deassert_device(struct reset_controller_dev *rcdev,
--				  unsigned long id)
--{
--	u32 val;
--
--	if (id < 8)
--		return -1;
--
--	val = ltq_rcu_r32(RCU_RST_REQ);
--	val &= ~BIT(id);
--	ltq_rcu_w32(val, RCU_RST_REQ);
--
--	return 0;
--}
--
--static int ltq_reset_device(struct reset_controller_dev *rcdev,
--			       unsigned long id)
--{
--	ltq_assert_device(rcdev, id);
--	return ltq_deassert_device(rcdev, id);
--}
--
--static const struct reset_control_ops reset_ops = {
--	.reset = ltq_reset_device,
--	.assert = ltq_assert_device,
--	.deassert = ltq_deassert_device,
--};
--
--static struct reset_controller_dev reset_dev = {
--	.ops			= &reset_ops,
--	.owner			= THIS_MODULE,
--	.nr_resets		= 32,
--	.of_reset_n_cells	= 1,
--};
--
--void ltq_rst_init(void)
--{
--	reset_dev.of_node = of_find_compatible_node(NULL, NULL,
--						"lantiq,xway-reset");
--	if (!reset_dev.of_node)
--		pr_err("Failed to find reset controller node");
--	else
--		reset_controller_register(&reset_dev);
--}
--
- static void ltq_machine_restart(char *command)
+ static int __init mips_reboot_setup(void)
  {
- 	u32 val = ltq_rcu_r32(RCU_RST_REQ);
+ 	struct resource res;
+@@ -176,10 +137,6 @@ static int __init mips_reboot_setup(void)
+ 	if (!ltq_rcu_membase)
+ 		panic("Failed to remap core memory");
+ 
+-	if (of_machine_is_compatible("lantiq,ar9") ||
+-	    of_machine_is_compatible("lantiq,vr9"))
+-		ltq_usb_init();
+-
+ 	_machine_restart = ltq_machine_restart;
+ 	_machine_halt = ltq_machine_halt;
+ 	pm_power_off = ltq_machine_power_off;
 -- 
 2.11.0

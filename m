@@ -1,51 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 15:55:02 +0200 (CEST)
-Received: from mga03.intel.com ([134.134.136.65]:51751 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993866AbdF2NyxRqoDH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Jun 2017 15:54:53 +0200
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Jun 2017 06:54:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.40,281,1496127600"; 
-   d="scan'208";a="280158351"
-Received: from tthayer-hp-z620-workstation.an.intel.com (HELO [10.122.105.144]) ([10.122.105.144])
-  by fmsmga004.fm.intel.com with ESMTP; 29 Jun 2017 06:54:44 -0700
-Reply-To: thor.thayer@linux.intel.com
-Subject: Re: [PATCH] EDAC: Get rid of mci->mod_ver
-To:     Borislav Petkov <bp@alien8.de>,
-        linux-edac <linux-edac@vger.kernel.org>
-Cc:     Mark Gross <mark.gross@intel.com>,
-        Robert Richter <rric@kernel.org>,
-        Tim Small <tim@buttersideup.com>,
-        Ranganathan Desikan <ravi@jetztechnologies.com>,
-        "Arvind R." <arvino55@gmail.com>, Jason Baron <jbaron@akamai.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>, Loc Ho <lho@apm.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org
-References: <20170629100311.vmdq6fojpo5ye4ne@pd.tnic>
-From:   Thor Thayer <thor.thayer@linux.intel.com>
-Message-ID: <deade91d-7326-8a39-3881-50db582c3098@linux.intel.com>
-Date:   Thu, 29 Jun 2017 08:57:57 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 16:05:35 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:61399 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993866AbdF2OF1pYpTH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jun 2017 16:05:27 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id C6570A4CCF6FD;
+        Thu, 29 Jun 2017 15:05:18 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 29 Jun 2017 15:05:21 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 1/1] MIPS: Avoid accidental raw backtrace
+Date:   Thu, 29 Jun 2017 15:05:04 +0100
+Message-ID: <913e3161e788882af01f96be523b1b67ae549039.1498744803.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.13.2
 MIME-Version: 1.0
-In-Reply-To: <20170629100311.vmdq6fojpo5ye4ne@pd.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <thor.thayer@linux.intel.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58903
+X-archive-position: 58904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thor.thayer@linux.intel.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,52 +41,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/29/2017 05:03 AM, Borislav Petkov wrote:
-> Hi,
-> 
-> any objections?
-> 
-> ---
-> It is a write-only variable so get rid of it.
-> 
-> Signed-off-by: Borislav Petkov <bp@suse.de>
-> Cc: Thor Thayer <thor.thayer@linux.intel.com>
-> Cc: Mark Gross <mark.gross@intel.com>
-> Cc: Robert Richter <rric@kernel.org>
-> Cc: Tim Small <tim@buttersideup.com>
-> Cc: Ranganathan Desikan <ravi@jetztechnologies.com>
-> Cc: "Arvind R." <arvino55@gmail.com>
-> Cc: Jason Baron <jbaron@akamai.com>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Michal Simek <michal.simek@xilinx.com>
-> Cc: "Sören Brinkmann" <soren.brinkmann@xilinx.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: David Daney <david.daney@cavium.com>
-> Cc: Loc Ho <lho@apm.com>
-> Cc: linux-edac@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mips@linux-mips.org
-> ---
->   drivers/edac/altera_edac.c      | 2 --
+Since commit 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with
+usermode") show_backtrace() invokes the raw backtracer when
+cp0_status & ST0_KSU indicates user mode to fix issues on EVA kernels
+where user and kernel address spaces overlap.
 
-<snip>
+However this is used by show_stack() which creates its own pt_regs on
+the stack and leaves cp0_status uninitialised in most of the code paths.
+This results in the non deterministic use of the raw back tracer
+depending on the previous stack content.
 
-> 
-> diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-> index db75d4b614f7..fa2e5db56d24 100644
-> --- a/drivers/edac/altera_edac.c
-> +++ b/drivers/edac/altera_edac.c
-> @@ -38,7 +38,6 @@
->   #include "edac_module.h"
->   
->   #define EDAC_MOD_STR		"altera_edac"
-> -#define EDAC_VERSION		"1"
->   #define EDAC_DEVICE		"Altera"
->   
+show_stack() deals exclusively with kernel mode stacks anyway, so
+explicitly initialise regs.cp0_status to KSU_KERNEL (i.e. 0) to ensure
+we get a useful backtrace.
 
-<snip>
+Fixes: 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with usermode")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 3.15+
+---
+ arch/mips/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+), 0 deletions(-)
 
-Looks fine for Altera EDAC.
-
-Acked-by: Thor Thayer <thor.thayer@linux.intel.com>
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 9681b5877140..38dfa27730ff 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -201,6 +201,8 @@ void show_stack(struct task_struct *task, unsigned long *sp)
+ {
+ 	struct pt_regs regs;
+ 	mm_segment_t old_fs = get_fs();
++
++	regs.cp0_status = KSU_KERNEL;
+ 	if (sp) {
+ 		regs.regs[29] = (unsigned long)sp;
+ 		regs.regs[31] = 0;
+-- 
+git-series 0.8.10

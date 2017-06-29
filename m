@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 23:40:44 +0200 (CEST)
-Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:33251 "EHLO
-        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993992AbdF2VkNW017l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jun 2017 23:40:13 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 23:41:07 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:53175 "EHLO mail.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993993AbdF2VkOKUDYl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Jun 2017 23:40:14 +0200
 Received: from hauke-desktop.lan (p2003008628204200CF7ED62A161325E0.dip0.t-ipconnect.de [IPv6:2003:86:2820:4200:cf7e:d62a:1613:25e0])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 46E711001DE;
-        Thu, 29 Jun 2017 23:40:12 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 3C4E31001DF;
+        Thu, 29 Jun 2017 23:40:13 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -14,9 +14,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v6 01/16] MIPS: lantiq: Use of_platform_default_populate instead of __dt_register_buses
-Date:   Thu, 29 Jun 2017 23:39:36 +0200
-Message-Id: <20170629213951.31176-2-hauke@hauke-m.de>
+Subject: [PATCH v6 02/16] mtd: lantiq-flash: drop check of boot select
+Date:   Thu, 29 Jun 2017 23:39:37 +0200
+Message-Id: <20170629213951.31176-3-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170629213951.31176-1-hauke@hauke-m.de>
 References: <20170629213951.31176-1-hauke@hauke-m.de>
@@ -24,7 +24,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58912
+X-archive-position: 58913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,29 +41,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-
-This allows populating syscon devices which are using "simple-mfd"
-instead of "simple-bus".
+Do not check which flash type the SoC was booted from before
+using this driver. Assume that the device tree is correct and use this
+driver when it was added to device tree. This also removes a build
+dependency to the SoC code.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Acked-by: Brian Norris <computersforpeace@gmail.com>
 ---
- arch/mips/lantiq/prom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/maps/lantiq-flash.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 96773bed8a8a..9ff7ccde9de0 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -117,7 +117,7 @@ void __init prom_init(void)
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+index 3e33ab66eb24..77b1d8013295 100644
+--- a/drivers/mtd/maps/lantiq-flash.c
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -114,12 +114,6 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	struct cfi_private *cfi;
+ 	int err;
  
- int __init plat_of_setup(void)
- {
--	return __dt_register_buses(soc_info.compatible, "simple-bus");
-+	return of_platform_default_populate(NULL, NULL, NULL);
- }
- 
- arch_initcall(plat_of_setup);
+-	if (of_machine_is_compatible("lantiq,falcon") &&
+-			(ltq_boot_select() != BS_FLASH)) {
+-		dev_err(&pdev->dev, "invalid bootstrap options\n");
+-		return -ENODEV;
+-	}
+-
+ 	ltq_mtd = devm_kzalloc(&pdev->dev, sizeof(struct ltq_mtd), GFP_KERNEL);
+ 	if (!ltq_mtd)
+ 		return -ENOMEM;
 -- 
 2.11.0

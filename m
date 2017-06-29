@@ -1,66 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 03:33:41 +0200 (CEST)
-Received: from mail-io0-x230.google.com ([IPv6:2607:f8b0:4001:c06::230]:34707
-        "EHLO mail-io0-x230.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992675AbdF2BdenAUvq convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 07:46:27 +0200 (CEST)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:34883
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991965AbdF2FqUfc0KI convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Jun 2017 03:33:34 +0200
-Received: by mail-io0-x230.google.com with SMTP id r36so45719053ioi.1;
-        Wed, 28 Jun 2017 18:33:34 -0700 (PDT)
+        Thu, 29 Jun 2017 07:46:20 +0200
+Received: by mail-wm0-x241.google.com with SMTP id u23so424230wma.2
+        for <linux-mips@linux-mips.org>; Wed, 28 Jun 2017 22:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=kJqBM+rQO0OuWhZ8qRhT5IldSnadrfgiGyTg+/MzqFE=;
-        b=bggiv3KwQilaDiQsUf8WK2jF6DH+f2GZC6eYkvlbVKefsxofJDbEQ2f2+xAe+Gl480
-         tZ1uPCbXSjRBVCdG6nXAqgz1fPZQ5+Vw89I2pMOGjPW6hVY7r2VQYyaWt/HS9xPEyGe8
-         9KE/1Xr7hDCHizRKZtbzjDPp+LMsOt7yfEbelOi5nKX/20WWS/hKaDQGapJmK50TY+rn
-         pVUjbl+6mL8ZnJygGIXX/s51Ms+vPO89Bi0tJ/xqK5folOSJKipHD0ajP6rv56LZbNd8
-         BAOlfqSXEfU6EQA/0ft5IYviJ3pMFX1MBFhKU3BKNsAPgj63KqmtcWjGcuYFBMYBVJ5j
-         XAJQ==
+        d=albanarts-com.20150623.gappssmtp.com; s=20150623;
+        h=sender:date:in-reply-to:references:mime-version
+         :content-transfer-encoding:subject:to:cc:from:message-id;
+        bh=MabRMkLijWLNbS/eZWGsge5Nv3iSAFQMY364nfPAJYM=;
+        b=uvkNbctzvwk4nZALnEZpowN5rFhHlidFhUf4mO0VKvKtRrO2aUQ/jcG1kqr9Hw/SMr
+         0tboktltOzwRmf/LbKMjtrX/V36WCSknczMT13M/NmlV4/59ie7YpmnQBPXCaHgogrqy
+         1FaPfdG3QQFSRKB/Vdp1TMJy5jfdGWX/aMVmYXiulLzpWfjLKZaV6S8BxeDt2TLnPPzc
+         Wh2T41yGTumkBW7m28KkCJwUzpEOur+QIlafWTFrIvxZYToJxHGeFXaeLYRf7vcwtv4o
+         Pa5FnUjaPxOJcuRPQP0pWC9U4f+xnQ+Rd7/CtYUXyU5ncSXjIat4Jm31THC4en7bDLEH
+         eCag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=kJqBM+rQO0OuWhZ8qRhT5IldSnadrfgiGyTg+/MzqFE=;
-        b=WZYWz9Ymg/riK0/KL1E22tEf3HphxS0eF05GRL0M+GquMPANcaKB01Yc7Qp6NOdVs7
-         yff6pb8txSzc6A/aWW1Oji+UkfhQLUH/Z3VYbCPcW5It4PojRJ8rOGr2sHvNz7XUmgKO
-         RVpS/Va1bIHIQiC8LCT2hCXm1Fbtf7qUZVDTh7/MlHpC1Hdomldu7BS05UPQX6bD98Nu
-         bEdAluhTHo1tf6Y84v1YRcWzW63wvpCLS1RWgkJbfrtKZS3EGGxtUZfr2+lVdoBVHe6o
-         0P9ZSeWvblPLMl6Uj8HyJVXxYAp0xM2cPgP1VuFoxveDKWt9pNLSCS5Tgw+/VpjhnAsn
-         cOQw==
-X-Gm-Message-State: AKS2vOyhoFxIWKbYx4Q6DCeI2Pb+u34qigV2oQduRNg8Ll9lRi82RtFd
-        dfppEGdf7oFcO5jzEKdW9tOGZbB7jA==
-X-Received: by 10.107.205.193 with SMTP id d184mr16783024iog.188.1498700008872;
- Wed, 28 Jun 2017 18:33:28 -0700 (PDT)
+        h=x-gm-message-state:sender:date:in-reply-to:references:mime-version
+         :content-transfer-encoding:subject:to:cc:from:message-id;
+        bh=MabRMkLijWLNbS/eZWGsge5Nv3iSAFQMY364nfPAJYM=;
+        b=jlSgNRp/AOS63ln+xP23GIrz94DmIifJLzVxQDLh8NlDD1CnhnckZrvpn2xO5Bf/IN
+         BxUToBngBKvta6zKhFi4fwEDvXaorMOglPzy3Xrd2cp2hQj68+wGgoP8UhJjRtlHWtl1
+         HGtGlgkuJFaMJX1WLrM4yo2HNPieCX9/Ic1MIBYR5AIQqUppv64BDpY+1q6ZaJYTxpHM
+         E4zhFU+RS7A5tj20Itgx03VPlZjwce89cSqjr5NE/V8Z+E8Ywk8nlZjFjsuPBOnavf6B
+         eHjEvkhhFmyd7uXMp1zmPzLs78PjLRqDzJmbkJpnTb/P/DR07WHovPoLCfGqkk2rsLN+
+         FcPQ==
+X-Gm-Message-State: AKS2vOzQ2mKbON72k+Fk8ekYJNtbDR8RRvtIVSQG9C/bCyBoI542rJlo
+        vL8DotJV/Sn4itmh8JM=
+X-Received: by 10.28.107.88 with SMTP id g85mr9615662wmc.42.1498715175114;
+        Wed, 28 Jun 2017 22:46:15 -0700 (PDT)
+Received: from android-f8911984c6e3e13 (jahogan.plus.com. [212.159.75.221])
+        by smtp.gmail.com with ESMTPSA id q70sm4797984wrb.3.2017.06.28.22.46.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 28 Jun 2017 22:46:14 -0700 (PDT)
+Date:   Thu, 29 Jun 2017 06:46:13 +0100
+In-Reply-To: <CAAhV-H7+0v0TE=V29DVYtEhxN2fUjVhh9MP9gNV96jzkq_1yrg@mail.gmail.com>
+References: <1498144016-9111-1-git-send-email-chenhc@lemote.com> <1498144016-9111-3-git-send-email-chenhc@lemote.com> <20170628143005.GJ31455@jhogan-linux.le.imgtec.org> <CAAhV-H7+0v0TE=V29DVYtEhxN2fUjVhh9MP9gNV96jzkq_1yrg@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.107.144.85 with HTTP; Wed, 28 Jun 2017 18:33:28 -0700 (PDT)
-In-Reply-To: <20170628143005.GJ31455@jhogan-linux.le.imgtec.org>
-References: <1498144016-9111-1-git-send-email-chenhc@lemote.com>
- <1498144016-9111-3-git-send-email-chenhc@lemote.com> <20170628143005.GJ31455@jhogan-linux.le.imgtec.org>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Thu, 29 Jun 2017 09:33:28 +0800
-X-Google-Sender-Auth: M0i88JOwnWUhftuhjD6jeenHU6Q
-Message-ID: <CAAhV-H7+0v0TE=V29DVYtEhxN2fUjVhh9MP9gNV96jzkq_1yrg@mail.gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Subject: Re: [PATCH V7 2/9] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+To:     linux-mips@linux-mips.org, Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <chenhuacai@gmail.com>
+From:   James Hogan <james.hogan@imgtec.com>
+Message-ID: <64E99F82-4E2B-4D53-8750-FCE90F84A29B@imgtec.com>
+Return-Path: <james@albanarts.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58889
+X-archive-position: 58890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,52 +75,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, James,
-
-Is it suitable to add this line in arch/mips/include/asm/mmzone.h?
-#define pa_to_nid(addr) 0
-
-Huacai
-
-On Wed, Jun 28, 2017 at 10:30 PM, James Hogan <james.hogan@imgtec.com> wrote:
-> Hi Huacai,
+On 29 June 2017 02:33:28 BST, Huacai Chen <chenhc@lemote.com> wrote:
+>Hi, James,
 >
-> On Thu, Jun 22, 2017 at 11:06:49PM +0800, Huacai Chen wrote:
->> @@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+>Is it suitable to add this line in arch/mips/include/asm/mmzone.h?
+>#define pa_to_nid(addr) 0
+
+It was basically malta_defconfig.
+
+OTOH when i tried including asm/mmzone.h, that tries including <mmzone.h> which it can't find.
+
+Cheers
+Jamee
+
+>
+>Huacai
+>
+>On Wed, Jun 28, 2017 at 10:30 PM, James Hogan <james.hogan@imgtec.com>
+>wrote:
+>> Hi Huacai,
 >>
->>       preempt_disable();
->>       if (cpu_has_inclusive_pcaches) {
->> -             if (size >= scache_size)
->> -                     r4k_blast_scache();
->> -             else
->> +             if (size >= scache_size) {
->> +                     if (current_cpu_type() != CPU_LOONGSON3)
->> +                             r4k_blast_scache();
->> +                     else
->> +                             r4k_blast_scache_node(pa_to_nid(addr));
->> +             } else
->>                       blast_scache_range(addr, addr + size);
->>               preempt_enable();
->>               __sync();
->> @@ -872,9 +896,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+>> On Thu, Jun 22, 2017 at 11:06:49PM +0800, Huacai Chen wrote:
+>>> @@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned
+>long addr, unsigned long size)
+>>>
+>>>       preempt_disable();
+>>>       if (cpu_has_inclusive_pcaches) {
+>>> -             if (size >= scache_size)
+>>> -                     r4k_blast_scache();
+>>> -             else
+>>> +             if (size >= scache_size) {
+>>> +                     if (current_cpu_type() != CPU_LOONGSON3)
+>>> +                             r4k_blast_scache();
+>>> +                     else
+>>> +                            
+>r4k_blast_scache_node(pa_to_nid(addr));
+>>> +             } else
+>>>                       blast_scache_range(addr, addr + size);
+>>>               preempt_enable();
+>>>               __sync();
+>>> @@ -872,9 +896,12 @@ static void r4k_dma_cache_inv(unsigned long
+>addr, unsigned long size)
+>>>
+>>>       preempt_disable();
+>>>       if (cpu_has_inclusive_pcaches) {
+>>> -             if (size >= scache_size)
+>>> -                     r4k_blast_scache();
+>>> -             else {
+>>> +             if (size >= scache_size) {
+>>> +                     if (current_cpu_type() != CPU_LOONGSON3)
+>>> +                             r4k_blast_scache();
+>>> +                     else
+>>> +                            
+>r4k_blast_scache_node(pa_to_nid(addr));
 >>
->>       preempt_disable();
->>       if (cpu_has_inclusive_pcaches) {
->> -             if (size >= scache_size)
->> -                     r4k_blast_scache();
->> -             else {
->> +             if (size >= scache_size) {
->> +                     if (current_cpu_type() != CPU_LOONGSON3)
->> +                             r4k_blast_scache();
->> +                     else
->> +                             r4k_blast_scache_node(pa_to_nid(addr));
->
-> malta_defconfig now fails to build:
->
-> arch/mips/mm/c-r4k.c: In function ‘r4k_dma_cache_wback_inv’:
-> arch/mips/mm/c-r4k.c:867:5: error: implicit declaration of function ‘pa_to_nid’ [-Werror=implicit-function-declaration]
->      r4k_blast_scache_node(pa_to_nid(addr));
->      ^
->
-> Cheers
-> James
+>> malta_defconfig now fails to build:
+>>
+>> arch/mips/mm/c-r4k.c: In function ‘r4k_dma_cache_wback_inv’:
+>> arch/mips/mm/c-r4k.c:867:5: error: implicit declaration of function
+>‘pa_to_nid’ [-Werror=implicit-function-declaration]
+>>      r4k_blast_scache_node(pa_to_nid(addr));
+>>      ^
+>>
+>> Cheers
+>> James
+
+
+--
+James Hogan

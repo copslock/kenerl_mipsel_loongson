@@ -1,36 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 18:40:10 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38244 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993976AbdF2QkDCk7hg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jun 2017 18:40:03 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id B41D239E39A4A;
-        Thu, 29 Jun 2017 17:39:53 +0100 (IST)
-Received: from [10.20.78.60] (10.20.78.60) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 29 Jun 2017
- 17:39:56 +0100
-Date:   Thu, 29 Jun 2017 17:39:44 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 5/6] MIPS: tlbex: Use ErrorEPC as scratch when KScratch
- isn't available
-In-Reply-To: <20170628152535.GA2698@linux-mips.org>
-Message-ID: <alpine.DEB.2.00.1706291729220.31404@tp.orcam.me.uk>
-References: <20170602223806.5078-1-paul.burton@imgtec.com> <20170602223806.5078-6-paul.burton@imgtec.com> <alpine.DEB.2.00.1706151806310.23046@tp.orcam.me.uk> <20170628152535.GA2698@linux-mips.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2017 18:56:13 +0200 (CEST)
+Received: from mga03.intel.com ([134.134.136.65]:13331 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993905AbdF2Q4Fe8bvg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Jun 2017 18:56:05 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Jun 2017 09:56:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.40,281,1496127600"; 
+   d="scan'208";a="105238805"
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+  by orsmga002.jf.intel.com with ESMTP; 29 Jun 2017 09:55:47 -0700
+Received: from orsmsx114.amr.corp.intel.com ([169.254.8.165]) by
+ ORSMSX104.amr.corp.intel.com ([169.254.4.9]) with mapi id 14.03.0319.002;
+ Thu, 29 Jun 2017 09:55:47 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Borislav Petkov <bp@alien8.de>,
+        linux-edac <linux-edac@vger.kernel.org>
+CC:     Thor Thayer <thor.thayer@linux.intel.com>, "Gross, Mark"
+        <mark.gross@intel.com>, Robert Richter <rric@kernel.org>, Tim Small
+        <tim@buttersideup.com>, Ranganathan Desikan <ravi@jetztechnologies.com>,
+        Arvind R. <arvino55@gmail.com>, Jason Baron <jbaron@akamai.com>, Michal Simek
+        <michal.simek@xilinx.com>, =?utf-8?B?U8O2cmVuIEJyaW5rbWFubg==?=
+        <soren.brinkmann@xilinx.com>, Ralf Baechle <ralf@linux-mips.org>, David Daney
+        <david.daney@cavium.com>, Loc Ho <lho@apm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>, "linux-mips@linux-mips.org"
+        <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] EDAC: Get rid of mci->mod_ver
+Thread-Topic: [PATCH] EDAC: Get rid of mci->mod_ver
+Thread-Index: AQHS8L8YVgzNLmzzOE6EL6WXBCuPRKI8Dx3Q
+Date:   Thu, 29 Jun 2017 16:55:46 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F612E6E02@ORSMSX114.amr.corp.intel.com>
+References: <20170629100311.vmdq6fojpo5ye4ne@pd.tnic>
+In-Reply-To: <20170629100311.vmdq6fojpo5ye4ne@pd.tnic>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 10.0.102.7
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.60]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Return-Path: <tony.luck@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58906
+X-archive-position: 58907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: tony.luck@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,23 +66,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 28 Jun 2017, Ralf Baechle wrote:
-
-> So I think while it's a nice hack I think this patch should be reserved
-> for system that don't support parity or ECC or where generally a tiny bit
-> of performance is more important that reliability.
-
- One problem I can see here is that AFAICT we use this somewhat costly 
-scratch setup even in cases where it is not needed (i.e. the scratch 
-remains unused throughout the handler), defeating the intent of the TLB 
-handler generator, which was created for the very purpose of avoiding any 
-wasted cycles that static universal handlers necessarily incurred.
-
- I think this is what has to be addressed instead, removing the penalty 
-from configurations that do not need it, i.e. no RIXI, no HTW, etc.  Then 
-chances are the more complex configurations will often have the required 
-scratch resources available such as KScratch or SRS registers, which can 
-then be used appropriately (and if some don't then it'll be them only 
-that'll take the penalty they deserve).
-
-  Maciej
+PiBhbnkgb2JqZWN0aW9ucz8NCj4NCj4gLS0tDQo+IEl0IGlzIGEgd3JpdGUtb25seSB2YXJpYWJs
+ZSBzbyBnZXQgcmlkIG9mIGl0Lg0KDQpOb3BlLiAgWmFwIGl0Lg0KDQpBY2tlZC1ieTogVG9ueSBM
+dWNrIDx0b255Lmx1Y2tAaW50ZWwuY29tPg0K

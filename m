@@ -1,61 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jun 2017 07:49:00 +0200 (CEST)
-Received: from mail-pf0-x230.google.com ([IPv6:2607:f8b0:400e:c00::230]:33692
-        "EHLO mail-pf0-x230.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992170AbdF3FrUZKmFm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jun 2017 07:47:20 +0200
-Received: by mail-pf0-x230.google.com with SMTP id e7so61635602pfk.0
-        for <linux-mips@linux-mips.org>; Thu, 29 Jun 2017 22:47:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jun 2017 09:03:35 +0200 (CEST)
+Received: from mail-it0-x234.google.com ([IPv6:2607:f8b0:4001:c0b::234]:36803
+        "EHLO mail-it0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992022AbdF3HD1jpCIY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jun 2017 09:03:27 +0200
+Received: by mail-it0-x234.google.com with SMTP id m68so56947897ith.1;
+        Fri, 30 Jun 2017 00:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=DgX2CRzG7ZY76LmDt/+e7ntAxd1sHIY4PzE4l/INono=;
-        b=DpIyWvQr11NqKgJIZQq/3+QcwQDNySPW6f0C02I9eWUTP/0yD8bbget+lMHTDaBhTk
-         +3JEzD8kJ7m3ZCAhlXeFGwdswoR0Xvk9ZqZYA/Lh+eWzmoQmG+HJA5UqYz+Tv0pkhUJh
-         Pjs4A5jgu2QWByKOa8ZEhcsQwM18gwFm9mInE=
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=m+l/7/0D++4nnqPuj/QiupX1SfxBSzP2aJAodM57xY8=;
+        b=Wo1ak2jVMq36ZsCbep5IVVaB2FDKCXAF9BiV5Ona9RHAIt+HP8SaLaa2KqWZA4CKHK
+         dAdMq0F5W3m4QST+RHI4GXEXdrlxHPr4wOn/rm3nHXv0aamot/gxwfntWXmIjvv8rdQP
+         Or0LBUnWymC70Usy4SXZzy3ilYupywLuV8bFZ46pSMyQdF18SI+9McKRC4xdTgduToWM
+         9hrkmyBK2cbh84rEFZ/qZmJYjpSax2J8xtuaC5wzBR/HzAt+cNoVVDpXDA5iNnhQBGyb
+         18YFHmX3KZOSJrfcFD8dGag6vN0AGrLMq5mxOfNeJp2rApiElnLGCYypWQ0Fjj8GT4p+
+         lIbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=DgX2CRzG7ZY76LmDt/+e7ntAxd1sHIY4PzE4l/INono=;
-        b=o6wfWhD5uRiHFhlj2PtvVKW5pXukI1fhoj95Jz9OJllf6Oug9+sxpKv9orXTVnggv5
-         4hbVTWW2nqE6zMXzRE5cSP2iSwYnv/dGOAC9SLqYwoePor+1TDokVwIc07Hr/92VrMF0
-         IkkJI48p41LLcG0NQBA+eXtig3YrLCKkU//dDV40mqfpJVi/pyJLOT14W7uIeBsWEYWk
-         FS0NseE3gK1HAINY/+C10ql1xLkicULK1QnzzUo8a7+V+/Bx54HeOKm4e5+EQJ1NwwYZ
-         Ka2REq8XsZTX4jJU9l/KjeqIZ97u1j0CQ9XDzoZvdTt0bzKzc3PhKnS1nSEkTZ/XOlyX
-         CXLg==
-X-Gm-Message-State: AKS2vOzL03tSdL5ZR4QH5y4C84fUfAgPSHXkOhSX+dIeFtuY6qlPUqqx
-        hLpftGNdj4MCWXR1
-X-Received: by 10.98.159.130 with SMTP id v2mr20283371pfk.20.1498801634652;
-        Thu, 29 Jun 2017 22:47:14 -0700 (PDT)
-Received: from localhost.localdomain ([106.51.129.233])
-        by smtp.gmail.com with ESMTPSA id a187sm11405550pgc.37.2017.06.29.22.47.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 29 Jun 2017 22:47:13 -0700 (PDT)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Stable <stable@vger.kernel.org>,
-        =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
-        <noltari@gmail.com>, john@phrozen.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH for-4.4 09/16] MIPS: ralink: fix MT7628 wled_an pinmux gpio
-Date:   Fri, 30 Jun 2017 11:16:33 +0530
-Message-Id: <1498801600-20896-10-git-send-email-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1498801600-20896-1-git-send-email-amit.pundir@linaro.org>
-References: <1498801600-20896-1-git-send-email-amit.pundir@linaro.org>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=m+l/7/0D++4nnqPuj/QiupX1SfxBSzP2aJAodM57xY8=;
+        b=iV/kgBvMXcEGTqkoB9/OINUC5FjoHOezgdLrcrzHSc0CAAgCaAvOLFMJeaZFiys+G6
+         5sBTb2mccPDRXIhUDUEytEkfLULLi6vLmwfhE/HQC0I10kfj4H+Sy2Oxtwx82V62MjD3
+         /ENzzdPwho9SOnDPPZUD/94ir/H7kL4e2PMmaQCc7ROZ72L4+QhDyfpYXFPMyG0SxgQl
+         9ucrLhzZ2zyBxoEZXs+lFCwaEMJu2VmbS431HpS67/cPoi3kniHu+MkTr99/f3g4xILG
+         TZePMfjb04gCy207I3yuk6U07wCzVpYJHR5Zs/bHT6TJ2aWVj8SbWcRAHkjE0v/J2Xwd
+         F/kg==
+X-Gm-Message-State: AKS2vOx29sTa9KVjeAmE9d4CFl+k5xcKHDJ0r8ceAdnE3jbE3+kNid6+
+        9HiQ+Wwd1Zn4E4ZAjILFgAsAa5DQGg==
+X-Received: by 10.36.87.147 with SMTP id u141mr17484112ita.72.1498806201861;
+ Fri, 30 Jun 2017 00:03:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <amit.pundir@linaro.org>
+Received: by 10.107.144.85 with HTTP; Fri, 30 Jun 2017 00:03:21 -0700 (PDT)
+In-Reply-To: <dff97c4e-62aa-eacc-c1c9-16f824eda332@gentoo.org>
+References: <1498144016-9111-1-git-send-email-chenhc@lemote.com>
+ <1498144016-9111-3-git-send-email-chenhc@lemote.com> <20170628143005.GJ31455@jhogan-linux.le.imgtec.org>
+ <CAAhV-H7+0v0TE=V29DVYtEhxN2fUjVhh9MP9gNV96jzkq_1yrg@mail.gmail.com>
+ <64E99F82-4E2B-4D53-8750-FCE90F84A29B@imgtec.com> <dff97c4e-62aa-eacc-c1c9-16f824eda332@gentoo.org>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Fri, 30 Jun 2017 15:03:21 +0800
+X-Google-Sender-Auth: ih1bbz08bzG3nQWMYBjv2mgnR_s
+Message-ID: <CAAhV-H6aJ=bh9Dc1JNs8dpeBxvWiKFn0SDrwz0PM92FnM0yWyA@mail.gmail.com>
+Subject: Re: [PATCH V7 2/9] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58937
+X-archive-position: 58938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amit.pundir@linaro.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,39 +74,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+What about add these lines in c-r4k.c?
+#ifnde pa_to_nid
+#define pa_to_nid(addr) 0
+#endif
 
-commit 07b50db6e685172a41b9978aebffb2438166d9b6 upstream.
+Huacai
 
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Cc: john@phrozen.org
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13307/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
- arch/mips/ralink/mt7620.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
-index 37cfc7d3c185..48d6349fd9d7 100644
---- a/arch/mips/ralink/mt7620.c
-+++ b/arch/mips/ralink/mt7620.c
-@@ -196,10 +196,10 @@ static struct rt2880_pmx_func wled_kn_grp_mt7628[] = {
- };
- 
- static struct rt2880_pmx_func wled_an_grp_mt7628[] = {
--	FUNC("rsvd", 3, 35, 1),
--	FUNC("rsvd", 2, 35, 1),
--	FUNC("gpio", 1, 35, 1),
--	FUNC("wled_an", 0, 35, 1),
-+	FUNC("rsvd", 3, 44, 1),
-+	FUNC("rsvd", 2, 44, 1),
-+	FUNC("gpio", 1, 44, 1),
-+	FUNC("wled_an", 0, 44, 1),
- };
- 
- #define MT7628_GPIO_MODE_MASK		0x3
--- 
-2.7.4
+On Thu, Jun 29, 2017 at 6:23 PM, Joshua Kinard <kumba@gentoo.org> wrote:
+> On 06/29/2017 01:46, James Hogan wrote:
+>> On 29 June 2017 02:33:28 BST, Huacai Chen <chenhc@lemote.com> wrote:
+>>> Hi, James,
+>>>
+>>> Is it suitable to add this line in arch/mips/include/asm/mmzone.h?
+>>> #define pa_to_nid(addr) 0
+>>
+>> It was basically malta_defconfig.
+>>
+>> OTOH when i tried including asm/mmzone.h, that tries including <mmzone.h> which it can't find.
+>>
+>> Cheers
+>> Jamee
+>>
+>
+> <asm/mmzone.h> is only supposed to be defined for NUMA-aware systems, as far as
+> I can tell.  I believe a lot of the Loongson code derives somewhat from the
+> IP27 code, as both are the only MIPS platforms that define a specific version
+> of that header.
+>
+> It also looks like the generic mmzone.h header probably just needs the
+> <mmzone.h> include removed.  pa_to_nid is only used for pfn_to_nid when
+> CONFIG_DISCONTIGMEM is set, and IP27 is one of the only platforms that uses
+> that memory model.
+>
+> --J
+>

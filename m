@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jun 2017 07:47:52 +0200 (CEST)
-Received: from mail-pg0-x235.google.com ([IPv6:2607:f8b0:400e:c05::235]:34167
-        "EHLO mail-pg0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992022AbdF3FrKX0XRm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jun 2017 07:47:10 +0200
-Received: by mail-pg0-x235.google.com with SMTP id t186so58772447pgb.1
-        for <linux-mips@linux-mips.org>; Thu, 29 Jun 2017 22:47:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jun 2017 07:48:16 +0200 (CEST)
+Received: from mail-pg0-x232.google.com ([IPv6:2607:f8b0:400e:c05::232]:33243
+        "EHLO mail-pg0-x232.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992078AbdF3FrNUOC0m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jun 2017 07:47:13 +0200
+Received: by mail-pg0-x232.google.com with SMTP id f127so58490955pgc.0
+        for <linux-mips@linux-mips.org>; Thu, 29 Jun 2017 22:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=qsQw8YfTN4V/2RxuF5rUjMkS3vhgniLUlofFz0Ul2P4=;
-        b=POl0Ew+LBNego56svIblaXg+OIKC2zQafP+IvAPJE+1bidbGDgLxXsgBD2ra1zaa3I
-         TOEqpacTX5HRqVee2fV4uz/BQYQXa2+pWPiVOVPiOzmJudL2S1zW7HwvXV9FfbEAgJyT
-         KqvYQ0ir8PH580YUul8MSv0py78f9WrSzqoH8=
+        bh=PNf+3ZdwA0pkw3e3Ly13LkN0CHKMZ6CDCOKI2VxOsC0=;
+        b=daNU1VF1Nj0sLN79j/jQhOFcsy3HCsY0wFIFQWib+U3BZ7/COA/pbMYEnklW6Bsdac
+         syIDqOXtoBb6BA5W7StOu++qINIolIIyZiIGnocY/p+GLOXEijkMEjx2YwOH4f+pSCBu
+         u4QKrauok7qjQv6lX84p/w2eOF+6bBtzsOwiM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=qsQw8YfTN4V/2RxuF5rUjMkS3vhgniLUlofFz0Ul2P4=;
-        b=F9O8SnAiVHTOnId2TXmGWI4+iFbfCGKcdfU9u07sWLwtpUrfa/YUimf2yk6HCxCiQb
-         NjsXAopPedR64mkpPeNrUESgLvBmkjdpYZBiLdoX+NqWGZB/9pFhIFbsHtZGJ7SWoTzF
-         mAHF6hxmxq7R6GH44anjHqJTH49Am5mqCl/if3UoMK1G+ISj24QMr4qYAo8LPsGK0gE0
-         lXaJb2IZldtC5o+nLKmVM8Dw2b2SIT6PkgQ0qHEISyVzD1KqYKLhVNi6LF928m5443dj
-         3vetjyRoyQDQ1HNSaBQNN5/H8bcm4IkBx706dVknA+eaScUC9ppr4oY4PJG8ilu+jLZN
-         M6mQ==
-X-Gm-Message-State: AKS2vOxNqjP7AALOCh6eYn/3bnNJ3xHvqKPlgMeKubwVK9TBnCxkIDGv
-        8QDX9qbyfEG+sM/r
-X-Received: by 10.99.4.6 with SMTP id 6mr19792491pge.126.1498801624614;
-        Thu, 29 Jun 2017 22:47:04 -0700 (PDT)
+        bh=PNf+3ZdwA0pkw3e3Ly13LkN0CHKMZ6CDCOKI2VxOsC0=;
+        b=HkQQE1E/AhfWMzd3KSzXSxjnd3jLi1FMsBN5Ccse3MKjT3ZobowkooKVhSx4yZA/T8
+         2q0c4rcvvEUu/febUIFjeM1rse4kwbZ+ay3uVYsNwQCU/LNYz2CU0lWSMDD8QZswV80Y
+         d7ctkXiThAJz64PebPuMrgNdG6u3IYYYdNlc3QqZKNtSCA1Vh1bCb7kWcrslpdRUSEku
+         xGBghdmUcAS+4y0u0nbi7Ru1ByG0Xe64/iUntdgAOw+7srxAAG/GkkwnRK7/TPVPNefy
+         xC6VLC32nhJOvJ90p/xEO9gQHzoFQkskVRbQ2hB34mkcjgKv71zoiYuEnQc6SXDB5HVN
+         S+wQ==
+X-Gm-Message-State: AKS2vOxVUyJP/k4cK7ZlOUdtA2h6zzo5CL4aTZ8CDqQHNA82Z0B1yZij
+        u5CeCYAcxyvTd1LOgoNqyw==
+X-Received: by 10.101.85.206 with SMTP id k14mr18987953pgs.153.1498801627575;
+        Thu, 29 Jun 2017 22:47:07 -0700 (PDT)
 Received: from localhost.localdomain ([106.51.129.233])
-        by smtp.gmail.com with ESMTPSA id a187sm11405550pgc.37.2017.06.29.22.47.01
+        by smtp.gmail.com with ESMTPSA id a187sm11405550pgc.37.2017.06.29.22.47.04
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 29 Jun 2017 22:47:03 -0700 (PDT)
+        Thu, 29 Jun 2017 22:47:06 -0700 (PDT)
 From:   Amit Pundir <amit.pundir@linaro.org>
 To:     Greg KH <gregkh@linuxfoundation.org>
 Cc:     Stable <stable@vger.kernel.org>, John Crispin <blogic@openwrt.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH for-4.4 06/16] MIPS: ralink: fix USB frequency scaling
-Date:   Fri, 30 Jun 2017 11:16:30 +0530
-Message-Id: <1498801600-20896-7-git-send-email-amit.pundir@linaro.org>
+Subject: [PATCH for-4.4 07/16] MIPS: ralink: Fix invalid assignment of SoC type
+Date:   Fri, 30 Jun 2017 11:16:31 +0530
+Message-Id: <1498801600-20896-8-git-send-email-amit.pundir@linaro.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1498801600-20896-1-git-send-email-amit.pundir@linaro.org>
 References: <1498801600-20896-1-git-send-email-amit.pundir@linaro.org>
@@ -45,7 +45,7 @@ Return-Path: <amit.pundir@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58934
+X-archive-position: 58935
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,33 +64,30 @@ X-list: linux-mips
 
 From: John Crispin <blogic@openwrt.org>
 
-commit fad2522272ed5ed451d2d7b1dc547ddf3781cc7e upstream.
+commit 0af3a40f09a2a85089037a0b5b51471fa48b229e upstream.
 
-Commit 418d29c87061 ("MIPS: ralink: Unify SoC id handling") was not fully
-correct. The logic for the SoC check got inverted. We need to check if it
-is not a MT76x8.
+Commit 418d29c87061 ("MIPS: ralink: Unify SoC id handling") introduced
+broken code. We obviously need to assign the value.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11992/
+Patchwork: https://patchwork.linux-mips.org/patch/11993/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
- arch/mips/ralink/mt7620.c | 2 +-
+ arch/mips/ralink/rt288x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
-index 733768e9877c..4c17dc6e8ae9 100644
---- a/arch/mips/ralink/mt7620.c
-+++ b/arch/mips/ralink/mt7620.c
-@@ -459,7 +459,7 @@ void __init ralink_clk_init(void)
- 	ralink_clk_add("10000c00.uartlite", periph_rate);
- 	ralink_clk_add("10180000.wmac", xtal_rate);
+diff --git a/arch/mips/ralink/rt288x.c b/arch/mips/ralink/rt288x.c
+index 15506a1ff22a..9dd67749c592 100644
+--- a/arch/mips/ralink/rt288x.c
++++ b/arch/mips/ralink/rt288x.c
+@@ -109,5 +109,5 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ 	soc_info->mem_size_max = RT2880_MEM_SIZE_MAX;
  
--	if (IS_ENABLED(CONFIG_USB) && is_mt76x8()) {
-+	if (IS_ENABLED(CONFIG_USB) && !is_mt76x8()) {
- 		/*
- 		 * When the CPU goes into sleep mode, the BUS clock will be
- 		 * too low for USB to function properly. Adjust the busses
+ 	rt2880_pinmux_data = rt2880_pinmux_data_act;
+-	ralink_soc == RT2880_SOC;
++	ralink_soc = RT2880_SOC;
+ }
 -- 
 2.7.4

@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2017 18:33:43 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:44112 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2017 18:34:06 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:43132 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992974AbdGBQahjz0Vq (ORCPT
+        with ESMTP id S23993179AbdGBQahum1uq (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 2 Jul 2017 18:30:37 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -11,20 +11,19 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Paul Burton <paul.burton@imgtec.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3 09/18] serial: 8250_ingenic: Parse earlycon options
-Date:   Sun,  2 Jul 2017 18:30:07 +0200
-Message-Id: <20170702163016.6714-10-paul@crapouillou.net>
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
+Subject: [PATCH v3 15/18] MIPS: JZ4770: Work around config2 misreporting associativity
+Date:   Sun,  2 Jul 2017 18:30:13 +0200
+Message-Id: <20170702163016.6714-16-paul@crapouillou.net>
 In-Reply-To: <20170702163016.6714-1-paul@crapouillou.net>
 References: <20170607200439.24450-2-paul@crapouillou.net>
  <20170702163016.6714-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1499013031; bh=igT6oMtV/Cdn7qheH5e401KIl7i1NeEu5JVru1WdCbM=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=EP0zHPL6htLsDfWS+f0PkGw4hY2Yv7kv7lpdENzjCQdJv05/q0ktWsPxXW9d3BkMD5+9npMjXB0oGvO6KWteKmJ4EqI1b4A2t91qN6lFrJ1XZ1bkozgMcRTTtkdWm6BhtTIQe2jLWZ6N0Qkp/JSV8H8UerP8VUqhR/xzLxNdgBw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1499013037; bh=hy9Qdh6ZRVQZrImDd/0PbzNkMGf5D2+terPO5rZ/fqk=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=EHPvczjAC6l3DsiaztSb9DdsPFe6TGqFYpqfGPwE0zK3n2cNDFldKsI5MFBf/qDhjG3uqX63E2g1KYsRi65we50Cz5bID4WFyXyQRvJ7cYTFnnhsT7/Tx5m5nDNzUaea/5elWajRgtqp+MiIhMWLpL2YemKC96fV7tUVLaf03Ek=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58951
+X-archive-position: 58952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,60 +40,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In the devicetree, it is possible to specify the baudrate, parity,
-bits, flow of the early console, by passing a configuration string like
-this:
+From: Maarten ter Huurne <maarten@treewalker.org>
 
-aliases {
-	serial0 = &uart0;
-};
+According to config2, the associativity would be 5-ways, but the
+documentation states 4-ways, which also matches the documented
+L2 cache size of 256 kB.
 
-chosen {
-	stdout-path = "serial0:57600n8";
-};
-
-This, for instance, will configure the early console for a baudrate of
-57600 bps, no parity, and 8 bits per baud.
-
-This patches implements parsing of this configuration string in the
-8250_ingenic driver, which previously just ignored it.
-
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
 ---
- drivers/tty/serial/8250/8250_ingenic.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/mips/mm/sc-mips.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- v2: Don't create temp. buffer, now that uart_parse_options takes a const char*
+ v2: No change
  v3: No change
 
-diff --git a/drivers/tty/serial/8250/8250_ingenic.c b/drivers/tty/serial/8250/8250_ingenic.c
-index b31b2ca552d1..be4a07a24342 100644
---- a/drivers/tty/serial/8250/8250_ingenic.c
-+++ b/drivers/tty/serial/8250/8250_ingenic.c
-@@ -99,14 +99,22 @@ static int __init ingenic_early_console_setup(struct earlycon_device *dev,
- 					      const char *opt)
- {
- 	struct uart_port *port = &dev->port;
--	unsigned int baud, divisor;
-+	unsigned int divisor;
-+	int baud = 115200;
+diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
+index c909c3342729..67a3b4d88580 100644
+--- a/arch/mips/mm/sc-mips.c
++++ b/arch/mips/mm/sc-mips.c
+@@ -15,6 +15,7 @@
+ #include <asm/mmu_context.h>
+ #include <asm/r4kcache.h>
+ #include <asm/mips-cm.h>
++#include <asm/bootinfo.h>
  
- 	if (!dev->port.membase)
- 		return -ENODEV;
+ /*
+  * MIPS32/MIPS64 L2 cache handling
+@@ -228,6 +229,14 @@ static inline int __init mips_sc_probe(void)
+ 	else
+ 		return 0;
  
-+	if (opt) {
-+		unsigned int parity, bits, flow; /* unused for now */
++	/*
++	 * According to config2 it would be 5-ways, but that is contradicted
++	 * by all documentation.
++	 */
++	if (current_cpu_type() == CPU_JZRISC &&
++				mips_machtype == MACH_INGENIC_JZ4770)
++		c->scache.ways = 4;
 +
-+		uart_parse_options(opt, &baud, &parity, &bits, &flow);
-+	}
-+
- 	ingenic_early_console_setup_clock(dev);
+ 	c->scache.waysize = c->scache.sets * c->scache.linesz;
+ 	c->scache.waybit = __ffs(c->scache.waysize);
  
--	baud = dev->baud ?: 115200;
-+	if (dev->baud)
-+		baud = dev->baud;
- 	divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * baud);
- 
- 	early_out(port, UART_IER, 0);
 -- 
 2.11.0

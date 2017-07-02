@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2017 18:34:30 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2017 18:34:52 +0200 (CEST)
 Received: from outils.crapouillou.net ([89.234.176.41]:44112 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993853AbdGBQaitHQIq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Jul 2017 18:30:38 +0200
+        with ESMTP id S23994274AbdGBQajx3qZq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Jul 2017 18:30:39 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
@@ -11,19 +11,20 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Paul Burton <paul.burton@imgtec.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: [PATCH v3 16/18] MIPS: JZ4770: Workaround for corrupted DMA transfers
-Date:   Sun,  2 Jul 2017 18:30:14 +0200
-Message-Id: <20170702163016.6714-17-paul@crapouillou.net>
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v3 17/18] devicetree/bindings: Add GCW vendor prefix
+Date:   Sun,  2 Jul 2017 18:30:15 +0200
+Message-Id: <20170702163016.6714-18-paul@crapouillou.net>
 In-Reply-To: <20170702163016.6714-1-paul@crapouillou.net>
 References: <20170607200439.24450-2-paul@crapouillou.net>
  <20170702163016.6714-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1499013038; bh=vnO+PJMlLFF/qQ7mjHJDOgqhUbswCu0zM28gKfwhP44=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=P4vZMzb4LE+QiZICCfil6BUZ7pMwiKo22/GJGPhYUSaBYYBPnLmcpNu8jK4C4wWaEoTmn/9Ut1KtTKFvjB+cQIh9uKTz0nQYVFNkRmhcA6tfltjZnGMzML0W768/GsK+MnmwIOZSLPfctIwD1hV620SH6KBYaAaE7trl3QO4Mgw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1499013039; bh=BXgyWl2Lc3dTZm5hzy/wB4QaS7zwT+gl27JyDoqPnSs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=lNesUdA0v0BMd85eAhWqAeYh5DxzcsHNrt7GHZyUSuK/gj4S2hCZO2YVthoKurGjamLpHQh+15yGstw3qJaME391crDOX0m3bddVEaW+eafwh0NZDrkSnA3+60tCXC6ukjrMQadp+zEfPotfF8kpaOdWc+kPupEtiB5iFUkBbx8=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58953
+X-archive-position: 58954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,81 +41,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Maarten ter Huurne <maarten@treewalker.org>
+Game Consoles Worldwide, mostly known under the acronym GCW, is the
+creator of the GCW Zero open-source video game system.
 
-We have seen MMC DMA transfers read corrupted data from SDRAM when
-a burst interval ends at physical address 0x10000000. To avoid this
-problem, we remove the final page of low memory from the memory map.
-
-Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- arch/mips/jz4740/setup.c | 24 ++++++++++++++++++++++++
- arch/mips/kernel/setup.c |  8 ++++++++
- 2 files changed, 32 insertions(+)
+ Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
- v2: No change
+ v2: It's 'Game Consoles Worldwide', not 'Games Consoles Worldwide'
  v3: No change
 
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index afd84ee966e8..6948b133a15d 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -23,6 +23,7 @@
- 
- #include <asm/bootinfo.h>
- #include <asm/mips_machine.h>
-+#include <asm/page.h>
- #include <asm/prom.h>
- 
- #include <asm/mach-jz4740/base.h>
-@@ -102,6 +103,29 @@ void __init arch_init_irq(void)
- 	irqchip_init();
- }
- 
-+/*
-+ * We have seen MMC DMA transfers read corrupted data from SDRAM when a burst
-+ * interval ends at physical address 0x10000000. To avoid this problem, we
-+ * remove the final page of low memory from the memory map.
-+ */
-+void __init jz4770_reserve_unsafe_for_dma(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		struct boot_mem_map_entry *entry = boot_mem_map.map + i;
-+
-+		if (entry->type != BOOT_MEM_RAM)
-+			continue;
-+
-+		if (entry->addr + entry->size != 0x10000000)
-+			continue;
-+
-+		entry->size -= PAGE_SIZE;
-+		break;
-+	}
-+}
-+
- static int __init jz4740_machine_setup(void)
- {
- 	mips_machine_setup();
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 89785600fde4..cccfd7ba89fe 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -838,6 +838,14 @@ static void __init arch_mem_init(char **cmdline_p)
- 
- 	parse_early_param();
- 
-+#ifdef CONFIG_MACH_JZ4770
-+	if (current_cpu_type() == CPU_JZRISC &&
-+				mips_machtype == MACH_INGENIC_JZ4770) {
-+		extern void __init jz4770_reserve_unsafe_for_dma(void);
-+		jz4770_reserve_unsafe_for_dma();
-+	}
-+#endif
-+
- 	if (usermem) {
- 		pr_info("User-defined physical RAM map:\n");
- 		print_memory_map();
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index c03d20140366..5921aa1248fb 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -114,6 +114,7 @@ focaltech	FocalTech Systems Co.,Ltd
+ friendlyarm	Guangzhou FriendlyARM Computer Tech Co., Ltd
+ fsl	Freescale Semiconductor
+ fujitsu	Fujitsu Ltd.
++gcw Game Consoles Worldwide
+ ge	General Electric Company
+ geekbuying	GeekBuying
+ gef	GE Fanuc Intelligent Platforms Embedded Systems, Inc.
 -- 
 2.11.0

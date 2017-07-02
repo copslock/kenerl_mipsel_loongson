@@ -1,29 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2017 18:37:39 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:46478 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2017 18:38:00 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:47446 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994633AbdGBQbH5Cixq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Jul 2017 18:31:07 +0200
+        with ESMTP id S23993419AbdGBQfQi0sOq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Jul 2017 18:35:16 +0200
+Date:   Sun, 02 Jul 2017 18:35:01 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
+Subject: Re: [PATCH v5 05/14] MIPS: ingenic: Enable pinctrl for all ingenic
+ SoCs
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: [PATCH v3 10/18] MIPS: Setup boot_command_line before plat_mem_setup
-Date:   Sun,  2 Jul 2017 18:30:08 +0200
-Message-Id: <20170702163016.6714-11-paul@crapouillou.net>
-In-Reply-To: <20170702163016.6714-1-paul@crapouillou.net>
-References: <20170607200439.24450-2-paul@crapouillou.net>
- <20170702163016.6714-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1499013032; bh=PAkvXpDEB68zfGCEicyjk4dYGliSi+02jYmcHMZ1WPg=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=XJfTc0F92cDl2wQs7RV2y5H6ThuE8A+3FkiFjZvA7lbUkasfNqLWTB3ReehT4wuSgj4n3Vzf5LtQv8B1oB6zqT8seXp7XcBvEeodGN7lg11S7irwu5nc/BMFS2ElgYCLr32xjqtg2x7dNz7NlD7xGwuFmsxlrT7r7T6iGCe+22k=
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Message-Id: <1499013301.1477.0@smtp.crapouillou.net>
+In-Reply-To: <CACRpkdauf5c2i4o5i8QY8YHPNjizkvTu6kAbnquWiP_=v2=KdQ@mail.gmail.com>
+References: <20170402204244.14216-2-paul@crapouillou.net>
+        <20170428200824.10906-1-paul@crapouillou.net>
+        <20170428200824.10906-6-paul@crapouillou.net>
+        <CACRpkdauf5c2i4o5i8QY8YHPNjizkvTu6kAbnquWiP_=v2=KdQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1499013311; bh=mtPV2CxHXL4vEB4E6Ur//bQ7fgALF+q75uFaDxLB3fQ=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type; b=vQNNLq0+I975MxmEJwUZZVKiD/6JimnQwKW39UlyyT7UtvQ4DW/n9TQMc3RdT/Mxz1NDGOKOIhPh0/wrHMwFhyPKO8pFM79HomsIGk4WokMgLjmtYH+aUEBT5jdhKiXvzKksoLNcnOh8hspcgPCVN+fbBM6iI8B8dRgs8izYmws=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58961
+X-archive-position: 58962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,84 +57,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+Hi Linus,
 
-Platforms using DT will typically call __dt_setup_arch from
-plat_mem_setup. This in turn calls early_init_dt_scan. When
-CONFIG_CMDLINE is set, this leads to its value being copied into
-boot_command_line by early_init_dt_scan_chosen. If this happens before
-the code setting up boot_command_line in arch_mem_init runs, that code
-will go on to append CONFIG_CMDLINE (via builtin_cmdline) to
-boot_command_line again, duplicating it. For some command line
-parameters (eg. earlycon) this can be a problem. Set up
-boot_command_line before early_init_dt_scan_chosen gets called such that
-it will not write CONFIG_CMDLINE in this scenario & the arguments aren't
-duplicated.
+> I applied all the patches to a branch in pinctrl and merged into my
+> devel branch for testing:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/
+> Branch: ingenic
+> 
+> Ralf: are you OK with this? It would be nice to have your ACK on
+> all patches. If you want you can pull this branch into the MIPS
+> tree, or we can hope for it all to settle nicely because of low 
+> platform
+> activity in MIPS on this platform, so it only needs to come in
+> from my trees.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
- arch/mips/kernel/setup.c | 39 ++++++++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 19 deletions(-)
-
- v2: No change
- v3: No change
-
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 01d1dbde5fbf..89785600fde4 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -785,25 +785,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	struct memblock_region *reg;
- 	extern void plat_mem_setup(void);
- 
--	/* call board setup routine */
--	plat_mem_setup();
--
--	/*
--	 * Make sure all kernel memory is in the maps.  The "UP" and
--	 * "DOWN" are opposite for initdata since if it crosses over
--	 * into another memory section you don't want that to be
--	 * freed when the initdata is freed.
--	 */
--	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
--			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
--			 BOOT_MEM_RAM);
--	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
--			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
--			 BOOT_MEM_INIT_RAM);
--
--	pr_info("Determined physical RAM map:\n");
--	print_memory_map();
--
- #if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
- 	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
- #else
-@@ -831,6 +812,26 @@ static void __init arch_mem_init(char **cmdline_p)
- 	}
- #endif
- #endif
-+
-+	/* call board setup routine */
-+	plat_mem_setup();
-+
-+	/*
-+	 * Make sure all kernel memory is in the maps.  The "UP" and
-+	 * "DOWN" are opposite for initdata since if it crosses over
-+	 * into another memory section you don't want that to be
-+	 * freed when the initdata is freed.
-+	 */
-+	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
-+			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
-+			 BOOT_MEM_RAM);
-+	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
-+			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
-+			 BOOT_MEM_INIT_RAM);
-+
-+	pr_info("Determined physical RAM map:\n");
-+	print_memory_map();
-+
- 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
- 
- 	*cmdline_p = command_line;
--- 
-2.11.0
+There has been no word from Ralf, is this going into 4.13?

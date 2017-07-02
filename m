@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 00:42:26 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 00:42:50 +0200 (CEST)
 Received: from hauke-m.de ([5.39.93.123]:56275 "EHLO mail.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992974AbdGBWlRvdoBa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 3 Jul 2017 00:41:17 +0200
+        id S23993417AbdGBWlSdlRxa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Jul 2017 00:41:18 +0200
 Received: from hauke-desktop.lan (p20030086285C0200C8691593FAB84A84.dip0.t-ipconnect.de [IPv6:2003:86:285c:200:c869:1593:fab8:4a84])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id C0F371001E5;
-        Mon,  3 Jul 2017 00:41:16 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id BF65F1001E6;
+        Mon,  3 Jul 2017 00:41:17 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -14,9 +14,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v7 05/16] watchdog: lantiq: add device tree binding documentation
-Date:   Mon,  3 Jul 2017 00:40:40 +0200
-Message-Id: <20170702224051.15109-6-hauke@hauke-m.de>
+Subject: [PATCH v7 06/16] MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD
+Date:   Mon,  3 Jul 2017 00:40:41 +0200
+Message-Id: <20170702224051.15109-7-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170702224051.15109-1-hauke@hauke-m.de>
 References: <20170702224051.15109-1-hauke@hauke-m.de>
@@ -24,7 +24,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58966
+X-archive-position: 58967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,43 +41,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The binding was not documented before, add the documentation now.
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+ arch/mips/lantiq/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-new file mode 100644
-index 000000000000..c3967feebb6c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-@@ -0,0 +1,24 @@
-+Lantiq WTD watchdog binding
-+============================
-+
-+This describes the binding of the Lantiq watchdog driver.
-+
-+-------------------------------------------------------------------------------
-+Required properties:
-+- compatible		: Should be one of
-+				"lantiq,wdt"
-+				"lantiq,xrx100-wdt"
-+				"lantiq,xrx200-wdt"
-+				"lantiq,falcon-wdt"
-+- lantiq,rcu		: A phandle to the RCU syscon (required for
-+			  "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
-+			  "lantiq,xrx100-wdt")
-+
-+-------------------------------------------------------------------------------
-+Example for the watchdog on the xRX200 SoCs:
-+		watchdog@803f0 {
-+			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
-+			reg = <0x803f0 0x10>;
-+
-+			lantiq,rcu = <&rcu0>;
-+		};
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 177769dbb0e8..f5db4a426568 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -17,6 +17,7 @@ config SOC_XWAY
+ 	bool "XWAY"
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
++	select MFD_SYSCON
+ 
+ config SOC_FALCON
+ 	bool "FALCON"
 -- 
 2.11.0

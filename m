@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 00:41:44 +0200 (CEST)
-Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:36321 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 00:42:04 +0200 (CEST)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:36337 "EHLO
         mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990686AbdGBWlPzCsUa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 00:41:15 +0200
+        with ESMTP id S23993179AbdGBWlRv4gza (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 00:41:17 +0200
 Received: from hauke-desktop.lan (p20030086285C0200C8691593FAB84A84.dip0.t-ipconnect.de [IPv6:2003:86:285c:200:c869:1593:fab8:4a84])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 58DB01001A2;
-        Mon,  3 Jul 2017 00:41:14 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 13D301001A3;
+        Mon,  3 Jul 2017 00:41:15 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -14,9 +14,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v7 02/16] mtd: lantiq-flash: drop check of boot select
-Date:   Mon,  3 Jul 2017 00:40:37 +0200
-Message-Id: <20170702224051.15109-3-hauke@hauke-m.de>
+Subject: [PATCH v7 03/16] mtd: spi-falcon: drop check of boot select
+Date:   Mon,  3 Jul 2017 00:40:38 +0200
+Message-Id: <20170702224051.15109-4-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170702224051.15109-1-hauke@hauke-m.de>
 References: <20170702224051.15109-1-hauke@hauke-m.de>
@@ -24,7 +24,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58964
+X-archive-position: 58965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,27 +47,25 @@ driver when it was added to device tree. This also removes a build
 dependency to the SoC code.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Brian Norris <computersforpeace@gmail.com>
 ---
- drivers/mtd/maps/lantiq-flash.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-falcon.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index 3e33ab66eb24..77b1d8013295 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -114,12 +114,6 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	struct cfi_private *cfi;
- 	int err;
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+index 286b2c81fc6b..f8638e82e5db 100644
+--- a/drivers/spi/spi-falcon.c
++++ b/drivers/spi/spi-falcon.c
+@@ -395,11 +395,6 @@ static int falcon_sflash_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	int ret;
  
--	if (of_machine_is_compatible("lantiq,falcon") &&
--			(ltq_boot_select() != BS_FLASH)) {
+-	if (ltq_boot_select() != BS_SPI) {
 -		dev_err(&pdev->dev, "invalid bootstrap options\n");
 -		return -ENODEV;
 -	}
 -
- 	ltq_mtd = devm_kzalloc(&pdev->dev, sizeof(struct ltq_mtd), GFP_KERNEL);
- 	if (!ltq_mtd)
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+ 	if (!master)
  		return -ENOMEM;
 -- 
 2.11.0

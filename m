@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:40:13 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37534 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:40:40 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37546 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993857AbdGCNiZROzli (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:38:25 +0200
+        by eddie.linux-mips.org with ESMTP id S23994766AbdGCNi1YnpOi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:38:27 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 19D1E927;
-        Mon,  3 Jul 2017 13:38:18 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 411E292F;
+        Mon,  3 Jul 2017 13:38:21 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, John Crispin <blogic@openwrt.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        stable@vger.kernel.org,
+        =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>, john@phrozen.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.4 042/101] MIPS: ralink: Fix invalid assignment of SoC type
-Date:   Mon,  3 Jul 2017 15:34:42 +0200
-Message-Id: <20170703133341.564426155@linuxfoundation.org>
+Subject: [PATCH 4.4 043/101] MIPS: ralink: fix MT7628 pinmux typos
+Date:   Mon,  3 Jul 2017 15:34:43 +0200
+Message-Id: <20170703133341.696698681@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.2
 In-Reply-To: <20170703133334.237346187@linuxfoundation.org>
 References: <20170703133334.237346187@linuxfoundation.org>
@@ -25,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58994
+X-archive-position: 58995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,30 +48,34 @@ X-list: linux-mips
 
 ------------------
 
-From: John Crispin <blogic@openwrt.org>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit 0af3a40f09a2a85089037a0b5b51471fa48b229e upstream.
+commit d7146829c9da24e285cb1b1f2156b5b3e2d40c07 upstream.
 
-Commit 418d29c87061 ("MIPS: ralink: Unify SoC id handling") introduced
-broken code. We obviously need to assign the value.
-
-Signed-off-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Cc: john@phrozen.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11993/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13306/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/rt288x.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ralink/mt7620.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/ralink/rt288x.c
-+++ b/arch/mips/ralink/rt288x.c
-@@ -109,5 +109,5 @@ void prom_soc_init(struct ralink_soc_inf
- 	soc_info->mem_size_max = RT2880_MEM_SIZE_MAX;
+--- a/arch/mips/ralink/mt7620.c
++++ b/arch/mips/ralink/mt7620.c
+@@ -223,9 +223,9 @@ static struct rt2880_pmx_func wled_an_gr
+ #define MT7628_GPIO_MODE_GPIO		0
  
- 	rt2880_pinmux_data = rt2880_pinmux_data_act;
--	ralink_soc == RT2880_SOC;
-+	ralink_soc = RT2880_SOC;
- }
+ static struct rt2880_pmx_group mt7628an_pinmux_data[] = {
+-	GRP_G("pmw1", pwm1_grp_mt7628, MT7628_GPIO_MODE_MASK,
++	GRP_G("pwm1", pwm1_grp_mt7628, MT7628_GPIO_MODE_MASK,
+ 				1, MT7628_GPIO_MODE_PWM1),
+-	GRP_G("pmw0", pwm0_grp_mt7628, MT7628_GPIO_MODE_MASK,
++	GRP_G("pwm0", pwm0_grp_mt7628, MT7628_GPIO_MODE_MASK,
+ 				1, MT7628_GPIO_MODE_PWM0),
+ 	GRP_G("uart2", uart2_grp_mt7628, MT7628_GPIO_MODE_MASK,
+ 				1, MT7628_GPIO_MODE_UART2),

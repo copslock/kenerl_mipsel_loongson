@@ -1,66 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 12:20:07 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:35853 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992028AbdGCKTzcAzfg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 12:19:55 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1dRyPv-0008IM-9w; Mon, 03 Jul 2017 12:17:19 +0200
-Date:   Mon, 3 Jul 2017 12:18:28 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Jiri Slaby <jslaby@suse.cz>
-cc:     Will Deacon <will.deacon@arm.com>, mingo@redhat.com,
-        peterz@infradead.org, dvhart@infradead.org,
-        linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/1] futex: remove duplicated code and fix UB
-In-Reply-To: <80af8d81-4522-de2d-8289-1ab46565505a@suse.cz>
-Message-ID: <alpine.DEB.2.20.1707031211120.2188@nanos>
-References: <20170621115318.2781-1-jslaby@suse.cz> <alpine.DEB.2.20.1706230017520.2221@nanos> <80af8d81-4522-de2d-8289-1ab46565505a@suse.cz>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <tglx@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 14:56:12 +0200 (CEST)
+Received: from smtpbguseast2.qq.com ([54.204.34.130]:56317 "EHLO
+        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992110AbdGCM4FpmiEx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 14:56:05 +0200
+X-QQ-mid: bizesmtp13t1499086536tznnnk9n
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Mon, 03 Jul 2017 20:55:27 +0800 (CST)
+X-QQ-SSF: 01100000000000F0FMF0B00A0000000
+X-QQ-FEAT: vusB/7NFgTsHF4U7dSy06AU/7DaalfT6I8cvO+R4BxFGBDphyzOkgmwUxsuiW
+        gdD+kYvxjh8PaB7iarQi/KPDq6eIdeHZIHD8RVpvw3NIanZk2zyuQVP8jK4cHQ32uFHLY8q
+        VD+zwZsxwEN3bYVr4e1cF4se/SH29T3t/W5UtACWcYv33e8o57/XeTlyxkDjPYaVS7LgPp/
+        r+5ZKHVpgiHxSMXYO+v/gJ3xM7XWHC87zwp84kwflJKqFaTFSaos9EavRkvTYf2/o9jlMMo
+        till/rirBXKteW0l9uklpjjLhNyRN2ChCqWA==
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH V8 2/9] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
+Date:   Mon,  3 Jul 2017 20:56:32 +0800
+Message-Id: <1499086592-18593-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58983
+X-archive-position: 58984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,61 +48,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 26 Jun 2017, Jiri Slaby wrote:
-> On 06/23/2017, 09:51 AM, Thomas Gleixner wrote:
-> > On Wed, 21 Jun 2017, Jiri Slaby wrote:
-> >> diff --git a/arch/arm64/include/asm/futex.h b/arch/arm64/include/asm/futex.h
-> >> index f32b42e8725d..5bb2fd4674e7 100644
-> >> --- a/arch/arm64/include/asm/futex.h
-> >> +++ b/arch/arm64/include/asm/futex.h
-> >> @@ -48,20 +48,10 @@ do {									\
-> >>  } while (0)
-> >>  
-> >>  static inline int
-> >> -futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
-> > 
-> > That unsigned int seems to be a change from the arm64 tree in next. It's
-> > not upstream and it'll cause a (easy to resolve) conflict.
-> 
-> Ugh, I thought the arm64 is in upstream already. Note that this patch
-> just takes what is in this arm64 fix and makes it effective for all
-> architectures. So I will wait with v2 until it merges upstream.
+For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
+only flush Node-0's scache. So we add r4k_blast_scache_node() by using
+(CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
+start address.
 
-Ok.
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/r4kcache.h | 30 ++++++++++++++++++++++++++++
+ arch/mips/mm/c-r4k.c             | 42 +++++++++++++++++++++++++++++++++-------
+ 2 files changed, 65 insertions(+), 7 deletions(-)
 
-> > Yes, we probably can't change that anymore, but at least we should make it
-> > very explicit and add a comment to that effect.
-> 
-> Something like this or do you want a comment yet?
->         unsigned int op =         (encoded_op & 0x70000000) >> 28;
->         unsigned int cmp =        (encoded_op & 0x0f000000) >> 24;
->         int oparg = sign_extend32((encoded_op & 0x00fff000) >> 12, 12);
->         int cmparg = sign_extend32(encoded_op & 0x00000fff, 12);
-
-Yes, that makes sense.
-
-There is also the issue with the shift. See this thread for further
-reference:
-
-  http://lkml.kernel.org/r/alpine.DEB.2.20.1706282353190.1890@nanos
-
-The gist is:
-
-  "Anything using a shift value < 0 or > 31 will get crap as a
-   result. Rightfully so because it's just undefined.
-
-   Yes I know that the insanity of user space is unlimited, but anything
-   attempting this is so broken that we cannot break it further by making
-   that shift arg unsigned and actually limit it to 0-31"
-
-So we should make that case explicit as well.
-
-        if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28)) {
-		if (oparg < 0 || oparg > 31)
-			return -EINVAL;
-                oparg = 1 << oparg;
-	}
-
-Thanks,
-
-	tglx
+diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+index 7f12d7e..e5ece81 100644
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -747,4 +747,38 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
+ __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
+ __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+ 
++#ifndef pa_to_nid
++#define pa_to_nid(addr) 0
++#endif
++
++#ifndef NODE_ADDRSPACE_SHIFT
++#define nid_to_addrbase(nid) 0
++#else
++#define nid_to_addrbase(nid) (nid << NODE_ADDRSPACE_SHIFT)
++#endif
++
++#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
++static inline void blast_##pfx##cache##lsize##_node(long node)		\
++{									\
++	unsigned long start = CAC_BASE | nid_to_addrbase(node);		\
++	unsigned long end = start + current_cpu_data.desc.waysize;	\
++	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
++	unsigned long ws_end = current_cpu_data.desc.ways <<		\
++			       current_cpu_data.desc.waybit;		\
++	unsigned long ws, addr;						\
++									\
++	__##pfx##flush_prologue						\
++									\
++	for (ws = 0; ws < ws_end; ws += ws_inc)				\
++		for (addr = start; addr < end; addr += lsize * 32)	\
++			cache##lsize##_unroll32(addr|ws, indexop);	\
++									\
++	__##pfx##flush_epilogue						\
++}
++
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
++
+ #endif /* _ASM_R4KCACHE_H */
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 81d6a15..7b242e8 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
+ 		r4k_blast_scache = blast_scache128;
+ }
+ 
++static void (* r4k_blast_scache_node)(long node);
++
++static void r4k_blast_scache_node_setup(void)
++{
++	unsigned long sc_lsize = cpu_scache_line_size();
++
++	if (current_cpu_type() != CPU_LOONGSON3)
++		r4k_blast_scache_node = (void *)cache_noop;
++	else if (sc_lsize == 16)
++		r4k_blast_scache_node = blast_scache16_node;
++	else if (sc_lsize == 32)
++		r4k_blast_scache_node = blast_scache32_node;
++	else if (sc_lsize == 64)
++		r4k_blast_scache_node = blast_scache64_node;
++	else if (sc_lsize == 128)
++		r4k_blast_scache_node = blast_scache128_node;
++}
++
+ static inline void local_r4k___flush_cache_all(void * args)
+ {
+ 	switch (current_cpu_type()) {
+ 	case CPU_LOONGSON2:
+-	case CPU_LOONGSON3:
+ 	case CPU_R4000SC:
+ 	case CPU_R4000MC:
+ 	case CPU_R4400SC:
+@@ -480,6 +497,10 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 		r4k_blast_scache();
+ 		break;
+ 
++	case CPU_LOONGSON3:
++		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
++		break;
++
+ 	case CPU_BMIPS5000:
+ 		r4k_blast_scache();
+ 		__sync();
+@@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+-		if (size >= scache_size)
+-			r4k_blast_scache();
+-		else
++		if (size >= scache_size) {
++			if (current_cpu_type() != CPU_LOONGSON3)
++				r4k_blast_scache();
++			else
++				r4k_blast_scache_node(pa_to_nid(addr));
++		} else
+ 			blast_scache_range(addr, addr + size);
+ 		preempt_enable();
+ 		__sync();
+@@ -872,9 +896,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+-		if (size >= scache_size)
+-			r4k_blast_scache();
+-		else {
++		if (size >= scache_size) {
++			if (current_cpu_type() != CPU_LOONGSON3)
++				r4k_blast_scache();
++			else
++				r4k_blast_scache_node(pa_to_nid(addr));
++		} else {
+ 			/*
+ 			 * There is no clearly documented alignment requirement
+ 			 * for the cache instruction on MIPS processors and
+@@ -1905,6 +1932,7 @@ void r4k_cache_init(void)
+ 	r4k_blast_scache_page_setup();
+ 	r4k_blast_scache_page_indexed_setup();
+ 	r4k_blast_scache_setup();
++	r4k_blast_scache_node_setup();
+ #ifdef CONFIG_EVA
+ 	r4k_blast_dcache_user_page_setup();
+ 	r4k_blast_icache_user_page_setup();
+-- 
+2.7.0

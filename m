@@ -1,66 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 09:52:04 +0200 (CEST)
-Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:34631
-        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990557AbdGCHv5bjG0Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 09:51:57 +0200
-Received: by mail-qt0-x244.google.com with SMTP id m54so19994383qtb.1;
-        Mon, 03 Jul 2017 00:51:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 11:07:22 +0200 (CEST)
+Received: from mail-io0-x236.google.com ([IPv6:2607:f8b0:4001:c06::236]:34352
+        "EHLO mail-io0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992110AbdGCJHQBclgg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 11:07:16 +0200
+Received: by mail-io0-x236.google.com with SMTP id r36so53426992ioi.1
+        for <linux-mips@linux-mips.org>; Mon, 03 Jul 2017 02:07:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=nPHVfn4UDOrwnzzoiAHPjt0Ph6QZRMqM2EwojBngqs8=;
-        b=eGeze+tdPCbQTNT8c3AKbAbJw2sKzy3kpGexeGcWaLyINXuKwWo4hv2SPUbqpb4pDW
-         TG9iadNAL1t88cqKDeNnZZUcBN+/uQ9upu/ppAVDS74t/70d5BCZC0LJtd34Z66azmSd
-         muDQZI6iEaIRP9+aL0fwgVpXuzRZQQTkAfIYXJe9nDRHxqfeaSTYnLSbuHIIXoWLCQQA
-         p775nHg83jGM86lVXqYYnbOGFR29ipVRsZuXiV83/gurjwyGv5tsODQ7vDPQ4yQhcD6o
-         8OUh3DOu+86krgA/qEKo6U1MMuLiQzCXYnGcv/wKJzW+yiTZmyQbSm/lkhIyJG4Yi/oj
-         mtCg==
+        bh=lIczDFyCRABloW28H5OMv2naHN1EJmeRw6ojqKer0TY=;
+        b=MdXEdziqMrXacRkxIAdxbvcCUViIkaZvGpMTcObyT5+SL5e7c/BrK7NSpyQG3SJe5k
+         fhqVsRe8OgZZ4xe5TYxlScaWAUmh2KRNmxHEh0BsdmNPAvmiNnJBybNNMpLhS6vM1tZt
+         e9lVyaHugDtF9eUxwtAysbKHww61VbSLoY2NY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=nPHVfn4UDOrwnzzoiAHPjt0Ph6QZRMqM2EwojBngqs8=;
-        b=oxMAKw33wM/VGJ8t7C1MIO2x6KGMru3Ptoo1UnE4r5e8/rZGVPMT8NCco5V2CP11zz
-         n0lIM2HGWJgzNijnfVZ1s+DHHvvAJTkEosS2c4gqZCoXKwy+31jQnDUlNmtq+6U4BSie
-         JREAMx6V5wSuHP6+r+MwvsbHFHEa71sA4Lt94sh7ztfJOjnpdQiYgRo6IskYi0KDq2YT
-         /5L6nYChc4SjQo+okKdkfwpl5mmAbfDooSyCX9kRTyzmt8osmOt4DtUIf6UmMqbmBRIi
-         0CZ9wAIOZmbMjR3NXFucSO3lZIDwkrUzRBiKPfbOmEX0Jc4Ng9ZOp/jdy3ks7hGdFNM6
-         nNag==
-X-Gm-Message-State: AKS2vOwOwC6j0I4mCw5Bw62ZK1ClPguj6ywKRsfAXNBIzHOYq5gQscuY
-        /gLsW6nDn5KYUTesfvGyfLo0aa6vFg==
-X-Received: by 10.200.41.238 with SMTP id 43mr39573876qtt.168.1499068311933;
- Mon, 03 Jul 2017 00:51:51 -0700 (PDT)
+        bh=lIczDFyCRABloW28H5OMv2naHN1EJmeRw6ojqKer0TY=;
+        b=DqtzlJuo9NxauRIxGOq3fGh0H4bWeRuLBFOBGcVmbnKWmh9AUSg+HXdv9niKYW9CiH
+         DOTF/GHJiB+7053E8Qo4497dUpe8L7xRLOuen1JRab8G0u6ShTYpjooxdm5mY7qot75v
+         CJ9zVXCiHVvorR0vEEqZxDnWD1TU+o+ehcunrttzZMDUU+0Fq5urQYCuY16XkAjW3Hze
+         mBvPu9vP7bLCCiz2MZ/3NUEpg+eiLcbRS4aD8vB2/3rBDCZleK2jzBnjT+/g3PjoVQdz
+         LO6jGqouJdiliuXVo1Ult2iihuepedvuKxU6/ZZq+o12B2rC5FQvLgGlPzx3pA8coYbI
+         n7NA==
+X-Gm-Message-State: AKS2vOyzj5wsSsPJxqro7LyZg6a4q3xRvZ5zYB3ePke1oo20waq88eEm
+        84fNfkqcZEHHPHA/rfEsTTpaHAo6JLP6
+X-Received: by 10.107.6.23 with SMTP id 23mr37172984iog.122.1499072830243;
+ Mon, 03 Jul 2017 02:07:10 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.12.135.137 with HTTP; Mon, 3 Jul 2017 00:51:51 -0700 (PDT)
-In-Reply-To: <20170702224051.15109-11-hauke@hauke-m.de>
-References: <20170702224051.15109-1-hauke@hauke-m.de> <20170702224051.15109-11-hauke@hauke-m.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 3 Jul 2017 10:51:51 +0300
-Message-ID: <CAHp75VexwnVsb-ojXaZDN7QPVRKUeP-R=5C+j5ZSkE37Dtyp1Q@mail.gmail.com>
-Subject: Re: [PATCH v7 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-To:     Hauke Mehrtens <hauke@hauke-m.de>
+Received: by 10.79.142.212 with HTTP; Mon, 3 Jul 2017 02:07:09 -0700 (PDT)
+In-Reply-To: <1499013301.1477.0@smtp.crapouillou.net>
+References: <20170402204244.14216-2-paul@crapouillou.net> <20170428200824.10906-1-paul@crapouillou.net>
+ <20170428200824.10906-6-paul@crapouillou.net> <CACRpkdauf5c2i4o5i8QY8YHPNjizkvTu6kAbnquWiP_=v2=KdQ@mail.gmail.com>
+ <1499013301.1477.0@smtp.crapouillou.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 3 Jul 2017 11:07:09 +0200
+Message-ID: <CACRpkdb=Zti+C+2me_WP0=m6z12G5Kz+W_cPcZsw=CVzBO_wAg@mail.gmail.com>
+Subject: Re: [PATCH v5 05/14] MIPS: ingenic: Enable pinctrl for all ingenic SoCs
+To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
-        linux-watchdog@vger.kernel.org,
-        devicetree <devicetree@vger.kernel.org>,
-        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
-        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
-        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
+        Alexandre Courbot <gnurou@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <andy.shevchenko@gmail.com>
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58981
+X-archive-position: 58982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.shevchenko@gmail.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,33 +80,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 3, 2017 at 1:40 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+On Sun, Jul 2, 2017 at 6:35 PM, Paul Cercueil <paul@crapouillou.net> wrote:
+> Hi Linus,
 >
-> The reset controllers (on xRX200 and newer SoCs have two of them) are
-> provided by the RCU module. This was initially implemented as a simple
-> reset controller. However, the RCU module provides more functionality
-> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> The old reset controller driver implementation from
-> arch/mips/lantiq/xway/reset.c did not honor this fact.
+>> I applied all the patches to a branch in pinctrl and merged into my
+>> devel branch for testing:
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/
+>> Branch: ingenic
+>>
+>> Ralf: are you OK with this? It would be nice to have your ACK on
+>> all patches. If you want you can pull this branch into the MIPS
+>> tree, or we can hope for it all to settle nicely because of low platform
+>> activity in MIPS on this platform, so it only needs to come in
+>> from my trees.
 >
-> For some devices the request and the status bits are different.
+>
+> There has been no word from Ralf, is this going into 4.13?
 
-> +Required properties:
-> +- compatible           : Should be one of
-> +                               "lantiq,danube-reset"
-> +                               "lantiq,xrx200-reset"
-> +- offset-set           : Offset of the reset set register
-> +- offset-status                : Offset of the reset status register
+Yes.
 
-Just one side comment (I'm fine with either choice, just for your
-information). Recently I have reviewed at24 patch which adds a
-property for getting MAC offset and my reseach ends up with the naming
-pattern mac-offset (as many others are doing this way). So, perhaps in
-your case it might make sense to do that way? Anyway, it's a matter of
-a (bit of a) chaos in DT bindings, whatever you decide users will live
-with.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Yours,
+Linus Walleij

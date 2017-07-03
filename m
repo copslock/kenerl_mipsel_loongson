@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:39:48 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37526 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:40:13 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37534 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993942AbdGCNiXFjAOi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:38:23 +0200
+        by eddie.linux-mips.org with ESMTP id S23993857AbdGCNiZROzli (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:38:25 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E572E8FF;
-        Mon,  3 Jul 2017 13:38:16 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 19D1E927;
+        Mon,  3 Jul 2017 13:38:18 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, John Crispin <blogic@openwrt.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.4 041/101] MIPS: ralink: fix USB frequency scaling
-Date:   Mon,  3 Jul 2017 15:34:41 +0200
-Message-Id: <20170703133341.415913336@linuxfoundation.org>
+Subject: [PATCH 4.4 042/101] MIPS: ralink: Fix invalid assignment of SoC type
+Date:   Mon,  3 Jul 2017 15:34:42 +0200
+Message-Id: <20170703133341.564426155@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.2
 In-Reply-To: <20170703133334.237346187@linuxfoundation.org>
 References: <20170703133334.237346187@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58993
+X-archive-position: 58994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,31 +48,28 @@ X-list: linux-mips
 
 From: John Crispin <blogic@openwrt.org>
 
-commit fad2522272ed5ed451d2d7b1dc547ddf3781cc7e upstream.
+commit 0af3a40f09a2a85089037a0b5b51471fa48b229e upstream.
 
-Commit 418d29c87061 ("MIPS: ralink: Unify SoC id handling") was not fully
-correct. The logic for the SoC check got inverted. We need to check if it
-is not a MT76x8.
+Commit 418d29c87061 ("MIPS: ralink: Unify SoC id handling") introduced
+broken code. We obviously need to assign the value.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11992/
+Patchwork: https://patchwork.linux-mips.org/patch/11993/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/mt7620.c |    2 +-
+ arch/mips/ralink/rt288x.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/ralink/mt7620.c
-+++ b/arch/mips/ralink/mt7620.c
-@@ -459,7 +459,7 @@ void __init ralink_clk_init(void)
- 	ralink_clk_add("10000c00.uartlite", periph_rate);
- 	ralink_clk_add("10180000.wmac", xtal_rate);
+--- a/arch/mips/ralink/rt288x.c
++++ b/arch/mips/ralink/rt288x.c
+@@ -109,5 +109,5 @@ void prom_soc_init(struct ralink_soc_inf
+ 	soc_info->mem_size_max = RT2880_MEM_SIZE_MAX;
  
--	if (IS_ENABLED(CONFIG_USB) && is_mt76x8()) {
-+	if (IS_ENABLED(CONFIG_USB) && !is_mt76x8()) {
- 		/*
- 		 * When the CPU goes into sleep mode, the BUS clock will be
- 		 * too low for USB to function properly. Adjust the busses
+ 	rt2880_pinmux_data = rt2880_pinmux_data_act;
+-	ralink_soc == RT2880_SOC;
++	ralink_soc = RT2880_SOC;
+ }

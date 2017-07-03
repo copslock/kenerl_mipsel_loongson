@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:35:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36846 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:35:35 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36850 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993857AbdGCNfC7EuXi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:35:02 +0200
+        by eddie.linux-mips.org with ESMTP id S23993122AbdGCNfEicpyi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:35:04 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 568B98FF;
-        Mon,  3 Jul 2017 13:34:56 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 79A828D7;
+        Mon,  3 Jul 2017 13:34:58 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Bryan ODonoghue <bryan.odonoghue@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.18 16/36] MIPS: Avoid accidental raw backtrace
-Date:   Mon,  3 Jul 2017 15:34:13 +0200
-Message-Id: <20170703133256.967830448@linuxfoundation.org>
+Subject: [PATCH 3.18 17/36] MIPS: pm-cps: Drop manual cache-line alignment of ready_count
+Date:   Mon,  3 Jul 2017 15:34:14 +0200
+Message-Id: <20170703133257.003832041@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.2
 In-Reply-To: <20170703133256.260692013@linuxfoundation.org>
 References: <20170703133256.260692013@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58985
+X-archive-position: 58986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,43 +46,72 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 854236363370995a609a10b03e35fd3dc5e9e4a1 upstream.
+commit 161c51ccb7a6faf45ffe09aa5cf1ad85ccdad503 upstream.
 
-Since commit 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with
-usermode") show_backtrace() invokes the raw backtracer when
-cp0_status & ST0_KSU indicates user mode to fix issues on EVA kernels
-where user and kernel address spaces overlap.
+We allocate memory for a ready_count variable per-CPU, which is accessed
+via a cached non-coherent TLB mapping to perform synchronisation between
+threads within the core using LL/SC instructions. In order to ensure
+that the variable is contained within its own data cache line we
+allocate 2 lines worth of memory & align the resulting pointer to a line
+boundary. This is however unnecessary, since kmalloc is guaranteed to
+return memory which is at least cache-line aligned (see
+ARCH_DMA_MINALIGN). Stop the redundant manual alignment.
 
-However this is used by show_stack() which creates its own pt_regs on
-the stack and leaves cp0_status uninitialised in most of the code paths.
-This results in the non deterministic use of the raw back tracer
-depending on the previous stack content.
+Besides cleaning up the code & avoiding needless work, this has the side
+effect of avoiding an arithmetic error found by Bryan on 64 bit systems
+due to the 32 bit size of the former dlinesz. This led the ready_count
+variable to have its upper 32b cleared erroneously for MIPS64 kernels,
+causing problems when ready_count was later used on MIPS64 via cpuidle.
 
-show_stack() deals exclusively with kernel mode stacks anyway, so
-explicitly initialise regs.cp0_status to KSU_KERNEL (i.e. 0) to ensure
-we get a useful backtrace.
-
-Fixes: 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with usermode")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 3179d37ee1ed ("MIPS: pm-cps: add PM state entry code for CPS systems")
+Reported-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16656/
+Patchwork: https://patchwork.linux-mips.org/patch/15383/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/traps.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/kernel/pm-cps.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -191,6 +191,8 @@ void show_stack(struct task_struct *task
+--- a/arch/mips/kernel/pm-cps.c
++++ b/arch/mips/kernel/pm-cps.c
+@@ -55,7 +55,6 @@ DECLARE_BITMAP(state_support, CPS_PM_STA
+  * state. Actually per-core rather than per-CPU.
+  */
+ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
+-static DEFINE_PER_CPU_ALIGNED(void*, ready_count_alloc);
+ 
+ /* Indicates online CPUs coupled with the current CPU */
+ static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
+@@ -624,7 +623,6 @@ static int __init cps_gen_core_entries(u
  {
- 	struct pt_regs regs;
- 	mm_segment_t old_fs = get_fs();
-+
-+	regs.cp0_status = KSU_KERNEL;
- 	if (sp) {
- 		regs.regs[29] = (unsigned long)sp;
- 		regs.regs[31] = 0;
+ 	enum cps_pm_state state;
+ 	unsigned core = cpu_data[cpu].core;
+-	unsigned dlinesz = cpu_data[cpu].dcache.linesz;
+ 	void *entry_fn, *core_rc;
+ 
+ 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
+@@ -644,16 +642,11 @@ static int __init cps_gen_core_entries(u
+ 	}
+ 
+ 	if (!per_cpu(ready_count, core)) {
+-		core_rc = kmalloc(dlinesz * 2, GFP_KERNEL);
++		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
+ 		if (!core_rc) {
+ 			pr_err("Failed allocate core %u ready_count\n", core);
+ 			return -ENOMEM;
+ 		}
+-		per_cpu(ready_count_alloc, core) = core_rc;
+-
+-		/* Ensure ready_count is aligned to a cacheline boundary */
+-		core_rc += dlinesz - 1;
+-		core_rc = (void *)((unsigned long)core_rc & ~(dlinesz - 1));
+ 		per_cpu(ready_count, core) = core_rc;
+ 	}
+ 

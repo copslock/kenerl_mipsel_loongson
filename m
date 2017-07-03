@@ -1,73 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 11:07:22 +0200 (CEST)
-Received: from mail-io0-x236.google.com ([IPv6:2607:f8b0:4001:c06::236]:34352
-        "EHLO mail-io0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992110AbdGCJHQBclgg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 11:07:16 +0200
-Received: by mail-io0-x236.google.com with SMTP id r36so53426992ioi.1
-        for <linux-mips@linux-mips.org>; Mon, 03 Jul 2017 02:07:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=lIczDFyCRABloW28H5OMv2naHN1EJmeRw6ojqKer0TY=;
-        b=MdXEdziqMrXacRkxIAdxbvcCUViIkaZvGpMTcObyT5+SL5e7c/BrK7NSpyQG3SJe5k
-         fhqVsRe8OgZZ4xe5TYxlScaWAUmh2KRNmxHEh0BsdmNPAvmiNnJBybNNMpLhS6vM1tZt
-         e9lVyaHugDtF9eUxwtAysbKHww61VbSLoY2NY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=lIczDFyCRABloW28H5OMv2naHN1EJmeRw6ojqKer0TY=;
-        b=DqtzlJuo9NxauRIxGOq3fGh0H4bWeRuLBFOBGcVmbnKWmh9AUSg+HXdv9niKYW9CiH
-         DOTF/GHJiB+7053E8Qo4497dUpe8L7xRLOuen1JRab8G0u6ShTYpjooxdm5mY7qot75v
-         CJ9zVXCiHVvorR0vEEqZxDnWD1TU+o+ehcunrttzZMDUU+0Fq5urQYCuY16XkAjW3Hze
-         mBvPu9vP7bLCCiz2MZ/3NUEpg+eiLcbRS4aD8vB2/3rBDCZleK2jzBnjT+/g3PjoVQdz
-         LO6jGqouJdiliuXVo1Ult2iihuepedvuKxU6/ZZq+o12B2rC5FQvLgGlPzx3pA8coYbI
-         n7NA==
-X-Gm-Message-State: AKS2vOyzj5wsSsPJxqro7LyZg6a4q3xRvZ5zYB3ePke1oo20waq88eEm
-        84fNfkqcZEHHPHA/rfEsTTpaHAo6JLP6
-X-Received: by 10.107.6.23 with SMTP id 23mr37172984iog.122.1499072830243;
- Mon, 03 Jul 2017 02:07:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 12:20:07 +0200 (CEST)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:35853 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992028AbdGCKTzcAzfg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 12:19:55 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1dRyPv-0008IM-9w; Mon, 03 Jul 2017 12:17:19 +0200
+Date:   Mon, 3 Jul 2017 12:18:28 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Jiri Slaby <jslaby@suse.cz>
+cc:     Will Deacon <will.deacon@arm.com>, mingo@redhat.com,
+        peterz@infradead.org, dvhart@infradead.org,
+        linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/1] futex: remove duplicated code and fix UB
+In-Reply-To: <80af8d81-4522-de2d-8289-1ab46565505a@suse.cz>
+Message-ID: <alpine.DEB.2.20.1707031211120.2188@nanos>
+References: <20170621115318.2781-1-jslaby@suse.cz> <alpine.DEB.2.20.1706230017520.2221@nanos> <80af8d81-4522-de2d-8289-1ab46565505a@suse.cz>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Received: by 10.79.142.212 with HTTP; Mon, 3 Jul 2017 02:07:09 -0700 (PDT)
-In-Reply-To: <1499013301.1477.0@smtp.crapouillou.net>
-References: <20170402204244.14216-2-paul@crapouillou.net> <20170428200824.10906-1-paul@crapouillou.net>
- <20170428200824.10906-6-paul@crapouillou.net> <CACRpkdauf5c2i4o5i8QY8YHPNjizkvTu6kAbnquWiP_=v2=KdQ@mail.gmail.com>
- <1499013301.1477.0@smtp.crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 3 Jul 2017 11:07:09 +0200
-Message-ID: <CACRpkdb=Zti+C+2me_WP0=m6z12G5Kz+W_cPcZsw=CVzBO_wAg@mail.gmail.com>
-Subject: Re: [PATCH v5 05/14] MIPS: ingenic: Enable pinctrl for all ingenic SoCs
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58982
+X-archive-position: 58983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,25 +73,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jul 2, 2017 at 6:35 PM, Paul Cercueil <paul@crapouillou.net> wrote:
-> Hi Linus,
->
->> I applied all the patches to a branch in pinctrl and merged into my
->> devel branch for testing:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/
->> Branch: ingenic
->>
->> Ralf: are you OK with this? It would be nice to have your ACK on
->> all patches. If you want you can pull this branch into the MIPS
->> tree, or we can hope for it all to settle nicely because of low platform
->> activity in MIPS on this platform, so it only needs to come in
->> from my trees.
->
->
-> There has been no word from Ralf, is this going into 4.13?
+On Mon, 26 Jun 2017, Jiri Slaby wrote:
+> On 06/23/2017, 09:51 AM, Thomas Gleixner wrote:
+> > On Wed, 21 Jun 2017, Jiri Slaby wrote:
+> >> diff --git a/arch/arm64/include/asm/futex.h b/arch/arm64/include/asm/futex.h
+> >> index f32b42e8725d..5bb2fd4674e7 100644
+> >> --- a/arch/arm64/include/asm/futex.h
+> >> +++ b/arch/arm64/include/asm/futex.h
+> >> @@ -48,20 +48,10 @@ do {									\
+> >>  } while (0)
+> >>  
+> >>  static inline int
+> >> -futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
+> > 
+> > That unsigned int seems to be a change from the arm64 tree in next. It's
+> > not upstream and it'll cause a (easy to resolve) conflict.
+> 
+> Ugh, I thought the arm64 is in upstream already. Note that this patch
+> just takes what is in this arm64 fix and makes it effective for all
+> architectures. So I will wait with v2 until it merges upstream.
 
-Yes.
+Ok.
 
-Yours,
-Linus Walleij
+> > Yes, we probably can't change that anymore, but at least we should make it
+> > very explicit and add a comment to that effect.
+> 
+> Something like this or do you want a comment yet?
+>         unsigned int op =         (encoded_op & 0x70000000) >> 28;
+>         unsigned int cmp =        (encoded_op & 0x0f000000) >> 24;
+>         int oparg = sign_extend32((encoded_op & 0x00fff000) >> 12, 12);
+>         int cmparg = sign_extend32(encoded_op & 0x00000fff, 12);
+
+Yes, that makes sense.
+
+There is also the issue with the shift. See this thread for further
+reference:
+
+  http://lkml.kernel.org/r/alpine.DEB.2.20.1706282353190.1890@nanos
+
+The gist is:
+
+  "Anything using a shift value < 0 or > 31 will get crap as a
+   result. Rightfully so because it's just undefined.
+
+   Yes I know that the insanity of user space is unlimited, but anything
+   attempting this is so broken that we cannot break it further by making
+   that shift arg unsigned and actually limit it to 0-31"
+
+So we should make that case explicit as well.
+
+        if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28)) {
+		if (oparg < 0 || oparg > 31)
+			return -EINVAL;
+                oparg = 1 << oparg;
+	}
+
+Thanks,
+
+	tglx

@@ -1,25 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:41:05 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37562 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:41:55 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38560 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994767AbdGCNi3f8nvi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:38:29 +0200
+        by eddie.linux-mips.org with ESMTP id S23994818AbdGCNlr4Nnji (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:41:47 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 68E958FF;
-        Mon,  3 Jul 2017 13:38:23 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5E277927;
+        Mon,  3 Jul 2017 13:41:41 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
-        <noltari@gmail.com>, john@phrozen.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.4 044/101] MIPS: ralink: fix MT7628 wled_an pinmux gpio
-Date:   Mon,  3 Jul 2017 15:34:44 +0200
-Message-Id: <20170703133341.875344479@linuxfoundation.org>
+        stable@vger.kernel.org, Karl Beldan <karl.beldan+oss@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.9 033/172] MIPS: head: Reorder instructions missing a delay slot
+Date:   Mon,  3 Jul 2017 15:33:33 +0200
+Message-Id: <20170703133415.799624439@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.2
-In-Reply-To: <20170703133334.237346187@linuxfoundation.org>
-References: <20170703133334.237346187@linuxfoundation.org>
+In-Reply-To: <20170703133414.260777365@linuxfoundation.org>
+References: <20170703133414.260777365@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58996
+X-archive-position: 58997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,41 +43,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Karl Beldan <karl.beldan@gmail.com>
 
-commit 07b50db6e685172a41b9978aebffb2438166d9b6 upstream.
+commit 25d8b92e0af75d72ce8b99e63e5a449cc0888efa upstream.
 
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Cc: john@phrozen.org
+In this sequence the 'move' is assumed in the delay slot of the 'beq',
+but head.S is in reorder mode and the former gets pushed one 'nop'
+farther by the assembler.
+
+The corrected behavior made booting with an UHI supplied dtb erratic.
+
+Fixes: 15f37e158892 ("MIPS: store the appended dtb address in a variable")
+Signed-off-by: Karl Beldan <karl.beldan+oss@gmail.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Cc: Jonas Gorski <jogo@openwrt.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13307/
+Patchwork: https://patchwork.linux-mips.org/patch/16614/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/mt7620.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/head.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/ralink/mt7620.c
-+++ b/arch/mips/ralink/mt7620.c
-@@ -196,10 +196,10 @@ static struct rt2880_pmx_func wled_kn_gr
- };
+--- a/arch/mips/kernel/head.S
++++ b/arch/mips/kernel/head.S
+@@ -106,8 +106,8 @@ NESTED(kernel_entry, 16, sp)			# kernel
+ 	beq		t0, t1, dtb_found
+ #endif
+ 	li		t1, -2
+-	beq		a0, t1, dtb_found
+ 	move		t2, a1
++	beq		a0, t1, dtb_found
  
- static struct rt2880_pmx_func wled_an_grp_mt7628[] = {
--	FUNC("rsvd", 3, 35, 1),
--	FUNC("rsvd", 2, 35, 1),
--	FUNC("gpio", 1, 35, 1),
--	FUNC("wled_an", 0, 35, 1),
-+	FUNC("rsvd", 3, 44, 1),
-+	FUNC("rsvd", 2, 44, 1),
-+	FUNC("gpio", 1, 44, 1),
-+	FUNC("wled_an", 0, 44, 1),
- };
- 
- #define MT7628_GPIO_MODE_MASK		0x3
+ 	li		t2, 0
+ dtb_found:

@@ -1,21 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:41:55 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38560 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2017 15:42:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38564 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994818AbdGCNlr4Nnji (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:41:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23994767AbdGCNltlyVqi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2017 15:41:49 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5E277927;
-        Mon,  3 Jul 2017 13:41:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 87E2692B;
+        Mon,  3 Jul 2017 13:41:43 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Karl Beldan <karl.beldan+oss@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 033/172] MIPS: head: Reorder instructions missing a delay slot
-Date:   Mon,  3 Jul 2017 15:33:33 +0200
-Message-Id: <20170703133415.799624439@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.9 034/172] MIPS: Avoid accidental raw backtrace
+Date:   Mon,  3 Jul 2017 15:33:34 +0200
+Message-Id: <20170703133415.850691358@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.2
 In-Reply-To: <20170703133414.260777365@linuxfoundation.org>
 References: <20170703133414.260777365@linuxfoundation.org>
@@ -26,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58997
+X-archive-position: 58998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,39 +45,43 @@ X-list: linux-mips
 
 ------------------
 
-From: Karl Beldan <karl.beldan@gmail.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 25d8b92e0af75d72ce8b99e63e5a449cc0888efa upstream.
+commit 854236363370995a609a10b03e35fd3dc5e9e4a1 upstream.
 
-In this sequence the 'move' is assumed in the delay slot of the 'beq',
-but head.S is in reorder mode and the former gets pushed one 'nop'
-farther by the assembler.
+Since commit 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with
+usermode") show_backtrace() invokes the raw backtracer when
+cp0_status & ST0_KSU indicates user mode to fix issues on EVA kernels
+where user and kernel address spaces overlap.
 
-The corrected behavior made booting with an UHI supplied dtb erratic.
+However this is used by show_stack() which creates its own pt_regs on
+the stack and leaves cp0_status uninitialised in most of the code paths.
+This results in the non deterministic use of the raw back tracer
+depending on the previous stack content.
 
-Fixes: 15f37e158892 ("MIPS: store the appended dtb address in a variable")
-Signed-off-by: Karl Beldan <karl.beldan+oss@gmail.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: Jonas Gorski <jogo@openwrt.org>
+show_stack() deals exclusively with kernel mode stacks anyway, so
+explicitly initialise regs.cp0_status to KSU_KERNEL (i.e. 0) to ensure
+we get a useful backtrace.
+
+Fixes: 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with usermode")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16614/
+Patchwork: https://patchwork.linux-mips.org/patch/16656/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/head.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/traps.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -106,8 +106,8 @@ NESTED(kernel_entry, 16, sp)			# kernel
- 	beq		t0, t1, dtb_found
- #endif
- 	li		t1, -2
--	beq		a0, t1, dtb_found
- 	move		t2, a1
-+	beq		a0, t1, dtb_found
- 
- 	li		t2, 0
- dtb_found:
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -199,6 +199,8 @@ void show_stack(struct task_struct *task
+ {
+ 	struct pt_regs regs;
+ 	mm_segment_t old_fs = get_fs();
++
++	regs.cp0_status = KSU_KERNEL;
+ 	if (sp) {
+ 		regs.regs[29] = (unsigned long)sp;
+ 		regs.regs[31] = 0;

@@ -1,50 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2017 10:30:25 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:53321
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993859AbdGDIaSpVnRY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jul 2017 10:30:18 +0200
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1dSJDs-0006lS-Q0; Tue, 04 Jul 2017 10:30:16 +0200
-Message-ID: <1499157009.4045.4.camel@pengutronix.de>
-Subject: Re: [PATCH v7 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
-        linux-watchdog@vger.kernel.org,
-        devicetree <devicetree@vger.kernel.org>,
-        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
-        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
-        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
-        Rob Herring <robh@kernel.org>
-Date:   Tue, 04 Jul 2017 10:30:09 +0200
-In-Reply-To: <e1160f30-eeff-3db2-884c-9cd4af35a37d@hauke-m.de>
-References: <20170702224051.15109-1-hauke@hauke-m.de>
-         <20170702224051.15109-11-hauke@hauke-m.de>
-         <CAHp75VexwnVsb-ojXaZDN7QPVRKUeP-R=5C+j5ZSkE37Dtyp1Q@mail.gmail.com>
-         <e1160f30-eeff-3db2-884c-9cd4af35a37d@hauke-m.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2017 13:45:01 +0200 (CEST)
+Received: from mail-pf0-x236.google.com ([IPv6:2607:f8b0:400e:c00::236]:36794
+        "EHLO mail-pf0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993543AbdGDLoycGiwv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jul 2017 13:44:54 +0200
+Received: by mail-pf0-x236.google.com with SMTP id q86so114363502pfl.3
+        for <linux-mips@linux-mips.org>; Tue, 04 Jul 2017 04:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=zLeAV6js01dIatCeo30cAABzLRqFOHAVuaeh8GxhRB0=;
+        b=Wl5w/BSiDXEKW1lPPTQT5CIAiBFNp+brC/1nKc0JdglCmOfSL2iIdkQc/6RUUblsxp
+         lOTOETYtYrHgbh0aCqhyBeYB1RogtW5pUrF0sB+vLXfu79gDf2m6jnevR5uAiyKuy37k
+         e9ki3jELEtN2m/yctVrXd597zZ1yH6Hk6LkNQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=zLeAV6js01dIatCeo30cAABzLRqFOHAVuaeh8GxhRB0=;
+        b=cPABcvHH2tW2iyqIJkmqppIIoowgpapmDo8ai9UUOBgkq80gD1HRulVd7MEL0JE9fg
+         9o5jD3amsEZ3oslsZab/9c2Gl/5b0LPGIpRUlo3B63dQOk7GIpnLZd+5hbm8sa/RWdS4
+         +dnffdfBpUIqez5Gp/GESbJsmYxySpyla88umCjDx94tIN086iLOF2ucybh17/amvfjo
+         PLPG54kuNuIlFjVGL4LjsYTbTKoS0SZ0NWIgPFtmkRSe7Lqr6kT5ITo0WTZDMFmAxO2I
+         ggHDh4Y0oc03P7+kmj2kwo2UIn6KcCSI8N9/mFghHIr0Pu+btBJa2q6XaJr7RmxdIEJN
+         bZxA==
+X-Gm-Message-State: AIVw112Wf1ErSQGvX8hD1GLb8YX4pjK4j7vdSAVgCIELy83CAQlw0KtL
+        D2O0zA1qXNplHv30
+X-Received: by 10.98.113.65 with SMTP id m62mr14830617pfc.150.1499168688577;
+        Tue, 04 Jul 2017 04:44:48 -0700 (PDT)
+Received: from localhost.localdomain ([106.51.234.165])
+        by smtp.gmail.com with ESMTPSA id t83sm39782750pfg.91.2017.07.04.04.44.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 04 Jul 2017 04:44:47 -0700 (PDT)
+From:   Amit Pundir <amit.pundir@linaro.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Stable <stable@vger.kernel.org>,
+        Yousong Zhou <yszhou4tech@gmail.com>,
+        "Maciej W . Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH for-3.18 4/5] MIPS: UAPI: Ignore __arch_swab{16,32,64} when using MIPS16
+Date:   Tue,  4 Jul 2017 17:14:23 +0530
+Message-Id: <1499168664-25980-5-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1499168664-25980-1-git-send-email-amit.pundir@linaro.org>
+References: <1499168664-25980-1-git-send-email-amit.pundir@linaro.org>
+Return-Path: <amit.pundir@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59013
+X-archive-position: 59014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: amit.pundir@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,46 +64,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 2017-07-03 at 23:30 +0200, Hauke Mehrtens wrote:
-> On 07/03/2017 09:51 AM, Andy Shevchenko wrote:
-> > On Mon, Jul 3, 2017 at 1:40 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> >> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> >>
-> >> The reset controllers (on xRX200 and newer SoCs have two of them) are
-> >> provided by the RCU module. This was initially implemented as a simple
-> >> reset controller. However, the RCU module provides more functionality
-> >> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> >> The old reset controller driver implementation from
-> >> arch/mips/lantiq/xway/reset.c did not honor this fact.
-> >>
-> >> For some devices the request and the status bits are different.
-> > 
-> >> +Required properties:
-> >> +- compatible           : Should be one of
-> >> +                               "lantiq,danube-reset"
-> >> +                               "lantiq,xrx200-reset"
-> >> +- offset-set           : Offset of the reset set register
-> >> +- offset-status                : Offset of the reset status register
-> > 
-> > Just one side comment (I'm fine with either choice, just for your
-> > information). Recently I have reviewed at24 patch which adds a
-> > property for getting MAC offset and my reseach ends up with the naming
-> > pattern mac-offset (as many others are doing this way). So, perhaps in
-> > your case it might make sense to do that way? Anyway, it's a matter of
-> > a (bit of a) chaos in DT bindings, whatever you decide users will live
-> > with.
-> > 
-> I put the offset first to group them better together, but I have no
-> problem in reversing the order, then it is in a more natural speaking form.
+From: Yousong Zhou <yszhou4tech@gmail.com>
 
-Either way, I would like to see an Acked-by from the device tree
-maintainers for the bindings. Given that,
+commit 71a0a72456b48de972d7ed613b06a22a3aa9057f upstream.
 
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Some GCC versions (e.g. 4.8.3) can incorrectly inline a function with
+MIPS32 instructions into another function with MIPS16 code [1], causing
+the assembler to genereate incorrect binary code or fail right away
+complaining about unrecognized opcode.
 
-to merge this driver through the mips tree, since a git merge with
-    git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc.git drivers/reset-2
-is conflict free.
+In the case of __arch_swab{16,32}, when inlined by the compiler with
+flags `-mips32r2 -mips16 -Os', the assembler can fail with the following
+error.
 
-regards
-Philipp
+    {standard input}:79: Error: unrecognized opcode `wsbh $2,$2'
+
+For performance concerns and to workaround the issue already existing in
+older compilers, just ignore these 2 functions when compiling with
+mips16 enabled.
+
+ [1] Inlining nomips16 function into mips16 function can result in
+     undefined builtins, https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55777
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/11241/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+---
+ arch/mips/include/uapi/asm/swab.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/include/uapi/asm/swab.h b/arch/mips/include/uapi/asm/swab.h
+index 8f2d184dbe9f..23cd9b118c9e 100644
+--- a/arch/mips/include/uapi/asm/swab.h
++++ b/arch/mips/include/uapi/asm/swab.h
+@@ -13,8 +13,9 @@
+ 
+ #define __SWAB_64_THRU_32__
+ 
+-#if (defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||		\
+-    defined(_MIPS_ARCH_LOONGSON3A)
++#if !defined(__mips16) &&					\
++	((defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||	\
++	 defined(_MIPS_ARCH_LOONGSON3A))
+ 
+ static inline __attribute_const__ __u16 __arch_swab16(__u16 x)
+ {
+@@ -65,5 +66,5 @@ static inline __attribute_const__ __u64 __arch_swab64(__u64 x)
+ }
+ #define __arch_swab64 __arch_swab64
+ #endif /* __mips64 */
+-#endif /* MIPS R2 or newer or Loongson 3A */
++#endif /* (not __mips16) and (MIPS R2 or newer or Loongson 3A) */
+ #endif /* _ASM_SWAB_H */
+-- 
+2.7.4

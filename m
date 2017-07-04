@@ -1,35 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2017 00:42:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:53535 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993904AbdGCWmGriBUk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jul 2017 00:42:06 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 5820037FAD514;
-        Mon,  3 Jul 2017 23:41:55 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 3 Jul 2017 23:42:00 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Fix MIPS64 FP save/restore on 32-bit kernels
-Date:   Mon, 3 Jul 2017 23:41:47 +0100
-Message-ID: <9a0f24583ac74fd8da19e3edb1739dc6bb6d6d5d.1499121677.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.13.2
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2017 10:30:25 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:53321
+        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993859AbdGDIaSpVnRY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jul 2017 10:30:18 +0200
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1dSJDs-0006lS-Q0; Tue, 04 Jul 2017 10:30:16 +0200
+Message-ID: <1499157009.4045.4.camel@pengutronix.de>
+Subject: Re: [PATCH v7 10/16] reset: Add a reset controller driver for the
+ Lantiq XWAY based SoCs
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
+        linux-watchdog@vger.kernel.org,
+        devicetree <devicetree@vger.kernel.org>,
+        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
+        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
+        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
+        Rob Herring <robh@kernel.org>
+Date:   Tue, 04 Jul 2017 10:30:09 +0200
+In-Reply-To: <e1160f30-eeff-3db2-884c-9cd4af35a37d@hauke-m.de>
+References: <20170702224051.15109-1-hauke@hauke-m.de>
+         <20170702224051.15109-11-hauke@hauke-m.de>
+         <CAHp75VexwnVsb-ojXaZDN7QPVRKUeP-R=5C+j5ZSkE37Dtyp1Q@mail.gmail.com>
+         <e1160f30-eeff-3db2-884c-9cd4af35a37d@hauke-m.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.9-1+b1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <p.zabel@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59012
+X-archive-position: 59013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: p.zabel@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,126 +57,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-32-bit kernels can be configured to support MIPS64, in which case
-neither CONFIG_64BIT or CONFIG_CPU_MIPS32_R* will be set. This causes
-the CP0_Status.FR checks at the point of floating point register save
-and restore to be compiled out, which results in odd FP registers not
-being saved or restored to the task or signal context even when
-CP0_Status.FR is set.
+On Mon, 2017-07-03 at 23:30 +0200, Hauke Mehrtens wrote:
+> On 07/03/2017 09:51 AM, Andy Shevchenko wrote:
+> > On Mon, Jul 3, 2017 at 1:40 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> >> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> >>
+> >> The reset controllers (on xRX200 and newer SoCs have two of them) are
+> >> provided by the RCU module. This was initially implemented as a simple
+> >> reset controller. However, the RCU module provides more functionality
+> >> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
+> >> The old reset controller driver implementation from
+> >> arch/mips/lantiq/xway/reset.c did not honor this fact.
+> >>
+> >> For some devices the request and the status bits are different.
+> > 
+> >> +Required properties:
+> >> +- compatible           : Should be one of
+> >> +                               "lantiq,danube-reset"
+> >> +                               "lantiq,xrx200-reset"
+> >> +- offset-set           : Offset of the reset set register
+> >> +- offset-status                : Offset of the reset status register
+> > 
+> > Just one side comment (I'm fine with either choice, just for your
+> > information). Recently I have reviewed at24 patch which adds a
+> > property for getting MAC offset and my reseach ends up with the naming
+> > pattern mac-offset (as many others are doing this way). So, perhaps in
+> > your case it might make sense to do that way? Anyway, it's a matter of
+> > a (bit of a) chaos in DT bindings, whatever you decide users will live
+> > with.
+> > 
+> I put the offset first to group them better together, but I have no
+> problem in reversing the order, then it is in a more natural speaking form.
 
-Fix the ifdefs to use CONFIG_CPU_MIPSR2 and CONFIG_CPU_MIPSR6, which are
-enabled for the relevant revisions of either MIPS32 or MIPS64, along
-with some other CPUs such as Octeon (r2), Loongson1 (r2), XLP (r2),
-Loongson 3A R2.
+Either way, I would like to see an Acked-by from the device tree
+maintainers for the bindings. Given that,
 
-The suspect code originates from commit 597ce1723e0f ("MIPS: Support for
-64-bit FP with O32 binaries") in v3.14, however the code in
-__enable_fpu() was consistent and refused to set FR=1, falling back to
-software FPU emulation. This was suboptimal but should be functionally
-correct.
+Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-Commit fcc53b5f6c38 ("MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6
-CPU") in v4.2 (and stable tagged back to 4.0) later introduced the bug
-by updating __enable_fpu() to set FR=1 but failing to update the other
-similar ifdefs to enable FR=1 state handling.
+to merge this driver through the mips tree, since a git merge with
+    git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc.git drivers/reset-2
+is conflict free.
 
-Fixes: fcc53b5f6c38 ("MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6 CPU")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.0+
----
- arch/mips/include/asm/asmmacro.h |  8 ++++----
- arch/mips/kernel/r4k_fpu.S       | 12 ++++++------
- arch/mips/kernel/r4k_switch.S    |  8 ++++----
- 3 files changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 83054f79f72a..b815d7b3bd27 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -126,8 +126,8 @@
- 	.endm
- 
- 	.macro	fpu_save_double thread status tmp
--#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
--		defined(CONFIG_CPU_MIPS32_R6)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
-+		defined(CONFIG_CPU_MIPSR6)
- 	sll	\tmp, \status, 5
- 	bgez	\tmp, 10f
- 	fpu_save_16odd \thread
-@@ -184,8 +184,8 @@
- 	.endm
- 
- 	.macro	fpu_restore_double thread status tmp
--#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
--		defined(CONFIG_CPU_MIPS32_R6)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
-+		defined(CONFIG_CPU_MIPSR6)
- 	sll	\tmp, \status, 5
- 	bgez	\tmp, 10f				# 16 register mode?
- 
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index 56d86b09c917..93b1745def16 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -50,11 +50,11 @@ LEAF(_save_fp_context)
- 	cfc1	t1, fcr31
- 	.set	pop
- 
--#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
--		defined(CONFIG_CPU_MIPS32_R6)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
-+		defined(CONFIG_CPU_MIPSR6)
- 	.set	push
- 	SET_HARDFLOAT
--#ifdef CONFIG_CPU_MIPS32_R2
-+#ifdef CONFIG_CPU_MIPSR2
- 	.set	mips32r2
- 	.set	fp=64
- 	mfc0	t0, CP0_STATUS
-@@ -118,11 +118,11 @@ LEAF(_save_fp_context)
- LEAF(_restore_fp_context)
- 	EX	lw t1, 0(a1)
- 
--#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)  || \
--		defined(CONFIG_CPU_MIPS32_R6)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2)  || \
-+		defined(CONFIG_CPU_MIPSR6)
- 	.set	push
- 	SET_HARDFLOAT
--#ifdef CONFIG_CPU_MIPS32_R2
-+#ifdef CONFIG_CPU_MIPSR2
- 	.set	mips32r2
- 	.set	fp=64
- 	mfc0	t0, CP0_STATUS
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 7b386d54fd65..5508d3a03dbf 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -71,8 +71,8 @@
-  */
- LEAF(_save_fp)
- EXPORT_SYMBOL(_save_fp)
--#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
--		defined(CONFIG_CPU_MIPS32_R6)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
-+		defined(CONFIG_CPU_MIPSR6)
- 	mfc0	t0, CP0_STATUS
- #endif
- 	fpu_save_double a0 t0 t1		# clobbers t1
-@@ -83,8 +83,8 @@ EXPORT_SYMBOL(_save_fp)
-  * Restore a thread's fp context.
-  */
- LEAF(_restore_fp)
--#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
--		defined(CONFIG_CPU_MIPS32_R6)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
-+		defined(CONFIG_CPU_MIPSR6)
- 	mfc0	t0, CP0_STATUS
- #endif
- 	fpu_restore_double a0 t0 t1		# clobbers t1
--- 
-git-series 0.8.10
+regards
+Philipp

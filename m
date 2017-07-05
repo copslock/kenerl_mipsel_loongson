@@ -1,37 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jul 2017 22:03:06 +0200 (CEST)
-Received: from smtprelay0081.hostedemail.com ([216.40.44.81]:47655 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993894AbdGEUC5iKDws (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Jul 2017 22:02:57 +0200
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 1DB8F1808D232;
-        Wed,  5 Jul 2017 20:02:56 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: fork56_8de97f0eb1214
-X-Filterd-Recvd-Size: 1447
-Received: from joe-laptop.perches.com (unknown [47.151.132.55])
-        (Authenticated sender: joe@perches.com)
-        by omf07.hostedemail.com (Postfix) with ESMTPA;
-        Wed,  5 Jul 2017 20:02:55 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 09/18] MIPS: SMP: Move asmlinkage before return type
-Date:   Wed,  5 Jul 2017 13:02:18 -0700
-Message-Id: <756d3fb543e981b9284e756fa27616725a354b28.1499284835.git.joe@perches.com>
-X-Mailer: git-send-email 2.10.0.rc2.1.g053435c
-In-Reply-To: <cover.1499284835.git.joe@perches.com>
-References: <cover.1499284835.git.joe@perches.com>
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jul 2017 23:56:24 +0200 (CEST)
+Received: from mail.free-electrons.com ([62.4.15.54]:44692 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993876AbdGEV4Rz0YRr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Jul 2017 23:56:17 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 1342520917; Wed,  5 Jul 2017 23:56:11 +0200 (CEST)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id DB0772081B;
+        Wed,  5 Jul 2017 23:56:00 +0200 (CEST)
+Date:   Wed, 5 Jul 2017 23:56:02 +0200
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+Cc:     linux-mips@linux-mips.org,
+        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        "David S. Miller" <davem@davemloft.net>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>
+Subject: Re: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
+Message-ID: <20170705215602.vihwoio2dagxy2fc@piout.net>
+References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1498664922-28493-3-git-send-email-aleksandar.markovic@rt-rk.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1498664922-28493-3-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59023
+X-archive-position: 59024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,25 +56,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Make the code like the rest of the kernel.
+Hi,
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- arch/mips/include/asm/smp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The subject doesn't fit the subsystem style, this needs to be changed.
 
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 98a117a05fbc..bab3d41e5987 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -47,7 +47,7 @@ extern int __cpu_logical_map[NR_CPUS];
- /* Mask of CPUs which are currently definitely operating coherently */
- extern cpumask_t cpu_coherent_mask;
- 
--extern void asmlinkage smp_bootstrap(void);
-+extern asmlinkage void smp_bootstrap(void);
- 
- extern void calculate_cpu_foreign_map(void);
- 
+On 28/06/2017 at 17:46:55 +0200, Aleksandar Markovic wrote:
+> From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+> 
+> Add device driver for a virtual Goldfish RTC clock.
+> 
+> The driver can be built only if CONFIG_MIPS and CONFIG_GOLDFISH are
+> set. The compatible string used by OS for binding the driver is
+> defined as "google,goldfish-rtc".
+> 
+
+Is it really MIPS specific? I would expect the same driver to work on
+the ARM based emulator too.
+
+> +config RTC_DRV_GOLDFISH
+> +	tristate "Goldfish Real Time Clock"
+> +	depends on MIPS
+> +	depends on GOLDFISH
+
+This should be made buildable with COMPILE_TEST to extend coverage.
+
+> +	help
+> +	  Say yes here to build support for the Goldfish RTC.
+
+Please, don't expect anybody to actually know what is goldfish can you
+add a sentence or two?
+
+> +static irqreturn_t goldfish_rtc_interrupt(int irq, void *dev_id)
+> +{
+> +	struct goldfish_rtc	*qrtc = dev_id;
+> +	unsigned long		events = 0;
+> +	void __iomem *base = qrtc->base;
+> +
+> +	writel(1, base + TIMER_CLEAR_INTERRUPT);
+> +	events = RTC_IRQF | RTC_AF;
+> +
+> +	rtc_update_irq(qrtc->rtc, 1, events);
+
+I'd say that events is not needed you can pass the flags directly to
+rtc_update_irq
+
+> +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
+> +{
+> +	u64 time;
+> +	u64 time_low;
+> +	u64 time_high;
+> +	u64 time_high_prev;
+> +
+> +	struct goldfish_rtc *qrtc =
+> +			platform_get_drvdata(to_platform_device(dev));
+> +	void __iomem *base = qrtc->base;
+> +
+> +	time_high = readl(base + TIMER_TIME_HIGH);
+> +	do {
+> +		time_high_prev = time_high;
+> +		time_low = readl(base + TIMER_TIME_LOW);
+> +		time_high = readl(base + TIMER_TIME_HIGH);
+> +	} while (time_high != time_high_prev);
+
+I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
+and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
+TIMER_TIME_LOW is read. Note that the original driver from google
+doesn't do that.
+
+> +	time = (time_high << 32) | time_low;
+> +
+> +	do_div(time, NSEC_PER_SEC);
+> +
+> +	rtc_time_to_tm(time, tm);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct rtc_class_ops goldfish_rtc_ops = {
+> +	.read_time	= goldfish_rtc_read_time,
+> +};
+> +
+> +static int goldfish_rtc_probe(struct platform_device *pdev)
+> +{
+> +	struct resource *r;
+> +	struct goldfish_rtc *qrtc;
+> +	unsigned long rtc_dev_len;
+> +	unsigned long rtc_dev_addr;
+> +	int err;
+> +
+> +	qrtc = devm_kzalloc(&pdev->dev, sizeof(*qrtc), GFP_KERNEL);
+> +	if (qrtc == NULL)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, qrtc);
+> +
+> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (r == NULL)
+> +		return -ENODEV;
+> +
+> +	rtc_dev_addr = r->start;
+> +	rtc_dev_len = resource_size(r);
+> +	qrtc->base = devm_ioremap(&pdev->dev, rtc_dev_addr, rtc_dev_len);
+
+devm_ioremap_resource ?
+
+> +	if (IS_ERR(qrtc->base))
+> +		return -ENODEV;
+> +
+> +	qrtc->irq = platform_get_irq(pdev, 0);
+> +	if (qrtc->irq < 0)
+> +		return -ENODEV;
+> +
+
+Is the irq so important that you have to fail here even if the driver
+doesn't support any alarm?
+
+> +	qrtc->rtc = devm_rtc_device_register(&pdev->dev, pdev->name,
+> +					&goldfish_rtc_ops, THIS_MODULE);
+> +	if (IS_ERR(qrtc->rtc))
+> +		return PTR_ERR(qrtc->rtc);
+> +
+> +	err = devm_request_irq(&pdev->dev, qrtc->irq, goldfish_rtc_interrupt,
+> +		0, pdev->name, qrtc);
+> +	if (err)
+> +		return err;
+
+Ditto.
+
+
 -- 
-2.10.0.rc2.1.g053435c
+Alexandre Belloni, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

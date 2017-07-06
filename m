@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 15:25:27 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:36298 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 15:25:56 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55098 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993894AbdGFNZVAvsR0 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 15:25:21 +0200
+        with ESMTP id S23993894AbdGFNZt1cqbn convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 15:25:49 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 3CAE8E69593E;
-        Thu,  6 Jul 2017 14:25:10 +0100 (IST)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 6 Jul 2017 14:25:13 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
- (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
- 2017 14:25:13 +0100
+        by Forcepoint Email with ESMTPS id 43A646580FE87;
+        Thu,  6 Jul 2017 14:25:38 +0100 (IST)
+Received: from BADAG03.ba.imgtec.org (10.20.40.115) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
+ 2017 14:25:41 +0100
 Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
- bamail02.ba.imgtec.org ([fe80::5efe:10.20.40.28%12]) with mapi id
- 14.03.0266.001; Thu, 6 Jul 2017 06:25:10 -0700
+ badag03.ba.imgtec.org ([fe80::5efe:10.20.40.115%12]) with mapi id
+ 14.03.0266.001; Thu, 6 Jul 2017 06:25:38 -0700
 From:   Miodrag Dinic <Miodrag.Dinic@imgtec.com>
-To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        "Aleksandar Markovic" <aleksandar.markovic@rt-rk.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "Aleksandar Markovic" <Aleksandar.Markovic@imgtec.com>,
+To:     Marc Zyngier <marc.zyngier@arm.com>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
         Goran Ferenc <Goran.Ferenc@imgtec.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
         "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <Douglas.Leung@imgtec.com>,
+        "Douglas Leung" <Douglas.Leung@imgtec.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <James.Hogan@imgtec.com>,
+        "Jason Cooper" <jason@lakedaemon.net>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Paul Burton <Paul.Burton@imgtec.com>,
         Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
         Raghu Gandham <Raghu.Gandham@imgtec.com>,
-        "jinqian@google.com" <jinqian@google.com>, Bo Hu <bohu@google.com>,
-        "lfy@google.com" <lfy@google.com>
-Subject: RE: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
-Thread-Topic: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
-Thread-Index: AQHS8CZqqLh/yoIrEkOda53qS4lugqJGSAgAgAB3juc=
-Date:   Thu, 6 Jul 2017 13:25:09 +0000
-Message-ID: <232DDC0A2B605E4F9E85F6904417885F015D929D3D@BADAG02.ba.imgtec.org>
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: RE: [PATCH v2 04/10] MIPS: ranchu: Add Goldfish PIC driver
+Thread-Topic: [PATCH v2 04/10] MIPS: ranchu: Add Goldfish PIC driver
+Thread-Index: AQHS8CaC6v2YiHLjMEunbo2Olm8iM6I6/mKAgAvIiqc=
+Date:   Thu, 6 Jul 2017 13:25:37 +0000
+Message-ID: <232DDC0A2B605E4F9E85F6904417885F015D929D45@BADAG02.ba.imgtec.org>
 References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1498664922-28493-3-git-send-email-aleksandar.markovic@rt-rk.com>,<20170705215602.vihwoio2dagxy2fc@piout.net>
-In-Reply-To: <20170705215602.vihwoio2dagxy2fc@piout.net>
+ <1498664922-28493-5-git-send-email-aleksandar.markovic@rt-rk.com>,<2b0374aa-ca59-8f9e-7ddd-08ddf8631b02@arm.com>
+In-Reply-To: <2b0374aa-ca59-8f9e-7ddd-08ddf8631b02@arm.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -55,7 +50,7 @@ Return-Path: <Miodrag.Dinic@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59032
+X-archive-position: 59033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,320 +67,293 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-cc-ing Jin Quian, Bo Hu & Lingfeng Yang from Google
+Hi Mark,
 
-Hi Alexandre,
+> As it stands, this needs a major amount of reworking. You're most
+> probably better off rewriting it from scratch instead of tinkering with
+> what looks like 10+ year old code...
 
-thank you for your comments, answers are inline:
-
-> 
-> On 28/06/2017 at 17:46:55 +0200, Aleksandar Markovic wrote:
-> > From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-> > 
-> > Add device driver for a virtual Goldfish RTC clock.
-> > 
-> > The driver can be built only if CONFIG_MIPS and CONFIG_GOLDFISH are
-> > set. The compatible string used by OS for binding the driver is
-> > defined as "google,goldfish-rtc".
-> > 
-> 
-> Is it really MIPS specific? I would expect the same driver to work on
-> the ARM based emulator too.
-
-This driver can be made to work for ARM/Intel emulator but it is currently
-used only by MIPS emulator, so I would prefer to keep it guarded with "MIPS".
-If ARM or Intel decide to use this driver for their emulators it can be easily
-enabled.
-
-> > +config RTC_DRV_GOLDFISH
-> > +     tristate "Goldfish Real Time Clock"
-> > +     depends on MIPS
-> > +     depends on GOLDFISH
-> 
-> This should be made buildable with COMPILE_TEST to extend coverage.
-
-It will be included in the next version.
-
-> > +     help
-> > +       Say yes here to build support for the Goldfish RTC.
-> 
-> Please, don't expect anybody to actually know what is goldfish can you
-> add a sentence or two?
-
-It will be better documented in the next version. Thank you.
-
-> > +static irqreturn_t goldfish_rtc_interrupt(int irq, void *dev_id)
-> > +{
-> > +     struct goldfish_rtc     *qrtc = dev_id;
-> > +     unsigned long           events = 0;
-> > +     void __iomem *base = qrtc->base;
-> > +
-> > +     writel(1, base + TIMER_CLEAR_INTERRUPT);
-> > +     events = RTC_IRQF | RTC_AF;
-> > +
-> > +     rtc_update_irq(qrtc->rtc, 1, events);
-> 
-> I'd say that events is not needed you can pass the flags directly to
-> rtc_update_irq
-
-It will be corrected in the next version.
-
-> > +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
-> > +{
-> > +     u64 time;
-> > +     u64 time_low;
-> > +     u64 time_high;
-> > +     u64 time_high_prev;
-> > +
-> > +     struct goldfish_rtc *qrtc =
-> > +                     platform_get_drvdata(to_platform_device(dev));
-> > +     void __iomem *base = qrtc->base;
-> > +
-> > +     time_high = readl(base + TIMER_TIME_HIGH);
-> > +     do {
-> > +             time_high_prev = time_high;
-> > +             time_low = readl(base + TIMER_TIME_LOW);
-> > +             time_high = readl(base + TIMER_TIME_HIGH);
-> > +     } while (time_high != time_high_prev);
-> 
-> I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
-> and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
-> TIMER_TIME_LOW is read. Note that the original driver from google
-> doesn't do that.
-
-This is the way how other HW drivers are doing it, so we used this
-approach to make it more in-line with other HW, and it also does not
-make any assumptions regarding TIMER_TIME_HIGH is latched or not.
-This is the relevant part of code on the RTC device side which emulates these reads:
-
-static uint64_t goldfish_timer_read(void *opaque, hwaddr offset, unsigned size)
-{
-    struct timer_state *s = (struct timer_state *)opaque;
-    switch(offset) {
-        case TIMER_TIME_LOW:
-            s->now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-            return s->now_ns;
-        case TIMER_TIME_HIGH:
-            return s->now_ns >> 32;
-        default:
-            cpu_abort(current_cpu,
-                      "goldfish_timer_read: Bad offset %" HWADDR_PRIx "\n",
-                      offset);
-            return 0;
-    }
-}
-
-So theoretically speaking, we could imagine the situation that the kernel pre-empts after the
-first TIMER_TIME_LOW read and another request for reading the time gets processed, so
-the previous call would end-up having stale TIMER_TIME_LOW value.
-This is however very unlikely to happen, but one extra read in the loop doesn't hurt and
-actually makes the code less prone to error.
-
-> > +     time = (time_high << 32) | time_low;
-> > +
-> > +     do_div(time, NSEC_PER_SEC);
-> > +
-> > +     rtc_time_to_tm(time, tm);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static const struct rtc_class_ops goldfish_rtc_ops = {
-> > +     .read_time      = goldfish_rtc_read_time,
-> > +};
-> > +
-> > +static int goldfish_rtc_probe(struct platform_device *pdev)
-> > +{
-> > +     struct resource *r;
-> > +     struct goldfish_rtc *qrtc;
-> > +     unsigned long rtc_dev_len;
-> > +     unsigned long rtc_dev_addr;
-> > +     int err;
-> > +
-> > +     qrtc = devm_kzalloc(&pdev->dev, sizeof(*qrtc), GFP_KERNEL);
-> > +     if (qrtc == NULL)
-> > +             return -ENOMEM;
-> > +
-> > +     platform_set_drvdata(pdev, qrtc);
-> > +
-> > +     r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > +     if (r == NULL)
-> > +             return -ENODEV;
-> > +
-> > +     rtc_dev_addr = r->start;
-> > +     rtc_dev_len = resource_size(r);
-> > +     qrtc->base = devm_ioremap(&pdev->dev, rtc_dev_addr, rtc_dev_len);
-> 
-> devm_ioremap_resource ?
-
-Thanks, it will be fixed in next version to use devm_ioremap_resource().
-
-> > +     if (IS_ERR(qrtc->base))
-> > +             return -ENODEV;
-> > +
-> > +     qrtc->irq = platform_get_irq(pdev, 0);
-> > +     if (qrtc->irq < 0)
-> > +             return -ENODEV;
-> > +
-> 
-> Is the irq so important that you have to fail here even if the driver
-> doesn't support any alarm?
-
-Well currently it does not support alarm features, but we are considering
-to implement it in some other iteration. Maybe we will introduce it in the next version
-if not we will remove the IRQ handling. Thanks.
-
-> > +     qrtc->rtc = devm_rtc_device_register(&pdev->dev, pdev->name,
-> > +                                     &goldfish_rtc_ops, THIS_MODULE);
-> > +     if (IS_ERR(qrtc->rtc))
-> > +             return PTR_ERR(qrtc->rtc);
-> > +
-> > +     err = devm_request_irq(&pdev->dev, qrtc->irq, goldfish_rtc_interrupt,
-> > +             0, pdev->name, qrtc);
-> > +     if (err)
-> > +             return err;
-> 
-> Ditto.
+thanks for your valuable comments.
+We will try to update this code with regards to the latest kernel standards for
+interrupt controller drivers and propose a new version in next patch series.
 
 Kind regards,
 Miodrag
 
 ________________________________________
-From: Alexandre Belloni [alexandre.belloni@free-electrons.com]
-Sent: Wednesday, July 05, 2017 11:56 PM
-To: Aleksandar Markovic
-Cc: linux-mips@linux-mips.org; Aleksandar Markovic; Miodrag Dinic; Goran Ferenc; Alessandro Zummo; David S. Miller; Douglas Leung; Greg Kroah-Hartman; James Hogan; linux-kernel@vger.kernel.org; linux-rtc@vger.kernel.org; Martin K. Petersen; Mauro Carvalho Chehab; Paul Burton; Petar Jovanovic; Raghu Gandham
-Subject: Re: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
+From: Marc Zyngier [marc.zyngier@arm.com]
+Sent: Wednesday, June 28, 2017 7:33 PM
+To: Aleksandar Markovic; linux-mips@linux-mips.org
+Cc: Aleksandar Markovic; Miodrag Dinic; Goran Ferenc; David S. Miller; Douglas Leung; Greg Kroah-Hartman; James Hogan; Jason Cooper; linux-kernel@vger.kernel.org; Martin K. Petersen; Mauro Carvalho Chehab; Paul Burton; Petar Jovanovic; Raghu Gandham; Thomas Gleixner
+Subject: Re: [PATCH v2 04/10] MIPS: ranchu: Add Goldfish PIC driver
 
-Hi,
-
-The subject doesn't fit the subsystem style, this needs to be changed.
-
-On 28/06/2017 at 17:46:55 +0200, Aleksandar Markovic wrote:
+On 28/06/17 16:46, Aleksandar Markovic wrote:
 > From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 >
-> Add device driver for a virtual Goldfish RTC clock.
+> Add device driver for a virtual programmable interrupt controller
 >
-> The driver can be built only if CONFIG_MIPS and CONFIG_GOLDFISH are
-> set. The compatible string used by OS for binding the driver is
-> defined as "google,goldfish-rtc".
+> The virtual PIC is designed as a device tree-based interrupt controller.
 >
-
-Is it really MIPS specific? I would expect the same driver to work on
-the ARM based emulator too.
-
-> +config RTC_DRV_GOLDFISH
-> +     tristate "Goldfish Real Time Clock"
+> The compatible string used by OS for binding the driver is
+> "google,goldfish-pic".
+>
+> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
+> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+> ---
+>  MAINTAINERS                        |   1 +
+>  drivers/irqchip/Kconfig            |   9 ++
+>  drivers/irqchip/Makefile           |   1 +
+>  drivers/irqchip/irq-goldfish-pic.c | 169 +++++++++++++++++++++++++++++++++++++
+>  4 files changed, 180 insertions(+)
+>  create mode 100644 drivers/irqchip/irq-goldfish-pic.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 85da9f0..fb4c6ea 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -845,6 +845,7 @@ ANDROID GOLDFISH PIC DRIVER
+>  M:   Miodrag Dinic <miodrag.dinic@imgtec.com>
+>  S:   Supported
+>  F:   Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+> +F:   drivers/irqchip/irq-goldfish-pic.c
+>
+>  ANDROID GOLDFISH RTC DRIVER
+>  M:   Miodrag Dinic <miodrag.dinic@imgtec.com>
+> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 478f8ac..6c2f924 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -301,3 +301,12 @@ config QCOM_IRQ_COMBINER
+>       help
+>         Say yes here to add support for the IRQ combiner devices embedded
+>         in Qualcomm Technologies chips.
+> +
+> +config GOLDFISH_PIC
+> +     bool "Goldfish programmable interrupt controller"
 > +     depends on MIPS
 > +     depends on GOLDFISH
-
-This should be made buildable with COMPILE_TEST to extend coverage.
-
+> +     select IRQ_DOMAIN
 > +     help
-> +       Say yes here to build support for the Goldfish RTC.
-
-Please, don't expect anybody to actually know what is goldfish can you
-add a sentence or two?
-
-> +static irqreturn_t goldfish_rtc_interrupt(int irq, void *dev_id)
+> +       Say yes here to enable Goldfish interrupt controller driver used
+> +       for Goldfish based virtual platforms.
+> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+> index b64c59b..5e73932 100644
+> --- a/drivers/irqchip/Makefile
+> +++ b/drivers/irqchip/Makefile
+> @@ -76,3 +76,4 @@ obj-$(CONFIG_EZNPS_GIC)                     += irq-eznps.o
+>  obj-$(CONFIG_ARCH_ASPEED)            += irq-aspeed-vic.o
+>  obj-$(CONFIG_STM32_EXTI)             += irq-stm32-exti.o
+>  obj-$(CONFIG_QCOM_IRQ_COMBINER)              += qcom-irq-combiner.o
+> +obj-$(CONFIG_GOLDFISH_PIC)           += irq-goldfish-pic.o
+> diff --git a/drivers/irqchip/irq-goldfish-pic.c b/drivers/irqchip/irq-goldfish-pic.c
+> new file mode 100644
+> index 0000000..d0e4c2d
+> --- /dev/null
+> +++ b/drivers/irqchip/irq-goldfish-pic.c
+> @@ -0,0 +1,169 @@
+> +/* drivers/irqchip/irq-goldfish-pic.c
+> + *
+> + * Copyright (C) 2007 Google, Inc.
+> + * Copyright (C) 2017 Imagination Technologies Ltd.
+> + *
+> + * This software is licensed under the terms of the GNU General Public
+> + * License version 2, as published by the Free Software Foundation, and
+> + * may be copied, distributed, and modified under those terms.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <linux/interrupt.h>
+> +#include <linux/irqchip.h>
+> +#include <linux/of.h>
+> +#include <linux/of_address.h>
+> +
+> +#include <asm/setup.h>
+> +
+> +/* 0..7 MIPS CPU interrupts */
+> +#define GOLDFISH_CPU_IRQ_PIC         (MIPS_CPU_IRQ_BASE + 2)
+> +#define GOLDFISH_CPU_IRQ_FIQ         (MIPS_CPU_IRQ_BASE + 3) /* Not used? */
+> +#define GOLDFISH_CPU_IRQ_COMPARE     (MIPS_CPU_IRQ_BASE + 7)
+> +
+> +#define GOLDFISH_NR_IRQS             40
+> +/* 8..39 Cascaded Goldfish PIC interrupts */
+> +#define GOLDFISH_IRQ_OFFSET          8
+> +
+> +#define GOLDFISH_PIC_NUMBER          0x04
+> +#define GOLDFISH_PIC_DISABLE_ALL     0x08
+> +#define GOLDFISH_PIC_DISABLE         0x0c
+> +#define GOLDFISH_PIC_ENABLE          0x10
+> +
+> +static struct irq_domain *goldfish_pic_domain;
+> +static void __iomem *goldfish_pic_base;
+> +
+> +void goldfish_mask_irq(struct irq_data *d)
 > +{
-> +     struct goldfish_rtc     *qrtc = dev_id;
-> +     unsigned long           events = 0;
-> +     void __iomem *base = qrtc->base;
-> +
-> +     writel(1, base + TIMER_CLEAR_INTERRUPT);
-> +     events = RTC_IRQF | RTC_AF;
-> +
-> +     rtc_update_irq(qrtc->rtc, 1, events);
+> +     writel(d->irq - GOLDFISH_IRQ_OFFSET,
+> +            goldfish_pic_base + GOLDFISH_PIC_DISABLE);
 
-I'd say that events is not needed you can pass the flags directly to
-rtc_update_irq
+This makes exactly zero sense. You're using the Linux irq, which is just
+a random number, and write that to the HW?
 
-> +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
+> +}
+> +
+> +void goldfish_unmask_irq(struct irq_data *d)
 > +{
-> +     u64 time;
-> +     u64 time_low;
-> +     u64 time_high;
-> +     u64 time_high_prev;
+> +     writel(d->irq - GOLDFISH_IRQ_OFFSET,
+> +            goldfish_pic_base + GOLDFISH_PIC_ENABLE);
+> +}
 > +
-> +     struct goldfish_rtc *qrtc =
-> +                     platform_get_drvdata(to_platform_device(dev));
-> +     void __iomem *base = qrtc->base;
+> +static struct irq_chip goldfish_irq_chip = {
+> +     .name   = "goldfish",
+> +     .irq_mask       = goldfish_mask_irq,
+> +     .irq_mask_ack   = goldfish_mask_irq,
+> +     .irq_unmask     = goldfish_unmask_irq,
+> +};
 > +
-> +     time_high = readl(base + TIMER_TIME_HIGH);
-> +     do {
-> +             time_high_prev = time_high;
-> +             time_low = readl(base + TIMER_TIME_LOW);
-> +             time_high = readl(base + TIMER_TIME_HIGH);
-> +     } while (time_high != time_high_prev);
+> +void goldfish_irq_dispatch(void)
+> +{
+> +     uint32_t irq;
+> +
+> +     /*
+> +      * Disable all interrupt sources
+> +      */
+> +     irq = readl(goldfish_pic_base + GOLDFISH_PIC_NUMBER);
+> +     do_IRQ(GOLDFISH_IRQ_OFFSET + irq);
+> +}
+> +
+> +void goldfish_fiq_dispatch(void)
+> +{
+> +     panic("goldfish_fiq_dispatch");
+> +}
+> +
+> +static void goldfish_ip2_irq_dispatch(struct irq_desc *desc)
+> +{
+> +     unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+> +
+> +     if (pending & CAUSEF_IP2)
+> +             goldfish_irq_dispatch();
+> +     else if (pending & CAUSEF_IP3)
+> +             goldfish_fiq_dispatch();
+> +     else if (pending & CAUSEF_IP7)
+> +             do_IRQ(MIPS_CPU_IRQ_BASE + 7);
+> +     else
+> +             spurious_interrupt();
+> +}
+> +
+> +static struct irqaction cascade = {
+> +     .handler        = no_action,
+> +     .flags          = IRQF_NO_THREAD,
+> +     .name           = "cascade",
+> +};
+> +
+> +static void mips_timer_dispatch(void)
+> +{
+> +     do_IRQ(MIPS_CPU_IRQ_BASE + GOLDFISH_CPU_IRQ_COMPARE);
+> +}
+> +
+> +static int goldfish_pic_map(struct irq_domain *d, unsigned int irq,
+> +                             irq_hw_number_t hw)
+> +{
+> +     struct irq_chip *chip = &goldfish_irq_chip;
+> +
+> +     if (hw < GOLDFISH_IRQ_OFFSET)
+> +             return 0;
+> +
+> +     irq_set_chip_and_handler(hw, chip, handle_level_irq);
 
-I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
-and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
-TIMER_TIME_LOW is read. Note that the original driver from google
-doesn't do that.
+Ah, right. No. Really. You're completely confusing irq and hwirq. You
+really have to chose: either your system is DT driven, and you
+completely disassociate irq and hwirq (that's what the irq domain is
+for), or it is the same thing, and there is no irq domain (and no DT
+either).
 
-> +     time = (time_high << 32) | time_low;
-> +
-> +     do_div(time, NSEC_PER_SEC);
-> +
-> +     rtc_time_to_tm(time, tm);
+As it stands, this looks like a driver that has been DT-ified in a
+hurry, without actually trying to make it fit in.
+
 > +
 > +     return 0;
 > +}
 > +
-> +static const struct rtc_class_ops goldfish_rtc_ops = {
-> +     .read_time      = goldfish_rtc_read_time,
+> +static const struct irq_domain_ops irq_domain_ops = {
+> +     .xlate = irq_domain_xlate_onetwocell,
+> +     .map = goldfish_pic_map,
 > +};
 > +
-> +static int goldfish_rtc_probe(struct platform_device *pdev)
+> +int __init goldfish_pic_of_init(struct device_node *node,
+> +                             struct device_node *parent)
 > +{
-> +     struct resource *r;
-> +     struct goldfish_rtc *qrtc;
-> +     unsigned long rtc_dev_len;
-> +     unsigned long rtc_dev_addr;
-> +     int err;
+> +     struct resource res;
 > +
-> +     qrtc = devm_kzalloc(&pdev->dev, sizeof(*qrtc), GFP_KERNEL);
-> +     if (qrtc == NULL)
+> +     if (of_address_to_resource(node, 0, &res)) {
+> +             pr_err("%s(): Failed to get icu memory range", __func__);
+> +             return -ENODEV;
+> +     }
+> +
+> +     if (request_mem_region(res.start, resource_size(&res),
+> +                             res.name) < 0) {
+> +             pr_err("%s(): Failed to request icu memory", __func__);
 > +             return -ENOMEM;
+> +     }
 > +
-> +     platform_set_drvdata(pdev, qrtc);
+> +     goldfish_pic_base = ioremap_nocache(res.start, resource_size(&res));
+
+All of the above should replaced by a single of_iomap.
+
+> +     if (!goldfish_pic_base) {
+> +             pr_err("%s(): Failed to remap icu memory", __func__);
+> +             release_mem_region(res.start, resource_size(&res));
+> +             return -ENOMEM;
+> +     }
 > +
-> +     r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +     if (r == NULL)
-> +             return -ENODEV;
+> +     /*
+> +      * Disable all interrupt sources
+> +      */
+> +     writel(1, goldfish_pic_base + GOLDFISH_PIC_DISABLE_ALL);
 > +
-> +     rtc_dev_addr = r->start;
-> +     rtc_dev_len = resource_size(r);
-> +     qrtc->base = devm_ioremap(&pdev->dev, rtc_dev_addr, rtc_dev_len);
-
-devm_ioremap_resource ?
-
-> +     if (IS_ERR(qrtc->base))
-> +             return -ENODEV;
+> +     if (cpu_has_vint) {
+> +             pr_info("Setting up vectored interrupts\n");
+> +             set_vi_handler(GOLDFISH_CPU_IRQ_PIC, goldfish_irq_dispatch);
+> +             set_vi_handler(GOLDFISH_CPU_IRQ_FIQ, goldfish_fiq_dispatch);
+> +             set_vi_handler(GOLDFISH_CPU_IRQ_COMPARE, mips_timer_dispatch);
+> +     } else {
+> +             irq_set_chained_handler(GOLDFISH_CPU_IRQ_PIC,
+> +                             goldfish_ip2_irq_dispatch);
+> +     }
 > +
-> +     qrtc->irq = platform_get_irq(pdev, 0);
-> +     if (qrtc->irq < 0)
-> +             return -ENODEV;
+> +     setup_irq(MIPS_CPU_IRQ_BASE+GOLDFISH_CPU_IRQ_PIC, &cascade);
+> +     setup_irq(MIPS_CPU_IRQ_BASE+GOLDFISH_CPU_IRQ_FIQ, &cascade);
+
+The problem here is that you're mixing HW interrupt numbers (the VI
+stuff) and things that should never be a HW interrupt number.
+
 > +
+> +     goldfish_pic_domain = irq_domain_add_linear(node, GOLDFISH_NR_IRQS,
+> +                                                     &irq_domain_ops, 0);
 
-Is the irq so important that you have to fail here even if the driver
-doesn't support any alarm?
+And if you're going to confuse irq and hwirq, this is definitely not the
+irqdomain you want, but a legacy domain instead.
 
-> +     qrtc->rtc = devm_rtc_device_register(&pdev->dev, pdev->name,
-> +                                     &goldfish_rtc_ops, THIS_MODULE);
-> +     if (IS_ERR(qrtc->rtc))
-> +             return PTR_ERR(qrtc->rtc);
+> +     if (!goldfish_pic_domain)
+> +             panic("Failed to add IRQ domain");
 > +
-> +     err = devm_request_irq(&pdev->dev, qrtc->irq, goldfish_rtc_interrupt,
-> +             0, pdev->name, qrtc);
-> +     if (err)
-> +             return err;
+> +     return 0;
+> +}
+> +
+> +IRQCHIP_DECLARE(google_goldfish_pic, "google,goldfish-pic",
+> +             goldfish_pic_of_init);
+>
 
-Ditto.
+As it stands, this needs a major amount of reworking. You're most
+probably better off rewriting it from scratch instead of tinkering with
+what looks like 10+ year old code...
 
+Thanks,
 
+        M.
 --
-Alexandre Belloni, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Jazz is not dead. It just smells funny...

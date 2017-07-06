@@ -1,57 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 15:23:28 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47365 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 15:25:27 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36298 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993894AbdGFNXVP1DRx convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 15:23:21 +0200
+        with ESMTP id S23993894AbdGFNZVAvsR0 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 15:25:21 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 7342E13C5E272;
-        Thu,  6 Jul 2017 14:23:11 +0100 (IST)
-Received: from BADAG04.ba.imgtec.org (10.20.40.112) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
- 2017 14:23:14 +0100
+        by Forcepoint Email with ESMTPS id 3CAE8E69593E;
+        Thu,  6 Jul 2017 14:25:10 +0100 (IST)
+Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 6 Jul 2017 14:25:13 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
+ (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
+ 2017 14:25:13 +0100
 Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
- BADAG04.ba.imgtec.org ([fe80::b930:4082:95b0:e446%15]) with mapi id
- 14.03.0266.001; Thu, 6 Jul 2017 06:23:11 -0700
+ bamail02.ba.imgtec.org ([fe80::5efe:10.20.40.28%12]) with mapi id
+ 14.03.0266.001; Thu, 6 Jul 2017 06:25:10 -0700
 From:   Miodrag Dinic <Miodrag.Dinic@imgtec.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        "Aleksandar Markovic" <aleksandar.markovic@rt-rk.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Aleksandar Markovic" <Aleksandar.Markovic@imgtec.com>,
         Goran Ferenc <Goran.Ferenc@imgtec.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        "David S. Miller" <davem@davemloft.net>,
         Douglas Leung <Douglas.Leung@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <James.Hogan@imgtec.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Paul Burton <Paul.Burton@imgtec.com>,
         Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
         Raghu Gandham <Raghu.Gandham@imgtec.com>,
-        "jinqian@google.com" <jinqian@google.com>,
-        "lfy@google.com" <lfy@google.com>, Bo Hu <bohu@google.com>,
-        "arve@android.com" <arve@android.com>
-Subject: RE: [PATCH v2 06/10] Documentation: Add device tree binding for
- Goldfish FB driver
-Thread-Topic: [PATCH v2 06/10] Documentation: Add device tree binding for
- Goldfish FB driver
-Thread-Index: AQHS8CaWT/npMCJNDUyBQ7ycfQt1mqI873QAgAC3epg=
-Date:   Thu, 6 Jul 2017 13:23:10 +0000
-Message-ID: <232DDC0A2B605E4F9E85F6904417885F015D929D32@BADAG02.ba.imgtec.org>
+        "jinqian@google.com" <jinqian@google.com>, Bo Hu <bohu@google.com>,
+        "lfy@google.com" <lfy@google.com>
+Subject: RE: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
+Thread-Topic: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
+Thread-Index: AQHS8CZqqLh/yoIrEkOda53qS4lugqJGSAgAgAB3juc=
+Date:   Thu, 6 Jul 2017 13:25:09 +0000
+Message-ID: <232DDC0A2B605E4F9E85F6904417885F015D929D3D@BADAG02.ba.imgtec.org>
 References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1498664922-28493-7-git-send-email-aleksandar.markovic@rt-rk.com>,<CAL_Jsq+m-g__T34W2-7ddAF9ehH1woT3WfuxuDnHQMfzrg86Hg@mail.gmail.com>
-In-Reply-To: <CAL_Jsq+m-g__T34W2-7ddAF9ehH1woT3WfuxuDnHQMfzrg86Hg@mail.gmail.com>
+ <1498664922-28493-3-git-send-email-aleksandar.markovic@rt-rk.com>,<20170705215602.vihwoio2dagxy2fc@piout.net>
+In-Reply-To: <20170705215602.vihwoio2dagxy2fc@piout.net>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [82.117.201.26]
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 Return-Path: <Miodrag.Dinic@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59031
+X-archive-position: 59032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,59 +72,320 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-cc-ing Arve Hjønnevåg who originally upstreamed Goldfish FB driver
 cc-ing Jin Quian, Bo Hu & Lingfeng Yang from Google
 
-Hi Rob,
+Hi Alexandre,
 
-Thanks for taking the time to review the patches
+thank you for your comments, answers are inline:
 
-> I don't know that this should even go upstream. There's no upstream
-> qemu support for goldfish-fb. Maybe this is a minor driver change, but
-> FB drivers are being replaced with DRM drivers. And the time for AOSP
-> supporting framebuffer drivers is limited I think with HWC2 and
-> explicit fence support in DRM.
+> 
+> On 28/06/2017 at 17:46:55 +0200, Aleksandar Markovic wrote:
+> > From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+> > 
+> > Add device driver for a virtual Goldfish RTC clock.
+> > 
+> > The driver can be built only if CONFIG_MIPS and CONFIG_GOLDFISH are
+> > set. The compatible string used by OS for binding the driver is
+> > defined as "google,goldfish-rtc".
+> > 
+> 
+> Is it really MIPS specific? I would expect the same driver to work on
+> the ARM based emulator too.
 
-Goldfish FB is actively used by all supported architectures in Android (Intel/ARM/MIPS)
-and is part of Android emulator project and so far, there have been no limitations in
-AOSP for using it.
+This driver can be made to work for ARM/Intel emulator but it is currently
+used only by MIPS emulator, so I would prefer to keep it guarded with "MIPS".
+If ARM or Intel decide to use this driver for their emulators it can be easily
+enabled.
 
-We have already tested this particular version of the driver for MIPS
-Ranchu virtual platform (introduced in this series) which is DT based and
-therefore we needed to integrate device tree support for this driver.
+> > +config RTC_DRV_GOLDFISH
+> > +     tristate "Goldfish Real Time Clock"
+> > +     depends on MIPS
+> > +     depends on GOLDFISH
+> 
+> This should be made buildable with COMPILE_TEST to extend coverage.
 
-> bindings/display/
+It will be included in the next version.
 
-Did you mean to use this location instead of "bindings/goldfish/"?
+> > +     help
+> > +       Say yes here to build support for the Goldfish RTC.
+> 
+> Please, don't expect anybody to actually know what is goldfish can you
+> add a sentence or two?
+
+It will be better documented in the next version. Thank you.
+
+> > +static irqreturn_t goldfish_rtc_interrupt(int irq, void *dev_id)
+> > +{
+> > +     struct goldfish_rtc     *qrtc = dev_id;
+> > +     unsigned long           events = 0;
+> > +     void __iomem *base = qrtc->base;
+> > +
+> > +     writel(1, base + TIMER_CLEAR_INTERRUPT);
+> > +     events = RTC_IRQF | RTC_AF;
+> > +
+> > +     rtc_update_irq(qrtc->rtc, 1, events);
+> 
+> I'd say that events is not needed you can pass the flags directly to
+> rtc_update_irq
+
+It will be corrected in the next version.
+
+> > +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
+> > +{
+> > +     u64 time;
+> > +     u64 time_low;
+> > +     u64 time_high;
+> > +     u64 time_high_prev;
+> > +
+> > +     struct goldfish_rtc *qrtc =
+> > +                     platform_get_drvdata(to_platform_device(dev));
+> > +     void __iomem *base = qrtc->base;
+> > +
+> > +     time_high = readl(base + TIMER_TIME_HIGH);
+> > +     do {
+> > +             time_high_prev = time_high;
+> > +             time_low = readl(base + TIMER_TIME_LOW);
+> > +             time_high = readl(base + TIMER_TIME_HIGH);
+> > +     } while (time_high != time_high_prev);
+> 
+> I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
+> and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
+> TIMER_TIME_LOW is read. Note that the original driver from google
+> doesn't do that.
+
+This is the way how other HW drivers are doing it, so we used this
+approach to make it more in-line with other HW, and it also does not
+make any assumptions regarding TIMER_TIME_HIGH is latched or not.
+This is the relevant part of code on the RTC device side which emulates these reads:
+
+static uint64_t goldfish_timer_read(void *opaque, hwaddr offset, unsigned size)
+{
+    struct timer_state *s = (struct timer_state *)opaque;
+    switch(offset) {
+        case TIMER_TIME_LOW:
+            s->now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+            return s->now_ns;
+        case TIMER_TIME_HIGH:
+            return s->now_ns >> 32;
+        default:
+            cpu_abort(current_cpu,
+                      "goldfish_timer_read: Bad offset %" HWADDR_PRIx "\n",
+                      offset);
+            return 0;
+    }
+}
+
+So theoretically speaking, we could imagine the situation that the kernel pre-empts after the
+first TIMER_TIME_LOW read and another request for reading the time gets processed, so
+the previous call would end-up having stale TIMER_TIME_LOW value.
+This is however very unlikely to happen, but one extra read in the loop doesn't hurt and
+actually makes the code less prone to error.
+
+> > +     time = (time_high << 32) | time_low;
+> > +
+> > +     do_div(time, NSEC_PER_SEC);
+> > +
+> > +     rtc_time_to_tm(time, tm);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static const struct rtc_class_ops goldfish_rtc_ops = {
+> > +     .read_time      = goldfish_rtc_read_time,
+> > +};
+> > +
+> > +static int goldfish_rtc_probe(struct platform_device *pdev)
+> > +{
+> > +     struct resource *r;
+> > +     struct goldfish_rtc *qrtc;
+> > +     unsigned long rtc_dev_len;
+> > +     unsigned long rtc_dev_addr;
+> > +     int err;
+> > +
+> > +     qrtc = devm_kzalloc(&pdev->dev, sizeof(*qrtc), GFP_KERNEL);
+> > +     if (qrtc == NULL)
+> > +             return -ENOMEM;
+> > +
+> > +     platform_set_drvdata(pdev, qrtc);
+> > +
+> > +     r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +     if (r == NULL)
+> > +             return -ENODEV;
+> > +
+> > +     rtc_dev_addr = r->start;
+> > +     rtc_dev_len = resource_size(r);
+> > +     qrtc->base = devm_ioremap(&pdev->dev, rtc_dev_addr, rtc_dev_len);
+> 
+> devm_ioremap_resource ?
+
+Thanks, it will be fixed in next version to use devm_ioremap_resource().
+
+> > +     if (IS_ERR(qrtc->base))
+> > +             return -ENODEV;
+> > +
+> > +     qrtc->irq = platform_get_irq(pdev, 0);
+> > +     if (qrtc->irq < 0)
+> > +             return -ENODEV;
+> > +
+> 
+> Is the irq so important that you have to fail here even if the driver
+> doesn't support any alarm?
+
+Well currently it does not support alarm features, but we are considering
+to implement it in some other iteration. Maybe we will introduce it in the next version
+if not we will remove the IRQ handling. Thanks.
+
+> > +     qrtc->rtc = devm_rtc_device_register(&pdev->dev, pdev->name,
+> > +                                     &goldfish_rtc_ops, THIS_MODULE);
+> > +     if (IS_ERR(qrtc->rtc))
+> > +             return PTR_ERR(qrtc->rtc);
+> > +
+> > +     err = devm_request_irq(&pdev->dev, qrtc->irq, goldfish_rtc_interrupt,
+> > +             0, pdev->name, qrtc);
+> > +     if (err)
+> > +             return err;
+> 
+> Ditto.
 
 Kind regards,
 Miodrag
-________________________________________
-From: Rob Herring [robh+dt@kernel.org]
-Sent: Friday, June 30, 2017 1:12 AM
-To: Aleksandar Markovic
-Cc: Linux-MIPS; Aleksandar Markovic; Miodrag Dinic; Goran Ferenc; devicetree@vger.kernel.org; Douglas Leung; James Hogan; linux-kernel@vger.kernel.org; Mark Rutland; Paul Burton; Petar Jovanovic; Raghu Gandham
-Subject: Re: [PATCH v2 06/10] Documentation: Add device tree binding for Goldfish FB driver
 
-On Wed, Jun 28, 2017 at 10:46 AM, Aleksandar Markovic
-<aleksandar.markovic@rt-rk.com> wrote:
+________________________________________
+From: Alexandre Belloni [alexandre.belloni@free-electrons.com]
+Sent: Wednesday, July 05, 2017 11:56 PM
+To: Aleksandar Markovic
+Cc: linux-mips@linux-mips.org; Aleksandar Markovic; Miodrag Dinic; Goran Ferenc; Alessandro Zummo; David S. Miller; Douglas Leung; Greg Kroah-Hartman; James Hogan; linux-kernel@vger.kernel.org; linux-rtc@vger.kernel.org; Martin K. Petersen; Mauro Carvalho Chehab; Paul Burton; Petar Jovanovic; Raghu Gandham
+Subject: Re: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
+
+Hi,
+
+The subject doesn't fit the subsystem style, this needs to be changed.
+
+On 28/06/2017 at 17:46:55 +0200, Aleksandar Markovic wrote:
 > From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 >
-> Add documentation for DT binding of Goldfish FB driver. The compatible
-> string used by OS for binding the driver is "google,goldfish-fb".
+> Add device driver for a virtual Goldfish RTC clock.
 >
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-> ---
->  .../bindings/goldfish/google,goldfish-fb.txt           | 18 ++++++++++++++++++
+> The driver can be built only if CONFIG_MIPS and CONFIG_GOLDFISH are
+> set. The compatible string used by OS for binding the driver is
+> defined as "google,goldfish-rtc".
+>
 
-bindings/display/
+Is it really MIPS specific? I would expect the same driver to work on
+the ARM based emulator too.
 
-I don't know that this should even go upstream. There's no upstream
-qemu support for goldfish-fb. Maybe this is a minor driver change, but
-FB drivers are being replaced with DRM drivers. And the time for AOSP
-supporting framebuffer drivers is limited I think with HWC2 and
-explicit fence support in DRM.
+> +config RTC_DRV_GOLDFISH
+> +     tristate "Goldfish Real Time Clock"
+> +     depends on MIPS
+> +     depends on GOLDFISH
 
-Rob
+This should be made buildable with COMPILE_TEST to extend coverage.
+
+> +     help
+> +       Say yes here to build support for the Goldfish RTC.
+
+Please, don't expect anybody to actually know what is goldfish can you
+add a sentence or two?
+
+> +static irqreturn_t goldfish_rtc_interrupt(int irq, void *dev_id)
+> +{
+> +     struct goldfish_rtc     *qrtc = dev_id;
+> +     unsigned long           events = 0;
+> +     void __iomem *base = qrtc->base;
+> +
+> +     writel(1, base + TIMER_CLEAR_INTERRUPT);
+> +     events = RTC_IRQF | RTC_AF;
+> +
+> +     rtc_update_irq(qrtc->rtc, 1, events);
+
+I'd say that events is not needed you can pass the flags directly to
+rtc_update_irq
+
+> +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
+> +{
+> +     u64 time;
+> +     u64 time_low;
+> +     u64 time_high;
+> +     u64 time_high_prev;
+> +
+> +     struct goldfish_rtc *qrtc =
+> +                     platform_get_drvdata(to_platform_device(dev));
+> +     void __iomem *base = qrtc->base;
+> +
+> +     time_high = readl(base + TIMER_TIME_HIGH);
+> +     do {
+> +             time_high_prev = time_high;
+> +             time_low = readl(base + TIMER_TIME_LOW);
+> +             time_high = readl(base + TIMER_TIME_HIGH);
+> +     } while (time_high != time_high_prev);
+
+I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
+and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
+TIMER_TIME_LOW is read. Note that the original driver from google
+doesn't do that.
+
+> +     time = (time_high << 32) | time_low;
+> +
+> +     do_div(time, NSEC_PER_SEC);
+> +
+> +     rtc_time_to_tm(time, tm);
+> +
+> +     return 0;
+> +}
+> +
+> +static const struct rtc_class_ops goldfish_rtc_ops = {
+> +     .read_time      = goldfish_rtc_read_time,
+> +};
+> +
+> +static int goldfish_rtc_probe(struct platform_device *pdev)
+> +{
+> +     struct resource *r;
+> +     struct goldfish_rtc *qrtc;
+> +     unsigned long rtc_dev_len;
+> +     unsigned long rtc_dev_addr;
+> +     int err;
+> +
+> +     qrtc = devm_kzalloc(&pdev->dev, sizeof(*qrtc), GFP_KERNEL);
+> +     if (qrtc == NULL)
+> +             return -ENOMEM;
+> +
+> +     platform_set_drvdata(pdev, qrtc);
+> +
+> +     r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +     if (r == NULL)
+> +             return -ENODEV;
+> +
+> +     rtc_dev_addr = r->start;
+> +     rtc_dev_len = resource_size(r);
+> +     qrtc->base = devm_ioremap(&pdev->dev, rtc_dev_addr, rtc_dev_len);
+
+devm_ioremap_resource ?
+
+> +     if (IS_ERR(qrtc->base))
+> +             return -ENODEV;
+> +
+> +     qrtc->irq = platform_get_irq(pdev, 0);
+> +     if (qrtc->irq < 0)
+> +             return -ENODEV;
+> +
+
+Is the irq so important that you have to fail here even if the driver
+doesn't support any alarm?
+
+> +     qrtc->rtc = devm_rtc_device_register(&pdev->dev, pdev->name,
+> +                                     &goldfish_rtc_ops, THIS_MODULE);
+> +     if (IS_ERR(qrtc->rtc))
+> +             return PTR_ERR(qrtc->rtc);
+> +
+> +     err = devm_request_irq(&pdev->dev, qrtc->irq, goldfish_rtc_interrupt,
+> +             0, pdev->name, qrtc);
+> +     if (err)
+> +             return err;
+
+Ditto.
+
+
+--
+Alexandre Belloni, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

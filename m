@@ -1,61 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 16:09:26 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25311 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993920AbdGFOJSNgFhn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 16:09:18 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9904A41F8EBA;
-        Thu,  6 Jul 2017 16:19:37 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 06 Jul 2017 16:19:37 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 06 Jul 2017 16:19:37 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id ACF6576877BF5;
-        Thu,  6 Jul 2017 15:09:08 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
- 2017 15:09:12 +0100
-Date:   Thu, 6 Jul 2017 15:09:12 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        <linux-mips@linux-mips.org>,
-        Goran Ferenc <goran.ferenc@imgtec.com>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        Douglas Leung <douglas.leung@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v2 2/4] MIPS: VDSO: Add implementation of clock_gettime()
- fallback
-Message-ID: <20170706140911.GG6973@jhogan-linux.le.imgtec.org>
-References: <1498665337-28845-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1498665337-28845-3-git-send-email-aleksandar.markovic@rt-rk.com>
- <alpine.DEB.2.00.1707060055470.3339@tp.orcam.me.uk>
- <20170706090553.GO31455@jhogan-linux.le.imgtec.org>
- <alpine.DEB.2.00.1707061405410.3339@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 17:13:52 +0200 (CEST)
+Received: from mail.free-electrons.com ([62.4.15.54]:35556 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993920AbdGFPNqNYHSF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 17:13:46 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 321CD208D0; Thu,  6 Jul 2017 17:13:39 +0200 (CEST)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 06C14207FA;
+        Thu,  6 Jul 2017 17:13:29 +0200 (CEST)
+Date:   Thu, 6 Jul 2017 17:13:30 +0200
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     Miodrag Dinic <Miodrag.Dinic@imgtec.com>
+Cc:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
+        Goran Ferenc <Goran.Ferenc@imgtec.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        "David S. Miller" <davem@davemloft.net>,
+        Douglas Leung <Douglas.Leung@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <James.Hogan@imgtec.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
+        Raghu Gandham <Raghu.Gandham@imgtec.com>,
+        "jinqian@google.com" <jinqian@google.com>, Bo Hu <bohu@google.com>,
+        "lfy@google.com" <lfy@google.com>
+Subject: Re: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
+Message-ID: <20170706151330.4ovj7mmcjf4qlh4o@piout.net>
+References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1498664922-28493-3-git-send-email-aleksandar.markovic@rt-rk.com>
+ <20170705215602.vihwoio2dagxy2fc@piout.net>
+ <232DDC0A2B605E4F9E85F6904417885F015D929D3D@BADAG02.ba.imgtec.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Xv6Km4yt4judTFSp"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1707061405410.3339@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <232DDC0A2B605E4F9E85F6904417885F015D929D3D@BADAG02.ba.imgtec.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59035
+X-archive-position: 59036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,54 +61,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Xv6Km4yt4judTFSp
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 06/07/2017 at 13:25:09 +0000, Miodrag Dinic wrote:
+> > > +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
+> > > +{
+> > > +     u64 time;
+> > > +     u64 time_low;
+> > > +     u64 time_high;
+> > > +     u64 time_high_prev;
+> > > +
+> > > +     struct goldfish_rtc *qrtc =
+> > > +                     platform_get_drvdata(to_platform_device(dev));
+> > > +     void __iomem *base = qrtc->base;
+> > > +
+> > > +     time_high = readl(base + TIMER_TIME_HIGH);
+> > > +     do {
+> > > +             time_high_prev = time_high;
+> > > +             time_low = readl(base + TIMER_TIME_LOW);
+> > > +             time_high = readl(base + TIMER_TIME_HIGH);
+> > > +     } while (time_high != time_high_prev);
+> > 
+> > I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
+> > and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
+> > TIMER_TIME_LOW is read. Note that the original driver from google
+> > doesn't do that.
+> 
+> This is the way how other HW drivers are doing it, so we used this
+> approach to make it more in-line with other HW, and it also does not
+> make any assumptions regarding TIMER_TIME_HIGH is latched or not.
+> This is the relevant part of code on the RTC device side which emulates these reads:
+> 
+> static uint64_t goldfish_timer_read(void *opaque, hwaddr offset, unsigned size)
+> {
+>     struct timer_state *s = (struct timer_state *)opaque;
+>     switch(offset) {
+>         case TIMER_TIME_LOW:
+>             s->now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+>             return s->now_ns;
+>         case TIMER_TIME_HIGH:
+>             return s->now_ns >> 32;
+>         default:
+>             cpu_abort(current_cpu,
+>                       "goldfish_timer_read: Bad offset %" HWADDR_PRIx "\n",
+>                       offset);
+>             return 0;
+>     }
+> }
+> 
+> So theoretically speaking, we could imagine the situation that the kernel pre-empts after the
+> first TIMER_TIME_LOW read and another request for reading the time gets processed, so
+> the previous call would end-up having stale TIMER_TIME_LOW value.
+> This is however very unlikely to happen, but one extra read in the loop doesn't hurt and
+> actually makes the code less prone to error.
+> 
 
-On Thu, Jul 06, 2017 at 02:12:37PM +0100, Maciej W. Rozycki wrote:
-> On Thu, 6 Jul 2017, James Hogan wrote:
-> > > (and would have to forcibly use the 32-bit encoding in the microMIPS
-> > > case)?
-> >=20
-> > I don't believe there is a 16-bit SYSCALL encoding in microMIPS, at
-> > least I can't see one in the 5.04 manual.
->=20
->  I referred to the preceding instruction, presumably LI, that does have a=
-=20
-> 16-bit variant in the microMIPS instruction set.
+Every call to the RTC callbacks are protected by a mutex so this will
+never happen.
 
-Ah yes, I see what you mean.
+Most of the RTCs are actually latching the time on the first register
+read and don't require specific handling. I'd prefer to keep the driver
+simple.
 
-Hopefully microMIPS support is new enough for that not to matter.
 
-It appears that the restart behaviour was improved in v2.6.36 in commit
-8f5a00eb422e ("MIPS: Sanitize restart logics"), whereas first mentions
-of micromips are in v3.9, in commit f8fa4811dbb2 ("MIPS: Add support for
-the M14KEc core.").
+> > > +     qrtc->irq = platform_get_irq(pdev, 0);
+> > > +     if (qrtc->irq < 0)
+> > > +             return -ENODEV;
+> > > +
+> > 
+> > Is the irq so important that you have to fail here even if the driver
+> > doesn't support any alarm?
+> 
+> Well currently it does not support alarm features, but we are considering
+> to implement it in some other iteration. Maybe we will introduce it in the next version
+> if not we will remove the IRQ handling. Thanks.
+> 
 
-Cheers
-James
+I'd say that you should probably leave out the whole IRQ handling until
+you really handle alarms in the driver or do you have a way to generate
+alarms (and so interrupts) without using the driver?
 
---Xv6Km4yt4judTFSp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlleRHsACgkQbAtpk944
-dnr5YA/+NYnq2IOaUfnAk8+buZjf3Z1yYRGYKiiB3bygfEBpxge9mb++d5J2olOM
-tA15j9aNiqyZ8RRoV8sVwkbXQliwjMbiRdnc+zCMVJZGTIfkq4nLY/Eh4aG0Hg7D
-lx1UGBDixpB9/RcuOsKbDwms8jnaRKgFsCQ+JEKotAmdrYcYN7K4kesnIPxWTpYy
-o4J4/pVLUIF5s46okSNYQf2pPH7IV8JYbqt5ls9seKwzVcReb99BpaNF1uhE2vEE
-8IxOntJkbUjk7QtF7cRm4Ao/LWc4fVh+c/ZkDpa2TMRkJw1I4QEYCY3n5RAi7IAe
-YG7xq9RsjAG1ec/CYklAguXw3Rz8QJM+vF4zmVOBhCBecKMEu0jXJVR+R5nmj+oM
-/W0lppuRbWhYti3Nub5f6WPKQHvpnRCYZ9/h5uo4Hws4QKrxEOWPwjXVpO3/LbJR
-Y3sYN5yU4F8BjXSZeBpj4DChK2MGkZ5f+w19yDBEpxARr2wnuIOQ7sF9dF6k5fL2
-KC+zJhOD0vueWmvI5fIpgSCRZSZKyHTs8iAFr1EZFSGR9Sf87kazfcC180Mc1DKh
-ZN1ts1Vb5e2g5lGdamNRkEEelScRUR2gjSXedw80zBdrIBM+HyuA2zdMX+MvXTli
-IT6FyXxrZiyShYQCApW/OkBiA5r1I/Bcrchfxe5eMt9pu0MFZbo=
-=qOWk
------END PGP SIGNATURE-----
-
---Xv6Km4yt4judTFSp--
+-- 
+Alexandre Belloni, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

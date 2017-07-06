@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 17:13:52 +0200 (CEST)
-Received: from mail.free-electrons.com ([62.4.15.54]:35556 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbdGFPNqNYHSF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 17:13:46 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 321CD208D0; Thu,  6 Jul 2017 17:13:39 +0200 (CEST)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 06C14207FA;
-        Thu,  6 Jul 2017 17:13:29 +0200 (CEST)
-Date:   Thu, 6 Jul 2017 17:13:30 +0200
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Miodrag Dinic <Miodrag.Dinic@imgtec.com>
-Cc:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
-        Goran Ferenc <Goran.Ferenc@imgtec.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <Douglas.Leung@imgtec.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <James.Hogan@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
-        Raghu Gandham <Raghu.Gandham@imgtec.com>,
-        "jinqian@google.com" <jinqian@google.com>, Bo Hu <bohu@google.com>,
-        "lfy@google.com" <lfy@google.com>
-Subject: Re: [PATCH v2 02/10] MIPS: ranchu: Add Goldfish RTC driver
-Message-ID: <20170706151330.4ovj7mmcjf4qlh4o@piout.net>
-References: <1498664922-28493-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1498664922-28493-3-git-send-email-aleksandar.markovic@rt-rk.com>
- <20170705215602.vihwoio2dagxy2fc@piout.net>
- <232DDC0A2B605E4F9E85F6904417885F015D929D3D@BADAG02.ba.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 18:17:23 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30795 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993934AbdGFQRNJzbKA convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 18:17:13 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 17BD760B2B459;
+        Thu,  6 Jul 2017 17:17:03 +0100 (IST)
+Received: from BADAG03.ba.imgtec.org (10.20.40.115) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
+ 2017 17:17:07 +0100
+Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
+ badag03.ba.imgtec.org ([fe80::5efe:10.20.40.115%12]) with mapi id
+ 14.03.0266.001; Thu, 6 Jul 2017 09:17:03 -0700
+From:   Petar Jovanovic <Petar.Jovanovic@imgtec.com>
+To:     Petar Jovanovic <petar.jovanovic@rt-rk.com>,
+        Maciej Rozycki <Maciej.Rozycki@imgtec.com>,
+        'David Daney' <ddaney@caviumnetworks.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "david.daney@cavium.com" <david.daney@cavium.com>
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
+ mips64r1
+Thread-Topic: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2
+ and mips64r1
+Thread-Index: AQHSnbX++bP4lnkFiE+wD6odSKTYpKG3hZqAgB8QjxiAFMJoAIAKSgX9gAk83ICAAoqeAIAAGCEAgCcALACAHyi9Zw==
+Date:   Thu, 6 Jul 2017 16:17:03 +0000
+Message-ID: <56EA75BA695AE044ACFB41322F6D2BF4013D065C1B@BADAG02.ba.imgtec.org>
+References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com>
+ <001b01d2ae25$d7554b80$85ffe280$@rt-rk.com>
+ <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>
+ <002c01d2c80f$52e66060$f8b32120$@rt-rk.com>
+ <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org>
+ <alpine.DEB.2.00.1705210223180.2590@tp.orcam.me.uk>
+ <22c5e59d-fb87-9dbf-1285-2a5ff3b62497@caviumnetworks.com>
+ <alpine.DEB.2.00.1705221846340.2590@tp.orcam.me.uk>,<000a01d2e6a4$38a8fe70$a9fafb50$@rt-rk.com>
+In-Reply-To: <000a01d2e6a4$38a8fe70$a9fafb50$@rt-rk.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [89.216.37.146]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <232DDC0A2B605E4F9E85F6904417885F015D929D3D@BADAG02.ba.imgtec.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <alexandre.belloni@free-electrons.com>
+Return-Path: <Petar.Jovanovic@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59036
+X-archive-position: 59037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: Petar.Jovanovic@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,86 +64,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/07/2017 at 13:25:09 +0000, Miodrag Dinic wrote:
-> > > +static int goldfish_rtc_read_time(struct device *dev, struct rtc_time *tm)
-> > > +{
-> > > +     u64 time;
-> > > +     u64 time_low;
-> > > +     u64 time_high;
-> > > +     u64 time_high_prev;
-> > > +
-> > > +     struct goldfish_rtc *qrtc =
-> > > +                     platform_get_drvdata(to_platform_device(dev));
-> > > +     void __iomem *base = qrtc->base;
-> > > +
-> > > +     time_high = readl(base + TIMER_TIME_HIGH);
-> > > +     do {
-> > > +             time_high_prev = time_high;
-> > > +             time_low = readl(base + TIMER_TIME_LOW);
-> > > +             time_high = readl(base + TIMER_TIME_HIGH);
-> > > +     } while (time_high != time_high_prev);
-> > 
-> > I'm not sure why you need that loop as the comments for TIMER_TIME_LOW
-> > and TIMER_TIME_HIGH indicate that TIMER_TIME_HIGH is latched when
-> > TIMER_TIME_LOW is read. Note that the original driver from google
-> > doesn't do that.
-> 
-> This is the way how other HW drivers are doing it, so we used this
-> approach to make it more in-line with other HW, and it also does not
-> make any assumptions regarding TIMER_TIME_HIGH is latched or not.
-> This is the relevant part of code on the RTC device side which emulates these reads:
-> 
-> static uint64_t goldfish_timer_read(void *opaque, hwaddr offset, unsigned size)
-> {
->     struct timer_state *s = (struct timer_state *)opaque;
->     switch(offset) {
->         case TIMER_TIME_LOW:
->             s->now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->             return s->now_ns;
->         case TIMER_TIME_HIGH:
->             return s->now_ns >> 32;
->         default:
->             cpu_abort(current_cpu,
->                       "goldfish_timer_read: Bad offset %" HWADDR_PRIx "\n",
->                       offset);
->             return 0;
->     }
-> }
-> 
-> So theoretically speaking, we could imagine the situation that the kernel pre-empts after the
-> first TIMER_TIME_LOW read and another request for reading the time gets processed, so
-> the previous call would end-up having stale TIMER_TIME_LOW value.
-> This is however very unlikely to happen, but one extra read in the loop doesn't hurt and
-> actually makes the code less prone to error.
-> 
+Ping.
+________________________________________
+From: Petar Jovanovic [petar.jovanovic@rt-rk.com]
+Sent: Friday, June 16, 2017 3:26 PM
+To: Maciej Rozycki; 'David Daney'
+Cc: Petar Jovanovic; linux-mips@linux-mips.org; ralf@linux-mips.org; david.daney@cavium.com
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and mips64r1
 
-Every call to the RTC callbacks are protected by a mutex so this will
-never happen.
+Can this change be applied now?
 
-Most of the RTCs are actually latching the time on the first register
-read and don't require specific handling. I'd prefer to keep the driver
-simple.
+Thanks.
 
-
-> > > +     qrtc->irq = platform_get_irq(pdev, 0);
-> > > +     if (qrtc->irq < 0)
-> > > +             return -ENODEV;
-> > > +
-> > 
-> > Is the irq so important that you have to fail here even if the driver
-> > doesn't support any alarm?
-> 
-> Well currently it does not support alarm features, but we are considering
-> to implement it in some other iteration. Maybe we will introduce it in the next version
-> if not we will remove the IRQ handling. Thanks.
-> 
-
-I'd say that you should probably leave out the whole IRQ handling until
-you really handle alarms in the driver or do you have a way to generate
-alarms (and so interrupts) without using the driver?
-
-
--- 
-Alexandre Belloni, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Regards,
+Petar

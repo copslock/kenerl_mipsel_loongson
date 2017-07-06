@@ -1,17 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 15:28:54 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44327 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993894AbdGFN2rg72pn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 15:28:47 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2017 16:09:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25311 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993920AbdGFOJSNgFhn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2017 16:09:18 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9904A41F8EBA;
+        Thu,  6 Jul 2017 16:19:37 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 06 Jul 2017 16:19:37 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 06 Jul 2017 16:19:37 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id EDF40BC6D9632;
-        Thu,  6 Jul 2017 14:12:46 +0100 (IST)
-Received: from [10.20.78.101] (10.20.78.101) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 6 Jul 2017
- 14:12:49 +0100
-Date:   Thu, 6 Jul 2017 14:12:37 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     James Hogan <james.hogan@imgtec.com>
+        by Forcepoint Email with ESMTPS id ACF6576877BF5;
+        Thu,  6 Jul 2017 15:09:08 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Jul
+ 2017 15:09:12 +0100
+Date:   Thu, 6 Jul 2017 15:09:12 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
 CC:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
         <linux-mips@linux-mips.org>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
@@ -25,22 +33,29 @@ CC:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
         Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH v2 2/4] MIPS: VDSO: Add implementation of clock_gettime()
  fallback
-In-Reply-To: <20170706090553.GO31455@jhogan-linux.le.imgtec.org>
-Message-ID: <alpine.DEB.2.00.1707061405410.3339@tp.orcam.me.uk>
-References: <1498665337-28845-1-git-send-email-aleksandar.markovic@rt-rk.com> <1498665337-28845-3-git-send-email-aleksandar.markovic@rt-rk.com> <alpine.DEB.2.00.1707060055470.3339@tp.orcam.me.uk> <20170706090553.GO31455@jhogan-linux.le.imgtec.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Message-ID: <20170706140911.GG6973@jhogan-linux.le.imgtec.org>
+References: <1498665337-28845-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1498665337-28845-3-git-send-email-aleksandar.markovic@rt-rk.com>
+ <alpine.DEB.2.00.1707060055470.3339@tp.orcam.me.uk>
+ <20170706090553.GO31455@jhogan-linux.le.imgtec.org>
+ <alpine.DEB.2.00.1707061405410.3339@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.101]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Xv6Km4yt4judTFSp"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1707061405410.3339@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59034
+X-archive-position: 59035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,41 +68,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 6 Jul 2017, James Hogan wrote:
+--Xv6Km4yt4judTFSp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > +	asm volatile(
-> > > +	"       syscall\n"
-> > > +	: "=r" (ret), "=r" (error)
-> > > +	: "r" (clkid), "r" (ts), "r" (nr)
-> > > +	: "memory");
-> > > +
-> > > +	return error ? -ret : ret;
-> > > +}
-> > 
-> >  Hmm, are you sure it is safe nowadays WRT the syscall restart convention 
-> > to leave out the instruction explicitly loading the syscall number that 
-> > would normally immediately precede SYSCALL
-> 
-> It should be fine. syscall restart only rewinds one (32-bit)
-> instruction, and it preserves the syscall number in pt_regs::regs[0]
-> (see handle_signal() / do_signal() and this code in e.g. scall32-o32.S:)
-> 
-> sw      t1, PT_R0(sp)           # save it for syscall restarting
+On Thu, Jul 06, 2017 at 02:12:37PM +0100, Maciej W. Rozycki wrote:
+> On Thu, 6 Jul 2017, James Hogan wrote:
+> > > (and would have to forcibly use the 32-bit encoding in the microMIPS
+> > > case)?
+> >=20
+> > I don't believe there is a 16-bit SYSCALL encoding in microMIPS, at
+> > least I can't see one in the 5.04 manual.
+>=20
+>  I referred to the preceding instruction, presumably LI, that does have a=
+=20
+> 16-bit variant in the microMIPS instruction set.
 
- Fair enough, I just wanted to be sure.
+Ah yes, I see what you mean.
 
- [This user code is bundled with the kernel, so it can assume whatever the 
-kernel does, however general user code does have to conform to the legacy 
-restart convention, unless it also requires a kernel version that is new 
-enough and has a safety check in place.]
+Hopefully microMIPS support is new enough for that not to matter.
 
-> > (and would have to forcibly use the 32-bit encoding in the microMIPS
-> > case)?
-> 
-> I don't believe there is a 16-bit SYSCALL encoding in microMIPS, at
-> least I can't see one in the 5.04 manual.
+It appears that the restart behaviour was improved in v2.6.36 in commit
+8f5a00eb422e ("MIPS: Sanitize restart logics"), whereas first mentions
+of micromips are in v3.9, in commit f8fa4811dbb2 ("MIPS: Add support for
+the M14KEc core.").
 
- I referred to the preceding instruction, presumably LI, that does have a 
-16-bit variant in the microMIPS instruction set.
+Cheers
+James
 
-  Maciej
+--Xv6Km4yt4judTFSp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlleRHsACgkQbAtpk944
+dnr5YA/+NYnq2IOaUfnAk8+buZjf3Z1yYRGYKiiB3bygfEBpxge9mb++d5J2olOM
+tA15j9aNiqyZ8RRoV8sVwkbXQliwjMbiRdnc+zCMVJZGTIfkq4nLY/Eh4aG0Hg7D
+lx1UGBDixpB9/RcuOsKbDwms8jnaRKgFsCQ+JEKotAmdrYcYN7K4kesnIPxWTpYy
+o4J4/pVLUIF5s46okSNYQf2pPH7IV8JYbqt5ls9seKwzVcReb99BpaNF1uhE2vEE
+8IxOntJkbUjk7QtF7cRm4Ao/LWc4fVh+c/ZkDpa2TMRkJw1I4QEYCY3n5RAi7IAe
+YG7xq9RsjAG1ec/CYklAguXw3Rz8QJM+vF4zmVOBhCBecKMEu0jXJVR+R5nmj+oM
+/W0lppuRbWhYti3Nub5f6WPKQHvpnRCYZ9/h5uo4Hws4QKrxEOWPwjXVpO3/LbJR
+Y3sYN5yU4F8BjXSZeBpj4DChK2MGkZ5f+w19yDBEpxARr2wnuIOQ7sF9dF6k5fL2
+KC+zJhOD0vueWmvI5fIpgSCRZSZKyHTs8iAFr1EZFSGR9Sf87kazfcC180Mc1DKh
+ZN1ts1Vb5e2g5lGdamNRkEEelScRUR2gjSXedw80zBdrIBM+HyuA2zdMX+MvXTli
+IT6FyXxrZiyShYQCApW/OkBiA5r1I/Bcrchfxe5eMt9pu0MFZbo=
+=qOWk
+-----END PGP SIGNATURE-----
+
+--Xv6Km4yt4judTFSp--

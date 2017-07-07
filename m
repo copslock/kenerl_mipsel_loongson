@@ -1,42 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 13:37:44 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:32774 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993095AbdGGLhiAcdxF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Jul 2017 13:37:38 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 2847E1A20D0;
-        Fri,  7 Jul 2017 13:37:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkn153 (rtrkn153.domain.local [192.168.236.145])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 129711A1FF5;
-        Fri,  7 Jul 2017 13:37:32 +0200 (CEST)
-From:   "Petar Jovanovic" <petar.jovanovic@rt-rk.com>
-To:     "'Maciej W. Rozycki'" <macro@imgtec.com>,
-        "'Petar Jovanovic'" <Petar.Jovanovic@imgtec.com>
-Cc:     "'David Daney'" <ddaney@caviumnetworks.com>,
-        <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <david.daney@cavium.com>
-References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com> <001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org> <002c01d2c80f$52e66060$f8b32120$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org> <alpine.DEB.2.00.1705210223180.2590@tp.orcam.me.uk> <22c5e59d-fb87-9dbf-1285-2a5ff3b62497@caviumnetworks.com> <alpine.DEB.2.00.1705221846340.2590@tp.orcam.me.uk>,<000a01d2e6a4$38a8fe70$a9fafb50$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D065C1B@BADAG02.ba.imgtec.org> <alpine.DEB.2.00.1707062139020.3339@tp.orcam.me.uk>
-In-Reply-To: <alpine.DEB.2.00.1707062139020.3339@tp.orcam.me.uk>
-Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and mips64r1
-Date:   Fri, 7 Jul 2017 13:37:31 +0200
-Message-ID: <000b01d2f715$6bb602f0$432208d0$@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 16:08:47 +0200 (CEST)
+Received: from mail-yw0-f194.google.com ([209.85.161.194]:34572 "EHLO
+        mail-yw0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993943AbdGGOIlfG7RC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2017 16:08:41 +0200
+Received: by mail-yw0-f194.google.com with SMTP id a12so1809314ywh.1;
+        Fri, 07 Jul 2017 07:08:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=DySmL7pF7X4XS4Dt9wYxum38PWRJlH95n7/FoGs0uiw=;
+        b=kkMbFD6q7OPf6fIkbhXXetYSk6sRfZnOiztyQtibkRsR6s/ls+KKzNxQeFStIG6xqB
+         KgK2KLilytrfTavsXhbYLFIA/pgeuS3rzOicQS/SU62lHsOASzzzcxOzE+mMzX3PcnEg
+         uBjb5qPdOGx8WkV73drjcwfjyy1N17bT8oFhL+kR15CG1G+RDq0rd/0rTQFcssWLh35J
+         ptMQjacwGVZWdMmcXJZeTFo1nmWQax3DYlToZZPziQOnYc6NVejfpUume/7DHYRNcnYX
+         qVDtO0isUtZKK0+W1DK/VcVaeVWDV4S97URK+FdO7hNk4AbeWfPK+voVLOdrG2OSUsh4
+         /nIQ==
+X-Gm-Message-State: AIVw112WVd2NoAgkJKmnFyGi402/1Wlu3a2hz9VNmgeGX9aNQwof9gsn
+        a3gAs0kkMlsCnw==
+X-Received: by 10.13.224.196 with SMTP id j187mr1871828ywe.167.1499436515793;
+        Fri, 07 Jul 2017 07:08:35 -0700 (PDT)
+Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
+        by smtp.gmail.com with ESMTPSA id d16sm1333173ywb.51.2017.07.07.07.08.35
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 07 Jul 2017 07:08:35 -0700 (PDT)
+Date:   Fri, 7 Jul 2017 09:08:34 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
+        john@phrozen.org, linux-spi@vger.kernel.org,
+        hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
+        p.zabel@pengutronix.de
+Subject: Re: [PATCH v7 05/16] watchdog: lantiq: add device tree binding
+ documentation
+Message-ID: <20170707140834.nugjw5jxkyzwrmzq@rob-hp-laptop>
+References: <20170702224051.15109-1-hauke@hauke-m.de>
+ <20170702224051.15109-6-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 15.0
-Thread-Index: AQFk0u1L5Xxe++MwOaWf1NpDgdbVAQD+Q8JBAi8P7/cBht+ufgJrlzj2AtLLO/IBy5iamAEgIZO+AjLK5lYBw/HWDgHB3Adxoo/NW+A=
-Content-Language: en-us
-Return-Path: <petar.jovanovic@rt-rk.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170702224051.15109-6-hauke@hauke-m.de>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59045
+X-archive-position: 59046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: petar.jovanovic@rt-rk.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,21 +64,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------Original Message-----
-From: Maciej W. Rozycki
-> I think we came to the conclusion that the way to move forward is to 
-> implement Octeon-specific controls where generic R1/R2 ISA ones are now 
-> (ab)used to get the desired effect.  Only once this is in place your 
-> change can go in.
+On Mon, Jul 03, 2017 at 12:40:40AM +0200, Hauke Mehrtens wrote:
+> The binding was not documented before, add the documentation now.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> new file mode 100644
+> index 000000000000..c3967feebb6c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> @@ -0,0 +1,24 @@
+> +Lantiq WTD watchdog binding
+> +============================
+> +
+> +This describes the binding of the Lantiq watchdog driver.
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties:
+> +- compatible		: Should be one of
+> +				"lantiq,wdt"
+> +				"lantiq,xrx100-wdt"
+> +				"lantiq,xrx200-wdt"
+> +				"lantiq,falcon-wdt"
+> +- lantiq,rcu		: A phandle to the RCU syscon (required for
+> +			  "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
+> +			  "lantiq,xrx100-wdt")
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the watchdog on the xRX200 SoCs:
+> +		watchdog@803f0 {
+> +			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
 
-As I said earlier in the thread, "in the current ToT, I have not seen
-where this change would affect apart from show_cpuinfo()"[1]. So, if
-someone implements Octeon-specific controls, where this should be used?
-I am not aware of the places where Octeon (ab)uses it in the current
-kernel code. David says he "cannot recall exactly what the issues
-were" [2].
+This is still mismatched. If the example is correct, then the compatible 
+list should be:
 
-Petar
+"lantiq,wdt"
+"lantiq,xrx100-wdt"
+"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
+"lantiq,falcon-wdt"
 
-[1] https://www.linux-mips.org/archives/linux-mips/2017-05/msg00103.html
-[2] https://www.linux-mips.org/archives/linux-mips/2017-03/msg00149.html
+You can also remove "lantiq,xrx200-wdt" from the driver if you want as 
+"lantiq,xrx100-wdt" is good enough to match on.
+
+Rob

@@ -1,58 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 16:17:57 +0200 (CEST)
-Received: from mail-yw0-f195.google.com ([209.85.161.195]:33731 "EHLO
-        mail-yw0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993941AbdGGORvUU4ZC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2017 16:17:51 +0200
-Received: by mail-yw0-f195.google.com with SMTP id f200so1827375ywb.0;
-        Fri, 07 Jul 2017 07:17:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 16:23:25 +0200 (CEST)
+Received: from mail-yw0-f193.google.com ([209.85.161.193]:36678 "EHLO
+        mail-yw0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993941AbdGGOXTX64-7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2017 16:23:19 +0200
+Received: by mail-yw0-f193.google.com with SMTP id l21so1830463ywb.3;
+        Fri, 07 Jul 2017 07:23:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=beQ4dgmpdr/aPmyOdIzd1D2INzQGpM4kbNPbCWprsMc=;
-        b=MIIgfN5RmDknv/pTSFX+zlkJOBvSSblYWPJSq/HUkv44L2r0m5KVzz0vSQeEMtLmJa
-         Knl1R3YNsu3E97dWoCzwykvx3F0J1s+hFbixHXj4FmY7OqP/tTQSXav/UZTWXE5l7RQy
-         bmVcaNP7I9yOf1FnfECcalIBU9iiA3HtJkXn0S5hOQ54ee/jDMeI5i9nKKVFb64s/Pu4
-         zVjqHIalvgCsFjnqzQc5RLoDl3K26IrM0clauyZDCX99TZpEA97rAl0Q15KoWFX4+1g4
-         eXo26FMKlHUzm1FEG4hUnaH2EVlA/ZUotyzTwSkGvWq0GJEDMwDy/tkfzGREK4KEkmiF
-         ta8A==
-X-Gm-Message-State: AIVw110mw1SKojSjFcImqIFL2tzUJ+3n3iGufVwJbh0SS+QuZJx+Woat
-        Wm3kO/9pccECPQ==
-X-Received: by 10.13.206.129 with SMTP id q123mr1929748ywd.266.1499437065636;
-        Fri, 07 Jul 2017 07:17:45 -0700 (PDT)
+        bh=NSabiw+GtvTEasCOrx9JoAdmfXlt+6DMHqY1ZOZSxl8=;
+        b=cCGNz+S6ihSq9ny0DSYTnbY3wFMUC9saYdVNc8YLP9dRqBnm5EK1x4ghNKVLe6BHZT
+         1bpspytrNSkCrftdWdaAkjkTL/o2KM9B+M9MbDd33v+w4NY0N1APuz9oxibXImgTVW+f
+         +BfclADqoZgaFGvCmIqvtXzmfhsWhXrIdMeNqy50IwhAtdrC8IE14FDTqdlKJ+VPJCPW
+         HjP1BSGVyce4GvYME6L+fjuKlrOCtnCkJdT2NWJfdT7u80uevweKVXj9F1BuOi2RlNLQ
+         phcKdTKOFbHAK5cZbi+X7zeOyP/Wfwku0VNZQLt0EIuZ9vRqrBd8FnEfF5/KOYgQMhb3
+         hPhQ==
+X-Gm-Message-State: AIVw110eBNFN0DbWA9Ms7igbCA+CxAQJSmaRiNWRvq6nrZg7XuRg+7Up
+        ADd9eg/Vatk5dg==
+X-Received: by 10.13.228.197 with SMTP id n188mr2281801ywe.58.1499437393523;
+        Fri, 07 Jul 2017 07:23:13 -0700 (PDT)
 Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.gmail.com with ESMTPSA id 142sm1335632ywf.32.2017.07.07.07.17.44
+        by smtp.gmail.com with ESMTPSA id y23sm1369975ywa.52.2017.07.07.07.23.12
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 07 Jul 2017 07:17:45 -0700 (PDT)
-Date:   Fri, 7 Jul 2017 09:17:44 -0500
+        Fri, 07 Jul 2017 07:23:13 -0700 (PDT)
+Date:   Fri, 7 Jul 2017 09:23:12 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
-        linux-watchdog@vger.kernel.org,
-        devicetree <devicetree@vger.kernel.org>,
-        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
-        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
-        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-Subject: Re: [PATCH v7 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-Message-ID: <20170707141744.atno6j3f7hcidxze@rob-hp-laptop>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
+        john@phrozen.org, linux-spi@vger.kernel.org,
+        hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
+        p.zabel@pengutronix.de, Kishon Vijay Abraham I <kishon@ti.com>
+Subject: Re: [PATCH v7 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
+ using the RCU module
+Message-ID: <20170707142312.5pwily3gbntvesbm@rob-hp-laptop>
 References: <20170702224051.15109-1-hauke@hauke-m.de>
- <20170702224051.15109-11-hauke@hauke-m.de>
- <CAHp75VexwnVsb-ojXaZDN7QPVRKUeP-R=5C+j5ZSkE37Dtyp1Q@mail.gmail.com>
+ <20170702224051.15109-15-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHp75VexwnVsb-ojXaZDN7QPVRKUeP-R=5C+j5ZSkE37Dtyp1Q@mail.gmail.com>
+In-Reply-To: <20170702224051.15109-15-hauke@hauke-m.de>
 User-Agent: NeoMutt/20170113 (1.7.2)
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59050
+X-archive-position: 59051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,35 +64,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 03, 2017 at 10:51:51AM +0300, Andy Shevchenko wrote:
-> On Mon, Jul 3, 2017 at 1:40 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> > From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> >
-> > The reset controllers (on xRX200 and newer SoCs have two of them) are
-> > provided by the RCU module. This was initially implemented as a simple
-> > reset controller. However, the RCU module provides more functionality
-> > (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> > The old reset controller driver implementation from
-> > arch/mips/lantiq/xway/reset.c did not honor this fact.
-> >
-> > For some devices the request and the status bits are different.
+On Mon, Jul 03, 2017 at 12:40:49AM +0200, Hauke Mehrtens wrote:
+> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
+> the PHY interfaces for each core. The phy instances can be passed to the
+> dwc2 driver, which already supports the generic phy interface.
 > 
-> > +Required properties:
-> > +- compatible           : Should be one of
-> > +                               "lantiq,danube-reset"
-> > +                               "lantiq,xrx200-reset"
-> > +- offset-set           : Offset of the reset set register
-> > +- offset-status                : Offset of the reset status register
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  42 ++++
+>  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
+>  drivers/phy/Kconfig                                |   8 +
+>  drivers/phy/Makefile                               |   1 +
+>  drivers/phy/phy-lantiq-rcu-usb2.c                  | 275 +++++++++++++++++++++
+>  5 files changed, 338 insertions(+), 12 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+>  create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
 > 
-> Just one side comment (I'm fine with either choice, just for your
-> information). Recently I have reviewed at24 patch which adds a
-> property for getting MAC offset and my reseach ends up with the naming
-> pattern mac-offset (as many others are doing this way). So, perhaps in
-> your case it might make sense to do that way? Anyway, it's a matter of
-> a (bit of a) chaos in DT bindings, whatever you decide users will live
-> with.
+> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+> new file mode 100644
+> index 000000000000..c538baa2ba54
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+> @@ -0,0 +1,42 @@
+> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
+> +===========================================
+> +
+> +This binding describes the USB PHY hardware provided by the RCU module on the
+> +Lantiq XWAY SoCs.
+> +
+> +This driver has to be a sub node of the Lantiq RCU block.
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties (controller (parent) node):
+> +- compatible	: Should be one of
+> +			"lantiq,ase-usb2-phy"
+> +			"lantiq,danube-usb2-phy"
+> +			"lantiq,xrx100-usb2-phy"
+> +			"lantiq,xrx200-usb2-phy"
+> +			"lantiq,xrx300-usb2-phy"
+> +- offset-phy	: Offset of the USB PHY configuration register
+> +- offset-ana	: Offset of the USB Analog configuration register
 
-Not a pattern I want to standardize. Describing offsets is generally an 
-indication of the compatible not being specific enough.
+These are not needed with the reg property used instead.
 
 Rob

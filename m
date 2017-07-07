@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 16:08:47 +0200 (CEST)
-Received: from mail-yw0-f194.google.com ([209.85.161.194]:34572 "EHLO
-        mail-yw0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993943AbdGGOIlfG7RC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2017 16:08:41 +0200
-Received: by mail-yw0-f194.google.com with SMTP id a12so1809314ywh.1;
-        Fri, 07 Jul 2017 07:08:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 16:10:55 +0200 (CEST)
+Received: from mail-yb0-f195.google.com ([209.85.213.195]:32853 "EHLO
+        mail-yb0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993941AbdGGOKricXSC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2017 16:10:47 +0200
+Received: by mail-yb0-f195.google.com with SMTP id 84so1453481ybe.0;
+        Fri, 07 Jul 2017 07:10:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=DySmL7pF7X4XS4Dt9wYxum38PWRJlH95n7/FoGs0uiw=;
-        b=kkMbFD6q7OPf6fIkbhXXetYSk6sRfZnOiztyQtibkRsR6s/ls+KKzNxQeFStIG6xqB
-         KgK2KLilytrfTavsXhbYLFIA/pgeuS3rzOicQS/SU62lHsOASzzzcxOzE+mMzX3PcnEg
-         uBjb5qPdOGx8WkV73drjcwfjyy1N17bT8oFhL+kR15CG1G+RDq0rd/0rTQFcssWLh35J
-         ptMQjacwGVZWdMmcXJZeTFo1nmWQax3DYlToZZPziQOnYc6NVejfpUume/7DHYRNcnYX
-         qVDtO0isUtZKK0+W1DK/VcVaeVWDV4S97URK+FdO7hNk4AbeWfPK+voVLOdrG2OSUsh4
-         /nIQ==
-X-Gm-Message-State: AIVw112WVd2NoAgkJKmnFyGi402/1Wlu3a2hz9VNmgeGX9aNQwof9gsn
-        a3gAs0kkMlsCnw==
-X-Received: by 10.13.224.196 with SMTP id j187mr1871828ywe.167.1499436515793;
-        Fri, 07 Jul 2017 07:08:35 -0700 (PDT)
+        bh=qZx0CwDz1Mgg9yRtNUETt1BwDoHazrDf/TtSZmYFsKg=;
+        b=lazl2M0eR+WJDNFkNppEzb8xyjxbhDDcS5ZOmLRgSBbegtdR+sF+h0svuPm/N3RX3P
+         ufleFquNHUe54vBSYzrMMo5hji2k3lxIBo0zkn9GdeZyAikRJb+MPx2H/PY8/iRiHWD3
+         M3lCmgQYFto862LbF2IHks4ZS7XIlC3uYDzOVlWhIyVXvS4MmKy7m2S77KanUut9Vgzh
+         RYtK2GM3tzfGvxx0GklkoGyMDUacl/IzUVHXimb0FyLIIz7wAtZnphnKGiQhg1TDt1JZ
+         CPnU8G7VpUOnRWXoyhBYX8e+SifWCYFOegpijvinSCIsW7mCrTHsaDWMJ2exymPttGZa
+         GK5w==
+X-Gm-Message-State: AIVw111d7yveY/U+DSbf8cPP6AenibJjQ6NfXQnDGsR/hyYiRY2wT7/G
+        JBQtBTYhghQ4gg==
+X-Received: by 10.37.97.86 with SMTP id v83mr4629093ybb.124.1499436642024;
+        Fri, 07 Jul 2017 07:10:42 -0700 (PDT)
 Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.gmail.com with ESMTPSA id d16sm1333173ywb.51.2017.07.07.07.08.35
+        by smtp.gmail.com with ESMTPSA id r206sm1360115ywb.41.2017.07.07.07.10.41
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 07 Jul 2017 07:08:35 -0700 (PDT)
-Date:   Fri, 7 Jul 2017 09:08:34 -0500
+        Fri, 07 Jul 2017 07:10:41 -0700 (PDT)
+Date:   Fri, 7 Jul 2017 09:10:40 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
@@ -33,21 +33,21 @@ Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         john@phrozen.org, linux-spi@vger.kernel.org,
         hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
         p.zabel@pengutronix.de
-Subject: Re: [PATCH v7 05/16] watchdog: lantiq: add device tree binding
- documentation
-Message-ID: <20170707140834.nugjw5jxkyzwrmzq@rob-hp-laptop>
+Subject: Re: [PATCH v7 07/16] Documentation: DT: MIPS: lantiq: Add docs for
+ the RCU bindings
+Message-ID: <20170707141040.nidxo4qn2a5uyr6u@rob-hp-laptop>
 References: <20170702224051.15109-1-hauke@hauke-m.de>
- <20170702224051.15109-6-hauke@hauke-m.de>
+ <20170702224051.15109-8-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170702224051.15109-6-hauke@hauke-m.de>
+In-Reply-To: <20170702224051.15109-8-hauke@hauke-m.de>
 User-Agent: NeoMutt/20170113 (1.7.2)
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59046
+X-archive-position: 59047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,51 +64,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 03, 2017 at 12:40:40AM +0200, Hauke Mehrtens wrote:
-> The binding was not documented before, add the documentation now.
+On Mon, Jul 03, 2017 at 12:40:42AM +0200, Hauke Mehrtens wrote:
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> 
+> This adds the initial documentation for the RCU module (a MFD device
+> which provides USB PHYs, reset controllers and more).
+> 
+> The RCU register range is used for multiple purposes. Mostly one device
+> uses one or multiple register exclusively, but for some registers some
+> bits are for one driver and some other bits are for a different driver.
+> With this patch all accesses to the RCU registers will go through
+> syscon.
 > 
 > Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 > ---
->  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-> new file mode 100644
-> index 000000000000..c3967feebb6c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-> @@ -0,0 +1,24 @@
-> +Lantiq WTD watchdog binding
-> +============================
-> +
-> +This describes the binding of the Lantiq watchdog driver.
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties:
-> +- compatible		: Should be one of
-> +				"lantiq,wdt"
-> +				"lantiq,xrx100-wdt"
-> +				"lantiq,xrx200-wdt"
-> +				"lantiq,falcon-wdt"
-> +- lantiq,rcu		: A phandle to the RCU syscon (required for
-> +			  "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
-> +			  "lantiq,xrx100-wdt")
-> +
-> +-------------------------------------------------------------------------------
-> +Example for the watchdog on the xRX200 SoCs:
-> +		watchdog@803f0 {
-> +			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
+>  .../devicetree/bindings/mips/lantiq/rcu.txt        | 98 ++++++++++++++++++++++
+>  1 file changed, 98 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
 
-This is still mismatched. If the example is correct, then the compatible 
-list should be:
-
-"lantiq,wdt"
-"lantiq,xrx100-wdt"
-"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
-"lantiq,falcon-wdt"
-
-You can also remove "lantiq,xrx200-wdt" from the driver if you want as 
-"lantiq,xrx100-wdt" is good enough to match on.
-
-Rob
+Acked-by: Rob Herring <robh@kernel.org>

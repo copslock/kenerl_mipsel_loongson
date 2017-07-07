@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 22:11:56 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:53818 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2017 22:19:02 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:54258 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993949AbdGGULsEpnyc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Jul 2017 22:11:48 +0200
-Received: from mail-yb0-f178.google.com (mail-yb0-f178.google.com [209.85.213.178])
+        id S23993949AbdGGUSyu1fpc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Jul 2017 22:18:54 +0200
+Received: from mail-yb0-f172.google.com (mail-yb0-f172.google.com [209.85.213.172])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2FDDF22C88;
-        Fri,  7 Jul 2017 20:11:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2FDDF22C88
+        by mail.kernel.org (Postfix) with ESMTPSA id 39C8522C7C;
+        Fri,  7 Jul 2017 20:18:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 39C8522C7C
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
-Received: by mail-yb0-f178.google.com with SMTP id p207so14035874yba.2;
-        Fri, 07 Jul 2017 13:11:46 -0700 (PDT)
-X-Gm-Message-State: AIVw1124UCaj0Z3e/NzSvqCkgN0PCY0XFlPLUkwwRKe1FNzEkWJeYtU4
-        tFQlx8pX5MvELlaemIc+AD8wDCrbvg==
-X-Received: by 10.37.98.141 with SMTP id w135mr1104236ybb.192.1499458305242;
- Fri, 07 Jul 2017 13:11:45 -0700 (PDT)
+Received: by mail-yb0-f172.google.com with SMTP id p207so14087465yba.2;
+        Fri, 07 Jul 2017 13:18:53 -0700 (PDT)
+X-Gm-Message-State: AIVw1138FBOxCCPfWCZIDkxHIm0LlZnGvBob0CqMigFQq4yTm4ROP5Y9
+        w90l6OlHFxyjaOSh+lnCVFUaVvbIkg==
+X-Received: by 10.37.98.141 with SMTP id w135mr1124576ybb.192.1499458732384;
+ Fri, 07 Jul 2017 13:18:52 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.129.82.66 with HTTP; Fri, 7 Jul 2017 13:11:24 -0700 (PDT)
-In-Reply-To: <534b3592-2803-ac95-ad60-3cf5d1252413@hauke-m.de>
-References: <20170702224051.15109-1-hauke@hauke-m.de> <20170702224051.15109-15-hauke@hauke-m.de>
- <20170707142312.5pwily3gbntvesbm@rob-hp-laptop> <534b3592-2803-ac95-ad60-3cf5d1252413@hauke-m.de>
+Received: by 10.129.82.66 with HTTP; Fri, 7 Jul 2017 13:18:31 -0700 (PDT)
+In-Reply-To: <704b3b8b-3f33-3d51-82d7-a9515fc39742@hauke-m.de>
+References: <20170702224051.15109-1-hauke@hauke-m.de> <20170702224051.15109-6-hauke@hauke-m.de>
+ <20170707140834.nugjw5jxkyzwrmzq@rob-hp-laptop> <704b3b8b-3f33-3d51-82d7-a9515fc39742@hauke-m.de>
 From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 7 Jul 2017 15:11:24 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKSixi3v8qmEFXQpYWi8C2USx5znahmCH14-8sBe+W3ig@mail.gmail.com>
-Message-ID: <CAL_JsqKSixi3v8qmEFXQpYWi8C2USx5znahmCH14-8sBe+W3ig@mail.gmail.com>
-Subject: Re: [PATCH v7 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
+Date:   Fri, 7 Jul 2017 15:18:31 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKM329HsQHCe4i6UK6SQZqRvJ-BPxOsv-1z0h=EDe2C-Q@mail.gmail.com>
+Message-ID: <CAL_JsqKM329HsQHCe4i6UK6SQZqRvJ-BPxOsv-1z0h=EDe2C-Q@mail.gmail.com>
+Subject: Re: [PATCH v7 05/16] watchdog: lantiq: add device tree binding documentation
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Linux-MIPS <linux-mips@linux-mips.org>,
@@ -39,14 +38,13 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "hauke.mehrtens" <hauke.mehrtens@intel.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Kishon Vijay Abraham I <kishon@ti.com>
+        Philipp Zabel <p.zabel@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59065
+X-archive-position: 59066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,65 +61,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 7, 2017 at 1:49 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+On Fri, Jul 7, 2017 at 2:01 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
 >
 >
-> On 07/07/2017 04:23 PM, Rob Herring wrote:
->> On Mon, Jul 03, 2017 at 12:40:49AM +0200, Hauke Mehrtens wrote:
->>> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
->>> the PHY interfaces for each core. The phy instances can be passed to the
->>> dwc2 driver, which already supports the generic phy interface.
+> On 07/07/2017 04:08 PM, Rob Herring wrote:
+>> On Mon, Jul 03, 2017 at 12:40:40AM +0200, Hauke Mehrtens wrote:
+>>> The binding was not documented before, add the documentation now.
 >>>
 >>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->>> Cc: Kishon Vijay Abraham I <kishon@ti.com>
 >>> ---
->>>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  42 ++++
->>>  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
->>>  drivers/phy/Kconfig                                |   8 +
->>>  drivers/phy/Makefile                               |   1 +
->>>  drivers/phy/phy-lantiq-rcu-usb2.c                  | 275 +++++++++++++++++++++
->>>  5 files changed, 338 insertions(+), 12 deletions(-)
->>>  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->>>  create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
+>>>  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
+>>>  1 file changed, 24 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
 >>>
->>> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+>>> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
 >>> new file mode 100644
->>> index 000000000000..c538baa2ba54
+>>> index 000000000000..c3967feebb6c
 >>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->>> @@ -0,0 +1,42 @@
->>> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
->>> +===========================================
+>>> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+>>> @@ -0,0 +1,24 @@
+>>> +Lantiq WTD watchdog binding
+>>> +============================
 >>> +
->>> +This binding describes the USB PHY hardware provided by the RCU module on the
->>> +Lantiq XWAY SoCs.
->>> +
->>> +This driver has to be a sub node of the Lantiq RCU block.
+>>> +This describes the binding of the Lantiq watchdog driver.
 >>> +
 >>> +-------------------------------------------------------------------------------
->>> +Required properties (controller (parent) node):
->>> +- compatible        : Should be one of
->>> +                    "lantiq,ase-usb2-phy"
->>> +                    "lantiq,danube-usb2-phy"
->>> +                    "lantiq,xrx100-usb2-phy"
->>> +                    "lantiq,xrx200-usb2-phy"
->>> +                    "lantiq,xrx300-usb2-phy"
->>> +- offset-phy        : Offset of the USB PHY configuration register
->>> +- offset-ana        : Offset of the USB Analog configuration register
+>>> +Required properties:
+>>> +- compatible                : Should be one of
+>>> +                            "lantiq,wdt"
+>>> +                            "lantiq,xrx100-wdt"
+>>> +                            "lantiq,xrx200-wdt"
+>>> +                            "lantiq,falcon-wdt"
+>>> +- lantiq,rcu                : A phandle to the RCU syscon (required for
+>>> +                      "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
+>>> +                      "lantiq,xrx100-wdt")
+>>> +
+>>> +-------------------------------------------------------------------------------
+>>> +Example for the watchdog on the xRX200 SoCs:
+>>> +            watchdog@803f0 {
+>>> +                    compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
 >>
->> These are not needed with the reg property used instead.
+>> This is still mismatched. If the example is correct, then the compatible
+>> list should be:
+>>
+>> "lantiq,wdt"
+>> "lantiq,xrx100-wdt"
+>> "lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
+>> "lantiq,falcon-wdt"
+>>
+>> You can also remove "lantiq,xrx200-wdt" from the driver if you want as
+>> "lantiq,xrx100-wdt" is good enough to match on.
+>>
+>> Rob
+>>
+> Ok thank you.
 >
-> Hi Rob,
->
-> These register are also used by completely different drivers, the
-> hardware engineers used some bits of these registers for completely
-> different purposes, some bits are used for DSL instead of USB PHY. When
-> I io map them, they can only be access through this driver.
->
-> Should I get the register from the reg property and access them though
-> regmap or how should I make sure also other drivers can access the other
-> bits.
+> All the features that are supported by the wtd drivers use the same
+> register offsets on the xrx100 and xrx200 SoCs. I added the xrx200 only
+> if in the future we find some mismatch and I want to be able to use some
+> other code for this SoC.
 
-Yes, just read the reg property like you would for the offset properties.
+Yes, the dts should have the xrx200 compatible. The driver can use the
+xrx100 one until you need it.
+
+> In this case I would then list complete compatible line which should be
+> used for this SoC in the description of the compatible line, is that
+> correct?
+
+Yes.
 
 Rob

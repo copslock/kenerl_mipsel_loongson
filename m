@@ -1,49 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2017 13:07:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7320 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993179AbdGKLG6op2Gp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2017 13:06:58 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 18DC741F8E67;
-        Tue, 11 Jul 2017 13:17:31 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 11 Jul 2017 13:17:31 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 11 Jul 2017 13:17:31 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id D98DA27579D0E;
-        Tue, 11 Jul 2017 12:06:49 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 11 Jul
- 2017 12:06:52 +0100
-Date:   Tue, 11 Jul 2017 12:06:52 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Fix MIPS I ISA /proc/cpuinfo reporting
-Message-ID: <20170711110652.GO6973@jhogan-linux.le.imgtec.org>
-References: <alpine.LFD.2.20.1707082259380.5208@eddie.linux-mips.org>
- <20170711101746.GQ31455@jhogan-linux.le.imgtec.org>
- <alpine.LFD.2.20.1707111149220.2054@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2017 14:14:55 +0200 (CEST)
+Received: from mail-eopbgr20065.outbound.protection.outlook.com ([40.107.2.65]:55353
+        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993955AbdGKMOsekM17 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2017 14:14:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sondrel.onmicrosoft.com; s=selector1-sondrel-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=akvEET+uuHOpAv4z3sXi+9yUsAtHYRT7GIlcAPQqizI=;
+ b=vJibRXQB8p5fwBp8Q6R4FzO6XbvE/f2H0eUOVdKoIFECbwdmkqa6lnJRHvm3eIhrdoyk8+5FbLvOTkYuvwAkcs0lsiFmzAHUHT+qZPp6zfWhSZwEvny1NES9O8e/td3QaMcD0hEA9PNc91+S180A8WAd/joqNvrDp/a4YafZoRM=
+Received: from DB6PR0601MB2534.eurprd06.prod.outlook.com (10.168.81.16) by
+ DB6PR0601MB2536.eurprd06.prod.outlook.com (10.168.81.18) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.1240.13; Tue, 11 Jul 2017 12:14:41 +0000
+Received: from DB6PR0601MB2534.eurprd06.prod.outlook.com
+ ([fe80::6de9:6f91:97f1:b042]) by DB6PR0601MB2534.eurprd06.prod.outlook.com
+ ([fe80::6de9:6f91:97f1:b042%17]) with mapi id 15.01.1240.020; Tue, 11 Jul
+ 2017 12:14:41 +0000
+From:   James Hartley <james.hartley@sondrel.com>
+To:     Shawn Lin <shawn.lin@rock-chips.com>,
+        James Hartley <james.hartley@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>
+Subject: RE: [PATCH] MIPS: DTS: remove num-slots from Pistachio SoC
+Thread-Topic: [PATCH] MIPS: DTS: remove num-slots from Pistachio SoC
+Thread-Index: AQHS9V0Q0eL0AlEpo0OCwT39D7bKC6JOkz+g
+Date:   Tue, 11 Jul 2017 12:14:41 +0000
+Message-ID: <DB6PR0601MB25344ED6BED820ADDB025C46F9AE0@DB6PR0601MB2534.eurprd06.prod.outlook.com>
+References: <1499238288-28914-1-git-send-email-shawn.lin@rock-chips.com>
+In-Reply-To: <1499238288-28914-1-git-send-email-shawn.lin@rock-chips.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: rock-chips.com; dkim=none (message not signed)
+ header.d=none;rock-chips.com; dmarc=none action=none header.from=sondrel.com;
+x-originating-ip: [195.88.9.101]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;DB6PR0601MB2536;7:Il+Md1cTBc6EKSYEDMaX3A8nJcWwMTWnBaCWDwTKIEwV/FgNIa5TfY3D+Dh6mH2R3McnZsdnmtE4y/za6dbARXuzCW9FCWsWAOoRRM/NWCsn8XLaqMnBfRLF2UwGWvKMvW/xYre5qKfgTIu/N2KyY7/rj4Ur+QIcu/uoxP+oUUYhK5/67rP2nF5HLijuR3gAiN+ODBvxnVDlC4LZBkXk0UQI02MQwBJJR4WQKwECIoiKkmkdl9lT6nSYQMfXkm3lkz/BOuXHQmYhio2u5g67BS3dCn/DsiCFe5rdvB2/jnOzxnGmg2W6t/hznSeO57bKys2dLWrPxLP37+1uXH+n3knN/xUD/1FNn0OIM02rhzwB+BYHmcsUDCl+6bctLicTn94ZimOd7CbDTDItbTKi2U08hm8u5Mu/bm15tOxGVuAy64Ole2ItOVNGzuSG2QKFoWxUgPrRttaN4ZHvZVUPXME8QqvGPeLpI64aPcj7Rgnz8WElEiujx1iINitcOe0/Qt9kKnbHC4FGCy4Qboeo1HJJOdN+1gVxjsDsQ6sxzwMGeQKKaz86X9HL86nk68fM/zzcZ5oWcgYQuQ+krn7kK62eg97xzYjx8Lck7rblSUg36opP+FGVHBd3UDtyWcWCvQNCiuiQmtFmxYm/5hhZRYQRCRl4eo6mFJoqMMKV3XPqkGwksVXqpKZBXtE5ZleF9wQRrE24uNxW46/kvC81CFpZ+M/qTIOqVJP/NaaA46BTOeCUBctIovJidHRXIqW5Ukx+u3ZuV32BHHOS9b/bUbl9w3qpO2l6m2q/GfjvhPE=
+x-ms-office365-filtering-correlation-id: a4ca3c20-081d-4bd2-0932-08d4c85668d4
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(2017030254075)(300000503095)(300135400095)(2017052603031)(201703131423075)(201703031133081)(201702281549075)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:DB6PR0601MB2536;
+x-ms-traffictypediagnostic: DB6PR0601MB2536:
+x-microsoft-antispam-prvs: <DB6PR0601MB253658E3E09327D59F22DB80F9AE0@DB6PR0601MB2536.eurprd06.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(236129657087228)(7411616537696);
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(5005006)(8121501046)(2017060910075)(93006095)(93001095)(100000703101)(100105400095)(3002001)(10201501046)(6041248)(20161123555025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123558100)(20161123560025)(20161123564025)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:DB6PR0601MB2536;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:DB6PR0601MB2536;
+x-forefront-prvs: 0365C0E14B
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(6009001)(39400400002)(39410400002)(39830400002)(39450400003)(13464003)(51914003)(54356999)(50986999)(14454004)(6246003)(7736002)(2950100002)(6116002)(3846002)(102836003)(5250100002)(25786009)(33656002)(5660300001)(2906002)(53546010)(6436002)(478600001)(38730400002)(6506006)(86362001)(305945005)(229853002)(76176999)(3660700001)(9686003)(55016002)(81166006)(8676002)(189998001)(2900100001)(74316002)(4326008)(66066001)(99286003)(7696004)(54906002)(8936002)(53936002)(3280700002);DIR:OUT;SFP:1101;SCL:1;SRVR:DB6PR0601MB2536;H:DB6PR0601MB2534.eurprd06.prod.outlook.com;FPR:;SPF:None;MLV:sfv;LANG:en;
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6PUEI5/nYziPl3wQ"
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.20.1707111149220.2054@eddie.linux-mips.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+X-OriginatorOrg: sondrel.com
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2017 12:14:41.6961
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4faa3872-698e-4896-80ec-148b916cb1ba
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0601MB2536
+Return-Path: <james.hartley@sondrel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59093
+X-archive-position: 59094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: james.hartley@sondrel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,109 +79,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---6PUEI5/nYziPl3wQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Shawn, 
 
-On Tue, Jul 11, 2017 at 11:56:08AM +0100, Maciej W. Rozycki wrote:
-> On Tue, 11 Jul 2017, James Hogan wrote:
->=20
-> > On Sat, Jul 08, 2017 at 11:24:44PM +0100, Maciej W. Rozycki wrote:
-> > > Cc: stable@vger.kernel.org # 3.19+
-> > > Fixes: 515a6393dbac ("MIPS: kernel: proc: Add MIPS R6 support to /pro=
-c/cpuinfo")
-> >=20
-> > That commit landed in v4.0-rc1, not 3.19.
->=20
->  Hmm:
->=20
-> $ git show 515a6393dbac:Makefile | head -5
-> VERSION =3D 3
-> PATCHLEVEL =3D 19
-> SUBLEVEL =3D 0
-> EXTRAVERSION =3D -rc4
-> NAME =3D Diseased Newt
-> $=20
->=20
-> I just trusted that.
+> -----Original Message-----
+> From: Shawn Lin [mailto:shawn.lin@rock-chips.com]
+> Sent: 05 July 2017 08:05
+> To: James Hartley; Ionela Voinescu
+> Cc: Ralf Baechle; linux-mips@linux-mips.org; Shawn Lin; Jaehoon Chung
+> Subject: [PATCH] MIPS: DTS: remove num-slots from Pistachio SoC
+> 
+> dwmmc driver deprecated num-slots and plan to get rid of it finally. Just
+> move a step to cleanup it from DT.
+> 
+> Cc: Jaehoon Chung <jh80.chung@samsung.com>
+> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 
-Yeh, thats the release its based on, not the release it was first merged
-into, usually the subsystem branch for the next release is based on one
-of the rc's of the previous release.
+Acked-by: James Hartley <james.hartley@sondrel.com>
 
-I have this slow hack in my ~/.gitconfig:
-[alias]
-	tc =3D tag --contains
-	vc =3D "!vc() { for i in `git tc \"$@\" | grep '^v'`; do echo \"$(git log =
--1 --pretty=3D'%ct' $i) $i\"; done | sort -n | head -n1 | sed 's/^[0-9]* //=
-g'; }; vc"
+Thanks for the patch.
 
-Then:
-$ git vc 515a6393dbac4f4492237c7b305bbf9c4c558a1c                          =
-                                                                    =20
-v4.0-rc1
+James.
 
-You can do something sort of similar with git describe --contains:
-
-$ git describe --contains 515a6393dbac4f4492237c7b305bbf9c4c558a1c
-v4.0-rc1~4^2~26^2~34
-
-But if you have other tags in your tree between the commit and an
-upstream release it'll sometimes show that instead which isn't very
-helpful.
-
->=20
-> > Most stable tags with comments also have square brackets around the
-> > email too, i.e.:
-> > Cc: <stable@vger.kernel.org> # 4.0+
-> >=20
-> > (though maybe thats just not to confuse git-send-email).
->=20
->  It doesn't seem so obvious, it looks fairly random to me.  If you say=20
-> it helps, then I can adjust -- any pointers to a previous discussion?
-
-No idea, just a random observation.
-Documentation/process/stable-kernel-rules.rst uses <>, but also has a
-weird version comment format more like below which I'm not too keen on:
-
-Cc: <stable@vger.kernel.org> # 4.0.y-
-
-Cheers
-James
-
->=20
-> > Otherwise:
-> > Reviewed-by: James Hogan <james.hogan@imgtec.com>
-> >=20
-> > Nice catch!
->=20
->  Thanks for your review.  I actually spotted it visually in the course=20
-> of the recent Octeon ISA level discussion, before verifying the fix with=
-=20
-> actual hardware.
->=20
->   Maciej
-
---6PUEI5/nYziPl3wQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAllksUsACgkQbAtpk944
-dnp89RAArx9XdNyTDbQXI5XOgNevfs6cu+/iA5GvhDMJJ0QSodQ2PwCvMuNSUS1a
-6IKZWu/EWFSfASrv5S1XZdRu8qL8bmWTKdNSW8gl4JSCSUkEPDg1Qe4yiVkcxjx7
-C/2T3lKzcVSTOCVjVFQXmLqmr92xLKH6pp3PPC2fssl2usjlzp3ncm/4MhSRbStL
-LOE1XvAAJF0SPA0brXNQETBZybO964PNOI5fg3YSbIdK48Hh+NA7CCDpQdFhyc4X
-EeWKyvJhYXqmhpAIsAuerq3HF/YRbz4MLcAjdazlK/FdYizsv46hwgvaAVC+tNAe
-LtSSzan3+dCPiL2DWmPd+o4hgT93I0Hy5bzQJUI9gcEbtNWN1pJbUiIQe15Jv7jl
-zBHSLWPd0T5wszeBkJYTZ67rM4yz/8d7FwbhjOw/4WKLoH0UQHKmHABx/9Dj6D9k
-XhDsol2APJ5iMjbiHhNRdvAvR6zBlb6zbkSI5PH5PRunoN/OoyUQYDfF+I6khgG5
-yfYwKB8VNN67QPRFjutmLtslJqUrUeHPScmN6IZMe94TW02d1JXH/+d37dSuMdnG
-uyYY2BYeIvRJPo9lKgOyluQsbAeOJ96mpVtLzVLuPfvZfmlzNiivQzexII5uSIGp
-qjqc4LzmYkGWEiHrE0sivytYcL19UDHwMY5xDcOGMx6pVnd2Vx8=
-=oufJ
------END PGP SIGNATURE-----
-
---6PUEI5/nYziPl3wQ--
+> ---
+> 
+>  arch/mips/boot/dts/img/pistachio.dtsi | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/mips/boot/dts/img/pistachio.dtsi
+> b/arch/mips/boot/dts/img/pistachio.dtsi
+> index 57809f6..f8d7e6f 100644
+> --- a/arch/mips/boot/dts/img/pistachio.dtsi
+> +++ b/arch/mips/boot/dts/img/pistachio.dtsi
+> @@ -805,7 +805,6 @@
+>  		pinctrl-0 = <&sdhost_pins>;
+>  		pinctrl-names = "default";
+>  		fifo-depth = <0x20>;
+> -		num-slots = <1>;
+>  		clock-frequency = <50000000>;
+>  		bus-width = <8>;
+>  		cap-mmc-highspeed;
+> --
+> 1.9.1
+> 

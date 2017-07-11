@@ -1,57 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2017 08:40:49 +0200 (CEST)
-Received: from lelnx194.ext.ti.com ([198.47.27.80]:11136 "EHLO
-        lelnx194.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991978AbdGKGkmzvXHe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2017 08:40:42 +0200
-Received: from dflxv15.itg.ti.com ([128.247.5.124])
-        by lelnx194.ext.ti.com (8.15.1/8.15.1) with ESMTP id v6B6c6I4010098;
-        Tue, 11 Jul 2017 01:38:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ti.com;
-        s=ti-com-17Q1; t=1499755086;
-        bh=h4xHMmrtNPldBAbKG58wsjflyqS/BWWZAXd/xGW4UzA=;
-        h=Subject:To:References:CC:From:Date:In-Reply-To;
-        b=ZB60FzOSnyBGiaseTZTMu9sq0cAHdQMrv3RUKqmRDb9Hrnz80DlkyFCwBaafrTxcR
-         UGekR9QXBSEnvLHxux4Pw87mrZgdBYaTPUzduaR9Z8WOnK7U+c6ro/941U4S2gHtu4
-         rrHZeFx4RriSV+P4oLoT+0o3QrYGTTAHrujifvWA=
-Received: from DLEE70.ent.ti.com (dlemailx.itg.ti.com [157.170.170.113])
-        by dflxv15.itg.ti.com (8.14.3/8.13.8) with ESMTP id v6B6c6ug001121;
-        Tue, 11 Jul 2017 01:38:06 -0500
-Received: from dflp33.itg.ti.com (10.64.6.16) by DLEE70.ent.ti.com
- (157.170.170.113) with Microsoft SMTP Server id 14.3.294.0; Tue, 11 Jul 2017
- 01:38:05 -0500
-Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])      by
- dflp33.itg.ti.com (8.14.3/8.13.8) with ESMTP id v6B6c1j6005262;        Tue, 11 Jul
- 2017 01:38:02 -0500
-Subject: Re: [PATCH v7 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
-To:     Rob Herring <robh@kernel.org>, Hauke Mehrtens <hauke@hauke-m.de>
-References: <20170702224051.15109-1-hauke@hauke-m.de>
- <20170702224051.15109-15-hauke@hauke-m.de>
- <20170707142312.5pwily3gbntvesbm@rob-hp-laptop>
-CC:     <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <linux-mtd@lists.infradead.org>, <linux-watchdog@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <martin.blumenstingl@googlemail.com>,
-        <john@phrozen.org>, <linux-spi@vger.kernel.org>,
-        <hauke.mehrtens@intel.com>, <andy.shevchenko@gmail.com>,
-        <p.zabel@pengutronix.de>
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <30adb3f5-50b5-35e3-685f-9fe0fa8c31f8@ti.com>
-Date:   Tue, 11 Jul 2017 12:08:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2017 09:30:28 +0200 (CEST)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:34933
+        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992196AbdGKHaV1FE56 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2017 09:30:21 +0200
+Received: by mail-oi0-x241.google.com with SMTP id l130so14625268oib.2
+        for <linux-mips@linux-mips.org>; Tue, 11 Jul 2017 00:30:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=j42UM+l67ybSj9H+sUgHlPehOBQ67zJxoPae4Os7tdM=;
+        b=GfTbOHQ4fe9k6y0v0ZPynk8j+4lrTmKrSH5tyT7qRgNUq2EQyJHGBQo+jwSJU4hlQk
+         Wp6Kk9OC2GuyzjQiQZ3hmBELPEaJWOxMIoyrOeY4wy9jYPq7RdC08FZ6hOCVYt78knJW
+         5mcHvFsdo4C/MZ9ZqZ0o7jvJx2riEm9sdvWrmsoXXGAN4yuXfhhbxnhLrVOtxqiuZh/O
+         wP7IV4z84jcZp1VjtUe018eGMaz4gj2POItzrNtID/Fi5UG4daZQ3QiTkD9ZdRfJoULD
+         uHjGHC/TA74oOYq1QxN/uXzDGkuhL9GRLeb+5Z0i7/UJEcHtlboVH+lgTvqe3tVDqxYE
+         mydQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=j42UM+l67ybSj9H+sUgHlPehOBQ67zJxoPae4Os7tdM=;
+        b=M3B09LCRi095ZvoZisWlE+ayKbqTm5Cdjgv88zSgTcyjNqF9wbetfqaQuMTIlgOVZa
+         pJnmmwt/NSKYWJP3zT3jkfqEXC98gRd0NnCTXu1xzOMhMhZ72twNBk4f1tj6ahRV3s14
+         MVBdrkMf0HJsv5TGeXD2h4Vju9kRmf3eqhJnf1INsnUFJH8Iz/+MV02x+AC8QtC/dnK4
+         L9xE/EBsvNhCzlSIWWDi0GIo+AzxG2fGnYrazAFyBrXfm/2BQ3cWyZEWcKBEHxPChj/6
+         88nmtMjSaCDYDy+6T8HWV7y1klyuyeRhSVXE+Qz5jCDDxOdWFS9Cu/Se8ag0syQm0anK
+         zZYg==
+X-Gm-Message-State: AIVw112jJIon1nOr7LonImNIBBdAeqVs0NewT1oCU6m9oiQES/x15zcK
+        7FA+a6Y9pGYvHTIDCNNsLYZUbP84Kw==
+X-Received: by 10.202.166.136 with SMTP id t8mr11270698oij.61.1499758215626;
+ Tue, 11 Jul 2017 00:30:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20170707142312.5pwily3gbntvesbm@rob-hp-laptop>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Return-Path: <kishon@ti.com>
+Received: by 10.182.78.163 with HTTP; Tue, 11 Jul 2017 00:30:14 -0700 (PDT)
+In-Reply-To: <20170711001207.GA11642@glebfm.cloud.tilaa.com>
+References: <20170711001207.GA11642@glebfm.cloud.tilaa.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 11 Jul 2017 09:30:14 +0200
+X-Google-Sender-Auth: O_9qzVRUe7a_LTiGXtdMhC3WNkQ
+Message-ID: <CAK8P3a1uJc0dNoELw1KWKnc9Lme3HDxR2Coj0-snuCmO4n-81A@mail.gmail.com>
+Subject: Re: [PATCH] tty: Fix TIOCGPTPEER ioctl definition
+To:     Gleb Fotengauer-Malinovskiy <glebfm@altlinux.org>
+Cc:     Aleksa Sarai <asarai@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Valentin Rothberg <vrothberg@suse.com>,
+        "Dmitry V. Levin" <ldv@altlinux.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-sh@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        linux-arch <linux-arch@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59088
+X-archive-position: 59089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kishon@ti.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,28 +77,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Tue, Jul 11, 2017 at 2:12 AM, Gleb Fotengauer-Malinovskiy
+<glebfm@altlinux.org> wrote:
+> This ioctl does nothing to justify an _IOC_READ or _IOC_WRITE flag
+> because it doesn't copy anything from/to userspace to access the
+> argument.
+>
+> Fixes: 54ebbfb1 ("tty: add TIOCGPTPEER ioctl")
+> Signed-off-by: Gleb Fotengauer-Malinovskiy <glebfm@altlinux.org>
 
-On Friday 07 July 2017 07:53 PM, Rob Herring wrote:
-> On Mon, Jul 03, 2017 at 12:40:49AM +0200, Hauke Mehrtens wrote:
->> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
->> the PHY interfaces for each core. The phy instances can be passed to the
->> dwc2 driver, which already supports the generic phy interface.
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-
-I see you have added my name in cc but for some reason I don't have the patch
-in my mailbox. Can you resend it please?
-
->> ---
->>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  42 ++++
->>  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
->>  drivers/phy/Kconfig                                |   8 +
->>  drivers/phy/Makefile                               |   1 +
->>  drivers/phy/phy-lantiq-rcu-usb2.c                  | 275 +++++++++++++++++++++
-
-Please create a new directory withing phy for adding a phy driver.
-
-Thanks
-Kishon
+Acked-by: Arnd Bergmann <arnd@arndb.de>

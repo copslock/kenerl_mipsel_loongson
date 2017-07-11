@@ -1,50 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2017 16:45:55 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34701 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993963AbdGKOpsGtMJz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Jul 2017 16:45:48 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 8A70DAB43;
-        Tue, 11 Jul 2017 14:45:47 +0000 (UTC)
-Subject: Re: [PATCH] tty: Fix TIOCGPTPEER ioctl definition
-To:     David Laight <David.Laight@ACULAB.COM>,
-        'Gleb Fotengauer-Malinovskiy' <glebfm@altlinux.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Valentin Rothberg <vrothberg@suse.com>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Dmitry V. Levin" <ldv@altlinux.org>, Jiri Slaby <jslaby@suse.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20170711001207.GA11642@glebfm.cloud.tilaa.com>
- <063D6719AE5E284EB5DD2968C1650D6DD003758C@AcuExch.aculab.com>
-From:   Aleksa Sarai <asarai@suse.de>
-Message-ID: <a99e301b-05d1-d262-aca2-60e3f3400bc5@suse.de>
-Date:   Wed, 12 Jul 2017 00:45:36 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2017 17:55:59 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45790 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993971AbdGKPzwxiD3B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2017 17:55:52 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 1CBADBB0E6681;
+        Tue, 11 Jul 2017 16:55:43 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 11 Jul 2017 16:55:46 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        James Hartley <james.hartley@sondrel.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Ionela Voinescu <ionela.voinescu@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] MIPS: pistachio: Enable Root FS on NFS in defconfig
+Date:   Tue, 11 Jul 2017 16:55:40 +0100
+Message-ID: <1499788540-20773-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <063D6719AE5E284EB5DD2968C1650D6DD003758C@AcuExch.aculab.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <asarai@suse.de>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59096
+X-archive-position: 59097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: asarai@suse.de
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,25 +45,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->> Sent: 11 July 2017 01:12
->> This ioctl does nothing to justify an _IOC_READ or _IOC_WRITE flag
->> because it doesn't copy anything from/to userspace to access the
->> argument.
->>
->> Fixes: 54ebbfb1 ("tty: add TIOCGPTPEER ioctl")
-> ...
->> -#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
->> +#define TIOCGPTPEER	_IO('T', 0x41) /* Safely open the slave */
-> 
-> This is a user API change. When was the ioctl added?
+When the upstream kernel pistachio_defconfig is built & tested on the
+ci40 platform the current lack of these options leads to essentially
+false failures when the RFS fails to mount.
 
-It was just pulled this merge window (4.13-rc1).
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
 
-  % git tag --contains 54ebbfb1603415d9953c150535850d30609ef077
-  %
+ arch/mips/configs/pistachio_defconfig | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
+index 7d32fbbca962..3aa17c5ffed0 100644
+--- a/arch/mips/configs/pistachio_defconfig
++++ b/arch/mips/configs/pistachio_defconfig
+@@ -47,6 +47,8 @@ CONFIG_IP_ADVANCED_ROUTER=y
+ CONFIG_IP_MULTIPLE_TABLES=y
+ CONFIG_IP_ROUTE_MULTIPATH=y
+ CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
+ CONFIG_IP_MROUTE=y
+ CONFIG_IP_PIMSM_V1=y
+ CONFIG_IP_PIMSM_V2=y
+@@ -292,7 +294,8 @@ CONFIG_SQUASHFS_LZO=y
+ CONFIG_PSTORE=y
+ CONFIG_PSTORE_CONSOLE=y
+ CONFIG_PSTORE_RAM=y
+-# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
+ CONFIG_NLS_DEFAULT="utf8"
+ CONFIG_NLS_CODEPAGE_437=m
+ CONFIG_NLS_ASCII=m
 -- 
-Aleksa Sarai
-Software Engineer (Containers)
-SUSE Linux GmbH
-https://www.cyphar.com/
+2.7.4

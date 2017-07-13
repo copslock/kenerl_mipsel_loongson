@@ -1,43 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 15:36:10 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:51996 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991615AbdGMNgB2SH2Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jul 2017 15:36:01 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id AE22E68B02; Thu, 13 Jul 2017 15:36:00 +0200 (CEST)
-Date:   Thu, 13 Jul 2017 15:36:00 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Thierry Escande <thierry.escande@collabora.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pawel Osciak <pawel@osciak.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 0/2] [media] videobuf2-dc: Add support for cacheable
-        MMAP
-Message-ID: <20170713133600.GA24748@lst.de>
-References: <CGME20161026085228epcas3p3895ea279d5538750a3b1c59715ad3761@epcas3p3.samsung.com> <1477471926-15796-1-git-send-email-thierry.escande@collabora.com> <f829886e-4842-a500-6b10-9a46e1b763f5@samsung.com> <20170705173327.GD5417@lst.de> <7505cb31-6bd1-7f76-f975-aa5e61e567f0@samsung.com> <20170713132153.GD31807@n2100.armlinux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 17:43:54 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41418 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992568AbdGMPnqGk4U6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2017 17:43:46 +0200
+Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1ABCBAE1;
+        Thu, 13 Jul 2017 15:43:38 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Yousong Zhou <yszhou4tech@gmail.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 3.18 02/22] MIPS: UAPI: Ignore __arch_swab{16,32,64} when using MIPS16
+Date:   Thu, 13 Jul 2017 17:42:42 +0200
+Message-Id: <20170713153934.228855979@linuxfoundation.org>
+X-Mailer: git-send-email 2.13.2
+In-Reply-To: <20170713153934.089183081@linuxfoundation.org>
+References: <20170713153934.089183081@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170713132153.GD31807@n2100.armlinux.org.uk>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59106
+X-archive-position: 59107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,52 +43,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 13, 2017 at 02:21:53PM +0100, Russell King - ARM Linux wrote:
-> My conclusion of the dma_alloc_noncoherent() and dma_cache_sync() API
-> when it was introduced is that it's basically a completely broken
-> interface, and I've never seen any point to it.  Maybe some of that is
-> because it's badly documented - which in turn makes it badly designed
-> (because there's no specification detailing what it's supposed to be
-> doing.)
-> 
-> I'd like to see that thing die...
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
-It's not exactly the best interface ever, so any improvement is welcome.
+------------------
 
-I've posted a series to kill dma_alloc_noncoherent in favor of
-dma_alloc_attrs a short while ago, and a big chunk of it should have
-made it into 4.12.  I plan to kill it off entirely for 4.13.
+From: Yousong Zhou <yszhou4tech@gmail.com>
 
-That leaves dma_cache_sync() - it's used by 6 drivers:
+commit 71a0a72456b48de972d7ed613b06a22a3aa9057f upstream.
 
-drivers/net/ethernet/i825xx/lasi_82596.c
-drivers/net/ethernet/seeq/sgiseeq.c
-drivers/scsi/53c700.c
-drivers/scsi/sgiwd93.c
-drivers/sh/maple/maple.c
-drivers/tty/serial/mpsc.c
+Some GCC versions (e.g. 4.8.3) can incorrectly inline a function with
+MIPS32 instructions into another function with MIPS16 code [1], causing
+the assembler to genereate incorrect binary code or fail right away
+complaining about unrecognized opcode.
 
-Those are used on parisc, mips for a few old SGI systems, the SH
-dreamcast and powerpc marvell mv64x60 devices.
+In the case of __arch_swab{16,32}, when inlined by the compiler with
+flags `-mips32r2 -mips16 -Os', the assembler can fail with the following
+error.
 
-So it shouldn't be too hard to figure out if they could be moved
-to the normal dma_sync_* calls.
+    {standard input}:79: Error: unrecognized opcode `wsbh $2,$2'
 
-On parisc dma_cache_sync is equivalent to dma_sync_single_for_cpu,
-so that should be fine.
+For performance concerns and to workaround the issue already existing in
+older compilers, just ignore these 2 functions when compiling with
+mips16 enabled.
 
-On mips the implementation of dma_sync_single_for_cpu is a little
-more complicated, but both dma_sync_single_for_cpu and dma_cache_sync
-end up calling __dma_sync_virtual, so they look like the same in
-the end as well.
+ [1] Inlining nomips16 function into mips16 function can result in
+     undefined builtins, https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55777
 
-On SH sync_single_for_device is implemented using dma_cache_sync,
-and there is no dma_sync_single_for_cpu.
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/11241/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-On powerpc both dma_sync_single_for_cpu and dma_sync_single_for_device
-are implemented using the same primitive as dma_cache_sync.
+---
+ arch/mips/include/uapi/asm/swab.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-In short: killing off dma_cache_sync and using the existing and
-better defined syncing primitives looks entirely feasible.
-
-I'll add it to my TODO list for 4.13.
+--- a/arch/mips/include/uapi/asm/swab.h
++++ b/arch/mips/include/uapi/asm/swab.h
+@@ -13,8 +13,9 @@
+ 
+ #define __SWAB_64_THRU_32__
+ 
+-#if (defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||		\
+-    defined(_MIPS_ARCH_LOONGSON3A)
++#if !defined(__mips16) &&					\
++	((defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||	\
++	 defined(_MIPS_ARCH_LOONGSON3A))
+ 
+ static inline __attribute_const__ __u16 __arch_swab16(__u16 x)
+ {
+@@ -65,5 +66,5 @@ static inline __attribute_const__ __u64
+ }
+ #define __arch_swab64 __arch_swab64
+ #endif /* __mips64 */
+-#endif /* MIPS R2 or newer or Loongson 3A */
++#endif /* (not __mips16) and (MIPS R2 or newer or Loongson 3A) */
+ #endif /* _ASM_SWAB_H */

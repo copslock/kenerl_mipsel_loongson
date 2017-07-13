@@ -1,36 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 01:20:54 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:42172 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991058AbdGLXUpwRjw2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2017 01:20:45 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4565661286; Wed, 12 Jul 2017 23:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1499901639;
-        bh=OO6hcq3zhKLyIzfVz/ceNOVg8GzXvkKegQUtNaTx5No=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AQ4pdT0qhBk/IoxlV0kg8udcPuyFJoeb3pXkoE+fzxCudpvvhBQTzwAJKuThcn1Pq
-         yMu7Vd8SatJI7PQQQt4egn2Scy5v2yKsI8FjVOK+e9Gx6zZHcimOaszixXgclTDDa+
-         V5goJH0rhYp5wGh/1TB5fBYDd2WhqyWVKBriQ950=
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46B6A61201;
-        Wed, 12 Jul 2017 23:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1499901638;
-        bh=OO6hcq3zhKLyIzfVz/ceNOVg8GzXvkKegQUtNaTx5No=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VtgeYvK9fAOlG2AYH1U8DnKDMXuXJRJifLIaHm/avYKcDJM5P6fkxc5kU5qCM2R3n
-         2WXmcYZq0FjJ3IkMXmMQQ101PYY4XWYJhg/hkwu3aF/9ZPtFCJapDAoJafq3+yeFWz
-         q3HphMRH2uoG8Yojfw6GiakXH5CXm38/bjwP7PE8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 46B6A61201
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
-Date:   Wed, 12 Jul 2017 16:20:37 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Paul Cercueil <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 12:07:33 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:49968 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991073AbdGMKH0KcqMc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2017 12:07:26 +0200
+To:     Stephen Boyd <sboyd@codeaurora.org>
+Subject: Re: [PATCH v3 01/18] clk: ingenic: Use const pointer to clk_ops in  struct
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Thu, 13 Jul 2017 12:07:25 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -38,26 +18,23 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 01/18] clk: ingenic: Use const pointer to clk_ops in
- struct
-Message-ID: <20170712232037.GR22780@codeaurora.org>
+Subject: 
+In-Reply-To: <20170712232037.GR22780@codeaurora.org>
 References: <20170607200439.24450-2-paul@crapouillou.net>
  <20170702163016.6714-1-paul@crapouillou.net>
  <20170702163016.6714-2-paul@crapouillou.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170702163016.6714-2-paul@crapouillou.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sboyd@codeaurora.org>
+ <20170712232037.GR22780@codeaurora.org>
+Message-ID: <ca4da3fa3067a7301f8fc1539e9e4362@crapouillou.net>
+X-Sender: paul@crapouillou.net
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59102
+X-archive-position: 59103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,20 +47,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/02, Paul Cercueil wrote:
-> The CGU common code does not modify the pointed clk_ops structure, so it
-> should be marked as const.
+Le 2017-07-13 01:20, Stephen Boyd a écrit :
+> On 07/02, Paul Cercueil wrote:
+>> The CGU common code does not modify the pointed clk_ops structure, so 
+>> it
+>> should be marked as const.
+>> 
+>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>> ---
 > 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
+> Sorry I forgot, did you want an ack for these clk patches or for
+> me to take them through clk tree. If it's the ack case,
+> 
+> Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+> 
+> for patches 1 through 6.
 
-Sorry I forgot, did you want an ack for these clk patches or for
-me to take them through clk tree. If it's the ack case,
+I think ACK; then Ralf can take them in 4.13 :)
 
-Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+Thanks,
 
-for patches 1 through 6.
-
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+-Paul

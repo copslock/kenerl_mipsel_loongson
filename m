@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 13:49:31 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37328 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991797AbdGMLtWUWyRl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jul 2017 13:49:22 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v6DBnHSu028703;
-        Thu, 13 Jul 2017 13:49:17 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v6DBnGR8028702;
-        Thu, 13 Jul 2017 13:49:16 +0200
-Date:   Thu, 13 Jul 2017 13:49:16 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Stephen Boyd <sboyd@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 01/18] clk: ingenic: Use const pointer to clk_ops in
- struct
-Message-ID: <20170713114916.GA17495@linux-mips.org>
-References: <20170607200439.24450-2-paul@crapouillou.net>
- <20170702163016.6714-1-paul@crapouillou.net>
- <20170702163016.6714-2-paul@crapouillou.net>
- <20170712232037.GR22780@codeaurora.org>
- <ca4da3fa3067a7301f8fc1539e9e4362@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 15:36:10 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.211]:51996 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991615AbdGMNgB2SH2Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Jul 2017 15:36:01 +0200
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id AE22E68B02; Thu, 13 Jul 2017 15:36:00 +0200 (CEST)
+Date:   Thu, 13 Jul 2017 15:36:00 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Russell King - ARM Linux <linux@armlinux.org.uk>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Thierry Escande <thierry.escande@collabora.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pawel Osciak <pawel@osciak.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 0/2] [media] videobuf2-dc: Add support for cacheable
+        MMAP
+Message-ID: <20170713133600.GA24748@lst.de>
+References: <CGME20161026085228epcas3p3895ea279d5538750a3b1c59715ad3761@epcas3p3.samsung.com> <1477471926-15796-1-git-send-email-thierry.escande@collabora.com> <f829886e-4842-a500-6b10-9a46e1b763f5@samsung.com> <20170705173327.GD5417@lst.de> <7505cb31-6bd1-7f76-f975-aa5e61e567f0@samsung.com> <20170713132153.GD31807@n2100.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ca4da3fa3067a7301f8fc1539e9e4362@crapouillou.net>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20170713132153.GD31807@n2100.armlinux.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59105
+X-archive-position: 59106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,21 +50,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 13, 2017 at 12:07:25PM +0200, Paul Cercueil wrote:
-
-> > Sorry I forgot, did you want an ack for these clk patches or for
-> > me to take them through clk tree. If it's the ack case,
-> > 
-> > Acked-by: Stephen Boyd <sboyd@codeaurora.org>
-> > 
-> > for patches 1 through 6.
+On Thu, Jul 13, 2017 at 02:21:53PM +0100, Russell King - ARM Linux wrote:
+> My conclusion of the dma_alloc_noncoherent() and dma_cache_sync() API
+> when it was introduced is that it's basically a completely broken
+> interface, and I've never seen any point to it.  Maybe some of that is
+> because it's badly documented - which in turn makes it badly designed
+> (because there's no specification detailing what it's supposed to be
+> doing.)
 > 
-> I think ACK; then Ralf can take them in 4.13 :)
+> I'd like to see that thing die...
 
-My pull request for 4.13 is already finalized so it'd be great if this
-could make it to 4.13 through the clk tree.  If that should be impossible
-I'd like to merge this via the MIPS tree for 4.14.
+It's not exactly the best interface ever, so any improvement is welcome.
 
-Thanks,
+I've posted a series to kill dma_alloc_noncoherent in favor of
+dma_alloc_attrs a short while ago, and a big chunk of it should have
+made it into 4.12.  I plan to kill it off entirely for 4.13.
 
-  Ralf
+That leaves dma_cache_sync() - it's used by 6 drivers:
+
+drivers/net/ethernet/i825xx/lasi_82596.c
+drivers/net/ethernet/seeq/sgiseeq.c
+drivers/scsi/53c700.c
+drivers/scsi/sgiwd93.c
+drivers/sh/maple/maple.c
+drivers/tty/serial/mpsc.c
+
+Those are used on parisc, mips for a few old SGI systems, the SH
+dreamcast and powerpc marvell mv64x60 devices.
+
+So it shouldn't be too hard to figure out if they could be moved
+to the normal dma_sync_* calls.
+
+On parisc dma_cache_sync is equivalent to dma_sync_single_for_cpu,
+so that should be fine.
+
+On mips the implementation of dma_sync_single_for_cpu is a little
+more complicated, but both dma_sync_single_for_cpu and dma_cache_sync
+end up calling __dma_sync_virtual, so they look like the same in
+the end as well.
+
+On SH sync_single_for_device is implemented using dma_cache_sync,
+and there is no dma_sync_single_for_cpu.
+
+On powerpc both dma_sync_single_for_cpu and dma_sync_single_for_device
+are implemented using the same primitive as dma_cache_sync.
+
+In short: killing off dma_cache_sync and using the existing and
+better defined syncing primitives looks entirely feasible.
+
+I'll add it to my TODO list for 4.13.

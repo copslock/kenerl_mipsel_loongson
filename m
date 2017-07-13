@@ -1,36 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 17:43:54 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41418 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992568AbdGMPnqGk4U6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2017 17:43:46 +0200
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1ABCBAE1;
-        Thu, 13 Jul 2017 15:43:38 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Yousong Zhou <yszhou4tech@gmail.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 3.18 02/22] MIPS: UAPI: Ignore __arch_swab{16,32,64} when using MIPS16
-Date:   Thu, 13 Jul 2017 17:42:42 +0200
-Message-Id: <20170713153934.228855979@linuxfoundation.org>
-X-Mailer: git-send-email 2.13.2
-In-Reply-To: <20170713153934.089183081@linuxfoundation.org>
-References: <20170713153934.089183081@linuxfoundation.org>
-User-Agent: quilt/0.65
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 19:50:32 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:43082 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992262AbdGMRuYiBSeS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2017 19:50:24 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 16607612BA; Thu, 13 Jul 2017 17:50:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1499968223;
+        bh=V6rMqMvAJ+0/ZzCwfmnzN3jaNPRJJOixuOOkEYsayAQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RlFWEjuICr35AMTyNU2VpySmi/y+ldF9MOGvqu9n2zT2WCtLPOUMf8kxgHprJHA9g
+         bNTKJZwhxowW853qtLmgOX/M8evi8wwO6pLheP5c/N7L+YqIZ/27EvCFBm8Nd2oS8m
+         Sx+Skk9Ef82piDMLP1I9FH83j2mJPF4DA5/8VR3k=
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4D0B66128F;
+        Thu, 13 Jul 2017 17:50:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1499968222;
+        bh=V6rMqMvAJ+0/ZzCwfmnzN3jaNPRJJOixuOOkEYsayAQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JDt5rNQTdDYMGuUNnP66ByRjfHrYULFc8TqWWLruxFRz69zLzGM5JH+G7zH6dkH1W
+         f81yTk614FIJMVr3jgdzrnntAbdcBuftZhxIUG2eLkWcdO+3szWUGqZqIm6/5jAltg
+         fo8ZR5dTdDo9VqZVaNbTmwn8uVzcRJqhvCFYhCVo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4D0B66128F
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
+Date:   Thu, 13 Jul 2017 10:50:21 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH v3 01/18] clk: ingenic: Use const pointer to clk_ops in
+ struct
+Message-ID: <20170713175021.GA22780@codeaurora.org>
+References: <20170607200439.24450-2-paul@crapouillou.net>
+ <20170702163016.6714-1-paul@crapouillou.net>
+ <20170702163016.6714-2-paul@crapouillou.net>
+ <20170712232037.GR22780@codeaurora.org>
+ <ca4da3fa3067a7301f8fc1539e9e4362@crapouillou.net>
+ <20170713114916.GA17495@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170713114916.GA17495@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59107
+X-archive-position: 59108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,62 +73,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+On 07/13, Ralf Baechle wrote:
+> On Thu, Jul 13, 2017 at 12:07:25PM +0200, Paul Cercueil wrote:
+> 
+> > > Sorry I forgot, did you want an ack for these clk patches or for
+> > > me to take them through clk tree. If it's the ack case,
+> > > 
+> > > Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+> > > 
+> > > for patches 1 through 6.
+> > 
+> > I think ACK; then Ralf can take them in 4.13 :)
+> 
+> My pull request for 4.13 is already finalized so it'd be great if this
+> could make it to 4.13 through the clk tree.  If that should be impossible
+> I'd like to merge this via the MIPS tree for 4.14.
+> 
 
-------------------
+It's too late for v4.13, so you can take it for v4.14.
 
-From: Yousong Zhou <yszhou4tech@gmail.com>
-
-commit 71a0a72456b48de972d7ed613b06a22a3aa9057f upstream.
-
-Some GCC versions (e.g. 4.8.3) can incorrectly inline a function with
-MIPS32 instructions into another function with MIPS16 code [1], causing
-the assembler to genereate incorrect binary code or fail right away
-complaining about unrecognized opcode.
-
-In the case of __arch_swab{16,32}, when inlined by the compiler with
-flags `-mips32r2 -mips16 -Os', the assembler can fail with the following
-error.
-
-    {standard input}:79: Error: unrecognized opcode `wsbh $2,$2'
-
-For performance concerns and to workaround the issue already existing in
-older compilers, just ignore these 2 functions when compiling with
-mips16 enabled.
-
- [1] Inlining nomips16 function into mips16 function can result in
-     undefined builtins, https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55777
-
-Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11241/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/include/uapi/asm/swab.h |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
---- a/arch/mips/include/uapi/asm/swab.h
-+++ b/arch/mips/include/uapi/asm/swab.h
-@@ -13,8 +13,9 @@
- 
- #define __SWAB_64_THRU_32__
- 
--#if (defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||		\
--    defined(_MIPS_ARCH_LOONGSON3A)
-+#if !defined(__mips16) &&					\
-+	((defined(__mips_isa_rev) && (__mips_isa_rev >= 2)) ||	\
-+	 defined(_MIPS_ARCH_LOONGSON3A))
- 
- static inline __attribute_const__ __u16 __arch_swab16(__u16 x)
- {
-@@ -65,5 +66,5 @@ static inline __attribute_const__ __u64
- }
- #define __arch_swab64 __arch_swab64
- #endif /* __mips64 */
--#endif /* MIPS R2 or newer or Loongson 3A */
-+#endif /* (not __mips16) and (MIPS R2 or newer or Loongson 3A) */
- #endif /* _ASM_SWAB_H */
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

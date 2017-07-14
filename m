@@ -1,66 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2017 19:50:32 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:43082 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992262AbdGMRuYiBSeS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2017 19:50:24 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 16607612BA; Thu, 13 Jul 2017 17:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1499968223;
-        bh=V6rMqMvAJ+0/ZzCwfmnzN3jaNPRJJOixuOOkEYsayAQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RlFWEjuICr35AMTyNU2VpySmi/y+ldF9MOGvqu9n2zT2WCtLPOUMf8kxgHprJHA9g
-         bNTKJZwhxowW853qtLmgOX/M8evi8wwO6pLheP5c/N7L+YqIZ/27EvCFBm8Nd2oS8m
-         Sx+Skk9Ef82piDMLP1I9FH83j2mJPF4DA5/8VR3k=
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4D0B66128F;
-        Thu, 13 Jul 2017 17:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1499968222;
-        bh=V6rMqMvAJ+0/ZzCwfmnzN3jaNPRJJOixuOOkEYsayAQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JDt5rNQTdDYMGuUNnP66ByRjfHrYULFc8TqWWLruxFRz69zLzGM5JH+G7zH6dkH1W
-         f81yTk614FIJMVr3jgdzrnntAbdcBuftZhxIUG2eLkWcdO+3szWUGqZqIm6/5jAltg
-         fo8ZR5dTdDo9VqZVaNbTmwn8uVzcRJqhvCFYhCVo=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4D0B66128F
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
-Date:   Thu, 13 Jul 2017 10:50:21 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 01/18] clk: ingenic: Use const pointer to clk_ops in
- struct
-Message-ID: <20170713175021.GA22780@codeaurora.org>
-References: <20170607200439.24450-2-paul@crapouillou.net>
- <20170702163016.6714-1-paul@crapouillou.net>
- <20170702163016.6714-2-paul@crapouillou.net>
- <20170712232037.GR22780@codeaurora.org>
- <ca4da3fa3067a7301f8fc1539e9e4362@crapouillou.net>
- <20170713114916.GA17495@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2017 19:17:55 +0200 (CEST)
+Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:47920 "EHLO
+        mx0b-00010702.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992121AbdGNRRrck9OS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jul 2017 19:17:47 +0200
+Received: from pps.filterd (m0098781.ppops.net [127.0.0.1])
+        by mx0a-00010702.pphosted.com (8.16.0.21/8.16.0.21) with SMTP id v6EHGGa0029730;
+        Fri, 14 Jul 2017 12:17:44 -0500
+Received: from ni.com (skprod2.natinst.com [130.164.80.23])
+        by mx0a-00010702.pphosted.com with ESMTP id 2bq18k85y2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2017 12:17:44 -0500
+Received: from us-aus-exhub2.ni.corp.natinst.com (us-aus-exhub2.ni.corp.natinst.com [130.164.68.32])
+        by us-aus-skprod2.natinst.com (8.16.0.17/8.16.0.17) with ESMTPS id v6EHHhY2004802
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2017 12:17:43 -0500
+Received: from us-aus-exch7.ni.corp.natinst.com (130.164.68.17) by
+ us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Fri, 14 Jul 2017 12:17:43 -0500
+Received: from us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) by
+ us-aus-exch7.ni.corp.natinst.com (130.164.68.17) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Fri, 14 Jul 2017 12:17:43 -0500
+Received: from nathan3500-linux-VM.amer.corp.natinst.com (130.164.49.7) by
+ us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) with Microsoft SMTP Server
+ id 15.0.1156.6 via Frontend Transport; Fri, 14 Jul 2017 12:17:43 -0500
+From:   Nathan Sullivan <nathan.sullivan@ni.com>
+To:     <ralf@linux-mips.org>, <robh+dt@kernel.org>
+CC:     <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: RESEND PATCH v5
+Date:   Fri, 14 Jul 2017 12:16:50 -0500
+Message-ID: <1500052611-32445-1-git-send-email-nathan.sullivan@ni.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170713114916.GA17495@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sboyd@codeaurora.org>
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-07-14_12:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_policy_notspam policy=outbound_policy score=30
+ priorityscore=1501 malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0
+ spamscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=30 reason=mlx scancount=1 engine=8.0.1-1706020000
+ definitions=main-1707140278
+Return-Path: <nathan.sullivan@ni.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59108
+X-archive-position: 59109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: nathan.sullivan@ni.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,25 +61,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/13, Ralf Baechle wrote:
-> On Thu, Jul 13, 2017 at 12:07:25PM +0200, Paul Cercueil wrote:
-> 
-> > > Sorry I forgot, did you want an ack for these clk patches or for
-> > > me to take them through clk tree. If it's the ack case,
-> > > 
-> > > Acked-by: Stephen Boyd <sboyd@codeaurora.org>
-> > > 
-> > > for patches 1 through 6.
-> > 
-> > I think ACK; then Ralf can take them in 4.13 :)
-> 
-> My pull request for 4.13 is already finalized so it'd be great if this
-> could make it to 4.13 through the clk tree.  If that should be impossible
-> I'd like to merge this via the MIPS tree for 4.14.
-> 
-
-It's too late for v4.13, so you can take it for v4.14.
-
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+---
+Changes from v4:
+ 
+- Address Rob Herring's device tree feedback

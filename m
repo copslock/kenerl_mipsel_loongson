@@ -1,39 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2017 19:18:38 +0200 (CEST)
-Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:48053 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2017 19:33:42 +0200 (CEST)
+Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:51313 "EHLO
         mx0b-00010702.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23994792AbdGNRSa1sJoS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jul 2017 19:18:30 +0200
+        by eddie.linux-mips.org with ESMTP id S23992121AbdGNRdeWUX22 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jul 2017 19:33:34 +0200
 Received: from pps.filterd (m0098781.ppops.net [127.0.0.1])
-        by mx0a-00010702.pphosted.com (8.16.0.21/8.16.0.21) with SMTP id v6EHGmw3030099;
-        Fri, 14 Jul 2017 12:18:28 -0500
-Received: from ni.com (skprod3.natinst.com [130.164.80.24])
-        by mx0a-00010702.pphosted.com with ESMTP id 2bq18k860u-1
+        by mx0a-00010702.pphosted.com (8.16.0.21/8.16.0.21) with SMTP id v6EHVLce007440;
+        Fri, 14 Jul 2017 12:33:31 -0500
+Received: from ni.com (skprod2.natinst.com [130.164.80.23])
+        by mx0a-00010702.pphosted.com with ESMTP id 2bq18k875y-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2017 12:18:28 -0500
-Received: from us-aus-exhub1.ni.corp.natinst.com (us-aus-exhub1.ni.corp.natinst.com [130.164.68.41])
-        by us-aus-skprod3.natinst.com (8.16.0.17/8.16.0.17) with ESMTPS id v6EHIQAL008498
+        Fri, 14 Jul 2017 12:33:31 -0500
+Received: from us-aus-exhub2.ni.corp.natinst.com (us-aus-exhub2.ni.corp.natinst.com [130.164.68.32])
+        by us-aus-skprod2.natinst.com (8.16.0.17/8.16.0.17) with ESMTPS id v6EHXUGu013640
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2017 12:18:27 -0500
-Received: from us-aus-exch3.ni.corp.natinst.com (130.164.68.13) by
- us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) with Microsoft SMTP Server
- (TLS) id 15.0.1156.6; Fri, 14 Jul 2017 12:17:49 -0500
+        Fri, 14 Jul 2017 12:33:30 -0500
 Received: from us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) by
- us-aus-exch3.ni.corp.natinst.com (130.164.68.13) with Microsoft SMTP Server
- (TLS) id 15.0.1156.6; Fri, 14 Jul 2017 12:17:49 -0500
+ us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Fri, 14 Jul 2017 12:33:30 -0500
 Received: from nathan3500-linux-VM.amer.corp.natinst.com (130.164.49.7) by
  us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) with Microsoft SMTP Server
- id 15.0.1156.6 via Frontend Transport; Fri, 14 Jul 2017 12:17:49 -0500
+ id 15.0.1156.6 via Frontend Transport; Fri, 14 Jul 2017 12:33:30 -0500
 From:   Nathan Sullivan <nathan.sullivan@ni.com>
 To:     <ralf@linux-mips.org>, <robh+dt@kernel.org>
 CC:     <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
         <linux-kernel@vger.kernel.org>,
         Nathan Sullivan <nathan.sullivan@ni.com>
-Subject: [PATCH] MIPS: NI 169445 board support
-Date:   Fri, 14 Jul 2017 12:16:51 -0500
-Message-ID: <1500052611-32445-2-git-send-email-nathan.sullivan@ni.com>
+Subject: [RESEND][PATCH v5] MIPS: NI 169445 board support
+Date:   Fri, 14 Jul 2017 12:33:27 -0500
+Message-ID: <1500053607-32645-1-git-send-email-nathan.sullivan@ni.com>
 X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1500052611-32445-1-git-send-email-nathan.sullivan@ni.com>
-References: <1500052611-32445-1-git-send-email-nathan.sullivan@ni.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-07-14_12:,,
@@ -42,12 +37,12 @@ X-Proofpoint-Spam-Details: rule=outbound_policy_notspam policy=outbound_policy s
  priorityscore=1501 malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0
  spamscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0 adultscore=0
  classifier=spam adjust=30 reason=mlx scancount=1 engine=8.0.1-1706020000
- definitions=main-1707140278
+ definitions=main-1707140282
 Return-Path: <nathan.sullivan@ni.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59110
+X-archive-position: 59111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,6 +63,11 @@ Support the National Instruments 169445 board.
 
 Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
 ---
+
+Changes from v4:
+ 
+- Address Rob Herring's device tree feedback
+
  Documentation/devicetree/bindings/mips/ni.txt   |   7 ++
  MAINTAINERS                                     |   8 ++
  arch/mips/boot/dts/Makefile                     |   1 +

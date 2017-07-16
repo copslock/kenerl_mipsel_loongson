@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jul 2017 16:17:03 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40899 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994822AbdGPOQz68Pu8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Jul 2017 16:16:55 +0200
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1dWk3K-00057G-Ds; Sun, 16 Jul 2017 14:57:42 +0100
-Received: from ben by deadeye with local (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1dWk3G-0002N6-5h; Sun, 16 Jul 2017 14:57:38 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jul 2017 16:23:54 +0200 (CEST)
+Received: from smtp109.iad3a.emailsrvr.com ([173.203.187.109]:52619 "EHLO
+        smtp109.iad3a.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994823AbdGPOXd1qV-i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Jul 2017 16:23:33 +0200
+Received: from smtp22.relay.iad3a.emailsrvr.com (localhost [127.0.0.1])
+        by smtp22.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 60F5E19F;
+        Sun, 16 Jul 2017 10:23:32 -0400 (EDT)
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp22.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 5419C68E6;
+        Sun, 16 Jul 2017 10:23:31 -0400 (EDT)
+X-Sender-Id: abbotti@mev.co.uk
+Received: from [192.168.1.35] (redmecca.plus.com [80.229.15.156])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA)
+        by 0.0.0.0:587 (trex/5.7.12);
+        Sun, 16 Jul 2017 10:23:32 -0400
+Subject: Re: include/linux/kernel.h:860:32: error: dereferencing pointer to
+ incomplete type 'struct clock_event_device'
+From:   Ian Abbott <abbotti@mev.co.uk>
+To:     kbuild test robot <fengguang.wu@intel.com>
+Cc:     kbuild-all@01.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-mips@linux-mips.org
+References: <201707161158.V5vr9Ak9%fengguang.wu@intel.com>
+ <b281909c-f4de-dadd-3d87-2ed2cc5dae1b@mev.co.uk>
+ <f34577c1-4814-e13a-1cd9-8a621bccf98b@mev.co.uk>
+Message-ID: <d5581fe0-2420-655b-3c3c-25c316f05576@mev.co.uk>
+Date:   Sun, 16 Jul 2017 15:23:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
-        "Jason Wessel" <jason.wessel@windriver.com>,
-        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org
-Date:   Sun, 16 Jul 2017 14:56:46 +0100
-Message-ID: <lsq.1500213406.165666338@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 148/178] MIPS: KGDB: Use kernel context for sleeping
- threads
-In-Reply-To: <lsq.1500213404.466735591@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+In-Reply-To: <f34577c1-4814-e13a-1cd9-8a621bccf98b@mev.co.uk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <abbotti@mev.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59116
+X-archive-position: 59117
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: abbotti@mev.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,126 +56,155 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.46-rc1 review patch.  If anyone has any objections, please let me know.
+On 16/07/17 15:14, Ian Abbott wrote:
+> On 16/07/17 14:50, Ian Abbott wrote:
+>> On 16/07/17 04:24, kbuild test robot wrote:
+>>> tree: 
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 
+>>> master
+>>> head:   5771a8c08880cdca3bfb4a3fc6d309d6bba20877
+>>> commit: c7acec713d14c6ce8a20154f9dfda258d6bcad3b kernel.h: handle 
+>>> pointers to arrays better in container_of()
+>>> date:   3 days ago
+>>> config: ia64-allyesconfig (attached as .config)
+>>> compiler: ia64-linux-gcc (GCC) 6.2.0
+>>> reproduce:
+>>>         wget 
+>>> https://raw.githubusercontent.com/01org/lkp-tests/master/sbin/make.cross 
+>>> -O ~/bin/make.cross
+>>>         chmod +x ~/bin/make.cross
+>>>         git checkout c7acec713d14c6ce8a20154f9dfda258d6bcad3b
+>>>         # save the attached .config to linux build tree
+>>>         make.cross ARCH=ia64
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>    In file included from drivers/clocksource/timer-of.c:25:0:
+>>>    drivers/clocksource/timer-of.h:35:28: error: field 'clkevt' has 
+>>> incomplete type
+>>>      struct clock_event_device clkevt;
+>>>                                ^~~~~~
+>>>    In file included from include/linux/err.h:4:0,
+>>>                     from include/linux/clk.h:15,
+>>>                     from drivers/clocksource/timer-of.c:18:
+>>>    drivers/clocksource/timer-of.h: In function 'to_timer_of':
+>>>>> include/linux/kernel.h:860:32: error: dereferencing pointer to 
+>>>>> incomplete type 'struct clock_event_device'
+>>>      BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)->member) && \
+>>>                                    ^~~~~~
+>>>    include/linux/compiler.h:517:19: note: in definition of macro 
+>>> '__compiletime_assert'
+>>>       bool __cond = !(condition);    \
+>>>                       ^~~~~~~~~
+>>>    include/linux/compiler.h:537:2: note: in expansion of macro 
+>>> '_compiletime_assert'
+>>>      _compiletime_assert(condition, msg, __compiletime_assert_, 
+>>> __LINE__)
+>>>      ^~~~~~~~~~~~~~~~~~~
+>>>    include/linux/build_bug.h:46:37: note: in expansion of macro 
+>>> 'compiletime_assert'
+>>>     #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>>>                                         ^~~~~~~~~~~~~~~~~~
+>>>    include/linux/kernel.h:860:2: note: in expansion of macro 
+>>> 'BUILD_BUG_ON_MSG'
+>>>      BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)->member) && \
+>>>      ^~~~~~~~~~~~~~~~
+>>>    include/linux/kernel.h:860:20: note: in expansion of macro 
+>>> '__same_type'
+>>>      BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)->member) && \
+>>>                        ^~~~~~~~~~~
+>>>    drivers/clocksource/timer-of.h:44:9: note: in expansion of macro 
+>>> 'container_of'
+>>>      return container_of(clkevt, struct timer_of, clkevt);
+>>>             ^~~~~~~~~~~~
+>>> -- 
+>>>    In file included from drivers//clocksource/timer-of.c:25:0:
+>>>    drivers//clocksource/timer-of.h:35:28: error: field 'clkevt' has 
+>>> incomplete type
+>>>      struct clock_event_device clkevt;
+>>>                                ^~~~~~
+>>>    In file included from include/linux/err.h:4:0,
+>>>                     from include/linux/clk.h:15,
+>>>                     from drivers//clocksource/timer-of.c:18:
+>>>    drivers//clocksource/timer-of.h: In function 'to_timer_of':
+>>>>> include/linux/kernel.h:860:32: error: dereferencing pointer to 
+>>>>> incomplete type 'struct clock_event_device'
+>>>      BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)->member) && \
+>>>                                    ^~~~~~
+>>>    include/linux/compiler.h:517:19: note: in definition of macro 
+>>> '__compiletime_assert'
+>>>       bool __cond = !(condition);    \
+>>>                       ^~~~~~~~~
+>>>    include/linux/compiler.h:537:2: note: in expansion of macro 
+>>> '_compiletime_assert'
+>>>      _compiletime_assert(condition, msg, __compiletime_assert_, 
+>>> __LINE__)
+>>>      ^~~~~~~~~~~~~~~~~~~
+>>>    include/linux/build_bug.h:46:37: note: in expansion of macro 
+>>> 'compiletime_assert'
+>>>     #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>>>                                         ^~~~~~~~~~~~~~~~~~
+>>>    include/linux/kernel.h:860:2: note: in expansion of macro 
+>>> 'BUILD_BUG_ON_MSG'
+>>>      BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)->member) && \
+>>>      ^~~~~~~~~~~~~~~~
+>>>    include/linux/kernel.h:860:20: note: in expansion of macro 
+>>> '__same_type'
+>>>      BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)->member) && \
+>>>                        ^~~~~~~~~~~
+>>>    drivers//clocksource/timer-of.h:44:9: note: in expansion of macro 
+>>> 'container_of'
+>>>      return container_of(clkevt, struct timer_of, clkevt);
+>>>             ^~~~~~~~~~~~
+>>>
+>>> vim +860 include/linux/kernel.h
+>>>
+>>>    843
+>>>    844
+>>>    845    /*
+>>>    846     * swap - swap value of @a and @b
+>>>    847     */
+>>>    848    #define swap(a, b) \
+>>>    849        do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } 
+>>> while (0)
+>>>    850
+>>>    851    /**
+>>>    852     * container_of - cast a member of a structure out to the 
+>>> containing structure
+>>>    853     * @ptr:    the pointer to the member.
+>>>    854     * @type:    the type of the container struct this is 
+>>> embedded in.
+>>>    855     * @member:    the name of the member within the struct.
+>>>    856     *
+>>>    857     */
+>>>    858    #define container_of(ptr, type, member) ({                \
+>>>    859        void *__mptr = (void *)(ptr);                    \
+>>>  > 860        BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type 
+>>> *)0)->member) &&    \
+>>>    861                 !__same_type(*(ptr), void),            \
+>>>    862                 "pointer type mismatch in container_of()");    \
+>>>    863        ((type *)(__mptr - offsetof(type, member))); })
+>>>    864
+>>>
+>>> ---
+>>> 0-DAY kernel test infrastructure                Open Source 
+>>> Technology Center
+>>> https://lists.01.org/pipermail/kbuild-all                   Intel 
+>>> Corporation
+>>>
+>>
+>> struct clock_event_device is only completely defined when 
+>> CONFIG_GENERIC_CLOCKEVENTS is defined, which it isn't.  But I'm 
+>> confused as to why TIMER_OF getting selected by allyesconfig since it 
+>> depends on GENERIC_CLOCKEVENTS.
+>>
+> 
+> It seems to be due to CLKSRC_PISTACHIO being selected,  I guess that 
+> should also depend on GENERIC_CLOCKEVENTS.
+> 
 
-------------------
+Cc'ing linux-mips@linux-mips.org.
 
-From: James Hogan <james.hogan@imgtec.com>
-
-commit 162b270c664dca2e0944308e92f9fcc887151a72 upstream.
-
-KGDB is a kernel debug stub and it can't be used to debug userland as it
-can only safely access kernel memory.
-
-On MIPS however KGDB has always got the register state of sleeping
-processes from the userland register context at the beginning of the
-kernel stack. This is meaningless for kernel threads (which never enter
-userland), and for user threads it prevents the user seeing what it is
-doing while in the kernel:
-
-(gdb) info threads
-  Id   Target Id         Frame
-  ...
-  3    Thread 2 (kthreadd) 0x0000000000000000 in ?? ()
-  2    Thread 1 (init)   0x000000007705c4b4 in ?? ()
-  1    Thread -2 (shadowCPU0) 0xffffffff8012524c in arch_kgdb_breakpoint () at arch/mips/kernel/kgdb.c:201
-
-Get the register state instead from the (partial) kernel register
-context stored in the task's thread_struct for resume() to restore. All
-threads now correctly appear to be in context_switch():
-
-(gdb) info threads
-  Id   Target Id         Frame
-  ...
-  3    Thread 2 (kthreadd) context_switch (rq=<optimized out>, cookie=..., next=<optimized out>, prev=0x0) at kernel/sched/core.c:2903
-  2    Thread 1 (init)   context_switch (rq=<optimized out>, cookie=..., next=<optimized out>, prev=0x0) at kernel/sched/core.c:2903
-  1    Thread -2 (shadowCPU0) 0xffffffff8012524c in arch_kgdb_breakpoint () at arch/mips/kernel/kgdb.c:201
-
-Call clobbered registers which aren't saved and exception registers
-(BadVAddr & Cause) which can't be easily determined without stack
-unwinding are reported as 0. The PC is taken from the return address,
-such that the state presented matches that found immediately after
-returning from resume().
-
-Fixes: 8854700115ec ("[MIPS] kgdb: add arch support for the kernel's kgdb core")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Jason Wessel <jason.wessel@windriver.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15829/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/kernel/kgdb.c | 48 +++++++++++++++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 15 deletions(-)
-
---- a/arch/mips/kernel/kgdb.c
-+++ b/arch/mips/kernel/kgdb.c
-@@ -244,9 +244,6 @@ static int compute_signal(int tt)
- void sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *p)
- {
- 	int reg;
--	struct thread_info *ti = task_thread_info(p);
--	unsigned long ksp = (unsigned long)ti + THREAD_SIZE - 32;
--	struct pt_regs *regs = (struct pt_regs *)ksp - 1;
- #if (KGDB_GDB_REG_SIZE == 32)
- 	u32 *ptr = (u32 *)gdb_regs;
- #else
-@@ -254,25 +251,46 @@ void sleeping_thread_to_gdb_regs(unsigne
- #endif
- 
- 	for (reg = 0; reg < 16; reg++)
--		*(ptr++) = regs->regs[reg];
-+		*(ptr++) = 0;
- 
- 	/* S0 - S7 */
--	for (reg = 16; reg < 24; reg++)
--		*(ptr++) = regs->regs[reg];
-+	*(ptr++) = p->thread.reg16;
-+	*(ptr++) = p->thread.reg17;
-+	*(ptr++) = p->thread.reg18;
-+	*(ptr++) = p->thread.reg19;
-+	*(ptr++) = p->thread.reg20;
-+	*(ptr++) = p->thread.reg21;
-+	*(ptr++) = p->thread.reg22;
-+	*(ptr++) = p->thread.reg23;
- 
- 	for (reg = 24; reg < 28; reg++)
- 		*(ptr++) = 0;
- 
- 	/* GP, SP, FP, RA */
--	for (reg = 28; reg < 32; reg++)
--		*(ptr++) = regs->regs[reg];
--
--	*(ptr++) = regs->cp0_status;
--	*(ptr++) = regs->lo;
--	*(ptr++) = regs->hi;
--	*(ptr++) = regs->cp0_badvaddr;
--	*(ptr++) = regs->cp0_cause;
--	*(ptr++) = regs->cp0_epc;
-+	*(ptr++) = (long)p;
-+	*(ptr++) = p->thread.reg29;
-+	*(ptr++) = p->thread.reg30;
-+	*(ptr++) = p->thread.reg31;
-+
-+	*(ptr++) = p->thread.cp0_status;
-+
-+	/* lo, hi */
-+	*(ptr++) = 0;
-+	*(ptr++) = 0;
-+
-+	/*
-+	 * BadVAddr, Cause
-+	 * Ideally these would come from the last exception frame up the stack
-+	 * but that requires unwinding, otherwise we can't know much for sure.
-+	 */
-+	*(ptr++) = 0;
-+	*(ptr++) = 0;
-+
-+	/*
-+	 * PC
-+	 * use return address (RA), i.e. the moment after return from resume()
-+	 */
-+	*(ptr++) = p->thread.reg31;
- }
- 
- void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+-- 
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-

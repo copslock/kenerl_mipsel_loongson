@@ -1,38 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2017 10:25:57 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:13752 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990924AbdGRIZvJHf9G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2017 10:25:51 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 28A67AAF5052B;
-        Tue, 18 Jul 2017 09:25:41 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 18 Jul 2017 09:25:43 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-CC:     <linux-mips@linux-mips.org>, <akpm@linux-foundation.org>,
-        <kbuild-all@01.org>, <arnd@arndb.de>, <abbotti@mev.co.uk>,
-        Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH v2] CLOCKSOURCE: Fix CLKSRC_PISTACHIO dependencies
-Date:   Tue, 18 Jul 2017 09:25:39 +0100
-Message-ID: <1500366339-2780-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <d5581fe0-2420-655b-3c3c-25c316f05576@mev.co.uk>
-References: <d5581fe0-2420-655b-3c3c-25c316f05576@mev.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2017 12:17:58 +0200 (CEST)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:34042
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994847AbdGRKRv38Zld (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2017 12:17:51 +0200
+Received: by mail-wr0-x244.google.com with SMTP id w4so3631470wrb.1;
+        Tue, 18 Jul 2017 03:17:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=53C57+nq/4b+0h92EdDMa+xLCRMVcwzdCJc+XTejfPo=;
+        b=CQma+77Z1LtKLOVJbI3LLru6R9tnEcUmlEAPoFV6Yo5fHFwl+CNsEB5i22Wmg7yU7W
+         d1YU68v6pcBEW1YjxiwS987N/5EEOAQ0lal8RHNjB9KGDlY7oRCDbi1FVFCdf+4MRCtY
+         bS0rJoPiQfONHv3FdTtYTVlrmYvkUWG1A2wzCK+AvsGVzyDY42IsM2PUJCrFUr/INpvs
+         roGHeXx505s2vlzvfPIMmcbp5GskraDc6lAC0t8RQUwKWqZQ4woiENGW+qxSknVCrGem
+         5FNZOvxH4ZpfbvWpDCDpeaWp+S70tIDbsnmbacbkCpQTTDiut6Irbtly5f4LLpoAW2Zf
+         nKOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=53C57+nq/4b+0h92EdDMa+xLCRMVcwzdCJc+XTejfPo=;
+        b=ludMIwVN6jyN6T/JdmyBB81t8BrUB+iec81e/EKHgoVgXBmtSm8nKxVVaLwA986tr3
+         zmsJjs3ah7gqqGa8cYsRxu5liMYMBSSXKO9fNaT/rdyIm6y4KltzLK3ssRJbvqY/LAVA
+         FxBRVpPU9I7BqthxzHbhWC4hPgA9btgpBK2YK2vD0ihhnGZWMkIdgpzdZAix5kI78aMq
+         al/pCBHIy7uZgoBuxINjPxqr0V9JfjCkc1XDI7UcS2b3RdcGswFI7XeiI/+gU2l+d+Hu
+         T92I5M38G48BbJUQCVcZdS4WYa0ER9l7zuN78PjBW7bplLCNhGCwElcCqCHXMvCOIBRT
+         jWTQ==
+X-Gm-Message-State: AIVw113rR7VJvOqL9VXno3fL8ybUOJCyyUnzvPNpOFzLz6p5VpvF5oik
+        skYqzxyWexnlMK5P
+X-Received: by 10.28.181.6 with SMTP id e6mr1197277wmf.25.1500373066012;
+        Tue, 18 Jul 2017 03:17:46 -0700 (PDT)
+Received: from localhost.localdomain ([2001:470:9e39::48e])
+        by smtp.gmail.com with ESMTPSA id 9sm3253728wml.25.2017.07.18.03.17.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 18 Jul 2017 03:17:45 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 5/9] MIPS: AR7: allow NULL clock for clk_get_rate
+Date:   Tue, 18 Jul 2017 12:17:26 +0200
+Message-Id: <20170718101730.2541-6-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.13.2
+In-Reply-To: <20170718101730.2541-1-jonas.gorski@gmail.com>
+References: <20170718101730.2541-1-jonas.gorski@gmail.com>
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59126
+X-archive-position: 59127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,37 +67,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In v4.13, CLKSRC_PISTACHIO can select TIMER_OF on architectures without
-GENERIC_CLOCKEVENTS, resulting in a struct clock_event_device missing
-some required features and build breakage compiling timer_of.c. One of
-the symbols selecting TIMER_OF is CLKSRC_PISTACHIO, so add the
-dependency on GENERIC_CLOCKEVENTS.
+Make the behaviour of clk_get_rate consistent with common clk's
+clk_get_rate by accepting NULL clocks as parameter. Some device
+drivers rely on this, and will cause an OOPS otherwise.
 
-Thanks to kbuild test robot for finding this error
-(https://lkml.org/lkml/2017/7/16/249)
-
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Suggested-by: Ian Abbott <abbotti@mev.co.uk>
+Fixes: 780019ddf02f ("MIPS: AR7: Implement clock API")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Reported-by: Mathias Kresin <dev@kresin.me>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
+ arch/mips/ar7/clock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Changes in v2:
-Drop MIPS dependency
-
- drivers/clocksource/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index fcae5ca6ac92..54a67f8a28eb 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -262,7 +262,7 @@ config CLKSRC_LPC32XX
+diff --git a/arch/mips/ar7/clock.c b/arch/mips/ar7/clock.c
+index dda422a0f36c..0137656107a9 100644
+--- a/arch/mips/ar7/clock.c
++++ b/arch/mips/ar7/clock.c
+@@ -430,6 +430,9 @@ EXPORT_SYMBOL(clk_disable);
  
- config CLKSRC_PISTACHIO
- 	bool "Clocksource for Pistachio SoC" if COMPILE_TEST
--	depends on HAS_IOMEM
-+	depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
- 	select TIMER_OF
- 	help
- 	  Enables the clocksource for the Pistachio SoC.
+ unsigned long clk_get_rate(struct clk *clk)
+ {
++	if (!clk)
++		return 0;
++
+ 	return clk->rate;
+ }
+ EXPORT_SYMBOL(clk_get_rate);
 -- 
-2.7.4
+2.11.0

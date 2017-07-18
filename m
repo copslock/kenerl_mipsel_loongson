@@ -1,55 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2017 12:19:12 +0200 (CEST)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35777
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2017 13:08:33 +0200 (CEST)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:36846
         "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994850AbdGRKRykqzGd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2017 12:17:54 +0200
-Received: by mail-wr0-x244.google.com with SMTP id a10so3657775wrd.2;
-        Tue, 18 Jul 2017 03:17:54 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23990924AbdGRKRolkFNd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2017 12:17:44 +0200
+Received: by mail-wr0-x244.google.com with SMTP id y67so1449587wrb.3
+        for <linux-mips@linux-mips.org>; Tue, 18 Jul 2017 03:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=3P9Xht38iIfkyMom35IZVoGV+p+fw2DjuuEs4EalF3M=;
-        b=muw5Fzo1uhCLLsgbX2yw9h+bsz6T35LRTmM1YyHM/DO+cpF4LROAwFjPO1kkutCnkC
-         1kaiEjo2u9N1VKWvNLEh1foud9HoQx/CbxkhrWm9KgHGh4QVzpzFGtlLmMvozsp0wxXB
-         5/hXEYSOj+foQNJu33Z42szIIMsS5glaKBpliKxHeBoebmFRXl90ixPD3/aaIRqtrg8Y
-         DD1sP8n1FYkqV9IconeUV7tLcaMTiLos8nM8hFxEgXjXXa70EcmPreJLNsxz/z7GuVBO
-         PDBMPzw7xbEmlowbT3xMNIuaeXyw+LO+icPn+99H4pDiR6SV+kx9tI8KRZG3Ykxc4cZS
-         2IbQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=1ekkiy2g+M7FPDZ21WANrrjeUxkf7Ll6rM2VtDBfESc=;
+        b=ojuA6SUmhkzgLfJWJIUpufZ8aYi6aeHGBh99geD/lt4pLTDM9n6dPJCjetuMtiShVl
+         se9wL6nnf3XTuzFtsT6pwBnMuubBohvHE0iT1x7vV3+6kBb0hxrl/oP3bGdg2rDKpGPp
+         2v6DOaVmh8gHRMb59FqCItRqJcET/lV+CWQ6fFwdH0c1lb1CuA1LT6p4JsQpDFbbHpmf
+         QOq2RVIYxwH/WOmDhhc0B2K0lJA1zMrq1IShmECCIBlpeEVLWTgivO9Rjsrf+eSniWSu
+         ihVj4iPQkk5DTi9Yp7725nlqBxtpuR+BxHKax5OjOfKdkYJcRsTOqK+CjJCkKN4ad59+
+         asqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=3P9Xht38iIfkyMom35IZVoGV+p+fw2DjuuEs4EalF3M=;
-        b=mcyR6hORLiKAEDXR+NkdfG1EGZv7ChPI8Nd+nYn72/qvCjLX8l7OKg+nyAwsLfpfez
-         eyhi8cgs+CBaBis6CFZK/GkUzSsIAJjMNG+/DIGlL0TRrH6ASxPJ15g0OBFYSyD2qqfZ
-         m0fF6ahi/M1W2R+789vQfkukMZYBwBurNRSNJslu3KUG1iHaG0yPnZ/DuiW05o4Q9tWN
-         Ivk3Iumb3QU4w7B+H0ykQ+of2rW6MnCKGAgj70nDDchI/VuuzKxKBhDuQOnpVH313B3u
-         Aj8RuUmA7zwe4ioQ1s4gRhfOZ1K7j81sVmopr21KX75opTzUkIswIVBumjAmSGBHg9Aj
-         9SOg==
-X-Gm-Message-State: AIVw111Ps2BOda3RGXwN8LVbM6V6I2yw78va6jz3tFfg+72KIByyp5XS
-        RZoDE/kMRvUbew==
-X-Received: by 10.28.14.207 with SMTP id 198mr1218941wmo.102.1500373069411;
-        Tue, 18 Jul 2017 03:17:49 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1ekkiy2g+M7FPDZ21WANrrjeUxkf7Ll6rM2VtDBfESc=;
+        b=qDTcih+rH0Y8z3yHPdh1WODtoKqrF8yI9hPR6tC5GRGDfl/vpORCNxK1NseDBnzSVf
+         gx5jFNHY9BdiTqeVx7TABiFB3K82Wkbr25hFogPMc0nuZaJswXjl84nGCOIJNvH1YyK0
+         pNHXS8q+D+JenAU99zzx6a/cD5AvIcn1gsycSvQSGIzjYUrjuF/IeF46UQQix4QZHnlb
+         Xk9jBBn8E96kFDu4R7/nVhGuDl6F4o/Ac3YT8HMkb66HNf24ZMBMUvTlL1l4pI9IYPIj
+         +St7ecNgicFoviClSo3mn/n9snn9c7TQTsQzLRdNGr+q2P973XOZuzrAlsakbbFJkm2c
+         rzlw==
+X-Gm-Message-State: AIVw1125Y4ee3GAu+s8oQV+ncxwjKK/E/rhlSqbKUtHG//hiiMwsh4bo
+        9EWAfpkoeplBjw==
+X-Received: by 10.223.179.216 with SMTP id x24mr652602wrd.7.1500373059384;
+        Tue, 18 Jul 2017 03:17:39 -0700 (PDT)
 Received: from localhost.localdomain ([2001:470:9e39::48e])
-        by smtp.gmail.com with ESMTPSA id 9sm3253728wml.25.2017.07.18.03.17.48
+        by smtp.gmail.com with ESMTPSA id 9sm3253728wml.25.2017.07.18.03.17.37
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Jul 2017 03:17:48 -0700 (PDT)
+        Tue, 18 Jul 2017 03:17:38 -0700 (PDT)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     John Crispin <john@phrozen.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 8/9] MIPS: ralink: allow NULL clock for clk_get_rate
-Date:   Tue, 18 Jul 2017 12:17:29 +0200
-Message-Id: <20170718101730.2541-9-jonas.gorski@gmail.com>
+Cc:     adi-buildroot-devel@lists.sourceforge.net,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org
+Subject: [PATCH 0/9] make clk_get_rate implementations behavior more consistent
+Date:   Tue, 18 Jul 2017 12:17:21 +0200
+Message-Id: <20170718101730.2541-1-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 2.13.2
-In-Reply-To: <20170718101730.2541-1-jonas.gorski@gmail.com>
-References: <20170718101730.2541-1-jonas.gorski@gmail.com>
 To:     unlisted-recipients:; (no To-header on input)
 Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59130
+X-archive-position: 59131
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,34 +65,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Make the behaviour of clk_get_rate consistent with common clk's
-clk_get_rate by accepting NULL clocks as parameter. Some device
-drivers rely on this, and will cause an OOPS otherwise.
+The common clock and several other clock API implementations allow
+calling clk_get_rate with a NULL pointer. While not specified as
+expected behavior of the API, device drivers have come to rely on that,
+causing them to OOPS when run on a platform with a different clock API
+implementation.
 
-Fixes: 3f0a06b0368d ("MIPS: ralink: adds clkdev code")
-Cc: John Crispin <john@phrozen.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Fix this by making sure all clk_get_rate implementations handle
+NULL clocks instead of OOPSing.
+
+While some custom implementations even allow ERR_PTR()s, I decided
+against that as IIRC the usual idea is that errors should be handled and
+not silently carried over.
+
+Cc: adi-buildroot-devel@lists.sourceforge.net
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
-Reported-by: Mathias Kresin <dev@kresin.me>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
----
- arch/mips/ralink/clk.c | 3 +++
- 1 file changed, 3 insertions(+)
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@linux-mips.org
 
-diff --git a/arch/mips/ralink/clk.c b/arch/mips/ralink/clk.c
-index eb1c61917eb7..1b7df115eb60 100644
---- a/arch/mips/ralink/clk.c
-+++ b/arch/mips/ralink/clk.c
-@@ -53,6 +53,9 @@ EXPORT_SYMBOL_GPL(clk_disable);
- 
- unsigned long clk_get_rate(struct clk *clk)
- {
-+	if (!clk)
-+		return 0;
-+
- 	return clk->rate;
- }
- EXPORT_SYMBOL_GPL(clk_get_rate);
+Jonas Gorski (9):
+  ARM: ep93xx: allow NULL clock for clk_get_rate
+  ARM: mmp: allow NULL clock for clk_get_rate
+  blackfin: bf609: allow NULL clock for clk_get_rate
+  m68k: allow NULL clock for clk_get_rate
+  MIPS: AR7: allow NULL clock for clk_get_rate
+  MIPS: BCM63XX: allow NULL clock for clk_get_rate
+  MIPS: Loongson 2F: allow NULL clock for clk_get_rate
+  MIPS: ralink: allow NULL clock for clk_get_rate
+  unicore32: allow NULL clock for clk_get_rate
+
+ arch/arm/mach-ep93xx/clock.c           | 3 +++
+ arch/arm/mach-mmp/clock.c              | 4 +++-
+ arch/blackfin/mach-bf609/clock.c       | 2 +-
+ arch/m68k/coldfire/clk.c               | 3 +++
+ arch/mips/ar7/clock.c                  | 3 +++
+ arch/mips/bcm63xx/clk.c                | 3 +++
+ arch/mips/loongson64/lemote-2f/clock.c | 3 +++
+ arch/mips/ralink/clk.c                 | 3 +++
+ arch/unicore32/kernel/clock.c          | 3 +++
+ 9 files changed, 25 insertions(+), 2 deletions(-)
+
 -- 
 2.11.0

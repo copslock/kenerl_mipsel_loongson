@@ -1,147 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2017 03:23:59 +0200 (CEST)
-Received: from mail-co1nam03on0047.outbound.protection.outlook.com ([104.47.40.47]:19456
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994843AbdGRBXva0RfR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Jul 2017 03:23:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=QTzYAMevDLFng/SR0fYInSrsF6HF4Anaqg9nTqcAteQ=;
- b=c2zJSzoLMKSYHqB9rx+6g4CcfMfv5w/Wg7BPhRcgLPsxThcfLjrmSDQfKMyppcnyFQApvtELLRu6hvfEOWqeXOfIYteTT4H0JJ+zFw/CWo+qh5kC/3fZj5jd8u5EJDRlrd+S5F5Q8vTZBpU0+4Spr0+J6YTijP0ypwl/0XSot6o=
-Authentication-Results: linux-mips.org; dkim=none (message not signed)
- header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
-Received: from [10.0.0.4] (173.18.42.219) by
- BY1PR0701MB1221.namprd07.prod.outlook.com (10.160.105.152) with Microsoft
- SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1261.13; Tue, 18
- Jul 2017 01:23:43 +0000
-To:     linux-mips@linux-mips.org
-From:   "Steven J. Hill" <Steven.Hill@cavium.com>
-Subject: Patches being ignored...
-Message-ID: <97ec63cc-7ca4-f71b-8e42-221a4e79e985@cavium.com>
-Date:   Mon, 17 Jul 2017 20:23:39 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2017 09:39:41 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30648 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990924AbdGRHjdU9bQq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2017 09:39:33 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id A0F92653C01A7;
+        Tue, 18 Jul 2017 08:39:24 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 18 Jul 2017 08:39:26 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <marc.zyngier@arm.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] irqchip/mips-gic: Remove population of irq domain names
+Date:   Tue, 18 Jul 2017 08:39:21 +0100
+Message-ID: <1500363561-32213-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [173.18.42.219]
-X-ClientProxiedBy: CY4PR18CA0028.namprd18.prod.outlook.com (10.173.177.14) To
- BY1PR0701MB1221.namprd07.prod.outlook.com (10.160.105.152)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ee7e2db5-3836-4e2d-e485-08d4cd7ba1c0
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(300000503095)(300135400095)(201703131423075)(201703031133081)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:BY1PR0701MB1221;
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1221;3:pbpOpbhVDfQjcc4wQm1gwZ8MiOhMnpF3s6j9CiFUCRe8Mt5byuzAkXNnHeJT0be39BTeUgBewS91FbMfkwLFRa4EIm5k4M7nKP/ZswoVHNrch2AObxpKDQB5FyNZG1r4G71KsXiM+j6l3wu1LFmtIznwey0kxW1zqsOgfpuzlUONtuEr+PbSEmpaHVBB+t+vyrBVOetNU1eql58d2MwfPTIkDzi7gVLqZiLgLkM+97voICqV3xgmpK7bLVB0kxnjEi1OyhWr/IcLLe3GayTUFqfiQQ4FzXTm14xVjBOrBP1+kYDDzvrqoyx5ksmH/7+ne77mR9uzR14g1umMvUu7PWQvIxoEreIY1D6clVwbSD3NrWiKBBIMT6MwC0dkCAA/1MOGhKuW3buT0mdS3f0ICx+Si7xE5YCDqZNhK4siFrnDK5BVZWepDgC2aWvC8PwvCEf+i0JHqxZ2j91SIXLl7fdtvu7/zcAzCwNjg66HJQgaEvzy7ZE8orBx4+C0AB0kg2Ivk0wwwB+aIab0IfANjEStrw0ncGOQVc+DbQoo4GHVT+0G9lILT4+j0dVV3qlFTrW4MYvD3BtLMXLkEFMd0+RualMYN7ggW+mS2foHXLs1cK18VfHFgwZahzQ4+gN5JuYWvWcp1KhuR7IAb/sjpZzS7sAl31jg0j5xEQEuzE5uh1PJtF2jpv7SV3K+kCDA1n6QjG8oX9t71EsiG/T9PYXRCWRmSSMjK5UVEv3FzqY=
-X-MS-TrafficTypeDiagnostic: BY1PR0701MB1221:
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1221;25:JSgl0TNEhMdhaggYdBGBUmyUmeJ3Dsn4KgBo5OF8sV2D3V0Y329YO9+IPLcdmTXkZydP7TANZxm0xIGMeMwv8X67t2QgXruozlxMwTS0HBDnMEqJ2IZnvh9pl0Ieko5WKsytCdFnR8O6wxT4Q4ihruiPw+eOwK7B7bSMNFkEbgJbW1d6uefyl5WQYmGf9bqp3GX/PP6iRP51Q2ghI2eR+943XQfMMMmB46/Rq73QcU7ZUn8DuXOGCAWnQGzTG/5Kbr48f7bHUtoEzJ0YJQjJWXH6PxoqzCegPasa95/O00pP+ymIRRPXfNEdL71NJ8ewmN5+u7g4AFQZ3Ewf2jDl34DgD2wsoXWFhlInjJFNtiQJ71WheTeM/JVKi+7nzjQT8Zj8KzYNP53PCDXZ3pdJlECdELD3sMUgrxFclTxPjHybbEUPFORFxjQrAX3L9vQpL233tyPB5rYQ4yDtGnpthFzuAfssfDjWgc3fCZM+tcRVhd+i1qFmZXJGC5I7hEN4tT4xyye9B0ACHR7Q3f504KTJxtCsy0aPiQqcQPmB63Lqjca7TpOXKBWN6P9SxEfJP0WudOT+tgUhZswRAtKAUUEku94y/l13cd4BaYa6+53zwckN+cqfaSgmS8hgfCgyo9xmwgSSGskjpZH/rz+BmIMuGpF1PA/PTqAZWgFw7KABgqY6YwfHpmiUNCsIc7bAh5/xMQa23QtCMtxhbzcaAHpSaiY0cU6xSFMqw+pGVpgIc9RMmSfJMEEz4lbtWWIPvPJiRHVFzejWy+sf7+TcydYX4uXPDGrWqSruw9xEpRYy8mOa9ykmVohVyw4snvOQviGeTL4Xvnnefn4ggq8SpEgV0umn5K/69m52SR6SmWPbIFGPxUnOFI/70rCwdCZW20aOJr3sbh1Srq3JORrhWviQXXsSLtS8xbj9m57BAIk=
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1221;31:AsIjBQszEyUPeq7V7GYO7KmMil8Iz1x7UB/dbDOTrxrVpt61iuHn/alIy3HoGd0a57na0bcBcZkc4wWurPhOjAJ4Ono8KLxFp9gQY/alIetc+tJqQ/pbPqz2Ee/oY3q0j8FO9gRjfGpmF8p6WRKDzg0mHpSadR+C1msZbFHh48mu9xKo876IAuTrbgukoNbwHR+d+4Cog4Z6zA+pGF2dXfZvTn8vS+By2Ie7dY7bYS/PWdS8P0CX3bM3cBkJ27pFY11cWPpeAK8svE9qC5sGQFbOgNm9TdOzCEumhQoKj3/DypKRwS5dnUYgGD/b8jJFl0DU+uRxsGdB5kAtwcIey9EToO+HCqTvQkHqWnpUIhCOj449CmC58egNU95HW+vQ+R+td5zsJr0Gr7eKTAQtJa0ei/U3yOE7ALSRuNwr+KWMQKDxB3XKs7EZEkv01OoLRRfzUlAADEDBbcacbyaVyllacIAL9mdORBJDcJ3DlVlAj8Ec0mIw56lI2i+HOkXmqM+Ic2wQ5LJDeeV7aykF1R+HB3q6LXIcOMvVtBmk+33UiMQltoA1MinPXKB11TGwQuzhouF4JXVLrhBGIXy/ZbjphKgJRVlIdxb65UMyVIAfvUPzgQvu43krziuAcGE/IePTmbbBO9a1SYQXnKpyK3hTkeA5vBeT7JMhh7Zz/hzhMyAwKv+2Lq4sdnrcR2nvZS8ybrCuetln3ejIYPOIDg==
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1221;20:2z5EsMdP1ZK+jjZlYT/lo5NIYnfHvxCzOhiqEkuuVjbwrHL/sjCJ4Ew3lwdV9pn/C87bfC67rvuiyL8nsIbU4R37WF4Liuv2EaW6EBSiRa1EHdyqwgTE0NA/QcymaHVxNATCXpGYzB0A9rRfUU2M9CvVlc8l+tDyszhsiymvQ+Rq36bAThg0wZG39jfWz4EOy2PVLB+rEueX90VV3GgyKUCMrqipOwkuh0quZnAzzH9Ga55PurYCgxcAV6Y1OWwL0+t2SEBSaTRdOeypnQRU7ebr9gycoKaPl8ZBbZkU0TpN/1+wxTmOGDVEw5ORDxX6U9vWI0VlRFdfuXuF0gB7QwCwq2/MWjwwwbvWxRJXsPJCXG8tuE9drDKbHO6414eQiMad25xNOtBLh5ofsGMSx+VCRRgMp1094mFhLs4JzjR33w5TLc6O4cgIa3sXB9IdfY7bTtrcCtHcyNbxfN9U7HLrN0urD1skpyNGW1oVCqPZQN05Obzoq2YLHsFtQzN6
-X-Exchange-Antispam-Report-Test: UriScan:(236129657087228);
-X-Microsoft-Antispam-PRVS: <BY1PR0701MB1221AB64E73B8124605AB72980A10@BY1PR0701MB1221.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(8121501046)(5005006)(2017060910075)(93006095)(93001095)(10201501046)(100000703101)(100105400095)(3002001)(6041248)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123558100)(20161123560025)(20161123555025)(20161123562025)(20161123564025)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:BY1PR0701MB1221;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:BY1PR0701MB1221;
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjE7NDpwdjBQK1hUUEhwNnlOS29IWklISFFuTFV3?=
- =?utf-8?B?U09vU2tnbXFtamZVSEFBb1g5a1Q4djhjTUJhaDNYSUVzR3JkQjYzd3grbXYz?=
- =?utf-8?B?VGIxTVp1VGpWdWhza3UyYkVRR091Tk5DOFFMQ2ErK29ENzh6MEUyczBjbURY?=
- =?utf-8?B?aXA0am9hUXBKVkdnVnZWYmZpcXE4Qy8wOWJseHZjUU5GQ2VlUjA3K3NLRWsz?=
- =?utf-8?B?VkNJa3pSMWlVZWduSVJBNG13UmoyZjNCZEgyb1FlRmxaWGFSaE0xaGVPZFNI?=
- =?utf-8?B?S2ozUFVoR3R4czVVcDBodXNxVGpxYTlsaGI1N1ZDaG5TV2M0d25aYmFyWTBk?=
- =?utf-8?B?ZnR5RTNGZUlsT0lYMDdTS0RicnhtZDFPakU3czJLcW5KaSsvam8vcmFHMFVt?=
- =?utf-8?B?ZFNUc0JydStYSm9mNXltY0xYdnBNNkdQYXQ5U3dQcVZwRGJIdEV2K1p3Y1Uv?=
- =?utf-8?B?QkxHTFU3VlM4S2NnQlJIak5jSCtnTUJVSFVqQXRqcnlxWC9NRnlYVDZCM1F1?=
- =?utf-8?B?UmVzOWp1dXBuakVQN2o4OWZTcFUrYTdsODhjTXJwTitDNVdyZ2QrUG1QZmRv?=
- =?utf-8?B?QlFxNnQ0ZDJWdnlhMmorQUV1SC9NdWlOcUR3algza2ZIQitVYnJPQkdQWitB?=
- =?utf-8?B?UVpIT2VzajF4aXJ4NU5VK1V2b29MY20ydWg2UUkwMm5tZCsySlQvUHZHMmhY?=
- =?utf-8?B?ME1acTgyTUx1U0FmbENCb1haSENUTTJDWlJ6UHhCbHhmbzRyTEFVK2x1NTJ0?=
- =?utf-8?B?Q3dxYjZlWFJGd3A5SDViZXBZeFpmN2VMbXlnZ1F4THdSYWJ3RGZKTGYwazRq?=
- =?utf-8?B?ZGF5ZjRLQWloT2V2VUlWVTVFY1hvcktpaHZ5TjNpaUd6WCtSeHZDZG1ZZGJH?=
- =?utf-8?B?WHZEMFRQTWljeWdyc2g5RGN2TVIwSkVUSTJyS0VKS3pGUENzQVo0MVh0VXI1?=
- =?utf-8?B?blBwc3Awc2lISkM5Z003TFBwVnJFYkVrZFhSUUdXeVQ1RXpmRWdiUkJPQ1ZI?=
- =?utf-8?B?L2JPaGhwY2FjQVVrMWREY2hmYTFVbXdjMm1RNkUxSUxEM2RjdjlGcjFlM2dZ?=
- =?utf-8?B?TzNrMEpOREFOWThNNzVERE9xS2dMMmVzemZBY2pWR2RDN3ZNbVVoVll6Rnd0?=
- =?utf-8?B?ZWVGbC9Zb0dFN3RkbkNyRGdleEhSUTIrcDNDNXJRNHArc0F6TXYxU1VzalV4?=
- =?utf-8?B?UE5OVjZJOVBuclpMR0hRaW5wUkl6QXpoZVpiQURkbW1RVDgydkRWZkN3SzVG?=
- =?utf-8?B?TWUvMkM3aWQrVERrUkpnKzhEZkY3bHFvRldCdXJVek1wNHJvWlNXRHRPeGJy?=
- =?utf-8?B?SkcvcXB5dXQ0MU9weDA1TnZBTjBYaVJCWjBNUWZXaUo4ci9VWU9aRjVrZGp4?=
- =?utf-8?B?YTZYdDhWRDdzRlVYWU5iUHdvSVpJNFZvYTdpYjBlT3FmQks4dUJKeUtXNzZp?=
- =?utf-8?B?QVA1WCt1MUdaanVnYjBsU2VId0hjeko3Q2NzM2lNcUZtSVVmcnY1WWNRWERS?=
- =?utf-8?B?bk5DVmVsZ2dSLzBGWUtiQTRqSlF4SlpOM2EwYUtnLzEzbHAxN01jTDBJaEFj?=
- =?utf-8?B?SXYvL2JUQU5LdEhFZHdsNnBGQWtOU0FQeUVVK01zTHlvcnJ0bzZCN1lZWXA3?=
- =?utf-8?B?YkFwVUlvT2syQjVrM0o3Q1FYQnFDNWZDN2ozZUtJSklndHhNZVhJMG1SUT09?=
-X-Forefront-PRVS: 037291602B
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(7370300001)(6009001)(6049001)(39400400002)(39450400003)(39850400002)(39860400002)(39840400002)(39410400002)(2351001)(8676002)(81166006)(558084003)(64126003)(72206003)(5660300001)(230700001)(65806001)(65826007)(2906002)(66066001)(478600001)(7736002)(50466002)(33646002)(47776003)(23676002)(83506001)(2361001)(305945005)(42186005)(77096006)(31696002)(31686004)(6916009)(4001350100001)(966005)(6666003)(36756003)(50986999)(54356999)(3480700004)(6486002)(110136004)(53936002)(6306002)(90366009)(86362001)(3846002)(6116002)(38730400002)(25786009)(189998001)(7350300001);DIR:OUT;SFP:1101;SCL:1;SRVR:BY1PR0701MB1221;H:[10.0.0.4];FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjE7MjM6ZWdMOU9wSE5qd2VObzhZOVhqQVZRTXNP?=
- =?utf-8?B?eGFDLzlmODhWcytXWUt4bXhya0JLdzZFbUcxdmZGeHU2a1JkY0IzeXZ0OSsr?=
- =?utf-8?B?V0NEY2VGZGU4cTVIQUVjSk9oUWd5eWpWaGFraWNmOWtFbEJDTzNUeHE1SzJ2?=
- =?utf-8?B?MExFdjdoNDFZcGx3RHFlWmhkZFVVdFRYQU5uNVV5YjBqMVFmeEhkNUVrMXlX?=
- =?utf-8?B?VTlVNE5DNnZpU2ZIdm54WUk2eEhuNU1LRUQxaG5Rdmo1bkRZTjF6WEdmdGVD?=
- =?utf-8?B?eGZPa1NBOUNKa3lXTDhKc2tJZnd3LzgvV01hcERBcXd1VWlCTXQ5cDlERldX?=
- =?utf-8?B?UjRkYVBudVJuL0RDbzh5NEdBR1ZpTTRwY0JrN25PMVN3NExoYkI5VXc0d1J3?=
- =?utf-8?B?ZnJqTVRQWWZtYXBUWDhFeTZ0WDYrbFB2SWkxN3NpbXFUeWNxUXZieDQ2cGQ5?=
- =?utf-8?B?MWFZWjZMYTJUdDBKL2Q5a0ZBNlk3OTk5Z0xFQ05paXg4N3dOOWRmQUNuSmtK?=
- =?utf-8?B?VWhKMUkxMFpLdGZ5MjlVRmlIWVVUWU5LMUtQRDNLeE5NL0hjNitPZ0tVeDhi?=
- =?utf-8?B?ZnhVV2hERURQcUV0THpwUGNwSUVkNm1DWXhTZ29CeGRQQitRNi9FcDdwc0ZJ?=
- =?utf-8?B?bzU4MVRIUXlwRDVBZGs0VzUrSzBNZkJ2cGRBYnVJdmpxS2dqeE9ST1Nuditt?=
- =?utf-8?B?bExhbS9oc1BoS2trOFJWTWpVY25JTkszT25Vb1pFM2crYzE2Z0xiUSszc3Av?=
- =?utf-8?B?TldjZTVycUt0SS9xZlFvSklVNURuYmM3enQrSnR4UUNLaUoxRmRxcDUrLytO?=
- =?utf-8?B?OVNYeWtqWlFpZTdaT2ErY2MzcWpnS1k4M1NJZWdoNS9WR0ZFcVZSblQzZkFQ?=
- =?utf-8?B?ZUZoZ0xCd0JxampqL1JLV3J1aWxXditRY0lwNjI1MDFkOXNkY3owR0JmV3BD?=
- =?utf-8?B?UUFxcHgycW1iaHZqVlBMdjlhMWgyQ3NJUk9IbUY3bm5KTUovcElIVUZnR3JK?=
- =?utf-8?B?aVkxUlNSdko2WTAzcCtybUN4MXV3SFVHZGVWYmZHODhiaGdNZmxlMUNML3hH?=
- =?utf-8?B?RE5DNVFpaURiUUxQK29TQ1pqSWY4WHFjVlhReUpjTU5jcUdDcTkzMmpkZTdK?=
- =?utf-8?B?VEFESU5nVWVkRHRVRm5BalVKT0pycWdlZC85Wm9ZM2RQSnZKRGZ6V2p3NnRQ?=
- =?utf-8?B?NjFNc213dy82aFNOL01EbHdnQnhrcmxZQk92ODBFTnVxdGVvQkxnalFDYlFE?=
- =?utf-8?B?VnhTakY5M2hKQ090M2tOTkNtYTJVWVYrSGkwdFZtSGhIdGZKWGQxeVFYd2hQ?=
- =?utf-8?B?akNrUU9qQ2dqUXF5RkpZSlRJUXpLamxsM2svYnJjcGdUbHppMXBQT2ZObHh3?=
- =?utf-8?B?U1FLcWV1UVRORkwyMEdXZXVvQVo3WnUwei9TQk40eGFvWUw3cFBvNXBqUmZR?=
- =?utf-8?B?OVExS1pXZ2d1VFljMFBPVzJXUmtpa2tGdE91ZHdsd2lXUG10VHp3ZVdpRmp2?=
- =?utf-8?B?c3U1K3c0U0hTQmVuOUNvOXFHaFdQUi9TVGc0a20wbU1wZzJGT3ZGdFpMVVlC?=
- =?utf-8?B?RGpjR3ZsVW14eWFzSDB5SCtsUXRhZ1JSOXpaMHJQZVdtRGcxRWFFSlp6RDhF?=
- =?utf-8?B?QlYraW1IQXN4V2NnSXhvWmxXSEJXV29iTmt2L1UvRTR3dDhrRzlSZmhkM1NF?=
- =?utf-8?B?SU1BMGJDQ3FUM3IzRDA0Zklwakx6L2U2ejBiMTF4ZURvWU5pSWpkWWRvLzZF?=
- =?utf-8?B?b3FkRjJDQklCQnhRcU9kV2dOSXlQczNVOHRhK3VkZXpUZk1UTzlTK003QitE?=
- =?utf-8?B?NDN5OEtXMjhzZ1F3cERmTC84eXpCc0tjL0FHZHJKdFg2aVNvQT09?=
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjE7Njo5QWxidkJueE9sTGlwVUhMR2ZrbFJHVG1y?=
- =?utf-8?B?MXpxbVVyQjI0aXpLaXhBZlBweUlXTDBuRVZTbEpCQit2eUFjdG5mbVFjblBB?=
- =?utf-8?B?cWRzb0Z0RG81QzVZUEYwNkx0cUZjMjc1SDhZYVBLWFVLUDNpV25tb3VIaGxJ?=
- =?utf-8?B?N1dxQnI5a1huekVZNmtMWmUydVh3ZEVWNk00VzRuaGdoZ0UxeEJMUGt4NFJ3?=
- =?utf-8?B?MmlEcWM5T05GUjltQVZjVFVPNEVMaGFJNHNLZEp1SG9iU0RNNGxoNUVNZUlr?=
- =?utf-8?B?VWM1MzR1amhDMVdEaEVYRUlUcHF6dW9qVi96VktveUw1dHhlVDI4cEw2Mjdj?=
- =?utf-8?B?WFlRL3NTZWNQSE1Ed0VKdE1xWFBKcVlQOE9iT2VYUXZzUjBIbXB1MHFpWTU2?=
- =?utf-8?B?THdxYnBqN2lEQUs5L2ErVzZjeVJpd3hNTVA2ZWF3c3FLYUZhU0laS1Z5N2hs?=
- =?utf-8?B?S2k5VVFhTkFiSHVNejlKSXMrcUVkeUpaMVh4VEtOak9ISVB4MTNEbFVPYnlG?=
- =?utf-8?B?SmdPcHdHTGloMXpJd2RTdlcxTkRwNzFlQ0prdXRFeDVxcWVlbXpHMVRYYmZD?=
- =?utf-8?B?aG5qemtLYitla3ZTMXVOOC82aUcxanJjUnA4SVNKT3pnVXhGRlFwTHBmVHlB?=
- =?utf-8?B?L3FrVDgrcVo2dWFrRjhTNlU5eVhRNHRPck0zdnhNTGV4ZE5sTWYvZ092aHg0?=
- =?utf-8?B?Y1ZubytIMDZpZGpMT0hyM1ZhODRyTCtLajJSVjcvTzZwd3h5azVFYUFiSDhE?=
- =?utf-8?B?Vit2VjA0azMwdjBlck5rUU96UEJxbmtKczZteTVSNlZER1owdndEUHdySk1F?=
- =?utf-8?B?TTJXbGZPU0dYK0FHdWRKWEVRY0hRMDBudHA2NTVDdkVnY0M3SStvTDlnVmxH?=
- =?utf-8?B?MFdRQWRYU0JMM1NaQnNhVEE0TEVEbDZxWWJGdDhibDc2b29KdHR1bFFGeVdq?=
- =?utf-8?B?Nm14MXJ6QnR3Y2s0V2pqMDdxT0JkNHBjYlY3dmRCRzYrV3MyQnBRaDNsRDdE?=
- =?utf-8?B?Y1d2R1FHRE1Zd1BRWDdOT3JFYy9rdEpYU0c3dThMS080ZnVXQmV6TTl5TEly?=
- =?utf-8?B?NFhZc3VWcDMveUoyNGJXeUxvQXE3L0RGcU5LK1R3Z2hNdmtjdTl2a1IvZUpp?=
- =?utf-8?B?aGNQalZYQ1IreUFTWGo1THJJbkRISFNESFpTTDRMbU5wd2o5OFhxQ2piQ3dB?=
- =?utf-8?B?TVZJYkNLSmJyUUo2Nk9zSGw1RENzS3F1djRKKzc1SFJBV0JKQkNIWXZMbldo?=
- =?utf-8?B?cHdXN1d6U2tTUXNIS0FQbkhIdVUvK3M0eUhiQVNyZlVlRmk1Z3dwT1RZdkRP?=
- =?utf-8?Q?0hF1tg9rTY3DunSkPJf2SJsFOfkRoA7s4=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1221;5:Z4amoS+0anhzDjo6LK7w8qMgvf3si4+lboqBEtq3hi6tFkTsaYINsJpbmqtthR7Vii0cija1Jm8iKSRVKFDn1qJzFGkJKyE3fZDQZ9ycXlkFRcJw9njEvEDgUTEdll6dBEPCVHWv6p8R7Rm2kUISD3WgcGlSnkC77OwvDk69Kx0VfTb7UnzKS1e2NyU/w1EFN+PK9V7r0ahpjD8AMRGpgFXo5xOU1Mos5gu2d8XLdpumzJ2UoerMeuF1c2oiGL38RspW/ExhbA4bfimnBoEdMlDfVa/Pm/kFI8WQu2jUMm+ojgJ7DZ993RH8xc4kg3uTezD6k5dJbKFUbUlnSm66M6GsraDmd5oXJwDDrvbpLqck/i58kZJrvOXT6GmIVn5Jkke2QavG55drnljaRGUncQ9BZ0gt1hpKbvgWF2nsgPnzRH8PqathRMZOs1bgJOz1lKiRG/qXv5UxfSCpbgN2dezhz2R1XVYaiIzTscb8yyErULVrFOPcAjnhMtzgoKaJ;24:TY3ERJ5/SnfDjBFDr58f31GdguoZcj+0XmhyX4FJUalCWhLep7rKinKokKJUyKOnObTCmaVobdtrkXoQ0moxdGguLZOsMsEz91oMJEn6rAM=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1221;7:QmciUqm7g6t5KU6WoNsGY5gIcZLVAk/PKROJxzbyXhwIqetLd9XSRR+hlQs6GBz4NJyLBFxNVkqzJFSg3WbDX6mhTHBnFIe/5Bn4jifskLmDB0xZ3mQ3Gew6t6LuZ3POmpMPtf50GdOUlCXxpQ3kCbcpC3C8WlXbI37bBhUpPoRpPAZn1XeCrUOYgEA/RNhlsfRK9GlofAD4CrOors6qjsDs6u/+DzZEDaBmICHVnPGosfq05lyHDlGuDaJFeTYYC1hDOm7tzI9VaYM7l9IktaySzFqt3LccQOFK84cEosTtDkaMNJo0NFrcwZkEytIEeNyqZD1gouopdB4MjiobPiiKA8oJgCJ+mz4vt1z+y04PNU3cc/fYVgg7HbgqXxH3LrwPr4ppjcNup0PeiMaP9Ri8SYtzPflocbH94+NTMjuFU3L+Z3nG90XBS8mBFZPxIkl7J6I5zb2XJmCsUU+87utcq+OmtvSscP7n2Pdr8kw/6g1R5HWyIU60nG6/upnCa3ozw3GltsixcjXwClqd/HYNtHJA32X/YcPeNFobG2rIVrc9k2AGjUpaUD7eBYgvkZS8y96syMcuFXxF1hwoag+lAkgqWcK309K5R+xMpg14xwUI3nq14YbCwXnSt4emqGTN8wr9jH5A/3xMetQaqUc/ImXQIKmqC/PDhfDzjhh/5UZI1jMCErsVNP+zj0YECWEenvJSAUPK9VDEGEL6OBsWGmV0yjztohB+h1uz0FwA5w5YNzEAWW3GRMFmjnmCTDPi4mUErHqKHSa034zBj2uopC71aDD+4ZJ7hzSDeWg=
-X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2017 01:23:43.4527 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR0701MB1221
-Return-Path: <Steven.Hill@cavium.com>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59124
+X-archive-position: 59125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@cavium.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -154,11 +44,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I have two patches:
+Since commit d59f6617eef0f ("genirq: Allow fwnode to carry name
+information only") the irqdomain core sets the names of irq domains.
+When the name is allocated the new IRQ_DOMAIN_NAME_ALLOCATED flag is
+set. Replacing the allocated name with a constant one is not a good
+idea, since calling the new irq_domain_update_bus_token() API, added to
+the MIPS GIC driver by commit 96f0d93a487e1 ("irqchip/MSI: Use
+irq_domain_update_bus_token instead of an open coded access") will
+attempt to kfree the pointer, and result in a kernel OOPS.
 
-   https://patchwork.linux-mips.org/patch/16152/
-   https://patchwork.linux-mips.org/patch/16153/
+Fix this by removing the names, now that they are set by the irqdomain
+core. This effectively reverts commit 21c57fd13589 ("irqchip/mips-gic:
+Populate irq_domain names").
 
-that have been sitting since the end of May. I just checked
-the v4.13-rc1 tag and they are still not in there. Why are
-patches not going in?
+Fixes: d59f6617eef0f ("genirq: Allow fwnode to carry name information only")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+
+---
+
+ drivers/irqchip/irq-mips-gic.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 832ebf4062f7..6ab1d3afec02 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -950,7 +950,6 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 					       &gic_irq_domain_ops, NULL);
+ 	if (!gic_irq_domain)
+ 		panic("Failed to add GIC IRQ domain");
+-	gic_irq_domain->name = "mips-gic-irq";
+ 
+ 	gic_ipi_domain = irq_domain_add_hierarchy(gic_irq_domain,
+ 						  IRQ_DOMAIN_FLAG_IPI_PER_CPU,
+@@ -959,7 +958,6 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 	if (!gic_ipi_domain)
+ 		panic("Failed to add GIC IPI domain");
+ 
+-	gic_ipi_domain->name = "mips-gic-ipi";
+ 	irq_domain_update_bus_token(gic_ipi_domain, DOMAIN_BUS_IPI);
+ 
+ 	if (node &&
+-- 
+2.7.4

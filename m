@@ -1,153 +1,143 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jul 2017 17:32:58 +0200 (CEST)
-Received: from mail-bn3nam01on0075.outbound.protection.outlook.com ([104.47.33.75]:33152
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993886AbdGSPcpuQYKp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Jul 2017 17:32:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=7nAe16/o01hL4MFRnlB7ru3YTc8frnmBpKqXvJzG+gk=;
- b=na3UZ1hWIsqSjG2R6LFHfpnMmJw2+5GYwlG2W9E+iV27enwryKg7kn3YTtKWmRB9rYHzL04GnQzLPAsqBqO8xYopm9foSkTQqldnakLRbOEc3PcXv9tk+6WwEdCju2wX/YDMRGUiW36WtQWb4e7ZUBvw628efRmPVmePX2D5C/0=
-Authentication-Results: linux-mips.org; dkim=none (message not signed)
- header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
-Received: from [10.0.0.4] (173.18.42.219) by
- BY1PR0701MB1223.namprd07.prod.outlook.com (10.160.105.154) with Microsoft
- SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1261.13; Wed, 19
- Jul 2017 15:32:32 +0000
-Subject: Re: [PATCH] MIPS: Octeon: Fix broken EDAC driver.
-To:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-References: <1496251247-27123-1-git-send-email-steven.hill@cavium.com>
- <20170719093919.GR31455@jhogan-linux.le.imgtec.org>
- <20170719142105.GE5852@linux-mips.org>
- <20170719151654.GT31455@jhogan-linux.le.imgtec.org>
-From:   "Steven J. Hill" <Steven.Hill@cavium.com>
-Message-ID: <d151f82f-5a80-55c5-f9fa-30390ae08ec2@cavium.com>
-Date:   Wed, 19 Jul 2017 10:32:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jul 2017 17:33:49 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:44611
+        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993423AbdGSPdlSE2Op (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jul 2017 17:33:41 +0200
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7] helo=dude.pengutronix.de.)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1dXqsc-0001si-J3; Wed, 19 Jul 2017 17:27:14 +0200
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        =?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alan Tull <atull@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Andrew Lunn <andrew@lunn.ch>, Ben Skeggs <bskeggs@redhat.com>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Bin Liu <b-liu@ti.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Chen Feng <puck.chen@hisilicon.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        David Airlie <airlied@linux.ie>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Jiri Slaby <jslaby@suse.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        John Youn <johnyoun@synopsys.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Marc Dietrich <marvin24@gmx.de>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Yao <mark.yao@rock-chips.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Moritz Fischer <moritz.fischer@ettus.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Peter Chen <Peter.Chen@nxp.com>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Philippe Cornu <philippe.cornu@st.com>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Rakesh Iyer <riyer@nvidia.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Richard Weinberger <richard@nod.at>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Rongrong Zou <zourongrong@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Stephen Boyd <sboyd@codeaurora.org>, Tejun Heo <tj@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vincent Abriou <vincent.abriou@st.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Xinliang Liu <z.liuxinliang@hisilicon.com>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        Yannick Fertre <yannick.fertre@st.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Zhang Rui <rui.zhang@intel.com>, alsa-devel@alsa-project.org,
+        ath10k@lists.infradead.org, devel@driverdev.osuosl.org,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        nouveau@lists.freedesktop.org
+Subject: [PATCH 000/102] Convert drivers to explicit reset API
+Date:   Wed, 19 Jul 2017 17:25:04 +0200
+Message-Id: <20170719152646.25903-1-p.zabel@pengutronix.de>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-In-Reply-To: <20170719151654.GT31455@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [173.18.42.219]
-X-ClientProxiedBy: MWHPR17CA0069.namprd17.prod.outlook.com (10.173.106.159) To
- BY1PR0701MB1223.namprd07.prod.outlook.com (10.160.105.154)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4ad2fd1a-b718-429a-1feb-08d4cebb602c
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(300000503095)(300135400095)(201703131423075)(201703031133081)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:BY1PR0701MB1223;
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1223;3:m6PFQRotJYg1iDEnOpgyLH4ACgo2L45Ai+OYV/esbU1xxT20wQ9x79roE/RQ37FucFqlg1CNo8kE/zrdWaeQJDYH9KpDrRzaLf0fYF/wpBg0ADajNGSRmVqyaDY4Vzpi247V5EHtacAoUgcQG/Flq1fRGNM7KgBQ/1XK+z4yDeFzJeu5ruWDUvvcR4W3K38/Q+SpMTs9BvsVsbz6G3axsz+NDi1YWc5DgXGZzaq4hmxNb0K2Mj1+Z7xdOfoEYGunW0NsiVuFQ3gyDXMMiAlsxZR3N4emxBD/0qBr6N6PytMvkt6Vv1IGsGWzXr7vjvwSJ9ZjLhaSxOjIjMNS9+U6KyxaHbHtssqgVKW2elYA3feYSclTtOUVZiJ5SjeHkL7zwAmilwYbadD0vTMuikZgQb3wtBxq4I9YmXheqOwK6WOUW8Tn+pIhWKu74oQcfCRO6HabM3Sna7boAbkLYJkyYTx3TfxuJEvUnQHsgq8BvTiocIcLdSelpWbmcg3AYray6E3eJ3jUFoJZrFVBc0H+U92K9Mvq2vrf9iaX0ghsJlOoYk/YIsA7zC0zGq4GiJSEm5X74TyGMs6AufFFZTgFy/wQYfCtm7qrcKEyzqRDqSQk+o1Z3+Ufd0MHFK+DbVhBic2l5vR3fPlt1I00+gKwNg03FU7jpv70J801QDs1cE0ZtAt+xxwbFsY1UvRRw2dSIV9g+jeHUas2e+lvWsOwI/oZwetlh0gry68PbySSa/0=
-X-MS-TrafficTypeDiagnostic: BY1PR0701MB1223:
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1223;25:t5+eS4ELjJNeWa8SmNocq9xt9sfqlPd73wbjMBbzmzUO7Suf73CTMq9i4BdHNzvQuL1HFkWatvciNww/Jfm47yPIQic1GIFDYHQv3XcKFx+cIQZRwoK0e+gj12NoWrKj71UF54l3yT3wDo86R75KMoLI1PHiCIRzD0Ky1siQjOkaDPxhR0BlM0JHdk2TOfyflu66mDkSg/mm1BoWleseVOQM/4a5VfhXYtu3rbRWJysCwAdP3Yk/V5wFbuDamDFFEoLRrmqZ0hhlTQ6J/zmymV/yTh4frvgy4USP+WduHUflY7t17K7H46KxDvypea5lJPY/N4v5AP+MnHNhZMZ6kkV/3n394X/KPOptXUKIX6Qf4smrJluD0lJyrZa+xphDgC6RiMFGpo+HT8WWARPZAv/sfFS+CRT7Gx0lBZLnoWIAGpt/Auud5a7hgnM32GMnRYjLOEtNbgwFlQA76dS7fBN/+NI6l0jWqAYzK2xXBVsaDR6xa/JLEcQTy9GyO3Adq2Afj7PZOR2a7Km2HP14f/eD1FwCJBXV3vHiWsAyGK9JNsH2hXI8NsBBTeX5ty2mHB/KR3aouhBDn9PlFip+wM36YV8I/BPS5KoAT2Hd5QCBqEQLt3JiNjwb5UdXFIW1M7u3mGXErS9YuzFnWJ8afd57o92X2a9WThN5EPMO7F5Vw4DOJOwosbJIaH+sDtsoLiKQuFhQDgukmoxZVP9lcNtH/XBxq0XUfqFO7uy4xCVyjTUoMFKrhcNW6D+6yQP+r6e8b2OO4M803JeU+wkACK8scDtleqFW8en5PqhwRRq0ey3B3faTKb3bmusPirtn7zfFFa/1uUdMcAPdlpEVQ4i/eKWIIHlFmTvtFACJCgnsMQKednCgebG4qBZgAfidzQ5RjxWRZUt1Vyjc+goE0Raaq1V+oLTVVuCTXTGabbQ=
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1223;31:37xccAGdI2pfGPTIfv2rPe8En0AcqfOrDfmIg0NZQMQqew4WzTtS9COkX1FIKyBOvMER+D9shKVSoWTexAyowbPrFumF36VKRajWDo0s2YXNx+tm+LI4h/tfECJI52Vq+0pE0AvIJ07Z/Gdw+Le+aH4eVutbtw6/IV5FDSaJX1qUnP5STvc9NoVeoMoEKWyFgubo3V49xJXHPyGkMuC3Dq/u4IZuB9Ip8IphgZ48rc1IiiaO5uGhxdF01wyY7pRXJo306EyViM/2eBfKaNsjWuaUdTMKqzifz+ECMBc5US3hbrELQnCHk9odc38Zl07+uFoNOJJUJM56wo1GpCQ8SaAFp+NlNUp4eoStNqolfoJ2hTwUomczXZow3WdAJzpfoF4jNIn5NTtLCmSXP95ykOWkJe8f0AhLD428OxJGJn2rg5j0wcpRbmFlc0Ej74Kt9yhWLRNC9LrIxJCIv45M4mElQMK/td0nLuyJ/8Fvgzpp9snBT+5jfk+seg4BpRC28g/rtMqk9qBKehQwiI1eDv//IL/jCJS7+yVRGNIJvoERWu7SM50d01EWWMHdnovodmUueQF7UkYdaVUi8QzkoMsjgjrF9s28HXCg8axWB7JbYx/s525THkQgsqYTv9TXVoOtqAR0Szo1NPEYeyq6LlYYtqKWe15aPvM2GDH1RAxLryR9PnhFOfx7l+xdZoh5
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1223;20:DHLsX8Y9zqRDE6yr9IzfVSrwDbdxeGi7JCZplZkOFvNYsbsC50VgAi50Glj/njm5KTOf2APzas0BJZs2puYPpcN/u881gJA7faJgmnDnVgHqfDIfwE9Pup6tYyCEXLq40ndGzbQLcvjq7ZMxTCX6gE8DM2CT+OinhruigH7W5pk89GCcAtv0yZHyRlYGB2Bs/dsRtZ7bYO84zwkJrHWzNA8JAOoJaIYVresHe6iL4eI+LYqv8KHWrlb3zJ+X9s5h0o0bR7KJTGwPH+8pO1/FtgHmiCgnjhWfEd7ZR1tn/7oVPePm69fg91mtBBni4sVSgWhoBSrU2wY/XVN4dzQFcwXsRoQYsIqe36DLl8Oqh77BP/u+801/5+Y9dIxrSDUMbHflTAe6iacmuZ7p/S19Wpt5lA87edcc8Msv6cSR0nwX3P6SWJIIFK7bZ/Rz4owsEIqYsYOIqTv6HBbc9zr8pL/bcQwWojo7SCs+pMkrNsL0AgYDX3C5Q8TICzU23CGk
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <BY1PR0701MB122388D41294A1366F93506680A60@BY1PR0701MB1223.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(5005006)(8121501046)(3002001)(10201501046)(100000703101)(100105400095)(93006095)(93001095)(6041248)(20161123564025)(20161123558100)(20161123562025)(20161123560025)(20161123555025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:BY1PR0701MB1223;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:BY1PR0701MB1223;
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjM7NDorelVkSUlQUFBjWTN3MEQyODJMQWRULzYr?=
- =?utf-8?B?MWM2UHpubjVjWUxocEVCRlhBLytVOWNLTTR5cXdOMzNoZFE5WFo0dUtPM1lC?=
- =?utf-8?B?QTFlcHVRUUF6YkE5YVA1eE1pWlNFSXNRQXl6WDJHb3V5cWtWY2ZhTFVyQU9B?=
- =?utf-8?B?WnI5ZGRlcUw1OEdFL1B1VThxSkZVaTBGeHFMWkhzK3kxNVNNanAyWnZrZUNv?=
- =?utf-8?B?M2RmOUw2RzhZZGtWQUk1VXZkMmJHYmUyYXAxbjNJSGQ5SXM2RXExc0VCdVQx?=
- =?utf-8?B?U0xKNW9uLzBhTXpIZHFMd2R4Q0tmWGJtemdNcTdsTEY5YmhpNEpoQUlKaC8w?=
- =?utf-8?B?a21UMXBDelc1UnV0NHJaRENtU3dMRXYrVGZlYklxczU3L1B2aDAxQVNHTnpo?=
- =?utf-8?B?MVVhWUFCRlkyMHROTUhaaWxTLzMwVmdCNGpUOCtPd2Nuc2I0NVFSWmV2Qjhl?=
- =?utf-8?B?YzAybmtCRzgxdzRBdk9Qc1lwTFBzakdmYzQzMFg3ckliVm1QZ3F1ZTVhbVht?=
- =?utf-8?B?cXFrMWR1TU05TmhCRVQ5VWRZK21nS1BEUGF4ZndNL29iZk1lNWhyem1kVWZF?=
- =?utf-8?B?TDJJTmduNGVjSExQVUptQzdFRXpLZXlkTWFEb3dYK1QyUVVPMWRyZVRMSUIw?=
- =?utf-8?B?dTVncDVJZVlwT00wN1hkWGJYdEthNlY1dmVJUUwrcURiK3h3NEFPYm9YL2k5?=
- =?utf-8?B?bWR1bW1IaUZjYVdmZk5NazVnRCtZdFZURFYrVktJZTZHNVlZQXE5WFdiQVdY?=
- =?utf-8?B?aXNJRHhPQ0ZWbXdnZHJzakEvclJ3Umo0blo4N1RzL0hoYjNpSEpnN3c4OU82?=
- =?utf-8?B?bm0wQW8wNzVTZGtLTFBpRVZXL2dWNEtFQm1aK3JJV0k3R2V1Qk1md0J4bk1L?=
- =?utf-8?B?Rmw3dlkyZlllSVlKa1pQdkxkN2ZxRUpHNWhmbU5wVmpBWlZicllyd0E3MER0?=
- =?utf-8?B?K0xpalBpd2NuUSs1amk5NURYd1NwdjJ4bFVJaVRXa29ERHpmY2pTczBqVkg3?=
- =?utf-8?B?V05SajNrM3FsVTRxck5jU0NrZ3lFcmsrayswcG14elNmNnViVHY1TkVrTmpP?=
- =?utf-8?B?UFE3UlEyWk9ZVmdaTUtqdHQ1V2VKSU5GWWQ2ektFelVyQm04cUMzOG94c1ZU?=
- =?utf-8?B?a0pNSlZsRm5ZRmU2cVREZ1BrTGJXc1Fwc09KbGx5ZEtGL1BtZkU5bXFFTDZP?=
- =?utf-8?B?am81c1dzNENieVB5cytZVDZ2cjdTZkpQVDlBRVlBOWhKcnRMSGhZVDJiU2p0?=
- =?utf-8?B?Z0E1QWdQNjBEMFYxQWZSMkhMNi9yMUVtWWRoUkJpNTFNdDZ5VDZRUmhBOURE?=
- =?utf-8?B?WG5COGlCWkRIaHhyeFVQdXR0NENWSjJTUVBVeTM5enNJdEZxdXZkSjh0aU1m?=
- =?utf-8?B?ZFdQdnVWRTgvWFp0UFNJQnZtVXhFRVhYaSs3SHd3MTE1aThwQU56bjR2LzRG?=
- =?utf-8?B?M0Fpa2lPWjBxaEdZSTRWRnVBTzAyMElNM1QzRVVlZWMwTGlzcUtmUmw2aEZ4?=
- =?utf-8?Q?0EdAZGzeka892GxA8AIThGIL864oK2N6hgwp8rnBt/KpKvb?=
-X-Forefront-PRVS: 0373D94D15
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(7370300001)(4630300001)(6009001)(6049001)(39850400002)(39450400003)(39410400002)(39860400002)(39840400002)(39400400002)(33646002)(305945005)(83506001)(6116002)(65826007)(3846002)(4326008)(7350300001)(23676002)(5660300001)(53936002)(4270600006)(77096006)(6486002)(478600001)(7736002)(64126003)(229853002)(31696002)(31686004)(90366009)(47776003)(86362001)(76176999)(38730400002)(4001350100001)(72206003)(65806001)(54356999)(50986999)(2950100002)(230700001)(36756003)(6246003)(6666003)(66066001)(189998001)(50466002)(81166006)(19618925003)(2906002)(8676002)(42186005)(25786009)(558084003)(93886004);DIR:OUT;SFP:1101;SCL:1;SRVR:BY1PR0701MB1223;H:[10.0.0.4];FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjM7MjM6Q3ZTaFBuMWNET1BZUWcxUHUrUUxtcWFs?=
- =?utf-8?B?S1RERVIxQ09lOHpUanZSQ0J0R1Awb09BcUZMUkROT00rdFNXWjhURGFId1N0?=
- =?utf-8?B?TjBTQmQyNTRTUEpUZ01DQ003c2tyU25FK0NXcUcrWVNDRk1SSERjR2U1Q3J6?=
- =?utf-8?B?ejVRTE4wM200TEVwU3FjVjdRU0xYMmNQb0I5c1JMamROazZ6aWkzYW1Ta2lP?=
- =?utf-8?B?cUh6dEsvVndBTEwxdHV6N2F1cWJZUTFTaTlGQzFSbnJTM1ppYTlnS0dBYXgv?=
- =?utf-8?B?YktNUjRSdGs4bFJrMWZkdnZhUERNaHY5Vkh1WThRYnl2dElkdWxMaFB2Zjlv?=
- =?utf-8?B?UmZoVmNyWTRjMFhFMjB6aGt3NUZqU3BPNWx4Q3ZUUUxjOEZweHQwUUJ5emFN?=
- =?utf-8?B?S0xjbUViSDU0dUFyMkpxVkxueEllNHM4b3pJOHcyVE10Rm9CNVNMcFhjQUly?=
- =?utf-8?B?TUlsUCtRWDd6ZzR3TUpnQlV2THMwcll6Ri9RbnhZbjFmUlFaNG4vdG1PTTUv?=
- =?utf-8?B?WFVuQ29tQndQbWxzbkhxNUM3dGFTZVlHenV2aWZGYVhxSXlJcHhudEh4bmlX?=
- =?utf-8?B?Z0ZIRE40WVBjRUJ0ZkNEeGxxNSthMXNZb28vMzdTeEMxZnlDN0hSRkFqYlRk?=
- =?utf-8?B?UE9GRTZCZ3dHdmxiSXpPRFc2Ri82OVY2RHVxNm9rUFd3bVJFR1RTdFQrTHBq?=
- =?utf-8?B?d1puY0RRMWpTRzNxaG50MUFnYm94aHdSM0V3YTdYSjBhWHcwWnNvVzZTT1lS?=
- =?utf-8?B?RjFmWDgyRmhhaHBCTHBlWHJSbkhiazdNNEx5emdZcTdXMTBXSzYyL3BvWWVq?=
- =?utf-8?B?amduMmJSSGNBRjVmL092VFpvUHo1b2llZkxHaTh2UG4rNHczWk9RWGt4OXpp?=
- =?utf-8?B?SXVLZkhRVUVIbE95T2w4VENzZURpOHR6UzNuZXE3amdvZUJ0amc5K05PSDNU?=
- =?utf-8?B?R2ZyNnFpNjh2bWdURWE2Y3U5S1NCeURoc2czNWIrRGs1cDM2VzdoUGNOMFJB?=
- =?utf-8?B?cXBzTmlGYXV6cTNXL01LTWlFOVIxVkJhOWNFbUthMHk3a05WTDN5QUhISzlt?=
- =?utf-8?B?bC9HOVliOWR4aW9Ibkw3aDN2SVA1ZTNud2cyMjJOMGxnaXV4K1JlQi9wUFoz?=
- =?utf-8?B?KzA0TUQyTWoxNXY1ZUlpY3RlS3I0cnhaMUZ0QWZnb1RmcE13cExERDZUT0lV?=
- =?utf-8?B?NTB1cUdCenJlREhadE1wbGZYV0VTRnYwemdpTmxHQXV2WEl4aEl1b1d3NHE1?=
- =?utf-8?B?bGpmNHlIbmVvdnNwOWNrMDkrOW90TlYwdnFkemgrTndtTGFOdzdVR1RLM2Na?=
- =?utf-8?B?bXdsZkRXS05iRjZXSkdBRThPOEVlNjZPbW40NEczcFIwMXhvR1pZQlMzT1p0?=
- =?utf-8?B?Ly84UVZVMmhjM05abEtvSFZlYk9PTCtXTjhxY3pqV21Pb1YzOWlucWJRMi82?=
- =?utf-8?B?cGt1RkI5T1dLUlFtQ1ZjdUtZTjcwT25pTlEra2twYmJXdnhTUStZd25YNTUz?=
- =?utf-8?B?OHpNbjY3RVJBdlVKbzZRUmYybEVoM2I5SU94MWx3RkJ5eEloSW4wdGFjdkZG?=
- =?utf-8?B?OWtmazRLaUpNajVlYlpEd2U0c3o0anVldGVpd1hyZ3V6SHhrUU45b0o2a0VE?=
- =?utf-8?B?Zy9PSnNIanQ3eWg3VlNkcGZmMVhBNGRFNkw4U3VRSUNpT3VJTVhKcWs1MHdu?=
- =?utf-8?B?SGNSSEFLT015N1hNN1FwOTA0SVBqRlMrSUpET0dqeHNSYmd5K3Y1LzlqVDZ5?=
- =?utf-8?B?T25pc2JPMFJDem5VZ1p1M1NESFI3WkFLWkkyOVFUOU9lMDJLemRSeCtEQmdW?=
- =?utf-8?B?TkhXYytMcVZsOEo4Rm93cHZuWlk3bG1TaGNZb2NCQm9zdit3VFlmVm1WU3NP?=
- =?utf-8?Q?yzb/h6K1AmzuKBvfZt94PNxxOnvmGWTmzp?=
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjM7NjpKWks3OWE1T2tJVkx1MkxtMUJMS0tqeXZ2?=
- =?utf-8?B?Y3p1UmZXUjBUTHZEODNWSGtKU1dIZDFrejRjNURqZkVyZWFxUExMRG1ueDNE?=
- =?utf-8?B?TjRYb2FHdUZOK2dYVllKYVFaTFZBcDY0U3g4ODBKWVpJNXd0RFRsUXkrcDZB?=
- =?utf-8?B?LzdzR21vd2x4UWZnb0dwVHRIT0lwNktFK0NZWWVMWDM1T3dCaWJ0aFQzR0Ns?=
- =?utf-8?B?YXNPTHVlUDhrdnJKeDVZd2pxWUZYbGhpYStxT0lZRVBSWEVKcDEvUWxudGJQ?=
- =?utf-8?B?azh4YXArMjRZWldTM3dIeEtJT1ZlMWVzTHg5M3orSCtiVUVlM0xLa0RjOGVa?=
- =?utf-8?B?RXlRRmp5cGRCWVJoVjFrMlNqZW4yV1p3RTByejdkajIwZTZEUDQvRUtXNkNt?=
- =?utf-8?B?NUdkdnV5ZlcxYkFoUGtFbHNOZVRpQzJyNXRiZEZmaWd6Q1Z4cVpjc04wRGVn?=
- =?utf-8?B?LzR3cjg1c1Q3SWtMVytUR3pkYU56UGpuUkdkbHNvM2NMLzVqYVhzbVRWeVA5?=
- =?utf-8?B?MFMraUZXM2ZYN0lLUTd0MkI0bnp6VWlabW5hZUZsWTFWMFY0ZWxETFR3WW5Z?=
- =?utf-8?B?OWZpS1NCRjdyYXRlUzhDeUxuNnRCcFgrVDdIdVNlb3lYanhQY0RETHNXV1ox?=
- =?utf-8?B?ekcyOG1TWjBOd3BCdS9vQjR6TjNuanFwYW83UmdHcEN2bndDbHd1anYwQUQ5?=
- =?utf-8?B?amFSWlg2a005S0xyU1NaTXljMGFWbnBDQm1iT1BsOUN5dHJ4aGxuNEhkdmNm?=
- =?utf-8?B?VXFNbmtDckU1VDNTeFBzRER0OVpSRkEzYXZXbE1zdDBkRFhYSHlZbUFSUXh2?=
- =?utf-8?B?ME5sMTdaOUMrT3piNWdLd1hlcGkrMlNiODUrMG9mOTBRMGcrVWZKY1NMaXpm?=
- =?utf-8?B?WnRWelVRclllWUsvYzBOYUtXQndlanYyQ3E0aEtzZFNqRnNZdkJmenNWM2NC?=
- =?utf-8?B?NXBqQjBYQ0xMdVQ5VFBSY0tOY3NGY1JrNW9iNTJUeUJ0VS9kZ1pSNUxNc0dP?=
- =?utf-8?B?cWNnbGoxWEY2MjlONnJTMEJ4MWh3TWhvejZtd3RUcHRiZGk4ZFM2SFk4VWdL?=
- =?utf-8?B?cWUrRjlyYVd5eWdXZUUvTWFYVWs1R21NQVVOUUtVQVNsTjRhMm1GMWdwS05p?=
- =?utf-8?B?cXpHbDVqVWNRck56UGZiS2ZzQjF6d1pYc0huUmpCU1BTWXJ2OFIwWWpPUjEv?=
- =?utf-8?B?QWpmV09hOC9TL1I0TlFsemJ4ZzV1Q29qbTd2ZkRUakhjZkJmV1FFL1JVREpr?=
- =?utf-8?B?Q0t5aXY3eGcwZDVRMVdseGRWUmZGMjdhelQweXUyVDl1d29vZjc3NERWZDc0?=
- =?utf-8?Q?JpTh5MF/nxekGZdG8UG5yHPOi12q11S9Y=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1223;5:pkFOhzbuc2aDhE4U5St8eZn9wtZ9Sc5J8BLTwQykI1B7ueyveY7AlzanD3kO3d7s/qeCgwCpH1l8tpA/FJUOSHNAmTgvxplwrktTFnIUJYOHdN1Q1Ka72VCei8Hg7+CP48SbDk4ZLPHzUYEM/nxCacrrSUMlbwvGm14tWd07MGXQcZ4EXGBjP3CdT9mZqYUlaXHKxU/mUv51CyNMHfvF1OsfF7ruW75eMJsBZxq4SX4Olxgkle0k0K82xQlOTa1LnuDfezmf60ovVFwaMvpPY+FjPIGdGOiiZHnZ6HdrjFoARe7Xyrpu3U84lgTrsqnCvDprV61KJDF0bgVyuIKhj+0mPlHz6LG8cHaB3Anb//bKeukdX0+pGMHqcVewwRl8KTf1Z/u3Yg7IDPriROAEBJ7yZMtg3uqu4LSq6m9Nufo1kVgamp++3LpIYDiYKSUar87VyPPxRuvWib2tF/qgViO7UMCCXNpT/mc57h5OOIT7f1uF1J3P7L0e9+r1R1cY;24:UxbAiSgUtzZhXycRxlUR4qQC/SE3SP5qx14INEbQCKCcCb/ZisV6Wtr6pA+Ill+ydUg5RfHjoG3HW6p+3LLEhKW/Ve5MecDkANyriVRfwJk=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1223;7:goNORbMWeWo5Xex78iH3YOIxiFDhTS1NL0alNROUfcIzZBWU8JokAwuTboPrO82aV+8RBLqWR5IJSS/qbWbsGBFxUVI6tqfOgPpOaIx+5N4Rgtp+PV9x/Q1KSg/XmuwRx+Z5TkdnN85xGCSk5qtcFDKJqBQ6Q0cLTp2ShS/Gr93xeCGG4roM8JDJT8P+YTWBt3mQVAjidoKuW7VkLbrbPsBKEOKSKpI45JguSEN4bASnoGNrTq9qePPS4OSSn6Jxnr3u6HSiESAnvt+VOBk4Z4y28oNcZMJ3+1+jY7yHphtqKSyWK2nydghFkb3mbZ3HxlmxwRnSaigtqeumvciOXKZ6JZo4WevsK0WVmQ2BMmo+kIZxa7n6EuZnq07TN+ZgVQKsNsMoOeRjCVQdQ78MBs0YoRzr0bOHZ8GfgwDRh0wMaG4d5DDfDzrWW6LtIDJDrsRJMQM+fLaAFGZlKP7beT+n0tr+GLdsGIUhzjH26L0Q5mCQN24o3cre8Jee5dyp0qxqJV7EuyZ4NQDYC90sRvLX0qQj9gYDar7NQBDQDBj3NjUlRjiI+83nLMRbgw7T1TynGQpW40KTOHsyRRqr+NIFQxQvQpMjDU2nfcs7l7uBrmNPxHFTjPsWO73djMoRkn5MWsSrXu5wDmzwz096iQ5Mpvev0uE9U/ggUmCmC1cUKgk3ft5l+CE97+GlH8Q6c0NygEyWaz9ju8JtFl6T72w8ieIHoSioLvT11+FrfNfzcizt4mU/PGwc/gqEaTT4F5d099fqJGxNPmNUDU+BCK/lplRPy+XOWYGgbs6X7x0=
-X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2017 15:32:32.8969 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR0701MB1223
-Return-Path: <Steven.Hill@cavium.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <p.zabel@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59150
+X-archive-position: 59151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@cavium.com
+X-original-sender: p.zabel@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -160,4 +150,429 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I'll respin this patch and post shortly.
+The reset control API has two modes: exclusive access, where the driver
+expects to have full and immediate control over the state of the reset
+line, and shared (clock-like) access, where drivers only request reset
+deassertion while active, but don't care about the state of the reset line
+while inactive.
+
+Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
+reset lines") started to transition the reset control request API calls
+to explicitly state whether the driver needs exclusive or shared reset
+control behavior.
+
+This series converts all drivers that currently implicitly request
+exclusive reset controls to the corresponding explicit API call. It is,
+for the most part, generated from the following semantic patch:
+
+@@
+expression rstc, dev, id;
+@@
+-rstc = reset_control_get(dev, id);
++rstc = reset_control_get_exclusive(dev, id);
+@@
+expression rstc, dev, id;
+@@
+-rstc = reset_control_get_optional(dev, id);
++rstc = reset_control_get_optional_exclusive(dev, id);
+@@
+expression rstc, node, id;
+@@
+-rstc = of_reset_control_get(node, id);
++rstc = of_reset_control_get_exclusive(node, id);
+@@
+expression rstc, node, index;
+@@
+-rstc = of_reset_control_get_by_index(node, index);
++rstc = of_reset_control_get_exclusive_by_index(node, index);
+@@
+expression rstc, dev, id;
+@@
+-rstc = devm_reset_control_get(dev, id);
++rstc = devm_reset_control_get_exclusive(dev, id);
+@@
+expression rstc, dev, id;
+@@
+-rstc = devm_reset_control_get_optional(dev, id);
++rstc = devm_reset_control_get_optional_exclusive(dev, id);
+@@
+expression rstc, dev, index;
+@@
+-rstc = devm_reset_control_get_by_index(dev, index);
++rstc = devm_reset_control_get_exclusive_by_index(dev, index);
+
+After all driver patches are applied, the temporary transition helpers
+can be removed.
+
+regards
+Philipp
+
+Philipp Zabel (102):
+  ARM: rockchip: explicitly request exclusive reset control
+  ARM: socfpga: explicitly request exclusive reset control
+  MIPS: pci-mt7620: explicitly request exclusive reset control
+  ahci: st: explicitly request exclusive reset control
+  ata: sata_gemini: explicitly request exclusive reset control
+  ata: ahci_tegra: explicitly request exclusive reset control
+  bus: sunxi-rsb: explicitly request exclusive reset control
+  bus: tegra-gmi: explicitly request exclusive reset control
+  clk: sunxi: explicitly request exclusive reset control
+  clk: tegra: explicitly request exclusive reset control
+  clocksource/drivers/timer-stm32: explicitly request exclusive reset
+    control
+  clocksource/drivers/sun5i: explicitly request exclusive reset control
+  crypto: rockchip: explicitly request exclusive reset control
+  crypto: sun4i-ss - request exclusive reset control
+  PM / devfreq: tegra: explicitly request exclusive reset control
+  dmaengine: stm32-dma: explicitly request exclusive reset control
+  dmaengine: sun6i: explicitly request exclusive reset control
+  dmaengine: tegra-apb: explicitly request exclusive reset control
+  drm: kirin: explicitly request exclusive reset control
+  drm/nouveau/tegra: explicitly request exclusive reset control
+  drm/rockchip: explicitly request exclusive reset control
+  drm/sti: explicitly request exclusive reset control
+  drm/stm: explicitly request exclusive reset control
+  drm/sun4i: explicitly request exclusive reset control
+  drm/tegra: explicitly request exclusive reset control
+  gpu: host1x: explicitly request exclusive reset control
+  i2c: mv64xxx: explicitly request exclusive reset control
+  i2c: stm32f4: explicitly request exclusive reset control
+  i2c: sun6i-pw2i: explicitly request exclusive reset control
+  i2c: tegra: explicitly request exclusive reset control
+  iio: adc: rockchip_saradc: explicitly request exclusive reset control
+  iio: dac: stm32-dac-core: explicitly request exclusive reset control
+  Input: tegra-kbc - request exclusive reset control
+  coda: explicitly request exclusive reset control
+  st-rc: explicitly request exclusive reset control
+  stm32-dcmi: explicitly request exclusive reset control
+  rc: sunxi-cir: explicitly request exclusive reset control
+  mmc: dw_mmc: explicitly request exclusive reset control
+  mmc: sdhci-st: explicitly request exclusive reset control
+  mmc: sunxi: explicitly request exclusive reset control
+  mmc: tegra: explicitly request exclusive reset control
+  mtd: nand: sunxi: explicitly request exclusive reset control
+  mtd: spi-nor: stm32-quadspi: explicitly request exclusive reset
+    control
+  net: dsa: mt7530: explicitly request exclusive reset control
+  net: ethernet: hisi_femac: explicitly request exclusive reset control
+  net: ethernet: hix5hd2_gmac: explicitly request exclusive reset
+    control
+  net: stmmac: explicitly request exclusive reset control
+  net: stmmac: dwc-qos: explicitly request exclusive reset control
+  ath10k: explicitly request exclusive reset control
+  nvmem: lpc18xx-eeprom: explicitly request exclusive reset control
+  PCI: dwc: pcie-qcom: explicitly request exclusive reset control
+  PCI: imx6: explicitly request exclusive reset control
+  PCI: tegra: explicitly request exclusive reset control
+  PCI: rockchip: explicitly request exclusive reset control
+  phy: berlin-usb: explicitly request exclusive reset control
+  PCI: mediatek: explicitly request exclusive reset control
+  phy: qcom-usb-hs: explicitly request exclusive reset control
+  phy: rockchip-pcie: explicitly request exclusive reset control
+  phy: rockchip-typec: explicitly request exclusive reset control
+  phy: rockchip-usb: explicitly request exclusive reset control
+  phy: sun4i-usb: explicitly request exclusive reset control
+  phy: sun9i-usb: explicitly request exclusive reset control
+  phy: tegra: explicitly request exclusive reset control
+  phy: qcom-qmp: explicitly request exclusive reset control
+  phy: qcom-qusb2: explicitly request exclusive reset control
+  pinctrl: stm32: explicitly request exclusive reset control
+  pinctrl: sunxi: explicitly request exclusive reset control
+  pinctrl: tegra: explicitly request exclusive reset control
+  pwm: hibvt: explicitly request exclusive reset control
+  pwm: tegra: explicitly request exclusive reset control
+  remoteproc/keystone: explicitly request exclusive reset control
+  remoteproc: qcom: explicitly request exclusive reset control
+  remoteproc: st: explicitly request exclusive reset control
+  soc: mediatek: PMIC wrap: explicitly request exclusive reset control
+  soc/tegra: pmc: explicitly request exclusive reset control
+  spi: stm32: explicitly request exclusive reset control
+  spi: sun6i: explicitly request exclusive reset control
+  spi: tegra20-slink: explicitly request exclusive reset control
+  spi: tegra114: explicitly request exclusive reset control
+  spi: tegra20-sflash: explicitly request exclusive reset control
+  staging: nvec: explicitly request exclusive reset control
+  thermal: rockchip: explicitly request exclusive reset control
+  thermal: tegra: explicitly request exclusive reset control
+  serial: 8250_dw: explicitly request exclusive reset control
+  serial: tegra: explicitly request exclusive reset control
+  usb: chipidea: msm: explicitly request exclusive reset control
+  usb: dwc2: explicitly request exclusive reset control
+  usb: host: ehci-tegra: explicitly request exclusive reset control
+  usb: host: xhci-tegra: explicitly request exclusive reset control
+  usb: musb: sunxi: explicitly request exclusive reset control
+  usb: phy: msm: explicitly request exclusive reset control
+  usb: phy: qcom-8x16-usb: explicitly request exclusive reset control
+  watchdog: asm9260: explicitly request exclusive reset control
+  watchdog: mt7621: explicitly request exclusive reset control
+  watchdog: rt2880: explicitly request exclusive reset control
+  watchdog: zx2967: explicitly request exclusive reset control
+  ASoC: img: explicitly request exclusive reset control
+  ASoC: stm32: explicitly request exclusive reset control
+  ASoC: sun4i: explicitly request exclusive reset control
+  ASoC: tegra: explicitly request exclusive reset control
+  Documentation: devres: add explicit exclusive/shared reset control
+    request calls
+  reset: finish transition to explicit exclusive reset control requests
+
+ Documentation/driver-model/devres.txt              |  7 ++-
+ arch/arm/mach-rockchip/platsmp.c                   |  2 +-
+ arch/mips/pci/pci-mt7620.c                         |  2 +-
+ drivers/ata/ahci_st.c                              |  6 +--
+ drivers/ata/ahci_tegra.c                           |  8 ++--
+ drivers/ata/sata_gemini.c                          |  4 +-
+ drivers/bus/sunxi-rsb.c                            |  2 +-
+ drivers/bus/tegra-gmi.c                            |  2 +-
+ drivers/clk/sunxi/clk-sun9i-mmc.c                  |  2 +-
+ drivers/clk/tegra/clk-dfll.c                       |  2 +-
+ drivers/clocksource/timer-stm32.c                  |  2 +-
+ drivers/clocksource/timer-sun5i.c                  |  2 +-
+ drivers/crypto/rockchip/rk3288_crypto.c            |  2 +-
+ drivers/crypto/sunxi-ss/sun4i-ss-core.c            |  3 +-
+ drivers/devfreq/tegra-devfreq.c                    |  2 +-
+ drivers/dma/stm32-dma.c                            |  2 +-
+ drivers/dma/sun6i-dma.c                            |  2 +-
+ drivers/dma/tegra20-apb-dma.c                      |  2 +-
+ drivers/fpga/altera-hps2fpga.c                     |  3 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c    |  2 +-
+ drivers/gpu/drm/nouveau/nvkm/engine/device/tegra.c |  2 +-
+ drivers/gpu/drm/rockchip/analogix_dp-rockchip.c    |  2 +-
+ drivers/gpu/drm/rockchip/cdn-dp-core.c             |  8 ++--
+ drivers/gpu/drm/rockchip/dw-mipi-dsi.c             |  2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |  4 +-
+ drivers/gpu/drm/sti/sti_hdmi.c                     |  2 +-
+ drivers/gpu/drm/sti/sti_hqvdp.c                    |  2 +-
+ drivers/gpu/drm/sti/sti_tvout.c                    |  2 +-
+ drivers/gpu/drm/stm/ltdc.c                         |  2 +-
+ drivers/gpu/drm/sun4i/sun4i_backend.c              |  4 +-
+ drivers/gpu/drm/sun4i/sun4i_tcon.c                 |  2 +-
+ drivers/gpu/drm/sun4i/sun4i_tv.c                   |  2 +-
+ drivers/gpu/drm/sun4i/sun6i_drc.c                  |  2 +-
+ drivers/gpu/drm/sun4i/sun8i_mixer.c                |  2 +-
+ drivers/gpu/drm/tegra/dc.c                         |  2 +-
+ drivers/gpu/drm/tegra/dpaux.c                      |  3 +-
+ drivers/gpu/drm/tegra/dsi.c                        |  2 +-
+ drivers/gpu/drm/tegra/gr3d.c                       |  6 +--
+ drivers/gpu/drm/tegra/hdmi.c                       |  2 +-
+ drivers/gpu/drm/tegra/sor.c                        |  2 +-
+ drivers/gpu/host1x/dev.c                           |  2 +-
+ drivers/i2c/busses/i2c-mv64xxx.c                   |  2 +-
+ drivers/i2c/busses/i2c-stm32f4.c                   |  2 +-
+ drivers/i2c/busses/i2c-sun6i-p2wi.c                |  2 +-
+ drivers/i2c/busses/i2c-tegra.c                     |  2 +-
+ drivers/iio/adc/rockchip_saradc.c                  |  3 +-
+ drivers/iio/dac/stm32-dac-core.c                   |  2 +-
+ drivers/input/keyboard/tegra-kbc.c                 |  2 +-
+ drivers/media/platform/coda/coda-common.c          |  3 +-
+ drivers/media/platform/stm32/stm32-dcmi.c          |  2 +-
+ drivers/media/rc/st_rc.c                           |  2 +-
+ drivers/media/rc/sunxi-cir.c                       |  2 +-
+ drivers/mmc/host/dw_mmc.c                          |  2 +-
+ drivers/mmc/host/sdhci-st.c                        |  2 +-
+ drivers/mmc/host/sdhci-tegra.c                     |  3 +-
+ drivers/mmc/host/sunxi-mmc.c                       |  3 +-
+ drivers/mtd/nand/sunxi_nand.c                      |  2 +-
+ drivers/mtd/spi-nor/stm32-quadspi.c                |  2 +-
+ drivers/net/dsa/mt7530.c                           |  3 +-
+ drivers/net/ethernet/hisilicon/hisi_femac.c        |  4 +-
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c      |  6 +--
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  |  3 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |  4 +-
+ drivers/net/wireless/ath/ath10k/ahb.c              | 15 ++++---
+ drivers/nvmem/lpc18xx_eeprom.c                     |  2 +-
+ drivers/pci/dwc/pci-imx6.c                         |  7 +--
+ drivers/pci/dwc/pcie-qcom.c                        | 40 +++++++++--------
+ drivers/pci/host/pci-tegra.c                       |  6 +--
+ drivers/pci/host/pcie-mediatek.c                   |  2 +-
+ drivers/pci/host/pcie-rockchip.c                   | 15 ++++---
+ drivers/phy/allwinner/phy-sun4i-usb.c              |  2 +-
+ drivers/phy/allwinner/phy-sun9i-usb.c              |  4 +-
+ drivers/phy/marvell/phy-berlin-usb.c               |  2 +-
+ drivers/phy/qualcomm/phy-qcom-qmp.c                |  4 +-
+ drivers/phy/qualcomm/phy-qcom-qusb2.c              |  3 +-
+ drivers/phy/qualcomm/phy-qcom-usb-hs.c             |  3 +-
+ drivers/phy/rockchip/phy-rockchip-pcie.c           |  2 +-
+ drivers/phy/rockchip/phy-rockchip-typec.c          |  6 +--
+ drivers/phy/rockchip/phy-rockchip-usb.c            |  2 +-
+ drivers/phy/tegra/xusb-tegra210.c                  |  4 +-
+ drivers/phy/tegra/xusb.c                           |  2 +-
+ drivers/pinctrl/stm32/pinctrl-stm32.c              |  2 +-
+ drivers/pinctrl/sunxi/pinctrl-sun6i-a31-r.c        |  2 +-
+ drivers/pinctrl/sunxi/pinctrl-sun8i-a23-r.c        |  2 +-
+ drivers/pinctrl/tegra/pinctrl-tegra-xusb.c         |  2 +-
+ drivers/pwm/pwm-hibvt.c                            |  2 +-
+ drivers/pwm/pwm-tegra.c                            |  2 +-
+ drivers/remoteproc/keystone_remoteproc.c           |  2 +-
+ drivers/remoteproc/qcom_q6v5_pil.c                 |  3 +-
+ drivers/remoteproc/st_remoteproc.c                 |  6 ++-
+ drivers/reset/core.c                               |  2 +-
+ drivers/soc/mediatek/mtk-pmic-wrap.c               |  5 ++-
+ drivers/soc/tegra/pmc.c                            |  2 +-
+ drivers/spi/spi-stm32.c                            |  2 +-
+ drivers/spi/spi-sun6i.c                            |  2 +-
+ drivers/spi/spi-tegra114.c                         |  2 +-
+ drivers/spi/spi-tegra20-sflash.c                   |  2 +-
+ drivers/spi/spi-tegra20-slink.c                    |  2 +-
+ drivers/staging/nvec/nvec.c                        |  2 +-
+ drivers/thermal/rockchip_thermal.c                 |  3 +-
+ drivers/thermal/tegra/soctherm.c                   |  3 +-
+ drivers/tty/serial/8250/8250_dw.c                  |  2 +-
+ drivers/tty/serial/serial-tegra.c                  |  2 +-
+ drivers/usb/chipidea/ci_hdrc_msm.c                 |  2 +-
+ drivers/usb/dwc2/platform.c                        |  3 +-
+ drivers/usb/host/ehci-tegra.c                      |  5 ++-
+ drivers/usb/host/xhci-tegra.c                      |  6 ++-
+ drivers/usb/musb/sunxi.c                           |  2 +-
+ drivers/usb/phy/phy-msm-usb.c                      |  4 +-
+ drivers/usb/phy/phy-qcom-8x16-usb.c                |  2 +-
+ drivers/watchdog/asm9260_wdt.c                     |  2 +-
+ drivers/watchdog/mt7621_wdt.c                      |  2 +-
+ drivers/watchdog/rt2880_wdt.c                      |  2 +-
+ drivers/watchdog/zx2967_wdt.c                      |  2 +-
+ include/linux/reset.h                              | 50 ----------------------
+ sound/soc/img/img-i2s-in.c                         |  2 +-
+ sound/soc/img/img-i2s-out.c                        |  2 +-
+ sound/soc/img/img-parallel-out.c                   |  2 +-
+ sound/soc/img/img-spdif-in.c                       |  2 +-
+ sound/soc/img/img-spdif-out.c                      |  2 +-
+ sound/soc/stm/stm32_i2s.c                          |  2 +-
+ sound/soc/stm/stm32_sai.c                          |  2 +-
+ sound/soc/stm/stm32_spdifrx.c                      |  2 +-
+ sound/soc/sunxi/sun4i-codec.c                      |  3 +-
+ sound/soc/sunxi/sun4i-i2s.c                        |  2 +-
+ sound/soc/sunxi/sun4i-spdif.c                      |  3 +-
+ sound/soc/tegra/tegra30_ahub.c                     |  4 +-
+ 128 files changed, 226 insertions(+), 235 deletions(-)
+
+-- 
+2.11.0
+
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: "Emilio López" <emilio@elopez.com.ar>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Alan Tull <atull@kernel.org>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Ben Skeggs <bskeggs@redhat.com>
+Cc: Benjamin Gaignard <benjamin.gaignard@linaro.org>
+Cc: Bin Liu <b-liu@ti.com>
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Boris Brezillon <boris.brezillon@free-electrons.com>
+Cc: Brian Norris <computersforpeace@gmail.com>
+Cc: Chanwoo Choi <cw00.choi@samsung.com>
+Cc: Chen Feng <puck.chen@hisilicon.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Cc: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: David Airlie <airlied@linux.ie>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Eduardo Valentin <edubezval@gmail.com>
+Cc: Felipe Balbi <balbi@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Hartmut Knaack <knaack.h@gmx.de>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Jaehoon Chung <jh80.chung@samsung.com>
+Cc: Jiri Slaby <jslaby@suse.com>
+Cc: Joachim Eastwood <manabian@gmail.com>
+Cc: John Youn <johnyoun@synopsys.com>
+Cc: Jon Hunter <jonathanh@nvidia.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Kalle Valo <kvalo@qca.qualcomm.com>
+Cc: Kishon Vijay Abraham I <kishon@ti.com>
+Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Laxman Dewangan <ldewangan@nvidia.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Marc Dietrich <marvin24@gmx.de>
+Cc: Marek Vasut <marek.vasut@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mark Yao <mark.yao@rock-chips.com>
+Cc: Mathias Nyman <mathias.nyman@intel.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Moritz Fischer <moritz.fischer@ettus.com>
+Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
+Cc: Ohad Ben-Cohen <ohad@wizery.com>
+Cc: Patrice Chotard <patrice.chotard@st.com>
+Cc: Peter Chen <Peter.Chen@nxp.com>
+Cc: Peter De Schrijver <pdeschrijver@nvidia.com>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: Philippe Cornu <philippe.cornu@st.com>
+Cc: Prashant Gaikwad <pgaikwad@nvidia.com>
+Cc: Rakesh Iyer <riyer@nvidia.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: Rongrong Zou <zourongrong@gmail.com>
+Cc: Ryder Lee <ryder.lee@mediatek.com>
+Cc: Salil Mehta <salil.mehta@huawei.com>
+Cc: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
+Cc: Stephen Boyd <sboyd@codeaurora.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Vincent Abriou <vincent.abriou@st.com>
+Cc: Vinod Koul <vinod.koul@intel.com>
+Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+Cc: Wim Van Sebroeck <wim@iguana.be>
+Cc: Wolfram Sang <wsa@the-dreams.de>
+Cc: Xinliang Liu <z.liuxinliang@hisilicon.com>
+Cc: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+Cc: Yannick Fertre <yannick.fertre@st.com>
+Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: alsa-devel@alsa-project.org
+Cc: ath10k@lists.infradead.org
+Cc: devel@driverdev.osuosl.org
+Cc: dmaengine@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-clk@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fpga@vger.kernel.org
+Cc: linux-gpio@vger.kernel.org
+Cc: linux-i2c@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-input@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-mmc@vger.kernel.org
+Cc: linux-mtd@lists.infradead.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-pwm@vger.kernel.org
+Cc: linux-remoteproc@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-serial@vger.kernel.org
+Cc: linux-spi@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Cc: linux-watchdog@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: nouveau@lists.freedesktop.org

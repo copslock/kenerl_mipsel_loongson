@@ -1,35 +1,153 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jul 2017 17:27:32 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:60365
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992309AbdGSP1Z1XeKp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jul 2017 17:27:25 +0200
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7] helo=dude.pengutronix.de.)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1dXqsm-0001si-Th; Wed, 19 Jul 2017 17:27:24 +0200
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 003/102] MIPS: pci-mt7620: explicitly request exclusive reset control
-Date:   Wed, 19 Jul 2017 17:25:07 +0200
-Message-Id: <20170719152646.25903-4-p.zabel@pengutronix.de>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170719152646.25903-1-p.zabel@pengutronix.de>
-References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jul 2017 17:31:56 +0200 (CEST)
+Received: from mail-bn3nam01on0051.outbound.protection.outlook.com ([104.47.33.51]:57076
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994858AbdGSPbnlMeup (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Jul 2017 17:31:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=dK2wu/qD4sn4kJ+ZCsCmTgs22bHyf2amOjL2Yzisjjc=;
+ b=afzNuy2Zx++8c2gpUXHIhzXSQ5HavpAvl2BAJ1fruVmS/3ZmbhNTXVIQG96GBUHzoaJ6n3gv+r1v9d4nMU0SF1NfNI00Av9sjrYVBEiCXTxX52r0gff3FQIwnpGJKip22KO9rEmYQ4iYrj/lyenXIVlS6c58RoEC7udW2X+9n1c=
+Authentication-Results: linux-mips.org; dkim=none (message not signed)
+ header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
+Received: from [10.0.0.4] (173.18.42.219) by
+ BY1PR0701MB1222.namprd07.prod.outlook.com (10.160.105.153) with Microsoft
+ SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1261.13; Wed, 19
+ Jul 2017 15:31:35 +0000
+Subject: Re: [PATCH] MIPS: OCTEON: Fix USB platform code breakage.
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+References: <1496250830-26716-1-git-send-email-steven.hill@cavium.com>
+ <20170719094143.GS31455@jhogan-linux.le.imgtec.org>
+From:   "Steven J. Hill" <Steven.Hill@cavium.com>
+Message-ID: <d8c33b8e-e57c-f109-7747-fdddbcc7bd0e@cavium.com>
+Date:   Wed, 19 Jul 2017 10:31:30 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
+MIME-Version: 1.0
+In-Reply-To: <20170719094143.GS31455@jhogan-linux.le.imgtec.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [173.18.42.219]
+X-ClientProxiedBy: MWHPR17CA0049.namprd17.prod.outlook.com (10.173.106.139) To
+ BY1PR0701MB1222.namprd07.prod.outlook.com (10.160.105.153)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 3429822a-30fa-4d27-5841-08d4cebb3dd5
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(300000503095)(300135400095)(201703131423075)(201703031133081)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:BY1PR0701MB1222;
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1222;3:qhy2u+6vRd1ya8e5bKX/nzTXAAXZJPVOEeLFIGTId229CxJbgo2kdNuMSTSLfhl2i9EW5Gsd5E7qxyVZDFA9PuDF/UFKMWTHfFQ4aS1TXBM/F8XCnGktZJVWyMfQAMn9JyvqzBaANJzZ54MfyLsrN4oSq/34kscjoc38JJsWaIM6Cn6rarUYScHkUzwBO8jK9lk8rK2uCkJJqHM0R6XXAx0jQWoC7ISozKF/dobD2S97Q+I13upLrJrRe0wv1sGXn8mOqaSio/tFIyKYQzTFH18lQdFHkG4xUnf8WkaOI3rqUUMpGnLnfpUW83bcXlG2fxL9RnrpeF7hPeuntD1U5daIEWhDd2U0xfH/Z8yjtNCRFeGkeMFDDza4XxxqfPxthrkr3dX/eGnz6Ctz+K7tm8se4F3dx1IckActSchSncxxbPj4IAeCoCo6xV/Ty+MFwIMG265U1bx1KivtHJWPQZXNVTaerOp+Q7Fhqwx5VerJ+LRP/BLgvMJhTPvnPTsSdDtXFm4R7B3z3ELS0IBiqEAd0Nkq8vtP1nN4U+FGzus9Ly+RJZeOZXCpnxLhUa0jfCWysFqqe9Y733uHy4xTAcGEfFc/bDRzqQLP4VA7IZ7KrVmqBhmmXkaBkTTiByFoXoLB/VkMux+xpjVzy+OPdbHOayLwE4BevtLcaT87L1WzXf81wUYDCXcEfC6nHvOaXxFjWGBZD+c2XnAqZf8mp62v5LwHwaZ42kDPD3VoErE=
+X-MS-TrafficTypeDiagnostic: BY1PR0701MB1222:
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1222;25:7ZuVUYtg4tYyTCvFT1PNes2QLt7G180NY3paRICFNZfr7uzL5C1VOCwpqWxiX2KcczwTRnL4ZnKS0akiKSBkuuX4FZNDyoOsgDAO+qz1TxkNA9WpTo3L7lq/X81ad6W/K8cAfgn0Qbe2RCattJfl9QIiU6XUgE58oii4YjYRuKObNS478QaU5hi2j1MKP11gXHQFvfBWJ4AFKGPvGDRgVd1dDcDnfn1LU8/f5bCd/sWmST2CrxcYHDq6ze/WNOhQdN7Gj7cTaYbrFNA014allApBX+tDn6qlkUnD0geqWNBUq85HO7F0tfQBe1i/+Q+Wgl1Y6OApxqMPz3Qp+81cnKw+HX2kof6uSUgjJO1fMxZECsdzKgpkBNpJkJk61+Ne39MvmWoQ8te2+Q8/gYOkFOhbnyM+gNO/rO1c2n8xokcSFrp+kfw38KLplDfMv5l9/cPUBqU1kQ2E6XaFVPa6CEUxLA7+sjVNftmZ0Lx0T52EXUxk/lA99cXi74jsKyh2OcKUWsYcWIFj3YXExz2YIJ/oRIqVpO7nsdFXlLOQ3R6M3CG4zteeElkCCk5+p6/4dFwN5sNlGKqH9SbTt2AJNc4HwTggTQ2TJveeLWWXlEDYBdZAOFo5OdP0wJcOYV0NaWt22aLzjckJr2IiMqQ3BAwnWHW+6VxgxZTFqOl+66NJIoyIDXBHupztl1OQj+YTkSB2+Zdc7N1SCbMrFDmxrnJEwVKjDr9BLDMREKl1RYwbMeJhjRlY0HRY61BsBok7osZEWp4Zhje4rqfHAx91kSvXGFfriSxpwBMoDCmoHVCIfq1PlJCHZZlxUzrasHd60V4qxRI+bu++a5a1xFNrrxhajpFwDMW8ccGJuM44XGGr7682lnMN1enubPQFWrzx476m3edliuSkoz7gDU7ZbcLWvqz7OO+3qNH1nWIF5Rg=
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1222;31:vSSIAmnfEe6zfeo4m3MJvaEOrm06mjK4dRccFLNfhvECaSLQj5g0Qp0LiI4opblYSX9uI9Dx6ZzLUmavr59NFkc9uWtbEFHMtU9/vx8MCyyLd5ft1/TNVjohr5yXnR+vucwT1qq/SSL1z/XRMA9yYcGS1cKjicZZ56EkNTMIRrsgVMrlAiqFF7Fuopw8CNQ0Tkrtma9fY7TCONXav/RLI5jOWaM+MSZZ5Qih0+Mc1dhoSOIDxhFofelXAXwsI6R6XD/Ko35rSUYtk2vNGdFHE3JXD5FihAVOUo+UrAfjWY2ranOSS2rLWxV3gumw7F/Bw1l2+mPPzrmZEGDJlQ1Lo9EzwJ91GGI8AghLiDf83801VsVUz74tTwP9sLOKYh13+8o2FAhoDElSoxMYUb7+CnfbRsOQ4I4AZyhGdIhpSCmhjll6742bxT61QjluPmgBgVc0h+db4TgIhs8f/SnGRfGeenC/tANJOvgSk9oKWidsG3QHbexypWAasJiGgWDGC37sWvI3/cSjvqXx5XZwl1+GSIwCQDze3Gz0pU/eLar8HkJtIAWymtL3ilYkMCXJKP5x+le8u+eVsKVouQkGEzdSqfSN+w5QYvFmJzA7AZlOhmMPYcu+FWQIreHRFCVb9+ou6bGVldT7ijzGYTKYAMnObMRYaZLFhC2SalQPOui1rHHgGg63rtRrZeb9mZ7u
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1222;20:aw2yeJsFGnFqa7S5xIdnHhey+cvsUkpCvzBT5YHj+YBa3tfwT3tOELFgo0NyG/JUFpI+pi90959Z6qedw7EBhJpY9jx/Uu1OaU1jAvo3ZOx91MXMOLigfjGnpeXkN8czXoK/a6ZtHidEVj/QKyI12xH/cdzBgpye/1Dy7LzWthwKHmymkuPjW5XtN+qOZ5EFfdq+PB5boZRUIfQbnybfEdzat7l1zMNZ6Spoxw0oSrhyoLE+n59OqXqk1/5EWif527IpvTsn/+UDE4p2ACJmyxzVy8x6V+3Zot0Rt4U7NUpOcbSH4G/k/y/I/smBBN8aBk1/+8Gz3lUNtsX1K+pdUJ7hXJEzc52+aUtvFKVzJ4veftwTJQBYTEkGroJk3jnB3RcukzdlRKzYp8Uv5y2N39NMoTwBtDq+j44Zii+mqn4tXqbvgsN/w10WEVWH/aa1c+CVcw/xiQ6Bh0DW1zMRe8pi6jAQtEq9otCw5WO3ZWgvGdUjlBMl69j+5toExmns
+X-Exchange-Antispam-Report-Test: UriScan:(236129657087228);
+X-Microsoft-Antispam-PRVS: <BY1PR0701MB12226E3E5A53B0117B9B087280A60@BY1PR0701MB1222.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(8121501046)(5005006)(2017060910075)(93006095)(93001095)(10201501046)(100000703101)(100105400095)(3002001)(6041248)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123555025)(20161123562025)(20161123564025)(20161123560025)(20161123558100)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:BY1PR0701MB1222;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:BY1PR0701MB1222;
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjI7NDoyTjMzN1ZaQzJuU0VlQjhjZ0FzMVZiUy9K?=
+ =?utf-8?B?cWxvL3N3cUs4dmZHakhoV3ZWcW51bExiYXF0YmVIazhOQ1dNRDdsTlphU1ZZ?=
+ =?utf-8?B?V1Q2ZFZsNzZnK1BBaTIwSFpJMmZZL0xFdnpzRGxoUWN3NVNjVlZIcmU1V3Mr?=
+ =?utf-8?B?VUJZSTVZMkRpeUlVajR4cGhCbHRIQ0lZZ3dSYm1oODVsQnBHVmY4eUNQaG00?=
+ =?utf-8?B?NnRWVml1eEllbGFxVnVQQkxYbkUzOFJTSDZwNDJmRXZBQTgvazdRMStvTklj?=
+ =?utf-8?B?S09DaVlYN29wMTluNTQ1NWJRWTZKY3BaL1NHc1ZNOXJPUTFYL1BZZURFMVFS?=
+ =?utf-8?B?dmRtNndpVU4zUlVnWk1nNFpwV05jajlNZ28xSmxFaEJaQzdHV1ozRjc3NzVm?=
+ =?utf-8?B?T1dBemFjZWl6M3RyVWg2ZWJnbU5ISzNlUlNuTU1PSnVXTkZTWEpHRHR0akpo?=
+ =?utf-8?B?MXZCazFDV1ozTEZPVHR0OFFucGZ6NVNHN0QxK3lvdWM4WHR2aDZhVktCUUJq?=
+ =?utf-8?B?S0tYMTZUQktyaXRZcU01UnRUaXBzRzI3dVNTVGMxZUx5ektxRDExVFlvdWZx?=
+ =?utf-8?B?V0o4QzFnNldpcUJpa2Y5TERsVGk4MGFaRXlTOHVKcGE1QU92dzJNYmwvUzhF?=
+ =?utf-8?B?UTBtWUlmZmYyREpTNlpRaXFDZnQwWEdIZ3lZK2E0aE82NEkxQUZxc2hqK0lT?=
+ =?utf-8?B?enptT25KUWJaUS9BejY1ZWF3SEp6VzdybWZWRDM1bktoQmFXNS96Vml2aVdX?=
+ =?utf-8?B?dEZKRmVmdmZYZUk4cjhlU3ZBWHFUTmpnaDRaOXF4RkZ5QVY1cGZhZ3BBUzk2?=
+ =?utf-8?B?cUNiaWI2QVdhdCtYTmVudXhLbmdSSXJ0UHRPdGFJZkljc3UwZnUzY1dpWG1J?=
+ =?utf-8?B?SFJPbk5SK3UxdVNzVWJ2TS9kNTFTNzZDRUx4VDhOMlRRcHF2SXdpQ2l3QUh6?=
+ =?utf-8?B?UTBGWm1KVkFNaCtUUzJqUlZvV1FkQWxzS1l6SGcxV0J5dHlDcDl3bm1OWVlu?=
+ =?utf-8?B?MDhtYy9mZ0N4QkZFQ2gxVmlIemZXampkNWp6WGthVjlyOTBMY0JRZU9TMCs2?=
+ =?utf-8?B?cVdMME5nNzZhTnkyRmtTZWdYUUxtYVprL1d6Q0lZZW0weEE3ZUUySWEzQks5?=
+ =?utf-8?B?RFZlVzROejFZRXRNN0k0OEJxMEl1VzQyRGt4SUVldWRIZHRhMFhSQkJJT24v?=
+ =?utf-8?B?UDNLR1JoZGhHTkNlV0pJL2ZYRTlTMzRlSzRramNQdjhUUUxaZDFveStKRThj?=
+ =?utf-8?B?UjRXd2h6Lzc1VnF2T05SemFBVEQ5NTY4UGVzWnYyaWhIRU1kMGdITllZTnVE?=
+ =?utf-8?B?bHdwTXA1VTI1d2d6aE55dzY0NFM0eFBqZkNkMnJJL1RIeFRNMFhpMUpoSHQ1?=
+ =?utf-8?B?YUFndEdhZlh3ZnZRdXUyNE5seHpySFNJZTJkemRQZVRBVVJTYkpKK3JKOVY3?=
+ =?utf-8?B?Nmp0T3dsMURma3dGNTFjRjFzWFlHcHNNNklnMlZqZjBxbDkza3pzSEtJeHBH?=
+ =?utf-8?B?cXN2dnptNG8xaldkT1FKSnlHWlZnczJtRk84ekdHY0MxeGdSSXFiVnN5U3hH?=
+ =?utf-8?B?NVg4NFUxVk1FRUpqMEJoc3E5NWtRam43RVhYUkpUTDBTMEFvU1lLK296YTZF?=
+ =?utf-8?B?RkYvSXNBUWhZVUEzUzFvdHV1czZLVkUvRmRVSHJ6NzFBcUZHTTgyeDN6dz09?=
+X-Forefront-PRVS: 0373D94D15
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(7370300001)(4630300001)(6009001)(6049001)(39850400002)(39450400003)(39860400002)(39400400002)(39410400002)(39840400002)(24454002)(377454003)(478600001)(65826007)(53936002)(305945005)(76176999)(50986999)(72206003)(54356999)(5660300001)(33646002)(25786009)(86362001)(31696002)(2906002)(47776003)(230700001)(64126003)(6116002)(3846002)(110136004)(38730400002)(90366009)(6246003)(66066001)(65806001)(42186005)(4326008)(229853002)(50466002)(31686004)(83506001)(36756003)(6486002)(6666003)(77096006)(53546010)(81166006)(8676002)(2950100002)(6916009)(23676002)(4001350100001)(189998001)(7350300001)(7736002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY1PR0701MB1222;H:[10.0.0.4];FPR:;SPF:None;MLV:sfv;LANG:en;
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjI7MjM6WkJWaW9tRDFaM3hIbGxrTGoxMDZuVGht?=
+ =?utf-8?B?aWYxQjl0d21NNld4cGlVUGhKR1kvRGtRY0l6ejk4MzlrbmlLcTZEaStGZGF2?=
+ =?utf-8?B?ZmhVSXNIUldjSm5xbWxoV0gzdlhyWE1yTXRwbThvTkJGR1l1T2RjZDJxc0J6?=
+ =?utf-8?B?cko4b2loZkRKOGJvOG02dU9XVzgvSFNRSVcwcGJWOU4ycEF3U0FMd2ZKSGRY?=
+ =?utf-8?B?aEJjWjBXbVJlbFZGMDFYM1pHaS9nc0pJbG4wdlpWWHZKRHJNRTN6REZTUzJV?=
+ =?utf-8?B?cTZwSXRBeGVmMlpQMUpGQ3hXY05JWXVnU3diRHIzeGlpeTM0dDB6ck5ZREFz?=
+ =?utf-8?B?VHVlOVk4eDBpU2VrVVR0bkFDNjZQZWlVUGt4R0FQVXpHQ1R6b0pHTXRJbnF2?=
+ =?utf-8?B?ZEFnS0swSXFHUVpDLzZNTU1wT2xkZEIyT1JVclVtcEg5TU5hL2g0bWxyOUor?=
+ =?utf-8?B?VEdSMEZvall0VmFiYU0yQ2IwNDZXK1l0ZHV5SlhCQWlMMlZlRTIwbnlWUDN6?=
+ =?utf-8?B?Vmg0YXY3THlKN3Y1bmNyQ0xNdXhjYWMzOUh5emVtakxySEN1Ym9zbVFZNG9z?=
+ =?utf-8?B?UFZneExscnc4ZUF2VzRvTEdIeFlmL3JzeUkwVzFNcGhpQVhwend5YkM5R0k1?=
+ =?utf-8?B?R0NvUjJ6ZllacGtCQzFERTYwQ09BMU41V1YyMW5yS2drNkpVSVlWaUE0TGg2?=
+ =?utf-8?B?eGtJS0NFMXYyU21Jenl6QzN3anBJd29iOHlVRUpKZGFHUDI1MlpERHJyUTRD?=
+ =?utf-8?B?akw0Q3p0VjZMcjFvWk1FWEowdkQ4eG12eCtua0J6VzRTYjB2RmNnM3RtYTlP?=
+ =?utf-8?B?ZkIrbDZLUVRCZzFUeUVMeTU3YVlCVUZyN29OeWwrdkREWTNJdFY5SlZKc1FO?=
+ =?utf-8?B?ckE4dUFVVjVubDBNK3Z5TmE3dnQzSStWRWdIUEwzWTVxQkttR0xrVXkzcFlZ?=
+ =?utf-8?B?TklqeUJoQmVUMzdWNzRsRkppcmk0TGsrSUVUSDlYSmRwR3FlaVBXMW9kVTd0?=
+ =?utf-8?B?MlJSSHdGMFNHMEc0V0hYZkR4Vi9kVU9rQnRUTHpHY2N4bmE5V0twWllsSXBY?=
+ =?utf-8?B?Rkg0S1FVKzVPT3h0RnVyYjhIbHREVDQ1bkxQZ0VSRHlsaUxaWmw1N3U4aG1o?=
+ =?utf-8?B?UlBOd2htMEhJT0pWVlhSRTc5Y2FOQk9JRHRBQmptRzA5M1hsaWZhMVdET3B2?=
+ =?utf-8?B?a2hyL1NvQVU2SmxSN1NiMTdWVExXSFZrOWdKWE5sWGhEZmtYQUJXRGZCYmhW?=
+ =?utf-8?B?YUFiQU9nejNyVUZ6OU9Id3RFNFkwMUpIRnZ2QU1WRGJFUUZ1UC9SU3NrN2tU?=
+ =?utf-8?B?MjllNUV4bzUvbWhNcCtpd0RMODBycHp1M2Zicll4M3o3bTlFMDFZMDlIVldv?=
+ =?utf-8?B?cnR2d2szWW1QNVpGM2tJL1ArMnpGRUprL0RDejk2TFNacmU1S3VYQnFEaEFT?=
+ =?utf-8?B?a0ZXOS9OcTBLM3FTeGlCSWxRaFJITnZMSWZBUytTK1NQaGdMUFM2TUpoR3A2?=
+ =?utf-8?B?eUpieEJnNG4wM0lMQkI4Rit5SjVqRk5KSlRCL2lwdjRoUXNpWlJXaGJBa0RX?=
+ =?utf-8?B?Q1NjRVZVY0tVN1NUN1U3ODRMWDNCd2JkOUpCVnZvaEtsSTRmMFV1OUNjYUp0?=
+ =?utf-8?B?Q1p0UTc5YUJGZ0d4ZkwxaE90bUdzQ3h2RDIwTnZONmF2OTlycnJCa0dVUEpU?=
+ =?utf-8?B?Tk93YXNvVnZVS01CZm55Z1NxR2ZxS0t2WHNjU0Z6bGp3d2xQb0ZrckNWcEx0?=
+ =?utf-8?B?L0VsaTRLVjBTT3RtZm5uZ0QrMG1PMzRMNmQzVnVNS25BVHRycmZrYTBGQkFN?=
+ =?utf-8?B?bThQYlVCQVJTTjNyQU1MMHJHeVZKQ0M0Z01xNzdJSytPdmQxb0Q2NUJDZkdC?=
+ =?utf-8?B?amk4OUZpUzZINGNnWEN0T1J2SGJ6R29CVStQWXpEZzVrN1E2b2FoWUpmeXgr?=
+ =?utf-8?B?QUJpbEFhbXBtclE9PQ==?=
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjEyMjI7NjpsVlpIaUxiMXNTWFdyVmxRQUE4dFRVOGhH?=
+ =?utf-8?B?dkcrQXIxSDduNDQ4dkJ6ZFhQcGtEWG56aUZXQUdKREFWbEJuREQraGV3dkdJ?=
+ =?utf-8?B?YVpqN2xtaTd5ZFpMRExaWUR5KzdoOEMwR3UxZk9TMnhhbXlTdGN2dHJqQkN3?=
+ =?utf-8?B?d1FMVE5tcUs3Um1RazBrRjNhREhsTUgwVWd4Z3NqUjYvL1hPZlBxa0NoU2Z5?=
+ =?utf-8?B?VzgvdXRzUVhWK0JmeXViVDhFdmxFUHNYdWxSdS9wVlQ3WkNWRkZ6eDdDUnVl?=
+ =?utf-8?B?R1V3djZVT0NUZE9TRnNxK1hEM25kSFVJa3BBVEEyN0UyYlRmWDV5UTZLZTZx?=
+ =?utf-8?B?S3B2eVVMM1owVi9lcXZraDFHUkhiK05uTmNTY3drV2FpakJtMy9sVFMzRzVh?=
+ =?utf-8?B?bFpZemNJZDN5bU50cHNWR3hPeE5zR29rL1VETGFXY1JCSENCSlB4Ujk0YkdB?=
+ =?utf-8?B?QmUyR3BEZE84RXdZS2tneG9aSXlOVWlhUlpGdnBBSTNZNWNlTDJ0bmVJdWtS?=
+ =?utf-8?B?dUZlb1VSZ0QrVnZabHJtZFVjQUprV2ZIK0pRZjhJUFJ6SEltR0VXUC9jSi9l?=
+ =?utf-8?B?NkNPeXA1d0xnR3ppTVZJLzdwOUxSYUpuTjE0aXFBdEhrVkoxZm1adGtDUkJS?=
+ =?utf-8?B?bTRTNVI3Z0pJb3YrUGdMMjMrdFRJOW0rZytWc2tJYlZXb0sybnBYV3krelNJ?=
+ =?utf-8?B?d2dlZ2x2TlUzb3pRbzVSVC9EakJtTTdpaFNCcW9pdEp2a1hHVDh0Q0Rvdmh3?=
+ =?utf-8?B?UDJNV2tGeXJVWXNZVVBSMVloNnlwbzFLNHlaSzBsMjFxcyttMVFsRFVCdjRQ?=
+ =?utf-8?B?NDJvdlpXS200RWZMRUJNV0ljbXQ3MjZZS2hKaWNTa0RKYVJyUVhWVXRndEMw?=
+ =?utf-8?B?VmlPazNoV3QzNlcySGN1cy94TGNXTDg4SGw1WHc3c2gyT011ZE1ycXZFWnov?=
+ =?utf-8?B?SHNwalViVTdvakZyNVRXeEdmcDhMYWowOTRDMllIcGNWZzNBR3dZUUxTcDhD?=
+ =?utf-8?B?bFR5NTZkTTVCekdtUzlHNXkvYUNiMWgwM1pDRGJTUTRqc2xlbjgva2UyZE9k?=
+ =?utf-8?B?UjJZUDlOaDhFNnkwWHY3aHhGYmFyN3F2ZUxMbVhncmVxeDhIZk43KzdjTDJP?=
+ =?utf-8?B?b0JsWkdiOE10ZHFXaW50UW9JNUl2QUdmSEN4NWxIMGt3cFV5bFhvQzdha2l3?=
+ =?utf-8?B?bEFmcGtxUFBETjB5a21ETzdORmJOWldUWGh0aFFjV21EZHVUL2xEQ256N003?=
+ =?utf-8?B?dDJvUWdneXJBTk1pTDZ4S2wyUW5lSmRJWDFnSTFyYThQUzhVaWQxb1pXZE41?=
+ =?utf-8?Q?/tPCYyHWPI1BPdz2/64wXcsO37k+pWSZY=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1222;5:TUMEW1RB6RU7OUFNVHf4PMHMvNYIzYOv9sndZb9XoZsZk+lY83/IKCuEE4hPi23az67DNkd84x9bnDhvZc2unvMntPYianA+C4G41XH2Fv5OCwNtPkKWNPCLxvHec6fQpwTzuYn0a2ZBh1QxV/VpwcHhPTuLczEa9hSMqlaDk/Me43CDiquMoBY7yPT4URFxvo7AaEXgY8jfKTEHpvLXMmFe+OIB9WOoOxnA4ILDIAj58ggsbWQ9xVetLckQuP58q2moz/RMGbggj+/EZsSut0SiPFMA/acBmsuCN8gzEmy+0twvfwgUAaaqfY4UzGDhljOhj7BlmnY90N1/pB33AuZI/voxFV0B/7+nxSqRsAkdJiXwGomOjZkjHX/b9XQTWjIVRf4jBzfZpfZVMefWW/DxDjOsLLTqTqjzc3G/uR6KDwtXkWIbwwIf4uRrs2So9ND3YubjlKxDtA2VJOUKGbGWvbm5BwobUnruCcwS8MJQQzN81Emxv3hjmp3+RRso;24:uioej6LjtEp89q7lwcQQKHzcYjstMUR5Sep52hDgUqOs6eFq82SSvhLYm8Pk7Q49/sfYvfJt4/9f75dq1cCmVjgfpAIRVj8QllQQ9W16vgg=
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1222;7:WBCv1zGJl3gO7y+yoeyiw7NBvG1AtyaSI0WEWah2BBGU+vAyFkgPOVk+iSwL2dci3b9aI6Cy+6R5ib5CzrXgctJMHiQNm8DKyfvRDP91q1cbTaMZuFCDFZ6471U035fzddQmQ57nc8SCkv1Elj2HfcTNFTQJad+AP3J4U266zYfk20eCs7Mu0O64bDR1nU5rmTazns4m9muoOTwxhS5bW7fKEo69XKZpImUiuNWG+niBxMxghODAFCTj73rx3yfwjUWXk5mwmtmd88pqjIazsUXl4qinD0VIkUxY7ujYTg3kYfgDRiS16S0ULJKdGJG3wkYSF40zXSPagXkUN9oWjHXt9ErS5oT2Y6RdIN6lxNQu19ap5QDe7QnZMvFIjJJSKiKLg/D/txuWihjZqfyRAnCf3maPZ15PGiBE5vjvnCOx95bSSkCouIntyISOdwebNcChTPI3lFGBQu7CWzSvDc5Xi52tknsrbC4qCx6u3TJVjOGS2CjpTrmWZRErMOnbAIFIaSUk1BroYrcu0iDLNy+WGNC3R62bvyyUlHB6CaynKhw02/+Zj963uLObFyMmoIH1WKiofQ3qDwM6QjXFYRMvyfkRIEdfPOx87jycTwN2wRlzFcnzThj5M6kuDOlwn2HYwU/vi+nyOv0G5f90iWTg0LR/hZRvPkiVsYRnUpaP8jBYOLrLUWHNhejuzvWIpoRXUDmzZvbOGW433QP9J+lhg5YIZSR6d5UuzgoIgqQ4+WzwEmpdZ05mIoFgSbAMtGuIvOJs6hST7BP/vGknCR2ttEscXfFSXVqqn0IC1Ug=
+X-OriginatorOrg: cavium.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2017 15:31:35.2211 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR0701MB1222
+Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59148
+X-archive-position: 59149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: Steven.Hill@cavium.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,33 +160,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
-reset lines") started to transition the reset control request API calls
-to explicitly state whether the driver needs exclusive or shared reset
-control behavior. Convert all drivers requesting exclusive resets to the
-explicit API call so the temporary transition helpers can be removed.
-
-No functional changes.
-
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
----
- arch/mips/pci/pci-mt7620.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/pci/pci-mt7620.c b/arch/mips/pci/pci-mt7620.c
-index 628c5132b3d8b..4e633c1e7ff3e 100644
---- a/arch/mips/pci/pci-mt7620.c
-+++ b/arch/mips/pci/pci-mt7620.c
-@@ -291,7 +291,7 @@ static int mt7620_pci_probe(struct platform_device *pdev)
- 							  IORESOURCE_MEM, 1);
- 	u32 val = 0;
- 
--	rstpcie0 = devm_reset_control_get(&pdev->dev, "pcie0");
-+	rstpcie0 = devm_reset_control_get_exclusive(&pdev->dev, "pcie0");
- 	if (IS_ERR(rstpcie0))
- 		return PTR_ERR(rstpcie0);
- 
--- 
-2.11.0
+On 07/19/2017 04:41 AM, James Hogan wrote:
+> 
+> Is this already fixed in some other way or is it some unusual configuration? I couldn't reproduce any failure on 4.12 and you haven't quoted the build error or explained what was missing that required io.h to be included.
+> 
+It appears things are working fine in 4.12, so I have dropped
+this patch.

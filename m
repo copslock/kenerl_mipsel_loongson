@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jul 2017 11:38:37 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:41619
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992196AbdGTJiaxdsQZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jul 2017 11:38:30 +0200
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1dY7tF-0000kR-R3; Thu, 20 Jul 2017 11:37:01 +0200
-Message-ID: <1500543415.2354.37.camel@pengutronix.de>
-Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jul 2017 12:37:00 +0200 (CEST)
+Received: from mail.free-electrons.com ([62.4.15.54]:59956 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990864AbdGTKgxmA0nS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jul 2017 12:36:53 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id A988D208A1; Thu, 20 Jul 2017 12:36:41 +0200 (CEST)
+Received: from windsurf (LStLambert-657-1-97-87.w90-63.abo.wanadoo.fr [90.63.216.87])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 4A40D20868;
+        Thu, 20 Jul 2017 12:36:39 +0200 (CEST)
+Date:   Thu, 20 Jul 2017 12:36:40 +0200
+From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+To:     Philipp Zabel <p.zabel@pengutronix.de>
 Cc:     linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Prashant Gaikwad <pgaikwad@nvidia.com>,
         Heiko Stuebner <heiko@sntech.de>,
@@ -43,7 +43,7 @@ Cc:     linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         linux-i2c@vger.kernel.org, linux-watchdog@vger.kernel.org,
         Boris Brezillon <boris.brezillon@free-electrons.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Jon Hunter <jonathanh@nvidia.com>,
         linux-rockchip@lists.infradead.org,
@@ -114,27 +114,26 @@ Cc:     linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Rongrong Zou <zourongrong@gmail.com>,
         linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
         Lucas Stach <l.stach@pengutronix.de>
-Date:   Thu, 20 Jul 2017 11:36:55 +0200
-In-Reply-To: <20170719211515.46a1196c@windsurf>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+Message-ID: <20170720123640.43c2ce01@windsurf>
+In-Reply-To: <1500543415.2354.37.camel@pengutronix.de>
 References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-         <20170719211515.46a1196c@windsurf>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
+        <20170719211515.46a1196c@windsurf>
+        <1500543415.2354.37.camel@pengutronix.de>
+Organization: Free Electrons
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+Return-Path: <thomas.petazzoni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59167
+X-archive-position: 59168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: thomas.petazzoni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -147,50 +146,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Thomas,
+Hello,
 
-On Wed, 2017-07-19 at 21:15 +0200, Thomas Petazzoni wrote:
-> Hello,
-> 
-> On Wed, 19 Jul 2017 17:25:04 +0200, Philipp Zabel wrote:
-> > The reset control API has two modes: exclusive access, where the driver
-> > expects to have full and immediate control over the state of the reset
-> > line, and shared (clock-like) access, where drivers only request reset
-> > deassertion while active, but don't care about the state of the reset line
-> > while inactive.
-> > 
-> > Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
-> > reset lines") started to transition the reset control request API calls
-> > to explicitly state whether the driver needs exclusive or shared reset
-> > control behavior.
-> > 
-> > This series converts all drivers that currently implicitly request
-> > exclusive reset controls to the corresponding explicit API call. It is,
-> > for the most part, generated from the following semantic patch:
-> > 
-> > @@
-> > expression rstc, dev, id;
-> > @@
-> > -rstc = reset_control_get(dev, id);
-> > +rstc = reset_control_get_exclusive(dev, id);
-> 
-> I don't know if it has been discussed in the past, so forgive me if it
-> has been. Have you considered adding a "int flags" argument to the
-> existing reset_control_get_*() functions, rather than introducing
-> separate exclusive variants ?
-> 
-> Indeed, with a "int flags" argument you could in the future add more
-> variants/behaviors without actually multiplying the number of
-> functions. Something like the "flags" argument for request_irq() for
-> example.
+On Thu, 20 Jul 2017 11:36:55 +0200, Philipp Zabel wrote:
 
-I can't find the discussion right now, but I remember we had talked
-about this in the past.
-Behind the scenes, all the inline API functions already call common
-entry points with flags (well, currently separate bool parameters for
-shared and optional).
-One reason against exposing those as an int flags in the user facing API
-is the possibility to accidentally provide a wrong value.
+> > I don't know if it has been discussed in the past, so forgive me if it
+> > has been. Have you considered adding a "int flags" argument to the
+> > existing reset_control_get_*() functions, rather than introducing
+> > separate exclusive variants ?
+> > 
+> > Indeed, with a "int flags" argument you could in the future add more
+> > variants/behaviors without actually multiplying the number of
+> > functions. Something like the "flags" argument for request_irq() for
+> > example.  
+> 
+> I can't find the discussion right now, but I remember we had talked
+> about this in the past.
+> Behind the scenes, all the inline API functions already call common
+> entry points with flags (well, currently separate bool parameters for
+> shared and optional).
+> One reason against exposing those as an int flags in the user facing API
+> is the possibility to accidentally provide a wrong value.
 
-regards
-Philipp
+This is a quite strange argument. You could also accidentally use the
+wrong variant of the function, just like you could use the wrong flag.
+
+Once again, the next time you have another parameter for those reset
+functions, beyond the exclusive/shared variant, you will multiply again
+by two the number of functions ? You already have the  exclusive/shared
+and optional/mandatory variants, so 4 variants. When you'll add a new
+parameter, you'll have 8 variants. Doesn't seem really good.
+
+What about reset_control_get(struct device *, const char *, int flags)
+to replace all those variants ?
+
+Best regards,
+
+Thomas
+-- 
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

@@ -1,142 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jul 2017 14:58:04 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:51277
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992533AbdGTM56J5L08 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jul 2017 14:57:58 +0200
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1dYAzJ-00087B-2w; Thu, 20 Jul 2017 14:55:29 +0200
-Message-ID: <1500555312.2354.75.camel@pengutronix.de>
-Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc:     linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        dri-devel@lists.freedesktop.org, Marc Dietrich <marvin24@gmx.de>,
-        Rakesh Iyer <riyer@nvidia.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-clk@vger.kernel.org, Wim Van Sebroeck <wim@iguana.be>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Xinliang Liu <z.liuxinliang@hisilicon.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Jiri Slaby <jslaby@suse.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ohad Ben-Cohen <ohad@wizery.com>, linux-pm@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincent Abriou <vincent.abriou@st.com>, Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-spi@vger.kernel.org,
-        linux-crypto@vger.kernel.org, Tejun Heo <tj@kernel.org>,
-        alsa-devel@alsa-project.org, linux-doc@vger.kernel.org,
-        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
-        Philippe Cornu <philippe.cornu@st.com>,
-        Kalle Valo <kvalo@qca.qualcomm.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        linux-i2c@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        linux-rockchip@lists.infradead.org,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        linux-media@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        linux-arm-msm@vger.kernel.org,
-        Joachim Eastwood <manabian@gmail.com>,
-        linux-gpio@vger.kernel.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jul 2017 17:05:16 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:20343 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993359AbdGTPFJAh9Gv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jul 2017 17:05:09 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 6F8C49445BBAF;
+        Thu, 20 Jul 2017 16:04:59 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 20 Jul 2017 16:05:02 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        David Woodhouse <dwmw@amazon.co.uk>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-iio@vger.kernel.org, linux-pci@vger.kernel.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        linux-tegra@vger.kernel.org, linux-mtd@lists.infradead.org,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        ath10k@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-input@vger.kernel.org,
-        linux-pwm@vger.kernel.org, Chen Feng <puck.chen@hisilicon.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mmc@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-remoteproc@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-ide@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        devel@driverdev.osuosl.org, Yannick Fertre <yannick.fertre@st.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Richard Weinberger <richard@nod.at>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        linux-serial@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Alan Tull <atull@kernel.org>,
-        John Youn <johnyoun@synopsys.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mark Yao <mark.yao@rock-chips.com>,
-        Moritz Fischer <moritz.fischer@ettus.com>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        netdev@vger.kernel.org,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Rongrong Zou <zourongrong@gmail.com>,
-        linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Lucas Stach <l.stach@pengutronix.de>
-Date:   Thu, 20 Jul 2017 14:55:12 +0200
-In-Reply-To: <20170720123640.43c2ce01@windsurf>
-References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-         <20170719211515.46a1196c@windsurf>
-         <1500543415.2354.37.camel@pengutronix.de>
-         <20170720123640.43c2ce01@windsurf>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+        <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: PCI: Fix smp_processor_id() in preemptible
+Date:   Thu, 20 Jul 2017 16:04:43 +0100
+Message-ID: <1500563083-13420-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59169
+X-archive-position: 59170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -149,53 +45,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Thomas,
+Commit 1c3c5eab1715 ("sched/core: Enable might_sleep() and
+smp_processor_id() checks early") enables checks for might_sleep() and
+smp_processor_id() being used in preemptible code earlier in the boot
+than before. This results in a new BUG from
+pcibios_set_cache_line_size().
 
-On Thu, 2017-07-20 at 12:36 +0200, Thomas Petazzoni wrote:
-> Hello,
-> 
-> On Thu, 20 Jul 2017 11:36:55 +0200, Philipp Zabel wrote:
-> 
-> > > I don't know if it has been discussed in the past, so forgive me if it
-> > > has been. Have you considered adding a "int flags" argument to the
-> > > existing reset_control_get_*() functions, rather than introducing
-> > > separate exclusive variants ?
-> > > 
-> > > Indeed, with a "int flags" argument you could in the future add more
-> > > variants/behaviors without actually multiplying the number of
-> > > functions. Something like the "flags" argument for request_irq() for
-> > > example.  
-> > 
-> > I can't find the discussion right now, but I remember we had talked
-> > about this in the past.
-> > Behind the scenes, all the inline API functions already call common
-> > entry points with flags (well, currently separate bool parameters for
-> > shared and optional).
-> > One reason against exposing those as an int flags in the user facing API
-> > is the possibility to accidentally provide a wrong value.
-> 
-> This is a quite strange argument. You could also accidentally use the
-> wrong variant of the function, just like you could use the wrong flag.
+BUG: using smp_processor_id() in preemptible [00000000] code:
+swapper/0/1
+caller is pcibios_set_cache_line_size+0x10/0x70
+CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.13.0-rc1-00007-g3ce3e4ba4275 #615
+Stack : 0000000000000000 ffffffff81189694 0000000000000000 ffffffff81822318
+        000000000000004e 0000000000000001 800000000e20bd08 20c49ba5e3540000
+        0000000000000000 0000000000000000 ffffffff818d0000 0000000000000000
+        0000000000000000 ffffffff81189328 ffffffff818ce692 0000000000000000
+        0000000000000000 ffffffff81189bc8 ffffffff818d0000 0000000000000000
+        ffffffff81828907 ffffffff81769970 800000020ec78d80 ffffffff818c7b48
+        0000000000000001 0000000000000001 ffffffff818652b0 ffffffff81896268
+        ffffffff818c0000 800000020ec7fb40 800000020ec7fc58 ffffffff81684cac
+        0000000000000000 ffffffff8118ab50 0000000000000030 ffffffff81769970
+        0000000000000001 ffffffff81122a58 0000000000000000 0000000000000000
+        ...
+Call Trace:
+[<ffffffff81122a58>] show_stack+0x90/0xb0
+[<ffffffff81684cac>] dump_stack+0xac/0xf0
+[<ffffffff813f7050>] check_preemption_disabled+0x120/0x128
+[<ffffffff818855e8>] pcibios_set_cache_line_size+0x10/0x70
+[<ffffffff81100578>] do_one_initcall+0x48/0x140
+[<ffffffff81865dc4>] kernel_init_freeable+0x194/0x24c
+[<ffffffff8169c534>] kernel_init+0x14/0x118
+[<ffffffff8111ca84>] ret_from_kernel_thread+0x14/0x1c
 
-You can't accidentally use no flag at all or a completely bogus value
-with the "plethora of inline functions" variant.
+Fix this by using raw_current_cpu_data instead.
 
-> Once again, the next time you have another parameter for those reset
-> functions, beyond the exclusive/shared variant, you will multiply again
-> by two the number of functions ? You already have the  exclusive/shared
-> and optional/mandatory variants, so 4 variants. When you'll add a new
-> parameter, you'll have 8 variants. Doesn't seem really good.
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
 
-I'd rather avoid adding more variants, if possible. The complexity
-increases regardless of whether the API is expressed as a bunch of
-functions or as a single function with a bunch of flags.
+In heteregenerous systems the more correct fix for this would be to
+iterate over CPUs checking each ones cache hierarchy. However, as no
+such systems currently exist that seems wasteful.
 
-> What about reset_control_get(struct device *, const char *, int flags)
-> to replace all those variants ?
+---
+ arch/mips/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-While I like how this looks, unfortunately (devm_)reset_control_get
-already exists without the flags, so we can't change to that with a
-gentle transition.
-
-regards
-Philipp
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index bd67ac74fe2d..7ef8d97fa324 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -28,7 +28,7 @@ EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
+ 
+ static int __init pcibios_set_cache_line_size(void)
+ {
+-	struct cpuinfo_mips *c = &current_cpu_data;
++	struct cpuinfo_mips *c = &raw_current_cpu_data;
+ 	unsigned int lsize;
+ 
+ 	/*
+-- 
+2.7.4

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jul 2017 16:15:42 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:55917 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jul 2017 16:16:12 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:55934 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993966AbdGUOMzaOvSG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jul 2017 16:12:55 +0200
+        id S23993969AbdGUONCcrBMG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jul 2017 16:13:02 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 0E9941A46C8;
-        Fri, 21 Jul 2017 16:12:50 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id F11951A46C8;
+        Fri, 21 Jul 2017 16:12:56 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id B646E1A4153;
-        Fri, 21 Jul 2017 16:12:49 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 97E911A4153;
+        Fri, 21 Jul 2017 16:12:56 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
@@ -21,9 +21,9 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v3 08/16] MIPS: math-emu: <MAXA|MINA>.<D|S>: Fix cases of input values with opposite signs
-Date:   Fri, 21 Jul 2017 16:09:06 +0200
-Message-Id: <1500646206-2436-9-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v3 09/16] MIPS: math-emu: <MAXA|MINA>.<D|S>: Fix cases of both infinite inputs
+Date:   Fri, 21 Jul 2017 16:09:07 +0200
+Message-Id: <1500646206-2436-10-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1500646206-2436-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1500646206-2436-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -31,7 +31,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59184
+X-archive-position: 59185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,94 +50,121 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Fix the value returned by <MAXA|MINA>.<D|S>, if inputs are normal fp
-numbers of the same absolute value, but opposite signs.
+Fix the value returned by <MAXA|MINA>.<D|S> fd,fs,ft, if both inputs
+are infinite. The previous implementation returned always the value
+contained in ft in such cases. The correct behavior is specified
+in Mips instruction set manual and is as follows:
+
+    fs    ft        MAXA     MINA
+  ---------------------------------
+    inf   inf        inf      inf
+    inf  -inf        inf     -inf
+   -inf   inf        inf     -inf
+   -inf  -inf       -inf     -inf
 
 The relevant example:
 
 MAXA.S fd,fs,ft:
-  If fs contains -3, and ft contains +3, fd is going to contain +3
-  (without this patch, it used to contain -3).
+  If fs contains +inf, and ft contains -inf, fd is going to contain
+  +inf (without this patch, it used to contain -inf).
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/math-emu/dp_fmax.c | 8 ++++++--
- arch/mips/math-emu/dp_fmin.c | 6 +++++-
- arch/mips/math-emu/sp_fmax.c | 8 ++++++--
- arch/mips/math-emu/sp_fmin.c | 6 +++++-
- 4 files changed, 22 insertions(+), 6 deletions(-)
+ arch/mips/math-emu/dp_fmax.c | 4 +++-
+ arch/mips/math-emu/dp_fmin.c | 4 +++-
+ arch/mips/math-emu/sp_fmax.c | 4 +++-
+ arch/mips/math-emu/sp_fmin.c | 4 +++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/math-emu/dp_fmax.c b/arch/mips/math-emu/dp_fmax.c
-index a0175cc..860b43f9 100644
+index 860b43f9..5459643 100644
 --- a/arch/mips/math-emu/dp_fmax.c
 +++ b/arch/mips/math-emu/dp_fmax.c
-@@ -224,7 +224,11 @@ union ieee754dp ieee754dp_fmaxa(union ieee754dp x, union ieee754dp y)
- 		return y;
+@@ -183,6 +183,9 @@ union ieee754dp ieee754dp_fmaxa(union ieee754dp x, union ieee754dp y)
+ 	/*
+ 	 * Infinity and zero handling
+ 	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++		return ieee754dp_inf(xs & ys);
++
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+@@ -190,7 +193,6 @@ union ieee754dp ieee754dp_fmaxa(union ieee754dp x, union ieee754dp y)
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
+ 		return x;
  
- 	/* Compare mantissa */
--	if (xm <= ym)
-+	if (xm < ym)
- 		return y;
--	return x;
-+	else if (xm > ym)
-+		return x;
-+	else if (xs == 0)
-+		return x;
-+	return y;
- }
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
 diff --git a/arch/mips/math-emu/dp_fmin.c b/arch/mips/math-emu/dp_fmin.c
-index 074a858..73d85e4 100644
+index 73d85e4..d4cd243 100644
 --- a/arch/mips/math-emu/dp_fmin.c
 +++ b/arch/mips/math-emu/dp_fmin.c
-@@ -224,7 +224,11 @@ union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
+@@ -183,6 +183,9 @@ union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
+ 	/*
+ 	 * Infinity and zero handling
+ 	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++		return ieee754dp_inf(xs | ys);
++
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+@@ -190,7 +193,6 @@ union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
  		return x;
  
- 	/* Compare mantissa */
--	if (xm <= ym)
-+	if (xm < ym)
-+		return x;
-+	else if (xm > ym)
-+		return y;
-+	else if (xs == 1)
- 		return x;
- 	return y;
- }
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
 diff --git a/arch/mips/math-emu/sp_fmax.c b/arch/mips/math-emu/sp_fmax.c
-index 15825db..fec7f64 100644
+index fec7f64..528a90b 100644
 --- a/arch/mips/math-emu/sp_fmax.c
 +++ b/arch/mips/math-emu/sp_fmax.c
-@@ -224,7 +224,11 @@ union ieee754sp ieee754sp_fmaxa(union ieee754sp x, union ieee754sp y)
- 		return y;
+@@ -183,6 +183,9 @@ union ieee754sp ieee754sp_fmaxa(union ieee754sp x, union ieee754sp y)
+ 	/*
+ 	 * Infinity and zero handling
+ 	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++		return ieee754sp_inf(xs & ys);
++
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+@@ -190,7 +193,6 @@ union ieee754sp ieee754sp_fmaxa(union ieee754sp x, union ieee754sp y)
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
+ 		return x;
  
- 	/* Compare mantissa */
--	if (xm <= ym)
-+	if (xm < ym)
- 		return y;
--	return x;
-+	else if (xm > ym)
-+		return x;
-+	else if (xs == 0)
-+		return x;
-+	return y;
- }
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
 diff --git a/arch/mips/math-emu/sp_fmin.c b/arch/mips/math-emu/sp_fmin.c
-index f1418f7..74780bc 100644
+index 74780bc..5f1d650 100644
 --- a/arch/mips/math-emu/sp_fmin.c
 +++ b/arch/mips/math-emu/sp_fmin.c
-@@ -225,7 +225,11 @@ union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)
+@@ -184,6 +184,9 @@ union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)
+ 	/*
+ 	 * Infinity and zero handling
+ 	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++		return ieee754sp_inf(xs | ys);
++
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+@@ -191,7 +194,6 @@ union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
  		return x;
  
- 	/* Compare mantissa */
--	if (xm <= ym)
-+	if (xm < ym)
-+		return x;
-+	else if (xm > ym)
-+		return y;
-+	else if (xs == 1)
- 		return x;
- 	return y;
- }
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
 -- 
 2.7.4

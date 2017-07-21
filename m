@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jul 2017 16:16:44 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:55979 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jul 2017 16:17:07 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:56030 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993967AbdGUONId-IJG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jul 2017 16:13:08 +0200
+        id S23993947AbdGUONSQGp9G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jul 2017 16:13:18 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 2B7F11A46C8;
-        Fri, 21 Jul 2017 16:13:03 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 3301B1A46C8;
+        Fri, 21 Jul 2017 16:13:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id D28B11A4153;
-        Fri, 21 Jul 2017 16:13:02 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id D4E401A4153;
+        Fri, 21 Jul 2017 16:13:10 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
@@ -21,9 +21,9 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v3 10/16] MIPS: math-emu: MINA.<D|S>: Fix some cases of infinity and zero inputs
-Date:   Fri, 21 Jul 2017 16:09:08 +0200
-Message-Id: <1500646206-2436-11-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v3 11/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix NaN propagation
+Date:   Fri, 21 Jul 2017 16:09:09 +0200
+Message-Id: <1500646206-2436-12-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1500646206-2436-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1500646206-2436-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -31,7 +31,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59186
+X-archive-position: 59187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,72 +50,266 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Fix following special cases for MINA>.<D|S>:
+Fix the cases of <MADDF|MSUBF>.<D|S> when any of three inputs is any
+NaN. Correct behavior of <MADDF|MSUBF>.<D|S> fd, fs, ft is following:
 
-  - if one of the inputs is zero, and the other is subnormal, normal,
-    or infinity, the  value of the former should be returned (that is,
-    a zero).
-  - if one of the inputs is infinity, and the other input is normal,
-    or subnormal, the value of the latter should be returned.
+  - if any of inputs is sNaN, return a sNaN using following rules: if
+    only one input is sNaN, return that one; if more than one input is
+    sNaN, order of precedence for return value is fd, fs, ft
+  - if no input is sNaN, but at least one of inputs is qNaN, return a
+    qNaN using following rules: if only one input is qNaN, return that
+    one; if more than one input is qNaN, order of precedence for
+    return value is fd, fs, ft
 
-The previous implementation's logic for such cases was incorrect - it
-appears as if it implements MAXA, and not MINA instruction.
+The previous code contained handling of some above cases, but not all.
+Also, such handling was scattered into various cases of
+"switch (CLPAIR(xc, yc))" statement and elsewhere. With this patch,
+this logic is placed in one place, and "switch (CLPAIR(xc, yc))" is
+significantly simplified.
 
 The relevant example:
 
-MINA.S fd,fs,ft:
-  If fs contains 100.0, and ft contains 0.0, fd is going to contain
-  0.0 (without this patch, it used to contain 100.0).
+MADDF.S fd,fs,ft:
+  If fs contains qNaN1, ft contains qNaN2, and fd contains qNaN3, fd
+  is going to contain qNaN3 (without this patch, it used to contain
+  qNaN1).
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/math-emu/dp_fmin.c | 4 ++--
- arch/mips/math-emu/sp_fmin.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/math-emu/dp_maddf.c | 71 ++++++++++++++-----------------------------
+ arch/mips/math-emu/sp_maddf.c | 69 ++++++++++++++---------------------------
+ 2 files changed, 46 insertions(+), 94 deletions(-)
 
-diff --git a/arch/mips/math-emu/dp_fmin.c b/arch/mips/math-emu/dp_fmin.c
-index d4cd243..1e9ee3d 100644
---- a/arch/mips/math-emu/dp_fmin.c
-+++ b/arch/mips/math-emu/dp_fmin.c
-@@ -191,14 +191,14 @@ union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
--		return x;
-+		return y;
+diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
+index caa62f2..4f2e783 100644
+--- a/arch/mips/math-emu/dp_maddf.c
++++ b/arch/mips/math-emu/dp_maddf.c
+@@ -48,52 +48,35 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
  
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
+ 	ieee754_clearcx();
+ 
+-	switch (zc) {
+-	case IEEE754_CLASS_SNAN:
+-		ieee754_setcx(IEEE754_INVALID_OPERATION);
+-		return ieee754dp_nanxcpt(z);
+-	case IEEE754_CLASS_DNORM:
+-		DPDNORMZ;
+-	/* QNAN and ZERO cases are handled separately below */
+-	}
+-
+-	switch (CLPAIR(xc, yc)) {
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
+-		return ieee754dp_nanxcpt(y);
+-
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
+-		return ieee754dp_nanxcpt(x);
+-
+-	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++	/* handle the cases when at least one of x, y or z is a NaN */
++	if (((xc == IEEE754_CLASS_SNAN) || (xc == IEEE754_CLASS_QNAN)) ||
++	    ((yc == IEEE754_CLASS_SNAN) || (yc == IEEE754_CLASS_QNAN)) ||
++	    ((zc == IEEE754_CLASS_SNAN) || (zc == IEEE754_CLASS_QNAN))) {
++		/* order of precedence is z, x, y */
++		if (zc == IEEE754_CLASS_SNAN)
++			return ieee754dp_nanxcpt(z);
++		if (xc == IEEE754_CLASS_SNAN)
++			return ieee754dp_nanxcpt(x);
++		if (yc == IEEE754_CLASS_SNAN)
++			return ieee754dp_nanxcpt(y);
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		if (xc == IEEE754_CLASS_QNAN)
++			return x;
+ 		return y;
++	}
+ 
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
+-		return x;
++	if (zc == IEEE754_CLASS_DNORM)
++		DPDNORMZ;
++	/* ZERO z cases are handled separately below */
+ 
++	switch (CLPAIR(xc, yc)) {
+ 
+ 	/*
+ 	 * Infinity handling
+ 	 */
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
--		return y;
-+		return x;
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+ 		ieee754_setcx(IEEE754_INVALID_OPERATION);
+ 		return ieee754dp_indef();
+ 
+@@ -102,8 +85,6 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+ 		return ieee754dp_inf(xs ^ ys);
  
  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
- 		return ieee754dp_zero(xs | ys);
-diff --git a/arch/mips/math-emu/sp_fmin.c b/arch/mips/math-emu/sp_fmin.c
-index 5f1d650..685ce75 100644
---- a/arch/mips/math-emu/sp_fmin.c
-+++ b/arch/mips/math-emu/sp_fmin.c
-@@ -192,14 +192,14 @@ union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
--		return x;
-+		return y;
+@@ -120,25 +101,19 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 		DPDNORMX;
  
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+-		else if (zc == IEEE754_CLASS_INF)
++		if (zc == IEEE754_CLASS_INF)
+ 			return ieee754dp_inf(zs);
+ 		DPDNORMY;
+ 		break;
+ 
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+-		else if (zc == IEEE754_CLASS_INF)
++		if (zc == IEEE754_CLASS_INF)
+ 			return ieee754dp_inf(zs);
+ 		DPDNORMX;
+ 		break;
+ 
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+-		else if (zc == IEEE754_CLASS_INF)
++		if (zc == IEEE754_CLASS_INF)
+ 			return ieee754dp_inf(zs);
+ 		/* fall through to real computations */
+ 	}
+diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
+index c91d5e5..9fd2035 100644
+--- a/arch/mips/math-emu/sp_maddf.c
++++ b/arch/mips/math-emu/sp_maddf.c
+@@ -48,51 +48,36 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 
+ 	ieee754_clearcx();
+ 
+-	switch (zc) {
+-	case IEEE754_CLASS_SNAN:
+-		ieee754_setcx(IEEE754_INVALID_OPERATION);
+-		return ieee754sp_nanxcpt(z);
+-	case IEEE754_CLASS_DNORM:
+-		SPDNORMZ;
+-	/* QNAN and ZERO cases are handled separately below */
++	/* handle the cases when at least one of x, y or z is a NaN */
++	if (((xc == IEEE754_CLASS_SNAN) || (xc == IEEE754_CLASS_QNAN)) ||
++	    ((yc == IEEE754_CLASS_SNAN) || (yc == IEEE754_CLASS_QNAN)) ||
++	    ((zc == IEEE754_CLASS_SNAN) || (zc == IEEE754_CLASS_QNAN))) {
++		/* order of precedence is z, x, y */
++		if (zc == IEEE754_CLASS_SNAN)
++			return ieee754sp_nanxcpt(z);
++		if (xc == IEEE754_CLASS_SNAN)
++			return ieee754sp_nanxcpt(x);
++		if (yc == IEEE754_CLASS_SNAN)
++			return ieee754sp_nanxcpt(y);
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		if (xc == IEEE754_CLASS_QNAN)
++			return x;
++		return y;
+ 	}
+ 
++	if (zc == IEEE754_CLASS_DNORM)
++		SPDNORMZ;
++	/* ZERO z cases are handled separately below */
++
+ 	switch (CLPAIR(xc, yc)) {
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
+-		return ieee754sp_nanxcpt(y);
+-
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
+-	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
+-		return ieee754sp_nanxcpt(x);
+-
+-	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
 -		return y;
-+		return x;
+ 
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+-	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
+-		return x;
+ 
+ 	/*
+ 	 * Infinity handling
+ 	 */
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+ 		ieee754_setcx(IEEE754_INVALID_OPERATION);
+ 		return ieee754sp_indef();
+ 
+@@ -101,8 +86,6 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+ 		return ieee754sp_inf(xs ^ ys);
  
  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
- 		return ieee754sp_zero(xs | ys);
+@@ -119,25 +102,19 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 		SPDNORMX;
+ 
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+-		else if (zc == IEEE754_CLASS_INF)
++		if (zc == IEEE754_CLASS_INF)
+ 			return ieee754sp_inf(zs);
+ 		SPDNORMY;
+ 		break;
+ 
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+-		else if (zc == IEEE754_CLASS_INF)
++		if (zc == IEEE754_CLASS_INF)
+ 			return ieee754sp_inf(zs);
+ 		SPDNORMX;
+ 		break;
+ 
+ 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
+-		if (zc == IEEE754_CLASS_QNAN)
+-			return z;
+-		else if (zc == IEEE754_CLASS_INF)
++		if (zc == IEEE754_CLASS_INF)
+ 			return ieee754sp_inf(zs);
+ 		/* fall through to real computations */
+ 	}
 -- 
 2.7.4

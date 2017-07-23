@@ -1,156 +1,178 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jul 2017 21:05:55 +0200 (CEST)
-Received: from mail-bn3nam01on0041.outbound.protection.outlook.com ([104.47.33.41]:15968
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993156AbdGUTFpMKDbO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jul 2017 21:05:45 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Jul 2017 20:42:02 +0200 (CEST)
+Received: from mail-io0-x236.google.com ([IPv6:2607:f8b0:4001:c06::236]:38025
+        "EHLO mail-io0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993256AbdGWSlziAMms (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Jul 2017 20:41:55 +0200
+Received: by mail-io0-x236.google.com with SMTP id g13so36163225ioj.5
+        for <linux-mips@linux-mips.org>; Sun, 23 Jul 2017 11:41:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=dwV8ZARidh3Ydru251VgyrnEASYxD1C1eWgvXoo6dCI=;
- b=jneUTETjPfRki6Wy3tOJ+vTQKh3cgHw0u9p3uIqQKCBS/iHdpq09Fcg1hPuraHT46U3HzfXsKxHS3KYFwLC1ZE6LJAhmzCJWB4g77evUUb2qO9SXbhHPYHpqNoXw1jv/AVSRsTezxaocbPZbJCXMW6pSskRopzTcbiYWOXnFd7k=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Steven.Hill@cavium.com; 
-Received: from [10.0.0.4] (173.18.42.219) by
- BN3PR0701MB1220.namprd07.prod.outlook.com (10.160.115.139) with Microsoft
- SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1261.13; Fri, 21
- Jul 2017 19:05:36 +0000
-Subject: Re: [PATCH] MIPS: OCTEON: Fix USB platform code breakage.
-To:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-References: <1496250830-26716-1-git-send-email-steven.hill@cavium.com>
- <20170719094143.GS31455@jhogan-linux.le.imgtec.org>
- <d8c33b8e-e57c-f109-7747-fdddbcc7bd0e@cavium.com>
- <bce34cc9-38a2-1fce-3569-65742dc068ad@imgtec.com>
-From:   "Steven J. Hill" <Steven.Hill@cavium.com>
-Message-ID: <bca7ce4c-efb0-968e-2570-f759398b75d1@cavium.com>
-Date:   Fri, 21 Jul 2017 14:05:30 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=vhqof9grmGhgmVpo8nLVV6yHAMuBhkqXLFjUrJiUi0g=;
+        b=jGSHCg4unaKpNUDOy878A+wpEP+j6k8diAqh7lpfrfRh+WjPq1uu8Uq/VeCms9NDyg
+         kiy+/2nJQ2EOqsNaKG+tjH6Twdm/D1fVGxQW5EbzB4sviGcrs351/8+Sd26IyqEx5a+6
+         ramZgBA3KNoMdbEsKstCzW0xSmrirb0WlGnpo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=vhqof9grmGhgmVpo8nLVV6yHAMuBhkqXLFjUrJiUi0g=;
+        b=hVnJh9BTnA65mKpy3biQVaxC0hosC5N+aoGMw0YKvXgbgwN4qmGHpbYWPk2qriY4h3
+         BKq4TyLAl1bKlBi3PlOF8PfpVYzIbYg9MditPRrUeCxnFPQExvMIjVpMK36XilfvyC2O
+         +5D5I0Mc6b3npaQIIC1u6klc/fzYiRT8XWgCmEO1cTIpECEjUH4Xw7MzuAaq7Wl9zE8M
+         6Mmy91yQLUvZwtH2PRyhNiZavVgjHFNjFRCjajjGjQFVczwMiLYwiQTuzZfHn18+3Lgg
+         B7ETQ3+quVr78I8kJEC0jHc8P22shaV3Ngrsawn5DczJSuM7g1jOkQCmWVci5UlTLLo3
+         Mpew==
+X-Gm-Message-State: AIVw113NkGXOdVRDT6PV3UiBdiUJFApzafsKChAnwDQY3esQ1ZIYdv3Z
+        UKrfuJ4V9xpn3zXNy6Uf3GY47fz+VZrT
+X-Received: by 10.107.157.9 with SMTP id g9mr14710954ioe.46.1500835309647;
+ Sun, 23 Jul 2017 11:41:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <bce34cc9-38a2-1fce-3569-65742dc068ad@imgtec.com>
-Content-Type: multipart/mixed;
- boundary="------------88776FA91E472887FB70C3A1"
-Content-Language: en-US
-X-Originating-IP: [173.18.42.219]
-X-ClientProxiedBy: DM5PR15CA0068.namprd15.prod.outlook.com (10.173.207.30) To
- BN3PR0701MB1220.namprd07.prod.outlook.com (10.160.115.139)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 92ab1ce2-6305-433c-2e42-08d4d06b7898
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(300000503095)(300135400095)(49563074)(201703131423075)(201703031133081)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:BN3PR0701MB1220;
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1220;3:klguGv+DN7VPKvSypT2QE6DoierzexTNh9z9qPoQSemW+5JywVT6ZbmuwJvL2J+6XW1LBNoB2ULXWjGDYocvwwb3ij0V1znoVNp5rt9RxC/qoPV7xcVPPPTrUFITaCfnhXEbZDmtq4tc54CoY/fClXlnF37iqUoUwtPXd0tVwJ2cjZfzCXZT2Sn8nvUE+FB4O3mN6uehouPJBgKtOgaMpGttMM63x+1cdvde3uRpfvS9JCvIaGT2BzSr+LjYfrQ4oZ+8uDU+W/414DJp8oMG9X9agCezuJBbzkmHGt6Leya9qIbDBF65YC0LKDIhqttCIdgC4iY6HGgMXrYzAU6+y95udIkYE7hD04tT7WyOq9qIHasOrPQikkcQzM+wjv94rYRfRifbGxoNHNzOSsP/opK37Gnknht4EFIL4NGKTAppCxubaUlQS/4VPvJrEXaIPNOBLgW1BG3kdIh4Gpeh1XSKLp3aT4FYQ7Ij1Yl6RU1qTXQ0IwxAn3oKtgUqvaUziGguptUYll4vkaRjHGp7F9cSws8XUBULwH/fJdeUvqub1p1adBzxMfZCOwxXiP2Jj/cUU47lTVdx/iygKic1V0c1o2Xkb2FHyfALxkXZm6r6zKsNKDjWIpW8hxao0Idr2lTWwGpQFSrc/SDwoD+mBFejEy5NjUjHEhVZFXqThSFQMnXvj4axo92PewA8IvIq+z46EaP1McVfuHBWHgBN7o2tD+xp02JFVhOOyWduo73ZkdMX6T6OIOKmxq8FVHro
-X-MS-TrafficTypeDiagnostic: BN3PR0701MB1220:
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0701MB1220;25:OgLJoGSGAuti99xMX6/RMVPxtWB2rC4B2/EQuGA?=
- =?us-ascii?Q?6KTLhDZo2RSlbWuQ+qha0hDG2Ataz8gAlw5qVmlsrExihqPMXxVR8TkmmHzc?=
- =?us-ascii?Q?ssMwdxnlS87iDZEwFUYc6WJJrxN8a5kTrb7knAy102jAEBp/0qhLXwawkq89?=
- =?us-ascii?Q?ESk335jqcClXkZ9NLoN9v15sAkE03zObDv0n0VbCDktE4cYaGX0OtiyWY38e?=
- =?us-ascii?Q?FQ/Qsdjlnsli1DKOnOACS1FjbHg2MRPcFXTTPnMtKyGqOAhBD47OlEvFkF6d?=
- =?us-ascii?Q?VTGZVZNvuJrWTpRx30QjDddjv59CYpuK7dFanrEgQmQRP+AUW82JmJyzME6y?=
- =?us-ascii?Q?uBI3pMeqtxIUvQ3nKfURs9pAlMCRv8p61PImeSbjocub+YBwpwmuRn/2gYNU?=
- =?us-ascii?Q?20ITd2uCPo5JI92HlaIOzFKEfxSnFifQPsabj4doehtV9jFKPYbE3Y65M8Ze?=
- =?us-ascii?Q?pGRqF65N3JyHly/bgX0OOidUniqXeibeU4LH016DsUkrGUQFSjfypNmRv5+0?=
- =?us-ascii?Q?6kkXegzsjvfwqszirzjNmAuJSoNVeCDcpj+RjKY2DMK8pYrzY0w6eGXfSTYJ?=
- =?us-ascii?Q?f/SbIoFy9W71wcULuS34BwhbcaC82oehtM+5wlosNAdCQLYYLlRYm4Lkky+x?=
- =?us-ascii?Q?yY0TC7g5jTbUm5Df+vMOX50t0fYq1kmErShJHIb2p1zP4R1kv5KYoE/ya2ZI?=
- =?us-ascii?Q?xO2ptq3XPNn7FYTJutv5lBKT+r1uXbacKizc44rl+dQpq3fIdsbIE3tZrbqk?=
- =?us-ascii?Q?/FhHM5dHjyDXxXmhrNupFEW4yieRS9DnM/VwbnU6odL+cbUv7gTS9ZCD1YuJ?=
- =?us-ascii?Q?AOkHkEJDDVRTVR8VMYyTOIDqwpvvvGUbK7XNE1dk2A9YvB6jE8nGRSSWlhSv?=
- =?us-ascii?Q?9/we/OZSsAJM/XKaouktaC72tBEW3VczotQ7xgPb8g5jTNs7SoY4Gco0TIzF?=
- =?us-ascii?Q?0sbviNA74CCpAvt8ybi7k8SKhrzshQo7oxmhia96PyQ=3D=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1220;31:EEdQ4MtkOENVERR5tTr7a5Qi5EHl9CqN92xERuwVtJslEO14yL918dpMx/euA7ASed2ns2C5LJl49i2pnlbpuUtI0b5s7nU4UTQ0YWZ7ap0g1JftRBJdCnejzVU4ll+N13SVbJILIUoJ1LBybvnz01NIEXVG6l4vtV8DFgve+skxeAOIriz/EZIWax5rXt6o9fStp1PHBInlPPRVZos/TsBv5fMyAHwl9/iORHMiMXuOb9MALMTc5dZ+rNZPq7jf7ly7+9kUfcH5LG3wWLHZEI7M8ccbrQWjKd4awKaEhwJPExVZCsbVGLgBleR0GeWqDZfpT6s17f2DLRmGN5HyxzJWs1dijBjXjUxCG7JmksBRHBsUNJ8eGQUe2+NiA9Sc0AWeOIOFecPhUVuRqEKNOX12uybJJweKKXNMvwkMV9zKloh8gRaWhoRp9jXnzCRKKHfhA5AYeWVH0YlqHv/snRV1FKPK4NVFS1PAt8cW+pN8AqabebXRZbP7j+aIPh527RhmKd/bb7+CjVcNLs5u4/a6/dOPy9X3iR7sMHRYGWQxLwDiPgVcHKKK6aeCDraMfhHU2Tq7UKrObnseJUVCLOikBPOCyY4L7HdpdHBpSOsCIKy62Cg/fYjyGbqKwY3h4Tyd6dALj+cixwjCQVTWJE4H0Y2NrE6riyJ/qvb4/qBzos+ENemjs29Rt47ofTDG7w7c67xTC5s579im2UgLguYybC46bdfxEpXW9YfS/kCavhJP20WefHzIJPX3X67q
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1220;20:OrQ0gG9SnqE6Kl17Md9s007Fxi5np7K5F2k/34QoT/1JdUb3OUEA0To79yI1rhH1kHyFwa9GrMyCyuC7GBCOcmA4SC3EJspZolWxy02iNA4uOKV+S2CI2HmIBepXeK1O8t0t5pDhcwILnEIRCZdy+S2LwXIiSsPmCaAJxkdtKr8KCdiUPVRClxH8EwfneN5SvGglFt+1oDcDUp/qthOaRjLcb7hVxVFgPVUIulzx1Z6hi1DJ1yIifCVPDZJihmd0dM6fHL1WbPY7mjcuWOZj/oRxzPMnpsjwfkrllGuCpxqf+7He4H9WbcdzNwrDhvE6d2QghqhB3eZdAFnDSOTRyy9+p2Luvys4eUE9tubG3ZoOCDAFyC8GNz4Z+J5l8qDPVkUesjtQcyIfWcpkoRLh3TcJbxGz65CodiNQKPAz5p/0uhv/rubo7P5iN5U39V5/5hu3b1NDhCoDu/1UffduwDkLeADzOsddGg0oDDkUt6m0uV2BF9i6wHam1O51fmac
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <BN3PR0701MB122027C0BDBEEE62F3EAF38780A40@BN3PR0701MB1220.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(102415395)(6040450)(601004)(2401047)(5005006)(8121501046)(10201501046)(93006095)(93001095)(100000703101)(100105400095)(3002001)(6041248)(20161123562025)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123555025)(20161123560025)(20161123564025)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:BN3PR0701MB1220;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:BN3PR0701MB1220;
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0701MB1220;4:C7pEkp3gzvAig8ljVWYnWe7U3SE/JfS56qrp4PN6?=
- =?us-ascii?Q?utn0BttCEMNCkBsjPDriJirVSmQKdwg2FPEZa11Et7b0/YITtpSQhIPkoJ0E?=
- =?us-ascii?Q?PJm5jDrm2+FQS8f/cqrSR/bRBpJng2fPc2rzLctKjOfAjKw/iJYBcDnM72ye?=
- =?us-ascii?Q?a0C7Xz6sb4JnAdI4yP04KcfTxC7XAzlsv9qeovMZejexRrCbpapQq0RXZCHD?=
- =?us-ascii?Q?M35pjSjeMtzpW+y+8BRQSjd0/S+Rz2A0PjDeUqngTCaauymDPO8j19lCPk+7?=
- =?us-ascii?Q?BWCVu438p9LoB6MxQljtMp1Gven3E+8P/VcgOs/2kIzYc2hx6BYTop2ggJGb?=
- =?us-ascii?Q?ovKlCsL0ySaTlYrWZfonRWwEdwklyWfyGSQlMGQedriVeN/n17f1EsqoLFbG?=
- =?us-ascii?Q?k7HV5OAWK2s2+oa2Buqm6k+SVjGxenw7UImXQaIBM7aArAhlsx1maCbV/ZzW?=
- =?us-ascii?Q?mWpUFzXtOngHd8LkqyYAWpYyKZK4GhP8gyhi6oJVx6RbpWNA5RTcNB6M9UTK?=
- =?us-ascii?Q?nvLRFRvap2szcPBjswn4PZw67e0+lMdM5kvC6mlU5YZHRJOR9EUNNCV4rPNR?=
- =?us-ascii?Q?Ug31rs9U0Kv6S0wwv9dgwblVmCSFJHkT/zRxiuHw8++YNHMewCGudtJ7qrXx?=
- =?us-ascii?Q?DEhGqCa0Y/AZjvP1jPwcRkW24HVi9JseneYhumd0zKOo/eZegO+K9F//xzUc?=
- =?us-ascii?Q?amvLPYaHdSLtH5qGuf19gaD0g798kcfDce9WojIw0gcuYQQ7MNWmjqlaJ6Oo?=
- =?us-ascii?Q?Z415p7lX0w60HwDPTV1cg57BjJ9M4oBhcrTpo935+ZTq6SWn9/53n7qXuyTR?=
- =?us-ascii?Q?px6KTdifrpKsV95TX8MEQnu2pxe8kXp3wCd1WyBq3GvliGXrlIEI1h6j/GOS?=
- =?us-ascii?Q?/D1FhJa32jJAg3yVeItn05l6ONQ/RlmjbCmhJzaEhgCmCoJuLI59QjpaTYpt?=
- =?us-ascii?Q?VzYwtvG5o6lFXYzZ58Aj1z1WNAPcdiAragmkXco7wzR3QS8jAFqEiXmOAhPG?=
- =?us-ascii?Q?hiHa/f9mRMisAC0EeMvfpcj5K+PzJff9+F8O3+CPuTCDNo5ysRdgU8++2tOC?=
- =?us-ascii?Q?qjPd5ByTg2tU0GUiH2vjtCKNWFPbtttougivOxAw18Waydgh6xloaJmRx5UM?=
- =?us-ascii?Q?i0N+3j5A1067k0gFil1iksj60sS8lQC+7obs1YDG/UQll65Oj9tqeQ=3D=3D?=
-X-Forefront-PRVS: 0375972289
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(7370300001)(6009001)(6049001)(39450400003)(39400400002)(39860400002)(39850400002)(39410400002)(39840400002)(377454003)(189002)(24454002)(199003)(83506001)(2950100002)(31686004)(53546010)(31696002)(5000100001)(2476003)(105586002)(54356999)(50986999)(76176999)(68736007)(106356001)(189998001)(6486002)(86362001)(84326002)(81156014)(77096006)(5660300001)(101416001)(6246003)(8676002)(42186005)(38730400002)(3846002)(81166006)(36756003)(65826007)(229853002)(53936002)(90366009)(65956001)(4326008)(4610100001)(66066001)(568964002)(93886004)(65806001)(6116002)(5890100001)(72206003)(4001350100001)(97736004)(7350300001)(2906002)(33646002)(478600001)(25786009)(305945005)(6666003)(64126003)(7736002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN3PR0701MB1220;H:[10.0.0.4];FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: cavium.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0701MB1220;23:MGe4MS2VmezWYkJ5qfVo33eVlu/DzUgN77JaIrZ?=
- =?us-ascii?Q?uK0X5KZcda/nNYR0JNI7DcbJs5mQWk0p3JYUpOqvtRiWE/klyZkJA04G+/DB?=
- =?us-ascii?Q?EsS6gXkQBp+oSbBJrnD8GWbQnT51sPQkxuHirOwGgtU4ulS1Kw0h9T1tF+XJ?=
- =?us-ascii?Q?g53yVSSnRMWSLzuvk3EE9W13PZb87AmrTUa8A5Y3/d0OAvQuyA5tdCx51+OT?=
- =?us-ascii?Q?7RgsFY+uGsU5WBxhuN8Q0CFKWRt1K6mCNfVHQGcff/jfEJaD/zIjJ7yn/pvU?=
- =?us-ascii?Q?uI0oaC+YtH9RuGCRzHWUpoZFi70i69kqE7MstY1MIhc51lbtlxzxlRQ9Yuno?=
- =?us-ascii?Q?hDG7zg8DE/5QYJRzcUfDvAQwlmvaSnIYD9VxzlA2Un6GZxOG7paP3OteGnyd?=
- =?us-ascii?Q?0XMe9M390xs4aCzj56xXoKquBOuHMDMJzkwONoHlmwZzw8ORPU0vBYuiD3lZ?=
- =?us-ascii?Q?GMuSEqwbuZ5m9/Wyu9wvoUEs9DTR9SBsfNYP3yQFOnzezS1WUV/0xvFf43e1?=
- =?us-ascii?Q?NofrfCsFCnygGTVN84AabksRpB10r0TCTj45DF7hhVQbIokvgodiNRRxS3Cn?=
- =?us-ascii?Q?fqTjbcR1hk50B9yOX7kR5rpsh3WnWer81RhmQAA/90ob5h9RwbItGwLidneJ?=
- =?us-ascii?Q?apT9NLZwunDh5cjDRIgNWhWu91+yh52KzGgKtoLq+bciWHpeicstoHqzHD4u?=
- =?us-ascii?Q?kbofloDmrG/AeNjvYQzWBqv3tiZwc9IFhl9JHiHQeWnyQoPCrcP6jenHJETE?=
- =?us-ascii?Q?7f+P/ulYacTYq9kHiB4uK76BddmRdtbZKnW9Ir7DLlzWJ0CoYZiXMcM6e8XR?=
- =?us-ascii?Q?TFhzJABqp9EyNzR9Ybr/xRLH+t6afeumnm4uZE04pwUgwfnH/xhGtEihgNh4?=
- =?us-ascii?Q?TcjgfMgqcQDcmQcAfQrHLfebWlldd5uTVWm+5zfB87N9WLFb+v63n/bBue/C?=
- =?us-ascii?Q?wsCiR4IfGNIkFxDZPAT2MAsttpDQJoznmZT5Et0aQt0sDwtgUZnlZqF0IPFB?=
- =?us-ascii?Q?jqnVTHqwbUNK21X/DDGq9XD7VfE6uX2qnGdVI0bZPwXovijFrnNMf4YLxczA?=
- =?us-ascii?Q?acpV2Gy/ihBHGmpTfvxxPlqIdxLQqMx1mmmmEKRnDDmxqrV4i4BcMSreTmOE?=
- =?us-ascii?Q?YQSKfaxMcfl+9QxWlQ4rLH7gZgyibNEy9IGY9x8XtQdbZVTqVzFAFJCTkq7+?=
- =?us-ascii?Q?VmeAp+eqnVF6ObxprGQk00+H921rp513617R67MR6njyWgFeL84/0sBXtNJg?=
- =?us-ascii?Q?Cp6r7rlz2SSecNXJGElTVZ5m8riEwtkSbTbdi4mq+g3uhMUN8oGACsqTNun4?=
- =?us-ascii?Q?QSmF59F7nqzx7r2Vt+c7uf8bLJFoLqYEnFCoQ+/Wq+e3be2fkH550pS6Fuw6?=
- =?us-ascii?Q?4JT4ZJIkjJHuPKFG/1wjD0GPxa/BfM+sgl9EiCVoIBPpUQ5SXqhkGlbY3mgs?=
- =?us-ascii?Q?168S3mnNLp5FY9bFPEK/UDwISEGWPrlOpLHNfB0vaPraNfxs9UTe1+y8LbG8?=
- =?us-ascii?Q?hojkae+nmWkCYEngEs9S64BlfbaahV1LDBnuWlrtPSBfGvfU8v0bEEb4bHGs?=
- =?us-ascii?Q?AnAUPJ4npaGP8Ai1XkoQx/zRIp0QgQ6P+NiH9v5QNBfUUkbngwWhuuT2WU+X?=
- =?us-ascii?Q?2T32Lmds783aPkyiqz5JfV2N9GNpgJ9SfvykWO9Ibz1Y=3D?=
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0701MB1220;6:n8MjTkuxY8puKY70RVw69uMg8BjsZCW9subu6H8t?=
- =?us-ascii?Q?dqsw6V8CqS0tZ7JZrivEZi+7/6MqCu7Ed2d7v22tGJn3GBEBWb8Eeyra0tXw?=
- =?us-ascii?Q?EApsAOXfB307greGe9TyaCCQq4z2QJaZnWhy1kuWzFkS6fWvirFbAbukGZEu?=
- =?us-ascii?Q?FKnPJsifbqZAAr9kCyjbkoTZaTT33VJLzCuHq5b0YRSvRsbwC1GubUG4FHK3?=
- =?us-ascii?Q?JdrjtTHSDldq7YGKGTK617weB6JfDCufBg9URbwY2Uyl0m19TnNjTAYwBRoU?=
- =?us-ascii?Q?LJgpFLbEFRc+/AEpPD1cGCYmPgNmWPy52WJ7gdTLZDAoWTf1KEaBTF1JZjel?=
- =?us-ascii?Q?8f0ilUgNLBNwOxtWaaRCBU3XaseGM3Pu8fbu65uhA4AgBNo7y7HO6ZG2ez24?=
- =?us-ascii?Q?YfThRqMB1qpEGOZ1YRVzNXfuN9m6/66IaXZgoh64LOebG8uB/SNtHYgS96Td?=
- =?us-ascii?Q?WXRberIkjt+17xqXulwIQz9k+/OW9uoqaiSjbpKftgKVhPslFqjkjy1UOWn7?=
- =?us-ascii?Q?aLaY8MNiarZWKgERbjB7SrmJyLygik4aw1IvWBxx3sNVw4QbF0UU7bE7DA0o?=
- =?us-ascii?Q?rDmjY8OMy7ecUa2kzpD1LjQSjwXRAiCSXiJiiMhhl7yCwq0GDGEdzspiQCPs?=
- =?us-ascii?Q?JP4LcnS84o83ftXQIJwwh1ZftpCv9GgkN1sR+2tZefKI4IHhRbG+hohiUcS7?=
- =?us-ascii?Q?gsuGMqB9RzCMcLdpxoy3a7CECEl4hsbbnpXrQEvcOWxzwtD3IaLvTB0Wc9QO?=
- =?us-ascii?Q?WnU+eb8aKi8MX2DeUswy0kiNoKnid51ZJZ7+fvQrDplFu4BQbPQuBlynuRu1?=
- =?us-ascii?Q?j6CbEqCd1sBjNzcnHfKDSEN4/9MMj2tyxECK6C0PevUGgwvTiYtkTh6tmOzv?=
- =?us-ascii?Q?YiNx696rkhSX8H+oDdyC4GSfiTCb2T0e+htZ3+rFMYVZIUfI8GJbeKqvyk5g?=
- =?us-ascii?Q?eDR6gsbQuOMRDEDWYt0lgzIYeIk+XS0IAb3dkWfGB5Ul2thQQ4/vsnDA5nct?=
- =?us-ascii?Q?jKU=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1220;5:Qa8JJ80UHnH5PoNG8UriFaRYJEraBssaYyE+TbWd2d3szDQiVkQHKcb8JdvNwwv8RuImVFSE+UasWKxQCE96W7Y5at0YQQ2j89duhYkKiS1CvX+Ouco3pavwyOOdUIU7cgwZX/JTffeJ47GA+6d7KewSgkTzgRyFlmPCsqREEKxMlhHqJrRVTj6WVaIGS1rB5ckbQ3nbkQ24HZowVR1hGu/PvApXXZNsefKlxYXWv1Z1No3MitnjHSd38y4pvxh2+bUFCMqCsQk8tgQLOTAIIfUU1sVXjYhpHxY+p+DWMeql5VHz/qyekvHDnFFJ91pIe7HIJmYvJdSA9oOCYjL5yyzNMYKVAQ+a9x/9wP7dNSdMILGMjaB6fXXARmE3JRZF2I131zCMR+PnhUhEFhf+E5ppq2yuQ/HlQ1HCfhJEqex4GLqroeeQpTuJt4IbCCIcm0CNlx5ErYfww0UGJ7BcqYGsbmW9pBx8ZxVgvwJ6TKQIHOalCybJ6Z8ZLppWmuCH;24:zUX9ZoX/wLPLuykr9r8M1mLz1iSVkuQfE1EJwj2s76sMGBuZSpHeTDRfbItLNVkHepB5AMA1nkENdSPWScrecUDgj0nCrMymRm/KMDsm/NY=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1220;7:7xVz4xr/OCTVKXK2vhwSgxKXZgofmb+ZEamyfAhQZBoVrDJp7tx1X2S8QmX9gxRIJj5eAhf0Slos35g3u9nyiakQEeIK7Wx4O0WrqaZ+Xsuo59XuwQjz1E355XFskc1eFrH5TvfzNfrHUMg6ygmpRCTrIp0VER0rpzxWXctq1ygsAoeW7OnyFGbFzwXF3NDY4HvKf/3ulxV7evLu4RzbXAPfW0WsZwYJ2WwS3NtG+RhVx0roBnb1F6mNTcVK/fqTQVSDBaUGgLmVpFX6QzdpykR5710D07CN9Z3sx7cUqsNqGnYtqR4onByWzAEkcrg7EPJXgGQ5braoCrrV1cdJISYnf7dMG/QXWrq1PxmPW9vxmdDJmxZZIxuyBOYS0jszT6Rhv0S0TRSVlreYgaQ4z/Zs8bzs/ggsOQDHKt+F5OYo0rovf6MhMSvN+vStMRJ+L6fTAxKULbWUtj2mfedkBeDr2CO66v62V2WTbr+EYF+cSkdDJVRRu+rLiagYXoidL5WKU3tacG3UDBmmiBxsIzmwKdoEU0e31OJW146nmMYPbd2UVfr9VTXqVlDy43o6SAw/bJWP8kCdVbodo6skWyt8Cg8dxPAlUt+fGdLIOddRM4BpLTRJkKQ8SB/RVUGgudCW+UY5+M9oiPanipnNtbZNUPRZ+wy8m4aGDCSbQsuwIpfwNqVacZNOkZRb/vueLqiqOXgDNfHNrn6yi/9K2JkR2onJPYG3GDchFD6vFx+s/bL36MqUL+EWLhvHRGp1HIM/LT8zyStaZpzaoEyecHiqUHKOGinxRcOt4gH/FUc=
-X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2017 19:05:36.3555 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0701MB1220
-Return-Path: <Steven.Hill@cavium.com>
+Received: by 10.79.154.22 with HTTP; Sun, 23 Jul 2017 11:41:48 -0700 (PDT)
+In-Reply-To: <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
+References: <20170719152646.25903-1-p.zabel@pengutronix.de>
+ <20170719211515.46a1196c@windsurf> <1500543415.2354.37.camel@pengutronix.de>
+ <20170720123640.43c2ce01@windsurf> <1500555312.2354.75.camel@pengutronix.de> <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 23 Jul 2017 20:41:48 +0200
+Message-ID: <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Peter Chen <Peter.Chen@nxp.com>,
+        DRI <dri-devel@lists.freedesktop.org>,
+        Marc Dietrich <marvin24@gmx.de>,
+        Rakesh Iyer <riyer@nvidia.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Xinliang Liu <z.liuxinliang@hisilicon.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Jiri Slaby <jslaby@suse.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Abriou <vincent.abriou@st.com>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        Tejun Heo <tj@kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
+        Philippe Cornu <philippe.cornu@st.com>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        Joachim Eastwood <manabian@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        ath10k@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        Chen Feng <puck.chen@hisilicon.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        Yannick Fertre <yannick.fertre@st.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Richard Weinberger <richard@nod.at>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Alan Tull <atull@kernel.org>,
+        John Youn <johnyoun@synopsys.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        dmaengine@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mark Yao <mark.yao@rock-chips.com>,
+        Moritz Fischer <moritz.fischer@ettus.com>,
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        netdev <netdev@vger.kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Rongrong Zou <zourongrong@gmail.com>,
+        linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Lucas Stach <l.stach@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59211
+X-archive-position: 59212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@cavium.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -163,109 +185,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------88776FA91E472887FB70C3A1
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+On Thu, Jul 20, 2017 at 10:46 PM, Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+> On Thu, Jul 20, 2017 at 5:55 AM, Philipp Zabel <p.zabel@pengutronix.de> wrote:
 
-On 07/21/2017 11:10 AM, Matt Redfearn wrote:
-> 
-> This is indeed still broken in v4.13-rc1 with some configurations:
-> 
-> CC      arch/mips/cavium-octeon/octeon-usb.o arch/mips/cavium-octeon/octeon-usb.c: In function ‘dwc3_octeon_device_init’: arch/mips/cavium-octeon/octeon-usb.c:540:4: error: implicit declaration of function ‘devm_iounmap’ [-Werror=implicit-function-declaration] devm_iounmap(&pdev->dev, base); ^ cc1: some warnings being treated as errors scripts/Makefile.build:302: recipe for target 'arch/mips/cavium-octeon/octeon-usb.o' failed
-> 
-With "some" configurations? If I take a clean v4.13-rc1 tag and
-use the default 'arch/mips/configs/cavium_octeon_defconfig' file
-and revert the thin-AR patch, the kernel builds and links without
-any errors. If I go a step further and enable USB DesignWare 3
-support the kernel still builds without errors. I have attached
-this config file for reference. I cannot reproduce your errors
-with a stock v4.13-rc1 kernel.
+>>> What about reset_control_get(struct device *, const char *, int flags)
+>>> to replace all those variants ?
+>>
+>> While I like how this looks, unfortunately (devm_)reset_control_get
+>> already exists without the flags, so we can't change to that with a
+>> gentle transition.
+>
+> This was done for gpiod_get() and its flags argument with horrifying
+> #define-ry, which thankfully was completely hidden from users.
 
---------------88776FA91E472887FB70C3A1
-Content-Type: text/plain; charset=UTF-8;
- name="defconfig"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="defconfig"
+For your reference:
 
-Q09ORklHX0NBVklVTV9PQ1RFT05fU09DPXkKQ09ORklHX0NBVklVTV9DTjYzWFhQMT15CkNP
-TkZJR19DQVZJVU1fT0NURU9OX0NWTVNFR19TSVpFPTIKQ09ORklHX1RSQU5TUEFSRU5UX0hV
-R0VQQUdFPXkKQ09ORklHX1NNUD15CkNPTkZJR19OUl9DUFVTPTMyCkNPTkZJR19IWl8xMDA9
-eQpDT05GSUdfUFJFRU1QVD15CkNPTkZJR19TWVNWSVBDPXkKQ09ORklHX1BPU0lYX01RVUVV
-RT15CkNPTkZJR19CU0RfUFJPQ0VTU19BQ0NUPXkKQ09ORklHX0JTRF9QUk9DRVNTX0FDQ1Rf
-VjM9eQpDT05GSUdfSUtDT05GSUc9eQpDT05GSUdfSUtDT05GSUdfUFJPQz15CkNPTkZJR19M
-T0dfQlVGX1NISUZUPTE0CkNPTkZJR19SRUxBWT15CkNPTkZJR19CTEtfREVWX0lOSVRSRD15
-CkNPTkZJR19FWFBFUlQ9eQpDT05GSUdfU0xBQj15CkNPTkZJR19NT0RVTEVTPXkKQ09ORklH
-X01PRFVMRV9VTkxPQUQ9eQojIENPTkZJR19CTEtfREVWX0JTRyBpcyBub3Qgc2V0CkNPTkZJ
-R19QQ0k9eQpDT05GSUdfUENJX01TST15CkNPTkZJR19NSVBTMzJfTzMyPXkKQ09ORklHX01J
-UFMzMl9OMzI9eQpDT05GSUdfTkVUPXkKQ09ORklHX1BBQ0tFVD15CkNPTkZJR19VTklYPXkK
-Q09ORklHX0lORVQ9eQpDT05GSUdfSVBfTVVMVElDQVNUPXkKQ09ORklHX0lQX0FEVkFOQ0VE
-X1JPVVRFUj15CkNPTkZJR19JUF9NVUxUSVBMRV9UQUJMRVM9eQpDT05GSUdfSVBfUk9VVEVf
-TVVMVElQQVRIPXkKQ09ORklHX0lQX1JPVVRFX1ZFUkJPU0U9eQpDT05GSUdfSVBfUE5QPXkK
-Q09ORklHX0lQX1BOUF9ESENQPXkKQ09ORklHX0lQX1BOUF9CT09UUD15CkNPTkZJR19JUF9Q
-TlBfUkFSUD15CkNPTkZJR19JUF9NUk9VVEU9eQpDT05GSUdfSVBfUElNU01fVjE9eQpDT05G
-SUdfSVBfUElNU01fVjI9eQpDT05GSUdfU1lOX0NPT0tJRVM9eQpDT05GSUdfVUVWRU5UX0hF
-TFBFUl9QQVRIPSIvc2Jpbi9ob3RwbHVnIgpDT05GSUdfREVWVE1QRlM9eQojIENPTkZJR19G
-V19MT0FERVIgaXMgbm90IHNldApDT05GSUdfTVREPXkKIyBDT05GSUdfTVREX09GX1BBUlRT
-IGlzIG5vdCBzZXQKQ09ORklHX01URF9CTE9DSz15CkNPTkZJR19NVERfQ0ZJPXkKQ09ORklH
-X01URF9DRklfQU1EU1REPXkKQ09ORklHX01URF9TTFJBTT15CkNPTkZJR19CTEtfREVWX0xP
-T1A9eQpDT05GSUdfRUVQUk9NX0FUMjQ9eQpDT05GSUdfRUVQUk9NX0FUMjU9eQpDT05GSUdf
-QkxLX0RFVl9TRD15CkNPTkZJR19BVEE9eQpDT05GSUdfU0FUQV9BSENJPXkKQ09ORklHX1NB
-VEFfQUhDSV9QTEFURk9STT15CkNPTkZJR19QQVRBX09DVEVPTl9DRj15CkNPTkZJR19TQVRB
-X1NJTD15CkNPTkZJR19ORVRERVZJQ0VTPXkKIyBDT05GSUdfTkVUX1ZFTkRPUl8zQ09NIGlz
-IG5vdCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9BREFQVEVDIGlzIG5vdCBzZXQKIyBDT05G
-SUdfTkVUX1ZFTkRPUl9BTFRFT04gaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX0FN
-RCBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1JfQVRIRVJPUyBpcyBub3Qgc2V0CiMg
-Q09ORklHX05FVF9WRU5ET1JfQlJPQURDT00gaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVO
-RE9SX0JST0NBREUgaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX0NIRUxTSU8gaXMg
-bm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX0NJU0NPIGlzIG5vdCBzZXQKIyBDT05GSUdf
-TkVUX1ZFTkRPUl9ERUMgaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX0RMSU5LIGlz
-IG5vdCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9FTVVMRVggaXMgbm90IHNldAojIENPTkZJ
-R19ORVRfVkVORE9SX0VYQVIgaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX0hQIGlz
-IG5vdCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9JTlRFTCBpcyBub3Qgc2V0CiMgQ09ORklH
-X05FVF9WRU5ET1JfTUFSVkVMTCBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1JfTUVM
-TEFOT1ggaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX01JQ1JFTCBpcyBub3Qgc2V0
-CiMgQ09ORklHX05FVF9WRU5ET1JfTVlSSSBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5E
-T1JfTkFUU0VNSSBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1JfTlZJRElBIGlzIG5v
-dCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9PS0kgaXMgbm90IHNldAojIENPTkZJR19ORVRf
-UEFDS0VUX0VOR0lORSBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1JfUUxPR0lDIGlz
-IG5vdCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9SRUFMVEVLIGlzIG5vdCBzZXQKIyBDT05G
-SUdfTkVUX1ZFTkRPUl9SREMgaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX1NFRVEg
-aXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX1NJTEFOIGlzIG5vdCBzZXQKIyBDT05G
-SUdfTkVUX1ZFTkRPUl9TSVMgaXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX1NNU0Mg
-aXMgbm90IHNldAojIENPTkZJR19ORVRfVkVORE9SX1NUTUlDUk8gaXMgbm90IHNldAojIENP
-TkZJR19ORVRfVkVORE9SX1NVTiBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1JfVEVI
-VVRJIGlzIG5vdCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9USSBpcyBub3Qgc2V0CiMgQ09O
-RklHX05FVF9WRU5ET1JfVE9TSElCQSBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1Jf
-VklBIGlzIG5vdCBzZXQKIyBDT05GSUdfTkVUX1ZFTkRPUl9XSVpORVQgaXMgbm90IHNldApD
-T05GSUdfQkNNODdYWF9QSFk9eQpDT05GSUdfQlJPQURDT01fUEhZPXkKQ09ORklHX01BUlZF
-TExfUEhZPXkKQ09ORklHX1VTQl9ORVRfRFJJVkVSUz1tCiMgQ09ORklHX1dMQU4gaXMgbm90
-IHNldAojIENPTkZJR19JTlBVVCBpcyBub3Qgc2V0CiMgQ09ORklHX1NFUklPIGlzIG5vdCBz
-ZXQKIyBDT05GSUdfVlQgaXMgbm90IHNldApDT05GSUdfU0VSSUFMXzgyNTA9eQpDT05GSUdf
-U0VSSUFMXzgyNTBfQ09OU09MRT15CkNPTkZJR19TRVJJQUxfODI1MF9OUl9VQVJUUz0yCkNP
-TkZJR19TRVJJQUxfODI1MF9SVU5USU1FX1VBUlRTPTIKQ09ORklHX1NFUklBTF84MjUwX0RX
-PXkKIyBDT05GSUdfSFdfUkFORE9NIGlzIG5vdCBzZXQKQ09ORklHX0kyQz15CkNPTkZJR19J
-MkNfT0NURU9OPXkKQ09ORklHX1NQST15CkNPTkZJR19TUElfT0NURU9OPXkKIyBDT05GSUdf
-SFdNT04gaXMgbm90IHNldApDT05GSUdfV0FUQ0hET0c9eQpDT05GSUdfVVNCPXkKIyBDT05G
-SUdfVVNCX1BDSSBpcyBub3Qgc2V0CkNPTkZJR19VU0JfWEhDSV9IQ0Q9eQpDT05GSUdfVVNC
-X0VIQ0lfSENEPXkKQ09ORklHX1VTQl9FSENJX0hDRF9QTEFURk9STT15CkNPTkZJR19VU0Jf
-T0hDSV9IQ0Q9eQpDT05GSUdfVVNCX09IQ0lfSENEX1BMQVRGT1JNPXkKQ09ORklHX1VTQl9T
-VE9SQUdFPXkKQ09ORklHX1VTQl9EV0MzPXkKQ09ORklHX01NQz15CiMgQ09ORklHX1BXUlNF
-UV9FTU1DIGlzIG5vdCBzZXQKIyBDT05GSUdfUFdSU0VRX1NJTVBMRSBpcyBub3Qgc2V0CkNP
-TkZJR19NTUNfQ0FWSVVNX09DVEVPTj15CkNPTkZJR19SVENfQ0xBU1M9eQpDT05GSUdfUlRD
-X0RSVl9EUzEzMDc9eQpDT05GSUdfU1RBR0lORz15CkNPTkZJR19PQ1RFT05fRVRIRVJORVQ9
-eQpDT05GSUdfT0NURU9OX1VTQj1tCiMgQ09ORklHX0lPTU1VX1NVUFBPUlQgaXMgbm90IHNl
-dApDT05GSUdfRVhUNF9GUz15CkNPTkZJR19FWFQ0X0ZTX1BPU0lYX0FDTD15CkNPTkZJR19F
-WFQ0X0ZTX1NFQ1VSSVRZPXkKQ09ORklHX01TRE9TX0ZTPXkKQ09ORklHX1ZGQVRfRlM9eQpD
-T05GSUdfUFJPQ19LQ09SRT15CkNPTkZJR19UTVBGUz15CkNPTkZJR19IVUdFVExCRlM9eQpD
-T05GSUdfTkZTX0ZTPXkKQ09ORklHX05GU19WND15CkNPTkZJR19ORlNfVjRfMT15CkNPTkZJ
-R19ST09UX05GUz15CkNPTkZJR19OTFNfQ09ERVBBR0VfNDM3PXkKQ09ORklHX05MU19BU0NJ
-ST15CkNPTkZJR19OTFNfSVNPODg1OV8xPXkKQ09ORklHX05MU19VVEY4PXkKQ09ORklHX0RF
-QlVHX0lORk89eQpDT05GSUdfREVCVUdfRlM9eQpDT05GSUdfTUFHSUNfU1lTUlE9eQojIENP
-TkZJR19TQ0hFRF9ERUJVRyBpcyBub3Qgc2V0CkNPTkZJR19TRUNVUklUWT15CkNPTkZJR19T
-RUNVUklUWV9ORVRXT1JLPXkKQ09ORklHX0NSWVBUT19DQkM9eQpDT05GSUdfQ1JZUFRPX0hN
-QUM9eQpDT05GSUdfQ1JZUFRPX01ENV9PQ1RFT049eQpDT05GSUdfQ1JZUFRPX1NIQTFfT0NU
-RU9OPW0KQ09ORklHX0NSWVBUT19TSEEyNTZfT0NURU9OPW0KQ09ORklHX0NSWVBUT19TSEE1
-MTJfT0NURU9OPW0KQ09ORklHX0NSWVBUT19ERVM9eQo=
---------------88776FA91E472887FB70C3A1--
+commit bae48da237fcedd7ad09569025483b988635efb7
+"gpiolib: add gpiod_get() and gpiod_put() functions"
+
+commit 39b2bbe3d715cf5013b5c48695ccdd25bd3bf120
+"gpio: add flags argument to gpiod_get*() functions"
+
+commit 0dbc8b7afef6e4fddcfebcbacbeb269a0a3b06d5
+"gpio: move varargs hack outside #ifdef GPIOLIB"
+
+commit b17d1bf16cc72a374a48d748940f700009d40ff4
+"gpio: make flags mandatory for gpiod_get functions"
+
+Retrospectively ... was that really a good idea... it was a LOT
+of trouble to add a flag, maybe it had been better to try and
+just slam all users in a single go.
+
+But it worked.
+
+Yours,
+Linus Walleij

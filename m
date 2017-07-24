@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 01:34:00 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50378 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 01:42:14 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44838 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992366AbdGXXdw47gUt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 01:33:52 +0200
+        by eddie.linux-mips.org with ESMTP id S23993420AbdGXXmHEiQyt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 01:42:07 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 3D5C841F8DE4;
-        Tue, 25 Jul 2017 01:45:02 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 82D7C41F8DE4;
+        Tue, 25 Jul 2017 01:53:16 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 25 Jul 2017 01:45:02 +0100
+  Tue, 25 Jul 2017 01:53:16 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 25 Jul 2017 01:45:02 +0100
+        by imgpgp01.kl.imgtec.org on Tue, 25 Jul 2017 01:53:16 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 389DB8B3CB2F2;
-        Tue, 25 Jul 2017 00:33:43 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 8015094C98ABA;
+        Tue, 25 Jul 2017 00:41:57 +0100 (IST)
 Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 25 Jul
- 2017 00:33:47 +0100
-Date:   Tue, 25 Jul 2017 00:33:46 +0100
+ 2017 00:42:01 +0100
+Date:   Tue, 25 Jul 2017 00:42:00 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Matt Redfearn <matt.redfearn@imgtec.com>
-CC:     "Steven J. Hill" <Steven.Hill@cavium.com>,
-        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: OCTEON: Fix USB platform code breakage.
-Message-ID: <20170724233346.GV31455@jhogan-linux.le.imgtec.org>
-References: <1496250830-26716-1-git-send-email-steven.hill@cavium.com>
- <20170719094143.GS31455@jhogan-linux.le.imgtec.org>
- <d8c33b8e-e57c-f109-7747-fdddbcc7bd0e@cavium.com>
- <bce34cc9-38a2-1fce-3569-65742dc068ad@imgtec.com>
- <bca7ce4c-efb0-968e-2570-f759398b75d1@cavium.com>
- <7fae6b84-ee63-072d-9c2d-9fc5a2816e6f@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH] MIPS: PCI: Fix smp_processor_id() in preemptible
+Message-ID: <20170724234200.GW31455@jhogan-linux.le.imgtec.org>
+References: <1500563083-13420-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="v7CWsE/Dy737oYst"
+        protocol="application/pgp-signature"; boundary="f4arffV+Mc+T1KhS"
 Content-Disposition: inline
-In-Reply-To: <7fae6b84-ee63-072d-9c2d-9fc5a2816e6f@imgtec.com>
+In-Reply-To: <1500563083-13420-1-git-send-email-matt.redfearn@imgtec.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 3d264444
@@ -42,7 +40,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59228
+X-archive-position: 59229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,90 +57,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---v7CWsE/Dy737oYst
+--f4arffV+Mc+T1KhS
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 24, 2017 at 08:47:55AM +0100, Matt Redfearn wrote:
-> Hi Steven,
+On Thu, Jul 20, 2017 at 04:04:43PM +0100, Matt Redfearn wrote:
+> Commit 1c3c5eab1715 ("sched/core: Enable might_sleep() and
+> smp_processor_id() checks early") enables checks for might_sleep() and
+> smp_processor_id() being used in preemptible code earlier in the boot
+> than before. This results in a new BUG from
+> pcibios_set_cache_line_size().
 >=20
+> BUG: using smp_processor_id() in preemptible [00000000] code:
+> swapper/0/1
+> caller is pcibios_set_cache_line_size+0x10/0x70
+> CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.13.0-rc1-00007-g3ce3e4ba4275 =
+#615
+> Stack : 0000000000000000 ffffffff81189694 0000000000000000 ffffffff818223=
+18
+>         000000000000004e 0000000000000001 800000000e20bd08 20c49ba5e35400=
+00
+>         0000000000000000 0000000000000000 ffffffff818d0000 00000000000000=
+00
+>         0000000000000000 ffffffff81189328 ffffffff818ce692 00000000000000=
+00
+>         0000000000000000 ffffffff81189bc8 ffffffff818d0000 00000000000000=
+00
+>         ffffffff81828907 ffffffff81769970 800000020ec78d80 ffffffff818c7b=
+48
+>         0000000000000001 0000000000000001 ffffffff818652b0 ffffffff818962=
+68
+>         ffffffff818c0000 800000020ec7fb40 800000020ec7fc58 ffffffff81684c=
+ac
+>         0000000000000000 ffffffff8118ab50 0000000000000030 ffffffff817699=
+70
+>         0000000000000001 ffffffff81122a58 0000000000000000 00000000000000=
+00
+>         ...
+> Call Trace:
+> [<ffffffff81122a58>] show_stack+0x90/0xb0
+> [<ffffffff81684cac>] dump_stack+0xac/0xf0
+> [<ffffffff813f7050>] check_preemption_disabled+0x120/0x128
+> [<ffffffff818855e8>] pcibios_set_cache_line_size+0x10/0x70
+> [<ffffffff81100578>] do_one_initcall+0x48/0x140
+> [<ffffffff81865dc4>] kernel_init_freeable+0x194/0x24c
+> [<ffffffff8169c534>] kernel_init+0x14/0x118
+> [<ffffffff8111ca84>] ret_from_kernel_thread+0x14/0x1c
 >=20
-> On 21/07/17 20:05, Steven J. Hill wrote:
-> > On 07/21/2017 11:10 AM, Matt Redfearn wrote:
-> >> This is indeed still broken in v4.13-rc1 with some configurations:
-> >>
-> >> CC      arch/mips/cavium-octeon/octeon-usb.o arch/mips/cavium-octeon/o=
-cteon-usb.c: In function =E2=80=98dwc3_octeon_device_init=E2=80=99: arch/mi=
-ps/cavium-octeon/octeon-usb.c:540:4: error: implicit declaration of functio=
-n =E2=80=98devm_iounmap=E2=80=99 [-Werror=3Dimplicit-function-declaration] =
-devm_iounmap(&pdev->dev, base); ^ cc1: some warnings being treated as error=
-s scripts/Makefile.build:302: recipe for target 'arch/mips/cavium-octeon/oc=
-teon-usb.o' failed
-> >>
-> > With "some" configurations? If I take a clean v4.13-rc1 tag and
-> > use the default 'arch/mips/configs/cavium_octeon_defconfig' file
-> > and revert the thin-AR patch, the kernel builds and links without
-> > any errors. If I go a step further and enable USB DesignWare 3
-> > support the kernel still builds without errors. I have attached
-> > this config file for reference. I cannot reproduce your errors
-> > with a stock v4.13-rc1 kernel.
+> Fix this by using raw_current_cpu_data instead.
 >=20
-> I have bisected it for you. The Kconfig that causes the issue is SMP.=20
-> Steps to reproduce:
-> $ make cavium_octeon_defconfig
-> $ make menuconfig - Turn off CONFIG_SMP.
-> $ make clean arch/mips/cavium-octeon/octeon-usb.o
-> <snip>
-> CC [M]  arch/mips/cavium-octeon/octeon-usb.o
-> arch/mips/cavium-octeon/octeon-usb.c: In function =E2=80=98dwc3_octeon_de=
-vice_init=E2=80=99:
-> arch/mips/cavium-octeon/octeon-usb.c:540:4: error: implicit declaration=
-=20
-> of function =E2=80=98devm_iounmap=E2=80=99 [-Werror=3Dimplicit-function-d=
-eclaration]
->      devm_iounmap(&pdev->dev, base);
->      ^
-> cc1: some warnings being treated as errors
-> scripts/Makefile.build:308: recipe for target=20
-> 'arch/mips/cavium-octeon/octeon-usb.o' failed
-> make[1]: *** [arch/mips/cavium-octeon/octeon-usb.o] Error 1
-> Makefile:1662: recipe for target 'arch/mips/cavium-octeon/octeon-usb.o'=
-=20
-> failed
-> make: *** [arch/mips/cavium-octeon/octeon-usb.o] Error 2
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> ---
 >=20
-> Applying this patch fixes the build.
->=20
-> Tested-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> In heteregenerous systems the more correct fix for this would be to
+> iterate over CPUs checking each ones cache hierarchy. However, as no
+> such systems currently exist that seems wasteful.
 
-Thanks Matt,
+I fear this may return to bite us at some point.
 
-As for the original patch, with an improved commit message:
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+How about switching to using cpu_*cache_line_size(), which uses
+cpu_data[0]? That way we'll at least be able to grep for users when the
+macros are later fixed or removed.
+
+Admitedly there is no cpu_tcache_line_size(), but it could be trivially
+added.
 
 Cheers
 James
 
---v7CWsE/Dy737oYst
+>=20
+> ---
+>  arch/mips/pci/pci.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+> index bd67ac74fe2d..7ef8d97fa324 100644
+> --- a/arch/mips/pci/pci.c
+> +++ b/arch/mips/pci/pci.c
+> @@ -28,7 +28,7 @@ EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
+> =20
+>  static int __init pcibios_set_cache_line_size(void)
+>  {
+> -	struct cpuinfo_mips *c =3D &current_cpu_data;
+> +	struct cpuinfo_mips *c =3D &raw_current_cpu_data;
+>  	unsigned int lsize;
+> =20
+>  	/*
+> --=20
+> 2.7.4
+>=20
+>=20
+
+--f4arffV+Mc+T1KhS
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAll2g9AACgkQbAtpk944
-dnpffRAAuci5JCNxNQSZ7GwxlhN7qnJnXwF1SFM++t+UwYIAKBJGNT90bgqz/s0x
-czf3xXJVRQ9b6+sLN9P1CTEHJCmW0+/nsIqqHHHiHccM4GDwzmk6nHUEugMn1ext
-4yzX/qU4qTyWSMtYZNP6x0R5Ky7/sN83ozdKcy15ZHU0iqdWQRPiAfWjjXKMS+YQ
-8Ai3As8wIkrRFEwcwD7/GU4v3qvZoRSYQVcM2OLrBbsKHCvEagv7VcI83yALk9Xj
-xNQvrotGgQgg19hHm6KDHvhN1Fz4NrRI5ytz59UrL9xrx+w0e8mVqd4LJG3y4ZwK
-mx50vzhsN/zecNOURfjcURD1rsKR/v6aaZoBPv0QobzE+/tRyScNppBHJquoo3si
-7fnWEuSFYlTolhk71PqH6TKnjnZUkqObevS7i7F39s24q43Rux6xlXg7XcbIC2OF
-2N9bCXVJe9N3QdDHJ3spaLpzHmJi262QvEhifhSSHBo6JSH4mBSVfYRwxGrwEjP7
-1vZey2OGRYykf9Y+MqlhHBKxI+wRNfTdnw7bGgMgl52VZQu2FeVJcYjf3EwLH3eb
-70M0g4orJ14h4+fRznZcXSxdHvfCyuD4v1LGtC3n8hwQxTDIZRudkku4leTvnUex
-c8HeHGxH9KcY2+sifTD/zQe/d+eb2D7k41f0O33jdmBjszHArh8=
-=/wwg
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAll2hccACgkQbAtpk944
+dnr0pA//bK0m5SsYVUYQkGTD+g5piX+RLF/+urYCiCqVHVc9owfBwHV+HJN8PD/x
+nOpLAtZZ+sVY8+uLnX0q4wRq23LqCGH/YXSE5IzOlj4q8QbWhOYThpxXSAlAz/k1
+x7DGsDlqh9w3n8V6w3679L0LWvqZXcfKZML9TDVYjRZ6vcEZEAX3+k1/wydibRvE
+GVx30TjeVdLt7xba3DtWPeSVXg/fYnHXgLP2OLMvhwfXx9Y6XOd5+NpxEVbvYhVD
+/nvPr61e4Sm/LhszmNvk2VvHwL9q+qCPnPbftSTQUZANANTJgNslZGaXE2XjpU7b
+RSCD7aWnn8vxKc9j2B0+J+OMikO7SryyJl9dDl1A7kfdGb/0Asizwg+vCjfILo4J
+7zCx9YTCBErUsqmBmQBdeRZ7QRXw9kWGH516CKVa82pSVaN6LpL9sUjG9gjbH+Kc
+WrJmGQ10njhUnukrOYnENNnjliU4RSiwfIy9TEJOJGdhb/CtSeR1wARENCu/lPDF
+SH6FOiMlMoaohKe1ym+9lbLjgXqj8ygdHkDZfR5fr0VjRekfhPJQ/IvuL/11TXEz
+vFHBVxThoiDtPOlslSOcOC/+rXEWbglP34dyEZ3vd4FA+Fovaswmx/rh/6vddkdN
+p+IAg4qcp8eCkR7fbTcMk+vFP6tbL+PFz95qgeKTJeLPyhSAVw4=
+=JVyw
 -----END PGP SIGNATURE-----
 
---v7CWsE/Dy737oYst--
+--f4arffV+Mc+T1KhS--

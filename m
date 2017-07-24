@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jul 2017 13:47:41 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27134 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jul 2017 14:06:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:65022 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991087AbdGXLr2LjQ-g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jul 2017 13:47:28 +0200
+        by eddie.linux-mips.org with ESMTP id S23991087AbdGXMGK4MmLg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jul 2017 14:06:10 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 20AB241F8E18;
-        Mon, 24 Jul 2017 13:58:36 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 0CD9F41F8E18;
+        Mon, 24 Jul 2017 14:17:19 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 24 Jul 2017 13:58:36 +0100
+  Mon, 24 Jul 2017 14:17:19 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 24 Jul 2017 13:58:36 +0100
+        by imgpgp01.kl.imgtec.org on Mon, 24 Jul 2017 14:17:19 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 4E387A2B23E41;
-        Mon, 24 Jul 2017 12:47:20 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 28D8B56C6F15A;
+        Mon, 24 Jul 2017 13:06:03 +0100 (IST)
 Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 24 Jul
- 2017 12:47:22 +0100
-Date:   Mon, 24 Jul 2017 12:47:21 +0100
+ 2017 13:06:05 +0100
+Date:   Mon, 24 Jul 2017 13:06:04 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 CC:     <linux-mips@linux-mips.org>,
@@ -30,16 +30,16 @@ CC:     <linux-mips@linux-mips.org>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v3 13/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix some
- cases of zero inputs
-Message-ID: <20170724114721.GR6973@jhogan-linux.le.imgtec.org>
+Subject: Re: [PATCH v3 16/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Clean up
+ maddf_flags enumeration
+Message-ID: <20170724120604.GS6973@jhogan-linux.le.imgtec.org>
 References: <1500646206-2436-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1500646206-2436-14-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1500646206-2436-17-git-send-email-aleksandar.markovic@rt-rk.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+xUfOySV6ieGZheq"
+        protocol="application/pgp-signature"; boundary="3X8HaB+/xMECYZdj"
 Content-Disposition: inline
-In-Reply-To: <1500646206-2436-14-git-send-email-aleksandar.markovic@rt-rk.com>
+In-Reply-To: <1500646206-2436-17-git-send-email-aleksandar.markovic@rt-rk.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 3d264444
@@ -47,7 +47,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59220
+X-archive-position: 59221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,32 +64,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---+xUfOySV6ieGZheq
+--3X8HaB+/xMECYZdj
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 21, 2017 at 04:09:11PM +0200, Aleksandar Markovic wrote:
+On Fri, Jul 21, 2017 at 04:09:14PM +0200, Aleksandar Markovic wrote:
 > From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 >=20
-> Fix the cases of <MADDF|MSUBF>.<D|S> when any of two multiplicands is
-> +0 or -0, and the third input is also +0 or -0. Depending on the signs
-> of inputs, certain special cases must be handled.
+> Fix definition and usage of maddf_flags enumeration. Avoid duplicate
+> definition and apply more common capitalization.
 >=20
-> The relevant example:
+> This patch does not change any scenario. It just make MADDF and MSUBF
+> emulation code more readable and easier to maintain, and hopefully
+> also prevents future bugs.
 >=20
-> MADDF.S fd,fs,ft:
->   If fs contains +0.0, ft contains -0.0, and fd contains 0.0, fd is
->   going to contain +0.0 (without this patch, it used to contain -0.0).
->=20
-
-Usual fixes/stable comments.
-
 > Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 > Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 > Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-
-Patch looks correct to me.
 
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
@@ -97,73 +89,188 @@ Cheers
 James
 
 > ---
->  arch/mips/math-emu/dp_maddf.c | 8 ++++++++
->  arch/mips/math-emu/sp_maddf.c | 8 ++++++++
->  2 files changed, 16 insertions(+)
+>  arch/mips/math-emu/dp_maddf.c   | 19 ++++++++-----------
+>  arch/mips/math-emu/ieee754int.h |  4 ++++
+>  arch/mips/math-emu/sp_maddf.c   | 19 ++++++++-----------
+>  3 files changed, 20 insertions(+), 22 deletions(-)
 >=20
 > diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-> index 45f815d..b8b2c17 100644
+> index 68b55c8..d36f01a 100644
 > --- a/arch/mips/math-emu/dp_maddf.c
 > +++ b/arch/mips/math-emu/dp_maddf.c
-> @@ -113,6 +113,14 @@ static union ieee754dp _dp_maddf(union ieee754dp z, =
-union ieee754dp x,
->  	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
->  		if (zc =3D=3D IEEE754_CLASS_INF)
->  			return ieee754dp_inf(zs);
-> +		/* Handle cases +0 + (-0) and similar ones. */
-> +		if (zc =3D=3D IEEE754_CLASS_ZERO) {
-> +			if ((!(flags & maddf_negate_product) && (zs =3D=3D (xs ^ ys))) ||
-> +			    ((flags & maddf_negate_product) && (zs !=3D (xs ^ ys))))
-> +				return z;
-> +			else
-> +				return ieee754dp_zero(ieee754_csr.rm =3D=3D FPU_CSR_RD);
-> +		}
->  		/* Multiplication is 0 so just return z */
->  		return z;
+> @@ -14,9 +14,6 @@
 > =20
+>  #include "ieee754dp.h"
+> =20
+> -enum maddf_flags {
+> -	maddf_negate_product	=3D 1 << 0,
+> -};
+> =20
+>  /* 128 bits shift right logical with rounding. */
+>  void srl128(u64 *hptr, u64 *lptr, int count)
+> @@ -111,8 +108,8 @@ static union ieee754dp _dp_maddf(union ieee754dp z, u=
+nion ieee754dp x,
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+>  		if ((zc =3D=3D IEEE754_CLASS_INF) &&
+> -		    ((!(flags & maddf_negate_product) && (zs !=3D (xs ^ ys))) ||
+> -		     ((flags & maddf_negate_product) && (zs =3D=3D (xs ^ ys))))) {
+> +		    ((!(flags & MADDF_NEGATE_PRODUCT) && (zs !=3D (xs ^ ys))) ||
+> +		     ((flags & MADDF_NEGATE_PRODUCT) && (zs =3D=3D (xs ^ ys))))) {
+>  			/*
+>  			 * Cases of addition of infinities with opposite signs
+>  			 * or subtraction of infinities with same signs.
+> @@ -124,9 +121,9 @@ static union ieee754dp _dp_maddf(union ieee754dp z, u=
+nion ieee754dp x,
+>  		 * z is here either not infinity, or infinity of the same sign
+>  		 * as maddf_negate_product * x * y. So, the result must be
+>  		 * infinity, and its sign is determined only by the value of
+> -		 * (flags & maddf_negate_product) and the signs of x and y.
+> +		 * (flags & MADDF_NEGATE_PRODUCT) and the signs of x and y.
+>  		 */
+> -		if (flags & maddf_negate_product)
+> +		if (flags & MADDF_NEGATE_PRODUCT)
+>  			return ieee754dp_inf(1 ^ (xs ^ ys));
+>  		else
+>  			return ieee754dp_inf(xs ^ ys);
+> @@ -140,8 +137,8 @@ static union ieee754dp _dp_maddf(union ieee754dp z, u=
+nion ieee754dp x,
+>  			return ieee754dp_inf(zs);
+>  		/* Handle cases +0 + (-0) and similar ones. */
+>  		if (zc =3D=3D IEEE754_CLASS_ZERO) {
+> -			if ((!(flags & maddf_negate_product) && (zs =3D=3D (xs ^ ys))) ||
+> -			    ((flags & maddf_negate_product) && (zs !=3D (xs ^ ys))))
+> +			if ((!(flags & MADDF_NEGATE_PRODUCT) && (zs =3D=3D (xs ^ ys))) ||
+> +			    ((flags & MADDF_NEGATE_PRODUCT) && (zs !=3D (xs ^ ys))))
+>  				return z;
+>  			else
+>  				return ieee754dp_zero(ieee754_csr.rm =3D=3D FPU_CSR_RD);
+> @@ -184,7 +181,7 @@ static union ieee754dp _dp_maddf(union ieee754dp z, u=
+nion ieee754dp x,
+> =20
+>  	re =3D xe + ye;
+>  	rs =3D xs ^ ys;
+> -	if (flags & maddf_negate_product)
+> +	if (flags & MADDF_NEGATE_PRODUCT)
+>  		rs ^=3D 1;
+> =20
+>  	/* shunt to top of word */
+> @@ -335,5 +332,5 @@ union ieee754dp ieee754dp_maddf(union ieee754dp z, un=
+ion ieee754dp x,
+>  union ieee754dp ieee754dp_msubf(union ieee754dp z, union ieee754dp x,
+>  				union ieee754dp y)
+>  {
+> -	return _dp_maddf(z, x, y, maddf_negate_product);
+> +	return _dp_maddf(z, x, y, MADDF_NEGATE_PRODUCT);
+>  }
+> diff --git a/arch/mips/math-emu/ieee754int.h b/arch/mips/math-emu/ieee754=
+int.h
+> index 8bc2f69..dd2071f 100644
+> --- a/arch/mips/math-emu/ieee754int.h
+> +++ b/arch/mips/math-emu/ieee754int.h
+> @@ -26,6 +26,10 @@
+> =20
+>  #define CLPAIR(x, y)	((x)*6+(y))
+> =20
+> +enum maddf_flags {
+> +	MADDF_NEGATE_PRODUCT	=3D 1 << 0,
+> +};
+> +
+>  static inline void ieee754_clearcx(void)
+>  {
+>  	ieee754_csr.cx =3D 0;
 > diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
-> index 76856d7..cb8597b 100644
+> index b380189..715cc47 100644
 > --- a/arch/mips/math-emu/sp_maddf.c
 > +++ b/arch/mips/math-emu/sp_maddf.c
-> @@ -114,6 +114,14 @@ static union ieee754sp _sp_maddf(union ieee754sp z, =
-union ieee754sp x,
->  	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
->  		if (zc =3D=3D IEEE754_CLASS_INF)
->  			return ieee754sp_inf(zs);
-> +		/* Handle cases +0 + (-0) and similar ones. */
-> +		if (zc =3D=3D IEEE754_CLASS_ZERO) {
-> +			if ((!(flags & maddf_negate_product) && (zs =3D=3D (xs ^ ys))) ||
-> +			    ((flags & maddf_negate_product) && (zs !=3D (xs ^ ys))))
-> +				return z;
-> +			else
-> +				return ieee754sp_zero(ieee754_csr.rm =3D=3D FPU_CSR_RD);
-> +		}
->  		/* Multiplication is 0 so just return z */
->  		return z;
+> @@ -14,9 +14,6 @@
 > =20
+>  #include "ieee754sp.h"
+> =20
+> -enum maddf_flags {
+> -	maddf_negate_product	=3D 1 << 0,
+> -};
+> =20
+>  static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+>  				 union ieee754sp y, enum maddf_flags flags)
+> @@ -81,8 +78,8 @@ static union ieee754sp _sp_maddf(union ieee754sp z, uni=
+on ieee754sp x,
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+>  		if ((zc =3D=3D IEEE754_CLASS_INF) &&
+> -		    ((!(flags & maddf_negate_product) && (zs !=3D (xs ^ ys))) ||
+> -		     ((flags & maddf_negate_product) && (zs =3D=3D (xs ^ ys))))) {
+> +		    ((!(flags & MADDF_NEGATE_PRODUCT) && (zs !=3D (xs ^ ys))) ||
+> +		     ((flags & MADDF_NEGATE_PRODUCT) && (zs =3D=3D (xs ^ ys))))) {
+>  			/*
+>  			 * Cases of addition of infinities with opposite signs
+>  			 * or subtraction of infinities with same signs.
+> @@ -94,9 +91,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, uni=
+on ieee754sp x,
+>  		 * z is here either not infinity, or infinity of the same sign
+>  		 * as maddf_negate_product * x * y. So, the result must be
+>  		 * infinity, and its sign is determined only by the value of
+> -		 * (flags & maddf_negate_product) and the signs of x and y.
+> +		 * (flags & MADDF_NEGATE_PRODUCT) and the signs of x and y.
+>  		 */
+> -		if (flags & maddf_negate_product)
+> +		if (flags & MADDF_NEGATE_PRODUCT)
+>  			return ieee754sp_inf(1 ^ (xs ^ ys));
+>  		else
+>  			return ieee754sp_inf(xs ^ ys);
+> @@ -110,8 +107,8 @@ static union ieee754sp _sp_maddf(union ieee754sp z, u=
+nion ieee754sp x,
+>  			return ieee754sp_inf(zs);
+>  		/* Handle cases +0 + (-0) and similar ones. */
+>  		if (zc =3D=3D IEEE754_CLASS_ZERO) {
+> -			if ((!(flags & maddf_negate_product) && (zs =3D=3D (xs ^ ys))) ||
+> -			    ((flags & maddf_negate_product) && (zs !=3D (xs ^ ys))))
+> +			if ((!(flags & MADDF_NEGATE_PRODUCT) && (zs =3D=3D (xs ^ ys))) ||
+> +			    ((flags & MADDF_NEGATE_PRODUCT) && (zs !=3D (xs ^ ys))))
+>  				return z;
+>  			else
+>  				return ieee754sp_zero(ieee754_csr.rm =3D=3D FPU_CSR_RD);
+> @@ -156,7 +153,7 @@ static union ieee754sp _sp_maddf(union ieee754sp z, u=
+nion ieee754sp x,
+> =20
+>  	re =3D xe + ye;
+>  	rs =3D xs ^ ys;
+> -	if (flags & maddf_negate_product)
+> +	if (flags & MADDF_NEGATE_PRODUCT)
+>  		rs ^=3D 1;
+> =20
+>  	/* Multiple 24 bit xm and ym to give 48 bit results */
+> @@ -255,5 +252,5 @@ union ieee754sp ieee754sp_maddf(union ieee754sp z, un=
+ion ieee754sp x,
+>  union ieee754sp ieee754sp_msubf(union ieee754sp z, union ieee754sp x,
+>  				union ieee754sp y)
+>  {
+> -	return _sp_maddf(z, x, y, maddf_negate_product);
+> +	return _sp_maddf(z, x, y, MADDF_NEGATE_PRODUCT);
+>  }
 > --=20
 > 2.7.4
 >=20
 
---+xUfOySV6ieGZheq
+--3X8HaB+/xMECYZdj
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAll13j4ACgkQbAtpk944
-dnqZaw//Wtc2dO3V1MULHcdhxiuDmQZifq5BCyTfw720jS0bG3WC83t6rB3Vw2sQ
-uO2jGzQWPx+AhkcnSAAiejMuTKTOFjUBWMtwc9VrAabTR2DtVx51Maef1yGxqAd+
-mlEIBVUIhcOw9HuuQQAT/l3E7YwJ8Zs4UPX7u8IVQrJ0e6NEqZu7vhvIBtbeLCYp
-LLwY54DngA157dW7VB1ypa9Bb9xJn1+qu17AuUJsIB3Dz9IkLYnLyHyrL3bEux6h
-BAtD4BjZMbKLe/tza0nvbot/yiLNK1XG6G1xPjuqWcDIUTNEsA1S71qQjrYFb0lo
-FHIvb7BnfT75DyLWmF/sx6l3mZJOphvPMJBuirxHGUIswLtZt2fBSwwbiBlE/ELI
-WuU7ZughQXgMwjQfw41wNHWHavv1zhOxdDAt1aFSHgXj5Fk3VFkFRUxs5wl1Lq+A
-J15TheNefxc+REj2B/AwsQLAUzf5k1CpohDr0uV1B5hNLZnvsxtY1EqIQXLSHexZ
-HtWh2BXov07oqlPU5HW7CbtuFk/LQvp1btIVHEWHiZ8rm2AfBLy4viEPXer//SkE
-LPlIDKutPuLEYHWy7w1Dq8YTO6xQFaYYx5Z1who7L57xC9KtcQUrYCPMO07zZsyU
-G2avIjaLlLnlMo2td4SK5UqS5qp8IZiFm/0iWlBfVQKNXGh/7QY=
-=kWm2
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAll14qsACgkQbAtpk944
+dnqx3w/+PCjr3XmGjoBvIqoJDcC4uPFOOfZngvNEqduY6fS6J93GcUMrPy9DlRbu
+YbR9RT2052VzFYCGww00sKdIsBwKgIzHdlNqDjs0JTX1eIkXS7VOw7jBf8X1u00y
+8Cjs48sLlBelGflqpfQF3Oby9IwP935CFVrJdP8z9DsLtKE7OprO1dDUpt57ST2A
+7XZmqUSmYuUEcEJEmL1SIwd06KbZ0CILsfShN0bYa43G0T9nTf/0+mh8aLEM0pen
+D4j9kTUqe4/kOy8PQBhoLRvHcj0q22MYM970yKlUp+AmuPIvCkubqFHrKDzbPJzb
+7GGFf/icApgDhAdUtS9ieYylB2KDDsCtqjC/RHHXtPahwxK88X/LAMh6pL/wyY2A
+JIjLerh8ei5X3pFZChxcozG/fZEd14OPk1b5ai2C7Jr4GfTdWs1mArZ/x1lwPxnm
+42GCrL65LY+mgMmCCw2uGK2MghYx5U4T8pUj8zLPIPqhidwAmEm/GkT2eilmr/os
+xIVsjhPEegE6duC9lLedlla7PykFv8JvFqIzeInK0iz+5BcKE4kj/QDhhx0tmb07
+o+xOjISG5c7bCMegRQbK+zoYPdOHiVCl0bv4zSfiQqziGIsqn18tjwlUjxwDrcNG
+K+LZLJELLBEg95NBoeZfd3aOSDjzuL9V024zQird2yAqB3TSlrk=
+=s8to
 -----END PGP SIGNATURE-----
 
---+xUfOySV6ieGZheq--
+--3X8HaB+/xMECYZdj--

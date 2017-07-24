@@ -1,166 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jul 2017 10:36:32 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:39337
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990505AbdGXIgZjj1mH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jul 2017 10:36:25 +0200
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1dZYoU-0006tl-UB; Mon, 24 Jul 2017 10:34:02 +0200
-Message-ID: <1500885221.2391.50.camel@pengutronix.de>
-Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        DRI <dri-devel@lists.freedesktop.org>,
-        Marc Dietrich <marvin24@gmx.de>,
-        Rakesh Iyer <riyer@nvidia.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Xinliang Liu <z.liuxinliang@hisilicon.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Jiri Slaby <jslaby@suse.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincent Abriou <vincent.abriou@st.com>, Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        Tejun Heo <tj@kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
-        Philippe Cornu <philippe.cornu@st.com>,
-        Kalle Valo <kvalo@qca.qualcomm.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-        Joachim Eastwood <manabian@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        ath10k@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        Chen Feng <puck.chen@hisilicon.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-remoteproc@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        Yannick Fertre <yannick.fertre@st.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Richard Weinberger <richard@nod.at>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Alan Tull <atull@kernel.org>,
-        John Youn <johnyoun@synopsys.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        dmaengine@vger.kernel.org,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mark Yao <mark.yao@rock-chips.com>,
-        Moritz Fischer <moritz.fischer@ettus.com>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        netdev <netdev@vger.kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Rongrong Zou <zourongrong@gmail.com>,
-        linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Lucas Stach <l.stach@pengutronix.de>
-Date:   Mon, 24 Jul 2017 10:33:41 +0200
-In-Reply-To: <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
-References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-         <20170719211515.46a1196c@windsurf>
-         <1500543415.2354.37.camel@pengutronix.de>
-         <20170720123640.43c2ce01@windsurf>
-         <1500555312.2354.75.camel@pengutronix.de>
-         <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
-         <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jul 2017 12:24:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8469 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990510AbdGXKYTBnciN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jul 2017 12:24:19 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id C632741F8E18;
+        Mon, 24 Jul 2017 12:35:26 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 24 Jul 2017 12:35:26 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 24 Jul 2017 12:35:26 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 56D69ACF301C7;
+        Mon, 24 Jul 2017 11:24:11 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 24 Jul
+ 2017 11:24:12 +0100
+Date:   Mon, 24 Jul 2017 11:24:12 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+CC:     <linux-mips@linux-mips.org>,
+        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v3 11/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix NaN
+ propagation
+Message-ID: <20170724102412.GP6973@jhogan-linux.le.imgtec.org>
+References: <1500646206-2436-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1500646206-2436-12-git-send-email-aleksandar.markovic@rt-rk.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kfbWTnNdPEvwDq13"
+Content-Disposition: inline
+In-Reply-To: <1500646206-2436-12-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 3d264444
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59217
+X-archive-position: 59218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -173,46 +64,343 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 2017-07-23 at 20:41 +0200, Linus Walleij wrote:
-> On Thu, Jul 20, 2017 at 10:46 PM, Dmitry Torokhov
-> <dmitry.torokhov@gmail.com> wrote:
-> > On Thu, Jul 20, 2017 at 5:55 AM, Philipp Zabel <p.zabel@pengutronix.de> wrote:
-> 
-> >>> What about reset_control_get(struct device *, const char *, int flags)
-> >>> to replace all those variants ?
-> >>
-> >> While I like how this looks, unfortunately (devm_)reset_control_get
-> >> already exists without the flags, so we can't change to that with a
-> >> gentle transition.
-> >
-> > This was done for gpiod_get() and its flags argument with horrifying
-> > #define-ry, which thankfully was completely hidden from users.
-> 
-> For your reference:
-> 
-> commit bae48da237fcedd7ad09569025483b988635efb7
-> "gpiolib: add gpiod_get() and gpiod_put() functions"
-> 
-> commit 39b2bbe3d715cf5013b5c48695ccdd25bd3bf120
-> "gpio: add flags argument to gpiod_get*() functions"
-> 
-> commit 0dbc8b7afef6e4fddcfebcbacbeb269a0a3b06d5
-> "gpio: move varargs hack outside #ifdef GPIOLIB"
-> 
-> commit b17d1bf16cc72a374a48d748940f700009d40ff4
-> "gpio: make flags mandatory for gpiod_get functions"
-> 
-> Retrospectively ... was that really a good idea... it was a LOT
-> of trouble to add a flag, maybe it had been better to try and
-> just slam all users in a single go.
-> 
-> But it worked.
+--kfbWTnNdPEvwDq13
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the hint and the references. It seems this turned out okay,
-but I wouldn't dare to introduce such macro horror^Wmagic.
-I'd rather have all users converted to the _exclusive/_shared function
-calls and maybe then replace the internal __reset_control_get with
-Thomas' suggestion.
+On Fri, Jul 21, 2017 at 04:09:09PM +0200, Aleksandar Markovic wrote:
+> From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+>=20
+> Fix the cases of <MADDF|MSUBF>.<D|S> when any of three inputs is any
+> NaN. Correct behavior of <MADDF|MSUBF>.<D|S> fd, fs, ft is following:
+>=20
+>   - if any of inputs is sNaN, return a sNaN using following rules: if
+>     only one input is sNaN, return that one; if more than one input is
+>     sNaN, order of precedence for return value is fd, fs, ft
+>   - if no input is sNaN, but at least one of inputs is qNaN, return a
+>     qNaN using following rules: if only one input is qNaN, return that
+>     one; if more than one input is qNaN, order of precedence for
+>     return value is fd, fs, ft
+>=20
+> The previous code contained handling of some above cases, but not all.
+> Also, such handling was scattered into various cases of
+> "switch (CLPAIR(xc, yc))" statement and elsewhere. With this patch,
+> this logic is placed in one place, and "switch (CLPAIR(xc, yc))" is
+> significantly simplified.
+>=20
+> The relevant example:
+>=20
+> MADDF.S fd,fs,ft:
+>   If fs contains qNaN1, ft contains qNaN2, and fd contains qNaN3, fd
+>   is going to contain qNaN3 (without this patch, it used to contain
+>   qNaN1).
+>=20
 
-regards
-Philipp
+Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF FPU=
+ instruction")
+Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU=
+ instruction")
+
+> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
+> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+
+If backported, I suspect commits:
+6162051e87f6 ("MIPS: math-emu: Unify ieee754sp_m{add,sub}f")
+and
+d728f6709bcc ("MIPS: math-emu: Unify ieee754dp_m{add,sub}f")
+in 4.7 will require manual backporting between 4.3 and 4.7 (due to
+separation of maddf/msubf before that point), so I suppose tagging
+stable 4.7+ and backporting is best (assuming you consider this fix
+worth backporting).
+
+> ---
+>  arch/mips/math-emu/dp_maddf.c | 71 ++++++++++++++-----------------------=
+------
+>  arch/mips/math-emu/sp_maddf.c | 69 ++++++++++++++-----------------------=
+----
+>  2 files changed, 46 insertions(+), 94 deletions(-)
+>=20
+> diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
+> index caa62f2..4f2e783 100644
+> --- a/arch/mips/math-emu/dp_maddf.c
+> +++ b/arch/mips/math-emu/dp_maddf.c
+> @@ -48,52 +48,35 @@ static union ieee754dp _dp_maddf(union ieee754dp z, u=
+nion ieee754dp x,
+> =20
+>  	ieee754_clearcx();
+> =20
+> -	switch (zc) {
+> -	case IEEE754_CLASS_SNAN:
+> -		ieee754_setcx(IEEE754_INVALID_OPERATION);
+> -		return ieee754dp_nanxcpt(z);
+> -	case IEEE754_CLASS_DNORM:
+> -		DPDNORMZ;
+> -	/* QNAN and ZERO cases are handled separately below */
+> -	}
+> -
+> -	switch (CLPAIR(xc, yc)) {
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
+> -		return ieee754dp_nanxcpt(y);
+> -
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
+> -		return ieee754dp_nanxcpt(x);
+> -
+> -	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
+> +	/* handle the cases when at least one of x, y or z is a NaN */
+> +	if (((xc =3D=3D IEEE754_CLASS_SNAN) || (xc =3D=3D IEEE754_CLASS_QNAN)) =
+||
+> +	    ((yc =3D=3D IEEE754_CLASS_SNAN) || (yc =3D=3D IEEE754_CLASS_QNAN)) =
+||
+> +	    ((zc =3D=3D IEEE754_CLASS_SNAN) || (zc =3D=3D IEEE754_CLASS_QNAN)))=
+ {
+
+This condition basically covers all of the cases below. Any particular
+reason not to skip it ...
+
+> +		/* order of precedence is z, x, y */
+> +		if (zc =3D=3D IEEE754_CLASS_SNAN)
+> +			return ieee754dp_nanxcpt(z);
+> +		if (xc =3D=3D IEEE754_CLASS_SNAN)
+> +			return ieee754dp_nanxcpt(x);
+> +		if (yc =3D=3D IEEE754_CLASS_SNAN)
+> +			return ieee754dp_nanxcpt(y);
+> +		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> +			return z;
+> +		if (xc =3D=3D IEEE754_CLASS_QNAN)
+> +			return x;
+>  		return y;
+
+=2E.. and make this return conditional on (yc =3D=3D IEEE754_CLASS_QNAN)?
+
+Same for sp_maddf.c too.
+
+Otherwise:
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+
+Cheers
+James
+
+> +	}
+> =20
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
+> -		return x;
+> +	if (zc =3D=3D IEEE754_CLASS_DNORM)
+> +		DPDNORMZ;
+> +	/* ZERO z cases are handled separately below */
+> =20
+> +	switch (CLPAIR(xc, yc)) {
+> =20
+>  	/*
+>  	 * Infinity handling
+>  	 */
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+>  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+>  		ieee754_setcx(IEEE754_INVALID_OPERATION);
+>  		return ieee754dp_indef();
+> =20
+> @@ -102,8 +85,6 @@ static union ieee754dp _dp_maddf(union ieee754dp z, un=
+ion ieee754dp x,
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+>  		return ieee754dp_inf(xs ^ ys);
+> =20
+>  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+> @@ -120,25 +101,19 @@ static union ieee754dp _dp_maddf(union ieee754dp z,=
+ union ieee754dp x,
+>  		DPDNORMX;
+> =20
+>  	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+> -		else if (zc =3D=3D IEEE754_CLASS_INF)
+> +		if (zc =3D=3D IEEE754_CLASS_INF)
+>  			return ieee754dp_inf(zs);
+>  		DPDNORMY;
+>  		break;
+> =20
+>  	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+> -		else if (zc =3D=3D IEEE754_CLASS_INF)
+> +		if (zc =3D=3D IEEE754_CLASS_INF)
+>  			return ieee754dp_inf(zs);
+>  		DPDNORMX;
+>  		break;
+> =20
+>  	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+> -		else if (zc =3D=3D IEEE754_CLASS_INF)
+> +		if (zc =3D=3D IEEE754_CLASS_INF)
+>  			return ieee754dp_inf(zs);
+>  		/* fall through to real computations */
+>  	}
+> diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
+> index c91d5e5..9fd2035 100644
+> --- a/arch/mips/math-emu/sp_maddf.c
+> +++ b/arch/mips/math-emu/sp_maddf.c
+> @@ -48,51 +48,36 @@ static union ieee754sp _sp_maddf(union ieee754sp z, u=
+nion ieee754sp x,
+> =20
+>  	ieee754_clearcx();
+> =20
+> -	switch (zc) {
+> -	case IEEE754_CLASS_SNAN:
+> -		ieee754_setcx(IEEE754_INVALID_OPERATION);
+> -		return ieee754sp_nanxcpt(z);
+> -	case IEEE754_CLASS_DNORM:
+> -		SPDNORMZ;
+> -	/* QNAN and ZERO cases are handled separately below */
+> +	/* handle the cases when at least one of x, y or z is a NaN */
+> +	if (((xc =3D=3D IEEE754_CLASS_SNAN) || (xc =3D=3D IEEE754_CLASS_QNAN)) =
+||
+> +	    ((yc =3D=3D IEEE754_CLASS_SNAN) || (yc =3D=3D IEEE754_CLASS_QNAN)) =
+||
+> +	    ((zc =3D=3D IEEE754_CLASS_SNAN) || (zc =3D=3D IEEE754_CLASS_QNAN)))=
+ {
+> +		/* order of precedence is z, x, y */
+> +		if (zc =3D=3D IEEE754_CLASS_SNAN)
+> +			return ieee754sp_nanxcpt(z);
+> +		if (xc =3D=3D IEEE754_CLASS_SNAN)
+> +			return ieee754sp_nanxcpt(x);
+> +		if (yc =3D=3D IEEE754_CLASS_SNAN)
+> +			return ieee754sp_nanxcpt(y);
+> +		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> +			return z;
+> +		if (xc =3D=3D IEEE754_CLASS_QNAN)
+> +			return x;
+> +		return y;
+>  	}
+> =20
+> +	if (zc =3D=3D IEEE754_CLASS_DNORM)
+> +		SPDNORMZ;
+> +	/* ZERO z cases are handled separately below */
+> +
+>  	switch (CLPAIR(xc, yc)) {
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
+> -		return ieee754sp_nanxcpt(y);
+> -
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
+> -	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
+> -		return ieee754sp_nanxcpt(x);
+> -
+> -	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
+> -		return y;
+> =20
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+> -	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
+> -		return x;
+> =20
+>  	/*
+>  	 * Infinity handling
+>  	 */
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
+>  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+>  		ieee754_setcx(IEEE754_INVALID_OPERATION);
+>  		return ieee754sp_indef();
+> =20
+> @@ -101,8 +86,6 @@ static union ieee754sp _sp_maddf(union ieee754sp z, un=
+ion ieee754sp x,
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+>  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+>  		return ieee754sp_inf(xs ^ ys);
+> =20
+>  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+> @@ -119,25 +102,19 @@ static union ieee754sp _sp_maddf(union ieee754sp z,=
+ union ieee754sp x,
+>  		SPDNORMX;
+> =20
+>  	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+> -		else if (zc =3D=3D IEEE754_CLASS_INF)
+> +		if (zc =3D=3D IEEE754_CLASS_INF)
+>  			return ieee754sp_inf(zs);
+>  		SPDNORMY;
+>  		break;
+> =20
+>  	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+> -		else if (zc =3D=3D IEEE754_CLASS_INF)
+> +		if (zc =3D=3D IEEE754_CLASS_INF)
+>  			return ieee754sp_inf(zs);
+>  		SPDNORMX;
+>  		break;
+> =20
+>  	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
+> -		if (zc =3D=3D IEEE754_CLASS_QNAN)
+> -			return z;
+> -		else if (zc =3D=3D IEEE754_CLASS_INF)
+> +		if (zc =3D=3D IEEE754_CLASS_INF)
+>  			return ieee754sp_inf(zs);
+>  		/* fall through to real computations */
+>  	}
+> --=20
+> 2.7.4
+>=20
+
+--kfbWTnNdPEvwDq13
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAll1yr4ACgkQbAtpk944
+dnpyGxAAvAE12wcW6rEfKelJLaqYjsD+QJrcSsDUZPC1nGrRb90R/46kkaF2CuEv
+imkuCpyNTsWXbAxdUh4ae5U8bK8oTc/0Z6cxd2ZP6gpKOy+P/Bc8aXEGdaUBMphh
+931hJNuaNwSxKlWgGeuGspZ1pe1LtPJIoRDgJQQoXBGGKBrtL3ENt1V4/nLTzMTK
+1aQiN66yIs3Hea0dqJzy5Rvxiy/yLTWsH4daB9Pp0xKWuBSN1ivIwC0MXhZwLgRv
+ciJZ5Y2TqQHz2FPF6Q1ZpxqqeJlodv5DpdQR2zRbK7PHrQ6iY9oZdXbseag1mbyK
+4ACsF0te8OofWlPmzk3Bcg/U88Ao/eHgGreEQbPpeyHXISF3n6O6clizt+9OJJFy
+XHNibLgWzHrjvHJP761IayfTEtA87SjmawuOfhKWE802MlgbmSOrsvPur6OrLeaq
+b8d4yQ8xR+TaluiOeZS+NzJk0ZAwQ5oPEJzHuLE6/YRqbh4cv4gZrB9GQD0cECDS
+XTTQPBToc0b25RdfmieFS9MaqFU9aOAO9wzeRQzDl6jDTHsKuZ9XBSEXJD/LnaIJ
+6vYujo9g8tm7y8aGqRLtWnCRVUIHzeQO3kkY1rEl76h8+GmmWK13n3UYRZjziSdW
+O/edw+hsMIk7nVOL8g1502FSzsEhBlRV6u39r2eK0kMIfH/h8t0=
+=3SxC
+-----END PGP SIGNATURE-----
+
+--kfbWTnNdPEvwDq13--

@@ -1,43 +1,166 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jul 2017 09:48:08 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35913 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991087AbdGXHsBmAY6h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jul 2017 09:48:01 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 108D0EF2C924D;
-        Mon, 24 Jul 2017 08:47:54 +0100 (IST)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 24 Jul
- 2017 08:47:55 +0100
-Subject: Re: [PATCH] MIPS: OCTEON: Fix USB platform code breakage.
-To:     "Steven J. Hill" <Steven.Hill@cavium.com>,
-        James Hogan <james.hogan@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-References: <1496250830-26716-1-git-send-email-steven.hill@cavium.com>
- <20170719094143.GS31455@jhogan-linux.le.imgtec.org>
- <d8c33b8e-e57c-f109-7747-fdddbcc7bd0e@cavium.com>
- <bce34cc9-38a2-1fce-3569-65742dc068ad@imgtec.com>
- <bca7ce4c-efb0-968e-2570-f759398b75d1@cavium.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <7fae6b84-ee63-072d-9c2d-9fc5a2816e6f@imgtec.com>
-Date:   Mon, 24 Jul 2017 08:47:55 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <bca7ce4c-efb0-968e-2570-f759398b75d1@cavium.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jul 2017 10:36:32 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:39337
+        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990505AbdGXIgZjj1mH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jul 2017 10:36:25 +0200
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1dZYoU-0006tl-UB; Mon, 24 Jul 2017 10:34:02 +0200
+Message-ID: <1500885221.2391.50.camel@pengutronix.de>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Peter Chen <Peter.Chen@nxp.com>,
+        DRI <dri-devel@lists.freedesktop.org>,
+        Marc Dietrich <marvin24@gmx.de>,
+        Rakesh Iyer <riyer@nvidia.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Xinliang Liu <z.liuxinliang@hisilicon.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Jiri Slaby <jslaby@suse.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Abriou <vincent.abriou@st.com>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        Tejun Heo <tj@kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
+        Philippe Cornu <philippe.cornu@st.com>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        Joachim Eastwood <manabian@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        ath10k@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        Chen Feng <puck.chen@hisilicon.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        Yannick Fertre <yannick.fertre@st.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Richard Weinberger <richard@nod.at>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Alan Tull <atull@kernel.org>,
+        John Youn <johnyoun@synopsys.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        dmaengine@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mark Yao <mark.yao@rock-chips.com>,
+        Moritz Fischer <moritz.fischer@ettus.com>,
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        netdev <netdev@vger.kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Rongrong Zou <zourongrong@gmail.com>,
+        linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Lucas Stach <l.stach@pengutronix.de>
+Date:   Mon, 24 Jul 2017 10:33:41 +0200
+In-Reply-To: <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
+References: <20170719152646.25903-1-p.zabel@pengutronix.de>
+         <20170719211515.46a1196c@windsurf>
+         <1500543415.2354.37.camel@pengutronix.de>
+         <20170720123640.43c2ce01@windsurf>
+         <1500555312.2354.75.camel@pengutronix.de>
+         <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
+         <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.9-1+b1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <p.zabel@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59216
+X-archive-position: 59217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: p.zabel@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,46 +173,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Steven,
+On Sun, 2017-07-23 at 20:41 +0200, Linus Walleij wrote:
+> On Thu, Jul 20, 2017 at 10:46 PM, Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
+> > On Thu, Jul 20, 2017 at 5:55 AM, Philipp Zabel <p.zabel@pengutronix.de> wrote:
+> 
+> >>> What about reset_control_get(struct device *, const char *, int flags)
+> >>> to replace all those variants ?
+> >>
+> >> While I like how this looks, unfortunately (devm_)reset_control_get
+> >> already exists without the flags, so we can't change to that with a
+> >> gentle transition.
+> >
+> > This was done for gpiod_get() and its flags argument with horrifying
+> > #define-ry, which thankfully was completely hidden from users.
+> 
+> For your reference:
+> 
+> commit bae48da237fcedd7ad09569025483b988635efb7
+> "gpiolib: add gpiod_get() and gpiod_put() functions"
+> 
+> commit 39b2bbe3d715cf5013b5c48695ccdd25bd3bf120
+> "gpio: add flags argument to gpiod_get*() functions"
+> 
+> commit 0dbc8b7afef6e4fddcfebcbacbeb269a0a3b06d5
+> "gpio: move varargs hack outside #ifdef GPIOLIB"
+> 
+> commit b17d1bf16cc72a374a48d748940f700009d40ff4
+> "gpio: make flags mandatory for gpiod_get functions"
+> 
+> Retrospectively ... was that really a good idea... it was a LOT
+> of trouble to add a flag, maybe it had been better to try and
+> just slam all users in a single go.
+> 
+> But it worked.
 
+Thanks for the hint and the references. It seems this turned out okay,
+but I wouldn't dare to introduce such macro horror^Wmagic.
+I'd rather have all users converted to the _exclusive/_shared function
+calls and maybe then replace the internal __reset_control_get with
+Thomas' suggestion.
 
-On 21/07/17 20:05, Steven J. Hill wrote:
-> On 07/21/2017 11:10 AM, Matt Redfearn wrote:
->> This is indeed still broken in v4.13-rc1 with some configurations:
->>
->> CC      arch/mips/cavium-octeon/octeon-usb.o arch/mips/cavium-octeon/octeon-usb.c: In function ‘dwc3_octeon_device_init’: arch/mips/cavium-octeon/octeon-usb.c:540:4: error: implicit declaration of function ‘devm_iounmap’ [-Werror=implicit-function-declaration] devm_iounmap(&pdev->dev, base); ^ cc1: some warnings being treated as errors scripts/Makefile.build:302: recipe for target 'arch/mips/cavium-octeon/octeon-usb.o' failed
->>
-> With "some" configurations? If I take a clean v4.13-rc1 tag and
-> use the default 'arch/mips/configs/cavium_octeon_defconfig' file
-> and revert the thin-AR patch, the kernel builds and links without
-> any errors. If I go a step further and enable USB DesignWare 3
-> support the kernel still builds without errors. I have attached
-> this config file for reference. I cannot reproduce your errors
-> with a stock v4.13-rc1 kernel.
-
-I have bisected it for you. The Kconfig that causes the issue is SMP. 
-Steps to reproduce:
-$ make cavium_octeon_defconfig
-$ make menuconfig - Turn off CONFIG_SMP.
-$ make clean arch/mips/cavium-octeon/octeon-usb.o
-<snip>
-CC [M]  arch/mips/cavium-octeon/octeon-usb.o
-arch/mips/cavium-octeon/octeon-usb.c: In function ‘dwc3_octeon_device_init’:
-arch/mips/cavium-octeon/octeon-usb.c:540:4: error: implicit declaration 
-of function ‘devm_iounmap’ [-Werror=implicit-function-declaration]
-     devm_iounmap(&pdev->dev, base);
-     ^
-cc1: some warnings being treated as errors
-scripts/Makefile.build:308: recipe for target 
-'arch/mips/cavium-octeon/octeon-usb.o' failed
-make[1]: *** [arch/mips/cavium-octeon/octeon-usb.o] Error 1
-Makefile:1662: recipe for target 'arch/mips/cavium-octeon/octeon-usb.o' 
-failed
-make: *** [arch/mips/cavium-octeon/octeon-usb.o] Error 2
-
-Applying this patch fixes the build.
-
-Tested-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
-Thanks,
-Matt
+regards
+Philipp

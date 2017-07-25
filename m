@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:36:35 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39192 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:37:05 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39202 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994900AbdGYTZDtz6c2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:25:03 +0200
+        by eddie.linux-mips.org with ESMTP id S23994902AbdGYTZEbfarY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:25:04 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CFC51ABB;
-        Tue, 25 Jul 2017 19:24:57 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 88ECA504;
+        Tue, 25 Jul 2017 19:24:58 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.12 136/196] MIPS: Fix MIPS I ISA /proc/cpuinfo reporting
-Date:   Tue, 25 Jul 2017 12:22:15 -0700
-Message-Id: <20170725192052.811859702@linuxfoundation.org>
+Subject: [PATCH 4.12 137/196] MIPS: Save static registers before sysmips
+Date:   Tue, 25 Jul 2017 12:22:16 -0700
+Message-Id: <20170725192052.848398067@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
 In-Reply-To: <20170725192046.422343510@linuxfoundation.org>
 References: <20170725192046.422343510@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59268
+X-archive-position: 59269
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,58 +45,90 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@linux-mips.org>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit e5f5a5b06e51a36f6ddf31a4a485358263953a3d upstream.
+commit 49955d84cd9ccdca5a16a495e448e1a06fad9e49 upstream.
 
-Correct a commit 515a6393dbac ("MIPS: kernel: proc: Add MIPS R6 support
-to /proc/cpuinfo") regression that caused MIPS I systems to show no ISA
-levels supported in /proc/cpuinfo, e.g.:
+The MIPS sysmips system call handler may return directly from the
+MIPS_ATOMIC_SET case (mips_atomic_set()) to syscall_exit. This path
+restores the static (callee saved) registers, however they won't have
+been saved on entry to the system call.
 
-system type		: Digital DECstation 2100/3100
-machine			: Unknown
-processor		: 0
-cpu model		: R3000 V2.0  FPU V2.0
-BogoMIPS		: 10.69
-wait instruction	: no
-microsecond timers	: no
-tlb_entries		: 64
-extra interrupt vector	: no
-hardware watchpoint	: no
-isa			:
-ASEs implemented	:
-shadow register sets	: 1
-kscratch registers	: 0
-package			: 0
-core			: 0
-VCED exceptions		: not available
-VCEI exceptions		: not available
+Use the save_static_function() macro to create a __sys_sysmips wrapper
+function which saves the static registers before calling sys_sysmips, so
+that the correct static register state is restored by syscall_exit.
 
-and similarly exclude `mips1' from the ISA list for any processors below
-MIPSr1.  This is because the condition to show `mips1' on has been made
-`cpu_has_mips_r1' rather than newly-introduced `cpu_has_mips_1'.  Use
-the correct condition then.
-
-Fixes: 515a6393dbac ("MIPS: kernel: proc: Add MIPS R6 support to /proc/cpuinfo")
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Fixes: f1e39a4a616c ("MIPS: Rewrite sysmips(MIPS_ATOMIC_SET, ...) in C with inline assembler")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16758/
+Patchwork: https://patchwork.linux-mips.org/patch/16149/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/scall32-o32.S |    2 +-
+ arch/mips/kernel/scall64-64.S  |    2 +-
+ arch/mips/kernel/scall64-n32.S |    2 +-
+ arch/mips/kernel/scall64-o32.S |    2 +-
+ arch/mips/kernel/syscall.c     |    6 ++++++
+ 5 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -83,7 +83,7 @@ static int show_cpuinfo(struct seq_file
- 	}
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -371,7 +371,7 @@ EXPORT(sys_call_table)
+ 	PTR	sys_writev
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	sys_ni_syscall			/* 4150 */
+ 	PTR	sys_getsid
+ 	PTR	sys_fdatasync
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -311,7 +311,7 @@ EXPORT(sys_call_table)
+ 	PTR	sys_sched_getaffinity
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	sys_io_setup			/* 5200 */
+ 	PTR	sys_io_destroy
+ 	PTR	sys_io_getevents
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -302,7 +302,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	compat_sys_sched_getaffinity
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	compat_sys_io_setup			/* 6200 */
+ 	PTR	sys_io_destroy
+ 	PTR	compat_sys_io_getevents
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -371,7 +371,7 @@ EXPORT(sys32_call_table)
+ 	PTR	compat_sys_writev
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	sys_ni_syscall			/* 4150 */
+ 	PTR	sys_getsid
+ 	PTR	sys_fdatasync
+--- a/arch/mips/kernel/syscall.c
++++ b/arch/mips/kernel/syscall.c
+@@ -195,6 +195,12 @@ static inline int mips_atomic_set(unsign
+ 	unreachable();
+ }
  
- 	seq_printf(m, "isa\t\t\t:"); 
--	if (cpu_has_mips_r1)
-+	if (cpu_has_mips_1)
- 		seq_printf(m, " mips1");
- 	if (cpu_has_mips_2)
- 		seq_printf(m, "%s", " mips2");
++/*
++ * mips_atomic_set() normally returns directly via syscall_exit potentially
++ * clobbering static registers, so be sure to preserve them.
++ */
++save_static_function(sys_sysmips);
++
+ SYSCALL_DEFINE3(sysmips, long, cmd, long, arg1, long, arg2)
+ {
+ 	switch (cmd) {

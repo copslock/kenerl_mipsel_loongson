@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:26:27 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36344 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:27:00 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36330 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993976AbdGYTUrjUcjn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:20:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23993974AbdGYTUqwX70n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:20:46 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 98A7CA86;
-        Tue, 25 Jul 2017 19:20:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3B969ACA;
+        Tue, 25 Jul 2017 19:20:40 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 67/83] MIPS: Fix a typo: s/preset/present/ in r2-to-r6 emulation error message
-Date:   Tue, 25 Jul 2017 12:19:31 -0700
-Message-Id: <20170725191719.011394573@linuxfoundation.org>
+Subject: [PATCH 4.4 60/83] MIPS: Save static registers before sysmips
+Date:   Tue, 25 Jul 2017 12:19:24 -0700
+Message-Id: <20170725191717.889385594@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
 In-Reply-To: <20170725191708.449126292@linuxfoundation.org>
 References: <20170725191708.449126292@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59249
+X-archive-position: 59250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,32 +45,90 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 27fe2200dad2de8207a694024a7b9037dff1b280 upstream.
+commit 49955d84cd9ccdca5a16a495e448e1a06fad9e49 upstream.
 
-This is a user-visible message, so we want it to be spelled correctly.
+The MIPS sysmips system call handler may return directly from the
+MIPS_ATOMIC_SET case (mips_atomic_set()) to syscall_exit. This path
+restores the static (callee saved) registers, however they won't have
+been saved on entry to the system call.
 
-Fixes: 5f9f41c474be ("MIPS: kernel: Prepare the JR instruction for emulation on MIPS R6")
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Use the save_static_function() macro to create a __sys_sysmips wrapper
+function which saves the static registers before calling sys_sysmips, so
+that the correct static register state is restored by syscall_exit.
+
+Fixes: f1e39a4a616c ("MIPS: Rewrite sysmips(MIPS_ATOMIC_SET, ...) in C with inline assembler")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16400/
+Patchwork: https://patchwork.linux-mips.org/patch/16149/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/branch.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/scall32-o32.S |    2 +-
+ arch/mips/kernel/scall64-64.S  |    2 +-
+ arch/mips/kernel/scall64-n32.S |    2 +-
+ arch/mips/kernel/scall64-o32.S |    2 +-
+ arch/mips/kernel/syscall.c     |    6 ++++++
+ 5 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -845,7 +845,7 @@ sigill_dsp:
- 	force_sig(SIGILL, current);
- 	return -EFAULT;
- sigill_r2r6:
--	pr_info("%s: R2 branch but r2-to-r6 emulator is not preset - sending SIGILL.\n",
-+	pr_info("%s: R2 branch but r2-to-r6 emulator is not present - sending SIGILL.\n",
- 		current->comm);
- 	force_sig(SIGILL, current);
- 	return -EFAULT;
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -372,7 +372,7 @@ EXPORT(sys_call_table)
+ 	PTR	sys_writev
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	sys_ni_syscall			/* 4150 */
+ 	PTR	sys_getsid
+ 	PTR	sys_fdatasync
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -312,7 +312,7 @@ EXPORT(sys_call_table)
+ 	PTR	sys_sched_getaffinity
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	sys_io_setup			/* 5200 */
+ 	PTR	sys_io_destroy
+ 	PTR	sys_io_getevents
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -298,7 +298,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	compat_sys_sched_getaffinity
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	compat_sys_io_setup			/* 6200 */
+ 	PTR	sys_io_destroy
+ 	PTR	compat_sys_io_getevents
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -367,7 +367,7 @@ EXPORT(sys32_call_table)
+ 	PTR	compat_sys_writev
+ 	PTR	sys_cacheflush
+ 	PTR	sys_cachectl
+-	PTR	sys_sysmips
++	PTR	__sys_sysmips
+ 	PTR	sys_ni_syscall			/* 4150 */
+ 	PTR	sys_getsid
+ 	PTR	sys_fdatasync
+--- a/arch/mips/kernel/syscall.c
++++ b/arch/mips/kernel/syscall.c
+@@ -202,6 +202,12 @@ static inline int mips_atomic_set(unsign
+ 	unreachable();
+ }
+ 
++/*
++ * mips_atomic_set() normally returns directly via syscall_exit potentially
++ * clobbering static registers, so be sure to preserve them.
++ */
++save_static_function(sys_sysmips);
++
+ SYSCALL_DEFINE3(sysmips, long, cmd, long, arg1, long, arg2)
+ {
+ 	switch (cmd) {

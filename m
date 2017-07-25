@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:33:56 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37916 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:34:27 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38006 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994874AbdGYTW11Gbun (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:22:27 +0200
+        by eddie.linux-mips.org with ESMTP id S23994880AbdGYTWej2I5n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:22:34 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6A509A82;
-        Tue, 25 Jul 2017 19:22:21 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 72D34B00;
+        Tue, 25 Jul 2017 19:22:28 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 096/125] MIPS: Fix a typo: s/preset/present/ in r2-to-r6 emulation error message
-Date:   Tue, 25 Jul 2017 12:20:11 -0700
-Message-Id: <20170725192019.690507452@linuxfoundation.org>
+Subject: [PATCH 4.9 093/125] MIPS: Rename `sigill_r6 to `sigill_r2r6 in `__compute_return_epc_for_insn
+Date:   Tue, 25 Jul 2017 12:20:08 -0700
+Message-Id: <20170725192019.533633196@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
 In-Reply-To: <20170725192014.314851996@linuxfoundation.org>
 References: <20170725192014.314851996@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59263
+X-archive-position: 59264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,30 +48,97 @@ X-list: linux-mips
 
 From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit 27fe2200dad2de8207a694024a7b9037dff1b280 upstream.
+commit 1f4edde422961397cf4470b347958c13c6a740bb upstream.
 
-This is a user-visible message, so we want it to be spelled correctly.
+Use the more accurate `sigill_r2r6' name for the label used in the case
+of sending SIGILL in the absence of the instruction emulator for an
+earlier ISA level instruction that has been removed as from the R6 ISA,
+so that the `sigill_r6' name is freed for the situation where an R6
+instruction is not supposed to be interpreted, because the executing
+processor does not support the R6 ISA.
 
-Fixes: 5f9f41c474be ("MIPS: kernel: Prepare the JR instruction for emulation on MIPS R6")
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16400/
+Patchwork: https://patchwork.linux-mips.org/patch/16397/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/branch.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/branch.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 --- a/arch/mips/kernel/branch.c
 +++ b/arch/mips/kernel/branch.c
-@@ -823,7 +823,7 @@ sigill_dsp:
- 	force_sig(SIGILL, current);
- 	return -EFAULT;
- sigill_r2r6:
--	pr_info("%s: R2 branch but r2-to-r6 emulator is not preset - sending SIGILL.\n",
-+	pr_info("%s: R2 branch but r2-to-r6 emulator is not present - sending SIGILL.\n",
+@@ -431,7 +431,7 @@ int __compute_return_epc_for_insn(struct
+ 			/* Fall through */
+ 		case jr_op:
+ 			if (NO_R6EMU && insn.r_format.func == jr_op)
+-				goto sigill_r6;
++				goto sigill_r2r6;
+ 			regs->cp0_epc = regs->regs[insn.r_format.rs];
+ 			break;
+ 		}
+@@ -446,7 +446,7 @@ int __compute_return_epc_for_insn(struct
+ 		switch (insn.i_format.rt) {
+ 		case bltzl_op:
+ 			if (NO_R6EMU)
+-				goto sigill_r6;
++				goto sigill_r2r6;
+ 		case bltz_op:
+ 			if ((long)regs->regs[insn.i_format.rs] < 0) {
+ 				epc = epc + 4 + (insn.i_format.simmediate << 2);
+@@ -459,7 +459,7 @@ int __compute_return_epc_for_insn(struct
+ 
+ 		case bgezl_op:
+ 			if (NO_R6EMU)
+-				goto sigill_r6;
++				goto sigill_r2r6;
+ 		case bgez_op:
+ 			if ((long)regs->regs[insn.i_format.rs] >= 0) {
+ 				epc = epc + 4 + (insn.i_format.simmediate << 2);
+@@ -574,7 +574,7 @@ int __compute_return_epc_for_insn(struct
+ 	 */
+ 	case beql_op:
+ 		if (NO_R6EMU)
+-			goto sigill_r6;
++			goto sigill_r2r6;
+ 	case beq_op:
+ 		if (regs->regs[insn.i_format.rs] ==
+ 		    regs->regs[insn.i_format.rt]) {
+@@ -588,7 +588,7 @@ int __compute_return_epc_for_insn(struct
+ 
+ 	case bnel_op:
+ 		if (NO_R6EMU)
+-			goto sigill_r6;
++			goto sigill_r2r6;
+ 	case bne_op:
+ 		if (regs->regs[insn.i_format.rs] !=
+ 		    regs->regs[insn.i_format.rt]) {
+@@ -602,7 +602,7 @@ int __compute_return_epc_for_insn(struct
+ 
+ 	case blezl_op: /* not really i_format */
+ 		if (!insn.i_format.rt && NO_R6EMU)
+-			goto sigill_r6;
++			goto sigill_r2r6;
+ 	case blez_op:
+ 		/*
+ 		 * Compact branches for R6 for the
+@@ -637,7 +637,7 @@ int __compute_return_epc_for_insn(struct
+ 
+ 	case bgtzl_op:
+ 		if (!insn.i_format.rt && NO_R6EMU)
+-			goto sigill_r6;
++			goto sigill_r2r6;
+ 	case bgtz_op:
+ 		/*
+ 		 * Compact branches for R6 for the
+@@ -836,7 +836,7 @@ sigill_dsp:
  		current->comm);
  	force_sig(SIGILL, current);
  	return -EFAULT;
+-sigill_r6:
++sigill_r2r6:
+ 	pr_info("%s: R2 branch but r2-to-r6 emulator is not preset - sending SIGILL.\n",
+ 		current->comm);
+ 	force_sig(SIGILL, current);

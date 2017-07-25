@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:21:11 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35730 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:21:46 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36214 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993940AbdGYTTktgkvn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:19:40 +0200
+        by eddie.linux-mips.org with ESMTP id S23993924AbdGYTUiDMvZn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:20:38 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9E74FA55;
-        Tue, 25 Jul 2017 19:19:34 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 091F9A82;
+        Tue, 25 Jul 2017 19:20:31 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.18 60/60] MIPS: Send SIGILL for BPOSGE32 in `__compute_return_epc_for_insn
-Date:   Tue, 25 Jul 2017 12:16:51 -0700
-Message-Id: <20170725191622.708826424@linuxfoundation.org>
+Subject: [PATCH 4.4 61/83] MIPS: Actually decode JALX in `__compute_return_epc_for_insn
+Date:   Tue, 25 Jul 2017 12:19:25 -0700
+Message-Id: <20170725191718.017964636@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
-In-Reply-To: <20170725191614.043749784@linuxfoundation.org>
-References: <20170725191614.043749784@linuxfoundation.org>
+In-Reply-To: <20170725191708.449126292@linuxfoundation.org>
+References: <20170725191708.449126292@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59239
+X-archive-position: 59240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,56 +42,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit 7b82c1058ac1f8f8b9f2b8786b1f710a57a870a8 upstream.
+commit a9db101b735a9d49295326ae41f610f6da62b08c upstream.
 
-Fix commit e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.") and
-send SIGILL rather than SIGBUS whenever an unimplemented BPOSGE32 DSP
-ASE instruction has been encountered in `__compute_return_epc_for_insn'
-as our Reserved Instruction exception handler would in response to an
-attempt to actually execute the instruction.  Sending SIGBUS only makes
-sense for the unaligned PC case, since moved to `__compute_return_epc'.
-Adjust function documentation accordingly, correct formatting and use
-`pr_info' rather than `printk' as the other exit path already does.
+Complement commit fb6883e5809c ("MIPS: microMIPS: Support handling of
+delay slots.") and actually decode the regular MIPS JALX major
+instruction opcode, the handling of which has been added with the said
+commit for EPC calculation in `__compute_return_epc_for_insn'.
 
-Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Fixes: fb6883e5809c ("MIPS: microMIPS: Support handling of delay slots.")
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 2.6.14+
-Patchwork: https://patchwork.linux-mips.org/patch/16396/
+Patchwork: https://patchwork.linux-mips.org/patch/16394/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/branch.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/kernel/branch.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/arch/mips/kernel/branch.c
 +++ b/arch/mips/kernel/branch.c
-@@ -396,7 +396,7 @@ int __MIPS16e_compute_return_epc(struct
-  *
-  * @regs:	Pointer to pt_regs
-  * @insn:	branch instruction to decode
-- * @returns:	-EFAULT on error and forces SIGBUS, and on success
-+ * @returns:	-EFAULT on error and forces SIGILL, and on success
-  *		returns 0 or BRANCH_LIKELY_TAKEN as appropriate after
-  *		evaluating the branch.
-  */
-@@ -633,8 +633,9 @@ int __compute_return_epc_for_insn(struct
- 	return ret;
- 
- sigill:
--	printk("%s: DSP branch but not DSP ASE - sending SIGBUS.\n", current->comm);
--	force_sig(SIGBUS, current);
-+	pr_info("%s: DSP branch but not DSP ASE - sending SIGILL.\n",
-+		current->comm);
-+	force_sig(SIGILL, current);
- 	return -EFAULT;
- }
- EXPORT_SYMBOL_GPL(__compute_return_epc_for_insn);
+@@ -556,6 +556,7 @@ int __compute_return_epc_for_insn(struct
+ 	/*
+ 	 * These are unconditional and in j_format.
+ 	 */
++	case jalx_op:
+ 	case jal_op:
+ 		regs->regs[31] = regs->cp0_epc + 8;
+ 	case j_op:

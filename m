@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:32:22 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37362 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:32:51 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37346 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993955AbdGYTWEdHt-n (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23994856AbdGYTWEs0bZn (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:22:04 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7DCFFA81;
-        Tue, 25 Jul 2017 19:21:58 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2CE83A86;
+        Tue, 25 Jul 2017 19:22:04 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 092/125] MIPS: Send SIGILL for BPOSGE32 in `__compute_return_epc_for_insn
-Date:   Tue, 25 Jul 2017 12:20:07 -0700
-Message-Id: <20170725192019.488200916@linuxfoundation.org>
+Subject: [PATCH 4.9 094/125] MIPS: Send SIGILL for linked branches in `__compute_return_epc_for_insn
+Date:   Tue, 25 Jul 2017 12:20:09 -0700
+Message-Id: <20170725192019.598258037@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
 In-Reply-To: <20170725192014.314851996@linuxfoundation.org>
 References: <20170725192014.314851996@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59260
+X-archive-position: 59261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,49 +48,52 @@ X-list: linux-mips
 
 From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit 7b82c1058ac1f8f8b9f2b8786b1f710a57a870a8 upstream.
+commit fef40be6da856afead4177aaa9d869a66fb3381f upstream.
 
-Fix commit e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.") and
-send SIGILL rather than SIGBUS whenever an unimplemented BPOSGE32 DSP
-ASE instruction has been encountered in `__compute_return_epc_for_insn'
-as our Reserved Instruction exception handler would in response to an
-attempt to actually execute the instruction.  Sending SIGBUS only makes
-sense for the unaligned PC case, since moved to `__compute_return_epc'.
-Adjust function documentation accordingly, correct formatting and use
-`pr_info' rather than `printk' as the other exit path already does.
+Fix commit 319824eabc3f ("MIPS: kernel: branch: Do not emulate the
+branch likelies on MIPS R6") and also send SIGILL rather than returning
+-SIGILL for BLTZAL, BLTZALL, BGEZAL and BGEZALL instruction encodings no
+longer supported in R6, except where emulated.  Returning -SIGILL is
+never correct as the API defines this function's result upon error to be
+-EFAULT and a signal actually issued.
 
-Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Fixes: 319824eabc3f ("MIPS: kernel: branch: Do not emulate the branch likelies on MIPS R6")
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16396/
+Patchwork: https://patchwork.linux-mips.org/patch/16398/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/branch.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/kernel/branch.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 --- a/arch/mips/kernel/branch.c
 +++ b/arch/mips/kernel/branch.c
-@@ -399,7 +399,7 @@ int __MIPS16e_compute_return_epc(struct
-  *
-  * @regs:	Pointer to pt_regs
-  * @insn:	branch instruction to decode
-- * @returns:	-EFAULT on error and forces SIGBUS, and on success
-+ * @returns:	-EFAULT on error and forces SIGILL, and on success
-  *		returns 0 or BRANCH_LIKELY_TAKEN as appropriate after
-  *		evaluating the branch.
-  *
-@@ -832,8 +832,9 @@ int __compute_return_epc_for_insn(struct
- 	return ret;
- 
- sigill_dsp:
--	printk("%s: DSP branch but not DSP ASE - sending SIGBUS.\n", current->comm);
--	force_sig(SIGBUS, current);
-+	pr_info("%s: DSP branch but not DSP ASE - sending SIGILL.\n",
-+		current->comm);
-+	force_sig(SIGILL, current);
- 	return -EFAULT;
- sigill_r6:
- 	pr_info("%s: R2 branch but r2-to-r6 emulator is not preset - sending SIGILL.\n",
+@@ -473,10 +473,8 @@ int __compute_return_epc_for_insn(struct
+ 		case bltzal_op:
+ 		case bltzall_op:
+ 			if (NO_R6EMU && (insn.i_format.rs ||
+-			    insn.i_format.rt == bltzall_op)) {
+-				ret = -SIGILL;
+-				break;
+-			}
++			    insn.i_format.rt == bltzall_op))
++				goto sigill_r2r6;
+ 			regs->regs[31] = epc + 8;
+ 			/*
+ 			 * OK we are here either because we hit a NAL
+@@ -507,10 +505,8 @@ int __compute_return_epc_for_insn(struct
+ 		case bgezal_op:
+ 		case bgezall_op:
+ 			if (NO_R6EMU && (insn.i_format.rs ||
+-			    insn.i_format.rt == bgezall_op)) {
+-				ret = -SIGILL;
+-				break;
+-			}
++			    insn.i_format.rt == bgezall_op))
++				goto sigill_r2r6;
+ 			regs->regs[31] = epc + 8;
+ 			/*
+ 			 * OK we are here either because we hit a BAL

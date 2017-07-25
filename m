@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:27:35 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36324 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:28:00 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37254 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993975AbdGYTUqw6Qnn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:20:46 +0200
+        by eddie.linux-mips.org with ESMTP id S23994832AbdGYTVyAsZkn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:21:54 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8CCC9AB5;
-        Tue, 25 Jul 2017 19:20:39 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C9810AE1;
+        Tue, 25 Jul 2017 19:21:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 59/83] MIPS: Fix MIPS I ISA /proc/cpuinfo reporting
-Date:   Tue, 25 Jul 2017 12:19:23 -0700
-Message-Id: <20170725191717.728857607@linuxfoundation.org>
+Subject: [PATCH 4.9 079/125] MIPS: Fix mips_atomic_set() retry condition
+Date:   Tue, 25 Jul 2017 12:19:54 -0700
+Message-Id: <20170725192018.645484735@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
-In-Reply-To: <20170725191708.449126292@linuxfoundation.org>
-References: <20170725191708.449126292@linuxfoundation.org>
+In-Reply-To: <20170725192014.314851996@linuxfoundation.org>
+References: <20170725192014.314851996@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59251
+X-archive-position: 59252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,62 +41,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@linux-mips.org>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit e5f5a5b06e51a36f6ddf31a4a485358263953a3d upstream.
+commit 2ec420b26f7b6ff332393f0bb5a7d245f7ad87f0 upstream.
 
-Correct a commit 515a6393dbac ("MIPS: kernel: proc: Add MIPS R6 support
-to /proc/cpuinfo") regression that caused MIPS I systems to show no ISA
-levels supported in /proc/cpuinfo, e.g.:
+The inline asm retry check in the MIPS_ATOMIC_SET operation of the
+sysmips system call has been backwards since commit f1e39a4a616c ("MIPS:
+Rewrite sysmips(MIPS_ATOMIC_SET, ...) in C with inline assembler")
+merged in v2.6.32, resulting in the non R10000_LLSC_WAR case retrying
+until the operation was inatomic, before returning the new value that
+was probably just written multiple times instead of the old value.
 
-system type		: Digital DECstation 2100/3100
-machine			: Unknown
-processor		: 0
-cpu model		: R3000 V2.0  FPU V2.0
-BogoMIPS		: 10.69
-wait instruction	: no
-microsecond timers	: no
-tlb_entries		: 64
-extra interrupt vector	: no
-hardware watchpoint	: no
-isa			:
-ASEs implemented	:
-shadow register sets	: 1
-kscratch registers	: 0
-package			: 0
-core			: 0
-VCED exceptions		: not available
-VCEI exceptions		: not available
+Invert the branch condition to fix that particular issue.
 
-and similarly exclude `mips1' from the ISA list for any processors below
-MIPSr1.  This is because the condition to show `mips1' on has been made
-`cpu_has_mips_r1' rather than newly-introduced `cpu_has_mips_1'.  Use
-the correct condition then.
-
-Fixes: 515a6393dbac ("MIPS: kernel: proc: Add MIPS R6 support to /proc/cpuinfo")
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Fixes: f1e39a4a616c ("MIPS: Rewrite sysmips(MIPS_ATOMIC_SET, ...) in C with inline assembler")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16758/
+Patchwork: https://patchwork.linux-mips.org/patch/16148/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/proc.c |    2 +-
+ arch/mips/kernel/syscall.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -83,7 +83,7 @@ static int show_cpuinfo(struct seq_file
- 	}
- 
- 	seq_printf(m, "isa\t\t\t:"); 
--	if (cpu_has_mips_r1)
-+	if (cpu_has_mips_1)
- 		seq_printf(m, " mips1");
- 	if (cpu_has_mips_2)
- 		seq_printf(m, "%s", " mips2");
+--- a/arch/mips/kernel/syscall.c
++++ b/arch/mips/kernel/syscall.c
+@@ -141,7 +141,7 @@ static inline int mips_atomic_set(unsign
+ 		"1:	ll	%[old], (%[addr])			\n"
+ 		"	move	%[tmp], %[new]				\n"
+ 		"2:	sc	%[tmp], (%[addr])			\n"
+-		"	bnez	%[tmp], 4f				\n"
++		"	beqz	%[tmp], 4f				\n"
+ 		"3:							\n"
+ 		"	.insn						\n"
+ 		"	.subsection 2					\n"

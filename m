@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:17:37 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35270 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:18:07 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35276 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993922AbdGYTR3LL0Pn (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993928AbdGYTR3mp8kn (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:17:29 +0200
 Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EE672AAE;
-        Tue, 25 Jul 2017 19:17:22 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A1BF4AA6;
+        Tue, 25 Jul 2017 19:17:23 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.18 42/60] MIPS: Actually decode JALX in `__compute_return_epc_for_insn
-Date:   Tue, 25 Jul 2017 12:16:33 -0700
-Message-Id: <20170725191620.046886440@linuxfoundation.org>
+Subject: [PATCH 3.18 43/60] MIPS: Fix unaligned PC interpretation in `compute_return_epc
+Date:   Tue, 25 Jul 2017 12:16:34 -0700
+Message-Id: <20170725191620.148826219@linuxfoundation.org>
 X-Mailer: git-send-email 2.13.3
 In-Reply-To: <20170725191614.043749784@linuxfoundation.org>
 References: <20170725191614.043749784@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59232
+X-archive-position: 59233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,32 +48,39 @@ X-list: linux-mips
 
 From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit a9db101b735a9d49295326ae41f610f6da62b08c upstream.
+commit 11a3799dbeb620bf0400b1fda5cc2c6bea55f20a upstream.
 
-Complement commit fb6883e5809c ("MIPS: microMIPS: Support handling of
-delay slots.") and actually decode the regular MIPS JALX major
-instruction opcode, the handling of which has been added with the said
-commit for EPC calculation in `__compute_return_epc_for_insn'.
+Fix a regression introduced with commit fb6883e5809c ("MIPS: microMIPS:
+Support handling of delay slots.") and defer to `__compute_return_epc'
+if the ISA bit is set in EPC with non-MIPS16, non-microMIPS hardware,
+which will then arrange for a SIGBUS due to an unaligned instruction
+reference.  Returning EPC here is never correct as the API defines this
+function's result to be either a negative error code on failure or one
+of 0 and BRANCH_LIKELY_TAKEN on success.
 
 Fixes: fb6883e5809c ("MIPS: microMIPS: Support handling of delay slots.")
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16394/
+Patchwork: https://patchwork.linux-mips.org/patch/16395/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/branch.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/branch.h |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -493,6 +493,7 @@ int __compute_return_epc_for_insn(struct
- 	/*
- 	 * These are unconditional and in j_format.
- 	 */
-+	case jalx_op:
- 	case jal_op:
- 		regs->regs[31] = regs->cp0_epc + 8;
- 	case j_op:
+--- a/arch/mips/include/asm/branch.h
++++ b/arch/mips/include/asm/branch.h
+@@ -74,10 +74,7 @@ static inline int compute_return_epc(str
+ 			return __microMIPS_compute_return_epc(regs);
+ 		if (cpu_has_mips16)
+ 			return __MIPS16e_compute_return_epc(regs);
+-		return regs->cp0_epc;
+-	}
+-
+-	if (!delay_slot(regs)) {
++	} else if (!delay_slot(regs)) {
+ 		regs->cp0_epc += 4;
+ 		return 0;
+ 	}

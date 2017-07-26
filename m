@@ -1,41 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 09:41:51 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42833 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992054AbdGZHlWxr5Fn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 09:41:22 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 26D69E97ADF32;
-        Wed, 26 Jul 2017 08:41:14 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 26 Jul 2017 08:41:16 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        David Woodhouse <dwmw@amazon.co.uk>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 15:35:18 +0200 (CEST)
+Received: from cn.fujitsu.com ([59.151.112.132]:35759 "EHLO
+        heian.cn.fujitsu.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992036AbdGZNfKGCg90 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 15:35:10 +0200
+X-IronPort-AV: E=Sophos;i="5.22,518,1449504000"; 
+   d="scan'208";a="21846599"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 26 Jul 2017 21:34:56 +0800
+Received: from G08CNEXCHPEKD03.g08.fujitsu.local (unknown [10.167.33.85])
+        by cn.fujitsu.com (Postfix) with ESMTP id 3D275402BB97;
+        Wed, 26 Jul 2017 21:34:54 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.167.226.106) by
+ G08CNEXCHPEKD03.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
+ (TLS) id 14.3.319.2; Wed, 26 Jul 2017 21:34:54 +0800
+From:   Dou Liyang <douly.fnst@cn.fujitsu.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <mpe@ellerman.id.au>, Dou Liyang <douly.fnst@cn.fujitsu.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 2/2] MIPS: PCI: Fix smp_processor_id() in preemptible
-Date:   Wed, 26 Jul 2017 08:41:09 +0100
-Message-ID: <1501054869-15068-2-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1501054869-15068-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1501054869-15068-1-git-send-email-matt.redfearn@imgtec.com>
+        <linux-mips@linux-mips.org>
+Subject: [PATCH 04/11] MIPS: numa: Remove the unused parent_node() macro
+Date:   Wed, 26 Jul 2017 21:34:29 +0800
+Message-ID: <1501076076-1974-5-git-send-email-douly.fnst@cn.fujitsu.com>
+X-Mailer: git-send-email 2.5.5
+In-Reply-To: <1501076076-1974-1-git-send-email-douly.fnst@cn.fujitsu.com>
+References: <1501076076-1974-1-git-send-email-douly.fnst@cn.fujitsu.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+X-Originating-IP: [10.167.226.106]
+X-yoursite-MailScanner-ID: 3D275402BB97.AE90D
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: douly.fnst@cn.fujitsu.com
+Return-Path: <douly.fnst@cn.fujitsu.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59279
+X-archive-position: 59280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: douly.fnst@cn.fujitsu.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,83 +52,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 1c3c5eab1715 ("sched/core: Enable might_sleep() and
-smp_processor_id() checks early") enables checks for might_sleep() and
-smp_processor_id() being used in preemptible code earlier in the boot
-than before. This results in a new BUG from
-pcibios_set_cache_line_size().
+Commit a7be6e5a7f8d ("mm: drop useless local parameters of
+__register_one_node()") removes the last user of parent_node().
 
-BUG: using smp_processor_id() in preemptible [00000000] code:
-swapper/0/1 caller is pcibios_set_cache_line_size+0x10/0x70
-CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.13.0-rc1-00007-g3ce3e4ba4275 #615
-Stack: 0000000000000000 ffffffff81189694 0000000000000000 ffffffff81822318
-       000000000000004e 0000000000000001 800000000e20bd08 20c49ba5e3540000
-       0000000000000000 0000000000000000 ffffffff818d0000 0000000000000000
-       0000000000000000 ffffffff81189328 ffffffff818ce692 0000000000000000
-       0000000000000000 ffffffff81189bc8 ffffffff818d0000 0000000000000000
-       ffffffff81828907 ffffffff81769970 800000020ec78d80 ffffffff818c7b48
-       0000000000000001 0000000000000001 ffffffff818652b0 ffffffff81896268
-       ffffffff818c0000 800000020ec7fb40 800000020ec7fc58 ffffffff81684cac
-       0000000000000000 ffffffff8118ab50 0000000000000030 ffffffff81769970
-       0000000000000001 ffffffff81122a58 0000000000000000 0000000000000000 ...
-Call Trace:
-[<ffffffff81122a58>] show_stack+0x90/0xb0
-[<ffffffff81684cac>] dump_stack+0xac/0xf0
-[<ffffffff813f7050>] check_preemption_disabled+0x120/0x128
-[<ffffffff818855e8>] pcibios_set_cache_line_size+0x10/0x70
-[<ffffffff81100578>] do_one_initcall+0x48/0x140
-[<ffffffff81865dc4>] kernel_init_freeable+0x194/0x24c
-[<ffffffff8169c534>] kernel_init+0x14/0x118
-[<ffffffff8111ca84>] ret_from_kernel_thread+0x14/0x1c
+The parent_node() macros in both IP27 and Loongson64 are unnecessary.
 
-Fix this by using the cpu_*cache_line_size() macros instead. These
-macros are the "proper" way to determine the CPU cache sizes.
-This makes use of the newly added cpu_tcache_line_size.
+Remove it for cleanup.
 
-Fixes: 1c3c5eab1715 ("sched/core: Enable might_sleep() and smp_processor_id() checks early")
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Suggested-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Dou Liyang <douly.fnst@cn.fujitsu.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
 ---
+ arch/mips/include/asm/mach-ip27/topology.h       | 1 -
+ arch/mips/include/asm/mach-loongson64/topology.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-Changes in v3:
-Split into 2 patches
-
-Changes in v2:
-Switch to using cpu_*cache_line_size() macros
-
-In heteregenerous
-systems the more correct fix for this would be to iterate over CPUs
-checking each ones cache hierarchy. However, as no such systems
-currently exist that seems wasteful.
-
----
- arch/mips/pci/pci.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index bd67ac74fe2d..9632436d74d7 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -28,16 +28,15 @@ EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
+diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
+index defd135..3fb7a0e 100644
+--- a/arch/mips/include/asm/mach-ip27/topology.h
++++ b/arch/mips/include/asm/mach-ip27/topology.h
+@@ -23,7 +23,6 @@ struct cpuinfo_ip27 {
+ extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
  
- static int __init pcibios_set_cache_line_size(void)
- {
--	struct cpuinfo_mips *c = &current_cpu_data;
- 	unsigned int lsize;
+ #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
+-#define parent_node(node)	(node)
+ #define cpumask_of_node(node)	((node) == -1 ?				\
+ 				 cpu_all_mask :				\
+ 				 &hub_data(node)->h_cpus)
+diff --git a/arch/mips/include/asm/mach-loongson64/topology.h b/arch/mips/include/asm/mach-loongson64/topology.h
+index 0d8f3b5..bcb8856 100644
+--- a/arch/mips/include/asm/mach-loongson64/topology.h
++++ b/arch/mips/include/asm/mach-loongson64/topology.h
+@@ -4,7 +4,6 @@
+ #ifdef CONFIG_NUMA
  
- 	/*
- 	 * Set PCI cacheline size to that of the highest level in the
- 	 * cache hierarchy.
- 	 */
--	lsize = c->dcache.linesz;
--	lsize = c->scache.linesz ? : lsize;
--	lsize = c->tcache.linesz ? : lsize;
-+	lsize = cpu_dcache_line_size();
-+	lsize = cpu_scache_line_size() ? : lsize;
-+	lsize = cpu_tcache_line_size() ? : lsize;
+ #define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
+-#define parent_node(node)	(node)
+ #define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
  
- 	BUG_ON(!lsize);
- 
+ struct pci_bus;
 -- 
-2.7.4
+2.5.5

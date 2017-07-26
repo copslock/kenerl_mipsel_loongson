@@ -1,15 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 15:36:01 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.13]:55126 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993866AbdGZNft4dkE0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 15:35:49 +0200
-Received: from wuerfel.lan ([5.56.224.194]) by mrelayeu.kundenserver.de
- (mreue101 [212.227.15.145]) with ESMTPA (Nemesis) id
- 0M2Mj6-1dszmH2zem-00s6cO; Wed, 26 Jul 2017 15:34:57 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 16:42:29 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:26026 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992036AbdGZOmSm3Z8Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jul 2017 16:42:18 +0200
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C8DF861D37;
+        Wed, 26 Jul 2017 14:42:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com C8DF861D37
+Authentication-Results: ext-mx10.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
+Authentication-Results: ext-mx10.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=pbonzini@redhat.com
+Received: from [10.36.117.59] (ovpn-117-59.ams2.redhat.com [10.36.117.59])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E278B6A751;
+        Wed, 26 Jul 2017 14:42:08 +0000 (UTC)
+Subject: Re: [PATCH v2] smp_call_function: use inline helpers instead of
+ macros
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -17,35 +26,28 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
         Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] smp_call_function: use inline helpers instead of macros
-Date:   Wed, 26 Jul 2017 15:32:28 +0200
-Message-Id: <20170726133447.2056379-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-X-Provags-ID: V03:K0:ozb/DBC7+MVFrdRtsDhLmFgW5PJY9A9Tr/kjmI+7n/xvBEszkOk
- VbYl0rPmE9d0UMZ/bnIJp/MbG1w5uRE2x1rOoGTgJUkEMKGFWVbw9JyhSx5X8E956FSsQ0J
- mNHbJYE0wQ+plQzUvUfgrKhqPeTnWNcBOOCB5pALGkksxWHZWDiXWQyndPR411QfNFFNgAx
- kXMAkb7mFvt4lePNG/Cjg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:BaV9/BVGy2A=:c9B79YDi9Sta7w8+wtXHAV
- mtAEtBF338R85s8VUESCQBThyjN0EEKYhaA4CZ4Bvwf7bgrqO55q9UoQLIAXxC5Hds0/zQDIE
- 6lMcu8Mmngi2P6KtGPZNdPL6ycbFvw7TEb5exdblLVYP8CbFLyH0GIpVAaG/y/cIzzXk3p6mF
- B0F8949T8bq+RgHqpcjCZdqN5gLIsjDAW0EEoeVfoQacgusTHeohawwJnykTnpTGKZS5NUuI7
- xzZh6IAW2t/J/DTVS2uGR4GWrVNoQZGCif4OOmBA5MXfv4+Nu+QtBh8JJyVTzJ9XZLqpqWy/k
- RR3unIyspdL8xNc0Ramwru1h6wq8oPFC78urMvO1GdBQea0PUqyRiG53u0Tp+Zfeww5GnuBuM
- eXC1D4vg54c0vZSZGn07jXHyOcZu1hQ3g2Y7CXJbthATHOoWIWQ3XA4oyPXlt1pI8lG+sP2W/
- 3vbMIAti9GziqQRUnU/j+lhy97TLkiXkL1zq5bA+afLh0xbo6PdyESxRrRoevNzv2qVPIFe7F
- qSuNcmJkKhv4VUYOweYDkS/Dqr4Bh8KCgWE+hpDRaLjnl4oJfy0dKiAMhg/NTVXehxvLVSBpp
- RbelOY5/oBsbOljb9GlJYZNiEOUTyRicOQmnADJnaX2wL9baJoUS4e6G6a/rtbKD2tOSDuxjW
- 4Hd2OdMur8Qk1vStFNNkZXMqvBbQ62pMwXAaKUTDKYwFCpDBOVB6rO/WfTQjiKQNN8au9aasx
- 98sHvlHXFbuxnleNGUKY8FNi7KrUJVIeHRM96w==
-Return-Path: <arnd@arndb.de>
+References: <20170726133447.2056379-1-arnd@arndb.de>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <cc227181-ef9f-dede-d478-ba0714e4bfbb@redhat.com>
+Date:   Wed, 26 Jul 2017 16:42:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
+MIME-Version: 1.0
+In-Reply-To: <20170726133447.2056379-1-arnd@arndb.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Wed, 26 Jul 2017 14:42:12 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59281
+X-archive-position: 59282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,74 +60,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A new caller of smp_call_function() passes a local variable as the 'wait'
-argument, and that variable is otherwise unused, so we get a warning
-in non-SMP configurations:
+On 26/07/2017 15:32, Arnd Bergmann wrote:
+> A new caller of smp_call_function() passes a local variable as the 'wait'
+> argument, and that variable is otherwise unused, so we get a warning
+> in non-SMP configurations:
+> 
+> virt/kvm/kvm_main.c: In function 'kvm_make_all_cpus_request':
+> virt/kvm/kvm_main.c:195:7: error: unused variable 'wait' [-Werror=unused-variable]
+>   bool wait = req & KVM_REQUEST_WAIT;
+> 
+> This addresses the warning by changing the two macros into inline functions.
+> As reported by the 0day build bot, a small change is required in the MIPS
+> r4k code for this, which then gets a warning about a missing variable.
+> 
+> Fixes: 7a97cec26b94 ("KVM: mark requests that need synchronization")
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Link: https://patchwork.kernel.org/patch/9722063/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-virt/kvm/kvm_main.c: In function 'kvm_make_all_cpus_request':
-virt/kvm/kvm_main.c:195:7: error: unused variable 'wait' [-Werror=unused-variable]
-  bool wait = req & KVM_REQUEST_WAIT;
+This is not needed anymore, I've fixed it in KVM:
 
-This addresses the warning by changing the two macros into inline functions.
-As reported by the 0day build bot, a small change is required in the MIPS
-r4k code for this, which then gets a warning about a missing variable.
+    commit b49defe83659cefbb1763d541e779da32594ab10
+    Author: Paolo Bonzini <pbonzini@redhat.com>
+    Date:   Fri Jun 30 13:25:45 2017 +0200
 
-Fixes: 7a97cec26b94 ("KVM: mark requests that need synchronization")
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://patchwork.kernel.org/patch/9722063/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v2: - fix MIPS build error reported by kbuild test robot
-    - remove up_smp_call_function()
----
- arch/mips/mm/c-r4k.c |  2 ++
- include/linux/smp.h  | 12 +++++++-----
- 2 files changed, 9 insertions(+), 5 deletions(-)
+    kvm: avoid unused variable warning for UP builds
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 81d6a15c93d0..f353bf5f24f1 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -97,9 +97,11 @@ static inline void r4k_on_each_cpu(unsigned int type,
- 				   void (*func)(void *info), void *info)
- {
- 	preempt_disable();
-+#ifdef CONFIG_SMP
- 	if (r4k_op_needs_ipi(type))
- 		smp_call_function_many(&cpu_foreign_map[smp_processor_id()],
- 				       func, info, 1);
-+#endif
- 	func(info);
- 	preempt_enable();
- }
-diff --git a/include/linux/smp.h b/include/linux/smp.h
-index 68123c1fe549..ea24e2d3504c 100644
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -135,17 +135,19 @@ static inline void smp_send_stop(void) { }
-  *	These macros fold the SMP functionality into a single CPU system
-  */
- #define raw_smp_processor_id()			0
--static inline int up_smp_call_function(smp_call_func_t func, void *info)
-+static inline int smp_call_function(smp_call_func_t func, void *info, int wait)
- {
- 	return 0;
- }
--#define smp_call_function(func, info, wait) \
--			(up_smp_call_function(func, info))
- 
- static inline void smp_send_reschedule(int cpu) { }
- #define smp_prepare_boot_cpu()			do {} while (0)
--#define smp_call_function_many(mask, func, info, wait) \
--			(up_smp_call_function(func, info))
-+
-+static inline void smp_call_function_many(const struct cpumask *mask,
-+			    smp_call_func_t func, void *info, bool wait)
-+{
-+}
-+
- static inline void call_function_init(void) { }
- 
- static inline int
--- 
-2.9.0
+    The uniprocessor version of smp_call_function_many does not evaluate
+    all of its argument, and the compiler emits a warning about "wait"
+    being unused.  This breaks the build on architectures for which
+    "-Werror" is enabled by default.
+
+    Work around it by moving the invocation of smp_call_function_many to
+    its own inline function.
+
+    Reported-by: Paul Mackerras <paulus@ozlabs.org>
+    Cc: stable@vger.kernel.org
+    Fixes: 7a97cec26b94c909f4cbad2dc3186af3e457a522
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Paolo

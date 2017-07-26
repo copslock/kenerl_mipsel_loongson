@@ -1,35 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2017 21:41:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39762 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993949AbdGYTZmKlM5b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2017 21:25:42 +0200
-Received: from localhost (rrcs-64-183-28-114.west.biz.rr.com [64.183.28.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 02EA3504;
-        Tue, 25 Jul 2017 19:25:35 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 09:41:27 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59963 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991978AbdGZHlUc4rzn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 09:41:20 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id C61CEF3090769;
+        Wed, 26 Jul 2017 08:41:11 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 26 Jul 2017 08:41:14 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
         James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.12 144/196] MIPS: Send SIGILL for R6 branches in `__compute_return_epc_for_insn
-Date:   Tue, 25 Jul 2017 12:22:23 -0700
-Message-Id: <20170725192053.137386676@linuxfoundation.org>
-X-Mailer: git-send-email 2.13.3
-In-Reply-To: <20170725192046.422343510@linuxfoundation.org>
-References: <20170725192046.422343510@linuxfoundation.org>
-User-Agent: quilt/0.65
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v3 1/2] MIPS: Introduce cpu_tcache_line_size
+Date:   Wed, 26 Jul 2017 08:41:08 +0100
+Message-ID: <1501054869-15068-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59277
+X-archive-position: 59278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,120 +45,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.12-stable review patch.  If anyone has any objections, please let me know.
+There exist macros to return the cache line size of the L1 dcache and L2
+scache but there is currently no macro for the L3 tcache. Add this macro
+which will be used by the following patch "MIPS: PCI: Fix
+smp_processor_id() in preemptible"
 
-------------------
-
-From: Maciej W. Rozycki <macro@imgtec.com>
-
-commit a60b1a5bf88a250f1a77977c0224e502c901c77b upstream.
-
-Fix:
-
-* commit 8467ca0122e2 ("MIPS: Emulate the new MIPS R6 branch compact
-(BC) instruction"),
-
-* commit 84fef630127a ("MIPS: Emulate the new MIPS R6 BALC
-instruction"),
-
-* commit 69b9a2fd05a3 ("MIPS: Emulate the new MIPS R6 BEQZC and JIC
-instructions"),
-
-* commit 28d6f93d201d ("MIPS: Emulate the new MIPS R6 BNEZC and JIALC
-instructions"),
-
-* commit c893ce38b265 ("MIPS: Emulate the new MIPS R6 BOVC, BEQC and
-BEQZALC instructions")
-
-and send SIGILL rather than returning -SIGILL for R6 branch and jump
-instructions.  Returning -SIGILL is never correct as the API defines
-this function's result upon error to be -EFAULT and a signal actually
-issued.
-
-Fixes: 8467ca0122e2 ("MIPS: Emulate the new MIPS R6 branch compact (BC) instruction")
-Fixes: 84fef630127a ("MIPS: Emulate the new MIPS R6 BALC instruction")
-Fixes: 69b9a2fd05a3 ("MIPS: Emulate the new MIPS R6 BEQZC and JIC instructions")
-Fixes: 28d6f93d201d ("MIPS: Emulate the new MIPS R6 BNEZC and JIALC instructions")
-Fixes: c893ce38b265 ("MIPS: Emulate the new MIPS R6 BOVC, BEQC and BEQZALC instructions")
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16399/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
 ---
- arch/mips/kernel/branch.c |   35 +++++++++++++++--------------------
- 1 file changed, 15 insertions(+), 20 deletions(-)
 
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -771,35 +771,27 @@ int __compute_return_epc_for_insn(struct
- #else
- 	case bc6_op:
- 		/* Only valid for MIPS R6 */
--		if (!cpu_has_mips_r6) {
--			ret = -SIGILL;
--			break;
--		}
-+		if (!cpu_has_mips_r6)
-+			goto sigill_r6;
- 		regs->cp0_epc += 8;
- 		break;
- 	case balc6_op:
--		if (!cpu_has_mips_r6) {
--			ret = -SIGILL;
--			break;
--		}
-+		if (!cpu_has_mips_r6)
-+			goto sigill_r6;
- 		/* Compact branch: BALC */
- 		regs->regs[31] = epc + 4;
- 		epc += 4 + (insn.i_format.simmediate << 2);
- 		regs->cp0_epc = epc;
- 		break;
- 	case pop66_op:
--		if (!cpu_has_mips_r6) {
--			ret = -SIGILL;
--			break;
--		}
-+		if (!cpu_has_mips_r6)
-+			goto sigill_r6;
- 		/* Compact branch: BEQZC || JIC */
- 		regs->cp0_epc += 8;
- 		break;
- 	case pop76_op:
--		if (!cpu_has_mips_r6) {
--			ret = -SIGILL;
--			break;
--		}
-+		if (!cpu_has_mips_r6)
-+			goto sigill_r6;
- 		/* Compact branch: BNEZC || JIALC */
- 		if (!insn.i_format.rs) {
- 			/* JIALC: set $31/ra */
-@@ -811,10 +803,8 @@ int __compute_return_epc_for_insn(struct
- 	case pop10_op:
- 	case pop30_op:
- 		/* Only valid for MIPS R6 */
--		if (!cpu_has_mips_r6) {
--			ret = -SIGILL;
--			break;
--		}
-+		if (!cpu_has_mips_r6)
-+			goto sigill_r6;
- 		/*
- 		 * Compact branches:
- 		 * bovc, beqc, beqzalc, bnvc, bnec, bnezlac
-@@ -837,6 +827,11 @@ sigill_r2r6:
- 		current->comm);
- 	force_sig(SIGILL, current);
- 	return -EFAULT;
-+sigill_r6:
-+	pr_info("%s: R6 branch but no MIPSr6 ISA support - sending SIGILL.\n",
-+		current->comm);
-+	force_sig(SIGILL, current);
-+	return -EFAULT;
- }
- EXPORT_SYMBOL_GPL(__compute_return_epc_for_insn);
+Changes in v3:
+Split into 2 patches
+
+Changes in v2: None
+
+ arch/mips/include/asm/cpu-features.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 8baa9033b181..721b698bfe3c 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -428,6 +428,9 @@
+ #ifndef cpu_scache_line_size
+ #define cpu_scache_line_size()	cpu_data[0].scache.linesz
+ #endif
++#ifndef cpu_tcache_line_size
++#define cpu_tcache_line_size()	cpu_data[0].tcache.linesz
++#endif
  
+ #ifndef cpu_hwrena_impl_bits
+ #define cpu_hwrena_impl_bits		0
+-- 
+2.7.4

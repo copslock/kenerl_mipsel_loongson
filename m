@@ -1,45 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 15:35:18 +0200 (CEST)
-Received: from cn.fujitsu.com ([59.151.112.132]:35759 "EHLO
-        heian.cn.fujitsu.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992036AbdGZNfKGCg90 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 15:35:10 +0200
-X-IronPort-AV: E=Sophos;i="5.22,518,1449504000"; 
-   d="scan'208";a="21846599"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 26 Jul 2017 21:34:56 +0800
-Received: from G08CNEXCHPEKD03.g08.fujitsu.local (unknown [10.167.33.85])
-        by cn.fujitsu.com (Postfix) with ESMTP id 3D275402BB97;
-        Wed, 26 Jul 2017 21:34:54 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.167.226.106) by
- G08CNEXCHPEKD03.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.319.2; Wed, 26 Jul 2017 21:34:54 +0800
-From:   Dou Liyang <douly.fnst@cn.fujitsu.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     <mpe@ellerman.id.au>, Dou Liyang <douly.fnst@cn.fujitsu.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 15:36:01 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.13]:55126 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993866AbdGZNft4dkE0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 15:35:49 +0200
+Received: from wuerfel.lan ([5.56.224.194]) by mrelayeu.kundenserver.de
+ (mreue101 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 0M2Mj6-1dszmH2zem-00s6cO; Wed, 26 Jul 2017 15:34:57 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 04/11] MIPS: numa: Remove the unused parent_node() macro
-Date:   Wed, 26 Jul 2017 21:34:29 +0800
-Message-ID: <1501076076-1974-5-git-send-email-douly.fnst@cn.fujitsu.com>
-X-Mailer: git-send-email 2.5.5
-In-Reply-To: <1501076076-1974-1-git-send-email-douly.fnst@cn.fujitsu.com>
-References: <1501076076-1974-1-git-send-email-douly.fnst@cn.fujitsu.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.167.226.106]
-X-yoursite-MailScanner-ID: 3D275402BB97.AE90D
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: douly.fnst@cn.fujitsu.com
-Return-Path: <douly.fnst@cn.fujitsu.com>
+        Paul Burton <paul.burton@imgtec.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juergen Gross <jgross@suse.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] smp_call_function: use inline helpers instead of macros
+Date:   Wed, 26 Jul 2017 15:32:28 +0200
+Message-Id: <20170726133447.2056379-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+X-Provags-ID: V03:K0:ozb/DBC7+MVFrdRtsDhLmFgW5PJY9A9Tr/kjmI+7n/xvBEszkOk
+ VbYl0rPmE9d0UMZ/bnIJp/MbG1w5uRE2x1rOoGTgJUkEMKGFWVbw9JyhSx5X8E956FSsQ0J
+ mNHbJYE0wQ+plQzUvUfgrKhqPeTnWNcBOOCB5pALGkksxWHZWDiXWQyndPR411QfNFFNgAx
+ kXMAkb7mFvt4lePNG/Cjg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:BaV9/BVGy2A=:c9B79YDi9Sta7w8+wtXHAV
+ mtAEtBF338R85s8VUESCQBThyjN0EEKYhaA4CZ4Bvwf7bgrqO55q9UoQLIAXxC5Hds0/zQDIE
+ 6lMcu8Mmngi2P6KtGPZNdPL6ycbFvw7TEb5exdblLVYP8CbFLyH0GIpVAaG/y/cIzzXk3p6mF
+ B0F8949T8bq+RgHqpcjCZdqN5gLIsjDAW0EEoeVfoQacgusTHeohawwJnykTnpTGKZS5NUuI7
+ xzZh6IAW2t/J/DTVS2uGR4GWrVNoQZGCif4OOmBA5MXfv4+Nu+QtBh8JJyVTzJ9XZLqpqWy/k
+ RR3unIyspdL8xNc0Ramwru1h6wq8oPFC78urMvO1GdBQea0PUqyRiG53u0Tp+Zfeww5GnuBuM
+ eXC1D4vg54c0vZSZGn07jXHyOcZu1hQ3g2Y7CXJbthATHOoWIWQ3XA4oyPXlt1pI8lG+sP2W/
+ 3vbMIAti9GziqQRUnU/j+lhy97TLkiXkL1zq5bA+afLh0xbo6PdyESxRrRoevNzv2qVPIFe7F
+ qSuNcmJkKhv4VUYOweYDkS/Dqr4Bh8KCgWE+hpDRaLjnl4oJfy0dKiAMhg/NTVXehxvLVSBpp
+ RbelOY5/oBsbOljb9GlJYZNiEOUTyRicOQmnADJnaX2wL9baJoUS4e6G6a/rtbKD2tOSDuxjW
+ 4Hd2OdMur8Qk1vStFNNkZXMqvBbQ62pMwXAaKUTDKYwFCpDBOVB6rO/WfTQjiKQNN8au9aasx
+ 98sHvlHXFbuxnleNGUKY8FNi7KrUJVIeHRM96w==
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59280
+X-archive-position: 59281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: douly.fnst@cn.fujitsu.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,46 +58,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit a7be6e5a7f8d ("mm: drop useless local parameters of
-__register_one_node()") removes the last user of parent_node().
+A new caller of smp_call_function() passes a local variable as the 'wait'
+argument, and that variable is otherwise unused, so we get a warning
+in non-SMP configurations:
 
-The parent_node() macros in both IP27 and Loongson64 are unnecessary.
+virt/kvm/kvm_main.c: In function 'kvm_make_all_cpus_request':
+virt/kvm/kvm_main.c:195:7: error: unused variable 'wait' [-Werror=unused-variable]
+  bool wait = req & KVM_REQUEST_WAIT;
 
-Remove it for cleanup.
+This addresses the warning by changing the two macros into inline functions.
+As reported by the 0day build bot, a small change is required in the MIPS
+r4k code for this, which then gets a warning about a missing variable.
 
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Dou Liyang <douly.fnst@cn.fujitsu.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
+Fixes: 7a97cec26b94 ("KVM: mark requests that need synchronization")
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://patchwork.kernel.org/patch/9722063/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/mach-ip27/topology.h       | 1 -
- arch/mips/include/asm/mach-loongson64/topology.h | 1 -
- 2 files changed, 2 deletions(-)
+v2: - fix MIPS build error reported by kbuild test robot
+    - remove up_smp_call_function()
+---
+ arch/mips/mm/c-r4k.c |  2 ++
+ include/linux/smp.h  | 12 +++++++-----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
-index defd135..3fb7a0e 100644
---- a/arch/mips/include/asm/mach-ip27/topology.h
-+++ b/arch/mips/include/asm/mach-ip27/topology.h
-@@ -23,7 +23,6 @@ struct cpuinfo_ip27 {
- extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 81d6a15c93d0..f353bf5f24f1 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -97,9 +97,11 @@ static inline void r4k_on_each_cpu(unsigned int type,
+ 				   void (*func)(void *info), void *info)
+ {
+ 	preempt_disable();
++#ifdef CONFIG_SMP
+ 	if (r4k_op_needs_ipi(type))
+ 		smp_call_function_many(&cpu_foreign_map[smp_processor_id()],
+ 				       func, info, 1);
++#endif
+ 	func(info);
+ 	preempt_enable();
+ }
+diff --git a/include/linux/smp.h b/include/linux/smp.h
+index 68123c1fe549..ea24e2d3504c 100644
+--- a/include/linux/smp.h
++++ b/include/linux/smp.h
+@@ -135,17 +135,19 @@ static inline void smp_send_stop(void) { }
+  *	These macros fold the SMP functionality into a single CPU system
+  */
+ #define raw_smp_processor_id()			0
+-static inline int up_smp_call_function(smp_call_func_t func, void *info)
++static inline int smp_call_function(smp_call_func_t func, void *info, int wait)
+ {
+ 	return 0;
+ }
+-#define smp_call_function(func, info, wait) \
+-			(up_smp_call_function(func, info))
  
- #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
--#define parent_node(node)	(node)
- #define cpumask_of_node(node)	((node) == -1 ?				\
- 				 cpu_all_mask :				\
- 				 &hub_data(node)->h_cpus)
-diff --git a/arch/mips/include/asm/mach-loongson64/topology.h b/arch/mips/include/asm/mach-loongson64/topology.h
-index 0d8f3b5..bcb8856 100644
---- a/arch/mips/include/asm/mach-loongson64/topology.h
-+++ b/arch/mips/include/asm/mach-loongson64/topology.h
-@@ -4,7 +4,6 @@
- #ifdef CONFIG_NUMA
+ static inline void smp_send_reschedule(int cpu) { }
+ #define smp_prepare_boot_cpu()			do {} while (0)
+-#define smp_call_function_many(mask, func, info, wait) \
+-			(up_smp_call_function(func, info))
++
++static inline void smp_call_function_many(const struct cpumask *mask,
++			    smp_call_func_t func, void *info, bool wait)
++{
++}
++
+ static inline void call_function_init(void) { }
  
- #define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
--#define parent_node(node)	(node)
- #define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
- 
- struct pci_bus;
+ static inline int
 -- 
-2.5.5
+2.9.0

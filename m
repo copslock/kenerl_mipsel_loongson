@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:15:40 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:57654 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:16:02 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:57683 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993956AbdG0QMc1ptR9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jul 2017 18:12:32 +0200
+        id S23994817AbdG0QMgqIcq9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jul 2017 18:12:36 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id EA8F61A49C9;
-        Thu, 27 Jul 2017 18:12:26 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 440CA1A49F0;
+        Thu, 27 Jul 2017 18:12:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id CA8621A49C4;
-        Thu, 27 Jul 2017 18:12:26 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 283691A49C4;
+        Thu, 27 Jul 2017 18:12:31 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
         Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
         "# 4 . 7+" <stable@vger.kernel.org>, Bo Hu <bohu@google.com>,
-        Douglas Leung <douglas.leung@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         Jin Qian <jinqian@google.com>, linux-kernel@vger.kernel.org,
         Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v4 11/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix NaN propagation
-Date:   Thu, 27 Jul 2017 18:08:54 +0200
-Message-Id: <1501171791-23690-12-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v4 12/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix some cases of infinite inputs
+Date:   Thu, 27 Jul 2017 18:08:55 +0200
+Message-Id: <1501171791-23690-13-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -33,7 +33,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59295
+X-archive-position: 59296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,266 +52,103 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Fix the cases of <MADDF|MSUBF>.<D|S> when any of three inputs is any
-NaN. Correct behavior of <MADDF|MSUBF>.<D|S> fd, fs, ft is following:
+Fix the cases of <MADDF|MSUBF>.<D|S> when any of two multiplicands is
+infinity. The correct behavior in such cases is affected by the nature
+of third input. Cases of addition of infinities with opposite signs
+and subtraction of infinities with same signs may arise and must be
+handles separately. Also, the value od flags argument (that determines
+whether the instruction is MADDF or MSUBF) affects the outcome.
 
-  - if any of inputs is sNaN, return a sNaN using following rules: if
-    only one input is sNaN, return that one; if more than one input is
-    sNaN, order of precedence for return value is fd, fs, ft
-  - if no input is sNaN, but at least one of inputs is qNaN, return a
-    qNaN using following rules: if only one input is qNaN, return that
-    one; if more than one input is qNaN, order of precedence for
-    return value is fd, fs, ft
-
-The previous code contained correct handling of some above cases, but
-not all. Also, such handling was scattered into various cases of
-"switch (CLPAIR(xc, yc))" statement, and elsewhere. With this patch,
-this logic is placed in one place, and "switch (CLPAIR(xc, yc))" is
-significantly simplified.
-
-A relevant example:
+Relevant examples:
 
 MADDF.S fd,fs,ft:
-  If fs contains qNaN1, ft contains qNaN2, and fd contains qNaN3, fd
-  is going to contain qNaN3 (without this patch, it used to contain
-  qNaN1).
+  If fs contains +inf, ft contains +inf, and fd contains -inf, fd is
+  going to contain indef (without this patch, it used to contain
+  -inf).
+
+MSUBF.S fd,fs,ft:
+  If fs contains +inf, ft contains 1.0, and fd contains +0.0, fd is
+  going to contain -inf (without this patch, it used to contain +inf).
 
 Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction")
 Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU instruction")
 
+Signed-off-by: Douglas Leung <douglas.leung@imgtec.com>
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 Cc: <stable@vger.kernel.org> # 4.7+
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
 ---
- arch/mips/math-emu/dp_maddf.c | 66 +++++++++++++------------------------------
- arch/mips/math-emu/sp_maddf.c | 66 ++++++++++++++-----------------------------
- 2 files changed, 41 insertions(+), 91 deletions(-)
+ arch/mips/math-emu/dp_maddf.c | 22 +++++++++++++++++++++-
+ arch/mips/math-emu/sp_maddf.c | 22 +++++++++++++++++++++-
+ 2 files changed, 42 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-index caa62f2..8b1bd42 100644
+index 8b1bd42..557a0a1 100644
 --- a/arch/mips/math-emu/dp_maddf.c
 +++ b/arch/mips/math-emu/dp_maddf.c
-@@ -48,52 +48,34 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 
- 	ieee754_clearcx();
- 
--	switch (zc) {
--	case IEEE754_CLASS_SNAN:
--		ieee754_setcx(IEEE754_INVALID_OPERATION);
-+	/*
-+	 * Handle the cases when at least one of x, y or z is a NaN.
-+	 * Order of precedence is sNaN, qNaN and z, x, y.
-+	 */
-+	if (zc == IEEE754_CLASS_SNAN)
- 		return ieee754dp_nanxcpt(z);
--	case IEEE754_CLASS_DNORM:
--		DPDNORMZ;
--	/* QNAN and ZERO cases are handled separately below */
--	}
--
--	switch (CLPAIR(xc, yc)) {
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
--		return ieee754dp_nanxcpt(y);
--
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
-+	if (xc == IEEE754_CLASS_SNAN)
- 		return ieee754dp_nanxcpt(x);
--
--	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
-+	if (yc == IEEE754_CLASS_SNAN)
-+		return ieee754dp_nanxcpt(y);
-+	if (zc == IEEE754_CLASS_QNAN)
-+		return z;
-+	if (xc == IEEE754_CLASS_QNAN)
-+		return x;
-+	if (yc == IEEE754_CLASS_QNAN)
- 		return y;
- 
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
--		return x;
-+	if (zc == IEEE754_CLASS_DNORM)
-+		DPDNORMZ;
-+	/* ZERO z cases are handled separately below */
- 
-+	switch (CLPAIR(xc, yc)) {
- 
- 	/*
- 	 * Infinity handling
- 	 */
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
- 		ieee754_setcx(IEEE754_INVALID_OPERATION);
- 		return ieee754dp_indef();
- 
-@@ -102,8 +84,6 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+@@ -84,7 +84,27 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
- 		return ieee754dp_inf(xs ^ ys);
+-		return ieee754dp_inf(xs ^ ys);
++		if ((zc == IEEE754_CLASS_INF) &&
++		    ((!(flags & maddf_negate_product) && (zs != (xs ^ ys))) ||
++		     ((flags & maddf_negate_product) && (zs == (xs ^ ys))))) {
++			/*
++			 * Cases of addition of infinities with opposite signs
++			 * or subtraction of infinities with same signs.
++			 */
++			ieee754_setcx(IEEE754_INVALID_OPERATION);
++			return ieee754dp_indef();
++		}
++		/*
++		 * z is here either not an infinity, or an infinity having the
++		 * same sign as product (x*y) (in case of MADDF.D instruction)
++		 * or product -(x*y) (in MSUBF.D case). The result must be an
++		 * infinity, and its sign is determined only by the value of
++		 * (flags & maddf_negate_product) and the signs of x and y.
++		 */
++		if (flags & maddf_negate_product)
++			return ieee754dp_inf(1 ^ (xs ^ ys));
++		else
++			return ieee754dp_inf(xs ^ ys);
  
  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
-@@ -120,25 +100,19 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 		DPDNORMX;
- 
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
--		else if (zc == IEEE754_CLASS_INF)
-+		if (zc == IEEE754_CLASS_INF)
- 			return ieee754dp_inf(zs);
- 		DPDNORMY;
- 		break;
- 
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
--		else if (zc == IEEE754_CLASS_INF)
-+		if (zc == IEEE754_CLASS_INF)
- 			return ieee754dp_inf(zs);
- 		DPDNORMX;
- 		break;
- 
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
--		else if (zc == IEEE754_CLASS_INF)
-+		if (zc == IEEE754_CLASS_INF)
- 			return ieee754dp_inf(zs);
- 		/* fall through to real computations */
- 	}
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
 diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
-index c91d5e5..6cdaa2a 100644
+index 6cdaa2a..0d8d25f 100644
 --- a/arch/mips/math-emu/sp_maddf.c
 +++ b/arch/mips/math-emu/sp_maddf.c
-@@ -48,51 +48,35 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
- 
- 	ieee754_clearcx();
- 
--	switch (zc) {
--	case IEEE754_CLASS_SNAN:
--		ieee754_setcx(IEEE754_INVALID_OPERATION);
-+	/*
-+	 * Handle the cases when at least one of x, y or z is a NaN.
-+	 * Order of precedence is sNaN, qNaN and z, x, y.
-+	 */
-+	if (zc == IEEE754_CLASS_SNAN)
- 		return ieee754sp_nanxcpt(z);
--	case IEEE754_CLASS_DNORM:
--		SPDNORMZ;
--	/* QNAN and ZERO cases are handled separately below */
--	}
--
--	switch (CLPAIR(xc, yc)) {
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
-+	if (xc == IEEE754_CLASS_SNAN)
-+		return ieee754sp_nanxcpt(x);
-+	if (yc == IEEE754_CLASS_SNAN)
- 		return ieee754sp_nanxcpt(y);
-+	if (zc == IEEE754_CLASS_QNAN)
-+		return z;
-+	if (xc == IEEE754_CLASS_QNAN)
-+		return x;
-+	if (yc == IEEE754_CLASS_QNAN)
-+		return y;
- 
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
--	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
--		return ieee754sp_nanxcpt(x);
-+	if (zc == IEEE754_CLASS_DNORM)
-+		SPDNORMZ;
-+	/* ZERO z cases are handled separately below */
- 
--	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
--		return y;
-+	switch (CLPAIR(xc, yc)) {
- 
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
--		return x;
- 
- 	/*
- 	 * Infinity handling
- 	 */
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
- 		ieee754_setcx(IEEE754_INVALID_OPERATION);
- 		return ieee754sp_indef();
- 
-@@ -101,8 +85,6 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+@@ -85,7 +85,27 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
  	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
- 		return ieee754sp_inf(xs ^ ys);
+-		return ieee754sp_inf(xs ^ ys);
++		if ((zc == IEEE754_CLASS_INF) &&
++		    ((!(flags & maddf_negate_product) && (zs != (xs ^ ys))) ||
++		     ((flags & maddf_negate_product) && (zs == (xs ^ ys))))) {
++			/*
++			 * Cases of addition of infinities with opposite signs
++			 * or subtraction of infinities with same signs.
++			 */
++			ieee754_setcx(IEEE754_INVALID_OPERATION);
++			return ieee754sp_indef();
++		}
++		/*
++		 * z is here either not an infinity, or an infinity having the
++		 * same sign as product (x*y) (in case of MADDF.D instruction)
++		 * or product -(x*y) (in MSUBF.D case). The result must be an
++		 * infinity, and its sign is determined only by the value of
++		 * (flags & maddf_negate_product) and the signs of x and y.
++		 */
++		if (flags & maddf_negate_product)
++			return ieee754sp_inf(1 ^ (xs ^ ys));
++		else
++			return ieee754sp_inf(xs ^ ys);
  
  	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
-@@ -119,25 +101,19 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
- 		SPDNORMX;
- 
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
--		else if (zc == IEEE754_CLASS_INF)
-+		if (zc == IEEE754_CLASS_INF)
- 			return ieee754sp_inf(zs);
- 		SPDNORMY;
- 		break;
- 
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
--		else if (zc == IEEE754_CLASS_INF)
-+		if (zc == IEEE754_CLASS_INF)
- 			return ieee754sp_inf(zs);
- 		SPDNORMX;
- 		break;
- 
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
--		if (zc == IEEE754_CLASS_QNAN)
--			return z;
--		else if (zc == IEEE754_CLASS_INF)
-+		if (zc == IEEE754_CLASS_INF)
- 			return ieee754sp_inf(zs);
- 		/* fall through to real computations */
- 	}
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
 -- 
 2.7.4

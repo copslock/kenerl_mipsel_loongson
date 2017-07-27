@@ -1,43 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:17:51 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:57725 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993975AbdG0QMw0OZs9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jul 2017 18:12:52 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id E6C981A4A40;
-        Thu, 27 Jul 2017 18:12:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id C92CB1A4A25;
-        Thu, 27 Jul 2017 18:12:46 +0200 (CEST)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Douglas Leung <douglas.leung@imgtec.com>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Goran Ferenc <goran.ferenc@imgtec.com>,
-        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        "# 4 . 7+" <stable@vger.kernel.org>, Bo Hu <bohu@google.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jin Qian <jinqian@google.com>, linux-kernel@vger.kernel.org,
-        Paul Burton <paul.burton@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v4 16/16] MIPS: math-emu: <MADDF|MSUBF>.D: Fix accuracy (64-bit case)
-Date:   Thu, 27 Jul 2017 18:08:59 +0200
-Message-Id: <1501171791-23690-17-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jul 2017 00:38:42 +0200 (CEST)
+Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:35303
+        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993961AbdG0WifsYC5D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jul 2017 00:38:35 +0200
+Received: by mail-qk0-x243.google.com with SMTP id a77so2298268qkb.2
+        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2017 15:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=2Jzk271X1msY18Ii8Ign3KT9bJ2e5zPC2r/uXDaAyn0=;
+        b=SkuTEpXyCPETPHcObmiJ/9UfEEwdxa2tggEWZzUS3YTpe9OZEhw5yNisTFqPIbC3sW
+         7aG8BMOABy9xq+PYvYxWa3ednMZFcuoeAU+FG5Qj1SBYekGq6q8mGLctwHB4+KDDOIkQ
+         YztRk8/7Gl+DWx15VBiL8lqSddpKm7kIDZXZLD7nNx/HlYYGbE/CyGLAT2pUMnbKa1EN
+         t/iZIgFe8eDFT6OsOsInV2oZPOyhxJK4x8TAoGM/g+79nOtEGDqjh+ubIBSFouaKGDlQ
+         LgmHkWlI3TmRh7aa29KkbSi3JnRU3GH4nx9zSsHfStEZT80+ZCbZ30D7c/zSyf6G5dBL
+         P9Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2Jzk271X1msY18Ii8Ign3KT9bJ2e5zPC2r/uXDaAyn0=;
+        b=au2xvEIWno4yM2IyforcxlugdqI2sIr/14XZvxfyJckTHfFiuEfxjuVbCCeRCZcXNQ
+         LsvNnT/o/vo90yRlFGNLO501k7UzBrizqME8NBw9fhrepn+dposQBNgb4BWM8jK+2Z7y
+         lxDq2gF6c/MREgaP7veL8fT8kEBLB43PnSG2295x6dOBtol8NqGpsPeEwKP/7VV0GTy/
+         OHA8JR58twKC2IRCfzN8tiMSiySXmC5bC2mnQc/UBeC23OY1mROgUmkZ4ew2yZUdz2Et
+         DhGv4D7ps9r3OcmTEHwAtUCYcANCgw8HV3wuUAsivnDJghwuvK7xBrPDdQeU4CrqYk3c
+         wwuA==
+X-Gm-Message-State: AIVw110JATi13oQuGRLlj5UT/Ra2X8EuVNspi5FP0w6CDBnlTovv7IoR
+        3ozawPV/Jk1clA==
+X-Received: by 10.55.26.161 with SMTP id l33mr8252195qkh.315.1501195110089;
+        Thu, 27 Jul 2017 15:38:30 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com ([192.19.255.250])
+        by smtp.gmail.com with ESMTPSA id i79sm13895881qke.3.2017.07.27.15.38.27
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Jul 2017 15:38:29 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     opendmb@gmail.com, Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com (maintainer:BROADCOM BCM7XXX ARM
+        ARCHITECTURE),
+        linux-mips@linux-mips.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE),
+        linux-kernel@vger.kernel.org (open list:IRQCHIP DRIVERS)
+Subject: [PATCH] irqchip: brcmstb-l2: Define an irq_pm_shutdown function
+Date:   Thu, 27 Jul 2017 15:38:17 -0700
+Message-Id: <20170727223817.7494-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.9.3
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59300
+X-archive-position: 59301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,243 +71,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Douglas Leung <douglas.leung@imgtec.com>
+The Broadcom STB platforms support S5 and we allow specific hardware
+wake-up events to take us out of this state. Because we were not
+defining an irq_pm_shutdown() function pointer, we would not be
+correctly masking non-wakeup events, which would result in spurious
+wake-ups from sources that were not explicitly configured for wake-up.
 
-Implement fused multiply-add with correct accuracy.
-
-Fused multiply-add operation has better accuracy than respective
-sequential execution of multiply and add operations applied on the
-same inputs. This is because accuracy errors accumulate in latter
-case.
-
-This patch implements fused multiply-add with the same accuracy
-as it is implemented in hardware, using 128-bit intermediate
-calculations.
-
-One test case example (raw bits) that this patch fixes:
-
-MADDF.D fd,fs,ft:
-  fd = 0x00000ca000000000
-  fs = ft = 0x3f40624dd2f1a9fc
-
-Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction")
-Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU instruction")
-
-Signed-off-by: Douglas Leung <douglas.leung@imgtec.com>
-Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-Cc: <stable@vger.kernel.org> # 4.7+
+Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box Level-2 interrupt controller")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/math-emu/dp_maddf.c | 133 +++++++++++++++++++++++++++++-------------
- 1 file changed, 94 insertions(+), 39 deletions(-)
+ drivers/irqchip/irq-brcmstb-l2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-index e799fc8..e0d9be5 100644
---- a/arch/mips/math-emu/dp_maddf.c
-+++ b/arch/mips/math-emu/dp_maddf.c
-@@ -15,18 +15,44 @@
- #include "ieee754dp.h"
+diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
+index bddf169c4b37..b009b916a292 100644
+--- a/drivers/irqchip/irq-brcmstb-l2.c
++++ b/drivers/irqchip/irq-brcmstb-l2.c
+@@ -189,6 +189,7 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
  
+ 	ct->chip.irq_suspend = brcmstb_l2_intc_suspend;
+ 	ct->chip.irq_resume = brcmstb_l2_intc_resume;
++	ct->chip.irq_pm_shutdown = brcmstb_l2_intc_suspend;
  
-+/* 128 bits shift right logical with rounding. */
-+void srl128(u64 *hptr, u64 *lptr, int count)
-+{
-+	u64 low;
-+
-+	if (count >= 128) {
-+		*lptr = *hptr != 0 || *lptr != 0;
-+		*hptr = 0;
-+	} else if (count >= 64) {
-+		if (count == 64) {
-+			*lptr = *hptr | (*lptr != 0);
-+		} else {
-+			low = *lptr;
-+			*lptr = *hptr >> (count - 64);
-+			*lptr |= (*hptr << (128 - count)) != 0 || low != 0;
-+		}
-+		*hptr = 0;
-+	} else {
-+		low = *lptr;
-+		*lptr = low >> count | *hptr << (64 - count);
-+		*lptr |= (low << (64 - count)) != 0;
-+		*hptr = *hptr >> count;
-+	}
-+}
-+
- static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 				 union ieee754dp y, enum maddf_flags flags)
- {
- 	int re;
- 	int rs;
--	u64 rm;
- 	unsigned lxm;
- 	unsigned hxm;
- 	unsigned lym;
- 	unsigned hym;
- 	u64 lrm;
- 	u64 hrm;
-+	u64 lzm;
-+	u64 hzm;
- 	u64 t;
- 	u64 at;
- 	int s;
-@@ -172,7 +198,7 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 	ym <<= 64 - (DP_FBITS + 1);
- 
- 	/*
--	 * Multiply 64 bits xm, ym to give high 64 bits rm with stickness.
-+	 * Multiply 64 bits xm and ym to give 128 bits result in hrm:lrm.
- 	 */
- 
- 	/* 32 * 32 => 64 */
-@@ -202,81 +228,110 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 
- 	hrm = hrm + (t >> 32);
- 
--	rm = hrm | (lrm != 0);
--
--	/*
--	 * Sticky shift down to normal rounding precision.
--	 */
--	if ((s64) rm < 0) {
--		rm = (rm >> (64 - (DP_FBITS + 1 + 3))) |
--		     ((rm << (DP_FBITS + 1 + 3)) != 0);
-+	/* Put explicit bit at bit 126 if necessary */
-+	if ((int64_t)hrm < 0) {
-+		lrm = (hrm << 63) | (lrm >> 1);
-+		hrm = hrm >> 1;
- 		re++;
--	} else {
--		rm = (rm >> (64 - (DP_FBITS + 1 + 3 + 1))) |
--		     ((rm << (DP_FBITS + 1 + 3 + 1)) != 0);
- 	}
--	assert(rm & (DP_HIDDEN_BIT << 3));
- 
--	if (zc == IEEE754_CLASS_ZERO)
--		return ieee754dp_format(rs, re, rm);
-+	assert(hrm & (1 << 62));
- 
--	/* And now the addition */
--	assert(zm & DP_HIDDEN_BIT);
-+	if (zc == IEEE754_CLASS_ZERO) {
-+		/*
-+		 * Move explicit bit from bit 126 to bit 55 since the
-+		 * ieee754dp_format code expects the mantissa to be
-+		 * 56 bits wide (53 + 3 rounding bits).
-+		 */
-+		srl128(&hrm, &lrm, (126 - 55));
-+		return ieee754dp_format(rs, re, lrm);
-+	}
- 
--	/*
--	 * Provide guard,round and stick bit space.
--	 */
--	zm <<= 3;
-+	/* Move explicit bit from bit 52 to bit 126 */
-+	lzm = 0;
-+	hzm = zm << 10;
-+	assert(hzm & (1 << 62));
- 
-+	/* Make the exponents the same */
- 	if (ze > re) {
- 		/*
- 		 * Have to shift y fraction right to align.
- 		 */
- 		s = ze - re;
--		rm = XDPSRS(rm, s);
-+		srl128(&hrm, &lrm, s);
- 		re += s;
- 	} else if (re > ze) {
- 		/*
- 		 * Have to shift x fraction right to align.
- 		 */
- 		s = re - ze;
--		zm = XDPSRS(zm, s);
-+		srl128(&hzm, &lzm, s);
- 		ze += s;
- 	}
- 	assert(ze == re);
- 	assert(ze <= DP_EMAX);
- 
-+	/* Do the addition */
- 	if (zs == rs) {
- 		/*
--		 * Generate 28 bit result of adding two 27 bit numbers
--		 * leaving result in xm, xs and xe.
-+		 * Generate 128 bit result by adding two 127 bit numbers
-+		 * leaving result in hzm:lzm, zs and ze.
- 		 */
--		zm = zm + rm;
--
--		if (zm >> (DP_FBITS + 1 + 3)) { /* carry out */
--			zm = XDPSRS1(zm);
-+		hzm = hzm + hrm + (lzm > (lzm + lrm));
-+		lzm = lzm + lrm;
-+		if ((int64_t)hzm < 0) {        /* carry out */
-+			srl128(&hzm, &lzm, 1);
- 			ze++;
- 		}
- 	} else {
--		if (zm >= rm) {
--			zm = zm - rm;
-+		if (hzm > hrm || (hzm == hrm && lzm >= lrm)) {
-+			hzm = hzm - hrm - (lzm < lrm);
-+			lzm = lzm - lrm;
- 		} else {
--			zm = rm - zm;
-+			hzm = hrm - hzm - (lrm < lzm);
-+			lzm = lrm - lzm;
- 			zs = rs;
- 		}
--		if (zm == 0)
-+		if (lzm == 0 && hzm == 0)
- 			return ieee754dp_zero(ieee754_csr.rm == FPU_CSR_RD);
- 
- 		/*
--		 * Normalize to rounding precision.
-+		 * Put explicit bit at bit 126 if necessary.
- 		 */
--		while ((zm >> (DP_FBITS + 3)) == 0) {
--			zm <<= 1;
--			ze--;
-+		if (hzm == 0) {
-+			/* left shift by 63 or 64 bits */
-+			if ((int64_t)lzm < 0) {
-+				/* MSB of lzm is the explicit bit */
-+				hzm = lzm >> 1;
-+				lzm = lzm << 63;
-+				ze -= 63;
-+			} else {
-+				hzm = lzm;
-+				lzm = 0;
-+				ze -= 64;
-+			}
-+		}
-+
-+		t = 0;
-+		while ((hzm >> (62 - t)) == 0)
-+			t++;
-+
-+		assert(t <= 62);
-+		if (t) {
-+			hzm = hzm << t | lzm >> (64 - t);
-+			lzm = lzm << t;
-+			ze -= t;
- 		}
- 	}
- 
--	return ieee754dp_format(zs, ze, zm);
-+	/*
-+	 * Move explicit bit from bit 126 to bit 55 since the
-+	 * ieee754dp_format code expects the mantissa to be
-+	 * 56 bits wide (53 + 3 rounding bits).
-+	 */
-+	srl128(&hzm, &lzm, (126 - 55));
-+
-+	return ieee754dp_format(zs, ze, lzm);
- }
- 
- union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
+ 	if (data->can_wake) {
+ 		/* This IRQ chip can wake the system, set all child interrupts
 -- 
-2.7.4
+2.9.3

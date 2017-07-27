@@ -1,66 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2017 16:50:34 +0200 (CEST)
-Received: from mail-oi0-x244.google.com ([IPv6:2607:f8b0:4003:c06::244]:33969
-        "EHLO mail-oi0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992036AbdGZOu1CWHTY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2017 16:50:27 +0200
-Received: by mail-oi0-x244.google.com with SMTP id v11so13588815oif.1;
-        Wed, 26 Jul 2017 07:50:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=6xJHHw/mj6eXPkDzuCZwe/WuiTPLyPreUSHZtBltYb4=;
-        b=d2s9y/iiGPC082pbPP2eY0uYhPUsfNT/Pv7nsArmnA94/1wfzF+iK3mETkBq/znqJp
-         6OChx/GSp5BwiUfP4QrbVJU3udoJBvl8OzGx7RaNCcaVzKdVEpXJYD5jsZVwwn9Gl2Ge
-         l9O6CdjabmDQnX8cKJkImaDIs18vrovVA6QUA0R/MJoUXmTRxRwLg0FKGPje96WXpKEJ
-         dV/tjsz8lYK/qsrw9wdJJg3X7g9vStqgjlRQvFQM5DeXnjazo3/6OHyoZB+bPKmEBm0v
-         lWWvm4Ri9uCLTREU1R/aghZ7sYzd/ID+bJaTi4JKMF9EdK7n5vnif6jxyWLsspZA+osf
-         NuUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=6xJHHw/mj6eXPkDzuCZwe/WuiTPLyPreUSHZtBltYb4=;
-        b=KKMbrs9dEUmpoRDdUvu2OC+AvnlYCQh8WnmnvACGM3hWSFnABZ3urS3QH5aNrnN2sH
-         bu5xG3mBZtKBAL5403QO3k7kta8c7KGXeFPGNgftw9juYaEZMEUlbPl9QZhEgBpHXlPj
-         OJbPyU9jNQWsFSeGN4mqod56GgaEbj2XegzVfrrhMZhQjJhpLjJgRES4P5rvq8nNEyii
-         MO7w8cMee2bT9Ls0HMln7yMgWVPP61Yj/rLTaW2ZZNjRrNa/EI0KXRASv5PbXva0OxBR
-         JNHTKMVGQ+EaxMmSCr+jCwZjgpy7ya9o8MrTTSZA10LcV4RRgR0Uzgd6i4Z7PnUT4PNd
-         bE5w==
-X-Gm-Message-State: AIVw113hZArL8raotEQnJJ0c70F8x0vF3Ow/PCafdDKx9ST5ekVcjL21
-        XwOo2e3N0/26mtmMFPRChjy2332nWg==
-X-Received: by 10.202.218.11 with SMTP id r11mr1026894oig.306.1501080621022;
- Wed, 26 Jul 2017 07:50:21 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.182.29.34 with HTTP; Wed, 26 Jul 2017 07:50:20 -0700 (PDT)
-In-Reply-To: <cc227181-ef9f-dede-d478-ba0714e4bfbb@redhat.com>
-References: <20170726133447.2056379-1-arnd@arndb.de> <cc227181-ef9f-dede-d478-ba0714e4bfbb@redhat.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 26 Jul 2017 16:50:20 +0200
-X-Google-Sender-Auth: zsrGNe1q8X3r4NLITEBEqirFsZ0
-Message-ID: <CAK8P3a3Wch2mUGnWjYXTUR0tt0q6DqoN58q4eS5Q7shHi=iS-g@mail.gmail.com>
-Subject: Re: [PATCH v2] smp_call_function: use inline helpers instead of macros
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:10:51 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:57381 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993953AbdG0QKnjode9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jul 2017 18:10:43 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 5B6661A4700;
+        Thu, 27 Jul 2017 18:10:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 3FC541A2258;
+        Thu, 27 Jul 2017 18:10:37 +0200 (CEST)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Bo Hu <bohu@google.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
+        Jin Qian <jinqian@google.com>, linux-kernel@vger.kernel.org,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juergen Gross <jgross@suse.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v4 00/16] MIPS: Miscellaneous fixes related to Android Mips emulator
+Date:   Thu, 27 Jul 2017 18:08:43 +0200
+Message-Id: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59283
+X-archive-position: 59284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,33 +48,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 26, 2017 at 4:42 PM, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> On 26/07/2017 15:32, Arnd Bergmann wrote:
->> A new caller of smp_call_function() passes a local variable as the 'wait'
->> argument, and that variable is otherwise unused, so we get a warning
->> in non-SMP configurations:
->>
->> virt/kvm/kvm_main.c: In function 'kvm_make_all_cpus_request':
->> virt/kvm/kvm_main.c:195:7: error: unused variable 'wait' [-Werror=unused-variable]
->>   bool wait = req & KVM_REQUEST_WAIT;
->>
->> This addresses the warning by changing the two macros into inline functions.
->> As reported by the 0day build bot, a small change is required in the MIPS
->> r4k code for this, which then gets a warning about a missing variable.
->>
->> Fixes: 7a97cec26b94 ("KVM: mark requests that need synchronization")
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Link: https://patchwork.kernel.org/patch/9722063/
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> This is not needed anymore, I've fixed it in KVM:
->
->     commit b49defe83659cefbb1763d541e779da32594ab10
->     Author: Paolo Bonzini <pbonzini@redhat.com>
->     Date:   Fri Jun 30 13:25:45 2017 +0200
->
->     kvm: avoid unused variable warning for UP builds
+From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Ok, that seems sufficient, thanks!
+v3->v4:
 
-      Arnd
+    - patches on MADDF/MSUBF tagged as "stable #4.7+"
+    - patches on MAX/MIN/MAXA/MINA tagged as "stable #4.3+"
+    - logic in the patch on NaN handling in MADDF/MSUBF simplified
+    - improved code formatting in several patches
+    - fixed spelling mistakes and improved otherwise code comments
+    - fixed multiple typos and spelling mistakes in commit messages
+    - ammended commit messages in several instances
+    - patch 16 moved 2 places ahead in patch order
+    - rebased to the latest kernel code
+
+v2->v3:
+
+    - added a patch that fixes clobber lists in vdso fallback cases
+    - added 6 patches related to MIN/MINA/MAX/MAXA issues
+    - added 6 patches related to MADDF/MSUBDF issues
+    - enhanced logic and comments in patch on multitouch
+    - fixed a number of minor spelling and format mistakes in code
+        comments and commit messages
+    - several patches removed since they got integrated into the tree
+    - order of patches changed to better reflect similarity
+    - rebased to the latest kernel code
+
+v1->v2:
+
+    - the patch on PREF usage in memcpy dropped as not needed
+    - updated recipient lists using get_maintainer.pl
+    - rebased to the latest kernel code
+
+This series contains an assortment of changes necessary for proper
+operation of Android emulator for Mips. However, we think that wider
+kernel community may benefit from them too.
+
+Aleksandar Markovic (10):
+  MIPS: math-emu: <MAX|MAXA|MIN|MINA>.<D|S>: Fix quiet NaN propagation
+  MIPS: math-emu: <MAX|MAXA|MIN|MINA>.<D|S>: Fix cases of both inputs
+    zero
+  MIPS: math-emu: <MAX|MIN>.<D|S>: Fix cases of both inputs negative
+  MIPS: math-emu: <MAXA|MINA>.<D|S>: Fix cases of input values with
+    opposite signs
+  MIPS: math-emu: <MAXA|MINA>.<D|S>: Fix cases of both infinite inputs
+  MIPS: math-emu: MINA.<D|S>: Fix some cases of infinity and zero inputs
+  MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix NaN propagation
+  MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix some cases of infinite inputs
+  MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix some cases of zero inputs
+  MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Clean up "maddf_flags"
+    enumeration
+
+Douglas Leung (2):
+  MIPS: math-emu: <MADDF|MSUBF>.S: Fix accuracy (32-bit case)
+  MIPS: math-emu: <MADDF|MSUBF>.D: Fix accuracy (64-bit case)
+
+Goran Ferenc (1):
+  MIPS: VDSO: Fix clobber lists in fallback code paths
+
+Lingfeng Yang (1):
+  input: goldfish: Fix multitouch event handling
+
+Miodrag Dinic (2):
+  tty: goldfish: Use streaming DMA for r/w operations on Ranchu
+    platforms
+  tty: goldfish: Implement support for kernel 'earlycon' parameter
+
+ arch/mips/math-emu/dp_fmax.c             |  84 ++++++++---
+ arch/mips/math-emu/dp_fmin.c             |  86 ++++++++---
+ arch/mips/math-emu/dp_maddf.c            | 246 +++++++++++++++++++------------
+ arch/mips/math-emu/ieee754int.h          |   4 +
+ arch/mips/math-emu/ieee754sp.h           |   4 +
+ arch/mips/math-emu/sp_fmax.c             |  84 ++++++++---
+ arch/mips/math-emu/sp_fmin.c             |  86 ++++++++---
+ arch/mips/math-emu/sp_maddf.c            | 229 ++++++++++++++--------------
+ arch/mips/vdso/gettimeofday.c            |   6 +-
+ drivers/input/keyboard/goldfish_events.c |  35 ++++-
+ drivers/tty/Kconfig                      |   3 +
+ drivers/tty/goldfish.c                   | 145 ++++++++++++++++--
+ 12 files changed, 698 insertions(+), 314 deletions(-)
+
+-- 
+2.7.4

@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:11:18 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:57400 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:11:50 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:57441 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993954AbdG0QKysChO9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jul 2017 18:10:54 +0200
+        id S23993966AbdG0QLOiQ0K9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jul 2017 18:11:14 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 26E621A4772;
-        Thu, 27 Jul 2017 18:10:49 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 06AA21A4700;
+        Thu, 27 Jul 2017 18:11:09 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 0A4B81A4700;
-        Thu, 27 Jul 2017 18:10:49 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id DD4801A2258;
+        Thu, 27 Jul 2017 18:11:08 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
-Cc:     Lingfeng Yang <lfy@google.com>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
+        Aleksandar Markovic <aleksandar.markovic@imgtech.com>,
         Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         Bo Hu <bohu@google.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Douglas Leung <douglas.leung@imgtec.com>,
-        Henrik Rydberg <rydberg@bitmath.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Jin Qian <jinqian@google.com>, linux-input@vger.kernel.org,
+        Jin Qian <jinqian@google.com>, Jiri Slaby <jslaby@suse.com>,
         linux-kernel@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>
-Subject: [PATCH v4 01/16] input: goldfish: Fix multitouch event handling
-Date:   Thu, 27 Jul 2017 18:08:44 +0200
-Message-Id: <1501171791-23690-2-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v4 02/16] tty: goldfish: Use streaming DMA for r/w operations on Ranchu platforms
+Date:   Thu, 27 Jul 2017 18:08:45 +0200
+Message-Id: <1501171791-23690-3-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -35,7 +34,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59285
+X-archive-position: 59286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,98 +51,215 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Lingfeng Yang <lfy@google.com>
+From: Miodrag Dinic <miodrag.dinic@imgtec.com>
 
-Register Goldfish Events device properly as a multitouch device,
-and send SYN_REPORT events in appropriate cases only.
+Implement tty r/w operations using streaming DMA.
 
-If SYN_REPORT event is sent on every single multitouch event, it
-breaks the multitouch support. The multitouch interaction becomes
-janky and user has to click 2-3 times to do stuff (also, notification
-bars are randomly activating when not clicking). If these SYN_REPORT
-events are suppressed, multitouch works fine, plus the events have a
-protocol that looks nice.
+Goldfish tty for Ranchu platforms has been modified to use
+streaming DMA mappings for read/write operations. This change
+eliminates the need for snooping through the TLB in QEMU using
+cpu_get_phys_page_debug() which does not guarantee that it will
+return the valid va -> pa mapping.
 
-In addition, Goldfish Events device needs to be registered as a
-multitouch device by issuing input_mt_init_slots. Otherwise,
-input_handle_abs_event in drivers/input/input.c will silently drop
-all ABS_MT_SLOT events, causing touches with more than one finger
-not to work properly.
+The streaming DMA mapping is implemented using dma_map_single() per
+transfer, while dma_unmap_single() is used for unmapping right after
+the DMA transfer.
 
-Signed-off-by: Lingfeng Yang <lfy@google.com>
+Using DMA API is the proper way for handling r/w transfers and
+makes this driver more portable, thus effectively eliminating
+the need for virt_to_page() and page_to_phys() conversions.
+
+This change does not affect the old style Goldfish tty behaviour
+which is still used by the Goldfish emulator. Version register has
+been added and probed to see which platform is running this driver.
+Reading from the new GOLDFISH_TTY_VERSION register using the Goldfish
+emulator will return 0 and driver will work with virtual addresses.
+Whereas if run on Ranchu it returns 1, and thus DMA is used.
+
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtech.com>
 ---
- drivers/input/keyboard/goldfish_events.c | 35 +++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ drivers/tty/goldfish.c | 119 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 108 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/input/keyboard/goldfish_events.c b/drivers/input/keyboard/goldfish_events.c
-index f6e643b..bc3e8b3 100644
---- a/drivers/input/keyboard/goldfish_events.c
-+++ b/drivers/input/keyboard/goldfish_events.c
-@@ -17,6 +17,7 @@
- #include <linux/interrupt.h>
- #include <linux/types.h>
- #include <linux/input.h>
-+#include <linux/input/mt.h>
- #include <linux/kernel.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-@@ -24,6 +25,8 @@
+diff --git a/drivers/tty/goldfish.c b/drivers/tty/goldfish.c
+index 996bd47..acd50fa 100644
+--- a/drivers/tty/goldfish.c
++++ b/drivers/tty/goldfish.c
+@@ -22,6 +22,8 @@
  #include <linux/io.h>
- #include <linux/acpi.h>
+ #include <linux/module.h>
+ #include <linux/goldfish.h>
++#include <linux/mm.h>
++#include <linux/dma-mapping.h>
  
-+#define GOLDFISH_MAX_FINGERS 5
-+
  enum {
- 	REG_READ        = 0x00,
- 	REG_SET_PAGE    = 0x00,
-@@ -52,7 +55,22 @@ static irqreturn_t events_interrupt(int irq, void *dev_id)
- 	value = __raw_readl(edev->addr + REG_READ);
+ 	GOLDFISH_TTY_PUT_CHAR       = 0x00,
+@@ -32,6 +34,8 @@ enum {
+ 	GOLDFISH_TTY_DATA_LEN       = 0x14,
+ 	GOLDFISH_TTY_DATA_PTR_HIGH  = 0x18,
  
- 	input_event(edev->input, type, code, value);
--	input_sync(edev->input);
++	GOLDFISH_TTY_VERSION		= 0x20,
 +
-+	/*
-+	 * Send an extra (EV_SYN, SYN_REPORT, 0x0) event only if a key
-+	 * was pressed. Some keyboard device drivers may only send the
-+	 * EV_KEY event and not the EV_SYN event.
-+	 *
-+	 * Note that sending an extra SYN_REPORT is not necessary nor
-+	 * correct protocol with other devices such as touchscreens,
-+	 * which will send their own SYN_REPORTs when sufficient event
-+	 * event information has been collected (for example, in case
-+	 * touchscreens, when pressure and X/Y coordinates have been
-+	 * received). Hence, we will only send this extra SYN_REPORT
-+	 * if type == EV_KEY.
-+	 */
-+	if (type == EV_KEY)
-+		input_sync(edev->input);
- 	return IRQ_HANDLED;
+ 	GOLDFISH_TTY_CMD_INT_DISABLE    = 0,
+ 	GOLDFISH_TTY_CMD_INT_ENABLE     = 1,
+ 	GOLDFISH_TTY_CMD_WRITE_BUFFER   = 2,
+@@ -45,6 +49,8 @@ struct goldfish_tty {
+ 	u32 irq;
+ 	int opencount;
+ 	struct console console;
++	u32 version;
++	struct device *dev;
+ };
+ 
+ static DEFINE_MUTEX(goldfish_tty_lock);
+@@ -53,24 +59,94 @@ static u32 goldfish_tty_line_count = 8;
+ static u32 goldfish_tty_current_line_count;
+ static struct goldfish_tty *goldfish_ttys;
+ 
+-static void goldfish_tty_do_write(int line, const char *buf, unsigned count)
++static inline void do_rw_io(struct goldfish_tty *qtty,
++				unsigned long address,
++				unsigned int count,
++				int is_write)
+ {
+ 	unsigned long irq_flags;
+-	struct goldfish_tty *qtty = &goldfish_ttys[line];
+ 	void __iomem *base = qtty->base;
++
+ 	spin_lock_irqsave(&qtty->lock, irq_flags);
+-	gf_write_ptr(buf, base + GOLDFISH_TTY_DATA_PTR,
++	gf_write_ptr((void *)address, base + GOLDFISH_TTY_DATA_PTR,
+ 				base + GOLDFISH_TTY_DATA_PTR_HIGH);
+ 	writel(count, base + GOLDFISH_TTY_DATA_LEN);
+-	writel(GOLDFISH_TTY_CMD_WRITE_BUFFER, base + GOLDFISH_TTY_CMD);
++
++	if (is_write)
++		writel(GOLDFISH_TTY_CMD_WRITE_BUFFER, base + GOLDFISH_TTY_CMD);
++	else
++		writel(GOLDFISH_TTY_CMD_READ_BUFFER, base + GOLDFISH_TTY_CMD);
++
+ 	spin_unlock_irqrestore(&qtty->lock, irq_flags);
  }
  
-@@ -155,6 +173,21 @@ static int events_probe(struct platform_device *pdev)
- 	input_dev->name = edev->name;
- 	input_dev->id.bustype = BUS_HOST;
- 
-+	/*
-+	 * Set the Goldfish Device to be multitouch.
-+	 *
-+	 * In the Ranchu kernel, there is multitouch-specific code for
-+	 * handling ABS_MT_SLOT events (see file drivers/input/input.c,
-+	 * function input_handle_abs_event). If we do not issue
-+	 * input_mt_init_slots, the kernel will filter out needed
-+	 * ABS_MT_SLOT events when we touch the screen in more than one
-+	 * place, preventing multitouch with more than one finger from
-+	 * working.
-+	 */
-+	error = input_mt_init_slots(input_dev, GOLDFISH_MAX_FINGERS, 0);
-+	if (error)
-+		return error;
++static inline void goldfish_tty_rw(struct goldfish_tty *qtty,
++				unsigned long addr,
++				unsigned int count,
++				int is_write)
++{
++	dma_addr_t dma_handle;
++	enum dma_data_direction dma_dir;
 +
- 	events_import_bits(edev, input_dev->evbit, EV_SYN, EV_MAX);
- 	events_import_bits(edev, input_dev->keybit, EV_KEY, KEY_MAX);
- 	events_import_bits(edev, input_dev->relbit, EV_REL, REL_MAX);
++	dma_dir = (is_write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
++	if (qtty->version) {
++		/*
++		 * Goldfish TTY for Ranchu platform uses
++		 * physical addresses and DMA for read/write operations
++		 */
++		unsigned long addr_end = addr + count;
++
++		while (addr < addr_end) {
++			unsigned long pg_end = (addr & PAGE_MASK) + PAGE_SIZE;
++			unsigned long next =
++					pg_end < addr_end ? pg_end : addr_end;
++			unsigned long avail = next - addr;
++
++			/*
++			 * Map the buffer's virtual address to the DMA address
++			 * so the buffer can be accessed by the device.
++			 */
++			dma_handle = dma_map_single(qtty->dev,
++						(void *)addr, avail, dma_dir);
++
++			if (dma_mapping_error(qtty->dev, dma_handle)) {
++				dev_err(qtty->dev, "tty: DMA mapping error.\n");
++				return;
++			}
++			do_rw_io(qtty, dma_handle, avail, is_write);
++
++			/*
++			 * Unmap the previously mapped region after
++			 * the completion of the read/write operation.
++			 */
++			dma_unmap_single(qtty->dev, dma_handle, avail, dma_dir);
++
++			addr += avail;
++		}
++	} else {
++		/*
++		 * Old style Goldfish TTY used on the Goldfish platform
++		 * uses virtual addresses.
++		 */
++		do_rw_io(qtty, addr, count, is_write);
++	}
++
++}
++
++static void goldfish_tty_do_write(int line, const char *buf,
++				unsigned int count)
++{
++	struct goldfish_tty *qtty = &goldfish_ttys[line];
++	unsigned long address = (unsigned long)(void *)buf;
++
++	goldfish_tty_rw(qtty, address, count, 1);
++}
++
+ static irqreturn_t goldfish_tty_interrupt(int irq, void *dev_id)
+ {
+ 	struct goldfish_tty *qtty = dev_id;
+ 	void __iomem *base = qtty->base;
+-	unsigned long irq_flags;
++	unsigned long address;
+ 	unsigned char *buf;
+ 	u32 count;
+ 
+@@ -79,12 +155,10 @@ static irqreturn_t goldfish_tty_interrupt(int irq, void *dev_id)
+ 		return IRQ_NONE;
+ 
+ 	count = tty_prepare_flip_string(&qtty->port, &buf, count);
+-	spin_lock_irqsave(&qtty->lock, irq_flags);
+-	gf_write_ptr(buf, base + GOLDFISH_TTY_DATA_PTR,
+-				base + GOLDFISH_TTY_DATA_PTR_HIGH);
+-	writel(count, base + GOLDFISH_TTY_DATA_LEN);
+-	writel(GOLDFISH_TTY_CMD_READ_BUFFER, base + GOLDFISH_TTY_CMD);
+-	spin_unlock_irqrestore(&qtty->lock, irq_flags);
++
++	address = (unsigned long)(void *)buf;
++	goldfish_tty_rw(qtty, address, count, 0);
++
+ 	tty_schedule_flip(&qtty->port);
+ 	return IRQ_HANDLED;
+ }
+@@ -271,6 +345,29 @@ static int goldfish_tty_probe(struct platform_device *pdev)
+ 	qtty->port.ops = &goldfish_port_ops;
+ 	qtty->base = base;
+ 	qtty->irq = irq;
++	qtty->dev = &pdev->dev;
++
++	/* Goldfish TTY device used by the Goldfish emulator
++	 * should identify itself with 0, forcing the driver
++	 * to use virtual addresses. Goldfish TTY device
++	 * on Ranchu emulator (qemu2) returns 1 here and
++	 * driver will use physical addresses.
++	 */
++	qtty->version = readl(base + GOLDFISH_TTY_VERSION);
++
++	/* Goldfish TTY device on Ranchu emulator (qemu2)
++	 * will use DMA for read/write IO operations.
++	 */
++	if (qtty->version > 0) {
++		/* Initialize dma_mask to 32-bits.
++		 */
++		if (!pdev->dev.dma_mask)
++			pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
++		if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) {
++			dev_err(&pdev->dev, "No suitable DMA available.\n");
++			goto err_create_driver_failed;
++		}
++	}
+ 
+ 	writel(GOLDFISH_TTY_CMD_INT_DISABLE, base + GOLDFISH_TTY_CMD);
+ 
 -- 
 2.7.4

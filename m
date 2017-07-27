@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:16:31 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:57689 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2017 18:17:01 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:57695 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994818AbdG0QMkmUXq9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jul 2017 18:12:40 +0200
+        id S23994821AbdG0QMpppvr9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jul 2017 18:12:45 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 33A9C1A4A33;
-        Thu, 27 Jul 2017 18:12:35 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 3A9421A49F1;
+        Thu, 27 Jul 2017 18:12:40 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (rtrkw197-lin.domain.local [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 0DB471A4A09;
-        Thu, 27 Jul 2017 18:12:35 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id DD4501A4982;
+        Thu, 27 Jul 2017 18:12:39 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
@@ -23,9 +23,9 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v4 13/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix some cases of zero inputs
-Date:   Thu, 27 Jul 2017 18:08:56 +0200
-Message-Id: <1501171791-23690-14-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v4 14/16] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Clean up "maddf_flags" enumeration
+Date:   Thu, 27 Jul 2017 18:08:57 +0200
+Message-Id: <1501171791-23690-15-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1501171791-23690-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -33,7 +33,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59297
+X-archive-position: 59298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,18 +52,12 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Fix the cases of <MADDF|MSUBF>.<D|S> when any of two multiplicands is
-+0 or -0, and the third input is also +0 or -0. Depending on the signs
-of inputs, certain special cases must be handled.
+Fix definition and usage of "maddf_flags" enumeration. Avoid duplicate
+definition and apply more common capitalization.
 
-A relevant example:
-
-MADDF.S fd,fs,ft:
-  If fs contains +0.0, ft contains -0.0, and fd contains 0.0, fd is
-  going to contain +0.0 (without this patch, it used to contain -0.0).
-
-Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction")
-Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU instruction")
+This patch does not change any scenario. It just makes MADDF and
+MSUBF emulation code more readable and easier to maintain, and
+hopefully prevents future bugs as well.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
@@ -71,67 +65,155 @@ Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 Cc: <stable@vger.kernel.org> # 4.7+
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
 ---
- arch/mips/math-emu/dp_maddf.c | 18 +++++++++++++++++-
- arch/mips/math-emu/sp_maddf.c | 18 +++++++++++++++++-
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ arch/mips/math-emu/dp_maddf.c   | 19 ++++++++-----------
+ arch/mips/math-emu/ieee754int.h |  4 ++++
+ arch/mips/math-emu/sp_maddf.c   | 19 ++++++++-----------
+ 3 files changed, 20 insertions(+), 22 deletions(-)
 
 diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-index 557a0a1..c38fe1b 100644
+index c38fe1b..e799fc8 100644
 --- a/arch/mips/math-emu/dp_maddf.c
 +++ b/arch/mips/math-emu/dp_maddf.c
-@@ -113,7 +113,23 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		if (zc == IEEE754_CLASS_INF)
- 			return ieee754dp_inf(zs);
--		/* Multiplication is 0 so just return z */
-+		if (zc == IEEE754_CLASS_ZERO) {
-+			/* Handle cases +0 + (-0) and similar ones. */
-+			if ((!(flags & maddf_negate_product)
-+					&& (zs == (xs ^ ys))) ||
-+			    ((flags & maddf_negate_product)
-+					&& (zs != (xs ^ ys))))
-+				/*
-+				 * Cases of addition of zeros of equal signs
-+				 * or subtraction of zeroes of opposite signs.
-+				 * The sign of the resulting zero is in any
-+				 * such case determined only by the sign of z.
-+				 */
-+				return z;
-+
-+			return ieee754dp_zero(ieee754_csr.rm == FPU_CSR_RD);
-+		}
-+		/* x*y is here 0, and z is not 0, so just return z */
- 		return z;
+@@ -14,9 +14,6 @@
  
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ #include "ieee754dp.h"
+ 
+-enum maddf_flags {
+-	maddf_negate_product	= 1 << 0,
+-};
+ 
+ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 				 union ieee754dp y, enum maddf_flags flags)
+@@ -85,8 +82,8 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+ 		if ((zc == IEEE754_CLASS_INF) &&
+-		    ((!(flags & maddf_negate_product) && (zs != (xs ^ ys))) ||
+-		     ((flags & maddf_negate_product) && (zs == (xs ^ ys))))) {
++		    ((!(flags & MADDF_NEGATE_PRODUCT) && (zs != (xs ^ ys))) ||
++		     ((flags & MADDF_NEGATE_PRODUCT) && (zs == (xs ^ ys))))) {
+ 			/*
+ 			 * Cases of addition of infinities with opposite signs
+ 			 * or subtraction of infinities with same signs.
+@@ -99,9 +96,9 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 		 * same sign as product (x*y) (in case of MADDF.D instruction)
+ 		 * or product -(x*y) (in MSUBF.D case). The result must be an
+ 		 * infinity, and its sign is determined only by the value of
+-		 * (flags & maddf_negate_product) and the signs of x and y.
++		 * (flags & MADDF_NEGATE_PRODUCT) and the signs of x and y.
+ 		 */
+-		if (flags & maddf_negate_product)
++		if (flags & MADDF_NEGATE_PRODUCT)
+ 			return ieee754dp_inf(1 ^ (xs ^ ys));
+ 		else
+ 			return ieee754dp_inf(xs ^ ys);
+@@ -115,9 +112,9 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 			return ieee754dp_inf(zs);
+ 		if (zc == IEEE754_CLASS_ZERO) {
+ 			/* Handle cases +0 + (-0) and similar ones. */
+-			if ((!(flags & maddf_negate_product)
++			if ((!(flags & MADDF_NEGATE_PRODUCT)
+ 					&& (zs == (xs ^ ys))) ||
+-			    ((flags & maddf_negate_product)
++			    ((flags & MADDF_NEGATE_PRODUCT)
+ 					&& (zs != (xs ^ ys))))
+ 				/*
+ 				 * Cases of addition of zeros of equal signs
+@@ -167,7 +164,7 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
+ 
+ 	re = xe + ye;
+ 	rs = xs ^ ys;
+-	if (flags & maddf_negate_product)
++	if (flags & MADDF_NEGATE_PRODUCT)
+ 		rs ^= 1;
+ 
+ 	/* shunt to top of word */
+@@ -291,5 +288,5 @@ union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
+ union ieee754dp ieee754dp_msubf(union ieee754dp z, union ieee754dp x,
+ 				union ieee754dp y)
+ {
+-	return _dp_maddf(z, x, y, maddf_negate_product);
++	return _dp_maddf(z, x, y, MADDF_NEGATE_PRODUCT);
+ }
+diff --git a/arch/mips/math-emu/ieee754int.h b/arch/mips/math-emu/ieee754int.h
+index 8bc2f69..dd2071f 100644
+--- a/arch/mips/math-emu/ieee754int.h
++++ b/arch/mips/math-emu/ieee754int.h
+@@ -26,6 +26,10 @@
+ 
+ #define CLPAIR(x, y)	((x)*6+(y))
+ 
++enum maddf_flags {
++	MADDF_NEGATE_PRODUCT	= 1 << 0,
++};
++
+ static inline void ieee754_clearcx(void)
+ {
+ 	ieee754_csr.cx = 0;
 diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
-index 0d8d25f..4241ec1 100644
+index 4241ec1..07f5a9b 100644
 --- a/arch/mips/math-emu/sp_maddf.c
 +++ b/arch/mips/math-emu/sp_maddf.c
-@@ -114,7 +114,23 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		if (zc == IEEE754_CLASS_INF)
- 			return ieee754sp_inf(zs);
--		/* Multiplication is 0 so just return z */
-+		if (zc == IEEE754_CLASS_ZERO) {
-+			/* Handle cases +0 + (-0) and similar ones. */
-+			if ((!(flags & maddf_negate_product)
-+					&& (zs == (xs ^ ys))) ||
-+			    ((flags & maddf_negate_product)
-+					&& (zs != (xs ^ ys))))
-+				/*
-+				 * Cases of addition of zeros of equal signs
-+				 * or subtraction of zeroes of opposite signs.
-+				 * The sign of the resulting zero is in any
-+				 * such case determined only by the sign of z.
-+				 */
-+				return z;
-+
-+			return ieee754sp_zero(ieee754_csr.rm == FPU_CSR_RD);
-+		}
-+		/* x*y is here 0, and z is not 0, so just return z */
- 		return z;
+@@ -14,9 +14,6 @@
  
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ #include "ieee754sp.h"
+ 
+-enum maddf_flags {
+-	maddf_negate_product	= 1 << 0,
+-};
+ 
+ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 				 union ieee754sp y, enum maddf_flags flags)
+@@ -86,8 +83,8 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
+ 		if ((zc == IEEE754_CLASS_INF) &&
+-		    ((!(flags & maddf_negate_product) && (zs != (xs ^ ys))) ||
+-		     ((flags & maddf_negate_product) && (zs == (xs ^ ys))))) {
++		    ((!(flags & MADDF_NEGATE_PRODUCT) && (zs != (xs ^ ys))) ||
++		     ((flags & MADDF_NEGATE_PRODUCT) && (zs == (xs ^ ys))))) {
+ 			/*
+ 			 * Cases of addition of infinities with opposite signs
+ 			 * or subtraction of infinities with same signs.
+@@ -100,9 +97,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 		 * same sign as product (x*y) (in case of MADDF.D instruction)
+ 		 * or product -(x*y) (in MSUBF.D case). The result must be an
+ 		 * infinity, and its sign is determined only by the value of
+-		 * (flags & maddf_negate_product) and the signs of x and y.
++		 * (flags & MADDF_NEGATE_PRODUCT) and the signs of x and y.
+ 		 */
+-		if (flags & maddf_negate_product)
++		if (flags & MADDF_NEGATE_PRODUCT)
+ 			return ieee754sp_inf(1 ^ (xs ^ ys));
+ 		else
+ 			return ieee754sp_inf(xs ^ ys);
+@@ -116,9 +113,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 			return ieee754sp_inf(zs);
+ 		if (zc == IEEE754_CLASS_ZERO) {
+ 			/* Handle cases +0 + (-0) and similar ones. */
+-			if ((!(flags & maddf_negate_product)
++			if ((!(flags & MADDF_NEGATE_PRODUCT)
+ 					&& (zs == (xs ^ ys))) ||
+-			    ((flags & maddf_negate_product)
++			    ((flags & MADDF_NEGATE_PRODUCT)
+ 					&& (zs != (xs ^ ys))))
+ 				/*
+ 				 * Cases of addition of zeros of equal signs
+@@ -170,7 +167,7 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
+ 
+ 	re = xe + ye;
+ 	rs = xs ^ ys;
+-	if (flags & maddf_negate_product)
++	if (flags & MADDF_NEGATE_PRODUCT)
+ 		rs ^= 1;
+ 
+ 	/* shunt to top of word */
+@@ -287,5 +284,5 @@ union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
+ union ieee754sp ieee754sp_msubf(union ieee754sp z, union ieee754sp x,
+ 				union ieee754sp y)
+ {
+-	return _sp_maddf(z, x, y, maddf_negate_product);
++	return _sp_maddf(z, x, y, MADDF_NEGATE_PRODUCT);
+ }
 -- 
 2.7.4

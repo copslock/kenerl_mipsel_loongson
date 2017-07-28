@@ -1,48 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jul 2017 16:03:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24032 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991867AbdG1ODqJkEsX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jul 2017 16:03:46 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5624141F8EDF;
-        Fri, 28 Jul 2017 16:15:05 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Fri, 28 Jul 2017 16:15:05 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Fri, 28 Jul 2017 16:15:05 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 98EC530141A01;
-        Fri, 28 Jul 2017 15:03:36 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 28 Jul
- 2017 15:03:40 +0100
-Date:   Fri, 28 Jul 2017 15:03:39 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     James Cowgill <James.Cowgill@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2/2] MIPS: Remove pt_regs adjustments in indirect syscall
- handler
-Message-ID: <20170728140339.GX31455@jhogan-linux.le.imgtec.org>
-References: <20170331160959.3192-1-James.Cowgill@imgtec.com>
- <20170331160959.3192-3-James.Cowgill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jul 2017 02:00:12 +0200 (CEST)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:35733
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993974AbdG2AAFjiEMl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Jul 2017 02:00:05 +0200
+Received: by mail-wm0-x242.google.com with SMTP id r77so15951599wmd.2;
+        Fri, 28 Jul 2017 17:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=D+3ZdGUtG2uH/NtSvEIbe5NiinAJoNLsFZd8JJkw/Z4=;
+        b=mPrdjsZhS8F9pR2KYOGmmWYR2V1c3maDFY0Lt6/+8/mo8upPcRBdPswaSZIqGca6Q2
+         D1mybyab1R7eBJK55E5aWkUSkKouDyfTOmS4AK4OnKRa7fq8tmctqgetw83o5aXEx0V/
+         3uHW78RLuKiIC2CeyMJ6rRUCgj4C6Gjgs/NTFSqV+mtQQxuRYAC3SI5JYipxDkWYBiOF
+         FQ8uIvzdfQvBjiOb3FyvfSNHRmJ+zH1krkh4NYLiBz5E1PJR89GROa3Xup0OvedNhx7c
+         H+/aehVltS8uqNiO+6NfxytNkGuCBcgHJsBXzicWjWq7APB+/6LoNxeIGaJC6BuX5IZP
+         pWpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=D+3ZdGUtG2uH/NtSvEIbe5NiinAJoNLsFZd8JJkw/Z4=;
+        b=LTr5o5+0ylDP7EqUjseXg/qVHUJY/9DDNBJ3bsuFogaTr+6aKHOOC6Mln1IuKpqcNJ
+         f7YAChM+baFjc3HXd31mQcreka4eHuOZNtRz4+jhKNDjH77/ApeJjsDprlaDU5gz2VpD
+         gdJlGak+XYKW1/ouk3C4Vqnml7uyyE6bYCtl+hogBJgXra6ECY29jiW4f0vuIX+dgQvW
+         NZGisfQqwDjkfuZOM/gUZ4hCmTdWIzTFN74ZjKmhUJ4J+3oPmtS0uLhd26ptRgKrAsK2
+         HQCMVPdmG5NCEusYrGLhxMMFbPZJNLKTNP1exWryG4gbXrg0WqJ9eEZGG9GmAdtmqRPP
+         +UFA==
+X-Gm-Message-State: AIVw111V99OB4PH1lsOzkSB6UdPSt5xjICspYM0cf6Ksb3P7qExIcsdu
+        Cx6sggGPQrKjGg==
+X-Received: by 10.28.97.133 with SMTP id v127mr7107434wmb.150.1501286400299;
+        Fri, 28 Jul 2017 17:00:00 -0700 (PDT)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id q185sm6189403wmd.19.2017.07.28.16.59.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 28 Jul 2017 16:59:59 -0700 (PDT)
+Subject: Re: [PATCH v3 0/4] Broadcom STB S2/S3/S5 support for ARM and MIPS
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Arnd Bergmann <arnd@arndb.de>, Eric Anholt <eric@anholt.net>,
+        Justin Chen <justinpopo6@gmail.com>,
+        Doug Berger <opendmb@gmail.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:BROADCOM BCM47XX MIPS ARCHITECTURE" 
+        <linux-mips@linux-mips.org>, linux-pm@vger.kernerl.org
+References: <20170706222225.9758-1-f.fainelli@gmail.com>
+ <72d54e9c-6a50-2eac-52db-b1e8c234c552@broadcom.com>
+Message-ID: <4bebae92-5ae3-8b89-a85a-c06f9d70d658@gmail.com>
+Date:   Fri, 28 Jul 2017 16:59:52 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6yuPXOSZRpyw7iEV"
-Content-Disposition: inline
-In-Reply-To: <20170331160959.3192-3-James.Cowgill@imgtec.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 3d264444
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <72d54e9c-6a50-2eac-52db-b1e8c234c552@broadcom.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59302
+X-archive-position: 59303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,128 +92,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---6yuPXOSZRpyw7iEV
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 07/18/2017 12:52 PM, Florian Fainelli wrote:
+> On 07/06/2017 03:22 PM, Florian Fainelli wrote:
+>> Hi,
+>>
+>> This patch series adds support for S2/S3/S5 suspend/resume states on
+>> ARM and MIPS based Broadcom STB SoCs.
+>>
+>> This was submitted a long time ago by Brian, and I am now picking this
+>> up and trying to get this included with support for our latest chips.
+>>
+>> Provided that I can collect the necessary Acks from Rob (DT) and other
+>> people (Rafael?) I would probably take this via the Broadcom ARM SoC
+>> pull requests.
+> 
+> Rafael, any feedback on this?
 
-On Fri, Mar 31, 2017 at 05:09:59PM +0100, James Cowgill wrote:
-> If a restartable syscall is called using the indirect o32 syscall
-> handler - eg: syscall(__NR_waitid, ...), then it is possible for the
-> incorrect arguments to be passed to the syscall after it has been
-> restarted. This is because the syscall handler tries to shift all the
-> registers down one place in pt_regs so that when the syscall is restarted,
-> the "real" syscall is called instead. Unfortunately it only shifts the
-> arguments passed in registers, not the arguments on the user stack. This
-> causes the 4th argument to be duplicated when the syscall is restarted.
->=20
-> Fix by removing all the pt_regs shifting so that the indirect syscall
-> handler is called again when the syscall is restarted. The comment "some
-> syscalls like execve get their arguments from struct pt_regs" is long
-> out of date so this should now be safe.
->=20
-> Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Tested-by: James Hogan <james.hogan@imgtec.com>
-
-This is safe to backport as far back as 4.2 too (I just tested), which
-is I think as far back as patch 1 (commit f9c4e3a6dae1) can be
-backported due to the commit 3033f14ab78c3 ("clone: support passing tls
-argument via C rather than pt_regs magic") referenced in patch 1, so I
-suggest adding:
-
-Cc: <stable@vger.kernel.org> # f9c4e3a6dae1: MIPS: Opt into HAVE_COPY_THREA=
-D_TLS
-Cc: <stable@vger.kernel.org> # 4.2+
-
-Thanks
-James
-
-> ---
->  arch/mips/kernel/scall32-o32.S | 11 -----------
->  arch/mips/kernel/scall64-o32.S |  6 ------
->  2 files changed, 17 deletions(-)
->=20
-> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o3=
-2.S
-> index c29d397eee86..d8d6336c4cc5 100644
-> --- a/arch/mips/kernel/scall32-o32.S
-> +++ b/arch/mips/kernel/scall32-o32.S
-> @@ -190,12 +190,6 @@ illegal_syscall:
->  	sll	t1, t0, 2
->  	beqz	v0, einval
->  	lw	t2, sys_call_table(t1)		# syscall routine
-> -	sw	a0, PT_R2(sp)			# call routine directly on restart
-> -
-> -	/* Some syscalls like execve get their arguments from struct pt_regs
-> -	   and claim zero arguments in the syscall table. Thus we have to
-> -	   assume the worst case and shuffle around all potential arguments.
-> -	   If you want performance, don't use indirect syscalls. */
-> =20
->  	move	a0, a1				# shift argument registers
->  	move	a1, a2
-> @@ -207,11 +201,6 @@ illegal_syscall:
->  	sw	t4, 16(sp)
->  	sw	t5, 20(sp)
->  	sw	t6, 24(sp)
-> -	sw	a0, PT_R4(sp)			# .. and push back a0 - a3, some
-> -	sw	a1, PT_R5(sp)			# syscalls expect them there
-> -	sw	a2, PT_R6(sp)
-> -	sw	a3, PT_R7(sp)
-> -	sw	a3, PT_R26(sp)			# update a3 for syscall restarting
->  	jr	t2
->  	/* Unreached */
-> =20
-> diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o3=
-2.S
-> index 5a47042dd25f..6fd8ecca89e7 100644
-> --- a/arch/mips/kernel/scall64-o32.S
-> +++ b/arch/mips/kernel/scall64-o32.S
-> @@ -198,7 +198,6 @@ LEAF(sys32_syscall)
->  	dsll	t1, t0, 3
->  	beqz	v0, einval
->  	ld	t2, sys32_call_table(t1)		# syscall routine
-> -	sd	a0, PT_R2(sp)		# call routine directly on restart
-> =20
->  	move	a0, a1			# shift argument registers
->  	move	a1, a2
-> @@ -207,11 +206,6 @@ LEAF(sys32_syscall)
->  	move	a4, a5
->  	move	a5, a6
->  	move	a6, a7
-> -	sd	a0, PT_R4(sp)		# ... and push back a0 - a3, some
-> -	sd	a1, PT_R5(sp)		# syscalls expect them there
-> -	sd	a2, PT_R6(sp)
-> -	sd	a3, PT_R7(sp)
-> -	sd	a3, PT_R26(sp)		# update a3 for syscall restarting
->  	jr	t2
->  	/* Unreached */
-> =20
-> --=20
-> 2.11.0
->=20
->=20
-
---6yuPXOSZRpyw7iEV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAll7RDMACgkQbAtpk944
-dnpCWBAAkpeBzPlFljnuMosjvo3ALoOhUMfNCXNsIlwxixaSEFzeslolcZvXZX3l
-OvUOYne6I+OZCv62g6GBQsEYgcoFByZWNHr3vbgXYOiDGmlY7HVuCY2edcPZJsxC
-A4aPnPi44kEBuOWJWJUWI4cWWojl/uxe3lVCbiJBoKM8otHwOn0NcUjQ4glm3vyH
-xl5/RYz6dsMPSAVid+NAZ0tSx1HC+9lAwXVgeMNqOgy0kKArGIglAF6sE/5kJx3w
-k2NczvWtI0w1mXBHbfVUPxpF/xI4JOOwOlkvH56X40GHKVYB7RQPUl+2Ib8mjums
-D1veRR/koLXcB+63T1Y1vL93j2SZP06dJagCbm1hTECgJ03fRqPyaq28MLBCDe5H
-bMIEJWz0iy+pOeaW4XK8LLjjBw28Bh+jcPKhmgOk4UWTaKH7L0fFN2HVj92KvrQJ
-zxkNCuCJEoxx+zp3VvtQ5eDyYc/MYAiplaYNGpHW/w6DRcq8GYRDoS4o25XN/c0S
-BbWQCvmFakdidJLtN+ZfGpEuj2/odb1fN5ClQTnOVRRmy1S4NjLARATDl2xYUf4S
-mxQcaFXj1SFmey/z+w7G5b0aIEsA51cmBrNlSba37PpMZ4pGuEYwCwaarj8pARRI
-IqXUe001DiT9RuznMbOrwA9FYUfu3kuvS+VROWDksZjtHET/K1U=
-=bnoH
------END PGP SIGNATURE-----
-
---6yuPXOSZRpyw7iEV--
+Applied these 4 patches to drivers/next now.
+-- 
+Florian

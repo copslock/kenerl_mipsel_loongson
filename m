@@ -1,85 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jul 2017 02:00:12 +0200 (CEST)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:35733
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993974AbdG2AAFjiEMl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Jul 2017 02:00:05 +0200
-Received: by mail-wm0-x242.google.com with SMTP id r77so15951599wmd.2;
-        Fri, 28 Jul 2017 17:00:05 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jul 2017 03:51:42 +0200 (CEST)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:38601
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993975AbdG2BveP4ynf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Jul 2017 03:51:34 +0200
+Received: by mail-wr0-x244.google.com with SMTP id g32so10349383wrd.5
+        for <linux-mips@linux-mips.org>; Fri, 28 Jul 2017 18:51:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=D+3ZdGUtG2uH/NtSvEIbe5NiinAJoNLsFZd8JJkw/Z4=;
-        b=mPrdjsZhS8F9pR2KYOGmmWYR2V1c3maDFY0Lt6/+8/mo8upPcRBdPswaSZIqGca6Q2
-         D1mybyab1R7eBJK55E5aWkUSkKouDyfTOmS4AK4OnKRa7fq8tmctqgetw83o5aXEx0V/
-         3uHW78RLuKiIC2CeyMJ6rRUCgj4C6Gjgs/NTFSqV+mtQQxuRYAC3SI5JYipxDkWYBiOF
-         FQ8uIvzdfQvBjiOb3FyvfSNHRmJ+zH1krkh4NYLiBz5E1PJR89GROa3Xup0OvedNhx7c
-         H+/aehVltS8uqNiO+6NfxytNkGuCBcgHJsBXzicWjWq7APB+/6LoNxeIGaJC6BuX5IZP
-         pWpQ==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=0f7Y5i2Eq9hlvBrl4gLm3j3ZRUPf+uA3fNQ3Y40wsOA=;
+        b=rXZMutVSxFhg+lNXukbepwYVSjIEPhv/d7pjXT/iUZ/Oh+fLXxeDMGjrB9Dt6qnQNa
+         wz3qdbMV2sky10N5FP3ZNfMppygTTHPtPr1/Asw39vMQfkE1FsPWbai6GfRFhPIVOFSo
+         JuJZ+29apxf9jW/aiPaESDqEv3rJYtUl5Bd3kc6It7oDDfk6T8p7HVJGG7/y1KVnqGMW
+         z0DDepBShfcKuXvE1SgpxDFHl8f118MrglIA9Rk0Cqo+YMGnJNv1fViWQaKyL+KKWzmE
+         /GH/zB92mhQ4IeK4Fg6881wPj44zaWlwW62kuXTIL89oWhcXm4aX4LFGi4G9HZFHtZLi
+         IT0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=D+3ZdGUtG2uH/NtSvEIbe5NiinAJoNLsFZd8JJkw/Z4=;
-        b=LTr5o5+0ylDP7EqUjseXg/qVHUJY/9DDNBJ3bsuFogaTr+6aKHOOC6Mln1IuKpqcNJ
-         f7YAChM+baFjc3HXd31mQcreka4eHuOZNtRz4+jhKNDjH77/ApeJjsDprlaDU5gz2VpD
-         gdJlGak+XYKW1/ouk3C4Vqnml7uyyE6bYCtl+hogBJgXra6ECY29jiW4f0vuIX+dgQvW
-         NZGisfQqwDjkfuZOM/gUZ4hCmTdWIzTFN74ZjKmhUJ4J+3oPmtS0uLhd26ptRgKrAsK2
-         HQCMVPdmG5NCEusYrGLhxMMFbPZJNLKTNP1exWryG4gbXrg0WqJ9eEZGG9GmAdtmqRPP
-         +UFA==
-X-Gm-Message-State: AIVw111V99OB4PH1lsOzkSB6UdPSt5xjICspYM0cf6Ksb3P7qExIcsdu
-        Cx6sggGPQrKjGg==
-X-Received: by 10.28.97.133 with SMTP id v127mr7107434wmb.150.1501286400299;
-        Fri, 28 Jul 2017 17:00:00 -0700 (PDT)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id q185sm6189403wmd.19.2017.07.28.16.59.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 28 Jul 2017 16:59:59 -0700 (PDT)
-Subject: Re: [PATCH v3 0/4] Broadcom STB S2/S3/S5 support for ARM and MIPS
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=0f7Y5i2Eq9hlvBrl4gLm3j3ZRUPf+uA3fNQ3Y40wsOA=;
+        b=hu+NSWUTiBfN3l4alqhEW4cg9+54cxRClDxYR6US5hQsazRYs02N+08bXjczKDkT/w
+         nfpoSDatVUwkpWkhqTGWKLFwA1DFGypwYIDM0ZtGaGFphkkCL8VXCP1bJCMfdEI9SC0Y
+         BLtG/Uv3tHSnPBzhkZf+FtZwjaFw+f+BEwRanyUsFsNoDSiHwYiHH32+2guwYfaaVfs1
+         gnK16ZwSaGQcgDozyl2WiXC7AEqECkNKM3BrATXnOeX/VBjvxouIjDlAMDkooqNFP+Go
+         eVh//QrY7cVCMi4pmywNUr0XjJXRHxTmDF/WuthQ0WHwcq9MCCAS7kws5lp5dJkqqfTz
+         b3Rg==
+X-Gm-Message-State: AIVw110T9Azhi4RsAGRM0uU+ytodvI9gMRlmDVXPqYFyGjtIjd8S9NBF
+        6bEI/rm29qXDh35Uysk83T0WRf3wZw==
+X-Received: by 10.223.160.139 with SMTP id m11mr7020854wrm.142.1501293088838;
+ Fri, 28 Jul 2017 18:51:28 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.28.18.199 with HTTP; Fri, 28 Jul 2017 18:50:58 -0700 (PDT)
+In-Reply-To: <20170727223817.7494-1-f.fainelli@gmail.com>
+References: <20170727223817.7494-1-f.fainelli@gmail.com>
+From:   Gregory Fong <gregory.0xf0@gmail.com>
+Date:   Fri, 28 Jul 2017 18:50:58 -0700
+Message-ID: <CADtm3G4Rnm1276qYWe_MSnoZ2_Lxc1QFCUx1ZVfWtb5n4M2T2w@mail.gmail.com>
+Subject: Re: [PATCH] irqchip: brcmstb-l2: Define an irq_pm_shutdown function
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Doug Berger <opendmb@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
         Brian Norris <computersforpeace@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
         "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
         <bcm-kernel-feedback-list@broadcom.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>, Eric Anholt <eric@anholt.net>,
-        Justin Chen <justinpopo6@gmail.com>,
-        Doug Berger <opendmb@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:BROADCOM BCM47XX MIPS ARCHITECTURE" 
-        <linux-mips@linux-mips.org>, linux-pm@vger.kernerl.org
-References: <20170706222225.9758-1-f.fainelli@gmail.com>
- <72d54e9c-6a50-2eac-52db-b1e8c234c552@broadcom.com>
-Message-ID: <4bebae92-5ae3-8b89-a85a-c06f9d70d658@gmail.com>
-Date:   Fri, 28 Jul 2017 16:59:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <72d54e9c-6a50-2eac-52db-b1e8c234c552@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+        "open list:BROADCOM BMIPS MIPS ARCHITECTURE" 
+        <linux-mips@linux-mips.org>,
+        "open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <gregory.0xf0@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59303
+X-archive-position: 59304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: gregory.0xf0@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,22 +75,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/18/2017 12:52 PM, Florian Fainelli wrote:
-> On 07/06/2017 03:22 PM, Florian Fainelli wrote:
->> Hi,
->>
->> This patch series adds support for S2/S3/S5 suspend/resume states on
->> ARM and MIPS based Broadcom STB SoCs.
->>
->> This was submitted a long time ago by Brian, and I am now picking this
->> up and trying to get this included with support for our latest chips.
->>
->> Provided that I can collect the necessary Acks from Rob (DT) and other
->> people (Rafael?) I would probably take this via the Broadcom ARM SoC
->> pull requests.
-> 
-> Rafael, any feedback on this?
+On Thu, Jul 27, 2017 at 3:38 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
+> The Broadcom STB platforms support S5 and we allow specific hardware
+> wake-up events to take us out of this state. Because we were not
+> defining an irq_pm_shutdown() function pointer, we would not be
+> correctly masking non-wakeup events, which would result in spurious
+> wake-ups from sources that were not explicitly configured for wake-up.
+>
+> Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box Level-2 interrupt controller")
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Applied these 4 patches to drivers/next now.
--- 
-Florian
+Acked-by: Gregory Fong <gregory.0xf0@gmail.com>

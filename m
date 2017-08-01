@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2017 16:08:48 +0200 (CEST)
-Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:37218 "EHLO
-        pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994626AbdHAOIj73oIY convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Aug 2017 16:08:39 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 9727C3F6AB
-        for <linux-mips@linux-mips.org>; Tue,  1 Aug 2017 16:08:39 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id R7Xesjokfxnc for <linux-mips@linux-mips.org>;
-        Tue,  1 Aug 2017 16:08:32 +0200 (CEST)
-Received: from [10.0.1.7] (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 459F03F38C
-        for <linux-mips@linux-mips.org>; Tue,  1 Aug 2017 16:08:29 +0200 (CEST)
-From:   Fredrik Noring <noring@nocrew.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
-Subject: Update PS2 R5900 to kernel 4.x?
-Message-Id: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
-Date:   Tue, 1 Aug 2017 16:08:27 +0200
-To:     linux-mips@linux-mips.org
-X-Mailer: Apple Mail (2.3259)
-Return-Path: <noring@nocrew.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2017 22:33:30 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:2243 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994826AbdHAUdXZ-qgJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Aug 2017 22:33:23 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 7773EF63B443B;
+        Tue,  1 Aug 2017 21:33:12 +0100 (IST)
+Received: from localhost (10.20.1.88) by HHMAIL01.hh.imgtec.org (10.100.10.21)
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 1 Aug 2017 21:33:17
+ +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        stable <stable@vger.kernel.org>
+Subject: [PATCH] Revert "MIPS: Don't unnecessarily include kmalloc.h into <asm/cache.h>."
+Date:   Tue, 1 Aug 2017 13:32:57 -0700
+Message-ID: <20170801203257.31897-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.13.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.20.1.88]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59312
+X-archive-position: 59313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,33 +42,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello MIPS maintainers,
+Commit 296e46db0073 ("MIPS: Don't unnecessarily include kmalloc.h into
+<asm/cache.h>.") claimed that the inclusion of the machine's kmalloc.h
+from asm/cache.h is unnecessary, but this is not true.
 
-I'm trying update the PS2 R5900 patch to kernel version 4.x. I started
-at 2.6.35 and it was easy up to v3.9-rc1 commit 64b3122 which crashes with
-a memory fault at boot:
+Without including kmalloc.h we don't get a definition for
+ARCH_DMA_MINALIGN, which means we no longer suitably align DMA. Further
+to this the definition of ARCH_KMALLOC_MINALIGN provided by linux/slab.h
+ends up being set to the alignment of an unsigned long long value rather
+than to ARCH_DMA_MINALIGN, which means that buffers allocated using
+kmalloc may no longer be safely aligned for use with DMA.
 
-  commit 64b3122df48b81a40366a11f299ab819138c96e8
-  Author: Al Viro <viro@zeniv.linux.org.uk>
-  Date:   Thu Dec 27 11:52:32 2012 -0500
-  
-      mips: take the "zero newsp means inherit the parent's one" to copy_thread()
-      
-      Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fix this by re-adding the include of kmalloc.h in asm/cache.h. This
+reverts commit 296e46db0073 ("MIPS: Don't unnecessarily include
+kmalloc.h into <asm/cache.h>.")
 
-I've pushed the patched (working) parent commit here:
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 296e46db0073 ("MIPS: Don't unnecessarily include kmalloc.h into <asm/cache.h>.")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: stable <stable@vger.kernel.org> # v4.12+
+---
 
-  https://github.com/frno7/linux/tree/ps2-v3.9-rc1-974fdb3
+Hi Ralf,
 
-The whole PS2 R5900 patch is quite large, but I suspect the problem is limited
-to changes in arch/mips/kernel, more specifically:
+This causes issues with DMA on various systems - please could you merge
+it ASAP? It would be great if you submitted your patches to the list for
+review in future, since nobody had any opportunity to spot that this
+change was broken before you merged it...
 
-  arch/mips/kernel/process.c
-  arch/mips/kernel/scall32-n32.S
-  arch/mips/kernel/syscall.c
+Thanks,
+    Paul
+---
+ arch/mips/include/asm/cache.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-(Several system calls etc. have been rearranged since 2.6.35.) I've been stuck
-for a couple of days trying to get this to work. Would anyone be able to help?
-
-Many thanks,
-Fredrik
+diff --git a/arch/mips/include/asm/cache.h b/arch/mips/include/asm/cache.h
+index fc67947ed658..8b14c2706aa5 100644
+--- a/arch/mips/include/asm/cache.h
++++ b/arch/mips/include/asm/cache.h
+@@ -9,6 +9,8 @@
+ #ifndef _ASM_CACHE_H
+ #define _ASM_CACHE_H
+ 
++#include <kmalloc.h>
++
+ #define L1_CACHE_SHIFT		CONFIG_MIPS_L1_CACHE_SHIFT
+ #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
+ 
+-- 
+2.13.3

@@ -1,38 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2017 16:26:12 +0200 (CEST)
-Received: from resqmta-po-12v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:171]:37944
-        "EHLO resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994883AbdHCO0DnT7p0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2017 16:26:03 +0200
-Received: from resomta-po-05v.sys.comcast.net ([96.114.154.229])
-        by resqmta-po-12v.sys.comcast.net with ESMTP
-        id dH42dmQelK2u5dH4bdFIim; Thu, 03 Aug 2017 14:26:01 +0000
-Received: from [192.168.1.13] ([73.201.189.102])
-        by resomta-po-05v.sys.comcast.net with SMTP
-        id dH4ZdypfM25gRdH4adOTch; Thu, 03 Aug 2017 14:26:01 +0000
-Subject: Re: Update PS2 R5900 to kernel 4.x?
-To:     Fredrik Noring <noring@nocrew.org>, linux-mips@linux-mips.org
-References: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <0d0fdd50-929f-da92-dd35-88f2878da8c2@gentoo.org>
-Date:   Thu, 3 Aug 2017 10:25:41 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2017 18:09:24 +0200 (CEST)
+Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:23062 "EHLO
+        ste-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994897AbdHCQJR10XZJ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Aug 2017 18:09:17 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id A95E43F602;
+        Thu,  3 Aug 2017 18:09:12 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id pFOUB4mIQHy5; Thu,  3 Aug 2017 18:09:05 +0200 (CEST)
+Received: from [10.0.1.7] (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 0631D3F3A6;
+        Thu,  3 Aug 2017 18:09:03 +0200 (CEST)
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfHLCxihYZ8BNbOzNVYiuKHyajRjY7QC705wqANIxta2SYzLsrZ2gtk3582dLNhB15sDxbhSZ14QAC0x859WW2Q0Mk5f95LOGmiWcjuT+nQnlBsIcaSDj
- 2sn2R8sLoh+NxCOeDyKSEZ+BBJJO2lJeDhjacjrjtQeE/GkrYsh+Sw9reZi0RMUwNCF4oymHln4Cq9NrOkOImx+C5yAV7BiIM8M=
-Return-Path: <kumba@gentoo.org>
+Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
+Subject: Re: Update PS2 R5900 to kernel 4.x?
+From:   Fredrik Noring <noring@nocrew.org>
+In-Reply-To: <0d0fdd50-929f-da92-dd35-88f2878da8c2@gentoo.org>
+Date:   Thu, 3 Aug 2017 18:09:00 +0200
+Cc:     linux-mips@linux-mips.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <64C2A7A5-46FD-406C-9B51-5F45AEBA70F0@nocrew.org>
+References: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
+ <0d0fdd50-929f-da92-dd35-88f2878da8c2@gentoo.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+X-Mailer: Apple Mail (2.3259)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59348
+X-archive-position: 59349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,52 +49,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/01/2017 10:08, Fredrik Noring wrote:
-> Hello MIPS maintainers,
-> 
-> I'm trying update the PS2 R5900 patch to kernel version 4.x. I started
-> at 2.6.35 and it was easy up to v3.9-rc1 commit 64b3122 which crashes with
-> a memory fault at boot:
-> 
->   commit 64b3122df48b81a40366a11f299ab819138c96e8
->   Author: Al Viro <viro@zeniv.linux.org.uk>
->   Date:   Thu Dec 27 11:52:32 2012 -0500
->   
->       mips: take the "zero newsp means inherit the parent's one" to copy_thread()
->       
->       Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> 
-> I've pushed the patched (working) parent commit here:
-> 
->   https://github.com/frno7/linux/tree/ps2-v3.9-rc1-974fdb3
-> 
-> The whole PS2 R5900 patch is quite large, but I suspect the problem is limited
-> to changes in arch/mips/kernel, more specifically:
-> 
->   arch/mips/kernel/process.c
->   arch/mips/kernel/scall32-n32.S
->   arch/mips/kernel/syscall.c
-> 
-> (Several system calls etc. have been rearranged since 2.6.35.) I've been stuck
-> for a couple of days trying to get this to work. Would anyone be able to help?
-> 
-> Many thanks,
-> Fredrik
+Hi Joshua!
 
-Didn't the PS2 kernel need a lot of userland changes and a special toolchain to
-deal with the hybrid nature of the R5900?  Do you have a working userland that
-can run under the 3.9 kernel?  Last I heard, the latest kernel that would work
-on PS2 was a Sony-modified ~2.4.17 that was put out for some kind of
-specialized PS2 hardware found only in Japan.
+> 3 aug. 2017 kl. 16:25 skrev Joshua Kinard <kumba@gentoo.org>:
+> 
+> Didn't the PS2 kernel need a lot of userland changes and a special toolchain to
+> deal with the hybrid nature of the R5900?
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+It depends, as I understand it. R5900 implements 64-bit MIPS III except LL, SC,
+LLD and SCD, plus many extensions. Some instructions are emulated by the
+kernel for compatibility, see changes to arch/mips/kernel/traps.c:
 
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
+    https://github.com/frno7/linux/blob/ps2-v3.9-rc1-974fdb3/arch/mips/kernel/traps.c#L613
 
---Emperor Turhan, Centauri Republic
+Since emulation is slow and R5900 has 128-bit load/store instructions, some
+(optional) extensions were made:
+
+    config R5900_128BIT_SUPPORT
+        bool "Support for 128 bit general purpose registers”
+
+    config MIPS_N32
+        bool "Kernel support for n32 binaries”
+
+as well as adding e.g. arch/mips/kernel/scall32-n32.S:
+
+    https://github.com/frno7/linux/blob/ps2-v3.9-rc1-974fdb3/arch/mips/kernel/scall32-n32.S
+
+Then there is a set of hardware bugs involving NOPs to avoid short loops, SYNCs
+for MFC0 and MTC0, etc. Several updates address these. Jürgen Urban worked on
+both the kernel and binutils about five years ago:
+
+    https://sourceware.org/ml/binutils/2012-11/msg00360.html
+
+I suspect the reason it crashes on 3.9 is that some of the changes are way out
+of synch with the rest of the kernel since 2.6.35, even if the patch applies
+fairly easily.
+
+> Do you have a working userland that can run under the 3.9 kernel?
+
+I started with the ”Black Rhino” (Debian) distribution and its Busybox, which
+boots with 3.8, but I was actually hoping to get Gentoo MIPS working, as I’ve
+seen you have stage 3 MIPS binaries. What are your thoughts on this?
+
+> Last I heard, the latest kernel that would work
+> on PS2 was a Sony-modified ~2.4.17 that was put out for some kind of
+> specialized PS2 hardware found only in Japan.
+
+I have a normal SCPH-70004 unit and as far as I understand the majority of the
+manufactured PS2 units work (the last ones excepted). A slightly tricky part is
+installing a boot loader (e.g. Free MC boot) on a memory card. No modifications
+such as soldering is required.
+
+All the best,
+Fredrik

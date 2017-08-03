@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2017 10:33:54 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:41393
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993035AbdHCIdp1onWl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2017 10:33:45 +0200
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1ddBZh-0004Vx-0q; Thu, 03 Aug 2017 10:33:45 +0200
-Message-ID: <1501749222.23911.4.camel@pengutronix.de>
-Subject: Re: [PATCH v8 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com, robh@kernel.org,
-        andy.shevchenko@gmail.com
-Date:   Thu, 03 Aug 2017 10:33:42 +0200
-In-Reply-To: <20170802225717.24408-11-hauke@hauke-m.de>
-References: <20170802225717.24408-1-hauke@hauke-m.de>
-         <20170802225717.24408-11-hauke@hauke-m.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2017 16:26:12 +0200 (CEST)
+Received: from resqmta-po-12v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:171]:37944
+        "EHLO resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994883AbdHCO0DnT7p0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2017 16:26:03 +0200
+Received: from resomta-po-05v.sys.comcast.net ([96.114.154.229])
+        by resqmta-po-12v.sys.comcast.net with ESMTP
+        id dH42dmQelK2u5dH4bdFIim; Thu, 03 Aug 2017 14:26:01 +0000
+Received: from [192.168.1.13] ([73.201.189.102])
+        by resomta-po-05v.sys.comcast.net with SMTP
+        id dH4ZdypfM25gRdH4adOTch; Thu, 03 Aug 2017 14:26:01 +0000
+Subject: Re: Update PS2 R5900 to kernel 4.x?
+To:     Fredrik Noring <noring@nocrew.org>, linux-mips@linux-mips.org
+References: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <0d0fdd50-929f-da92-dd35-88f2878da8c2@gentoo.org>
+Date:   Thu, 3 Aug 2017 10:25:41 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
+MIME-Version: 1.0
+In-Reply-To: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+X-CMAE-Envelope: MS4wfHLCxihYZ8BNbOzNVYiuKHyajRjY7QC705wqANIxta2SYzLsrZ2gtk3582dLNhB15sDxbhSZ14QAC0x859WW2Q0Mk5f95LOGmiWcjuT+nQnlBsIcaSDj
+ 2sn2R8sLoh+NxCOeDyKSEZ+BBJJO2lJeDhjacjrjtQeE/GkrYsh+Sw9reZi0RMUwNCF4oymHln4Cq9NrOkOImx+C5yAV7BiIM8M=
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59347
+X-archive-position: 59348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,80 +45,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Hauke,
-
-On Thu, 2017-08-03 at 00:57 +0200, Hauke Mehrtens wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+On 08/01/2017 10:08, Fredrik Noring wrote:
+> Hello MIPS maintainers,
 > 
-> The reset controllers (on xRX200 and newer SoCs have two of them) are
-> provided by the RCU module. This was initially implemented as a simple
-> reset controller. However, the RCU module provides more functionality
-> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> The old reset controller driver implementation from
-> arch/mips/lantiq/xway/reset.c did not honor this fact.
+> I'm trying update the PS2 R5900 patch to kernel version 4.x. I started
+> at 2.6.35 and it was easy up to v3.9-rc1 commit 64b3122 which crashes with
+> a memory fault at boot:
 > 
-> For some devices the request and the status bits are different.
+>   commit 64b3122df48b81a40366a11f299ab819138c96e8
+>   Author: Al Viro <viro@zeniv.linux.org.uk>
+>   Date:   Thu Dec 27 11:52:32 2012 -0500
+>   
+>       mips: take the "zero newsp means inherit the parent's one" to copy_thread()
+>       
+>       Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  .../devicetree/bindings/reset/lantiq,reset.txt     |  30 +++
->  drivers/reset/Kconfig                              |   6 +
->  drivers/reset/Makefile                             |   1 +
->  drivers/reset/reset-lantiq.c                       | 224 +++++++++++++++++++++
->  4 files changed, 261 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
->  create mode 100644 drivers/reset/reset-lantiq.c
+> I've pushed the patched (working) parent commit here:
 > 
-[...]
-> diff --git a/drivers/reset/reset-lantiq.c b/drivers/reset/reset-lantiq.c
-> new file mode 100644
-> index 000000000000..b84c45e7e6b8
-> --- /dev/null
-> +++ b/drivers/reset/reset-lantiq.c
-> @@ -0,0 +1,224 @@
-[...]
-> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
-> +			       struct lantiq_rcu_reset_priv *priv)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct resource *res;
-> +	struct resource res_parent;
-> +	int ret;
-> +
-> +	priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
-> +	if (IS_ERR(priv->regmap)) {
-> +		dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
-> +		return PTR_ERR(priv->regmap);
-> +	}
-> +
-> +	ret = of_address_to_resource(dev->of_node->parent, 0, &res_parent);
-> +	if (ret)
-> +		return ret;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res) {
-> +		dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
-> +		return ret;
+>   https://github.com/frno7/linux/tree/ps2-v3.9-rc1-974fdb3
+> 
+> The whole PS2 R5900 patch is quite large, but I suspect the problem is limited
+> to changes in arch/mips/kernel, more specifically:
+> 
+>   arch/mips/kernel/process.c
+>   arch/mips/kernel/scall32-n32.S
+>   arch/mips/kernel/syscall.c
+> 
+> (Several system calls etc. have been rearranged since 2.6.35.) I've been stuck
+> for a couple of days trying to get this to work. Would anyone be able to help?
+> 
+> Many thanks,
+> Fredrik
 
-This should return -EINVAL instead of 0.
+Didn't the PS2 kernel need a lot of userland changes and a special toolchain to
+deal with the hybrid nature of the R5900?  Do you have a working userland that
+can run under the 3.9 kernel?  Last I heard, the latest kernel that would work
+on PS2 was a Sony-modified ~2.4.17 that was put out for some kind of
+specialized PS2 hardware found only in Japan.
 
-> +	}
-> +
-> +	if (res->start < res_parent.start)
-> +		return -ENOENT;
-> +	priv->reset_offset = res->start - res_parent.start;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> +	if (!res) {
-> +		dev_err(&pdev->dev, "Failed to get RCU status offset\n");
-> +		return ret;
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
 
-Same here.
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
 
-With this fixed,
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
-
-regards
-Philipp
+--Emperor Turhan, Centauri Republic

@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 15:05:41 +0200 (CEST)
-Received: from www62.your-server.de ([213.133.104.62]:54289 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23995071AbdHDNFc6SBYT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 15:05:32 +0200
-Received: from [92.105.166.74] (helo=localhost.localdomain)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-SHA:256)
-        (Exim 4.85_2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1ddcI4-0003dT-9s; Fri, 04 Aug 2017 15:05:20 +0200
-Message-ID: <5984710F.4010301@iogearbox.net>
-Date:   Fri, 04 Aug 2017 15:05:19 +0200
-From:   Daniel Borkmann <daniel@iogearbox.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 15:43:06 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43995 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23995077AbdHDNm6coaGP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 15:42:58 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 036D22AC4332;
+        Fri,  4 Aug 2017 14:42:49 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 4 Aug
+ 2017 14:42:52 +0100
+Date:   Fri, 4 Aug 2017 14:42:52 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] mips: gitignore: ignore generated .c files
+Message-ID: <20170804134252.GZ31455@jhogan-linux.le.imgtec.org>
+References: <20170802150404.10579-1-brgl@bgdev.pl>
 MIME-Version: 1.0
-To:     "David S. Miller" <davem@davemloft.net>
-CC:     David Daney <david.daney@cavium.com>,
-        Alexei Starovoitov <ast@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, James.Cowgill@imgtec.com,
-        markos.chandras@imgtec.com
-Subject: Re: [PATCH] MIPS: Add missing file for eBPF JIT.
-References: <20170804001012.24901-1-david.daney@cavium.com>
-In-Reply-To: <20170804001012.24901-1-david.daney@cavium.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.99.2/23628/Fri Aug  4 10:29:26 2017)
-Return-Path: <daniel@iogearbox.net>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="oRWDw5wXQ3uCJU7V"
+Content-Disposition: inline
+In-Reply-To: <20170802150404.10579-1-brgl@bgdev.pl>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59358
+X-archive-position: 59359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@iogearbox.net
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,41 +45,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/04/2017 02:10 AM, David Daney wrote:
-> Inexplicably, commit f381bf6d82f0 ("MIPS: Add support for eBPF JIT.")
-> lost a file somewhere on its path to Linus' tree.  Add back the
-> missing ebpf_jit.c so that we can build with CONFIG_BPF_JIT selected.
->
-> This version of ebpf_jit.c is identical to the original except for two
-> minor change need to resolve conflicts with changes merged from the
-> BPF branch:
->
-> A) Set prog->jited_len = image_size;
-> B) Use BPF_TAIL_CALL instead of BPF_CALL | BPF_X
->
-> Fixes: f381bf6d82f0 ("MIPS: Add support for eBPF JIT.")
-> Signed-off-by: David Daney <david.daney@cavium.com>
+--oRWDw5wXQ3uCJU7V
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 02, 2017 at 05:04:04PM +0200, Bartosz Golaszewski wrote:
+> Add ashldi3.c and bswapsi.c to the list of ignored files.
+>=20
+> Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
+
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+
+Cheers
+James
+
 > ---
->
-> It might be best to merge this along the path of BPF fixes rather than
-> MIPS, as the MIPS maintainer (Ralf) seems to be inactive recently.
+>  arch/mips/boot/compressed/.gitignore | 2 ++
+>  1 file changed, 2 insertions(+)
+>  create mode 100644 arch/mips/boot/compressed/.gitignore
+>=20
+> diff --git a/arch/mips/boot/compressed/.gitignore b/arch/mips/boot/compre=
+ssed/.gitignore
+> new file mode 100644
+> index 000000000000..ebae133f1d00
+> --- /dev/null
+> +++ b/arch/mips/boot/compressed/.gitignore
+> @@ -0,0 +1,2 @@
+> +ashldi3.c
+> +bswapsi.c
+> --=20
+> 2.13.2
+>=20
+>=20
 
-Looks like situation is that multiple people including myself tried
-to contact Ralf due to 'half/mis-applied' MIPS BPF JIT in [1,2] that
-sits currently in Linus tree, but never got a reply back since mid June.
+--oRWDw5wXQ3uCJU7V
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Given the work was accepted long ago but incorrectly merged, would be
-great if this could still be fixed up with this patch. Given Ralf seems
-unfortunately unresponsive, is there a chance, if people are fine with
-it, that we could try route this fix e.g. via -net instead before a
-final v4.13?
+-----BEGIN PGP SIGNATURE-----
 
-Anyway, the generic pieces interacting with core BPF look good to me:
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlmEedsACgkQbAtpk944
+dnoFjBAAhg2DT+T1u5Kdn7Sigapjx7vxFKAqtFxOiwGzupwAEo9iX4L5Eh9Iyrep
+3ShQi8wBdgZpwwiAi2pBkrbTlxstAk3+fD41aXRiMMglydcgneQR8BVLtG5rnS+z
+tBWgOjF+75XePRCiQU6AL8Jny0PbKiZJu01uUM0Z0qpcXSliR+KC2AUJxqDWwiLn
+JJdu6yMdtLHCKF5auaNtXB6X36DE4Md3MuepBYfR3PcqM2yycLmnhNvB8AKvNHki
+H5KSd7kffxZHT3OsCoz+/FevEhi0rVsRNjCEiQ9X+UV7AjqjT9eV732PYwPSlc4K
+mcNcQYd8ayMzJQM83b9lpDkYM/jP6JQjpe2EwDXpPpsVxhBxM+LDH6yYdZ6o1dbj
+43ovqpfVHyzukO0uIEC2yLWauLFFVhYIBW0XJOXKWzSLfdNU9biUGvKfJ8VySl3T
+esgmEkUVa+DyiPvyyk+k3Dv2xFg9Bi5RPcGrt+eC4PirKlIaDmL6qvpuIiSSl2jY
+s/dTdw5zjgguAyYDQIirVMm8FhhnaiDS7uuoY11tQoCdHfUhVsNlD29qQEF+MdtG
+lFlxK7VVekPWPxI92JxxzsarKBja/DZEfqssr1tN4gc7/Da5PY5DwCItarWhucPl
+27Z4TgGvQeeUQAPlN2OM0/LlswbCVAQLYq4vLxFkVAY79HteYw8=
+=chuk
+-----END PGP SIGNATURE-----
 
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-
-Thanks,
-Daniel
-
-   [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f381bf6d82f032b7410185b35d000ea370ac706b
-   [2] https://patchwork.linux-mips.org/patch/16369/
+--oRWDw5wXQ3uCJU7V--

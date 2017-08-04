@@ -1,30 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 17:19:29 +0200 (CEST)
-Received: (from localhost user: 'ralf' uid#1000 fake: STDIN
-        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S23995087AbdHDPTVNIxyX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Aug 2017 17:19:21 +0200
-Date:   Fri, 4 Aug 2017 17:19:20 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc:     linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openadk.org>
-Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
-Message-ID: <20170804151920.GA11317@linux-mips.org>
-References: <20170803225547.6caa602b@windsurf.lan>
- <20170804000556.GC30597@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 17:22:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8997 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23995090AbdHDPWKyNKrX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 17:22:10 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id EA05A74164939;
+        Fri,  4 Aug 2017 16:22:00 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 4 Aug
+ 2017 16:22:04 +0100
+Date:   Fri, 4 Aug 2017 16:22:04 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     "Dmitry V. Levin" <ldv@altlinux.org>, <linux-mips@linux-mips.org>,
+        <linux-ia64@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, <sparclinux@vger.kernel.org>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        <linux-s390@vger.kernel.org>, <linux-am33-list@redhat.com>,
+        <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Chris Zankel <chris@zankel.net>,
+        Tony Luck <tony.luck@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-alpha@vger.kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] uapi: fix another asm/shmbuf.h userspace compilation
+ error
+Message-ID: <20170804152203.GA31455@jhogan-linux.le.imgtec.org>
+References: <20170302004607.GE27132@altlinux.org>
+ <CAK8P3a1=-Q=gVRyk+PwqxTeTPXa4yrmqWKG7SyZng2d7bcbG=g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ofekNuVaYCKmvJ0U"
 Content-Disposition: inline
-In-Reply-To: <20170804000556.GC30597@linux-mips.org>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <CAK8P3a1=-Q=gVRyk+PwqxTeTPXa4yrmqWKG7SyZng2d7bcbG=g@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59364
+X-archive-position: 59365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,64 +67,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 04, 2017 at 02:05:57AM +0200, Ralf Baechle wrote:
+--ofekNuVaYCKmvJ0U
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > 
-> > When trying to build the current Linux master with a gcc 7.x toolchain
-> > for mips64r6-n32, I'm getting the following build failure:
-> > 
-> > crypto/scompress.o: In function `.L31':
-> > scompress.c:(.text+0x2a0): undefined reference to `__multi3'
-> > drivers/base/component.o: In function `.L97':
-> > component.c:(.text+0x4a4): undefined reference to `__multi3'
-> > drivers/base/component.o: In function `component_master_add_with_match':
-> > component.c:(.text+0x8c4): undefined reference to `__multi3'
-> > net/core/ethtool.o: In function `ethtool_set_per_queue_coalesce':
-> > ethtool.c:(.text+0x1ab0): undefined reference to `__multi3'
-> > Makefile:1000: recipe for target 'vmlinux' failed
-> > make[2]: *** [vmlinux] Error 1
-> > 
-> > Taking the example from net/core/ethtool.o, objdump says:
-> > 
-> >     1aac:       00408025        move    s0,v0
-> >     1ab0:       e8000000        balc    1ab4 <ethtool_set_per_queue_coalesce+0x7c>
-> >     1ab4:       14600000        bnez    v1,1ab8 <ethtool_set_per_queue_coalesce+0x80>
-> > 
-> > And readelf tells us:
-> > 
-> > Relocation section '.rela.text' at offset 0xaa00 contains 1189 entries:
-> >   Offset          Info           Type           Sym. Value    Sym. Name + Addend
-> > [...]
-> > 000000001ab0  023a0000003d R_MIPS_PC26_S2    0000000000000000 __multi3 - 4
-> >                     Type2: R_MIPS_NONE      
-> >                     Type3: R_MIPS_NONE      
-> > [...]
-> > Symbol table '.symtab' contains 586 entries:
-> > [...]
-> >    570: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  UND __multi3
-> > 
-> > __multi3() is normally provided by libgcc, but of course the kernel
-> > doesn't link with libgcc.
-> > 
-> > The bug can be reproduced by building with the toolchain available at
-> > http://toolchains.free-electrons.com/downloads/2017.08-rc1-fix-binutils/toolchains/mips64r6el-n32/tarballs/mips64r6el-n32--glibc--bleeding-edge-2017.05-1453-ga703fdd-1.tar.bz2
-> > and building with the attached kernel configuration file.
-> > 
-> > It is not clear to me if this is a kernel issue (lack of __multi3 in
-> > arch/mips/lib/), or a gcc bug in that it shouldn't emit a call to this
-> > function.
-> > 
-> > FWIW, sparc64 had a similar issue, and they added __multi3 in their
-> > libgcc replacement, see commit
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/sparc/lib?id=1b4af13ff2cc6897557bb0b8d9e2fad4fa4d67aa.
-> 
-> I think these days we've given up the stuborn resistance of the old days
-> against adding new libgcc1 functions to the kernel, so we should probably
-> just add it.
-> 
-> I'm looking into this but a small wrench into the gear is that I'm still
-> on GCC 6 so I'm off to building myself a cross-gcc first ...
+On Thu, Mar 02, 2017 at 02:07:20PM +0100, Arnd Bergmann wrote:
+> On Thu, Mar 2, 2017 at 1:46 AM, Dmitry V. Levin <ldv@altlinux.org> wrote:
+> > Replace size_t with __kernel_size_t to fix asm/shmbuf.h userspace
+> > compilation errors like this:
+> >
+> > /usr/include/asm-generic/shmbuf.h:28:2: error: unknown type name 'size_=
+t'
+> >   size_t   shm_segsz; /* size of segment (bytes) */
+> >
+> > x32 is the only architecture where sizeof(size_t) is less than
+> > sizeof(__kernel_size_t), but as the kernel treats shm_segsz field as
+> > __kernel_size_t anyway, UAPI should follow.  Thanks to little-endiannes
+> > of x32 and 64-bit alignment of the field following shm_segsz, this
+> > change doesn't break ABI, and the difference doesn't manifest itself
+> > easily.
+> >
+> > Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
+>=20
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-I now can reproduce the issue with vanilla FSF binutils 2.28 and GCC 7.1.0.
+Out of interest, is there a plan for merging these patches from Dmitry?
 
-  Ralf
+Cheers
+James
+
+--ofekNuVaYCKmvJ0U
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlmEkRMACgkQbAtpk944
+dnrAMg/+K3doXr6onSUJPfVtAuAORRxr6EypmBdFZs5/qV4cwNTkljJ0c/yGAKaM
+fUM6pJ9n56h7YGG0/y2m+YCI56TPWyh8HnoKTNyhgDtg+Sn1e2Ub4dXyEjYdQhXN
+TMTzPsP/COyFkrStEulbLuGoaU4t7UMFk5nU7FTQ1BpCeyuEO5opnUpA3JMZwehK
+KK7orqZYUE+iZ8QfbEXiuHr68EsvpMeHj0z6WNkXD/8gRzSFTMqf5wHFpm3cNTJ7
+3BRJx3LOkkE3amkPOm1kIOPWkMAEIFF11hRc79e4Wpkak6tnoCowkLvVNadB+UH2
+bb5BTgwifuU83lrWsqC6gzs6e4PR0DEAgQofoLy5uGQjVgYqJ970Q8/Cl4xsfvcL
+qVVFp8oGN5oZoXFiMWhYVQydG4m9TaruA2vOZK3F9fdrNBmd4t+fNxF+l3CTfa79
+dAGLliqjUunWrW8WBrFmIySw9Sxl8DbJKyl0jxaJUbfGCnmsmkCZO4fP8h3BK37Y
+mjMPsH3AjUnkBSLRBK+d261LMYCBgMY/SpUWwR7RqRbtxrqO7voVeNcyXQ1c4tVE
+cYJhQpy57wjDKE0luxGSU0o1ATJst6xcL+URKTvRoxIWrkZXUBPnwfusoedLqTxd
+f5AIFSEhwz7t8hBSEweo8qITuBmr86QmyKPwYN4R9xkonfb2Kis=
+=9M2T
+-----END PGP SIGNATURE-----
+
+--ofekNuVaYCKmvJ0U--

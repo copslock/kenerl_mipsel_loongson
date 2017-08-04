@@ -1,46 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 16:57:53 +0200 (CEST)
-Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:57381 "EHLO
-        ste-ftg-msa2.bahnhof.se" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23995085AbdHDO5pV1FZX convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Aug 2017 16:57:45 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTP id 253DF3F433;
-        Fri,  4 Aug 2017 16:57:43 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from ste-ftg-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id O6gcTLJ8IGaq; Fri,  4 Aug 2017 16:57:34 +0200 (CEST)
-Received: from [10.0.1.7] (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTPA id 3BD663F294;
-        Fri,  4 Aug 2017 16:57:29 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
-Subject: Re: Update PS2 R5900 to kernel 4.x?
-From:   Fredrik Noring <noring@nocrew.org>
-In-Reply-To: <77bec1a2-7e2b-3012-a909-b5ec1fe24178@gentoo.org>
-Date:   Fri, 4 Aug 2017 16:57:27 +0200
-Cc:     linux-mips@linux-mips.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <1DC41BC8-A39F-4F73-8A97-B61BE0023788@nocrew.org>
-References: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
- <0d0fdd50-929f-da92-dd35-88f2878da8c2@gentoo.org>
- <64C2A7A5-46FD-406C-9B51-5F45AEBA70F0@nocrew.org>
- <b0356404-42b6-6e8b-e15b-57cf98b7d6e6@gentoo.org>
- <2CA3040B-8EB9-456C-A4DE-BFE0D097971C@nocrew.org>
- <77bec1a2-7e2b-3012-a909-b5ec1fe24178@gentoo.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-X-Mailer: Apple Mail (2.3259)
-Return-Path: <noring@nocrew.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 17:19:29 +0200 (CEST)
+Received: (from localhost user: 'ralf' uid#1000 fake: STDIN
+        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S23995087AbdHDPTVNIxyX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Aug 2017 17:19:21 +0200
+Date:   Fri, 4 Aug 2017 17:19:20 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc:     linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openadk.org>
+Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
+Message-ID: <20170804151920.GA11317@linux-mips.org>
+References: <20170803225547.6caa602b@windsurf.lan>
+ <20170804000556.GC30597@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170804000556.GC30597@linux-mips.org>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59363
+X-archive-position: 59364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,33 +37,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, Aug 04, 2017 at 02:05:57AM +0200, Ralf Baechle wrote:
 
-> 4 aug. 2017 kl. 16:13 skrev Joshua Kinard <kumba@gentoo.org>:
+> > 
+> > When trying to build the current Linux master with a gcc 7.x toolchain
+> > for mips64r6-n32, I'm getting the following build failure:
+> > 
+> > crypto/scompress.o: In function `.L31':
+> > scompress.c:(.text+0x2a0): undefined reference to `__multi3'
+> > drivers/base/component.o: In function `.L97':
+> > component.c:(.text+0x4a4): undefined reference to `__multi3'
+> > drivers/base/component.o: In function `component_master_add_with_match':
+> > component.c:(.text+0x8c4): undefined reference to `__multi3'
+> > net/core/ethtool.o: In function `ethtool_set_per_queue_coalesce':
+> > ethtool.c:(.text+0x1ab0): undefined reference to `__multi3'
+> > Makefile:1000: recipe for target 'vmlinux' failed
+> > make[2]: *** [vmlinux] Error 1
+> > 
+> > Taking the example from net/core/ethtool.o, objdump says:
+> > 
+> >     1aac:       00408025        move    s0,v0
+> >     1ab0:       e8000000        balc    1ab4 <ethtool_set_per_queue_coalesce+0x7c>
+> >     1ab4:       14600000        bnez    v1,1ab8 <ethtool_set_per_queue_coalesce+0x80>
+> > 
+> > And readelf tells us:
+> > 
+> > Relocation section '.rela.text' at offset 0xaa00 contains 1189 entries:
+> >   Offset          Info           Type           Sym. Value    Sym. Name + Addend
+> > [...]
+> > 000000001ab0  023a0000003d R_MIPS_PC26_S2    0000000000000000 __multi3 - 4
+> >                     Type2: R_MIPS_NONE      
+> >                     Type3: R_MIPS_NONE      
+> > [...]
+> > Symbol table '.symtab' contains 586 entries:
+> > [...]
+> >    570: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  UND __multi3
+> > 
+> > __multi3() is normally provided by libgcc, but of course the kernel
+> > doesn't link with libgcc.
+> > 
+> > The bug can be reproduced by building with the toolchain available at
+> > http://toolchains.free-electrons.com/downloads/2017.08-rc1-fix-binutils/toolchains/mips64r6el-n32/tarballs/mips64r6el-n32--glibc--bleeding-edge-2017.05-1453-ga703fdd-1.tar.bz2
+> > and building with the attached kernel configuration file.
+> > 
+> > It is not clear to me if this is a kernel issue (lack of __multi3 in
+> > arch/mips/lib/), or a gcc bug in that it shouldn't emit a call to this
+> > function.
+> > 
+> > FWIW, sparc64 had a similar issue, and they added __multi3 in their
+> > libgcc replacement, see commit
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/sparc/lib?id=1b4af13ff2cc6897557bb0b8d9e2fad4fa4d67aa.
 > 
-> If I can find the time this weekend, and the power cord, I'll have to see if it
-> works.  I want to say it might've taken a power spike and stopped turning on,
-> but that might've been something else attached to my TV.  Thus far planning to
-> try and chase down possible timer/RCU bugs in SGI IP27 this weekend, but we'll see.
+> I think these days we've given up the stuborn resistance of the old days
+> against adding new libgcc1 functions to the kernel, so we should probably
+> just add it.
+> 
+> I'm looking into this but a small wrench into the gear is that I'm still
+> on GCC 6 so I'm off to building myself a cross-gcc first ...
 
-You will (most likely) need a boot loader (e.g. Free MC boot) on a memory card.
-I borrowed a “Swap Magic” dvd from a friend to install it. There are apparently
-several other ways, including buying a preinstalled memory card. This needs to
-be done once and is a small threshold to installing Linux.
+I now can reproduce the issue with vanilla FSF binutils 2.28 and GCC 7.1.0.
 
-I compiled the linux-dev project
-
-    https://github.com/rickgaiser/linux-dev
-
-which contains most if not all needed tools, including a fairly recent R5900
-cross-compiler:
-
-    % mipsel-linux-gcc --version
-    mipsel-linux-gcc.br_real (Buildroot 2017.02-00008-g0de152b) 6.3.0
-
-If your machine happens to be defective or incompatible, a great variation of
-PS2 machines sell second-hand for EUR 25 or so. Most are compatible with Linux,
-as I understand, but check the model to be sure. Later models have ethernet but
-I believe all have usb so I suppose network and other things are doable on all.
-
-All the best,
-Fredrik
+  Ralf

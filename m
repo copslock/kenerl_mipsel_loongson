@@ -1,54 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 02:11:05 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:49077 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994925AbdHDAKiLf0Ab (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Aug 2017 02:10:38 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 7C48FAF49;
-        Fri,  4 Aug 2017 00:10:36 +0000 (UTC)
-Date:   Fri, 4 Aug 2017 02:10:35 +0200
-From:   "Luis R. Rodriguez" <mcgrof@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Luis R. Rodriguez" <mcgrof@kernel.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Jessica Yu <jeyu@redhat.com>, Michal Marek <mmarek@suse.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH] exec: Avoid recursive modprobe for binary format
- handlers
-Message-ID: <20170804001035.GI27873@wotan.suse.de>
-References: <1500645920-28490-1-git-send-email-matt.redfearn@imgtec.com>
- <20170802001200.GD18884@wotan.suse.de>
- <CAGXu5jJw74M0hTL8JGUtshgZpGjzWia2d=oK3t8oJF6qo9Xp_A@mail.gmail.com>
- <20170802232331.GO18884@wotan.suse.de>
- <CAGXu5jKDpsZAEEvoUQWghhbnF=g30Z1tkQxdv+vhmLJM5FW+qQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 04:05:02 +0200 (CEST)
+Received: from resqmta-po-02v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:161]:41048
+        "EHLO resqmta-po-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994928AbdHDCEzPnH1U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 04:04:55 +0200
+Received: from resomta-po-12v.sys.comcast.net ([96.114.154.236])
+        by resqmta-po-02v.sys.comcast.net with ESMTP
+        id dRyidhHDfRvmJdRyrd4fGc; Fri, 04 Aug 2017 02:04:49 +0000
+Received: from [192.168.1.13] ([73.201.189.102])
+        by resomta-po-12v.sys.comcast.net with SMTP
+        id dRyqdUoARcQv5dRyqdWHSo; Fri, 04 Aug 2017 02:04:49 +0000
+Subject: Re: Update PS2 R5900 to kernel 4.x?
+To:     Fredrik Noring <noring@nocrew.org>
+Cc:     linux-mips@linux-mips.org
+References: <A4F10467-06DE-4880-B740-10B32CAC9208@nocrew.org>
+ <0d0fdd50-929f-da92-dd35-88f2878da8c2@gentoo.org>
+ <64C2A7A5-46FD-406C-9B51-5F45AEBA70F0@nocrew.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <b0356404-42b6-6e8b-e15b-57cf98b7d6e6@gentoo.org>
+Date:   Thu, 3 Aug 2017 22:04:29 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGXu5jKDpsZAEEvoUQWghhbnF=g30Z1tkQxdv+vhmLJM5FW+qQ@mail.gmail.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <lurodriguez@suse.de>
+In-Reply-To: <64C2A7A5-46FD-406C-9B51-5F45AEBA70F0@nocrew.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4wfO+eM1xkZHsvZd35Q8QTCvTla1u0LRVyUABwgD9of13ruuKJwwtWXZSOz9lCuV1a9MtjFWPuZroeyVAt4iUNu3P3c7dLaU8VGVNrvPBgnFCGXqNr5lPu
+ kVBFwLdbSHjHiqLSr3ZkDGGWnhamRMpm12wsFQRLK7V/b2in9cVdgGQ4RmwyEDN16BWzpqwqvlw3aHRT1QjONHesByrUmCPvtdk=
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59356
+X-archive-position: 59357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcgrof@kernel.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,126 +48,95 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 03, 2017 at 05:02:40PM -0700, Kees Cook wrote:
-> On Wed, Aug 2, 2017 at 4:23 PM, Luis R. Rodriguez <mcgrof@kernel.org> wrote:
-> > On Tue, Aug 01, 2017 at 07:28:20PM -0700, Kees Cook wrote:
-> >> On Tue, Aug 1, 2017 at 5:12 PM, Luis R. Rodriguez <mcgrof@kernel.org> wrote:
-> >> > On Fri, Jul 21, 2017 at 03:05:20PM +0100, Matt Redfearn wrote:
-> >> >> Commit 6d7964a722af ("kmod: throttle kmod thread limit") which was
-> >> >> merged in v4.13-rc1 broke this behaviour since the recursive modprobe is
-> >> >> no longer caught, it just ends up waiting indefinitely for the kmod_wq
-> >> >> wait queue. Hence the kernel appears to hang silently when starting
-> >> >> userspace.
-> >> >
-> >> > Indeed, the recursive issue were no longer expected to exist.
-> >>
-> >> Errr, yeah, recursive binfmt loads can still happen.
-> >>
-> >> > The *old* implementation would also prevent a set of binaries to daisy chain
-> >> > a set of 50 different binaries which require different binfmt loaders. The
-> >> > current implementation enables this and we'd just wait. There's a bound to
-> >> > the number of binfmd loaders though, so this would be bounded. If however
-> >> > a 2nd loader loaded the first binary we'd run into the same issue I think.
-> >> >
-> >> > If we can't think of a good way to resolve this we'll just have to revert
-> >> > 6d7964a722af for now.
-> >>
-> >> The weird but "normal" recursive case is usually a script calling a
-> >> script calling a misc format. Getting a chain of modprobes running,
-> >> though, seems unlikely. I *think* Matt's patch is okay, but I agree,
-> >> it'd be better for the request_module() to fail.
-> >
-> > In that case how about we just have each waiter only wait max X seconds,
-> > if the number of concurrent ongoing modprobe calls hasn't reduced by
-> > a single digit in X seconds we give up on request_module() for the
-> > module and clearly indicate what happened.
-> >
-> > Matt, can you test?
-> >
-> > Note I've used wait_event_killable_timeout() to only accept SIGKILL
-> > for now. I've seen issues wit SIGCHILD and at modprobe this could
-> > even be a bigger issue, so this would restrict the signals received
-> > *only* to SIGKILL.
-> >
-> > It would be good to come up with a simple test case for this in
-> > tools/testing/selftests/kmod/kmod.sh
-> >
-> >   Luis
-> >
-> > diff --git a/include/linux/wait.h b/include/linux/wait.h
-> > index 5b74e36c0ca8..dc19880c02f5 100644
-> > --- a/include/linux/wait.h
-> > +++ b/include/linux/wait.h
-> > @@ -757,6 +757,43 @@ extern int do_wait_intr_irq(wait_queue_head_t *, wait_queue_entry_t *);
-> >         __ret;                                                                  \
-> >  })
-> >
-> > +#define __wait_event_killable_timeout(wq_head, condition, timeout)             \
-> > +       ___wait_event(wq_head, ___wait_cond_timeout(condition),                 \
-> > +                     TASK_KILLABLE, 0, timeout,                                \
-> > +                     __ret = schedule_timeout(__ret))
-> > +
-> > +/**
-> > + * wait_event_killable_timeout - sleep until a condition gets true or a timeout elapses
-> > + * @wq_head: the waitqueue to wait on
-> > + * @condition: a C expression for the event to wait for
-> > + * @timeout: timeout, in jiffies
-> > + *
-> > + * The process is put to sleep (TASK_KILLABLE) until the
-> > + * @condition evaluates to true or a kill signal is received.
-> > + * The @condition is checked each time the waitqueue @wq_head is woken up.
-> > + *
-> > + * wake_up() has to be called after changing any variable that could
-> > + * change the result of the wait condition.
-> > + *
-> > + * Returns:
-> > + * 0 if the @condition evaluated to %false after the @timeout elapsed,
-> > + * 1 if the @condition evaluated to %true after the @timeout elapsed,
-> > + * the remaining jiffies (at least 1) if the @condition evaluated
-> > + * to %true before the @timeout elapsed, or -%ERESTARTSYS if it was
-> > + * interrupted by a kill signal.
-> > + *
-> > + * Only kill signals interrupt this process.
-> > + */
-> > +#define wait_event_killable_timeout(wq_head, condition, timeout)               \
-> > +({                                                                             \
-> > +       long __ret = timeout;                                                   \
-> > +       might_sleep();                                                          \
-> > +       if (!___wait_cond_timeout(condition))                                   \
-> > +               __ret = __wait_event_killable_timeout(wq_head,                  \
-> > +                                               condition, timeout);            \
-> > +       __ret;                                                                  \
-> > +})
-> > +
-> >
-> >  #define __wait_event_lock_irq(wq_head, condition, lock, cmd)                   \
-> >         (void)___wait_event(wq_head, condition, TASK_UNINTERRUPTIBLE, 0, 0,     \
-> > diff --git a/kernel/kmod.c b/kernel/kmod.c
-> > index 6d016c5d97c8..1b5f7bada8d2 100644
-> > --- a/kernel/kmod.c
-> > +++ b/kernel/kmod.c
-> > @@ -71,6 +71,13 @@ static atomic_t kmod_concurrent_max = ATOMIC_INIT(MAX_KMOD_CONCURRENT);
-> >  static DECLARE_WAIT_QUEUE_HEAD(kmod_wq);
-> >
-> >  /*
-> > + * If modprobe can't be called after this time we assume its very likely
-> > + * your userspace has created a recursive dependency, and we'll have no
-> > + * option but to fail.
-> > + */
-> > +#define MAX_KMOD_TIMEOUT 5
+On 08/03/2017 12:09, Fredrik Noring wrote:
+> Hi Joshua!
 > 
-> Would this mean slow (swappy) systems could start failing modprobe
-> just due to access times?
+>> 3 aug. 2017 kl. 16:25 skrev Joshua Kinard <kumba@gentoo.org>:
+>>
+>> Didn't the PS2 kernel need a lot of userland changes and a special toolchain to
+>> deal with the hybrid nature of the R5900?
+> 
+> It depends, as I understand it. R5900 implements 64-bit MIPS III except LL, SC,
+> LLD and SCD, plus many extensions. Some instructions are emulated by the
+> kernel for compatibility, see changes to arch/mips/kernel/traps.c:
+> 
+>     https://github.com/frno7/linux/blob/ps2-v3.9-rc1-974fdb3/arch/mips/kernel/traps.c#L613
 
-No, this is pre-launch and depends on *all* running kmod threads.
-The wait would *only* fail if we already hit the limit of 50 concurrent
-kmod threads running at the same time and they *all* don't finish for 5 seconds
-straight. If at any point in time any modprobe call finishes that would clear
-this and the waiting modprobe waiting would chug on. So this would only happen
-if we were maxed out busy without any return for X seconds straight with all
-kmod threads busy.
+I forgot about the lack of LL/SC on that CPU.  Those are MIPS-II instructions,
+though, so I'd think that if the R5900 is MIPS-III + some MIPS-IV, that it
+would've had LL/SC, especially since Toshiba fabbed the chip?  I wonder why
+they or Sony would've omitted those instructions.
 
-The name probably should reflect that better then, MAX_KMOD_ALL_BUSY_TIMEOUT
-maybe?
 
-  Luis
+> Since emulation is slow and R5900 has 128-bit load/store instructions, some
+> (optional) extensions were made:
+> 
+>     config R5900_128BIT_SUPPORT
+>         bool "Support for 128 bit general purpose registers”
+> 
+>     config MIPS_N32
+>         bool "Kernel support for n32 binaries”
+
+The 128-bit register support likely needs the toolchain help, since uint128_t
+has only recently shown up in gcc I think?
+
+
+> Then there is a set of hardware bugs involving NOPs to avoid short loops, SYNCs
+> for MFC0 and MTC0, etc. Several updates address these. Jürgen Urban worked on
+> both the kernel and binutils about five years ago:
+> 
+>     https://sourceware.org/ml/binutils/2012-11/msg00360.html
+> 
+> I suspect the reason it crashes on 3.9 is that some of the changes are way out
+> of synch with the rest of the kernel since 2.6.35, even if the patch applies
+> fairly easily.
+
+Am not knowledgeable here, unfortunately.  If you have a Oops report and can
+trace through a debugger and look at the underlying asm, that might highlight
+something.  I've not had a lot of luck doing that on my SGI systems though.
+
+
+>> Do you have a working userland that can run under the 3.9 kernel?
+> 
+> I started with the ”Black Rhino” (Debian) distribution and its Busybox, which
+> boots with 3.8, but I was actually hoping to get Gentoo MIPS working, as I’ve
+> seen you have stage 3 MIPS binaries. What are your thoughts on this?
+
+Could be doable.  I forget, was PS2 big -endian or little-endian?  I primarily
+work with big-endian these days due to my SGI systems.  I've got recent stage
+builds at several different ABI/ISA combos and even a working netboot
+filesystem.  Haven't had time to get kernels rolled yet (IP27 always spoils the
+fun).
+
+
+>> Last I heard, the latest kernel that would work
+>> on PS2 was a Sony-modified ~2.4.17 that was put out for some kind of
+>> specialized PS2 hardware found only in Japan.
+> 
+> I have a normal SCPH-70004 unit and as far as I understand the majority of the
+> manufactured PS2 units work (the last ones excepted). A slightly tricky part is
+> installing a boot loader (e.g. Free MC boot) on a memory card. No modifications
+> such as soldering is required.
+
+I have one of the PS2 debug machines in a closet somewhere.  Basically a normal
+PS2 with 4x RAM and says "TEST" on the side in the PS2 font.  Can't remember if
+it still works or not.
+
+And it's insanely way out of date for modern Gentoo (by ~14 years), but I keep
+an archive of the original attempt to run Gentoo on a PS2 from ~2003 here:
+http://dev.gentoo.org/~kumba/mips/ps2/gentoo-ps2/
+
+The "ps2dev.diff.bz2" patch might be of interest, as it has the changes for the
+toolchain in it.
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

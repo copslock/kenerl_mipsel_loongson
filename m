@@ -1,125 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 17:59:34 +0200 (CEST)
-Received: from mail-wm0-x234.google.com ([IPv6:2a00:1450:400c:c09::234]:38264
-        "EHLO mail-wm0-x234.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23995096AbdHDP7Sr7L51 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 17:59:18 +0200
-Received: by mail-wm0-x234.google.com with SMTP id m85so23449797wma.1
-        for <linux-mips@linux-mips.org>; Fri, 04 Aug 2017 08:59:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 18:41:19 +0200 (CEST)
+Received: from mail-by2nam01on0050.outbound.protection.outlook.com ([104.47.34.50]:37184
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23995096AbdHDQlMXxi0a (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Aug 2017 18:41:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=+76tjrzCyGxtsWyGV1LLyoHKgiJjdzaNlPLKaHO2MhM=;
-        b=NUZlacrkQcY12gPBVar1q9bMYYsrFrn0jQ0LMwWWCc4KLGyAxUXJeAZvUziTkewjY3
-         jZ3m91kWHOm/Ssu8MUu/hKDSyFIeadTMtfFuRPW5wLQR5CT731hEuOh1CGBIM0TINJTL
-         lBrsBrkZFykFzM2waJqBKNKFIAmT39ASNcuUuYfqf6kPwofCrMVtx1sIK6gX/0nj5hv9
-         88ysQB3yMUgqNtTi3XC8A51XXJpzXNNOe7fHjeqHncuadls371Vdkl3Q8zYtHR9OEwBC
-         yz26yhIpdidg0hZL2pX3xQz62Jh+8/lbASVdyYgCfzB0cuBUtmCfFOjjcCsN4C2FZ3vH
-         +0YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=+76tjrzCyGxtsWyGV1LLyoHKgiJjdzaNlPLKaHO2MhM=;
-        b=nZPx0j//Z3SMMl2lzMvTUhXoslr9NJqyKNUNm5WRKad7001Vh7eCNkdAoSfV7tTNmY
-         nF2NZ3ogLAqTn1LMGID92TS49uPr67su9Q8qRc+FADi3mQAA4SII0aa1e7i0cMcRXrc4
-         CwddCDqR+PTzDjZ3vky8vFh1S29DUtDb90PXp2qyOml4X4qHgbnnQe8hWAu9e4Tfd8t9
-         Sxpz8SEwXkS0f/1MOWZDlVtFKjuKYbkfuWkbhlHs83Z5JwWTsQiikKhZ3pIdRMb1uRoa
-         Jhbj+QSvD4EtowNoQglUB8xPu0TEggVFY51pErZc+X7+D99nMG3rYQ8O0Ch4jkEq3kEg
-         iaBA==
-X-Gm-Message-State: AHYfb5j48+g1rXmvDIxVal2c4lAl1Y4rqkHu8aUaVVW+FzLXUGtu/s5J
-        9aRKtsPGoDFNeoWR
-X-Received: by 10.28.57.4 with SMTP id g4mr1578342wma.170.1501862348224;
-        Fri, 04 Aug 2017 08:59:08 -0700 (PDT)
-Received: from [192.168.1.21] ([90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id m77sm4849063wmd.21.2017.08.04.08.59.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 04 Aug 2017 08:59:07 -0700 (PDT)
-Subject: Re: [PATCH] mtd: nand: Rename nand.h into rawnand.h
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Peter Pan <peterpandong@micron.com>,
-        Jonathan Corbet <corbet@lwn.net>, Sekhar Nori <nsekhar@ti.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@free-electrons.com>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Steven Miao <realmz6@gmail.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Josh Wu <rainyfeeling@outlook.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Han Xu <han.xu@nxp.com>,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
-        linux-mediatek@lists.infradead.org,
-        linux-oxnas@lists.tuxfamily.org, linuxppc-dev@lists.ozlabs.org,
-        devel@driverdev.osuosl.org
-References: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Organization: Baylibre
-Message-ID: <c1b8cd3f-2db8-6f9f-286f-28992c8b5a8d@baylibre.com>
-Date:   Fri, 4 Aug 2017 17:59:04 +0200
+ d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=vPT9WFX0tDkxlazMB+MVOreYqtloXBBkD+tyRaA9sc8=;
+ b=M36Yuqym0BEdlERnqtArAQ2GPst2zvgyrWdmxGjZbeFJ6b7LqQGFvqKQTVOAJopApvcNmBtqWX6FDnSnCMaFLDy4BBTJfrgGuAzltdYG/hVYtirF01Le/Jl32pz5hp/lzPvMwxNXFsHF0rOfmc0scSKI/ily6aygEI+V32yEoMU=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=David.Daney@cavium.com; 
+Received: from ddl.caveonetworks.com (50.233.148.156) by
+ MWHPR07MB3504.namprd07.prod.outlook.com (10.164.192.31) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
+ 15.1.1304.22; Fri, 4 Aug 2017 16:41:04 +0000
+Subject: Re: [PATCH] mips: octeon: unselect NR_CPUS_DEFAULT_16
+To:     James Hogan <james.hogan@imgtec.com>,
+        Yang Shi <yang.shi@windriver.com>
+Cc:     "david.daney@cavium.com" <david.daney@cavium.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+References: <1455926968-12779-1-git-send-email-yang.shi@windriver.com>
+ <20170804132718.GY31455@jhogan-linux.le.imgtec.org>
+From:   David Daney <ddaney@caviumnetworks.com>
+Message-ID: <dde7b389-73c6-b218-914c-0b4d76b34a75@caviumnetworks.com>
+Date:   Fri, 4 Aug 2017 09:41:00 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20170804132718.GY31455@jhogan-linux.le.imgtec.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Return-Path: <narmstrong@baylibre.com>
+X-Originating-IP: [50.233.148.156]
+X-ClientProxiedBy: BY2PR07CA0021.namprd07.prod.outlook.com (10.166.107.16) To
+ MWHPR07MB3504.namprd07.prod.outlook.com (10.164.192.31)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: dbd5e479-89a9-49a5-522b-08d4db579931
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(2017030254152)(300000503095)(300135400095)(201703131423075)(201703031133081)(201702281549075)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:MWHPR07MB3504;
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;3:ZjbYEL0W+Y2d1aiP4fn3pu67491EauWOKws8uDafnnxGk6O8c7WF30y+bJGDiQH/Ci+enLUz4ntRiXEiapYCIvB879AQCGoCN5enAtp4eRVtOLJUKO9cqq+Ct6a5ux9+7kys5Bu/Kht9XTTY5gJQnBwRe7AjzsXfToPD2BqP8Knwp7/6QzWEaglWXqvFM+hrK6POn4pxpuUayNO/3CD+HcLiZrYIqq2uvRDvnj0/GYIocXhO/V0jXcAk44PmrAJJ;25:eE4sTkeLkZpax7v+hwyuA53B+4h6dN3hQbZzZTKTjpILK9dtgLsBIdxEbGmYkD8aDJaMG0xLzOaLrJ3ZRKgbCjErxbg1WXodEwjnrsYpMpj/9wOKQWQooque39il0C7aeuG86ROJ9HfucEb2GY2PnCWclzvu2PJOU+U7pivzkpLCRMaSUAA86uVFkf3FJ7I8TeB1etD6lekpcp/79ZP9fp1zMSW9QHHumAH7PZnCB8bQIG5e2ROl8O4kPd0kzwCFqKRRcYe7e1VE9zvk7lJ0NHJopjM1npC8O1URaIdGhaqQ0WxhA1HCpxVN4Na9z1v//VvXD+Dhnb3l3M4rmi9csg==;31:IFth4d3aBxnZZ/YJvJ0n66l84zCybyOoXNv6EHM+o6szNOFuTrsBiYNCtDZy8564Ch56kjCPs7EMge3lIjOu2P+XiOpps+arGuTcfmgFa8Cs5vU+UU5FTlcHo5t0QDQwqfNfGSoDiV//c4wB5xqxuBaHvej0MOTeyT+Og5l27fhRSGliCzVmKR9FjehIz6uc8vzFhEwoHbIJQcZUoYO1fpeu2ohnlTm41KZ3C60NaHo=
+X-MS-TrafficTypeDiagnostic: MWHPR07MB3504:
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;20:1RiNdWSQAYUTwN0WlOVrrhzBgZEfEDIz/dlT0aTx5roj21/k30+ZK+wnp0iCUhwjWNRanbH8ccGWbnQkSiITYYuOJZIL5Xz1/GhPq33GUdSm5MM5DXftVr9+zSEodnBrjpDGehk47vnBX7JGOQVkmhUmSt5KZmPrfRMTfHCZbPBR3PWUB1lJRMC6MPh79VisdavA1ul/AvpEfky3NHSzSU5ZDR50F18xwHqcr3tv8VZ1yvIgTZ8jf8Nwep9UmIHq9hztoR6JS/v/r/b9coSroD+m4WA6bCrg0pf4r87HxKsB9OMObOv7+Y43x9r0v5vchG6aDnk2b9v8RXzwMCdsGdWp6h6Y3FhRjiIWO8pMLIum9vYHOncE3qOSb1ar4CBj4gsjpAX+NhRetEwPTjBGwuwbB+KA95luZjbkbMCBAjitNIBHw4b3XlqhKiIS8Qs0nInbHzJl+Y6+jkuU45vJLExxkS0xp9h2aZagZp/CDS5O6FAdqwp4Y26LetR5cBuXOtI/sYMmp0pwuAwY7Tqt+IMtuKLziUm1WI82pz7E3HkTa8QrETk8YSdrbh0Hpw8/VTZJ665Cc3miGx3qIuvc37540FejpemqQuwL4uBFBqE=;4:JyrUPxzxrVUm76zZUEFslYT1jbx7BR02zzROOpUUDj7qSIhA9+YT0WgJOgJkaY5BsB5UM2uwkU4C4NAPMsftIv2UrZ4auwC/uFxgrGjyHapBDOXARFcgugTiBsniUs8aXSP8SJdvf616iGok6dmemb7j6OiYLzg9GKXT02DspAJU1OGxURqliNQsHWyHawEpBbpG9iaYNZGCryZf7gX44K9h4Z3/BM0qGVAocpBIpcQZojHBMaI6SMccQwUxMwr1
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Microsoft-Antispam-PRVS: <MWHPR07MB35049E16B81B4E6960AFF9FA97B60@MWHPR07MB3504.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(5005006)(8121501046)(3002001)(10201501046)(93006095)(100000703101)(100105400095)(6041248)(20161123562025)(20161123555025)(20161123558100)(20161123560025)(20161123564025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(6072148)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:MWHPR07MB3504;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:MWHPR07MB3504;
+X-Forefront-PRVS: 0389EDA07F
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(7370300001)(6009001)(39400400002)(39410400002)(39840400002)(39850400002)(39450400003)(199003)(189002)(377454003)(24454002)(50986999)(6246003)(54356999)(54906002)(5660300001)(25786009)(23676002)(33646002)(6512007)(478600001)(50466002)(53416004)(64126003)(69596002)(4001350100001)(3846002)(101416001)(76176999)(65826007)(83506001)(7736002)(53546010)(42186005)(8676002)(81166006)(31686004)(81156014)(4326008)(305945005)(97736004)(31696002)(42882006)(6486002)(6116002)(2950100002)(6506006)(68736007)(2906002)(65956001)(65806001)(66066001)(230700001)(47776003)(189998001)(6666003)(53936002)(105586002)(72206003)(36756003)(7350300001)(106356001)(229853002)(38730400002)(15760500002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR07MB3504;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+Received-SPF: None (protection.outlook.com: cavium.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtNV0hQUjA3TUIzNTA0OzIzOk1ybVAra1NVcWJQR1ZpSmhsei9adW13Tlgy?=
+ =?utf-8?B?MHZhejN6bDU3b1I4R3NHTWFIZ05YYnZGdEd0SDluU2h0VVNtYUFERDNWMStR?=
+ =?utf-8?B?RXZWNG91UHV2OG1HeENLV2xzMHV5aVlPaVBiNUUzL2svL21iWXVGZThza1Vp?=
+ =?utf-8?B?REpwNzRoVm9JL1hSWk5ldFhBUHlOSjJnQlEwOFNjNEZHd3BDQkFOSXZSYnNh?=
+ =?utf-8?B?RERxRDZrTU5kM2VLUER5azA0azFGdDZ4TUJtSlpDV2xWRVh6TisxZ3dmbXBJ?=
+ =?utf-8?B?a2t0NUEzWkNSM2FwOWNvUlJreFZDTFB1Znc5ZjhRRGhZT1FVeDE0OHVFMHRN?=
+ =?utf-8?B?T3p5RWF6czE5VE5LdWNmV0FVbmhSSjgvSzlRT1F0OHF6YTY1WlhrV3lRMHQ2?=
+ =?utf-8?B?UDZKUkxkWHdXRU1jWFlOQXoxc2ppTVlGalBCSSszbmtsajlEL0xzMFR0VXV0?=
+ =?utf-8?B?Q2NUVE9uSG11MVdER1doSmhyQlJhT3lIa25mSjVYNThmcHdMeGpzczI0MzFX?=
+ =?utf-8?B?eStLa2d2Y3pzM3NsU0RBaEVXaTZSQmJReFZXMEcrRG5xaW5ydU5ZYzlXU3VO?=
+ =?utf-8?B?bGgwakRTaDN6UUtqUnNzS1cwUEh0dDNpMHdDNHVlMzEzMHU3ZWs5V0RuUjFC?=
+ =?utf-8?B?em5YSFZKcHd4YllMeVJzd2U5U1F1RVRiYUc2RVR4NG0waGUxZGU0c01OV0Iz?=
+ =?utf-8?B?K3ZXODZNMGE0Y3lJdG9PcWQrc2hHTUFHOUpLaGlaeWtzUjBhSkxkSVNQMjJj?=
+ =?utf-8?B?dUhZYS9kRXhMMHcrdmZvcHpseUtRUTZoTHdZNnJweDZsMTl6UVFTOE44OUZN?=
+ =?utf-8?B?RWN6UiswTnpkeThtY0o5dzczOFhsUG1QVDJuNDROZXROUnpwN1ZZN3VJa3B2?=
+ =?utf-8?B?eERacWlva240VlZQUEZQNjg0Y2xMdUFKYmYwTjJMekJCZVlXNm0vT3ZGTTJY?=
+ =?utf-8?B?UHFIRXhGSWVyd21EdkhBcEdRNHpVZ1F1MXBIcXBRQlh0QVhWTDNTZnJraDVX?=
+ =?utf-8?B?SVV1ZzRwcG5xV00wdWpBVDZkQnBsWGdjYTBvaWVxOEFLUXNuYU5icmRRSEdQ?=
+ =?utf-8?B?Y2d1UEY3ZE9VNFcvcTBidmZSNHZNeHBhMitLVGNPQ3U1RVRZSks5VDZpZEYy?=
+ =?utf-8?B?eDVFZ00vcThSUkRQcTU3OERyd295UkFMKzY1Qk5kY3crMnV2c1BreW9BU2xk?=
+ =?utf-8?B?Z1FoRHpWNm5ZUnVzcFM4YmNScFJBRTRaNHM5QVNQYnlhZUZhektPanF1TkRi?=
+ =?utf-8?B?b1ZMcmJuYnB1dnRmSEZhTVp6V1VYM3VDVm1BUWpWbUlRMWp5NG5KNXozcldm?=
+ =?utf-8?B?dkh1ZElCbzRwMzd4MWVwKzdRNjVpMjVUNjFSZUQ3ZkFnbXVHTTByQUN5aFpF?=
+ =?utf-8?B?SnJCZ2hVVUlZU1k5alVaZHgyT0R3Tmd1WkFVbGorMDg2VXBvTisxbXBCbzg3?=
+ =?utf-8?B?bjdtK1hkaWR0aG5oT1hUK1VVU0FidTNIek9lTzFEY3ozeDZWSE9PMzlnM09S?=
+ =?utf-8?B?S2VkbTZXMjNnamVNU3JXTi82UUtBeFZUTEdFV3ZwdEQ1MVZKNXVLVm9WZ3Ur?=
+ =?utf-8?B?L2VWaC9CalBtcXplVG1DL043bStWUW1UUDF1L1loOXZrMnFhUHdnQ09WZFpN?=
+ =?utf-8?B?aWNlODZ5QTNJalNPcXJyalRja0dydndqcHY5Ni9mOGpHaStEcmE4MDJqdzZL?=
+ =?utf-8?B?UVRHZWdxUG1INGsxa1dqZ3FJVEd5UkdpM1QyYmJIS2txSzcreGFYZTUvclpG?=
+ =?utf-8?B?SUJVSkZ0TmpLYXIvZFBUY0xaSXg1TUhxanNnOCtuZTVQTnpZN2JlYlcwRWE2?=
+ =?utf-8?B?ei9ibXBvTDlWL0JSZk1ZYWZEZWg3T2t6UXU1aXFGVGs1ZENEMWRuWDNnY2Qw?=
+ =?utf-8?B?OTMwSE45UHMvYWlPQjhCMTFNMGZNaDFSRWFIQXNtVm1RT2VJRWU2ZEFvOG95?=
+ =?utf-8?B?TnVzcFIzQWhUcGVEaXdqWC9MNDFoWGNOcnFhK1diWXJPRHprRUFDYVc0c1pX?=
+ =?utf-8?B?bzZjRkhCQlZDTVhoc1d1ZlpiNlEzS1k4YkhYMmhCZ3I4YU9Sbm5qT1kvYk43?=
+ =?utf-8?B?eE5zOUtjYysyeUhwMzNSMndGdm5BK2Rxb3F1S3FaVytiRFBYWVhmK2gyU2FW?=
+ =?utf-8?Q?vit1C7UOoI2A8OroIR2t0VhiXW5wJdoa2CUCEKG+llg8?=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;6:ZjMhoZSGsyqI10asyy5hxFeINnUSqn1nEp/9pk0BllqgXWnun0jGUkIlZh2mgjq+DGc9eI54YciRAKDGn/GQsMHCzPWkVsccUi229a13qVHZjuwyXGKJBIi4Rpvf1erapwDUemngBHN/oTALS2E8JhU8pAsQrgsotjk6Ms13Ki5RQyVtbMN7qMC59c12U6K9aLlfWcP/fhF3nglZsQ5FJxzx5DyRSo9Oito5ykRSUozfSoWJYM5COMBA6mcIFPPMX5KJ+jatAMwN8o/pO7TC6512MieOEtfLBkuhnArz13NPEI1ZWuptPGCRiW48ojQXgCFtm2bfit0iKJ6Bm+ootA==;5:Btr4LRw4dqTs0h5FdwHJlEvC7zTdaYndkEJaT+Ltsx5G1E3sDKoihV2IsMPXu9TPmHpqEVcCpn5EgQCNQqt9JUtJksQMjzGDDwk3yWods6sY/Jg8Oix2imx3cGeIgxp8CDRYtpyTdR/jzwG2rIfoGg==;24:NByz4ZV2qP60jwZkbulxBfrmU7Jcy9ZNN3aXVjcENMNC9DHoBNCPsHjdi8NahQokEGqQcNPb5+A5PN70kcVZNsSIxUagGc+HlMY8OM1a8Pw=;7:I9UdrXY7+X4bh+/bN7mBE60WqzqunPlTPB8l/JDPIJH1oKW3aR1fBjvX86epbaB5TxF7v5z/ZgNy2+3e2tCC783aLMNn2CjG/klitCfg0bO2SzVIQsuIkq+yKTRgCoMrx6g7UDunOe2lp7a4uym10sMwjDHVxo0ZKyjkLlm0Ht01tyAQGuWc8TBdb6sAWTMisZxQo5axPoMhSz1Bjw/Ka55ZbhbFhYc24hXs6KRfLvU=
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: caviumnetworks.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2017 16:41:04.0179 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB3504
+Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59370
+X-archive-position: 59371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: narmstrong@baylibre.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -132,238 +114,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/04/2017 05:29 PM, Boris Brezillon wrote:
-> We are planning to share more code between different NAND based
-> devices (SPI NAND, OneNAND and raw NANDs), but before doing that
-> we need to move the existing include/linux/mtd/nand.h file into
-> include/linux/mtd/rawnand.h so we can later create a nand.h header
-> containing all common structure and function prototypes.
+On 08/04/2017 06:27 AM, James Hogan wrote:
+> On Sat, Feb 20, 2016 at 12:09:28AM +0000, Yang Shi wrote:
+>> In the octeon defconfig, NR_CPUS is 32. And, some model of OCTEON II do have
+>>> 16 cores. Given the typical memory size equipped by Octeon boards, it sounds
+>> like not a big deal to set a bigger NR_CPUS value as default.
+>>
+>> Signed-off-by: Yang Shi <yang.shi@windriver.com>
+>> ---
+>>   arch/mips/Kconfig | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index ab433d3..a885156 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -885,7 +885,6 @@ config CAVIUM_OCTEON_SOC
+>>          select USE_OF
+>>          select ARCH_SPARSEMEM_ENABLE
+>>          select SYS_SUPPORTS_SMP
+>> -       select NR_CPUS_DEFAULT_16
 > 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> Signed-off-by: Peter Pan <peterpandong@micron.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Sekhar Nori <nsekhar@ti.com>
-> Cc: Kevin Hilman <khilman@kernel.org>
-> Cc: Jason Cooper <jason@lakedaemon.net>
-> Cc: Andrew Lunn <andrew@lunn.ch>
-> Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> Cc: Gregory Clement <gregory.clement@free-electrons.com>
-> Cc: Hartley Sweeten <hsweeten@visionengravers.com>
-> Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <kernel@pengutronix.de>
-> Cc: Fabio Estevam <fabio.estevam@nxp.com>
-> Cc: Imre Kaloz <kaloz@openwrt.org>
-> Cc: Krzysztof Halasa <khalasa@piap.pl>
-> Cc: Eric Miao <eric.y.miao@gmail.com>
-> Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Alexander Clouter <alex@digriz.org.uk>
-> Cc: Daniel Mack <daniel@zonque.org>
-> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-> Cc: Marek Vasut <marek.vasut@gmail.com>
-> Cc: Kukjin Kim <kgene@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Simtec Linux Team <linux@simtec.co.uk>
-> Cc: Steven Miao <realmz6@gmail.com>
-> Cc: Mikael Starvik <starvik@axis.com>
-> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Wenyou Yang <wenyou.yang@atmel.com>
-> Cc: Josh Wu <rainyfeeling@outlook.com>
-> Cc: Kamal Dasu <kdasu.kdev@gmail.com>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Han Xu <han.xu@nxp.com>
-> Cc: Harvey Hunt <harveyhuntnexus@gmail.com>
-> Cc: Vladimir Zapolskiy <vz@mleia.com>
-> Cc: Sylvain Lemieux <slemieux.tyco@gmail.com>
-> Cc: Matthias Brugger <matthias.bgg@gmail.com>
-> Cc: Wan ZongShun <mcuos.com@gmail.com>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-> Cc: Maxim Levitsky <maximlevitsky@gmail.com>
-> Cc: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: adi-buildroot-devel@lists.sourceforge.net
-> Cc: linux-cris-kernel@axis.com
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: linux-mediatek@lists.infradead.org
-> Cc: linux-oxnas@lists.tuxfamily.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: devel@driverdev.osuosl.org
-> ---
-> Hi All,
-> 
-> Sorry for the huge Cc list, but I'd like to collect as much acks as
-> possible for this patch which is actually part of a bigger series [1].
-> 
-> Note that there's nothing complicated here, it's just a mechanical
-> s/nand\.h/rawnand\.h/ replacement, but it impacts several architectures,
-> the doc and staging directories.
-> 
-> Regards,
-> 
-> Boris
-> 
-> [1]https://lwn.net/Articles/723694/
-> ---
->  Documentation/driver-api/mtdnand.rst            | 8 ++++----
->  MAINTAINERS                                     | 2 +-
->  arch/arm/mach-davinci/board-da850-evm.c         | 2 +-
->  arch/arm/mach-davinci/board-dm355-evm.c         | 2 +-
->  arch/arm/mach-davinci/board-dm355-leopard.c     | 2 +-
->  arch/arm/mach-davinci/board-dm365-evm.c         | 2 +-
->  arch/arm/mach-davinci/board-dm644x-evm.c        | 2 +-
->  arch/arm/mach-davinci/board-dm646x-evm.c        | 2 +-
->  arch/arm/mach-davinci/board-sffsdr.c            | 2 +-
->  arch/arm/mach-dove/dove-db-setup.c              | 2 +-
->  arch/arm/mach-ep93xx/snappercl15.c              | 2 +-
->  arch/arm/mach-ep93xx/ts72xx.c                   | 2 +-
->  arch/arm/mach-imx/mach-qong.c                   | 2 +-
->  arch/arm/mach-ixp4xx/ixdp425-setup.c            | 2 +-
->  arch/arm/mach-mmp/aspenite.c                    | 2 +-
->  arch/arm/mach-omap1/board-fsample.c             | 2 +-
->  arch/arm/mach-omap1/board-h2.c                  | 2 +-
->  arch/arm/mach-omap1/board-h3.c                  | 2 +-
->  arch/arm/mach-omap1/board-nand.c                | 2 +-
->  arch/arm/mach-omap1/board-perseus2.c            | 2 +-
->  arch/arm/mach-orion5x/db88f5281-setup.c         | 2 +-
->  arch/arm/mach-orion5x/kurobox_pro-setup.c       | 2 +-
->  arch/arm/mach-orion5x/ts209-setup.c             | 2 +-
->  arch/arm/mach-orion5x/ts78xx-setup.c            | 2 +-
->  arch/arm/mach-pxa/balloon3.c                    | 2 +-
->  arch/arm/mach-pxa/em-x270.c                     | 2 +-
->  arch/arm/mach-pxa/eseries.c                     | 2 +-
->  arch/arm/mach-pxa/palmtx.c                      | 2 +-
->  arch/arm/mach-pxa/tosa.c                        | 2 +-
->  arch/arm/mach-s3c24xx/common-smdk.c             | 2 +-
->  arch/arm/mach-s3c24xx/mach-anubis.c             | 2 +-
->  arch/arm/mach-s3c24xx/mach-at2440evb.c          | 2 +-
->  arch/arm/mach-s3c24xx/mach-bast.c               | 2 +-
->  arch/arm/mach-s3c24xx/mach-gta02.c              | 2 +-
->  arch/arm/mach-s3c24xx/mach-jive.c               | 2 +-
->  arch/arm/mach-s3c24xx/mach-mini2440.c           | 2 +-
->  arch/arm/mach-s3c24xx/mach-osiris.c             | 2 +-
->  arch/arm/mach-s3c24xx/mach-qt2410.c             | 2 +-
->  arch/arm/mach-s3c24xx/mach-rx3715.c             | 2 +-
->  arch/arm/mach-s3c24xx/mach-vstms.c              | 2 +-
->  arch/blackfin/mach-bf537/boards/dnp5370.c       | 2 +-
->  arch/blackfin/mach-bf537/boards/stamp.c         | 2 +-
->  arch/blackfin/mach-bf561/boards/acvilon.c       | 2 +-
->  arch/cris/arch-v32/drivers/mach-a3/nandflash.c  | 2 +-
->  arch/cris/arch-v32/drivers/mach-fs/nandflash.c  | 2 +-
->  arch/mips/alchemy/devboards/db1200.c            | 2 +-
->  arch/mips/alchemy/devboards/db1300.c            | 2 +-
->  arch/mips/alchemy/devboards/db1550.c            | 2 +-
->  arch/mips/include/asm/mach-jz4740/jz4740_nand.h | 2 +-
->  arch/mips/netlogic/xlr/platform-flash.c         | 2 +-
->  arch/mips/pnx833x/common/platform.c             | 2 +-
->  arch/mips/rb532/devices.c                       | 2 +-
->  arch/sh/boards/mach-migor/setup.c               | 2 +-
->  drivers/mtd/inftlcore.c                         | 2 +-
->  drivers/mtd/nand/ams-delta.c                    | 2 +-
->  drivers/mtd/nand/atmel/nand-controller.c        | 2 +-
->  drivers/mtd/nand/atmel/pmecc.c                  | 2 +-
->  drivers/mtd/nand/au1550nd.c                     | 2 +-
->  drivers/mtd/nand/bcm47xxnflash/bcm47xxnflash.h  | 2 +-
->  drivers/mtd/nand/bf5xx_nand.c                   | 2 +-
->  drivers/mtd/nand/brcmnand/brcmnand.c            | 2 +-
->  drivers/mtd/nand/cafe_nand.c                    | 2 +-
->  drivers/mtd/nand/cmx270_nand.c                  | 2 +-
->  drivers/mtd/nand/cs553x_nand.c                  | 2 +-
->  drivers/mtd/nand/davinci_nand.c                 | 2 +-
->  drivers/mtd/nand/denali.h                       | 2 +-
->  drivers/mtd/nand/diskonchip.c                   | 2 +-
->  drivers/mtd/nand/docg4.c                        | 2 +-
->  drivers/mtd/nand/fsl_elbc_nand.c                | 2 +-
->  drivers/mtd/nand/fsl_ifc_nand.c                 | 2 +-
->  drivers/mtd/nand/fsl_upm.c                      | 2 +-
->  drivers/mtd/nand/fsmc_nand.c                    | 2 +-
->  drivers/mtd/nand/gpio.c                         | 2 +-
->  drivers/mtd/nand/gpmi-nand/gpmi-nand.h          | 2 +-
->  drivers/mtd/nand/hisi504_nand.c                 | 2 +-
->  drivers/mtd/nand/jz4740_nand.c                  | 2 +-
->  drivers/mtd/nand/jz4780_nand.c                  | 2 +-
->  drivers/mtd/nand/lpc32xx_mlc.c                  | 2 +-
->  drivers/mtd/nand/lpc32xx_slc.c                  | 2 +-
->  drivers/mtd/nand/mpc5121_nfc.c                  | 2 +-
->  drivers/mtd/nand/mtk_nand.c                     | 2 +-
->  drivers/mtd/nand/mxc_nand.c                     | 2 +-
->  drivers/mtd/nand/nand_amd.c                     | 2 +-
->  drivers/mtd/nand/nand_base.c                    | 2 +-
->  drivers/mtd/nand/nand_bbt.c                     | 2 +-
->  drivers/mtd/nand/nand_bch.c                     | 2 +-
->  drivers/mtd/nand/nand_ecc.c                     | 2 +-
->  drivers/mtd/nand/nand_hynix.c                   | 2 +-
->  drivers/mtd/nand/nand_ids.c                     | 2 +-
->  drivers/mtd/nand/nand_macronix.c                | 2 +-
->  drivers/mtd/nand/nand_micron.c                  | 2 +-
->  drivers/mtd/nand/nand_samsung.c                 | 2 +-
->  drivers/mtd/nand/nand_timings.c                 | 2 +-
->  drivers/mtd/nand/nand_toshiba.c                 | 2 +-
->  drivers/mtd/nand/nandsim.c                      | 2 +-
->  drivers/mtd/nand/ndfc.c                         | 2 +-
->  drivers/mtd/nand/nuc900_nand.c                  | 2 +-
->  drivers/mtd/nand/omap2.c                        | 2 +-
->  drivers/mtd/nand/orion_nand.c                   | 2 +-
->  drivers/mtd/nand/oxnas_nand.c                   | 2 +-
->  drivers/mtd/nand/pasemi_nand.c                  | 2 +-
->  drivers/mtd/nand/plat_nand.c                    | 2 +-
->  drivers/mtd/nand/pxa3xx_nand.c                  | 2 +-
->  drivers/mtd/nand/qcom_nandc.c                   | 2 +-
->  drivers/mtd/nand/r852.h                         | 2 +-
->  drivers/mtd/nand/s3c2410.c                      | 2 +-
->  drivers/mtd/nand/sh_flctl.c                     | 2 +-
->  drivers/mtd/nand/sharpsl.c                      | 2 +-
->  drivers/mtd/nand/sm_common.c                    | 2 +-
->  drivers/mtd/nand/socrates_nand.c                | 2 +-
->  drivers/mtd/nand/sunxi_nand.c                   | 2 +-
->  drivers/mtd/nand/tango_nand.c                   | 2 +-
->  drivers/mtd/nand/tmio_nand.c                    | 2 +-
->  drivers/mtd/nand/txx9ndfmc.c                    | 2 +-
->  drivers/mtd/nand/vf610_nfc.c                    | 2 +-
->  drivers/mtd/nand/xway_nand.c                    | 2 +-
->  drivers/mtd/nftlcore.c                          | 2 +-
->  drivers/mtd/nftlmount.c                         | 2 +-
->  drivers/mtd/ssfdc.c                             | 2 +-
->  drivers/mtd/tests/nandbiterrs.c                 | 2 +-
->  drivers/staging/mt29f_spinand/mt29f_spinand.c   | 2 +-
->  fs/jffs2/wbuf.c                                 | 2 +-
->  include/linux/mtd/nand-gpio.h                   | 2 +-
->  include/linux/mtd/{nand.h => rawnand.h}         | 8 +++-----
->  include/linux/mtd/sh_flctl.h                    | 2 +-
->  include/linux/mtd/sharpsl.h                     | 2 +-
->  include/linux/platform_data/mtd-davinci.h       | 2 +-
->  include/linux/platform_data/mtd-nand-s3c2410.h  | 2 +-
->  128 files changed, 133 insertions(+), 135 deletions(-)
->  rename include/linux/mtd/{nand.h => rawnand.h} (99%)
-> 
-[...]
-> diff --git a/drivers/mtd/nand/oxnas_nand.c b/drivers/mtd/nand/oxnas_nand.c
-> index 7061bb2923b4..d649d5944826 100644
-> --- a/drivers/mtd/nand/oxnas_nand.c
-> +++ b/drivers/mtd/nand/oxnas_nand.c
-> @@ -21,7 +21,7 @@
->  #include <linux/clk.h>
->  #include <linux/reset.h>
->  #include <linux/mtd/mtd.h>
-> -#include <linux/mtd/nand.h>
-> +#include <linux/mtd/rawnand.h>
->  #include <linux/mtd/partitions.h>
->  #include <linux/of.h>
->  
-[...]
+> So should this select NR_CPUS_DEFAULT_32 instead?
 
-For oxnas_nand.c :
-Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+
+There are OCTEON systems today with 96 CPUs, so something 96 or greater 
+would let us avoid changing this more than once.
+
+David Daney
+
+
+> 
+> Cheers
+> James
+> 
+>>          select BUILTIN_DTB
+>>          select MTD_COMPLEX_MAPPINGS
+>>          help
+>> --
+>> 2.0.2
+>>
+>>

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 17:29:35 +0200 (CEST)
-Received: from mail.free-electrons.com ([62.4.15.54]:59441 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 17:30:01 +0200 (CEST)
+Received: from mail.free-electrons.com ([62.4.15.54]:59469 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23995089AbdHDP3Zkt1B1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 17:29:25 +0200
+        by eddie.linux-mips.org with ESMTP id S23995090AbdHDP30CRIL1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 17:29:26 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 7BD0221F09; Fri,  4 Aug 2017 17:29:16 +0200 (CEST)
+        id 9173921F05; Fri,  4 Aug 2017 17:29:17 +0200 (CEST)
 Received: from localhost.localdomain (LStLambert-657-1-97-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 2CA9621EB0;
-        Fri,  4 Aug 2017 17:29:15 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 5434521EB6;
+        Fri,  4 Aug 2017 17:29:16 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         Richard Weinberger <richard@nod.at>,
@@ -72,9 +72,11 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         linux-oxnas@lists.tuxfamily.org, linuxppc-dev@lists.ozlabs.org,
         devel@driverdev.osuosl.org
 Subject: [PATCH] mtd: nand: Rename nand.h into rawnand.h
-Date:   Fri,  4 Aug 2017 17:29:09 +0200
-Message-Id: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
+Date:   Fri,  4 Aug 2017 17:29:10 +0200
+Message-Id: <1501860550-16506-2-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
+References: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -82,7 +84,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59366
+X-archive-position: 59367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

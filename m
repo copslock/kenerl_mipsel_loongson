@@ -1,100 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 20:22:46 +0200 (CEST)
-Received: from mleia.com ([178.79.152.223]:58221 "EHLO mail.mleia.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23995095AbdHDSWgx3-Bp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Aug 2017 20:22:36 +0200
-Received: from mail.mleia.com (localhost [127.0.0.1])
-        by mail.mleia.com (Postfix) with ESMTP id B44C33BFD75;
-        Fri,  4 Aug 2017 19:22:35 +0100 (BST)
-Received: from [192.168.0.103] (unknown [93.185.26.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.mleia.com (Postfix) with ESMTPSA id 78EDC3BC07D;
-        Fri,  4 Aug 2017 19:22:27 +0100 (BST)
-Subject: Re: [PATCH] mtd: nand: Rename nand.h into rawnand.h
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-References: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
- <1501860550-16506-2-git-send-email-boris.brezillon@free-electrons.com>
-Cc:     Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Peter Pan <peterpandong@micron.com>,
-        Jonathan Corbet <corbet@lwn.net>, Sekhar Nori <nsekhar@ti.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@free-electrons.com>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Steven Miao <realmz6@gmail.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Josh Wu <rainyfeeling@outlook.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Han Xu <han.xu@nxp.com>,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
-        linux-mediatek@lists.infradead.org,
-        linux-oxnas@lists.tuxfamily.org, linuxppc-dev@lists.ozlabs.org,
-        devel@driverdev.osuosl.org
-From:   Vladimir Zapolskiy <vz@mleia.com>
-Message-ID: <5e849e7d-37ff-d1f6-5451-9954f89667ae@mleia.com>
-Date:   Fri, 4 Aug 2017 21:22:17 +0300
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101
- Icedove/45.1.0
-MIME-Version: 1.0
-In-Reply-To: <1501860550-16506-2-git-send-email-boris.brezillon@free-electrons.com>
-Content-Type: text/plain; charset=utf-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Aug 2017 20:24:30 +0200 (CEST)
+Received: from shards.monkeyblade.net ([184.105.139.130]:57550 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23995095AbdHDSYWJ0ebm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Aug 2017 20:24:22 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6C49812125303;
+        Fri,  4 Aug 2017 11:24:15 -0700 (PDT)
+Date:   Fri, 04 Aug 2017 11:24:15 -0700 (PDT)
+Message-Id: <20170804.112415.2219726575381919877.davem@davemloft.net>
+To:     daniel@iogearbox.net
+Cc:     david.daney@cavium.com, ast@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, James.Cowgill@imgtec.com,
+        markos.chandras@imgtec.com
+Subject: Re: [PATCH] MIPS: Add missing file for eBPF JIT.
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <5984710F.4010301@iogearbox.net>
+References: <20170804001012.24901-1-david.daney@cavium.com>
+        <5984710F.4010301@iogearbox.net>
+X-Mailer: Mew version 6.7 on Emacs 25.2 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20170804_192235_832386_A3802F67 
-X-CRM114-Status: GOOD (  23.94  )
-Return-Path: <vz@mleia.com>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 04 Aug 2017 11:24:15 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59373
+X-archive-position: 59374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vz@mleia.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -107,104 +47,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Boris,
+From: Daniel Borkmann <daniel@iogearbox.net>
+Date: Fri, 04 Aug 2017 15:05:19 +0200
 
-On 04.08.2017 18:29, Boris Brezillon wrote:
-> We are planning to share more code between different NAND based
-> devices (SPI NAND, OneNAND and raw NANDs), but before doing that
-> we need to move the existing include/linux/mtd/nand.h file into
-> include/linux/mtd/rawnand.h so we can later create a nand.h header
-> containing all common structure and function prototypes.
+> On 08/04/2017 02:10 AM, David Daney wrote:
+>> Inexplicably, commit f381bf6d82f0 ("MIPS: Add support for eBPF JIT.")
+>> lost a file somewhere on its path to Linus' tree.  Add back the
+>> missing ebpf_jit.c so that we can build with CONFIG_BPF_JIT selected.
+>>
+>> This version of ebpf_jit.c is identical to the original except for two
+>> minor change need to resolve conflicts with changes merged from the
+>> BPF branch:
+>>
+>> A) Set prog->jited_len = image_size;
+>> B) Use BPF_TAIL_CALL instead of BPF_CALL | BPF_X
+>>
+>> Fixes: f381bf6d82f0 ("MIPS: Add support for eBPF JIT.")
+>> Signed-off-by: David Daney <david.daney@cavium.com>
+>> ---
+>>
+>> It might be best to merge this along the path of BPF fixes rather than
+>> MIPS, as the MIPS maintainer (Ralf) seems to be inactive recently.
 > 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> Signed-off-by: Peter Pan <peterpandong@micron.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Sekhar Nori <nsekhar@ti.com>
-> Cc: Kevin Hilman <khilman@kernel.org>
-> Cc: Jason Cooper <jason@lakedaemon.net>
-> Cc: Andrew Lunn <andrew@lunn.ch>
-> Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> Cc: Gregory Clement <gregory.clement@free-electrons.com>
-> Cc: Hartley Sweeten <hsweeten@visionengravers.com>
-> Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <kernel@pengutronix.de>
-> Cc: Fabio Estevam <fabio.estevam@nxp.com>
-> Cc: Imre Kaloz <kaloz@openwrt.org>
-> Cc: Krzysztof Halasa <khalasa@piap.pl>
-> Cc: Eric Miao <eric.y.miao@gmail.com>
-> Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Alexander Clouter <alex@digriz.org.uk>
-> Cc: Daniel Mack <daniel@zonque.org>
-> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-> Cc: Marek Vasut <marek.vasut@gmail.com>
-> Cc: Kukjin Kim <kgene@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Simtec Linux Team <linux@simtec.co.uk>
-> Cc: Steven Miao <realmz6@gmail.com>
-> Cc: Mikael Starvik <starvik@axis.com>
-> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Wenyou Yang <wenyou.yang@atmel.com>
-> Cc: Josh Wu <rainyfeeling@outlook.com>
-> Cc: Kamal Dasu <kdasu.kdev@gmail.com>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Han Xu <han.xu@nxp.com>
-> Cc: Harvey Hunt <harveyhuntnexus@gmail.com>
-> Cc: Vladimir Zapolskiy <vz@mleia.com>
-> Cc: Sylvain Lemieux <slemieux.tyco@gmail.com>
-> Cc: Matthias Brugger <matthias.bgg@gmail.com>
-> Cc: Wan ZongShun <mcuos.com@gmail.com>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-> Cc: Maxim Levitsky <maximlevitsky@gmail.com>
-> Cc: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: adi-buildroot-devel@lists.sourceforge.net
-> Cc: linux-cris-kernel@axis.com
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: linux-mediatek@lists.infradead.org
-> Cc: linux-oxnas@lists.tuxfamily.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: devel@driverdev.osuosl.org
-> ---
-> Hi All,
+> Looks like situation is that multiple people including myself tried
+> to contact Ralf due to 'half/mis-applied' MIPS BPF JIT in [1,2] that
+> sits currently in Linus tree, but never got a reply back since mid
+> June.
 > 
-> Sorry for the huge Cc list, but I'd like to collect as much acks as
-> possible for this patch which is actually part of a bigger series [1].
+> Given the work was accepted long ago but incorrectly merged, would be
+> great if this could still be fixed up with this patch. Given Ralf
+> seems
+> unfortunately unresponsive, is there a chance, if people are fine with
+> it, that we could try route this fix e.g. via -net instead before a
+> final v4.13?
 > 
-> Note that there's nothing complicated here, it's just a mechanical
-> s/nand\.h/rawnand\.h/ replacement, but it impacts several architectures,
-> the doc and staging directories.
+> Anyway, the generic pieces interacting with core BPF look good to me:
 > 
-> Regards,
-> 
-> Boris
-> 
-> [1]https://lwn.net/Articles/723694/
-> ---
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 
-[snip]
+Ok, I've applied this to the net GIT tree.
 
->  drivers/mtd/nand/lpc32xx_mlc.c                  | 2 +-
->  drivers/mtd/nand/lpc32xx_slc.c                  | 2 +-
-
-For LPC32xx drivers
-
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
-
---
-With best wishes,
-Vladimir
+Thanks.

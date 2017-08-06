@@ -1,39 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Aug 2017 13:57:59 +0200 (CEST)
-Received: from mail.free-electrons.com ([62.4.15.54]:48976 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993944AbdHEL5w2Q-cq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Aug 2017 13:57:52 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 553E121DCD; Sat,  5 Aug 2017 13:57:44 +0200 (CEST)
-Received: from windsurf (unknown [37.171.170.247])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 9DFCC21DC7;
-        Sat,  5 Aug 2017 13:57:37 +0200 (CEST)
-Date:   Sat, 5 Aug 2017 13:56:49 +0200
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openadk.org>
-Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
-Message-ID: <20170805135649.152b0739@windsurf>
-In-Reply-To: <20170804222500.GA11675@linux-mips.org>
-References: <20170803225547.6caa602b@windsurf.lan>
-        <20170804000556.GC30597@linux-mips.org>
-        <20170804151920.GA11317@linux-mips.org>
-        <20170804174151.2eea9af3@windsurf.lan>
-        <20170804222500.GA11675@linux-mips.org>
-Organization: Free Electrons
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Aug 2017 02:04:27 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59975 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993965AbdHFAESpSzT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Aug 2017 02:04:18 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id A6767296EECEA;
+        Sun,  6 Aug 2017 01:04:07 +0100 (IST)
+Received: from localhost (10.20.79.108) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 6 Aug
+ 2017 01:04:12 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>, <linux-pci@vger.kernel.org>
+CC:     Bharat Kumar Gogada <bharatku@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Ravikiran Gummaluri <rgummal@xilinx.com>,
+        <linux-mips@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v6 0/6] PCI: xilinx: Fixes, optimisation & MIPS support
+Date:   Sat, 5 Aug 2017 17:03:45 -0700
+Message-ID: <20170806000351.17952-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.13.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@free-electrons.com>
+Content-Type: text/plain
+X-Originating-IP: [10.20.79.108]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59377
+X-archive-position: 59378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,33 +43,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+This series fixes an issue found using INTx interrupts with the Xilinx
+AXI PCIe Host Bridge IP on the Imagination Technologies MIPS Boston
+development board, performs a couple of optimisations to interrupt
+handling & allows the driver to be used on MIPS systems.
 
-On Sat, 5 Aug 2017 00:25:00 +0200, Ralf Baechle wrote:
+Applies atop v4.13-rc3.
 
-> > Great! However, looking at the functions that end up calling __multi3,
-> > I'm wondering why suddenly gcc 7.x needs to call such a function, while
-> > the same code was compiling without __multi3 in libgcc with gcc 6.x.  
-> 
-> Chances are it's something specific to MIPS64 R6.  Before trying your
-> config file I also tried a number of other defconfigs and all built
-> well.
-> 
-> Here's a test case which generates a reference to __multi3:
-> 
-> unsigned long func(unsigned long a, unsigned long b)
-> {
->         return a > (~0UL) / b;
-> }
-> 
-> GCC rearanges above statement to:
-> 
-> 	return (unsigned __int128)a * (unsigned __int128) b > 0xffffffff;
+Paul Burton (6):
+  PCI: Move enum pci_interrupt_pin to a new common header
+  PCI: Introduce pci_irqd_intx_xlate()
+  PCI: xilinx: Translate INTx range to hwirqs 0-3
+  PCI: xilinx: Unify INTx & MSI interrupt decode
+  PCI: xilinx: Don't enable config completion interrupts
+  PCI: xilinx: Allow build on MIPS platforms
 
-And this is normal/expected ?
+ drivers/pci/host/Kconfig       |  2 +-
+ drivers/pci/host/pcie-xilinx.c | 58 +++++++++++++++---------------------------
+ include/linux/pci-common.h     | 31 ++++++++++++++++++++++
+ include/linux/pci-epf.h        |  9 +------
+ include/linux/pci.h            | 33 ++++++++++++++++++++++++
+ 5 files changed, 87 insertions(+), 46 deletions(-)
+ create mode 100644 include/linux/pci-common.h
 
-Thomas
 -- 
-Thomas Petazzoni, CTO, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+2.13.4

@@ -1,44 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2017 15:42:36 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:35632 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992366AbdHGNmUZQg5g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Aug 2017 15:42:20 +0200
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id ED37946AB9;
-        Mon,  7 Aug 2017 15:42:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
-        with ESMTP id ze9T6V5VBXKh; Mon,  7 Aug 2017 15:42:06 +0200 (CEST)
-Subject: Re: [PATCH v8 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
-To:     ralf@linux-mips.org, Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
-        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
-        martin.blumenstingl@googlemail.com, john@phrozen.org,
-        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
-        robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de
-References: <20170802225717.24408-1-hauke@hauke-m.de>
- <20170802225717.24408-15-hauke@hauke-m.de>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <c5f6e6d6-c374-5066-7dc1-1632c8af1286@hauke-m.de>
-Date:   Mon, 7 Aug 2017 15:41:59 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2017 17:27:04 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53440 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993892AbdHGP0xDhHpM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Aug 2017 17:26:53 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v77FQnBL013500;
+        Mon, 7 Aug 2017 17:26:49 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v77FQmtN013499;
+        Mon, 7 Aug 2017 17:26:48 +0200
+Date:   Mon, 7 Aug 2017 17:26:48 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Nathan Sullivan <nathan.sullivan@ni.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Cc:     robh+dt@kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6] MIPS: NI 169445 board support
+Message-ID: <20170807152648.GA13214@linux-mips.org>
+References: <1500402549-12090-1-git-send-email-nathan.sullivan@ni.com>
 MIME-Version: 1.0
-In-Reply-To: <20170802225717.24408-15-hauke@hauke-m.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1500402549-12090-1-git-send-email-nathan.sullivan@ni.com>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59391
+X-archive-position: 59392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,175 +44,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Kishon,
+On Tue, Jul 18, 2017 at 01:29:09PM -0500, Nathan Sullivan wrote:
 
-On 08/03/2017 12:57 AM, Hauke Mehrtens wrote:
-> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
-> the PHY interfaces for each core. The phy instances can be passed to the
-> dwc2 driver, which already supports the generic phy interface.
-> 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Support the National Instruments 169445 board.
 
-Kishon could you please review this patch and give an Ack or Nack, I
-would like to merge this thorough Ralf's mips tree.
+Thanks, applied with minor changes:
 
-> ---
->  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  43 +++
->  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
->  drivers/phy/Kconfig                                |   1 +
->  drivers/phy/Makefile                               |   2 +-
->  drivers/phy/lantiq/Kconfig                         |  10 +
->  drivers/phy/lantiq/Makefile                        |   1 +
->  drivers/phy/lantiq/phy-lantiq-rcu-usb2.c           | 290 +++++++++++++++++++++
->  7 files changed, 358 insertions(+), 13 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->  create mode 100644 drivers/phy/lantiq/Kconfig
->  create mode 100644 drivers/phy/lantiq/Makefile
->  create mode 100644 drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
-> new file mode 100644
-> index 000000000000..76036c5c5d11
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
-> @@ -0,0 +1,43 @@
-> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
-> +===========================================
+> --- a/arch/mips/boot/dts/Makefile
+> +++ b/arch/mips/boot/dts/Makefile
+> @@ -4,6 +4,7 @@ dts-dirs	+= img
+>  dts-dirs	+= ingenic
+>  dts-dirs	+= lantiq
+>  dts-dirs	+= mti
+> +dts-dirs	+= ni
+>  dts-dirs	+= netlogic
+>  dts-dirs	+= pic32
+>  dts-dirs	+= qca
+
+Keep things in alphabetical order, so ni should go after netlogic.
+
+> diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.its.S
+> index f67fbf1..de851f7 100644
+> --- a/arch/mips/generic/vmlinux.its.S
+> +++ b/arch/mips/generic/vmlinux.its.S
+> @@ -29,3 +29,28 @@
+>  		};
+>  	};
+>  };
 > +
-> +This binding describes the USB PHY hardware provided by the RCU module on the
-> +Lantiq XWAY SoCs.
-> +
-> +This driver has to be a sub node of the Lantiq RCU block.
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties (controller (parent) node):
-> +- compatible	: Should be one of
-> +			"lantiq,ase-usb2-phy"
-> +			"lantiq,danube-usb2-phy"
-> +			"lantiq,xrx100-usb2-phy"
-> +			"lantiq,xrx200-usb2-phy"
-> +			"lantiq,xrx300-usb2-phy"
-> +- reg		: Defines the following sets of registers in the parent
-> +		  syscon device
-> +			- Offset of the USB PHY configuration register
-> +			- Offset of the USB Analog configuration
-> +			  register (only for xrx200 and xrx200)
-> +- clocks	: References to the (PMU) "ctrl" and "phy" clk gates.
-> +- clock-names	: Must be one of the following:
-> +			"ctrl"
-> +			"phy"
-> +- resets	: References to the RCU USB configuration reset bits.
-> +- reset-names	: Must be one of the following:
-> +			"phy" (optional)
-> +			"ctrl" (shared)
-> +
-> +-------------------------------------------------------------------------------
-> +Example for the USB PHYs on an xRX200 SoC:
-> +	usb_phy0: usb2-phy@18 {
-> +		compatible = "lantiq,xrx200-usb2-phy";
-> +		reg = <0x18 4>, <0x38 4>;
-> +
-> +		clocks = <&pmu PMU_GATE_USB0_CTRL>,
-> +			 <&pmu PMU_GATE_USB0_PHY>;
-> +		clock-names = "ctrl", "phy";
-> +		resets = <&reset1 4 4>, <&reset0 4 4>;
-> +		reset-names = "phy", "ctrl";
-> +		#phy-cells = <0>;
+> +#ifdef CONFIG_FIT_IMAGE_FDT_NI169445
+> +/ {
+> +	images {
+[...]
 > +	};
-> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-> index 87eab4d288e5..f76978e4da32 100644
-> --- a/arch/mips/lantiq/xway/sysctrl.c
-> +++ b/arch/mips/lantiq/xway/sysctrl.c
-....
-> index c1807d4a0079..968088ceaeb3 100644
-> --- a/drivers/phy/Kconfig
-> +++ b/drivers/phy/Kconfig
-> @@ -52,6 +52,7 @@ source "drivers/phy/allwinner/Kconfig"
->  source "drivers/phy/amlogic/Kconfig"
->  source "drivers/phy/broadcom/Kconfig"
->  source "drivers/phy/hisilicon/Kconfig"
-> +source "drivers/phy/lantiq/Kconfig"
->  source "drivers/phy/marvell/Kconfig"
->  source "drivers/phy/motorola/Kconfig"
->  source "drivers/phy/qualcomm/Kconfig"
-> diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
-> index f252201e0ec9..a8b9439a5d8e 100644
-> --- a/drivers/phy/Makefile
-> +++ b/drivers/phy/Makefile
-> @@ -7,9 +7,9 @@ obj-$(CONFIG_PHY_LPC18XX_USB_OTG)	+= phy-lpc18xx-usb-otg.o
->  obj-$(CONFIG_PHY_MT65XX_USB3)		+= phy-mt65xx-usb3.o
->  obj-$(CONFIG_PHY_XGENE)			+= phy-xgene.o
->  obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
-> -
->  obj-$(CONFIG_ARCH_SUNXI)		+= allwinner/
->  obj-$(CONFIG_ARCH_MESON)		+= amlogic/
-> +obj-$(CONFIG_LANTIQ)			+= lantiq/
->  obj-$(CONFIG_ARCH_RENESAS)		+= renesas/
->  obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
->  obj-$(CONFIG_ARCH_TEGRA)		+= tegra/
-> diff --git a/drivers/phy/lantiq/Kconfig b/drivers/phy/lantiq/Kconfig
-> new file mode 100644
-> index 000000000000..a2d5006b3dc7
-> --- /dev/null
-> +++ b/drivers/phy/lantiq/Kconfig
-> @@ -0,0 +1,10 @@
-> +#
-> +# Phy drivers for Lantiq / Intel platforms
-> +#
-> +config PHY_LANTIQ_RCU_USB2
-> +	tristate "Lantiq XWAY SoC RCU based USB PHY"
-> +	depends on SOC_TYPE_XWAY
-> +	depends on OF
-> +	select GENERIC_PHY
-> +	help
-> +	  Support for the USB PHY(s) on the Lantiq / Intel XWAY family SoCs.
-> diff --git a/drivers/phy/lantiq/Makefile b/drivers/phy/lantiq/Makefile
-> new file mode 100644
-> index 000000000000..f73eb56a5416
-> --- /dev/null
-> +++ b/drivers/phy/lantiq/Makefile
-> @@ -0,0 +1 @@
-> +obj-$(CONFIG_PHY_LANTIQ_RCU_USB2)	+= phy-lantiq-rcu-usb2.o
-> diff --git a/drivers/phy/lantiq/phy-lantiq-rcu-usb2.c b/drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
-> new file mode 100644
-> index 000000000000..8f5687737b50
-> --- /dev/null
-> +++ b/drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
-> @@ -0,0 +1,290 @@
+> +};
+> +#endif
 
-.....
+There's been a reject on this file because of a Boston #ifdefed section.
+I've fixed that up but we need a cleaner solution.  Paul, any suggestions?
 
-> +
-> +	ret = of_address_to_resource(dev->of_node->parent, 0, &res_parent);
-> +	if (ret)
-> +		return ret;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res) {
-> +		dev_err(dev, "Failed to get RCU PHY reg offset\n");
-> +		return ret;
-
-I will return -ENOENT here.
-
-> +	}
-> +
-> +	if (res->start < res_parent.start)
-> +		return -ENOENT;
-> +	priv->phy_reg_offset = res->start - res_parent.start;
-> +
-> +	if (priv->reg_bits->have_ana_cfg) {
-> +		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> +		if (!res) {
-> +			dev_err(dev, "Failed to get RCU ANA CFG1 reg offset\n");
-> +			return ret;
-
-I will return -ENOENT here.
-
-> +		}
-> +
-> +		if (res->start < res_parent.start)
-> +			return -ENOENT;
-> +		priv->ana_cfg1_reg_offset = res->start - res_parent.start;
-> +	}
-> +
+  Ralf

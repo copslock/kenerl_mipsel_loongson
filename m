@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 14:24:42 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 14:25:12 +0200 (CEST)
 Received: from mailapp01.imgtec.com ([195.59.15.196]:4037 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993411AbdHHMXDcealG (ORCPT
+        with ESMTP id S23993901AbdHHMXDxCrBG (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 8 Aug 2017 14:23:03 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 100CD5490EAC4;
-        Tue,  8 Aug 2017 13:22:54 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 824C2E9E4A821;
+        Tue,  8 Aug 2017 13:22:59 +0100 (IST)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 8 Aug 2017 13:22:57 +0100
+ 14.3.294.0; Tue, 8 Aug 2017 13:23:02 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 3/6] MIPS: microMIPS: Fix decoding of addiusp instruction
-Date:   Tue, 8 Aug 2017 13:22:32 +0100
-Message-ID: <1502194955-18018-4-git-send-email-matt.redfearn@imgtec.com>
+Subject: [PATCH v3 5/6] MIPS: Stacktrace: Fix  microMIPS stack unwinding on big endian systems
+Date:   Tue, 8 Aug 2017 13:22:34 +0100
+Message-ID: <1502194955-18018-6-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1502194955-18018-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1502194955-18018-1-git-send-email-matt.redfearn@imgtec.com>
@@ -29,7 +31,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59421
+X-archive-position: 59422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,108 +48,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-added handling of microMIPS instructions to manipulate the stack
-pointer. Unfortunately the decoding of the addiusp instruction was
-incorrect, and performed a left shift by 2 bits to the raw immediate,
-rather than decoding the immediate and then performing the shift, as
-documented in the ISA.
+The stack unwinding code uses the mips_instuction union to decode the
+instructions it finds. That union uses the __BITFIELD_FIELD macro to
+reorder depending on endianness. The stack unwinding code always places
+16bit instructions in halfword 1 of the union. This makes the union
+accesses correct for little endian systems. Similarly, 32bit
+instructions are reordered such that they are correct for little endian
+systems. This handling leaves unwinding the stack on big endian systems
+broken, as the mips_instruction union will then look for the fields in
+the wrong halfword.
 
-This led to incomplete stack traces, due to incorrect frame sizes being
-calculated. For example the instruction:
-801faee0 <do_sys_poll>:
-801faee0:       4e25            addiu   sp,sp,-952
-
-As decoded by objdump, would be interpreted by the existing code as
-having manipulated the stack pointer by +1096.
-
-Fix this by changing the order of decoding the immediate and applying
-the left shift. Also change to accessing the instuction through the
-union to avoid the endianness problem of accesing halfword[0], which
-will fail on big endian systems.
-
-Cope with the special behaviour of immediates 0x0, 0x1, 0x1fe and 0x1ff
-by XORing with 0x100 again if mod(immediate) < 4. This logic was tested
-with the following test code:
-
-int main(int argc, char **argv)
-{
-	unsigned int enc;
-	int imm;
-
-	for (enc = 0; enc < 512; ++enc) {
-		int tmp = enc << 2;
-		imm = -(signed short)(tmp | ((tmp & 0x100) ? 0xfe00 : 0));
-		unsigned short tmp = enc;
-		tmp = (tmp ^ 0x100) - 0x100;
-		if ((unsigned short)(tmp + 2) < 4)
-			tmp ^= 0x100;
-		imm = -(signed short)(tmp << 2);
-		printf("%#x\t%d\t->\t(%#x\t%d)\t%#x\t%d\n",
-		       enc, enc,
-		       (short)tmp, (short)tmp,
-		       imm, imm);
-	}
-	return EXIT_SUCCESS;
-}
-
-Which generates the table:
-
-input encoding	->	tmp (matching manual)	frame size
------------------------------------------------------------------------
-0	0	->	(0x100		256)	0xfffffc00	-1024
-0x1	1	->	(0x101		257)	0xfffffbfc	-1028
-0x2	2	->	(0x2		2)	0xfffffff8	-8
-0x3	3	->	(0x3		3)	0xfffffff4	-12
-...
-0xfe	254	->	(0xfe		254)	0xfffffc08	-1016
-0xff	255	->	(0xff		255)	0xfffffc04	-1020
-0x100	256	->	(0xffffff00	-256)	0x400		1024
-0x101	257	->	(0xffffff01	-255)	0x3fc		1020
-...
-0x1fc	508	->	(0xfffffffc	-4)	0x10		16
-0x1fd	509	->	(0xfffffffd	-3)	0xc		12
-0x1fe	510	->	(0xfffffefe	-258)	0x408		1032
-0x1ff	511	->	(0xfffffeff	-257)	0x404		1028
-
-Thanks to James Hogan for the test code & verifying the logic.
+To fix this, use a logical shift to place the 16bit instruction into the
+correct position in the word field of the union. Use the same shifting
+to order the 2 halfwords of 32bit instuctions. Then replace accesses to
+the halfword with accesses to the shifted word.
+In the case of the ADDIUS5 instruction, switch to using the
+mm16_r5_format union member to avoid the need for a 16bit shift.
 
 Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-Suggested-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
 ---
 
 Changes in v3:
-- Deal with special behaviour of addiusp immediates 0x0,0x1,0x1fe & 0x1ff
+New patch to fix big endian systems
 
-Changes in v2:
-- Replace conditional with xor and subtract
+Changes in v2: None
 
- arch/mips/kernel/process.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/mips/kernel/process.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 9d38faf01055..288a79bd0e72 100644
+index 6fa726b0be01..ba7d5f73c8b0 100644
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -386,10 +386,14 @@ static int get_frame_info(struct mips_frame_info *info)
+@@ -208,7 +208,7 @@ static inline int is_ra_save_ins(union mips_instruction *ip, int *poff)
+ 	 *
+ 	 * microMIPS is way more fun...
+ 	 */
+-	if (mm_insn_16bit(ip->halfword[1])) {
++	if (mm_insn_16bit(ip->word >> 16)) {
+ 		switch (ip->mm16_r5_format.opcode) {
+ 		case mm_swsp16_op:
+ 			if (ip->mm16_r5_format.rt != 31)
+@@ -287,7 +287,7 @@ static inline int is_jump_ins(union mips_instruction *ip)
+ 	 *
+ 	 * microMIPS is kind of more fun...
+ 	 */
+-	if (mm_insn_16bit(ip->halfword[1])) {
++	if (mm_insn_16bit(ip->word >> 16)) {
+ 		if ((ip->mm16_r5_format.opcode == mm_pool16c_op &&
+ 		    (ip->mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op))
+ 			return 1;
+@@ -324,7 +324,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
+ 	 *
+ 	 * microMIPS is not more fun...
+ 	 */
+-	if (mm_insn_16bit(ip->halfword[1])) {
++	if (mm_insn_16bit(ip->word >> 16)) {
+ 		return (ip->mm16_r3_format.opcode == mm_pool16d_op &&
+ 			ip->mm16_r3_format.simmediate & mm_addiusp_func) ||
+ 		       (ip->mm16_r5_format.opcode == mm_pool16d_op &&
+@@ -363,12 +363,10 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	for (i = 0; i < max_insns && ip < ip_end; i++) {
+ 		ip = (void *)ip + last_insn_size;
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+-			insn.halfword[0] = 0;
+-			insn.halfword[1] = ip->halfword[0];
++			insn.word = ip->halfword[0] << 16;
+ 			last_insn_size = 2;
+ 		} else if (is_mmips) {
+-			insn.halfword[0] = ip->halfword[1];
+-			insn.halfword[1] = ip->halfword[0];
++			insn.word = ip->halfword[0] << 16 | ip->halfword[1];
+ 			last_insn_size = 4;
+ 		} else {
+ 			insn.word = ip->word;
+@@ -382,7 +380,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 			if (is_sp_move_ins(&insn))
+ 			{
+ #ifdef CONFIG_CPU_MICROMIPS
+-				if (mm_insn_16bit(ip->halfword[0]))
++				if (mm_insn_16bit(insn.word >> 16))
  				{
  					unsigned short tmp;
  
--					if (ip->halfword[0] & mm_addiusp_func)
-+					if (ip->mm16_r3_format.simmediate & mm_addiusp_func)
- 					{
--						tmp = (((ip->halfword[0] >> 1) & 0x1ff) << 2);
--						info->frame_size = -(signed short)(tmp | ((tmp & 0x100) ? 0xfe00 : 0));
-+						tmp = ip->mm_b0_format.simmediate >> 1;
-+						tmp = ((tmp & 0x1ff) ^ 0x100) - 0x100;
-+						/* 0x0,0x1,0x1fe,0x1ff are special */
-+						if ((tmp + 2) < 4)
-+							tmp ^= 0x100;
-+						info->frame_size = -(signed short)(tmp << 2);
+@@ -395,7 +393,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 							tmp ^= 0x100;
+ 						info->frame_size = -(signed short)(tmp << 2);
  					} else {
- 						tmp = (ip->halfword[0] >> 1);
+-						tmp = (ip->halfword[0] >> 1);
++						tmp = (ip->mm16_r5_format.imm >> 1);
  						info->frame_size = -(signed short)(tmp & 0xf);
+ 					}
+ 				} else
 -- 
 2.7.4

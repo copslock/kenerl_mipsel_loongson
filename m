@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 22:45:21 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:60972 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 23:02:04 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:34296 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994870AbdHHUpM2n72S (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Aug 2017 22:45:12 +0200
+        id S23994886AbdHHVByQwv3S (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Aug 2017 23:01:54 +0200
 Received: from localhost (unknown [69.71.4.159])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 81D6323695;
-        Tue,  8 Aug 2017 20:45:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 81D6323695
+        by mail.kernel.org (Postfix) with ESMTPSA id C428E22DA8;
+        Tue,  8 Aug 2017 21:01:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C428E22DA8
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=helgaas@kernel.org
-Date:   Tue, 8 Aug 2017 15:45:06 -0500
+Date:   Tue, 8 Aug 2017 16:01:49 -0500
 From:   Bjorn Helgaas <helgaas@kernel.org>
 To:     Paul Burton <paul.burton@imgtec.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
@@ -19,22 +19,20 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Michal Simek <michal.simek@xilinx.com>,
         Ravikiran Gummaluri <rgummal@xilinx.com>,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH v6 1/6] PCI: Move enum pci_interrupt_pin to a new common
- header
-Message-ID: <20170808204506.GA21796@bhelgaas-glaptop.roam.corp.google.com>
+Subject: Re: [PATCH v6 2/6] PCI: Introduce pci_irqd_intx_xlate()
+Message-ID: <20170808210149.GM16580@bhelgaas-glaptop.roam.corp.google.com>
 References: <20170806000351.17952-1-paul.burton@imgtec.com>
- <20170806000351.17952-2-paul.burton@imgtec.com>
- <20170808202745.GL16580@bhelgaas-glaptop.roam.corp.google.com>
+ <20170806000351.17952-3-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170808202745.GL16580@bhelgaas-glaptop.roam.corp.google.com>
+In-Reply-To: <20170806000351.17952-3-paul.burton@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59430
+X-archive-position: 59431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,68 +49,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 08, 2017 at 03:27:45PM -0500, Bjorn Helgaas wrote:
-> On Sat, Aug 05, 2017 at 05:03:46PM -0700, Paul Burton wrote:
-> > We currently have a definition of enum pci_interrupt_pin in a header
-> > specific to PCI endpoints - pci-epf.h. In order to allow for use of this
-> > enum from PCI host code in a future commit, move its definition to a new
-> > pci-common.h header which we'll include from both host & endpoint code.
-> > 
-> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: linux-pci@vger.kernel.org
-> > 
-> > ---
-> > 
-> > Changes in v6:
-> > - New patch.
-> > 
-> >  include/linux/pci-common.h | 31 +++++++++++++++++++++++++++++++
-> >  include/linux/pci-epf.h    |  9 +--------
-> >  2 files changed, 32 insertions(+), 8 deletions(-)
-> >  create mode 100644 include/linux/pci-common.h
-> > 
-> > diff --git a/include/linux/pci-common.h b/include/linux/pci-common.h
-> > new file mode 100644
-> > index 000000000000..6a69a2c95ac7
-> > --- /dev/null
-> > +++ b/include/linux/pci-common.h
-> > @@ -0,0 +1,31 @@
-> > +/**
-> > + * Common PCI definitions
-> > + *
-> > + * This program is free software: you can redistribute it and/or modify
-> > + * it under the terms of the GNU General Public License version 2 of
-> > + * the License as published by the Free Software Foundation.
-> > + */
-> > +
-> > +#ifndef __LINUX_PCI_COMMON_H__
-> > +#define __LINUX_PCI_COMMON_H__
-> > +
-> > +/**
-> > + * enum pci_interrupt_pin - PCI INTx interrupt values
-> > + * @PCI_INTERRUPT_UNKNOWN: Unknown or unassigned interrupt
-> > + * @PCI_INTERRUPT_INTA: PCI INTA pin
-> > + * @PCI_INTERRUPT_INTB: PCI INTB pin
-> > + * @PCI_INTERRUPT_INTC: PCI INTC pin
-> > + * @PCI_INTERRUPT_INTD: PCI INTD pin
-> > + *
-> > + * Corresponds to values for legacy PCI INTx interrupts, as can be found in the
-> > + * PCI_INTERRUPT_PIN register.
-> > + */
-> > +enum pci_interrupt_pin {
-> > +	PCI_INTERRUPT_UNKNOWN,
-> > +	PCI_INTERRUPT_INTA,
-> > +	PCI_INTERRUPT_INTB,
-> > +	PCI_INTERRUPT_INTC,
-> > +	PCI_INTERRUPT_INTD,
-> > +};
+On Sat, Aug 05, 2017 at 05:03:47PM -0700, Paul Burton wrote:
+> Legacy PCI INTx interrupts are represented in both the PCI_INTERRUPT_PIN
+> register & in device trees using the range 1-4. This has led to various
+> drivers using this range internally with an IRQ domain of size 5 whose
+> first entry is wasted, and to other drivers getting this wrong resulting
+> in broken interrupts.
 > 
-> Could this (and the new pci_irqd_intx_xlate() added in the next patch)
-> go in drivers/pci/pci.h instead?
+> In order to save the wasted IRQ domain entry this patch introduces a new
+> pci_irqd_intx_xlate() helper function, which drivers can assign as the
+> xlate callback for their INTx IRQ domain. Further patches will make use
+> of this in drivers to allow them to use an IRQ domain of size 4 for
+> legacy INTx interrupts.
 > 
-> If pci_irqd_intx_xlate() needs to be in include/linux/pci.h, is there
-> a reason this enum couldn't go there as well?
+> Note that although it seems tempting to instead perform this translation
+> in of_irq_parse_pci() in order to catch all drivers in one shot, this
+> would present complications with handling interrupt-map properties in
+> device trees, since those are handled outside of of_irq_parse_pci() &
+> expect the 1-4 range for INTx interrupts. It would also require that all
+> drivers are modified at once, where this approach allows them to be
+> tackled one by one.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: linux-pci@vger.kernel.org
+> 
+> ---
+> Bjorn, if this works for you then I can prepare another series to fix up
+> other drivers to use this if you like.
 
-Also, I'd kind of like to have a PCI_NUM_INTX or similar that all the
-drivers could use instead of defining their own.
+I think this is a good start, and being able to do it incrementally is
+nice.
+
+I don't fully understand the issue you mentioned with
+of_irq_parse_pci() above, but I think we can go ahead with this
+approach for now.
+
+It's too bad to have to include ".xlate = pci_irqd_intx_xlate" in each
+driver, but there's a lot of similarity between drivers in that setup,
+so maybe something can be factored out in the future.
+
+
+> Changes in v6:
+> - New patch.
+> 
+>  include/linux/pci.h | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+> 
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 4869e66dd659..40c4f5f48d5b 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -33,6 +33,7 @@
+>  #include <linux/resource_ext.h>
+>  #include <uapi/linux/pci.h>
+>  
+> +#include <linux/pci-common.h>
+>  #include <linux/pci_ids.h>
+>  
+>  /*
+> @@ -1394,6 +1395,38 @@ pci_alloc_irq_vectors(struct pci_dev *dev, unsigned int min_vecs,
+>  					      NULL);
+>  }
+>  
+> +/**
+> + * pci_irqd_intx_xlate() - Translate PCI INTx value to an IRQ domain hwirq
+> + * @d: the INTx IRQ domain
+> + * @node: the DT node for the device whose interrupt we're translating
+> + * @intspec: the interrupt specifier data from the DT
+> + * @intsize: the number of entries in @intspec
+> + * @out_hwirq: pointer at which to write the hwirq number
+> + * @out_type: pointer at which to write the interrupt type
+> + *
+> + * Translate a PCI INTx interrupt number from device tree in the range 1-4, as
+> + * stored in the standard PCI_INTERRUPT_PIN register, to a value in the range
+> + * 0-3 suitable for use in a 4 entry IRQ domain. That is, subtract one from the
+> + * INTx value to obtain the hwirq number.
+> + *
+> + * Returns 0 on success, or -EINVAL if the interrupt specifier is out of range.
+> + */
+> +static inline int pci_irqd_intx_xlate(struct irq_domain *d,
+> +				      struct device_node *node,
+> +				      const u32 *intspec,
+> +				      unsigned int intsize,
+> +				      unsigned long *out_hwirq,
+> +				      unsigned int *out_type)
+> +{
+> +	const u32 intx = intspec[0];
+> +
+> +	if (intx < PCI_INTERRUPT_INTA || intx > PCI_INTERRUPT_INTD)
+> +		return -EINVAL;
+> +
+> +	*out_hwirq = intx - PCI_INTERRUPT_INTA;
+> +	return 0;
+> +}
+> +
+>  #ifdef CONFIG_PCIEPORTBUS
+>  extern bool pcie_ports_disabled;
+>  extern bool pcie_ports_auto;
+> -- 
+> 2.13.4
+> 

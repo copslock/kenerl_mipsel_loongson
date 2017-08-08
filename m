@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 14:25:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40565 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 14:26:23 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17875 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994856AbdHHMXLq0CDm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Aug 2017 14:23:11 +0200
+        with ESMTP id S23994863AbdHHMXxk85-Z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Aug 2017 14:23:53 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 51FAB3F308A4A;
-        Tue,  8 Aug 2017 13:23:02 +0100 (IST)
+        by Forcepoint Email with ESMTPS id E185DAD1F86F8;
+        Tue,  8 Aug 2017 13:23:43 +0100 (IST)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 8 Aug 2017 13:23:05 +0100
+ 14.3.294.0; Tue, 8 Aug 2017 13:23:47 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
+CC:     <linux-mips@linux-mips.org>, <kernel-hardening@lists.openwall.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 6/6] MIPS: Refactor handling of stack pointer in get_frame_info
-Date:   Tue, 8 Aug 2017 13:22:35 +0100
-Message-ID: <1502194955-18018-7-git-send-email-matt.redfearn@imgtec.com>
+Subject: [PATCH] MIPS: usercopy: Implement stack frame object validation
+Date:   Tue, 8 Aug 2017 13:23:42 +0100
+Message-ID: <1502195022-18161-1-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1502194955-18018-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1502194955-18018-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
@@ -29,7 +27,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59424
+X-archive-position: 59425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,126 +44,177 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-added handling of microMIPS instructions to manipulate the stack
-pointer. The code that was added violates code style rules with long
-lines caused by lots of nested conditionals.
+This implements arch_within_stack_frames() for MIPS that validates if an
+object is wholly contained by a kernel stack frame.
 
-The added code interprets (inline) any known stack pointer manipulation
-instruction to find the stack frame size. Handling the microMIPS cases
-added quite a bit of complication to this function.
+With CONFIG_HARDENED_USERCOPY enabled, MIPS now passes the LKDTM tests
+USERCOPY_STACK_FRAME_TO, USERCOPY_STACK_FRAME_FROM and
+USERCOPY_STACK_BEYOND on a Creator Ci40.
 
-Refactor is_sp_move_ins to perform the interpretation of the immediate
-as the instruction manipulating the stack pointer is found. This reduces
-the amount of indentation required in get_frame_info, and more closely
-matches the operation of is_ra_save_ins.
+Since the MIPS kernel does not use frame pointers, we re-use the MIPS
+kernels stack frame unwinder which uses instruction inspection to deduce
+the stack frame size. As such it introduces a larger performance penalty
+than on arches which use the frame pointer.
 
-Suggested-by: Maciej W. Rozycki <macro@imgtec.com>
+On qemu, before this patch, hackbench gives:
+Running with 10*40 (== 400) tasks.
+Time: 5.484
+Running with 10*40 (== 400) tasks.
+Time: 4.039
+Running with 10*40 (== 400) tasks.
+Time: 3.908
+Running with 10*40 (== 400) tasks.
+Time: 3.955
+Running with 10*40 (== 400) tasks.
+Time: 4.185
+Running with 10*40 (== 400) tasks.
+Time: 4.497
+Running with 10*40 (== 400) tasks.
+Time: 3.980
+Running with 10*40 (== 400) tasks.
+Time: 4.078
+Running with 10*40 (== 400) tasks.
+Time: 4.219
+Running with 10*40 (== 400) tasks.
+Time: 4.026
+
+Giving an average of 4.2371
+
+With this patch, hackbench gives:
+Running with 10*40 (== 400) tasks.
+Time: 5.671
+Running with 10*40 (== 400) tasks.
+Time: 4.282
+Running with 10*40 (== 400) tasks.
+Time: 4.101
+Running with 10*40 (== 400) tasks.
+Time: 4.040
+Running with 10*40 (== 400) tasks.
+Time: 4.683
+Running with 10*40 (== 400) tasks.
+Time: 4.387
+Running with 10*40 (== 400) tasks.
+Time: 4.289
+Running with 10*40 (== 400) tasks.
+Time: 4.027
+Running with 10*40 (== 400) tasks.
+Time: 4.048
+Running with 10*40 (== 400) tasks.
+Time: 4.079
+
+Giving an average of 4.3607
+
+This indicates an additional 3% overhead for inspecting the kernel stack
+when CONFIG_HARDENED_USERCOPY is enabled.
+
+This patch is based on Linux v4.13-rc4, and for correct operation on
+microMIPS depends on my series "MIPS: Further microMIPS stack unwinding
+fixes"
+
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 ---
 
-Changes in v3: None
-Changes in v2:
-- Refactor is_sp_move_ins to interpret immediate inline.
+ arch/mips/Kconfig                   |  1 +
+ arch/mips/include/asm/thread_info.h | 74 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 75 insertions(+)
 
- arch/mips/kernel/process.c | 61 +++++++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 31 deletions(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index ba7d5f73c8b0..26e2cdcd0057 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -313,9 +313,11 @@ static inline int is_jump_ins(union mips_instruction *ip)
- #endif
- }
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 8dd20358464f..6cbf2d525c8d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -35,6 +35,7 @@ config MIPS
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES && 64BIT
++	select HAVE_ARCH_WITHIN_STACK_FRAMES if KALLSYMS
+ 	select HAVE_CBPF_JIT if (!64BIT && !CPU_MICROMIPS)
+ 	select HAVE_EBPF_JIT if (64BIT && !CPU_MICROMIPS)
+ 	select HAVE_CC_STACKPROTECTOR
+diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
+index b439e512792b..931652460393 100644
+--- a/arch/mips/include/asm/thread_info.h
++++ b/arch/mips/include/asm/thread_info.h
+@@ -14,6 +14,80 @@
  
--static inline int is_sp_move_ins(union mips_instruction *ip)
-+static inline int is_sp_move_ins(union mips_instruction *ip, int *frame_size)
- {
- #ifdef CONFIG_CPU_MICROMIPS
-+	unsigned short tmp;
+ #include <asm/processor.h>
+ 
++#ifdef CONFIG_HAVE_ARCH_WITHIN_STACK_FRAMES
 +
- 	/*
- 	 * addiusp -imm
- 	 * addius5 sp,-imm
-@@ -325,20 +327,39 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
- 	 * microMIPS is not more fun...
- 	 */
- 	if (mm_insn_16bit(ip->word >> 16)) {
--		return (ip->mm16_r3_format.opcode == mm_pool16d_op &&
--			ip->mm16_r3_format.simmediate & mm_addiusp_func) ||
--		       (ip->mm16_r5_format.opcode == mm_pool16d_op &&
--			ip->mm16_r5_format.rt == 29);
-+		if (ip->mm16_r3_format.opcode == mm_pool16d_op &&
-+		    ip->mm16_r3_format.simmediate & mm_addiusp_func) {
-+			tmp = ip->mm_b0_format.simmediate >> 1;
-+			tmp = ((tmp & 0x1ff) ^ 0x100) - 0x100;
-+			if ((tmp + 2) < 4) /* 0x0,0x1,0x1fe,0x1ff are special */
-+				tmp ^= 0x100;
-+			*frame_size = -(signed short)(tmp << 2);
-+			return 1;
-+		}
-+		if (ip->mm16_r5_format.opcode == mm_pool16d_op &&
-+		    ip->mm16_r5_format.rt == 29) {
-+			tmp = ip->mm16_r5_format.imm >> 1;
-+			*frame_size = -(signed short)(tmp & 0xf);
-+			return 1;
-+		}
-+		return 0;
- 	}
- 
--	return ip->mm_i_format.opcode == mm_addiu32_op &&
--	       ip->mm_i_format.rt == 29 && ip->mm_i_format.rs == 29;
-+	if (ip->mm_i_format.opcode == mm_addiu32_op &&
-+	    ip->mm_i_format.rt == 29 && ip->mm_i_format.rs == 29) {
-+		*frame_size = -ip->i_format.simmediate;
-+		return 1;
-+	}
- #else
- 	/* addiu/daddiu sp,sp,-imm */
- 	if (ip->i_format.rs != 29 || ip->i_format.rt != 29)
- 		return 0;
--	if (ip->i_format.opcode == addiu_op || ip->i_format.opcode == daddiu_op)
++/*
++ * Walks up the stack frames to make sure that the specified object is
++ * entirely contained by a single stack frame.
++ *
++ * Returns:
++ *	GOOD_FRAME	if within a frame
++ *	BAD_STACK	if placed across a frame boundary (or outside stack)
++ *	NOT_STACK	unable to determine
++ */
++static inline int arch_within_stack_frames(const void *const stack,
++					   const void *const stackend,
++					   const void *obj, unsigned long len)
++{
++	/* Avoid header recursion by just declaring this here */
++	extern unsigned long unwind_stack_by_address(
++						unsigned long stack_page,
++						unsigned long *sp,
++						unsigned long pc,
++						unsigned long *ra);
++	unsigned long sp, lastsp, ra, pc;
++	int skip_frames;
 +
-+	if (ip->i_format.opcode == addiu_op ||
-+	    ip->i_format.opcode == daddiu_op) {
-+		*frame_size = -ip->i_format.simmediate;
- 		return 1;
++	/* Get this frame's details */
++	sp = (unsigned long)__builtin_frame_address(0);
++	pc = (unsigned long)current_text_addr();
++
++	/*
++	 * Skip initial frames to get back the function requesting the copy.
++	 * Unwind the frames of:
++	 *   arch_within_stack_frames (inlined into check_stack_object)
++	 *   __check_object_size
++	 * This leaves sp & pc in the frame associated with
++	 *   copy_{to,from}_user() (inlined into do_usercopy_stack)
++	 */
++	for (skip_frames = 0; skip_frames < 2; skip_frames++) {
++		pc = unwind_stack_by_address((unsigned long)stack, &sp, pc, &ra);
++		if (!pc)
++			return BAD_STACK;
 +	}
- #endif
- 	return 0;
- }
-@@ -377,29 +398,7 @@ static int get_frame_info(struct mips_frame_info *info)
- 			break;
- 
- 		if (!info->frame_size) {
--			if (is_sp_move_ins(&insn))
--			{
--#ifdef CONFIG_CPU_MICROMIPS
--				if (mm_insn_16bit(insn.word >> 16))
--				{
--					unsigned short tmp;
--
--					if (ip->mm16_r3_format.simmediate & mm_addiusp_func)
--					{
--						tmp = ip->mm_b0_format.simmediate >> 1;
--						tmp = ((tmp & 0x1ff) ^ 0x100) - 0x100;
--						/* 0x0,0x1,0x1fe,0x1ff are special */
--						if ((tmp + 2) < 4)
--							tmp ^= 0x100;
--						info->frame_size = -(signed short)(tmp << 2);
--					} else {
--						tmp = (ip->mm16_r5_format.imm >> 1);
--						info->frame_size = -(signed short)(tmp & 0xf);
--					}
--				} else
--#endif
--				info->frame_size = - ip->i_format.simmediate;
--			}
-+			is_sp_move_ins(&insn, &info->frame_size);
- 			continue;
- 		}
- 		if (info->pc_offset == -1 &&
++
++	if ((unsigned long)obj < sp) {
++		/* obj is not in the frame of the requestor or it's callers */
++		return BAD_STACK;
++	}
++
++	/*
++	 * low ---------------------------------------> high
++	 * [local vars][saved regs][ra][local vars']
++	 * ^                           ^
++	 * lastsp                      sp
++	 * ^----------------------^
++	 *  allow copies only within here
++	 */
++	do {
++		lastsp = sp;
++		pc = unwind_stack_by_address((unsigned long)stack, &sp, pc, &ra);
++		if ((((unsigned long)obj) >= lastsp) &&
++		    (((unsigned long)obj + len) <= (sp - sizeof(void *)))) {
++			/* obj is entirely within this stack frame */
++			return GOOD_FRAME;
++		}
++	} while (pc);
++
++	/*
++	 * We can't unwind any further. If we haven't found the object entirely
++	 * within one of our callers frames, it must be a bad object.
++	 */
++	return BAD_STACK;
++}
++
++#endif /* CONFIG_HAVE_ARCH_WITHIN_STACK_FRAMES */
++
+ /*
+  * low level task data that entry.S needs immediate access to
+  * - this struct should fit entirely inside of one cache line
 -- 
 2.7.4

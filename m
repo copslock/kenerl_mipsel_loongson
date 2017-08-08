@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 01:18:40 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:21148 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994847AbdHGXSaJciqI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Aug 2017 01:18:30 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 20C6572BE8F6;
-        Tue,  8 Aug 2017 00:18:19 +0100 (IST)
-Received: from localhost (10.20.1.88) by HHMAIL01.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 8 Aug 2017 00:18:23
- +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: Prevent building MT support for microMIPS kernels
-Date:   Mon, 7 Aug 2017 16:18:04 -0700
-Message-ID: <20170807231804.19920-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2017 06:32:49 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:44534 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991726AbdHHEcelGtZZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Aug 2017 06:32:34 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v784WXr3005856;
+        Tue, 8 Aug 2017 06:32:33 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v784WXnK005855;
+        Tue, 8 Aug 2017 06:32:33 +0200
+Date:   Tue, 8 Aug 2017 06:32:33 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Nathan Sullivan <nathan.sullivan@ni.com>
+Subject: Re: [PATCH 4/4] MIPS: NI 169445: Fix lack of ITS root node
+Message-ID: <20170808043233.GG3509@linux-mips.org>
+References: <20170807223724.19408-1-paul.burton@imgtec.com>
+ <20170807223724.19408-5-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170807223724.19408-5-paul.burton@imgtec.com>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59415
+X-archive-position: 59416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,40 +43,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We don't currently support the MT ASE for microMIPS kernels, and there
-are no CPUs currently in existence that use both. They can however both
-be enabled in Kconfig, resulting in build failures such as:
+On Mon, Aug 07, 2017 at 03:37:24PM -0700, Paul Burton wrote:
 
-  AS      arch/mips/kernel/cps-vec.o
-arch/mips/kernel/cps-vec.S: Assembler messages:
-arch/mips/kernel/cps-vec.S:242: Warning: the 32-bit microMIPS architecture does not support the `mt' extension
-arch/mips/kernel/cps-vec.S:276: Error: unrecognized opcode `mttc0 $13,$2,2'
-arch/mips/kernel/cps-vec.S:282: Error: unrecognized opcode `mttc0 $8,$1,2'
-arch/mips/kernel/cps-vec.S:285: Error: unrecognized opcode `mttc0 $0,$2,1'
-...
+> For some reason the root node was missing in the NI 169445 flattened
+> image tree source, leading to the following build error when attempting
+> to generate the flattened image tree binary:
+> 
+>   ITB     arch/mips/boot/vmlinux.gz.itb
+> Error: arch/mips/boot/vmlinux.gz.its:90.1-2 syntax error
+> FATAL ERROR: Unable to parse input tree
+> /usr/bin/mkimage: Can't read arch/mips/boot/vmlinux.gz.itb.tmp: Invalid argument
+> make[1]: *** [arch/mips/boot/Makefile:165: arch/mips/boot/vmlinux.gz.itb] Error 255
+> make: *** [arch/mips/Makefile:371: vmlinux.gz.itb] Error 2
+> 
+> Fix this by adding in the root node.
 
-Fix this by preventing MT from being enabled when targeting microMIPS.
+My bad, I messed this up when fixing a merge conflict in
+arch/mips/generic/vmlinux.its.S.  I fixed the original
+commit instead.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
+Thanks,
 
- arch/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 12abdf4d3850..14ab86d7ea59 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2249,7 +2249,7 @@ config CPU_R4K_CACHE_TLB
- 
- config MIPS_MT_SMP
- 	bool "MIPS MT SMP support (1 TC on each available VPE)"
--	depends on SYS_SUPPORTS_MULTITHREADING && !CPU_MIPSR6
-+	depends on SYS_SUPPORTS_MULTITHREADING && !CPU_MIPSR6 && !CPU_MICROMIPS
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select SYNC_R4K
--- 
-2.14.0
+  Ralf

@@ -1,50 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2017 13:45:29 +0200 (CEST)
-Received: from mezzanine.sirena.org.uk ([IPv6:2400:8900::f03c:91ff:fedb:4f4]:44164
-        "EHLO mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23995200AbdHILomX7Rn3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Aug 2017 13:44:42 +0200
-Received: from debutante.sirena.org.uk ([2001:470:1f1d:6b5::3] helo=debutante)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dfPPT-0006SB-Hs; Wed, 09 Aug 2017 11:44:25 +0000
-Received: from broonie by debutante with local (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dfPPR-0006Tp-1G; Wed, 09 Aug 2017 12:44:21 +0100
-Date:   Wed, 9 Aug 2017 12:44:21 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com, robh@kernel.org,
-        andy.shevchenko@gmail.com, p.zabel@pengutronix.de, kishon@ti.com,
-        mark.rutland@arm.com
-Message-ID: <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2017 16:02:38 +0200 (CEST)
+Received: from mga11.intel.com ([192.55.52.93]:23364 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23995078AbdHIOCZjLpC6 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Aug 2017 16:02:25 +0200
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Aug 2017 07:02:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.41,348,1498546800"; 
+   d="scan'208";a="1160867129"
+Received: from irsmsx108.ger.corp.intel.com ([163.33.3.3])
+  by orsmga001.jf.intel.com with ESMTP; 09 Aug 2017 07:02:18 -0700
+Received: from irsmsx112.ger.corp.intel.com (10.108.20.5) by
+ IRSMSX108.ger.corp.intel.com (163.33.3.3) with Microsoft SMTP Server (TLS) id
+ 14.3.319.2; Wed, 9 Aug 2017 15:02:18 +0100
+Received: from irsmsx101.ger.corp.intel.com ([169.254.1.250]) by
+ irsmsx112.ger.corp.intel.com ([169.254.1.122]) with mapi id 14.03.0319.002;
+ Wed, 9 Aug 2017 15:02:18 +0100
+From:   "Langer, Thomas" <thomas.langer@intel.com>
+To:     Mark Brown <broonie@kernel.org>, Hauke Mehrtens <hauke@hauke-m.de>
+CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "martin.blumenstingl@googlemail.com" 
+        <martin.blumenstingl@googlemail.com>,
+        "john@phrozen.org" <john@phrozen.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "Mehrtens, Hauke" <hauke.mehrtens@intel.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
+        "kishon@ti.com" <kishon@ti.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>
+Subject: RE: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
+Thread-Topic: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
+Thread-Index: AQHTEJkla2ZOI5AY2UK8gYMNJvv32qJ717iAgAA2lfA=
+Date:   Wed, 9 Aug 2017 14:02:16 +0000
+Message-ID: <0DAF21CFE1B20740AE23D6AF6E54843F1EA0A385@IRSMSX101.ger.corp.intel.com>
 References: <20170808225247.32266-1-hauke@hauke-m.de>
  <20170808225247.32266-4-hauke@hauke-m.de>
+ <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
+In-Reply-To: <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 10.0.102.7
+dlp-reaction: no-action
+x-originating-ip: [163.33.239.182]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="76oohoz2fusi4hjt"
-Content-Disposition: inline
-In-Reply-To: <20170808225247.32266-4-hauke@hauke-m.de>
-X-Cookie: You will lose an important tape file.
-User-Agent: NeoMutt/20170609 (1.8.3)
-X-SA-Exim-Connect-IP: 2001:470:1f1d:6b5::3
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: No (on mezzanine.sirena.org.uk); Unknown failure
-Return-Path: <broonie@sirena.org.uk>
+Return-Path: <thomas.langer@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59455
+X-archive-position: 59456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: thomas.langer@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,32 +75,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---76oohoz2fusi4hjt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Aug 09, 2017 at 12:52:34AM +0200, Hauke Mehrtens wrote:
+> -----Original Message-----
+> From: linux-spi-owner@vger.kernel.org [mailto:linux-spi-
+> owner@vger.kernel.org] On Behalf Of Mark Brown
+> Sent: Wednesday, August 9, 2017 1:44 PM
+> To: Hauke Mehrtens <hauke@hauke-m.de>
+> Cc: ralf@linux-mips.org; linux-mips@linux-mips.org; linux-
+> mtd@lists.infradead.org; linux-watchdog@vger.kernel.org;
+> devicetree@vger.kernel.org; martin.blumenstingl@googlemail.com;
+> john@phrozen.org; linux-spi@vger.kernel.org; Mehrtens, Hauke
+> <hauke.mehrtens@intel.com>; robh@kernel.org; andy.shevchenko@gmail.com;
+> p.zabel@pengutronix.de; kishon@ti.com; mark.rutland@arm.com
+> Subject: Re: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
+> 
+> On Wed, Aug 09, 2017 at 12:52:34AM +0200, Hauke Mehrtens wrote:
+> 
+> > Do not check which flash type the SoC was booted from before
+> > using this driver. Assume that the device tree is correct and use this
+> > driver when it was added to device tree. This also removes a build
+> > dependency to the SoC code.
+> 
+> Why?  Is this assumption reliably true?
 
-> Do not check which flash type the SoC was booted from before
-> using this driver. Assume that the device tree is correct and use this
-> driver when it was added to device tree. This also removes a build
-> dependency to the SoC code.
-
-Why?  Is this assumption reliably true?
-
---76oohoz2fusi4hjt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmK9ZQACgkQJNaLcl1U
-h9AHSwf9Fq1OGMyZ9pNQve/uU1k7zR3YCjYuG4FAiLJ7uyu52Gbu6Jhy2kZNIn4Z
-CthKUBdR/SdY6Qfhm0kk82z5Q2Jg6gc0FNzVPjXHe0nRL6oFvGyO8Zs8UL0hfJsn
-8TMv7S+ApJMSjM7Aayj/Gx1bCq1GBG2s9LLhllMVfOgY0JVh5ofTzy4Egt1cfY26
-SK/DTBgpOJc66xrLAOV7Z6GluBSvyOpFvoobbH8YvKEM+iV+QALKZ4u4UjKI8UJG
-BNUTEqnljsgLIL8wvoEHFSwh9DSenQbKdzI1sUNkFF0cA7MnrrSez3vfuigi0nZo
-Cwhde95F1WGQNdz3R2Cf83JlTMrOBw==
-=fsAd
------END PGP SIGNATURE-----
-
---76oohoz2fusi4hjt--
+Yes. We only have one type of flash interface in the device tree, as they 
+are connected to the shared EBU (External Bus Unit).

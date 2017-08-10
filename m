@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 04:05:13 +0200 (CEST)
-Received: from smtpbg65.qq.com ([103.7.28.233]:38034 "EHLO smtpbg65.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 04:06:14 +0200 (CEST)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:42580 "EHLO smtpbgbr2.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993940AbdHJCFEAkOXC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Aug 2017 04:05:04 +0200
-X-QQ-mid: bizesmtp4t1502330655tunll1dip
+        id S23993940AbdHJCGIFz6rC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Aug 2017 04:06:08 +0200
+X-QQ-mid: bizesmtp4t1502330737te8z20px3
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 10 Aug 2017 10:04:11 +0800 (CST)
+        id ; Thu, 10 Aug 2017 10:04:16 +0800 (CST)
 X-QQ-SSF: 01100000004000F0FMF0000A0000000
-X-QQ-FEAT: 3jlOKZxptE6GlVRzmfLM6iuCdu1kU6Ivi6RykvMzy173FAGXfIj7c2fNti+YS
-        V/yNKx2M9fExD+zf8fbgq0b3P8Lku3ufiVDK5gLpI5V4zZ3RnyY2yG3/kMN6JEP9kNrxnta
-        iz3HP9FCQoM7Ac5aKlka0ajTXe3Tifb7F3AdCq/6Ii5hIaRzvdrd+xvPv6XIdcTo2ROZcKo
-        WVb47Cr/UNYkxaa00u/siZ2BGbgS5u+w40GEhk+9yMq54jlDhU6lD9qz2SOPIj7DRRtqYmw
-        7DrYsqfVXkjiZqezWwfrUfOfmY0fVddeiuvQ==
+X-QQ-FEAT: 3GtnPQ8BMmYX7kVtOCSaQ7wOTwwwa+KHS7Bhd055dxs6nvWUiBhMyk52lBBIy
+        YwLnjQYIt+o3zL/XvrqDJy9VUS5MT1t9s0Q4S3WdkJJ0i9K/s+6fD4+c3okUBajvA44IT0A
+        ULP0hDSX3az6urHjynEzDEJvZVJ4Z4reTKVVmP0/+hUvRZoPwyvAfeUr0CFWA6aFXoVvYsQ
+        Y+dv8wap8waGOW6dpbMKJqLC95dhNatUUNh4ARbX5y5HyL0I405+siMP3on10BVU/3TyFZG
+        oUdCrfQkAeAiuxDs07bOwEzLcdTBijBZZlsQ==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,20 +21,21 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH 2/8] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
-Date:   Thu, 10 Aug 2017 10:04:36 +0800
-Message-Id: <1502330682-16812-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH 3/8] MIPS: Ensure pmd_present() returns false after pmd_mknotpresent()
+Date:   Thu, 10 Aug 2017 10:04:37 +0800
+Message-Id: <1502330682-16812-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1502330433-16670-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1502330682-16812-1-git-send-email-chenhc@lemote.com>
 References: <1502330433-16670-1-git-send-email-chenhc@lemote.com>
+ <1502330682-16812-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybgforeign:qybgforeign4
+Feedback-ID: bizesmtp:lemote.com:qybgforeign:qybgforeign1
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59464
+X-archive-position: 59465
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,145 +52,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
-only flush Node-0's scache. So we add r4k_blast_scache_node() by using
-(CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
-start address.
+This patch is borrowed from ARM64 to ensure pmd_present() returns false
+after pmd_mknotpresent(). This is needed for THP.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/r4kcache.h | 34 ++++++++++++++++++++++++++++++++
- arch/mips/mm/c-r4k.c             | 42 +++++++++++++++++++++++++++++++++-------
- 2 files changed, 69 insertions(+), 7 deletions(-)
+ arch/mips/include/asm/pgtable-64.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index 7f12d7e..c1f2806 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -747,4 +747,38 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
- __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
- __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index 67fe6dc..a2252c2 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -271,6 +271,11 @@ static inline int pmd_bad(pmd_t pmd)
  
-+#ifndef pa_to_nid
-+#define pa_to_nid(addr) 0
+ static inline int pmd_present(pmd_t pmd)
+ {
++#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
++	if (unlikely(pmd_val(pmd) & _PAGE_HUGE))
++		return pmd_val(pmd) & _PAGE_PRESENT;
 +#endif
 +
-+#ifndef NODE_ADDRSPACE_SHIFT
-+#define nid_to_addrbase(nid) 0
-+#else
-+#define nid_to_addrbase(nid) (nid << NODE_ADDRSPACE_SHIFT)
-+#endif
-+
-+#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
-+static inline void blast_##pfx##cache##lsize##_node(long node)		\
-+{									\
-+	unsigned long start = CAC_BASE | nid_to_addrbase(node);		\
-+	unsigned long end = start + current_cpu_data.desc.waysize;	\
-+	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
-+	unsigned long ws_end = current_cpu_data.desc.ways <<		\
-+			       current_cpu_data.desc.waybit;		\
-+	unsigned long ws, addr;						\
-+									\
-+	__##pfx##flush_prologue						\
-+									\
-+	for (ws = 0; ws < ws_end; ws += ws_inc)				\
-+		for (addr = start; addr < end; addr += lsize * 32)	\
-+			cache##lsize##_unroll32(addr|ws, indexop);	\
-+									\
-+	__##pfx##flush_epilogue						\
-+}
-+
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
-+
- #endif /* _ASM_R4KCACHE_H */
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 81d6a15..7b242e8 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
- 		r4k_blast_scache = blast_scache128;
+ 	return pmd_val(pmd) != (unsigned long) invalid_pte_table;
  }
  
-+static void (* r4k_blast_scache_node)(long node);
-+
-+static void r4k_blast_scache_node_setup(void)
-+{
-+	unsigned long sc_lsize = cpu_scache_line_size();
-+
-+	if (current_cpu_type() != CPU_LOONGSON3)
-+		r4k_blast_scache_node = (void *)cache_noop;
-+	else if (sc_lsize == 16)
-+		r4k_blast_scache_node = blast_scache16_node;
-+	else if (sc_lsize == 32)
-+		r4k_blast_scache_node = blast_scache32_node;
-+	else if (sc_lsize == 64)
-+		r4k_blast_scache_node = blast_scache64_node;
-+	else if (sc_lsize == 128)
-+		r4k_blast_scache_node = blast_scache128_node;
-+}
-+
- static inline void local_r4k___flush_cache_all(void * args)
- {
- 	switch (current_cpu_type()) {
- 	case CPU_LOONGSON2:
--	case CPU_LOONGSON3:
- 	case CPU_R4000SC:
- 	case CPU_R4000MC:
- 	case CPU_R4400SC:
-@@ -480,6 +497,10 @@ static inline void local_r4k___flush_cache_all(void * args)
- 		r4k_blast_scache();
- 		break;
- 
-+	case CPU_LOONGSON3:
-+		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
-+		break;
-+
- 	case CPU_BMIPS5000:
- 		r4k_blast_scache();
- 		__sync();
-@@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- 
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
--		if (size >= scache_size)
--			r4k_blast_scache();
--		else
-+		if (size >= scache_size) {
-+			if (current_cpu_type() != CPU_LOONGSON3)
-+				r4k_blast_scache();
-+			else
-+				r4k_blast_scache_node(pa_to_nid(addr));
-+		} else
- 			blast_scache_range(addr, addr + size);
- 		preempt_enable();
- 		__sync();
-@@ -872,9 +896,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- 
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
--		if (size >= scache_size)
--			r4k_blast_scache();
--		else {
-+		if (size >= scache_size) {
-+			if (current_cpu_type() != CPU_LOONGSON3)
-+				r4k_blast_scache();
-+			else
-+				r4k_blast_scache_node(pa_to_nid(addr));
-+		} else {
- 			/*
- 			 * There is no clearly documented alignment requirement
- 			 * for the cache instruction on MIPS processors and
-@@ -1905,6 +1932,7 @@ void r4k_cache_init(void)
- 	r4k_blast_scache_page_setup();
- 	r4k_blast_scache_page_indexed_setup();
- 	r4k_blast_scache_setup();
-+	r4k_blast_scache_node_setup();
- #ifdef CONFIG_EVA
- 	r4k_blast_dcache_user_page_setup();
- 	r4k_blast_icache_user_page_setup();
 -- 
 2.7.0

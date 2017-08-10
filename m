@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 04:01:22 +0200 (CEST)
-Received: from smtpbg202.qq.com ([184.105.206.29]:49579 "EHLO smtpbg202.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 04:05:13 +0200 (CEST)
+Received: from smtpbg65.qq.com ([103.7.28.233]:38034 "EHLO smtpbg65.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993943AbdHJCBCQ925C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Aug 2017 04:01:02 +0200
-X-QQ-mid: bizesmtp9t1502330431tnw4998bs
+        id S23993940AbdHJCFEAkOXC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Aug 2017 04:05:04 +0200
+X-QQ-mid: bizesmtp4t1502330655tunll1dip
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 10 Aug 2017 10:00:20 +0800 (CST)
-X-QQ-SSF: 01100000004000F0FMF0B00A0000000
-X-QQ-FEAT: aNIQy3Sfu62yZkD28SskSvdUKl1HxcpO47/G06/OpIKfMjBxrfHM7R+uQlIsK
-        mAsq+GuUi18sr/1qgLs5014Nt68Me+owUkXjFiOp8TOaoD8ft9hpPP7GWOyLI833sIxJ6nq
-        hf4qcQlOjgj8zBitTtj0rOCeqWsdvVzUnz8mpj4OBucu1CebJCx9JIWVJ3BT4tYEcOXpcA6
-        EkRV9PBniewAsRhXSnzjaSgw3zcRZUL8hm0hsA+W45qAb02Lhh5PsjQrZeJCtnTjAzy0q1w
-        FPUya9sCZPIHaGnbL77hpFj6VjOf9ufs9/zg==
+        id ; Thu, 10 Aug 2017 10:04:11 +0800 (CST)
+X-QQ-SSF: 01100000004000F0FMF0000A0000000
+X-QQ-FEAT: 3jlOKZxptE6GlVRzmfLM6iuCdu1kU6Ivi6RykvMzy173FAGXfIj7c2fNti+YS
+        V/yNKx2M9fExD+zf8fbgq0b3P8Lku3ufiVDK5gLpI5V4zZ3RnyY2yG3/kMN6JEP9kNrxnta
+        iz3HP9FCQoM7Ac5aKlka0ajTXe3Tifb7F3AdCq/6Ii5hIaRzvdrd+xvPv6XIdcTo2ROZcKo
+        WVb47Cr/UNYkxaa00u/siZ2BGbgS5u+w40GEhk+9yMq54jlDhU6lD9qz2SOPIj7DRRtqYmw
+        7DrYsqfVXkjiZqezWwfrUfOfmY0fVddeiuvQ==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,21 +20,21 @@ Cc:     John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 1/8] MIPS: Loongson-3: Enable Store Fill Buffer at runtime
-Date:   Thu, 10 Aug 2017 10:00:26 +0800
-Message-Id: <1502330433-16670-2-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH 2/8] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
+Date:   Thu, 10 Aug 2017 10:04:36 +0800
+Message-Id: <1502330682-16812-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1502330433-16670-1-git-send-email-chenhc@lemote.com>
 References: <1502330433-16670-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybgforeign:qybgforeign2
+Feedback-ID: bizesmtp:lemote.com:qybgforeign:qybgforeign4
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59463
+X-archive-position: 59464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,119 +51,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-New Loongson-3 (Loongson-3A R2, Loongson-3A R3, and newer) has SFB
-(Store Fill Buffer) which can improve the performance of memory access.
-Now, SFB enablement is controlled by CONFIG_LOONGSON3_ENHANCEMENT, and
-the generic kernel has no benefit from SFB (even it is running on a new
-Loongson-3 machine). With this patch, we can enable SFB at runtime by
-detecting the CPU type (the expense is war_io_reorder_wmb() will always
-be a 'sync', which will hurt the performance of old Loongson-3).
+For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
+only flush Node-0's scache. So we add r4k_blast_scache_node() by using
+(CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
+start address.
 
+Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/io.h                         |  2 +-
- .../asm/mach-loongson64/kernel-entry-init.h        | 38 +++++++++++++---------
- arch/mips/include/asm/mipsregs.h                   |  2 ++
- 3 files changed, 25 insertions(+), 17 deletions(-)
+ arch/mips/include/asm/r4kcache.h | 34 ++++++++++++++++++++++++++++++++
+ arch/mips/mm/c-r4k.c             | 42 +++++++++++++++++++++++++++++++++-------
+ 2 files changed, 69 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index ecabc00..d3e38af 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -304,7 +304,7 @@ static inline void iounmap(const volatile void __iomem *addr)
- #undef __IS_KSEG1
+diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+index 7f12d7e..c1f2806 100644
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -747,4 +747,38 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
+ __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
+ __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+ 
++#ifndef pa_to_nid
++#define pa_to_nid(addr) 0
++#endif
++
++#ifndef NODE_ADDRSPACE_SHIFT
++#define nid_to_addrbase(nid) 0
++#else
++#define nid_to_addrbase(nid) (nid << NODE_ADDRSPACE_SHIFT)
++#endif
++
++#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
++static inline void blast_##pfx##cache##lsize##_node(long node)		\
++{									\
++	unsigned long start = CAC_BASE | nid_to_addrbase(node);		\
++	unsigned long end = start + current_cpu_data.desc.waysize;	\
++	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
++	unsigned long ws_end = current_cpu_data.desc.ways <<		\
++			       current_cpu_data.desc.waybit;		\
++	unsigned long ws, addr;						\
++									\
++	__##pfx##flush_prologue						\
++									\
++	for (ws = 0; ws < ws_end; ws += ws_inc)				\
++		for (addr = start; addr < end; addr += lsize * 32)	\
++			cache##lsize##_unroll32(addr|ws, indexop);	\
++									\
++	__##pfx##flush_epilogue						\
++}
++
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
++
+ #endif /* _ASM_R4KCACHE_H */
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 81d6a15..7b242e8 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
+ 		r4k_blast_scache = blast_scache128;
  }
  
--#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
-+#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_CPU_LOONGSON3)
- #define war_io_reorder_wmb()		wmb()
- #else
- #define war_io_reorder_wmb()		do { } while (0)
-diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-index 8393bc54..4b7f58a 100644
---- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-@@ -19,19 +19,22 @@
- 	.set	push
- 	.set	mips64
- 	/* Set LPA on LOONGSON3 config3 */
--	mfc0	t0, $16, 3
-+	mfc0	t0, CP0_CONFIG3
- 	or	t0, (0x1 << 7)
--	mtc0	t0, $16, 3
-+	mtc0	t0, CP0_CONFIG3
- 	/* Set ELPA on LOONGSON3 pagegrain */
--	mfc0	t0, $5, 1
-+	mfc0	t0, CP0_PAGEGRAIN
- 	or	t0, (0x1 << 29)
--	mtc0	t0, $5, 1
--#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-+	mtc0	t0, CP0_PAGEGRAIN
- 	/* Enable STFill Buffer */
--	mfc0	t0, $16, 6
-+	mfc0	t0, CP0_PRID
-+	andi	t0, 0xffff
-+	slti	t0, 0x6308
-+	bnez	t0, 1f
-+	mfc0	t0, CP0_CONFIG6
- 	or	t0, 0x100
--	mtc0	t0, $16, 6
--#endif
-+	mtc0	t0, CP0_CONFIG6
-+1:
- 	_ehb
- 	.set	pop
- #endif
-@@ -45,19 +48,22 @@
- 	.set	push
- 	.set	mips64
- 	/* Set LPA on LOONGSON3 config3 */
--	mfc0	t0, $16, 3
-+	mfc0	t0, CP0_CONFIG3
- 	or	t0, (0x1 << 7)
--	mtc0	t0, $16, 3
-+	mtc0	t0, CP0_CONFIG3
- 	/* Set ELPA on LOONGSON3 pagegrain */
--	mfc0	t0, $5, 1
-+	mfc0	t0, CP0_PAGEGRAIN
- 	or	t0, (0x1 << 29)
--	mtc0	t0, $5, 1
--#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-+	mtc0	t0, CP0_PAGEGRAIN
- 	/* Enable STFill Buffer */
--	mfc0	t0, $16, 6
-+	mfc0	t0, CP0_PRID
-+	andi	t0, 0xffff
-+	slti	t0, 0x6308
-+	bnez	t0, 1f
-+	mfc0	t0, CP0_CONFIG6
- 	or	t0, 0x100
--	mtc0	t0, $16, 6
--#endif
-+	mtc0	t0, CP0_CONFIG6
-+1:
- 	_ehb
- 	.set	pop
- #endif
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index dbb0ece..cb1ebc6 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -50,6 +50,7 @@
- #define CP0_CONF $3
- #define CP0_CONTEXT $4
- #define CP0_PAGEMASK $5
-+#define CP0_PAGEGRAIN $5, 1
- #define CP0_SEGCTL0 $5, 2
- #define CP0_SEGCTL1 $5, 3
- #define CP0_SEGCTL2 $5, 4
-@@ -76,6 +77,7 @@
- #define CP0_CONFIG $16
- #define CP0_CONFIG3 $16, 3
- #define CP0_CONFIG5 $16, 5
-+#define CP0_CONFIG6 $16, 6
- #define CP0_LLADDR $17
- #define CP0_WATCHLO $18
- #define CP0_WATCHHI $19
++static void (* r4k_blast_scache_node)(long node);
++
++static void r4k_blast_scache_node_setup(void)
++{
++	unsigned long sc_lsize = cpu_scache_line_size();
++
++	if (current_cpu_type() != CPU_LOONGSON3)
++		r4k_blast_scache_node = (void *)cache_noop;
++	else if (sc_lsize == 16)
++		r4k_blast_scache_node = blast_scache16_node;
++	else if (sc_lsize == 32)
++		r4k_blast_scache_node = blast_scache32_node;
++	else if (sc_lsize == 64)
++		r4k_blast_scache_node = blast_scache64_node;
++	else if (sc_lsize == 128)
++		r4k_blast_scache_node = blast_scache128_node;
++}
++
+ static inline void local_r4k___flush_cache_all(void * args)
+ {
+ 	switch (current_cpu_type()) {
+ 	case CPU_LOONGSON2:
+-	case CPU_LOONGSON3:
+ 	case CPU_R4000SC:
+ 	case CPU_R4000MC:
+ 	case CPU_R4400SC:
+@@ -480,6 +497,10 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 		r4k_blast_scache();
+ 		break;
+ 
++	case CPU_LOONGSON3:
++		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
++		break;
++
+ 	case CPU_BMIPS5000:
+ 		r4k_blast_scache();
+ 		__sync();
+@@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+-		if (size >= scache_size)
+-			r4k_blast_scache();
+-		else
++		if (size >= scache_size) {
++			if (current_cpu_type() != CPU_LOONGSON3)
++				r4k_blast_scache();
++			else
++				r4k_blast_scache_node(pa_to_nid(addr));
++		} else
+ 			blast_scache_range(addr, addr + size);
+ 		preempt_enable();
+ 		__sync();
+@@ -872,9 +896,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+-		if (size >= scache_size)
+-			r4k_blast_scache();
+-		else {
++		if (size >= scache_size) {
++			if (current_cpu_type() != CPU_LOONGSON3)
++				r4k_blast_scache();
++			else
++				r4k_blast_scache_node(pa_to_nid(addr));
++		} else {
+ 			/*
+ 			 * There is no clearly documented alignment requirement
+ 			 * for the cache instruction on MIPS processors and
+@@ -1905,6 +1932,7 @@ void r4k_cache_init(void)
+ 	r4k_blast_scache_page_setup();
+ 	r4k_blast_scache_page_indexed_setup();
+ 	r4k_blast_scache_setup();
++	r4k_blast_scache_node_setup();
+ #ifdef CONFIG_EVA
+ 	r4k_blast_dcache_user_page_setup();
+ 	r4k_blast_icache_user_page_setup();
 -- 
 2.7.0

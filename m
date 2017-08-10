@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 20:29:21 +0200 (CEST)
-Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:34642
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 20:29:46 +0200 (CEST)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:36128
         "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993893AbdHJS1yrBp6N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Aug 2017 20:27:54 +0200
-Received: by mail-oi0-x241.google.com with SMTP id v11so1373375oif.1;
-        Thu, 10 Aug 2017 11:27:54 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23993901AbdHJS1z3vRRN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Aug 2017 20:27:55 +0200
+Received: by mail-oi0-x241.google.com with SMTP id b130so1365103oii.3;
+        Thu, 10 Aug 2017 11:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Lcl/3a1TLLfk79ZdZ9GDoQFnIqOpdxkFlbB6eIiqzL8=;
-        b=CZgYpbXWg59XFQmltrS0m9/CB+TdXpMbjVRRYh3SMs4DqevUxzczWOB1VGKhKBiqq6
-         H/mvPj2SOEzfpgHLHnVHj714sMIVMEjVQZia4FYfVW0Bxs+UcgUqc8boa4btTgRjS2EH
-         WLHqAcKYCFUFUH9f8ljuVEWYBhpTsdW492yVIq5z8jCtxF25viNu65BKS7TiS+DaRpZ7
-         VqY5qW67FyRNGcrqU7FCaYAOnSp4S0zb6Tg4ddqoi5XIYtOfvgJyDBMY2MkFFRoHiHJK
-         mM71pXKdc2GItqKQ4AmeOZam6VpQRkoQk4KSxsueAYK114di6WyCwAiHZPqrcZAU8yQQ
-         vF/w==
+        bh=F/2/KpGL+rw33Djh5nGOuZD0fXi2i/PObc+Um7hTSUY=;
+        b=boJbEJPMqPm/ARWZQPI9IEKcVqv2tbKfuaRQ3Px5QhPrkBqJ29WghuoHzbgnRtfojt
+         MsMejWG5baShaNB2TdjYRyEEP+7IWu5gQanqZiec9Xa9gJ9hXcFVKDNlPptqcEyrpIaE
+         mxrDpRFlAmnPou7NjsXDBtxoMp8ApfABMngfy3M8YhwnCsqx8XK84B4OtT9q9t0u4A5X
+         XsLoLFqOruSnsQhhAH7eOUZghZuTOD3rjd5YAmMsAje5lRlZ2qPW0T38cHoQjc5JECLu
+         FiDlAQa3pDFSfmQW2+2P18+fX0k6XbjSloTjLFuhdp7VVv7pMTKIFT1f4CJTlh1xJpqy
+         Kbvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references;
-        bh=Lcl/3a1TLLfk79ZdZ9GDoQFnIqOpdxkFlbB6eIiqzL8=;
-        b=TBKenBp11/LEmBTOIjGfxF00KwH4t5EwjfhNryvf8W2dR19OKdFzrRvPwvLivWRCPu
-         fF9c6ZqaF7yA+zwWDrMp8PnX3PhF6A6h0PqfE5Pa0EL2p+/0THRALz3yJ3T01Pv1Bfqa
-         HAYXPk9CvIDmIDN3S3OPNYWQoha7B7e37Oo088dYD38nlR+pnaDd/07TtSDMkNTHJ8+m
-         tHjo7TApFMgbVW/0w6VZ1x5m1gzgPmMLLJGLk2IUoeKFyZqmRJztb3sqfvzsA13/4wVs
-         wnUbdacIFCI2QjyqhS240lP3xSZBauQGl+OuB7jfjcHMcR3KK7ys1i1d33XPnAhy/huT
-         ZyYQ==
-X-Gm-Message-State: AHYfb5iB7lT+cq64sXvht8m2UEg2zx6D03LBSj0UrT91w/my5R2EGnIw
-        pUm+DNVGwKljqUWgmf9bJg==
-X-Received: by 10.202.79.6 with SMTP id d6mr14876354oib.6.1502389668632;
-        Thu, 10 Aug 2017 11:27:48 -0700 (PDT)
+        bh=F/2/KpGL+rw33Djh5nGOuZD0fXi2i/PObc+Um7hTSUY=;
+        b=hTOk+b4EJnGJ7WLw76CY3PCieJiGhsuCyfxx3MBZVwBQHXJs/L/hWcCJxA7hIWoEUh
+         S3+zVhsg5AKRkWOnyy2DntX/4iJ5kaRQKzwYqbjhMWvRu3f3XZHPz4U2PAdC85Mbc7XE
+         vu3g/hp76GV3qjys2vdD5tRe5rJgtMRRF9hXAyi23fZF6JC8eMYfg112dDEMTu8/00y+
+         JXvCMpOgNLiMxBCyLaXiB4XD8a12WCzQryuJRm8HGmjmpUoQHg0Czhzuy2CB6ydFWxBk
+         RUI9YF7XD8jZekfMF+3epDxMi+8QICZZWO5jeuGYy8xGxNUPPbWhbkKfQ3wGN015l24f
+         PX/Q==
+X-Gm-Message-State: AHYfb5hr2paQupNLqFAd731lY84wLKE9shbvPceTdP6q2IpiFIiToe77
+        0V3Df5cfcDcG6bXYgESNww==
+X-Received: by 10.202.175.74 with SMTP id y71mr16122124oie.132.1502389669359;
+        Thu, 10 Aug 2017 11:27:49 -0700 (PDT)
 Received: from serve.minyard.net ([47.184.154.34])
-        by smtp.gmail.com with ESMTPSA id v186sm7094673oie.44.2017.08.10.11.27.47
+        by smtp.gmail.com with ESMTPSA id k128sm8199990oih.50.2017.08.10.11.27.47
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Thu, 10 Aug 2017 11:27:47 -0700 (PDT)
 Received: from t430.minyard.net (t430m.minyard.net [192.168.27.3])
-        by serve.minyard.net (Postfix) with ESMTPA id 807688F4;
+        by serve.minyard.net (Postfix) with ESMTPA id 9BC66900;
         Thu, 10 Aug 2017 13:27:43 -0500 (CDT)
 Received: by t430.minyard.net (Postfix, from userid 1000)
-        id 0F60D30004C; Thu, 10 Aug 2017 13:27:42 -0500 (CDT)
+        id 2A073300DFD; Thu, 10 Aug 2017 13:27:41 -0500 (CDT)
 From:   minyard@acm.org
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         linux-kernel@vger.kernel.org
 Cc:     Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH 2/4] mips: Make SAVE_SOME more standard
-Date:   Thu, 10 Aug 2017 13:27:38 -0500
-Message-Id: <1502389660-8969-3-git-send-email-minyard@acm.org>
+Subject: [PATCH 1/4] mips: Fix issues in backtraces
+Date:   Thu, 10 Aug 2017 13:27:37 -0500
+Message-Id: <1502389660-8969-2-git-send-email-minyard@acm.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1502389660-8969-1-git-send-email-minyard@acm.org>
 References: <1502389660-8969-1-git-send-email-minyard@acm.org>
@@ -53,7 +53,7 @@ Return-Path: <tcminyard@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59480
+X-archive-position: 59481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,155 +72,103 @@ X-list: linux-mips
 
 From: Corey Minyard <cminyard@mvista.com>
 
-Modify the SAVE_SOME macro to look more like a standard
-function, doing the arithmetic for the frame on the SP
-register instead of copying it from K1, and by saving
-the stored EPC from the RA.  This lets the get_frame_info()
-function process this function like any other.  It also
-remove an instruction or two from the kernel entry,
-making it more efficient.
+I saw two problems when doing backtraces:
 
-unwind_stack_by_address() has special handling for
-the top of the interrupt stack, but without this change
-unwinding will still fail if you get an interrupt while
-handling an interrupt and try to do a traceback from
-the second interrupt.
+The compiler was putting a "fast return" at the top of some
+functions, before it set up the frame.  The backtrace code
+would stop when it saw a jump instruction, so it would never
+get to the stack frame setup and would thus misinterpret it.
+To fix this, don't look for jump instructions until the
+frame setup has been seen.
 
-This change modifies the get_saved_sp macro to
-optionally store the fetched value right into sp and store the
-old SP value into K0.  Then it's just a matter of subtracting
-the frame from SP and storing the old SP from K0.
+The assembly code here is:
 
-This required changing the DADDI workaround a bit, since K0
-holds the SP, we had to use K1 for AT.  But it eliminated
-some of the special handling for the DADDI workaround.
+ffffffff80b885a0 <serial8250_handle_irq>:
+ffffffff80b885a0:       c8a00003        bbit0   a1,0x0,ffffffff80b885b0 <serial8250_handle_irq+0x10>
+ffffffff80b885a4:       0000102d        move    v0,zero
+ffffffff80b885a8:       03e00008        jr      ra
+ffffffff80b885ac:       00000000        nop
+ffffffff80b885b0:       67bdffd0        daddiu  sp,sp,-48
+ffffffff80b885b4:       ffb00008        sd      s0,8(sp)
 
-Saving the RA register was moved up to before fetching the
-CP0_EPC register, so the CP0_EPC register could be stored
-into RA and the saved.  This lets the traceback code know
-where RA is actually stored.
+The second problem was the compiler was putting the last
+instruction of the frame save in the delay slot of the
+jump instruction.  If it saved the RA in there, the
+backtrace could would miss it and misinterpret the frame.
+To fix this, make sure to process the instruction after
+the first jump seen.
+
+The assembly code for this is:
+
+ffffffff80806fd0 <plat_irq_dispatch>:
+ffffffff80806fd0:       67bdffd0        daddiu  sp,sp,-48
+ffffffff80806fd4:       ffb30020        sd      s3,32(sp)
+ffffffff80806fd8:       24130018        li      s3,24
+ffffffff80806fdc:       ffb20018        sd      s2,24(sp)
+ffffffff80806fe0:       3c12811c        lui     s2,0x811c
+ffffffff80806fe4:       ffb10010        sd      s1,16(sp)
+ffffffff80806fe8:       3c11811c        lui     s1,0x811c
+ffffffff80806fec:       ffb00008        sd      s0,8(sp)
+ffffffff80806ff0:       3c10811c        lui     s0,0x811c
+ffffffff80806ff4:       08201c03        j       ffffffff8080700c <plat_irq_dispa
+tch+0x3c>
+ffffffff80806ff8:       ffbf0028        sd      ra,40(sp)
 
 Signed-off-by: Corey Minyard <cminyard@mvista.com>
 ---
- arch/mips/include/asm/stackframe.h | 51 +++++++++++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 14 deletions(-)
+ arch/mips/kernel/process.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index eaa5a4d..d2fb919 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -83,8 +83,16 @@
- 		LONG_S	$30, PT_R30(sp)
- 		.endm
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 5351e1f..a1d930a 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -349,6 +349,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	union mips_instruction insn, *ip, *ip_end;
+ 	const unsigned int max_insns = 128;
+ 	unsigned int i;
++	bool saw_jump = false;
  
-+/*
-+ * get_saved_sp returns the SP for the current CPU by looking in the
-+ * kernelsp array for it.  If tosp is set, it stores the current sp in
-+ * k0 and loads the new value in sp.  If not, it clobbers k0 and
-+ * stores the new value in k1, leaving sp unaffected.
-+ */
- #ifdef CONFIG_SMP
--		.macro	get_saved_sp	/* SMP variation */
-+
-+		/* SMP variation */
-+		.macro	get_saved_sp docfi=0 tosp=0
- 		ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
- #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		lui	k1, %hi(kernelsp)
-@@ -97,7 +105,15 @@
- #endif
- 		LONG_SRL	k0, SMP_CPUID_PTRSHIFT
- 		LONG_ADDU	k1, k0
-+		.if \tosp
-+		move	k0, sp
-+		.if \docfi
-+		.cfi_register sp, k0
-+		.endif
-+		LONG_L	sp, %lo(kernelsp)(k1)
-+		.else
- 		LONG_L	k1, %lo(kernelsp)(k1)
-+		.endif
- 		.endm
+ 	info->pc_offset = -1;
+ 	info->frame_size = 0;
+@@ -370,9 +371,6 @@ static int get_frame_info(struct mips_frame_info *info)
+ 			insn.word = ip->word;
+ 		}
  
- 		.macro	set_saved_sp stackp temp temp2
-@@ -106,7 +122,8 @@
- 		LONG_S	\stackp, kernelsp(\temp)
- 		.endm
- #else /* !CONFIG_SMP */
--		.macro	get_saved_sp	/* Uniprocessor variation */
-+		/* Uniprocessor variation */
-+		.macro	get_saved_sp docfi=0 tosp=0
- #ifdef CONFIG_CPU_JUMP_WORKAROUNDS
- 		/*
- 		 * Clear BTB (branch target buffer), forbid RAS (return address
-@@ -135,7 +152,15 @@
- 		daddiu	k1, %hi(kernelsp)
- 		dsll	k1, k1, 16
- #endif
-+		.if \tosp
-+		move	k0, sp
-+		.if \docfi
-+		.cfi_register sp, k0
-+		.endif
-+		LONG_L	sp, %lo(kernelsp)(k1)
-+		.else
- 		LONG_L	k1, %lo(kernelsp)(k1)
-+		.endif
- 		.endm
- 
- 		.macro	set_saved_sp stackp temp temp2
-@@ -151,7 +176,6 @@
- 		sll	k0, 3		/* extract cu0 bit */
- 		.set	noreorder
- 		bltz	k0, 8f
--		 move	k1, sp
- #ifdef CONFIG_EVA
- 		/*
- 		 * Flush interAptiv's Return Prediction Stack (RPS) by writing
-@@ -178,17 +202,16 @@
- 		MTC0	k0, CP0_ENTRYHI
- #endif
- 		.set	reorder
-+		 move	k0, sp
- 		/* Called from user mode, new stack. */
- 		get_saved_sp
--#ifndef CONFIG_CPU_DADDI_WORKAROUNDS
--8:		move	k0, sp
--		PTR_SUBU sp, k1, PT_SIZE
--#else
--		.set	at=k0
--8:		PTR_SUBU k1, PT_SIZE
-+8:
-+#ifdef CONFIG_CPU_DADDI_WORKAROUNDS
-+		.set	at=k1
-+#endif
-+		PTR_SUBU sp, PT_SIZE
-+#ifdef CONFIG_CPU_DADDI_WORKAROUNDS
- 		.set	noat
--		move	k0, sp
--		move	sp, k1
- #endif
- 		LONG_S	k0, PT_R29(sp)
- 		LONG_S	$3, PT_R3(sp)
-@@ -206,16 +229,16 @@
- 		LONG_S	$5, PT_R5(sp)
- 		LONG_S	v1, PT_CAUSE(sp)
- 		LONG_S	$6, PT_R6(sp)
--		MFC0	v1, CP0_EPC
-+		LONG_S	ra, PT_R31(sp)
-+		MFC0	ra, CP0_EPC
- 		LONG_S	$7, PT_R7(sp)
- #ifdef CONFIG_64BIT
- 		LONG_S	$8, PT_R8(sp)
- 		LONG_S	$9, PT_R9(sp)
- #endif
--		LONG_S	v1, PT_EPC(sp)
-+		LONG_S	ra, PT_EPC(sp)
- 		LONG_S	$25, PT_R25(sp)
- 		LONG_S	$28, PT_R28(sp)
--		LONG_S	$31, PT_R31(sp)
- 
- 		/* Set thread_info if we're coming from user mode */
- 		mfc0	k0, CP0_STATUS
+-		if (is_jump_ins(&insn))
+-			break;
+-
+ 		if (!info->frame_size) {
+ 			if (is_sp_move_ins(&insn))
+ 			{
+@@ -396,10 +394,28 @@ static int get_frame_info(struct mips_frame_info *info)
+ 				info->frame_size = - ip->i_format.simmediate;
+ 			}
+ 			continue;
++		} else if (!saw_jump && is_jump_ins(ip)) {
++			/*
++			 * If we see a jump instruction, we are finished
++			 * with the frame save.
++			 *
++			 * Some functions can have a shortcut return at
++			 * the beginning of the function, so don't start
++			 * looking for jump instruction until we see the
++			 * frame setup.
++			 *
++			 * The RA save instruction can get put into the
++			 * delay slot of the jump instruction, so look
++			 * at the next instruction, too.
++			 */
++			saw_jump = true;
++			continue;
+ 		}
+ 		if (info->pc_offset == -1 &&
+ 		    is_ra_save_ins(&insn, &info->pc_offset))
+ 			break;
++		if (saw_jump)
++			break;
+ 	}
+ 	if (info->frame_size && info->pc_offset >= 0) /* nested */
+ 		return 0;
 -- 
 2.7.4

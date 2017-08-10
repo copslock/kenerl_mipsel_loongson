@@ -1,61 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 17:05:48 +0200 (CEST)
-Received: from mezzanine.sirena.org.uk ([IPv6:2400:8900::f03c:91ff:fedb:4f4]:54924
-        "EHLO mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992568AbdHJPFlW7g0H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Aug 2017 17:05:41 +0200
-Received: from host86-142-17-160.range86-142.btcentralplus.com ([86.142.17.160] helo=finisterre)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dfp1U-0005cw-IS; Thu, 10 Aug 2017 15:05:23 +0000
-Received: from broonie by finisterre with local (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dfp1P-0000h8-QW; Thu, 10 Aug 2017 16:05:15 +0100
-Date:   Thu, 10 Aug 2017 16:05:15 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "Langer, Thomas" <thomas.langer@intel.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "martin.blumenstingl@googlemail.com" 
-        <martin.blumenstingl@googlemail.com>,
-        "john@phrozen.org" <john@phrozen.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "Mehrtens, Hauke" <hauke.mehrtens@intel.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-        "kishon@ti.com" <kishon@ti.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>
-Message-ID: <20170810150515.w66ksbfexbcegy6z@sirena.org.uk>
-References: <20170808225247.32266-1-hauke@hauke-m.de>
- <20170808225247.32266-4-hauke@hauke-m.de>
- <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
- <0DAF21CFE1B20740AE23D6AF6E54843F1EA0A385@IRSMSX101.ger.corp.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 18:25:36 +0200 (CEST)
+Received: from mail-pg0-f68.google.com ([74.125.83.68]:33888 "EHLO
+        mail-pg0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993893AbdHJQZYI6Bqh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Aug 2017 18:25:24 +0200
+Received: by mail-pg0-f68.google.com with SMTP id y192so999069pgd.1;
+        Thu, 10 Aug 2017 09:25:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VoS4yOeWmAko7FidGyVyBvkklDN6eizoFw2jhH/q1ts=;
+        b=qZFV4emXRxN9LkFG2czwdyJJFlDvbfHFPf+C98rk7+LcrCPRRkd/MY9qVKzzI8njcn
+         KAOeXfXJfzk6V+W1GDHxswwW2g1VCo4SmssxeLqJ1nQGRoKtaQ4jlLfTO3o4BqyaaATG
+         bHwQ20swffvquXAmAO5Y9WbuPnpoH3Y3TAtFYmR2T+ykMBeboDNBvqTqVMpfAJnTT0jD
+         EiqRAU04eJQVHuS4/lKx9krzDvs5IwFH4CSHDVyQ2Ei3zXX4aVlirnofwpmCcwls14rD
+         uDtWUcjQxIZhyp+bIKir2xzMCW9htGZOGUhbtiAMNJF3oJyHMhhHlVsse2i7XlpR807F
+         HFqw==
+X-Gm-Message-State: AHYfb5jYfDw552uIGiEj495wpkh1RCEHT14NkcfgCFa35+jXHpFaJne6
+        xSuu+zJHfzpfaQ==
+X-Received: by 10.84.164.165 with SMTP id w34mr13852493pla.119.1502382317120;
+        Thu, 10 Aug 2017 09:25:17 -0700 (PDT)
+Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
+        by smtp.gmail.com with ESMTPSA id s14sm12790921pfj.124.2017.08.10.09.25.16
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 10 Aug 2017 09:25:16 -0700 (PDT)
+Date:   Thu, 10 Aug 2017 11:25:15 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Jiri Slaby <jslaby@suse.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Russell King <linux@armlinux.org.uk>
+Subject: Re: [PATCH 4/8] tty/bcm63xx_uart: allow naming clock in device tree
+Message-ID: <20170810162515.qkmhcnsaoh4wjrzs@rob-hp-laptop>
+References: <20170802093429.12572-1-jonas.gorski@gmail.com>
+ <20170802093429.12572-5-jonas.gorski@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="s6uae5i4hoypg7dc"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0DAF21CFE1B20740AE23D6AF6E54843F1EA0A385@IRSMSX101.ger.corp.intel.com>
-X-Cookie: Do you like "TENDER VITTLES"?
-User-Agent: NeoMutt/20170609 (1.8.3)
-X-SA-Exim-Connect-IP: 86.142.17.160
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: No (on mezzanine.sirena.org.uk); Unknown failure
-Return-Path: <broonie@sirena.org.uk>
+In-Reply-To: <20170802093429.12572-5-jonas.gorski@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59474
+X-archive-position: 59475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,42 +69,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, Aug 02, 2017 at 11:34:25AM +0200, Jonas Gorski wrote:
+> Codify using a named clock for the refclk of the uart. This makes it
+> easier if we might need to add a gating clock (like present on the
+> BCM6345).
+> 
+> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt | 6 ++++++
+>  drivers/tty/serial/bcm63xx_uart.c                              | 6 ++++--
+>  2 files changed, 10 insertions(+), 2 deletions(-)
 
---s6uae5i4hoypg7dc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Aug 09, 2017 at 02:02:16PM +0000, Langer, Thomas wrote:
-> > On Wed, Aug 09, 2017 at 12:52:34AM +0200, Hauke Mehrtens wrote:
-
-> > > Do not check which flash type the SoC was booted from before
-> > > using this driver. Assume that the device tree is correct and use this
-> > > driver when it was added to device tree. This also removes a build
-> > > dependency to the SoC code.
-
-> > Why?  Is this assumption reliably true?
-
-> Yes. We only have one type of flash interface in the device tree, as they=
-=20
-> are connected to the shared EBU (External Bus Unit).
-
-That sounds board specific but this is a driver for a SoC?  In any case
-this needs to end up in the commit log.
-
---s6uae5i4hoypg7dc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmMdioACgkQJNaLcl1U
-h9BYlAgAgCDu3huZzBs6oYvZZ+POaY/GV5Cs55enzpxuT8F87rnOrYbTGQw66HzP
-+4Foc1xogiJOKDNSs+BpPiuFTo/zvwu+ApKkEE8OeaDOQh4gVhCag/OUKz9z5hAZ
-ZvSHQud2xiO1FjFZeLFB1KGEA9jb9ltOjWdJxqdiv1S9mV4ITiVho//mhTNf6HcL
-RMiKTeDmSz37Q3X1vgrnQehpTYgqUHYCzr/NjUjsJ3nATLZpr8bLbLhh4YKalxqj
-Elnt3lXSauR4/LfcfwpSqRYfeMP/LhWAHMRRJpSMLqFVAyWgndZP9IXm9mP4fXia
-R3yhSmQxzNY7qhWMoY1vQAfNsr4hwA==
-=HdUK
------END PGP SIGNATURE-----
-
---s6uae5i4hoypg7dc--
+Acked-by: Rob Herring <robh@kernel.org>

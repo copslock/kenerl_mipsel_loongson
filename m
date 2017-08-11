@@ -1,41 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Aug 2017 23:34:57 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:39568 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993901AbdHJVeupRSZi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Aug 2017 23:34:50 +0200
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 3E8F7460AB;
-        Thu, 10 Aug 2017 23:34:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id Wv4ixm6Fqq9O; Thu, 10 Aug 2017 23:34:43 +0200 (CEST)
-Subject: Re: clock_gettime() may return timestamps out of order
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Rene Nielsen <rene.nielsen@microsemi.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-References: <478589358072764BA7A23B82543788A895AD4ECE@avsrvexchmbx1.microsemi.net>
- <1bd4bad1-5574-7b76-0cd7-d0334c08667f@hauke-m.de>
- <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <cb142670-3e27-e129-f7f9-064037304c52@hauke-m.de>
-Date:   Thu, 10 Aug 2017 23:34:42 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2017 12:24:39 +0200 (CEST)
+Received: from lelnx193.ext.ti.com ([198.47.27.77]:27696 "EHLO
+        lelnx193.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990510AbdHKKYWS61pZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2017 12:24:22 +0200
+Received: from dflxv15.itg.ti.com ([128.247.5.124])
+        by lelnx193.ext.ti.com (8.15.1/8.15.1) with ESMTP id v7BANwNK013917;
+        Fri, 11 Aug 2017 05:23:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ti.com;
+        s=ti-com-17Q1; t=1502447038;
+        bh=gPXWSFrZkHvuyY+uG+emahxbJwEEPzzWOdHNm5X9ggs=;
+        h=Subject:To:References:CC:From:Date:In-Reply-To;
+        b=roydhjsuOIHrDnHZnIlS7SHQR8DJan/XkDjejG165HUisofHRzqe3TulYWThTzjys
+         vE20De31pa04dmzD2I+bYovrerotloYmhUKJ4J/vqGnoALYotI4JdySenrZafTK3v0
+         e/94JpESB9PNmSp0pW5eTmlweZeotEHSXLZfUaAc=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by dflxv15.itg.ti.com (8.14.3/8.13.8) with ESMTP id v7BANwKt030309;
+        Fri, 11 Aug 2017 05:23:58 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.1.845.34; Fri, 11
+ Aug 2017 05:23:58 -0500
+Received: from dlep32.itg.ti.com (157.170.170.100) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_0,
+ cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.1.845.34 via Frontend Transport;
+ Fri, 11 Aug 2017 05:23:58 -0500
+Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by dlep32.itg.ti.com (8.14.3/8.13.8) with ESMTP id v7BANrQS012650;
+        Fri, 11 Aug 2017 05:23:54 -0500
+Subject: Re: [PATCH v9 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
+ using the RCU module
+To:     Hauke Mehrtens <hauke@hauke-m.de>, <ralf@linux-mips.org>
+References: <20170808225247.32266-1-hauke@hauke-m.de>
+ <20170808225247.32266-15-hauke@hauke-m.de>
+CC:     <linux-mips@linux-mips.org>, <linux-mtd@lists.infradead.org>,
+        <linux-watchdog@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <martin.blumenstingl@googlemail.com>, <john@phrozen.org>,
+        <linux-spi@vger.kernel.org>, <hauke.mehrtens@intel.com>,
+        <robh@kernel.org>, <andy.shevchenko@gmail.com>,
+        <p.zabel@pengutronix.de>, <mark.rutland@arm.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <b0e370cc-90cd-07c5-6d74-528189ac1614@ti.com>
+Date:   Fri, 11 Aug 2017 15:53:53 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
-In-Reply-To: <20170623213325.GD31455@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+In-Reply-To: <20170808225247.32266-15-hauke@hauke-m.de>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Return-Path: <kishon@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59483
+X-archive-position: 59484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: kishon@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,140 +69,474 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/23/2017 11:33 PM, James Hogan wrote:
-> On Thu, Jun 22, 2017 at 09:32:33PM +0200, Hauke Mehrtens wrote:
->> On 06/21/2017 10:14 AM, Rene Nielsen wrote:
->>> Hi folks,
->>>
->>> Let me go straight into the problem:
->>> We have a multi-threaded application that runs on a MIPS 24KEc using glibc v.
->>> 2.24 under kernel v. 4.9.29 both compiled with gcc v. 6.3.0.
->>> Our 24KEc has a 4-way 32 KBytes dcache (and similar icache), so it's prone to cache
->>> aliasing (don't know if this matters...).
->>>
->>> We want to be able to do stack backtraces from a signal handler in case our
->>> application makes a glibc call that results in an assert(). The stack
->>> backtracing is made within the signal handler with calls to _Unwind_Backtrace().
->>> With the default set of glibc compiler flags, we can't trace through signal
->>> handlers. Not so long ago, we used uclibc rather than glibc, and experienced the
->>> same problem, but we got it to work by enabling the
->>> '-fasynchronous-unwind-tables' gcc flag during compilation of uclibc.
->>> Using the same flag during compilation of glibc causes unexpected runtime
->>> problems:
->>>
->>> Many of the threads in our application call clock_gettime(CLOCK_MONOTONIC) many
->>> times per second, so we greatly appreciate the existence and utilization of the
->>> VDSO.
->>>
->>> Occassionally, however, clock_gettime(CLOCK_MONOTONIC) returns timestamps out of
->>> order on the same thread. It's not that the returned timestamps seem wrong (they
->>> are mostly off by some hundred microseconds), but they simply appear out of
->>> order.
->>>
->>> Since glibc utilizes VDSO (and uclibc doesn't), my guess is that there's
->>> something wrong in the interface between the two, but I can't figure out what.
->>> Other glibc calls seem OK (I don't know whether there's a problem with the other
->>> VDSO function, gettimeofday(), though). If not compiled with the infamous flag,
->>> we don't see this problem.
->>>
->>> I have tried with a single-threaded test-app, but haven't been able to
->>> reproduce.
->>>
->>> Any help is highly appreciated. Don't hesitate to asking questions, if needed.
->>>
->>> Thank you very much in advance,
->>> Best regards,
->>> René Nielsen
->>
->>
->> Hi Rene
->>
->> I had a problem with the clock_gettime() call over VDSO on a MIPS BE
->> 34Kc CPU, see this:
->> https://www.linux-mips.org/archives/linux-mips/2016-01/msg00727.html
->> It was sometimes off by 1 second.
->>
->> It is gone in the current version of LEDE (former OpenWrt), but when I
->> used git bisect to find the place where it was fixed, I found a place
->> which has nothing to do with MIPS internal or libc stuff.
->>
->> Makeing some pages uncached or flushing them help, but caused
->> performance problems, I have never found the root cause of the problem.
+
+
+On Wednesday 09 August 2017 04:22 AM, Hauke Mehrtens wrote:
+> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
+> the PHY interfaces for each core. The phy instances can be passed to the
+> dwc2 driver, which already supports the generic phy interface.
 > 
-> Hauke: Did that platform have aliasing dcache too?
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+
+Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
+
+> ---
+>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  40 ++++
+>  arch/mips/lantiq/xway/sysctrl.c                    |  36 +--
+>  drivers/phy/Kconfig                                |   1 +
+>  drivers/phy/Makefile                               |   2 +-
+>  drivers/phy/lantiq/Kconfig                         |   9 +
+>  drivers/phy/lantiq/Makefile                        |   1 +
+>  drivers/phy/lantiq/phy-lantiq-rcu-usb2.c           | 254 +++++++++++++++++++++
+>  7 files changed, 324 insertions(+), 19 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+>  create mode 100644 drivers/phy/lantiq/Kconfig
+>  create mode 100644 drivers/phy/lantiq/Makefile
+>  create mode 100644 drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
 > 
-> I notice that the mips_vdso_data is updated by update_vsyscall() via
-> kseg0, however userland will be accessing it via the mapping 1 page
-> below the VDSO.
-> 
-> If the kernel data happened to be placed such that the mips_vdso_data in
-> kseg0 and the user mapping had different page colours then you could
-> easily hit aliasing issues. A couple of well placed flushes or some more
-> careful placement of the VDSO data might well fix it, as could some
-> random patch changing the positioning of the data such that it
-> coincidentally lined up on the same colour.
-> 
-> Rene: Would you be able to try the following?
-> 1) report the values of data_addr and &vdso_data in
-> arch_setup_additional_pages() (arch/mips/kernel/vdso.c)
-> 2) apply the (completely untested) patch below and see if it helps
-> 3) report those two values with the patch applied to check it has worked
-> as expected
-> 
-> The patch unfortunately hacks arch_get_unmapped_area_common so that it
-> does the colour alignment on non-shared anonymous pages, as long as
-> non-zero pgoff is provided. Hopefully no userland code would try
-> mmap'ing anonymous memory with a file offset, and so it should be
-> harmless.
-> 
-> It doesn't look like we can just pass MAP_SHARED to avoid the hack as
-> then pgoff will get cleared by get_unmapped_area()).
-> 
-> Thanks
-> James
-> 
-> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-> index 093517e85a6c..4840b20a3756 100644
-> --- a/arch/mips/kernel/vdso.c
-> +++ b/arch/mips/kernel/vdso.c
-> @@ -129,7 +129,12 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
->  	vvar_size = gic_size + PAGE_SIZE;
->  	size = vvar_size + image->size;
+> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+> new file mode 100644
+> index 000000000000..d8d25063dd5d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+> @@ -0,0 +1,40 @@
+> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
+> +===========================================
+> +
+> +This binding describes the USB PHY hardware provided by the RCU module on the
+> +Lantiq XWAY SoCs.
+> +
+> +This driver has to be a sub node of the Lantiq RCU block.
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties (controller (parent) node):
+> +- compatible	: Should be one of
+> +			"lantiq,ase-usb2-phy"
+> +			"lantiq,danube-usb2-phy"
+> +			"lantiq,xrx100-usb2-phy"
+> +			"lantiq,xrx200-usb2-phy"
+> +			"lantiq,xrx300-usb2-phy"
+> +- reg		: Defines the following sets of registers in the parent
+> +		  syscon device
+> +			- Offset of the USB PHY configuration register
+> +			- Offset of the USB Analog configuration
+> +			  register (only for xrx200 and xrx200)
+> +- clocks	: References to the (PMU) "phy" clk gate.
+> +- clock-names	: Must be "phy"
+> +- resets	: References to the RCU USB configuration reset bits.
+> +- reset-names	: Must be one of the following:
+> +			"phy" (optional)
+> +			"ctrl" (shared)
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the USB PHYs on an xRX200 SoC:
+> +	usb_phy0: usb2-phy@18 {
+> +		compatible = "lantiq,xrx200-usb2-phy";
+> +		reg = <0x18 4>, <0x38 4>;
+> +
+> +		clocks = <&pmu PMU_GATE_USB0_PHY>;
+> +		clock-names = "phy";
+> +		resets = <&reset1 4 4>, <&reset0 4 4>;
+> +		reset-names = "phy", "ctrl";
+> +		#phy-cells = <0>;
+> +	};
+> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+> index 87eab4d288e5..7611c3013793 100644
+> --- a/arch/mips/lantiq/xway/sysctrl.c
+> +++ b/arch/mips/lantiq/xway/sysctrl.c
+> @@ -469,8 +469,8 @@ void __init ltq_soc_init(void)
 >  
-> -	base = get_unmapped_area(NULL, 0, size, 0, 0);
-> +	/*
-> +	 * Hack to get the user mapping of the VDSO data page matching the cache
-> +	 * colour of its kseg0 address.
-> +	 */
-> +	base = get_unmapped_area(NULL, 0, size,
-> +			(virt_to_phys(&vdso_data) - gic_size) >> PAGE_SHIFT, 0);
->  	if (IS_ERR_VALUE(base)) {
->  		ret = base;
->  		goto out;
-> diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-> index 64dd8bdd92c3..872cf1fd1744 100644
-> --- a/arch/mips/mm/mmap.c
-> +++ b/arch/mips/mm/mmap.c
-> @@ -81,7 +81,7 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
->  	}
->  
->  	do_color_align = 0;
-> -	if (filp || (flags & MAP_SHARED))
-> +	if (filp || (flags & MAP_SHARED) || pgoff)
->  		do_color_align = 1;
->  
->  	/* requesting a specific address */
+>  	if (of_machine_is_compatible("lantiq,grx390") ||
+>  	    of_machine_is_compatible("lantiq,ar10")) {
+> -		clkdev_add_pmu("1e101000.usb", "phy", 1, 2, PMU_ANALOG_USB0_P);
+> -		clkdev_add_pmu("1e106000.usb", "phy", 1, 2, PMU_ANALOG_USB1_P);
+> +		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 2, PMU_ANALOG_USB0_P);
+> +		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 2, PMU_ANALOG_USB1_P);
+>  		/* rc 0 */
+>  		clkdev_add_pmu("1d900000.pcie", "phy", 1, 2, PMU_ANALOG_PCIE0_P);
+>  		clkdev_add_pmu("1d900000.pcie", "msi", 1, 1, PMU1_PCIE_MSI);
+> @@ -490,8 +490,8 @@ void __init ltq_soc_init(void)
+>  		else
+>  			clkdev_add_static(CLOCK_133M, CLOCK_133M,
+>  						CLOCK_133M, CLOCK_133M);
+> -		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+> -		clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
+> +		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+> +		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+>  		clkdev_add_pmu("1e180000.etop", "ppe", 1, 0, PMU_PPE);
+>  		clkdev_add_cgu("1e180000.etop", "ephycgu", CGU_EPHY);
+>  		clkdev_add_pmu("1e180000.etop", "ephy", 1, 0, PMU_EPHY);
+> @@ -500,8 +500,8 @@ void __init ltq_soc_init(void)
+>  	} else if (of_machine_is_compatible("lantiq,grx390")) {
+>  		clkdev_add_static(ltq_grx390_cpu_hz(), ltq_grx390_fpi_hz(),
+>  				  ltq_grx390_fpi_hz(), ltq_grx390_pp32_hz());
+> -		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+> -		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
+> +		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+> +		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1);
+>  		/* rc 2 */
+>  		clkdev_add_pmu("1a800000.pcie", "phy", 1, 2, PMU_ANALOG_PCIE2_P);
+>  		clkdev_add_pmu("1a800000.pcie", "msi", 1, 1, PMU1_PCIE2_MSI);
+> @@ -513,8 +513,8 @@ void __init ltq_soc_init(void)
+>  	} else if (of_machine_is_compatible("lantiq,ar10")) {
+>  		clkdev_add_static(ltq_ar10_cpu_hz(), ltq_ar10_fpi_hz(),
+>  				  ltq_ar10_fpi_hz(), ltq_ar10_pp32_hz());
+> -		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+> -		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
+> +		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+> +		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1);
+>  		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH |
+>  			       PMU_PPE_DP | PMU_PPE_TC);
+>  		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+> @@ -526,10 +526,10 @@ void __init ltq_soc_init(void)
+>  	} else if (of_machine_is_compatible("lantiq,vr9")) {
+>  		clkdev_add_static(ltq_vr9_cpu_hz(), ltq_vr9_fpi_hz(),
+>  				ltq_vr9_fpi_hz(), ltq_vr9_pp32_hz());
+> -		clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
+> -		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0 | PMU_AHBM);
+> -		clkdev_add_pmu("1e106000.usb", "phy", 1, 0, PMU_USB1_P);
+> -		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1 | PMU_AHBM);
+> +		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+> +		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
+> +		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
+> +		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1 | PMU_AHBM);
+>  		clkdev_add_pmu("1d900000.pcie", "phy", 1, 1, PMU1_PCIE_PHY);
+>  		clkdev_add_pmu("1d900000.pcie", "bus", 1, 0, PMU_PCIE_CLK);
+>  		clkdev_add_pmu("1d900000.pcie", "msi", 1, 1, PMU1_PCIE_MSI);
+> @@ -550,10 +550,10 @@ void __init ltq_soc_init(void)
+>  	} else if (of_machine_is_compatible("lantiq,ar9")) {
+>  		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
+>  				ltq_ar9_fpi_hz(), CLOCK_250M);
+> -		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+> -		clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
+> -		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
+> -		clkdev_add_pmu("1e106000.usb", "phy", 1, 0, PMU_USB1_P);
+> +		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+> +		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+> +		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
+> +		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1);
+>  		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
+>  		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+>  		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+> @@ -562,8 +562,8 @@ void __init ltq_soc_init(void)
+>  	} else {
+>  		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
+>  				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
+> -		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+> -		clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
+> +		clkdev_add_pmu("1f203018.usb2-phy", "ctrl", 1, 0, PMU_USB0);
+> +		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+>  		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+>  		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+>  		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+> diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
+> index c1807d4a0079..968088ceaeb3 100644
+> --- a/drivers/phy/Kconfig
+> +++ b/drivers/phy/Kconfig
+> @@ -52,6 +52,7 @@ source "drivers/phy/allwinner/Kconfig"
+>  source "drivers/phy/amlogic/Kconfig"
+>  source "drivers/phy/broadcom/Kconfig"
+>  source "drivers/phy/hisilicon/Kconfig"
+> +source "drivers/phy/lantiq/Kconfig"
+>  source "drivers/phy/marvell/Kconfig"
+>  source "drivers/phy/motorola/Kconfig"
+>  source "drivers/phy/qualcomm/Kconfig"
+> diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
+> index f252201e0ec9..a8b9439a5d8e 100644
+> --- a/drivers/phy/Makefile
+> +++ b/drivers/phy/Makefile
+> @@ -7,9 +7,9 @@ obj-$(CONFIG_PHY_LPC18XX_USB_OTG)	+= phy-lpc18xx-usb-otg.o
+>  obj-$(CONFIG_PHY_MT65XX_USB3)		+= phy-mt65xx-usb3.o
+>  obj-$(CONFIG_PHY_XGENE)			+= phy-xgene.o
+>  obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
+> -
+>  obj-$(CONFIG_ARCH_SUNXI)		+= allwinner/
+>  obj-$(CONFIG_ARCH_MESON)		+= amlogic/
+> +obj-$(CONFIG_LANTIQ)			+= lantiq/
+>  obj-$(CONFIG_ARCH_RENESAS)		+= renesas/
+>  obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
+>  obj-$(CONFIG_ARCH_TEGRA)		+= tegra/
+> diff --git a/drivers/phy/lantiq/Kconfig b/drivers/phy/lantiq/Kconfig
+> new file mode 100644
+> index 000000000000..326d88a6417d
+> --- /dev/null
+> +++ b/drivers/phy/lantiq/Kconfig
+> @@ -0,0 +1,9 @@
+> +#
+> +# Phy drivers for Lantiq / Intel platforms
+> +#
+> +config PHY_LANTIQ_RCU_USB2
+> +	tristate "Lantiq XWAY SoC RCU based USB PHY"
+> +	depends on OF && (SOC_TYPE_XWAY || COMPILE_TEST)
+> +	select GENERIC_PHY
+> +	help
+> +	  Support for the USB PHY(s) on the Lantiq / Intel XWAY family SoCs.
+> diff --git a/drivers/phy/lantiq/Makefile b/drivers/phy/lantiq/Makefile
+> new file mode 100644
+> index 000000000000..f73eb56a5416
+> --- /dev/null
+> +++ b/drivers/phy/lantiq/Makefile
+> @@ -0,0 +1 @@
+> +obj-$(CONFIG_PHY_LANTIQ_RCU_USB2)	+= phy-lantiq-rcu-usb2.o
+> diff --git a/drivers/phy/lantiq/phy-lantiq-rcu-usb2.c b/drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
+> new file mode 100644
+> index 000000000000..986224fca9e9
+> --- /dev/null
+> +++ b/drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
+> @@ -0,0 +1,254 @@
+> +/*
+> + * Lantiq XWAY SoC RCU module based USB 1.1/2.0 PHY driver
+> + *
+> + * Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> + * Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_device.h>
+> +#include <linux/phy/phy.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/reset.h>
+> +
+> +/* Transmitter HS Pre-Emphasis Enable */
+> +#define RCU_CFG1_TX_PEE		BIT(0)
+> +/* Disconnect Threshold */
+> +#define RCU_CFG1_DIS_THR_MASK	0x00038000
+> +#define RCU_CFG1_DIS_THR_SHIFT	15
+> +
+> +struct ltq_rcu_usb2_bits {
+> +	u8 hostmode;
+> +	u8 slave_endianness;
+> +	u8 host_endianness;
+> +	bool have_ana_cfg;
+> +};
+> +
+> +struct ltq_rcu_usb2_priv {
+> +	struct regmap			*regmap;
+> +	unsigned int			phy_reg_offset;
+> +	unsigned int			ana_cfg1_reg_offset;
+> +	const struct ltq_rcu_usb2_bits	*reg_bits;
+> +	struct device			*dev;
+> +	struct phy			*phy;
+> +	struct clk			*phy_gate_clk;
+> +	struct reset_control		*ctrl_reset;
+> +	struct reset_control		*phy_reset;
+> +};
+> +
+> +static const struct ltq_rcu_usb2_bits xway_rcu_usb2_reg_bits = {
+> +	.hostmode = 11,
+> +	.slave_endianness = 9,
+> +	.host_endianness = 10,
+> +	.have_ana_cfg = false,
+> +};
+> +
+> +static const struct ltq_rcu_usb2_bits xrx100_rcu_usb2_reg_bits = {
+> +	.hostmode = 11,
+> +	.slave_endianness = 17,
+> +	.host_endianness = 10,
+> +	.have_ana_cfg = false,
+> +};
+> +
+> +static const struct ltq_rcu_usb2_bits xrx200_rcu_usb2_reg_bits = {
+> +	.hostmode = 11,
+> +	.slave_endianness = 9,
+> +	.host_endianness = 10,
+> +	.have_ana_cfg = true,
+> +};
+> +
+> +static const struct of_device_id ltq_rcu_usb2_phy_of_match[] = {
+> +	{
+> +		.compatible = "lantiq,ase-usb2-phy",
+> +		.data = &xway_rcu_usb2_reg_bits,
+> +	},
+> +	{
+> +		.compatible = "lantiq,danube-usb2-phy",
+> +		.data = &xway_rcu_usb2_reg_bits,
+> +	},
+> +	{
+> +		.compatible = "lantiq,xrx100-usb2-phy",
+> +		.data = &xrx100_rcu_usb2_reg_bits,
+> +	},
+> +	{
+> +		.compatible = "lantiq,xrx200-usb2-phy",
+> +		.data = &xrx200_rcu_usb2_reg_bits,
+> +	},
+> +	{
+> +		.compatible = "lantiq,xrx300-usb2-phy",
+> +		.data = &xrx200_rcu_usb2_reg_bits,
+> +	},
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, ltq_rcu_usb2_phy_of_match);
+> +
+> +static int ltq_rcu_usb2_phy_init(struct phy *phy)
+> +{
+> +	struct ltq_rcu_usb2_priv *priv = phy_get_drvdata(phy);
+> +
+> +	if (priv->reg_bits->have_ana_cfg) {
+> +		regmap_update_bits(priv->regmap, priv->ana_cfg1_reg_offset,
+> +			RCU_CFG1_TX_PEE, RCU_CFG1_TX_PEE);
+> +		regmap_update_bits(priv->regmap, priv->ana_cfg1_reg_offset,
+> +			RCU_CFG1_DIS_THR_MASK, 7 << RCU_CFG1_DIS_THR_SHIFT);
+> +	}
+> +
+> +	/* Configure core to host mode */
+> +	regmap_update_bits(priv->regmap, priv->phy_reg_offset,
+> +			   BIT(priv->reg_bits->hostmode), 0);
+> +
+> +	/* Select DMA endianness (Host-endian: big-endian) */
+> +	regmap_update_bits(priv->regmap, priv->phy_reg_offset,
+> +		BIT(priv->reg_bits->slave_endianness), 0);
+> +	regmap_update_bits(priv->regmap, priv->phy_reg_offset,
+> +		BIT(priv->reg_bits->host_endianness),
+> +		BIT(priv->reg_bits->host_endianness));
+> +
+> +	return 0;
+> +}
+> +
+> +static int ltq_rcu_usb2_phy_power_on(struct phy *phy)
+> +{
+> +	struct ltq_rcu_usb2_priv *priv = phy_get_drvdata(phy);
+> +	struct device *dev = priv->dev;
+> +	int ret;
+> +
+> +	reset_control_deassert(priv->phy_reset);
+> +
+> +	ret = clk_prepare_enable(priv->phy_gate_clk);
+> +	if (ret)
+> +		dev_err(dev, "failed to enable PHY gate\n");
+> +
+> +	return ret;
+> +}
+> +
+> +static int ltq_rcu_usb2_phy_power_off(struct phy *phy)
+> +{
+> +	struct ltq_rcu_usb2_priv *priv = phy_get_drvdata(phy);
+> +
+> +	reset_control_assert(priv->phy_reset);
+> +
+> +	clk_disable_unprepare(priv->phy_gate_clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct phy_ops ltq_rcu_usb2_phy_ops = {
+> +	.init		= ltq_rcu_usb2_phy_init,
+> +	.power_on	= ltq_rcu_usb2_phy_power_on,
+> +	.power_off	= ltq_rcu_usb2_phy_power_off,
+> +	.owner		= THIS_MODULE,
+> +};
+> +
+> +static int ltq_rcu_usb2_of_parse(struct ltq_rcu_usb2_priv *priv,
+> +				 struct platform_device *pdev)
+> +{
+> +	struct device *dev = priv->dev;
+> +	const __be32 *offset;
+> +	int ret;
+> +
+> +	priv->reg_bits = of_device_get_match_data(dev);
+> +
+> +	priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
+> +	if (IS_ERR(priv->regmap)) {
+> +		dev_err(dev, "Failed to lookup RCU regmap\n");
+> +		return PTR_ERR(priv->regmap);
+> +	}
+> +
+> +	offset = of_get_address(dev->of_node, 0, NULL, NULL);
+> +	if (!offset) {
+> +		dev_err(dev, "Failed to get RCU PHY reg offset\n");
+> +		return -ENOENT;
+> +	}
+> +	priv->phy_reg_offset = __be32_to_cpu(*offset);
+> +
+> +	if (priv->reg_bits->have_ana_cfg) {
+> +		offset = of_get_address(dev->of_node, 1, NULL, NULL);
+> +		if (!offset) {
+> +			dev_err(dev, "Failed to get RCU ANA CFG1 reg offset\n");
+> +			return -ENOENT;
+> +		}
+> +		priv->ana_cfg1_reg_offset = __be32_to_cpu(*offset);
+> +	}
+> +
+> +	priv->phy_gate_clk = devm_clk_get(dev, "phy");
+> +	if (IS_ERR(priv->phy_gate_clk)) {
+> +		dev_err(dev, "Unable to get USB phy gate clk\n");
+> +		return PTR_ERR(priv->phy_gate_clk);
+> +	}
+> +
+> +	priv->ctrl_reset = devm_reset_control_get_shared(dev, "ctrl");
+> +	if (IS_ERR(priv->ctrl_reset)) {
+> +		if (PTR_ERR(priv->ctrl_reset) != -EPROBE_DEFER)
+> +			dev_err(dev, "failed to get 'ctrl' reset\n");
+> +		return PTR_ERR(priv->ctrl_reset);
+> +	}
+> +
+> +	priv->phy_reset = devm_reset_control_get_optional(dev, "phy");
+> +	if (IS_ERR(priv->phy_reset))
+> +		return PTR_ERR(priv->phy_reset);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ltq_rcu_usb2_phy_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct ltq_rcu_usb2_priv *priv;
+> +	struct phy_provider *provider;
+> +	int ret;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->dev = dev;
+> +
+> +	ret = ltq_rcu_usb2_of_parse(priv, pdev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Reset USB core through reset controller */
+> +	reset_control_deassert(priv->ctrl_reset);
+> +
+> +	reset_control_assert(priv->phy_reset);
+> +
+> +	priv->phy = devm_phy_create(dev, dev->of_node, &ltq_rcu_usb2_phy_ops);
+> +	if (IS_ERR(priv->phy)) {
+> +		dev_err(dev, "failed to create PHY\n");
+> +		return PTR_ERR(priv->phy);
+> +	}
+> +
+> +	phy_set_drvdata(priv->phy, priv);
+> +
+> +	provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+> +	if (IS_ERR(provider))
+> +		return PTR_ERR(provider);
+> +
+> +	dev_set_drvdata(priv->dev, priv);
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver ltq_rcu_usb2_phy_driver = {
+> +	.probe	= ltq_rcu_usb2_phy_probe,
+> +	.driver = {
+> +		.name	= "lantiq-rcu-usb2-phy",
+> +		.of_match_table	= ltq_rcu_usb2_phy_of_match,
+> +	}
+> +};
+> +module_platform_driver(ltq_rcu_usb2_phy_driver);
+> +
+> +MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
+> +MODULE_DESCRIPTION("Lantiq XWAY USB2 PHY driver");
+> +MODULE_LICENSE("GPL v2");
 > 
-
-Hi James,
-
-This patch also solved my problem with VDSO on the Lantiq VR9 SoC.
-
-Could you please send this as a patch for inclusion into the Linux
-mainline kernel and also mark it for backporting to to stable.
-
-We deactivated VDSO gettimeofday support for MIPS in LEDE because of
-this bug. With VDSO support a ping would show wrong numbers in about 5%
-to 50% of the cases on affected SOCs.
-
-Hauke

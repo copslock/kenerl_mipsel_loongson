@@ -1,63 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2017 18:46:33 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14534 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2017 22:57:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27944 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994249AbdHKQq0SmmBE convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2017 18:46:26 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 0661E3C848CE;
-        Fri, 11 Aug 2017 17:46:13 +0100 (IST)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 11 Aug 2017 17:46:16 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
- (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 11 Aug
- 2017 17:46:16 +0100
-Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
- bamail02.ba.imgtec.org ([fe80::5efe:10.20.40.28%12]) with mapi id
- 14.03.0266.001; Fri, 11 Aug 2017 09:46:12 -0700
-From:   Miodrag Dinic <Miodrag.Dinic@imgtec.com>
-To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        "Aleksandar Markovic" <aleksandar.markovic@rt-rk.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Goran Ferenc <Goran.Ferenc@imgtec.com>,
-        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        "Bo Hu" <bohu@google.com>, "David S. Miller" <davem@davemloft.net>,
-        "Douglas Leung" <Douglas.Leung@imgtec.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Jin Qian <jinqian@google.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Paul Burton" <Paul.Burton@imgtec.com>,
-        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
-        Raghu Gandham <Raghu.Gandham@imgtec.com>
-Subject: RE: [PATCH v3 2/8] MIPS: ranchu: Add Goldfish RTC driver
-Thread-Topic: [PATCH v3 2/8] MIPS: ranchu: Add Goldfish RTC driver
-Thread-Index: AQHTAkJJASL9wXsvJUO3I3hbOUgLw6J+oPYAgADc3h0=
-Date:   Fri, 11 Aug 2017 16:46:11 +0000
-Message-ID: <232DDC0A2B605E4F9E85F6904417885F015D937238@BADAG02.ba.imgtec.org>
-References: <1500656111-9520-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1500656111-9520-3-git-send-email-aleksandar.markovic@rt-rk.com>,<20170810203430.zgtxvi7uaqmg4dzr@piout.net>
-In-Reply-To: <20170810203430.zgtxvi7uaqmg4dzr@piout.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [82.117.201.26]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S23994814AbdHKU5gHpruw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2017 22:57:36 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTP id 348EE8BFC41DB;
+        Fri, 11 Aug 2017 21:57:25 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 11 Aug 2017 21:57:29 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Lars Persson <lars.persson@axis.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 0/4] MIPS: syscall tracing fixes
+Date:   Fri, 11 Aug 2017 21:56:49 +0100
+Message-ID: <20170811205653.21873-1-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.13.2
 MIME-Version: 1.0
-Return-Path: <Miodrag.Dinic@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59485
+X-archive-position: 59486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Miodrag.Dinic@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,51 +50,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alexandre,
+These patches fix some system call tracing issues around seccomp and
+ptrace on MIPS.
 
-we have this sorted & plan to submit version 4 of this series next week.
+Patch 1 fixes an issue introduced in v4.13-rc1, where o32 indirect
+syscall arguments aren't shifted when filling out seccomp_data struct.
+Arguably the samples/bpf/tracex5 case that was being fixed in -rc1 is
+flawed, or else other arches are broken too. thoughts welcome on that,
+but either way this fix should be okay. It'd be good to get this fix
+in particular into v4.13.
 
-Thank you.
+Patches 2 and 3 fix changing of system calls by ptrace and
+SECCOMP_RET_TRACE so that seccomp & syscall trace don't use the stale
+system call number, which appears to have been conceptually broken since
+v3.19 when thread_info::syscall was introduced, but also prevented the
+change in v4.8 to re-run the seccomp filter against a changed syscall
+from being effective on MIPS.
+First (patch 2) syscall_trace_enter() is fixed to re-read the syscall
+number from thread_info:syscall, then (patch 3) ptrace is fixed to
+update thread_info::syscall when the relevant registers are altered.
 
-Kind regards,
-Miodrag
-________________________________________
-From: Alexandre Belloni [alexandre.belloni@free-electrons.com]
-Sent: Thursday, August 10, 2017 10:34 PM
-To: Aleksandar Markovic
-Cc: linux-mips@linux-mips.org; Miodrag Dinic; Goran Ferenc; Aleksandar Markovic; Alessandro Zummo; Bo Hu; David S. Miller; Douglas Leung; Greg Kroah-Hartman; James Hogan; Jin Qian; linux-kernel@vger.kernel.org; linux-rtc@vger.kernel.org; Mauro Carvalho Chehab; Paul Burton; Petar Jovanovic; Raghu Gandham
-Subject: Re: [PATCH v3 2/8] MIPS: ranchu: Add Goldfish RTC driver
+Finally patch 4 fixes an API gap for MIPS which prevents a
+SECCOMP_RET_TRACE tracer from being able to cancel a system call, since
+you can't set both the system call number (v0) to -1 and the return
+value (v0) to the chosen error code. A PTRACE_SET_SYSCALL is added which
+allows thread_info::syscall to be set to -1 after the return value has
+already been set in the v0 register to some other value.
 
-Hi,
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Will Drewry <wad@chromium.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Lars Persson <lars.persson@axis.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
 
-On 21/07/2017 at 18:53:31 +0200, Aleksandar Markovic wrote:
-> From: Miodrag Dinic <miodrag.dinic@imgtec.com>
->
-> Add device driver for a virtual Goldfish RTC clock.
->
-> The driver can be built only if CONFIG_MIPS and CONFIG_GOLDFISH are
-> set. The compatible string used by OS for binding the driver is
-> defined as "google,goldfish-rtc".
->
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-> ---
->  MAINTAINERS                |   1 +
->  drivers/rtc/Kconfig        |   8 ++
->  drivers/rtc/Makefile       |   1 +
->  drivers/rtc/rtc-goldfish.c | 233 +++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 243 insertions(+)
->  create mode 100644 drivers/rtc/rtc-goldfish.c
->
+James Hogan (4):
+  MIPS/seccomp: Fix indirect syscall args
+  MIPS/ptrace: Pick up ptrace/seccomp changed syscalls
+  MIPS/ptrace: Update syscall nr on register changes
+  MIPS/ptrace: Add PTRACE_SET_SYSCALL operation
 
-Do you mind fixing the remaining checkpatch --strict issues, the two
-kbuild errors and the warning reported by Julia?
+ arch/mips/include/asm/syscall.h     | 29 ++++++++++++++++++++----
+ arch/mips/include/uapi/asm/ptrace.h |  1 +
+ arch/mips/kernel/ptrace.c           | 45 +++++++++++++++++++++++++++++--------
+ arch/mips/kernel/ptrace32.c         | 18 +++++++++++++++
+ 4 files changed, 80 insertions(+), 13 deletions(-)
 
-Thanks!
-
-
---
-Alexandre Belloni, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+-- 
+2.13.2

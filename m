@@ -1,70 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2017 00:17:37 +0200 (CEST)
-Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:37915
-        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994814AbdHKWRUIinMG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2017 00:17:20 +0200
-Received: by mail-it0-x22c.google.com with SMTP id m34so1118008iti.1
-        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2017 15:17:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2017 00:18:23 +0200 (CEST)
+Received: from mail-it0-x236.google.com ([IPv6:2607:f8b0:4001:c0b::236]:35963
+        "EHLO mail-it0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994814AbdHKWSLDiPYG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2017 00:18:11 +0200
+Received: by mail-it0-x236.google.com with SMTP id 77so1151473itj.1
+        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2017 15:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=I3eEuqRqlP1sYvOkMAs+8DIvemOAKLMgPi2QLgNJsCA=;
-        b=q2F6maB5I9/mOwLYpZqEkUQ2zt0ztCBOcMhFzQJ6xj3u5KltlXMR5xG4sxG5Md5jj2
-         3ethidZGTRbClWOWj5s9IrcKYDvvvImdFmEVOFkECz7FBQ9l2f5zZGKK0s81NrOLbaEc
-         lRPfASpSHM7hH/e7Qwca5z4V10fS9DbY1h5aMKAhmfHRDUpmshL4/TL1ff8XUyUJ6Imz
-         kznlk9qkI7ra7PEMlD53WmXr6bt0POl+9TpGnNlQcv2z6myHUaQWIMig6fIxbGpKeVlA
-         7oA7I84IFMC1yUwE2ai6qhYU1MzwTkjxhnkDFDEk9lka+pM4cq9LYbZuEytm6QF9an4d
-         tV0A==
+        bh=tNomcGA/1vP97/bo19N4UfkDC26A/JGnTHKJITApoVA=;
+        b=A/t+oX2J7gRHONHcSAI51bD1sXPU8LmSFWhBwvW5397jRe6XRjFHZWRuokKIwIdZ++
+         xwh/qWUqqO49sPB2WT5kFdmGXkBGFB8cnnTvdjPP4IUXn21YTn3d02kQH1X06y8NcB7p
+         w6FZE4KXfkpUudE0D9aSMulwUDyogWvF7DFbDfFTXaWm4Yy5vM5RHyvfEnstuwhkycNA
+         PdT9uIpAiqn9TRlisa3dIEpsAOx55hF9r+U/jfWE6L6CfLTP57Xl3HHt73j9fc8LXn6h
+         j3gDbp5upZIyT+zF5EAF/5OnLh3c/cIQaa6EUanw10Jnh94VzJafXnNuKDX7PglexSh1
+         Qv+Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=I3eEuqRqlP1sYvOkMAs+8DIvemOAKLMgPi2QLgNJsCA=;
-        b=DqmNbIWHcBJ5o0EkBcsSsWDbyHoRHMNxbuGL3gR9zVTv5nfH9zkAv98bL+HrlcLZHN
-         fL0BoEhk1U7muoZO9h7EFvfoI2z0H9D4pt+aigtFCqvO2mxsNnx00qsBe4Iga/mXsKiv
-         6EnnmhdTTYoGkY0CPVvpypRbcmd1dSxKoZz3k=
+        bh=tNomcGA/1vP97/bo19N4UfkDC26A/JGnTHKJITApoVA=;
+        b=WcT1Ddan5w4MGkWTx/xNGmITsj21KNV8Hz7g/pzeZetdRPOPk6s+RyMk+964nCq86i
+         lRdpatit2QgipbxTpGZgTA0ZJTmxOumTyBwR5Ok1tSsaKHbTxow7jtwMj60ndpsFtSgc
+         QOf3EovaCrw/iznZ+6CBpOvbPxncXcJnCOl0k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=I3eEuqRqlP1sYvOkMAs+8DIvemOAKLMgPi2QLgNJsCA=;
-        b=DaQW1x/Of0xLsUgal53wzj4CJ9TnB738JRd+0qyawr7/yTd4ouY8LzXyyuYomrUgnm
-         NwNwF8LP3QMqXwW+1I84/UC5wiTbYjif5Zbp7vcK7xslUngP4TNTCLidIiE7YbNA0Nvi
-         8ACgfErVE8gx8BsMkanmfdI6qYQI/LdAYkQO7QvFVIf9otVlFsHj2BVpu6EDFTHRvsWi
-         pNN7oKy2cFmts5U3FqngbL92S3085CwHWsDzOsBKcRg6loK3GouRJx03XGJm93ZQJjm0
-         nhqSJemRk5mZdcuspR230VnyQMZW5VlzlARMYftHF7vrS4sTSL2f4GRaNXd2rwxG7S3z
-         nRRA==
-X-Gm-Message-State: AHYfb5jeRvd5wX8m3bD2N9TdAiGzkXkp+BSmDWCDN99IsCycWINHJXQ3
-        f7vHA0j8mFCLUQ14NKojgLIw0IColHZG
-X-Received: by 10.36.101.2 with SMTP id u2mr153724itb.38.1502489832722; Fri,
- 11 Aug 2017 15:17:12 -0700 (PDT)
+        bh=tNomcGA/1vP97/bo19N4UfkDC26A/JGnTHKJITApoVA=;
+        b=XnMdyce7zTEqGH5YOL3ef9MMxtXuwfGZXXfK2Cy8z9VdTFxc+IogaRNK974jSfrInn
+         TsY9hPhQk/u4NhczVflajG7zkZxpAn0vCVEX5ssMOHYrJokSlJsZEn+2Rz7CoRE5lRPm
+         YeM8QglYgul2F+n5h/T1ieRxBVJipR87XBUrxJASlGvQCdiLdum7NxY2jcKEI50WRXKO
+         0QqFfwENhHqybpVS5vI0I39jUj/eKUv0XaOwGkivJwcEpuWU0xOIK6T4dyyyF3jv/Mh8
+         Ozm15cUBHxohqK9yLRrMQpbo0qGBp6VJDELVDFQrKDJZ/ZDUyXRldTAH2/E+Mvvjq/pd
+         yJrw==
+X-Gm-Message-State: AHYfb5jygV0qZ8mL+q4e5OFyod3VO9Q6BLicCXUVTt/koEsPywtKo39W
+        wv16ks/h8pP/FMkNFBYOLQI/O0TdAf+J
+X-Received: by 10.36.140.131 with SMTP id j125mr122631itd.43.1502489885172;
+ Fri, 11 Aug 2017 15:18:05 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.138.161 with HTTP; Fri, 11 Aug 2017 15:17:11 -0700 (PDT)
-In-Reply-To: <20170811205653.21873-2-james.hogan@imgtec.com>
-References: <20170811205653.21873-1-james.hogan@imgtec.com> <20170811205653.21873-2-james.hogan@imgtec.com>
+Received: by 10.107.138.161 with HTTP; Fri, 11 Aug 2017 15:18:04 -0700 (PDT)
+In-Reply-To: <20170811205653.21873-3-james.hogan@imgtec.com>
+References: <20170811205653.21873-1-james.hogan@imgtec.com> <20170811205653.21873-3-james.hogan@imgtec.com>
 From:   Kees Cook <keescook@chromium.org>
-Date:   Fri, 11 Aug 2017 15:17:11 -0700
-X-Google-Sender-Auth: Gr9W9oY4MINFvGN-fqMbNgtMMTw
-Message-ID: <CAGXu5jKmDKZ5DPDC87ZqHtmRVac7t3kQ3nqY4YzargZZPQmW6Q@mail.gmail.com>
-Subject: Re: [PATCH 1/4] MIPS/seccomp: Fix indirect syscall args
+Date:   Fri, 11 Aug 2017 15:18:04 -0700
+X-Google-Sender-Auth: Pus43Qo0QRC83g578CRJBOp5i4k
+Message-ID: <CAGXu5jLEvfOWGv+BNWCddMmtGumB_cpGOX6GCCm8Usz6=m=mPw@mail.gmail.com>
+Subject: Re: [PATCH 2/4] MIPS/ptrace: Pick up ptrace/seccomp changed syscalls
 To:     James Hogan <james.hogan@imgtec.com>
 Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Will Drewry <wad@chromium.org>,
+        Lars Persson <lars.persson@axis.com>,
         Oleg Nesterov <oleg@redhat.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Network Development <netdev@vger.kernel.org>
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59491
+X-archive-position: 59492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,92 +79,66 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Fri, Aug 11, 2017 at 1:56 PM, James Hogan <james.hogan@imgtec.com> wrote:
-> Since commit 669c4092225f ("MIPS: Give __secure_computing() access to
-> syscall arguments."), upon syscall entry when seccomp is enabled,
-> syscall_trace_enter() passes a carefully prepared struct seccomp_data
-> containing syscall arguments to __secure_computing(). Unfortunately it
-> directly uses mips_get_syscall_arg() and fails to take into account the
-> indirect O32 system calls (i.e. syscall(2)) which put the system call
-> number in a0 and have the arguments shifted up by one entry.
+> The MIPS syscall_trace_enter() allows the system call number to be
+> altered or cancelled by a ptrace tracer, via the normal ptrace hook
+> (PTRACE_SYSCALL) and changing the system call number register on entry,
+> and similarly via seccomp (PTRACE_EVENT_SECCOMP when a seccomp filter
+> returns SECCOMP_RET_TRACE).
 >
-> We can't just revert that commit as samples/bpf/tracex5 would break
-> again, so use syscall_get_arguments() which already takes indirect
-> syscalls into account instead of directly using mips_get_syscall_arg(),
-> similar to what populate_seccomp_data() does.
+> Be sure to update the syscall local variable if this happens, so that
+> seccomp will filter the correct system call number if the normal ptrace
+> hook changes it first, and so that if either the normal ptrace hook or
+> seccomp change it the correct system call number is passed to the trace
+> event.
 >
-> This also removes the redundant error checking of the
-> mips_get_syscall_arg() return value (get_user() already zeroes the
-> result if an argument from the stack can't be loaded).
+> This won't have any effect until the next commit, which fixes ptrace to
+> update thread_info::syscall.
 >
-> Reported-by: James Cowgill <James.Cowgill@imgtec.com>
-> Fixes: 669c4092225f ("MIPS: Give __secure_computing() access to syscall arguments.")
+> Fixes: c2d9f1775731 ("MIPS: Fix syscall_get_nr for the syscall exit tracing.")
 > Signed-off-by: James Hogan <james.hogan@imgtec.com>
 > Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: David Daney <david.daney@cavium.com>
+> Cc: Lars Persson <lars.persson@axis.com>
+> Cc: Oleg Nesterov <oleg@redhat.com>
 > Cc: Kees Cook <keescook@chromium.org>
 > Cc: Andy Lutomirski <luto@amacapital.net>
 > Cc: Will Drewry <wad@chromium.org>
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
 > Cc: linux-mips@linux-mips.org
-> ---
-> It would have been much simpler for MIPS arch code to just pass a NULL
-> seccomp_data to secure_computing() so populate_seccomp_data() would take
-> care of fetching arguments, as it did for MIPS prior to commit
-> 669c4092225f ("MIPS: Give __secure_computing() access to syscall
-> arguments."), but as that commit mentions it breaks samples/bpf/tracex5,
-> which relies on sd being non-NULL at entry to __seccomp_filter().
->
-> Arguably the samples/bpf/tracex5 test is flawed, at least for every arch
-> except x86 (and now MIPS).
-
-Weird. Yeah, that sample is broken. Allowing NULL sd is totally fine.
-The point is that seccomp will use syscall_get_arguments() when it's
-NULL (which is effectively what this is doing...)
-
-The reason sd can be _non_-NULL is when an architecture has access to
-the args in some way that might be faster than calling
-syscall_get_arguments().
-
-Regardless, I'm fine with this change. It should either be this or
-reverting 669c4092225f, but it looks like kprobes of
-__seccomp_filter() is desired on MIPS...
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
 
 -Kees
 
 > ---
->  arch/mips/kernel/ptrace.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
+>  arch/mips/kernel/ptrace.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 >
 > diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-> index 6dd13641a418..1395654cfc8d 100644
+> index 1395654cfc8d..be5d5fefcc7c 100644
 > --- a/arch/mips/kernel/ptrace.c
 > +++ b/arch/mips/kernel/ptrace.c
-> @@ -872,15 +872,13 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+> @@ -864,9 +864,11 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+>
+>         current_thread_info()->syscall = syscall;
+>
+> -       if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+> -           tracehook_report_syscall_entry(regs))
+> -               return -1;
+> +       if (test_thread_flag(TIF_SYSCALL_TRACE)) {
+> +               if (tracehook_report_syscall_entry(regs))
+> +                       return -1;
+> +               syscall = current_thread_info()->syscall;
+> +       }
+>
+>  #ifdef CONFIG_SECCOMP
 >         if (unlikely(test_thread_flag(TIF_SECCOMP))) {
->                 int ret, i;
->                 struct seccomp_data sd;
-> +               unsigned long args[6];
->
->                 sd.nr = syscall;
->                 sd.arch = syscall_get_arch();
-> -               for (i = 0; i < 6; i++) {
-> -                       unsigned long v, r;
-> -
-> -                       r = mips_get_syscall_arg(&v, current, regs, i);
-> -                       sd.args[i] = r ? 0 : v;
-> -               }
-> +               syscall_get_arguments(current, regs, 0, 6, args);
-> +               for (i = 0; i < 6; i++)
-> +                       sd.args[i] = args[i];
->                 sd.instruction_pointer = KSTK_EIP(current);
->
+> @@ -884,6 +886,7 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
 >                 ret = __secure_computing(&sd);
+>                 if (ret == -1)
+>                         return ret;
+> +               syscall = current_thread_info()->syscall;
+>         }
+>  #endif
+>
 > --
 > 2.13.2
 >

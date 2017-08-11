@@ -1,58 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2017 00:18:23 +0200 (CEST)
-Received: from mail-it0-x236.google.com ([IPv6:2607:f8b0:4001:c0b::236]:35963
-        "EHLO mail-it0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994814AbdHKWSLDiPYG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2017 00:18:11 +0200
-Received: by mail-it0-x236.google.com with SMTP id 77so1151473itj.1
-        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2017 15:18:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2017 00:23:56 +0200 (CEST)
+Received: from mail-io0-x22d.google.com ([IPv6:2607:f8b0:4001:c06::22d]:38013
+        "EHLO mail-io0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994820AbdHKWXkz1OR4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2017 00:23:40 +0200
+Received: by mail-io0-x22d.google.com with SMTP id g71so24593420ioe.5
+        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2017 15:23:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=tNomcGA/1vP97/bo19N4UfkDC26A/JGnTHKJITApoVA=;
-        b=A/t+oX2J7gRHONHcSAI51bD1sXPU8LmSFWhBwvW5397jRe6XRjFHZWRuokKIwIdZ++
-         xwh/qWUqqO49sPB2WT5kFdmGXkBGFB8cnnTvdjPP4IUXn21YTn3d02kQH1X06y8NcB7p
-         w6FZE4KXfkpUudE0D9aSMulwUDyogWvF7DFbDfFTXaWm4Yy5vM5RHyvfEnstuwhkycNA
-         PdT9uIpAiqn9TRlisa3dIEpsAOx55hF9r+U/jfWE6L6CfLTP57Xl3HHt73j9fc8LXn6h
-         j3gDbp5upZIyT+zF5EAF/5OnLh3c/cIQaa6EUanw10Jnh94VzJafXnNuKDX7PglexSh1
-         Qv+Q==
+        bh=VHOkLRVTJu3kYC59wdwdFIQZJhtDgl4PmkfYFQSiHJI=;
+        b=OuRlZyZeDxc4JBOFFmEB0bZJZDH6yMvaL64EXDV5rTI1PYxi7VA4hwBeZnVA8o9fTq
+         bvacnriCW/07ReB6rMmj9VqvbmaxQBblbQ2lrK4ZThZUDgmpO/Jm8BEqmRppdJxiKdLP
+         vzw3YgG2xdcR6Gv1lFqXLZi6UoS019CJXkHek143jff+Tdf/jYMSZkqbDgIaMVXcNwSj
+         eMS/mwMY97TGDcWsuYnfM2/Wro+tzKg5+ybIMIvqw8PWUNPmQrt3IhlfIpi/TCOhropr
+         jM2Uo0aK4tGcUv1kY+OSD8a2F9Wo6i9AjPqJaE3NycURHZOuonmnPLDLS/Dmmo26sJ/E
+         ZeOQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=tNomcGA/1vP97/bo19N4UfkDC26A/JGnTHKJITApoVA=;
-        b=WcT1Ddan5w4MGkWTx/xNGmITsj21KNV8Hz7g/pzeZetdRPOPk6s+RyMk+964nCq86i
-         lRdpatit2QgipbxTpGZgTA0ZJTmxOumTyBwR5Ok1tSsaKHbTxow7jtwMj60ndpsFtSgc
-         QOf3EovaCrw/iznZ+6CBpOvbPxncXcJnCOl0k=
+        bh=VHOkLRVTJu3kYC59wdwdFIQZJhtDgl4PmkfYFQSiHJI=;
+        b=NAIuPHRIFGS3lJbOiClGR1OtU9rSpJixEE8lsibpuvn1Ad3LvxO00pUI2rsHNSZsiY
+         C3expwbg3n0NdkI2wr6J8k3BlXhhdbgw++Pdbyke+z5YFQXxlqmsN50Pyyrqo56LDT1h
+         u1VMhtK5i7IH6g/u0oFGk6kF8W34O70rFsxM8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=tNomcGA/1vP97/bo19N4UfkDC26A/JGnTHKJITApoVA=;
-        b=XnMdyce7zTEqGH5YOL3ef9MMxtXuwfGZXXfK2Cy8z9VdTFxc+IogaRNK974jSfrInn
-         TsY9hPhQk/u4NhczVflajG7zkZxpAn0vCVEX5ssMOHYrJokSlJsZEn+2Rz7CoRE5lRPm
-         YeM8QglYgul2F+n5h/T1ieRxBVJipR87XBUrxJASlGvQCdiLdum7NxY2jcKEI50WRXKO
-         0QqFfwENhHqybpVS5vI0I39jUj/eKUv0XaOwGkivJwcEpuWU0xOIK6T4dyyyF3jv/Mh8
-         Ozm15cUBHxohqK9yLRrMQpbo0qGBp6VJDELVDFQrKDJZ/ZDUyXRldTAH2/E+Mvvjq/pd
-         yJrw==
-X-Gm-Message-State: AHYfb5jygV0qZ8mL+q4e5OFyod3VO9Q6BLicCXUVTt/koEsPywtKo39W
-        wv16ks/h8pP/FMkNFBYOLQI/O0TdAf+J
-X-Received: by 10.36.140.131 with SMTP id j125mr122631itd.43.1502489885172;
- Fri, 11 Aug 2017 15:18:05 -0700 (PDT)
+        bh=VHOkLRVTJu3kYC59wdwdFIQZJhtDgl4PmkfYFQSiHJI=;
+        b=cwsJonq6rJGkzWwBdGz+TFQ+BW/gADjtHlCHmxxHVI7P1IUO4bIq/ZBMA0y7/gj4Ji
+         jljVFNMdlChumEYdT02YYWZoJWfkRCURGzcna0ed1vrb7WDBCOfF4UAB4s014Nnfi4jL
+         gajYEi77QRCUQsz5WFAoOEmqArdqlwFJ9mjPgVvB7BSHtIopPh1vktBYrvb1N6hrBIdT
+         WJ3QHLDfRquIyP5ZqPJb4tAaSFiDHChjIzHJQLOaaK98O7RFsqTU9NrP7SEkToMXUfhc
+         XtzwflC5Djw87lffH80wcQz/3DqqTsmPoLECA2n0H0QFJnHSNTRzJdxCQHGID+PELeEV
+         /llg==
+X-Gm-Message-State: AHYfb5h2Mq/zDNnKuKfy8a8oUWL6Ev40eG9qujvVQH2/AZ7IiQbi13bR
+        uqf9vXi4hry5kEdadosgNLMwvn657Mrf
+X-Received: by 10.107.168.165 with SMTP id e37mr15550138ioj.133.1502490215088;
+ Fri, 11 Aug 2017 15:23:35 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.138.161 with HTTP; Fri, 11 Aug 2017 15:18:04 -0700 (PDT)
-In-Reply-To: <20170811205653.21873-3-james.hogan@imgtec.com>
-References: <20170811205653.21873-1-james.hogan@imgtec.com> <20170811205653.21873-3-james.hogan@imgtec.com>
+Received: by 10.107.138.161 with HTTP; Fri, 11 Aug 2017 15:23:34 -0700 (PDT)
+In-Reply-To: <20170811205653.21873-5-james.hogan@imgtec.com>
+References: <20170811205653.21873-1-james.hogan@imgtec.com> <20170811205653.21873-5-james.hogan@imgtec.com>
 From:   Kees Cook <keescook@chromium.org>
-Date:   Fri, 11 Aug 2017 15:18:04 -0700
-X-Google-Sender-Auth: Pus43Qo0QRC83g578CRJBOp5i4k
-Message-ID: <CAGXu5jLEvfOWGv+BNWCddMmtGumB_cpGOX6GCCm8Usz6=m=mPw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] MIPS/ptrace: Pick up ptrace/seccomp changed syscalls
+Date:   Fri, 11 Aug 2017 15:23:34 -0700
+X-Google-Sender-Auth: mwWmddKMA09DQ5kwrYzVW0gwLSs
+Message-ID: <CAGXu5j+Z_n1G9_q=FrOHVbz0axR8G6izB2Rvku1k6bRjJ6rMrA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] MIPS/ptrace: Add PTRACE_SET_SYSCALL operation
 To:     James Hogan <james.hogan@imgtec.com>
 Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Lars Persson <lars.persson@axis.com>,
         Oleg Nesterov <oleg@redhat.com>,
         Andy Lutomirski <luto@amacapital.net>,
         Will Drewry <wad@chromium.org>
@@ -61,7 +60,7 @@ Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59492
+X-archive-position: 59493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -79,66 +78,111 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Fri, Aug 11, 2017 at 1:56 PM, James Hogan <james.hogan@imgtec.com> wrote:
-> The MIPS syscall_trace_enter() allows the system call number to be
-> altered or cancelled by a ptrace tracer, via the normal ptrace hook
-> (PTRACE_SYSCALL) and changing the system call number register on entry,
-> and similarly via seccomp (PTRACE_EVENT_SECCOMP when a seccomp filter
-> returns SECCOMP_RET_TRACE).
+> Add a PTRACE_SET_SYSCALL ptrace operation to allow the system call to be
+> cancelled independently to the value of the v0 system call number
+> register.
 >
-> Be sure to update the syscall local variable if this happens, so that
-> seccomp will filter the correct system call number if the normal ptrace
-> hook changes it first, and so that if either the normal ptrace hook or
-> seccomp change it the correct system call number is passed to the trace
-> event.
+> This is needed for SECCOMP_RET_TRACE when the tracer wants to cancel the
+> system call, since it has to set both the system call number to -1 and
+> the chosen return value, both of which reside in the same register (v0).
+> The tracer should set the return value first, followed by
+> PTRACE_SET_SYSCALL to set the system call number to -1.
 >
-> This won't have any effect until the next commit, which fixes ptrace to
-> update thread_info::syscall.
+> That is in contrast to the normal ptrace syscall hook which triggers the
+> tracer on both entry and exit, allowing the system call to be cancelled
+> during the entry hook (setting system call number register to -1, or
+> optionally using PTRACE_SET_SYSCALL), separately to setting the return
+> value during the exit hook.
 >
-> Fixes: c2d9f1775731 ("MIPS: Fix syscall_get_nr for the syscall exit tracing.")
+> Positive values (to change the syscall that should be executed instead
+> of cancelling it entirely) are explicitly disallowed at the moment. The
+> same thing can be done safely already by writing the v0 system call
+> number register and the argument registers, and allowing
+> thread_info::syscall to be changed to a different value independently of
+> the v0 register would potentially allow seccomp or the syscall trace
+> events to be fooled into thinking a different system call was being
+> executed.
+
+Wouldn't the sycall be reloaded, so no spoofing could occur?
+
+Regardless, can you update
+tools/testing/selftests/seccomp/seccomp_bpf.c to update or eliminate
+the MIPS-only SYSCALL_NUM_RET_SHARE_REG special-case? (Or maybe it
+needs to be further special-cased to split syscall-changing from
+syscall-cancelling?)
+
+-Kees
+
+>
 > Signed-off-by: James Hogan <james.hogan@imgtec.com>
 > Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Lars Persson <lars.persson@axis.com>
 > Cc: Oleg Nesterov <oleg@redhat.com>
 > Cc: Kees Cook <keescook@chromium.org>
 > Cc: Andy Lutomirski <luto@amacapital.net>
 > Cc: Will Drewry <wad@chromium.org>
 > Cc: linux-mips@linux-mips.org
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
--Kees
-
 > ---
->  arch/mips/kernel/ptrace.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+>  arch/mips/include/uapi/asm/ptrace.h |  1 +
+>  arch/mips/kernel/ptrace.c           | 11 +++++++++++
+>  arch/mips/kernel/ptrace32.c         | 11 +++++++++++
+>  3 files changed, 23 insertions(+)
 >
+> diff --git a/arch/mips/include/uapi/asm/ptrace.h b/arch/mips/include/uapi/asm/ptrace.h
+> index 91a3d197ede3..23af103c4e8d 100644
+> --- a/arch/mips/include/uapi/asm/ptrace.h
+> +++ b/arch/mips/include/uapi/asm/ptrace.h
+> @@ -58,6 +58,7 @@ struct pt_regs {
+>
+>  #define PTRACE_GET_THREAD_AREA 25
+>  #define PTRACE_SET_THREAD_AREA 26
+> +#define PTRACE_SET_SYSCALL     27
+>
+>  /* Calls to trace a 64bit program from a 32bit program.         */
+>  #define PTRACE_PEEKTEXT_3264   0xc0
 > diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-> index 1395654cfc8d..be5d5fefcc7c 100644
+> index 465fc5633e61..9bf31a990c6e 100644
 > --- a/arch/mips/kernel/ptrace.c
 > +++ b/arch/mips/kernel/ptrace.c
-> @@ -864,9 +864,11 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+> @@ -853,6 +853,17 @@ long arch_ptrace(struct task_struct *child, long request,
+>                 ret = put_user(task_thread_info(child)->tp_value, datalp);
+>                 break;
 >
->         current_thread_info()->syscall = syscall;
+> +       case PTRACE_SET_SYSCALL:
+> +               /*
+> +                * This is currently only useful to cancel the syscall from a
+> +                * seccomp RET_TRACE tracer.
+> +                */
+> +               if ((long)data >= 0)
+> +                       return -EINVAL;
+> +               task_thread_info(child)->syscall = -1;
+> +               ret = 0;
+> +               break;
+> +
+>         case PTRACE_GET_WATCH_REGS:
+>                 ret = ptrace_get_watch_regs(child, addrp);
+>                 break;
+> diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
+> index 2b9260f92ccd..cca76aec9c10 100644
+> --- a/arch/mips/kernel/ptrace32.c
+> +++ b/arch/mips/kernel/ptrace32.c
+> @@ -287,6 +287,17 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+>                                 (unsigned int __user *) (unsigned long) data);
+>                 break;
 >
-> -       if (test_thread_flag(TIF_SYSCALL_TRACE) &&
-> -           tracehook_report_syscall_entry(regs))
-> -               return -1;
-> +       if (test_thread_flag(TIF_SYSCALL_TRACE)) {
-> +               if (tracehook_report_syscall_entry(regs))
-> +                       return -1;
-> +               syscall = current_thread_info()->syscall;
-> +       }
->
->  #ifdef CONFIG_SECCOMP
->         if (unlikely(test_thread_flag(TIF_SECCOMP))) {
-> @@ -884,6 +886,7 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
->                 ret = __secure_computing(&sd);
->                 if (ret == -1)
->                         return ret;
-> +               syscall = current_thread_info()->syscall;
->         }
->  #endif
->
+> +       case PTRACE_SET_SYSCALL:
+> +               /*
+> +                * This is currently only useful to cancel the syscall from a
+> +                * seccomp RET_TRACE tracer.
+> +                */
+> +               if ((long)data >= 0)
+> +                       return -EINVAL;
+> +               task_thread_info(child)->syscall = -1;
+> +               ret = 0;
+> +               break;
+> +
+>         case PTRACE_GET_THREAD_AREA_3264:
+>                 ret = put_user(task_thread_info(child)->tp_value,
+>                                 (unsigned long __user *) (unsigned long) data);
 > --
 > 2.13.2
 >

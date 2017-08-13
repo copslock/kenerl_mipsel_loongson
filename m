@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 04:56:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37636 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 04:57:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30079 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993909AbdHMCylPDXN6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 04:54:41 +0200
+        with ESMTP id S23992110AbdHMCy6zSSI6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 04:54:58 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id B839CDAF01D5E;
-        Sun, 13 Aug 2017 03:54:32 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 151E3E5E2E912;
+        Sun, 13 Aug 2017 03:54:50 +0100 (IST)
 Received: from localhost (10.20.79.142) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 13 Aug
- 2017 03:54:34 +0100
+ 2017 03:54:51 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 15/19] MIPS: CM: Add cluster & block args to mips_cm_lock_other()
-Date:   Sat, 12 Aug 2017 19:49:39 -0700
-Message-ID: <20170813024943.14989-16-paul.burton@imgtec.com>
+Subject: [PATCH 16/19] MIPS: SMP: Allow boot_secondary SMP op to return errors
+Date:   Sat, 12 Aug 2017 19:49:40 -0700
+Message-ID: <20170813024943.14989-17-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.14.0
 In-Reply-To: <20170813024943.14989-1-paul.burton@imgtec.com>
 References: <20170813024943.14989-1-paul.burton@imgtec.com>
@@ -26,7 +26,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59511
+X-archive-position: 59512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,206 +43,315 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With CM >= 3.5 we have the notion of multiple clusters & can access
-their CM, CPC & GIC registers via the apporpriate redirect/other
-register blocks. In order to allow for this introduce cluster & block
-arguments to mips_cm_lock_other() which configures the redirect/other
-region to point at the appropriate cluster, core, VP & register block.
+Allow the boot_secondary SMP op to return an error to __cpu_up(), which
+will in turn return it to its caller.
 
-Since we now have 4 arguments to mips_cm_lock_other() & a common use is
-likely to be to target the cluster, core & VP corresponding to a
-particular Linux CPU number we also add a new mips_cm_lock_other_cpu()
-helper function which handles that without the caller needing to
-manually pull out the cluster, core & VP numbers.
+This will allow SMP implementations to return errors quickly in cases
+they they know have failed, rather than relying upon __cpu_up()
+eventually timing out waiting for the cpu_running completion.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/include/asm/mips-cm.h | 45 ++++++++++++++++++++++++++++++++---------
- arch/mips/kernel/mips-cm.c      | 19 ++++++++++++++---
- arch/mips/kernel/smp-cps.c      | 10 ++++-----
- arch/mips/kernel/smp.c          |  2 +-
- 4 files changed, 58 insertions(+), 18 deletions(-)
+ arch/mips/cavium-octeon/smp.c         | 8 ++++++--
+ arch/mips/include/asm/smp-ops.h       | 2 +-
+ arch/mips/kernel/smp-bmips.c          | 4 +++-
+ arch/mips/kernel/smp-cmp.c            | 3 ++-
+ arch/mips/kernel/smp-cps.c            | 3 ++-
+ arch/mips/kernel/smp-mt.c             | 4 +++-
+ arch/mips/kernel/smp-up.c             | 3 ++-
+ arch/mips/kernel/smp.c                | 6 +++++-
+ arch/mips/loongson64/loongson-3/smp.c | 3 ++-
+ arch/mips/netlogic/common/smp.c       | 4 +++-
+ arch/mips/paravirt/paravirt-smp.c     | 3 ++-
+ arch/mips/sgi-ip27/ip27-smp.c         | 3 ++-
+ arch/mips/sibyte/bcm1480/smp.c        | 3 ++-
+ arch/mips/sibyte/sb1250/smp.c         | 3 ++-
+ 14 files changed, 37 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 6cfc0cc265d7..d42cc8e76dc2 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -437,29 +437,56 @@ static inline unsigned int mips_cm_vp_id(unsigned int cpu)
- #ifdef CONFIG_MIPS_CM
- 
- /**
-- * mips_cm_lock_other - lock access to another core
-+ * mips_cm_lock_other - lock access to redirect/other region
-+ * @cluster: the other cluster to be accessed
-  * @core: the other core to be accessed
-  * @vp: the VP within the other core to be accessed
-+ * @block: the register block to be accessed
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 163663a5363d..75e7c8625659 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -205,7 +205,7 @@ int plat_post_relocation(long offset)
+  * Firmware CPU startup hook
   *
-- * Call before operating upon a core via the 'other' register region in
-- * order to prevent the region being moved during access. Must be followed
-- * by a call to mips_cm_unlock_other.
-+ * Configure the redirect/other region for the local core/VP (depending upon
-+ * the CM revision) to target the specified @cluster, @core, @vp & register
-+ * @block. Must be called before using the redirect/other region, and followed
-+ * by a call to mips_cm_unlock_other() when access to the redirect/other region
-+ * is complete.
-+ *
-+ * This function acquires a spinlock such that code between it &
-+ * mips_cm_unlock_other() calls cannot be pre-empted by anything which may
-+ * reconfigure the redirect/other region, and cannot be interfered with by
-+ * another VP in the core. As such calls to this function should not be nested.
   */
--extern void mips_cm_lock_other(unsigned int core, unsigned int vp);
-+extern void mips_cm_lock_other(unsigned int cluster, unsigned int core,
-+			       unsigned int vp, unsigned int block);
+-static void octeon_boot_secondary(int cpu, struct task_struct *idle)
++static int octeon_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	int count;
  
- /**
-- * mips_cm_unlock_other - unlock access to another core
-+ * mips_cm_unlock_other - unlock access to redirect/other region
-  *
-- * Call after operating upon another core via the 'other' register region.
-- * Must be called after mips_cm_lock_other.
-+ * Must be called after mips_cm_lock_other() once all required access to the
-+ * redirect/other region has been completed.
-  */
- extern void mips_cm_unlock_other(void);
- 
- #else /* !CONFIG_MIPS_CM */
- 
--static inline void mips_cm_lock_other(unsigned int core, unsigned int vp) { }
-+static inline void mips_cm_lock_other(unsigned int cluster, unsigned int core,
-+				      unsigned int vp, unsigned int block) { }
- static inline void mips_cm_unlock_other(void) { }
- 
- #endif /* !CONFIG_MIPS_CM */
- 
-+/**
-+ * mips_cm_lock_other_cpu - lock access to redirect/other region
-+ * @cpu: the other CPU whose register we want to access
-+ *
-+ * Configure the redirect/other region for the local core/VP (depending upon
-+ * the CM revision) to target the specified @cpu & register @block. This is
-+ * equivalent to calling mips_cm_lock_other() but accepts a Linux CPU number
-+ * for convenience.
-+ */
-+static inline void mips_cm_lock_other_cpu(unsigned int cpu, unsigned int block)
-+{
-+	struct cpuinfo_mips *d = &cpu_data[cpu];
+@@ -223,8 +223,12 @@ static void octeon_boot_secondary(int cpu, struct task_struct *idle)
+ 		udelay(1);
+ 		count--;
+ 	}
+-	if (count == 0)
++	if (count == 0) {
+ 		pr_err("Secondary boot timeout\n");
++		return -ETIMEDOUT;
++	}
 +
-+	mips_cm_lock_other(cpu_cluster(d), cpu_core(d), cpu_vpe_id(d), block);
-+}
-+
- #endif /* __MIPS_ASM_MIPS_CM_H__ */
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 64ad8d0a6986..602c6ec9c01d 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -257,17 +257,28 @@ int mips_cm_probe(void)
- 	return 0;
++	return 0;
  }
  
--void mips_cm_lock_other(unsigned int core, unsigned int vp)
-+void mips_cm_lock_other(unsigned int cluster, unsigned int core,
-+			unsigned int vp, unsigned int block)
+ /**
+diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
+index 38859e7b1f1f..e5f49dd453c7 100644
+--- a/arch/mips/include/asm/smp-ops.h
++++ b/arch/mips/include/asm/smp-ops.h
+@@ -26,7 +26,7 @@ struct plat_smp_ops {
+ 	void (*send_ipi_mask)(const struct cpumask *mask, unsigned int action);
+ 	void (*init_secondary)(void);
+ 	void (*smp_finish)(void);
+-	void (*boot_secondary)(int cpu, struct task_struct *idle);
++	int (*boot_secondary)(int cpu, struct task_struct *idle);
+ 	void (*smp_setup)(void);
+ 	void (*prepare_cpus)(unsigned int max_cpus);
+ #ifdef CONFIG_HOTPLUG_CPU
+diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+index 4ac576c68034..406072e26752 100644
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -179,7 +179,7 @@ static void bmips_prepare_cpus(unsigned int max_cpus)
+ /*
+  * Tell the hardware to boot CPUx - runs on CPU0
+  */
+-static void bmips_boot_secondary(int cpu, struct task_struct *idle)
++static int bmips_boot_secondary(int cpu, struct task_struct *idle)
  {
--	unsigned curr_core;
-+	unsigned int curr_core, cm_rev;
- 	u32 val;
- 
-+	cm_rev = mips_cm_revision();
- 	preempt_disable();
- 
--	if (mips_cm_revision() >= CM_REV_CM3) {
-+	if (cm_rev >= CM_REV_CM3) {
- 		val = core << __ffs(CM3_GCR_Cx_OTHER_CORE);
- 		val |= vp << __ffs(CM3_GCR_Cx_OTHER_VP);
- 
-+		if (cm_rev >= CM_REV_CM3_5) {
-+			val |= CM_GCR_Cx_OTHER_CLUSTER_EN;
-+			val |= cluster << __ffs(CM_GCR_Cx_OTHER_CLUSTER);
-+			val |= block << __ffs(CM_GCR_Cx_OTHER_BLOCK);
-+		} else {
-+			WARN_ON(cluster != 0);
-+			WARN_ON(block != CM_GCR_Cx_OTHER_BLOCK_LOCAL);
-+		}
+ 	bmips_smp_boot_sp = __KSTK_TOS(idle);
+ 	bmips_smp_boot_gp = (unsigned long)task_thread_info(idle);
+@@ -231,6 +231,8 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+ 		}
+ 		cpumask_set_cpu(cpu, &bmips_booted_mask);
+ 	}
 +
- 		/*
- 		 * We need to disable interrupts in SMP systems in order to
- 		 * ensure that we don't interrupt the caller with code which
-@@ -280,7 +291,9 @@ void mips_cm_lock_other(unsigned int core, unsigned int vp)
- 		spin_lock_irqsave(this_cpu_ptr(&cm_core_lock),
- 				  *this_cpu_ptr(&cm_core_lock_flags));
- 	} else {
-+		WARN_ON(cluster != 0);
- 		WARN_ON(vp != 0);
-+		WARN_ON(block != CM_GCR_Cx_OTHER_BLOCK_LOCAL);
++	return 0;
+ }
  
- 		/*
- 		 * We only have a GCR_CL_OTHER per core in systems with
+ /*
+diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+index 1acffdee88f4..04b21deea4f2 100644
+--- a/arch/mips/kernel/smp-cmp.c
++++ b/arch/mips/kernel/smp-cmp.c
+@@ -78,7 +78,7 @@ static void cmp_smp_finish(void)
+  * __KSTK_TOS(idle) is apparently the stack pointer
+  * (unsigned long)idle->thread_info the gp
+  */
+-static void cmp_boot_secondary(int cpu, struct task_struct *idle)
++static int cmp_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	struct thread_info *gp = task_thread_info(idle);
+ 	unsigned long sp = __KSTK_TOS(idle);
+@@ -95,6 +95,7 @@ static void cmp_boot_secondary(int cpu, struct task_struct *idle)
+ #endif
+ 
+ 	amon_cpu_start(cpu, pc, sp, (unsigned long)gp, a0);
++	return 0;
+ }
+ 
+ /*
 diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 8cc508809466..7aac84ffc2af 100644
+index 7aac84ffc2af..4a4a25c722f1 100644
 --- a/arch/mips/kernel/smp-cps.c
 +++ b/arch/mips/kernel/smp-cps.c
-@@ -52,7 +52,7 @@ static unsigned core_vpe_count(unsigned core)
- 		&& (!IS_ENABLED(CONFIG_CPU_MIPSR6) || !cpu_has_vp))
- 		return 1;
+@@ -288,7 +288,7 @@ static void remote_vpe_boot(void *dummy)
+ 	mips_cps_boot_vpes(core_cfg, cpu_vpe_id(&current_cpu_data));
+ }
  
--	mips_cm_lock_other(core, 0);
-+	mips_cm_lock_other(0, core, 0, CM_GCR_Cx_OTHER_BLOCK_LOCAL);
- 	cfg = read_gcr_co_config() & CM_GCR_Cx_CONFIG_PVPE;
- 	mips_cm_unlock_other();
- 	return cfg + 1;
-@@ -214,7 +214,7 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
- 	unsigned timeout;
+-static void cps_boot_secondary(int cpu, struct task_struct *idle)
++static int cps_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	unsigned core = cpu_core(&cpu_data[cpu]);
+ 	unsigned vpe_id = cpu_vpe_id(&cpu_data[cpu]);
+@@ -346,6 +346,7 @@ static void cps_boot_secondary(int cpu, struct task_struct *idle)
+ 	mips_cps_boot_vpes(core_cfg, vpe_id);
+ out:
+ 	preempt_enable();
++	return 0;
+ }
  
- 	/* Select the appropriate core */
--	mips_cm_lock_other(core, 0);
-+	mips_cm_lock_other(0, core, 0, CM_GCR_Cx_OTHER_BLOCK_LOCAL);
+ static void cps_init_secondary(void)
+diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+index 5a7b5857d083..30415a74f312 100644
+--- a/arch/mips/kernel/smp-mt.c
++++ b/arch/mips/kernel/smp-mt.c
+@@ -152,7 +152,7 @@ static void vsmp_smp_finish(void)
+  * (unsigned long)idle->thread_info the gp
+  * assumes a 1:1 mapping of TC => VPE
+  */
+-static void vsmp_boot_secondary(int cpu, struct task_struct *idle)
++static int vsmp_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	struct thread_info *gp = task_thread_info(idle);
+ 	dvpe();
+@@ -184,6 +184,8 @@ static void vsmp_boot_secondary(int cpu, struct task_struct *idle)
+ 	clear_c0_mvpcontrol(MVPCONTROL_VPC);
  
- 	/* Set its reset vector */
- 	write_gcr_co_reset_base(CKSEG1ADDR((unsigned long)mips_cps_core_entry));
-@@ -313,7 +313,7 @@ static void cps_boot_secondary(int cpu, struct task_struct *idle)
- 	}
+ 	evpe(EVPE_ENABLE);
++
++	return 0;
+ }
  
- 	if (cpu_has_vp) {
--		mips_cm_lock_other(core, vpe_id);
-+		mips_cm_lock_other(0, core, vpe_id, CM_GCR_Cx_OTHER_BLOCK_LOCAL);
- 		core_entry = CKSEG1ADDR((unsigned long)mips_cps_core_entry);
- 		write_gcr_co_reset_base(core_entry);
- 		mips_cm_unlock_other();
-@@ -518,7 +518,7 @@ static void cps_cpu_die(unsigned int cpu)
- 		 */
- 		fail_time = ktime_add_ms(ktime_get(), 2000);
- 		do {
--			mips_cm_lock_other(core, 0);
-+			mips_cm_lock_other(0, core, 0, CM_GCR_Cx_OTHER_BLOCK_LOCAL);
- 			mips_cpc_lock_other(core);
- 			stat = read_cpc_co_stat_conf();
- 			stat &= CPC_Cx_STAT_CONF_SEQSTATE;
-@@ -562,7 +562,7 @@ static void cps_cpu_die(unsigned int cpu)
- 			panic("Failed to call remote sibling CPU\n");
- 	} else if (cpu_has_vp) {
- 		do {
--			mips_cm_lock_other(core, vpe_id);
-+			mips_cm_lock_other(0, core, vpe_id, CM_GCR_Cx_OTHER_BLOCK_LOCAL);
- 			stat = read_cpc_co_vp_running();
- 			mips_cm_unlock_other();
- 		} while (stat & (1 << vpe_id));
+ /*
+diff --git a/arch/mips/kernel/smp-up.c b/arch/mips/kernel/smp-up.c
+index 4cf015a624d1..525d3196f793 100644
+--- a/arch/mips/kernel/smp-up.c
++++ b/arch/mips/kernel/smp-up.c
+@@ -39,8 +39,9 @@ static void up_smp_finish(void)
+ /*
+  * Firmware CPU startup hook
+  */
+-static void up_boot_secondary(int cpu, struct task_struct *idle)
++static int up_boot_secondary(int cpu, struct task_struct *idle)
+ {
++	return 0;
+ }
+ 
+ static void __init up_smp_setup(void)
 diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 4cc43892b959..6248a5a3ec9e 100644
+index 6248a5a3ec9e..a4a59ed0164c 100644
 --- a/arch/mips/kernel/smp.c
 +++ b/arch/mips/kernel/smp.c
-@@ -190,7 +190,7 @@ void mips_smp_send_ipi_mask(const struct cpumask *mask, unsigned int action)
- 			core = cpu_core(&cpu_data[cpu]);
+@@ -439,7 +439,11 @@ void smp_prepare_boot_cpu(void)
  
- 			while (!cpumask_test_cpu(cpu, &cpu_coherent_mask)) {
--				mips_cm_lock_other(core, 0);
-+				mips_cm_lock_other_cpu(cpu, CM_GCR_Cx_OTHER_BLOCK_LOCAL);
- 				mips_cpc_lock_other(core);
- 				write_cpc_co_cmd(CPC_Cx_CMD_PWRUP);
- 				mips_cpc_unlock_other();
+ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ {
+-	mp_ops->boot_secondary(cpu, tidle);
++	int err;
++
++	err = mp_ops->boot_secondary(cpu, tidle);
++	if (err)
++		return err;
+ 
+ 	/*
+ 	 * We must check for timeout here, as the CPU will not be marked
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index bde64b0f1e47..8501109bb0f0 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -400,7 +400,7 @@ static void __init loongson3_prepare_cpus(unsigned int max_cpus)
+ /*
+  * Setup the PC, SP, and GP of a secondary processor and start it runing!
+  */
+-static void loongson3_boot_secondary(int cpu, struct task_struct *idle)
++static int loongson3_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	unsigned long startargs[4];
+ 
+@@ -423,6 +423,7 @@ static void loongson3_boot_secondary(int cpu, struct task_struct *idle)
+ 			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x8));
+ 	loongson3_ipi_write64(startargs[0],
+ 			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x0));
++	return 0;
+ }
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
+index 615027863f54..39a300bd6cc2 100644
+--- a/arch/mips/netlogic/common/smp.c
++++ b/arch/mips/netlogic/common/smp.c
+@@ -147,7 +147,7 @@ unsigned long nlm_next_gp;
+ unsigned long nlm_next_sp;
+ static cpumask_t phys_cpu_present_mask;
+ 
+-void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
++int nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ {
+ 	uint64_t picbase;
+ 	int hwtid;
+@@ -161,6 +161,8 @@ void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ 	/* barrier for sp/gp store above */
+ 	__sync();
+ 	nlm_pic_send_ipi(picbase, hwtid, 1, 1);  /* NMI */
++
++	return 0;
+ }
+ 
+ void __init nlm_smp_setup(void)
+diff --git a/arch/mips/paravirt/paravirt-smp.c b/arch/mips/paravirt/paravirt-smp.c
+index b61b26ccf601..107d9f90d668 100644
+--- a/arch/mips/paravirt/paravirt-smp.c
++++ b/arch/mips/paravirt/paravirt-smp.c
+@@ -100,11 +100,12 @@ static void paravirt_smp_finish(void)
+ 	local_irq_enable();
+ }
+ 
+-static void paravirt_boot_secondary(int cpu, struct task_struct *idle)
++static int paravirt_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	paravirt_smp_gp[cpu] = (unsigned long)task_thread_info(idle);
+ 	smp_wmb();
+ 	paravirt_smp_sp[cpu] = __KSTK_TOS(idle);
++	return 0;
+ }
+ 
+ static irqreturn_t paravirt_reched_interrupt(int irq, void *dev_id)
+diff --git a/arch/mips/sgi-ip27/ip27-smp.c b/arch/mips/sgi-ip27/ip27-smp.c
+index 85ee974a1582..545446dfe7fa 100644
+--- a/arch/mips/sgi-ip27/ip27-smp.c
++++ b/arch/mips/sgi-ip27/ip27-smp.c
+@@ -195,7 +195,7 @@ static void ip27_smp_finish(void)
+  * set sp to the kernel stack of the newly created idle process, gp to the proc
+  * struct so that current_thread_info() will work.
+  */
+-static void ip27_boot_secondary(int cpu, struct task_struct *idle)
++static int ip27_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	unsigned long gp = (unsigned long)task_thread_info(idle);
+ 	unsigned long sp = __KSTK_TOS(idle);
+@@ -203,6 +203,7 @@ static void ip27_boot_secondary(int cpu, struct task_struct *idle)
+ 	LAUNCH_SLAVE(cputonasid(cpu), cputoslice(cpu),
+ 		(launch_proc_t)MAPPED_KERN_RW_TO_K0(smp_bootstrap),
+ 		0, (void *) sp, (void *) gp);
++	return 0;
+ }
+ 
+ static void __init ip27_smp_setup(void)
+diff --git a/arch/mips/sibyte/bcm1480/smp.c b/arch/mips/sibyte/bcm1480/smp.c
+index 20091d5fe5a1..90c9d1255ad7 100644
+--- a/arch/mips/sibyte/bcm1480/smp.c
++++ b/arch/mips/sibyte/bcm1480/smp.c
+@@ -117,7 +117,7 @@ static void bcm1480_smp_finish(void)
+  * Setup the PC, SP, and GP of a secondary processor and start it
+  * running!
+  */
+-static void bcm1480_boot_secondary(int cpu, struct task_struct *idle)
++static int bcm1480_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	int retval;
+ 
+@@ -126,6 +126,7 @@ static void bcm1480_boot_secondary(int cpu, struct task_struct *idle)
+ 			       (unsigned long)task_thread_info(idle), 0);
+ 	if (retval != 0)
+ 		printk("cfe_start_cpu(%i) returned %i\n" , cpu, retval);
++	return retval;
+ }
+ 
+ /*
+diff --git a/arch/mips/sibyte/sb1250/smp.c b/arch/mips/sibyte/sb1250/smp.c
+index 46ce1298c27d..5baabca52f25 100644
+--- a/arch/mips/sibyte/sb1250/smp.c
++++ b/arch/mips/sibyte/sb1250/smp.c
+@@ -106,7 +106,7 @@ static void sb1250_smp_finish(void)
+  * Setup the PC, SP, and GP of a secondary processor and start it
+  * running!
+  */
+-static void sb1250_boot_secondary(int cpu, struct task_struct *idle)
++static int sb1250_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ 	int retval;
+ 
+@@ -115,6 +115,7 @@ static void sb1250_boot_secondary(int cpu, struct task_struct *idle)
+ 			       (unsigned long)task_thread_info(idle), 0);
+ 	if (retval != 0)
+ 		printk("cfe_start_cpu(%i) returned %i\n" , cpu, retval);
++	return retval;
+ }
+ 
+ /*
 -- 
 2.14.0

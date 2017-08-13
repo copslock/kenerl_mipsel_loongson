@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:46:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11775 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:46:25 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29546 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993920AbdHMEoJqIfxd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:44:09 +0200
+        with ESMTP id S23993911AbdHMEo0hIeid (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:44:26 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 1682C69B6296C;
-        Sun, 13 Aug 2017 05:44:00 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 5AE25D379277F;
+        Sun, 13 Aug 2017 05:44:18 +0100 (IST)
 Received: from localhost (10.20.79.142) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 13 Aug
- 2017 05:44:01 +0100
+ 2017 05:44:19 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>,
         Marc Zyngier <marc.zyngier@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 22/38] MIPS: VDSO: Drop gic_get_usm_range() usage
-Date:   Sat, 12 Aug 2017 21:36:30 -0700
-Message-ID: <20170813043646.25821-23-paul.burton@imgtec.com>
+Subject: [PATCH 23/38] irqchip: mips-gic: Remove gic_get_usm_range()
+Date:   Sat, 12 Aug 2017 21:36:31 -0700
+Message-ID: <20170813043646.25821-24-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.14.0
 In-Reply-To: <20170813043646.25821-1-paul.burton@imgtec.com>
 References: <20170813043646.25821-1-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59538
+X-archive-position: 59539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,13 +45,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We don't really need gic_get_usm_range() to abstract discovery of the
-address of the GIC user-visible section now that we have access to its
-base address globally.
-
-Switch to calculating it ourselves, which will allow us to stop
-requiring the irqchip driver to care about a counter exposed to userland
-for use via the VDSO.
+The MIPS VDSO code is no longer reliant upon the irqchip driver to
+provide the address of the GIC's user-visible section via
+gic_get_usm_range(). Remove the now-dead code.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Jason Cooper <jason@lakedaemon.net>
@@ -61,63 +57,82 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/kernel/vdso.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/irqchip/irq-mips-gic.c   | 14 --------------
+ include/linux/irqchip/mips-gic.h | 11 -----------
+ 2 files changed, 25 deletions(-)
 
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index 093517e85a6c..019035d7225c 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -13,13 +13,13 @@
- #include <linux/err.h>
- #include <linux/init.h>
- #include <linux/ioport.h>
--#include <linux/irqchip/mips-gic.h>
- #include <linux/mm.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/timekeeper_internal.h>
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index d6fbc5d6e8e2..6086747f02bf 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -46,7 +46,6 @@ struct gic_pcpu_mask {
+ 	DECLARE_BITMAP(pcpu_mask, GIC_MAX_INTRS);
+ };
  
- #include <asm/abi.h>
-+#include <asm/mips-cps.h>
- #include <asm/vdso.h>
+-static unsigned long __gic_base_addr;
+ static struct gic_pcpu_mask pcpu_masks[NR_CPUS];
+ static DEFINE_SPINLOCK(gic_lock);
+ static struct irq_domain *gic_irq_domain;
+@@ -134,17 +133,6 @@ int gic_get_c0_fdc_int(void)
+ 				  GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_FDC));
+ }
  
- /* Kernel-provided data used by the VDSO. */
-@@ -99,9 +99,8 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+-int gic_get_usm_range(struct resource *gic_usm_res)
+-{
+-	if (!gic_present)
+-		return -1;
+-
+-	gic_usm_res->start = __gic_base_addr + USM_VISIBLE_SECTION_OFS;
+-	gic_usm_res->end = gic_usm_res->start + (USM_VISIBLE_SECTION_SIZE - 1);
+-
+-	return 0;
+-}
+-
+ static void gic_handle_shared_int(bool chained)
  {
- 	struct mips_vdso_image *image = current->thread.abi->vdso;
- 	struct mm_struct *mm = current->mm;
--	unsigned long gic_size, vvar_size, size, base, data_addr, vdso_addr;
-+	unsigned long gic_size, vvar_size, size, base, data_addr, vdso_addr, gic_pfn;
- 	struct vm_area_struct *vma;
--	struct resource gic_res;
- 	int ret;
+ 	unsigned int intr, virq;
+@@ -672,8 +660,6 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 	unsigned int gicconfig, cpu;
+ 	unsigned int v[2];
  
- 	if (down_write_killable(&mm->mmap_sem))
-@@ -125,7 +124,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 	 * only map a page even though the total area is 64K, as we only need
- 	 * the counter registers at the start.
- 	 */
--	gic_size = gic_present ? PAGE_SIZE : 0;
-+	gic_size = mips_gic_present() ? PAGE_SIZE : 0;
- 	vvar_size = gic_size + PAGE_SIZE;
- 	size = vvar_size + image->size;
+-	__gic_base_addr = gic_base_addr;
+-
+ 	mips_gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
  
-@@ -148,13 +147,9 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ 	gicconfig = read_gic_config();
+diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
+index da02a146b292..843e1bb49767 100644
+--- a/include/linux/irqchip/mips-gic.h
++++ b/include/linux/irqchip/mips-gic.h
+@@ -11,10 +11,6 @@
+ #include <linux/clocksource.h>
+ #include <linux/ioport.h>
  
- 	/* Map GIC user page. */
- 	if (gic_size) {
--		ret = gic_get_usm_range(&gic_res);
--		if (ret)
--			goto out;
-+		gic_pfn = virt_to_phys(mips_gic_base + MIPS_GIC_USER_OFS) >> PAGE_SHIFT;
+-/* GIC Address Space */
+-#define USM_VISIBLE_SECTION_OFS		0x10000
+-#define USM_VISIBLE_SECTION_SIZE	0x10000
+-
+ /* User Mode Visible Section Register Map */
+ #define GIC_UMV_SH_COUNTER_31_00_OFS	0x0000
+ #define GIC_UMV_SH_COUNTER_63_32_OFS	0x0004
+@@ -29,18 +25,11 @@ extern void gic_init(unsigned long gic_base_addr,
+ extern int gic_get_c0_compare_int(void);
+ extern int gic_get_c0_perfcount_int(void);
+ extern int gic_get_c0_fdc_int(void);
+-extern int gic_get_usm_range(struct resource *gic_usm_res);
  
--		ret = io_remap_pfn_range(vma, base,
--					 gic_res.start >> PAGE_SHIFT,
--					 gic_size,
-+		ret = io_remap_pfn_range(vma, base, gic_pfn, gic_size,
- 					 pgprot_noncached(PAGE_READONLY));
- 		if (ret)
- 			goto out;
+ #else /* CONFIG_MIPS_GIC */
+ 
+ #define gic_present	0
+ 
+-static inline int gic_get_usm_range(struct resource *gic_usm_res)
+-{
+-	/* Shouldn't be called. */
+-	return -1;
+-}
+-
+ #endif /* CONFIG_MIPS_GIC */
+ 
+ #endif /* __LINUX_IRQCHIP_MIPS_GIC_H */
 -- 
 2.14.0

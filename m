@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:43:41 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58562 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:44:02 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31484 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993912AbdHMEmUy5Ucd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:42:20 +0200
+        with ESMTP id S23993911AbdHMEmiT6F9d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:42:38 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 7F25C99F43F2B;
-        Sun, 13 Aug 2017 05:42:11 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 9D4DB2038A0A3;
+        Sun, 13 Aug 2017 05:42:29 +0100 (IST)
 Received: from localhost (10.20.79.142) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 13 Aug
- 2017 05:42:13 +0100
+ 2017 05:42:31 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>,
         Marc Zyngier <marc.zyngier@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 16/38] irqchip: mips-gic: Convert remaining shared reg access to new accessors
-Date:   Sat, 12 Aug 2017 21:36:24 -0700
-Message-ID: <20170813043646.25821-17-paul.burton@imgtec.com>
+Subject: [PATCH 17/38] irqchip: mips-gic: Convert local int mask access to new accessors
+Date:   Sat, 12 Aug 2017 21:36:25 -0700
+Message-ID: <20170813043646.25821-18-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.14.0
 In-Reply-To: <20170813043646.25821-1-paul.burton@imgtec.com>
 References: <20170813043646.25821-1-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59532
+X-archive-position: 59533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,9 +45,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Convert the remaining accesses to registers in the GIC shared register
-block to use the new accessor functions provided by asm/mips-gic.h,
-resulting in code which is often shorter & easier to read.
+Use the new accessor functions provided by asm/mips-gic.h to access
+masks controlling local interrupts, resulting in code which is often
+shorter & easier to read.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Jason Cooper <jason@lakedaemon.net>
@@ -57,96 +57,138 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-mips@linux-mips.org
 ---
 
- drivers/irqchip/irq-mips-gic.c   | 16 ++++++++--------
- include/linux/irqchip/mips-gic.h | 20 --------------------
- 2 files changed, 8 insertions(+), 28 deletions(-)
+ drivers/irqchip/irq-mips-gic.c   | 14 +++++------
+ include/linux/irqchip/mips-gic.h | 52 ----------------------------------------
+ 2 files changed, 7 insertions(+), 59 deletions(-)
 
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index bc7a4e320f89..90b8644e1264 100644
+index 90b8644e1264..ac4ba4f7c2d6 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -119,7 +119,7 @@ static void gic_send_ipi(struct irq_data *d, unsigned int cpu)
- {
- 	irq_hw_number_t hwirq = GIC_HWIRQ_TO_SHARED(irqd_to_hwirq(d));
+@@ -328,8 +328,8 @@ static void gic_handle_local_int(bool chained)
+ 	unsigned long pending, masked;
+ 	unsigned int intr, virq;
  
--	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_SET(hwirq));
-+	write_gic_wedge(GIC_WEDGE_RW | hwirq);
+-	pending = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
+-	masked = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
++	pending = read_gic_vl_pend();
++	masked = read_gic_vl_mask();
+ 
+ 	bitmap_and(&pending, &pending, &masked, GIC_NUM_LOCAL_INTRS);
+ 
+@@ -347,14 +347,14 @@ static void gic_mask_local_irq(struct irq_data *d)
+ {
+ 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+ 
+-	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
++	write_gic_vl_rmask(BIT(intr));
  }
  
- int gic_get_c0_compare_int(void)
-@@ -215,7 +215,7 @@ static void gic_ack_irq(struct irq_data *d)
+ static void gic_unmask_local_irq(struct irq_data *d)
  {
- 	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
+ 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
  
--	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_CLR(irq));
-+	write_gic_wedge(irq);
+-	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
++	write_gic_vl_smask(BIT(intr));
  }
  
- static int gic_set_type(struct irq_data *d, unsigned int type)
-@@ -700,13 +700,13 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 
- 	mips_gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
- 
--	gicconfig = gic_read(GIC_REG(SHARED, GIC_SH_CONFIG));
--	gic_shared_intrs = (gicconfig & GIC_SH_CONFIG_NUMINTRS_MSK) >>
--		   GIC_SH_CONFIG_NUMINTRS_SHF;
--	gic_shared_intrs = ((gic_shared_intrs + 1) * 8);
-+	gicconfig = read_gic_config();
-+	gic_shared_intrs = gicconfig & GIC_CONFIG_NUMINTERRUPTS;
-+	gic_shared_intrs >>= __fls(GIC_CONFIG_NUMINTERRUPTS);
-+	gic_shared_intrs = (gic_shared_intrs + 1) * 8;
- 
--	gic_vpes = (gicconfig & GIC_SH_CONFIG_NUMVPES_MSK) >>
--		  GIC_SH_CONFIG_NUMVPES_SHF;
-+	gic_vpes = gicconfig & GIC_CONFIG_PVPS;
-+	gic_vpes >>= __fls(GIC_CONFIG_PVPS);
- 	gic_vpes = gic_vpes + 1;
- 
- 	if (cpu_has_veic) {
+ static struct irq_chip gic_local_irq_controller = {
+@@ -373,7 +373,7 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ 	for (i = 0; i < gic_vpes; i++) {
+ 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
+ 			  mips_cm_vp_id(i));
+-		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
++		write_gic_vo_rmask(BIT(intr));
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+ }
+@@ -388,7 +388,7 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+ 	for (i = 0; i < gic_vpes; i++) {
+ 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
+ 			  mips_cm_vp_id(i));
+-		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
++		write_gic_vo_smask(BIT(intr));
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+ }
+@@ -432,7 +432,7 @@ static void __init gic_basic_init(void)
+ 		for (j = 0; j < GIC_NUM_LOCAL_INTRS; j++) {
+ 			if (!gic_local_irq_is_routable(j))
+ 				continue;
+-			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << j);
++			write_gic_vo_rmask(BIT(j));
+ 		}
+ 	}
+ }
 diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index ad8b216b6056..f0a60770d775 100644
+index f0a60770d775..011698962a8d 100644
 --- a/include/linux/irqchip/mips-gic.h
 +++ b/include/linux/irqchip/mips-gic.h
-@@ -19,8 +19,6 @@
- #define GIC_REG(segment, offset) (segment##_##SECTION_OFS + offset##_##OFS)
+@@ -28,10 +28,6 @@
  
- /* GIC Address Space */
--#define SHARED_SECTION_OFS		0x0000
--#define SHARED_SECTION_SIZE		0x8000
- #define VPE_LOCAL_SECTION_OFS		0x8000
- #define VPE_LOCAL_SECTION_SIZE		0x4000
- #define VPE_OTHER_SECTION_OFS		0xc000
-@@ -28,15 +26,6 @@
- #define USM_VISIBLE_SECTION_OFS		0x10000
- #define USM_VISIBLE_SECTION_SIZE	0x10000
- 
--/* Register Map for Shared Section */
--
--#define GIC_SH_CONFIG_OFS		0x0000
--
--#define GIC_SH_REVISIONID_OFS		0x0020
--
--/* Set/Clear corresponding bit in Edge Detect Register */
--#define GIC_SH_WEDGE_OFS		0x0280
--
  /* Register Map for Local Section */
  #define GIC_VPE_CTL_OFS			0x0000
- #define GIC_VPE_PEND_OFS		0x0004
-@@ -65,15 +54,6 @@
- #define GIC_UMV_SH_COUNTER_63_32_OFS	0x0004
+-#define GIC_VPE_PEND_OFS		0x0004
+-#define GIC_VPE_MASK_OFS		0x0008
+-#define GIC_VPE_RMASK_OFS		0x000c
+-#define GIC_VPE_SMASK_OFS		0x0010
+ #define GIC_VPE_TIMER_MAP_OFS		0x0048
+ #define GIC_VPE_OTHER_ADDR_OFS		0x0080
+ #define GIC_VPE_WD_CONFIG0_OFS		0x0090
+@@ -69,54 +65,6 @@
+ #define GIC_VPE_CTL_EIC_MODE_SHF	0
+ #define GIC_VPE_CTL_EIC_MODE_MSK	(MSK(1) << GIC_VPE_CTL_EIC_MODE_SHF)
  
- /* Masks */
--#define GIC_SH_CONFIG_NUMINTRS_SHF	16
--#define GIC_SH_CONFIG_NUMINTRS_MSK	(MSK(8) << GIC_SH_CONFIG_NUMINTRS_SHF)
+-/* GIC_VPE_PEND Masks */
+-#define GIC_VPE_PEND_WD_SHF		0
+-#define GIC_VPE_PEND_WD_MSK		(MSK(1) << GIC_VPE_PEND_WD_SHF)
+-#define GIC_VPE_PEND_CMP_SHF		1
+-#define GIC_VPE_PEND_CMP_MSK		(MSK(1) << GIC_VPE_PEND_CMP_SHF)
+-#define GIC_VPE_PEND_TIMER_SHF		2
+-#define GIC_VPE_PEND_TIMER_MSK		(MSK(1) << GIC_VPE_PEND_TIMER_SHF)
+-#define GIC_VPE_PEND_PERFCOUNT_SHF	3
+-#define GIC_VPE_PEND_PERFCOUNT_MSK	(MSK(1) << GIC_VPE_PEND_PERFCOUNT_SHF)
+-#define GIC_VPE_PEND_SWINT0_SHF		4
+-#define GIC_VPE_PEND_SWINT0_MSK		(MSK(1) << GIC_VPE_PEND_SWINT0_SHF)
+-#define GIC_VPE_PEND_SWINT1_SHF		5
+-#define GIC_VPE_PEND_SWINT1_MSK		(MSK(1) << GIC_VPE_PEND_SWINT1_SHF)
+-#define GIC_VPE_PEND_FDC_SHF		6
+-#define GIC_VPE_PEND_FDC_MSK		(MSK(1) << GIC_VPE_PEND_FDC_SHF)
 -
--#define GIC_SH_CONFIG_NUMVPES_SHF	0
--#define GIC_SH_CONFIG_NUMVPES_MSK	(MSK(8) << GIC_SH_CONFIG_NUMVPES_SHF)
+-/* GIC_VPE_RMASK Masks */
+-#define GIC_VPE_RMASK_WD_SHF		0
+-#define GIC_VPE_RMASK_WD_MSK		(MSK(1) << GIC_VPE_RMASK_WD_SHF)
+-#define GIC_VPE_RMASK_CMP_SHF		1
+-#define GIC_VPE_RMASK_CMP_MSK		(MSK(1) << GIC_VPE_RMASK_CMP_SHF)
+-#define GIC_VPE_RMASK_TIMER_SHF		2
+-#define GIC_VPE_RMASK_TIMER_MSK		(MSK(1) << GIC_VPE_RMASK_TIMER_SHF)
+-#define GIC_VPE_RMASK_PERFCNT_SHF	3
+-#define GIC_VPE_RMASK_PERFCNT_MSK	(MSK(1) << GIC_VPE_RMASK_PERFCNT_SHF)
+-#define GIC_VPE_RMASK_SWINT0_SHF	4
+-#define GIC_VPE_RMASK_SWINT0_MSK	(MSK(1) << GIC_VPE_RMASK_SWINT0_SHF)
+-#define GIC_VPE_RMASK_SWINT1_SHF	5
+-#define GIC_VPE_RMASK_SWINT1_MSK	(MSK(1) << GIC_VPE_RMASK_SWINT1_SHF)
+-#define GIC_VPE_RMASK_FDC_SHF		6
+-#define GIC_VPE_RMASK_FDC_MSK		(MSK(1) << GIC_VPE_RMASK_FDC_SHF)
 -
--#define GIC_SH_WEDGE_SET(intr)		((intr) | (0x1 << 31))
--#define GIC_SH_WEDGE_CLR(intr)		((intr) & ~(0x1 << 31))
+-/* GIC_VPE_SMASK Masks */
+-#define GIC_VPE_SMASK_WD_SHF		0
+-#define GIC_VPE_SMASK_WD_MSK		(MSK(1) << GIC_VPE_SMASK_WD_SHF)
+-#define GIC_VPE_SMASK_CMP_SHF		1
+-#define GIC_VPE_SMASK_CMP_MSK		(MSK(1) << GIC_VPE_SMASK_CMP_SHF)
+-#define GIC_VPE_SMASK_TIMER_SHF		2
+-#define GIC_VPE_SMASK_TIMER_MSK		(MSK(1) << GIC_VPE_SMASK_TIMER_SHF)
+-#define GIC_VPE_SMASK_PERFCNT_SHF	3
+-#define GIC_VPE_SMASK_PERFCNT_MSK	(MSK(1) << GIC_VPE_SMASK_PERFCNT_SHF)
+-#define GIC_VPE_SMASK_SWINT0_SHF	4
+-#define GIC_VPE_SMASK_SWINT0_MSK	(MSK(1) << GIC_VPE_SMASK_SWINT0_SHF)
+-#define GIC_VPE_SMASK_SWINT1_SHF	5
+-#define GIC_VPE_SMASK_SWINT1_MSK	(MSK(1) << GIC_VPE_SMASK_SWINT1_SHF)
+-#define GIC_VPE_SMASK_FDC_SHF		6
+-#define GIC_VPE_SMASK_FDC_MSK		(MSK(1) << GIC_VPE_SMASK_FDC_SHF)
 -
- #define GIC_MAP_SHF			0
- #define GIC_MAP_MSK			(MSK(6) << GIC_MAP_SHF)
- 
+ /* GIC nomenclature for Core Interrupt Pins. */
+ #define GIC_CPU_INT0		0 /* Core Interrupt 2 */
+ #define GIC_CPU_INT1		1 /* .		      */
 -- 
 2.14.0

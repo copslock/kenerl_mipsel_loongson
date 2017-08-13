@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:43:18 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3723 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:43:41 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58562 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993913AbdHMEmBhmzzd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:42:01 +0200
+        with ESMTP id S23993912AbdHMEmUy5Ucd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:42:20 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 63E8511B7D424;
-        Sun, 13 Aug 2017 05:41:53 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 7F25C99F43F2B;
+        Sun, 13 Aug 2017 05:42:11 +0100 (IST)
 Received: from localhost (10.20.79.142) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 13 Aug
- 2017 05:41:55 +0100
+ 2017 05:42:13 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>,
         Marc Zyngier <marc.zyngier@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 15/38] irqchip: mips-gic: Remove gic_map_to_vpe()
-Date:   Sat, 12 Aug 2017 21:36:23 -0700
-Message-ID: <20170813043646.25821-16-paul.burton@imgtec.com>
+Subject: [PATCH 16/38] irqchip: mips-gic: Convert remaining shared reg access to new accessors
+Date:   Sat, 12 Aug 2017 21:36:24 -0700
+Message-ID: <20170813043646.25821-17-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.14.0
 In-Reply-To: <20170813043646.25821-1-paul.burton@imgtec.com>
 References: <20170813043646.25821-1-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59531
+X-archive-position: 59532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,9 +45,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove the gic_map_to_vpe() function in favour of using the new
-write_gic_map_vp() accessor function which isn't any more complex to
-use & allows us to drop a level of abstraction.
+Convert the remaining accesses to registers in the GIC shared register
+block to use the new accessor functions provided by asm/mips-gic.h,
+resulting in code which is often shorter & easier to read.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Jason Cooper <jason@lakedaemon.net>
@@ -57,62 +57,96 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-mips@linux-mips.org
 ---
 
- drivers/irqchip/irq-mips-gic.c   | 11 ++---------
- include/linux/irqchip/mips-gic.h |  6 ------
- 2 files changed, 2 insertions(+), 15 deletions(-)
+ drivers/irqchip/irq-mips-gic.c   | 16 ++++++++--------
+ include/linux/irqchip/mips-gic.h | 20 --------------------
+ 2 files changed, 8 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index b97c7afef61d..bc7a4e320f89 100644
+index bc7a4e320f89..90b8644e1264 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -81,13 +81,6 @@ static inline void gic_write(unsigned int reg, unsigned long val)
- 		return gic_write64(reg, (u64)val);
+@@ -119,7 +119,7 @@ static void gic_send_ipi(struct irq_data *d, unsigned int cpu)
+ {
+ 	irq_hw_number_t hwirq = GIC_HWIRQ_TO_SHARED(irqd_to_hwirq(d));
+ 
+-	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_SET(hwirq));
++	write_gic_wedge(GIC_WEDGE_RW | hwirq);
  }
  
--static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
--{
--	gic_write(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_VPE_BASE) +
--		  GIC_SH_MAP_TO_VPE_REG_OFF(intr, vpe),
--		  GIC_SH_MAP_TO_VPE_REG_BIT(vpe));
--}
--
- static bool gic_local_irq_is_routable(int intr)
+ int gic_get_c0_compare_int(void)
+@@ -215,7 +215,7 @@ static void gic_ack_irq(struct irq_data *d)
  {
- 	u32 vpe_ctl;
-@@ -294,7 +287,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 	spin_lock_irqsave(&gic_lock, flags);
+ 	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
  
- 	/* Re-route this IRQ */
--	gic_map_to_vpe(irq, mips_cm_vp_id(cpumask_first(&tmp)));
-+	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpumask_first(&tmp))));
+-	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_CLR(irq));
++	write_gic_wedge(irq);
+ }
  
- 	/* Update the pcpu_masks */
- 	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
-@@ -486,7 +479,7 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ static int gic_set_type(struct irq_data *d, unsigned int type)
+@@ -700,13 +700,13 @@ static void __init __gic_init(unsigned long gic_base_addr,
  
- 	spin_lock_irqsave(&gic_lock, flags);
- 	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
--	gic_map_to_vpe(intr, mips_cm_vp_id(vpe));
-+	write_gic_map_vp(intr, BIT(mips_cm_vp_id(vpe)));
- 	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
- 		clear_bit(intr, pcpu_masks[i].pcpu_mask);
- 	set_bit(intr, pcpu_masks[vpe].pcpu_mask);
+ 	mips_gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
+ 
+-	gicconfig = gic_read(GIC_REG(SHARED, GIC_SH_CONFIG));
+-	gic_shared_intrs = (gicconfig & GIC_SH_CONFIG_NUMINTRS_MSK) >>
+-		   GIC_SH_CONFIG_NUMINTRS_SHF;
+-	gic_shared_intrs = ((gic_shared_intrs + 1) * 8);
++	gicconfig = read_gic_config();
++	gic_shared_intrs = gicconfig & GIC_CONFIG_NUMINTERRUPTS;
++	gic_shared_intrs >>= __fls(GIC_CONFIG_NUMINTERRUPTS);
++	gic_shared_intrs = (gic_shared_intrs + 1) * 8;
+ 
+-	gic_vpes = (gicconfig & GIC_SH_CONFIG_NUMVPES_MSK) >>
+-		  GIC_SH_CONFIG_NUMVPES_SHF;
++	gic_vpes = gicconfig & GIC_CONFIG_PVPS;
++	gic_vpes >>= __fls(GIC_CONFIG_PVPS);
+ 	gic_vpes = gic_vpes + 1;
+ 
+ 	if (cpu_has_veic) {
 diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index dea79a7a54cc..ad8b216b6056 100644
+index ad8b216b6056..f0a60770d775 100644
 --- a/include/linux/irqchip/mips-gic.h
 +++ b/include/linux/irqchip/mips-gic.h
-@@ -37,12 +37,6 @@
- /* Set/Clear corresponding bit in Edge Detect Register */
- #define GIC_SH_WEDGE_OFS		0x0280
+@@ -19,8 +19,6 @@
+ #define GIC_REG(segment, offset) (segment##_##SECTION_OFS + offset##_##OFS)
  
--/* Maps Interrupt X to a VPE */
--#define GIC_SH_INTR_MAP_TO_VPE_BASE_OFS 0x2000
--#define GIC_SH_MAP_TO_VPE_REG_OFF(intr, vpe) \
--	((32 * (intr)) + (((vpe) / 32) * 4))
--#define GIC_SH_MAP_TO_VPE_REG_BIT(vpe)	(1 << ((vpe) % 32))
+ /* GIC Address Space */
+-#define SHARED_SECTION_OFS		0x0000
+-#define SHARED_SECTION_SIZE		0x8000
+ #define VPE_LOCAL_SECTION_OFS		0x8000
+ #define VPE_LOCAL_SECTION_SIZE		0x4000
+ #define VPE_OTHER_SECTION_OFS		0xc000
+@@ -28,15 +26,6 @@
+ #define USM_VISIBLE_SECTION_OFS		0x10000
+ #define USM_VISIBLE_SECTION_SIZE	0x10000
+ 
+-/* Register Map for Shared Section */
+-
+-#define GIC_SH_CONFIG_OFS		0x0000
+-
+-#define GIC_SH_REVISIONID_OFS		0x0020
+-
+-/* Set/Clear corresponding bit in Edge Detect Register */
+-#define GIC_SH_WEDGE_OFS		0x0280
 -
  /* Register Map for Local Section */
  #define GIC_VPE_CTL_OFS			0x0000
  #define GIC_VPE_PEND_OFS		0x0004
+@@ -65,15 +54,6 @@
+ #define GIC_UMV_SH_COUNTER_63_32_OFS	0x0004
+ 
+ /* Masks */
+-#define GIC_SH_CONFIG_NUMINTRS_SHF	16
+-#define GIC_SH_CONFIG_NUMINTRS_MSK	(MSK(8) << GIC_SH_CONFIG_NUMINTRS_SHF)
+-
+-#define GIC_SH_CONFIG_NUMVPES_SHF	0
+-#define GIC_SH_CONFIG_NUMVPES_MSK	(MSK(8) << GIC_SH_CONFIG_NUMVPES_SHF)
+-
+-#define GIC_SH_WEDGE_SET(intr)		((intr) | (0x1 << 31))
+-#define GIC_SH_WEDGE_CLR(intr)		((intr) & ~(0x1 << 31))
+-
+ #define GIC_MAP_SHF			0
+ #define GIC_MAP_MSK			(MSK(6) << GIC_MAP_SHF)
+ 
 -- 
 2.14.0

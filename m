@@ -1,38 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:52:04 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54348 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993932AbdHMEs6Rss5d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:48:58 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 475F79577A7AA;
-        Sun, 13 Aug 2017 05:48:50 +0100 (IST)
-Received: from localhost (10.20.79.142) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 13 Aug
- 2017 05:48:51 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 11:09:13 +0200 (CEST)
+Received: from mail-lf0-x233.google.com ([IPv6:2a00:1450:4010:c07::233]:37716
+        "EHLO mail-lf0-x233.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991978AbdHMJJAOnDMP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 11:09:00 +0200
+Received: by mail-lf0-x233.google.com with SMTP id m86so29809371lfi.4
+        for <linux-mips@linux-mips.org>; Sun, 13 Aug 2017 02:08:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UjHSepHMJl1/082sARBNAPVG12F1Cu/em25NfxggR/g=;
+        b=qAYWWl0dbq9ZAqw5oyXd+/AYADm5QRXTe6GAi4I1E2IgAHxf8x8dIu/mtJwWmNWkf+
+         sH8lCrHzL4PhpgeXqdRzfxN1OVpJu3TfOGV2zTcLyuro+jsWBgJtyeSvmQDyF1C70LTI
+         pQzj5kqvRarI6zI2a0/flCjE1b1PlElPoTlTC5yZNc1Zh2X1CbuZMxphg/Mn3dwGmcZI
+         tOgh0kKH1SodfPpWlKPAJ/fuZleedfkMlJ2PjWiRzBo3VvIxXDNGUsUA5HsttS+ktl7W
+         hz4FVdQq/762gBrm88RGCD7fsg9klU052EZBlv34MXfbTn6iLH/Trmwuoi1S7ve1uIcR
+         qnvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UjHSepHMJl1/082sARBNAPVG12F1Cu/em25NfxggR/g=;
+        b=Xg4yJi7Zk1G2e1As5s8Ys9c/iOYInuYwFR0g++LncTy62lhix3hOpcw7ExvOB0BPeg
+         HhVh1xZ3/YPbDyQai5NyMgPtEnJo2Wk2YT9OOHzgv78CJp4cd3+3l87iCKqwYuZ/Vqxc
+         Dhujjd8Qq8YhLsyL+TL3DkmoPMFQuHGHDIRSmOL0tcqsiO7WQbZ1mQCXecNEs9IvEmDF
+         fd9eTT9QLs2GVtd0aUbMfu4j/r4NwKhZet+tE9UMwbnnGlWti3ylUj2Doq9zTe8We5Wo
+         msyX1bS0ZO1PIWCpmcE1vQmLFUPml7OjtadGQnZUjKStmkvWOo9aH3KUJr79kCZ77xr9
+         uIfw==
+X-Gm-Message-State: AHYfb5jZV/5CP0YcLRt+dry+6SyFP9Dj9jThrW3dvWyi/L+86tytNcuv
+        Gv8//z4WFyCDHkq+
+X-Received: by 10.25.229.197 with SMTP id i66mr7339251lfk.163.1502615333711;
+        Sun, 13 Aug 2017 02:08:53 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.87.50])
+        by smtp.gmail.com with ESMTPSA id y65sm936432lfd.13.2017.08.13.02.08.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 13 Aug 2017 02:08:52 -0700 (PDT)
+Subject: Re: [PATCH 37/38] irqchip: mips-gic: Use cpumask_first_and() in
+ gic_set_affinity()
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Jason Cooper <jason@lakedaemon.net>,
         Marc Zyngier <marc.zyngier@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 38/38] irqchip: mips-gic: Let the core set struct irq_common_data affinity
-Date:   Sat, 12 Aug 2017 21:36:46 -0700
-Message-ID: <20170813043646.25821-39-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.0
-In-Reply-To: <20170813043646.25821-1-paul.burton@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>
 References: <20170813043646.25821-1-paul.burton@imgtec.com>
+ <20170813043646.25821-38-paul.burton@imgtec.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <8af291b4-2cdc-d9aa-88a3-a6c3af856bb4@cogentembedded.com>
+Date:   Sun, 13 Aug 2017 12:08:50 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.79.142]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <20170813043646.25821-38-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59554
+X-archive-position: 59555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,41 +76,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-gic_set_affinity() manually copies the provided cpumask to the struct
-irq_common_data affinity field, returning IRQ_SET_MASK_OK_NOCOPY in
-order to prevent the core code from doing that.
+Hello!
 
-We can instead simply let the core code do it for us, by returning
-IRQ_SET_MASK_OK instead of IRQ_SET_MASK_OK_NOCOPY & doing the copy
-ourselves.
+On 8/13/2017 7:36 AM, Paul Burton wrote:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mips@linux-mips.org
+> Currently in gic_set_affinity() we calculate a temporary cpumask holding
+> the intersection of the provided cpumask & the CPUs that are online,
+> then we call cpumask_first twice on it to find the first such CPU. Since
+> we don't need to temporary cpumask for anything else & we only care
 
----
+    s/to/the/?
 
- drivers/irqchip/irq-mips-gic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> about the first CPU that's both online & in the provided cpumask, we can
+> instead use cpumask_first_and to find that CPU & drop the temporary
+> mask.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Marc Zyngier <marc.zyngier@arm.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: linux-mips@linux-mips.org
+[...]
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index cd9cbda1f263..11bab55e18bd 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -266,10 +266,9 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 	/* Update the pcpu_masks */
- 	gic_setup_pcpu_mask(irq, read_gic_mask(irq) ? cpu : NR_CPUS);
- 
--	cpumask_copy(irq_data_get_affinity_mask(d), cpumask);
- 	spin_unlock_irqrestore(&gic_lock, flags);
- 
--	return IRQ_SET_MASK_OK_NOCOPY;
-+	return IRQ_SET_MASK_OK;
- }
- #endif
- 
--- 
-2.14.0
+MBR, Serge

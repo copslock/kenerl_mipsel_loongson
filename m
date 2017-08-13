@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 04:58:41 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62910 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 06:37:33 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39420 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993866AbdHMCzwwa-d6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 04:55:52 +0200
+        with ESMTP id S23990557AbdHMEh1LBpAd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 06:37:27 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 86479F41AC3E6;
-        Sun, 13 Aug 2017 03:55:44 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 751248FF09085;
+        Sun, 13 Aug 2017 05:37:18 +0100 (IST)
 Received: from localhost (10.20.79.142) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 13 Aug
- 2017 03:55:45 +0100
+ 2017 05:37:20 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
+To:     <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 19/19] MIPS: CPS: Detect CPUs in secondary clusters
-Date:   Sat, 12 Aug 2017 19:49:43 -0700
-Message-ID: <20170813024943.14989-20-paul.burton@imgtec.com>
+Subject: [PATCH 00/38] irqchip: mips-gic: Cleanup & optimisation
+Date:   Sat, 12 Aug 2017 21:36:08 -0700
+Message-ID: <20170813043646.25821-1-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.14.0
-In-Reply-To: <20170813024943.14989-1-paul.burton@imgtec.com>
-References: <20170813024943.14989-1-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.20.79.142]
@@ -26,7 +26,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59515
+X-archive-position: 59516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,184 +43,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-As a first step towards supporting multi-cluster systems, detect cores &
-VPs in secondary clusters & record their cluster information in the
-cpu_data array. The "VP topology" line printed during boot is extended
-to display multiple clusters. On a single cluster it shows output like
-the following:
+This series cleans up the MIPS Global Interrupt Controller (GIC) driver
+somewhat. It moves us towards using a header in a similar vein to the
+ones we have for the MIPS Coherence Manager (CM) & Cluster Power
+Controller (CPC) which allows us to access the GIC outside of the
+irqchip driver - something beneficial already for the clocksource &
+clock event driver, and which will be beneficial for further drivers
+(eg. one for the GIC watchdog timer) and for multi-cluster work. Using
+this header is also beneficial for consistency & code-sharing.
 
-  VP topology: {4,4}
+In addition to cleanups the series also optimises the driver in various
+ways, including by using a per-CPU variable for pcpu_masks & removing
+the need to read the GIC_SH_MASK_* registers when decoding interrupts in
+gic_handle_shared_int().
 
-This would indicate a system with 2 cores which each contain 4 VPs. We
-extend this to cover multiple clusters in a natural way:
+This series requires my "[PATCH 00/19] MIPS: Initial multi-cluster
+support" series to be applied first.
 
-  VP topology: {4,4},{2,2}
 
-This would indicate a system with 2 clusters. The first cluster contains
-2 cores which each contain 4 VPs. The second cluster contains 2 cores
-which each contain 2 VPs.
+James Hogan (1):
+  irqchip: mips-gic: SYNC after enabling GIC region
 
-Actually booting these cores & VPs is left to further patches once other
-pieces are in place.
+Paul Burton (37):
+  MIPS: GIC: Introduce asm/mips-gic.h with accessor functions
+  clocksource: mips-gic-timer: Use new GIC accessor functions
+  irqchip: mips-gic: Remove counter access functions
+  MIPS: CPS: Read GIC_VL_IDENT directly, not via irqchip driver
+  irqchip: mips-gic: Remove gic_read_local_vp_id()
+  lib/iomap_copy.c: Add __ioread64_copy
+  irqchip: mips-gic: Simplify shared interrupt pending/mask reads
+  irqchip: mips-gic: Simplify gic_local_irq_domain_map()
+  irqchip: mips-gic: Drop gic_(re)set_mask() functions
+  irqchip: mips-gic: Remove gic_set_polarity()
+  irqchip: mips-gic: Remove gic_set_trigger()
+  irqchip: mips-gic: Remove gic_set_dual_edge()
+  irqchip: mips-gic: Remove gic_map_to_pin()
+  irqchip: mips-gic: Remove gic_map_to_vpe()
+  irqchip: mips-gic: Convert remaining shared reg access to new
+    accessors
+  irqchip: mips-gic: Convert local int mask access to new accessors
+  irqchip: mips-gic: Convert remaining local reg access to new accessors
+  MIPS: GIC: Move GIC_LOCAL_INT_* to asm/mips-gic.h
+  irqchip: mips-gic: Remove GIC_CPU_INT* macros
+  irqchip: mips-gic: Move various definitions to the driver
+  MIPS: VDSO: Drop gic_get_usm_range() usage
+  irqchip: mips-gic: Remove gic_get_usm_range()
+  irqchip: mips-gic: Remove __gic_irq_dispatch() forward declaration
+  irqchip: mips-gic: Remove gic_init()
+  MIPS: Use mips_gic_present() in place of gic_present
+  irqchip: mips-gic: Remove gic_present
+  irqchip: mips-gic: Move gic_get_c0_*_int() to asm/mips-gic.h
+  MIPS: VDSO: Avoid use of linux/irqchip/mips-gic.h
+  MIPS: Remove unnecessary inclusions of linux/irqchip/mips-gic.h
+  irqchip: mips-gic: Remove linux/irqchip/mips-gic.h
+  irqchip: mips-gic: Inline __gic_init()
+  irqchip: mips-gic: Inline gic_basic_init()
+  irqchip: mips-gic: Make pcpu_masks a per-cpu variable
+  irqchip: mips-gic: Use pcpu_masks to avoid reading GIC_SH_MASK*
+  irqchip: mips-gic: Clean up mti,reserved-cpu-vectors handling
+  irqchip: mips-gic: Use cpumask_first_and() in gic_set_affinity()
+  irqchip: mips-gic: Let the core set struct irq_common_data affinity
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+ arch/mips/generic/irq.c                      |   8 +-
+ arch/mips/include/asm/mips-boards/maltaint.h |   5 -
+ arch/mips/include/asm/mips-cps.h             |   1 +
+ arch/mips/include/asm/mips-gic.h             | 347 +++++++++++++++
+ arch/mips/kernel/smp-cmp.c                   |   1 -
+ arch/mips/kernel/smp-cps.c                   |   3 +-
+ arch/mips/kernel/smp-mt.c                    |   6 +-
+ arch/mips/kernel/vdso.c                      |  15 +-
+ arch/mips/lantiq/irq.c                       |   4 -
+ arch/mips/mti-malta/malta-int.c              |   4 +-
+ arch/mips/mti-malta/malta-time.c             |  20 +-
+ arch/mips/pistachio/irq.c                    |   1 -
+ arch/mips/pistachio/time.c                   |   2 +-
+ arch/mips/ralink/irq-gic.c                   |   2 +-
+ arch/mips/vdso/gettimeofday.c                |   7 +-
+ drivers/clocksource/mips-gic-timer.c         |  37 +-
+ drivers/irqchip/irq-mips-gic.c               | 604 ++++++++-------------------
+ include/linux/io.h                           |   1 +
+ include/linux/irqchip/mips-gic.h             | 297 -------------
+ lib/iomap_copy.c                             |  25 ++
+ 20 files changed, 609 insertions(+), 781 deletions(-)
+ create mode 100644 arch/mips/include/asm/mips-gic.h
+ delete mode 100644 include/linux/irqchip/mips-gic.h
 
----
-
- arch/mips/kernel/smp-cps.c | 80 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 51 insertions(+), 29 deletions(-)
-
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 4b9dcca12e5f..0d9cda6a77de 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -40,44 +40,58 @@ static int __init setup_nothreads(char *s)
- }
- early_param("nothreads", setup_nothreads);
- 
--static unsigned core_vpe_count(unsigned core)
-+static unsigned core_vpe_count(unsigned int cluster, unsigned core)
- {
- 	if (threads_disabled)
- 		return 1;
- 
--	return mips_cps_numvps(0, core);
-+	return mips_cps_numvps(cluster, core);
- }
- 
- static void __init cps_smp_setup(void)
- {
--	unsigned int ncores, nvpes, core_vpes;
-+	unsigned int nclusters, ncores, nvpes, core_vpes;
- 	unsigned long core_entry;
--	int c, v;
-+	int cl, c, v;
- 
- 	/* Detect & record VPE topology */
--	ncores = mips_cps_numcores(0);
-+	nvpes = 0;
-+	nclusters = mips_cps_numclusters();
- 	pr_info("%s topology ", cpu_has_mips_r6 ? "VP" : "VPE");
--	for (c = nvpes = 0; c < ncores; c++) {
--		core_vpes = core_vpe_count(c);
--		pr_cont("%c%u", c ? ',' : '{', core_vpes);
--
--		/* Use the number of VPEs in core 0 for smp_num_siblings */
--		if (!c)
--			smp_num_siblings = core_vpes;
-+	for (cl = 0; cl < nclusters; cl++) {
-+		if (cl > 0)
-+			pr_cont(",");
-+		pr_cont("{");
-+
-+		ncores = mips_cps_numcores(cl);
-+		for (c = 0; c < ncores; c++) {
-+			core_vpes = core_vpe_count(cl, c);
-+
-+			if (c > 0)
-+				pr_cont(",");
-+			pr_cont("%u", core_vpes);
-+
-+			/* Use the number of VPEs in cluster 0 core 0 for smp_num_siblings */
-+			if (!cl && !c)
-+				smp_num_siblings = core_vpes;
-+
-+			for (v = 0; v < min_t(int, core_vpes, NR_CPUS - nvpes); v++) {
-+				cpu_set_cluster(&cpu_data[nvpes + v], cl);
-+				cpu_set_core(&cpu_data[nvpes + v], c);
-+				cpu_set_vpe_id(&cpu_data[nvpes + v], v);
-+			}
- 
--		for (v = 0; v < min_t(int, core_vpes, NR_CPUS - nvpes); v++) {
--			cpu_set_core(&cpu_data[nvpes + v], c);
--			cpu_set_vpe_id(&cpu_data[nvpes + v], v);
-+			nvpes += core_vpes;
- 		}
- 
--		nvpes += core_vpes;
-+		pr_cont("}");
- 	}
--	pr_cont("} total %u\n", nvpes);
-+	pr_cont(" total %u\n", nvpes);
- 
- 	/* Indicate present CPUs (CPU being synonymous with VPE) */
- 	for (v = 0; v < min_t(unsigned, nvpes, NR_CPUS); v++) {
--		set_cpu_possible(v, true);
--		set_cpu_present(v, true);
-+		set_cpu_possible(v, cpu_cluster(&cpu_data[v]) == 0);
-+		set_cpu_present(v, cpu_cluster(&cpu_data[v]) == 0);
- 		__cpu_number_map[v] = v;
- 		__cpu_logical_map[v] = v;
- 	}
-@@ -109,7 +123,7 @@ static void __init cps_smp_setup(void)
- static void __init cps_prepare_cpus(unsigned int max_cpus)
- {
- 	unsigned ncores, core_vpes, c, cca;
--	bool cca_unsuitable;
-+	bool cca_unsuitable, cores_limited;
- 	u32 *entry_code;
- 
- 	mips_mt_set_cpuoptions();
-@@ -129,19 +143,22 @@ static void __init cps_prepare_cpus(unsigned int max_cpus)
- 	}
- 
- 	/* Warn the user if the CCA prevents multi-core */
--	ncores = mips_cps_numcores(0);
--	if ((cca_unsuitable || cpu_has_dc_aliases) && ncores > 1) {
-+	cores_limited = false;
-+	if (cca_unsuitable || cpu_has_dc_aliases) {
-+		for_each_present_cpu(c) {
-+			if (cpus_are_siblings(smp_processor_id(), c))
-+				continue;
-+
-+			set_cpu_present(c, false);
-+			cores_limited = true;
-+		}
-+	}
-+	if (cores_limited)
- 		pr_warn("Using only one core due to %s%s%s\n",
- 			cca_unsuitable ? "unsuitable CCA" : "",
- 			(cca_unsuitable && cpu_has_dc_aliases) ? " & " : "",
- 			cpu_has_dc_aliases ? "dcache aliasing" : "");
- 
--		for_each_present_cpu(c) {
--			if (!cpus_are_siblings(smp_processor_id(), c))
--				set_cpu_present(c, false);
--		}
--	}
--
- 	/*
- 	 * Patch the start of mips_cps_core_entry to provide:
- 	 *
-@@ -156,6 +173,7 @@ static void __init cps_prepare_cpus(unsigned int max_cpus)
- 	__sync();
- 
- 	/* Allocate core boot configuration structs */
-+	ncores = mips_cps_numcores(0);
- 	mips_cps_core_bootcfg = kcalloc(ncores, sizeof(*mips_cps_core_bootcfg),
- 					GFP_KERNEL);
- 	if (!mips_cps_core_bootcfg) {
-@@ -165,7 +183,7 @@ static void __init cps_prepare_cpus(unsigned int max_cpus)
- 
- 	/* Allocate VPE boot configuration structs */
- 	for (c = 0; c < ncores; c++) {
--		core_vpes = core_vpe_count(c);
-+		core_vpes = core_vpe_count(0, c);
- 		mips_cps_core_bootcfg[c].vpe_config = kcalloc(core_vpes,
- 				sizeof(*mips_cps_core_bootcfg[c].vpe_config),
- 				GFP_KERNEL);
-@@ -288,6 +306,10 @@ static int cps_boot_secondary(int cpu, struct task_struct *idle)
- 	unsigned int remote;
- 	int err;
- 
-+	/* We don't yet support booting CPUs in other clusters */
-+	if (cpu_cluster(&cpu_data[cpu]) != cpu_cluster(&current_cpu_data))
-+		return -ENOSYS;
-+
- 	vpe_cfg->pc = (unsigned long)&smp_bootstrap;
- 	vpe_cfg->sp = __KSTK_TOS(idle);
- 	vpe_cfg->gp = (unsigned long)task_thread_info(idle);
 -- 
 2.14.0

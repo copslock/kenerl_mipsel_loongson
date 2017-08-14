@@ -1,44 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 11:42:00 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29440 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992078AbdHNJlw5rASJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 11:41:52 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 74E12B932D2C;
-        Mon, 14 Aug 2017 10:41:43 +0100 (IST)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 14 Aug
- 2017 10:41:45 +0100
-Date:   Mon, 14 Aug 2017 10:41:45 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Will Drewry <wad@chromium.org>
-Subject: Re: [PATCH 4/4] MIPS/ptrace: Add PTRACE_SET_SYSCALL operation
-Message-ID: <20170814094145.GP6973@jhogan-linux.le.imgtec.org>
-References: <20170811205653.21873-1-james.hogan@imgtec.com>
- <20170811205653.21873-5-james.hogan@imgtec.com>
- <CAGXu5j+Z_n1G9_q=FrOHVbz0axR8G6izB2Rvku1k6bRjJ6rMrA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Bl8CjiHBfOoF9JLC"
-Content-Disposition: inline
-In-Reply-To: <CAGXu5j+Z_n1G9_q=FrOHVbz0axR8G6izB2Rvku1k6bRjJ6rMrA@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 12:22:04 +0200 (CEST)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:36047
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993923AbdHNKV6Y0hnJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 12:21:58 +0200
+Received: by mail-wm0-x244.google.com with SMTP id d40so13892081wma.3;
+        Mon, 14 Aug 2017 03:21:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=85KZ5iSYa4kbNJVZjgsz5D0FlD02lP+x4Gq+okBucg8=;
+        b=tJ7/5DwCd3jn0lI+n4CuEnpVEy2rIHtEK0/zlERMdNEFOYGG7x8ss3rBLnbJOHgaI2
+         ZmAq4edGduIlwnZdr6qkFdKIjr8J97VKpI0SI9tRoUE/ko1MEOLYsrpbW1RG9ciq+8xN
+         IEPTkdNoXF92qO2lR+zL6ChBiXINiZWiymIHwIp8B3VBmuM/b5eSRs8QsegfaggU+wmi
+         ja05QTbJyZsMXjTzUQ162WRbhRR56QxrzPQxaC+txPfb3T8GI2wxdekcy+2x7GtQEZ4C
+         l8zBJUJdEi5JkyUE5CN81owtZzR1Hl6goetBEDPNsFRXVBo80M+RcmR0NDkKtdOi4yau
+         oOHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=85KZ5iSYa4kbNJVZjgsz5D0FlD02lP+x4Gq+okBucg8=;
+        b=oXpg14v698BiImgCj0aNa/Q3CxhuorZG1zal9mlgEkBvPT+X0E4B7H2drd2LJE8tOe
+         pQ8Y/4Gjd2MaA7t4TkGRobgrbf2+G6uYk5KdGocdjLceejG9KUmm1I8xbP26Q/iVG0L3
+         RVsUbZI3KQZLdbSGlwqyecqSXQXae3oCzN+44Uc71y36nSz0DPzlb7eWG7mxB6hedkAV
+         q6pOiXN9/majGMWJSv3myuaAAS34MUQbmuIX8tqObIUc1jYthipQR1FJyxKUkbWGDxI8
+         YQEXHIN9dZQsYiYUPMDfi13RDiK2tBjhnLxjtjkShQOdo2jQmvI12AizMVYnRm6yMWAm
+         7fGA==
+X-Gm-Message-State: AHYfb5h8x0u2NEdb4a/IUPdeqIYI5CMl3PrLcYM5kciPUDuzSrmNSFlY
+        FqjKGMnIGKru2ETm
+X-Received: by 10.28.52.12 with SMTP id b12mr3920301wma.54.1502706112873;
+        Mon, 14 Aug 2017 03:21:52 -0700 (PDT)
+Received: from flagship2.speedport.ip (p200300C20BDC300542C67896337F1D76.dip0.t-ipconnect.de. [2003:c2:bdc:3005:42c6:7896:337f:1d76])
+        by smtp.gmail.com with ESMTPSA id c68sm5357757wmh.21.2017.08.14.03.21.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 14 Aug 2017 03:21:52 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W . Rozycki" <macro@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH v2] MIPS: math-emu: do not use bools for arithmetic
+Date:   Mon, 14 Aug 2017 12:21:48 +0200
+Message-Id: <20170814102148.397474-1-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 2.14.1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59561
+X-archive-position: 59562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,174 +63,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Bl8CjiHBfOoF9JLC
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+GCC-7 complains about a boolean value being used with an arithmetic
+AND:
 
-On Fri, Aug 11, 2017 at 03:23:34PM -0700, Kees Cook wrote:
-> On Fri, Aug 11, 2017 at 1:56 PM, James Hogan <james.hogan@imgtec.com> wro=
-te:
-> > Add a PTRACE_SET_SYSCALL ptrace operation to allow the system call to be
-> > cancelled independently to the value of the v0 system call number
-> > register.
-> >
-> > This is needed for SECCOMP_RET_TRACE when the tracer wants to cancel the
-> > system call, since it has to set both the system call number to -1 and
-> > the chosen return value, both of which reside in the same register (v0).
-> > The tracer should set the return value first, followed by
-> > PTRACE_SET_SYSCALL to set the system call number to -1.
-> >
-> > That is in contrast to the normal ptrace syscall hook which triggers the
-> > tracer on both entry and exit, allowing the system call to be cancelled
-> > during the entry hook (setting system call number register to -1, or
-> > optionally using PTRACE_SET_SYSCALL), separately to setting the return
-> > value during the exit hook.
-> >
-> > Positive values (to change the syscall that should be executed instead
-> > of cancelling it entirely) are explicitly disallowed at the moment. The
-> > same thing can be done safely already by writing the v0 system call
-> > number register and the argument registers, and allowing
-> > thread_info::syscall to be changed to a different value independently of
-> > the v0 register would potentially allow seccomp or the syscall trace
-> > events to be fooled into thinking a different system call was being
-> > executed.
->=20
-> Wouldn't the sycall be reloaded, so no spoofing could occur?
+arch/mips/math-emu/cp1emu.c: In function 'cop1Emulate':
+arch/mips/math-emu/cp1emu.c:838:14: warning: '~' on a boolean expression [-Wbool-operation]
+  fpr = (x) & ~(cop1_64bit(xcp) == 0);    \
+              ^
+arch/mips/math-emu/cp1emu.c:1068:3: note: in expansion of macro 'DITOREG'
+   DITOREG(dval, MIPSInst_RT(ir));
+   ^~~~~~~
+arch/mips/math-emu/cp1emu.c:838:14: note: did you mean to use logical not?
+  fpr = (x) & ~(cop1_64bit(xcp) == 0);    \
 
-The case I was thinking of was:
-- PTRACE_POKEUSR v0 =3D __NR_some_disallowed_syscall
-- PTRACE_SET_SYSCALL __NR_some_allowed_syscall
+Since cop1_64bit() returns and int, just flip the LSB.
 
-syscall_get_nr() will return __NR_some_allowed_syscall, so seccomp will
-allow, but when syscall_trace_enter() returns to syscall_trace_entry in
-arch/mips/kernel/scall32-o32.S, it will reload the syscall number from
-v0 (i.e. __NR_some_disallowed_syscall).
+Suggested-by: Maciej W. Rozycki <macro@imgtec.com> 
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+v2: just use xor, as suggested by Maciej.  No size changes this time, but still
+untested due to lack of hardfloat userland.
 
->=20
-> Regardless, can you update
-> tools/testing/selftests/seccomp/seccomp_bpf.c to update or eliminate
-> the MIPS-only SYSCALL_NUM_RET_SHARE_REG special-case? (Or maybe it
-> needs to be further special-cased to split syscall-changing from
-> syscall-cancelling?)
+ arch/mips/math-emu/cp1emu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sure, i'll look into that,
-
-Thanks for reviewing,
-
-Cheers
-James
-
->=20
-> -Kees
->=20
-> >
-> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: Oleg Nesterov <oleg@redhat.com>
-> > Cc: Kees Cook <keescook@chromium.org>
-> > Cc: Andy Lutomirski <luto@amacapital.net>
-> > Cc: Will Drewry <wad@chromium.org>
-> > Cc: linux-mips@linux-mips.org
-> > ---
-> >  arch/mips/include/uapi/asm/ptrace.h |  1 +
-> >  arch/mips/kernel/ptrace.c           | 11 +++++++++++
-> >  arch/mips/kernel/ptrace32.c         | 11 +++++++++++
-> >  3 files changed, 23 insertions(+)
-> >
-> > diff --git a/arch/mips/include/uapi/asm/ptrace.h b/arch/mips/include/ua=
-pi/asm/ptrace.h
-> > index 91a3d197ede3..23af103c4e8d 100644
-> > --- a/arch/mips/include/uapi/asm/ptrace.h
-> > +++ b/arch/mips/include/uapi/asm/ptrace.h
-> > @@ -58,6 +58,7 @@ struct pt_regs {
-> >
-> >  #define PTRACE_GET_THREAD_AREA 25
-> >  #define PTRACE_SET_THREAD_AREA 26
-> > +#define PTRACE_SET_SYSCALL     27
-> >
-> >  /* Calls to trace a 64bit program from a 32bit program.         */
-> >  #define PTRACE_PEEKTEXT_3264   0xc0
-> > diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-> > index 465fc5633e61..9bf31a990c6e 100644
-> > --- a/arch/mips/kernel/ptrace.c
-> > +++ b/arch/mips/kernel/ptrace.c
-> > @@ -853,6 +853,17 @@ long arch_ptrace(struct task_struct *child, long r=
-equest,
-> >                 ret =3D put_user(task_thread_info(child)->tp_value, dat=
-alp);
-> >                 break;
-> >
-> > +       case PTRACE_SET_SYSCALL:
-> > +               /*
-> > +                * This is currently only useful to cancel the syscall =
-=66rom a
-> > +                * seccomp RET_TRACE tracer.
-> > +                */
-> > +               if ((long)data >=3D 0)
-> > +                       return -EINVAL;
-> > +               task_thread_info(child)->syscall =3D -1;
-> > +               ret =3D 0;
-> > +               break;
-> > +
-> >         case PTRACE_GET_WATCH_REGS:
-> >                 ret =3D ptrace_get_watch_regs(child, addrp);
-> >                 break;
-> > diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
-> > index 2b9260f92ccd..cca76aec9c10 100644
-> > --- a/arch/mips/kernel/ptrace32.c
-> > +++ b/arch/mips/kernel/ptrace32.c
-> > @@ -287,6 +287,17 @@ long compat_arch_ptrace(struct task_struct *child,=
- compat_long_t request,
-> >                                 (unsigned int __user *) (unsigned long)=
- data);
-> >                 break;
-> >
-> > +       case PTRACE_SET_SYSCALL:
-> > +               /*
-> > +                * This is currently only useful to cancel the syscall =
-=66rom a
-> > +                * seccomp RET_TRACE tracer.
-> > +                */
-> > +               if ((long)data >=3D 0)
-> > +                       return -EINVAL;
-> > +               task_thread_info(child)->syscall =3D -1;
-> > +               ret =3D 0;
-> > +               break;
-> > +
-> >         case PTRACE_GET_THREAD_AREA_3264:
-> >                 ret =3D put_user(task_thread_info(child)->tp_value,
-> >                                 (unsigned long __user *) (unsigned long=
-) data);
-> > --
-> > 2.13.2
-> >
->=20
->=20
->=20
-> --=20
-> Kees Cook
-> Pixel Security
-
---Bl8CjiHBfOoF9JLC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlmRcEcACgkQbAtpk944
-dnpLRw//YmbX0+UEBZF6f39Nhrsr+Tp/WqIKu+kOGT8duf3wQbB/MnKlusAsvHh9
-nOD1ebs/7KGj5t22krBOrOZEAIbbo/W22BxwFcXzRdiyoXCLFI7arbr41oHOfW/7
-QawLBHAUPqcH9cut07NjIuBQ7JhO1ecfBYLtkmeJtp6eXXeHWYBR597waCJq5LBM
-07a3n2I/neOX7MsKDg3b4G425XFjZhAxj5a6vwep5xfY3RUSkXOXxwO/1qlIuw2s
-+z0S+onYY4r7aLyGrWmen3RnoEJ60jSNBLPHuQr92O/mg3bYwBjHtbqYi4+3LkEA
-lk5zhAMkWJnW0sixGx+q9BJ4PVhpvxQwaOTbQfdyhqlQP8rmhvM7pfLQAMiWj7kr
-aap0tpy0kzJdMTrw/qWeQEnxHc3lM+x9kW7gD/lVr5fnrXRkXhK6CqXAzNymlIPx
-2ZFyQOBgXP8z5dlnbdlfhGuB8fZBLrfA6v59cJQGZi57CXm+07TUsk48mcG5siMx
-9MdzQ5wejiG+Dw7eD3dLQ12GWJhzfOE+0ZkvnUUFs8qcT6jeG3ipZ89it7Y+FqaP
-T4gp0j04VDeu0FEx+kZ8LUAUw/cATyNd6ocEQ4QYroGL5ZywodRp4yhFaMrpp0My
-ADbx86lQKwpWNUncAGZOMwqip+ZAdBtUqDUv/ZkWlEmbJO/2ygc=
-=vJpe
------END PGP SIGNATURE-----
-
---Bl8CjiHBfOoF9JLC--
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index f08a7b4facb9..53a3b73a28d5 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -830,12 +830,12 @@ do {									\
+ } while (0)
+ 
+ #define DIFROMREG(di, x)						\
+-	((di) = get_fpr64(&ctx->fpr[(x) & ~(cop1_64bit(xcp) == 0)], 0))
++	((di) = get_fpr64(&ctx->fpr[(x) & ~(cop1_64bit(xcp) ^ 1)], 0))
+ 
+ #define DITOREG(di, x)							\
+ do {									\
+ 	unsigned fpr, i;						\
+-	fpr = (x) & ~(cop1_64bit(xcp) == 0);				\
++	fpr = (x) & ~(cop1_64bit(xcp) ^ 1);				\
+ 	set_fpr64(&ctx->fpr[fpr], 0, di);				\
+ 	for (i = 1; i < ARRAY_SIZE(ctx->fpr[x].val64); i++)		\
+ 		set_fpr64(&ctx->fpr[fpr], i, 0);			\
+-- 
+2.14.1

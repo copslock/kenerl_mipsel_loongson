@@ -1,42 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2017 22:46:17 +0200 (CEST)
-Received: from mail.free-electrons.com ([62.4.15.54]:50755 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993918AbdHMUqKH7SCb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2017 22:46:10 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 77B982081E; Sun, 13 Aug 2017 22:46:04 +0200 (CEST)
-Received: from windsurf (unknown [77.147.230.132])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 0D8C02080D;
-        Sun, 13 Aug 2017 22:46:04 +0200 (CEST)
-Date:   Sun, 13 Aug 2017 22:46:02 +0200
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openadk.org>
-Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
-Message-ID: <20170813224602.25043e8a@windsurf>
-In-Reply-To: <20170807083448.GA20713@linux-mips.org>
-References: <20170803225547.6caa602b@windsurf.lan>
-        <20170804000556.GC30597@linux-mips.org>
-        <20170804151920.GA11317@linux-mips.org>
-        <20170804174151.2eea9af3@windsurf.lan>
-        <20170804222500.GA11675@linux-mips.org>
-        <20170805135649.152b0739@windsurf>
-        <20170807083448.GA20713@linux-mips.org>
-Organization: Free Electrons
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 08:21:18 +0200 (CEST)
+Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:38911
+        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991965AbdHNGVJMIDUt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 08:21:09 +0200
+Received: by mail-io0-x242.google.com with SMTP id o9so7022495iod.5
+        for <linux-mips@linux-mips.org>; Sun, 13 Aug 2017 23:21:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=q7ER7trGYUQtmhvQ6605+zTKJoX1ljrxHLdhGj7NWOI=;
+        b=J4llaWTk23bf75S7Kfn4MdXnby6x6cfFfbcP4SqsRjg4euWwrrsxVEDbUU/Cx2ElDl
+         NHvMTaw+smTvOVDQPF4t11/qNuIXNn9814uWR97BbFxQKj+Y4IUfRVo1n7bIyp+rvwFf
+         9cRo6scnLeSbCGqWhDgE1IS8b5QIXM4Lry22ZnB747GO4jNzVTcSc+R4L+e9fh/PWwBm
+         Rg5L3oLz/aoGWmwlGkojulQeB1z287WycN07MjPlXAP/0pLhfDZq/blUrzJdAWFBzqAE
+         DY32mNhZ7gNuFxs6G6Q1GIOLU+xDUsgL1YOM8G1rhAqojY3opzMerVAa2xnKhpL8xrBk
+         RtRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=q7ER7trGYUQtmhvQ6605+zTKJoX1ljrxHLdhGj7NWOI=;
+        b=mZu4X+uQuhVwwImP1jOFSN5Ujf9i8r+7HgjWsfX0arqQu1+rRwK1lf3FjQ4OyuSqO8
+         +G5X+77+MqNN7jc1IX7cLRYRJ6wKcTZN2tbe7Zcnvn9yzF0TwTpa+SrnjobVKRL1Ed4A
+         j3xl26T+Mb0O1M+x0322xwAHrc6SniAtaQmNNuvBTIV0e2MbZ0v+VZ259d1GYmIRQ1Lf
+         JyU3e0Bczvkh0cZrio3wt8n8dy/JOM+YEaThoIadfE7YmWnx761AzorQsp5ju2oNLcO2
+         8IxwzU2meLEg5YcfZOoualxqjKbPCFqkHOZv47Qj7u/cWI8m/b9ocxWm2iKEjrBxf3jl
+         KIFw==
+X-Gm-Message-State: AHYfb5i9hPkWYdbra+tAiLRHoMQ0ZvvOeRP10FMAc4UNgD4qwFadXMUx
+        ZhnMgWRnvZKHGUWqtDNMdo69tSP+EQ==
+X-Received: by 10.107.134.87 with SMTP id i84mr17221987iod.294.1502691663441;
+ Sun, 13 Aug 2017 23:21:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@free-electrons.com>
+Received: by 10.107.201.130 with HTTP; Sun, 13 Aug 2017 23:21:02 -0700 (PDT)
+In-Reply-To: <20170813124435.24684-1-syq@debian.org>
+References: <20170813124435.24684-1-syq@debian.org>
+From:   Huacai Chen <chenhuacai@gmail.com>
+Date:   Mon, 14 Aug 2017 14:21:02 +0800
+Message-ID: <CAAhV-H64Qt7QwR3nE7pm=oShb2QhajSyHGCZ+ky8=iuZ6C-1=A@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Loongson fix name confict - MEM_RESERVED
+To:     YunQiang Su <syq@debian.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        YunQiang Su <yunqiang.su@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59558
+X-archive-position: 59559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,71 +64,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Hi, Yunqiang
 
-On Mon, 7 Aug 2017 10:34:48 +0200, Ralf Baechle wrote:
+Please rename it to SYSTEM_RAM_RESERVED, thanks.
 
-> > > Chances are it's something specific to MIPS64 R6.  Before trying your
-> > > config file I also tried a number of other defconfigs and all built
-> > > well.
-> > > 
-> > > Here's a test case which generates a reference to __multi3:
-> > > 
-> > > unsigned long func(unsigned long a, unsigned long b)
-> > > {
-> > >         return a > (~0UL) / b;
-> > > }
-> > > 
-> > > GCC rearanges above statement to:
-> > > 
-> > > 	return (unsigned __int128)a * (unsigned __int128) b > 0xffffffff;  
-> > 
-> > And this is normal/expected ?  
-> 
-> Without consideration of performance, It's certainly is valid code.  And
-> with that I can't drop the issue as a GCC code generation bug.
-> 
-> However it seems GCC itself doesn't seem to have a __multi3 in its
-> libgcc2 - which indeed would be a GCC issue - at least none I was easily
-> able to find with grep so I'm adding Matthew Fortune to cc in the hope he
-> can shed some light on this.
+Huacai
 
-Indeed, I don't see __multi3 implemented in libgcc in the source code,
-but it's probably because it's tricky to see its implementation,
-as it really is there:
-
-$ ./bin/mips64el-linux-readelf -a ./mips64el-buildroot-linux-uclibc/sysroot/lib/libgcc_s.so.1 | grep multi3
-  1747: 00011700   100 FUNC    GLOBAL DEFAULT   11 __multi3@@GCC_3.0
-  5511: 00011700   100 FUNC    GLOBAL DEFAULT   11 __multi3
-  000435e4 -32236(gp) 00011700 00011700 FUNC     11 __multi3
-
-Objdump says:
-
-00011700 <__multi3>:
-   11700:       0006103e        dsrl32  v0,a2,0x0
-   11704:       7c89f803        dext    a5,a0,0x0,0x20
-   11708:       0004403e        dsrl32  a4,a0,0x0
-   1170c:       7ccaf803        dext    a6,a2,0x0,0x20
-   11710:       012a589c        dmul    a7,a5,a6
-   11714:       010a509c        dmul    a6,a4,a6
-   11718:       0122489c        dmul    a5,a5,v0
-   1171c:       0102409c        dmul    a4,a4,v0
-   11720:       012a482d        daddu   a5,a5,a6
-   11724:       000b103e        dsrl32  v0,a7,0x0
-   11728:       0049102d        daddu   v0,v0,a5
-   1172c:       184a0003        bgeuc   v0,a6,1173c <.L2>
-   11730:       24090001        li      a5,1
-   11734:       0009483c        dsll32  a5,a5,0x0
-   11738:       0109402d        daddu   a4,a4,a5
-
-The same __multi3 problem also occurred on SPARC64, and they fixed it
-by adding a __multi3 implementation in the kernel. See:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/sparc?id=1b4af13ff2cc6897557bb0b8d9e2fad4fa4d67aa.
-
-Best regards,
-
-Thomas
--- 
-Thomas Petazzoni, CTO, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+On Sun, Aug 13, 2017 at 8:44 PM, YunQiang Su <syq@debian.org> wrote:
+> From: YunQiang Su <yunqiang.su@imgtec.com>
+>
+> MEM_RESERVED is used as a value of enum mem_type in
+> include/linux/edac.h.
+> This will make failure to build for Loongson in some case:
+> for example with CONFIG_RAS enabled.
+>
+> So here rename MEM_RESERVED to LOONGSON_MEM_RESERVED in Loongson code.
+> ---
+>  arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
+>  arch/mips/loongson64/common/mem.c                  | 2 +-
+>  arch/mips/loongson64/loongson-3/numa.c             | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
+> index 9f9bb9c53785..595a949e5f47 100644
+> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
+> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+> @@ -3,7 +3,7 @@
+>
+>  #define SYSTEM_RAM_LOW         1
+>  #define SYSTEM_RAM_HIGH                2
+> -#define MEM_RESERVED           3
+> +#define LOONGSON_MEM_RESERVED          3
+>  #define PCI_IO                 4
+>  #define PCI_MEM                        5
+>  #define LOONGSON_CFG_REG       6
+> diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/common/mem.c
+> index b01d52473da8..6c97dbe2cb85 100644
+> --- a/arch/mips/loongson64/common/mem.c
+> +++ b/arch/mips/loongson64/common/mem.c
+> @@ -79,7 +79,7 @@ void __init prom_init_memory(void)
+>                                         (u64)loongson_memmap->map[i].mem_size << 20,
+>                                         BOOT_MEM_RAM);
+>                                 break;
+> -                       case MEM_RESERVED:
+> +                       case LOONGSON_MEM_RESERVED:
+>                                 add_memory_region(loongson_memmap->map[i].mem_start,
+>                                         (u64)loongson_memmap->map[i].mem_size << 20,
+>                                         BOOT_MEM_RESERVED);
+> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+> index f17ef520799a..3ceb401f7691 100644
+> --- a/arch/mips/loongson64/loongson-3/numa.c
+> +++ b/arch/mips/loongson64/loongson-3/numa.c
+> @@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
+>                         memblock_add_node(PFN_PHYS(start_pfn),
+>                                 PFN_PHYS(end_pfn - start_pfn), node);
+>                         break;
+> -               case MEM_RESERVED:
+> +               case LOONGSON_MEM_RESERVED:
+>                         pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+>                                 (u32)node_id, mem_type, mem_start, mem_size);
+>                         add_memory_region((node_id << 44) + mem_start,
+> --
+> 2.14.1
+>
+>

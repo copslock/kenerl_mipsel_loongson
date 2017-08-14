@@ -1,57 +1,168 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 08:21:18 +0200 (CEST)
-Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:38911
-        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991965AbdHNGVJMIDUt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 08:21:09 +0200
-Received: by mail-io0-x242.google.com with SMTP id o9so7022495iod.5
-        for <linux-mips@linux-mips.org>; Sun, 13 Aug 2017 23:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=q7ER7trGYUQtmhvQ6605+zTKJoX1ljrxHLdhGj7NWOI=;
-        b=J4llaWTk23bf75S7Kfn4MdXnby6x6cfFfbcP4SqsRjg4euWwrrsxVEDbUU/Cx2ElDl
-         NHvMTaw+smTvOVDQPF4t11/qNuIXNn9814uWR97BbFxQKj+Y4IUfRVo1n7bIyp+rvwFf
-         9cRo6scnLeSbCGqWhDgE1IS8b5QIXM4Lry22ZnB747GO4jNzVTcSc+R4L+e9fh/PWwBm
-         Rg5L3oLz/aoGWmwlGkojulQeB1z287WycN07MjPlXAP/0pLhfDZq/blUrzJdAWFBzqAE
-         DY32mNhZ7gNuFxs6G6Q1GIOLU+xDUsgL1YOM8G1rhAqojY3opzMerVAa2xnKhpL8xrBk
-         RtRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=q7ER7trGYUQtmhvQ6605+zTKJoX1ljrxHLdhGj7NWOI=;
-        b=mZu4X+uQuhVwwImP1jOFSN5Ujf9i8r+7HgjWsfX0arqQu1+rRwK1lf3FjQ4OyuSqO8
-         +G5X+77+MqNN7jc1IX7cLRYRJ6wKcTZN2tbe7Zcnvn9yzF0TwTpa+SrnjobVKRL1Ed4A
-         j3xl26T+Mb0O1M+x0322xwAHrc6SniAtaQmNNuvBTIV0e2MbZ0v+VZ259d1GYmIRQ1Lf
-         JyU3e0Bczvkh0cZrio3wt8n8dy/JOM+YEaThoIadfE7YmWnx761AzorQsp5ju2oNLcO2
-         8IxwzU2meLEg5YcfZOoualxqjKbPCFqkHOZv47Qj7u/cWI8m/b9ocxWm2iKEjrBxf3jl
-         KIFw==
-X-Gm-Message-State: AHYfb5i9hPkWYdbra+tAiLRHoMQ0ZvvOeRP10FMAc4UNgD4qwFadXMUx
-        ZhnMgWRnvZKHGUWqtDNMdo69tSP+EQ==
-X-Received: by 10.107.134.87 with SMTP id i84mr17221987iod.294.1502691663441;
- Sun, 13 Aug 2017 23:21:03 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.201.130 with HTTP; Sun, 13 Aug 2017 23:21:02 -0700 (PDT)
-In-Reply-To: <20170813124435.24684-1-syq@debian.org>
-References: <20170813124435.24684-1-syq@debian.org>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Mon, 14 Aug 2017 14:21:02 +0800
-Message-ID: <CAAhV-H64Qt7QwR3nE7pm=oShb2QhajSyHGCZ+ky8=iuZ6C-1=A@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Loongson fix name confict - MEM_RESERVED
-To:     YunQiang Su <syq@debian.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        YunQiang Su <yunqiang.su@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 09:40:22 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:32969
+        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991960AbdHNHkPorDIg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 09:40:15 +0200
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1dh9vt-0001Ow-60; Mon, 14 Aug 2017 09:37:05 +0200
+Message-ID: <1502696198.2287.7.camel@pengutronix.de>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Wolfram Sang <wsa@the-dreams.de>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Peter Chen <Peter.Chen@nxp.com>,
+        DRI <dri-devel@lists.freedesktop.org>,
+        Marc Dietrich <marvin24@gmx.de>,
+        Rakesh Iyer <riyer@nvidia.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Xinliang Liu <z.liuxinliang@hisilicon.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Jiri Slaby <jslaby@suse.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Abriou <vincent.abriou@st.com>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        Tejun Heo <tj@kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
+        Philippe Cornu <philippe.cornu@st.com>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        Joachim Eastwood <manabian@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        ath10k@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        Chen Feng <puck.chen@hisilicon.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        Yannick Fertre <yannick.fertre@st.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Richard Weinberger <richard@nod.at>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Alan Tull <atull@kernel.org>,
+        John Youn <johnyoun@synopsys.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        dmaengine@vger.kernel.org,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mark Yao <mark.yao@rock-chips.com>,
+        Moritz Fischer <moritz.fischer@ettus.com>,
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        netdev <netdev@vger.kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Rongrong Zou <zourongrong@gmail.com>,
+        linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Lucas Stach <l.stach@pengutronix.de>
+Date:   Mon, 14 Aug 2017 09:36:38 +0200
+In-Reply-To: <20170812114357.v4ru75dw5hq7wemx@ninjato>
+References: <20170719152646.25903-1-p.zabel@pengutronix.de>
+         <20170719211515.46a1196c@windsurf>
+         <1500543415.2354.37.camel@pengutronix.de>
+         <20170720123640.43c2ce01@windsurf>
+         <1500555312.2354.75.camel@pengutronix.de>
+         <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
+         <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
+         <1500885221.2391.50.camel@pengutronix.de>
+         <20170812114357.v4ru75dw5hq7wemx@ninjato>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <chenhuacai@gmail.com>
+X-Mailer: Evolution 3.22.6-1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <p.zabel@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59559
+X-archive-position: 59560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: p.zabel@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,67 +175,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Yunqiang
+On Sat, 2017-08-12 at 13:43 +0200, Wolfram Sang wrote:
+> > Thanks for the hint and the references. It seems this turned out
+> > okay,
+> > but I wouldn't dare to introduce such macro horror^Wmagic.
+> > I'd rather have all users converted to the _exclusive/_shared
+> > function
+> > calls and maybe then replace the internal __reset_control_get with
+> > Thomas' suggestion.
+> 
+> I didn't follow the discussion closely. Shall I still apply the i2c
+> patches?
 
-Please rename it to SYSTEM_RAM_RESERVED, thanks.
+Yes, please.
 
-Huacai
-
-On Sun, Aug 13, 2017 at 8:44 PM, YunQiang Su <syq@debian.org> wrote:
-> From: YunQiang Su <yunqiang.su@imgtec.com>
->
-> MEM_RESERVED is used as a value of enum mem_type in
-> include/linux/edac.h.
-> This will make failure to build for Loongson in some case:
-> for example with CONFIG_RAS enabled.
->
-> So here rename MEM_RESERVED to LOONGSON_MEM_RESERVED in Loongson code.
-> ---
->  arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
->  arch/mips/loongson64/common/mem.c                  | 2 +-
->  arch/mips/loongson64/loongson-3/numa.c             | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> index 9f9bb9c53785..595a949e5f47 100644
-> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> @@ -3,7 +3,7 @@
->
->  #define SYSTEM_RAM_LOW         1
->  #define SYSTEM_RAM_HIGH                2
-> -#define MEM_RESERVED           3
-> +#define LOONGSON_MEM_RESERVED          3
->  #define PCI_IO                 4
->  #define PCI_MEM                        5
->  #define LOONGSON_CFG_REG       6
-> diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/common/mem.c
-> index b01d52473da8..6c97dbe2cb85 100644
-> --- a/arch/mips/loongson64/common/mem.c
-> +++ b/arch/mips/loongson64/common/mem.c
-> @@ -79,7 +79,7 @@ void __init prom_init_memory(void)
->                                         (u64)loongson_memmap->map[i].mem_size << 20,
->                                         BOOT_MEM_RAM);
->                                 break;
-> -                       case MEM_RESERVED:
-> +                       case LOONGSON_MEM_RESERVED:
->                                 add_memory_region(loongson_memmap->map[i].mem_start,
->                                         (u64)loongson_memmap->map[i].mem_size << 20,
->                                         BOOT_MEM_RESERVED);
-> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
-> index f17ef520799a..3ceb401f7691 100644
-> --- a/arch/mips/loongson64/loongson-3/numa.c
-> +++ b/arch/mips/loongson64/loongson-3/numa.c
-> @@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
->                         memblock_add_node(PFN_PHYS(start_pfn),
->                                 PFN_PHYS(end_pfn - start_pfn), node);
->                         break;
-> -               case MEM_RESERVED:
-> +               case LOONGSON_MEM_RESERVED:
->                         pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
->                                 (u32)node_id, mem_type, mem_start, mem_size);
->                         add_memory_region((node_id << 44) + mem_start,
-> --
-> 2.14.1
->
->
+regards
+Philipp

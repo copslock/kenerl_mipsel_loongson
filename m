@@ -1,22 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 20:18:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19430 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 20:19:24 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:42878 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993939AbdHNSSnfp5pp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 20:18:43 +0200
+        with ESMTP id S23993944AbdHNSTD7JE0p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 20:19:03 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 4BACEA34DABEA;
-        Mon, 14 Aug 2017 19:18:33 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 8AD148096665D;
+        Mon, 14 Aug 2017 19:18:53 +0100 (IST)
 Received: from localhost (10.20.1.88) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 14 Aug 2017 19:18:36
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 14 Aug 2017 19:18:56
  +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 0/8] MIPS: generic kernel config improvements
-Date:   Mon, 14 Aug 2017 11:18:11 -0700
-Message-ID: <20170814181819.7376-1-paul.burton@imgtec.com>
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH v2 1/8] MIPS: Introduce CPU_ISA_GE_* Kconfig entries
+Date:   Mon, 14 Aug 2017 11:18:12 -0700
+Message-ID: <20170814181819.7376-2-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.14.0
+In-Reply-To: <20170814181819.7376-1-paul.burton@imgtec.com>
+References: <20170814181819.7376-1-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.20.1.88]
@@ -24,7 +27,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59570
+X-archive-position: 59571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,41 +44,120 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series introduces support for filtering which board support is
-enabled based upon the ISA, endianness or other configuration. This
-allows us to only include board support in kernels that it makes sense
-for - eg. there's no point including support for systems that have 32
-bit CPUs in 64 bit kernels.
+Various entries in Kconfig depend upon the ISA that the kernel build is
+targeting being greater than or equal to some revision. The way in which
+we've handled that so far has been to OR the Kconfig entries for all
+applicable ISAs or CPUs. This leads to us having lists in Kconfig which:
 
-It then makes a few tweaks to generic_defconfig & prevents direct use of
-generic_defconfig, which is almost certainly not what a user wants.
+ - Require expansion when new architecture revisions are introduced.
 
-Applies atop mips-for-linux-next at aa9a357f236f.
+ - Don't always clearly show what we actually depend upon.
 
-Paul Burton (8):
-  MIPS: Introduce CPU_ISA_GE_* Kconfig entries
-  MIPS: generic: Allow filtering enabled boards by requirements
-  MIPS: SEAD-3: Only include in 32 bit kernels by default
-  MIPS: NI 169445: Only include in suitable kernels
-  MIPS: Prevent direct use of generic_defconfig
-  MIPS: Make CONFIG_MIPS_MT_SMP default y
-  MIPS: generic: Don't explicitly disable CONFIG_USB_SUPPORT
-  MIPS: generic: Bump default NR_CPUS to 16
+ - Make it difficult for code, or board Kconfig fragments in a later
+   patch, to depend upon a range of ISA revisions in a maintainable way.
 
- MAINTAINERS                                     |  1 +
- arch/mips/Kconfig                               | 26 ++++++-
- arch/mips/Makefile                              | 23 ++++++-
- arch/mips/configs/generic/board-ni169445.config |  3 +
- arch/mips/configs/generic/board-sead-3.config   |  2 +
- arch/mips/configs/generic_defconfig             |  3 +-
- arch/mips/configs/malta_defconfig               |  1 -
- arch/mips/configs/malta_kvm_defconfig           |  1 -
- arch/mips/configs/malta_kvm_guest_defconfig     |  1 +
- arch/mips/configs/maltasmvp_defconfig           |  1 -
- arch/mips/configs/maltasmvp_eva_defconfig       |  1 -
- arch/mips/tools/generic-board-config.sh         | 90 +++++++++++++++++++++++++
- 12 files changed, 142 insertions(+), 11 deletions(-)
- create mode 100755 arch/mips/tools/generic-board-config.sh
+This patch introduces new Kconfig entries which indicate that the ISA
+being targeted is greater than or equal to a particular revision, which
+allows us to express requirements on potentially open-ended ranges of
+ISA revisions rather than only upon specific revisions.
 
+For example, we currently express the dependency of hardware watchpoint
+support on a MIPSr1 or higher ISA like so:
+
+  default y if CPU_MIPSR1 || CPU_MIPSR2 || CPU_MIPSR6
+
+With the new Kconfig entries introduced by this patch this can be
+simplified to:
+
+  default y if CPU_ISA_GE_R1
+
+Which makes it clearer what the actual dependency is & won't require
+extending if we add further architecture revisions in the future (so
+long as they support hardware watchpoints).
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+
+---
+
+Changes in v2:
+- New patch.
+
+ arch/mips/Kconfig | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 14ab86d7ea59..0f1c1adfbff3 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2023,21 +2023,40 @@ config CPU_MIPS64
+ config CPU_MIPSR1
+ 	bool
+ 	default y if CPU_MIPS32_R1 || CPU_MIPS64_R1
++	select CPU_ISA_GE_R1
+ 
+ config CPU_MIPSR2
+ 	bool
+ 	default y if CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_CAVIUM_OCTEON
+ 	select CPU_HAS_RIXI
++	select CPU_ISA_GE_R2
+ 	select MIPS_SPRAM
+ 
+ config CPU_MIPSR6
+ 	bool
+ 	default y if CPU_MIPS32_R6 || CPU_MIPS64_R6
+ 	select CPU_HAS_RIXI
++	select CPU_ISA_GE_R6
+ 	select HAVE_ARCH_BITREVERSE
+ 	select MIPS_ASID_BITS_VARIABLE
+ 	select MIPS_SPRAM
+ 
++#
++# The following CPU_ISA_GE_* entries indicate that the ISA we're targeting is
++# greater than or equal to the appropriate revision. They can be used to
++# require a particular range of ISA revisions.
++#
++config CPU_ISA_GE_R1
++	bool
++
++config CPU_ISA_GE_R2
++	bool
++	select CPU_ISA_GE_R1
++
++config CPU_ISA_GE_R6
++	bool
++	select CPU_ISA_GE_R2
++
+ config EVA
+ 	bool
+ 
+@@ -2062,14 +2081,14 @@ config CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 	bool
+ config MIPS_PGD_C0_CONTEXT
+ 	bool
+-	default y if 64BIT && (CPU_MIPSR2 || CPU_MIPSR6) && !CPU_XLP
++	default y if 64BIT && CPU_ISA_GE_R2 && !CPU_XLP
+ 
+ #
+ # Set to y for ptrace access to watch registers.
+ #
+ config HARDWARE_WATCHPOINTS
+        bool
+-       default y if CPU_MIPSR1 || CPU_MIPSR2 || CPU_MIPSR6
++       default y if CPU_ISA_GE_R1
+ 
+ menu "Kernel type"
+ 
+@@ -2574,7 +2593,7 @@ config SYS_SUPPORTS_NUMA
+ 
+ config RELOCATABLE
+ 	bool "Relocatable kernel"
+-	depends on SYS_SUPPORTS_RELOCATABLE && (CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_MIPS32_R6 || CPU_MIPS64_R6 || CAVIUM_OCTEON_SOC)
++	depends on SYS_SUPPORTS_RELOCATABLE && CPU_ISA_GE_R2
+ 	help
+ 	  This builds a kernel image that retains relocation information
+ 	  so it can be loaded someplace besides the default 1MB.
 -- 
 2.14.0

@@ -1,168 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 09:40:22 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:32969
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991960AbdHNHkPorDIg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 09:40:15 +0200
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1dh9vt-0001Ow-60; Mon, 14 Aug 2017 09:37:05 +0200
-Message-ID: <1502696198.2287.7.camel@pengutronix.de>
-Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        DRI <dri-devel@lists.freedesktop.org>,
-        Marc Dietrich <marvin24@gmx.de>,
-        Rakesh Iyer <riyer@nvidia.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Xinliang Liu <z.liuxinliang@hisilicon.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Jiri Slaby <jslaby@suse.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincent Abriou <vincent.abriou@st.com>, Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 11:42:00 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29440 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992078AbdHNJlw5rASJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 11:41:52 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 74E12B932D2C;
+        Mon, 14 Aug 2017 10:41:43 +0100 (IST)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 14 Aug
+ 2017 10:41:45 +0100
+Date:   Mon, 14 Aug 2017 10:41:45 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Kees Cook <keescook@chromium.org>
+CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        Tejun Heo <tj@kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org,
-        Philippe Cornu <philippe.cornu@st.com>,
-        Kalle Valo <kvalo@qca.qualcomm.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-        Joachim Eastwood <manabian@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        ath10k@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        Chen Feng <puck.chen@hisilicon.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-remoteproc@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        Yannick Fertre <yannick.fertre@st.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Richard Weinberger <richard@nod.at>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Alan Tull <atull@kernel.org>,
-        John Youn <johnyoun@synopsys.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        dmaengine@vger.kernel.org,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mark Yao <mark.yao@rock-chips.com>,
-        Moritz Fischer <moritz.fischer@ettus.com>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        netdev <netdev@vger.kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Rongrong Zou <zourongrong@gmail.com>,
-        linux-fpga@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Lucas Stach <l.stach@pengutronix.de>
-Date:   Mon, 14 Aug 2017 09:36:38 +0200
-In-Reply-To: <20170812114357.v4ru75dw5hq7wemx@ninjato>
-References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-         <20170719211515.46a1196c@windsurf>
-         <1500543415.2354.37.camel@pengutronix.de>
-         <20170720123640.43c2ce01@windsurf>
-         <1500555312.2354.75.camel@pengutronix.de>
-         <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
-         <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
-         <1500885221.2391.50.camel@pengutronix.de>
-         <20170812114357.v4ru75dw5hq7wemx@ninjato>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+        Oleg Nesterov <oleg@redhat.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>
+Subject: Re: [PATCH 4/4] MIPS/ptrace: Add PTRACE_SET_SYSCALL operation
+Message-ID: <20170814094145.GP6973@jhogan-linux.le.imgtec.org>
+References: <20170811205653.21873-1-james.hogan@imgtec.com>
+ <20170811205653.21873-5-james.hogan@imgtec.com>
+ <CAGXu5j+Z_n1G9_q=FrOHVbz0axR8G6izB2Rvku1k6bRjJ6rMrA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Bl8CjiHBfOoF9JLC"
+Content-Disposition: inline
+In-Reply-To: <CAGXu5j+Z_n1G9_q=FrOHVbz0axR8G6izB2Rvku1k6bRjJ6rMrA@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59560
+X-archive-position: 59561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -175,19 +51,174 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 2017-08-12 at 13:43 +0200, Wolfram Sang wrote:
-> > Thanks for the hint and the references. It seems this turned out
-> > okay,
-> > but I wouldn't dare to introduce such macro horror^Wmagic.
-> > I'd rather have all users converted to the _exclusive/_shared
-> > function
-> > calls and maybe then replace the internal __reset_control_get with
-> > Thomas' suggestion.
-> 
-> I didn't follow the discussion closely. Shall I still apply the i2c
-> patches?
+--Bl8CjiHBfOoF9JLC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes, please.
+On Fri, Aug 11, 2017 at 03:23:34PM -0700, Kees Cook wrote:
+> On Fri, Aug 11, 2017 at 1:56 PM, James Hogan <james.hogan@imgtec.com> wro=
+te:
+> > Add a PTRACE_SET_SYSCALL ptrace operation to allow the system call to be
+> > cancelled independently to the value of the v0 system call number
+> > register.
+> >
+> > This is needed for SECCOMP_RET_TRACE when the tracer wants to cancel the
+> > system call, since it has to set both the system call number to -1 and
+> > the chosen return value, both of which reside in the same register (v0).
+> > The tracer should set the return value first, followed by
+> > PTRACE_SET_SYSCALL to set the system call number to -1.
+> >
+> > That is in contrast to the normal ptrace syscall hook which triggers the
+> > tracer on both entry and exit, allowing the system call to be cancelled
+> > during the entry hook (setting system call number register to -1, or
+> > optionally using PTRACE_SET_SYSCALL), separately to setting the return
+> > value during the exit hook.
+> >
+> > Positive values (to change the syscall that should be executed instead
+> > of cancelling it entirely) are explicitly disallowed at the moment. The
+> > same thing can be done safely already by writing the v0 system call
+> > number register and the argument registers, and allowing
+> > thread_info::syscall to be changed to a different value independently of
+> > the v0 register would potentially allow seccomp or the syscall trace
+> > events to be fooled into thinking a different system call was being
+> > executed.
+>=20
+> Wouldn't the sycall be reloaded, so no spoofing could occur?
 
-regards
-Philipp
+The case I was thinking of was:
+- PTRACE_POKEUSR v0 =3D __NR_some_disallowed_syscall
+- PTRACE_SET_SYSCALL __NR_some_allowed_syscall
+
+syscall_get_nr() will return __NR_some_allowed_syscall, so seccomp will
+allow, but when syscall_trace_enter() returns to syscall_trace_entry in
+arch/mips/kernel/scall32-o32.S, it will reload the syscall number from
+v0 (i.e. __NR_some_disallowed_syscall).
+
+>=20
+> Regardless, can you update
+> tools/testing/selftests/seccomp/seccomp_bpf.c to update or eliminate
+> the MIPS-only SYSCALL_NUM_RET_SHARE_REG special-case? (Or maybe it
+> needs to be further special-cased to split syscall-changing from
+> syscall-cancelling?)
+
+Sure, i'll look into that,
+
+Thanks for reviewing,
+
+Cheers
+James
+
+>=20
+> -Kees
+>=20
+> >
+> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: Oleg Nesterov <oleg@redhat.com>
+> > Cc: Kees Cook <keescook@chromium.org>
+> > Cc: Andy Lutomirski <luto@amacapital.net>
+> > Cc: Will Drewry <wad@chromium.org>
+> > Cc: linux-mips@linux-mips.org
+> > ---
+> >  arch/mips/include/uapi/asm/ptrace.h |  1 +
+> >  arch/mips/kernel/ptrace.c           | 11 +++++++++++
+> >  arch/mips/kernel/ptrace32.c         | 11 +++++++++++
+> >  3 files changed, 23 insertions(+)
+> >
+> > diff --git a/arch/mips/include/uapi/asm/ptrace.h b/arch/mips/include/ua=
+pi/asm/ptrace.h
+> > index 91a3d197ede3..23af103c4e8d 100644
+> > --- a/arch/mips/include/uapi/asm/ptrace.h
+> > +++ b/arch/mips/include/uapi/asm/ptrace.h
+> > @@ -58,6 +58,7 @@ struct pt_regs {
+> >
+> >  #define PTRACE_GET_THREAD_AREA 25
+> >  #define PTRACE_SET_THREAD_AREA 26
+> > +#define PTRACE_SET_SYSCALL     27
+> >
+> >  /* Calls to trace a 64bit program from a 32bit program.         */
+> >  #define PTRACE_PEEKTEXT_3264   0xc0
+> > diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+> > index 465fc5633e61..9bf31a990c6e 100644
+> > --- a/arch/mips/kernel/ptrace.c
+> > +++ b/arch/mips/kernel/ptrace.c
+> > @@ -853,6 +853,17 @@ long arch_ptrace(struct task_struct *child, long r=
+equest,
+> >                 ret =3D put_user(task_thread_info(child)->tp_value, dat=
+alp);
+> >                 break;
+> >
+> > +       case PTRACE_SET_SYSCALL:
+> > +               /*
+> > +                * This is currently only useful to cancel the syscall =
+=66rom a
+> > +                * seccomp RET_TRACE tracer.
+> > +                */
+> > +               if ((long)data >=3D 0)
+> > +                       return -EINVAL;
+> > +               task_thread_info(child)->syscall =3D -1;
+> > +               ret =3D 0;
+> > +               break;
+> > +
+> >         case PTRACE_GET_WATCH_REGS:
+> >                 ret =3D ptrace_get_watch_regs(child, addrp);
+> >                 break;
+> > diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
+> > index 2b9260f92ccd..cca76aec9c10 100644
+> > --- a/arch/mips/kernel/ptrace32.c
+> > +++ b/arch/mips/kernel/ptrace32.c
+> > @@ -287,6 +287,17 @@ long compat_arch_ptrace(struct task_struct *child,=
+ compat_long_t request,
+> >                                 (unsigned int __user *) (unsigned long)=
+ data);
+> >                 break;
+> >
+> > +       case PTRACE_SET_SYSCALL:
+> > +               /*
+> > +                * This is currently only useful to cancel the syscall =
+=66rom a
+> > +                * seccomp RET_TRACE tracer.
+> > +                */
+> > +               if ((long)data >=3D 0)
+> > +                       return -EINVAL;
+> > +               task_thread_info(child)->syscall =3D -1;
+> > +               ret =3D 0;
+> > +               break;
+> > +
+> >         case PTRACE_GET_THREAD_AREA_3264:
+> >                 ret =3D put_user(task_thread_info(child)->tp_value,
+> >                                 (unsigned long __user *) (unsigned long=
+) data);
+> > --
+> > 2.13.2
+> >
+>=20
+>=20
+>=20
+> --=20
+> Kees Cook
+> Pixel Security
+
+--Bl8CjiHBfOoF9JLC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlmRcEcACgkQbAtpk944
+dnpLRw//YmbX0+UEBZF6f39Nhrsr+Tp/WqIKu+kOGT8duf3wQbB/MnKlusAsvHh9
+nOD1ebs/7KGj5t22krBOrOZEAIbbo/W22BxwFcXzRdiyoXCLFI7arbr41oHOfW/7
+QawLBHAUPqcH9cut07NjIuBQ7JhO1ecfBYLtkmeJtp6eXXeHWYBR597waCJq5LBM
+07a3n2I/neOX7MsKDg3b4G425XFjZhAxj5a6vwep5xfY3RUSkXOXxwO/1qlIuw2s
++z0S+onYY4r7aLyGrWmen3RnoEJ60jSNBLPHuQr92O/mg3bYwBjHtbqYi4+3LkEA
+lk5zhAMkWJnW0sixGx+q9BJ4PVhpvxQwaOTbQfdyhqlQP8rmhvM7pfLQAMiWj7kr
+aap0tpy0kzJdMTrw/qWeQEnxHc3lM+x9kW7gD/lVr5fnrXRkXhK6CqXAzNymlIPx
+2ZFyQOBgXP8z5dlnbdlfhGuB8fZBLrfA6v59cJQGZi57CXm+07TUsk48mcG5siMx
+9MdzQ5wejiG+Dw7eD3dLQ12GWJhzfOE+0ZkvnUUFs8qcT6jeG3ipZ89it7Y+FqaP
+T4gp0j04VDeu0FEx+kZ8LUAUw/cATyNd6ocEQ4QYroGL5ZywodRp4yhFaMrpp0My
+ADbx86lQKwpWNUncAGZOMwqip+ZAdBtUqDUv/ZkWlEmbJO/2ygc=
+=vJpe
+-----END PGP SIGNATURE-----
+
+--Bl8CjiHBfOoF9JLC--

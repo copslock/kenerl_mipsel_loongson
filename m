@@ -1,42 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 18:18:34 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58689 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993931AbdHNQS2BGz0D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 18:18:28 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 43AD4E159F37C;
-        Mon, 14 Aug 2017 17:18:18 +0100 (IST)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 14 Aug
- 2017 17:18:21 +0100
-Received: from np-p-burton.localnet (10.20.1.88) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 14 Aug
- 2017 09:18:19 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-CC:     <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>,
-        "Marc Zyngier" <marc.zyngier@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Aug 2017 18:48:43 +0200 (CEST)
+Received: from mail-lf0-x22b.google.com ([IPv6:2a00:1450:4010:c07::22b]:32885
+        "EHLO mail-lf0-x22b.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993931AbdHNQsdKl9t- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Aug 2017 18:48:33 +0200
+Received: by mail-lf0-x22b.google.com with SMTP id d17so42184331lfe.0
+        for <linux-mips@linux-mips.org>; Mon, 14 Aug 2017 09:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=QTVKzwNG6tWcMolDV3BumgFvrlgMGyfQYzFpP/BRAhM=;
+        b=gSNoFZu+VemPtLgUx+V1f/+zq69X1i+WnzvCt6NAk3dF2B/jYcmkNttT1pNDCSB/h5
+         UFWFOrgnj6UnZtXQ0WzrEVP6hYoeBDj/Acv7iVWhCgh/9LcxzEU6AsOa2UcNxdrdIyga
+         YYqgM6tIBbzbx1IlgMwYfhYTW61au0sXmatHsOowOOd6vj/crE4qnIsuemX8A0wrFJXG
+         iXyTOerNz6f7HrgwQZb0gF2T69W8WGpq6bIowe6OaKNV/9i3HMm9ZzBz0WI4iNFlQhLE
+         HW6TPW3E1An4UISBKUXqUkjZcDFuQI0OPNfCJwhlV34V2zR4VeaTa+obEAQvGCE4gaKs
+         oSxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=QTVKzwNG6tWcMolDV3BumgFvrlgMGyfQYzFpP/BRAhM=;
+        b=KrQizDMv3GgGpT0QIIfiw15R5FxBxkOym/Y+zONpJtga0zDiiEpAeq2NZodNnX4mAd
+         drHDzcL0tuJxC/OdU6hJ0AmDe3/+EQ5o4pWEsPWORPAJoOnxl5iIoShh4SMeo3LuU1BJ
+         L/P2JM+TrmkVugkqrr4hOoIoCcJNZ33cbm1U68p3v2m0kNhJwWco/v2smUQ4Hvl/SuTb
+         ol5nRfndjLmu3D5u+fCaDXEBZiJvi1N3deyagjWCnjB0ONQNfVvbDOH50jK5hcdcza19
+         JJa/Kj7kywfn5q3KWeo8dMNqnjx7PoYLsLqinoFnNQtWF0gQ9vM2VovA3D5ZThi5BfKR
+         0NQQ==
+X-Gm-Message-State: AHYfb5g3Lm6WyEGSz/qFED4LBRe85VmcZhjD8lv2tVq95YWgakENFnTQ
+        jsvUsgqBaunPwsfb
+X-Received: by 10.46.80.4 with SMTP id e4mr7773782ljb.63.1502729307544;
+        Mon, 14 Aug 2017 09:48:27 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([31.173.86.78])
+        by smtp.gmail.com with ESMTPSA id o85sm1569749lfb.9.2017.08.14.09.48.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 14 Aug 2017 09:48:25 -0700 (PDT)
+Subject: Re: [PATCH 37/38] irqchip: mips-gic: Use cpumask_first_and() in
+ gic_set_affinity()
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH 37/38] irqchip: mips-gic: Use cpumask_first_and() in gic_set_affinity()
-Date:   Mon, 14 Aug 2017 09:18:18 -0700
-Message-ID: <2303810.q0vlmmS52X@np-p-burton>
-Organization: Imagination Technologies
-In-Reply-To: <8af291b4-2cdc-d9aa-88a3-a6c3af856bb4@cogentembedded.com>
-References: <20170813043646.25821-1-paul.burton@imgtec.com> <20170813043646.25821-38-paul.burton@imgtec.com> <8af291b4-2cdc-d9aa-88a3-a6c3af856bb4@cogentembedded.com>
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20170813043646.25821-1-paul.burton@imgtec.com>
+ <20170813043646.25821-38-paul.burton@imgtec.com>
+ <8af291b4-2cdc-d9aa-88a3-a6c3af856bb4@cogentembedded.com>
+ <2303810.q0vlmmS52X@np-p-burton>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <8fa63739-ff57-394d-11b1-9eb314659183@cogentembedded.com>
+Date:   Mon, 14 Aug 2017 19:48:24 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart300565529.n1cbobXRVD";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <2303810.q0vlmmS52X@np-p-burton>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59567
+X-archive-position: 59568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,67 +80,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart300565529.n1cbobXRVD
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+On 08/14/2017 07:18 PM, Paul Burton wrote:
 
-Hi Sergei,
-
-On Sunday, 13 August 2017 02:08:50 PDT Sergei Shtylyov wrote:
-> Hello!
+>> On 8/13/2017 7:36 AM, Paul Burton wrote:
+>>> Currently in gic_set_affinity() we calculate a temporary cpumask holding
+>>> the intersection of the provided cpumask & the CPUs that are online,
+>>> then we call cpumask_first twice on it to find the first such CPU. Since
+>>> we don't need to temporary cpumask for anything else & we only care
+>>
+>>      s/to/the/?
 > 
-> On 8/13/2017 7:36 AM, Paul Burton wrote:
-> > Currently in gic_set_affinity() we calculate a temporary cpumask holding
-> > the intersection of the provided cpumask & the CPUs that are online,
-> > then we call cpumask_first twice on it to find the first such CPU. Since
-> > we don't need to temporary cpumask for anything else & we only care
+> Indeed - nice to know someone is reading a 38 patch series :)
+
+    I can't say I've read all of them, only the smaller ones... :-)
+
+> I'll fix up but leave submitting a v2 until someone asks me to.
+
+    It's OK.
+
+> Thanks,
+>      Paul
 > 
->     s/to/the/?
+>>
+>>> about the first CPU that's both online & in the provided cpumask, we can
+>>> instead use cpumask_first_and to find that CPU & drop the temporary
+>>> mask.
+>>>
+>>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>>> Cc: Jason Cooper <jason@lakedaemon.net>
+>>> Cc: Marc Zyngier <marc.zyngier@arm.com>
+>>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>> Cc: linux-mips@linux-mips.org
+>>
+>> [...]
 
-Indeed - nice to know someone is reading a 38 patch series :)
-
-I'll fix up but leave submitting a v2 until someone asks me to.
-
-Thanks,
-    Paul
-
-> 
-> > about the first CPU that's both online & in the provided cpumask, we can
-> > instead use cpumask_first_and to find that CPU & drop the temporary
-> > mask.
-> > 
-> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> > Cc: Jason Cooper <jason@lakedaemon.net>
-> > Cc: Marc Zyngier <marc.zyngier@arm.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: linux-mips@linux-mips.org
-> 
-> [...]
-> 
-> MBR, Serge
-
-
---nextPart300565529.n1cbobXRVD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAlmRzUoACgkQgiDZ+mk8
-HGVcHg//aq1vE3Meiak/gB1X1jxgOfHA/j0b33c1QUOzqOJmNlBvbgVxTWMSxOmL
-kTwoU2OK1fAgcB1ykLJe2A3y6s+KyI4ShXgwr5FT3qjZjwyd2sjJs8ULyC/E1CeU
-/qhkKmKPiitKTrwnKzroArxUpAQ0n/2hqDKsrx+7cAy5AiLJADjp41gRJ5+GicHV
-XhH9Qzi9YZEtoY1yOpXvWz8hGzWW0qpq6/+EUSHlkvddskYwW8XMF0asF6MSO7bx
-1lvbAH2ebMQEANjHiAVA7tO2rcx8ig6N3sXh7xb2+OxWz9ClQ+F5hImipoCTP7yf
-o80+kKnvClwDC+rOaKZf4VqCZKHaJdmRK/GmLURqT04iSHn0JSRt3+mI+4O5FKyA
-+IpbJYvoYIh9QHZ68KH7l3MmX/KrCeuFP7RkaGcOol+EreuMz1r5tchJ8535ooz/
-rhdHdInvqKXLMB1jBl4Be1wSpzuH9Y2+1j2JF5LDV8UXTyV/0gHVPo0cpjNM4zZY
-yQwNBI4FSK3hR/axWw8Y+xQa8w11ahQmllY76pCR45zdY32Lo7QYkWcZA1Evpjek
-hMwqkdDayRLKit8/5sMTZjzO/eVrCX0hiRTNrdtRJmyWZvKke8UhoJ7N+Y0hNGxl
-jM1FZjJ5pMFhE/LsrtVtrc60gnXVPS2jTmqLWk2yGifrrSkW/WM=
-=k4Ds
------END PGP SIGNATURE-----
-
---nextPart300565529.n1cbobXRVD--
+MBR, Sergei

@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Aug 2017 18:29:10 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:22463 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Aug 2017 18:33:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43804 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993870AbdHOQ3CFcp4a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Aug 2017 18:29:02 +0200
+        with ESMTP id S23992170AbdHOQdDm4eDa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Aug 2017 18:33:03 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 3C149E862CBAC;
-        Tue, 15 Aug 2017 17:28:52 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 78992E1809E2A;
+        Tue, 15 Aug 2017 17:32:54 +0100 (IST)
 Received: from LDT-H-Hunt.le.imgtec.org (192.168.154.107) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 15 Aug 2017 17:28:55 +0100
+ 14.3.294.0; Tue, 15 Aug 2017 17:32:57 +0100
 From:   Harvey Hunt <harvey.hunt@imgtec.com>
 To:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <matthias.bgg@gmail.com>, <ralf@linux-mips.org>
+        <ralf@linux-mips.org>, <john@phrozen.org>
 CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
-        John Crispin <john@phrozen.org>, <linux-mips@linux-mips.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] MIPS: dts: ralink: Add Mediatek MT7628A SoC
-Date:   Tue, 15 Aug 2017 17:28:50 +0100
-Message-ID: <1502814530-40604-1-git-send-email-harvey.hunt@imgtec.com>
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH 1/3] dt-bindings: vendors: Add VoCore as a vendor
+Date:   Tue, 15 Aug 2017 17:32:51 +0100
+Message-ID: <1502814773-40842-1-git-send-email-harvey.hunt@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -27,7 +26,7 @@ Return-Path: <Harvey.Hunt@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59590
+X-archive-position: 59591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,171 +43,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MT7628A is the successor to the MT7620 and pin compatible with the
-MT7688A, although the latter supports only a 1T1R antenna rather than
-a 2T2R antenna.
-
-This commit adds support for the following features:
-
-- UART
-- USB PHY
-- EHCI
-- Interrupt controller
-- System controller
-- Memory controller
-- Reset controller
+VoCore are a manufacturer of devices such as the VoCore2.
 
 Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: linux-mips@linux-mips.org 
-Cc: devicetree@vger.kernel.org 
-Cc: linux-kernel@vger.kernel.org 
-Cc: linux-mediatek@lists.infradead.org 
+Cc: linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-mips@linux-mips.org
 ---
- Documentation/devicetree/bindings/mips/ralink.txt |   1 +
- arch/mips/boot/dts/ralink/mt7628a.dtsi            | 125 ++++++++++++++++++++++
- 2 files changed, 126 insertions(+)
- create mode 100644 arch/mips/boot/dts/ralink/mt7628a.dtsi
+ Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/mips/ralink.txt b/Documentation/devicetree/bindings/mips/ralink.txt
-index b35a8d0..a16e8d7 100644
---- a/Documentation/devicetree/bindings/mips/ralink.txt
-+++ b/Documentation/devicetree/bindings/mips/ralink.txt
-@@ -15,3 +15,4 @@ value must be one of the following values:
-   ralink,rt5350-soc
-   ralink,mt7620a-soc
-   ralink,mt7620n-soc
-+  ralink,mt7628a-soc
-diff --git a/arch/mips/boot/dts/ralink/mt7628a.dtsi b/arch/mips/boot/dts/ralink/mt7628a.dtsi
-new file mode 100644
-index 0000000..8461fe9
---- /dev/null
-+++ b/arch/mips/boot/dts/ralink/mt7628a.dtsi
-@@ -0,0 +1,125 @@
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,mt7628a-soc";
-+
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		cpu@0 {
-+			compatible = "mti,mips24KEc";
-+			device_type = "cpu";
-+			reg = <0>;
-+		};
-+	};
-+
-+	resetctrl: resetctrl {
-+		compatible = "ralink,rt2880-reset";
-+		#reset-cells = <1>;
-+	};
-+
-+	cpuintc: cpuintc {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
-+
-+	palmbus@10000000 {
-+		compatible = "palmbus";
-+		reg = <0x10000000 0x200000>;
-+		ranges = <0x0 0x10000000 0x1FFFFF>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		sysc@0 {
-+			compatible = "ralink,mt7620a-sysc";
-+			reg = <0x0 0x100>;
-+		};
-+
-+		intc: intc@200 {
-+			compatible = "ralink,rt2880-intc";
-+			reg = <0x200 0x100>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			resets = <&resetctrl 9>;
-+			reset-names = "intc";
-+
-+			interrupt-parent = <&cpuintc>;
-+			interrupts = <2>;
-+
-+			ralink,intc-registers = <0x9c 0xa0
-+						 0x6c 0xa4
-+						 0x80 0x78>;
-+		};
-+
-+		memc@300 {
-+			compatible = "ralink,mt7620a-memc";
-+			reg = <0x300 0x100>;
-+		};
-+
-+		uartlite@c00 {
-+			compatible = "ns16550a";
-+			reg = <0xc00 0x100>;
-+
-+			resets = <&resetctrl 12>;
-+			reset-names = "uart0";
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <20>;
-+
-+			reg-shift = <2>;
-+		};
-+
-+		uart1@d00 {
-+			compatible = "ns16550a";
-+			reg = <0xd00 0x100>;
-+
-+			resets = <&resetctrl 19>;
-+			reset-names = "uart1";
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <21>;
-+
-+			reg-shift = <2>;
-+		};
-+
-+		uart2@e00 {
-+			compatible = "ns16550a";
-+			reg = <0xe00 0x100>;
-+
-+			resets = <&resetctrl 20>;
-+			reset-names = "uart2";
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <22>;
-+
-+			reg-shift = <2>;
-+		};
-+	};
-+
-+	usbphy: uphy@10120000 {
-+		compatible = "mediatek,mt7628-usbphy";
-+		reg = <0x10120000 0x1000>;
-+
-+		#phy-cells = <0>;
-+
-+		resets = <&resetctrl 22 &resetctrl 25>;
-+		reset-names = "host", "device";
-+	};
-+
-+	ehci@101c0000 {
-+		compatible = "generic-ehci";
-+		reg = <0x101c0000 0x1000>;
-+
-+		phys = <&usbphy>;
-+		phy-names = "usb";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <18>;
-+	};
-+};
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index daf465be..f6e3716 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -353,6 +353,7 @@ variscite	Variscite Ltd.
+ via	VIA Technologies, Inc.
+ virtio	Virtual I/O Device Specification, developed by the OASIS consortium
+ vivante	Vivante Corporation
++vocore VoCore Studio
+ voipac	Voipac Technologies s.r.o.
+ wd	Western Digital Corp.
+ wetek	WeTek Electronics, limited.
 -- 
 2.7.4

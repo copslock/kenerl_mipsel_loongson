@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Aug 2017 18:36:30 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50116 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993103AbdHOQf4p05Xa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Aug 2017 18:35:56 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 0732F13CE51C;
-        Tue, 15 Aug 2017 17:35:47 +0100 (IST)
-Received: from LDT-H-Hunt.le.imgtec.org (192.168.154.107) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 15 Aug 2017 17:35:50 +0100
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-To:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <ralf@linux-mips.org>, <john@phrozen.org>
-CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: configs: Add Onion Omega2+ defconfig
-Date:   Tue, 15 Aug 2017 17:35:45 +0100
-Message-ID: <1502814945-41052-2-git-send-email-harvey.hunt@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1502814945-41052-1-git-send-email-harvey.hunt@imgtec.com>
-References: <1502814945-41052-1-git-send-email-harvey.hunt@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Aug 2017 18:49:34 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:59174 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993870AbdHOQtSD9eOa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Aug 2017 18:49:18 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B137F2B;
+        Tue, 15 Aug 2017 09:49:10 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C5A9E3F483;
+        Tue, 15 Aug 2017 09:49:09 -0700 (PDT)
+Subject: Re: [PATCH 00/38] irqchip: mips-gic: Cleanup & optimisation
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20170813043646.25821-1-paul.burton@imgtec.com>
+ <deae1e69-010e-474d-9bb6-a4d92c955356@arm.com>
+ <1561377.UX34hIl2NL@np-p-burton>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <d8ce06f2-4205-91d1-78e8-34ea9c7fe855@arm.com>
+Date:   Tue, 15 Aug 2017 17:49:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.107]
-Return-Path: <Harvey.Hunt@imgtec.com>
+In-Reply-To: <1561377.UX34hIl2NL@np-p-burton>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59595
+X-archive-position: 59596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,152 +49,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Create a defconfig for the Omega2+ that reaches userspace and
-allows use of the USB port.
+On 15/08/17 17:16, Paul Burton wrote:
+> Hi Marc,
+> 
+> On Tuesday, 15 August 2017 03:13:03 PDT Marc Zyngier wrote:
+>> Hi Paul,
+>>
+>> On 13/08/17 05:36, Paul Burton wrote:
+>>> This series cleans up the MIPS Global Interrupt Controller (GIC) driver
+>>> somewhat. It moves us towards using a header in a similar vein to the
+>>> ones we have for the MIPS Coherence Manager (CM) & Cluster Power
+>>> Controller (CPC) which allows us to access the GIC outside of the
+>>> irqchip driver - something beneficial already for the clocksource &
+>>> clock event driver, and which will be beneficial for further drivers
+>>> (eg. one for the GIC watchdog timer) and for multi-cluster work. Using
+>>> this header is also beneficial for consistency & code-sharing.
+>>>
+>>> In addition to cleanups the series also optimises the driver in various
+>>> ways, including by using a per-CPU variable for pcpu_masks & removing
+>>> the need to read the GIC_SH_MASK_* registers when decoding interrupts in
+>>> gic_handle_shared_int().
+>>>
+>>> This series requires my "[PATCH 00/19] MIPS: Initial multi-cluster
+>>> support" series to be applied first.
+>>
+>> I'm not on Cc on this one, so it is a bit hard to see what's going on.
+> 
+> That other series is only really related insomuch as it adds asm/mips-cps.h 
+> which this series makes use of, and changes a couple of lines in irq-mips-
+> gic.c which would cause conflicts if this series is applied without the other 
+> first.
+> 
+>> But overall, it is incredibly difficult to follow what is going on here.
+>> Everything seems to move around, and while I'm sure that you have
+>> something in mind, the mix of fixes+optimizations+new features is a bit
+>> hard to swallow (not to mention the VDSO stuff in the middle of what is
+>> supposed to be an irqchip series).
+> 
+> In general the non-irqchip patches preceed the irqchip patch that they enable. 
+> For example, the VDSO patch you mention (presumably patch 22 "MIPS: VDSO: Drop 
+> git_get_usm_range() usage") is followed immediately by the removal of that 
+> function in patch 23 "irqchip: mips-gic: Remove gic_get_usm_range()".
+> 
+> The issue is that the MIPS GIC irqchip driver currently provides a bunch of 
+> functions which have nothing to do with interrupts, and so probably ought to 
+> be elsewhere. Moving that code elsewhere involves both adjusting the callers 
+> of those functions & then removing them from the irqchip driver, hence the 
+> non-irqchip patches followed by the related irqchip patches.
+> 
+> In general the only things that move are:
+> 
+>  - The GIC register definitions, to asm/mips-gic.h for reasons described in 
+> patch 2.
+> 
+>  - Functions as I mentioned in the previous paragraph which have nothing to do 
+> with the irqchip driver & don't need to be there once we have access to GIC 
+> registers elsewhere through asm/mips-gic.h.
+> 
+>  - A few other bits from linux/irqchip/mips-gic.h just so we can drop that 
+> header.
+> 
+>> Is there any chance you could rework this to have a more logical
+>> ordering? Something like fixes first, new features next, and
+>> optimizations in the end, organized by domains (arch stuff first, then
+>> irqchip, then timer, then userspace)?
+> 
+> It's already almost grouped like that. We have:
+> 
+> - Patch 1 is a fix.
+> 
+> - Patches 2 through 34 are cleanup, though a couple could probably be 
+> secondarily considered optimisations too.
+> 
+> - Patch 35 is an optimisation.
+> 
+> - Patches 36 through 38 could be considered optimisation or cleanup depending 
+> upon the tint of your glasses.
+> 
+> So I'm not sure what you're asking me to do here - to group them better I 
+> could perhaps move patch 35 to the end, but I'm not sure I see how that would 
+> make review any easier.
 
-Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
----
- arch/mips/configs/omega2p_defconfig | 130 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 130 insertions(+)
- create mode 100644 arch/mips/configs/omega2p_defconfig
+This classification on its own is quite useful. In the future, please
+add this kind of thing to the cover letter, it definitely helps.
 
-diff --git a/arch/mips/configs/omega2p_defconfig b/arch/mips/configs/omega2p_defconfig
-new file mode 100644
-index 0000000..1199daf
---- /dev/null
-+++ b/arch/mips/configs/omega2p_defconfig
-@@ -0,0 +1,130 @@
-+CONFIG_RALINK=y
-+CONFIG_SOC_MT7620=y
-+CONFIG_DTB_OMEGA2P=y
-+CONFIG_CPU_MIPS32_R2=y
-+# CONFIG_COMPACTION is not set
-+CONFIG_HZ_100=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CGROUPS=y
-+CONFIG_MEMCG=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_CGROUP_CPUACCT=y
-+CONFIG_NAMESPACES=y
-+CONFIG_USER_NS=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_VM_EVENT_COUNTERS is not set
-+# CONFIG_SLUB_DEBUG is not set
-+# CONFIG_COMPAT_BRK is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+# CONFIG_FW_LOADER is not set
-+# CONFIG_ALLOW_DEV_COREDUMP is not set
-+CONFIG_NETDEVICES=y
-+# CONFIG_ETHERNET is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=2
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=3
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=3
-+CONFIG_SERIAL_OF_PLATFORM=y
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_HCD_PLATFORM=y
-+CONFIG_MMC=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_MEMORY=y
-+CONFIG_PHY_RALINK_USB=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_PROC_KCORE=y
-+# CONFIG_PROC_PAGE_MONITOR is not set
-+CONFIG_TMPFS=y
-+CONFIG_CONFIGFS_FS=y
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_737=y
-+CONFIG_NLS_CODEPAGE_775=y
-+CONFIG_NLS_CODEPAGE_850=y
-+CONFIG_NLS_CODEPAGE_852=y
-+CONFIG_NLS_CODEPAGE_855=y
-+CONFIG_NLS_CODEPAGE_857=y
-+CONFIG_NLS_CODEPAGE_860=y
-+CONFIG_NLS_CODEPAGE_861=y
-+CONFIG_NLS_CODEPAGE_862=y
-+CONFIG_NLS_CODEPAGE_863=y
-+CONFIG_NLS_CODEPAGE_864=y
-+CONFIG_NLS_CODEPAGE_865=y
-+CONFIG_NLS_CODEPAGE_866=y
-+CONFIG_NLS_CODEPAGE_869=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_CODEPAGE_950=y
-+CONFIG_NLS_CODEPAGE_932=y
-+CONFIG_NLS_CODEPAGE_949=y
-+CONFIG_NLS_CODEPAGE_874=y
-+CONFIG_NLS_ISO8859_8=y
-+CONFIG_NLS_CODEPAGE_1250=y
-+CONFIG_NLS_CODEPAGE_1251=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_NLS_ISO8859_2=y
-+CONFIG_NLS_ISO8859_3=y
-+CONFIG_NLS_ISO8859_4=y
-+CONFIG_NLS_ISO8859_5=y
-+CONFIG_NLS_ISO8859_6=y
-+CONFIG_NLS_ISO8859_7=y
-+CONFIG_NLS_ISO8859_9=y
-+CONFIG_NLS_ISO8859_13=y
-+CONFIG_NLS_ISO8859_14=y
-+CONFIG_NLS_ISO8859_15=y
-+CONFIG_NLS_KOI8_R=y
-+CONFIG_NLS_KOI8_U=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_PANIC_ON_OOPS=y
-+CONFIG_PANIC_TIMEOUT=10
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+CONFIG_STACKTRACE=y
-+# CONFIG_FTRACE is not set
-+CONFIG_CRYPTO_DEFLATE=y
-+CONFIG_CRYPTO_LZO=y
-+CONFIG_CRC16=y
-+CONFIG_XZ_DEC=y
+> 
+> I didn't group by domain like you suggest for the reason I mention before - 
+> the non-irqchip patches are purely there to enable the following irqchip patch 
+> so it made sense to me to group those together. If you really want I could 
+> move all the non-irqchip patches to the start & all the irqchip patches to the 
+> end, but again I'm not sure I see how that helps - it would just mean that 
+> tightly related patches no longer follow one another.
+> 
+>> Because at the moment, this is a bit overwhelming...
+> 
+> My intent in splitting this into so many patches, and in grouping together the 
+> related non-irqchip & irqchip patches, was to reduce that overwhelming-ness by 
+> making each patch pretty readable by itself & perhaps taking into account only 
+> a patch or two before it. I guess that didn't work though.. :)
+I'll try and review the series with the above in mind. It will hopefully
+make things easier.
+
+Thanks,
+
+	M.
 -- 
-2.7.4
+Jazz is not dead. It just smells funny...

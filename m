@@ -1,57 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 18:54:56 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:41296 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994885AbdHQQyqd-k1i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Aug 2017 18:54:46 +0200
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 641405F739;
-        Thu, 17 Aug 2017 16:54:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 641405F739
-Authentication-Results: ext-mx10.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx10.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=pbonzini@redhat.com
-Received: from [10.36.117.100] (ovpn-117-100.ams2.redhat.com [10.36.117.100])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0C9235D97E;
-        Thu, 17 Aug 2017 16:54:33 +0000 (UTC)
-Subject: Re: [PATCH RFC 2/2] KVM: RCU protected dynamic vcpus array
-To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Christoffer Dall <cdall@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Alexander Graf <agraf@suse.com>
-References: <20170816194037.9460-1-rkrcmar@redhat.com>
- <20170816194037.9460-3-rkrcmar@redhat.com>
- <7cb42373-355c-7cb3-2979-9529aef0641c@redhat.com>
- <20170817165044.GF2566@flask>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <1dea37fa-d51e-1381-c3f1-e067065560b7@redhat.com>
-Date:   Thu, 17 Aug 2017 18:54:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <20170817165044.GF2566@flask>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Thu, 17 Aug 2017 16:54:39 +0000 (UTC)
-Return-Path: <pbonzini@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 20:25:58 +0200 (CEST)
+Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:38456
+        "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994887AbdHQSZwDBgo7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Aug 2017 20:25:52 +0200
+Received: by mail-pg0-x241.google.com with SMTP id 123so11055757pga.5;
+        Thu, 17 Aug 2017 11:25:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=LJubvV5uWllSou/VLVhRjf5T3AX8ujo4Xf7/Vm1Lse0=;
+        b=EWX46/2+BDmlMQrjJe3W1pzZstRsLDbX2fS0/TUMPQBzGXaqzklN24dyqaWGh68aT+
+         cW7CkclQ4m3ajQ9Io6R/by22CUlPrAAm5yOd7Yl/3GaRTJAM3yFViAmGu2/cG3IRHFWx
+         JtPebol6cMzMBVFDOZpDHoSPt393mmpjDzK5Mq52jU+iVHIw3ixuwNgEpZDzjfKs5km9
+         Tk9h7DateJGtdQmUBm4EFfXOt0duKpn+PrdP53z6BzJjabG5RtsPqxEjrmCQzKXBYvHM
+         09uaxcgTVG1n+wN2RCc3ZEpsLF76ELsVxtzANedfFY0206LBAWCBc7DgAkOjK29KVgbd
+         6aNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=LJubvV5uWllSou/VLVhRjf5T3AX8ujo4Xf7/Vm1Lse0=;
+        b=fYKYXUT2vxiOc/sd7zpqmBF6Jtn4aktfNh5LiTSOCSqA5QbpR+NzKzBM38EOBdTxD+
+         tbelT2mFqZamFJ8tLQZ+diXmOHSbEdO3XGH9C+l4KSCNipX4FN7QT4z4txZhw17Iu4f1
+         tp8TR58ltTcUr2WewtnNqa8qIW+k8QXbQym6JmsAeV+FCOEGuzUa3W2/2z4d7mUw7zI0
+         qyr+6vZ8oZK9uU6T3Ja/zcNnHMtR6LGifPeT/IR4fIi2HBNGoPv6nEMBrIb8eM3sS8dl
+         LES/pnH/1zK0IqDuwpoLE2B9b2EcwwBC1/gCzU+BjTW1bVyVT6UFdT1fr24YYJteirrc
+         JnVg==
+X-Gm-Message-State: AHYfb5h8IbQxA77W+ymb+fWqZfiF1PZZYsuL9DCFVbtJn1fba/aI+Dw7
+        pyCOSl6SDrY9CA==
+X-Received: by 10.101.86.74 with SMTP id m10mr5867479pgs.79.1502994345832;
+        Thu, 17 Aug 2017 11:25:45 -0700 (PDT)
+Received: from linux.local ([42.109.133.212])
+        by smtp.gmail.com with ESMTPSA id a86sm8882565pfe.181.2017.08.17.11.25.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 17 Aug 2017 11:25:45 -0700 (PDT)
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+To:     herbert@gondor.apana.org.au, robh+dt@kernel.org,
+        mark.rutland@arm.com, ralf@linux-mips.org, mturquette@baylibre.com,
+        sboyd@codeaurora.org, davem@davemloft.net, paul@crapouillou.net,
+        linux-crypto@vger.kernel.org, linux-mips@linux-mips.org
+Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Subject: [PATCH 0/6] crypto: Add driver for JZ4780 PRNG
+Date:   Thu, 17 Aug 2017 23:55:14 +0530
+Message-Id: <20170817182520.20102-1-prasannatsmkumar@gmail.com>
+X-Mailer: git-send-email 2.10.0
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59627
+X-archive-position: 59628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,63 +64,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17/08/2017 18:50, Radim Krčmář wrote:
-> 2017-08-17 13:14+0200, David Hildenbrand:
->>>  	atomic_set(&kvm->online_vcpus, 0);
->>>  	mutex_unlock(&kvm->lock);
->>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
->>> index c8df733eed41..eb9fb5b493ac 100644
->>> --- a/include/linux/kvm_host.h
->>> +++ b/include/linux/kvm_host.h
->>> @@ -386,12 +386,17 @@ struct kvm_memslots {
->>>  	int used_slots;
->>>  };
->>>  
->>> +struct kvm_vcpus {
->>> +	u32 online;
->>> +	struct kvm_vcpu *array[];
->>
->> On option could be to simply chunk it:
->>
->> +struct kvm_vcpus {
->> +       struct kvm_vcpu vcpus[32];
-> 
-> I'm thinking of 128/256.
-> 
->> +};
->> +
->>  /*
->>   * Note:
->>   * memslots are not sorted by id anymore, please use id_to_memslot()
->> @@ -391,7 +395,7 @@ struct kvm {
->>         struct mutex slots_lock;
->>         struct mm_struct *mm; /* userspace tied to this vm */
->>         struct kvm_memslots __rcu *memslots[KVM_ADDRESS_SPACE_NUM];
->> -       struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
->> +       struct kvm_vcpus vcpus[(KVM_MAX_VCPUS + 31) / 32];
->>         /*
->>          * created_vcpus is protected by kvm->lock, and is incremented
->> @@ -483,12 +487,14 @@ static inline struct kvm_io_bus
->> *kvm_get_bus(struct kvm *kvm, enum kvm_bus idx)
->>
->>
->> 1. make nobody access kvm->vcpus directly (factor out)
->> 2. allocate next chunk if necessary when creating a VCPU and store
->> pointer using WRITE_ONCE
->> 3. use READ_ONCE to test for availability of the current chunk
-> 
-> We can also use kvm->online_vcpus exactly like we did now.
-> 
->> kvm_for_each_vcpu just has to use READ_ONCE to access/test for the right
->> chunk. Pointers never get invalid. No RCU needed. Sleeping in the loop
->> is possible.
-> 
-> I like this better than SRCU because it keeps the internal code mostly
-> intact, even though it is compromise solution with a tunable.
-> (SRCU gives us more protection than we need.)
->
-> I'd do this for v2,
+This patch series adds support of pseudo random number generator found
+in Ingenic's JZ4780 and X1000 SoC.
 
-Sounds good!
+The PRNG hardware block registers are a part of same hardware block
+that has clock and power registers which is handled by CGU driver.
+Ingenic M200 SoC contains power related registers that are present
+after the PRNG registers. So instead of reducing the register range,
+syscon interface is used to expose a register map that is used by both
+CGU driver and this driver. Changes made to jz4740-cgu.c is only compile
+tested.
 
-Paolo
+PrasannaKumar Muralidharan (6):
+  crypto: jz4780-rng: Add devicetree bindings for RNG in JZ4780 SoC
+  crypto: jz4780-rng: Make ingenic CGU driver use syscon
+  crypto: jz4780-rng: Add Ingenic JZ4780 hardware PRNG driver
+  crypto: jz4780-rng: Add RNG node to jz4780.dtsi
+  crypto: jz4780-rng: Add myself as mainatainer for JZ4780 PRNG driver
+  crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
+
+ .../devicetree/bindings/rng/ingenic,jz4780-rng.txt |  24 +++
+ MAINTAINERS                                        |   5 +
+ arch/mips/boot/dts/ingenic/jz4740.dtsi             |  14 +-
+ arch/mips/boot/dts/ingenic/jz4780.dtsi             |  18 ++-
+ arch/mips/configs/ci20_defconfig                   |   5 +
+ drivers/clk/ingenic/cgu.c                          |  46 +++---
+ drivers/clk/ingenic/cgu.h                          |   9 +-
+ drivers/clk/ingenic/jz4740-cgu.c                   |  30 ++--
+ drivers/clk/ingenic/jz4780-cgu.c                   |  10 +-
+ drivers/crypto/Kconfig                             |  19 +++
+ drivers/crypto/Makefile                            |   1 +
+ drivers/crypto/jz4780-rng.c                        | 173 +++++++++++++++++++++
+ 12 files changed, 304 insertions(+), 50 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/rng/ingenic,jz4780-rng.txt
+ create mode 100644 drivers/crypto/jz4780-rng.c
+
+-- 
+2.10.0

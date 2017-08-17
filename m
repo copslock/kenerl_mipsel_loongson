@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 03:43:48 +0200 (CEST)
-Received: from smtpbgau2.qq.com ([54.206.34.216]:45856 "EHLO smtpbgau2.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993929AbdHQBnmHJv8F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Aug 2017 03:43:42 +0200
-X-QQ-mid: bizesmtp8t1502934180tryndr8sb
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 05:49:36 +0200 (CEST)
+Received: from smtpbguseast2.qq.com ([54.204.34.130]:44512 "EHLO
+        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991726AbdHQDtVaj0A2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Aug 2017 05:49:21 +0200
+X-QQ-mid: bizesmtp15t1502941720t6igrq6u
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 17 Aug 2017 09:41:44 +0800 (CST)
-X-QQ-SSF: 01100000004000F0FMF0B00A0000000
-X-QQ-FEAT: nSUdqPGu3tvl9/YbIbXS1OkIF1UkT82lIiKoCK5vcde2SSjaxk5pgBcTmKpq/
-        GcrGHKKO+3r+rH4l744xmx8wyPm+Z8CRAgQ2g6YGgOyU4F0tQDFX2zrTd8PkgxqpuQuWPU6
-        t19YhajNlLOOQflh6yc3AGuhodZdhU9Mvu55jZrUDyTJR7rh05lvJBMqFP3l3nmXIBwwVVW
-        H8qKlq7PxOfaj9DN4Qtkzzn6rRaOHriIF/bR6CaXgxmbAFjiCh6udzWOGyaimU+MfJiikIq
-        Qctq0bzp0CVcY8lnBRvIjguiANf9EKaXUS8A==
+        id ; Thu, 17 Aug 2017 11:48:30 +0800 (CST)
+X-QQ-SSF: 01100000004000F0FMF0000A0000000
+X-QQ-FEAT: r8geFCKg7nbvcEdfP/0Oip4g09rRHXEOHbGMbTBbztSM/Xy7wTwtmsgL4NZXT
+        jPjcGKLAW4lboGw7zWO6f538EjvPOrX860SSeH02QHDn9ARD1s+GuJEM9Czy8M39zs30XC0
+        AjqUmkOLpEjDogln7OPb0WBAlTd5DD2Qgakllc/tiMbomj090hnigLr5W+wbIdjv6D0fa71
+        hJt5E3uulhl+VxluolWNVzMDSqSyvlQ4ofjcDrqIGf1tShsPeheztQRCfp8UOaKw4NaWewj
+        +CHBgHibaxhTdIZCuPYBz0Ywbodl/3RMmUbg==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,19 +20,20 @@ Cc:     John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: Ensure VDSO pages mapped above STACK_TOP
-Date:   Thu, 17 Aug 2017 09:42:39 +0800
-Message-Id: <1502934159-21783-1-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>,
+        YunQiang Su <yunqiang.su@imgtec.com>
+Subject: [PATCH] MIPS: Loongson fix name confict - MEM_RESERVED
+Date:   Thu, 17 Aug 2017 11:49:26 +0800
+Message-Id: <1502941766-19524-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybgforeign:qybgforeign2
+Feedback-ID: bizesmtp:lemote.com:qybgforeign:qybgforeign1
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59603
+X-archive-position: 59604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,87 +50,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Unlimited stack size (ulimit -s unlimited) causes kernel to use legacy
-layout for applications. Thus, if VDSO isn't mapped above STACK_TOP, it
-will be mapped at a very low address. This will probably cause an early
-brk() failure and then a segmentation fault, because the application's
-initial mm->brk is usually below VDSO (especially when COMPAT_BRK is
-enabled) and there is no more room to expand its heap.
+MEM_RESERVED is used as a value of enum mem_type in include/linux/
+edac.h. This will make failure to build for Loongson in some case:
+for example with CONFIG_RAS enabled.
 
-This patch reserve 4 MB space above STACK_TOP, and use the low 2 MB for
-VDSO randomization (as a result, VDSO pages can use as much as 2 MB).
+So here rename MEM_RESERVED to SYSTEM_RAM_RESERVED in Loongson code.
 
-Cc: stable@vger.kernel.org
+Signed-off-by: YunQiang Su <yunqiang.su@imgtec.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/processor.h |  5 +++--
- arch/mips/kernel/vdso.c           | 16 +++++++++++++++-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
+ arch/mips/loongson64/common/mem.c                  | 2 +-
+ arch/mips/loongson64/loongson-3/numa.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 95b8c47..1c99e2c 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -13,6 +13,7 @@
+diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
+index 6faa76d..7f66760 100644
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -3,7 +3,7 @@
  
- #include <linux/atomic.h>
- #include <linux/cpumask.h>
-+#include <linux/sizes.h>
- #include <linux/threads.h>
- 
- #include <asm/cachectl.h>
-@@ -82,9 +83,9 @@ extern unsigned int vced_count, vcei_count;
- 
- /*
-  * One page above the stack is used for branch delay slot "emulation".
-- * See dsemul.c for details.
-+ * See dsemul.c for details, other pages are for VDSO.
-  */
--#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - PAGE_SIZE)
-+#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - SZ_4M)
- 
- /*
-  * This decides where the kernel will search for a free chunk of vm
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index 093517e..71fecec 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -15,6 +15,7 @@
- #include <linux/ioport.h>
- #include <linux/irqchip/mips-gic.h>
- #include <linux/mm.h>
-+#include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/timekeeper_internal.h>
-@@ -95,6 +96,19 @@ void update_vsyscall_tz(void)
- 	}
- }
- 
-+static unsigned long vdso_base(void)
-+{
-+	unsigned long offset = 0UL;
-+
-+	if (current->flags & PF_RANDOMIZE) {
-+		offset = get_random_int();
-+		offset <<= PAGE_SHIFT;
-+		offset &= 0x1ffffful; /* 2 MB */
-+	}
-+
-+	return STACK_TOP + PAGE_SIZE + offset;
-+}
-+
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- {
- 	struct mips_vdso_image *image = current->thread.abi->vdso;
-@@ -129,7 +143,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 	vvar_size = gic_size + PAGE_SIZE;
- 	size = vvar_size + image->size;
- 
--	base = get_unmapped_area(NULL, 0, size, 0, 0);
-+	base = get_unmapped_area(NULL, vdso_base(), size, 0, 0);
- 	if (IS_ERR_VALUE(base)) {
- 		ret = base;
- 		goto out;
+ #define SYSTEM_RAM_LOW		1
+ #define SYSTEM_RAM_HIGH		2
+-#define MEM_RESERVED		3
++#define SYSTEM_RAM_RESERVED	3
+ #define PCI_IO			4
+ #define PCI_MEM			5
+ #define LOONGSON_CFG_REG	6
+diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/common/mem.c
+index 4022a35..65169ee 100644
+--- a/arch/mips/loongson64/common/mem.c
++++ b/arch/mips/loongson64/common/mem.c
+@@ -86,7 +86,7 @@ void __init prom_init_memory(void)
+ 					(u64)loongson_memmap->map[i].mem_size << 20,
+ 					BOOT_MEM_RAM);
+ 				break;
+-			case MEM_RESERVED:
++			case SYSTEM_RAM_RESERVED:
+ 				add_memory_region(loongson_memmap->map[i].mem_start,
+ 					(u64)loongson_memmap->map[i].mem_size << 20,
+ 					BOOT_MEM_RESERVED);
+diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+index 2e93cd2..416a489 100644
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -175,7 +175,7 @@ static void __init szmem(unsigned int node)
+ 			memblock_add_node(PFN_PHYS(start_pfn),
+ 				PFN_PHYS(end_pfn - start_pfn), node);
+ 			break;
+-		case MEM_RESERVED:
++		case SYSTEM_RAM_RESERVED:
+ 			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+ 				(u32)node_id, mem_type, mem_start, mem_size);
+ 			add_memory_region((node_id << 44) + mem_start,
 -- 
 2.7.0
+
+
+C

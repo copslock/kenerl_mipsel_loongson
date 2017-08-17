@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 23:36:43 +0200 (CEST)
-Received: from mail-oi0-f65.google.com ([209.85.218.65]:35999 "EHLO
-        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994895AbdHQVggtCufu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Aug 2017 23:36:36 +0200
-Received: by mail-oi0-f65.google.com with SMTP id b130so7640443oii.3;
-        Thu, 17 Aug 2017 14:36:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=hkjNGH2m06m6gKUoJElbpIilF+yJfv9mSUkjFFw2mvY=;
-        b=ZxE6GvndRxG4a7YrEYAySw+5GIlhPyti6XceYkHmXrb0rKzAnhSi8dPCPlqJHs+qye
-         Mislz6OJf6ME0lERsnxa75If6uUwtLMRF8OIOfGt/HZ71lraVSvRc5PHimYhZI13Nsfs
-         fGL0j07DPl1y5gYJgpEOZY/v55BguKPjWgStS82ZrnpKQ6JxWXA4JR9aStUff1LerPrZ
-         HxzXuRhNN/4A/taPozLD/JlIQoKSxNphxR83ADVExa8GHxZJRIKO5a7KZZUhGrQ+kAxD
-         thC6f/opSJm4qpR4X2PO0vnDCnaQV2YcRpe8xUmaOYB0k6wozHIvX+KY55HDehUXM2nM
-         aWPw==
-X-Gm-Message-State: AHYfb5gJSJ6KSqLKLe7Yai5j2WoThWZE5AL07dh7y3UeNWHrXIY1onTA
-        4/Jdtd4ScGZo8g==
-X-Received: by 10.202.92.130 with SMTP id q124mr8088232oib.294.1503005790088;
-        Thu, 17 Aug 2017 14:36:30 -0700 (PDT)
-Received: from localhost (mobile-166-173-60-17.mycingular.net. [166.173.60.17])
-        by smtp.gmail.com with ESMTPSA id i196sm5218356oib.14.2017.08.17.14.36.29
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 17 Aug 2017 14:36:29 -0700 (PDT)
-Date:   Thu, 17 Aug 2017 16:36:28 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Harvey Hunt <harvey.hunt@imgtec.com>
-Cc:     mark.rutland@arm.com, ralf@linux-mips.org, john@phrozen.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/3] MIPS: dts: Add VoCore2 board
-Message-ID: <20170817213628.nrkeuek7vu6oebfx@rob-hp-laptop>
-References: <1502814773-40842-1-git-send-email-harvey.hunt@imgtec.com>
- <1502814773-40842-2-git-send-email-harvey.hunt@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 00:19:48 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33498 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994885AbdHQWTet8Amu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Aug 2017 00:19:34 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v7HMJWet010016;
+        Fri, 18 Aug 2017 00:19:32 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v7HMJVoe010015;
+        Fri, 18 Aug 2017 00:19:31 +0200
+Date:   Fri, 18 Aug 2017 00:19:31 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
+Cc:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Waldemar Brodkorb <wbx@openadk.org>
+Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
+Message-ID: <20170817221931.GB12588@linux-mips.org>
+References: <20170803225547.6caa602b@windsurf.lan>
+ <20170804000556.GC30597@linux-mips.org>
+ <20170804151920.GA11317@linux-mips.org>
+ <20170804174151.2eea9af3@windsurf.lan>
+ <20170804222500.GA11675@linux-mips.org>
+ <20170805135649.152b0739@windsurf>
+ <20170807083448.GA20713@linux-mips.org>
+ <20170813224602.25043e8a@windsurf>
+ <20170817071534.GH13257@linux-mips.org>
+ <6D39441BF12EF246A7ABCE6654B0235380DAB457@hhmail02.hh.imgtec.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1502814773-40842-2-git-send-email-harvey.hunt@imgtec.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235380DAB457@hhmail02.hh.imgtec.org>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59639
+X-archive-position: 59640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,97 +53,169 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 15, 2017 at 05:32:52PM +0100, Harvey Hunt wrote:
-> The VoCore2 board is a low cost MT7628A based board with 128MB RAM, 16MB
-> flash and multiple external peripherals.
+On Thu, Aug 17, 2017 at 08:49:13AM +0000, Matthew Fortune wrote:
+> Date:   Thu, 17 Aug 2017 08:49:13 +0000
+> From: Matthew Fortune <Matthew.Fortune@imgtec.com>
+> To: Ralf Baechle <ralf@linux-mips.org>, Thomas Petazzoni
+>  <thomas.petazzoni@free-electrons.com>
+> CC: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>, Waldemar
+>  Brodkorb <wbx@openadk.org>
+> Subject: RE: undefined reference to `__multi3' when building with gcc 7.x
+> Content-Type: text/plain; charset="us-ascii"
 > 
-> This initial DTS provides enough support to get to userland and use the USB
-> port.
+> Ralf Baechle <ralf@linux-mips.org> writes:
+> > On Sun, Aug 13, 2017 at 10:46:02PM +0200, Thomas Petazzoni wrote:
+> > > Date:   Sun, 13 Aug 2017 22:46:02 +0200
+> > > From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> > > To: Ralf Baechle <ralf@linux-mips.org>
+> > > Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>,
+> > >  linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openadk.org>
+> > > Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
+> > > Content-Type: text/plain; charset=US-ASCII
+> > >
+> > > Hello,
+> > >
+> > > On Mon, 7 Aug 2017 10:34:48 +0200, Ralf Baechle wrote:
+> > >
+> > > > > > Chances are it's something specific to MIPS64 R6.  Before trying your
+> > > > > > config file I also tried a number of other defconfigs and all built
+> > > > > > well.
+> > > > > >
+> > > > > > Here's a test case which generates a reference to __multi3:
+> > > > > >
+> > > > > > unsigned long func(unsigned long a, unsigned long b)
+> > > > > > {
+> > > > > >         return a > (~0UL) / b;
+> > > > > > }
+> > > > > >
+> > > > > > GCC rearanges above statement to:
+> > > > > >
+> > > > > > 	return (unsigned __int128)a * (unsigned __int128) b > 0xffffffff;
+> > > > >
+> > > > > And this is normal/expected ?
+> > > >
+> > > > Without consideration of performance, It's certainly is valid code.  And
+> > > > with that I can't drop the issue as a GCC code generation bug.
+> > > >
+> > > > However it seems GCC itself doesn't seem to have a __multi3 in its
+> > > > libgcc2 - which indeed would be a GCC issue - at least none I was easily
+> > > > able to find with grep so I'm adding Matthew Fortune to cc in the hope he
+> > > > can shed some light on this.
+> > >
+> > > Indeed, I don't see __multi3 implemented in libgcc in the source code,
+> > > but it's probably because it's tricky to see its implementation,
+> > > as it really is there:
+> > >
+> > > $ ./bin/mips64el-linux-readelf -a ./mips64el-buildroot-linux-
+> > uclibc/sysroot/lib/libgcc_s.so.1 | grep multi3
+> > >   1747: 00011700   100 FUNC    GLOBAL DEFAULT   11 __multi3@@GCC_3.0
+> > >   5511: 00011700   100 FUNC    GLOBAL DEFAULT   11 __multi3
+> > >   000435e4 -32236(gp) 00011700 00011700 FUNC     11 __multi3
+> > >
+> > > Objdump says:
+> > >
+> > > 00011700 <__multi3>:
+> > >    11700:       0006103e        dsrl32  v0,a2,0x0
+> > >    11704:       7c89f803        dext    a5,a0,0x0,0x20
+> > >    11708:       0004403e        dsrl32  a4,a0,0x0
+> > >    1170c:       7ccaf803        dext    a6,a2,0x0,0x20
+> > >    11710:       012a589c        dmul    a7,a5,a6
+> > >    11714:       010a509c        dmul    a6,a4,a6
+> > >    11718:       0122489c        dmul    a5,a5,v0
+> > >    1171c:       0102409c        dmul    a4,a4,v0
+> > >    11720:       012a482d        daddu   a5,a5,a6
+> > >    11724:       000b103e        dsrl32  v0,a7,0x0
+> > >    11728:       0049102d        daddu   v0,v0,a5
+> > >    1172c:       184a0003        bgeuc   v0,a6,1173c <.L2>
+> > >    11730:       24090001        li      a5,1
+> > >    11734:       0009483c        dsll32  a5,a5,0x0
+> > >    11738:       0109402d        daddu   a4,a4,a5
+> > 
+> > I happened to have a GCC build dir around so I greped for __multi3 and
+> > found it hiding in muldi3.o.
+> > 
+> > Maybe that'obvious for those in the know, not me :)  Also that .o file
+> > contained MIPS III code and I was able to get GCC to emit a reference
+> > to __multi3 for MIPS III or MIPS64R1 targets, so version of __multi3
+> > even seems unused.
 > 
-> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> ---
->  MAINTAINERS                           |  6 ++++++
->  arch/mips/boot/dts/ralink/Makefile    |  1 +
->  arch/mips/boot/dts/ralink/vocore2.dts | 18 ++++++++++++++++++
->  arch/mips/ralink/Kconfig              |  5 +++++
->  4 files changed, 30 insertions(+)
->  create mode 100644 arch/mips/boot/dts/ralink/vocore2.dts
+> Sorry for the long delay in replying.
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 6f7721d..82dcc6f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14127,6 +14127,12 @@ L:	netdev@vger.kernel.org
->  S:	Maintained
->  F:	drivers/net/vmxnet3/
->  
-> +VOCORE VOCORE2 BOARD
-> +M:	Harvey Hunt <harveyhuntnexus@gmail.com>
-> +L:	linux-mips@linux-mips.org
-> +S:	Maintained
-> +F:	arch/mips/boot/dts/ralink/vocore2.dts
-> +
->  VOLTAGE AND CURRENT REGULATOR FRAMEWORK
->  M:	Liam Girdwood <lgirdwood@gmail.com>
->  M:	Mark Brown <broonie@kernel.org>
-> diff --git a/arch/mips/boot/dts/ralink/Makefile b/arch/mips/boot/dts/ralink/Makefile
-> index 2a72259..a191788 100644
-> --- a/arch/mips/boot/dts/ralink/Makefile
-> +++ b/arch/mips/boot/dts/ralink/Makefile
-> @@ -2,6 +2,7 @@ dtb-$(CONFIG_DTB_RT2880_EVAL)	+= rt2880_eval.dtb
->  dtb-$(CONFIG_DTB_RT305X_EVAL)	+= rt3052_eval.dtb
->  dtb-$(CONFIG_DTB_RT3883_EVAL)	+= rt3883_eval.dtb
->  dtb-$(CONFIG_DTB_MT7620A_EVAL)	+= mt7620a_eval.dtb
-> +dtb-$(CONFIG_DTB_VOCORE2)		+= vocore2.dtb
->  
->  obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
->  
-> diff --git a/arch/mips/boot/dts/ralink/vocore2.dts b/arch/mips/boot/dts/ralink/vocore2.dts
-> new file mode 100644
-> index 0000000..7591340
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/ralink/vocore2.dts
-> @@ -0,0 +1,18 @@
-> +/dts-v1/;
-> +
-> +#include "mt7628a.dtsi"
-> +
-> +/ {
-> +	compatible = "vocore,vocore2", "ralink,mt7628a-soc";
+> I think this could be considered a GCC bug. The multiply pattern support
+> in MIPS GCC is incredibly complex but the net effect is supposed to be
+> a guarantee that certain multiply operations will never need to use
+> helpers and as such we don't provide the helpers in those cases. There
+> are however special cases of course. The widening multiply from DImode
+> to TImode can't be generated by the compiler when working around R4000
+> errata and the extension is unsigned from DImode to TImode. I don't
+> believe TImode multiplies (i.e. full width 128-bit multiplies) are
+> generated from MIPS GCC but I don't know whether we have sleep-walked
+> into having __int128 support which would muddy the water somewhat.
+> 
+> So... In an R6 build I don't think the __multi3 helper should be generated
+> and I think the offending pattern needs extending for R6 support:
+> 
+> (define_expand "<u>mulditi3"
+>   [(set (match_operand:TI 0 "register_operand")
+>         (mult:TI (any_extend:TI (match_operand:DI 1 "register_operand"))
+>                  (any_extend:TI (match_operand:DI 2 "register_operand"))))]
+>   "ISA_HAS_DMULT && !(<CODE> == ZERO_EXTEND && TARGET_FIX_VR4120)"
+> {
+>   rtx hilo;
+> 
+>   if (TARGET_MIPS16)
+>     {
+>       hilo = gen_rtx_REG (TImode, MD_REG_FIRST);
+>       emit_insn (gen_<u>mulditi3_internal (hilo, operands[1], operands[2]));
+>       emit_move_insn (operands[0], hilo);
+>     }
+>   else if (TARGET_FIX_R4000)
+>     emit_insn (gen_<u>mulditi3_r4000 (operands[0], operands[1], operands[2]));
+>   else
+>     emit_insn (gen_<u>mulditi3_internal (operands[0], operands[1],
+>                                          operands[2]));
+>   DONE;
+> })
+> 
+> For SI->DI mode multiplies on 32bit R6 we have the following which naturally
+> ports to DI->TI:
+> 
+> (define_expand "<u>mulsidi3_32bit_r6"
+>   [(set (match_operand:DI 0 "register_operand")
+>         (mult:DI (any_extend:DI (match_operand:SI 1 "register_operand"))
+>                  (any_extend:DI (match_operand:SI 2 "register_operand"))))]
+>   "!TARGET_64BIT && ISA_HAS_R6MUL"
+> {
+>   rtx dest = gen_reg_rtx (DImode);
+>   rtx low = mips_subword (dest, 0);
+>   rtx high = mips_subword (dest, 1);
+> 
+>   emit_insn (gen_mulsi3_mul3_nohilo (low, operands[1], operands[2]));
+>   emit_insn (gen_<su>mulsi3_highpart_r6 (high, operands[1], operands[2]));
+> 
+>   emit_move_insn (mips_subword (operands[0], 0), low);
+>   emit_move_insn (mips_subword (operands[0], 1), high);
+>   DONE;
+> })
+> 
+> Despite the theory being simple, wiring this up will take time as it also
+> involves getting the costing calculations updated.
+> 
+> Please can you submit it as a GCC bug?
 
-Is vocore,vocore2 documented?
+Will do.
 
-> +	model = "VoCore2";
-> +
-> +	memory@0 {
-> +		device_type = "memory";
-> +		reg = <0x0 0x8000000>;
-> +	};
-> +
-> +	chosen {
-> +		bootargs = "console=ttyS2,115200";
-> +		stdout-path = "serial2:115200";
-> +	};
-> +};
-> diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-> index 710b04c..c2b2c2d 100644
-> --- a/arch/mips/ralink/Kconfig
-> +++ b/arch/mips/ralink/Kconfig
-> @@ -82,6 +82,11 @@ choice
->  		depends on SOC_MT7620
->  		select BUILTIN_DTB
->  
-> +	config DTB_VOCORE2
-> +		bool "VoCore2"
-> +		depends on SOC_MT7620
-> +		select BUILTIN_DTB
-> +
->  endchoice
->  
->  endif
-> -- 
-> 2.7.4
-> 
+> As a workaround you may want to include a version of __multi3 in the kernel
+> until it is resolved.
+
+Yes, working on that.  This has been made harder by the fact that the
+implementation of __umulti3 is well hidden in the source :)  I now have
+functioning implementation of __multi3 but it's still too ugly to be
+committed to the kernel.
+
+And while I agree it should be fixed in GCC at the same time the
+generated code while convoluted and unnecessarily slow appears to be
+correct so I think we should support this by adding a suitable __umulti3
+to the kernel code as you suggest.
+
+  Ralf

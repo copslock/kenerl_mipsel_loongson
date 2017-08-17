@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 09:30:15 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:52076 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2017 09:36:37 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:51836 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992126AbdHQHaCoFDHO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Aug 2017 09:30:02 +0200
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        id S23992456AbdHQHg0lKIOO convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Aug 2017 09:36:26 +0200
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id EAB356A6D1;
-        Thu, 17 Aug 2017 07:29:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com EAB356A6D1
-Authentication-Results: ext-mx04.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx04.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=david@redhat.com
-Received: from [10.36.117.43] (ovpn-117-43.ams2.redhat.com [10.36.117.43])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 525176BF9D;
-        Thu, 17 Aug 2017 07:29:52 +0000 (UTC)
-Subject: Re: [PATCH RFC 0/2] KVM: use RCU to allow dynamic kvm->vcpus array
-To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Christoffer Dall <cdall@linaro.org>,
+        by mx1.redhat.com (Postfix) with ESMTPS id 064FCD7159;
+        Thu, 17 Aug 2017 07:36:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 064FCD7159
+Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
+Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=cohuck@redhat.com
+Received: from gondolin (dhcp-192-222.str.redhat.com [10.33.192.222])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 51437600CA;
+        Thu, 17 Aug 2017 07:36:14 +0000 (UTC)
+Date:   Thu, 17 Aug 2017 09:36:12 +0200
+From:   Cornelia Huck <cohuck@redhat.com>
+To:     Alexander Graf <agraf@suse.de>
+Cc:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
+        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
         Marc Zyngier <marc.zyngier@arm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>,
         James Hogan <james.hogan@imgtec.com>,
+        Christoffer Dall <cdall@linaro.org>,
         Paul Mackerras <paulus@ozlabs.org>,
-        Alexander Graf <agraf@suse.com>
+        David Hildenbrand <david@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH RFC 0/2] KVM: use RCU to allow dynamic kvm->vcpus array
+Message-ID: <20170817093612.024cc4bc.cohuck@redhat.com>
+In-Reply-To: <b77b151f-e51d-3657-66e9-6fbc83887b18@suse.de>
 References: <20170816194037.9460-1-rkrcmar@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
+        <b77b151f-e51d-3657-66e9-6fbc83887b18@suse.de>
 Organization: Red Hat GmbH
-Message-ID: <db11c343-d5f7-97cd-47df-ed801bad5947@redhat.com>
-Date:   Thu, 17 Aug 2017 09:29:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20170816194037.9460-1-rkrcmar@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Thu, 17 Aug 2017 07:29:56 +0000 (UTC)
-Return-Path: <david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 17 Aug 2017 07:36:19 +0000 (UTC)
+Return-Path: <cohuck@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59606
+X-archive-position: 59607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david@redhat.com
+X-original-sender: cohuck@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,48 +60,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 16.08.2017 21:40, Radim Krčmář wrote:
-> The goal is to increase KVM_MAX_VCPUS without worrying about memory
-> impact of many small guests.
+On Thu, 17 Aug 2017 09:04:14 +0200
+Alexander Graf <agraf@suse.de> wrote:
+
+> On 16.08.17 21:40, Radim Krčmář  wrote:
+> > The goal is to increase KVM_MAX_VCPUS without worrying about memory
+> > impact of many small guests.
+> > 
+> > This is a second out of three major "dynamic" options:
+> >   1) size vcpu array at VM creation time
+> >   2) resize vcpu array when new VCPUs are created
+> >   3) use a lockless list/tree for VCPUs
+> > 
+> > The disadvantage of (1) is its requirement on userspace changes and
+> > limited flexibility because userspace must provide the maximal count on
+> > start.  The main advantage is that kvm->vcpus will work like it does
+> > now.  It has been posted as "[PATCH 0/4] KVM: add KVM_CREATE_VM2 to
+> > allow dynamic kvm->vcpus array",
+> > http://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1377285.html
+> > 
+> > The main problem of (2), this series, is that we cannot extend the array
+> > in place and therefore require some kind of protection when moving it.
+> > RCU seems best, but it makes the code slower and harder to deal with.
+> > The main advantage is that we do not need userspace changes.  
 > 
-> This is a second out of three major "dynamic" options:
->  1) size vcpu array at VM creation time
->  2) resize vcpu array when new VCPUs are created
->  3) use a lockless list/tree for VCPUs
+> Creating/Destroying vcpus is not something I consider a fast path, so 
+> why should we optimize for it? The case that needs to be fast is execution.
 > 
-> The disadvantage of (1) is its requirement on userspace changes and
-> limited flexibility because userspace must provide the maximal count on
-> start.  The main advantage is that kvm->vcpus will work like it does
-> now.  It has been posted as "[PATCH 0/4] KVM: add KVM_CREATE_VM2 to
-> allow dynamic kvm->vcpus array",
-> http://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1377285.html
+> What if we just sent a "vcpu move" request to all vcpus with the new 
+> pointer after it moved? That way the vcpu thread itself would be 
+> responsible for the migration to the new memory region. Only if all 
+> vcpus successfully moved, keep rolling (and allow foreign get_vcpu again).
 > 
-> The main problem of (2), this series, is that we cannot extend the array
-> in place and therefore require some kind of protection when moving it.
-> RCU seems best, but it makes the code slower and harder to deal with.
-> The main advantage is that we do not need userspace changes.
-> 
-> The third option wasn't explored yet.  It would solve the ugly
-> kvm_for_each_vcpu() of (2), but kvm_get_vcpu() would become linear.
-> (We could mitigate it by having list of vcpu arrays and A lockless
->  sequentially growing "tree" would be logarithmic and not that much more
->  complicated to implement.)
+> That way we should be basically lock-less and scale well. For additional 
+> icing, feel free to increase the vcpu array x2 every time it grows to 
+> not run into the slow path too often.
 
-That sounds interesting but also too complicated.
-
-> 
-> Which option do you think is the best?
-
-I actually think the RCU variant doesn't look bad at all. Execution time
-should be ok.
-
-As Alex said, doubling the size every time we run out of space could be
-done.
-
-I clearly favor a solution that doesn't require user space changes.
-
--- 
-
-Thanks,
-
-David
+I'd prefer the rcu approach: This is a mechanism already understood
+well, no need to come up with a new one that will likely have its own
+share of problems.

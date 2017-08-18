@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 15:20:29 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:45722 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 15:20:53 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:46021 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993968AbdHRNUPwhye9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Aug 2017 15:20:15 +0200
+        id S23994907AbdHRNU3oqT09 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Aug 2017 15:20:29 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 665A21A1D54;
-        Fri, 18 Aug 2017 15:20:10 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 1F7BB1A1DE6;
+        Fri, 18 Aug 2017 15:20:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 49D371A0EE6;
-        Fri, 18 Aug 2017 15:20:10 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 0390E1A0EE6;
+        Fri, 18 Aug 2017 15:20:20 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
@@ -25,9 +25,9 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3/6] MIPS: math-emu: CLASS.D: Zero bits 32-63 of the result
-Date:   Fri, 18 Aug 2017 15:17:32 +0200
-Message-Id: <1503062286-27030-4-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH 4/6] MIPS: math-emu: Add FP emu debugfs statistics for branches
+Date:   Fri, 18 Aug 2017 15:17:33 +0200
+Message-Id: <1503062286-27030-5-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1503062286-27030-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1503062286-27030-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -35,7 +35,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59659
+X-archive-position: 59660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,37 +54,58 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Fix content of CLASS.D output bits 32-63 to match hardware behavior.
+Add FP emu debugfs counter for branches.
 
-Prior to this patch, bits 32-63 of CLASS.D output were not
-initialized, causing differnet 32-63 bits content of CLASS.D, based on
-circumstances. However, the hardware consistently returns all these
-bits zeroed. The documentation is not clear whether these bits should
-be zero or unpredicible. Since technically "all zero" case still can
-be viewed as belonging to "unpredictible" class of results, it is
-better to zero bits 32-63.
+The new counter is displayed the same way as existing counter, and
+its default path is /sys/kernel/debug/mips/fpuemustats/.
+
+The limitation of this counter is that it counts only R6 branch
+instructions BC1NEZ and BC1EQZ.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 ---
- arch/mips/math-emu/cp1emu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/fpu_emulator.h | 1 +
+ arch/mips/math-emu/cp1emu.c          | 1 +
+ arch/mips/math-emu/me-debugfs.c      | 1 +
+ 3 files changed, 3 insertions(+)
 
+diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
+index c05369e..7f5cf1f 100644
+--- a/arch/mips/include/asm/fpu_emulator.h
++++ b/arch/mips/include/asm/fpu_emulator.h
+@@ -36,6 +36,7 @@ struct mips_fpu_emulator_stats {
+ 	unsigned long emulated;
+ 	unsigned long loads;
+ 	unsigned long stores;
++	unsigned long branches;
+ 	unsigned long cp1ops;
+ 	unsigned long cp1xops;
+ 	unsigned long errors;
 diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index cabcf2c..1ad15f8 100644
+index 1ad15f8..40c74e1 100644
 --- a/arch/mips/math-emu/cp1emu.c
 +++ b/arch/mips/math-emu/cp1emu.c
-@@ -2144,8 +2144,8 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 				return SIGILL;
- 
- 			DPFROMREG(fs, MIPSInst_FS(ir));
--			rv.w = ieee754dp_2008class(fs);
--			rfmt = w_fmt;
-+			rv.l = ieee754dp_2008class(fs);
-+			rfmt = l_fmt;
- 			break;
- 		}
- 
+@@ -1230,6 +1230,7 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 				break;
+ 			}
+ branch_common:
++			MIPS_FPU_EMU_INC_STATS(branches);
+ 			set_delay_slot(xcp);
+ 			if (cond) {
+ 				/*
+diff --git a/arch/mips/math-emu/me-debugfs.c b/arch/mips/math-emu/me-debugfs.c
+index be650ed..78b26c8 100644
+--- a/arch/mips/math-emu/me-debugfs.c
++++ b/arch/mips/math-emu/me-debugfs.c
+@@ -53,6 +53,7 @@ do {									\
+ 	FPU_STAT_CREATE(emulated);
+ 	FPU_STAT_CREATE(loads);
+ 	FPU_STAT_CREATE(stores);
++	FPU_STAT_CREATE(branches);
+ 	FPU_STAT_CREATE(cp1ops);
+ 	FPU_STAT_CREATE(cp1xops);
+ 	FPU_STAT_CREATE(errors);
 -- 
 2.7.4

@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 19:19:30 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63148 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994928AbdHRRS6kB1Gq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 19:18:58 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 63AE55005552A;
-        Fri, 18 Aug 2017 18:18:48 +0100 (IST)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 18 Aug 2017 18:18:52 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
- (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 18 Aug
- 2017 18:18:51 +0100
-Received: from np-p-burton.localnet (10.20.1.88) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 18 Aug
- 2017 10:18:49 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Set ISA bit in entry-y for microMIPS kernels
-Date:   Fri, 18 Aug 2017 10:18:49 -0700
-Message-ID: <8259872.Nrvp2QXiRE@np-p-burton>
-Organization: Imagination Technologies
-In-Reply-To: <alpine.DEB.2.00.1708181731080.17596@tp.orcam.me.uk>
-References: <20170807231647.19551-1-paul.burton@imgtec.com> <alpine.DEB.2.00.1708181302480.17596@tp.orcam.me.uk> <alpine.DEB.2.00.1708181731080.17596@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 19:25:27 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:42706 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994932AbdHRRZQhnUhv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 19:25:16 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CFED2B;
+        Fri, 18 Aug 2017 10:25:10 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C9C63F483;
+        Fri, 18 Aug 2017 10:25:09 -0700 (PDT)
+Subject: Re: [PATCH 35/38] irqchip: mips-gic: Use pcpu_masks to avoid reading
+ GIC_SH_MASK*
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20170813043646.25821-1-paul.burton@imgtec.com>
+ <20170813043646.25821-36-paul.burton@imgtec.com>
+ <405f8fc2-2947-cc68-e40a-b7e26a03e713@arm.com>
+ <34162033.30QQ0eu7r0@np-p-burton>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <f44d57df-1071-94f6-75cf-83f5175abf50@arm.com>
+Date:   Fri, 18 Aug 2017 18:25:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5028221.36bJTdk8DF";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <34162033.30QQ0eu7r0@np-p-burton>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59683
+X-archive-position: 59684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,117 +51,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart5028221.36bJTdk8DF
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+On 18/08/17 18:11, Paul Burton wrote:
+> Hi Marc,
+> 
+> On Friday, 18 August 2017 08:44:15 PDT Marc Zyngier wrote:
+>> On 13/08/17 05:36, Paul Burton wrote:
+>>> This patch avoids the need to read the GIC_SH_MASK* registers when
+>>> decoding shared interrupts by setting & clearing the interrupt's bit in
+>>> the appropriate CPU's pcpu_masks entry when masking or unmasking the
+>>> interrupt.
+>>>
+>>> This effectively means that whilst an interrupt is masked we clear its
+>>> bit in all pcpu_masks, which causes gic_handle_shared_int() to ignore it
+>>> on all CPUs without needing to check GIC_SH_MASK*.
+>>>
+>>> In essence, we add a little overhead to masking or unmasking interrupts
+>>> but in return reduce the overhead of the far more common task of
+>>> decoding interrupts.
+>>>
+>>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>>> Cc: Jason Cooper <jason@lakedaemon.net>
+>>> Cc: Marc Zyngier <marc.zyngier@arm.com>
+>>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>> Cc: linux-mips@linux-mips.org
+>>> ---
+>>>
+>>>  drivers/irqchip/irq-mips-gic.c | 49
+>>>  ++++++++++++++++++++++++------------------ 1 file changed, 28
+>>>  insertions(+), 21 deletions(-)
+>>>
+>>> diff --git a/drivers/irqchip/irq-mips-gic.c
+>>> b/drivers/irqchip/irq-mips-gic.c index 00153231376a..7a42f0b3822f 100644
+>>> --- a/drivers/irqchip/irq-mips-gic.c
+>>> +++ b/drivers/irqchip/irq-mips-gic.c
+>>> @@ -55,6 +55,19 @@ static struct irq_chip gic_level_irq_controller,
+>>> gic_edge_irq_controller;> 
+>>>  DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
+>>>  DECLARE_BITMAP(ipi_available, GIC_MAX_INTRS);
+>>>
+>>> +static void gic_setup_pcpu_mask(unsigned int intr, unsigned int cpu)
+>>> +{
+>>> +	unsigned int i;
+>>> +
+>>> +	/* Clear the interrupt's bit in all pcpu_masks */
+>>> +	for_each_possible_cpu(i)
+>>> +		clear_bit(intr, per_cpu_ptr(pcpu_masks, i));
+>>
+>> This iterates from 0 to nr_cpu_ids-1...
+>>
+>>> +
+>>> +	/* Set the interrupt's bit in the appropriate CPU's mask */
+>>> +	if (cpu < NR_CPUS)
+>>
+>> and here you're using NR_CPUS. I'm a bit worried that you're not quite
+>> using the same thing (nr_cpu_ids <= NR_CPUS).
+> 
+> I think that would be fine - if nr_cpu_ids is less than NR_CPUS then all we 
+> risk is leaving bits set in the mask for CPUs that aren't in cpu_possible_mask 
+> (which is where nr_cpu_ids comes from). Since those CPUs don't exist & thus 
+> can't take interrupts they'll never check the bits in their mask.
+> 
+> The NR_CPUS check here is basically just to allow the interrupt to be set in 
+> none of the masks when called by gic_mask_irq() - NR_CPUS is just some 
+> constant value that we know will never be the ID of a CPU that an interrupt's 
+> affinity is set to.
+> 
+> Perhaps it'd be clearer to instead split gic_setup_pcpu_mask() into 2 
+> functions - one to just clear all the masks, and one to set the interrupt's 
+> bit in the appropriate one? Possibly just inline that second one. That way we 
+> wouldn't be using NR_CPUS at all here which might be clearer. How does that 
+> sound?
 
-Hi Maciej,
-
-On Friday, 18 August 2017 09:46:30 PDT Maciej W. Rozycki wrote:
-> On Fri, 18 Aug 2017, Maciej W. Rozycki wrote:
-> > > When building a kernel for the microMIPS ISA, ensure that the ISA bit
-> > > (ie. bit 0) in the entry address is set. Otherwise we may include an
-> > > entry address in images which bootloaders will jump to as MIPS32 code.
-> >  
-> >  Hmm, what's going on here?  The ISA bit is set by the linker according to
-> > 
-> > the mode the code at the entry symbol has been assembled for, e.g.:
-> > 
-> > $ readelf -h vmlinux | grep Entry
-> > 
-> >   Entry point address:               0x804355e1
-> > 
-> > $ readelf -s vmlinux | grep kernel_entry
-> > 156535: 80100400     0 FUNC    GLOBAL DEFAULT [MICROMIPS]     1
-> > __kernel_entry 156742: 804355e0   146 FUNC    GLOBAL DEFAULT [MICROMIPS] 
-> >    1 kernel_entry $
-> > 
-> > or no microMIPS (or MIPS16) executable could work.  Is your build process
-> > or toolchain used broken by any chance?
-> 
->  It is indeed the build process.  You've come up with a valid, however a
-> complicated solution.  How about the change below, on top of yours -- does
-> it work for you?  If so, then I'll wrap it up and submit as an update.
-> 
->   Maciej
-> 
-> ---
->  arch/mips/Makefile |   17 ++---------------
->  1 file changed, 2 insertions(+), 15 deletions(-)
-> 
-> linux-mips-start-address.diff
-> Index: linux-sfr-usead/arch/mips/Makefile
-> ===================================================================
-> --- linux-sfr-usead.orig/arch/mips/Makefile	2017-08-18 15:25:58.196676000
-> +0100 +++ linux-sfr-usead/arch/mips/Makefile	2017-08-18 15:27:55.309653000
-> +0100 @@ -242,21 +242,8 @@ include arch/mips/Kbuild.platforms
->  ifdef CONFIG_PHYSICAL_START
->  load-y					= $(CONFIG_PHYSICAL_START)
->  endif
-> -
-> -entry-noisa-y				= 0x$(shell $(NM) vmlinux 2>/dev/null \
-> -					| grep "\bkernel_entry\b" | cut -f1 -d \ )
-> -ifdef CONFIG_CPU_MICROMIPS
-> -  #
-> -  # Set the ISA bit, since the kernel_entry symbol in the ELF will have it
-> -  # clear which would lead to images containing addresses which bootloaders
-> may -  # jump to as MIPS32 code.
-> -  #
-> -  entry-y = $(patsubst %0,%1,$(patsubst %2,%3,$(patsubst %4,%5, \
-> -              $(patsubst %6,%7,$(patsubst %8,%9,$(patsubst %a,%b, \
-> -              $(patsubst %c,%d,$(patsubst %e,%f,$(entry-noisa-y)))))))))
-> -else
-> -  entry-y = $(entry-noisa-y)
-> -endif
-> +entry-y				= $(shell $(OBJDUMP) -f vmlinux 2>/dev/null \
-> +					| sed -n 's/start address //p')
-> 
->  cflags-y			+= -I$(srctree)/arch/mips/include/asm/mach-generic
->  drivers-$(CONFIG_PCI)		+= arch/mips/pci/
-
-I originally did this [1], and wrote about it in the post-three-dashes notes 
-for this patch. To quote myself:
-
-> I originally tried using "objdump -f" to obtain the entry address, which
-> works for microMIPS but it always outputs a 32 bit address for a 32 bit
-> ELF whilst nm will sign extend to 64 bit. That matters for systems where
-> we might want to run a MIPS32 kernel on a MIPS64 CPU & load it with a
-> MIPS64 bootloader, which would then jump to a non-canonical
-> (non-sign-extended) address.
-> 
-> This works in all cases as it only changes the behaviour for microMIPS
-> kernels, but isn't the prettiest solution. A possible alternative would
-> be to write a custom tool to just extract, sign extend & print the entry
-> point of an ELF executable. I'm open to feedback if that would be
-> preferred.
-
-So if we were to use objdump we'd need to handle sign extending 32 bit 
-addresses to form a canonical address. Perhaps that'd be cleaner though.
+That'd probably be best, even if that's a couple extra lines here and
+there. This NR_CPUS is just confusing.
 
 Thanks,
-    Paul
 
-[1] https://patchwork.linux-mips.org/patch/14020/
---nextPart5028221.36bJTdk8DF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAlmXIXkACgkQgiDZ+mk8
-HGX5WBAAlAqrRzF0glt7f1xh734kOJvqloE2pUVXjf7Zh6ffbujXmZmr8uXu7mca
-VWZ4noW3FaxqoR0ZS/AWWc0Fuv77DIJkKa2hlUwkolfdEeoJnFvqc7HsHhnutvfh
-INrs9p8fXJJSiHjtTrivxbPGTHNTXMVoo9C0pVTQr2LM3FFJ/QNqHJW+Q2GQyDzD
-qvMRvNASVFreWEtPbCO0arf5uWwrthn7MTbjIftfe29HAFvyQ/JthspbEmoasTaF
-yGiCnwN6GPVCMZCYcH973rtwH3H7Bf37mMUbv/NKcKS6VZctobOXoE4qwxn780Uo
-RgSWDBfGE9GBCEBh1e2N8fpfgPEKZatCCwXzm09ldJSHay1SGV+stgz+2lEMKcUk
-qDK5WRT/zYRIgPNVsr/HOpG8XsuH116nS0zj5q3Pv1QBzbRzMmJb6vCvHkEYB3LK
-ZaP1b1MIjzmix5jt0k5CHUj+TMTBxbfrEW7U4w/tK9//V/cr5Y687sWkcRhNEbux
-PrMSjoZpHnPQQEr4Hp057zq/BvssK7lapr4imVIcko9+iTxBp0Jscf6jbuxh0/Oc
-lAiN03wzCcdAeIiJyZQaCQcGYJZgS3IBtVdjs2h0UlonSMUuNd0Z4Iso3rP/oahY
-EJNhkMcX4B2AjQMQs0RKFOdaaBkvzL2wZM7OsB4IPptgg+Rkj88=
-=VM4i
------END PGP SIGNATURE-----
-
---nextPart5028221.36bJTdk8DF--
+	M.
+-- 
+Jazz is not dead. It just smells funny...

@@ -1,55 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 17:34:06 +0200 (CEST)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:36786
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992864AbdHRPd63kCCs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 17:33:58 +0200
-Received: by mail-wr0-x241.google.com with SMTP id f8so5398431wrf.3;
-        Fri, 18 Aug 2017 08:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=pRJUv4Af109BXxtrK4wMc67RTrV/uyq58nOXmhRNoGE=;
-        b=AxkSHZUh+NLLgIz2MAt47crnEu92lNSZ7Y7ZXOwEGRBGiqw1ei15cKgev+utfqR4lq
-         pgDHsd7KS2uEO/qur6X3PMZHxbrY8bqRc+NxTSt3IeMWQkO8UXruASuitQUoM9a64C5n
-         mb6l1hKW1baUfGD1zOsCzROEmu4A0of3M8dV4gNhIxOiMb/p3RmVPVigDIx7re9YVtBC
-         f3r7gaXbUOKk0CzWb+nN39ucZLakxFJ+RjF07jcj49K76G8aibO1bkxwUGcdRahhGlC3
-         ha3EL86yPNdTR/aJ8uPzoZ9+PmVdXSYJ3V8mFszTVbfUasGpdYIPbOt/oWZaq+BmupJ4
-         P06g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=pRJUv4Af109BXxtrK4wMc67RTrV/uyq58nOXmhRNoGE=;
-        b=beVIioTCZu3scrYI3/P+qCSip5MGeAdkaaYdqIA6hUXkOyGTZSjmI7ZsApjSq9Ukm0
-         K98BVrQdnd2G54OD1o7/i9F6MOwbbGsiqLZsG9fTTb6FtlRucSETZK6OT7oOT9rezhEf
-         TgEac0mzq14BEdENQOW63+3sLmhC3l3NEZ2ftpL2ng7i9wADuAec/F8GP6tnksOw2n02
-         1kkVjTlDAooITKFOAD07PD+qQSRqjIvKAGGsAC5YkKxJAPfYjBLhX7Bvs9c8G2J0fErG
-         kj9Uwj+7qtYV0heftfYpqg5ak1KHH8W3NvWPsTZb/qzANfuL/LEbFtOfo1V8FEK82CnI
-         a2lw==
-X-Gm-Message-State: AHYfb5iDS3qPHX9ekClZoqaQCh89gJS967QGDfdhYFq5iAFjwY0Xmjkr
-        nqoVL2aEHQo83/UmD86ShA==
-X-Received: by 10.223.149.65 with SMTP id 59mr5330645wrs.292.1503070432830;
-        Fri, 18 Aug 2017 08:33:52 -0700 (PDT)
-Received: from void.lan (93-44-201-58.ip98.fastwebnet.it. [93.44.201.58])
-        by smtp.gmail.com with ESMTPSA id k29sm5167624wrk.56.2017.08.18.08.33.51
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 18 Aug 2017 08:33:52 -0700 (PDT)
-From:   Rocco Folino <rocco.folino@gmail.com>
-To:     ralf@linux-mips.org, robh+dt@kernel.org, mark.rutland@arm.com
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rocco Folino <rocco.folino@gmail.com>
-Subject: [PATCH] MIPS: ath79: support devicetree selection
-Date:   Fri, 18 Aug 2017 17:32:42 +0200
-Message-Id: <b78cb3ef8df8531efdb7b011743ad3f38978015d.1503070362.git.rocco.folino@gmail.com>
-X-Mailer: git-send-email 2.13.5
-Return-Path: <rocco.folino@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 17:37:29 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:41296 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992864AbdHRPhNAtp0s (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Aug 2017 17:37:13 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C685B15A2;
+        Fri, 18 Aug 2017 08:37:05 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DADB03F540;
+        Fri, 18 Aug 2017 08:37:04 -0700 (PDT)
+Subject: Re: [PATCH 34/38] irqchip: mips-gic: Make pcpu_masks a per-cpu
+ variable
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Jason Cooper <jason@lakedaemon.net>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>
+References: <20170813043646.25821-1-paul.burton@imgtec.com>
+ <20170813043646.25821-35-paul.burton@imgtec.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <80cfe904-c724-26dd-6802-b2f1b49062be@arm.com>
+Date:   Fri, 18 Aug 2017 16:37:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
+MIME-Version: 1.0
+In-Reply-To: <20170813043646.25821-35-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59671
+X-archive-position: 59672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rocco.folino@gmail.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,86 +49,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow to choose devicetrees from Kconfig.
+On 13/08/17 05:36, Paul Burton wrote:
+> Define the pcpu_masks variable using the kernel's standard per-cpu
+> variable support, rather than an open-coded array of structs containing
+> bitmaps.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Marc Zyngier <marc.zyngier@arm.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: linux-mips@linux-mips.org
+> ---
+> 
+>  drivers/irqchip/irq-mips-gic.c | 17 ++++++++---------
+>  1 file changed, 8 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+> index feff4bf97577..00153231376a 100644
+> --- a/drivers/irqchip/irq-mips-gic.c
+> +++ b/drivers/irqchip/irq-mips-gic.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/irq.h>
+>  #include <linux/irqchip.h>
+>  #include <linux/of_address.h>
+> +#include <linux/percpu.h>
+>  #include <linux/sched.h>
+>  #include <linux/smp.h>
+>  
+> @@ -23,6 +24,7 @@
+>  #include <dt-bindings/interrupt-controller/mips-gic.h>
+>  
+>  #define GIC_MAX_INTRS		256
+> +#define GIC_MAX_LONGS		BITS_TO_LONGS(GIC_MAX_INTRS)
+>  
+>  /* Add 2 to convert GIC CPU pin to core interrupt */
+>  #define GIC_CPU_PIN_OFFSET	2
+> @@ -40,11 +42,8 @@
+>  
+>  void __iomem *mips_gic_base;
+>  
+> -struct gic_pcpu_mask {
+> -	DECLARE_BITMAP(pcpu_mask, GIC_MAX_INTRS);
+> -};
+> +DEFINE_PER_CPU_READ_MOSTLY(unsigned long[GIC_MAX_LONGS], pcpu_masks);
+>  
+> -static struct gic_pcpu_mask pcpu_masks[NR_CPUS];
+>  static DEFINE_SPINLOCK(gic_lock);
+>  static struct irq_domain *gic_irq_domain;
+>  static struct irq_domain *gic_ipi_domain;
+> @@ -137,7 +136,7 @@ static void gic_handle_shared_int(bool chained)
+>  	DECLARE_BITMAP(intrmask, GIC_MAX_INTRS);
+>  
+>  	/* Get per-cpu bitmaps */
+> -	pcpu_mask = pcpu_masks[smp_processor_id()].pcpu_mask;
+> +	pcpu_mask = this_cpu_ptr(pcpu_masks);
+>  
+>  	if (mips_cm_is64) {
+>  		__ioread64_copy(pending, addr_gic_pend(),
+> @@ -254,8 +253,8 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+>  
+>  	/* Update the pcpu_masks */
+>  	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
 
-Signed-off-by: Rocco Folino <rocco.folino@gmail.com>
----
- arch/mips/ath79/Kconfig         | 44 +++++++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/qca/Makefile | 10 +++++-----
- 2 files changed, 49 insertions(+), 5 deletions(-)
+Is there any case where gic_vpes is not equal to nr_cpus?
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index dfc60209dc63..b43d116187af 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -1,5 +1,49 @@
- if ATH79
- 
-+menu "Atheros AR71XX/AR724X/AR913X devicetree selection"
-+
-+config DTB_ATH_DPT_MODULE
-+	bool "DPTechnics DPT-Module"
-+	select SOC_933X
-+	select BUILTIN_DTB
-+	help
-+	  Say 'Y' if you want your kernel to support the
-+	  DPTechnics DPT-Module board.
-+
-+config DTB_ATH_DRAGINO_MS14
-+	bool "Dragino MS14 (Dragino 2)"
-+	select SOC_AR933X
-+	select BUILTIN_DTB
-+	help
-+	  Say 'Y' if you want your kernel to support the
-+	  Dragino MS14 board.
-+
-+config DTB_ATH_OMEGA
-+	bool "Onion Omega"
-+	select SOC_AR933X
-+	select BUILTIN_DTB
-+	help
-+	  Say 'Y' if you want your kernel to support the
-+	  Onion Omega board.
-+
-+config DTB_ATH_TL_MR3020
-+	bool "TP-Link TL-MR3020"
-+	select SOC_AR933X
-+	select BUILTIN_DTB
-+	help
-+	  Say 'Y' if you want your kernel to support the
-+	  TP-Link TL-MR3020 board.
-+
-+config DTB_ATH_TL_WR1043ND_V1
-+	bool "TP-Link TL-WR1043ND v1"
-+	select SOC_AR913X
-+	select BUILTIN_DTB
-+	help
-+	  Say 'Y' if you want your kernel to support the
-+	  TP-Link TL-WR1043ND v1 board.
-+
-+endmenu
-+
- menu "Atheros AR71XX/AR724X/AR913X machine selection"
- 
- config ATH79_MACH_AP121
-diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
-index 63a9ddf048c9..acaf448e4516 100644
---- a/arch/mips/boot/dts/qca/Makefile
-+++ b/arch/mips/boot/dts/qca/Makefile
-@@ -1,9 +1,9 @@
- # All DTBs
--dtb-$(CONFIG_ATH79)			+= ar9132_tl_wr1043nd_v1.dtb
--dtb-$(CONFIG_ATH79)			+= ar9331_dpt_module.dtb
--dtb-$(CONFIG_ATH79)			+= ar9331_dragino_ms14.dtb
--dtb-$(CONFIG_ATH79)			+= ar9331_omega.dtb
--dtb-$(CONFIG_ATH79)			+= ar9331_tl_mr3020.dtb
-+dtb-$(CONFIG_DTB_ATH_TL_WR1043ND_V1)	+= ar9132_tl_wr1043nd_v1.dtb
-+dtb-$(CONFIG_DTB_ATH_DPT_MODULE)	+= ar9331_dpt_module.dtb
-+dtb-$(CONFIG_DTB_ATH_DRAGINO_MS14)	+= ar9331_dragino_ms14.dtb
-+dtb-$(CONFIG_DTB_ATH_OMEGA)		+= ar9331_omega.dtb
-+dtb-$(CONFIG_DTB_ATH_TL_MR3020)		+= ar9331_tl_mr3020.dtb
- 
- # Force kbuild to make empty built-in.o if necessary
- obj-				+= dummy.o
+> -		clear_bit(irq, pcpu_masks[i].pcpu_mask);
+> -	set_bit(irq, pcpu_masks[cpumask_first(&tmp)].pcpu_mask);
+> +		clear_bit(irq, per_cpu_ptr(pcpu_masks, i));
+> +	set_bit(irq, per_cpu_ptr(pcpu_masks, cpumask_first(&tmp)));
+>  
+>  	cpumask_copy(irq_data_get_affinity_mask(d), cpumask);
+>  	spin_unlock_irqrestore(&gic_lock, flags);
+> @@ -416,8 +415,8 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+>  	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
+>  	write_gic_map_vp(intr, BIT(mips_cm_vp_id(vpe)));
+>  	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
+> -		clear_bit(intr, pcpu_masks[i].pcpu_mask);
+> -	set_bit(intr, pcpu_masks[vpe].pcpu_mask);
+> +		clear_bit(intr, per_cpu_ptr(pcpu_masks, i));
+> +	set_bit(intr, per_cpu_ptr(pcpu_masks, vpe));
+>  	spin_unlock_irqrestore(&gic_lock, flags);
+>  
+>  	return 0;
+> 
+
+Thanks,
+
+	M.
 -- 
-2.13.5
+Jazz is not dead. It just smells funny...

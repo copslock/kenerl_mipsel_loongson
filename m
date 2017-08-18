@@ -1,55 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 15:54:20 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:39646 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 16:05:14 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:36882 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994906AbdHRNyDBS5OK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Aug 2017 15:54:03 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97E2715A2;
-        Fri, 18 Aug 2017 06:53:54 -0700 (PDT)
-Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD9A53F483;
-        Fri, 18 Aug 2017 06:53:50 -0700 (PDT)
-Subject: Re: [PATCH v4 4/8] irqchip/irq-goldfish-pic: Add Goldfish PIC driver
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Goran Ferenc <goran.ferenc@imgtec.com>,
-        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        Bo Hu <bohu@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@imgtec.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jin Qian <jinqian@google.com>, linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <1503061833-26563-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1503061833-26563-5-git-send-email-aleksandar.markovic@rt-rk.com>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <f701df56-ceff-7da8-7c0e-1bf2a2853512@arm.com>
-Date:   Fri, 18 Aug 2017 14:53:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+        id S23994915AbdHROE56RrmK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Aug 2017 16:04:57 +0200
+Received: from mail-qt0-f180.google.com (mail-qt0-f180.google.com [209.85.216.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 428FC22CB4;
+        Fri, 18 Aug 2017 14:04:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 428FC22CB4
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
+Received: by mail-qt0-f180.google.com with SMTP id b4so6340297qta.1;
+        Fri, 18 Aug 2017 07:04:56 -0700 (PDT)
+X-Gm-Message-State: AHYfb5guBYOtMNZLtEHL8HTY6Yd1FuuM/wphKFF73AV/KZM5MfunBfx3
+        Dvc0UThHahjJPsHhn3LgmAtXg+6e3w==
+X-Received: by 10.200.34.100 with SMTP id p33mr13157536qtp.87.1503065095450;
+ Fri, 18 Aug 2017 07:04:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1503061833-26563-5-git-send-email-aleksandar.markovic@rt-rk.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Received: by 10.12.153.1 with HTTP; Fri, 18 Aug 2017 07:04:34 -0700 (PDT)
+In-Reply-To: <97c83648-3710-cb9a-a065-9fbe8dd1b734@imgtec.com>
+References: <1502814530-40604-1-git-send-email-harvey.hunt@imgtec.com>
+ <20170817213426.34shgxwnjowcg4sk@rob-hp-laptop> <97c83648-3710-cb9a-a065-9fbe8dd1b734@imgtec.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 18 Aug 2017 09:04:34 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+NZWkvibcL+CFWD8curFDKF2=bBzyCVsRyyiFOFwNBbg@mail.gmail.com>
+Message-ID: <CAL_Jsq+NZWkvibcL+CFWD8curFDKF2=bBzyCVsRyyiFOFwNBbg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: dts: ralink: Add Mediatek MT7628A SoC
+To:     Harvey Hunt <Harvey.Hunt@imgtec.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59664
+X-archive-position: 59665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,264 +58,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 18/08/17 14:08, Aleksandar Markovic wrote:
-> From: Miodrag Dinic <miodrag.dinic@imgtec.com>
-> 
-> Add device driver for a virtual programmable interrupt controller
-> 
-> The virtual PIC is designed as a device tree-based interrupt controller.
-> 
-> The compatible string used by OS for binding the driver is
-> "google,goldfish-pic".
-> 
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-> ---
->  MAINTAINERS                        |   1 +
->  drivers/irqchip/Kconfig            |   8 ++
->  drivers/irqchip/Makefile           |   1 +
->  drivers/irqchip/irq-goldfish-pic.c | 145 +++++++++++++++++++++++++++++++++++++
->  4 files changed, 155 insertions(+)
->  create mode 100644 drivers/irqchip/irq-goldfish-pic.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 013da1d..6426875 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -844,6 +844,7 @@ ANDROID GOLDFISH PIC DRIVER
->  M:	Miodrag Dinic <miodrag.dinic@imgtec.com>
->  S:	Supported
->  F:	Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
-> +F:	drivers/irqchip/irq-goldfish-pic.c
->  
->  ANDROID GOLDFISH RTC DRIVER
->  M:	Miodrag Dinic <miodrag.dinic@imgtec.com>
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index f1fd5f4..21fab14 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -306,3 +306,11 @@ config QCOM_IRQ_COMBINER
->  	help
->  	  Say yes here to add support for the IRQ combiner devices embedded
->  	  in Qualcomm Technologies chips.
-> +
-> +config GOLDFISH_PIC
-> +	bool "Goldfish programmable interrupt controller"
-> +	depends on MIPS && (GOLDFISH || COMPILE_TEST)
-> +	select IRQ_DOMAIN
-> +	help
-> +	  Say yes here to enable Goldfish interrupt controller driver used
-> +	  for Goldfish based virtual platforms.
-> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-> index e88d856..ade04a1 100644
-> --- a/drivers/irqchip/Makefile
-> +++ b/drivers/irqchip/Makefile
-> @@ -78,3 +78,4 @@ obj-$(CONFIG_EZNPS_GIC)			+= irq-eznps.o
->  obj-$(CONFIG_ARCH_ASPEED)		+= irq-aspeed-vic.o irq-aspeed-i2c-ic.o
->  obj-$(CONFIG_STM32_EXTI) 		+= irq-stm32-exti.o
->  obj-$(CONFIG_QCOM_IRQ_COMBINER)		+= qcom-irq-combiner.o
-> +obj-$(CONFIG_GOLDFISH_PIC) 		+= irq-goldfish-pic.o
-> diff --git a/drivers/irqchip/irq-goldfish-pic.c b/drivers/irqchip/irq-goldfish-pic.c
-> new file mode 100644
-> index 0000000..948c35e
-> --- /dev/null
-> +++ b/drivers/irqchip/irq-goldfish-pic.c
-> @@ -0,0 +1,145 @@
-> +/*
-> + * Copyright (C) 2017 Imagination Technologies Ltd.	All rights reserved
-> + *	Author: Miodrag Dinic <miodrag.dinic@imgtec.com>
-> + *
-> + * This file implements interrupt controller driver for MIPS Goldfish PIC.
-> + *
-> + * This program is free software; you can redistribute	it and/or modify it
-> + * under  the terms of	the GNU General	 Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/kernel.h>
-> +#include <linux/irq.h>
-> +#include <linux/irqchip.h>
-> +#include <linux/irqdomain.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_irq.h>
-> +
-> +#include <asm/setup.h>
-> +
-> +/* 0..7 MIPS CPU interrupts */
-> +#define GF_CPU_IRQ_PIC		(MIPS_CPU_IRQ_BASE + 2)
-> +#define GF_CPU_IRQ_COMPARE	(MIPS_CPU_IRQ_BASE + 7)
-> +
-> +#define GF_NR_IRQS		40
-> +/* 8..39 Cascaded Goldfish PIC interrupts */
-> +#define GF_IRQ_OFFSET		8
-> +
-> +#define GF_PIC_NUMBER		0x04
-> +#define GF_PIC_DISABLE_ALL	0x08
-> +#define GF_PIC_DISABLE		0x0c
-> +#define GF_PIC_ENABLE		0x10
-> +
-> +static struct irq_domain *irq_domain;
-> +static void __iomem *gf_pic_base;
-> +
-> +static inline void unmask_goldfish_irq(struct irq_data *d)
-> +{
-> +	writel(d->hwirq - GF_IRQ_OFFSET,
-> +	       gf_pic_base + GF_PIC_ENABLE);
-> +	irq_enable_hazard();
-> +}
-> +
-> +static inline void mask_goldfish_irq(struct irq_data *d)
-> +{
-> +	writel(d->hwirq - GF_IRQ_OFFSET,
-> +	       gf_pic_base + GF_PIC_DISABLE);
-> +	irq_disable_hazard();
-> +}
-> +
-> +static struct irq_chip goldfish_irq_controller = {
-> +	.name		= "Goldfish PIC",
-> +	.irq_ack	= mask_goldfish_irq,
+On Fri, Aug 18, 2017 at 4:42 AM, Harvey Hunt <Harvey.Hunt@imgtec.com> wrote:
+> Hi Rob,
+>
+> Thanks for the review.
+>
+>
+> On 17/08/17 22:34, Rob Herring wrote:
+>>
+>> On Tue, Aug 15, 2017 at 05:28:50PM +0100, Harvey Hunt wrote:
+>>>
+>>> The MT7628A is the successor to the MT7620 and pin compatible with the
+>>> MT7688A, although the latter supports only a 1T1R antenna rather than
+>>> a 2T2R antenna.
 
-I'm slightly puzzled.
+[...]
 
-> +	.irq_mask	= mask_goldfish_irq,
-> +	.irq_mask_ack	= mask_goldfish_irq,
+>>> +               uartlite@c00 {
+>>
+>>
+>> serial@c00
+>>
+>> And so on. IOW, use standard, generic node names as defined in the DT
+>> spec.
+>
+>
+>
+> The clocks for the UARTs are using the device names "uartlite", "uart1" and
+> "uart2" (as defined in arch/mips/ralink/mt7620.c).
 
-What does it mean to have irq_mask_ack implemented as mask?
+You can't add clocks to the DT? Looks like mt76x8 at least should be
+pretty easy with some fixed clocks.
 
-> +	.irq_unmask	= unmask_goldfish_irq,
-> +	.irq_eoi	= unmask_goldfish_irq,
+Depending if backwards compatibility (old dtb working on new kernel)
+is a concern on these platforms, you could just change all the names
+both in the kernel and dts.
 
-Really? Are you joking?
+> Changing the name of the DT nodes causes the serial driver to bail as it
+> can't find the clock for the device.
+>
+> arch/mips/boot/dts/ralink/mt7620a.dtsi is already using the uartlite name,
+> although it hasn't been documented...
 
-> +	.irq_disable	= mask_goldfish_irq,
-> +	.irq_enable	= unmask_goldfish_irq,
+Generally the kernel shouldn't care what the names are (though you can
+match by name, it's not widely used).
 
-If enable/disable are the same as mask/unmask, you don't need separate
-entry points.
+In any case, I guess fixing this can be done later.
 
-> +};
-> +
-> +static void goldfish_irq_dispatch(void)
-> +{
-> +	u32 irq;
-> +	u32 virq;
-> +
-> +	irq = readl(gf_pic_base + GF_PIC_NUMBER);
-> +	if (irq == 0) {
-> +		/* Timer interrupt */
-> +		do_IRQ(GF_CPU_IRQ_COMPARE);
-> +		return;
-> +	}
-
-Why isn't this indirected through the irqdomain just like the rest?
-
-> +
-> +	virq = irq_linear_revmap(irq_domain, irq);
-> +	virq += GF_IRQ_OFFSET;
-
-
-?????? Why do you have to add an offset here? The whole point of an
-irqdomain is to convert a hwirq to an irq. If you need to adjust it, it
-means you're doing something completely wrong the first place.
-
-> +	do_IRQ(virq);
-> +}
-> +
-> +static void goldfish_ip2_irq_dispatch(struct irq_desc *desc)
-> +{
-> +	unsigned long pending = read_c0_cause() & read_c0_status() & ST0_IM;
-> +
-> +	if (pending & CAUSEF_IP2)
-> +		goldfish_irq_dispatch();
-> +	else
-> +		spurious_interrupt();
-
-chained_irq_enter/exit when this is a chained interrupt handler?
-
-> +}
-> +
-> +static int goldfish_pic_map(struct irq_domain *d, unsigned int irq,
-> +			    irq_hw_number_t hw)
-> +{
-> +	if (cpu_has_vint)
-> +		set_vi_handler(hw, goldfish_irq_dispatch);
-> +
-> +	irq_set_chip_and_handler(irq, &goldfish_irq_controller,
-> +				 handle_level_irq);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct irq_domain_ops gf_pic_irq_domain_ops = {
-> +	.map = goldfish_pic_map,
-> +	.xlate = irq_domain_xlate_onetwocell,
-
-Why "twocell"? You only seem to handle level interrupts, so one single
-cell should be enough, right? That's even the way you document it in the
-DT...
-
-> +};
-> +
-> +static struct irqaction cascade = {
-> +	.handler	= no_action,
-> +	.flags		= IRQF_PROBE_SHARED,
-> +	.name		= "cascade",
-> +};
-> +
-> +static void __init __goldfish_pic_init(struct device_node *of_node)
-
-Why this __ prefix?
-
-> +{
-> +	gf_pic_base = of_iomap(of_node, 0);
-> +	if (!gf_pic_base)
-> +		panic("Failed to map Goldfish PIC base : No such device!");
-
-No such device? Or more accurately out of space to do the IO mapping?
-
-> +
-> +	/* Mask interrupts. */
-> +	writel(1, gf_pic_base + GF_PIC_DISABLE_ALL);
-> +
-> +	if (!cpu_has_vint)
-> +		irq_set_chained_handler(GF_CPU_IRQ_PIC,
-> +					goldfish_ip2_irq_dispatch);
-> +
-> +	setup_irq(GF_CPU_IRQ_PIC, &cascade);
-> +
-> +	irq_domain = irq_domain_add_legacy(of_node, GF_NR_IRQS,
-> +					   GF_IRQ_OFFSET, 0,
-> +					   &gf_pic_irq_domain_ops, NULL);
-> +	if (!irq_domain)
-> +		panic("Failed to add irqdomain for Goldfish PIC");
-> +}
-> +
-> +int __init goldfish_pic_of_init(struct device_node *of_node,
-> +				struct device_node *parent)
-
-Why isn't it static?
-
-> +{
-> +	__goldfish_pic_init(of_node);
-
-Why do we need to indirect it at all?
-
-> +	return 0;
-> +}
-> +
-> +IRQCHIP_DECLARE(google_gf_pic, "google,goldfish-pic", goldfish_pic_of_init);
-> +
-> 
-
-Really, this is not any better than the initial version. You clearly
-have not tried to understand the requirements for an interrupt
-controller with respect to the flows it uses. Also, the use of the
-irqdomain is completely backward.
-
-	M.
--- 
-Jazz is not dead. It just smells funny...
+Rob

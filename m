@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 11:43:08 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40639 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991058AbdHRJm71cmdG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 11:42:59 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 1B8A826CEB99E;
-        Fri, 18 Aug 2017 10:42:50 +0100 (IST)
-Received: from [192.168.154.107] (192.168.154.107) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 18 Aug
- 2017 10:42:52 +0100
-Subject: Re: [PATCH] MIPS: dts: ralink: Add Mediatek MT7628A SoC
-To:     Rob Herring <robh@kernel.org>
-CC:     <mark.rutland@arm.com>, <matthias.bgg@gmail.com>,
-        <ralf@linux-mips.org>, John Crispin <john@phrozen.org>,
-        <linux-mips@linux-mips.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <1502814530-40604-1-git-send-email-harvey.hunt@imgtec.com>
- <20170817213426.34shgxwnjowcg4sk@rob-hp-laptop>
-From:   Harvey Hunt <Harvey.Hunt@imgtec.com>
-Message-ID: <97c83648-3710-cb9a-a065-9fbe8dd1b734@imgtec.com>
-Date:   Fri, 18 Aug 2017 10:42:52 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 13:10:42 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:37476 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991181AbdHRLKabIp7W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 13:10:30 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0373C2B;
+        Fri, 18 Aug 2017 04:10:23 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE0E23F540;
+        Fri, 18 Aug 2017 04:10:21 -0700 (PDT)
+Subject: Re: [PATCH 02/38] MIPS: GIC: Introduce asm/mips-gic.h with accessor
+ functions
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Jason Cooper <jason@lakedaemon.net>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org
+References: <20170813043646.25821-1-paul.burton@imgtec.com>
+ <20170813043646.25821-3-paul.burton@imgtec.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <b331ff4a-cdc6-49d1-96a5-f7536b3324f1@arm.com>
+Date:   Fri, 18 Aug 2017 12:10:20 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20170817213426.34shgxwnjowcg4sk@rob-hp-laptop>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+In-Reply-To: <20170813043646.25821-3-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.107]
-Return-Path: <Harvey.Hunt@imgtec.com>
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59642
+X-archive-position: 59643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Harvey.Hunt@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,229 +49,203 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Rob,
-
-Thanks for the review.
-
-On 17/08/17 22:34, Rob Herring wrote:
-> On Tue, Aug 15, 2017 at 05:28:50PM +0100, Harvey Hunt wrote:
->> The MT7628A is the successor to the MT7620 and pin compatible with the
->> MT7688A, although the latter supports only a 1T1R antenna rather than
->> a 2T2R antenna.
->>
->> This commit adds support for the following features:
->>
->> - UART
->> - USB PHY
->> - EHCI
->> - Interrupt controller
->> - System controller
->> - Memory controller
->> - Reset controller
->>
->> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
->> Cc: John Crispin <john@phrozen.org>
->> Cc: linux-mips@linux-mips.org
->> Cc: devicetree@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: linux-mediatek@lists.infradead.org
->> ---
->>   Documentation/devicetree/bindings/mips/ralink.txt |   1 +
->>   arch/mips/boot/dts/ralink/mt7628a.dtsi            | 125 ++++++++++++++++++++++
->>   2 files changed, 126 insertions(+)
->>   create mode 100644 arch/mips/boot/dts/ralink/mt7628a.dtsi
->>
->> diff --git a/Documentation/devicetree/bindings/mips/ralink.txt b/Documentation/devicetree/bindings/mips/ralink.txt
->> index b35a8d0..a16e8d7 100644
->> --- a/Documentation/devicetree/bindings/mips/ralink.txt
->> +++ b/Documentation/devicetree/bindings/mips/ralink.txt
->> @@ -15,3 +15,4 @@ value must be one of the following values:
->>     ralink,rt5350-soc
->>     ralink,mt7620a-soc
->>     ralink,mt7620n-soc
->> +  ralink,mt7628a-soc
->> diff --git a/arch/mips/boot/dts/ralink/mt7628a.dtsi b/arch/mips/boot/dts/ralink/mt7628a.dtsi
->> new file mode 100644
->> index 0000000..8461fe9
->> --- /dev/null
->> +++ b/arch/mips/boot/dts/ralink/mt7628a.dtsi
->> @@ -0,0 +1,125 @@
->> +/ {
->> +	#address-cells = <1>;
->> +	#size-cells = <1>;
->> +	compatible = "ralink,mt7628a-soc";
->> +
->> +	cpus {
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		cpu@0 {
->> +			compatible = "mti,mips24KEc";
->> +			device_type = "cpu";
->> +			reg = <0>;
->> +		};
->> +	};
->> +
->> +	resetctrl: resetctrl {
+On 13/08/17 05:36, Paul Burton wrote:
+> This patch introduces a new header providing accessor functions for the
+> MIPS Global Interrupt Controller (GIC) mirroring those provided for the
+> other 2 components of the MIPS Coherent Processing System (CPS) - the
+> Coherence Manager (CM) & Cluster Power Controller (CPC).
 > 
-> reset-controller {
-
-Done
-
+> This header makes use of the new standardised CPS accessor macros where
+> possible, but does require some custom accessors for cases where we have
+> either a bit or a register per interrupt.
 > 
->> +		compatible = "ralink,rt2880-reset";
->> +		#reset-cells = <1>;
->> +	};
->> +
->> +	cpuintc: cpuintc {
+> A major advantage of this over the existing
+> include/linux/irqchip/mips-gic.h definitions is that code performing
+> accesses can become much simpler, for example this:
 > 
-> interrupt-controller {
-
-Done
-
+>   gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_TRIGGER) +
+>                   GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
+>                   (unsigned long)trig << GIC_INTR_BIT(intr));
 > 
->> +		#address-cells = <0>;
->> +		#interrupt-cells = <1>;
->> +		interrupt-controller;
->> +		compatible = "mti,cpu-interrupt-controller";
->> +	};
->> +
->> +	palmbus@10000000 {
->> +		compatible = "palmbus";
->> +		reg = <0x10000000 0x200000>;
->> +		ranges = <0x0 0x10000000 0x1FFFFF>;
->> +
->> +		#address-cells = <1>;
->> +		#size-cells = <1>;
->> +
->> +		sysc@0 {
+> ...can become simply:
 > 
-> system-controller@0
-
-Done
-
+>   change_gic_trig(intr, trig);
 > 
->> +			compatible = "ralink,mt7620a-sysc";
->> +			reg = <0x0 0x100>;
->> +		};
->> +
->> +		intc: intc@200 {
+> The accessors handle 32 vs 64 bit in the same way as for CM & CPC code,
+> which means that GIC code will also not need to worry about the access
+> size in most cases. They are also accessible outside of
+> drivers/irqchip/irq-mips-gic.c which will allow for simplification in
+> the use of the non-interrupt portions of the GIC (eg. counters) which
+> currently require the interrupt controller driver to expose helper
+> functions for access.
 > 
-> interrupt-controller@200
-
-Done
-
+> This patch doesn't change any existing code over to use the new
+> accessors yet, since a wholesale change would be invasive & difficult to
+> review. Instead follow-on patches will convert code piecemeal to use
+> this new header. The one change to existing code is to rename gic_base
+> to mips_gic_base & make it global, in order to fit in with the naming
+> expected by the standardised CPS accessor macros.
 > 
->> +			compatible = "ralink,rt2880-intc";
->> +			reg = <0x200 0x100>;
->> +
->> +			interrupt-controller;
->> +			#interrupt-cells = <1>;
->> +
->> +			resets = <&resetctrl 9>;
->> +			reset-names = "intc";
->> +
->> +			interrupt-parent = <&cpuintc>;
->> +			interrupts = <2>;
->> +
->> +			ralink,intc-registers = <0x9c 0xa0
->> +						 0x6c 0xa4
->> +						 0x80 0x78>;
->> +		};
->> +
->> +		memc@300 {
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Marc Zyngier <marc.zyngier@arm.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> ---
 > 
-> memory-controller@300
-
-Done
-
+>  arch/mips/include/asm/mips-cps.h |   1 +
+>  arch/mips/include/asm/mips-gic.h | 293 +++++++++++++++++++++++++++++++++++++++
+>  drivers/irqchip/irq-mips-gic.c   |  13 +-
+>  3 files changed, 300 insertions(+), 7 deletions(-)
+>  create mode 100644 arch/mips/include/asm/mips-gic.h
 > 
->> +			compatible = "ralink,mt7620a-memc";
->> +			reg = <0x300 0x100>;
->> +		};
->> +
->> +		uartlite@c00 {
-> 
-> serial@c00
-> 
-> And so on. IOW, use standard, generic node names as defined in the DT
-> spec.
+> diff --git a/arch/mips/include/asm/mips-cps.h b/arch/mips/include/asm/mips-cps.h
+> index 2dd737d803e1..bf02b5070a98 100644
+> --- a/arch/mips/include/asm/mips-cps.h
+> +++ b/arch/mips/include/asm/mips-cps.h
+> @@ -107,6 +107,7 @@ static inline void clear_##unit##_##name(uint##sz##_t val)		\
+>  
+>  #include <asm/mips-cm.h>
+>  #include <asm/mips-cpc.h>
+> +#include <asm/mips-gic.h>
+>  
+>  /**
+>   * mips_cps_numclusters - return the number of clusters present in the system
+> diff --git a/arch/mips/include/asm/mips-gic.h b/arch/mips/include/asm/mips-gic.h
+> new file mode 100644
+> index 000000000000..8cf4bdc1a059
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mips-gic.h
+> @@ -0,0 +1,293 @@
+> +/*
+> + * Copyright (C) 2017 Imagination Technologies
+> + * Author: Paul Burton <paul.burton@imgtec.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
+> + */
+> +
+> +#ifndef __MIPS_ASM_MIPS_CPS_H__
+> +# error Please include asm/mips-cps.h rather than asm/mips-gic.h
+> +#endif
+> +
+> +#ifndef __MIPS_ASM_MIPS_GIC_H__
+> +#define __MIPS_ASM_MIPS_GIC_H__
+> +
+> +#include <linux/bitops.h>
+> +
+> +/* The base address of the GIC registers */
+> +extern void __iomem *mips_gic_base;
+> +
+> +/* Offsets from the GIC base address to various control blocks */
+> +#define MIPS_GIC_SHARED_OFS	0x00000
+> +#define MIPS_GIC_SHARED_SZ	0x08000
+> +#define MIPS_GIC_LOCAL_OFS	0x08000
+> +#define MIPS_GIC_LOCAL_SZ	0x04000
+> +#define MIPS_GIC_REDIR_OFS	0x0c000
+> +#define MIPS_GIC_REDIR_SZ	0x04000
+> +#define MIPS_GIC_USER_OFS	0x10000
+> +#define MIPS_GIC_USER_SZ	0x10000
+> +
+> +/* For read-only shared registers */
+> +#define GIC_ACCESSOR_RO(sz, off, name)					\
+> +	CPS_ACCESSOR_RO(gic, sz, MIPS_GIC_SHARED_OFS + off, name)
+> +
+> +/* For read-write shared registers */
+> +#define GIC_ACCESSOR_RW(sz, off, name)					\
+> +	CPS_ACCESSOR_RW(gic, sz, MIPS_GIC_SHARED_OFS + off, name)
+> +
+> +/* For read-only local registers */
+> +#define GIC_VX_ACCESSOR_RO(sz, off, name)				\
+> +	CPS_ACCESSOR_RO(gic, sz, MIPS_GIC_LOCAL_OFS + off, vl_##name)	\
+> +	CPS_ACCESSOR_RO(gic, sz, MIPS_GIC_REDIR_OFS + off, vo_##name)
+> +
+> +/* For read-write local registers */
+> +#define GIC_VX_ACCESSOR_RW(sz, off, name)				\
+> +	CPS_ACCESSOR_RW(gic, sz, MIPS_GIC_LOCAL_OFS + off, vl_##name)	\
+> +	CPS_ACCESSOR_RW(gic, sz, MIPS_GIC_REDIR_OFS + off, vo_##name)
+> +
+> +/* For read-only shared per-interrupt registers */
+> +#define GIC_ACCESSOR_RO_INTR_REG(sz, off, stride, name)			\
+> +static inline void __iomem *addr_gic_##name(unsigned int intr)		\
+> +{									\
+> +	return mips_gic_base + (off) + (intr * (stride));		\
+> +}									\
+> +									\
+> +static inline unsigned int read_gic_##name(unsigned int intr)		\
+> +{									\
+> +	BUILD_BUG_ON(sz != 32);						\
+> +	return __raw_readl(addr_gic_##name(intr));			\
+> +}
+> +
+> +/* For read-write shared per-interrupt registers */
+> +#define GIC_ACCESSOR_RW_INTR_REG(sz, off, stride, name)			\
+> +	GIC_ACCESSOR_RO_INTR_REG(sz, off, stride, name)			\
+> +									\
+> +static inline void write_gic_##name(unsigned int intr,			\
+> +				    unsigned int val)			\
+> +{									\
+> +	BUILD_BUG_ON(sz != 32);						\
+> +	__raw_writel(val, addr_gic_##name(intr));			\
+> +}
+> +
+> +/* For read-only local per-interrupt registers */
+> +#define GIC_VX_ACCESSOR_RO_INTR_REG(sz, off, stride, name)		\
+> +	GIC_ACCESSOR_RO_INTR_REG(sz, MIPS_GIC_LOCAL_OFS + off,		\
+> +				 stride, vl_##name)			\
+> +	GIC_ACCESSOR_RO_INTR_REG(sz, MIPS_GIC_REDIR_OFS + off,		\
+> +				 stride, vo_##name)
+> +
+> +/* For read-write local per-interrupt registers */
+> +#define GIC_VX_ACCESSOR_RW_INTR_REG(sz, off, stride, name)		\
+> +	GIC_ACCESSOR_RW_INTR_REG(sz, MIPS_GIC_LOCAL_OFS + off,		\
+> +				 stride, vl_##name)			\
+> +	GIC_ACCESSOR_RW_INTR_REG(sz, MIPS_GIC_REDIR_OFS + off,		\
+> +				 stride, vo_##name)
+> +
+> +/* For read-only shared bit-per-interrupt registers */
+> +#define GIC_ACCESSOR_RO_INTR_BIT(off, name)				\
+> +static inline void __iomem *addr_gic_##name(void)			\
+> +{									\
+> +	return mips_gic_base + (off);					\
+> +}									\
+> +									\
+> +static inline unsigned int read_gic_##name(unsigned int intr)		\
+> +{									\
+> +	void __iomem *addr = addr_gic_##name();				\
+> +	unsigned int val;						\
+> +									\
+> +	if (mips_cm_is64) {						\
+> +		addr += (intr / 64) * sizeof(uint64_t);			\
+> +		val = __raw_readq(addr) >> intr % 64;			\
+> +	} else {							\
+> +		addr += (intr / 32) * sizeof(uint32_t);			\
+> +		val = __raw_readl(addr) >> intr % 32;			\
+> +	}								\
+> +									\
+> +	return val & 0x1;						\
+> +}
+> +
+> +/* For read-write shared bit-per-interrupt registers */
+> +#define GIC_ACCESSOR_RW_INTR_BIT(off, name)				\
+> +	GIC_ACCESSOR_RO_INTR_BIT(off, name)				\
+> +									\
+> +static inline void write_gic_##name(unsigned int intr)			\
+> +{									\
+> +	void __iomem *addr = addr_gic_##name();				\
+> +									\
+> +	if (mips_cm_is64) {						\
 
-
-The clocks for the UARTs are using the device names "uartlite", "uart1" 
-and "uart2" (as defined in arch/mips/ralink/mt7620.c).
-
-Changing the name of the DT nodes causes the serial driver to bail as it 
-can't find the clock for the device.
-
-arch/mips/boot/dts/ralink/mt7620a.dtsi is already using the uartlite 
-name, although it hasn't been documented...
+Given that you now refer to this symbol, wouldn't it be best to include
+asm/mips-cm.h here? It is probably included via some other path, but
+it'd make this file standalone.
 
 Thanks,
 
-Harvey
-
-> 
->> +			compatible = "ns16550a";
->> +			reg = <0xc00 0x100>;
->> +
->> +			resets = <&resetctrl 12>;
->> +			reset-names = "uart0";
->> +
->> +			interrupt-parent = <&intc>;
->> +			interrupts = <20>;
->> +
->> +			reg-shift = <2>;
->> +		};
->> +
->> +		uart1@d00 {
->> +			compatible = "ns16550a";
->> +			reg = <0xd00 0x100>;
->> +
->> +			resets = <&resetctrl 19>;
->> +			reset-names = "uart1";
->> +
->> +			interrupt-parent = <&intc>;
->> +			interrupts = <21>;
->> +
->> +			reg-shift = <2>;
->> +		};
->> +
->> +		uart2@e00 {
->> +			compatible = "ns16550a";
->> +			reg = <0xe00 0x100>;
->> +
->> +			resets = <&resetctrl 20>;
->> +			reset-names = "uart2";
->> +
->> +			interrupt-parent = <&intc>;
->> +			interrupts = <22>;
->> +
->> +			reg-shift = <2>;
->> +		};
->> +	};
->> +
->> +	usbphy: uphy@10120000 {
->> +		compatible = "mediatek,mt7628-usbphy";
->> +		reg = <0x10120000 0x1000>;
->> +
->> +		#phy-cells = <0>;
->> +
->> +		resets = <&resetctrl 22 &resetctrl 25>;
->> +		reset-names = "host", "device";
->> +	};
->> +
->> +	ehci@101c0000 {
->> +		compatible = "generic-ehci";
->> +		reg = <0x101c0000 0x1000>;
->> +
->> +		phys = <&usbphy>;
->> +		phy-names = "usb";
->> +
->> +		interrupt-parent = <&intc>;
->> +		interrupts = <18>;
->> +	};
->> +};
->> -- 
->> 2.7.4
->>
+	M.
+-- 
+Jazz is not dead. It just smells funny...

@@ -1,45 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 15:16:12 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:52349 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992974AbdHRNP4rszJ9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 15:15:56 +0200
-Received: from 82-70-136-246.dsl.in-addr.zen.co.uk ([82.70.136.246] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1dih7m-0007ab-3q; Fri, 18 Aug 2017 14:15:42 +0100
-Received: from ben by deadeye with local (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1dih7k-00068k-4o; Fri, 18 Aug 2017 14:15:40 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Fuxin Zhang" <zhangfx@lemote.com>,
-        "Huacai Chen" <chenhc@lemote.com>,
-        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Zhangjin Wu" <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        "John Crispin" <john@phrozen.org>
-Date:   Fri, 18 Aug 2017 14:13:20 +0100
-Message-ID: <lsq.1503062000.223402560@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 032/134] MIPS: Loongson-3: Select MIPS_L1_CACHE_SHIFT_6
-In-Reply-To: <lsq.1503061998.818387115@decadent.org.uk>
-X-SA-Exim-Connect-IP: 82.70.136.246
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 15:18:57 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:41908 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993968AbdHRNSsv4Ey9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Aug 2017 15:18:48 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 8BF151A1DF4;
+        Fri, 18 Aug 2017 15:18:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw197-lin.domain.local (unknown [10.10.13.95])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 6EBED1A1DCA;
+        Fri, 18 Aug 2017 15:18:42 +0200 (CEST)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Bo Hu <bohu@google.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Jin Qian <jinqian@google.com>, linux-kernel@vger.kernel.org,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 0/6] MIPS: math-emu: FP emulation fixes and improvements
+Date:   Fri, 18 Aug 2017 15:17:29 +0200
+Message-Id: <1503062286-27030-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59655
+X-archive-position: 59656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,38 +50,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.47-rc1 review patch.  If anyone has any objections, please let me know.
+From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-------------------
+This series includes:
 
-From: Huacai Chen <chenhc@lemote.com>
+  - a fix for certain SIGILL program crashes on issuing a valid
+    CMP instruction
+  - a fix for RINT emulation inaccuracies
+  - a fix for the output of CLASS.D instruction emulation
+  - several FP emulation debugfs statistics improvements
 
-commit 17c99d9421695a0e0de18bf1e7091d859e20ec1d upstream.
+The patches in this series are logically and physically
+independent on the patches previously sent in "Misc" series.
+This means that these two series can be applied independently,
+in any order.
 
-Some newer Loongson-3 have 64 bytes cache lines, so select
-MIPS_L1_CACHE_SHIFT_6.
+The script "checkpatch --strict" returns a check and a warning
+iff aplied on the patch 6. However, they are unavoidable if the
+code is to be kept consistent in the file me-debugfs.c.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15755/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[bwh: Backported to 3.16: adjust context]
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Aleksandar Markovic (6):
+  MIPS: math-emu: CMP.Sxxx.<D|S>: Prevent occurences of SIGILL crashes
+  MIPS: math-emu: RINT.<D|S>: Fix several problems by reimplementation
+  MIPS: math-emu: CLASS.D: Zero bits 32-63 of the result
+  MIPS: math-emu: Add FP emu debugfs statistics for branches
+  MIPS: math-emu: Add FP emu debugfs reset functionality
+  MIPS: math-emu: Add FP emu debugfs stats for individual instructions
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1193,6 +1193,7 @@ config CPU_LOONGSON3
- 	select CPU_SUPPORTS_HUGEPAGES
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
-+	select MIPS_L1_CACHE_SHIFT_6
- 	help
- 		The Loongson 3 processor implements the MIPS64R2 instruction
- 		set with many extensions.
+ MAINTAINERS                          |   7 +
+ arch/mips/include/asm/fpu_emulator.h | 116 +++++++++++++
+ arch/mips/math-emu/Makefile          |   6 +-
+ arch/mips/math-emu/cp1emu.c          | 272 +++++++++++++++++++++++++++++-
+ arch/mips/math-emu/dp_rint.c         |  89 ++++++++++
+ arch/mips/math-emu/ieee754.h         |   2 +
+ arch/mips/math-emu/me-debugfs.c      | 318 ++++++++++++++++++++++++++++++++++-
+ arch/mips/math-emu/sp_rint.c         |  90 ++++++++++
+ 8 files changed, 888 insertions(+), 12 deletions(-)
+ create mode 100644 arch/mips/math-emu/dp_rint.c
+ create mode 100644 arch/mips/math-emu/sp_rint.c
+
+-- 
+2.7.4

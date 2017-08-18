@@ -1,42 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 17:44:39 +0200 (CEST)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:41380 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994913AbdHRPo0nV0Ys (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 17:44:26 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5FAC15A2;
-        Fri, 18 Aug 2017 08:44:17 -0700 (PDT)
-Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A7B393F540;
-        Fri, 18 Aug 2017 08:44:16 -0700 (PDT)
-Subject: Re: [PATCH 35/38] irqchip: mips-gic: Use pcpu_masks to avoid reading
- GIC_SH_MASK*
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Jason Cooper <jason@lakedaemon.net>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>
-References: <20170813043646.25821-1-paul.burton@imgtec.com>
- <20170813043646.25821-36-paul.burton@imgtec.com>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <405f8fc2-2947-cc68-e40a-b7e26a03e713@arm.com>
-Date:   Fri, 18 Aug 2017 16:44:15 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 18:04:41 +0200 (CEST)
+Received: from mail-lf0-x229.google.com ([IPv6:2a00:1450:4010:c07::229]:34702
+        "EHLO mail-lf0-x229.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994915AbdHRQE3VOKNs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 18:04:29 +0200
+Received: by mail-lf0-x229.google.com with SMTP id g77so12246021lfg.1
+        for <linux-mips@linux-mips.org>; Fri, 18 Aug 2017 09:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lAYN/xwFMjomELxZ7E0V+Ja6bZU+dAZFtjwW3sXVA8g=;
+        b=Cw81v5iKRGhFkD2y7AgSb+2XV7OqOKKOQaBtzoL2feoXWhYe7vIyaxdD1/xeFdUrvH
+         WLNOryqGC/zZk6Cvi63O8lXw/XnLUpJQspKvh0xMEp+Kc8HaAXp7SBMcnecG3LAaq1rX
+         kzVdOyxms0HRAO6jhQKBbt0/CZKf3jUFvf14x6PwHEoJSMG796VzmpqobEt003K1TjTJ
+         s8YSCMCmBUS3IYCDm9NJymhxaosqXlaVByUoEROXvpC67M6IzLTApytGs4ptW3el0iHK
+         lL/hoh4ujgsdzDS7BeJ1/JHf81mwPumZD/CewDjxk2IE/Tw9K5x/Op9ahTLVoyxWBKT+
+         7whQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=lAYN/xwFMjomELxZ7E0V+Ja6bZU+dAZFtjwW3sXVA8g=;
+        b=YCm3+e5nnNr4cKPULBg59qbECq7oDU2/ygl5qYXVLbW1tNFHWZdkBRnQCZT2FOtqPZ
+         qpZUwCjLpQJA6WiQnjKsDEBVbbWeF+Qd3V2sLy9zZzkH5XR58L/t4Tm6InA2oRq+1cds
+         y6ee6NyAUXQd2zTqM6UnjroECcJ67/9TC4cGQBeGiMTeh/zcd/lqQHUqSS2a/784M2NK
+         HewRVw1hC/YVvisWlwDukDdtZzfCtxVM+YFK92xd2yEHRpJZfX7UHNYNh36gJYZHRCgp
+         6ZrqxCFnLs76oxVWnDhHniYGjTKruObGkXBzMTD0Jt9ni+vzrZ+vsJkJP2GgEM5RCddK
+         /awg==
+X-Gm-Message-State: AHYfb5iefz3WzBm5RIxaZZpU2Sq+ZVeGHnN7UgRzLQHulRcRBKQTLEcS
+        QlBM7d5rsjIuqWHB
+X-Received: by 10.25.38.85 with SMTP id m82mr3980815lfm.20.1503072263878;
+        Fri, 18 Aug 2017 09:04:23 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([31.173.85.183])
+        by smtp.gmail.com with ESMTPSA id h70sm1349750lfh.66.2017.08.18.09.04.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 18 Aug 2017 09:04:22 -0700 (PDT)
+Subject: Re: [PATCH v4 6/8] Documentation: Add device tree binding for
+ Goldfish FB driver
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        Bo Hu <bohu@google.com>, David Airlie <airlied@linux.ie>,
+        devicetree@vger.kernel.org,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        dri-devel@lists.freedesktop.org,
+        James Hogan <james.hogan@imgtec.com>,
+        Jin Qian <jinqian@google.com>, linux-kernel@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Rob Herring <robh+dt@kernel.org>
+References: <1503061833-26563-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1503061833-26563-7-git-send-email-aleksandar.markovic@rt-rk.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <64418e6a-7ac2-ae2f-a064-937343ecb136@cogentembedded.com>
+Date:   Fri, 18 Aug 2017 19:04:19 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20170813043646.25821-36-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+In-Reply-To: <1503061833-26563-7-git-send-email-aleksandar.markovic@rt-rk.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59673
+X-archive-position: 59674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,156 +89,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 13/08/17 05:36, Paul Burton wrote:
-> This patch avoids the need to read the GIC_SH_MASK* registers when
-> decoding shared interrupts by setting & clearing the interrupt's bit in
-> the appropriate CPU's pcpu_masks entry when masking or unmasking the
-> interrupt.
+On 08/18/2017 04:08 PM, Aleksandar Markovic wrote:
+
+> From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 > 
-> This effectively means that whilst an interrupt is masked we clear its
-> bit in all pcpu_masks, which causes gic_handle_shared_int() to ignore it
-> on all CPUs without needing to check GIC_SH_MASK*.
+> Add documentation for DT binding of Goldfish FB driver. The compatible
+> string used by OS for binding the driver is "google,goldfish-fb".
 > 
-> In essence, we add a little overhead to masking or unmasking interrupts
-> but in return reduce the overhead of the far more common task of
-> decoding interrupts.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Jason Cooper <jason@lakedaemon.net>
-> Cc: Marc Zyngier <marc.zyngier@arm.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
+> Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 > ---
+>   .../devicetree/bindings/display/google,goldfish-fb.txt | 18 ++++++++++++++++++
+>   1 file changed, 18 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/display/google,goldfish-fb.txt
 > 
->  drivers/irqchip/irq-mips-gic.c | 49 ++++++++++++++++++++++++------------------
->  1 file changed, 28 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index 00153231376a..7a42f0b3822f 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
-> @@ -55,6 +55,19 @@ static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
->  DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
->  DECLARE_BITMAP(ipi_available, GIC_MAX_INTRS);
->  
-> +static void gic_setup_pcpu_mask(unsigned int intr, unsigned int cpu)
-> +{
-> +	unsigned int i;
+> diff --git a/Documentation/devicetree/bindings/display/google,goldfish-fb.txt b/Documentation/devicetree/bindings/display/google,goldfish-fb.txt
+> new file mode 100644
+> index 0000000..9ce0615
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/google,goldfish-fb.txt
+> @@ -0,0 +1,18 @@
+> +Android Goldfish framebuffer
 > +
-> +	/* Clear the interrupt's bit in all pcpu_masks */
-> +	for_each_possible_cpu(i)
-> +		clear_bit(intr, per_cpu_ptr(pcpu_masks, i));
+> +Android Goldfish framebuffer device used by Android emulator.
+> +
+> +Required properties:
+> +
+> +- compatible : should contain "google,goldfish-fb"
+> +- reg        : <registers mapping>
+> +- interrupts : <interrupt mapping>
+> +
+> +Example:
+> +
+> +	goldfish_fb@1f008000 {
 
-This iterates from 0 to nr_cpu_ids-1...
+    The node names should be generic according to the DT spec. It even has the 
+fitting name: "display".
 
-> +
-> +	/* Set the interrupt's bit in the appropriate CPU's mask */
-> +	if (cpu < NR_CPUS)
+> +		compatible = "google,goldfish-fb";
+> +		interrupts = <0x10>;
+> +		reg = <0x1f008000 0x0 0x100>;
+> +		compatible = "google,goldfish-fb";
 
-and here you're using NR_CPUS. I'm a bit worried that you're not quite
-using the same thing (nr_cpu_ids <= NR_CPUS).
+    Why twice? :-)
 
-> +		set_bit(intr, per_cpu_ptr(pcpu_masks, cpu));
-> +}
-> +
->  static bool gic_local_irq_is_routable(int intr)
->  {
->  	u32 vpe_ctl;
-> @@ -133,24 +146,17 @@ static void gic_handle_shared_int(bool chained)
->  	unsigned int intr, virq;
->  	unsigned long *pcpu_mask;
->  	DECLARE_BITMAP(pending, GIC_MAX_INTRS);
-> -	DECLARE_BITMAP(intrmask, GIC_MAX_INTRS);
->  
->  	/* Get per-cpu bitmaps */
->  	pcpu_mask = this_cpu_ptr(pcpu_masks);
->  
-> -	if (mips_cm_is64) {
-> +	if (mips_cm_is64)
->  		__ioread64_copy(pending, addr_gic_pend(),
->  				DIV_ROUND_UP(gic_shared_intrs, 64));
-> -		__ioread64_copy(intrmask, addr_gic_mask(),
-> -				DIV_ROUND_UP(gic_shared_intrs, 64));
-> -	} else {
-> +	else
->  		__ioread32_copy(pending, addr_gic_pend(),
->  				DIV_ROUND_UP(gic_shared_intrs, 32));
-> -		__ioread32_copy(intrmask, addr_gic_mask(),
-> -				DIV_ROUND_UP(gic_shared_intrs, 32));
-> -	}
->  
-> -	bitmap_and(pending, pending, intrmask, gic_shared_intrs);
->  	bitmap_and(pending, pending, pcpu_mask, gic_shared_intrs);
->  
->  	for_each_set_bit(intr, pending, gic_shared_intrs) {
-> @@ -165,12 +171,19 @@ static void gic_handle_shared_int(bool chained)
->  
->  static void gic_mask_irq(struct irq_data *d)
->  {
-> -	write_gic_rmask(BIT(GIC_HWIRQ_TO_SHARED(d->hwirq)));
-> +	unsigned int intr = GIC_HWIRQ_TO_SHARED(d->hwirq);
-> +
-> +	write_gic_rmask(BIT(intr));
-> +	gic_setup_pcpu_mask(intr, NR_CPUS);
->  }
->  
->  static void gic_unmask_irq(struct irq_data *d)
->  {
-> -	write_gic_smask(BIT(GIC_HWIRQ_TO_SHARED(d->hwirq)));
-> +	struct cpumask *affinity = irq_data_get_affinity_mask(d);
-> +	unsigned int intr = GIC_HWIRQ_TO_SHARED(d->hwirq);
-> +
-> +	write_gic_smask(BIT(intr));
-> +	gic_setup_pcpu_mask(intr, cpumask_first_and(affinity, cpu_online_mask));
->  }
->  
->  static void gic_ack_irq(struct irq_data *d)
-> @@ -239,7 +252,6 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
->  	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
->  	cpumask_t	tmp = CPU_MASK_NONE;
->  	unsigned long	flags;
-> -	int		i;
->  
->  	cpumask_and(&tmp, cpumask, cpu_online_mask);
->  	if (cpumask_empty(&tmp))
-> @@ -252,9 +264,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
->  	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpumask_first(&tmp))));
->  
->  	/* Update the pcpu_masks */
-> -	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
-> -		clear_bit(irq, per_cpu_ptr(pcpu_masks, i));
-> -	set_bit(irq, per_cpu_ptr(pcpu_masks, cpumask_first(&tmp)));
-> +	gic_setup_pcpu_mask(irq, read_gic_mask(irq) ? cpumask_first(&tmp) : NR_CPUS);
->  
->  	cpumask_copy(irq_data_get_affinity_mask(d), cpumask);
->  	spin_unlock_irqrestore(&gic_lock, flags);
-> @@ -405,18 +415,15 @@ static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
->  }
->  
->  static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
-> -				     irq_hw_number_t hw, unsigned int vpe)
-> +				     irq_hw_number_t hw, unsigned int cpu)
->  {
->  	int intr = GIC_HWIRQ_TO_SHARED(hw);
->  	unsigned long flags;
-> -	int i;
->  
->  	spin_lock_irqsave(&gic_lock, flags);
->  	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
-> -	write_gic_map_vp(intr, BIT(mips_cm_vp_id(vpe)));
-> -	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
-> -		clear_bit(intr, per_cpu_ptr(pcpu_masks, i));
-> -	set_bit(intr, per_cpu_ptr(pcpu_masks, vpe));
-> +	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
-> +	gic_setup_pcpu_mask(intr, cpu);
->  	spin_unlock_irqrestore(&gic_lock, flags);
->  
->  	return 0;
+> +	};
 > 
 
-Thanks,
-
-	M.
--- 
-Jazz is not dead. It just smells funny...
+MBR, Sergei

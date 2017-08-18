@@ -1,44 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 23:10:22 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54382 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Aug 2017 00:14:09 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49041 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994939AbdHRVKLf5reH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 23:10:11 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id F15EE3E196389;
-        Fri, 18 Aug 2017 22:10:00 +0100 (IST)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 18 Aug 2017 22:10:05 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
- (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 18 Aug
- 2017 22:10:04 +0100
-Received: from np-p-burton.localnet (10.20.1.88) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 18 Aug
- 2017 14:10:02 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Marc Zyngier <marc.zyngier@arm.com>
-CC:     Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH 00/38] irqchip: mips-gic: Cleanup & optimisation
-Date:   Fri, 18 Aug 2017 14:09:58 -0700
-Message-ID: <8259948.IKz1zfOHbW@np-p-burton>
-Organization: Imagination Technologies
-In-Reply-To: <b6b59dc3-0390-1eb8-f30e-c753b462972e@arm.com>
-References: <20170813043646.25821-1-paul.burton@imgtec.com> <3865163.6ibQ6d6yKY@np-p-burton> <b6b59dc3-0390-1eb8-f30e-c753b462972e@arm.com>
+        with ESMTP id S23994939AbdHRWNyXde7T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Aug 2017 00:13:54 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 27A9BFE6B6873;
+        Fri, 18 Aug 2017 23:13:43 +0100 (IST)
+Received: from [10.20.78.87] (10.20.78.87) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 18 Aug 2017
+ 23:13:46 +0100
+Date:   Fri, 18 Aug 2017 23:13:39 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Set ISA bit in entry-y for microMIPS kernels
+In-Reply-To: <8259872.Nrvp2QXiRE@np-p-burton>
+Message-ID: <alpine.DEB.2.00.1708181944260.17596@tp.orcam.me.uk>
+References: <20170807231647.19551-1-paul.burton@imgtec.com> <alpine.DEB.2.00.1708181302480.17596@tp.orcam.me.uk> <alpine.DEB.2.00.1708181731080.17596@tp.orcam.me.uk> <8259872.Nrvp2QXiRE@np-p-burton>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3068740.hOu8ehoW4b";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.87]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59691
+X-archive-position: 59692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,77 +42,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart3068740.hOu8ehoW4b
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Hi Paul,
 
-Hi Marc,
-
-On Friday, 18 August 2017 10:49:27 PDT Marc Zyngier wrote:
-> On 18/08/17 18:44, Paul Burton wrote:
-> > Hi Marc,
-> > 
-> > On Friday, 18 August 2017 10:28:01 PDT Marc Zyngier wrote:
-> >> Hi Paul,
-> >> 
-> >> On 13/08/17 05:36, Paul Burton wrote:
-> >>> This series cleans up the MIPS Global Interrupt Controller (GIC) driver
-> >>> somewhat. It moves us towards using a header in a similar vein to the
-> >>> ones we have for the MIPS Coherence Manager (CM) & Cluster Power
-> >>> Controller (CPC) which allows us to access the GIC outside of the
-> >>> irqchip driver - something beneficial already for the clocksource &
-> >>> clock event driver, and which will be beneficial for further drivers
-> >>> (eg. one for the GIC watchdog timer) and for multi-cluster work. Using
-> >>> this header is also beneficial for consistency & code-sharing.
-> >>> 
-> >>> In addition to cleanups the series also optimises the driver in various
-> >>> ways, including by using a per-CPU variable for pcpu_masks & removing
-> >>> the need to read the GIC_SH_MASK_* registers when decoding interrupts in
-> >>> gic_handle_shared_int().
-> >>> 
-> >>> This series requires my "[PATCH 00/19] MIPS: Initial multi-cluster
-> >>> support" series to be applied first.
-> >> 
-> >> I went through the whole series, and didn't spot anything bad (the
-> >> couple of nits I raised can either be fixed at a later time or as a
-> >> fixup on top of what you have).
-> > 
-> > Thanks :) I appreciate your review. So shall I take that as you'd prefer
-> > that I submit separate fixup patches rather than submit a v2?
+> I originally did this [1], and wrote about it in the post-three-dashes notes 
+> for this patch. To quote myself:
 > 
-> Just post the fixups on top. Nobody wants a new 38 series in their
-> Inbox! ;-)
+> > I originally tried using "objdump -f" to obtain the entry address, which
+> > works for microMIPS but it always outputs a 32 bit address for a 32 bit
+> > ELF whilst nm will sign extend to 64 bit. That matters for systems where
+> > we might want to run a MIPS32 kernel on a MIPS64 CPU & load it with a
+> > MIPS64 bootloader, which would then jump to a non-canonical
+> > (non-sign-extended) address.
+> > 
+> > This works in all cases as it only changes the behaviour for microMIPS
+> > kernels, but isn't the prettiest solution. A possible alternative would
+> > be to write a custom tool to just extract, sign extend & print the entry
+> > point of an ELF executable. I'm open to feedback if that would be
+> > preferred.
+> 
+> So if we were to use objdump we'd need to handle sign extending 32 bit 
+> addresses to form a canonical address. Perhaps that'd be cleaner though.
 
-The changes to patch 35 wound up causing conflicts with patch 37 if you go 
-squash the fixup commit, so I instead submitted a v2 of just those 2 patches.
+ Hmm, your reasoning sounds right (and I was blind to miss it entirely, 
+sorry), however reality seems to disagree.  As at 5fc9484f5e41^ I get:
 
-I've also updated a bundle on the linux-mips patchwork which is hopefully 
-convenient for whomever merges the series:
+make -f ./scripts/Makefile.build obj=arch/mips/boot VMLINUX=vmlinux \
+		VMLINUX_LOAD_ADDRESS=0xffffffff80100000 VMLINUX_ENTRY_ADDRESS=0x804fca20 PLATFORM="generic/" ADDR_BITS=32 arch/mips/boot/vmlinux.srec
 
-https://patchwork.linux-mips.org/bundle/paulburton/4.14-gic/
+whereas at 5fc9484f5e41^ I get:
 
-Thanks,
-    Paul
---nextPart3068740.hOu8ehoW4b
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+make -f ./scripts/Makefile.build obj=arch/mips/boot VMLINUX=vmlinux \
+		VMLINUX_LOAD_ADDRESS=0xffffffff80100000 VMLINUX_ENTRY_ADDRESS=0x804fca21 PLATFORM="generic/" ADDR_BITS=32 arch/mips/boot/vmlinux.srec
 
------BEGIN PGP SIGNATURE-----
+so in both cases the entry address is 32-bit, which is why I didn't see 
+any disadvantage from using `objdump -f'.  Indeed:
 
-iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAlmXV6YACgkQgiDZ+mk8
-HGVWLQ//Ul/R6VTQHRtdsRDGMxA1k0ThBlvs87e8NP/rvbUyQAn/5RGaA4wWyS/V
-GBLUkZ1TDeFOuXi8tV4A+44IdEUN2lmLZQab9eISPp3wOsrWu7lMSgqJ/OAKb3WZ
-sgBTWrJKVkGc3GIC/qvDQ8mZwJJrmpen/uTDiUY4qt3U4ZxG+Gw3l/GWRjeQyIgJ
-rbMxeG+DUVtSiu4F97IwRFZBRHxInMc5nqqlyx1ED9PonYviNP8p3+ni/u9v8VFU
-NNm6UgdAoJY+vzRVtGbV/L9w3aYbQ/WV9D0j7B+Tvtp0KgRO0yHONilxk838bcl1
-W3L3nv2McyB0OiIIyg7xyWW0VJOeJ0V9jzxM92le5PKmRiANwwP0HfdqbGG8SJ3F
-y+SH5vrfCLL1nHHrxYAG5QQdAxAp6zg1letxlRSDtN/MPDeLNUJ6cB+MCUg84LFn
-UhToKv0fzIxWCA5A/l+B+CJ0CqtXnhJoS8mmgRWPzb62s3ggWwfLMIc8kkbsh13S
-EeN7F4c1XPAgkJ7eMFQmet2360JUDPnh4b1XSdjDjELjOYjEKFOhW4j99WGFwURV
-vU/zwpdLLnH7/XGhPTrepy1x1o0SMqHNv57RDXwufKZbLPZW01WFqQICCL3R1rsx
-qDDozjHLEu/iHsf8adY11bLa37uu8EqzmlDb90xMFwxfkUtsFI8=
-=TV0f
------END PGP SIGNATURE-----
+$ mips-linux-gnu-nm vmlinux | grep kernel_entry
+80100000 T __kernel_entry
+804fca20 T kernel_entry
+$ mips-mti-linux-gnu-nm vmlinux | grep kernel_entry
+ffffffff80100000 T __kernel_entry
+ffffffff804fca20 T kernel_entry
+$ 
 
---nextPart3068740.hOu8ehoW4b--
+which means you can't rely on `nm' sign-extending addresses to 64 bits 
+with 32-bit binaries.  And it looks like a bug to me indeed that some 
+versions of `nm' do such sign-extension, unlike `objdump' and `readelf'.  
+I'll have to bisect it to see when it started happening and take it with 
+upstream binutils.
+
+ How about this version then?  It does the right thing for me:
+
+make -f ./scripts/Makefile.build obj=arch/mips/boot VMLINUX=vmlinux \
+		VMLINUX_LOAD_ADDRESS=0xffffffff80100000 VMLINUX_ENTRY_ADDRESS=0xffffffff804fca21 PLATFORM="generic/" ADDR_BITS=32 arch/mips/boot/vmlinux.srec
+
+and given than we need to sign-extend in either case I think retrieving 
+the canonical entry point rather than transforming the entry symbol is 
+simpler and more reliable.
+
+  Maciej
+
+---
+ arch/mips/Makefile |   19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
+
+linux-mips-start-address.diff
+Index: linux-sfr-usead/arch/mips/Makefile
+===================================================================
+--- linux-sfr-usead.orig/arch/mips/Makefile	2017-08-18 22:17:42.962681000 +0100
++++ linux-sfr-usead/arch/mips/Makefile	2017-08-18 23:01:00.997846000 +0100
+@@ -244,20 +244,11 @@ ifdef CONFIG_PHYSICAL_START
+ load-y					= $(CONFIG_PHYSICAL_START)
+ endif
+ 
+-entry-noisa-y				= 0x$(shell $(NM) vmlinux 2>/dev/null \
+-					| grep "\bkernel_entry\b" | cut -f1 -d \ )
+-ifdef CONFIG_CPU_MICROMIPS
+-  #
+-  # Set the ISA bit, since the kernel_entry symbol in the ELF will have it
+-  # clear which would lead to images containing addresses which bootloaders may
+-  # jump to as MIPS32 code.
+-  #
+-  entry-y = $(patsubst %0,%1,$(patsubst %2,%3,$(patsubst %4,%5, \
+-              $(patsubst %6,%7,$(patsubst %8,%9,$(patsubst %a,%b, \
+-              $(patsubst %c,%d,$(patsubst %e,%f,$(entry-noisa-y)))))))))
+-else
+-  entry-y = $(entry-noisa-y)
+-endif
++# Knowing that a 32-bit kernel will be linked at a KSEG address
++# sign-extend the entry point to 64 bits if retrieved as a 32-bit
++# number by stuffing `ffffffff' after the leading `0x'.
++entry-y	= $(shell $(OBJDUMP) -f vmlinux 2>/dev/null \
++	| sed -n 's/0x\(........\)$$/0xffffffff\1/;s/start address //p')
+ 
+ cflags-y			+= -I$(srctree)/arch/mips/include/asm/mach-generic
+ drivers-$(CONFIG_PCI)		+= arch/mips/pci/

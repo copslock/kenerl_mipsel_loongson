@@ -1,50 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 16:22:44 +0200 (CEST)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:40296 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994912AbdHROW3E7hvK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 16:22:29 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5EA4A13D5;
-        Fri, 18 Aug 2017 07:22:22 -0700 (PDT)
-Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 653193F483;
-        Fri, 18 Aug 2017 07:22:19 -0700 (PDT)
-Subject: Re: [PATCH RFC 0/2] KVM: use RCU to allow dynamic kvm->vcpus array
-To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Alexander Graf <agraf@suse.de>
-Cc:     linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
-        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Christoffer Dall <cdall@linaro.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Cornelia Huck <cohuck@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-References: <20170816194037.9460-1-rkrcmar@redhat.com>
- <b77b151f-e51d-3657-66e9-6fbc83887b18@suse.de> <20170817145411.GE2566@flask>
- <edb9403f-3a94-605d-5f06-9bc81ca4d2c3@suse.de> <20170818141028.GG2566@flask>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <5186b185-9db8-304d-25b9-20957fb9c545@arm.com>
-Date:   Fri, 18 Aug 2017 15:22:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 17:32:05 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:47052 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994912AbdHRPbxDwRJs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Aug 2017 17:31:53 +0200
+Received: from mail-qk0-f173.google.com (mail-qk0-f173.google.com [209.85.220.173])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 319AE2392A;
+        Fri, 18 Aug 2017 15:31:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 319AE2392A
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
+Received: by mail-qk0-f173.google.com with SMTP id z18so54698639qka.4;
+        Fri, 18 Aug 2017 08:31:51 -0700 (PDT)
+X-Gm-Message-State: AHYfb5gzKMVPbcKw3jU2So0iC5J6yD4d0FmkTxxQj9Wvcajn0GRYmMHM
+        KYy2AOVAcxnPJSoBr+WdwWYMRYmmPA==
+X-Received: by 10.55.107.130 with SMTP id g124mr12348365qkc.210.1503070310387;
+ Fri, 18 Aug 2017 08:31:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20170818141028.GG2566@flask>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
-Return-Path: <marc.zyngier@arm.com>
+Received: by 10.12.153.1 with HTTP; Fri, 18 Aug 2017 08:31:29 -0700 (PDT)
+In-Reply-To: <73251933-33bf-416d-cf2a-0fad0337a512@imgtec.com>
+References: <1502814530-40604-1-git-send-email-harvey.hunt@imgtec.com>
+ <20170817213426.34shgxwnjowcg4sk@rob-hp-laptop> <97c83648-3710-cb9a-a065-9fbe8dd1b734@imgtec.com>
+ <CAL_Jsq+NZWkvibcL+CFWD8curFDKF2=bBzyCVsRyyiFOFwNBbg@mail.gmail.com> <73251933-33bf-416d-cf2a-0fad0337a512@imgtec.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 18 Aug 2017 10:31:29 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+2e944JTYmU69JBUjD+iQY6ec7YUgk-_KR4Vks2jKnQg@mail.gmail.com>
+Message-ID: <CAL_Jsq+2e944JTYmU69JBUjD+iQY6ec7YUgk-_KR4Vks2jKnQg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: dts: ralink: Add Mediatek MT7628A SoC
+To:     Harvey Hunt <Harvey.Hunt@imgtec.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59669
+X-archive-position: 59670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,82 +59,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 18/08/17 15:10, Radim Krčmář wrote:
-> 2017-08-17 21:17+0200, Alexander Graf:
->> On 17.08.17 16:54, Radim Krčmář wrote:
->>> 2017-08-17 09:04+0200, Alexander Graf:
->>>> What if we just sent a "vcpu move" request to all vcpus with the new pointer
->>>> after it moved? That way the vcpu thread itself would be responsible for the
->>>> migration to the new memory region. Only if all vcpus successfully moved,
->>>> keep rolling (and allow foreign get_vcpu again).
+On Fri, Aug 18, 2017 at 9:11 AM, Harvey Hunt <Harvey.Hunt@imgtec.com> wrote:
+> Hi Rob,
+>
+> On 18/08/17 15:04, Rob Herring wrote:
+>>
+>> On Fri, Aug 18, 2017 at 4:42 AM, Harvey Hunt <Harvey.Hunt@imgtec.com>
+>> wrote:
 >>>
->>> I'm not sure if I understood this.  You propose to cache kvm->vcpus in
->>> vcpu->vcpus and do an extensions of this,
+>>> Hi Rob,
 >>>
->>>    int vcpu_create(...) {
->>>      if (resize_needed(kvm->vcpus)) {
->>>        old_vcpus = kvm->vcpus
->>>        kvm->vcpus = make_bigger(kvm->vcpus)
->>
->> if (kvm->vcpus != old_vcpus) :)
->>
->>>        kvm_make_all_cpus_request(kvm, KVM_REQ_UPDATE_VCPUS)
->>
->> IIRC you'd need some manual bookkeeping to ensure that all users have
->> switched to the new array. Or set the KVM_REQUEST_WAIT flag :).
-> 
-> Absolutely.  I was thinking about synchronous execution, which might
-> need extra work to expedite halted VCPUs.  Letting the last user free it
-> is plausible and would need more protection against races.
-> 
->>>        free(old_vcpus)
->>>      }
->>>      vcpu->vcpus = kvm->vcpus
->>>    }
+>>> Thanks for the review.
 >>>
->>> with added extra locking, (S)RCU, on accesses that do not come from
->>> VCPUs (irqfd and VM ioctl)?
+>>>
+>>> On 17/08/17 22:34, Rob Herring wrote:
+>>>>
+>>>>
+>>>> On Tue, Aug 15, 2017 at 05:28:50PM +0100, Harvey Hunt wrote:
+>>>>>
+>>>>>
+>>>>> The MT7628A is the successor to the MT7620 and pin compatible with the
+>>>>> MT7688A, although the latter supports only a 1T1R antenna rather than
+>>>>> a 2T2R antenna.
 >>
->> Well, in an ideal world we wouldn't have any users to vcpu structs outside
->> of the vcpus obviously. Every time we do, we should either reconsider
->> whether the design is smart and if we think it is, protect them accordingly.
-> 
-> And there would be no linear access to all VCPUs. :)
-> 
-> The main user of kvm->vcpus is kvm_for_each_vcpu(), which is well suited
-> for a list, so we can change the design of kvm_for_each_vcpu() to use a
-> list head in struct kvm_vcpu with head/tail in struct kvm.
-> (The list is trivial to make lockless as we only append.)
-> 
-> This would allow more flexibility with the remaining uses.
-> 
->> Maybe even hard code separate request mechanisms for the few cases where
->> it's reasonable?
-> 
-> All non-kvm_for_each_vcpu() seem to need accesss outside of VCPU scope.
-> 
-> We have few awkward accesses that can be handled keeping track of kvm
-> state and all remaining uses need some kind of "int -> struct kvm_vcpu"
-> mapping, where the integer is arbitrary.
-> 
-> All users of kvm_get_vcpu_by_id() need a vcpu_id mapping, but hijack
-> kvm->vcpus for O(1) access if lucky, with fallback to
-> kvm_for_each_vcpu().  Adding a vcpu_id mapping seems reasonable.
-> 
-> s390 __floating_irq_kick() and x86 kvm_irq_delivery_to_apic() are
-> keeping a bitmap for kvm->vcpus indices.  They want compact indices,
-> which cannot be provided by vcpu_id mapping.
-> 
-> I think that MIPS and ARM use the index in kvm->vcpus for userspace
-> communication, which looks dangerous as userspace shouldn't know the
-> position.  Not much we can do because of that.
-I think (at least for the ARM side) that we could switch whatever use we
-have of the index to a vcpu_id. The worse offender (as far as I can
-remember) is when injecting an interrupt, and that could be creatively
-re-purposed to describe an affinity value in a backward compatible way.
+>>
+>> [...]
+>>
+>>>>> +               uartlite@c00 {
+>>>>
+>>>>
+>>>>
+>>>> serial@c00
+>>>>
+>>>> And so on. IOW, use standard, generic node names as defined in the DT
+>>>> spec.
+>>>
+>>>
+>>>
+>>>
+>>> The clocks for the UARTs are using the device names "uartlite", "uart1"
+>>> and
+>>> "uart2" (as defined in arch/mips/ralink/mt7620.c).
+>>
+>>
+>> You can't add clocks to the DT? Looks like mt76x8 at least should be
+>> pretty easy with some fixed clocks.
+>>
+>> Depending if backwards compatibility (old dtb working on new kernel)
+>> is a concern on these platforms, you could just change all the names
+>> both in the kernel and dts.
+>
+>
+> I don't think backwards compatibility will matter - the bootloaders I've
+> come across don't ship DTBs with them and I don't think there are any ralink
+> devices using the upstream MT7620 DT.
+>
+> John might have some thoughts on backwards compat though.
+>
+>>
+>>> Changing the name of the DT nodes causes the serial driver to bail as it
+>>> can't find the clock for the device.
+>>>
+>>> arch/mips/boot/dts/ralink/mt7620a.dtsi is already using the uartlite
+>>> name,
+>>> although it hasn't been documented...
+>>
+>>
+>> Generally the kernel shouldn't care what the names are (though you can
+>> match by name, it's not widely used).
+>>
+>> In any case, I guess fixing this can be done later.
+>>
+>> Rob
+>>
+>
+> Shall I respin this patch with the earlier nodes (intc etc) renamed and then
+> send a patch later to rename the serial ports in the DT and kernel (assuming
+> there are no backwards compatibility issues)?
 
-Probably.
+Yes, that sounds find.
 
-	N,
--- 
-Jazz is not dead. It just smells funny...
+Rob

@@ -1,34 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 23:05:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38693 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2017 23:10:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54382 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994932AbdHRVFFX0v0H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 23:05:05 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id B3425C7B3C259;
-        Fri, 18 Aug 2017 22:04:54 +0100 (IST)
-Received: from localhost (10.20.1.88) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 18 Aug 2017 22:04:58
- +0100
+        with ESMTP id S23994939AbdHRVKLf5reH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2017 23:10:11 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id F15EE3E196389;
+        Fri, 18 Aug 2017 22:10:00 +0100 (IST)
+Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 18 Aug 2017 22:10:05 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
+ (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 18 Aug
+ 2017 22:10:04 +0100
+Received: from np-p-burton.localnet (10.20.1.88) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 18 Aug
+ 2017 14:10:02 -0700
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH v2 37/38] irqchip: mips-gic: Use cpumask_first_and() in gic_set_affinity()
-Date:   Fri, 18 Aug 2017 14:04:35 -0700
-Message-ID: <20170818210435.2271-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20170813043646.25821-38-paul.burton@imgtec.com>
-References: <20170813043646.25821-38-paul.burton@imgtec.com>
+To:     Marc Zyngier <marc.zyngier@arm.com>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH 00/38] irqchip: mips-gic: Cleanup & optimisation
+Date:   Fri, 18 Aug 2017 14:09:58 -0700
+Message-ID: <8259948.IKz1zfOHbW@np-p-burton>
+Organization: Imagination Technologies
+In-Reply-To: <b6b59dc3-0390-1eb8-f30e-c753b462972e@arm.com>
+References: <20170813043646.25821-1-paul.burton@imgtec.com> <3865163.6ibQ6d6yKY@np-p-burton> <b6b59dc3-0390-1eb8-f30e-c753b462972e@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="nextPart3068740.hOu8ehoW4b";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 X-Originating-IP: [10.20.1.88]
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59690
+X-archive-position: 59691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,64 +51,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently in gic_set_affinity() we calculate a temporary cpumask holding
-the intersection of the provided cpumask & the CPUs that are online,
-then we call cpumask_first twice on it to find the first such CPU. Since
-we don't need the temporary cpumask for anything else & we only care
-about the first CPU that's both online & in the provided cpumask, we can
-instead use cpumask_first_and to find that CPU & drop the temporary
-mask.
+--nextPart3068740.hOu8ehoW4b
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mips@linux-mips.org
+Hi Marc,
 
----
+On Friday, 18 August 2017 10:49:27 PDT Marc Zyngier wrote:
+> On 18/08/17 18:44, Paul Burton wrote:
+> > Hi Marc,
+> > 
+> > On Friday, 18 August 2017 10:28:01 PDT Marc Zyngier wrote:
+> >> Hi Paul,
+> >> 
+> >> On 13/08/17 05:36, Paul Burton wrote:
+> >>> This series cleans up the MIPS Global Interrupt Controller (GIC) driver
+> >>> somewhat. It moves us towards using a header in a similar vein to the
+> >>> ones we have for the MIPS Coherence Manager (CM) & Cluster Power
+> >>> Controller (CPC) which allows us to access the GIC outside of the
+> >>> irqchip driver - something beneficial already for the clocksource &
+> >>> clock event driver, and which will be beneficial for further drivers
+> >>> (eg. one for the GIC watchdog timer) and for multi-cluster work. Using
+> >>> this header is also beneficial for consistency & code-sharing.
+> >>> 
+> >>> In addition to cleanups the series also optimises the driver in various
+> >>> ways, including by using a per-CPU variable for pcpu_masks & removing
+> >>> the need to read the GIC_SH_MASK_* registers when decoding interrupts in
+> >>> gic_handle_shared_int().
+> >>> 
+> >>> This series requires my "[PATCH 00/19] MIPS: Initial multi-cluster
+> >>> support" series to be applied first.
+> >> 
+> >> I went through the whole series, and didn't spot anything bad (the
+> >> couple of nits I raised can either be fixed at a later time or as a
+> >> fixup on top of what you have).
+> > 
+> > Thanks :) I appreciate your review. So shall I take that as you'd prefer
+> > that I submit separate fixup patches rather than submit a v2?
+> 
+> Just post the fixups on top. Nobody wants a new 38 series in their
+> Inbox! ;-)
 
-Changes in v2:
-- Rebase atop changes to patch 35 "irqchip: mips-gic: Use pcpu_masks to
-  avoid reading GIC_SH_MASK*".
-- Fixup typo in commit message (s/to/the/).
+The changes to patch 35 wound up causing conflicts with patch 37 if you go 
+squash the fixup commit, so I instead submitted a v2 of just those 2 patches.
 
- drivers/irqchip/irq-mips-gic.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I've also updated a bundle on the linux-mips patchwork which is hopefully 
+convenient for whomever merges the series:
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 183c225b84de..8f64ac824d20 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -250,23 +250,23 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 			    bool force)
- {
- 	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
--	cpumask_t	tmp = CPU_MASK_NONE;
--	unsigned long	flags;
-+	unsigned long flags;
-+	unsigned int cpu;
- 
--	cpumask_and(&tmp, cpumask, cpu_online_mask);
--	if (cpumask_empty(&tmp))
-+	cpu = cpumask_first_and(cpumask, cpu_online_mask);
-+	if (cpu >= NR_CPUS)
- 		return -EINVAL;
- 
- 	/* Assumption : cpumask refers to a single CPU */
- 	spin_lock_irqsave(&gic_lock, flags);
- 
- 	/* Re-route this IRQ */
--	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpumask_first(&tmp))));
-+	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpu)));
- 
- 	/* Update the pcpu_masks */
- 	gic_clear_pcpu_masks(irq);
- 	if (read_gic_mask(irq))
--		set_bit(irq, per_cpu_ptr(pcpu_masks, cpumask_first(&tmp)));
-+		set_bit(irq, per_cpu_ptr(pcpu_masks, cpu));
- 
- 	cpumask_copy(irq_data_get_affinity_mask(d), cpumask);
- 	spin_unlock_irqrestore(&gic_lock, flags);
--- 
-2.14.1
+https://patchwork.linux-mips.org/bundle/paulburton/4.14-gic/
+
+Thanks,
+    Paul
+--nextPart3068740.hOu8ehoW4b
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAlmXV6YACgkQgiDZ+mk8
+HGVWLQ//Ul/R6VTQHRtdsRDGMxA1k0ThBlvs87e8NP/rvbUyQAn/5RGaA4wWyS/V
+GBLUkZ1TDeFOuXi8tV4A+44IdEUN2lmLZQab9eISPp3wOsrWu7lMSgqJ/OAKb3WZ
+sgBTWrJKVkGc3GIC/qvDQ8mZwJJrmpen/uTDiUY4qt3U4ZxG+Gw3l/GWRjeQyIgJ
+rbMxeG+DUVtSiu4F97IwRFZBRHxInMc5nqqlyx1ED9PonYviNP8p3+ni/u9v8VFU
+NNm6UgdAoJY+vzRVtGbV/L9w3aYbQ/WV9D0j7B+Tvtp0KgRO0yHONilxk838bcl1
+W3L3nv2McyB0OiIIyg7xyWW0VJOeJ0V9jzxM92le5PKmRiANwwP0HfdqbGG8SJ3F
+y+SH5vrfCLL1nHHrxYAG5QQdAxAp6zg1letxlRSDtN/MPDeLNUJ6cB+MCUg84LFn
+UhToKv0fzIxWCA5A/l+B+CJ0CqtXnhJoS8mmgRWPzb62s3ggWwfLMIc8kkbsh13S
+EeN7F4c1XPAgkJ7eMFQmet2360JUDPnh4b1XSdjDjELjOYjEKFOhW4j99WGFwURV
+vU/zwpdLLnH7/XGhPTrepy1x1o0SMqHNv57RDXwufKZbLPZW01WFqQICCL3R1rsx
+qDDozjHLEu/iHsf8adY11bLa37uu8EqzmlDb90xMFwxfkUtsFI8=
+=TV0f
+-----END PGP SIGNATURE-----
+
+--nextPart3068740.hOu8ehoW4b--

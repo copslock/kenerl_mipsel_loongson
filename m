@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Aug 2017 00:20:56 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:33580 "EHLO mx2.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Aug 2017 00:21:20 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:33605 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994954AbdHSWTztrzci (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 20 Aug 2017 00:19:55 +0200
+        id S23994956AbdHSWT5C0-yi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 20 Aug 2017 00:19:57 +0200
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id 2A81C48E84;
-        Sun, 20 Aug 2017 00:19:50 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 70A284905C;
+        Sun, 20 Aug 2017 00:19:51 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id vmlrODLOBxtB; Sun, 20 Aug 2017 00:19:48 +0200 (CEST)
+        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
+        with ESMTP id 3-NxoDQMpmn4; Sun, 20 Aug 2017 00:19:50 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -20,17 +20,18 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         kishon@ti.com, mark.rutland@arm.com,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v10 02/16] mtd: lantiq-flash: drop check of boot select
-Date:   Sun, 20 Aug 2017 00:18:09 +0200
-Message-Id: <20170819221823.13850-3-hauke@hauke-m.de>
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH v10 03/16] spi: spi-falcon: drop check of boot select
+Date:   Sun, 20 Aug 2017 00:18:10 +0200
+Message-Id: <20170819221823.13850-4-hauke@hauke-m.de>
 In-Reply-To: <20170819221823.13850-1-hauke@hauke-m.de>
 References: <20170819221823.13850-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59701
+X-archive-position: 59702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,28 +53,37 @@ using this driver. Assume that the device tree is correct and use this
 driver when it was added to device tree. This also removes a build
 dependency to the SoC code.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Brian Norris <computersforpeace@gmail.com>
----
- drivers/mtd/maps/lantiq-flash.c | 6 ------
- 1 file changed, 6 deletions(-)
+All device trees I am aware of only have one correct flash device entry
+in it. The device tree is anyway bundled with the kernel in all systems
+using device tree I know of.
 
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index 3e33ab66eb24..77b1d8013295 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -114,12 +114,6 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	struct cfi_private *cfi;
- 	int err;
+The boot mode can be specified with some pin straps and will select the
+flash type the rom code will boot from. One SPI, NOR or NAND flash chip
+can be connect to the EBU and used to load the first stage boot loader
+from.
+
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+---
+ drivers/spi/spi-falcon.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+index 286b2c81fc6b..f8638e82e5db 100644
+--- a/drivers/spi/spi-falcon.c
++++ b/drivers/spi/spi-falcon.c
+@@ -395,11 +395,6 @@ static int falcon_sflash_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	int ret;
  
--	if (of_machine_is_compatible("lantiq,falcon") &&
--			(ltq_boot_select() != BS_FLASH)) {
+-	if (ltq_boot_select() != BS_SPI) {
 -		dev_err(&pdev->dev, "invalid bootstrap options\n");
 -		return -ENODEV;
 -	}
 -
- 	ltq_mtd = devm_kzalloc(&pdev->dev, sizeof(struct ltq_mtd), GFP_KERNEL);
- 	if (!ltq_mtd)
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+ 	if (!master)
  		return -ENOMEM;
 -- 
 2.11.0

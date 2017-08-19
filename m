@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Aug 2017 00:21:20 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:33605 "EHLO mx2.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Aug 2017 00:21:49 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:33615 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994956AbdHSWT5C0-yi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 20 Aug 2017 00:19:57 +0200
+        id S23994958AbdHSWUBia47i (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 20 Aug 2017 00:20:01 +0200
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id 70A284905C;
-        Sun, 20 Aug 2017 00:19:51 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 2E00E48F2F;
+        Sun, 20 Aug 2017 00:19:56 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id 3-NxoDQMpmn4; Sun, 20 Aug 2017 00:19:50 +0200 (CEST)
+        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
+        with ESMTP id 5TeeKYwmtWVt; Sun, 20 Aug 2017 00:19:54 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -20,18 +20,17 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         kishon@ti.com, mark.rutland@arm.com,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH v10 03/16] spi: spi-falcon: drop check of boot select
-Date:   Sun, 20 Aug 2017 00:18:10 +0200
-Message-Id: <20170819221823.13850-4-hauke@hauke-m.de>
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v10 05/16] watchdog: lantiq: add device tree binding documentation
+Date:   Sun, 20 Aug 2017 00:18:12 +0200
+Message-Id: <20170819221823.13850-6-hauke@hauke-m.de>
 In-Reply-To: <20170819221823.13850-1-hauke@hauke-m.de>
 References: <20170819221823.13850-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59702
+X-archive-position: 59703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,42 +47,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Do not check which flash type the SoC was booted from before
-using this driver. Assume that the device tree is correct and use this
-driver when it was added to device tree. This also removes a build
-dependency to the SoC code.
-
-All device trees I am aware of only have one correct flash device entry
-in it. The device tree is anyway bundled with the kernel in all systems
-using device tree I know of.
-
-The boot mode can be specified with some pin straps and will select the
-flash type the rom code will boot from. One SPI, NOR or NAND flash chip
-can be connect to the EBU and used to load the first stage boot loader
-from.
+The binding was not documented before, add the documentation now.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- drivers/spi/spi-falcon.c | 5 -----
- 1 file changed, 5 deletions(-)
+ .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
 
-diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
-index 286b2c81fc6b..f8638e82e5db 100644
---- a/drivers/spi/spi-falcon.c
-+++ b/drivers/spi/spi-falcon.c
-@@ -395,11 +395,6 @@ static int falcon_sflash_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	int ret;
- 
--	if (ltq_boot_select() != BS_SPI) {
--		dev_err(&pdev->dev, "invalid bootstrap options\n");
--		return -ENODEV;
--	}
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
- 	if (!master)
- 		return -ENOMEM;
+diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+new file mode 100644
+index 000000000000..18d4d8302702
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+@@ -0,0 +1,24 @@
++Lantiq WTD watchdog binding
++============================
++
++This describes the binding of the Lantiq watchdog driver.
++
++-------------------------------------------------------------------------------
++Required properties:
++- compatible		: Should be one of
++				"lantiq,wdt"
++				"lantiq,xrx100-wdt"
++				"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
++				"lantiq,falcon-wdt"
++- reg			: Address of the watchdog block
++- lantiq,rcu		: A phandle to the RCU syscon (required for
++			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
++
++-------------------------------------------------------------------------------
++Example for the watchdog on the xRX200 SoCs:
++		watchdog@803f0 {
++			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
++			reg = <0x803f0 0x10>;
++
++			lantiq,rcu = <&rcu0>;
++		};
 -- 
 2.11.0

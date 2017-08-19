@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Aug 2017 00:21:49 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:33615 "EHLO mx2.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Aug 2017 00:22:14 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:33636 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994958AbdHSWUBia47i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 20 Aug 2017 00:20:01 +0200
+        id S23994959AbdHSWUEkVJSi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 20 Aug 2017 00:20:04 +0200
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id 2E00E48F2F;
-        Sun, 20 Aug 2017 00:19:56 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 8720B490ED;
+        Sun, 20 Aug 2017 00:19:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp1.mailbox.org ([80.241.60.240])
         by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id 5TeeKYwmtWVt; Sun, 20 Aug 2017 00:19:54 +0200 (CEST)
+        with ESMTP id 9VOjohO5W3BH; Sun, 20 Aug 2017 00:19:56 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -21,16 +21,16 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         kishon@ti.com, mark.rutland@arm.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v10 05/16] watchdog: lantiq: add device tree binding documentation
-Date:   Sun, 20 Aug 2017 00:18:12 +0200
-Message-Id: <20170819221823.13850-6-hauke@hauke-m.de>
+Subject: [PATCH v10 06/16] MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD
+Date:   Sun, 20 Aug 2017 00:18:13 +0200
+Message-Id: <20170819221823.13850-7-hauke@hauke-m.de>
 In-Reply-To: <20170819221823.13850-1-hauke@hauke-m.de>
 References: <20170819221823.13850-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59703
+X-archive-position: 59704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,44 +47,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The binding was not documented before, add the documentation now.
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+ arch/mips/lantiq/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-new file mode 100644
-index 000000000000..18d4d8302702
---- /dev/null
-+++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-@@ -0,0 +1,24 @@
-+Lantiq WTD watchdog binding
-+============================
-+
-+This describes the binding of the Lantiq watchdog driver.
-+
-+-------------------------------------------------------------------------------
-+Required properties:
-+- compatible		: Should be one of
-+				"lantiq,wdt"
-+				"lantiq,xrx100-wdt"
-+				"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
-+				"lantiq,falcon-wdt"
-+- reg			: Address of the watchdog block
-+- lantiq,rcu		: A phandle to the RCU syscon (required for
-+			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
-+
-+-------------------------------------------------------------------------------
-+Example for the watchdog on the xRX200 SoCs:
-+		watchdog@803f0 {
-+			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
-+			reg = <0x803f0 0x10>;
-+
-+			lantiq,rcu = <&rcu0>;
-+		};
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 177769dbb0e8..f5db4a426568 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -17,6 +17,7 @@ config SOC_XWAY
+ 	bool "XWAY"
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
++	select MFD_SYSCON
+ 
+ config SOC_FALCON
+ 	bool "FALCON"
 -- 
 2.11.0

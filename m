@@ -1,52 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2017 22:42:42 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:43204 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23995081AbdHUUjCeVxI7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Aug 2017 22:39:02 +0200
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 629BE61467;
-        Mon, 21 Aug 2017 20:38:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 629BE61467
-Authentication-Results: ext-mx10.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx10.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=rkrcmar@redhat.com
-Received: from flask (unknown [10.43.2.80])
-        by smtp.corp.redhat.com (Postfix) with SMTP id D7E4F5C460;
-        Mon, 21 Aug 2017 20:38:46 +0000 (UTC)
-Received: by flask (sSMTP sendmail emulation); Mon, 21 Aug 2017 22:38:46 +0200
-From:   =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>
-To:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Christoffer Dall <cdall@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Alexander Graf <agraf@suse.com>
-Subject: [PATCH RFC v3 9/9] KVM: split kvm->vcpus into chunks
-Date:   Mon, 21 Aug 2017 22:35:30 +0200
-Message-Id: <20170821203530.9266-10-rkrcmar@redhat.com>
-In-Reply-To: <20170821203530.9266-1-rkrcmar@redhat.com>
-References: <20170821203530.9266-1-rkrcmar@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2017 23:04:33 +0200 (CEST)
+Received: from mail.free-electrons.com ([62.4.15.54]:52366 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23995050AbdHUVEWz6sC7 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Aug 2017 23:04:22 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id D40D5209E4; Mon, 21 Aug 2017 23:04:15 +0200 (CEST)
+Received: from bbrezillon (91-160-177-164.subs.proxad.net [91.160.177.164])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 691C0209D7;
+        Mon, 21 Aug 2017 23:04:04 +0200 (CEST)
+Date:   Mon, 21 Aug 2017 23:04:04 +0200
+From:   Boris Brezillon <boris.brezillon@free-electrons.com>
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        Peter Pan <peterpandong@micron.com>,
+        Jonathan Corbet <corbet@lwn.net>, Sekhar Nori <nsekhar@ti.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Alexander Clouter <alex@digriz.org.uk>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Simtec Linux Team <linux@simtec.co.uk>,
+        Steven Miao <realmz6@gmail.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Wenyou Yang <wenyou.yang@atmel.com>,
+        Josh Wu <rainyfeeling@outlook.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Han Xu <han.xu@nxp.com>,
+        Harvey Hunt <harveyhuntnexus@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        linux-mediatek@lists.infradead.org,
+        linux-oxnas@lists.tuxfamily.org, linuxppc-dev@lists.ozlabs.org,
+        devel@driverdev.osuosl.org
+Subject: Re: [PATCH] mtd: nand: Rename nand.h into rawnand.h
+Message-ID: <20170821230404.0c768f90@bbrezillon>
+In-Reply-To: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
+References: <1501860550-16506-1-git-send-email-boris.brezillon@free-electrons.com>
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Mon, 21 Aug 2017 20:38:56 +0000 (UTC)
-Return-Path: <rkrcmar@redhat.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59750
+X-archive-position: 59752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rkrcmar@redhat.com
+X-original-sender: boris.brezillon@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,167 +102,228 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This allows us to have high KVM_VCPU_MAX without wasting too much space
-with small guests.  RCU is a viable alternative now that we do not have
-to protect the kvm_for_each_vcpu() loop.
+Le Fri,  4 Aug 2017 17:29:09 +0200,
+Boris Brezillon <boris.brezillon@free-electrons.com> a écrit :
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
----
- arch/mips/kvm/mips.c     |  2 +-
- arch/x86/kvm/vmx.c       |  2 +-
- include/linux/kvm_host.h | 27 ++++++++++++++++++++-------
- virt/kvm/kvm_main.c      | 27 +++++++++++++++++++++++----
- 4 files changed, 45 insertions(+), 13 deletions(-)
+> We are planning to share more code between different NAND based
+> devices (SPI NAND, OneNAND and raw NANDs), but before doing that
+> we need to move the existing include/linux/mtd/nand.h file into
+> include/linux/mtd/rawnand.h so we can later create a nand.h header
+> containing all common structure and function prototypes.
+> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> Signed-off-by: Peter Pan <peterpandong@micron.com>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Sekhar Nori <nsekhar@ti.com>
+> Cc: Kevin Hilman <khilman@kernel.org>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> Cc: Gregory Clement <gregory.clement@free-electrons.com>
+> Cc: Hartley Sweeten <hsweeten@visionengravers.com>
+> Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <kernel@pengutronix.de>
+> Cc: Fabio Estevam <fabio.estevam@nxp.com>
+> Cc: Imre Kaloz <kaloz@openwrt.org>
+> Cc: Krzysztof Halasa <khalasa@piap.pl>
+> Cc: Eric Miao <eric.y.miao@gmail.com>
+> Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: Alexander Clouter <alex@digriz.org.uk>
+> Cc: Daniel Mack <daniel@zonque.org>
+> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+> Cc: Marek Vasut <marek.vasut@gmail.com>
+> Cc: Kukjin Kim <kgene@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: Simtec Linux Team <linux@simtec.co.uk>
+> Cc: Steven Miao <realmz6@gmail.com>
+> Cc: Mikael Starvik <starvik@axis.com>
+> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Wenyou Yang <wenyou.yang@atmel.com>
+> Cc: Josh Wu <rainyfeeling@outlook.com>
+> Cc: Kamal Dasu <kdasu.kdev@gmail.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Han Xu <han.xu@nxp.com>
+> Cc: Harvey Hunt <harveyhuntnexus@gmail.com>
+> Cc: Vladimir Zapolskiy <vz@mleia.com>
+> Cc: Sylvain Lemieux <slemieux.tyco@gmail.com>
+> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> Cc: Wan ZongShun <mcuos.com@gmail.com>
+> Cc: Neil Armstrong <narmstrong@baylibre.com>
+> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+> Cc: Maxim Levitsky <maximlevitsky@gmail.com>
+> Cc: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+> Cc: Stefan Agner <stefan@agner.ch>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-omap@vger.kernel.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: adi-buildroot-devel@lists.sourceforge.net
+> Cc: linux-cris-kernel@axis.com
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: bcm-kernel-feedback-list@broadcom.com
+> Cc: linux-mediatek@lists.infradead.org
+> Cc: linux-oxnas@lists.tuxfamily.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: devel@driverdev.osuosl.org
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index c841cb434486..7d452163dcef 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -488,7 +488,7 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,
- 	if (irq->cpu == -1)
- 		dvcpu = vcpu;
- 	else
--		dvcpu = vcpu->kvm->vcpus[irq->cpu];
-+		dvcpu = kvm_get_vcpu(vcpu->kvm, irq->cpu);
- 
- 	if (intr == 2 || intr == 3 || intr == 4) {
- 		kvm_mips_callbacks->queue_io_int(dvcpu, irq);
-diff --git a/arch/x86/kvm/vmx.c b/arch/x86/kvm/vmx.c
-index ae0f04e26fec..2b92c2de2b3a 100644
---- a/arch/x86/kvm/vmx.c
-+++ b/arch/x86/kvm/vmx.c
-@@ -11741,7 +11741,7 @@ static int vmx_update_pi_irte(struct kvm *kvm, unsigned int host_irq,
- 
- 	if (!kvm_arch_has_assigned_device(kvm) ||
- 		!irq_remapping_cap(IRQ_POSTING_CAP) ||
--		!kvm_vcpu_apicv_active(kvm->vcpus[0]))
-+		!kvm_vcpu_apicv_active(kvm_get_vcpu(kvm, 0)))
- 		return 0;
- 
- 	idx = srcu_read_lock(&kvm->irq_srcu);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 5417dac55272..5cc3ca8b92b3 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -388,12 +388,16 @@ struct kvm_memslots {
- 	int used_slots;
- };
- 
-+#define KVM_VCPUS_CHUNK_SIZE 128
-+#define KVM_VCPUS_CHUNKS_NUM \
-+	(round_up(KVM_MAX_VCPUS, KVM_VCPUS_CHUNK_SIZE) / KVM_VCPUS_CHUNK_SIZE)
-+
- struct kvm {
- 	spinlock_t mmu_lock;
- 	struct mutex slots_lock;
- 	struct mm_struct *mm; /* userspace tied to this vm */
- 	struct kvm_memslots __rcu *memslots[KVM_ADDRESS_SPACE_NUM];
--	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
-+	struct kvm_vcpu **vcpus[KVM_VCPUS_CHUNKS_NUM];
- 	struct list_head vcpu_list;
- 
- 	/*
-@@ -484,14 +488,23 @@ static inline struct kvm_io_bus *kvm_get_bus(struct kvm *kvm, enum kvm_bus idx)
- 				      !refcount_read(&kvm->users_count));
- }
- 
--static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
-+static inline struct kvm_vcpu *__kvm_get_vcpu(struct kvm *kvm, int id)
- {
--	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu, in case
--	 * the caller has read kvm->online_vcpus before (as is the case
--	 * for kvm_for_each_vcpu, for example).
-+	return kvm->vcpus[id / KVM_VCPUS_CHUNK_SIZE][id % KVM_VCPUS_CHUNK_SIZE];
-+}
-+
-+static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int id)
-+{
-+	if (id >= atomic_read(&kvm->online_vcpus))
-+		return NULL;
-+
-+	/*
-+	 * Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  Ensures that the
-+	 * pointers leading to an online vcpu are valid.
- 	 */
- 	smp_rmb();
--	return kvm->vcpus[i];
-+
-+	return __kvm_get_vcpu(kvm, id);
- }
- 
- #define kvm_for_each_vcpu(vcpup, kvm) \
-@@ -514,7 +527,7 @@ static inline struct kvm_vcpu *kvm_get_vcpu_by_id(struct kvm *kvm, int id)
- 
- 	if (id < 0)
- 		return NULL;
--	if (id < KVM_MAX_VCPUS)
-+	if (id < atomic_read(&kvm->online_vcpus))
- 		vcpu = kvm_get_vcpu(kvm, id);
- 	if (vcpu && vcpu->vcpu_id == id)
- 		return vcpu;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 6cec58cad6c7..f9d68ec332c6 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -759,11 +759,14 @@ void kvm_free_vcpus(struct kvm *kvm)
- 
- 	mutex_lock(&kvm->lock);
- 
--	i = atomic_read(&kvm->online_vcpus);
-+	i = round_up(atomic_read(&kvm->online_vcpus), KVM_VCPUS_CHUNK_SIZE) /
-+		KVM_VCPUS_CHUNK_SIZE;
- 	atomic_set(&kvm->online_vcpus, 0);
- 
--	while (i--)
-+	while (i--) {
-+		kfree(kvm->vcpus[i]);
- 		kvm->vcpus[i] = NULL;
-+	}
- 
- 	mutex_unlock(&kvm->lock);
- }
-@@ -2480,6 +2483,8 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
- {
- 	int r;
- 	struct kvm_vcpu *vcpu;
-+	struct kvm_vcpu **vcpusp;
-+	unsigned chunk, offset;
- 
- 	if (id >= KVM_MAX_VCPU_ID)
- 		return -EINVAL;
-@@ -2517,8 +2522,22 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
- 
- 	vcpu->vcpus_idx = atomic_read(&kvm->online_vcpus);
- 
--	BUG_ON(kvm->vcpus[vcpu->vcpus_idx]);
-+	chunk  = vcpu->vcpus_idx / KVM_VCPUS_CHUNK_SIZE;
-+	offset = vcpu->vcpus_idx % KVM_VCPUS_CHUNK_SIZE;
- 
-+	if (!kvm->vcpus[chunk]) {
-+		kvm->vcpus[chunk] = kzalloc(KVM_VCPUS_CHUNK_SIZE * sizeof(**kvm->vcpus),
-+		                            GFP_KERNEL);
-+		if (!kvm->vcpus[chunk]) {
-+			r = -ENOMEM;
-+			goto unlock_vcpu_destroy;
-+		}
-+
-+		BUG_ON(offset != 0);
-+	}
-+
-+	vcpusp = &kvm->vcpus[chunk][offset];
-+	BUG_ON(*vcpusp);
- 
- 	/* Now it's all set up, let userspace reach it */
- 	kvm_get_kvm(kvm);
-@@ -2528,7 +2547,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
- 		goto unlock_vcpu_destroy;
- 	}
- 
--	kvm->vcpus[atomic_read(&kvm->online_vcpus)] = vcpu;
-+	*vcpusp = vcpu;
- 	list_add_tail_rcu(&vcpu->vcpu_list, &kvm->vcpu_list);
- 
- 	/*
--- 
-2.13.3
+Created the nand/rename-header-file immutable branch which I then
+merged in nand/next.
+
+This way, anyone can pull the nand/rename-header-file branch in case a
+conflict arise on one of the file modified by this patch.
+
+The following changes since commit 5771a8c08880cdca3bfb4a3fc6d309d6bba20877:
+
+  Linux v4.13-rc1 (2017-07-15 15:22:10 -0700)
+
+are available in the git repository at:
+
+  git://git.infradead.org/l2-mtd.git nand/rename-header-file
+
+for you to fetch changes up to d4092d76a4a4e57b65910899948a83cc8646c5a5:
+
+  mtd: nand: Rename nand.h into rawnand.h (2017-08-13 10:11:49 +0200)
+
+----------------------------------------------------------------
+Boris Brezillon (1):
+      mtd: nand: Rename nand.h into rawnand.h
+
+ Documentation/driver-api/mtdnand.rst            | 8 ++++----
+ MAINTAINERS                                     | 2 +-
+ arch/arm/mach-davinci/board-da850-evm.c         | 2 +-
+ arch/arm/mach-davinci/board-dm355-evm.c         | 2 +-
+ arch/arm/mach-davinci/board-dm355-leopard.c     | 2 +-
+ arch/arm/mach-davinci/board-dm365-evm.c         | 2 +-
+ arch/arm/mach-davinci/board-dm644x-evm.c        | 2 +-
+ arch/arm/mach-davinci/board-dm646x-evm.c        | 2 +-
+ arch/arm/mach-davinci/board-sffsdr.c            | 2 +-
+ arch/arm/mach-dove/dove-db-setup.c              | 2 +-
+ arch/arm/mach-ep93xx/snappercl15.c              | 2 +-
+ arch/arm/mach-ep93xx/ts72xx.c                   | 2 +-
+ arch/arm/mach-imx/mach-qong.c                   | 2 +-
+ arch/arm/mach-ixp4xx/ixdp425-setup.c            | 2 +-
+ arch/arm/mach-mmp/aspenite.c                    | 2 +-
+ arch/arm/mach-omap1/board-fsample.c             | 2 +-
+ arch/arm/mach-omap1/board-h2.c                  | 2 +-
+ arch/arm/mach-omap1/board-h3.c                  | 2 +-
+ arch/arm/mach-omap1/board-nand.c                | 2 +-
+ arch/arm/mach-omap1/board-perseus2.c            | 2 +-
+ arch/arm/mach-orion5x/db88f5281-setup.c         | 2 +-
+ arch/arm/mach-orion5x/kurobox_pro-setup.c       | 2 +-
+ arch/arm/mach-orion5x/ts209-setup.c             | 2 +-
+ arch/arm/mach-orion5x/ts78xx-setup.c            | 2 +-
+ arch/arm/mach-pxa/balloon3.c                    | 2 +-
+ arch/arm/mach-pxa/em-x270.c                     | 2 +-
+ arch/arm/mach-pxa/eseries.c                     | 2 +-
+ arch/arm/mach-pxa/palmtx.c                      | 2 +-
+ arch/arm/mach-pxa/tosa.c                        | 2 +-
+ arch/arm/mach-s3c24xx/common-smdk.c             | 2 +-
+ arch/arm/mach-s3c24xx/mach-anubis.c             | 2 +-
+ arch/arm/mach-s3c24xx/mach-at2440evb.c          | 2 +-
+ arch/arm/mach-s3c24xx/mach-bast.c               | 2 +-
+ arch/arm/mach-s3c24xx/mach-gta02.c              | 2 +-
+ arch/arm/mach-s3c24xx/mach-jive.c               | 2 +-
+ arch/arm/mach-s3c24xx/mach-mini2440.c           | 2 +-
+ arch/arm/mach-s3c24xx/mach-osiris.c             | 2 +-
+ arch/arm/mach-s3c24xx/mach-qt2410.c             | 2 +-
+ arch/arm/mach-s3c24xx/mach-rx3715.c             | 2 +-
+ arch/arm/mach-s3c24xx/mach-vstms.c              | 2 +-
+ arch/blackfin/mach-bf537/boards/dnp5370.c       | 2 +-
+ arch/blackfin/mach-bf537/boards/stamp.c         | 2 +-
+ arch/blackfin/mach-bf561/boards/acvilon.c       | 2 +-
+ arch/cris/arch-v32/drivers/mach-a3/nandflash.c  | 2 +-
+ arch/cris/arch-v32/drivers/mach-fs/nandflash.c  | 2 +-
+ arch/mips/alchemy/devboards/db1200.c            | 2 +-
+ arch/mips/alchemy/devboards/db1300.c            | 2 +-
+ arch/mips/alchemy/devboards/db1550.c            | 2 +-
+ arch/mips/include/asm/mach-jz4740/jz4740_nand.h | 2 +-
+ arch/mips/netlogic/xlr/platform-flash.c         | 2 +-
+ arch/mips/pnx833x/common/platform.c             | 2 +-
+ arch/mips/rb532/devices.c                       | 2 +-
+ arch/sh/boards/mach-migor/setup.c               | 2 +-
+ drivers/mtd/inftlcore.c                         | 2 +-
+ drivers/mtd/nand/ams-delta.c                    | 2 +-
+ drivers/mtd/nand/atmel/nand-controller.c        | 2 +-
+ drivers/mtd/nand/atmel/pmecc.c                  | 2 +-
+ drivers/mtd/nand/au1550nd.c                     | 2 +-
+ drivers/mtd/nand/bcm47xxnflash/bcm47xxnflash.h  | 2 +-
+ drivers/mtd/nand/bf5xx_nand.c                   | 2 +-
+ drivers/mtd/nand/brcmnand/brcmnand.c            | 2 +-
+ drivers/mtd/nand/cafe_nand.c                    | 2 +-
+ drivers/mtd/nand/cmx270_nand.c                  | 2 +-
+ drivers/mtd/nand/cs553x_nand.c                  | 2 +-
+ drivers/mtd/nand/davinci_nand.c                 | 2 +-
+ drivers/mtd/nand/denali.h                       | 2 +-
+ drivers/mtd/nand/diskonchip.c                   | 2 +-
+ drivers/mtd/nand/docg4.c                        | 2 +-
+ drivers/mtd/nand/fsl_elbc_nand.c                | 2 +-
+ drivers/mtd/nand/fsl_ifc_nand.c                 | 2 +-
+ drivers/mtd/nand/fsl_upm.c                      | 2 +-
+ drivers/mtd/nand/fsmc_nand.c                    | 2 +-
+ drivers/mtd/nand/gpio.c                         | 2 +-
+ drivers/mtd/nand/gpmi-nand/gpmi-nand.h          | 2 +-
+ drivers/mtd/nand/hisi504_nand.c                 | 2 +-
+ drivers/mtd/nand/jz4740_nand.c                  | 2 +-
+ drivers/mtd/nand/jz4780_nand.c                  | 2 +-
+ drivers/mtd/nand/lpc32xx_mlc.c                  | 2 +-
+ drivers/mtd/nand/lpc32xx_slc.c                  | 2 +-
+ drivers/mtd/nand/mpc5121_nfc.c                  | 2 +-
+ drivers/mtd/nand/mtk_nand.c                     | 2 +-
+ drivers/mtd/nand/mxc_nand.c                     | 2 +-
+ drivers/mtd/nand/nand_amd.c                     | 2 +-
+ drivers/mtd/nand/nand_base.c                    | 2 +-
+ drivers/mtd/nand/nand_bbt.c                     | 2 +-
+ drivers/mtd/nand/nand_bch.c                     | 2 +-
+ drivers/mtd/nand/nand_ecc.c                     | 2 +-
+ drivers/mtd/nand/nand_hynix.c                   | 2 +-
+ drivers/mtd/nand/nand_ids.c                     | 2 +-
+ drivers/mtd/nand/nand_macronix.c                | 2 +-
+ drivers/mtd/nand/nand_micron.c                  | 2 +-
+ drivers/mtd/nand/nand_samsung.c                 | 2 +-
+ drivers/mtd/nand/nand_timings.c                 | 2 +-
+ drivers/mtd/nand/nand_toshiba.c                 | 2 +-
+ drivers/mtd/nand/nandsim.c                      | 2 +-
+ drivers/mtd/nand/ndfc.c                         | 2 +-
+ drivers/mtd/nand/nuc900_nand.c                  | 2 +-
+ drivers/mtd/nand/omap2.c                        | 2 +-
+ drivers/mtd/nand/orion_nand.c                   | 2 +-
+ drivers/mtd/nand/oxnas_nand.c                   | 2 +-
+ drivers/mtd/nand/pasemi_nand.c                  | 2 +-
+ drivers/mtd/nand/plat_nand.c                    | 2 +-
+ drivers/mtd/nand/pxa3xx_nand.c                  | 2 +-
+ drivers/mtd/nand/qcom_nandc.c                   | 2 +-
+ drivers/mtd/nand/r852.h                         | 2 +-
+ drivers/mtd/nand/s3c2410.c                      | 2 +-
+ drivers/mtd/nand/sh_flctl.c                     | 2 +-
+ drivers/mtd/nand/sharpsl.c                      | 2 +-
+ drivers/mtd/nand/sm_common.c                    | 2 +-
+ drivers/mtd/nand/socrates_nand.c                | 2 +-
+ drivers/mtd/nand/sunxi_nand.c                   | 2 +-
+ drivers/mtd/nand/tango_nand.c                   | 2 +-
+ drivers/mtd/nand/tmio_nand.c                    | 2 +-
+ drivers/mtd/nand/txx9ndfmc.c                    | 2 +-
+ drivers/mtd/nand/vf610_nfc.c                    | 2 +-
+ drivers/mtd/nand/xway_nand.c                    | 2 +-
+ drivers/mtd/nftlcore.c                          | 2 +-
+ drivers/mtd/nftlmount.c                         | 2 +-
+ drivers/mtd/ssfdc.c                             | 2 +-
+ drivers/mtd/tests/nandbiterrs.c                 | 2 +-
+ drivers/staging/mt29f_spinand/mt29f_spinand.c   | 2 +-
+ fs/jffs2/wbuf.c                                 | 2 +-
+ include/linux/mtd/nand-gpio.h                   | 2 +-
+ include/linux/mtd/{nand.h => rawnand.h}         | 8 +++-----
+ include/linux/mtd/sh_flctl.h                    | 2 +-
+ include/linux/mtd/sharpsl.h                     | 2 +-
+ include/linux/platform_data/mtd-davinci.h       | 2 +-
+ include/linux/platform_data/mtd-nand-s3c2410.h  | 2 +-
+ 128 files changed, 133 insertions(+), 135 deletions(-)
+ rename include/linux/mtd/{nand.h => rawnand.h} (99%)

@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2017 12:57:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39192 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993879AbdHUKznQ9FlD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Aug 2017 12:55:43 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 8E35C90AC9C27;
-        Mon, 21 Aug 2017 11:55:34 +0100 (IST)
-Received: from LDT-H-Hunt.le.imgtec.org (192.168.154.107) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 21 Aug 2017 11:55:36 +0100
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-To:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <ralf@linux-mips.org>, <john@phrozen.org>
-CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: [V2 3/3] MIPS: configs: Add Onion Omega2+ defconfig
-Date:   Mon, 21 Aug 2017 11:55:31 +0100
-Message-ID: <1503312931-34416-3-git-send-email-harvey.hunt@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1503312931-34416-1-git-send-email-harvey.hunt@imgtec.com>
-References: <1503312931-34416-1-git-send-email-harvey.hunt@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.107]
-Return-Path: <Harvey.Hunt@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2017 14:29:17 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:55938 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990773AbdHUM3JWll-G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Aug 2017 14:29:09 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 278F91A45FD;
+        Mon, 21 Aug 2017 14:29:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from mcs19.domain.local (mcs19.domain.local [10.10.13.51])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id D5AAB1A45F7;
+        Mon, 21 Aug 2017 14:29:02 +0200 (CEST)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2 0/6] MIPS: math-emu: FP emulation fixes and improvements
+Date:   Mon, 21 Aug 2017 14:24:46 +0200
+Message-Id: <20170821122526.22072-1-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.9.3
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59727
+X-archive-position: 59728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,154 +49,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Create a defconfig for the Omega2+ that reaches userspace and
-allows use of the USB port.
+From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
----
-Changes in V2:
-- Remove CONFIG_PANIC_ON_OOPS
+v1->v2:
 
- arch/mips/configs/omega2p_defconfig | 129 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 129 insertions(+)
- create mode 100644 arch/mips/configs/omega2p_defconfig
+   - corrected a number of spelling and other minor mistakes in commit
+     messages
+   - rebased to the latest code
 
-diff --git a/arch/mips/configs/omega2p_defconfig b/arch/mips/configs/omega2p_defconfig
-new file mode 100644
-index 0000000..e2731c3
---- /dev/null
-+++ b/arch/mips/configs/omega2p_defconfig
-@@ -0,0 +1,129 @@
-+CONFIG_RALINK=y
-+CONFIG_SOC_MT7620=y
-+CONFIG_DTB_OMEGA2P=y
-+CONFIG_CPU_MIPS32_R2=y
-+# CONFIG_COMPACTION is not set
-+CONFIG_HZ_100=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CGROUPS=y
-+CONFIG_MEMCG=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_CGROUP_CPUACCT=y
-+CONFIG_NAMESPACES=y
-+CONFIG_USER_NS=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_VM_EVENT_COUNTERS is not set
-+# CONFIG_SLUB_DEBUG is not set
-+# CONFIG_COMPAT_BRK is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+# CONFIG_FW_LOADER is not set
-+# CONFIG_ALLOW_DEV_COREDUMP is not set
-+CONFIG_NETDEVICES=y
-+# CONFIG_ETHERNET is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=2
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=3
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=3
-+CONFIG_SERIAL_OF_PLATFORM=y
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_HCD_PLATFORM=y
-+CONFIG_MMC=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_MEMORY=y
-+CONFIG_PHY_RALINK_USB=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_PROC_KCORE=y
-+# CONFIG_PROC_PAGE_MONITOR is not set
-+CONFIG_TMPFS=y
-+CONFIG_CONFIGFS_FS=y
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_737=y
-+CONFIG_NLS_CODEPAGE_775=y
-+CONFIG_NLS_CODEPAGE_850=y
-+CONFIG_NLS_CODEPAGE_852=y
-+CONFIG_NLS_CODEPAGE_855=y
-+CONFIG_NLS_CODEPAGE_857=y
-+CONFIG_NLS_CODEPAGE_860=y
-+CONFIG_NLS_CODEPAGE_861=y
-+CONFIG_NLS_CODEPAGE_862=y
-+CONFIG_NLS_CODEPAGE_863=y
-+CONFIG_NLS_CODEPAGE_864=y
-+CONFIG_NLS_CODEPAGE_865=y
-+CONFIG_NLS_CODEPAGE_866=y
-+CONFIG_NLS_CODEPAGE_869=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_CODEPAGE_950=y
-+CONFIG_NLS_CODEPAGE_932=y
-+CONFIG_NLS_CODEPAGE_949=y
-+CONFIG_NLS_CODEPAGE_874=y
-+CONFIG_NLS_ISO8859_8=y
-+CONFIG_NLS_CODEPAGE_1250=y
-+CONFIG_NLS_CODEPAGE_1251=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_NLS_ISO8859_2=y
-+CONFIG_NLS_ISO8859_3=y
-+CONFIG_NLS_ISO8859_4=y
-+CONFIG_NLS_ISO8859_5=y
-+CONFIG_NLS_ISO8859_6=y
-+CONFIG_NLS_ISO8859_7=y
-+CONFIG_NLS_ISO8859_9=y
-+CONFIG_NLS_ISO8859_13=y
-+CONFIG_NLS_ISO8859_14=y
-+CONFIG_NLS_ISO8859_15=y
-+CONFIG_NLS_KOI8_R=y
-+CONFIG_NLS_KOI8_U=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_PANIC_TIMEOUT=10
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+CONFIG_STACKTRACE=y
-+# CONFIG_FTRACE is not set
-+CONFIG_CRYPTO_DEFLATE=y
-+CONFIG_CRYPTO_LZO=y
-+CONFIG_CRC16=y
-+CONFIG_XZ_DEC=y
+This series includes:
+
+  - a fix for certain SIGILL program crashes on issuing a valid CMP
+    instruction
+  - a fix for RINT emulation inaccuracies
+  - a fix for the output of CLASS.D instruction emulation
+  - several FP emulation debugfs statistics improvements
+
+The patches in this series are logically and physically independent on
+the patches previously sent in "Misc" series. This means that these
+two series can be applied independently, in any order.
+
+Aleksandar Markovic (6):
+  MIPS: math-emu: CMP.Sxxx.<D|S>: Prevent occurrences of SIGILL crashes
+  MIPS: math-emu: RINT.<D|S>: Fix several problems by reimplementation
+  MIPS: math-emu: CLASS.D: Zero bits 32-63 of the result
+  MIPS: math-emu: Add FP emu debugfs statistics for branches
+  MIPS: math-emu: Add FP emu debugfs clear functionality
+  MIPS: math-emu: Add FP emu debugfs stats for individual instructions
+
+ MAINTAINERS                          |   7 +
+ arch/mips/include/asm/fpu_emulator.h | 116 +++++++++++++
+ arch/mips/math-emu/Makefile          |   6 +-
+ arch/mips/math-emu/cp1emu.c          | 272 +++++++++++++++++++++++++++++-
+ arch/mips/math-emu/dp_rint.c         |  89 ++++++++++
+ arch/mips/math-emu/ieee754.h         |   2 +
+ arch/mips/math-emu/me-debugfs.c      | 318 ++++++++++++++++++++++++++++++++++-
+ arch/mips/math-emu/sp_rint.c         |  90 ++++++++++
+ 8 files changed, 888 insertions(+), 12 deletions(-)
+ create mode 100644 arch/mips/math-emu/dp_rint.c
+ create mode 100644 arch/mips/math-emu/sp_rint.c
+
 -- 
-2.7.4
+2.9.3

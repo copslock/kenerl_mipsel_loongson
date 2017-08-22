@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2017 13:44:32 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:60038 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2017 13:52:05 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:56916 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991438AbdHVLoXgBT3t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Aug 2017 13:44:23 +0200
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        id S23992110AbdHVLv56UADt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Aug 2017 13:51:57 +0200
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 76F0D404331;
-        Tue, 22 Aug 2017 11:44:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 76F0D404331
-Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=david@redhat.com
+        by mx1.redhat.com (Postfix) with ESMTPS id 7F03EC05680C;
+        Tue, 22 Aug 2017 11:51:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 7F03EC05680C
+Authentication-Results: ext-mx08.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
+Authentication-Results: ext-mx08.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=david@redhat.com
 Received: from [10.36.117.62] (ovpn-117-62.ams2.redhat.com [10.36.117.62])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2F3CE7D54F;
-        Tue, 22 Aug 2017 11:44:14 +0000 (UTC)
-Subject: Re: [PATCH RFC v3 3/9] KVM: remember position in kvm->vcpus array
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7708B5E1D1;
+        Tue, 22 Aug 2017 11:51:48 +0000 (UTC)
+Subject: Re: [PATCH RFC v3 4/9] KVM: arm/arm64: use locking helpers in
+ kvm_vgic_create()
 To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
@@ -28,25 +29,25 @@ Cc:     Paolo Bonzini <pbonzini@redhat.com>,
         Paul Mackerras <paulus@ozlabs.org>,
         Alexander Graf <agraf@suse.com>
 References: <20170821203530.9266-1-rkrcmar@redhat.com>
- <20170821203530.9266-4-rkrcmar@redhat.com>
+ <20170821203530.9266-5-rkrcmar@redhat.com>
 From:   David Hildenbrand <david@redhat.com>
 Organization: Red Hat GmbH
-Message-ID: <29ad4696-f106-031e-c9b9-b10b4f4c8107@redhat.com>
-Date:   Tue, 22 Aug 2017 13:44:13 +0200
+Message-ID: <1ef9ab09-b998-b0c9-86e3-7fd2234418fa@redhat.com>
+Date:   Tue, 22 Aug 2017 13:51:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20170821203530.9266-4-rkrcmar@redhat.com>
+In-Reply-To: <20170821203530.9266-5-rkrcmar@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Tue, 22 Aug 2017 11:44:17 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Tue, 22 Aug 2017 11:51:51 +0000 (UTC)
 Return-Path: <david@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59756
+X-archive-position: 59757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,60 +65,94 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 21.08.2017 22:35, Radim Krčmář wrote:
+> No new VCPUs can be created because we are holding the kvm->lock.
+> This means that if we successfuly lock all VCPUs, we'll be unlocking the
+> same set and there is no need to do extra bookkeeping.
+> 
 > Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
 > ---
->  include/linux/kvm_host.h | 11 +++--------
->  virt/kvm/kvm_main.c      |  5 ++++-
->  2 files changed, 7 insertions(+), 9 deletions(-)
+>  virt/kvm/arm/vgic/vgic-init.c       | 24 +++++++++---------------
+>  virt/kvm/arm/vgic/vgic-kvm-device.c |  6 +++++-
+>  2 files changed, 14 insertions(+), 16 deletions(-)
 > 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 6882538eda32..a8ff956616d2 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -220,7 +220,8 @@ struct kvm_vcpu {
->  	struct preempt_notifier preempt_notifier;
->  #endif
->  	int cpu;
-> -	int vcpu_id;
-> +	int vcpu_id; /* id given by userspace at creation */
-> +	int vcpus_idx; /* index in kvm->vcpus array */
->  	int srcu_idx;
->  	int mode;
->  	unsigned long requests;
-> @@ -516,13 +517,7 @@ static inline struct kvm_vcpu *kvm_get_vcpu_by_id(struct kvm *kvm, int id)
->  
->  static inline int kvm_vcpu_get_idx(struct kvm_vcpu *vcpu)
+> diff --git a/virt/kvm/arm/vgic/vgic-init.c b/virt/kvm/arm/vgic/vgic-init.c
+> index 5801261f3add..feb766f74c34 100644
+> --- a/virt/kvm/arm/vgic/vgic-init.c
+> +++ b/virt/kvm/arm/vgic/vgic-init.c
+> @@ -119,7 +119,7 @@ void kvm_vgic_vcpu_early_init(struct kvm_vcpu *vcpu)
+>   */
+>  int kvm_vgic_create(struct kvm *kvm, u32 type)
 >  {
-> -	struct kvm_vcpu *tmp;
-> -	int idx;
-> -
-> -	kvm_for_each_vcpu(idx, tmp, vcpu->kvm)
-> -		if (tmp == vcpu)
-> -			return idx;
-> -	BUG();
-> +	return vcpu->vcpus_idx;
+> -	int i, vcpu_lock_idx = -1, ret;
+> +	int i, ret;
+>  	struct kvm_vcpu *vcpu;
+>  
+>  	if (irqchip_in_kernel(kvm))
+> @@ -140,18 +140,14 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+>  	 * vcpu->mutex.  By grabbing the vcpu->mutex of all VCPUs we ensure
+>  	 * that no other VCPUs are run while we create the vgic.
+>  	 */
+> -	ret = -EBUSY;
+> -	kvm_for_each_vcpu(i, vcpu, kvm) {
+> -		if (!mutex_trylock(&vcpu->mutex))
+> -			goto out_unlock;
+> -		vcpu_lock_idx = i;
+> -	}
+> +	if (!lock_all_vcpus(kvm))
+> +		return -EBUSY;
+
+Yes, this makes sense.
+
+>  
+> -	kvm_for_each_vcpu(i, vcpu, kvm) {
+> -		if (vcpu->arch.has_run_once)
+> +	kvm_for_each_vcpu(i, vcpu, kvm)
+> +		if (vcpu->arch.has_run_once) {
+> +			ret = -EBUSY;
+>  			goto out_unlock;
+> -	}
+> -	ret = 0;
+> +		}
+
+somehow I prefer keeping the {}
+
+>  
+>  	if (type == KVM_DEV_TYPE_ARM_VGIC_V2)
+>  		kvm->arch.max_vcpus = VGIC_V2_MAX_CPUS;
+> @@ -176,11 +172,9 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+>  	kvm->arch.vgic.vgic_cpu_base = VGIC_ADDR_UNDEF;
+>  	kvm->arch.vgic.vgic_redist_base = VGIC_ADDR_UNDEF;
+>  
+> +	ret = 0;
+>  out_unlock:
+> -	for (; vcpu_lock_idx >= 0; vcpu_lock_idx--) {
+> -		vcpu = kvm_get_vcpu(kvm, vcpu_lock_idx);
+> -		mutex_unlock(&vcpu->mutex);
+> -	}
+> +	unlock_all_vcpus(kvm);
+>  	return ret;
 >  }
 >  
->  #define kvm_for_each_memslot(memslot, slots)	\
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index e17c40d986f3..caf8323f7df7 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2498,7 +2498,10 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
->  		goto unlock_vcpu_destroy;
->  	}
+> diff --git a/virt/kvm/arm/vgic/vgic-kvm-device.c b/virt/kvm/arm/vgic/vgic-kvm-device.c
+> index 10ae6f394b71..c5124737c7fc 100644
+> --- a/virt/kvm/arm/vgic/vgic-kvm-device.c
+> +++ b/virt/kvm/arm/vgic/vgic-kvm-device.c
+> @@ -270,7 +270,11 @@ static void unlock_vcpus(struct kvm *kvm, int vcpu_lock_idx)
 >  
-> -	BUG_ON(kvm->vcpus[atomic_read(&kvm->online_vcpus)]);
-> +	vcpu->vcpus_idx = atomic_read(&kvm->online_vcpus);
+>  void unlock_all_vcpus(struct kvm *kvm)
+>  {
+> -	unlock_vcpus(kvm, atomic_read(&kvm->online_vcpus) - 1);
+> +	int i;
+> +	struct kvm_vcpu *tmp_vcpu;
 > +
-> +	BUG_ON(kvm->vcpus[vcpu->vcpus_idx]);
-> +
+> +	kvm_for_each_vcpu(i, tmp_vcpu, kvm)
+> +		mutex_unlock(&tmp_vcpu->mutex);
+>  }
 >  
->  	/* Now it's all set up, let userspace reach it */
->  	kvm_get_kvm(kvm);
+>  /* Returns true if all vcpus were locked, false otherwise */
 > 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Looks sane to me.
 
 -- 
 

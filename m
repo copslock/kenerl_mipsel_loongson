@@ -1,57 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2017 16:19:20 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:52384 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992724AbdHVOTMTMeHR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Aug 2017 16:19:12 +0200
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 7E46C37E68;
-        Tue, 22 Aug 2017 14:19:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 7E46C37E68
-Authentication-Results: ext-mx05.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx05.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=david@redhat.com
-Received: from [10.36.117.255] (unknown [10.36.117.255])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 92C2E7EF62;
-        Tue, 22 Aug 2017 14:19:00 +0000 (UTC)
-Subject: Re: [PATCH RFC v3 7/9] KVM: add kvm_free_vcpus and
- kvm_arch_free_vcpus
-To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Christoffer Dall <cdall@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Alexander Graf <agraf@suse.com>
-References: <20170821203530.9266-1-rkrcmar@redhat.com>
- <20170821203530.9266-8-rkrcmar@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <45e07499-e60c-5289-f439-9c51f59866ec@redhat.com>
-Date:   Tue, 22 Aug 2017 16:18:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 00:04:04 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:49321 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993913AbdHVWD4A9QR0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 00:03:56 +0200
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1dkHH4-0000dU-0W; Tue, 22 Aug 2017 22:03:50 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        linux-mips@linux-mips.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] MIPS,bpf: fix missing break in switch statement
+Date:   Tue, 22 Aug 2017 23:03:49 +0100
+Message-Id: <20170822220349.5648-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.14.1
 MIME-Version: 1.0
-In-Reply-To: <20170821203530.9266-8-rkrcmar@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Tue, 22 Aug 2017 14:19:05 +0000 (UTC)
-Return-Path: <david@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Return-Path: <colin.king@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59759
+X-archive-position: 59760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david@redhat.com
+X-original-sender: colin.king@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,57 +43,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: Colin Ian King <colin.king@canonical.com>
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 33a15e176927..0d2d8b0c785c 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -750,6 +750,23 @@ static void kvm_destroy_devices(struct kvm *kvm)
->  	}
->  }
->  
-> +void kvm_free_vcpus(struct kvm *kvm)
-> +{
-> +	int i;
-> +
-> +	kvm_arch_free_vcpus(kvm);
+There is a missing break causing a fall-through and setting
+ctx.use_bbit_insns to the wrong value. Fix this by adding the
+missing break.
 
-I wonder if it would be possible to get rid of kvm_arch_free_vcpus(kvm)
-completely and simply call
+Detected with cppcheck:
+"Variable 'ctx.use_bbit_insns' is reassigned a value before the old
+one has been used. 'break;' missing?"
 
-kvm_for_each_vcpu(i, vcpu, kvm)
-	kvm_arch_vcpu_free(vcpu);
+Fixes: 8d8d18c3283f ("MIPS,bpf: Fix using smp_processor_id() in preemptible splat.")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ arch/mips/net/ebpf_jit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-at that point.
-
-Would certainly require some refactoring, and I am not sure if we could
-modify the special mmu handling for x86 ("Unpin any mmu pages first.").
-But if in doubt, that part could be moved to kvm_arch_destroy_vm(), just
-before calling kvm_free_vcpus().
-
-> +
-> +	mutex_lock(&kvm->lock);
-> +
-> +	i = atomic_read(&kvm->online_vcpus);
-> +	atomic_set(&kvm->online_vcpus, 0);
-
-i = atomic_xchg(&kvm->online_vcpus, 0);
-
-> +
-> +	while (i--)
-> +		kvm->vcpus[i] = NULL;
-> +
-> +	mutex_unlock(&kvm->lock);
-> +}
-> +
->  static void kvm_destroy_vm(struct kvm *kvm)
->  {
->  	int i;
-> 
-
-
+diff --git a/arch/mips/net/ebpf_jit.c b/arch/mips/net/ebpf_jit.c
+index 44ddc12cbb0e..7646891c4e9b 100644
+--- a/arch/mips/net/ebpf_jit.c
++++ b/arch/mips/net/ebpf_jit.c
+@@ -1892,6 +1892,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	case CPU_CAVIUM_OCTEON2:
+ 	case CPU_CAVIUM_OCTEON3:
+ 		ctx.use_bbit_insns = 1;
++		break;
+ 	default:
+ 		ctx.use_bbit_insns = 0;
+ 	}
 -- 
-
-Thanks,
-
-David
+2.14.1

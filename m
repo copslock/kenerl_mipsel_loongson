@@ -1,52 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 02:41:29 +0200 (CEST)
-Received: from mail-oi0-f65.google.com ([209.85.218.65]:34280 "EHLO
-        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993912AbdHWAlV1zWxA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 02:41:21 +0200
-Received: by mail-oi0-f65.google.com with SMTP id k62so325133oia.1;
-        Tue, 22 Aug 2017 17:41:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 04:57:43 +0200 (CEST)
+Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:34908
+        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990506AbdHWC5gn9vKs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 04:57:36 +0200
+Received: by mail-pg0-x243.google.com with SMTP id m133so461547pga.2;
+        Tue, 22 Aug 2017 19:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=h5mTxLiBFYE0bF05U8Mwrv3ydBDfFGkMMI8nBETkZuo=;
+        b=YL5uGkt3UYY4JDPTNFudU2AONjnjSxyjwvAjQYVlgCWlcOkxyrMQRaHxhPxZLzdrmK
+         VtyMyPtG1Ww/+lcNo7a2yubU05Ahg0M45WyVLytPOwRkGZKrUSc/RCv0E6S3xuwQISKG
+         5iMKBsdQYOIdtEQfdJSQ77NRIiSgzkRq0emNrcg/1vNNeITSz7Krv99H5PmTnmcpdPdC
+         dFsO+v1LLXR3heYx0IXLi46atPj8L8I6UfsxwzhKcQgrU2rGfxFapme++ZzExv+NYK3y
+         wDEVBWKWQaLd4ZX+n3QUpii8XMn3K5POepKXlSh0BIFrZLhPAKTN2rkKudymmhn+jPFd
+         KFIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=WWvtNhDNwCan5MN17mI77pkreqRO+ilUKKHgJJMPNOs=;
-        b=Z6/rEDXQ9Zzzl/MYtqf/Lra3PEmEq1uoUKvjFX/OqeXe+xuOmcagzBtjk8ZsO4F1Al
-         5xy1mCptGcRiISnEGmoMFgIizdaD6ga0RTvMskFuI6aIjwEu1LkZ4d0cJPhEfXdd/NDQ
-         cwKTqtF76VvJuVP/Z3rUiYM4wEUc7E8HFPPuUBNnym10S2WRc/pvJzJGQONKndS6QNXq
-         nrVllFbk63nqLJxPURPckR6H7v5poSaZyvM6fQk713QIjRNHoyOG8OwL8WfJaCdiDF5T
-         jzXK9+6DqEjldXpijZaJVHD+T8JzQW1VdL/TVKJ0lDLjEhwBo/lGs0xHKaFuKmBtmDJq
-         dLjQ==
-X-Gm-Message-State: AHYfb5jQwk4a5bC34rmSkPzzHv2Tttvqof2WIxaWNl51NlJrZluUDJrT
-        4/VSerMRXZBPWg==
-X-Received: by 10.202.67.6 with SMTP id q6mr1389920oia.144.1503448875625;
-        Tue, 22 Aug 2017 17:41:15 -0700 (PDT)
-Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
-        by smtp.gmail.com with ESMTPSA id t186sm408333oie.29.2017.08.22.17.41.14
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 22 Aug 2017 17:41:15 -0700 (PDT)
-Date:   Tue, 22 Aug 2017 19:41:14 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Harvey Hunt <harvey.hunt@imgtec.com>
-Cc:     mark.rutland@arm.com, ralf@linux-mips.org, john@phrozen.org,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [V2 1/4] MIPS: dts: ralink: Add Mediatek MT7628A SoC
-Message-ID: <20170823004114.a7raxjrjj7vcmpbb@rob-hp-laptop>
-References: <1503312931-34416-1-git-send-email-harvey.hunt@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1503312931-34416-1-git-send-email-harvey.hunt@imgtec.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <robherring2@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=h5mTxLiBFYE0bF05U8Mwrv3ydBDfFGkMMI8nBETkZuo=;
+        b=fAUb7Ig1gZXnRWroGyP1/+uV3Oc57Um09heN5ZhB4AONmZDWDzSt+XH+6GWFw+jvsF
+         0YlDie+DQ3t2b0fAVnIlFBdcCrZ9hH7fyoQVHhl7aKI2cJEqTXiqI0YTQylafal6Jr1D
+         fJWRCPhc5MggHhaGrV/EyM+VFMAO8tWAh8YbKhCZJuP4YoyTmjZfV63wusciVLkZXwuB
+         I1uRBDMHEN7aMSQsrvikRp6qAJlcq8jhpIqpH7k1Col2chzWHN2ZNX233WoPbDjLF5CX
+         QwclnECt4P8FvB9NVjmLrLYzMDLuvKmifbjcz6JDjAAHKo2mjCbt7ee24EpM24/mPhNo
+         zMUw==
+X-Gm-Message-State: AHYfb5ieHnKayW++yYS6LUsdnRrAs8aKt2Vzn32wFY2PY7Qf2H6cRjSb
+        CLEtilBd5kJreA==
+X-Received: by 10.84.132.73 with SMTP id 67mr1308249ple.53.1503457050557;
+        Tue, 22 Aug 2017 19:57:30 -0700 (PDT)
+Received: from linux.local ([42.109.139.20])
+        by smtp.gmail.com with ESMTPSA id 10sm489771pfs.131.2017.08.22.19.57.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 22 Aug 2017 19:57:29 -0700 (PDT)
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+To:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        robh+dt@kernel.org, mark.rutland@arm.com, ralf@linux-mips.org,
+        paul@crapouillou.net, linux-crypto@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        malat@debian.org, noloader@gmail.com
+Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Subject: [PATCH v2 0/4] crypto: Add driver for JZ4780 PRNG
+Date:   Wed, 23 Aug 2017 08:27:03 +0530
+Message-Id: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
+X-Mailer: git-send-email 2.10.0
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59763
+X-archive-position: 59764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,39 +65,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 21, 2017 at 11:55:29AM +0100, Harvey Hunt wrote:
-> The MT7628A is the successor to the MT7620 and pin compatible with the
-> MT7688A, although the latter supports only a 1T1R antenna rather than
-> a 2T2R antenna.
-> 
-> This commit adds support for the following features:
-> 
-> - UART
-> - USB PHY
-> - EHCI
-> - Interrupt controller
-> - System controller
-> - Memory controller
-> - Reset controller
-> 
-> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-> Cc: linux-mips@linux-mips.org 
-> Cc: devicetree@vger.kernel.org 
-> Cc: linux-kernel@vger.kernel.org 
-> Cc: linux-mediatek@lists.infradead.org 
-> ---
-> Ralf: I've added this patch to both my vocore2 and omega2+
-> patchsets for ease of review, please only merge it once :-)
-> 
-> Changes in V2:
-> - Add MT7628 to patchset to keep kbuild happy and retain context
-> - Rename multiple DT nodes to standard names
-> - Add labels for uarts
-> - Rename USB PHY handle
-> 
->  Documentation/devicetree/bindings/mips/ralink.txt |   1 +
->  arch/mips/boot/dts/ralink/mt7628a.dtsi            | 126 ++++++++++++++++++++++
->  2 files changed, 127 insertions(+)
->  create mode 100644 arch/mips/boot/dts/ralink/mt7628a.dtsi
+This patch series adds support of pseudo random number generator found
+in Ingenic's JZ4780 and X1000 SoC.
 
-Acked-by: Rob Herring <robh@kernel.org>
+Based on Paul's review comments, add 'syscon' compatible in CGU node in
+jz4780.dtsi. jz4780-rng driver uses regmap exposed via syscon interface
+to access the RNG registers. CGU driver is not modified in this patch
+set as registers used by CGU driver and this driver are different.
+
+PrasannaKumar Muralidharan (4):
+  crypto: jz4780-rng: Add JZ4780 PRNG devicetree binding documentation
+  crypto: jz4780-rng: Add Ingenic JZ4780 hardware PRNG driver
+  crypto: jz4780-rng: Add RNG node to jz4780.dtsi
+  crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
+
+ .../bindings/crypto/ingenic,jz4780-rng.txt         |  20 +++
+ MAINTAINERS                                        |   5 +
+ arch/mips/boot/dts/ingenic/jz4780.dtsi             |   6 +-
+ arch/mips/configs/ci20_defconfig                   |   5 +
+ drivers/crypto/Kconfig                             |  19 +++
+ drivers/crypto/Makefile                            |   1 +
+ drivers/crypto/jz4780-rng.c                        | 168 +++++++++++++++++++++
+ 7 files changed, 223 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
+ create mode 100644 drivers/crypto/jz4780-rng.c
+
+-- 
+2.10.0

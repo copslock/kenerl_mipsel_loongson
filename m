@@ -1,61 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 04:59:17 +0200 (CEST)
-Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:34934
-        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990506AbdHWC6DUEGts (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 04:58:03 +0200
-Received: by mail-pg0-x244.google.com with SMTP id m133so462266pga.2;
-        Tue, 22 Aug 2017 19:58:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=7u9+dRxvsQONkUPhdnrGQyiXziyb1EZd5TCVnDTOVQA=;
-        b=aBpuOZzDiaPPfFyopbidlpIMP0LSV/FHJFm6yRibGFJB7fPagucpz2KBs/9TLYZ/0r
-         bieArssIBafEBOte2x8sy0vH+58TvWN1l8Ed/RLPNcDHIhK8pYlRjknyjcy0ILv2rhrS
-         WFz7vfZuFhQu/he3MggrF6A+SrGwH+vA6P+rl6kHYnrfqQMf87NonRjIeTtAvvW5nnkw
-         9fUhAAWh1YG/amSoW3Boekkjzi6GnLmTCn9y4iX0pVPQRCnBMblyTXeIdvRFAQcZA8MK
-         Sr1wA2kMvbH6NzDR/nCB2Lt+ihR0b5jYIWw8qPZuBnjRwJniVrMKBRHcTbKQxT/IUTxd
-         Fg4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=7u9+dRxvsQONkUPhdnrGQyiXziyb1EZd5TCVnDTOVQA=;
-        b=PDjJ+G6cIMrACXVvz3nftGjq6vbF20E6t7Gq4kKCIvl1SyPX2t3eztIH6BmM//V2i7
-         97SyPaMGgdmq8GmHWkWkxRVrRGpFrH62Zjhi49A5nUXcgTu9P7Kr/Mveqjb3YviaYyJY
-         CkChISEkTJA8m77T8k1+OvbFXoacu0xOop0jZZcAIQOXgvxKHXXsZb61PSFpMjftK/pL
-         dvAIZH5sGxjj+rsRTIdfbTqGeqZdvA8mrrG41sbkfKI8tperpFsmEdkI1P5d6S0wF4+H
-         a97qAj417NAtHpjXFduXgq+Eyl6OK3hrzO4Q5Bwhw3V45by+5YdrQJokbT7MQQJfUDqb
-         3zNQ==
-X-Gm-Message-State: AHYfb5gun944d8TFszqJn8gLOkXLLQf89lMuIEZWEuj5s3gli36n5wY1
-        03fALwuM2243zoKduI5EXA==
-X-Received: by 10.84.218.139 with SMTP id r11mr1331378pli.25.1503457077635;
-        Tue, 22 Aug 2017 19:57:57 -0700 (PDT)
-Received: from linux.local ([42.109.139.20])
-        by smtp.gmail.com with ESMTPSA id 10sm489771pfs.131.2017.08.22.19.57.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 22 Aug 2017 19:57:57 -0700 (PDT)
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-To:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        robh+dt@kernel.org, mark.rutland@arm.com, ralf@linux-mips.org,
-        paul@crapouillou.net, linux-crypto@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        malat@debian.org, noloader@gmail.com
-Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Subject: [PATCH v2 4/4] crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
-Date:   Wed, 23 Aug 2017 08:27:07 +0530
-Message-Id: <20170823025707.27888-5-prasannatsmkumar@gmail.com>
-X-Mailer: git-send-email 2.10.0
-In-Reply-To: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
-References: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
-Return-Path: <prasannatsmkumar@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 10:21:34 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:52564 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990924AbdHWIV2ESRRZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 10:21:28 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 4B6EF80AECE94;
+        Wed, 23 Aug 2017 09:21:18 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 23 Aug 2017 09:21:20 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: Revert "MIPS: Fix race on setting and getting cpu_online_mask"
+Date:   Wed, 23 Aug 2017 09:21:15 +0100
+Message-ID: <1503476475-21069-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59768
+X-archive-position: 59769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,30 +46,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Enable PRNG driver support in MIPS Creator CI20 default config.
+Commit 6f542ebeaee0 ("MIPS: Fix race on setting and getting
+cpu_online_mask") effectively reverted commit 8f46cca1e6c06 ("MIPS: SMP:
+Fix possibility of deadlock when bringing CPUs online") and thus has
+reinstated the possibility of deadlock.
 
-Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+The commit was based on testing of kernel v4.4, where the CPU hotplug
+code issued a BUG() if the starting CPU is not marked online when the
+boot CPU returns from __cpu_up. The commit fixes this race, but
+re-introduces the deadlock situation.
+
+As noted in the commit message, upstream differs in this area. The
+hotplug code now waits on a completion event in bringup_wait_for_ap,
+which is set by the starting CPU in cpuhp_online_idle once it calls
+cpu_startup_entry. Thus there is no possibility of a race in upstream,
+and this commit has only re-introduced the deadlock condition, which can
+be observed on multiple platforms when running a heavy load test at the
+same time as hotplugging CPUs. See commit 8f46cca1e6c06 ("MIPS: SMP: Fix
+possibility of deadlock when bringing CPUs online") for details.
+
+This reverts commit 6f542ebeaee0ee552a902ce3892220fc22c7ec8e.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+CC: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
 ---
-No changes in v2
 
- arch/mips/configs/ci20_defconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/kernel/smp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-index b42cfa7..9f48f2c 100644
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -88,6 +88,11 @@ CONFIG_SERIAL_8250_RUNTIME_UARTS=5
- CONFIG_SERIAL_8250_INGENIC=y
- CONFIG_SERIAL_OF_PLATFORM=y
- # CONFIG_HW_RANDOM is not set
-+CONFIG_CRYPTO_USER=y
-+CONFIG_CRYPTO_USER_API=y
-+CONFIG_CRYPTO_USER_API_RNG=y
-+CONFIG_CRYPTO_HW=y
-+CONFIG_CRYPTO_DEV_JZ4780_RNG=y
- CONFIG_I2C=y
- CONFIG_I2C_JZ4780=y
- CONFIG_GPIO_SYSFS=y
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 25f6877ce464..603963e1d8e7 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -383,6 +383,9 @@ asmlinkage void start_secondary(void)
+ 	cpumask_set_cpu(cpu, &cpu_coherent_mask);
+ 	notify_cpu_starting(cpu);
+ 
++	complete(&cpu_running);
++	synchronise_count_slave(cpu);
++
+ 	set_cpu_online(cpu, true);
+ 
+ 	set_cpu_sibling_map(cpu);
+@@ -390,9 +393,6 @@ asmlinkage void start_secondary(void)
+ 
+ 	calculate_cpu_foreign_map();
+ 
+-	complete(&cpu_running);
+-	synchronise_count_slave(cpu);
+-
+ 	/*
+ 	 * irq will be enabled in ->smp_finish(), enabling it too early
+ 	 * is dangerous.
 -- 
-2.10.0
+2.7.4

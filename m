@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 04:57:43 +0200 (CEST)
-Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:34908
-        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990506AbdHWC5gn9vKs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 04:57:36 +0200
-Received: by mail-pg0-x243.google.com with SMTP id m133so461547pga.2;
-        Tue, 22 Aug 2017 19:57:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2017 04:58:06 +0200 (CEST)
+Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:34914
+        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990511AbdHWC5mR0hys (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2017 04:57:42 +0200
+Received: by mail-pg0-x242.google.com with SMTP id m133so461704pga.2;
+        Tue, 22 Aug 2017 19:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=h5mTxLiBFYE0bF05U8Mwrv3ydBDfFGkMMI8nBETkZuo=;
-        b=YL5uGkt3UYY4JDPTNFudU2AONjnjSxyjwvAjQYVlgCWlcOkxyrMQRaHxhPxZLzdrmK
-         VtyMyPtG1Ww/+lcNo7a2yubU05Ahg0M45WyVLytPOwRkGZKrUSc/RCv0E6S3xuwQISKG
-         5iMKBsdQYOIdtEQfdJSQ77NRIiSgzkRq0emNrcg/1vNNeITSz7Krv99H5PmTnmcpdPdC
-         dFsO+v1LLXR3heYx0IXLi46atPj8L8I6UfsxwzhKcQgrU2rGfxFapme++ZzExv+NYK3y
-         wDEVBWKWQaLd4ZX+n3QUpii8XMn3K5POepKXlSh0BIFrZLhPAKTN2rkKudymmhn+jPFd
-         KFIQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=phcFsdWDqG7TeGjBNoWJbV5xDY4Q14cQBDBGXmtJ42k=;
+        b=V5Xf/+i+Z/haK2Q0wR3iHxmgJo+qhOPB3wLxkMSDpS8DbdI4YIBsh7eZihbAH/x/qY
+         ITIt2BWxmtL8mL8rksO/9m/SI2C2cMCp9ikHDkzp6/iyoMFxSSvRwLvdSKkP78XfQdvH
+         TIozVNn+t7xXXGGvFSfdqZ0emuNSYyRYlS0P3CT+KwSH1DIHwF+VTpUUTTfAmAWHsMEZ
+         GhUA9mAl5gS6pFAiBK3dJHldog7zQaRQVFsBgyA3pgTexjE84BA6he4rM4rQyzI4gLmh
+         H8m26QfV+aEcxqU+VKV9RfJSRLAFALu+oELwAHzW0VCNYdxDm0QXKfKlBop1QdmZuCpj
+         hvAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=h5mTxLiBFYE0bF05U8Mwrv3ydBDfFGkMMI8nBETkZuo=;
-        b=fAUb7Ig1gZXnRWroGyP1/+uV3Oc57Um09heN5ZhB4AONmZDWDzSt+XH+6GWFw+jvsF
-         0YlDie+DQ3t2b0fAVnIlFBdcCrZ9hH7fyoQVHhl7aKI2cJEqTXiqI0YTQylafal6Jr1D
-         fJWRCPhc5MggHhaGrV/EyM+VFMAO8tWAh8YbKhCZJuP4YoyTmjZfV63wusciVLkZXwuB
-         I1uRBDMHEN7aMSQsrvikRp6qAJlcq8jhpIqpH7k1Col2chzWHN2ZNX233WoPbDjLF5CX
-         QwclnECt4P8FvB9NVjmLrLYzMDLuvKmifbjcz6JDjAAHKo2mjCbt7ee24EpM24/mPhNo
-         zMUw==
-X-Gm-Message-State: AHYfb5ieHnKayW++yYS6LUsdnRrAs8aKt2Vzn32wFY2PY7Qf2H6cRjSb
-        CLEtilBd5kJreA==
-X-Received: by 10.84.132.73 with SMTP id 67mr1308249ple.53.1503457050557;
-        Tue, 22 Aug 2017 19:57:30 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=phcFsdWDqG7TeGjBNoWJbV5xDY4Q14cQBDBGXmtJ42k=;
+        b=eCuMm/kV3lRBF6lRPV4QbOqRdeV1fPEoV/JcLCFmXrIhiWRTyt6GI3sAJeQX2vsh5K
+         3aJ8u0dQf/S+gXneDejhgSytqAZx3WR8HQAHQBy0h31S/YwLBC/yxhczvbdXKf5rGVKq
+         ZVcRbhTTDbahVsyaZKamrQxVNYwHwXlqqQCQ2gAZpgt+q/zkRqIdH8neBr7OWOFpyETX
+         3UsptLc2D45Vvm3E7+vqM1Ac8JmlJmxWdV3WG6UrT1UZkAIZMX/ErH1zS1PEjPUTSu3s
+         D3C5Adi8Wuy2ISHYdpefQ6fvZ7RMZUORB35QStDideM+1+p8RBg/J3iMc7wx/8oTk6Ls
+         ogqQ==
+X-Gm-Message-State: AHYfb5gHXIj9e86P8ADBVk/82Pb0t88xcndR507HhShHtyFiYmKAD7MZ
+        W5eGYArfhKVb0A==
+X-Received: by 10.84.174.193 with SMTP id r59mr1373113plb.266.1503457056551;
+        Tue, 22 Aug 2017 19:57:36 -0700 (PDT)
 Received: from linux.local ([42.109.139.20])
-        by smtp.gmail.com with ESMTPSA id 10sm489771pfs.131.2017.08.22.19.57.24
+        by smtp.gmail.com with ESMTPSA id 10sm489771pfs.131.2017.08.22.19.57.30
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 22 Aug 2017 19:57:29 -0700 (PDT)
+        Tue, 22 Aug 2017 19:57:35 -0700 (PDT)
 From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 To:     herbert@gondor.apana.org.au, davem@davemloft.net,
         robh+dt@kernel.org, mark.rutland@arm.com, ralf@linux-mips.org,
@@ -40,15 +41,17 @@ To:     herbert@gondor.apana.org.au, davem@davemloft.net,
         devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         malat@debian.org, noloader@gmail.com
 Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Subject: [PATCH v2 0/4] crypto: Add driver for JZ4780 PRNG
-Date:   Wed, 23 Aug 2017 08:27:03 +0530
-Message-Id: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
+Subject: [PATCH v2 1/4] crypto: jz4780-rng: Add JZ4780 PRNG devicetree binding documentation
+Date:   Wed, 23 Aug 2017 08:27:04 +0530
+Message-Id: <20170823025707.27888-2-prasannatsmkumar@gmail.com>
 X-Mailer: git-send-email 2.10.0
+In-Reply-To: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
+References: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
 Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59764
+X-archive-position: 59765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,30 +68,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch series adds support of pseudo random number generator found
-in Ingenic's JZ4780 and X1000 SoC.
+Add devicetree bindings for hardware pseudo random number generator
+present in Ingenic JZ4780 SoC.
 
-Based on Paul's review comments, add 'syscon' compatible in CGU node in
-jz4780.dtsi. jz4780-rng driver uses regmap exposed via syscon interface
-to access the RNG registers. CGU driver is not modified in this patch
-set as registers used by CGU driver and this driver are different.
+Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+---
+Changes in v2:
+* Add "syscon" in CGU node's compatible section
+* Make RNG child node of CGU.
 
-PrasannaKumar Muralidharan (4):
-  crypto: jz4780-rng: Add JZ4780 PRNG devicetree binding documentation
-  crypto: jz4780-rng: Add Ingenic JZ4780 hardware PRNG driver
-  crypto: jz4780-rng: Add RNG node to jz4780.dtsi
-  crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
-
- .../bindings/crypto/ingenic,jz4780-rng.txt         |  20 +++
- MAINTAINERS                                        |   5 +
- arch/mips/boot/dts/ingenic/jz4780.dtsi             |   6 +-
- arch/mips/configs/ci20_defconfig                   |   5 +
- drivers/crypto/Kconfig                             |  19 +++
- drivers/crypto/Makefile                            |   1 +
- drivers/crypto/jz4780-rng.c                        | 168 +++++++++++++++++++++
- 7 files changed, 223 insertions(+), 1 deletion(-)
+ .../bindings/crypto/ingenic,jz4780-rng.txt           | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
- create mode 100644 drivers/crypto/jz4780-rng.c
 
+diff --git a/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt b/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
+new file mode 100644
+index 0000000..a0c18e5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
+@@ -0,0 +1,20 @@
++Ingenic jz4780 RNG driver
++
++Required properties:
++- compatible : Should be "ingenic,jz4780-rng"
++
++Example:
++
++cgu: jz4780-cgu@10000000 {
++	compatible = "ingenic,jz4780-cgu", "syscon";
++	reg = <0x10000000 0x100>;
++
++	clocks = <&ext>, <&rtc>;
++	clock-names = "ext", "rtc";
++
++	#clock-cells = <1>;
++
++	rng: rng@d8 {
++		compatible = "ingenic,jz480-rng";
++	};
++};
 -- 
 2.10.0

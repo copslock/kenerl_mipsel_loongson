@@ -1,42 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Aug 2017 21:10:35 +0200 (CEST)
-Received: from aserp1040.oracle.com ([141.146.126.69]:27936 "EHLO
-        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994745AbdHXTK2RDMU0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Aug 2017 21:10:28 +0200
-Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
-        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id v7OJAGql004926
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Aug 2017 19:10:17 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userv0022.oracle.com (8.14.4/8.14.4) with ESMTP id v7OJAFSo011390
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 24 Aug 2017 19:10:16 GMT
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id v7OJAD6l031911;
-        Thu, 24 Aug 2017 19:10:15 GMT
-Received: from mwanda (/197.157.34.178)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 24 Aug 2017 12:10:12 -0700
-Date:   Thu, 24 Aug 2017 22:10:00 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     wuzhangjin@gmail.com
-Cc:     linux-mips@linux-mips.org
-Subject: [bug report] MIPS: Lemote 2F: Add basic CS5536 VSM support
-Message-ID: <20170824190959.cycywo6pcmtkf45a@mwanda>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2017 00:04:40 +0200 (CEST)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:33001 "EHLO
+        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994798AbdHXWEeczDJJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2017 00:04:34 +0200
+Received: from darkstar.musicnaut.iki.fi (85-76-79-90-nat.elisa-mobile.fi [85.76.79.90])
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id E2D37234187;
+        Fri, 25 Aug 2017 01:04:33 +0300 (EEST)
+Date:   Fri, 25 Aug 2017 01:04:33 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     wuzhangjin@gmail.com, linux-mips@linux-mips.org
+Subject: Re: [bug report] MIPS: Lemote 2F: Add basic CS5536 VSM support
+Message-ID: <20170824220433.lxlpfa7yf3jswzas@darkstar.musicnaut.iki.fi>
+References: <20170824190959.cycywo6pcmtkf45a@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20170609 (1.8.3)
-X-Source-IP: userv0022.oracle.com [156.151.31.74]
-Return-Path: <dan.carpenter@oracle.com>
+In-Reply-To: <20170824190959.cycywo6pcmtkf45a@mwanda>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59794
+X-archive-position: 59795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.carpenter@oracle.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,37 +39,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[ This code is 8 years old, so it's possible no one has this hardware
-  any more.  -dan ]
+Hi,
 
-Hello Wu Zhangjin,
+On Thu, Aug 24, 2017 at 10:10:00PM +0300, Dan Carpenter wrote:
+> [ This code is 8 years old, so it's possible no one has this hardware
+>   any more.  -dan ]
 
-The patch 22c21003a91b: "MIPS: Lemote 2F: Add basic CS5536 VSM
-support" from Nov 10, 2009, leads to the following static checker
-warning:
+I have a working Lemote 2F system running current mainline in active use.
 
-	./arch/mips/loongson64/common/cs5536/cs5536_ohci.c:141 (null)()
-	warn: masked condition '(lo & 3840) == 11' is always false.
-
-arch/mips/loongson64/common/cs5536/cs5536_ohci.c
-   135          case PCI_INTERRUPT_LINE:
-   136                  conf_data =
-   137                      CFG_PCI_INTERRUPT_LINE(PCI_DEFAULT_PIN, CS5536_USB_INTR);
-   138                  break;
-   139          case PCI_OHCI_INT_REG:
-   140                  _rdmsr(DIVIL_MSR_REG(PIC_YSEL_LOW), &hi, &lo);
-   141                  if ((lo & 0x00000f00) == CS5536_USB_INTR)
-
-CS5536_USB_INTR is 11 so this condition can't possibly be true.  I'm not
-sure what was intended.
-
-   142                          conf_data = 1;
-   143                  break;
-   144          default:
-   145                  break;
-   146          }
-   147  
-   148          return conf_data;
-
-regards,
-dan carpenter
+A.

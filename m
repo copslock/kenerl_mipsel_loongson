@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Aug 2017 17:35:20 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15557 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994729AbdHXPfNLsTGJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Aug 2017 17:35:13 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id DE53846C049A5;
-        Thu, 24 Aug 2017 16:35:01 +0100 (IST)
-Received: from [10.20.78.111] (10.20.78.111) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 24 Aug 2017
- 16:35:02 +0100
-Date:   Thu, 24 Aug 2017 16:34:51 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Joseph Myers <joseph@codesourcery.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
-        "binutils@sourceware.org" <binutils@sourceware.org>,
-        "gcc@gcc.gnu.org" <gcc@gcc.gnu.org>
-Subject: RE: [RFC v2] MIPS ABI Extension for IEEE Std 754 Non-Compliant
- Interlinking
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235380AC3E7A@HHMAIL01.hh.imgtec.org>
-Message-ID: <alpine.DEB.2.00.1708231619520.17596@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1605141043120.6794@tp.orcam.me.uk> <6D39441BF12EF246A7ABCE6654B023537E40C27F@hhmail02.hh.imgtec.org> <alpine.DEB.2.00.1607121323050.4076@tp.orcam.me.uk> <6D39441BF12EF246A7ABCE6654B0235380AC3E7A@HHMAIL01.hh.imgtec.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Aug 2017 21:10:35 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:27936 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994745AbdHXTK2RDMU0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Aug 2017 21:10:28 +0200
+Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id v7OJAGql004926
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 24 Aug 2017 19:10:17 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userv0022.oracle.com (8.14.4/8.14.4) with ESMTP id v7OJAFSo011390
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 24 Aug 2017 19:10:16 GMT
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id v7OJAD6l031911;
+        Thu, 24 Aug 2017 19:10:15 GMT
+Received: from mwanda (/197.157.34.178)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 24 Aug 2017 12:10:12 -0700
+Date:   Thu, 24 Aug 2017 22:10:00 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     wuzhangjin@gmail.com
+Cc:     linux-mips@linux-mips.org
+Subject: [bug report] MIPS: Lemote 2F: Add basic CS5536 VSM support
+Message-ID: <20170824190959.cycywo6pcmtkf45a@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.111]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170609 (1.8.3)
+X-Source-IP: userv0022.oracle.com [156.151.31.74]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59793
+X-archive-position: 59794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,100 +49,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Matthew,
+[ This code is 8 years old, so it's possible no one has this hardware
+  any more.  -dan ]
 
-On Fri, 11 Nov 2016, Matthew Fortune wrote:
+Hello Wu Zhangjin,
 
-> This means that a user consciously creating an object that 'needs' ieee
-> compliance via use of -fieee=strict or -mieee=strict is thwarted by the
-> next user who builds the executable. This kind of scenario can occur with
-> a static library prepared by an expert in floating point and then someone
-> casually including that into a bigger application. Obviously a similar
-> issue is present with the rules around executable and shared libraries
-> where the executable's compliance mode can override a shared library
-> but at this level we are not losing any information and the executable
-> has either very specifically been set to 'relaxed' mode or the kernel
-> has set legacy to mean relaxed. The latter can at least be fixed by
-> changing the kernel. Losing information in a static link cannot be
-> fixed.
+The patch 22c21003a91b: "MIPS: Lemote 2F: Add basic CS5536 VSM
+support" from Nov 10, 2009, leads to the following static checker
+warning:
 
- I think I can see your point and I admit I may have oversimplified the 
-model, losing a piece of crucial information and consequently control.
+	./arch/mips/loongson64/common/cs5536/cs5536_ohci.c:141 (null)()
+	warn: masked condition '(lo & 3840) == 11' is always false.
 
- What I can propose is a changed model which requires three states at 
-compilation/assembly, and then four states at link/load time automatically 
-determined by the input objects, with a possible influence of linker 
-command-line options to prevent certain transitions.  These are (names up 
-to discussion):
+arch/mips/loongson64/common/cs5536/cs5536_ohci.c
+   135          case PCI_INTERRUPT_LINE:
+   136                  conf_data =
+   137                      CFG_PCI_INTERRUPT_LINE(PCI_DEFAULT_PIN, CS5536_USB_INTR);
+   138                  break;
+   139          case PCI_OHCI_INT_REG:
+   140                  _rdmsr(DIVIL_MSR_REG(PIC_YSEL_LOW), &hi, &lo);
+   141                  if ((lo & 0x00000f00) == CS5536_USB_INTR)
 
-1. Strict -- known to require the NaN encodings to match,
+CS5536_USB_INTR is 11 so this condition can't possibly be true.  I'm not
+sure what was intended.
 
-2. Unknown -- may or may not require the NaN encodings to match,
+   142                          conf_data = 1;
+   143                  break;
+   144          default:
+   145                  break;
+   146          }
+   147  
+   148          return conf_data;
 
-3. Unneeded -- known not to require the NaN encodings to match
-
--- at compilation/assembly and:
-
-A. Strict -- enforcing matching NaN encodings -- built from strict, 
-   unknown and unneeded objects of the matching NaN encoding,
-
-B. Unknown -- matching the NaN encodings, but not enforcing it -- built 
-   from unknown and unneeded objects of the matching NaN encoding,
-
-C. Unneeded -- not requiring the NaN encodings to match -- built from only
-   unneeded objects of the matching NaN encoding,
-
-D. Relaxed -- known not to match either NaN encoding -- built from unknown 
-   and unneeded objects of which at least one does not match the NaN 
-   encoding of the remaining objects, or from at least one relaxed object.
-
--- at link/load time.  Any other object combinations would result in a 
-link/load failure, e.g. you could not mix A with a D object, or any object 
-not matching the NaN encoding.
-
- The difference between B and C is at the run time -- the treatment of B 
-is controlled by the "ieee754=" kernel option, whereas C always ignores 
-NaN compatibility of the hardware.  The difference between C and D is at 
-the link/load time -- C can be upgraded to A or B, but D is inherently 
-lost and remains at D.  At the ELF binary level B objects correspond to 
-what I previously referred to as legacy objects, i.e. no extra annotation 
-beyond the EF_MIPS_NAN2008 bit.  There could be a linker command-line 
-option to prevent a transition from B to D from happening if not desired, 
-causing a link failure.
-
- The states would be maintained at run-time, when a DSO is dlopen(3)ed.  
-A would accept A, B or C if matching the NaN encoding, and stay at A.  B 
-would accept B or C if matching the NaN encoding, and stay at B.  With the 
-relaxed kernel configuration B would also accept B or C using the opposite 
-NaN encoding or D, and switch to D.  C would accept C if matching the NaN 
-encoding, and stay at C.  C would accept B if matching the NaN encoding, 
-and switch to B.  C would accept B or C using the opposite NaN encoding or 
-D, and switch to D.  Any other combinations would cause a dlopen(3) 
-failure.
-
- In this model only the initial state is determined by the main executable 
-and further transitions are possible as dynamic objects are added, making 
-the use of prctl(3) to switch states more prominent.  One unfortunate 
-consequence is that dlopen(3)ing an A DSO from a B or C executable 
-switches its state to A permanently making it impossible to subsequently 
-dlopen(3) a D DSO even though it would have be allowed beforehand.  
-Perhaps it would be possible to track state transitions and restore the B 
-or C state as appropriate when the A DSO is dlclose(3)d.  Likewise with B 
-or C to D and C to B state transitions.
-
- In this model I think I would recommend distributions to have the 
-compiler configured for 2 by default, so that user-built software comes 
-out as B (with a link-time transition to D disallowed by default), however 
-distributed software compiled as 3 and consequently linked as C, with any 
-pieces identified as doing proper math compiled as 1 and consequently 
-linked as A, for both NaN encodings if required.  The reason is I think we 
-need to draw a line somewhere and conclude that while we can try to 
-minimise the damage caused by the hardware peculiarities created by the 
-architecture maintainers we cannot prevent all cases of bad software 
-builds caused by gross incompetence.
-
- Does this model match your expectations?  If so, then I'll work on a 
-specification update and a corresponding user interface change, and post 
-the results.
-
-  Maciej
+regards,
+dan carpenter

@@ -1,60 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2017 23:20:33 +0200 (CEST)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:33461
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993457AbdHYVU1Va0e7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2017 23:20:27 +0200
-Received: by mail-wm0-x242.google.com with SMTP id e67so1001157wmd.0;
-        Fri, 25 Aug 2017 14:20:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2017 23:21:55 +0200 (CEST)
+Received: from mail-wm0-x234.google.com ([IPv6:2a00:1450:400c:c09::234]:35373
+        "EHLO mail-wm0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993457AbdHYVVn1yhh7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2017 23:21:43 +0200
+Received: by mail-wm0-x234.google.com with SMTP id y71so735387wmd.0;
+        Fri, 25 Aug 2017 14:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=qbIGU1RVONbETkiRi5RgEzEBPHZ7SMPS9LlF2jlwdzg=;
-        b=FWVNJ0dcah/jHBGdv6zVCbsd1o5tlcqG0YwyUcz9dJGacr82Gw0tmWsHPWpIh3QwRS
-         fYR3+TNdrpqzLB9IYbQFnMO6iuosifWFTBADfI/F8UADd1v9JVBW3rIO3uWU48EnZxnQ
-         IvBcw3qYgK+EBHTPbEbz/6x3yY0ADUzoo02yBRWy4VNzlz56Zpdj/xLJOzkuyl+l1xO6
-         dJCwvnNv4bulgcwn4Ym0n+rYhpm9vmR0CRw8B9uSpaDksm2xNRFVDkfVbyyitRIsOqDC
-         KQqabvH41ia1Wku7Uc9edJsxvbWrUFdqL/MSOKs6wWrsCS2quNYBJlnYornsRO+fBgGR
-         nSWw==
+        h=to:from:subject:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=OFQVyhwjl01oFLmjqn5ZjP5k03XbK4PXM16cyy9YYGU=;
+        b=PVXSrThW56ctQNupcY71/G6fgQzr0cL/rET3oYD/D8D2U3333bkiWpqScFKHJHauLl
+         SHTT8simitpj/KhJAUqQo+hE/0Z82QH7iB+XhMoo2D1EsCHWybeNCz0u7ghvDHWdqdra
+         W05Yi5HdIYxszSQT5vYPsymCen/wkN8sdy4G0er7XhfoMAMDHFEMzzSos0nYESGZzv9I
+         s1KzGI3808RidUEGM68RdZjP7on+gVDo/x+1sGse1M0bh8DuNVX/3k5i9nVHw8EJ13N9
+         Q/2UFVYE/PBdLg7uEbXWdCpb3oPWYU9lOvUs9E54qRhaHwJSJHmsTPEct7T7dbKPOREn
+         hAFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qbIGU1RVONbETkiRi5RgEzEBPHZ7SMPS9LlF2jlwdzg=;
-        b=uauqcfeJWMagQBztaueawC9r8A9rvJflZRVbBPDPScIvREVkf8PiHrj/tZBt28kjnV
-         xvRox2BtSaP0TtJIttNoXiiRaX/q7/BWvQR+zi9vmvoIcQUq5+wvbiWbnrbSWFpgKrIo
-         6W0AOHjVvvrHjwGHaWK7UD8sVcJS8UlBdHmKKnylV5T6QGQ76TNEtvN1KGTjtyZG/tYG
-         3o7ANSeVB5d/cYDD2s3SAxXti+hRCNebi8JN2VGyeBsjYiqdaJKG8J3nJCCp2+vybz0D
-         8PAmrKwm/4UvZOplh+n08XcSMGIiL+w/Wpi1FYcYwOmRBlo25UmJk0vFb1GcX5JnDD6O
-         nhuw==
-X-Gm-Message-State: AHYfb5hnqMShhN18uJDbp62/iEY37UUNczd//D2H5+5NmophIixOtB72
-        9gEB1r4LvI/6Ag==
-X-Received: by 10.28.51.200 with SMTP id z191mr308780wmz.193.1503696021903;
-        Fri, 25 Aug 2017 14:20:21 -0700 (PDT)
+        h=x-gm-message-state:to:from:subject:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=OFQVyhwjl01oFLmjqn5ZjP5k03XbK4PXM16cyy9YYGU=;
+        b=b+vtA2JJbRoms9gV99ZM9oyceKmBoMtOmH3rhQZ/mnxP1SUcldHRRXPMMnN6bXkNqO
+         e7336ZS6JEiG+756EQ8uyFrUh3VhC2FYJ7sLgXx1zNrje4ypcM2Q6GUNNajBupml9B2c
+         i5fhyCOVHRojNfqdc8b32N1Q4ZaEqSsYIcb6yW7QbCrprVpPCGkEC7A2CP4rx40kdBQl
+         mdOrXbjPMiYO6bdeZxx+VfTGypNSxr7EWlr1usVHGAcffnaxU15xEE03XpEQE+Ax6gmc
+         lMyGP/R4FLL3MyBESCsutiPnNAJ/5JQffre3RyynBYIoJCa5MQdpqK9JQQnAYZZPf26k
+         0ApQ==
+X-Gm-Message-State: AHYfb5iXJFxDMemeDQoKPk/2aPjmeezYk9XkGEINVTnR9jVJeObeOJJM
+        YBxEmm5zTO3PZw==
+X-Received: by 10.28.213.203 with SMTP id m194mr314874wmg.41.1503696096961;
+        Fri, 25 Aug 2017 14:21:36 -0700 (PDT)
 Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id f145sm1337830wmf.13.2017.08.25.14.20.20
+        by smtp.googlemail.com with ESMTPSA id k9sm3854018wrc.93.2017.08.25.14.21.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Aug 2017 14:20:21 -0700 (PDT)
-Subject: Re: [PATCH 00/11] MIPS: Fix various sparse warnings
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>, trivial@kernel.org
-References: <20170823181754.24044-1-paul.burton@imgtec.com>
+        Fri, 25 Aug 2017 14:21:36 -0700 (PDT)
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <878b21e3-d119-e653-3875-154655f4b22f@gmail.com>
-Date:   Fri, 25 Aug 2017 14:20:17 -0700
+Subject: Maintenance of Linux/MIPS?
+Cc:     john@phrozen.org, david.daney@cavium.com
+Message-ID: <c96eaa42-ab7f-d902-746c-c6cff242c596@gmail.com>
+Date:   Fri, 25 Aug 2017 14:21:33 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20170823181754.24044-1-paul.burton@imgtec.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59802
+X-archive-position: 59803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,61 +68,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/23/2017 11:17 AM, Paul Burton wrote:
-> This series fixes various sparse warnings, mostly low hanging fruit.
-> 
-> Patches 1-7 include headers providing declarations of functions or
-> variables in files which provide their definitions. This clears up
-> sparse warnings & ensures that the prototypes of declarations &
-> definitions match.
-> 
-> Patch 8 fixes the type of a fault_addr argument used in the FPU
-> emulation code to be correct & avoid a lot of sparse warnings.
-> 
-> Patches 9 & 10 remove some dead code.
-> 
-> Patch 11 declares a bunch of things which we don't use outside of the
-> translation unit that defines them static.
-> 
-> Applies atop v4.13-rc6.
+Hi,
 
-FWIW:
+There are a lot of patches at
+https://patchwork.linux-mips.org/project/linux-mips/list/ that appear to
+be under the "New" state and have not had a chance to be reviewed yet.
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+What can we do to help speed up the review process, do we need more
+reviewers? It seems like most patches affecting Linux/MIPS are still
+core MIPS kernel changes, but would it help if say, people were queuing
+SoC/board specific patches in trees and submit pull requests? Would that
+help lower the amount of patches to review?
 
-> 
-> Paul Burton (11):
->   MIPS: generic: Include asm/bootinfo.h for plat_fdt_relocated()
->   MIPS: generic: Include asm/time.h for get_c0_*_int()
->   MIPS: Include asm/setup.h for cpu_cache_init()
->   MIPS: Include linux/cpu.h for arch_cpu_idle()
->   MIPS: Include asm/delay.h for __{,n,u}delay()
->   MIPS: Include elf-randomize.h for arch_mmap_rnd() &
->     arch_randomize_brk()
->   MIPS: Include linux/initrd.h for free_initrd_mem()
->   MIPS: math-emu: Correct user fault_addr type
->   MIPS: Remove __invalidate_kernel_vmap_range
->   MIPS: Remove plat_timer_setup()
->   MIPS: Declare various variables & functions static
-> 
->  arch/mips/generic/init.c              |  5 +++++
->  arch/mips/generic/irq.c               |  1 +
->  arch/mips/include/asm/fpu_emulator.h  |  2 +-
->  arch/mips/kernel/cpu-probe.c          |  2 +-
->  arch/mips/kernel/idle.c               |  1 +
->  arch/mips/kernel/mips-r2-to-r6-emul.c |  6 +++---
->  arch/mips/kernel/pm-cps.c             |  2 +-
->  arch/mips/kernel/time.c               | 14 --------------
->  arch/mips/kernel/unaligned.c          |  2 +-
->  arch/mips/lib/delay.c                 |  1 +
->  arch/mips/math-emu/cp1emu.c           |  8 ++++----
->  arch/mips/mm/cache.c                  |  2 +-
->  arch/mips/mm/dma-default.c            |  4 ++--
->  arch/mips/mm/init.c                   |  1 +
->  arch/mips/mm/mmap.c                   |  1 +
->  15 files changed, 24 insertions(+), 28 deletions(-)
-> 
+Any other suggestion?
 
-
+Thanks!
 -- 
 Florian

@@ -1,55 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2017 23:57:48 +0200 (CEST)
-Received: from mail-oi0-f68.google.com ([209.85.218.68]:36491 "EHLO
-        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994821AbdHYV5lgU2QA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2017 23:57:41 +0200
-Received: by mail-oi0-f68.google.com with SMTP id d66so611207oib.3;
-        Fri, 25 Aug 2017 14:57:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=QsxYmqUlrgZULAZSYYcAG4QJ0S4RFdFvdAU2R+J77vQ=;
-        b=RhI1WSQ7BuRwbWUlNRENp6tDEAfw35XbLKDgbQd2YMlvbLfOvS9SDUD6R7HwAoaPGx
-         soXB3+E4rCHOHCPbu5C8U/qgNqU1BLdRpZB0dlAQl5UiQQbsbImys3mKnMUIgxgswofc
-         o5ljLIs3sgdYoXkbfIORXeQKxtPp+dtSlNr04B6FAuyHKce+sDQJ/3shbS6Vc6KmMwpa
-         1DafalUV66Dq0ifozkyzrocw08Ih+rGFO41STA8d05/wOogcnP2Wjeq/n5RjmFxjamME
-         OfPnuVG9RK/W3jjFGf00sCRcr4Y1xsT5TS81qhCTBGDLL+92Gzapcih8CudmCCw2XENv
-         kZ5Q==
-X-Gm-Message-State: AHYfb5hlzKQtDm2MypShfWuEq4A0OVaxD4JgTAanCZvN47dmEq/o5Zc5
-        fRRzPRJx0EbXRg==
-X-Received: by 10.202.67.7 with SMTP id q7mr14511394oia.62.1503698255726;
-        Fri, 25 Aug 2017 14:57:35 -0700 (PDT)
-Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
-        by smtp.gmail.com with ESMTPSA id n72sm7832457oig.13.2017.08.25.14.57.35
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 25 Aug 2017 14:57:35 -0700 (PDT)
-Date:   Fri, 25 Aug 2017 16:57:34 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        mark.rutland@arm.com, ralf@linux-mips.org, paul@crapouillou.net,
-        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org, malat@debian.org, noloader@gmail.com
-Subject: Re: [PATCH v2 1/4] crypto: jz4780-rng: Add JZ4780 PRNG devicetree
- binding documentation
-Message-ID: <20170825215734.f5rc7fzxpl3ynnwl@rob-hp-laptop>
-References: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
- <20170823025707.27888-2-prasannatsmkumar@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Aug 2017 01:07:57 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55507 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993179AbdHYXHrczeMx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 26 Aug 2017 01:07:47 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id BC32C81BFC55D;
+        Sat, 26 Aug 2017 00:07:35 +0100 (IST)
+Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Sat, 26 Aug 2017 00:07:40 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
+ (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 26 Aug
+ 2017 00:07:40 +0100
+Received: from np-p-burton.localnet (10.20.1.88) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 25 Aug
+ 2017 16:07:37 -0700
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>, <ralf@linux-mips.org>
+CC:     <john@phrozen.org>, <david.daney@cavium.com>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: Re: Maintenance of Linux/MIPS?
+Date:   Fri, 25 Aug 2017 16:07:31 -0700
+Message-ID: <1539189.Q9sWsqvfCA@np-p-burton>
+Organization: Imagination Technologies
+In-Reply-To: <c96eaa42-ab7f-d902-746c-c6cff242c596@gmail.com>
+References: <c96eaa42-ab7f-d902-746c-c6cff242c596@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170823025707.27888-2-prasannatsmkumar@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <robherring2@gmail.com>
+Content-Type: multipart/signed; boundary="nextPart1641345.frPGPuF62o";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-Originating-IP: [10.20.1.88]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59804
+X-archive-position: 59805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,52 +51,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 23, 2017 at 08:27:04AM +0530, PrasannaKumar Muralidharan wrote:
-> Add devicetree bindings for hardware pseudo random number generator
-> present in Ingenic JZ4780 SoC.
-> 
-> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-> ---
-> Changes in v2:
-> * Add "syscon" in CGU node's compatible section
-> * Make RNG child node of CGU.
-> 
->  .../bindings/crypto/ingenic,jz4780-rng.txt           | 20 ++++++++++++++++++++
+--nextPart1641345.frPGPuF62o
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-bindings/rng/ for RNG h/w.
+Hello,
 
->  1 file changed, 20 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
+On Friday, 25 August 2017 14:21:33 PDT Florian Fainelli wrote:
+> Hi,
 > 
-> diff --git a/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt b/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
-> new file mode 100644
-> index 0000000..a0c18e5
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
-> @@ -0,0 +1,20 @@
-> +Ingenic jz4780 RNG driver
-> +
-> +Required properties:
-> +- compatible : Should be "ingenic,jz4780-rng"
-> +
-> +Example:
-> +
-> +cgu: jz4780-cgu@10000000 {
-> +	compatible = "ingenic,jz4780-cgu", "syscon";
-> +	reg = <0x10000000 0x100>;
-> +
-> +	clocks = <&ext>, <&rtc>;
-> +	clock-names = "ext", "rtc";
-> +
-> +	#clock-cells = <1>;
-> +
-> +	rng: rng@d8 {
-
-unit-address requires reg property.
-
-> +		compatible = "ingenic,jz480-rng";
-> +	};
-> +};
-> -- 
-> 2.10.0
+> There are a lot of patches at
+> https://patchwork.linux-mips.org/project/linux-mips/list/ that appear to
+> be under the "New" state and have not had a chance to be reviewed yet.
 > 
+> What can we do to help speed up the review process, do we need more
+> reviewers? It seems like most patches affecting Linux/MIPS are still
+> core MIPS kernel changes, but would it help if say, people were queuing
+> SoC/board specific patches in trees and submit pull requests? Would that
+> help lower the amount of patches to review?
+> 
+> Any other suggestion?
+> 
+> Thanks!
+
+Personally I think it'd probably be good if Ralf were willing to formally 
+share maintainership duties with someone else or a group of people. I think 
+James for example would be a great choice, and already dons a maintainer hat.
+
+As-is Ralf ends up being a bottleneck a lot of the time, and the backlog in 
+patchwork is pretty good evidence of that. There are a whole lot of patches 
+that ought to be going into v4.14, and that ought to be sat in linux-next 
+right now in preparation for that. Sadly not many of them are, and usually 
+that remains the case until very close to the merge window. Sharing the load 
+could only help with this.
+
+Thanks,
+    Paul
+--nextPart1641345.frPGPuF62o
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAlmgrbMACgkQgiDZ+mk8
+HGUz7xAApj3d17u5thHq5IUgCsa1au4fAN70befvN3iD4p8aA0WWQewIQa5U9pCt
+vlP8GfVEfjpbDI9r31sEMJwb9QYaSUISetw7sUNxoi2awSveRaLm/GYyQswWslOI
+IfPo/Da7ohDMrSLX5t7W9OEt/zjTUGRApfsw6NV1A7pogYykxAcTkmei/YN6BvLp
+z9u3KPH17cJzwo39P0gC4RX8d9y1skjajSgL/o4AEzOq21XieHTRuKJyeze1x/zK
+OcIC3mUZkOLFFziIln7dyh2dOWTHKLEsL9jUpqa7rIEY/mlgXOcJ3OlITbTBxkSK
+YLH9/ZQ8BhngdZEd/eolJmUlpImqA7wIt+ISOii+0qdbonzv0aduvZC69Ur54ic3
+6UZfhw96I0M0kVIn7XS5L/k0RclxAQs6O4bh1kFesvIpeWwcDoC74X35VoPdX2fS
+KgqMEHJA/ZTCbhA3aGCyI845DBFPxlJSq/ZRL1Spdc2j6GNwg9FGVNdvir2gVJ9S
+eJ2hgNZahMR1U39uGjovKIGU0lyGcNxawlSC1uS2jfv2Rl4Ny0U3NQekFfkVCwxW
+PwqQTume9oVJugL380I4Y/ThawJ+B/AHaWz4JkAf7GFpUJ7TL7FImJqe8hkymGrE
+BIGiW/y4IayNn1Bth7Q9KdguFKb81sMqzncmeWhg7xmWhgzXv8Q=
+=cnlm
+-----END PGP SIGNATURE-----
+
+--nextPart1641345.frPGPuF62o--

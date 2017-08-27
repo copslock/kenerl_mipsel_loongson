@@ -1,51 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2017 18:16:39 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:48261 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994951AbdH0QLO46wkp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Aug 2017 18:11:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=A6rVdJc79RFX3Nn1zYvkhb1EbACMTbYd+8B2L9Uf2XM=; b=RT3UlEbqPe8MB7b+BTuHt2VZv
-        6b++/ifKE+n+LGr+2BIosU/ARSGP2g5kxRc1Rk0tsrYyX6nvY2NLeZ6HNiNMywJgKb/R4wiiTw9M1
-        U9pReulwbj5F/BInZVnB34ZcIoCaVn4zkeE8iO400H1r0lTXsosvTpeseVhvYHSwqTW8mX/fyTfLQ
-        a2oaC27VTIyw9k0yF1FsGAeospQijEmaXqxxlkbOpwWbcmKOaByooPzuafsRhaRQ5Soffp88TpVrk
-        Gn45ZbxlByY4cI7sRAbKFd7mwZzF5zUBQO1H2nDbqCYNtlcFk4vPx3DL5EFnjjj5op+YeUfyVq9Y+
-        EnbIFJULw==;
-Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dm09T-0006v0-HH; Sun, 27 Aug 2017 16:11:07 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     iommu@lists.linux-foundation.org
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Michal Simek <monstr@monstr.eu>,
-        David Howells <dhowells@redhat.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
-        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-xtensa@linux-xtensa.org,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 12/12] dma-mapping: turn dma_cache_sync into a dma_map_ops method
-Date:   Sun, 27 Aug 2017 18:10:32 +0200
-Message-Id: <20170827161032.22772-13-hch@lst.de>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170827161032.22772-1-hch@lst.de>
-References: <20170827161032.22772-1-hch@lst.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+0d43c28c1e7909f7e68d+5117+infradead.org+hch@bombadil.srs.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2017 21:56:34 +0200 (CEST)
+Received: from mail-lf0-x22c.google.com ([IPv6:2a00:1450:4010:c07::22c]:32929
+        "EHLO mail-lf0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23995079AbdH0T40LT3XV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Aug 2017 21:56:26 +0200
+Received: by mail-lf0-x22c.google.com with SMTP id y15so15286683lfd.0
+        for <linux-mips@linux-mips.org>; Sun, 27 Aug 2017 12:56:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=from:message-id:user-agent:date:to:cc:subject:mime-version
+         :content-disposition;
+        bh=hqgIbfFzBoqE3Jf00o1qxQY5jW5m2Cqnj3W5z+bjDmM=;
+        b=ORvJhERaTs08HFujA3oXj3Fiue4yxACnGctCyOJEiT1770V7wKK1A+QGmKPG+n2kTL
+         NjvkDazTtZlQlsYc17rX2I5fO+J//so8+w0Gz89ZaZFuMjprrl7aItHrq7pZDkkOWTNU
+         z9HshBfAYbFm1DlDbBGexuaMm4rHOLTqNgPDFV4N9x8UNZS1VBScgdpzzA7X4SptjLwj
+         RG2TkYYxYjEp7M9umRRF04kZsWkAwm/3rh2TROGN+s87vX0/4aAMdQlrllReMU3ArKBG
+         GtOq8gkbx0O0732wcQxqVNagapHURKB1lM17k6fGTWbDfSNkycicdTXLEVqBvqNiGRlV
+         YIsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:message-id:user-agent:date:to:cc:subject
+         :mime-version:content-disposition;
+        bh=hqgIbfFzBoqE3Jf00o1qxQY5jW5m2Cqnj3W5z+bjDmM=;
+        b=In6n67tIaBroSX9HmNyKgmp87syhwzuL8M2kwKnH9x7Dm2Td54kc2Oux7Fh1enqUvO
+         zMouyogXrtsTdbpjigzR6r74jX38wanb5Hk6nsdh6ztdWWXf5q0HEg3QJPWLSz8VuUpT
+         lzOu859N+7BkO1+yK6w/gidYKikLcma53DVX6bYZ6+qJRlZ9Ek7Uk49/kThCvYdPgL+1
+         paB2gg+po4W9CpgRcqa+TMWoWxicQoft1+fQD3Q6Ar2trGziSeF9xeBcUVWRAB6Cbjq0
+         t+rfGLGBEazD7GA0Um0OwEQBexf61g8zRS7EqzScW5aJ+p4NxzGuTny6MflQFH4tWwz/
+         yEZA==
+X-Gm-Message-State: AHYfb5jkUJLa1+3ps+m8QlLrJmbDqX7wkpzy/PBxM0BTDpP/wJlhsXzk
+        YkncFqwd1wVcLQB3
+X-Received: by 10.46.69.131 with SMTP id s125mr1959653lja.131.1503863778027;
+        Sun, 27 Aug 2017 12:56:18 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([31.173.80.216])
+        by smtp.gmail.com with ESMTPSA id d192sm2007659lfe.89.2017.08.27.12.56.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 27 Aug 2017 12:56:16 -0700 (PDT)
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+X-Google-Original-From: "Sergei Shtylyov" <headless@wasted.cogentembedded.com>
+Received: by wasted.cogentembedded.com (sSMTP sendmail emulation); Sun, 27 Aug 2017 22:56:13 +0300
+Message-Id: <20170827195613.904715064@cogentembedded.com>
+User-Agent: quilt/0.64
+Date:   Sun, 27 Aug 2017 22:55:09 +0300
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        linux-ide@vger.kernel.org ("open list:LIBATA PATA DRIVERS")
+Cc:     linux-mips@linux-mips.org,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: [PATCH] pata_octeon_cf: use of_property_read_{bool|u32}()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Disposition: inline; filename=pata_octeon_cf-use-of_property_read_-bool-u32.patch
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59827
+X-archive-position: 59828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,469 +71,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After we removed all the dead wood it turns out only two architectures
-actually implement dma_cache_sync as a no-op: mips and parisc.  Add
-a cache_sync method to struct dma_map_ops and implement it for the
-mips defualt DMA ops, and the parisc pa11 ops.
+The Octeon CF driver basically  open-codes of_property_read_{bool|u32}()
+using  of_{find|get}_property() calls in its  probe() method.  Using the
+modern DT APIs saves 2 LoCs and 16 bytes of object code (MIPS gcc 3.4.3).
 
-Note that arm, arc and openrisc support DMA_ATTR_NON_CONSISTENT, but
-never provided a functional dma_cache_sync implementations, which
-seems somewhat odd.
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/alpha/include/asm/dma-mapping.h      |  2 --
- arch/cris/include/asm/dma-mapping.h       |  6 ------
- arch/frv/include/asm/dma-mapping.h        |  6 ------
- arch/hexagon/include/asm/dma-mapping.h    |  3 ---
- arch/ia64/include/asm/dma-mapping.h       |  6 ------
- arch/m32r/include/asm/dma-mapping.h       |  5 -----
- arch/m68k/include/asm/dma-mapping.h       |  6 ------
- arch/metag/include/asm/dma-mapping.h      | 10 ----------
- arch/microblaze/include/asm/dma-mapping.h |  5 -----
- arch/mips/include/asm/dma-mapping.h       |  3 ---
- arch/mips/mm/dma-default.c                |  7 +++----
- arch/mn10300/include/asm/dma-mapping.h    |  6 ------
- arch/nios2/include/asm/dma-mapping.h      |  9 ---------
- arch/parisc/include/asm/dma-mapping.h     |  8 --------
- arch/parisc/kernel/pci-dma.c              |  8 ++++++++
- arch/powerpc/include/asm/dma-mapping.h    |  5 -----
- arch/s390/include/asm/dma-mapping.h       |  5 -----
- arch/sh/include/asm/dma-mapping.h         |  6 ------
- arch/sparc/include/asm/dma-mapping.h      |  8 --------
- arch/tile/include/asm/dma-mapping.h       |  9 ---------
- arch/unicore32/include/asm/dma-mapping.h  |  5 -----
- arch/x86/include/asm/dma-mapping.h        |  6 ------
- arch/xtensa/include/asm/dma-mapping.h     |  5 -----
- include/linux/dma-mapping.h               | 13 +++++++++++++
- 24 files changed, 24 insertions(+), 128 deletions(-)
+ drivers/ata/pata_octeon_cf.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/alpha/include/asm/dma-mapping.h b/arch/alpha/include/asm/dma-mapping.h
-index 5d53666935e6..399a4f49355e 100644
---- a/arch/alpha/include/asm/dma-mapping.h
-+++ b/arch/alpha/include/asm/dma-mapping.h
-@@ -8,6 +8,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return dma_ops;
- }
- 
--#define dma_cache_sync(dev, va, size, dir)		  ((void)0)
+Index: libata/drivers/ata/pata_octeon_cf.c
+===================================================================
+--- libata.orig/drivers/ata/pata_octeon_cf.c
++++ libata/drivers/ata/pata_octeon_cf.c
+@@ -840,7 +840,6 @@ static int octeon_cf_probe(struct platfo
+ 	struct property *reg_prop;
+ 	int n_addr, n_size, reg_len;
+ 	struct device_node *node;
+-	const void *prop;
+ 	void __iomem *cs0;
+ 	void __iomem *cs1 = NULL;
+ 	struct ata_host *host;
+@@ -850,7 +849,7 @@ static int octeon_cf_probe(struct platfo
+ 	void __iomem *base;
+ 	struct octeon_cf_port *cf_port;
+ 	int rv = -ENOMEM;
 -
- #endif	/* _ALPHA_DMA_MAPPING_H */
-diff --git a/arch/cris/include/asm/dma-mapping.h b/arch/cris/include/asm/dma-mapping.h
-index 256169de3743..e30adde42beb 100644
---- a/arch/cris/include/asm/dma-mapping.h
-+++ b/arch/cris/include/asm/dma-mapping.h
-@@ -16,10 +16,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- }
- #endif
++	u32 bus_width;
  
--static inline void
--dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--	       enum dma_data_direction direction)
--{
--}
--
- #endif
-diff --git a/arch/frv/include/asm/dma-mapping.h b/arch/frv/include/asm/dma-mapping.h
-index da0e5c9744c4..da24ae943f02 100644
---- a/arch/frv/include/asm/dma-mapping.h
-+++ b/arch/frv/include/asm/dma-mapping.h
-@@ -14,10 +14,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &frv_dma_ops;
- }
+ 	node = pdev->dev.of_node;
+ 	if (node == NULL)
+@@ -860,11 +859,10 @@ static int octeon_cf_probe(struct platfo
+ 	if (!cf_port)
+ 		return -ENOMEM;
  
--static inline
--void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--		    enum dma_data_direction direction)
--{
--}
--
- #endif  /* _ASM_DMA_MAPPING_H */
-diff --git a/arch/hexagon/include/asm/dma-mapping.h b/arch/hexagon/include/asm/dma-mapping.h
-index 463dbc18f853..5208de242e79 100644
---- a/arch/hexagon/include/asm/dma-mapping.h
-+++ b/arch/hexagon/include/asm/dma-mapping.h
-@@ -37,9 +37,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return dma_ops;
- }
+-	cf_port->is_true_ide = (of_find_property(node, "cavium,true-ide", NULL) != NULL);
++	cf_port->is_true_ide = of_property_read_bool(node, "cavium,true-ide");
  
--extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--			   enum dma_data_direction direction);
--
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- {
- 	if (!dev->dma_mask)
-diff --git a/arch/ia64/include/asm/dma-mapping.h b/arch/ia64/include/asm/dma-mapping.h
-index 99dfc1aa9d3c..9e5b5df76ff8 100644
---- a/arch/ia64/include/asm/dma-mapping.h
-+++ b/arch/ia64/include/asm/dma-mapping.h
-@@ -44,10 +44,4 @@ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
- 	return daddr;
- }
+-	prop = of_get_property(node, "cavium,bus-width", NULL);
+-	if (prop)
+-		is_16bit = (be32_to_cpup(prop) == 16);
++	if (of_property_read_u32(node, "cavium,bus-width", &bus_width) == 0)
++		is_16bit = (bus_width == 16);
+ 	else
+ 		is_16bit = false;
  
--static inline void
--dma_cache_sync (struct device *dev, void *vaddr, size_t size,
--	enum dma_data_direction dir)
--{
--}
--
- #endif /* _ASM_IA64_DMA_MAPPING_H */
-diff --git a/arch/m32r/include/asm/dma-mapping.h b/arch/m32r/include/asm/dma-mapping.h
-index aff3ae8b62f7..9e993daed7a0 100644
---- a/arch/m32r/include/asm/dma-mapping.h
-+++ b/arch/m32r/include/asm/dma-mapping.h
-@@ -13,11 +13,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &dma_noop_ops;
- }
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--				  enum dma_data_direction direction)
--{
--}
--
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- {
- 	if (!dev->dma_mask)
-diff --git a/arch/m68k/include/asm/dma-mapping.h b/arch/m68k/include/asm/dma-mapping.h
-index 9210e470771b..9a0d559fcc13 100644
---- a/arch/m68k/include/asm/dma-mapping.h
-+++ b/arch/m68k/include/asm/dma-mapping.h
-@@ -8,10 +8,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
-         return &m68k_dma_ops;
- }
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--				  enum dma_data_direction dir)
--{
--	/* we use coherent allocation, so not much to do here. */
--}
--
- #endif  /* _M68K_DMA_MAPPING_H */
-diff --git a/arch/metag/include/asm/dma-mapping.h b/arch/metag/include/asm/dma-mapping.h
-index ea573be2b6d0..340265dcf839 100644
---- a/arch/metag/include/asm/dma-mapping.h
-+++ b/arch/metag/include/asm/dma-mapping.h
-@@ -8,14 +8,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &metag_dma_ops;
- }
- 
--/*
-- * dma_alloc_attrs() always returns non-cacheable memory, so there's no need to
-- * do any flushing here.
-- */
--static inline void
--dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--	       enum dma_data_direction direction)
--{
--}
--
- #endif
-diff --git a/arch/microblaze/include/asm/dma-mapping.h b/arch/microblaze/include/asm/dma-mapping.h
-index ad448e4aedb6..6b9ea39405b8 100644
---- a/arch/microblaze/include/asm/dma-mapping.h
-+++ b/arch/microblaze/include/asm/dma-mapping.h
-@@ -25,9 +25,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &dma_direct_ops;
- }
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--		enum dma_data_direction direction)
--{
--}
--
- #endif	/* _ASM_MICROBLAZE_DMA_MAPPING_H */
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index aba71385f9d1..6ea1439430a2 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -26,9 +26,6 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- 
- static inline void dma_mark_clean(void *addr, size_t size) {}
- 
--extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--	       enum dma_data_direction direction);
--
- #define arch_setup_dma_ops arch_setup_dma_ops
- static inline void arch_setup_dma_ops(struct device *dev, u64 dma_base,
- 				      u64 size, const struct iommu_ops *iommu,
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 8e78251eccc2..e69073f32a71 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -419,7 +419,7 @@ int mips_dma_supported(struct device *dev, u64 mask)
- 	return plat_dma_supported(dev, mask);
- }
- 
--void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
-+static void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 			 enum dma_data_direction direction)
- {
- 	BUG_ON(direction == DMA_NONE);
-@@ -428,8 +428,6 @@ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 		__dma_sync_virtual(vaddr, size, direction);
- }
- 
--EXPORT_SYMBOL(dma_cache_sync);
--
- static const struct dma_map_ops mips_default_dma_map_ops = {
- 	.alloc = mips_dma_alloc_coherent,
- 	.free = mips_dma_free_coherent,
-@@ -443,7 +441,8 @@ static const struct dma_map_ops mips_default_dma_map_ops = {
- 	.sync_sg_for_cpu = mips_dma_sync_sg_for_cpu,
- 	.sync_sg_for_device = mips_dma_sync_sg_for_device,
- 	.mapping_error = mips_dma_mapping_error,
--	.dma_supported = mips_dma_supported
-+	.dma_supported = mips_dma_supported,
-+	.cache_sync = mips_dma_cache_sync,
- };
- 
- const struct dma_map_ops *mips_dma_map_ops = &mips_default_dma_map_ops;
-diff --git a/arch/mn10300/include/asm/dma-mapping.h b/arch/mn10300/include/asm/dma-mapping.h
-index dc24163b190f..439e474ed6d7 100644
---- a/arch/mn10300/include/asm/dma-mapping.h
-+++ b/arch/mn10300/include/asm/dma-mapping.h
-@@ -18,10 +18,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &mn10300_dma_ops;
- }
- 
--static inline
--void dma_cache_sync(void *vaddr, size_t size,
--		    enum dma_data_direction direction)
--{
--}
--
- #endif
-diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
-index f8dc62222741..6ceb92251da0 100644
---- a/arch/nios2/include/asm/dma-mapping.h
-+++ b/arch/nios2/include/asm/dma-mapping.h
-@@ -17,13 +17,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &nios2_dma_ops;
- }
- 
--/*
-- * dma_alloc_attrs() always returns non-cacheable memory, so there's no need to
-- * do any flushing here.
-- */
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--				  enum dma_data_direction direction)
--{
--}
--
- #endif /* _ASM_NIOS2_DMA_MAPPING_H */
-diff --git a/arch/parisc/include/asm/dma-mapping.h b/arch/parisc/include/asm/dma-mapping.h
-index 2b16282add69..cb26bbd71d8a 100644
---- a/arch/parisc/include/asm/dma-mapping.h
-+++ b/arch/parisc/include/asm/dma-mapping.h
-@@ -32,14 +32,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return hppa_dma_ops;
- }
- 
--static inline void
--dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--	       enum dma_data_direction direction)
--{
--	if (hppa_dma_ops->sync_single_for_cpu)
--		flush_kernel_dcache_range((unsigned long)vaddr, size);
--}
--
- static inline void *
- parisc_walk_tree(struct device *dev)
- {
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index 5f0067a62738..ee43e9f73ad3 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -572,6 +572,12 @@ static void pa11_dma_sync_sg_for_device(struct device *dev, struct scatterlist *
- 		flush_kernel_vmap_range(sg_virt(sg), sg->length);
- }
- 
-+static void pa11_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
-+	       enum dma_data_direction direction)
-+{
-+	flush_kernel_dcache_range((unsigned long)vaddr, size);
-+}
-+
- const struct dma_map_ops pcxl_dma_ops = {
- 	.dma_supported =	pa11_dma_supported,
- 	.alloc =		pa11_dma_alloc,
-@@ -584,6 +590,7 @@ const struct dma_map_ops pcxl_dma_ops = {
- 	.sync_single_for_device = pa11_dma_sync_single_for_device,
- 	.sync_sg_for_cpu =	pa11_dma_sync_sg_for_cpu,
- 	.sync_sg_for_device =	pa11_dma_sync_sg_for_device,
-+	.cache_sync =		pa11_dma_cache_sync,
- };
- 
- static void *pcx_dma_alloc(struct device *dev, size_t size,
-@@ -620,4 +627,5 @@ const struct dma_map_ops pcx_dma_ops = {
- 	.sync_single_for_device = pa11_dma_sync_single_for_device,
- 	.sync_sg_for_cpu =	pa11_dma_sync_sg_for_cpu,
- 	.sync_sg_for_device =	pa11_dma_sync_sg_for_device,
-+	.cache_sync =		pa11_dma_cache_sync,
- };
-diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
-index 320846442bfb..2e43c2ef7632 100644
---- a/arch/powerpc/include/asm/dma-mapping.h
-+++ b/arch/powerpc/include/asm/dma-mapping.h
-@@ -141,10 +141,5 @@ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
- 
- #define ARCH_HAS_DMA_MMAP_COHERENT
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--		enum dma_data_direction direction)
--{
--}
--
- #endif /* __KERNEL__ */
- #endif	/* _ASM_DMA_MAPPING_H */
-diff --git a/arch/s390/include/asm/dma-mapping.h b/arch/s390/include/asm/dma-mapping.h
-index 512ad0eaa11a..b17304b13de5 100644
---- a/arch/s390/include/asm/dma-mapping.h
-+++ b/arch/s390/include/asm/dma-mapping.h
-@@ -15,11 +15,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &dma_noop_ops;
- }
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--				  enum dma_data_direction direction)
--{
--}
--
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- {
- 	if (!dev->dma_mask)
-diff --git a/arch/sh/include/asm/dma-mapping.h b/arch/sh/include/asm/dma-mapping.h
-index b46194ecef17..e89df111c017 100644
---- a/arch/sh/include/asm/dma-mapping.h
-+++ b/arch/sh/include/asm/dma-mapping.h
-@@ -9,12 +9,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return dma_ops;
- }
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--		    enum dma_data_direction dir)
--{
--}
--
--/* arch/sh/mm/consistent.c */
- extern void *dma_generic_alloc_coherent(struct device *dev, size_t size,
- 					dma_addr_t *dma_addr, gfp_t flag,
- 					unsigned long attrs);
-diff --git a/arch/sparc/include/asm/dma-mapping.h b/arch/sparc/include/asm/dma-mapping.h
-index 60bf1633d554..b298ed45cb23 100644
---- a/arch/sparc/include/asm/dma-mapping.h
-+++ b/arch/sparc/include/asm/dma-mapping.h
-@@ -5,14 +5,6 @@
- #include <linux/mm.h>
- #include <linux/dma-debug.h>
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--				  enum dma_data_direction dir)
--{
--	/* Since dma_{alloc,free}_noncoherent() allocated coherent memory, this
--	 * routine can be a nop.
--	 */
--}
--
- extern const struct dma_map_ops *dma_ops;
- extern const struct dma_map_ops pci32_dma_ops;
- 
-diff --git a/arch/tile/include/asm/dma-mapping.h b/arch/tile/include/asm/dma-mapping.h
-index 7061dc8af43a..97ad62878290 100644
---- a/arch/tile/include/asm/dma-mapping.h
-+++ b/arch/tile/include/asm/dma-mapping.h
-@@ -67,13 +67,4 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- #define HAVE_ARCH_DMA_SET_MASK 1
- int dma_set_mask(struct device *dev, u64 mask);
- 
--/*
-- * dma_alloc_attrs() always returns non-cacheable memory, so there's no need to
-- * do any flushing here.
-- */
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--				  enum dma_data_direction direction)
--{
--}
--
- #endif /* _ASM_TILE_DMA_MAPPING_H */
-diff --git a/arch/unicore32/include/asm/dma-mapping.h b/arch/unicore32/include/asm/dma-mapping.h
-index e949855bb794..ac608c2f6af6 100644
---- a/arch/unicore32/include/asm/dma-mapping.h
-+++ b/arch/unicore32/include/asm/dma-mapping.h
-@@ -45,10 +45,5 @@ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
- 
- static inline void dma_mark_clean(void *addr, size_t size) {}
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr,
--		size_t size, enum dma_data_direction direction)
--{
--}
--
- #endif /* __KERNEL__ */
- #endif
-diff --git a/arch/x86/include/asm/dma-mapping.h b/arch/x86/include/asm/dma-mapping.h
-index 04877267ad18..cdc1ab17eb62 100644
---- a/arch/x86/include/asm/dma-mapping.h
-+++ b/arch/x86/include/asm/dma-mapping.h
-@@ -66,12 +66,6 @@ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
- }
- #endif /* CONFIG_X86_DMA_REMAP */
- 
--static inline void
--dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--	enum dma_data_direction dir)
--{
--}
--
- static inline unsigned long dma_alloc_coherent_mask(struct device *dev,
- 						    gfp_t gfp)
- {
-diff --git a/arch/xtensa/include/asm/dma-mapping.h b/arch/xtensa/include/asm/dma-mapping.h
-index 353e0314d6ba..153bf2370988 100644
---- a/arch/xtensa/include/asm/dma-mapping.h
-+++ b/arch/xtensa/include/asm/dma-mapping.h
-@@ -23,11 +23,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &xtensa_dma_map_ops;
- }
- 
--static inline void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
--		    enum dma_data_direction direction)
--{
--}
--
- static inline dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
- {
- 	return (dma_addr_t)paddr;
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 4c98cc96971f..ca73ba27ae79 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -125,6 +125,8 @@ struct dma_map_ops {
- 	void (*sync_sg_for_device)(struct device *dev,
- 				   struct scatterlist *sg, int nents,
- 				   enum dma_data_direction dir);
-+	void (*cache_sync)(struct device *dev, void *vaddr, size_t size,
-+			enum dma_data_direction direction);
- 	int (*mapping_error)(struct device *dev, dma_addr_t dma_addr);
- 	int (*dma_supported)(struct device *dev, u64 mask);
- #ifdef ARCH_HAS_DMA_GET_REQUIRED_MASK
-@@ -435,6 +437,17 @@ dma_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
- #define dma_map_page(d, p, o, s, r) dma_map_page_attrs(d, p, o, s, r, 0)
- #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
- 
-+static inline void
-+dma_cache_sync(struct device *dev, void *vaddr, size_t size,
-+		enum dma_data_direction dir)
-+{
-+	const struct dma_map_ops *ops = get_dma_ops(dev);
-+
-+	BUG_ON(!valid_dma_direction(dir));
-+	if (ops->cache_sync)
-+		ops->cache_sync(dev, vaddr, size, dir);
-+}
-+
- extern int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 			   void *cpu_addr, dma_addr_t dma_addr, size_t size);
- 
--- 
-2.11.0

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2017 18:11:32 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:50181 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2017 18:11:58 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:38433 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994892AbdH0QKuTXgCp (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23994907AbdH0QKumnHBp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 27 Aug 2017 18:10:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=1gkwFIEl+mGuY2quRb1Mw3EgjPTrVWuIul2QAg4C4yU=; b=i80rTXQ7nCQGgutfWmFYlb6mI
-        Ua4JGzBuzQzipyRh23A7HlTWESKkLxCVEwkaOeO/qbAZuev3M/wrszDfZaaONR3swFz50YYcXseHT
-        Tom6BxytZRDNvLkeDFb7Xc5x2lSsTdvPEh4kGoQiRFEQOs5tkXZg/vrtEzlqbO+75AkV9ovx+vwCW
-        ZiGp4fXo0G9ddtzxtd32pr/RzAfr6QECzi1YlFvgLKSX4Wp44kJ06m4mC7YZLk6xF7uxpksPI6iwQ
-        AFPvB/21q45e9ZXOieTd3vtPYcWPi6UNy4Y2eK9/EnWv0wAiVdNjK66/rpKDfsry+4ilHBF0QM0cL
-        9mvTjOVRg==;
+         bh=+Um/ceceeE/cD42xzfXk0MN+1+tMan5Tc0BBsyGV9N4=; b=KdLCt2np1r7WQq20wQDiu1aM9
+        vuqm2MSjkhypc4DRmctENxotKYWpk4+GIaD7+oEg7qxR8f+rAvjDn+Q3eODI3tA8IOm0AStpMBA0t
+        JxK+6BfP0qSYG7tjBN1Oly/10Y9H5X+tmRkkLk0eLEYwYE71vC7SA3wSWzXUh82Dh/Xy67RPbJvGT
+        whBcdiEf8fdaitAQMr629pWax79E+ZU9Ue774tfsgu+NYS1hOPVNzpMxCpszYOdc9j97fdf7GTslI
+        fxwTTSKXFmaNO/CNS8VbNY7yXn+dEIawu9eRPJOQJ/v9SRQhc9QGzM73k1ZTPdSNCubuIhrEzObuO
+        4QR+jLZvA==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dm08z-0006r4-Uy; Sun, 27 Aug 2017 16:10:38 +0000
+        id 1dm08x-0006qo-As; Sun, 27 Aug 2017 16:10:35 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
@@ -30,18 +30,16 @@ Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
         linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-xtensa@linux-xtensa.org,
         linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 01/12] floppy: consolidate the dummy fd_cacheflush definition
-Date:   Sun, 27 Aug 2017 18:10:21 +0200
-Message-Id: <20170827161032.22772-2-hch@lst.de>
+Subject: refactor dma_cache_sync
+Date:   Sun, 27 Aug 2017 18:10:20 +0200
+Message-Id: <20170827161032.22772-1-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170827161032.22772-1-hch@lst.de>
-References: <20170827161032.22772-1-hch@lst.de>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Return-Path: <BATV+0d43c28c1e7909f7e68d+5117+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59816
+X-archive-position: 59817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,95 +56,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Only mips defines this helper, so remove all the other arch definitions.
+The dma_cache_sync routines is used to flush caches for memory returned
+by dma_alloc_attrs with the DMA_ATTR_NON_CONSISTENT flag (or previously
+from dma_alloc_noncoherent), but the requirements for it seems to be
+frequently misunderstood.  dma_cache_sync is documented to be a no-op for
+allocations that do not have the DMA_ATTR_NON_CONSISTENT flag set, and
+yet a lot of architectures implement it in some way despite not
+implementing DMA_ATTR_NON_CONSISTENT.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/alpha/include/asm/floppy.h    | 2 --
- arch/powerpc/include/asm/floppy.h  | 2 --
- arch/sparc/include/asm/floppy_32.h | 1 -
- arch/sparc/include/asm/floppy_64.h | 1 -
- drivers/block/floppy.c             | 4 ++++
- 5 files changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/arch/alpha/include/asm/floppy.h b/arch/alpha/include/asm/floppy.h
-index bae97eb19d26..942924756cf2 100644
---- a/arch/alpha/include/asm/floppy.h
-+++ b/arch/alpha/include/asm/floppy.h
-@@ -24,7 +24,6 @@
- #define fd_set_dma_count(count) set_dma_count(FLOPPY_DMA,count)
- #define fd_enable_irq()         enable_irq(FLOPPY_IRQ)
- #define fd_disable_irq()        disable_irq(FLOPPY_IRQ)
--#define fd_cacheflush(addr,size) /* nothing */
- #define fd_request_irq()        request_irq(FLOPPY_IRQ, floppy_interrupt,\
- 					    0, "floppy", NULL)
- #define fd_free_irq()           free_irq(FLOPPY_IRQ, NULL)
-@@ -62,7 +61,6 @@ alpha_fd_dma_setup(char *addr, unsigned long size, int mode, int io)
- 	prev_dir = dir;
- 
- 	fd_clear_dma_ff();
--	fd_cacheflush(addr, size);
- 	fd_set_dma_mode(mode);
- 	set_dma_addr(FLOPPY_DMA, bus_addr);
- 	fd_set_dma_count(size);
-diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
-index 936a904ae78c..167c44b58848 100644
---- a/arch/powerpc/include/asm/floppy.h
-+++ b/arch/powerpc/include/asm/floppy.h
-@@ -25,7 +25,6 @@
- #define fd_get_dma_residue()    fd_ops->_get_dma_residue(FLOPPY_DMA)
- #define fd_enable_irq()         enable_irq(FLOPPY_IRQ)
- #define fd_disable_irq()        disable_irq(FLOPPY_IRQ)
--#define fd_cacheflush(addr,size) /* nothing */
- #define fd_free_irq()           free_irq(FLOPPY_IRQ, NULL);
- 
- #include <linux/pci.h>
-@@ -152,7 +151,6 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
- 	prev_dir = dir;
- 
- 	fd_clear_dma_ff();
--	fd_cacheflush(addr, size);
- 	fd_set_dma_mode(mode);
- 	set_dma_addr(FLOPPY_DMA, bus_addr);
- 	fd_set_dma_count(size);
-diff --git a/arch/sparc/include/asm/floppy_32.h b/arch/sparc/include/asm/floppy_32.h
-index 071b83e52f15..dab58525229e 100644
---- a/arch/sparc/include/asm/floppy_32.h
-+++ b/arch/sparc/include/asm/floppy_32.h
-@@ -70,7 +70,6 @@ static struct sun_floppy_ops sun_fdops;
- #define fd_set_dma_count(count)   sun_fd_set_dma_count(count)
- #define fd_enable_irq()           /* nothing... */
- #define fd_disable_irq()          /* nothing... */
--#define fd_cacheflush(addr, size) /* nothing... */
- #define fd_request_irq()          sun_fd_request_irq()
- #define fd_free_irq()             /* nothing... */
- #if 0  /* P3: added by Alain, these cause a MMU corruption. 19960524 XXX */
-diff --git a/arch/sparc/include/asm/floppy_64.h b/arch/sparc/include/asm/floppy_64.h
-index 625756406a7e..a1db35a22c99 100644
---- a/arch/sparc/include/asm/floppy_64.h
-+++ b/arch/sparc/include/asm/floppy_64.h
-@@ -72,7 +72,6 @@ static struct sun_floppy_ops sun_fdops;
- #define fd_set_dma_addr(addr)     sun_fdops.fd_set_dma_addr(addr)
- #define fd_set_dma_count(count)   sun_fdops.fd_set_dma_count(count)
- #define get_dma_residue(x)        sun_fdops.get_dma_residue()
--#define fd_cacheflush(addr, size) /* nothing... */
- #define fd_request_irq()          sun_fdops.fd_request_irq()
- #define fd_free_irq()             sun_fdops.fd_free_irq()
- #define fd_eject(drive)           sun_fdops.fd_eject(drive)
-diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
-index 9c00f29e40c1..b1d896f9a227 100644
---- a/drivers/block/floppy.c
-+++ b/drivers/block/floppy.c
-@@ -275,6 +275,10 @@ static int set_next_request(void);
- #define fd_dma_mem_alloc(size) __get_dma_pages(GFP_KERNEL, get_order(size))
- #endif
- 
-+#ifndef fd_cacheflush
-+#define fd_cacheflush(addr, size) /* nothing... */
-+#endif
-+
- static inline void fallback_on_nodma_alloc(char **addr, size_t l)
- {
- #ifdef FLOPPY_CAN_FALLBACK_ON_NODMA
--- 
-2.11.0
+This series removes a few abuses of dma_cache_sync for non-DMA API
+purposes, then changes all remaining architectures that do not implement
+DMA_ATTR_NON_CONSISTENT to implement dma_cache_sync as a no-op, and
+then adds the struct dma_map_ops indirection we use for all other
+DMA mapping operations to dma_cache_sync as well, thus removing all but
+two implementations of the function.

@@ -1,44 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 14:51:47 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:58116 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992181AbdH1Mv3vBVKs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 14:51:29 +0200
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6020388A;
-        Mon, 28 Aug 2017 12:51:23 +0000 (UTC)
-Date:   Mon, 28 Aug 2017 14:51:29 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Russell King <linux@armlinux.org.uk>
-Subject: Re: [PATCH 3/8] tty/bcm63xx_uart: use refclk for the expected clock
- name
-Message-ID: <20170828125129.GA2652@kroah.com>
-References: <20170802093429.12572-1-jonas.gorski@gmail.com>
- <20170802093429.12572-4-jonas.gorski@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 15:53:18 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:44530 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993302AbdH1NxGGKxFJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Aug 2017 15:53:06 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v7SDr5sM021167;
+        Mon, 28 Aug 2017 15:53:05 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v7SDr5dO021166;
+        Mon, 28 Aug 2017 15:53:05 +0200
+Date:   Mon, 28 Aug 2017 15:53:05 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Fredrik Noring <noring@nocrew.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Add basic R5900 support
+Message-ID: <20170828135305.GA20466@linux-mips.org>
+References: <20170827132309.GA32166@localhost.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170802093429.12572-4-jonas.gorski@gmail.com>
+In-Reply-To: <20170827132309.GA32166@localhost.localdomain>
 User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <gregkh@linuxfoundation.org>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59834
+X-archive-position: 59835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,9 +42,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 02, 2017 at 11:34:24AM +0200, Jonas Gorski wrote:
-> We now have the clock available under refclk, so use that.
-> 
-> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+On Sun, Aug 27, 2017 at 03:23:10PM +0200, Fredrik Noring wrote:
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Fredrik Noring <noring@nocrew.org>
+> ---
+>  arch/mips/Kconfig                | 13 +++++++++++++
+>  arch/mips/include/asm/cpu-type.h |  4 ++++
+>  arch/mips/include/asm/cpu.h      |  6 ++++++
+>  arch/mips/include/asm/module.h   |  2 ++
+>  arch/mips/kernel/cpu-probe.c     | 10 ++++++++++
+>  5 files changed, 35 insertions(+)
+
+Patch is looking perfect at a glance but without support for an R5900
+system that is the PS2 it kinda pointless so I'd like to wait and
+review and apply everything at once.
+
+  Ralf

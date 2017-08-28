@@ -1,54 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 20:31:47 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:47890 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993921AbdH1SbgJREYr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Aug 2017 20:31:36 +0200
-Received: from mail-qt0-f174.google.com (mail-qt0-f174.google.com [209.85.216.174])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5470521A95;
-        Mon, 28 Aug 2017 18:31:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 5470521A95
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
-Received: by mail-qt0-f174.google.com with SMTP id x36so5918866qtx.2;
-        Mon, 28 Aug 2017 11:31:34 -0700 (PDT)
-X-Gm-Message-State: AHYfb5j7AhYlknLp3ceh1ZYhgscwyID/9teNG5Wtgw77e/bl62UOvVxm
-        1oltUhFNRbv5WLLst7TPyjkLy7rvVA==
-X-Received: by 10.237.62.237 with SMTP id o42mr2255238qtf.87.1503945093459;
- Mon, 28 Aug 2017 11:31:33 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 23:52:35 +0200 (CEST)
+Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:35260
+        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993955AbdH1VwWpXK7I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 23:52:22 +0200
+Received: by mail-io0-x243.google.com with SMTP id c18so1579620ioj.2
+        for <linux-mips@linux-mips.org>; Mon, 28 Aug 2017 14:52:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=pU3QM1wFOSWktliB00fJ0WzBmux66Sm+5rZHJt8+UZ4=;
+        b=T/k1aAGhmmp6EqzL4v1yDfTDn0UQTg1p+SUTpc3IarB9MsPC2kUcUi6SDB2DC3gOg3
+         ToFpEv16rf4s+BOfHR36Nn+QmXPU/LPYpi167Qj5dwynThNOGRKe3oF3qWDIcJKmbw86
+         YChL/uhZ72WFL0etq1vt9ja8anv3Ysld3AHDt8CKxAK9ikTHIVL4iiInTY/6Ey7Bhc/1
+         oXvDBSC1yzF5jVjHWQMEvTxFfj+I1RUAB7Mb8ZIpumDWQo+qrcbCpTCZt3s0L92D1Wrm
+         IqyoQ31wBiUJEy5DjvCTpgxtJGtXAtIh+M+b2s/hH+qnxx65pXfi9RSzhKPA3B3EW19f
+         RhUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pU3QM1wFOSWktliB00fJ0WzBmux66Sm+5rZHJt8+UZ4=;
+        b=Y35X0cqEnwvaCTJ2rYyKLNTJgtLwZzDXPgIkgpOWUjXZZv7qjTF+RQW4ROSgOv0EKc
+         plXmcc/CTd0fOlAMK2gkpQZ89u8yZyNjC1/DqB/zRqXD/5KqqviYqZRWaA+9ysrkq2y5
+         7eUjhT5xXfyLQp1TEZJQgV+bKEGT2qNsdDrlre6oRV4CQ07nJeT3Hbe/xVjJZaUWUdk5
+         PS0jmM/0qPSUpIf/py/4p1N2EBXk5JMltL0zXBPsIoIHnjZJeMOHHN7LYMFhvtNSXlGI
+         506RaqOurSMFjXnyHXr5SmYQ9AROhF+30D0xtF1JmP+RIHuqsJQgEcNcMhC0yx2qFYu7
+         g0UA==
+X-Gm-Message-State: AHYfb5hgnvQTatszGwefP5C+SjE8g3FCbLGlSabzaD4NGlHhVtE0cVIb
+        8tLXSWfG3fFqWGOq
+X-Received: by 10.36.249.65 with SMTP id l62mr2069276ith.88.1503957136810;
+        Mon, 28 Aug 2017 14:52:16 -0700 (PDT)
+Received: from ddl.caveonetworks.com (50-233-148-156-static.hfc.comcastbusiness.net. [50.233.148.156])
+        by smtp.googlemail.com with ESMTPSA id y200sm616431itc.34.2017.08.28.14.52.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Aug 2017 14:52:16 -0700 (PDT)
+Subject: Re: [PATCH] pata_octeon_cf: use of_property_read_{bool|u32}()
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        "open list:LIBATA PATA DRIVERS" <linux-ide@vger.kernel.org>
+Cc:     linux-mips@linux-mips.org
+References: <20170827195613.904715064@cogentembedded.com>
+From:   David Daney <ddaney.cavm@gmail.com>
+Message-ID: <d414cf99-2e53-eef8-9372-3900b0543a46@gmail.com>
+Date:   Mon, 28 Aug 2017 14:52:14 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Received: by 10.12.153.1 with HTTP; Mon, 28 Aug 2017 11:31:12 -0700 (PDT)
-In-Reply-To: <CANc+2y7pD7EkSS-9ky4YDxGjk3wGW1PVZje2UXMRuOQJA=S+HA@mail.gmail.com>
-References: <20170823025707.27888-1-prasannatsmkumar@gmail.com>
- <20170823025707.27888-2-prasannatsmkumar@gmail.com> <20170825215734.f5rc7fzxpl3ynnwl@rob-hp-laptop>
- <CANc+2y7pD7EkSS-9ky4YDxGjk3wGW1PVZje2UXMRuOQJA=S+HA@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 28 Aug 2017 13:31:12 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+YO2DRVqudNuigefikkKZiv066wW6cM8qbn5Y31t-WTQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+YO2DRVqudNuigefikkKZiv066wW6cM8qbn5Y31t-WTQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] crypto: jz4780-rng: Add JZ4780 PRNG devicetree
- binding documentation
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-crypto@vger.kernel.org,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Mathieu Malaterre <malat@debian.org>, noloader@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh@kernel.org>
+In-Reply-To: <20170827195613.904715064@cogentembedded.com>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59838
+X-archive-position: 59839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,71 +74,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 25, 2017 at 10:20 PM, PrasannaKumar Muralidharan
-<prasannatsmkumar@gmail.com> wrote:
-> Hi Rob,
->
-> On 26 August 2017 at 03:27, Rob Herring <robh@kernel.org> wrote:
->> On Wed, Aug 23, 2017 at 08:27:04AM +0530, PrasannaKumar Muralidharan wrote:
->>> Add devicetree bindings for hardware pseudo random number generator
->>> present in Ingenic JZ4780 SoC.
->>>
->>> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->>> ---
->>> Changes in v2:
->>> * Add "syscon" in CGU node's compatible section
->>> * Make RNG child node of CGU.
->>>
->>>  .../bindings/crypto/ingenic,jz4780-rng.txt           | 20 ++++++++++++++++++++
->>
->> bindings/rng/ for RNG h/w.
->
-> There are two subsystem for dealing with RNG hw. Hw_random subsystem
-> for true RNG (driver/char/hw_random) and crypto framework for pseudo
-> RNG (crypto/ and drviers/crypto). This HW is pseudo RNG so I have
-> placed the dt bindings in bindings/crypto as the driver itself is in
-> drivers/crypto folder. I am wondering if there is any relation between
-> driver folder and bindings folder. Can you please explain the folder
-> relation? Should this be put in bindings/rng or bindings/crypto?
+On 08/27/2017 12:55 PM, Sergei Shtylyov wrote:
+> The Octeon CF driver basically  open-codes of_property_read_{bool|u32}()
+> using  of_{find|get}_property() calls in its  probe() method.  Using the
+> modern DT APIs saves 2 LoCs and 16 bytes of object code (MIPS gcc 3.4.3).
+> 
+> Signed-off-by: Sergei Shtylyov<sergei.shtylyov@cogentembedded.com>
 
-There's not a 1-1 relationship though obviously there's a lot of
-overlap. I'd still say this should go in bindings/rng.
+It still works with this applied, so:
 
->>>  1 file changed, 20 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
->>>
->>> diff --git a/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt b/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
->>> new file mode 100644
->>> index 0000000..a0c18e5
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/crypto/ingenic,jz4780-rng.txt
->>> @@ -0,0 +1,20 @@
->>> +Ingenic jz4780 RNG driver
->>> +
->>> +Required properties:
->>> +- compatible : Should be "ingenic,jz4780-rng"
->>> +
->>> +Example:
->>> +
->>> +cgu: jz4780-cgu@10000000 {
->>> +     compatible = "ingenic,jz4780-cgu", "syscon";
->>> +     reg = <0x10000000 0x100>;
->>> +
->>> +     clocks = <&ext>, <&rtc>;
->>> +     clock-names = "ext", "rtc";
->>> +
->>> +     #clock-cells = <1>;
->>> +
->>> +     rng: rng@d8 {
->>
->> unit-address requires reg property.
->
-> The driver uses regmap to access the registers. In this case reg
-> property is not useful. Is reg property still needed? If not, how
-> should the node be declared?
+Acked-by: David Daney <david.daney@cavium.com>
 
-What the driver (currently) does is irrelevant to the binding. Your
-choice is either add the reg property or name the node just "rng".
-Either is fine, but better to have more information than less IMO.
-
-Rob
+> 
+> ---
+>   drivers/ata/pata_octeon_cf.c |   10 ++++------
+>   1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> Index: libata/drivers/ata/pata_octeon_cf.c
+> ===================================================================
+> --- libata.orig/drivers/ata/pata_octeon_cf.c
+> +++ libata/drivers/ata/pata_octeon_cf.c
+> @@ -840,7 +840,6 @@ static int octeon_cf_probe(struct platfo
+>   	struct property *reg_prop;
+>   	int n_addr, n_size, reg_len;
+>   	struct device_node *node;
+> -	const void *prop;
+>   	void __iomem *cs0;
+>   	void __iomem *cs1 = NULL;
+>   	struct ata_host *host;
+> @@ -850,7 +849,7 @@ static int octeon_cf_probe(struct platfo
+>   	void __iomem *base;
+>   	struct octeon_cf_port *cf_port;
+>   	int rv = -ENOMEM;
+> -
+> +	u32 bus_width;
+>   
+>   	node = pdev->dev.of_node;
+>   	if (node == NULL)
+> @@ -860,11 +859,10 @@ static int octeon_cf_probe(struct platfo
+>   	if (!cf_port)
+>   		return -ENOMEM;
+>   
+> -	cf_port->is_true_ide = (of_find_property(node, "cavium,true-ide", NULL) != NULL);
+> +	cf_port->is_true_ide = of_property_read_bool(node, "cavium,true-ide");
+>   
+> -	prop = of_get_property(node, "cavium,bus-width", NULL);
+> -	if (prop)
+> -		is_16bit = (be32_to_cpup(prop) == 16);
+> +	if (of_property_read_u32(node, "cavium,bus-width", &bus_width) == 0)
+> +		is_16bit = (bus_width == 16);
+>   	else
+>   		is_16bit = false;
+>   
+> 
+> 
+> 

@@ -1,64 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2017 21:56:34 +0200 (CEST)
-Received: from mail-lf0-x22c.google.com ([IPv6:2a00:1450:4010:c07::22c]:32929
-        "EHLO mail-lf0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23995079AbdH0T40LT3XV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Aug 2017 21:56:26 +0200
-Received: by mail-lf0-x22c.google.com with SMTP id y15so15286683lfd.0
-        for <linux-mips@linux-mips.org>; Sun, 27 Aug 2017 12:56:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 08:26:43 +0200 (CEST)
+Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:33338
+        "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991131AbdH1G0frEVVj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 08:26:35 +0200
+Received: by mail-pg0-x241.google.com with SMTP id q16so5687045pgc.0
+        for <linux-mips@linux-mips.org>; Sun, 27 Aug 2017 23:26:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=from:message-id:user-agent:date:to:cc:subject:mime-version
-         :content-disposition;
-        bh=hqgIbfFzBoqE3Jf00o1qxQY5jW5m2Cqnj3W5z+bjDmM=;
-        b=ORvJhERaTs08HFujA3oXj3Fiue4yxACnGctCyOJEiT1770V7wKK1A+QGmKPG+n2kTL
-         NjvkDazTtZlQlsYc17rX2I5fO+J//so8+w0Gz89ZaZFuMjprrl7aItHrq7pZDkkOWTNU
-         z9HshBfAYbFm1DlDbBGexuaMm4rHOLTqNgPDFV4N9x8UNZS1VBScgdpzzA7X4SptjLwj
-         RG2TkYYxYjEp7M9umRRF04kZsWkAwm/3rh2TROGN+s87vX0/4aAMdQlrllReMU3ArKBG
-         GtOq8gkbx0O0732wcQxqVNagapHURKB1lM17k6fGTWbDfSNkycicdTXLEVqBvqNiGRlV
-         YIsA==
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=o2r6ww6wqepZOlWmszucYXGNqxFZr/kx5uznVpnhaGQ=;
+        b=A171deNIKDvRUAaL1JypLCfaLRMqstue+NWDLu/1SOgq/iwaRFTJjqRS949YENDntW
+         tKw2vIILbxRfvlKjLooMSdLJUB7qFNmhxrsIfusruT8jZ0XIKxDv2kJuABS9Ban11am2
+         skFuubaBkWY3/PJ5OFAxPiuv9inYdUJ46Yr1YJl6ASlzI/lxTeBIkQLTPLkZxtOMGeYU
+         FRKOmbwNjbHmx2QrV1MDY3yQ/69evi0tpF2Qu9t9VUsSpW1+3mq+ZigHicWMiUeI3M4n
+         T2BjRit/xmnKQO1Jsw43oSHuKjaXwnrtR1M39DQQX4FszFAVbXxxikg+4eFZ3EI7KUyB
+         /qkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:message-id:user-agent:date:to:cc:subject
-         :mime-version:content-disposition;
-        bh=hqgIbfFzBoqE3Jf00o1qxQY5jW5m2Cqnj3W5z+bjDmM=;
-        b=In6n67tIaBroSX9HmNyKgmp87syhwzuL8M2kwKnH9x7Dm2Td54kc2Oux7Fh1enqUvO
-         zMouyogXrtsTdbpjigzR6r74jX38wanb5Hk6nsdh6ztdWWXf5q0HEg3QJPWLSz8VuUpT
-         lzOu859N+7BkO1+yK6w/gidYKikLcma53DVX6bYZ6+qJRlZ9Ek7Uk49/kThCvYdPgL+1
-         paB2gg+po4W9CpgRcqa+TMWoWxicQoft1+fQD3Q6Ar2trGziSeF9xeBcUVWRAB6Cbjq0
-         t+rfGLGBEazD7GA0Um0OwEQBexf61g8zRS7EqzScW5aJ+p4NxzGuTny6MflQFH4tWwz/
-         yEZA==
-X-Gm-Message-State: AHYfb5jkUJLa1+3ps+m8QlLrJmbDqX7wkpzy/PBxM0BTDpP/wJlhsXzk
-        YkncFqwd1wVcLQB3
-X-Received: by 10.46.69.131 with SMTP id s125mr1959653lja.131.1503863778027;
-        Sun, 27 Aug 2017 12:56:18 -0700 (PDT)
-Received: from wasted.cogentembedded.com ([31.173.80.216])
-        by smtp.gmail.com with ESMTPSA id d192sm2007659lfe.89.2017.08.27.12.56.14
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 27 Aug 2017 12:56:16 -0700 (PDT)
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-X-Google-Original-From: "Sergei Shtylyov" <headless@wasted.cogentembedded.com>
-Received: by wasted.cogentembedded.com (sSMTP sendmail emulation); Sun, 27 Aug 2017 22:56:13 +0300
-Message-Id: <20170827195613.904715064@cogentembedded.com>
-User-Agent: quilt/0.64
-Date:   Sun, 27 Aug 2017 22:55:09 +0300
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tejun Heo <tj@kernel.org>,
-        linux-ide@vger.kernel.org ("open list:LIBATA PATA DRIVERS")
-Cc:     linux-mips@linux-mips.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: [PATCH] pata_octeon_cf: use of_property_read_{bool|u32}()
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=o2r6ww6wqepZOlWmszucYXGNqxFZr/kx5uznVpnhaGQ=;
+        b=n8BH/AnX8V/LEG9dmot51YnaqqTO7PacmTKtRx1vzmb4OjVojmBTMEhobt+v2PsJRc
+         uAslOZgiJpYajEhosMNqrTEW0sAp9XG2G7lSgoF3Y0bayK4XaUrV6Fi64x+hpi/RcfSa
+         uNGemn3EpYSpJVvg+y/oYEx9DEXjIPwCzeYqfHovLuCdOxZsFwWz1XXJoZqroNgv7+XO
+         ChCe+u6ObU5li84fc5ZJH0M3iErXJ3bB0cXaYjXOpEdiFCNSWXyEyggZhvsCOOkboHM7
+         TscHjZXPqsSQnea38Qc89/5YomFYK3jQMlEuoOZX1h3gcaxAoOtWRqruF7Or2N3sJ8WT
+         ZQNQ==
+X-Gm-Message-State: AHYfb5gD7Mm/EzQhXCzycMVTpi2Idkf5S2bdvMkKI+UT64UpxxGg7w2l
+        jg9uNlIq27faZruPZzQiywgcbY46Og==
+X-Received: by 10.101.73.198 with SMTP id t6mr6594554pgs.340.1503901589854;
+ Sun, 27 Aug 2017 23:26:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Disposition: inline; filename=pata_octeon_cf-use-of_property_read_-bool-u32.patch
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: by 10.100.161.139 with HTTP; Sun, 27 Aug 2017 23:26:29 -0700 (PDT)
+In-Reply-To: <20170827161032.22772-13-hch@lst.de>
+References: <20170827161032.22772-1-hch@lst.de> <20170827161032.22772-13-hch@lst.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 28 Aug 2017 08:26:29 +0200
+X-Google-Sender-Auth: RoLkdPQg1hiOK5xHOURWc5WjUms
+Message-ID: <CAMuHMdVwHx2aATKqYS7xXTjnCigoZzVFFfcZOmvNj3KcFFJehg@mail.gmail.com>
+Subject: Re: [PATCH 12/12] dma-mapping: turn dma_cache_sync into a dma_map_ops method
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Michal Simek <monstr@monstr.eu>,
+        David Howells <dhowells@redhat.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59828
+X-archive-position: 59829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,49 +78,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Octeon CF driver basically  open-codes of_property_read_{bool|u32}()
-using  of_{find|get}_property() calls in its  probe() method.  Using the
-modern DT APIs saves 2 LoCs and 16 bytes of object code (MIPS gcc 3.4.3).
+Hi Christoph,
 
-Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+On Sun, Aug 27, 2017 at 6:10 PM, Christoph Hellwig <hch@lst.de> wrote:
+> After we removed all the dead wood it turns out only two architectures
+> actually implement dma_cache_sync as a no-op: mips and parisc.  Add
 
----
- drivers/ata/pata_octeon_cf.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+s/no-op/real op/
 
-Index: libata/drivers/ata/pata_octeon_cf.c
-===================================================================
---- libata.orig/drivers/ata/pata_octeon_cf.c
-+++ libata/drivers/ata/pata_octeon_cf.c
-@@ -840,7 +840,6 @@ static int octeon_cf_probe(struct platfo
- 	struct property *reg_prop;
- 	int n_addr, n_size, reg_len;
- 	struct device_node *node;
--	const void *prop;
- 	void __iomem *cs0;
- 	void __iomem *cs1 = NULL;
- 	struct ata_host *host;
-@@ -850,7 +849,7 @@ static int octeon_cf_probe(struct platfo
- 	void __iomem *base;
- 	struct octeon_cf_port *cf_port;
- 	int rv = -ENOMEM;
--
-+	u32 bus_width;
- 
- 	node = pdev->dev.of_node;
- 	if (node == NULL)
-@@ -860,11 +859,10 @@ static int octeon_cf_probe(struct platfo
- 	if (!cf_port)
- 		return -ENOMEM;
- 
--	cf_port->is_true_ide = (of_find_property(node, "cavium,true-ide", NULL) != NULL);
-+	cf_port->is_true_ide = of_property_read_bool(node, "cavium,true-ide");
- 
--	prop = of_get_property(node, "cavium,bus-width", NULL);
--	if (prop)
--		is_16bit = (be32_to_cpup(prop) == 16);
-+	if (of_property_read_u32(node, "cavium,bus-width", &bus_width) == 0)
-+		is_16bit = (bus_width == 16);
- 	else
- 		is_16bit = false;
- 
+> a cache_sync method to struct dma_map_ops and implement it for the
+> mips defualt DMA ops, and the parisc pa11 ops.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,71 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 08:26:43 +0200 (CEST)
-Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:33338
-        "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991131AbdH1G0frEVVj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 08:26:35 +0200
-Received: by mail-pg0-x241.google.com with SMTP id q16so5687045pgc.0
-        for <linux-mips@linux-mips.org>; Sun, 27 Aug 2017 23:26:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=o2r6ww6wqepZOlWmszucYXGNqxFZr/kx5uznVpnhaGQ=;
-        b=A171deNIKDvRUAaL1JypLCfaLRMqstue+NWDLu/1SOgq/iwaRFTJjqRS949YENDntW
-         tKw2vIILbxRfvlKjLooMSdLJUB7qFNmhxrsIfusruT8jZ0XIKxDv2kJuABS9Ban11am2
-         skFuubaBkWY3/PJ5OFAxPiuv9inYdUJ46Yr1YJl6ASlzI/lxTeBIkQLTPLkZxtOMGeYU
-         FRKOmbwNjbHmx2QrV1MDY3yQ/69evi0tpF2Qu9t9VUsSpW1+3mq+ZigHicWMiUeI3M4n
-         T2BjRit/xmnKQO1Jsw43oSHuKjaXwnrtR1M39DQQX4FszFAVbXxxikg+4eFZ3EI7KUyB
-         /qkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=o2r6ww6wqepZOlWmszucYXGNqxFZr/kx5uznVpnhaGQ=;
-        b=n8BH/AnX8V/LEG9dmot51YnaqqTO7PacmTKtRx1vzmb4OjVojmBTMEhobt+v2PsJRc
-         uAslOZgiJpYajEhosMNqrTEW0sAp9XG2G7lSgoF3Y0bayK4XaUrV6Fi64x+hpi/RcfSa
-         uNGemn3EpYSpJVvg+y/oYEx9DEXjIPwCzeYqfHovLuCdOxZsFwWz1XXJoZqroNgv7+XO
-         ChCe+u6ObU5li84fc5ZJH0M3iErXJ3bB0cXaYjXOpEdiFCNSWXyEyggZhvsCOOkboHM7
-         TscHjZXPqsSQnea38Qc89/5YomFYK3jQMlEuoOZX1h3gcaxAoOtWRqruF7Or2N3sJ8WT
-         ZQNQ==
-X-Gm-Message-State: AHYfb5gD7Mm/EzQhXCzycMVTpi2Idkf5S2bdvMkKI+UT64UpxxGg7w2l
-        jg9uNlIq27faZruPZzQiywgcbY46Og==
-X-Received: by 10.101.73.198 with SMTP id t6mr6594554pgs.340.1503901589854;
- Sun, 27 Aug 2017 23:26:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 11:33:39 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54645 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992100AbdH1JdcDC1Bz convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 11:33:32 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 3034EB2D44F19;
+        Mon, 28 Aug 2017 10:33:23 +0100 (IST)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 28 Aug
+ 2017 10:33:25 +0100
+Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
+ bamail02.ba.imgtec.org ([fe80::5efe:10.20.40.28%12]) with mapi id
+ 14.03.0266.001; Mon, 28 Aug 2017 02:33:22 -0700
+From:   Miodrag Dinic <Miodrag.Dinic@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Goran Ferenc <Goran.Ferenc@imgtec.com>,
+        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
+        Bo Hu <bohu@google.com>,
+        Douglas Leung <Douglas.Leung@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Jin Qian <jinqian@google.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
+        Raghu Gandham <Raghu.Gandham@imgtec.com>
+Subject: RE: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if
+ MIPS_GENERIC
+Thread-Topic: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if
+ MIPS_GENERIC
+Thread-Index: AQHTGCO8zCH0uE7J3kGnsE7DpIV426KW9+qAgAKWrAo=
+Date:   Mon, 28 Aug 2017 09:33:21 +0000
+Message-ID: <232DDC0A2B605E4F9E85F6904417885F015D956D48@BADAG02.ba.imgtec.org>
+References: <1503061833-26563-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1503061833-26563-9-git-send-email-aleksandar.markovic@rt-rk.com>,<20170826105235.GF7433@linux-mips.org>
+In-Reply-To: <20170826105235.GF7433@linux-mips.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [82.117.201.26]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 10.100.161.139 with HTTP; Sun, 27 Aug 2017 23:26:29 -0700 (PDT)
-In-Reply-To: <20170827161032.22772-13-hch@lst.de>
-References: <20170827161032.22772-1-hch@lst.de> <20170827161032.22772-13-hch@lst.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 28 Aug 2017 08:26:29 +0200
-X-Google-Sender-Auth: RoLkdPQg1hiOK5xHOURWc5WjUms
-Message-ID: <CAMuHMdVwHx2aATKqYS7xXTjnCigoZzVFFfcZOmvNj3KcFFJehg@mail.gmail.com>
-Subject: Re: [PATCH 12/12] dma-mapping: turn dma_cache_sync into a dma_map_ops method
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     iommu@lists.linux-foundation.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Michal Simek <monstr@monstr.eu>,
-        David Howells <dhowells@redhat.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <geert.uytterhoeven@gmail.com>
+Return-Path: <Miodrag.Dinic@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59829
+X-archive-position: 59830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Miodrag.Dinic@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,24 +64,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Christoph,
+Hi Ralf,
 
-On Sun, Aug 27, 2017 at 6:10 PM, Christoph Hellwig <hch@lst.de> wrote:
-> After we removed all the dead wood it turns out only two architectures
-> actually implement dma_cache_sync as a no-op: mips and parisc.  Add
+Even though I agree with your approach in handling this issue is more appropriate,
+but the reason we isolated this option just for MIPS_GENERIC was because we
+are not quite sure which MIPS platforms were using this option (and effectively i8042 driver), except for Malta.
+So, we decided to go with a safer solution and deselect it only for platforms which we are most sure aren't going to use it.
 
-s/no-op/real op/
+If you prefer to have this option sprinkled across platforms which are using it, please indicate which those are.
 
-> a cache_sync method to struct dma_map_ops and implement it for the
-> mips defualt DMA ops, and the parisc pa11 ops.
+Kind regards,
+Miodrag
 
-Gr{oetje,eeting}s,
+________________________________________
+From: Ralf Baechle [ralf@linux-mips.org]
+Sent: Saturday, August 26, 2017 12:52 PM
+To: Aleksandar Markovic
+Cc: linux-mips@linux-mips.org; Miodrag Dinic; Goran Ferenc; Aleksandar Markovic; Bo Hu; Douglas Leung; James Hogan; Jin Qian; Paul Burton; Petar Jovanovic; Raghu Gandham
+Subject: Re: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if MIPS_GENERIC
 
-                        Geert
+On Fri, Aug 18, 2017 at 03:09:00PM +0200, Aleksandar Markovic wrote:
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> From: Miodrag Dinic <miodrag.dinic@imgtec.com>
+>
+> This effectively disables i8042 driver for MIPS_GENERIC kernel platform.
+> Currently, only sead-3, boston and ranchu boards are supported by the
+> MIPS generic kernel and none of them require this driver.
+> More specifically, kernel would crash if it gets enabled, because
+> i8042 driver would try to read from an non-existent IO register.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+And many more platforms would beneftig from disabling this option because
+let's face it, the i8042's heydays are over.  So rather than spreading
+random depenencies on MIPS_GENERIC or other platforms through Kconfig
+please push the select of ARCH_MIGHT_HAVE_PC_SERIO to the platforms.
+
+  Ralf

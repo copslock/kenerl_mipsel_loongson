@@ -1,28 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 19:11:13 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48874 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993917AbdH1RLDR5Q2u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 19:11:03 +0200
-Date:   Mon, 28 Aug 2017 18:11:03 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Fredrik Noring <noring@nocrew.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Add basic R5900 support
-In-Reply-To: <20170828135305.GA20466@linux-mips.org>
-Message-ID: <alpine.LFD.2.20.1708281808190.30639@eddie.linux-mips.org>
-References: <20170827132309.GA32166@localhost.localdomain> <20170828135305.GA20466@linux-mips.org>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 19:45:21 +0200 (CEST)
+Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:36400
+        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993912AbdH1RpNt2H03 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Aug 2017 19:45:13 +0200
+Received: by mail-qt0-x243.google.com with SMTP id e2so1024857qta.3
+        for <linux-mips@linux-mips.org>; Mon, 28 Aug 2017 10:45:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=anbkQVw7X10o2caYTRaJPG4CDDlaf2zs/P7UPEynpaU=;
+        b=WFXgQpp9sdRs+vE4Q9JEvcosVsc7D7zooJRhGJj91DkdkPbXEA/y2CxAh1CR6YaBjf
+         LLA1UNXZUafaMgde36RwaMaomLokMTOZkpXtEkkY7honcbGopeRjiTsjz/bPdQZXE0lv
+         DnzreplFxkFCX9Yk6S3J8/zuUK/6UX1EdenSJhI0Bu6g9yxDGFJwa3gVZpwRhBsmFrI3
+         AJEf/9O6ebyv9wQdoznMgkWMlZa6EFlMqYsSp7KBnmLSnHELdK6hBD60Ysad7HMmcJzg
+         tbWEOQExZOu1gAm9C5i0Zs7/XFCHju+hwzxBtQceBYZGtetcFZqSBf2VK2p8yEuLjPLk
+         jTyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=anbkQVw7X10o2caYTRaJPG4CDDlaf2zs/P7UPEynpaU=;
+        b=IeGoLZ7nv0900eC3AvRk7ArwXqawBLfr1z+vXvxk4t2vVIphfb7Mgt9C6Xotb8WbPc
+         PQqmo8wZz7RfTpiOYoIbZAOeAz+f0pRJ8wH8/ZBGeBgh9xIkmh8JFWShbb9GWtbc1vvS
+         W8GweBI8gyF+MVgiUjFxsALGADxRiKQaSzaiQwlHSzZfq0bJNaF00IBiazhPGj2DMXGq
+         RdX1RHy3M3h5E6pbs3y3/Z35CCUg65+XFXn6rwpwFpK7ZaL2q1Hxqix35HunG+le1QUO
+         MiHBm9zhcEr0EMIDD0Ye2DOoEZ0WPdwwca4BKqfSzFW5PBHzsM1uGPGpb6VDwirb3iZZ
+         oI7g==
+X-Gm-Message-State: AHYfb5izKt4CPGe/bmdPlVaJHPuzYx1nDaoQKTWZsSwwqo08UQXwYL+7
+        ffYr2T/rYnFg2A==
+X-Received: by 10.200.54.250 with SMTP id b55mr1881448qtc.13.1503942306270;
+        Mon, 28 Aug 2017 10:45:06 -0700 (PDT)
+Received: from localhost (dhcp-ec-8-6b-ed-7a-cf.cpe.echoes.net. [72.28.26.219])
+        by smtp.gmail.com with ESMTPSA id p21sm653787qta.36.2017.08.28.10.45.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Aug 2017 10:45:05 -0700 (PDT)
+Date:   Mon, 28 Aug 2017 10:45:03 -0700
+From:   Tejun Heo <tj@kernel.org>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "\"open list:LIBATA PATA DRIVERS\"" <linux-ide@vger.kernel.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] pata_octeon_cf: use of_property_read_{bool|u32}()
+Message-ID: <20170828174502.GX491396@devbig577.frc2.facebook.com>
+References: <20170827195613.904715064@cogentembedded.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170827195613.904715064@cogentembedded.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <htejun@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59836
+X-archive-position: 59837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tj@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,22 +70,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 28 Aug 2017, Ralf Baechle wrote:
-
-> > Signed-off-by: Fredrik Noring <noring@nocrew.org>
-> > ---
-> >  arch/mips/Kconfig                | 13 +++++++++++++
-> >  arch/mips/include/asm/cpu-type.h |  4 ++++
-> >  arch/mips/include/asm/cpu.h      |  6 ++++++
-> >  arch/mips/include/asm/module.h   |  2 ++
-> >  arch/mips/kernel/cpu-probe.c     | 10 ++++++++++
-> >  5 files changed, 35 insertions(+)
+On Sun, Aug 27, 2017 at 10:55:09PM +0300, Sergei Shtylyov wrote:
+> The Octeon CF driver basically  open-codes of_property_read_{bool|u32}()
+> using  of_{find|get}_property() calls in its  probe() method.  Using the
+> modern DT APIs saves 2 LoCs and 16 bytes of object code (MIPS gcc 3.4.3).
 > 
-> Patch is looking perfect at a glance but without support for an R5900
-> system that is the PS2 it kinda pointless so I'd like to wait and
-> review and apply everything at once.
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
- I've had some concerns anyway though, which I'll post tomorrow (as 
-today's a UK bank holiday).
+Applied to libata/for-4.14.
 
-  Maciej
+Thanks.
+
+-- 
+tejun

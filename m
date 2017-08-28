@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 13:23:52 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:40774 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991500AbdH1LXn5W0A- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Aug 2017 13:23:43 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v7SBNWHh015697;
-        Mon, 28 Aug 2017 13:23:32 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v7SBNR4J015695;
-        Mon, 28 Aug 2017 13:23:27 +0200
-Date:   Mon, 28 Aug 2017 13:23:27 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Aug 2017 13:29:53 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:42008 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991955AbdH1L3pE06G1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Aug 2017 13:29:45 +0200
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id D91C64908C;
+        Mon, 28 Aug 2017 13:29:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
+        with ESMTP id 97tgqcsUuLhn; Mon, 28 Aug 2017 13:29:37 +0200 (CEST)
+Subject: Re: [PATCH v10 03/16] spi: spi-falcon: drop check of boot select
+To:     Ralf Baechle <ralf@linux-mips.org>, Mark Brown <broonie@kernel.org>
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
         martin.blumenstingl@googlemail.com, john@phrozen.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
-        kishon@ti.com, mark.rutland@arm.com,
-        Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v10 03/16] spi: spi-falcon: drop check of boot select
-Message-ID: <20170828112327.GA15640@linux-mips.org>
+        kishon@ti.com, mark.rutland@arm.com
 References: <20170819221823.13850-1-hauke@hauke-m.de>
  <20170819221823.13850-4-hauke@hauke-m.de>
+ <20170828112327.GA15640@linux-mips.org>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <40428f8d-f781-7952-30c6-41f65ec1096b@hauke-m.de>
+Date:   Mon, 28 Aug 2017 13:29:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170819221823.13850-4-hauke@hauke-m.de>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20170828112327.GA15640@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59832
+X-archive-position: 59833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,23 +52,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Aug 20, 2017 at 12:18:10AM +0200, Hauke Mehrtens wrote:
-
-> Do not check which flash type the SoC was booted from before
-> using this driver. Assume that the device tree is correct and use this
-> driver when it was added to device tree. This also removes a build
-> dependency to the SoC code.
+On 08/28/2017 01:23 PM, Ralf Baechle wrote:
+> On Sun, Aug 20, 2017 at 12:18:10AM +0200, Hauke Mehrtens wrote:
 > 
-> All device trees I am aware of only have one correct flash device entry
-> in it. The device tree is anyway bundled with the kernel in all systems
-> using device tree I know of.
+>> Do not check which flash type the SoC was booted from before
+>> using this driver. Assume that the device tree is correct and use this
+>> driver when it was added to device tree. This also removes a build
+>> dependency to the SoC code.
+>>
+>> All device trees I am aware of only have one correct flash device entry
+>> in it. The device tree is anyway bundled with the kernel in all systems
+>> using device tree I know of.
+>>
+>> The boot mode can be specified with some pin straps and will select the
+>> flash type the rom code will boot from. One SPI, NOR or NAND flash chip
+>> can be connect to the EBU and used to load the first stage boot loader
+>> from.
 > 
-> The boot mode can be specified with some pin straps and will select the
-> flash type the rom code will boot from. One SPI, NOR or NAND flash chip
-> can be connect to the EBU and used to load the first stage boot loader
-> from.
+> I think other than this patch we finally have all the acks necessary so
+> I merged the series except this patch which shouldn't be strictly necessary.
+> 
+>   Ralf
+> 
 
-I think other than this patch we finally have all the acks necessary so
-I merged the series except this patch which shouldn't be strictly necessary.
+Hi Ralf and Mark,
 
-  Ralf
+this driver will not build any more without this patch, because
+ltq_boot_select() gets removed in "[PATCH v10 09/16] MIPS: lantiq:
+remove ltq_reset_cause() and ltq_boot_select()"
+
+Mark could you please have a look at the commit message if it is better now.
+
+Hauke

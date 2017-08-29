@@ -1,35 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 19:25:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30324 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23995045AbdH2RY6lp01U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 19:24:58 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id CE54182B64299;
-        Tue, 29 Aug 2017 18:24:48 +0100 (IST)
-Received: from [10.20.78.165] (10.20.78.165) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 29 Aug 2017
- 18:24:51 +0100
-Date:   Tue, 29 Aug 2017 18:24:41 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 19:33:52 +0200 (CEST)
+Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:47903 "EHLO
+        pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23995047AbdH2Rdnzf36E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 19:33:43 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 1B1B43F36B;
+        Tue, 29 Aug 2017 19:33:36 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id exrBbNsNR3MU; Tue, 29 Aug 2017 19:33:26 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 09BA33F34B;
+        Tue, 29 Aug 2017 19:33:21 +0200 (CEST)
+Date:   Tue, 29 Aug 2017 19:33:18 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
 Subject: Re: [PATCH] MIPS: Add basic R5900 support
-In-Reply-To: <20170827132309.GA32166@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1708271511430.17596@tp.orcam.me.uk>
+Message-ID: <20170829173318.GA2130@localhost.localdomain>
 References: <20170827132309.GA32166@localhost.localdomain>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+ <20170828135305.GA20466@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.165]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20170828135305.GA20466@linux-mips.org>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59879
+X-archive-position: 59880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,78 +50,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Fredrik,
+On Mon, Aug 28, 2017 at 03:53:05PM +0200, Ralf Baechle wrote:
+> Patch is looking perfect at a glance but without support for an R5900
+> system that is the PS2 it kinda pointless so I'd like to wait and
+> review and apply everything at once.
 
- Thank you for your contribution.  As Ralf has noted your change looks 
-good overall.  I just have a couple of nits to address.  Please take them 
-into account with the next version of your change.
+Thanks for your quick feedback! Everything else is here:
 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 2828ecde133d..2a3592032861 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1708,6 +1708,16 @@ config CPU_BMIPS
->  	help
->  	  Support for BMIPS32/3300/4350/4380 and BMIPS5000 processors.
->  
-> +config CPU_R5900
-> +	bool "R5900"
-> +	depends on SYS_HAS_CPU_R5900
-> +	select CPU_SUPPORTS_32BIT_KERNEL
-> +	select CPU_SUPPORTS_64BIT_KERNEL
-> +	select IRQ_MIPS_CPU
-> +	select CPU_HAS_WB
+https://github.com/frno7/linux/tree/ps2-v4.12-squashed
 
- Is there an external explicitly-driven write-back buffer there with the 
-R5900?  That would be odd with a MIPS III ISA processor, however if there 
-indeed is, then I think the CPU_HAS_WB setting needs to go along with the 
-code that implements `__wbflush' for this platform.
+This is GPL work by Sony, Jürgen Urban, Rick Gaiser, and others. About 40000
+lines of code with drivers etc. and unpostable in current form. I've updated
+it from 2.6.35 to 4.12 and it's running with workarounds and a few reverts.
+I believe the patch can be improved in several areas. Some notes:
 
-> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-> index 98f59307e6a3..f332aaa9e69b 100644
-> --- a/arch/mips/include/asm/cpu.h
-> +++ b/arch/mips/include/asm/cpu.h
-> @@ -326,6 +327,11 @@ enum cpu_type_enum {
->  
->  	CPU_QEMU_GENERIC,
->  
-> +	/*
-> +	 * Playstation 2 processors
-> +	 */
-> +	CPU_R5900,
+- The R5900 has 128 bit registers. In the patch this is implemented by
+  replacing __u64 pt_regs::regs[32] with r5900_reg_t { __u64 lo, hi; }, and
+  consequently replacing all 300+ register reads and writes with macros such
+  as MIPS_READ_REG, MIPS_WRITE_REG, etc. Perhaps a less intrusive way is to
+  store the most significant 64 bits separately and only use the least 64 bits
+  in the rest of the kernel, without modification?
+- MFC0/MTC0 and a few other instructions need additional SYNC. The patch uses
+  ifdefs but perhaps macros are better? (See p. C-28 in TX79 Core Architecture
+  manual by Toshiba, for example.)
+- A new SYNC.P instruction is added to arch/mips/mm/uasm-mips.c.
+- According to the same manual, the "first two instructions in an exception
+  handler are executed as NOP when a bus error occurs (FLX05)" with the
+  corrective measure to "place NOP in the first two instruction locations in
+  all exception handlers" (p. 1-11).
+- The memcpy/strlen/etc. family of functions need short loop NOP padding to
+  avoid hardware bugs. Perhaps it's less fragile to rely on the compiler and
+  use C implementations instead of assembly for R5900?
+- A few other places apparently also need NOP padding.
+- I'm unusure about arch/mips/kernel/scall32-n32.S.
+- LL, SC, LLD and SCD etc. are not implemented in R5900 and are emulated.
+- FPU needs special save/restore.
+- arch/mips/include/asm/r4kcache.h is modified with special cache macros.
+- arch/mips/mm/tlbex.c is updated with scratch pad memory map.
+- The USB driver in the patch broke on 6f65126c7 "USB: OHCI: add SG support"
+  and 6894258ed "dma-mapping: consolidate dma_{alloc,free}_{attrs,coherent}".
+- The patch also broke on a6335fa1 "MIPS: bootmem: Don't use memory holes for
+  page bitmap", as well as 084a7cf7 "MIPS: IRQ Stack: Unwind IRQ stack onto
+  task stack".
+- One should look at the 2.6.35 patch series to make sense of some of the
+  changes in this updated patch. These parts need to be reworked, of course.
 
- Shouldn't it go along with `R4000 class processors' earlier above?
+That's a start and some design choices need to be made to continue. What are
+your thoughts?
 
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index 1aba27786bd5..b8bed9f26f8d 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -1518,6 +1518,16 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
->  		}
->  
->  		break;
-> +	case PRID_IMP_R5900:
-> +		c->cputype = CPU_R5900;
-> +		__cpu_name[cpu] = "R5900";
-> +		c->isa_level = MIPS_CPU_ISA_III;
-> +		c->tlbsize = 48;
-> +		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE |
-> +			     MIPS_CPU_4KEX | MIPS_CPU_DIVEC |
-> +			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
-> +			     MIPS_CPU_COUNTER;
-> +		break;
-
- If this is a MIPS III base ISA implementation, then presumably you need 
-to set `c->fpu_msk31' as well, to exclude FPU_CSR_CONDX bits introduced 
-with the MIPS IV ISA only.  Double-check with hardware documentation for 
-the details.
-
- If you don't have documentation, but you have the hardware at hand, then 
-you'll best check it yourself by writing a small user program that writes 
-to CP1.FCSR and checks which bits stick (of course you need to leave the 
-exception cause/mask bits alone for this check or you'll get SIGFPE sent 
-instead).
-
- Please let me know if you have any questions.
-
-  Maciej
+Fredrik

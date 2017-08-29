@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 12:00:39 +0200 (CEST)
-Received: from mail-wm0-x22c.google.com ([IPv6:2a00:1450:400c:c09::22c]:36117
-        "EHLO mail-wm0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994921AbdH2KAX3Bt5B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 12:00:23 +0200
-Received: by mail-wm0-x22c.google.com with SMTP id b82so17347466wmd.1
-        for <linux-mips@linux-mips.org>; Tue, 29 Aug 2017 03:00:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 12:01:25 +0200 (CEST)
+Received: from mail-wm0-x236.google.com ([IPv6:2a00:1450:400c:c09::236]:36249
+        "EHLO mail-wm0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994922AbdH2KBEgajaB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 12:01:04 +0200
+Received: by mail-wm0-x236.google.com with SMTP id b82so17358417wmd.1
+        for <linux-mips@linux-mips.org>; Tue, 29 Aug 2017 03:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=M1z83VgvwW8tiMdD0EXHnESX58gU0k50XC0P2K7aq9o=;
-        b=H2dsTFaqtGNyM689reSAMuZJmxQl2H2Foe2F/BGujHmMdBhZLparTJlpN5+5f82GaD
-         rCg0uhDIHZBdYyBXf5Jhh+OxVd8tnU1+sJCo3Yv40DE6z9YbnIMuoHuLKE4gZvbbYz2+
-         mIsx/IfYsXm/G+p0Cpj4buFotV99Y6zUUsLvc=
+        bh=SFbSuxyB9dGd25O152JEFwFDgZazzaIlSrZUj9vgagw=;
+        b=SL/lxyB21jHUxuWVkK+Z2jwk4XntBYNnfoLVBXbpQ83eCCQqc69dFgqFoFQMtExgA6
+         GTjaAL3eG+tGRVXnnEHqv2h08ipuA1K7E6n50WTzEapQhJmBAVpmh2n0M7cchzPN5ffs
+         tE0M1ztw/uP2xKNUUT33iw3h+fwGKjZym5jPc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=M1z83VgvwW8tiMdD0EXHnESX58gU0k50XC0P2K7aq9o=;
-        b=tplXg+17eKxMwQcp6gZLyFrXz93mO8v33j0vK96sZFC2deur62Ra1zZPmCaETCzg8b
-         EoA6WnXCrcFI9e0S+GQrIybX4NPx37HLf2SnQBiNz5Vjd8fV6tqhSOT0dunvpkcmsXM3
-         Sv1BZ3UUeuiXOxzXkjtFqaAV9telRb4VwuAxUGiEqCwzOXA5wxpOZ8PX6M7QY8yDDJ+d
-         r4mvW68sENhax4mmFZiCH3AGEvz72Ax3T8yw/2uTgsxsf9qEyfX+JM+y/RQ6xheiRlTW
-         fXza4iX1ordQV47OAmzrnfVc/yylevgf3XBLUvefSPUKhNI8tQxm0Gy4R+P7QP/CB3iH
-         4f3g==
-X-Gm-Message-State: AHYfb5i/xjNnF0IfM9qBkdpz31bA5HZap6xl1od5tKkmXhnY0o0FjBXG
-        KMezMF0VYJtqAWMY
-X-Received: by 10.80.173.245 with SMTP id b50mr3100929edd.143.1504000817873;
-        Tue, 29 Aug 2017 03:00:17 -0700 (PDT)
+        bh=SFbSuxyB9dGd25O152JEFwFDgZazzaIlSrZUj9vgagw=;
+        b=qqZRwxXbixzM8i9bKvykjlSN3J3RnUlzA+9pvphl4fqmqT/W2PsU14y3ZH23Pv1tkD
+         6/l+9Q+mlRs7/jG4GxcQ+PAb6p7cUAqCNX2lY9Rd/tCU6Q/o7akwULzF6rSQtoXw9w0J
+         pwscV/Nm4BBJ7FNbwVc2yse7jHLQ9FSFRfo8GQQZh+/phljSl3Mgb+SKkU/W31FnxhVL
+         zwN56s3wfeklQi/xeorOpnzB3WXTiXk0AsAJ5voxw+tYuzf8Qu4P2YYeepMPY5NN/ffh
+         NmVE7V9W7f4SCepzzn6H31fVVQkhy/PUzRLfFbF6FrYACQoHsX9cfp8wjFKlcAF7vu2t
+         smIg==
+X-Gm-Message-State: AHYfb5i3g+qNz+/MOPxMaaGBiTPGMrfVDba3dEjMGcnVwW/2rRrvRtoi
+        U6U92Vi8vCB6htVF
+X-Received: by 10.80.151.101 with SMTP id d34mr3166820edb.83.1504000857401;
+        Tue, 29 Aug 2017 03:00:57 -0700 (PDT)
 Received: from localhost (xd93ddc2d.cust.hiper.dk. [217.61.220.45])
-        by smtp.gmail.com with ESMTPSA id h64sm1284401edc.67.2017.08.29.03.00.17
+        by smtp.gmail.com with ESMTPSA id m25sm1126305edj.23.2017.08.29.03.00.56
         (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 29 Aug 2017 03:00:17 -0700 (PDT)
-Date:   Tue, 29 Aug 2017 12:00:16 +0200
+        Tue, 29 Aug 2017 03:00:56 -0700 (PDT)
+Date:   Tue, 29 Aug 2017 12:00:55 +0200
 From:   Christoffer Dall <cdall@linaro.org>
 To:     Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -48,22 +48,22 @@ Cc:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         James Hogan <james.hogan@imgtec.com>,
         Paul Mackerras <paulus@ozlabs.org>,
         Alexander Graf <agraf@suse.com>
-Subject: Re: [PATCH RFC v3 4/9] KVM: arm/arm64: use locking helpers in
- kvm_vgic_create()
-Message-ID: <20170829100016.GU24649@cbox>
+Subject: Re: [PATCH RFC v3 2/9] KVM: arm/arm64: fix vcpu self-detection in
+ vgic_v3_dispatch_sgi()
+Message-ID: <20170829100055.GV24649@cbox>
 References: <20170821203530.9266-1-rkrcmar@redhat.com>
- <20170821203530.9266-5-rkrcmar@redhat.com>
+ <20170821203530.9266-3-rkrcmar@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20170821203530.9266-5-rkrcmar@redhat.com>
+In-Reply-To: <20170821203530.9266-3-rkrcmar@redhat.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <cdall@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59854
+X-archive-position: 59855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,98 +80,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 21, 2017 at 10:35:25PM +0200, Radim Krčmář wrote:
-> No new VCPUs can be created because we are holding the kvm->lock.
-> This means that if we successfuly lock all VCPUs, we'll be unlocking the
-> same set and there is no need to do extra bookkeeping.
+On Mon, Aug 21, 2017 at 10:35:23PM +0200, Radim Krčmář wrote:
+> The index in kvm->vcpus array and vcpu->vcpu_id are very different
+> things.  Comparing struct kvm_vcpu pointers is a sure way to know.
 > 
 > Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
+
+Acked-by: Christoffer Dall <cdall@linaro.org>
+
 > ---
->  virt/kvm/arm/vgic/vgic-init.c       | 24 +++++++++---------------
->  virt/kvm/arm/vgic/vgic-kvm-device.c |  6 +++++-
->  2 files changed, 14 insertions(+), 16 deletions(-)
+>  virt/kvm/arm/vgic/vgic-mmio-v3.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/virt/kvm/arm/vgic/vgic-init.c b/virt/kvm/arm/vgic/vgic-init.c
-> index 5801261f3add..feb766f74c34 100644
-> --- a/virt/kvm/arm/vgic/vgic-init.c
-> +++ b/virt/kvm/arm/vgic/vgic-init.c
-> @@ -119,7 +119,7 @@ void kvm_vgic_vcpu_early_init(struct kvm_vcpu *vcpu)
->   */
->  int kvm_vgic_create(struct kvm *kvm, u32 type)
->  {
-> -	int i, vcpu_lock_idx = -1, ret;
-> +	int i, ret;
->  	struct kvm_vcpu *vcpu;
+> diff --git a/virt/kvm/arm/vgic/vgic-mmio-v3.c b/virt/kvm/arm/vgic/vgic-mmio-v3.c
+> index 408ef06638fc..9d4b69b766ec 100644
+> --- a/virt/kvm/arm/vgic/vgic-mmio-v3.c
+> +++ b/virt/kvm/arm/vgic/vgic-mmio-v3.c
+> @@ -797,7 +797,6 @@ void vgic_v3_dispatch_sgi(struct kvm_vcpu *vcpu, u64 reg)
+>  	u16 target_cpus;
+>  	u64 mpidr;
+>  	int sgi, c;
+> -	int vcpu_id = vcpu->vcpu_id;
+>  	bool broadcast;
 >  
->  	if (irqchip_in_kernel(kvm))
-> @@ -140,18 +140,14 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->  	 * vcpu->mutex.  By grabbing the vcpu->mutex of all VCPUs we ensure
->  	 * that no other VCPUs are run while we create the vgic.
->  	 */
-> -	ret = -EBUSY;
-> -	kvm_for_each_vcpu(i, vcpu, kvm) {
-> -		if (!mutex_trylock(&vcpu->mutex))
-> -			goto out_unlock;
-> -		vcpu_lock_idx = i;
-> -	}
-> +	if (!lock_all_vcpus(kvm))
-> +		return -EBUSY;
+>  	sgi = (reg & ICC_SGI1R_SGI_ID_MASK) >> ICC_SGI1R_SGI_ID_SHIFT;
+> @@ -821,7 +820,7 @@ void vgic_v3_dispatch_sgi(struct kvm_vcpu *vcpu, u64 reg)
+>  			break;
 >  
-> -	kvm_for_each_vcpu(i, vcpu, kvm) {
-> -		if (vcpu->arch.has_run_once)
-> +	kvm_for_each_vcpu(i, vcpu, kvm)
-> +		if (vcpu->arch.has_run_once) {
-> +			ret = -EBUSY;
->  			goto out_unlock;
-> -	}
-> -	ret = 0;
-> +		}
-
-I also prefer the additional brace here.
-
+>  		/* Don't signal the calling VCPU */
+> -		if (broadcast && c == vcpu_id)
+> +		if (broadcast && c_vcpu == vcpu)
+>  			continue;
 >  
->  	if (type == KVM_DEV_TYPE_ARM_VGIC_V2)
->  		kvm->arch.max_vcpus = VGIC_V2_MAX_CPUS;
-> @@ -176,11 +172,9 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->  	kvm->arch.vgic.vgic_cpu_base = VGIC_ADDR_UNDEF;
->  	kvm->arch.vgic.vgic_redist_base = VGIC_ADDR_UNDEF;
->  
-> +	ret = 0;
->  out_unlock:
-> -	for (; vcpu_lock_idx >= 0; vcpu_lock_idx--) {
-> -		vcpu = kvm_get_vcpu(kvm, vcpu_lock_idx);
-> -		mutex_unlock(&vcpu->mutex);
-> -	}
-> +	unlock_all_vcpus(kvm);
->  	return ret;
->  }
->  
-> diff --git a/virt/kvm/arm/vgic/vgic-kvm-device.c b/virt/kvm/arm/vgic/vgic-kvm-device.c
-> index 10ae6f394b71..c5124737c7fc 100644
-> --- a/virt/kvm/arm/vgic/vgic-kvm-device.c
-> +++ b/virt/kvm/arm/vgic/vgic-kvm-device.c
-> @@ -270,7 +270,11 @@ static void unlock_vcpus(struct kvm *kvm, int vcpu_lock_idx)
->  
->  void unlock_all_vcpus(struct kvm *kvm)
->  {
-> -	unlock_vcpus(kvm, atomic_read(&kvm->online_vcpus) - 1);
-> +	int i;
-> +	struct kvm_vcpu *tmp_vcpu;
-> +
-> +	kvm_for_each_vcpu(i, tmp_vcpu, kvm)
-> +		mutex_unlock(&tmp_vcpu->mutex);
->  }
->  
->  /* Returns true if all vcpus were locked, false otherwise */
+>  		if (!broadcast) {
 > -- 
 > 2.13.3
 > 
-
-As noted on the other patch, it looks a bit strange to modify
-unlock_all_vcpus() here without also doing something about the error
-path in lock_all_vcpus().
-
-Otherwise this patch looks fine to me.
-
-Thanks,
--Christoffer

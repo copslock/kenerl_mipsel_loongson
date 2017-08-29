@@ -1,65 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 09:43:08 +0200 (CEST)
-Received: from mail-wr0-x235.google.com ([IPv6:2a00:1450:400c:c0c::235]:34312
-        "EHLO mail-wr0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994908AbdH2Hm7XOAc5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 09:42:59 +0200
-Received: by mail-wr0-x235.google.com with SMTP id z91so7587506wrc.1
-        for <linux-mips@linux-mips.org>; Tue, 29 Aug 2017 00:42:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=rjY/Prx4zR6N4L/k4DBbOnkwvkmSlAJz6RMqW2/hwjU=;
-        b=Tul5JHTRVIoALJ7FqoqZO86piMGWeQVlwTu4mc6PyFdjmSns2XOscpR2n8C2NnMRZg
-         fvpe540+0YMCaD5cHYDYboCLadAAo7KBvH2xMvDujvU4WeziWFsJDpTNIhq76M/Pgw2e
-         +d43AIqQpsZ4e+W9Is7AwSjHO0l1jwKbOFSns=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rjY/Prx4zR6N4L/k4DBbOnkwvkmSlAJz6RMqW2/hwjU=;
-        b=OlIx5bw4oA0jbkiI2VeOr2xBt0GTI9vB3+USE81IFXWqmk06wm/WgePT2MUl0ZqTes
-         quhtUleDyIwUWa8+7wD8MUrcxdSbgy1yyguf0lS0AO1wppRgUKMnkuAOFfTT8BeaYA4m
-         ZGxSiOAze+5KS2nvYWwPEpyCQ2Nc3kvkHpPzPVvX6HIDXuBvOAZD0o115MQX+ajvEtaV
-         +Oo77lgEW0MtPi3yYUxjBtDPCoKfyB38ktdtMph3FeTNVhkcEDmKpUB6tcMKGaMUV4wB
-         q8ipZ+kuNf2EA88952UhDEWQnzGlTswZvYFOZpsf4qCBgtKPNR5gkngRVL2tgBmrJwtu
-         PPBQ==
-X-Gm-Message-State: AHYfb5hbmG2SZLUJxenVeauzG4dXdQnS+1UkaO5DCNtpHZFFfE8/y6jQ
-        nZRDSDkAE0XNNdIAI0YQOw==
-X-Received: by 10.223.130.184 with SMTP id 53mr1597508wrc.221.1503992573605;
-        Tue, 29 Aug 2017 00:42:53 -0700 (PDT)
-Received: from [192.168.0.74] (135-224-190-109.dsl.ovh.fr. [109.190.224.135])
-        by smtp.googlemail.com with ESMTPSA id m188sm2376092wme.1.2017.08.29.00.42.52
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Aug 2017 00:42:53 -0700 (PDT)
-Subject: Re: [PATCH 13/19] MIPS: Unify checks for sibling CPUs
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:38:39 +0200 (CEST)
+Received: from SMTPBG179.QQ.COM ([119.147.194.222]:48538 "EHLO
+        smtpbg179.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994905AbdH2IibuiClD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 10:38:31 +0200
+X-QQ-mid: bizesmtp5t1503995875tp51mpnyw
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Tue, 29 Aug 2017 16:37:54 +0800 (CST)
+X-QQ-SSF: 01100000008000F0FJF1B00A0000000
+X-QQ-FEAT: 7eDRq1lSlwuLAQqnPDolwS5hO76kxenU+NEZckGoergHXiy20aLIRtjQTklU5
+        FY8bc2hED2dLg3r5DeoMaLFRceG7UPFeHGk8hz7P40pHQH9zXkvsD3KrhneOchORcaohtyS
+        3EsTonR2cANatlIe21VeChgMb2S3qxljZVPFAFT4ATLDyngOTJt4ozdIbfQuxVDxdoboK6y
+        yWUC+KFOdKFVUc29aHY87eyfslPCSmEr1Sy4JMlwRn84ZAP4ezAy+BvRA2HY4RMscNHSBdT
+        CQmMX0U43UroEc/yg3lYHMnohd4ubdHW0orx7DXuBbEvZEconobO4vIAg=
+X-QQ-GoodBg: 0
+From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org
-Cc:     linux-mips@linux-mips.org
-References: <20170813024943.14989-1-paul.burton@imgtec.com>
- <20170813024943.14989-14-paul.burton@imgtec.com>
- <20170826122749.GI7433@linux-mips.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <c850dd48-abde-4268-0896-98561a0c657b@linaro.org>
-Date:   Tue, 29 Aug 2017 09:42:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <20170826122749.GI7433@linux-mips.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+        James Hogan <james.hogan@imgtec.com>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Yang Ling <gnaygnil@gmail.com>,
+        =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6?= <Yeking@Red54.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Binbin Zhou <zhoubb@lemote.com>,
+        HuaCai Chen <chenhc@lemote.com>
+Subject: [PATCH RESEND v8 4/9] MIPS: Loongson: Add Loongson-1A Kconfig options
+Date:   Tue, 29 Aug 2017 16:38:41 +0800
+Message-Id: <1503995926-17125-5-git-send-email-zhoubb@lemote.com>
+X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
+References: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb14
+Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59842
+X-archive-position: 59843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: zhoubb@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,46 +59,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26/08/2017 14:27, Ralf Baechle wrote:
-> Hi,
-> 
-> Paul didn't cc the other maintainers.  Tglx gave me his Ack on IRC so I
-> now only still need one of a drivers/cpuidle/ maintainer.
-> 
-> Thanks,
-> 
->   Ralf
-> 
-> On Sat, Aug 12, 2017 at 07:49:37PM -0700, Paul Burton wrote:
->> Date:   Sat, 12 Aug 2017 19:49:37 -0700
->> From: Paul Burton <paul.burton@imgtec.com>
->> To: linux-mips@linux-mips.org
->> CC: Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>
->> Subject: [PATCH 13/19] MIPS: Unify checks for sibling CPUs
->> Content-Type: text/plain
->>
->> Up until now we have open-coded checks for whether CPUs are siblings,
->> with slight variations on whether we consider the package ID or not.
->>
->> This will only get more complex when we introduce cluster support, so in
->> preparation for that this patch introduces a cpus_are_siblings()
->> function which can be used to check whether or not 2 CPUs are siblings
->> in a consistent manner.
->>
->> By checking globalnumber with the VP ID masked out this also has the
->> neat side effect of being ready for multi-cluster systems already.
->>
->> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Cc: linux-mips@linux-mips.org
->> ---
+Added Kconfig options include: Loongson-1A CPU and machine definition,
+CPU cache features, 32-bit kernel and early printk support.
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+Signed-off-by: HuaCai Chen <chenhc@lemote.com>
+---
+ arch/mips/Kconfig            | 12 ++++++++++++
+ arch/mips/loongson32/Kconfig | 20 ++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 9891a12..6a4373a8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1424,6 +1424,15 @@ config CPU_LOONGSON2F
+ 	  have a similar programming interface with FPGA northbridge used in
+ 	  Loongson2E.
+ 
++config CPU_LOONGSON1A
++	bool "Loongson 1A"
++	depends on SYS_HAS_CPU_LOONGSON1A
++	select CPU_LOONGSON1
++	select LEDS_GPIO_REGISTER
++	help
++	  The Loongson 1A is a 32-bit SoC, which implements the MIPS32
++	  release 2 instruction set.
++
+ config CPU_LOONGSON1B
+ 	bool "Loongson 1B"
+ 	depends on SYS_HAS_CPU_LOONGSON1B
+@@ -1891,6 +1900,9 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+ 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 
++config SYS_HAS_CPU_LOONGSON1A
++	bool
++
+ config SYS_HAS_CPU_LOONGSON1B
+ 	bool
+ 
+diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
+index 3c0c2f2..6e0f6ec 100644
+--- a/arch/mips/loongson32/Kconfig
++++ b/arch/mips/loongson32/Kconfig
+@@ -1,8 +1,28 @@
+ if MACH_LOONGSON32
+ 
++config ZONE_DMA
++	prompt "Zone DMA"
++	bool
++
+ choice
+ 	prompt "Machine Type"
+ 
++config LOONGSON1_LS1A
++	bool "Loongson LS1A board"
++	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
++	select CSRC_R4K if !MIPS_EXTERNAL_TIMER
++	select SYS_HAS_CPU_LOONGSON1A
++	select DMA_NONCOHERENT
++	select BOOT_ELF32
++	select IRQ_MIPS_CPU
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_SUPPORTS_MIPS16
++	select SYS_HAS_EARLY_PRINTK
++	select USE_GENERIC_EARLY_PRINTK_8250
++	select COMMON_CLK
++
+ config LOONGSON1_LS1B
+ 	bool "Loongson LS1B board"
+ 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
 -- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.9.4

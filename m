@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 17:47:29 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 17:48:23 +0200 (CEST)
 Received: from mail-cys01nam02on0058.outbound.protection.outlook.com ([104.47.37.58]:30302
         "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23995045AbdH2PnRdp051 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Aug 2017 17:43:17 +0200
+        id S23995047AbdH2PnSNcvO1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Aug 2017 17:43:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=Lp7O0sjAZBF84k2P76Jt/fkWRqC2M++D0YUBX+TfS/g=;
- b=DnH+C6mtePLYczFPO6/4TpU6u0qacTfKoRdQHkS/IHqzcg0JA+wAKE0X/H3LiXuzjCg9pC7KnoyfbyE5x7E1gYbMosc3xMteic028Auzsbf+pNXo09NIhCtjt80mteo11Q5jwDPt9rKXwXFRrJKuGxhPHOw/Bot+ExBd9shDSA8=
+ bh=rtDyLnURFOjiCnEQ28/NIA0QMuYZVvHKmWfDAI9FHhA=;
+ b=joR9hWXNviCFE+SA0//v6Ng+P0COWAKp+m8SWknWsZCYKEbbUoDVLhxeYcWKNQGd3z8Io2vhqyPY86WODrKYKrA3woqzRibQi/4xA/Q0yeK+QiD2Gil+9M+zkyE1VV/TFtDdMYZO9WcAp3iselmqna9vJsIIfHLLKnwFUMupKQ8=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (173.18.42.219) by
  MWHPR0701MB3803.namprd07.prod.outlook.com (2603:10b6:301:7f::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.1.1385.9; Tue, 29
- Aug 2017 15:43:01 +0000
+ Aug 2017 15:43:02 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org,
         ralf@linux-mips.org
-Subject: [PATCH 7/8] watchdog: octeon-wdt: Add support for cn68XX SOCs.
-Date:   Tue, 29 Aug 2017 10:40:37 -0500
-Message-Id: <1504021238-3184-8-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH 8/8] watchdog: octeon-wdt: Add support for 78XX SOCs.
+Date:   Tue, 29 Aug 2017 10:40:38 -0500
+Message-Id: <1504021238-3184-9-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1504021238-3184-1-git-send-email-steven.hill@cavium.com>
 References: <1504021238-3184-1-git-send-email-steven.hill@cavium.com>
@@ -32,50 +32,49 @@ X-ClientProxiedBy: BY2PR07CA0031.namprd07.prod.outlook.com
  (2a01:111:e400:7bff::26) To MWHPR0701MB3803.namprd07.prod.outlook.com
  (2603:10b6:301:7f::19)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b23935ac-6409-491a-f76f-08d4eef4a1fe
+X-MS-Office365-Filtering-Correlation-Id: c526877c-6082-4680-b594-08d4eef4a29e
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(2017030254152)(300000503095)(300135400095)(201703131423075)(201703031133081)(201702281549075)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:MWHPR0701MB3803;
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;3:rl2//QhxofpgvuSoecQmpjJzsBfvYrhCloJcZ2a5bqrHvmN90xl+m+wLSXTkEXGRL0CvEV6TNAG8/Fg5GFBfg0Wfl3oOSl6sGmTcIx6pKb1Jp1qmmOIleEjEC65sIY7VyfsCIPHSBwk0SvsjwTDJXiQwLlMV+mI/jFunivPMj8RQULliKQS2jIWTFlE4EaW093mh7yJtvnD2eQexMwkNNLjUgxklmagsizt08fRh+sIR0LcFw3S6J6c4kV8YMAM7;25:+SDZG8arviJquoGR4dAYTCrcapazv52jUqlvBON1qjEfIQxe040TMV6IbLeLO8JmzSqxe+ASxEgBQN6Qh9Cf4ON62UqXACE8GrpCOiDLX/+g1Sd8WjBTap7gBcl35PdyRA6DtXYsJKmK29lzPz0M53rxxgPqehkg8PXChRggmlH8eyK5Wv20Q7uux4BlAQvNJ8mxGOkZvjPOJElWL2y1FOtGOOOpyfYM492s2v790rqHUcOPHk3FPDhr6cY+o6IkYchbgk5htMVV0+YsBWwZr14Fk4fIJrU1JqwRXUhSewZpM9zyOZ+YHPVu+RuAL/Y4MUIFlRmCbazBNIeEHTsjvQ==;31:aT7iabplZ9o2DiuxGbAo/dj7JmLlk0LBzD8mwGILcKBvXJ+ahAMRZNLxqXOb4eAZDrj9zLTPBh0i334h9qdXzOKhNiVXh7Xlu+Sh3zCk1u7f61kw6zAddme2KWWL38jZDJwnpJc6hpGSS2P7b/SokRmOef0yHhvZoTtsW2CX3sGin7z7F1dSvNPzFrxSw4jtMfg1rvpXhm+sBAiofPw5ymbX/9H0wbD2l3nZ2PVqprw=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;3:UR7/qT5UsDxdHtrL+9UNeim2ExzExS0mq7I4+EW0mqO7K3eRnLeRP/AxB0oD+PIODIKpKh/5dUN761326a7CbVD/y2ozBA82r1NZoRYceWS/9Xwwpo8ROaC7BiVJ6n3TXMGF12ZPASHhq1ifRzMHodQTRHr6bk8Ak/Dyh/qlM5csUcuPyxU4EfPWxEvRoSF0GAxN3PUmyHd+uvdK8GtCdlJzZI19/JgYyFrFcjIHFxOd7U/hqY0/bhUDfTe7jbc3;25:Dz6gtbJ/9ahAMp9juhbHJuDjeDC7DC4ItOaKvIjMUQzRms/DSv+dRpS6iTBDPUalM4YK4pu1jwEgGOwDDszF7Br/4LLDaCCFJfpvAkptphmZKCeUadUFwax/0G+clL3wDENMpNRWtGkNYWTjnJhWd/5r5u+0IGmMRxSnR67QiVS7yD8syH7MdYjGXJojIuITDnO6q7nBlmqSpHQ00KN7q5tSk/+ibo94Zq8ixoL8ZXChbRKRIktK4+Yhu5q7shNhYqu7X6Y0VHtF1oq1mZaQkSIMa0ET1/erA/RaQovaLpPm9w9YXbAZglWVFKEJ0Pxt3f4iecCYnI9BISAKMEAvhQ==;31:HZlh3195o2eXrWCwYmqwDUJk8xbMYdiNfhgijWF0Jd/KrWMrUJhX+MEMkBkO0+PtJfGyXgUPiokacYmsfzRBEyo0MTRnY16aO1AGfuzugisTktYDKJ4wnSBVyhW/AQOoeWt0L5EIWalWPJHVRpCMsAzGkaqFWlmTmXp9koUhoQTC6Ycl37hG+nKfQS4sMThr/tV6KJqsbD0QnIT5Uj2FQ6fG+KWsz/dhYbNGtSUKRaw=
 X-MS-TrafficTypeDiagnostic: MWHPR0701MB3803:
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;20:LWbp3EFe3lv7Fr6TjGpsjWEhiBojLzQhkSDSbX0e4+sziby3i6im4vM1n3j7Z/0tmWHgIt/Msz9IPGt5C0HFWQTTxi+LfytXO2OLO6CGiq3ORGS72YJuHtpMhrHPaE3rX4lvcmH/32N24uX1gfXgWOhlJgsQRAjO6SZuQRURg39QHDxD+aZN+yqFMd2LlD8+/VpuovPI9Z9lU2PdD3sqcIKZe+HaLAWKWTpcKsvkFcmVI32a1yYiJ8Y9WKi6WBxH1Sk/duBTSirR/u2Aje4PK2dZcPjyMx8CU21PlmiW6vizdIEDc9Ye5dp7HBz7atW6ehFVrexS/Xvx+heYpY12ZEQqV1Qrg/imw1VaoKSouZ7br2I1Wq5FccfwlBfPLWdJCj6I0lTAJ68NyYM+MMoA2aGzbkbBCRCv7Nnblv9L7K0EeC9frEypKRcDCRicj+IEJ9E8WmwxcAohI77xngFoqQEXRWpC2b4z33Phqf49AK9+4DO/th1qEf5KfmfedfHS;4:BOxUfrGSrKyfYEEYUCxYRlakLy75ndfz8Zxp9vCsQQhIPwalYecYD6UkZmL2YnA8MjyQO7HFE2CsDF4TaW1UviYnZLULR9CO1wxL8jUCupTiELaXIJ5o1PPVOGCe6lKwJm3YQ60Lf8g00xDcPUFZkuux3B0ln/ZarBl54XLIBN54NP0c4idfdASKJvnckqRHOW7su88HMNyAVcIuCpRvM9pYLrAYEjZCnHYwd6wr16uFDo5d8Um2asT2m++FINyE
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;20:1sJoK91kSUh20yk4Vi0KTnJTHpDlpbT09JWxvk0Tq40k9lvGb8BgtjJDs8yLiuEkyowUTVCx7QXBmI+554p2dNZOBH11SjOydJGziEGgKFnlNJC3qb0Zf/JkJTORhjh2FOC5WrSHlBTTtV+UPI5aZyDdgq8nLMhapoaINAi/+6F6Pit5wQG19cl6ee3PrgngqojxRNg6Qvgr+IHKjZAmzVlgX8ml/wYMWXexFIXCbWjN9bFoS4FOUlo3n1+IJS4/I/zJWW0dT/W7GM2L7G1YcGJgS5ek7CDG36iFVdCwnwwtO7REa+7+T402yoKyMV6r9K+yksWr3wcBVhQYYvKrIssCRCp5NOLnUrI1SLKN+AIno5KssS2Vsv4W/kuyVuPZhySYQKUeFb5N1cl50oPjs6RCN1w4S0RHUYslqkZQha+Tj8QtQM/jai1O8BJnUW4WhV3ILdleshy3BbSIo5cDOd8nRzPTpofAdpqBpUixE54nBeInLJCURjVd5Bxh+Hqs;4:J/kw8GkwK/nOQWDHa8bzQHH16IG0iTrnn+DSDbQyuOA1MxXgjCj8osYFkGcd4KN5k/9Pk4SMR/XdvWg9lUi8Nh73e06dS4ewEy3gRvAF1lFsQl/DKu+OvHRcvu0JHEna+fl0gLS1obUryOhp/a0tbiSnRp6+wFDNTn+m7jcnBydCAfEYUPKG9TdEd9v2QCdReMJmubW3ReH5KfLxgPo+5HnaKhbROdGyLLDs52jkvyjApoG48Srt9Ww/c7gsqH6g
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <MWHPR0701MB38035CC1B253CFC375EA2382809F0@MWHPR0701MB3803.namprd07.prod.outlook.com>
+X-Microsoft-Antispam-PRVS: <MWHPR0701MB380384F424965487C56B2F69809F0@MWHPR0701MB3803.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(601004)(2401047)(5005006)(8121501046)(93006095)(93001095)(3002001)(10201501046)(100000703101)(100105400095)(6041248)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123564025)(20161123562025)(20161123555025)(20161123560025)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:MWHPR0701MB3803;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:MWHPR0701MB3803;
 X-Forefront-PRVS: 0414DF926F
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(7370300001)(4630300001)(6009001)(189002)(199003)(189998001)(7736002)(72206003)(97736004)(36756003)(305945005)(5003940100001)(69596002)(33646002)(50226002)(8676002)(81166006)(7350300001)(50466002)(81156014)(68736007)(3846002)(6116002)(48376002)(6506006)(66066001)(86362001)(575784001)(47776003)(53936002)(110136004)(50986999)(76176999)(5660300001)(6666003)(6486002)(2906002)(2950100002)(25786009)(42186005)(53416004)(6512007)(106356001)(101416001)(478600001)(105586002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR0701MB3803;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(7370300001)(4630300001)(6009001)(189002)(199003)(189998001)(7736002)(72206003)(97736004)(36756003)(305945005)(5003940100001)(69596002)(33646002)(50226002)(8676002)(81166006)(7350300001)(50466002)(81156014)(68736007)(3846002)(6116002)(48376002)(6506006)(66066001)(86362001)(47776003)(53936002)(110136004)(50986999)(76176999)(5660300001)(6666003)(6486002)(2906002)(2950100002)(25786009)(42186005)(53416004)(6512007)(106356001)(101416001)(478600001)(105586002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR0701MB3803;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR0701MB3803;23:ptkWK3aZw5VRSqG8KB7mNhc0O3njujx0f6CIQcO?=
- =?us-ascii?Q?6qWL84gBvsR1RwgFrHNqMd0FIwSbL1itqVaDkXbkxrVJzOZ5EGwDt7uOnWZQ?=
- =?us-ascii?Q?k5TUMJ573jPR2Lbz4WJcH1y3+EbVwHt2egTSz0epV8v09xyTCjx095hqL/2R?=
- =?us-ascii?Q?73mtm6xMeD597JJyBVrQuzX3JoSbZ4VD5aWxG2dyfOBBIXrSylk0UblpNaEz?=
- =?us-ascii?Q?PfLcWNF33W4akbXl9UV4BRLMWI83GfSUgtfVgXlzHSezW4dl/WjIo1abek+M?=
- =?us-ascii?Q?wPsukQcI5pNZIc4qEOrFUZS3RWdkKBOBBwcuO54sz8L6wVvOn4e2KPuHF9Hq?=
- =?us-ascii?Q?R4kORRexl1CXKkIVD32Z6gQ4QHZ8+q/mdzj3DQc+uyNQ0S8xdI0NuhE/AsFm?=
- =?us-ascii?Q?H/MJtFKF+Z1NkTNuA7JEKZY5o0cqjgP96TbUsMpLnvWwUNcguJH07UcY+7h7?=
- =?us-ascii?Q?bTVMRjc1VTQEcmwl6kVWt7oT0fkjRj4kfg0he6zDpUxOL49IjvDOB0TtgUPR?=
- =?us-ascii?Q?6LxzJJCyNee+wr4FwbpIqnXl+1q2m5t3KGlW37elAI6anlWP6d4F2uJbgRok?=
- =?us-ascii?Q?8e1/EKb9NuOVoo26geplnjPQ2EyeyZaKF6lLGxqrUp47fvJStTl2UDh4GGe5?=
- =?us-ascii?Q?N0AK6Zh5pfxzW++USlwNgnrvdqpzrox01T1qM59O9uu6HiMnOBLybyVFu0U7?=
- =?us-ascii?Q?9pS4jpMR/bRH0+IxeuE/VcU+YyzG9toZ9XhPwvgeXJJJs0mZIjDsy+ak7/VB?=
- =?us-ascii?Q?6GgbVGzCg1K3A4ox8PtHUXolKLh3SFC7VGWgjr1zFo8STMZ43xeRhJNDRk+V?=
- =?us-ascii?Q?1Yzg0rYduXK6og0hbPDi8wAo3gwYoVQ3QPlzjUmpQ5UGvWYNy7pxVUfRf8Dj?=
- =?us-ascii?Q?gVxFurMuoCiwhPxkJZJmFUUmrcMC4sVeQl59Wj6qwdFG1/ddb9GevzG78fKl?=
- =?us-ascii?Q?3bMaCo6YBJYlQ5KOMPXqaNO9RQ+GaVx9apGJ7GNqhOimYA+DWttKhZwe3Gdc?=
- =?us-ascii?Q?xBKXQtxRUpvvr9jqo8zAS1eGPAelQsA49Ew9JGoBrqC+tb0tCcfUz6A37u7Q?=
- =?us-ascii?Q?mu5qYx/SOXgIO9HrlV1Yh7ngw5cqBiOmedj3TpZjXE9EvhKxY5rAxlbAB3tJ?=
- =?us-ascii?Q?apf1Gjn2RYtBl1s9SEryWOzKy+5FBmgMx?=
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;6:ovcolZpLF9RnlOoR/Awj83Z7voe3M4TKMtS19Dv7pDoITCsuOb469mVe9e4BXmQJUvoONu92mPLV8gbBsBu40O6r32yF7JEDmCivrKHoBRE1D7n/j5+0RItzzF3gj4CTEyPJ+iYiKBia6DU73VeZws5GzgTIhI5frdYW7bg/IJYws0XqZD6rLgj3t9I0UXPIq7azBp7yuqPtY9HBp3FH6msU6JiBUffgOeBnOr9nS8G/q/euyMPOo+qTCpMx+OQu+FbhIdDcMY7CPhC0rIGnAnQhF67Q2rOFI8Dtwig9tKY1m2Ze+/qXWzdJHWXyTEq6qnVlmedf105Ns0qzv2l6TA==;5:OhMj9ReCSPUT7ZFxpA2RNoKMNjQa7djonHbqC9V9nmGvV7jI32+V3MQpL2kvSQcLxYhRu1DuLzxgsIUBpgIAW7BXxx33GwRDSlf0CMlg14GArgKx43z0ABrM52/oTWWgfG2/kCUZXjWIjy6uhtRfOg==;24:sB64uhiFGow56Yg69c0soixAWGDnM8nRuPZgbVk70h3GKtCLZVZhxFkoiN/ssHmrH7KUhBeSpH5+YNi4lJ4RE0gX6kWVSMgxPbNswIJcbe8=;7:cZXRe/tjPzGVF432/dUl1/azAJDeiOGvoR/8yFenPB7iuopejkb7wy7/TnO96X40/BMBsbnUccfOtwv7wbmKA9mv7ehcVy4yhuqCgwpB5EoHIjktVC0tMGsm2jzPgwhGqKsHyLvdYr24SqZ7RCstadvQLU6kFf4zZPuLNlxssAvyh7RdbqVJ4N0vCHQAuCXvy4D8Ba+pwHcBqmKkP6JZawfKFBAMakarast68Um1huQ=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR0701MB3803;23:UuDFMkb0RafRZbwIfxwKOcYwYVwBLn9obT1ciWT?=
+ =?us-ascii?Q?o7Ck8iRvPuzeVHKpWQZvYSYyEA9LMAE86zYMTXS27+CD6ZZy5srH/687zIaz?=
+ =?us-ascii?Q?0q0GskBBCCPlfxavT+6g1lH12QXD1KyucrkEnM+i0DzEElvyrnctIInhcA+S?=
+ =?us-ascii?Q?YQejBkWVsjLOluiBOuaHLdjkSq4+Gy/EGFY2w+Cf08ISv42FBR+qsB1UBAoA?=
+ =?us-ascii?Q?TCTUYQ2VEJhtUZcINAo2WEeegNGNI5cQOx5tlhjwvjn61v94GiOy4cjhKwZU?=
+ =?us-ascii?Q?fPZpckMaSG/tCIg3CzdR6A5pKDXzmNy8xZqoxvAtdIyfIrLmmMI4XMDidmW1?=
+ =?us-ascii?Q?+I/VH5xa1a9pd9Gkm9mwLoQ33wEMPcjuKFAU1cat/QMqkCbuyd/MK9AoW53L?=
+ =?us-ascii?Q?hS5ApOY4dDiE0J0wplg8jngBZqool9DsZxQd7Db+5HsKiGg9n3B87H+SUgaq?=
+ =?us-ascii?Q?8QzA7uq1O6R3GsoRAxfuJzvmHiPgUBW++egdwkr2FVwrGmHeisUPCMwhZmKI?=
+ =?us-ascii?Q?FUiGdYoCKr1hOtNnwLnn8s/MEW4LjE2iG7A3urvIqkP3EH9bNlnsWLJedU7L?=
+ =?us-ascii?Q?AmVInbqInLV8qY7Xi0ybKrbb1RQxFzEk+u7K9WLuZcoIUVpMV2i01nMzGzT8?=
+ =?us-ascii?Q?SVHhB3Y82hUiw2rF41EC6f0fZtM8k6sjl3lGlfUnCFMu4sNqkZ+yEURqUI9L?=
+ =?us-ascii?Q?8TdzFON2Bxv7DY/3Ij4Asa9XsEWGlVsJbG7/My9WhmvaaOcDrI9xoARQZE7e?=
+ =?us-ascii?Q?frNYJMMlJNae8YDOGetblNI5j+6nHWZtzA163Wit6Q+oAaa5BHnfNemw+TpZ?=
+ =?us-ascii?Q?C1WOEaQZIkU3IlQMUhmSFqaoMNCyci/WFQGw7CANF0uUsvPOWbxm4tGbWsTm?=
+ =?us-ascii?Q?HKniCMSUG1QMDLJmbDcAYAfhr5eYhO4m3WSocFTz00XisIYU7IuFa1VJA9hW?=
+ =?us-ascii?Q?fY5obk0p8e4T8+jnKf7dsbn8NzUPWVxkHew6M5PiQqr03pa6fT7kb1ZyWKaF?=
+ =?us-ascii?Q?gkpipY9sTEbHVi7e/bkV5G8Y9ZozURIUc4NUlPgt75pANa3CHulrMvSNCYKP?=
+ =?us-ascii?Q?YAEA8AfFzu/U1g6W0Fs86f3tIhMIYVSiizhbtr2tQeo51ubrFBA=3D=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;6:xtJNDSl5T1dOBJpbvZTfX+0V/gHS6D9QYCZRfXopY65Li1CFxfnKPU1hDUdRMofxvDtQAz/tytzU8puA+WWThcusHJ/1dTZLeSNo/71xaLZ6c3jI6OwxBWqOcQ9GmRwL1DBgVATNN/SqVhLzjddhAa9gMfiIprsztsZiRsQv8vDSK5bkTyHo+2wWdlXmFIjfT5bDnmu0p97MLBw0Ajs3Wu5Y8cXQffIfok1Sk0XEJzCXo8BY8WV1Rlfk6Qua72FvrwE88XFrK30nvA73ET0kNm+OkhH538aHfgjAONN5+ul5zJtq+xTDKeBiqN5IrYhwz0EwLuIDfJOSK76iqAlMkw==;5:SZnjAIFmtv8IRyDTzvCe/aXW99HJfGnQHhzqRlGrPm9kH23O+aTD17uroKxqbaXYptMlEditDI7Yfs3gNfh+SlGv3OW233WezgbQKp2NkGembTnQV0hZ0yM/8Qwg/VTIy3E4jUuUd2+Q5Yx5PL7Yqg==;24:jd0KMMxfrbE5MH7s1Lvn0Gp1WWbj7abeAQV+jZH8GLa4TEXTo0/3kB9A00p/kAoh/5SKzD1l4/++fFzgPcVKur8XV29qOAH0qmx4I6rXmyo=;7:iemVNuGNneTUPn1OghKiTVHtijv+A4Pr3B3TMrzLOTagJFQx6+9IQUHWQ1KW6z3eWx929qsHemPaMX4Q2nHjk862Xj9MK1tElX77FCYKwu/Sbjb7spcMZv4IDCMGo1wa6PA7Bg2ccF+8V/utzWRMikVrYeQbdBrZ0MB4Ee10344y3OxfLdf1dmcGoHML99E3HtLLvxWnrScK/Iwf1FZ0zlD19xz1LMsSJ5/XVgLIhO0=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2017 15:43:01.4448 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2017 15:43:02.8042 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR0701MB3803
 Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59875
+X-archive-position: 59876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,121 +91,288 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+From: Carlos Munoz <carlos.munoz@caviumnetworks.com>
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Carlos Munoz <cmunoz@caviumnetworks.com>
-Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
+Signed-off-by: Carlos Munoz <carlos.munoz@caviumnetworks.com>
+Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+Acked-by: David Daney <david.daney@cavium.com>
 ---
- drivers/watchdog/octeon-wdt-main.c | 48 +++++++++++++++++++++++++++-----------
- 1 file changed, 35 insertions(+), 13 deletions(-)
+ drivers/watchdog/octeon-wdt-main.c | 133 ++++++++++++++++++++++++++++---------
+ 1 file changed, 103 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/watchdog/octeon-wdt-main.c b/drivers/watchdog/octeon-wdt-main.c
-index 73b5102..410800f 100644
+index 410800f..0ec419a 100644
 --- a/drivers/watchdog/octeon-wdt-main.c
 +++ b/drivers/watchdog/octeon-wdt-main.c
-@@ -69,6 +69,9 @@
- 
+@@ -70,6 +70,10 @@
  #include <asm/octeon/octeon.h>
  #include <asm/octeon/cvmx-boot-vector.h>
-+#include <asm/octeon/cvmx-ciu2-defs.h>
+ #include <asm/octeon/cvmx-ciu2-defs.h>
++#include <asm/octeon/cvmx-rst-defs.h>
 +
-+static int divisor;
++/* Watchdog interrupt major block number (8 MSBs of intsn) */
++#define WD_BLOCK_NUMBER		0x01
  
- /* The count needed to achieve timeout_sec. */
- static unsigned int timeout_cnt;
-@@ -227,10 +230,10 @@ void octeon_wdt_nmi_stage3(u64 reg[32])
- 	u64 cp0_epc = read_c0_epc();
+ static int divisor;
  
- 	/* Delay so output from all cores output is not jumbled together. */
--	__delay(100000000ull * coreid);
-+	udelay(85000 * coreid);
+@@ -91,6 +95,8 @@ static cpumask_t irq_enabled_cpus;
  
- 	octeon_wdt_write_string("\r\n*** NMI Watchdog interrupt on Core 0x");
--	octeon_wdt_write_hex(coreid, 1);
-+	octeon_wdt_write_hex(coreid, 2);
- 	octeon_wdt_write_string(" ***\r\n");
- 	for (i = 0; i < 32; i++) {
- 		octeon_wdt_write_string("\t");
-@@ -253,11 +256,28 @@ void octeon_wdt_nmi_stage3(u64 reg[32])
- 	octeon_wdt_write_hex(cp0_cause, 16);
- 	octeon_wdt_write_string("\r\n");
+ #define WD_TIMO 60			/* Default heartbeat = 60 seconds */
  
--	octeon_wdt_write_string("\tsum0\t0x");
--	octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU_INTX_SUM0(coreid * 2)), 16);
--	octeon_wdt_write_string("\ten0\t0x");
--	octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU_INTX_EN0(coreid * 2)), 16);
--	octeon_wdt_write_string("\r\n");
-+	/* The CIU register is different for each Octeon model. */
-+	if (OCTEON_IS_MODEL(OCTEON_CN68XX)) {
-+		octeon_wdt_write_string("\tsrc_wd\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU2_SRC_PPX_IP2_WDOG(coreid)), 16);
-+		octeon_wdt_write_string("\ten_wd\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU2_EN_PPX_IP2_WDOG(coreid)), 16);
-+		octeon_wdt_write_string("\r\n");
-+		octeon_wdt_write_string("\tsrc_rml\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU2_SRC_PPX_IP2_RML(coreid)), 16);
-+		octeon_wdt_write_string("\ten_rml\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU2_EN_PPX_IP2_RML(coreid)), 16);
-+		octeon_wdt_write_string("\r\n");
-+		octeon_wdt_write_string("\tsum\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU2_SUM_PPX_IP2(coreid)), 16);
-+		octeon_wdt_write_string("\r\n");
-+	} else if (!octeon_has_feature(OCTEON_FEATURE_CIU3)) {
-+		octeon_wdt_write_string("\tsum0\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU_INTX_SUM0(coreid * 2)), 16);
-+		octeon_wdt_write_string("\ten0\t0x");
-+		octeon_wdt_write_hex(cvmx_read_csr(CVMX_CIU_INTX_EN0(coreid * 2)), 16);
-+		octeon_wdt_write_string("\r\n");
-+	}
- 
- 	octeon_wdt_write_string("*** Chip soft reset soon ***\r\n");
- }
-@@ -366,7 +386,7 @@ static void octeon_wdt_calc_parameters(int t)
- 
- 	countdown_reset = periods > 2 ? periods - 2 : 0;
- 	heartbeat = t;
--	timeout_cnt = ((octeon_get_io_clock_rate() >> 8) * timeout_sec) >> 8;
-+	timeout_cnt = ((octeon_get_io_clock_rate() / divisor) * timeout_sec) >> 8;
- }
- 
- static int octeon_wdt_set_timeout(struct watchdog_device *wdog,
-@@ -437,9 +457,7 @@ static enum cpuhp_state octeon_wdt_online;
-  */
- static int __init octeon_wdt_init(void)
++#define CVMX_GSERX_SCRATCH(offset) (CVMX_ADD_IO_SEG(0x0001180090000020ull) + ((offset) & 15) * 0x1000000ull)
++
+ static int heartbeat = WD_TIMO;
+ module_param(heartbeat, int, 0444);
+ MODULE_PARM_DESC(heartbeat,
+@@ -115,21 +121,12 @@ void octeon_wdt_nmi_stage2(void);
+ static int cpu2core(int cpu)
  {
--	int i;
- 	int ret;
--	u64 *ptr;
+ #ifdef CONFIG_SMP
+-	return cpu_logical_map(cpu);
++	return cpu_logical_map(cpu) & 0x3f;
+ #else
+ 	return cvmx_get_core_num();
+ #endif
+ }
  
- 	octeon_wdt_bootvector = cvmx_boot_vector_get();
- 	if (!octeon_wdt_bootvector) {
-@@ -447,10 +465,15 @@ static int __init octeon_wdt_init(void)
- 		return -ENOMEM;
+-static int core2cpu(int coreid)
+-{
+-#ifdef CONFIG_SMP
+-	return cpu_number_map(coreid);
+-#else
+-	return 0;
+-#endif
+-}
+-
+ /**
+  * Poke the watchdog when an interrupt is received
+  *
+@@ -140,13 +137,14 @@ static int core2cpu(int coreid)
+  */
+ static irqreturn_t octeon_wdt_poke_irq(int cpl, void *dev_id)
+ {
+-	unsigned int core = cvmx_get_core_num();
+-	int cpu = core2cpu(core);
++	int cpu = raw_smp_processor_id();
++	unsigned int core = cpu2core(cpu);
++	int node = cpu_to_node(cpu);
+ 
+ 	if (do_countdown) {
+ 		if (per_cpu_countdown[cpu] > 0) {
+ 			/* We're alive, poke the watchdog */
+-			cvmx_write_csr(CVMX_CIU_PP_POKEX(core), 1);
++			cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(core), 1);
+ 			per_cpu_countdown[cpu]--;
+ 		} else {
+ 			/* Bad news, you are about to reboot. */
+@@ -155,7 +153,7 @@ static irqreturn_t octeon_wdt_poke_irq(int cpl, void *dev_id)
+ 		}
+ 	} else {
+ 		/* Not open, just ping away... */
+-		cvmx_write_csr(CVMX_CIU_PP_POKEX(core), 1);
++		cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(core), 1);
+ 	}
+ 	return IRQ_HANDLED;
+ }
+@@ -280,26 +278,74 @@ void octeon_wdt_nmi_stage3(u64 reg[32])
  	}
  
-+	if (OCTEON_IS_MODEL(OCTEON_CN68XX))
-+		divisor = 0x200;
-+	else
-+		divisor = 0x100;
+ 	octeon_wdt_write_string("*** Chip soft reset soon ***\r\n");
 +
- 	/*
- 	 * Watchdog time expiration length = The 16 bits of LEN
- 	 * represent the most significant bits of a 24 bit decrementer
--	 * that decrements every 256 cycles.
-+	 * that decrements every divisor cycle.
- 	 *
- 	 * Try for a timeout of 5 sec, if that fails a smaller number
- 	 * of even seconds,
-@@ -458,8 +481,7 @@ static int __init octeon_wdt_init(void)
- 	max_timeout_sec = 6;
- 	do {
- 		max_timeout_sec--;
--		timeout_cnt = ((octeon_get_io_clock_rate() >> 8) *
--			      max_timeout_sec) >> 8;
-+		timeout_cnt = ((octeon_get_io_clock_rate() / divisor) * max_timeout_sec) >> 8;
- 	} while (timeout_cnt > 65535);
++	/*
++	 * G-30204: We must trigger a soft reset before watchdog
++	 * does an incomplete job of doing it.
++	 */
++	if (OCTEON_IS_OCTEON3() && !OCTEON_IS_MODEL(OCTEON_CN70XX)) {
++		u64 scr;
++		unsigned int node = cvmx_get_node_num();
++		unsigned int lcore = cvmx_get_local_core_num();
++		union cvmx_ciu_wdogx ciu_wdog;
++
++		/*
++		 * Wait for other cores to print out information, but
++		 * not too long.  Do the soft reset before watchdog
++		 * can trigger it.
++		 */
++		do {
++			ciu_wdog.u64 = cvmx_read_csr_node(node, CVMX_CIU_WDOGX(lcore));
++		} while (ciu_wdog.s.cnt > 0x10000);
++
++		scr = cvmx_read_csr_node(0, CVMX_GSERX_SCRATCH(0));
++		scr |= 1 << 11; /* Indicate watchdog in bit 11 */
++		cvmx_write_csr_node(0, CVMX_GSERX_SCRATCH(0), scr);
++		cvmx_write_csr_node(0, CVMX_RST_SOFT_RST, 1);
++	}
++}
++
++static int octeon_wdt_cpu_to_irq(int cpu)
++{
++	unsigned int coreid;
++	int node;
++	int irq;
++
++	coreid = cpu2core(cpu);
++	node = cpu_to_node(cpu);
++
++	if (octeon_has_feature(OCTEON_FEATURE_CIU3)) {
++		struct irq_domain *domain;
++		int hwirq;
++
++		domain = octeon_irq_get_block_domain(node,
++						     WD_BLOCK_NUMBER);
++		hwirq = WD_BLOCK_NUMBER << 12 | 0x200 | coreid;
++		irq = irq_find_mapping(domain, hwirq);
++	} else {
++		irq = OCTEON_IRQ_WDOG0 + coreid;
++	}
++	return irq;
+ }
  
- 	BUG_ON(timeout_cnt == 0);
+ static int octeon_wdt_cpu_pre_down(unsigned int cpu)
+ {
+ 	unsigned int core;
+-	unsigned int irq;
++	int node;
+ 	union cvmx_ciu_wdogx ciu_wdog;
+ 
+ 	core = cpu2core(cpu);
+ 
+-	irq = OCTEON_IRQ_WDOG0 + core;
++	node = cpu_to_node(cpu);
+ 
+ 	/* Poke the watchdog to clear out its state */
+-	cvmx_write_csr(CVMX_CIU_PP_POKEX(core), 1);
++	cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(core), 1);
+ 
+ 	/* Disable the hardware. */
+ 	ciu_wdog.u64 = 0;
+-	cvmx_write_csr(CVMX_CIU_WDOGX(core), ciu_wdog.u64);
++	cvmx_write_csr_node(node, CVMX_CIU_WDOGX(core), ciu_wdog.u64);
+ 
+-	free_irq(irq, octeon_wdt_poke_irq);
++	free_irq(octeon_wdt_cpu_to_irq(cpu), octeon_wdt_poke_irq);
+ 	return 0;
+ }
+ 
+@@ -308,33 +354,56 @@ static int octeon_wdt_cpu_online(unsigned int cpu)
+ 	unsigned int core;
+ 	unsigned int irq;
+ 	union cvmx_ciu_wdogx ciu_wdog;
++	int node;
++	struct irq_domain *domain;
++	int hwirq;
+ 
+ 	core = cpu2core(cpu);
++	node = cpu_to_node(cpu);
+ 
+ 	octeon_wdt_bootvector[core].target_ptr = (u64)octeon_wdt_nmi_stage2;
+ 
+ 	/* Disable it before doing anything with the interrupts. */
+ 	ciu_wdog.u64 = 0;
+-	cvmx_write_csr(CVMX_CIU_WDOGX(core), ciu_wdog.u64);
++	cvmx_write_csr_node(node, CVMX_CIU_WDOGX(core), ciu_wdog.u64);
+ 
+ 	per_cpu_countdown[cpu] = countdown_reset;
+ 
+-	irq = OCTEON_IRQ_WDOG0 + core;
++	if (octeon_has_feature(OCTEON_FEATURE_CIU3)) {
++		/* Must get the domain for the watchdog block */
++		domain = octeon_irq_get_block_domain(node, WD_BLOCK_NUMBER);
++
++		/* Get a irq for the wd intsn (hardware interrupt) */
++		hwirq = WD_BLOCK_NUMBER << 12 | 0x200 | core;
++		irq = irq_create_mapping(domain, hwirq);
++		irqd_set_trigger_type(irq_get_irq_data(irq),
++				      IRQ_TYPE_EDGE_RISING);
++	} else
++		irq = OCTEON_IRQ_WDOG0 + core;
+ 
+ 	if (request_irq(irq, octeon_wdt_poke_irq,
+ 			IRQF_NO_THREAD, "octeon_wdt", octeon_wdt_poke_irq))
+ 		panic("octeon_wdt: Couldn't obtain irq %d", irq);
+ 
++	/* Must set the irq affinity here */
++	if (octeon_has_feature(OCTEON_FEATURE_CIU3)) {
++		cpumask_t mask;
++
++		cpumask_clear(&mask);
++		cpumask_set_cpu(cpu, &mask);
++		irq_set_affinity(irq, &mask);
++	}
++
+ 	cpumask_set_cpu(cpu, &irq_enabled_cpus);
+ 
+ 	/* Poke the watchdog to clear out its state */
+-	cvmx_write_csr(CVMX_CIU_PP_POKEX(core), 1);
++	cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(core), 1);
+ 
+ 	/* Finally enable the watchdog now that all handlers are installed */
+ 	ciu_wdog.u64 = 0;
+ 	ciu_wdog.s.len = timeout_cnt;
+ 	ciu_wdog.s.mode = 3;	/* 3 = Interrupt + NMI + Soft-Reset */
+-	cvmx_write_csr(CVMX_CIU_WDOGX(core), ciu_wdog.u64);
++	cvmx_write_csr_node(node, CVMX_CIU_WDOGX(core), ciu_wdog.u64);
+ 
+ 	return 0;
+ }
+@@ -343,20 +412,20 @@ static int octeon_wdt_ping(struct watchdog_device __always_unused *wdog)
+ {
+ 	int cpu;
+ 	int coreid;
++	int node;
+ 
+ 	if (disable)
+ 		return 0;
+ 
+ 	for_each_online_cpu(cpu) {
+ 		coreid = cpu2core(cpu);
+-		cvmx_write_csr(CVMX_CIU_PP_POKEX(coreid), 1);
++		node = cpu_to_node(cpu);
++		cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(coreid), 1);
+ 		per_cpu_countdown[cpu] = countdown_reset;
+ 		if ((countdown_reset || !do_countdown) &&
+ 		    !cpumask_test_cpu(cpu, &irq_enabled_cpus)) {
+ 			/* We have to enable the irq */
+-			int irq = OCTEON_IRQ_WDOG0 + coreid;
+-
+-			enable_irq(irq);
++			enable_irq(octeon_wdt_cpu_to_irq(cpu));
+ 			cpumask_set_cpu(cpu, &irq_enabled_cpus);
+ 		}
+ 	}
+@@ -395,6 +464,7 @@ static int octeon_wdt_set_timeout(struct watchdog_device *wdog,
+ 	int cpu;
+ 	int coreid;
+ 	union cvmx_ciu_wdogx ciu_wdog;
++	int node;
+ 
+ 	if (t <= 0)
+ 		return -1;
+@@ -406,12 +476,13 @@ static int octeon_wdt_set_timeout(struct watchdog_device *wdog,
+ 
+ 	for_each_online_cpu(cpu) {
+ 		coreid = cpu2core(cpu);
+-		cvmx_write_csr(CVMX_CIU_PP_POKEX(coreid), 1);
++		node = cpu_to_node(cpu);
++		cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(coreid), 1);
+ 		ciu_wdog.u64 = 0;
+ 		ciu_wdog.s.len = timeout_cnt;
+ 		ciu_wdog.s.mode = 3;	/* 3 = Interrupt + NMI + Soft-Reset */
+-		cvmx_write_csr(CVMX_CIU_WDOGX(coreid), ciu_wdog.u64);
+-		cvmx_write_csr(CVMX_CIU_PP_POKEX(coreid), 1);
++		cvmx_write_csr_node(node, CVMX_CIU_WDOGX(coreid), ciu_wdog.u64);
++		cvmx_write_csr_node(node, CVMX_CIU_PP_POKEX(coreid), 1);
+ 	}
+ 	octeon_wdt_ping(wdog); /* Get the irqs back on. */
+ 	return 0;
+@@ -467,6 +538,8 @@ static int __init octeon_wdt_init(void)
+ 
+ 	if (OCTEON_IS_MODEL(OCTEON_CN68XX))
+ 		divisor = 0x200;
++	else if (OCTEON_IS_MODEL(OCTEON_CN78XX))
++		divisor = 0x400;
+ 	else
+ 		divisor = 0x100;
+ 
 -- 
 2.1.4

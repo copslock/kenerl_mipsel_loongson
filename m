@@ -1,63 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 03:43:28 +0200 (CEST)
-Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:34499
-        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994895AbdH2BnWVFBkb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 03:43:22 +0200
-Received: by mail-io0-x241.google.com with SMTP id d81so1323008ioj.1;
-        Mon, 28 Aug 2017 18:43:22 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 06:55:48 +0200 (CEST)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:38610
+        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994901AbdH2Ezj1M9Ia (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 06:55:39 +0200
+Received: by mail-oi0-x241.google.com with SMTP id r203so2158595oih.5;
+        Mon, 28 Aug 2017 21:55:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=64JCY27RZ6jL3O9qC7NmrcT3y5aUlSCIAEJBad4xyl8=;
-        b=deHv5B8mRcw01jsc80DhNLUe9SJ1GYG2x1UOm28+cx2AW1g43f5lplmVW7nNYj4Emo
-         0yYsPWESdWvohnn3WgiMZb/HWOkQZPf4ZtFRb6VejeohUMSg43JPRhg5n/gic5jJQ60m
-         uTdtKeQ+MGTh2Atd4OThi7+IA6eo8aKTSeFn4QVu3qpHF+q7JMP2zTgRsXKhWUUba1aM
-         Q7gFxRvuGdHvjAfaFl0jFZ98N0gpyK1YI7ujnR7e/AGZX5K0IteucHzEufqxZIIYdBHm
-         34fVFOxg+Nyz2Sfs3uC/Jkc+ayzWypnrppocU+T8W3qUHzm7n8nItYHEjaHRSz0xBZjQ
-         cC/g==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=nZqsS8hrHRi8dNGwjlVPtcEq9qW1+VVqt2CyKZGIN6A=;
+        b=dEmYNFDe/13EQUKJk//AM+kkIk2WgFmLc8u3Q4RzJ3a96RO7MMC/zE30y+gvUszexd
+         0PsKdPDE4zTbhn1GwszacOIp7n6RcbG5PiEyL0Blm+u1tDX74HL5scy8yUE/g4LvIQcP
+         TAli+ButXuntwR2lS+B5VW2IvJa2BhWJg7MDfbLUqH4X1WzF73YDdHQwZoJcj9ZoZCLk
+         JCYpF266OenE+JTYR/21nfxTK6nO/f3U2aYmfib14UTgcBkyjMcathm51+wJ7w7FXf5a
+         Yu+9BYcGo8YIBqYeaCjUshfEt9VwAuTruO2G6FKh2p88LBmE+IwSrZJZk/ta0S1mqVvi
+         uG8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=64JCY27RZ6jL3O9qC7NmrcT3y5aUlSCIAEJBad4xyl8=;
-        b=B4W7M4jrdFAZnbt1Wc7rvK3SvdrgsMIDEU+RaGckO4VPoyX9WKnAXSjFFIkZ1A7nLo
-         z5HlKu7GyPU3xZvO2A+Is1zbt3g1AQeoVRF+86miZVHMHgbm52RUzA8GiCjq6Cp3bH1A
-         /4Jsv+zrm2M4ZFsZVZiLPPRJ+4aRNXxTz+JC5MMriE1XK5CQprBRxCH5dHdUk4v0ymtD
-         ixnaLF9noSw1dO1FFM2U6g6MAhggEeUAk59fC8bvtf38oqzQNdq/NC7dX3mhU+gWPQt6
-         wFElYB5Jeja4RXop9F7BPEm4ekiB8uMWH1WNg2ownu1PjW4hncFkT0OXA0TXYLNwsNEd
-         M4wg==
-X-Gm-Message-State: AHYfb5hYRYzSmNGuEUDxiQoSXO8aWnzyoo+D1yz5whijyl1WwcAXjwz2
-        uyrLQ1dLOuJvhDWRv0npcmslh2t9qg==
-X-Received: by 10.36.50.82 with SMTP id j79mr2613757ita.108.1503970996550;
- Mon, 28 Aug 2017 18:43:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.183.75 with HTTP; Mon, 28 Aug 2017 18:43:15 -0700 (PDT)
-In-Reply-To: <71ea8331-78da-c22b-d46d-99ab6c187bbf@nokia.com>
-References: <1503476475-21069-1-git-send-email-matt.redfearn@imgtec.com> <71ea8331-78da-c22b-d46d-99ab6c187bbf@nokia.com>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Tue, 29 Aug 2017 09:43:15 +0800
-Message-ID: <CAAhV-H7z82vsvdDc6Hfbp62KM6q72Z_bg6eUFdbK0azU2zmseg@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Revert "MIPS: Fix race on setting and getting cpu_online_mask"
-To:     Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
-Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nZqsS8hrHRi8dNGwjlVPtcEq9qW1+VVqt2CyKZGIN6A=;
+        b=beG4vZSlQ9e6Po5ukMwBW24pJmGZw1iBfqanVoZYDUhAvZ7/GXidrg5p3LkHEM2XMz
+         n94MWPn6pWAmVMrk8OzPbA5iksMovoONDL1BBKiEPlpuksNyujrR7eQWksDmwtOA+NXk
+         nTawaB8MAr6Uw045z6MwwZAlJbUeUkKRlUFbxqaTnXmKYFe2e7c24+VisLe9uMLXFoiJ
+         huWnbgLprloTTjM1blV55ehlJfcIjmnBa1xoKF9xaq+IQ9hEWZURygNfZL5hTaKjbYW2
+         zzJpsuh23ePb8Ghya+cigDmpwZo7xhL9jmQkxXrmUDmpX1ZfiD2QVOihWPum3OJEa5cs
+         ncRA==
+X-Gm-Message-State: AHYfb5j+t5JZoNSDoGTkqIoNUlh7h8c6GiFQcmDGfSjyz0LQhp17x/Hl
+        JgU7LLJYvjasww==
+X-Received: by 10.202.245.67 with SMTP id t64mr2447975oih.19.1503982533528;
+        Mon, 28 Aug 2017 21:55:33 -0700 (PDT)
+Received: from ?IPv6:2001:470:d:73f:d42c:b86f:7c64:7fe4? ([2001:470:d:73f:d42c:b86f:7c64:7fe4])
+        by smtp.gmail.com with ESMTPSA id c187sm2443220oih.52.2017.08.28.21.55.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Aug 2017 21:55:32 -0700 (PDT)
+Subject: Re: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if
+ MIPS_GENERIC
+To:     Miodrag Dinic <Miodrag.Dinic@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <chenhuacai@gmail.com>
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Goran Ferenc <Goran.Ferenc@imgtec.com>,
+        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
+        Bo Hu <bohu@google.com>,
+        Douglas Leung <Douglas.Leung@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Jin Qian <jinqian@google.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
+        Raghu Gandham <Raghu.Gandham@imgtec.com>
+References: <1503061833-26563-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1503061833-26563-9-git-send-email-aleksandar.markovic@rt-rk.com>
+ <20170826105235.GF7433@linux-mips.org>
+ <232DDC0A2B605E4F9E85F6904417885F015D956D48@BADAG02.ba.imgtec.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <98b6a367-657d-d6a6-b3c2-7fbebd9241f7@gmail.com>
+Date:   Mon, 28 Aug 2017 21:55:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
+MIME-Version: 1.0
+In-Reply-To: <232DDC0A2B605E4F9E85F6904417885F015D956D48@BADAG02.ba.imgtec.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59840
+X-archive-position: 59841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,28 +86,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I suggest to drop sync_r4k completely, because it is inaccurate. You
-can use IPI to synchronize count/compare instead, as Loongson-3 does.
 
-Huacai
 
-On Mon, Aug 28, 2017 at 6:07 PM, Matija Glavinic Pecotic
-<matija.glavinic-pecotic.ext@nokia.com> wrote:
-> On 08/23/2017 10:21 AM, Matt Redfearn wrote:
->> As noted in the commit message, upstream differs in this area. The
->> hotplug code now waits on a completion event in bringup_wait_for_ap,
->> which is set by the starting CPU in cpuhp_online_idle once it calls
->> cpu_startup_entry. Thus there is no possibility of a race in upstream,
->> and this commit has only re-introduced the deadlock condition, which can
->> be observed on multiple platforms when running a heavy load test at the
->> same time as hotplugging CPUs. See commit 8f46cca1e6c06 ("MIPS: SMP: Fix
->> possibility of deadlock when bringing CPUs online") for details.
->
-> I personally do not like the fact that synchronization is implicitly done by the callers, it is the reason why the patch was proposed. As noted before, it is enough someone checks cpu online mask somewhere in between and there is race again.
->
-> How about moving synchronise_count_slave before setting the cpu online? Is there dependency it has to be done after completion?
->
-> Regards,
->
-> Matija
->
+On 08/28/2017 02:33 AM, Miodrag Dinic wrote:
+> Hi Ralf,
+> 
+> Even though I agree with your approach in handling this issue is more appropriate,
+> but the reason we isolated this option just for MIPS_GENERIC was because we
+> are not quite sure which MIPS platforms were using this option (and effectively i8042 driver), except for Malta.
+> So, we decided to go with a safer solution and deselect it only for platforms which we are most sure aren't going to use it.
+> 
+> If you prefer to have this option sprinkled across platforms which are using it, please indicate which those are.
+
+FWIW, I had started something similar, see comments from Maciej:
+
+https://patchwork.linux-mips.org/patch/16226/
+
+> 
+> Kind regards,
+> Miodrag
+> 
+> ________________________________________
+> From: Ralf Baechle [ralf@linux-mips.org]
+> Sent: Saturday, August 26, 2017 12:52 PM
+> To: Aleksandar Markovic
+> Cc: linux-mips@linux-mips.org; Miodrag Dinic; Goran Ferenc; Aleksandar Markovic; Bo Hu; Douglas Leung; James Hogan; Jin Qian; Paul Burton; Petar Jovanovic; Raghu Gandham
+> Subject: Re: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if MIPS_GENERIC
+> 
+> On Fri, Aug 18, 2017 at 03:09:00PM +0200, Aleksandar Markovic wrote:
+> 
+>> From: Miodrag Dinic <miodrag.dinic@imgtec.com>
+>>
+>> This effectively disables i8042 driver for MIPS_GENERIC kernel platform.
+>> Currently, only sead-3, boston and ranchu boards are supported by the
+>> MIPS generic kernel and none of them require this driver.
+>> More specifically, kernel would crash if it gets enabled, because
+>> i8042 driver would try to read from an non-existent IO register.
+> 
+> And many more platforms would beneftig from disabling this option because
+> let's face it, the i8042's heydays are over.  So rather than spreading
+> random depenencies on MIPS_GENERIC or other platforms through Kconfig
+> please push the select of ARCH_MIGHT_HAVE_PC_SERIO to the platforms.
+> 
+>   Ralf
+> 
+
+-- 
+Florian

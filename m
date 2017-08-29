@@ -1,56 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 20:34:25 +0200 (CEST)
-Received: from heliosphere.sirena.org.uk ([IPv6:2a01:7e01::f03c:91ff:fed4:a3b6]:41704
-        "EHLO heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23995072AbdH2SeHuUu-H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 20:34:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=5th27f3Z/c5hvTH0hxiESXnYQNNkJcvUwJPm4OFvAL0=; b=nbZSCVc2aUsoWy2p+kYQ275OH
-        WEAW+BeRLri8gPFFC88tMA6hU40fkKFiGQ2+LeMULv2hBkjqRflFcdWHHiG9YC4ozbOZSvFDi3UgW
-        ykOV9D3juhFXDasPC2nCHDRD5UEgj0cUijCdU1dio30bs9z4kw3l5KGp58alNi/haXx50=;
-Received: from 188.29.165.33.threembb.co.uk ([188.29.165.33] helo=finisterre.ee.mobilebroadband)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dmlKW-0003ox-Ly; Tue, 29 Aug 2017 18:33:41 +0000
-Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
-        id BB7654400E7; Tue, 29 Aug 2017 19:33:30 +0100 (BST)
-Date:   Tue, 29 Aug 2017 19:33:30 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com, robh@kernel.org,
-        andy.shevchenko@gmail.com, p.zabel@pengutronix.de, kishon@ti.com,
-        mark.rutland@arm.com
-Subject: Re: [PATCH v10 03/16] spi: spi-falcon: drop check of boot select
-Message-ID: <20170829183330.bw32izdgscs3qv7n@sirena.org.uk>
-References: <20170819221823.13850-1-hauke@hauke-m.de>
- <20170819221823.13850-4-hauke@hauke-m.de>
- <20170828112327.GA15640@linux-mips.org>
- <40428f8d-f781-7952-30c6-41f65ec1096b@hauke-m.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="em6bza2p3zhdutf5"
-Content-Disposition: inline
-In-Reply-To: <40428f8d-f781-7952-30c6-41f65ec1096b@hauke-m.de>
-X-Cookie: Often things ARE as bad as they seem!
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <broonie@sirena.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 20:49:52 +0200 (CEST)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35315
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23995072AbdH2StloXU7H (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 20:49:41 +0200
+Received: by mail-wr0-x244.google.com with SMTP id a47so2848124wra.2
+        for <linux-mips@linux-mips.org>; Tue, 29 Aug 2017 11:49:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=TVLxS7EURYJFk18Osgoa9NUdLsID/WNuGDrIdlzIEIA=;
+        b=C8SHRYCirmS84iv98l0UbZQoSgADgDIDCshL6oPTlroz3TZ4v7bXcvwTrecc7ByPGQ
+         DWq7Zgjc3GaQGp1Zkb+FTZgpNr7M/WAdBQNqBrqxC2W+pjn3KEgtsUfsg2ZhsmsePReu
+         g/RUww/V2CMoo2o2autTNNRmD6/Rhp0YR9vnXmtwAKtvSVQsqokObJGIu8q3jQchEeTE
+         XwwCN1tAbNRBBvcW0vLNcMjzyU3Z/OUh1mNt2wlPUYckYSJzPTbvnmP7izqn/TKMFplP
+         HKID53d/2KAtdsCv+eI1+7BMebMH5fdu9MOAQWw29BMIYxhV/UyHfnQcKzPaK9tFRNG0
+         jk8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=TVLxS7EURYJFk18Osgoa9NUdLsID/WNuGDrIdlzIEIA=;
+        b=d5uABji6zWc8+PUOpopnlRkKZXzA801cOdAycbBxL45AErMCkUfS5slvnbO3ykV8kY
+         D9B1XRiN8MuWGFN/LIFYAM/CTGA6feAX1cIIhJbAabKMErRjtEE75N/z2C/5nq4skroj
+         GrhLvXjVG/T6t31tNTv2fc0u1H9zRnclrGyuRo+05z9BoZz3MMDhHk3j6YW6pAjStle3
+         ltzUwx/loIL/edY1ftvD+eQS8xIRqrtu1RiDV3JkBDlerUM/T09IDyneRQ/QoAutW7l0
+         EA843SGc5g27ybIsi7EzPv/ZLxcmY+A4awcdVLo3MCm5U3eNbDmI7CUrD7iNXDHN4zXQ
+         38cA==
+X-Gm-Message-State: AHYfb5hjD0VqaadQZxcGrFIxliwwJX2tjZcK90L/gmdge1+3vvO5C520
+        h1vIkEbw7Ya6/g==
+X-Received: by 10.223.199.75 with SMTP id b11mr774641wrh.293.1504032576286;
+        Tue, 29 Aug 2017 11:49:36 -0700 (PDT)
+Received: from stb-bld-04.irv.broadcom.com ([192.19.255.250])
+        by smtp.gmail.com with ESMTPSA id o191sm1899055wmg.5.2017.08.29.11.49.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 29 Aug 2017 11:49:35 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     opendmb@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        linux-mips@linux-mips.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
+Subject: [PATCH] irqchip: irq-bcm7120-l2: Use correct I/O accessors for irq_fwd_mask
+Date:   Tue, 29 Aug 2017 11:43:06 -0700
+Message-Id: <1504032187-53035-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59881
+X-archive-position: 59882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,39 +67,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Initialization of irq_fwd_mask was done using __raw_readl() which
+happens to work for all cases except when using ARM BE8 which requires
+readl() (with the proper swapping). Move the initialization of the
+irq_fwd_mask till later when we have correctly defined our I/O
+accessors.
 
---em6bza2p3zhdutf5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ drivers/irqchip/irq-bcm7120-l2.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-On Mon, Aug 28, 2017 at 01:29:33PM +0200, Hauke Mehrtens wrote:
-
-> Mark could you please have a look at the commit message if it is better n=
-ow.
-
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-Sending content free pings just adds to the mail volume (if they are
-seen at all) and if something has gone wrong you'll have to resend the
-patches anyway.
-
---em6bza2p3zhdutf5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmls3kACgkQJNaLcl1U
-h9B79gf/Wa/VFkXnOlBBNgm63YVzh2QsxE9mKHpvq1zfYnZKXeW4dHKXtXd0NT0T
-WDNmcLPyxJ6nmEPAxsarDv86W1wQ6oS91N+17jgdkneocp290gLk6C/esWLR+AqZ
-NU8f9FA+hl/YQ6ZLRiyz3EaB3kDGxGyIJCLgAj8MP0qogG8I5a05/fwc184qpG/I
-98rvKfPPfZilzOeeK34nxoFTQrp7q9+HHS5I0ZtJuTeHBXnjofkBcNULZRUSP3db
-jMnk1GqbA+FcGnAbwRAxHXzsCCAUsk+Y5V63hYyReFUo1nVwC0E5xLvF1wguhVv3
-xilvTr6q7n8CeXYiyp8J4HIDf8VgUw==
-=BO/Z
------END PGP SIGNATURE-----
-
---em6bza2p3zhdutf5--
+diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+index 64c2692070ef..983640eba418 100644
+--- a/drivers/irqchip/irq-bcm7120-l2.c
++++ b/drivers/irqchip/irq-bcm7120-l2.c
+@@ -250,12 +250,6 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+ 	if (ret < 0)
+ 		goto out_free_l1_data;
+ 
+-	for (idx = 0; idx < data->n_words; idx++) {
+-		__raw_writel(data->irq_fwd_mask[idx],
+-			     data->pair_base[idx] +
+-			     data->en_offset[idx]);
+-	}
+-
+ 	for (irq = 0; irq < data->num_parent_irqs; irq++) {
+ 		ret = bcm7120_l2_intc_init_one(dn, data, irq, valid_mask);
+ 		if (ret)
+@@ -297,6 +291,10 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+ 		gc->reg_base = data->pair_base[idx];
+ 		ct->regs.mask = data->en_offset[idx];
+ 
++		/* gc->reg_base is defined and so is gc->writel */
++		irq_reg_writel(gc, data->irq_fwd_mask[idx],
++			       data->en_offset[idx]);
++
+ 		ct->chip.irq_mask = irq_gc_mask_clr_bit;
+ 		ct->chip.irq_unmask = irq_gc_mask_set_bit;
+ 		ct->chip.irq_ack = irq_gc_noop;
+-- 
+1.9.1

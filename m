@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:41:33 +0200 (CEST)
-Received: from smtpbg342.qq.com ([14.17.44.37]:51861 "EHLO smtpbg342.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:42:01 +0200 (CEST)
+Received: from smtpbg328.qq.com ([14.17.43.160]:43808 "EHLO smtpbg328.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994917AbdH2Ii5YixVD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Aug 2017 10:38:57 +0200
-X-QQ-mid: bizesmtp5t1503995884tvykjawz5
+        id S23994918AbdH2Ii6gK4jD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Aug 2017 10:38:58 +0200
+X-QQ-mid: bizesmtp5t1503995887tyyp52fld
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 29 Aug 2017 16:38:03 +0800 (CST)
-X-QQ-SSF: 01100000000000F0FKF1
-X-QQ-FEAT: ADnUHJMvE2vht/Ym0CuCs0AedB5OvR4xtiQnXuebiWgYVWXMUVs9VAEdymSXf
-        ZpcIcD/V3akDfgGccBVqiW+vCIINi+S2fo4G5dXwbIn70/wePotFUmfReeJstVP0p24LXFM
-        3skFdZ64FqB5zVpOPLO8kopw22XcHRaGQgvTozsyd5Na8ss/1J6aJ42AsJkt62yIVWtc8UA
-        7mzllpvGW5hCwTp7Jd0cGVlpCg1F9OkMqZTE7gaMNXs9I/aXIL/EW51PTL9/BXTJgJ+TTng
-        qUrf4nW3NPoPvLgH6U/y/NhwP1s0CUt7Wbr8/+PIKrpA8c
+        id ; Tue, 29 Aug 2017 16:38:06 +0800 (CST)
+X-QQ-SSF: 01100000008000F0FKF1B00A0000000
+X-QQ-FEAT: f0dVAzX4zgnX9yvQ/wuURaAWdjNcRQDHrquomBwMoThPl3x+1lamskgUcqW5V
+        qMHcwqC3cDgrg5c+nM+9xMQ8v6gpvbrKDP6tG+ZxH4v1kbl6TFRn6cwE6yB9sy9PqxBJjcm
+        K+hrX7zwUN8+tBqBzuWsHLEgccDM8b9491d2Iqwz/LzZjDvtTGcGvvXpAI6xPVk54mL/Yp8
+        1J9oOlXYF1OXlI49OgMs3E+kk7XBq+g9olUsnDPmyF0DjvicRn8VKl2WQ3ZdabHGfbRLzma
+        l/YeEHGw07q7+CMUAZ58X2uoqbVU28/mp1yYv3NjRQBxpbA5bZjf4w3PM=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -30,19 +30,19 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v8 7/9] clk: Loongson: A descriptive spinlock name for Loongson1's clk driver
-Date:   Tue, 29 Aug 2017 16:38:44 +0800
-Message-Id: <1503995926-17125-8-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH RESEND v8 8/9] clk: Loongson: Add Loongson-1A clock support
+Date:   Tue, 29 Aug 2017 16:38:45 +0800
+Message-Id: <1503995926-17125-9-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
 References: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb8
+Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb19
 Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59850
+X-archive-position: 59851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,10 +59,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The spinlock name in clk-loongson1*.c is "_lock", that's not a very good
-name for something that may show up in lockdep debugging error messages.
+This patch adds clock support to Loongson-1A SoC.
 
-Give it a bit more descriptive name--ls1x_clk_lock.
+Unfortunately, The Loongson-1A's PLL register is written only,
+so we just set it with a fixed value.
 
 Acked-by: Stephen Boyd <sboyd@codeaurora.org>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
@@ -70,107 +70,140 @@ Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 Cc: Michael Turquette <mturquette@baylibre.com>
 Cc: linux-clk@vger.kernel.org
 ---
- drivers/clk/loongson1/clk-loongson1b.c | 14 +++++++-------
- drivers/clk/loongson1/clk-loongson1c.c |  8 ++++----
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ arch/mips/include/asm/mach-loongson32/regs-clk.h | 30 +++++++++-
+ drivers/clk/loongson1/Makefile                   |  1 +
+ drivers/clk/loongson1/clk-loongson1a.c           | 73 ++++++++++++++++++++++++
+ 3 files changed, 103 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/loongson1/clk-loongson1a.c
 
-diff --git a/drivers/clk/loongson1/clk-loongson1b.c b/drivers/clk/loongson1/clk-loongson1b.c
-index f36a97e..8d5be12 100644
---- a/drivers/clk/loongson1/clk-loongson1b.c
-+++ b/drivers/clk/loongson1/clk-loongson1b.c
-@@ -18,7 +18,7 @@
- #define OSC		(33 * 1000000)
- #define DIV_APB		2
+diff --git a/arch/mips/include/asm/mach-loongson32/regs-clk.h b/arch/mips/include/asm/mach-loongson32/regs-clk.h
+index e5e8f11..d8278a4 100644
+--- a/arch/mips/include/asm/mach-loongson32/regs-clk.h
++++ b/arch/mips/include/asm/mach-loongson32/regs-clk.h
+@@ -18,7 +18,35 @@
+ #define LS1X_CLK_PLL_FREQ		LS1X_CLK_REG(0x0)
+ #define LS1X_CLK_PLL_DIV		LS1X_CLK_REG(0x4)
  
--static DEFINE_SPINLOCK(_lock);
-+static DEFINE_SPINLOCK(ls1x_clk_lock);
- 
- static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
- 					  unsigned long parent_rate)
-@@ -64,12 +64,12 @@ void __init ls1x_clk_init(void)
- 				   CLK_GET_RATE_NOCACHE, LS1X_CLK_PLL_DIV,
- 				   DIV_CPU_SHIFT, DIV_CPU_WIDTH,
- 				   CLK_DIVIDER_ONE_BASED |
--				   CLK_DIVIDER_ROUND_CLOSEST, &_lock);
-+				   CLK_DIVIDER_ROUND_CLOSEST, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "cpu_clk_div", NULL);
- 	hw = clk_hw_register_mux(NULL, "cpu_clk", cpu_parents,
- 			       ARRAY_SIZE(cpu_parents),
- 			       CLK_SET_RATE_NO_REPARENT, LS1X_CLK_PLL_DIV,
--			       BYPASS_CPU_SHIFT, BYPASS_CPU_WIDTH, 0, &_lock);
-+			       BYPASS_CPU_SHIFT, BYPASS_CPU_WIDTH, 0, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "cpu_clk", NULL);
- 
- 	/*                                 _____
-@@ -80,12 +80,12 @@ void __init ls1x_clk_init(void)
- 	 */
- 	hw = clk_hw_register_divider(NULL, "dc_clk_div", "pll_clk",
- 				   0, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
--				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "dc_clk_div", NULL);
- 	hw = clk_hw_register_mux(NULL, "dc_clk", dc_parents,
- 			       ARRAY_SIZE(dc_parents),
- 			       CLK_SET_RATE_NO_REPARENT, LS1X_CLK_PLL_DIV,
--			       BYPASS_DC_SHIFT, BYPASS_DC_WIDTH, 0, &_lock);
-+			       BYPASS_DC_SHIFT, BYPASS_DC_WIDTH, 0, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "dc_clk", NULL);
- 
- 	/*                                 _____
-@@ -97,12 +97,12 @@ void __init ls1x_clk_init(void)
- 	hw = clk_hw_register_divider(NULL, "ahb_clk_div", "pll_clk",
- 				   0, LS1X_CLK_PLL_DIV, DIV_DDR_SHIFT,
- 				   DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED,
--				   &_lock);
-+				   &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "ahb_clk_div", NULL);
- 	hw = clk_hw_register_mux(NULL, "ahb_clk", ahb_parents,
- 			       ARRAY_SIZE(ahb_parents),
- 			       CLK_SET_RATE_NO_REPARENT, LS1X_CLK_PLL_DIV,
--			       BYPASS_DDR_SHIFT, BYPASS_DDR_WIDTH, 0, &_lock);
-+			       BYPASS_DDR_SHIFT, BYPASS_DDR_WIDTH, 0, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "ahb_clk", NULL);
- 	clk_hw_register_clkdev(hw, "ls1x-dma", NULL);
- 	clk_hw_register_clkdev(hw, "stmmaceth", NULL);
-diff --git a/drivers/clk/loongson1/clk-loongson1c.c b/drivers/clk/loongson1/clk-loongson1c.c
-index 3466f73..7635848 100644
---- a/drivers/clk/loongson1/clk-loongson1c.c
-+++ b/drivers/clk/loongson1/clk-loongson1c.c
-@@ -16,7 +16,7 @@
- #define OSC		(24 * 1000000)
- #define DIV_APB		1
- 
--static DEFINE_SPINLOCK(_lock);
-+static DEFINE_SPINLOCK(ls1x_clk_lock);
- 
- static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
- 					  unsigned long parent_rate)
-@@ -58,7 +58,7 @@ void __init ls1x_clk_init(void)
- 				   CLK_GET_RATE_NOCACHE, LS1X_CLK_PLL_DIV,
- 				   DIV_CPU_SHIFT, DIV_CPU_WIDTH,
- 				   CLK_DIVIDER_ONE_BASED |
--				   CLK_DIVIDER_ROUND_CLOSEST, &_lock);
-+				   CLK_DIVIDER_ROUND_CLOSEST, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "cpu_clk_div", NULL);
- 	hw = clk_hw_register_fixed_factor(NULL, "cpu_clk", "cpu_clk_div",
- 					0, 1, 1);
-@@ -66,7 +66,7 @@ void __init ls1x_clk_init(void)
- 
- 	hw = clk_hw_register_divider(NULL, "dc_clk_div", "pll_clk",
- 				   0, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
--				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "dc_clk_div", NULL);
- 	hw = clk_hw_register_fixed_factor(NULL, "dc_clk", "dc_clk_div",
- 					0, 1, 1);
-@@ -75,7 +75,7 @@ void __init ls1x_clk_init(void)
- 	hw = clk_hw_register_divider_table(NULL, "ahb_clk_div", "cpu_clk_div",
- 				0, LS1X_CLK_PLL_FREQ, DIV_DDR_SHIFT,
- 				DIV_DDR_WIDTH, CLK_DIVIDER_ALLOW_ZERO,
--				ahb_div_table, &_lock);
-+				ahb_div_table, &ls1x_clk_lock);
- 	clk_hw_register_clkdev(hw, "ahb_clk_div", NULL);
- 	hw = clk_hw_register_fixed_factor(NULL, "ahb_clk", "ahb_clk_div",
- 					0, 1, 1);
+-#if defined(CONFIG_LOONGSON1_LS1B)
++#if defined(CONFIG_LOONGSON1_LS1A)
++/* write only */
++#define CORE_PLL_CFG		0x1fe78030
++#define CPU_MUL			GENMASK(2, 0)
++#define CPU_CFG_EN		BIT(3)
++#define DDR_MUL			GENMASK(6, 4)
++#define DDR_CFG_EN		BIT(7)
++#define CPU_CFG_W_EN		BIT(11)
++#define DDR_CFG_W_EN		BIT(15)
++
++#define VGA_PLL_CFG		0x1fd00410
++#define VGA_M			GENMASK(7, 0)
++#define VGA_N			GENMASK(11, 8)
++#define VGA_OD			GENMASK(13, 12)
++#define VGA_FRAC		GENMASK(31, 14)
++
++#define LCD_PLL_CFG		0x1fd00410
++#define LCD_M			GENMASK(7, 0)
++#define LCD_N			GENMASK(11, 8)
++#define LCD_OD			GENMASK(13, 12)
++#define LCD_FRAC		GENMASK(31, 14)
++
++#define GPU_PLL_CFG		0x1fd00414
++#define GPU_M			GENMASK(7, 0)
++#define GPU_N			GENMASK(11, 8)
++#define GPU_OD			GENMASK(13, 12)
++#define GPU_FRAC		GENMASK(31, 14)
++
++#elif defined(CONFIG_LOONGSON1_LS1B)
+ /* Clock PLL Divisor Register Bits */
+ #define DIV_DC_EN			BIT(31)
+ #define DIV_DC_RST			BIT(30)
+diff --git a/drivers/clk/loongson1/Makefile b/drivers/clk/loongson1/Makefile
+index b7f6a16..da7b2dd 100644
+--- a/drivers/clk/loongson1/Makefile
++++ b/drivers/clk/loongson1/Makefile
+@@ -1,3 +1,4 @@
+ obj-y				+= clk.o
++obj-$(CONFIG_LOONGSON1_LS1A)	+= clk-loongson1a.o
+ obj-$(CONFIG_LOONGSON1_LS1B)	+= clk-loongson1b.o
+ obj-$(CONFIG_LOONGSON1_LS1C)	+= clk-loongson1c.o
+diff --git a/drivers/clk/loongson1/clk-loongson1a.c b/drivers/clk/loongson1/clk-loongson1a.c
+new file mode 100644
+index 0000000..680bf1b
+--- /dev/null
++++ b/drivers/clk/loongson1/clk-loongson1a.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright (c) 2012-2016 Binbin Zhou <zhoubb@lemote.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/clkdev.h>
++#include <linux/clk-provider.h>
++#include <linux/io.h>
++#include <linux/err.h>
++
++#include <loongson1.h>
++#include "clk.h"
++
++#define OSC		(33 * 1000000)
++#define DIV_APB		2
++
++static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
++					unsigned long parent_rate)
++{
++	/* Workaround, loongson-1A pll register is written only */
++	return OSC * 8;
++}
++
++static const struct clk_ops ls1x_pll_clk_ops = {
++	.recalc_rate = ls1x_pll_recalc_rate,
++};
++
++void __init ls1x_clk_init(void)
++{
++	struct clk_hw *hw;
++
++	hw = clk_hw_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
++	clk_hw_register_clkdev(hw, "osc_clk", NULL);
++
++	/* clock from 33 MHz OSC clk */
++	hw = clk_hw_register_pll(NULL, "pll_clk", "osc_clk",
++				&ls1x_pll_clk_ops, 0);
++	clk_hw_register_clkdev(hw, "pll_clk", NULL);
++
++	/* cpu clk */
++	hw = clk_hw_register_fixed_factor(NULL, "cpu_clk", "pll_clk",
++					0, 1, 1);
++	clk_hw_register_clkdev(hw, "cpu_clk", NULL);
++
++	/* dc clk */
++	hw = clk_hw_register_fixed_factor(NULL, "ddr_clk", "pll_clk",
++					0, 1, 1);
++	clk_hw_register_clkdev(hw, "ddr_clk", NULL);
++
++	/* ahb clk */
++	hw = clk_hw_register_fixed_factor(NULL, "ahb_clk", "pll_clk",
++					0, 1, 2);
++	clk_hw_register_clkdev(hw, "ahb_clk", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-dma", NULL);
++	clk_hw_register_clkdev(hw, "stmmaceth", NULL);
++
++	/* clock derived from AHB clk */
++	/* APB clk is always half of the AHB clk */
++	hw = clk_hw_register_fixed_factor(NULL, "apb_clk", "ahb_clk",
++					0, 1, DIV_APB);
++	clk_hw_register_clkdev(hw, "apb_clk", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-ac97", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-i2c", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-nand", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-pwmtimer", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-spi", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-wdt", NULL);
++	clk_hw_register_clkdev(hw, "serial8250", NULL);
++}
 -- 
 2.9.4

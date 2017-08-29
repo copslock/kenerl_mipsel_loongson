@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 18:46:28 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58576 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23995048AbdH2QqUtkzDr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Aug 2017 18:46:20 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v7TGkJYg002776;
-        Tue, 29 Aug 2017 18:46:19 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v7TGkIUG002775;
-        Tue, 29 Aug 2017 18:46:18 +0200
-Date:   Tue, 29 Aug 2017 18:46:18 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        linux-mips@linux-mips.org, trivial@kernel.org
-Subject: Re: [PATCH 11/11] MIPS: Declare various variables & functions static
-Message-ID: <20170829164618.GE22412@linux-mips.org>
-References: <20170823181754.24044-1-paul.burton@imgtec.com>
- <20170823181754.24044-12-paul.burton@imgtec.com>
- <787b1a5b-2e77-41cc-235f-6dfd882b225a@imgtec.com>
- <5605804.ME68hyheDo@np-p-burton>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 19:25:05 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30324 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23995045AbdH2RY6lp01U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 19:24:58 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id CE54182B64299;
+        Tue, 29 Aug 2017 18:24:48 +0100 (IST)
+Received: from [10.20.78.165] (10.20.78.165) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 29 Aug 2017
+ 18:24:51 +0100
+Date:   Tue, 29 Aug 2017 18:24:41 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Fredrik Noring <noring@nocrew.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Add basic R5900 support
+In-Reply-To: <20170827132309.GA32166@localhost.localdomain>
+Message-ID: <alpine.DEB.2.00.1708271511430.17596@tp.orcam.me.uk>
+References: <20170827132309.GA32166@localhost.localdomain>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5605804.ME68hyheDo@np-p-burton>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.165]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59878
+X-archive-position: 59879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,19 +42,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 29, 2017 at 09:44:16AM -0700, Paul Burton wrote:
+Hi Fredrik,
 
-> > +#ifdef CONFIG_DEBUG_FS
-> >   static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2emustats);
-> >   static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2bdemustats);
-> >   static DEFINE_PER_CPU(struct mips_r2br_emulator_stats, mipsr2bremustats);
-> > +#endif
-> > 
-> > if you're OK with it then I guess it may be best for Ralf to fold this
-> > change into your patch?
-> 
-> D'oh! That looks like a reasonable fix to me - could you fold it in Ralf?
+ Thank you for your contribution.  As Ralf has noted your change looks 
+good overall.  I just have a couple of nits to address.  Please take them 
+into account with the next version of your change.
 
-Done that a few hours ago.
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 2828ecde133d..2a3592032861 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -1708,6 +1708,16 @@ config CPU_BMIPS
+>  	help
+>  	  Support for BMIPS32/3300/4350/4380 and BMIPS5000 processors.
+>  
+> +config CPU_R5900
+> +	bool "R5900"
+> +	depends on SYS_HAS_CPU_R5900
+> +	select CPU_SUPPORTS_32BIT_KERNEL
+> +	select CPU_SUPPORTS_64BIT_KERNEL
+> +	select IRQ_MIPS_CPU
+> +	select CPU_HAS_WB
 
-  Ralf
+ Is there an external explicitly-driven write-back buffer there with the 
+R5900?  That would be odd with a MIPS III ISA processor, however if there 
+indeed is, then I think the CPU_HAS_WB setting needs to go along with the 
+code that implements `__wbflush' for this platform.
+
+> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+> index 98f59307e6a3..f332aaa9e69b 100644
+> --- a/arch/mips/include/asm/cpu.h
+> +++ b/arch/mips/include/asm/cpu.h
+> @@ -326,6 +327,11 @@ enum cpu_type_enum {
+>  
+>  	CPU_QEMU_GENERIC,
+>  
+> +	/*
+> +	 * Playstation 2 processors
+> +	 */
+> +	CPU_R5900,
+
+ Shouldn't it go along with `R4000 class processors' earlier above?
+
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index 1aba27786bd5..b8bed9f26f8d 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -1518,6 +1518,16 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+>  		}
+>  
+>  		break;
+> +	case PRID_IMP_R5900:
+> +		c->cputype = CPU_R5900;
+> +		__cpu_name[cpu] = "R5900";
+> +		c->isa_level = MIPS_CPU_ISA_III;
+> +		c->tlbsize = 48;
+> +		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE |
+> +			     MIPS_CPU_4KEX | MIPS_CPU_DIVEC |
+> +			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
+> +			     MIPS_CPU_COUNTER;
+> +		break;
+
+ If this is a MIPS III base ISA implementation, then presumably you need 
+to set `c->fpu_msk31' as well, to exclude FPU_CSR_CONDX bits introduced 
+with the MIPS IV ISA only.  Double-check with hardware documentation for 
+the details.
+
+ If you don't have documentation, but you have the hardware at hand, then 
+you'll best check it yourself by writing a small user program that writes 
+to CP1.FCSR and checks which bits stick (of course you need to leave the 
+exception cause/mask bits alone for this check or you'll get SIGFPE sent 
+instead).
+
+ Please let me know if you have any questions.
+
+  Maciej

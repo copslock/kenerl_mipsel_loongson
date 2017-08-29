@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:40:43 +0200 (CEST)
-Received: from SMTPBG352.QQ.COM ([183.57.50.167]:36165 "EHLO smtpbg352.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:41:05 +0200 (CEST)
+Received: from smtpbg291.qq.com ([113.108.11.223]:42956 "EHLO smtpbg291.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994915AbdH2IiyX0edD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Aug 2017 10:38:54 +0200
-X-QQ-mid: bizesmtp5t1503995881tc62rka0c
+        id S23994916AbdH2Ii4CUIrD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Aug 2017 10:38:56 +0200
+X-QQ-mid: bizesmtp5t1503995890tf7k9hlk4
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 29 Aug 2017 16:38:00 +0800 (CST)
-X-QQ-SSF: 01100000008000F0FJF1B00A0000000
-X-QQ-FEAT: sbrYme1FedzHaqidAQN1u0H/dnXk/QoDalhKkI9tU0GO2UKSgodlWZL8h/zul
-        kvniibmWXevuwVrUvV/2lhExlxZx9sfeC/c2tv9IDmF/gotBmsHqhOIoXh9ttlrGJine+ym
-        bFpEt0w13x4CeFUS+Tw0FdGk6xM7OotQTgjkoY9ZMxBNu49Ob3xHSLJ5mS6pOAu2gvHq0F3
-        BJuXYWZOd3SE6ynFX2r6coA2NNXuCXKYZrDat16Xek8NpYMNF8hDk6uqzijzEiDOS3zwCXg
-        BvC3yINgoTE70XcGhxaoc3hRjmdrI1SLS/V1bcqW5xhH7eRgBkDODKoEY=
+        id ; Tue, 29 Aug 2017 16:38:08 +0800 (CST)
+X-QQ-SSF: 01100000008000F0FKF1B00A0000000
+X-QQ-FEAT: NJZCQJFrT+USpasi6DUnjYWH0OvaEZIYkxyohHtjh7j8R4lkgr0ZJcw1bkfsq
+        vXOBIvdpvf/OqiDanO3WQbCJ0ayRblLLRWSxLvkbsbb2YLlw1qxJLaOHGBH5raTGgDwbysp
+        forPYD33nYkiZrkdfEu/dwiHn2M48IMmpWV6is7X7ICf++OQO1cEhhwZGqFw7T4Suhlkn0D
+        kuPJBkgdzIZ+sS8qW9GS/iKIpSz7+o6iuz2Ml1S1+sdPawZXwtxcHAxIWU7fyRZCQCoqGJS
+        mH2ebc8rm/OecBl2C089JWvvDuLYNQwqwHQzT1BsHIL0bNP/Qwn5qj8Q8=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -30,19 +30,19 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v8 6/9] MIPS: Loongson: Add Loongson-1A board support
-Date:   Tue, 29 Aug 2017 16:38:43 +0800
-Message-Id: <1503995926-17125-7-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH RESEND v8 9/9] MIPS: Loongson: Add Loongson-1A default config file
+Date:   Tue, 29 Aug 2017 16:38:46 +0800
+Message-Id: <1503995926-17125-10-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
 References: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb7
+Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb12
 Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59848
+X-archive-position: 59849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,82 +59,147 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Register basic devices for Loongson-1A, and setup clk for UART.
-
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson32/Makefile      |  6 ++++++
- arch/mips/loongson32/ls1a/Makefile |  5 +++++
- arch/mips/loongson32/ls1a/board.c  | 31 +++++++++++++++++++++++++++++++
- 3 files changed, 42 insertions(+)
- create mode 100644 arch/mips/loongson32/ls1a/Makefile
- create mode 100644 arch/mips/loongson32/ls1a/board.c
+ arch/mips/configs/loongson1a_defconfig | 130 +++++++++++++++++++++++++++++++++
+ 1 file changed, 130 insertions(+)
+ create mode 100644 arch/mips/configs/loongson1a_defconfig
 
-diff --git a/arch/mips/loongson32/Makefile b/arch/mips/loongson32/Makefile
-index 1ab2c5b..cd1f597 100644
---- a/arch/mips/loongson32/Makefile
-+++ b/arch/mips/loongson32/Makefile
-@@ -5,6 +5,12 @@
- obj-$(CONFIG_MACH_LOONGSON32) += common/
- 
- #
-+# Loongson LS1A board
-+#
-+
-+obj-$(CONFIG_LOONGSON1_LS1A)  += ls1a/
-+
-+#
- # Loongson LS1B board
- #
- 
-diff --git a/arch/mips/loongson32/ls1a/Makefile b/arch/mips/loongson32/ls1a/Makefile
+diff --git a/arch/mips/configs/loongson1a_defconfig b/arch/mips/configs/loongson1a_defconfig
 new file mode 100644
-index 0000000..dc23a9a
+index 0000000..1a8545e
 --- /dev/null
-+++ b/arch/mips/loongson32/ls1a/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for loongson1A based machines.
-+#
-+
-+obj-y += board.o
-diff --git a/arch/mips/loongson32/ls1a/board.c b/arch/mips/loongson32/ls1a/board.c
-new file mode 100644
-index 0000000..7993f6c
---- /dev/null
-+++ b/arch/mips/loongson32/ls1a/board.c
-@@ -0,0 +1,31 @@
-+/*
-+ * Copyright (c) 2016 Binbin Zhou <zhoubb@lemote.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <platform.h>
-+
-+static struct platform_device *ls1a_platform_devices[] __initdata = {
-+	&ls1x_uart_pdev,
-+	&ls1x_eth0_pdev,
-+	&ls1x_eth1_pdev,
-+	&ls1x_rtc_pdev,
-+	&ls1x_wdt_pdev,
-+	&ls1x_ahci_pdev,
-+	&ls1x_ohci_pdev,
-+};
-+
-+static int __init ls1a_platform_init(void)
-+{
-+	ls1x_serial_set_uartclk(&ls1x_uart_pdev);
-+	ls1x_rtc_set_extclk(&ls1x_rtc_pdev);
-+
-+	return platform_add_devices(ls1a_platform_devices,
-+				   ARRAY_SIZE(ls1a_platform_devices));
-+}
-+
-+arch_initcall(ls1a_platform_init);
++++ b/arch/mips/configs/loongson1a_defconfig
+@@ -0,0 +1,129 @@
++CONFIG_MACH_LOONGSON32=y
++CONFIG_ZONE_DMA=y
++CONFIG_PAGE_SIZE_16KB=y
++CONFIG_HIGHMEM=y
++CONFIG_HZ_1000=y
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_SECCOMP is not set
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_CGROUPS=y
++CONFIG_BLK_CGROUP=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_EXPERT=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_SYN_COOKIES=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_IPV6 is not set
++CONFIG_BRIDGE=y
++# CONFIG_BRIDGE_IGMP_SNOOPING is not set
++# CONFIG_WIRELESS is not set
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_BLOCK=y
++CONFIG_NFTL=y
++CONFIG_NFTL_RW=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_RAM=y
++# CONFIG_SCSI_PROC_FS is not set
++CONFIG_BLK_DEV_SD=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_ATA=y
++# CONFIG_SATA_PMP is not set
++CONFIG_SATA_AHCI_PLATFORM=y
++# CONFIG_ATA_SFF is not set
++CONFIG_NETDEVICES=y
++CONFIG_NETCONSOLE=y
++# CONFIG_NET_VENDOR_ARC is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_SAMSUNG is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++CONFIG_STMMAC_ETH=y
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++CONFIG_REALTEK_PHY=y
++# CONFIG_USB_NET_DRIVERS is not set
++# CONFIG_WLAN is not set
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_LEGACY_PTY_COUNT=8
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_I2C=y
++CONFIG_SPI=y
++# CONFIG_HWMON is not set
++CONFIG_WATCHDOG=y
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_USB=y
++CONFIG_USB_MON=y
++CONFIG_USB_XHCI_HCD=m
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=m
++CONFIG_USB_GADGET=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_PCF8563=y
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_SCHED_DEBUG is not set
++# CONFIG_FTRACE is not set
++CONFIG_XZ_DEC=y
 -- 
 2.9.4

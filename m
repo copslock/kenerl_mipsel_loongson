@@ -1,79 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 06:55:48 +0200 (CEST)
-Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:38610
-        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994901AbdH2Ezj1M9Ia (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 06:55:39 +0200
-Received: by mail-oi0-x241.google.com with SMTP id r203so2158595oih.5;
-        Mon, 28 Aug 2017 21:55:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 09:43:08 +0200 (CEST)
+Received: from mail-wr0-x235.google.com ([IPv6:2a00:1450:400c:c0c::235]:34312
+        "EHLO mail-wr0-x235.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994908AbdH2Hm7XOAc5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 09:42:59 +0200
+Received: by mail-wr0-x235.google.com with SMTP id z91so7587506wrc.1
+        for <linux-mips@linux-mips.org>; Tue, 29 Aug 2017 00:42:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=nZqsS8hrHRi8dNGwjlVPtcEq9qW1+VVqt2CyKZGIN6A=;
-        b=dEmYNFDe/13EQUKJk//AM+kkIk2WgFmLc8u3Q4RzJ3a96RO7MMC/zE30y+gvUszexd
-         0PsKdPDE4zTbhn1GwszacOIp7n6RcbG5PiEyL0Blm+u1tDX74HL5scy8yUE/g4LvIQcP
-         TAli+ButXuntwR2lS+B5VW2IvJa2BhWJg7MDfbLUqH4X1WzF73YDdHQwZoJcj9ZoZCLk
-         JCYpF266OenE+JTYR/21nfxTK6nO/f3U2aYmfib14UTgcBkyjMcathm51+wJ7w7FXf5a
-         Yu+9BYcGo8YIBqYeaCjUshfEt9VwAuTruO2G6FKh2p88LBmE+IwSrZJZk/ta0S1mqVvi
-         uG8w==
+        bh=rjY/Prx4zR6N4L/k4DBbOnkwvkmSlAJz6RMqW2/hwjU=;
+        b=Tul5JHTRVIoALJ7FqoqZO86piMGWeQVlwTu4mc6PyFdjmSns2XOscpR2n8C2NnMRZg
+         fvpe540+0YMCaD5cHYDYboCLadAAo7KBvH2xMvDujvU4WeziWFsJDpTNIhq76M/Pgw2e
+         +d43AIqQpsZ4e+W9Is7AwSjHO0l1jwKbOFSns=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=nZqsS8hrHRi8dNGwjlVPtcEq9qW1+VVqt2CyKZGIN6A=;
-        b=beG4vZSlQ9e6Po5ukMwBW24pJmGZw1iBfqanVoZYDUhAvZ7/GXidrg5p3LkHEM2XMz
-         n94MWPn6pWAmVMrk8OzPbA5iksMovoONDL1BBKiEPlpuksNyujrR7eQWksDmwtOA+NXk
-         nTawaB8MAr6Uw045z6MwwZAlJbUeUkKRlUFbxqaTnXmKYFe2e7c24+VisLe9uMLXFoiJ
-         huWnbgLprloTTjM1blV55ehlJfcIjmnBa1xoKF9xaq+IQ9hEWZURygNfZL5hTaKjbYW2
-         zzJpsuh23ePb8Ghya+cigDmpwZo7xhL9jmQkxXrmUDmpX1ZfiD2QVOihWPum3OJEa5cs
-         ncRA==
-X-Gm-Message-State: AHYfb5j+t5JZoNSDoGTkqIoNUlh7h8c6GiFQcmDGfSjyz0LQhp17x/Hl
-        JgU7LLJYvjasww==
-X-Received: by 10.202.245.67 with SMTP id t64mr2447975oih.19.1503982533528;
-        Mon, 28 Aug 2017 21:55:33 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:d42c:b86f:7c64:7fe4? ([2001:470:d:73f:d42c:b86f:7c64:7fe4])
-        by smtp.gmail.com with ESMTPSA id c187sm2443220oih.52.2017.08.28.21.55.31
+        bh=rjY/Prx4zR6N4L/k4DBbOnkwvkmSlAJz6RMqW2/hwjU=;
+        b=OlIx5bw4oA0jbkiI2VeOr2xBt0GTI9vB3+USE81IFXWqmk06wm/WgePT2MUl0ZqTes
+         quhtUleDyIwUWa8+7wD8MUrcxdSbgy1yyguf0lS0AO1wppRgUKMnkuAOFfTT8BeaYA4m
+         ZGxSiOAze+5KS2nvYWwPEpyCQ2Nc3kvkHpPzPVvX6HIDXuBvOAZD0o115MQX+ajvEtaV
+         +Oo77lgEW0MtPi3yYUxjBtDPCoKfyB38ktdtMph3FeTNVhkcEDmKpUB6tcMKGaMUV4wB
+         q8ipZ+kuNf2EA88952UhDEWQnzGlTswZvYFOZpsf4qCBgtKPNR5gkngRVL2tgBmrJwtu
+         PPBQ==
+X-Gm-Message-State: AHYfb5hbmG2SZLUJxenVeauzG4dXdQnS+1UkaO5DCNtpHZFFfE8/y6jQ
+        nZRDSDkAE0XNNdIAI0YQOw==
+X-Received: by 10.223.130.184 with SMTP id 53mr1597508wrc.221.1503992573605;
+        Tue, 29 Aug 2017 00:42:53 -0700 (PDT)
+Received: from [192.168.0.74] (135-224-190-109.dsl.ovh.fr. [109.190.224.135])
+        by smtp.googlemail.com with ESMTPSA id m188sm2376092wme.1.2017.08.29.00.42.52
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Aug 2017 21:55:32 -0700 (PDT)
-Subject: Re: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if
- MIPS_GENERIC
-To:     Miodrag Dinic <Miodrag.Dinic@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Goran Ferenc <Goran.Ferenc@imgtec.com>,
-        Aleksandar Markovic <Aleksandar.Markovic@imgtec.com>,
-        Bo Hu <bohu@google.com>,
-        Douglas Leung <Douglas.Leung@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Jin Qian <jinqian@google.com>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
-        Raghu Gandham <Raghu.Gandham@imgtec.com>
-References: <1503061833-26563-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1503061833-26563-9-git-send-email-aleksandar.markovic@rt-rk.com>
- <20170826105235.GF7433@linux-mips.org>
- <232DDC0A2B605E4F9E85F6904417885F015D956D48@BADAG02.ba.imgtec.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <98b6a367-657d-d6a6-b3c2-7fbebd9241f7@gmail.com>
-Date:   Mon, 28 Aug 2017 21:55:29 -0700
+        Tue, 29 Aug 2017 00:42:53 -0700 (PDT)
+Subject: Re: [PATCH 13/19] MIPS: Unify checks for sibling CPUs
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org
+Cc:     linux-mips@linux-mips.org
+References: <20170813024943.14989-1-paul.burton@imgtec.com>
+ <20170813024943.14989-14-paul.burton@imgtec.com>
+ <20170826122749.GI7433@linux-mips.org>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <c850dd48-abde-4268-0896-98561a0c657b@linaro.org>
+Date:   Tue, 29 Aug 2017 09:42:51 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <232DDC0A2B605E4F9E85F6904417885F015D956D48@BADAG02.ba.imgtec.org>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20170826122749.GI7433@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59841
+X-archive-position: 59842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,50 +72,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On 08/28/2017 02:33 AM, Miodrag Dinic wrote:
-> Hi Ralf,
+On 26/08/2017 14:27, Ralf Baechle wrote:
+> Hi,
 > 
-> Even though I agree with your approach in handling this issue is more appropriate,
-> but the reason we isolated this option just for MIPS_GENERIC was because we
-> are not quite sure which MIPS platforms were using this option (and effectively i8042 driver), except for Malta.
-> So, we decided to go with a safer solution and deselect it only for platforms which we are most sure aren't going to use it.
+> Paul didn't cc the other maintainers.  Tglx gave me his Ack on IRC so I
+> now only still need one of a drivers/cpuidle/ maintainer.
 > 
-> If you prefer to have this option sprinkled across platforms which are using it, please indicate which those are.
-
-FWIW, I had started something similar, see comments from Maciej:
-
-https://patchwork.linux-mips.org/patch/16226/
-
-> 
-> Kind regards,
-> Miodrag
-> 
-> ________________________________________
-> From: Ralf Baechle [ralf@linux-mips.org]
-> Sent: Saturday, August 26, 2017 12:52 PM
-> To: Aleksandar Markovic
-> Cc: linux-mips@linux-mips.org; Miodrag Dinic; Goran Ferenc; Aleksandar Markovic; Bo Hu; Douglas Leung; James Hogan; Jin Qian; Paul Burton; Petar Jovanovic; Raghu Gandham
-> Subject: Re: [PATCH v4 8/8] MIPS: Unselect ARCH_MIGHT_HAVE_PC_SERIO if MIPS_GENERIC
-> 
-> On Fri, Aug 18, 2017 at 03:09:00PM +0200, Aleksandar Markovic wrote:
-> 
->> From: Miodrag Dinic <miodrag.dinic@imgtec.com>
->>
->> This effectively disables i8042 driver for MIPS_GENERIC kernel platform.
->> Currently, only sead-3, boston and ranchu boards are supported by the
->> MIPS generic kernel and none of them require this driver.
->> More specifically, kernel would crash if it gets enabled, because
->> i8042 driver would try to read from an non-existent IO register.
-> 
-> And many more platforms would beneftig from disabling this option because
-> let's face it, the i8042's heydays are over.  So rather than spreading
-> random depenencies on MIPS_GENERIC or other platforms through Kconfig
-> please push the select of ARCH_MIGHT_HAVE_PC_SERIO to the platforms.
+> Thanks,
 > 
 >   Ralf
 > 
+> On Sat, Aug 12, 2017 at 07:49:37PM -0700, Paul Burton wrote:
+>> Date:   Sat, 12 Aug 2017 19:49:37 -0700
+>> From: Paul Burton <paul.burton@imgtec.com>
+>> To: linux-mips@linux-mips.org
+>> CC: Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>
+>> Subject: [PATCH 13/19] MIPS: Unify checks for sibling CPUs
+>> Content-Type: text/plain
+>>
+>> Up until now we have open-coded checks for whether CPUs are siblings,
+>> with slight variations on whether we consider the package ID or not.
+>>
+>> This will only get more complex when we introduce cluster support, so in
+>> preparation for that this patch introduces a cpus_are_siblings()
+>> function which can be used to check whether or not 2 CPUs are siblings
+>> in a consistent manner.
+>>
+>> By checking globalnumber with the VP ID masked out this also has the
+>> neat side effect of being ready for multi-cluster systems already.
+>>
+>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Cc: linux-mips@linux-mips.org
+>> ---
+
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+
 
 -- 
-Florian
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

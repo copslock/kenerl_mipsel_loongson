@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:39:03 +0200 (CEST)
-Received: from smtpbg339.qq.com ([14.17.44.34]:41674 "EHLO smtpbg339.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 10:39:29 +0200 (CEST)
+Received: from smtpbg327.qq.com ([14.17.43.158]:35719 "EHLO smtpbg327.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994908AbdH2IihA0EPD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994910AbdH2Iihu0iOD (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 29 Aug 2017 10:38:37 +0200
-X-QQ-mid: bizesmtp5t1503995863t0ldsalln
+X-QQ-mid: bizesmtp5t1503995870tlhsywkyk
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 29 Aug 2017 16:37:30 +0800 (CST)
+        id ; Tue, 29 Aug 2017 16:37:48 +0800 (CST)
 X-QQ-SSF: 01100000008000F0FJF1B00A0000000
-X-QQ-FEAT: vvh+TVF7+rWiynUkEQpLq685n+QKNPjX+q0q8uwOwSSVe2ZgNCBGVm+4dHLu/
-        pPv4t/6N1z8NgikBYhWOOcc72PV/2wpBEishvhIjcz8BD/n+dZrCexq44WwnVDvfKRknzik
-        pzy0S5pmpxCuXiJMNk5qov8knvgxbiB8vrXnfuvJhJyDjlkLF3hy2W9PlrGF16KYGvVJg02
-        Wn7/fskWnH8z4NgwGEuHqJFgPKQ1aIG7CtaArfNBVoCDsPWm8JviaIIDy1iwicp/reOHSxM
-        2+HBEkaXTT8juK8isXcizcVSSMf21QWui59aLB8A9CYBSy9zfvhFzHi4Q=
+X-QQ-FEAT: zwJ6aF/l+gOUl+y04d2FmO2rNHhiUrFlqt+0bhKxHCfY0hGhWoc+nCt45Lbuz
+        uwa0yO8dj0AWIgrYfDT5nVWgR3dGaE9cvHJKSsvX3rVjeKdjl6DgaLwzMIilS8+aSOuFqFs
+        VOr+Z2CRBHYo7QAobyiskyTGuviWfppRngNHqCIu2Q0/N0N9RVQ3OKoQiMRJFtgSc84Uinx
+        hkzXoiKh2nkqvtKx8T2xskyuZZpw5qgUJLjy0ItLf5yoHOluvylixCInZjt2lLY0OwG2VZS
+        9D0+D9Dlk5KuI4fXTAwKeeVzJgCgf+QN0GuS+8rJeTrYBI3xhCCdVe6dI=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -29,18 +29,20 @@ Cc:     John Crispin <john@phrozen.org>,
         Michael Turquette <mturquette@baylibre.com>,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Binbin Zhou <zhoubb@lemote.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v8 0/9] MIPS: Loongson: Add the Loongson-1A processor support
-Date:   Tue, 29 Aug 2017 16:38:37 +0800
-Message-Id: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
+        HuaCai Chen <chenhc@lemote.com>
+Subject: [PATCH RESEND v8 2/9] MIPS: Loongson: Expand Loongson-1's register definition
+Date:   Tue, 29 Aug 2017 16:38:39 +0800
+Message-Id: <1503995926-17125-3-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
+References: <1503995926-17125-1-git-send-email-zhoubb@lemote.com>
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb3
+Feedback-ID: bizesmtp:lemote.com:qybgweb:qybgweb18
 Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59844
+X-archive-position: 59845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,91 +59,244 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson-1A CPU is similar with Loongson-1B/1C, which is a 32-bit SoC.
-
-It is a cost-effective single chip system based on LS232 processor core,
-and is applicable to fields such as industrial control, and security applications.
-It implements the MIPS32 release 2 instruction set.
-
-They share the same PRID, so we rewrite them into PRID_REV_LOONGSON1ABC,
-and use their CPU macros to distinguish.
-
-Due to historic reasons, devicetree is not supported on Loongson1 platform now.
-Maybe it will have change in the future.
-
-Changes since v1:
-
-1. According commit c908656a7531771ae7642990a7c5f3c7307bd612
-   (MIPS: Loongson: Naming style cleanup and rework) to fix the naming style.
-
-Changes since v2:
-
-1. Remove __irq_set_handler_locked().
-2. Rebases on top of v4.5-rc5.
-
-Changes since v3:
-
-1. Rename the Loongson-1 series's PRID name.
-2. Rewite Loongson-1A's clk driver.
-3. Rebases on top of v4.10-rc2.
-
-Changes since v4:
-
-1. Fix comment's spelling error.
-
-Changes since v5:
-
-1. Rebases on top of v4.11-rc3.
-
-Changes since v6:
-
-1. Improve comment readability.
-2. Rebases on top of v4.12-rc4.
-
-Changes since v7:
-1. Rename Loongson1 clk driver's spinlock name.
-
-Binbin Zhou(9):
- MIPS: Loongson: Merge PRID macro for Loongson-1A/1B/1C
- MIPS: Loongson: Expand Loongson-1's register definition
- MIPS: Loongson: Add basic Loongson-1A CPU support
- MIPS: Loongson: Add Loongson-1A Kconfig options
- MIPS: Loongson: Add platform devices for Loongson-1A
- MIPS: Loongson: Add Loongson-1A board support
- clk: Loongson: A descriptive spinlock name for Loongson1's clk driver
- clk: Loongson: Add Loongson-1A clock support
- MIPS: Loongson: Add Loongson-1A default config file
+To improve the code readability, expand the register definition.
+Because most registers are generic in Loongson-1 series CPU.
 
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: HuaCai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/mach-loongson32/loongson1.h | 170 ++++++++++++++++++----
+ arch/mips/loongson32/common/platform.c            |  16 +-
+ 2 files changed, 149 insertions(+), 37 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
+index 84c28a8..8cfd4ba 100644
+--- a/arch/mips/include/asm/mach-loongson32/loongson1.h
++++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
+@@ -19,35 +19,147 @@
+ #endif
+ 
+ /* Loongson 1 Register Bases */
+-#define LS1X_MUX_BASE			0x1fd00420
+-#define LS1X_INTC_BASE			0x1fd01040
+-#define LS1X_GPIO0_BASE			0x1fd010c0
+-#define LS1X_GPIO1_BASE			0x1fd010c4
+-#define LS1X_DMAC_BASE			0x1fd01160
+-#define LS1X_CBUS_BASE			0x1fd011c0
+-#define LS1X_EHCI_BASE			0x1fe00000
+-#define LS1X_OHCI_BASE			0x1fe08000
+-#define LS1X_GMAC0_BASE			0x1fe10000
+-#define LS1X_GMAC1_BASE			0x1fe20000
+-
+-#define LS1X_UART0_BASE			0x1fe40000
+-#define LS1X_UART1_BASE			0x1fe44000
+-#define LS1X_UART2_BASE			0x1fe48000
+-#define LS1X_UART3_BASE			0x1fe4c000
+-#define LS1X_CAN0_BASE			0x1fe50000
+-#define LS1X_CAN1_BASE			0x1fe54000
+-#define LS1X_I2C0_BASE			0x1fe58000
+-#define LS1X_I2C1_BASE			0x1fe68000
+-#define LS1X_I2C2_BASE			0x1fe70000
+-#define LS1X_PWM0_BASE			0x1fe5c000
+-#define LS1X_PWM1_BASE			0x1fe5c010
+-#define LS1X_PWM2_BASE			0x1fe5c020
+-#define LS1X_PWM3_BASE			0x1fe5c030
+-#define LS1X_WDT_BASE			0x1fe5c060
+-#define LS1X_RTC_BASE			0x1fe64000
+-#define LS1X_AC97_BASE			0x1fe74000
+-#define LS1X_NAND_BASE			0x1fe78000
+-#define LS1X_CLK_BASE			0x1fe78030
++#define LS1X_DC_REG_BASE		0x1c200000
++#define LS1X_MUX_REG_BASE		0x1f000000
++
++#define LS1X_CFG_REG_BASE		(LS1X_MUX_REG_BASE + 0x00d00000)
++
++#define LS1X_INTC_BASE			(LS1X_CFG_REG_BASE + 0x1040)
++
++/* GPIO regs */
++#define LS1X_GPIO_REG_BASE		(LS1X_CFG_REG_BASE + 0x1000)
++#define LS1X_GPIO_CFG0_REG		(LS1X_GPIO_REG_BASE + 0xc0)
++#define LS1X_GPIO_CFG1_REG		(LS1X_GPIO_REG_BASE + 0xc4)
++#define LS1X_GPIO_CFG2_REG		(LS1X_GPIO_REG_BASE + 0xc8)
++#define LS1X_GPIO_OE0_REG		(LS1X_GPIO_REG_BASE + 0xd0)
++#define LS1X_GPIO_OE1_REG		(LS1X_GPIO_REG_BASE + 0xd4)
++#define LS1X_GPIO_OE2_REG		(LS1X_GPIO_REG_BASE + 0xd8)
++#define LS1X_GPIO_IN0_REG		(LS1X_GPIO_REG_BASE + 0xe0)
++#define LS1X_GPIO_IN1_REG		(LS1X_GPIO_REG_BASE + 0xe4)
++#define LS1X_GPIO_IN2_REG		(LS1X_GPIO_REG_BASE + 0xe8)
++#define LS1X_GPIO_OUT0_REG		(LS1X_GPIO_REG_BASE + 0xf0)
++#define LS1X_GPIO_OUT1_REG		(LS1X_GPIO_REG_BASE + 0xf4)
++#define LS1X_GPIO_OUT2_REG		(LS1X_GPIO_REG_BASE + 0xf8)
++
++#define LS1X_DMA_ORDER_REG		(LS1X_CFG_REG_BASE + 0x1160)
++
++#define LS1X_MUX_BASE			(LS1X_CFG_REG_BASE + 0x0420)
++
++/* USB regs */
++#define LS1X_EHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e00000)
++#define LS1X_OHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e08000)
++
++/* GMAC regs */
++#define LS1X_GMAC0_BASE			(LS1X_MUX_REG_BASE + 0x00e10000)
++#define LS1X_GMAC0_DMA_REG		(LS1X_GMAC0_BASE + 0x1000)
++#define LS1X_GMAC1_BASE			(LS1X_MUX_REG_BASE + 0x00e20000)
++#define LS1X_GMAC1_DMA_REG		(LS1X_GMAC1_BASE + 0x1000)
++
++/* SATA regs */
++#define LS1X_AHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e30000)
++
++/* APB regs */
++#define LS1X_APB_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e40000)
++
++/* UART regs */
++#define LS1X_UART0_BASE			(LS1X_APB_REG_BASE + 0x0000)
++#define LS1X_UART1_BASE			(LS1X_APB_REG_BASE + 0x4000)
++#define LS1X_UART2_BASE			(LS1X_APB_REG_BASE + 0x8000)
++#define LS1X_UART3_BASE			(LS1X_APB_REG_BASE + 0xc000)
++
++/* CAN regs */
++#define LS1X_CAN0_BASE			(LS1X_APB_REG_BASE + 0x10000)
++#define LS1X_CAN1_BASE			(LS1X_APB_REG_BASE + 0x14000)
++
++#define LS1X_I2C0_BASE			(LS1X_APB_REG_BASE + 0x18000)
++#define LS1X_I2C0_PRER_LO_REG		(LS1X_I2C0_BASE + 0x0)
++#define LS1X_I2C0_PRER_HI_REG		(LS1X_I2C0_BASE + 0x1)
++#define LS1X_I2C0_CTR_REG		(LS1X_I2C0_BASE + 0x2)
++#define LS1X_I2C0_TXR_REG		(LS1X_I2C0_BASE + 0x3)
++#define LS1X_I2C0_RXR_REG		(LS1X_I2C0_BASE + 0x3)
++#define LS1X_I2C0_CR_REG		(LS1X_I2C0_BASE + 0x4)
++#define LS1X_I2C0_SR_REG		(LS1X_I2C0_BASE + 0x4)
++
++#define LS1X_I2C1_BASE			(LS1X_APB_REG_BASE + 0x28000)
++#define LS1X_I2C1_PRER_LO_REG		(LS1X_I2C1_BASE + 0x0)
++#define LS1X_I2C1_PRER_HI_REG		(LS1X_I2C1_BASE + 0x1)
++#define LS1X_I2C1_CTR_REG		(LS1X_I2C1_BASE + 0x2)
++#define LS1X_I2C1_TXR_REG		(LS1X_I2C1_BASE + 0x3)
++#define LS1X_I2C1_RXR_REG		(LS1X_I2C1_BASE + 0x3)
++#define LS1X_I2C1_CR_REG		(LS1X_I2C1_BASE + 0x4)
++#define LS1X_I2C1_SR_REG		(LS1X_I2C1_BASE + 0x4)
++
++#define LS1X_I2C2_BASE			(LS1X_APB_REG_BASE + 0x30000)
++#define LS1X_I2C2_PRER_LO_REG		(LS1X_I2C2_BASE + 0x0)
++#define LS1X_I2C2_PRER_HI_REG		(LS1X_I2C2_BASE + 0x1)
++#define LS1X_I2C2_CTR_REG		(LS1X_I2C2_BASE + 0x2)
++#define LS1X_I2C2_TXR_REG		(LS1X_I2C2_BASE + 0x3)
++#define LS1X_I2C2_RXR_REG		(LS1X_I2C2_BASE + 0x3)
++#define LS1X_I2C2_CR_REG		(LS1X_I2C2_BASE + 0x4)
++#define LS1X_I2C2_SR_REG		(LS1X_I2C2_BASE + 0x4)
++
++#define LS1X_PWM_REG_BASE		(LS1X_APB_REG_BASE + 0x1c000)
++#define LS1X_PWM0_BASE			(LS1X_PWM_REG_BASE + 0x00)
++#define LS1X_PWM1_BASE			(LS1X_PWM_REG_BASE + 0x10)
++#define LS1X_PWM2_BASE			(LS1X_PWM_REG_BASE + 0x20)
++#define LS1X_PWM3_BASE			(LS1X_PWM_REG_BASE + 0x30)
++
++/* RTC regs */
++#define LS1X_RTC_BASE			(LS1X_APB_REG_BASE + 0x24000)
++
++/* AC97 regs */
++#define LS1X_AC97_BASE			(LS1X_APB_REG_BASE + 0x34000)
++
++/* Watchdog regs */
++#ifdef CONFIG_CPU_LOONGSON1A
++#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e7c060)
++#else
++#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e5c060)
++#endif
++
++/* CLK regs */
++#define LS1X_CLK_BASE			(LS1X_MUX_REG_BASE + 0x00e78030)
++
++/* NAND regs */
++#define LS1X_NAND_REG_BASE		(LS1X_APB_REG_BASE + 0x38000)
++#define LS1X_NAND_CMD_REG		(LS1X_NAND_REG_BASE + 0x0000)
++#define LS1X_NAND_ADDR_C_REG		(LS1X_NAND_REG_BASE + 0x0004)
++#define LS1X_NAND_ADDR_R_REG		(LS1X_NAND_REG_BASE + 0x0008)
++#define LS1X_NAND_TIMING_REG		(LS1X_NAND_REG_BASE + 0x000c)
++#define LS1X_NAND_IDL_REG		(LS1X_NAND_REG_BASE + 0x0010)
++#define LS1X_NAND_STA_IDH_REG		(LS1X_NAND_REG_BASE + 0x0014)
++#define LS1X_NAND_PARAM_REG		(LS1X_NAND_REG_BASE + 0x0018)
++#define LS1X_NAND_OP_NUM_REG		(LS1X_NAND_REG_BASE + 0x001c)
++#define LS1X_NAND_CSRDY_MAP_REG		(LS1X_NAND_REG_BASE + 0x0020)
++#define LS1X_NAND_DMA_ACC_REG		(LS1X_NAND_REG_BASE + 0x0040)
++
++/* ACPI regs for ls1a */
++#define LS1X_ACPI_REG_BASE		(LS1X_APB_REG_BASE + 0x3c000)
++#define LS1X_PM1_STS_REG		(LS1X_ACPI_REG_BASE + 0x0000)
++#define LS1X_PM1_EN_REG			(LS1X_ACPI_REG_BASE + 0x0004)
++#define LS1X_PM1_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0008)
++#define LS1X_PM1_TMR_REG		(LS1X_ACPI_REG_BASE + 0x000c)
++#define LS1X_P_CNT_REG			(LS1X_ACPI_REG_BASE + 0x0010)
++#define LS1X_P_LVL2_REG			(LS1X_ACPI_REG_BASE + 0x0014)
++#define LS1X_P_LVL3_REG			(LS1X_ACPI_REG_BASE + 0x0018)
++#define LS1X_GPE0_STS_REG		(LS1X_ACPI_REG_BASE + 0x0020)
++#define LS1X_GPE0_EN_REG		(LS1X_ACPI_REG_BASE + 0x0024)
++#define LS1X_PM_CONF1_REG		(LS1X_ACPI_REG_BASE + 0x0030)
++#define LS1X_PM_CONF2_REG		(LS1X_ACPI_REG_BASE + 0x0034)
++#define LS1X_PM_CONF3_REG		(LS1X_ACPI_REG_BASE + 0x0038)
++#define LS1X_RST_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0044)
++#define LS1X_CPU_INIT_REG		(LS1X_ACPI_REG_BASE + 0x0050)
++
++#define LS1X_SPI0_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e80000)
++#define LS1X_SPI1_REG_BASE		(LS1X_MUX_REG_BASE + 0x00ec0000)
++
++/* LPC regs */
++#define LS1X_LPC_IO_BASE		(LS1X_MUX_REG_BASE + 0x00f00000)
++#define LS1X_LPC_REG_BASE		(LS1X_MUX_REG_BASE + 0x00f10200)
++#define LS1X_LPC_CFG0_REG		(LS1X_LPC_REG_BASE + 0x0)
++#define LS1X_LPC_CFG1_REG		(LS1X_LPC_REG_BASE + 0x4)
++#define LS1X_LPC_CFG2_REG		(LS1X_LPC_REG_BASE + 0x8)
++#define LS1X_LPC_CFG3_REG		(LS1X_LPC_REG_BASE + 0xc)
+ 
+ #include <regs-clk.h>
+ #include <regs-mux.h>
+diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
+index 100f23d..f71392f 100644
+--- a/arch/mips/loongson32/common/platform.c
++++ b/arch/mips/loongson32/common/platform.c
+@@ -84,8 +84,8 @@ struct platform_device ls1x_cpufreq_pdev = {
+ /* DMA */
+ static struct resource ls1x_dma_resources[] = {
+ 	[0] = {
+-		.start = LS1X_DMAC_BASE,
+-		.end = LS1X_DMAC_BASE + SZ_4 - 1,
++		.start = LS1X_DMA_ORDER_REG,
++		.end = LS1X_DMA_ORDER_REG + SZ_4 - 1,
+ 		.flags = IORESOURCE_MEM,
+ 	},
+ 	[1] = {
+@@ -259,8 +259,8 @@ struct platform_device ls1x_eth1_pdev = {
+ /* GPIO */
+ static struct resource ls1x_gpio0_resources[] = {
+ 	[0] = {
+-		.start	= LS1X_GPIO0_BASE,
+-		.end	= LS1X_GPIO0_BASE + SZ_4 - 1,
++		.start	= LS1X_GPIO_CFG0_REG,
++		.end	= LS1X_GPIO_CFG0_REG + SZ_4 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ };
+@@ -274,8 +274,8 @@ struct platform_device ls1x_gpio0_pdev = {
+ 
+ static struct resource ls1x_gpio1_resources[] = {
+ 	[0] = {
+-		.start	= LS1X_GPIO1_BASE,
+-		.end	= LS1X_GPIO1_BASE + SZ_4 - 1,
++		.start	= LS1X_GPIO_CFG1_REG,
++		.end	= LS1X_GPIO_CFG1_REG + SZ_4 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ };
+@@ -290,8 +290,8 @@ struct platform_device ls1x_gpio1_pdev = {
+ /* NAND Flash */
+ static struct resource ls1x_nand_resources[] = {
+ 	[0] = {
+-		.start	= LS1X_NAND_BASE,
+-		.end	= LS1X_NAND_BASE + SZ_32 - 1,
++		.start	= LS1X_NAND_REG_BASE,
++		.end	= LS1X_NAND_REG_BASE + SZ_32 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ 	[1] = {
 -- 
- arch/mips/Kconfig                                 |  12 +++++++++
- arch/mips/configs/loongson1a_defconfig            | 129 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/cpu-type.h                  |   3 ++-
- arch/mips/include/asm/cpu.h                       |   3 +--
- arch/mips/include/asm/mach-loongson32/irq.h       |  16 ++++++++----
- arch/mips/include/asm/mach-loongson32/loongson1.h | 172 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------
- arch/mips/include/asm/mach-loongson32/platform.h  |   2 ++
- arch/mips/include/asm/mach-loongson32/regs-clk.h  |  30 ++++++++++++++++++++-
- arch/mips/include/asm/mach-loongson32/regs-mux.h  |  36 ++++++++++++++++++++++++-
- arch/mips/kernel/cpu-probe.c                      |   6 ++++-
- arch/mips/loongson32/Kconfig                      |  20 ++++++++++++++
- arch/mips/loongson32/Makefile                     |   6 +++++
- arch/mips/loongson32/Platform                     |   1 +
- arch/mips/loongson32/common/irq.c                 |   2 +-
- arch/mips/loongson32/common/platform.c            |  83 ++++++++++++++++++++++++++++++++++++++++++++++++----------
- arch/mips/loongson32/common/setup.c               |   6 +++--
- arch/mips/loongson32/ls1a/Makefile                |   5 ++++
- arch/mips/loongson32/ls1a/board.c                 |  31 ++++++++++++++++++++++
- arch/mips/mm/c-r4k.c                              |  10 +++++++
- drivers/clk/loongson1/Makefile                    |   1 +
- drivers/clk/loongson1/clk-loongson1a.c            |  73 +++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/clk/loongson1/clk-loongson1b.c            |  14 +++++-----
- drivers/clk/loongson1/clk-loongson1c.c            |   8 +++---
- 23 files changed, 601 insertions(+), 69 deletions(-)
- create mode 100644 arch/mips/configs/loongson1a_defconfig
- create mode 100644 arch/mips/loongson32/ls1a/Makefile
- create mode 100644 arch/mips/loongson32/ls1a/board.c
- create mode 100644 drivers/clk/loongson1/clk-loongson1a.c
---
-1.9.0
+2.9.4

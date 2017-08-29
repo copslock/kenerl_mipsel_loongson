@@ -1,39 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 12:07:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:2781 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994922AbdH2KHlURBOB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 12:07:41 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 16E84CD0EBCA6;
-        Tue, 29 Aug 2017 11:07:32 +0100 (IST)
-Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 29 Aug
- 2017 11:07:34 +0100
-Subject: Re: [PATCH 11/11] MIPS: Declare various variables & functions static
-To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>, <trivial@kernel.org>
-References: <20170823181754.24044-1-paul.burton@imgtec.com>
- <20170823181754.24044-12-paul.burton@imgtec.com>
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <b4d64ecd-c3f5-dcf8-8ecb-3d59d15cda89@imgtec.com>
-Date:   Tue, 29 Aug 2017 12:07:33 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2017 13:24:11 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:51874 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994929AbdH2LXyTaWk4 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2017 13:23:54 +0200
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 8FD24404318;
+        Tue, 29 Aug 2017 11:23:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com 8FD24404318
+Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
+Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; spf=fail smtp.mailfrom=cohuck@redhat.com
+Received: from gondolin (dhcp-192-215.str.redhat.com [10.33.192.215])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 067D86FDDC;
+        Tue, 29 Aug 2017 11:23:44 +0000 (UTC)
+Date:   Tue, 29 Aug 2017 13:23:42 +0200
+From:   Cornelia Huck <cohuck@redhat.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Christoffer Dall <cdall@linaro.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Mackerras <paulus@ozlabs.org>,
+        Alexander Graf <agraf@suse.com>
+Subject: Re: [PATCH RFC v3 1/9] KVM: s390: optimize detection of started
+ vcpus
+Message-ID: <20170829132342.1ef25500.cohuck@redhat.com>
+In-Reply-To: <67a8b09c-3e7a-943d-8684-f9ad6e70514b@redhat.com>
+References: <20170821203530.9266-1-rkrcmar@redhat.com>
+        <20170821203530.9266-2-rkrcmar@redhat.com>
+        <67a8b09c-3e7a-943d-8684-f9ad6e70514b@redhat.com>
+Organization: Red Hat GmbH
 MIME-Version: 1.0
-In-Reply-To: <20170823181754.24044-12-paul.burton@imgtec.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Tue, 29 Aug 2017 11:23:47 +0000 (UTC)
+Return-Path: <cohuck@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59856
+X-archive-position: 59857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: cohuck@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,127 +62,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+On Tue, 22 Aug 2017 13:31:27 +0200
+David Hildenbrand <david@redhat.com> wrote:
 
-On 23.08.2017 20:17, Paul Burton wrote:
-> We currently have various variables & functions which are only used
-> within a single translation unit, but which we don't declare static.
-> This causes various sparse warnings of the form:
+> On 21.08.2017 22:35, Radim Krčmář wrote:
+> > We can add a variable instead of scanning all online VCPUs to know how
+> > many are started.  We can't trivially tell which VCPU is the last one,
+> > though.  
 > 
->    arch/mips/kernel/mips-r2-to-r6-emul.c:49:1: warning: symbol
->      'mipsr2emustats' was not declared. Should it be static?
+> You could keep the started vcpus in a list. Then you might drop unsigned
+> started_vcpus;
 > 
->    arch/mips/kernel/unaligned.c:1381:11: warning: symbol 'reg16to32st'
->      was not declared. Should it be static?
-> 
->    arch/mips/mm/mmap.c:146:15: warning: symbol 'arch_mmap_rnd' was not
->      declared. Should it be static?
-> 
-> Fix these & others by declaring various affected variables & functions
-> static, avoiding the sparse warnings & redundant symbols.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> 
-> ---
-> 
->   arch/mips/kernel/cpu-probe.c          | 2 +-
->   arch/mips/kernel/mips-r2-to-r6-emul.c | 6 +++---
->   arch/mips/kernel/pm-cps.c             | 2 +-
->   arch/mips/kernel/unaligned.c          | 2 +-
->   arch/mips/mm/dma-default.c            | 4 ++--
->   5 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index d08afc7dc507..17df18b87b9d 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -326,7 +326,7 @@ static int __init fpu_disable(char *s)
->   
->   __setup("nofpu", fpu_disable);
->   
-> -int mips_dsp_disabled;
-> +static int mips_dsp_disabled;
->   
->   static int __init dsp_disable(char *s)
->   {
-> diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
-> index ae64c8f56a8c..ac23b4f09f02 100644
-> --- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-> +++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-> @@ -46,9 +46,9 @@
->   #define LL	"ll "
->   #define SC	"sc "
->   
-> -DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2emustats);
-> -DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2bdemustats);
-> -DEFINE_PER_CPU(struct mips_r2br_emulator_stats, mipsr2bremustats);
-> +static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2emustats);
-> +static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2bdemustats);
-> +static DEFINE_PER_CPU(struct mips_r2br_emulator_stats, mipsr2bremustats);
->   
+> No started vcpus: Start pointer NULL
+> Single started vcpu: Only one element in the list (easy to check)
+> > 1 started vcpus: More than one element int he list (easy to check)  
 
-This leads to the following:
-
-../arch/mips/kernel/mips-r2-to-r6-emul.c:51:56: error: 
-‘mipsr2bremustats’ defined but not used [-Werror=unused-variable]
-  static DEFINE_PER_CPU(struct mips_r2br_emulator_stats, mipsr2bremustats);
-                                                         ^
-../include/linux/percpu-defs.h:105:19: note: in definition of macro 
-‘DEFINE_PER_CPU_SECTION’
-   __typeof__(type) name
-                    ^~~~
-../arch/mips/kernel/mips-r2-to-r6-emul.c:51:8: note: in expansion of 
-macro ‘DEFINE_PER_CPU’
-  static DEFINE_PER_CPU(struct mips_r2br_emulator_stats, mipsr2bremustats);
-         ^~~~~~~~~~~~~~
-../arch/mips/kernel/mips-r2-to-r6-emul.c:50:54: error: 
-‘mipsr2bdemustats’ defined but not used [-Werror=unused-variable]
-  static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2bdemustats);
-                                                       ^
-../include/linux/percpu-defs.h:105:19: note: in definition of macro 
-‘DEFINE_PER_CPU_SECTION’
-   __typeof__(type) name
-                    ^~~~
-../arch/mips/kernel/mips-r2-to-r6-emul.c:50:8: note: in expansion of 
-macro ‘DEFINE_PER_CPU’
-  static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2bdemustats);
-         ^~~~~~~~~~~~~~
-../arch/mips/kernel/mips-r2-to-r6-emul.c:49:54: error: ‘mipsr2emustats’ 
-defined but not used [-Werror=unused-variable]
-  static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2emustats);
-                                                       ^
-../include/linux/percpu-defs.h:105:19: note: in definition of macro 
-‘DEFINE_PER_CPU_SECTION’
-   __typeof__(type) name
-                    ^~~~
-../arch/mips/kernel/mips-r2-to-r6-emul.c:49:8: note: in expansion of 
-macro ‘DEFINE_PER_CPU’
-  static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2emustats);
-
-
-when CONFIG_DEBUG_FS=n (eg. malta_qemu_32r6_defconfig)
-
-Since these are not used without DEBUG_FS then I guess the following 
-patch should be ok:
-
-diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c 
-b/arch/mips/kernel/mips-r2-to-r6-emul.c
-index 3bd721c..eb18b18 100644
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -46,9 +46,11 @@
-  #define LL     "ll "
-  #define SC     "sc "
-
-+#ifdef CONFIG_DEBUG_FS
-  static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2emustats);
-  static DEFINE_PER_CPU(struct mips_r2_emulator_stats, mipsr2bdemustats);
-  static DEFINE_PER_CPU(struct mips_r2br_emulator_stats, mipsr2bremustats);
-+#endif
-
-if you're OK with it then I guess it may be best for Ralf to fold this 
-change into your patch?
-
-Marcin
+I'm not sure the added complication of keeping a list buys us much
+here: We only have the "look for the last vcpu not stopped" operation
+for the 2->1 transition.

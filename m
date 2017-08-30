@@ -1,60 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Aug 2017 09:05:58 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:55213 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993935AbdH3HEfoS13B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Aug 2017 09:04:35 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=lMp5vmZe9jWoDFCkt3rK6zMnKJeC19VfKgOSbtGoJnc=; b=5UWvmPTFXvVBRWLEu9roQYb1jT
-        359ezOpeV0em0EXDr/KOx/vQ3vg2BiFeVIAw8NHtGvnspVegGXj1MZZDEUARIm6zXCSIkbQs498fU
-        t/fYLedK095aT6+7EU+tIiXpqdLqX9S3OF2f7VlzOi3t8sM/gSzsr/BUszMZdPAYDHimaVHJsyJoE
-        DTrg6hfLngxqUXkxe3DNaJEd6x4o5wrIY4pPU/+x+v9aKPmLt/CyHMs7BqXug5cKYCBkmbddYDEcB
-        hEzoeMkRawAH1DNbhqXLS4yKiIsTEOQINUjaMK4bTc0qN78bAbFFQuBfeaOsn5pCFdke96WdNU3Ds
-        sI0VllEw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:53250 helo=localhost)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.89)
-        (envelope-from <linux@roeck-us.net>)
-        id 1dmuhK-001xLa-EC; Wed, 30 Aug 2017 04:33:52 +0000
-Date:   Tue, 29 Aug 2017 21:33:49 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Steven J. Hill" <steven.hill@cavium.com>
-Cc:     linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org,
-        ralf@linux-mips.org
-Subject: Re: [PATCH 6/8] watchdog: octeon-wdt: File cleaning.
-Message-ID: <20170830043349.GB14791@roeck-us.net>
-References: <1504021238-3184-1-git-send-email-steven.hill@cavium.com>
- <1504021238-3184-7-git-send-email-steven.hill@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Aug 2017 12:48:45 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:47014 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993868AbdH3Ksghz8xP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Aug 2017 12:48:36 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F001E80D;
+        Wed, 30 Aug 2017 03:48:29 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C6E43F483;
+        Wed, 30 Aug 2017 03:48:28 -0700 (PDT)
+Subject: Re: [PATCH] irqchip: irq-bcm7120-l2: Use correct I/O accessors for
+ irq_fwd_mask
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     opendmb@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        "open list:BROADCOM BMIPS MIPS ARCHITECTURE" 
+        <linux-mips@linux-mips.org>
+References: <1504032187-53035-1-git-send-email-f.fainelli@gmail.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <2c52e192-9cb2-0e53-ddc2-23e25d1ae5bc@arm.com>
+Date:   Wed, 30 Aug 2017 11:48:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1504021238-3184-7-git-send-email-steven.hill@cavium.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+In-Reply-To: <1504032187-53035-1-git-send-email-f.fainelli@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59889
+X-archive-position: 59890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,173 +52,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 29, 2017 at 10:40:36AM -0500, Steven J. Hill wrote:
-> From: "Steven J. Hill" <Steven.Hill@cavium.com>
-> 
-> * Update copyright and company name.
-> * Remove unused headers.
-> * Fix variable spelling and data type.
-> * Use octal values for module parameters.
-> 
-> Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-> Acked-by: David Daney <david.daney@cavium.com>
+On 29/08/17 19:43, Florian Fainelli wrote:
+> Initialization of irq_fwd_mask was done using __raw_readl() which
+> happens to work for all cases except when using ARM BE8 which requires
+> readl() (with the proper swapping). Move the initialization of the
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+s/readl/writel/, I presume?
 
+> irq_fwd_mask till later when we have correctly defined our I/O
+> accessors.
+> 
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 > ---
->  drivers/watchdog/octeon-wdt-main.c | 45 +++++++++++++++++++++++++-------------
->  1 file changed, 30 insertions(+), 15 deletions(-)
+>  drivers/irqchip/irq-bcm7120-l2.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/watchdog/octeon-wdt-main.c b/drivers/watchdog/octeon-wdt-main.c
-> index fbdd484..73b5102 100644
-> --- a/drivers/watchdog/octeon-wdt-main.c
-> +++ b/drivers/watchdog/octeon-wdt-main.c
-> @@ -1,7 +1,7 @@
->  /*
->   * Octeon Watchdog driver
->   *
-> - * Copyright (C) 2007, 2008, 2009, 2010 Cavium Networks
-> + * Copyright (C) 2007-2017 Cavium, Inc.
->   *
->   * Converted to use WATCHDOG_CORE by Aaro Koskinen <aaro.koskinen@iki.fi>.
->   *
-> @@ -59,14 +59,9 @@
->  #include <linux/interrupt.h>
->  #include <linux/watchdog.h>
->  #include <linux/cpumask.h>
-> -#include <linux/bitops.h>
-> -#include <linux/kernel.h>
->  #include <linux/module.h>
-> -#include <linux/string.h>
->  #include <linux/delay.h>
->  #include <linux/cpu.h>
-> -#include <linux/smp.h>
-> -#include <linux/fs.h>
->  #include <linux/irq.h>
+> diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+> index 64c2692070ef..983640eba418 100644
+> --- a/drivers/irqchip/irq-bcm7120-l2.c
+> +++ b/drivers/irqchip/irq-bcm7120-l2.c
+> @@ -250,12 +250,6 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+>  	if (ret < 0)
+>  		goto out_free_l1_data;
 >  
->  #include <asm/mipsregs.h>
-> @@ -85,7 +80,7 @@ static unsigned int max_timeout_sec;
->  static unsigned int timeout_sec;
+> -	for (idx = 0; idx < data->n_words; idx++) {
+> -		__raw_writel(data->irq_fwd_mask[idx],
+> -			     data->pair_base[idx] +
+> -			     data->en_offset[idx]);
+> -	}
+> -
+>  	for (irq = 0; irq < data->num_parent_irqs; irq++) {
+>  		ret = bcm7120_l2_intc_init_one(dn, data, irq, valid_mask);
+>  		if (ret)
+> @@ -297,6 +291,10 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+>  		gc->reg_base = data->pair_base[idx];
+>  		ct->regs.mask = data->en_offset[idx];
 >  
->  /* Set to non-zero when userspace countdown mode active */
-> -static int do_coundown;
-> +static bool do_countdown;
->  static unsigned int countdown_reset;
->  static unsigned int per_cpu_countdown[NR_CPUS];
->  
-> @@ -94,17 +89,22 @@ static cpumask_t irq_enabled_cpus;
->  #define WD_TIMO 60			/* Default heartbeat = 60 seconds */
->  
->  static int heartbeat = WD_TIMO;
-> -module_param(heartbeat, int, S_IRUGO);
-> +module_param(heartbeat, int, 0444);
->  MODULE_PARM_DESC(heartbeat,
->  	"Watchdog heartbeat in seconds. (0 < heartbeat, default="
->  				__MODULE_STRING(WD_TIMO) ")");
->  
->  static bool nowayout = WATCHDOG_NOWAYOUT;
-> -module_param(nowayout, bool, S_IRUGO);
-> +module_param(nowayout, bool, 0444);
->  MODULE_PARM_DESC(nowayout,
->  	"Watchdog cannot be stopped once started (default="
->  				__MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
->  
-> +static int disable;
-> +module_param(disable, int, 0444);
-> +MODULE_PARM_DESC(disable,
-> +	"Disable the watchdog entirely (default=0)");
+> +		/* gc->reg_base is defined and so is gc->writel */
+> +		irq_reg_writel(gc, data->irq_fwd_mask[idx],
+> +			       data->en_offset[idx]);
 > +
->  static struct cvmx_boot_vector_element *octeon_wdt_bootvector;
->  
->  void octeon_wdt_nmi_stage2(void);
-> @@ -140,7 +140,7 @@ static irqreturn_t octeon_wdt_poke_irq(int cpl, void *dev_id)
->  	unsigned int core = cvmx_get_core_num();
->  	int cpu = core2cpu(core);
->  
-> -	if (do_coundown) {
-> +	if (do_countdown) {
->  		if (per_cpu_countdown[cpu] > 0) {
->  			/* We're alive, poke the watchdog */
->  			cvmx_write_csr(CVMX_CIU_PP_POKEX(core), 1);
-> @@ -324,11 +324,14 @@ static int octeon_wdt_ping(struct watchdog_device __always_unused *wdog)
->  	int cpu;
->  	int coreid;
->  
-> +	if (disable)
-> +		return 0;
-> +
->  	for_each_online_cpu(cpu) {
->  		coreid = cpu2core(cpu);
->  		cvmx_write_csr(CVMX_CIU_PP_POKEX(coreid), 1);
->  		per_cpu_countdown[cpu] = countdown_reset;
-> -		if ((countdown_reset || !do_coundown) &&
-> +		if ((countdown_reset || !do_countdown) &&
->  		    !cpumask_test_cpu(cpu, &irq_enabled_cpus)) {
->  			/* We have to enable the irq */
->  			int irq = OCTEON_IRQ_WDOG0 + coreid;
-> @@ -378,6 +381,9 @@ static int octeon_wdt_set_timeout(struct watchdog_device *wdog,
->  
->  	octeon_wdt_calc_parameters(t);
->  
-> +	if (disable)
-> +		return 0;
-> +
->  	for_each_online_cpu(cpu) {
->  		coreid = cpu2core(cpu);
->  		cvmx_write_csr(CVMX_CIU_PP_POKEX(coreid), 1);
-> @@ -394,13 +400,13 @@ static int octeon_wdt_set_timeout(struct watchdog_device *wdog,
->  static int octeon_wdt_start(struct watchdog_device *wdog)
->  {
->  	octeon_wdt_ping(wdog);
-> -	do_coundown = 1;
-> +	do_countdown = 1;
->  	return 0;
->  }
->  
->  static int octeon_wdt_stop(struct watchdog_device *wdog)
->  {
-> -	do_coundown = 0;
-> +	do_countdown = 0;
->  	octeon_wdt_ping(wdog);
->  	return 0;
->  }
-> @@ -473,6 +479,11 @@ static int __init octeon_wdt_init(void)
->  		return ret;
->  	}
->  
-> +	if (disable) {
-> +		pr_notice("disabled\n");
-> +		return 0;
-> +	}
-> +
->  	cpumask_clear(&irq_enabled_cpus);
->  
->  	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "watchdog/octeon:online",
-> @@ -493,6 +504,10 @@ static int __init octeon_wdt_init(void)
->  static void __exit octeon_wdt_cleanup(void)
->  {
->  	watchdog_unregister_device(&octeon_wdt);
-> +
-> +	if (disable)
-> +		return;
-> +
->  	cpuhp_remove_state(octeon_wdt_online);
->  
->  	/*
-> @@ -503,7 +518,7 @@ static void __exit octeon_wdt_cleanup(void)
->  }
->  
->  MODULE_LICENSE("GPL");
-> -MODULE_AUTHOR("Cavium Networks <support@caviumnetworks.com>");
-> -MODULE_DESCRIPTION("Cavium Networks Octeon Watchdog driver.");
-> +MODULE_AUTHOR("Cavium Inc. <support@cavium.com>");
-> +MODULE_DESCRIPTION("Cavium Inc. OCTEON Watchdog driver.");
->  module_init(octeon_wdt_init);
->  module_exit(octeon_wdt_cleanup);
-> -- 
-> 2.1.4
+>  		ct->chip.irq_mask = irq_gc_mask_clr_bit;
+>  		ct->chip.irq_unmask = irq_gc_mask_set_bit;
+>  		ct->chip.irq_ack = irq_gc_noop;
 > 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+Thanks,
+
+	M.
+-- 
+Jazz is not dead. It just smells funny...

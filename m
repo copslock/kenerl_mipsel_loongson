@@ -1,55 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Aug 2017 02:35:30 +0200 (CEST)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:34832
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994822AbdHaAfXajk-j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Aug 2017 02:35:23 +0200
-Received: by mail-qk0-x244.google.com with SMTP id p67so6486380qkd.2
-        for <linux-mips@linux-mips.org>; Wed, 30 Aug 2017 17:35:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Aug 2017 02:36:55 +0200 (CEST)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:37686
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994821AbdHaAgtCAhbj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Aug 2017 02:36:49 +0200
+Received: by mail-wm0-x243.google.com with SMTP id x189so3358889wmg.4
+        for <linux-mips@linux-mips.org>; Wed, 30 Aug 2017 17:36:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=vxqN5JZAn/oqYiz49UrBTdppqL8l+sqsWoxCjiCXRNo=;
-        b=a4baU9I4c2+DOpMfvQ9D3o6+0zveXIsf9FSI+VhrQaV/xqPEWir0RWDv9nXwU/L52N
-         4MyEjV4y0uDO+hpA+SrBXj7agt5HF3HOArNpXGEqqSnATyAAo05Y5EEJG5FxqngMvQKz
-         Z0wXKAKWyNZw6RsxSCLzHkKbjRwo+LJ1p41DrOwWOBaeUh0qYk0XvbKVxqzh6xxX3/oQ
-         bEEkkZpwYhOKLwrzyp65ZzX4HGZIrMpNlwNuiwZ3jP8K1YOogs4dpx+Zbu61Qn7h72LG
-         6PQpko/zqJQO0q0Ao3XSNwopdPUvr0CYzBYRtHc/5Moun1J/Jldgx7P/vIdirY9NiY/m
-         RSLA==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Sb41c4C6+Of/KW4LbBG4MP50SGzwLCz7ypGzgGjxYi0=;
+        b=ilt4YwQsu1k6khQCNHTqnxW1HcJ40FYM06MtWOJ+5smpYSrQzCYgge2BvnJqOSXYm+
+         p+P51l2OlJpK+cTObsmiP5+2oIgoDGMRTb0T6UhvZrPC+0OXg9y/Q56Ybog8G6JSB6wr
+         NAT6ZHzGqPYRz1iM4rRbR3KsSNAEugXT8wXY+//e6FXbWwN//6+7I1oHcISIE3pS1DjS
+         mjWRLhr+BDykMz6ZoOz/5Q62WDzzLL/Wm/ha1RHMQozQK0narV4krQqFN4dO5goFmHld
+         BnEHUcZ9kMnjo63dlmqIitnws48szvQI+x6q+GZFEr0+4mI/PVp9rqkf71lGJUi3Z3rr
+         TDug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=vxqN5JZAn/oqYiz49UrBTdppqL8l+sqsWoxCjiCXRNo=;
-        b=nN0HrooZqaH2Hdo590zihE343WOi2rHbKDzFf/uPEUOPEWohqTGDrfBg7z841UIZ/q
-         ItwP9zWjG8E+dQWUE8wjFaPyPY9G30vpZjR4ggoMn9CNzYPtdb+K8RG3yOQQKD/k5Vxn
-         2bFCEGYGff2jZEzTqTDdWvjEyyK1MOEzKkKD1ETllvMI0DvL73VXLMj3SUM1U73Riqmf
-         m3P934rUnbsWhXCqYisd44S3nKmHC1iy3eajDYyszGjwa9JWLEbfu2Zn53PqVwAf4YSq
-         yNBLxRmPgho+iAvD1KKRVnSx7xOWGsriUId1foKQ7Fla7FeLgTS/dZw1IKYEi1OB9tub
-         RX2Q==
-X-Gm-Message-State: AHYfb5hMx9VHcqJvY3P2fogkMAEx67HvJN6vWGUReDTR+5ET71mWsOO5
-        zMejZdCmVXCLsQ==
-X-Received: by 10.55.164.82 with SMTP id n79mr1608432qke.45.1504139717462;
-        Wed, 30 Aug 2017 17:35:17 -0700 (PDT)
-Received: from stb-bld-04.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id u13sm4661485qku.56.2017.08.30.17.35.12
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 30 Aug 2017 17:35:16 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Sb41c4C6+Of/KW4LbBG4MP50SGzwLCz7ypGzgGjxYi0=;
+        b=svwaslvHJEJhedY1fxRezWqjy84KbkTuI3a/1BhEfE+r1yGSS+jndI0Sa8an0YxSl2
+         hSWVVqa/rAmtfxZ/Xk8aHzUiUbA/0kQN0GDCQlB2F1mb1Cu6zh4ekY4QB/CSQtYdh2v1
+         JkdbY1hMKejDdLrx7ZKzQokQiDgh1F9JMp3JI/UNOFWie+RVe8gfuF1rBPW2Wqhk87GA
+         00KF9OavCgwKZmpqjApHRzrIhh5LpcXek1XwrryVyv4GcuvWBmG8FA18Otc7Fe3OEiKf
+         Z1h66rOaxTCjPCxSgE4+eiptcI+sz9RPHto/b74MMXgW7k7kJk1GqiWepM7zrddi8e/u
+         thIA==
+X-Gm-Message-State: AHYfb5j63w6nzcGE+OfEB8vSJO9mLSkHzGylTFuDP767qIdy1ePZWE4r
+        r6Cf1Cc/nmEVMbFqAB4=
+X-Received: by 10.28.60.215 with SMTP id j206mr2705358wma.73.1504139803545;
+        Wed, 30 Aug 2017 17:36:43 -0700 (PDT)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id n50sm11861632wrb.37.2017.08.30.17.36.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 30 Aug 2017 17:36:42 -0700 (PDT)
+Subject: Re: [PATCH] irqchip: irq-bcm7120-l2: Use correct I/O accessors for
+ irq_fwd_mask
+To:     Marc Zyngier <marc.zyngier@arm.com>, linux-kernel@vger.kernel.org
+Cc:     opendmb@gmail.com, bcm-kernel-feedback-list@broadcom.com,
         Kevin Cernekee <cernekee@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        linux-mips@linux-mips.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
-Subject: [PATCH v2] irqchip: irq-bcm7120-l2: Use correct I/O accessors for irq_fwd_mask
-Date:   Wed, 30 Aug 2017 17:29:16 -0700
-Message-Id: <1504139356-1052-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        "open list:BROADCOM BMIPS MIPS ARCHITECTURE" 
+        <linux-mips@linux-mips.org>
+References: <1504032187-53035-1-git-send-email-f.fainelli@gmail.com>
+ <2c52e192-9cb2-0e53-ddc2-23e25d1ae5bc@arm.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <6344fffc-4125-a3b9-ce96-741f4d8becfb@gmail.com>
+Date:   Wed, 30 Aug 2017 17:36:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
+MIME-Version: 1.0
+In-Reply-To: <2c52e192-9cb2-0e53-ddc2-23e25d1ae5bc@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59895
+X-archive-position: 59896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,48 +78,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Initialization of irq_fwd_mask was done using __raw_writel() which
-happens to work for all cases except when using ARM BE8 which requires
-writel() (with the proper swapping). Move the initialization of the
-irq_fwd_mask till later when we have correctly defined our I/O
-accessors.
+On 08/30/2017 03:48 AM, Marc Zyngier wrote:
+> On 29/08/17 19:43, Florian Fainelli wrote:
+>> Initialization of irq_fwd_mask was done using __raw_readl() which
+>> happens to work for all cases except when using ARM BE8 which requires
+>> readl() (with the proper swapping). Move the initialization of the
+> 
+> s/readl/writel/, I presume?
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
-Changes in v2:
-
-- corrected readl vs. writel in commit subject, spotted by Marc
-
- drivers/irqchip/irq-bcm7120-l2.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index 64c2692070ef..983640eba418 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -250,12 +250,6 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
- 	if (ret < 0)
- 		goto out_free_l1_data;
- 
--	for (idx = 0; idx < data->n_words; idx++) {
--		__raw_writel(data->irq_fwd_mask[idx],
--			     data->pair_base[idx] +
--			     data->en_offset[idx]);
--	}
--
- 	for (irq = 0; irq < data->num_parent_irqs; irq++) {
- 		ret = bcm7120_l2_intc_init_one(dn, data, irq, valid_mask);
- 		if (ret)
-@@ -297,6 +291,10 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
- 		gc->reg_base = data->pair_base[idx];
- 		ct->regs.mask = data->en_offset[idx];
- 
-+		/* gc->reg_base is defined and so is gc->writel */
-+		irq_reg_writel(gc, data->irq_fwd_mask[idx],
-+			       data->en_offset[idx]);
-+
- 		ct->chip.irq_mask = irq_gc_mask_clr_bit;
- 		ct->chip.irq_unmask = irq_gc_mask_set_bit;
- 		ct->chip.irq_ack = irq_gc_noop;
+Correct, just submitted a v2 with that fixed, thanks.
 -- 
-1.9.1
+Florian

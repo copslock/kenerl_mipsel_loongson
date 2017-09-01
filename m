@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 09:00:05 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51248 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 09:04:46 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51624 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992111AbdIAG7vwqltu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Sep 2017 08:59:51 +0200
+        id S23992111AbdIAHEhnMTRu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 1 Sep 2017 09:04:37 +0200
 Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v816xmNa010663;
-        Fri, 1 Sep 2017 08:59:48 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v8174au6010804;
+        Fri, 1 Sep 2017 09:04:36 +0200
 Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v816xlJP010661;
-        Fri, 1 Sep 2017 08:59:47 +0200
-Date:   Fri, 1 Sep 2017 08:59:47 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v8174ZgC010803;
+        Fri, 1 Sep 2017 09:04:35 +0200
+Date:   Fri, 1 Sep 2017 09:04:35 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Kees Cook <keescook@chromium.org>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 24/31] mips/sgi-ip22: Use separate static data field with
+Subject: Re: [PATCH 23/31] mips/sgi-ip32: Use separate static data field with
  with static timer
-Message-ID: <20170901065947.GA32117@linux-mips.org>
+Message-ID: <20170901070435.GB32117@linux-mips.org>
 References: <1504222183-61202-1-git-send-email-keescook@chromium.org>
- <1504222183-61202-25-git-send-email-keescook@chromium.org>
+ <1504222183-61202-24-git-send-email-keescook@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1504222183-61202-25-git-send-email-keescook@chromium.org>
+In-Reply-To: <1504222183-61202-24-git-send-email-keescook@chromium.org>
 User-Agent: Mutt/1.8.3 (2017-05-23)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59904
+X-archive-position: 59905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,55 +46,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 31, 2017 at 04:29:36PM -0700, Kees Cook wrote:
+On Thu, Aug 31, 2017 at 04:29:35PM -0700, Kees Cook wrote:
 
 > In preparation for changing the timer callback argument to the timer
 > pointer, move to a separate static data variable.
 > 
 > Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: James Hogan <james.hogan@imgtec.com>
 > Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
 > Cc: linux-mips@linux-mips.org
 > Signed-off-by: Kees Cook <keescook@chromium.org>
 > ---
->  arch/mips/sgi-ip22/ip22-reset.c | 16 ++++++++--------
+>  arch/mips/sgi-ip32/ip32-reset.c | 16 ++++++++--------
 >  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
-> index 196b041866ac..5cc32610e6d3 100644
-> --- a/arch/mips/sgi-ip22/ip22-reset.c
-> +++ b/arch/mips/sgi-ip22/ip22-reset.c
+> diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
+> index 4e263fd4deff..6636a9c686cd 100644
+> --- a/arch/mips/sgi-ip32/ip32-reset.c
+> +++ b/arch/mips/sgi-ip32/ip32-reset.c
 > @@ -38,6 +38,7 @@
->  #define PANIC_FREQ		(HZ / 8)
+>  extern struct platform_device ip32_rtc_device;
 >  
->  static struct timer_list power_timer, blink_timer, debounce_timer;
+>  static struct timer_list power_timer, blink_timer;
 > +static unsigned long blink_timer_timeout;
 
-You're removing power_timer and debounce_timer ...
+Similar to the IP22 patch this patch removes power_timer ...
 
->  #define MACHINE_PANICED		1
->  #define MACHINE_SHUTTING_DOWN	2
-> @@ -86,13 +87,13 @@ static void power_timeout(unsigned long data)
->  	sgi_machine_power_off();
+>  static int has_panicked, shutting_down;
+>  
+>  static __noreturn void ip32_poweroff(void *data)
+> @@ -71,11 +72,11 @@ static void ip32_machine_restart(char *cmd)
+>  	unreachable();
 >  }
 >  
 > -static void blink_timeout(unsigned long data)
 > +static void blink_timeout(unsigned long unused)
 >  {
->  	/* XXX fix this for fullhouse  */
->  	sgi_ioc_reset ^= (SGIOC_RESET_LC0OFF|SGIOC_RESET_LC1OFF);
->  	sgioc->reset = sgi_ioc_reset;
->  
+>  	unsigned long led = mace->perif.ctrl.misc ^ MACEISA_LED_RED;
+>  	mace->perif.ctrl.misc = led;
 > -	mod_timer(&blink_timer, jiffies + data);
 > +	mod_timer(&blink_timer, jiffies + blink_timer_timeout);
 >  }
 >  
->  static void debounce(unsigned long data)
-> @@ -128,8 +129,8 @@ static inline void power_button(void)
+>  static void ip32_machine_halt(void)
+> @@ -99,8 +100,8 @@ void ip32_prepare_poweroff(void)
 >  	}
 >  
->  	machine_state |= MACHINE_SHUTTING_DOWN;
+>  	shutting_down = 1;
 > -	blink_timer.data = POWERDOWN_FREQ;
 > -	blink_timeout(POWERDOWN_FREQ);
 > +	blink_timer_timeout = POWERDOWN_FREQ;
@@ -104,12 +100,12 @@ You're removing power_timer and debounce_timer ...
 >  
 >  	setup_timer(&power_timer, power_timeout, 0UL);
 
-... but don't remove the reference to power_timer nor use of debounce_timer.
+... but doesn't fix the users.
 
 >  	power_timer.expires = jiffies + POWERDOWN_TIMEOUT * HZ;
-> @@ -169,8 +170,8 @@ static int panic_event(struct notifier_block *this, unsigned long event,
->  		return NOTIFY_DONE;
->  	machine_state |= MACHINE_PANICED;
+> @@ -120,8 +121,8 @@ static int panic_event(struct notifier_block *this, unsigned long event,
+>  	led = mace->perif.ctrl.misc | MACEISA_LED_GREEN;
+>  	mace->perif.ctrl.misc = led;
 >  
 > -	blink_timer.data = PANIC_FREQ;
 > -	blink_timeout(PANIC_FREQ);
@@ -118,9 +114,9 @@ You're removing power_timer and debounce_timer ...
 >  
 >  	return NOTIFY_DONE;
 >  }
-> @@ -193,8 +194,7 @@ static int __init reboot_setup(void)
->  		return res;
->  	}
+> @@ -142,8 +143,7 @@ static __init int ip32_reboot_setup(void)
+>  	_machine_halt = ip32_machine_halt;
+>  	pm_power_off = ip32_machine_halt;
 >  
 > -	init_timer(&blink_timer);
 > -	blink_timer.function = blink_timeout;

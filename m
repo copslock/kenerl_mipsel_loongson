@@ -1,48 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 10:54:20 +0200 (CEST)
-Received: from mail.cn.fujitsu.com ([183.91.158.132]:35702 "EHLO
-        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991826AbdIAIyMy401N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 10:54:12 +0200
-X-IronPort-AV: E=Sophos;i="5.41,457,1498492800"; 
-   d="scan'208";a="25108678"
-Received: from localhost (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 01 Sep 2017 16:54:04 +0800
-Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
-        by cn.fujitsu.com (Postfix) with ESMTP id BAA2B4724E70;
-        Fri,  1 Sep 2017 16:54:03 +0800 (CST)
-Received: from localhost.localdomain (10.167.226.106) by
- G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.319.2; Fri, 1 Sep 2017 16:54:04 +0800
-Subject: Re: [PATCH v2 2/7] MIPS: numa: Remove the unused parent_node() macro
-To:     Ralf Baechle <ralf@linux-mips.org>
-References: <1504234599-29533-1-git-send-email-douly.fnst@cn.fujitsu.com>
- <1504234599-29533-3-git-send-email-douly.fnst@cn.fujitsu.com>
- <20170901084255.GA19890@linux-mips.org>
-CC:     <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-mips@linux-mips.org>
-From:   Dou Liyang <douly.fnst@cn.fujitsu.com>
-Message-ID: <8d57c5de-9965-3423-6325-89db6c798a51@cn.fujitsu.com>
-Date:   Fri, 1 Sep 2017 16:54:01 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
-MIME-Version: 1.0
-In-Reply-To: <20170901084255.GA19890@linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.167.226.106]
-X-yoursite-MailScanner-ID: BAA2B4724E70.AA1E3
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: douly.fnst@cn.fujitsu.com
-Return-Path: <douly.fnst@cn.fujitsu.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 12:47:46 +0200 (CEST)
+Received: from heliosphere.sirena.org.uk ([IPv6:2a01:7e01::f03c:91ff:fed4:a3b6]:40656
+        "EHLO heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991615AbdIAKrixWw0Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 12:47:38 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=x6lS955ktFfM+ieI7cutVrBz+1TkuLhpeURSIp7LesA=; b=PlqgqWR74WaC
+        YHuRZCOtnaj9c0HXgoJJHhPI0gRoqoZazP3BeRHgW5KhsB1stYPo7dVecRsR4BeCb/rCy3z23dzvJ
+        6JAdyYsNAslNhadPQnXtpJ9BA0hDPDAPAjC0SDLkhmxVcrKa/hrEU69MmCwwiJ9FQmz07h761bXyO
+        iy3YM=;
+Received: from debutante.sirena.org.uk ([2001:470:1f1d:6b5::3] helo=debutante)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1dnjTz-000555-5d; Fri, 01 Sep 2017 10:47:27 +0000
+Received: from broonie by debutante with local (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1dnjTy-0006AD-Ox; Fri, 01 Sep 2017 11:47:26 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+        martin.blumenstingl@googlemail.com, john@phrozen.org,
+        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
+        linux-spi@vger.kernel.org
+Subject: Applied "spi: spi-falcon: drop check of boot select" to the spi tree
+In-Reply-To:  <20170417192942.32219-4-hauke@hauke-m.de>
+Message-Id: <E1dnjTy-0006AD-Ox@debutante>
+Date:   Fri, 01 Sep 2017 11:47:26 +0100
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59907
+X-archive-position: 59908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: douly.fnst@cn.fujitsu.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,32 +55,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+The patch
 
-At 09/01/2017 04:42 PM, Ralf Baechle wrote:
-> On Fri, Sep 01, 2017 at 10:56:34AM +0800, Dou Liyang wrote:
->
->> Commit a7be6e5a7f8d ("mm: drop useless local parameters of
->> __register_one_node()") removes the last user of parent_node().
->>
->> The parent_node() macros in both IP27 and Loongson64 are unnecessary.
->>
->> Remove it for cleanup.
->
-> I already applied v1.
->
+   spi: spi-falcon: drop check of boot select
 
-Thank you very much. :-)
+has been applied to the spi tree at
 
-Maybe I missed some message, so I thought it was not yet accepted.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-please ignore this patch.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-	dou
-> Thanks,
->
->   Ralf
->
->
->
+Mark

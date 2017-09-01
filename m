@@ -1,45 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 04:57:25 +0200 (CEST)
-Received: from mail.cn.fujitsu.com ([183.91.158.132]:18543 "EHLO
-        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992111AbdIAC45eV9kU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 04:56:57 +0200
-X-IronPort-AV: E=Sophos;i="5.41,456,1498492800"; 
-   d="scan'208";a="25090030"
-Received: from localhost (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 01 Sep 2017 10:56:44 +0800
-Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
-        by cn.fujitsu.com (Postfix) with ESMTP id 1ABD0472403C;
-        Fri,  1 Sep 2017 10:56:45 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.167.226.106) by
- G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.319.2; Fri, 1 Sep 2017 10:56:45 +0800
-From:   Dou Liyang <douly.fnst@cn.fujitsu.com>
-To:     <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>
-CC:     Dou Liyang <douly.fnst@cn.fujitsu.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 09:00:05 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51248 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992111AbdIAG7vwqltu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 1 Sep 2017 08:59:51 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v816xmNa010663;
+        Fri, 1 Sep 2017 08:59:48 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v816xlJP010661;
+        Fri, 1 Sep 2017 08:59:47 +0200
+Date:   Fri, 1 Sep 2017 08:59:47 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         James Hogan <james.hogan@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH v2 2/7] MIPS: numa: Remove the unused parent_node() macro
-Date:   Fri, 1 Sep 2017 10:56:34 +0800
-Message-ID: <1504234599-29533-3-git-send-email-douly.fnst@cn.fujitsu.com>
-X-Mailer: git-send-email 2.5.5
-In-Reply-To: <1504234599-29533-1-git-send-email-douly.fnst@cn.fujitsu.com>
-References: <1504234599-29533-1-git-send-email-douly.fnst@cn.fujitsu.com>
+        Ingo Molnar <mingo@kernel.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 24/31] mips/sgi-ip22: Use separate static data field with
+ with static timer
+Message-ID: <20170901065947.GA32117@linux-mips.org>
+References: <1504222183-61202-1-git-send-email-keescook@chromium.org>
+ <1504222183-61202-25-git-send-email-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.167.226.106]
-X-yoursite-MailScanner-ID: 1ABD0472403C.ADD10
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: douly.fnst@cn.fujitsu.com
-Return-Path: <douly.fnst@cn.fujitsu.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1504222183-61202-25-git-send-email-keescook@chromium.org>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59903
+X-archive-position: 59904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: douly.fnst@cn.fujitsu.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,46 +48,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit a7be6e5a7f8d ("mm: drop useless local parameters of
-__register_one_node()") removes the last user of parent_node().
+On Thu, Aug 31, 2017 at 04:29:36PM -0700, Kees Cook wrote:
 
-The parent_node() macros in both IP27 and Loongson64 are unnecessary.
+> In preparation for changing the timer callback argument to the timer
+> pointer, move to a separate static data variable.
+> 
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: James Hogan <james.hogan@imgtec.com>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/mips/sgi-ip22/ip22-reset.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
+> index 196b041866ac..5cc32610e6d3 100644
+> --- a/arch/mips/sgi-ip22/ip22-reset.c
+> +++ b/arch/mips/sgi-ip22/ip22-reset.c
+> @@ -38,6 +38,7 @@
+>  #define PANIC_FREQ		(HZ / 8)
+>  
+>  static struct timer_list power_timer, blink_timer, debounce_timer;
+> +static unsigned long blink_timer_timeout;
 
-Remove it for cleanup.
+You're removing power_timer and debounce_timer ...
 
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Dou Liyang <douly.fnst@cn.fujitsu.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/include/asm/mach-ip27/topology.h       | 1 -
- arch/mips/include/asm/mach-loongson64/topology.h | 1 -
- 2 files changed, 2 deletions(-)
+>  #define MACHINE_PANICED		1
+>  #define MACHINE_SHUTTING_DOWN	2
+> @@ -86,13 +87,13 @@ static void power_timeout(unsigned long data)
+>  	sgi_machine_power_off();
+>  }
+>  
+> -static void blink_timeout(unsigned long data)
+> +static void blink_timeout(unsigned long unused)
+>  {
+>  	/* XXX fix this for fullhouse  */
+>  	sgi_ioc_reset ^= (SGIOC_RESET_LC0OFF|SGIOC_RESET_LC1OFF);
+>  	sgioc->reset = sgi_ioc_reset;
+>  
+> -	mod_timer(&blink_timer, jiffies + data);
+> +	mod_timer(&blink_timer, jiffies + blink_timer_timeout);
+>  }
+>  
+>  static void debounce(unsigned long data)
+> @@ -128,8 +129,8 @@ static inline void power_button(void)
+>  	}
+>  
+>  	machine_state |= MACHINE_SHUTTING_DOWN;
+> -	blink_timer.data = POWERDOWN_FREQ;
+> -	blink_timeout(POWERDOWN_FREQ);
+> +	blink_timer_timeout = POWERDOWN_FREQ;
+> +	blink_timeout(0);
+>  
+>  	setup_timer(&power_timer, power_timeout, 0UL);
 
-diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
-index defd135..3fb7a0e 100644
---- a/arch/mips/include/asm/mach-ip27/topology.h
-+++ b/arch/mips/include/asm/mach-ip27/topology.h
-@@ -23,7 +23,6 @@ struct cpuinfo_ip27 {
- extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
- 
- #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
--#define parent_node(node)	(node)
- #define cpumask_of_node(node)	((node) == -1 ?				\
- 				 cpu_all_mask :				\
- 				 &hub_data(node)->h_cpus)
-diff --git a/arch/mips/include/asm/mach-loongson64/topology.h b/arch/mips/include/asm/mach-loongson64/topology.h
-index 0d8f3b5..bcb8856 100644
---- a/arch/mips/include/asm/mach-loongson64/topology.h
-+++ b/arch/mips/include/asm/mach-loongson64/topology.h
-@@ -4,7 +4,6 @@
- #ifdef CONFIG_NUMA
- 
- #define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
--#define parent_node(node)	(node)
- #define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
- 
- struct pci_bus;
--- 
-2.5.5
+... but don't remove the reference to power_timer nor use of debounce_timer.
+
+>  	power_timer.expires = jiffies + POWERDOWN_TIMEOUT * HZ;
+> @@ -169,8 +170,8 @@ static int panic_event(struct notifier_block *this, unsigned long event,
+>  		return NOTIFY_DONE;
+>  	machine_state |= MACHINE_PANICED;
+>  
+> -	blink_timer.data = PANIC_FREQ;
+> -	blink_timeout(PANIC_FREQ);
+> +	blink_timer_timeout = PANIC_FREQ;
+> +	blink_timeout(0);
+>  
+>  	return NOTIFY_DONE;
+>  }
+> @@ -193,8 +194,7 @@ static int __init reboot_setup(void)
+>  		return res;
+>  	}
+>  
+> -	init_timer(&blink_timer);
+> -	blink_timer.function = blink_timeout;
+> +	setup_timer(&blink_timer, blink_timeout, 0);
+>  	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
+>  
+>  	return 0;
+
+  Ralf

@@ -1,55 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 18:40:19 +0200 (CEST)
-Received: from heliosphere.sirena.org.uk ([IPv6:2a01:7e01::f03c:91ff:fed4:a3b6]:39164
-        "EHLO heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993918AbdIAQkKtC9Yv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 18:40:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=7pElQ/EEua0qiD3YwyLR8qDOtIjVUZ3KyIZr/zzQWQE=; b=sCZXYShXH9z5lCFhpeWf/dQHx
-        OLrCTSeaYesz/56a/m26T96YaeHtlGaJgxC06JBfusOPukiJFjUqdEzqn7UHiM89BIWQDoyVbqmwq
-        Us17kLYnkYQs8jhdF3/rPsxJZnIHOdw2b5/8mNfj8+1I1gLxlVXEE9vQCnbfXy1YmaoJM=;
-Received: from debutante.sirena.org.uk ([2001:470:1f1d:6b5::3] helo=debutante)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dnoz5-0005kQ-OA; Fri, 01 Sep 2017 16:39:55 +0000
-Received: from broonie by debutante with local (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1dnoz4-0006rb-Tt; Fri, 01 Sep 2017 17:39:54 +0100
-Date:   Fri, 1 Sep 2017 17:39:54 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>, linux-spi@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
-        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
-        martin.blumenstingl@googlemail.com, john@phrozen.org,
-        hauke.mehrtens@intel.com
-Subject: Re: Applied "spi: spi-falcon: drop check of boot select" to the spi
- tree
-Message-ID: <20170901163954.zj2kpqhag7vakucp@sirena.org.uk>
-References: <20170417192942.32219-4-hauke@hauke-m.de>
- <E1dnjTy-0006AD-Ox@debutante>
- <20170901142355.GB31297@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 18:57:52 +0200 (CEST)
+Received: from mail-io0-x236.google.com ([IPv6:2607:f8b0:4001:c06::236]:38848
+        "EHLO mail-io0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993918AbdIAQ5isCG-v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 18:57:38 +0200
+Received: by mail-io0-x236.google.com with SMTP id 81so4798975ioj.5
+        for <linux-mips@linux-mips.org>; Fri, 01 Sep 2017 09:57:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=NBKfw3oWiUFuzhy9PNef+DrCjl4BggTHQU7Yl5HF3ho=;
+        b=f2b7/PWJffOG2vreYgBROmyHZfBJc/NNtQfmenjyXRZkPjsDwASP6R0IckCC+NN48p
+         EqDKJvpR2PUS8/ytezgdXd+jdBSOCYThTu/I0slQxkNJzXUiSckGLVzdgHc6TdjyGTHt
+         jU95pynryk2O6LJ/8EY28RG02Ex/Gyw4KD9/8WuEa9YysumabyHt3LdI7AL4YUNjJ87c
+         EXcN6kcb28NgEGhCIkEO6ZnxJgjyys6c6AFpCD9rxqrgQtf1XGymnqBlbJzmZZMvqAmN
+         PCvzZAR97EVxKyJwEpCGzLgB77RrBhvvQsN8iXhVbwWq4j+zizgcEzEjDubVhcP4qx++
+         PTHw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=NBKfw3oWiUFuzhy9PNef+DrCjl4BggTHQU7Yl5HF3ho=;
+        b=COroPvyDil7/XGwrt9hKL57qgl8itHNK33+BJbAw7hfN0blfUzk13TMgP/buDkf+aP
+         4Atc8sLkJjqRmv3+Dht2ypyfAFoAKbSpEfUzfr74S64rx+ZF8x/1/STfV0BWgLVp6v/o
+         lsowvBZI4qFsfM3qlgqgF5JupgOL1sc1E1Qb4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=NBKfw3oWiUFuzhy9PNef+DrCjl4BggTHQU7Yl5HF3ho=;
+        b=khtTiUSvapsTksmB/xRbsj7hgUbDFm0mfmi2bjcmw3WBYmSR76SidoY28/5DtF3uHV
+         ByvZ+8crD/YME3XLYYJjmeBVZO7t4zhC1dgOVcBefjoRwstEvoJdVej3WKBISas45XwH
+         FGUQ+WadV0mzqwzAGHs6cvwNRRdpPqmT9tKZzJTmKpwIsxQRZudJp9xnJXThLlcaAzwc
+         AR3WBOPME9osGmoSLSxnAy5AjYVWIqbYUI4Q0aEo3HBHgOjaUKgsNbwRSww1e+UcSPL1
+         Gp1B/iuKwf+D0mdgg/d3Kp0V5RCX08JS4bIIh6/ZNxb4yUJGE+ZPdcC3bE0EevN/0cE8
+         6jiw==
+X-Gm-Message-State: AHPjjUh11b/iQftgK+R4yVxcucsZdUoeQ7H3wedJfmlr0shK1l4jqxGj
+        tZN/vwf9tQZ4cAEESeW8jRVH66MLBmBC
+X-Google-Smtp-Source: ADKCNb6f/5cP0PuuJ16f+mRu6IaVXiFlaw5k4b/Ga21mIL3uRU5BnXbtVaLlDmXFDDtSWKAssJlrsVYNjgz6jNMDHKA=
+X-Received: by 10.36.208.210 with SMTP id m201mr1354843itg.77.1504285052977;
+ Fri, 01 Sep 2017 09:57:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yz2qmbdgrt2zqrtv"
-Content-Disposition: inline
-In-Reply-To: <20170901142355.GB31297@linux-mips.org>
-X-Cookie: No Canadian coins.
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <broonie@sirena.org.uk>
+Received: by 10.107.7.101 with HTTP; Fri, 1 Sep 2017 09:57:32 -0700 (PDT)
+In-Reply-To: <20170901065947.GA32117@linux-mips.org>
+References: <1504222183-61202-1-git-send-email-keescook@chromium.org>
+ <1504222183-61202-25-git-send-email-keescook@chromium.org> <20170901065947.GA32117@linux-mips.org>
+From:   Kees Cook <keescook@chromium.org>
+Date:   Fri, 1 Sep 2017 09:57:32 -0700
+X-Google-Sender-Auth: bW8Cl7R_XCNf9JFCRW9H7iiAwAk
+Message-ID: <CAGXu5jJmZ3NMGcG5jz739ukgdWJ3+0krL=A-_C7ntWmwNcXn=A@mail.gmail.com>
+Subject: Re: [PATCH 24/31] mips/sgi-ip22: Use separate static data field with
+ with static timer
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59911
+X-archive-position: 59912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,57 +80,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Aug 31, 2017 at 11:59 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Thu, Aug 31, 2017 at 04:29:36PM -0700, Kees Cook wrote:
+>
+>> In preparation for changing the timer callback argument to the timer
+>> pointer, move to a separate static data variable.
+>>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Cc: James Hogan <james.hogan@imgtec.com>
+>> Cc: Ingo Molnar <mingo@kernel.org>
+>> Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+>> Cc: linux-mips@linux-mips.org
+>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>> ---
+>>  arch/mips/sgi-ip22/ip22-reset.c | 16 ++++++++--------
+>>  1 file changed, 8 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
+>> index 196b041866ac..5cc32610e6d3 100644
+>> --- a/arch/mips/sgi-ip22/ip22-reset.c
+>> +++ b/arch/mips/sgi-ip22/ip22-reset.c
+>> @@ -38,6 +38,7 @@
+>>  #define PANIC_FREQ           (HZ / 8)
+>>
+>>  static struct timer_list power_timer, blink_timer, debounce_timer;
+>> +static unsigned long blink_timer_timeout;
+>
+> You're removing power_timer and debounce_timer ...
 
---yz2qmbdgrt2zqrtv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Nope, I think you misread: this only adds blink_timer_timeout;
 
-On Fri, Sep 01, 2017 at 04:23:55PM +0200, Ralf Baechle wrote:
+>
+>>  #define MACHINE_PANICED              1
+>>  #define MACHINE_SHUTTING_DOWN        2
+>> @@ -86,13 +87,13 @@ static void power_timeout(unsigned long data)
+>>       sgi_machine_power_off();
+>>  }
+>>
+>> -static void blink_timeout(unsigned long data)
+>> +static void blink_timeout(unsigned long unused)
+>>  {
+>>       /* XXX fix this for fullhouse  */
+>>       sgi_ioc_reset ^= (SGIOC_RESET_LC0OFF|SGIOC_RESET_LC1OFF);
+>>       sgioc->reset = sgi_ioc_reset;
+>>
+>> -     mod_timer(&blink_timer, jiffies + data);
+>> +     mod_timer(&blink_timer, jiffies + blink_timer_timeout);
+>>  }
+>>
+>>  static void debounce(unsigned long data)
+>> @@ -128,8 +129,8 @@ static inline void power_button(void)
+>>       }
+>>
+>>       machine_state |= MACHINE_SHUTTING_DOWN;
+>> -     blink_timer.data = POWERDOWN_FREQ;
+>> -     blink_timeout(POWERDOWN_FREQ);
+>> +     blink_timer_timeout = POWERDOWN_FREQ;
+>> +     blink_timeout(0);
+>>
+>>       setup_timer(&power_timer, power_timeout, 0UL);
+>
+> ... but don't remove the reference to power_timer nor use of debounce_timer.
+>
+>>       power_timer.expires = jiffies + POWERDOWN_TIMEOUT * HZ;
+>> @@ -169,8 +170,8 @@ static int panic_event(struct notifier_block *this, unsigned long event,
+>>               return NOTIFY_DONE;
+>>       machine_state |= MACHINE_PANICED;
+>>
+>> -     blink_timer.data = PANIC_FREQ;
+>> -     blink_timeout(PANIC_FREQ);
+>> +     blink_timer_timeout = PANIC_FREQ;
+>> +     blink_timeout(0);
+>>
+>>       return NOTIFY_DONE;
+>>  }
+>> @@ -193,8 +194,7 @@ static int __init reboot_setup(void)
+>>               return res;
+>>       }
+>>
+>> -     init_timer(&blink_timer);
+>> -     blink_timer.function = blink_timeout;
+>> +     setup_timer(&blink_timer, blink_timeout, 0);
+>>       atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
+>>
+>>       return 0;
+>
+>   Ralf
 
-> Thanks Mark - but there are some ordering dependencies in Hauke's
-> patch series so it would be great if I could have an Acked-by to merge
-> this patch through the MIPS tree along with the rest of Hauke's series.
+-Kees
 
-Ah, I see - I wasn't copied on the cover letter so I didn't know about
-this.  Here's a pull request:
 
-The following changes since commit 5771a8c08880cdca3bfb4a3fc6d309d6bba20877:
-
-  Linux v4.13-rc1 (2017-07-15 15:22:10 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-falcon-no-board-check
-
-for you to fetch changes up to 1a41aa1376df9e24d0c760df1a6f59765316c457:
-
-  spi: spi-falcon: drop check of boot select (2017-09-01 11:33:22 +0100)
-
-----------------------------------------------------------------
-spi: Remove board check from the Falcon driver
-
-MIPS is removing this board check so support a cross tree merge.
-
-----------------------------------------------------------------
-Hauke Mehrtens (1):
-      spi: spi-falcon: drop check of boot select
-
- drivers/spi/spi-falcon.c | 5 -----
- 1 file changed, 5 deletions(-)
-
---yz2qmbdgrt2zqrtv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmpjVoACgkQJNaLcl1U
-h9BV1gf7Bb/eqetoXini9Wo2ec8W/Faq3iyNLJsm5sq6kdEmyfgg45y+VPDzER/s
-S2zaLpkahr6nOhFZVCc+ZuJ0/ONB3j1zKeCul8E0Jquh8R2UhNSIxla2VRnDHDxG
-NlCM9pk0eI6NJ4ad78DcIf8q7eeikuFchw66pMIzeZj02AWurYj6Vf15iZxwv/Im
-PxAT5C5XG8roa3FRCXNjI+m0sT1jBkjHNFpINm6mj9tUQ3nWW14vjKDjAbyH0ymR
-bqLmqWA/TKhZX8Ek4BgQRIcAc8qPPs4atb07cDvahDjvZUZEREik5qe9Vh0wtLXi
-D09hfGioArLwS0+IGC2PQ3K95sr7VA==
-=Yz51
------END PGP SIGNATURE-----
-
---yz2qmbdgrt2zqrtv--
+-- 
+Kees Cook
+Pixel Security

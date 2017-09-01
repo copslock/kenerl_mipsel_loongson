@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 23:47:57 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57170 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994863AbdIAVrqoCL2o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 23:47:46 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 2F40CBD15E639;
-        Fri,  1 Sep 2017 22:47:35 +0100 (IST)
-Received: from localhost (10.20.1.88) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 1 Sep 2017 22:47:39
- +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: Fix cmpxchg on 32b signed ints for 64b kernel with !kernel_uses_llsc
-Date:   Fri, 1 Sep 2017 14:46:50 -0700
-Message-ID: <20170901214650.15389-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Sep 2017 00:56:35 +0200 (CEST)
+Received: (from localhost user: 'ralf' uid#1000 fake: STDIN
+        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S23994856AbdIAW40tCr0y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 2 Sep 2017 00:56:26 +0200
+Date:   Sat, 2 Sep 2017 00:56:24 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 23/31] mips/sgi-ip32: Use separate static data field with
+ with static timer
+Message-ID: <20170901225624.GA8914@linux-mips.org>
+References: <1504222183-61202-1-git-send-email-keescook@chromium.org>
+ <1504222183-61202-24-git-send-email-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1504222183-61202-24-git-send-email-keescook@chromium.org>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59913
+X-archive-position: 59914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,92 +40,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 8263db4d7768 ("MIPS: cmpxchg: Implement __cmpxchg() as a
-function") refactored our implementation of __cmpxchg() to be a function
-rather than a macro, with the aim of making it easier to read & modify.
-Unfortunately the commit breaks use of cmpxchg() for signed 32 bit
-values when we have a 64 bit kernel with kernel_uses_llsc == false,
-because:
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
- - In cmpxchg_local() we cast the old value to the type the pointer
-   points to, and then to an unsigned long. If the pointer points to a
-   signed type smaller than 64 bits then the old value will be sign
-   extended to 64 bits. That is, bits beyond the size of the pointed to
-   type will be set to 1 if the old value is negative. In the case of a
-   signed 32 bit integer with a negative value, bits 63:32 will all be
-   set.
-
- - In __cmpxchg_asm() we load the value from memory, ie. dereference the
-   pointer, and store the value as an unsigned integer (__ret) whose
-   size matches the pointer. For a 32 bit cmpxchg() this means we store
-   the value in a u32, because the pointer provided to __cmpxchg_asm()
-   by __cmpxchg() is of type volatile u32 *.
-
- - __cmpxchg_asm() then checks whether the value in memory (__ret)
-   matches the provided old value, by comparing the two values. This
-   results in the u32 being promoted to a 64 bit unsigned long to match
-   the old argument - however because both types are unsigned the value
-   is zero extended, which does not match the sign extension performed
-   on the old value in cmpxchg_local() earlier.
-
-This mismatch means that unfortunate cmpxchg() calls can incorrectly
-fail for 64 bit kernels with kernel_uses_llsc == false. This is the case
-on at least non-SMP Cavium Octeon kernels, which hardcode
-kernel_uses_llsc in their cpu-feature-overrides.h header. Using a
-v4.13-rc7 kernel configured using cavium_octeon_defconfig with SMP
-manually disabled, this presents itself as oddity when we reach
-userland - for example:
-
-  can't run '/bin/mount': Text file busy
-  can't run '/bin/mkdir': Text file busy
-  can't run '/bin/mkdir': Text file busy
-  can't run '/bin/mount': Text file busy
-  can't run '/bin/hostname': Text file busy
-  can't run '/etc/init.d/rcS': Text file busy
-  can't run '/sbin/getty': Text file busy
-  can't run '/sbin/getty': Text file busy
-
-It appears that some part of the init process, which is in this case
-buildroot's busybox init, is running successfully. It never manages to
-reach the login prompt though, and complains about /sbin/getty being
-busy repeatedly and indefinitely.
-
-Fix this by casting the old value provided to __cmpxchg_asm() to an
-appropriately sized unsigned integer, such that we consistently
-zero-extend avoiding the mismatch. The __cmpxchg_small() case for 8 & 16
-bit values is unaffected because __cmpxchg_small() already masks
-provided values appropriately.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 8263db4d7768 ("MIPS: cmpxchg: Implement __cmpxchg() as a function")
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/include/asm/cmpxchg.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-index 903f3bf48419..7e25c5cc353a 100644
---- a/arch/mips/include/asm/cmpxchg.h
-+++ b/arch/mips/include/asm/cmpxchg.h
-@@ -155,14 +155,16 @@ static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
- 		return __cmpxchg_small(ptr, old, new, size);
- 
- 	case 4:
--		return __cmpxchg_asm("ll", "sc", (volatile u32 *)ptr, old, new);
-+		return __cmpxchg_asm("ll", "sc", (volatile u32 *)ptr,
-+				     (u32)old, new);
- 
- 	case 8:
- 		/* lld/scd are only available for MIPS64 */
- 		if (!IS_ENABLED(CONFIG_64BIT))
- 			return __cmpxchg_called_with_bad_pointer();
- 
--		return __cmpxchg_asm("lld", "scd", (volatile u64 *)ptr, old, new);
-+		return __cmpxchg_asm("lld", "scd", (volatile u64 *)ptr,
-+				     (u64)old, new);
- 
- 	default:
- 		return __cmpxchg_called_with_bad_pointer();
--- 
-2.14.1
+  Ralf

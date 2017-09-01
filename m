@@ -1,73 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 18:57:52 +0200 (CEST)
-Received: from mail-io0-x236.google.com ([IPv6:2607:f8b0:4001:c06::236]:38848
-        "EHLO mail-io0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993918AbdIAQ5isCG-v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 18:57:38 +0200
-Received: by mail-io0-x236.google.com with SMTP id 81so4798975ioj.5
-        for <linux-mips@linux-mips.org>; Fri, 01 Sep 2017 09:57:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=NBKfw3oWiUFuzhy9PNef+DrCjl4BggTHQU7Yl5HF3ho=;
-        b=f2b7/PWJffOG2vreYgBROmyHZfBJc/NNtQfmenjyXRZkPjsDwASP6R0IckCC+NN48p
-         EqDKJvpR2PUS8/ytezgdXd+jdBSOCYThTu/I0slQxkNJzXUiSckGLVzdgHc6TdjyGTHt
-         jU95pynryk2O6LJ/8EY28RG02Ex/Gyw4KD9/8WuEa9YysumabyHt3LdI7AL4YUNjJ87c
-         EXcN6kcb28NgEGhCIkEO6ZnxJgjyys6c6AFpCD9rxqrgQtf1XGymnqBlbJzmZZMvqAmN
-         PCvzZAR97EVxKyJwEpCGzLgB77RrBhvvQsN8iXhVbwWq4j+zizgcEzEjDubVhcP4qx++
-         PTHw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=NBKfw3oWiUFuzhy9PNef+DrCjl4BggTHQU7Yl5HF3ho=;
-        b=COroPvyDil7/XGwrt9hKL57qgl8itHNK33+BJbAw7hfN0blfUzk13TMgP/buDkf+aP
-         4Atc8sLkJjqRmv3+Dht2ypyfAFoAKbSpEfUzfr74S64rx+ZF8x/1/STfV0BWgLVp6v/o
-         lsowvBZI4qFsfM3qlgqgF5JupgOL1sc1E1Qb4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=NBKfw3oWiUFuzhy9PNef+DrCjl4BggTHQU7Yl5HF3ho=;
-        b=khtTiUSvapsTksmB/xRbsj7hgUbDFm0mfmi2bjcmw3WBYmSR76SidoY28/5DtF3uHV
-         ByvZ+8crD/YME3XLYYJjmeBVZO7t4zhC1dgOVcBefjoRwstEvoJdVej3WKBISas45XwH
-         FGUQ+WadV0mzqwzAGHs6cvwNRRdpPqmT9tKZzJTmKpwIsxQRZudJp9xnJXThLlcaAzwc
-         AR3WBOPME9osGmoSLSxnAy5AjYVWIqbYUI4Q0aEo3HBHgOjaUKgsNbwRSww1e+UcSPL1
-         Gp1B/iuKwf+D0mdgg/d3Kp0V5RCX08JS4bIIh6/ZNxb4yUJGE+ZPdcC3bE0EevN/0cE8
-         6jiw==
-X-Gm-Message-State: AHPjjUh11b/iQftgK+R4yVxcucsZdUoeQ7H3wedJfmlr0shK1l4jqxGj
-        tZN/vwf9tQZ4cAEESeW8jRVH66MLBmBC
-X-Google-Smtp-Source: ADKCNb6f/5cP0PuuJ16f+mRu6IaVXiFlaw5k4b/Ga21mIL3uRU5BnXbtVaLlDmXFDDtSWKAssJlrsVYNjgz6jNMDHKA=
-X-Received: by 10.36.208.210 with SMTP id m201mr1354843itg.77.1504285052977;
- Fri, 01 Sep 2017 09:57:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2017 23:47:57 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57170 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994863AbdIAVrqoCL2o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Sep 2017 23:47:46 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 2F40CBD15E639;
+        Fri,  1 Sep 2017 22:47:35 +0100 (IST)
+Received: from localhost (10.20.1.88) by hhmail02.hh.imgtec.org (10.100.10.21)
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 1 Sep 2017 22:47:39
+ +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: Fix cmpxchg on 32b signed ints for 64b kernel with !kernel_uses_llsc
+Date:   Fri, 1 Sep 2017 14:46:50 -0700
+Message-ID: <20170901214650.15389-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.14.1
 MIME-Version: 1.0
-Received: by 10.107.7.101 with HTTP; Fri, 1 Sep 2017 09:57:32 -0700 (PDT)
-In-Reply-To: <20170901065947.GA32117@linux-mips.org>
-References: <1504222183-61202-1-git-send-email-keescook@chromium.org>
- <1504222183-61202-25-git-send-email-keescook@chromium.org> <20170901065947.GA32117@linux-mips.org>
-From:   Kees Cook <keescook@chromium.org>
-Date:   Fri, 1 Sep 2017 09:57:32 -0700
-X-Google-Sender-Auth: bW8Cl7R_XCNf9JFCRW9H7iiAwAk
-Message-ID: <CAGXu5jJmZ3NMGcG5jz739ukgdWJ3+0krL=A-_C7ntWmwNcXn=A@mail.gmail.com>
-Subject: Re: [PATCH 24/31] mips/sgi-ip22: Use separate static data field with
- with static timer
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <keescook@google.com>
+Content-Type: text/plain
+X-Originating-IP: [10.20.1.88]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59912
+X-archive-position: 59913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,96 +40,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 31, 2017 at 11:59 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Thu, Aug 31, 2017 at 04:29:36PM -0700, Kees Cook wrote:
->
->> In preparation for changing the timer callback argument to the timer
->> pointer, move to a separate static data variable.
->>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Cc: James Hogan <james.hogan@imgtec.com>
->> Cc: Ingo Molnar <mingo@kernel.org>
->> Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
->> Cc: linux-mips@linux-mips.org
->> Signed-off-by: Kees Cook <keescook@chromium.org>
->> ---
->>  arch/mips/sgi-ip22/ip22-reset.c | 16 ++++++++--------
->>  1 file changed, 8 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
->> index 196b041866ac..5cc32610e6d3 100644
->> --- a/arch/mips/sgi-ip22/ip22-reset.c
->> +++ b/arch/mips/sgi-ip22/ip22-reset.c
->> @@ -38,6 +38,7 @@
->>  #define PANIC_FREQ           (HZ / 8)
->>
->>  static struct timer_list power_timer, blink_timer, debounce_timer;
->> +static unsigned long blink_timer_timeout;
->
-> You're removing power_timer and debounce_timer ...
+Commit 8263db4d7768 ("MIPS: cmpxchg: Implement __cmpxchg() as a
+function") refactored our implementation of __cmpxchg() to be a function
+rather than a macro, with the aim of making it easier to read & modify.
+Unfortunately the commit breaks use of cmpxchg() for signed 32 bit
+values when we have a 64 bit kernel with kernel_uses_llsc == false,
+because:
 
-Nope, I think you misread: this only adds blink_timer_timeout;
+ - In cmpxchg_local() we cast the old value to the type the pointer
+   points to, and then to an unsigned long. If the pointer points to a
+   signed type smaller than 64 bits then the old value will be sign
+   extended to 64 bits. That is, bits beyond the size of the pointed to
+   type will be set to 1 if the old value is negative. In the case of a
+   signed 32 bit integer with a negative value, bits 63:32 will all be
+   set.
 
->
->>  #define MACHINE_PANICED              1
->>  #define MACHINE_SHUTTING_DOWN        2
->> @@ -86,13 +87,13 @@ static void power_timeout(unsigned long data)
->>       sgi_machine_power_off();
->>  }
->>
->> -static void blink_timeout(unsigned long data)
->> +static void blink_timeout(unsigned long unused)
->>  {
->>       /* XXX fix this for fullhouse  */
->>       sgi_ioc_reset ^= (SGIOC_RESET_LC0OFF|SGIOC_RESET_LC1OFF);
->>       sgioc->reset = sgi_ioc_reset;
->>
->> -     mod_timer(&blink_timer, jiffies + data);
->> +     mod_timer(&blink_timer, jiffies + blink_timer_timeout);
->>  }
->>
->>  static void debounce(unsigned long data)
->> @@ -128,8 +129,8 @@ static inline void power_button(void)
->>       }
->>
->>       machine_state |= MACHINE_SHUTTING_DOWN;
->> -     blink_timer.data = POWERDOWN_FREQ;
->> -     blink_timeout(POWERDOWN_FREQ);
->> +     blink_timer_timeout = POWERDOWN_FREQ;
->> +     blink_timeout(0);
->>
->>       setup_timer(&power_timer, power_timeout, 0UL);
->
-> ... but don't remove the reference to power_timer nor use of debounce_timer.
->
->>       power_timer.expires = jiffies + POWERDOWN_TIMEOUT * HZ;
->> @@ -169,8 +170,8 @@ static int panic_event(struct notifier_block *this, unsigned long event,
->>               return NOTIFY_DONE;
->>       machine_state |= MACHINE_PANICED;
->>
->> -     blink_timer.data = PANIC_FREQ;
->> -     blink_timeout(PANIC_FREQ);
->> +     blink_timer_timeout = PANIC_FREQ;
->> +     blink_timeout(0);
->>
->>       return NOTIFY_DONE;
->>  }
->> @@ -193,8 +194,7 @@ static int __init reboot_setup(void)
->>               return res;
->>       }
->>
->> -     init_timer(&blink_timer);
->> -     blink_timer.function = blink_timeout;
->> +     setup_timer(&blink_timer, blink_timeout, 0);
->>       atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
->>
->>       return 0;
->
->   Ralf
+ - In __cmpxchg_asm() we load the value from memory, ie. dereference the
+   pointer, and store the value as an unsigned integer (__ret) whose
+   size matches the pointer. For a 32 bit cmpxchg() this means we store
+   the value in a u32, because the pointer provided to __cmpxchg_asm()
+   by __cmpxchg() is of type volatile u32 *.
 
--Kees
+ - __cmpxchg_asm() then checks whether the value in memory (__ret)
+   matches the provided old value, by comparing the two values. This
+   results in the u32 being promoted to a 64 bit unsigned long to match
+   the old argument - however because both types are unsigned the value
+   is zero extended, which does not match the sign extension performed
+   on the old value in cmpxchg_local() earlier.
 
+This mismatch means that unfortunate cmpxchg() calls can incorrectly
+fail for 64 bit kernels with kernel_uses_llsc == false. This is the case
+on at least non-SMP Cavium Octeon kernels, which hardcode
+kernel_uses_llsc in their cpu-feature-overrides.h header. Using a
+v4.13-rc7 kernel configured using cavium_octeon_defconfig with SMP
+manually disabled, this presents itself as oddity when we reach
+userland - for example:
 
+  can't run '/bin/mount': Text file busy
+  can't run '/bin/mkdir': Text file busy
+  can't run '/bin/mkdir': Text file busy
+  can't run '/bin/mount': Text file busy
+  can't run '/bin/hostname': Text file busy
+  can't run '/etc/init.d/rcS': Text file busy
+  can't run '/sbin/getty': Text file busy
+  can't run '/sbin/getty': Text file busy
+
+It appears that some part of the init process, which is in this case
+buildroot's busybox init, is running successfully. It never manages to
+reach the login prompt though, and complains about /sbin/getty being
+busy repeatedly and indefinitely.
+
+Fix this by casting the old value provided to __cmpxchg_asm() to an
+appropriately sized unsigned integer, such that we consistently
+zero-extend avoiding the mismatch. The __cmpxchg_small() case for 8 & 16
+bit values is unaffected because __cmpxchg_small() already masks
+provided values appropriately.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 8263db4d7768 ("MIPS: cmpxchg: Implement __cmpxchg() as a function")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/include/asm/cmpxchg.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
+index 903f3bf48419..7e25c5cc353a 100644
+--- a/arch/mips/include/asm/cmpxchg.h
++++ b/arch/mips/include/asm/cmpxchg.h
+@@ -155,14 +155,16 @@ static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
+ 		return __cmpxchg_small(ptr, old, new, size);
+ 
+ 	case 4:
+-		return __cmpxchg_asm("ll", "sc", (volatile u32 *)ptr, old, new);
++		return __cmpxchg_asm("ll", "sc", (volatile u32 *)ptr,
++				     (u32)old, new);
+ 
+ 	case 8:
+ 		/* lld/scd are only available for MIPS64 */
+ 		if (!IS_ENABLED(CONFIG_64BIT))
+ 			return __cmpxchg_called_with_bad_pointer();
+ 
+-		return __cmpxchg_asm("lld", "scd", (volatile u64 *)ptr, old, new);
++		return __cmpxchg_asm("lld", "scd", (volatile u64 *)ptr,
++				     (u64)old, new);
+ 
+ 	default:
+ 		return __cmpxchg_called_with_bad_pointer();
 -- 
-Kees Cook
-Pixel Security
+2.14.1

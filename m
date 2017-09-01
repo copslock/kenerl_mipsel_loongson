@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Sep 2017 00:56:35 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Sep 2017 00:57:06 +0200 (CEST)
 Received: (from localhost user: 'ralf' uid#1000 fake: STDIN
         (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S23994856AbdIAW40tCr0y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 2 Sep 2017 00:56:26 +0200
-Date:   Sat, 2 Sep 2017 00:56:24 +0200
+        id S23994864AbdIAW4zT0yFy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 2 Sep 2017 00:56:55 +0200
+Date:   Sat, 2 Sep 2017 00:56:52 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Kees Cook <keescook@chromium.org>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 23/31] mips/sgi-ip32: Use separate static data field with
+Subject: Re: [PATCH 24/31] mips/sgi-ip22: Use separate static data field with
  with static timer
-Message-ID: <20170901225624.GA8914@linux-mips.org>
+Message-ID: <20170901225652.GB8914@linux-mips.org>
 References: <1504222183-61202-1-git-send-email-keescook@chromium.org>
- <1504222183-61202-24-git-send-email-keescook@chromium.org>
+ <1504222183-61202-25-git-send-email-keescook@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1504222183-61202-24-git-send-email-keescook@chromium.org>
+In-Reply-To: <1504222183-61202-25-git-send-email-keescook@chromium.org>
 User-Agent: Mutt/1.8.3 (2017-05-23)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59914
+X-archive-position: 59915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

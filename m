@@ -1,20 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Sep 2017 09:09:25 +0200 (CEST)
-Received: from cpanel2.indieserve.net ([199.212.143.6]:53535 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Sep 2017 10:43:21 +0200 (CEST)
+Received: from cpanel2.indieserve.net ([199.212.143.6]:40241 "EHLO
         cpanel2.indieserve.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdIBHJPfLBSU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Sep 2017 09:09:15 +0200
-Received: from cpec03f0ed08c7f-cm68b6fcf980b0.cpe.net.cable.rogers.com ([174.118.92.171]:47406 helo=localhost.localdomain)
+        by eddie.linux-mips.org with ESMTP id S23990517AbdIBInJa8ht8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Sep 2017 10:43:09 +0200
+Received: from cpec03f0ed08c7f-cm68b6fcf980b0.cpe.net.cable.rogers.com ([174.118.92.171]:47916 helo=localhost.localdomain)
         by cpanel2.indieserve.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
         (Exim 4.89)
         (envelope-from <rpjday@crashcourse.ca>)
-        id 1do2YG-00035k-C4
-        for linux-mips@linux-mips.org; Sat, 02 Sep 2017 03:09:08 -0400
-Date:   Sat, 2 Sep 2017 03:09:06 -0400 (EDT)
+        id 1do418-0003C3-KV; Sat, 02 Sep 2017 04:43:02 -0400
+Date:   Sat, 2 Sep 2017 04:43:00 -0400 (EDT)
 From:   "Robert P. J. Day" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Standardize DTS files, status "ok" -> "okay"
-Message-ID: <alpine.LFD.2.21.1709020307150.11468@localhost.localdomain>
+To:     devicetree@vger.kernel.org
+cc:     linux-mips@linux-mips.org,
+        Linux PPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
+        monstr@monstr.eu
+Subject: [PATCH] devicetree: Remove remaining references/tests for
+ "chosen@0"
+Message-ID: <alpine.LFD.2.21.1709020416130.13598@localhost.localdomain>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -32,7 +35,7 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59916
+X-archive-position: 59917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,53 +53,118 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
-While the current kernel code in drivers/of/ allows developers to be
-sloppy and use the status value "ok", the current DTSpec 0.1 makes it
-clear that the only officially proper spelling is "okay", so adjust
-the very small number of DTS files under arch/mips/.
+Since, according to a recent devicetree ML posting by Rob Herring,
+the node "/chosen@0" is most likely for real Open Firmware and does
+not apply to DTSpec, remove all remaining tests and references for
+that node, of which there are very few left:
+
+ arch/microblaze/kernel/prom.c | 3 +--
+ arch/mips/generic/yamon-dt.c  | 4 ----
+ arch/powerpc/boot/oflib.c     | 7 ++-----
+ drivers/of/base.c             | 2 --
+ drivers/of/fdt.c              | 5 +----
+ 5 files changed, 4 insertions(+), 17 deletions(-)
+
+This should be innocuous as, in all of the three arch/ files above,
+there is a test for "chosen" immediately before the test for
+"chosen@0", so nothing should change.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dts b/arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dts
-index 430d35c..18397f4 100644
---- a/arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dts
-+++ b/arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dts
-@@ -18,7 +18,7 @@
- };
+  if this patch is premature, then just ignore it, thanks.
 
- &leds0 {
--	status = "ok";
-+	status = "okay";
- 	brcm,serial-leds;
- 	brcm,serial-dat-low;
- 	brcm,serial-shift-inv;
-diff --git a/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts b/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts
-index 702eae2..cfffbba 100644
---- a/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts
-+++ b/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts
-@@ -18,7 +18,7 @@
- };
+diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
+index 68f0999..c81bfd7 100644
+--- a/arch/microblaze/kernel/prom.c
++++ b/arch/microblaze/kernel/prom.c
+@@ -53,8 +53,7 @@ static int __init early_init_dt_scan_chosen_serial(unsigned long node,
 
- &leds0 {
--	status = "ok";
-+	status = "okay";
+ 	pr_debug("%s: depth: %d, uname: %s\n", __func__, depth, uname);
 
- 	led@0 {
- 		reg = <0>;
-diff --git a/arch/mips/boot/dts/ralink/rt3052_eval.dts b/arch/mips/boot/dts/ralink/rt3052_eval.dts
-index ec9e9a0..564870f 100644
---- a/arch/mips/boot/dts/ralink/rt3052_eval.dts
-+++ b/arch/mips/boot/dts/ralink/rt3052_eval.dts
-@@ -46,6 +46,6 @@
- 	};
+-	if (depth == 1 && (strcmp(uname, "chosen") == 0 ||
+-				strcmp(uname, "chosen@0") == 0)) {
++	if (depth == 1 && (strcmp(uname, "chosen") == 0)) {
+ 		p = of_get_flat_dt_prop(node, "linux,stdout-path", &l);
+ 		if (p != NULL && l > 0)
+ 			stdout = p; /* store pointer to stdout-path */
+diff --git a/arch/mips/generic/yamon-dt.c b/arch/mips/generic/yamon-dt.c
+index 6077bca..3a241b2 100644
+--- a/arch/mips/generic/yamon-dt.c
++++ b/arch/mips/generic/yamon-dt.c
+@@ -28,8 +28,6 @@ __init int yamon_dt_append_cmdline(void *fdt)
+ 	/* find or add chosen node */
+ 	chosen_off = fdt_path_offset(fdt, "/chosen");
+ 	if (chosen_off == -FDT_ERR_NOTFOUND)
+-		chosen_off = fdt_path_offset(fdt, "/chosen@0");
+-	if (chosen_off == -FDT_ERR_NOTFOUND)
+ 		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
+ 	if (chosen_off < 0) {
+ 		pr_err("Unable to find or add DT chosen node: %d\n",
+@@ -221,8 +219,6 @@ __init int yamon_dt_serial_config(void *fdt)
+ 	/* find or add chosen node */
+ 	chosen_off = fdt_path_offset(fdt, "/chosen");
+ 	if (chosen_off == -FDT_ERR_NOTFOUND)
+-		chosen_off = fdt_path_offset(fdt, "/chosen@0");
+-	if (chosen_off == -FDT_ERR_NOTFOUND)
+ 		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
+ 	if (chosen_off < 0) {
+ 		pr_err("Unable to find or add DT chosen node: %d\n",
+diff --git a/arch/powerpc/boot/oflib.c b/arch/powerpc/boot/oflib.c
+index 46c98a4..a01471f 100644
+--- a/arch/powerpc/boot/oflib.c
++++ b/arch/powerpc/boot/oflib.c
+@@ -131,11 +131,8 @@ static int check_of_version(void)
+ 		return 0;
+ 	chosen = of_finddevice("/chosen");
+ 	if (chosen == (phandle) -1) {
+-		chosen = of_finddevice("/chosen@0");
+-		if (chosen == (phandle) -1) {
+-			printf("no chosen\n");
+-			return 0;
+-		}
++		printf("no chosen\n");
++		return 0;
+ 	}
+ 	if (of_getprop(chosen, "mmu", &chosen_mmu, sizeof(chosen_mmu)) <= 0) {
+ 		printf("no mmu\n");
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 686628d..e0f636d 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1659,8 +1659,6 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64 align))
 
- 	usb@101c0000 {
--		status = "ok";
-+		status = "okay";
- 	};
- };
+ 	of_aliases = of_find_node_by_path("/aliases");
+ 	of_chosen = of_find_node_by_path("/chosen");
+-	if (of_chosen == NULL)
+-		of_chosen = of_find_node_by_path("/chosen@0");
+
+ 	if (of_chosen) {
+ 		/* linux,stdout-path and /aliases/stdout are for legacy compatibility */
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index ce30c9a..0b0a709 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -980,8 +980,6 @@ int __init early_init_dt_scan_chosen_stdout(void)
+
+ 	offset = fdt_path_offset(fdt, "/chosen");
+ 	if (offset < 0)
+-		offset = fdt_path_offset(fdt, "/chosen@0");
+-	if (offset < 0)
+ 		return -ENOENT;
+
+ 	p = fdt_getprop(fdt, offset, "stdout-path", &l);
+@@ -1117,8 +1115,7 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+
+ 	pr_debug("search \"chosen\", depth: %d, uname: %s\n", depth, uname);
+
+-	if (depth != 1 || !data ||
+-	    (strcmp(uname, "chosen") != 0 && strcmp(uname, "chosen@0") != 0))
++	if (depth != 1 || !data || (strcmp(uname, "chosen") != 0))
+ 		return 0;
+
+ 	early_init_dt_check_for_initrd(node);
 
 -- 
 

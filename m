@@ -1,60 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Sep 2017 21:34:40 +0200 (CEST)
-Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:36134
-        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991743AbdIBTe2YlzEO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Sep 2017 21:34:28 +0200
-Received: by mail-oi0-x241.google.com with SMTP id x184so2502611oia.3;
-        Sat, 02 Sep 2017 12:34:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=sG09Y6aDE70FvvrfF9e3iA5powfkQol6aTVIrKSrBgA=;
-        b=XMDY3EWc4t/pEthLss2vGTL6wDqzM3WkwwhltozWRrf6GdM74WR/caCrDx/C4Rumrt
-         9ayk9vXIGu0IzHY5qBr9rq6yI4oqO+sa1TjHM9FzIkH6AymOTegHBCbIOQ92FdtEkWnp
-         PGIst49L9yyn4PgXAFBS/WMJdQhnToJbRsr58JYB5gwhsAhMh5tqVIQxMK6WuhNwKDOD
-         4QYkkK1SwD24fBMKnuVNyJecCmA5aVkvifuaZRdi/UcCZ7xSRJ3Z0GS1z965vapXytXj
-         uFE91ShbEFpvI9ZZyLz8c81nogJZQKMXHknBUqGb/Cv666doOfOsoCe5REyualQUogeo
-         uZvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=sG09Y6aDE70FvvrfF9e3iA5powfkQol6aTVIrKSrBgA=;
-        b=Eet7Bn8f/fsCvr0PemTZTHuzSaKiZcSYJgevWbCbRzp7TaXesZvdCH8sO7U87LFBaY
-         oPG+YnF4w3jkAiI7gqKz1nyj8sobeE4bncCbYz5LozH7MlakMMU08jEevqdj+Bb5Njp1
-         j/r/fz7ciR/7e2h6l/6myvNWXMsVjyN6JhKgPtqpbZI9CbRJBQYjn66yhSh/zsemKRLq
-         EurzJYghu18bDUviow1uiAHJ01j7SyYz7kMOBa389qIYOZ/Dv6t55RQZjFIjP/PSvdpc
-         1UP7ccmYbcVY1GyeeA/U7bxlC82qGEVYG1cG0JAifysb5MB/r2aIa3qfy9M9HEHuh69p
-         F/UQ==
-X-Gm-Message-State: AHPjjUitZIUvyX57MadK5naO5yh3IoWmPt9NIpXXTKdRB1RWk8DI1ngB
-        8uz8lftlzQu1DGDvwwI=
-X-Google-Smtp-Source: ADKCNb7rzeL8LmbNJXFgEdIOiZMUQcZSyCDjb+K8uzZ/JpKRpqYnEIj2Lnz5i9m0eFmBZJz5p200cA==
-X-Received: by 10.202.244.78 with SMTP id s75mr5441491oih.207.1504380862316;
-        Sat, 02 Sep 2017 12:34:22 -0700 (PDT)
-Received: from bender.lan ([2001:470:d:73f:b0fd:7de5:8e98:d2eb])
-        by smtp.gmail.com with ESMTPSA id e184sm4613924oih.35.2017.09.02.12.34.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 02 Sep 2017 12:34:21 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, james.hogan@imgtec.com, john@phrozen.org,
-        david.daney@cavium.com, paul.burton@imgtec.com,
-        matt.redfearn@imgtec.com, Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH] MAINTAINERS: Add James as MIPS co-maintainer
-Date:   Sat,  2 Sep 2017 12:34:18 -0700
-Message-Id: <20170902193418.5577-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <33db77a2-32e4-6b2c-d463-9d116ba55623@imgtec.com>
-References: <33db77a2-32e4-6b2c-d463-9d116ba55623@imgtec.com>
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Sep 2017 00:22:08 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:39926 "EHLO gate.crashing.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993359AbdIBWV4fbh4R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Sep 2017 00:21:56 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id v82MKsW3017746;
+        Sat, 2 Sep 2017 17:20:56 -0500
+Message-ID: <1504390854.4974.108.camel@kernel.crashing.org>
+Subject: Re: [PATCH] devicetree: Remove remaining references/tests for
+ "chosen@0"
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     "Robert P. J. Day" <rpjday@crashcourse.ca>,
+        devicetree@vger.kernel.org
+Cc:     linux-mips@linux-mips.org, monstr@monstr.eu,
+        Linux PPC Mailing List <linuxppc-dev@lists.ozlabs.org>
+Date:   Sun, 03 Sep 2017 08:20:54 +1000
+In-Reply-To: <alpine.LFD.2.21.1709020416130.13598@localhost.localdomain>
+References: <alpine.LFD.2.21.1709020416130.13598@localhost.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.24.5 (3.24.5-1.fc26) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <benh@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59920
+X-archive-position: 59921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,25 +42,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Based on popular vote, designate James as a co-maintainer for the MIPS
-architecture.
+On Sat, 2017-09-02 at 04:43 -0400, Robert P. J. Day wrote:
+> Since, according to a recent devicetree ML posting by Rob Herring,
+> the node "/chosen@0" is most likely for real Open Firmware and does
+> not apply to DTSpec, remove all remaining tests and references for
+> that node, of which there are very few left:
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+Technically that would break Open Firmware systems where the node is
+really called chosen@0
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 317e72c230ca..68204d6bef2b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8768,6 +8768,7 @@ S:	Maintained
- F:	drivers/usb/image/microtek.*
- 
- MIPS
-+M:	James Hogan <james.hogan@imgtec.com>
- M:	Ralf Baechle <ralf@linux-mips.org>
- L:	linux-mips@linux-mips.org
- W:	http://www.linux-mips.org/
--- 
-2.11.0
+Now I'm not sure such a thing actually exist however.
+
+My collection of DTs don't seem to have one, except in the ancient html
+variants that were extracted by the pengionppc folks for the original
+PowerMac 8600 but I wonder if that's a bug in the extraction script
+since they also have @0 on /packages etc...
+
+Ben.

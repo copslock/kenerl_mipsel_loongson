@@ -1,37 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Sep 2017 19:25:50 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54322 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993423AbdICRZkTeXWk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Sep 2017 19:25:40 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 2822AF67ECDA2;
-        Sun,  3 Sep 2017 18:25:27 +0100 (IST)
-Received: from localhost (10.20.78.182) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sun, 3 Sep
- 2017 18:25:30 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        kbuild test robot <fengguang.wu@intel.com>,
-        <kbuild-all@01.org>
-Subject: [PATCH] MIPS: Fix generic-board-config.sh for builds using O=
-Date:   Sun, 3 Sep 2017 10:24:58 -0700
-Message-ID: <20170903172458.32576-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <201709032319.ZeWJCqZ0%fengguang.wu@intel.com>
-References: <201709032319.ZeWJCqZ0%fengguang.wu@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Sep 2017 19:36:42 +0200 (CEST)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:34458
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994867AbdIDRgc3B7iF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Sep 2017 19:36:32 +0200
+Received: by mail-io0-x244.google.com with SMTP id f99so594761ioi.1;
+        Mon, 04 Sep 2017 10:36:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=8XVwHu0F1Qys7zDKeOT28OK8YZd6+hlG07g1XymBYjs=;
+        b=slD4nj2Ok6PmLosisAhLgxlXB4g5TlpK7s7GpUX03QC6tFOMHLWcB0BtoRmfSxhjT+
+         U89afHlXo5DDsgck4/PyDbpJVBVhKI1mKQdCM5u6CxghSegM9+uw7u23qLiOPBCeWKSv
+         wTMaQVB3c/cHkqnTNjOop1ZuqDTQRrEbrpFvbGgen3wsM6jD2SLLIQgj9+xBTmFEhnbl
+         za4HL4RkDOGP0DgbOsQ2DfuymDb2Z16LuEqQo7+YgC/9ci95SelFd57su1GSC2gc3zX2
+         oOlHFRipdvrkoepbXgXfIMNNGcmdTJAd0mfWAAb+OxE/MxIzuz0NYYilXalB8s7K6hvF
+         bO9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=8XVwHu0F1Qys7zDKeOT28OK8YZd6+hlG07g1XymBYjs=;
+        b=FZrOJ0eY8zta96oLcJ1Bdncovjbb1NhtNLKpX6BWYyZ5mydApzS/w3Uy31g21lPhab
+         4S7s0x6zKFu2K/y+IUiVwIVRMHPy0ybt4O8BKovTXJ7BjY8ZHARGKNq4zNrIT7o1tGEc
+         tfcue6eRGH6L7OEiGdwccChDrgEmC1l9w6mJCt7LsTTeAXOYueXpcz5/MmGPGRowNBkq
+         vKyraSkB5nKd+L8ewV3MehuKwvcd8fmSyMJdglASyDTrNWW2aPMYoM9XjDmSHOR0nl3/
+         5vK/JQ1+BRMJyJ54zh/iIZkAd+H0BM+0fDUDtKLD3bk8/YWdNgvkaHI4Wxr7eHJV8d0Z
+         +gNQ==
+X-Gm-Message-State: AHPjjUgeTqs7taxcLO7/XBDF7ETDd0EPI0NdRtcAe+t1kQXnRyGZfQTt
+        e4gv9NssLYoPK1WsoBcXIFx14mp6KQ==
+X-Google-Smtp-Source: ADKCNb6beUSWMJP+HvP76C1wKFa4HyLfCd1IzQVZI4t1R1bSfS+ml6j4vP1wgrP6qkJi1yosqho+x+sOJrpnGQu41AU=
+X-Received: by 10.36.5.206 with SMTP id 197mr1782505itl.79.1504546586514; Mon,
+ 04 Sep 2017 10:36:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.78.182]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: by 10.2.153.53 with HTTP; Mon, 4 Sep 2017 10:36:06 -0700 (PDT)
+In-Reply-To: <20170819221823.13850-7-hauke@hauke-m.de>
+References: <20170819221823.13850-1-hauke@hauke-m.de> <20170819221823.13850-7-hauke@hauke-m.de>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Mon, 4 Sep 2017 19:36:06 +0200
+Message-ID: <CAFBinCACuJ8gs+k4hu+JqpbfS2oJyu2di_2rqqyAFxh8kDOivw@mail.gmail.com>
+Subject: Re: [PATCH v10 06/16] MIPS: lantiq: Enable MFD_SYSCON to be able to
+ use it for the RCU MFD
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, john@phrozen.org,
+        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
+        robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
+        kishon@ti.com, mark.rutland@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <martin.blumenstingl@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59924
+X-archive-position: 59925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: martin.blumenstingl@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,81 +70,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When configuring the kernel using one of the generic MIPS defconfig
-targets, the generic-board-config.sh script is used to check
-requirements listed in board config fragments against a reference config
-in order to determine which board config fragments to merge into the
-final config.
+On Sun, Aug 20, 2017 at 12:18 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-When specifying O= to configure in a directory other than the kernel
-source directory, this generic-board-config.sh script is invoked in the
-directory that we are configuring in (ie. the directory that O equals),
-and the path to the reference config is relative to the current
-directory. The script then changes the current directory to the source
-tree, which unfortunately breaks later access to the reference file
-since its path is relative to a directory that is no longer the current
-working directory. This results in configuration failing with errors
-such as:
-
-  $ make ARCH=mips O=tmp 32r2_defconfig
-  make[1]: Entering directory '/home/pburton/src/linux/tmp'
-  Using ../arch/mips/configs/generic_defconfig as base
-  Merging ../arch/mips/configs/generic/32r2.config
-  Merging ../arch/mips/configs/generic/eb.config
-  grep: ./.config.32r2_defconfig: No such file or directory
-  grep: ./.config.32r2_defconfig: No such file or directory
-  The base file '.config' does not exist.  Exit.
-  make[1]: *** [arch/mips/Makefile:505: 32r2_defconfig] Error 1
-  make[1]: Leaving directory '/home/pburton/src/linux-ingenic/tmp'
-  make: *** [Makefile:145: sub-make] Error 2
-
-Fix this by avoiding changing the working directory in
-generic-board-config.sh, instead using full paths to files under
-$(srctree)/ where necessary.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 27e0d4b05107 ("MIPS: generic: Allow filtering enabled boards by requirements")
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kbuild test robot <fengguang.wu@intel.com>
-Cc: kbuild-all@01.org
---
-Ralf, feel free to squash this into 27e0d4b05107 ("MIPS: generic: Allow
-filtering enabled boards by requirements") as a fixup.
----
- arch/mips/tools/generic-board-config.sh | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/tools/generic-board-config.sh b/arch/mips/tools/generic-board-config.sh
-index 5c4f93687039..654d652d7fa1 100755
---- a/arch/mips/tools/generic-board-config.sh
-+++ b/arch/mips/tools/generic-board-config.sh
-@@ -30,8 +30,6 @@ cfg="$4"
- boards_origin="$5"
- shift 5
- 
--cd "${srctree}"
--
- # Only print Skipping... lines if the user explicitly specified BOARDS=. In the
- # general case it only serves to obscure the useful output about what actually
- # was included.
-@@ -48,7 +46,7 @@ environment*)
- esac
- 
- for board in $@; do
--	board_cfg="arch/mips/configs/generic/board-${board}.config"
-+	board_cfg="${srctree}/arch/mips/configs/generic/board-${board}.config"
- 	if [ ! -f "${board_cfg}" ]; then
- 		echo "WARNING: Board config '${board_cfg}' not found"
- 		continue
-@@ -84,7 +82,7 @@ for board in $@; do
- 	done || continue
- 
- 	# Merge this board config fragment into our final config file
--	./scripts/kconfig/merge_config.sh \
-+	${srctree}/scripts/kconfig/merge_config.sh \
- 		-m -O ${objtree} ${cfg} ${board_cfg} \
- 		| grep -Ev '^(#|Using)'
- done
--- 
-2.14.1
+> ---
+>  arch/mips/lantiq/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+> index 177769dbb0e8..f5db4a426568 100644
+> --- a/arch/mips/lantiq/Kconfig
+> +++ b/arch/mips/lantiq/Kconfig
+> @@ -17,6 +17,7 @@ config SOC_XWAY
+>         bool "XWAY"
+>         select SOC_TYPE_XWAY
+>         select HW_HAS_PCI
+> +       select MFD_SYSCON
+>
+>  config SOC_FALCON
+>         bool "FALCON"
+> --
+> 2.11.0
+>

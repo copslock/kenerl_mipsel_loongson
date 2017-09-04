@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Sep 2017 19:37:48 +0200 (CEST)
-Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:34489
-        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994867AbdIDRhaRS15F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Sep 2017 19:37:30 +0200
-Received: by mail-io0-x244.google.com with SMTP id f99so596980ioi.1;
-        Mon, 04 Sep 2017 10:37:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Sep 2017 19:40:31 +0200 (CEST)
+Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:35859
+        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994867AbdIDRkKJHwkF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Sep 2017 19:40:10 +0200
+Received: by mail-io0-x242.google.com with SMTP id 2so595481ion.3;
+        Mon, 04 Sep 2017 10:40:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=G0OzFyp9IVf4WYVh3tv14J+PN+l585si6dSzDg/GMRE=;
-        b=uKm/2Y+yKwLvoeKZHi+ZhF3fRA3mEsiaQKV6SlTzzySp2pTCB49vtByQk5vw0xXaYS
-         nmKON9wrYPwNIvCRzxlRoDay4Ako7EMBulgXjxKPK7KoxiELXKkvjIPDS0Ir4EV6785I
-         Rey7wVqf2aGOtJozeJVc93S7W+DM+DmXJwrAaLy2SoZbGlCmVBTYVoMUKnL7Uca6HyJs
-         ACnQ/EuFs1/43tOckXwpAuM6Dhsm5O1HcIxGG0Yf9zhtGT7ZLXeNh2Si0jGI7Sf0ioBT
-         DnjpoRW7qRQPpUtCRobY3XeJ9NA9l61Bly706EbpXax2TtE/MUVrXRCRBM62s1v6rzgW
-         dR/g==
+        bh=Cg1MRrZMnWv+jLToWt1dLtyXRsP51kvp2CX/ALTx9Po=;
+        b=eeQI6hMZ600i/Dpl1ioofWabmt42TTEXxd1t1NaZM74v0X5vCHwMqWaTkhRXDthIcx
+         FqvFY6t5zORReQuBEkpQpAFgzAaTmrsfkZwz7nCjB6TaRaBZ+x+tFo8v581I5ErUHzYl
+         MvarWUFjT6aJ2rK6tJc3bUXlNNRkMu9roig2zF/I2G/oqOrHSXpjKAXIO7DdVc8Z7iJg
+         rVowmaWcrz9MbF5uNDcx1mUbhmADvkoun0jIWhwzyehDnqojrYifbcFTBtBFcdqsaU9c
+         KdkLIVRk7diEcx4UuRDQ4gpxm1UNG50TmSf+akOo1LdGEOn8PVaaQH9kRi8FO8To1brW
+         tBzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=G0OzFyp9IVf4WYVh3tv14J+PN+l585si6dSzDg/GMRE=;
-        b=bCAzcWE+pZtgV407nsd7v2g3ftW6dbiQ57mfX8auubjCUboo4D4SsYFJTL2OeOWuIA
-         W9HMnryDE1+bAQgYoKvrUfkfcTVwJdUfHJBpjDESi1d6y8evCKQb2TPyF93w1gzCaX4s
-         Jk4mwKCCp9HeoFnUu3yofciB9yX+BZ8I+LRV98cBrDCoNTeasTCpYb2kEGPCRl1jnbf/
-         bcktHmlrkaz4AcI6U3/XdNfLD4oRsb7yqaTqCvUHuQzCfnvUvjd0Y0ZASkHznzG4YZrB
-         9ljo7YoWSy6dldGAiClkb+aGgGNDkXBkPMSLfe4wsXQOWtx2uLEcCONBSrlF6r0/nh8r
-         4XmQ==
-X-Gm-Message-State: AHPjjUhE38LYqLB9jIw8otZAMyX93ApNAka91C1BzWykLIF9EvB5eGv1
-        x5kONieo/VhdqM7ydO1GjGu15Z8jBQ==
-X-Google-Smtp-Source: ADKCNb5HjFruyUnPqoLRY7V91g+WaDQxIXV7yWQB0AIaJesKmprRJ7Q/2Lxi6AirzkgQoLCojXEnjwD49GW9BFrK3zw=
-X-Received: by 10.36.92.10 with SMTP id q10mr1191683itb.145.1504546644180;
- Mon, 04 Sep 2017 10:37:24 -0700 (PDT)
+        bh=Cg1MRrZMnWv+jLToWt1dLtyXRsP51kvp2CX/ALTx9Po=;
+        b=VO0v+z3UN68bI7B+F2NBeK1TKBHpm9EkHcMcbM/YpjjIm8PgaV57N4QdNkoFBwwDhn
+         46P/8DdQ1O0XtaX99gn9juE5BCY5qqVNMkDVndiGcz6Rw4FO9NW0sD9t91zfgFGQp+ym
+         Z6jrLZn8DAqGj+sMK7su4qpusfZfF3vLdSq8wWC1lnMmFx8waTH5s4ze71iaqiy076Mb
+         aYEPnLvJZpkbERE3lvv96ffY41g2pvCTkBj7F0NR9pTgE5v+9d1gG0u85HSHfNCLfIbG
+         qW2My4iIcYxd5CYh85XRucnkjgCkDtWgbGBRxBXYc18zB+XuP+aj/Ur9tBoiYxbT2zrU
+         8s0g==
+X-Gm-Message-State: AHPjjUivkJ/ixrYTWSJMGC/yvCw3xIxINWQwaInjqTat3MOY2Js58SfE
+        lA1NLZWJMeqCtKqJXMWn3oi6FJDK5w==
+X-Google-Smtp-Source: ADKCNb6tvMBQ8p9kvyJOag2deSkeyjQH635C++gcPkGApDvf60CGxhn/sPzblzp58pP0iZF7NBjUSvUcMbP645iLSzY=
+X-Received: by 10.36.224.65 with SMTP id c62mr1208909ith.61.1504546804098;
+ Mon, 04 Sep 2017 10:40:04 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.2.153.53 with HTTP; Mon, 4 Sep 2017 10:37:03 -0700 (PDT)
-In-Reply-To: <20170819221823.13850-11-hauke@hauke-m.de>
-References: <20170819221823.13850-1-hauke@hauke-m.de> <20170819221823.13850-11-hauke@hauke-m.de>
+Received: by 10.2.153.53 with HTTP; Mon, 4 Sep 2017 10:39:43 -0700 (PDT)
+In-Reply-To: <20170819221823.13850-13-hauke@hauke-m.de>
+References: <20170819221823.13850-1-hauke@hauke-m.de> <20170819221823.13850-13-hauke@hauke-m.de>
 From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Mon, 4 Sep 2017 19:37:03 +0200
-Message-ID: <CAFBinCCGL4P4F4iVZJpc77dyptF_mOaeC4F417Oc=pU93MFYqw@mail.gmail.com>
-Subject: Re: [PATCH v10 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
+Date:   Mon, 4 Sep 2017 19:39:43 +0200
+Message-ID: <CAFBinCD=Mm1Q9XFsBCrMGUYuwJqxmZARXKoV8-vOpHkMhrDKkQ@mail.gmail.com>
+Subject: Re: [PATCH v10 12/16] MIPS: lantiq: Add a GPHY driver which uses the
+ RCU syscon-mfd
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
@@ -53,7 +53,7 @@ Return-Path: <martin.blumenstingl@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59926
+X-archive-position: 59927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,315 +73,390 @@ X-list: linux-mips
 On Sun, Aug 20, 2017 at 12:18 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
 > From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 >
-> The reset controllers (on xRX200 and newer SoCs have two of them) are
-> provided by the RCU module. This was initially implemented as a simple
-> reset controller. However, the RCU module provides more functionality
-> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> The old reset controller driver implementation from
-> arch/mips/lantiq/xway/reset.c did not honor this fact.
->
-> For some devices the request and the status bits are different.
+> Compared to the old xrx200_phy_fw driver the new version has multiple
+> enhancements. The name of the firmware files does not have to be added
+> to all .dts files anymore - one now configures the GPHY mode (FE or GE)
+> instead. Each GPHY can now also boot separate firmware (thus mixing of
+> GE and FE GPHYs is now possible).
+> The new implementation is based on the RCU syscon-mfd and uses the
+> reeset_controller framework instead of raw RCU register reads/writes.
 >
 > Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
 > Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-thank you Hauke for pushing this!
-
 > ---
->  .../devicetree/bindings/reset/lantiq,reset.txt     |  30 +++
->  drivers/reset/Kconfig                              |   6 +
->  drivers/reset/Makefile                             |   1 +
->  drivers/reset/reset-lantiq.c                       | 212 +++++++++++++++++++++
->  4 files changed, 249 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
->  create mode 100644 drivers/reset/reset-lantiq.c
+>  .../devicetree/bindings/mips/lantiq/rcu-gphy.txt   |  36 +++
+>  arch/mips/lantiq/xway/sysctrl.c                    |   6 +-
+>  drivers/soc/lantiq/Makefile                        |   1 +
+>  drivers/soc/lantiq/gphy.c                          | 260 +++++++++++++++++++++
+>  include/dt-bindings/mips/lantiq_rcu_gphy.h         |  15 ++
+>  5 files changed, 316 insertions(+), 2 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu-gphy.txt
+>  create mode 100644 drivers/soc/lantiq/gphy.c
+>  create mode 100644 include/dt-bindings/mips/lantiq_rcu_gphy.h
 >
-> diff --git a/Documentation/devicetree/bindings/reset/lantiq,reset.txt b/Documentation/devicetree/bindings/reset/lantiq,reset.txt
+> diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu-gphy.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu-gphy.txt
 > new file mode 100644
-> index 000000000000..c6aef36b7d15
+> index 000000000000..a0c19bd1ce66
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reset/lantiq,reset.txt
-> @@ -0,0 +1,30 @@
-> +Lantiq XWAY SoC RCU reset controller binding
-> +============================================
+> +++ b/Documentation/devicetree/bindings/mips/lantiq/rcu-gphy.txt
+> @@ -0,0 +1,36 @@
+> +Lantiq XWAY SoC GPHY binding
+> +============================
 > +
-> +This binding describes a reset-controller found on the RCU module on Lantiq
-> +XWAY SoCs.
-> +
-> +This node has to be a sub node of the Lantiq RCU block.
+> +This binding describes a software-defined ethernet PHY, provided by the RCU
+> +module on newer Lantiq XWAY SoCs (xRX200 and newer).
 > +
 > +-------------------------------------------------------------------------------
 > +Required properties:
 > +- compatible           : Should be one of
-> +                               "lantiq,danube-reset"
-> +                               "lantiq,xrx200-reset"
-> +- reg                  : Defines the following sets of registers in the parent
-> +                         syscon device
-> +                       - Offset of the reset set register
-> +                       - Offset of the reset status register
-> +- #reset-cells         : Specifies the number of cells needed to encode the
-> +                         reset line, should be 2.
-> +                         The first cell takes the reset set bit and the
-> +                         second cell takes the status bit.
+> +                               "lantiq,xrx200a1x-gphy"
+> +                               "lantiq,xrx200a2x-gphy"
+> +                               "lantiq,xrx300-gphy"
+> +                               "lantiq,xrx330-gphy"
+> +- reg                  : Addrress of the GPHY FW load address register
+> +- resets               : Must reference the RCU GPHY reset bit
+> +- reset-names          : One entry, value must be "gphy" or optional "gphy2"
+> +- clocks               : A reference to the (PMU) GPHY clock gate
+> +
+> +Optional properties:
+> +- lantiq,gphy-mode     : GPHY_MODE_GE (default) or GPHY_MODE_FE as defined in
+> +                         <dt-bindings/mips/lantiq_xway_gphy.h>
+> +
 > +
 > +-------------------------------------------------------------------------------
-> +Example for the reset-controllers on the xRX200 SoCs:
-> +       reset0: reset-controller@10 {
-> +               compatible = "lantiq,xrx200-reset";
-> +               reg <0x10 0x04>, <0x14 0x04>;
+> +Example for the GPHys on the xRX200 SoCs:
 > +
-> +               #reset-cells = <2>;
+> +#include <dt-bindings/mips/lantiq_rcu_gphy.h>
+> +       gphy0: gphy@20 {
+> +               compatible = "lantiq,xrx200a2x-gphy";
+> +               reg = <0x20 0x4>;
+> +
+> +               resets = <&reset0 31 30>, <&reset1 7 7>;
+> +               reset-names = "gphy", "gphy2";
+> +               clocks = <&pmu0 XRX200_PMU_GATE_GPHY>;
+> +               lantiq,gphy-mode = <GPHY_MODE_GE>;
 > +       };
-> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> index 608c071e4bbf..4172ea1827f8 100644
-> --- a/drivers/reset/Kconfig
-> +++ b/drivers/reset/Kconfig
-> @@ -48,6 +48,12 @@ config RESET_IMX7
->         help
->           This enables the reset controller driver for i.MX7 SoCs.
->
-> +config RESET_LANTIQ
-> +       bool "Lantiq XWAY Reset Driver" if COMPILE_TEST
-> +       default SOC_TYPE_XWAY
-> +       help
-> +         This enables the reset controller driver for Lantiq / Intel XWAY SoCs.
-> +
->  config RESET_LPC18XX
->         bool "LPC18xx/43xx Reset Driver" if COMPILE_TEST
->         default ARCH_LPC18XX
-> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> index 7081f9da2599..54d8b3f703f2 100644
-> --- a/drivers/reset/Makefile
-> +++ b/drivers/reset/Makefile
-> @@ -7,6 +7,7 @@ obj-$(CONFIG_RESET_ATH79) += reset-ath79.o
->  obj-$(CONFIG_RESET_BERLIN) += reset-berlin.o
->  obj-$(CONFIG_RESET_GEMINI) += reset-gemini.o
->  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-> +obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
->  obj-$(CONFIG_RESET_LPC18XX) += reset-lpc18xx.o
->  obj-$(CONFIG_RESET_MESON) += reset-meson.o
->  obj-$(CONFIG_RESET_OXNAS) += reset-oxnas.o
-> diff --git a/drivers/reset/reset-lantiq.c b/drivers/reset/reset-lantiq.c
+> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+> index 706639a343bc..87eab4d288e5 100644
+> --- a/arch/mips/lantiq/xway/sysctrl.c
+> +++ b/arch/mips/lantiq/xway/sysctrl.c
+> @@ -518,7 +518,8 @@ void __init ltq_soc_init(void)
+>                 clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH |
+>                                PMU_PPE_DP | PMU_PPE_TC);
+>                 clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+> -               clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
+> +               clkdev_add_pmu("1f203020.gphy", NULL, 1, 0, PMU_GPHY);
+> +               clkdev_add_pmu("1f203068.gphy", NULL, 1, 0, PMU_GPHY);
+>                 clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+>                 clkdev_add_pmu("1e116000.mei", "afe", 1, 2, PMU_ANALOG_DSL_AFE);
+>                 clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+> @@ -541,7 +542,8 @@ void __init ltq_soc_init(void)
+>                                 PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
+>                                 PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
+>                                 PMU_PPE_QSB | PMU_PPE_TOP);
+> -               clkdev_add_pmu("1f203000.rcu", "gphy", 0, 0, PMU_GPHY);
+> +               clkdev_add_pmu("1f203020.gphy", NULL, 0, 0, PMU_GPHY);
+> +               clkdev_add_pmu("1f203068.gphy", NULL, 0, 0, PMU_GPHY);
+>                 clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+>                 clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+>                 clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+> diff --git a/drivers/soc/lantiq/Makefile b/drivers/soc/lantiq/Makefile
+> index 35aa86bd1023..be9e866d53e5 100644
+> --- a/drivers/soc/lantiq/Makefile
+> +++ b/drivers/soc/lantiq/Makefile
+> @@ -1 +1,2 @@
+>  obj-y                          += fpi-bus.o
+> +obj-$(CONFIG_XRX200_PHY_FW)    += gphy.o
+> diff --git a/drivers/soc/lantiq/gphy.c b/drivers/soc/lantiq/gphy.c
 > new file mode 100644
-> index 000000000000..11a582e50d30
+> index 000000000000..8d8659463b3e
 > --- /dev/null
-> +++ b/drivers/reset/reset-lantiq.c
-> @@ -0,0 +1,212 @@
+> +++ b/drivers/soc/lantiq/gphy.c
+> @@ -0,0 +1,260 @@
 > +/*
 > + *  This program is free software; you can redistribute it and/or modify it
 > + *  under the terms of the GNU General Public License version 2 as published
 > + *  by the Free Software Foundation.
 > + *
-> + *  Copyright (C) 2010 John Crispin <blogic@phrozen.org>
-> + *  Copyright (C) 2013-2015 Lantiq Beteiligungs-GmbH & Co.KG
+> + *  Copyright (C) 2012 John Crispin <blogic@phrozen.org>
 > + *  Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 > + *  Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
 > + */
 > +
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/firmware.h>
 > +#include <linux/mfd/syscon.h>
 > +#include <linux/module.h>
+> +#include <linux/reboot.h>
 > +#include <linux/regmap.h>
-> +#include <linux/reset-controller.h>
-> +#include <linux/of_address.h>
+> +#include <linux/reset.h>
+> +#include <linux/of_device.h>
 > +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
 > +#include <linux/property.h>
+> +#include <dt-bindings/mips/lantiq_rcu_gphy.h>
 > +
-> +#define LANTIQ_RCU_RESET_TIMEOUT       10000
+> +#include <lantiq_soc.h>
 > +
-> +struct lantiq_rcu_reset_priv {
-> +       struct reset_controller_dev rcdev;
-> +       struct device *dev;
-> +       struct regmap *regmap;
-> +       u32 reset_offset;
-> +       u32 status_offset;
+> +#define XRX200_GPHY_FW_ALIGN   (16 * 1024)
+> +
+> +struct xway_gphy_priv {
+> +       struct clk *gphy_clk_gate;
+> +       struct reset_control *gphy_reset;
+> +       struct reset_control *gphy_reset2;
+> +       struct notifier_block gphy_reboot_nb;
+> +       void __iomem *membase;
+> +       char *fw_name;
 > +};
 > +
-> +static struct lantiq_rcu_reset_priv *to_lantiq_rcu_reset_priv(
-> +       struct reset_controller_dev *rcdev)
+> +struct xway_gphy_match_data {
+> +       char *fe_firmware_name;
+> +       char *ge_firmware_name;
+> +};
+> +
+> +static const struct xway_gphy_match_data xrx200a1x_gphy_data = {
+> +       .fe_firmware_name = "lantiq/xrx200_phy22f_a14.bin",
+> +       .ge_firmware_name = "lantiq/xrx200_phy11g_a14.bin",
+> +};
+> +
+> +static const struct xway_gphy_match_data xrx200a2x_gphy_data = {
+> +       .fe_firmware_name = "lantiq/xrx200_phy22f_a22.bin",
+> +       .ge_firmware_name = "lantiq/xrx200_phy11g_a22.bin",
+> +};
+> +
+> +static const struct xway_gphy_match_data xrx300_gphy_data = {
+> +       .fe_firmware_name = "lantiq/xrx300_phy22f_a21.bin",
+> +       .ge_firmware_name = "lantiq/xrx300_phy11g_a21.bin",
+> +};
+> +
+> +static const struct of_device_id xway_gphy_match[] = {
+> +       { .compatible = "lantiq,xrx200a1x-gphy", .data = &xrx200a1x_gphy_data },
+> +       { .compatible = "lantiq,xrx200a2x-gphy", .data = &xrx200a2x_gphy_data },
+> +       { .compatible = "lantiq,xrx300-gphy", .data = &xrx300_gphy_data },
+> +       { .compatible = "lantiq,xrx330-gphy", .data = &xrx300_gphy_data },
+> +       {},
+> +};
+> +MODULE_DEVICE_TABLE(of, xway_gphy_match);
+> +
+> +static struct xway_gphy_priv *to_xway_gphy_priv(struct notifier_block *nb)
 > +{
-> +       return container_of(rcdev, struct lantiq_rcu_reset_priv, rcdev);
+> +       return container_of(nb, struct xway_gphy_priv, gphy_reboot_nb);
 > +}
 > +
-> +static int lantiq_rcu_reset_status(struct reset_controller_dev *rcdev,
-> +                                  unsigned long id)
+> +static int xway_gphy_reboot_notify(struct notifier_block *reboot_nb,
+> +                                  unsigned long code, void *unused)
 > +{
-> +       struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
-> +       unsigned int status = (id >> 8) & 0x1f;
-> +       u32 val;
-> +       int ret;
+> +       struct xway_gphy_priv *priv = to_xway_gphy_priv(reboot_nb);
 > +
-> +       ret = regmap_read(priv->regmap, priv->status_offset, &val);
-> +       if (ret)
-> +               return ret;
+> +       if (priv) {
+> +               reset_control_assert(priv->gphy_reset);
+> +               reset_control_assert(priv->gphy_reset2);
+> +       }
 > +
-> +       return !!(val & BIT(status));
+> +       return NOTIFY_DONE;
 > +}
 > +
-> +static int lantiq_rcu_reset_status_timeout(struct reset_controller_dev *rcdev,
-> +                                          unsigned long id, bool assert)
+> +static int xway_gphy_load(struct device *dev, struct xway_gphy_priv *priv,
+> +                         dma_addr_t *dev_addr)
 > +{
-> +       int ret;
-> +       int retry = LANTIQ_RCU_RESET_TIMEOUT;
-> +
-> +       do {
-> +               ret = lantiq_rcu_reset_status(rcdev, id);
-> +               if (ret < 0)
-> +                       return ret;
-> +               if (ret == assert)
-> +                       return 0;
-> +               usleep_range(20, 40);
-> +       } while (--retry);
-> +
-> +       return -ETIMEDOUT;
-> +}
-> +
-> +static int lantiq_rcu_reset_update(struct reset_controller_dev *rcdev,
-> +                                  unsigned long id, bool assert)
-> +{
-> +       struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
-> +       unsigned int set = id & 0x1f;
-> +       u32 val = assert ? BIT(set) : 0;
+> +       const struct firmware *fw;
+> +       void *fw_addr;
+> +       dma_addr_t dma_addr;
+> +       size_t size;
 > +       int ret;
 > +
-> +       ret = regmap_update_bits(priv->regmap, priv->reset_offset, BIT(set),
-> +                                val);
+> +       ret = request_firmware(&fw, priv->fw_name, dev);
 > +       if (ret) {
-> +               dev_err(priv->dev, "Failed to set reset bit %u\n", set);
+> +               dev_err(dev, "failed to load firmware: %s, error: %i\n",
+> +                       priv->fw_name, ret);
 > +               return ret;
 > +       }
 > +
+> +       /*
+> +        * GPHY cores need the firmware code in a persistent and contiguous
+> +        * memory area with a 16 kB boundary aligned start address.
+> +        */
+> +       size = fw->size + XRX200_GPHY_FW_ALIGN;
 > +
-> +       ret = lantiq_rcu_reset_status_timeout(rcdev, id, assert);
-> +       if (ret)
-> +               dev_err(priv->dev, "Failed to %s bit %u\n",
-> +                       assert ? "assert" : "deassert", set);
+> +       fw_addr = dmam_alloc_coherent(dev, size, &dma_addr, GFP_KERNEL);
+> +       if (fw_addr) {
+> +               fw_addr = PTR_ALIGN(fw_addr, XRX200_GPHY_FW_ALIGN);
+> +               *dev_addr = ALIGN(dma_addr, XRX200_GPHY_FW_ALIGN);
+> +               memcpy(fw_addr, fw->data, fw->size);
+> +       } else {
+> +               dev_err(dev, "failed to alloc firmware memory\n");
+> +               ret = -ENOMEM;
+> +       }
+> +
+> +       release_firmware(fw);
 > +
 > +       return ret;
 > +}
 > +
-> +static int lantiq_rcu_reset_assert(struct reset_controller_dev *rcdev,
-> +                            unsigned long id)
-> +{
-> +       return lantiq_rcu_reset_update(rcdev, id, true);
-> +}
-> +
-> +static int lantiq_rcu_reset_deassert(struct reset_controller_dev *rcdev,
-> +                              unsigned long id)
-> +{
-> +       return lantiq_rcu_reset_update(rcdev, id, false);
-> +}
-> +
-> +static int lantiq_rcu_reset_reset(struct reset_controller_dev *rcdev,
-> +                           unsigned long id)
-> +{
-> +       int ret;
-> +
-> +       ret = lantiq_rcu_reset_assert(rcdev, id);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return lantiq_rcu_reset_deassert(rcdev, id);
-> +}
-> +
-> +static const struct reset_control_ops lantiq_rcu_reset_ops = {
-> +       .assert = lantiq_rcu_reset_assert,
-> +       .deassert = lantiq_rcu_reset_deassert,
-> +       .status = lantiq_rcu_reset_status,
-> +       .reset  = lantiq_rcu_reset_reset,
-> +};
-> +
-> +static int lantiq_rcu_reset_of_parse(struct platform_device *pdev,
-> +                              struct lantiq_rcu_reset_priv *priv)
+> +static int xway_gphy_of_probe(struct platform_device *pdev,
+> +                             struct xway_gphy_priv *priv)
 > +{
 > +       struct device *dev = &pdev->dev;
-> +       const __be32 *offset;
+> +       const struct xway_gphy_match_data *gphy_fw_name_cfg;
+> +       u32 gphy_mode;
+> +       int ret;
+> +       struct resource *res_gphy;
 > +
-> +       priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
-> +       if (IS_ERR(priv->regmap)) {
-> +               dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
-> +               return PTR_ERR(priv->regmap);
+> +       gphy_fw_name_cfg = of_device_get_match_data(dev);
+> +
+> +       priv->gphy_clk_gate = devm_clk_get(dev, NULL);
+> +       if (IS_ERR(priv->gphy_clk_gate)) {
+> +               dev_err(dev, "Failed to lookup gate clock\n");
+> +               return PTR_ERR(priv->gphy_clk_gate);
 > +       }
 > +
-> +       offset = of_get_address(dev->of_node, 0, NULL, NULL);
-> +       if (!offset) {
-> +               dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
-> +               return -ENOENT;
-> +       }
-> +       priv->reset_offset = __be32_to_cpu(*offset);
+> +       res_gphy = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +       priv->membase = devm_ioremap_resource(dev, res_gphy);
+> +       if (IS_ERR(priv->membase))
+> +               return PTR_ERR(priv->membase);
 > +
-> +       offset = of_get_address(dev->of_node, 1, NULL, NULL);
-> +       if (!offset) {
-> +               dev_err(&pdev->dev, "Failed to get RCU status offset\n");
-> +               return -ENOENT;
+> +       priv->gphy_reset = devm_reset_control_get(dev, "gphy");
+> +       if (IS_ERR(priv->gphy_reset)) {
+> +               if (PTR_ERR(priv->gphy_reset) != -EPROBE_DEFER)
+> +                       dev_err(dev, "Failed to lookup gphy reset\n");
+> +               return PTR_ERR(priv->gphy_reset);
 > +       }
-> +       priv->status_offset = __be32_to_cpu(*offset);
+> +
+> +       priv->gphy_reset2 = devm_reset_control_get_optional(dev, "gphy2");
+> +       if (IS_ERR(priv->gphy_reset2))
+> +               return PTR_ERR(priv->gphy_reset2);
+> +
+> +       ret = device_property_read_u32(dev, "lantiq,gphy-mode", &gphy_mode);
+> +       /* Default to GE mode */
+> +       if (ret)
+> +               gphy_mode = GPHY_MODE_GE;
+> +
+> +       switch (gphy_mode) {
+> +       case GPHY_MODE_FE:
+> +               priv->fw_name = gphy_fw_name_cfg->fe_firmware_name;
+> +               break;
+> +       case GPHY_MODE_GE:
+> +               priv->fw_name = gphy_fw_name_cfg->ge_firmware_name;
+> +               break;
+> +       default:
+> +               dev_err(dev, "Unknown GPHY mode %d\n", gphy_mode);
+> +               return -EINVAL;
+> +       }
 > +
 > +       return 0;
 > +}
 > +
-> +static int lantiq_rcu_reset_xlate(struct reset_controller_dev *rcdev,
-> +                                 const struct of_phandle_args *reset_spec)
+> +static int xway_gphy_probe(struct platform_device *pdev)
 > +{
-> +       unsigned int status, set;
+> +       struct device *dev = &pdev->dev;
+> +       struct xway_gphy_priv *priv;
+> +       dma_addr_t fw_addr = 0;
+> +       int ret;
 > +
-> +       set = reset_spec->args[0];
-> +       status = reset_spec->args[1];
-> +
-> +       if (set >= rcdev->nr_resets || status >= rcdev->nr_resets)
-> +               return -EINVAL;
-> +
-> +       return (status << 8) | set;
-> +}
-> +
-> +static int lantiq_rcu_reset_probe(struct platform_device *pdev)
-> +{
-> +       struct lantiq_rcu_reset_priv *priv;
-> +       int err;
-> +
-> +       priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+> +       priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 > +       if (!priv)
 > +               return -ENOMEM;
 > +
-> +       priv->dev = &pdev->dev;
+> +       ret = xway_gphy_of_probe(pdev, priv);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = clk_prepare_enable(priv->gphy_clk_gate);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = xway_gphy_load(dev, priv, &fw_addr);
+> +       if (ret) {
+> +               clk_disable_unprepare(priv->gphy_clk_gate);
+> +               return ret;
+> +       }
+> +
+> +       reset_control_assert(priv->gphy_reset);
+> +       reset_control_assert(priv->gphy_reset2);
+> +
+> +       iowrite32be(fw_addr, priv->membase);
+> +
+> +       reset_control_deassert(priv->gphy_reset);
+> +       reset_control_deassert(priv->gphy_reset2);
+> +
+> +       /* assert the gphy reset because it can hang after a reboot: */
+> +       priv->gphy_reboot_nb.notifier_call = xway_gphy_reboot_notify;
+> +       priv->gphy_reboot_nb.priority = -1;
+> +
+> +       ret = register_reboot_notifier(&priv->gphy_reboot_nb);
+> +       if (ret)
+> +               dev_warn(dev, "Failed to register reboot notifier\n");
+> +
 > +       platform_set_drvdata(pdev, priv);
 > +
-> +       err = lantiq_rcu_reset_of_parse(pdev, priv);
-> +       if (err)
-> +               return err;
-> +
-> +       priv->rcdev.ops = &lantiq_rcu_reset_ops;
-> +       priv->rcdev.owner = THIS_MODULE;
-> +       priv->rcdev.of_node = pdev->dev.of_node;
-> +       priv->rcdev.nr_resets = 32;
-> +       priv->rcdev.of_xlate = lantiq_rcu_reset_xlate;
-> +       priv->rcdev.of_reset_n_cells = 2;
-> +
-> +       return reset_controller_register(&priv->rcdev);
+> +       return ret;
 > +}
 > +
-> +static const struct of_device_id lantiq_rcu_reset_dt_ids[] = {
-> +       { .compatible = "lantiq,danube-reset", },
-> +       { .compatible = "lantiq,xrx200-reset", },
-> +       { },
-> +};
-> +MODULE_DEVICE_TABLE(of, lantiq_rcu_reset_dt_ids);
+> +static int xway_gphy_remove(struct platform_device *pdev)
+> +{
+> +       struct device *dev = &pdev->dev;
+> +       struct xway_gphy_priv *priv = platform_get_drvdata(pdev);
+> +       int ret;
 > +
-> +static struct platform_driver lantiq_rcu_reset_driver = {
-> +       .probe  = lantiq_rcu_reset_probe,
+> +       reset_control_assert(priv->gphy_reset);
+> +       reset_control_assert(priv->gphy_reset2);
+> +
+> +       iowrite32be(0, priv->membase);
+> +
+> +       clk_disable_unprepare(priv->gphy_clk_gate);
+> +
+> +       ret = unregister_reboot_notifier(&priv->gphy_reboot_nb);
+> +       if (ret)
+> +               dev_warn(dev, "Failed to unregister reboot notifier\n");
+> +
+> +       return 0;
+> +}
+> +
+> +static struct platform_driver xway_gphy_driver = {
+> +       .probe = xway_gphy_probe,
+> +       .remove = xway_gphy_remove,
 > +       .driver = {
-> +               .name           = "lantiq-reset",
-> +               .of_match_table = lantiq_rcu_reset_dt_ids,
+> +               .name = "xway-rcu-gphy",
+> +               .of_match_table = xway_gphy_match,
 > +       },
 > +};
-> +module_platform_driver(lantiq_rcu_reset_driver);
 > +
+> +module_platform_driver(xway_gphy_driver);
+> +
+> +MODULE_FIRMWARE("lantiq/xrx300_phy11g_a21.bin");
+> +MODULE_FIRMWARE("lantiq/xrx300_phy22f_a21.bin");
+> +MODULE_FIRMWARE("lantiq/xrx200_phy11g_a14.bin");
+> +MODULE_FIRMWARE("lantiq/xrx200_phy11g_a22.bin");
+> +MODULE_FIRMWARE("lantiq/xrx200_phy22f_a14.bin");
+> +MODULE_FIRMWARE("lantiq/xrx200_phy22f_a22.bin");
 > +MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-> +MODULE_DESCRIPTION("Lantiq XWAY RCU Reset Controller Driver");
+> +MODULE_DESCRIPTION("Lantiq XWAY GPHY Firmware Loader");
 > +MODULE_LICENSE("GPL");
+> diff --git a/include/dt-bindings/mips/lantiq_rcu_gphy.h b/include/dt-bindings/mips/lantiq_rcu_gphy.h
+> new file mode 100644
+> index 000000000000..fa1a63773342
+> --- /dev/null
+> +++ b/include/dt-bindings/mips/lantiq_rcu_gphy.h
+> @@ -0,0 +1,15 @@
+> +/*
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + *  Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> + *  Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
+> + */
+> +#ifndef _DT_BINDINGS_MIPS_LANTIQ_RCU_GPHY_H
+> +#define _DT_BINDINGS_MIPS_LANTIQ_RCU_GPHY_H
+> +
+> +#define GPHY_MODE_GE   1
+> +#define GPHY_MODE_FE   2
+> +
+> +#endif /* _DT_BINDINGS_MIPS_LANTIQ_RCU_GPHY_H */
 > --
 > 2.11.0
 >

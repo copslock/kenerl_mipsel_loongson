@@ -1,35 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 13:07:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25323 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994913AbdIELG7L2hgo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 13:06:59 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 76E85C213C93B;
-        Tue,  5 Sep 2017 12:06:49 +0100 (IST)
-Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 5 Sep 2017 12:06:52 +0100
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: fix incorrect mem=X@Y handling
-Date:   Tue, 5 Sep 2017 13:06:48 +0200
-Message-ID: <1504609608-7694-1-git-send-email-marcin.nowakowski@imgtec.com>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 16:31:02 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:54148 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994926AbdIEOarZ0XjV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Sep 2017 16:30:47 +0200
+Received: from mail-qk0-f169.google.com (mail-qk0-f169.google.com [209.85.220.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C561321E92
+        for <linux-mips@linux-mips.org>; Tue,  5 Sep 2017 14:30:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C561321E92
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
+Received: by mail-qk0-f169.google.com with SMTP id a128so12045447qkc.5
+        for <linux-mips@linux-mips.org>; Tue, 05 Sep 2017 07:30:43 -0700 (PDT)
+X-Gm-Message-State: AHPjjUiJnp4Mf6kLp5kpoBvteewi2t5N1CVhUXzVKMiDHtqz8uxgjcKJ
+        Ryd43efHpuE5V+8T9maxQwZ7GxUPRQ==
+X-Google-Smtp-Source: ADKCNb792YFhgxvddsq4tCw3RnSu2OvGhrpTuRXR7r3H29rOQ2Ck0sENCOp23xHBcMmQ0ikbF88ejAqg/WZY72EfMTM=
+X-Received: by 10.55.160.4 with SMTP id j4mr5195505qke.357.1504621842956; Tue,
+ 05 Sep 2017 07:30:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Received: by 10.12.153.1 with HTTP; Tue, 5 Sep 2017 07:30:22 -0700 (PDT)
+In-Reply-To: <alpine.LFD.2.21.1709030637090.24875@localhost.localdomain>
+References: <alpine.LFD.2.21.1709020416130.13598@localhost.localdomain>
+ <1504390854.4974.108.camel@kernel.crashing.org> <alpine.LFD.2.21.1709030637090.24875@localhost.localdomain>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 5 Sep 2017 09:30:22 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJNoWAAi3Nj5KxAf5ov73nfPVaGeT1RTNgzZGpdxZ7s=w@mail.gmail.com>
+Message-ID: <CAL_JsqJNoWAAi3Nj5KxAf5ov73nfPVaGeT1RTNgzZGpdxZ7s=w@mail.gmail.com>
+Subject: Re: [PATCH] devicetree: Remove remaining references/tests for "chosen@0"
+To:     "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Linux PPC Mailing List <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59933
+X-archive-position: 59934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,74 +56,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Change 73fbc1eba7ff added a fix to ensure that the memory range between
-PHYS_OFFSET and low memory address specified by mem= cmdline argument is
-not later processed by free_all_bootmem.
-This change was incorrect for systems where the commandline specifies
-more than 1 mem argument, as it will cause all memory between
-PHYS_OFFSET and each of the memory offsets to be marked as reserved,
-which results in parts of the RAM marked as reserved (Creator CI20's
-u-boot has a default commandline argument 'mem=256M@0x0
-mem=768M@0x30000000').
+On Sun, Sep 3, 2017 at 5:43 AM, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> On Sun, 3 Sep 2017, Benjamin Herrenschmidt wrote:
+>
+>> On Sat, 2017-09-02 at 04:43 -0400, Robert P. J. Day wrote:
+>> > Since, according to a recent devicetree ML posting by Rob Herring,
+>> > the node "/chosen@0" is most likely for real Open Firmware and
+>> > does not apply to DTSpec, remove all remaining tests and
+>> > references for that node, of which there are very few left:
+>>
+>> Technically that would break Open Firmware systems where the node is
+>> really called chosen@0
+>>
+>> Now I'm not sure such a thing actually exist however.
+>>
+>> My collection of DTs don't seem to have one, except in the ancient
+>> html variants that were extracted by the pengionppc folks for the
+>> original PowerMac 8600 but I wonder if that's a bug in the
+>> extraction script since they also have @0 on /packages etc...
+>
+>   obviously, this isn't a priority issue, i was just working off a
+> comment by rob herring that "chosen@0" is not defined by the current
+> DTSpec 0.1, so it seemed appropriate to toss it. if there's a reason
+> to hang onto it, that's fine with me.
+>
+>   however, given the diff stat of the change to remove every single
+> reference to that node name in the current kernel source:
+>
+>  arch/microblaze/kernel/prom.c | 3 +--
+>  arch/mips/generic/yamon-dt.c  | 4 ----
+>  arch/powerpc/boot/oflib.c     | 7 ++-----
+>  drivers/of/base.c             | 2 --
+>  drivers/of/fdt.c              | 5 +----
+>  5 files changed, 4 insertions(+), 17 deletions(-)
+>
+> it seems inconsistent that three architectures would be testing for
+> that node, but none of the rest. consistency suggests that every
+> architecture should take it into account, or none should.
 
-Change the behaviour to ensure that only the range between PHYS_OFFSET
-and the lowest start address of the memories is marked as protected.
+I generally agree and have moved various things from arch to
+drivers/of/ to ensure that. But for legacy things, we have to allow
+for exceptions. I agree with Ben and think that microblaze (they
+generally just copied PPC), MIPS, and the FDT code in drivers/of/ can
+be changed.
 
-This change also ensures that the range is marked protected even if it's
-only defined through the devicetree and not only via commandline
-arguments.
-
-Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Fixes: 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing")
-Cc: stable@vger.kernel.org
----
- arch/mips/kernel/setup.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index fe39397..a1c39ec 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -374,6 +374,7 @@ static void __init bootmem_init(void)
- 	unsigned long reserved_end;
- 	unsigned long mapstart = ~0UL;
- 	unsigned long bootmap_size;
-+	phys_addr_t ramstart = ~0UL;
- 	bool bootmap_valid = false;
- 	int i;
- 
-@@ -394,6 +395,21 @@ static void __init bootmem_init(void)
- 	max_low_pfn = 0;
- 
- 	/*
-+	 * Reserve any memory between the start of RAM and PHYS_OFFSET
-+	 */
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
-+			continue;
-+
-+		ramstart = min(ramstart, boot_mem_map.map[i].addr);
-+	}
-+
-+	if (ramstart > PHYS_OFFSET)
-+		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
-+				  BOOT_MEM_RESERVED);
-+
-+
-+	/*
- 	 * Find the highest page frame number we have available.
- 	 */
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
-@@ -663,9 +679,6 @@ static int __init early_parse_mem(char *p)
- 
- 	add_memory_region(start, size, BOOT_MEM_RAM);
- 
--	if (start && start > PHYS_OFFSET)
--		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
--				BOOT_MEM_RESERVED);
- 	return 0;
- }
- early_param("mem", early_parse_mem);
--- 
-2.7.4
+Rob

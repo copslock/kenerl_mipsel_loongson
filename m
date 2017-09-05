@@ -1,36 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 20:29:35 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27255 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991067AbdIES3WScFVI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 20:29:22 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 9F4F14E304460;
-        Tue,  5 Sep 2017 19:29:11 +0100 (IST)
-Received: from localhost (10.20.1.88) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 5 Sep 2017 19:29:15
- +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] irqchip: mips-gic: Fix shared interrupt mask writes
-Date:   Tue, 5 Sep 2017 11:28:46 -0700
-Message-ID: <20170905182846.27994-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 23:23:21 +0200 (CEST)
+Received: from cpanel2.indieserve.net ([199.212.143.6]:56841 "EHLO
+        cpanel2.indieserve.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991799AbdIEVXI3m9TD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 23:23:08 +0200
+Received: from cpec03f0ed08c7f-cm68b6fcf980b0.cpe.net.cable.rogers.com ([174.118.92.171]:51466 helo=localhost.localdomain)
+        by cpanel2.indieserve.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <rpjday@crashcourse.ca>)
+        id 1dpLJD-0006Ji-Ft; Tue, 05 Sep 2017 17:22:59 -0400
+Date:   Tue, 5 Sep 2017 17:22:57 -0400 (EDT)
+From:   "Robert P. J. Day" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To:     Rob Herring <robh@kernel.org>
+cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Linux PPC Mailing List <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] devicetree: Remove remaining references/tests for
+ "chosen@0"
+In-Reply-To: <CAL_JsqJNoWAAi3Nj5KxAf5ov73nfPVaGeT1RTNgzZGpdxZ7s=w@mail.gmail.com>
+Message-ID: <alpine.LFD.2.21.1709051720470.5346@localhost.localdomain>
+References: <alpine.LFD.2.21.1709020416130.13598@localhost.localdomain> <1504390854.4974.108.camel@kernel.crashing.org> <alpine.LFD.2.21.1709030637090.24875@localhost.localdomain> <CAL_JsqJNoWAAi3Nj5KxAf5ov73nfPVaGeT1RTNgzZGpdxZ7s=w@mail.gmail.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel2.indieserve.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel2.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel2.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <rpjday@crashcourse.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59938
+X-archive-position: 59939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: rpjday@crashcourse.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,64 +56,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The write_gic_smask() & write_gic_rmask() functions take a shared
-interrupt number as a parameter, but we're incorrectly providing them a
-bitmask with the shared interrupt's bit set. This effectively means that
-we mask or unmask the shared interrupt 1<<n rather than shared interrupt
-n, and as a result likely drop interrupts.
+On Tue, 5 Sep 2017, Rob Herring wrote:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 68898c8765f4 ("irqchip: mips-gic: Drop gic_(re)set_mask() functions")
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mips@linux-mips.org
----
-With Boston PCIe support & the GIC cleanup series now coming together in
--next, this bug was uncovered by running next-20170905 on a Boston
-board, which failed to find any rootfs media due to a lack of PCIe
-interrupts. With this fix we're now able to use the Boston's SATA or MMC
-controllers :)
+> On Sun, Sep 3, 2017 at 5:43 AM, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> > On Sun, 3 Sep 2017, Benjamin Herrenschmidt wrote:
+> >
+> >> On Sat, 2017-09-02 at 04:43 -0400, Robert P. J. Day wrote:
+> >> > Since, according to a recent devicetree ML posting by Rob Herring,
+> >> > the node "/chosen@0" is most likely for real Open Firmware and
+> >> > does not apply to DTSpec, remove all remaining tests and
+> >> > references for that node, of which there are very few left:
+> >>
+> >> Technically that would break Open Firmware systems where the node is
+> >> really called chosen@0
+> >>
+> >> Now I'm not sure such a thing actually exist however.
+> >>
+> >> My collection of DTs don't seem to have one, except in the ancient
+> >> html variants that were extracted by the pengionppc folks for the
+> >> original PowerMac 8600 but I wonder if that's a bug in the
+> >> extraction script since they also have @0 on /packages etc...
+> >
+> >   obviously, this isn't a priority issue, i was just working off a
+> > comment by rob herring that "chosen@0" is not defined by the current
+> > DTSpec 0.1, so it seemed appropriate to toss it. if there's a reason
+> > to hang onto it, that's fine with me.
+> >
+> >   however, given the diff stat of the change to remove every single
+> > reference to that node name in the current kernel source:
+> >
+> >  arch/microblaze/kernel/prom.c | 3 +--
+> >  arch/mips/generic/yamon-dt.c  | 4 ----
+> >  arch/powerpc/boot/oflib.c     | 7 ++-----
+> >  drivers/of/base.c             | 2 --
+> >  drivers/of/fdt.c              | 5 +----
+> >  5 files changed, 4 insertions(+), 17 deletions(-)
+> >
+> > it seems inconsistent that three architectures would be testing for
+> > that node, but none of the rest. consistency suggests that every
+> > architecture should take it into account, or none should.
+>
+> I generally agree and have moved various things from arch to
+> drivers/of/ to ensure that. But for legacy things, we have to allow
+> for exceptions. I agree with Ben and think that microblaze (they
+> generally just copied PPC), MIPS, and the FDT code in drivers/of/ can
+> be changed.
 
-Ideally this would be applied as a fixup to 68898c8765f4 ("irqchip:
-mips-gic: Drop gic_(re)set_mask() functions"), but even if not it'd be
-great to get into the v4.14 MIPS pull where the breakage is introduced,
-or otherwise just ASAP - my apologies!
----
- drivers/irqchip/irq-mips-gic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+  i'm not quite sure what people have agreed on, so i'll just leave it
+in the hands of others here to submit patches for what they think is
+appropriate.
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 6e52a88bbd9e..40159ac12ac8 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -169,7 +169,7 @@ static void gic_mask_irq(struct irq_data *d)
- {
- 	unsigned int intr = GIC_HWIRQ_TO_SHARED(d->hwirq);
- 
--	write_gic_rmask(BIT(intr));
-+	write_gic_rmask(intr);
- 	gic_clear_pcpu_masks(intr);
- }
- 
-@@ -179,7 +179,7 @@ static void gic_unmask_irq(struct irq_data *d)
- 	unsigned int intr = GIC_HWIRQ_TO_SHARED(d->hwirq);
- 	unsigned int cpu;
- 
--	write_gic_smask(BIT(intr));
-+	write_gic_smask(intr);
- 
- 	gic_clear_pcpu_masks(intr);
- 	cpu = cpumask_first_and(affinity, cpu_online_mask);
-@@ -767,7 +767,7 @@ static int __init gic_of_init(struct device_node *node,
- 	for (i = 0; i < gic_shared_intrs; i++) {
- 		change_gic_pol(i, GIC_POL_ACTIVE_HIGH);
- 		change_gic_trig(i, GIC_TRIG_LEVEL);
--		write_gic_rmask(BIT(i));
-+		write_gic_rmask(i);
- 	}
- 
- 	for (i = 0; i < gic_vpes; i++) {
+rday
+
 -- 
-2.14.1
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================

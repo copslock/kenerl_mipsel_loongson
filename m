@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 09:11:54 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:40486 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 09:12:56 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41306 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994902AbdIEHLlcbfPB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 09:11:41 +0200
+        by eddie.linux-mips.org with ESMTP id S23994892AbdIEHMkJx9vB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 09:12:40 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 59F8493E;
-        Tue,  5 Sep 2017 07:11:33 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EF1F49B9;
+        Tue,  5 Sep 2017 07:12:33 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -15,12 +15,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 01/18] irqchip: mips-gic: SYNC after enabling GIC region
-Date:   Tue,  5 Sep 2017 09:11:09 +0200
-Message-Id: <20170905070918.101123097@linuxfoundation.org>
+Subject: [PATCH 4.12 03/27] irqchip: mips-gic: SYNC after enabling GIC region
+Date:   Tue,  5 Sep 2017 09:11:19 +0200
+Message-Id: <20170905070923.392288429@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20170905070918.034746210@linuxfoundation.org>
-References: <20170905070918.034746210@linuxfoundation.org>
+In-Reply-To: <20170905070923.265950493@linuxfoundation.org>
+References: <20170905070923.265950493@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -28,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59931
+X-archive-position: 59932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,7 +45,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -1115,8 +1115,11 @@ static int __init gic_of_init(struct dev
+@@ -1022,8 +1022,11 @@ static int __init gic_of_init(struct dev
  		gic_len = resource_size(&res);
  	}
  

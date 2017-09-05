@@ -1,38 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 09:12:56 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41306 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994892AbdIEHMkJx9vB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 09:12:40 +0200
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EF1F49B9;
-        Tue,  5 Sep 2017 07:12:33 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.12 03/27] irqchip: mips-gic: SYNC after enabling GIC region
-Date:   Tue,  5 Sep 2017 09:11:19 +0200
-Message-Id: <20170905070923.392288429@linuxfoundation.org>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20170905070923.265950493@linuxfoundation.org>
-References: <20170905070923.265950493@linuxfoundation.org>
-User-Agent: quilt/0.65
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2017 13:07:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25323 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994913AbdIELG7L2hgo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2017 13:06:59 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 76E85C213C93B;
+        Tue,  5 Sep 2017 12:06:49 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 5 Sep 2017 12:06:52 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: fix incorrect mem=X@Y handling
+Date:   Tue, 5 Sep 2017 13:06:48 +0200
+Message-ID: <1504609608-7694-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59932
+X-archive-position: 59933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,56 +42,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.12-stable review patch.  If anyone has any objections, please let me know.
+Change 73fbc1eba7ff added a fix to ensure that the memory range between
+PHYS_OFFSET and low memory address specified by mem= cmdline argument is
+not later processed by free_all_bootmem.
+This change was incorrect for systems where the commandline specifies
+more than 1 mem argument, as it will cause all memory between
+PHYS_OFFSET and each of the memory offsets to be marked as reserved,
+which results in parts of the RAM marked as reserved (Creator CI20's
+u-boot has a default commandline argument 'mem=256M@0x0
+mem=768M@0x30000000').
 
-------------------
+Change the behaviour to ensure that only the range between PHYS_OFFSET
+and the lowest start address of the memories is marked as protected.
 
-From: James Hogan <james.hogan@imgtec.com>
+This change also ensures that the range is marked protected even if it's
+only defined through the devicetree and not only via commandline
+arguments.
 
-commit 2c0e8382386f618c85d20cb05e7cf7df8cdd382c upstream.
-
-A SYNC is required between enabling the GIC region and actually trying
-to use it, even if the first access is a read, otherwise its possible
-depending on the timing (and in my case depending on the precise
-alignment of certain kernel code) to hit CM bus errors on that first
-access.
-
-Add the SYNC straight after setting the GIC base.
-
-[paul.burton@imgtec.com:
-  Changes later in this series increase our likelihood of hitting this
-  by reducing the amount of code that runs between enabling the GIC &
-  accessing it.]
-
-Fixes: a7057270c280 ("irqchip: mips-gic: Add device-tree support")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Acked-by: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17019/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Fixes: 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing")
+Cc: stable@vger.kernel.org
 ---
- drivers/irqchip/irq-mips-gic.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/kernel/setup.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -1022,8 +1022,11 @@ static int __init gic_of_init(struct dev
- 		gic_len = resource_size(&res);
- 	}
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index fe39397..a1c39ec 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -374,6 +374,7 @@ static void __init bootmem_init(void)
+ 	unsigned long reserved_end;
+ 	unsigned long mapstart = ~0UL;
+ 	unsigned long bootmap_size;
++	phys_addr_t ramstart = ~0UL;
+ 	bool bootmap_valid = false;
+ 	int i;
  
--	if (mips_cm_present())
-+	if (mips_cm_present()) {
- 		write_gcr_gic_base(gic_base | CM_GCR_GIC_BASE_GICEN_MSK);
-+		/* Ensure GIC region is enabled before trying to access it */
-+		__sync();
+@@ -394,6 +395,21 @@ static void __init bootmem_init(void)
+ 	max_low_pfn = 0;
+ 
+ 	/*
++	 * Reserve any memory between the start of RAM and PHYS_OFFSET
++	 */
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
++			continue;
++
++		ramstart = min(ramstart, boot_mem_map.map[i].addr);
 +	}
- 	gic_present = true;
++
++	if (ramstart > PHYS_OFFSET)
++		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
++				  BOOT_MEM_RESERVED);
++
++
++	/*
+ 	 * Find the highest page frame number we have available.
+ 	 */
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+@@ -663,9 +679,6 @@ static int __init early_parse_mem(char *p)
  
- 	__gic_init(gic_base, gic_len, cpu_vec, 0, node);
+ 	add_memory_region(start, size, BOOT_MEM_RAM);
+ 
+-	if (start && start > PHYS_OFFSET)
+-		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
+-				BOOT_MEM_RESERVED);
+ 	return 0;
+ }
+ early_param("mem", early_parse_mem);
+-- 
+2.7.4

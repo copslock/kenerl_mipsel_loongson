@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Sep 2017 13:01:04 +0200 (CEST)
-Received: from mail-vk0-x242.google.com ([IPv6:2607:f8b0:400c:c05::242]:36237
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Sep 2017 13:02:07 +0200 (CEST)
+Received: from mail-vk0-x242.google.com ([IPv6:2607:f8b0:400c:c05::242]:34621
         "EHLO mail-vk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992121AbdIFLAxQ-pXq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Sep 2017 13:00:53 +0200
-Received: by mail-vk0-x242.google.com with SMTP id x85so1786374vkx.3;
-        Wed, 06 Sep 2017 04:00:53 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23992036AbdIFLCAuInfq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Sep 2017 13:02:00 +0200
+Received: by mail-vk0-x242.google.com with SMTP id v203so1709146vkv.1;
+        Wed, 06 Sep 2017 04:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=jQQkrgmbXGjM7MY4xtmgRxVffHK6Vx4A3J6xg3MatWc=;
-        b=slfCXZf2oTJS+7bW1tVo+9JPQZZ+eCj/uusJy/6PVwL7e+Ocwl8CFxFcr38ZhCNY77
-         YWF1eJoxwWyOYG3SHfjwPmU3Ojo2jQviJ0JauXi18Ki3PrhjTJ/b5BCBzdvFvGlIckvb
-         FOW2rDQ0rJr+fhwdMo/S87IhbE8YIkjOR4fwkZK8EAoXxJ1ckziEzpONYZLkas0eaDsI
-         SSFlMXk+P8nrHQtEU5a/SrMN59MYH3HiboB4Buzti28ngtS0eHg+0JRUZh5m8Y1DoilH
-         kyPVy5H/XRoFsGPJbN8100XkPDz4bKC4B0GX+B0jw9IMCD7AxcFC0yk5XMZHmZMhNxna
-         nh8w==
+        bh=PVWlUYea714WxkcYQrWDXaA2wRDbF3X6AVOKu+kgLLE=;
+        b=hVxyEiAfNd5Z8iDIkcbp/HVVfpaQbMckx+s03V3xDe59jO8ep6jsvyyQ8kvsysrn/p
+         xpguYZxhug6VW1KW8+a8e5kCDZW5XbDJXGNr0D82uoegGAfTzRhOW86/20S9Rztvu6M4
+         TUAeHI6pUNJqa0M6goxhd1q9cC+FAKFesOZVdrr8SMq4UMYLkF09nCtaZibt5tqtxCLW
+         BWu94B4a0c2QVbeq+l3C/zYAQLv7GaiYEHnQ+BwYAZE70ltUtEAHt0FhB65+fbi5JXOV
+         dnGeT5cZAXdc3W0lqtSXkqjqcrYWr0IcXMtn0lMyiWUTA8lQj3QMqjv7SEzaJOoj7RTv
+         ZLmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=jQQkrgmbXGjM7MY4xtmgRxVffHK6Vx4A3J6xg3MatWc=;
-        b=ugYQcAqqSoSq4174Hlo54FT30gdzPWpJT9DERFUo0Cio3FqwAIvrSf3zTJxg70XM46
-         cFRwOuMnGFd49dflYs+FJkCu90stS6dPn42X4gcO0Nzn+kI4SeZvgQhbitSGVsOnZ2s9
-         tM2znLrUFgWdvK6lVISWTwgfNWNMG+6Dhvw6XfedbPOcnpgGkNXKDY8JY49U/s8qrkvV
-         pokUiHq1hv8IAFq6obL6WD0dOVs2ZAsDUAX2wVr6XaqqW3P7oQ+lz5iY28Z+W57GhsUe
-         bCPMDPM27/VehtqUHVwic+kVtU7nk1kbiaOCLblppNcdTIwm9cvdQd/0k6dhQKN0ML/8
-         4mCA==
-X-Gm-Message-State: AHPjjUggnIHDySq1vafL/Wtcleq8O65mWpF9cB1FCc/ZEG44ZB5G+l2I
-        drAtBOBH98LolZju6CLRS+7oD/1s8A==
-X-Google-Smtp-Source: ADKCNb5+A2LjlLsK85zH88oX1kK/aOItCXOD1iRLgJvfMsYIckqKJYnsAXjXwIvkUUCFrXvwbppaQfpP2zbduOpn9XQ=
-X-Received: by 10.31.4.201 with SMTP id 192mr1254990vke.88.1504695646879; Wed,
- 06 Sep 2017 04:00:46 -0700 (PDT)
+        bh=PVWlUYea714WxkcYQrWDXaA2wRDbF3X6AVOKu+kgLLE=;
+        b=Frzr4qKCuMg/HGl5/RgpUzagPJK9iO7kmSU11a40wsXK88b8GR14O0G62TtNcemdGM
+         9gQ7KsSvvrUbZFWKJbqdIyUqHfqtDwP0gQkrRpEEREd7fZXiid/XP9YgC+zMQMl5eMjK
+         p07hP4IUYAXW2oDGrEOlfKxl/ysHuvx7Cnr/J7E1kqBMI22gFoXJz+Ueg7emj15d5cKK
+         Sf+nWdeHPVlt3qTOEAnJLRD+Wj3jKgrS1yCuggsFsSnpW9hkC+YjsrBUGhVWTcE6NLJc
+         HTsSHP2GryOs9pRPRREJ1nCYI/ir0NJrBdphHKmmgI70dWnKlUugBJZqfrQkrThx1pNk
+         YfnA==
+X-Gm-Message-State: AHPjjUi4FbwefsR9sAWs5jzKrXtHeVRynjVN2loHTB3HU+iZhXVgWQvj
+        7HCQaumLVYZlFQBX5Rhw5j1EDvNTR6e/0C4=
+X-Google-Smtp-Source: ADKCNb4loi2lFxS9eB+rMNyjYka6Z1u3GMPlc79wM4PPAvplXbdjLjN+OoaFWpzkHAfdKeBleA1lJCwAp2yxb480a5A=
+X-Received: by 10.31.124.137 with SMTP id x131mr1281654vkc.6.1504695712796;
+ Wed, 06 Sep 2017 04:01:52 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.176.28.81 with HTTP; Wed, 6 Sep 2017 04:00:26 -0700 (PDT)
-In-Reply-To: <20170802093429.12572-7-jonas.gorski@gmail.com>
-References: <20170802093429.12572-1-jonas.gorski@gmail.com> <20170802093429.12572-7-jonas.gorski@gmail.com>
+Received: by 10.176.28.81 with HTTP; Wed, 6 Sep 2017 04:01:32 -0700 (PDT)
+In-Reply-To: <20170802093429.12572-5-jonas.gorski@gmail.com>
+References: <20170802093429.12572-1-jonas.gorski@gmail.com> <20170802093429.12572-5-jonas.gorski@gmail.com>
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 6 Sep 2017 13:00:26 +0200
-Message-ID: <CAOiHx=nvzGybbsTy+y54TetDAQ5zZBLZ3pJh7EVAZM_VbzVS9A@mail.gmail.com>
-Subject: Re: [PATCH 6/8] bcm63xx_enet: just use "enet" as the clock name
+Date:   Wed, 6 Sep 2017 13:01:32 +0200
+Message-ID: <CAOiHx=mC=GfX0VvuRWR-AmXYfVOEkuruwGHooS08WrL_z-60UA@mail.gmail.com>
+Subject: Re: [PATCH 4/8] tty/bcm63xx_uart: allow naming clock in device tree
 To:     MIPS Mailing List <linux-mips@linux-mips.org>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
@@ -61,7 +61,7 @@ Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59942
+X-archive-position: 59943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,11 +78,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi David,
+Hi Greg,
 
 On 2 August 2017 at 11:34, Jonas Gorski <jonas.gorski@gmail.com> wrote:
-> Now that we have the individual clocks available as "enet" we
-> don't need to rely on the device id for them anymore.
+> Codify using a named clock for the refclk of the uart. This makes it
+> easier if we might need to add a gating clock (like present on the
+> BCM6345).
 >
 > Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 
@@ -92,38 +93,53 @@ Could I please get a (N)Ack so Ralf can add this patch to his tree?
 Regards
 Jonas
 
+
 > ---
->  drivers/net/ethernet/broadcom/bcm63xx_enet.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt | 6 ++++++
+>  drivers/tty/serial/bcm63xx_uart.c                              | 6 ++++--
+>  2 files changed, 10 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.c b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-> index 61a88b64bd39..d6844923a1c0 100644
-> --- a/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-> +++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-> @@ -1718,7 +1718,6 @@ static int bcm_enet_probe(struct platform_device *pdev)
->         struct bcm63xx_enet_platform_data *pd;
->         struct resource *res_mem, *res_irq, *res_irq_rx, *res_irq_tx;
->         struct mii_bus *bus;
-> -       const char *clk_name;
->         int i, ret;
+> diff --git a/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt b/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt
+> index 5c52e5eef16d..8b2b0460259a 100644
+> --- a/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt
+> +++ b/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt
+> @@ -11,6 +11,11 @@ Required properties:
+>  - clocks: Clock driving the hardware; used to figure out the baud rate
+>    divisor.
 >
->         /* stop if shared driver failed, assume driver->probe will be
-> @@ -1761,14 +1760,12 @@ static int bcm_enet_probe(struct platform_device *pdev)
->         if (priv->mac_id == 0) {
->                 priv->rx_chan = 0;
->                 priv->tx_chan = 1;
-> -               clk_name = "enet0";
->         } else {
->                 priv->rx_chan = 2;
->                 priv->tx_chan = 3;
-> -               clk_name = "enet1";
->         }
+> +
+> +Optional properties:
+> +
+> +- clock-names: Should be "refclk".
+> +
+>  Example:
 >
-> -       priv->mac_clk = clk_get(&pdev->dev, clk_name);
-> +       priv->mac_clk = clk_get(&pdev->dev, "enet");
->         if (IS_ERR(priv->mac_clk)) {
->                 ret = PTR_ERR(priv->mac_clk);
->                 goto out;
+>         uart0: serial@14e00520 {
+> @@ -19,6 +24,7 @@ Example:
+>                 interrupt-parent = <&periph_intc>;
+>                 interrupts = <2>;
+>                 clocks = <&periph_clk>;
+> +               clock-names = "refclk";
+>         };
+>
+>         clocks {
+> diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
+> index a2b9376ec861..f227eff28d3a 100644
+> --- a/drivers/tty/serial/bcm63xx_uart.c
+> +++ b/drivers/tty/serial/bcm63xx_uart.c
+> @@ -841,8 +841,10 @@ static int bcm_uart_probe(struct platform_device *pdev)
+>         if (!res_irq)
+>                 return -ENODEV;
+>
+> -       clk = pdev->dev.of_node ? of_clk_get(pdev->dev.of_node, 0) :
+> -                                 clk_get(&pdev->dev, "refclk");
+> +       clk = clk_get(&pdev->dev, "refclk");
+> +       if (IS_ERR(clk) && pdev->dev.of_node)
+> +               clk = of_clk_get(pdev->dev.of_node, 0);
+> +
+>         if (IS_ERR(clk))
+>                 return -ENODEV;
+>
 > --
 > 2.13.2
 >

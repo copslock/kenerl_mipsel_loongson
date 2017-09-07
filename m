@@ -1,52 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Sep 2017 23:37:25 +0200 (CEST)
-Received: from mail-pf0-x232.google.com ([IPv6:2607:f8b0:400e:c00::232]:35289
-        "EHLO mail-pf0-x232.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993156AbdIFVhPCMwPJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Sep 2017 23:37:15 +0200
-Received: by mail-pf0-x232.google.com with SMTP id g13so14711598pfm.2
-        for <linux-mips@linux-mips.org>; Wed, 06 Sep 2017 14:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=2ZKSQaCkJm0jjODw1AaZbXW/aP7sJjHQu6bX5eBcMHA=;
-        b=feJXkk58ptVCKa9QhERy7ItqTx4uL+zouKdhSk5RA2gVorXvyJNtIy3j6FGuaWmlkQ
-         p6mvHy3MGkutMw3dW/Ob9tK1HK2m+WukR+9+0K14fKIVgW1JV0DGw8zL+Azdnu3p0Akb
-         PRkr83OwSOKAszwEbs0PEvFxzR5MuluBIuJfIu9PU9h1BJ1TYW7p/UOhvlb0Qv1kndkT
-         BNoLgtSbubTISsHPzCCyjdpgDD1WaIlOW0Vo16HIIioXOdzKuST3qlI8daBv1uXujpa7
-         X+8awEIDDjtpZFXLih75crQSG61dq3XoPxmMGUP9NrMGtSQI/1YqbWjyE7TaklS/IWJ3
-         y8jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=2ZKSQaCkJm0jjODw1AaZbXW/aP7sJjHQu6bX5eBcMHA=;
-        b=WJ1nYvkcRKo8o5qHkdz/mL7ZSdHRfLvx88O07tVgvZ464wySED8oPBtutt9XrHm+fO
-         7fqOuO+Sb/o3ss2OTlaCvPmOzyizZsx2zMm3u8W9PHK7jLgQMm/wWjrxjSbu0lM+eZvf
-         I58YWJAS5+KIuzuc3c7U4G2v8XUxvVwu/Ig4bT6My/2XeFd1KY2XERmyAnVFYTgSZjz9
-         AInplTSxQ6sPjzClVS1W6nmIPYYp5ZYJOZxFX1zjGlwtq8qQJLWs4uIQ4vXd+GkWmvUv
-         yMzDzp1UdIaa46jRq/3OEIFp/7KcErMZ/MfGK8I7agjlYoIhH4ljLSusmqlJxzqHTwN1
-         0Tqg==
-X-Gm-Message-State: AHPjjUh44/K+hLRYrZNZ5qHUDh7VIDi1WrCILsKDKDWCh5BfncGIVyO3
-        bwO5Pbf5GXfO3cY28SPXKcuWxfjZtFVLXGqfN0s=
-X-Google-Smtp-Source: ADKCNb60sBzi5CSRS/N1B/RRdbPKuNH5H5oViJ77QkVXTihqRNm8KZ/Xu/wKpYMftmBj0HnyYfC0qv//3i4SVQugrp8=
-X-Received: by 10.84.130.42 with SMTP id 39mr567287plc.239.1504733828321; Wed,
- 06 Sep 2017 14:37:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Sep 2017 12:13:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29000 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992054AbdIGKNYB0BxL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Sep 2017 12:13:24 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 0422A1B5149ED;
+        Thu,  7 Sep 2017 10:57:37 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 7 Sep 2017 10:57:40 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
+        "# v4 . 1+" <stable@vger.kernel.org>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        <linux-mips@linux-mips.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: SMP: Fix deadlock & online race
+Date:   Thu, 7 Sep 2017 10:57:34 +0100
+Message-ID: <1504778254-24380-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Received: by 10.100.165.132 with HTTP; Wed, 6 Sep 2017 14:37:07 -0700 (PDT)
-From:   Justin Chen <justinpopo6@gmail.com>
-Date:   Wed, 6 Sep 2017 14:37:07 -0700
-Message-ID: <CAJx26kXc=AXjOeZdwhUCExFSuRRQ9VT-uoNijov9yFEy-BFcNA@mail.gmail.com>
-Subject: [RFC] Hanging when parking smp threads
-To:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <justinpopo6@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59952
+X-archive-position: 59953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinpopo6@gmail.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,38 +47,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Commit 6f542ebeaee0 ("MIPS: Fix race on setting and getting
+cpu_online_mask") effectively reverted commit 8f46cca1e6c06 ("MIPS: SMP:
+Fix possibility of deadlock when bringing CPUs online") and thus has
+reinstated the possibility of deadlock.
 
-I've been trying to trace down a hang issue for ages now, can't seem
-to get to the root of the problem. I'm wondering if anyone else has
-seen anything similar or has any suggestions.
+The commit was based on testing of kernel v4.4, where the CPU hotplug
+core code issued a BUG() if the starting CPU is not marked online when
+the boot CPU returns from __cpu_up. The commit fixes this race (in
+v4.4), but re-introduces the deadlock situation.
 
-I am testing on a bmips chip on kernel version 4.1.20. I don't see the
-problem on ARM, so I have a suspicion there might be an issue with the
-smp mips specific code, but I cannot put my finger on it.
+As noted in the commit message, upstream differs in this area. Commit
+8df3e07e7f21f ("cpu/hotplug: Let upcoming cpu bring itself fully up")
+adds a completion event in the CPU hotplug core code, making this race
+impossible. However, people were unhappy with relying on the core code
+to do the right thing.
 
-The hang occurs when stress testing suspend and resume. Everyone once
-in a while it hangs when going into suspend and I see the following.
+To address the issues both commits were trying to fix, add a second
+completion event in the MIPS smp hotplug path. It removes the
+possibility of a race, since the MIPS smp hotplug code now synchronises
+both the boot and secondary CPUs before they return to the hotplug core
+code. It also addresses the deadlock by ensuring that the secondary CPU
+is not marked online before it's counters are synchronised.
 
-1. CPU 0 brings down other CPUs for suspend and attempts to parks smp
-threads. It waits for each thread to be parked before moving on.
-kernel/power/suspend.c: disable_nonboot_cpus()
-kernel/cpu.c: _cpu_down() then smpboot_park_threads()
+This fix should also be backported to fix the race condition introduced
+by the backport of commit 8f46cca1e6c06 ("MIPS: SMP: Fix possibility of
+deadlock when bringing CPUs online"), through really that race only
+existed before commit 8df3e07e7f21f ("cpu/hotplug: Let upcoming cpu
+bring itself fully up").
+To apply cleanly it requires both commit a00eeede507c10 ("MIPS: SMP: Use
+a completion event to signal CPU up") and commit 6f542ebeaee0 ("MIPS:
+Fix race on setting and getting cpu_online_mask") to be applied.
 
-2. CPU X(nonboot cpu) parks all smpboot threads except the last one.
-Then it hangs here.
-Under further inspection I see the following...
-The thread that needs to be parked is never scheduled instead it is
-waiting in the wake_list within the cpu runqueue(The cpu that should
-be parking the thread).
-The CPU (with its wait_list populated) is staying in the idle task
-loop. It never schedules the next task in the wait_list.
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+CC: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
+Fixes: 6f542ebeaee0 ("MIPS: Fix race on setting and getting cpu_online_mask")
+Cc: <stable@vger.kernel.org> # v4.1+
+Seires-cc: linux-mips@linux-mips.org
+---
 
-I've tried pulling in potential fixes from upstream, but everything i
-tried so far has failed to fix the hang.
+ arch/mips/kernel/smp.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-I am running out of ideas on how to debug this. So any pointers on how
-to get deeper into the issue would be much appreciated. Thanks!
-
-Justin
-.
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 6bace7695788..20d7bc5f0eb5 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -66,6 +66,7 @@ EXPORT_SYMBOL(cpu_sibling_map);
+ cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(cpu_core_map);
+ 
++static DECLARE_COMPLETION(cpu_starting);
+ static DECLARE_COMPLETION(cpu_running);
+ 
+ /*
+@@ -376,6 +377,12 @@ asmlinkage void start_secondary(void)
+ 	cpumask_set_cpu(cpu, &cpu_coherent_mask);
+ 	notify_cpu_starting(cpu);
+ 
++	/* Notify boot CPU that we're starting & ready to sync counters */
++	complete(&cpu_starting);
++
++	synchronise_count_slave(cpu);
++
++	/* The CPU is running and counters synchronised, now mark it online */
+ 	set_cpu_online(cpu, true);
+ 
+ 	set_cpu_sibling_map(cpu);
+@@ -383,8 +390,11 @@ asmlinkage void start_secondary(void)
+ 
+ 	calculate_cpu_foreign_map();
+ 
++	/*
++	 * Notify boot CPU that we're up & online and it can safely return
++	 * from __cpu_up
++	 */
+ 	complete(&cpu_running);
+-	synchronise_count_slave(cpu);
+ 
+ 	/*
+ 	 * irq will be enabled in ->smp_finish(), enabling it too early
+@@ -443,17 +453,17 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ {
+ 	mp_ops->boot_secondary(cpu, tidle);
+ 
+-	/*
+-	 * We must check for timeout here, as the CPU will not be marked
+-	 * online until the counters are synchronised.
+-	 */
+-	if (!wait_for_completion_timeout(&cpu_running,
++	/* Wait for CPU to start and be ready to sync counters */
++	if (!wait_for_completion_timeout(&cpu_starting,
+ 					 msecs_to_jiffies(1000))) {
+ 		pr_crit("CPU%u: failed to start\n", cpu);
+ 		return -EIO;
+ 	}
+ 
+ 	synchronise_count_master(cpu);
++
++	/* Wait for CPU to finish startup & mark itself online before return */
++	wait_for_completion(&cpu_running);
+ 	return 0;
+ }
+ 
+-- 
+2.7.4

@@ -1,35 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Sep 2017 00:12:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9919 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993960AbdIHWMsSveJA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Sep 2017 00:12:48 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 96607D95F1B83;
-        Fri,  8 Sep 2017 23:12:36 +0100 (IST)
-Received: from localhost (10.20.1.88) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 8 Sep 2017 23:12:40
- +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Sep 2017 03:32:53 +0200 (CEST)
+Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:35564
+        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993960AbdIIBcmkhWke (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Sep 2017 03:32:42 +0200
+Received: by mail-pf0-x243.google.com with SMTP id g13so2193188pfm.2;
+        Fri, 08 Sep 2017 18:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ulBdcO7IvtjALr4RjZEgyCdh00vQ76tvmCjc+1TGsUI=;
+        b=ltINuvOfn5d7buMuHt6HcfA7yIv7/5x7cNXXHDh6GyjpB6k7AUY20oUcQRecizJyvq
+         J8E1G/5lbCrJG/LuJ47hGyaAGZRNbCBc7n/z88n9O1cxDtuuzaGK/5d+oHi9xd6mB6Xk
+         SqpmlM/BjXc6LpBJJWY797b7YpuhExg8aEJUxZeULYCZ4FqU9KY+QHoM8vpFsKEzafcm
+         oh+OWVq/ykiqwoTYJ9ay+SjqnoMhFnA8WAIi9VnjSuCoaZCDTA/Pxh4VDmhztF0po/xN
+         abVfAG84r7SIzbx9JtJBdoNrLkO7dXXmG0RajSoP37ZLa8/OhTDIO3YPrstEotmROZJj
+         ifNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ulBdcO7IvtjALr4RjZEgyCdh00vQ76tvmCjc+1TGsUI=;
+        b=L+0dc0jTV04jf4keeFcE9M4q6ZB05X0sV5dji3aGbi8UEaoAVTgPVZLNaXeJEPP6S2
+         78pdtXvgtoTatqphYGaWN3y+5rZC6eKLADTtZcip1vwMFMmsq4tv2i+y7QREqPDFNDt9
+         i4g7mgqW9BR4VNf0phNs7lZm6Uxj5UXl78ZyoPkTxbsDcnqlJeZ+SgckKTHDscqHaMgn
+         KDEQXwQpUh8j8Y2GpChrmZ/24Q2Q5iZwTINiVtHkLmwhfmSTlfobJkC/LISKYLwYCXE/
+         3KCYQPYFFo+Hq23gDpv62jy6/tp/SEMZDV28WY8ZJuR+48LxXTQDZ03dUWLOx+db1NPX
+         jX6w==
+X-Gm-Message-State: AHPjjUhj/T0ThKHGBgNR8CtW6ubviL7fS2nDEPg8GhsjzgqENnVptaGq
+        9KCVKixlw5+BWA==
+X-Google-Smtp-Source: ADKCNb6ZkZ0Op5RkpAQdbBqwWFbYwDluTx5/7AAs1WvRF6jgGsbUzh/tOLWinkK/WFHa8DPS868EQA==
+X-Received: by 10.98.141.77 with SMTP id z74mr4961560pfd.179.1504920755729;
+        Fri, 08 Sep 2017 18:32:35 -0700 (PDT)
+Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id e3sm5293565pga.80.2017.09.08.18.32.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 08 Sep 2017 18:32:34 -0700 (PDT)
+Subject: Re: [PATCH 2/3] watchdog: jz4780: Allow selection of jz4740-wdt
+ driver
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        stable <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: math-emu: Remove pr_err() calls from fpu_emu()
-Date:   Fri, 8 Sep 2017 15:12:21 -0700
-Message-ID: <20170908221221.3001-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.1
+        Wim Van Sebroeck <wim@iguana.be>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org
+References: <20170908183558.1537-1-malat@debian.org>
+ <20170908183558.1537-2-malat@debian.org>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <65d7a551-9496-c0ef-f4a2-5dacc4678326@roeck-us.net>
+Date:   Fri, 8 Sep 2017 18:32:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.1.88]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <20170908183558.1537-2-malat@debian.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59968
+X-archive-position: 59969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,50 +82,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The FPU emulator includes 2 calls to pr_err() which are triggered by
-invalid instruction encodings for MIPSr6 cmp.cond.fmt instructions.
-These cases are not kernel errors, merely invalid instructions which are
-already handled by delivering a SIGILL which will provide notification
-that something failed in cases where that makes sense.
+On 09/08/2017 11:35 AM, Mathieu Malaterre wrote:
+> This driver works for jz4740 & jz4780
+> 
+> Suggested-by: Maarten ter Huurne <maarten@treewalker.org>
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
 
-In cases where that SIGILL is somewhat expected & being handled, for
-example when crashme happens to generate one of the affected bad
-encodings, the message is printed with no useful context about what
-triggered it & spams the kernel log for no good reason.
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-Remove the pr_err() calls to make crashme run silently & treat the bad
-encodings the same way we do others, with a SIGILL & no further kernel
-log output.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: f8c3c6717a71 ("MIPS: math-emu: Add support for the CMP.condn.fmt R6 instruction")
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable <stable@vger.kernel.org> # v4.3+
----
-
- arch/mips/math-emu/cp1emu.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index f08a7b4facb9..4f0a1a6f7589 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -2387,7 +2387,6 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 					break;
- 				default:
- 					/* Reserved R6 ops */
--					pr_err("Reserved MIPS R6 CMP.condn.S operation\n");
- 					return SIGILL;
- 				}
- 			}
-@@ -2461,7 +2460,6 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 					break;
- 				default:
- 					/* Reserved R6 ops */
--					pr_err("Reserved MIPS R6 CMP.condn.D operation\n");
- 					return SIGILL;
- 				}
- 			}
--- 
-2.14.1
+> ---
+>   drivers/watchdog/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index c722cbfdc7e6..ca200d1f310a 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -1460,7 +1460,7 @@ config INDYDOG
+>   
+>   config JZ4740_WDT
+>   	tristate "Ingenic jz4740 SoC hardware watchdog"
+> -	depends on MACH_JZ4740
+> +	depends on MACH_JZ4740 || MACH_JZ4780
+>   	select WATCHDOG_CORE
+>   	help
+>   	  Hardware driver for the built-in watchdog timer on Ingenic jz4740 SoCs.
+> 

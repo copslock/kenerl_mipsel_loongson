@@ -1,74 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Sep 2017 17:53:55 +0200 (CEST)
-Received: from fldsmtpe03.verizon.com ([140.108.26.142]:7884 "EHLO
-        fldsmtpe03.verizon.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994730AbdINPwjqtWAc convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Sep 2017 17:54:22 +0200 (CEST)
+Received: from omzsmtpe01.verizonbusiness.com ([199.249.25.210]:46652 "EHLO
+        omzsmtpe01.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994753AbdINPxOBljfc convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Sep 2017 17:52:39 +0200
+        Thu, 14 Sep 2017 17:53:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1505404359; x=1536940359;
+  t=1505404393; x=1536940393;
   h=from:cc:to:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=jUhVEeyq3V3y5FEPBskooRH2JZMn1huJn8IGNJTpMOM=;
-  b=tdOuFdIBR9F/G7BnkfoMcqULwtYV/sMsOQOpjpMEtRcp9eSIBedLEpXv
-   YhmATeiEEKK7vpxg/9ax5u6xEasf+yWbuUry0QluDjt20rzCR6ZYn4q5H
-   k0acK4Uk20djTS0XiKNMp2OjSSyuFB8XwgcsJhcupMRrVdRKUNRRiaUNy
-   c=;
-Received: from unknown (HELO fldsmtpi02.verizon.com) ([166.68.71.144])
-  by fldsmtpe03.verizon.com with ESMTP; 14 Sep 2017 15:52:29 +0000
+  bh=yNRUdmY/S5Rebb/GBqI5y/FHVkkGrnjFXCDH8vc404w=;
+  b=FbfHdF3x27sYbv2VjUkgyXeVoo4tjSm/9xKSV0Zks5to2jxcI2aj3Uc4
+   Wmy9ZDiofWNXccrRX6/M2vQKcSHh8/EPaU1IsaifvrAOk6p1xDWyxK428
+   YY24HTBCGOqxxOBPvhe0oJtJ6Ucn18GHV63gVvTRaW9fxujDJPXQOB9hL
+   Y=;
+Received: from unknown (HELO fldsmtpi01.verizon.com) ([166.68.71.143])
+  by omzsmtpe01.verizonbusiness.com with ESMTP; 14 Sep 2017 15:53:06 +0000
 From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
+Cc:     Arnd Bergmann <arnd@arndb.de>, John Crispin <john@phrozen.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
 Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO apollo.verizonwireless.com) ([10.255.192.101])
-  by fldsmtpi02.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 14 Sep 2017 15:51:23 +0000
+  by fldsmtpi01.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 14 Sep 2017 15:52:26 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1505404283; x=1536940283;
+  t=1505404347; x=1536940347;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=jUhVEeyq3V3y5FEPBskooRH2JZMn1huJn8IGNJTpMOM=;
-  b=T+vhrkRIUZYS1n6sKcWeJmjCANSuEQxRksZR/ZHA4PKUAFH/SiPyIL1n
-   lQRcKazDJOixqyQcl2ZUYg5Ys2g0wM7Iy5O/oA1jMxgfrXlh5ZIL2fK0P
-   nkkbrnCOSeGzzl6JPORyfopSLehWjo9hDkyqISlEspsa1X+6dnnidkdQS
-   c=;
-Received: from challenger.odc.vzwcorp.com (HELO mercury.verizonwireless.com) ([10.255.240.24])
-  by apollo.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 14 Sep 2017 11:51:23 -0400
+  bh=yNRUdmY/S5Rebb/GBqI5y/FHVkkGrnjFXCDH8vc404w=;
+  b=XkRcSEROhoDvJgriCPMB2dsPWaLYfVBdMmWSA/bDlsiy+TsEqZ7O7/bq
+   uqS4PWSCwM+Jtelf7bIWKmjCHK2EU2OaRdGhp7CA/h9K0RXnQExgYRUul
+   Mi4NHy4anhXYgFpWtFyGnNYm6YvDD8jlICScTqLQwux5XSAl5hXe8oVoE
+   s=;
+Received: from ranger.odc.vzwcorp.com (HELO mercury.verizonwireless.com) ([10.255.240.27])
+  by apollo.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 14 Sep 2017 11:52:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1505404283; x=1536940283;
+  t=1505404347; x=1536940347;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=jUhVEeyq3V3y5FEPBskooRH2JZMn1huJn8IGNJTpMOM=;
-  b=T+vhrkRIUZYS1n6sKcWeJmjCANSuEQxRksZR/ZHA4PKUAFH/SiPyIL1n
-   lQRcKazDJOixqyQcl2ZUYg5Ys2g0wM7Iy5O/oA1jMxgfrXlh5ZIL2fK0P
-   nkkbrnCOSeGzzl6JPORyfopSLehWjo9hDkyqISlEspsa1X+6dnnidkdQS
-   c=;
-X-Host: challenger.odc.vzwcorp.com
-Received: from casac1exh001.uswin.ad.vzwcorp.com ([10.11.218.43])
-  by mercury.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 14 Sep 2017 15:51:23 +0000
-Received: from scwexch12apd.uswin.ad.vzwcorp.com (153.114.130.31) by
- CASAC1EXH001.uswin.ad.vzwcorp.com (10.11.218.43) with Microsoft SMTP Server
- (TLS) id 14.3.248.2; Thu, 14 Sep 2017 08:51:12 -0700
-Received: from OMZP1LUMXCA20.uswin.ad.vzwcorp.com (144.8.22.198) by
- scwexch12apd.uswin.ad.vzwcorp.com (153.114.130.31) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Thu, 14 Sep 2017 08:51:11 -0700
+  bh=yNRUdmY/S5Rebb/GBqI5y/FHVkkGrnjFXCDH8vc404w=;
+  b=XkRcSEROhoDvJgriCPMB2dsPWaLYfVBdMmWSA/bDlsiy+TsEqZ7O7/bq
+   uqS4PWSCwM+Jtelf7bIWKmjCHK2EU2OaRdGhp7CA/h9K0RXnQExgYRUul
+   Mi4NHy4anhXYgFpWtFyGnNYm6YvDD8jlICScTqLQwux5XSAl5hXe8oVoE
+   s=;
+X-Host: ranger.odc.vzwcorp.com
+Received: from casac1exh003.uswin.ad.vzwcorp.com ([10.11.218.45])
+  by mercury.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 14 Sep 2017 15:52:26 +0000
+Received: from scwexch24apd.uswin.ad.vzwcorp.com (153.114.130.43) by
+ CASAC1EXH003.uswin.ad.vzwcorp.com (10.11.218.45) with Microsoft SMTP Server
+ (TLS) id 14.3.248.2; Thu, 14 Sep 2017 08:52:12 -0700
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- OMZP1LUMXCA20.uswin.ad.vzwcorp.com (144.8.22.198) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Thu, 14 Sep 2017 10:51:10 -0500
+ scwexch24apd.uswin.ad.vzwcorp.com (153.114.130.43) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Thu, 14 Sep 2017 08:52:11 -0700
+Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
+ OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Thu, 14 Sep 2017 10:52:10 -0500
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
  OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
- 15.00.1263.000; Thu, 14 Sep 2017 10:51:10 -0500
+ 15.00.1263.000; Thu, 14 Sep 2017 10:52:10 -0500
 To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH for 4.9 10/59] MIPS: Ensure bss section ends on a long-aligned
- address
-Thread-Topic: [PATCH for 4.9 10/59] MIPS: Ensure bss section ends on a
- long-aligned address
-Thread-Index: AQHTLXFHcO+koevglk6BO8QsYtCUPg==
-Date:   Thu, 14 Sep 2017 15:51:07 +0000
-Message-ID: <20170914155051.8289-10-alexander.levin@verizon.com>
+Subject: [PATCH for 4.9 57/59] MIPS: Lantiq: Fix another request_mem_region()
+ return code check
+Thread-Topic: [PATCH for 4.9 57/59] MIPS: Lantiq: Fix another
+ request_mem_region() return code check
+Thread-Index: AQHTLXFPV0xtfHiiX0OoZ5w6F24/1w==
+Date:   Thu, 14 Sep 2017 15:51:20 +0000
+Message-ID: <20170914155051.8289-57-alexander.levin@verizon.com>
 References: <20170914155051.8289-1-alexander.levin@verizon.com>
 In-Reply-To: <20170914155051.8289-1-alexander.levin@verizon.com>
 Accept-Language: en-US
@@ -85,7 +85,7 @@ Return-Path: <alexander.levin@verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59999
+X-archive-position: 60000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -102,50 +102,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3f00f4d8f083bc61005d0a1ef592b149f5c88bbd ]
+[ Upstream commit 98ea51cb0c8ce009d9da1fd7b48f0ff1d7a9bbb0 ]
 
-When clearing the .bss section in kernel_entry we do so using LONG_S
-instructions, and branch whilst the current write address doesn't equal
-the end of the .bss section minus the size of a long integer. The .bss
-section always begins at a long-aligned address and we always increment
-the write pointer by the size of a long integer - we therefore rely upon
-the .bss section ending at a long-aligned address. If this is not the
-case then the long-aligned write address can never be equal to the
-non-long-aligned end address & we will continue to increment past the
-end of the .bss section, attempting to zero the rest of memory.
+Hauke already fixed a couple of them, but one instance remains
+that checks for a negative integer when it should check
+for a NULL pointer:
 
-Despite this requirement that .bss end at a long-aligned address we pass
-0 as the end alignment requirement to the BSS_SECTION macro and thus
-don't guarantee any particular alignment, allowing us to hit the error
-condition described above.
+arch/mips/lantiq/xway/sysctrl.c: In function 'ltq_soc_init':
+arch/mips/lantiq/xway/sysctrl.c:473:19: error: ordered comparison of pointer with integer zero [-Werror=extra]
 
-Fix this by instead passing 8 bytes as the end alignment argument to
-the BSS_SECTION macro, ensuring that the end of the .bss section is
-always at least long-aligned.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 6e807852676a ("MIPS: Lantiq: Fix check for return value of request_mem_region()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: John Crispin <john@phrozen.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14526/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15043/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 ---
- arch/mips/kernel/vmlinux.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/lantiq/xway/sysctrl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index d5de67591735..f0a0e6d62be3 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -182,7 +182,7 @@ SECTIONS
- 	 * Force .bss to 64K alignment so that .bss..swapper_pg_dir
- 	 * gets that alignment.	 .sbss should be empty, so there will be
- 	 * no holes after __init_end. */
--	BSS_SECTION(0, 0x10000, 0)
-+	BSS_SECTION(0, 0x10000, 8)
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 90565477dfbd..95bec460b651 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -469,8 +469,8 @@ void __init ltq_soc_init(void)
+ 			panic("Failed to load xbar nodes from devicetree");
+ 		if (of_address_to_resource(np_xbar, 0, &res_xbar))
+ 			panic("Failed to get xbar resources");
+-		if (request_mem_region(res_xbar.start, resource_size(&res_xbar),
+-			res_xbar.name) < 0)
++		if (!request_mem_region(res_xbar.start, resource_size(&res_xbar),
++			res_xbar.name))
+ 			panic("Failed to get xbar resources");
  
- 	_end = . ;
- 
+ 		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
 -- 
 2.11.0

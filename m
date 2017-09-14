@@ -1,46 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Sep 2017 22:55:57 +0200 (CEST)
-Received: from sauhun.de ([88.99.104.3]:53005 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991412AbdIMUzu5RD1i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Sep 2017 22:55:50 +0200
-Received: from localhost (p54B333DB.dip0.t-ipconnect.de [84.179.51.219])
-        by pokefinder.org (Postfix) with ESMTPSA id 86E1F2C35A8;
-        Wed, 13 Sep 2017 22:55:44 +0200 (CEST)
-Date:   Wed, 13 Sep 2017 22:55:44 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Sep 2017 11:30:33 +0200 (CEST)
+Received: from mail-wr0-x22c.google.com ([IPv6:2a00:1450:400c:c0c::22c]:46869
+        "EHLO mail-wr0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992363AbdINJaZCE6sw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Sep 2017 11:30:25 +0200
+Received: by mail-wr0-x22c.google.com with SMTP id o42so5084345wrb.3
+        for <linux-mips@linux-mips.org>; Thu, 14 Sep 2017 02:30:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=1RcmgaZbz5mtDXvINfBx/OdM5AvORCMTeuEFo0fVrmA=;
+        b=BH5pMrvk3puwXxGkCnIaDLLL/taa90rQOGYDFiyTzHiAwwlRhZ+ewfiyuBGDwf4ME7
+         qzsQWyRgEgNnU+3Od7Eub/h3jlk5eYbxwsT+E7IaxEz5V9yLJ52nDGrIoniR2//JBfAV
+         +9x9yOBfMOy6wi0/2V5T2hhXIHvf8YMsDRfdk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=1RcmgaZbz5mtDXvINfBx/OdM5AvORCMTeuEFo0fVrmA=;
+        b=EG7flc10yDaXDgeyM0fw29OuZH/p0eAZ0/JMDln1LsE6yMQBBD+3AD/zqdGoVvFcqJ
+         BJVAq6RwckuSaeMnJpZB9dRBzUOIlgDoSEHGUHcaD8ZwmjoosQFvgLGaDhSBxs5St+eb
+         A0tg3W8NKXhuPQYTfQIHKNK++84VRiaGdK2SfrNIWsd+ETR+XNHbQN/qadBjYYuDfmxY
+         4Y4TQLLHEAFzLJJcYtmlR3bvZTmZd1TaLIEs/34KAO8PWgQufUsTyF46zfdd0Y4sI5eC
+         jQpBQYJh5Po3l6e6luAq5eSRCr3tBQcehCINohoyJ1BSWwk6CZY1y4cMPHVKuuFcu7Qn
+         t8bg==
+X-Gm-Message-State: AHPjjUjT9c/TUbvNor0ywsp0/IHbVcyMzKySoGx6U2lgCjdsJNT3/mSO
+        3Q0N7dg0UUVegMVt
+X-Google-Smtp-Source: ADKCNb6qHtYnmnauu9MwO55JXeUZEoRwps4tEMZC2PN3EunV6M1UGQSF1wzIEn9zbioDbQP4ouLWZg==
+X-Received: by 10.223.134.83 with SMTP id 19mr16933142wrw.223.1505381419619;
+        Thu, 14 Sep 2017 02:30:19 -0700 (PDT)
+Received: from dell ([2.27.167.120])
+        by smtp.gmail.com with ESMTPSA id m201sm689460wma.13.2017.09.14.02.30.18
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 14 Sep 2017 02:30:18 -0700 (PDT)
+Date:   Thu, 14 Sep 2017 10:30:17 +0100
+From:   Lee Jones <lee.jones@linaro.org>
 To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        adi-buildroot-devel@lists.sourceforge.net, arm@kernel.org,
         Steven Miao <realmz6@gmail.com>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 1/5] i2c: gpio: Convert to use descriptors
-Message-ID: <20170913205544.iatsjsb3ffohruwi@ninjato>
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 4/5] i2c: gpio: Augment all boardfiles to use open drain
+Message-ID: <20170914093017.3xqgqomzt7i7gb5m@dell>
 References: <20170910214424.14945-1-linus.walleij@linaro.org>
- <20170910214424.14945-2-linus.walleij@linaro.org>
- <CAMuHMdXabvax2Wru8j+MC4X5F+z5hoUo1tEbX+zn2AUW6QENVA@mail.gmail.com>
- <CACRpkdb4LQAqyWpRAWGRxUOcTbWVksNc3FTWdPnYNE-AUHtfgg@mail.gmail.com>
+ <20170910214424.14945-5-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rpjnafryku246gtn"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACRpkdb4LQAqyWpRAWGRxUOcTbWVksNc3FTWdPnYNE-AUHtfgg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20170910214424.14945-5-linus.walleij@linaro.org>
 User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <wsa@the-dreams.de>
+Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 59992
+X-archive-position: 59993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: lee.jones@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,39 +74,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sun, 10 Sep 2017, Linus Walleij wrote:
 
---rpjnafryku246gtn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> We now handle the open drain mode internally in the I2C GPIO
+> driver, but we will get warnings from the gpiolib that we
+> override the default mode of the line so it becomes open
+> drain.
+> 
+> We can fix all in-kernel users by simply passing the right
+> flag along in the descriptor table, and we already touched
+> all of these files in the series so let's just tidy it up.
+> 
+> Cc: arm@kernel.org
+> Cc: Steven Miao <realmz6@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ARM SoC folks: requesting ACK for Wolfram to take this patch.
+> Steven (Blackfin): requesting ACK for Wolfram to take this patch.
+> Ralf (MIPS): requesting ACK for Wolfram to take this patch.
+> Lee: requesting ACK for Wolfram to take this patch.
+> ---
+>  arch/arm/mach-ep93xx/core.c                  | 6 ++++--
+>  arch/arm/mach-ixp4xx/avila-setup.c           | 4 ++--
+>  arch/arm/mach-ixp4xx/dsmg600-setup.c         | 4 ++--
+>  arch/arm/mach-ixp4xx/fsg-setup.c             | 4 ++--
+>  arch/arm/mach-ixp4xx/ixdp425-setup.c         | 4 ++--
+>  arch/arm/mach-ixp4xx/nas100d-setup.c         | 4 ++--
+>  arch/arm/mach-ixp4xx/nslu2-setup.c           | 4 ++--
+>  arch/arm/mach-ks8695/board-acs5k.c           | 6 ++++--
+>  arch/arm/mach-pxa/palmz72.c                  | 6 ++++--
+>  arch/arm/mach-pxa/viper.c                    | 8 ++++----
+>  arch/arm/mach-sa1100/simpad.c                | 6 ++++--
+>  arch/blackfin/mach-bf533/boards/blackstamp.c | 4 ++--
+>  arch/blackfin/mach-bf533/boards/ezkit.c      | 4 ++--
+>  arch/blackfin/mach-bf533/boards/stamp.c      | 4 ++--
+>  arch/blackfin/mach-bf561/boards/ezkit.c      | 4 ++--
+>  arch/mips/alchemy/board-gpr.c                | 4 ++++
+>  arch/mips/ath79/mach-pb44.c                  | 4 ++--
 
+>  drivers/mfd/sm501.c                          | 4 ++--
 
-> If Wolfram likes this series, I volunteer to rebase your patch
-> (oh well rewrite patch 2 from scratch, haha) on top of it as well
-> so he can apply the whole thing.
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
-Yes, I like Geert's series. Merging the two series sounds great to me
-and is probably easiest, but I'll leave it to you guys how to upstream
-it.
-
-
---rpjnafryku246gtn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlm5m1AACgkQFA3kzBSg
-Kba9IBAAn7uOLxskwT8kgRTLzPXBB74aK9mmLaD1FQwvVLF0EcVoFYod987Zg3WA
-1QecZTUcKAqDFjc4HHUbHrzX8C/QrsKl2Bj+u8lt+iFkn5hlwpmE+mwjtcyT8OZF
-Lb8tMzKH3fLxBN9aSjMzt7klbhl9y1CFxOlKVueNEuY0ienwMG4NZAsBhWEoJwe+
-BCoeWK75P9Us1WFH4SbWqcxa5CMPfSfTTu0Rc8p1DFFrbo+ibjOAIcNNv/ac1RTT
-b1fdMo+8NEJjW1rnyB8l50IbevhgtWpPRrYsCl0dRWUZeKdbu5crT006V/28CCpV
-cc25Q+VGyBtGmTdtMtFIJBeRLrl6p3P1QS6d+/KBgZdYkbp5FKsjoXxGa1pQh7Lw
-ssPm9LLwPJ8uGvP1gjZnOWgOEjdpWO53QqrUKS2fXuJEsQQDwdMmK4V4MHY95wk9
-DDOnJ1YgeX6MbcfjS6j6lu6pwdji0g6IRIOYL1gCirTkDX/OpCAftRnbTVYwpuqR
-FwU3xhNXz1p4eDy43DlTNmiCmugkkkYWx3DQLymCIoHjWbXP3/mVNzenF65eKUBr
-wOgco1nJwC/1ktq7JEbZJ6jFce/TP5zGk/q69SCFZ3+mKhd/b07i/QIcr2yA0Vya
-4jjqwNmJxWTYRyf3Dcsjb9ybA95VgL5SNkW3e7w88kA25QdmwdU=
-=v60d
------END PGP SIGNATURE-----
-
---rpjnafryku246gtn--
+-- 
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

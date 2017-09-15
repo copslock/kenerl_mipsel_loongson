@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Sep 2017 19:35:01 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Sep 2017 19:35:27 +0200 (CEST)
 Received: from mail-co1nam03on0062.outbound.protection.outlook.com ([104.47.40.62]:11616
         "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992110AbdIOReCLycOM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992181AbdIOReCkSHTM (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 15 Sep 2017 19:34:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=DCCgCqSqZsJ2AYBVVwKHy8MhFsTp+2MWopGcYdrvCb8=;
- b=UKNgpNdYTiot1Hqv+Xt6nkEOKpZnYGEtG8uF9PQn3T/TGhCaGqCM30sFOB2K7+1zaPAPUTsVtzLU4iNL8IQuxQKsIUqEurOlUZK2aR953XL+NZEpoLwB8MpTVPuE+pYWhLS2X6bSRfUkgmTNWkkIjz7XTX77twoy8Rs4ooDAAgc=
+ bh=yiJ4Qa87uKUD6+7bY40su02qZjH+Cyy3e553/nG6+ZQ=;
+ b=RbFl5WWI3hvoH0w1LUJ5DREEh1kD9B1eOMe+TeIWzoUd2N0tuueDwOAULb3tjYC+/4ohOtCG1E6VDeY6Vmz2QxeeK8SGynMlU57CQcJUWoT+WGuzf3YnsXXhHfAVlECF7v4JVFapOVS4hWwS0GKFcVH0J46rWJNfSR07e8P9IDM=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (173.18.42.219) by
  DM5PR0701MB3800.namprd07.prod.outlook.com (2603:10b6:4:7f::22) with Microsoft
  SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.20.56.11; Fri, 15
- Sep 2017 17:33:52 +0000
+ Sep 2017 17:33:53 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH 03/11] MIPS: Octeon: Header and file cleaning.
-Date:   Fri, 15 Sep 2017 12:30:05 -0500
-Message-Id: <1505496613-27879-4-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH 04/11] MIPS: Octeon: Add support for accessing the boot vector.
+Date:   Fri, 15 Sep 2017 12:30:06 -0500
+Message-Id: <1505496613-27879-5-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1505496613-27879-1-git-send-email-steven.hill@cavium.com>
 References: <1505496613-27879-1-git-send-email-steven.hill@cavium.com>
@@ -32,45 +32,45 @@ X-ClientProxiedBy: SN1PR0701CA0031.namprd07.prod.outlook.com
  (2a01:111:e400:5173::41) To DM5PR0701MB3800.namprd07.prod.outlook.com
  (2603:10b6:4:7f::22)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: dc96e729-1805-4bf8-16c8-08d4fc5fef38
+X-MS-Office365-Filtering-Correlation-Id: 08f8b053-aa40-47e2-245b-08d4fc5fefc7
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(22001)(300000502095)(300135100095)(2017030254152)(300000503095)(300135400095)(2017052603199)(201703131423075)(201703031133081)(201702281549075)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:DM5PR0701MB3800;
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR0701MB3800;3:88w8PqueqGtfd1z1bRoA1ucsvDXGQyiumakjKkBCjjtlLIgysbFVHRBrbQ63VA4wpkZdLiVlOmqVCFI8gjaKE6FGLJule6Jyu2mQIcpxR/fIuyrH9x1Nb4IgroG5quU6idjW6LwHXxKEnbs0WNCcuYfTRVkJC+ylZTeDXORLxuGK6cSMF2sfD5bbT3aFpg6Ipkx302F7N+ftYkNyrr/jbnkzk5eT5uQnmAb4u/kKu9xRu/m5UAFunvnBzrZDX6Um;25:DV07ZLGupbQY9y3s1MacPp8m5iR2iK7PIOjpkOHt3NieuhjM3FKEHcyoUQkr5WluY491wIYqkBbdUz7PMrR2qBizBhg48rSD3AiSx+yRNHCWtbhyyJIkhm1xb/f2lcVh3YUG/mtVpaFKGD+X0ADPefd5zVpJW46DxtDewLcXnMlJXEk0okcBgvtB8EAMVXgEtK3kDjgLP/XXwBZZ22yD72ZPVH97KKZaW1tw3c+4PzcggVWjhD3GoM0XEdQ9r4SL5m8V7hlR3y71TPjFgj9aQdK1tCvGmX16NIqHW/G2WuCbysZU96X/P5tywNM4nNF0wOMJm5mRIw7V75uBhd/y3g==;31:lvik6N5C0BMy0bTRxTnqSoVeDf4oGLk9c1RYa/D8EboftUwLSOZDSFgvh7Ts1Cy2FwBf/+YFrnkNpd/Zt19NO0i9ep08GzSLlpkqbZT2f3AlHakrl5c95OD/43hm7xMkbn8aqlGgBKqtvoE/iORfFYKxIWMhxTHdGdPfoHMLER0f7Orh6wd7Hc+6cAr3+WWTYCDR0QiF3wNtcqTyKIjLb+W4IMp1SGMU0K/vKFMqNPo=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR0701MB3800;3:LuyC/UyQXRB/8LlIDisQ1hP6fploiO/MtXPAv0xoekPt0/qc+o4/yE3EHNBNTBmeGVwiAn7td2kPdPgj2EfeexX6gEvzQU8XfRJ3aNzrZXGk1R5ddjP0bFr7E9oOySf/6rDL5m2xl6F8zYxtJl+7Z/8NQlBDcU9hQ4vavIJphX8/DPSjVpv7TGaD9GS/mJdTGGaVTMlB0Y1qdNSL0gHaIJfiDv8gEuExQtGtAqro7rqplJzREgkhMG1LsUK3CKYY;25:CjqJTyFaG7lSQz9rKyqTfPO4lBd2ng+IDQyxdDzmo2PD5sF7w+3OwlE6L9xgXCB0G7tJN96jKy52pM+bX9FHQZeOZcYISNYEEV2SASKPDG1mU8dVJeLpqoBcbJ6U45uhx5b08GRK7hnhgWpiEvMT/675Ab/C21k8btFTiDYHoWT6sP4DbXUNm+P6IZ0soTO67d6rU01fZ2fQuQOPekPEZajGOwhRh56TYH2SVBN9b415HRBR7xNX94vVzNOsw52CXeymI1flgI/klcEWmDMUYBi9WQQ7+tMzrPQ3q1wruZQUqz0XraWf/plAN6+RywAcD2kW5poEvrowVCVdma2woA==;31:HIfMC5FAuV/Z//RMy+Qm6fFXovu9PrsGOkteseGVw5BxawLVPOv9Y8HROPVl424lLdEw0LKqIjYv9Y1B9r9dvAqo2LkZmTbk6Fjo7eD2vfJYzsCrByLW03ZAAzUQf6TQRPHkZ5QC32M4XrWCGNKW08lEqrS8Ubcpv5Wl5xDfzPiuW24Mg89F0v6EowOfEw0GFnWYTO9bAaeU7y9sfS/VRKtDS1p9njqgB32UC2THIYw=
 X-MS-TrafficTypeDiagnostic: DM5PR0701MB3800:
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR0701MB3800;20:fXj75RJvpwOSmBGJ2HEQkvT130jhEUoLxFaowLObI/Cy4skWJRsRLHh+SbZoDhmaxcv9hL3e4BBmDhtPPZt1y/L49RUVAbhRD6CKdu14ZbLbUsaeu2BKEhdGX9Yu0kGJNj/9rzyk4YFTJiYUE2Ep7aUdYPMuO4G6rADo1NCfFTia2V0H+n//e9Iv+Wmsfy7L2pd1qiZ0k8ShcBKynWF7nm7DqnBtUQO0X3PzUujoMlIwNuKOPoJeyUxUnnXXj/+b4RWb2Z5Rfr2XqXsxnmWcM9Te0pEoqtskAuLv5Cscv2XJsoo3JveJYcA85CQ7xK5kd/5D9U58HoaB86oPE2CxhqhUbyhuCkk6fAPHxbvHkwF7+ohQXvDikYmNEhKpP6/ZZj7QvWnJD2c9e5I0GTyL127LzB/pn3tftmAyRDD66SBacVfcfug8hn9IY/x8eu2bhw3H+1zm5o0nTH5gp0YT6o8K5Sc/sQSPVy68LLeGuIiK0EaHFYtegHGsGslLmpHa;4:m40rmDOX5T5U5P16KvAIobVjDkCuk6eQy5s7lhLsb+ArkfqJyie6771Cgl4xO9hI/4GPNtFXl1/wmaCSmUUGrbFgyAJlJXz/E5j5ebQau+xiW+t8EfVNfiw6z0PQ4DBVFH6+DSth2SnguYgPVSQNLJ7m8mCzJKi+e9bz+iYOZ39zUT2G/VxhEuAPcmQpez0nks5t89b4o2jj8v8263qcHTwynYbPCOuNjT53MwXEQyVeCusEq9clujuZyxH9m8lQ
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <DM5PR0701MB3800D1A23D9EDC89512CF956806C0@DM5PR0701MB3800.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR0701MB3800;20:rL1Mz85VjcCYddnfMXFD0zuQvhbCJTOLaOLMK65g0I4a/dQp1Mu6ktcKMtzFwlHg0h3M/fxWYtqoSHPOQq00X2k27XLRY73/7iyifH9P55VwMr+8QRYxTENzrpXGvX8kJcXqvgjxfUINQ51ge79i6k6PNHGvRMkQ/sZjjUWxZdQ36c/5W0PZuLbgl9jzTuA/W1+ilzgIz5XNDqsLRpOHUVpuM2keKtndboFS6Yi8ri+f+J29pqb5v9MOl4poO3NXZosC6ByZOuFBQYTsUzE7JT8gF6Rq6gk+Qz+n/xIrGaV/jLivhtlCLJFhV2FObLfatzp5mT/Iw9Dg9VqQZZhcTqYY7ZdAmvtXi5LS0dPkzWrCfd5ri2vtqwFV5HTFWRBfJUxj9UlBggheax6Og5PLHoRM9tPaqB3tBAsqrPXXkVcM4AYOc6EgOBBMmfH92B9141ZoXgBHRvbzuzfYIXk8xGZaJHvJg6ixaHi/+exwixR7AVEr5FNRr1I9D7D56yKL;4:LgmdD+qKpK97DFmQlW84DeDKL5+UE78RI0fkt9HZRbW6i4M3jgbymCzM8YqSkcXjtOA1EnWKaWP28kkjKy5Lncklzj+LKR6mymrkW4pFBsg7BEKvcj6beYrFeC6+LesPcYzD3zmBC3Kca5/39/GSyH1Jrkzmq+dIh9C21XgBpLa7fmittF9TtGUxMQwqDvQe9ZsoXjWUFYyvzAMTP5reb4gA7xXG+sy2tdopnt3rbb1Kq7J4uZ3myNQ+5jyabUNizSYhvQPsJMY37xDukU+UEvq7fQ4+wcQNqsgzZEuAO0OMrfech8xVBW4Ot2Fj29x8HB2jaVNw+JbOYn151lbsmQ==
+X-Exchange-Antispam-Report-Test: UriScan:(278428928389397)(131327999870524);
+X-Microsoft-Antispam-PRVS: <DM5PR0701MB3800378C88EA59F6ADAF9698806C0@DM5PR0701MB3800.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(2401047)(8121501046)(5005006)(100000703101)(100105400095)(3002001)(10201501046)(93006095)(93001095)(6041248)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123564025)(20161123560025)(20161123555025)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:DM5PR0701MB3800;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:DM5PR0701MB3800;
 X-Forefront-PRVS: 0431F981D8
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(346002)(376002)(199003)(189002)(2950100002)(33646002)(50986999)(68736007)(53416004)(47776003)(76176999)(106356001)(2361001)(105586002)(2351001)(66066001)(48376002)(6666003)(50466002)(6506006)(6916009)(36756003)(7736002)(69596002)(2906002)(5660300001)(101416001)(8676002)(6486002)(305945005)(4326008)(53936002)(450100002)(25786009)(189998001)(97736004)(86362001)(8936002)(110136004)(50226002)(3846002)(6116002)(5003940100001)(81156014)(81166006)(72206003)(316002)(16526017)(16586007)(6512007)(478600001)(2004002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR0701MB3800;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(346002)(376002)(199003)(189002)(2950100002)(33646002)(50986999)(68736007)(53416004)(47776003)(76176999)(106356001)(2361001)(105586002)(2351001)(66066001)(48376002)(6666003)(50466002)(6506006)(6916009)(36756003)(7736002)(69596002)(2906002)(5660300001)(101416001)(8676002)(6486002)(305945005)(4326008)(53936002)(450100002)(25786009)(189998001)(97736004)(575784001)(86362001)(8936002)(110136004)(50226002)(3846002)(6116002)(5003940100001)(81156014)(81166006)(72206003)(316002)(16526017)(16586007)(6512007)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR0701MB3800;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR0701MB3800;23:JKmBJiKZYO5Bm4j/aADH5AfAGs7gQxe85S5TRoG?=
- =?us-ascii?Q?jXTJWRoGQ/FQc3MFCdsrjJFIksNQHX1U+8ds3xzH1mRXe3T4+P+4DHYmUtp4?=
- =?us-ascii?Q?OX86NOQb6lIBZC2Sm2aUJjziryuLEHYOkdR+q8YG0R7b/9bY6Xv42z0bboO3?=
- =?us-ascii?Q?qX0BZ8AvuLiKy//Ej38XG1SC99WziWiOq7ZBCLAefQZw3T6GpJyn9lezhJEP?=
- =?us-ascii?Q?flLt9qwLqn+FIDeeqy8rQYoH7tG5rmuDA1mRGAY8W83BR7aGUHFraPpJqLAj?=
- =?us-ascii?Q?EVn/YAKobs3IGZxl8ZDgAgielErbyIthRSVvWETZHYNJr7TtxtVUBjr8axR9?=
- =?us-ascii?Q?x6jCFv1yja18FVcU5Gkc8l+nwke7nDAM1KlgnC2y/d9oLv96dQMaSoN5zto9?=
- =?us-ascii?Q?WC0DnfaCev666A6MPEdT8DFkmW39tQe9K7WYXkYkD7ncXbWKr7h5XPVLozwY?=
- =?us-ascii?Q?UTTJ/4zHbQGQJudMgw+nBrfiNAbA9PiFXll64hQqQqqmGjabZHYWmCFqjQ1D?=
- =?us-ascii?Q?u8s4txnYZ55Kbck7oP9KftC/fBNhPKhpHwALMzay2pq0UclyafwYAs2p+A93?=
- =?us-ascii?Q?374GGvIcWCBb6p0oygQ/5RMbYfgUZv6f/zyByOrgkVT0jegq+37NCaEqjj3k?=
- =?us-ascii?Q?XKdfVD4XLGVmNIIMY8f04/B4XkHR93WyL4IC95lmArSTVt+GiEq7zKFhYXl2?=
- =?us-ascii?Q?pQfhkHjFJThi6V0pFgFBW4dubc6UQj4kMW7op8V5WQ3g4S02uVLzqhVm6eD5?=
- =?us-ascii?Q?P3vdfXT+zEt+jdD6KrJYvEKDxG8RzN/pYpX4MqRIyAT5rFDNPQkadf7cU7+8?=
- =?us-ascii?Q?WLIQ6+RmE5Ld6DmANnBq5it+Q2ZEU/mugVUggN1X0/8H1etAeMlUp/X0TEOC?=
- =?us-ascii?Q?ZH5qtwipjGlfgefdr2AiN+JGhPrntF86+3urYIXlf5Dv9aWRFFzTVzfYef22?=
- =?us-ascii?Q?LVAQpehVlvLXvpfzD1eUFkR28eYf8QEJ6kPZSJzCDZASuyD0KTlhew8KspIS?=
- =?us-ascii?Q?Y52o6LPGZjttRGtLNVS4xiPvO1QFzqF5pjvPVKIaSlIvHsmN7QdsBMmgiQq/?=
- =?us-ascii?Q?5aKK+MBrAxm3S7J6aDn0Z7iQ1zfVVU6jqA0ipLI6E0gdqLhPxapOQ7iZXoU9?=
- =?us-ascii?Q?ElKHtaY6kENlTDLj9iYgje4+kTF4aXWe5Fj7RaTn7cQgTmOD/IkAuJS2UPzH?=
- =?us-ascii?Q?Bdb1ii1rhOJcuUXzUpZ4DntpnF3SOeE890ti7vSleWQCsjq9rc75UwCtpDg?=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR0701MB3800;23:GzG1/KhF0GeFumrg0KjbY11DxEz7IGlzrC40Vlb?=
+ =?us-ascii?Q?mNnKx6eM1nGy6Wedjg7yqcId27RkVvNXwbmfhuMaNFfqTuyfhqd/+y2zvlYl?=
+ =?us-ascii?Q?D0glXk3QVbc4BP11NkSE/AE7G39TymXYaBmJh+sQ6xXzbZHs87dT/M97g6nd?=
+ =?us-ascii?Q?XnP69vaPXYwSlNsWXzRxa3gFmYnsW/UQ8D4mElWj5O0eDG4/i0qQniFMp+x7?=
+ =?us-ascii?Q?NFM9OKQmOdXXVn8QVND0WjSIU4EhJwXoisFP8UqpE+5XJzRvuFFbj8NDctzS?=
+ =?us-ascii?Q?YP9XsPvw7j8Y2spedxm2y7He2/MqxeaeR2ZHQnOHfkW8wj++fwI0Jsz+7P5m?=
+ =?us-ascii?Q?ODE+WGfSCFyOxnqKcmQGB/chTGwc5LJu+I/2Gk8L2bCgMPWKVwKxEJYKRfcU?=
+ =?us-ascii?Q?I0IbaynVn4L250HegnbNCrDAnWWSbR/yAObKwqqzeg3+co7HLlxfpY3OBucI?=
+ =?us-ascii?Q?JBpI4rCeIjg+9odyE4GCO3BLwr9aP351Imo2bvK5r+tyxCYt1XK/zFtdr+ax?=
+ =?us-ascii?Q?3KjCif0K5YLZEP/pVRHaTcR2wVvZ54WuHAfFMVrAbDcZSDo6T9a4ly7HsmG4?=
+ =?us-ascii?Q?s/yFvFzyVE0VRepiUeOP9BEXHfSE0O1DGU8pN3WBugQaVbDh+2w0Le58xwj3?=
+ =?us-ascii?Q?7rPlTWWx6JD5EwdSJ9eqGestUsA7okkrz74A9MjxbB9G+cDb8FfsY+LmbMxS?=
+ =?us-ascii?Q?S/89AaeZ+z9dnWY5Gl7+qaj8mXvn7bgpEPGR96IJvg31xL5IGEhJWW5qHyBE?=
+ =?us-ascii?Q?h8VYNwB+AG42eWaW5ET57rO3/WU2zy6hrZ2QQImG1708Cjgd0rsuiEI6FBA2?=
+ =?us-ascii?Q?p4iDgINQ/lGCloy2lLomg9m9tz+biud2kHtsW4WBmh/Pp3gyasoMcdbDwmYH?=
+ =?us-ascii?Q?RXz3/dtm5Ojvi2wyonBCDPrFs4fxzZhyQqNVE4yGv5cB+IAYBKni1hsMGHtm?=
+ =?us-ascii?Q?iE71uVaSCSNrKXF3fxMyNOex9wDJE031ZP9nU+UC9rUshdw9ZW9M3SRLNqmd?=
+ =?us-ascii?Q?opeV9CqPw7LVdH3FT+HB3IOIrF3gim8cq1IE1uPW2o0xQKgdKb3YQu97sjqx?=
+ =?us-ascii?Q?nqBpXSGkNFUR8qhoDo7jU8WddGDZkEVgAh1Uci5HjawJo9hweuhP0QL5g0eu?=
+ =?us-ascii?Q?sFw5x0aMl1iY34QKyPSyJ1wvYZR9sjGQfrPPqjSLX9FyvcFkQU6955bM2tpM?=
+ =?us-ascii?Q?H/Q7URpCQrziG3WbYzmbIlC2S1DUSh5Nv+peNXELClOul7qqO3YNzv1JjKw?=
  =?us-ascii?Q?=3D=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR0701MB3800;6:VIdEy5yfytTp3QuTDUdsOF+5WQMlHjz+KTszTBK4WFXl/kIZVev5MezgMgtzQFVdrTCJsWRoDnFmAtDTtm7sFcGn0sxz1a/z9ybtbWVpQc2MYgE6aNUYKtiUNN1Cl524xjBFl13XlRvbtV1d698WWxcziFegPPdtAxg/kxzFOfi5r0Kx7DweGXcM9YiSdeth/8PJQt6lq1teXpS2lJOWTNEZ6czVHxd3LEstA0ovhqdBA97+smVLrsu2Ymko/TgBFH0XiBiRl2PM7pTRf0J4ZJiQ/AGcz62j/Y4DZf5ioLskBxi0cfau3vZMmk7VeFh94cwt9ykHLSSUSbgKCcHSzQ==;5:/6xZZg3gIKuDhZquBAOZnzbU7gSxJGBAQwm5JE8gyJHo85Ehce7HBDQmkiRsgIccz7ULAToPrDraHOi1LDR1nDB83F0+YQtQX7ic4poxRehiLOKDj64MKnqHBvIB6aRwnB0aCBtf4pX89jYYDwlIDw==;24:D8yCUFUJGvqnMUZPIvfrwjWoeceE2DH1fnzvMMdSWpUeyVHrD+xzj2LbrxnIJEmbYrUrJxtnhj0/TgAPylVNMG2giOp9VUUInK3dO70VHi8=;7:SfIPVgUXT12tWsHnqGbC5woVXNAS6RWxEw6GbO3XWZMKhZZKhedqiXnmyAa804JYx/sL4UKR6qXRNaHNOUWVHCMDkgjyjBLIjUo7Pnbub4p7IRtJw1glOu0+W7PuLB2EaxFa3uFsarzV9er2NKToRuhM/zQvrYJnyh1UKFppn7BdtlQGkidm5ibGsTg+HiLu7hRj2hqyEl4imEVTUtYULW6GkD4LcfCG/4tR8OfipII=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR0701MB3800;6:D4XlyqJylKSwdpRik4bn6YFwGVCwqGRNyLE5ILTixQ2/MW+xk3C4XQAnDgz2JhythpghW7VOTsIrSKqhYFzvf3NJyG1X+msGBmQlFIvJH9dCzneSrqpD2ZwLWso+Y2JuKlUS6fOX1RDG0s3Z5K9GtOANpZSj6aPHFnYos1zK9ZBx/tnCkGTW2xNUfp+ahZjWYNh++Y4i48iQF+Nq8FQg39fpgFPaJ3wSntmyl8b8TptGZYS4YDHIozRyQ+HnD/gyc9TKrY7tugeWS5dSh1Dt8uJmOR2oxft5p9TLoIiodfmLRk7iBSvRUtko8rSiKSlxL5h1lJtbLrBUV5dUUpHrzw==;5:OX4mmecrwamUZiT54bgwy0cHkM5J+XrtQpGPDroIFq+NU9YgeF4FT/bgjwQqa6wrACnZRWJQ6Zmm68C8iQnu3He2AIZOHM8gBnZr0EB7rLOnymhtxVjFS3E8ab0+9tw/WIAmGi3U57ERkMG03YEcYA==;24:+2Jat5IzHE98Hz1EZh0W6BdXYBkriqnAEj1QTK74E/UYqJ7sGbRK9SiK/SPJx+fhAl3j9g+EizQn2fZQCIJ0cLlrt6fwWqNe9RWZQKCLrGw=;7:TmnuDL0t5L/FjdmeR91LCsgMDqasr4H5obpVONHFTP58LrXxD3EjEULb4W81I5dCALEnr++7+BTdRVf6xpLnUk1QNDTIInoniwmFuAPkWgj9XjlKWXUxRXevo++JyIufD5Puc7w5YjAQyZqSdz6t5zLfOQVfmd2Gyhb2tb+ICeirkBTralQOuAsECoQzjEsuvjn9Y3SPYVe8eYJ7YaCagjDz9sHxKRh6fsVNLREz6Ww=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2017 17:33:52.8324 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2017 17:33:53.4418 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR0701MB3800
@@ -78,7 +78,7 @@ Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60015
+X-archive-position: 60016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -97,436 +97,404 @@ X-list: linux-mips
 
 From: "Steven J. Hill" <Steven.Hill@cavium.com>
 
-In preparation for new hotplug CPU, some housekeeping:
-
-* Clean-up header file dependencies, specifically move inclusion
-  of some headers to only the files that need them.
-* Remove usage of arch/mips/cavium-octeon/octeon_boot.h
-* Clean-ups from checkpatch in arch/mips/cavium-octeon/setup.c
-* Add defining of NR_IRQS_LEGACY for completeness.
-* Move CVMX_TMP_STR macros from top level to cvmx-asm.h
-* Update some copyright dates.
-* Add some missing register include files to top level.
+Used by the Octeon hotplug CPU and watchdog driver code to get
+the address of the firmware boot vector.
 
 Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
 Acked-by: David Daney <david.daney@cavium.com>
 ---
- .../cavium-octeon/executive/cvmx-helper-board.c    |  2 +-
- .../cavium-octeon/executive/cvmx-helper-jtag.c     |  1 +
- .../cavium-octeon/executive/cvmx-helper-rgmii.c    |  1 +
- .../cavium-octeon/executive/cvmx-helper-sgmii.c    |  1 +
- .../mips/cavium-octeon/executive/cvmx-helper-spi.c |  1 +
- .../cavium-octeon/executive/cvmx-helper-xaui.c     |  1 +
- arch/mips/cavium-octeon/executive/cvmx-helper.c    |  1 +
- arch/mips/cavium-octeon/executive/cvmx-pko.c       |  1 +
- arch/mips/cavium-octeon/executive/cvmx-spi.c       |  1 +
- arch/mips/cavium-octeon/octeon-platform.c          |  1 +
- arch/mips/cavium-octeon/octeon_boot.h              | 95 ----------------------
- arch/mips/cavium-octeon/setup.c                    | 10 ++-
- arch/mips/include/asm/mach-cavium-octeon/irq.h     |  8 ++
- arch/mips/include/asm/octeon/cvmx-asm.h            |  6 +-
- arch/mips/include/asm/octeon/cvmx-sysinfo.h        |  4 +-
- arch/mips/include/asm/octeon/cvmx.h                | 10 +--
- 16 files changed, 36 insertions(+), 108 deletions(-)
- delete mode 100644 arch/mips/cavium-octeon/octeon_boot.h
+ arch/mips/cavium-octeon/executive/Makefile         |   2 +-
+ .../cavium-octeon/executive/cvmx-boot-vector.c     | 167 +++++++++++++++++++++
+ arch/mips/cavium-octeon/executive/cvmx-bootmem.c   |  85 +++++++++++
+ arch/mips/include/asm/octeon/cvmx-boot-vector.h    |  53 +++++++
+ arch/mips/include/asm/octeon/cvmx-bootmem.h        |  28 ++++
+ 5 files changed, 334 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/cavium-octeon/executive/cvmx-boot-vector.c
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-boot-vector.h
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-index ab8362e..22d46fe 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-@@ -32,7 +32,7 @@
-  */
+diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
+index b6d6e84..50b4278 100644
+--- a/arch/mips/cavium-octeon/executive/Makefile
++++ b/arch/mips/cavium-octeon/executive/Makefile
+@@ -16,4 +16,4 @@ obj-y += cvmx-pko.o cvmx-spi.o cvmx-cmd-queue.o \
+ 	cvmx-helper-loop.o cvmx-helper-spi.o cvmx-helper-util.o \
+ 	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o
  
- #include <asm/octeon/octeon.h>
--#include <asm/octeon/cvmx-bootinfo.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
-index 607b4e6..e417037 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
-@@ -33,6 +33,7 @@
-  */
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- #include <asm/octeon/cvmx-helper-jtag.h>
- 
- 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-index d18ed5a..2d84490 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-@@ -30,6 +30,7 @@
-  * and monitoring.
-  */
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-index 5782833..a25275d 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-@@ -31,6 +31,7 @@
-  */
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
-index ef16aa0..d9dac21 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
-@@ -34,6 +34,7 @@ void __cvmx_interrupt_stxx_int_msk_enable(int index);
-  * and monitoring.
-  */
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- #include <asm/octeon/cvmx-spi.h>
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-index 19d54e0..d692638 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-@@ -32,6 +32,7 @@
-  */
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-index 75108ec..1e807f8 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-@@ -31,6 +31,7 @@
-  *
-  */
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-pko.c b/arch/mips/cavium-octeon/executive/cvmx-pko.c
-index 676fab5..ec5b013 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-pko.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-pko.c
-@@ -30,6 +30,7 @@
-  */
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- #include <asm/octeon/cvmx-pko.h>
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-spi.c b/arch/mips/cavium-octeon/executive/cvmx-spi.c
-index f51957a..d346ea7 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-spi.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-spi.c
-@@ -30,6 +30,7 @@
-  * Support library for the SPI
-  */
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- 
- #include <asm/octeon/cvmx-config.h>
- 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 8505db4..a605191 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -13,6 +13,7 @@
- #include <linux/libfdt.h>
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-bootinfo.h>
- #include <asm/octeon/cvmx-helper-board.h>
- 
- #ifdef CONFIG_USB
-diff --git a/arch/mips/cavium-octeon/octeon_boot.h b/arch/mips/cavium-octeon/octeon_boot.h
-deleted file mode 100644
-index a6ce7c4..0000000
---- a/arch/mips/cavium-octeon/octeon_boot.h
-+++ /dev/null
-@@ -1,95 +0,0 @@
--/*
-- * (C) Copyright 2004, 2005 Cavium Networks
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- */
--
--#ifndef __OCTEON_BOOT_H__
--#define __OCTEON_BOOT_H__
--
--#include <linux/types.h>
--
--struct boot_init_vector {
--	/* First stage address - in ram instead of flash */
--	uint64_t code_addr;
--	/* Setup code for application, NOT application entry point */
--	uint32_t app_start_func_addr;
--	/* k0 is used for global data - needs to be passed to other cores */
--	uint32_t k0_val;
--	/* Address of boot info block structure */
--	uint64_t boot_info_addr;
--	uint32_t flags;		/* flags */
--	uint32_t pad;
--};
--
--/* similar to bootloader's linux_app_boot_info but without global data */
--struct linux_app_boot_info {
--#ifdef __BIG_ENDIAN_BITFIELD
--	uint32_t labi_signature;
--	uint32_t start_core0_addr;
--	uint32_t avail_coremask;
--	uint32_t pci_console_active;
--	uint32_t icache_prefetch_disable;
--	uint32_t padding;
--	uint64_t InitTLBStart_addr;
--	uint32_t start_app_addr;
--	uint32_t cur_exception_base;
--	uint32_t no_mark_private_data;
--	uint32_t compact_flash_common_base_addr;
--	uint32_t compact_flash_attribute_base_addr;
--	uint32_t led_display_base_addr;
--#else
--	uint32_t start_core0_addr;
--	uint32_t labi_signature;
--
--	uint32_t pci_console_active;
--	uint32_t avail_coremask;
--
--	uint32_t padding;
--	uint32_t icache_prefetch_disable;
--
--	uint64_t InitTLBStart_addr;
--
--	uint32_t cur_exception_base;
--	uint32_t start_app_addr;
--
--	uint32_t compact_flash_common_base_addr;
--	uint32_t no_mark_private_data;
--
--	uint32_t led_display_base_addr;
--	uint32_t compact_flash_attribute_base_addr;
--#endif
--};
--
--/* If not to copy a lot of bootloader's structures
--   here is only offset of requested member */
--#define AVAIL_COREMASK_OFFSET_IN_LINUX_APP_BOOT_BLOCK	 0x765c
--
--/* hardcoded in bootloader */
--#define	 LABI_ADDR_IN_BOOTLOADER			 0x700
--
--#define LINUX_APP_BOOT_BLOCK_NAME "linux-app-boot"
--
--#define LABI_SIGNATURE 0xAABBCC01
--
--/*  from uboot-headers/octeon_mem_map.h */
--#define EXCEPTION_BASE_INCR	(4 * 1024)
--			       /* Increment size for exception base addresses (4k minimum) */
--#define EXCEPTION_BASE_BASE	0
--#define BOOTLOADER_PRIV_DATA_BASE	(EXCEPTION_BASE_BASE + 0x800)
--#define BOOTLOADER_BOOT_VECTOR		(BOOTLOADER_PRIV_DATA_BASE)
--
--#endif /* __OCTEON_BOOT_H__ */
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index a8034d0..2085138 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -39,6 +39,7 @@
- #include <asm/time.h>
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-sysinfo.h>
- #include <asm/octeon/pci-octeon.h>
- #include <asm/octeon/cvmx-rst-defs.h>
- 
-@@ -165,6 +166,7 @@ static int octeon_kexec_prepare(struct kimage *image)
- 			int argc = 0, offt;
- 			char *str = (char *)image->segment[i].buf;
- 			char *ptr = strchr(str, ' ');
-+
- 			while (ptr && (OCTEON_ARGV_MAX_ARGS > argc)) {
- 				*ptr = '\0';
- 				if (ptr[1] != ' ') {
-@@ -357,6 +359,7 @@ void octeon_write_lcd(const char *s)
- 			ioremap_nocache(octeon_bootinfo->led_display_base_addr,
- 					8);
- 		int i;
-+
- 		for (i = 0; i < 8; i++, s++) {
- 			if (*s)
- 				iowrite8(*s, lcd_address + i);
-@@ -429,6 +432,7 @@ static void octeon_restart(char *command)
- 	/* Disable all watchdogs before soft reset. They don't get cleared */
- #ifdef CONFIG_SMP
- 	int cpu;
-+
- 	for_each_online_cpu(cpu)
- 		cvmx_write_csr(CVMX_CIU_WDOGX(cpu_logical_map(cpu)), 0);
- #else
-@@ -715,11 +719,13 @@ void __init prom_init(void)
- 	if (OCTEON_IS_OCTEON2()) {
- 		/* I/O clock runs at a different rate than the CPU. */
- 		union cvmx_mio_rst_boot rst_boot;
-+
- 		rst_boot.u64 = cvmx_read_csr(CVMX_MIO_RST_BOOT);
- 		octeon_io_clock_rate = 50000000 * rst_boot.s.pnr_mul;
- 	} else if (OCTEON_IS_OCTEON3()) {
- 		/* I/O clock runs at a different rate than the CPU. */
- 		union cvmx_rst_boot rst_boot;
-+
- 		rst_boot.u64 = cvmx_read_csr(CVMX_RST_BOOT);
- 		octeon_io_clock_rate = 50000000 * rst_boot.s.pnr_mul;
- 	} else {
-@@ -927,6 +933,7 @@ static __init void memory_exclude_page(u64 addr, u64 *mem, u64 *size)
- {
- 	if (addr > *mem && addr < *mem + *size) {
- 		u64 inc = addr - *mem;
-+
- 		add_memory_region(*mem, inc, BOOT_MEM_RAM);
- 		*mem += inc;
- 		*size -= inc;
-@@ -947,6 +954,7 @@ void __init fw_init_cmdline(void)
- 	for (i = 0; i < octeon_boot_desc_ptr->argc; i++) {
- 		const char *arg =
- 			cvmx_phys_to_ptr(octeon_boot_desc_ptr->argv[i]);
-+
- 		if (strlen(arcs_cmdline) + strlen(arg) + 1 <
- 			   sizeof(arcs_cmdline) - 1) {
- 			strcat(arcs_cmdline, " ");
-@@ -1202,7 +1210,7 @@ void __init device_tree_init(void)
- 	init_octeon_system_type();
- }
- 
--static int __initdata disable_octeon_edac_p;
-+static int disable_octeon_edac_p __initdata;
- 
- static int __init disable_octeon_edac(char *str)
- {
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/irq.h b/arch/mips/include/asm/mach-cavium-octeon/irq.h
-index 64b86b9..7c2bf76 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/irq.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/irq.h
-@@ -11,6 +11,14 @@
- #define NR_IRQS OCTEON_IRQ_LAST
- #define MIPS_CPU_IRQ_BASE OCTEON_IRQ_SW0
- 
+-obj-y += cvmx-helper-errata.o cvmx-helper-jtag.o
++obj-y += cvmx-helper-errata.o cvmx-helper-jtag.o cvmx-boot-vector.o
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-boot-vector.c b/arch/mips/cavium-octeon/executive/cvmx-boot-vector.c
+new file mode 100644
+index 0000000..b7019d2
+--- /dev/null
++++ b/arch/mips/cavium-octeon/executive/cvmx-boot-vector.c
+@@ -0,0 +1,167 @@
 +/*
-+ * 0    - unused.
-+ * 1..8 - MIPS
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * For a total of 9
++ * Copyright (C) 2004-2017 Cavium, Inc.
 + */
-+#define NR_IRQS_LEGACY 9
 +
- enum octeon_irq {
- /* 1 - 8 represent the 8 MIPS standard interrupt sources */
- 	OCTEON_IRQ_SW0 = 1,
-diff --git a/arch/mips/include/asm/octeon/cvmx-asm.h b/arch/mips/include/asm/octeon/cvmx-asm.h
-index 31eacc2..0c6ae93 100644
---- a/arch/mips/include/asm/octeon/cvmx-asm.h
-+++ b/arch/mips/include/asm/octeon/cvmx-asm.h
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2008 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -32,7 +32,9 @@
- #ifndef __CVMX_ASM_H__
- #define __CVMX_ASM_H__
++
++/*
++  We install this program at the bootvector:
++------------------------------------
++	.set noreorder
++	.set nomacro
++	.set noat
++reset_vector:
++	dmtc0	$k0, $31, 0	# Save $k0 to DESAVE
++	dmtc0	$k1, $31, 3	# Save $k1 to KScratch2
++
++	mfc0	$k0, $12, 0	# Status
++	mfc0	$k1, $15, 1	# Ebase
++
++	ori	$k0, 0x84	# Enable 64-bit addressing, set
++				# ERL (should already be set)
++	andi	$k1, 0x3ff	# mask out core ID
++
++	mtc0	$k0, $12, 0	# Status
++	sll	$k1, 5
++
++	lui	$k0, 0xbfc0
++	cache	17, 0($0)	# Core-14345, clear L1 Dcache virtual
++				# tags if the core hit an NMI
++
++	ld	$k0, 0x78($k0)	# k0 <- (bfc00078) pointer to the reset vector
++	synci	0($0)		# Invalidate ICache to get coherent
++				# view of target code.
++
++	daddu	$k0, $k0, $k1
++	nop
++
++	ld	$k0, 0($k0)	# k0 <- core specific target address
++	dmfc0	$k1, $31, 3	# Restore $k1 from KScratch2
++
++	beqz	$k0, wait_loop	# Spin in wait loop
++	nop
++
++	jr	$k0
++	nop
++
++	nop			# NOPs needed here to fill delay slots
++	nop			# on endian reversal of previous instructions
++
++wait_loop:
++	wait
++	nop
++
++	b	wait_loop
++	nop
++
++	nop
++	nop
++------------------------------------
++
++0000000000000000 <reset_vector>:
++   0:	40baf800	dmtc0	k0,c0_desave
++   4:	40bbf803	dmtc0	k1,c0_kscratch2
++
++   8:	401a6000	mfc0	k0,c0_status
++   c:	401b7801	mfc0	k1,c0_ebase
++
++  10:	375a0084	ori	k0,k0,0x84
++  14:	337b03ff	andi	k1,k1,0x3ff
++
++  18:	409a6000	mtc0	k0,c0_status
++  1c:	001bd940	sll	k1,k1,0x5
++
++  20:	3c1abfc0	lui	k0,0xbfc0
++  24:	bc110000	cache	0x11,0(zero)
++
++  28:	df5a0078	ld	k0,120(k0)
++  2c:	041f0000	synci	0(zero)
++
++  30:	035bd02d	daddu	k0,k0,k1
++  34:	00000000	nop
++
++  38:	df5a0000	ld	k0,0(k0)
++  3c:	403bf803	dmfc0	k1,c0_kscratch2
++
++  40:	13400005	beqz	k0,58 <wait_loop>
++  44:	00000000	nop
++
++  48:	03400008	jr	k0
++  4c:	00000000	nop
++
++  50:	00000000	nop
++  54:	00000000	nop
++
++0000000000000058 <wait_loop>:
++  58:	42000020	wait
++  5c:	00000000	nop
++
++  60:	1000fffd	b	58 <wait_loop>
++  64:	00000000	nop
++
++  68:	00000000	nop
++  6c:	00000000	nop
++
++ */
++
++#include <asm/octeon/cvmx-boot-vector.h>
++
++static unsigned long long _cvmx_bootvector_data[16] = {
++	0x40baf80040bbf803ull,  /* patch low order 8-bits if no KScratch*/
++	0x401a6000401b7801ull,
++	0x375a0084337b03ffull,
++	0x409a6000001bd940ull,
++	0x3c1abfc0bc110000ull,
++	0xdf5a0078041f0000ull,
++	0x035bd02d00000000ull,
++	0xdf5a0000403bf803ull,  /* patch low order 8-bits if no KScratch*/
++	0x1340000500000000ull,
++	0x0340000800000000ull,
++	0x0000000000000000ull,
++	0x4200002000000000ull,
++	0x1000fffd00000000ull,
++	0x0000000000000000ull,
++	OCTEON_BOOT_MOVEABLE_MAGIC1,
++	0 /* To be filled in with address of vector block*/
++};
++
++/* 2^10 CPUs */
++#define VECTOR_TABLE_SIZE (1024 * sizeof(struct cvmx_boot_vector_element))
++
++static void cvmx_boot_vector_init(void *mem)
++{
++	uint64_t kseg0_mem;
++	int i;
++
++	memset(mem, 0, VECTOR_TABLE_SIZE);
++	kseg0_mem = cvmx_ptr_to_phys(mem) | 0x8000000000000000ull;
++
++	for (i = 0; i < 15; i++) {
++		uint64_t v = _cvmx_bootvector_data[i];
++
++		if (OCTEON_IS_OCTEON1PLUS() && (i == 0 || i == 7))
++			v &= 0xffffffff00000000ull; /* KScratch not availble. */
++		cvmx_write_csr(CVMX_MIO_BOOT_LOC_ADR, i * 8);
++		cvmx_write_csr(CVMX_MIO_BOOT_LOC_DAT, v);
++	}
++	cvmx_write_csr(CVMX_MIO_BOOT_LOC_ADR, 15 * 8);
++	cvmx_write_csr(CVMX_MIO_BOOT_LOC_DAT, kseg0_mem);
++	cvmx_write_csr(CVMX_MIO_BOOT_LOC_CFGX(0), 0x81fc0000);
++}
++
++/**
++ * Get a pointer to the per-core table of reset vector pointers
++ *
++ */
++struct cvmx_boot_vector_element *cvmx_boot_vector_get(void)
++{
++	struct cvmx_boot_vector_element *ret;
++
++	ret = cvmx_bootmem_alloc_named_range_once(VECTOR_TABLE_SIZE, 0,
++		(1ull << 32) - 1, 8, "__boot_vector1__", cvmx_boot_vector_init);
++	return ret;
++}
++EXPORT_SYMBOL(cvmx_boot_vector_get);
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
+index 8d54d77..94d97ebf 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
+@@ -44,6 +44,55 @@ static struct cvmx_bootmem_desc *cvmx_bootmem_desc;
  
--#include <asm/octeon/octeon-model.h>
-+/* turn the variable name into a string */
-+#define CVMX_TMP_STR(x) CVMX_TMP_STR2(x)
-+#define CVMX_TMP_STR2(x) #x
+ /* See header file for descriptions of functions */
  
- /* other useful stuff */
- #define CVMX_SYNC asm volatile ("sync" : : : "memory")
-diff --git a/arch/mips/include/asm/octeon/cvmx-sysinfo.h b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
-index c6c3ee3..ea1381a 100644
---- a/arch/mips/include/asm/octeon/cvmx-sysinfo.h
-+++ b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2016 Cavium, Inc.
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -32,7 +32,7 @@
- #ifndef __CVMX_SYSINFO_H__
- #define __CVMX_SYSINFO_H__
- 
--#include "cvmx-coremask.h"
-+#include <asm/octeon/cvmx-bootinfo.h>
- 
- #define OCTEON_SERIAL_LEN 20
- /**
-diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
-index 4c14382..d1d1935 100644
---- a/arch/mips/include/asm/octeon/cvmx.h
-+++ b/arch/mips/include/asm/octeon/cvmx.h
-@@ -54,8 +54,7 @@ enum cvmx_mips_space {
- #endif
- 
- #include <asm/octeon/cvmx-asm.h>
--#include <asm/octeon/cvmx-packet.h>
--#include <asm/octeon/cvmx-sysinfo.h>
-+#include <asm/octeon/octeon-model.h>
- 
- #include <asm/octeon/cvmx-ciu-defs.h>
- #include <asm/octeon/cvmx-ciu3-defs.h>
-@@ -68,8 +67,9 @@ enum cvmx_mips_space {
- #include <asm/octeon/cvmx-led-defs.h>
- #include <asm/octeon/cvmx-mio-defs.h>
- #include <asm/octeon/cvmx-pow-defs.h>
-+#include <asm/octeon/cvmx-rst-defs.h>
-+#include <asm/octeon/cvmx-rnm-defs.h>
- 
--#include <asm/octeon/cvmx-bootinfo.h>
- #include <asm/octeon/cvmx-bootmem.h>
- #include <asm/octeon/cvmx-l2c.h>
- 
-@@ -102,10 +102,6 @@ static inline uint32_t cvmx_get_proc_id(void)
- 	return id;
++/**
++ * This macro returns the size of a member of a structure.
++ * Logically it is the same as "sizeof(s::field)" in C++, but
++ * C lacks the "::" operator.
++ */
++#define SIZEOF_FIELD(s, field) sizeof(((s *)NULL)->field)
++
++/**
++ * This macro returns a member of the
++ * cvmx_bootmem_named_block_desc_t structure. These members can't
++ * be directly addressed as they might be in memory not directly
++ * reachable. In the case where bootmem is compiled with
++ * LINUX_HOST, the structure itself might be located on a remote
++ * Octeon. The argument "field" is the member name of the
++ * cvmx_bootmem_named_block_desc_t to read. Regardless of the type
++ * of the field, the return type is always a uint64_t. The "addr"
++ * parameter is the physical address of the structure.
++ */
++#define CVMX_BOOTMEM_NAMED_GET_FIELD(addr, field)			\
++	__cvmx_bootmem_desc_get(addr,					\
++		offsetof(struct cvmx_bootmem_named_block_desc, field),	\
++		SIZEOF_FIELD(struct cvmx_bootmem_named_block_desc, field))
++
++/**
++ * This function is the implementation of the get macros defined
++ * for individual structure members. The argument are generated
++ * by the macros inorder to read only the needed memory.
++ *
++ * @param base   64bit physical address of the complete structure
++ * @param offset Offset from the beginning of the structure to the member being
++ *               accessed.
++ * @param size   Size of the structure member.
++ *
++ * @return Value of the structure member promoted into a uint64_t.
++ */
++static inline uint64_t __cvmx_bootmem_desc_get(uint64_t base, int offset,
++					       int size)
++{
++	base = (1ull << 63) | (base + offset);
++	switch (size) {
++	case 4:
++		return cvmx_read64_uint32(base);
++	case 8:
++		return cvmx_read64_uint64(base);
++	default:
++		return 0;
++	}
++}
++
+ /*
+  * Wrapper functions are provided for reading/writing the size and
+  * next block values as these may not be directly addressible (in 32
+@@ -98,6 +147,42 @@ void *cvmx_bootmem_alloc(uint64_t size, uint64_t alignment)
+ 	return cvmx_bootmem_alloc_range(size, alignment, 0, 0);
  }
  
--/* turn the variable name into a string */
--#define CVMX_TMP_STR(x) CVMX_TMP_STR2(x)
--#define CVMX_TMP_STR2(x) #x
--
++void *cvmx_bootmem_alloc_named_range_once(uint64_t size, uint64_t min_addr,
++					  uint64_t max_addr, uint64_t align,
++					  char *name,
++					  void (*init) (void *))
++{
++	int64_t addr;
++	void *ptr;
++	uint64_t named_block_desc_addr;
++
++	named_block_desc_addr = (uint64_t)
++		cvmx_bootmem_phy_named_block_find(name,
++						  (uint32_t)CVMX_BOOTMEM_FLAG_NO_LOCKING);
++
++	if (named_block_desc_addr) {
++		addr = CVMX_BOOTMEM_NAMED_GET_FIELD(named_block_desc_addr,
++						    base_addr);
++		return cvmx_phys_to_ptr(addr);
++	}
++
++	addr = cvmx_bootmem_phy_named_block_alloc(size, min_addr, max_addr,
++						  align, name,
++						  (uint32_t)CVMX_BOOTMEM_FLAG_NO_LOCKING);
++
++	if (addr < 0)
++		return NULL;
++	ptr = cvmx_phys_to_ptr(addr);
++
++	if (init)
++		init(ptr);
++	else
++		memset(ptr, 0, size);
++
++	return ptr;
++}
++EXPORT_SYMBOL(cvmx_bootmem_alloc_named_range_once);
++
+ void *cvmx_bootmem_alloc_named_range(uint64_t size, uint64_t min_addr,
+ 				     uint64_t max_addr, uint64_t align,
+ 				     char *name)
+diff --git a/arch/mips/include/asm/octeon/cvmx-boot-vector.h b/arch/mips/include/asm/octeon/cvmx-boot-vector.h
+new file mode 100644
+index 0000000..8db0824
+--- /dev/null
++++ b/arch/mips/include/asm/octeon/cvmx-boot-vector.h
+@@ -0,0 +1,53 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2003-2017 Cavium, Inc.
++ */
++
++#ifndef __CVMX_BOOT_VECTOR_H__
++#define __CVMX_BOOT_VECTOR_H__
++
++#include <asm/octeon/octeon.h>
++
++/*
++ * The boot vector table is made up of an array of 1024 elements of
++ * struct cvmx_boot_vector_element.  There is one entry for each
++ * possible MIPS CPUNum, indexed by the CPUNum.
++ *
++ * Once cvmx_boot_vector_get() returns a non-NULL value (indicating
++ * success), NMI to a core will cause execution to transfer to the
++ * target_ptr location for that core's entry in the vector table.
++ *
++ * The struct cvmx_boot_vector_element fields app0, app1, and app2 can
++ * be used by the application that has set the target_ptr in any
++ * application specific manner, they are not touched by the vectoring
++ * code.
++ *
++ * The boot vector code clobbers the CP0_DESAVE register, and on
++ * OCTEON II and later CPUs also clobbers CP0_KScratch2.  All GP
++ * registers are preserved, except on pre-OCTEON II CPUs, where k1 is
++ * clobbered.
++ *
++ */
++
++
++/*
++ * Applications install the boot bus code in cvmx-boot-vector.c, which
++ * uses this magic:
++ */
++#define OCTEON_BOOT_MOVEABLE_MAGIC1 0xdb00110ad358eacdull
++
++struct cvmx_boot_vector_element {
++	/* kseg0 or xkphys address of target code. */
++	uint64_t target_ptr;
++	/* Three application specific arguments. */
++	uint64_t app0;
++	uint64_t app1;
++	uint64_t app2;
++};
++
++struct cvmx_boot_vector_element *cvmx_boot_vector_get(void);
++
++#endif /* __CVMX_BOOT_VECTOR_H__ */
+diff --git a/arch/mips/include/asm/octeon/cvmx-bootmem.h b/arch/mips/include/asm/octeon/cvmx-bootmem.h
+index 3745625..72d2e40 100644
+--- a/arch/mips/include/asm/octeon/cvmx-bootmem.h
++++ b/arch/mips/include/asm/octeon/cvmx-bootmem.h
+@@ -255,6 +255,34 @@ extern void *cvmx_bootmem_alloc_named_range(uint64_t size, uint64_t min_addr,
+ 					    uint64_t max_addr, uint64_t align,
+ 					    char *name);
+ 
++/**
++ * Allocate if needed a block of memory from a specific range of the
++ * free list that was passed to the application by the bootloader, and
++ * assign it a name in the global named block table.  (part of the
++ * cvmx_bootmem_descriptor_t structure) Named blocks can later be
++ * freed.  If the requested name block is already allocated, return
++ * the pointer to block of memory.  If request cannot be satisfied
++ * within the address range specified, NULL is returned
++ *
++ * @param size   Size in bytes of block to allocate
++ * @param min_addr  minimum address of range
++ * @param max_addr  maximum address of range
++ * @param align  Alignment of memory to be allocated. (must be a power of 2)
++ * @param name   name of block - must be less than CVMX_BOOTMEM_NAME_LEN bytes
++ * @param init   Initialization function
++ *
++ * The initialization function is optional, if omitted the named block
++ * is initialized to all zeros when it is created, i.e. once.
++ *
++ * @return pointer to block of memory, NULL on error
++ */
++void *cvmx_bootmem_alloc_named_range_once(uint64_t size,
++					  uint64_t min_addr,
++					  uint64_t max_addr,
++					  uint64_t align,
++					  char *name,
++					  void (*init) (void *));
++
+ extern int cvmx_bootmem_free_named(char *name);
+ 
  /**
-  * Builds a bit mask given the required size in bits.
-  *
 -- 
 2.1.4

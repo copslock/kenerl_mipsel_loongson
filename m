@@ -1,68 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Sep 2017 19:57:39 +0200 (CEST)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:33025
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991438AbdIOR5bWV40M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Sep 2017 19:57:31 +0200
-Received: by mail-lf0-x242.google.com with SMTP id y15so1559659lfd.0
-        for <linux-mips@linux-mips.org>; Fri, 15 Sep 2017 10:57:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lixom-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=cy6nRpK1HSD/EUHMSN/SkA/bIRzGlkF0NuR21AOkwWI=;
-        b=FHkjkbu8T1bX3i8KVOGmaqA0Mcme6fnFL1CXW3WC0RiYX9kWC/neMY/CzroiWoyGnq
-         eL/beicXC8EJJsO9PSDjmO0Xh6UxAUbIok9JJpDTfk/oRVgUfuh72xTXjrRP4o9vUE7S
-         Adm+wpwGWCNV6aPfRyus6YqdBbpHIAxR/p8uwOjzFzqkh4rCYxOQw2D/6gdPDsZL10tA
-         ItR90DYpw5Mh+2meu+xpc4in+ZU8XvlkPd6bJF8s9cyFzgZf3WHPy8+SvytMBy8AN9aF
-         j4TlCAeS1SP2N/6hykWQfraQ4q6TT64tEGKw3tIOD66T1N9xTnv3UUTGY6YYU2joe5cJ
-         gSGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=cy6nRpK1HSD/EUHMSN/SkA/bIRzGlkF0NuR21AOkwWI=;
-        b=Tv+boLbwff1DpuINJmQbipILjSyxI4WH3MeZVJzjqOOz55V+W5CrNiTc67peVPv/F9
-         YcMhSenI69xlCG709QJGdx+yd8u0zMO8Fi+CpmWLeRD4xbj9xevWyzHWds7J8V11nE0q
-         pB8GHqXtV+sUTtT+AZ4738AcOkr+qnUuq+mtkD3PiswqrIo3k5DhDD6nFDpsgzh8/heJ
-         UjwSMShzhm4zVrhHN2fRVJP69gxNo24adOx1eiOBDwkOzZWcNzi/PxoAOKPTvErAzUuh
-         DOrD897bUhKj6oqrm6FT9J/u/cDZiMobrNlB5VSC0Gw9qHDbDhDRmfnB4sKeRwi2Kn4X
-         jgzA==
-X-Gm-Message-State: AHPjjUhKvS7HP6N0CGd+e2d6ktJuACYmNwllHPi3ZvthRa/jAD4WNHPt
-        1UnPnMuWxfS7g51m9sgiH+TvYeNFe9ATbNQjdcQxoQ==
-X-Google-Smtp-Source: AOwi7QANnUseSPsYNdu4eCJz7zUUWKVfTjW/WzPfyB8Lp5QUW6Qwv/idOgSlRUzajrb5FN1sbBhcwMWu3zE6WibgtVA=
-X-Received: by 10.46.21.81 with SMTP id 17mr3652180ljv.68.1505498245936; Fri,
- 15 Sep 2017 10:57:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Sep 2017 20:29:05 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31514 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992121AbdIOS2yArjc5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Sep 2017 20:28:54 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 8F64187B5F477;
+        Fri, 15 Sep 2017 19:28:43 +0100 (IST)
+Received: from [10.20.78.38] (10.20.78.38) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 15 Sep 2017
+ 19:28:46 +0100
+Date:   Fri, 15 Sep 2017 19:28:37 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Fredrik Noring <noring@nocrew.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Add basic R5900 support
+In-Reply-To: <20170915131945.GA32582@localhost.localdomain>
+Message-ID: <alpine.DEB.2.00.1709151838530.16752@tp.orcam.me.uk>
+References: <20170827132309.GA32166@localhost.localdomain> <alpine.DEB.2.00.1708271511430.17596@tp.orcam.me.uk> <20170902102830.GA2602@localhost.localdomain> <alpine.DEB.2.00.1709091022180.4331@tp.orcam.me.uk> <alpine.DEB.2.00.1709110610290.5244@tp.orcam.me.uk>
+ <20170912175826.GA2526@localhost.localdomain> <alpine.DEB.2.00.1709151136220.16752@tp.orcam.me.uk> <20170915131945.GA32582@localhost.localdomain>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.25.199.193 with HTTP; Fri, 15 Sep 2017 10:57:24 -0700 (PDT)
-X-Originating-IP: [209.133.79.7]
-In-Reply-To: <20170915175439.izhfpx2ztep4evet@ninjato>
-References: <20170910214424.14945-1-linus.walleij@linaro.org>
- <20170910214424.14945-2-linus.walleij@linaro.org> <CAOesGMitNqwjEHugsiwsmRAVSinUEv=eprJXHRRhSHUypm=b1A@mail.gmail.com>
- <20170915175439.izhfpx2ztep4evet@ninjato>
-From:   Olof Johansson <olof@lixom.net>
-Date:   Fri, 15 Sep 2017 10:57:24 -0700
-Message-ID: <CAOesGMi5Jx+hDGtUV_3sE8-7Rc+KronFyUmRzT55hZuRn28OPQ@mail.gmail.com>
-Subject: Re: [PATCH 1/5] i2c: gpio: Convert to use descriptors
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        "arm@kernel.org" <arm@kernel.org>, Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Lee Jones <lee.jones@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <olof@lixom.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.20.78.38]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60028
+X-archive-position: 60029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: olof@lixom.net
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,32 +44,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Sep 15, 2017 at 10:54 AM, Wolfram Sang <wsa@the-dreams.de> wrote:
-> On Fri, Sep 15, 2017 at 10:51:28AM -0700, Olof Johansson wrote:
->> On Sun, Sep 10, 2017 at 2:44 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
->> [...]
->> > Cc: arm@kernel.org
->> > Cc: Steven Miao <realmz6@gmail.com>
->> > Cc: Ralf Baechle <ralf@linux-mips.org>
->> > Cc: Lee Jones <lee.jones@linaro.org>
->> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
->> > ---
->> > ARM SoC folks: requesting ACK for Wolfram to take this patch.
->> > Steven (Blackfin): requesting ACK for Wolfram to take this patch.
->> > Ralf (MIPS): requesting ACK for Wolfram to take this patch.
->> > Lee: requesting ACK for Wolfram to take this patch.
->>
->> Acked-by: Olof Johansson <olof@lixom.net>
->>
->> Wolfram: Same thing here, maybe this and the other patch can go on one
->> branch for merge in case of conflicts.
->
-> Yes, I am fine with picking all these up. However, we already found out
-> there needs to be a V2 because Geert had another series cleaning up the
-> i2c-gpio driver and it was decided to merge those two series.
+Hi Fredrik,
 
-Yep, that approach makes sense. I suspect the arm mach pieces will
-still look the same so the ack can stay in that case.
+> >  I wonder if FS=1 hardwired also means the Underflow exception cannot 
+> > happen.  As the corresponding Cause and Enable bits cannot be set together 
+> > or an FPE exception will happen right away, and the Unimplemented 
+> > Operation exception is uncoditional so we need to leave it out, can you 
+> > please also try these masks in turns:
+> > 
+> > 	      " li   %1,0x0001f07c\n"
+> > 
+> > and:
+> > 
+> > 	      " li   %1,0x00000f80\n"
+> > 
+> > This will reveal if any of the Cause, Enable or Flag bits are hardwired.
+> 
+> The result is:
+> 
+> 	FCSR 0x0001f07c old: 01000001, new: 0101c079
+> 	FCSR 0x00000f80 old: 01000001, new: 01000001
 
+ This looks unusual and inconsistent in that only V, Z and O Cause bits 
+appear settable, these and also I Flag bits do and no Enable bits do.  
+Given Jürgen's observations in the discussion you referred to below I 
+would expect the I Flag bit not to be settable either; perhaps it's a 
+hardware erratum.
 
--Olof
+> I was looking for information on GCC for R5900 and found
+> 
+> https://gcc.gnu.org/ml/gcc-patches/2013-01/msg00658.html
+> 
+> where you and Jürgen Urban discuss this topic. Jürgen cites some FPU details
+> from the Emotion Engine core user's manual that is very helpful, in addition
+> to mentioning TX79 differences.
+
+ Thanks for the reference, I did remember I had the discussion, but didn't 
+recall the details, although I had a vague recollection about instruction 
+encoding differences.
+
+ Given the situation I think we'll have to stick with full FPU emulation 
+for regular MIPS/Linux user programs, and then possibly have an ELF ABI 
+flag of sorts to mark software requesting running in the R5900 hard-float 
+mode (which obviously won't be able to use standard `libm', etc.); we can 
+think of doing it in a way to keep binary compatibility with exiting PS2 
+software, should this be a concern.
+
+ Tasks run in the R5900 hard-float mode would then have our FPU emulator 
+strapped for pass-through operation, i.e. the CpU exception and context 
+switching would work normally, however any FPE exception, given the 
+findings above about FCSR possibly including Unimplemented Operation only, 
+would just throw SIGFPE, letting the userland handle it if desired.  
+You'd need a new `si_code' of course for Unimplemented Operation; or maybe 
+not even that, because as vague as Jürgen's notes are they seem to suggest 
+the R5900 may not actually trap with FPE ever.
+
+ This also means you only want FPU_CSR_CONDX in `c->fpu_msk31' (for the 
+full FPU emulation) as with an ordinary MIPS III processor.
+
+ NB, I think the issue with RDHWR emulation to access CP0.UserLocal 
+mentioned in the discussion referred will have to be addressed with the 
+initial submission as well.
+
+  Maciej

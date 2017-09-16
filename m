@@ -1,66 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Sep 2017 19:38:41 +0200 (CEST)
-Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:34799
-        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992533AbdIPRiduZMGi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Sep 2017 19:38:33 +0200
-Received: by mail-oi0-x242.google.com with SMTP id v66so1223822oig.1;
-        Sat, 16 Sep 2017 10:38:33 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2017 00:25:27 +0200 (CEST)
+Received: from mail-it0-x234.google.com ([IPv6:2607:f8b0:4001:c0b::234]:53006
+        "EHLO mail-it0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991131AbdIPWZTHsnrt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2017 00:25:19 +0200
+Received: by mail-it0-x234.google.com with SMTP id c195so6355234itb.1
+        for <linux-mips@linux-mips.org>; Sat, 16 Sep 2017 15:25:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=A2FsbOEEkrMdVsMuzVsZGPCtA7yROMLAz659WXkvtEE=;
-        b=p7mWLjnEoJojLn3LA4feQl9duSJnZbCZ8lcy0dH4d5x+RZw1DWbkpQzuYbS7lr4Tjt
-         2miJ2q5XneTmvP82gNJxjYKuZXNxcJIuz59B+qB1KptJsDTMgNBZgSwUddxfAxD+EEJA
-         lJv6V7yntVm17EXayHVrZl92GmjYpvUfIuuLJ5h1dfBRL8xjsIO1/HU6cY3BA+GpMP9Y
-         39kYu9sbPe627Af647wIOyWJD9Gk2p+X9jAWl05vtDHanUj3kg/VP2gB477O8TfNkHDY
-         zTXvk1OQOJMna2qKQQGbmPvOZx+yqO5YhK7db9/T9vEDQcDDFWcdu8Qzf0zfOlCocJkK
-         UpBQ==
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=/JpJP9zITUcO1kOvMiEpyYzAAqq1gbyKwqxBHtVl4jQ=;
+        b=PJkyjuS1wLM+63aRbrl5l8eXqxVqKY6+/DioR++YGJ8t80h29EXu0/mcmUfPIgz4HN
+         6MCT08IAHD0wbJZVU/ulRf6zdMhZTtBJXRgb1xygCB9jFAoHqiWWjqnHych/kKMSbxFG
+         M9EO6C+GRf51dEmpMHk3X68Tfyn/5008iN7FI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=A2FsbOEEkrMdVsMuzVsZGPCtA7yROMLAz659WXkvtEE=;
-        b=iYB9XrLF3wh/jTRSjR/O0xoHEzaDof5kkidOzQIT9pKVBhiNWfgHXi3w86jYinwIp0
-         +JZZtgNhORNoO4O4KWK+embPeZQFbGjKTqdNG7WPhNX+qOhSigrblzBFRSccNVwhO/md
-         rK9Q2KOgupFU239M7uOnGqXSzHs6Y5ew9IiX9Qm84zMU4JDzqaDOOd+jmxnksa7hZLKM
-         rEZEhfInL1GCjfKbCGeBP2EpfT8OCxtc8PZKwDPswOLTKSWfomSrHdFzCKWrKO94UqML
-         6jK9nzwcmZIzV6EBjLyuXBuEr7jXind8s71V9LkFYg7IP5dXRQdeUXX3ScVnDA8U0tnJ
-         mSTQ==
-X-Gm-Message-State: AHPjjUgGx2IIGM3ACjEDyte0dJ8ZRgYsHUaeCkxyBRU1mJa/dTaDElx/
-        nXCaSzrHaS3Xjw==
-X-Google-Smtp-Source: AOwi7QBNkHpeqUaSmOFOngSeJJeiSLXiNXfVQY9vXhROlAJJ2x86h0cNgtByEAr4ob0OYivevN7oUA==
-X-Received: by 10.202.80.145 with SMTP id e139mr13957428oib.80.1505583507383;
-        Sat, 16 Sep 2017 10:38:27 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:a44d:fd1e:981d:f058? ([2001:470:d:73f:a44d:fd1e:981d:f058])
-        by smtp.gmail.com with ESMTPSA id s133sm4451508oih.25.2017.09.16.10.38.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 16 Sep 2017 10:38:26 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: Allow __cpu_number_map to be larger than NR_CPUS
-To:     "Steven J. Hill" <steven.hill@cavium.com>,
-        linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, david.daney@cavium.com
-References: <1505494693-22732-1-git-send-email-steven.hill@cavium.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <203e4433-39cc-140b-59a0-e140343f0cde@gmail.com>
-Date:   Sat, 16 Sep 2017 10:38:24 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=/JpJP9zITUcO1kOvMiEpyYzAAqq1gbyKwqxBHtVl4jQ=;
+        b=CYvUivQ5icEalsGYQBfJldOnNvX+e8JiZgJ82JENn/UgJizhMLfUBso6D/+mc+FqQp
+         PaXgRjcYO1D5Wg070IApu8VDkWO3TLDrhsdatQpThBp7zG0ZY8sBytT7rUN3Rs/Lj5J3
+         brbgs6Vnyrx8lZznsmnlPBIH04rYqnzo3fbO+UfQGdCH9dCZ9z1OgdRwvWzGXWW08MCD
+         tu0lBKUq1GnzBy03Xb1HaqFjYXvv2HKV8SwJq3xjGud2rnbJbcT9M5rK+m0RPPBTqjnv
+         IF5vY65bdFwBRYzFL75KZRA2PC5jS83CY1FO/TXoZqYIU5eSrTmZ3JE0ZS0ggYF6sSrE
+         OKKw==
+X-Gm-Message-State: AHPjjUjewd4wxApCL0hiomFwp/Hpxu0c3yRZXoF85npZQVvbn6SCxITL
+        vnma1Azd5v9k5TIxav3LHnSypJNeMHXkL8hlXFe8CA==
+X-Google-Smtp-Source: AOwi7QA/hQdD529TqqLshBCsdNn4VDC36dHzQJEv0C6OQ1+aCsOyW7fahIjALdnsPpA3Ms5Lv8BfMW9jCRuMFzqcqqQ=
+X-Received: by 10.36.6.3 with SMTP id 3mr4255166itv.36.1505600712813; Sat, 16
+ Sep 2017 15:25:12 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1505494693-22732-1-git-send-email-steven.hill@cavium.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Received: by 10.79.164.78 with HTTP; Sat, 16 Sep 2017 15:25:12 -0700 (PDT)
+In-Reply-To: <20170914093509.uwk47vt3wnm3rtqb@dell>
+References: <20170910214424.14945-1-linus.walleij@linaro.org>
+ <20170910214424.14945-2-linus.walleij@linaro.org> <20170914093509.uwk47vt3wnm3rtqb@dell>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 17 Sep 2017 00:25:12 +0200
+Message-ID: <CACRpkdZYDALXSoEE9jdo7A5P4XZczVbh_uiLkE54=sRtA3rNDQ@mail.gmail.com>
+Subject: Re: [PATCH 1/5] i2c: gpio: Convert to use descriptors
+To:     Lee Jones <lee.jones@linaro.org>, Ben Dooks <ben@fluff.org.uk>,
+        Ville Syrjala <syrjala@sci.fi>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Heiko Schocher <hs@denx.de>, Guenter Roeck <linux@roeck-us.net>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        "arm@kernel.org" <arm@kernel.org>, Steven Miao <realmz6@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60033
+X-archive-position: 60034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,88 +72,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/15/2017 09:58 AM, Steven J. Hill wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> In systems where the CPU id space is sparse, this allows a smaller
-> NR_CPUS to be chosen, thus keeping internal data structures smaller.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Signed-off-by: Carlos Munoz <cmunoz@caviumnetworks.com>
-> ---
->  arch/mips/Kconfig           | 3 ++-
->  arch/mips/include/asm/smp.h | 2 +-
->  arch/mips/kernel/smp.c      | 4 ++--
->  3 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 48d91d5..ed35fd1 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -915,7 +915,8 @@ config CAVIUM_OCTEON_SOC
->  	select USE_OF
->  	select ARCH_SPARSEMEM_ENABLE
->  	select SYS_SUPPORTS_SMP
-> -	select NR_CPUS_DEFAULT_16
-> +	select NR_CPUS_DEFAULT_64
-> +	select MIPS_NR_CPU_NR_MAP_1024
+On Thu, Sep 14, 2017 at 11:35 AM, Lee Jones <lee.jones@linaro.org> wrote:
 
-Are you possibly missing a hunk in this patch series that does something
-like the following:
+>>  drivers/mfd/sm501.c                          |  49 +++++-----
+>
+> I'd prefer for this to be applied with a Tested-by.  I appreciate that
+> this is an old driver, but can you attempt to contact one of the
+> authors or someone else who might have hardware please?
 
-config MIPS_NR_CPU_NR_MAP
-	int
-	default "1024" if MIPS_NR_CPU_NR_MAP_1024
-	default NR_CPUS
+For SM501 specifically I guess.
 
-config MIPS_NR_CPU_NR_MAP_1024
-	bool
+OK makes sense as it is the most invasive one, paging around...
 
-otherwise...
+Ben, Ville, Magnus, Heiko, Guenther: is one of you still using this
+hardware so you can test the patch set?
 
->  	select BUILTIN_DTB
->  	select MTD_COMPLEX_MAPPINGS
->  	select SYS_SUPPORTS_RELOCATABLE
-> diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-> index bab3d41..5fa6c85 100644
-> --- a/arch/mips/include/asm/smp.h
-> +++ b/arch/mips/include/asm/smp.h
-> @@ -29,7 +29,7 @@ extern cpumask_t cpu_foreign_map[];
->  
->  /* Map from cpu id to sequential logical cpu number.  This will only
->     not be idempotent when cpus failed to come on-line.	*/
-> -extern int __cpu_number_map[NR_CPUS];
-> +extern int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];
-
-I don't think this is defined and would build?
-
-Should you also have a BUILD_BUG_ON() statement that ensures that the
-sparse map is bigger than or equal to NR_CPUS?
-
->  #define cpu_number_map(cpu)  __cpu_number_map[cpu]
->  
->  /* The reverse map from sequential logical cpu number to cpu id.  */
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index 6bace76..aea84b9 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -48,10 +48,10 @@
->  #include <asm/setup.h>
->  #include <asm/maar.h>
->  
-> -int __cpu_number_map[NR_CPUS];		/* Map physical to logical */
-> +int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];   /* Map physical to logical */
->  EXPORT_SYMBOL(__cpu_number_map);
->  
-> -int __cpu_logical_map[NR_CPUS];		/* Map logical to physical */
-> +int __cpu_logical_map[NR_CPUS];			   /* Map logical to physical */
-
-Unrelated clean up.
-
->  EXPORT_SYMBOL(__cpu_logical_map);
->  
->  /* Number of TCs (or siblings in Intel speak) per CPU core */
-> 
-
--- 
-Florian
+Yours,
+Linus Walleij

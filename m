@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Sep 2017 21:18:59 +0200 (CEST)
-Received: from smtp3-g21.free.fr ([IPv6:2a01:e0c:1:1599::12]:25744 "EHLO
-        smtp3-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991500AbdIOTSw66ss5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Sep 2017 21:18:52 +0200
-Received: from macbookpro.malat.net (unknown [78.225.226.121])
-        by smtp3-g21.free.fr (Postfix) with ESMTP id DF0AB13F7E2;
-        Fri, 15 Sep 2017 21:18:51 +0200 (CEST)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
-        id 8F97810C0911; Fri, 15 Sep 2017 21:18:51 +0200 (CEST)
-From:   Mathieu Malaterre <malat@debian.org>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/5] MIPS: jz4780: DTS: Probe the jz4740-watchdog driver from devicetree
-Date:   Fri, 15 Sep 2017 21:18:36 +0200
-Message-Id: <20170915191837.27564-1-malat@debian.org>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170908183558.1537-3-malat@debian.org>
-References: <20170908183558.1537-3-malat@debian.org>
-To:     unlisted-recipients:; (no To-header on input)
-Return-Path: <mathieu@macbookpro.malat.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Sep 2017 15:34:41 +0200 (CEST)
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:46386 "EHLO
+        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992214AbdIPNee0xSbW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Sep 2017 15:34:34 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 52F344038A;
+        Sat, 16 Sep 2017 15:34:30 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id asYl8vqErZoz; Sat, 16 Sep 2017 15:34:29 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 89B183F867;
+        Sat, 16 Sep 2017 15:34:27 +0200 (CEST)
+Date:   Sat, 16 Sep 2017 15:34:26 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+Message-ID: <20170916133423.GB32582@localhost.localdomain>
+References: <20170911151737.GA2265@localhost.localdomain>
+ <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60031
+X-archive-position: 60032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,31 +48,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The jz4740-watchdog driver supports both jz4740 & jz4780.
+Hi Maciej,
 
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
-Changes in v2:
-* make the node name generic (Paul Cercueil)
+>  For the initial R5900 support I think there are two options here, 
+> depending on what hardware supports:
+> 
+> 1. If (for binary compatibility reasons) 128-bit GPR support can somehow 
+>    be disabled in hardware, by flipping a CP0 register bit or suchlike, 
+>    then I suggest doing that in the first stage.
 
- arch/mips/boot/dts/ingenic/jz4780.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+Unfortunately I haven't found such a switch. There is also a set of 128-bit
+multimedia instructions to consider (GCC is perhaps unlikely to generate
+those but assembly code is an option too).
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-index 20e37d2d6008..76055bbc823a 100644
---- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-@@ -263,6 +263,11 @@
- 		status = "disabled";
- 	};
- 
-+	watchdog: watchdog@10002000 {
-+		compatible = "ingenic,jz4780-watchdog";
-+		reg = <0x10002000 0x100>;
-+	};
-+
- 	nemc: nemc@13410000 {
- 		compatible = "ingenic,jz4780-nemc";
- 		reg = <0x13410000 0x10000>;
--- 
-2.11.0
+> 2. Otherwise I think that the context initialisation/switch code has to be 
+>    adjusted such that the upper GPR halves are set to a known state, 
+>    either zeroed or sign-extended from bit #63 (or #31 really, given the 
+>    initial 32-bit port only) according to hardware requirements, so as to
+>    make execution stable and prevent data from leaking between contexts.
+> 
+> Later on proper 128-bit support can be added, though for that to make 
+> sense you need to have compiler support too, which AFAICT is currently 
+> missing.  Myself I'd rather defer commenting on that further support until 
+> we get to it, although of course someone else might be willing to sketch 
+> an idea.
+
+I have a working 32-bit kernel now, except that BusyBox randomly crashes
+unless the kernel saves/restores 64-bit GPRs. The executables and libraries
+declare "ELF 32-bit LSB, MIPS, MIPS-III version 1" so in theory, I suppose,
+they ought to be 32-bit only. It is possible that the error lies in the
+kernel handling of the GPRs but I have double-checked this in several ways.
+
+The error, as it appears, is nasty for at least two reasons: it occurs
+randomly (when the kernel arbitrarily resets the upper 96 bits of all GPRs)
+and it can easily remain undetected and lead to silent data corruption.
+
+Are there other Linux MIPS implementations that reset GPRs like this?
+
+Fredrik

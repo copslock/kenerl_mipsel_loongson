@@ -1,79 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2017 02:14:58 +0200 (CEST)
-Received: from mail-pf0-x244.google.com ([IPv6:2607:f8b0:400e:c00::244]:33982
-        "EHLO mail-pf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991131AbdIQAOvo4Rcx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2017 02:14:51 +0200
-Received: by mail-pf0-x244.google.com with SMTP id g65so2960454pfe.1;
-        Sat, 16 Sep 2017 17:14:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2017 11:39:27 +0200 (CEST)
+Received: from mail-lf0-x22f.google.com ([IPv6:2a00:1450:4010:c07::22f]:57321
+        "EHLO mail-lf0-x22f.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992604AbdIQJjVOk-OP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2017 11:39:21 +0200
+Received: by mail-lf0-x22f.google.com with SMTP id a18so5562466lfl.13
+        for <linux-mips@linux-mips.org>; Sun, 17 Sep 2017 02:39:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=IaG7BT5sDma7BcQen1l3asVYGUeYoxUkzGqSFwaKGF0=;
-        b=BNyybLN1anRPtNhjpopTr3kgeL1Xu1swxHytn5OYtVjikOEIt5zxN1RzRWYRL2YHOJ
-         ozNX036VCQPNT9TWDKmm2bFOS8syp5c3pQgRh44Lmv0O/MWUX5WM5kF1+eXpIJVmntGJ
-         Ke6aHmwVcogN20g1YoftpDsXxcavQWavAzke1+P/JJFADAiLs3mj2AlbfqCZYY31fm3U
-         HKf7l3TDXIEJUGCUocHE1DSAQ6qIOmhmOAVxCQaX2Mhx2qgUV2XvO+nFZ6xv51qsEvSJ
-         n30zZLdBWkL1M0bydrc33Yq5qJlzMaPscQiR+eTGWWueUGmdS92YeRPLP6ZoUOXI+7iS
-         0t5Q==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jnkFVZuCs8tCS72rnGKumg5zfRI8BEYKUCFYpr678Do=;
+        b=PGoh4cd6Ps6Av8pYMJ4uQr4IHxAEZP5frtqQVt3+aUqL3QB/jliD0DPS1xp5R011r/
+         4Gf3vvE9VtvRNVMj1A5xH8/BvMhoJNV+Neh7YeUbDJJ3jN2ZLVOcyTRzp3f7Dh9X83BM
+         q+64DxGd+YVIuW4EdE/87PEJWmQbReqP0x8m4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=IaG7BT5sDma7BcQen1l3asVYGUeYoxUkzGqSFwaKGF0=;
-        b=SSAc68ylTzS+mdePdsA0Vq0BEU6dNpKJJntr4o1nmUv3+ODKH4PPSXTFDX+DHDMel9
-         b/J1sCX+rWOMSZg/20aZAJzwQ9JpCTUAM0HCPcZ+3AsccTEJ9tFE+BeZQbzphvcuZq49
-         /HUEpfVsGmPwfGTtHzR/2ux2uJHnaVjXVc82LKorbmyOW/9Hq57Jg1FginvlUQnLpvkN
-         dEU3nMLmJcoaxGmfwOttj3gXP1y4b+OMVk/1Z2RyUlSquT0WInqrrpQB/J3EqJr4BElj
-         CyWIC12OycI36S93NyHkrLIyD8lI9rgTZpzhW2+GUov4uuZvepL9nomWNmFPMUbNvbWL
-         JWfQ==
-X-Gm-Message-State: AHPjjUi3sf78C3T7EyyiL8pvn3zRlJTv6xOgbQ64wMnYjd4ASVEBPDF4
-        rwSWpcc/ovxIb2ji
-X-Google-Smtp-Source: ADKCNb4CxOvGcoh3LUxDi0QhWo8K/+dit5IMJ/9PiUYp/LKbQLWFgLwOJ5JkqZSdpNGFsyXMNRlWhg==
-X-Received: by 10.99.121.141 with SMTP id u135mr28649426pgc.262.1505607284992;
-        Sat, 16 Sep 2017 17:14:44 -0700 (PDT)
-Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id i63sm8950704pfk.34.2017.09.16.17.14.42
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 16 Sep 2017 17:14:43 -0700 (PDT)
-Subject: Re: [PATCH 1/5] i2c: gpio: Convert to use descriptors
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, Ben Dooks <ben@fluff.org.uk>,
-        Ville Syrjala <syrjala@sci.fi>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Heiko Schocher <hs@denx.de>
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
+        bh=jnkFVZuCs8tCS72rnGKumg5zfRI8BEYKUCFYpr678Do=;
+        b=QKW4GrlRSw7go1B3RHHqL4s2v7PLnBNCbxivybwMlM/jIlHFZFfAtLcIChjO5asmwX
+         LcGns8huq0BVcpfPlFhDjg88Mv0TdABXh5uTAhR8DFh5kUnfROv+HET7Mv8eZfpaiU+6
+         V+3sJ0alDeO2+YKXs5MDPRYAI3ZblsNNAjnOzfij9QKpUZCeLELUkCiy1uuEeKM1DO7b
+         MrfVGVYlVJMAiULbDn/usW5e639lb+MESVcDU6zoO1FbIXYltCR4SjhrW29YHUznAJy0
+         w4Xmo/Mm+fVUnozTgDV8VrlJgKZiBbOhidT//8nGPIOHOlH3c3RrKI9NdsAntBcLTpWS
+         b05g==
+X-Gm-Message-State: AHPjjUjQLPeoir9SfJe/MdZSJTBNUEke4IadLOHH8Y1XkzgPDQctWRIr
+        7/q98Ke3PqyWeatW
+X-Google-Smtp-Source: AOwi7QCxFP77zq2rHe7EymrvY8tdC5bVPT/OV8/B1/GnedKUbtAIfN2HoqhBm/E1IgP44ExqeG/k3w==
+X-Received: by 10.25.205.149 with SMTP id d143mr2012195lfg.147.1505641155348;
+        Sun, 17 Sep 2017 02:39:15 -0700 (PDT)
+Received: from fabina.bredbandsbolaget.se (c-2209e055.014-348-6c756e10.cust.bredbandsbolaget.se. [85.224.9.34])
+        by smtp.gmail.com with ESMTPSA id t84sm974559lfi.21.2017.09.17.02.39.13
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 17 Sep 2017 02:39:14 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         adi-buildroot-devel@lists.sourceforge.net,
-        "arm@kernel.org" <arm@kernel.org>, Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <20170910214424.14945-1-linus.walleij@linaro.org>
- <20170910214424.14945-2-linus.walleij@linaro.org>
- <20170914093509.uwk47vt3wnm3rtqb@dell>
- <CACRpkdZYDALXSoEE9jdo7A5P4XZczVbh_uiLkE54=sRtA3rNDQ@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <7f67dfa0-31da-0967-0929-28ae105bb2b5@roeck-us.net>
-Date:   Sat, 16 Sep 2017 17:14:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 0/7] I2C GPIO to use gpiolibs open drain
+Date:   Sun, 17 Sep 2017 11:38:59 +0200
+Message-Id: <20170917093906.16325-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.13.5
 MIME-Version: 1.0
-In-Reply-To: <CACRpkdZYDALXSoEE9jdo7A5P4XZczVbh_uiLkE54=sRtA3rNDQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <groeck7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60035
+X-archive-position: 60037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,26 +67,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/16/2017 03:25 PM, Linus Walleij wrote:
-> On Thu, Sep 14, 2017 at 11:35 AM, Lee Jones <lee.jones@linaro.org> wrote:
-> 
->>>   drivers/mfd/sm501.c                          |  49 +++++-----
->>
->> I'd prefer for this to be applied with a Tested-by.  I appreciate that
->> this is an old driver, but can you attempt to contact one of the
->> authors or someone else who might have hardware please?
-> 
-> For SM501 specifically I guess.
-> 
-> OK makes sense as it is the most invasive one, paging around...
-> 
-> Ben, Ville, Magnus, Heiko, Guenther: is one of you still using this
-> hardware so you can test the patch set?
-> 
+This augments the I2C GPIO driver to use open drain emulation
+or hardware support for open drain from the GPIO driver.
 
-qemu supports it. I _think_ my commit for this driver was to fix a warning
-I saw when running some qemu test. Unfortunately, I have no idea how that
-message was triggered in my tests, or in other words which qemu machine
-actually uses it. I'll try to find out, but no promises.
+This version layers Geert Uytterhoeven's idea to use explicit
+sda-gpios and scl-gpios for the GPIO lines, and strongly
+encourage the (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN) flags to be
+used in all device trees.
 
-Guenter
+We have collected ACKs from the ARM SoC maintainers and the
+MFD maintainer and are looking for testers to try this out.
+
+Geert Uytterhoeven (1):
+  dt-bindings: i2c: i2c-gpio: Add support for named gpios
+
+Linus Walleij (6):
+  i2c: gpio: Convert to use descriptors
+  gpio: Make it possible for consumers to enforce open drain
+  i2c: gpio: Enforce open drain through gpiolib
+  i2c: gpio: Augment all boardfiles to use open drain
+  i2c: gpio: Local vars in probe
+  i2c: gpio: Add support for named gpios in DT
+
+ Documentation/devicetree/bindings/i2c/i2c-gpio.txt |  32 +++-
+ arch/arm/mach-ep93xx/core.c                        |  41 ++--
+ arch/arm/mach-ep93xx/edb93xx.c                     |  15 +-
+ arch/arm/mach-ep93xx/include/mach/platform.h       |   4 +-
+ arch/arm/mach-ep93xx/simone.c                      |  12 +-
+ arch/arm/mach-ep93xx/snappercl15.c                 |  12 +-
+ arch/arm/mach-ep93xx/vision_ep9307.c               |   7 +-
+ arch/arm/mach-ixp4xx/avila-setup.c                 |  17 +-
+ arch/arm/mach-ixp4xx/dsmg600-setup.c               |  16 +-
+ arch/arm/mach-ixp4xx/fsg-setup.c                   |  16 +-
+ arch/arm/mach-ixp4xx/goramo_mlr.c                  |  24 +--
+ arch/arm/mach-ixp4xx/ixdp425-setup.c               |  16 +-
+ arch/arm/mach-ixp4xx/nas100d-setup.c               |  16 +-
+ arch/arm/mach-ixp4xx/nslu2-setup.c                 |  16 +-
+ arch/arm/mach-ks8695/board-acs5k.c                 |  15 +-
+ arch/arm/mach-pxa/palmz72.c                        |  14 +-
+ arch/arm/mach-pxa/viper.c                          |  27 ++-
+ arch/arm/mach-sa1100/simpad.c                      |  14 +-
+ arch/blackfin/mach-bf533/boards/blackstamp.c       |  19 +-
+ arch/blackfin/mach-bf533/boards/ezkit.c            |  18 +-
+ arch/blackfin/mach-bf533/boards/stamp.c            |  18 +-
+ arch/blackfin/mach-bf561/boards/ezkit.c            |  18 +-
+ arch/mips/alchemy/board-gpr.c                      |  23 ++-
+ arch/mips/ath79/mach-pb44.c                        |  16 +-
+ drivers/gpio/gpiolib.c                             |  13 ++
+ drivers/i2c/busses/i2c-gpio.c                      | 213 ++++++++++-----------
+ drivers/mfd/sm501.c                                |  49 ++---
+ include/linux/gpio/consumer.h                      |   6 +
+ include/linux/i2c-gpio.h                           |   4 -
+ 29 files changed, 423 insertions(+), 288 deletions(-)
+
+-- 
+2.13.5

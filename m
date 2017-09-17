@@ -1,48 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2017 11:41:50 +0200 (CEST)
-Received: from mail-lf0-x22b.google.com ([IPv6:2a00:1450:4010:c07::22b]:53294
-        "EHLO mail-lf0-x22b.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992625AbdIQJkUJZSyP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2017 11:40:20 +0200
-Received: by mail-lf0-x22b.google.com with SMTP id k9so5569457lfe.10
-        for <linux-mips@linux-mips.org>; Sun, 17 Sep 2017 02:40:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2017 11:42:14 +0200 (CEST)
+Received: from mail-lf0-x232.google.com ([IPv6:2a00:1450:4010:c07::232]:54280
+        "EHLO mail-lf0-x232.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993022AbdIQJkWYWuJP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2017 11:40:22 +0200
+Received: by mail-lf0-x232.google.com with SMTP id k23so5571233lfi.11
+        for <linux-mips@linux-mips.org>; Sun, 17 Sep 2017 02:40:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=gCUiTTfNN4A0Ks5ICP11L6908VWob6q3aNpZBxzMr2o=;
-        b=EJcODZSdpg3anuolr3cBANwdDM8I3E5iGHNAV6io8KZ76ctPs1N8pDHUd5hSGKBLmS
-         PWtS4Z0u2rQ02mW/KebTOT15ijAUtZAR325dmSS6xwD2tQcKoSAwgvypytV92QiQmxTf
-         dG62zACB18ekGsRb0Lruib8UTN498A80hzV68=
+        bh=Y1VLeRKXOxFcngVRxxUIqqi7JFtX1kvthA2oNKtATuI=;
+        b=MSWejNoohC5PPHM0DMfoZpDvQmq0B3GA6vrjmZqDwCvAl7TqA1MH+6WZ45E/7Enqu6
+         dHWwmoeIkVtQZTABUE1yfDHhRcL99JN5BctIAUYY9NhpeHYEOEhw6sUKMBf/yq3X9575
+         Tboefojb6wMQkF3id0L3JYdyOaU72IWy81ZQw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=gCUiTTfNN4A0Ks5ICP11L6908VWob6q3aNpZBxzMr2o=;
-        b=Nxj3NTEqmqunfjHXalLFE+0xwRk2jkQrQJ44M0n1EnA0dQci6wHiSzWRyH2E+QgEET
-         dz1nG14XETBbu/rfprpof/MmoupqW4h5hXib0D/gVuBmEGLEI6lNckTc5zAjhmVvIGHO
-         wjLuYTooJZu28AlGjGg3dhbk0YS7DqOM/UV0nHfPSKdpGo9oDNgi8bSvYa6PCH0ZHw7c
-         yb7AhCNtCrIC07+KA11zA8N1qaGaCVPFF7TiGCrgg3TamoqrYYVJ7Z9uJSW0Ubi0TrHp
-         wvSsTpX91pCpfMgQkrI23wpd8Bipl9x+TjOuC789MzdPstRt7WKEtFEqVNOg+d22mP8f
-         T5hQ==
-X-Gm-Message-State: AHPjjUiZbpppw+crlVag+3OYk8BMrf21u71TiHKzJIiYl06nJv2S8woh
-        X9xlMHwgYwHcoGvk
-X-Google-Smtp-Source: AOwi7QDWbRvs7Toyp6taphGqkvNt0d7MrNzgbP/livSNkIwozyUchtApTPh4f+O29jWcgjEgCNNigg==
-X-Received: by 10.25.217.213 with SMTP id s82mr2511208lfi.176.1505641214477;
-        Sun, 17 Sep 2017 02:40:14 -0700 (PDT)
+        bh=Y1VLeRKXOxFcngVRxxUIqqi7JFtX1kvthA2oNKtATuI=;
+        b=EvXsYDHY6GLEAkaiGpVz1xuvoOjWS3NwEKD0oV1bqhSl1VuN/aPcuZTb5T37cum9kB
+         wuP6F8OfSRqt4p/fEqYTIuV/V7+KhGNOtCfcS/LCZJX1xuZ5A8zpGpHr0OWrI+TDML17
+         5yRY5VHznOgI53+ERShW2kVukvBCAl4xV9aT2Dh6f486LSAoUfBKLwe+bcxblOAGXWYk
+         nDcbHpJfcIvhSSbusrVh9qVNUYTT274D5qXx7pY1wO8YtN1DMhkZ18Ys9NrSlwkMUzbC
+         cwx0jMJbU5xnS+WS2eatlW0Pqe2qGXGnG9Q8rwoFEhxxkP1qGSNl7DeDs2hXKQy6ANOm
+         NPQw==
+X-Gm-Message-State: AHPjjUijW8yZ20yK7oxWwhn603aDHyY2aSo/ID7FySqtJKT00MGrq5Qn
+        D6/bZbruBACVOB/t
+X-Google-Smtp-Source: AOwi7QAmOLGzGESEjkytdRvn7bxaaTHsN1+LSWjF7+CDybZq/niGRNPrVjIxoUk3U/Uq/vJiRI2M/w==
+X-Received: by 10.25.79.8 with SMTP id d8mr2202310lfb.118.1505641216590;
+        Sun, 17 Sep 2017 02:40:16 -0700 (PDT)
 Received: from fabina.bredbandsbolaget.se (c-2209e055.014-348-6c756e10.cust.bredbandsbolaget.se. [85.224.9.34])
-        by smtp.gmail.com with ESMTPSA id t84sm974559lfi.21.2017.09.17.02.40.12
+        by smtp.gmail.com with ESMTPSA id t84sm974559lfi.21.2017.09.17.02.40.15
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 17 Sep 2017 02:40:13 -0700 (PDT)
+        Sun, 17 Sep 2017 02:40:15 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         adi-buildroot-devel@lists.sourceforge.net,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        geert.renesas@glider.be, devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6/7] dt-bindings: i2c: i2c-gpio: Add support for named gpios
-Date:   Sun, 17 Sep 2017 11:39:05 +0200
-Message-Id: <20170917093906.16325-7-linus.walleij@linaro.org>
+Subject: [PATCH 7/7] i2c: gpio: Add support for named gpios in DT
+Date:   Sun, 17 Sep 2017 11:39:06 +0200
+Message-Id: <20170917093906.16325-8-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.13.5
 In-Reply-To: <20170917093906.16325-1-linus.walleij@linaro.org>
 References: <20170917093906.16325-1-linus.walleij@linaro.org>
@@ -50,7 +48,7 @@ Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60043
+X-archive-position: 60044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,86 +65,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Geert Uytterhoeven <geert+renesas () glider ! be>
+This adds support for using the "sda" and "scl" GPIOs in
+device tree instead of anonymously using index 0 and 1 of
+the "gpios" property.
 
-The current i2c-gpio DT bindings use a single unnamed "gpios" property
-to refer to the SDA and SCL signal lines by index.  This is error-prone
-for the casual DT writer and reviewer, as one has to look up the order
-in the DT bindings.
+We add a helper function to retrieve the GPIO descriptors
+and some explicit error handling since the probe may have
+to be deferred. At least this happened to me when moving
+to using named "sda" and "scl" lines (all of a sudden this
+started to probe before the GPIO driver) so we need to
+gracefully defer probe when we ge -ENOENT in the error
+pointer.
 
-Fix this by amending the DT bindings to use two separate named gpios
-properties, and deprecate the old unnamed variant.
-
-Take this opportunity to clearly deprecate the "i2c-gpio,sda-open-drain"
-and "i2c-gpio,scl-open-drain" flags as well. The commit describes
-in detail what these flags actually mean, and why they should not be
-used in new device trees.
-
-Cc: devicetree@vger.kernel.org
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-[Augmented to what I and Rob would like]
+Suggested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
-ChangeLog v1->v2:
-- Create a special section for the deprecated bindings
-- Also deprecate the open drain bool properties
-- Update the example to use the new style of bindings
+This is pretty much a rewrite of Geerts patch on top of
+my own changes to support descriptors.
 ---
- Documentation/devicetree/bindings/i2c/i2c-gpio.txt | 32 ++++++++++++++++------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/i2c/busses/i2c-gpio.c | 59 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/i2c/i2c-gpio.txt b/Documentation/devicetree/bindings/i2c/i2c-gpio.txt
-index 4f8ec947c6bd..38a05562d1d2 100644
---- a/Documentation/devicetree/bindings/i2c/i2c-gpio.txt
-+++ b/Documentation/devicetree/bindings/i2c/i2c-gpio.txt
-@@ -2,25 +2,39 @@ Device-Tree bindings for i2c gpio driver
+diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
+index beb5ce523684..2738b851f470 100644
+--- a/drivers/i2c/busses/i2c-gpio.c
++++ b/drivers/i2c/busses/i2c-gpio.c
+@@ -82,6 +82,42 @@ static void of_i2c_gpio_get_props(struct device_node *np,
+ 		of_property_read_bool(np, "i2c-gpio,scl-output-only");
+ }
  
- Required properties:
- 	- compatible = "i2c-gpio";
--	- gpios: sda and scl gpio
--
-+	- sda-gpios: gpio used for the sda signal, this should be flagged as
-+	  active high using open drain with (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)
-+	  from <dt-bindings/gpio/gpio.h> since the signal is by definition
-+	  open drain.
-+	- scl-gpios: gpio used for the scl signal, this should be flagged as
-+	  active high using open drain with (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)
-+	  from <dt-bindings/gpio/gpio.h> since the signal is by definition
-+	  open drain.
- 
- Optional properties:
--	- i2c-gpio,sda-open-drain: sda as open drain
--	- i2c-gpio,scl-open-drain: scl as open drain
- 	- i2c-gpio,scl-output-only: scl as output only
- 	- i2c-gpio,delay-us: delay between GPIO operations (may depend on each platform)
- 	- i2c-gpio,timeout-ms: timeout to get data
- 
-+Deprecated properties, do not use in new device tree sources:
-+	- gpios: sda and scl gpio, alternative for {sda,scl}-gpios
-+	- i2c-gpio,sda-open-drain: this means that something outside of our
-+	  control has put the GPIO line used for SDA into open drain mode, and
-+	  that something is not the GPIO chip. It is essentially an
-+	  inconsistency flag.
-+	- i2c-gpio,scl-open-drain: this means that something outside of our
-+	  control has put the GPIO line used for SCL into open drain mode, and
-+	  that something is not the GPIO chip. It is essentially an
-+	  inconsistency flag.
++static struct gpio_desc *i2c_gpio_get_desc(struct device *dev,
++					   const char *con_id,
++					   unsigned int index,
++					   enum gpiod_flags gflags)
++{
++	struct gpio_desc *retdesc;
++	int ret;
 +
- Example nodes:
- 
-+#include <dt-bindings/gpio/gpio.h>
++	retdesc = devm_gpiod_get(dev, con_id, gflags);
++	if (!IS_ERR(retdesc)) {
++		dev_dbg(dev, "got GPIO from name %s\n", con_id);
++		return retdesc;
++	}
 +
- i2c@0 {
- 	compatible = "i2c-gpio";
--	gpios = <&pioA 23 0 /* sda */
--		 &pioA 24 0 /* scl */
--		>;
--	i2c-gpio,sda-open-drain;
--	i2c-gpio,scl-open-drain;
-+	sda-gpios = <&pioA 23 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+	scl-gpios = <&pioA 24 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
- 	i2c-gpio,delay-us = <2>;	/* ~100 kHz */
- 	#address-cells = <1>;
- 	#size-cells = <0>;
++	retdesc = devm_gpiod_get_index(dev, NULL, index, gflags);
++	if (!IS_ERR(retdesc)) {
++		dev_dbg(dev, "got GPIO from index %u\n", index);
++		return retdesc;
++	}
++
++	ret = PTR_ERR(retdesc);
++
++	/* FIXME: hack in the old code, is this really necessary? */
++	if (ret == -EINVAL)
++		retdesc = ERR_PTR(-EPROBE_DEFER);
++
++	/* This happens if the GPIO driver is not yet probed, let's defer */
++	if (ret == -ENOENT)
++		retdesc = ERR_PTR(-EPROBE_DEFER);
++
++	if (ret != -EPROBE_DEFER)
++		dev_err(dev, "error trying to get descriptor: %ld\n", ret);
++
++	return retdesc;
++}
++
+ static int i2c_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct i2c_gpio_private_data *priv;
+@@ -125,14 +161,10 @@ static int i2c_gpio_probe(struct platform_device *pdev)
+ 		gflags = GPIOD_OUT_HIGH;
+ 	else
+ 		gflags = GPIOD_OUT_HIGH_OPEN_DRAIN;
+-	priv->sda = devm_gpiod_get_index(dev, NULL, 0, gflags);
+-	if (IS_ERR(priv->sda)) {
+-		ret = PTR_ERR(priv->sda);
+-		/* FIXME: hack in the old code, is this really necessary? */
+-		if (ret == -EINVAL)
+-			ret = -EPROBE_DEFER;
+-		return ret;
+-	}
++	priv->sda = i2c_gpio_get_desc(dev, "sda", 0, gflags);
++	if (IS_ERR(priv->sda))
++		return PTR_ERR(priv->sda);
++
+ 	/*
+ 	 * If the SCL line is marked from platform data or device tree as
+ 	 * "open drain" it means something outside of our control is making
+@@ -144,14 +176,9 @@ static int i2c_gpio_probe(struct platform_device *pdev)
+ 		gflags = GPIOD_OUT_LOW;
+ 	else
+ 		gflags = GPIOD_OUT_LOW_OPEN_DRAIN;
+-	priv->scl = devm_gpiod_get_index(dev, NULL, 1, gflags);
+-	if (IS_ERR(priv->scl)) {
+-		ret = PTR_ERR(priv->scl);
+-		/* FIXME: hack in the old code, is this really necessary? */
+-		if (ret == -EINVAL)
+-			ret = -EPROBE_DEFER;
+-		return ret;
+-	}
++	priv->scl = i2c_gpio_get_desc(dev, "scl", 1, gflags);
++	if (IS_ERR(priv->scl))
++		return PTR_ERR(priv->scl);
+ 
+ 	bit_data->setsda = i2c_gpio_setsda_val;
+ 	bit_data->setscl = i2c_gpio_setscl_val;
 -- 
 2.13.5

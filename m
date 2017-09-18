@@ -1,61 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 16:06:02 +0200 (CEST)
-Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:33021
-        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993155AbdIROEaGod3Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2017 16:04:30 +0200
-Received: by mail-pg0-x243.google.com with SMTP id i130so301480pgc.0;
-        Mon, 18 Sep 2017 07:04:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=KIenUeQjayBAgrzr2Xrbp4UGlbMmpEMOzMn6i80CTgA=;
-        b=cjLUEZfqx7EFmBSxMI3+qUnFnBZEb1enX0ZlKH01MedmcekdCBdHS3UbMhOHA6Lfgq
-         dgIwexpwzcBqndm5uN/uf6L8ObMUSjuDBrMnVexDcnOs4YeU/2ChsgHb122N1HkgHd/v
-         oV0St28ufd3qIaFYN0wTNd/HZxTMagFKcO/LkUhfaOW+VlL5t0ybaqeqTrrkBNDWlQkK
-         P3nBeEbrOfanhmvQpzUi7fXGuJfZ3GlxFmVJw9uW8dRodK8H8g3iMys9v4kKekAqg8y/
-         ssjgpb0EsYyAajRhhFpntKxq8DSJZrWf9EiHhs8NkTLJmYUKNheGiej5VEIaUdRqsHZx
-         9ZFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=KIenUeQjayBAgrzr2Xrbp4UGlbMmpEMOzMn6i80CTgA=;
-        b=LOWNqY2fON6WGqzM9nx1evs1zMTKVN4llT8WIDPfWaf9WBEM2+2nhgrOPQOUXmlIUr
-         zp/wcY83te+aYvUZqmq0zhZU3CJtJtBWMo8P84aEBrl5cytQ2aK+f2EKFkXcgRwUmiD9
-         R1GPUP1C2oti8+HprxW2x1vzfT4JpT0TCIv9WI8M9JY2YxwC0faDzqtI4qHoMJPOa0mD
-         IHUPkPNwyAc8vv+4TJ2zLZWDVoqd6KsD2SZ22oe7oe2/WKXdOs5F3D3SRlTT+pLynboa
-         haLQOzRLebLdSJS9nXgpwnXmpURkwBB4ScM1mNQATzAIi7pVuhqPkN95Wgj9K7jIqsyu
-         790Q==
-X-Gm-Message-State: AHPjjUjrs2IJPPfRcRPSTj5uLmyEnKhAhk2Q5zrvMgumU1qjWDUun86T
-        EPWoTgNwVor0gw==
-X-Google-Smtp-Source: ADKCNb5a13yi0NiqRRzx2WvgE80ZRYXKsBzu6yQ1iFDTPPtRlBa7M+RY7lTSCqAe7uwXpGAaKLkEOQ==
-X-Received: by 10.98.65.27 with SMTP id o27mr32826800pfa.205.1505743464069;
-        Mon, 18 Sep 2017 07:04:24 -0700 (PDT)
-Received: from linux.local ([43.224.131.38])
-        by smtp.gmail.com with ESMTPSA id q77sm14683252pfa.173.2017.09.18.07.04.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 18 Sep 2017 07:04:23 -0700 (PDT)
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-To:     herbert@gondor.apana.org.au, robh+dt@kernel.org,
-        ralf@linux-mips.org, davem@davemloft.net, paul@crapouillou.net,
-        linux-crypto@vger.kernel.org, linux-mips@linux-mips.org,
-        malat@debian.org, noloader@gmail.com
-Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Subject: [PATCH v3 4/4] crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
-Date:   Mon, 18 Sep 2017 19:32:41 +0530
-Message-Id: <20170918140241.24003-5-prasannatsmkumar@gmail.com>
-X-Mailer: git-send-email 2.10.0
-In-Reply-To: <20170918140241.24003-1-prasannatsmkumar@gmail.com>
-References: <20170918140241.24003-1-prasannatsmkumar@gmail.com>
-Return-Path: <prasannatsmkumar@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 17:55:53 +0200 (CEST)
+Received: from mout.kundenserver.de ([217.72.192.73]:57227 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993156AbdIRPzpv3QrW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2017 17:55:45 +0200
+Received: from wuerfel.lan ([95.208.190.237]) by mrelayeu.kundenserver.de
+ (mreue103 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 0MOlGA-1dnwFQ2CSk-006AWD; Mon, 18 Sep 2017 17:55:38 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: pmcs-msp71xx: include asm/setup.h
+Date:   Mon, 18 Sep 2017 17:55:24 +0200
+Message-Id: <20170918155537.1919207-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+X-Provags-ID: V03:K0:2pGUJNJSXYO/jKPJ7ODsAeztkGwH4FP1xmV3XqlPCcK7LusGQYD
+ 8tP39sixEZ7cLdnpmVgmHsVbzahlIPXdlluw5H5XYkMpv01XzB66NerxV4QVG4I+0KZdyJ/
+ SYDh/SpaEcZ/YfFeZ0GaL4heRDR34Uu2uLDPGOl7QgImwNicLeXblIAPDyDmDNQrQMU0sxX
+ 3fUfpE+sfyexwbJxPLqrg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:wIdotrWYwME=:1P3sX7tvyMko4fedJbcTAz
+ 85Jr3Lk5DzBHOocV2CD4pbtuBTtCDMnetWLBVCzVEfNicuRk7Bcm51FixhYMxTjrqPrCdgppf
+ AQHyAS6KMQpWnstBofPnj9nElFn9Q44s1FQPsMy0yICoe7fi1mqvj+NSTSVUCHnS7My19q8RL
+ 74OJyk1UW+QsjSf/v7okKuQbN/ta84TWcLazyaR50DMmeaHps4EzlLNOUoFUPDxq3XoB3xkom
+ mYw5PH2+Fx7h8IX0+uJ8RkS+8PZaW9XczMUiPjqedUvt3nN7PxrcGRzdbdSntBL77sMJEx4nx
+ pVuCYxwHh3x/GxDYZEMl2qiF5VRmGYoEGGHpwzos1rw6SbzIE+tKJoHsy3IH2ldyiNpexjFgo
+ xiK5yRFWmVeQRlMNialwJKTCQfKbRwYuGoVImudmK0X2bicxx/2PcPPKyS9b4XhCDWZADtO7D
+ LsfE9nQzDbV483B5IIrnTTIFD8lCdhR3vooEkzbP1vnJyGTQO7d7MUIvum8PvbX+TP+Uj+maV
+ jXX2TPlvfZxnLHYUKN2xLHv+I9JmV4vBSN1pAh/zt8I7An19bmmHcyYiNUUYiPqm16TY/9Hcb
+ zNLl0LyeIXfamHCfQ7rDCAKSpw9yZOAIqQkrFRL/1iRhDHfPZSZXKOOrt0qJLBNCG7BdO80rJ
+ ggYXDFh6JaWs/7J+FAGFJkAhio+PKqnzFFQqBGLSnYx+1+SCRKqYOv79qHGNAwf937Ixh5Qng
+ rI1DTJ29VDVNeza+hjpC1ThTZNycyt3/4nBWuA==
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60060
+X-archive-position: 60061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,32 +51,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Enable PRNG driver support in MIPS Creator CI20 default config.
+msp71xx_defconfig can not be built at the in v4.14-rc1
 
-Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+arch/mips/pmcs-msp71xx/msp_smp.c:72:2: error: implicit declaration of function 'set_vi_handler' [-Werror=implicit-function-declaration]
+
+I don't know what caused the regression, but including the right
+header is the obvious fix.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-No changes in v3
+ arch/mips/pmcs-msp71xx/msp_smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-No changes in v2
-
- arch/mips/configs/ci20_defconfig | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-index b42cfa7..9f48f2c 100644
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -88,6 +88,11 @@ CONFIG_SERIAL_8250_RUNTIME_UARTS=5
- CONFIG_SERIAL_8250_INGENIC=y
- CONFIG_SERIAL_OF_PLATFORM=y
- # CONFIG_HW_RANDOM is not set
-+CONFIG_CRYPTO_USER=y
-+CONFIG_CRYPTO_USER_API=y
-+CONFIG_CRYPTO_USER_API_RNG=y
-+CONFIG_CRYPTO_HW=y
-+CONFIG_CRYPTO_DEV_JZ4780_RNG=y
- CONFIG_I2C=y
- CONFIG_I2C_JZ4780=y
- CONFIG_GPIO_SYSFS=y
+diff --git a/arch/mips/pmcs-msp71xx/msp_smp.c b/arch/mips/pmcs-msp71xx/msp_smp.c
+index ffa0f7101a97..2b08242ade62 100644
+--- a/arch/mips/pmcs-msp71xx/msp_smp.c
++++ b/arch/mips/pmcs-msp71xx/msp_smp.c
+@@ -22,6 +22,8 @@
+ #include <linux/smp.h>
+ #include <linux/interrupt.h>
+ 
++#include <asm/setup.h>
++
+ #ifdef CONFIG_MIPS_MT_SMP
+ #define MIPS_CPU_IPI_RESCHED_IRQ 0	/* SW int 0 for resched */
+ #define MIPS_CPU_IPI_CALL_IRQ 1		/* SW int 1 for call */
 -- 
-2.10.0
+2.9.0

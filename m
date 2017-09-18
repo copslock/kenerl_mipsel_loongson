@@ -1,56 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2017 16:10:25 +0200 (CEST)
-Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:34960
-        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992604AbdIQOKSpjRcI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2017 16:10:18 +0200
-Received: by mail-wr0-x242.google.com with SMTP id n64so3698417wrb.2;
-        Sun, 17 Sep 2017 07:10:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=8wcwLTYJDt4hPUjEnb8t+8b5KmMxDY8qtb/ZN3nN+9I=;
-        b=s414B8q8zSG3JwJ6tauKuNMAkX0+ICl3Td+ZnsqnopWKOOR60PUO0IcyV+E6VyUelj
-         rFsw7XrOFey4ZcXQbg7VyhXbms0EkulXoYA+htMRu+LDwHr6387Ow6MzDUUYdVbOIfcd
-         l9ajK3u0kN3xyoDtToq68bNS8KxlJu2zq4WDE8OWMPUC+NLDVnNJIz/haT2wti+PCtk5
-         2A3kNm9xlvV3QSGphlmiZi+nP2CVUDibkAlqm/M1BugnsXrcyfVsaXfXabUE1tZXzTAE
-         kouqghziu+Rv3silWLCtcrg0KoaSAPITwK2FF7GtmR8v8FRt8TrPNLyCv7F3TkJpxY3X
-         UyCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=8wcwLTYJDt4hPUjEnb8t+8b5KmMxDY8qtb/ZN3nN+9I=;
-        b=BqdpFrTO5UxHSRhk5FJYYzGoTDTrMolVel+XVmIdssJbsd3aOIIT374gr5/OVqYI+L
-         YCQH1mo/IgfQqDFTFCki6iFKhlM1djyMMCE/SfEEZKPQE0Hxl9ghRKctMYmyg09aX41v
-         ed57mCFIrJkBt8/8RkLY4nG6pAOUuoFwmqJ++IxTwYhHFURI3j6LPCoxaht76be615iA
-         F+qimKK5ZSk5+XBGW3AIo7q4C18AEsgSb0DJqTyDIavsvSu5l7F8xj8FOF1Q3pJIe/YS
-         0fZgyIvwiKdMSsSffGR0PK1RwXzqoP7XbWEBe5kQQg4uAgGZmxX4N+jx7U5wkZWFUdtQ
-         HgPA==
-X-Gm-Message-State: AHPjjUieql0kArPFAvzlbO4BkgdDvvnBmtqsC+pNsEJVwDXtveLuY2f9
-        vdxFB6gQTx8haG1r
-X-Google-Smtp-Source: ADKCNb6sp2LtkZ2vDBTN/Pu3zBOgImE5ZCU2REVx9KZJ7hYkIbk4yTPQKBhy1s3IsnyT3NztwURztw==
-X-Received: by 10.223.146.4 with SMTP id 4mr26892321wrj.16.1505657413136;
-        Sun, 17 Sep 2017 07:10:13 -0700 (PDT)
-Received: from localhost.localdomain (cpc101300-bagu16-2-0-cust362.1-3.cable.virginm.net. [86.21.41.107])
-        by smtp.gmail.com with ESMTPSA id i8sm4865478wra.56.2017.09.17.07.10.12
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 17 Sep 2017 07:10:12 -0700 (PDT)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH] MIPS: MSP71xx: fix build failure
-Date:   Sun, 17 Sep 2017 15:10:07 +0100
-Message-Id: <1505657407-5696-1-git-send-email-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <sudipm.mukherjee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 02:20:30 +0200 (CEST)
+Received: from omzsmtpe03.verizonbusiness.com ([199.249.25.208]:20113 "EHLO
+        omzsmtpe03.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992899AbdIRAUXOcHSG convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Sep 2017 02:20:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
+  t=1505694022; x=1537230022;
+  h=from:cc:to:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=GWxKOUkvrMlC6BuYxvLEO6AdEQ9uWqgvWh02I11Rcg4=;
+  b=JDsLPiaqRmKIgihQr44EGaZkZW8kJMaVDf/s0aJmbt5LfoCYokKkzajE
+   NbR6ZxS27RX+WynLzItlO5S8SafQGt8bXtmjf0PpeWqVXk1g4RuCknKmu
+   bSR3feZxFEgoI9ReygrJCaMd3bszoQJyFNdjqN3HWztCbiG2yvDCpN6Yq
+   4=;
+Received: from unknown (HELO fldsmtpi03.verizon.com) ([166.68.71.145])
+  by omzsmtpe03.verizonbusiness.com with ESMTP; 18 Sep 2017 00:20:14 +0000
+From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
+Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Jason A . Donenfeld" <jason@zx2c4.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
+Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO atlantis.verizonwireless.com) ([10.255.192.101])
+  by fldsmtpi03.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 18 Sep 2017 00:19:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
+  t=1505693992; x=1537229992;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=GWxKOUkvrMlC6BuYxvLEO6AdEQ9uWqgvWh02I11Rcg4=;
+  b=AhU1inhGbM/GgunFyn8csaeTAsLIIPYzZJqvxzB3mgqS+5seMN4ssqRs
+   Vai5/rTt0Bz+Z8i1NLenLM744bdInWRxeaPPo13CkZ6nhVeUdt6pj1R7f
+   8W9mf9VPRcreJSsP0DP87FVjLX3IYKTX1um/qoX32pF+3+R44MDAxQvrx
+   8=;
+Received: from discovery.odc.vzwcorp.com (HELO mercury.verizonwireless.com) ([10.255.240.25])
+  by atlantis.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 17 Sep 2017 20:19:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
+  t=1505693992; x=1537229992;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=GWxKOUkvrMlC6BuYxvLEO6AdEQ9uWqgvWh02I11Rcg4=;
+  b=AhU1inhGbM/GgunFyn8csaeTAsLIIPYzZJqvxzB3mgqS+5seMN4ssqRs
+   Vai5/rTt0Bz+Z8i1NLenLM744bdInWRxeaPPo13CkZ6nhVeUdt6pj1R7f
+   8W9mf9VPRcreJSsP0DP87FVjLX3IYKTX1um/qoX32pF+3+R44MDAxQvrx
+   8=;
+X-Host: discovery.odc.vzwcorp.com
+Received: from casac1exh002.uswin.ad.vzwcorp.com ([10.11.218.44])
+  by mercury.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 18 Sep 2017 00:19:50 +0000
+Received: from scwexch06apd.uswin.ad.vzwcorp.com (153.114.130.25) by
+ CASAC1EXH002.uswin.ad.vzwcorp.com (10.11.218.44) with Microsoft SMTP Server
+ (TLS) id 14.3.248.2; Sun, 17 Sep 2017 17:19:49 -0700
+Received: from OMZP1LUMXCA14.uswin.ad.vzwcorp.com (144.8.22.189) by
+ scwexch06apd.uswin.ad.vzwcorp.com (153.114.130.25) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Sun, 17 Sep 2017 17:19:48 -0700
+Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
+ OMZP1LUMXCA14.uswin.ad.vzwcorp.com (144.8.22.189) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Sun, 17 Sep 2017 19:19:47 -0500
+Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
+ OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
+ 15.00.1263.000; Sun, 17 Sep 2017 19:19:47 -0500
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH for 4.9 17/39] MIPS: IRQ Stack: Unwind IRQ stack onto task
+ stack
+Thread-Topic: [PATCH for 4.9 17/39] MIPS: IRQ Stack: Unwind IRQ stack onto
+ task stack
+Thread-Index: AQHTMBPSZrETPABjLEyg784UjIhdTQ==
+Date:   Mon, 18 Sep 2017 00:19:41 +0000
+Message-ID: <20170918001922.7048-17-alexander.levin@verizon.com>
+References: <20170918001922.7048-1-alexander.levin@verizon.com>
+In-Reply-To: <20170918001922.7048-1-alexander.levin@verizon.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.144.60.250]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <alexander.levin@verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60045
+X-archive-position: 60046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: alexander.levin@verizon.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,34 +111,208 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The build of msp71xx_defconfig was failing with the error:
-arch/mips/pmcs-msp71xx/msp_smp.c: In function 'msp_vsmp_int_init':
-arch/mips/pmcs-msp71xx/msp_smp.c:72:2: error:
-	implicit declaration of function 'set_vi_handler';
-	did you mean 'irq_set_handler'? [-Werror=implicit-function-declaration]
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-The file 'msp_smp.c' was only missing a header file.
+[ Upstream commit db8466c581cca1a08b505f1319c3ecd246f16fa8 ]
 
-Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+When the separate IRQ stack was introduced, stack unwinding only
+proceeded as far as the top of the IRQ stack, leading to kernel
+backtraces being less useful, lacking the trace of what was interrupted.
+
+Fix this by providing a means for the kernel to unwind the IRQ stack
+onto the interrupted task stack. The processor state is saved to the
+kernel task stack on interrupt. The IRQ_STACK_START macro reserves an
+unsigned long at the top of the IRQ stack where the interrupted task
+stack pointer can be saved. After the active stack is switched to the
+IRQ stack, save the interrupted tasks stack pointer to the reserved
+location.
+
+Fix the stack unwinding code to look for the frame being the top of the
+IRQ stack and if so get the next frame from the saved location. The
+existing test does not work with the separate stack since the ra is no
+longer pointed at ret_from_{irq,exception}.
+
+The test to stop unwinding the stack 32 bytes from the top of a stack
+must be modified to allow unwinding to continue up to the location of
+the saved task stack pointer when on the IRQ stack. The low / high marks
+of the stack are set depending on whether the sp is on an irq stack or
+not.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: Masanari Iida <standby24x7@gmail.com>
+Cc: Chris Metcalf <cmetcalf@mellanox.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15788/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 ---
+ arch/mips/include/asm/irq.h    | 15 +++++++++++
+ arch/mips/kernel/asm-offsets.c |  1 +
+ arch/mips/kernel/genex.S       |  8 ++++--
+ arch/mips/kernel/process.c     | 56 ++++++++++++++++++++++++++++--------------
+ 4 files changed, 60 insertions(+), 20 deletions(-)
 
-The build logs of next-20170915 is at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/275726387
-
- arch/mips/pmcs-msp71xx/msp_smp.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/mips/pmcs-msp71xx/msp_smp.c b/arch/mips/pmcs-msp71xx/msp_smp.c
-index ffa0f71..6441bd2 100644
---- a/arch/mips/pmcs-msp71xx/msp_smp.c
-+++ b/arch/mips/pmcs-msp71xx/msp_smp.c
-@@ -21,6 +21,7 @@
-  */
- #include <linux/smp.h>
- #include <linux/interrupt.h>
-+#include <asm/setup.h>
+diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
+index 956db6e201d1..ddd1c918103b 100644
+--- a/arch/mips/include/asm/irq.h
++++ b/arch/mips/include/asm/irq.h
+@@ -18,9 +18,24 @@
+ #include <irq.h>
  
- #ifdef CONFIG_MIPS_MT_SMP
- #define MIPS_CPU_IPI_RESCHED_IRQ 0	/* SW int 0 for resched */
+ #define IRQ_STACK_SIZE			THREAD_SIZE
++#define IRQ_STACK_START			(IRQ_STACK_SIZE - sizeof(unsigned long))
+ 
+ extern void *irq_stack[NR_CPUS];
+ 
++/*
++ * The highest address on the IRQ stack contains a dummy frame put down in
++ * genex.S (handle_int & except_vec_vi_handler) which is structured as follows:
++ *
++ *   top ------------
++ *       | task sp  | <- irq_stack[cpu] + IRQ_STACK_START
++ *       ------------
++ *       |          | <- First frame of IRQ context
++ *       ------------
++ *
++ * task sp holds a copy of the task stack pointer where the struct pt_regs
++ * from exception entry can be found.
++ */
++
+ static inline bool on_irq_stack(int cpu, unsigned long sp)
+ {
+ 	unsigned long low = (unsigned long)irq_stack[cpu];
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index 4be2763f835d..bfff6ea45d51 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -103,6 +103,7 @@ void output_thread_info_defines(void)
+ 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
+ 	DEFINE(_THREAD_MASK, THREAD_MASK);
+ 	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
++	DEFINE(_IRQ_STACK_START, IRQ_STACK_START);
+ 	BLANK();
+ }
+ 
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 2ac6c2625c13..ae810da4d499 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -215,9 +215,11 @@ NESTED(handle_int, PT_SIZE, sp)
+ 	beq	t0, t1, 2f
+ 
+ 	/* Switch to IRQ stack */
+-	li	t1, _IRQ_STACK_SIZE
++	li	t1, _IRQ_STACK_START
+ 	PTR_ADD sp, t0, t1
+ 
++	/* Save task's sp on IRQ stack so that unwinding can follow it */
++	LONG_S	s1, 0(sp)
+ 2:
+ 	jal	plat_irq_dispatch
+ 
+@@ -325,9 +327,11 @@ NESTED(except_vec_vi_handler, 0, sp)
+ 	beq	t0, t1, 2f
+ 
+ 	/* Switch to IRQ stack */
+-	li	t1, _IRQ_STACK_SIZE
++	li	t1, _IRQ_STACK_START
+ 	PTR_ADD sp, t0, t1
+ 
++	/* Save task's sp on IRQ stack so that unwinding can follow it */
++	LONG_S	s1, 0(sp)
+ 2:
+ 	jalr	v0
+ 
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index fbbf5fcc695a..1b50958a1373 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -487,31 +487,52 @@ unsigned long notrace unwind_stack_by_address(unsigned long stack_page,
+ 					      unsigned long pc,
+ 					      unsigned long *ra)
+ {
++	unsigned long low, high, irq_stack_high;
+ 	struct mips_frame_info info;
+ 	unsigned long size, ofs;
++	struct pt_regs *regs;
+ 	int leaf;
+-	extern void ret_from_irq(void);
+-	extern void ret_from_exception(void);
+ 
+ 	if (!stack_page)
+ 		return 0;
+ 
+ 	/*
+-	 * If we reached the bottom of interrupt context,
+-	 * return saved pc in pt_regs.
++	 * IRQ stacks start at IRQ_STACK_START
++	 * task stacks at THREAD_SIZE - 32
+ 	 */
+-	if (pc == (unsigned long)ret_from_irq ||
+-	    pc == (unsigned long)ret_from_exception) {
+-		struct pt_regs *regs;
+-		if (*sp >= stack_page &&
+-		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
+-			regs = (struct pt_regs *)*sp;
+-			pc = regs->cp0_epc;
+-			if (!user_mode(regs) && __kernel_text_address(pc)) {
+-				*sp = regs->regs[29];
+-				*ra = regs->regs[31];
+-				return pc;
+-			}
++	low = stack_page;
++	if (!preemptible() && on_irq_stack(raw_smp_processor_id(), *sp)) {
++		high = stack_page + IRQ_STACK_START;
++		irq_stack_high = high;
++	} else {
++		high = stack_page + THREAD_SIZE - 32;
++		irq_stack_high = 0;
++	}
++
++	/*
++	 * If we reached the top of the interrupt stack, start unwinding
++	 * the interrupted task stack.
++	 */
++	if (unlikely(*sp == irq_stack_high)) {
++		unsigned long task_sp = *(unsigned long *)*sp;
++
++		/*
++		 * Check that the pointer saved in the IRQ stack head points to
++		 * something within the stack of the current task
++		 */
++		if (!object_is_on_stack((void *)task_sp))
++			return 0;
++
++		/*
++		 * Follow pointer to tasks kernel stack frame where interrupted
++		 * state was saved.
++		 */
++		regs = (struct pt_regs *)task_sp;
++		pc = regs->cp0_epc;
++		if (!user_mode(regs) && __kernel_text_address(pc)) {
++			*sp = regs->regs[29];
++			*ra = regs->regs[31];
++			return pc;
+ 		}
+ 		return 0;
+ 	}
+@@ -532,8 +553,7 @@ unsigned long notrace unwind_stack_by_address(unsigned long stack_page,
+ 	if (leaf < 0)
+ 		return 0;
+ 
+-	if (*sp < stack_page ||
+-	    *sp + info.frame_size > stack_page + THREAD_SIZE - 32)
++	if (*sp < low || *sp + info.frame_size > high)
+ 		return 0;
+ 
+ 	if (leaf)
 -- 
-2.7.4
+2.11.0

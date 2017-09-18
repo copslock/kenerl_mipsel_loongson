@@ -1,44 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 17:55:53 +0200 (CEST)
-Received: from mout.kundenserver.de ([217.72.192.73]:57227 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993156AbdIRPzpv3QrW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2017 17:55:45 +0200
-Received: from wuerfel.lan ([95.208.190.237]) by mrelayeu.kundenserver.de
- (mreue103 [212.227.15.145]) with ESMTPA (Nemesis) id
- 0MOlGA-1dnwFQ2CSk-006AWD; Mon, 18 Sep 2017 17:55:38 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: pmcs-msp71xx: include asm/setup.h
-Date:   Mon, 18 Sep 2017 17:55:24 +0200
-Message-Id: <20170918155537.1919207-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-X-Provags-ID: V03:K0:2pGUJNJSXYO/jKPJ7ODsAeztkGwH4FP1xmV3XqlPCcK7LusGQYD
- 8tP39sixEZ7cLdnpmVgmHsVbzahlIPXdlluw5H5XYkMpv01XzB66NerxV4QVG4I+0KZdyJ/
- SYDh/SpaEcZ/YfFeZ0GaL4heRDR34Uu2uLDPGOl7QgImwNicLeXblIAPDyDmDNQrQMU0sxX
- 3fUfpE+sfyexwbJxPLqrg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:wIdotrWYwME=:1P3sX7tvyMko4fedJbcTAz
- 85Jr3Lk5DzBHOocV2CD4pbtuBTtCDMnetWLBVCzVEfNicuRk7Bcm51FixhYMxTjrqPrCdgppf
- AQHyAS6KMQpWnstBofPnj9nElFn9Q44s1FQPsMy0yICoe7fi1mqvj+NSTSVUCHnS7My19q8RL
- 74OJyk1UW+QsjSf/v7okKuQbN/ta84TWcLazyaR50DMmeaHps4EzlLNOUoFUPDxq3XoB3xkom
- mYw5PH2+Fx7h8IX0+uJ8RkS+8PZaW9XczMUiPjqedUvt3nN7PxrcGRzdbdSntBL77sMJEx4nx
- pVuCYxwHh3x/GxDYZEMl2qiF5VRmGYoEGGHpwzos1rw6SbzIE+tKJoHsy3IH2ldyiNpexjFgo
- xiK5yRFWmVeQRlMNialwJKTCQfKbRwYuGoVImudmK0X2bicxx/2PcPPKyS9b4XhCDWZADtO7D
- LsfE9nQzDbV483B5IIrnTTIFD8lCdhR3vooEkzbP1vnJyGTQO7d7MUIvum8PvbX+TP+Uj+maV
- jXX2TPlvfZxnLHYUKN2xLHv+I9JmV4vBSN1pAh/zt8I7An19bmmHcyYiNUUYiPqm16TY/9Hcb
- zNLl0LyeIXfamHCfQ7rDCAKSpw9yZOAIqQkrFRL/1iRhDHfPZSZXKOOrt0qJLBNCG7BdO80rJ
- ggYXDFh6JaWs/7J+FAGFJkAhio+PKqnzFFQqBGLSnYx+1+SCRKqYOv79qHGNAwf937Ixh5Qng
- rI1DTJ29VDVNeza+hjpC1ThTZNycyt3/4nBWuA==
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 19:06:27 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:23871 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992800AbdIRRGRNfrXg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2017 19:06:17 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 9DE901FBDD978;
+        Mon, 18 Sep 2017 18:06:06 +0100 (IST)
+Received: from [10.20.78.62] (10.20.78.62) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Mon, 18 Sep 2017
+ 18:06:09 +0100
+Date:   Mon, 18 Sep 2017 18:05:56 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Fredrik Noring <noring@nocrew.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+In-Reply-To: <20170916133423.GB32582@localhost.localdomain>
+Message-ID: <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
+References: <20170911151737.GA2265@localhost.localdomain> <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk> <20170916133423.GB32582@localhost.localdomain>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.62]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60061
+X-archive-position: 60062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,30 +42,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-msp71xx_defconfig can not be built at the in v4.14-rc1
+Hi Fredrik,
 
-arch/mips/pmcs-msp71xx/msp_smp.c:72:2: error: implicit declaration of function 'set_vi_handler' [-Werror=implicit-function-declaration]
+> >  For the initial R5900 support I think there are two options here, 
+> > depending on what hardware supports:
+> > 
+> > 1. If (for binary compatibility reasons) 128-bit GPR support can somehow 
+> >    be disabled in hardware, by flipping a CP0 register bit or suchlike, 
+> >    then I suggest doing that in the first stage.
+> 
+> Unfortunately I haven't found such a switch. There is also a set of 128-bit
+> multimedia instructions to consider (GCC is perhaps unlikely to generate
+> those but assembly code is an option too).
 
-I don't know what caused the regression, but including the right
-header is the obvious fix.
+ The usual minimal approach is to have compiler intrinsics implemented.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/pmcs-msp71xx/msp_smp.c | 2 ++
- 1 file changed, 2 insertions(+)
+> > 2. Otherwise I think that the context initialisation/switch code has to be 
+> >    adjusted such that the upper GPR halves are set to a known state, 
+> >    either zeroed or sign-extended from bit #63 (or #31 really, given the 
+> >    initial 32-bit port only) according to hardware requirements, so as to
+> >    make execution stable and prevent data from leaking between contexts.
+> > 
+> > Later on proper 128-bit support can be added, though for that to make 
+> > sense you need to have compiler support too, which AFAICT is currently 
+> > missing.  Myself I'd rather defer commenting on that further support until 
+> > we get to it, although of course someone else might be willing to sketch 
+> > an idea.
+> 
+> I have a working 32-bit kernel now, except that BusyBox randomly crashes
+> unless the kernel saves/restores 64-bit GPRs. The executables and libraries
+> declare "ELF 32-bit LSB, MIPS, MIPS-III version 1" so in theory, I suppose,
+> they ought to be 32-bit only. It is possible that the error lies in the
+> kernel handling of the GPRs but I have double-checked this in several ways.
 
-diff --git a/arch/mips/pmcs-msp71xx/msp_smp.c b/arch/mips/pmcs-msp71xx/msp_smp.c
-index ffa0f7101a97..2b08242ade62 100644
---- a/arch/mips/pmcs-msp71xx/msp_smp.c
-+++ b/arch/mips/pmcs-msp71xx/msp_smp.c
-@@ -22,6 +22,8 @@
- #include <linux/smp.h>
- #include <linux/interrupt.h>
- 
-+#include <asm/setup.h>
-+
- #ifdef CONFIG_MIPS_MT_SMP
- #define MIPS_CPU_IPI_RESCHED_IRQ 0	/* SW int 0 for resched */
- #define MIPS_CPU_IPI_CALL_IRQ 1		/* SW int 1 for call */
--- 
-2.9.0
+ Virtually all 64-bit MIPS processors have the CP0.Status.UX bit, which 
+the Linux kernel keeps clear for o32 processes (CP0.Status.PX is currently 
+unsupported and is kept clear as well), which means that an attempt to use 
+any instruction that affects register bits beyond bit #31 will cause a 
+Reserved Instruction exception, and in turn SIGILL being sent to the 
+program.  
+
+ So any crash caused by the lack of handling of the upper bits is a result 
+of either a kernel bug or an issue with hardware.
+
+> The error, as it appears, is nasty for at least two reasons: it occurs
+> randomly (when the kernel arbitrarily resets the upper 96 bits of all GPRs)
+> and it can easily remain undetected and lead to silent data corruption.
+
+ Hmm, can you verify that no LWU instruction is present in the kernel 
+somewhere?
+
+ Can you add a diagnostic consistency check to the context restoration 
+code, i.e. all the macros called from RESTORE_ALL (in <asm/stackframe.h>), 
+such as a `break 12' (BRK_BUG) instruction if a register value is not 
+correctly sign-extended?  You can instead use one of the register trap 
+instructions (with the same BRK_BUG code), to avoid the need for a branch.  
+Make sure you don't clobber registers restored; you may have to use $k0 or 
+$k1 in places.  This will cause a kernel oops, which can then be examined 
+to track down a possible cause.
+
+ GAS will prevent the use of any 64-bit instructions (which LWU is one of) 
+when the o32 ABI has been selected for assembly, however it can be 
+temporarily overridden by `.set' pseudo-ops, and also I haven't verified 
+if there isn't an issue with `-march=r5900' in GAS.
+
+> Are there other Linux MIPS implementations that reset GPRs like this?
+
+ No, because keeping CP0.Status.UX clear guarantees that only instructions 
+which sign-extend register results from bit #31 can be used.
+
+ Maciej

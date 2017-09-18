@@ -1,61 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 21:09:52 +0200 (CEST)
-Received: from mail-io0-x231.google.com ([IPv6:2607:f8b0:4001:c06::231]:46484
-        "EHLO mail-io0-x231.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993179AbdIRTJp6KK7n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2017 21:09:45 +0200
-Received: by mail-io0-x231.google.com with SMTP id d16so4632454ioj.3
-        for <linux-mips@linux-mips.org>; Mon, 18 Sep 2017 12:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=mZij9RtT0OwvSzjyWH0ZMI7sELbw0Dm4WuovXS483Go=;
-        b=FMxLbJstjzS0nqAmu7dDqJbJSo3KHlNpc4lc5418pWE+F4JumgdmH7m4T6e4uJu17F
-         2A6c4mHbyMvLdRZN4UqRORzZuJa1G6iiAfVBPmp8H6u9OF1BykgG8tyAw3khBc/EmTSE
-         S3cZIbU+D4T5lgKfMPVoyVhFyDlvx/FDxdjTU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=mZij9RtT0OwvSzjyWH0ZMI7sELbw0Dm4WuovXS483Go=;
-        b=U90SSVnmrBX7O8wVbhs58B5Ykbn1+eUX3aFzBVIItwqrg55fSZD5QgIAegXnSoYmmq
-         4JvJt+CSnCRhLpupRJ2jUyQHvUD6oll3sYF/Y5HH1sgY8IgSbofDCyzNRT7seCcmvFzV
-         lhDkoklJKcqZN12sJLyXKOr5ADJYab9gHNDHwz37N0wGUOnMvJRhJ3uFLbvelQ4b3mUA
-         nm5rC3gEWNkSxBJidy4lFwEOgB79BeYkhPP4aHDFIxjOHzh2eR5hNdWEr5fiVECA8JBx
-         E0tVi7R0D9WEZiRlrvcD3MX16TXgd0Vb268vAKKRSA6yZRNyBke3R1H7tpgqHRu8L+VN
-         MDKA==
-X-Gm-Message-State: AHPjjUhix8Ebw3zyYnO0Djrd1vF1T/lWlJcWN4XBlAgN9bv1moWQEJHQ
-        BfxDF9f+8617t1CmNN0BtkUyCaQYA5KQrb2JZlwaKw==
-X-Google-Smtp-Source: AOwi7QACPkDFrauGqTzQkQg4Yyp3Jooi9/x13tVm/ywRvAFaZCF+UJRPvsdgbzgsdYjlBcZyO8Rd/VqwIxAJ7nweqq0=
-X-Received: by 10.107.139.215 with SMTP id n206mr22532675iod.155.1505761780058;
- Mon, 18 Sep 2017 12:09:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2017 21:24:58 +0200 (CEST)
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:54827 "EHLO
+        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993179AbdIRTYuszUy0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2017 21:24:50 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 2D1F33F514;
+        Mon, 18 Sep 2017 21:24:44 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id PkqkN24Dy3Ia; Mon, 18 Sep 2017 21:24:41 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 6DABE3F37B;
+        Mon, 18 Sep 2017 21:24:32 +0200 (CEST)
+Date:   Mon, 18 Sep 2017 21:24:29 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+Message-ID: <20170918192428.GA391@localhost.localdomain>
+References: <20170911151737.GA2265@localhost.localdomain>
+ <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
+ <20170916133423.GB32582@localhost.localdomain>
+ <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
 MIME-Version: 1.0
-Received: by 10.79.164.78 with HTTP; Mon, 18 Sep 2017 12:09:39 -0700 (PDT)
-In-Reply-To: <CAMuHMdX+bx9pNEAFoBzfM7JhhH800u-HumpQYRsG3d5BNuduvg@mail.gmail.com>
-References: <20170917093906.16325-1-linus.walleij@linaro.org>
- <20170917093906.16325-8-linus.walleij@linaro.org> <CAMuHMdX+bx9pNEAFoBzfM7JhhH800u-HumpQYRsG3d5BNuduvg@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 18 Sep 2017 21:09:39 +0200
-Message-ID: <CACRpkdaYjQC9wTCvAJ-zEdX9fvBTRK5sazCd4L32zG3WkB1q4A@mail.gmail.com>
-Subject: Re: [PATCH 7/7] i2c: gpio: Add support for named gpios in DT
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60064
+X-archive-position: 60065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,22 +50,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 18, 2017 at 11:58 AM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+Hi Maciej,
 
->> +       if (ret != -EPROBE_DEFER)
->> +               dev_err(dev, "error trying to get descriptor: %ld\n", ret);
->
-> warning: format '%ld' expects argument of type 'long int', but
-> argument 3 has type 'int' [-Wformat=]
->
-> %d (0day busy?)
+> > Unfortunately I haven't found such a switch. There is also a set of 128-bit
+> > multimedia instructions to consider (GCC is perhaps unlikely to generate
+> > those but assembly code is an option too).
+> 
+>  The usual minimal approach is to have compiler intrinsics implemented.
 
-Bah haven't pushed it to the 0day builders yet.
-I'll do that tonight so I can drown in the build errors.
-:-D
+I sometimes make less than minimal programs, or unusual ones, or both. ;)
 
-Fixing it.
+>  Virtually all 64-bit MIPS processors have the CP0.Status.UX bit, which 
+> the Linux kernel keeps clear for o32 processes (CP0.Status.PX is currently 
+> unsupported and is kept clear as well), which means that an attempt to use 
+> any instruction that affects register bits beyond bit #31 will cause a 
+> Reserved Instruction exception, and in turn SIGILL being sent to the 
+> program.  
 
-Yours,
-Linus Walleij
+Would UX be bit 5 of CP0.Status? That bit is hardwired to naught according
+to the TX79 manual (p. 4-16).
+
+>  So any crash caused by the lack of handling of the upper bits is a result 
+> of either a kernel bug or an issue with hardware.
+
+R5900 does not seem to implement UX, SX, KX or PX.
+
+>  Hmm, can you verify that no LWU instruction is present in the kernel 
+> somewhere?
+
+Sure, "mipsel-linux-objdump -d vmlinux | grep lwu" yields nil.
+
+>  Can you add a diagnostic consistency check to the context restoration 
+> code, i.e. all the macros called from RESTORE_ALL (in <asm/stackframe.h>), 
+> such as a `break 12' (BRK_BUG) instruction if a register value is not 
+> correctly sign-extended?  You can instead use one of the register trap 
+> instructions (with the same BRK_BUG code), to avoid the need for a branch.  
+> Make sure you don't clobber registers restored; you may have to use $k0 or 
+> $k1 in places.  This will cause a kernel oops, which can then be examined 
+> to track down a possible cause.
+
+Given the R5900 patch I believe this can be done somewhat simpler, since
+register access macros have been implemented in C (in this way the physical
+registers become in some sense separated from the logical registers in the
+kernel).
+
+The transition from 128-bit registers to 64-bit registers was easy (in a
+32-bit kernel) by changing the LONGD_{L,S} macros in asm.h from quadword
+{L,S}Q to doubleword {L,S}D instructions, and changing pt_regs::regs[32]
+from r5900_reg_t to unsigned long long. (The patch replaces LONG_* with
+three variants: LONGD_*, LONGH_* and LONGI_*. It also forces LD and SD
+via a ".set push/.set mips3/.set pop" combination like you outline below.)
+
+The patch has full 64-bit registers accessible in C too, which is why I
+propose to do the diagnostic consistency check in C. (Macros truncate to
+32 bits everywhere in the kernel except for save/restore.)
+
+>  GAS will prevent the use of any 64-bit instructions (which LWU is one of) 
+> when the o32 ABI has been selected for assembly, however it can be 
+> temporarily overridden by `.set' pseudo-ops, and also I haven't verified 
+> if there isn't an issue with `-march=r5900' in GAS.
+
+I'm using a BusyBox binary from the Debian-based Black Rhino distribution,
+so I'm not entirely sure how it was compiled, and it might contain 64-bit
+instructions that are not caught by the (unavailable) UX bit.
+
+Fredrik

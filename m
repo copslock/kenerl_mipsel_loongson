@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Sep 2017 14:44:50 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30672 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Sep 2017 15:11:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55450 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993921AbdISMofyKRtD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Sep 2017 14:44:35 +0200
+        with ESMTP id S23993914AbdISNLm1sXaD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Sep 2017 15:11:42 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 913C8BCBFEDC4;
-        Tue, 19 Sep 2017 13:44:26 +0100 (IST)
-Received: from [10.20.78.58] (10.20.78.58) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.361.1; Tue, 19 Sep 2017
- 13:44:28 +0100
-Date:   Tue, 19 Sep 2017 13:44:17 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-In-Reply-To: <20170918192428.GA391@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk>
-References: <20170911151737.GA2265@localhost.localdomain> <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk> <20170916133423.GB32582@localhost.localdomain> <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk> <20170918192428.GA391@localhost.localdomain>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        by Forcepoint Email with ESMTPS id 1BA4661CC987;
+        Tue, 19 Sep 2017 14:11:33 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Tue, 19 Sep 2017 14:11:35 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] MIPS: Fix input modify in __write_64bit_c0_split()
+Date:   Tue, 19 Sep 2017 14:11:22 +0100
+Message-ID: <20170919131122.23926-1-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.14.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.58]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60073
+X-archive-position: 60074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,83 +41,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Fredrik,
+The inline asm in __write_64bit_c0_split() modifies the 64-bit input
+operand by shifting the high register left by 32, and constructing the
+full 64-bit value in the low register (even on a 32-bit kernel), so if
+that value is used again it could cause breakage as GCC would assume the
+registers haven't changed when they have.
 
-> >  Virtually all 64-bit MIPS processors have the CP0.Status.UX bit, which 
-> > the Linux kernel keeps clear for o32 processes (CP0.Status.PX is currently 
-> > unsupported and is kept clear as well), which means that an attempt to use 
-> > any instruction that affects register bits beyond bit #31 will cause a 
-> > Reserved Instruction exception, and in turn SIGILL being sent to the 
-> > program.  
-> 
-> Would UX be bit 5 of CP0.Status? That bit is hardwired to naught according
-> to the TX79 manual (p. 4-16).
+To quote the GCC extended asm documentation:
+> Warning: Do not modify the contents of input-only operands (except for
+> inputs tied to outputs). The compiler assumes that on exit from the
+> asm statement these operands contain the same values as they had
+> before executing the statement.
 
- Yes, bit #5.
+Avoid modifying the input by using a temporary variable as an output
+which is modified instead of the input and not otherwise used. The asm
+is always __volatile__ so GCC shouldn't optimise it out. The low
+register of the temporary output is written before the high register of
+the input is read, so we have two constraint alternatives, one where
+both use the same registers (for when the input value isn't subsequently
+used), and one with an early clobber on the output in case the low
+output uses the same register as the high input. This allows the
+resulting assembly to remain mostly unchanged.
 
-> >  Can you add a diagnostic consistency check to the context restoration 
-> > code, i.e. all the macros called from RESTORE_ALL (in <asm/stackframe.h>), 
-> > such as a `break 12' (BRK_BUG) instruction if a register value is not 
-> > correctly sign-extended?  You can instead use one of the register trap 
-> > instructions (with the same BRK_BUG code), to avoid the need for a branch.  
-> > Make sure you don't clobber registers restored; you may have to use $k0 or 
-> > $k1 in places.  This will cause a kernel oops, which can then be examined 
-> > to track down a possible cause.
-> 
-> Given the R5900 patch I believe this can be done somewhat simpler, since
-> register access macros have been implemented in C (in this way the physical
-> registers become in some sense separated from the logical registers in the
-> kernel).
-> 
-> The transition from 128-bit registers to 64-bit registers was easy (in a
-> 32-bit kernel) by changing the LONGD_{L,S} macros in asm.h from quadword
-> {L,S}Q to doubleword {L,S}D instructions, and changing pt_regs::regs[32]
-> from r5900_reg_t to unsigned long long.
+A diff of a MIPS32r6 kernel reveals only three differences, two in
+relation to write_c0_r10k_diag() in cpu_probe() (register allocation
+rearranged slightly but otherwise identical), and one in relation to
+write_c0_cvmmemctl2() in kvm_vz_local_flush_guesttlb_all(), but the
+octeon CPU is only supported on 64-bit kernels where
+__write_64bit_c0_split() isn't used so that shouldn't matter in
+practice. So there currently doesn't appear to be anything broken by
+this bug.
 
- But why did you have to change anything there in the first place?  All 
-that's there is generic stuff.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/include/asm/mipsregs.h | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-> (The patch replaces LONG_* with
-> three variants: LONGD_*, LONGH_* and LONGI_*. It also forces LD and SD
-> via a ".set push/.set mips3/.set pop" combination like you outline below.)
-
- I don't remember suggesting anything like that.
-
-> The patch has full 64-bit registers accessible in C too, which is why I
-> propose to do the diagnostic consistency check in C. (Macros truncate to
-> 32 bits everywhere in the kernel except for save/restore.)
-
- You need to figure out the semantics of 128-bit registers and describe it 
-in details (to be provided in the relevant commit's description), in 
-particular any interaction 32-bit and 64-bit instructions have with the 
-upper 64-bit half, before we can accept any change to support these 
-extended registers.
-  
- Barring evidence otherwise I think updating macros in <asm/asm.h> is not 
-enough, because our syscalls rely on the standard MIPS psABI's calling 
-convention and call-saved registers will only be saved and restored on an 
-as-needed basis, in the prologue/epilogue of any kernel's C functions that 
-actually use them.  And GCC will only use save and restore call-saved 
-registers using regular 32-bit or 64-bit operations, according to the ABI 
-the kernel has been compiled for.  So if there's a need to preserve the 
-upper 64-bit halves, then it has to be done explicitly, possibly in an 
-extra <asm/stackframe.h> macro.
-
- But all that is something for a later stage; right now I suggest that you 
-figure out what's causing registers to become clobbered and fix it there.
-
-> >  GAS will prevent the use of any 64-bit instructions (which LWU is one of) 
-> > when the o32 ABI has been selected for assembly, however it can be 
-> > temporarily overridden by `.set' pseudo-ops, and also I haven't verified 
-> > if there isn't an issue with `-march=r5900' in GAS.
-> 
-> I'm using a BusyBox binary from the Debian-based Black Rhino distribution,
-> so I'm not entirely sure how it was compiled, and it might contain 64-bit
-> instructions that are not caught by the (unavailable) UX bit.
-
- Use `file' or `readelf -h' on the BusyBox binary to double-check the ABI 
-it has been built for.  Although I doubt there will be issues with the 
-executable, as it would crash on any of the other MIPS processors which 
-implement the 32-bit mode correctly.
-
-  Maciej
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index e4ed1bc9a734..a6810923b3f0 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1377,29 +1377,32 @@ do {									\
+ 
+ #define __write_64bit_c0_split(source, sel, val)			\
+ do {									\
++	unsigned long long __tmp;					\
+ 	unsigned long __flags;						\
+ 									\
+ 	local_irq_save(__flags);					\
+ 	if (sel == 0)							\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+-			"dsll\t%L0, %L0, 32\n\t"			\
++			"dsll\t%L0, %L1, 32\n\t"			\
+ 			"dsrl\t%L0, %L0, 32\n\t"			\
+-			"dsll\t%M0, %M0, 32\n\t"			\
++			"dsll\t%M0, %M1, 32\n\t"			\
+ 			"or\t%L0, %L0, %M0\n\t"				\
+ 			"dmtc0\t%L0, " #source "\n\t"			\
+ 			".set\tmips0"					\
+-			: : "r" (val));					\
++			: "=&r,r" (__tmp)				\
++			: "r,0" (val));					\
+ 	else								\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+-			"dsll\t%L0, %L0, 32\n\t"			\
++			"dsll\t%L0, %L1, 32\n\t"			\
+ 			"dsrl\t%L0, %L0, 32\n\t"			\
+-			"dsll\t%M0, %M0, 32\n\t"			\
++			"dsll\t%M0, %M1, 32\n\t"			\
+ 			"or\t%L0, %L0, %M0\n\t"				\
+ 			"dmtc0\t%L0, " #source ", " #sel "\n\t"		\
+ 			".set\tmips0"					\
+-			: : "r" (val));					\
++			: "=&r,r" (__tmp)				\
++			: "r,0" (val));					\
+ 	local_irq_restore(__flags);					\
+ } while (0)
+ 
+-- 
+2.14.1

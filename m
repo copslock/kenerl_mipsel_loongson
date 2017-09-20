@@ -1,80 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Sep 2017 20:05:54 +0200 (CEST)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:33781
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993918AbdISSFreYHYW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Sep 2017 20:05:47 +0200
-Received: by mail-qt0-x242.google.com with SMTP id b1so268550qtc.0
-        for <linux-mips@linux-mips.org>; Tue, 19 Sep 2017 11:05:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=UeUirkkL9biszv//tMsmWqmcEbbAyFJelgl79oSDdjc=;
-        b=qfvTwiiNRG+dyzTqF8aDhX5sHOX0ZxRKu80mIrfKPViajhS5BspkV5ZhiO4nr2R1uo
-         yI1PhLeMNH0QARMpkRsgKKvDjYXGSbGOMbh+fNqSiY6IuoweR7gS+/LdzAbtzMZa5EZF
-         BPJD6YL1vh7caBxqDyKxnFJdyRQgRmewr0lNs4HAz6ubyveqmRK33YS9sCX3mlYuKO53
-         5KrsBzS6C/QYujh3pInVx7tyEQ8cGK/qhnYbYjpbjtNTMcsZeaRpOIUaVZadxPih2Wvg
-         I9PuoKtmvyKP2S54apDNCC/0I0wNlH8CC875139/S9+2jsM4LjkTmW6xpb36j7tIdVOT
-         gyTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UeUirkkL9biszv//tMsmWqmcEbbAyFJelgl79oSDdjc=;
-        b=SKuOOaKUIVmXHMjRd9FdMaclIDMaTTu4pHbDIef6n7y9ikRUWB1Fag4qSXI2LJTU7Z
-         RyoQ2Dw8upeJbqS62Qr0OpmdJnfh+27X7lSlQvqP5LZE//qQlo3O5ZYUIsZEukMbrHlv
-         F9IljnpvSyIjZHCuGdUSO1f7ycesyb23Oq8kuRp8o4PW2gF09HzZvDV8eCe0EZWynfUc
-         /Irpjn/SXRNNb8bbZqMuaSXY397stBDIsHKEB/SZi9aO9sZVARdp+iz8joah3uZqc1sX
-         g1IYcDw4Nc3EQGiPWu46nZ5/S81ISWfsc7IIiy+DzWhVeyHb00SioJ5w8CjTYibdOiZ1
-         LKsA==
-X-Gm-Message-State: AHPjjUhkh1qeW3HYtEKzwSHj1tBb+5ofuZlqyBQMm2SnZltW6erUz+Rn
-        qFlgydpH/ctbJd/XrIMAvGc=
-X-Google-Smtp-Source: AOwi7QC4txgQYSMLtWlMTjSgY/RWNRpR12Y+QWOkKOsLcj+JDUc+FNjYVJe9i8HOm0la9yDPvApsXg==
-X-Received: by 10.200.25.78 with SMTP id g14mr3358913qtk.48.1505844341260;
-        Tue, 19 Sep 2017 11:05:41 -0700 (PDT)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id u17sm7398122qtc.15.2017.09.19.11.05.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 19 Sep 2017 11:05:40 -0700 (PDT)
-Subject: Re: [PATCH v4 0/3] Add support for BCM7271 style interrupt controller
-To:     Doug Berger <opendmb@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
-        Mans Rullgard <mans@mansr.com>, Mason <slash.tmp@free.fr>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Sebastian Frias <sf84@laposte.net>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
-References: <20170919010000.32072-1-opendmb@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <db82458e-5656-1eb2-b4b8-051cc12e7095@gmail.com>
-Date:   Tue, 19 Sep 2017 11:05:35 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <20170919010000.32072-1-opendmb@gmail.com>
-Content-Type: text/plain; charset=utf-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 06:46:00 +0200 (CEST)
+Received: from omzsmtpe03.verizonbusiness.com ([199.249.25.208]:16929 "EHLO
+        omzsmtpe03.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991550AbdITEpyI3LR9 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Sep 2017 06:45:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
+  t=1505882753; x=1537418753;
+  h=from:cc:to:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=1yontPG1P74X54WmVcMbw2nWm8YKYQddXpV6SIhxGWw=;
+  b=mBKvpEmXmQxydQYwD1RFAwuOM2p3/5BOj60g4c1kjxL7jf0Jg0IYvHx+
+   6nIRL1CmFGI2qVlYVN5oo9ZVxf8Zh1X3ivNWSj6YPPFSGpmdTDFaBpTmj
+   zksBP6060UVP4cT7qC0klDWg/gV9jgwkXIIMxDfLcevb2gkvYkL9b/DsG
+   M=;
+Received: from unknown (HELO fldsmtpi01.verizon.com) ([166.68.71.143])
+  by omzsmtpe03.verizonbusiness.com with ESMTP; 20 Sep 2017 04:45:45 +0000
+From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, John Crispin <john@phrozen.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
+Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO atlantis.verizonwireless.com) ([10.255.192.101])
+  by fldsmtpi01.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 20 Sep 2017 04:45:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
+  t=1505882721; x=1537418721;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=1yontPG1P74X54WmVcMbw2nWm8YKYQddXpV6SIhxGWw=;
+  b=N5i0sZEiemNvrh3TIy0rGqZYn3bmum3v4vi4e1C9PBRWLuFpnfBKeg3B
+   rTZXFFVuNGghemkNGLllUAkMgjV6SJSXVKLZ2ISof2HIWGeF8+FnvyjZp
+   yYusYbYMbqWsj7qB2E9LIxuqWJVHPi/1zyKu4AaO9uB/11nRbUG8DS2v5
+   w=;
+Received: from viking.odc.vzwcorp.com (HELO mercury.verizonwireless.com) ([10.255.240.26])
+  by atlantis.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 20 Sep 2017 00:45:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
+  t=1505882720; x=1537418720;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=1yontPG1P74X54WmVcMbw2nWm8YKYQddXpV6SIhxGWw=;
+  b=sUfTHvE1OTvQ6hORyXNXFr4j22hO+3J53LOnYxQO+wOiNEthrQ7P8g2E
+   BXb71hfYU7UkMOd4Cko7pJw0nyHOyvLSiZKMHqQBaJL/JTMj3aDlcHbKu
+   3f7zkdtv2m+JaojhBKG7MKJKkq5PFUBOjWAf2mwSRb+F2sXvynqmhNDmV
+   8=;
+X-Host: viking.odc.vzwcorp.com
+Received: from casac1exh001.uswin.ad.vzwcorp.com ([10.11.218.43])
+  by mercury.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 20 Sep 2017 04:45:19 +0000
+Received: from scwexch18apd.uswin.ad.vzwcorp.com (153.114.130.37) by
+ CASAC1EXH001.uswin.ad.vzwcorp.com (10.11.218.43) with Microsoft SMTP Server
+ (TLS) id 14.3.248.2; Tue, 19 Sep 2017 21:45:19 -0700
+Received: from OMZP1LUMXCA14.uswin.ad.vzwcorp.com (144.8.22.189) by
+ scwexch18apd.uswin.ad.vzwcorp.com (153.114.130.37) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Tue, 19 Sep 2017 21:45:18 -0700
+Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
+ OMZP1LUMXCA14.uswin.ad.vzwcorp.com (144.8.22.189) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Tue, 19 Sep 2017 23:45:17 -0500
+Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
+ OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
+ 15.00.1263.000; Tue, 19 Sep 2017 23:45:17 -0500
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH review for 4.4 30/47] MIPS: Lantiq: Fix another
+ request_mem_region() return code check
+Thread-Topic: [PATCH review for 4.4 30/47] MIPS: Lantiq: Fix another
+ request_mem_region() return code check
+Thread-Index: AQHTMcs7JSUhJYXtEkSs2C8QyTbM+g==
+Date:   Wed, 20 Sep 2017 04:45:07 +0000
+Message-ID: <20170920044445.7392-30-alexander.levin@verizon.com>
+References: <20170920044445.7392-1-alexander.levin@verizon.com>
+In-Reply-To: <20170920044445.7392-1-alexander.levin@verizon.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.144.60.250]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <alexander.levin@verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60075
+X-archive-position: 60076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: alexander.levin@verizon.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,65 +102,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/18/2017 05:59 PM, Doug Berger wrote:
-> This patch set extends the functionality of the irq-brcmstb-l2 interrupt
-> controller driver to cover a hardware variant first introduced in the
-> BCM7271 SoC.  The main difference between this variant and the block
-> found in earlier brcmstb SoCs is that this variant only supports level
-> sensitive interrupts and therefore does not latch the interrupt state
-> based on edges.  Since there is no longer a need to ack interrupts with
-> a register write to clear the latch the register map has been changed.
-> 
-> Therefore the change to add support for the new hardware block is to
-> abstract the register accesses to accommodate different maps and to
-> identify the block with a new device-tree compatible string.
-> 
-> I also took the opportunity to make some small efficiency enhancements
-> to the driver.  One of these was to make use of the slightly more
-> efficient irq_mask_ack method.  However, I discovered that the defined
-> irq_gc_mask_disable_reg_and_ack() generic irq function was insufficient
-> for my needs.  Previous submissions offered candidate solutions to
-> address my needs within the generic irqchip library, but since those
-> submissions appear to have stalled I am submitting this version that
-> includes the function in the driver to prevent controversy and allow
-> the new functionality to be included. 
+From: Arnd Bergmann <arnd@arndb.de>
 
-For this entire series:
+[ Upstream commit 98ea51cb0c8ce009d9da1fd7b48f0ff1d7a9bbb0 ]
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Hauke already fixed a couple of them, but one instance remains
+that checks for a negative integer when it should check
+for a NULL pointer:
 
-Thanks Doug.
+arch/mips/lantiq/xway/sysctrl.c: In function 'ltq_soc_init':
+arch/mips/lantiq/xway/sysctrl.c:473:19: error: ordered comparison of pointer with integer zero [-Werror=extra]
 
-> 
-> Changes in v4:
-> 
-> - The first three commits were removed from the patch set to remove any
->   dependencies on changing the generic irqchip or irqchip-tango imple-
->   mentations. If there is a will to make those changes in the future
->   they can be applied at that time, but they needn't hold up the accept-
->   ance of this patch set.
->   
-> Changes in v3:
-> 
-> - I did not submit a v3 patch set, but Marc Gonzalez included a PATCH v3
->   in a response to the v2 patch so I am skipping ahead to v4 to avoid
->   confusion.
->   
-> Changes in v2:
-> 
-> - removed unused permutations of irq_mask_ack methods
-> - added Reviewed-by and Acked-by responses from first submission
-> 
-> Doug Berger (3):
->   irqchip: brcmstb-l2: Remove some processing from the handler
->   irqchip: brcmstb-l2: Abstract register accesses
->   irqchip: brcmstb-l2: Add support for the BCM7271 L2 controller
-> 
->  .../bindings/interrupt-controller/brcm,l2-intc.txt |   3 +-
->  drivers/irqchip/irq-brcmstb-l2.c                   | 171 +++++++++++++++------
->  2 files changed, 126 insertions(+), 48 deletions(-)
-> 
+Fixes: 6e807852676a ("MIPS: Lantiq: Fix check for return value of request_mem_region()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: John Crispin <john@phrozen.org>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15043/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
+---
+ arch/mips/lantiq/xway/sysctrl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index daf580ce5ca2..2528181232fd 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -469,8 +469,8 @@ void __init ltq_soc_init(void)
+ 			panic("Failed to load xbar nodes from devicetree");
+ 		if (of_address_to_resource(np_xbar, 0, &res_xbar))
+ 			panic("Failed to get xbar resources");
+-		if (request_mem_region(res_xbar.start, resource_size(&res_xbar),
+-			res_xbar.name) < 0)
++		if (!request_mem_region(res_xbar.start, resource_size(&res_xbar),
++			res_xbar.name))
+ 			panic("Failed to get xbar resources");
+ 
+ 		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
 -- 
-Florian
+2.11.0

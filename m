@@ -1,37 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 07:07:57 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20238 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990825AbdITFHtIc-09 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2017 07:07:49 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id BC6D79F0F4663;
-        Wed, 20 Sep 2017 06:07:40 +0100 (IST)
-Received: from localhost (10.20.78.67) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 20 Sep
- 2017 06:07:42 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 13:14:34 +0200 (CEST)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:32867
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992297AbdITLOVnSjVX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2017 13:14:21 +0200
+Received: by mail-wm0-x242.google.com with SMTP id m127so2127305wmm.0;
+        Wed, 20 Sep 2017 04:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=z9cN2ATQ5QHTuTh0ekQ09K0GOyHXBfNdFBVEN+uUfXQ=;
+        b=tOppH06yy/yVlgtf0LYrfLaeYIgfFpP6E4V1qk5HMmOypMJWtYJYpEm+wyqvwLDvFd
+         qdhWwe+3BW5LXNpNeoKse6zMuD1moS+qXue4P2anMfgxQxsFyWBh6V1Kdn5k+Hc0baAA
+         sWqZ9WpteL6rfTaxnm4dxQfv8Yqp2OoscS9zn0berBQ/3ErVOihIGO+dfL3UoNklIpkt
+         0wvdWjQH3bnHEErksAOXZfJkLVeol5QD1OMcZLAy5JTTEGRM5evyfDzi6GN1KEslgYix
+         UrdB667AplZkmo5CmenGX0zYJZKMRzKaDcwVj7BfU0IHqfF3qHp9riJVjaSm8HHoZi1l
+         z9vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=z9cN2ATQ5QHTuTh0ekQ09K0GOyHXBfNdFBVEN+uUfXQ=;
+        b=FPgSZZfvsVjp2euQL5lRs4fmHVNOedwy1Im5+aZxo30eOsuHkm7f/pCiX/75YBiJA+
+         ygYWZ+k4oqOuwtBl0MilN1EMiDvvXRju8qdQ8U0c45a0OJb1sfPh3RmBo5yZ+0s3LATl
+         WOxKd+eiy4530zUjUDC87mdRa6x1EJSaovUSo8vJbTYV5jJ0B5ChstEiDuhnKY27xF4q
+         naS30LSJ3IZw3NLflVIekLnYBFZnJyNpX8fMM4gJmMAFvAN9w83VBLTS8yJfNAG8egKR
+         NfZReURyhYKtV+k29/Cj9KxjGS+oHfP5slPSm0A4GmbGnPhnx0fgtai6moBDiKByk0/M
+         G2PQ==
+X-Gm-Message-State: AHPjjUiPYOUdQadXurs6TwzVedEn0HKhVkhDt3DTsBrTWSUgfDFB2msX
+        g8AGLX1DjPDqSWIaL7SCgE5Kfg==
+X-Google-Smtp-Source: AOwi7QDseebG//AoIGPoMIWW/NSjxZXBnk2bSgEDSWp8VGk2CxI7TJ/sqCxZEgAf5jfFLYywE33nhw==
+X-Received: by 10.80.179.185 with SMTP id s54mr4356594edd.164.1505906055903;
+        Wed, 20 Sep 2017 04:14:15 -0700 (PDT)
+Received: from localhost.localdomain ([2001:470:9e39::48e])
+        by smtp.gmail.com with ESMTPSA id s12sm884513edd.25.2017.09.20.04.14.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 20 Sep 2017 04:14:15 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        stable <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Fix perf event init
-Date:   Tue, 19 Sep 2017 22:07:18 -0700
-Message-ID: <20170920050718.22756-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.14.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.20.78.67]
-Return-Path: <Paul.Burton@imgtec.com>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Russell King <linux@armlinux.org.uk>
+Subject: [PATCH V2 0/8] MIPS: BCM63XX: add and use clkdev lookup support
+Date:   Wed, 20 Sep 2017 13:14:00 +0200
+Message-Id: <20170920111408.29711-1-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.13.2
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60083
+X-archive-position: 60084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,51 +70,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit c311c797998c ("cpumask: make "nr_cpumask_bits" unsigned")
-modified mipspmu_event_init() to cast the struct perf_event cpu field to
-an unsigned integer before it is compared with nr_cpumask_bits (and
-*ahem* did so without copying the linux-mips mailing list or any MIPS
-developers...). This is broken because the cpu field may be -1 for
-events which follow a process rather than being affine to a particular
-CPU. When this is the case the cast to an unsigned int results in a
-value equal to ULONG_MAX, which is always greater than nr_cpumask_bits
-so we always fail mipspmu_event_init() and return -ENODEV.
+This patchset adds support for clckdev lookup support to name input
+clocks in various drivers more closely to their functions, or simplify
+their usage.
 
-The check against nr_cpumask_bits seems nonsensical anyway, so this
-patch simply removes it. The cpu field is going to either be -1 or a
-valid CPU number. Comparing it with nr_cpumask_bits is effectively
-checking that it's a valid cpu number, but it seems safe to rely on the
-core perf events code to ensure that's the case.
+Since most of these patches touch arch/mips, it probably makes most
+sense to go through the MIPS tree.
 
-The end result is that this fixes use of perf on MIPS when not
-constraining events to a particular CPU, and fixes the "perf list hw"
-command which fails to list any events without this.
+The HSSPI driver was already updated previously to support a "pll"
+input with ff18e1ef04e2 ("spi/bcm63xx-hsspi: allow providing clock rate
+through a second clock"), so there is no need to touch it.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: c311c797998c ("cpumask: make "nr_cpumask_bits" unsigned")
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable <stable@vger.kernel.org> # v4.12+
----
+This patch series is part of an effort to modernize BCM63XX and clean up
+its drivers to eventually make them usable with BMIPS and device tree.
 
- arch/mips/kernel/perf_event_mipsxx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Changes V1 -> V2:
+* Drop the bcm63xx_enet patch, it will be sent again once the clkdev
+  lookup is actually applied.
+* Added a patch to fix refcounting in the secondary switch clocks.
+* Slightly reordered patches to be ordered thematically.
+* Added collected Acks / Reviews to their respective patches.
 
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index ea994cd80009..15ce0004a2f4 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -618,8 +618,7 @@ static int mipspmu_event_init(struct perf_event *event)
- 		return -ENOENT;
- 	}
- 
--	if ((unsigned int)event->cpu >= nr_cpumask_bits ||
--	    (event->cpu >= 0 && !cpu_online(event->cpu)))
-+	if (event->cpu >= 0 && !cpu_online(event->cpu))
- 		return -ENODEV;
- 
- 	if (!atomic_inc_not_zero(&active_events)) {
+Due to none of the patches having changed between V1 and V2 I did not
+add individual changelogs. These will be added if the code or commit log
+text changes.
+
+Jonas Gorski (8):
+  MIPS: BCM63XX: add clkdev lookup support
+  MIPS: BCM63XX: provide periph clock as refclk for uart
+  tty/bcm63xx_uart: use refclk for the expected clock name
+  tty/bcm63xx_uart: allow naming clock in device tree
+  MIPS: BMIPS: name the refclk clock for uart
+  MIPS: BCM63XX: move the HSSPI PLL HZ into its own clock
+  MIPS: BCM63XX: provide enet clocks as "enet" to the ethernet devices
+  MIPS: BCM63XX: split out swpkt_sar/usb clocks
+
+ .../bindings/serial/brcm,bcm6345-uart.txt          |   6 +
+ arch/mips/Kconfig                                  |   1 +
+ arch/mips/bcm63xx/clk.c                            | 242 +++++++++++++++++----
+ arch/mips/boot/dts/brcm/bcm3368.dtsi               |   2 +
+ arch/mips/boot/dts/brcm/bcm63268.dtsi              |   2 +
+ arch/mips/boot/dts/brcm/bcm6328.dtsi               |   2 +
+ arch/mips/boot/dts/brcm/bcm6358.dtsi               |   2 +
+ arch/mips/boot/dts/brcm/bcm6362.dtsi               |   2 +
+ arch/mips/boot/dts/brcm/bcm6368.dtsi               |   2 +
+ drivers/tty/serial/bcm63xx_uart.c                  |   6 +-
+ 10 files changed, 218 insertions(+), 49 deletions(-)
+
 -- 
-2.14.1
+2.13.2

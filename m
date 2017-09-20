@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 13:17:30 +0200 (CEST)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:36526
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 13:17:54 +0200 (CEST)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:35288
         "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993915AbdITLQSdZX-X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2017 13:16:18 +0200
-Received: by mail-wm0-x243.google.com with SMTP id r136so2119410wmf.3;
-        Wed, 20 Sep 2017 04:16:18 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23993918AbdITLQTw0QyX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2017 13:16:19 +0200
+Received: by mail-wm0-x243.google.com with SMTP id e64so2126097wmi.2;
+        Wed, 20 Sep 2017 04:16:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=aoZqJe/zJsKqD6CDebjOGOq+Cjc7ASV8t1qCFib6cac=;
-        b=s3+KtIu2W/1tt8ZCY4noZpgLx7eLclxZrZwAJO9oVj/3qpxHnETqpbOqbGsYTrZiSk
-         Iu0fazp9VCX5H/XmXAu8Gr+P3tMgi4bs3O5JYv/9hxf7lN6M9ujSdSUSOnCjgqg2fina
-         QBRtoU75TBmUJRwohj5z6YKi4vRuiwxyO1CyyIIcAyxljhHJF2L8Umny3zKPqdTqOVK7
-         R8j9ByT1FRxcSi/gzvPIS7uSk2N4so1hobPu+gojDBoXf2Qrmwi85nwDZymrKU+y1NAX
-         Nmz7TRgDPtni0EK6uDl9u9614C5tjq/dmEbobveoe4E+KHr12a+4DViYwg5ydfsZsugw
-         YOOg==
+        bh=cqVPQGainFh9P49hJyGNpQkjXSK3BMhwAQa2Fdw2oA8=;
+        b=Fhy52v/wgUuerUonpaTy1Nk/Xu7G2XHu9OJFhJ2EwXpNX3xKqD7DksdjmQ23VsqfGQ
+         PjD5T6muiYOqbUm40yRvrRdpmv2DcgmAuM12nedSD6Dpsh8KRrHD9/S4nJ4kIKChcT4G
+         hZYgIxqqbwbofouKg2dLltwseMe3XHEhSyNiHV4+u5yrFqZoub7zPLQ6iBEfafTJ/r1L
+         ovLhPDJmVvt3WdOkQeBLzz2nwl0J07YEq6YAy8LvMfwm3BTG+4sgfctGupwLMe65a17K
+         v6i/HxAnGhsZCGhngardYGTyAdHpyxIhB83TzvuSF5/dxqZsOjHwT2OxbPKd83Co0Mcs
+         m9ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=aoZqJe/zJsKqD6CDebjOGOq+Cjc7ASV8t1qCFib6cac=;
-        b=Fn6IMlvAVykC+R++XoV1iA34g/d1CWrOsD7bIk3mRfJqcGA41jHupwMEkYOmjX/Sb2
-         FZ8Er9nCEnKH3RP9Qc9wMIHmVf8ypvZXafQXfXxf36OpS3mkjn9P58jqYtkyrcLh0GzF
-         z4waPa09tDtdiDQ4m6IoYRlPWcVbpadTn94mMLs552wcZ9BQ0/gm+CFoLcLNQXXN8eyg
-         lurW6E6gf6wqdHIX5zvM7JA93K1MeJAfAIszhLhQR8/UaVAgS1iMY2V/gR9etMLB0DbC
-         qPyriCp5HsvA0xJ2L0ImGyvj4VXbL5sJ+6s62uHs92Op50a/0BVuspFT834MulLeDBdQ
-         vCFg==
-X-Gm-Message-State: AHPjjUjYDP5qkuby6lgQsrePXEB1NMOfsflgfES0dEiWgQcf7CZ3sH8q
-        uxbXvkgSsZXskhhP5xKTgZrtMQ==
-X-Google-Smtp-Source: AOwi7QAKV3xyf91HFB7r9ib7XtlLLbOzoLuVQYI0e3+jVyY44iSsWc4BZqjtfAzvrSZmzk8pMTMSnw==
-X-Received: by 10.80.206.11 with SMTP id y11mr4398662edi.94.1505906172634;
-        Wed, 20 Sep 2017 04:16:12 -0700 (PDT)
+        bh=cqVPQGainFh9P49hJyGNpQkjXSK3BMhwAQa2Fdw2oA8=;
+        b=AcLVvUAefDmolazcEZqbEeA2L/L5f52SkJslnt2XcbmAhj6YQzuCoapmAX7bh+vvfq
+         lIi5SpxSagNRNwCdWRVYdnkez7FhRyU6dkWrIPKati/70bUUi//YUnqUiQ2I+m/i9qht
+         XRAcow64qu//GykWf/JyNc6JGF6WZipTsC7vrxY2GodhZDJiC0GOaEJqDzb7LLJFlTLP
+         C27HAiAyTP9JpJxgIJ0FNEmPgmPKlJBCc9W5JM7uDXlWWPHiy2PMRzr1TzE5jMDEE0o2
+         FSD0xZBCPzIS2Q2zerY+5WZp5dfVy7U2PacNYMOi52gr1jympWrPCYbIWBJ118kBdqvN
+         Vaig==
+X-Gm-Message-State: AHPjjUhb+LXLgSVwKyLPMxFdK07GDwuWAdxRdTPdBowQ4+fLVPcXDwqB
+        jtffq3/kAQKNC23bniYGiuQgZA==
+X-Google-Smtp-Source: AOwi7QCPqpLg6cPjVbbyoKAQc3OzjacwiM15sV5KBRxVTiwj6J/BiJQ6e3Esup2XahkAgkwaNj0L9A==
+X-Received: by 10.80.135.65 with SMTP id 1mr4121495edv.266.1505906174345;
+        Wed, 20 Sep 2017 04:16:14 -0700 (PDT)
 Received: from localhost.localdomain ([2001:470:9e39::48e])
-        by smtp.gmail.com with ESMTPSA id s12sm884513edd.25.2017.09.20.04.16.11
+        by smtp.gmail.com with ESMTPSA id s12sm884513edd.25.2017.09.20.04.16.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 Sep 2017 04:16:12 -0700 (PDT)
+        Wed, 20 Sep 2017 04:16:13 -0700 (PDT)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
 To:     linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org
@@ -46,9 +46,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         bcm-kernel-feedback-list@broadcom.com,
         Kevin Cernekee <cernekee@gmail.com>,
         Russell King <linux@armlinux.org.uk>
-Subject: [PATCH V2 4/8] tty/bcm63xx_uart: allow naming clock in device tree
-Date:   Wed, 20 Sep 2017 13:14:04 +0200
-Message-Id: <20170920111408.29711-5-jonas.gorski@gmail.com>
+Subject: [PATCH V2 5/8] MIPS: BMIPS: name the refclk clock for uart
+Date:   Wed, 20 Sep 2017 13:14:05 +0200
+Message-Id: <20170920111408.29711-6-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 2.13.2
 In-Reply-To: <20170920111408.29711-1-jonas.gorski@gmail.com>
 References: <20170920111408.29711-1-jonas.gorski@gmail.com>
@@ -56,7 +56,7 @@ Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60088
+X-archive-position: 60089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,59 +73,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Codify using a named clock for the refclk of the uart. This makes it
-easier if we might need to add a gating clock (like present on the
-BCM6345).
+Add the clock name to the uart nodes, to name the input clock
+properly.
 
-Acked-by: Rob Herring <robh@kernel.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt | 6 ++++++
- drivers/tty/serial/bcm63xx_uart.c                              | 6 ++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ arch/mips/boot/dts/brcm/bcm3368.dtsi  | 2 ++
+ arch/mips/boot/dts/brcm/bcm63268.dtsi | 2 ++
+ arch/mips/boot/dts/brcm/bcm6328.dtsi  | 2 ++
+ arch/mips/boot/dts/brcm/bcm6358.dtsi  | 2 ++
+ arch/mips/boot/dts/brcm/bcm6362.dtsi  | 2 ++
+ arch/mips/boot/dts/brcm/bcm6368.dtsi  | 2 ++
+ 6 files changed, 12 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt b/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt
-index 5c52e5eef16d..8b2b0460259a 100644
---- a/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt
-+++ b/Documentation/devicetree/bindings/serial/brcm,bcm6345-uart.txt
-@@ -11,6 +11,11 @@ Required properties:
- - clocks: Clock driving the hardware; used to figure out the baud rate
-   divisor.
+diff --git a/arch/mips/boot/dts/brcm/bcm3368.dtsi b/arch/mips/boot/dts/brcm/bcm3368.dtsi
+index bee855cb8073..772fb42b7730 100644
+--- a/arch/mips/boot/dts/brcm/bcm3368.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm3368.dtsi
+@@ -82,6 +82,7 @@
+ 			interrupts = <2>;
  
-+
-+Optional properties:
-+
-+- clock-names: Should be "refclk".
-+
- Example:
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
  
- 	uart0: serial@14e00520 {
-@@ -19,6 +24,7 @@ Example:
- 		interrupt-parent = <&periph_intc>;
- 		interrupts = <2>;
- 		clocks = <&periph_clk>;
-+		clock-names = "refclk";
- 	};
+ 			status = "disabled";
+ 		};
+@@ -94,6 +95,7 @@
+ 			interrupts = <3>;
  
- 	clocks {
-diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
-index a2b9376ec861..f227eff28d3a 100644
---- a/drivers/tty/serial/bcm63xx_uart.c
-+++ b/drivers/tty/serial/bcm63xx_uart.c
-@@ -841,8 +841,10 @@ static int bcm_uart_probe(struct platform_device *pdev)
- 	if (!res_irq)
- 		return -ENODEV;
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
  
--	clk = pdev->dev.of_node ? of_clk_get(pdev->dev.of_node, 0) :
--				  clk_get(&pdev->dev, "refclk");
-+	clk = clk_get(&pdev->dev, "refclk");
-+	if (IS_ERR(clk) && pdev->dev.of_node)
-+		clk = of_clk_get(pdev->dev.of_node, 0);
-+
- 	if (IS_ERR(clk))
- 		return -ENODEV;
+ 			status = "disabled";
+ 		};
+diff --git a/arch/mips/boot/dts/brcm/bcm63268.dtsi b/arch/mips/boot/dts/brcm/bcm63268.dtsi
+index 7e6bf2cc0287..b033a23b5e13 100644
+--- a/arch/mips/boot/dts/brcm/bcm63268.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm63268.dtsi
+@@ -83,6 +83,7 @@
+ 			interrupts = <5>;
+ 
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 
+ 			status = "disabled";
+ 		};
+@@ -95,6 +96,7 @@
+ 			interrupts = <34>;
+ 
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 
+ 			status = "disabled";
+ 		};
+diff --git a/arch/mips/boot/dts/brcm/bcm6328.dtsi b/arch/mips/boot/dts/brcm/bcm6328.dtsi
+index 5633b9d90f55..7c3061ba6d38 100644
+--- a/arch/mips/boot/dts/brcm/bcm6328.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm6328.dtsi
+@@ -68,6 +68,7 @@
+ 			interrupt-parent = <&periph_intc>;
+ 			interrupts = <28>;
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 			status = "disabled";
+ 		};
+ 
+@@ -77,6 +78,7 @@
+ 			interrupt-parent = <&periph_intc>;
+ 			interrupts = <39>;
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 			status = "disabled";
+ 		};
+ 
+diff --git a/arch/mips/boot/dts/brcm/bcm6358.dtsi b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+index f9d8d392162b..ab9d6c268a84 100644
+--- a/arch/mips/boot/dts/brcm/bcm6358.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+@@ -92,6 +92,7 @@
+ 			interrupts = <2>;
+ 
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 
+ 			status = "disabled";
+ 		};
+@@ -104,6 +105,7 @@
+ 			interrupts = <3>;
+ 
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 
+ 			status = "disabled";
+ 		};
+diff --git a/arch/mips/boot/dts/brcm/bcm6362.dtsi b/arch/mips/boot/dts/brcm/bcm6362.dtsi
+index c507da594f2f..ca93c9a6f23f 100644
+--- a/arch/mips/boot/dts/brcm/bcm6362.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm6362.dtsi
+@@ -83,6 +83,7 @@
+ 			interrupts = <3>;
+ 
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 
+ 			status = "disabled";
+ 		};
+@@ -95,6 +96,7 @@
+ 			interrupts = <4>;
+ 
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 
+ 			status = "disabled";
+ 		};
+diff --git a/arch/mips/boot/dts/brcm/bcm6368.dtsi b/arch/mips/boot/dts/brcm/bcm6368.dtsi
+index d0e3a70b32e2..da4ec89710fd 100644
+--- a/arch/mips/boot/dts/brcm/bcm6368.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm6368.dtsi
+@@ -89,6 +89,7 @@
+ 			interrupt-parent = <&periph_intc>;
+ 			interrupts = <2>;
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 			status = "disabled";
+ 		};
+ 
+@@ -98,6 +99,7 @@
+ 			interrupt-parent = <&periph_intc>;
+ 			interrupts = <3>;
+ 			clocks = <&periph_clk>;
++			clock-names = "refclk";
+ 			status = "disabled";
+ 		};
  
 -- 
 2.13.2

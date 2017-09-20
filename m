@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 06:46:26 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2017 06:46:50 +0200 (CEST)
 Received: from omzsmtpe01.verizonbusiness.com ([199.249.25.210]:28137 "EHLO
         omzsmtpe01.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991599AbdITEp4OeRj9 convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S23991743AbdITEp5GyLa9 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Sep 2017 06:45:56 +0200
+        Wed, 20 Sep 2017 06:45:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1505882755; x=1537418755;
+  t=1505882756; x=1537418756;
   h=from:cc:to:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=RCTJcZhoXmE8z6CilK9WoCAGbzSVZzwjApYYOp/YkBI=;
-  b=bEt6kv3rJ9hGQv0IxU2xy15jPUEgsuxybcWTTzjD110gzlxMGq1+1FSW
-   fZXbkZTIbo/EZ5XMMtXCbpimqnJj3Rk8+f0AwE2x2CGRVRucDSzHClSFy
-   Us7ap15Ipx26oyIUmQ2ipW9gQNhh2V78k6UVNQ6xcF7r1sFF3kyiW+3DN
-   Y=;
+  bh=ZQWw8ECaWQg7u/9Ki+0efZi7gKOZdrtT46pJ9+clpIk=;
+  b=An3RnWaFsMtg+L7xn4+tn/2UckrTzgC9qntNaxc4YLqHxXYwNf6X5qel
+   Wfsj5H6w8JrZequYSOgEQGRnyw9JtJqr8MZ6qERUdgu/HN8Aq92O0yriM
+   ckPpUSHOlNxdMg7GqyQGtTUoR2EM0RQhPf8/DyJs0egegzbGdQ1CEBrFy
+   M=;
 Received: from unknown (HELO fldsmtpi03.verizon.com) ([166.68.71.145])
-  by omzsmtpe01.verizonbusiness.com with ESMTP; 20 Sep 2017 04:45:48 +0000
+  by omzsmtpe01.verizonbusiness.com with ESMTP; 20 Sep 2017 04:45:49 +0000
 From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
+Cc:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>
@@ -28,11 +28,11 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1505882706; x=1537418706;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=RCTJcZhoXmE8z6CilK9WoCAGbzSVZzwjApYYOp/YkBI=;
-  b=XNYUPC918/KFisgj/q1RLksl8OtNrDEvJzjOeSdGhdDlcjepqt4qjAAU
-   1YyXt4z0U20nUB0BWPAAKN3MDRSmgqO6Dsvxj3hL9EGUBMEv8grgjqck0
-   jnTy2MEG+UlvzTVBG8gF+ANhSBExw5pd246t+fnx3vn3nNLQBwbQixQ51
-   Q=;
+  bh=ZQWw8ECaWQg7u/9Ki+0efZi7gKOZdrtT46pJ9+clpIk=;
+  b=KYZa29q4Nt1r6/cmTv/AP0prpzJCwB+LxS1mOZ9+D/XtNYiByZcMWFC+
+   TvF0TfeUpIMPF9dFoMF84mWkmJ434eHyDC5OamRyq6HYkS8OCnm/mxYCF
+   Lvee0WTyrWfTYmu5Aa+xhkfnDnNlAb6pQgi1MDtSARISOYVvmNwXquJd1
+   A=;
 Received: from discovery.odc.vzwcorp.com (HELO mercury.verizonwireless.com) ([10.255.240.25])
   by atlantis.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 20 Sep 2017 00:45:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -40,35 +40,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1505882706; x=1537418706;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=RCTJcZhoXmE8z6CilK9WoCAGbzSVZzwjApYYOp/YkBI=;
-  b=XNYUPC918/KFisgj/q1RLksl8OtNrDEvJzjOeSdGhdDlcjepqt4qjAAU
-   1YyXt4z0U20nUB0BWPAAKN3MDRSmgqO6Dsvxj3hL9EGUBMEv8grgjqck0
-   jnTy2MEG+UlvzTVBG8gF+ANhSBExw5pd246t+fnx3vn3nNLQBwbQixQ51
-   Q=;
+  bh=ZQWw8ECaWQg7u/9Ki+0efZi7gKOZdrtT46pJ9+clpIk=;
+  b=KYZa29q4Nt1r6/cmTv/AP0prpzJCwB+LxS1mOZ9+D/XtNYiByZcMWFC+
+   TvF0TfeUpIMPF9dFoMF84mWkmJ434eHyDC5OamRyq6HYkS8OCnm/mxYCF
+   Lvee0WTyrWfTYmu5Aa+xhkfnDnNlAb6pQgi1MDtSARISOYVvmNwXquJd1
+   A=;
 X-Host: discovery.odc.vzwcorp.com
 Received: from casac1exh003.uswin.ad.vzwcorp.com ([10.11.218.45])
-  by mercury.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 20 Sep 2017 04:45:05 +0000
-Received: from scwexch25apd.uswin.ad.vzwcorp.com (153.114.130.44) by
+  by mercury.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 20 Sep 2017 04:45:06 +0000
+Received: from scwexch28apd.uswin.ad.vzwcorp.com (153.114.130.47) by
  CASAC1EXH003.uswin.ad.vzwcorp.com (10.11.218.45) with Microsoft SMTP Server
- (TLS) id 14.3.248.2; Tue, 19 Sep 2017 21:45:04 -0700
-Received: from OMZP1LUMXCA19.uswin.ad.vzwcorp.com (144.8.22.197) by
- scwexch25apd.uswin.ad.vzwcorp.com (153.114.130.44) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Tue, 19 Sep 2017 21:45:03 -0700
+ (TLS) id 14.3.248.2; Tue, 19 Sep 2017 21:45:05 -0700
+Received: from OMZP1LUMXCA20.uswin.ad.vzwcorp.com (144.8.22.198) by
+ scwexch28apd.uswin.ad.vzwcorp.com (153.114.130.47) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Tue, 19 Sep 2017 21:45:05 -0700
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- OMZP1LUMXCA19.uswin.ad.vzwcorp.com (144.8.22.197) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Tue, 19 Sep 2017 23:45:02 -0500
+ OMZP1LUMXCA20.uswin.ad.vzwcorp.com (144.8.22.198) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Tue, 19 Sep 2017 23:45:03 -0500
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
  OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
- 15.00.1263.000; Tue, 19 Sep 2017 23:45:02 -0500
+ 15.00.1263.000; Tue, 19 Sep 2017 23:45:03 -0500
 To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH review for 4.4 06/47] MIPS: Ensure bss section ends on a
- long-aligned address
-Thread-Topic: [PATCH review for 4.4 06/47] MIPS: Ensure bss section ends on a
- long-aligned address
-Thread-Index: AQHTMcs3xFA2V0kFwU+TgkC35BD+Nw==
+Subject: [PATCH review for 4.4 07/47] MIPS: kexec: Do not reserve invalid
+ crashkernel memory on boot
+Thread-Topic: [PATCH review for 4.4 07/47] MIPS: kexec: Do not reserve invalid
+ crashkernel memory on boot
+Thread-Index: AQHTMcs4C4AhdCkcEUGC3CNSWM63CA==
 Date:   Wed, 20 Sep 2017 04:45:01 +0000
-Message-ID: <20170920044445.7392-6-alexander.levin@verizon.com>
+Message-ID: <20170920044445.7392-7-alexander.levin@verizon.com>
 References: <20170920044445.7392-1-alexander.levin@verizon.com>
 In-Reply-To: <20170920044445.7392-1-alexander.levin@verizon.com>
 Accept-Language: en-US
@@ -85,7 +85,7 @@ Return-Path: <alexander.levin@verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60077
+X-archive-position: 60078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -102,50 +102,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-[ Upstream commit 3f00f4d8f083bc61005d0a1ef592b149f5c88bbd ]
+[ Upstream commit a8f108d70c74d83574c157648383eb2e4285a190 ]
 
-When clearing the .bss section in kernel_entry we do so using LONG_S
-instructions, and branch whilst the current write address doesn't equal
-the end of the .bss section minus the size of a long integer. The .bss
-section always begins at a long-aligned address and we always increment
-the write pointer by the size of a long integer - we therefore rely upon
-the .bss section ending at a long-aligned address. If this is not the
-case then the long-aligned write address can never be equal to the
-non-long-aligned end address & we will continue to increment past the
-end of the .bss section, attempting to zero the rest of memory.
+Do not reserve memory for the crashkernel if the commandline argument
+points to a wrong location. This can happen if the location is specified
+wrong or if the same commandline is reused when starting the crashkernel
+- in the latter case the reserved memory would point to the location
+from which the crashkernel is executing.
 
-Despite this requirement that .bss end at a long-aligned address we pass
-0 as the end alignment requirement to the BSS_SECTION macro and thus
-don't guarantee any particular alignment, allowing us to hit the error
-condition described above.
-
-Fix this by instead passing 8 bytes as the end alignment argument to
-the BSS_SECTION macro, ensuring that the end of the .bss section is
-always at least long-aligned.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14526/
+Patchwork: https://patchwork.linux-mips.org/patch/14612/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 ---
- arch/mips/kernel/vmlinux.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/setup.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 0a93e83cd014..2026203c41e2 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -159,7 +159,7 @@ SECTIONS
- 	 * Force .bss to 64K alignment so that .bss..swapper_pg_dir
- 	 * gets that alignment.	 .sbss should be empty, so there will be
- 	 * no holes after __init_end. */
--	BSS_SECTION(0, 0x10000, 0)
-+	BSS_SECTION(0, 0x10000, 8)
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 8acae316f26b..68f1118d10ad 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -596,6 +596,11 @@ static void __init mips_parse_crashkernel(void)
+ 	if (ret != 0 || crash_size <= 0)
+ 		return;
  
- 	_end = . ;
- 
++	if (!memory_region_available(crash_base, crash_size)) {
++		pr_warn("Invalid memory region reserved for crash kernel\n");
++		return;
++	}
++
+ 	crashk_res.start = crash_base;
+ 	crashk_res.end	 = crash_base + crash_size - 1;
+ }
 -- 
 2.11.0

@@ -1,36 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Sep 2017 11:47:55 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56134 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990395AbdIVJrdcUYVK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Sep 2017 11:47:33 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v8M9lW5f003732;
-        Fri, 22 Sep 2017 11:47:32 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v8M9lRUR003726;
-        Fri, 22 Sep 2017 11:47:27 +0200
-Date:   Fri, 22 Sep 2017 11:47:27 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, stable <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/4] MIPS: Search main exception table for data bus errors
-Message-ID: <20170922094727.GI4851@linux-mips.org>
-References: <20170922064447.28728-1-paul.burton@imgtec.com>
- <20170922064447.28728-2-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170922064447.28728-2-paul.burton@imgtec.com>
-User-Agent: Mutt/1.9.0 (2017-09-02)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Sep 2017 13:43:56 +0200 (CEST)
+Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:36756
+        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990394AbdIVLnscSa4A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Sep 2017 13:43:48 +0200
+Received: by mail-pf0-x243.google.com with SMTP id f84so360117pfj.3;
+        Fri, 22 Sep 2017 04:43:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=k4VZ9ON+kJZef+l99Tz+k8XS24rFiMy9QCpPS0sJGyc=;
+        b=VNNFoep4mYz5E1du5csmU3N5+bEPv9OR4bzzdKGS4a4+voXqi4nIsE7tjDrFX6DK+c
+         aPsQw+hJ9CUPbF/rv3EF/pA+fNFmxo2FVBruC7fVXdKpi1gP6JKYShC3IMxuqGP2uLI+
+         Q60Bc/8WXEh+J9Mn4Hb1EMPFw1fYYiBJe0fZzxVDTGBgR/+clFRqzWEIoyZN98TaU5lA
+         0kQafEzldImdbPYJwvIZ5YplrxeSstRrcP9zLEHZIHMVoj0xayb9RJxOTnTXy/+Px2B5
+         lfPyf2ihN0BVcGCk/1VgQzuwLsjGDSOBoowEagMUP+DPdVZF+HSR51v34Md4lss5kNFX
+         nPTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=k4VZ9ON+kJZef+l99Tz+k8XS24rFiMy9QCpPS0sJGyc=;
+        b=eR5ex3W+K1ihhkjjlPjzWg7X8AQxmlQJjJ7ZlKXTMEfGYyQ5e7bdZuFkXG95jNum4d
+         /sf1dpiCMua/ddQUprGS3m7IN1gm7XcTxHzzUcQ2EsKo/YkOX3xfAhM0G5JifNbs9ilK
+         1QgN5BG34PXc7l0LuprCHyZh1TqWPMIegmPwVDcdsWnsQIGN45/2b5l2yD0WFx2hYBbK
+         c13OKxq7HrRKTZQNzLdTn5pckppzJF3Kpfc4HvdlpLQFX+Nnjxxf5Faw1AUzDcUA82GG
+         Th18mfxpbNnh6SuLkxRUqvfCWtPJ63MLnKbVx/E+btoDLJFGeYTuCqn+lEhoXKcKaZXP
+         Aqhg==
+X-Gm-Message-State: AHPjjUj8qDgubdbigLgUjY5tGzmZFBTehCBdNRpB0BaRR0PajeuRtxnv
+        53jCTI8jYr4b8S5EZDSxuzjfCbjj
+X-Google-Smtp-Source: AOwi7QAuQ4cIoTD8MPiossCVYpYHmNTiPLOjC2wQuM0XioT6j/oFx1zez+lJ5lw4t+Ye4BgX2pbv5Q==
+X-Received: by 10.84.233.204 with SMTP id m12mr8696446pln.305.1506080621458;
+        Fri, 22 Sep 2017 04:43:41 -0700 (PDT)
+Received: from localhost.localdomain ([103.42.74.194])
+        by smtp.gmail.com with ESMTPSA id j14sm6783838pff.59.2017.09.22.04.43.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 22 Sep 2017 04:43:40 -0700 (PDT)
+From:   Allen Pais <allen.lkml@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Allen Pais <allen.lkml@gmail.com>
+Subject: [PATCH] mips: use setup_timer() helper.
+Date:   Fri, 22 Sep 2017 17:13:35 +0530
+Message-Id: <1506080615-6137-1-git-send-email-allen.lkml@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <allen.lkml@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60111
+X-archive-position: 60112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: allen.lkml@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,70 +62,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Sep 21, 2017 at 11:44:44PM -0700, Paul Burton wrote:
+   Use setup_timer function instead of initializing timer with the
+   function and data fields.
 
-> We have 2 exception tables in MIPS kernels:
-> 
->   - __ex_table which is the main exception table used in places where
->     the kernel might fault accessing a user address.
-> 
->   - __dbe_table which is used in various platform & driver code that
->     expects that it might trigger a bus error exception.
-> 
-> When a data bus error exception occurs we only search __dbe_table, and
-> thus we have the expectation that access to user addresses will not
-> trigger bus errors.
-> 
-> Sadly, this expectation is not true - at least not since we began
-> mapping the GIC user page for use with the VDSO in commit a7f4df4e21dd
-> ("MIPS: VDSO: Add implementations of gettimeofday() and
-> clock_gettime()"). The GIC user page provides user code with direct
-> access to a hardware-provided memory mapped register interface, albeit a
-> very simple one containing a single register. Like many register
-> interfaces however it has limitations - notably like the rest of the GIC
-> register interface it requires that accesses to it are either 32 bit or
-> 64 bit. Any smaller accesses generate a data bus error exception. Herein
-> our bug lies - we have no such restrictions upon kernel access to user
-> memory, and users can freely cause the kernel to attempt smaller than 32
-> bit accesses in various ways:
-> 
->   - Perform an unaligned memory access. In cases where this isn't
->     handled by the CPU, such as when accessing uncached memory like the
->     GIC register interface, we'll proceed to attempt to emulate the
->     unaligned access via do_ade() using byte-sized loads or stores on
->     MIPSr6 systems.
-> 
->   - Cause the kernel to invoke __copy_from_user(), __copy_to_user() or
->     one of their variants acting upon uncached memory with either a
->     non-32bit-aligned address or size. Similarly this will cause the
->     kernel to perform smaller than 32 bit memory accesses. Many syscalls
->     will allow this to be triggered.
-> 
-> When the kernel attempts smaller than 32 bit access to the GIC user page
-> via any of these means, it generates a bus error exception. We then
-> check __dbe_table for a fixup, find none & call die_if_kernel() from
-> do_be(). Essentially we allow user code to kill the kernel, or rather to
-> cause the kernel to kill itself.
-> 
-> This patch fixes this problem rather simply by searching __ex_table for
-> fixups if we take a data bus error exception which has no fixup in
-> __dbe_table. All of the vulnerable user memory accesses should already
-> have entries in __ex_table, and making use of them seems reasonable.
-> 
-> I have marked this for stable backport as far as v4.4 which introduced
-> the VDSO, and provided users with access to the GIC user page in commit
-> a7f4df4e21dd ("MIPS: VDSO: Add implementations of gettimeofday() and
-> clock_gettime()"). Searching __ex_table may have made sense prior to
-> that, but I'm currently unaware of any other cases in which it could
-> cause problems.
+Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+---
+ arch/mips/lasat/picvue_proc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Unfortunately the DBE exception is imprecise.  The EPC might actually point
-to the far end of the kernel and have no useful relation at all to the
-instruction triggering it.
-
-As a consequence a false fixup might be used resulting in very silly and
-probably bad things happening.
-
-So this needs a different solution.
-
-  Ralf
+diff --git a/arch/mips/lasat/picvue_proc.c b/arch/mips/lasat/picvue_proc.c
+index dd292dc..a8103f6 100644
+--- a/arch/mips/lasat/picvue_proc.c
++++ b/arch/mips/lasat/picvue_proc.c
+@@ -197,8 +197,7 @@ static int __init pvc_proc_init(void)
+ 	if (proc_entry == NULL)
+ 		goto error;
+ 
+-	init_timer(&timer);
+-	timer.function = pvc_proc_timerfunc;
++	setup_timer(&timer, pvc_proc_timerfunc, 0UL);
+ 
+ 	return 0;
+ error:
+-- 
+2.7.4

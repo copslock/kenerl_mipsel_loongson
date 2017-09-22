@@ -1,41 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Sep 2017 11:47:30 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8364 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990392AbdIVJrXyQMFK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Sep 2017 11:47:23 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 1B7BDF1040276;
-        Fri, 22 Sep 2017 10:47:15 +0100 (IST)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Fri, 22 Sep
- 2017 10:47:17 +0100
-Subject: Re: [PATCH 09/11] MIPS: Add the concept of BOOT_MEM_KERNEL to
- boot_mem_map.
-To:     "Steven J. Hill" <steven.hill@cavium.com>,
-        <linux-mips@linux-mips.org>
-CC:     <ralf@linux-mips.org>
-References: <1505496613-27879-1-git-send-email-steven.hill@cavium.com>
- <1505496613-27879-10-git-send-email-steven.hill@cavium.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <694923bf-d230-a1e2-9c81-fa2195a5abfa@imgtec.com>
-Date:   Fri, 22 Sep 2017 10:47:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Sep 2017 11:47:55 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56134 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990395AbdIVJrdcUYVK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Sep 2017 11:47:33 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v8M9lW5f003732;
+        Fri, 22 Sep 2017 11:47:32 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v8M9lRUR003726;
+        Fri, 22 Sep 2017 11:47:27 +0200
+Date:   Fri, 22 Sep 2017 11:47:27 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, stable <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/4] MIPS: Search main exception table for data bus errors
+Message-ID: <20170922094727.GI4851@linux-mips.org>
+References: <20170922064447.28728-1-paul.burton@imgtec.com>
+ <20170922064447.28728-2-paul.burton@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <1505496613-27879-10-git-send-email-steven.hill@cavium.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170922064447.28728-2-paul.burton@imgtec.com>
+User-Agent: Mutt/1.9.0 (2017-09-02)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60110
+X-archive-position: 60111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,89 +43,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Steven,
+On Thu, Sep 21, 2017 at 11:44:44PM -0700, Paul Burton wrote:
 
+> We have 2 exception tables in MIPS kernels:
+> 
+>   - __ex_table which is the main exception table used in places where
+>     the kernel might fault accessing a user address.
+> 
+>   - __dbe_table which is used in various platform & driver code that
+>     expects that it might trigger a bus error exception.
+> 
+> When a data bus error exception occurs we only search __dbe_table, and
+> thus we have the expectation that access to user addresses will not
+> trigger bus errors.
+> 
+> Sadly, this expectation is not true - at least not since we began
+> mapping the GIC user page for use with the VDSO in commit a7f4df4e21dd
+> ("MIPS: VDSO: Add implementations of gettimeofday() and
+> clock_gettime()"). The GIC user page provides user code with direct
+> access to a hardware-provided memory mapped register interface, albeit a
+> very simple one containing a single register. Like many register
+> interfaces however it has limitations - notably like the rest of the GIC
+> register interface it requires that accesses to it are either 32 bit or
+> 64 bit. Any smaller accesses generate a data bus error exception. Herein
+> our bug lies - we have no such restrictions upon kernel access to user
+> memory, and users can freely cause the kernel to attempt smaller than 32
+> bit accesses in various ways:
+> 
+>   - Perform an unaligned memory access. In cases where this isn't
+>     handled by the CPU, such as when accessing uncached memory like the
+>     GIC register interface, we'll proceed to attempt to emulate the
+>     unaligned access via do_ade() using byte-sized loads or stores on
+>     MIPSr6 systems.
+> 
+>   - Cause the kernel to invoke __copy_from_user(), __copy_to_user() or
+>     one of their variants acting upon uncached memory with either a
+>     non-32bit-aligned address or size. Similarly this will cause the
+>     kernel to perform smaller than 32 bit memory accesses. Many syscalls
+>     will allow this to be triggered.
+> 
+> When the kernel attempts smaller than 32 bit access to the GIC user page
+> via any of these means, it generates a bus error exception. We then
+> check __dbe_table for a fixup, find none & call die_if_kernel() from
+> do_be(). Essentially we allow user code to kill the kernel, or rather to
+> cause the kernel to kill itself.
+> 
+> This patch fixes this problem rather simply by searching __ex_table for
+> fixups if we take a data bus error exception which has no fixup in
+> __dbe_table. All of the vulnerable user memory accesses should already
+> have entries in __ex_table, and making use of them seems reasonable.
+> 
+> I have marked this for stable backport as far as v4.4 which introduced
+> the VDSO, and provided users with access to the GIC user page in commit
+> a7f4df4e21dd ("MIPS: VDSO: Add implementations of gettimeofday() and
+> clock_gettime()"). Searching __ex_table may have made sense prior to
+> that, but I'm currently unaware of any other cases in which it could
+> cause problems.
 
-On 15/09/17 18:30, Steven J. Hill wrote:
-> From: David Daney <david.daney@cavium.com>
->
-> No change to memory initialization, but this gets us ready for the
-> next patches adding hotplug CPU and NUMA support for Octeon.
->
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Signed-off-by: Carlos Munoz <cmunoz@caviumnetworks.com>
-> ---
->   arch/mips/include/asm/bootinfo.h |  1 +
->   arch/mips/kernel/setup.c         | 18 ++++++++++++------
->   2 files changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
-> index e26a093..71dd16e 100644
-> --- a/arch/mips/include/asm/bootinfo.h
-> +++ b/arch/mips/include/asm/bootinfo.h
-> @@ -90,6 +90,7 @@ extern unsigned long mips_machtype;
->   #define BOOT_MEM_ROM_DATA	2
->   #define BOOT_MEM_RESERVED	3
->   #define BOOT_MEM_INIT_RAM	4
-> +#define BOOT_MEM_KERNEL		5
->   
->   /*
->    * A memory map that's built upon what was determined
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index fe39397..3dd765a 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -200,6 +200,9 @@ static void __init print_memory_map(void)
->   		case BOOT_MEM_INIT_RAM:
->   			printk(KERN_CONT "(usable after init)\n");
->   			break;
-> +		case BOOT_MEM_KERNEL:
-> +			printk(KERN_CONT "(kernel data and code)\n");
-> +			break;
+Unfortunately the DBE exception is imprecise.  The EPC might actually point
+to the far end of the kernel and have no useful relation at all to the
+instruction triggering it.
 
-When KASLR is active, that print leaks the kernels randomized base 
-address to userspace and gives the game away. Please could you at least 
-guard it with !IS_ENABLED(CONFIG_RANDOMIZE_BASE) ?
+As a consequence a false fixup might be used resulting in very silly and
+probably bad things happening.
 
-Thanks,
-Matt
+So this needs a different solution.
 
->   		case BOOT_MEM_ROM_DATA:
->   			printk(KERN_CONT "(ROM data)\n");
->   			break;
-> @@ -824,6 +827,7 @@ static void __init arch_mem_init(char **cmdline_p)
->   {
->   	struct memblock_region *reg;
->   	extern void plat_mem_setup(void);
-> +	phys_addr_t kernel_begin, init_begin, init_end, kernel_end;
->   
->   	/* call board setup routine */
->   	plat_mem_setup();
-> @@ -834,12 +838,13 @@ static void __init arch_mem_init(char **cmdline_p)
->   	 * into another memory section you don't want that to be
->   	 * freed when the initdata is freed.
->   	 */
-> -	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
-> -			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
-> -			 BOOT_MEM_RAM);
-> -	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
-> -			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
-> -			 BOOT_MEM_INIT_RAM);
-> +	kernel_begin = PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT;
-> +	kernel_end = PFN_UP(__pa_symbol(&_end)) << PAGE_SHIFT;
-> +	init_begin = PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT;
-> +	init_end = PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT;
-> +	arch_mem_addpart(kernel_begin, init_begin, BOOT_MEM_KERNEL);
-> +	arch_mem_addpart(init_end, kernel_end, BOOT_MEM_KERNEL);
-> +	arch_mem_addpart(init_begin, init_end, BOOT_MEM_INIT_RAM);
->   
->   	pr_info("Determined physical RAM map:\n");
->   	print_memory_map();
-> @@ -949,6 +954,7 @@ static void __init resource_init(void)
->   		case BOOT_MEM_RAM:
->   		case BOOT_MEM_INIT_RAM:
->   		case BOOT_MEM_ROM_DATA:
-> +		case BOOT_MEM_KERNEL:
->   			res->name = "System RAM";
->   			res->flags |= IORESOURCE_SYSRAM;
->   			break;
+  Ralf

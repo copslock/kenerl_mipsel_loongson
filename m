@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:37:54 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33822 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:38:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33834 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990557AbdIXUhMMFTVz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:37:12 +0200
+        by eddie.linux-mips.org with ESMTP id S23990633AbdIXUhOmi1Vz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:37:14 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 82A803EE;
-        Sun, 24 Sep 2017 20:37:05 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 06E80360;
+        Sun, 24 Sep 2017 20:37:08 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -19,9 +19,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 13/77] MIPS: math-emu: <MAX|MAXA|MIN|MINA>.<D|S>: Fix quiet NaN propagation
-Date:   Sun, 24 Sep 2017 22:31:58 +0200
-Message-Id: <20170924203243.407641939@linuxfoundation.org>
+Subject: [PATCH 4.9 14/77] MIPS: math-emu: <MAX|MAXA|MIN|MINA>.<D|S>: Fix cases of both inputs zero
+Date:   Sun, 24 Sep 2017 22:31:59 +0200
+Message-Id: <20170924203243.443778913@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20170924203242.904856530@linuxfoundation.org>
 References: <20170924203242.904856530@linuxfoundation.org>
@@ -32,7 +32,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60123
+X-archive-position: 60124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,18 +55,28 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-commit e78bf0dc4789bdea1453595ae89e8db65918e22e upstream.
+commit 15560a58bfd4ff82cdd16b2270d4ef9b06d2cc4d upstream.
 
-Fix the value returned by <MAX|MAXA|MIN|MINA>.<D|S> fd,fs,ft, if both
-inputs are quiet NaNs. The <MAX|MAXA|MIN|MINA>.<D|S> specifications
-state that the returned value in such cases should be the quiet NaN
-contained in register fs.
+Fix the value returned by <MAX|MAXA|MIN|MINA>.<D|S>, if both inputs
+are zeros. The right behavior in such cases is stated in instruction
+reference manual and is as follows:
+
+   fs  ft       MAX     MIN       MAXA    MINA
+  ---------------------------------------------
+    0   0        0       0         0       0
+    0  -0        0      -0         0      -0
+   -0   0        0      -0         0      -0
+   -0  -0       -0      -0        -0      -0
+
+Prior to this patch, some of the above cases were yielding correct
+results. However, for the sake of code consistency, all such cases
+are rewritten in this patch.
 
 A relevant example:
 
 MAX.S fd,fs,ft:
-  If fs contains qNaN1, and ft contains qNaN2, fd is going to contain
-  qNaN1 (without this patch, it used to contain qNaN2).
+  If fs contains +0.0, and ft contains -0.0, fd is going to contain
+  +0.0 (without this patch, it used to contain -0.0).
 
 Fixes: a79f5f9ba508 ("MIPS: math-emu: Add support for the MIPS R6 MAX{, A} FPU instruction")
 Fixes: 4e9561b20e2f ("MIPS: math-emu: Add support for the MIPS R6 MIN{, A} FPU instruction")
@@ -83,254 +93,110 @@ Cc: Petar Jovanovic <petar.jovanovic@imgtec.com>
 Cc: Raghu Gandham <raghu.gandham@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16880/
+Patchwork: https://patchwork.linux-mips.org/patch/16881/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/dp_fmax.c |   32 ++++++++++++++++++++++++++++----
- arch/mips/math-emu/dp_fmin.c |   32 ++++++++++++++++++++++++++++----
- arch/mips/math-emu/sp_fmax.c |   32 ++++++++++++++++++++++++++++----
- arch/mips/math-emu/sp_fmin.c |   32 ++++++++++++++++++++++++++++----
- 4 files changed, 112 insertions(+), 16 deletions(-)
+ arch/mips/math-emu/dp_fmax.c |    8 ++------
+ arch/mips/math-emu/dp_fmin.c |    8 ++------
+ arch/mips/math-emu/sp_fmax.c |    8 ++------
+ arch/mips/math-emu/sp_fmin.c |    8 ++------
+ 4 files changed, 8 insertions(+), 24 deletions(-)
 
 --- a/arch/mips/math-emu/dp_fmax.c
 +++ b/arch/mips/math-emu/dp_fmax.c
-@@ -47,14 +47,26 @@ union ieee754dp ieee754dp_fmax(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+@@ -92,9 +92,7 @@ union ieee754dp ieee754dp_fmax(union iee
+ 		return ys ? x : y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754dp_zero(1);
++		return ieee754dp_zero(xs & ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754dp ieee754dp_fmaxa(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		DPDNORMX;
+@@ -204,9 +202,7 @@ union ieee754dp ieee754dp_fmaxa(union ie
+ 		return y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754dp_zero(1);
++		return ieee754dp_zero(xs & ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		DPDNORMX;
 --- a/arch/mips/math-emu/dp_fmin.c
 +++ b/arch/mips/math-emu/dp_fmin.c
-@@ -47,14 +47,26 @@ union ieee754dp ieee754dp_fmin(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+@@ -92,9 +92,7 @@ union ieee754dp ieee754dp_fmin(union iee
+ 		return ys ? y : x;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754dp_zero(1);
++		return ieee754dp_zero(xs | ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754dp ieee754dp_fmina(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		DPDNORMX;
+@@ -204,9 +202,7 @@ union ieee754dp ieee754dp_fmina(union ie
+ 		return y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754dp_zero(1);
++		return ieee754dp_zero(xs | ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		DPDNORMX;
 --- a/arch/mips/math-emu/sp_fmax.c
 +++ b/arch/mips/math-emu/sp_fmax.c
-@@ -47,14 +47,26 @@ union ieee754sp ieee754sp_fmax(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+@@ -92,9 +92,7 @@ union ieee754sp ieee754sp_fmax(union iee
+ 		return ys ? x : y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754sp_zero(1);
++		return ieee754sp_zero(xs & ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754sp ieee754sp_fmaxa(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		SPDNORMX;
+@@ -204,9 +202,7 @@ union ieee754sp ieee754sp_fmaxa(union ie
+ 		return y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754sp_zero(1);
++		return ieee754sp_zero(xs & ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		SPDNORMX;
 --- a/arch/mips/math-emu/sp_fmin.c
 +++ b/arch/mips/math-emu/sp_fmin.c
-@@ -47,14 +47,26 @@ union ieee754sp ieee754sp_fmin(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+@@ -92,9 +92,7 @@ union ieee754sp ieee754sp_fmin(union iee
+ 		return ys ? y : x;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754sp_zero(1);
++		return ieee754sp_zero(xs | ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754sp ieee754sp_fmina(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		SPDNORMX;
+@@ -204,9 +202,7 @@ union ieee754sp ieee754sp_fmina(union ie
+ 		return y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+ 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
+-		if (xs == ys)
+-			return x;
+-		return ieee754sp_zero(1);
++		return ieee754sp_zero(xs | ys);
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+ 		SPDNORMX;

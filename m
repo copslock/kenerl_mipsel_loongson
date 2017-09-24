@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:35:27 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33236 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:35:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33260 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990481AbdIXUeuY53gz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:34:50 +0200
+        by eddie.linux-mips.org with ESMTP id S23990483AbdIXUexltBXz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:34:53 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BE04A360;
-        Sun, 24 Sep 2017 20:34:39 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C1BA5480;
+        Sun, 24 Sep 2017 20:34:44 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -19,9 +19,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 21/66] MIPS: math-emu: <MAX|MAXA|MIN|MINA>.<D|S>: Fix quiet NaN propagation
-Date:   Sun, 24 Sep 2017 22:31:16 +0200
-Message-Id: <20170924202921.459594703@linuxfoundation.org>
+Subject: [PATCH 4.4 23/66] MIPS: math-emu: <MAX|MIN>.<D|S>: Fix cases of both inputs negative
+Date:   Sun, 24 Sep 2017 22:31:18 +0200
+Message-Id: <20170924202921.538639421@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20170924202920.581603259@linuxfoundation.org>
 References: <20170924202920.581603259@linuxfoundation.org>
@@ -32,7 +32,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60118
+X-archive-position: 60119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,18 +55,19 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-commit e78bf0dc4789bdea1453595ae89e8db65918e22e upstream.
+commit aabf5cf02e22ebc4e541adf835910f388b6c3e65 upstream.
 
-Fix the value returned by <MAX|MAXA|MIN|MINA>.<D|S> fd,fs,ft, if both
-inputs are quiet NaNs. The <MAX|MAXA|MIN|MINA>.<D|S> specifications
-state that the returned value in such cases should be the quiet NaN
-contained in register fs.
+Fix the value returned by <MAX|MIN>.<D|S>, if both inputs are negative
+normal fp numbers. The previous logic did not take into account that
+if both inputs have the same sign, there should be separate treatment
+of the cases when both inputs are negative and when both inputs are
+positive.
 
 A relevant example:
 
 MAX.S fd,fs,ft:
-  If fs contains qNaN1, and ft contains qNaN2, fd is going to contain
-  qNaN1 (without this patch, it used to contain qNaN2).
+  If fs contains -5.0, and ft contains -7.0, fd is going to contain
+  -5.0 (without this patch, it used to contain -7.0).
 
 Fixes: a79f5f9ba508 ("MIPS: math-emu: Add support for the MIPS R6 MAX{, A} FPU instruction")
 Fixes: 4e9561b20e2f ("MIPS: math-emu: Add support for the MIPS R6 MIN{, A} FPU instruction")
@@ -83,254 +84,186 @@ Cc: Petar Jovanovic <petar.jovanovic@imgtec.com>
 Cc: Raghu Gandham <raghu.gandham@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16880/
+Patchwork: https://patchwork.linux-mips.org/patch/16882/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/dp_fmax.c |   32 ++++++++++++++++++++++++++++----
- arch/mips/math-emu/dp_fmin.c |   32 ++++++++++++++++++++++++++++----
- arch/mips/math-emu/sp_fmax.c |   32 ++++++++++++++++++++++++++++----
- arch/mips/math-emu/sp_fmin.c |   32 ++++++++++++++++++++++++++++----
- 4 files changed, 112 insertions(+), 16 deletions(-)
+ arch/mips/math-emu/dp_fmax.c |   32 ++++++++++++++++++++++++--------
+ arch/mips/math-emu/dp_fmin.c |   32 ++++++++++++++++++++++++--------
+ arch/mips/math-emu/sp_fmax.c |   32 ++++++++++++++++++++++++--------
+ arch/mips/math-emu/sp_fmin.c |   32 ++++++++++++++++++++++++--------
+ 4 files changed, 96 insertions(+), 32 deletions(-)
 
 --- a/arch/mips/math-emu/dp_fmax.c
 +++ b/arch/mips/math-emu/dp_fmax.c
-@@ -47,14 +47,26 @@ union ieee754dp ieee754dp_fmax(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
- 
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
+@@ -116,16 +116,32 @@ union ieee754dp ieee754dp_fmax(union iee
+ 	else if (xs < ys)
  		return x;
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754dp ieee754dp_fmaxa(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+-	/* Compare exponent */
+-	if (xe > ye)
+-		return x;
+-	else if (xe < ye)
+-		return y;
++	/* Signs of inputs are equal, let's compare exponents */
++	if (xs == 0) {
++		/* Inputs are both positive */
++		if (xe > ye)
++			return x;
++		else if (xe < ye)
++			return y;
++	} else {
++		/* Inputs are both negative */
++		if (xe > ye)
++			return y;
++		else if (xe < ye)
++			return x;
++	}
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
+-	/* Compare mantissa */
++	/* Signs and exponents of inputs are equal, let's compare mantissas */
++	if (xs == 0) {
++		/* Inputs are both positive, with equal signs and exponents */
++		if (xm <= ym)
++			return y;
 +		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
++	}
++	/* Inputs are both negative, with equal signs and exponents */
+ 	if (xm <= ym)
+-		return y;
+-	return x;
++		return x;
++	return y;
+ }
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ union ieee754dp ieee754dp_fmaxa(union ieee754dp x, union ieee754dp y)
 --- a/arch/mips/math-emu/dp_fmin.c
 +++ b/arch/mips/math-emu/dp_fmin.c
-@@ -47,14 +47,26 @@ union ieee754dp ieee754dp_fmin(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+@@ -116,16 +116,32 @@ union ieee754dp ieee754dp_fmin(union iee
+ 	else if (xs < ys)
+ 		return y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+-	/* Compare exponent */
+-	if (xe > ye)
+-		return y;
+-	else if (xe < ye)
+-		return x;
++	/* Signs of inputs are the same, let's compare exponents */
++	if (xs == 0) {
++		/* Inputs are both positive */
++		if (xe > ye)
++			return y;
++		else if (xe < ye)
++			return x;
++	} else {
++		/* Inputs are both negative */
++		if (xe > ye)
++			return x;
++		else if (xe < ye)
++			return y;
++	}
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754dp ieee754dp_fmina(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754dp_nanxcpt(x);
+-	/* Compare mantissa */
++	/* Signs and exponents of inputs are equal, let's compare mantissas */
++	if (xs == 0) {
++		/* Inputs are both positive, with equal signs and exponents */
++		if (xm <= ym)
++			return x;
++		return y;
++	}
++	/* Inputs are both negative, with equal signs and exponents */
+ 	if (xm <= ym)
+-		return x;
+-	return y;
++		return y;
++	return x;
+ }
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
- 
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
 --- a/arch/mips/math-emu/sp_fmax.c
 +++ b/arch/mips/math-emu/sp_fmax.c
-@@ -47,14 +47,26 @@ union ieee754sp ieee754sp_fmax(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
- 
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
+@@ -116,16 +116,32 @@ union ieee754sp ieee754sp_fmax(union iee
+ 	else if (xs < ys)
  		return x;
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754sp ieee754sp_fmaxa(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+-	/* Compare exponent */
+-	if (xe > ye)
+-		return x;
+-	else if (xe < ye)
+-		return y;
++	/* Signs of inputs are equal, let's compare exponents */
++	if (xs == 0) {
++		/* Inputs are both positive */
++		if (xe > ye)
++			return x;
++		else if (xe < ye)
++			return y;
++	} else {
++		/* Inputs are both negative */
++		if (xe > ye)
++			return y;
++		else if (xe < ye)
++			return x;
++	}
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
+-	/* Compare mantissa */
++	/* Signs and exponents of inputs are equal, let's compare mantissas */
++	if (xs == 0) {
++		/* Inputs are both positive, with equal signs and exponents */
++		if (xm <= ym)
++			return y;
 +		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
++	}
++	/* Inputs are both negative, with equal signs and exponents */
+ 	if (xm <= ym)
+-		return y;
+-	return x;
++		return x;
++	return y;
+ }
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ union ieee754sp ieee754sp_fmaxa(union ieee754sp x, union ieee754sp y)
 --- a/arch/mips/math-emu/sp_fmin.c
 +++ b/arch/mips/math-emu/sp_fmin.c
-@@ -47,14 +47,26 @@ union ieee754sp ieee754sp_fmin(union iee
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+@@ -116,16 +116,32 @@ union ieee754sp ieee754sp_fmin(union iee
+ 	else if (xs < ys)
+ 		return y;
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
+-	/* Compare exponent */
+-	if (xe > ye)
+-		return y;
+-	else if (xe < ye)
+-		return x;
++	/* Signs of inputs are the same, let's compare exponents */
++	if (xs == 0) {
++		/* Inputs are both positive */
++		if (xe > ye)
++			return y;
++		else if (xe < ye)
++			return x;
++	} else {
++		/* Inputs are both negative */
++		if (xe > ye)
++			return x;
++		else if (xe < ye)
++			return y;
++	}
  
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
-@@ -147,14 +159,26 @@ union ieee754sp ieee754sp_fmina(union ie
- 	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
- 		return ieee754sp_nanxcpt(x);
+-	/* Compare mantissa */
++	/* Signs and exponents of inputs are equal, let's compare mantissas */
++	if (xs == 0) {
++		/* Inputs are both positive, with equal signs and exponents */
++		if (xm <= ym)
++			return x;
++		return y;
++	}
++	/* Inputs are both negative, with equal signs and exponents */
+ 	if (xm <= ym)
+-		return x;
+-	return y;
++		return y;
++	return x;
+ }
  
--	/* numbers are preferred to NaNs */
-+	/*
-+	 * Quiet NaN handling
-+	 */
-+
-+	/*
-+	 *    The case of both inputs quiet NaNs
-+	 */
-+	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
-+		return x;
-+
-+	/*
-+	 *    The cases of exactly one input quiet NaN (numbers
-+	 *    are here preferred as returned values to NaNs)
-+	 */
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
- 		return x;
- 
--	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
+ union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)

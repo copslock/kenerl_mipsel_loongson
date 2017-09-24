@@ -1,27 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:39:44 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33870 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:40:16 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33980 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990757AbdIXUhXdatwz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:37:23 +0200
+        by eddie.linux-mips.org with ESMTP id S23991048AbdIXUhrGLl0z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:37:47 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 82699360;
-        Sun, 24 Sep 2017 20:37:15 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 97A98414;
+        Sun, 24 Sep 2017 20:37:40 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Goran Ferenc <goran.ferenc@imgtec.com>,
         Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>, Bo Hu <bohu@google.com>,
-        Douglas Leung <douglas.leung@imgtec.com>,
-        Jin Qian <jinqian@google.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
+        James.Hogan@imgtec.com, Paul.Burton@imgtec.com,
+        Raghu.Gandham@imgtec.com, Leonid.Yegoshin@imgtec.com,
+        Douglas.Leung@imgtec.com, Petar.Jovanovic@imgtec.com,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 17/77] MIPS: math-emu: <MAXA|MINA>.<D|S>: Fix cases of both infinite inputs
-Date:   Sun, 24 Sep 2017 22:32:02 +0200
-Message-Id: <20170924203243.554624352@linuxfoundation.org>
+Subject: [PATCH 4.9 19/77] MIPS: math-emu: Handle zero accumulator case in MADDF and MSUBF separately
+Date:   Sun, 24 Sep 2017 22:32:04 +0200
+Message-Id: <20170924203243.631443417@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20170924203242.904856530@linuxfoundation.org>
 References: <20170924203242.904856530@linuxfoundation.org>
@@ -32,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60127
+X-archive-position: 60128
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,129 +52,70 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-commit 3444c4eb534c20e44f0d6670b34263efaf8b531f upstream.
+commit ddbfff7429a75d954bf5bdff9f2222bceb4c236a upstream.
 
-Fix the value returned by <MAXA|MINA>.<D|S> fd,fs,ft, if both inputs
-are infinite. The previous implementation returned always the value
-contained in ft in such cases. The correct behavior is specified
-in Mips instruction set manual and is as follows:
-
-    fs    ft        MAXA     MINA
-  ---------------------------------
-    inf   inf        inf      inf
-    inf  -inf        inf     -inf
-   -inf   inf        inf     -inf
-   -inf  -inf       -inf     -inf
-
-A relevant example:
-
-MAXA.S fd,fs,ft:
-  If fs contains +inf, and ft contains -inf, fd is going to contain
-  +inf (without this patch, it used to contain -inf).
-
-Fixes: a79f5f9ba508 ("MIPS: math-emu: Add support for the MIPS R6 MAX{, A} FPU instruction")
-Fixes: 4e9561b20e2f ("MIPS: math-emu: Add support for the MIPS R6 MIN{, A} FPU instruction")
+If accumulator value is zero, just return the value of previously
+calculated product. This brings logic in MADDF/MSUBF implementation
+closer to the logic in ADD/SUB case.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: Bo Hu <bohu@google.com>
-Cc: Douglas Leung <douglas.leung@imgtec.com>
-Cc: Jin Qian <jinqian@google.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Petar Jovanovic <petar.jovanovic@imgtec.com>
-Cc: Raghu Gandham <raghu.gandham@imgtec.com>
+Cc: James.Hogan@imgtec.com
+Cc: Paul.Burton@imgtec.com
+Cc: Raghu.Gandham@imgtec.com
+Cc: Leonid.Yegoshin@imgtec.com
+Cc: Douglas.Leung@imgtec.com
+Cc: Petar.Jovanovic@imgtec.com
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16884/
+Patchwork: https://patchwork.linux-mips.org/patch/16512/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/dp_fmax.c |    4 +++-
- arch/mips/math-emu/dp_fmin.c |    4 +++-
- arch/mips/math-emu/sp_fmax.c |    4 +++-
- arch/mips/math-emu/sp_fmin.c |    4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ arch/mips/math-emu/dp_maddf.c |    5 ++++-
+ arch/mips/math-emu/sp_maddf.c |    5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/mips/math-emu/dp_fmax.c
-+++ b/arch/mips/math-emu/dp_fmax.c
-@@ -202,6 +202,9 @@ union ieee754dp ieee754dp_fmaxa(union ie
- 	/*
- 	 * Infinity and zero handling
- 	 */
-+	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
-+		return ieee754dp_inf(xs & ys);
-+
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
-@@ -209,7 +212,6 @@ union ieee754dp ieee754dp_fmaxa(union ie
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		return x;
+--- a/arch/mips/math-emu/dp_maddf.c
++++ b/arch/mips/math-emu/dp_maddf.c
+@@ -54,7 +54,7 @@ static union ieee754dp _dp_maddf(union i
+ 		return ieee754dp_nanxcpt(z);
+ 	case IEEE754_CLASS_DNORM:
+ 		DPDNORMZ;
+-	/* QNAN is handled separately below */
++	/* QNAN and ZERO cases are handled separately below */
+ 	}
  
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
---- a/arch/mips/math-emu/dp_fmin.c
-+++ b/arch/mips/math-emu/dp_fmin.c
-@@ -202,6 +202,9 @@ union ieee754dp ieee754dp_fmina(union ie
- 	/*
- 	 * Infinity and zero handling
- 	 */
-+	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
-+		return ieee754dp_inf(xs | ys);
-+
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
-@@ -209,7 +212,6 @@ union ieee754dp ieee754dp_fmina(union ie
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		return x;
+ 	switch (CLPAIR(xc, yc)) {
+@@ -210,6 +210,9 @@ static union ieee754dp _dp_maddf(union i
+ 	}
+ 	assert(rm & (DP_HIDDEN_BIT << 3));
  
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
---- a/arch/mips/math-emu/sp_fmax.c
-+++ b/arch/mips/math-emu/sp_fmax.c
-@@ -202,6 +202,9 @@ union ieee754sp ieee754sp_fmaxa(union ie
- 	/*
- 	 * Infinity and zero handling
- 	 */
-+	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
-+		return ieee754sp_inf(xs & ys);
++	if (zc == IEEE754_CLASS_ZERO)
++		return ieee754dp_format(rs, re, rm);
 +
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
-@@ -209,7 +212,6 @@ union ieee754sp ieee754sp_fmaxa(union ie
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		return x;
+ 	/* And now the addition */
+ 	assert(zm & DP_HIDDEN_BIT);
  
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
---- a/arch/mips/math-emu/sp_fmin.c
-+++ b/arch/mips/math-emu/sp_fmin.c
-@@ -202,6 +202,9 @@ union ieee754sp ieee754sp_fmina(union ie
- 	/*
- 	 * Infinity and zero handling
- 	 */
-+	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
-+		return ieee754sp_inf(xs | ys);
+--- a/arch/mips/math-emu/sp_maddf.c
++++ b/arch/mips/math-emu/sp_maddf.c
+@@ -54,7 +54,7 @@ static union ieee754sp _sp_maddf(union i
+ 		return ieee754sp_nanxcpt(z);
+ 	case IEEE754_CLASS_DNORM:
+ 		SPDNORMZ;
+-	/* QNAN is handled separately below */
++	/* QNAN and ZERO cases are handled separately below */
+ 	}
+ 
+ 	switch (CLPAIR(xc, yc)) {
+@@ -203,6 +203,9 @@ static union ieee754sp _sp_maddf(union i
+ 	}
+ 	assert(rm & (SP_HIDDEN_BIT << 3));
+ 
++	if (zc == IEEE754_CLASS_ZERO)
++		return ieee754sp_format(rs, re, rm);
 +
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
- 	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
-@@ -209,7 +212,6 @@ union ieee754sp ieee754sp_fmina(union ie
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		return x;
+ 	/* And now the addition */
  
--	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
- 	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
+ 	assert(zm & SP_HIDDEN_BIT);

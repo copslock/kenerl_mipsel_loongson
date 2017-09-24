@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:44:59 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34856 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:45:31 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34876 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992197AbdIXUkn63Irz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:40:43 +0200
+        by eddie.linux-mips.org with ESMTP id S23992456AbdIXUksuwyrz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:40:48 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 428063EE;
-        Sun, 24 Sep 2017 20:40:37 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3162D266;
+        Sun, 24 Sep 2017 20:40:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -19,9 +19,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Petar Jovanovic <petar.jovanovic@imgtec.com>,
         Raghu Gandham <raghu.gandham@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.13 019/109] MIPS: math-emu: <MAX|MIN>.<D|S>: Fix cases of both inputs negative
-Date:   Sun, 24 Sep 2017 22:32:40 +0200
-Message-Id: <20170924203353.868377458@linuxfoundation.org>
+Subject: [PATCH 4.13 020/109] MIPS: math-emu: <MAXA|MINA>.<D|S>: Fix cases of input values with opposite signs
+Date:   Sun, 24 Sep 2017 22:32:41 +0200
+Message-Id: <20170924203353.908697321@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20170924203353.104695385@linuxfoundation.org>
 References: <20170924203353.104695385@linuxfoundation.org>
@@ -32,7 +32,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60138
+X-archive-position: 60139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,19 +55,16 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
 
-commit aabf5cf02e22ebc4e541adf835910f388b6c3e65 upstream.
+commit 1a41b3b441508ae63b1a9ec699ec94065739eb60 upstream.
 
-Fix the value returned by <MAX|MIN>.<D|S>, if both inputs are negative
-normal fp numbers. The previous logic did not take into account that
-if both inputs have the same sign, there should be separate treatment
-of the cases when both inputs are negative and when both inputs are
-positive.
+Fix the value returned by <MAXA|MINA>.<D|S>, if the inputs are normal
+fp numbers of the same absolute value, but opposite signs.
 
 A relevant example:
 
-MAX.S fd,fs,ft:
-  If fs contains -5.0, and ft contains -7.0, fd is going to contain
-  -5.0 (without this patch, it used to contain -7.0).
+MAXA.S fd,fs,ft:
+  If fs contains -3.0, and ft contains +3.0, fd is going to contain
+  +3.0 (without this patch, it used to contain -3.0).
 
 Fixes: a79f5f9ba508 ("MIPS: math-emu: Add support for the MIPS R6 MAX{, A} FPU instruction")
 Fixes: 4e9561b20e2f ("MIPS: math-emu: Add support for the MIPS R6 MIN{, A} FPU instruction")
@@ -84,186 +81,76 @@ Cc: Petar Jovanovic <petar.jovanovic@imgtec.com>
 Cc: Raghu Gandham <raghu.gandham@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16882/
+Patchwork: https://patchwork.linux-mips.org/patch/16883/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/dp_fmax.c |   32 ++++++++++++++++++++++++--------
- arch/mips/math-emu/dp_fmin.c |   32 ++++++++++++++++++++++++--------
- arch/mips/math-emu/sp_fmax.c |   32 ++++++++++++++++++++++++--------
- arch/mips/math-emu/sp_fmin.c |   32 ++++++++++++++++++++++++--------
- 4 files changed, 96 insertions(+), 32 deletions(-)
+ arch/mips/math-emu/dp_fmax.c |    8 ++++++--
+ arch/mips/math-emu/dp_fmin.c |    6 +++++-
+ arch/mips/math-emu/sp_fmax.c |    8 ++++++--
+ arch/mips/math-emu/sp_fmin.c |    6 +++++-
+ 4 files changed, 22 insertions(+), 6 deletions(-)
 
 --- a/arch/mips/math-emu/dp_fmax.c
 +++ b/arch/mips/math-emu/dp_fmax.c
-@@ -116,16 +116,32 @@ union ieee754dp ieee754dp_fmax(union iee
- 	else if (xs < ys)
- 		return x;
+@@ -243,7 +243,11 @@ union ieee754dp ieee754dp_fmaxa(union ie
+ 		return y;
  
--	/* Compare exponent */
--	if (xe > ye)
--		return x;
--	else if (xe < ye)
--		return y;
-+	/* Signs of inputs are equal, let's compare exponents */
-+	if (xs == 0) {
-+		/* Inputs are both positive */
-+		if (xe > ye)
-+			return x;
-+		else if (xe < ye)
-+			return y;
-+	} else {
-+		/* Inputs are both negative */
-+		if (xe > ye)
-+			return y;
-+		else if (xe < ye)
-+			return x;
-+	}
- 
--	/* Compare mantissa */
-+	/* Signs and exponents of inputs are equal, let's compare mantissas */
-+	if (xs == 0) {
-+		/* Inputs are both positive, with equal signs and exponents */
-+		if (xm <= ym)
-+			return y;
-+		return x;
-+	}
-+	/* Inputs are both negative, with equal signs and exponents */
- 	if (xm <= ym)
--		return y;
+ 	/* Compare mantissa */
+-	if (xm <= ym)
++	if (xm < ym)
+ 		return y;
 -	return x;
++	else if (xm > ym)
++		return x;
++	else if (xs == 0)
 +		return x;
 +	return y;
  }
- 
- union ieee754dp ieee754dp_fmaxa(union ieee754dp x, union ieee754dp y)
 --- a/arch/mips/math-emu/dp_fmin.c
 +++ b/arch/mips/math-emu/dp_fmin.c
-@@ -116,16 +116,32 @@ union ieee754dp ieee754dp_fmin(union iee
- 	else if (xs < ys)
- 		return y;
- 
--	/* Compare exponent */
--	if (xe > ye)
--		return y;
--	else if (xe < ye)
--		return x;
-+	/* Signs of inputs are the same, let's compare exponents */
-+	if (xs == 0) {
-+		/* Inputs are both positive */
-+		if (xe > ye)
-+			return y;
-+		else if (xe < ye)
-+			return x;
-+	} else {
-+		/* Inputs are both negative */
-+		if (xe > ye)
-+			return x;
-+		else if (xe < ye)
-+			return y;
-+	}
- 
--	/* Compare mantissa */
-+	/* Signs and exponents of inputs are equal, let's compare mantissas */
-+	if (xs == 0) {
-+		/* Inputs are both positive, with equal signs and exponents */
-+		if (xm <= ym)
-+			return x;
-+		return y;
-+	}
-+	/* Inputs are both negative, with equal signs and exponents */
- 	if (xm <= ym)
--		return x;
--	return y;
-+		return y;
-+	return x;
- }
- 
- union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
---- a/arch/mips/math-emu/sp_fmax.c
-+++ b/arch/mips/math-emu/sp_fmax.c
-@@ -116,16 +116,32 @@ union ieee754sp ieee754sp_fmax(union iee
- 	else if (xs < ys)
+@@ -243,7 +243,11 @@ union ieee754dp ieee754dp_fmina(union ie
  		return x;
  
--	/* Compare exponent */
--	if (xe > ye)
--		return x;
--	else if (xe < ye)
--		return y;
-+	/* Signs of inputs are equal, let's compare exponents */
-+	if (xs == 0) {
-+		/* Inputs are both positive */
-+		if (xe > ye)
-+			return x;
-+		else if (xe < ye)
-+			return y;
-+	} else {
-+		/* Inputs are both negative */
-+		if (xe > ye)
-+			return y;
-+		else if (xe < ye)
-+			return x;
-+	}
- 
--	/* Compare mantissa */
-+	/* Signs and exponents of inputs are equal, let's compare mantissas */
-+	if (xs == 0) {
-+		/* Inputs are both positive, with equal signs and exponents */
-+		if (xm <= ym)
-+			return y;
+ 	/* Compare mantissa */
+-	if (xm <= ym)
++	if (xm < ym)
 +		return x;
-+	}
-+	/* Inputs are both negative, with equal signs and exponents */
- 	if (xm <= ym)
--		return y;
++	else if (xm > ym)
++		return y;
++	else if (xs == 1)
+ 		return x;
+ 	return y;
+ }
+--- a/arch/mips/math-emu/sp_fmax.c
++++ b/arch/mips/math-emu/sp_fmax.c
+@@ -243,7 +243,11 @@ union ieee754sp ieee754sp_fmaxa(union ie
+ 		return y;
+ 
+ 	/* Compare mantissa */
+-	if (xm <= ym)
++	if (xm < ym)
+ 		return y;
 -	return x;
++	else if (xm > ym)
++		return x;
++	else if (xs == 0)
 +		return x;
 +	return y;
  }
- 
- union ieee754sp ieee754sp_fmaxa(union ieee754sp x, union ieee754sp y)
 --- a/arch/mips/math-emu/sp_fmin.c
 +++ b/arch/mips/math-emu/sp_fmin.c
-@@ -116,16 +116,32 @@ union ieee754sp ieee754sp_fmin(union iee
- 	else if (xs < ys)
- 		return y;
+@@ -243,7 +243,11 @@ union ieee754sp ieee754sp_fmina(union ie
+ 		return x;
  
--	/* Compare exponent */
--	if (xe > ye)
--		return y;
--	else if (xe < ye)
--		return x;
-+	/* Signs of inputs are the same, let's compare exponents */
-+	if (xs == 0) {
-+		/* Inputs are both positive */
-+		if (xe > ye)
-+			return y;
-+		else if (xe < ye)
-+			return x;
-+	} else {
-+		/* Inputs are both negative */
-+		if (xe > ye)
-+			return x;
-+		else if (xe < ye)
-+			return y;
-+	}
- 
--	/* Compare mantissa */
-+	/* Signs and exponents of inputs are equal, let's compare mantissas */
-+	if (xs == 0) {
-+		/* Inputs are both positive, with equal signs and exponents */
-+		if (xm <= ym)
-+			return x;
+ 	/* Compare mantissa */
+-	if (xm <= ym)
++	if (xm < ym)
++		return x;
++	else if (xm > ym)
 +		return y;
-+	}
-+	/* Inputs are both negative, with equal signs and exponents */
- 	if (xm <= ym)
--		return x;
--	return y;
-+		return y;
-+	return x;
++	else if (xs == 1)
+ 		return x;
+ 	return y;
  }
- 
- union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)

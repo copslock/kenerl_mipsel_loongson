@@ -1,42 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2017 22:49:28 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35396 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990480AbdIXUnAbv94z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2017 22:43:00 +0200
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A3AB53EE;
-        Sun, 24 Sep 2017 20:42:53 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Goran Ferenc <goran.ferenc@imgtec.com>,
-        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>, Bo Hu <bohu@google.com>,
-        Douglas Leung <douglas.leung@imgtec.com>,
-        Jin Qian <jinqian@google.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.13 025/109] MIPS: math-emu: <MADDF|MSUBF>.<D|S>: Fix some cases of zero inputs
-Date:   Sun, 24 Sep 2017 22:32:46 +0200
-Message-Id: <20170924203354.101299342@linuxfoundation.org>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20170924203353.104695385@linuxfoundation.org>
-References: <20170924203353.104695385@linuxfoundation.org>
-User-Agent: quilt/0.65
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Sep 2017 14:51:16 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.211]:39910 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990493AbdIYMvJ6wnhV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Sep 2017 14:51:09 +0200
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 999D268C4E; Mon, 25 Sep 2017 14:51:07 +0200 (CEST)
+Date:   Mon, 25 Sep 2017 14:51:07 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Fuxin Zhang <zhangfx@lemote.com>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org,
+        "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, Roland Dreier <rolandd@cisco.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ivan Mikhaylov <ivan@ru.ibm.com>,
+        Tariq Toukan <tariqt@mellanox.com>,
+        Andy Gross <agross@codeaurora.org>,
+        "Mark A . Greer" <mgreer@mvista.com>,
+        Robert Baldyga <r.baldyga@samsung.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V7 1/2] dma-mapping: Rework dma_get_cache_alignment()
+Message-ID: <20170925125107.GC8130@lst.de>
+References: <1506332766-23966-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1506332766-23966-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60147
+X-archive-position: 60148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,99 +57,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.13-stable review patch.  If anyone has any objections, please let me know.
+> index aba7138..e2c5d9e 100644
+> --- a/arch/mips/include/asm/dma-mapping.h
+> +++ b/arch/mips/include/asm/dma-mapping.h
+> @@ -39,4 +39,6 @@ static inline void arch_setup_dma_ops(struct device *dev, u64 dma_base,
+>  #endif
+>  }
+>  
+> +int mips_get_cache_alignment(struct device *dev);
 
-------------------
+All the other mips generic dma helpers are prefixed mips_dma_*
+so it might make sense to follow that.
 
-From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+Also please don't add arch-local helpers to asm/dma-mapping.h - this
+is a header used by linux/dma-mapping.h and should not contain
+implementation details if avoidable.
 
-commit 7cf64ce4d37f1b4f44365fcf77f565d523819dcd upstream.
+> +					   dma_get_cache_alignment(NULL)) / mdev->limits.mtt_seg_size;
 
-Fix the cases of <MADDF|MSUBF>.<D|S> when any of two multiplicands is
-+0 or -0, and the third input is also +0 or -0. Depending on the signs
-of inputs, certain special cases must be handled.
-
-A relevant example:
-
-MADDF.S fd,fs,ft:
-  If fs contains +0.0, ft contains -0.0, and fd contains 0.0, fd is
-  going to contain +0.0 (without this patch, it used to contain -0.0).
-
-Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction")
-Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU instruction")
-
-Signed-off-by: Miodrag Dinic <miodrag.dinic@imgtec.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@imgtec.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: Bo Hu <bohu@google.com>
-Cc: Douglas Leung <douglas.leung@imgtec.com>
-Cc: Jin Qian <jinqian@google.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Petar Jovanovic <petar.jovanovic@imgtec.com>
-Cc: Raghu Gandham <raghu.gandham@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16888/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/math-emu/dp_maddf.c |   18 +++++++++++++++++-
- arch/mips/math-emu/sp_maddf.c |   18 +++++++++++++++++-
- 2 files changed, 34 insertions(+), 2 deletions(-)
-
---- a/arch/mips/math-emu/dp_maddf.c
-+++ b/arch/mips/math-emu/dp_maddf.c
-@@ -113,7 +113,23 @@ static union ieee754dp _dp_maddf(union i
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		if (zc == IEEE754_CLASS_INF)
- 			return ieee754dp_inf(zs);
--		/* Multiplication is 0 so just return z */
-+		if (zc == IEEE754_CLASS_ZERO) {
-+			/* Handle cases +0 + (-0) and similar ones. */
-+			if ((!(flags & maddf_negate_product)
-+					&& (zs == (xs ^ ys))) ||
-+			    ((flags & maddf_negate_product)
-+					&& (zs != (xs ^ ys))))
-+				/*
-+				 * Cases of addition of zeros of equal signs
-+				 * or subtraction of zeroes of opposite signs.
-+				 * The sign of the resulting zero is in any
-+				 * such case determined only by the sign of z.
-+				 */
-+				return z;
-+
-+			return ieee754dp_zero(ieee754_csr.rm == FPU_CSR_RD);
-+		}
-+		/* x*y is here 0, and z is not 0, so just return z */
- 		return z;
- 
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
---- a/arch/mips/math-emu/sp_maddf.c
-+++ b/arch/mips/math-emu/sp_maddf.c
-@@ -114,7 +114,23 @@ static union ieee754sp _sp_maddf(union i
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
- 		if (zc == IEEE754_CLASS_INF)
- 			return ieee754sp_inf(zs);
--		/* Multiplication is 0 so just return z */
-+		if (zc == IEEE754_CLASS_ZERO) {
-+			/* Handle cases +0 + (-0) and similar ones. */
-+			if ((!(flags & maddf_negate_product)
-+					&& (zs == (xs ^ ys))) ||
-+			    ((flags & maddf_negate_product)
-+					&& (zs != (xs ^ ys))))
-+				/*
-+				 * Cases of addition of zeros of equal signs
-+				 * or subtraction of zeroes of opposite signs.
-+				 * The sign of the resulting zero is in any
-+				 * such case determined only by the sign of z.
-+				 */
-+				return z;
-+
-+			return ieee754sp_zero(ieee754_csr.rm == FPU_CSR_RD);
-+		}
-+		/* x*y is here 0, and z is not 0, so just return z */
- 		return z;
- 
- 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
+As said before - please don't pass NULL to this function but the proper
+device, which would be &mdev->pdev->dev in this case for example.

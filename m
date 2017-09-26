@@ -1,37 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2017 15:59:28 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4487 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992078AbdIZN7VdfI0a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Sep 2017 15:59:21 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 211F1B4B1F594;
-        Tue, 26 Sep 2017 14:59:12 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 26 Sep
- 2017 14:59:15 +0100
-Date:   Tue, 26 Sep 2017 14:59:14 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Al Viro <viro@ZenIV.linux.org.uk>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: potential deadlock in r4k_flush_cache_sigtramp()
-Message-ID: <20170926135914.GW17077@jhogan-linux.le.imgtec.org>
-References: <20170923134021.GN32076@ZenIV.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2017 16:00:00 +0200 (CEST)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:35337
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992078AbdIZN7x362Za (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Sep 2017 15:59:53 +0200
+Received: by mail-io0-x241.google.com with SMTP id d16so4608253ioj.2;
+        Tue, 26 Sep 2017 06:59:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=IhadVHMVkt/XzhpXVqQXlv4/4Mr78kskQb0tZgW24Fw=;
+        b=sn/LmfyW92BGHySuILQpDZQL8BJiQCbdbyriV8nRslHQAcl5oEvZYDl/RnH4VexRgT
+         /1QPm9MLq0cGAbZAQyHkRc/SevwxYJMVKP9VrlATwm61v8q5zyYqQDPFXHW0Wf0WWEIe
+         l94KMfYj21ioyWUl48/wiSoSQOFg8p9fzzWl/rE+7ArcDoqr7gANiE34/TAeU3/li9ob
+         aGnEEtFuyIVJan2UCL9902iOmoRhpoD8xcw1RuoSWugq+McXm4mtwvf0X4rA9WThucEX
+         dXORVrvo14ZeSwrSmSYdxx/OcNdtHZdqou0quThQpmPN9l3Nq2koL0/aXhi4adC009In
+         aiiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=IhadVHMVkt/XzhpXVqQXlv4/4Mr78kskQb0tZgW24Fw=;
+        b=iKfecWDe2UhRFdNMH/TvUuRqhYjsZCihpFieAJubtmYN3k8p9KtdmkzjjHNOg89vfb
+         KcJDnh/uB4n+ZDW7ODmRohMeAKY+IDpp8wFp0VI9IMAEnsa7CasKbJMIR1Qx0/2zbiKN
+         URTihRk14gvY0dYRfXQVlg2iAyl++qMTaiAatgRSZA/xeoR1cMxSdOXQNGTo253Kp0RP
+         xwzHJZq7kQlwU4ZBpEbMxDCeoGHmtGVnqeKI4tL5KOB4gTFS8J5qshCd0A1lI6MFPpcg
+         OqUXK3h5bP0PZ4p00OAff07+FgembYBe6pAy5D2dtQBpN1nOQnEF9stInX51dV+CY1eM
+         1BfA==
+X-Gm-Message-State: AHPjjUjejP4QrqpPAGv/vh27/XWrqWV+kmb22vzGgJ61JGIt+UBw+TDK
+        OjFbfIQCNexRIO7A6vnRL7TObs2mXG2yf4qz+xo=
+X-Google-Smtp-Source: AOwi7QCzmOMcjZG23bKDdVC3f9Dr75TsWSzn6w2/aqHoh/+ZIsZosNo4Ff5hvjbL7OTozJ/vNXkMjkrLcfviiiofTYo=
+X-Received: by 10.107.78.19 with SMTP id c19mr13987037iob.205.1506434387087;
+ Tue, 26 Sep 2017 06:59:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lrvsYIebpInmECXG"
-Content-Disposition: inline
-In-Reply-To: <20170923134021.GN32076@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.2.12.193 with HTTP; Tue, 26 Sep 2017 06:59:46 -0700 (PDT)
+In-Reply-To: <CA+7wUsyrP8a96-55Zk_GPQmNzPS9MB__dhjwUds7RkQhfe=+EA@mail.gmail.com>
+References: <20170908183558.1537-3-malat@debian.org> <20170915191837.27564-1-malat@debian.org>
+ <CANc+2y6gZ4UQ7fKbJeV7HhDLLW9pbUEr0K0Tq5eBfg1ba2s_LQ@mail.gmail.com> <CA+7wUsyrP8a96-55Zk_GPQmNzPS9MB__dhjwUds7RkQhfe=+EA@mail.gmail.com>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Tue, 26 Sep 2017 19:29:46 +0530
+Message-ID: <CANc+2y47sX0-oDiZvY0AnwHyy0v1uZM7wg-Le5Np=OVEVf0YVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] MIPS: jz4780: DTS: Probe the jz4740-watchdog
+ driver from devicetree
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60158
+X-archive-position: 60159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,112 +72,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---lrvsYIebpInmECXG
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 26 September 2017 at 18:56, Mathieu Malaterre <malat@debian.org> wrote:
+> Hi PrasannaKumar !
+>
+> On Tue, Sep 26, 2017 at 3:17 PM, PrasannaKumar Muralidharan
+> <prasannatsmkumar@gmail.com> wrote:
+>> Hi Mathieu,
+>>
+>> On 16 September 2017 at 00:48, Mathieu Malaterre <malat@debian.org> wrote:
+>>> The jz4740-watchdog driver supports both jz4740 & jz4780.
+>>>
+>>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+>>> ---
+>>> Changes in v2:
+>>> * make the node name generic (Paul Cercueil)
+>>>
+>>>  arch/mips/boot/dts/ingenic/jz4780.dtsi | 5 +++++
+>>>  1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+>>> index 20e37d2d6008..76055bbc823a 100644
+>>> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
+>>> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+>>> @@ -263,6 +263,11 @@
+>>>                 status = "disabled";
+>>>         };
+>>>
+>>> +       watchdog: watchdog@10002000 {
+>>> +               compatible = "ingenic,jz4780-watchdog";
+>>
+>> In drivers/watchdog/jz4740_wdt.c the compatible is declared as
+>> "ingenic,jz4740-watchdog" while your change says
+>> "ingenic,jz4780-watchdog". Can you modify that?
+>
+> Well in the full changeset, you'll find: [PATCH v2 4/5] watchdog:
+> jz4740: Add support for the watchdog in jz4780 SoC
+>
+> https://lkml.org/lkml/2017/9/15/451
+>
+> There has been some misunderstanding. I still believe I need a new
+> compatible string, even if currently the code is 100% identical.
 
-Hi Al,
+I missed that. Ignore this comment.
 
-On Sat, Sep 23, 2017 at 02:40:21PM +0100, Al Viro wrote:
-> 	Calling get_user_pages_fast() while holding ->mmap_sem is
-> asking for trouble:
->=20
-> CPU1: r4k_flush_cache_sigtramp()
-> 	down_read(&current->mm->mmap_sem);
->=20
-> CPU2: (running thread with the same ->mm): sys_pkey_alloc()
-> 	down_write(&current->mm->mmap_sem);
->=20
-> CPU1:
-> 	pages =3D get_user_pages_fast(addr, 1, 0, &args.page);
-> which hits an absent page and goto slow.  Then it goes on to
->         ret =3D get_user_pages_unlocked(start, (end - start) >> PAGE_SHIF=
-T,
->                                       pages, write ? FOLL_WRITE : 0);
-> which does
->         return __get_user_pages_unlocked(current, current->mm, start, nr_=
-pages,
->                                          pages, gup_flags | FOLL_TOUCH);
-> which does
->         down_read(&mm->mmap_sem);
->         ret =3D __get_user_pages_locked(tsk, mm, start, nr_pages, pages, =
-NULL,=20
->                                       &locked, false, gup_flags);
->=20
-> and we have a classical deadlock on recursive down_read() (thread 1: down=
-_read()
-> gets the rwsem; thread 2: down_write() blocks waiting for thread 1 to rel=
-ease
-> it; thread 1: down_read() blocks waiting for thread 2 to get through down=
-_write()
-> and eventual up_write(), which completes the deadlock).
+>
+>>> +               reg = <0x10002000 0x100>;
+>>> +       };
+>>> +
+>>
+>> The structures jz4740_wdt_device and jz4740_wdt_resources can be
+>> removed form arch/mips/jz4740/platform.c as watchdog is declared in
+>> device tree. For JZ4740 platform watchdog is not used so the variables
+>> can be removed.
+>>
+>> Do you mind adding watchdog entry to JZ4740 device tree? Currently
+>> watchdog is not enabled for JZ4740 platform.
+>
+>
+> Will do once this series has been accepted. Thanks for the review !
 
-Hmm, indeed. Thanks for spotting that one.
+Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 
-> Replacing pkey_alloc(2) with e.g. mmap(2) turns that from hard deadlock i=
-nto
-> something killable, but while "with bad timing you might get process stuck
-> hard" is worse than "with bad timing you might get process stuck until you
-> kill -9 it", neither is a good thing.
->=20
-> I'm not familiar enough with arch/mips guts to suggest any variant of sol=
-ution;
-> replacing get_user_pages_fast() with get_user_pages_locked() would solve =
-the
-> deadlock, but that loses the fast path; not taking ->mmap_sem there have
-> local_r4k_flush_cache_sigtramp() run without fcs_args->mm being locked, w=
-hich
-> might or might not be a problem.  Suggestions?
-
-I suspect my concern was the theoretical situation where:
-
-task1 hits an FPU branch instruction that needs emulating
-	this creates a trampoline above the stack in user memory to
-	execute the delay slot instruction, and calls
-	r4k_flush_cache_sigtramp()
-
-task2 in same process changes the memory mapping somehow.
-
-SMP call to local_r4k_flush_cache_sigtramp()
-	it may do cache op using the user virtual address when same mm
-	active, or using kmap otherwise.
-
-For the kmap case (SMP call to CPU with different process executing) its
-holding a reference to the page so it should be fine. If the page was
-swapped out or otherwise copied and it icache flushed the old page, then
-I think the new page would get flushed when swapped back in so thats
-fine.
-
-Otherwise I can't imagine a situation where it'd misbehave unless
-userland explicitly remapped the memory and it accessed using the
-virtual address, in which case its asking for trouble.
-
-Therefore I suspect it should be safe to drop the mmap_sem, but thats
-OTOH. Have I missed anything important?
-
-Thanks
-James
-
---lrvsYIebpInmECXG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlnKXSQACgkQbAtpk944
-dnrRPQ//ZmQFwDu7CejwqzHyi/u3CCecII8btEZe2rNTCS61zTl3tl9EQXcJPFbF
-r81OfroJz81yt2xl1tINAXh12W5DxMYF+sraJRaLf7XH9537sZdB2COxtdSKiEkt
-zKjvpeEZRC8tz/P+E7ejUyJGt7sjxvedVk/zB/r3yz/TDzwvmeGv6cZexAmCB4HI
-PFpq7DVuIZWGB+xo0Moq9J+rAalevp9SJVbnyD0uFDFdRI/+EMZ2RMtH7SoHmOhO
-fp1iuxTdaH1UXQDanIlJOyc5eKpOw7Vz44qtlK14ahK13TiwTT3lZM0OO+XsLeT3
-HH3vgCI8qEBP8dOaK2KQcp9aYQ+w3CBXWd5qaipl7jgzLNYKCU7lL33zKm/GLHn1
-sZe9OJOS0Tb0Z9FeTJ+Jq9w1OnELR2ViQRDzU8dMM0voL8BUugB5c6lUUyqkPp1O
-JsQnlaC1r8VZ1gNuWNREjla5HY1mkKgl5NLiLLI/sy/VCHz/mI6i1UiKSJBBJ5SL
-UJiAF96MeJYkH1O5VRX3qFOC4zY/QmQkPhwRi8T6yREIbtX9uUJu4Au/YyjSRlrn
-cxYburPxOq1ATqRaUAdgq5XINl4JFX1nOecMLpUS9sfkPUK7r3ktVYppGPMnwV4Z
-bAD4P+BZ4uZxO2+PGYR4abVXLCXkIw1Nhu4FEGkZ6Fu2JCtdfSc=
-=A3Pd
------END PGP SIGNATURE-----
-
---lrvsYIebpInmECXG--
+>
+>>>         nemc: nemc@13410000 {
+>>>                 compatible = "ingenic,jz4780-nemc";
+>>>                 reg = <0x13410000 0x10000>;
+>>> --
+>>> 2.11.0
+>>>
+>>
+>> Regards,
+>> PrasannaKumar

@@ -1,43 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Sep 2017 23:07:07 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:34553 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990475AbdIYVG5MwAXY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Sep 2017 23:06:57 +0200
-Received: from p4fea516b.dip0.t-ipconnect.de ([79.234.81.107] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1dwaYP-0008Gz-OY; Mon, 25 Sep 2017 23:04:38 +0200
-Date:   Mon, 25 Sep 2017 23:06:39 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Paul Burton <paul.burton@imgtec.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>, dianders@chromium.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2017 08:10:30 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.211]:45534 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990515AbdIZGKYCzknz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Sep 2017 08:10:24 +0200
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id D34909EDA3; Tue, 26 Sep 2017 08:10:19 +0200 (CEST)
+Date:   Tue, 26 Sep 2017 08:10:19 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Jason Cooper <jason@lakedaemon.net>, jeffy.chen@rock-chips.com,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        tfiga@chromium.org
-Subject: Re: [RFC PATCH v1 2/9] genirq: Support shared per_cpu_devid
- interrupts
-In-Reply-To: <20170907232542.20589-3-paul.burton@imgtec.com>
-Message-ID: <alpine.DEB.2.20.1709252259270.2418@nanos>
-References: <1682867.tATABVWsV9@np-p-burton> <20170907232542.20589-1-paul.burton@imgtec.com> <20170907232542.20589-3-paul.burton@imgtec.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        linux-mips <linux-mips@linux-mips.org>,
+        "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        Roland Dreier <rolandd@cisco.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ivan Mikhaylov <ivan@ru.ibm.com>,
+        Tariq Toukan <tariqt@mellanox.com>,
+        Andy Gross <agross@codeaurora.org>,
+        "Mark A . Greer" <mgreer@mvista.com>,
+        Robert Baldyga <r.baldyga@samsung.com>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [PATCH V7 1/2] dma-mapping: Rework dma_get_cache_alignment()
+Message-ID: <20170926061019.GA6416@lst.de>
+References: <1506332766-23966-1-git-send-email-chenhc@lemote.com> <20170925125107.GC8130@lst.de> <tencent_7716E99906A9D63D4592EFB6@qq.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_7716E99906A9D63D4592EFB6@qq.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60150
+X-archive-position: 60151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,46 +61,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 7 Sep 2017, Paul Burton wrote:
-> Up until now per_cpu_devid interrupts have not supported sharing. On
-> MIPS we have some percpu interrupts which are shared in many systems -
-> a single CPU interrupt line may be used to indicate a timer interrupt,
-> performance counter interrupt or fast debug channel interrupt. We have
-> up until now supported this with a series of hacks, wherein drivers call
-> each other's interrupt handlers & our MIPS GIC irqchip driver includes a
-> hack which configures the interrupt(s) for all CPUs. In order to allow
-> this mess to be cleaned up, this patch introduces support for shared
-> per_cpu_devid interrupts.
+On Tue, Sep 26, 2017 at 09:48:01AM +0800, 陈华才 wrote:
+> Hi, Christoph,
 > 
-> The major portion of this is supporting per_cpu_devid interrupts in
-> __handle_irq_event_percpu() and then making use of this, via
-> handle_irq_event_percpu(), from handler_percpu_devif_irq() to invoke the
-> handler for all actions associated with the shared interrupt. This does
-> have a few side effects worth noting:
-> 
->  - per_cpu_devid interrupts will now add to the entropy pool via
->    add_interrupt_randomness(), where they previously did not.
-> 
->  - per_cpu_devid interrupts will record timings when IRQS_TIMINGS is
->    set, via record_irq_time(), where they previously did not.
-> 
->  - per_cpu_devid interrupts will handle an IRQ_WAKE_THREAD return from
->    their handlers to wake a thread, where they previously did not.
+> Can I put the declaration in asm/dma-coherence.h?
 
-That's broken because it lacks the magic synchronization which is described
-in the comment in __irq_wake_thread().
+Generally something not expose to the rest of the kernel (that is not
+in arch/mips/include/) would be preferred, but in the end the architecture
+maintainer will have to decide.
 
-> I'm not aware of any reason the above should be bad side effects, so
-> sharing __handle_irq_event_percpu() for per_cpu_devid interrupts seems
-> like a positive.
+> And, last time you said it is OK to pass a NULL to dma_get_cache_alignment() and cc all driver maintainers. I have do so.
 
-Now you are :)
-
-The other side effect of this is the extra overhead. You add an extra
-conditional into the main interrupt handling function
-__handle_irq_event_percpu() and the extra loop and hoops overhead for
-handle_percpu_devid_irq().
-
-Thanks,
-
-	tglx
+No, I asked you to converted everything to pass the struct device and
+cc the driver maintainers.

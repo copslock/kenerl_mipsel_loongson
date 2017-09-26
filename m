@@ -1,65 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2017 16:24:02 +0200 (CEST)
-Received: from smtp-out4.electric.net ([192.162.216.185]:59158 "EHLO
-        smtp-out4.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992078AbdIZOXyrzAUy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Sep 2017 16:23:54 +0200
-Received: from 1dwqlv-0002Y1-VT by out4a.electric.net with emc1-ok (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1dwqm0-0002oj-TP; Tue, 26 Sep 2017 07:23:44 -0700
-Received: by emcmailer; Tue, 26 Sep 2017 07:23:44 -0700
-Received: from [156.67.243.126] (helo=AcuExch.aculab.com)
-        by out4a.electric.net with esmtps (TLSv1:AES128-SHA:128)
-        (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1dwqlv-0002Y1-VT; Tue, 26 Sep 2017 07:23:39 -0700
-Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
- mapi id 14.03.0123.003; Tue, 26 Sep 2017 15:23:41 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Matt Redfearn' <matt.redfearn@imgtec.com>,
-        David Miller <davem@davemloft.net>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "alexandre.torgue@st.com" <alexandre.torgue@st.com>,
-        "peppe.cavallaro@st.com" <peppe.cavallaro@st.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "James Hogan" <james.hogan@imgtec.com>
-Subject: RE: [PATCH] net: stmmac: Meet alignment requirements for DMA
-Thread-Topic: [PATCH] net: stmmac: Meet alignment requirements for DMA
-Thread-Index: AQHTNs9za6qdFbduzEmZHg5agQgOi6LHNvIw
-Date:   Tue, 26 Sep 2017 14:23:40 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6DD0081391@AcuExch.aculab.com>
-References: <1506078833-14002-1-git-send-email-matt.redfearn@imgtec.com>
- <20170922.182639.272534775457081015.davem@davemloft.net>
- <587dc9a8-b974-e222-95b4-93c2a8f2aba2@imgtec.com>
-In-Reply-To: <587dc9a8-b974-e222-95b4-93c2a8f2aba2@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.99.200]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2017 17:13:23 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9075 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992078AbdIZPNQFIB4V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Sep 2017 17:13:16 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 9EF86CE7B5FDC;
+        Tue, 26 Sep 2017 16:13:04 +0100 (IST)
+Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 26 Sep
+ 2017 16:13:07 +0100
+To:     David Daney <david.daney@cavium.com>
+CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Subject: =?UTF-8?Q?error:_=e2=80=98target=e2=80=99_may_be_used_uninitialized?=
+ =?UTF-8?Q?_in_arch/mips/net/ebpf=5fjit.c?=
+Message-ID: <31051d4e-95a1-ec81-7e9e-5cf0f3d752df@imgtec.com>
+Date:   Tue, 26 Sep 2017 16:13:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-X-Outbound-IP: 156.67.243.126
-X-Env-From: David.Laight@ACULAB.COM
-X-Proto: esmtps
-X-Revdns: 
-X-HELO: AcuExch.aculab.com
-X-TLS:  TLSv1:AES128-SHA:128
-X-Authenticated_ID: 
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (c)
-X-Virus-Status: Scanned by VirusSMART (s)
-Return-Path: <David.Laight@ACULAB.COM>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60160
+X-archive-position: 60161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,18 +44,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-RnJvbTogTWF0dCBSZWRmZWFybg0KPiBTZW50OiAyNiBTZXB0ZW1iZXIgMjAxNyAxNDo1OA0KLi4u
-DQo+ID4gQXMgbG9uZyBhcyB5b3UgdXNlIHRoZSBkbWFfe21hcCx1bmFtcH1fc2luZ2xlKCkgYW5k
-IHN5bmMgdG8vZnJvbQ0KPiA+IGRlaXZjZSBpbnRlcmZhY2VzIHByb3Blcmx5LCB0aGUgY2FjaGVs
-aW5lIGlzc3VlcyB3aWxsIGJlIGhhbmRsZWQgcHJvcGVybHkNCj4gPiBhbmQgdGhlIGNwdSBhbmQg
-dGhlIGRldmljZSB3aWxsIHNlZSBwcm9wZXIgdXB0b2RhdGUgbWVtb3J5IGNvbnRlbnRzLg0KPiAN
-Cj4gSSBpbnRlcnByZXQgdGhlIERNQSBBUEkgZG9jdW1lbnQgKGFuZCB0aGUgTUlQUyBhcmNoIGRt
-YSBjb2RlIG9wZXJhdGVzDQo+IHRoaXMgd2F5KSBhcyBzdGF0aW5nIHRoYXQgdGhlIGRyaXZlciBt
-dXN0IGVuc3VyZSB0aGF0IGJ1ZmZlcnMgcGFzc2VkIHRvDQo+IGl0IGFyZSBjYWNoZWxpbmUgYWxp
-Z25lZCwgYW5kIGNhY2hlbGluZSBzaXplZCwgdG8gcHJldmVudCBjYWNoZQ0KPiBtYW5hZ2VtZW50
-IHRocm93aW5nIGF3YXkgYWRqYWNlbnQgZGF0YSBpbiB0aGUgc2FtZSBjYWNoZWxpbmUuDQoNClRo
-ZSBpbXBvcnRhbnQgdGhpbmcgaXMgdGhhdCB0aGUgZHJpdmVyIG11c3Qgbm90IGRpcnR5IGFueSBj
-YWNoZSBsaW5lcw0KdGhhdCBhcmUgbWFwcGVkIGZvciBETUEgKGZyb20gdGhlIGRldmljZSkuDQoN
-ClR5cGljYWxseSB0aGlzIGlzIG5vdCBhIHByb2JsZW0gYmVjYXVzZSB0aGUgZHJpdmVyIGRvZXNu
-J3QgbG9vaw0KYXQgc2tiIChldGMpIHRoYXQgY29udGFpbiByZWNlaXZlIGJ1ZmZlcnMgb25jZSB0
-aGUgZG1hIGlzIHNldHVwLg0KDQoJRGF2aWQNCg0KDQo=
+Hi David,
+
+I see the following compiler error when I turn on CONFIG_MIPS_EBPF_JIT 
+with v4.13 and v4.14-rc1 (cavium_octeon_defconfig based)
+
+This is with gcc:
+
+gcc version 4.9.2 (Codescape GNU Tools 2016.05-03 for MIPS MTI Linux)
+
+
+arch/mips/net/ebpf_jit.c: In function ‘build_one_insn’:
+arch/mips/net/ebpf_jit.c:1119:80: error: ‘target’ may be used 
+uninitialized in this function [-Werror=maybe-uninitialized]
+     emit_instr(ctx, j, target);
+^
+cc1: all warnings being treated as errors
+
+
+This appears to have been the case since the ebpf_jit was merged in 
+b6bd53f9c4e825fca82fe1392157c78443c814ab.
+
+Thanks,
+
+Matt

@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2017 14:19:38 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43088 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992181AbdI0MStQ4iOJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Sep 2017 14:18:49 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 79DA24D43FA04;
-        Wed, 27 Sep 2017 13:18:38 +0100 (IST)
-Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Wed, 27 Sep 2017 13:18:41 +0100
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 2/2] MIPS: crypto: Add crc32 and crc32c hw accelerated module
-Date:   Wed, 27 Sep 2017 14:18:36 +0200
-Message-ID: <1506514716-29470-3-git-send-email-marcin.nowakowski@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1506514716-29470-1-git-send-email-marcin.nowakowski@imgtec.com>
-References: <1506514716-29470-1-git-send-email-marcin.nowakowski@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2017 15:17:29 +0200 (CEST)
+Received: from mga05.intel.com ([192.55.52.43]:41181 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992135AbdI0NRWRqUES (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Sep 2017 15:17:22 +0200
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga105.fm.intel.com with ESMTP; 27 Sep 2017 06:17:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.42,445,1500966000"; 
+   d="gz'50?scan'50,208,50";a="156668446"
+Received: from bee.sh.intel.com (HELO bee) ([10.239.97.14])
+  by fmsmga006.fm.intel.com with ESMTP; 27 Sep 2017 06:17:17 -0700
+Received: from kbuild by bee with local (Exim 4.84_2)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1dxCIL-0008Qg-5A; Wed, 27 Sep 2017 21:22:33 +0800
+Date:   Wed, 27 Sep 2017 21:17:08 +0800
+From:   kbuild test robot <fengguang.wu@intel.com>
+To:     David Daney <david.daney@cavium.com>
+Cc:     kbuild-all@01.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Carlos Munoz <cmunoz@caviumnetworks.com>
+Subject: [mips-sjhill:mips-for-linux-next 9/12]
+ arch/mips/include/asm/smp.h:32:29: error: 'CONFIG_MIPS_NR_CPU_NR_MAP'
+ undeclared here (not in a function)
+Message-ID: <201709272157.oeuxyCCi%fengguang.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: multipart/mixed; boundary="vtzGhvizbBRQ85DL"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: fengguang.wu@intel.com
+X-SA-Exim-Scanned: No (on bee); SAEximRunCond expanded to false
+Return-Path: <fengguang.wu@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60175
+X-archive-position: 60176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,464 +51,348 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This module registers crc32 and crc32c algorithms that use the
-optional CRC32[bhwd] and CRC32C[bhwd] instructions in MIPSr6 cores.
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: linux-crypto@vger.kernel.org
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
+--vtzGhvizbBRQ85DL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+tree:   git://git.linux-mips.org/pub/scm/sjhill/linux-sjhill.git mips-for-linux-next
+head:   f6cccc012695551ad73da0ff9bfce4e4679a07b0
+commit: 43b97bf59c6969804449a3da534289a8f3a95a7e [9/12] MIPS: Allow __cpu_number_map to be larger than NR_CPUS
+config: mips-maltasmvp_defconfig (attached as .config)
+compiler: mipsel-linux-gnu-gcc (Debian 6.1.1-9) 6.1.1 20160705
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git checkout 43b97bf59c6969804449a3da534289a8f3a95a7e
+        # save the attached .config to linux build tree
+        make.cross ARCH=mips 
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/smp.h:63:0,
+                    from arch/mips/include/asm/cpu-type.h:12,
+                    from arch/mips/include/asm/timex.h:19,
+                    from include/linux/timex.h:65,
+                    from include/linux/jiffies.h:9,
+                    from include/linux/ktime.h:25,
+                    from include/linux/timer.h:5,
+                    from include/linux/workqueue.h:8,
+                    from include/linux/rhashtable.h:26,
+                    from include/linux/ipc.h:6,
+                    from include/uapi/linux/sem.h:4,
+                    from include/linux/sem.h:8,
+                    from include/linux/sched.h:14,
+                    from arch/mips/kernel/asm-offsets.c:13:
+>> arch/mips/include/asm/smp.h:32:29: error: 'CONFIG_MIPS_NR_CPU_NR_MAP' undeclared here (not in a function)
+    extern int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];
+                                ^~~~~~~~~~~~~~~~~~~~~~~~~
+   make[2]: *** [arch/mips/kernel/asm-offsets.s] Error 1
+   make[2]: Target '__build' not remade because of errors.
+   make[1]: *** [prepare0] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [sub-make] Error 2
+
+vim +/CONFIG_MIPS_NR_CPU_NR_MAP +32 arch/mips/include/asm/smp.h
+
+    29	
+    30	/* Map from cpu id to sequential logical cpu number.  This will only
+    31	   not be idempotent when cpus failed to come on-line.	*/
+  > 32	extern int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];
+    33	#define cpu_number_map(cpu)  __cpu_number_map[cpu]
+    34	
 
 ---
- arch/mips/Kconfig             |   4 +
- arch/mips/Makefile            |   3 +
- arch/mips/crypto/Makefile     |   5 +
- arch/mips/crypto/crc32-mips.c | 361 ++++++++++++++++++++++++++++++++++++++++++
- crypto/Kconfig                |   9 ++
- 5 files changed, 382 insertions(+)
- create mode 100644 arch/mips/crypto/Makefile
- create mode 100644 arch/mips/crypto/crc32-mips.c
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index cb7fcc4..0f96812 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2036,6 +2036,7 @@ config CPU_MIPSR6
- 	select CPU_HAS_RIXI
- 	select HAVE_ARCH_BITREVERSE
- 	select MIPS_ASID_BITS_VARIABLE
-+	select MIPS_CRC_SUPPORT
- 	select MIPS_SPRAM
- 
- config EVA
-@@ -2503,6 +2504,9 @@ config MIPS_ASID_BITS
- config MIPS_ASID_BITS_VARIABLE
- 	bool
- 
-+config MIPS_CRC_SUPPORT
-+	bool
-+
- #
- # - Highmem only makes sense for the 32-bit kernel.
- # - The current highmem code will only work properly on physically indexed
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index a96d97a..aa77536 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -216,6 +216,8 @@ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
- endif
- toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
- cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
-+toolchain-crc				:= $(call cc-option-yn,$(mips-cflags) -Wa$(comma)-mcrc)
-+cflags-$(toolchain-crc)			+= -DTOOLCHAIN_SUPPORTS_CRC
- 
- #
- # Firmware support
-@@ -324,6 +326,7 @@ libs-y			+= arch/mips/math-emu/
- # See arch/mips/Kbuild for content of core part of the kernel
- core-y += arch/mips/
- 
-+drivers-$(CONFIG_MIPS_CRC_SUPPORT) += arch/mips/crypto/
- drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
- 
- # suspend and hibernation support
-diff --git a/arch/mips/crypto/Makefile b/arch/mips/crypto/Makefile
-new file mode 100644
-index 0000000..665c725
---- /dev/null
-+++ b/arch/mips/crypto/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for MIPS crypto files..
-+#
-+
-+obj-$(CONFIG_CRYPTO_CRC32_MIPS) += crc32-mips.o
-diff --git a/arch/mips/crypto/crc32-mips.c b/arch/mips/crypto/crc32-mips.c
-new file mode 100644
-index 0000000..dfa8bb1
---- /dev/null
-+++ b/arch/mips/crypto/crc32-mips.c
-@@ -0,0 +1,361 @@
-+/*
-+ * crc32-mips.c - CRC32 and CRC32C using optional MIPSr6 instructions
-+ *
-+ * Module based on arm64/crypto/crc32-arm.c
-+ *
-+ * Copyright (C) 2014 Linaro Ltd <yazen.ghannam@linaro.org>
-+ * Copyright (C) 2017 Imagination Technologies, Ltd.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#include <linux/unaligned/access_ok.h>
-+#include <linux/cpufeature.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/string.h>
-+
-+#include <crypto/internal/hash.h>
-+
-+enum crc_op_size {
-+	b, h, w, d,
-+};
-+
-+enum crc_type {
-+	crc32,
-+	crc32c,
-+};
-+
-+#ifdef TOOLCHAIN_SUPPORTS_CRC
-+
-+#define _CRC32(crc, value, size, type)		\
-+do {						\
-+	__asm__ __volatile__(			\
-+	".set	push\n\t"			\
-+	".set	crc\n\t"			\
-+	#type #size "	%0, %1, %0\n\t"		\
-+	".set	pop\n\t"			\
-+	: "+r" (crc)				\
-+	: "r" (value)				\
-+);						\
-+} while(0)
-+
-+#define CRC_REGISTER
-+
-+#else	/* TOOLCHAIN_SUPPORTS_CRC */
-+/*
-+ * Crc argument is currently ignored and the assembly below assumes
-+ * the crc is stored in $2. As the register number is encoded in the
-+ * instruction we can't let the compiler chose the register it wants.
-+ * An alternative is to change the code to do
-+ * move $2, %0
-+ * crc32
-+ * move %0, $2
-+ * but that adds unnecessary operations that the crc32 operation is
-+ * designed to avoid. This issue can go away once the assembler
-+ * is extended to support this operation and the compiler can make
-+ * the right register choice automatically
-+ */
-+
-+#define _CRC32(crc, value, size, type)						\
-+do {										\
-+	__asm__ __volatile__(							\
-+	".set	push\n\t"							\
-+	".set	noat\n\t"							\
-+	"move	$at, %1\n\t"							\
-+	"# " #type #size "	%0, $at, %0\n\t"				\
-+	_ASM_INSN_IF_MIPS(0x7c00000f | (2 << 16) | (1 << 21) | (%2 << 6) | (%3 << 8))	\
-+	_ASM_INSN32_IF_MM(0x00000030 | (1 << 16) | (2 << 21) | (%2 << 14) | (%3 << 3))	\
-+	".set	pop\n\t"							\
-+	: "+r" (crc)								\
-+	: "r" (value), "i" (size), "i" (type)					\
-+);										\
-+} while(0)
-+
-+#define CRC_REGISTER __asm__("$2")
-+#endif	/* !TOOLCHAIN_SUPPORTS_CRC */
-+
-+#define CRC32(crc, value, size) \
-+	_CRC32(crc, value, size, crc32)
-+
-+#define CRC32C(crc, value, size) \
-+	_CRC32(crc, value, size, crc32c)
-+
-+static u32 crc32_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
-+{
-+	s64 length = len;
-+	register u32 crc CRC_REGISTER = crc_;
-+
-+#ifdef CONFIG_64BIT
-+	while ((length -= sizeof(u64)) >= 0) {
-+		register u64 value = get_unaligned_le64(p);
-+
-+		CRC32(crc, value, d);
-+		p += sizeof(u64);
-+	}
-+
-+	if (length & sizeof(u32)) {
-+#else /* !CONFIG_64BIT */
-+	while ((length -= sizeof(u32)) >= 0) {
-+#endif
-+		register u32 value = get_unaligned_le32(p);
-+
-+		CRC32(crc, value, w);
-+		p += sizeof(u32);
-+	}
-+
-+	if (length & sizeof(u16)) {
-+		register u16 value = get_unaligned_le16(p);
-+
-+		CRC32(crc, value, h);
-+		p += sizeof(u16);
-+	}
-+
-+	if (length & sizeof(u8)) {
-+		register u8 value = *p++;
-+
-+		CRC32(crc, value, b);
-+	}
-+
-+	return crc;
-+}
-+
-+static u32 crc32c_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
-+{
-+	s64 length = len;
-+	register u32 crc __asm__("$2") = crc_;
-+
-+#ifdef CONFIG_64BIT
-+	while ((length -= sizeof(u64)) >= 0) {
-+		register u64 value = get_unaligned_le64(p);
-+
-+		CRC32C(crc, value, d);
-+		p += sizeof(u64);
-+	}
-+
-+	if (length & sizeof(u32)) {
-+#else /* !CONFIG_64BIT */
-+	while ((length -= sizeof(u32)) >= 0) {
-+#endif
-+		register u32 value = get_unaligned_le32(p);
-+
-+		CRC32C(crc, value, w);
-+		p += sizeof(u32);
-+	}
-+
-+	if (length & sizeof(u16)) {
-+		register u16 value = get_unaligned_le16(p);
-+
-+		CRC32C(crc, value, h);
-+		p += sizeof(u16);
-+	}
-+
-+	if (length & sizeof(u8)) {
-+		register u8 value = *p++;
-+
-+		CRC32C(crc, value, b);
-+	}
-+	return crc;
-+}
-+
-+#define CHKSUM_BLOCK_SIZE	1
-+#define CHKSUM_DIGEST_SIZE	4
-+
-+struct chksum_ctx {
-+	u32 key;
-+};
-+
-+struct chksum_desc_ctx {
-+	u32 crc;
-+};
-+
-+static int chksum_init(struct shash_desc *desc)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(desc->tfm);
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	ctx->crc = mctx->key;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Setting the seed allows arbitrary accumulators and flexible XOR policy
-+ * If your algorithm starts with ~0, then XOR with ~0 before you set
-+ * the seed.
-+ */
-+static int chksum_setkey(struct crypto_shash *tfm, const u8 *key,
-+			 unsigned int keylen)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(tfm);
-+
-+	if (keylen != sizeof(mctx->key)) {
-+		crypto_shash_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
-+		return -EINVAL;
-+	}
-+	mctx->key = get_unaligned_le32(key);
-+	return 0;
-+}
-+
-+static int chksum_update(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	ctx->crc = crc32_mips_le_hw(ctx->crc, data, length);
-+	return 0;
-+}
-+
-+static int chksumc_update(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	ctx->crc = crc32c_mips_le_hw(ctx->crc, data, length);
-+	return 0;
-+}
-+
-+static int chksum_final(struct shash_desc *desc, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	put_unaligned_le32(ctx->crc, out);
-+	return 0;
-+}
-+
-+static int chksumc_final(struct shash_desc *desc, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	put_unaligned_le32(~ctx->crc, out);
-+	return 0;
-+}
-+
-+static int __chksum_finup(u32 crc, const u8 *data, unsigned int len, u8 *out)
-+{
-+	put_unaligned_le32(crc32_mips_le_hw(crc, data, len), out);
-+	return 0;
-+}
-+
-+static int __chksumc_finup(u32 crc, const u8 *data, unsigned int len, u8 *out)
-+{
-+	put_unaligned_le32(~crc32c_mips_le_hw(crc, data, len), out);
-+	return 0;
-+}
-+
-+static int chksum_finup(struct shash_desc *desc, const u8 *data,
-+			unsigned int len, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	return __chksum_finup(ctx->crc, data, len, out);
-+}
-+
-+static int chksumc_finup(struct shash_desc *desc, const u8 *data,
-+			unsigned int len, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	return __chksumc_finup(ctx->crc, data, len, out);
-+}
-+
-+static int chksum_digest(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length, u8 *out)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(desc->tfm);
-+
-+	return __chksum_finup(mctx->key, data, length, out);
-+}
-+
-+static int chksumc_digest(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length, u8 *out)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(desc->tfm);
-+
-+	return __chksumc_finup(mctx->key, data, length, out);
-+}
-+
-+static int chksum_cra_init(struct crypto_tfm *tfm)
-+{
-+	struct chksum_ctx *mctx = crypto_tfm_ctx(tfm);
-+
-+	mctx->key = ~0;
-+	return 0;
-+}
-+
-+static struct shash_alg crc32_alg = {
-+	.digestsize		=	CHKSUM_DIGEST_SIZE,
-+	.setkey			=	chksum_setkey,
-+	.init			=	chksum_init,
-+	.update			=	chksum_update,
-+	.final			=	chksum_final,
-+	.finup			=	chksum_finup,
-+	.digest			=	chksum_digest,
-+	.descsize		=	sizeof(struct chksum_desc_ctx),
-+	.base			=	{
-+		.cra_name		=	"crc32",
-+		.cra_driver_name	=	"crc32-mips-hw",
-+		.cra_priority		=	300,
-+		.cra_blocksize		=	CHKSUM_BLOCK_SIZE,
-+		.cra_alignmask		=	0,
-+		.cra_ctxsize		=	sizeof(struct chksum_ctx),
-+		.cra_module		=	THIS_MODULE,
-+		.cra_init		=	chksum_cra_init,
-+	}
-+};
-+
-+static struct shash_alg crc32c_alg = {
-+	.digestsize		=	CHKSUM_DIGEST_SIZE,
-+	.setkey			=	chksum_setkey,
-+	.init			=	chksum_init,
-+	.update			=	chksumc_update,
-+	.final			=	chksumc_final,
-+	.finup			=	chksumc_finup,
-+	.digest			=	chksumc_digest,
-+	.descsize		=	sizeof(struct chksum_desc_ctx),
-+	.base			=	{
-+		.cra_name		=	"crc32c",
-+		.cra_driver_name	=	"crc32c-mips-hw",
-+		.cra_priority		=	300,
-+		.cra_blocksize		=	CHKSUM_BLOCK_SIZE,
-+		.cra_alignmask		=	0,
-+		.cra_ctxsize		=	sizeof(struct chksum_ctx),
-+		.cra_module		=	THIS_MODULE,
-+		.cra_init		=	chksum_cra_init,
-+	}
-+};
-+
-+static int __init crc32_mod_init(void)
-+{
-+	int err;
-+
-+	err = crypto_register_shash(&crc32_alg);
-+
-+	if (err)
-+		return err;
-+
-+	err = crypto_register_shash(&crc32c_alg);
-+
-+	if (err) {
-+		crypto_unregister_shash(&crc32_alg);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static void __exit crc32_mod_exit(void)
-+{
-+	crypto_unregister_shash(&crc32_alg);
-+	crypto_unregister_shash(&crc32c_alg);
-+}
-+
-+MODULE_AUTHOR("Marcin Nowakowski <marcin.nowakowski@imgtec.com");
-+MODULE_DESCRIPTION("CRC32 and CRC32C using optional MIPS instructions");
-+MODULE_LICENSE("GPL v2");
-+
-+module_cpu_feature_match(MIPS_CRC32, crc32_mod_init);
-+module_exit(crc32_mod_exit);
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 28b1a0d..661971a 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -494,6 +494,15 @@ config CRYPTO_CRC32_PCLMUL
- 	  which will enable any routine to use the CRC-32-IEEE 802.3 checksum
- 	  and gain better performance as compared with the table implementation.
- 
-+config CRYPTO_CRC32_MIPS
-+	tristate "CRC32c and CRC32 CRC algorithm (MIPS)"
-+	depends on MIPS_CRC_SUPPORT
-+	select CRYPTO_HASH
-+	help
-+	  CRC32c and CRC32 CRC algorithms implemented using mips crypto
-+	  instructions, when available.
-+
-+
- config CRYPTO_CRCT10DIF
- 	tristate "CRCT10DIF algorithm"
- 	select CRYPTO_HASH
--- 
-2.7.4
+--vtzGhvizbBRQ85DL
+Content-Type: application/gzip
+Content-Disposition: attachment; filename=".config.gz"
+Content-Transfer-Encoding: base64
+
+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
+9QAA
+
+--vtzGhvizbBRQ85DL--

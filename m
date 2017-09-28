@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2017 19:40:04 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2017 19:40:26 +0200 (CEST)
 Received: from mail-sn1nam01on0042.outbound.protection.outlook.com ([104.47.32.42]:33276
         "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992338AbdI1RjHW9HnF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992339AbdI1RjHmBwnF (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 28 Sep 2017 19:39:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=noMv9nDD9kAs4XScsezM9c+xVB0JMldinyTTSfnqH7o=;
- b=QHpYXLSfCENboq9jnans2xR5RO4wM5n9fDMAPcQnm5vbDA70L+9/0gyTGWqcAXQ7Y5tZHVnGrroaQIKMk5KJiAtypx/Ov4HhIS3T/LB63xZpGk8kaV2aVv73o2bZajOYzyeu9xmhWXYPqEHHT3+SPxllj6DRTH7+9wszUg0U7x4=
+ bh=y1G8gRvLNWOUo0QonG75bYJGYzSuZ3D/3pe0wu6sIkw=;
+ b=JHUsLEPofLRt7T5Kh5xMdKT6PtpGicg5h8o2V9+Gs64vj2DjNlDlim1MYIsHShxEoiXl1j00SVKrXNjyivYb1LV8iAdBavwjkrufStVDsi2joIe9C4w0Vq5AKoRUR2kc56aNZb52mCJU/AwKvWiWouWcjjHmvMfGQYsVHHtmxi0=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (173.18.42.219) by
  SN4PR0701MB3807.namprd07.prod.outlook.com (2603:10b6:803:4e::30) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.20.77.7; Thu, 28 Sep
- 2017 17:38:58 +0000
+ 2017 17:38:59 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH v2 03/12] MIPS: Allow __cpu_number_map to be larger than NR_CPUS
-Date:   Thu, 28 Sep 2017 12:34:04 -0500
-Message-Id: <1506620053-2557-4-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH v2 04/12] MIPS: Octeon: Remove usage of cvmx_wait() everywhere.
+Date:   Thu, 28 Sep 2017 12:34:05 -0500
+Message-Id: <1506620053-2557-5-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1506620053-2557-1-git-send-email-steven.hill@cavium.com>
 References: <1506620053-2557-1-git-send-email-steven.hill@cavium.com>
@@ -32,44 +32,44 @@ X-ClientProxiedBy: CY1PR07CA0024.namprd07.prod.outlook.com
  (2a01:111:e400:c60a::34) To SN4PR0701MB3807.namprd07.prod.outlook.com
  (2603:10b6:803:4e::30)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ecb288db-d815-4bc6-2169-08d50697ccad
+X-MS-Office365-Filtering-Correlation-Id: 61d8a798-112a-4162-de3b-08d50697cd6b
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(2017030254152)(2017052603199)(201703131423075)(201703031133081)(201702281549075);SRVR:SN4PR0701MB3807;
-X-Microsoft-Exchange-Diagnostics: 1;SN4PR0701MB3807;3:a+TPiakTW1n1FLqDCwi4UeDJmLWINn9lgcB9mPXOQBqlWzoIeGkkVCWNRSw40v2zV+JWLoZdtW9iWJtZJ1O+G0ZSi32NgdiS7oPNfB8vqhxOP08d3AcMQ8LAR2DdlsN73oEGBY8b+b2SgzaZ51HKqbqewFcbkieZX+9TSHL6sFT0XtjDFMnNgqoFpxUSShVhxCTLQoaLDGlqjDUEXf4KAFyVBj49cB6VhBugX8ZsWXyXLF+05GfE9+9mjfX6deOS;25:sFvN26JQ3N3dF9C5Nq5hZjriq14SVb+I+1s6zIU6Yos++tQaeDBJHcyERbJA+2QSpQz9BDa1UspJFZhC42+HiPz5yIrbiyyVcgc9T4nmnJFdWdwJyppac+wK0KIVY/SswiIR71h0GCgLpC8DYfo553k4X0K6d+RSlekX4/+lgUTyoPlHR5hdA2QNruehtBE2FEDFrK9A+W056BqSQxc+7+RlaJLrv9/+LPgzfSR/JDDSKU21rJ41cSopjekA39IFwssEWwiJDnlF5RHZUW9Mo0+Tl/UQlXethLUoBoRyyOj8Umfi7b1VBYwCoAScVYmrEgoH/+GTH1K8L25NTnxC8A==;31:KO9Faitu1j2XPvcTb4K3Y8Z5+RrTptZr7i22L1locVX4M2WBhgoopGK4jvygf3cKIrg880iHb+LnIv+1LRrbmOPTOuUbJylikkrcTLTT4WT5bm/1zBjSwnvNXdp63OYhdAVx4bsqR1rHyFLeQ8Xo1ORj1okjqbSfsF/CYhjlhSw+CfS2dndfEeDPSF083GnqGO5MvCJ2FPTuTy6Q3PRUhEapwuCw6IRA/EjZxVjiCX8=
+X-Microsoft-Exchange-Diagnostics: 1;SN4PR0701MB3807;3:OIiE5O0rygKSjuqB5Y8jngEISjI4xqMzZvkr6lxCoAWmd1R9kmiyYAdxT8ig+Yl0CevaYhvlGW7FB8v/oTY2KqYJnjSYw3aPwyQ2p6PgqrcssH8PvaC2+s9hUYCNG0Wz7WHZcOpLsTlzMXiH+aDimgVu+mh1AZHeTMQNvIbP/shnCO9LfLPs81nVIqi9uIvNrrnggbvo4BTRImdUgHOnlHYlVNwadCQuUd6jgU+o33yBJN5NQOLs65oB3yhyNqCY;25:0V5vHO7B2NHUG0xXFrLY+7wEvFX1rCOOe7nL5gPLwZ6Gg1MfdTIHI0BoRkX2KooOQof6FjNBQKR4KtD9GaMo7Nxvl9ThCEesG8JLNSyYiiK34oT8rDoHgltIQn03mx5IC+FlK70ESZyYoRBXic0iV8XOh1NRZwgFcsHVaWXzAMfbYdOGKaTPnHzHk9zQHkBb1rD//C+rUR/bQiWvqBk4T24CnR4KPdDuGR/R4gnTJTMZnL+APJ7SPY1jbFAfGdwB17MrMRvECFmFFJ7OLB4TuPYgPlLR+QDxQR73CPPuUq9whItjl4EOtziVTND4Y4bMTIHwKIz/GZmercVYuI5bgQ==;31:/Ex/9yr7RUl49TTztKr22ZlX54ochaK6ixRPuWpaI8dhMYq2Bkv8GbqZaQjJ910Awq2VMRwcWWEC9rcq1WSPJ6742gEN+LG7O+LkMhQCw6cPt8DiwY/0XFn+8xlc3vZ4V9n7GTlwyezq9wgZD0BQITGcmJM4/fLveRYizo/SQhbgB9rGFrCyUyyJITEQ8qKF08HU5L53z64+3pRbGuUU/b+ywuFFBTznSATYce/TDII=
 X-MS-TrafficTypeDiagnostic: SN4PR0701MB3807:
-X-Microsoft-Exchange-Diagnostics: 1;SN4PR0701MB3807;20:LnkPT0qNn6pXf7iki54HLaJNmwfv8qwyoA1BJm/5l2cQSnBIuGpipOiiX3FNsXerPpiA5xjrNLcwMj8y2frEo+25liQ6gY/DxyWcbgQM8VGkmh5hnwbmn2bNBaVOUluoZ1kT20+J7vuUsU4noJuzPUIOz49lOS+fdawlVnknNGSfhCDnYmWR6LrIfO8pdQ0lUE5X7aA+jiucjRd0s9VhwL/5+zobhINu3mg0P9evjhTdQZs2ThPbTef+P3FxYMjPVPIaPEmykJi62J+0V0rPRpNtrHsu4Fl9NBY2ifSqDOwqT9yg+tySr0fbJ9k9oFrzld3ono9OxJNt0Y9Bohg7aiEfcg4tRLcPfZXaZsnScLibeiDQQ6+z7jPyuHIGB3xT/ZNgbU5cuKiBHYMUDFMeMANjyJzCD0lxv2I3lCvWd6K9cngrsV7mU2g6blKqTK8UT/I1qYVbGfO/pXCoQKcF7pdtv+d//VSULRuMH5txHflYT12opy1oSmg6sF8rWU27;4:5LRKaCMreFdNzidXGnvGB4p3w4pk7wTaveePUSJCVSOxnjAnTu6OyleZDjMdWVMhKOboGXvid3dJ9Hu/YKJ4GwVbPudOdzmeQ8WbkkKkLrE01JlNyz5neY8NK72Op1zz1JiAjl0BCswuNPEl64dd5pyW2o6/S9m26qH4xqaOteZeNq7M0uUHUlBl7dvYo66qXKTZsP/wCMhYE4dlifoEjfl4q6r2uALRhFGsHhUliUbRZJw9jakNDiKTbD8ctbjU
+X-Microsoft-Exchange-Diagnostics: 1;SN4PR0701MB3807;20:yaLWkp+pKExH5y/0IrGFkies6XDUkHEfNda9Zne5p7k2XnhYcXNTkYetJvqcm3mhDyXHpRqoT5Z2VHB3iUxrIWe/UTI8XdPyTSdFoATbjVwCBW05l3yUSf8cJnj7DJtxeDyudMcCm17F+jAiDAbPACTtutGLiHD+Nij81yL4CJezF30PcZtsH2z+Vo+BHZ9WWAys7Bu1RoU5tt3ejMDqBxXh5ei5IcNKxtZXnQIz9MGOKyxn5+0WoxkTzjlR9Gzw8//Fq4eVkIiHV2vaNNI163wDtnWxSxEyqzMBEzS+hcuuOPsu9kJSZOHWCWZ/HAHG8iUit/TQAPubpVEIU6S6HBgSVZs1Ot8xqcyQmQ+I7m16lQcZFDgkfxCBR6wLKQhqX2nRdTaNn7cr06oSMIg1O1RKEWoWm68tWoGRHv9cEu2l1uOB2f8Hf+LEKgRwWaFuCtMNz+6l8AOGLY7SvQYCs8SYE+yn4qfy4f3rDmTeD/8+e3f1r/mk687qkskYJ47j;4:bNKkaDDAKXNtRsxZe9caJDxCfHxOx6hJtD+jViDd/xPFhkcfgyHc+sByOB3fx5X3jRuscpW8TLHi1zTolYCnlqEsQuk+GTLCbzosNNaJlsNFkc8pC5ZKQTlWcOW58M1BNz2/kgsI/ZFkvF6TGX7ptngbWPEuqzMzdE+WNK+NxGgEAKTKieU6CphMLiiV8tC4xmNLzTB9+pl0dleg+eyel8yG10anxKkfC6Lf1DLK6S0HeSMLPv3u4qSuMBois4RD
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <SN4PR0701MB3807331536D15115A199C93B80790@SN4PR0701MB3807.namprd07.prod.outlook.com>
+X-Microsoft-Antispam-PRVS: <SN4PR0701MB38070870B6B1FACCEE3C7D1380790@SN4PR0701MB3807.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(2401047)(5005006)(8121501046)(100000703101)(100105400095)(93006095)(93001095)(3002001)(10201501046)(6041248)(20161123560025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123558100)(20161123555025)(20161123564025)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:SN4PR0701MB3807;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:SN4PR0701MB3807;
 X-Forefront-PRVS: 0444EB1997
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(346002)(376002)(189002)(199003)(76176999)(53416004)(6512007)(50986999)(189998001)(2361001)(68736007)(6116002)(5003940100001)(101416001)(3846002)(86362001)(2906002)(36756003)(53936002)(33646002)(106356001)(50226002)(2351001)(6506006)(105586002)(6666003)(50466002)(316002)(2950100002)(6916009)(16526017)(25786009)(16586007)(66066001)(47776003)(305945005)(6486002)(478600001)(97736004)(48376002)(7736002)(4326008)(81166006)(5660300001)(72206003)(69596002)(8936002)(8676002)(81156014)(450100002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN4PR0701MB3807;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(346002)(376002)(189002)(199003)(76176999)(53416004)(6512007)(50986999)(189998001)(2361001)(68736007)(6116002)(5003940100001)(101416001)(575784001)(3846002)(86362001)(2906002)(36756003)(53936002)(33646002)(106356001)(50226002)(2351001)(6506006)(105586002)(6666003)(50466002)(316002)(2950100002)(6916009)(16526017)(25786009)(16586007)(66066001)(47776003)(305945005)(6486002)(478600001)(97736004)(48376002)(7736002)(4326008)(81166006)(5660300001)(72206003)(69596002)(8936002)(8676002)(81156014)(450100002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN4PR0701MB3807;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN4PR0701MB3807;23:BDSkSR+3YvhDf97wv0SiEREupSlp2PK3I5PltET?=
- =?us-ascii?Q?Z5HcBhKIphNlL36tBd78GHxPayTdXxAK9j5ll3VolwtcKo/+pHiAC7RvHrD8?=
- =?us-ascii?Q?5FZctYCFtW9WRis/Gu8M7MHYZgWMw5TlYb+q5pzaantSTOGavfCKrc4G1JOx?=
- =?us-ascii?Q?UouoEJy+z0cNCA62fgj1HDVJvXJEQvXI73/T03mFBSXtYsxsO2J7zfVv5+LG?=
- =?us-ascii?Q?B1R2FiCo0BCbusNY/EHB0ioQPiBPHOTQW8/v630KZKrrO12oXpsr0CnzonxG?=
- =?us-ascii?Q?fbt04hZLaMHQgDjdKCr5MBmVU6czob6Pk90LvDfvK4cZQ47o1khz6nzX7lSB?=
- =?us-ascii?Q?3leKbIfRPVmx2R+aSGDZNKutZxU7pUeg5vSardiMMMrq7KdX4sEXaQQtrBez?=
- =?us-ascii?Q?ORv4u96vl6PS4yoj8HrA5D0fA4Q+5lwB2y95Hk7VvP/PC5FWrHIbfSr6NXP9?=
- =?us-ascii?Q?GA7lU/moDmtq7EdemmiuNoMqgjzyE7AjYFegciqSgjKRovftzJKeG+61z9BB?=
- =?us-ascii?Q?k0zipF9Q2U3ACHaORHWU3VtcLpEFH2XiAW6FibO4gL3rz9wRPWAPFlsDpTse?=
- =?us-ascii?Q?X2i3Ei3ZT0TNgIolRju1Sh1ml3PckJAp41uXGhL+9gUBNkYdtZkNwsgZWyq/?=
- =?us-ascii?Q?8Mv/M0uRbysYjs6C/Ediul85AdUof912KlnS2Johd3R/exHvLtJH2HFYV0S8?=
- =?us-ascii?Q?k0rHnT9+YQXBowfFQFmmXLg+LN4YPE33YPBoe7eZpxqQ16Pr7EbCm8ezzQ5p?=
- =?us-ascii?Q?uj87hdIsOYeoiHGceWPULk6Tgt6kr7tb8VSS8qSl8wTN3lQdcDI50ekcVEE6?=
- =?us-ascii?Q?QdjRtttg+QMB9DCJ9k7JgLvYZMinKQJOOHGrYPlY3Xi/5X0YQDqoHHbYSZn5?=
- =?us-ascii?Q?s+Gvx0IGPfYk9HE+pUc1yIB/LLXlBQRgxiRKEm++1OVD/l3Rx3IIqvR+Cra2?=
- =?us-ascii?Q?omUrjKi5ZRmiCJ0K8JueQlvdPPRmuSJNeWpc7+bKY8lfQpHwm6gVwiztkOZY?=
- =?us-ascii?Q?cn6XAMN5m/FLbnvK9XbJ1IKIiuUv2Bc/omcxTjCpoer580y1eLB7ZUDBAVOJ?=
- =?us-ascii?Q?LvhV5ytEijQ4wg5UFfC/QNrZ3KzbMZpd70MFqoWHeAXUQ+MO4IYzzbS/EobQ?=
- =?us-ascii?Q?rvU3c3O7JYwHm/MC87wj3ne+aAfCGT4FQJdcpWDgvctShmLiGWgUEeOh7V74?=
- =?us-ascii?Q?qrYRccElwiERbZLA=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;SN4PR0701MB3807;6:u8E3bMTqo55Pk09zXG05dWdOJ9w6EXBADbZRQ2KSrrab++5YVwVA9wIsGAd24e6ZQawBx63O1nZ81zXLsAYQPkVMA5oBD1slAuIrAwwdlXKlOvYmIvcmvX5Vbq7xTkT284WC1uYdkLeC8wqdbON2dXOhch7ISdoyaudgBZM02qoxDqd66fCgM+7z9N0Z3fE8AEddwpzbWTUF5H3zA7Z/2RZJjeEM7VxvH7tlA8cvfEfOHKEp6k8UTDk7hmvXAnlKPCjQ8Ugzt+pCQYSXOJilV0t02Qwl2PcrGPPxAYJaBP0+iOfHQ3sq+o6wiVbw6Jx5Gdt4Is0Xueiot9IRmcSyjg==;5:KI3ED0kUFfP7YcOklIWTBquxbQ28VQa51WGFyr8bvr2he9Rdxqh70uRCMd0g1o6XMjzSwATwoZiQJcCJirUcGkbFBqobeXrmrEtiEswcYgZZ0OALBhCYg/znSnmu14dd/rKze6nyMIUsffvxSHy6ZA==;24:ApZHjm49bf6We658YhO6NrBGEWqNxa+j8qJzNhZu6tu5q0ZtCsi7wUR8G8CBeoLoDQvjr3yFWNnDGUk0RuCdJv9BpaQQfDyt0isvfyA0UNk=;7:7/o2bMCwjBp80hXeSFVn9cVOBapI9PK3XYy8OfRO+uUEBrGNZVoc8JJWBev2mKGj5abSX6pFLx2SiI+OGxtfwrHOhKlC5rb6XFJKQ04JZQAOtVN+aVrEePsMRfXT3Vf0gZBPYFfzKVYUKdmWfGPGwi3++vjAhtQ55sW3WSdtXa9ehvgauKAWP6lqd7J7+xhkJk3asbbDjtwfqD9q6VxO1f+WlF5NyfqRmeRyc8Vb6Bc=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN4PR0701MB3807;23:nLO1+NJE3TuGCVgDkdcZX1Fy2znbO7EtidzHBgy?=
+ =?us-ascii?Q?gyO9aJoQZkqT7rkQh0co/0NXKV1gmD7q5tg9H7DXH4ER7ponehnTGsjNTBAs?=
+ =?us-ascii?Q?QIFt6itHBl06IrGWfsSJco4Zkaj7o+iKKksbh8tVNY9hi7Ogn2PWT2WMBzPU?=
+ =?us-ascii?Q?q6SAnocn7rg6tM0y9JCnX7AJ9uX97BeLu6H09mqjAmvZavwe3YVWqJAS2d4y?=
+ =?us-ascii?Q?QDCrameT/q9Wukngm1m6+XXQtEFKrqc6djDuFXQdeBInZf5DOb4ysidiFQED?=
+ =?us-ascii?Q?72Zpoq3SxA8fCF1AXVo6OfWs5rlvwusIr9njAfH/yeZHT4Mt6hWeGcUFaN3z?=
+ =?us-ascii?Q?2hfS8rMtJEjF+T27xir2HNRYOBEGR/YlpQD0VADS+wnaN4uCFO9GaRWxgHEy?=
+ =?us-ascii?Q?8ybyjEWoAOZFPQsZhBBGHiau8wWbCq8omXp11wl4UrGjEdI1/X9urklqpW/R?=
+ =?us-ascii?Q?pP5MeN+0h758/JQVxybJsTZAMRo6MBmP+qxNyHYBAsmNx+T9T/1sHfWuF1GF?=
+ =?us-ascii?Q?ORCxmFmMMg1Jm5/szVeUlwWAK4qzvPAnIcYup7YAqC7E7oDSRzVxzYw8wosr?=
+ =?us-ascii?Q?zd5Je2waYfYYORPl+uruqcFGO88enQ5QHQsLLwHNL0YGhaXFfplgKt5+vqs9?=
+ =?us-ascii?Q?e8LlIfcFG7W76a4MxNw2SQ7lwuv+gGO4IqPVpsAYpJg18dyEgLo1p7lq5Dlf?=
+ =?us-ascii?Q?1AiXQJvWuGBMl7dH5Ojlv2rcE2ngWUkvClfKTKezxqF5KhuDVGQ3Jv2O2v+3?=
+ =?us-ascii?Q?w9gmlfSGWatjuJzFy1dyriZIC0+DFwJQp+60LuBAzOHbKdi3oAjBueO0t4t9?=
+ =?us-ascii?Q?xg6PDEbYGKDjrHgVirthVJq0CsqdXBIo8Oc72f7qNkFDmez/tuxeFhMoZH4w?=
+ =?us-ascii?Q?FM3jXoInIoG2sFEpJfmuitxPR2VUWNsRX9HvHLk98FGLl0f1xCM+I30B1AKo?=
+ =?us-ascii?Q?yTPxZK/wJr2EoiF82OYlcRVQTfQSslGAvWQT/dK+Hd3fl523dMr58gNq4jzd?=
+ =?us-ascii?Q?tkZyh5jSpw7+phn0XZrVixSYC2x6W/RtsEODCwIbeG8VwuBebNYBukAOpcIH?=
+ =?us-ascii?Q?UwUY0+nMNV7No5oZDXixhwCEUT0Ulkrxf1geGK84yuVDE8MadAD/EHUmHtgl?=
+ =?us-ascii?Q?1wClIh6ygSWyFOig0NWqQVOYI0MDpWLuWXnSW0Q9v1tFrUxxGB4v+DU8PLJI?=
+ =?us-ascii?Q?JhN0vrLzShBpA7KA5GGHSzfVY+j0ffX5WIAgk?=
+X-Microsoft-Exchange-Diagnostics: 1;SN4PR0701MB3807;6:CcFz1M6u6r7yoeh+m+3Zfw8T+9ZrfV3w/0t1LhgS5FvCjiLDfQ0PcgGnqsfCNlstFTJ1JC+ejcSBOg7sfd/uRmx0zNnwQ6IkgOqBA/F0GddsoqpN4E2lc/mlGoNUzExGiVnNxffW+RiN+Jjj1ZtJkTwlZVyuYeoW5dDhg3XKomkr657/rdSUVwbQjOSlErANt3KFSn3Arv0qsGdyAUREIw8POzRwKPqWZbwZtPNfq24c0JmMGlf/MygQrv280ghVO9kztJXoqpxue3K/MFj4kbD0r0BOB6yYDJPoTbK6V8oyOaMlaKUYOjC/+KaE2yQzJVzXerVMnz+GRSE1jepkmA==;5:/bWx1OB0GhvU+LZ1xzSz8TELHDkpaXHcR0/wBtt6eJXKBvDI4SlBv7Frx/bGq9BlLIP7mE4Vpi2WmPi8eV7YWRflVaYaBGS+Lw1IdfXYNhWHKgVU/PBbfLCTOFu/Zx6GNXPJO+jSoqmtmtg/znO8YA==;24:y1xnTXXaeL/02zMVBJ7WUwEnSJq7xZGrU5XdE5MDnjSK85gkQVUn65aYmZEOfieagvS0n1bgJI1SOguHVmqA2Hk4rtrInJQgIV/1aNqYv3E=;7:7LuTIVm35fogtY5XF3xi+i47PRndtRLlkME8bSDJ8Bn76H38nS/7I3SQriXNnGz6AHcr5z9VYRFyM84U5PXitLjORpXt+BcvmTpmO7/aiCfEgNS4r4yHUy1Wx6hzQOxxnU6E4AbBEJAhaGuyi387nx1SYRiMf2BC40pwqFhwxVbQCTS7prienA2hCZLLWgNj4C7o5yFN9iJjZp0Gd5cf5ljAuXaHRH1jdt8dOx2vMLg=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2017 17:38:58.3394 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2017 17:38:59.5426 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR0701MB3807
@@ -77,7 +77,7 @@ Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60187
+X-archive-position: 60188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -94,73 +94,198 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+From: "Steven J. Hill" <Steven.Hill@cavium.com>
 
-In systems where the CPU id space is sparse, this allows a smaller
-NR_CPUS to be chosen, thus keeping internal data structures smaller.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Carlos Munoz <cmunoz@caviumnetworks.com>
+Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+Acked-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/Kconfig           | 11 ++++++++++-
- arch/mips/include/asm/smp.h |  2 +-
- arch/mips/kernel/smp.c      |  2 +-
- 3 files changed, 12 insertions(+), 3 deletions(-)
+ arch/mips/cavium-octeon/executive/cvmx-helper.c |  2 +-
+ arch/mips/cavium-octeon/executive/cvmx-spi.c    | 10 +++++-----
+ arch/mips/include/asm/octeon/cvmx-fpa.h         |  4 +++-
+ arch/mips/include/asm/octeon/cvmx.h             | 15 ++-------------
+ arch/mips/pci/pcie-octeon.c                     | 12 ++++++------
+ 5 files changed, 17 insertions(+), 26 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index cb7fcc4..da74db1 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -915,7 +915,8 @@ config CAVIUM_OCTEON_SOC
- 	select USE_OF
- 	select ARCH_SPARSEMEM_ENABLE
- 	select SYS_SUPPORTS_SMP
--	select NR_CPUS_DEFAULT_16
-+	select NR_CPUS_DEFAULT_64
-+	select MIPS_NR_CPU_NR_MAP_1024
- 	select BUILTIN_DTB
- 	select MTD_COMPLEX_MAPPINGS
- 	select SYS_SUPPORTS_RELOCATABLE
-@@ -2725,6 +2726,14 @@ config NR_CPUS
- config MIPS_PERF_SHARED_TC_COUNTERS
- 	bool
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+index f24be0b..75108ec 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -862,7 +862,7 @@ int __cvmx_helper_errata_fix_ipd_ptr_alignment(void)
+ 	 */
+ 	cvmx_write_csr(CVMX_ASXX_RX_PRT_EN(INTERFACE(FIX_IPD_OUTPORT)), 0);
  
-+config MIPS_NR_CPU_NR_MAP_1024
-+	bool
+-	cvmx_wait(100000000ull);
++	__delay(100000000ull);
+ 
+ 	for (retry_loop_cnt = 0; retry_loop_cnt < 10; retry_loop_cnt++) {
+ 		retry_cnt = 100000;
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-spi.c b/arch/mips/cavium-octeon/executive/cvmx-spi.c
+index 459e3b1..f51957a 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-spi.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-spi.c
+@@ -215,7 +215,7 @@ int cvmx_spi_reset_cb(int interface, cvmx_spi_mode_t mode)
+ 	spxx_clk_ctl.u64 = 0;
+ 	spxx_clk_ctl.s.runbist = 1;
+ 	cvmx_write_csr(CVMX_SPXX_CLK_CTL(interface), spxx_clk_ctl.u64);
+-	cvmx_wait(10 * MS);
++	__delay(10 * MS);
+ 	spxx_bist_stat.u64 = cvmx_read_csr(CVMX_SPXX_BIST_STAT(interface));
+ 	if (spxx_bist_stat.s.stat0)
+ 		cvmx_dprintf
+@@ -265,14 +265,14 @@ int cvmx_spi_reset_cb(int interface, cvmx_spi_mode_t mode)
+ 	spxx_clk_ctl.s.rcvtrn = 0;
+ 	spxx_clk_ctl.s.srxdlck = 0;
+ 	cvmx_write_csr(CVMX_SPXX_CLK_CTL(interface), spxx_clk_ctl.u64);
+-	cvmx_wait(100 * MS);
++	__delay(100 * MS);
+ 
+ 	/* Reset SRX0 DLL */
+ 	spxx_clk_ctl.s.srxdlck = 1;
+ 	cvmx_write_csr(CVMX_SPXX_CLK_CTL(interface), spxx_clk_ctl.u64);
+ 
+ 	/* Waiting for Inf0 Spi4 RX DLL to lock */
+-	cvmx_wait(100 * MS);
++	__delay(100 * MS);
+ 
+ 	/* Enable dynamic alignment */
+ 	spxx_trn4_ctl.s.trntest = 0;
+@@ -527,7 +527,7 @@ int cvmx_spi_training_cb(int interface, cvmx_spi_mode_t mode, int timeout)
+ 	spxx_clk_ctl.s.rcvtrn = 1;
+ 	spxx_clk_ctl.s.srxdlck = 1;
+ 	cvmx_write_csr(CVMX_SPXX_CLK_CTL(interface), spxx_clk_ctl.u64);
+-	cvmx_wait(1000 * MS);
++	__delay(1000 * MS);
+ 
+ 	/* SRX0 clear the boot bit */
+ 	spxx_trn4_ctl.u64 = cvmx_read_csr(CVMX_SPXX_TRN4_CTL(interface));
+@@ -536,7 +536,7 @@ int cvmx_spi_training_cb(int interface, cvmx_spi_mode_t mode, int timeout)
+ 
+ 	/* Wait for the training sequence to complete */
+ 	cvmx_dprintf("SPI%d: Waiting for training\n", interface);
+-	cvmx_wait(1000 * MS);
++	__delay(1000 * MS);
+ 	/* Wait a really long time here */
+ 	timeout_time = cvmx_get_cycle() + 1000ull * MS * 600;
+ 	/*
+diff --git a/arch/mips/include/asm/octeon/cvmx-fpa.h b/arch/mips/include/asm/octeon/cvmx-fpa.h
+index c00501d..29ae636 100644
+--- a/arch/mips/include/asm/octeon/cvmx-fpa.h
++++ b/arch/mips/include/asm/octeon/cvmx-fpa.h
+@@ -36,6 +36,8 @@
+ #ifndef __CVMX_FPA_H__
+ #define __CVMX_FPA_H__
+ 
++#include <linux/delay.h>
 +
-+config MIPS_NR_CPU_NR_MAP
-+	int
-+	default 1024 if MIPS_NR_CPU_NR_MAP_1024
-+	default NR_CPUS if !MIPS_NR_CPU_NR_MAP_1024
-+
- #
- # Timer Interrupt Frequency Configuration
- #
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 9e494f8..88ebd83 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -29,7 +29,7 @@ extern cpumask_t cpu_foreign_map[];
+ #include <asm/octeon/cvmx-address.h>
+ #include <asm/octeon/cvmx-fpa-defs.h>
  
- /* Map from cpu id to sequential logical cpu number.  This will only
-    not be idempotent when cpus failed to come on-line.	*/
--extern int __cpu_number_map[NR_CPUS];
-+extern int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];
- #define cpu_number_map(cpu)  __cpu_number_map[cpu]
+@@ -165,7 +167,7 @@ static inline void cvmx_fpa_enable(void)
+ 		}
  
- /* The reverse map from sequential logical cpu number to cpu id.  */
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index bbe19b6..5576888 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -48,7 +48,7 @@
- #include <asm/setup.h>
- #include <asm/maar.h>
+ 		/* Enforce a 10 cycle delay between config and enable */
+-		cvmx_wait(10);
++		__delay(10);
+ 	}
  
--int __cpu_number_map[NR_CPUS];		/* Map physical to logical */
-+int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];   /* Map physical to logical */
- EXPORT_SYMBOL(__cpu_number_map);
+ 	/* FIXME: CVMX_FPA_CTL_STATUS read is unmodelled */
+diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
+index 205ab2c..25854abc 100644
+--- a/arch/mips/include/asm/octeon/cvmx.h
++++ b/arch/mips/include/asm/octeon/cvmx.h
+@@ -30,6 +30,7 @@
  
- int __cpu_logical_map[NR_CPUS];		/* Map logical to physical */
+ #include <linux/kernel.h>
+ #include <linux/string.h>
++#include <linux/delay.h>
+ 
+ enum cvmx_mips_space {
+ 	CVMX_MIPS_SPACE_XKSEG = 3LL,
+@@ -429,18 +430,6 @@ static inline uint64_t cvmx_get_cycle(void)
+ }
+ 
+ /**
+- * Wait for the specified number of cycle
+- *
+- */
+-static inline void cvmx_wait(uint64_t cycles)
+-{
+-	uint64_t done = cvmx_get_cycle() + cycles;
+-
+-	while (cvmx_get_cycle() < done)
+-		; /* Spin */
+-}
+-
+-/**
+  * Reads a chip global cycle counter.  This counts CPU cycles since
+  * chip reset.	The counter is 64 bit.
+  * This register does not exist on CN38XX pass 1 silicion
+@@ -481,7 +470,7 @@ static inline uint64_t cvmx_get_cycle_global(void)
+ 				result = -1;				\
+ 				break;					\
+ 			} else						\
+-				cvmx_wait(100);				\
++				__delay(100);				\
+ 		}							\
+ 	} while (0);							\
+ 	result;								\
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+index fd28874..87ba86b 100644
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -639,7 +639,7 @@ static int __cvmx_pcie_rc_initialize_link_gen1(int pcie_port)
+ 			cvmx_dprintf("PCIe: Port %d link timeout\n", pcie_port);
+ 			return -1;
+ 		}
+-		cvmx_wait(10000);
++		__delay(10000);
+ 		pciercx_cfg032.u32 = cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
+ 	} while (pciercx_cfg032.s.dlla == 0);
+ 
+@@ -821,7 +821,7 @@ static int __cvmx_pcie_rc_initialize_gen1(int pcie_port)
+ 	 * don't poll PESCX_CTL_STATUS2[PCIERST], but simply wait a
+ 	 * fixed number of cycles.
+ 	 */
+-	cvmx_wait(400000);
++	__delay(400000);
+ 
+ 	/*
+ 	 * PESCX_BIST_STATUS2[PCLK_RUN] was missing on pass 1 of
+@@ -1018,7 +1018,7 @@ static int __cvmx_pcie_rc_initialize_gen1(int pcie_port)
+ 		i = in_p_offset;
+ 		while (i--) {
+ 			cvmx_write64_uint32(write_address, 0);
+-			cvmx_wait(10000);
++			__delay(10000);
+ 		}
+ 
+ 		/*
+@@ -1034,7 +1034,7 @@ static int __cvmx_pcie_rc_initialize_gen1(int pcie_port)
+ 			dbg_data.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_DBG_DATA);
+ 			old_in_fif_p_count = dbg_data.s.data & 0xff;
+ 			cvmx_write64_uint32(write_address, 0);
+-			cvmx_wait(10000);
++			__delay(10000);
+ 			dbg_data.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_DBG_DATA);
+ 			in_fif_p_count = dbg_data.s.data & 0xff;
+ 		} while (in_fif_p_count != ((old_in_fif_p_count+1) & 0xff));
+@@ -1053,7 +1053,7 @@ static int __cvmx_pcie_rc_initialize_gen1(int pcie_port)
+ 			cvmx_dprintf("PCIe: Port %d aligning TLP counters as workaround to maintain ordering\n", pcie_port);
+ 			while (in_fif_p_count != 0) {
+ 				cvmx_write64_uint32(write_address, 0);
+-				cvmx_wait(10000);
++				__delay(10000);
+ 				in_fif_p_count = (in_fif_p_count + 1) & 0xff;
+ 			}
+ 			/*
+@@ -1105,7 +1105,7 @@ static int __cvmx_pcie_rc_initialize_link_gen2(int pcie_port)
+ 	do {
+ 		if (cvmx_get_cycle() - start_cycle >  octeon_get_clock_rate())
+ 			return -1;
+-		cvmx_wait(10000);
++		__delay(10000);
+ 		pciercx_cfg032.u32 = cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
+ 	} while ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1));
+ 
 -- 
 2.1.4

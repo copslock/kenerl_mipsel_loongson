@@ -1,65 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2017 20:22:58 +0200 (CEST)
-Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:38236
-        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992378AbdI1SWtfp3tF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Sep 2017 20:22:49 +0200
-Received: by mail-qk0-x243.google.com with SMTP id q8so1542445qkl.5
-        for <linux-mips@linux-mips.org>; Thu, 28 Sep 2017 11:22:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=3TeW4X2HTRDnQB5hBNv4azwqnfAFcT5TcKTM8jEsWXY=;
-        b=ehJd6sJFZtDpa0ZNwNUZIJbynZSWPyrXjOg+GdxlL7pte1iwmcFLV/cSSdu6zhvPBj
-         ZrzOks0coFVeqaFmBoMiHBDAvisKXQcST9KQqgBD21QtEJzFb8ZQtaDS1h4dJS1d6d4A
-         lUdf99+vq5Cci7HbNeTSQLzpmblJ+fPOPAMJwbdKXWwWx9pGwZiFSe97gCHl7iCdHoSg
-         hsuG3lhMQUFbH3gPN1cwF98+8O1E79a6wvan6J5GedG8iK+6k8RJmyBk4UilcjZZj3WF
-         M34u18eNT2bpOeztC8KJ7rANXshmnUlWrTmePmP7axph27LtZiFwhHQ5GsKEYj0G3FmX
-         LZQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=3TeW4X2HTRDnQB5hBNv4azwqnfAFcT5TcKTM8jEsWXY=;
-        b=rTIqmEWgN2BuFenNHufvJBc+3HkFlBuvZIxLpC8cKj+ZijdgOSOsQeJcs1f3J8qfFg
-         hDFQegEmvNHodTKnAXvVVxEL9XdI3ROEaZ3pBTtwmwos3tYn+k36phjIUAnS/0oxl9/C
-         TVL0Qspt73s89MKJC1+uI5MDBRZBGcYqS07BWCSFQ2+DxL+971r828qxDuK8uVU1KCi2
-         PsszXt5OYV/JUKkPFJL1AlULNx4WAj/G+QMSGSrlTH4mCxdWS2uV4MZbbG0Jkq4Jlnnz
-         CtZQkVZW57p4yYLrE4RHeXhP0FFLuN17bx4W+TIewS2hMxFSf5P+I4Iroxc5IGIZllLT
-         Ke2w==
-X-Gm-Message-State: AHPjjUhsTJuWMyHyJE0UG5PNwAYkEvZuKYsXAIzHmJREZ0ESS+Tpvucw
-        mn9/JUgpnXx6MRG+VGXj7lI=
-X-Google-Smtp-Source: AOwi7QBmKNZBPGUY+Y/blAtuBz7m0D7xCznoW04x30VuY8hFK0sp1JnMfaIOzeXXUujyMDU8TsjxtA==
-X-Received: by 10.55.217.18 with SMTP id u18mr7793085qki.53.1506622963289;
-        Thu, 28 Sep 2017 11:22:43 -0700 (PDT)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id r190sm1420114qke.9.2017.09.28.11.22.41
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 28 Sep 2017 11:22:42 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: BMIPS: Do not mask IPIs during suspend
-To:     justinpopo6@gmail.com, linux-mips@linux-mips.org
-Cc:     f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com
-References: <20170928001515.22917-1-justinpopo6@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <9b61aae3-53a3-8e96-e00e-76117b19f079@gmail.com>
-Date:   Thu, 28 Sep 2017 11:22:38 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2017 17:27:00 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16969 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992364AbdI2P0wXzfsi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2017 17:26:52 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id AF35B27A6023;
+        Fri, 29 Sep 2017 16:26:41 +0100 (IST)
+Received: from [10.20.78.110] (10.20.78.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.361.1; Fri, 29 Sep 2017
+ 16:26:44 +0100
+Date:   Fri, 29 Sep 2017 16:26:31 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Use SLL by 0 for 32-bit truncation in
+ `__read_64bit_c0_split'
+Message-ID: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <20170928001515.22917-1-justinpopo6@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.110]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60198
+X-archive-position: 60199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,52 +42,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/27/2017 05:15 PM, justinpopo6@gmail.com wrote:
-> From: Justin Chen <justinpopo6@gmail.com>
-> 
-> Commit a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs") fixes
-> an issue where disable_irq did not actually disable the irq. The
-> bug caused our IPIs to not be disabled, which actually is the correct
-> behavior.
-> 
-> With the addition of Commit a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq
-> on CPU IRQs"), the IPIs were getting disabled going into suspend,
-> thus schedule_ipi() was not being called. This caused deadlocks where
-> schedulable task were not being scheduled and other cpus were waiting
-> for them to do something.
-> 
-> Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called
-> on the IPIs during suspend.
-> 
-> Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-> Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
+Optimize `__read_64bit_c0_split' and reduce the instruction count by 1, 
+observing that a DSLL/DSRA pair by 32, is equivalent to SLL by 0, which 
+architecturally truncates the value requested to 32 bits on 64-bit MIPS 
+hardware regardless of whether the input operand is or is not a properly 
+sign-extended 32-bit value.
 
-This looks good to me, not sure if this is the recommended way to solve
-this bug, but this definitively works.
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+---
+ Tested by compilation only to verify syntax correctnes as I do not know 
+if this execution path is actually used by any configuration (suggestions 
+welcome).  I believe it to be technically correct though, being 
+sufficiently straightforward to verify by proofreading, and an obvious 
+improvement.
 
-> ---
->  arch/mips/kernel/smp-bmips.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-> index 1b070a76fcdd..3b900a04d724 100644
-> --- a/arch/mips/kernel/smp-bmips.c
-> +++ b/arch/mips/kernel/smp-bmips.c
-> @@ -168,10 +168,10 @@ static void bmips_prepare_cpus(unsigned int max_cpus)
->  		return;
->  	}
->  
-> -	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
-> +	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt, IRQF_PERCPU | IRQF_NO_SUSPEND,
->  			"smp_ipi0", NULL))
->  		panic("Can't request IPI0 interrupt");
-> -	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
-> +	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt, IRQF_PERCPU | IRQF_NO_SUSPEND,
->  			"smp_ipi1", NULL))
->  		panic("Can't request IPI1 interrupt");
->  }
-> 
+ Therefore, please apply.
 
+ NB if this turns out indeed used, then we might have to do something 
+about DMFC0 hazard avoidance for the sake of MIPS III support, and also
+choose to use an MFC0/MFHC0 instruction pair instead on MIPS64r5+.
 
--- 
-Florian
+  Maciej
+
+---
+ arch/mips/include/asm/mipsregs.h |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+linux-mips-read-64bit-c0-split-sll.diff
+Index: linux-sfr-test/arch/mips/include/asm/mipsregs.h
+===================================================================
+--- linux-sfr-test.orig/arch/mips/include/asm/mipsregs.h	2017-07-08 15:32:02.000000000 +0100
++++ linux-sfr-test/arch/mips/include/asm/mipsregs.h	2017-09-29 01:02:01.390974000 +0100
+@@ -1344,19 +1344,17 @@ do {									\
+ 	if (sel == 0)							\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+-			"dmfc0\t%M0, " #source "\n\t"			\
+-			"dsll\t%L0, %M0, 32\n\t"			\
+-			"dsra\t%M0, %M0, 32\n\t"			\
+-			"dsra\t%L0, %L0, 32\n\t"			\
++			"dmfc0\t%L0, " #source "\n\t"			\
++			"dsra\t%M0, %L0, 32\n\t"			\
++			"sll\t%L0, %L0, 0\n\t"				\
+ 			".set\tmips0"					\
+ 			: "=r" (__val));				\
+ 	else								\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+-			"dmfc0\t%M0, " #source ", " #sel "\n\t"		\
+-			"dsll\t%L0, %M0, 32\n\t"			\
+-			"dsra\t%M0, %M0, 32\n\t"			\
+-			"dsra\t%L0, %L0, 32\n\t"			\
++			"dmfc0\t%L0, " #source ", " #sel "\n\t"		\
++			"dsra\t%M0, %L0, 32\n\t"			\
++			"sll\t%L0, %L0, 0\n\t"				\
+ 			".set\tmips0"					\
+ 			: "=r" (__val));				\
+ 	local_irq_restore(__flags);					\

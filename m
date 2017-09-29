@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2017 21:59:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58695 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2017 22:54:34 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30208 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990474AbdI2T7ejJ0vf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2017 21:59:34 +0200
+        with ESMTP id S23990474AbdI2Uy1aRz2k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2017 22:54:27 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 32734DEC9422F;
-        Fri, 29 Sep 2017 20:59:22 +0100 (IST)
+        by Forcepoint Email with ESMTPS id E15755BC46F93;
+        Fri, 29 Sep 2017 21:54:16 +0100 (IST)
 Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Fri, 29 Sep
- 2017 20:59:26 +0100
-Date:   Fri, 29 Sep 2017 20:59:26 +0100
+ 2017 21:54:21 +0100
+Date:   Fri, 29 Sep 2017 21:54:20 +0100
 From:   James Hogan <james.hogan@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Use SLL by 0 for 32-bit truncation in
- `__read_64bit_c0_split'
-Message-ID: <20170929195925.GF17077@jhogan-linux.le.imgtec.org>
-References: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
+To:     "Steven J. Hill" <steven.hill@cavium.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+Subject: Re: [PATCH v2 01/12] MIPS: Add nudges to writes for bit unlocks.
+Message-ID: <20170929205343.GA24591@jhogan-linux.le.imgtec.org>
+References: <1506620053-2557-1-git-send-email-steven.hill@cavium.com>
+ <1506620053-2557-2-git-send-email-steven.hill@cavium.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="1hVIwB4NpNcOOTEe"
+        protocol="application/pgp-signature"; boundary="b5gNqxB1S1yM7hjW"
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
+In-Reply-To: <1506620053-2557-2-git-send-email-steven.hill@cavium.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60202
+X-archive-position: 60203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,120 +45,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---1hVIwB4NpNcOOTEe
+--b5gNqxB1S1yM7hjW
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 29, 2017 at 04:26:31PM +0100, Maciej W. Rozycki wrote:
-> Optimize `__read_64bit_c0_split' and reduce the instruction count by 1,=
-=20
-> observing that a DSLL/DSRA pair by 32, is equivalent to SLL by 0, which=
-=20
-> architecturally truncates the value requested to 32 bits on 64-bit MIPS=
-=20
-> hardware regardless of whether the input operand is or is not a properly=
-=20
-> sign-extended 32-bit value.
+Hi Steven,
+
+On Thu, Sep 28, 2017 at 12:34:02PM -0500, Steven J. Hill wrote:
+> From: Chad Reese <kreese@caviumnetworks.com>
 >=20
-> Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-> ---
->  Tested by compilation only to verify syntax correctnes as I do not know=
-=20
-> if this execution path is actually used by any configuration (suggestions=
-=20
-> welcome).  I believe it to be technically correct though, being=20
-> sufficiently straightforward to verify by proofreading, and an obvious=20
-> improvement.
-
-Agreed, I did something similar locally too but didn't bother to submit
-it :).
-
+> Flushing the writes lets other CPUs waiting for the lock to get it
+> sooner.
 >=20
->  Therefore, please apply.
->=20
->  NB if this turns out indeed used, then we might have to do something=20
-> about DMFC0 hazard avoidance for the sake of MIPS III support, and also
-> choose to use an MFC0/MFHC0 instruction pair instead on MIPS64r5+.
+> Signed-off-by: Chad Reese <kreese@caviumnetworks.com>
+> Signed-off-by: David Daney <david.daney@cavium.com>
 
-This would have to depend on MVH bit, but in practice I suspect it isn't
-worthwhile doing it here instead of in a separate macro to use depending
-on the register.
-
-Using MVH would have the advantage of avoiding the potential window when
-a 32-bit EJTAG or Cache error handler potentially canonicalises register
-state I suppose.
-
-That's another advantage of this patch actually, it reduces the size of
-that window to a single instruction.
-
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+I think this needs your SOB too.
 
 Cheers
 James
 
->=20
->   Maciej
->=20
 > ---
->  arch/mips/include/asm/mipsregs.h |   14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
+>  arch/mips/include/asm/bitops.h | 1 +
+>  1 file changed, 1 insertion(+)
 >=20
-> linux-mips-read-64bit-c0-split-sll.diff
-> Index: linux-sfr-test/arch/mips/include/asm/mipsregs.h
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-sfr-test.orig/arch/mips/include/asm/mipsregs.h	2017-07-08 15:32=
-:02.000000000 +0100
-> +++ linux-sfr-test/arch/mips/include/asm/mipsregs.h	2017-09-29 01:02:01.3=
-90974000 +0100
-> @@ -1344,19 +1344,17 @@ do {									\
->  	if (sel =3D=3D 0)							\
->  		__asm__ __volatile__(					\
->  			".set\tmips64\n\t"				\
-> -			"dmfc0\t%M0, " #source "\n\t"			\
-> -			"dsll\t%L0, %M0, 32\n\t"			\
-> -			"dsra\t%M0, %M0, 32\n\t"			\
-> -			"dsra\t%L0, %L0, 32\n\t"			\
-> +			"dmfc0\t%L0, " #source "\n\t"			\
-> +			"dsra\t%M0, %L0, 32\n\t"			\
-> +			"sll\t%L0, %L0, 0\n\t"				\
->  			".set\tmips0"					\
->  			: "=3Dr" (__val));				\
->  	else								\
->  		__asm__ __volatile__(					\
->  			".set\tmips64\n\t"				\
-> -			"dmfc0\t%M0, " #source ", " #sel "\n\t"		\
-> -			"dsll\t%L0, %M0, 32\n\t"			\
-> -			"dsra\t%M0, %M0, 32\n\t"			\
-> -			"dsra\t%L0, %L0, 32\n\t"			\
-> +			"dmfc0\t%L0, " #source ", " #sel "\n\t"		\
-> +			"dsra\t%M0, %L0, 32\n\t"			\
-> +			"sll\t%L0, %L0, 0\n\t"				\
->  			".set\tmips0"					\
->  			: "=3Dr" (__val));				\
->  	local_irq_restore(__flags);					\
+> diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitop=
+s.h
+> index fa57cef..da1b871 100644
+> --- a/arch/mips/include/asm/bitops.h
+> +++ b/arch/mips/include/asm/bitops.h
+> @@ -456,6 +456,7 @@ static inline void __clear_bit_unlock(unsigned long n=
+r, volatile unsigned long *
+>  {
+>  	smp_mb__before_llsc();
+>  	__clear_bit(nr, addr);
+> +	nudge_writes();
+>  }
+> =20
+>  /*
+> --=20
+> 2.1.4
+>=20
+>=20
 
---1hVIwB4NpNcOOTEe
+--b5gNqxB1S1yM7hjW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlnOphQACgkQbAtpk944
-dnoJ/w//Ss5jJD7GR/mU6OCOmZXI6XAShsm7SqkirD3ew20oAqx3cUJ2Fd+tGx3G
-X8pgTL5MiwRvQ5faxtcB3+Paiq/HnSwTLEyvDNJHR9VSfZZcdAHpwsb82+efSIK7
-MUzteh90XBKIV/spW4jSyh2SUmPtMjcrTan1Voq3xxBRrTKbyLodBwszXkd8J/sf
-PT0qBZk/Yc+kxQ1RqRLKvzHqnfMw5P1acnlaZ/+ARWNXoWtjSR3MlPWZDiC/SRlZ
-kl+BGIfEOYFEKFmDfLO5b2iPRx2jIHYAbQgbWBPYpdnlr9DssYJP46k1I6sFJxqB
-VhOxiRYZJwIvUbSav8eh4Q0JM9ln/HUU89a0MhcYUIWIhJhgEWGZN+3Nr36JOA1C
-MuR1yaQip+29TkVXO3fZLEA53lzAV1BuFLAU2wAM+aPu4yQ6G33mN5bHfHLOzmFz
-VQHJDAoQkDqevJMPH0FYuChxccN4dppyKOzvs2fm2tPiOdjnA06PnykmkHHnk0Vx
-d8df6hMOzGVJzebV/110m66MIfm6295UGSy6pRKZod76pkl0l0KtNv/R3RNF7qvk
-LzvWOgmp0xaanE/V/HglQNOvkwqxLelfEb0zaik85YQvuq/BzspKytZbdgbYead3
-ROJ2Y3lVjA8ujYtQ5liOA8ZU9oJU5/yZgG8w/nHtZyywaZmjbjE=
-=H9IQ
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlnOsvwACgkQbAtpk944
+dnqjohAAuC82aXZaQa88hYNxtQBFaJlZzECCYxJ/ewN/2eGnGgk47mSIdNvR5CRj
+eVq53OZgrLKG+feIfv7oDZV5eg4g2foK+fnIYQA9yUKwtbLbRSPms56T3/u8z9Ye
+knXP5PYs+xx+Yde76hydNk79CDML5HF7hFBhFfMn+ZKaficz62yOymkIekT5y1yh
+jqx+strOEGQUJdK8w+dZgW3cohmT48V/wNSj6olJNzkWH8+JpifU0DSxrsY/x+kn
+PBbkX15NH6qMtyqcTMlmRnx45Vc+Bir7LD3ScZrjl+iuHw2WKXWV/x9uxxHyrGPv
+j7r27F7ol8EQ+psLbSO7qfM1wcnPek9dZU5ElMWlpUHeAAf9agp2WPfb0rPBSKVr
+15s1pbGwmqV/KNrYdnWNPWQ3Oeg5oSlq/mOHVykWOJQEbRQkl+XK7xF6Ec4cF2yP
+LouOAVaozgZx2QVXoBS+kJH9Zk8vjRQzxj0dNyhkUqSdJXrAdJ/OfhzENkICVrha
+u3zJKeFSB5VQQcIBK87LHGRF3EeGhVzWecT7I+wDkBjzCATwIJofJUyG3lRJ5VDu
+vnGbcUbt92KhalqTcoDLsG/Ukngk5IkwLz+vzd8+QsNqDQ7ye90u2JyxAD1wH04n
+K4H7MZ7JL3TWKyo7spz/vhC3CXySXbkRi8AaCpclWiLALgJtRiI=
+=hOfC
 -----END PGP SIGNATURE-----
 
---1hVIwB4NpNcOOTEe--
+--b5gNqxB1S1yM7hjW--

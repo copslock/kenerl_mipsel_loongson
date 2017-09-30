@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Sep 2017 08:57:16 +0200 (CEST)
-Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:57318 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Sep 2017 20:26:32 +0200 (CEST)
+Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:2039 "EHLO
         ste-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992127AbdI3G5J2j05R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Sep 2017 08:57:09 +0200
+        by eddie.linux-mips.org with ESMTP id S23990495AbdI3S0Zj5OAf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Sep 2017 20:26:25 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 397B63F64F;
-        Sat, 30 Sep 2017 08:57:06 +0200 (CEST)
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 1F6C93F41D;
+        Sat, 30 Sep 2017 20:26:15 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
         by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zq1vWDoWqaZg; Sat, 30 Sep 2017 08:57:01 +0200 (CEST)
+        with ESMTP id kgdWC-qf4-Em; Sat, 30 Sep 2017 20:26:12 +0200 (CEST)
 Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
         (Authenticated sender: mb547485)
-        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id A74573F3AA;
-        Sat, 30 Sep 2017 08:56:56 +0200 (CEST)
-Date:   Sat, 30 Sep 2017 08:56:55 +0200
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id B91C13F43C;
+        Sat, 30 Sep 2017 20:26:09 +0200 (CEST)
+Date:   Sat, 30 Sep 2017 20:26:08 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     "Maciej W. Rozycki" <macro@imgtec.com>
 Cc:     linux-mips@linux-mips.org
 Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-Message-ID: <20170930065654.GA7714@localhost.localdomain>
+Message-ID: <20170930182608.GB7714@localhost.localdomain>
 References: <20170911151737.GA2265@localhost.localdomain>
  <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
  <20170916133423.GB32582@localhost.localdomain>
  <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
- <20170918192428.GA391@localhost.localdomain>
- <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk>
- <20170920145440.GB9255@localhost.localdomain>
- <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
- <20170927172107.GB2631@localhost.localdomain>
- <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+ <20170920140715.GA9255@localhost.localdomain>
+ <alpine.DEB.2.00.1709201604400.16752@tp.orcam.me.uk>
+ <20170922163753.GA2415@localhost.localdomain>
+ <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+In-Reply-To: <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
 User-Agent: Mutt/1.8.3 (2017-05-23)
 Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60209
+X-archive-position: 60210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,59 +56,98 @@ X-list: linux-mips
 
 Hi Maciej,
 
-> > Hmm... What about a 32-bit kernel and bits 63:32 sign-extended by kernel
-> > instructions? LONG_{L,S} saves/restores 31:0 using LW/SW thus 63:32 will
-> > be lost in exceptions?
+> > I suspect 63:32 are the critical bits of the upper 96 bits since SD/LD
+> > is sufficient. Summery of observations thus far: save/restore works with
+> > SQ/LQ and SD/LD, but not SW/LW, in a 32-bit kernel ceteris paribus.
 > 
->  You mean for use with MMI instructions?  Offhand I think we have two 
-> options:
-> 
-> 1. Declaring the lack of support for MMI instructions in o32 software.
-> 
-> 2. Switching to using LD/SD in <asm/stackframe.h> and preserving statics 
->    across syscalls with SAVE_STATIC/RESTORE_STATIC at the cost of
->    performance loss.
-> 
-> I'm open for a better suggestion though.  I propose that we start with #1, 
-> as the zero performance cost and zero effort solution.
+>  This does look intriguing.
 
-Sure. I would eventually like to explore solutions to efficiently support
-the full register range in applications with both 32- and 64-bit kernels.
+I believe the simple answer to this mystery is that addresses are not
+supposed to be sign-extended, given the look of $31 below. What are
+your thoughts on this?
 
-> > BusyBox at
-> > 
-> > https://packages.debian.org/stretch/mipsel/busybox-static/download
-> > 
-> > seemed appropriate but yields "illegal instruction" which I suppose is
-> > interesting in itself. My MIPS toolchain is somewhat limited at the moment
-> > so I will need to get back on this.
-> 
->  Getting a core dump and using it to figure out which specific instruction 
-> caused the exception would be interesting.
+To delay and recover from the trap I chose printk_delay_msec as an
+(arbitrary) trigger with "echo 1 >/proc/sys/kernel/printk_delay".
 
-It's 72308802 as in "mul s1,s1,s0" which I believe is the DSP enhancement
-multiplication with register write in the MIPS32 architecture. The R5900
-doesn't have those DSP instructions, as far as I can tell.
+.macro check_reg reg
+	.extern	printk_delay_msec
+	sll	$27, \reg, 0
+	beq	$27, \reg, 1f
+	nop
+	lw	$27, printk_delay_msec
+	beq	$27, $0, 1f
+	nop
+	.set	at=$27
+	sw	$0, printk_delay_msec
+	.set	noat
+	break	12
+	nop
+1:
+.endm
 
-For this reason the R5900 patch modifies the __{save,restore}_dsp macros,
-mips_dsp_state::dspcontrol, DSP_INIT, sigcontext32::sc_dsp, etc. I've seen
-the cpu_has_dsp macro too, but haven't looked at the details of this yet.
+Break instruction in kernel code[#1]:
+CPU: 0 PID: 94 Comm: echo Not tainted 4.12.0+ #510
+task: 81fb5500 task.stack: 81f70000
+$ 0   :
+ 0000000000000000
+ 0000000000000020
+ ffffffff8100a874
+ ffffffff800beeb0
+$ 4   :
+ ffffffffffffffff
+ 000000000fb60000
+ 000000000082cb49
+ 0000000000000001
+$ 8   :
+ 0000000000000875
+ ffffffff80260684
+ ffffffff80539f0c
+ ffffffffffffff80
+$12   :
+ 000000007f9582e0
+ 0000000077f1a2d0
+ 0000000000000000
+ 0000000000000000
+$16   :
+ ffffffff81500d80
+ ffffffff81020be0
+ ffffffff81f71dd8
+ 000000000fb79000
+$20   :
+ ffffffff805150c0
+ 000000000fb61000
+ ffffffff814e59f8
+ 000000000fb60000
+$24   :
+ 0000000000000000
+ 0000000077e4d67c                  
+$28   :
+ ffffffff81f70000
+ ffffffff81f71bf8
+ ffffffff815010f8
+ 00000000800bed80
+Hi    : 00000000
+Lo    : 00000048
+epc   : 800beeb0 unmap_page_range+0x3cc/0x664
+ra    : 00000000800bed80 unmap_page_range+0x29c/0x664
+Status: 30018c03	KERNEL EXL IE 
+Cause : 50000424 (ExcCode 09)
+PrId  : 00002e42 (R5900)
+Modules linked in:
+Process echo (pid: 94, threadinfo=81f70000, task=81fb5500, tls=00adc0e0)
+Stack : 8053a2e8 00000000 00000001 00000000 00000000 80520000 00000000 30018c01
+        00000000 00000000 001fffff 80525f60 8100a874 ffffffff ffffffff ffffffff
+        ffffffff ffffffff 0fb60000 00000000 0082cb49 00000000 00000001 00000000
+        01000200 8025bfcc 014200ca 00000001 81f71c68 81f71c68 00000001 00000000
+        00000002 81f71cb0 81f71d10 8025c010 00000000 30018c01 8053a2e8 00000000
+        ...
+Call Trace:
+[<800beeb0>] unmap_page_range+0x3cc/0x664
+[<8025bfcc>] simple_strtoull+0x34/0x68
+[<8025c010>] simple_strtoul+0x10/0x1c
+Code: 1220ff6b  ae440008  8e220014 <30430001> 2442ffff  0223100a  8c420004  30420001  14400013 
 
-Considering the lack of DSP instructions, would you know any commonly
-compiled mipsel distribution that could be made compatible with the R5900
-in a reasonable manner? I suppose Gentoo has an advantage here, given the
-ability to supply R5900 compilation flags.
-
-> Also make sure you have RDHWR instruction emulation in place for CP0
-> UserLocal register access.
-
-Right. Debian's BusyBox has 857 of those. Jürgen Urban observed in the
-conversation with you in
-
-https://gcc.gnu.org/ml/gcc-patches/2013-01/msg00658.html
-
-that RDHWR has the same encoding as "sq v1,-6085(zero)" for the R5900,
-which luckily always gives an alignment exception so that the kernel is
-able to emulate RDHWR properly. I haven't verified this though.
+---[ end trace e89f1298cab4fd73 ]---
+Fixing recursive fault but reboot is needed!
 
 Fredrik

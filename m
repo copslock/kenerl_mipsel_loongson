@@ -1,36 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Sep 2017 01:55:41 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18165 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992618AbdI2Xze6Ik0L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Sep 2017 01:55:34 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 672AD3FBAB9A8;
-        Sat, 30 Sep 2017 00:55:23 +0100 (IST)
-Received: from [10.20.78.110] (10.20.78.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.361.1; Sat, 30 Sep 2017
- 00:55:27 +0100
-Date:   Sat, 30 Sep 2017 00:55:15 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Sep 2017 08:57:16 +0200 (CEST)
+Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:57318 "EHLO
+        ste-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992127AbdI3G5J2j05R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Sep 2017 08:57:09 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 397B63F64F;
+        Sat, 30 Sep 2017 08:57:06 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zq1vWDoWqaZg; Sat, 30 Sep 2017 08:57:01 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id A74573F3AA;
+        Sat, 30 Sep 2017 08:56:56 +0200 (CEST)
+Date:   Sat, 30 Sep 2017 08:56:55 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org
 Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-In-Reply-To: <20170922163753.GA2415@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
-References: <20170911151737.GA2265@localhost.localdomain> <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk> <20170916133423.GB32582@localhost.localdomain> <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk> <20170920140715.GA9255@localhost.localdomain>
- <alpine.DEB.2.00.1709201604400.16752@tp.orcam.me.uk> <20170922163753.GA2415@localhost.localdomain>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Message-ID: <20170930065654.GA7714@localhost.localdomain>
+References: <20170911151737.GA2265@localhost.localdomain>
+ <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
+ <20170916133423.GB32582@localhost.localdomain>
+ <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
+ <20170918192428.GA391@localhost.localdomain>
+ <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk>
+ <20170920145440.GB9255@localhost.localdomain>
+ <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
+ <20170927172107.GB2631@localhost.localdomain>
+ <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.110]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60208
+X-archive-position: 60209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,72 +57,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Fredrik,
+Hi Maciej,
 
-> >  This would verify whether the original contents of $17 were a properly 
-> > sign-extended 32-bit value.  Although for predictable operation I would 
-> > advise to use:
-> > 
-> > 	sll	k1, $17, 0
-> > 	sw	k1, PT_R17(sp)
-> > 	lw	k1, PT_R17(sp)
-> > 	tne	k1, $17, 12
-> > 
-> > or simply:
-> > 
-> > 	sll	k1, $17, 0
-> > 	tne	k1, $17, 12
-> > 	sw	$17, PT_R17(sp)
+> > Hmm... What about a 32-bit kernel and bits 63:32 sign-extended by kernel
+> > instructions? LONG_{L,S} saves/restores 31:0 using LW/SW thus 63:32 will
+> > be lost in exceptions?
 > 
-> There is a slight complication: the trap appears to be taken before the
-> console is ready, hence nothing is displayed. Is there a practical way
-> to postpone or recover from a trap? The issue becomes somewhat involved
-> since the trap needs to save/restore registers for itself to recover,
-> and so might evoke boundless recursion.
-
- You can use a static variable to hold a flag preventing the diagnostic 
-check from failing more than once, avoiding recursion.  Just check it here 
-before doing actual verification and set it at the beginning of the Trap 
-exception handler in arch/mips/kernel/genex.S.
-
-> From a practical point of view it would be great if backtraces could be
-> rate limited, recoverable and possible to copy over network (I don't have
-> e.g. a serial port soldered). I will look into other alternatives to try
-> to capture this.
-
- You can halt mid-way through `show_registers' to limit output if all you 
-have is the virtual terminal and you have to copy information by hand.  
-Later on in bootstrap you have the netconsole available; see 
-Documentation/networking/netconsole.txt for details (I have never used 
-that myself though).
-
-> > Previously you wrote that the problem is with resetting the upper 96 bits 
-> > (how did you notice that BTW?) rather than bits 63:32 only, so you need a 
-> > different check.
+>  You mean for use with MMI instructions?  Offhand I think we have two 
+> options:
 > 
-> I suspect 63:32 are the critical bits of the upper 96 bits since SD/LD
-> is sufficient. Summery of observations thus far: save/restore works with
-> SQ/LQ and SD/LD, but not SW/LW, in a 32-bit kernel ceteris paribus.
-
- This does look intriguing.
-
-> >  Well, you do need to verify your patches for such a possibility, right.  
-> > I would advise double-checking exception handling indeed, including 
-> > run-time generated exception handler code in particular.
+> 1. Declaring the lack of support for MMI instructions in o32 software.
 > 
-> The extremely early trap indicates a kernel issue, or perhaps register
-> garbage during kernel initialisation, that wouldn't be an error? Is the
-> run-time code related to genex.S? The R5900 patch sprinkles NOP and
-> SYNC.P instructions on it, for various workarounds, but not much else
-> apart from reverting db8466c581c "MIPS: IRQ Stack: Unwind IRQ stack onto
-> task stack" that otherwise crashes for an unknown reason.
+> 2. Switching to using LD/SD in <asm/stackframe.h> and preserving statics 
+>    across syscalls with SAVE_STATIC/RESTORE_STATIC at the cost of
+>    performance loss.
+> 
+> I'm open for a better suggestion though.  I propose that we start with #1, 
+> as the zero performance cost and zero effort solution.
 
- You cannot assume the firmware leaves properly sign-extended 32-bit 
-values in registers upon the kernel entry.  I advise truncating the 
-contents of registers (with SLL by 0) at the beginning of `kernel_entry' 
-in arch/mips/kernel/head.S for the purpose of avoiding spurious check 
-triggers in the course of this debugging effort.
+Sure. I would eventually like to explore solutions to efficiently support
+the full register range in applications with both 32- and 64-bit kernels.
 
- HTH,
+> > BusyBox at
+> > 
+> > https://packages.debian.org/stretch/mipsel/busybox-static/download
+> > 
+> > seemed appropriate but yields "illegal instruction" which I suppose is
+> > interesting in itself. My MIPS toolchain is somewhat limited at the moment
+> > so I will need to get back on this.
+> 
+>  Getting a core dump and using it to figure out which specific instruction 
+> caused the exception would be interesting.
 
-  Maciej
+It's 72308802 as in "mul s1,s1,s0" which I believe is the DSP enhancement
+multiplication with register write in the MIPS32 architecture. The R5900
+doesn't have those DSP instructions, as far as I can tell.
+
+For this reason the R5900 patch modifies the __{save,restore}_dsp macros,
+mips_dsp_state::dspcontrol, DSP_INIT, sigcontext32::sc_dsp, etc. I've seen
+the cpu_has_dsp macro too, but haven't looked at the details of this yet.
+
+Considering the lack of DSP instructions, would you know any commonly
+compiled mipsel distribution that could be made compatible with the R5900
+in a reasonable manner? I suppose Gentoo has an advantage here, given the
+ability to supply R5900 compilation flags.
+
+> Also make sure you have RDHWR instruction emulation in place for CP0
+> UserLocal register access.
+
+Right. Debian's BusyBox has 857 of those. Jürgen Urban observed in the
+conversation with you in
+
+https://gcc.gnu.org/ml/gcc-patches/2013-01/msg00658.html
+
+that RDHWR has the same encoding as "sq v1,-6085(zero)" for the R5900,
+which luckily always gives an alignment exception so that the kernel is
+able to emulate RDHWR properly. I haven't verified this though.
+
+Fredrik

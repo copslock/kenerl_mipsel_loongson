@@ -1,54 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Oct 2017 18:11:18 +0200 (CEST)
-Received: from imap1.codethink.co.uk ([176.9.8.82]:33103 "EHLO
-        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990408AbdJBQLKkb50J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Oct 2017 18:11:10 +0200
-Received: from [185.98.148.236] (helo=[0.0.0.0])
-        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
-        id 1dz3J9-0000oD-72; Mon, 02 Oct 2017 17:11:03 +0100
-Subject: Re: [PATCH 1/7] i2c: gpio: Convert to use descriptors
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Vincent Sanders <vincent.sanders@collabora.co.uk>,
-        Vincent Sanders <vince@kyllikki.org>,
-        Teddy Wang <teddy.wang@siliconmotion.com>
-Cc:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Heiko Schocher <hs@denx.de>
-References: <20170917093906.16325-1-linus.walleij@linaro.org>
- <20170917093906.16325-2-linus.walleij@linaro.org>
- <CACRpkdZ=BZHp3mjccUYaPTuMbXgwGSErvLprnp4j0H+7C5NYJQ@mail.gmail.com>
-From:   Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-Message-ID: <3100653b-21b7-0a84-6379-7c38e18e2dd6@codethink.co.uk>
-Date:   Mon, 2 Oct 2017 17:11:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Oct 2017 18:33:59 +0200 (CEST)
+Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:19969 "EHLO
+        ste-ftg-msa2.bahnhof.se" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990408AbdJBQdwneNm0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Oct 2017 18:33:52 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTP id AAD973F43F;
+        Mon,  2 Oct 2017 18:33:49 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from ste-ftg-msa2.bahnhof.se ([127.0.0.1])
+        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id G-n9BfRAwJlJ; Mon,  2 Oct 2017 18:33:45 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTPA id 862E03F41B;
+        Mon,  2 Oct 2017 18:33:41 +0200 (CEST)
+Date:   Mon, 2 Oct 2017 18:33:39 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+Message-ID: <20171002163339.GA2171@localhost.localdomain>
+References: <20170916133423.GB32582@localhost.localdomain>
+ <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
+ <20170918192428.GA391@localhost.localdomain>
+ <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk>
+ <20170920145440.GB9255@localhost.localdomain>
+ <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
+ <20170927172107.GB2631@localhost.localdomain>
+ <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+ <20170930065654.GA7714@localhost.localdomain>
+ <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
 MIME-Version: 1.0
-In-Reply-To: <CACRpkdZ=BZHp3mjccUYaPTuMbXgwGSErvLprnp4j0H+7C5NYJQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <ben.dooks@codethink.co.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60216
+X-archive-position: 60217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben.dooks@codethink.co.uk
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,51 +56,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/10/17 02:05, Linus Walleij wrote:
-> On Sun, Sep 17, 2017 at 11:39 AM, Linus Walleij
-> <linus.walleij@linaro.org> wrote:
+Hi Maciej,
+
+>  In any case you'll have to find a MIPS I or MIPS II distribution, like an 
+> older version of Debian.
+
+I will see what I can find. I currently have Black Rhino based on Debian
+and tailored for the R5900, as you verified.
+
+>  The three-argument MUL is a part of the base MIPS32 architecture BTW, 
+> originating from the IDT R4650 and the NEC Vr5500 processors.  It has 
+> nothing to do with the DSP ASE (though it may have been claimed originally 
+> to be a DSP enhancement).
+
+Ah, I was referring to a press release that appears to be written by
+MIPS Technologies (linked from Wikipedia):
+
+    In addition, DSP enhancements such as multiply (MUL) and multiply and
+    add (MADD) instructions have been standardized and added to the new
+    architectures. While these instructions have been available as
+    licensee-specific extensions in the past, this is the first time that
+    they have been available as a standard part of the MIPS(R) architecture.
+
+https://www.thefreelibrary.com/MIPS+Technologies,+Inc.+Enhances+Architecture+to+Support+Growing+Need...-a054531136
+
+> > For this reason the R5900 patch modifies the __{save,restore}_dsp macros,
+> > mips_dsp_state::dspcontrol, DSP_INIT, sigcontext32::sc_dsp, etc. I've seen
+> > the cpu_has_dsp macro too, but haven't looked at the details of this yet.
 > 
->> - The MFD Silicon Motion SM501 is a special case. It dynamically
->>    spawns an I2C bus off the MFD using sm501_create_subdev().
->>    We use an approach to dynamically create a machine descriptor
->>    table and attach this to the "SM501-LOW" or "SM501-HIGH"
->>    gpiochip. We use chip-local offsets to grab the right lines.
->>    We can get rid of two local static inline helpers as part
->>    of this refactoring.
-> (...)
->> SM501 users: requesting Tested-by on this patch.
-> 
-> Paging Simtec (if it reaches anyone), Vincent Sanders,
-> Teddy Wang at Silicon Motion:
+>  Given that the R5900 does not expand DSP support anyhow that sounds 
+> suspicious to me.
 
-I'm fairly sure Simtec is not currently active. See below.
-I have no idea if the SM501 is even available for current designs.
+Yes, I agree.
 
-> Does any of you have an "Anubis" board so you can test GPIO
-> on this board before/after this patch and see if it checks out right?
-> 
-> I guess it's this board:
-> http://www.simtec.co.uk/products/BBD20EUROA/
-
-I think that's fairly close.
-We did have a couple of other designs done for clients, but they may
-not have been available to the general public.
-
-> 
-> Does anyone know of a commercially obtainable product using
-> SM501 with reasonable mainline Linux support so I can test it myself?
-> 
-> Getting a bit desperate...
-
-At the moment I have no time to go through the boxes of ex-Simtec stuff
-that I still have... quite a lot of my old Simtec stuff has already been
-recycled as it has been over five years since leaving.
-
-> Yours,
-> Linus Walleij
-> 
-
-
--- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
+Fredrik

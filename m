@@ -1,71 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2017 18:03:05 +0200 (CEST)
-Received: from smtp-out4.electric.net ([192.162.216.181]:51903 "EHLO
-        smtp-out4.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993376AbdJCQCye0Ja3 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Oct 2017 18:02:54 +0200
-Received: from 1dzPe5-0007Wf-Tg by out4a.electric.net with emc1-ok (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1dzPee-0005RM-U7; Tue, 03 Oct 2017 09:02:44 -0700
-Received: by emcmailer; Tue, 03 Oct 2017 09:02:44 -0700
-Received: from [156.67.243.126] (helo=AcuExch.aculab.com)
-        by out4a.electric.net with esmtps (TLSv1:AES128-SHA:128)
-        (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1dzPe5-0007Wf-Tg; Tue, 03 Oct 2017 09:02:09 -0700
-Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
- mapi id 14.03.0123.003; Tue, 3 Oct 2017 17:02:11 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Christoph Hellwig' <hch@lst.de>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
-CC:     Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        "Max Filippov" <jcmvbkbc@gmail.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        "Robin Murphy" <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: RE: [PATCH 02/11] x86: make dma_cache_sync a no-op
-Thread-Topic: [PATCH 02/11] x86: make dma_cache_sync a no-op
-Thread-Index: AQHTPDT4y1gt6BpuJ0WjoGP/hvSJ8KLSSINg
-Date:   Tue, 3 Oct 2017 16:02:10 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6DD0088B73@AcuExch.aculab.com>
-References: <20171003104311.10058-1-hch@lst.de>
- <20171003104311.10058-3-hch@lst.de>
-In-Reply-To: <20171003104311.10058-3-hch@lst.de>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.99.200]
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2017 19:01:17 +0200 (CEST)
+Received: from mail-qk0-x229.google.com ([IPv6:2607:f8b0:400d:c09::229]:54021
+        "EHLO mail-qk0-x229.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990429AbdJCRBHtjFit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2017 19:01:07 +0200
+Received: by mail-qk0-x229.google.com with SMTP id w63so8899314qkd.10;
+        Tue, 03 Oct 2017 10:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=lNTJJmA0P8ahL103LTAs7Vd8nK9p5cc2ncNOHh6nYQo=;
+        b=aehfp9Q/VjFIqao8gV8ERPaDW1Ip2EDK72vIMjCc+m7qCPCPWIV+qjbCwdIZP+onpN
+         ed+RJ4IUL7ueO6zNokDa8aVgMKayd3C7CpfxHiOpDnwa7nnkUpZm8diVXkaLM54XeiXQ
+         jKOLPxf/rpM1A3idFsV+AQllybwyHhTsFUN+nLnqQxwRoQSmrcNhZ/Akw7T4Y67vqzmx
+         Ro3NQVTAeyTAJV5znpXOTVjD/+Gxbeh0SHt2tuWi3saxlPoh1bBfFttyNumNHoFrO0Dc
+         X93OvwFGLme66rX2POaqIf9Uyel8k2bNoAQkMaifE8lzTP5zi9bujg0f9BhSOUXS/0E8
+         pTNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lNTJJmA0P8ahL103LTAs7Vd8nK9p5cc2ncNOHh6nYQo=;
+        b=PCZb58A9Ai+O/QNrsbUlDCqbiO6Wh/D46641fW+AjWa+BqO4i9j5vmhWd/sy55cKBL
+         Wt5K4T7ZROobZtU0dSuNRbv/SV6F9GqNNqToCIuRTwbcEuxzRG0lz/2iU/vwX7XeiTU4
+         Fi0lsoOmY7um3SWDk7NkGh7pqDT4yjaJr5RBmfpi8JdsRjyIF4MSKjtNZiW5z+Nlk1RB
+         AGadF0YTygfCXJ5R9ifDC8XAs9j67thPcvCRlI/FXzlNud7c1pzFJRynh9mPC+3tQ77I
+         6xeM/S1qWtQfDm7dNGd8WTZkQLwf6OoVp+9NLHoV3fxFeoSDaYb6Di003ZMQPuKWZ8l0
+         qHsw==
+X-Gm-Message-State: AMCzsaX09ruf4lKQ8u9/b5i98Ib2vUMyUz5SMwaRnBkd2IxTxHOHPQ6D
+        Ua18WAqm5XlG31R2VnF8G1yMEBJR
+X-Google-Smtp-Source: AOwi7QDmiPipc3UVVSsyy73wJHro0yncaEhqWyhOtxqNnKiKQkIgC05ehGM8o2eCc+H+0/WjRPCiCw==
+X-Received: by 10.55.82.194 with SMTP id g185mr12767038qkb.282.1507050061101;
+        Tue, 03 Oct 2017 10:01:01 -0700 (PDT)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id h4sm9025499qth.75.2017.10.03.10.00.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Oct 2017 10:01:00 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: Fix sparse CPU id space build error.
+To:     "Steven J. Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+References: <1506965989-5043-1-git-send-email-steven.hill@cavium.com>
+ <5b5111e8-c6c5-0814-d109-b325969c27b5@gmail.com>
+ <4bc7e31a-3db1-8254-9cb9-b794ebf0bf15@cavium.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <cdb3aebd-b30a-eb55-3715-f0ece3fa1af5@gmail.com>
+Date:   Tue, 3 Oct 2017 10:00:57 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-X-Outbound-IP: 156.67.243.126
-X-Env-From: David.Laight@ACULAB.COM
-X-Proto: esmtps
-X-Revdns: 
-X-HELO: AcuExch.aculab.com
-X-TLS:  TLSv1:AES128-SHA:128
-X-Authenticated_ID: 
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (c)
-X-Virus-Status: Scanned by VirusSMART (s)
-Return-Path: <David.Laight@ACULAB.COM>
+In-Reply-To: <4bc7e31a-3db1-8254-9cb9-b794ebf0bf15@cavium.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60239
+X-archive-position: 60240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,16 +75,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Christoph Hellwig
-> Sent: 03 October 2017 11:43
-> x86 does not implement DMA_ATTR_NON_CONSISTENT allocations, so it doesn't
-> make any sense to do any work in dma_cache_sync given that it must be a
-> no-op when dma_alloc_attrs returns coherent memory.
+On 10/03/2017 08:53 AM, Steven J. Hill wrote:
+> On 10/02/2017 11:05 PM, Florian Fainelli wrote:
+>>>
+>>> Patch "MIPS: Allow __cpu_number_map to be larger than NR_CPUS" was
+>>> incomplete, thus breaking all MIPS builds.
+>>
+>> Did not you submit a corrected version as part of [PATCH v2 00/12] Add
+>> Octeon Hotplug CPU Support.? Was v1 already merged?
+>>
+> Yes, I did. However, Ralf had already pushed the broken v1 patch
+> upstream. Timing jitter of patches.  ¯\_(ツ)_/¯
 
-I believe it is just about possible to require an explicit
-write flush on x86.
-ISTR this can happen with something like write combining.
-
-Whether this can actually happen is the kernel is another matter.
-
-	David
+Ralf, did not you have a post-receive hook set-up that emails people
+when you apply their patches at some point?
+-- 
+Florian

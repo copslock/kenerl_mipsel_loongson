@@ -1,49 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2017 21:49:42 +0200 (CEST)
-Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:16403 "EHLO
-        ste-ftg-msa2.bahnhof.se" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993302AbdJCTtgLqKya (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2017 21:49:36 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTP id BAA053F6AC;
-        Tue,  3 Oct 2017 21:49:28 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from ste-ftg-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Setovxr4Kq5Z; Tue,  3 Oct 2017 21:49:26 +0200 (CEST)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTPA id A1CCE3F3EA;
-        Tue,  3 Oct 2017 21:49:19 +0200 (CEST)
-Date:   Tue, 3 Oct 2017 21:49:17 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-Message-ID: <20171003194916.GA9633@localhost.localdomain>
-References: <20170911151737.GA2265@localhost.localdomain>
- <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
- <20170916133423.GB32582@localhost.localdomain>
- <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
- <20170920140715.GA9255@localhost.localdomain>
- <alpine.DEB.2.00.1709201604400.16752@tp.orcam.me.uk>
- <20170922163753.GA2415@localhost.localdomain>
- <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
- <20170930182608.GB7714@localhost.localdomain>
- <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2017 22:27:34 +0200 (CEST)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:44931 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993411AbdJCU11ksiUi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2017 22:27:27 +0200
+Received: from p4fea5b32.dip0.t-ipconnect.de ([79.234.91.50] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1dzTmV-0001wO-70; Tue, 03 Oct 2017 22:27:07 +0200
+Date:   Tue, 3 Oct 2017 22:27:08 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     David Laight <David.Laight@ACULAB.COM>
+cc:     'Christoph Hellwig' <hch@lst.de>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Chris Zankel <chris@zankel.net>,
+        Michal Simek <monstr@monstr.eu>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: RE: [PATCH 02/11] x86: make dma_cache_sync a no-op
+In-Reply-To: <063D6719AE5E284EB5DD2968C1650D6DD0088B73@AcuExch.aculab.com>
+Message-ID: <alpine.DEB.2.20.1710032214370.2278@nanos>
+References: <20171003104311.10058-1-hch@lst.de> <20171003104311.10058-3-hch@lst.de> <063D6719AE5E284EB5DD2968C1650D6DD0088B73@AcuExch.aculab.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <noring@nocrew.org>
+Content-Type: text/plain; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60241
+X-archive-position: 60242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,54 +58,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+On Tue, 3 Oct 2017, David Laight wrote:
 
->  Hmm, this looks consistent with the TX79 manual:
+> From: Christoph Hellwig
+> > Sent: 03 October 2017 11:43
+> > x86 does not implement DMA_ATTR_NON_CONSISTENT allocations, so it doesn't
+> > make any sense to do any work in dma_cache_sync given that it must be a
+> > no-op when dma_alloc_attrs returns coherent memory.
 > 
-> "6.2.1 Virtual Address Space
-> 
-> The C790 only implements 32 bits of virtual address space.  There is no 
-> requirement for address sign extension and no checking will be done on the 
-> upper 32 bits of the address."
-> 
-> and then say in the JAL instruction description:
-> 
-> "I: GPR[31] 63..0 <- zero_extend (PC + 8)"
-> 
-> It does not matter for the user mode where bit #31 is 0 and therefore both 
-> zero-extension and sign-extension produce the same result, so the typical 
-> PIC code sequence used to determine its own location, i.e.:
-> 
-> 	la	$2, 0f
-> 	bltzal	$0, 0f
-> 0:
-> 	subu	$2, $31, $2
-> 
-> will work correctly, not causing UB with the SUBU instruction.
-> 
->  However it does cause complications for the kernel in that the value of 
-> $ra retrieved cannot be readily used for 32-bit calculations and has to be 
-> treated with SLL by 0 first.  You'll have to audit the arch/mips subtree 
-> for any such $ra use for calculation; hopefully are there's none.
-> 
->  I wonder why they broke it like this -- was it a silly deliberate choice 
-> or merely an oversight (erratum) they chose to document rather than fix? 
-> For a change they do implement MFC0 with sign-extension, so retrieving 
-> e.g. CP0.EPC will see kernel addresses correctly sign-extended.
+> I believe it is just about possible to require an explicit
+> write flush on x86.
+> ISTR this can happen with something like write combining.
 
-After some further tests, it appears that for $ra, save/restore works with
-both SW/LW and SW/LWU. Hence, $ra bits 63:32 do not seem to matter at all
-(as intended), and its sign-extension failure can therefore be disregarded.
-This is somewhat non-obvious since $ra is the only register that fails to
-sign-extend after kernel initialisation (and consequently trigger a trap).
+As the changelog says: x86 only implements dma_alloc_coherent() which as
+the name says returns coherent memory, i.e. type WB (write back), which is
+not subject to dma_cache_sync() operations.
 
->  Anyway, as noted above that shouldn't cause a problem with user software 
-> and I think that any corruption you can see comes from elsewhere.  You'll 
-> have to paper this $ra non-sign-extension issue over somehow to proceed 
-> though.
+If the driver converts that memory to WC (write combine) on its own via
+PAT/MTRR, then it needs to take care of flushing the write buffer on its
+own. It's not convered by this interface.
 
-During early kernel initialisation at least one other register (besides
-$ra) appears to fail the sign-extension test, and the error cannot be
-ignored. I will now try figure this out.
+Thanks,
 
-Fredrik
+	tglx

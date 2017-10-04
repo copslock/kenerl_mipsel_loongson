@@ -1,48 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 09:49:22 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49009 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990482AbdJDHtO0LNeu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 09:49:14 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id AFECDDFD47E67;
-        Wed,  4 Oct 2017 08:49:04 +0100 (IST)
-Received: from [10.100.200.3] (10.100.200.3) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 4 Oct
- 2017 08:49:06 +0100
-Subject: Re: [PATCH 2/2] MIPS: crypto: Add crc32 and crc32c hw accelerated
- module
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-To:     Jonas Gorski <jonas.gorski@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>
-CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-References: <1506514716-29470-1-git-send-email-marcin.nowakowski@imgtec.com>
- <1506514716-29470-3-git-send-email-marcin.nowakowski@imgtec.com>
- <20170929213451.GB24591@jhogan-linux.le.imgtec.org>
- <CAOiHx=kMH+ujTw2myQ0uR3DxHnsBsmaGtmeVniGNf7VHytTa6g@mail.gmail.com>
- <7d9d2e3a-a78f-bbb6-f957-1419473fb90e@imgtec.com>
-Message-ID: <057939a9-a17e-f304-44af-c7c0e3ada21e@imgtec.com>
-Date:   Wed, 4 Oct 2017 09:49:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 10:29:30 +0200 (CEST)
+Received: from pegase1.c-s.fr ([93.17.236.30]:58165 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990482AbdJDI3VRwhcX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Oct 2017 10:29:21 +0200
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 3y6TZl3532z9ttBs;
+        Wed,  4 Oct 2017 10:29:03 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id geeUt-CqHz3Z; Wed,  4 Oct 2017 10:29:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 3y6TZl2Vvzz9ttBp;
+        Wed,  4 Oct 2017 10:29:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id B8C208B891;
+        Wed,  4 Oct 2017 10:29:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id JWtzsTQIw0Da; Wed,  4 Oct 2017 10:29:13 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.3])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 76AE88B74B;
+        Wed,  4 Oct 2017 10:29:13 +0200 (CEST)
+Subject: Re: [PATCH 07/11] powerpc: make dma_cache_sync a no-op
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org, Chris Zankel <chris@zankel.net>,
+        Michal Simek <monstr@monstr.eu>, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-xtensa@linux-xtensa.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+References: <20171003104311.10058-1-hch@lst.de>
+ <20171003104311.10058-8-hch@lst.de>
+ <670a0571-1a36-51a3-db52-64bc61184c35@c-s.fr> <20171003114330.GA24592@lst.de>
+From:   Christophe LEROY <christophe.leroy@c-s.fr>
+Message-ID: <fd0ccac1-51dc-1eff-f1ac-63f9df282de2@c-s.fr>
+Date:   Wed, 4 Oct 2017 10:29:13 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
  Thunderbird/52.3.0
 MIME-Version: 1.0
-In-Reply-To: <7d9d2e3a-a78f-bbb6-f957-1419473fb90e@imgtec.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+In-Reply-To: <20171003114330.GA24592@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.100.200.3]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Return-Path: <christophe.leroy@c-s.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60244
+X-archive-position: 60245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: christophe.leroy@c-s.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,79 +69,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
 
-On 03.10.2017 08:38, Marcin Nowakowski wrote:
 
->>>
->>> The need for 64-bit signed length is unfortunate. Do you get decent
->>> assembly and comparable/better performance on 32-bit if you just use len
->>> and only decrement it in the loops? i.e.
->>>
->>> -       while ((length -= sizeof(uXX)) >= 0) {
->>> +       while (len >= sizeof(uXX)) {
->>>                  register uXX value = get_unaligned_leXX(p);
->>>
->>>                  CRC32(crc, value, XX);
->>>                  p += sizeof(uXX);
->>> +               len -= sizeof(uXX);
->>>          }
->>>
->>> That would be more readable too IMHO.
+Le 03/10/2017 à 13:43, Christoph Hellwig a écrit :
+> On Tue, Oct 03, 2017 at 01:24:57PM +0200, Christophe LEROY wrote:
+>>> powerpc does not implement DMA_ATTR_NON_CONSISTENT allocations, so it
+>>> doesn't make any sense to do any work in dma_cache_sync given that it
+>>> must be a no-op when dma_alloc_attrs returns coherent memory.
+>> What about arch/powerpc/mm/dma-noncoherent.c ?
 >>
->> or maybe just do some pointer arithmetic like
->>
->>    const u8 *end = p + len;
->>
->>    while ((end - p) >= sizeof(uXX)) {
->>             register uXX value = get_unaligned_leXX(p);
->>
->>             CRC32(crc, value, XX);
->>             p += sizeof(uXX);
->>    }
+>> Powerpc 8xx doesn't have coherent memory.
 > 
-> Thank you both for these suggestions. All solutions are very similar in 
-> terms of the assembly produced, although the original code is the 
-> smallest of all:
-> 
-> original vs James':
-> crc32_mips_le_hw                             104     132     +28
-> vermagic                                      72      78      +6
-> chksumc_finup                                 40      44      +4
-> chksumc_digest                                44      48      +4
-> chksum_finup                                  92      96      +4
-> chksum_digest                                100     104      +4
-> 
-> original vs Jonas':
-> add/remove: 0/0 grow/shrink: 7/0 up/down: 90/0 (90)
-> function                                     old     new   delta
-> crc32_mips_le_hw                             104     148     +44
-> vermagic                                      72      78      +6
-> chksumc_finup                                 40      44      +4
-> chksumc_digest                                44      48      +4
-> chksum_finup                                  92      96      +4
-> chksum_digest                                100     104      +4
-> 
-> 
-> However - the key thing which is the processing loop is 6 instructions 
-> long in all variants. It's only the pre/post loop processing that adds 
-> the extra instructions so all these solutions should be roughly equal in 
-> terms of performance.
-> I find James' code a bit more readable so I'll go with it and post an 
-> updated patch.
+> It doesn't implement the DMA_ATTR_NON_CONSISTENT interface either,
+> so if it really doesn't have a way to provide dma coherent allocation
+> (although the code in __dma_alloc_coherent suggests it does provide
+> dma coherent allocations) I have no idea how it could ever have
+> worked.
 > 
 
-The comparisons above were for 64-bit, where the difference is 
-negligible. On 32-bit builds, however, the difference is more significant:
+Yes indeed it provides coherent memory by allocation non cached memory.
 
-original vs James':
+And drivers aiming at using non coherent memory do it by using kmalloc() 
+with GFP_DMA then dma_map_single().
+Then they use dma_sync_single_for_xxx(), which calls __dma_sync() on the 
+8xx and is a nop on other powerpcs.
 
-function                                     old     new   delta
-vermagic                                      80      86      +6
-crc32c_mips_le_hw                            144     104     -40
-crc32_mips_le_hw                             144     104     -40
-
-and the main crc loop is down from 9 to 5 instructions, so it's a 
-significant reduction of the loop size.
-
-Marcin
+Christophe

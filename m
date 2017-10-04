@@ -1,37 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 04:46:26 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:35751 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990475AbdJDCqQF6f3A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 04:46:16 +0200
-Received: from ben by shadbolt.decadent.org.uk with local (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1dzZhO-0006hx-6H; Wed, 04 Oct 2017 03:46:15 +0100
-Date:   Wed, 4 Oct 2017 03:46:14 +0100
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-Message-ID: <20171004024614.GC2971@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 09:49:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49009 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990482AbdJDHtO0LNeu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 09:49:14 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id AFECDDFD47E67;
+        Wed,  4 Oct 2017 08:49:04 +0100 (IST)
+Received: from [10.100.200.3] (10.100.200.3) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 4 Oct
+ 2017 08:49:06 +0100
+Subject: Re: [PATCH 2/2] MIPS: crypto: Add crc32 and crc32c hw accelerated
+ module
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     Jonas Gorski <jonas.gorski@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>
+CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+References: <1506514716-29470-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <1506514716-29470-3-git-send-email-marcin.nowakowski@imgtec.com>
+ <20170929213451.GB24591@jhogan-linux.le.imgtec.org>
+ <CAOiHx=kMH+ujTw2myQ0uR3DxHnsBsmaGtmeVniGNf7VHytTa6g@mail.gmail.com>
+ <7d9d2e3a-a78f-bbb6-f957-1419473fb90e@imgtec.com>
+Message-ID: <057939a9-a17e-f304-44af-c7c0e3ada21e@imgtec.com>
+Date:   Wed, 4 Oct 2017 09:49:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3siQDZowHQqNOShm"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-Subject: [RFC PATCH] MIPS: cmpxchg64() and HAVE_VIRT_CPU_ACCOUNTING_GEN don't
- work for 32-bit SMP
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
-X-SA-Exim-Scanned: Yes (on shadbolt.decadent.org.uk)
-Return-Path: <ben@decadent.org.uk>
+In-Reply-To: <7d9d2e3a-a78f-bbb6-f957-1419473fb90e@imgtec.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.100.200.3]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60243
+X-archive-position: 60244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,82 +55,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi James,
 
---3siQDZowHQqNOShm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 03.10.2017 08:38, Marcin Nowakowski wrote:
 
-__cmpxchg64_local_generic() is atomic only w.r.t tasks and interrupts
-on the same CPU (that's what the 'local' means).  We can't use it to
-implement cmpxchg64() in SMP configurations.
+>>>
+>>> The need for 64-bit signed length is unfortunate. Do you get decent
+>>> assembly and comparable/better performance on 32-bit if you just use len
+>>> and only decrement it in the loops? i.e.
+>>>
+>>> -       while ((length -= sizeof(uXX)) >= 0) {
+>>> +       while (len >= sizeof(uXX)) {
+>>>                  register uXX value = get_unaligned_leXX(p);
+>>>
+>>>                  CRC32(crc, value, XX);
+>>>                  p += sizeof(uXX);
+>>> +               len -= sizeof(uXX);
+>>>          }
+>>>
+>>> That would be more readable too IMHO.
+>>
+>> or maybe just do some pointer arithmetic like
+>>
+>>    const u8 *end = p + len;
+>>
+>>    while ((end - p) >= sizeof(uXX)) {
+>>             register uXX value = get_unaligned_leXX(p);
+>>
+>>             CRC32(crc, value, XX);
+>>             p += sizeof(uXX);
+>>    }
+> 
+> Thank you both for these suggestions. All solutions are very similar in 
+> terms of the assembly produced, although the original code is the 
+> smallest of all:
+> 
+> original vs James':
+> crc32_mips_le_hw                             104     132     +28
+> vermagic                                      72      78      +6
+> chksumc_finup                                 40      44      +4
+> chksumc_digest                                44      48      +4
+> chksum_finup                                  92      96      +4
+> chksum_digest                                100     104      +4
+> 
+> original vs Jonas':
+> add/remove: 0/0 grow/shrink: 7/0 up/down: 90/0 (90)
+> function                                     old     new   delta
+> crc32_mips_le_hw                             104     148     +44
+> vermagic                                      72      78      +6
+> chksumc_finup                                 40      44      +4
+> chksumc_digest                                44      48      +4
+> chksum_finup                                  92      96      +4
+> chksum_digest                                100     104      +4
+> 
+> 
+> However - the key thing which is the processing loop is 6 instructions 
+> long in all variants. It's only the pre/post loop processing that adds 
+> the extra instructions so all these solutions should be roughly equal in 
+> terms of performance.
+> I find James' code a bit more readable so I'll go with it and post an 
+> updated patch.
+> 
 
-So, for 32-bit SMP configurations:
+The comparisons above were for 64-bit, where the difference is 
+negligible. On 32-bit builds, however, the difference is more significant:
 
-- Don't define cmpxchg64()
-- Don't enable HAVE_VIRT_CPU_ACCOUNTING_GEN, which requires it
+original vs James':
 
-Fixes: e2093c7b03c1 ("MIPS: Fall back to generic implementation of ...")
-Fixes: bb877e96bea1 ("MIPS: Add support for full dynticks CPU time accounti=
-ng")
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/Kconfig               | 2 +-
- arch/mips/include/asm/cmpxchg.h | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+function                                     old     new   delta
+vermagic                                      80      86      +6
+crc32c_mips_le_hw                            144     104     -40
+crc32_mips_le_hw                             144     104     -40
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index cb7fcc4216fd..1e23f8455b7d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -64,7 +64,7 @@ config MIPS
- 	select HAVE_PERF_EVENTS
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_SYSCALL_TRACEPOINTS
--	select HAVE_VIRT_CPU_ACCOUNTING_GEN
-+	select HAVE_VIRT_CPU_ACCOUNTING_GEN if 64BIT || !SMP
- 	select IRQ_FORCED_THREADING
- 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
- 	select MODULES_USE_ELF_REL if MODULES
-diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxch=
-g.h
-index 903f3bf48419..ae2b4583b486 100644
---- a/arch/mips/include/asm/cmpxchg.h
-+++ b/arch/mips/include/asm/cmpxchg.h
-@@ -202,8 +202,10 @@ static inline unsigned long __cmpxchg(volatile void *p=
-tr, unsigned long old,
- #else
- #include <asm-generic/cmpxchg-local.h>
- #define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (=
-n))
-+#ifndef CONFIG_SMP
- #define cmpxchg64(ptr, o, n) cmpxchg64_local((ptr), (o), (n))
- #endif
-+#endif
-=20
- #undef __scbeqz
-=20
+and the main crc loop is down from 9 to 5 instructions, so it's a 
+significant reduction of the loop size.
 
---3siQDZowHQqNOShm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIVAwUBWdRLdee/yOyVhhEJAQorxRAAhJ07FBUYKq7uZGcLYKxPZJbGgJtBXP4F
-3Og7KAKnT4gpGx61DlR+UT+HzsI4b5As8/9fkd+JLc+Pe/Q3ehLGCoZxVMMNlKOw
-F9oRLlcxwfJESjtZ6LKpXakx0tj38eThQ7+uBJhhPzk5nFfOSJ/pumCQCAEQ/EO5
-JM3FC25AniXMr+oVDaX1IQWMwv1fWLCBarF5AweerLvyPsm6ctAEKgZyI8CgO3SD
-k4AEywk3cv+cy8xpq03bLSBVSCiOvLLE9H0LFn1Mt/au2t61ng+vzND3m8Lkfttl
-9HCf71wkcg52EdxPCPSkxFhkw6rCAbJ5D8RGP2cntqVbjJBuuM9Ger0srY+GcTna
-mldZjTCXJni2u+/HOnY1n0IMsy8Mekk2pmfBFpz4ZcvTaOCWMorG3LaDIyT3DroQ
-0eoggsbPuOz1AKQ30NCYMSTDt+fCOQEsztHf5cd+q6j9wnyY9eqmIXQNcErrNsFD
-jmhM1+NLIL6cdjNlSDmKddRi1SqLQaLZjTpWdr6lbEip+ArL0RGYNRAdiOUaDxvV
-em7fJqJkRafhWFMgYkmXwTjoPkcyNSMYsJnXg6QwqW6mRS4YroyftxIbDjYsUQK6
-2AISE38tnhgmMYXIm1Gw7UrB7VXD7PeFL5Ak4/Xfg/5l1LAQoB0XdthjcofIWQ6Y
-8PvOa932uvs=
-=iZCK
------END PGP SIGNATURE-----
-
---3siQDZowHQqNOShm--
+Marcin

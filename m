@@ -1,54 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 17:01:12 +0200 (CEST)
-Received: from mail-wm0-f68.google.com ([74.125.82.68]:54484 "EHLO
-        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990407AbdJDPBEgFujc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 17:01:04 +0200
-Received: by mail-wm0-f68.google.com with SMTP id i124so23738804wmf.3;
-        Wed, 04 Oct 2017 08:01:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=HYJaadQq+NvQqSFB/xxQy99CR1lCr6EP2cbAzL4kMms=;
-        b=EVs812AWillCkZoYpgyt+xtN85YpjnTw7nfme8kLxJGPRZVh018SVq0u9PzipLEIS2
-         POdm+b6tp1c+qdcpnru56rtUFTjA/XFLCN1vmrBDKAXlzniFh/fhO4VASLkQooflFbg6
-         yCVKIn9KZu23s8AAgCnmaYLHMArk/Beg0coQpPKMglFSrnGZlObUQjQ+ZmWPat0OC4t7
-         YfHQJhmg1aOWpEcxpkqHogJLNXPcUUwwH9KCXekDMvlxVZBXdHTEyYokd5CrJDza0D2t
-         t25A6hc/e1ndP2qLxPa9FhxWmMtb9YXDoYMivhWcq2PgOWZgN1mMxZiPg9W8s7cNPFeZ
-         Bgqg==
-X-Gm-Message-State: AMCzsaVSYbbQgP3zcavQOiJusTYaVOSWvc9aCCm3jogO7tV2i0LBWjVq
-        34SWLQSJtkcq/+RNhp98LnQ=
-X-Google-Smtp-Source: AOwi7QBFSXWUwqK7CMLoOWPqbZ0pppKSjpZcyfg0rLvWHMYyqB7Un7D81w0VM/0km6ES2J9CkAIIYw==
-X-Received: by 10.28.54.22 with SMTP id d22mr7200083wma.120.1507129259181;
-        Wed, 04 Oct 2017 08:00:59 -0700 (PDT)
-Received: from tiehlicka.suse.cz (prg-ext-pat.suse.com. [213.151.95.130])
-        by smtp.gmail.com with ESMTPSA id u18sm2770339wrg.94.2017.10.04.08.00.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Oct 2017 08:00:58 -0700 (PDT)
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Michal Hocko <mhocko@suse.com>,
-        David Howells <dhowells@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, Jeff Dike <jdike@addtoit.com>,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Richard Weinberger <richard@nod.at>,
-        Rich Felker <dalias@libc.org>,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH] mm, arch: remove empty_bad_page*
-Date:   Wed,  4 Oct 2017 17:00:45 +0200
-Message-Id: <20171004150045.30755-1-mhocko@kernel.org>
-X-Mailer: git-send-email 2.14.2
-Return-Path: <mstsxfx@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 17:36:19 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:40432 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990494AbdJDPgJq6KC2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Oct 2017 17:36:09 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v94Fa1Lb007226;
+        Wed, 4 Oct 2017 17:36:01 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v94Fa0u5007225;
+        Wed, 4 Oct 2017 17:36:00 +0200
+Date:   Wed, 4 Oct 2017 17:36:00 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v2 2/2] MIPS: crypto: Add crc32 and crc32c hw accelerated
+ module
+Message-ID: <20171004153600.GB31821@linux-mips.org>
+References: <1507114133-9129-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <1507114133-9129-3-git-send-email-marcin.nowakowski@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1507114133-9129-3-git-send-email-marcin.nowakowski@imgtec.com>
+User-Agent: Mutt/1.9.0 (2017-09-02)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60253
+X-archive-position: 60254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,216 +47,223 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Michal Hocko <mhocko@suse.com>
+On Wed, Oct 04, 2017 at 12:48:53PM +0200, Marcin Nowakowski wrote:
 
-empty_bad_page and empty_bad_pte_table seems to be a relict from old
-days which is not used by any code for a long time. I have tried to find
-when exactly but this is not really all that straightforward due to many
-code movements - traces disappear around 2.4 times.
+>  arch/mips/Kconfig             |   4 +
+>  arch/mips/Makefile            |   3 +
+>  arch/mips/crypto/Makefile     |   5 +
+>  arch/mips/crypto/crc32-mips.c | 364 ++++++++++++++++++++++++++++++++++++++++++
+>  crypto/Kconfig                |   9 ++
+>  5 files changed, 385 insertions(+)
+>  create mode 100644 arch/mips/crypto/Makefile
+>  create mode 100644 arch/mips/crypto/crc32-mips.c
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index cb7fcc4..0f96812 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2036,6 +2036,7 @@ config CPU_MIPSR6
+>  	select CPU_HAS_RIXI
+>  	select HAVE_ARCH_BITREVERSE
+>  	select MIPS_ASID_BITS_VARIABLE
+> +	select MIPS_CRC_SUPPORT
+>  	select MIPS_SPRAM
+>  
+>  config EVA
+> @@ -2503,6 +2504,9 @@ config MIPS_ASID_BITS
+>  config MIPS_ASID_BITS_VARIABLE
+>  	bool
+>  
+> +config MIPS_CRC_SUPPORT
+> +	bool
+> +
+>  #
+>  # - Highmem only makes sense for the 32-bit kernel.
+>  # - The current highmem code will only work properly on physically indexed
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index a96d97a..aa77536 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -216,6 +216,8 @@ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
+>  endif
+>  toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
+>  cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
+> +toolchain-crc				:= $(call cc-option-yn,$(mips-cflags) -Wa$(comma)-mcrc)
+> +cflags-$(toolchain-crc)			+= -DTOOLCHAIN_SUPPORTS_CRC
+>  
+>  #
+>  # Firmware support
+> @@ -324,6 +326,7 @@ libs-y			+= arch/mips/math-emu/
+>  # See arch/mips/Kbuild for content of core part of the kernel
+>  core-y += arch/mips/
+>  
+> +drivers-$(CONFIG_MIPS_CRC_SUPPORT) += arch/mips/crypto/
+>  drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
+>  
+>  # suspend and hibernation support
+> diff --git a/arch/mips/crypto/Makefile b/arch/mips/crypto/Makefile
+> new file mode 100644
+> index 0000000..665c725
+> --- /dev/null
+> +++ b/arch/mips/crypto/Makefile
+> @@ -0,0 +1,5 @@
+> +#
+> +# Makefile for MIPS crypto files..
+> +#
+> +
+> +obj-$(CONFIG_CRYPTO_CRC32_MIPS) += crc32-mips.o
+> diff --git a/arch/mips/crypto/crc32-mips.c b/arch/mips/crypto/crc32-mips.c
+> new file mode 100644
+> index 0000000..f2f5db0
+> --- /dev/null
+> +++ b/arch/mips/crypto/crc32-mips.c
+> @@ -0,0 +1,364 @@
+> +/*
+> + * crc32-mips.c - CRC32 and CRC32C using optional MIPSr6 instructions
+> + *
+> + * Module based on arm64/crypto/crc32-arm.c
+> + *
+> + * Copyright (C) 2014 Linaro Ltd <yazen.ghannam@linaro.org>
+> + * Copyright (C) 2017 Imagination Technologies, Ltd.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/unaligned/access_ok.h>
+> +#include <linux/cpufeature.h>
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/string.h>
+> +#include <asm/mipsregs.h>
+> +
+> +#include <crypto/internal/hash.h>
+> +
+> +enum crc_op_size {
+> +	b, h, w, d,
+> +};
+> +
+> +enum crc_type {
+> +	crc32,
+> +	crc32c,
+> +};
+> +
+> +#ifdef TOOLCHAIN_SUPPORTS_CRC
+> +
+> +#define _CRC32(crc, value, size, type)		\
+> +do {						\
+> +	__asm__ __volatile__(			\
+> +	".set	push\n\t"			\
+> +	".set	crc\n\t"			\
+> +	#type #size "	%0, %1, %0\n\t"		\
+> +	".set	pop"			\
+> +	: "+r" (crc)				\
+> +	: "r" (value)				\
+> +);						\
+> +} while(0)
+> +
+> +#define CRC_REGISTER
+> +
+> +#else	/* TOOLCHAIN_SUPPORTS_CRC */
+> +/*
+> + * Crc argument is currently ignored and the assembly below assumes
+> + * the crc is stored in $2. As the register number is encoded in the
+> + * instruction we can't let the compiler chose the register it wants.
+> + * An alternative is to change the code to do
+> + * move $2, %0
+> + * crc32
+> + * move %0, $2
+> + * but that adds unnecessary operations that the crc32 operation is
+> + * designed to avoid. This issue can go away once the assembler
+> + * is extended to support this operation and the compiler can make
+> + * the right register choice automatically
+> + */
+> +
+> +#define _CRC32(crc, value, size, type)						\
+> +do {										\
+> +	__asm__ __volatile__(							\
+> +	".set	push\n\t"							\
+> +	".set	noat\n\t"							\
+> +	"move	$at, %1\n\t"							\
+> +	"# " #type #size "	%0, $at, %0\n\t"				\
+> +	_ASM_INSN_IF_MIPS(0x7c00000f | (2 << 16) | (1 << 21) | (%2 << 6) | (%3 << 8))	\
+> +	_ASM_INSN32_IF_MM(0x00000030 | (1 << 16) | (2 << 21) | (%2 << 14) | (%3 << 3))	\
+> +	".set	pop"							\
+> +	: "+r" (crc)								\
+> +	: "r" (value), "i" (size), "i" (type)					\
+> +);										\
+> +} while(0)
+> +
+> +#define CRC_REGISTER __asm__("$2")
+> +#endif	/* !TOOLCHAIN_SUPPORTS_CRC */
 
-Anyway no code really references neither empty_bad_page nor
-empty_bad_pte_table. We only allocate the storage which is not used by
-anybody so remove them.
+Over there years we've added so many inlines for instructions not yet
+supported by gas and the simply approach always requires extra move
+instructions.  So I finally cooked up something better which only relies
+on things that are in gas for as long as I can remember.  This illustrates
+it:
 
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Jeff Dike <jdike@addtoit.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: <uclinux-h8-devel@lists.sourceforge.jp>
-Cc: <linux-mips@linux-mips.org>
-Cc: <linux-sh@vger.kernel.org>
-Signed-off-by: Michal Hocko <mhocko@suse.com>
----
-Hi,
-Pasha Tatashin made me look closer at
-include/linux/page-flags.h
-  * PG_reserved is set for special pages, which can never be swapped out. Some
-  * of them might not even exist (eg empty_bad_page)...
-in http://lkml.kernel.org/r/691dba28-718c-e9a9-d006-88505eb5cd7e@oracle.com
-because it was the first time I have heard about empty_bad_page. It
-seems that this is no longer needed but there are some relicts in
-arch code. Please note that I have no ways to test this other than
-run it through my compile (cross arch) test battery and there were no
-failures.
+	.macro	parse var r
+	.ifc	\r, $0
+\var	=	0
+	.endif
+	.ifc	\r, $1
+\var	=	1
+	.endif
+	.ifc	\r, $2
+\var	=	2
+	.endif
+	.ifc	\r, $3
+\var	=	3
+	.endif
+	.endm
 
- arch/frv/mm/init.c                 | 14 --------------
- arch/h8300/mm/init.c               | 13 -------------
- arch/mips/include/asm/pgtable-64.h |  8 +-------
- arch/mn10300/kernel/head.S         |  8 --------
- arch/sh/kernel/head_64.S           |  8 --------
- arch/um/kernel/mem.c               |  3 ---
- include/linux/page-flags.h         |  2 +-
- 7 files changed, 2 insertions(+), 54 deletions(-)
+	.macro	definsn opcode r1 r2 r3
+	parse	__definsn_r1 \r1
+	parse	__definsn_r2 \r2
+	parse	__definsn_r3 \r3
+	.word	\opcode | (__definsn_r1 << 16) | (__definsn_r2 << 20) | (__definsn_r3 << 24)
+	.endm
 
-diff --git a/arch/frv/mm/init.c b/arch/frv/mm/init.c
-index 328f0a292316..cf464100e838 100644
---- a/arch/frv/mm/init.c
-+++ b/arch/frv/mm/init.c
-@@ -42,21 +42,9 @@
- #undef DEBUG
- 
- /*
-- * BAD_PAGE is the page that is used for page faults when linux
-- * is out-of-memory. Older versions of linux just did a
-- * do_exit(), but using this instead means there is less risk
-- * for a process dying in kernel mode, possibly leaving a inode
-- * unused etc..
-- *
-- * BAD_PAGETABLE is the accompanying page-table: it is initialized
-- * to point to BAD_PAGE entries.
-- *
-  * ZERO_PAGE is a special page that is used for zero-initialized
-  * data and COW.
-  */
--static unsigned long empty_bad_page_table;
--static unsigned long empty_bad_page;
--
- unsigned long empty_zero_page;
- EXPORT_SYMBOL(empty_zero_page);
- 
-@@ -72,8 +60,6 @@ void __init paging_init(void)
- 	unsigned long zones_size[MAX_NR_ZONES] = {0, };
- 
- 	/* allocate some pages for kernel housekeeping tasks */
--	empty_bad_page_table	= (unsigned long) alloc_bootmem_pages(PAGE_SIZE);
--	empty_bad_page		= (unsigned long) alloc_bootmem_pages(PAGE_SIZE);
- 	empty_zero_page		= (unsigned long) alloc_bootmem_pages(PAGE_SIZE);
- 
- 	memset((void *) empty_zero_page, 0, PAGE_SIZE);
-diff --git a/arch/h8300/mm/init.c b/arch/h8300/mm/init.c
-index 495a3d6b539b..85c51cf782a5 100644
---- a/arch/h8300/mm/init.c
-+++ b/arch/h8300/mm/init.c
-@@ -39,20 +39,9 @@
- #include <asm/sections.h>
- 
- /*
-- * BAD_PAGE is the page that is used for page faults when linux
-- * is out-of-memory. Older versions of linux just did a
-- * do_exit(), but using this instead means there is less risk
-- * for a process dying in kernel mode, possibly leaving a inode
-- * unused etc..
-- *
-- * BAD_PAGETABLE is the accompanying page-table: it is initialized
-- * to point to BAD_PAGE entries.
-- *
-  * ZERO_PAGE is a special page that is used for zero-initialized
-  * data and COW.
-  */
--static unsigned long empty_bad_page_table;
--static unsigned long empty_bad_page;
- unsigned long empty_zero_page;
- 
- /*
-@@ -77,8 +66,6 @@ void __init paging_init(void)
- 	 * Initialize the bad page table and bad page to point
- 	 * to a couple of allocated pages.
- 	 */
--	empty_bad_page_table = (unsigned long)alloc_bootmem_pages(PAGE_SIZE);
--	empty_bad_page = (unsigned long)alloc_bootmem_pages(PAGE_SIZE);
- 	empty_zero_page = (unsigned long)alloc_bootmem_pages(PAGE_SIZE);
- 	memset((void *)empty_zero_page, 0, PAGE_SIZE);
- 
-diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-index 67fe6dc5211c..0036ea0c7173 100644
---- a/arch/mips/include/asm/pgtable-64.h
-+++ b/arch/mips/include/asm/pgtable-64.h
-@@ -31,12 +31,7 @@
-  * tables. Each page table is also a single 4K page, giving 512 (==
-  * PTRS_PER_PTE) 8 byte ptes. Each pud entry is initialized to point to
-  * invalid_pmd_table, each pmd entry is initialized to point to
-- * invalid_pte_table, each pte is initialized to 0. When memory is low,
-- * and a pmd table or a page table allocation fails, empty_bad_pmd_table
-- * and empty_bad_page_table is returned back to higher layer code, so
-- * that the failure is recognized later on. Linux does not seem to
-- * handle these failures very well though. The empty_bad_page_table has
-- * invalid pte entries in it, to force page faults.
-+ * invalid_pte_table, each pte is initialized to 0.
-  *
-  * Kernel mappings: kernel mappings are held in the swapper_pg_table.
-  * The layout is identical to userspace except it's indexed with the
-@@ -175,7 +170,6 @@
- 	printk("%s:%d: bad pgd %016lx.\n", __FILE__, __LINE__, pgd_val(e))
- 
- extern pte_t invalid_pte_table[PTRS_PER_PTE];
--extern pte_t empty_bad_page_table[PTRS_PER_PTE];
- 
- #ifndef __PAGETABLE_PUD_FOLDED
- /*
-diff --git a/arch/mn10300/kernel/head.S b/arch/mn10300/kernel/head.S
-index 73e00fc78072..0b15f759e0d2 100644
---- a/arch/mn10300/kernel/head.S
-+++ b/arch/mn10300/kernel/head.S
-@@ -433,14 +433,6 @@ ENTRY(swapper_pg_dir)
- ENTRY(empty_zero_page)
- 	.space PAGE_SIZE
- 
--	.balign PAGE_SIZE
--ENTRY(empty_bad_page)
--	.space PAGE_SIZE
--
--	.balign PAGE_SIZE
--ENTRY(empty_bad_pte_table)
--	.space PAGE_SIZE
--
- 	.balign PAGE_SIZE
- ENTRY(large_page_table)
- 	.space PAGE_SIZE
-diff --git a/arch/sh/kernel/head_64.S b/arch/sh/kernel/head_64.S
-index defd851abefa..cca491397a28 100644
---- a/arch/sh/kernel/head_64.S
-+++ b/arch/sh/kernel/head_64.S
-@@ -101,14 +101,6 @@
- mmu_pdtp_cache:
- 	.space PAGE_SIZE, 0
- 
--	.global empty_bad_page
--empty_bad_page:
--	.space PAGE_SIZE, 0
--
--	.global empty_bad_pte_table
--empty_bad_pte_table:
--	.space PAGE_SIZE, 0
--
- 	.global	fpu_in_use
- fpu_in_use:	.quad	0
- 
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index e7437ec62710..3c0e470ea646 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -22,8 +22,6 @@
- /* allocated in paging_init, zeroed in mem_init, and unchanged thereafter */
- unsigned long *empty_zero_page = NULL;
- EXPORT_SYMBOL(empty_zero_page);
--/* allocated in paging_init and unchanged thereafter */
--static unsigned long *empty_bad_page = NULL;
- 
- /*
-  * Initialized during boot, and readonly for initializing page tables
-@@ -146,7 +144,6 @@ void __init paging_init(void)
- 	int i;
- 
- 	empty_zero_page = (unsigned long *) alloc_bootmem_low_pages(PAGE_SIZE);
--	empty_bad_page = (unsigned long *) alloc_bootmem_low_pages(PAGE_SIZE);
- 	for (i = 0; i < ARRAY_SIZE(zones_size); i++)
- 		zones_size[i] = 0;
- 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index ba2d470d2d0a..048b763e939d 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -17,7 +17,7 @@
-  * Various page->flags bits:
-  *
-  * PG_reserved is set for special pages, which can never be swapped out. Some
-- * of them might not even exist (eg empty_bad_page)...
-+ * of them might not even exist...
-  *
-  * The PG_private bitflag is set on pagecache pages if they contain filesystem
-  * specific data (which is normally at page->private). It can be used by
--- 
-2.14.2
+	.macro	foo r1, r2, r3
+	definsn	42, \r1, \r2, \r3
+	.endm
+
+	foo	$1, $2, $3
+	foo	$3, $0, $1
+
+The advantages are obvious, the hypothetical instruction foo can be used
+just like it was actually supported by gas and no bloat by move
+instructions to shuffle operands in and results out.  Which for some
+very convoluted cases may also save you from an ICE.
+
+Above skeleton still needs a little polish, either by extending the
+parsing of register numbers to all 32 registers or by implementing that
+using another loop which probably would be implemented using a recursive
+gas macro.
+
+> +
+> +#define CRC32(crc, value, size) \
+> +	_CRC32(crc, value, size, crc32)
+> +
+> +#define CRC32C(crc, value, size) \
+> +	_CRC32(crc, value, size, crc32c)
+> +
+> +static u32 crc32_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
+> +{
+> +	register u32 crc CRC_REGISTER = crc_;
+> +
+> +#ifdef CONFIG_64BIT
+> +	while (len >= sizeof(u64)) {
+> +		register u64 value = get_unaligned_le64(p);
+
+Nice try but gcc will happily ignore the register keyword.  It only
+honors register when explicitly assigning a value to a register, something
+like register int foo asm("$42");.  Same for the other instances of
+register below.
+
+Cheers,
+
+  Ralf

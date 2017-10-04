@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2017 22:27:34 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:44931 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993411AbdJCU11ksiUi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2017 22:27:27 +0200
-Received: from p4fea5b32.dip0.t-ipconnect.de ([79.234.91.50] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1dzTmV-0001wO-70; Tue, 03 Oct 2017 22:27:07 +0200
-Date:   Tue, 3 Oct 2017 22:27:08 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     David Laight <David.Laight@ACULAB.COM>
-cc:     'Christoph Hellwig' <hch@lst.de>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        Chris Zankel <chris@zankel.net>,
-        Michal Simek <monstr@monstr.eu>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: RE: [PATCH 02/11] x86: make dma_cache_sync a no-op
-In-Reply-To: <063D6719AE5E284EB5DD2968C1650D6DD0088B73@AcuExch.aculab.com>
-Message-ID: <alpine.DEB.2.20.1710032214370.2278@nanos>
-References: <20171003104311.10058-1-hch@lst.de> <20171003104311.10058-3-hch@lst.de> <063D6719AE5E284EB5DD2968C1650D6DD0088B73@AcuExch.aculab.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 04:46:26 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:35751 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbdJDCqQF6f3A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 04:46:16 +0200
+Received: from ben by shadbolt.decadent.org.uk with local (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1dzZhO-0006hx-6H; Wed, 04 Oct 2017 03:46:15 +0100
+Date:   Wed, 4 Oct 2017 03:46:14 +0100
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Message-ID: <20171004024614.GC2971@decadent.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="3siQDZowHQqNOShm"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+Subject: [RFC PATCH] MIPS: cmpxchg64() and HAVE_VIRT_CPU_ACCOUNTING_GEN don't
+ work for 32-bit SMP
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on shadbolt.decadent.org.uk)
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60242
+X-archive-position: 60243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,26 +44,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 3 Oct 2017, David Laight wrote:
 
-> From: Christoph Hellwig
-> > Sent: 03 October 2017 11:43
-> > x86 does not implement DMA_ATTR_NON_CONSISTENT allocations, so it doesn't
-> > make any sense to do any work in dma_cache_sync given that it must be a
-> > no-op when dma_alloc_attrs returns coherent memory.
-> 
-> I believe it is just about possible to require an explicit
-> write flush on x86.
-> ISTR this can happen with something like write combining.
+--3siQDZowHQqNOShm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As the changelog says: x86 only implements dma_alloc_coherent() which as
-the name says returns coherent memory, i.e. type WB (write back), which is
-not subject to dma_cache_sync() operations.
+__cmpxchg64_local_generic() is atomic only w.r.t tasks and interrupts
+on the same CPU (that's what the 'local' means).  We can't use it to
+implement cmpxchg64() in SMP configurations.
 
-If the driver converts that memory to WC (write combine) on its own via
-PAT/MTRR, then it needs to take care of flushing the write buffer on its
-own. It's not convered by this interface.
+So, for 32-bit SMP configurations:
 
-Thanks,
+- Don't define cmpxchg64()
+- Don't enable HAVE_VIRT_CPU_ACCOUNTING_GEN, which requires it
 
-	tglx
+Fixes: e2093c7b03c1 ("MIPS: Fall back to generic implementation of ...")
+Fixes: bb877e96bea1 ("MIPS: Add support for full dynticks CPU time accounti=
+ng")
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/Kconfig               | 2 +-
+ arch/mips/include/asm/cmpxchg.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index cb7fcc4216fd..1e23f8455b7d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -64,7 +64,7 @@ config MIPS
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_SYSCALL_TRACEPOINTS
+-	select HAVE_VIRT_CPU_ACCOUNTING_GEN
++	select HAVE_VIRT_CPU_ACCOUNTING_GEN if 64BIT || !SMP
+ 	select IRQ_FORCED_THREADING
+ 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
+ 	select MODULES_USE_ELF_REL if MODULES
+diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxch=
+g.h
+index 903f3bf48419..ae2b4583b486 100644
+--- a/arch/mips/include/asm/cmpxchg.h
++++ b/arch/mips/include/asm/cmpxchg.h
+@@ -202,8 +202,10 @@ static inline unsigned long __cmpxchg(volatile void *p=
+tr, unsigned long old,
+ #else
+ #include <asm-generic/cmpxchg-local.h>
+ #define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (=
+n))
++#ifndef CONFIG_SMP
+ #define cmpxchg64(ptr, o, n) cmpxchg64_local((ptr), (o), (n))
+ #endif
++#endif
+=20
+ #undef __scbeqz
+=20
+
+--3siQDZowHQqNOShm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIVAwUBWdRLdee/yOyVhhEJAQorxRAAhJ07FBUYKq7uZGcLYKxPZJbGgJtBXP4F
+3Og7KAKnT4gpGx61DlR+UT+HzsI4b5As8/9fkd+JLc+Pe/Q3ehLGCoZxVMMNlKOw
+F9oRLlcxwfJESjtZ6LKpXakx0tj38eThQ7+uBJhhPzk5nFfOSJ/pumCQCAEQ/EO5
+JM3FC25AniXMr+oVDaX1IQWMwv1fWLCBarF5AweerLvyPsm6ctAEKgZyI8CgO3SD
+k4AEywk3cv+cy8xpq03bLSBVSCiOvLLE9H0LFn1Mt/au2t61ng+vzND3m8Lkfttl
+9HCf71wkcg52EdxPCPSkxFhkw6rCAbJ5D8RGP2cntqVbjJBuuM9Ger0srY+GcTna
+mldZjTCXJni2u+/HOnY1n0IMsy8Mekk2pmfBFpz4ZcvTaOCWMorG3LaDIyT3DroQ
+0eoggsbPuOz1AKQ30NCYMSTDt+fCOQEsztHf5cd+q6j9wnyY9eqmIXQNcErrNsFD
+jmhM1+NLIL6cdjNlSDmKddRi1SqLQaLZjTpWdr6lbEip+ArL0RGYNRAdiOUaDxvV
+em7fJqJkRafhWFMgYkmXwTjoPkcyNSMYsJnXg6QwqW6mRS4YroyftxIbDjYsUQK6
+2AISE38tnhgmMYXIm1Gw7UrB7VXD7PeFL5Ak4/Xfg/5l1LAQoB0XdthjcofIWQ6Y
+8PvOa932uvs=
+=iZCK
+-----END PGP SIGNATURE-----
+
+--3siQDZowHQqNOShm--

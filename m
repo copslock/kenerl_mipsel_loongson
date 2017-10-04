@@ -1,39 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 12:49:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:16078 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990491AbdJDKtQAoFAR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 12:49:16 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 1BC6EB1D9F84D;
-        Wed,  4 Oct 2017 11:49:06 +0100 (IST)
-Received: from WR-NOWAKOWSKI.hh.imgtec.org (10.100.200.3) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Wed, 4 Oct 2017 11:49:08 +0100
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v2 2/2] MIPS: crypto: Add crc32 and crc32c hw accelerated module
-Date:   Wed, 4 Oct 2017 12:48:53 +0200
-Message-ID: <1507114133-9129-3-git-send-email-marcin.nowakowski@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1507114133-9129-1-git-send-email-marcin.nowakowski@imgtec.com>
-References: <1507114133-9129-1-git-send-email-marcin.nowakowski@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 12:57:21 +0200 (CEST)
+Received: from mail-wm0-x22f.google.com ([IPv6:2a00:1450:400c:c09::22f]:46700
+        "EHLO mail-wm0-x22f.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990491AbdJDK5LZm17R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 12:57:11 +0200
+Received: by mail-wm0-x22f.google.com with SMTP id m72so22062541wmc.1
+        for <linux-mips@linux-mips.org>; Wed, 04 Oct 2017 03:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=g/+1E/FvCLLpqRNlBJJtsv9jHbbXVzj0tq0l82riPAI=;
+        b=IMOK+hQJpd7T01oxR8jmVwL2i2Q7aAE4o6bOj/bOJsvxkoojcj6TcXznMbMmqSF65c
+         iCreH+7exoi0V5lc0GTFa0x3C7Gh3VR9CMPbaOO7mERnHGtocFeXZZxe340VDGOWV4N5
+         bP3fch/f3tCfqgmrsnvkRR4297C7ecvS/4NqQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=g/+1E/FvCLLpqRNlBJJtsv9jHbbXVzj0tq0l82riPAI=;
+        b=SH8nv5UkHZWHDkLLFyXC65jpz66HBzgoOihEl3S6pFbyGKnRqcRTvD9gK/Pqpq4kK3
+         mmJsTsDSnl2y0Emmvuyr/6OoA18x6q4xwhCcfYQVuFTy+Y5PkOoebV9l+qPy/+uz8N/K
+         Dcd87l1meKchx74V1MyY5K2+9mvbisw+tuiZ51V9zanXelF0I4CcPyJASPFQtYzck/6J
+         GdbKDt9teKmiTlHi9woXLcKWcIToavBzX6WUkR3AgBURGSb9BwgTAsI3jypthLAuKyNg
+         azJrgO9C3Z0vGBCQN+CdSUgrUJfiJOqC8fcw3PrwzK8V8rOQ0+NkDLgtMWf3FulMhUk4
+         C11A==
+X-Gm-Message-State: AHPjjUjM25zcj5k2tky7PT8EfGl+aAMP3FF3dHGEfZnAaHS4/fGknT41
+        NxEx9y0r7RXZmut9qQb2oRWdDg==
+X-Google-Smtp-Source: AOwi7QAXmf4V5xxqGsEyyv14J9FEIqG9vZruV1b3Am2sycy/02/yTVIx6yk1xd/lTdpZEhMmPxPIbg==
+X-Received: by 10.80.212.40 with SMTP id t40mr28803272edh.67.1507114625862;
+        Wed, 04 Oct 2017 03:57:05 -0700 (PDT)
+Received: from dell ([2.27.167.120])
+        by smtp.gmail.com with ESMTPSA id h33sm13528445edh.70.2017.10.04.03.57.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 04 Oct 2017 03:57:05 -0700 (PDT)
+Date:   Wed, 4 Oct 2017 11:57:03 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Steven Miao <realmz6@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Ben Dooks <ben.dooks@codethink.co.uk>,
+        Heiko Schocher <hs@denx.de>
+Subject: Re: [PATCH 1/7] i2c: gpio: Convert to use descriptors
+Message-ID: <20171004105703.qmahtqieimw4kn3p@dell>
+References: <20170917093906.16325-1-linus.walleij@linaro.org>
+ <20170917093906.16325-2-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.3]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20170917093906.16325-2-linus.walleij@linaro.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60250
+X-archive-position: 60251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: lee.jones@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,471 +81,149 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This module registers crc32 and crc32c algorithms that use the
-optional CRC32[bhwd] and CRC32C[bhwd] instructions in MIPSr6 cores.
+On Sun, 17 Sep 2017, Linus Walleij wrote:
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: linux-crypto@vger.kernel.org
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
+> This converts the GPIO-based I2C-driver to using GPIO
+> descriptors instead of the old global numberspace-based
+> GPIO interface. We:
+> 
+> - Convert the driver to unconditionally grab two GPIOs
+>   from the device by index 0 (SDA) and 1 (SCL) which
+>   will work fine with device tree and descriptor tables.
+>   The existing device trees will continue to work just
+>   like before, but without any roundtrip through the
+>   global numberspace.
+> 
+> - Brutally convert all boardfiles still passing global
+>   GPIOs by registering descriptor tables associated with
+>   the devices instead so this driver does not need to keep
+>   supporting passing any GPIO numbers as platform data.
+> 
+> There is no stepwise approach as elegant as this, I
+> strongly prefer this big hammer over any antsteps for this
+> conversion. This way the old GPIO numbers go away and
+> NEVER COME BACK.
+> 
+> Special conversion for the different boards utilizing
+> I2C-GPIO:
+> 
+> - EP93xx (arch/arm/mach-ep93xx): pretty straight forward as
+>   all boards were using the same two GPIO lines, just define
+>   these two in a lookup table for "i2c-gpio" and register
+>   these along with the device. None of them define any
+>   other platform data so just pass NULL as platform data.
+>   This platform selects GPIOLIB so all should be smooth.
+>   The pins appear on a gpiochip for bank "G" as pins 1 (SDA)
+>   and 0 (SCL).
+> 
+> - IXP4 (arch/arm/mach-ixp4): descriptor tables have to
+>   be registered for each board separately. They all use
+>   "IXP4XX_GPIO_CHIP" so it is pretty straight forward.
+>   Most board define no other platform data than SCL/SDA
+>   so they can drop the #include of <linux/i2c-gpio.h> and
+>   assign NULL to platform data.
+> 
+>   The "goramo_mlr" (Goramo Multilink Router) board is a bit
+>   worrisome: it implements its own I2C bit-banging in the
+>   board file, and optionally registers an I2C serial port,
+>   but claims the same GPIO lines for itself in the board file.
+>   This is not going to work: there will be competition for the
+>   GPIO lines, so delete the optional extra I2C bus instead, no
+>   I2C devices are registered on it anyway, there are just hints
+>   that it may contain an EEPROM that may be accessed from
+>   userspace. This needs to be fixed up properly by the serial
+>   clock using I2C emulation so drop a note in the code.
+> 
+> - KS8695 board acs5k (arch/arm/mach-ks8695/board-acs5.c)
+>   has some platform data in addition to the pins so it needs to
+>   be kept around sans GPIO lines. Its GPIO chip is named
+>   "KS8695" and the arch selects GPIOLIB.
+> 
+> - PXA boards (arch/arm/mach-pxa/*) use some of the platform
+>   data so it needs to be preserved here. The viper board even
+>   registers two GPIO I2Cs. The gpiochip is named "gpio-pxa" and
+>   the arch selects GPIOLIB.
+> 
+> - SA1100 Simpad (arch/arm/mach-sa1100/simpad.c) defines a GPIO
+>   I2C bus, and the arch selects GPIOLIB.
+> 
+> - Blackfin boards (arch/blackfin/bf533 etc) for these I assume
+>   their I2C GPIOs refer to the local gpiochip defined in
+>   arch/blackfin/kernel/bfin_gpio.c names "BFIN-GPIO".
+>   The arch selects GPIOLIB. The boards get spiked with
+>   IF_ENABLED(I2C_GPIO) but that is a side effect of it
+>   being like that already (I would just have Kconfig select
+>   I2C_GPIO and get rid of them all.) I also delete any
+>   platform data set to 0 as it will get that value anyway
+>   from static declartions of platform data.
+> 
+> - The MIPS selects GPIOLIB and the Alchemy machine is using
+>   two local GPIO chips, one of them has a GPIO I2C. We need
+>   to adjust the local offset from the global number space here.
+>   The ATH79 has a proper GPIO driver in drivers/gpio/gpio-ath79.c
+>   and AFAICT the chip is named "ath79-gpio" and the PB44
+>   PCF857x expander spawns from this on GPIO 1 and 0. The latter
+>   board only use the platform data to specify pins so it can be
+>   cut altogether after this.
+> 
+> - The MFD Silicon Motion SM501 is a special case. It dynamically
+>   spawns an I2C bus off the MFD using sm501_create_subdev().
+>   We use an approach to dynamically create a machine descriptor
+>   table and attach this to the "SM501-LOW" or "SM501-HIGH"
+>   gpiochip. We use chip-local offsets to grab the right lines.
+>   We can get rid of two local static inline helpers as part
+>   of this refactoring.
+> 
+> Cc: Steven Miao <realmz6@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Cc: Magnus Damm <magnus.damm@gmail.com>
+> Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+> Cc: Heiko Schocher <hs@denx.de>
+> Acked-by: Olof Johansson <olof@lixom.net>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v1->v2:
+> - Fix a minor typo in error path (scl was sda from copy-paste)
+> - Collected Olof's ACK
+> 
+> Steven (Blackfin): requesting ACK for Wolfram to take this patch.
+> Ralf (MIPS): requesting ACK for Wolfram to take this patch.
+> Lee: requesting ACK for Wolfram to take this patch.
+> SM501 users: requesting Tested-by on this patch.
+> ---
+>  arch/arm/mach-ep93xx/core.c                  |  39 ++++----
+>  arch/arm/mach-ep93xx/edb93xx.c               |  15 +--
+>  arch/arm/mach-ep93xx/include/mach/platform.h |   4 +-
+>  arch/arm/mach-ep93xx/simone.c                |  12 +--
+>  arch/arm/mach-ep93xx/snappercl15.c           |  12 +--
+>  arch/arm/mach-ep93xx/vision_ep9307.c         |   7 +-
+>  arch/arm/mach-ixp4xx/avila-setup.c           |  17 +++-
+>  arch/arm/mach-ixp4xx/dsmg600-setup.c         |  16 +++-
+>  arch/arm/mach-ixp4xx/fsg-setup.c             |  16 +++-
+>  arch/arm/mach-ixp4xx/goramo_mlr.c            |  24 ++---
+>  arch/arm/mach-ixp4xx/ixdp425-setup.c         |  16 +++-
+>  arch/arm/mach-ixp4xx/nas100d-setup.c         |  16 +++-
+>  arch/arm/mach-ixp4xx/nslu2-setup.c           |  16 +++-
+>  arch/arm/mach-ks8695/board-acs5k.c           |  13 ++-
+>  arch/arm/mach-pxa/palmz72.c                  |  12 ++-
+>  arch/arm/mach-pxa/viper.c                    |  27 +++++-
+>  arch/arm/mach-sa1100/simpad.c                |  12 ++-
+>  arch/blackfin/mach-bf533/boards/blackstamp.c |  19 +++-
+>  arch/blackfin/mach-bf533/boards/ezkit.c      |  18 +++-
+>  arch/blackfin/mach-bf533/boards/stamp.c      |  18 +++-
+>  arch/blackfin/mach-bf561/boards/ezkit.c      |  18 +++-
+>  arch/mips/alchemy/board-gpr.c                |  19 +++-
+>  arch/mips/ath79/mach-pb44.c                  |  16 +++-
+>  drivers/i2c/busses/i2c-gpio.c                | 134 +++++++++++++--------------
+>  drivers/mfd/sm501.c                          |  49 +++++-----
 
----
-v2:
- - minor code refactoring as suggested by JamesH which produces
-   a better assembly output for 32-bit builds
----
- arch/mips/Kconfig             |   4 +
- arch/mips/Makefile            |   3 +
- arch/mips/crypto/Makefile     |   5 +
- arch/mips/crypto/crc32-mips.c | 364 ++++++++++++++++++++++++++++++++++++++++++
- crypto/Kconfig                |   9 ++
- 5 files changed, 385 insertions(+)
- create mode 100644 arch/mips/crypto/Makefile
- create mode 100644 arch/mips/crypto/crc32-mips.c
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index cb7fcc4..0f96812 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2036,6 +2036,7 @@ config CPU_MIPSR6
- 	select CPU_HAS_RIXI
- 	select HAVE_ARCH_BITREVERSE
- 	select MIPS_ASID_BITS_VARIABLE
-+	select MIPS_CRC_SUPPORT
- 	select MIPS_SPRAM
- 
- config EVA
-@@ -2503,6 +2504,9 @@ config MIPS_ASID_BITS
- config MIPS_ASID_BITS_VARIABLE
- 	bool
- 
-+config MIPS_CRC_SUPPORT
-+	bool
-+
- #
- # - Highmem only makes sense for the 32-bit kernel.
- # - The current highmem code will only work properly on physically indexed
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index a96d97a..aa77536 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -216,6 +216,8 @@ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
- endif
- toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
- cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
-+toolchain-crc				:= $(call cc-option-yn,$(mips-cflags) -Wa$(comma)-mcrc)
-+cflags-$(toolchain-crc)			+= -DTOOLCHAIN_SUPPORTS_CRC
- 
- #
- # Firmware support
-@@ -324,6 +326,7 @@ libs-y			+= arch/mips/math-emu/
- # See arch/mips/Kbuild for content of core part of the kernel
- core-y += arch/mips/
- 
-+drivers-$(CONFIG_MIPS_CRC_SUPPORT) += arch/mips/crypto/
- drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
- 
- # suspend and hibernation support
-diff --git a/arch/mips/crypto/Makefile b/arch/mips/crypto/Makefile
-new file mode 100644
-index 0000000..665c725
---- /dev/null
-+++ b/arch/mips/crypto/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for MIPS crypto files..
-+#
-+
-+obj-$(CONFIG_CRYPTO_CRC32_MIPS) += crc32-mips.o
-diff --git a/arch/mips/crypto/crc32-mips.c b/arch/mips/crypto/crc32-mips.c
-new file mode 100644
-index 0000000..f2f5db0
---- /dev/null
-+++ b/arch/mips/crypto/crc32-mips.c
-@@ -0,0 +1,364 @@
-+/*
-+ * crc32-mips.c - CRC32 and CRC32C using optional MIPSr6 instructions
-+ *
-+ * Module based on arm64/crypto/crc32-arm.c
-+ *
-+ * Copyright (C) 2014 Linaro Ltd <yazen.ghannam@linaro.org>
-+ * Copyright (C) 2017 Imagination Technologies, Ltd.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#include <linux/unaligned/access_ok.h>
-+#include <linux/cpufeature.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/string.h>
-+#include <asm/mipsregs.h>
-+
-+#include <crypto/internal/hash.h>
-+
-+enum crc_op_size {
-+	b, h, w, d,
-+};
-+
-+enum crc_type {
-+	crc32,
-+	crc32c,
-+};
-+
-+#ifdef TOOLCHAIN_SUPPORTS_CRC
-+
-+#define _CRC32(crc, value, size, type)		\
-+do {						\
-+	__asm__ __volatile__(			\
-+	".set	push\n\t"			\
-+	".set	crc\n\t"			\
-+	#type #size "	%0, %1, %0\n\t"		\
-+	".set	pop"			\
-+	: "+r" (crc)				\
-+	: "r" (value)				\
-+);						\
-+} while(0)
-+
-+#define CRC_REGISTER
-+
-+#else	/* TOOLCHAIN_SUPPORTS_CRC */
-+/*
-+ * Crc argument is currently ignored and the assembly below assumes
-+ * the crc is stored in $2. As the register number is encoded in the
-+ * instruction we can't let the compiler chose the register it wants.
-+ * An alternative is to change the code to do
-+ * move $2, %0
-+ * crc32
-+ * move %0, $2
-+ * but that adds unnecessary operations that the crc32 operation is
-+ * designed to avoid. This issue can go away once the assembler
-+ * is extended to support this operation and the compiler can make
-+ * the right register choice automatically
-+ */
-+
-+#define _CRC32(crc, value, size, type)						\
-+do {										\
-+	__asm__ __volatile__(							\
-+	".set	push\n\t"							\
-+	".set	noat\n\t"							\
-+	"move	$at, %1\n\t"							\
-+	"# " #type #size "	%0, $at, %0\n\t"				\
-+	_ASM_INSN_IF_MIPS(0x7c00000f | (2 << 16) | (1 << 21) | (%2 << 6) | (%3 << 8))	\
-+	_ASM_INSN32_IF_MM(0x00000030 | (1 << 16) | (2 << 21) | (%2 << 14) | (%3 << 3))	\
-+	".set	pop"							\
-+	: "+r" (crc)								\
-+	: "r" (value), "i" (size), "i" (type)					\
-+);										\
-+} while(0)
-+
-+#define CRC_REGISTER __asm__("$2")
-+#endif	/* !TOOLCHAIN_SUPPORTS_CRC */
-+
-+#define CRC32(crc, value, size) \
-+	_CRC32(crc, value, size, crc32)
-+
-+#define CRC32C(crc, value, size) \
-+	_CRC32(crc, value, size, crc32c)
-+
-+static u32 crc32_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
-+{
-+	register u32 crc CRC_REGISTER = crc_;
-+
-+#ifdef CONFIG_64BIT
-+	while (len >= sizeof(u64)) {
-+		register u64 value = get_unaligned_le64(p);
-+
-+		CRC32(crc, value, d);
-+		p += sizeof(u64);
-+		len -= sizeof(u64);
-+	}
-+
-+	if (len & sizeof(u32)) {
-+#else /* !CONFIG_64BIT */
-+	while (len >= sizeof(u32)) {
-+#endif
-+		register u32 value = get_unaligned_le32(p);
-+
-+		CRC32(crc, value, w);
-+		p += sizeof(u32);
-+		len -= sizeof(u32);
-+	}
-+
-+	if (len & sizeof(u16)) {
-+		register u16 value = get_unaligned_le16(p);
-+
-+		CRC32(crc, value, h);
-+		p += sizeof(u16);
-+	}
-+
-+	if (len & sizeof(u8)) {
-+		register u8 value = *p++;
-+
-+		CRC32(crc, value, b);
-+	}
-+
-+	return crc;
-+}
-+
-+static u32 crc32c_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
-+{
-+	register u32 crc CRC_REGISTER = crc_;
-+
-+#ifdef CONFIG_64BIT
-+	while (len >= sizeof(u64)) {
-+		register u64 value = get_unaligned_le64(p);
-+
-+		CRC32C(crc, value, d);
-+		p += sizeof(u64);
-+		len -= sizeof(u64);
-+	}
-+
-+	if (len & sizeof(u32)) {
-+#else /* !CONFIG_64BIT */
-+	while (len >= sizeof(u32)) {
-+#endif
-+		register u32 value = get_unaligned_le32(p);
-+
-+		CRC32C(crc, value, w);
-+		p += sizeof(u32);
-+		len -= sizeof(u32);
-+	}
-+
-+	if (len & sizeof(u16)) {
-+		register u16 value = get_unaligned_le16(p);
-+
-+		CRC32C(crc, value, h);
-+		p += sizeof(u16);
-+	}
-+
-+	if (len & sizeof(u8)) {
-+		register u8 value = *p++;
-+
-+		CRC32C(crc, value, b);
-+	}
-+	return crc;
-+}
-+
-+#define CHKSUM_BLOCK_SIZE	1
-+#define CHKSUM_DIGEST_SIZE	4
-+
-+struct chksum_ctx {
-+	u32 key;
-+};
-+
-+struct chksum_desc_ctx {
-+	u32 crc;
-+};
-+
-+static int chksum_init(struct shash_desc *desc)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(desc->tfm);
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	ctx->crc = mctx->key;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Setting the seed allows arbitrary accumulators and flexible XOR policy
-+ * If your algorithm starts with ~0, then XOR with ~0 before you set
-+ * the seed.
-+ */
-+static int chksum_setkey(struct crypto_shash *tfm, const u8 *key,
-+			 unsigned int keylen)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(tfm);
-+
-+	if (keylen != sizeof(mctx->key)) {
-+		crypto_shash_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
-+		return -EINVAL;
-+	}
-+	mctx->key = get_unaligned_le32(key);
-+	return 0;
-+}
-+
-+static int chksum_update(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	ctx->crc = crc32_mips_le_hw(ctx->crc, data, length);
-+	return 0;
-+}
-+
-+static int chksumc_update(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	ctx->crc = crc32c_mips_le_hw(ctx->crc, data, length);
-+	return 0;
-+}
-+
-+static int chksum_final(struct shash_desc *desc, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	put_unaligned_le32(ctx->crc, out);
-+	return 0;
-+}
-+
-+static int chksumc_final(struct shash_desc *desc, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	put_unaligned_le32(~ctx->crc, out);
-+	return 0;
-+}
-+
-+static int __chksum_finup(u32 crc, const u8 *data, unsigned int len, u8 *out)
-+{
-+	put_unaligned_le32(crc32_mips_le_hw(crc, data, len), out);
-+	return 0;
-+}
-+
-+static int __chksumc_finup(u32 crc, const u8 *data, unsigned int len, u8 *out)
-+{
-+	put_unaligned_le32(~crc32c_mips_le_hw(crc, data, len), out);
-+	return 0;
-+}
-+
-+static int chksum_finup(struct shash_desc *desc, const u8 *data,
-+			unsigned int len, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	return __chksum_finup(ctx->crc, data, len, out);
-+}
-+
-+static int chksumc_finup(struct shash_desc *desc, const u8 *data,
-+			unsigned int len, u8 *out)
-+{
-+	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
-+
-+	return __chksumc_finup(ctx->crc, data, len, out);
-+}
-+
-+static int chksum_digest(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length, u8 *out)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(desc->tfm);
-+
-+	return __chksum_finup(mctx->key, data, length, out);
-+}
-+
-+static int chksumc_digest(struct shash_desc *desc, const u8 *data,
-+			 unsigned int length, u8 *out)
-+{
-+	struct chksum_ctx *mctx = crypto_shash_ctx(desc->tfm);
-+
-+	return __chksumc_finup(mctx->key, data, length, out);
-+}
-+
-+static int chksum_cra_init(struct crypto_tfm *tfm)
-+{
-+	struct chksum_ctx *mctx = crypto_tfm_ctx(tfm);
-+
-+	mctx->key = ~0;
-+	return 0;
-+}
-+
-+static struct shash_alg crc32_alg = {
-+	.digestsize		=	CHKSUM_DIGEST_SIZE,
-+	.setkey			=	chksum_setkey,
-+	.init			=	chksum_init,
-+	.update			=	chksum_update,
-+	.final			=	chksum_final,
-+	.finup			=	chksum_finup,
-+	.digest			=	chksum_digest,
-+	.descsize		=	sizeof(struct chksum_desc_ctx),
-+	.base			=	{
-+		.cra_name		=	"crc32",
-+		.cra_driver_name	=	"crc32-mips-hw",
-+		.cra_priority		=	300,
-+		.cra_blocksize		=	CHKSUM_BLOCK_SIZE,
-+		.cra_alignmask		=	0,
-+		.cra_ctxsize		=	sizeof(struct chksum_ctx),
-+		.cra_module		=	THIS_MODULE,
-+		.cra_init		=	chksum_cra_init,
-+	}
-+};
-+
-+static struct shash_alg crc32c_alg = {
-+	.digestsize		=	CHKSUM_DIGEST_SIZE,
-+	.setkey			=	chksum_setkey,
-+	.init			=	chksum_init,
-+	.update			=	chksumc_update,
-+	.final			=	chksumc_final,
-+	.finup			=	chksumc_finup,
-+	.digest			=	chksumc_digest,
-+	.descsize		=	sizeof(struct chksum_desc_ctx),
-+	.base			=	{
-+		.cra_name		=	"crc32c",
-+		.cra_driver_name	=	"crc32c-mips-hw",
-+		.cra_priority		=	300,
-+		.cra_blocksize		=	CHKSUM_BLOCK_SIZE,
-+		.cra_alignmask		=	0,
-+		.cra_ctxsize		=	sizeof(struct chksum_ctx),
-+		.cra_module		=	THIS_MODULE,
-+		.cra_init		=	chksum_cra_init,
-+	}
-+};
-+
-+static int __init crc32_mod_init(void)
-+{
-+	int err;
-+
-+	err = crypto_register_shash(&crc32_alg);
-+
-+	if (err)
-+		return err;
-+
-+	err = crypto_register_shash(&crc32c_alg);
-+
-+	if (err) {
-+		crypto_unregister_shash(&crc32_alg);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static void __exit crc32_mod_exit(void)
-+{
-+	crypto_unregister_shash(&crc32_alg);
-+	crypto_unregister_shash(&crc32c_alg);
-+}
-+
-+MODULE_AUTHOR("Marcin Nowakowski <marcin.nowakowski@imgtec.com");
-+MODULE_DESCRIPTION("CRC32 and CRC32C using optional MIPS instructions");
-+MODULE_LICENSE("GPL v2");
-+
-+module_cpu_feature_match(MIPS_CRC32, crc32_mod_init);
-+module_exit(crc32_mod_exit);
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 28b1a0d..661971a 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -494,6 +494,15 @@ config CRYPTO_CRC32_PCLMUL
- 	  which will enable any routine to use the CRC-32-IEEE 802.3 checksum
- 	  and gain better performance as compared with the table implementation.
- 
-+config CRYPTO_CRC32_MIPS
-+	tristate "CRC32c and CRC32 CRC algorithm (MIPS)"
-+	depends on MIPS_CRC_SUPPORT
-+	select CRYPTO_HASH
-+	help
-+	  CRC32c and CRC32 CRC algorithms implemented using mips crypto
-+	  instructions, when available.
-+
-+
- config CRYPTO_CRCT10DIF
- 	tristate "CRCT10DIF algorithm"
- 	select CRYPTO_HASH
 -- 
-2.7.4
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

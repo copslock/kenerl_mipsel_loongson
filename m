@@ -1,46 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 11:06:40 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:38288 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990482AbdJDJGeGj1EX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Oct 2017 11:06:34 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 70CC468C8A; Wed,  4 Oct 2017 11:06:31 +0200 (CEST)
-Date:   Wed, 4 Oct 2017 11:06:31 +0200
-From:   'Christoph Hellwig' <hch@lst.de>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     'Christoph Hellwig' <hch@lst.de>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        Chris Zankel <chris@zankel.net>,
-        Michal Simek <monstr@monstr.eu>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH 04/11] ia64: make dma_cache_sync a no-op
-Message-ID: <20171004090631.GA23669@lst.de>
-References: <20171003104311.10058-1-hch@lst.de> <20171003104311.10058-5-hch@lst.de> <063D6719AE5E284EB5DD2968C1650D6DD0089626@AcuExch.aculab.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 12:49:12 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64944 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990482AbdJDKtEh3rtR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Oct 2017 12:49:04 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id C341D3B8361F9;
+        Wed,  4 Oct 2017 11:48:55 +0100 (IST)
+Received: from WR-NOWAKOWSKI.hh.imgtec.org (10.100.200.3) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Wed, 4 Oct 2017 11:48:58 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH v2 0/2] MIPS CRC instruction support 
+Date:   Wed, 4 Oct 2017 12:48:51 +0200
+Message-ID: <1507114133-9129-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <063D6719AE5E284EB5DD2968C1650D6DD0089626@AcuExch.aculab.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.3]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60247
+X-archive-position: 60248
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,9 +41,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 04, 2017 at 08:59:24AM +0000, David Laight wrote:
-> Are you sure about this one?
+MIPSr6 architecture introduces a new CRC32(C) instruction.
+The following patches add a crypto acceleration module for
+crc32 and crc32c algorithms using the new instructions.
 
-Yes.  And if you are not you haven't read either of the cover letter,
-the DMA-API documentation, or the reply from Thomas to your mail
-yesterday.
+Marcin Nowakowski (2):
+  MIPS: add crc instruction support flag to elf_hwcap
+  MIPS: crypto: Add crc32 and crc32c hw accelerated module
+
+ arch/mips/Kconfig                  |   4 +
+ arch/mips/Makefile                 |   3 +
+ arch/mips/crypto/Makefile          |   5 +
+ arch/mips/crypto/crc32-mips.c      | 364 +++++++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/mipsregs.h   |   1 +
+ arch/mips/include/uapi/asm/hwcap.h |   1 +
+ arch/mips/kernel/cpu-probe.c       |   3 +
+ crypto/Kconfig                     |   9 +
+ 8 files changed, 390 insertions(+)
+ create mode 100644 arch/mips/crypto/Makefile
+ create mode 100644 arch/mips/crypto/crc32-mips.c
+
+-- 
+2.7.4

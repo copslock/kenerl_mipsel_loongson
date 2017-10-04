@@ -1,40 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2017 17:36:19 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:40432 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990494AbdJDPgJq6KC2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Oct 2017 17:36:09 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v94Fa1Lb007226;
-        Wed, 4 Oct 2017 17:36:01 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v94Fa0u5007225;
-        Wed, 4 Oct 2017 17:36:00 +0200
-Date:   Wed, 4 Oct 2017 17:36:00 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v2 2/2] MIPS: crypto: Add crc32 and crc32c hw accelerated
- module
-Message-ID: <20171004153600.GB31821@linux-mips.org>
-References: <1507114133-9129-1-git-send-email-marcin.nowakowski@imgtec.com>
- <1507114133-9129-3-git-send-email-marcin.nowakowski@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1507114133-9129-3-git-send-email-marcin.nowakowski@imgtec.com>
-User-Agent: Mutt/1.9.0 (2017-09-02)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 01:28:09 +0200 (CEST)
+Received: from mail-pf0-x230.google.com ([IPv6:2607:f8b0:400e:c00::230]:44996
+        "EHLO mail-pf0-x230.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990474AbdJDX2AW0A7m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 01:28:00 +0200
+Received: by mail-pf0-x230.google.com with SMTP id t62so5849744pfd.1
+        for <linux-mips@linux-mips.org>; Wed, 04 Oct 2017 16:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=ITVgLNE8i9rAfzq2Kc2r6lp0r3r+3s7RVwwO69tcgXU=;
+        b=P6ZY++0x9wt6TdbCRt5x1tyhZRzZ6cGTL4gUmXQwU3fRmTkFzx6NZkJlrux+ulED4L
+         KXh6ARQJBpqR50VHUA2VHcBtnjwSd6aGmCuLGi1VE25X0SP9TQH21uVNBs7uYZT74LfA
+         jHIahkBirmsgmlsdLF4+U4yDBYDTQwfWb9TKQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=ITVgLNE8i9rAfzq2Kc2r6lp0r3r+3s7RVwwO69tcgXU=;
+        b=kUcwq6KIIqcBTK3QD34cBoP27Zkdraflsyi4su7x8fOoFggYXopIULpJcXvDhgShmi
+         0sC+mwJb4YhEU81uXIm5EgGBpjFyJScMQkjYfKwiqdSZQrClb/1+/B26GzEEhZX7KkiV
+         Lwo0qfBUuWbvQygjkJDg1AXrc8CTpRZYd1sQiVkVCGzSih+lpQ3IIf6+s6RfH6dw6SUs
+         jJLZyVwfUEHUTE4HWJ7xCgrNa7ZIFOiBXqUjJLrDPVbPn11pQ3DXK3YPXH2yhcmBiJbl
+         kUi91m/LnXkUO2rV5C1uTOFdg03FYyNYGxmeOuQ1FM7shE2xfPLbEQEZQnJeUVIkXu4v
+         EA5A==
+X-Gm-Message-State: AHPjjUi0ssARiizMUV8AcyWtjKoSyQQKxsTAb4TnejRWadVzCouELSGF
+        BYkEYDzJRodZ4nneJwRFLRON0Q==
+X-Google-Smtp-Source: AOwi7QDS9taT2iqNfNw4YiUZazaApwNZ3lsPhv8LNud5SnwE8aYCExF239pUvfz6UbV6TsSmYJpqpg==
+X-Received: by 10.99.9.198 with SMTP id 189mr19278629pgj.395.1507159674359;
+        Wed, 04 Oct 2017 16:27:54 -0700 (PDT)
+Received: from www.outflux.net (173-164-112-133-Oregon.hfc.comcastbusiness.net. [173.164.112.133])
+        by smtp.gmail.com with ESMTPSA id p77sm30484216pfa.92.2017.10.04.16.27.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Oct 2017 16:27:51 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Kees Cook <keescook@chromium.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Harish Patil <harish.patil@cavium.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.vnet.ibm.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <len.brown@intel.com>,
+        Manish Chopra <manish.chopra@cavium.com>,
+        Mark Gross <mark.gross@intel.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Michael Reed <mdr@sgi.com>, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>, Pavel Machek <pavel@ucw.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Tejun Heo <tj@kernel.org>,
+        Ursula Braun <ubraun@linux.vnet.ibm.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux1394-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 02/13] timer: Remove init_timer_pinned_deferrable() in favor of timer_setup()
+Date:   Wed,  4 Oct 2017 16:26:56 -0700
+Message-Id: <1507159627-127660-3-git-send-email-keescook@chromium.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1507159627-127660-1-git-send-email-keescook@chromium.org>
+References: <1507159627-127660-1-git-send-email-keescook@chromium.org>
+Return-Path: <keescook@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60254
+X-archive-position: 60255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,223 +101,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 04, 2017 at 12:48:53PM +0200, Marcin Nowakowski wrote:
+This refactors the only user of init_timer_pinned_deferrable() to use the
+new timer_setup() and from_timer(). Adds a pointer back to the policy,
+and drops the definition of init_timer_pinned_deferrable().
 
->  arch/mips/Kconfig             |   4 +
->  arch/mips/Makefile            |   3 +
->  arch/mips/crypto/Makefile     |   5 +
->  arch/mips/crypto/crc32-mips.c | 364 ++++++++++++++++++++++++++++++++++++++++++
->  crypto/Kconfig                |   9 ++
->  5 files changed, 385 insertions(+)
->  create mode 100644 arch/mips/crypto/Makefile
->  create mode 100644 arch/mips/crypto/crc32-mips.c
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index cb7fcc4..0f96812 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -2036,6 +2036,7 @@ config CPU_MIPSR6
->  	select CPU_HAS_RIXI
->  	select HAVE_ARCH_BITREVERSE
->  	select MIPS_ASID_BITS_VARIABLE
-> +	select MIPS_CRC_SUPPORT
->  	select MIPS_SPRAM
->  
->  config EVA
-> @@ -2503,6 +2504,9 @@ config MIPS_ASID_BITS
->  config MIPS_ASID_BITS_VARIABLE
->  	bool
->  
-> +config MIPS_CRC_SUPPORT
-> +	bool
-> +
->  #
->  # - Highmem only makes sense for the 32-bit kernel.
->  # - The current highmem code will only work properly on physically indexed
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index a96d97a..aa77536 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -216,6 +216,8 @@ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
->  endif
->  toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
->  cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
-> +toolchain-crc				:= $(call cc-option-yn,$(mips-cflags) -Wa$(comma)-mcrc)
-> +cflags-$(toolchain-crc)			+= -DTOOLCHAIN_SUPPORTS_CRC
->  
->  #
->  # Firmware support
-> @@ -324,6 +326,7 @@ libs-y			+= arch/mips/math-emu/
->  # See arch/mips/Kbuild for content of core part of the kernel
->  core-y += arch/mips/
->  
-> +drivers-$(CONFIG_MIPS_CRC_SUPPORT) += arch/mips/crypto/
->  drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
->  
->  # suspend and hibernation support
-> diff --git a/arch/mips/crypto/Makefile b/arch/mips/crypto/Makefile
-> new file mode 100644
-> index 0000000..665c725
-> --- /dev/null
-> +++ b/arch/mips/crypto/Makefile
-> @@ -0,0 +1,5 @@
-> +#
-> +# Makefile for MIPS crypto files..
-> +#
-> +
-> +obj-$(CONFIG_CRYPTO_CRC32_MIPS) += crc32-mips.o
-> diff --git a/arch/mips/crypto/crc32-mips.c b/arch/mips/crypto/crc32-mips.c
-> new file mode 100644
-> index 0000000..f2f5db0
-> --- /dev/null
-> +++ b/arch/mips/crypto/crc32-mips.c
-> @@ -0,0 +1,364 @@
-> +/*
-> + * crc32-mips.c - CRC32 and CRC32C using optional MIPSr6 instructions
-> + *
-> + * Module based on arm64/crypto/crc32-arm.c
-> + *
-> + * Copyright (C) 2014 Linaro Ltd <yazen.ghannam@linaro.org>
-> + * Copyright (C) 2017 Imagination Technologies, Ltd.
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/unaligned/access_ok.h>
-> +#include <linux/cpufeature.h>
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/string.h>
-> +#include <asm/mipsregs.h>
-> +
-> +#include <crypto/internal/hash.h>
-> +
-> +enum crc_op_size {
-> +	b, h, w, d,
-> +};
-> +
-> +enum crc_type {
-> +	crc32,
-> +	crc32c,
-> +};
-> +
-> +#ifdef TOOLCHAIN_SUPPORTS_CRC
-> +
-> +#define _CRC32(crc, value, size, type)		\
-> +do {						\
-> +	__asm__ __volatile__(			\
-> +	".set	push\n\t"			\
-> +	".set	crc\n\t"			\
-> +	#type #size "	%0, %1, %0\n\t"		\
-> +	".set	pop"			\
-> +	: "+r" (crc)				\
-> +	: "r" (value)				\
-> +);						\
-> +} while(0)
-> +
-> +#define CRC_REGISTER
-> +
-> +#else	/* TOOLCHAIN_SUPPORTS_CRC */
-> +/*
-> + * Crc argument is currently ignored and the assembly below assumes
-> + * the crc is stored in $2. As the register number is encoded in the
-> + * instruction we can't let the compiler chose the register it wants.
-> + * An alternative is to change the code to do
-> + * move $2, %0
-> + * crc32
-> + * move %0, $2
-> + * but that adds unnecessary operations that the crc32 operation is
-> + * designed to avoid. This issue can go away once the assembler
-> + * is extended to support this operation and the compiler can make
-> + * the right register choice automatically
-> + */
-> +
-> +#define _CRC32(crc, value, size, type)						\
-> +do {										\
-> +	__asm__ __volatile__(							\
-> +	".set	push\n\t"							\
-> +	".set	noat\n\t"							\
-> +	"move	$at, %1\n\t"							\
-> +	"# " #type #size "	%0, $at, %0\n\t"				\
-> +	_ASM_INSN_IF_MIPS(0x7c00000f | (2 << 16) | (1 << 21) | (%2 << 6) | (%3 << 8))	\
-> +	_ASM_INSN32_IF_MM(0x00000030 | (1 << 16) | (2 << 21) | (%2 << 14) | (%3 << 3))	\
-> +	".set	pop"							\
-> +	: "+r" (crc)								\
-> +	: "r" (value), "i" (size), "i" (type)					\
-> +);										\
-> +} while(0)
-> +
-> +#define CRC_REGISTER __asm__("$2")
-> +#endif	/* !TOOLCHAIN_SUPPORTS_CRC */
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/cpufreq/powernv-cpufreq.c | 13 +++++++------
+ include/linux/timer.h             |  2 --
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-Over there years we've added so many inlines for instructions not yet
-supported by gas and the simply approach always requires extra move
-instructions.  So I finally cooked up something better which only relies
-on things that are in gas for as long as I can remember.  This illustrates
-it:
-
-	.macro	parse var r
-	.ifc	\r, $0
-\var	=	0
-	.endif
-	.ifc	\r, $1
-\var	=	1
-	.endif
-	.ifc	\r, $2
-\var	=	2
-	.endif
-	.ifc	\r, $3
-\var	=	3
-	.endif
-	.endm
-
-	.macro	definsn opcode r1 r2 r3
-	parse	__definsn_r1 \r1
-	parse	__definsn_r2 \r2
-	parse	__definsn_r3 \r3
-	.word	\opcode | (__definsn_r1 << 16) | (__definsn_r2 << 20) | (__definsn_r3 << 24)
-	.endm
-
-	.macro	foo r1, r2, r3
-	definsn	42, \r1, \r2, \r3
-	.endm
-
-	foo	$1, $2, $3
-	foo	$3, $0, $1
-
-The advantages are obvious, the hypothetical instruction foo can be used
-just like it was actually supported by gas and no bloat by move
-instructions to shuffle operands in and results out.  Which for some
-very convoluted cases may also save you from an ICE.
-
-Above skeleton still needs a little polish, either by extending the
-parsing of register numbers to all 32 registers or by implementing that
-using another loop which probably would be implemented using a recursive
-gas macro.
-
-> +
-> +#define CRC32(crc, value, size) \
-> +	_CRC32(crc, value, size, crc32)
-> +
-> +#define CRC32C(crc, value, size) \
-> +	_CRC32(crc, value, size, crc32c)
-> +
-> +static u32 crc32_mips_le_hw(u32 crc_, const u8 *p, unsigned int len)
-> +{
-> +	register u32 crc CRC_REGISTER = crc_;
-> +
-> +#ifdef CONFIG_64BIT
-> +	while (len >= sizeof(u64)) {
-> +		register u64 value = get_unaligned_le64(p);
-
-Nice try but gcc will happily ignore the register keyword.  It only
-honors register when explicitly assigning a value to a register, something
-like register int foo asm("$42");.  Same for the other instances of
-register below.
-
-Cheers,
-
-  Ralf
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+index 3ff5160451b4..b6d7c4c98d0a 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -90,6 +90,7 @@ struct global_pstate_info {
+ 	int last_gpstate_idx;
+ 	spinlock_t gpstate_lock;
+ 	struct timer_list timer;
++	struct cpufreq_policy *policy;
+ };
+ 
+ static struct cpufreq_frequency_table powernv_freqs[POWERNV_MAX_PSTATES+1];
+@@ -625,10 +626,10 @@ static inline void  queue_gpstate_timer(struct global_pstate_info *gpstates)
+  * according quadratic equation. Queues a new timer if it is still not equal
+  * to local pstate
+  */
+-void gpstate_timer_handler(unsigned long data)
++void gpstate_timer_handler(struct timer_list *t)
+ {
+-	struct cpufreq_policy *policy = (struct cpufreq_policy *)data;
+-	struct global_pstate_info *gpstates = policy->driver_data;
++	struct global_pstate_info *gpstates = from_timer(gpstates, t, timer);
++	struct cpufreq_policy *policy = gpstates->policy;
+ 	int gpstate_idx, lpstate_idx;
+ 	unsigned long val;
+ 	unsigned int time_diff = jiffies_to_msecs(jiffies)
+@@ -800,9 +801,9 @@ static int powernv_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	policy->driver_data = gpstates;
+ 
+ 	/* initialize timer */
+-	init_timer_pinned_deferrable(&gpstates->timer);
+-	gpstates->timer.data = (unsigned long)policy;
+-	gpstates->timer.function = gpstate_timer_handler;
++	gpstates->policy = policy;
++	timer_setup(&gpstates->timer, gpstate_timer_handler,
++		    TIMER_PINNED | TIMER_DEFERRABLE);
+ 	gpstates->timer.expires = jiffies +
+ 				msecs_to_jiffies(GPSTATE_TIMER_INTERVAL);
+ 	spin_lock_init(&gpstates->gpstate_lock);
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 5ef5c9e41a09..d11e819a86e2 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -132,8 +132,6 @@ static inline void init_timer_on_stack_key(struct timer_list *timer,
+ 	__init_timer((timer), TIMER_PINNED)
+ #define init_timer_deferrable(timer)					\
+ 	__init_timer((timer), TIMER_DEFERRABLE)
+-#define init_timer_pinned_deferrable(timer)				\
+-	__init_timer((timer), TIMER_DEFERRABLE | TIMER_PINNED)
+ #define init_timer_on_stack(timer)					\
+ 	__init_timer_on_stack((timer), 0)
+ 
+-- 
+2.7.4

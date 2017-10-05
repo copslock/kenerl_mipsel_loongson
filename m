@@ -1,21 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 22:40:15 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:59436 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993637AbdJEUjR5RC-f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Oct 2017 22:39:17 +0200
-Received: from localhost (unknown [64.22.228.164])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C34F42191B;
-        Thu,  5 Oct 2017 20:39:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C34F42191B
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=helgaas@kernel.org
-Subject: [PATCH 4/4] alpha/PCI: Make pdev_save_srm_config() static
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     linux-pci@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, Rich Felker <dalias@libc.org>,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 22:58:25 +0200 (CEST)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:54549 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993608AbdJEU6SiEppf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 22:58:18 +0200
+Received: from p5492e998.dip0.t-ipconnect.de ([84.146.233.152] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1e0DCj-00031b-5q; Thu, 05 Oct 2017 22:57:13 +0200
+Date:   Thu, 5 Oct 2017 22:57:16 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+cc:     linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         David Howells <dhowells@redhat.com>,
         Max Filippov <jcmvbkbc@gmail.com>,
@@ -32,30 +30,32 @@ Cc:     linux-mips@linux-mips.org, Rich Felker <dalias@libc.org>,
         Fenghua Yu <fenghua.yu@intel.com>,
         linux-xtensa@linux-xtensa.org, Mikael Starvik <starvik@axis.com>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Richard Henderson <rth@twiddle.net>,
         Chris Zankel <chris@zankel.net>,
         Tony Luck <tony.luck@intel.com>, linux-cris-kernel@axis.com,
         linux-parisc@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         "David S. Miller" <davem@davemloft.net>
-Date:   Thu, 05 Oct 2017 15:39:06 -0500
-Message-ID: <20171005203906.18300.63272.stgit@bhelgaas-glaptop.roam.corp.google.com>
-In-Reply-To: <20171005201939.18300.25690.stgit@bhelgaas-glaptop.roam.corp.google.com>
-References: <20171005201939.18300.25690.stgit@bhelgaas-glaptop.roam.corp.google.com>
-User-Agent: StGit/0.17.1-dirty
+Subject: Re: [PATCH 1/4] PCI: Remove redundant pcibios_set_master()
+ declarations
+In-Reply-To: <20171005203842.18300.67328.stgit@bhelgaas-glaptop.roam.corp.google.com>
+Message-ID: <alpine.DEB.2.20.1710052256540.2398@nanos>
+References: <20171005201939.18300.25690.stgit@bhelgaas-glaptop.roam.corp.google.com> <20171005203842.18300.67328.stgit@bhelgaas-glaptop.roam.corp.google.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <helgaas@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60288
+X-archive-position: 60289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: helgaas@kernel.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,66 +68,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+On Thu, 5 Oct 2017, Bjorn Helgaas wrote:
 
-pdev_save_srm_config() and struct pdev_srm_saved_conf are only used in
-arch/alpha/kernel/pci.c, so make them static there.
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> All users of pcibios_set_master() include <linux/pci.h>, which already has
+> a declaration.  Remove the unnecessary declarations from the <asm/pci.h>
+> files.
+> 
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- arch/alpha/kernel/pci.c      |   11 ++++++++++-
- arch/alpha/kernel/pci_impl.h |    8 --------
- 2 files changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-index 564114eb85e1..16b67621a0d5 100644
---- a/arch/alpha/kernel/pci.c
-+++ b/arch/alpha/kernel/pci.c
-@@ -196,9 +196,16 @@ pcibios_init(void)
- subsys_initcall(pcibios_init);
- 
- #ifdef ALPHA_RESTORE_SRM_SETUP
-+/* Store PCI device configuration left by SRM here. */
-+struct pdev_srm_saved_conf
-+{
-+	struct pdev_srm_saved_conf *next;
-+	struct pci_dev *dev;
-+};
-+
- static struct pdev_srm_saved_conf *srm_saved_configs;
- 
--void pdev_save_srm_config(struct pci_dev *dev)
-+static void pdev_save_srm_config(struct pci_dev *dev)
- {
- 	struct pdev_srm_saved_conf *tmp;
- 	static int printed = 0;
-@@ -238,6 +245,8 @@ pci_restore_srm_config(void)
- 		pci_restore_state(tmp->dev);
- 	}
- }
-+#else
-+#define pdev_save_srm_config(dev)	do {} while (0)
- #endif
- 
- void pcibios_fixup_bus(struct pci_bus *bus)
-diff --git a/arch/alpha/kernel/pci_impl.h b/arch/alpha/kernel/pci_impl.h
-index 2b0ac429f5eb..65adea0d3d78 100644
---- a/arch/alpha/kernel/pci_impl.h
-+++ b/arch/alpha/kernel/pci_impl.h
-@@ -156,16 +156,8 @@ struct pci_iommu_arena
- #endif
- 
- #ifdef ALPHA_RESTORE_SRM_SETUP
--/* Store PCI device configuration left by SRM here. */
--struct pdev_srm_saved_conf
--{
--	struct pdev_srm_saved_conf *next;
--	struct pci_dev *dev;
--};
--
- extern void pci_restore_srm_config(void);
- #else
--#define pdev_save_srm_config(dev)	do {} while (0)
- #define pci_restore_srm_config()	do {} while (0)
- #endif
- 
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>

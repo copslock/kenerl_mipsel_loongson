@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 08:55:03 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:55024 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990511AbdJEGyuJLjaa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 08:54:50 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8AF4B60719; Thu,  5 Oct 2017 06:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1507186486;
-        bh=xJYhV6oqcPoHvx8ohN/ikovIfIM5MGorVc75zaxRmbo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZkKrefgWmU+pRusg7wTONxYsW13VFxrgvHiIztVb0rJGM71Xb6OnW0Pgzh4ezHoPc
-         EjyKWDyCKoysYr2fzkaisjtbE54W7nLghExAYAmkxTEt7a/OeXwTSOUuwINQWo7EK3
-         /hnPZNZgyXhF82FVyJrAmyHKqBZL8gIU5RyDLgX4=
-Received: from x230.qca.qualcomm.com (a88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3510A6025D;
-        Thu,  5 Oct 2017 06:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1507186485;
-        bh=xJYhV6oqcPoHvx8ohN/ikovIfIM5MGorVc75zaxRmbo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=J0V05Snnf0qaUNrquL+d53cPUMB1Zqjzn5/w+mco8HOC3e+27dPsY8LHrJ+BxoHQI
-         mLFCmxaXf1TF4/OLZHszqUxUTNWvyRFRVEr3e7/8kxuE+YWDI2ZzlMac001PoXrDXi
-         pqWOP8zvzRp0XrWkwYPiTE3/Ds4YmIX0ls+Mq2wU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3510A6025D
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,  Andrew Morton <akpm@linux-foundation.org>,  Arnd Bergmann <arnd@arndb.de>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,  Chris Metcalf <cmetcalf@mellanox.com>,  Geert Uytterhoeven <geert@linux-m68k.org>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Guenter Roeck <linux@roeck-us.net>,  Harish Patil <harish.patil@cavium.com>,  Heiko Carstens <heiko.carstens@de.ibm.com>,  "James E.J. Bottomley" <jejb@linux.vnet.ibm.com>,  John Stultz <john.stultz@linaro.org>,  Julian Wiedmann <jwi@linux.vnet.ibm.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,  Len Brown <len.brown@intel.com>,  Manish Chopra <manish.chopra@cavium.com>,  Mark Gross <mark.gross@intel.com>,  "Martin K. Petersen" <martin.petersen@oracle.com>,  Martin Schwidefsky <schwidefsky@de.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>,  Michael Reed <mdr@sgi.com>,  netdev@vger.kernel.org,  Oleg Nesterov <oleg@redhat.com>,  Paul Mackerras <paulus@samba.org>,  Pavel Machek <pavel@u
- cw.cz>,  Petr Mladek <pmladek@suse.com>,  "Rafael J. Wysocki" <rjw@rjwysocki.net>,  Ralf Baechle <ralf@linux-mips.org>,  Sebastian Reichel <sre@kernel.org>,  Stefan Richter <stefanr@s5r6.in-berlin.de>,  Stephen Boyd <sboyd@codeaurora.org>,  Sudip Mukherjee <sudipm.mukherjee@gmail.com>,  Tejun Heo <tj@kernel.org>,  Ursula Braun <ubraun@linux.vnet.ibm.com>,  Viresh Kumar <viresh.kumar@linaro.org>,  Wim Van Sebroeck <wim@iguana.be>,  linux1394-devel@lists.sourceforge.net,  linux-mips@linux-mips.org,  linux-pm@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,  linux-s390@vger.kernel.org,  linux-scsi@vger.kernel.org,  linux-watchdog@vger.kernel.org,  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/13] timer: Remove expires and data arguments from DEFINE_TIMER
-References: <1507159627-127660-1-git-send-email-keescook@chromium.org>
-        <1507159627-127660-11-git-send-email-keescook@chromium.org>
-Date:   Thu, 05 Oct 2017 09:54:33 +0300
-In-Reply-To: <1507159627-127660-11-git-send-email-keescook@chromium.org> (Kees
-        Cook's message of "Wed, 4 Oct 2017 16:27:04 -0700")
-Message-ID: <87d1625bkm.fsf@qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 09:07:57 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3198 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990512AbdJEHHtVhEqa convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 09:07:49 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id B69D29CD58F3F;
+        Thu,  5 Oct 2017 08:07:39 +0100 (IST)
+Received: from BADAG03.ba.imgtec.org (10.20.40.115) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 5 Oct
+ 2017 08:07:42 +0100
+Received: from BADAG02.ba.imgtec.org ([fe80::1092:c22e:588e:c561]) by
+ badag03.ba.imgtec.org ([fe80::5efe:10.20.40.115%12]) with mapi id
+ 14.03.0266.001; Thu, 5 Oct 2017 00:07:37 -0700
+From:   Paul Burton <Paul.Burton@imgtec.com>
+To:     Greg Ungerer <gerg@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH 06/11] MIPS: cmpxchg: Implement __cmpxchg() as a function
+Thread-Topic: [PATCH 06/11] MIPS: cmpxchg: Implement __cmpxchg() as a
+ function
+Thread-Index: AQHTPaNXn2Yy3bwiP02MD3F2STiLXqLU1Law
+Date:   Thu, 5 Oct 2017 07:07:38 +0000
+Message-ID: <D4E56584A8AFC94F836003742821EF82705B9658@badag02.ba.imgtec.org>
+References: <49fe6972-163d-3459-6963-582ffcc35b19@linux-m68k.org>
+In-Reply-To: <49fe6972-163d-3459-6963-582ffcc35b19@linux-m68k.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.20.78.153]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <kvalo@codeaurora.org>
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60277
+X-archive-position: 60278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: Paul.Burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,24 +53,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Kees Cook <keescook@chromium.org> writes:
+Hi Greg,
 
-> Drop the arguments from the macro and adjust all callers with the
-> following script:
->
->   perl -pi -e 's/DEFINE_TIMER\((.*), 0, 0\);/DEFINE_TIMER($1);/g;' \
->     $(git grep DEFINE_TIMER | cut -d: -f1 | sort -u | grep -v timer.h)
->
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # for m68k parts
+> On Fri, 9 Jun 2017 17:26:38 -0700, Paul Burton wrote:
+> > Replace the macro definition of __cmpxchg() with an inline function,
+> > which is easier to read & modify. The cmpxchg() & cmpxchg_local()
+> > macros are adjusted to call the new __cmpxchg() function.
+> >
+> > Signed-off-by: Paul Burton <paul.burton@xxxxxxxxxx>
+> > Cc: Ralf Baechle <ralf@xxxxxxxxxxxxxx>
+> > Cc: linux-mips@xxxxxxxxxxxxxx
+> 
+> I think this patch is breaking user space for me. I say "think"
+> because it is a bit tricky to bisect for the few patches previous to this one
+> since they won't compile cleanly for me (due to this
+> https://www.spinics.net/lists/mips/msg68727.html).
+> 
+> I have a Cavium Octeon 5010 MIPS64 CPU on a custom board, have been
+> running it for years running various kernel versions. Linux-4.13 breaks for me,
+> and I bisected back to this change.
+> 
+> What I see is user space bomb strait after boot with console messages like
+> this:
+> 
+> mount[37] killed because of sig - 11
+> 
+> STACK DUMP:
+> <snip>
+> 
+> I get a lot of them from various programs running from rc scripts.
+> It never manages to fully boot to login/shell.
+> 
+> If I take the linux-4.12 arch/mips/include/asm/cmpxchg.h and drop that in
+> place on a linux-4.13 (or even linux-4.14-rc3) I can compile and run everything
+> successfully.
+> 
+> Any thoughts?
 
-[...]
+Are you running a uniprocessor/non-SMP kernel? Could you try this fix I submitted this fix 5 weeks ago:
 
->  drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
+https://patchwork.linux-mips.org/patch/17226/
 
-For wireless:
+Ralf: Could we get that merged please?
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+(Apologies if this email is formatted oddly.)
 
--- 
-Kalle Valo
+Thanks,
+    Paul

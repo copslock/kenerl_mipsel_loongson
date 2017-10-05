@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 22:58:25 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:54549 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 22:58:48 +0200 (CEST)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:54564 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993608AbdJEU6SiEppf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 22:58:18 +0200
+        with ESMTP id S23993855AbdJEU6ZuljYf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 22:58:25 +0200
 Received: from p5492e998.dip0.t-ipconnect.de ([84.146.233.152] helo=nanos)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tglx@linutronix.de>)
-        id 1e0DCj-00031b-5q; Thu, 05 Oct 2017 22:57:13 +0200
-Date:   Thu, 5 Oct 2017 22:57:16 +0200 (CEST)
+        id 1e0DDJ-00032c-TP; Thu, 05 Oct 2017 22:57:50 +0200
+Date:   Thu, 5 Oct 2017 22:57:53 +0200 (CEST)
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     Bjorn Helgaas <helgaas@kernel.org>
 cc:     linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
@@ -36,11 +36,10 @@ cc:     linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/4] PCI: Remove redundant pcibios_set_master()
- declarations
-In-Reply-To: <20171005203842.18300.67328.stgit@bhelgaas-glaptop.roam.corp.google.com>
-Message-ID: <alpine.DEB.2.20.1710052256540.2398@nanos>
-References: <20171005201939.18300.25690.stgit@bhelgaas-glaptop.roam.corp.google.com> <20171005203842.18300.67328.stgit@bhelgaas-glaptop.roam.corp.google.com>
+Subject: Re: [PATCH 3/4] PCI: Remove unused declarations
+In-Reply-To: <20171005203856.18300.62381.stgit@bhelgaas-glaptop.roam.corp.google.com>
+Message-ID: <alpine.DEB.2.20.1710052257350.2398@nanos>
+References: <20171005201939.18300.25690.stgit@bhelgaas-glaptop.roam.corp.google.com> <20171005203856.18300.62381.stgit@bhelgaas-glaptop.roam.corp.google.com>
 User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,7 +50,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60289
+X-archive-position: 60290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,9 +71,12 @@ On Thu, 5 Oct 2017, Bjorn Helgaas wrote:
 
 > From: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> All users of pcibios_set_master() include <linux/pci.h>, which already has
-> a declaration.  Remove the unnecessary declarations from the <asm/pci.h>
-> files.
+> Remove these unused declarations:
+> 
+>   pcibios_config_init()              # never defined anywhere
+>   pcibios_scan_root()                # only defined by x86
+>   pcibios_get_irq_routing_table()    # only defined by x86
+>   pcibios_set_irq_routing()          # only defined by x86
 > 
 > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 

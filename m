@@ -1,43 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 08:29:44 +0200 (CEST)
-Received: from icp-osb-irony-out4.external.iinet.net.au ([203.59.1.220]:14514
-        "EHLO icp-osb-irony-out4.external.iinet.net.au" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdJEG3ho81ya (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 08:29:37 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2CuAADL0NVZ/zXSMGcNTxkBAQEBAQEBA?=
- =?us-ascii?q?QEBAQcBAQEBAYRBgRWDeppQAwEBAQaBCSKYOgciC4UYhSMUAQIBAQEBAQEBgVU?=
- =?us-ascii?q?SAYRFAQEEIlYbDQsCAiYCKjUNCAEBih8dpW9rgiciixIBAQEBAQUBAQEBHwWBD?=
- =?us-ascii?q?oIfgwuCMisLgnKIF4JhBYoSlyABjl0rh3GJYA2HCUiWSjaBLzIhCCoIhWMcgXl?=
- =?us-ascii?q?kAYV8g0YBAQE?=
-X-IPAS-Result: =?us-ascii?q?A2CuAADL0NVZ/zXSMGcNTxkBAQEBAQEBAQEBAQcBAQEBAYR?=
- =?us-ascii?q?BgRWDeppQAwEBAQaBCSKYOgciC4UYhSMUAQIBAQEBAQEBgVUSAYRFAQEEIlYbD?=
- =?us-ascii?q?QsCAiYCKjUNCAEBih8dpW9rgiciixIBAQEBAQUBAQEBHwWBDoIfgwuCMisLgnK?=
- =?us-ascii?q?IF4JhBYoSlyABjl0rh3GJYA2HCUiWSjaBLzIhCCoIhWMcgXlkAYV8g0YBAQE?=
-X-IronPort-AV: E=Sophos;i="5.42,480,1500912000"; 
-   d="scan'208";a="9925903"
-Received: from unknown (HELO [172.16.0.22]) ([103.48.210.53])
-  by icp-osb-irony-out4.iinet.net.au with ESMTP; 05 Oct 2017 14:29:05 +0800
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-From:   Greg Ungerer <gerg@linux-m68k.org>
-Subject: Re: [PATCH 06/11] MIPS: cmpxchg: Implement __cmpxchg() as a function
-Message-ID: <49fe6972-163d-3459-6963-582ffcc35b19@linux-m68k.org>
-Date:   Thu, 5 Oct 2017 16:29:11 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 08:55:03 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:55024 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990511AbdJEGyuJLjaa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 08:54:50 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 8AF4B60719; Thu,  5 Oct 2017 06:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1507186486;
+        bh=xJYhV6oqcPoHvx8ohN/ikovIfIM5MGorVc75zaxRmbo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ZkKrefgWmU+pRusg7wTONxYsW13VFxrgvHiIztVb0rJGM71Xb6OnW0Pgzh4ezHoPc
+         EjyKWDyCKoysYr2fzkaisjtbE54W7nLghExAYAmkxTEt7a/OeXwTSOUuwINQWo7EK3
+         /hnPZNZgyXhF82FVyJrAmyHKqBZL8gIU5RyDLgX4=
+Received: from x230.qca.qualcomm.com (a88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3510A6025D;
+        Thu,  5 Oct 2017 06:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1507186485;
+        bh=xJYhV6oqcPoHvx8ohN/ikovIfIM5MGorVc75zaxRmbo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=J0V05Snnf0qaUNrquL+d53cPUMB1Zqjzn5/w+mco8HOC3e+27dPsY8LHrJ+BxoHQI
+         mLFCmxaXf1TF4/OLZHszqUxUTNWvyRFRVEr3e7/8kxuE+YWDI2ZzlMac001PoXrDXi
+         pqWOP8zvzRp0XrWkwYPiTE3/Ds4YmIX0ls+Mq2wU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3510A6025D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,  Andrew Morton <akpm@linux-foundation.org>,  Arnd Bergmann <arnd@arndb.de>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,  Chris Metcalf <cmetcalf@mellanox.com>,  Geert Uytterhoeven <geert@linux-m68k.org>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Guenter Roeck <linux@roeck-us.net>,  Harish Patil <harish.patil@cavium.com>,  Heiko Carstens <heiko.carstens@de.ibm.com>,  "James E.J. Bottomley" <jejb@linux.vnet.ibm.com>,  John Stultz <john.stultz@linaro.org>,  Julian Wiedmann <jwi@linux.vnet.ibm.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,  Len Brown <len.brown@intel.com>,  Manish Chopra <manish.chopra@cavium.com>,  Mark Gross <mark.gross@intel.com>,  "Martin K. Petersen" <martin.petersen@oracle.com>,  Martin Schwidefsky <schwidefsky@de.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>,  Michael Reed <mdr@sgi.com>,  netdev@vger.kernel.org,  Oleg Nesterov <oleg@redhat.com>,  Paul Mackerras <paulus@samba.org>,  Pavel Machek <pavel@u
+ cw.cz>,  Petr Mladek <pmladek@suse.com>,  "Rafael J. Wysocki" <rjw@rjwysocki.net>,  Ralf Baechle <ralf@linux-mips.org>,  Sebastian Reichel <sre@kernel.org>,  Stefan Richter <stefanr@s5r6.in-berlin.de>,  Stephen Boyd <sboyd@codeaurora.org>,  Sudip Mukherjee <sudipm.mukherjee@gmail.com>,  Tejun Heo <tj@kernel.org>,  Ursula Braun <ubraun@linux.vnet.ibm.com>,  Viresh Kumar <viresh.kumar@linaro.org>,  Wim Van Sebroeck <wim@iguana.be>,  linux1394-devel@lists.sourceforge.net,  linux-mips@linux-mips.org,  linux-pm@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,  linux-s390@vger.kernel.org,  linux-scsi@vger.kernel.org,  linux-watchdog@vger.kernel.org,  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/13] timer: Remove expires and data arguments from DEFINE_TIMER
+References: <1507159627-127660-1-git-send-email-keescook@chromium.org>
+        <1507159627-127660-11-git-send-email-keescook@chromium.org>
+Date:   Thu, 05 Oct 2017 09:54:33 +0300
+In-Reply-To: <1507159627-127660-11-git-send-email-keescook@chromium.org> (Kees
+        Cook's message of "Wed, 4 Oct 2017 16:27:04 -0700")
+Message-ID: <87d1625bkm.fsf@qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <gerg@linux-m68k.org>
+Content-Type: text/plain
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60276
+X-archive-position: 60277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerg@linux-m68k.org
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,152 +63,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Kees Cook <keescook@chromium.org> writes:
 
-On Fri, 9 Jun 2017 17:26:38 -0700, Paul Burton wrote:
-> Replace the macro definition of __cmpxchg() with an inline function,
-> which is easier to read & modify. The cmpxchg() & cmpxchg_local() macros
-> are adjusted to call the new __cmpxchg() function.
-> 
-> Signed-off-by: Paul Burton <paul.burton@xxxxxxxxxx>
-> Cc: Ralf Baechle <ralf@xxxxxxxxxxxxxx>
-> Cc: linux-mips@xxxxxxxxxxxxxx
+> Drop the arguments from the macro and adjust all callers with the
+> following script:
+>
+>   perl -pi -e 's/DEFINE_TIMER\((.*), 0, 0\);/DEFINE_TIMER($1);/g;' \
+>     $(git grep DEFINE_TIMER | cut -d: -f1 | sort -u | grep -v timer.h)
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # for m68k parts
 
-I think this patch is breaking user space for me. I say "think"
-because it is a bit tricky to bisect for the few patches previous
-to this one since they won't compile cleanly for me (due to this
-https://www.spinics.net/lists/mips/msg68727.html).
+[...]
 
-I have a Cavium Octeon 5010 MIPS64 CPU on a custom board, have been
-running it for years running various kernel versions. Linux-4.13
-breaks for me, and I bisected back to this change.
+>  drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
 
-What I see is user space bomb strait after boot with console messages
-like this:
+For wireless:
 
-mount[37] killed because of sig - 11
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-STACK DUMP:
-CPU: 0 PID: 37 Comm: mount Not tainted 4.13.0-uc0 #8
-task: 8000000007d14200 task.stack: 8000000007f18000
-$ 0   : 0000000000000000 000000ffffd23f70 000000000000001a 000000000001a7d0
-$ 4   : 0000000125af9760 0000000125af9718 0000000125af9748 0000000000000001
-$ 8   : 2f2f2f2f2f2f2f2f 8101010101010100 0000000000000000 00000000ffffffff
-$12   : 000000fff79f6000 000000fff7980f00 000000fff79887d8 0000000000000018
-$16   : 0000000125af9718 0000000125af9760 0000000125af9748 0000000120054cd8
-$20   : 000000012006f3a0 00000001200083ac 0000000120059fa0 000000012006f3a0
-$24   : 00000000000001c8 000000fff798f7d0                                  
-$28   : 000000fff79f75e0 000000ffffd23fe0 0000000120010000 0000000120015820
-Hi    : 00000000000001b6
-Lo    : 000000000001b0b9
-epc   : 000000fff798f7f4 0x000000fff798f7f4
-ra    : 0000000120015820 0x0000000120015820
-Status: 00008cf3	KX SX UX USER EXL IE 
-Cause : 00800020 (ExcCode 08)
-PrId  : 000d0601 (Cavium Octeon+)
-000000ffffc9b000-000000ffffcbc000 rwxp 000000fffffdf000 00:00 0 
-
-I get a lot of them from various programs running from rc scripts.
-It never manages to fully boot to login/shell.
-
-If I take the linux-4.12 arch/mips/include/asm/cmpxchg.h and drop that
-in place on a linux-4.13 (or even linux-4.14-rc3) I can compile and
-run everything successfully.
-
-Any thoughts?
-
-Regards
-Greg
-
-
-
-> ---
-> 
->  arch/mips/include/asm/cmpxchg.h | 59 ++++++++++++++++++++++-------------------
->  1 file changed, 32 insertions(+), 27 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-> index e9c1e97bc29d..516cb66f066b 100644
-> --- a/arch/mips/include/asm/cmpxchg.h
-> +++ b/arch/mips/include/asm/cmpxchg.h
-> @@ -34,7 +34,7 @@
->   *
->   * - Get an error at link-time due to the call to the missing function.
->   */
-> -extern void __cmpxchg_called_with_bad_pointer(void)
-> +extern unsigned long __cmpxchg_called_with_bad_pointer(void)
->  	__compiletime_error("Bad argument size for cmpxchg");
->  extern unsigned long __xchg_called_with_bad_pointer(void)
->  	__compiletime_error("Bad argument size for xchg");
-> @@ -137,38 +137,43 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
->  	__ret;								\
->  })
->  
-> -#define __cmpxchg(ptr, old, new, pre_barrier, post_barrier)		\
-> +static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
-> +				      unsigned long new, unsigned int size)
-> +{
-> +	switch (size) {
-> +	case 4:
-> +		return __cmpxchg_asm("ll", "sc", (volatile u32 *)ptr, old, new);
-> +
-> +	case 8:
-> +		/* lld/scd are only available for MIPS64 */
-> +		if (!IS_ENABLED(CONFIG_64BIT))
-> +			return __cmpxchg_called_with_bad_pointer();
-> +
-> +		return __cmpxchg_asm("lld", "scd", (volatile u64 *)ptr, old, new);
-> +
-> +	default:
-> +		return __cmpxchg_called_with_bad_pointer();
-> +	}
-> +}
-> +
-> +#define cmpxchg_local(ptr, old, new)					\
-> +	((__typeof__(*(ptr)))						\
-> +		__cmpxchg((ptr),					\
-> +			  (unsigned long)(__typeof__(*(ptr)))(old),	\
-> +			  (unsigned long)(__typeof__(*(ptr)))(new),	\
-> +			  sizeof(*(ptr))))
-> +
-> +#define cmpxchg(ptr, old, new)						\
->  ({									\
-> -	__typeof__(ptr) __ptr = (ptr);					\
-> -	__typeof__(*(ptr)) __old = (old);				\
-> -	__typeof__(*(ptr)) __new = (new);				\
-> -	__typeof__(*(ptr)) __res = 0;					\
-> -									\
-> -	pre_barrier;							\
-> -									\
-> -	switch (sizeof(*(__ptr))) {					\
-> -	case 4:								\
-> -		__res = __cmpxchg_asm("ll", "sc", __ptr, __old, __new); \
-> -		break;							\
-> -	case 8:								\
-> -		if (sizeof(long) == 8) {				\
-> -			__res = __cmpxchg_asm("lld", "scd", __ptr,	\
-> -					   __old, __new);		\
-> -			break;						\
-> -		}							\
-> -	default:							\
-> -		__cmpxchg_called_with_bad_pointer();			\
-> -		break;							\
-> -	}								\
-> +	__typeof__(*(ptr)) __res;					\
->  									\
-> -	post_barrier;							\
-> +	smp_mb__before_llsc();						\
-> +	__res = cmpxchg_local((ptr), (old), (new));			\
-> +	smp_llsc_mb();							\
->  									\
->  	__res;								\
->  })
->  
-> -#define cmpxchg(ptr, old, new)		__cmpxchg(ptr, old, new, smp_mb__before_llsc(), smp_llsc_mb())
-> -#define cmpxchg_local(ptr, old, new)	__cmpxchg(ptr, old, new, , )
-> -
->  #ifdef CONFIG_64BIT
->  #define cmpxchg64_local(ptr, o, n)					\
->    ({									\
-> -- 
-> 2.13.1
+-- 
+Kalle Valo

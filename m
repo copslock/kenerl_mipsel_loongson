@@ -1,46 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 09:07:57 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3198 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990512AbdJEHHtVhEqa convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 09:07:49 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id B69D29CD58F3F;
-        Thu,  5 Oct 2017 08:07:39 +0100 (IST)
-Received: from BADAG03.ba.imgtec.org (10.20.40.115) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 5 Oct
- 2017 08:07:42 +0100
-Received: from BADAG02.ba.imgtec.org ([fe80::1092:c22e:588e:c561]) by
- badag03.ba.imgtec.org ([fe80::5efe:10.20.40.115%12]) with mapi id
- 14.03.0266.001; Thu, 5 Oct 2017 00:07:37 -0700
-From:   Paul Burton <Paul.Burton@imgtec.com>
-To:     Greg Ungerer <gerg@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH 06/11] MIPS: cmpxchg: Implement __cmpxchg() as a function
-Thread-Topic: [PATCH 06/11] MIPS: cmpxchg: Implement __cmpxchg() as a
- function
-Thread-Index: AQHTPaNXn2Yy3bwiP02MD3F2STiLXqLU1Law
-Date:   Thu, 5 Oct 2017 07:07:38 +0000
-Message-ID: <D4E56584A8AFC94F836003742821EF82705B9658@badag02.ba.imgtec.org>
-References: <49fe6972-163d-3459-6963-582ffcc35b19@linux-m68k.org>
-In-Reply-To: <49fe6972-163d-3459-6963-582ffcc35b19@linux-m68k.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.20.78.153]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 09:58:34 +0200 (CEST)
+Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:35182
+        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990522AbdJEH61T1IAc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 09:58:27 +0200
+Received: by mail-wr0-x241.google.com with SMTP id y44so4123117wry.2;
+        Thu, 05 Oct 2017 00:58:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=iyubx1KQ7TyStQ7ljkvx1oVzAfp0b0bdlo9lWsTqsQM=;
+        b=USYwBSE2JlH1WwRljSi4T3F0nMo8demgyS0krxhBWduZdzLy42+lCmy4ZKikMyi9O9
+         IscSO+tnHguzEXo/s1kJdmLgGjZTyliMEFqh4VfpGaSc8JVfZ+2oqL+vskTtJLqlgwhB
+         TqP2QL+jBnPh539lHDFl4r/JxwpApyuNhTC5BtrM1uKd6ZK+kpZETdOeEsW3nFYQHWIK
+         jwY+vNlZcDMVHkIztdO1QzvzGgQm9G3ItCZ+WB5braWI9Ek17q3e92uVgYAJ2Qsmoeb7
+         /qy9Ohkr4aN+EGy0/zAbtE0aI5GhuGVX+sANyTBtcREsQ98SBhwmqijkXiXana8qekGl
+         7X7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=iyubx1KQ7TyStQ7ljkvx1oVzAfp0b0bdlo9lWsTqsQM=;
+        b=awD4lIAJDbAM4eDmdQfQzNgCkmu1L0WHr/qgv3P40+2ZVn/wksiPi/dIwU1SBOg1fg
+         SIztzcgLhIS4NObS23gWK1KnrKOEMVhZeSMr5yfR9VjWNaT/9CHSp6L7OosLttbBA44c
+         9C8cCCxmnnV1eJU2+4TgkacNL7+0fo/DgoiK++PXrg0hC3BQkgj3g6wJ45eloIGkAZXj
+         dw9T53mbL/nSSqGy7wm9dTwgU7H+2MgfuRiEEVB+VEY10dTAzSjP/59B1xvjOff5j2q4
+         ifA1kFi9VG8DT7VpuI+zxd1Q6cWROPwsXy8mublG/FzrPFdc6ZVMZGcJelOcfL1opySC
+         2tdA==
+X-Gm-Message-State: AHPjjUgAHsvC9YagN/QIyDJLz189PwmGV95610Els/pF0HHmBy0PuWoI
+        YcM+5fvpo0p/JWts+Z6BIVo=
+X-Google-Smtp-Source: AOwi7QAcTo/57QMLjJ7QHNXDtcxNhPD8M7ATmG/yWTSOdKpZ+icEJ70iQyrQymO9LM/dgipN+8pSOA==
+X-Received: by 10.223.157.142 with SMTP id p14mr21187720wre.104.1507190301889;
+        Thu, 05 Oct 2017 00:58:21 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id i13sm13198176wre.93.2017.10.05.00.58.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 05 Oct 2017 00:58:21 -0700 (PDT)
+Date:   Thu, 5 Oct 2017 09:58:19 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Michal Hocko <mhocko@suse.com>,
+        David Howells <dhowells@redhat.com>,
+        Jeff Dike <jdike@addtoit.com>, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH] mm, arch: remove empty_bad_page*
+Message-ID: <20171005075819.nehorwiced7emgfi@gmail.com>
+References: <20171004150045.30755-1-mhocko@kernel.org>
 MIME-Version: 1.0
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20171004150045.30755-1-mhocko@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <mingo.kernel.org@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60278
+X-archive-position: 60279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Paul.Burton@imgtec.com
+X-original-sender: mingo@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,50 +78,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Greg,
 
-> On Fri, 9 Jun 2017 17:26:38 -0700, Paul Burton wrote:
-> > Replace the macro definition of __cmpxchg() with an inline function,
-> > which is easier to read & modify. The cmpxchg() & cmpxchg_local()
-> > macros are adjusted to call the new __cmpxchg() function.
-> >
-> > Signed-off-by: Paul Burton <paul.burton@xxxxxxxxxx>
-> > Cc: Ralf Baechle <ralf@xxxxxxxxxxxxxx>
-> > Cc: linux-mips@xxxxxxxxxxxxxx
-> 
-> I think this patch is breaking user space for me. I say "think"
-> because it is a bit tricky to bisect for the few patches previous to this one
-> since they won't compile cleanly for me (due to this
-> https://www.spinics.net/lists/mips/msg68727.html).
-> 
-> I have a Cavium Octeon 5010 MIPS64 CPU on a custom board, have been
-> running it for years running various kernel versions. Linux-4.13 breaks for me,
-> and I bisected back to this change.
-> 
-> What I see is user space bomb strait after boot with console messages like
-> this:
-> 
-> mount[37] killed because of sig - 11
-> 
-> STACK DUMP:
-> <snip>
-> 
-> I get a lot of them from various programs running from rc scripts.
-> It never manages to fully boot to login/shell.
-> 
-> If I take the linux-4.12 arch/mips/include/asm/cmpxchg.h and drop that in
-> place on a linux-4.13 (or even linux-4.14-rc3) I can compile and run everything
-> successfully.
-> 
-> Any thoughts?
+* Michal Hocko <mhocko@kernel.org> wrote:
 
-Are you running a uniprocessor/non-SMP kernel? Could you try this fix I submitted this fix 5 weeks ago:
+> From: Michal Hocko <mhocko@suse.com>
+> 
+> empty_bad_page and empty_bad_pte_table seems to be a relict from old
+> days which is not used by any code for a long time. I have tried to find
+> when exactly but this is not really all that straightforward due to many
+> code movements - traces disappear around 2.4 times.
+> 
+> Anyway no code really references neither empty_bad_page nor
+> empty_bad_pte_table. We only allocate the storage which is not used by
+> anybody so remove them.
+> 
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Jeff Dike <jdike@addtoit.com>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: <uclinux-h8-devel@lists.sourceforge.jp>
+> Cc: <linux-mips@linux-mips.org>
+> Cc: <linux-sh@vger.kernel.org>
+> Signed-off-by: Michal Hocko <mhocko@suse.com>
 
-https://patchwork.linux-mips.org/patch/17226/
+For the x86 bits:
 
-Ralf: Could we get that merged please?
-
-(Apologies if this email is formatted oddly.)
+Acked-by: Ingo Molnar <mingo@kernel.org>
 
 Thanks,
-    Paul
+
+	Ingo

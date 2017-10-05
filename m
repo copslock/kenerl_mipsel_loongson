@@ -1,71 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 09:58:34 +0200 (CEST)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:35182
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990522AbdJEH61T1IAc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 09:58:27 +0200
-Received: by mail-wr0-x241.google.com with SMTP id y44so4123117wry.2;
-        Thu, 05 Oct 2017 00:58:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2017 10:59:28 +0200 (CEST)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:33275
+        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990522AbdJEI7UmeB4D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2017 10:59:20 +0200
+Received: by mail-oi0-x241.google.com with SMTP id n129so8318663oia.0;
+        Thu, 05 Oct 2017 01:59:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=iyubx1KQ7TyStQ7ljkvx1oVzAfp0b0bdlo9lWsTqsQM=;
-        b=USYwBSE2JlH1WwRljSi4T3F0nMo8demgyS0krxhBWduZdzLy42+lCmy4ZKikMyi9O9
-         IscSO+tnHguzEXo/s1kJdmLgGjZTyliMEFqh4VfpGaSc8JVfZ+2oqL+vskTtJLqlgwhB
-         TqP2QL+jBnPh539lHDFl4r/JxwpApyuNhTC5BtrM1uKd6ZK+kpZETdOeEsW3nFYQHWIK
-         jwY+vNlZcDMVHkIztdO1QzvzGgQm9G3ItCZ+WB5braWI9Ek17q3e92uVgYAJ2Qsmoeb7
-         /qy9Ohkr4aN+EGy0/zAbtE0aI5GhuGVX+sANyTBtcREsQ98SBhwmqijkXiXana8qekGl
-         7X7A==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=hjJl86aOnhkRGqNJGmN0QuM/MqZDYoW2aF9qHsZMAyI=;
+        b=RtC4Wuc3+ThC6cjpfM/PkEkl7N6uRU6AK1d0xtl72vUpU9ybjeCzBB+SNzQU8FMBkg
+         5wdpGMpdod5W4qQ5WvjmwmP/r/kCUZigipixNnrRT6RWJ+EnwTIL361BBp2R3bX2sJMv
+         LwMqrzXgJhydDcu4X/nPBJTEV4BRjgGqDd5VOyftW/1zL1pkHP7RfJhn7Za+pHUdiLSr
+         AX/kkHvej3C8oMvChjAjWNy5U9QWgXTR0bnU0lTX1v8XbTWmb/7Luat+5FlqvZyRqWVY
+         XwW0+yIB3tGMPvB+NnbFN+tvrN0zadt3HqAtSbjYK6YyEPvOq5gavp+o4hehKimA5BYS
+         pXJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iyubx1KQ7TyStQ7ljkvx1oVzAfp0b0bdlo9lWsTqsQM=;
-        b=awD4lIAJDbAM4eDmdQfQzNgCkmu1L0WHr/qgv3P40+2ZVn/wksiPi/dIwU1SBOg1fg
-         SIztzcgLhIS4NObS23gWK1KnrKOEMVhZeSMr5yfR9VjWNaT/9CHSp6L7OosLttbBA44c
-         9C8cCCxmnnV1eJU2+4TgkacNL7+0fo/DgoiK++PXrg0hC3BQkgj3g6wJ45eloIGkAZXj
-         dw9T53mbL/nSSqGy7wm9dTwgU7H+2MgfuRiEEVB+VEY10dTAzSjP/59B1xvjOff5j2q4
-         ifA1kFi9VG8DT7VpuI+zxd1Q6cWROPwsXy8mublG/FzrPFdc6ZVMZGcJelOcfL1opySC
-         2tdA==
-X-Gm-Message-State: AHPjjUgAHsvC9YagN/QIyDJLz189PwmGV95610Els/pF0HHmBy0PuWoI
-        YcM+5fvpo0p/JWts+Z6BIVo=
-X-Google-Smtp-Source: AOwi7QAcTo/57QMLjJ7QHNXDtcxNhPD8M7ATmG/yWTSOdKpZ+icEJ70iQyrQymO9LM/dgipN+8pSOA==
-X-Received: by 10.223.157.142 with SMTP id p14mr21187720wre.104.1507190301889;
-        Thu, 05 Oct 2017 00:58:21 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id i13sm13198176wre.93.2017.10.05.00.58.20
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 05 Oct 2017 00:58:21 -0700 (PDT)
-Date:   Thu, 5 Oct 2017 09:58:19 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Michal Hocko <mhocko@suse.com>,
-        David Howells <dhowells@redhat.com>,
-        Jeff Dike <jdike@addtoit.com>, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Richard Weinberger <richard@nod.at>,
-        Rich Felker <dalias@libc.org>,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH] mm, arch: remove empty_bad_page*
-Message-ID: <20171005075819.nehorwiced7emgfi@gmail.com>
-References: <20171004150045.30755-1-mhocko@kernel.org>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=hjJl86aOnhkRGqNJGmN0QuM/MqZDYoW2aF9qHsZMAyI=;
+        b=QsHpJ9YTntbGgiGILxwTd49o83wCY0SryM32DbTd8sXQL4jcY6hwMzdRaqHeZMw8ZC
+         wB7uY+k36afKQbUZsDqZwL9WDX/otF2zQ4/3ywAEg7XgqteO3K7JH/gW5M2QzDZtW7Qd
+         nKmenwc+I6yJxH1Z+wcVGV16Hl8GUJmTZYv/MO71A/Pn5cX3ebHkpdzw+T9corDzzo5l
+         44ikf2cDrRLZ031Z9mMH9QTpFpb0gGK8nuUd/VqkgvraL1sZXWZiRRs3K3EsauV34bNA
+         tDacB6heJXtmuA4hbMWWONSNlhFmCL+IL1ZqhezVOkvW32VtjIG3oAXuOcu8W9Y8RNdQ
+         Cnzw==
+X-Gm-Message-State: AMCzsaU+7E+ZGqCXn7DS/GvNtQnHxYbR3OwAgf+f8RD2mwVFksP4teRT
+        KA6u/bU3M351gWADFbrWkl0C+1JWUtXoD7CoLx4=
+X-Google-Smtp-Source: AOwi7QBhpc8D8UYuWiIwKWJvS95Rt3xTJvJNyMWrWuVLAo4HEdrjagaoZNS1Bf3apjbKftgA+zoJkPKk1PlJ72xrL1U=
+X-Received: by 10.157.17.6 with SMTP id g6mr13540422ote.305.1507193953151;
+ Thu, 05 Oct 2017 01:59:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20171004150045.30755-1-mhocko@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <mingo.kernel.org@gmail.com>
+Received: by 10.157.28.152 with HTTP; Thu, 5 Oct 2017 01:59:12 -0700 (PDT)
+In-Reply-To: <1507159627-127660-11-git-send-email-keescook@chromium.org>
+References: <1507159627-127660-1-git-send-email-keescook@chromium.org> <1507159627-127660-11-git-send-email-keescook@chromium.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 5 Oct 2017 10:59:12 +0200
+X-Google-Sender-Auth: 78QHwSeyj49a01INFvcpGQcFj-4
+Message-ID: <CAK8P3a2uio4L3BMedHGg0wVy2asJ_CD8xqxevSnqdNDKOy6Vqw@mail.gmail.com>
+Subject: Re: [PATCH 10/13] timer: Remove expires and data arguments from DEFINE_TIMER
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Harish Patil <harish.patil@cavium.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.vnet.ibm.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <len.brown@intel.com>,
+        Manish Chopra <manish.chopra@cavium.com>,
+        Mark Gross <mark.gross@intel.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Reed <mdr@sgi.com>,
+        Networking <netdev@vger.kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Tejun Heo <tj@kernel.org>,
+        Ursula Braun <ubraun@linux.vnet.ibm.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux1394-devel@lists.sourceforge.net,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        linux-pm@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60279
+X-archive-position: 60280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,36 +108,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Oct 5, 2017 at 1:27 AM, Kees Cook <keescook@chromium.org> wrote:
+> Drop the arguments from the macro and adjust all callers with the
+> following script:
+>
+>   perl -pi -e 's/DEFINE_TIMER\((.*), 0, 0\);/DEFINE_TIMER($1);/g;' \
+>     $(git grep DEFINE_TIMER | cut -d: -f1 | sort -u | grep -v timer.h)
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # for m68k parts
 
-* Michal Hocko <mhocko@kernel.org> wrote:
+I was slightly worried about this large-scale rework, since it might conflict
+with new users of DEFINE_TIMER(), causing bisection problems.
 
-> From: Michal Hocko <mhocko@suse.com>
-> 
-> empty_bad_page and empty_bad_pte_table seems to be a relict from old
-> days which is not used by any code for a long time. I have tried to find
-> when exactly but this is not really all that straightforward due to many
-> code movements - traces disappear around 2.4 times.
-> 
-> Anyway no code really references neither empty_bad_page nor
-> empty_bad_pte_table. We only allocate the storage which is not used by
-> anybody so remove them.
-> 
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Jeff Dike <jdike@addtoit.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: <uclinux-h8-devel@lists.sourceforge.jp>
-> Cc: <linux-mips@linux-mips.org>
-> Cc: <linux-sh@vger.kernel.org>
-> Signed-off-by: Michal Hocko <mhocko@suse.com>
+However, a little research showed that we have only added two users
+in the past five years, so this is not a real concern.
 
-For the x86 bits:
+for arch/arm, drivers/char and overall:
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
-
-Thanks,
-
-	Ingo
+Acked-by: Arnd Bergmann <arnd@arndb.de>

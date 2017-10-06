@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 10:54:53 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:52016 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 10:55:24 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:52044 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993918AbdJFIy0ny-6o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 10:54:26 +0200
+        by eddie.linux-mips.org with ESMTP id S23993921AbdJFIybhxppo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 10:54:31 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3094F5B1;
-        Fri,  6 Oct 2017 08:54:20 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0CF51723;
+        Fri,  6 Oct 2017 08:54:25 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, Arvind Yadav <arvind.yadav.cs@gmail.com>,
+        antonynpavlov@gmail.com, albeu@free.fr, hackpascal@gmail.com,
+        sboyd@codeaurora.org, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@verizon.com>
-Subject: [PATCH 4.9 055/104] MIPS: Lantiq: Fix another request_mem_region() return code check
-Date:   Fri,  6 Oct 2017 10:51:33 +0200
-Message-Id: <20171006083848.891032794@linuxfoundation.org>
+Subject: [PATCH 4.9 056/104] mips: ath79: clock:- Unmap region obtained by of_iomap
+Date:   Fri,  6 Oct 2017 10:51:34 +0200
+Message-Id: <20171006083849.029960382@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171006083840.743659740@linuxfoundation.org>
 References: <20171006083840.743659740@linuxfoundation.org>
@@ -26,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60300
+X-archive-position: 60301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,41 +48,50 @@ X-list: linux-mips
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Arvind Yadav <arvind.yadav.cs@gmail.com>
 
 
-[ Upstream commit 98ea51cb0c8ce009d9da1fd7b48f0ff1d7a9bbb0 ]
+[ Upstream commit b3d91db3f71d5f70ea60d900425a3f96aeb3d065 ]
 
-Hauke already fixed a couple of them, but one instance remains
-that checks for a negative integer when it should check
-for a NULL pointer:
+Free memory mapping, if ath79_clocks_init_dt_ng is not successful.
 
-arch/mips/lantiq/xway/sysctrl.c: In function 'ltq_soc_init':
-arch/mips/lantiq/xway/sysctrl.c:473:19: error: ordered comparison of pointer with integer zero [-Werror=extra]
-
-Fixes: 6e807852676a ("MIPS: Lantiq: Fix check for return value of request_mem_region()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: John Crispin <john@phrozen.org>
+Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
+Fixes: 3bdf1071ba7d ("MIPS: ath79: update devicetree clock support for AR9132")
+Cc: antonynpavlov@gmail.com
+Cc: albeu@free.fr
+Cc: hackpascal@gmail.com
+Cc: sboyd@codeaurora.org
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15043/
+Patchwork: https://patchwork.linux-mips.org/patch/14915/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/lantiq/xway/sysctrl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/ath79/clock.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -469,8 +469,8 @@ void __init ltq_soc_init(void)
- 			panic("Failed to load xbar nodes from devicetree");
- 		if (of_address_to_resource(np_xbar, 0, &res_xbar))
- 			panic("Failed to get xbar resources");
--		if (request_mem_region(res_xbar.start, resource_size(&res_xbar),
--			res_xbar.name) < 0)
-+		if (!request_mem_region(res_xbar.start, resource_size(&res_xbar),
-+			res_xbar.name))
- 			panic("Failed to get xbar resources");
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -508,16 +508,19 @@ static void __init ath79_clocks_init_dt_
+ 		ar9330_clk_init(ref_clk, pll_base);
+ 	else {
+ 		pr_err("%s: could not find any appropriate clk_init()\n", dnfn);
+-		goto err_clk;
++		goto err_iounmap;
+ 	}
  
- 		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
+ 	if (of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data)) {
+ 		pr_err("%s: could not register clk provider\n", dnfn);
+-		goto err_clk;
++		goto err_iounmap;
+ 	}
+ 
+ 	return;
+ 
++err_iounmap:
++	iounmap(pll_base);
++
+ err_clk:
+ 	clk_put(ref_clk);
+ 

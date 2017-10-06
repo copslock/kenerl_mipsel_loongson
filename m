@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 19:31:03 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:60501 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991743AbdJFRaTb0KxM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 6 Oct 2017 19:30:19 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 22:29:01 +0200 (CEST)
+Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:3651 "EHLO
+        ste-ftg-msa2.bahnhof.se" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23991743AbdJFU2x2jfHL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 22:28:53 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 271B71A45F1;
-        Fri,  6 Oct 2017 19:30:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 05DF71A45EF;
-        Fri,  6 Oct 2017 19:30:13 +0200 (CEST)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        Douglas Leung <douglas.leung@imgtec.com>,
-        Goran Ferenc <goran.ferenc@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@imgtec.com>,
-        Raghu Gandham <raghu.gandham@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: math-emu: Use preferred flavor of unsigned integer declarations
-Date:   Fri,  6 Oct 2017 19:29:01 +0200
-Message-Id: <1507310955-3525-3-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1507310955-3525-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1507310955-3525-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTP id E87D53F5E1;
+        Fri,  6 Oct 2017 22:28:48 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from ste-ftg-msa2.bahnhof.se ([127.0.0.1])
+        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 6rChu_-u1Hzr; Fri,  6 Oct 2017 22:28:47 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTPA id EB32A3F5CA;
+        Fri,  6 Oct 2017 22:28:41 +0200 (CEST)
+Date:   Fri, 6 Oct 2017 22:28:39 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+Message-ID: <20171006202838.GA26707@localhost.localdomain>
+References: <20170911151737.GA2265@localhost.localdomain>
+ <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
+ <20170916133423.GB32582@localhost.localdomain>
+ <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
+ <20170920140715.GA9255@localhost.localdomain>
+ <alpine.DEB.2.00.1709201604400.16752@tp.orcam.me.uk>
+ <20170922163753.GA2415@localhost.localdomain>
+ <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
+ <20170930182608.GB7714@localhost.localdomain>
+ <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60316
+X-archive-position: 60317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,355 +56,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+Hi Maciej,
 
-Fix occurences of unsigned integer declarations that are not
-preferred by standards of checkpatch scripts. This removes
-significant number of checkpatch warnings in math-emu
-directory (several files will become completely warning-free),
-and thus makes easier to spot (now and in the future) other
-perhaps more significant checkpatch errors and warnings.
+>  Anyway, as noted above that shouldn't cause a problem with user software 
+> and I think that any corruption you can see comes from elsewhere.  You'll 
+> have to paper this $ra non-sign-extension issue over somehow to proceed 
+> though.
 
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
----
- arch/mips/math-emu/cp1emu.c     | 18 ++++++++++--------
- arch/mips/math-emu/dp_maddf.c   |  8 ++++----
- arch/mips/math-emu/dp_mul.c     |  8 ++++----
- arch/mips/math-emu/dp_sqrt.c    |  4 ++--
- arch/mips/math-emu/ieee754.h    | 15 ++++++++-------
- arch/mips/math-emu/ieee754int.h |  6 +++---
- arch/mips/math-emu/ieee754sp.c  |  4 ++--
- arch/mips/math-emu/ieee754sp.h  |  2 +-
- arch/mips/math-emu/sp_div.c     |  4 ++--
- arch/mips/math-emu/sp_fint.c    |  2 +-
- arch/mips/math-emu/sp_maddf.c   |  6 +++---
- arch/mips/math-emu/sp_mul.c     | 10 +++++-----
- 12 files changed, 45 insertions(+), 42 deletions(-)
+I've extended do_IRQ with a register check under the condition that
+user_mode(get_irq_regs()) is true, with the following sample results
+where registers $2-$25 are printed if they are not sign-extended
+properly (there is a certain amount of randomness to this):
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index d2fcb30..9f145e1 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -810,7 +810,7 @@ do {									\
- #define SITOREG(si, x)							\
- do {									\
- 	if (cop1_64bit(xcp) && !hybrid_fprs()) {			\
--		unsigned i;						\
-+		unsigned int i;						\
- 		set_fpr32(&ctx->fpr[x], 0, si);				\
- 		for (i = 1; i < ARRAY_SIZE(ctx->fpr[x].val32); i++)	\
- 			set_fpr32(&ctx->fpr[x], i, 0);			\
-@@ -823,7 +823,7 @@ do {									\
- 
- #define SITOHREG(si, x)							\
- do {									\
--	unsigned i;							\
-+	unsigned int i;							\
- 	set_fpr32(&ctx->fpr[x], 1, si);					\
- 	for (i = 2; i < ARRAY_SIZE(ctx->fpr[x].val32); i++)		\
- 		set_fpr32(&ctx->fpr[x], i, 0);				\
-@@ -834,7 +834,7 @@ do {									\
- 
- #define DITOREG(di, x)							\
- do {									\
--	unsigned fpr, i;						\
-+	unsigned int fpr, i;						\
- 	fpr = (x) & ~(cop1_64bit(xcp) ^ 1);				\
- 	set_fpr64(&ctx->fpr[fpr], 0, di);				\
- 	for (i = 1; i < ARRAY_SIZE(ctx->fpr[x].val64); i++)		\
-@@ -1465,7 +1465,7 @@ DEF3OP(nmsub, dp, ieee754dp_mul, ieee754dp_sub, ieee754dp_neg);
- static int fpux_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 	mips_instruction ir, void __user **fault_addr)
- {
--	unsigned rcsr = 0;	/* resulting csr */
-+	unsigned int rcsr = 0;	/* resulting csr */
- 
- 	MIPS_FPU_EMU_INC_STATS(cp1xops);
- 
-@@ -1661,10 +1661,10 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 	mips_instruction ir)
- {
- 	int rfmt;		/* resulting format */
--	unsigned rcsr = 0;	/* resulting csr */
-+	unsigned int rcsr = 0;	/* resulting csr */
- 	unsigned int oldrm;
- 	unsigned int cbit;
--	unsigned cond;
-+	unsigned int cond;
- 	union {
- 		union ieee754dp d;
- 		union ieee754sp s;
-@@ -2029,9 +2029,10 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 
- 		default:
- 			if (!NO_R6EMU && MIPSInst_FUNC(ir) >= fcmp_op) {
--				unsigned cmpop = MIPSInst_FUNC(ir) - fcmp_op;
-+				unsigned int cmpop;
- 				union ieee754sp fs, ft;
- 
-+				cmpop = MIPSInst_FUNC(ir) - fcmp_op;
- 				SPFROMREG(fs, MIPSInst_FS(ir));
- 				SPFROMREG(ft, MIPSInst_FT(ir));
- 				rv.w = ieee754sp_cmp(fs, ft,
-@@ -2379,9 +2380,10 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 
- 		default:
- 			if (!NO_R6EMU && MIPSInst_FUNC(ir) >= fcmp_op) {
--				unsigned cmpop = MIPSInst_FUNC(ir) - fcmp_op;
-+				unsigned int cmpop;
- 				union ieee754dp fs, ft;
- 
-+				cmpop = MIPSInst_FUNC(ir) - fcmp_op;
- 				DPFROMREG(fs, MIPSInst_FS(ir));
- 				DPFROMREG(ft, MIPSInst_FT(ir));
- 				rv.w = ieee754dp_cmp(fs, ft,
-diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-index e0d9be5..7ad79ed 100644
---- a/arch/mips/math-emu/dp_maddf.c
-+++ b/arch/mips/math-emu/dp_maddf.c
-@@ -45,10 +45,10 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- {
- 	int re;
- 	int rs;
--	unsigned lxm;
--	unsigned hxm;
--	unsigned lym;
--	unsigned hym;
-+	unsigned int lxm;
-+	unsigned int hxm;
-+	unsigned int lym;
-+	unsigned int hym;
- 	u64 lrm;
- 	u64 hrm;
- 	u64 lzm;
-diff --git a/arch/mips/math-emu/dp_mul.c b/arch/mips/math-emu/dp_mul.c
-index 87d0b44..60c8bfe 100644
---- a/arch/mips/math-emu/dp_mul.c
-+++ b/arch/mips/math-emu/dp_mul.c
-@@ -26,10 +26,10 @@ union ieee754dp ieee754dp_mul(union ieee754dp x, union ieee754dp y)
- 	int re;
- 	int rs;
- 	u64 rm;
--	unsigned lxm;
--	unsigned hxm;
--	unsigned lym;
--	unsigned hym;
-+	unsigned int lxm;
-+	unsigned int hxm;
-+	unsigned int lym;
-+	unsigned int hym;
- 	u64 lrm;
- 	u64 hrm;
- 	u64 t;
-diff --git a/arch/mips/math-emu/dp_sqrt.c b/arch/mips/math-emu/dp_sqrt.c
-index cd5bc08..cea907b 100644
---- a/arch/mips/math-emu/dp_sqrt.c
-+++ b/arch/mips/math-emu/dp_sqrt.c
-@@ -21,7 +21,7 @@
- 
- #include "ieee754dp.h"
- 
--static const unsigned table[] = {
-+static const unsigned int table[] = {
- 	0, 1204, 3062, 5746, 9193, 13348, 18162, 23592,
- 	29598, 36145, 43202, 50740, 58733, 67158, 75992,
- 	85215, 83599, 71378, 60428, 50647, 41945, 34246,
-@@ -33,7 +33,7 @@ union ieee754dp ieee754dp_sqrt(union ieee754dp x)
- {
- 	struct _ieee754_csr oldcsr;
- 	union ieee754dp y, z, t;
--	unsigned scalx, yh;
-+	unsigned int scalx, yh;
- 	COMPXDP;
- 
- 	EXPLODEXDP;
-diff --git a/arch/mips/math-emu/ieee754.h b/arch/mips/math-emu/ieee754.h
-index 92dc8fa..e0eb7a9 100644
---- a/arch/mips/math-emu/ieee754.h
-+++ b/arch/mips/math-emu/ieee754.h
-@@ -165,11 +165,12 @@ struct _ieee754_csr {
- };
- #define ieee754_csr (*(struct _ieee754_csr *)(&current->thread.fpu.fcr31))
- 
--static inline unsigned ieee754_getrm(void)
-+static inline unsigned int ieee754_getrm(void)
- {
- 	return (ieee754_csr.rm);
- }
--static inline unsigned ieee754_setrm(unsigned rm)
-+
-+static inline unsigned int ieee754_setrm(unsigned int rm)
- {
- 	return (ieee754_csr.rm = rm);
- }
-@@ -177,14 +178,14 @@ static inline unsigned ieee754_setrm(unsigned rm)
- /*
-  * get current exceptions
-  */
--static inline unsigned ieee754_getcx(void)
-+static inline unsigned int ieee754_getcx(void)
- {
- 	return (ieee754_csr.cx);
- }
- 
- /* test for current exception condition
-  */
--static inline int ieee754_cxtest(unsigned n)
-+static inline int ieee754_cxtest(unsigned int n)
- {
- 	return (ieee754_csr.cx & n);
- }
-@@ -192,21 +193,21 @@ static inline int ieee754_cxtest(unsigned n)
- /*
-  * get sticky exceptions
-  */
--static inline unsigned ieee754_getsx(void)
-+static inline unsigned int ieee754_getsx(void)
- {
- 	return (ieee754_csr.sx);
- }
- 
- /* clear sticky conditions
- */
--static inline unsigned ieee754_clrsx(void)
-+static inline unsigned int ieee754_clrsx(void)
- {
- 	return (ieee754_csr.sx = 0);
- }
- 
- /* test for sticky exception condition
-  */
--static inline int ieee754_sxtest(unsigned n)
-+static inline int ieee754_sxtest(unsigned int n)
- {
- 	return (ieee754_csr.sx & n);
- }
-diff --git a/arch/mips/math-emu/ieee754int.h b/arch/mips/math-emu/ieee754int.h
-index dd2071f..06ac0e2 100644
---- a/arch/mips/math-emu/ieee754int.h
-+++ b/arch/mips/math-emu/ieee754int.h
-@@ -54,13 +54,13 @@ static inline int ieee754_class_nan(int xc)
- }
- 
- #define COMPXSP \
--	unsigned xm; int xe; int xs __maybe_unused; int xc
-+	unsigned int xm; int xe; int xs __maybe_unused; int xc
- 
- #define COMPYSP \
--	unsigned ym; int ye; int ys; int yc
-+	unsigned int ym; int ye; int ys; int yc
- 
- #define COMPZSP \
--	unsigned zm; int ze; int zs; int zc
-+	unsigned int zm; int ze; int zs; int zc
- 
- #define EXPLODESP(v, vc, vs, ve, vm)					\
- {									\
-diff --git a/arch/mips/math-emu/ieee754sp.c b/arch/mips/math-emu/ieee754sp.c
-index 260e6896..8423e4c 100644
---- a/arch/mips/math-emu/ieee754sp.c
-+++ b/arch/mips/math-emu/ieee754sp.c
-@@ -65,7 +65,7 @@ union ieee754sp __cold ieee754sp_nanxcpt(union ieee754sp r)
- 	return r;
- }
- 
--static unsigned ieee754sp_get_rounding(int sn, unsigned xm)
-+static unsigned int ieee754sp_get_rounding(int sn, unsigned int xm)
- {
- 	/* inexact must round of 3 bits
- 	 */
-@@ -96,7 +96,7 @@ static unsigned ieee754sp_get_rounding(int sn, unsigned xm)
-  * xe is an unbiased exponent
-  * xm is 3bit extended precision value.
-  */
--union ieee754sp ieee754sp_format(int sn, int xe, unsigned xm)
-+union ieee754sp ieee754sp_format(int sn, int xe, unsigned int xm)
- {
- 	assert(xm);		/* we don't gen exact zeros (probably should) */
- 
-diff --git a/arch/mips/math-emu/ieee754sp.h b/arch/mips/math-emu/ieee754sp.h
-index 0f63e42..8c5a638 100644
---- a/arch/mips/math-emu/ieee754sp.h
-+++ b/arch/mips/math-emu/ieee754sp.h
-@@ -69,7 +69,7 @@ static inline int ieee754sp_finite(union ieee754sp x)
- #define SPDNORMY	SPDNORMx(ym, ye)
- #define SPDNORMZ	SPDNORMx(zm, ze)
- 
--static inline union ieee754sp buildsp(int s, int bx, unsigned m)
-+static inline union ieee754sp buildsp(int s, int bx, unsigned int m)
- {
- 	union ieee754sp r;
- 
-diff --git a/arch/mips/math-emu/sp_div.c b/arch/mips/math-emu/sp_div.c
-index 27f6db3..23587b3 100644
---- a/arch/mips/math-emu/sp_div.c
-+++ b/arch/mips/math-emu/sp_div.c
-@@ -23,9 +23,9 @@
- 
- union ieee754sp ieee754sp_div(union ieee754sp x, union ieee754sp y)
- {
--	unsigned rm;
-+	unsigned int rm;
- 	int re;
--	unsigned bm;
-+	unsigned int bm;
- 
- 	COMPXSP;
- 	COMPYSP;
-diff --git a/arch/mips/math-emu/sp_fint.c b/arch/mips/math-emu/sp_fint.c
-index d5d8495..1a35d12 100644
---- a/arch/mips/math-emu/sp_fint.c
-+++ b/arch/mips/math-emu/sp_fint.c
-@@ -23,7 +23,7 @@
- 
- union ieee754sp ieee754sp_fint(int x)
- {
--	unsigned xm;
-+	unsigned int xm;
- 	int xe;
- 	int xs;
- 
-diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
-index 7195fe7..f823338 100644
---- a/arch/mips/math-emu/sp_maddf.c
-+++ b/arch/mips/math-emu/sp_maddf.c
-@@ -20,9 +20,9 @@ static union ieee754sp _sp_maddf(union ieee754sp z, union ieee754sp x,
- {
- 	int re;
- 	int rs;
--	unsigned rm;
--	uint64_t rm64;
--	uint64_t zm64;
-+	unsigned int rm;
-+	u64 rm64;
-+	u64 zm64;
- 	int s;
- 
- 	COMPXSP;
-diff --git a/arch/mips/math-emu/sp_mul.c b/arch/mips/math-emu/sp_mul.c
-index d910c43..4015101 100644
---- a/arch/mips/math-emu/sp_mul.c
-+++ b/arch/mips/math-emu/sp_mul.c
-@@ -25,15 +25,15 @@ union ieee754sp ieee754sp_mul(union ieee754sp x, union ieee754sp y)
- {
- 	int re;
- 	int rs;
--	unsigned rm;
-+	unsigned int rm;
- 	unsigned short lxm;
- 	unsigned short hxm;
- 	unsigned short lym;
- 	unsigned short hym;
--	unsigned lrm;
--	unsigned hrm;
--	unsigned t;
--	unsigned at;
-+	unsigned int lrm;
-+	unsigned int hrm;
-+	unsigned int t;
-+	unsigned int at;
- 
- 	COMPXSP;
- 	COMPYSP;
--- 
-2.7.4
+    $10 : 00005f6362696c5f
+    epc = 0fb6db00 in ld.so.1[fb60000+19000]
+
+     $8 : ffffff7272655f5f
+     $9 : ffffff7272655f5f
+    $10 : 7066732e6362696c
+    epc = 0fb759a0 in ld.so.1[fb60000+19000]
+
+    $10 : 7274735f65646f6d
+    $12 : ffff000000000000
+    $13 : 0000ffffffffffff
+    $14 : 000000ffffffffff
+    epc = 0fb6d03c in ld.so.1[fb60000+19000]
+
+    $10 : ffff732e6362696c
+    epc = 0fb6cfe8 in ld.so.1[fb60000+19000]
+
+     $8 : 000000ff00000000
+    epc = 77e29fe4 in libc.so.6[77dc0000+12e000]
+
+     $9 : 7fb71f357fb71f40
+    epc = 0041cc60 in busybox[400000+3d000]
+
+    $10 : 0000ffffff6f6c63
+    epc = 0fb6d060 in ld.so.1[fb60000+19000]
+
+    $10 : 00ffffffff657365
+    epc = 0fb6d03c in ld.so.1[fb60000+19000]
+
+    $12 : ffff000000000000
+    $13 : 0000ffffffffffff
+    epc = 0fb6d03c in ld.so.1[fb60000+19000]
+
+     $8 : 4700302e325f4342
+     $9 : 4700302e325f4342
+    $10 : 0000ff6e6769735f
+    $14 : 00ff000000000000
+    epc = 0fb75a6c in ld.so.1[fb60000+19000]
+
+    $10 : 635f6362696c5f5f
+    $12 : ffff000000000000
+    $13 : 0000ffffffffffff
+    epc = 0fb6d608 in ld.so.1[fb60000+19000]
+
+I'm not yet sure this approach is completely correct, because there are
+quite a few macros and other things to set this up, and I'm assuming all
+these registers are saved for IRQs by SAVE_ALL. The regs variable is
+64-bits unsigned long long and save/restore is SD/LD in relevant places.
+
+It would be interesting to somehow single-step through BusyBox and for
+every hardware instruction validate registers to find the first occurrence
+where sign-extension breaks.
+
+What about making the R5900 a 64-bit kernel only if it would turn out that
+the 32-bit sign-extension logic is not completely reliable?
+
+Fredrik

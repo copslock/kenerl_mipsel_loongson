@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 22:29:01 +0200 (CEST)
-Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:3651 "EHLO
-        ste-ftg-msa2.bahnhof.se" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991743AbdJFU2x2jfHL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 22:28:53 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTP id E87D53F5E1;
-        Fri,  6 Oct 2017 22:28:48 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from ste-ftg-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6rChu_-u1Hzr; Fri,  6 Oct 2017 22:28:47 +0200 (CEST)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTPA id EB32A3F5CA;
-        Fri,  6 Oct 2017 22:28:41 +0200 (CEST)
-Date:   Fri, 6 Oct 2017 22:28:39 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-Message-ID: <20171006202838.GA26707@localhost.localdomain>
-References: <20170911151737.GA2265@localhost.localdomain>
- <alpine.DEB.2.00.1709141423180.16752@tp.orcam.me.uk>
- <20170916133423.GB32582@localhost.localdomain>
- <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
- <20170920140715.GA9255@localhost.localdomain>
- <alpine.DEB.2.00.1709201604400.16752@tp.orcam.me.uk>
- <20170922163753.GA2415@localhost.localdomain>
- <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
- <20170930182608.GB7714@localhost.localdomain>
- <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 22:53:06 +0200 (CEST)
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:54219 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991743AbdJFUw6Q3W1L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 22:52:58 +0200
+Received: from belgarion ([90.55.206.157])
+        by mwinf5d57 with ME
+        id JLsq1w00H3QH74y03LsrjQ; Fri, 06 Oct 2017 22:52:52 +0200
+X-ME-Helo: belgarion
+X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
+X-ME-Date: Fri, 06 Oct 2017 22:52:52 +0200
+X-ME-IP: 90.55.206.157
+From:   Robert Jarzmik <robert.jarzmik@free.fr>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
+        linux-mips@linux-mips.org, Steven Miao <realmz6@gmail.com>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/7] i2c: gpio: Augment all boardfiles to use open drain
+References: <20170917093906.16325-1-linus.walleij@linaro.org>
+        <20170917093906.16325-5-linus.walleij@linaro.org>
+X-URL:  http://belgarath.falguerolles.org/
+Date:   Fri, 06 Oct 2017 22:52:50 +0200
+In-Reply-To: <20170917093906.16325-5-linus.walleij@linaro.org> (Linus
+        Walleij's message of "Sun, 17 Sep 2017 11:39:03 +0200")
+Message-ID: <87bmlkf17h.fsf@belgarion.home>
+User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-Return-Path: <noring@nocrew.org>
+Content-Type: text/plain
+Return-Path: <robert.jarzmik@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60317
+X-archive-position: 60318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: robert.jarzmik@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,72 +50,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+Linus Walleij <linus.walleij@linaro.org> writes:
 
->  Anyway, as noted above that shouldn't cause a problem with user software 
-> and I think that any corruption you can see comes from elsewhere.  You'll 
-> have to paper this $ra non-sign-extension issue over somehow to proceed 
-> though.
+> We now handle the open drain mode internally in the I2C GPIO
+> driver, but we will get warnings from the gpiolib that we
+> override the default mode of the line so it becomes open
+> drain.
+>
+> We can fix all in-kernel users by simply passing the right
+> flag along in the descriptor table, and we already touched
+> all of these files in the series so let's just tidy it up.
+>
+> Cc: Steven Miao <realmz6@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Acked-by: Olof Johansson <olof@lixom.net>
+> Acked-by: Lee Jones <lee.jones@linaro.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v1->v2:
+> - Collected ACKs.
+>
+> Steven (Blackfin): requesting ACK for Wolfram to take this patch.
+> Ralf (MIPS): requesting ACK for Wolfram to take this patch.
+For mach-pxa:
+Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-I've extended do_IRQ with a register check under the condition that
-user_mode(get_irq_regs()) is true, with the following sample results
-where registers $2-$25 are printed if they are not sign-extended
-properly (there is a certain amount of randomness to this):
+Cheers.
 
-    $10 : 00005f6362696c5f
-    epc = 0fb6db00 in ld.so.1[fb60000+19000]
-
-     $8 : ffffff7272655f5f
-     $9 : ffffff7272655f5f
-    $10 : 7066732e6362696c
-    epc = 0fb759a0 in ld.so.1[fb60000+19000]
-
-    $10 : 7274735f65646f6d
-    $12 : ffff000000000000
-    $13 : 0000ffffffffffff
-    $14 : 000000ffffffffff
-    epc = 0fb6d03c in ld.so.1[fb60000+19000]
-
-    $10 : ffff732e6362696c
-    epc = 0fb6cfe8 in ld.so.1[fb60000+19000]
-
-     $8 : 000000ff00000000
-    epc = 77e29fe4 in libc.so.6[77dc0000+12e000]
-
-     $9 : 7fb71f357fb71f40
-    epc = 0041cc60 in busybox[400000+3d000]
-
-    $10 : 0000ffffff6f6c63
-    epc = 0fb6d060 in ld.so.1[fb60000+19000]
-
-    $10 : 00ffffffff657365
-    epc = 0fb6d03c in ld.so.1[fb60000+19000]
-
-    $12 : ffff000000000000
-    $13 : 0000ffffffffffff
-    epc = 0fb6d03c in ld.so.1[fb60000+19000]
-
-     $8 : 4700302e325f4342
-     $9 : 4700302e325f4342
-    $10 : 0000ff6e6769735f
-    $14 : 00ff000000000000
-    epc = 0fb75a6c in ld.so.1[fb60000+19000]
-
-    $10 : 635f6362696c5f5f
-    $12 : ffff000000000000
-    $13 : 0000ffffffffffff
-    epc = 0fb6d608 in ld.so.1[fb60000+19000]
-
-I'm not yet sure this approach is completely correct, because there are
-quite a few macros and other things to set this up, and I'm assuming all
-these registers are saved for IRQs by SAVE_ALL. The regs variable is
-64-bits unsigned long long and save/restore is SD/LD in relevant places.
-
-It would be interesting to somehow single-step through BusyBox and for
-every hardware instruction validate registers to find the first occurrence
-where sign-extension breaks.
-
-What about making the R5900 a 64-bit kernel only if it would turn out that
-the 32-bit sign-extension logic is not completely reliable?
-
-Fredrik
+--
+Robert

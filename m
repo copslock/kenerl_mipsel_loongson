@@ -1,22 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 10:55:24 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:52044 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 10:55:53 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:52236 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993921AbdJFIybhxppo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 10:54:31 +0200
+        by eddie.linux-mips.org with ESMTP id S23993936AbdJFIzMECt0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 10:55:12 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0CF51723;
-        Fri,  6 Oct 2017 08:54:25 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5009A723;
+        Fri,  6 Oct 2017 08:55:05 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Arvind Yadav <arvind.yadav.cs@gmail.com>,
-        antonynpavlov@gmail.com, albeu@free.fr, hackpascal@gmail.com,
-        sboyd@codeaurora.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Jason A. Donenfeld" <jason@zx2c4.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@verizon.com>
-Subject: [PATCH 4.9 056/104] mips: ath79: clock:- Unmap region obtained by of_iomap
-Date:   Fri,  6 Oct 2017 10:51:34 +0200
-Message-Id: <20171006083849.029960382@linuxfoundation.org>
+Subject: [PATCH 4.9 074/104] MIPS: IRQ Stack: Unwind IRQ stack onto task stack
+Date:   Fri,  6 Oct 2017 10:51:52 +0200
+Message-Id: <20171006083851.803770297@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171006083840.743659740@linuxfoundation.org>
 References: <20171006083840.743659740@linuxfoundation.org>
@@ -27,7 +34,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60301
+X-archive-position: 60302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,50 +55,200 @@ X-list: linux-mips
 
 ------------------
 
-From: Arvind Yadav <arvind.yadav.cs@gmail.com>
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
 
-[ Upstream commit b3d91db3f71d5f70ea60d900425a3f96aeb3d065 ]
+[ Upstream commit db8466c581cca1a08b505f1319c3ecd246f16fa8 ]
 
-Free memory mapping, if ath79_clocks_init_dt_ng is not successful.
+When the separate IRQ stack was introduced, stack unwinding only
+proceeded as far as the top of the IRQ stack, leading to kernel
+backtraces being less useful, lacking the trace of what was interrupted.
 
-Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
-Fixes: 3bdf1071ba7d ("MIPS: ath79: update devicetree clock support for AR9132")
-Cc: antonynpavlov@gmail.com
-Cc: albeu@free.fr
-Cc: hackpascal@gmail.com
-Cc: sboyd@codeaurora.org
+Fix this by providing a means for the kernel to unwind the IRQ stack
+onto the interrupted task stack. The processor state is saved to the
+kernel task stack on interrupt. The IRQ_STACK_START macro reserves an
+unsigned long at the top of the IRQ stack where the interrupted task
+stack pointer can be saved. After the active stack is switched to the
+IRQ stack, save the interrupted tasks stack pointer to the reserved
+location.
+
+Fix the stack unwinding code to look for the frame being the top of the
+IRQ stack and if so get the next frame from the saved location. The
+existing test does not work with the separate stack since the ra is no
+longer pointed at ret_from_{irq,exception}.
+
+The test to stop unwinding the stack 32 bytes from the top of a stack
+must be modified to allow unwinding to continue up to the location of
+the saved task stack pointer when on the IRQ stack. The low / high marks
+of the stack are set depending on whether the sp is on an irq stack or
+not.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: Masanari Iida <standby24x7@gmail.com>
+Cc: Chris Metcalf <cmetcalf@mellanox.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14915/
+Patchwork: https://patchwork.linux-mips.org/patch/15788/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/ath79/clock.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/irq.h    |   15 ++++++++++
+ arch/mips/kernel/asm-offsets.c |    1 
+ arch/mips/kernel/genex.S       |    8 ++++-
+ arch/mips/kernel/process.c     |   56 +++++++++++++++++++++++++++--------------
+ 4 files changed, 60 insertions(+), 20 deletions(-)
 
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -508,16 +508,19 @@ static void __init ath79_clocks_init_dt_
- 		ar9330_clk_init(ref_clk, pll_base);
- 	else {
- 		pr_err("%s: could not find any appropriate clk_init()\n", dnfn);
--		goto err_clk;
-+		goto err_iounmap;
- 	}
+--- a/arch/mips/include/asm/irq.h
++++ b/arch/mips/include/asm/irq.h
+@@ -18,9 +18,24 @@
+ #include <irq.h>
  
- 	if (of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data)) {
- 		pr_err("%s: could not register clk provider\n", dnfn);
--		goto err_clk;
-+		goto err_iounmap;
- 	}
+ #define IRQ_STACK_SIZE			THREAD_SIZE
++#define IRQ_STACK_START			(IRQ_STACK_SIZE - sizeof(unsigned long))
  
- 	return;
+ extern void *irq_stack[NR_CPUS];
  
-+err_iounmap:
-+	iounmap(pll_base);
++/*
++ * The highest address on the IRQ stack contains a dummy frame put down in
++ * genex.S (handle_int & except_vec_vi_handler) which is structured as follows:
++ *
++ *   top ------------
++ *       | task sp  | <- irq_stack[cpu] + IRQ_STACK_START
++ *       ------------
++ *       |          | <- First frame of IRQ context
++ *       ------------
++ *
++ * task sp holds a copy of the task stack pointer where the struct pt_regs
++ * from exception entry can be found.
++ */
 +
- err_clk:
- 	clk_put(ref_clk);
+ static inline bool on_irq_stack(int cpu, unsigned long sp)
+ {
+ 	unsigned long low = (unsigned long)irq_stack[cpu];
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -103,6 +103,7 @@ void output_thread_info_defines(void)
+ 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
+ 	DEFINE(_THREAD_MASK, THREAD_MASK);
+ 	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
++	DEFINE(_IRQ_STACK_START, IRQ_STACK_START);
+ 	BLANK();
+ }
  
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -215,9 +215,11 @@ NESTED(handle_int, PT_SIZE, sp)
+ 	beq	t0, t1, 2f
+ 
+ 	/* Switch to IRQ stack */
+-	li	t1, _IRQ_STACK_SIZE
++	li	t1, _IRQ_STACK_START
+ 	PTR_ADD sp, t0, t1
+ 
++	/* Save task's sp on IRQ stack so that unwinding can follow it */
++	LONG_S	s1, 0(sp)
+ 2:
+ 	jal	plat_irq_dispatch
+ 
+@@ -325,9 +327,11 @@ NESTED(except_vec_vi_handler, 0, sp)
+ 	beq	t0, t1, 2f
+ 
+ 	/* Switch to IRQ stack */
+-	li	t1, _IRQ_STACK_SIZE
++	li	t1, _IRQ_STACK_START
+ 	PTR_ADD sp, t0, t1
+ 
++	/* Save task's sp on IRQ stack so that unwinding can follow it */
++	LONG_S	s1, 0(sp)
+ 2:
+ 	jalr	v0
+ 
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -487,31 +487,52 @@ unsigned long notrace unwind_stack_by_ad
+ 					      unsigned long pc,
+ 					      unsigned long *ra)
+ {
++	unsigned long low, high, irq_stack_high;
+ 	struct mips_frame_info info;
+ 	unsigned long size, ofs;
++	struct pt_regs *regs;
+ 	int leaf;
+-	extern void ret_from_irq(void);
+-	extern void ret_from_exception(void);
+ 
+ 	if (!stack_page)
+ 		return 0;
+ 
+ 	/*
+-	 * If we reached the bottom of interrupt context,
+-	 * return saved pc in pt_regs.
++	 * IRQ stacks start at IRQ_STACK_START
++	 * task stacks at THREAD_SIZE - 32
+ 	 */
+-	if (pc == (unsigned long)ret_from_irq ||
+-	    pc == (unsigned long)ret_from_exception) {
+-		struct pt_regs *regs;
+-		if (*sp >= stack_page &&
+-		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
+-			regs = (struct pt_regs *)*sp;
+-			pc = regs->cp0_epc;
+-			if (!user_mode(regs) && __kernel_text_address(pc)) {
+-				*sp = regs->regs[29];
+-				*ra = regs->regs[31];
+-				return pc;
+-			}
++	low = stack_page;
++	if (!preemptible() && on_irq_stack(raw_smp_processor_id(), *sp)) {
++		high = stack_page + IRQ_STACK_START;
++		irq_stack_high = high;
++	} else {
++		high = stack_page + THREAD_SIZE - 32;
++		irq_stack_high = 0;
++	}
++
++	/*
++	 * If we reached the top of the interrupt stack, start unwinding
++	 * the interrupted task stack.
++	 */
++	if (unlikely(*sp == irq_stack_high)) {
++		unsigned long task_sp = *(unsigned long *)*sp;
++
++		/*
++		 * Check that the pointer saved in the IRQ stack head points to
++		 * something within the stack of the current task
++		 */
++		if (!object_is_on_stack((void *)task_sp))
++			return 0;
++
++		/*
++		 * Follow pointer to tasks kernel stack frame where interrupted
++		 * state was saved.
++		 */
++		regs = (struct pt_regs *)task_sp;
++		pc = regs->cp0_epc;
++		if (!user_mode(regs) && __kernel_text_address(pc)) {
++			*sp = regs->regs[29];
++			*ra = regs->regs[31];
++			return pc;
+ 		}
+ 		return 0;
+ 	}
+@@ -532,8 +553,7 @@ unsigned long notrace unwind_stack_by_ad
+ 	if (leaf < 0)
+ 		return 0;
+ 
+-	if (*sp < stack_page ||
+-	    *sp + info.frame_size > stack_page + THREAD_SIZE - 32)
++	if (*sp < low || *sp + info.frame_size > high)
+ 		return 0;
+ 
+ 	if (leaf)

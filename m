@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 10:52:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51512 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2017 10:53:07 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:51500 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993868AbdJFIwfMrqco (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993859AbdJFIwfMc38o (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2017 10:52:35 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A1A1D5B1;
-        Fri,  6 Oct 2017 08:52:28 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 23935723;
+        Fri,  6 Oct 2017 08:52:25 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,9 +13,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@verizon.com>
-Subject: [PATCH 4.9 011/104] MIPS: kexec: Do not reserve invalid crashkernel memory on boot
-Date:   Fri,  6 Oct 2017 10:50:49 +0200
-Message-Id: <20171006083842.433773825@linuxfoundation.org>
+Subject: [PATCH 4.9 010/104] MIPS: fix mem=X@Y commandline processing
+Date:   Fri,  6 Oct 2017 10:50:48 +0200
+Message-Id: <20171006083842.248091756@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171006083840.743659740@linuxfoundation.org>
 References: <20171006083840.743659740@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60295
+X-archive-position: 60296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,35 +50,34 @@ X-list: linux-mips
 From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
 
-[ Upstream commit a8f108d70c74d83574c157648383eb2e4285a190 ]
+[ Upstream commit 73fbc1eba7ffa3bf0ad12486232a8a1edb4e4411 ]
 
-Do not reserve memory for the crashkernel if the commandline argument
-points to a wrong location. This can happen if the location is specified
-wrong or if the same commandline is reused when starting the crashkernel
-- in the latter case the reserved memory would point to the location
-from which the crashkernel is executing.
+When a memory offset is specified through the commandline, add the
+memory in range PHYS_OFFSET:Y as reserved memory area.
+Otherwise the bootmem allocator is initialised with low page equal to
+min_low_pfn = PHYS_OFFSET, and in free_all_bootmem will process pages
+starting from min_low_pfn instead of PFN(Y).
 
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14612/
+Patchwork: https://patchwork.linux-mips.org/patch/14613/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/setup.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/kernel/setup.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -668,6 +668,11 @@ static void __init mips_parse_crashkerne
- 	if (ret != 0 || crash_size <= 0)
- 		return;
+@@ -589,6 +589,10 @@ static int __init early_parse_mem(char *
+ 		start = memparse(p + 1, &p);
  
-+	if (!memory_region_available(crash_base, crash_size)) {
-+		pr_warn("Invalid memory region reserved for crash kernel\n");
-+		return;
-+	}
+ 	add_memory_region(start, size, BOOT_MEM_RAM);
 +
- 	crashk_res.start = crash_base;
- 	crashk_res.end	 = crash_base + crash_size - 1;
++	if (start && start > PHYS_OFFSET)
++		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
++				BOOT_MEM_RESERVED);
+ 	return 0;
  }
+ early_param("mem", early_parse_mem);

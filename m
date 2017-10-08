@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Oct 2017 21:23:13 +0200 (CEST)
-Received: from mail.free-electrons.com ([62.4.15.54]:35918 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992185AbdJGTXGZ2REV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Oct 2017 21:23:06 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id B9E80208F7; Sat,  7 Oct 2017 21:22:56 +0200 (CEST)
-Received: from windsurf.home (LFbn-1-15130-153.w86-206.abo.wanadoo.fr [86.206.236.153])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 8F7B9208B2;
-        Sat,  7 Oct 2017 21:22:56 +0200 (CEST)
-Date:   Sat, 7 Oct 2017 21:22:55 +0200
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Waldemar Brodkorb <wbx@openadk.org>
-Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
-Message-ID: <20171007212255.287e6b45@windsurf.home>
-In-Reply-To: <20170817221931.GB12588@linux-mips.org>
-References: <20170803225547.6caa602b@windsurf.lan>
-        <20170804000556.GC30597@linux-mips.org>
-        <20170804151920.GA11317@linux-mips.org>
-        <20170804174151.2eea9af3@windsurf.lan>
-        <20170804222500.GA11675@linux-mips.org>
-        <20170805135649.152b0739@windsurf>
-        <20170807083448.GA20713@linux-mips.org>
-        <20170813224602.25043e8a@windsurf>
-        <20170817071534.GH13257@linux-mips.org>
-        <6D39441BF12EF246A7ABCE6654B0235380DAB457@hhmail02.hh.imgtec.org>
-        <20170817221931.GB12588@linux-mips.org>
-Organization: Free Electrons
-X-Mailer: Claws Mail 3.15.1-dirty (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2017 20:12:31 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40746 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992297AbdJHSMZPs7GU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Oct 2017 20:12:25 +0200
+Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1e1G3m-0000pt-QJ; Sun, 08 Oct 2017 19:12:18 +0100
+Received: from ben by deadeye with local (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1e1G3h-0002A3-Fg; Sun, 08 Oct 2017 19:12:13 +0100
+Message-ID: <1507486329.2677.81.camel@decadent.org.uk>
+Subject: Re: Building older mips kernels with different versions of
+ binutils; possible patch for 3.2 and 3.4
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        stable <stable@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Li Zefan <lizefan@huawei.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Sun, 08 Oct 2017 19:12:09 +0100
+In-Reply-To: <573936E3.3050003@roeck-us.net>
+References: <573936E3.3050003@roeck-us.net>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-H9IjW9ISzbg7+2/mgQnr"
+X-Mailer: Evolution 3.26.0-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60320
+X-archive-position: 60321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,37 +51,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
 
-On Fri, 18 Aug 2017 00:19:31 +0200, Ralf Baechle wrote:
+--=-H9IjW9ISzbg7+2/mgQnr
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > Despite the theory being simple, wiring this up will take time as it also
-> > involves getting the costing calculations updated.
-> > 
-> > Please can you submit it as a GCC bug?  
-> 
-> Will do.
-> 
-> > As a workaround you may want to include a version of __multi3 in the kernel
-> > until it is resolved.  
-> 
-> Yes, working on that.  This has been made harder by the fact that the
-> implementation of __umulti3 is well hidden in the source :)  I now have
-> functioning implementation of __multi3 but it's still too ugly to be
-> committed to the kernel.
-> 
-> And while I agree it should be fixed in GCC at the same time the
-> generated code while convoluted and unnecessarily slow appears to be
-> correct so I think we should support this by adding a suitable __umulti3
-> to the kernel code as you suggest.
+On Sun, 2016-05-15 at 19:56 -0700, Guenter Roeck wrote:
+[...]
+> For 3.4 and 3.2 kernels to build with binutils v2.24, it would be necessa=
+ry to
+> apply patch c02263063362 ("MIPS: Refactor 'clear_page' and 'copy_page' fu=
+nctions").
+> It applies cleanly to 3.4, but has a Makefile conflict in 3.2. It might
+> make sense to apply this patch to both releases. Would this be possible ?
+> This way, we would have at least one toolchain which can build all 3.2+ k=
+ernels.
 
-Has there been any progress on solving this issue ? Either on the GCC
-side or the kernel side ?
+I'm finally queueing this up for 3.2.
 
-Thanks a lot!
+Ben.
 
-Thomas
--- 
-Thomas Petazzoni, CTO, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+--=20
+Ben Hutchings
+compatible: Gracefully accepts erroneous data from any source
+
+
+--=-H9IjW9ISzbg7+2/mgQnr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAlnaankACgkQ57/I7JWG
+EQkrgw//QsAb46hDvO6uu8EtWEYNt+KgxKph8lQx7jbCxrqJcmlHJwYm5a+cAXY2
+xa33lljJ0Wk5OpBz90WUxsZlzDW1p3t2KRLUKgDJ3BWSwReEYLSWPIFiVj2OUZZ8
+HQIi2fPL1bn9qzJC1GUkb1MFn05pns3KksOndhz8XHaQT40cvfgIPMBr/9V5asic
+hzeSWOiWXENRlLfwuJFesgA6a4FLWtKo5CMXmu+2kccUd+gQt7XnpJdBIjDX85wj
+vt/BrzcQLSLrrEeDYKdy/BNILzZrfefAZBw25uQ+MkyhIylGzKf5GcZrxzecJLPh
+2ykZ5khr2QT9GszYtCJd+AKYVqya34ubPqbmWA5LjOzyHn5f3WPOVLkVaIZg592H
+MkCUIc7BQZ5MXt+sgoB/TOA5sqtLmQ9rp0g1bZHCESPvz4k46EhW66tRGVkeGLkE
+U7wh7cf3PooqJkTXinaquOk5U1M6oF4yOiH2pAdj1gMI9rCA7uBdwMf3QjOfPdS9
+o3U/E9RUNMd4FeX2chyjwwd3AxgrqylsLPs3J5YGjKH+vwFaTOdXfMvULep1oBfb
+c6bwA8t428vHhUSzHAfQGWrZ4Ik7LhD+5OHccMbu6YA+7HcH19fTi2hx0/10Wt5G
+O2ljIYIcf2XwLhoQXjJOHIx6kureRFPNdwXr/4hKFSN7URjExwY=
+=xE39
+-----END PGP SIGNATURE-----
+
+--=-H9IjW9ISzbg7+2/mgQnr--

@@ -1,71 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2017 21:01:19 +0200 (CEST)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:34322
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992310AbdJHTBMrzoar (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Oct 2017 21:01:12 +0200
-Received: by mail-pf0-x241.google.com with SMTP id b85so2181245pfj.1
-        for <linux-mips@linux-mips.org>; Sun, 08 Oct 2017 12:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:from:to:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=eOoNMV9zFnn16ezN2uT0y5n1aGas8drKWdF48EsDxx4=;
-        b=HzANwv6HIs3Li56FuNa18giTLx0uy4ti0yBtTmlRKWW9kdaKpH/0a/kZDq/n3CGC+3
-         6TfKhr7DWzTnpk2D8aXM0yzrOPGDrRXuBFFNu/7ENQuAkofZaZwcTUe4JDJ5P8p4ZgAv
-         zCZEcuZXj2nVmpeElMETWsDCbsqd6ylCle/JlcUPMPL4vC9vahBjz5DeRZw5MgDQNKqS
-         xb9xztuMlQbIgt50HsBofd4q1ZuSVT2hgjNF5uCix8jxQ696Sl3WEQaAJnlV/phaprhi
-         r8suBxTcwlb8NW3BXhb0Bin7kXfb/tcyOeAGHTbl1lJkD5QGilFYO08tiw9SaItpB0xL
-         23Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:from:to:references:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=eOoNMV9zFnn16ezN2uT0y5n1aGas8drKWdF48EsDxx4=;
-        b=G6MOGTQ8ZPXfS6lYSH1XIrHiFKpShxS3YH0l7Zj2WrlVjj1UJ7LVIobrKUV6JzMFuS
-         tdvGWR/DVM7UnIXcymm6+FJSMBgbN+aXLRmkx+o+w+s8GDwXRNeYClXzNG1lG9OW3grC
-         5X/KzvR2Wc6XNq3mpd4wV8Ga8uMeJh7MvJWiehKKWb50AC/nDfeUqqfGUgc1B7quqfZ2
-         Wtd/Ng+E5URyLj+X/3gIBgVvwabKArTTc68WDpIIezWiRBSAKT9JPkOEWJbHckyQGbQW
-         2IugtBb9u6Z01KYVjuEFYMw/EUyYeZktUiulLUwhLf8BOu5ip7z+596/Lt0Iwf4fSPe0
-         PFNQ==
-X-Gm-Message-State: AMCzsaVVBLXD1U5AMoF1SZQNXEgIZCCcigku7BvEuuZGzS4kPYycPoOl
-        edWvGBE7IGdU27P3BlIftZPFbg==
-X-Google-Smtp-Source: AOwi7QDV+pDWFtmZ3cXdR5z5ywUxl/IOu7cookimfRat5yJnET+gDNQpzBjF394E+/4njAka8g8Aew==
-X-Received: by 10.98.223.137 with SMTP id d9mr3558640pfl.98.1507489266317;
-        Sun, 08 Oct 2017 12:01:06 -0700 (PDT)
-Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id t2sm12682843pfk.90.2017.10.08.12.01.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 08 Oct 2017 12:01:05 -0700 (PDT)
-Subject: Re: Building older mips kernels with different versions of binutils;
- possible patch for 3.2 and 3.4
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ben Hutchings <ben@decadent.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2017 21:54:45 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:41331 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992297AbdJHTyiywX7A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Oct 2017 21:54:38 +0200
+Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1e1Hen-0005Pk-C0; Sun, 08 Oct 2017 20:54:37 +0100
+Received: from ben by deadeye with local (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1e1Hei-0001yV-2z; Sun, 08 Oct 2017 20:54:32 +0100
+Message-ID: <1507492460.2677.85.camel@decadent.org.uk>
+Subject: Re: Building older mips kernels with different versions of
+ binutils; possible patch for 3.2 and 3.4
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Guenter Roeck <linux@roeck-us.net>,
         stable <stable@vger.kernel.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Li Zefan <lizefan@huawei.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Sun, 08 Oct 2017 20:54:20 +0100
+In-Reply-To: <05e37183-f6a6-d141-5dad-9d4b161953b1@roeck-us.net>
 References: <573936E3.3050003@roeck-us.net>
- <1507486329.2677.81.camel@decadent.org.uk>
- <d7d60beb-4875-7cbf-0fd6-26317b97115d@roeck-us.net>
-Message-ID: <05e37183-f6a6-d141-5dad-9d4b161953b1@roeck-us.net>
-Date:   Sun, 8 Oct 2017 12:01:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
-MIME-Version: 1.0
-In-Reply-To: <d7d60beb-4875-7cbf-0fd6-26317b97115d@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <groeck7@gmail.com>
+         <1507486329.2677.81.camel@decadent.org.uk>
+         <d7d60beb-4875-7cbf-0fd6-26317b97115d@roeck-us.net>
+         <05e37183-f6a6-d141-5dad-9d4b161953b1@roeck-us.net>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-CtvzUo0iHQnSwjoH3h+Y"
+X-Mailer: Evolution 3.26.0-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60323
+X-archive-position: 60324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,26 +54,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/08/2017 11:49 AM, Guenter Roeck wrote:
-> On 10/08/2017 11:12 AM, Ben Hutchings wrote:
->> On Sun, 2016-05-15 at 19:56 -0700, Guenter Roeck wrote:
->> [...]
->>> For 3.4 and 3.2 kernels to build with binutils v2.24, it would be necessary to
->>> apply patch c02263063362 ("MIPS: Refactor 'clear_page' and 'copy_page' functions").
->>> It applies cleanly to 3.4, but has a Makefile conflict in 3.2. It might
->>> make sense to apply this patch to both releases. Would this be possible ?
->>> This way, we would have at least one toolchain which can build all 3.2+ kernels.
->>
->> I'm finally queueing this up for 3.2.
->>
->> Ben.
->>
-> 
-> mipsel images in 3.2.y-queue are now crashing for me. Should I have a look ?
-> 
-Turns out the culprit is qemu. I had switched from qemu 2.9 to qemu 2.10.
-Something has changed in qemu that causes a qemu boot failure with 3.2 mipsel
-(but not in more recent kernels). I'll switch back to qemu 2.9 for the affected
-builds.
 
-Guenter
+--=-CtvzUo0iHQnSwjoH3h+Y
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, 2017-10-08 at 12:01 -0700, Guenter Roeck wrote:
+> On 10/08/2017 11:49 AM, Guenter Roeck wrote:
+> > On 10/08/2017 11:12 AM, Ben Hutchings wrote:
+> > > On Sun, 2016-05-15 at 19:56 -0700, Guenter Roeck wrote:
+> > > [...]
+> > > > For 3.4 and 3.2 kernels to build with binutils v2.24, it would be n=
+ecessary to
+> > > > apply patch c02263063362 ("MIPS: Refactor 'clear_page' and 'copy_pa=
+ge' functions").
+> > > > It applies cleanly to 3.4, but has a Makefile conflict in 3.2. It m=
+ight
+> > > > make sense to apply this patch to both releases. Would this be poss=
+ible ?
+> > > > This way, we would have at least one toolchain which can build all =
+3.2+ kernels.
+> > >=20
+> > > I'm finally queueing this up for 3.2.
+> > >=20
+> > > Ben.
+> > >=20
+> >=20
+> > mipsel images in 3.2.y-queue are now crashing for me. Should I have a l=
+ook ?
+> >=20
+>=20
+> Turns out the culprit is qemu. I had switched from qemu 2.9 to qemu 2.10.
+> Something has changed in qemu that causes a qemu boot failure with 3.2 mi=
+psel
+> (but not in more recent kernels). I'll switch back to qemu 2.9 for the af=
+fected
+> builds.
+
+Thanks.  I did notice these failures but didn't think they were related
+to the few MIPS patches in the 3.2 queue.
+
+Ben.
+
+--=20
+Ben Hutchings
+compatible: Gracefully accepts erroneous data from any source
+
+
+--=-CtvzUo0iHQnSwjoH3h+Y
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAlnagmwACgkQ57/I7JWG
+EQksng/+Ii7w56BUaxsCvSQ4VcFJOUb8ZQlDkcc3pmAngjOyztebfndA/mFAxxGF
+Qxn85qb7EQ8Y/Q1sN39aUCP82zYXGCTsj/xyzZ11fqzENQ54gfudjBmEyytim9Yt
+XuCPXQ+9OdnrV4OELsCQIroOa32dNb1Ysm3AO4vrpeKiZtXXCAWP3otqo6Y6ggGr
+gJBFoN7evTN9U8T7/qaKJLOrZAqjivM7jyLuT1o06/8gCtGm/DzCLWdex+4b7p/n
+/a2wuUmgpJjTP/b6kQtv/3WfdkqjPNbQb/BntIrZJsu0z3st120QPMB5X2xlUjXE
+iuZH8LgAo5ZL2/+SnLMA3ZPMcAahrRl+ofHAPzk7kttk81DMAiYKWysdgLAqzDxw
+nTnCyCcSzIdKhkgmXKXigoODS1HY0P/bmkyHnTrfoVDzldkx6IWfB3QpIaYkmeqM
+QOFJLJ7DHVSArHzfxGFW0k0yq2ztXjtBBPHEZ6u+2AtaJP0TU9ZhrRxvfYpftnN2
+cR/sf7EZjbD4WVG45JjCXf5SZaAh+SN+peXgdf3f0IYWZA9eXVkJQcqHJWCxMO+3
+UJOQvgcuuSRKIaZC5HB8+rLtirOQ7GUr3dZoUoIb0Cmkq9xR50Z9bRJEJhjRIvIB
+BGF8rAwETwYihENuMtANrn4ZMzymigTByug9/DwxNQub02yOS2c=
+=Y1Zz
+-----END PGP SIGNATURE-----
+
+--=-CtvzUo0iHQnSwjoH3h+Y--

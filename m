@@ -1,28 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2017 14:53:53 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:52234 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2017 14:54:16 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:52272 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992533AbdJIMx3imQ5Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2017 14:53:29 +0200
+        by eddie.linux-mips.org with ESMTP id S23992641AbdJIMyACxkYY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2017 14:54:00 +0200
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1e1XQl-0004v1-V0; Mon, 09 Oct 2017 13:45:12 +0100
+        id 1e1XQm-0004v6-1r; Mon, 09 Oct 2017 13:45:12 +0100
 Received: from ben by deadeye with local (Exim 4.89)
         (envelope-from <ben@decadent.org.uk>)
-        id 1e1XQP-0001zj-Lg; Mon, 09 Oct 2017 13:44:49 +0100
+        id 1e1XQP-0001zV-JV; Mon, 09 Oct 2017 13:44:49 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, "James Hogan" <james.hogan@imgtec.com>
+CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "James Hogan" <james.hogan@imgtec.com>,
+        "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+        "Paul Burton" <paul.burton@imgtec.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
 Date:   Mon, 09 Oct 2017 13:44:24 +0100
-Message-ID: <lsq.1507553064.738780694@decadent.org.uk>
+Message-ID: <lsq.1507553064.271416989@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 058/192] MIPS: Save static registers before sysmips
+Subject: [PATCH 3.16 055/192] MIPS: Bail on unsupported module relocs
 In-Reply-To: <lsq.1507553063.449494954@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -31,7 +35,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60337
+X-archive-position: 60338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,89 +56,110 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 49955d84cd9ccdca5a16a495e448e1a06fad9e49 upstream.
+commit 04211a574641e29b529dcc84e75c03d7e9e368cf upstream.
 
-The MIPS sysmips system call handler may return directly from the
-MIPS_ATOMIC_SET case (mips_atomic_set()) to syscall_exit. This path
-restores the static (callee saved) registers, however they won't have
-been saved on entry to the system call.
+When an unsupported reloc is encountered in a module, we currently
+blindly branch to whatever would be at its entry in the reloc handler
+function pointer arrays. This may be NULL, or if the unsupported reloc
+has a type greater than that of the supported reloc with the highest
+type then we'll dereference some value after the function pointer array
+& branch to that. The result is at best a kernel oops.
 
-Use the save_static_function() macro to create a __sys_sysmips wrapper
-function which saves the static registers before calling sys_sysmips, so
-that the correct static register state is restored by syscall_exit.
+Fix this by checking that the reloc type has an entry in the function
+pointer array (ie. is less than the number of items in the array) and
+that the handler is non-NULL, returning an error code to fail the module
+load if no handler is found.
 
-Fixes: f1e39a4a616c ("MIPS: Rewrite sysmips(MIPS_ATOMIC_SET, ...) in C with inline assembler")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16149/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12432/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/scall32-o32.S | 2 +-
- arch/mips/kernel/scall64-64.S  | 2 +-
- arch/mips/kernel/scall64-n32.S | 2 +-
- arch/mips/kernel/scall64-o32.S | 2 +-
- arch/mips/kernel/syscall.c     | 6 ++++++
- 5 files changed, 10 insertions(+), 4 deletions(-)
+ arch/mips/kernel/module-rela.c | 19 ++++++++++++++++---
+ arch/mips/kernel/module.c      | 19 ++++++++++++++++---
+ 2 files changed, 32 insertions(+), 6 deletions(-)
 
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -363,7 +363,7 @@ EXPORT(sys_call_table)
- 	PTR	sys_writev
- 	PTR	sys_cacheflush
- 	PTR	sys_cachectl
--	PTR	sys_sysmips
-+	PTR	__sys_sysmips
- 	PTR	sys_ni_syscall			/* 4150 */
- 	PTR	sys_getsid
- 	PTR	sys_fdatasync
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -318,7 +318,7 @@ EXPORT(sys_call_table)
- 	PTR	sys_sched_getaffinity
- 	PTR	sys_cacheflush
- 	PTR	sys_cachectl
--	PTR	sys_sysmips
-+	PTR	__sys_sysmips
- 	PTR	sys_io_setup			/* 5200 */
- 	PTR	sys_io_destroy
- 	PTR	sys_io_getevents
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -307,7 +307,7 @@ EXPORT(sysn32_call_table)
- 	PTR	compat_sys_sched_getaffinity
- 	PTR	sys_cacheflush
- 	PTR	sys_cachectl
--	PTR	sys_sysmips
-+	PTR	__sys_sysmips
- 	PTR	compat_sys_io_setup			/* 6200 */
- 	PTR	sys_io_destroy
- 	PTR	compat_sys_io_getevents
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -358,7 +358,7 @@ EXPORT(sys32_call_table)
- 	PTR	compat_sys_writev
- 	PTR	sys_cacheflush
- 	PTR	sys_cachectl
--	PTR	sys_sysmips
-+	PTR	__sys_sysmips
- 	PTR	sys_ni_syscall			/* 4150 */
- 	PTR	sys_getsid
- 	PTR	sys_fdatasync
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -197,6 +197,12 @@ static inline int mips_atomic_set(unsign
- 	unreachable();
- }
- 
-+/*
-+ * mips_atomic_set() normally returns directly via syscall_exit potentially
-+ * clobbering static registers, so be sure to preserve them.
-+ */
-+save_static_function(sys_sysmips);
-+
- SYSCALL_DEFINE3(sysmips, long, cmd, long, arg1, long, arg2)
+--- a/arch/mips/kernel/module-rela.c
++++ b/arch/mips/kernel/module-rela.c
+@@ -109,9 +109,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs
+ 		       struct module *me)
  {
- 	switch (cmd) {
+ 	Elf_Mips_Rela *rel = (void *) sechdrs[relsec].sh_addr;
++	int (*handler)(struct module *me, u32 *location, Elf_Addr v);
+ 	Elf_Sym *sym;
+ 	u32 *location;
+-	unsigned int i;
++	unsigned int i, type;
+ 	Elf_Addr v;
+ 	int res;
+ 
+@@ -134,9 +135,21 @@ int apply_relocate_add(Elf_Shdr *sechdrs
+ 			return -ENOENT;
+ 		}
+ 
+-		v = sym->st_value + rel[i].r_addend;
++		type = ELF_MIPS_R_TYPE(rel[i]);
++
++		if (type < ARRAY_SIZE(reloc_handlers_rela))
++			handler = reloc_handlers_rela[type];
++		else
++			handler = NULL;
+ 
+-		res = reloc_handlers_rela[ELF_MIPS_R_TYPE(rel[i])](me, location, v);
++		if (!handler) {
++			pr_err("%s: Unknown relocation type %u\n",
++			       me->name, type);
++			return -EINVAL;
++		}
++
++		v = sym->st_value + rel[i].r_addend;
++		res = handler(me, location, v);
+ 		if (res)
+ 			return res;
+ 	}
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -197,9 +197,10 @@ int apply_relocate(Elf_Shdr *sechdrs, co
+ 		   struct module *me)
+ {
+ 	Elf_Mips_Rel *rel = (void *) sechdrs[relsec].sh_addr;
++	int (*handler)(struct module *me, u32 *location, Elf_Addr v);
+ 	Elf_Sym *sym;
+ 	u32 *location;
+-	unsigned int i;
++	unsigned int i, type;
+ 	Elf_Addr v;
+ 	int res;
+ 
+@@ -223,9 +224,21 @@ int apply_relocate(Elf_Shdr *sechdrs, co
+ 			return -ENOENT;
+ 		}
+ 
+-		v = sym->st_value;
++		type = ELF_MIPS_R_TYPE(rel[i]);
++
++		if (type < ARRAY_SIZE(reloc_handlers_rel))
++			handler = reloc_handlers_rel[type];
++		else
++			handler = NULL;
+ 
+-		res = reloc_handlers_rel[ELF_MIPS_R_TYPE(rel[i])](me, location, v);
++		if (!handler) {
++			pr_err("%s: Unknown relocation type %u\n",
++			       me->name, type);
++			return -EINVAL;
++		}
++
++		v = sym->st_value;
++		res = handler(me, location, v);
+ 		if (res)
+ 			return res;
+ 	}

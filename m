@@ -1,38 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2017 22:38:45 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:50014 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993913AbdJIUie4LYvG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 Oct 2017 22:38:34 +0200
-Received: from kernel.org (unknown [199.201.64.136])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F338A218C5;
-        Mon,  9 Oct 2017 20:38:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org F338A218C5
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=shli@kernel.org
-Date:   Mon, 9 Oct 2017 13:38:30 -0700
-From:   Shaohua Li <shli@kernel.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     linux-raid@vger.kernel.org, Linux/MIPS <linux-mips@linux-mips.org>
-Subject: Re: commit 8031c3ddc70a breaks RAID5 on MIPS kernel where PAGE_SIZE
- == 64K
-Message-ID: <20171009203830.qu75s3i6ghdaf6s2@kernel.org>
-References: <db0e511c-f5db-99fe-70ac-150864432db0@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2017 23:12:07 +0200 (CEST)
+Received: from 20pmail.ess.barracuda.com ([64.235.150.247]:47585 "EHLO
+        20pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993921AbdJIVL6a59LG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2017 23:11:58 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 09 Oct 2017 21:10:46 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 9 Oct 2017
+ 14:08:41 -0700
+Date:   Mon, 9 Oct 2017 22:09:24 +0100
+From:   James Hogan <james.hogan@mips.com>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+CC:     <linux-mips@linux-mips.org>,
+        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@imgtec.com>,
+        "Raghu Gandham" <raghu.gandham@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: math-emu: Update debugfs FP exception stats
+ for certain instructions
+Message-ID: <20171009210923.GA20378@jhogan-linux>
+References: <1507310955-3525-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1507310955-3525-2-git-send-email-aleksandar.markovic@rt-rk.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="YiEDa0DAkWCtVeE4"
 Content-Disposition: inline
-In-Reply-To: <db0e511c-f5db-99fe-70ac-150864432db0@gentoo.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <shli@kernel.org>
+In-Reply-To: <1507310955-3525-2-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1507583412-637139-572-195538-4
+X-BESS-VER: 2017.12-r1709122024
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.185837
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60349
+X-archive-position: 60350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shli@kernel.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,73 +67,241 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Oct 08, 2017 at 04:34:52PM -0400, Joshua Kinard wrote:
-> Hi,
-> 
-> Testing 4.13.5 out on my SGI Octane, I discovered that my RAID5 arrays were no
-> longer auto-assembling.  The error being thrown was an "attempt to access
-> beyond the end of the device".  I've hand-transcribed a block of these errors
-> from a manual attempt to assemble the array via mdadm from a netboot image:
-> 
-> / # mdadm -A /dev/md0 /dev/sda1 /dev/sdb1 /dev/sdc1
-> [   56.303339] md: md0 stopped.
-> [   56.323565] md/raid:md0: device sda1 operational as raid disk 0
-> [   56.334556] md/raid:md0: device sdb1 operational as raid disk 2
-> [   56.345396] md/raid:md0: device sdc1 operational as raid disk 1
-> [   56.350750] md/raid:md0: raid level 5 active with 3 out of 3 devices,
-> algorithm 2
-> [   56.369529] attempt to access beyond end of device
-> [   56.380149] sda1: rw=2048, want=4194312, limit=4194305
-> [   56.390823] attempt to access beyond end of device
-> [   56.401500] sdc1: rw=2048, want=4194312, limit=4194305
-> [   56.412313] attempt to access beyond end of device
-> [   56.423146] sdb1: rw=2048, want=4194312, limit=4194305
-> [   56.433985] md0: failed to create bitmap (-5)
-> mdadm: failed to RUN_ARRAY /dev/md0: input/output error
-> [   56.457979] md: md0 stopped.
-> / #
-> 
-> I've traced the offending commit down to 8031c3ddc70a ("md/bitmap: copy correct
-> data for bitmap super"):
-> 
-> https://git.linux-mips.org/cgit/ralf/linux.git/commit/?id=8031c3ddc70ab93099e7d1814382dba39f57b43e
-> 
-> Per the commit message, it makes an assumption that PAGE_SIZE is 4K.  MIPS
-> kernels allow you to change the value of PAGE_SIZE at compile time to something
-> other than 4K.  It appears that 4K and 16K both work, while 64K, which is what
-> I use on this machine, is broken with this commit applied.
-> 
-> Reverting this patch or setting PAGE_SIZE to 4K or 16K will resolve the issue,
-> but there are advantages to using 64K PAGE_SIZEs on these platforms.  I am not
-> sure that 16K is wholly safe either, FWIW, given the assumption made in the commit.
+--YiEDa0DAkWCtVeE4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Can you try below one?
+On Fri, Oct 06, 2017 at 07:29:00PM +0200, Aleksandar Markovic wrote:
+> From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+>=20
+> Fix omission of updating of debugfs FP exception stats for
+> instructions <CLASS|MADDF|MSUBF|MAX|MIN|MAXA|MINA>.<D|S>.
+>=20
+> CLASS.<D|S> can generate Unimplemented Operation FP exception.
+> <MADDF|MSUBF|MAX|MIN|MAXA|MINA>>.<D|S> can generate Inexact,
+
+nit: s/>>/>/
+
+> Unimplemented Operation, Invalid Operation, Overflow, and
+> Underflow FP exceptions. In such cases, and prior to this
+
+Well, according to the manual I'm looking at MAX|MIN|MAXA|MINA can't
+generate inexact, overflow, or underflow FP exceptions, and in practice
+the only FPE generated by emulating these instructions is invalid
+operation for MADDF/MSUBF. So presumably that's the only case we really
+care about.
+
+I.e. the MADDF/MSUBF invalid operation should be counted, but crucially
+the setting of rcsr bits allows it to generate a SIGFPE which from a
+glance it doesn't appear to do until this patch. The other changes are
+redundant and harmless.
+
+Does that sound correct? (appologies if I'm missing something, I'm just
+reading the code, and reading FPU emulation code late at night is
+probably asking for trouble).
+
+Given the potential fixing of SIGFPE in that case should this be tagged
+for stable?
+
+Thanks
+James
 
 
-diff --git a/drivers/md/bitmap.c b/drivers/md/bitmap.c
-index d2121637b4ab..f68ec973fbdd 100644
---- a/drivers/md/bitmap.c
-+++ b/drivers/md/bitmap.c
-@@ -153,6 +153,7 @@ static int read_sb_page(struct mddev *mddev, loff_t offset,
- 
- 	struct md_rdev *rdev;
- 	sector_t target;
-+	int target_size;
- 
- 	rdev_for_each(rdev, mddev) {
- 		if (! test_bit(In_sync, &rdev->flags)
-@@ -161,9 +162,12 @@ static int read_sb_page(struct mddev *mddev, loff_t offset,
- 			continue;
- 
- 		target = offset + index * (PAGE_SIZE/512);
-+		target_size = min_t(u64, size, i_size_read(rdev->bdev->bd_inode) -
-+			((target + rdev->sb_start) << 9));
-+		target_size = roundup(target_size,
-+			bdev_logical_block_size(rdev->bdev));
- 
--		if (sync_page_io(rdev, target,
--				 roundup(size, bdev_logical_block_size(rdev->bdev)),
-+		if (sync_page_io(rdev, target, target_size,
- 				 page, REQ_OP_READ, 0, true)) {
- 			page->index = index;
- 			return 0;
+> patch, debugfs FP exception stats were not updated, and
+> therefore contained overall wrong values.
+>=20
+> This brings the emulation of mentioned instructions consistent
+> with the previously implemented emulation of other related
+> FPU instructions.
+>=20
+> There is still some room for refactoring and improving the
+> code segment under label "copcsr", but this is beyond the
+> scope of this patch.
+>=20
+> Fixes: 38db37ba069f ("MIPS: math-emu: Add support for the MIPS R6 CLASS F=
+PU instruction")
+> Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF F=
+PU instruction")
+> Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF F=
+PU instruction")
+> Fixes: a79f5f9ba508 ("MIPS: math-emu: Add support for the MIPS R6 MAX{, A=
+} FPU instruction")
+> Fixes: 4e9561b20e2f ("MIPS: math-emu: Add support for the MIPS R6 MIN{, A=
+} FPU instruction")
+>=20
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+> ---
+>  arch/mips/math-emu/cp1emu.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+> index 192542d..d2fcb30 100644
+> --- a/arch/mips/math-emu/cp1emu.c
+> +++ b/arch/mips/math-emu/cp1emu.c
+> @@ -1795,7 +1795,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			SPFROMREG(fd, MIPSInst_FD(ir));
+>  			rv.s =3D ieee754sp_maddf(fd, fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmsubf_op: {
+> @@ -1809,7 +1809,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			SPFROMREG(fd, MIPSInst_FD(ir));
+>  			rv.s =3D ieee754sp_msubf(fd, fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case frint_op: {
+> @@ -1834,7 +1834,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.w =3D ieee754sp_2008class(fs);
+>  			rfmt =3D w_fmt;
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmin_op: {
+> @@ -1847,7 +1847,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(ft, MIPSInst_FT(ir));
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.s =3D ieee754sp_fmin(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmina_op: {
+> @@ -1860,7 +1860,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(ft, MIPSInst_FT(ir));
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.s =3D ieee754sp_fmina(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmax_op: {
+> @@ -1873,7 +1873,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(ft, MIPSInst_FT(ir));
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.s =3D ieee754sp_fmax(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmaxa_op: {
+> @@ -1886,7 +1886,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			SPFROMREG(ft, MIPSInst_FT(ir));
+>  			SPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.s =3D ieee754sp_fmaxa(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fabs_op:
+> @@ -2165,7 +2165,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			DPFROMREG(fd, MIPSInst_FD(ir));
+>  			rv.d =3D ieee754dp_maddf(fd, fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmsubf_op: {
+> @@ -2179,7 +2179,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			DPFROMREG(fd, MIPSInst_FD(ir));
+>  			rv.d =3D ieee754dp_msubf(fd, fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case frint_op: {
+> @@ -2204,7 +2204,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.l =3D ieee754dp_2008class(fs);
+>  			rfmt =3D l_fmt;
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmin_op: {
+> @@ -2217,7 +2217,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(ft, MIPSInst_FT(ir));
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.d =3D ieee754dp_fmin(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmina_op: {
+> @@ -2230,7 +2230,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(ft, MIPSInst_FT(ir));
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.d =3D ieee754dp_fmina(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmax_op: {
+> @@ -2243,7 +2243,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(ft, MIPSInst_FT(ir));
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.d =3D ieee754dp_fmax(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fmaxa_op: {
+> @@ -2256,7 +2256,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips=
+_fpu_struct *ctx,
+>  			DPFROMREG(ft, MIPSInst_FT(ir));
+>  			DPFROMREG(fs, MIPSInst_FS(ir));
+>  			rv.d =3D ieee754dp_fmaxa(fs, ft);
+> -			break;
+> +			goto copcsr;
+>  		}
+> =20
+>  		case fabs_op:
+> --=20
+> 2.7.4
+>=20
+
+--YiEDa0DAkWCtVeE4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlnb5XsACgkQbAtpk944
+dnoqrA//f4Qffia5TjQuX0B62cn9q45AD2dU17iqxOyTO8ghkyKl00SFCcAZ3DAV
+1X9YpBIGaVFMKOAOj+j8HxMKQMgrwygJeEwpSz7L8fC+6guyXNSlhQ5NyEswZs3u
+t2rPpn0xYDFA3m0bpacqvBrdtXU6jlSoTC5aE9GX+rxNiQpCQrQwWj+bTBGNNn3O
+FdgQsxVfqve3kdqyWlaAQ6cnm3NLLhnf6GPBBi5W76DRB7ZDTp3YGJ7YyZodEsBu
+Rql+nTg8NzRXM0yieA3qvCWpDozrq18MzZyPP1Eoj8ou/SNGZz9cvtUEgbXtKqZE
+9aSHJVHNqiUD5eK7E2TLF6SrFYDDbnXAvt/A9+o2K+GhDxhW1mP/xdKPwQzbMfik
+D0kkrgFbDirok5KgYUpbwvDieuadO1yPmgQ0Em/NEorGDX8O53quENqXusU3Plcs
++qModYcmiDYexG9/bPmGWd+l5ko7/jP6GZhabItXQKtjBc1uQyi6WRnS53Ltxkiw
+PwaaMupwKMUm1/xjt8ur6zf44M59GkGKtpJHRFtZq+iv0az8LldNrA5mzOI0ZuFY
+iDJJOA4ZxM3IdtT7zT9GOVwHma4iXqa5Lxj4OdDxCNvNOT6RKYIhn7bI7vS35dK4
+YK7WRldcpIJD1oT6dslTP1UCSIYWEdoeeJt+H4ZKAcRA7f26MTk=
+=hg/p
+-----END PGP SIGNATURE-----
+
+--YiEDa0DAkWCtVeE4--

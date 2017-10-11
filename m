@@ -1,41 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2017 15:18:46 +0200 (CEST)
-Received: from resqmta-po-12v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:171]:43178
-        "EHLO resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990394AbdJKNSdDCwyK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2017 15:18:33 +0200
-Received: from resomta-po-20v.sys.comcast.net ([96.114.154.244])
-        by resqmta-po-12v.sys.comcast.net with ESMTP
-        id 2GreeDQL1nYqY2GrheKeh9; Wed, 11 Oct 2017 13:16:01 +0000
-Received: from [192.168.1.13] ([73.173.137.35])
-        by resomta-po-20v.sys.comcast.net with SMTP
-        id 2Grfe1drIOhsv2GrfePtP9; Wed, 11 Oct 2017 13:16:00 +0000
-Subject: Re: Question regarding atomic ops
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-References: <eb17f62d-c347-e470-f9cf-06b18a55481e@gentoo.org>
- <4f77107c-18ba-d549-c5f2-d52d0460377b@gentoo.org>
- <20171010142306.GA24194@linux-mips.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <5b5db1f6-c00b-6b84-6d94-7776457f8678@gentoo.org>
-Date:   Wed, 11 Oct 2017 09:15:21 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2017 16:03:40 +0200 (CEST)
+Received: from 20pmail.ess.barracuda.com ([64.235.150.246]:43665 "EHLO
+        20pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992214AbdJKODcmx2vr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2017 16:03:32 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 11 Oct 2017 14:03:21 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Wed, 11 Oct 2017 07:01:47 -0700
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        "Matt Redfearn" <matt.redfearn@imgtec.com>,
+        "# v3 . 19 +" <stable@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/3] clocksource/mips-gic-timer: Fix rcu_sched timeouts from multithreading
+Date:   Wed, 11 Oct 2017 15:01:12 +0100
+Message-ID: <1507730474-8577-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20171010142306.GA24194@linux-mips.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfGf/ROOZirKH9GZoMFtkCrWHey6BJsJKAn1R4kXUZj95A+RsaZMbsqCPcX7EUo30r0Sz/nCWHFDwNtewUnPnodxo2+PRfY+tS7D2UMdI9/Y3L4dN3dSs
- CzmDbYUQHIiIK6zVHi1UsmsUpcScWVNBi0lixjbaGak4yhD7OexlKJWdQKOCBCafRh9siz4TMhFG8yt2N+eGMTCV7e3IRWOKRNs=
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1507730595-298553-1516-37637-14
+X-BESS-VER: 2017.12-r1710102214
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.185890
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60362
+X-archive-position: 60363
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,93 +54,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/10/2017 10:23, Ralf Baechle wrote:
-> On Mon, Oct 09, 2017 at 10:34:43PM -0400, Joshua Kinard wrote:
-> 
->> On 10/09/2017 22:24, Joshua Kinard wrote:
->>
->> [snip]
->>
->>> This raises the question of why was the standard "kernel_uses_llsc" case
->>> changed but not the R10000_LLSC_WAR case?  The changes seem like they would be
->>> applicable to the older R10K CPUs regardless, since this is before a lot of the
->>> code for the newer ISAs (R2+) was added.  I am getting a funny feeling that a
->>> lot of these templates need to be re-written (maybe even in plain C, given
->>> newer gcc's better intelligence) and other useful cleanups done.  I am not
->>> fluent in MIPS asm enough, though, to know what to change.
->>
->> Answered one of my own questions via this buried commit from ~2006/2007 that
->> has a commit message, but no changed files:
->>
->> https://git.linux-mips.org/cgit/ralf/linux.git/commit/arch/mips/include/asm/atomic.h?id=5999eca25c1fd4b9b9aca7833b04d10fe4bc877d
->>
->>> [MIPS] Improve branch prediction in ll/sc atomic operations.
->>> Now that finally all supported versions of binutils have functioning
->>> support for .subsection use .subsection to tweak the branch prediction
->>>
->>> I did not modify the R10000 errata variants because it seems unclear if
->>> this will invalidate the workaround which actually relies on the cheesy
->>> prediction of branch likely to cause a misspredict if the sc was
->>> successful.
->>>
->>> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
->>
->> Seems like that second paragraph is a ripe candidate for a comment block so
->> this is better documented :)
-> 
-> Btw, I reasonably certain applying the change to the R10000 LL/SC workaround
-> versions as well would work.  But testing is difficult, even with hardware
-> at hand - and the other option asing a R10000 RTL designer is tricky about
-> 20 years later!
+When the MIPS GIC clockevent code was written, it appears to have
+inherited the 0x300 cycle min delta from the MIPS CPU timer driver. This
+is suboptimal for two reasons.
 
-Okay, I'll see about playing with that file and collapsing that it down in size
-somewhat by merging the standard and R10000_LLSC_WAR cases in a similar way
-that arch/mips/include/asm/cmpxchg.h was done uses the '__scbeqz' macro.  I
-don't have any older R10000 CPUs affected by the errata to test with, but I can
-at least test the code path under R12K+ to make sure things still work.
+Firstly, the CPU timer counts once every other cycle (i.e. half the
+clock rate). The GIC counts once per clock. Assuming that the GIC and
+CPU share the same clock this means the GIC is counting twice as fast,
+and so the min delta should be (at least) doubled. Fix this by doubling
+the min delta to 0x600.
 
+Secondly, the fixed min delta ignores the fact that with MIPS
+multithreading active, execution resource within a core is shared
+between the hardware threads within that core. An inconvenienly timed
+switch of executing thread within gic_next_event, between the read and
+write of updated count, can result in the CPU writing an event in the
+past, and subsequently not receiving a tick interrupt until the counter
+wraps. This stalls the CPU from the RCU scheduler. Other CPUs detect
+this and print rcu_sched timeout messages in  the kernel log. It can
+lead to other issues as well if the CPU is holding locks or other
+resources at the point at which it stalls. Fix this by scaling the min
+delta for the timer based on the number of threads in the core
+(smp_num_siblings). This accounts for the greater average runtime of
+CPUs within a multithreading core.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Fixes: b695d8e6ad6f ("clocksource: mips-gic: Use clockevents_config_and_register")
+Cc: <stable@vger.kernel.org> # v3.19 +
+
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
 
-For the RCU stalls, I found this tidbit of information:
-o	Booting Linux using a console connection that is too slow to
-	keep up with the boot-time console-message rate.  For example,
-	a 115Kbaud serial console can be -way- too slow to keep up
-	with boot-time message rates, and will frequently result in
-	RCU CPU stall warning messages.  Especially if you have added
-	debug printk()s.
+ drivers/clocksource/mips-gic-timer.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-From here:
-https://www.kernel.org/doc/Documentation/RCU/stallwarn.txt
-
-By default, IP27 runs at 9600bps on the serial console.  The early PROM
-messages are hardcoded for that linespeed, which is why I leave it at 9600.
-Under the IOC3 metadriver (and I believe even the stock serial code in
-ioc3-eth.c), we're relying on a really simple (and crappy) non-IRQ polling
-routine buried deep in the 8250 serial core to read the serial console state,
-and so that probably adds to the problems.
-
-Under the metadriver, the DMA-capable ioc3_serial.c driver built originally for
-Altix will get detected if you build it in, but I've never been able to get any
-output out of it on boot.  I think nyef tried as well in his early IP35 port
-and didn't have much luck either.  Or maybe he did....I forget.  I guess that's
-something to look into so we can get away from the polling mechanism once and
-for all.
-
-If that is the source of my RCU stalls, I'll have to try booting w/o serial at
-all and log into the machine by ssh and see the timestamps in dmesg.  If they
-stay under ~45 seconds, that should confirm things.  It'd also rule out any
-other bugs elsewhere in the newer code I've written.  Which means Origin 200
-should run right again.  Onyx2 + NUMA, OTOH, still has something goofy with it
-as far as I know.
-
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index ae3167c28b12..6c94a74682a2 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -72,6 +72,9 @@ struct irqaction gic_compare_irqaction = {
+ static void gic_clockevent_cpu_init(unsigned int cpu,
+ 				    struct clock_event_device *cd)
+ {
++	unsigned long max_d = 0x7fffffff;
++	unsigned long min_d = 0x600;
++
+ 	cd->name		= "MIPS GIC";
+ 	cd->features		= CLOCK_EVT_FEAT_ONESHOT |
+ 				  CLOCK_EVT_FEAT_C3STOP;
+@@ -81,7 +84,15 @@ static void gic_clockevent_cpu_init(unsigned int cpu,
+ 	cd->cpumask		= cpumask_of(cpu);
+ 	cd->set_next_event	= gic_next_event;
+ 
+-	clockevents_config_and_register(cd, gic_frequency, 0x300, 0x7fffffff);
++	/*
++	 * The min_delta is sensitive to the number of hardware threads in
++	 * the core. With more threads each thread will, on average, get
++	 * less instructions executed per clock. To account for this, we
++	 * scale the min delta based on the number of threads per core.
++	 */
++	min_d *= smp_num_siblings;
++
++	clockevents_config_and_register(cd, gic_frequency, min_d, max_d);
+ 
+ 	enable_percpu_irq(gic_timer_irq, IRQ_TYPE_NONE);
+ }
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+2.7.4

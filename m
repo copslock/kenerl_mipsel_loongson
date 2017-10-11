@@ -1,146 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2017 12:37:27 +0200 (CEST)
-Received: from mail-dm3nam03on0083.outbound.protection.outlook.com ([104.47.41.83]:10450
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990432AbdJKKhTF2fAv convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2017 12:37:19 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2017 15:12:47 +0200 (CEST)
+Received: from mail-pg0-x229.google.com ([IPv6:2607:f8b0:400e:c05::229]:57293
+        "EHLO mail-pg0-x229.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990399AbdJKNMklfHoK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2017 15:12:40 +0200
+Received: by mail-pg0-x229.google.com with SMTP id m18so964186pgd.13
+        for <linux-mips@linux-mips.org>; Wed, 11 Oct 2017 06:12:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=hJ2fR9Sy4uj77xcJHW8+P6TV+cEPuqMtF1xw8u6klJQ=;
- b=bqtmwGSqtGBorBI1mGsLhLP2xdnt37e3bLjLG3XduaKc5Tz9uCS08QtvrAeMd2iaQ8IAieLjXZVUzJuVchd3OuWjL6Ej1o4Zps5dNyCuWWiqsvRRrAAxs2oZoCF4beM2JY69EPU4qda++L+i/7drI9WOm8TAXB/sx58O7oHp0u0=
-Received: from BN6PR03CA0092.namprd03.prod.outlook.com (10.164.122.158) by
- MWHPR03MB2717.namprd03.prod.outlook.com (10.168.207.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.77.7; Wed, 11 Oct 2017 10:37:06 +0000
-Received: from BN1AFFO11FD016.protection.gbl (2a01:111:f400:7c10::134) by
- BN6PR03CA0092.outlook.office365.com (2603:10b6:405:6f::30) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.56.11 via Frontend Transport; Wed, 11 Oct 2017 10:37:05 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.57)
- smtp.mailfrom=analog.com; lists.infradead.org; dkim=none (message not signed)
- header.d=none;lists.infradead.org; dmarc=bestguesspass action=none
- header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.57; helo=nwd2mta4.analog.com;
-Received: from nwd2mta4.analog.com (137.71.25.57) by
- BN1AFFO11FD016.mail.protection.outlook.com (10.58.52.76) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.77.10
- via Frontend Transport; Wed, 11 Oct 2017 10:37:05 +0000
-Received: from NWD2HUBCAS9.ad.analog.com (nwd2hubcas9.ad.analog.com [10.64.69.109])
-        by nwd2mta4.analog.com (8.13.8/8.13.8) with ESMTP id v9BAb46l029103
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=OK);
-        Wed, 11 Oct 2017 03:37:04 -0700
-Received: from NWD2MBX6.ad.analog.com ([fe80::55b9:119:62f8:e884]) by
- NWD2HUBCAS9.ad.analog.com ([fe80::44a2:871b:49ab:ea47%12]) with mapi id
- 14.03.0210.002; Wed, 11 Oct 2017 06:37:03 -0400
-From:   "Wu, Aaron" <Aaron.Wu@analog.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Steven Miao <realmz6@gmail.com>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [Adi-buildroot-devel] [PATCH 4/7] i2c: gpio: Augment all
- boardfiles to use open drain
-Thread-Topic: [Adi-buildroot-devel] [PATCH 4/7] i2c: gpio: Augment all
- boardfiles to use open drain
-Thread-Index: AQHTL5jkaWkT6h1N00aAnR6YZ/47MaLb+ZYAgAKgbSA=
-Date:   Wed, 11 Oct 2017 10:37:03 +0000
-Message-ID: <649EF91064D35D40B9C93A225BF41674ADD7CEFD@NWD2MBX6.ad.analog.com>
-References: <20170917093906.16325-1-linus.walleij@linaro.org>
- <20170917093906.16325-5-linus.walleij@linaro.org>
- <20171009142824.GB17971@linux-mips.org>
-In-Reply-To: <20171009142824.GB17971@linux-mips.org>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcYXd1MlxhcHBk?=
- =?us-ascii?Q?YXRhXHJvYW1pbmdcMDlkODQ5YjYtMzJkMy00YTQwLTg1ZWUtNmI4NGJhMjll?=
- =?us-ascii?Q?MzViXG1zZ3NcbXNnLTFjMzM2MGJiLWFlNzAtMTFlNy04OTc5LTY0MDA2YTdh?=
- =?us-ascii?Q?NDljOFxhbWUtdGVzdFwxYzMzNjBiZC1hZTcwLTExZTctODk3OS02NDAwNmE3?=
- =?us-ascii?Q?YTQ5Yzhib2R5LnR4dCIgc3o9IjEzOTkiIHQ9IjEzMTUyMTkxODIwMTI4ODgw?=
- =?us-ascii?Q?NSIgaD0ic0d0SHdmdk1pUkF2bEJBR25SeWtHdnhjYjYwPSIgaWQ9IiIgYmw9?=
- =?us-ascii?Q?IjAiIGJvPSIxIiBjaT0iY0FBQUFFUkhVMVJTUlVGTkNnVUFBS3dCQUFCbDJK?=
- =?us-ascii?Q?RGVmRUxUQVNzNVVlaU5SSDF4S3psUjZJMUVmWEVDQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUhBQUFBQThBUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVB?=
- =?us-ascii?Q?QVFBQkFBQUFJWVIzV0FBQUFBQUFBQUFBQUFBQUFKNEFBQUJoQUdRQWFRQmZB?=
- =?us-ascii?Q?SE1BWlFCakFIVUFjZ0JsQUY4QWNBQnlBRzhBYWdCbEFHTUFkQUJ6QUY4QWRB?=
- =?us-ascii?Q?QnBBR1VBY2dBeEFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBRUFB?=
- =?us-ascii?Q?QUFBQUFBQUFnQUFBQUFBbmdBQUFHRUFaQUJwQUY4QWN3QmxBR01BZFFCeUFH?=
- =?us-ascii?Q?VUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0IwQUdrQVpRQnlBRElBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFBQUFDQUFBQUFB?=
- =?us-ascii?Q?QT0iLz48L21ldGE+?=
-x-originating-ip: [10.99.24.225]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        d=mvista-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=bS6xHxg8G3EOzH270zeitjI6DK0+HySrXFS5i4cdEzE=;
+        b=Ln7dMaQHTqHKhDv1QVMN3CdElNeLMxWlb3qBjkjBDz9V7YfZy6UCW8xAJuxH8IVWKw
+         XhCBQ1eVD7Pbl4wRNpHcKQ/nt29qL22/bXNrJiPD1Bz/85SRc60Oeoq1RDAljzK8S1Af
+         CXOeoosEAkbkZm2DZavTalf3E4vHYk+zcRoAm4q5frHqs0qBDkQ6ZCMCf9v5so0JuybW
+         /gbmlXvY7rk29lOxnmXAk+SxX5jKcZgfyVnNHht7MFoIB42X7WkANof0RhwE2P3Bfhx9
+         /bPhp92IsFyuM7GrZy3EfmB0P6bDI6SZQdyJmtZiev4nwVkzPek9RQCy7XZi6nHtOuRe
+         rmeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=bS6xHxg8G3EOzH270zeitjI6DK0+HySrXFS5i4cdEzE=;
+        b=f6WpawFPOb0CByOD+z1vIsfIRJ7BD+rMVXRQq9pw92I0WWCOxLn/0hip/QbnUhsX9O
+         epSF+hgnZtCb1zu4+rDpEgd13L4S5sbDIe6QpgpSF5OEQLZ7WfwXFomaE34WmPD+OShE
+         gH9kXnLS2mB+TFsLXuT+Kldh6lBGxzC156CPJClxKyhpW++eOjmIGcMCnTixkhTPHaPS
+         4k54kHCGjkpjOtfa2qH82j39kYAsSz9yI50kaRHxlANwi9kfdzcjOXa6Fln0JobLdoo3
+         f/r3yMbb6nMa+2gRsnXeAB6Pn7UG8I3OZzRhFGyqaC+WSQMBusbvhMJCwy25qjNsTCCb
+         sCOg==
+X-Gm-Message-State: AMCzsaWnz1IEXBel0v5lOEpJGEwrA8w4NUMoi/uZ93GoDVCJcsZhSqav
+        wyCZtPUjbGYFJ6xOPNDpOVFI3w==
+X-Google-Smtp-Source: AOwi7QC+qOHhDDo6PP+T8adhrM89wmoMPfQrPfrR+mnM+3xlJg47roBAyjFhlnQ7IdwmdVdOJVj8MA==
+X-Received: by 10.98.78.202 with SMTP id c193mr10260764pfb.295.1507727553972;
+        Wed, 11 Oct 2017 06:12:33 -0700 (PDT)
+Received: from [192.168.27.3] ([47.184.168.85])
+        by smtp.gmail.com with ESMTPSA id u85sm26449063pfi.132.2017.10.11.06.12.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Oct 2017 06:12:33 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: Fix exception entry when CONFIG_EVA enabled
+To:     Matt Redfearn <matt.redfearn@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>
+Cc:     Matthew Fortune <matthew.fortune@mips.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        "Jason A. Donenfeld" <jason@zx2c4.com>,
+        Paul Burton <paul.burton@imgtec.com>
+References: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com>
+From:   Corey Minyard <cminyard@mvista.com>
+Message-ID: <605f6a96-a843-085c-efc6-a2c0f2afd84a@mvista.com>
+Date:   Wed, 11 Oct 2017 08:12:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(6009001)(39860400002)(346002)(376002)(2980300002)(438002)(377454003)(24454002)(189002)(13464003)(199003)(53754006)(356003)(7636002)(7696004)(102836003)(4326008)(7736002)(86362001)(6306002)(39060400002)(54906003)(6246003)(53376002)(3846002)(5250100002)(2900100001)(478600001)(230783001)(97756001)(2920100001)(246002)(6116002)(8676002)(305945005)(5660300001)(106002)(229853002)(72206003)(106466001)(8936002)(54356999)(1720100001)(76176999)(966005)(55846006)(23726003)(110136005)(55016002)(14454004)(50986999)(46406003)(8746002)(33656002)(189998001)(316002)(2950100002)(50466002)(2906002)(47776003)(53546010);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR03MB2717;H:nwd2mta4.analog.com;FPR:;SPF:Pass;PTR:nwd2mail11.analog.com;MX:1;A:1;LANG:en;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b5b071ca-e27d-45ad-0a3a-08d510940405
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(2017030254152)(8251501002)(2017052603199)(201703131423075)(201703031133081)(201702281549075);SRVR:MWHPR03MB2717;
-X-MS-TrafficTypeDiagnostic: MWHPR03MB2717:
-X-Forefront-Antispam-Report-Untrusted:  
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR03MB2717;20:iFZbuzVnZo0G1Wr2fcHNPGCU9Ts6iF2sTz05GF0W6HnMgDCvLSsmPqvNPYZnkP/rlChnyUo0Ye4y7eK9WgZEKvm3y2FH2MCfERVI9gSrH/7CuQ4OamW+QBHtmk/qd7LDfs8go6UfSGn6qbSMt/Z3S/XHUrnc9MlxM9sZD6Qw25M/K9szX/mcZA2DJ5aAXrZobQoUohcJn0tSAaq+SUDgHjGcZYAT5zJqu05oaHITYs30eGHX3cfl3ejsUlAzQTHTpIU0GudDfftKY6V15uj/fd6xNHijZYkph7s1T5SQPimdX8bHAyi9Er07KvaqJxgCMwLJobfTLt8CPow5hoZYAKlDpmx+OEXzoTqg9CZOLfd4qGVRu9oCzEukiOAhn1cotUqbuoar8d9gWPr2/48iFdTT5CEv/W+ymDINv+CpMM+K+C64k7FJugQgZDj2HWWnXV/hQOeyYPFhOHdUE1I8/IsCX/mL74zijafk1QU8Sft2ngNeegr1ibHH1WyhgdGc;4:6wtJ+PJ89LSdZNYV979jqRiiy4V2tdKxkvfW10iXc3mK5TObaTMJCM1nVK6l9quTxSlzAgDQrWLbbFCSNU4Mu+Df/WfR3y/qkIDxKBz0rTJ/F/LPDarECQqZ/8jFMB0QhXzjJA6zfYiAq+uyOS+QCjrJfMzLE1tU5cogwI5k2ZrquHDXcUB/9D62q3DFAxuVz+BW7FxW2GIHmf5sVJMHT3MEOF7b79q6Z7fmRn13/a2RnlaLvVUNc1mbm0BU+lWuXOyWth/o98kpl9cU2meyQw0DHZBaUr+GDTchIv1859LhaNysNdXZ4wgwR+mBMOOgBf7UPdF5gD33IvycXsjDO+opxhTe7E0B3CPi+wv4Xz17mFuBHF/sdjnHA/2hVMNSGymNBtQzRNk+yZlM446dLA==
-X-Exchange-Antispam-Report-Test: UriScan:(143289334528602)(9452136761055)(258649278758335)(42262312472803);
-X-Microsoft-Antispam-PRVS: <MWHPR03MB2717F30472513EEB63424283E04A0@MWHPR03MB2717.namprd03.prod.outlook.com>
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(2401047)(8121501046)(5005006)(3002001)(93006095)(93004095)(100000703101)(100105400095)(10201501046)(6055026)(6041248)(20161123555025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123564025)(20161123560025)(20161123558100)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:MWHPR03MB2717;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:MWHPR03MB2717;
-X-Forefront-PRVS: 0457F11EAF
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR03MB2717;23:SDD+51BvxbJ1TWyBLlVcgkowPLZBQuALbm92MMPkS?=
- =?us-ascii?Q?BeVW73Cjs/LmWT/CWORv0Bk/I0spxQ+9Z5OGGZAD9gGxvyDAy72f64eTfdma?=
- =?us-ascii?Q?sxMuaKuHT4v5V+XmI4EIZVGN0fS8DQ4UXTZRjIZVnQDa4pJiZMIhc6R0HqJb?=
- =?us-ascii?Q?z1zXbg5ia/BilctQxNdD7FpiQBZ1KYcPC71fY6UCEqJO8Rm2FYM1bv/Tj+25?=
- =?us-ascii?Q?XML5Jka1ir/3hQOwiPX5KStp5k0cPPBhuKNl2ujgymOYzDdePmQTM2PJVLWL?=
- =?us-ascii?Q?1b0Xew27trB6TXjJGEfobFXeSPZ+peZAqZuKw6SdU9GKivkpqKaVMg/6ltDl?=
- =?us-ascii?Q?DN6wMbhTkFZa1Bbnd1GkzYzSf/+PSa6RBOAOp9CR7x66Hu2uRPO0ZAVxkxfv?=
- =?us-ascii?Q?qJzKxK9eY/XMwEbCK5BaaAJXTjvUDkZPIT3ojLpOBaBey89NxXZy8r9VZexG?=
- =?us-ascii?Q?ifMOcRvZc6TB06M0ng9uV31iDHnSpO3EzAOuX5NmMiQtesr8ZCvwK61odoP6?=
- =?us-ascii?Q?RfUbaBIE5hcdCtP3jVEqAewiuovCVjnWl1OZZWHKt7wr0QzaY5JzBBOrZOMj?=
- =?us-ascii?Q?KIG/+2clKl2Cfur7kG8CaWCFvGjslFjekEpqiTdcYrSEYOlnDzTvWlWY0Wtk?=
- =?us-ascii?Q?X+SLJ0KYZjHh8Wtd87ygAPrl83DRss2Hal7F3KEiUO5huza8nliLL6r3LuR1?=
- =?us-ascii?Q?ko9Kltyqtcc4fvyzHXtN49holb2sTQqQCWdzUkvK4S17h1KZYWpmA0u3N89y?=
- =?us-ascii?Q?rC+oT/4rE1d86HMOqdEcPDGL+q/0/V/oRTPb1Ld0Wy4kbibfyxtcD41rh4tm?=
- =?us-ascii?Q?zHlZuaj8US+VFr+l5XCJ6pxNUQ3eBkfNO5N4gFXzN9dU9SD54ocOBLgMS5m+?=
- =?us-ascii?Q?y4C9Ted2RHTmgRPcCMUwWxcBl/SXxI8xrM+l4/1yoMoytA3s727Uu37QeqQD?=
- =?us-ascii?Q?vZ1M2TRHLkjyCmLFKBx3nCA1ab8MZAXxGVarAFS9S4vjtTXUs5nRrYTKHh5F?=
- =?us-ascii?Q?6+0/cBxUGhzMSbaXfuMDl2i5uEVOZOI+QkLHYA91+23YxlOx6IWUHXTW5anP?=
- =?us-ascii?Q?5OY70rSL4mWR9wY5HmqXglplQj4IRpYGHhsG4erZdQPmbrgWJ5PJ0yBNkp/i?=
- =?us-ascii?Q?S/2XPLDP0+unWpKlaeXrvqGVKlPOfD5Fy4WxencETa8j5lvI93OIrLRfod8M?=
- =?us-ascii?Q?2MD5cRWogP3NEIeR73IjwI2eMLMJDwxxnEuzi30v2el3A/6uQ5VjQy2wjaSM?=
- =?us-ascii?Q?zUzqrHkHsaL7CXrvIWvksmK0fFnvyPp+Wr18TGDf/RYvAyTGccbk8plaliQh?=
- =?us-ascii?Q?CVYMb6VPNfpt/QzD2NGZOavj77b6TscCqxvwrp6UzBex4HlqKsUPeq+AjAHp?=
- =?us-ascii?Q?Y13aHH7MlsWkSe/YT7DTLACYs48+KSGrSWbGOOkwJ4fL3Yk?=
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR03MB2717;6:KqKnFO7YpFjy2V94gr5ks5GpaO0KwZmChtEqq6jPQvVqPK4dJKRgeEIKNLLuNTecd54/fW35AELqrwUqU5/vuCfgsP26ludnBgNkUowSpnA/lTqD1x830H1F1HkTk+jS7HG1+Xeim9p2zZVcdR6xLD92VbmpnpuuLZ7hkTR2chMFMYTCX4qebiTmIhSjR3RgblqxBR9roacD9I6irZ2ndHbE91/q9sCuu1aiNpEGto5sDkb2oeVmlwHi6Rf8jviUMmv3A0GdT3TQ9dyoA4QanpdLHOzb5cc5eSMRa2m5FGfbab+m3xAJGSBxmXq66G1/SSQsdvVc6sM2VhHecroivw==;5:gZdYOnwg+pI8O6mDlswc7eyiYABYrdWT+u6yX6kmvqEOVcKZRI8rkpwVFvppFV4wSrOuvE2BVjbOAakvxjqZ9z7+NcW2jxXbJGzBKPuu3NBRwKu3GhFPmAEcMcY2cmosvx6YghEkrn3mD48ikOaJ+Q==;24:4RsAwG6Qr+h2W+biY75sSiOK57vR6sxSUQ9evzytONmzJoBFPb7/HNZTPipLDnPBg7QCEjq/EJJwuxE6/gwVl1HtqFCTY5L4dz2tmv0H9sY=;7:xA2YlwaNrR6xBFVI3byLgYZSQ3IPZ3e0RN6IjUov1Vh3H4Ln5NtxATrAOGoelm/6pHZNmknmYwe8yEDOsFiTeYDp1y1Z1NSP+1AiXM4IRgXBMwllLdBSuKa7rfJzAtkY10m6aX2S3w0BbEBWGr+ghkT//BKCUUEQdX6UY/ybGzCDemp6YO2oHyvd3XF23r1HPuow8ARaokU4xG9oJkXtbJklTLmLFMSAbGncQfTlkaY=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2017 10:37:05.0344
- (UTC)
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta4.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR03MB2717
-Return-Path: <Aaron.Wu@analog.com>
+In-Reply-To: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-GB
+Return-Path: <cminyard@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60360
+X-archive-position: 60361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Aaron.Wu@analog.com
+X-original-sender: cminyard@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -153,32 +77,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+On 10/11/2017 03:59 AM, Matt Redfearn wrote:
+> Commit 9fef68686317b ("MIPS: Make SAVE_SOME more standard") made several
+> changes to the order in which registers are saved in the SAVE_SOME
+> macro, used by exception handlers to save the processor state. In
+> particular, it removed the
+> move   k1, sp
+> in the delay slot of the branch testing if the processor is already in
+> kernel mode. This is replaced later in the macro by a
+> move   k0, sp
+> When CONFIG_EVA is disabled, this instruction actually appears in the
+> delay slot of the branch. However, when CONFIG_EVA is enabled, instead
+> the RPS workaround of
+> MFC0	k0, CP0_ENTRYHI
+> appears in the delay slot. This results in k0 not containing the stack
+> pointer, but some unrelated value, which is then saved to the kernel
+> stack. On exit from the exception, this bogus value is restored to the
+> stack pointer, resulting in an OOPS.
+>
+> Fix this by moving the save of SP in k0 explicitly in the delay slot of
+> the branch, outside of the CONFIG_EVA section, restoring the expected
+> instruction ordering when CONFIG_EVA is active.
+>
+> Fixes: 9fef68686317b ("MIPS: Make SAVE_SOME more standard")
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+> Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
 
-Steven is no longer working on this for ADI. Acked by me if this works. Thanks.
+I looked this over pretty carefully and it looks correct to me.  It 
+makes no difference
+in the instructions generated by the non-EVA case.  I shouldn't have 
+missed this :(.
 
-Best regards,
-Aaron Wu
-Analog Devices Inc.
+Reviewed-by: Corey Minyard <cminyard@mvista.com>
 
------Original Message-----
-From: Ralf Baechle [mailto:ralf@linux-mips.org] 
-Sent: Monday, October 09, 2017 10:28 PM
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-mips@linux-mips.org; Steven Miao <realmz6@gmail.com>; adi-buildroot-devel@lists.sourceforge.net; Geert Uytterhoeven <geert@linux-m68k.org>; linux-i2c@vger.kernel.org; linux-arm-kernel@lists.infradead.org
-Subject: Re: [Adi-buildroot-devel] [PATCH 4/7] i2c: gpio: Augment all boardfiles to use open drain
+>
+> ---
+>
+> Note that some of our compiler people are dubious about putting frame
+> related instructions in conditionally executed blocks of code. In this
+> case, presuming that we only care about unwinding the kernel stack, then
+> we only care about the case in which the branch is taken, and k0 always
+> contains the SP to be saved. There is also a question about putting
+> frame related instructions in branch delay slots. Again, in this case,
+> we think it's OK to use them since the only path that ought to be
+> unwound will be the "branch taken" route where we are already on the
+> kernel stack.
 
-On Sun, Sep 17, 2017 at 11:39:03AM +0200, Linus Walleij wrote:
+Since the compiler can put frame-related instructions in delay slots (see
+aee16625b19 MIPS: Fix issues in backtraces), it's probably ok.  I have 
+tested
+this before with kernel dumps and gdb, and gdb had no issues with this.
 
-> Steven (Blackfin): requesting ACK for Wolfram to take this patch.
-> Ralf (MIPS): requesting ACK for Wolfram to take this patch.
+That said, this is a tricky case.  But looking at the generated unwinding
+info, it seems to do the right thing.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> Not having access to a CFI based kernel stack unwinder makes this change
+> difficult to verify, but since the same construct already existed when
+> CONFIG_EVA is disabled, I don't think this change is likely to break the
+> unwinder, and fixes exception entry when CONFIG_EVA is enabled.
 
-  Ralf
+Agreed.  Thanks for fixing this.
 
-------------------------------------------------------------------------------
-Check out the vibrant tech community on one of the world's most engaging tech sites, Slashdot.org! http://sdm.link/slashdot _______________________________________________
-Adi-buildroot-devel mailing list
-Adi-buildroot-devel@lists.sourceforge.net
-https://lists.sourceforge.net/lists/listinfo/adi-buildroot-devel
+-corey
+
+> Thanks,
+> Matt
+>
+> ---
+>   arch/mips/include/asm/stackframe.h | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+> index 5d3563c55e0c..2161357cc68f 100644
+> --- a/arch/mips/include/asm/stackframe.h
+> +++ b/arch/mips/include/asm/stackframe.h
+> @@ -199,6 +199,10 @@
+>   		sll	k0, 3		/* extract cu0 bit */
+>   		.set	noreorder
+>   		bltz	k0, 8f
+> +		 move	k0, sp
+> +		.if \docfi
+> +		.cfi_register sp, k0
+> +		.endif
+>   #ifdef CONFIG_EVA
+>   		/*
+>   		 * Flush interAptiv's Return Prediction Stack (RPS) by writing
+> @@ -225,10 +229,6 @@
+>   		MTC0	k0, CP0_ENTRYHI
+>   #endif
+>   		.set	reorder
+> -		 move	k0, sp
+> -		.if \docfi
+> -		.cfi_register sp, k0
+> -		.endif
+>   		/* Called from user mode, new stack. */
+>   		get_saved_sp docfi=\docfi tosp=1
+>   8:

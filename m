@@ -1,70 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2017 15:12:47 +0200 (CEST)
-Received: from mail-pg0-x229.google.com ([IPv6:2607:f8b0:400e:c05::229]:57293
-        "EHLO mail-pg0-x229.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990399AbdJKNMklfHoK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2017 15:12:40 +0200
-Received: by mail-pg0-x229.google.com with SMTP id m18so964186pgd.13
-        for <linux-mips@linux-mips.org>; Wed, 11 Oct 2017 06:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=bS6xHxg8G3EOzH270zeitjI6DK0+HySrXFS5i4cdEzE=;
-        b=Ln7dMaQHTqHKhDv1QVMN3CdElNeLMxWlb3qBjkjBDz9V7YfZy6UCW8xAJuxH8IVWKw
-         XhCBQ1eVD7Pbl4wRNpHcKQ/nt29qL22/bXNrJiPD1Bz/85SRc60Oeoq1RDAljzK8S1Af
-         CXOeoosEAkbkZm2DZavTalf3E4vHYk+zcRoAm4q5frHqs0qBDkQ6ZCMCf9v5so0JuybW
-         /gbmlXvY7rk29lOxnmXAk+SxX5jKcZgfyVnNHht7MFoIB42X7WkANof0RhwE2P3Bfhx9
-         /bPhp92IsFyuM7GrZy3EfmB0P6bDI6SZQdyJmtZiev4nwVkzPek9RQCy7XZi6nHtOuRe
-         rmeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=bS6xHxg8G3EOzH270zeitjI6DK0+HySrXFS5i4cdEzE=;
-        b=f6WpawFPOb0CByOD+z1vIsfIRJ7BD+rMVXRQq9pw92I0WWCOxLn/0hip/QbnUhsX9O
-         epSF+hgnZtCb1zu4+rDpEgd13L4S5sbDIe6QpgpSF5OEQLZ7WfwXFomaE34WmPD+OShE
-         gH9kXnLS2mB+TFsLXuT+Kldh6lBGxzC156CPJClxKyhpW++eOjmIGcMCnTixkhTPHaPS
-         4k54kHCGjkpjOtfa2qH82j39kYAsSz9yI50kaRHxlANwi9kfdzcjOXa6Fln0JobLdoo3
-         f/r3yMbb6nMa+2gRsnXeAB6Pn7UG8I3OZzRhFGyqaC+WSQMBusbvhMJCwy25qjNsTCCb
-         sCOg==
-X-Gm-Message-State: AMCzsaWnz1IEXBel0v5lOEpJGEwrA8w4NUMoi/uZ93GoDVCJcsZhSqav
-        wyCZtPUjbGYFJ6xOPNDpOVFI3w==
-X-Google-Smtp-Source: AOwi7QC+qOHhDDo6PP+T8adhrM89wmoMPfQrPfrR+mnM+3xlJg47roBAyjFhlnQ7IdwmdVdOJVj8MA==
-X-Received: by 10.98.78.202 with SMTP id c193mr10260764pfb.295.1507727553972;
-        Wed, 11 Oct 2017 06:12:33 -0700 (PDT)
-Received: from [192.168.27.3] ([47.184.168.85])
-        by smtp.gmail.com with ESMTPSA id u85sm26449063pfi.132.2017.10.11.06.12.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Oct 2017 06:12:33 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: Fix exception entry when CONFIG_EVA enabled
-To:     Matt Redfearn <matt.redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>
-Cc:     Matthew Fortune <matthew.fortune@mips.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        "Jason A. Donenfeld" <jason@zx2c4.com>,
-        Paul Burton <paul.burton@imgtec.com>
-References: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com>
-From:   Corey Minyard <cminyard@mvista.com>
-Message-ID: <605f6a96-a843-085c-efc6-a2c0f2afd84a@mvista.com>
-Date:   Wed, 11 Oct 2017 08:12:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2017 15:18:46 +0200 (CEST)
+Received: from resqmta-po-12v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:171]:43178
+        "EHLO resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990394AbdJKNSdDCwyK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2017 15:18:33 +0200
+Received: from resomta-po-20v.sys.comcast.net ([96.114.154.244])
+        by resqmta-po-12v.sys.comcast.net with ESMTP
+        id 2GreeDQL1nYqY2GrheKeh9; Wed, 11 Oct 2017 13:16:01 +0000
+Received: from [192.168.1.13] ([73.173.137.35])
+        by resomta-po-20v.sys.comcast.net with SMTP
+        id 2Grfe1drIOhsv2GrfePtP9; Wed, 11 Oct 2017 13:16:00 +0000
+Subject: Re: Question regarding atomic ops
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+References: <eb17f62d-c347-e470-f9cf-06b18a55481e@gentoo.org>
+ <4f77107c-18ba-d549-c5f2-d52d0460377b@gentoo.org>
+ <20171010142306.GA24194@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <5b5db1f6-c00b-6b84-6d94-7776457f8678@gentoo.org>
+Date:   Wed, 11 Oct 2017 09:15:21 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
  Thunderbird/52.3.0
 MIME-Version: 1.0
-In-Reply-To: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-GB
-Return-Path: <cminyard@mvista.com>
+In-Reply-To: <20171010142306.GA24194@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfGf/ROOZirKH9GZoMFtkCrWHey6BJsJKAn1R4kXUZj95A+RsaZMbsqCPcX7EUo30r0Sz/nCWHFDwNtewUnPnodxo2+PRfY+tS7D2UMdI9/Y3L4dN3dSs
+ CzmDbYUQHIiIK6zVHi1UsmsUpcScWVNBi0lixjbaGak4yhD7OexlKJWdQKOCBCafRh9siz4TMhFG8yt2N+eGMTCV7e3IRWOKRNs=
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60361
+X-archive-position: 60362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cminyard@mvista.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,99 +48,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/11/2017 03:59 AM, Matt Redfearn wrote:
-> Commit 9fef68686317b ("MIPS: Make SAVE_SOME more standard") made several
-> changes to the order in which registers are saved in the SAVE_SOME
-> macro, used by exception handlers to save the processor state. In
-> particular, it removed the
-> move   k1, sp
-> in the delay slot of the branch testing if the processor is already in
-> kernel mode. This is replaced later in the macro by a
-> move   k0, sp
-> When CONFIG_EVA is disabled, this instruction actually appears in the
-> delay slot of the branch. However, when CONFIG_EVA is enabled, instead
-> the RPS workaround of
-> MFC0	k0, CP0_ENTRYHI
-> appears in the delay slot. This results in k0 not containing the stack
-> pointer, but some unrelated value, which is then saved to the kernel
-> stack. On exit from the exception, this bogus value is restored to the
-> stack pointer, resulting in an OOPS.
->
-> Fix this by moving the save of SP in k0 explicitly in the delay slot of
-> the branch, outside of the CONFIG_EVA section, restoring the expected
-> instruction ordering when CONFIG_EVA is active.
->
-> Fixes: 9fef68686317b ("MIPS: Make SAVE_SOME more standard")
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
+On 10/10/2017 10:23, Ralf Baechle wrote:
+> On Mon, Oct 09, 2017 at 10:34:43PM -0400, Joshua Kinard wrote:
+> 
+>> On 10/09/2017 22:24, Joshua Kinard wrote:
+>>
+>> [snip]
+>>
+>>> This raises the question of why was the standard "kernel_uses_llsc" case
+>>> changed but not the R10000_LLSC_WAR case?  The changes seem like they would be
+>>> applicable to the older R10K CPUs regardless, since this is before a lot of the
+>>> code for the newer ISAs (R2+) was added.  I am getting a funny feeling that a
+>>> lot of these templates need to be re-written (maybe even in plain C, given
+>>> newer gcc's better intelligence) and other useful cleanups done.  I am not
+>>> fluent in MIPS asm enough, though, to know what to change.
+>>
+>> Answered one of my own questions via this buried commit from ~2006/2007 that
+>> has a commit message, but no changed files:
+>>
+>> https://git.linux-mips.org/cgit/ralf/linux.git/commit/arch/mips/include/asm/atomic.h?id=5999eca25c1fd4b9b9aca7833b04d10fe4bc877d
+>>
+>>> [MIPS] Improve branch prediction in ll/sc atomic operations.
+>>> Now that finally all supported versions of binutils have functioning
+>>> support for .subsection use .subsection to tweak the branch prediction
+>>>
+>>> I did not modify the R10000 errata variants because it seems unclear if
+>>> this will invalidate the workaround which actually relies on the cheesy
+>>> prediction of branch likely to cause a misspredict if the sc was
+>>> successful.
+>>>
+>>> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+>>
+>> Seems like that second paragraph is a ripe candidate for a comment block so
+>> this is better documented :)
+> 
+> Btw, I reasonably certain applying the change to the R10000 LL/SC workaround
+> versions as well would work.  But testing is difficult, even with hardware
+> at hand - and the other option asing a R10000 RTL designer is tricky about
+> 20 years later!
 
-I looked this over pretty carefully and it looks correct to me.  It 
-makes no difference
-in the instructions generated by the non-EVA case.  I shouldn't have 
-missed this :(.
+Okay, I'll see about playing with that file and collapsing that it down in size
+somewhat by merging the standard and R10000_LLSC_WAR cases in a similar way
+that arch/mips/include/asm/cmpxchg.h was done uses the '__scbeqz' macro.  I
+don't have any older R10000 CPUs affected by the errata to test with, but I can
+at least test the code path under R12K+ to make sure things still work.
 
-Reviewed-by: Corey Minyard <cminyard@mvista.com>
+---
 
->
-> ---
->
-> Note that some of our compiler people are dubious about putting frame
-> related instructions in conditionally executed blocks of code. In this
-> case, presuming that we only care about unwinding the kernel stack, then
-> we only care about the case in which the branch is taken, and k0 always
-> contains the SP to be saved. There is also a question about putting
-> frame related instructions in branch delay slots. Again, in this case,
-> we think it's OK to use them since the only path that ought to be
-> unwound will be the "branch taken" route where we are already on the
-> kernel stack.
+For the RCU stalls, I found this tidbit of information:
+o	Booting Linux using a console connection that is too slow to
+	keep up with the boot-time console-message rate.  For example,
+	a 115Kbaud serial console can be -way- too slow to keep up
+	with boot-time message rates, and will frequently result in
+	RCU CPU stall warning messages.  Especially if you have added
+	debug printk()s.
 
-Since the compiler can put frame-related instructions in delay slots (see
-aee16625b19 MIPS: Fix issues in backtraces), it's probably ok.  I have 
-tested
-this before with kernel dumps and gdb, and gdb had no issues with this.
+From here:
+https://www.kernel.org/doc/Documentation/RCU/stallwarn.txt
 
-That said, this is a tricky case.  But looking at the generated unwinding
-info, it seems to do the right thing.
+By default, IP27 runs at 9600bps on the serial console.  The early PROM
+messages are hardcoded for that linespeed, which is why I leave it at 9600.
+Under the IOC3 metadriver (and I believe even the stock serial code in
+ioc3-eth.c), we're relying on a really simple (and crappy) non-IRQ polling
+routine buried deep in the 8250 serial core to read the serial console state,
+and so that probably adds to the problems.
 
-> Not having access to a CFI based kernel stack unwinder makes this change
-> difficult to verify, but since the same construct already existed when
-> CONFIG_EVA is disabled, I don't think this change is likely to break the
-> unwinder, and fixes exception entry when CONFIG_EVA is enabled.
+Under the metadriver, the DMA-capable ioc3_serial.c driver built originally for
+Altix will get detected if you build it in, but I've never been able to get any
+output out of it on boot.  I think nyef tried as well in his early IP35 port
+and didn't have much luck either.  Or maybe he did....I forget.  I guess that's
+something to look into so we can get away from the polling mechanism once and
+for all.
 
-Agreed.  Thanks for fixing this.
+If that is the source of my RCU stalls, I'll have to try booting w/o serial at
+all and log into the machine by ssh and see the timestamps in dmesg.  If they
+stay under ~45 seconds, that should confirm things.  It'd also rule out any
+other bugs elsewhere in the newer code I've written.  Which means Origin 200
+should run right again.  Onyx2 + NUMA, OTOH, still has something goofy with it
+as far as I know.
 
--corey
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
 
-> Thanks,
-> Matt
->
-> ---
->   arch/mips/include/asm/stackframe.h | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-> index 5d3563c55e0c..2161357cc68f 100644
-> --- a/arch/mips/include/asm/stackframe.h
-> +++ b/arch/mips/include/asm/stackframe.h
-> @@ -199,6 +199,10 @@
->   		sll	k0, 3		/* extract cu0 bit */
->   		.set	noreorder
->   		bltz	k0, 8f
-> +		 move	k0, sp
-> +		.if \docfi
-> +		.cfi_register sp, k0
-> +		.endif
->   #ifdef CONFIG_EVA
->   		/*
->   		 * Flush interAptiv's Return Prediction Stack (RPS) by writing
-> @@ -225,10 +229,6 @@
->   		MTC0	k0, CP0_ENTRYHI
->   #endif
->   		.set	reorder
-> -		 move	k0, sp
-> -		.if \docfi
-> -		.cfi_register sp, k0
-> -		.endif
->   		/* Called from user mode, new stack. */
->   		get_saved_sp docfi=\docfi tosp=1
->   8:
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

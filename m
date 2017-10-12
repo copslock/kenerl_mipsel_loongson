@@ -1,81 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2017 21:50:55 +0200 (CEST)
-Received: from mail-cys01nam02on0084.outbound.protection.outlook.com ([104.47.37.84]:32113
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2017 23:02:52 +0200 (CEST)
+Received: from mail-by2nam01on0081.outbound.protection.outlook.com ([104.47.34.81]:34528
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992592AbdJLTusP9wF7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 Oct 2017 21:50:48 +0200
+        id S23992592AbdJLVCqBo75j (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 Oct 2017 23:02:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=+27om/siflZW3vfzQ5O4K7QYNbxNWJXzmqJp8cUu67Y=;
- b=ZT31Tdf1zF1x/3WJaw8vCblU/H/cuEc3D3pAqYnlNPo9+K9iPmi/J+RFJB7tRxCqSAXg+zCLyMeUhX6kQPoiK3Z5S0gYUsTC5Gkj/W+s1J6kMLVLsiKk419izF8iv0xCcMts9F1TISqSDLkhaTd1SD6vpO9G5Zta5ZwOK1nskF4=
+ bh=yf1Z87bgx/g7Lu+hkSloiTO+m7DUtVtXWla838gjbfY=;
+ b=CH+1gJlHBUHeeFUE+NGooQsVvu2rLrvV0DJEINr6ftUtAdtCD2TPTIBOWnjC8v2caYiQiNLVX+zf8uhV+fH+d5O3wR5o9kFFqVsulegSNIzHnAjw6dvRBv/YRkb6CvSAh2lfx8JXZTHzLtQFyho6vOE6e2h9zWheAYaHpzl9r/4=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
- DM5PR07MB3498.namprd07.prod.outlook.com (10.164.153.29) with Microsoft SMTP
+ MWHPR07MB3503.namprd07.prod.outlook.com (10.164.192.30) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.77.7; Thu, 12 Oct 2017 19:50:37 +0000
+ 15.20.77.7; Thu, 12 Oct 2017 21:02:33 +0000
 From:   David Daney <david.daney@cavium.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org,
-        "Steven J. Hill" <steven.hill@cavium.com>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Add iomem resource for kernel bss section.
-Date:   Thu, 12 Oct 2017 12:50:34 -0700
-Message-Id: <20171012195034.5758-1-david.daney@cavium.com>
+To:     kexec@lists.infradead.org, Simon Horman <horms@verge.net.au>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH 0/4] kexec-tools: mips: Fixes for 64-bit and OCTEON
+Date:   Thu, 12 Oct 2017 14:02:24 -0700
+Message-Id: <20171012210228.7353-1-david.daney@cavium.com>
 X-Mailer: git-send-email 2.9.5
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: CY1PR07CA0023.namprd07.prod.outlook.com (10.166.202.33) To
- DM5PR07MB3498.namprd07.prod.outlook.com (10.164.153.29)
+X-ClientProxiedBy: SN1PR0701CA0012.namprd07.prod.outlook.com (10.162.96.22) To
+ MWHPR07MB3503.namprd07.prod.outlook.com (10.164.192.30)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f1de0f35-fb3d-4049-2499-08d511aa82ed
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(2017030254152)(2017052603199)(201703131423075)(201703031133081)(201702281549075);SRVR:DM5PR07MB3498;
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3498;3:1TI4XfUbbXFB8HMPZvWIEDmXMfA2UBa3tz5WiQOOy6XUF1zbu7bST4P0xLGe/8I3rVqvCVHWDzkXER49H5j2qEAEOUI6XksBlvDLn7BH72o77pt1Vs21LW1XFCNfRBNqcwRvkaiwvvTdayZqhQGiLenxPhMLLnOTTqfcLe+S556x7QMSs+L8nTBugAHQxSVhtZdRDg0tl1toBAV+e4io76yi2f13woJ0+WW0K8r+Tq40pD69IVVCrg9+FWfazjRz;25:V0B6O9bJ9eMV5zDvts/mU5FRn27Ak34m3UpyTltqhVbrPhTIY9PrLfFXZfRhf9jufaKuWaLJuww63IfDdeoUhsiQh7ZJ4N/fmOR3S1YUBhGDwUjo76GGRMcxBxetNOcWMyF0uOEVwEnYfngDbE1DD//lZa1o+63AE8SaGovWas/tMLO5ejHBmgHMfBBube3Itfrv7Sn5bKNO+RIxsQzaO5qrd+TIjRiQn8EQXj/plZ4yASJQLpGej3ExT+hW7D9YqLLm9Y++VQwANDcrE4t5lzbzJ7jCLDGAaOgWxz1kyQp0CmaPlxiTjsSivMgbg8zWd9S3g2fKV7tw4kcfh1YQWw==;31:ttTQA1FIDEWA49uHWaSGx0PcezrdZSrmLUe6XQ6SHZRuyvB3RvbefFlhqGzr36L1AVMsptgmJJ+k3Wf9rIZRH3FTh/L1l8udS9o8uPSrWKCvt8ZfdwGS2eYmv57FDCzDnGVsPpq24femMNHLthTiBq8wZmK+ejATcwgAHPmt5pOqMC2BgdVcKxXcX1YVqR0HPBj62dFbsLDdH3PLgb991+0ntcSvokLUYRihVDxCtB4=
-X-MS-TrafficTypeDiagnostic: DM5PR07MB3498:
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@cavium.com; 
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3498;20:j87cMMfdQ+hMwcaKT/kwG62+sVvgQzV3L5nrUd1uOVLBGqRERFn7RLIfnemx/5ylo48I/+BvUm3/TnLQ/0SwNF+ew7J9RTdlQf6pRIXgWNM6lzRnyfGVQF9E9BmZPfWrRpNN6ulgns0d+NlRZrBVZ9D5F9xqhDaoW4U0UaHxsSjBS20VVhN+cKr1YjpRQr6kr8s5090QHzXmXBSgH7PHXMnniu83t7sZ8m76AJLOhK+nKjZuzXl4T+uKhlE+pUsJKKYVmQUiO6cojMJt/eq6EudUBw83/7cOKM1xZNFpWcGu42pqxFJvXEaEtVP5+rTo63PjCMqU8JmKcbNdBb0OTkw5s5v7H/Ft9ZWz6IB1S/XaaAKwajA9xAMf3zZIyovnhBPV2mGlAxWEOjBW4nEv/fDWCLVWLU3R/G/Gg12ttCw9TOObShhs0K/77DebR8f1vTdcymgaU7eOa6Yd6AQNgGGsEZdiW3Zv0wgNdvlpqk0G8BtGy+lZYQPG55HZh7AU;4:KogyyxkUF6QimCfLhWWLqwtiWR8FC0WZvmV6SbhsYZ5DI4YzvnLkLbD9Ii73h7q4ADVzeVeSMYv+U918S7Xf9w0PtCxCJ8AIM/58N1iOEepHVAd5Ip/eUWtEv224U9982x5KudVkYDrNZsTbOZP+Hm/lLoTFnR1CY2gGtZR0OupXR7+IMs9cXGOwi5dc+AV5nVg3T/PxZmA+7RhNK9BispgHgUye/cDk/vRxOCRdi78+Nnb4kF9UbBpBnixikv52
+X-MS-Office365-Filtering-Correlation-Id: 075f9adc-786d-4d46-8d79-08d511b48f1d
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(2017030254152)(2017052603199)(201703131423075)(201703031133081)(201702281549075);SRVR:MWHPR07MB3503;
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3503;3:A4z+Zg+QcK4IR2/FJr4/w2TpbqqiIju812koLXZTf1BZr5lGkOiruHDd0L1U8xb2BWT3iOI1SfYyaXFy6Ir93fdpS0kt8dmOTWcf2VxmBGIEYtL561VVpxHQ85rWhfeLifOn8qbT/MLF7VJ3+F6ym5SLRBO+gwuyRuWa1BcbfNXYPAk6ZIS040whSzUrKh6JGhjQlffg7Ycj70bmO/Q9bTCdls+05tMpo/Jqm3V38WL367JNowmOPqStd++mU29q;25:sKvBtgymPA1BcSEnITLv6Mzx9SeMfjMxaJxJjuZhUZ3UIpdyRKSdywuD53Ph4rM8CN/javbGRUqASyOOTwDpeacGa9kbOTPjfcG3dLhHkaMTJS0btlUeO0OrMyQh0yBjsfJ7hD8OnKTnTnKxMV9dLEdZUyS44Dsxs20A+s8ZJauZUsRikOsNnNPz0QrHuoO5IH7axYhMJrTppvto2ZaCiaxj5royrNYQ8oc/p+Buzd6vCUjLwM/wJgI7eEOEF7xa/bUeNHvik0Ql+JtLBZP6xqwY5c9z/ho71rRiBAkr0uptFVXRpnQk37mcKu2Njq1ypTwsIjxDR/JezhWZL+NQyQ==;31:mfGq4RrPtO3XNR0WCM9AU3hxVoVbPRuetpNqJw/WTBh7RV4n5EaR6t4sCDWoirThroZRJ8EYTXRIsJTt+ENm0e7Bvpm/mEX8bml0J7DL76gX5mlqR9j7NwMUhneBiPxrnractTQ8eOG+gZsn0lnqf0zuVkblBfVw80mgeIBsTTDn/9aaRQM+g1EYACs64dE24KV3HWKxV1LMUxdbgSeKs0mOfZXWK4+uEjri53clcuw=
+X-MS-TrafficTypeDiagnostic: MWHPR07MB3503:
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3503;20:rhiZYa6VU7k2efDn1MD225iynL187h5P9wEgQDaiwMkJv4UK3d29av3WpSWa5na2UyFOqq7N3NeBSv0lsyB35SYHDcIujuugBpkNN4wEYaQMRk1aDimBhuADZ82HAQ5PI7et02I9AEGNIr3GquE5ODULbeVtKZsPoTxu2jROnCQPrSwocaLxGHcgy9y+HZI6ggJ2lyJCqepMYLWcbVQlqCYomh0GeooCrFXBqoHqc8STCQ/5IHXV9gLYOE0asaov4m3rUg/Ny8s9NcXq7Xi3faHNfT+FbbRZ8+BV6xy80xfDu7ZlEn84FMj8m1TQYi8Gmomr6S6m1bJjqolS4wUYK9BO1TxhORMLnL6Y0oPNgeV/YqeB8dnI9Ou3O9nKtDmltmLfqtfE2hQTH4Rjttv5G4C1bIV6kss1miNmU4MtGXr/ee6s0OBf0UHrNxXQckp6Bfcu3IH/KfC0Ddr9xPpSSxaG9xFHbDnVhsuaXpus4n6g02COtmyG4lRAF6wlPuWk;4:Vm6/K0Yv0TGgyM7E9ZBYsH5p2cn3fPlNQBY0R5gFfhYC9grw3cM77FP9vaQ1YPbiGkmvcx9RYFeGfBlP1ahj77T5PrNBqj2iYeJ50oV7FP5DX1XdLRbuyEcTEHF6evKtw/VuFamDsJ68Si5u2dGhnh8VwEdP87XlKPE6XwQLkfX4UOX/3PWF5V/jfLUDQXlLxDotT10xsylyotaGK3I5BAImsnglLpu/xGK7o5yazch80tlBlQy7I/sV0yetWnuh
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <DM5PR07MB3498B4D4F8ACD5BC569FECA2974B0@DM5PR07MB3498.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(2401047)(8121501046)(5005006)(10201501046)(3002001)(93006095)(93001095)(100000703101)(100105400095)(6041248)(20161123564025)(20161123558100)(20161123555025)(20161123560025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:DM5PR07MB3498;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:DM5PR07MB3498;
+X-Microsoft-Antispam-PRVS: <MWHPR07MB3503B3D4630D73EE529DF559974B0@MWHPR07MB3503.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(2401047)(8121501046)(5005006)(93006095)(93001095)(10201501046)(100000703101)(100105400095)(3002001)(6041248)(20161123558100)(20161123564025)(20161123562025)(20161123555025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123560025)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:MWHPR07MB3503;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:MWHPR07MB3503;
 X-Forefront-PRVS: 04583CED1A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(199003)(189002)(478600001)(50466002)(2906002)(48376002)(36756003)(54906003)(101416001)(50986999)(16586007)(105586002)(106356001)(53416004)(69596002)(6512007)(5660300001)(6916009)(5003940100001)(6666003)(305945005)(47776003)(66066001)(72206003)(33646002)(8676002)(8936002)(6116002)(7736002)(81156014)(81166006)(6486002)(4326008)(25786009)(107886003)(189998001)(316002)(86362001)(50226002)(97736004)(6506006)(53936002)(3846002)(68736007)(16526018)(1076002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3498;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(199003)(189002)(16526018)(68736007)(53416004)(25786009)(50986999)(69596002)(47776003)(5660300001)(50466002)(48376002)(6666003)(66066001)(101416001)(86362001)(6512007)(478600001)(316002)(6916009)(6506006)(7736002)(8676002)(81156014)(81166006)(305945005)(2906002)(16586007)(36756003)(72206003)(6486002)(6116002)(1076002)(53936002)(107886003)(3846002)(106356001)(97736004)(4326008)(33646002)(50226002)(5003940100001)(189998001)(8936002)(105586002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR07MB3503;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3498;23:tBPEjho3Ha9e8eiChoCGnJiu1xXhUh927xOU4CBdz?=
- =?us-ascii?Q?NJc8FHQ71p98AY5we4K63JURc/C9VLb8qa4nA7jQp5wtmanfauTxEQj0RgZD?=
- =?us-ascii?Q?27Ga3+pHNbYps837AumyLn7qKmIBl8f+VRIRhT8B+Gef869A9guh6iijqYac?=
- =?us-ascii?Q?prJVbENVEZfzWoyftsR37Zl9Y7Ev9M8zCrN9dtr8VL2IALsN0m7Q7tywkDF7?=
- =?us-ascii?Q?M39sZ5mx+xunejpy8S/R84fYxHfeC1cX0gWlYhopUbUF1V0xhQ/JugcVLVpq?=
- =?us-ascii?Q?TQjtfk9TybuWx4GOH7961MYJZcFvhMA0vtozKFLJjissVCxjmGH+s0tm0udk?=
- =?us-ascii?Q?peVRS5Q0aPZ8So9L9WvlR5jpwUyU6Pq9u39KDtQ5BprWWlhflKZzbs/FP/ZN?=
- =?us-ascii?Q?ZNA8BHhj5cPhnvXNGtKV7Qb777VddiThKnvNacbXtg3EONgxKImbz5yvz6DY?=
- =?us-ascii?Q?ctguJfupZffoMlFyG41KRI84rKRvxUe9uyhTZqGxfDsYHOT9yMHF2Ba1eYEk?=
- =?us-ascii?Q?7qOGUDzYHnFfbz53FNGLHcbOK8JmHjMH2Zgh6PwNzhyMFdrn8UgoYlWeUg5l?=
- =?us-ascii?Q?bmXCneCL2h6sG1jLnFrA3Ukz4FVI9scL9LRqhgeZf2+R+AepWYU8MqKbusNQ?=
- =?us-ascii?Q?CLjCBBwGNFlypR7fAWt4O2dEm2Ufn27uK2yj8jNaHKgZoGPoNZ8W8Uq3s41R?=
- =?us-ascii?Q?tPTujWFzdr+ELqn3uRfICCT72ovJFqI14x4qmODzEtpzG+n6eyKJia/rtBj0?=
- =?us-ascii?Q?o4YsHADt97wrrX7alFaG9VvOVX0JVB8nMXsQb6y40RieWIeW41IKx/VCotKv?=
- =?us-ascii?Q?+T5zarL8plXBiVM3DhBaQcI4VcG4cyJ1/sMzNZBCYZqvARFYWp5seesED1za?=
- =?us-ascii?Q?d1aZNuBRJMU7qDtg9mp6zynbi09D1Q9ttf1GDk1y1WFbErt3sXVtHOZiTSmd?=
- =?us-ascii?Q?LTPzr7mkUSBucZ2oOhtThCqwYHh5QYmMiTjjGWJFR7a3xv6jNxWFGOlhE8w7?=
- =?us-ascii?Q?oGSmj1JmwFt2b2HIGX6XLewzu0dmFIBll7e+8soRv5Pt6OZ7MvYrkPuu0GTW?=
- =?us-ascii?Q?j7tOh5ZG2/Kk39Ef3pCf9ogsiuWmvyDvYPMjoqwCf2Lw5RdkqdZ0cLsvCujL?=
- =?us-ascii?Q?kOROBdn6XH0IV0QI1mpqjPdzeXorts/?=
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3498;6:3er4wh0MvIA/V3qmN8oCPJNYfCEJ7xk6EdYzWRy26kgDzMihnbRC7RfY/jm/aQlGsKrXmTYHxpMRjVXWfkRgWnH+0oy+iF8AUsHMFlxc/bW4E7k9JV+PSO3sDEdCCYRIDS9TnwFhrcWGWL4SuK2wTD4OrJalKNml0gDwrlyYCoEPIExDOgGYIXf93kB83JDMe3PbjyUE9A44vUf+mqFx/IdSsg7vyXvmrAZ2fGsx8RLEaXzyaeYUBs8YU7habC9jO0P35PX2cCcOITOb0LDV0lhmGzAnKGqPQHl+uWZ8qeqXmXuQlkjCdHT+2JFQUMi6iMHyk3MU+Wz9twvavqkmhQ==;5:SolqAztuYMn+fHIE1V7i9gczAfgQa+1oTrpQDbq9WrIHqiWogiffNTbb2IAnqyCjTi9IzdUM6KzPXoZ/eBubl5Ml90wZfrKJU4Y5PprGsd737DW6aed/G66YweLbCClIqIO8AlLrW1DH0wAk9zAIOA==;24:7UtZX0/cpvD4ExHmKHLnhK0C0sVmTYaHRLyOEOQ0QY7AqBmjNufXZnAjNtCml/NavzYVF9IK2vMvjTL+ju9VhqJXn++9zM8d3sNx6Yr+XCg=;7:zOhUBrgxOZHoH2Gf4G4Jo4I+FLEt6QwLlOh8vvopsQEbK3KG3QVv9o40RDPq/dpLik/5I4RR9aH4nz2T/6Rygo2gSv/ZkvtIqyvT/sEBV4ulAaTaTEw1HFM9exnleDc4KbWMl1M+q+o7egaSFlJnmQNXaEvOtnFaNteFisECzZGQO8YRXYSfIva+XJFqhZRokKk62e3EELyteA/nYiCT6cOflj7qZiqwLDxEk81KRLM=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR07MB3503;23:t3ql6C1RTPmaIsygDhVdxyMZ0gF2it6BfInQvDvR1?=
+ =?us-ascii?Q?beIH9t5Y/JqC7NVS0v1+5t5Npm+b1tPVGLd0dPDsmDejTdFqb2SbtNnRpMUY?=
+ =?us-ascii?Q?uYbVkf0PvYVRJP7LYP7Xly17V4GuUXXgFzfATiGr9RWBcOnBPItjnR2JjTpC?=
+ =?us-ascii?Q?BWSqm3JG3hDtAYw1X958ve2vI4Jw/TYkPohGDpn5+UIAV+KKHEE1ZYTW/Ric?=
+ =?us-ascii?Q?qFOGIufy9LgUtmKOgqt8u3LMdlL1BQV9Pg0pddqgnMJ9NvO3TdQOXKr4rVbi?=
+ =?us-ascii?Q?t5Tgaycf4wtmyRKZJS692pejmbU1rabxCVx9wzvpRfK2NbCLPt0/buhGeQsl?=
+ =?us-ascii?Q?PHSj+PQC9YdJLtVjxZsg8kd3oF5SBhy1fMs3JqBiPAqPwFJfnCElJGJLUYI/?=
+ =?us-ascii?Q?Bli7AHi04sGozbmDh3lX7UfxMYoZNhk6y0cE6KbLs36PNtOGgCG62xs5cuSJ?=
+ =?us-ascii?Q?n9CwVtsiE5S7J2sBA1yMqVdlkhsIxgUwCIN99xbCntpQ7uvgANcvh4bFce/e?=
+ =?us-ascii?Q?JBbHeSB+Ur3o7zdSVdsqGF7uRuiYGRP5j9s8mQMKup5M0PFcaYhtL2IS2DBr?=
+ =?us-ascii?Q?CaT6akIO7st89yDF4MsGBj2fEapDmphW6T3qySHy4ogc4mtSZfoFYh8VKjMC?=
+ =?us-ascii?Q?evfOpgvXagXrNjIgpc7xjxfNIXPSFkWlsc7mHWYfIOxIaFViJZrj7ZD2rjVI?=
+ =?us-ascii?Q?z0Vv1y7wQdRoStt8H9YAHarML5KqY+MUFasgoJJ9xp69778TeYUmyIdINFCF?=
+ =?us-ascii?Q?uLG3/OFax8DLRlinvi1OeAOBxVy0Ap2wrq6commmxXe21Duye9pJ5wn+3z+s?=
+ =?us-ascii?Q?gAMUNWZ/9quPFC1K7Vv+qIm+xXNwWWCtl+0Y7tXmMhMPyfv5V3qXlaHko40r?=
+ =?us-ascii?Q?mTtriVDJMIogyA6/74lEIDprVN1bTtFUhliwpfHOnQAIwzzz+VtfYMuhCjk3?=
+ =?us-ascii?Q?5CQZA5q+Zr0oIBNFwkvGsnIu+juTDzQ2qaR+TmiTVZTZp/myjfn7G4DjPBN2?=
+ =?us-ascii?Q?BLQHHITyGKkh7lgM5JBSUv2Xa1J8LVtlk8Li/KUMMx896u9CkM0MBBXbb8Tv?=
+ =?us-ascii?Q?yQN1HTGQe19fK1NAEzFd/c8zV2FDkg++v5FPCJfDYI1AnMwmEURZ9d9Y85+f?=
+ =?us-ascii?Q?PBTxh8kKPs=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3503;6:3VpV0VzoqPLXnX4Hwrc8FyiKGjfLudMBgnoR4aIM8n1WuVgZSClsSMSXHnlO3VjSaZCtLJLdyIyCvg6qdWjQ48Q54L9oOwbdzVX0FAMLbolkhxKtRs5xfRZ1MzKEcjwtuFmG0Huc6MTBnusjUrM+s8k17NNe2ImjiQDyNWl3riON2WVt4ZHl+4NgU+amuZz20Jy9CQpyYlZIcOCOBwWpv5i/LZN+GhClOc/9SCPDcyS3X8AH8164FPHEOntD+GEjloebLUPnYZplYfPPhuVcRYTNjxKTTQEaoVnC8dVgd96NgKMsG08VV/VBbSd2j/8GzOr8Q4xVOljcTCUcGXfL7w==;5:JqI18N/Owh+BIEjmYcRNl3qE5LYSIawd08HWz7aueFCAswFyG3qvZreN3BW3nHi+j6E9GAWCjALzsjsO0ngNVxD94bhW8TZ/tiq6FFixPtAwlVCuMrj12GcwdLclXTNlacwj2Kwby3ygUaylG6Rn5A==;24:m9wqi33qXyeRk6ODLO/XhvTkGimbelDiEQGOxRZDBkkQljaGyV8oULigBzmpm1YVBWEZ9wLvv0zWczvCgchW1ajKSgcDPpF60jmx4bqyKRg=;7:THy0U8+KvcDNlLodyLGjsWMMXMvBjaPAnLLcEYumKEAg9eqFdp19TywjgpnVfsQ9jWEIyEzPfLOvQBpi3zQkAEp1/7v+aEeYjp/AYy0nFwhUMpysN6Zrgz7CYsUKVFdBfEI6uS25J+EIAbvd5ohFuOOSh2vuhelxW3axzrr8Ovx/hectTWg+xDdSZrdCTUdO+LcnrbsdSOqdTa4KYz4GuH8b2+DbR7d/b/067N56DgY=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2017 19:50:37.7735 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2017 21:02:33.0188 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR07MB3498
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB3503
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60392
+X-archive-position: 60393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,47 +89,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The kexec/kdump tools need to know where the .bss is so it can be
-included in the core dump.  This allows vmcore-dmesg to have access to
-the dmesg buffers of the crashed kernel as well as allowing the
-debugger to examine variables in the bss section.
+Here are a few improvements to the kexec-tools needed to get usable
+core dumps out of 64-bit kernels running on Cavium's OCTEON
+processors.  Patch 3/4 is OCTEON specific, the rest are needed for
+good results on MIPS64 in general.
 
-Add a request for the bss resource in addition to the already
-requested code and data sections.
+David Daney (4):
+  kexec-tools: mips: Merge adjacent memory ranges.
+  kexec-tools: mips: Don't set lowmem_limit to 2G for 64-bit systems.
+  kexec-tools: mips: Use proper page_offset for OCTEON CPUs.
+  kexec-tools: mips: Try to include bss in kernel vmcore file.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/kernel/setup.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kexec/arch/mips/crashdump-mips.c | 36 +++++++++++++++++++++++++++++++++---
+ kexec/arch/mips/crashdump-mips.h |  3 ++-
+ kexec/arch/mips/kexec-mips.c     | 14 ++++++++++----
+ 3 files changed, 45 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index fe39397..702c678 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -80,6 +80,7 @@ EXPORT_SYMBOL(mips_io_port_base);
- 
- static struct resource code_resource = { .name = "Kernel code", };
- static struct resource data_resource = { .name = "Kernel data", };
-+static struct resource bss_resource = { .name = "Kernel bss", };
- 
- static void *detect_magic __initdata = detect_memory_region;
- 
-@@ -927,6 +928,8 @@ static void __init resource_init(void)
- 	code_resource.end = __pa_symbol(&_etext) - 1;
- 	data_resource.start = __pa_symbol(&_etext);
- 	data_resource.end = __pa_symbol(&_edata) - 1;
-+	bss_resource.start = __pa_symbol(&__bss_start);
-+	bss_resource.end = __pa_symbol(&__bss_stop) - 1;
- 
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		struct resource *res;
-@@ -966,6 +969,7 @@ static void __init resource_init(void)
- 		 */
- 		request_resource(res, &code_resource);
- 		request_resource(res, &data_resource);
-+		request_resource(res, &bss_resource);
- 		request_crashkernel(res);
- 	}
- }
 -- 
 2.9.5

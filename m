@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2017 18:14:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36616 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2017 18:17:29 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37098 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992135AbdJPQOZz6wgC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Oct 2017 18:14:25 +0200
+        by eddie.linux-mips.org with ESMTP id S23992100AbdJPQRRHVx9C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Oct 2017 18:17:17 +0200
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EA7C4BD5;
-        Mon, 16 Oct 2017 16:14:17 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6FED7BE0;
+        Mon, 16 Oct 2017 16:17:09 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 08/28] MIPS: math-emu: Remove pr_err() calls from fpu_emu()
-Date:   Mon, 16 Oct 2017 18:12:01 +0200
-Message-Id: <20171016160923.943399112@linuxfoundation.org>
+Subject: [PATCH 4.9 06/39] MIPS: math-emu: Remove pr_err() calls from fpu_emu()
+Date:   Mon, 16 Oct 2017 18:16:02 +0200
+Message-Id: <20171016161430.472989953@linuxfoundation.org>
 X-Mailer: git-send-email 2.14.2
-In-Reply-To: <20171016160923.478701091@linuxfoundation.org>
-References: <20171016160923.478701091@linuxfoundation.org>
+In-Reply-To: <20171016161429.968555175@linuxfoundation.org>
+References: <20171016161429.968555175@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60411
+X-archive-position: 60412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,7 +41,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -77,7 +77,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/math-emu/cp1emu.c
 +++ b/arch/mips/math-emu/cp1emu.c
-@@ -2360,7 +2360,6 @@ dcopuop:
+@@ -2386,7 +2386,6 @@ dcopuop:
  					break;
  				default:
  					/* Reserved R6 ops */
@@ -85,7 +85,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  					return SIGILL;
  				}
  			}
-@@ -2434,7 +2433,6 @@ dcopuop:
+@@ -2460,7 +2459,6 @@ dcopuop:
  					break;
  				default:
  					/* Reserved R6 ops */

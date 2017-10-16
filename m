@@ -1,39 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2017 18:19:58 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38062 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992361AbdJPQTu2M-LC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Oct 2017 18:19:50 +0200
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8A9F9A84;
-        Mon, 16 Oct 2017 16:19:43 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2017 23:28:49 +0200 (CEST)
+Received: from imap1.codethink.co.uk ([176.9.8.82]:41611 "EHLO
+        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990451AbdJPV2mfrGt0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Oct 2017 23:28:42 +0200
+Received: from [167.98.27.226] (helo=xylophone)
+        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
+        id 1e4Cvz-0006dx-0g; Mon, 16 Oct 2017 22:28:27 +0100
+Message-ID: <1508189305.22379.54.camel@codethink.co.uk>
+Subject: Re: [PATCH 4.4 36/50] MIPS: IRQ Stack: Unwind IRQ stack onto task
+ stack
+From:   Ben Hutchings <ben.hutchings@codethink.co.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
         James Hogan <james.hogan@imgtec.com>,
-        David Daney <david.daney@cavium.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Colin Ian King <colin.king@canonical.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.13 03/53] MIPS: bpf: Fix uninitialised target compiler error
-Date:   Mon, 16 Oct 2017 18:16:00 +0200
-Message-Id: <20171016161442.396316989@linuxfoundation.org>
-X-Mailer: git-send-email 2.14.2
-In-Reply-To: <20171016161442.263947886@linuxfoundation.org>
-References: <20171016161442.263947886@linuxfoundation.org>
-User-Agent: quilt/0.65
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+        Paul Burton <paul.burton@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Jason A. Donenfeld" <jason@zx2c4.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Sasha Levin <alexander.levin@verizon.com>
+Date:   Mon, 16 Oct 2017 22:28:25 +0100
+In-Reply-To: <20171006083711.033827562@linuxfoundation.org>
+References: <20171006083705.157012217@linuxfoundation.org>
+         <20171006083711.033827562@linuxfoundation.org>
+Organization: Codethink Ltd.
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6-1+deb9u1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <ben.hutchings@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60414
+X-archive-position: 60415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: ben.hutchings@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,56 +54,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.13-stable review patch.  If anyone has any objections, please let me know.
+On Fri, 2017-10-06 at 10:53 +0200, Greg Kroah-Hartman wrote:
+> 4.4-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Matt Redfearn <matt.redfearn@imgtec.com>
+> 
+> 
+> [ Upstream commit db8466c581cca1a08b505f1319c3ecd246f16fa8 ]
+[...]
 
-------------------
+There was a follow-up to this which I suspect is also needed on the 4.4
+and 4.9 branches: commit 5fdc66e04620 ("MIPS: Fix minimum alignment
+requirement of IRQ stack").
 
-From: Matt Redfearn <matt.redfearn@imgtec.com>
+Ben.
 
-commit 94c3390ab84a6b449accc7351ffda4a0c17bdb92 upstream.
-
-Compiling ebpf_jit.c with gcc 4.9 results in a (likely spurious)
-compiler warning, as gcc has detected that the variable "target" may be
-used uninitialised. Since -Werror is active, this is treated as an error
-and causes a kernel build failure whenever CONFIG_MIPS_EBPF_JIT is
-enabled.
-
-arch/mips/net/ebpf_jit.c: In function 'build_one_insn':
-arch/mips/net/ebpf_jit.c:1118:80: error: 'target' may be used
-uninitialized in this function [-Werror=maybe-uninitialized]
-    emit_instr(ctx, j, target);
-                                                                                ^
-cc1: all warnings being treated as errors
-
-Fix this by initialising "target" to 0. If it really is used
-uninitialised this would result in a jump to 0 and a detectable run time
-failure.
-
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Fixes: b6bd53f9c4e8 ("MIPS: Add missing file for eBPF JIT.")
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: David Daney <david.daney@cavium.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Colin Ian King <colin.king@canonical.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17375/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/net/ebpf_jit.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/net/ebpf_jit.c
-+++ b/arch/mips/net/ebpf_jit.c
-@@ -679,7 +679,7 @@ static int build_one_insn(const struct b
- {
- 	int src, dst, r, td, ts, mem_off, b_off;
- 	bool need_swap, did_move, cmp_eq;
--	unsigned int target;
-+	unsigned int target = 0;
- 	u64 t64;
- 	s64 t64s;
- 
+-- 
+Ben Hutchings
+Software Developer, Codethink Ltd.

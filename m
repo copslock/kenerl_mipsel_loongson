@@ -1,47 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 07:17:21 +0200 (CEST)
-Received: from kirsty.vergenet.net ([202.4.237.240]:37364 "EHLO
-        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991672AbdJRFRNoz5J1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 07:17:13 +0200
-Received: from penelope.horms.nl (52D9BC73.cm-11-1c.dynamic.ziggo.nl [82.217.188.115])
-        by kirsty.vergenet.net (Postfix) with ESMTPA id 09B9C25B810;
-        Wed, 18 Oct 2017 16:17:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=verge.net.au; s=mail;
-        t=1508303831; bh=+Mp4V1a4Gr5Sigh1Yt3s+/AyZDHfuxBmC6VnYb8l9l0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QE5A6TPufVOzIV13pEAax/mqkdOQFz+2/xEeqF7zG4UH2yHqqem4P382h27ooN3Ox
-         wR89hfYmXDBC3iYsaf4fFJApqxjXD49XB3DE8iaaWHEz+XqHHO+OjqIg0RzbX46o0x
-         iI0qDj8X/XVksAWJQ17ySKq9qzm1Fiv2AV3O07YA=
-Received: by penelope.horms.nl (Postfix, from userid 7100)
-        id 69CC0E20907; Wed, 18 Oct 2017 07:16:53 +0200 (CEST)
-Date:   Wed, 18 Oct 2017 07:16:53 +0200
-From:   Simon Horman <horms@verge.net.au>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kexec@lists.infradead.org
-Subject: Re: [PATCH 3/4] kexec-tools: mips: Use proper page_offset for OCTEON
- CPUs.
-Message-ID: <20171018051653.anvogntf3ijw7fta@verge.net.au>
-References: <20171012210228.7353-1-david.daney@cavium.com>
- <20171012210228.7353-4-david.daney@cavium.com>
- <20171016065636.wxm3nrzq7lkn4lw6@verge.net.au>
- <901800ab-a86a-6513-3bdd-2d2567105ac4@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 08:47:01 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:51884 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990498AbdJRGqyFQUFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 08:46:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Ih3vSc/mVwF+EeLJFksZDMO55GFhDX3b+PntyVLQ+hA=; b=GLcLGZ2zobafeE1sQK5KIqrAn
+        aT06/GF6AUPVeLPlf8T2isLtMyyuXl7eJMhEu2awGYCdhQzSjS9lvRRkYy+uvsXoRVrrVSCdkw0W8
+        IhfUgly5XzOSuoAtCwegAUREp9O4qYkEdkjEfAYK6ip69Pl5WlFAFzofECIVXI8N4nH2IonXP/5sn
+        4NUXz/O2ILj1UPEKjFcLMt5OHAhcSfmfqGF11OFoc8iz0tMGr5KtQbnm0kGKm9iod27S+Mlz7t9uN
+        /1lVtRJ0Mj9noexZDdN81n0Wn2wnVm8tFixHcFnhyqk/gtUvWD8ai7IiWBGul7HgL2K1aCaflC0Fk
+        r0VCXZY+Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
+        id 1e4i7t-0006kd-41; Wed, 18 Oct 2017 06:46:49 +0000
+Date:   Tue, 17 Oct 2017 23:46:49 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Jim Quinlan <jim2101024@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>
+Subject: Re: [PATCH 1/9] SOC: brcmstb: add memory API
+Message-ID: <20171018064649.GA7734@infradead.org>
+References: <1507761269-7017-1-git-send-email-jim2101024@gmail.com>
+ <1507761269-7017-2-git-send-email-jim2101024@gmail.com>
+ <20171017082413.GA10574@infradead.org>
+ <abdb1e9d-f8c9-8066-48c5-37b4e2474952@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <901800ab-a86a-6513-3bdd-2d2567105ac4@caviumnetworks.com>
-Organisation: Horms Solutions BV
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <horms@verge.net.au>
+In-Reply-To: <abdb1e9d-f8c9-8066-48c5-37b4e2474952@gmail.com>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+33c0a560d8cf4f6c9bdc+5169+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60438
+X-archive-position: 60440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: horms@verge.net.au
+X-original-sender: hch@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,28 +68,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 16, 2017 at 09:05:22AM -0700, David Daney wrote:
-> On 10/15/2017 11:56 PM, Simon Horman wrote:
-> > On Thu, Oct 12, 2017 at 02:02:27PM -0700, David Daney wrote:
-> > > The OCTEON family of MIPS64 CPUs uses a PAGE_OFFSET of
-> > > 0x8000000000000000ULL, which is differs from other CPUs.
-> > > 
-> > > Scan /proc/cpuinfo to see if the current system is "Octeon", if so,
-> > > patch the page_offset so that usable kdump core files are produced.
-> > > 
-> > > Signed-off-by: David Daney <david.daney@cavium.com>
-> > 
-> > Is it possible to read this offset from the system rather than
-> > checking for an Octeon CPU? It seems that such an approach, if possible,
-> > would be somewhat more general.
-> > 
+On Tue, Oct 17, 2017 at 09:12:22AM -0700, Florian Fainelli wrote:
+> > Please move this into the arm arch code.
 > 
-> Before implementing this scanning of /proc/cpuinfo, I thought long and hard
-> about this, and couldn't think of how the PAGE_OFFSET could be derived from
-> information available in userspace.
-> 
-> Ralf (MIPS maintainer) may have an idea, but these address bits don't show
-> up in /proc/kallsyms or any other file in /proc or /sys that I am aware of.
+> No, this needs to work on both ARM and ARM64, hence the reason why this
+> is in a reasonably architecture neutral place.
 
-Thanks for the explanation. I've applied this patch pending any further
-progress in this area.
+So there is no other shared code between the ARM and ARM64 ports for
+this SOC?
+
+> >> +EXPORT_SYMBOL(brcmstb_memory_phys_addr_to_memc);
+> > 
+> >> +EXPORT_SYMBOL(brcmstb_memory_memc_size);
+> > 
+> > Why is this exported?
+> 
+> Because the PCIE RC driver can be built as a module.
+
+Hmm, supporting PCIE RC as module sounds odd, but it seems like there
+are a few others like that.  At least make it EXPORT_SYMBOL_GPL() then
+to document the internal nature.

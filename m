@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 21:54:56 +0200 (CEST)
-Received: from www.llwyncelyn.cymru ([82.70.14.225]:34354 "EHLO fuzix.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991526AbdJRTyn0GMKN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Oct 2017 21:54:43 +0200
-Received: from alans-desktop (82-70-14-226.dsl.in-addr.zen.co.uk [82.70.14.226])
-        by fuzix.org (8.15.2/8.15.2) with ESMTP id v9IJsMDJ005662;
-        Wed, 18 Oct 2017 20:54:22 +0100
-Date:   Wed, 18 Oct 2017 20:54:22 +0100
-From:   Alan Cox <gnomes@lxorguk.ukuu.org.uk>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc:     Huacai Chen <chenhc@lemote.com>, Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Fuxin Zhang <zhangfx@lemote.com>, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 22:35:08 +0200 (CEST)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:51113 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992456AbdJRUey61HAQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 22:34:54 +0200
+Received: from p4fea5642.dip0.t-ipconnect.de ([79.234.86.66] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1e4v3B-00064y-Rd; Wed, 18 Oct 2017 22:34:50 +0200
+Date:   Wed, 18 Oct 2017 22:34:50 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-mips@linux-mips.org,
-        "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, Tejun Heo <tj@kernel.org>,
-        linux-ide@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH V8 5/5] libata: Align DMA buffer to
- dma_get_cache_alignment()
-Message-ID: <20171018205422.7fc8cbce@alans-desktop>
-In-Reply-To: <94f55c1e-7553-0fc8-124e-ac6df5ac10ce@cogentembedded.com>
-References: <1508227542-13165-1-git-send-email-chenhc@lemote.com>
-        <1508227542-13165-5-git-send-email-chenhc@lemote.com>
-        <94f55c1e-7553-0fc8-124e-ac6df5ac10ce@cogentembedded.com>
-Organization: Intel Corporation
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        "# v3 . 19 +" <stable@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] clocksource/mips-gic-timer: Fix rcu_sched timeouts
+ from multithreading
+In-Reply-To: <1507730474-8577-1-git-send-email-matt.redfearn@mips.com>
+Message-ID: <alpine.DEB.2.20.1710182226080.2477@nanos>
+References: <1507730474-8577-1-git-send-email-matt.redfearn@mips.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <gnomes@lxorguk.ukuu.org.uk>
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60448
+X-archive-position: 60449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnomes@lxorguk.ukuu.org.uk
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,16 +48,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->     This function is called only for the PIO mode commands, so I doubt this is 
-> necessary...
+On Wed, 11 Oct 2017, Matt Redfearn wrote:
 
-That is true but there are platforms out there that issue disk level PIO
-commands via DMA (or can do so). Indeed the Cyrix MediaGX could do that
-in the 1990s but I never add support 8)
+> When the MIPS GIC clockevent code was written, it appears to have
+> inherited the 0x300 cycle min delta from the MIPS CPU timer driver. This
+> is suboptimal for two reasons.
+> 
+> Firstly, the CPU timer counts once every other cycle (i.e. half the
+> clock rate). The GIC counts once per clock. Assuming that the GIC and
+> CPU share the same clock this means the GIC is counting twice as fast,
+> and so the min delta should be (at least) doubled. Fix this by doubling
+> the min delta to 0x600.
+> 
+> Secondly, the fixed min delta ignores the fact that with MIPS
+> multithreading active, execution resource within a core is shared
+> between the hardware threads within that core. An inconvenienly timed
+> switch of executing thread within gic_next_event, between the read and
+> write of updated count, can result in the CPU writing an event in the
+> past, and subsequently not receiving a tick interrupt until the counter
+> wraps. This stalls the CPU from the RCU scheduler. Other CPUs detect
+> this and print rcu_sched timeout messages in  the kernel log. It can
+> lead to other issues as well if the CPU is holding locks or other
+> resources at the point at which it stalls. Fix this by scaling the min
+> delta for the timer based on the number of threads in the core
+> (smp_num_siblings). This accounts for the greater average runtime of
+> CPUs within a multithreading core.
 
-So I think it makes sense to allocate the buffers DMA aligned, but it
-doesn't seem to explain the situation in this case and I think it would
-be helpful to know what platform and ATA driver is tripping this and wny
-they are the only people in the universe to have the problem.
+I don't understand why this is not catched by the check at the end of the
+next_event() function:
 
-Alan
+        res = ((int)(gic_read_count() - cnt) >= 0) ? -ETIME : 0;
+
+Btw, the local_irq_save() in this function is pointless as this function is
+always called with interrupts disabled from the core code.
+
+Thanks,
+
+	tglx

@@ -1,75 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 15:04:10 +0200 (CEST)
-Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:45110
-        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992361AbdJRNED21gxT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 15:04:03 +0200
-Received: by mail-qk0-x242.google.com with SMTP id f199so6090744qke.2;
-        Wed, 18 Oct 2017 06:04:03 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 16:41:30 +0200 (CEST)
+Received: from mail-io0-x236.google.com ([IPv6:2607:f8b0:4001:c06::236]:56720
+        "EHLO mail-io0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992361AbdJROlYAYT7A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 16:41:24 +0200
+Received: by mail-io0-x236.google.com with SMTP id m81so6439087ioi.13;
+        Wed, 18 Oct 2017 07:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=9qAiUGS+z7Vj6IWv34Z61SP/tDHTFFNayL9BHeL93Lw=;
-        b=o6wQFocdD0TsGIdiuvGQC+zrjL+CSS2ryf91EobAbF1QysAvVDc+RiuvNVE7Wh5Nzu
-         8IzEFrAPt4KWL5rMQDmiTPUlHMsTQ3/OXqgJX44PeDxlQWibLE5hH2l1I0GNVbdktJy1
-         86P7uICorIZwlFMrBRmvk207ISjgmcytawcFuCbpano6vFLlDeUBR3GFXKdrcpeBVu0I
-         tmKEy6PaFhW7tUmMO5hsmeweEbKzeD7uxQrJrqeuhV6Jf4dNh7MiFajwmhDsb6JqTtCE
-         QbfRBwIS1vKhFPtFaoxVrlHLfjgLZEu+KO269TXA7zNr1flESXD9r4DqaFc/MAcl0PKf
-         OTZg==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=5YEIfX7V7x4JMLtGPmMqTsPLztnl1j8/jGYyeaPPrBA=;
+        b=FBWYJ3irhiXuA8hyWUT0IMDOT2Opu9IeqR3efUJB9HGOdLNiQ5i0yCk5slBXwjxi5N
+         /WNe4+R2s8hMCKVVOUOO2bbrc/Did2IxJ66kMFsSPL4dg5V2fsUCTDn+nBXgHGOJtkJb
+         CR2MgXQKdt4lPvDDqsLTZTfsw3J1hVbIoNiQ2MSxX3YiA5rL/+APItDlgjFk2HVpUsm5
+         b5iYLiqnbsMeDYoW/bwutOBEplUjAGvnuzKFsAe5ukZv0vdFbF1rDdWkyOUEaG8/pIwE
+         t8sgTfy3D7Wz1sQVrUlV7mYQv3dPorXjPkhwXOZpJYxtAD0BN8tDuMRGrATqSx0BW+D7
+         ud1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9qAiUGS+z7Vj6IWv34Z61SP/tDHTFFNayL9BHeL93Lw=;
-        b=Bnj16GF4x9myYrA8hxlxM2RnkHeX+n5UISRqNFPlQNpQ096C7isL4AuE9Bf83vJgs9
-         ffdqz9lb1wQvBf0v7QvMCKiznvoymVBgA4f4KC3iTLJBvN2rkkwlCcjv8tUVnNGrMD+H
-         lU684pssDAyyAcL1uSQIeAjgvfMq7sVe5GCbXy4BCc3jP5JNbz+DHYul7REtMzRpmY4r
-         q1+58wbRGjWaapw/HEbmUOAeG8mkdFHtS4WWmKhVZY7x14aEx6JyyVU1TTx7CDXLujZp
-         6X9arFfvMLPEdudSBUNdsVK0GmEvi4yQWrOY+ROa4xGcUvRxgadaidAePhkUVWPmkfxJ
-         9LDw==
-X-Gm-Message-State: AMCzsaXuChWXU76IrhDSvH5PMQXNmpvoQ65MgaltDNe5mea0sVvrTQ1S
-        vS0aRCvI0DoHa2omzzAaUME=
-X-Google-Smtp-Source: ABhQp+SeI0CwYzUwPqma3P5+L4VCnFczinXx3W10rr23d3DmCc8UK1xFWeuCabyXCs8V3NbZOsyUPg==
-X-Received: by 10.55.26.91 with SMTP id a88mr2033616qka.11.1508331837261;
-        Wed, 18 Oct 2017 06:03:57 -0700 (PDT)
-Received: from localhost (dhcp-ec-8-6b-ed-7a-cf.cpe.echoes.net. [72.28.5.223])
-        by smtp.gmail.com with ESMTPSA id k7sm2980670qkf.45.2017.10.18.06.03.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 18 Oct 2017 06:03:56 -0700 (PDT)
-Date:   Wed, 18 Oct 2017 06:03:53 -0700
-From:   Tejun Heo <tj@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Fuxin Zhang <zhangfx@lemote.com>, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org,
-        "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V8 5/5] libata: Align DMA buffer to
- dma_get_cache_alignment()
-Message-ID: <20171018130353.GA1302522@devbig577.frc2.facebook.com>
-References: <1508227542-13165-1-git-send-email-chenhc@lemote.com>
- <1508227542-13165-5-git-send-email-chenhc@lemote.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=5YEIfX7V7x4JMLtGPmMqTsPLztnl1j8/jGYyeaPPrBA=;
+        b=EmNHCPa0XtWBS83cYekWy+uJkK1MkNBQGhUbsbXCcib77708CLnV6HCSAC41fV2uL/
+         RNyYmRYdMh02yFo6IsdSs3hJeJforvu/60pJWdzyNVWNr3+SRc4b/LbrzP6KtsyFPmyF
+         b4EFjWp0VBNoKBEoTiqSSGoiaYdLlM3hLP6QQFDWSYhnrS4KuJW4C91RbV7Xgs2qH39C
+         BwuMJf0I6oJDmr+V4OK7uUxz/tDKHiUqdYjbG8gZjo2Cndi84SMvbH8HmArZM9Ki1h18
+         Vw+98zjI42VArAhU96hfDiUViYaZfkm3/G4UmMc+2DF1SIGL1y8aeoM7N1DVw1bftedi
+         caUQ==
+X-Gm-Message-State: AMCzsaUvlqZeq5ZXIYaUcMKCI3kRF8DVk3xdReDd0osCdUUbGP2mEjGx
+        b2b2iSPGDLisOioo1f6Vs/BQcyrp+G2bo0tNSIc=
+X-Google-Smtp-Source: ABhQp+QRDfTfKrw1qeZSSwnanY+c2n3Agwl9y+FapxRYgS1Ij3G+zAAFP4C16wYnu1Mnw9TpeCW2uAYTD93jCpUbr0I=
+X-Received: by 10.107.20.209 with SMTP id 200mr21059466iou.219.1508337677675;
+ Wed, 18 Oct 2017 07:41:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1508227542-13165-5-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <htejun@gmail.com>
+Received: by 10.107.47.156 with HTTP; Wed, 18 Oct 2017 07:41:17 -0700 (PDT)
+In-Reply-To: <20171018065316.GA11183@lst.de>
+References: <1507761269-7017-1-git-send-email-jim2101024@gmail.com>
+ <1507761269-7017-6-git-send-email-jim2101024@gmail.com> <589c04cb-061b-a453-3188-79324a02388e@arm.com>
+ <20171017081422.GA19475@lst.de> <CANCKTBsCB+x2XgrND9AhRtxPkCXfps1nA+YymkZjKHOUZfjSHQ@mail.gmail.com>
+ <20171018065316.GA11183@lst.de>
+From:   Jim Quinlan <jim2101024@gmail.com>
+Date:   Wed, 18 Oct 2017 10:41:17 -0400
+Message-ID: <CANCKTBv+yiCNsrnx3m+W9wPqC4NdKPZ2p=zLtSa8fX6v1rPcYQ@mail.gmail.com>
+Subject: Re: [PATCH 5/9] PCI: host: brcmstb: add dma-ranges for inbound traffic
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        devicetree@vger.kernel.org, linux-pci <linux-pci@vger.kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        iommu@lists.linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60442
+X-archive-position: 60443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,51 +82,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 17, 2017 at 04:05:42PM +0800, Huacai Chen wrote:
-> In non-coherent DMA mode, kernel uses cache flushing operations to
-> maintain I/O coherency, so in ata_do_dev_read_id() the DMA buffer
-> should be aligned to ARCH_DMA_MINALIGN. Otherwise, If a DMA buffer
-> and a kernel structure share a same cache line, and if the kernel
-> structure has dirty data, cache_invalidate (no writeback) will cause
-> data corruption.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  drivers/ata/libata-core.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> index ee4c1ec..e134955 100644
-> --- a/drivers/ata/libata-core.c
-> +++ b/drivers/ata/libata-core.c
-> @@ -1833,8 +1833,19 @@ static u32 ata_pio_mask_no_iordy(const struct ata_device *adev)
->  unsigned int ata_do_dev_read_id(struct ata_device *dev,
->  					struct ata_taskfile *tf, u16 *id)
->  {
-> -	return ata_exec_internal(dev, tf, NULL, DMA_FROM_DEVICE,
-> -				     id, sizeof(id[0]) * ATA_ID_WORDS, 0);
-> +	u16 *devid;
-> +	int res, size = sizeof(u16) * ATA_ID_WORDS;
-> +
-> +	if (IS_ALIGNED((unsigned long)id, dma_get_cache_alignment(&dev->tdev)))
-> +		res = ata_exec_internal(dev, tf, NULL, DMA_FROM_DEVICE, id, size, 0);
-> +	else {
-> +		devid = kmalloc(size, GFP_KERNEL);
-> +		res = ata_exec_internal(dev, tf, NULL, DMA_FROM_DEVICE, devid, size, 0);
-> +		memcpy(id, devid, size);
-> +		kfree(devid);
-> +	}
-> +
-> +	return res;
+On Wed, Oct 18, 2017 at 2:53 AM, Christoph Hellwig <hch@lst.de> wrote:
+> On Tue, Oct 17, 2017 at 12:11:55PM -0400, Jim Quinlan wrote:
+>> My understanding is that dma_pfn_offset is that it is a single
+>> constant offset from RAM, in our case, to map to PCIe space.
+>
+> Yes.
+>
+>> But in
+>> my commit message I detail how our PCIe controller presents memory
+>> with multiple regions with multiple different offsets. If an EP device
+>> maps to a region on the host memory, yes we can set the dma_pfn_offset
+>> for that device for that location within that range,.  But if the
+>> device then unmaps and allocates from another region with a different
+>> offset, it won't work.  If  I set dma_pfn_offset I have to assume that
+>> the device is using only one region of memory only, not more than one,
+>> and that it is not unmapping that region and mapping another (with a
+>> different offset).  Can I make those assumptions?
+>
+> No, we can't make that assumption unfortunately.  But how is your
+> code going to work if the mapping spans multiple of your translation
+> regions?
 
-Hmm... I think it'd be a lot better to ensure that the buffers are
-aligned properly to begin with.  There are only two buffers which are
-used for id reading - ata_port->sector_buf and ata_device->id.  Both
-are embedded arrays but making them separately allocated aligned
-buffers shouldn't be difficult.
+That's what brcm_to_{pci,cpu} are for -- they keep a list of the
+dma-ranges given in the PCIe DT node, and translate from system memory
+addresses to pci-space addresses, and vice versa.  As long as people
+are using the DMA API it should work.  It works for all of the ARM,
+ARM64, and MIPS Broadcom systems I've tested, using eight different EP
+devices.  Note that I am not thrilled to be advocating this mechanism
+but it seemed the best alternative.
 
-Thanks.
+>memorymaintiners
+> Also I really don't think the stacking of dma_ops as in this patch
+> is a good idea.  For MIPS you should do the variant suggested in
+> the patch description and hook into dma_to_phys/phys_to_dma helpers,
+> and for ARM/ARM64 you should talk to the maintainers on how they
+> want the translation integrated.
 
--- 
-tejun
+I would prefer that the same code work for all three architectures.
+What I would like from ARM/ARM64 is the ability to override
+phys_to_dma() and dma_to_phys(); I thought the chances of that being
+accepted would be slim.  But you are right, I should ask the
+maintainers.

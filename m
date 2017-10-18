@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 07:16:40 +0200 (CEST)
-Received: from kirsty.vergenet.net ([202.4.237.240]:37355 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2017 07:17:21 +0200 (CEST)
+Received: from kirsty.vergenet.net ([202.4.237.240]:37364 "EHLO
         kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991957AbdJRFQaNk-31 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 07:16:30 +0200
+        with ESMTP id S23991672AbdJRFRNoz5J1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2017 07:17:13 +0200
 Received: from penelope.horms.nl (52D9BC73.cm-11-1c.dynamic.ziggo.nl [82.217.188.115])
-        by kirsty.vergenet.net (Postfix) with ESMTPA id 364D625B810;
-        Wed, 18 Oct 2017 16:16:23 +1100 (AEDT)
+        by kirsty.vergenet.net (Postfix) with ESMTPA id 09B9C25B810;
+        Wed, 18 Oct 2017 16:17:11 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=verge.net.au; s=mail;
-        t=1508303783; bh=1fqwsosXMVEzZlvyCmzMhHQAFIYHRujPM+7e9Mtww8Q=;
+        t=1508303831; bh=+Mp4V1a4Gr5Sigh1Yt3s+/AyZDHfuxBmC6VnYb8l9l0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UXmclyXzLCY3xsqqIH1MrvG5LAtb0ebAd63Ks0hnidOZdqU/6YFWOjwQapYHDok34
-         BdZrsSnR2MS/Do35fDdbEBXmeh1KFTQSrhYWmk2mGjOh+JkhBKEIbvWTSfoRaQTqkU
-         hS0eNago58ywD0Mrs1gOzZSRPgnLNT7zjr+QYNc4=
+        b=QE5A6TPufVOzIV13pEAax/mqkdOQFz+2/xEeqF7zG4UH2yHqqem4P382h27ooN3Ox
+         wR89hfYmXDBC3iYsaf4fFJApqxjXD49XB3DE8iaaWHEz+XqHHO+OjqIg0RzbX46o0x
+         iI0qDj8X/XVksAWJQ17ySKq9qzm1Fiv2AV3O07YA=
 Received: by penelope.horms.nl (Postfix, from userid 7100)
-        id EBDECE20907; Wed, 18 Oct 2017 07:16:03 +0200 (CEST)
-Date:   Wed, 18 Oct 2017 07:16:03 +0200
+        id 69CC0E20907; Wed, 18 Oct 2017 07:16:53 +0200 (CEST)
+Date:   Wed, 18 Oct 2017 07:16:53 +0200
 From:   Simon Horman <horms@verge.net.au>
 To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
+Cc:     David Daney <david.daney@cavium.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         kexec@lists.infradead.org
-Subject: Re: [PATCH 1/4] kexec-tools: mips: Merge adjacent memory ranges.
-Message-ID: <20171018051603.f7o2lgr7tiux5r6b@verge.net.au>
+Subject: Re: [PATCH 3/4] kexec-tools: mips: Use proper page_offset for OCTEON
+ CPUs.
+Message-ID: <20171018051653.anvogntf3ijw7fta@verge.net.au>
 References: <20171012210228.7353-1-david.daney@cavium.com>
- <20171012210228.7353-2-david.daney@cavium.com>
- <20171016065313.g5va4jel5si2udbm@verge.net.au>
- <8a440fe8-0633-32e1-d142-44765b41c47b@caviumnetworks.com>
+ <20171012210228.7353-4-david.daney@cavium.com>
+ <20171016065636.wxm3nrzq7lkn4lw6@verge.net.au>
+ <901800ab-a86a-6513-3bdd-2d2567105ac4@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8a440fe8-0633-32e1-d142-44765b41c47b@caviumnetworks.com>
+In-Reply-To: <901800ab-a86a-6513-3bdd-2d2567105ac4@caviumnetworks.com>
 Organisation: Horms Solutions BV
 User-Agent: NeoMutt/20170113 (1.7.2)
 Return-Path: <horms@verge.net.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60437
+X-archive-position: 60438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,77 +54,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 16, 2017 at 09:13:30AM -0700, David Daney wrote:
-> On 10/15/2017 11:53 PM, Simon Horman wrote:
-> > On Thu, Oct 12, 2017 at 02:02:25PM -0700, David Daney wrote:
-> > > Some kernel versions running on MIPS split the System RAM memory
-> > > regions reported in /proc/iomem.  This may cause loading of the kexec
-> > > kernel to fail if it crosses one of the splits.
+On Mon, Oct 16, 2017 at 09:05:22AM -0700, David Daney wrote:
+> On 10/15/2017 11:56 PM, Simon Horman wrote:
+> > On Thu, Oct 12, 2017 at 02:02:27PM -0700, David Daney wrote:
+> > > The OCTEON family of MIPS64 CPUs uses a PAGE_OFFSET of
+> > > 0x8000000000000000ULL, which is differs from other CPUs.
 > > > 
-> > > Fix by merging adjacent memory ranges that have the same type.
+> > > Scan /proc/cpuinfo to see if the current system is "Octeon", if so,
+> > > patch the page_offset so that usable kdump core files are produced.
 > > > 
 > > > Signed-off-by: David Daney <david.daney@cavium.com>
-> > > ---
-> > >   kexec/arch/mips/kexec-mips.c | 14 ++++++++++----
-> > >   1 file changed, 10 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/kexec/arch/mips/kexec-mips.c b/kexec/arch/mips/kexec-mips.c
-> > > index 2e5b700..415c2ed 100644
-> > > --- a/kexec/arch/mips/kexec-mips.c
-> > > +++ b/kexec/arch/mips/kexec-mips.c
-> > > @@ -60,10 +60,16 @@ int get_memory_ranges(struct memory_range **range, int *ranges,
-> > >   		} else {
-> > >   			continue;
-> > >   		}
-> > > -		memory_range[memory_ranges].start = start;
-> > > -		memory_range[memory_ranges].end = end;
-> > > -		memory_range[memory_ranges].type = type;
-> > > -		memory_ranges++;
-> > > +		if (memory_ranges > 0 &&
 > > 
-> > It seems that this will never merge the first memory range
-> > with subsequent ones. Is that intentional?
-> 
-> 
-> With the first range (index 0), no other range yet exists to merge with.  We
-> can only test for merging with the second and subsequent ranges (indices 1
-> and above).  To do otherwise would cause us to read things from *before* the
-> beginning of the array ...
-
-Yes, of course. I see that now.
-
-I've applied this patch.
-
+> > Is it possible to read this offset from the system rather than
+> > checking for an Octeon CPU? It seems that such an approach, if possible,
+> > would be somewhat more general.
 > > 
-> > 
-> > > +		    memory_range[memory_ranges - 1].end == start &&
 > 
-> ... here.
+> Before implementing this scanning of /proc/cpuinfo, I thought long and hard
+> about this, and couldn't think of how the PAGE_OFFSET could be derived from
+> information available in userspace.
 > 
-> > > +		    memory_range[memory_ranges - 1].type == type) {
-> > > +			memory_range[memory_ranges - 1].end = end;
-> > > +		} else {
-> > > +			memory_range[memory_ranges].start = start;
-> > > +			memory_range[memory_ranges].end = end;
-> > > +			memory_range[memory_ranges].type = type;
-> > > +			memory_ranges++;
-> > > +		}
-> > >   	}
-> > >   	fclose(fp);
-> > >   	*range = memory_range;
-> > > -- 
-> > > 2.9.5
-> > > 
-> > > 
-> > > _______________________________________________
-> > > kexec mailing list
-> > > kexec@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/kexec
-> > > 
-> 
-> 
-> _______________________________________________
-> kexec mailing list
-> kexec@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kexec
-> 
+> Ralf (MIPS maintainer) may have an idea, but these address bits don't show
+> up in /proc/kallsyms or any other file in /proc or /sys that I am aware of.
+
+Thanks for the explanation. I've applied this patch pending any further
+progress in this area.

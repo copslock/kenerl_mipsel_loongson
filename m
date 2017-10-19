@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2017 17:11:51 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:54699 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992540AbdJSPLoz7L2l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2017 17:11:44 +0200
-Received: from hsi-kbw-5-158-153-52.hsi19.kabel-badenwuerttemberg.de ([5.158.153.52] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1e5CTl-00023D-0u; Thu, 19 Oct 2017 17:11:25 +0200
-Date:   Thu, 19 Oct 2017 17:11:28 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Martin Schwidefsky <schwidefsky@de.ibm.com>
-cc:     Matt Redfearn <matt.redfearn@mips.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] clockevents: Retry programming min delta up to 10
- times
-In-Reply-To: <20171019170448.4637f480@mschwideX1>
-Message-ID: <alpine.DEB.2.20.1710191709460.1971@nanos>
-References: <1508414135-29123-1-git-send-email-matt.redfearn@mips.com> <alpine.DEB.2.20.1710191435280.1971@nanos> <5b782526-b130-77f2-6d9a-15839e12e065@mips.com> <alpine.DEB.2.20.1710191527570.1971@nanos> <20171019170448.4637f480@mschwideX1>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2017 17:12:21 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.211]:33433 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992675AbdJSPMPEX3vl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Oct 2017 17:12:15 +0200
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id BBCB2DE7F8; Thu, 19 Oct 2017 17:12:14 +0200 (CEST)
+Date:   Thu, 19 Oct 2017 17:12:14 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     Huacai Chen <chenhc@lemote.com>, Christoph Hellwig <hch@lst.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Fuxin Zhang <zhangfx@lemote.com>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org,
+        "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, Tejun Heo <tj@kernel.org>,
+        linux-ide@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH V8 4/5] libsas: Align SMP req/resp to
+        dma_get_cache_alignment()
+Message-ID: <20171019151214.GD24204@lst.de>
+References: <1508227542-13165-1-git-send-email-chenhc@lemote.com> <CGME20171017080448epcas5p2c7c53292d84838f6d06e78abf4416729@epcas5p2.samsung.com> <1508227542-13165-4-git-send-email-chenhc@lemote.com> <286bf838-4d2f-a25f-baf9-ef3ac9b37d93@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <286bf838-4d2f-a25f-baf9-ef3ac9b37d93@samsung.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60480
+X-archive-position: 60481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,44 +49,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 19 Oct 2017, Martin Schwidefsky wrote:
+On Tue, Oct 17, 2017 at 01:55:43PM +0200, Marek Szyprowski wrote:
+> If I remember correctly, kernel guarantees that each kmalloced buffer is
+> always at least aligned to the CPU cache line, so CPU cache can be
+> invalidated on the allocated buffer without corrupting anything else.
 
-> On Thu, 19 Oct 2017 15:29:28 +0200 (CEST)
-> Thomas Gleixner <tglx@linutronix.de> wrote:
-> 
-> > On Thu, 19 Oct 2017, Matt Redfearn wrote:
-> > > On 19/10/17 13:43, Thomas Gleixner wrote:  
-> > > > 	delta = 0;
-> > > > 	for (i = 0; i < 10; i++) {
-> > > > 		delta += dev->min_delta_ns;
-> > > > 		dev->next_event = ktime_add_ns(ktime_get(), delta);
-> > > > 		clc = .....
-> > > > 	   	.....
-> > > > 
-> > > > That makes it more likely to succeed fast. Hmm?  
-> > > 
-> > > That will set the target time to increasing multiples of min_delta_ns in the
-> > > future, right?  
-> > 
-> > Yes, but without fiddling with min_delta_ns itself.
-> 
-> Grumpf, more extra code for yet another piece of broken hardware
-> I guess.
+Yes, from slab.h:
 
-and virtualization. Oh wait.. the virt is the ultimate reference for broken
-hardware...
+/*
+ * Some archs want to perform DMA into kmalloc caches and need a guaranteed
+ * alignment larger than the alignment of a 64-bit integer.
+ * Setting ARCH_KMALLOC_MINALIGN in arch headers allows that.
+ */
+#if defined(ARCH_DMA_MINALIGN) && ARCH_DMA_MINALIGN > 8
+#define ARCH_KMALLOC_MINALIGN ARCH_DMA_MINALIGN
+#define KMALLOC_MIN_SIZE ARCH_DMA_MINALIGN
+#define KMALLOC_SHIFT_LOW ilog2(ARCH_DMA_MINALIGN)
+#else
+#define ARCH_KMALLOC_MINALIGN __alignof__(unsigned long long)
+#endif
 
-> > > Sure, it should make it succeed faster - I'll make it like
-> > > that. Are you OK with the arbitrarily chosen 10 retries?  
-> > 
-> > I lost my crystalball so I have to trust yours :)
-> 
-> The alternative implementation would be to do the retries in
-> the clockevent driver itself. Then that particular driver can
-> choose the correct number of retries, no?
-
-There is no correct number ever. All you can do is set an upper limit.
-
-Thanks,
-
-	tglx
+Mips sets this for a few subarchitectures, but it seems like you need
+to set it for yours as well.

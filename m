@@ -1,64 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2017 17:48:51 +0200 (CEST)
-Received: from mail-oi0-x244.google.com ([IPv6:2607:f8b0:4003:c06::244]:48536
-        "EHLO mail-oi0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992540AbdJSPsocavZr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2017 17:48:44 +0200
-Received: by mail-oi0-x244.google.com with SMTP id m198so15597228oig.5;
-        Thu, 19 Oct 2017 08:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=tcyTuQEjo6x0t+GQc8CMN4wHLvtt3KoupdHBTJJxfL4=;
-        b=h6Yz57mbk40rw1KOh/dHL8l+4Sij91qdsUkt3WvNh5Qkb4FEzOek8pEHnLUo4PYS1c
-         Z09rVu+OVxKw5l7+MYsjrZbI55CFL/ijm9VwpWgQyE0F/k6vzx8wTTLnuc1iM9AcB25s
-         ICB/y2LWtgLWSkUh7Y9orj08P6ANyt0HBvyZBTzVx7GkQpzraRkRHTiMG/Kc3CU2Qp2I
-         Xel8Npxwt0h97SraaF00hjh0WnM0PZ2t95QE7Onxi0HdxRtF9TyQVIla7+5RMEeekwh8
-         LJeH2TDqCVKGDZC2VZETYftsRGK5J1ggtEAQkWT3Qi+2Fzx1oebQ6UqKbUNT5aE6WTeo
-         VatA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=tcyTuQEjo6x0t+GQc8CMN4wHLvtt3KoupdHBTJJxfL4=;
-        b=ezV2ewks6eQQ5ZSmoK8aR/j/zJfPqxxn2KSzOGzuDMOxqMJixTq0ldEeJSIHFvDzT7
-         Fr/NJVgbBfSnjl6CqHDMYbK8YGysVZHCiEEeC9KZMZ5QOZ3birptN4C/4nYMDTPxFsNq
-         BG18CMJFTiDORPQjt5GZfLD/x/c/ugg3RCTysN99tHCcJy/oPDrWj6qUUcd2q89p7YPX
-         DFmbFr130isR9nsClM/YlPoAOWjObxHil41A1tFWv4vE0p/CETfr1sQ4Ay3Uf9SXRi1b
-         PCPy+tzWE4p6BkmIgEP8RaNrNX87q9I9APbHxAQIlxvY2GDJhta/wTR4DCwovok2nM6l
-         80hw==
-X-Gm-Message-State: AMCzsaWQZLLDVC34dHSO44De1vFVnCO6HCofXFiyjX8CmxFtYtYLa2eQ
-        ZqJdYJrgZSDrL92dRP2EA2InlFZ7/oqAnqf5C7Q=
-X-Google-Smtp-Source: ABhQp+TVq3wVbx9zgI8RA5KG9hWCcaqd9KDlvbmEti3dynMb4WqM71aFgXzwy+pODxWhgARGGP2zaa+oOIyBez9nk70=
-X-Received: by 10.157.42.9 with SMTP id t9mr1270620ota.459.1508428118184; Thu,
- 19 Oct 2017 08:48:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2017 23:32:17 +0200 (CEST)
+Received: from frisell.zx2c4.com ([192.95.5.64]:51413 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992675AbdJSVcKs775L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Oct 2017 23:32:10 +0200
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 52fd2693
+        for <linux-mips@linux-mips.org>;
+        Thu, 19 Oct 2017 21:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :from:date:message-id:subject:to:content-type; s=mail; bh=hHdLMa
+        qMRrYapwPKradcX2o+PXQ=; b=MoAtC2ZvB3ApbEAF7KFG9VkqwPZ+W/u8ZbZhN9
+        bCbzSpZzuSe4snR4FxvRCs3Elfcyh5hwbKyn3hiZMfo/A/mvycw1mB8STY7LQJ11
+        ii49BNwPlefTIaQzVhQsZSvijdwPKbQS6UxLBhuGDpEW9k1mnDeFNg379dz8SfvG
+        YLDAev1MBy560Df3Ecw8O3h2Z7U1BIuooS1ABwrY19cUg10PDrNwsd+WZZHXWkJ5
+        BX0xYHfyyjGDAd9qvN629nVu2rUR6Z79+0OFttmgxQKTAuZ63UFlwYGtEXtWmcJN
+        lw/7Tk1Prun9VJNSy28+Dwnhq7HsetYUlXfOtOXlxecVBEmg==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 919406cd (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
+        for <linux-mips@linux-mips.org>;
+        Thu, 19 Oct 2017 21:24:04 +0000 (UTC)
+Received: by mail-oi0-f41.google.com with SMTP id m198so17148577oig.5
+        for <linux-mips@linux-mips.org>; Thu, 19 Oct 2017 14:24:58 -0700 (PDT)
+X-Gm-Message-State: AMCzsaUbXt+R0S8f/vLUzxnbE2d0Oq89rg5qORLBqcyj0wIaKPlEhi46
+        6dvAM1tWKZkxA8fIHGia2w9xr981vUgBcgVa84c=
+X-Google-Smtp-Source: ABhQp+RE+CZo8Hnp4yrSzQKSPciUKywPBEAtEM/7HPpRS3xhgqXP7EPNP848LDL9kqkgmtavDAZZhhg4qbll6nXnZNE=
+X-Received: by 10.157.3.102 with SMTP id 93mr1871086otv.165.1508448297936;
+ Thu, 19 Oct 2017 14:24:57 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.157.28.152 with HTTP; Thu, 19 Oct 2017 08:48:37 -0700 (PDT)
-In-Reply-To: <20170910214424.14945-5-linus.walleij@linaro.org>
-References: <20170910214424.14945-1-linus.walleij@linaro.org> <20170910214424.14945-5-linus.walleij@linaro.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 19 Oct 2017 17:48:37 +0200
-X-Google-Sender-Auth: Sx7Ue8PNVTKDnR4JxsxHW3zUGN0
-Message-ID: <CAK8P3a30U3pSEPqQtVN7MwE4dOC+Rj___adSEAebSBuX_2KadA@mail.gmail.com>
-Subject: Re: [PATCH 4/5] i2c: gpio: Augment all boardfiles to use open drain
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        arm-soc <arm@kernel.org>, Steven Miao <realmz6@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Lee Jones <lee.jones@linaro.org>
+Received: by 10.74.41.205 with HTTP; Thu, 19 Oct 2017 14:24:57 -0700 (PDT)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Thu, 19 Oct 2017 23:24:57 +0200
+X-Gmail-Original-Message-ID: <CAHmME9oCnYJV=1cvKsdWTuZeqLD5najE7j3dKS6sR9uj7+uZtA@mail.gmail.com>
+Message-ID: <CAHmME9oCnYJV=1cvKsdWTuZeqLD5najE7j3dKS6sR9uj7+uZtA@mail.gmail.com>
+Subject: minimal kernel config for qemu/malta
+To:     linux-mips@linux-mips.org
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60482
+X-archive-position: 60483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,23 +54,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Sep 10, 2017 at 11:44 PM, Linus Walleij
-<linus.walleij@linaro.org> wrote:
-> We now handle the open drain mode internally in the I2C GPIO
-> driver, but we will get warnings from the gpiolib that we
-> override the default mode of the line so it becomes open
-> drain.
->
-> We can fix all in-kernel users by simply passing the right
-> flag along in the descriptor table, and we already touched
-> all of these files in the series so let's just tidy it up.
->
-> Cc: arm@kernel.org
-> Cc: Steven Miao <realmz6@gmail.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ARM SoC folks: requesting ACK for Wolfram to take this patch.
+Hey folks,
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+I've got some CI infrastructure for WireGuard sitting on
+build.wireguard.com , where I build new kernels for different
+architectures. This works well for x86{_64) and arm(64), but I'm
+having trouble getting it rolling on qemu/malta, and none of my usual
+tricks seem to be working. (By tricks of course I mean enabling a
+bunch of random stuff until it works, and then bisecting options until
+I find the missing one...)
+
+The magic lives here:
+https://git.zx2c4.com/WireGuard/tree/src/tests/qemu
+
+Essentially what's happening is that this config file:
+https://git.zx2c4.com/WireGuard/tree/src/tests/qemu/kernel.config
+is prepended with this set of MIPS-specific directives:
+CONFIG_CPU_MIPS32_R2=y
+CONFIG_MIPS_MALTA=y
+
+And then is combined into the final .config using:
+$ make allnoconfig
+$ scripts/kconfig/merge_config.sh -n .config kernel.config.from.above
+
+Finally, qemu is launched with:
+
+        qemu-system-mips \
+               -nodefaults \
+               -nographic \
+              -cpu 24Kf -machine malta \
+               -smp 2 \
+               -m 192M \
+               -object rng-random,id=rng0,filename=/dev/urandom \
+               -device virtio-rng-pci,rng=rng0 \
+               -device virtio-serial,max_ports=2 \
+               -chardev stdio,id=stdio \
+               -device virtconsole,chardev=stdio \
+               -chardev file,id=status,path=./result \
+               -device virtserialport,chardev=status \
+               -no-reboot \
+               -monitor none \
+               -kernel ./kernel-src/vmlinux
+
+While this general procedure works flawlessly for intel and arm, with
+mips, it just seems to hang, with no output, and I can't seem to find
+which option I'm missing.
+
+As you might have seen above, I'm mostly concerned with finding the
+minimal set of options required to _generate_ a minimal full config.
+However, if it's easier for you to view the whole config at once after
+the merge steps above, it lives here: http://ix.io/Bud
+
+If anybody knows what I'm missing to launch a simple malta/virtio
+kernel on qemu, please do let me know.
+
+Thanks,
+Jason

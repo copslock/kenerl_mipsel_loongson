@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2017 14:02:49 +0200 (CEST)
-Received: from 20pmail.ess.barracuda.com ([64.235.154.233]:45512 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2017 14:03:09 +0200 (CEST)
+Received: from 20pmail.ess.barracuda.com ([64.235.154.232]:50861 "EHLO
         20pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990414AbdJSMChvrdfI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2017 14:02:37 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 19 Oct 2017 12:02:28 +0000
+        by eddie.linux-mips.org with ESMTP id S23992604AbdJSMCkOu0XI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2017 14:02:40 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 19 Oct 2017 12:02:30 +0000
 Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Thu, 19 Oct 2017 05:01:04 -0700
+ 14.3.361.1; Thu, 19 Oct 2017 05:00:28 -0700
 From:   Matt Redfearn <matt.redfearn@mips.com>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>
 CC:     James Hogan <james.hogan@mips.com>, <linux-mips@linux-mips.org>,
         "Matt Redfearn" <matt.redfearn@mips.com>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH V2 3/3] clocksource: mips-gic-timer: Add fastpath for local timer updates
-Date:   Thu, 19 Oct 2017 12:55:35 +0100
-Message-ID: <1508414135-29123-3-git-send-email-matt.redfearn@mips.com>
+Subject: [PATCH 2/3] clocksource/mips-gic-timer: Remove pointless irq_save,restore
+Date:   Thu, 19 Oct 2017 12:55:34 +0100
+Message-ID: <1508414135-29123-2-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1508414135-29123-1-git-send-email-matt.redfearn@mips.com>
 References: <1508414135-29123-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1508414543-321457-1461-58252-14
-X-BESS-VER: 2017.12-r1710102214
+X-BESS-ID: 1508414548-321458-21547-81380-3
+X-BESS-VER: 2017.12-r1709122024
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186115
@@ -37,7 +37,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60463
+X-archive-position: 60464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,39 +54,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Always accessing the compare register via the CM redirect region is
-(relatively) slow. If the timer being updated is the current CPUs
-then this can be shortcutted by writing to the CM VP local region.
+gic_next_event is always called with interrupts disabled, so the save /
+restore is pointless - remove it.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 
- drivers/clocksource/mips-gic-timer.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/clocksource/mips-gic-timer.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index 8e8e3aa25b3f..e8dee5491227 100644
+index ae3167c28b12..8e8e3aa25b3f 100644
 --- a/drivers/clocksource/mips-gic-timer.c
 +++ b/drivers/clocksource/mips-gic-timer.c
-@@ -39,14 +39,19 @@ static u64 notrace gic_read_count(void)
- 
- static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
- {
-+	int cpu = cpumask_first(evt->cpumask);
- 	unsigned long flags;
- 	u64 cnt;
- 	int res;
+@@ -45,10 +45,8 @@ static int gic_next_event(unsigned long delta, struct clock_event_device *evt)
  
  	cnt = gic_read_count();
  	cnt += (u64)delta;
--	write_gic_vl_other(mips_cm_vp_id(cpumask_first(evt->cpumask)));
--	write_gic_vo_compare(cnt);
-+	if (cpu == raw_smp_processor_id()) {
-+		write_gic_vl_compare(cnt);
-+	} else {
-+		write_gic_vl_other(mips_cm_vp_id(cpu));
-+		write_gic_vo_compare(cnt);
-+	}
+-	local_irq_save(flags);
+ 	write_gic_vl_other(mips_cm_vp_id(cpumask_first(evt->cpumask)));
+ 	write_gic_vo_compare(cnt);
+-	local_irq_restore(flags);
  	res = ((int)(gic_read_count() - cnt) >= 0) ? -ETIME : 0;
  	return res;
  }

@@ -1,47 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2017 16:37:26 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:33454 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992982AbdJTOgdCOo4Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Oct 2017 16:36:33 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id A599F1A49AD;
-        Fri, 20 Oct 2017 16:36:26 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 3517F1A49A8;
-        Fri, 20 Oct 2017 16:36:26 +0200 (CEST)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2017 16:42:10 +0200 (CEST)
+Received: from mail-io0-x231.google.com ([IPv6:2607:f8b0:4001:c06::231]:44421
+        "EHLO mail-io0-x231.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992982AbdJTOmDzkm4Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Oct 2017 16:42:03 +0200
+Received: by mail-io0-x231.google.com with SMTP id m16so13477656iod.1;
+        Fri, 20 Oct 2017 07:42:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=XgpXyFDdDEVSTpH1rZAEP5aB3YPxYHrwNFNiSquo3es=;
+        b=H7XSfEe5GIi060gWofVzTXfmBv2pL1akTFnVfIz2R9CdIIyWRK6TZ1/ywpblHreWWC
+         OOaSwMpYz0+MW7yPeWUHWhTGYCn6r9MwrlgquoAJV4TDmGuqejqMwxCPPvgHQgcEnyip
+         RUvHt2l/CgrvDMsKsrzX1mbwnAeCCyWuHsd54YcunOy8BfZE0eINGL2CCcwKjYbSEV/c
+         nNlsFMuOcSjRHgB6+lvBFZ5DFY5NVCBeCIdKLT6yfz8ENOOskm2YVYmYV+UUtA436/Wm
+         R9SW8rdiSwi4CgyQPmcPxAKWnwBudYSSaKQpF+ch7e3OYj3+uBhOQx6zFQsU14dZWI1u
+         5uLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=XgpXyFDdDEVSTpH1rZAEP5aB3YPxYHrwNFNiSquo3es=;
+        b=Nt6vBoAO8Jmi39mGPDmOAuzpGTW8Ov9wSLUEQEjeAw5qpTIGM+UWogf2G8sAy7dG7A
+         P5XIX1uPcSyuRG6YxHRwhdQ4Ci8sYbmooEtPLTaVyR84YhpB+VCo6XM4XdNAYGoIbZeG
+         vGps70f42gsp3kvFqH3WXgxOdkmKYafClVS0x8BzEVQyNGOqtzf7I8JDP0X+LD9mkYi+
+         iEsuNwz4Ezpr5wbcZEVrBMQUQsJoIrc+NOD+bAC8R8LxKKsmUbi/shmikMV2wE56OwFM
+         4p81rQOK3sQjPiW++I6ltRXvL9QvTyKK/wv6gJ4W/mCiPqI5fdCCAPpVXe5bcwciv991
+         dJqA==
+X-Gm-Message-State: AMCzsaXdS8G7mTFsTUT5hWgiFtPxnu7mNqcLm3P/czkWVLcYvD9dbH09
+        RhMwLrOrop+GEMC/mzcUtpVuUsC56oFW7/jT2ss=
+X-Google-Smtp-Source: ABhQp+SprlyIPeRSkUFMHdGJCv+Sm6ngH5R6OUGlt+ySzrrWAlw/Ay9kb18R15mCXm5HfvS3dUpcez+b42x917CCWl4=
+X-Received: by 10.107.18.74 with SMTP id a71mr7142359ioj.58.1508510517673;
+ Fri, 20 Oct 2017 07:41:57 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.107.47.156 with HTTP; Fri, 20 Oct 2017 07:41:56 -0700 (PDT)
+In-Reply-To: <20171020073730.GA12937@lst.de>
+References: <1507761269-7017-1-git-send-email-jim2101024@gmail.com>
+ <1507761269-7017-6-git-send-email-jim2101024@gmail.com> <589c04cb-061b-a453-3188-79324a02388e@arm.com>
+ <20171017081422.GA19475@lst.de> <CANCKTBsCB+x2XgrND9AhRtxPkCXfps1nA+YymkZjKHOUZfjSHQ@mail.gmail.com>
+ <20171018065316.GA11183@lst.de> <CANCKTBv+yiCNsrnx3m+W9wPqC4NdKPZ2p=zLtSa8fX6v1rPcYQ@mail.gmail.com>
+ <20171019091644.GA14983@lst.de> <CANCKTBuaTD29My77QfOeUmtZfLAmmJXUYe6QvBW+uoH2Kb+tAQ@mail.gmail.com>
+ <20171020073730.GA12937@lst.de>
+From:   Jim Quinlan <jim2101024@gmail.com>
+Date:   Fri, 20 Oct 2017 10:41:56 -0400
+Message-ID: <CANCKTBsRRkwNMrxWjtgxbyZqT6NOxPX0NHDbnEO2BMjj8oVtpg@mail.gmail.com>
+Subject: Re: [PATCH 5/9] PCI: host: brcmstb: add dma-ranges for inbound traffic
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        devicetree@vger.kernel.org, linux-pci <linux-pci@vger.kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Will Deacon <will.deacon@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v5 5/5] MIPS: ranchu: Add Ranchu as a new generic-based board
-Date:   Fri, 20 Oct 2017 16:33:38 +0200
-Message-Id: <1508510055-6167-6-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1508510055-6167-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1508510055-6167-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+        Rob Herring <robh+dt@kernel.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        iommu@lists.linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60505
+X-archive-position: 60506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,188 +85,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@mips.com>
+On Fri, Oct 20, 2017 at 3:37 AM, Christoph Hellwig <hch@lst.de> wrote:
+> On Thu, Oct 19, 2017 at 06:47:45PM -0400, Jim Quinlan wrote:
+>> The only way to prevent this is to reserve a single page at the end of
+>> the first memory region of any pair that are adjacent in physical
+>> memory.  A hack, yes, but I don't see an easier way out of this.  Many
+>> if not most of our boards do not have adjacent regions and would not
+>> need this.
+>
+> dma mappings can be much larger than a single page.  For the block
+> world take a look at __blk_segment_map_sg which does the merging
+> of contiguous pages into a single SG segment.  You'd have to override
+> BIOVEC_PHYS_MERGEABLE to prevent this from happening in your supported
+> architectures for the block layer.
 
-Provide amendments to the MIPS generic platform framework so that
-the new generic-based board Ranchu can be chosen to be built.
-
-Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
----
- MAINTAINERS                                   |  6 +++
- arch/mips/configs/generic/board-ranchu.config | 30 +++++++++++
- arch/mips/generic/Kconfig                     | 10 ++++
- arch/mips/generic/Makefile                    |  1 +
- arch/mips/generic/board-ranchu.c              | 78 +++++++++++++++++++++++++++
- 5 files changed, 125 insertions(+)
- create mode 100644 arch/mips/configs/generic/board-ranchu.config
- create mode 100644 arch/mips/generic/board-ranchu.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f1be016..e429cc2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11308,6 +11308,12 @@ S:	Maintained
- F:	Documentation/blockdev/ramdisk.txt
- F:	drivers/block/brd.c
- 
-+RANCHU VIRTUAL BOARD FOR MIPS
-+M:	Miodrag Dinic <miodrag.dinic@mips.com>
-+L:	linux-mips@linux-mips.org
-+S:	Supported
-+F:	arch/mips/generic/board-ranchu.c
-+
- RANDOM NUMBER DRIVER
- M:	"Theodore Ts'o" <tytso@mit.edu>
- S:	Maintained
-diff --git a/arch/mips/configs/generic/board-ranchu.config b/arch/mips/configs/generic/board-ranchu.config
-new file mode 100644
-index 0000000..fee9ad4
---- /dev/null
-+++ b/arch/mips/configs/generic/board-ranchu.config
-@@ -0,0 +1,30 @@
-+CONFIG_VIRT_BOARD_RANCHU=y
-+
-+CONFIG_BATTERY_GOLDFISH=y
-+CONFIG_FB=y
-+CONFIG_FB_GOLDFISH=y
-+CONFIG_GOLDFISH=y
-+CONFIG_STAGING=y
-+CONFIG_GOLDFISH_AUDIO=y
-+CONFIG_GOLDFISH_PIC=y
-+CONFIG_GOLDFISH_PIPE=y
-+CONFIG_GOLDFISH_TTY=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_GOLDFISH=y
-+
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_INPUT_KEYBOARD=y
-+CONFIG_KEYBOARD_GOLDFISH_EVENTS=y
-+
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_POWER_SUPPLY=y
-+CONFIG_POWER_RESET=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_POWER_RESET_SYSCON_POWEROFF=y
-+
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_VIRTIO_MMIO=y
-+CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
-+CONFIG_NETDEVICES=y
-+CONFIG_VIRTIO_NET=y
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index e0436aa..93582be 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -42,4 +42,14 @@ config FIT_IMAGE_FDT_NI169445
- 	  Enable this to include the FDT for the 169445 platform from
- 	  National Instruments in the FIT kernel image.
- 
-+config VIRT_BOARD_RANCHU
-+	bool "Ranchu platform for Android emulator"
-+	help
-+	  This enables support for the platform used by Android emulator.
-+
-+	  Ranchu platform consists of a set of virtual devices. This platform
-+	  enables emulation of variety of virtual configurations while using
-+	  Android emulator. Android emulator is based on Qemu, and contains
-+	  the support for the same set of virtual devices.
-+
- endif
-diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
-index 56b3ea5..2fee84a 100644
---- a/arch/mips/generic/Makefile
-+++ b/arch/mips/generic/Makefile
-@@ -15,3 +15,4 @@ obj-y += proc.o
- obj-$(CONFIG_YAMON_DT_SHIM)		+= yamon-dt.o
- obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
- obj-$(CONFIG_KEXEC)			+= kexec.o
-+obj-$(CONFIG_VIRT_BOARD_RANCHU)	+= board-ranchu.o
-diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
-new file mode 100644
-index 0000000..500874d
---- /dev/null
-+++ b/arch/mips/generic/board-ranchu.c
-@@ -0,0 +1,78 @@
-+/*
-+ * Copyright (C) 2017 Imagination Technologies Ltd.
-+ * Author: Miodrag Dinic <miodrag.dinic@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/of_address.h>
-+
-+#include <asm/machine.h>
-+#include <asm/time.h>
-+
-+#define GOLDFISH_TIMER_LOW		0x00
-+#define GOLDFISH_TIMER_HIGH		0x04
-+
-+static __init uint64_t read_rtc_time(void __iomem *base)
-+{
-+	u64 time_low;
-+	u64 time_high;
-+
-+	time_low = readl(base + GOLDFISH_TIMER_LOW);
-+	time_high = readl(base + GOLDFISH_TIMER_HIGH);
-+
-+	return (time_high << 32) | time_low;
-+}
-+
-+static __init unsigned int ranchu_measure_hpt_freq(void)
-+{
-+	u64 rtc_start, rtc_current, rtc_delta;
-+	unsigned int start, count;
-+	struct device_node *np;
-+	void __iomem *rtc_base;
-+
-+	np = of_find_compatible_node(NULL, NULL, "google,goldfish-rtc");
-+	if (!np)
-+		panic("%s(): Failed to find 'google,goldfish-rtc' dt node!",
-+		      __func__);
-+
-+	rtc_base = of_iomap(np, 0);
-+	if (!rtc_base)
-+		panic("%s(): Failed to ioremap Goldfish RTC base!", __func__);
-+
-+	/*
-+	 * poll the nanosecond resolution RTC for 1 second
-+	 * to calibrate the CPU frequency
-+	 */
-+	rtc_start = read_rtc_time(rtc_base);
-+	start = read_c0_count();
-+
-+	do {
-+		rtc_current = read_rtc_time(rtc_base);
-+		rtc_delta = rtc_current - rtc_start;
-+	} while (rtc_delta < NSEC_PER_SEC);
-+
-+	count = read_c0_count() - start;
-+
-+	count += 5000;	/* round */
-+	count -= count % 10000;
-+
-+	return count;
-+}
-+
-+static const struct of_device_id ranchu_of_match[];
-+
-+MIPS_MACHINE(ranchu) = {
-+	.matches = ranchu_of_match,
-+	.measure_hpt_freq = ranchu_measure_hpt_freq,
-+};
-+
-+static const struct of_device_id ranchu_of_match[] = {
-+	{
-+		.compatible = "mti,ranchu",
-+		.data = &__mips_mach_ranchu,
-+	},
-+};
--- 
-2.7.4
+I am not sure I understand your comment -- the size of the request
+shouldn't be a factor.  Let's look at your example of the DMA request
+of 3fffff00 to 4000000f (physical memory).  Lets say it is for 15
+pages.  If we block out  the last page [0x3ffff000..0x3fffffff] from
+what is available, there is no 15 page span that can happen across the
+0x40000000 boundary.  For SG, there can be no merge that connects a
+page from one region to another region.  Can you give an example of
+the scenario you are thinking of?

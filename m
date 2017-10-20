@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2017 16:29:14 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:58428 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2017 16:29:41 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:58525 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992181AbdJTO3BhRrgQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Oct 2017 16:29:01 +0200
+        id S23992366AbdJTO3QZpoSQ convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Oct 2017 16:29:16 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 823D71A47DB;
-        Fri, 20 Oct 2017 16:28:55 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTP id 5706F1A4803;
+        Fri, 20 Oct 2017 16:29:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 604E81A47C6;
-        Fri, 20 Oct 2017 16:28:55 +0200 (CEST)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 3743A1A47DC;
+        Fri, 20 Oct 2017 16:29:10 +0200 (CEST)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
@@ -20,9 +20,7 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
         Goran Ferenc <goran.ferenc@mips.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <james.hogan@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jeffy Chen <jeffy.chen@rock-chips.com>,
-        linux-kernel@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
         Martin Kepplinger <martink@posteo.de>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
@@ -33,17 +31,20 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
         Randy Dunlap <rdunlap@infradead.org>,
         Sebastian Reichel <sre@kernel.org>,
         Stephen Boyd <sboyd@codeaurora.org>
-Subject: [PATCH 1/2] MIPS: Update RINT emulation maintainer email address
-Date:   Fri, 20 Oct 2017 16:27:44 +0200
-Message-Id: <1508509687-3074-2-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH 2/2] MIPS: Update Goldfish RTC driver maintainer email address
+Date:   Fri, 20 Oct 2017 16:27:45 +0200
+Message-Id: <1508509687-3074-3-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1508509687-3074-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1508509687-3074-1-git-send-email-aleksandar.markovic@rt-rk.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60498
+X-archive-position: 60499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,8 +63,8 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-Change all relevant instances of aleksandar.markovic@imgtec.com
-email address to aleksandar.markovic@mips.com.
+Change all relevant instances of miodrag.dinic@imgtec.com
+email address to miodrag.dinic@mips.com.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
@@ -73,29 +74,29 @@ Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
  2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/.mailmap b/.mailmap
-index c7b10ca..bd14d63 100644
+index bd14d63..2494b4b 100644
 --- a/.mailmap
 +++ b/.mailmap
-@@ -15,6 +15,7 @@ Adriana Reus <adi.reus@gmail.com> <adriana.reus@intel.com>
- Alan Cox <alan@lxorguk.ukuu.org.uk>
- Alan Cox <root@hraefn.swansea.linux.org.uk>
- Aleksey Gorelov <aleksey_gorelov@phoenix.com>
-+Aleksandar Markovic <aleksandar.markovic@mips.com> <aleksandar.markovic@imgtec.com>
- Al Viro <viro@ftp.linux.org.uk>
- Al Viro <viro@zenIV.linux.org.uk>
- Andreas Herrmann <aherrman@de.ibm.com>
+@@ -118,6 +118,7 @@ Matt Ranostay <matt.ranostay@konsulko.com> <matt@ranostay.consulting>
+ Mayuresh Janorkar <mayur@ti.com>
+ Michael Buesch <m@bues.ch>
+ Michel Dänzer <michel@tungstengraphics.com>
++Miodrag Dinic <miodrag.dinic@imgtec.com> <miodrag.dinic@mips.com>
+ Mitesh shah <mshah@teja.com>
+ Mohit Kumar <mohit.kumar@st.com> <mohit.kumar.dhaka@gmail.com>
+ Morten Welinder <terra@gnome.org>
 diff --git a/MAINTAINERS b/MAINTAINERS
-index a74227a..6e753610 100644
+index 6e753610..4a3de82 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -9019,7 +9019,7 @@ F:	drivers/*/*loongson1*
- F:	drivers/*/*/*loongson1*
+@@ -873,7 +873,7 @@ F:	drivers/android/
+ F:	drivers/staging/android/
  
- MIPS RINT INSTRUCTION EMULATION
--M:	Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-+M:	Aleksandar Markovic <aleksandar.markovic@mips.com>
- L:	linux-mips@linux-mips.org
+ ANDROID GOLDFISH RTC DRIVER
+-M:	Miodrag Dinic <miodrag.dinic@imgtec.com>
++M:	Miodrag Dinic <miodrag.dinic@mips.com>
  S:	Supported
- F:	arch/mips/math-emu/sp_rint.c
+ F:	Documentation/devicetree/bindings/rtc/google,goldfish-rtc.txt
+ F:	drivers/rtc/rtc-goldfish.c
 -- 
 2.7.4

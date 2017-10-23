@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2017 18:12:09 +0200 (CEST)
-Received: from 20pmail.ess.barracuda.com ([64.235.150.246]:55804 "EHLO
-        20pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990591AbdJWQMCjQ2rl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Oct 2017 18:12:02 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 23 Oct 2017 16:11:57 +0000
-Received: from [10.20.78.46] (10.20.78.46) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Mon, 23 Oct 2017 09:09:48 -0700
-Date:   Mon, 23 Oct 2017 17:10:27 +0100
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-In-Reply-To: <20171021180040.GC10522@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1710231659060.3886@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk> <20170920140715.GA9255@localhost.localdomain> <alpine.DEB.2.00.1709201604400.16752@tp.orcam.me.uk> <20170922163753.GA2415@localhost.localdomain> <alpine.DEB.2.00.1709300024350.12020@tp.orcam.me.uk>
- <20170930182608.GB7714@localhost.localdomain> <alpine.DEB.2.00.1709301929060.12020@tp.orcam.me.uk> <20171006202838.GA26707@localhost.localdomain> <20171015163937.GA2239@localhost.localdomain> <alpine.DEB.2.00.1710171301160.3886@tp.orcam.me.uk>
- <20171021180040.GC10522@localhost.localdomain>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2017 19:21:55 +0200 (CEST)
+Received: from frisell.zx2c4.com ([192.95.5.64]:45483 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990504AbdJWRVpF9j9M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Oct 2017 19:21:45 +0200
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id fea499d6;
+        Mon, 23 Oct 2017 17:19:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
+        :subject:date:message-id:mime-version:content-type
+        :content-transfer-encoding; s=mail; bh=0fZUxAWunmi8tMqa0f9CRLdip
+        AI=; b=BJLW9CXI4sTTKqjdM0DL44lhUdFP6WUpdwzqJSuW1RPeKjXR1L5d0SXUR
+        kAUvIaz8DAxiPP7rGox1DQHRCw5TyXEa1LCuuwsrBzKny9HJKuG3TRRsT0eeJDLn
+        LXR7anyZDebG1PmzAUfN8Za59c2URwnXR742+vVe6pS3nFILpjisX53UhXCAh97V
+        O4yfAn8sL/W9yIpU/vJnN22lBX8GueTvA2Lpt54UL+9h2JM8Kn2pDSNALq1OO1W8
+        96+kucWg+Mq8RVbK4fjG6+l3W9KQ/Y39LcUvVp2Qt/DbZsDbmvBvpo7JmmPoelc2
+        squFuyJztF+S67t5BQWMgv7NryHVw==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5373e618 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
+        Mon, 23 Oct 2017 17:19:42 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
+Subject: [PATCH] mips/smp-cmp: use right include for task_struct
+Date:   Mon, 23 Oct 2017 19:20:56 +0200
+Message-Id: <20171023172056.12265-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1508775109-298553-5482-8345-2
-X-BESS-VER: 2017.12-r1710102214
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.50
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186225
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.50 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60527
+X-archive-position: 60528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,50 +46,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 21 Oct 2017, Fredrik Noring wrote:
+When task_struct was moved, this MIPS code was neglected. Evidently
+nobody is using it anymore. This fixes this build error:
 
-> > > Still left to explain is why the kernel stumbles on registers during
-> > > initialisation, before user applications are invoked.
-> > 
-> >  Good luck!
-> 
-> The problem was with the inq and outq macros in the Graphics Synthesizer
-> driver. A 32-bit kernel now works with 32-bit register save/restore and o32
-> applications, as intended. Many thanks for all your help in finding this!
+In file included from ./arch/mips/include/asm/thread_info.h:15:0,
+                 from ./include/linux/thread_info.h:37,
+                 from ./include/asm-generic/current.h:4,
+                 from ./arch/mips/include/generated/asm/current.h:1,
+                 from ./include/linux/sched.h:11,
+                 from arch/mips/kernel/smp-cmp.c:22:
+arch/mips/kernel/smp-cmp.c: In function ‘cmp_boot_secondary’:
+./arch/mips/include/asm/processor.h:384:41: error: implicit declaration
+of function ‘task_stack_page’ [-Werror=implicit-function-declaration]
+ #define __KSTK_TOS(tsk) ((unsigned long)task_stack_page(tsk) + \
+                                         ^
+arch/mips/kernel/smp-cmp.c:84:21: note: in expansion of macro ‘__KSTK_TOS’
+  unsigned long sp = __KSTK_TOS(idle);
+                     ^~~~~~~~~~
 
- Great, and you are welcome!
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: stable@vger.kernel.org
+---
+ arch/mips/kernel/smp-cmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I've found an unrelated curiosity. With CONFIG_CPU_HAS_MSA undefined,
-> handle_msa_fpe_int, do_msa_fpe, etc. are still generated with nonsensical
-> instructions:
-> 
-> 	80025128 <handle_msa_fpe_int>:
-> 	80025128:       787e0859        lq      s8,2137(v1) <<<-----
-> 	8002512c:       00202821        move    a1,at
-> 	80025130:       0000040f        sync.p
-> 	80025134:       40086000        mfc0    t0,c0_sr
-> 	...
-> 
-> 	80030f08 <do_msa_fpe>:
-> 	80030f08:       27bdffd8        addiu   sp,sp,-40
-> 	80030f0c:       afb0001c        sw      s0,28(sp)
-> 	80030f10:       00808021        move    s0,a0
-> 	...
-> 	80030f70:       02228824        and     s1,s1,v0
-> 	80030f74:       02200821        move    at,s1
-> 	80030f78:       783e0859        lq      s8,2137(at) <<<-----
-> 	80030f7c:       0000040f        sync.p
-> 	80030f80:       40016000        mfc0    at,c0_sr
-> 	...
-> 
-> I disabled both with the patch below (there seems to be more opportunities
-> for size reductions overall).
-
- Perhaps the MSA and the MSAFPE exception handlers could be improved 
-somehow for configurations known not to support the MSA ASE, however your 
-change as it stands will make the MSA exception handler default to 
-`do_reserved', which in turn will cause MSA software to cause a kernel 
-panic rather than sending SIGILL if run with CPU_HAS_MSA disabled on MSA 
-hardware.  This would be rather nasty IMO.
-
-  Maciej
+diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+index 05295a4909f1..415e4d19f897 100644
+--- a/arch/mips/kernel/smp-cmp.c
++++ b/arch/mips/kernel/smp-cmp.c
+@@ -19,7 +19,7 @@
+ #undef DEBUG
+ 
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
++#include <linux/sched/task_stack.h>
+ #include <linux/smp.h>
+ #include <linux/cpumask.h>
+ #include <linux/interrupt.h>
+-- 
+2.14.2

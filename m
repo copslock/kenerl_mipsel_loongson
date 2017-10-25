@@ -1,9 +1,9 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2017 01:40:22 +0200 (CEST)
-Received: from 5pmail.ess.barracuda.com ([64.235.150.217]:52159 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2017 01:40:45 +0200 (CEST)
+Received: from 5pmail.ess.barracuda.com ([64.235.154.203]:49354 "EHLO
         5pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991986AbdJYXinTh38S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Oct 2017 01:38:43 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 25 Oct 2017 23:38:34 +0000
+        by eddie.linux-mips.org with ESMTP id S23992128AbdJYXiqeIQQS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Oct 2017 01:38:46 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 25 Oct 2017 23:38:36 +0000
 Received: from pburton-laptop.mipstec.com (10.20.1.18) by mips01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Wed, 25 Oct 2017
  16:36:21 -0700
@@ -13,16 +13,16 @@ To:     Jason Cooper <jason@lakedaemon.net>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         Paul Burton <paul.burton@mips.com>
-Subject: [PATCH 6/8] irqchip: mips-gic: Remove gic_vpes variable
-Date:   Wed, 25 Oct 2017 16:37:28 -0700
-Message-ID: <20171025233730.22225-7-paul.burton@mips.com>
+Subject: [PATCH 7/8] irqchip: mips-gic: Share register writes in gic_set_type()
+Date:   Wed, 25 Oct 2017 16:37:29 -0700
+Message-ID: <20171025233730.22225-8-paul.burton@mips.com>
 X-Mailer: git-send-email 2.14.3
 In-Reply-To: <20171025233730.22225-1-paul.burton@mips.com>
 References: <20171025233730.22225-1-paul.burton@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-BESS-ID: 1508974714-298554-9092-33945-1
-X-BESS-VER: 2017.12-r1710102214
+X-BESS-ID: 1508974696-321459-28744-58481-9
+X-BESS-VER: 2017.12-r1709122024
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186295
@@ -36,7 +36,7 @@ Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60568
+X-archive-position: 60569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,8 +53,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Following the past few patches nothing uses the gic_vpes variable any
-longer. Remove the dead code.
+The gic_set_type() function included writes to the MIPS GIC polarity,
+trigger & dual-trigger registers in each case of a switch statement
+determining the IRQs type. This is all well & good when we only have a
+single cluster & thus a single GIC whose register we want to update. It
+will lead to significant duplication once we have multi-cluster support
+& multiple GICs to update.
+
+Refactor this such that we determine values for the polarity, trigger &
+dual-trigger registers and then have a single set of register writes
+following the switch statement. This will allow us to write the same
+values to each GIC in a multi-cluster system in a later patch, rather
+than needing to duplicate more register writes in each case.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: Jason Cooper <jason@lakedaemon.net>
@@ -63,31 +73,82 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-mips@linux-mips.org
 ---
 
- drivers/irqchip/irq-mips-gic.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/irqchip/irq-mips-gic.c | 46 +++++++++++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 70e18026f896..88797e1c58e2 100644
+index 88797e1c58e2..8c719a9912fc 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -49,7 +49,6 @@ static DEFINE_SPINLOCK(gic_lock);
- static struct irq_domain *gic_irq_domain;
- static struct irq_domain *gic_ipi_domain;
- static int gic_shared_intrs;
--static int gic_vpes;
- static unsigned int gic_cpu_pin;
- static unsigned int timer_cpu_pin;
- static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
-@@ -721,10 +720,6 @@ static int __init gic_of_init(struct device_node *node,
- 	gic_shared_intrs >>= __ffs(GIC_CONFIG_NUMINTERRUPTS);
- 	gic_shared_intrs = (gic_shared_intrs + 1) * 8;
+@@ -199,46 +199,46 @@ static void gic_ack_irq(struct irq_data *d)
  
--	gic_vpes = gicconfig & GIC_CONFIG_PVPS;
--	gic_vpes >>= __ffs(GIC_CONFIG_PVPS);
--	gic_vpes = gic_vpes + 1;
--
- 	if (cpu_has_veic) {
- 		/* Always use vector 1 in EIC mode */
- 		gic_cpu_pin = 0;
+ static int gic_set_type(struct irq_data *d, unsigned int type)
+ {
+-	unsigned int irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
++	unsigned int irq, pol, trig, dual;
+ 	unsigned long flags;
+-	bool is_edge;
++
++	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
+ 
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+ 	case IRQ_TYPE_EDGE_FALLING:
+-		change_gic_pol(irq, GIC_POL_FALLING_EDGE);
+-		change_gic_trig(irq, GIC_TRIG_EDGE);
+-		change_gic_dual(irq, GIC_DUAL_SINGLE);
+-		is_edge = true;
++		pol = GIC_POL_FALLING_EDGE;
++		trig = GIC_TRIG_EDGE;
++		dual = GIC_DUAL_SINGLE;
+ 		break;
+ 	case IRQ_TYPE_EDGE_RISING:
+-		change_gic_pol(irq, GIC_POL_RISING_EDGE);
+-		change_gic_trig(irq, GIC_TRIG_EDGE);
+-		change_gic_dual(irq, GIC_DUAL_SINGLE);
+-		is_edge = true;
++		pol = GIC_POL_RISING_EDGE;
++		trig = GIC_TRIG_EDGE;
++		dual = GIC_DUAL_SINGLE;
+ 		break;
+ 	case IRQ_TYPE_EDGE_BOTH:
+-		/* polarity is irrelevant in this case */
+-		change_gic_trig(irq, GIC_TRIG_EDGE);
+-		change_gic_dual(irq, GIC_DUAL_DUAL);
+-		is_edge = true;
++		pol = 0; /* Doesn't matter */
++		trig = GIC_TRIG_EDGE;
++		dual = GIC_DUAL_DUAL;
+ 		break;
+ 	case IRQ_TYPE_LEVEL_LOW:
+-		change_gic_pol(irq, GIC_POL_ACTIVE_LOW);
+-		change_gic_trig(irq, GIC_TRIG_LEVEL);
+-		change_gic_dual(irq, GIC_DUAL_SINGLE);
+-		is_edge = false;
++		pol = GIC_POL_ACTIVE_LOW;
++		trig = GIC_TRIG_LEVEL;
++		dual = GIC_DUAL_SINGLE;
+ 		break;
+ 	case IRQ_TYPE_LEVEL_HIGH:
+ 	default:
+-		change_gic_pol(irq, GIC_POL_ACTIVE_HIGH);
+-		change_gic_trig(irq, GIC_TRIG_LEVEL);
+-		change_gic_dual(irq, GIC_DUAL_SINGLE);
+-		is_edge = false;
++		pol = GIC_POL_ACTIVE_HIGH;
++		trig = GIC_TRIG_LEVEL;
++		dual = GIC_DUAL_SINGLE;
+ 		break;
+ 	}
+ 
+-	if (is_edge)
++	change_gic_pol(irq, pol);
++	change_gic_trig(irq, trig);
++	change_gic_dual(irq, dual);
++
++	if (trig == GIC_TRIG_EDGE)
+ 		irq_set_chip_handler_name_locked(d, &gic_edge_irq_controller,
+ 						 handle_edge_irq, NULL);
+ 	else
 -- 
 2.14.3

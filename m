@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Oct 2017 17:28:22 +0200 (CEST)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:51935
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991025AbdJYP2Omaatp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Oct 2017 17:28:14 +0200
-Received: by mail-it0-x244.google.com with SMTP id o135so1495453itb.0;
-        Wed, 25 Oct 2017 08:28:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Oct 2017 17:51:10 +0200 (CEST)
+Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:54098
+        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991550AbdJYPvCy7sKp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Oct 2017 17:51:02 +0200
+Received: by mail-it0-x243.google.com with SMTP id n195so1574354itg.2;
+        Wed, 25 Oct 2017 08:51:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=d+eyASIOrMB+fYDHTPqZJ4TD1SzqWh0CiGggAe7Zr9E=;
-        b=XqWMTQhZD5tD3hMGUjj/VPXPWnzCIhVkjVBYG5ABjA9PjDKrwlFmxt3b7gSLpWSJil
-         lE/9qR9iAifbfruBQxiiSkNOEgvksq1XbjacIHKErG2/XwEq8nIaBiyYI1XhnuubMiHI
-         S7QecaM2umpL/AESZtMYlji4Ft88RgbGL/sLhBkbBIWuk3an9NKwlEfw88rBcS52/urR
-         uKi5yktSbmIgqlYE0gfzHSooSFV56fnGIwi4XUkgPY2oorFO+3jIccjuSpyPtCxj/ZKL
-         8iU2L+Otc5mbOru4GLhNewgdlHPpzqO2SGF1zugjSLVs3KhoyisW6YzgJbCl1jSZ4QKU
-         dFVg==
+        bh=cAA8tWfA1pjoTXZV2+CyOteJExBd2R1mc4pwbA5VTO8=;
+        b=hlF+nI90iiTYUDn/EfuInaZtcAVSKZAVv+wDGei887aGGKBj8lav9VHM3df9TeU/DV
+         NpKbfqi6nMQCxcdyeJVe+2aX7x8CzycvKxfQMs5mYc0u5lDYbKgTKOzGmstISbx9E2A+
+         Y+OfX09OAe9boO1ZhGkYczRiQGI/Cz44RIwjuz0VN2wu6aJ+4Rpi+s1cvXUFQo16DFhf
+         IYDH40iOWXWEjYo8gytx+JHsEyHzF844rfwEa/CBOlQ+HkKNtyddSKZsxlcMqQN0L6nY
+         d4R6l64boDwEqscBzihtpxPHJODiUOHMVdCyHktfgLr9gXbwKReik++5vswuoruWHRfY
+         4MuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=d+eyASIOrMB+fYDHTPqZJ4TD1SzqWh0CiGggAe7Zr9E=;
-        b=pb/0V5ybwNCY5tjAwH4lyvJ4862cche69sUp2b4NOLTR6fZ/8IUFrzBuhqGJfJaYKR
-         aXozrKOtfPhmW1sWHyuOYIaG/qIy37w9kYmlyKn1FTmLvGpj8ZY9yIO5nq2eB5/KH2+f
-         CD/ie4woWWtjuSp/vUuhu81+fwa6bs4cQQYAEI2OcqAPjue8zWP9cen8ymEGuxRAlB2w
-         /RoeOQXg813aN+2wqIgF8Z2Q1+acOWQAKsNFvTxDN2a0bzNR/PoOdf8z5XwvDh8EVfmp
-         RN7xSiq/X9CNKBF5hinAbPIri2zPf9/8sNn4jIPIxX/M/LMQixbNxspG5RfqAwX7S9xf
-         neng==
-X-Gm-Message-State: AMCzsaVDi1nlwFKAbNpakUxe5gxPu1e8HfxnaazsSYb2IWD08CT2grKt
-        ZrYFu6UYAJ3GjqWBnY0mSCJVF1hSkAjgtme+VRY=
-X-Google-Smtp-Source: ABhQp+QF6r6JFAvl5H8HDeMUg6KaFgjPazp/COV/tUGeY2tPBgXHT5aVkXXRZpo88fLnj5XkBlniQqeufSg6J4QI4Zw=
-X-Received: by 10.36.135.202 with SMTP id f193mr2537855ite.47.1508945288319;
- Wed, 25 Oct 2017 08:28:08 -0700 (PDT)
+        bh=cAA8tWfA1pjoTXZV2+CyOteJExBd2R1mc4pwbA5VTO8=;
+        b=ZTS+OxHRDyygStFA7/SgWopiba07cNBSrUs2UjSZlCLlWPB4bxS+KgBnwhUVyfGIx+
+         Ako4XOGYef5ZJHWh5wMv5X5jrW3kSMoNsjqoAjcTxBRnxweSE9ENzoyZpcQe7o7araxi
+         8Uel1c0aplZ15cdScJGYhU1meg0fLkeBH36s1+1AhmsYu8Dz0RNVH49XrGXid+wG6UAy
+         Gef/KWWC5Ry/pBzXh5kJK52MJod+ZWQPZfGojy8qrf4WUMLylVTfAPADHTu8Yswr98H6
+         3S9bnf1evKyDP/lND28YJ0+ve1Vknu7eoiSUrGEWuo7vLOGDy9SNH/beK/cvKYLAE4cD
+         gbNw==
+X-Gm-Message-State: AMCzsaVg7TbZDNywDWTs/Wew1HoV8ItjyEUDnbzU4YwXCvqeP1r7v4qn
+        0jlxPAlBmozGAei87pbyTzC9afs3IYBVr0msq4I=
+X-Google-Smtp-Source: ABhQp+RxQdgH+e0qVB8h+oh0hdQCx0cv6lP89eBASDsEkTSnVGs8YGxsv5YxEEzko2an7O/Qhipqb66sUAp2SNGwaIc=
+X-Received: by 10.36.65.34 with SMTP id x34mr2828390ita.118.1508946656184;
+ Wed, 25 Oct 2017 08:50:56 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.47.156 with HTTP; Wed, 25 Oct 2017 08:28:07 -0700 (PDT)
-In-Reply-To: <5406ab92-c1da-f6fa-083d-82d1027130ea@gmail.com>
+Received: by 10.107.47.156 with HTTP; Wed, 25 Oct 2017 08:50:55 -0700 (PDT)
+In-Reply-To: <20171025005535.GJ21840@bhelgaas-glaptop.roam.corp.google.com>
 References: <1508868949-16652-1-git-send-email-jim2101024@gmail.com>
- <1508868949-16652-7-git-send-email-jim2101024@gmail.com> <5406ab92-c1da-f6fa-083d-82d1027130ea@gmail.com>
+ <1508868949-16652-7-git-send-email-jim2101024@gmail.com> <20171025005535.GJ21840@bhelgaas-glaptop.roam.corp.google.com>
 From:   Jim Quinlan <jim2101024@gmail.com>
-Date:   Wed, 25 Oct 2017 11:28:07 -0400
-Message-ID: <CANCKTBvAqu-godc03BiAt+9hxAoWABLVCtBzaA9ZWLJgXnQ3Fg@mail.gmail.com>
+Date:   Wed, 25 Oct 2017 11:50:55 -0400
+Message-ID: <CANCKTBuFy+6L0AX6wGH7CCqsWFVckeX5+U1x6SWvufXhS4DOvw@mail.gmail.com>
 Subject: Re: [PATCH 6/8] PCI: host: brcmstb: add MSI capability
-To:     Florian Fainelli <f.fainelli@gmail.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
 Cc:     linux-kernel@vger.kernel.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -50,6 +50,7 @@ Cc:     linux-kernel@vger.kernel.org,
         Russell King <rmk+kernel@armlinux.org.uk>,
         Robin Murphy <robin.murphy@arm.com>,
         Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         linux-pci <linux-pci@vger.kernel.org>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
         Gregory Fong <gregory.0xf0@gmail.com>,
@@ -64,7 +65,7 @@ Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60553
+X-archive-position: 60554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -81,12 +82,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 24, 2017 at 2:57 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> Hi Jim,
->
-> On 10/24/2017 11:15 AM, Jim Quinlan wrote:
+On Wed, Oct 25, 2017 at 9:22 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> On Tue, Oct 24, 2017 at 02:15:47PM -0400, Jim Quinlan wrote:
 >> This commit adds MSI to the Broadcom STB PCIe host controller. It does
->> not add MSIX since that functionality is not in the HW.  The MSI
+>> not add MSIX since that functiostbsrvnality is not in the HW.  The MSI
 >> controller is physically located within the PCIe block, however, there
 >> is no reason why the MSI controller could not be moved elsewhere in
 >> the future.
@@ -118,17 +117,24 @@ On Tue, Oct 24, 2017 at 2:57 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
 >> +config PCI_BRCMSTB_MSI
 >> +     bool "Broadcom Brcmstb PCIe MSI support"
 >> +     depends on ARCH_BRCMSTB || BMIPS_GENERIC
->
-> This could probably be depends on PCI_BRCMSTB, which would imply these
-> two conditions. PCI_BRCMSTB_MSI on its own is probably not very useful
-> without the parent RC driver.
->
 >> +     depends on OF
 >> +     depends on PCI_MSI
 >> +     default PCI_BRCMSTB
 >> +     help
 >> +       Say Y here if you want to enable MSI support for Broadcom's iProc
 >> +       PCIe controller
+>
+> Is there any reason *not* to enable MSI?  Most drivers just include
+> MSI support in the base driver, in the same file and under the same
+> config symbol.
+>
+CONFIG_PCI_BRCMSTB_MSI is bool, CONFIG_PCI_BRCMSTB is tri-state.  The
+reason for this -- and also for the separate msi file -- is that there
+is an irq call  that is not exported (I can dig it up if you'd like).
+We have had requests that the PCIe RC driver doesn't run at boot, so
+we consider the idea of it being a module valuable.  You can see the
+same thing going on with PCIE_IPROC_MSI.
+
 >> +
 >>  endmenu
 >> diff --git a/drivers/pci/host/Makefile b/drivers/pci/host/Makefile
@@ -140,16 +146,552 @@ On Tue, Oct 24, 2017 at 2:57 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
 >>  obj-$(CONFIG_PCI_BRCMSTB) += brcmstb-pci.o
 >>  brcmstb-pci-objs := pci-brcmstb.o pci-brcmstb-dma.o
 >> +obj-$(CONFIG_PCI_BRCMSTB_MSI) += pci-brcmstb-msi.o
+>>
+>>  # The following drivers are for devices that use the generic ACPI
+>>  # pci_root.c driver but don't support standard ECAM config access.
+>> diff --git a/drivers/pci/host/pci-brcmstb-msi.c b/drivers/pci/host/pci-brcmstb-msi.c
+>> new file mode 100644
+>> index 0000000..c805e2f
+>> --- /dev/null
+>> +++ b/drivers/pci/host/pci-brcmstb-msi.c
+>> @@ -0,0 +1,318 @@
+>> +/*
+>> + * Copyright (C) 2015-2017 Broadcom
+>> + *
+>> + * This program is free software; you can redistribute it and/or modify
+>> + * it under the terms of the GNU General Public License version 2 as
+>> + * published by the Free Software Foundation.
+>> + *
+>> + * This program is distributed in the hope that it will be useful,
+>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+>> + * GNU General Public License for more details.
+>> + *
+>> + */
 >
-> Should we combine this file with the brcmstb-pci.o? There is probably no
-> functional difference, except that pci-brcmstb-msi.ko needs to be loaded
-> first, right?
-> --
-> Florian
+> Remove last blank line of comment and add a blank line between comment
+> and #includes.
+Will fix.
 
-If you look at the pci/host/Kconfig you will see that other drivers
-also have a separate MSI config (eg iproc, altera, xgene) so there is
-precedent.  The reason that pci-brcmstb-msi.c is its own file is
-because it depends on an irq function that is not exported.  That is
-why CONFIG_PCI_BRCMSTB_MSI is bool, and CONFIG_PCI_BRCMSTB is
-tristate.  -- Jim
+>
+>> +#include <linux/bitops.h>
+>> +#include <linux/compiler.h>
+>> +#include <linux/init.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/io.h>
+>> +#include <linux/irqchip/chained_irq.h>
+>> +#include <linux/irqdomain.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/module.h>
+>> +#include <linux/msi.h>
+>> +#include <linux/of_irq.h>
+>> +#include <linux/of_pci.h>
+>> +#include <linux/of_platform.h>
+>> +#include <linux/pci.h>
+>> +#include <linux/types.h>
+>> +
+>> +#include "pci-brcmstb.h"
+>> +
+>> +#define PCIE_MISC_MSI_DATA_CONFIG                    0x404c
+>> +#define PCIE_MSI_INTR2_BASE                          0x4500
+>> +#define PCIE_MISC_MSI_BAR_CONFIG_LO                  0x4044
+>> +#define PCIE_MISC_MSI_BAR_CONFIG_HI                  0x4048
+>> +
+>> +/* Offsets from PCIE_INTR2_CPU_BASE and PCIE_MSI_INTR2_BASE */
+>> +#define STATUS                               0x0
+>> +#define SET                          0x4
+>> +#define CLR                          0x8
+>> +#define MASK_STATUS                  0xc
+>> +#define MASK_SET                     0x10
+>> +#define MASK_CLR                     0x14
+>> +
+>> +struct brcm_msi {
+>> +     struct irq_domain *msi_domain;
+>> +     struct irq_domain *inner_domain;
+>> +     struct mutex lock; /* guards the alloc/free operations */
+>> +     u64 target_addr;
+>> +     int irq;
+>> +     /* intr_base is the base pointer for interrupt status/set/clr regs */
+>> +     void __iomem *intr_base;
+>> +     /* intr_legacy_mask indicates how many bits are MSI interrupts */
+>> +     u32 intr_legacy_mask;
+>> +     /* intr_legacy_offset indicates bit position of MSI_01. It is
+>> +      * to map the register bit position to a hwirq that starts at 0.
+>> +      */
+>> +     u32 intr_legacy_offset;
+>> +     /* used indicates which MSI interrupts have been alloc'd */
+>> +     unsigned long used;
+>> +
+>> +     void __iomem *base;
+>> +     struct device *dev;
+>> +     struct device_node *dn;
+>> +     unsigned int rev;
+>> +};
+>> +
+>> +static struct irq_chip brcm_msi_irq_chip = {
+>> +     .name = "Brcm_MSI",
+>> +     .irq_mask = pci_msi_mask_irq,
+>> +     .irq_unmask = pci_msi_unmask_irq,
+>> +};
+>> +
+>> +static struct msi_domain_info brcm_msi_domain_info = {
+>> +     .flags  = (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
+>> +                MSI_FLAG_PCI_MSIX),
+>> +     .chip   = &brcm_msi_irq_chip,
+>> +};
+>> +
+>> +static void brcm_pcie_msi_isr(struct irq_desc *desc)
+>> +{
+>> +     struct irq_chip *chip = irq_desc_get_chip(desc);
+>> +     struct brcm_msi *msi;
+>> +     unsigned long status, virq;
+>> +     u32 mask, bit, hwirq;
+>> +
+>> +     chained_irq_enter(chip, desc);
+>> +     msi = irq_desc_get_handler_data(desc);
+>> +     mask = msi->intr_legacy_mask;
+>> +
+>> +     while ((status = bcm_readl(msi->intr_base + STATUS) & mask)) {
+>> +             for_each_set_bit(bit, &status, BRCM_INT_PCI_MSI_NR) {
+>> +                     /* clear the interrupt */
+>> +                     bcm_writel(1 << bit, msi->intr_base + CLR);
+>> +
+>> +                     /* Account for legacy interrupt offset */
+>> +                     hwirq = bit - msi->intr_legacy_offset;
+>> +
+>> +                     virq = irq_find_mapping(msi->inner_domain, hwirq);
+>> +                     if (virq) {
+>> +                             if (msi->used & (1 << hwirq))
+>> +                                     generic_handle_irq(virq);
+>> +                             else
+>> +                                     dev_info(msi->dev, "unhandled MSI %d\n",
+>> +                                              hwirq);
+>> +                     } else {
+>> +                             /* Unknown MSI, just clear it */
+>> +                             dev_dbg(msi->dev, "unexpected MSI\n");
+>
+> Use a local "struct device *dev" to avoid repeating the "msi->dev"
+> here and elsewhere.
+Will fix.
+
+>
+>> +                     }
+>> +             }
+>> +     }
+>> +     chained_irq_exit(chip, desc);
+>> +}
+>> +
+>> +static void brcm_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+>> +{
+>> +     struct brcm_msi *msi = irq_data_get_irq_chip_data(data);
+>> +     u32 temp;
+>> +
+>> +     msg->address_lo = lower_32_bits(msi->target_addr);
+>> +     msg->address_hi = upper_32_bits(msi->target_addr);
+>> +     temp = bcm_readl(msi->base + PCIE_MISC_MSI_DATA_CONFIG);
+>> +     msg->data = ((temp >> 16) & (temp & 0xffff)) | data->hwirq;
+>> +}
+>> +
+>> +static int brcm_msi_set_affinity(struct irq_data *irq_data,
+>> +                              const struct cpumask *mask, bool force)
+>> +{
+>> +     return -EINVAL;
+>> +}
+>> +
+>> +static struct irq_chip brcm_msi_bottom_irq_chip = {
+>> +     .name                   = "Brcm MSI",PCIE_IPROC_MSI
+>
+> Why the different name from brcm_msi_irq_chip above ("Brcm_MSI" vs
+> "Brcm MSI")?  If the "_" signifies something, it should be made more
+> explicit.
+>
+Will fix.
+
+>> +     .irq_compose_msi_msg    = brcm_compose_msi_msg,
+>> +     .irq_set_affinity       = brcm_msi_set_affinity,
+>> +};
+>> +
+>> +static int brcm_msi_alloc(struct brcm_msi *msi)
+>> +{
+>> +     int bit, hwirq;
+>> +
+>> +     mutex_lock(&msi->lock);
+>> +     bit = ~msi->used ? ffz(msi->used) : -1;
+>> +
+>> +     if (bit >= 0 && bit < BRCM_INT_PCI_MSI_NR) {
+>> +             msi->used |= (1 << bit);
+>> +             hwirq = bit - msi->intr_legacy_offset;
+>> +     } else {
+>> +             hwirq = -ENOSPC;
+>> +     }
+>> +
+>> +     mutex_unlock(&msi->lock);
+>> +     return hwirq;
+>> +}
+>> +
+>> +static void brcm_msi_free(struct brcm_msi *msi, unsigned long hwirq)
+>> +{
+>> +     mutex_lock(&msi->lock);
+>> +     msi->used &= ~(1 << (hwirq + msi->intr_legacy_offset));
+>> +     mutex_unlock(&msi->lock);
+>> +}
+>> +
+>> +static int brcm_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+>> +                              unsigned int nr_irqs, void *args)
+>> +{
+>> +     struct brcm_msi *msi = domain->host_data;
+>> +     int hwirq;
+>> +
+>> +     hwirq = brcm_msi_alloc(msi);
+>> +
+>> +     if (hwirq < 0)
+>> +             return hwirq;
+>> +
+>> +     irq_domain_set_info(domain, virq, (irq_hw_number_t)hwirq,
+>> +                         &brcm_msi_bottom_irq_chip, domain->host_data,
+>> +                         handle_simple_irq, NULL, NULL);
+>> +     return 0;
+>> +}
+>> +
+>> +static void brcm_irq_domain_free(struct irq_domain *domain,
+>> +                              unsigned int virq, unsigned int nr_irqs)
+>> +{
+>> +     struct irq_data *d = irq_domain_get_irq_data(domain, virq);
+>> +     struct brcm_msi *msi = irq_data_get_irq_chip_data(d);
+>> +
+>> +     brcm_msi_free(msi, d->hwirq);
+>> +}
+>> +
+>> +void brcm_msi_set_regs(struct brcm_msi *msi)
+>> +{
+>> +     u32 data_val, msi_lo, msi_hi;
+>> +
+>> +     if (msi->rev >= BRCM_PCIE_HW_REV_33) {PCIE_IPROC_MSI
+>> +             /* ffe0 -- least sig 5 bits are 0 indicating 32 msgs
+>> +              * 6540 -- this is our arbitrary unique data value
+>> +              */PCIE_IPROC_MSI
+>
+> Multi-line comment style.
+>
+Will fix.
+
+>> +             data_val = 0xffe06540;
+>> +     } else {
+>> +             /* fff8 -- least sig 3 bits are 0 indicating 8 msgs
+>> +              * 6540 -- this is our arbitrary unique data value
+>> +              */
+>> +             data_val = 0xfff86540;
+>> +     }
+>> +
+>> +     /* Make sure we are not masking MSIs.  Note that MSIs can be masked,
+>> +      * but that occurs on the PCIe EP device
+>> +      */
+>> +     bcm_writel(0xffffffff & msi->intr_legacy_mask,PCIE_IPROC_MSI
+>> +                msi->intr_base + MASK_CLR);
+>> +
+>> +     msi_lo = lower_32_bits(msi->target_addr);
+>> +     msi_hi = upper_32_bits(msi->target_addr);
+>> +     /* The 0 bit of PCIE_MISC_MSI_BAR_CONFIG_LO is repurposed to MSI
+>> +      * enable, which we set to 1.
+>> +      */
+>> +     bcm_writel(msi_lo | 1, msi->base + PCIE_MISC_MSI_BAR_CONFIG_LO);
+>> +     bcm_writel(msi_hi, msi->base + PCIE_MISC_MSI_BAR_CONFIG_HI);
+>> +     bcm_writel(data_val, msi->base + PCIE_MISC_MSI_DATA_CONFIG);
+>> +}
+>> +EXPORT_SYMBOL(brcm_msi_set_regs);
+>> +
+>> +static const struct irq_domain_ops msi_domain_ops = {
+>> +     .alloc  = brcm_irq_domain_alloc,
+>> +     .free   = brcm_irq_domain_free,
+>> +};
+>> +
+>> +static int brcm_allocate_domains(struct brcm_msi *msi)
+>> +{
+>> +     struct fwnode_handle *fwnode = of_node_to_fwnode(msi->dn);
+>> +
+>> +     msi->inner_domain = irq_domain_add_linear(NULL, BRCM_INT_PCI_MSI_NR,
+>> +                                               &msi_domain_ops, msi);
+>> +     if (!msi->inner_domain) {
+>> +             dev_err(msi->dev, "failed to create IRQ domain\n");
+>> +             return -ENOMEM;
+>> +     }
+>> +
+>> +     msi->msi_domain = pci_msi_create_irq_domain(fwnode,
+>> +                                                 &brcm_msi_domain_info,
+>> +                                                 msi->inner_domain);
+>> +     if (!msi->msi_domain) {
+>> +             dev_err(msi->dev, "failed to create MSI domain\n");
+>> +             irq_domain_remove(msi->inner_domain);
+>> +             return -ENOMEM;
+>> +     }
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +static void brcm_free_domains(struct brcm_msi *msi)
+>> +{
+>> +     irq_domain_remove(msi->msi_domain);
+>> +     irq_domain_remove(msi->inner_domain);
+>> +}
+>> +
+>> +void brcm_msi_remove(struct brcm_msi *msi)
+>> +{
+>> +     if (!msi)
+>> +             return;
+>> +     irq_set_chained_handler(msi->irq, NULL);
+>> +     irq_set_handler_data(msi->irq, NULL);
+>> +     brcm_free_domains(msi);
+>> +}
+>> +EXPORT_SYMBOL(brcm_msi_remove);
+>> +
+>> +int brcm_msi_probe(struct platform_device *pdev, struct brcm_info *info)
+>> +{
+>> +     struct brcm_msi *msi;
+>> +     int irq, ret;
+>> +
+>> +     irq = irq_of_parse_and_map(pdev->dev.of_node, 1);
+>> +     if (irq <= 0) {
+>> +             dev_err(&pdev->dev, "cannot map msi intr\n");
+>> +             return -ENODEV;
+>> +     }
+>> +
+>> +     msi = devm_kzalloc(&pdev->dev, sizeof(struct brcm_msi), GFP_KERNEL);
+>> +     if (!msi)
+>> +             return -ENOMEM;
+>> +
+>> +     msi->dev = &pdev->dev;
+>> +     msi->base = info->base;
+>> +     msi->rev =  info->rev;
+>> +     msi->dn = pdev->dev.of_node;
+>> +     msi->target_addr = info->msi_target_addr;
+>> +     msi->irq = irq;
+>> +
+>> +     ret = brcm_allocate_domains(msi);
+>> +     if (ret)
+>> +             return ret;
+>> +
+>> +     irq_set_chained_handler_and_data(msi->irq, brcm_pcie_msi_isr, msi);
+>> +
+>> +     if (msi->rev >= BRCM_PCIE_HW_REV_33) {PCIE_IPROC_MSI
+>> +             msi->intr_base = msi->base + PCIE_MSI_INTR2_BASE;
+>> +             /* This version of PCIe hw has only 32 intr bits
+>> +              * starting at bit position 0.
+>> +              */
+>> +             msi->intr_legacy_mask = 0xffffffff;
+>> +             msi->intr_legacy_offset = 0x0;
+>> +             msi->used = 0x0;
+>> +
+>> +     } else {
+>> +             msi->intr_base = msi->base + PCIE_INTR2_CPU_BASE;
+>> +             /* This version of PCIe hw has only 8 intr bits starting
+>> +              * at bit position 24.
+>> +              */
+>> +             msi->intr_legacy_mask = 0xff000000;
+>> +             msi->intr_legacy_offset = 24;
+>> +             msi->used = 0x00ffffff;
+>> +     }PCIE_IPROC_MSI
+>> +
+>> +     brcm_msi_set_regs(msi);
+>> +     info->msi = msi;
+>> +
+>> +     return 0;
+>> +}
+>> +EXPORT_SYMBOL(brcm_msi_probe);
+>> diff --git a/drivers/pci/host/pci-brcmstb.c b/drivers/pci/host/pci-brcmstb.c
+>> index f5d80e6..99900d9 100644
+>> --- a/drivers/pci/host/pci-brcmstb.c
+>> +++ b/drivers/pci/host/pci-brcmstb.c
+>> @@ -22,6 +22,7 @@
+>>  #include <linux/list.h>
+>>  #include <linux/log2.h>
+>>  #include <linux/module.h>
+>> +#include <linux/msi.h>
+>>  #include <linux/of_address.h>
+>>  #include <linux/of_irq.h>
+>>  #include <linux/of_pci.h>
+>> @@ -327,10 +328,13 @@ struct brcm_pcie {
+>>       int                     num_out_wins;
+>>       bool                    ssc;
+>>       int                     gen;
+>> +     u64                     msi_target_addr;
+>>       struct brcm_window      out_wins[BRCM_NUM_PCI_OUT_WINS];
+>>       struct list_head        resources;
+>>       struct device           *dev;
+>>       struct list_head        pwr_supplies;
+>> +     struct brcm_msi         *msi;
+>> +     bool                    msi_internal;
+>>       unsigned int            rev;
+>>       unsigned int            num;
+>>       bool                    bridge_setup_done;
+>> @@ -763,6 +767,7 @@ static void brcm_pcie_setup_prep(struct brcm_pcie *pcie)
+>>       void __iomem *base = pcie->base;
+>>       unsigned int scb_size_val;
+>>       u64 rc_bar2_size = 0, rc_bar2_offset = 0, total_mem_size = 0;
+>> +     u64 msi_target_addr;
+>>       u32 tmp, burst;
+>>       int i;
+>>
+>> @@ -806,14 +811,17 @@ static void brcm_pcie_setup_prep(struct brcm_pcie *pcie)
+>>       /* The PCI host controller by design must set the inbound
+>>        * viewport to be a contiguous arrangement of all of the
+>>        * system's memory.  In addition, its size mut be a power of
+>> -      * two.  To further complicate matters, the viewport must
+>> -      * start on a pci-address that is aligned on a multiple of its
+>> -      * size.  If a portion of the viewport does not represent
+>> -      * system memory -- e.g. 3GB of memory requires a 4GB viewport
+>> -      * -- we can map the outbound memory in or after 3GB and even
+>> -      * though the viewport will overlap the outbound memory the
+>> -      * controller will know to send outbound memory downstream and
+>> -      * everything else upstream.
+>> +      * two.  Further, the MSI target address must NOT be placed
+>> +      * inside this region, as the decoding logic will consider its
+>> +      * address to be inbound memory traffic.  To further
+>> +      * complicate matters, the viewport must start on a
+>> +      * pci-address that is aligned on a multiple of its size.
+>> +      * If a portion of the viewport does not represent system
+>> +      * memory -- e.g. 3GB of memory requires a 4GB viewport --
+>> +      * we can map the outbound memory in or after 3GB and even
+>> +      * though the viewport will overlap the outbound memory
+>> +      * the controller will know to send outbound memory downstream
+>> +      * and everything else upstream.
+>>        */
+>>       rc_bar2_size = roundup_pow_of_two_64(total_mem_size);
+>>
+>> @@ -828,6 +836,14 @@ static void brcm_pcie_setup_prep(struct brcm_pcie *pcie)
+>>               if (total_mem_size <= 0xc0000000ULL &&
+>>                   rc_bar2_size <= 0x100000000ULL) {
+>>                       rc_bar2_offset = 0;
+>> +                     /* If the viewport is less then 4GB we can fit
+>> +                      * the MSI target address under 4GB. Otherwise
+>> +                      * put it right below 64GB.
+>> +                      */
+>> +                     msi_target_addr =
+>> +                             (rc_bar2_size == 0x100000000ULL)
+>> +                             ? BRCM_MSI_TARGET_ADDR_GT_4GB
+>> +                             : BRCM_MSI_TARGET_ADDR_LT_4GB;
+>>               } else {
+>>                       /* The system memory is 4GB or larger so we
+>>                        * cannot start the inbound region at location
+>> @@ -836,15 +852,24 @@ static void brcm_pcie_setup_prep(struct brcm_pcie *pcie)
+>>                        * start it at the 1x multiple of its size
+>>                        */
+>>                       rc_bar2_offset = rc_bar2_size;
+>> -             }
+>>
+>> +                     /* Since we are starting the viewport at 4GB or
+>> +                      * higher, put the MSI target address below 4GB
+>> +                      */
+>> +                     msi_target_addr = BRCM_MSI_TARGET_ADDR_LT_4GB;
+>> +             }
+>>       } else {
+>>               /* Set simple configuration based on memory sizes
+>>                * only.  We always start the viewport at address 0,
+>>                * and set the MSI target address accordingly.
+>>                */
+>>               rc_bar2_offset = 0;
+>> +
+>> +             msi_target_addr = (rc_bar2_size >= 0x100000000ULL)
+>> +                     ? BRCM_MSI_TARGET_ADDR_GT_4GB
+>> +                     : BRCM_MSI_TARGET_ADDR_LT_4GB;
+>>       }
+>> +     pcie->msi_target_addr = msi_target_addr;
+>>
+>>       tmp = lower_32_bits(rc_bar2_offset);
+>>       tmp = INSERT_FIELD(tmp, PCIE_MISC_RC_BAR2_CONFIG_LO, SIZE,
+>> @@ -1053,6 +1078,9 @@ static int brcm_pcie_resume(struct device *dev)
+>>       if (ret)
+>>               return ret;
+>>
+>> +     if (pcie->msi && pcie->msi_internal)
+>> +             brcm_msi_set_regs(pcie->msi);
+>> +
+>>       pcie->suspended = false;
+>>
+>>       return 0;
+>> @@ -1116,6 +1144,7 @@ static void __attribute__((__section__("pci_fixup_early")))
+>>
+>>  static void _brcm_pcie_remove(struct brcm_pcie *pcie)
+>>  {
+>> +     brcm_msi_remove(pcie->msi);
+>>       turn_off(pcie);
+>>       clk_disable_unprepare(pcie->clk);
+>>       clk_put(pcie->clk);PCIE_IPROC_MSI
+>> @@ -1125,7 +1154,7 @@ static void _brcm_pcie_remove(struct brcm_pcie *pcie)
+>>
+>>  static int brcm_pcie_probe(struct platform_device *pdev)
+>>  {
+>> -     struct device_node *dn = pdev->dev.of_node;
+>> +     struct device_node *dn = pdev->dev.of_node, *msi_dn;
+>>       struct property *pp;
+>>       const struct of_device_id *of_id;
+>>       const struct pcie_cfg_data *data;
+>> @@ -1244,6 +1273,29 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+>>       if (ret)
+>>               goto fail;
+>>
+>> +     msi_dn = of_parse_phandle(pcie->dn, "msi-parent", 0);
+>> +     /* Use the internal MSI if no msi-parent property */
+>> +     if (!msi_dn)
+>> +             msi_dn = pcie->dn;
+>> +
+>> +     if (IS_ENABLED(CONFIG_PCI_MSI) && pci_msi_enabled()
+>> +         && msi_dn == pcie->dn) {
+>> +             struct brcm_info info;
+>> +
+>> +             info.rev = pcie->rev;
+>> +             info.msi_target_addr = pcie->msi_target_addr;
+>> +             info.base = pcie->base;
+>> +
+>> +             ret = brcm_msi_probe(pdev, &info);
+>> +             if (ret)
+>> +                     dev_err(pcie->dev,
+>> +                             "probe of internal MSI failed: %d)", ret);
+>> +             else
+>> +                     pcie->msi_internal = true;
+>> +
+>> +             pcie->msi = info.msi;
+>> +     }
+>> +
+>>       list_splice_init(&pcie->resources, &bridge->windows);
+>>       bridge->dev.parent = &pdev->dev;
+>>       bridge->busnr = 0;
+>> diff --git a/drivers/pci/host/pci-brcmstb.h b/drivers/pci/host/pci-brcmstb.h
+>> index c3b148a..f969c2a 100644
+>> --- a/drivers/pci/host/pci-brcmstb.h
+>> +++ b/drivers/pci/host/pci-brcmstb.h
+>> @@ -27,6 +27,32 @@
+>>  extern struct of_pci_range *dma_ranges;
+>>  extern int num_dma_ranges;
+>>
+>> +struct brcm_msi;
+>> +struct brcm_info;
+>> +struct platform_device;
+>> +
+>> +#ifdef CONFIG_PCI_BRCMSTB_MSI
+>> +int brcm_msi_probe(struct platform_device *pdev, struct brcm_info *info);
+>> +void brcm_msi_set_regs(struct brcm_msi *chip);
+>> +void brcm_msi_remove(struct brcm_msi *chip);
+>> +#else
+>> +static inline int brcm_msi_probe(struct platform_device *pdev,
+>> +                              struct brcm_info *info)
+>> +{
+>> +     return -ENODEV;
+>> +}
+>> +
+>> +static inline void brcm_msi_set_regs(struct brcm_msi *chip) {}
+>> +static inline void brcm_msi_remove(struct brcm_msi *chip) {}
+>> +#endif /* CONFIG_PCI_BRCMSTB_MSI */
+>> +
+>> +struct brcm_info {PCIE_IPROC_MSI
+>> +     int rev;
+>> +     u64 msi_target_addr;
+>> +     void __iomem *base;
+>> +     struct brcm_msi *msi;
+>> +};
+>> +
+>>  #if defined(CONFIG_MIPS)PCIE_IPROC_MSI
+>>  /* Broadcom MIPs HW implicitly does the swapping if necessary */
+>>  #define bcm_readl(a)         __raw_readl(a)
+>> --
+>> 1.9.0.138.g2de3478
+>>

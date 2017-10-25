@@ -1,60 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2017 00:12:18 +0200 (CEST)
-Received: from 5pmail.ess.barracuda.com ([64.235.154.203]:50800 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2017 01:38:00 +0200 (CEST)
+Received: from 5pmail.ess.barracuda.com ([64.235.150.217]:54423 "EHLO
         5pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdJYWMJVMF2v convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Oct 2017 00:12:09 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 25 Oct 2017 22:11:55 +0000
-Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
- MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
- 14.03.0361.001; Wed, 25 Oct 2017 15:09:58 -0700
-From:   Paul Burton <Paul.Burton@mips.com>
-To:     Matt Redfearn <Matt.Redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Matt Redfearn <Matt.Redfearn@mips.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: RE: [PATCH] MIPS: Boston: Fix earlycon baud rate selection
-Thread-Topic: [PATCH] MIPS: Boston: Fix earlycon baud rate selection
-Thread-Index: AQHTR0vTHE5eQMDsMUudJGZXvzzTsaL1KtyA
-Date:   Wed, 25 Oct 2017 22:09:57 +0000
-Message-ID: <0F3A6103614E5547AAE5309112E22E9102C5C4FA@MIPSMAIL01.mipstec.com>
-References: <1508246879-20580-1-git-send-email-matt.redfearn@mips.com>
-In-Reply-To: <1508246879-20580-1-git-send-email-matt.redfearn@mips.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.20.1.18]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        by eddie.linux-mips.org with ESMTP id S23991550AbdJYXhxu7-6S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Oct 2017 01:37:53 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 25 Oct 2017 23:37:42 +0000
+Received: from pburton-laptop.mipstec.com (10.20.1.18) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Wed, 25 Oct 2017
+ 16:36:20 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@mips.com>
+Subject: [PATCH 1/8] irqchip: mips-gic: Inline gic_local_irq_domain_map()
+Date:   Wed, 25 Oct 2017 16:37:23 -0700
+Message-ID: <20171025233730.22225-2-paul.burton@mips.com>
+X-Mailer: git-send-email 2.14.3
+In-Reply-To: <20171025233730.22225-1-paul.burton@mips.com>
+References: <20171025233730.22225-1-paul.burton@mips.com>
 MIME-Version: 1.0
-X-BESS-ID: 1508969515-321457-32054-41395-1
+Content-Type: text/plain
+X-BESS-ID: 1508974659-637137-14015-1039025-10
 X-BESS-VER: 2017.12-r1710102214
 X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186293
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186295
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
-        Domain Matches Recipient Domain 
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
 X-BESS-BRTS-Status: 1
 Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60561
+X-archive-position: 60562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Paul.Burton@mips.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,59 +53,134 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Matt,
+The gic_local_irq_domain_map() function has only one callsite in
+gic_irq_domain_map(), and the split between the two functions makes it
+unclear that they duplicate calculations & checks.
 
-On Tuesday, October 17, 2017 at 6:28 AM Matt Redfearn wrote:
-> During set up of the early console, the earlycon driver will attempt to
-> configure a baud rate, if one is set in the earlycon structure.
-> Previously, of_setup_earlycon left this field as 0, ignoring any baud
-> rate selected by the DT. Commit 31cb9a8575ca ("earlycon: initialise baud
-> field of earlycon device structure") changed this behaviour such that
-> any selected baud rate is now set. The earlycon driver must deduce the
-> divisor from the configured uartclk, which of_setup_earlycon sets to
-> BASE_BAUD. MIPS generic kernels do not set BASE_BAUD (there is no
-> practical way to set this generically for all supported platforms), so
-> when the early console is configured an incorrect divisor is calculated
-> for the selected baud rate, and garbage is printed to the console during
-> boot.
-> 
-> Fix this by removing the configured baud rate from the device tree.
-> This causes the early console to inherit the baud rate settings from the
-> bootloader. By the time the real console is probed, the clock drivers
-> necessary to calculate the divisor are enabled and the kernel can
-> correctly configure the baud rate.
+Inline gic_local_irq_domain_map() into gic_irq_domain_map() in order to
+clean this up. Doing this makes the following small issues obvious, and
+the patch tidies them up:
 
-Sadly I think this breaks the proper console - my current understanding
-is that we end up with it set to 9600 baud due to the defaults in
-serial8250_console_setup(). So with your patch I see correct output from
-the early console, then nothing when the proper console registers until
-my userland starts a getty on ttyS0 which reconfigures it to 115200 baud.
+ - Both functions used GIC_HWIRQ_TO_LOCAL() to convert a hwirq number to
+   a local IRQ number. We now only do this once. Although the compiler
+   ought to have optimised this away before anyway, the change leaves us
+   with less duplicate code.
 
-Thanks,
-    Paul
+ - gic_local_irq_domain_map() had a check for invalid local interrupt
+   numbers (intr > GIC_LOCAL_INT_FDC). This condition can never occur
+   because any hwirq higher than those used for local interrupts is a
+   shared interrupt, which gic_irq_domain_map() already handles
+   separately. We therefore remove this check.
 
-> Fixes: 31cb9a8575ca ("earlycon: initialise baud field of earlycon device
-> structure")
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> 
-> ---
-> 
->  arch/mips/boot/dts/img/boston.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/boot/dts/img/boston.dts
-> b/arch/mips/boot/dts/img/boston.dts
-> index 53bfa29a7093..179691aae7d7 100644
-> --- a/arch/mips/boot/dts/img/boston.dts
-> +++ b/arch/mips/boot/dts/img/boston.dts
-> @@ -11,7 +11,7 @@
->  	compatible = "img,boston";
-> 
->  	chosen {
-> -		stdout-path = "uart0:115200";
-> +		stdout-path = "uart0";
->  	};
-> 
->  	aliases {
-> --
-> 2.7.4
+ - The decision of whether to map the interrupt to gic_cpu_pin or
+   timer_cpu_pin can be handled within the existing switch statement in
+   gic_irq_domain_map(), shortening the code a little.
+
+The change additionally prepares us nicely for the following patch of
+the series which would otherwise need to duplicate the check for whether
+a local interrupt should be percpu_devid or just percpu (ie. the switch
+statement from gic_irq_domain_map()) in gic_local_irq_domain_map().
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-mips@linux-mips.org
+---
+
+ drivers/irqchip/irq-mips-gic.c | 58 ++++++++++++++++--------------------------
+ 1 file changed, 22 insertions(+), 36 deletions(-)
+
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index c90976d7e53c..6fdcc1552fab 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -382,39 +382,6 @@ static void gic_irq_dispatch(struct irq_desc *desc)
+ 	gic_handle_shared_int(true);
+ }
+ 
+-static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
+-				    irq_hw_number_t hw)
+-{
+-	int intr = GIC_HWIRQ_TO_LOCAL(hw);
+-	int i;
+-	unsigned long flags;
+-	u32 val;
+-
+-	if (!gic_local_irq_is_routable(intr))
+-		return -EPERM;
+-
+-	if (intr > GIC_LOCAL_INT_FDC) {
+-		pr_err("Invalid local IRQ %d\n", intr);
+-		return -EINVAL;
+-	}
+-
+-	if (intr == GIC_LOCAL_INT_TIMER) {
+-		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
+-		val = GIC_MAP_PIN_MAP_TO_PIN | timer_cpu_pin;
+-	} else {
+-		val = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
+-	}
+-
+-	spin_lock_irqsave(&gic_lock, flags);
+-	for (i = 0; i < gic_vpes; i++) {
+-		write_gic_vl_other(mips_cm_vp_id(i));
+-		write_gic_vo_map(intr, val);
+-	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
+-
+-	return 0;
+-}
+-
+ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 				     irq_hw_number_t hw, unsigned int cpu)
+ {
+@@ -457,7 +424,10 @@ static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
+ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 			      irq_hw_number_t hwirq)
+ {
+-	int err;
++	unsigned long flags;
++	unsigned int intr;
++	int err, i;
++	u32 map;
+ 
+ 	if (hwirq >= GIC_SHARED_HWIRQ_BASE) {
+ 		/* verify that shared irqs don't conflict with an IPI irq */
+@@ -474,8 +444,14 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 		return gic_shared_irq_domain_map(d, virq, hwirq, 0);
+ 	}
+ 
+-	switch (GIC_HWIRQ_TO_LOCAL(hwirq)) {
++	intr = GIC_HWIRQ_TO_LOCAL(hwirq);
++	map = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
++
++	switch (intr) {
+ 	case GIC_LOCAL_INT_TIMER:
++		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
++		map = GIC_MAP_PIN_MAP_TO_PIN | timer_cpu_pin;
++		/* fall-through */
+ 	case GIC_LOCAL_INT_PERFCTR:
+ 	case GIC_LOCAL_INT_FDC:
+ 		/*
+@@ -504,7 +480,17 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 		break;
+ 	}
+ 
+-	return gic_local_irq_domain_map(d, virq, hwirq);
++	if (!gic_local_irq_is_routable(intr))
++		return -EPERM;
++
++	spin_lock_irqsave(&gic_lock, flags);
++	for (i = 0; i < gic_vpes; i++) {
++		write_gic_vl_other(mips_cm_vp_id(i));
++		write_gic_vo_map(intr, map);
++	}
++	spin_unlock_irqrestore(&gic_lock, flags);
++
++	return 0;
+ }
+ 
+ static int gic_irq_domain_alloc(struct irq_domain *d, unsigned int virq,
+-- 
+2.14.3

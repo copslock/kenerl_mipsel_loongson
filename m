@@ -1,80 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Oct 2017 23:11:30 +0200 (CEST)
-Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:51701
-        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdJYVLX0d0jc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Oct 2017 23:11:23 +0200
-Received: by mail-io0-x242.google.com with SMTP id b186so2496727iof.8;
-        Wed, 25 Oct 2017 14:11:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=numCSL22TqwfSeqEEoe2n3nPWgF5IYZzAFSZ77sJ25w=;
-        b=JqBi6je5w4tIyMw0spQq+sshPCipIWMfU6rKYJcpvPoiicrKAqKOBCbp4+c2JYi6HF
-         0w5FT18MtY2NkcrAzCFGxqRrPEdyV/40KNQ/i4C+ZXRVG4ddhPnk3NN7wwWRnp+z9M0k
-         aakDI+bV5NVsWSnm2RDxmKZag7Vg7aPfZxZ6FNj/ibRHW/vHqkkac14ktChLWT+YQd6r
-         zzCOSJZMUK2Kc6x0dqMqEd2FVdbrym1IzZqX0VsBRp/etm2w1oZg2gqa7H0DjGvWfDGn
-         db9etfpmEzZDPMKMH3lCITP/TBrqlhvkM/kMPChAvxMHLcIZ1cPrO1tOoDikSVRKNMDE
-         ruOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=numCSL22TqwfSeqEEoe2n3nPWgF5IYZzAFSZ77sJ25w=;
-        b=mBOw5I6Sx9fYPKboEPTI3mTjTFAjd+3E9TLqfCHKBvj21/EIdkzdpm+fW1jZLQZCMR
-         dr31U39T20Kq3tWRgQ5jWfOT0h5oKqommwRd3v4RMCqtUpoeJpjCATzqbUu/E6o5KWq/
-         82cBec766mHYxTcO1BzMkrscZx1YuvqFtzKUFVzcBvHQThrmVcfYEOyS4Y5StHSfmJws
-         5MhB8/xc+KuCD48hiwuT9SlRq3SjPXtScjK4zIPPzHAHFvB9Vdwf4B59jZBzlDmOQl2A
-         lk/txDLtqmOZ5q0d88K/GWPUyHcWw8o2TOitEQuj7B/b+2/DdawmzgJmquf+hVbNWWJt
-         foVA==
-X-Gm-Message-State: AMCzsaUG4YDt/tSf0nnZQbfzKBxUNF+Z5qgs2d0sHMQ5NoJqxMym1Pas
-        e7GCu8KgD+MaOqU6CA96sY42W2QpyapksNBki7A=
-X-Google-Smtp-Source: ABhQp+QSbT+Yja3XOruGB37aELxhGUfeOAA7PswLYA22ZLgOnm5TLFWLrqkIpafEQWnQe67Sw1Xew9cQg3kYA6MaBBQ=
-X-Received: by 10.107.140.9 with SMTP id o9mr28013949iod.93.1508965876917;
- Wed, 25 Oct 2017 14:11:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.47.156 with HTTP; Wed, 25 Oct 2017 14:11:16 -0700 (PDT)
-In-Reply-To: <20171025201619.GO21840@bhelgaas-glaptop.roam.corp.google.com>
-References: <1508868949-16652-1-git-send-email-jim2101024@gmail.com>
- <1508868949-16652-7-git-send-email-jim2101024@gmail.com> <5406ab92-c1da-f6fa-083d-82d1027130ea@gmail.com>
- <CANCKTBvAqu-godc03BiAt+9hxAoWABLVCtBzaA9ZWLJgXnQ3Fg@mail.gmail.com>
- <20171025172310.GN21840@bhelgaas-glaptop.roam.corp.google.com>
- <3c0219a5-6b4d-b7e4-c2a4-83eba18ae06a@broadcom.com> <20171025201619.GO21840@bhelgaas-glaptop.roam.corp.google.com>
-From:   Jim Quinlan <jim2101024@gmail.com>
-Date:   Wed, 25 Oct 2017 17:11:16 -0400
-Message-ID: <CANCKTBsdcFSAASaOcXA0h3eYfq-UnF0UciTXex=F86d6E7E6CQ@mail.gmail.com>
-Subject: Re: [PATCH 6/8] PCI: host: brcmstb: add MSI capability
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Scott Branden <scott.branden@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Will Deacon <will.deacon@arm.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2017 00:12:18 +0200 (CEST)
+Received: from 5pmail.ess.barracuda.com ([64.235.154.203]:50800 "EHLO
+        5pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990511AbdJYWMJVMF2v convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Oct 2017 00:12:09 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 25 Oct 2017 22:11:55 +0000
+Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
+ MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
+ 14.03.0361.001; Wed, 25 Oct 2017 15:09:58 -0700
+From:   Paul Burton <Paul.Burton@mips.com>
+To:     Matt Redfearn <Matt.Redfearn@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Matt Redfearn <Matt.Redfearn@mips.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-arm-kernel@lists.infradead.org, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Jon Mason <jonmason@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <jim2101024@gmail.com>
+        "Mark Rutland" <mark.rutland@arm.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: RE: [PATCH] MIPS: Boston: Fix earlycon baud rate selection
+Thread-Topic: [PATCH] MIPS: Boston: Fix earlycon baud rate selection
+Thread-Index: AQHTR0vTHE5eQMDsMUudJGZXvzzTsaL1KtyA
+Date:   Wed, 25 Oct 2017 22:09:57 +0000
+Message-ID: <0F3A6103614E5547AAE5309112E22E9102C5C4FA@MIPSMAIL01.mipstec.com>
+References: <1508246879-20580-1-git-send-email-matt.redfearn@mips.com>
+In-Reply-To: <1508246879-20580-1-git-send-email-matt.redfearn@mips.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.20.1.18]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-BESS-ID: 1508969515-321457-32054-41395-1
+X-BESS-VER: 2017.12-r1710102214
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186293
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
+        Domain Matches Recipient Domain 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60560
+X-archive-position: 60561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jim2101024@gmail.com
+X-original-sender: Paul.Burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,143 +67,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 25, 2017 at 4:16 PM, Bjorn Helgaas <helgaas@kernel.org> wrote:
-> On Wed, Oct 25, 2017 at 11:40:47AM -0700, Scott Branden wrote:
->> Hi Bjorn,
->>
->>
->> On 17-10-25 10:23 AM, Bjorn Helgaas wrote:
->> >[+cc Ray, Scott, Jon]
->> >
->> >On Wed, Oct 25, 2017 at 11:28:07AM -0400, Jim Quinlan wrote:
->> >>On Tue, Oct 24, 2017 at 2:57 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
->> >>>Hi Jim,
->> >>>
->> >>>On 10/24/2017 11:15 AM, Jim Quinlan wrote:
->> >>>>This commit adds MSI to the Broadcom STB PCIe host controller. It does
->> >>>>not add MSIX since that functionality is not in the HW.  The MSI
->> >>>>controller is physically located within the PCIe block, however, there
->> >>>>is no reason why the MSI controller could not be moved elsewhere in
->> >>>>the future.
->> >>>>
->> >>>>Since the internal Brcmstb MSI controller is intertwined with the PCIe
->> >>>>controller, it is not its own platform device but rather part of the
->> >>>>PCIe platform device.
->> >>>>
->> >>>>Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
->> >>>>---
->> >>>>  drivers/pci/host/Kconfig           |  12 ++
->> >>>>  drivers/pci/host/Makefile          |   1 +
->> >>>>  drivers/pci/host/pci-brcmstb-msi.c | 318 +++++++++++++++++++++++++++++++++++++
->> >>>>  drivers/pci/host/pci-brcmstb.c     |  72 +++++++--
->> >>>>  drivers/pci/host/pci-brcmstb.h     |  26 +++
->> >>>>  5 files changed, 419 insertions(+), 10 deletions(-)
->> >>>>  create mode 100644 drivers/pci/host/pci-brcmstb-msi.c
->> >>>>
->> >>>>diff --git a/drivers/pci/host/Kconfig b/drivers/pci/host/Kconfig
->> >>>>index b9b4f11..54aa5d2 100644
->> >>>>--- a/drivers/pci/host/Kconfig
->> >>>>+++ b/drivers/pci/host/Kconfig
->> >>>>@@ -228,4 +228,16 @@ config PCI_BRCMSTB
->> >>>>       default ARCH_BRCMSTB || BMIPS_GENERIC
->> >>>>       help
->> >>>>         Adds support for Broadcom Settop Box PCIe host controller.
->> >>>>+       To compile this driver as a module, choose m here.
->> >>>>+
->> >>>>+config PCI_BRCMSTB_MSI
->> >>>>+     bool "Broadcom Brcmstb PCIe MSI support"
->> >>>>+     depends on ARCH_BRCMSTB || BMIPS_GENERIC
->> >>>This could probably be depends on PCI_BRCMSTB, which would imply these
->> >>>two conditions. PCI_BRCMSTB_MSI on its own is probably not very useful
->> >>>without the parent RC driver.
->> >>>
->> >>>>+     depends on OF
->> >>>>+     depends on PCI_MSI
->> >>>>+     default PCI_BRCMSTB
->> >>>>+     help
->> >>>>+       Say Y here if you want to enable MSI support for Broadcom's iProc
->> >>>>+       PCIe controller
->> >>>>+
->> >>>>  endmenu
->> >>>>diff --git a/drivers/pci/host/Makefile b/drivers/pci/host/Makefile
->> >>>>index c283321..1026d6f 100644
->> >>>>--- a/drivers/pci/host/Makefile
->> >>>>+++ b/drivers/pci/host/Makefile
->> >>>>@@ -23,6 +23,7 @@ obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
->> >>>>  obj-$(CONFIG_VMD) += vmd.o
->> >>>>  obj-$(CONFIG_PCI_BRCMSTB) += brcmstb-pci.o
->> >>>>  brcmstb-pci-objs := pci-brcmstb.o pci-brcmstb-dma.o
->> >>>>+obj-$(CONFIG_PCI_BRCMSTB_MSI) += pci-brcmstb-msi.o
->> >>>Should we combine this file with the brcmstb-pci.o? There is probably no
->> >>>functional difference, except that pci-brcmstb-msi.ko needs to be loaded
->> >>>first, right?
->> >>>--
->> >>>Florian
->> >>If you look at the pci/host/Kconfig you will see that other drivers
->> >>also have a separate MSI config (eg iproc, altera, xgene) so there is
->> >>precedent.  The reason that pci-brcmstb-msi.c is its own file is
->> >>because it depends on an irq function that is not exported.  That is
->> >>why CONFIG_PCI_BRCMSTB_MSI is bool, and CONFIG_PCI_BRCMSTB is
->> >>tristate.  -- Jim
->> >There is precedent, but that doesn't mean I like it :)
->> >I would strongly prefer one file per driver when possible.
->> >
->> >Take iproc for example.  iproc-msi.c is enabled by a Kconfig bool.  It
->> >contains a bunch of code with the only external entry points being
->> >iproc_msi_init() and iproc_msi_exit().  These are only called via
->> >iproc_pcie_bcma_probe() or iproc_pcie_pltfm_probe(), both of which are
->> >tristate.  So iproc-msi.c is only compiled if CONFIG_IPROC_BCMA or
->> >CONFIG_IPROC_PLATFORM are enabled, but all that text is loaded even if
->> >neither module is loaded, which seems suboptimal.
->> >
->> >I don't care if you have several config options to enable the BCMA
->> >probe and the platform probe (although these could probably be
->> >replaced in the code by a simple "#ifdef CONFIG_BCMA" and "#ifdef
->> >CONFIG_OF"), and making CONFIG_PCIE_IPROC tristate so it can be a
->> >module makes sense.  But I think it would be better to put all the
->> >code in one file instead of five, and probably remove
->> >CONFIG_PCIE_IPROC_MSI.  Maybe this requires exporting some IRQ
->> >function that currently isn't exported.  But that seems like a simpler
->> >solution than what we currently have.
->> Placing pcie-iproc-bcma.c in its own file is useful in being able to
->> read the code that is actually used.  BCMA is really unnecessary if
->> a few platforms stopped using BCMA and declared everything via
->> devicetree or ACPI.  Same with pcie-iproc-platform.c.  Both keep the
->> mess out of pcie-iproc.c.
->
-> Maybe.  Both pcie-iproc-bcma.c and pcie-iproc-platform.c are small
-> (280 lines combined) relative to pcie-iproc.c + pcie-iproc-msi.c (2150
-> lines combined), and keeping them separate requires pcie-iproc.h,
-> which could otherwise be folded into pcie-iproc.c.  So I'm still a
-> little skeptical.  You think of combining them as a mess, but I think
-> of it as a big convenience because I could see all the iproc-related
-> code in one place :)
->
->> It looks like pcie-iproc-msi.c followed existing pci drivers in
->> place.  So if msi was cleaned up through the entire pci drivers then
->> yes it would make sense to remove CONFIG_PCIE_IPROC_MSI and combine
->> code in pcie-iproc.c.  But I think leaving the bcma and platform
->> code in their own files makes it easier for us to work with the code
->> rather than placing unused code in ifdefs in the same file.
->
-> But I do object *more* to putting MSI in a separate file, especially
-> given the fact that all PCIe devices that generate interrupts must
-> support MSI.  So any reasonable PCIe root complex must also support
-> MSI, and I don't really see the benefit of configuring and building it
-> separately.
->
-> Anyway, iproc is already in the tree, and we *could* maybe change
-> something eventually.
->
-> The question we need to decide now is about how brcmstb should be
-> structured.  Somebody mentioned an IRQ function that would have to be
-> exported for the brcmstb main driver & MSI pieces to be combined.  I
-> don't know what specifically that is, but I thought maybe iproc had
-> the same issue.
-I was one the one who said an export was needed but I just recompiled
-the MSI code as a module and had no problem.  I was probably using an
-older tree when I concluded this.  So I'm fine with combining the MSI
-code in the same file as the driver.
+Hi Matt,
 
->
-> Bjorn
+On Tuesday, October 17, 2017 at 6:28 AM Matt Redfearn wrote:
+> During set up of the early console, the earlycon driver will attempt to
+> configure a baud rate, if one is set in the earlycon structure.
+> Previously, of_setup_earlycon left this field as 0, ignoring any baud
+> rate selected by the DT. Commit 31cb9a8575ca ("earlycon: initialise baud
+> field of earlycon device structure") changed this behaviour such that
+> any selected baud rate is now set. The earlycon driver must deduce the
+> divisor from the configured uartclk, which of_setup_earlycon sets to
+> BASE_BAUD. MIPS generic kernels do not set BASE_BAUD (there is no
+> practical way to set this generically for all supported platforms), so
+> when the early console is configured an incorrect divisor is calculated
+> for the selected baud rate, and garbage is printed to the console during
+> boot.
+> 
+> Fix this by removing the configured baud rate from the device tree.
+> This causes the early console to inherit the baud rate settings from the
+> bootloader. By the time the real console is probed, the clock drivers
+> necessary to calculate the divisor are enabled and the kernel can
+> correctly configure the baud rate.
+
+Sadly I think this breaks the proper console - my current understanding
+is that we end up with it set to 9600 baud due to the defaults in
+serial8250_console_setup(). So with your patch I see correct output from
+the early console, then nothing when the proper console registers until
+my userland starts a getty on ttyS0 which reconfigures it to 115200 baud.
+
+Thanks,
+    Paul
+
+> Fixes: 31cb9a8575ca ("earlycon: initialise baud field of earlycon device
+> structure")
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+> 
+> ---
+> 
+>  arch/mips/boot/dts/img/boston.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/boot/dts/img/boston.dts
+> b/arch/mips/boot/dts/img/boston.dts
+> index 53bfa29a7093..179691aae7d7 100644
+> --- a/arch/mips/boot/dts/img/boston.dts
+> +++ b/arch/mips/boot/dts/img/boston.dts
+> @@ -11,7 +11,7 @@
+>  	compatible = "img,boston";
+> 
+>  	chosen {
+> -		stdout-path = "uart0:115200";
+> +		stdout-path = "uart0";
+>  	};
+> 
+>  	aliases {
+> --
+> 2.7.4

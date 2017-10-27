@@ -1,58 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2017 14:09:07 +0200 (CEST)
-Received: from 5pmail.ess.barracuda.com ([64.235.154.202]:43427 "EHLO
-        5pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990505AbdJZMI7NJVLd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Oct 2017 14:08:59 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 26 Oct 2017 12:08:44 +0000
-Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 26 Oct
- 2017 05:07:11 -0700
-Subject: Re: [PATCH] MIPS: Boston: Fix earlycon baud rate selection
-To:     Paul Burton <Paul.Burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Oct 2017 05:09:10 +0200 (CEST)
+Received: from mail-oi0-f68.google.com ([209.85.218.68]:46278 "EHLO
+        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbdJ0DJD34F2z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Oct 2017 05:09:03 +0200
+Received: by mail-oi0-f68.google.com with SMTP id n82so8961574oig.3
+        for <linux-mips@linux-mips.org>; Thu, 26 Oct 2017 20:09:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=p3hIVaSweXT5CJ9M4KpP734TrxkvltudFbFeXwwAzhM=;
+        b=JZRaaifH2bQmPZQFmBXMIL2/8iAdwOm9FDstEDr3Hdxd2ezeOy8OG5L6aIXyz83vHk
+         EXx0IErihWeUx3Opm7sUKzANmyuHdQBhGGSuzHvg34vbzw2NY5inUCkwg6hVnI8AVKDc
+         +Zq4JDuxVCAUIerwiv/UoZdK3XA1bz/Vfuj6y1neKSMq/oZe9lctRWbfQu2//W70Q+ge
+         KX1DHIGItkhpeUGZ5CnguwzvoGmZWBmMTf9y6dBB879HtpDYehD4uZ8ewa9PpPhQ7hXv
+         aCGNKoFUq5E8vmG2Jr3EGCnHroD+fdWMk/b+SUJ/66yTQpvNA4snYibifbVunVMR1FqO
+         +IoA==
+X-Gm-Message-State: AMCzsaXSVimiaZXzpuaRPQWNiV38DKaqyRZF/ZKBVlOmt4RlBwweEHJM
+        zRdVhhSZK2owYvvlrHI3Ug==
+X-Google-Smtp-Source: ABhQp+SokWYahqtsl9VS6O1j+p2SdxlSUx0e1EKDJtrylLISf1tPmXcxcIz9R+2bKlO4R6+jUtpziQ==
+X-Received: by 10.202.239.135 with SMTP id n129mr3432881oih.381.1509073737299;
+        Thu, 26 Oct 2017 20:08:57 -0700 (PDT)
+Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
+        by smtp.gmail.com with ESMTPSA id r129sm2976140oig.14.2017.10.26.20.08.56
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 26 Oct 2017 20:08:56 -0700 (PDT)
+Date:   Thu, 26 Oct 2017 22:08:56 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+Cc:     linux-mips@linux-mips.org, Miodrag Dinic <miodrag.dinic@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Douglas Leung <douglas.leung@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <james.hogan@mips.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        linux-kernel@vger.kernel.org, Marc Zyngier <marc.zyngier@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <1508246879-20580-1-git-send-email-matt.redfearn@mips.com>
- <0F3A6103614E5547AAE5309112E22E9102C5C4FA@MIPSMAIL01.mipstec.com>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <6247cb1a-f32b-cdd1-0f8d-de619a7b3cb8@mips.com>
-Date:   Thu, 26 Oct 2017 13:07:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v5 1/5] Documentation: Add device tree binding for
+ Goldfish PIC driver
+Message-ID: <20171027030856.a2mahvhipy5vly26@rob-hp-laptop>
+References: <1508510055-6167-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1508510055-6167-2-git-send-email-aleksandar.markovic@rt-rk.com>
 MIME-Version: 1.0
-In-Reply-To: <0F3A6103614E5547AAE5309112E22E9102C5C4FA@MIPSMAIL01.mipstec.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1509019710-452060-20893-214222-15
-X-BESS-VER: 2017.12.1-r1709122024
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186309
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
-        Domain Matches Recipient Domain 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1508510055-6167-2-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60572
+X-archive-position: 60573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,71 +75,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+On Fri, Oct 20, 2017 at 04:33:34PM +0200, Aleksandar Markovic wrote:
+> From: Miodrag Dinic <miodrag.dinic@mips.com>
+> 
+> Add documentation for DT binding of Goldfish PIC driver. The compatible
+> string used by OS for binding the driver is "google,goldfish-pic".
+> 
+> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
+> Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+> ---
+>  .../interrupt-controller/google,goldfish-pic.txt   | 30 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  5 ++++
+>  2 files changed, 35 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt b/Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+> new file mode 100644
+> index 0000000..295bf97
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+> @@ -0,0 +1,30 @@
+> +Android Goldfish PIC
+> +
+> +Android Goldfish programmable interrupt device used by Android
+> +emulator.
+> +
+> +Required properties:
+> +
+> +- compatible : should contain "google,goldfish-pic"
+> +- reg        : <registers mapping>
+> +- interrupts : <interrupt mapping>
+> +
+> +Example for mips when used in cascade mode:
+> +
+> +        cpuintc {
+> +                #interrupt-cells = <0x1>;
+> +                #address-cells = <0>;
+> +                interrupt-controller;
+> +                compatible = "mti,cpu-interrupt-controller";
+> +        };
+> +
+> +        goldfish_pic@1f000000 {
 
+interrupt-controller@...
 
-On 25/10/17 23:09, Paul Burton wrote:
-> Hi Matt,
->
-> On Tuesday, October 17, 2017 at 6:28 AM Matt Redfearn wrote:
->> During set up of the early console, the earlycon driver will attempt to
->> configure a baud rate, if one is set in the earlycon structure.
->> Previously, of_setup_earlycon left this field as 0, ignoring any baud
->> rate selected by the DT. Commit 31cb9a8575ca ("earlycon: initialise baud
->> field of earlycon device structure") changed this behaviour such that
->> any selected baud rate is now set. The earlycon driver must deduce the
->> divisor from the configured uartclk, which of_setup_earlycon sets to
->> BASE_BAUD. MIPS generic kernels do not set BASE_BAUD (there is no
->> practical way to set this generically for all supported platforms), so
->> when the early console is configured an incorrect divisor is calculated
->> for the selected baud rate, and garbage is printed to the console during
->> boot.
->>
->> Fix this by removing the configured baud rate from the device tree.
->> This causes the early console to inherit the baud rate settings from the
->> bootloader. By the time the real console is probed, the clock drivers
->> necessary to calculate the divisor are enabled and the kernel can
->> correctly configure the baud rate.
-> Sadly I think this breaks the proper console - my current understanding
-> is that we end up with it set to 9600 baud due to the defaults in
-> serial8250_console_setup(). So with your patch I see correct output from
-> the early console, then nothing when the proper console registers until
-> my userland starts a getty on ttyS0 which reconfigures it to 115200 baud.
+With that,
 
-As long as you specify "console=ttyS0,115200" on the command line, then 
-the correct baud rate gets applied. I know that's not ideal...
+Acked-by: Rob Herring <robh@kernel.org>
 
-(CC'ing Eugene & Greg KH for other ideas to fix this)
-
-Thanks,
-Matt
-
->
-> Thanks,
->      Paul
->
->> Fixes: 31cb9a8575ca ("earlycon: initialise baud field of earlycon device
->> structure")
->> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->>
->> ---
->>
->>   arch/mips/boot/dts/img/boston.dts | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/mips/boot/dts/img/boston.dts
->> b/arch/mips/boot/dts/img/boston.dts
->> index 53bfa29a7093..179691aae7d7 100644
->> --- a/arch/mips/boot/dts/img/boston.dts
->> +++ b/arch/mips/boot/dts/img/boston.dts
->> @@ -11,7 +11,7 @@
->>   	compatible = "img,boston";
->>
->>   	chosen {
->> -		stdout-path = "uart0:115200";
->> +		stdout-path = "uart0";
->>   	};
->>
->>   	aliases {
->> --
->> 2.7.4
+> +                compatible = "google,goldfish-pic";
+> +                reg = <0x1f000000 0x0 0x1000>;
+> +
+> +                interrupt-controller;
+> +                #interrupt-cells = <0x1>;
+> +
+> +                interrupt-parent = <&cpuintc>;
+> +                interrupts = <0x2>;
+> +        };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4a3de82..4d5108f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -872,6 +872,11 @@ S:	Supported
+>  F:	drivers/android/
+>  F:	drivers/staging/android/
+>  
+> +ANDROID GOLDFISH PIC DRIVER
+> +M:	Miodrag Dinic <miodrag.dinic@mips.com>
+> +S:	Supported
+> +F:	Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+> +
+>  ANDROID GOLDFISH RTC DRIVER
+>  M:	Miodrag Dinic <miodrag.dinic@mips.com>
+>  S:	Supported
+> -- 
+> 2.7.4
+> 

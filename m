@@ -1,67 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Oct 2017 16:37:35 +0200 (CEST)
-Received: from mail-oi0-f65.google.com ([209.85.218.65]:50324 "EHLO
-        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991526AbdJ0OhZlEcuX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Oct 2017 16:37:25 +0200
-Received: by mail-oi0-f65.google.com with SMTP id q4so11185401oic.7;
-        Fri, 27 Oct 2017 07:37:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Oct 2017 16:27:52 +0100 (CET)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:52411
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992036AbdJ2P1qKY6e7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Oct 2017 16:27:46 +0100
+Received: by mail-wm0-x242.google.com with SMTP id t139so11739732wmt.1;
+        Sun, 29 Oct 2017 08:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vEZcvr4wDLQxs9dh7xn4+/KXvTaHtZOMr9eJ1pGTwGI=;
+        b=byUks6Cmc1UQpeCBM4PG8mSfxe9zzksSc20uxqowdPYZaSZ0o+MFqlCakn5sSclQ0O
+         FjXGk4bUzRjulhNoCVOmezQ/AnB/e7C3RjTGZeoIz6cBrVqXS8VK4QQaYR7xMVqZsbzm
+         SCPX5gk+/MUH4Licrt/nQ+h4hDvZ6uY05XtKUmVXwTYqXNyylA5WSkDEVMTupylBEW/Y
+         9pnWFNeRIq/mg+FLYRQM9NZ0HLcZh1DzaimudCg+DOyCxKyxEVaYBR5yC/EAsktwwXzK
+         MtVqx/I9wmtPqQm9MKWTWzZM5O3AN+HOi6tfvkZYi2MAJFZS1yNR3EK1UGvblFmCjuh7
+         lr5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=U7szZWYn33z91Fftqim2DxW67wcl2kiXHaVZmr/ZY0A=;
-        b=p4+2x756JLcO5CDZPCWjdNS7PklJO8tpKMDlJ10eWsLhO5yYKqZy6YOqjrN+JJeSOy
-         txdgIglPTzR5+w5WJU2mGHoIoiskeEuaE+nOeQwpZ82GKB1W8E9Dqg+wM5ff/EjHSpUc
-         jaD4guDS3WhofXLHbNSE/4fR0x06suf2s4jFGgY5V+kNmlXdKW8e7Q76I6s+Iu66NBR2
-         +a2YueRToIXq89cyyM9x3P94OnmXn9fzMOeXs3uL28uJZ4Xubkyxba6DQ00AQIMM0gJV
-         Qkw8vpaP8UcRnVxg6vOLCGFToo8cpGyMH+COV5/s7dpg1vB9n7ayZaAAm82RE/8ECfSF
-         Mb9g==
-X-Gm-Message-State: AMCzsaWZOcz5I1Azd3dPB70Id21S29UExm8jBz0xb5QZXfBxJHtVJ/1C
-        2FnDSmATPVz+hIwI4ZhP4g==
-X-Google-Smtp-Source: ABhQp+QGyt/7qXBS3/BCzET2JnDwBE7DJ9Y7xRDcPB0hBkN9WZBVD6e7sRNQfWrGcXXl8HpTIkDcIQ==
-X-Received: by 10.202.49.129 with SMTP id x123mr365200oix.14.1509115039480;
-        Fri, 27 Oct 2017 07:37:19 -0700 (PDT)
-Received: from localhost (mobile-166-176-121-60.mycingular.net. [166.176.121.60])
-        by smtp.gmail.com with ESMTPSA id l32sm3976233otb.17.2017.10.27.07.37.18
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 27 Oct 2017 07:37:18 -0700 (PDT)
-Date:   Fri, 27 Oct 2017 09:37:18 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Jim Quinlan <jim2101024@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vEZcvr4wDLQxs9dh7xn4+/KXvTaHtZOMr9eJ1pGTwGI=;
+        b=Dj+YWhWOY0hNuRwETMdklvg6BY80+hsVNbCTXOXrkCMPXZFl8SU/Ts21tbR5Ta9rbp
+         Vo+2SSVEQAlPS1XllkuuYb59zYIHU9llO3iA/joZi6jrLW1SF0ocHDmLl7Fe8o8lL99T
+         b1IY+T8Nz3H1CTOpfZC3CEsemw5WLuPkZ3Kk1xF7W4DKZdMITUZcb1Yw2zv5+cjlB2ik
+         mZWlkGCcHW0nqXcNyfVpch0A14Xz0hC4CoV0WDQU8Noikw/Bim5M6rK3WSpWR/p3LpBc
+         rMhrRbdmQvGDD7yaYNVMvAxe51KbqqIBhWw9wX9Za0yKDs6Mw8RElAawpvXUvxeH1/WY
+         KDdw==
+X-Gm-Message-State: AMCzsaWya4YO1n8Uw4FcXAVbMCtAa1xcmIuilDxqHZcYYu89+Nc4usOj
+        S3I6FVcJjXgopOeG39wX6X6ASA==
+X-Google-Smtp-Source: ABhQp+Twsaxfi6KB2K728Dw15txufZiZzDVHeN8QC9E9fB+lX7I7Ftw38UA7wJiB4M5W7LxexPFnfA==
+X-Received: by 10.28.197.65 with SMTP id v62mr1504108wmf.9.1509290860597;
+        Sun, 29 Oct 2017 08:27:40 -0700 (PDT)
+Received: from localhost.localdomain ([2001:470:9e39::48e])
+        by smtp.gmail.com with ESMTPSA id m26sm12498532wrb.81.2017.10.29.08.27.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 29 Oct 2017 08:27:40 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        linux-pci@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 2/8] PCI: host: brcmstb: add DT docs for Brcmstb PCIe
- device
-Message-ID: <20171027130538.lb2hs4umew4cgovv@rob-hp-laptop>
-References: <1508868949-16652-1-git-send-email-jim2101024@gmail.com>
- <1508868949-16652-3-git-send-email-jim2101024@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1508868949-16652-3-git-send-email-jim2101024@gmail.com>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <robherring2@gmail.com>
+        Nicolas Schichan <nschichan@freebox.fr>
+Subject: [PATCH 0/3] MIPS: AR7: assorted fixes
+Date:   Sun, 29 Oct 2017 16:27:18 +0100
+Message-Id: <20171029152721.6770-1-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.13.2
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60575
+X-archive-position: 60576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,95 +66,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 24, 2017 at 02:15:43PM -0400, Jim Quinlan wrote:
-> The DT bindings description of the Brcmstb PCIe device is described.  This
-> node can be used by almost all Broadcom settop box chips, using
-> ARM, ARM64, or MIPS CPU architectures.
+This patchset fixes a few issues found in AR7 that accumulated in the
+past few years. One was fixed for ages in OpenWrt/LEDE and never made
+it upstream, the others weren't noticed until now.
 
-"dt-bindings: pci: ..." for the subject please.
+Jonas Gorski (2):
+  MIPS: AR7: defer registration of GPIO
+  MIPS: AR7: ensure the port type's FCR value is used
 
-> 
-> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
-> ---
->  .../devicetree/bindings/pci/brcmstb-pci.txt        | 63 ++++++++++++++++++++++
->  1 file changed, 63 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/pci/brcmstb-pci.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/pci/brcmstb-pci.txt b/Documentation/devicetree/bindings/pci/brcmstb-pci.txt
-> new file mode 100644
-> index 0000000..49f9852
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pci/brcmstb-pci.txt
-> @@ -0,0 +1,63 @@
-> +Brcmstb PCIe Host Controller Device Tree Bindings
-> +
-> +Required Properties:
-> +- compatible
-> +  "brcm,bcm7425-pcie" -- for 7425 family MIPS-based SOCs.
-> +  "brcm,bcm7435-pcie" -- for 7435 family MIPS-based SOCs.
-> +  "brcm,bcm7445-pcie" -- for 7445 and later ARM based SOCs (not including
-> +      the 7278).
-> +  "brcm,bcm7278-pcie"  -- for 7278 family ARM-based SOCs.
-> +
-> +- reg -- the register start address and length for the PCIe reg block.
-> +- interrupts -- two interrupts are specified; the first interrupt is for
-> +     the PCI host controller and the second is for MSI if the built-in
-> +     MSI controller is to be used.
-> +- interrupt-names -- names of the interrupts (above): "pcie" and "msi".
-> +- #address-cells -- set to <3>.
-> +- #size-cells -- set to <2>.
-> +- #interrupt-cells: set to <1>.
-> +- interrupt-map-mask and interrupt-map, standard PCI properties to define the
-> +     mapping of the PCIe interface to interrupt numbers.
-> +- ranges: ranges for the PCI memory and I/O regions.
-> +- linux,pci-domain -- should be unique per host controller.
-> +
-> +Optional Properties:
-> +- clocks -- phandle of pcie clock.
-> +- clock-names -- set to "sw_pcie" if clocks is used.
-> +- dma-ranges -- Specifies the inbound memory mapping regions when
-> +     an "identity map" is not possible.
-> +- msi-controller -- this property is typically specified to have the
-> +     PCIe controller use its internal MSI controller.
-> +- msi-parent -- set to use an external MSI interrupt controller.
-> +- brcm,ssc -- (boolean) indicates usage of spread-spectrum clocking.
+Oswald Buddenhagen (1):
+  MIPS: AR7: ensure that serial ports are properly set up
 
-Use the same one already defined for Broadcom SATA phy.
+ arch/mips/ar7/platform.c | 5 +++++
+ arch/mips/ar7/prom.c     | 2 --
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-> +- max-link-speed --  (integer) indicates desired generation of link:
-> +     1 => 2.5 Gbps (gen1), 2 => 5.0 Gbps (gen2), 3 => 8.0 Gbps (gen3).
-> +- xyz-supply -- set to a voltage regulator phandle  that the root
-> +     complex should turn off/on/on on suspend/resume/boot.  Any property
-> +     matching '-supply' will be added to an internal list of phandles.
-
-Still not really liking this...
-
-> +
-> +
-> +Example Node:
-> +
-> +pcie0: pcie@f0460000 {
-> +		reg = <0x0 0xf0460000 0x0 0x9310>;
-> +		interrupts = <0x0 0x0 0x4>;
-> +		compatible = "brcm,pci-plat-dev";
-> +		#address-cells = <3>;
-> +		#size-cells = <2>;
-> +		ranges = <0x02000000 0x00000000 0x00000000 0x00000000 0xc0000000 0x00000000 0x08000000
-> +			  0x02000000 0x00000000 0x08000000 0x00000000 0xc8000000 0x00000000 0x08000000>;
-> +		#interrupt-cells = <1>;
-> +		interrupt-map-mask = <0 0 0 7>;
-> +		interrupt-map = <0 0 0 1 &intc 0 47 3
-> +				 0 0 0 2 &intc 0 48 3
-> +				 0 0 0 3 &intc 0 49 3
-> +				 0 0 0 4 &intc 0 50 3>;
-> +		clocks = <&sw_pcie0>;
-> +		clock-names = "sw_pcie";
-> +		msi-parent = <&pcie0>;  /* use PCIe's internal MSI controller */
-> +		msi-controller;         /* use PCIe's internal MSI controller */
-> +		brcm,ssc;
-> +		max-link-speed = <1>;
-> +		linux,pci-domain = <0>;
-> +	};
-> -- 
-> 1.9.0.138.g2de3478
-> 
+-- 
+2.13.2

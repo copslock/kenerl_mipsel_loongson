@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Oct 2017 09:00:32 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:53346 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990391AbdJ3IAVMdMyL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Oct 2017 09:00:21 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B969780D;
-        Mon, 30 Oct 2017 01:00:13 -0700 (PDT)
-Received: from zomby-woof (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B3DC3F3E1;
-        Mon, 30 Oct 2017 01:00:12 -0700 (PDT)
-From:   Marc Zyngier <marc.zyngier@arm.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Jason Cooper <jason@lakedaemon.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/8] irqchip: mips-gic: Use irq_cpu_online to (un)mask all-VP(E) IRQs
-In-Reply-To: <20171025233730.22225-3-paul.burton@mips.com> (Paul Burton's
-        message of "Wed, 25 Oct 2017 16:37:24 -0700")
-Organization: ARM Ltd
-References: <20171025233730.22225-1-paul.burton@mips.com>
-        <20171025233730.22225-3-paul.burton@mips.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1 (gnu/linux)
-Date:   Mon, 30 Oct 2017 08:00:08 +0000
-Message-ID: <86mv495alz.fsf@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <marc.zyngier@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Oct 2017 12:58:07 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:50877 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990485AbdJ3L6ADmSFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Oct 2017 12:58:00 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 245D41A21BF;
+        Mon, 30 Oct 2017 12:57:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id B58AE1A1FB3;
+        Mon, 30 Oct 2017 12:57:53 +0100 (CET)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <james.hogan@mips.com>,
+        linux-kernel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v6 0/5] MIPS: Add virtual Ranchu board as a generic-based board
+Date:   Mon, 30 Oct 2017 12:56:31 +0100
+Message-Id: <1509364642-21771-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60584
+X-archive-position: 60585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,91 +53,142 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 25 2017 at  5:37:24 pm BST, Paul Burton <paul.burton@mips.com> wrote:
-> The gic_all_vpes_local_irq_controller chip currently attempts to operate
-> on all CPUs/VPs in the system when masking or unmasking an interrupt.
-> This has a few drawbacks:
->
->  - In multi-cluster systems we may not always have access to all CPUs in
->    the system. When all CPUs in a cluster are powered down that
->    cluster's GIC may also power down, in which case we cannot configure
->    its state.
->
->  - Relatedly, if we power down a cluster after having configured
->    interrupts for CPUs within it then the cluster's GIC may lose state &
->    we need to reconfigure it. The current approach doesn't take this
->    into account.
->
->  - It's wasteful if we run Linux on fewer VPs than are present in the
->    system. For example if we run a uniprocessor kernel on CPU0 of a
->    system with 16 CPUs then there's no point in us configuring CPUs
->    1-15.
->
->  - The implementation is also lacking in that it expects the range
->    0..gic_vpes-1 to represent valid Linux CPU numbers which may not
->    always be the case - for example if we run on a system with more VPs
->    than the kernel is configured to support.
->
-> Fix all of these issues by only configuring the affected interrupts for
-> CPUs which are online at the time, and recording the configuration in a
-> new struct gic_all_vpes_chip_data for later use by CPUs being brought
-> online. We register a CPU hotplug state (reusing
-> CPUHP_AP_IRQ_GIC_STARTING which the ARM GIC driver uses, and which seems
-> suitably generic for reuse with the MIPS GIC) and execute
-> irq_cpu_online() in order to configure the interrupts on the newly
-> onlined CPU.
->
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Cc: Jason Cooper <jason@lakedaemon.net>
-> Cc: Marc Zyngier <marc.zyngier@arm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: linux-mips@linux-mips.org
-> ---
->
->  drivers/irqchip/irq-mips-gic.c | 72 ++++++++++++++++++++++++++++++++----------
->  1 file changed, 56 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index 6fdcc1552fab..dd9da773db90 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-[...]
+v5->v6:
 
-> @@ -622,6 +653,13 @@ static const struct irq_domain_ops gic_ipi_domain_ops = {
->  	.match = gic_ipi_domain_match,
->  };
->  
-> +static int gic_cpu_startup(unsigned int cpu)
-> +{
-> +	/* Invoke irq_cpu_online callbacks to enable desired interrupts */
-> +	irq_cpu_online();
-> +
-> +	return 0;
-> +}
->  
->  static int __init gic_of_init(struct device_node *node,
->  			      struct device_node *parent)
-> @@ -768,6 +806,8 @@ static int __init gic_of_init(struct device_node *node,
->  		}
->  	}
->  
-> -	return 0;
-> +	return cpuhp_setup_state(CPUHP_AP_IRQ_GIC_STARTING,
-> +				 "irqchip/mips/gic:starting",
-> +				 gic_cpu_startup, NULL);
+    - revised cascading handling code in Goldfish PIC implementation
+    - used more generic node name in Goldfish PIC documentation file
+    - used more generic node name in Goldfish FB documentation file
+    - corrected several minor items in both documentation files
+    - revisited copyright messages in two source files
+    - rebased to the latest code
 
-I'm wondering about this. CPUHP_AP_IRQ_GIC_STARTING is a symbol that is
-used on ARM platforms. You're very welcome to use it (as long as nobody
-builds a system with both an ARM GIC and a MIPS GIC...), but I'm a bit
-worried that we could end-up breaking things if one of us decides to
-reorder it in enum cpuhp_state.
+v4->v5:
 
-The safest option would be for you to add your own state value, which
-would allow the two architecture to evolve independently.
+    - removed RTC clock-related patches since they are already applied
+    - removed 8042-related patch since this issue is expected to be
+      resolved on the whole platform level
+    - redesigned Goldfish PIC driver
+    - updated email adresses in commit messages and MAINTAINERS file
+      to contain "@mips.com" instead of "@imgtec.com"
+    - used "MIPS" instead of "Mips" in commit messages
+    - rebased to the latest code
 
-Thoughts?
+v3->v4:
 
-	M.
+    - corrected RTC clock patch so that it does not cause build
+      errors for some targets, and limited compile support to MIPS
+      architecture, since it is the only case where this driver is
+      used
+    - changed titles of patches 2 and 4 to make them consistent
+      with commit messages of corresponding directories
+    - applied "checkpatch --strict" to the whole series and
+      corrected several instances of reported warnings
+    - rebased to the latest code
+
+v2->v3:
+
+    - fixed configuration dependency for VIRTIO_NET and
+        RTC_DRV_GOLDFISH
+    - fixed frequency calculation in ranchu_measure_hpt_freq()
+    - use DT info instead of hard-coding RTC base in
+        ranchu_measure_hpt_freq()
+    - Goldfish PIC reworked to follow legacy irq domain paradigm
+    - Goldfish RTC reimplemented to support alarm functionality
+    - added COMPILE_TEST to Goldfish PIC & RTC to extend compile
+        test coverage
+    - corrected location of documentation for Goldfish FB
+    - added a patch on unselecting ARCH_MIGHT_HAVE_PC_SERIO
+    - removed two patches on i8042 as not needed in new organization
+    - removed the patch on separate MIPS Android config as not needed
+    - rebased to the latest code
+
+v1->v2:
+
+    - patch on RTC driver cleaned up
+    - added drivers for virtio console and net to the Ranchu board
+    - minor improvements in commit messages
+    - updated recipient lists using get_maintainer.pl
+    - rebased to the latest code
+
+This series adds MIPS Ranchu virtual machine used by Android emulator.
+The board relies on the concept of MIPS generic boards, and utilizes
+generic board framework for build and device organization.
+
+The Ranchu board is intended to be used by Android emulator.The name
+"Ranchu" originates from Android development community. "Goldfish" and
+"Ranchu" are names for two generations of virtual boards used by
+Android emulator. "Ranchu" is a newer one among the two, and this
+series deals with Ranchu. However, for historical reasons, some file,
+device, and variable names in this series still contain the word
+"Goldfish".
+
+MIPS Ranchu machine includes a number of Goldfish devices. The
+support for Virtio devices is also included. Ranchu board supports
+up to 16 virtio devices which can be attached using virtio MMIO Bus.
+This is summarized in the following picture:
+
+       ABUS
+        ||----MIPS CPU
+        ||       |                    IRQs
+        ||----Goldfish PIC------------(32)--------
+        ||                     | | | | | | | | |
+        ||----Goldfish TTY------ | | | | | | | |
+        ||                       | | | | | | | |
+        ||----Goldfish RTC-------- | | | | | | |
+        ||                         | | | | | | |
+        ||----Goldfish FB----------- | | | | | |
+        ||                           | | | | | |
+        ||----Goldfish Events--------- | | | | |
+        ||                             | | | | |
+        ||----Goldfish Audio------------ | | | |
+        ||                               | | | |
+        ||----Goldfish Battery------------ | | |
+        ||                                 | | |
+        ||----Android PIPE------------------ | |
+        ||                                   | |
+        ||----Virtio MMIO Bus                | |
+        ||    |    |    |                    | |
+        ||    |    |   (virtio-block)--------- |
+        ||   (16)  |                           |
+        ||    |   (virtio-net)------------------
+
+
+Device Tree is created on the QEMU side based on the information about
+devices IO map and IRQ numbers. Kernel will load this DTB using UHI
+boot protocol.
+
+Checkpatch script outputs a small number of warnings if applied to
+this series. We did not correct the code, since we think the code is
+correct for those particular cases of checkpatch warnings.
+
+Aleksandar Markovic (2):
+  Documentation: Add device tree binding for Goldfish FB driver
+  video: goldfishfb: Add support for device tree bindings
+
+Miodrag Dinic (3):
+  Documentation: Add device tree binding for Goldfish PIC driver
+  irqchip/irq-goldfish-pic: Add Goldfish PIC driver
+  MIPS: ranchu: Add Ranchu as a new generic-based board
+
+ .../bindings/display/google,goldfish-fb.txt        |  17 +++
+ .../interrupt-controller/google,goldfish-pic.txt   |  30 +++++
+ MAINTAINERS                                        |  12 ++
+ arch/mips/configs/generic/board-ranchu.config      |  30 +++++
+ arch/mips/generic/Kconfig                          |  10 ++
+ arch/mips/generic/Makefile                         |   1 +
+ arch/mips/generic/board-ranchu.c                   |  79 +++++++++++++
+ drivers/irqchip/Kconfig                            |   8 ++
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-goldfish-pic.c                 | 128 +++++++++++++++++++++
+ drivers/video/fbdev/goldfishfb.c                   |   8 +-
+ 11 files changed, 323 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/display/google,goldfish-fb.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+ create mode 100644 arch/mips/configs/generic/board-ranchu.config
+ create mode 100644 arch/mips/generic/board-ranchu.c
+ create mode 100644 drivers/irqchip/irq-goldfish-pic.c
+
 -- 
-Jazz is not dead. It just smells funny.
+2.7.4

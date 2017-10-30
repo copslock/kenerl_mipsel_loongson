@@ -1,48 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Oct 2017 13:00:03 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:51332 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992213AbdJ3L7IwadQC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Oct 2017 12:59:08 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id AB7FA1A4177;
-        Mon, 30 Oct 2017 12:59:02 +0100 (CET)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 896551A2006;
-        Mon, 30 Oct 2017 12:59:02 +0100 (CET)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v6 5/5] MIPS: ranchu: Add Ranchu as a new generic-based board
-Date:   Mon, 30 Oct 2017 12:56:36 +0100
-Message-Id: <1509364642-21771-6-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1509364642-21771-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1509364642-21771-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Oct 2017 15:08:32 +0100 (CET)
+Received: from mail-vk0-x241.google.com ([IPv6:2607:f8b0:400c:c05::241]:49855
+        "EHLO mail-vk0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992215AbdJ3OIZd1ya5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Oct 2017 15:08:25 +0100
+Received: by mail-vk0-x241.google.com with SMTP id t184so8162746vka.6;
+        Mon, 30 Oct 2017 07:08:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=3unQ+LFXUbU9vd9XNttCtj7OFIBA8nul1hJ7Jkp9pBY=;
+        b=czZ9bpu5ehuJpmmy2ul7Jl5lAs9zLBi9ci9/7OfDhYix167DsxfdIHJeTsr3HrTuFS
+         Hn/SS3REaG8SS3hBpl4MPmh6IdPjMNUI4aCVy+Asu0inpvVbbD40gmWG2F5q/5i0uy7U
+         5vfKmexJBdOgzjCJwXyItt2+4fH2zjWTEyJXKor7eEJRvNPYpIHPQgsIfGBO6I/x9KT4
+         8XhcuDWHBOjIP18MflN3xrwxCnH+SZzfr70pkDwDN3h2milEUo3PuM8UuC6sWvUvTy0w
+         VPJG+KrDgLwwg2iUrmtAePmZz8CSTWTLteKdwY4TMrFSO6V05xjFlvtn848vYyATGxpq
+         y8og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=3unQ+LFXUbU9vd9XNttCtj7OFIBA8nul1hJ7Jkp9pBY=;
+        b=BJAXaM17Bs5QOpQCtG4NTKZflOymHvtmUVn8yhoQ6PeeEtSo9haFUaD3/KqjeywwZV
+         qA9xpXpvp5c48lQUVQrib62N3NPyaSIjrsh+9vsPVZaE3F25VjhBZeYcH/8dJwy9yLbF
+         CnWphVK4cg6HfzdnI0Ja6Vod6zOyA0LQEqKm6GZhLYJeQ7KU64h0UJakPZak5SUR2sdT
+         /5qCD9q0N9HuLV0CCel1ohgs79eUcvOWiseAQNUFzll5z0hODlJUeGuBKJ/VUitgGpK8
+         bIZdvutCneRE56uo252Q4Ec7q09rQIAs1g4e+/CIg40yperlqJ5K/hYmDvYubS5shP3t
+         A3eA==
+X-Gm-Message-State: AMCzsaXNHuh3Wjr2en4KzGzyroL3Nlg1OZpmZ1Vci9xypeMHey+Zcp7i
+        cuIQrjiqR8kWtmir4hv13/4KBM23S1v54eBh1wo=
+X-Google-Smtp-Source: ABhQp+TcPUkew8bMssDTRrqi0HJe0G19hMQwR98YgROMeQ6pdBpel58NZv2R4TaxCg5AsKnFH7A64pVwgj2XTmZIAjo=
+X-Received: by 10.31.3.98 with SMTP id 95mr6839247vkd.82.1509372499282; Mon,
+ 30 Oct 2017 07:08:19 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.159.49.16 with HTTP; Mon, 30 Oct 2017 07:07:58 -0700 (PDT)
+In-Reply-To: <1508868949-16652-3-git-send-email-jim2101024@gmail.com>
+References: <1508868949-16652-1-git-send-email-jim2101024@gmail.com> <1508868949-16652-3-git-send-email-jim2101024@gmail.com>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Mon, 30 Oct 2017 15:07:58 +0100
+Message-ID: <CAOiHx=kYf0pOrSvRHuj6+cy6qzSuz23RfNbB8ADLy_dRwZhiAg@mail.gmail.com>
+Subject: Re: [PATCH 2/8] PCI: host: brcmstb: add DT docs for Brcmstb PCIe device
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-pci@vger.kernel.org,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60590
+X-archive-position: 60591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,189 +83,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@mips.com>
+Hi,
 
-Provide amendments to the MIPS generic platform framework so that
-the new generic-based board Ranchu can be chosen to be built.
+On 24 October 2017 at 20:15, Jim Quinlan <jim2101024@gmail.com> wrote:
+> The DT bindings description of the Brcmstb PCIe device is described.  This
+> node can be used by almost all Broadcom settop box chips, using
+> ARM, ARM64, or MIPS CPU architectures.
+>
+> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+> ---
+>  .../devicetree/bindings/pci/brcmstb-pci.txt        | 63 ++++++++++++++++++++++
+>  1 file changed, 63 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/pci/brcmstb-pci.txt
+>
+> diff --git a/Documentation/devicetree/bindings/pci/brcmstb-pci.txt b/Documentation/devicetree/bindings/pci/brcmstb-pci.txt
+> new file mode 100644
+> index 0000000..49f9852
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/pci/brcmstb-pci.txt
+> @@ -0,0 +1,63 @@
+> +Brcmstb PCIe Host Controller Device Tree Bindings
+> +
+> +Required Properties:
+> +- compatible
+> +  "brcm,bcm7425-pcie" -- for 7425 family MIPS-based SOCs.
+> +  "brcm,bcm7435-pcie" -- for 7435 family MIPS-based SOCs.
+> +  "brcm,bcm7445-pcie" -- for 7445 and later ARM based SOCs (not including
+> +      the 7278).
+> +  "brcm,bcm7278-pcie"  -- for 7278 family ARM-based SOCs.
+> +
 
-Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
----
- MAINTAINERS                                   |  6 ++
- arch/mips/configs/generic/board-ranchu.config | 30 ++++++++++
- arch/mips/generic/Kconfig                     | 10 ++++
- arch/mips/generic/Makefile                    |  1 +
- arch/mips/generic/board-ranchu.c              | 79 +++++++++++++++++++++++++++
- 5 files changed, 126 insertions(+)
- create mode 100644 arch/mips/configs/generic/board-ranchu.config
- create mode 100644 arch/mips/generic/board-ranchu.c
+(snip)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f1be016..e429cc2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11308,6 +11308,12 @@ S:	Maintained
- F:	Documentation/blockdev/ramdisk.txt
- F:	drivers/block/brd.c
- 
-+RANCHU VIRTUAL BOARD FOR MIPS
-+M:	Miodrag Dinic <miodrag.dinic@mips.com>
-+L:	linux-mips@linux-mips.org
-+S:	Supported
-+F:	arch/mips/generic/board-ranchu.c
-+
- RANDOM NUMBER DRIVER
- M:	"Theodore Ts'o" <tytso@mit.edu>
- S:	Maintained
-diff --git a/arch/mips/configs/generic/board-ranchu.config b/arch/mips/configs/generic/board-ranchu.config
-new file mode 100644
-index 0000000..fee9ad4
---- /dev/null
-+++ b/arch/mips/configs/generic/board-ranchu.config
-@@ -0,0 +1,30 @@
-+CONFIG_VIRT_BOARD_RANCHU=y
-+
-+CONFIG_BATTERY_GOLDFISH=y
-+CONFIG_FB=y
-+CONFIG_FB_GOLDFISH=y
-+CONFIG_GOLDFISH=y
-+CONFIG_STAGING=y
-+CONFIG_GOLDFISH_AUDIO=y
-+CONFIG_GOLDFISH_PIC=y
-+CONFIG_GOLDFISH_PIPE=y
-+CONFIG_GOLDFISH_TTY=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_GOLDFISH=y
-+
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_INPUT_KEYBOARD=y
-+CONFIG_KEYBOARD_GOLDFISH_EVENTS=y
-+
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_POWER_SUPPLY=y
-+CONFIG_POWER_RESET=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_POWER_RESET_SYSCON_POWEROFF=y
-+
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_VIRTIO_MMIO=y
-+CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
-+CONFIG_NETDEVICES=y
-+CONFIG_VIRTIO_NET=y
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index e0436aa..93582be 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -42,4 +42,14 @@ config FIT_IMAGE_FDT_NI169445
- 	  Enable this to include the FDT for the 169445 platform from
- 	  National Instruments in the FIT kernel image.
- 
-+config VIRT_BOARD_RANCHU
-+	bool "Ranchu platform for Android emulator"
-+	help
-+	  This enables support for the platform used by Android emulator.
-+
-+	  Ranchu platform consists of a set of virtual devices. This platform
-+	  enables emulation of variety of virtual configurations while using
-+	  Android emulator. Android emulator is based on Qemu, and contains
-+	  the support for the same set of virtual devices.
-+
- endif
-diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
-index 56b3ea5..2fee84a 100644
---- a/arch/mips/generic/Makefile
-+++ b/arch/mips/generic/Makefile
-@@ -15,3 +15,4 @@ obj-y += proc.o
- obj-$(CONFIG_YAMON_DT_SHIM)		+= yamon-dt.o
- obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
- obj-$(CONFIG_KEXEC)			+= kexec.o
-+obj-$(CONFIG_VIRT_BOARD_RANCHU)	+= board-ranchu.o
-diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
-new file mode 100644
-index 0000000..0397752
---- /dev/null
-+++ b/arch/mips/generic/board-ranchu.c
-@@ -0,0 +1,79 @@
-+/*
-+ * Support code for virtual Ranchu board for MIPS.
-+ *
-+ * Author: Miodrag Dinic <miodrag.dinic@mips.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/of_address.h>
-+
-+#include <asm/machine.h>
-+#include <asm/time.h>
-+
-+#define GOLDFISH_TIMER_LOW		0x00
-+#define GOLDFISH_TIMER_HIGH		0x04
-+
-+static __init uint64_t read_rtc_time(void __iomem *base)
-+{
-+	u64 time_low;
-+	u64 time_high;
-+
-+	time_low = readl(base + GOLDFISH_TIMER_LOW);
-+	time_high = readl(base + GOLDFISH_TIMER_HIGH);
-+
-+	return (time_high << 32) | time_low;
-+}
-+
-+static __init unsigned int ranchu_measure_hpt_freq(void)
-+{
-+	u64 rtc_start, rtc_current, rtc_delta;
-+	unsigned int start, count;
-+	struct device_node *np;
-+	void __iomem *rtc_base;
-+
-+	np = of_find_compatible_node(NULL, NULL, "google,goldfish-rtc");
-+	if (!np)
-+		panic("%s(): Failed to find 'google,goldfish-rtc' dt node!",
-+		      __func__);
-+
-+	rtc_base = of_iomap(np, 0);
-+	if (!rtc_base)
-+		panic("%s(): Failed to ioremap Goldfish RTC base!", __func__);
-+
-+	/*
-+	 * poll the nanosecond resolution RTC for 1 second
-+	 * to calibrate the CPU frequency
-+	 */
-+	rtc_start = read_rtc_time(rtc_base);
-+	start = read_c0_count();
-+
-+	do {
-+		rtc_current = read_rtc_time(rtc_base);
-+		rtc_delta = rtc_current - rtc_start;
-+	} while (rtc_delta < NSEC_PER_SEC);
-+
-+	count = read_c0_count() - start;
-+
-+	count += 5000;	/* round */
-+	count -= count % 10000;
-+
-+	return count;
-+}
-+
-+static const struct of_device_id ranchu_of_match[];
-+
-+MIPS_MACHINE(ranchu) = {
-+	.matches = ranchu_of_match,
-+	.measure_hpt_freq = ranchu_measure_hpt_freq,
-+};
-+
-+static const struct of_device_id ranchu_of_match[] = {
-+	{
-+		.compatible = "mti,ranchu",
-+		.data = &__mips_mach_ranchu,
-+	},
-+};
--- 
-2.7.4
+> +
+> +Example Node:
+> +
+> +pcie0: pcie@f0460000 {
+> +               reg = <0x0 0xf0460000 0x0 0x9310>;
+> +               interrupts = <0x0 0x0 0x4>;
+> +               compatible = "brcm,pci-plat-dev";
+
+This is not one of the valid compatibles mentioned above.
+
+
+Regards
+Jonas

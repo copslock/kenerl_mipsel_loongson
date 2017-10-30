@@ -1,63 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Oct 2017 17:51:10 +0100 (CET)
-Received: from 5pmail.ess.barracuda.com ([64.235.154.203]:45892 "EHLO
-        5pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992181AbdJ3QvDEsJgk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Oct 2017 17:51:03 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 30 Oct 2017 16:49:58 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 30 Oct
- 2017 09:44:45 -0700
-Date:   Mon, 30 Oct 2017 16:45:24 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-CC:     <linux-mips@linux-mips.org>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        "Goran Ferenc" <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        "Paul Burton" <paul.burton@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        "Petar Jovanovic" <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v6 5/5] MIPS: ranchu: Add Ranchu as a new generic-based
- board
-Message-ID: <20171030164523.GA15235@jhogan-linux>
-References: <1509364642-21771-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1509364642-21771-6-git-send-email-aleksandar.markovic@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Oct 2017 18:55:59 +0100 (CET)
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:39320 "EHLO
+        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992181AbdJ3RzwtDsLi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Oct 2017 18:55:52 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 19A3640E92;
+        Mon, 30 Oct 2017 18:55:43 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id cI1EX0eRoyrD; Mon, 30 Oct 2017 18:55:38 +0100 (CET)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 2A11740E88;
+        Mon, 30 Oct 2017 18:55:24 +0100 (CET)
+Date:   Mon, 30 Oct 2017 18:55:17 +0100
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+Message-ID: <20171030175516.GA18586@localhost.localdomain>
+References: <20170916133423.GB32582@localhost.localdomain>
+ <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk>
+ <20170918192428.GA391@localhost.localdomain>
+ <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk>
+ <20170920145440.GB9255@localhost.localdomain>
+ <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
+ <20170927172107.GB2631@localhost.localdomain>
+ <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+ <20170930065654.GA7714@localhost.localdomain>
+ <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1509364642-21771-6-git-send-email-aleksandar.markovic@rt-rk.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1509382195-452059-3070-332247-2
-X-BESS-VER: 2017.12.1-r1710261623
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.60
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186424
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
-X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+In-Reply-To: <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60593
+X-archive-position: 60594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,126 +56,456 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 30, 2017 at 12:56:36PM +0100, Aleksandar Markovic wrote:
-> From: Miodrag Dinic <miodrag.dinic@mips.com>
+Hi Maciej,
+
+> > For this reason the R5900 patch modifies the __{save,restore}_dsp macros,
+> > mips_dsp_state::dspcontrol, DSP_INIT, sigcontext32::sc_dsp, etc. I've seen
+> > the cpu_has_dsp macro too, but haven't looked at the details of this yet.
 > 
-> Provide amendments to the MIPS generic platform framework so that
-> the new generic-based board Ranchu can be chosen to be built.
+>  Given that the R5900 does not expand DSP support anyhow that sounds 
+> suspicious to me.
 
-A bit more info about the board would be good here. What boot protocol
-is used? Does QEMU generate the DT dynamically?
+I've taken a closer look at the R5900 changes to the DSP kernel code now:
 
-> 
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> ---
->  MAINTAINERS                                   |  6 ++
->  arch/mips/configs/generic/board-ranchu.config | 30 ++++++++++
->  arch/mips/generic/Kconfig                     | 10 ++++
->  arch/mips/generic/Makefile                    |  1 +
->  arch/mips/generic/board-ranchu.c              | 79 +++++++++++++++++++++++++++
->  5 files changed, 126 insertions(+)
->  create mode 100644 arch/mips/configs/generic/board-ranchu.config
->  create mode 100644 arch/mips/generic/board-ranchu.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f1be016..e429cc2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11308,6 +11308,12 @@ S:	Maintained
->  F:	Documentation/blockdev/ramdisk.txt
->  F:	drivers/block/brd.c
->  
-> +RANCHU VIRTUAL BOARD FOR MIPS
-> +M:	Miodrag Dinic <miodrag.dinic@mips.com>
-> +L:	linux-mips@linux-mips.org
-> +S:	Supported
-> +F:	arch/mips/generic/board-ranchu.c
+The R5900 has four three-operand instructions: MADD, MADDU, MULT and MULTU.
+In addition, it has ten instructions for pipeline 1: MULT1, MULTU1, DIV1,
+DIVU1, MADD1, MADDU1, MFHI1, MFLO1, MTHI1 and MTLO1. Those are the reason
+(parts of) the cpu_has_dsp infrastructure is used, as shown in the patch
+below. What are your thoughts on this?
 
-Maybe worth adding arch/mips/configs/generic/board-ranchu.config too.
+The instructions are specific to the R5900, and notably incompatible with
+similar ones in the base MIPS32 architecture. They are also distinct from
+the (also R5900 specific) 128-bit multimedia instructions.
 
-> +
->  RANDOM NUMBER DRIVER
->  M:	"Theodore Ts'o" <tytso@mit.edu>
->  S:	Maintained
+By the way, "machine" is set to "Unknown" and "ASEs implemented" is empty
+in /proc/cpuinfo. What would be the proper values for the R5900?
 
-> diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-> index e0436aa..93582be 100644
-> --- a/arch/mips/generic/Kconfig
-> +++ b/arch/mips/generic/Kconfig
-> @@ -42,4 +42,14 @@ config FIT_IMAGE_FDT_NI169445
->  	  Enable this to include the FDT for the 169445 platform from
->  	  National Instruments in the FIT kernel image.
->  
-> +config VIRT_BOARD_RANCHU
-> +	bool "Ranchu platform for Android emulator"
-> +	help
-> +	  This enables support for the platform used by Android emulator.
-> +
-> +	  Ranchu platform consists of a set of virtual devices. This platform
-> +	  enables emulation of variety of virtual configurations while using
-> +	  Android emulator. Android emulator is based on Qemu, and contains
-> +	  the support for the same set of virtual devices.
+Fredrik
 
-This is effectively in the section "FIT/UHI Boards", but it has a
-platform file and no DT/FIT stuff in tree a bit like the boards in the
-section "Legacy (non-UHI/non-FIT) Boards".
-
-I'm guessing it might be something in between, with UHI + platform code,
-but DT provided by QEMU (i.e. FIT support makes no sense)?
-
-If it uses UHI I suppose it doesn't belong in the legacy section, but I
-think a consistent prompt would be beneficial, e.g.
-
-+config VIRT_BOARD_RANCHU
-+	bool "Support Ranchu platform for Android emulator"
-...
-
-> diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
-> new file mode 100644
-> index 0000000..0397752
-> --- /dev/null
-> +++ b/arch/mips/generic/board-ranchu.c
-> @@ -0,0 +1,79 @@
-> +/*
-> + * Support code for virtual Ranchu board for MIPS.
-> + *
-> + * Author: Miodrag Dinic <miodrag.dinic@mips.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/of_address.h>
-> +
-> +#include <asm/machine.h>
-> +#include <asm/time.h>
-> +
-> +#define GOLDFISH_TIMER_LOW		0x00
-> +#define GOLDFISH_TIMER_HIGH		0x04
-> +
-> +static __init uint64_t read_rtc_time(void __iomem *base)
-> +{
-> +	u64 time_low;
-> +	u64 time_high;
-> +
-> +	time_low = readl(base + GOLDFISH_TIMER_LOW);
-> +	time_high = readl(base + GOLDFISH_TIMER_HIGH);
-> +
-> +	return (time_high << 32) | time_low;
-
-What if high changes while reading this?
-
-E.g.
-TIMER_LOW	 0x00000000 *0xffffffff*
-TIMER_HIGH	*0x00000001* 0x00000000
-
-You'd presumably get 0x00000001ffffffff.
-
-Perhaps it should read HIGH before too, and retry if it has changed.
-
-Cheers
-James
+diff --git a/arch/mips/include/asm/dsp.h b/arch/mips/include/asm/dsp.h
+index 7bfad0520e25..1bf4da622795 100644
+--- a/arch/mips/include/asm/dsp.h
++++ b/arch/mips/include/asm/dsp.h
+@@ -27,11 +27,13 @@ static inline void __init_dsp(void)
+ {
+ 	mthi1(0);
+ 	mtlo1(0);
++#ifndef CONFIG_CPU_R5900
+ 	mthi2(0);
+ 	mtlo2(0);
+ 	mthi3(0);
+ 	mtlo3(0);
+ 	wrdsp(DSP_DEFAULT, DSP_MASK);
++#endif
+ }
+ 
+ static inline void init_dsp(void)
+@@ -40,6 +42,13 @@ static inline void init_dsp(void)
+ 		__init_dsp();
+ }
+ 
++#ifdef CONFIG_CPU_R5900
++#define __save_dsp(tsk)							\
++do {									\
++	tsk->thread.dsp.dspr[0] = mfhi1();				\
++	tsk->thread.dsp.dspr[1] = mflo1();				\
++} while (0)
++#else
+ #define __save_dsp(tsk)							\
+ do {									\
+ 	tsk->thread.dsp.dspr[0] = mfhi1();				\
+@@ -50,6 +59,7 @@ do {									\
+ 	tsk->thread.dsp.dspr[5] = mflo3();				\
+ 	tsk->thread.dsp.dspcontrol = rddsp(DSP_MASK);			\
+ } while (0)
++#endif
+ 
+ #define save_dsp(tsk)							\
+ do {									\
+@@ -57,6 +67,13 @@ do {									\
+ 		__save_dsp(tsk);					\
+ } while (0)
+ 
++#ifdef CONFIG_CPU_R5900
++#define __restore_dsp(tsk)						\
++do {									\
++	mthi1(tsk->thread.dsp.dspr[0]);					\
++	mtlo1(tsk->thread.dsp.dspr[1]);					\
++} while (0)
++#else
+ #define __restore_dsp(tsk)						\
+ do {									\
+ 	mthi1(tsk->thread.dsp.dspr[0]);					\
+@@ -67,6 +84,7 @@ do {									\
+ 	mtlo3(tsk->thread.dsp.dspr[5]);					\
+ 	wrdsp(tsk->thread.dsp.dspcontrol, DSP_MASK);			\
+ } while (0)
++#endif
+ 
+ #define restore_dsp(tsk)						\
+ do {									\
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 95b8c471f572..7330530f31b0 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -139,13 +139,19 @@ struct mips_fpu_struct {
+ 	unsigned int	msacsr;
+ };
+ 
++#ifdef CONFIG_CPU_R5900
++#define NUM_DSP_REGS   2
++#else
+ #define NUM_DSP_REGS   6
++#endif
+ 
+ typedef __u32 dspreg_t;
+ 
+ struct mips_dsp_state {
+ 	dspreg_t	dspr[NUM_DSP_REGS];
++#ifndef CONFIG_CPU_R5900
+ 	unsigned int	dspcontrol;
++#endif
+ };
+ 
+ #define INIT_CPUMASK { \
+@@ -304,10 +310,20 @@ struct thread_struct {
+ #define FPAFF_INIT
+ #endif /* CONFIG_MIPS_MT_FPAFF */
+ 
+-#define INIT_THREAD  {						\
+-	/*							\
+-	 * Saved main processor registers			\
+-	 */							\
++#ifdef CONFIG_CPU_R5900
++#define DSP_INIT \
++	.dsp			= {				\
++		.dspr		= {0, },			\
++	},
++#else
++#define DSP_INIT \
++	.dsp			= {				\
++		.dspr		= {0, },			\
++		.dspcontrol	= 0,				\
++	},
++#endif
++
++#define REGS_INIT \
+ 	.reg16			= 0,				\
+ 	.reg17			= 0,				\
+ 	.reg18			= 0,				\
+@@ -318,7 +334,13 @@ struct thread_struct {
+ 	.reg23			= 0,				\
+ 	.reg29			= 0,				\
+ 	.reg30			= 0,				\
+-	.reg31			= 0,				\
++	.reg31			= 0,
++
++#define INIT_THREAD  {						\
++        /*							\
++         * Saved main processor registers			\
++         */							\
++	REGS_INIT						\
+ 	/*							\
+ 	 * Saved cp0 stuff					\
+ 	 */							\
+@@ -342,10 +364,7 @@ struct thread_struct {
+ 	/*							\
+ 	 * Saved DSP stuff					\
+ 	 */							\
+-	.dsp			= {				\
+-		.dspr		= {0, },			\
+-		.dspcontrol	= 0,				\
+-	},							\
++	DSP_INIT						\
+ 	/*							\
+ 	 * saved watch register stuff				\
+ 	 */							\
+diff --git a/arch/mips/include/asm/sigcontext.h b/arch/mips/include/asm/sigcontext.h
+index eeeb0f48c767..4e975a3291f6 100644
+--- a/arch/mips/include/asm/sigcontext.h
++++ b/arch/mips/include/asm/sigcontext.h
+@@ -23,15 +23,19 @@ struct sigcontext32 {
+ 	__u32		sc_fpc_csr;
+ 	__u32		sc_fpc_eir;	/* Unused */
+ 	__u32		sc_used_math;
++#ifndef CONFIG_CPU_R5900
+ 	__u32		sc_dsp;		/* dsp status, was sc_ssflags */
++#endif
+ 	__u64		sc_mdhi;
+ 	__u64		sc_mdlo;
+ 	__u32		sc_hi1;		/* Was sc_cause */
+ 	__u32		sc_lo1;		/* Was sc_badvaddr */
++#ifndef CONFIG_CPU_R5900
+ 	__u32		sc_hi2;		/* Was sc_sigset[4] */
+ 	__u32		sc_lo2;
+ 	__u32		sc_hi3;
+ 	__u32		sc_lo3;
++#endif
+ };
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 || _MIPS_SIM == _MIPS_SIM_NABI32 */
+ #endif /* _ASM_SIGCONTEXT_H */
+diff --git a/arch/mips/include/uapi/asm/sigcontext.h b/arch/mips/include/uapi/asm/sigcontext.h
+index 5cbd9ae6421f..7564ba82425a 100644
+--- a/arch/mips/include/uapi/asm/sigcontext.h
++++ b/arch/mips/include/uapi/asm/sigcontext.h
+@@ -40,15 +40,26 @@ struct sigcontext {
+ 	unsigned int		sc_fpc_csr;
+ 	unsigned int		sc_fpc_eir;	/* Unused */
+ 	unsigned int		sc_used_math;
++#ifdef CONFIG_CPU_R5900
++	unsigned int		pad0;
++#else
+ 	unsigned int		sc_dsp;		/* dsp status, was sc_ssflags */
++#endif
+ 	unsigned long long	sc_mdhi;
+ 	unsigned long long	sc_mdlo;
+ 	unsigned long		sc_hi1;		/* Was sc_cause */
+ 	unsigned long		sc_lo1;		/* Was sc_badvaddr */
++#ifdef CONFIG_CPU_R5900
++	unsigned long		pad1;
++	unsigned long		pad2;
++	unsigned long		pad3;
++	unsigned long		pad4;
++#else
+ 	unsigned long		sc_hi2;		/* Was sc_sigset[4] */
+ 	unsigned long		sc_lo2;
+ 	unsigned long		sc_hi3;
+ 	unsigned long		sc_lo3;
++#endif
+ };
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+@@ -71,16 +82,22 @@ struct sigcontext {
+ 	__u64	sc_fpregs[32];
+ 	__u64	sc_mdhi;
+ 	__u64	sc_hi1;
++#ifndef CONFIG_CPU_R5900
+ 	__u64	sc_hi2;
+ 	__u64	sc_hi3;
++#endif
+ 	__u64	sc_mdlo;
+ 	__u64	sc_lo1;
++#ifndef CONFIG_CPU_R5900
+ 	__u64	sc_lo2;
+ 	__u64	sc_lo3;
++#endif
+ 	__u64	sc_pc;
+ 	__u32	sc_fpc_csr;
+ 	__u32	sc_used_math;
++#ifndef CONFIG_CPU_R5900
+ 	__u32	sc_dsp;
++#endif
+ 	__u32	sc_reserved;
+ };
+ 
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index a670c0c11875..041ed07e7910 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -226,10 +226,12 @@ void output_sc_defines(void)
+ 	OFFSET(SC_FPC_EIR, sigcontext, sc_fpc_eir);
+ 	OFFSET(SC_HI1, sigcontext, sc_hi1);
+ 	OFFSET(SC_LO1, sigcontext, sc_lo1);
++#ifndef CONFIG_CPU_R5900
+ 	OFFSET(SC_HI2, sigcontext, sc_hi2);
+ 	OFFSET(SC_LO2, sigcontext, sc_lo2);
+ 	OFFSET(SC_HI3, sigcontext, sc_hi3);
+ 	OFFSET(SC_LO3, sigcontext, sc_lo3);
++#endif
+ 	BLANK();
+ }
+ #endif
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index f702a459a830..b675c112aac3 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -416,9 +416,12 @@ int __MIPS16e_compute_return_epc(struct pt_regs *regs)
+ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 				   union mips_instruction insn)
+ {
+-	unsigned int bit, fcr31, dspcontrol, reg;
++	unsigned int bit, fcr31, reg;
+ 	long epc = regs->cp0_epc;
+ 	int ret = 0;
++#ifndef CONFIG_CPU_R5900
++	unsigned int dspcontrol;
++#endif
+ 
+ 	switch (insn.i_format.opcode) {
+ 	/*
+@@ -539,9 +542,12 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 			break;
+ 
+ 		case bposge32_op:
++#ifndef CONFIG_CPU_R5900
+ 			if (!cpu_has_dsp)
++#endif
+ 				goto sigill_dsp;
+ 
++#ifndef CONFIG_CPU_R5900
+ 			dspcontrol = rddsp(0x01);
+ 
+ 			if (dspcontrol >= 32) {
+@@ -549,6 +555,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 			} else
+ 				epc += 8;
+ 			regs->cp0_epc = epc;
++#endif
+ 			break;
+ 		}
+ 		break;
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index 6931fe722a0b..c1b854542561 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -710,7 +710,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			/* implementation / version register */
+ 			tmp = boot_cpu_data.fpu_id;
+ 			break;
+-		case DSP_BASE ... DSP_BASE + 5: {
++		case DSP_BASE ... DSP_BASE + NUM_DSP_REGS - 1: {
+ 			dspreg_t *dregs;
+ 
+ 			if (!cpu_has_dsp) {
+@@ -722,6 +722,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
+ 			break;
+ 		}
++#ifndef CONFIG_CPU_R5900
+ 		case DSP_CONTROL:
+ 			if (!cpu_has_dsp) {
+ 				tmp = 0;
+@@ -730,6 +731,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			}
+ 			tmp = child->thread.dsp.dspcontrol;
+ 			break;
++#endif
+ 		default:
+ 			tmp = 0;
+ 			ret = -EIO;
+@@ -791,7 +793,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			init_fp_ctx(child);
+ 			ptrace_setfcr31(child, data);
+ 			break;
+-		case DSP_BASE ... DSP_BASE + 5: {
++		case DSP_BASE ... DSP_BASE + NUM_DSP_REGS - 1: {
+ 			dspreg_t *dregs;
+ 
+ 			if (!cpu_has_dsp) {
+@@ -803,6 +805,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			dregs[addr - DSP_BASE] = data;
+ 			break;
+ 		}
++#ifndef CONFIG_CPU_R5900
+ 		case DSP_CONTROL:
+ 			if (!cpu_has_dsp) {
+ 				ret = -EIO;
+@@ -810,6 +813,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			}
+ 			child->thread.dsp.dspcontrol = data;
+ 			break;
++#endif
+ 		default:
+ 			/* The rest are not allowed. */
+ 			ret = -EIO;
+diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
+index 40e212d6b26b..232a28c94cce 100644
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -132,7 +132,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			/* implementation / version register */
+ 			tmp = boot_cpu_data.fpu_id;
+ 			break;
+-		case DSP_BASE ... DSP_BASE + 5: {
++		case DSP_BASE ... DSP_BASE + NUM_DSP_REGS - 1: {
+ 			dspreg_t *dregs;
+ 
+ 			if (!cpu_has_dsp) {
+@@ -144,6 +144,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
+ 			break;
+ 		}
++#ifndef CONFIG_CPU_R5900
+ 		case DSP_CONTROL:
+ 			if (!cpu_has_dsp) {
+ 				tmp = 0;
+@@ -152,6 +153,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			}
+ 			tmp = child->thread.dsp.dspcontrol;
+ 			break;
++#endif
+ 		default:
+ 			tmp = 0;
+ 			ret = -EIO;
+@@ -230,7 +232,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 		case FPC_CSR:
+ 			child->thread.fpu.fcr31 = data;
+ 			break;
+-		case DSP_BASE ... DSP_BASE + 5: {
++		case DSP_BASE ... DSP_BASE + NUM_DSP_REGS - 1: {
+ 			dspreg_t *dregs;
+ 
+ 			if (!cpu_has_dsp) {
+@@ -242,6 +244,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			dregs[addr - DSP_BASE] = data;
+ 			break;
+ 		}
++#ifndef CONFIG_CPU_R5900
+ 		case DSP_CONTROL:
+ 			if (!cpu_has_dsp) {
+ 				ret = -EIO;
+@@ -249,6 +252,7 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			}
+ 			child->thread.dsp.dspcontrol = data;
+ 			break;
++#endif
+ 		default:
+ 			/* The rest are not allowed. */
+ 			ret = -EIO;
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index 9e224469c788..3ca0f424c78b 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -426,11 +426,13 @@ int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
+ 	if (cpu_has_dsp) {
+ 		err |= __put_user(mfhi1(), &sc->sc_hi1);
+ 		err |= __put_user(mflo1(), &sc->sc_lo1);
++#ifndef CONFIG_CPU_R5900
+ 		err |= __put_user(mfhi2(), &sc->sc_hi2);
+ 		err |= __put_user(mflo2(), &sc->sc_lo2);
+ 		err |= __put_user(mfhi3(), &sc->sc_hi3);
+ 		err |= __put_user(mflo3(), &sc->sc_lo3);
+ 		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
++#endif
+ 	}
+ 
+ 
+@@ -503,11 +505,13 @@ int restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
+ 	if (cpu_has_dsp) {
+ 		err |= __get_user(treg, &sc->sc_hi1); mthi1(treg);
+ 		err |= __get_user(treg, &sc->sc_lo1); mtlo1(treg);
++#ifndef CONFIG_CPU_R5900
+ 		err |= __get_user(treg, &sc->sc_hi2); mthi2(treg);
+ 		err |= __get_user(treg, &sc->sc_lo2); mtlo2(treg);
+ 		err |= __get_user(treg, &sc->sc_hi3); mthi3(treg);
+ 		err |= __get_user(treg, &sc->sc_lo3); mtlo3(treg);
+ 		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
++#endif
+ 	}
+ 
+ 	for (i = 1; i < 32; i++)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 9979eb78c592..5b63fcc11733 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1607,8 +1607,10 @@ asmlinkage void do_mt(struct pt_regs *regs)
+ 
+ asmlinkage void do_dsp(struct pt_regs *regs)
+ {
++#ifndef CONFIG_CPU_R5900
+ 	if (cpu_has_dsp)
+ 		panic("Unexpected DSP exception");
++#endif
+ 
+ 	force_sig(SIGILL, current);
+ }

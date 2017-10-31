@@ -1,9 +1,9 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Oct 2017 17:42:54 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:36621 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Oct 2017 17:43:17 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:57888 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992318AbdJaQmrTODPA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Oct 2017 17:42:47 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 31 Oct 2017 16:42:24 +0000
+        by eddie.linux-mips.org with ESMTP id S23992339AbdJaQnHRMW3A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Oct 2017 17:43:07 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 31 Oct 2017 16:42:52 +0000
 Received: from pburton-laptop.mipstec.com (10.20.1.18) by mips01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Tue, 31 Oct 2017
  09:41:00 -0700
@@ -13,20 +13,20 @@ To:     Jason Cooper <jason@lakedaemon.net>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         Paul Burton <paul.burton@mips.com>
-Subject: [PATCH v2 1/8] irqchip: mips-gic: Inline gic_local_irq_domain_map()
-Date:   Tue, 31 Oct 2017 09:41:44 -0700
-Message-ID: <20171031164151.6357-2-paul.burton@mips.com>
+Subject: [PATCH v2 2/8] irqchip: mips-gic: Use irq_cpu_online to (un)mask all-VP(E) IRQs
+Date:   Tue, 31 Oct 2017 09:41:45 -0700
+Message-ID: <20171031164151.6357-3-paul.burton@mips.com>
 X-Mailer: git-send-email 2.14.3
 In-Reply-To: <20171031164151.6357-1-paul.burton@mips.com>
 References: <867evc5cc9.fsf@arm.com>
  <20171031164151.6357-1-paul.burton@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-BESS-ID: 1509468105-452059-3093-416304-3
+X-BESS-ID: 1509468105-452059-3093-416304-4
 X-BESS-VER: 2017.12.1-r1710261623
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186453
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186454
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
@@ -37,7 +37,7 @@ Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60603
+X-archive-position: 60604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,136 +54,220 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The gic_local_irq_domain_map() function has only one callsite in
-gic_irq_domain_map(), and the split between the two functions makes it
-unclear that they duplicate calculations & checks.
+The gic_all_vpes_local_irq_controller chip currently attempts to operate
+on all CPUs/VPs in the system when masking or unmasking an interrupt.
+This has a few drawbacks:
 
-Inline gic_local_irq_domain_map() into gic_irq_domain_map() in order to
-clean this up. Doing this makes the following small issues obvious, and
-the patch tidies them up:
+ - In multi-cluster systems we may not always have access to all CPUs in
+   the system. When all CPUs in a cluster are powered down that
+   cluster's GIC may also power down, in which case we cannot configure
+   its state.
 
- - Both functions used GIC_HWIRQ_TO_LOCAL() to convert a hwirq number to
-   a local IRQ number. We now only do this once. Although the compiler
-   ought to have optimised this away before anyway, the change leaves us
-   with less duplicate code.
+ - Relatedly, if we power down a cluster after having configured
+   interrupts for CPUs within it then the cluster's GIC may lose state &
+   we need to reconfigure it. The current approach doesn't take this
+   into account.
 
- - gic_local_irq_domain_map() had a check for invalid local interrupt
-   numbers (intr > GIC_LOCAL_INT_FDC). This condition can never occur
-   because any hwirq higher than those used for local interrupts is a
-   shared interrupt, which gic_irq_domain_map() already handles
-   separately. We therefore remove this check.
+ - It's wasteful if we run Linux on fewer VPs than are present in the
+   system. For example if we run a uniprocessor kernel on CPU0 of a
+   system with 16 CPUs then there's no point in us configuring CPUs
+   1-15.
 
- - The decision of whether to map the interrupt to gic_cpu_pin or
-   timer_cpu_pin can be handled within the existing switch statement in
-   gic_irq_domain_map(), shortening the code a little.
+ - The implementation is also lacking in that it expects the range
+   0..gic_vpes-1 to represent valid Linux CPU numbers which may not
+   always be the case - for example if we run on a system with more VPs
+   than the kernel is configured to support.
 
-The change additionally prepares us nicely for the following patch of
-the series which would otherwise need to duplicate the check for whether
-a local interrupt should be percpu_devid or just percpu (ie. the switch
-statement from gic_irq_domain_map()) in gic_local_irq_domain_map().
+Fix all of these issues by only configuring the affected interrupts for
+CPUs which are online at the time, and recording the configuration in a
+new struct gic_all_vpes_chip_data for later use by CPUs being brought
+online. We register a CPU hotplug state (reusing
+CPUHP_AP_IRQ_GIC_STARTING which the ARM GIC driver uses, and which seems
+suitably generic for reuse with the MIPS GIC) and execute
+irq_cpu_online() in order to configure the interrupts on the newly
+onlined CPU.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: Jason Cooper <jason@lakedaemon.net>
 Cc: Marc Zyngier <marc.zyngier@arm.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-mips@linux-mips.org
+
 ---
 
-Changes in v2: None
+Changes in v2:
+- Add & use CPUHP_AP_IRQ_MIPS_GIC_STARTING state rather than reusing
+  the generically-named CPUHP_AP_IRQ_GIC_STARTING used for the ARM GIC.
 
- drivers/irqchip/irq-mips-gic.c | 58 ++++++++++++++++--------------------------
- 1 file changed, 22 insertions(+), 36 deletions(-)
+ drivers/irqchip/irq-mips-gic.c | 72 ++++++++++++++++++++++++++++++++----------
+ include/linux/cpuhotplug.h     |  1 +
+ 2 files changed, 57 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index c90976d7e53c..6fdcc1552fab 100644
+index 6fdcc1552fab..60f644279803 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -382,39 +382,6 @@ static void gic_irq_dispatch(struct irq_desc *desc)
- 	gic_handle_shared_int(true);
- }
+@@ -8,6 +8,7 @@
+  */
+ #include <linux/bitmap.h>
+ #include <linux/clocksource.h>
++#include <linux/cpuhotplug.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+@@ -55,6 +56,11 @@ static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
+ DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
+ DECLARE_BITMAP(ipi_available, GIC_MAX_INTRS);
  
--static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
--				    irq_hw_number_t hw)
--{
--	int intr = GIC_HWIRQ_TO_LOCAL(hw);
++static struct gic_all_vpes_chip_data {
++	u32	map;
++	bool	mask;
++} gic_all_vpes_chip_data[GIC_NUM_LOCAL_INTRS];
++
+ static void gic_clear_pcpu_masks(unsigned int intr)
+ {
+ 	unsigned int i;
+@@ -338,13 +344,17 @@ static struct irq_chip gic_local_irq_controller = {
+ 
+ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ {
+-	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
 -	int i;
--	unsigned long flags;
--	u32 val;
--
--	if (!gic_local_irq_is_routable(intr))
--		return -EPERM;
--
--	if (intr > GIC_LOCAL_INT_FDC) {
--		pr_err("Invalid local IRQ %d\n", intr);
--		return -EINVAL;
--	}
--
--	if (intr == GIC_LOCAL_INT_TIMER) {
--		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
--		val = GIC_MAP_PIN_MAP_TO_PIN | timer_cpu_pin;
--	} else {
--		val = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
--	}
--
--	spin_lock_irqsave(&gic_lock, flags);
++	struct gic_all_vpes_chip_data *cd;
+ 	unsigned long flags;
++	int intr, cpu;
++
++	intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
++	cd = irq_data_get_irq_chip_data(d);
++	cd->mask = false;
+ 
+ 	spin_lock_irqsave(&gic_lock, flags);
 -	for (i = 0; i < gic_vpes; i++) {
 -		write_gic_vl_other(mips_cm_vp_id(i));
--		write_gic_vo_map(intr, val);
--	}
--	spin_unlock_irqrestore(&gic_lock, flags);
--
--	return 0;
--}
--
- static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 				     irq_hw_number_t hw, unsigned int cpu)
++	for_each_online_cpu(cpu) {
++		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_rmask(BIT(intr));
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+@@ -352,22 +362,40 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ 
+ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
  {
-@@ -457,7 +424,10 @@ static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
+-	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+-	int i;
++	struct gic_all_vpes_chip_data *cd;
+ 	unsigned long flags;
++	int intr, cpu;
++
++	intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
++	cd = irq_data_get_irq_chip_data(d);
++	cd->mask = true;
+ 
+ 	spin_lock_irqsave(&gic_lock, flags);
+-	for (i = 0; i < gic_vpes; i++) {
+-		write_gic_vl_other(mips_cm_vp_id(i));
++	for_each_online_cpu(cpu) {
++		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_smask(BIT(intr));
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+ }
+ 
++static void gic_all_vpes_irq_cpu_online(struct irq_data *d)
++{
++	struct gic_all_vpes_chip_data *cd;
++	unsigned int intr;
++
++	intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
++	cd = irq_data_get_irq_chip_data(d);
++
++	write_gic_vl_map(intr, cd->map);
++	if (cd->mask)
++		write_gic_vl_smask(BIT(intr));
++}
++
+ static struct irq_chip gic_all_vpes_local_irq_controller = {
+-	.name			=	"MIPS GIC Local",
+-	.irq_mask		=	gic_mask_local_irq_all_vpes,
+-	.irq_unmask		=	gic_unmask_local_irq_all_vpes,
++	.name			= "MIPS GIC Local",
++	.irq_mask		= gic_mask_local_irq_all_vpes,
++	.irq_unmask		= gic_unmask_local_irq_all_vpes,
++	.irq_cpu_online		= gic_all_vpes_irq_cpu_online,
+ };
+ 
+ static void __gic_irq_dispatch(void)
+@@ -424,9 +452,10 @@ static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
  static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
  			      irq_hw_number_t hwirq)
  {
--	int err;
-+	unsigned long flags;
-+	unsigned int intr;
-+	int err, i;
-+	u32 map;
++	struct gic_all_vpes_chip_data *cd;
+ 	unsigned long flags;
+ 	unsigned int intr;
+-	int err, i;
++	int err, cpu;
+ 	u32 map;
  
  	if (hwirq >= GIC_SHARED_HWIRQ_BASE) {
- 		/* verify that shared irqs don't conflict with an IPI irq */
-@@ -474,8 +444,14 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 		return gic_shared_irq_domain_map(d, virq, hwirq, 0);
- 	}
+@@ -459,9 +488,11 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 		 * the rest of the MIPS kernel code does not use the
+ 		 * percpu IRQ API for them.
+ 		 */
++		cd = &gic_all_vpes_chip_data[intr];
++		cd->map = map;
+ 		err = irq_domain_set_hwirq_and_chip(d, virq, hwirq,
+ 						    &gic_all_vpes_local_irq_controller,
+-						    NULL);
++						    cd);
+ 		if (err)
+ 			return err;
  
--	switch (GIC_HWIRQ_TO_LOCAL(hwirq)) {
-+	intr = GIC_HWIRQ_TO_LOCAL(hwirq);
-+	map = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
-+
-+	switch (intr) {
- 	case GIC_LOCAL_INT_TIMER:
-+		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
-+		map = GIC_MAP_PIN_MAP_TO_PIN | timer_cpu_pin;
-+		/* fall-through */
- 	case GIC_LOCAL_INT_PERFCTR:
- 	case GIC_LOCAL_INT_FDC:
- 		/*
-@@ -504,7 +480,17 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 		break;
- 	}
+@@ -484,8 +515,8 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 		return -EPERM;
  
--	return gic_local_irq_domain_map(d, virq, hwirq);
-+	if (!gic_local_irq_is_routable(intr))
-+		return -EPERM;
-+
-+	spin_lock_irqsave(&gic_lock, flags);
-+	for (i = 0; i < gic_vpes; i++) {
-+		write_gic_vl_other(mips_cm_vp_id(i));
-+		write_gic_vo_map(intr, map);
-+	}
-+	spin_unlock_irqrestore(&gic_lock, flags);
+ 	spin_lock_irqsave(&gic_lock, flags);
+-	for (i = 0; i < gic_vpes; i++) {
+-		write_gic_vl_other(mips_cm_vp_id(i));
++	for_each_online_cpu(cpu) {
++		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_map(intr, map);
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+@@ -622,6 +653,13 @@ static const struct irq_domain_ops gic_ipi_domain_ops = {
+ 	.match = gic_ipi_domain_match,
+ };
+ 
++static int gic_cpu_startup(unsigned int cpu)
++{
++	/* Invoke irq_cpu_online callbacks to enable desired interrupts */
++	irq_cpu_online();
 +
 +	return 0;
- }
++}
  
- static int gic_irq_domain_alloc(struct irq_domain *d, unsigned int virq,
+ static int __init gic_of_init(struct device_node *node,
+ 			      struct device_node *parent)
+@@ -768,6 +806,8 @@ static int __init gic_of_init(struct device_node *node,
+ 		}
+ 	}
+ 
+-	return 0;
++	return cpuhp_setup_state(CPUHP_AP_IRQ_MIPS_GIC_STARTING,
++				 "irqchip/mips/gic:starting",
++				 gic_cpu_startup, NULL);
+ }
+ IRQCHIP_DECLARE(mips_gic, "mti,gic", gic_of_init);
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 6d508767e144..1966a45bc453 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -98,6 +98,7 @@ enum cpuhp_state {
+ 	CPUHP_AP_IRQ_HIP04_STARTING,
+ 	CPUHP_AP_IRQ_ARMADA_XP_STARTING,
+ 	CPUHP_AP_IRQ_BCM2836_STARTING,
++	CPUHP_AP_IRQ_MIPS_GIC_STARTING,
+ 	CPUHP_AP_ARM_MVEBU_COHERENCY,
+ 	CPUHP_AP_PERF_X86_AMD_UNCORE_STARTING,
+ 	CPUHP_AP_PERF_X86_STARTING,
 -- 
 2.14.3

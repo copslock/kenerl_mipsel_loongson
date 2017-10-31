@@ -1,53 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Oct 2017 03:27:01 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:35008 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992215AbdJaC0yZwKe- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Oct 2017 03:26:54 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D281280D;
-        Mon, 30 Oct 2017 19:26:46 -0700 (PDT)
-Received: from zomby-woof (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 237D93F24A;
-        Mon, 30 Oct 2017 19:26:42 -0700 (PDT)
-From:   Marc Zyngier <marc.zyngier@arm.com>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-Cc:     <linux-mips@linux-mips.org>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@mips.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        <linux-kernel@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 2/5] irqchip/irq-goldfish-pic: Add Goldfish PIC driver
-In-Reply-To: <1509364642-21771-3-git-send-email-aleksandar.markovic@rt-rk.com>
-        (Aleksandar Markovic's message of "Mon, 30 Oct 2017 12:56:33 +0100")
-Organization: ARM Ltd
-References: <1509364642-21771-1-git-send-email-aleksandar.markovic@rt-rk.com>
-        <1509364642-21771-3-git-send-email-aleksandar.markovic@rt-rk.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1 (gnu/linux)
-Date:   Tue, 31 Oct 2017 02:26:40 +0000
-Message-ID: <86y3ns3vdr.fsf@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Oct 2017 06:35:14 +0100 (CET)
+Received: from gateway31.websitewelcome.com ([192.185.144.91]:42997 "EHLO
+        gateway31.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbdJaFfHmbve0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Oct 2017 06:35:07 +0100
+Received: from cm14.websitewelcome.com (cm14.websitewelcome.com [100.42.49.7])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id 4D75427FDED
+        for <linux-mips@linux-mips.org>; Tue, 31 Oct 2017 00:35:06 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id 9PCceNfFfHEIm9PCceTxzX; Tue, 31 Oct 2017 00:35:06 -0500
+Received: from [189.145.38.148] (port=59716 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.87)
+        (envelope-from <garsilva@embeddedor.com>)
+        id 1e9PCb-001aVz-Fc; Tue, 31 Oct 2017 00:35:05 -0500
+Date:   Tue, 31 Oct 2017 00:35:03 -0500
+From:   "Gustavo A. R. Silva" <garsilva@embeddedor.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
+        Julia Lawal <julia.lawall@lip6.fr>
+Subject: [PATCH] MIPS: microMIPS: Fix incorrect mask in insn_table_MM
+Message-ID: <20171031053503.GA5164@embeddedor.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.145.38.148
+X-Source-L: No
+X-Exim-ID: 1e9PCb-001aVz-Fc
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.145.38.148]:59716
+X-Source-Auth: garsilva@embeddedor.com
+X-Email-Count: 2
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+Return-Path: <garsilva@embeddedor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60597
+X-archive-position: 60598
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: garsilva@embeddedor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,107 +63,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 30 2017 at 12:56:33 pm GMT, Aleksandar Markovic <aleksandar.markovic@rt-rk.com> wrote:
-> From: Miodrag Dinic <miodrag.dinic@mips.com>
->
-> Add device driver for a virtual programmable interrupt controller
->
-> The virtual PIC is designed as a device tree-based interrupt controller.
->
-> The compatible string used by OS for binding the driver is
-> "google,goldfish-pic".
->
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+It seems that this is a typo error and the proper bit masking is
+"RT | RS" instead of "RS | RS".
 
-[...]
+This issue was detected with the help of Coccinelle.
 
-> diff --git a/drivers/irqchip/irq-goldfish-pic.c b/drivers/irqchip/irq-goldfish-pic.c
-> new file mode 100644
-> index 0000000..48fb773
-> --- /dev/null
-> +++ b/drivers/irqchip/irq-goldfish-pic.c
+Reported-by: Julia Lawall <julia.lawall@lip6.fr>
+Signed-off-by: Gustavo A. R. Silva <garsilva@embeddedor.com>
+---
+ arch/mips/mm/uasm-micromips.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[...]
-
-> +static int __init goldfish_pic_of_init(struct device_node *of_node,
-> +				       struct device_node *parent)
-> +{
-> +	struct goldfish_pic_data *gfpic;
-> +	struct irq_chip_generic *gc;
-> +	struct irq_chip_type *ct;
-> +	unsigned int parent_irq;
-> +	int ret = 0;
-> +
-> +	gfpic = kzalloc(sizeof(*gfpic), GFP_KERNEL);
-> +	if (!gfpic) {
-> +		ret = -ENOMEM;
-> +		goto out_err;
-> +	}
-> +
-> +	parent_irq = irq_of_parse_and_map(of_node, 0);
-> +	if (!parent_irq) {
-> +		pr_err("Failed to map Goldfish PIC parent IRQ\n");
-> +		ret = -EINVAL;
-> +		goto out_free;
-> +	}
-> +
-> +	gfpic->base = of_iomap(of_node, 0);
-> +	if (!gfpic->base) {
-> +		pr_err("Failed to map Goldfish PIC base\n");
-> +		ret = -ENOMEM;
-> +		goto out_unmap_irq;
-> +	}
-> +
-> +	/* Mask interrupts. */
-> +	writel(1, gfpic->base + GFPIC_REG_IRQ_DISABLE_ALL);
-> +
-> +	gc = irq_alloc_generic_chip("GFPIC", 1, GFPIC_IRQ_BASE, gfpic->base,
-> +				    handle_level_irq);
-> +
-> +	ct = gc->chip_types;
-
-And what if the allocation fails?
-
-> +	ct->regs.enable = GFPIC_REG_IRQ_ENABLE;
-> +	ct->regs.disable = GFPIC_REG_IRQ_DISABLE;
-> +	ct->chip.irq_unmask = irq_gc_unmask_enable_reg;
-> +	ct->chip.irq_mask = irq_gc_mask_disable_reg;
-> +
-> +	irq_setup_generic_chip(gc, IRQ_MSK(GFPIC_NR_IRQS), 0, 0,
-> +			       IRQ_NOPROBE | IRQ_LEVEL);
-> +
-> +	gfpic->irq_domain = irq_domain_add_legacy(of_node, GFPIC_NR_IRQS,
-> +						  GFPIC_IRQ_BASE, 0,
-> +						  &goldfish_irq_domain_ops,
-> +						  NULL);
-> +	if (!gfpic->irq_domain) {
-> +		pr_err("Failed to add irqdomain for Goldfish PIC\n");
-> +		ret = -EINVAL;
-> +		goto out_iounmap;
-> +	}
-> +
-> +	irq_set_chained_handler_and_data(parent_irq,
-> +					 goldfish_pic_cascade, gfpic);
-> +
-> +	pr_info("Successfully registered Goldfish PIC\n");
-> +	return 0;
-> +
-> +out_iounmap:
-> +	iounmap(gfpic->base);
-> +out_unmap_irq:
-> +	irq_dispose_mapping(parent_irq); 
-> +out_free:
-> +	kfree(gfpic);
-> +out_err:
-> +	return ret;
-> +}
-> +
-> +IRQCHIP_DECLARE(google_gf_pic, "google,goldfish-pic", goldfish_pic_of_init);
-
-Thanks,
-
-	M.
+diff --git a/arch/mips/mm/uasm-micromips.c b/arch/mips/mm/uasm-micromips.c
+index c28ff53..cdb5a19 100644
+--- a/arch/mips/mm/uasm-micromips.c
++++ b/arch/mips/mm/uasm-micromips.c
+@@ -80,7 +80,7 @@ static const struct insn const insn_table_MM[insn_invalid] = {
+ 	[insn_jr]	= {M(mm_pool32a_op, 0, 0, 0, mm_jalr_op, mm_pool32axf_op), RS},
+ 	[insn_lb]	= {M(mm_lb32_op, 0, 0, 0, 0, 0), RT | RS | SIMM},
+ 	[insn_ld]	= {0, 0},
+-	[insn_lh]	= {M(mm_lh32_op, 0, 0, 0, 0, 0), RS | RS | SIMM},
++	[insn_lh]	= {M(mm_lh32_op, 0, 0, 0, 0, 0), RT | RS | SIMM},
+ 	[insn_ll]	= {M(mm_pool32c_op, 0, 0, (mm_ll_func << 1), 0, 0), RS | RT | SIMM},
+ 	[insn_lld]	= {0, 0},
+ 	[insn_lui]	= {M(mm_pool32i_op, mm_lui_op, 0, 0, 0, 0), RS | SIMM},
 -- 
-Jazz is not dead. It just smells funny.
+2.7.4

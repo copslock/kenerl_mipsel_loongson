@@ -1,48 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Nov 2017 00:49:30 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:51236 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Nov 2017 00:52:31 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:43215 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991940AbdJaXtXPv74U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Nov 2017 00:49:23 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 31 Oct 2017 23:48:58 +0000
+        by eddie.linux-mips.org with ESMTP id S23991940AbdJaXwXjpkRU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Nov 2017 00:52:23 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 31 Oct 2017 23:52:06 +0000
 Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 31 Oct
- 2017 16:48:07 -0700
-Date:   Tue, 31 Oct 2017 23:48:53 +0000
+ 2017 16:51:33 -0700
+Date:   Tue, 31 Oct 2017 23:52:19 +0000
 From:   James Hogan <james.hogan@mips.com>
-To:     Corey Minyard <cminyard@mvista.com>
-CC:     Matt Redfearn <matt.redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Matthew Fortune <matthew.fortune@mips.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        "Jason A. Donenfeld" <jason@zx2c4.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: Re: [PATCH] MIPS: Fix exception entry when CONFIG_EVA enabled
-Message-ID: <20171031234853.GD15260@jhogan-linux>
-References: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com>
- <605f6a96-a843-085c-efc6-a2c0f2afd84a@mvista.com>
+To:     Paul Burton <paul.burton@mips.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Fix CM region target definitions
+Message-ID: <20171031235219.GE15260@jhogan-linux>
+References: <20171031220922.14931-1-paul.burton@mips.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ABTtc+pdwF7KHXCz"
+        protocol="application/pgp-signature"; boundary="gE7i1rD7pdK0Ng3j"
 Content-Disposition: inline
-In-Reply-To: <605f6a96-a843-085c-efc6-a2c0f2afd84a@mvista.com>
+In-Reply-To: <20171031220922.14931-1-paul.burton@mips.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1509493723-637139-14738-368075-4
+X-BESS-ID: 1509493926-637138-27156-361285-1
 X-BESS-VER: 2017.12-r1710252241
 X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Score: 0.51
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186465
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.51 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
 X-BESS-BRTS-Status: 1
 Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60625
+X-archive-position: 60626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,73 +57,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---ABTtc+pdwF7KHXCz
+--gE7i1rD7pdK0Ng3j
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 11, 2017 at 08:12:31AM -0500, Corey Minyard wrote:
-> On 10/11/2017 03:59 AM, Matt Redfearn wrote:
-> > Commit 9fef68686317b ("MIPS: Make SAVE_SOME more standard") made several
-> > changes to the order in which registers are saved in the SAVE_SOME
-> > macro, used by exception handlers to save the processor state. In
-> > particular, it removed the
-> > move   k1, sp
-> > in the delay slot of the branch testing if the processor is already in
-> > kernel mode. This is replaced later in the macro by a
-> > move   k0, sp
-> > When CONFIG_EVA is disabled, this instruction actually appears in the
-> > delay slot of the branch. However, when CONFIG_EVA is enabled, instead
-> > the RPS workaround of
-> > MFC0	k0, CP0_ENTRYHI
-> > appears in the delay slot. This results in k0 not containing the stack
-> > pointer, but some unrelated value, which is then saved to the kernel
-> > stack. On exit from the exception, this bogus value is restored to the
-> > stack pointer, resulting in an OOPS.
-> >
-> > Fix this by moving the save of SP in k0 explicitly in the delay slot of
-> > the branch, outside of the CONFIG_EVA section, restoring the expected
-> > instruction ordering when CONFIG_EVA is active.
-> >
-> > Fixes: 9fef68686317b ("MIPS: Make SAVE_SOME more standard")
-> > Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> > Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
+On Tue, Oct 31, 2017 at 03:09:22PM -0700, Paul Burton wrote:
+> The default CM target field in the GCR_BASE register is encoded with 0
+> meaning memory & 1 being reserved. However the definitions we use for
+> those bits effectively get these two values backwards - likely because
+> they were copied from the definitions for the CM regions where the
+> target is encoded differently. This results in use setting up GCR_BASE
+> with the reserved target value by default, rather than targeting memory
+> as intended. Although we currently seem to get away with this it's not a
+> great idea to rely upon.
 >=20
-> I looked this over pretty carefully and it looks correct to me.=C2=A0 It=
-=20
-> makes no difference
-> in the instructions generated by the non-EVA case.=C2=A0 I shouldn't have=
-=20
-> missed this :(.
+> Fix this by changing our macros to match the documentated target values.
 >=20
-> Reviewed-by: Corey Minyard <cminyard@mvista.com>
-
-Yeh, having stared at it for a little while it looks correct to me too.
+> The incorrect encoding became used as of commit 9f98f3dd0c51 ("MIPS: Add
+> generic CM probe & access code") in the Linux v3.15 cycle, and was
+> likely carried forwards from older but unused code introduced by
+> commit 39b8d5254246 ("[MIPS] Add support for MIPS CMP platform.") in the
+> v2.6.26 cycle.
+>=20
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Reported-by: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: <stable@vger.kernel.org> # v3.15+
 
 Reviewed-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
---ABTtc+pdwF7KHXCz
+> ---
+>=20
+>  arch/mips/include/asm/mips-cm.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips=
+-cm.h
+> index f6231b91b724..c6aaabd7cfd1 100644
+> --- a/arch/mips/include/asm/mips-cm.h
+> +++ b/arch/mips/include/asm/mips-cm.h
+> @@ -142,8 +142,8 @@ GCR_ACCESSOR_RO(64, 0x000, config)
+>  GCR_ACCESSOR_RW(64, 0x008, base)
+>  #define CM_GCR_BASE_GCRBASE			GENMASK_ULL(47, 15)
+>  #define CM_GCR_BASE_CMDEFTGT			GENMASK(1, 0)
+> -#define  CM_GCR_BASE_CMDEFTGT_DISABLED		0
+> -#define  CM_GCR_BASE_CMDEFTGT_MEM		1
+> +#define  CM_GCR_BASE_CMDEFTGT_MEM		0
+> +#define  CM_GCR_BASE_CMDEFTGT_RESERVED		1
+>  #define  CM_GCR_BASE_CMDEFTGT_IOCU0		2
+>  #define  CM_GCR_BASE_CMDEFTGT_IOCU1		3
+> =20
+> --=20
+> 2.15.0
+>=20
+>=20
+
+--gE7i1rD7pdK0Ng3j
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAln5C90ACgkQbAtpk944
-dnoa+g//bueyNffOEKJETzj+ErDTSSO0WpbJRJKK0AfKoct54YFUbr37ErVGUb/L
-MkMtgyfqdm4uutAhCp90Jn70ZOEAlheb2MjbnHvp5oNJ7PgohJkzocc3x5xA2B3F
-YbuIaTmfUa1W93h3+YSmE0DYYN7uas+j6AFoGf9Q6KryRoKbrHwnxEy8vhLJGFvd
-7szraNYk37S/nKTASAQmznNrAkjWeAbJ5qSvzPh0Ll3WDPGMPq6tAs+WoZrS1pmr
-23GLs+Jc8y2LLlMFjRiid1majATC9kcljlXSC8diq9b8TopPRhRx2ciuiaLeK2P9
-IkriDqu/313ADgi9/3UdJK/UBwz4nYbwo9z++Xv8DQzSH4RwDm/UDr9cJK1xBJm7
-kZ2s8/z2i5KFne9kqEOs1AjqhRWQtt4P6AnDY3b75/109wQB6zk2m3RtezB8DBP3
-qOhrCecCnnyk6RrenuQm9yXYAnH83GVVWUmN7z0mtAaeNZCcDFZckvGILM8evRvI
-A66/xSg3ACmOJbKS1XCtXwmKoLDdieKstmZCWSFmBXNHmzye4343RG6dZeWD3FvD
-hhaKWoTKl3VpKoyA3trnCulPhTrX6heuIJF+Jyah+0sZjOiCtlFDQN8J58k755XY
-mgb2xe9jiUw+qU6v4GMQ6Fuw3fh/PxLsTUAc7XZYFfI58HxB+0g=
-=/GEg
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAln5DLMACgkQbAtpk944
+dnoOag//aX0DaDsvnM+pRWG+7pwYZJIqD4usrz1x48cag+WMRrn6oKudsSruSgih
+08j3cbQAocp5nMYFr4irZdONpRibi1SHBMlotCYnQiwBzmakKgf+FPXTUtFKOOk3
+jWYSrSeYi7Z2wbUDuhUcYGUhS1vep/S9iM1nXTjRhjrArECrmK4jHLXsXee1PRRt
+5ZcPHQmaYQDXlMblWtHIxfnhbRMzY8rHkSd7EReSDHRh2VSNYI8i/24+yMGyG5bP
+iRQlauOnNZOc3dp8NZ3kSgNNnlYH8z/BUmKPxWq4aGRsfU3zbuF7reTkCzuxY0FR
+3/RzYKS2cLCWxXrz/HJ7mBtxFbeXCTRtNncq6tIq+tBLwLjWYM9t7xJ6NnN4e2xJ
+YJ9hydOBi7hRMyouH+iqBcijB8wlTQdynzK/t/uLNnpxPpPaS4ZIL0ppfNzDLN36
+LiVNJFH77oCavVYEGDZSPvDzE0/IlhGGna+gNpogDvp7ikC3aYHrq7iuEfpt1Ij/
+cG9IeRIMPLn7lTxjvr/luhON09UBgGvZvSNmUQrjs1Hcxi+jsUSvuyhK0MEaEfQd
+dCaiTqg0ITr89glvFr5Q+e4q7lULDjAItWQ06gWEX2KxUAj/AKj7Pm9whBRUhKZG
+FYzIwqAef2rs3/WpJpUwrPb7FcglKqZFXRBzsHKfOedHXIjUaOk=
+=Z8Jl
 -----END PGP SIGNATURE-----
 
---ABTtc+pdwF7KHXCz--
+--gE7i1rD7pdK0Ng3j--

@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Oct 2017 22:32:32 +0100 (CET)
-Received: from amalthea.cedarwireless.com ([198.148.6.44]:48220 "EHLO
-        amalthea.cedarwireless.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992312AbdJaVcZgYPOl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Oct 2017 22:32:25 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by amalthea.cedarwireless.com (Postfix) with ESMTP id 4BE3B4C6
-        for <linux-mips@linux-mips.org>; Tue, 31 Oct 2017 14:32:17 -0700 (PDT)
-X-Virus-Scanned: amavisd-new at cedarwireless.com
-Received: from amalthea.cedarwireless.com ([127.0.0.1])
-        by localhost (amalthea.cedarwireless.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ae62G2xN1Z4I for <linux-mips@linux-mips.org>;
-        Tue, 31 Oct 2017 14:31:46 -0700 (PDT)
-Received: from mail-wm0-f47.google.com (mail-wm0-f47.google.com [74.125.82.47])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: smtprelay)
-        by amalthea.cedarwireless.com (Postfix) with ESMTPSA id A5459994
-        for <linux-mips@linux-mips.org>; Tue, 31 Oct 2017 14:31:44 -0700 (PDT)
-Received: by mail-wm0-f47.google.com with SMTP id t139so1546945wmt.1
-        for <linux-mips@linux-mips.org>; Tue, 31 Oct 2017 14:31:44 -0700 (PDT)
-X-Gm-Message-State: AMCzsaV0gckieSf6g/ytugTPnKwVjgHEfM8qr2PRg8SlPb5X4AuXGRMG
-        UHVqeYL4wGZmm2hr00g9PF+buGj0G6Qws0IO/2I=
-X-Google-Smtp-Source: ABhQp+QSbjiR1nWob8GQrLd8WBkBPMUw6V16ycPfla2CkRHEtVsT1/wL58FmI6XCjEW2PoLNnQPQZfcV+1menbCyJwc=
-X-Received: by 10.28.92.208 with SMTP id q199mr2737682wmb.96.1509485502656;
- Tue, 31 Oct 2017 14:31:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Oct 2017 22:41:29 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:33300 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991940AbdJaVlVy01Gl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Oct 2017 22:41:21 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 31 Oct 2017 21:41:15 +0000
+Received: from jhogan-linux.mipstec.com (192.168.154.110) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Tue, 31 Oct 2017 14:40:42 -0700
+From:   James Hogan <james.hogan@mips.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>
+CC:     James Hogan <james.hogan@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Nathan Sullivan <nathan.sullivan@ni.com>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH for-4.14] MIPS: generic: Fix NI 169445 its build
+Date:   Tue, 31 Oct 2017 21:41:07 +0000
+Message-ID: <20171031214107.15596-1-james.hogan@mips.com>
+X-Mailer: git-send-email 2.14.1
 MIME-Version: 1.0
-Received: by 10.223.163.3 with HTTP; Tue, 31 Oct 2017 14:31:42 -0700 (PDT)
-In-Reply-To: <c726a4ab-632a-0788-1147-c3de26ab6b75@caviumnetworks.com>
-References: <CAO3KpR3+j86m_Bbq=C0Ws4jR3RHO9oq0Gdkq60JP4szqNKcosQ@mail.gmail.com>
- <3d272dc1-4012-c7ed-7c34-876265afb25e@caviumnetworks.com> <CAO3KpR1VGFYdY-Mxb+Xx6yzKhzXAycizEm_7f9LT5GdXcLbkDQ@mail.gmail.com>
- <c726a4ab-632a-0788-1147-c3de26ab6b75@caviumnetworks.com>
-From:   Gabriel Kuri <gkuri@ieee.org>
-Date:   Tue, 31 Oct 2017 14:31:42 -0700
-X-Gmail-Original-Message-ID: <CAO3KpR2oYGY89utWTpwd0+hzXQ8xJCsNpxLaX7fxV6hWiFbtNQ@mail.gmail.com>
-Message-ID: <CAO3KpR2oYGY89utWTpwd0+hzXQ8xJCsNpxLaX7fxV6hWiFbtNQ@mail.gmail.com>
-Subject: Re: Octeon CN5010 - Kernel 4.4.92
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <gkuri@ieee.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1509486062-452059-3089-435384-5
+X-BESS-VER: 2017.12.1-r1710261623
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.60
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186462
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
+X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60616
+X-archive-position: 60617
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gkuri@ieee.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,76 +54,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> What board it it?
+From: James Hogan <jhogan@kernel.org>
 
-It's an old Aruba AP-125 wireless access point. We have decommissioned
-hundreds of these APs and I'd like to integrate them in to a
-University course on embedded operating systems to make use of them.
+Since commit 04a85e087ad6 ("MIPS: generic: Move NI 169445 FIT image
+source to its own file"), a generic 32r2el_defconfig kernel fails to
+build with the following build error:
 
-> Why not show the entire logs we could know what you are doing in u-boot?
+  ITB     arch/mips/boot/vmlinux.gz.itb
+Error: arch/mips/boot/vmlinux.gz.its:111.1-2 syntax error
+FATAL ERROR: Unable to parse input tree
+mkimage Can't read arch/mips/boot/vmlinux.gz.itb.tmp: Invalid argument
 
-Here you go ...
+This is because arch/mips/generic/board-ni169445.its.S doesn't include
+the necessary "/" node path before the first open brace, which did
+previously exist when it was in arch/mips/generic/vmlinux.its.S.
 
-APBoot 1.0.8.3 (build 20343)
-Built: 2008-12-27 at 17:03:46
+Fixes: 04a85e087ad6 ("MIPS: generic: Move NI 169445 FIT image source to its own file")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Nathan Sullivan <nathan.sullivan@ni.com>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/generic/board-ni169445.its.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Model: AP-12x
-CPU:   OCTEON CN50XX-SCP revision: 1
-Clock: 500 MHz, DDR clock: 333 MHz (666 Mhz data rate)
-Power: POE
-POST1: passed
-POST2: passed
-DRAM:  64 MB
-Flash: 16 MB
-Clear: done
-BIST:  passed
-PCI:   PCI 32-bit; scanning bus 0 ...
-       dev fn venID devID class  rev    MBAR0    MBAR1    MBAR2    MBAR3
-       03  00  168c  ff1d 00002   01 80000000 00000000 00000000 00000000
-       04  00  168c  ff1d 00002   01 80010000 00000000 00000000 00000000
-Net:   en0, en1
-Radio: ar9160#0, ar9160#1
-apboot> bootoct bed00000 mem=0 console=ttyS0,9600
-argv[2]: mem=0
-argv[3]: console=ttyS0,9600
-ELF file is 64 bit
-Allocated memory for ELF segment: addr: 0x1100000, size 0x2628a48
-Loading .text @ 0x81100000 (0x35ca1c bytes)
-Loading __ex_table @ 0x8145ca20 (0x57c0 bytes)
-Loading .rodata @ 0x81463000 (0xca880 bytes)
-Loading .pci_fixup @ 0x8152d880 (0x1db8 bytes)
-Loading __ksymtab @ 0x8152f638 (0xbdd0 bytes)
-Loading __ksymtab_gpl @ 0x8153b408 (0x6710 bytes)
-Loading __ksymtab_strings @ 0x81541b18 (0x14cfd bytes)
-Loading __param @ 0x81556818 (0x988 bytes)
-Clearing __modver @ 0x815571a0 (0xe60 bytes)
-Loading .data @ 0x81558000 (0x3bbd8 bytes)
-Loading .data..page_aligned @ 0x81594000 (0x4000 bytes)
-Loading .init.text @ 0x81598000 (0x278b4 bytes)
-Loading .init.data @ 0x815bf8c0 (0x12390 bytes)
-Loading .data..percpu @ 0x815d2000 (0x3eb0 bytes)
-Clearing .bss @ 0x816e0000 (0x2048a48 bytes)
-## Loading OS kernel with entry point: 0x81107920 ...
-Bootloader: Done loading app on coremask: 0x1
-[    0.000000] Linux version 4.4.92 (gkuri@galileo) (gcc version 5.4.0
-(LEDE GCC 5.4.0 r3560-79f57e4227
-[    0.000000] CVMSEG size: 2 cache lines (256 bytes)
-[    0.000000] bootconsole [early0] enabled
-[    0.000000] CPU0 revision is: 000d0601 (Cavium Octeon+)
-[    0.000000] Checking for the multiply/shift bug... no.
-[    0.000000] Checking for the daddiu bug... no.
-[    0.000000] Determined physical RAM map:
-[    0.000000]  memory: 0000000000800000 @ 0000000003800000 (usable)
-[    0.000000]  memory: 0000000002628a48 @ 0000000001100000 (usable)
-[    0.000000] Wasting 243712 bytes for tracking 4352 unused pages
-[    0.000000] Using internal Device Tree.
-[    0.000000] bootmem alloc of 8388608 bytes failed!
-[    0.000000] Kernel panic - not syncing: Out of memory
-[    0.000000] Rebooting in 1 seconds..
-
-
-> Archaic version of u-boot being used...
-
-Yeah, it's Aruba's old version of U-Boot, which they have called
-"APBoot". I was trying to avoid compiling a new version of U-Boot for
-these boards.
+diff --git a/arch/mips/generic/board-ni169445.its.S b/arch/mips/generic/board-ni169445.its.S
+index d12e12fe90be..e4cb4f95a8cc 100644
+--- a/arch/mips/generic/board-ni169445.its.S
++++ b/arch/mips/generic/board-ni169445.its.S
+@@ -1,4 +1,4 @@
+-{
++/ {
+ 	images {
+ 		fdt@ni169445 {
+ 			description = "NI 169445 device tree";
+-- 
+2.14.1

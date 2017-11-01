@@ -1,39 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Nov 2017 17:59:39 +0100 (CET)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:42786 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992910AbdKAQ7c40Nfn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Nov 2017 17:59:32 +0100
-Received: from p4fea49b2.dip0.t-ipconnect.de ([79.234.73.178] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1e9wLz-0004C1-Hj; Wed, 01 Nov 2017 17:58:59 +0100
-Date:   Wed, 1 Nov 2017 17:59:23 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Paul Burton <paul.burton@mips.com>
-cc:     Marc Zyngier <marc.zyngier@arm.com>,
-        Jason Cooper <jason@lakedaemon.net>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] irqchip: mips-gic: Cleanups, fixes, prep for
- multi-cluster
-In-Reply-To: <20171101164047.4ascutd7tkoaxtjp@pburton-laptop>
-Message-ID: <alpine.DEB.2.20.1711011758170.1942@nanos>
-References: <867evc5cc9.fsf@arm.com> <20171031164151.6357-1-paul.burton@mips.com> <86efpi3lgj.fsf@arm.com> <20171101164047.4ascutd7tkoaxtjp@pburton-laptop>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Nov 2017 18:59:45 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.230]:51078 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992910AbdKAR7hvLer8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Nov 2017 18:59:37 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 01 Nov 2017 17:57:57 +0000
+Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
+ Microsoft SMTP Server id 14.3.361.1; Wed, 1 Nov 2017 10:57:21 -0700
+Date:   Wed, 1 Nov 2017 10:58:20 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+CC:     <linux-mips@linux-mips.org>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <james.hogan@mips.com>,
+        <linux-kernel@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v6 5/5] MIPS: ranchu: Add Ranchu as a new generic-based
+ board
+Message-ID: <20171101175820.nhepxzdwfokof6q2@pburton-laptop>
+References: <1509364642-21771-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1509364642-21771-6-git-send-email-aleksandar.markovic@rt-rk.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1509364642-21771-6-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: NeoMutt/20171013
+X-BESS-ID: 1509559077-452060-31111-528950-1
+X-BESS-VER: 2017.12.1-r1710261623
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.60
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186485
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
+X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60634
+X-archive-position: 60635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,34 +68,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 1 Nov 2017, Paul Burton wrote:
+Hi Aleksandar,
 
-> Hi Marc,
-> 
-> On Wed, Nov 01, 2017 at 12:13:16AM +0000, Marc Zyngier wrote:
-> > On Tue, Oct 31 2017 at  9:41:43 am GMT, Paul Burton <paul.burton@mips.com> wrote:
-> > > This series continues cleaning & fixing up the MIPS GIC irqchip driver
-> > > whilst laying groundwork to support multi-cluster systems.
-> 
-> <SNIP>
-> 
-> > Are those targeting 4.14 or 4.15? It is getting quite late for the
-> > former, and it doesn't seem to cleanly apply on tip/irq/core (or my
-> > irqchip-4.15 branch) if that's for the latter (patch 6 shouts at me).
-> 
-> Whichever you're happiest with. If you'd like me to rebase them & resubmit
-> that's fine.
-> 
-> I see the conflict with patch 6 atop tip/irq/core - it's because tip/irq/core
-> is based upon v4.14-rc2 which doesn't have commit a08588ea486a
-> ("irqchip/mips-gic: Fix shifts to extract register fields") that went into
-> v4.14-rc3. The correct resolution is to keep the patches version of things (ie.
-> delete the block of code).
+On Mon, Oct 30, 2017 at 12:56:36PM +0100, Aleksandar Markovic wrote:
+> diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
+> new file mode 100644
+> index 0000000..0397752
+> --- /dev/null
+> +++ b/arch/mips/generic/board-ranchu.c
+> @@ -0,0 +1,79 @@
+> +/*
+> + * Support code for virtual Ranchu board for MIPS.
+> + *
+> + * Author: Miodrag Dinic <miodrag.dinic@mips.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
+> + */
+> +
+> +#include <linux/of_address.h>
+> +
+> +#include <asm/machine.h>
 
-Marc, simply merge current linus into your branch with the reason:
+You should also include asm/mipsregs.h for read_c0_count(), even though it's
+presumably being pulled in indirectly as-is.
 
-      Pick up upstream fixes so dependent patches apply
+> +#include <asm/time.h>
+> +
+> +#define GOLDFISH_TIMER_LOW		0x00
+> +#define GOLDFISH_TIMER_HIGH		0x04
+> +
+> +static __init uint64_t read_rtc_time(void __iomem *base)
+> +{
+> +	u64 time_low;
+> +	u64 time_high;
+> +
+> +	time_low = readl(base + GOLDFISH_TIMER_LOW);
+> +	time_high = readl(base + GOLDFISH_TIMER_HIGH);
+> +
+> +	return (time_high << 32) | time_low;
+> +}
+> +
+> +static __init unsigned int ranchu_measure_hpt_freq(void)
+> +{
+> +	u64 rtc_start, rtc_current, rtc_delta;
+> +	unsigned int start, count;
+> +	struct device_node *np;
+> +	void __iomem *rtc_base;
+> +
+> +	np = of_find_compatible_node(NULL, NULL, "google,goldfish-rtc");
+> +	if (!np)
+> +		panic("%s(): Failed to find 'google,goldfish-rtc' dt node!",
+> +		      __func__);
+> +
+> +	rtc_base = of_iomap(np, 0);
+> +	if (!rtc_base)
+> +		panic("%s(): Failed to ioremap Goldfish RTC base!", __func__);
+> +
+> +	/*
+> +	 * poll the nanosecond resolution RTC for 1 second
+> +	 * to calibrate the CPU frequency
+> +	 */
+> +	rtc_start = read_rtc_time(rtc_base);
+> +	start = read_c0_count();
+> +
+> +	do {
+> +		rtc_current = read_rtc_time(rtc_base);
+> +		rtc_delta = rtc_current - rtc_start;
+> +	} while (rtc_delta < NSEC_PER_SEC);
+> +
+> +	count = read_c0_count() - start;
+> +
+> +	count += 5000;	/* round */
+> +	count -= count % 10000;
+> +
+> +	return count;
+> +}
+
+Would it be possible to have the emulator write the frequency into the
+devicetree, as the frequency of a fixed-clock used as the CPU's clock? If that
+were possible then there'd be no need for this board setup code at all. Not a
+big deal, but it'd be nice.
+
+> +
+> +static const struct of_device_id ranchu_of_match[];
+> +
+> +MIPS_MACHINE(ranchu) = {
+> +	.matches = ranchu_of_match,
+> +	.measure_hpt_freq = ranchu_measure_hpt_freq,
+> +};
+> +
+> +static const struct of_device_id ranchu_of_match[] = {
+> +	{
+> +		.compatible = "mti,ranchu",
+> +		.data = &__mips_mach_ranchu,
+> +	},
+> +};
+
+Could you move ranchu_of_match before the MIPS_MACHINE & drop the forward
+declaration? That would feel tidier to me. It could also be marked as
+__initdata.
+
+In general though, with those & James' comments addressed, I think this is
+looking good.
 
 Thanks,
-
-	tglx
+    Paul

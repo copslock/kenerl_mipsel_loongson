@@ -1,73 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 18:49:39 +0100 (CET)
-Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:53116
-        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991960AbdKBRt3cjstY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2017 18:49:29 +0100
-Received: by mail-pg0-x242.google.com with SMTP id a192so241723pge.9;
-        Thu, 02 Nov 2017 10:49:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 19:04:45 +0100 (CET)
+Received: from mail-pg0-x229.google.com ([IPv6:2607:f8b0:400e:c05::229]:54609
+        "EHLO mail-pg0-x229.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991960AbdKBSEgNAqcY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2017 19:04:36 +0100
+Received: by mail-pg0-x229.google.com with SMTP id l24so270817pgu.11;
+        Thu, 02 Nov 2017 11:04:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=32QbRC8XDIOBymUYOSgOw8crtbmy2rYVUsCyJF/0eZ0=;
-        b=bOH2DVmRnEn7uHOIJaji979qBrtXA1eia2f/YfquM/HC+SS9R3Uuk2oG27LQa5halv
-         xu41dB0xN749nNI0qkVFMbfvQrfEvDCWYu7szg01dP8u2ncpuiRP5+YI/s4Np+ZNXEPh
-         FrbwIgCZqJvuIk+bce+4cUVB7FnmyyCbXD27dgvOegGzVbfVAglqU1VBrqHfFkWFazWE
-         VaE0uFpLtTgMp5suTkbolJgi1wZwYFQhzZGdUGV4blYfrPBqyysKbaOV8jJIz7DyC/QQ
-         recetAN0exfc7SOEelm67PxiGZknpExQjG3CxBhSaUf6pDS9+7Qcu9DENtzogWZmSjKt
-         RuvQ==
+        bh=Gooj+JQGfJgm74p5cAaDjbQEy2lf4CJz7AomOsU37Pk=;
+        b=entfQcmUHsqabcyG4rSVl4u4EHUcc6ki3u8GGGSE3kqFuENAGzIvt6m6jUVeyBXEUD
+         1qkDnlhWaO4gNLHweD4nucC5rWATydO7QQdl+hrA4ZmWDoWj25eFede+TcqRkJsMFXwV
+         fBTCZ23pjQaWpqARK5I9awUBZjMBjpfjOFJ9DufqwANn7sUPAGU6SRD0P0+5He/nokPR
+         w9hvm5Pdh9x8ycOg7+j3K6iCEEdgPJct2eC1N9n16NVJM7cl7KFG+z1SCpoCBPnoB/zv
+         6GjUY3vL4jm2tLsIvzj9XNhxkjGkRfCyvwqMV5V/OGxP8RCfaYBY6EIqRiWDDlzq1r5/
+         WRTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=32QbRC8XDIOBymUYOSgOw8crtbmy2rYVUsCyJF/0eZ0=;
-        b=RuNSor0FUzjYnMZpe62oB6Z4VSxCuLmDtdPi6vMljxHkfEwJ9a0hWR1B//XZtYzfr0
-         zhjcBHBvY4qVMyRFIzifgYRkVcQavAxiC79SNCdvvWh5bze5jJcf+CRLiwX1qD8gKsJo
-         DBhf3G7n8fDVkzo7VMAeUMTiNGGJr3xGOob1QaTwl+WPIu9eVO1uyNrlJuT8l/qrVs6l
-         aSHZfDE6H10SG9/AkP+yQAQ4jREtpFrKYDZcKlGnuk5UoZntg8tJPSoCoqM2T2NCIrTo
-         7Ioj0cQW4od7zjU5tMNFuv5lqIj+0vcBOhUV7T973GR1k7RHUAo7YPNkrXhv6zDpzqNu
-         GI8w==
-X-Gm-Message-State: AMCzsaUOttGKP/3AlMBjUgQIpC0d6xED0NQndju++q45n9sNErBqrJc+
-        UOlG7QCG3RmqB8mewsB5RiM=
-X-Google-Smtp-Source: ABhQp+SSnpfUOYgsIWNln619NX850LL58niGBOaBR9lJBK3ki/jkp4O3mig9dAR2y8LDaOCu4g/t3A==
-X-Received: by 10.84.202.12 with SMTP id w12mr4042517pld.358.1509644962695;
-        Thu, 02 Nov 2017 10:49:22 -0700 (PDT)
+        bh=Gooj+JQGfJgm74p5cAaDjbQEy2lf4CJz7AomOsU37Pk=;
+        b=ZGrZHU/znjesOBj8lFUEZe4PNKu4tR8gXRPp9O51gceR70n96XNNRlw8n7eHmaKqtT
+         YMNoXSdoMjxs3uSC2ojnR8Uwp0P/e9vIBimGAr5BtDFLZX0Jq929K0WpGRyuOFIEv88F
+         Q1gRQ2+BHS3FHU7Cyhl0alIS/8sQoO4DQk0WuMCo8WlxORT/zynNhong9zdX2ooQrQSQ
+         WWCFeqt+wHA5uRzHk0K/MI0cYNGKcADOs7vg982h4KC5L3OM0t/7iTy/2WqUYP9D5vA3
+         90ZOu5sKsgB6AE6ke9YA5GM19ZK5wWh8wR8Ho48eRmnyoxAmyHL/q83HtXee1+x6Hc2J
+         m1Fw==
+X-Gm-Message-State: AMCzsaX6WiPBQkJYKxlecuJqwD2aaypDkVvsV5LBo7pNMXOmWI/ZFgoF
+        qgPRvoEEAEuFA4B0/fSokNs=
+X-Google-Smtp-Source: ABhQp+QnRqnpDm73T1VLA7YODC0+Smye1eO9XafszPUtm9fIXGUhggh78ErYlQEf2/3ODmw6rCAufw==
+X-Received: by 10.84.234.198 with SMTP id i6mr4160226plt.410.1509645869338;
+        Thu, 02 Nov 2017 11:04:29 -0700 (PDT)
 Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id c26sm7114581pfl.115.2017.11.02.10.49.20
+        by smtp.googlemail.com with ESMTPSA id l22sm7659971pfk.45.2017.11.02.11.04.27
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Nov 2017 10:49:21 -0700 (PDT)
-Subject: Re: [PATCH 3/7] MIPS: Octeon: Add a global resource manager.
+        Thu, 02 Nov 2017 11:04:28 -0700 (PDT)
+Subject: Re: [PATCH 4/7] MIPS: Octeon: Add Free Pointer Unit (FPA) support.
 To:     David Daney <ddaney@caviumnetworks.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        David Daney <david.daney@cavium.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@mips.com>, netdev@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-kernel@vger.kernel.org,
         "Steven J. Hill" <steven.hill@cavium.com>,
         devicetree@vger.kernel.org, Carlos Munoz <cmunoz@cavium.com>
 References: <20171102003606.19913-1-david.daney@cavium.com>
- <20171102003606.19913-4-david.daney@cavium.com>
- <20171102122327.GE4772@lunn.ch>
- <caeae680-915a-d08c-d220-899db0970328@caviumnetworks.com>
+ <20171102003606.19913-5-david.daney@cavium.com>
+ <d473b10c-ae5d-efa1-7329-de7b68152725@gmail.com>
+ <fc2d71e2-cdd4-1cf8-13b0-ea462b5e7e75@caviumnetworks.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <6ff04462-88ec-a972-4084-e26ea3cb630a@gmail.com>
-Date:   Thu, 2 Nov 2017 10:49:19 -0700
+Message-ID: <70fa7ec2-3e6d-e420-ff57-b34dc7ec311e@gmail.com>
+Date:   Thu, 2 Nov 2017 11:04:26 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <caeae680-915a-d08c-d220-899db0970328@caviumnetworks.com>
+In-Reply-To: <fc2d71e2-cdd4-1cf8-13b0-ea462b5e7e75@caviumnetworks.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60692
+X-archive-position: 60693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,62 +83,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/02/2017 09:03 AM, David Daney wrote:
-> On 11/02/2017 05:23 AM, Andrew Lunn wrote:
->>> +static void res_mgr_lock(void)
->>> +{
->>> +    unsigned int tmp;
->>> +    u64 lock = (u64)&res_mgr_info->rlock;
->>> +
->>> +    __asm__ __volatile__(
->>> +        ".set noreorder\n"
->>> +        "1: ll   %[tmp], 0(%[addr])\n"
->>> +        "   bnez %[tmp], 1b\n"
->>> +        "   li   %[tmp], 1\n"
->>> +        "   sc   %[tmp], 0(%[addr])\n"
->>> +        "   beqz %[tmp], 1b\n"
->>> +        "   nop\n"
->>> +        ".set reorder\n" :
->>> +        [tmp] "=&r"(tmp) :
->>> +        [addr] "r"(lock) :
->>> +        "memory");
->>> +}
->>> +
->>> +static void res_mgr_unlock(void)
->>> +{
->>> +    u64 lock = (u64)&res_mgr_info->rlock;
->>> +
->>> +    /* Wait until all resource operations finish before unlocking. */
->>> +    mb();
->>> +    __asm__ __volatile__(
->>> +        "sw $0, 0(%[addr])\n" : :
->>> +        [addr] "r"(lock) :
->>> +        "memory");
->>> +
->>> +    /* Force a write buffer flush. */
->>> +    mb();
->>> +}
+On 11/02/2017 09:27 AM, David Daney wrote:
+> On 11/01/2017 08:29 PM, Florian Fainelli wrote:
+>> Le 11/01/17 à 17:36, David Daney a écrit :
+>>> From: Carlos Munoz <cmunoz@cavium.com>
+>>>
+>>>  From the hardware user manual: "The FPA is a unit that maintains
+>>> pools of pointers to free L2/DRAM memory. To provide QoS, the pools
+>>> are referenced indirectly through 1024 auras. Both core software
+>>> and hardware units allocate and free pointers."
 >>
->> It would be good to add some justification for using your own locks,
->> rather than standard linux locks.
+>> This looks like a possibly similar implement to what
+>> drivers/net/ethernet/marvell/mvneta_bm.c, can you see if you can make
+>> any use of genpool_* and include/net/hwbm.h here as well?
 > 
-> Yes, I will add that.
-> 
-> 
->>
->> Is there anything specific to your hardware in this resource manager?
->> I'm just wondering if this should be generic, put somewhere in lib. Or
->> maybe there is already something generic, and you should be using it,
->> not re-inventing the wheel again.
-> 
-> The systems built around this hardware may have other software running
-> on CPUs that are not running the Linux kernel.  The data structures used
-> to arbitrate usage of shared system hardware resources use exactly these
-> locking primitives, so they cannot be changed to use the Linux locking
-> implementation de jour.
+> Yikes!  Is it permitted to put function definitions that are not "static
+> inline" in header files?
 
-Would hwspinlock be a possible option so this is abstracted on the Linux
-side using these locking primitives through the hwspinlock layer which
-in turn does exactly what is above?
--- 
+Meh well, this is not even ressembling what we initially discussed, so I
+was hoping we could build more interesting features on top of this.
+
+> 
+> The driver currently doesn't use page fragments, so I don't think that
+> the hwbm thing can be used.
+> 
+> Also the FPA unit is used to control RED and back pressure in the PKI
+> (packet input processor), which are features that are features not
+> considered in hwbm.
+> 
+> The OCTEON-III hardware also uses the FPA for non-packet-buffer memory
+> allocations.  So for those, it seems that hwbm is also not a good fit.
+
+OK, let me see if I understand how FPA works, can we say that this is
+more or less a buffer tokenizer in that, you give it a buffer physical
+address and it returns an unique identifier that the FPA uses for actual
+packet passing, transmission and other manipulations?
+
+There were a few funky things in the network driver, I will comment there.
+--
 Florian

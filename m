@@ -1,69 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 10:09:12 +0100 (CET)
-Received: from mail-ot0-x244.google.com ([IPv6:2607:f8b0:4003:c0f::244]:53703
-        "EHLO mail-ot0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993306AbdKBJJEyRKkA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2017 10:09:04 +0100
-Received: by mail-ot0-x244.google.com with SMTP id f18so949029otd.10;
-        Thu, 02 Nov 2017 02:09:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=NP/UeKGOFxvrbzcHNL6omhO18y91zlkSxU1FfgzGsb4=;
-        b=GfUG8Qn+ZyRs1tbyveUp4aGH+DZJMljHwpbP8NzfJigc4ZsdQ4mlzuqnb5CgvQMu7w
-         9SOcCq9wtqRLn4H34471ZBtuV1XD2aFaRdDvTObutoqFn6k2dTfORdAXXqCI90bwU3Yd
-         TXTjN87w156MxF4KYSwsJPGaps8/XucTMcb9MWe4lGAzYgaMTz8FHQitUdC9QOw/qKd1
-         Dr3Hr/VBRv5c7WfJIcq2/0ROROloQlwGYXCyhr7faQbtgidOUiLNrlaVCzAoIG+f9zAK
-         27srfEURgPqkvT12hfBIxL2Y39RNH6FzpwZ31GO/2KIEjks8k/EmHgy43NYmtyJ80GJi
-         vUVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=NP/UeKGOFxvrbzcHNL6omhO18y91zlkSxU1FfgzGsb4=;
-        b=iPhb+0M7rCR4TVbR3JwYa/TCrncxCYiFwDL2bh48cdf4hdW80CK2VXBGU7zzPo3wio
-         FKezNLJrHQF6RMV7otfSg7bpAjTKhjrbVvqEchH/Sd0HzxNsC6OwfIudWgEEbSQHxw7L
-         kdJtZaVegcoq0ow9HZ/xZ+HEkmrYVKg25LeKQp2KnFDpeu1JQB7MdOv2/WExY2QPWNnY
-         Gi1iea3mQvCH8Ugtx6YiGwFXn/G8rIhgQ/4vCLzi3HIAQrTr68INQZesgoZtGCsRDiEB
-         8IjYRVgvPixR/HyVIi1wVu9zFpJSbRh+ZKVVi868enBKy5fU5cEYynzDoJRuyHhDIsFr
-         plyA==
-X-Gm-Message-State: AJaThX4jh9h5cqZSd3aUOks0BJhkbsHvukK0Xb2YRLptMSXqp18tV5fj
-        EChP79GCVS3sK/GDTd3gK3nLGOKp12gO8tQCBCQ=
-X-Google-Smtp-Source: ABhQp+RGVm93dM9G0cpEGa53b00y46kgd+4JuhvgYbHMilD4a2D4MAwh9dmhXyH+kuCmmS4WEIoXszWbQ5vLHx86Dd8=
-X-Received: by 10.157.17.72 with SMTP id p8mr1698296otp.305.1509613738475;
- Thu, 02 Nov 2017 02:08:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 11:45:09 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:33792 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993359AbdKBKo6ePz-I (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Nov 2017 11:44:58 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7B8961435;
+        Thu,  2 Nov 2017 03:44:50 -0700 (PDT)
+Received: from on-the-bus (on-the-bus.cambridge.arm.com [10.1.207.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6AAB73F483;
+        Thu,  2 Nov 2017 03:44:49 -0700 (PDT)
+From:   Marc Zyngier <marc.zyngier@arm.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/8] irqchip: mips-gic: Cleanups, fixes, prep for multi-cluster
+In-Reply-To: <alpine.DEB.2.20.1711011758170.1942@nanos> (Thomas Gleixner's
+        message of "Wed, 1 Nov 2017 17:59:23 +0100")
+Organization: ARM Ltd
+References: <867evc5cc9.fsf@arm.com>
+        <20171031164151.6357-1-paul.burton@mips.com> <86efpi3lgj.fsf@arm.com>
+        <20171101164047.4ascutd7tkoaxtjp@pburton-laptop>
+        <alpine.DEB.2.20.1711011758170.1942@nanos>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1 (gnu/linux)
+Date:   Thu, 02 Nov 2017 10:44:47 +0000
+Message-ID: <87h8udufhc.fsf@on-the-bus.cambridge.arm.com>
 MIME-Version: 1.0
-Received: by 10.157.28.152 with HTTP; Thu, 2 Nov 2017 02:08:58 -0700 (PDT)
-In-Reply-To: <bb7c1a637afa47e8943ce494798f957c@SOC-EX01V.e01.socionext.com>
-References: <1509591085-23940-1-git-send-email-yamada.masahiro@socionext.com>
- <CAK8P3a3FoRJeO=TQGMRf6t4-bP8nP6KUEhkCrHP6L8XaF1Ee7g@mail.gmail.com> <bb7c1a637afa47e8943ce494798f957c@SOC-EX01V.e01.socionext.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 2 Nov 2017 10:08:58 +0100
-X-Google-Sender-Auth: 7d_aHD08P3vuixLU4fzGX0jTN8k
-Message-ID: <CAK8P3a0r=un9H8y2AizW3v5KzkTEGgb70hfBx8C88qphDjJksg@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: clean up *.dtb and *.dtb.S patterns from
- top-level Makefile
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     DTML <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60659
+X-archive-position: 60660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,20 +48,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 2, 2017 at 9:48 AM,  <yamada.masahiro@socionext.com> wrote:
-
->>       Arnd
+On Wed, Nov 01 2017 at  5:59:23 pm GMT, Thomas Gleixner <tglx@linutronix.de> wrote:
+> On Wed, 1 Nov 2017, Paul Burton wrote:
 >
-> Yeah, I had also noticed this race problem on parallel building
-> with CONFIG_OF_ALL_DTBS.
+>> Hi Marc,
+>> 
+>> On Wed, Nov 01, 2017 at 12:13:16AM +0000, Marc Zyngier wrote:
+>> > On Tue, Oct 31 2017 at 9:41:43 am GMT, Paul Burton
+>> > <paul.burton@mips.com> wrote:
+>> > > This series continues cleaning & fixing up the MIPS GIC irqchip driver
+>> > > whilst laying groundwork to support multi-cluster systems.
+>> 
+>> <SNIP>
+>> 
+>> > Are those targeting 4.14 or 4.15? It is getting quite late for the
+>> > former, and it doesn't seem to cleanly apply on tip/irq/core (or my
+>> > irqchip-4.15 branch) if that's for the latter (patch 6 shouts at me).
+>> 
+>> Whichever you're happiest with. If you'd like me to rebase them & resubmit
+>> that's fine.
+>> 
+>> I see the conflict with patch 6 atop tip/irq/core - it's because tip/irq/core
+>> is based upon v4.14-rc2 which doesn't have commit a08588ea486a
+>> ("irqchip/mips-gic: Fix shifts to extract register fields") that went into
+>> v4.14-rc3. The correct resolution is to keep the patches version of
+>> things (ie.
+>> delete the block of code).
 >
-> I was planning to do it
-> when I come up with a clean implementation.
+> Marc, simply merge current linus into your branch with the reason:
 >
-> One idea is to handle dtb-y and CONFIG_OF_ALL_DTBS
-> natively in scripts/Makefile.build or somewhere
-> as scripts/Makefile.dtbinst already recognizes dtb-y as a special variable.
+>       Pick up upstream fixes so dependent patches apply
 
-Ah, nice, that does sound better, yes.
+Fair enough. I've now merged -rc3 in my branch, and applied those
+without a hitch.
 
-      Arnd
+Thanks,
+
+	M.
+-- 
+Jazz is not dead, it just smell funny.

@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 11:45:09 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:33792 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993359AbdKBKo6ePz-I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Nov 2017 11:44:58 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7B8961435;
-        Thu,  2 Nov 2017 03:44:50 -0700 (PDT)
-Received: from on-the-bus (on-the-bus.cambridge.arm.com [10.1.207.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6AAB73F483;
-        Thu,  2 Nov 2017 03:44:49 -0700 (PDT)
-From:   Marc Zyngier <marc.zyngier@arm.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/8] irqchip: mips-gic: Cleanups, fixes, prep for multi-cluster
-In-Reply-To: <alpine.DEB.2.20.1711011758170.1942@nanos> (Thomas Gleixner's
-        message of "Wed, 1 Nov 2017 17:59:23 +0100")
-Organization: ARM Ltd
-References: <867evc5cc9.fsf@arm.com>
-        <20171031164151.6357-1-paul.burton@mips.com> <86efpi3lgj.fsf@arm.com>
-        <20171101164047.4ascutd7tkoaxtjp@pburton-laptop>
-        <alpine.DEB.2.20.1711011758170.1942@nanos>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1 (gnu/linux)
-Date:   Thu, 02 Nov 2017 10:44:47 +0000
-Message-ID: <87h8udufhc.fsf@on-the-bus.cambridge.arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 11:45:33 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:34025 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993310AbdKBKpVlSAhI convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Nov 2017 11:45:21 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 02 Nov 2017 10:45:18 +0000
+Received: from WR-NOWAKOWSKI.mipstec.com (192.168.159.207) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Thu, 2 Nov 2017 03:44:37 -0700
+From:   Marcin Nowakowski <marcin.nowakowski@mips.com>
+To:     <james.hogan@mips.com>, <linux-mips@linux-mips.org>
+CC:     Marcin Nowakowski <marcin.nowakowski@mips.com>
+Subject: [PATCH] Update email address for Marcin Nowakowski
+Date:   Thu, 2 Nov 2017 11:45:11 +0100
+Message-ID: <1509619511-29856-1-git-send-email-marcin.nowakowski@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [192.168.159.207]
+X-BESS-ID: 1509619517-637140-17701-473270-2
+X-BESS-VER: 2017.12-r1710252241
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.51
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186511
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn'
+        t match header 
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.51 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_MISMATCH_TO, BSF_RULE7568M, BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-BRTS-Status: 1
+Return-Path: <Marcin.Nowakowski@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60660
+X-archive-position: 60661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: marcin.nowakowski@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,42 +55,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 01 2017 at  5:59:23 pm GMT, Thomas Gleixner <tglx@linutronix.de> wrote:
-> On Wed, 1 Nov 2017, Paul Burton wrote:
->
->> Hi Marc,
->> 
->> On Wed, Nov 01, 2017 at 12:13:16AM +0000, Marc Zyngier wrote:
->> > On Tue, Oct 31 2017 at 9:41:43 am GMT, Paul Burton
->> > <paul.burton@mips.com> wrote:
->> > > This series continues cleaning & fixing up the MIPS GIC irqchip driver
->> > > whilst laying groundwork to support multi-cluster systems.
->> 
->> <SNIP>
->> 
->> > Are those targeting 4.14 or 4.15? It is getting quite late for the
->> > former, and it doesn't seem to cleanly apply on tip/irq/core (or my
->> > irqchip-4.15 branch) if that's for the latter (patch 6 shouts at me).
->> 
->> Whichever you're happiest with. If you'd like me to rebase them & resubmit
->> that's fine.
->> 
->> I see the conflict with patch 6 atop tip/irq/core - it's because tip/irq/core
->> is based upon v4.14-rc2 which doesn't have commit a08588ea486a
->> ("irqchip/mips-gic: Fix shifts to extract register fields") that went into
->> v4.14-rc3. The correct resolution is to keep the patches version of
->> things (ie.
->> delete the block of code).
->
-> Marc, simply merge current linus into your branch with the reason:
->
->       Pick up upstream fixes so dependent patches apply
+MIPS is no longer part of Imagination Technologies and my @imgtec.com
+address will soon stop working. Update any files containing my address
+as well as the .mailmap to point to my new @mips.com address.
 
-Fair enough. I've now merged -rc3 in my branch, and applied those
-without a hitch.
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
+---
+ .mailmap                         | 1 +
+ arch/mips/generic/kexec.c        | 2 +-
+ arch/mips/kernel/probes-common.h | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-Thanks,
-
-	M.
+diff --git a/.mailmap b/.mailmap
+index c7b10ca..c788c5d 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -100,6 +100,7 @@ Leonid I Ananiev <leonid.i.ananiev@intel.com>
+ Linas Vepstas <linas@austin.ibm.com>
+ Linus Lüssing <linus.luessing@c0d3.blue> <linus.luessing@web.de>
+ Linus Lüssing <linus.luessing@c0d3.blue> <linus.luessing@ascom.ch>
++Marcin Nowakowski <marcin.nowakowski@mips.com> <marcin.nowakowski@imgtec.com>
+ Mark Brown <broonie@sirena.org.uk>
+ Martin Kepplinger <martink@posteo.de> <martin.kepplinger@theobroma-systems.com>
+ Martin Kepplinger <martink@posteo.de> <martin.kepplinger@ginzinger.com>
+diff --git a/arch/mips/generic/kexec.c b/arch/mips/generic/kexec.c
+index e9fb735..1ca409f 100644
+--- a/arch/mips/generic/kexec.c
++++ b/arch/mips/generic/kexec.c
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (C) 2016 Imagination Technologies
+- * Author: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
++ * Author: Marcin Nowakowski <marcin.nowakowski@mips.com>
+  *
+  * This program is free software; you can redistribute it and/or modify it
+  * under the terms of the GNU General Public License as published by the
+diff --git a/arch/mips/kernel/probes-common.h b/arch/mips/kernel/probes-common.h
+index dd08e41..d2bf77b 100644
+--- a/arch/mips/kernel/probes-common.h
++++ b/arch/mips/kernel/probes-common.h
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (C) 2016 Imagination Technologies
+- * Author: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
++ * Author: Marcin Nowakowski <marcin.nowakowski@mips.com>
+  *
+  * This program is free software; you can redistribute it and/or modify it
+  * under the terms of the GNU General Public License as published by the
 -- 
-Jazz is not dead, it just smell funny.
+2.7.4

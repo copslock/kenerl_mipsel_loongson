@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 11:45:33 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:34025 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993310AbdKBKpVlSAhI convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Nov 2017 11:45:21 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 02 Nov 2017 10:45:18 +0000
-Received: from WR-NOWAKOWSKI.mipstec.com (192.168.159.207) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Thu, 2 Nov 2017 03:44:37 -0700
-From:   Marcin Nowakowski <marcin.nowakowski@mips.com>
-To:     <james.hogan@mips.com>, <linux-mips@linux-mips.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@mips.com>
-Subject: [PATCH] Update email address for Marcin Nowakowski
-Date:   Thu, 2 Nov 2017 11:45:11 +0100
-Message-ID: <1509619511-29856-1-git-send-email-marcin.nowakowski@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 12:15:39 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:50616 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993373AbdKBLPc1cwGI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Nov 2017 12:15:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 282801A4AAD;
+        Thu,  2 Nov 2017 12:15:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id A58D11A1D20;
+        Thu,  2 Nov 2017 12:15:25 +0100 (CET)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        James Hogan <james.hogan@mips.com>,
+        linux-kernel@vger.kernel.org,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v3 0/8] MIPS: Misc FPU emulation fixes
+Date:   Thu,  2 Nov 2017 12:13:57 +0100
+Message-Id: <1509621287-32198-1-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [192.168.159.207]
-X-BESS-ID: 1509619517-637140-17701-473270-2
-X-BESS-VER: 2017.12-r1710252241
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.51
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186511
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn'
-        t match header 
-        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.51 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_MISMATCH_TO, BSF_RULE7568M, BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-BRTS-Status: 1
-Return-Path: <Marcin.Nowakowski@mips.com>
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60661
+X-archive-position: 60662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@mips.com
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,52 +52,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS is no longer part of Imagination Technologies and my @imgtec.com
-address will soon stop working. Update any files containing my address
-as well as the .mailmap to point to my new @mips.com address.
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
----
- .mailmap                         | 1 +
- arch/mips/generic/kexec.c        | 2 +-
- arch/mips/kernel/probes-common.h | 2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
+v2->v3:
 
-diff --git a/.mailmap b/.mailmap
-index c7b10ca..c788c5d 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -100,6 +100,7 @@ Leonid I Ananiev <leonid.i.ananiev@intel.com>
- Linas Vepstas <linas@austin.ibm.com>
- Linus Lüssing <linus.luessing@c0d3.blue> <linus.luessing@web.de>
- Linus Lüssing <linus.luessing@c0d3.blue> <linus.luessing@ascom.ch>
-+Marcin Nowakowski <marcin.nowakowski@mips.com> <marcin.nowakowski@imgtec.com>
- Mark Brown <broonie@sirena.org.uk>
- Martin Kepplinger <martink@posteo.de> <martin.kepplinger@theobroma-systems.com>
- Martin Kepplinger <martink@posteo.de> <martin.kepplinger@ginzinger.com>
-diff --git a/arch/mips/generic/kexec.c b/arch/mips/generic/kexec.c
-index e9fb735..1ca409f 100644
---- a/arch/mips/generic/kexec.c
-+++ b/arch/mips/generic/kexec.c
-@@ -1,6 +1,6 @@
- /*
-  * Copyright (C) 2016 Imagination Technologies
-- * Author: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-+ * Author: Marcin Nowakowski <marcin.nowakowski@mips.com>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms of the GNU General Public License as published by the
-diff --git a/arch/mips/kernel/probes-common.h b/arch/mips/kernel/probes-common.h
-index dd08e41..d2bf77b 100644
---- a/arch/mips/kernel/probes-common.h
-+++ b/arch/mips/kernel/probes-common.h
-@@ -1,6 +1,6 @@
- /*
-  * Copyright (C) 2016 Imagination Technologies
-- * Author: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-+ * Author: Marcin Nowakowski <marcin.nowakowski@mips.com>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms of the GNU General Public License as published by the
+    - further improved commit message of patch 1
+    - minor adjustment to patch 2
+    - added six new, mostly minor, patches
+    - rebased to the latest code
+
+v1->v2:
+
+    - clarify effects of patch 1 in its commit message
+    - marked patch 1 as "stable #4.3+"
+    - replaced "Minor" with "Misc" in the series title and
+      cover letter
+
+This series contains twelwe misc FPU emulation patches that were
+not included into a recent larger series of FPU fixes, mainly not
+to additionally burden already complex set of patches.
+
+Only the first patch changes functionality.
+
+The remaining ones are just cosmetic changes - they just clean
+the code, making it easier to read, debug and maintain, and, by
+doing this, hopefully prevent future bugs. They remove a number
+of checkpatch and sparse warnings as well.
+
+Aleksandar Markovic (8):
+  MIPS: math-emu: Fix final emulation phase for certain instructions
+  MIPS: math-emu: Use preferred flavor of unsigned integer declarations
+  MIPS: math-emu: Remove an unnecessary header inclusion
+  MIPS: math-emu: Avoid definition duplication for macro DPXMULT()
+  MIPS: math-emu: Declare function srl128() as static
+  MIPS: math-emu: Avoid an assignment within if statement condition
+  MIPS: math-emu: Avoid multiple assignment
+  MIPS: math-emu: Mark fall throughs in switch statements with a comment
+
+ arch/mips/math-emu/cp1emu.c     | 74 ++++++++++++++++++++++++-----------------
+ arch/mips/math-emu/dp_add.c     |  3 +-
+ arch/mips/math-emu/dp_div.c     |  1 +
+ arch/mips/math-emu/dp_fmax.c    |  2 ++
+ arch/mips/math-emu/dp_fmin.c    |  2 ++
+ arch/mips/math-emu/dp_maddf.c   | 16 ++++-----
+ arch/mips/math-emu/dp_mul.c     | 12 +++----
+ arch/mips/math-emu/dp_sqrt.c    | 12 ++++---
+ arch/mips/math-emu/dp_sub.c     |  2 +-
+ arch/mips/math-emu/ieee754.h    | 15 +++++----
+ arch/mips/math-emu/ieee754dp.h  |  3 ++
+ arch/mips/math-emu/ieee754int.h |  6 ++--
+ arch/mips/math-emu/ieee754sp.c  |  4 +--
+ arch/mips/math-emu/ieee754sp.h  |  2 +-
+ arch/mips/math-emu/sp_add.c     |  3 +-
+ arch/mips/math-emu/sp_div.c     |  5 +--
+ arch/mips/math-emu/sp_fdp.c     |  3 +-
+ arch/mips/math-emu/sp_fint.c    |  2 +-
+ arch/mips/math-emu/sp_fmax.c    |  2 ++
+ arch/mips/math-emu/sp_fmin.c    |  2 ++
+ arch/mips/math-emu/sp_maddf.c   |  9 ++---
+ arch/mips/math-emu/sp_mul.c     | 11 +++---
+ arch/mips/math-emu/sp_sqrt.c    |  3 +-
+ arch/mips/math-emu/sp_sub.c     |  1 +
+ arch/mips/math-emu/sp_tlong.c   |  1 -
+ 25 files changed, 111 insertions(+), 85 deletions(-)
+
 -- 
 2.7.4

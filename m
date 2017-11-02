@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 12:17:13 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:51142 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 12:17:40 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:51387 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993637AbdKBLQ3tc1-I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Nov 2017 12:16:29 +0100
+        id S23993418AbdKBLQiVfWCI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Nov 2017 12:16:38 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 70C091A4AAE;
-        Thu,  2 Nov 2017 12:16:24 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id AF8211A4AAE;
+        Thu,  2 Nov 2017 12:16:32 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 548EC1A1D20;
-        Thu,  2 Nov 2017 12:16:24 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 937791A1D20;
+        Thu,  2 Nov 2017 12:16:32 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
@@ -25,9 +25,9 @@ Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
         Raghu Gandham <raghu.gandham@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v3 4/8] MIPS: math-emu: Avoid definition duplication for macro DPXMULT()
-Date:   Thu,  2 Nov 2017 12:14:01 +0100
-Message-Id: <1509621287-32198-5-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v3 5/8] MIPS: math-emu: Declare function srl128() as static
+Date:   Thu,  2 Nov 2017 12:14:02 +0100
+Message-Id: <1509621287-32198-6-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1509621287-32198-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1509621287-32198-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -35,7 +35,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60666
+X-archive-position: 60667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,57 +54,28 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-Avoid duplicate definition of macro DPXMULT(). Move its definition
-to a header.
+Declare function srl128() as static, since it it used just locally
+to the source file.
+
+This also removes a sparse warning for corresponding file.
 
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
 ---
- arch/mips/math-emu/dp_maddf.c  | 3 ---
- arch/mips/math-emu/dp_mul.c    | 3 ---
- arch/mips/math-emu/ieee754dp.h | 3 +++
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ arch/mips/math-emu/dp_maddf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
-index 7ad79ed..28b90fd 100644
+index 28b90fd..5c4ad8e 100644
 --- a/arch/mips/math-emu/dp_maddf.c
 +++ b/arch/mips/math-emu/dp_maddf.c
-@@ -201,9 +201,6 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
- 	 * Multiply 64 bits xm and ym to give 128 bits result in hrm:lrm.
- 	 */
+@@ -16,7 +16,7 @@
  
--	/* 32 * 32 => 64 */
--#define DPXMULT(x, y)	((u64)(x) * (u64)y)
--
- 	lxm = xm;
- 	hxm = xm >> 32;
- 	lym = ym;
-diff --git a/arch/mips/math-emu/dp_mul.c b/arch/mips/math-emu/dp_mul.c
-index 60c8bfe..7bc5dde 100644
---- a/arch/mips/math-emu/dp_mul.c
-+++ b/arch/mips/math-emu/dp_mul.c
-@@ -128,9 +128,6 @@ union ieee754dp ieee754dp_mul(union ieee754dp x, union ieee754dp y)
- 	 * Multiply 64 bits xm, ym to give high 64 bits rm with stickness.
- 	 */
  
--	/* 32 * 32 => 64 */
--#define DPXMULT(x, y)	((u64)(x) * (u64)y)
--
- 	lxm = xm;
- 	hxm = xm >> 32;
- 	lym = ym;
-diff --git a/arch/mips/math-emu/ieee754dp.h b/arch/mips/math-emu/ieee754dp.h
-index 9ba0230..a56707b 100644
---- a/arch/mips/math-emu/ieee754dp.h
-+++ b/arch/mips/math-emu/ieee754dp.h
-@@ -55,6 +55,9 @@ static inline int ieee754dp_finite(union ieee754dp x)
- #define XDPSRS1(v)	\
- 	(((v) >> 1) | ((v) & 1))
+ /* 128 bits shift right logical with rounding. */
+-void srl128(u64 *hptr, u64 *lptr, int count)
++static void srl128(u64 *hptr, u64 *lptr, int count)
+ {
+ 	u64 low;
  
-+/* 32bit * 32bit => 64bit unsigned integer multiplication */
-+#define DPXMULT(x, y)	((u64)(x) * (u64)y)
-+
- /* convert denormal to normalized with extended exponent */
- #define DPDNORMx(m,e) \
- 	while ((m >> DP_FBITS) == 0) { m <<= 1; e--; }
 -- 
 2.7.4

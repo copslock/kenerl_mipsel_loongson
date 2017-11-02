@@ -1,115 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 02:26:58 +0100 (CET)
-Received: from mail-sn1nam02on0046.outbound.protection.outlook.com ([104.47.36.46]:7840
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993095AbdKBB0sfpXIB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Nov 2017 02:26:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=3AwJmb2A6KV6qiddyZORGHb8IdR1e5z8kbOsU154h7A=;
- b=hNK2pE0THsgbCxxjem7q3ZiRWWLGf7Ikwj9WS9+lJiKl1d7ktfFPyO6o0G1O23tktr19VY8qkRpc/bdJ+6kYSkpMhaAQVM5/jISYRFZlN4uhNojgR4fLPQ3T6LZ+bxCir7WG7LVA4HM7/FLhcMSV6YDxcaN24eDx9km/n/COKWs=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@cavium.com; 
-Received: from ddl.caveonetworks.com (50.233.148.156) by
- DM5PR07MB3497.namprd07.prod.outlook.com (10.164.153.28) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.178.6; Thu, 2 Nov 2017 01:26:36 +0000
-Subject: Re: [PATCH 1/7] dt-bindings: Add Cavium Octeon Common Ethernet
- Interface.
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        James Hogan <james.hogan@mips.com>, netdev@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2017 03:53:31 +0100 (CET)
+Received: from conuserg-08.nifty.com ([210.131.2.75]:63559 "EHLO
+        conuserg-08.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993155AbdKBCxVmHRc6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2017 03:53:21 +0100
+Received: from pug.e01.socionext.com (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id vA22powq000683;
+        Thu, 2 Nov 2017 11:51:50 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com vA22powq000683
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1509591111;
+        bh=uRcKPhTz1a8m8RHzWYFOjtEKC/BP1/38NAW14O/QcFo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=u5/C7lmk4v+ayQiOYgvKaiauNINczTrdHpXOlycA3C5WLuqU0muIY8hSkwCLFDSAh
+         veEXfCQBiprOLjaI/Zbko/PEpLKZrrU/cYS8VQcvpXlcCujqoos/tnXUUndq9cVEql
+         P+ssLcM9lNb7aaQ70PWM3nSrSCgvZftr6IVvzPvdyoaUXhXFevxx609xynaPMfvV4R
+         TMe1Ehcb+8s9Ws3Y/6QhwkQQhcUPygjRBIjDxgspw6nUff+YivlsGA+a1OhGkPc16y
+         tK6oEIyaG4nA6DwG0fjvg0ati03KdnpHttg9iZr4mmJ8LBgybEx7YwiPcdjdfv+K1f
+         KPK6MoAuLf8zw==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        "Williams, Aaron" <Aaron.Williams@caviumnetworks.com>
-Cc:     linux-kernel@vger.kernel.org,
-        "Steven J. Hill" <steven.hill@cavium.com>,
-        devicetree@vger.kernel.org, Carlos Munoz <cmunoz@cavium.com>
-References: <20171102003606.19913-1-david.daney@cavium.com>
- <20171102003606.19913-2-david.daney@cavium.com>
- <af0de889-a34b-8346-9eeb-171498cc61ca@gmail.com>
-From:   David Daney <ddaney@caviumnetworks.com>
-Message-ID: <f1995841-126f-18c3-6e94-d7c854ec97f0@caviumnetworks.com>
-Date:   Wed, 1 Nov 2017 18:26:34 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
-MIME-Version: 1.0
-In-Reply-To: <af0de889-a34b-8346-9eeb-171498cc61ca@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: SN4PR0701CA0006.namprd07.prod.outlook.com (10.161.192.144)
- To DM5PR07MB3497.namprd07.prod.outlook.com (10.164.153.28)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c8224f00-0e51-4051-d7f7-08d52190c35b
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(4534020)(4602075)(2017052603199);SRVR:DM5PR07MB3497;
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3497;3:JVSHBtGzcufxbpDzaH0qRQvM4dsKmcxmEXx7MTea0N5XSTo/hgG0na6CoRQ19gw6oolpPCotMmhtKUU76rEwbrpZz4aTHFdnuaLjMJk8WEFxAvvRu+qDg5ncBdoegQcNy86Pfyg8rKBgUR+G7q6MAvHy/vDYGayYZuu2i7eSrsTrvM0nizyET99eyiWJd8FWZClcTRy96W9Mirtdqo6lEbdii72XQT9zWRaWyXCOGa3ZPVAbLp/+80dzUX+pF3/P;25:La4G7eQGAWz4su6cw4OOGIXxVG2etgirfC+/YGOE7cCEJpu6jaLHGczHnE0bGZR9zZuofCflIewl0KqjUNlvhE8EAD6zm85L34D39tGZFyHXKOlQWawRdLcGABh8yhjgs4SqMxnebsDg1UBSlFyeVkX9vKDeiaUFTexOpXiPVY6Wq7K5kC/k+08n3eyDTkFpD/1KtJp9Qd4+X4AQD26dgkv8c9SjKA4/7qmQZBuuQYyOmXNBZiRPwLgEOXQk8FQhdeQAO/MCfrQi0HHzhd5mKDb2wGkJLAs+HoFLyhtQhNaDmM6zJQAA8irtzUzaLDf+bCQdCC8ck8utdYgI6UMLWQ==;31:mycOvgy04v4czmCw2Hh4tf2cjmx/rQlANCw72UydbsPrwMKa16If5OGIX478IbVYnkdpYMpM5po4+q4tw1EafAtsjltrTOz7Ouy/3kYXhPYfD8SGk4UFyrTPNYxz1+oyNBYcmF4S/OUPyqtf7rusZqFDcQij8BeVlAoabUjPcZ3p98rtipA2Cge8gty/n9A5/5OPvkAdt19yc/HwdLwywHsDd2Dq+1HB/Gs9dbuZcn8=
-X-MS-TrafficTypeDiagnostic: DM5PR07MB3497:
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3497;20:3ugirFsvKXeUoKvWVh5kJ7ZpGD4SNBSM96hQJJzwL6BJdxXDVvwFIF4eY+7wcHT5merUiu5qJbrOR++FO7FtFYovoWe99ZflQEZIugLPjs+DVR/zlZVqSYtghYkehpl8IEWkJ8NFcrq3JDcaA8cWPfU0d6q4mDo5Y7FNiwHytXTt6vygjTJZOD0AdmTE+I+WuOBtp60ppIM/QYMq3sFHIqEIV2KUwQHnMrJ61L7aoILp+sm1NCcdfw5OdZFoEIrcCBxJNXrResV0b1RIzugu18HCxEVj9IlBD7LEiaS6xnWCe/Sux9TxMIiFNhFPVAkzHCVqoKNT+HAPiDzBCmkHhdPY0UB6tTxwKyW6pcrsFfKQXYUzKgktwIvcb5EM3uDLasVq2lnt8qCbRZDsCJBW8X76QVx1zB+tRNjdurHQlGjBUIxjKmYeidWWSvkCDqxmieqhb8HWu7sTqvEP4fjYdkwDdoc/2VP8emwF253iLxXO++BQ7zjcErqTPjW83wB+Xw40COa69bmiHx0yMSf6BgOxQoKu26helQv+3vArhJCEgFUGu/A9Wlq4tEOQ9v5iD7hxU/57GlqUc1j2bSIuuLTSytRESgCprlAtNU3b0Ko=;4:iDxMEQTKxXLpdYo8L9pqz3SFCrKn82ZhC1IeebnqwvnPkaVSMNB+TkvIbS1UUq3Uf6UE3HbDK3h/iDEDU3DepeE0MuXt7mqOnI/bvSVkHbgZPLnYjmI8dWe/fkpkesoqeuMJN7F7zcqv85Z68wZUiDJJ+p8IhTRpPsUaQZyaIkI2HYSckJyXwBiKcJfcwB5k5jeC1q3UOJ2BYZFMMqfUlgavxizOVFujD2OKNwT9AeNlru/GQEoHxNBI0kyYrNRe5Xo+WqVHxK78rZK54LlNwQ==
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Microsoft-Antispam-PRVS: <DM5PR07MB3497D88517E8B023F52421EC975C0@DM5PR07MB3497.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(6040450)(2401047)(8121501046)(5005006)(100000703101)(100105400095)(3002001)(93006095)(10201501046)(3231020)(6041248)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123558100)(20161123564025)(20161123555025)(20161123560025)(20161123562025)(6072148)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:DM5PR07MB3497;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:DM5PR07MB3497;
-X-Forefront-PRVS: 047999FF16
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(189002)(24454002)(199003)(7416002)(54356999)(39060400002)(107886003)(66066001)(6512007)(65806001)(5660300001)(31696002)(6486002)(6116002)(33646002)(65956001)(229853002)(6506006)(2906002)(36756003)(76176999)(50986999)(101416001)(47776003)(65826007)(53936002)(6246003)(189998001)(50466002)(6636002)(42882006)(478600001)(2950100002)(53416004)(83506002)(316002)(68736007)(16526018)(64126003)(53546010)(7736002)(8936002)(305945005)(106356001)(72206003)(58126008)(25786009)(81156014)(8676002)(3846002)(105586002)(81166006)(54906003)(69596002)(23676003)(97736004)(4326008)(31686004)(67846002)(110136005)(230700001)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3497;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: cavium.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtETTVQUjA3TUIzNDk3OzIzOkxMZnprMW9XbVdFVnBMbzAyUXRLZ1JFRmlQ?=
- =?utf-8?B?K3NZdnNWK2g4U1pLTzI2bkJOWG1hOFdzU3lWRGE2aXZRZlZ2K2RCdkUzZHBV?=
- =?utf-8?B?dEUvelJYcnZyWFB6Vk1zeU9SVEI3Z1FTVy9hUXErS1VaOUdmS0l2dU54anNI?=
- =?utf-8?B?WHVZdTBhQlNZQ1dZdUZnSml4aU4zOXhjdW1OanByNjA0eTNxdFZNWENBdk05?=
- =?utf-8?B?c0R2OHllS3FnbjRyclJsejV1MnZqUXc3am9YMlFWeXdJaFR1SW9mMlBpbi9o?=
- =?utf-8?B?MmVodTROc2hYZUdWR1VXM1FPclRncC9XazdOTURTeXNlOVJWOGhWcVZ2R3BS?=
- =?utf-8?B?SDVBRGpWZ3lUbkpQek5qRkY2cWpBRUIrUDlDNm03d2VwVi9hVkpjYXhHTnlW?=
- =?utf-8?B?Mjl5UlBlTkRZT2FBSmc5OWNtaWx6Sk5INmZtS0NWbkZZakUwL1h3djNzTENG?=
- =?utf-8?B?M0l2Q1ZFZTZXU21WeXVMc3krd3hXZHc0TngxemJCZ21TRHB2bG1kbEhidVNQ?=
- =?utf-8?B?c0Vhb1l3aFNzS3IvSHh6Mm9QVVJGa0JFRGRUaTlkU3R2NlRvbXIzRjk3ODZr?=
- =?utf-8?B?V3ZmR1JOTHdpQ3M3SzB0eGE2NzhGYzJtTTlSSmRZYmJUM2pNVWNBbUxIT2wx?=
- =?utf-8?B?a1ljQTZPUElkZHF5K0QrMU5hMkZNSndhaEljWS9hbXFVMzJMbFMzd0FjYmls?=
- =?utf-8?B?TUJOajhkcENwczNtN1A2Q1pxZnY5SCs4NFgrQjI5cnRKbHh3MisvaUpjdm5w?=
- =?utf-8?B?c1dtUFlyS0l2WTkzRXhuT1FlR0xIRFdISVlLOFFZR0dZaDRic25mMlo5SlB5?=
- =?utf-8?B?NmpuZDFwUHNiR1F3MmlIUEV2OW9ueWsrWnBuSjkwR1M0bHpBaEZGNEUxc1VH?=
- =?utf-8?B?WmQ2cTlIWkw5RkhkZzVGWFBCaENGZTNqQXlDMVJGOTMyYklJVk8xOGxneWQr?=
- =?utf-8?B?MnB2ZW1rOVRPcWE4UTdnVUxObEQyU0ljcVRXeVMvQzFFNmxJWUxmbFJXaFk3?=
- =?utf-8?B?d1FiclRYRlFJbmN0bzJhMUd3VSsxdnkwYmNwekJ2ZThFWFBxUWJHb201VnBQ?=
- =?utf-8?B?WEZIaUNNaE9ydXZkR3JnVG9sR0NnYzhDRXhGa0JpQytzM2hXOU5NVVZEQ0xj?=
- =?utf-8?B?L0FsMk9RY0FySDIwT2MzUTlkL0habjhxWUhDSnBxQWxRcm9KNE5wNTNlRFNu?=
- =?utf-8?B?UDF4SzhJUU9JWWpENUFqZ0xOSHFjVmdPQ0xBWkRBZkgwSHBsNE9xcTE3dUd0?=
- =?utf-8?B?OEJ2SWNKTXFyVlFoMkM4d3UyaFRsNTk3VE5ZRklFdkg0dFZhSHJOSFRTd0Ez?=
- =?utf-8?B?R1QrZ000VXVWMnlZNDFXKzdSY1VQQ25CbFZhWDFEZUZGV3ExbTdCczgyZkY2?=
- =?utf-8?B?ejgvRkl2bWJDK2Jwa1lBQWk0eURUSWsxbU0vOCtZWDZPWlV1c0tlckNKVXdr?=
- =?utf-8?B?bjJ0bkhaK1d5VTdqMTdtUXhDZXlJYmZYcWZqcjVFbXJ1Yjhqd21md3hrZVFq?=
- =?utf-8?B?M3ZyMy9SVmhseUM2MzNtMFE5TWx1U2h5QnlUQUtJRU43SW1jR0pGR2J1WHNQ?=
- =?utf-8?B?YkYyV21oZFpEc1VuMjNPTmZCd01VZCtjYkVqQ3k4ZVlyOGlhVEFHaUc0dmdv?=
- =?utf-8?B?VExzTGhKWU9yZzlpbElhNElFUmlGdG5IYTdzNkxWYmxZSTdLUmNvcmd2bWJ4?=
- =?utf-8?B?emRiZFJ0bDRIWFFXY0UrZnZMalBUZ3FKNEVVSHdQTTcxNDd4eDd2RjE1anRJ?=
- =?utf-8?B?UTAzYU5ubE9LU1BQUzROZEN1bElPc1JMSVRRMVJjZVZYZXlPbStRUmtrQjRE?=
- =?utf-8?B?SXc0SVYveEdqaXdJeldvbmJQcVpFOGR1NmU1WFQyK0FNdElOamNrNFpyNlpX?=
- =?utf-8?B?K2ZVVWtZa1N3NFREcm1MbW4rTXBPOHdITmVrN2lYdjlac3ZlSVlhcFdzWUg1?=
- =?utf-8?B?QjNpTjhnRkJzRlplTmh1SENRdnVWTGRmWHpPeCs4aS9HaEwxY3locDBIcWNB?=
- =?utf-8?B?TnNSOUk2aVlDd3NPdUVDT1h1RzZFZTA0cy9iQkYzY1MrWXFHR0VkRXhuZHhH?=
- =?utf-8?Q?16ns=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3497;6:K6m9nbXsbFwzTq/jUPc9Js8MvImkW2rA+xn5kS9VTc6Vr3tMYXyoT7NNUjqdOK8v69y9nnA8qZ725Vr0XWyZtyn4kIfMF1BGKq1c4wks3bcjCTJMgghzE+z5eG9DL/gG+yP0l6SeJO37PhvPnUte+Phygba0WQhd9Ww8wSOB8E+Wwnpg/w5yl/Xk5aD5S+pQ1EcyeLnUwt37dbkGNvqezPcI8Kur0YvqidGHo1qmeZITvbhryXDQin1mv95G1o++HXollE5qZ8O/gLEh1SC+ZBPrwgHIn6WunmlZvTatN71IXLYJEfWrDD550H5ImZwA1TZjr4m7XpcaJgdC9BHZsVBSi7EYpcAn2bnCt2y4kcE=;5:4rbhkEsKYN7F/c4Od6kWAuQaJRHVEWYpeuqAzTLgOB9TPrbDblkxo6MayilUcP/KhUf1VcqwOh8nhTkHoG1H9as7w3Joy8KEeg5h5f2eVHkA4OCnSL5R/vRtICc7MRtjWqSMpqPU60oX+kP2PQgCjs3/gP+tMv1I48mDb6QY2Lw=;24:jgLLLpOqKRiupixWCzc45cnd2yreDrKP3rsbCAa5oXqy8yfqwXc9D6kRmkjMG3kueJ7Et+538GH35vnrDtsyXsq2MsBz+xae9Qoyxovuxzw=;7:ACuLuCuUd9iO3xJKRo7s0grqfzzElla6IVb8hnzSGd6IFs3JaIWjXQb7vJyKwywrdjnRdAVa/ITjqveRggbzoRSdCZgg12GvRNdX2Z7E2HfssGteBnCbcQDHnjro+tAZK2gx7eaBO0WKz0xZUt3Xyt2GwSx9Vzx7gfS7D3dETiRSdK7Oda/Qjmb0l7/PT8v6ZY6+QV5Nzqllp52K6E5UWfeKeNRAlttZ+dE09qvXWLiQUPpp8OPZ+6+GJSRMcJss
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2017 01:26:36.8751 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8224f00-0e51-4051-d7f7-08d52190c35b
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR07MB3497
-Return-Path: <David.Daney@cavium.com>
+        Frank Rowand <frowand.list@gmail.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: [PATCH v2] kbuild: clean up *.dtb and *.dtb.S patterns from top-level Makefile
+Date:   Thu,  2 Nov 2017 11:51:25 +0900
+Message-Id: <1509591085-23940-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60654
+X-archive-position: 60655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -122,35 +53,578 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/01/2017 06:09 PM, Florian Fainelli wrote:
-> On 11/01/2017 05:36 PM, David Daney wrote:
->> From: Carlos Munoz <cmunoz@cavium.com>
->>
->> Add bindings for Common Ethernet Interface (BGX) block.
->>
->> Signed-off-by: Carlos Munoz <cmunoz@cavium.com>
->> Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->> ---
-> [snip]
->> +Properties:
->> +
->> +- compatible: "cavium,octeon-7360-xcv": Compatibility with cn73xx SOCs.
->> +
->> +- reg: The index of the interface within the BGX block.
->> +
->> +- local-mac-address: Mac address for the interface.
->> +
->> +- phy-handle: phandle to the phy node connected to the interface.
->> +
->> +- cavium,rx-clk-delay-bypass: Set to <1> to bypass the rx clock delay setting.
->> +  Needed by the Micrel PHY.
-> 
-> Is not that implied by an appropriate "phy-mode" property already?
+We need to add "clean-files" in Makfiles to clean up DT blobs, but we
+often miss to do so.
 
-I think you are correct.  That string never appears in the source code, 
-so I am going to remove that property from the binding document for the 
-next revision of the patch set.
+Since there are no source files that end with .dtb or .dtb.S, so we
+can clean-up those files from the top-level Makefile.
 
-Thanks,
-David Daney
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+Changes in v2:
+  - Remove clean-files
+
+ Documentation/kbuild/makefiles.txt               | 1 -
+ Makefile                                         | 2 +-
+ arch/arc/boot/dts/Makefile                       | 1 -
+ arch/arm/boot/dts/Makefile                       | 1 -
+ arch/arm64/boot/dts/actions/Makefile             | 1 -
+ arch/arm64/boot/dts/al/Makefile                  | 1 -
+ arch/arm64/boot/dts/allwinner/Makefile           | 1 -
+ arch/arm64/boot/dts/altera/Makefile              | 1 -
+ arch/arm64/boot/dts/amd/Makefile                 | 1 -
+ arch/arm64/boot/dts/amlogic/Makefile             | 1 -
+ arch/arm64/boot/dts/apm/Makefile                 | 1 -
+ arch/arm64/boot/dts/arm/Makefile                 | 1 -
+ arch/arm64/boot/dts/broadcom/Makefile            | 1 -
+ arch/arm64/boot/dts/broadcom/northstar2/Makefile | 1 -
+ arch/arm64/boot/dts/broadcom/stingray/Makefile   | 1 -
+ arch/arm64/boot/dts/cavium/Makefile              | 1 -
+ arch/arm64/boot/dts/exynos/Makefile              | 1 -
+ arch/arm64/boot/dts/freescale/Makefile           | 1 -
+ arch/arm64/boot/dts/hisilicon/Makefile           | 1 -
+ arch/arm64/boot/dts/lg/Makefile                  | 1 -
+ arch/arm64/boot/dts/marvell/Makefile             | 1 -
+ arch/arm64/boot/dts/mediatek/Makefile            | 1 -
+ arch/arm64/boot/dts/nvidia/Makefile              | 1 -
+ arch/arm64/boot/dts/qcom/Makefile                | 1 -
+ arch/arm64/boot/dts/realtek/Makefile             | 1 -
+ arch/arm64/boot/dts/renesas/Makefile             | 1 -
+ arch/arm64/boot/dts/rockchip/Makefile            | 1 -
+ arch/arm64/boot/dts/socionext/Makefile           | 1 -
+ arch/arm64/boot/dts/sprd/Makefile                | 1 -
+ arch/arm64/boot/dts/xilinx/Makefile              | 1 -
+ arch/arm64/boot/dts/zte/Makefile                 | 1 -
+ arch/c6x/boot/dts/Makefile                       | 2 --
+ arch/cris/boot/dts/Makefile                      | 2 --
+ arch/h8300/boot/dts/Makefile                     | 1 -
+ arch/metag/boot/dts/Makefile                     | 1 -
+ arch/microblaze/boot/Makefile                    | 2 +-
+ arch/mips/boot/dts/Makefile                      | 1 -
+ arch/mips/boot/dts/brcm/Makefile                 | 1 -
+ arch/mips/boot/dts/cavium-octeon/Makefile        | 1 -
+ arch/mips/boot/dts/img/Makefile                  | 1 -
+ arch/mips/boot/dts/ingenic/Makefile              | 1 -
+ arch/mips/boot/dts/lantiq/Makefile               | 1 -
+ arch/mips/boot/dts/mti/Makefile                  | 1 -
+ arch/mips/boot/dts/netlogic/Makefile             | 1 -
+ arch/mips/boot/dts/ni/Makefile                   | 1 -
+ arch/mips/boot/dts/pic32/Makefile                | 1 -
+ arch/mips/boot/dts/qca/Makefile                  | 1 -
+ arch/mips/boot/dts/ralink/Makefile               | 1 -
+ arch/mips/boot/dts/xilfpga/Makefile              | 1 -
+ arch/nios2/boot/Makefile                         | 2 --
+ arch/openrisc/boot/dts/Makefile                  | 2 --
+ arch/powerpc/boot/Makefile                       | 2 +-
+ arch/sh/boot/dts/Makefile                        | 2 --
+ arch/xtensa/boot/dts/Makefile                    | 2 --
+ 54 files changed, 3 insertions(+), 60 deletions(-)
+
+diff --git a/Documentation/kbuild/makefiles.txt b/Documentation/kbuild/makefiles.txt
+index f6f8038..71e9fee 100644
+--- a/Documentation/kbuild/makefiles.txt
++++ b/Documentation/kbuild/makefiles.txt
+@@ -1158,7 +1158,6 @@ When kbuild executes, the following steps are followed (roughly):
+ 
+ 	Example:
+ 		targets += $(dtb-y)
+-		clean-files += *.dtb
+ 		DTC_FLAGS ?= -p 1024
+ 
+ --- 6.8 Custom kbuild commands
+diff --git a/Makefile b/Makefile
+index 63a4c0e..c577c63 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1544,7 +1544,7 @@ clean: $(clean-dirs)
+ 	$(call cmd,rmfiles)
+ 	@find $(if $(KBUILD_EXTMOD), $(KBUILD_EXTMOD), .) $(RCS_FIND_IGNORE) \
+ 		\( -name '*.[oas]' -o -name '*.ko' -o -name '.*.cmd' \
+-		-o -name '*.ko.*' \
++		-o -name '*.ko.*' -o -name '*.dtb' -o -name '*.dtb.S' \
+ 		-o -name '*.dwo'  \
+ 		-o -name '*.su'  \
+ 		-o -name '.*.d' -o -name '.*.tmp' -o -name '*.mod.c' \
+diff --git a/arch/arc/boot/dts/Makefile b/arch/arc/boot/dts/Makefile
+index a09f11b..1257db1 100644
+--- a/arch/arc/boot/dts/Makefile
++++ b/arch/arc/boot/dts/Makefile
+@@ -14,4 +14,3 @@ dtstree		:= $(srctree)/$(src)
+ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dtstree)/*.dts))
+ 
+ always := $(dtb-y)
+-clean-files := *.dtb  *.dtb.S
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index faf46ab..5eeefbc 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -1074,4 +1074,3 @@ dtstree		:= $(srctree)/$(src)
+ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dtstree)/*.dts))
+ 
+ always		:= $(dtb-y)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/actions/Makefile b/arch/arm64/boot/dts/actions/Makefile
+index 62922d6..89bb1b5 100644
+--- a/arch/arm64/boot/dts/actions/Makefile
++++ b/arch/arm64/boot/dts/actions/Makefile
+@@ -2,4 +2,3 @@ dtb-$(CONFIG_ARCH_ACTIONS) += s900-bubblegum-96.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/al/Makefile b/arch/arm64/boot/dts/al/Makefile
+index 8a6cde4..8606a57 100644
+--- a/arch/arm64/boot/dts/al/Makefile
++++ b/arch/arm64/boot/dts/al/Makefile
+@@ -2,4 +2,3 @@ dtb-$(CONFIG_ARCH_ALPINE)	+= alpine-v2-evp.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/allwinner/Makefile b/arch/arm64/boot/dts/allwinner/Makefile
+index 19c3fbd..871ed768 100644
+--- a/arch/arm64/boot/dts/allwinner/Makefile
++++ b/arch/arm64/boot/dts/allwinner/Makefile
+@@ -11,4 +11,3 @@ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h5-nanopi-neo2.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/altera/Makefile b/arch/arm64/boot/dts/altera/Makefile
+index d7a6416..7511b51 100644
+--- a/arch/arm64/boot/dts/altera/Makefile
++++ b/arch/arm64/boot/dts/altera/Makefile
+@@ -2,4 +2,3 @@ dtb-$(CONFIG_ARCH_STRATIX10) += socfpga_stratix10_socdk.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/amd/Makefile b/arch/arm64/boot/dts/amd/Makefile
+index ba84770..cb1c779 100644
+--- a/arch/arm64/boot/dts/amd/Makefile
++++ b/arch/arm64/boot/dts/amd/Makefile
+@@ -4,4 +4,3 @@ dtb-$(CONFIG_ARCH_SEATTLE) += amd-overdrive.dtb \
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/amlogic/Makefile b/arch/arm64/boot/dts/amlogic/Makefile
+index 7a9f48c..d864403 100644
+--- a/arch/arm64/boot/dts/amlogic/Makefile
++++ b/arch/arm64/boot/dts/amlogic/Makefile
+@@ -22,4 +22,3 @@ dtb-$(CONFIG_ARCH_MESON) += meson-gxm-rbox-pro.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/apm/Makefile b/arch/arm64/boot/dts/apm/Makefile
+index c75f17a4..4334978 100644
+--- a/arch/arm64/boot/dts/apm/Makefile
++++ b/arch/arm64/boot/dts/apm/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_XGENE) += apm-merlin.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/arm/Makefile b/arch/arm64/boot/dts/arm/Makefile
+index 75cc2aa..01c342f 100644
+--- a/arch/arm64/boot/dts/arm/Makefile
++++ b/arch/arm64/boot/dts/arm/Makefile
+@@ -5,4 +5,3 @@ dtb-$(CONFIG_ARCH_VEXPRESS) += vexpress-v2f-1xv7-ca53x2.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/broadcom/Makefile b/arch/arm64/boot/dts/broadcom/Makefile
+index 3eaef38..d720d0d 100644
+--- a/arch/arm64/boot/dts/broadcom/Makefile
++++ b/arch/arm64/boot/dts/broadcom/Makefile
+@@ -4,4 +4,3 @@ dts-dirs	+= northstar2
+ dts-dirs	+= stingray
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/broadcom/northstar2/Makefile b/arch/arm64/boot/dts/broadcom/northstar2/Makefile
+index e01a148..c589b9b 100644
+--- a/arch/arm64/boot/dts/broadcom/northstar2/Makefile
++++ b/arch/arm64/boot/dts/broadcom/northstar2/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_BCM_IPROC) += ns2-xmc.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/broadcom/stingray/Makefile b/arch/arm64/boot/dts/broadcom/stingray/Makefile
+index f70028e..8edcc52 100644
+--- a/arch/arm64/boot/dts/broadcom/stingray/Makefile
++++ b/arch/arm64/boot/dts/broadcom/stingray/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_BCM_IPROC) += bcm958742t.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/cavium/Makefile b/arch/arm64/boot/dts/cavium/Makefile
+index 581b2c1..c63145e 100644
+--- a/arch/arm64/boot/dts/cavium/Makefile
++++ b/arch/arm64/boot/dts/cavium/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_THUNDER2) += thunder2-99xx.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/exynos/Makefile b/arch/arm64/boot/dts/exynos/Makefile
+index 7ddea53..4633adf 100644
+--- a/arch/arm64/boot/dts/exynos/Makefile
++++ b/arch/arm64/boot/dts/exynos/Makefile
+@@ -5,4 +5,3 @@ dtb-$(CONFIG_ARCH_EXYNOS) += \
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 72c4b52..fe18e3d 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -15,4 +15,3 @@ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls2088a-rdb.dtb
+  
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/hisilicon/Makefile b/arch/arm64/boot/dts/hisilicon/Makefile
+index 8960eca..cb25d7a 100644
+--- a/arch/arm64/boot/dts/hisilicon/Makefile
++++ b/arch/arm64/boot/dts/hisilicon/Makefile
+@@ -7,4 +7,3 @@ dtb-$(CONFIG_ARCH_HISI) += hip07-d05.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/lg/Makefile b/arch/arm64/boot/dts/lg/Makefile
+index 5c7b54c1..c0bbe06 100644
+--- a/arch/arm64/boot/dts/lg/Makefile
++++ b/arch/arm64/boot/dts/lg/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_LG1K) += lg1313-ref.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/marvell/Makefile b/arch/arm64/boot/dts/marvell/Makefile
+index 6cff81e..b471235 100644
+--- a/arch/arm64/boot/dts/marvell/Makefile
++++ b/arch/arm64/boot/dts/marvell/Makefile
+@@ -12,4 +12,3 @@ dtb-$(CONFIG_ARCH_MVEBU) += armada-8080-db.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/mediatek/Makefile b/arch/arm64/boot/dts/mediatek/Makefile
+index 151723b..80d1743 100644
+--- a/arch/arm64/boot/dts/mediatek/Makefile
++++ b/arch/arm64/boot/dts/mediatek/Makefile
+@@ -7,4 +7,3 @@ dtb-$(CONFIG_ARCH_MEDIATEK) += mt8173-evb.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/nvidia/Makefile b/arch/arm64/boot/dts/nvidia/Makefile
+index 1894145..a9d5196 100644
+--- a/arch/arm64/boot/dts/nvidia/Makefile
++++ b/arch/arm64/boot/dts/nvidia/Makefile
+@@ -6,4 +6,3 @@ dtb-$(CONFIG_ARCH_TEGRA_210_SOC) += tegra210-smaug.dtb
+ dtb-$(CONFIG_ARCH_TEGRA_186_SOC) += tegra186-p2771-0000.dtb
+ 
+ always		:= $(dtb-y)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index ff81d7e..65af6f9 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -8,4 +8,3 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/realtek/Makefile b/arch/arm64/boot/dts/realtek/Makefile
+index 8521e92..88cb515 100644
+--- a/arch/arm64/boot/dts/realtek/Makefile
++++ b/arch/arm64/boot/dts/realtek/Makefile
+@@ -2,4 +2,3 @@ dtb-$(CONFIG_ARCH_REALTEK) += rtd1295-zidoo-x9s.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/renesas/Makefile b/arch/arm64/boot/dts/renesas/Makefile
+index 381928b..960dade 100644
+--- a/arch/arm64/boot/dts/renesas/Makefile
++++ b/arch/arm64/boot/dts/renesas/Makefile
+@@ -5,4 +5,3 @@ dtb-$(CONFIG_ARCH_R8A7796) += r8a7796-salvator-x.dtb r8a7796-m3ulcb.dtb
+ dtb-$(CONFIG_ARCH_R8A77995) += r8a77995-draak.dtb
+ 
+ always		:= $(dtb-y)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
+index f1c9b13..6b6bb1d 100644
+--- a/arch/arm64/boot/dts/rockchip/Makefile
++++ b/arch/arm64/boot/dts/rockchip/Makefile
+@@ -13,4 +13,3 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-sapphire-excavator.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/socionext/Makefile b/arch/arm64/boot/dts/socionext/Makefile
+index 4bc091b..5eed3ce 100644
+--- a/arch/arm64/boot/dts/socionext/Makefile
++++ b/arch/arm64/boot/dts/socionext/Makefile
+@@ -6,4 +6,3 @@ dtb-$(CONFIG_ARCH_UNIPHIER) += \
+ 	uniphier-pxs3-ref.dtb
+ 
+ always		:= $(dtb-y)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/sprd/Makefile b/arch/arm64/boot/dts/sprd/Makefile
+index f0535e6..c91b62e 100644
+--- a/arch/arm64/boot/dts/sprd/Makefile
++++ b/arch/arm64/boot/dts/sprd/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_SPRD) += sc9836-openphone.dtb \
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/xilinx/Makefile b/arch/arm64/boot/dts/xilinx/Makefile
+index ae16427..74e1956 100644
+--- a/arch/arm64/boot/dts/xilinx/Makefile
++++ b/arch/arm64/boot/dts/xilinx/Makefile
+@@ -2,4 +2,3 @@ dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-ep108.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/arm64/boot/dts/zte/Makefile b/arch/arm64/boot/dts/zte/Makefile
+index d86c4de..71e0708 100644
+--- a/arch/arm64/boot/dts/zte/Makefile
++++ b/arch/arm64/boot/dts/zte/Makefile
+@@ -3,4 +3,3 @@ dtb-$(CONFIG_ARCH_ZX) += zx296718-pcbox.dtb
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb
+diff --git a/arch/c6x/boot/dts/Makefile b/arch/c6x/boot/dts/Makefile
+index c7528b0..cb4874c 100644
+--- a/arch/c6x/boot/dts/Makefile
++++ b/arch/c6x/boot/dts/Makefile
+@@ -16,5 +16,3 @@ $(obj)/builtin.dtb: $(obj)/$(DTB).dtb
+ 	$(call if_changed,cp)
+ 
+ $(obj)/linked_dtb.o: $(obj)/builtin.dtb
+-
+-clean-files := *.dtb
+diff --git a/arch/cris/boot/dts/Makefile b/arch/cris/boot/dts/Makefile
+index faf69fb..4a97c7d 100644
+--- a/arch/cris/boot/dts/Makefile
++++ b/arch/cris/boot/dts/Makefile
+@@ -2,5 +2,3 @@ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB)).dtb.o
+ ifneq ($(CONFIG_BUILTIN_DTB),"")
+ obj-$(CONFIG_OF) += $(BUILTIN_DTB)
+ endif
+-
+-clean-files := *.dtb.S
+diff --git a/arch/h8300/boot/dts/Makefile b/arch/h8300/boot/dts/Makefile
+index 6c08467..6f3fe47 100644
+--- a/arch/h8300/boot/dts/Makefile
++++ b/arch/h8300/boot/dts/Makefile
+@@ -12,4 +12,3 @@ dtstree		:= $(srctree)/$(src)
+ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dtstree)/*.dts))
+ 
+ always	    := $(dtb-y)
+-clean-files := *.dtb.S *.dtb
+diff --git a/arch/metag/boot/dts/Makefile b/arch/metag/boot/dts/Makefile
+index 097c6da..83d5b88 100644
+--- a/arch/metag/boot/dts/Makefile
++++ b/arch/metag/boot/dts/Makefile
+@@ -18,4 +18,3 @@ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dts
+ .SECONDARY: $(obj)/$(builtindtb-y).dtb.S
+ 
+ always += $(dtb-y)
+-clean-files += *.dtb *.dtb.S
+diff --git a/arch/microblaze/boot/Makefile b/arch/microblaze/boot/Makefile
+index 91d2068..1cb84cf 100644
+--- a/arch/microblaze/boot/Makefile
++++ b/arch/microblaze/boot/Makefile
+@@ -34,4 +34,4 @@ $(obj)/simpleImage.%: vmlinux FORCE
+ 	$(call if_changed,strip)
+ 	@echo 'Kernel: $@ is ready' ' (#'`cat .version`')'
+ 
+-clean-files += simpleImage.*.unstrip linux.bin.ub dts/*.dtb
++clean-files += simpleImage.*.unstrip linux.bin.ub
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index cbac26c..7891ffa 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -18,4 +18,3 @@ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(foreach d,$(dt
+ 
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+-clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/Makefile
+index d61bc2a..69a69d1 100644
+--- a/arch/mips/boot/dts/brcm/Makefile
++++ b/arch/mips/boot/dts/brcm/Makefile
+@@ -40,4 +40,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/cavium-octeon/Makefile b/arch/mips/boot/dts/cavium-octeon/Makefile
+index 5b99c40..a6fb331 100644
+--- a/arch/mips/boot/dts/cavium-octeon/Makefile
++++ b/arch/mips/boot/dts/cavium-octeon/Makefile
+@@ -6,4 +6,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Makefile
+index 3d70958..135f987 100644
+--- a/arch/mips/boot/dts/img/Makefile
++++ b/arch/mips/boot/dts/img/Makefile
+@@ -7,4 +7,3 @@ obj-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb.o
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
+index f2b864f..e3d0ec1 100644
+--- a/arch/mips/boot/dts/ingenic/Makefile
++++ b/arch/mips/boot/dts/ingenic/Makefile
+@@ -7,4 +7,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/lantiq/Makefile b/arch/mips/boot/dts/lantiq/Makefile
+index 0906c62..5976f08 100644
+--- a/arch/mips/boot/dts/lantiq/Makefile
++++ b/arch/mips/boot/dts/lantiq/Makefile
+@@ -6,4 +6,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/mti/Makefile b/arch/mips/boot/dts/mti/Makefile
+index fcabd69..9a1a6dc 100644
+--- a/arch/mips/boot/dts/mti/Makefile
++++ b/arch/mips/boot/dts/mti/Makefile
+@@ -7,4 +7,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/netlogic/Makefile b/arch/mips/boot/dts/netlogic/Makefile
+index 9868057..6b2cf49 100644
+--- a/arch/mips/boot/dts/netlogic/Makefile
++++ b/arch/mips/boot/dts/netlogic/Makefile
+@@ -10,4 +10,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/ni/Makefile b/arch/mips/boot/dts/ni/Makefile
+index 66cfdff..094da72 100644
+--- a/arch/mips/boot/dts/ni/Makefile
++++ b/arch/mips/boot/dts/ni/Makefile
+@@ -4,4 +4,3 @@ dtb-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= 169445.dtb
+ obj-					+= dummy.o
+ 
+ always					:= $(dtb-y)
+-clean-files				:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/pic32/Makefile b/arch/mips/boot/dts/pic32/Makefile
+index 7ac7905..0ee591b 100644
+--- a/arch/mips/boot/dts/pic32/Makefile
++++ b/arch/mips/boot/dts/pic32/Makefile
+@@ -9,4 +9,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
+index 63a9ddf..87cf351c 100644
+--- a/arch/mips/boot/dts/qca/Makefile
++++ b/arch/mips/boot/dts/qca/Makefile
+@@ -9,4 +9,3 @@ dtb-$(CONFIG_ATH79)			+= ar9331_tl_mr3020.dtb
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/ralink/Makefile b/arch/mips/boot/dts/ralink/Makefile
+index 55e2937..e0e3a9d 100644
+--- a/arch/mips/boot/dts/ralink/Makefile
++++ b/arch/mips/boot/dts/ralink/Makefile
+@@ -11,4 +11,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/xilfpga/Makefile b/arch/mips/boot/dts/xilfpga/Makefile
+index 913a752..8b9ea11 100644
+--- a/arch/mips/boot/dts/xilfpga/Makefile
++++ b/arch/mips/boot/dts/xilfpga/Makefile
+@@ -6,4 +6,3 @@ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ obj-				+= dummy.o
+ 
+ always				:= $(dtb-y)
+-clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/nios2/boot/Makefile b/arch/nios2/boot/Makefile
+index c899876..2ba23a6 100644
+--- a/arch/nios2/boot/Makefile
++++ b/arch/nios2/boot/Makefile
+@@ -53,7 +53,5 @@ $(obj)/%.dtb: $(src)/dts/%.dts FORCE
+ 
+ $(obj)/dtbs: $(addprefix $(obj)/, $(dtb-y))
+ 
+-clean-files := *.dtb
+-
+ install:
+ 	sh $(srctree)/$(src)/install.sh $(KERNELRELEASE) $(BOOTIMAGE) System.map "$(INSTALL_PATH)"
+diff --git a/arch/openrisc/boot/dts/Makefile b/arch/openrisc/boot/dts/Makefile
+index b092d30..0a5017c 100644
+--- a/arch/openrisc/boot/dts/Makefile
++++ b/arch/openrisc/boot/dts/Makefile
+@@ -5,6 +5,4 @@ BUILTIN_DTB :=
+ endif
+ obj-y += $(BUILTIN_DTB)
+ 
+-clean-files := *.dtb.S
+-
+ #DTC_FLAGS ?= -p 1024
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index c4e6fe3..c3caa5b 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -439,7 +439,7 @@ zInstall: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
+ clean-files += $(image-) $(initrd-) cuImage.* dtbImage.* treeImage.* \
+ 	zImage zImage.initrd zImage.chrp zImage.coff zImage.holly \
+ 	zImage.miboot zImage.pmac zImage.pseries \
+-	zImage.maple simpleImage.* otheros.bld *.dtb
++	zImage.maple simpleImage.* otheros.bld
+ 
+ # clean up files cached by wrapper
+ clean-kernel-base := vmlinux.strip vmlinux.bin
+diff --git a/arch/sh/boot/dts/Makefile b/arch/sh/boot/dts/Makefile
+index e5ce3a0..715def0 100644
+--- a/arch/sh/boot/dts/Makefile
++++ b/arch/sh/boot/dts/Makefile
+@@ -1,3 +1 @@
+ obj-$(CONFIG_USE_BUILTIN_DTB) += $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_SOURCE)).dtb.o
+-
+-clean-files := *.dtb.S
+diff --git a/arch/xtensa/boot/dts/Makefile b/arch/xtensa/boot/dts/Makefile
+index a15e241..c62dd6c 100644
+--- a/arch/xtensa/boot/dts/Makefile
++++ b/arch/xtensa/boot/dts/Makefile
+@@ -16,5 +16,3 @@ dtstree := $(srctree)/$(src)
+ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dtstree)/*.dts))
+ 
+ always += $(dtb-y)
+-clean-files += *.dtb *.dtb.S
+-
+-- 
+2.7.4

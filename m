@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Nov 2017 18:23:50 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:56153 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Nov 2017 18:24:16 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:56438 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990740AbdKCRXNn6AEa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 3 Nov 2017 18:23:13 +0100
+        id S23993359AbdKCRXV0VOG6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Nov 2017 18:23:21 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 567E51A4B01;
-        Fri,  3 Nov 2017 18:23:08 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id 1816B1A4B01;
+        Fri,  3 Nov 2017 18:23:16 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 3A17B1A4AF5;
-        Fri,  3 Nov 2017 18:23:08 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id F1A171A4AF5;
+        Fri,  3 Nov 2017 18:23:15 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
         Miodrag Dinic <miodrag.dinic@mips.com>,
         Goran Ferenc <goran.ferenc@mips.com>,
-        David Airlie <airlied@linux.ie>, devicetree@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Douglas Leung <douglas.leung@mips.com>,
-        dri-devel@lists.freedesktop.org,
         James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Paul Burton <paul.burton@mips.com>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v8 3/5] Documentation: Add device tree binding for Goldfish FB driver
-Date:   Fri,  3 Nov 2017 18:21:36 +0100
-Message-Id: <1509729730-26621-4-git-send-email-aleksandar.markovic@rt-rk.com>
+        Raghu Gandham <raghu.gandham@mips.com>
+Subject: [PATCH v8 4/5] video: goldfishfb: Add support for device tree bindings
+Date:   Fri,  3 Nov 2017 18:21:37 +0100
+Message-Id: <1509729730-26621-5-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1509729730-26621-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1509729730-26621-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -34,7 +33,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60707
+X-archive-position: 60708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,40 +52,38 @@ X-list: linux-mips
 
 From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-Add documentation for DT binding of Goldfish FB driver. The compatible
-string used by OS for binding the driver is "google,goldfish-fb".
+Add ability to the Goldfish FB driver to be recognized by OS via DT.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
 Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- .../devicetree/bindings/display/google,goldfish-fb.txt  | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/google,goldfish-fb.txt
+ drivers/video/fbdev/goldfishfb.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/display/google,goldfish-fb.txt b/Documentation/devicetree/bindings/display/google,goldfish-fb.txt
-new file mode 100644
-index 0000000..751fa9f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/google,goldfish-fb.txt
-@@ -0,0 +1,17 @@
-+Android Goldfish framebuffer
-+
-+Android Goldfish framebuffer device used by Android emulator.
-+
-+Required properties:
-+
-+- compatible : should contain "google,goldfish-fb"
-+- reg        : <registers mapping>
-+- interrupts : <interrupt mapping>
-+
-+Example:
-+
-+	display-controller@1f008000 {
-+		compatible = "google,goldfish-fb";
-+		interrupts = <0x10>;
-+		reg = <0x1f008000 0x100>;
-+	};
+diff --git a/drivers/video/fbdev/goldfishfb.c b/drivers/video/fbdev/goldfishfb.c
+index 7f6c9e6..3b70044 100644
+--- a/drivers/video/fbdev/goldfishfb.c
++++ b/drivers/video/fbdev/goldfishfb.c
+@@ -304,12 +304,18 @@ static int goldfish_fb_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static const struct of_device_id goldfish_fb_of_match[] = {
++	{ .compatible = "google,goldfish-fb", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, goldfish_fb_of_match);
+ 
+ static struct platform_driver goldfish_fb_driver = {
+ 	.probe		= goldfish_fb_probe,
+ 	.remove		= goldfish_fb_remove,
+ 	.driver = {
+-		.name = "goldfish_fb"
++		.name = "goldfish_fb",
++		.of_match_table = goldfish_fb_of_match,
+ 	}
+ };
+ 
 -- 
 2.7.4

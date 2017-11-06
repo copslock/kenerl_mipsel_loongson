@@ -1,41 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Nov 2017 06:07:50 +0100 (CET)
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:35785 "EHLO 1wt.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Nov 2017 11:42:02 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:44748 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990395AbdKFFHkifRdZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Nov 2017 06:07:40 +0100
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id vA657aES015535;
-        Mon, 6 Nov 2017 06:07:36 +0100
-Date:   Mon, 6 Nov 2017 06:07:36 +0100
-From:   Willy Tarreau <w@1wt.eu>
-To:     Huacai Chen <chenhuacai@gmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 3.10 021/139] MIPS: Send SIGILL for BPOSGE32 in
- `__compute_return_epc_for_insn'
-Message-ID: <20171106050736.GA15445@1wt.eu>
-References: <1509571159-4405-1-git-send-email-w@1wt.eu>
- <1509571159-4405-22-git-send-email-w@1wt.eu>
- <CAAhV-H6aqeSga3bx9SDDXW23KTi=YWHwKCaXoD-kWUYg9JCyzA@mail.gmail.com>
+        id S23990395AbdKFKlzngvWW convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Nov 2017 11:41:55 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2282D218D0;
+        Mon,  6 Nov 2017 10:41:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2282D218D0
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Mon, 6 Nov 2017 10:41:47 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: dts: remove bogus bcm96358nb4ser.dtb from
+ dtb-y entry
+Message-ID: <20171106095139.GG15260@jhogan-linux>
+References: <1509859853-27473-1-git-send-email-yamada.masahiro@socionext.com>
+ <1509859853-27473-2-git-send-email-yamada.masahiro@socionext.com>
+ <CAK7LNAQfK_BWQcVW-ScrpAwNAHav3MrrzV-tjn_YUjsuvd7U5A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAAhV-H6aqeSga3bx9SDDXW23KTi=YWHwKCaXoD-kWUYg9JCyzA@mail.gmail.com>
-User-Agent: Mutt/1.6.1 (2016-04-27)
-Return-Path: <w@1wt.eu>
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <CAK7LNAQfK_BWQcVW-ScrpAwNAHav3MrrzV-tjn_YUjsuvd7U5A@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60717
+X-archive-position: 60718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w@1wt.eu
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,19 +59,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Huacai,
+Hi,
 
-On Mon, Nov 06, 2017 at 12:41:48PM +0800, Huacai Chen wrote:
-> Hi, Willy,
+On Sun, Nov 05, 2017 at 11:11:38PM +0900, Masahiro Yamada wrote:
+> +CC Ralf Baechle <ralf@linux-mips.org>
+> +CC linux-mips@linux-mips.org
+> +CC Kevin Cernekee <cernekee@gmail.com>
+> +CC Florian Fainelli <f.fainelli@gmail.com>
 > 
-> Does these two patches really needed for 3.10? They are marked for 4.4 and 4.6.
 > 
-> ext4: avoid deadlock when expanding inode size
-> 
-> ext4: in ext4_seek_{hole,data}, return -ENXIO for negative offsets
+> I missed to CC MIPS maintainers.
 
-Ted provided stable backports of these patches for older kernels back
-to 3.18, thus I understood that they were valid before 4.4/4.6.
+Yes, please resend the patch so it lands in patchwork.linux-mips.org.
 
-Regards,
-Willy
+> 2017-11-05 14:30 GMT+09:00 Masahiro Yamada <yamada.masahiro@socionext.com>:
+> > arch/mips/boot/dts/brcm/bcm96358nb4ser.dts does not exist, so
+> > we cannot build bcm96358nb4ser.dtb .
+
+This appears to be due to the file being renamed in commit 695835511f96
+("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom").
+Please can you update the commit message when you resend to mention the
+cause of the problem.
+
+You could also add the following if you like while you're at it:
+
+Fixes: 695835511f96 ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom")
+Cc: <stable@vger.kernel.org> # 4.9+
+
+Thanks
+James

@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 00:55:51 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:34054 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 00:56:16 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:34138 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991120AbdKFXyOk9Caf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 00:54:14 +0100
+        by eddie.linux-mips.org with ESMTP id S23991258AbdKFXyRUVJwf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 00:54:17 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1eBrDV-0008UD-OJ; Mon, 06 Nov 2017 23:54:10 +0000
+        id 1eBrDV-0008Ty-Ke; Mon, 06 Nov 2017 23:54:09 +0000
 Received: from ben by deadeye with local (Exim 4.89)
         (envelope-from <ben@decadent.org.uk>)
-        id 1eBrDT-00013g-Rt; Mon, 06 Nov 2017 23:54:07 +0000
+        id 1eBrDT-000143-TY; Mon, 06 Nov 2017 23:54:07 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org,
-        "Sergey Ryazanov" <ryazanov.s.a@gmail.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        "Linux MIPS" <linux-mips@linux-mips.org>
+CC:     akpm@linux-foundation.org, "Atsushi Nemoto" <anemo@mba.ocn.ne.jp>,
+        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Arnd Bergmann" <arnd@arndb.de>
 Date:   Mon, 06 Nov 2017 23:03:02 +0000
-Message-ID: <lsq.1510009382.405486143@decadent.org.uk>
+Message-ID: <lsq.1510009382.155143478@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 281/294] MIPS: MSP71xx: remove odd locking in PCI
- config space access code
+Subject: [PATCH 3.16 283/294] MIPS: TXx9: Delete an unused variable in
+ tx4927_pcibios_setup
 In-Reply-To: <lsq.1510009377.526284287@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -35,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60732
+X-archive-position: 60733
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,70 +54,28 @@ X-list: linux-mips
 
 ------------------
 
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-commit c4a305374bbf36414515d2ae00d588c67051e67d upstream.
+commit 1bc2d3e38e5bf90af4e9d64e1696f2d39757355a upstream.
 
-Caller (generic PCI code) already do proper locking so no need to add
-another one here.
-
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Linux MIPS <linux-mips@linux-mips.org>
-Patchwork: https://patchwork.linux-mips.org/patch/7601/
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7216/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/pci/ops-pmcmsp.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/mips/pci/ops-tx4927.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/mips/pci/ops-pmcmsp.c
-+++ b/arch/mips/pci/ops-pmcmsp.c
-@@ -193,8 +193,6 @@ static void pci_proc_init(void)
- }
- #endif /* CONFIG_PROC_FS && PCI_COUNTERS */
+--- a/arch/mips/pci/ops-tx4927.c
++++ b/arch/mips/pci/ops-tx4927.c
+@@ -199,8 +199,6 @@ static struct {
  
--static DEFINE_SPINLOCK(bpci_lock);
+ char *tx4927_pcibios_setup(char *str)
+ {
+-	unsigned long val;
 -
- /*****************************************************************************
-  *
-  *  STRUCT: pci_io_resource
-@@ -368,7 +366,6 @@ int msp_pcibios_config_access(unsigned c
- 	struct msp_pci_regs *preg = (void *)PCI_BASE_REG;
- 	unsigned char bus_num = bus->number;
- 	unsigned char dev_fn = (unsigned char)devfn;
--	unsigned long flags;
- 	unsigned long intr;
- 	unsigned long value;
- 	static char pciirqflag;
-@@ -401,10 +398,7 @@ int msp_pcibios_config_access(unsigned c
- 	}
- 
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
--	local_irq_save(flags);
- 	vpe_status = dvpe();
--#else
--	spin_lock_irqsave(&bpci_lock, flags);
- #endif
- 
- 	/*
-@@ -457,9 +451,6 @@ int msp_pcibios_config_access(unsigned c
- 
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
- 		evpe(vpe_status);
--		local_irq_restore(flags);
--#else
--		spin_unlock_irqrestore(&bpci_lock, flags);
- #endif
- 
- 		return -1;
-@@ -467,9 +458,6 @@ int msp_pcibios_config_access(unsigned c
- 
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
- 	evpe(vpe_status);
--	local_irq_restore(flags);
--#else
--	spin_unlock_irqrestore(&bpci_lock, flags);
- #endif
- 
- 	return PCIBIOS_SUCCESSFUL;
+ 	if (!strncmp(str, "trdyto=", 7)) {
+ 		u8 val = 0;
+ 		if (kstrtou8(str + 7, 0, &val) == 0)

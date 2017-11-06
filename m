@@ -1,64 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Nov 2017 12:02:21 +0100 (CET)
-Received: from conssluserg-02.nifty.com ([210.131.2.81]:26116 "EHLO
-        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990474AbdKFLCOWtaRW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Nov 2017 12:02:14 +0100
-Received: from mail-yw0-f172.google.com (mail-yw0-f172.google.com [209.85.161.172]) (authenticated)
-        by conssluserg-02.nifty.com with ESMTP id vA6B1UEJ000850;
-        Mon, 6 Nov 2017 20:01:30 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com vA6B1UEJ000850
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1509966091;
-        bh=WysYu5Sxu6316PTx3ouBkF7DbThYY1lMR2jI3KJv3NM=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=WgQ1cCZLlutdtmKRPO9+hoGH5IyMU4IzLvxrICezT9aufWTWswnDRpwhHGRwSIveD
-         dfrny/vUFPchVU3vt5Ft0NoxlIvOMfrgMaX2ejBISX9wtkgyu0X2pXoJjpx3y5ZJvl
-         MgNSqgd4PxyidGRR8W80O0RYyTSkQEW9LcCBhfkn96eKMQm/wE1/Qt7lGbiejzWc0e
-         KJp4YozWzBBxWycU0EkekKiqVKoW72UDD7H0uPfFAhkfssesuzfgUEP5ULyNr26rdG
-         hLMEJYgDIK/oD+WZHZql3wJMzOlIwVF4YOKAXeWBTjp3nHf6WXY2qCUsGzfrE+JbXM
-         uK7GQzIn3mCbA==
-X-Nifty-SrcIP: [209.85.161.172]
-Received: by mail-yw0-f172.google.com with SMTP id i198so7440724ywe.7;
-        Mon, 06 Nov 2017 03:01:30 -0800 (PST)
-X-Gm-Message-State: AJaThX4nfvebW4+u0InIEGtP+BjhzCg1YOrXyWvRSfMGrh3CgOhOfMd4
-        6/C9H7oB9B6BQS2iCPM9VFe5AgWOEjCindzJmHs=
-X-Google-Smtp-Source: ABhQp+S6st6Khdgn+ig50twx14zY3olLsDt/eVy4vrfnJxCbnKA52nivxZGi3I4Un/d4aGeTeDq+860ii83JpTY32bY=
-X-Received: by 10.37.113.197 with SMTP id m188mr4704481ybc.390.1509966089673;
- Mon, 06 Nov 2017 03:01:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Nov 2017 16:06:57 +0100 (CET)
+Received: from resqmta-ch2-09v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:41]:43780
+        "EHLO resqmta-ch2-09v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990489AbdKFPGqmNerq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Nov 2017 16:06:46 +0100
+Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
+        by resqmta-ch2-09v.sys.comcast.net with ESMTP
+        id BiwMey7QLvIeHBiweedYUB; Mon, 06 Nov 2017 15:04:12 +0000
+Received: from [192.168.1.13] ([73.173.137.35])
+        by resomta-ch2-05v.sys.comcast.net with SMTP
+        id BiwcedTyDLIzOBiwdeqbJq; Mon, 06 Nov 2017 15:04:12 +0000
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Linux/MIPS <linux-mips@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: [PATCH v2] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
+Message-ID: <6b38d371-f53e-5d99-a792-444a5822b498@gentoo.org>
+Date:   Mon, 6 Nov 2017 10:04:05 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Received: by 10.37.110.139 with HTTP; Mon, 6 Nov 2017 03:00:49 -0800 (PST)
-In-Reply-To: <20171106095139.GG15260@jhogan-linux>
-References: <1509859853-27473-1-git-send-email-yamada.masahiro@socionext.com>
- <1509859853-27473-2-git-send-email-yamada.masahiro@socionext.com>
- <CAK7LNAQfK_BWQcVW-ScrpAwNAHav3MrrzV-tjn_YUjsuvd7U5A@mail.gmail.com> <20171106095139.GG15260@jhogan-linux>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Mon, 6 Nov 2017 20:00:49 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQ_bugEP8hHKmCif5QCz2=Pw_GpXzYz4zJeXO0HXaT_ag@mail.gmail.com>
-Message-ID: <CAK7LNAQ_bugEP8hHKmCif5QCz2=Pw_GpXzYz4zJeXO0HXaT_ag@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MIPS: dts: remove bogus bcm96358nb4ser.dtb from dtb-y entry
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfCy2fpYTWLhA1qwYas1EQeVp+FWp6RITkp0tjXx1o30pqMH3SiFmdhrC2ohgynOjEo1E/EIWmqv0JUOx/DGyNhf4jwFe0Yv5LAHj5g/lwSiqc+dQ7RhP
+ /4kFW/WFa8fdJ3yQlNqaHiU/a2b9vqfPR/Tfg3orXfNMwXDAkhGzrBOte7b5YxYNAvI3RKbRsTOGvYJqYOWFhEEtgQWeBQ7ePzuRpfTtlx3Stp+tVz5NRC2z
+ vVKGkjfMnYez+yeNt+arLZBW4GwU83dxg7TK5tWZ5tj38AK5dBcLo5iX768lhuXPPU625mBsaelkpTJfdGkKsg==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60719
+X-archive-position: 60720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,55 +48,381 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2017-11-06 19:41 GMT+09:00 James Hogan <jhogan@kernel.org>:
-> Hi,
->
-> On Sun, Nov 05, 2017 at 11:11:38PM +0900, Masahiro Yamada wrote:
->> +CC Ralf Baechle <ralf@linux-mips.org>
->> +CC linux-mips@linux-mips.org
->> +CC Kevin Cernekee <cernekee@gmail.com>
->> +CC Florian Fainelli <f.fainelli@gmail.com>
->>
->>
->> I missed to CC MIPS maintainers.
->
-> Yes, please resend the patch so it lands in patchwork.linux-mips.org.
+From: Joshua Kinard <kumba@gentoo.org>
 
+This patch reduces down the conditionals in MIPS atomic code that
+deal with a silicon bug in early R10000 cpus that required a workaround
+of a branch-likely instruction following a store-conditional in order
+to guarantee the whole ll/sc sequence is atomic.  As the only real
+difference is a branch-likely instruction (beqzl) over a standard
+branch (beqz), the conditional is reduced down to down to a single
+preprocessor check at the top to pick the required instruction.
 
-This is a part of clean-up series of DT building.
+This requires writing the uses in assembler, thus we discard the
+non-R10000 case that uses a mixture of a C do...while loop with
+embedded assembler that was added back in commit 7837314d141c, while
+also addressing a note found in the git log for empty commit
+5999eca25c1f.
 
-I want Acked-by from MIPS maintainers
-so that the whole series can go to a different tree.
-(DT or Kbuild).
+The macro definition for the branch instruction and the code comment
+derives from a patch sent in earlier by Paul Burton for various cmpxchg
+cleanups.
 
+Cc: linux-mips@linux-mips.org
+Cc: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+---
+Changes in v2:
+- Incorporate suggestions from upstream to atomic_sub_if_positive and
+  atomic64_sub_if_positive to avoid memory barriers, as those are already
+  implied and to eliminate the '.noreorder' directive and corner case of
+  subu/dsubu's output not getting used in the branch-likely case due to being
+  in the branch delay slot.
 
-Sam addressed more clean-up candidates in MIPS Makefiles
-https://patchwork.kernel.org/patch/10041879/
+---
+ arch/mips/include/asm/atomic.h |  197 +++++--------------------------
+ 1 file changed, 36 insertions(+), 161 deletions(-)
 
-So, I will probably end up with touching those Makefiles more.
-
-All patches must go to the same tree.
-
-
->> 2017-11-05 14:30 GMT+09:00 Masahiro Yamada <yamada.masahiro@socionext.com>:
->> > arch/mips/boot/dts/brcm/bcm96358nb4ser.dts does not exist, so
->> > we cannot build bcm96358nb4ser.dtb .
->
-> This appears to be due to the file being renamed in commit 695835511f96
-> ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom").
-> Please can you update the commit message when you resend to mention the
-> cause of the problem.
->
-> You could also add the following if you like while you're at it:
->
-> Fixes: 695835511f96 ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom")
-> Cc: <stable@vger.kernel.org> # 4.9+
->
-
-
-Will do.  Thanks!
-
-
--- 
-Best Regards
-Masahiro Yamada
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 0ab176bdb8e8..a89313b31feb 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -22,6 +22,17 @@
+ #include <asm/cmpxchg.h>
+ #include <asm/war.h>
+ 
++/*
++ * Using a branch-likely instruction to check the result of an sc instruction
++ * works around a bug present in R10000 CPUs prior to revision 3.0 that could
++ * cause ll-sc sequences to execute non-atomically.
++ */
++#if R10000_LLSC_WAR
++# define __scbeqz "beqzl"
++#else
++# define __scbeqz "beqz"
++#endif
++
+ #define ATOMIC_INIT(i)	  { (i) }
+ 
+ /*
+@@ -44,31 +55,18 @@
+ #define ATOMIC_OP(op, c_op, asm_op)					      \
+ static __inline__ void atomic_##op(int i, atomic_t * v)			      \
+ {									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		int temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	ll	%0, %1		# atomic_" #op "	\n"   \
+ 		"	" #asm_op " %0, %2				\n"   \
+ 		"	sc	%0, %1					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)	      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		int temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	ll	%0, %1		# atomic_" #op "\n"   \
+-			"	" #asm_op " %0, %2			\n"   \
+-			"	sc	%0, %1				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)  \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!temp));				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -83,36 +81,20 @@ static __inline__ int atomic_##op##_return_relaxed(int i, atomic_t * v)	      \
+ {									      \
+ 	int result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		int temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	ll	%1, %2		# atomic_" #op "_return	\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	sc	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		int temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	ll	%1, %2	# atomic_" #op "_return	\n"   \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	sc	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "+" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp; result c_op i;				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -131,36 +113,20 @@ static __inline__ int atomic_fetch_##op##_relaxed(int i, atomic_t * v)	      \
+ {									      \
+ 	int result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		int temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	ll	%1, %2		# atomic_fetch_" #op "	\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	sc	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	move	%0, %1					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		int temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	ll	%1, %2	# atomic_fetch_" #op "	\n"   \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	sc	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "+" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp;						      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -218,26 +184,7 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 
+ 	smp_mb__before_llsc();
+ 
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {
+-		int temp;
+-
+-		__asm__ __volatile__(
+-		"	.set	arch=r4000				\n"
+-		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
+-		"	subu	%0, %1, %3				\n"
+-		"	bltz	%0, 1f					\n"
+-		"	sc	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqzl	%0, 1b					\n"
+-		"	 subu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
+-		"1:							\n"
+-		"	.set	mips0					\n"
+-		: "=&r" (result), "=&r" (temp),
+-		  "+" GCC_OFF_SMALL_ASM() (v->counter)
+-		: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)
+-		: "memory");
+-	} else if (kernel_uses_llsc) {
++	if (kernel_uses_llsc) {
+ 		int temp;
+ 
+ 		__asm__ __volatile__(
+@@ -245,11 +192,8 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
+ 		"	subu	%0, %1, %3				\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	sc	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqz	%0, 1b					\n"
+-		"	 subu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	sc	%1, %2					\n"
++		"\t" __scbeqz "	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+@@ -386,31 +330,18 @@ static __inline__ int __atomic_add_unless(atomic_t *v, int a, int u)
+ #define ATOMIC64_OP(op, c_op, asm_op)					      \
+ static __inline__ void atomic64_##op(long i, atomic64_t * v)		      \
+ {									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		long temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	lld	%0, %1		# atomic64_" #op "	\n"   \
+ 		"	" #asm_op " %0, %2				\n"   \
+ 		"	scd	%0, %1					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)	      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		long temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	lld	%0, %1		# atomic64_" #op "\n" \
+-			"	" #asm_op " %0, %2			\n"   \
+-			"	scd	%0, %1				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)      \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!temp));				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -425,37 +356,20 @@ static __inline__ long atomic64_##op##_return_relaxed(long i, atomic64_t * v) \
+ {									      \
+ 	long result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		long temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	lld	%1, %2		# atomic64_" #op "_return\n"  \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	scd	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		long temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	lld	%1, %2	# atomic64_" #op "_return\n"  \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	scd	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "=" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)	      \
+-			: "memory");					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp; result c_op i;				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -474,37 +388,20 @@ static __inline__ long atomic64_fetch_##op##_relaxed(long i, atomic64_t * v)  \
+ {									      \
+ 	long result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		long temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	lld	%1, %2		# atomic64_fetch_" #op "\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	scd	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	move	%0, %1					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		long temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	lld	%1, %2	# atomic64_fetch_" #op "\n"   \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	scd	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "=" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)	      \
+-			: "memory");					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp;						      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -563,26 +460,7 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
+ 
+ 	smp_mb__before_llsc();
+ 
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {
+-		long temp;
+-
+-		__asm__ __volatile__(
+-		"	.set	arch=r4000				\n"
+-		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+-		"	dsubu	%0, %1, %3				\n"
+-		"	bltz	%0, 1f					\n"
+-		"	scd	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqzl	%0, 1b					\n"
+-		"	 dsubu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
+-		"1:							\n"
+-		"	.set	mips0					\n"
+-		: "=&r" (result), "=&r" (temp),
+-		  "=" GCC_OFF_SMALL_ASM() (v->counter)
+-		: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)
+-		: "memory");
+-	} else if (kernel_uses_llsc) {
++	if (kernel_uses_llsc) {
+ 		long temp;
+ 
+ 		__asm__ __volatile__(
+@@ -590,15 +468,12 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
+ 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+ 		"	dsubu	%0, %1, %3				\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	scd	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqz	%0, 1b					\n"
+-		"	 dsubu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	scd	%1, %2					\n"
++		"\t" __scbeqz "	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+-		  "+" GCC_OFF_SMALL_ASM() (v->counter)
++		  "=" GCC_OFF_SMALL_ASM() (v->counter)
+ 		: "Ir" (i));
+ 	} else {
+ 		unsigned long flags;

@@ -1,55 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 12:59:16 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:53272 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991869AbdKGL7ImOMZ7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Nov 2017 12:59:08 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7773814;
-        Tue,  7 Nov 2017 03:59:01 -0800 (PST)
-Received: from [10.1.207.62] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D6E43F220;
-        Tue,  7 Nov 2017 03:58:58 -0800 (PST)
-Subject: Re: [PATCH v8 2/5] irqchip/irq-goldfish-pic: Add Goldfish PIC driver
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@mips.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <1509729730-26621-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1509729730-26621-3-git-send-email-aleksandar.markovic@rt-rk.com>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <b2ac2511-83ea-e5b3-34af-0b82838211b9@arm.com>
-Date:   Tue, 7 Nov 2017 11:58:57 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 13:15:37 +0100 (CET)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:47404
+        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992143AbdKGMPaXkAd7 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Nov 2017 13:15:30 +0100
+Received: by mail-oi0-x241.google.com with SMTP id h200so9943629oib.4;
+        Tue, 07 Nov 2017 04:15:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=xGKAylS9Jor9qwXFlpToHjUUMKLO8QmoZa/ZZZyUSsY=;
+        b=ZttCaxlBGs9ksPxvqUxr3ejtRNmK3WXF9rKaUtKKBJypQ0RlTq4szgubV2Unjc7eHg
+         cZxnKLAFp3aWkjmHasKWpIE0sOe0eWnt5Vl0pjotQNVyXG2yu1ZhjV11K/UpMYuhh5o1
+         TJ1JPYCSr8/scwBJSdxB7lske709CQw0GDROxoJFg532Zm/5Z/Lsm4vok34PBUquHa10
+         cBf1mEAT994IJgwwClxHJvxerw8kB7QEHeTcloWi2GqYF8R13LU0xLJrmTS7MuaG85TU
+         iajRCS+azSI4IpE0NjtAaz/h6d+FfNEBCCICh2oWHymb/ePU8v7nZxWZSVP3/N1xCUKE
+         /IBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=xGKAylS9Jor9qwXFlpToHjUUMKLO8QmoZa/ZZZyUSsY=;
+        b=Yec3/9lYsYjqZCXcI+o3VXY5gNl6aJIQxhbQQqwsAwIfu4ibTINOmR3OI6nTaVBbKw
+         e7ddc2wgHst6kWv5Yc1FGrcGF9yoeh4rO0C9jJXSjSmCk3TVhWKOeRZ1FVhXVBqwaivz
+         kTR/Cde4MErmgsfCHYgPSOnz//xZZ8LXVC78hNUiPfSapf89laOEyCkYOPDXd03bSm9R
+         mduvPEL0rhXo4XvDQWJBuu9rByu3dlyQqWxr6thQdYg7dT4iabN6LY2da8oEimgjEENY
+         84oSgwAA7WxadJGNmrd3cypZZ54HDsfzhk0ltGUYwUZFPF4S35gDNPp0+Nx4IEPdtCjj
+         op9g==
+X-Gm-Message-State: AMCzsaXm/ObTZbmzTpIxnYbltPDjyC7X7OShsOzXjlBGM47ze4Titd03
+        XehGJIguU6SWAnE8hqX8gloygzD94IE7GKCXuwI=
+X-Google-Smtp-Source: ABhQp+RFJ6D2FdSRvbS3SMb2GrBlaXrc7mF+Y5As8190vBtTpk3rTR0OpAi10Kpe4sR4UPNU2mHLuTLzL3pE7yZ5X4k=
+X-Received: by 10.202.197.142 with SMTP id v136mr10855671oif.331.1510056922981;
+ Tue, 07 Nov 2017 04:15:22 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1509729730-26621-3-git-send-email-aleksandar.markovic@rt-rk.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Received: by 10.157.28.152 with HTTP; Tue, 7 Nov 2017 04:15:22 -0800 (PST)
+In-Reply-To: <5a0159b6.08bc500a.ebe4b.25c6@mx.google.com>
+References: <5a0159b6.08bc500a.ebe4b.25c6@mx.google.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 7 Nov 2017 13:15:22 +0100
+X-Google-Sender-Auth: rkJrGDLow7qrsnlI_Y4xeRR4jns
+Message-ID: <CAK8P3a3QKkGv6eSjX7wH6LpOY0-1XUPFoX0ntog5-ZSHPab6iA@mail.gmail.com>
+Subject: Re: next/master build: 214 builds: 26 failed, 188 passed, 28 errors,
+ 6333 warnings (next-20171107)
+To:     "kernelci.org bot" <bot@kernelci.org>
+Cc:     Kernel Build Reports Mailman List 
+        <kernel-build-reports@lists.linaro.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60739
+X-archive-position: 60740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,217 +76,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/11/17 17:21, Aleksandar Markovic wrote:
-> From: Miodrag Dinic <miodrag.dinic@mips.com>
-> 
-> Add device driver for a virtual programmable interrupt controller
-> 
-> The virtual PIC is designed as a device tree-based interrupt controller.
-> 
-> The compatible string used by OS for binding the driver is
-> "google,goldfish-pic".
-> 
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> ---
->  MAINTAINERS                        |   1 +
->  drivers/irqchip/Kconfig            |   8 +++
->  drivers/irqchip/Makefile           |   1 +
->  drivers/irqchip/irq-goldfish-pic.c | 136 +++++++++++++++++++++++++++++++++++++
->  4 files changed, 146 insertions(+)
->  create mode 100644 drivers/irqchip/irq-goldfish-pic.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 47f0b95..1bf5587 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -876,6 +876,7 @@ ANDROID GOLDFISH PIC DRIVER
->  M:	Miodrag Dinic <miodrag.dinic@mips.com>
->  S:	Supported
->  F:	Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
-> +F:	drivers/irqchip/irq-goldfish-pic.c
->  
->  ANDROID GOLDFISH RTC DRIVER
->  M:	Miodrag Dinic <miodrag.dinic@mips.com>
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 9d8a1dd..712b561 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -321,3 +321,11 @@ config IRQ_UNIPHIER_AIDET
->  	select IRQ_DOMAIN_HIERARCHY
->  	help
->  	  Support for the UniPhier AIDET (ARM Interrupt Detector).
-> +
-> +config GOLDFISH_PIC
-> +	bool "Goldfish programmable interrupt controller"
-> +	depends on MIPS && (GOLDFISH || COMPILE_TEST)
-> +	select IRQ_DOMAIN
-> +	help
-> +	  Say yes here to enable Goldfish interrupt controller driver used
-> +	  for Goldfish based virtual platforms.
-> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-> index 845abc1..0e7a224 100644
-> --- a/drivers/irqchip/Makefile
-> +++ b/drivers/irqchip/Makefile
-> @@ -79,3 +79,4 @@ obj-$(CONFIG_ARCH_ASPEED)		+= irq-aspeed-vic.o irq-aspeed-i2c-ic.o
->  obj-$(CONFIG_STM32_EXTI) 		+= irq-stm32-exti.o
->  obj-$(CONFIG_QCOM_IRQ_COMBINER)		+= qcom-irq-combiner.o
->  obj-$(CONFIG_IRQ_UNIPHIER_AIDET)	+= irq-uniphier-aidet.o
-> +obj-$(CONFIG_GOLDFISH_PIC) 		+= irq-goldfish-pic.o
-> diff --git a/drivers/irqchip/irq-goldfish-pic.c b/drivers/irqchip/irq-goldfish-pic.c
-> new file mode 100644
-> index 0000000..6e17ce6
-> --- /dev/null
-> +++ b/drivers/irqchip/irq-goldfish-pic.c
-> @@ -0,0 +1,136 @@
-> +/*
-> + * Driver for MIPS Goldfish Programmable Interrupt Controller.
-> + *
-> + * Author: Miodrag Dinic <miodrag.dinic@mips.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation; either version 2 of the License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> +
-> +#include <linux/interrupt.h>
-> +#include <linux/irq.h>
-> +#include <linux/irqchip.h>
-> +#include <linux/irqchip/chained_irq.h>
-> +#include <linux/irqdomain.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_irq.h>
-> +
-> +#define GFPIC_NR_IRQS			32
-> +
-> +/* 8..39 Cascaded Goldfish PIC interrupts */
-> +#define GFPIC_IRQ_BASE			8
-> +
-> +#define GFPIC_REG_IRQ_PENDING		0x04
-> +#define GFPIC_REG_IRQ_DISABLE_ALL	0x08
-> +#define GFPIC_REG_IRQ_DISABLE		0x0c
-> +#define GFPIC_REG_IRQ_ENABLE		0x10
-> +
-> +struct goldfish_pic_data {
-> +	void __iomem *base;
-> +	struct irq_domain *irq_domain;
-> +};
-> +
-> +static void goldfish_pic_cascade(struct irq_desc *desc)
-> +{
-> +	struct goldfish_pic_data *gfpic = irq_desc_get_handler_data(desc);
-> +	struct irq_chip *host_chip = irq_desc_get_chip(desc);
-> +	u32 pending, hwirq, virq;
-> +
-> +	chained_irq_enter(host_chip, desc);
-> +
-> +	pending = readl(gfpic->base + GFPIC_REG_IRQ_PENDING);
-> +	while (pending) {
-> +		hwirq = __fls(pending);
-> +		virq = irq_linear_revmap(gfpic->irq_domain, hwirq);
-> +		generic_handle_irq(virq);
-> +		pending &= ~(1 << hwirq);
-> +	}
-> +
-> +	chained_irq_exit(host_chip, desc);
-> +}
-> +
-> +static const struct irq_domain_ops goldfish_irq_domain_ops = {
-> +	.xlate = irq_domain_xlate_onecell,
-> +};
-> +
-> +static int __init goldfish_pic_of_init(struct device_node *of_node,
-> +				       struct device_node *parent)
-> +{
-> +	struct goldfish_pic_data *gfpic;
-> +	struct irq_chip_generic *gc;
-> +	struct irq_chip_type *ct;
-> +	unsigned int parent_irq;
-> +	int ret = 0;
-> +
-> +	gfpic = kzalloc(sizeof(*gfpic), GFP_KERNEL);
-> +	if (!gfpic) {
-> +		ret = -ENOMEM;
-> +		goto out_err;
-> +	}
-> +
-> +	parent_irq = irq_of_parse_and_map(of_node, 0);
-> +	if (!parent_irq) {
-> +		pr_err("Failed to map parent IRQ!");
-> +		ret = -EINVAL;
-> +		goto out_free;
-> +	}
-> +
-> +	gfpic->base = of_iomap(of_node, 0);
-> +	if (!gfpic->base) {
-> +		pr_err("Failed to map base address!");
-> +		ret = -ENOMEM;
-> +		goto out_unmap_irq;
-> +	}
-> +
-> +	/* Mask interrupts. */
-> +	writel(1, gfpic->base + GFPIC_REG_IRQ_DISABLE_ALL);
-> +
-> +	gc = irq_alloc_generic_chip("GFPIC", 1, GFPIC_IRQ_BASE, gfpic->base,
-> +				    handle_level_irq);
-> +	if (!gc) {
-> +		pr_err("Failed to allocate chip structures!");
-> +		ret = -ENOMEM;
-> +		goto out_unmap_irq;
-> +	}
-> +
-> +	ct = gc->chip_types;
-> +	ct->regs.enable = GFPIC_REG_IRQ_ENABLE;
-> +	ct->regs.disable = GFPIC_REG_IRQ_DISABLE;
-> +	ct->chip.irq_unmask = irq_gc_unmask_enable_reg;
-> +	ct->chip.irq_mask = irq_gc_mask_disable_reg;
-> +
-> +	irq_setup_generic_chip(gc, IRQ_MSK(GFPIC_NR_IRQS), 0, 0,
-> +			       IRQ_NOPROBE | IRQ_LEVEL);
-> +
-> +	gfpic->irq_domain = irq_domain_add_legacy(of_node, GFPIC_NR_IRQS,
-> +						  GFPIC_IRQ_BASE, 0,
-> +						  &goldfish_irq_domain_ops,
-> +						  NULL);
-> +	if (!gfpic->irq_domain) {
-> +		pr_err("Failed to add irqdomain!");
-> +		ret = -EINVAL;
+On Tue, Nov 7, 2017 at 7:59 AM, kernelci.org bot <bot@kernelci.org> wrote:
 
-Why -EINVAL? All the other allocation failures return -ENOMEM... And
-where is the freeing of "gc" done on error?
+> Errors summary:
+> 20 arch/mips/include/asm/smp.h:32:29: error: 'CONFIG_MIPS_NR_CPU_NR_MAP' undeclared here (not in a function)
 
-These are really trivial mistakes, and I wish you'd spend a bit more
-time looking at these details...
+I have reported this before, as did 0day, but I don't know if anyone
+is fixing this:
 
-> +		goto out_iounmap;
-> +	}
-> +
-> +	irq_set_chained_handler_and_data(parent_irq,
-> +					 goldfish_pic_cascade, gfpic);
-> +
-> +	pr_info("Successfully registered.");
-> +	return 0;
-> +
-> +out_iounmap:
-> +	iounmap(gfpic->base);
-> +out_unmap_irq:
-> +	irq_dispose_mapping(parent_irq);
-> +out_free:
-> +	kfree(gfpic);
-> +out_err:
-> +	pr_err("Failed to initialize! (errno = %d)", ret);
-> +	return ret;
-> +}
-> +
-> +IRQCHIP_DECLARE(google_gf_pic, "google,goldfish-pic", goldfish_pic_of_init);
-> 
+https://lists.01.org/pipermail/kbuild-all/2017-October/038694.html
 
-Thanks,
+This is caused by commit 43b97bf59c69 ("MIPS: Allow __cpu_number_map
+to be larger than NR_CPUS")
 
-	M.
--- 
-Jazz is not dead. It just smells funny...
+> 2 arch/arm/mach-footbridge/dc21285.c:145:2: error: expected ';' before 'else'
+
+A harmless rework that Linus Walleij did apparently uncovered an
+ancient bug. I'm
+waiting for Linus to suggest a fix.
+
+> 1 timekeeping.c:(.text+0x1628): undefined reference to `__lshrti3'
+> 1 fair.c:(.text+0x35c): undefined reference to `__lshrti3'
+
+Caused by the new 128-bit arithmetic in ARM64, a fix has been submitted by the
+original author.
+
+> 1 net/dsa/dsa2.c:678:7: error: implicit declaration of function 'of_property_read_variable_u32_array' [-Werror=implicit-function-declaration]
+
+I sent a fix
+
+> Warnings summary:
+> 16 fs/xfs/libxfs/xfs_bmap.c:4777:20: warning: unused variable 'ifp' [-Wunused-variable]
+> 16 fs/xfs/libxfs/xfs_bmap.c:4649:20: warning: unused variable 'ifp' [-Wunused-variable]
+
+I sent a fix
+
+> 12 arch/arm/boot/dts/spear1340-evb.dtb: Warning (dmas_property): Property 'dmas', cell 4 is not a phandle reference in /ahb/apb/serial@b4100000
+> 12 arch/arm/boot/dts/spear1340-evb.dtb: Warning (dmas_property): Missing property '#dma-cells' in node /interrupt-controller@ec801000 or bad phandle (referred from /ahb/apb/serial@b4100000:dmas[4])
+> 12 arch/arm/boot/dts/spear1310-evb.dtb: Warning (gpios_property): Property 'cs-gpios', cell 6 is not a phandle reference in /ahb/apb/spi@e0100000
+> 12 arch/arm/boot/dts/spear1310-evb.dtb: Warning (gpios_property): Missing property '#gpio-cells' in node /interrupt-controller@ec801000 or bad phandle (referred from /ahb/apb/spi@e0100000:cs-gpios[6])
+...
+
+endless stream of new dtc warnings, mostly valid. I have started
+fixing them but at some point
+gave up. Looking for help here.
+
+> Warnings:
+> warning: objtool: x86 instruction decoder differs from kernel
+> net/dccp/probe.c:166:2: warning: 'register_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/dccp/probe.c:170:4: warning: 'register_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/dccp/probe.c:190:2: warning: 'unregister_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/ipv4/tcp_probe.c:280:2: warning: 'register_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/ipv4/tcp_probe.c:298:2: warning: 'unregister_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/sctp/probe.c:189:2: warning: 'register_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/sctp/probe.c:194:3: warning: 'register_jprobe' is deprecated [-Wdeprecated-declarations]
+> net/sctp/probe.c:240:2: warning: 'unregister_jprobe' is deprecated [-Wdeprecated-declarations]
+
+Not sure, we discussed possible alternatives, but it looks like this
+is not getting addressed before
+4.15, so we may end up removing the deprecation warning to get a clean
+4.15 build instead.
+
+> drivers/soc/qcom/rmtfs_mem.c:211:1: warning: label 'remove_cdev' defined but not used [-Wunused-label]
+
+I sent a patch
+
+> x86_64_defconfig (x86) — PASS, 0 errors, 2 warnings, 0 section mismatches
+>
+> Warnings:
+> warning: objtool: x86 instruction decoder differs from kernel
+
+Josh Poimboeuf sent a patch
+
+> net/netfilter/nf_conntrack_netlink.c:536:15: warning: 'ctnetlink_proto_size' defined but not used [-Wunused-function]
+
+I have a patch, will send after some more testing.
+
+       Arnd

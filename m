@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 17:34:07 +0100 (CET)
-Received: from conuserg-09.nifty.com ([210.131.2.76]:63682 "EHLO
-        conuserg-09.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992143AbdKGQdmGoiG0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 17:33:42 +0100
-Received: from grover.sesame (FL1-125-199-20-195.osk.mesh.ad.jp [125.199.20.195]) (authenticated)
-        by conuserg-09.nifty.com with ESMTP id vA7GVppN022965;
-        Wed, 8 Nov 2017 01:31:54 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com vA7GVppN022965
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1510072315;
-        bh=hIKfXklYtJtMD08LqiOrvSbmgn+vgA0tVYd4cfa2y6M=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2MOuvVEq2pMVWyk4vyFIs6j73KE1Jz2CNHzyBB70vl0dnPE+5blWPdQIStPMRGiaR
-         oQVI5Hq7nN4yhrEhkQxjz8h4orrIwD8YbDwx+viFdx1AayO8ZUXGWiEBc41dZbj/DD
-         pOgbrgkp47FSOLyEvCDnWHARuXF0AGhCOu6cUe1JAagHLRAT1eEpnOCDfrORbthEWR
-         kAXzuM/IQGXmVxUV+moxZfLCxnJqFw7FvVsZDURbchR0NCfpp1aA5N2Y3KnWAYdYl7
-         aFXcQb2eXdRXNd9CrRuByK23k4mmdA6x32EWanm6qYUXDO5Y2f6ZpE2ZoORHYb2/6n
-         5IOe6lkjn5k/w==
-X-Nifty-SrcIP: [125.199.20.195]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     linux-kbuild@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Michal Marek <michal.lkml@markovi.net>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alexei Starovoitov <ast@kernel.org>, netdev@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/2] kbuild: remove all dummy assignments to obj-
-Date:   Wed,  8 Nov 2017 01:31:47 +0900
-Message-Id: <1510072307-16819-3-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1510072307-16819-1-git-send-email-yamada.masahiro@socionext.com>
-References: <1510072307-16819-1-git-send-email-yamada.masahiro@socionext.com>
-Return-Path: <yamada.masahiro@socionext.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 18:39:41 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:58314 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992240AbdKGRjelk7Hx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 18:39:34 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id A2C962083B; Tue,  7 Nov 2017 18:39:25 +0100 (CET)
+Received: from windsurf (unknown [88.128.80.144])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 667FD20838;
+        Tue,  7 Nov 2017 18:39:15 +0100 (CET)
+Date:   Tue, 7 Nov 2017 18:39:15 +0100
+From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Waldemar Brodkorb <wbx@openadk.org>
+Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
+Message-ID: <20171107183915.7aa19ae9@windsurf>
+In-Reply-To: <20170817221931.GB12588@linux-mips.org>
+References: <20170803225547.6caa602b@windsurf.lan>
+        <20170804000556.GC30597@linux-mips.org>
+        <20170804151920.GA11317@linux-mips.org>
+        <20170804174151.2eea9af3@windsurf.lan>
+        <20170804222500.GA11675@linux-mips.org>
+        <20170805135649.152b0739@windsurf>
+        <20170807083448.GA20713@linux-mips.org>
+        <20170813224602.25043e8a@windsurf>
+        <20170817071534.GH13257@linux-mips.org>
+        <6D39441BF12EF246A7ABCE6654B0235380DAB457@hhmail02.hh.imgtec.org>
+        <20170817221931.GB12588@linux-mips.org>
+Organization: Free Electrons
+X-Mailer: Claws Mail 3.15.1-dirty (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <thomas.petazzoni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60747
+X-archive-position: 60748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: thomas.petazzoni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,246 +54,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now kbuild core scripts create empty built-in.o where necessary.
-Remove "obj- := dummy.o" tricks.
+Hello,
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+On Fri, 18 Aug 2017 00:19:31 +0200, Ralf Baechle wrote:
 
- arch/arm/mach-uniphier/Makefile           | 1 -
- arch/mips/boot/dts/brcm/Makefile          | 3 ---
- arch/mips/boot/dts/cavium-octeon/Makefile | 3 ---
- arch/mips/boot/dts/img/Makefile           | 3 ---
- arch/mips/boot/dts/ingenic/Makefile       | 3 ---
- arch/mips/boot/dts/lantiq/Makefile        | 3 ---
- arch/mips/boot/dts/mti/Makefile           | 3 ---
- arch/mips/boot/dts/netlogic/Makefile      | 3 ---
- arch/mips/boot/dts/ni/Makefile            | 3 ---
- arch/mips/boot/dts/pic32/Makefile         | 3 ---
- arch/mips/boot/dts/qca/Makefile           | 3 ---
- arch/mips/boot/dts/ralink/Makefile        | 3 ---
- arch/mips/boot/dts/xilfpga/Makefile       | 3 ---
- firmware/Makefile                         | 3 ---
- samples/bpf/Makefile                      | 3 ---
- samples/hidraw/Makefile                   | 3 ---
- samples/seccomp/Makefile                  | 3 ---
- samples/sockmap/Makefile                  | 3 ---
- samples/statx/Makefile                    | 3 ---
- samples/uhid/Makefile                     | 3 ---
- 20 files changed, 58 deletions(-)
+> > As a workaround you may want to include a version of __multi3 in the kernel
+> > until it is resolved.  
+> 
+> Yes, working on that.  This has been made harder by the fact that the
+> implementation of __umulti3 is well hidden in the source :)  I now have
+> functioning implementation of __multi3 but it's still too ugly to be
+> committed to the kernel.
+> 
+> And while I agree it should be fixed in GCC at the same time the
+> generated code while convoluted and unnecessarily slow appears to be
+> correct so I think we should support this by adding a suitable __umulti3
+> to the kernel code as you suggest.
 
-diff --git a/arch/arm/mach-uniphier/Makefile b/arch/arm/mach-uniphier/Makefile
-index 6bea3d3..e69de29 100644
---- a/arch/arm/mach-uniphier/Makefile
-+++ b/arch/arm/mach-uniphier/Makefile
-@@ -1 +0,0 @@
--obj- += dummy.o
-diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/Makefile
-index bacb131..fcf68a2 100644
---- a/arch/mips/boot/dts/brcm/Makefile
-+++ b/arch/mips/boot/dts/brcm/Makefile
-@@ -34,6 +34,3 @@ dtb-$(CONFIG_DT_NONE) += \
- 	bcm97435svmb.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/cavium-octeon/Makefile b/arch/mips/boot/dts/cavium-octeon/Makefile
-index e9592a9..a857b4c 100644
---- a/arch/mips/boot/dts/cavium-octeon/Makefile
-+++ b/arch/mips/boot/dts/cavium-octeon/Makefile
-@@ -1,6 +1,3 @@
- dtb-$(CONFIG_CAVIUM_OCTEON_SOC)	+= octeon_3xxx.dtb octeon_68xx.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Makefile
-index a46d773..17dedb7 100644
---- a/arch/mips/boot/dts/img/Makefile
-+++ b/arch/mips/boot/dts/img/Makefile
-@@ -2,6 +2,3 @@ dtb-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+= boston.dtb
- 
- dtb-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb
- obj-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb.o
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
-index ddd0faf..f2e516c 100644
---- a/arch/mips/boot/dts/ingenic/Makefile
-+++ b/arch/mips/boot/dts/ingenic/Makefile
-@@ -2,6 +2,3 @@ dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
- dtb-$(CONFIG_JZ4780_CI20)	+= ci20.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/lantiq/Makefile b/arch/mips/boot/dts/lantiq/Makefile
-index 586b1c9..fed59e0 100644
---- a/arch/mips/boot/dts/lantiq/Makefile
-+++ b/arch/mips/boot/dts/lantiq/Makefile
-@@ -1,6 +1,3 @@
- dtb-$(CONFIG_DT_EASY50712)	+= easy50712.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/mti/Makefile b/arch/mips/boot/dts/mti/Makefile
-index faf7ac4..35cf12b 100644
---- a/arch/mips/boot/dts/mti/Makefile
-+++ b/arch/mips/boot/dts/mti/Makefile
-@@ -2,6 +2,3 @@ dtb-$(CONFIG_MIPS_MALTA)	+= malta.dtb
- dtb-$(CONFIG_LEGACY_BOARD_SEAD3)	+= sead3.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/netlogic/Makefile b/arch/mips/boot/dts/netlogic/Makefile
-index 77ffb30..84a38eb 100644
---- a/arch/mips/boot/dts/netlogic/Makefile
-+++ b/arch/mips/boot/dts/netlogic/Makefile
-@@ -5,6 +5,3 @@ dtb-$(CONFIG_DT_XLP_GVP)	+= xlp_gvp.dtb
- dtb-$(CONFIG_DT_XLP_RVP)	+= xlp_rvp.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/ni/Makefile b/arch/mips/boot/dts/ni/Makefile
-index 6cd9c60..9e2c9fa 100644
---- a/arch/mips/boot/dts/ni/Makefile
-+++ b/arch/mips/boot/dts/ni/Makefile
-@@ -1,4 +1 @@
- dtb-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= 169445.dtb
--
--# Force kbuild to make empty built-in.o if necessary
--obj-					+= dummy.o
-diff --git a/arch/mips/boot/dts/pic32/Makefile b/arch/mips/boot/dts/pic32/Makefile
-index 5a08e48..6ecc249 100644
---- a/arch/mips/boot/dts/pic32/Makefile
-+++ b/arch/mips/boot/dts/pic32/Makefile
-@@ -4,6 +4,3 @@ dtb-$(CONFIG_DTB_PIC32_NONE)		+= \
- 					pic32mzda_sk.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
-index 181db5d..ad6429b 100644
---- a/arch/mips/boot/dts/qca/Makefile
-+++ b/arch/mips/boot/dts/qca/Makefile
-@@ -4,6 +4,3 @@ dtb-$(CONFIG_ATH79)			+= ar9331_dpt_module.dtb
- dtb-$(CONFIG_ATH79)			+= ar9331_dragino_ms14.dtb
- dtb-$(CONFIG_ATH79)			+= ar9331_omega.dtb
- dtb-$(CONFIG_ATH79)			+= ar9331_tl_mr3020.dtb
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/ralink/Makefile b/arch/mips/boot/dts/ralink/Makefile
-index 7b64654..baaea4a 100644
---- a/arch/mips/boot/dts/ralink/Makefile
-+++ b/arch/mips/boot/dts/ralink/Makefile
-@@ -6,6 +6,3 @@ dtb-$(CONFIG_DTB_OMEGA2P)	+= omega2p.dtb
- dtb-$(CONFIG_DTB_VOCORE2)	+= vocore2.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/xilfpga/Makefile b/arch/mips/boot/dts/xilfpga/Makefile
-index 77c8096..53f755f 100644
---- a/arch/mips/boot/dts/xilfpga/Makefile
-+++ b/arch/mips/boot/dts/xilfpga/Makefile
-@@ -1,6 +1,3 @@
- dtb-$(CONFIG_XILFPGA_NEXYS4DDR)	+= nexys4ddr.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
--
--# Force kbuild to make empty built-in.o if necessary
--obj-				+= dummy.o
-diff --git a/firmware/Makefile b/firmware/Makefile
-index fa08088..6524be1 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -58,6 +58,3 @@ endif
- 
- targets := $(patsubst $(obj)/%,%, \
-                                 $(shell find $(obj) -name \*.gen.S 2>/dev/null))
--# Without this, built-in.o won't be created when it's empty, and the
--# final vmlinux link will fail.
--obj- := dummy
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index cf17c79..4ea6f75 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -1,6 +1,3 @@
--# kbuild trick to avoid linker error. Can be omitted if a module is built.
--obj- := dummy.o
--
- # List of programs to build
- hostprogs-y := test_lru_dist
- hostprogs-y += sock_example
-diff --git a/samples/hidraw/Makefile b/samples/hidraw/Makefile
-index a9ab961..329da9c 100644
---- a/samples/hidraw/Makefile
-+++ b/samples/hidraw/Makefile
-@@ -1,6 +1,3 @@
--# kbuild trick to avoid linker error. Can be omitted if a module is built.
--obj- := dummy.o
--
- # List of programs to build
- hostprogs-y := hid-example
- 
-diff --git a/samples/seccomp/Makefile b/samples/seccomp/Makefile
-index bf7cc6b..5c6baac 100644
---- a/samples/seccomp/Makefile
-+++ b/samples/seccomp/Makefile
-@@ -1,6 +1,3 @@
--# kbuild trick to avoid linker error. Can be omitted if a module is built.
--obj- := dummy.o
--
- hostprogs-$(CONFIG_SAMPLE_SECCOMP) := bpf-fancy dropper bpf-direct
- 
- HOSTCFLAGS_bpf-fancy.o += -I$(objtree)/usr/include
-diff --git a/samples/sockmap/Makefile b/samples/sockmap/Makefile
-index 9291ab8..73f1da4 100644
---- a/samples/sockmap/Makefile
-+++ b/samples/sockmap/Makefile
-@@ -1,6 +1,3 @@
--# kbuild trick to avoid linker error. Can be omitted if a module is built.
--obj- := dummy.o
--
- # List of programs to build
- hostprogs-y := sockmap
- 
-diff --git a/samples/statx/Makefile b/samples/statx/Makefile
-index 1f80a3d..59df7c2 100644
---- a/samples/statx/Makefile
-+++ b/samples/statx/Makefile
-@@ -1,6 +1,3 @@
--# kbuild trick to avoid linker error. Can be omitted if a module is built.
--obj- := dummy.o
--
- # List of programs to build
- hostprogs-$(CONFIG_SAMPLE_STATX) := test-statx
- 
-diff --git a/samples/uhid/Makefile b/samples/uhid/Makefile
-index c95a696..8d7fd61 100644
---- a/samples/uhid/Makefile
-+++ b/samples/uhid/Makefile
-@@ -1,6 +1,3 @@
--# kbuild trick to avoid linker error. Can be omitted if a module is built.
--obj- := dummy.o
--
- # List of programs to build
- hostprogs-y := uhid-example
- 
+Has there been some progress on this front? I'm willing to test patches
+if needed.
+
+Thanks!
+
+Thomas
 -- 
-2.7.4
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

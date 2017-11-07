@@ -1,45 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 20:11:09 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:59336 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 22:40:22 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.230]:41254 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992312AbdKGTLBI4tmM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 20:11:01 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 07 Nov 2017 19:10:06 +0000
-Received: from [10.20.78.212] (10.20.78.212) by mips01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Tue, 7 Nov 2017
- 11:08:29 -0800
-Date:   Tue, 7 Nov 2017 19:09:20 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Djordje Todorovic <djordje.todorovic@rt-rk.com>,
-        James Hogan <james.hogan@mips.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Fix an n32 core file generation regset support
- regression
-Message-ID: <alpine.DEB.2.00.1710272036270.3886@tp.orcam.me.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        by eddie.linux-mips.org with ESMTP id S23992329AbdKGVkOcVrh5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 22:40:14 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 07 Nov 2017 21:39:54 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 7 Nov 2017
+ 13:37:54 -0800
+Date:   Tue, 7 Nov 2017 21:39:15 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Jaedon Shin <jaedon.shin@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: BMIPS: Fix missing cbr address
+Message-ID: <20171107213915.GK15260@jhogan-linux>
+References: <20170616110301.38103-1-jaedon.shin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1510081805-321459-16728-14612-7
-X-BESS-VER: 2017.12-r1709122024
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Z8yxTSU1mh2gsre7"
+Content-Disposition: inline
+In-Reply-To: <20170616110301.38103-1-jaedon.shin@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510090790-452060-31097-1076682-12
+X-BESS-VER: 2017.12.1-r1710261623
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186681
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186687
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
 X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
 X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60753
+X-archive-position: 60754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,76 +56,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fix a commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.") 
-regression, then activated by commit 6a9c001b7ec3 ("MIPS: Switch ELF 
-core dumper to use regsets.)", that caused n32 processes to dump o32 
-core files by failing to set the EF_MIPS_ABI2 flag in the ELF core file 
-header's `e_flags' member:
+--Z8yxTSU1mh2gsre7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-$ file tls-core
-tls-core: ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYSV), [...]
-$ ./tls-core
-Aborted (core dumped)
-$ file core
-core: ELF 32-bit MSB core file MIPS, MIPS-I version 1 (SYSV), SVR4-style
-$ 
+On Fri, Jun 16, 2017 at 08:03:01PM +0900, Jaedon Shin wrote:
+> Fixes NULL pointer access in BMIPS3300 RAC flush.
+>=20
+> Fixes: 738a3f79027b ("MIPS: BMIPS: Add early CPU initialization code")
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
-Previously the flag was set as the result of a:
+Thanks. Applied for 4.14.
 
-#define ELF_CORE_EFLAGS EF_MIPS_ABI2
+Cheers
+James
 
-statement placed in arch/mips/kernel/binfmt_elfn32.c, however in the 
-regset case, i.e. when CORE_DUMP_USE_REGSET is set, ELF_CORE_EFLAGS is 
-no longer used by `fill_note_info' in fs/binfmt_elf.c, and instead the 
-`->e_flags' member of the regset view chosen is.  We have the views 
-defined in arch/mips/kernel/ptrace.c, however only an o32 and an n64 
-one, and the latter is used for n32 as well.  Consequently an o32 core 
-file is incorrectly dumped from n32 processes (the ELF32 vs ELF64 class 
-is chosen elsewhere, and the 32-bit one is correctly selected for n32).
+> ---
+>  arch/mips/kernel/smp-bmips.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+> index 1b070a76fcdd..5e0d87f4958f 100644
+> --- a/arch/mips/kernel/smp-bmips.c
+> +++ b/arch/mips/kernel/smp-bmips.c
+> @@ -589,11 +589,11 @@ void __init bmips_cpu_setup(void)
+> =20
+>  		/* Flush and enable RAC */
+>  		cfg =3D __raw_readl(cbr + BMIPS_RAC_CONFIG);
+> -		__raw_writel(cfg | 0x100, BMIPS_RAC_CONFIG);
+> +		__raw_writel(cfg | 0x100, cbr + BMIPS_RAC_CONFIG);
+>  		__raw_readl(cbr + BMIPS_RAC_CONFIG);
+> =20
+>  		cfg =3D __raw_readl(cbr + BMIPS_RAC_CONFIG);
+> -		__raw_writel(cfg | 0xf, BMIPS_RAC_CONFIG);
+> +		__raw_writel(cfg | 0xf, cbr + BMIPS_RAC_CONFIG);
+>  		__raw_readl(cbr + BMIPS_RAC_CONFIG);
+> =20
+>  		cfg =3D __raw_readl(cbr + BMIPS_RAC_ADDRESS_RANGE);
+> --=20
+> 2.13.1
+>=20
+>=20
 
-Correct the issue then by defining an n32 regset view and using it as 
-appropriate.  Issue discovered in GDB testing.
+--Z8yxTSU1mh2gsre7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Cc: stable@vger.kernel.org # 3.13+
-Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
----
- arch/mips/kernel/ptrace.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
-linux-mips-regset-view-n32-e-flags-abi2-init.diff
-Index: linux-sfr/arch/mips/kernel/ptrace.c
-===================================================================
---- linux-sfr.orig/arch/mips/kernel/ptrace.c	2017-10-27 04:55:34.000000000 +0100
-+++ linux-sfr/arch/mips/kernel/ptrace.c	2017-10-27 20:07:14.933716000 +0100
-@@ -618,6 +618,19 @@ static const struct user_regset_view use
- 	.n		= ARRAY_SIZE(mips64_regsets),
- };
- 
-+#ifdef CONFIG_MIPS32_N32
-+
-+static const struct user_regset_view user_mipsn32_view = {
-+	.name		= "mipsn32",
-+	.e_flags	= EF_MIPS_ABI2,
-+	.e_machine	= ELF_ARCH,
-+	.ei_osabi	= ELF_OSABI,
-+	.regsets	= mips64_regsets,
-+	.n		= ARRAY_SIZE(mips64_regsets),
-+};
-+
-+#endif /* CONFIG_MIPS32_N32 */
-+
- #endif /* CONFIG_64BIT */
- 
- const struct user_regset_view *task_user_regset_view(struct task_struct *task)
-@@ -629,6 +642,10 @@ const struct user_regset_view *task_user
- 	if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
- 		return &user_mips_view;
- #endif
-+#ifdef CONFIG_MIPS32_N32
-+	if (test_tsk_thread_flag(task, TIF_32BIT_ADDR))
-+		return &user_mipsn32_view;
-+#endif
- 	return &user_mips64_view;
- #endif
- }
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloCJ/wACgkQbAtpk944
+dnoMjQ/9EIHPM+IMm/zpYvkKQ7oXmtuzgyBOLM8g8SiHBrJuvZ7zMeDKCeFWBkDY
+Uqu+MQK2AGnBsTfjiqSBgiaO7p78oTYKjRYFJ5GbqNBwZYLTMBoWyz4/DUUZ0CXo
+2S4AXmmqQf0FnbTtGd5lt6FCZNg0qvyeYvOCUwtuU9RK6QKEVy3nzL/OTAbzdgZp
+ArS277LXCzb3aDFQ0TUcg58GPkh03GOzreh+FXs95uy3lZ1m6BbaKPQfzXvEKxhN
++kOvB7lxvqwIS3Z5vuuFHwY2P20G9/OQtz2Mch6dc0GFjxBzWU2ZwdkbkKTxPYWu
+s/lM4ktBlU93d6vFD9pgb3afTQoIzxRrA1Jyqxyl02CFC9IX90DPKo2GXVjjEET9
+HrG+VvpMA1G+6knwUvWB7Z1fExJ+2hyseXjsPfD3gEtKQeYSpSlbtND58wqalJn9
+FZcmE4hml66oTtNcjY92WrFEEhJWrKwgTJTHfk7h07X6NvQRDnrzspFEbi0ud6NI
+wwYOJdt/vYMpxHKYl2+yNsRjNjwquM5hyz6KzXxLekXwGrfdF3hi9bTx70fr288d
+vi/uzbpv2blDxpOl6/JwQ16go2ZaSwK8L1oumiRp5+uMVHySM1FX/2C7lLvpbDJf
+JGonuASwTWxkLczexDagvtC2hSYARThlecHBD4JFsnlM7vw/g/o=
+=mMww
+-----END PGP SIGNATURE-----
+
+--Z8yxTSU1mh2gsre7--

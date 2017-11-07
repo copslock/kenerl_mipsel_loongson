@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 23:52:00 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.230]:33145 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Nov 2017 23:53:46 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:54377 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992910AbdKGWvwz-iYC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 23:51:52 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 07 Nov 2017 22:51:18 +0000
+        by eddie.linux-mips.org with ESMTP id S23992910AbdKGWxhpvSVC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Nov 2017 23:53:37 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 07 Nov 2017 22:53:18 +0000
 Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 7 Nov 2017
- 14:49:29 -0800
-Date:   Tue, 7 Nov 2017 22:50:51 +0000
+ 14:50:54 -0800
+Date:   Tue, 7 Nov 2017 22:52:16 +0000
 From:   James Hogan <james.hogan@mips.com>
-To:     Martin Schiller <ms@dev.tdt.de>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <john@phrozen.org>, <ralf@linux-mips.org>, <hauke@hauke-m.de>,
-        <arnd@arndb.de>, <nbd@nbd.name>
-Subject: Re: [PATCH] MIPS: Lantiq: Fix ASC0/ASC1 clocks
-Message-ID: <20171107225050.GM15260@jhogan-linux>
-References: <1496118874-4251-1-git-send-email-ms@dev.tdt.de>
+To:     Mirko Parthey <mirko.parthey@web.de>
+CC:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: BCM47XX: Fix LED inversion for WRT54GSv1
+Message-ID: <20171107225215.GN15260@jhogan-linux>
+References: <20170518193002.GA8186@guitar.localdomain>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="V3eawNQxI9TAjvgi"
+        protocol="application/pgp-signature"; boundary="kkcDP0v44wDpNmbp"
 Content-Disposition: inline
-In-Reply-To: <1496118874-4251-1-git-send-email-ms@dev.tdt.de>
+In-Reply-To: <20170518193002.GA8186@guitar.localdomain>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510095006-321458-6107-16953-6
+X-BESS-ID: 1510095194-321459-25230-8844-2
 X-BESS-VER: 2017.12-r1709122024
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -38,7 +38,7 @@ Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60756
+X-archive-position: 60757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,69 +55,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---V3eawNQxI9TAjvgi
+--kkcDP0v44wDpNmbp
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 30, 2017 at 06:34:34AM +0200, Martin Schiller wrote:
-> ASC1 is available on every Lantiq SoC (also AmazonSE) and should be
-> enabled like the other generic xway clocks instead of ASC0, which is
-> only available for AR9 and Danube.
+On Thu, May 18, 2017 at 09:30:03PM +0200, Mirko Parthey wrote:
+> The WLAN LED on the Linksys WRT54GSv1 is active low, but the software
+> treats it as active high. Fix the inverted logic.
 >=20
-> Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-> ---
->  arch/mips/lantiq/xway/sysctrl.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysc=
-trl.c
-> index 95bec46..cd6dbea 100644
-> --- a/arch/mips/lantiq/xway/sysctrl.c
-> +++ b/arch/mips/lantiq/xway/sysctrl.c
-> @@ -484,9 +484,9 @@ void __init ltq_soc_init(void)
-> =20
->  	/* add our generic xway clocks */
->  	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
-> -	clkdev_add_pmu("1e100400.serial", NULL, 0, 0, PMU_ASC0);
->  	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
->  	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
-> +	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
->  	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
->  	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
->  	clkdev_add_pmu("1e105300.ebu", NULL, 0, 0, PMU_EBU);
-> @@ -501,7 +501,6 @@ void __init ltq_soc_init(void)
->  	}
-> =20
->  	if (!of_machine_is_compatible("lantiq,ase")) {
-> -		clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
->  		clkdev_add_pci();
->  	}
+> Signed-off-by: Mirko Parthey <mirko.parthey@web.de>
 
-Thanks, applied for 4.15 (and I dropped the braces here too).
+Thanks, applied for 4.15.
 
 Cheers
 James
 
---V3eawNQxI9TAjvgi
+> ---
+>  arch/mips/bcm47xx/leds.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
+> index a35f1d5cde9f..08ad23c492e7 100644
+> --- a/arch/mips/bcm47xx/leds.c
+> +++ b/arch/mips/bcm47xx/leds.c
+> @@ -330,7 +330,7 @@ bcm47xx_leds_linksys_wrt54g3gv2[] __initconst =3D {
+>  /* Verified on: WRT54GS V1.0 */
+>  static const struct gpio_led
+>  bcm47xx_leds_linksys_wrt54g_type_0101[] __initconst =3D {
+> -	BCM47XX_GPIO_LED(0, "green", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
+> +	BCM47XX_GPIO_LED(0, "green", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
+>  	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
+>  	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
+>  };
+> --=20
+> 2.1.4
+>=20
+>=20
+
+--kkcDP0v44wDpNmbp
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloCOMoACgkQbAtpk944
-dnp73RAAjh14QRU27UUJ0ejlxrfIFfFG/QZMSGNfSwkP7PBV3VB8lh5bdldWVirt
-g7BxHsFxT/ZicrBnUFoe8I0h2KzjjILXqG8Doz5A0HsPlFK/fxMiYNEItuwyqHH9
-rlaBhTDPVx3wOFl1S6j0uKSyGMXQyI6WalKSBBROwABbZTJSQTrXQne9SLcW5E1+
-K5dGv1j+1eyxTCtzay8jfhlr7EC7pHG/DGq9eXwAEZhhW36LjtCGtEfUKYrHGPaN
-JWiKp7zoFk1CtbcBW+Ch5v3n36csjqDcTXRK7DDGvVfqqJuxTBlLtLWJCb+xqyW2
-gvvPArEQVcLNEOqhTKiGfvQWf5A+EtR34dymwAHUYz8izktxbFuqo4Xh6kutxRWo
-jB9GoPO1inZ/wAF1bUCSKj88GOPMRgO0No9kJqO4Sl4kBflF9SndC9UWgDabkIuy
-HBpaGg1f7iCpLj0Z4BZ24sQA2kwV7lNJchoYm2XUXbucTMzc+StjBei0WvWY1Ce1
-kppRlxZK39dGDXMDtHkXGJwar1T2Ji3r3QC/MVNS8CKS/aFT5ZpGwNcsEWJBSdPu
-61CdIxIT++cUhcQGTGjghyi4TKWspsGFfyPT/kNmNVq4YdtjTMe0UCu583lihfQe
-lvCKg9wob3KqQ6ZygSH518q9gxgPfIPs4nK3fcvcNisuwv8gDwg=
-=V9Td
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloCOR8ACgkQbAtpk944
+dnrVLxAAhTN2mioVknQPnyCE7I35xOc58HbiY08rCWmwYHjyl06AfOn4jDt6VaEd
+5Rvg43vK/Mo9eaLcG2vHAK/9p00NGYVVkHMm1qnUMVxPcNKFOa/xKgXbmNJqZmRY
+cDn6Qq3cB5LatE+OnuWlMeeJ8HbRxeAG1ZKCW0hlv2lcsIOoF5ymEDuxF5y9Y0nl
+BQa+YLnTs+wMElqWXda0bVa2NRAvHOGoM90GEqcZh2slSx+UAp/xrthirUlPpmhc
+fq3BJDlvdy3sLDJ9qTrRBuMCM0o6QoAyNIG7ALDJXyktJFoEtcfhItKRrwZNM7OS
+a4qgyY7+rLJweMC2T0U6UCDDhQ317aEhsOq9woIq8etMwqf9SO95P2hLuGoKjUBQ
+pt9PQU3c5CNXPdDTCqCp3sejqZKWR695ADrq+64i/ISaBi0+oSP2ipkcHQ/S44yP
+G6ItanFZYB80TzIKMDv4HerBSOKFUFh+YE6veFjfoeebEOlzYFhOSeiTYJzXSN67
+WxHAkPedFgKR6U2Wnp9dja0y6e5xjYYFWgrJQRtlBzEEIhyZy+R3ZdAYOa7CZU79
+1Q/mhIkMu8FgJThyXTPmljb7gqRgPKZrlQmmp7UHd9MkYLaFz2dQpvY3zjbF2GzN
+AcNIPvIZdBf0PxJls+GBMn8YFcW7a64CTHAu5Cfvk0aOFltHoyM=
+=c17P
 -----END PGP SIGNATURE-----
 
---V3eawNQxI9TAjvgi--
+--kkcDP0v44wDpNmbp--

@@ -1,56 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:54:55 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:55:16 +0100 (CET)
 Received: from omzsmtpe03.verizonbusiness.com ([199.249.25.208]:5573 "EHLO
         omzsmtpe03.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993910AbdKHUxF56pMC convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Nov 2017 21:53:05 +0100
+        by eddie.linux-mips.org with ESMTP id S23993911AbdKHUxGpZjmC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Nov 2017 21:53:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=one.verizon.com; i=@one.verizon.com; q=dns/txt;
-  s=corp; t=1510174385; x=1541710385;
+  s=corp; t=1510174386; x=1541710386;
   h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=lWYiH7bmooyz2H70PWmWRnaMM2KaREC/ACpbRN1JX6M=;
-  b=in64fcM4DUzs8HsLnMbiigVg2wAiZMo2S1EKc+3dWUgodfb8yUgJNPYU
-   auYNAe3qlHXYI7Ir+UFZogEbBHVJrMbckV5vTaJjjybUeYuYk+/PC8CGq
-   NnMm+QxVSPFOSaL5RJAVzf0/ctR1TT5WWv99ZVnCs5QL5McPeO3DGk5U9
-   I=;
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=B8L3gNzRmoNYQv5LYbpcy8i/2A16VQ/wC0jG9tlrBv0=;
+  b=DGdULO8Lf/a9wkcG1DZg80qjy7NKqo2JBMndxjyiZbKzbnLJQWr6PAHM
+   xr1Gt3vLpyc8q2BQ/J8hTU66d3otnZLPDPtbPzBJrPfKreWCaDmVCxODt
+   wGT4ZQLga61E/CtlSydaFT/AFVLleNQSCO7sVpOcUMp5V2QXh5KYyxc/c
+   g=;
 Received: from unknown (HELO fldsmtpi02.verizon.com) ([166.68.71.144])
   by omzsmtpe03.verizonbusiness.com with ESMTP; 08 Nov 2017 20:52:54 +0000
-Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO atlantis.verizonwireless.com) ([10.255.192.101])
-  by fldsmtpi02.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 20:52:39 +0000
+Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO apollo.verizonwireless.com) ([10.255.192.101])
+  by fldsmtpi02.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 20:52:40 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1510174359; x=1541710359;
+  t=1510174360; x=1541710360;
   h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=lWYiH7bmooyz2H70PWmWRnaMM2KaREC/ACpbRN1JX6M=;
-  b=Kl4lD7pcfY6MMUwiX0/nqaSdUoAD66//av0aVAQpXXO+Qbq9p/AzlxX1
-   LPe5lirxGXPRD2BcMyhHSN3NB7cjkgQ+N5dy8s+D0gyOlUjWpOewcwFm2
-   TkRY25FoqMFrqcmmU4fQz/XH4xHWThUsTkEzxAXpgareExCL93qUl4jEW
-   s=;
-Received: from mariner.tdc.vzwcorp.com (HELO eris.verizonwireless.com) ([10.254.88.84])
-  by atlantis.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 15:52:39 -0500
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=B8L3gNzRmoNYQv5LYbpcy8i/2A16VQ/wC0jG9tlrBv0=;
+  b=rZK3biemJ3a/TSaBUwY+H6BAlg+TBkjcUPFuVe1h9G5IzKMWf118CG4C
+   ArWz3lMcJdIym6bfk9+CX0TGa3qAWEVw88KVqqf5D01nI2rZOmzqMRcof
+   /XJKqEFt64eqqYmcIBammQN2bLmIcbn+tTMv79sbJp65fX96ccGb9JOXI
+   k=;
+Received: from endeavour.tdc.vzwcorp.com (HELO eris.verizonwireless.com) ([10.254.88.163])
+  by apollo.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 15:52:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1510174359; x=1541710359;
+  t=1510174360; x=1541710360;
   h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=lWYiH7bmooyz2H70PWmWRnaMM2KaREC/ACpbRN1JX6M=;
-  b=Kl4lD7pcfY6MMUwiX0/nqaSdUoAD66//av0aVAQpXXO+Qbq9p/AzlxX1
-   LPe5lirxGXPRD2BcMyhHSN3NB7cjkgQ+N5dy8s+D0gyOlUjWpOewcwFm2
-   TkRY25FoqMFrqcmmU4fQz/XH4xHWThUsTkEzxAXpgareExCL93qUl4jEW
-   s=;
-X-Host: mariner.tdc.vzwcorp.com
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=B8L3gNzRmoNYQv5LYbpcy8i/2A16VQ/wC0jG9tlrBv0=;
+  b=rZK3biemJ3a/TSaBUwY+H6BAlg+TBkjcUPFuVe1h9G5IzKMWf118CG4C
+   ArWz3lMcJdIym6bfk9+CX0TGa3qAWEVw88KVqqf5D01nI2rZOmzqMRcof
+   /XJKqEFt64eqqYmcIBammQN2bLmIcbn+tTMv79sbJp65fX96ccGb9JOXI
+   k=;
+X-Host: endeavour.tdc.vzwcorp.com
 Received: from ohtwi1exh001.uswin.ad.vzwcorp.com ([10.144.218.43])
-  by eris.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 08 Nov 2017 20:52:39 +0000
-Received: from tbwexch30apd.uswin.ad.vzwcorp.com (153.114.162.54) by
+  by eris.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 08 Nov 2017 20:52:40 +0000
+Received: from tbwexch11apd.uswin.ad.vzwcorp.com (153.114.162.35) by
  OHTWI1EXH001.uswin.ad.vzwcorp.com (10.144.218.43) with Microsoft SMTP Server
- (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:52:39 -0500
-Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- tbwexch30apd.uswin.ad.vzwcorp.com (153.114.162.54) with Microsoft SMTP Server
+ (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:52:40 -0500
+Received: from OMZP1LUMXCA12.uswin.ad.vzwcorp.com (144.8.22.187) by
+ tbwexch11apd.uswin.ad.vzwcorp.com (153.114.162.35) with Microsoft SMTP Server
  (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 15:52:39 -0500
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) with Microsoft SMTP Server
+ OMZP1LUMXCA12.uswin.ad.vzwcorp.com (144.8.22.187) with Microsoft SMTP Server
  (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 14:52:38 -0600
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
  OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
@@ -58,17 +60,18 @@ Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
 From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
 To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Jayachandran C <jchandra@broadcom.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
-Subject: [PATCH AUTOSEL for-3.18 25/27] MIPS: init: Ensure reserved memory
- regions are not added to bootmem
-Thread-Topic: [PATCH AUTOSEL for-3.18 25/27] MIPS: init: Ensure reserved
- memory regions are not added to bootmem
-Thread-Index: AQHTWNNJyeX4lFtg5Ui5BCvIl/YDIQ==
+Subject: [PATCH AUTOSEL for-3.18 26/27] MIPS: Netlogic: Exclude
+ netlogic,xlp-pic code from XLR builds
+Thread-Topic: [PATCH AUTOSEL for-3.18 26/27] MIPS: Netlogic: Exclude
+ netlogic,xlp-pic code from XLR builds
+Thread-Index: AQHTWNNJ4fCa78PBvUC/zSbzQB6o7A==
 Date:   Wed, 8 Nov 2017 20:51:01 +0000
-Message-ID: <20171108205049.27612-25-alexander.levin@verizon.com>
+Message-ID: <20171108205049.27612-26-alexander.levin@verizon.com>
 References: <20171108205049.27612-1-alexander.levin@verizon.com>
 In-Reply-To: <20171108205049.27612-1-alexander.levin@verizon.com>
 Accept-Language: en-US
@@ -78,14 +81,15 @@ X-MS-TNEF-Correlator:
 x-ms-exchange-messagesentrepresentingtype: 1
 x-ms-exchange-transport-fromentityheader: Hosted
 x-originating-ip: [10.144.60.250]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1494C7EA293D754388B6A86B0E0AF0FF@vzwcorp.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Return-Path: <alexander.levin@one.verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60766
+X-archive-position: 60767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -102,41 +106,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-
-[ Upstream commit e89ef66d7682f031f026eee6bba03c8c2248d2a9 ]
-
-Memories managed through boot_mem_map are generally expected to define
-non-crossing areas. However, if part of a larger memory block is marked
-as reserved, it would still be added to bootmem allocator as an
-available block and could end up being overwritten by the allocator.
-
-Prevent this by explicitly marking the memory as reserved it if exists
-in the range used by bootmem allocator.
-
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14608/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
----
- arch/mips/kernel/setup.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 0b40c1a8f960..6235cf0b857c 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -495,6 +495,10 @@ static void __init bootmem_init(void)
- 			continue;
- 		default:
- 			/* Not usable memory */
-+			if (start > min_low_pfn && end < max_low_pfn)
-+				reserve_bootmem(boot_mem_map.map[i].addr,
-+						boot_mem_map.map[i].size,
-+						BOOTMEM_DEFAULT);
- 			continue;
- 		}
- 
--- 
-2.11.0
+RnJvbTogUGF1bCBCdXJ0b24gPHBhdWwuYnVydG9uQGltZ3RlYy5jb20+DQoNClsgVXBzdHJlYW0g
+Y29tbWl0IDk3OTkyNzBhZmZjNTM0MTRkYTk2ZTc3ZTQ1NGE1NjE2YjM5Y2RhYjAgXQ0KDQpDb2Rl
+IGluIGFyY2gvbWlwcy9uZXRsb2dpYy9jb21tb24vaXJxLmMgd2hpY2ggaGFuZGxlcyB0aGUgWExQ
+IFBJQyBmYWlscw0KdG8gYnVpbGQgaW4gWExSIGNvbmZpZ3VyYXRpb25zIGR1ZSB0byBjcHVfaXNf
+eGxwOXh4IG5vdCBiZWluZyBkZWZpbmVkLA0KbGVhZGluZyB0byB0aGUgZm9sbG93aW5nIGJ1aWxk
+IGZhaWx1cmU6DQoNCiAgICBhcmNoL21pcHMvbmV0bG9naWMvY29tbW9uL2lycS5jOiBJbiBmdW5j
+dGlvbiDigJh4bHBfb2ZfcGljX2luaXTigJk6DQogICAgYXJjaC9taXBzL25ldGxvZ2ljL2NvbW1v
+bi9pcnEuYzoyOTg6MjogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uDQogICAgb2YgZnVuY3Rp
+b24g4oCYY3B1X2lzX3hscDl4eOKAmSBbLVdlcnJvcj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJh
+dGlvbl0NCiAgICAgIGlmIChjcHVfaXNfeGxwOXh4KCkpIHsNCiAgICAgIF4NCg0KQWx0aG91Z2gg
+dGhlIGNvZGUgd2FzIGNvbmRpdGlvbmFsIHVwb24gQ09ORklHX09GIHdoaWNoIGlzIGluZGlyZWN0
+bHkNCnNlbGVjdGVkIGJ5IENPTkZJR19OTE1fWExQX0JPQVJEIGJ1dCBub3QgQ09ORklHX05MTV9Y
+TFJfQk9BUkQsIHRoZQ0KZmFpbGluZyBYTFIgd2l0aCBDT05GSUdfT0YgY29uZmlndXJhdGlvbiBj
+YW4gYmUgY29uZmlndXJlZCBtYW51YWxseSBvcg0KYnkgcmFuZGNvbmZpZy4NCg0KRml4IHRoZSBi
+dWlsZCBmYWlsdXJlIGJ5IG1ha2luZyB0aGUgYWZmZWN0ZWQgWExQIFBJQyBjb2RlIGNvbmRpdGlv
+bmFsDQp1cG9uIENPTkZJR19DUFVfWExQIHdoaWNoIGlzIHVzZWQgdG8gZ3VhcmQgdGhlIGluY2x1
+c2lvbiBvZg0KYXNtL25ldGxvZ2ljL3hscC1oYWwveGxwLmggdGhhdCBwcm92aWRlcyB0aGUgcmVx
+dWlyZWQgY3B1X2lzX3hscDl4eA0KZnVuY3Rpb24uDQoNCltyYWxmQGxpbnV4LW1pcHMub3JnOiBG
+aXhlZCB1cCBhcyBwZXIgSmF5YWNoYW5kcmFuJ3Mgc3VnZ2VzdGlvbi5dDQoNClNpZ25lZC1vZmYt
+Ynk6IFBhdWwgQnVydG9uIDxwYXVsLmJ1cnRvbkBpbWd0ZWMuY29tPg0KQ2M6IEpheWFjaGFuZHJh
+biBDIDxqY2hhbmRyYUBicm9hZGNvbS5jb20+DQpDYzogbGludXgtbWlwc0BsaW51eC1taXBzLm9y
+Zw0KUGF0Y2h3b3JrOiBodHRwczovL3BhdGNod29yay5saW51eC1taXBzLm9yZy9wYXRjaC8xNDUy
+NC8NClNpZ25lZC1vZmYtYnk6IFJhbGYgQmFlY2hsZSA8cmFsZkBsaW51eC1taXBzLm9yZz4NClNp
+Z25lZC1vZmYtYnk6IFNhc2hhIExldmluIDxhbGV4YW5kZXIubGV2aW5AdmVyaXpvbi5jb20+DQot
+LS0NCiBhcmNoL21pcHMvbmV0bG9naWMvY29tbW9uL2lycS5jIHwgNCArKy0tDQogMSBmaWxlIGNo
+YW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2Fy
+Y2gvbWlwcy9uZXRsb2dpYy9jb21tb24vaXJxLmMgYi9hcmNoL21pcHMvbmV0bG9naWMvY29tbW9u
+L2lycS5jDQppbmRleCBjMTAwYjlhZmEwYWIuLjQ4YjQzZWUwZDE5OSAxMDA2NDQNCi0tLSBhL2Fy
+Y2gvbWlwcy9uZXRsb2dpYy9jb21tb24vaXJxLmMNCisrKyBiL2FyY2gvbWlwcy9uZXRsb2dpYy9j
+b21tb24vaXJxLmMNCkBAIC0yNzUsNyArMjc1LDcgQEAgYXNtbGlua2FnZSB2b2lkIHBsYXRfaXJx
+X2Rpc3BhdGNoKHZvaWQpDQogCWRvX0lSUShubG1faXJxX3RvX3hpcnEobm9kZSwgaSkpOw0KIH0N
+CiANCi0jaWZkZWYgQ09ORklHX09GDQorI2lmZGVmIENPTkZJR19DUFVfWExQDQogc3RhdGljIGNv
+bnN0IHN0cnVjdCBpcnFfZG9tYWluX29wcyB4bHBfcGljX2lycV9kb21haW5fb3BzID0gew0KIAku
+eGxhdGUgPSBpcnFfZG9tYWluX3hsYXRlX29uZXR3b2NlbGwsDQogfTsNCkBAIC0zNDgsNyArMzQ4
+LDcgQEAgdm9pZCBfX2luaXQgYXJjaF9pbml0X2lycSh2b2lkKQ0KICNpZiBkZWZpbmVkKENPTkZJ
+R19DUFVfWExSKQ0KIAlubG1fc2V0dXBfZm1uX2lycSgpOw0KICNlbmRpZg0KLSNpZiBkZWZpbmVk
+KENPTkZJR19PRikNCisjaWZkZWYgQ09ORklHX0NQVV9YTFANCiAJb2ZfaXJxX2luaXQoeGxwX3Bp
+Y19pcnFfaWRzKTsNCiAjZW5kaWYNCiB9DQotLSANCjIuMTEuMA0K

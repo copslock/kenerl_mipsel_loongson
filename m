@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 23:08:45 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:33625 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 23:09:13 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:47255 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993910AbdKHWIin3LIr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Nov 2017 23:08:38 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 08 Nov 2017 22:07:45 +0000
+        by eddie.linux-mips.org with ESMTP id S23993917AbdKHWJGgPiHr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Nov 2017 23:09:06 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 08 Nov 2017 22:08:48 +0000
 Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 8 Nov 2017
- 14:03:24 -0800
-Date:   Wed, 8 Nov 2017 22:03:22 +0000
+ 14:06:46 -0800
+Date:   Wed, 8 Nov 2017 22:06:44 +0000
 From:   James Hogan <james.hogan@mips.com>
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <linux-serial@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Schichan <nschichan@freebox.fr>
-Subject: Re: [PATCH 0/3] MIPS: AR7: assorted fixes
-Message-ID: <20171108220322.GO15260@jhogan-linux>
-References: <20171029152721.6770-1-jonas.gorski@gmail.com>
+To:     "Maciej W. Rozycki " <macro@mips.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Use SLL by 0 for 32-bit truncation in
+ `__read_64bit_c0_split'
+Message-ID: <20171108220643.GP15260@jhogan-linux>
+References: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8CNmCRe8Sh4keFKJ"
+        protocol="application/pgp-signature"; boundary="E187YRO8KGM40JwS"
 Content-Disposition: inline
-In-Reply-To: <20171029152721.6770-1-jonas.gorski@gmail.com>
+In-Reply-To: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510178858-637138-27161-936463-5
+X-BESS-ID: 1510178927-637137-12452-944941-1
 X-BESS-VER: 2017.12-r1710252241
 X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186734
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186733
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
 X-BESS-BRTS-Status: 1
 Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60777
+X-archive-position: 60778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,47 +55,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---8CNmCRe8Sh4keFKJ
+--E187YRO8KGM40JwS
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 29, 2017 at 04:27:18PM +0100, Jonas Gorski wrote:
-> This patchset fixes a few issues found in AR7 that accumulated in the
-> past few years. One was fixed for ages in OpenWrt/LEDE and never made
-> it upstream, the others weren't noticed until now.
+On Fri, Sep 29, 2017 at 04:26:31PM +0100, Maciej W. Rozycki wrote:
+> Optimize `__read_64bit_c0_split' and reduce the instruction count by 1,=
+=20
+> observing that a DSLL/DSRA pair by 32, is equivalent to SLL by 0, which=
+=20
+> architecturally truncates the value requested to 32 bits on 64-bit MIPS=
+=20
+> hardware regardless of whether the input operand is or is not a properly=
+=20
+> sign-extended 32-bit value.
 >=20
-> Jonas Gorski (2):
->   MIPS: AR7: defer registration of GPIO
->   MIPS: AR7: ensure the port type's FCR value is used
+> Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+> ---
+>  Tested by compilation only to verify syntax correctnes as I do not know=
+=20
+> if this execution path is actually used by any configuration (suggestions=
+=20
+> welcome).  I believe it to be technically correct though, being=20
+> sufficiently straightforward to verify by proofreading, and an obvious=20
+> improvement.
 >=20
-> Oswald Buddenhagen (1):
->   MIPS: AR7: ensure that serial ports are properly set up
+>  Therefore, please apply.
 
-Thanks. Patches 1 + 2 applied for 4.14.
+Thanks, Applied for 4.15.
 
 Cheers
 James
 
---8CNmCRe8Sh4keFKJ
+--E187YRO8KGM40JwS
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloDfyIACgkQbAtpk944
-dnpRvg/8DkL56Q6m1iZzJwFPkCJlh0eWskY1Mi6b3msAGViiB8YrP+wSxoscSv91
-MDD0LNPEuu3azN5UCR1FAfSALPml3Mc7mU0+l4mBtpQcIonrQLIHb7p06qMWPLul
-BU6/Lii9B+TBvTv+45W4IrwtRPX8Jik+FI1kjbO9HtugNgfTrIBNHZNiC9pM2MhM
-E6ZGRd+RsD3/O+hTMrtu9PbD8j8LT0wZJseT8ythEup53sFG/XTEts+DfxEHnvoM
-ueqPYG05R36ufDsotqOOGZI1EAREsc/33+qR8H6YOmPx4zAj1wIl+ILtM9Nm9WbJ
-CeIaA9OwTUej8hayMhmfH5i7bRFgZt2Nx5RYjvL14sn9KGLAEZJDh3v+IXi7zSpe
-hqOnlL69u7bpoFnET5LYm3sRUDGofL/5lg4hRVtcou8tOhdQgxsRhC9FHDC5aKwd
-1xS9fI5orU5dEvmKbcjeyZtn0u+TfY5oZdqRUI2qtHMqMf6SanipO+zcZvNwDmcS
-KTxrGKf2VIzvm9rLFH/VY/4vIgKhSMFF1JGljbIW/sPJ6Qr4PHdAxStfJY8KiIOa
-P2gGxHRawOrLhAmfpXoWxqZ+eFhmn19KH6Cl9154zQORsc9DxYw75Pvh+kpnOGzB
-c8NPvJp/0g4ZJvdKfMGGz8j+5LG5tv/QBotyw0lk+3Aj8mDCO6M=
-=p972
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloDf/MACgkQbAtpk944
+dnoeuQ//WTBzaIdGliegG3NUnozCe3aPu67GMxNGBURhqqz6mg2ilikrZR2s8lk9
+u4L2naLhpH+mWwucChzxe46SvK+8tLLOGrv9qfK6DAkUw+Ql6utMUKL/Gne4s0dW
+dfvUo7VPBWOzQLnklyXQpmlg7RmmBV3Q2GvJTGH+6G3VVn3IDto1D39b4H8e+bSp
+iqrv7tsy2UvVhPhgp4tbsgt5vqgYc8+/Qatu8wCvrbO1RsXAKMjHkwKmbDR/5eDI
+yA+OGwfn7FTdipEsCZQRrsQ76adhIPnqMrSqwSRF8WHDrQk0kWfBP3uODge2O4QJ
+c2I/K9Kf10Z/SfKwfipPsvbOXDlvoCOh5yjf9J6cpZeRb3UjopYbmDMorv/z1/Qf
+EU7FNg4AE92cMJxWFQyVtpVI/UjWLPQEWUKzISoxFKfN5PFdoxCSyYp2vsBC9EbE
+/12aBX5368K8kRktZw3OZqhWPY9HtX1CxPpa2MxVdWhz+mZb5evL2CUs2pgeb/zx
+6wkKM7pSJVsy/xKyAQ8/IUUcmxsK8ws0Ywv9bGvRheVPUfXzhj63eU4NwEn3F5Q0
+2FfqOXijA1rTiAAMkYzBqzF1mw8/GjQI1lXWsksSGX8xE/y3JqTbcHqYUAdmE2oD
+rDlMZezGbOowqRfpgXo9YnHfppCFTI3hqRbp+E+E332pFa/utMM=
+=RqTU
 -----END PGP SIGNATURE-----
 
---8CNmCRe8Sh4keFKJ--
+--E187YRO8KGM40JwS--

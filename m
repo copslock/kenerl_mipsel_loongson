@@ -1,95 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:58:47 +0100 (CET)
-Received: from fldsmtpe03.verizon.com ([140.108.26.142]:58707 "EHLO
-        fldsmtpe03.verizon.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993932AbdKHUxok2--C convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Nov 2017 21:53:44 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=one.verizon.com; i=@one.verizon.com; q=dns/txt;
-  s=corp; t=1510174424; x=1541710424;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=vcrOdM94v8LUKqLm6Oc5JKKm6VgVmOfh1DUpie8h6FU=;
-  b=j1muiuH1uGb82qxSGnyCwDXD3H4GQClOZdCmKTzhTCZlu82YS92dpSaj
-   bhaZya58sMmGbnGAuCPZn4AwSN0g4C62NJCktgqTOYg3h41gZNzIBw542
-   voPSdEvnHxshW1nrfWGXIV9nEzwcqsUv253SzHOQu/tycWXVNJodpSMXJ
-   8=;
-Received: from unknown (HELO fldsmtpi03.verizon.com) ([166.68.71.145])
-  by fldsmtpe03.verizon.com with ESMTP; 08 Nov 2017 20:53:40 +0000
-Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO atlantis.verizonwireless.com) ([10.255.192.101])
-  by fldsmtpi03.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 20:52:39 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1510174361; x=1541710361;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=vcrOdM94v8LUKqLm6Oc5JKKm6VgVmOfh1DUpie8h6FU=;
-  b=YlknLmVK9xDvYlIANtu5Y+iwR+Q8YnytkRjDYiGNWic21/SnD58VedQp
-   VewMfTyK/7VE5N3zll5LryoOwrMpBABvi7+8HDm+6yalnpR4+pq0uIjlh
-   U+FoXlPiiWX87IbHLyn9fzd18FKM9vVmPptsa/52EIo6tE10B4VNwkruW
-   8=;
-Received: from pioneer.tdc.vzwcorp.com (HELO eris.verizonwireless.com) ([10.254.88.34])
-  by atlantis.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 15:52:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1510174358; x=1541710358;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=vcrOdM94v8LUKqLm6Oc5JKKm6VgVmOfh1DUpie8h6FU=;
-  b=Ofe7kYvMdBO2q/4QJH697y/uVh0Ig0rguDQ6CnmbZ4O32CwiZJhyYZCG
-   BxeADPVcXjeDyWb5Oz88s0zYQDo+yhdBgJybfc/kckaPJgV7O19JLyOqU
-   R++XwayK6ozusaqKsugYKbjAHvl9j0QnToeKNzw4pG0am9jkOmWMJX34c
-   Q=;
-X-Host: pioneer.tdc.vzwcorp.com
-Received: from ohtwi1exh003.uswin.ad.vzwcorp.com ([10.144.218.45])
-  by eris.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 08 Nov 2017 20:52:38 +0000
-Received: from tbwexch04apd.uswin.ad.vzwcorp.com (153.114.162.28) by
- OHTWI1EXH003.uswin.ad.vzwcorp.com (10.144.218.45) with Microsoft SMTP Server
- (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:52:38 -0500
-Received: from OMZP1LUMXCA19.uswin.ad.vzwcorp.com (144.8.22.197) by
- tbwexch04apd.uswin.ad.vzwcorp.com (153.114.162.28) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 15:52:37 -0500
-Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- OMZP1LUMXCA19.uswin.ad.vzwcorp.com (144.8.22.197) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 14:52:37 -0600
-Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
- OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
- 15.00.1263.000; Wed, 8 Nov 2017 14:52:36 -0600
-From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 23:08:45 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:33625 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993910AbdKHWIin3LIr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Nov 2017 23:08:38 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 08 Nov 2017 22:07:45 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 8 Nov 2017
+ 14:03:24 -0800
+Date:   Wed, 8 Nov 2017 22:03:22 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <linux-serial@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
-Subject: [PATCH AUTOSEL for-3.18 23/27] MIPS: End asm function prologue macros
- with .insn
-Thread-Topic: [PATCH AUTOSEL for-3.18 23/27] MIPS: End asm function prologue
- macros with .insn
-Thread-Index: AQHTWNNIDOC9+vKwDUi3XmEuGm5mwA==
-Date:   Wed, 8 Nov 2017 20:51:00 +0000
-Message-ID: <20171108205049.27612-23-alexander.levin@verizon.com>
-References: <20171108205049.27612-1-alexander.levin@verizon.com>
-In-Reply-To: <20171108205049.27612-1-alexander.levin@verizon.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.144.60.250]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Schichan <nschichan@freebox.fr>
+Subject: Re: [PATCH 0/3] MIPS: AR7: assorted fixes
+Message-ID: <20171108220322.GO15260@jhogan-linux>
+References: <20171029152721.6770-1-jonas.gorski@gmail.com>
 MIME-Version: 1.0
-Return-Path: <alexander.levin@one.verizon.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="8CNmCRe8Sh4keFKJ"
+Content-Disposition: inline
+In-Reply-To: <20171029152721.6770-1-jonas.gorski@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510178858-637138-27161-936463-5
+X-BESS-VER: 2017.12-r1710252241
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186734
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60776
+X-archive-position: 60777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.levin@one.verizon.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,76 +58,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+--8CNmCRe8Sh4keFKJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit 08889582b8aa0bbc01a1e5a0033b9f98d2e11caa ]
+On Sun, Oct 29, 2017 at 04:27:18PM +0100, Jonas Gorski wrote:
+> This patchset fixes a few issues found in AR7 that accumulated in the
+> past few years. One was fixed for ages in OpenWrt/LEDE and never made
+> it upstream, the others weren't noticed until now.
+>=20
+> Jonas Gorski (2):
+>   MIPS: AR7: defer registration of GPIO
+>   MIPS: AR7: ensure the port type's FCR value is used
+>=20
+> Oswald Buddenhagen (1):
+>   MIPS: AR7: ensure that serial ports are properly set up
 
-When building a kernel targeting a microMIPS ISA, recent GNU linkers
-will fail the link if they cannot determine that the target of a branch
-or jump is microMIPS code, with errors such as the following:
+Thanks. Patches 1 + 2 applied for 4.14.
 
-    mips-img-linux-gnu-ld: arch/mips/built-in.o: .text+0x542c:
-    Unsupported jump between ISA modes; consider recompiling with
-    interlinking enabled.
-    mips-img-linux-gnu-ld: final link failed: Bad value
+Cheers
+James
 
-or:
+--8CNmCRe8Sh4keFKJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-    ./arch/mips/include/asm/uaccess.h:1017: warning: JALX to a
-    non-word-aligned address
+-----BEGIN PGP SIGNATURE-----
 
-Placing anything other than an instruction at the start of a function
-written in assembly appears to trigger such errors. In order to prepare
-for allowing us to follow function prologue macros with an EXPORT_SYMBOL
-invocation, end the prologue macros (LEAD, NESTED & FEXPORT) with a
-.insn directive. This ensures that the start of the function is marked
-as code, which always makes sense for functions & safely prevents us
-from hitting the link errors described above.
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloDfyIACgkQbAtpk944
+dnpRvg/8DkL56Q6m1iZzJwFPkCJlh0eWskY1Mi6b3msAGViiB8YrP+wSxoscSv91
+MDD0LNPEuu3azN5UCR1FAfSALPml3Mc7mU0+l4mBtpQcIonrQLIHb7p06qMWPLul
+BU6/Lii9B+TBvTv+45W4IrwtRPX8Jik+FI1kjbO9HtugNgfTrIBNHZNiC9pM2MhM
+E6ZGRd+RsD3/O+hTMrtu9PbD8j8LT0wZJseT8ythEup53sFG/XTEts+DfxEHnvoM
+ueqPYG05R36ufDsotqOOGZI1EAREsc/33+qR8H6YOmPx4zAj1wIl+ILtM9Nm9WbJ
+CeIaA9OwTUej8hayMhmfH5i7bRFgZt2Nx5RYjvL14sn9KGLAEZJDh3v+IXi7zSpe
+hqOnlL69u7bpoFnET5LYm3sRUDGofL/5lg4hRVtcou8tOhdQgxsRhC9FHDC5aKwd
+1xS9fI5orU5dEvmKbcjeyZtn0u+TfY5oZdqRUI2qtHMqMf6SanipO+zcZvNwDmcS
+KTxrGKf2VIzvm9rLFH/VY/4vIgKhSMFF1JGljbIW/sPJ6Qr4PHdAxStfJY8KiIOa
+P2gGxHRawOrLhAmfpXoWxqZ+eFhmn19KH6Cl9154zQORsc9DxYw75Pvh+kpnOGzB
+c8NPvJp/0g4ZJvdKfMGGz8j+5LG5tv/QBotyw0lk+3Aj8mDCO6M=
+=p972
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14508/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
----
- arch/mips/include/asm/asm.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
-index 7c26b28bf252..859cf7048347 100644
---- a/arch/mips/include/asm/asm.h
-+++ b/arch/mips/include/asm/asm.h
-@@ -54,7 +54,8 @@
- 		.align	2;				\
- 		.type	symbol, @function;		\
- 		.ent	symbol, 0;			\
--symbol:		.frame	sp, 0, ra
-+symbol:		.frame	sp, 0, ra;			\
-+		.insn
- 
- /*
-  * NESTED - declare nested routine entry point
-@@ -63,8 +64,9 @@ symbol:		.frame	sp, 0, ra
- 		.globl	symbol;				\
- 		.align	2;				\
- 		.type	symbol, @function;		\
--		.ent	symbol, 0;			 \
--symbol:		.frame	sp, framesize, rpc
-+		.ent	symbol, 0;			\
-+symbol:		.frame	sp, framesize, rpc;		\
-+		.insn
- 
- /*
-  * END - mark end of function
-@@ -86,7 +88,7 @@ symbol:
- #define FEXPORT(symbol)					\
- 		.globl	symbol;				\
- 		.type	symbol, @function;		\
--symbol:
-+symbol:		.insn
- 
- /*
-  * ABS - export absolute symbol
--- 
-2.11.0
+--8CNmCRe8Sh4keFKJ--

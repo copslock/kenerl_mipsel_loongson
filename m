@@ -1,74 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:53:49 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:54:11 +0100 (CET)
 Received: from omzsmtpe03.verizonbusiness.com ([199.249.25.208]:5573 "EHLO
         omzsmtpe03.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993907AbdKHUxD1GcbC convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S23993908AbdKHUxEZA-gC convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Nov 2017 21:53:03 +0100
+        Wed, 8 Nov 2017 21:53:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=one.verizon.com; i=@one.verizon.com; q=dns/txt;
-  s=corp; t=1510174383; x=1541710383;
+  s=corp; t=1510174384; x=1541710384;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=RVouqR+hRJv9ImmIXStxLXCUPZFxtpFXIghvhzb7CSU=;
-  b=VpmolFgexGj3S/vvn8HV5vNE2LbNEQcqCGZ71I9NTLmyZWloozWdyjUf
-   +Xbw7dHEgQ3kmUj88Rt+FPbrl3rh9d379G1ja4u4VjhRy3i25zgwtrmkF
-   PczkP+gEYExgFWJZQ7CKhB7N9w09sQmtw2w7dwOL2W1JSAImNcG4CTQYs
-   M=;
+  bh=rSCak13Jqpev54b+1N9IL/5Xfvg15AQcH4tQgdXJSX4=;
+  b=LjgpQL91jMnpaQ7hcb97Ici6cSUt6S+QswsnwLhQB+IMeTM2WHw4gOjR
+   h3VlrelxJqNaABLPrUewV2DH9UGiyfHKI8wkte1ZmBSlIJ5cGPWLTF6gm
+   fiYncAg01zAm5kDj8FGQhEsU01XqfRC7hxZOIND4Wu122OtOhWgfkm77B
+   w=;
 Received: from unknown (HELO fldsmtpi02.verizon.com) ([166.68.71.144])
   by omzsmtpe03.verizonbusiness.com with ESMTP; 08 Nov 2017 20:52:54 +0000
 Received: from rogue-10-255-192-101.rogue.vzwcorp.com (HELO apollo.verizonwireless.com) ([10.255.192.101])
-  by fldsmtpi02.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 20:51:54 +0000
+  by fldsmtpi02.verizon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 20:52:24 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1510174314; x=1541710314;
+  t=1510174344; x=1541710344;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=RVouqR+hRJv9ImmIXStxLXCUPZFxtpFXIghvhzb7CSU=;
-  b=mvPa9pZJjHNYrf0Z308to5Eb+SQtkju/oaYf6G1lFw3BUaA9OC6Y7ZXZ
-   +yhrJ/o+0RFjkBG3BtcGmIssT2ik/HC5wRi09nNgT56xC71sRYs/enw5e
-   HOnjH+i9pPve1DEMqGWYHViXxK57bfCkGiLT/H7ziKNCK7CuWHv209rYp
-   U=;
-Received: from endeavour.tdc.vzwcorp.com (HELO eris.verizonwireless.com) ([10.254.88.163])
-  by apollo.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 15:51:54 -0500
+  bh=rSCak13Jqpev54b+1N9IL/5Xfvg15AQcH4tQgdXJSX4=;
+  b=tcoBVjt8JSGUT2DCznend3N0Go0WcMDiRbZL8y3lAlNnlqfTPr2tuE/3
+   yWGdtDBUQTd1BRbmeE+3bsG+Nh0dZ2mr+HHJPFRvVoj1iXNR7WaVAhmaM
+   0nDXQNQYoTtca/cBfI92HC2neyY2/f6bw4SZT3CrlrL6ZPxCri3ZMdAH1
+   c=;
+Received: from surveyor.tdc.vzwcorp.com (HELO eris.verizonwireless.com) ([10.254.88.83])
+  by apollo.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 15:52:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1510174314; x=1541710314;
+  t=1510174344; x=1541710344;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=RVouqR+hRJv9ImmIXStxLXCUPZFxtpFXIghvhzb7CSU=;
-  b=mvPa9pZJjHNYrf0Z308to5Eb+SQtkju/oaYf6G1lFw3BUaA9OC6Y7ZXZ
-   +yhrJ/o+0RFjkBG3BtcGmIssT2ik/HC5wRi09nNgT56xC71sRYs/enw5e
-   HOnjH+i9pPve1DEMqGWYHViXxK57bfCkGiLT/H7ziKNCK7CuWHv209rYp
-   U=;
-X-Host: endeavour.tdc.vzwcorp.com
+  bh=rSCak13Jqpev54b+1N9IL/5Xfvg15AQcH4tQgdXJSX4=;
+  b=tcoBVjt8JSGUT2DCznend3N0Go0WcMDiRbZL8y3lAlNnlqfTPr2tuE/3
+   yWGdtDBUQTd1BRbmeE+3bsG+Nh0dZ2mr+HHJPFRvVoj1iXNR7WaVAhmaM
+   0nDXQNQYoTtca/cBfI92HC2neyY2/f6bw4SZT3CrlrL6ZPxCri3ZMdAH1
+   c=;
+X-Host: surveyor.tdc.vzwcorp.com
 Received: from ohtwi1exh001.uswin.ad.vzwcorp.com ([10.144.218.43])
-  by eris.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 08 Nov 2017 20:51:53 +0000
-Received: from tbwexch17apd.uswin.ad.vzwcorp.com (153.114.162.41) by
+  by eris.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 08 Nov 2017 20:52:24 +0000
+Received: from tbwexch25apd.uswin.ad.vzwcorp.com (153.114.162.49) by
  OHTWI1EXH001.uswin.ad.vzwcorp.com (10.144.218.43) with Microsoft SMTP Server
- (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:51:52 -0500
+ (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:52:24 -0500
+Received: from OMZP1LUMXCA13.uswin.ad.vzwcorp.com (144.8.22.188) by
+ tbwexch25apd.uswin.ad.vzwcorp.com (153.114.162.49) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 15:52:23 -0500
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- tbwexch17apd.uswin.ad.vzwcorp.com (153.114.162.41) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 15:51:51 -0500
-Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 14:51:51 -0600
+ OMZP1LUMXCA13.uswin.ad.vzwcorp.com (144.8.22.188) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 14:52:22 -0600
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
  OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
- 15.00.1263.000; Wed, 8 Nov 2017 14:51:51 -0600
+ 15.00.1263.000; Wed, 8 Nov 2017 14:52:22 -0600
 From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
 To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
-Subject: [PATCH AUTOSEL for-4.4 37/39] MIPS: init: Ensure reserved memory
- regions are not added to bootmem
-Thread-Topic: [PATCH AUTOSEL for-4.4 37/39] MIPS: init: Ensure reserved memory
- regions are not added to bootmem
-Thread-Index: AQHTWNM+TaT8xB/71kaDkPquwzzAhg==
-Date:   Wed, 8 Nov 2017 20:50:42 +0000
-Message-ID: <20171108205027.27525-37-alexander.levin@verizon.com>
+Subject: [PATCH AUTOSEL for-4.4 39/39] MIPS: Use Makefile.postlink to insert
+ relocations into vmlinux
+Thread-Topic: [PATCH AUTOSEL for-4.4 39/39] MIPS: Use Makefile.postlink to
+ insert relocations into vmlinux
+Thread-Index: AQHTWNM+uKnh1XQhTUW3lZKZsrMQnQ==
+Date:   Wed, 8 Nov 2017 20:50:43 +0000
+Message-ID: <20171108205027.27525-39-alexander.levin@verizon.com>
 References: <20171108205027.27525-1-alexander.levin@verizon.com>
 In-Reply-To: <20171108205027.27525-1-alexander.levin@verizon.com>
 Accept-Language: en-US
@@ -85,7 +85,7 @@ Return-Path: <alexander.levin@one.verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60763
+X-archive-position: 60764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -102,41 +102,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-[ Upstream commit e89ef66d7682f031f026eee6bba03c8c2248d2a9 ]
+[ Upstream commit 44079d3509aee89c58f3e4fd929fa53ab2299019 ]
 
-Memories managed through boot_mem_map are generally expected to define
-non-crossing areas. However, if part of a larger memory block is marked
-as reserved, it would still be added to bootmem allocator as an
-available block and could end up being overwritten by the allocator.
+When relocatable support for MIPS was merged, there was no support for
+an architecture to add a postlink step for vmlinux. This meant that only
+invoking a target within the boot directory, such as uImage, caused the
+relocations to be inserted into vmlinux. Building just the vmlinux
+target would result in a relocatable kernel with no relocation
+information present.
 
-Prevent this by explicitly marking the memory as reserved it if exists
-in the range used by bootmem allocator.
+Commit fbe6e37dab97 ("kbuild: add arch specific post-link Makefile")
+recified this situation, so MIPS can now define a postlink step to add
+relocation information into vmlinux, and remove the additional steps
+tacked onto boot targets.
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Tested-by: Steven J. Hill <steven.hill@cavium.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14608/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/14554/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 ---
- arch/mips/kernel/setup.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/Makefile.postlink | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 arch/mips/Makefile.postlink
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 1acaf0939cb5..4f9f1ae49213 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -506,6 +506,10 @@ static void __init bootmem_init(void)
- 			continue;
- 		default:
- 			/* Not usable memory */
-+			if (start > min_low_pfn && end < max_low_pfn)
-+				reserve_bootmem(boot_mem_map.map[i].addr,
-+						boot_mem_map.map[i].size,
-+						BOOTMEM_DEFAULT);
- 			continue;
- 		}
- 
+diff --git a/arch/mips/Makefile.postlink b/arch/mips/Makefile.postlink
+new file mode 100644
+index 000000000000..b0ddf0701a31
+--- /dev/null
++++ b/arch/mips/Makefile.postlink
+@@ -0,0 +1,35 @@
++# ===========================================================================
++# Post-link MIPS pass
++# ===========================================================================
++#
++# 1. Insert relocations into vmlinux
++
++PHONY := __archpost
++__archpost:
++
++include include/config/auto.conf
++include scripts/Kbuild.include
++
++CMD_RELOCS = arch/mips/boot/tools/relocs
++quiet_cmd_relocs = RELOCS $@
++      cmd_relocs = $(CMD_RELOCS) $@
++
++# `@true` prevents complaint when there is nothing to be done
++
++vmlinux: FORCE
++	@true
++ifeq ($(CONFIG_RELOCATABLE),y)
++	$(call if_changed,relocs)
++endif
++
++%.ko: FORCE
++	@true
++
++clean:
++	@true
++
++PHONY += FORCE clean
++
++FORCE:
++
++.PHONY: $(PHONY)
 -- 
 2.11.0

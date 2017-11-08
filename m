@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:54:32 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 21:54:55 +0100 (CET)
 Received: from omzsmtpe03.verizonbusiness.com ([199.249.25.208]:5573 "EHLO
         omzsmtpe03.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993909AbdKHUxFMjeUC convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S23993910AbdKHUxF56pMC convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 8 Nov 2017 21:53:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -9,10 +9,10 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   s=corp; t=1510174385; x=1541710385;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=xFaGZp8zmeuHozXmaR24rjshVgaPQ7BQ3dE34bdNNm4=;
-  b=Yp6+s8J23a38SEQx9/BiFebID599T6TeSCOXewdUpeZxjoNTWEq/vyGg
-   Dhc1h5TzJhIn2zZl5yJW5BqTuGZrLeUMJBvfb2M9xkK85AYC9f0SVe1Vg
-   MschDy9d/a4W9QYwfOVYNSV5HElsWHerRqVRNtWzCWfRPRFFao4C1x02c
+  bh=lWYiH7bmooyz2H70PWmWRnaMM2KaREC/ACpbRN1JX6M=;
+  b=in64fcM4DUzs8HsLnMbiigVg2wAiZMo2S1EKc+3dWUgodfb8yUgJNPYU
+   auYNAe3qlHXYI7Ir+UFZogEbBHVJrMbckV5vTaJjjybUeYuYk+/PC8CGq
+   NnMm+QxVSPFOSaL5RJAVzf0/ctR1TT5WWv99ZVnCs5QL5McPeO3DGk5U9
    I=;
 Received: from unknown (HELO fldsmtpi02.verizon.com) ([166.68.71.144])
   by omzsmtpe03.verizonbusiness.com with ESMTP; 08 Nov 2017 20:52:54 +0000
@@ -23,11 +23,11 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1510174359; x=1541710359;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=xFaGZp8zmeuHozXmaR24rjshVgaPQ7BQ3dE34bdNNm4=;
-  b=m8bAdrWf76bUJXFdI2iV/jYT1JP4275sWasE7rbxH/l+cVkxqblO75Mk
-   PG9lOqLj4QiLyZONoCfwBstejKQG41QT+xx/EvUD9KU7atT+OB/PItH1I
-   qtNQYD/+zLObVDyqkGXn6b1eh6vxaJW64C8B1R50R95zliNc0+LvESp03
-   g=;
+  bh=lWYiH7bmooyz2H70PWmWRnaMM2KaREC/ACpbRN1JX6M=;
+  b=Kl4lD7pcfY6MMUwiX0/nqaSdUoAD66//av0aVAQpXXO+Qbq9p/AzlxX1
+   LPe5lirxGXPRD2BcMyhHSN3NB7cjkgQ+N5dy8s+D0gyOlUjWpOewcwFm2
+   TkRY25FoqMFrqcmmU4fQz/XH4xHWThUsTkEzxAXpgareExCL93qUl4jEW
+   s=;
 Received: from mariner.tdc.vzwcorp.com (HELO eris.verizonwireless.com) ([10.254.88.84])
   by atlantis.verizonwireless.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 08 Nov 2017 15:52:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -35,26 +35,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1510174359; x=1541710359;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=xFaGZp8zmeuHozXmaR24rjshVgaPQ7BQ3dE34bdNNm4=;
-  b=m8bAdrWf76bUJXFdI2iV/jYT1JP4275sWasE7rbxH/l+cVkxqblO75Mk
-   PG9lOqLj4QiLyZONoCfwBstejKQG41QT+xx/EvUD9KU7atT+OB/PItH1I
-   qtNQYD/+zLObVDyqkGXn6b1eh6vxaJW64C8B1R50R95zliNc0+LvESp03
-   g=;
+  bh=lWYiH7bmooyz2H70PWmWRnaMM2KaREC/ACpbRN1JX6M=;
+  b=Kl4lD7pcfY6MMUwiX0/nqaSdUoAD66//av0aVAQpXXO+Qbq9p/AzlxX1
+   LPe5lirxGXPRD2BcMyhHSN3NB7cjkgQ+N5dy8s+D0gyOlUjWpOewcwFm2
+   TkRY25FoqMFrqcmmU4fQz/XH4xHWThUsTkEzxAXpgareExCL93qUl4jEW
+   s=;
 X-Host: mariner.tdc.vzwcorp.com
-Received: from ohtwi1exh003.uswin.ad.vzwcorp.com ([10.144.218.45])
+Received: from ohtwi1exh001.uswin.ad.vzwcorp.com ([10.144.218.43])
   by eris.verizonwireless.com with ESMTP/TLS/AES128-SHA256; 08 Nov 2017 20:52:39 +0000
-Received: from tbwexch29apd.uswin.ad.vzwcorp.com (153.114.162.53) by
- OHTWI1EXH003.uswin.ad.vzwcorp.com (10.144.218.45) with Microsoft SMTP Server
- (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:52:38 -0500
+Received: from tbwexch30apd.uswin.ad.vzwcorp.com (153.114.162.54) by
+ OHTWI1EXH001.uswin.ad.vzwcorp.com (10.144.218.43) with Microsoft SMTP Server
+ (TLS) id 14.3.248.2; Wed, 8 Nov 2017 15:52:39 -0500
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
- tbwexch29apd.uswin.ad.vzwcorp.com (153.114.162.53) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 15:52:38 -0500
+ tbwexch30apd.uswin.ad.vzwcorp.com (153.114.162.54) with Microsoft SMTP Server
+ (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 15:52:39 -0500
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) by
  OMZP1LUMXCA17.uswin.ad.vzwcorp.com (144.8.22.195) with Microsoft SMTP Server
- (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 14:52:37 -0600
+ (TLS) id 15.0.1263.5; Wed, 8 Nov 2017 14:52:38 -0600
 Received: from OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) by
  OMZP1LUMXCA17.uswin.ad.vzwcorp.com ([144.8.22.195]) with mapi id
- 15.00.1263.000; Wed, 8 Nov 2017 14:52:37 -0600
+ 15.00.1263.000; Wed, 8 Nov 2017 14:52:38 -0600
 From:   "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
 To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
@@ -62,13 +62,13 @@ CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Levin, Alexander (Sasha Levin)" <alexander.levin@one.verizon.com>
-Subject: [PATCH AUTOSEL for-3.18 24/27] MIPS: init: Ensure bootmem does not
- corrupt reserved memory
-Thread-Topic: [PATCH AUTOSEL for-3.18 24/27] MIPS: init: Ensure bootmem does
- not corrupt reserved memory
-Thread-Index: AQHTWNNItdJQLhNbY06y4MhVlzvHxw==
-Date:   Wed, 8 Nov 2017 20:51:00 +0000
-Message-ID: <20171108205049.27612-24-alexander.levin@verizon.com>
+Subject: [PATCH AUTOSEL for-3.18 25/27] MIPS: init: Ensure reserved memory
+ regions are not added to bootmem
+Thread-Topic: [PATCH AUTOSEL for-3.18 25/27] MIPS: init: Ensure reserved
+ memory regions are not added to bootmem
+Thread-Index: AQHTWNNJyeX4lFtg5Ui5BCvIl/YDIQ==
+Date:   Wed, 8 Nov 2017 20:51:01 +0000
+Message-ID: <20171108205049.27612-25-alexander.levin@verizon.com>
 References: <20171108205049.27612-1-alexander.levin@verizon.com>
 In-Reply-To: <20171108205049.27612-1-alexander.levin@verizon.com>
 Accept-Language: en-US
@@ -85,7 +85,7 @@ Return-Path: <alexander.levin@one.verizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60765
+X-archive-position: 60766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,129 +104,39 @@ X-list: linux-mips
 
 From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-[ Upstream commit d9b5b658210f28ed9f70c757d553e679d76e2986 ]
+[ Upstream commit e89ef66d7682f031f026eee6bba03c8c2248d2a9 ]
 
-Current init code initialises bootmem allocator with all of the low
-memory that it assumes is available, but does not check for reserved
-memory block, which can lead to corruption of data that may be stored
-there.
-Move bootmem's allocation map to a location that does not cross any
-reserved regions
+Memories managed through boot_mem_map are generally expected to define
+non-crossing areas. However, if part of a larger memory block is marked
+as reserved, it would still be added to bootmem allocator as an
+available block and could end up being overwritten by the allocator.
+
+Prevent this by explicitly marking the memory as reserved it if exists
+in the range used by bootmem allocator.
 
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14609/
+Patchwork: https://patchwork.linux-mips.org/patch/14608/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 ---
- arch/mips/kernel/setup.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 71 insertions(+), 3 deletions(-)
+ arch/mips/kernel/setup.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index f3b635f86c39..0b40c1a8f960 100644
+index 0b40c1a8f960..6235cf0b857c 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -146,6 +146,35 @@ void __init detect_memory_region(phys_t start, phys_t sz_min, phys_t sz_max)
- 	add_memory_region(start, size, BOOT_MEM_RAM);
- }
+@@ -495,6 +495,10 @@ static void __init bootmem_init(void)
+ 			continue;
+ 		default:
+ 			/* Not usable memory */
++			if (start > min_low_pfn && end < max_low_pfn)
++				reserve_bootmem(boot_mem_map.map[i].addr,
++						boot_mem_map.map[i].size,
++						BOOTMEM_DEFAULT);
+ 			continue;
+ 		}
  
-+bool __init memory_region_available(phys_addr_t start, phys_addr_t size)
-+{
-+	int i;
-+	bool in_ram = false, free = true;
-+
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		phys_addr_t start_, end_;
-+
-+		start_ = boot_mem_map.map[i].addr;
-+		end_ = boot_mem_map.map[i].addr + boot_mem_map.map[i].size;
-+
-+		switch (boot_mem_map.map[i].type) {
-+		case BOOT_MEM_RAM:
-+			if (start >= start_ && start + size <= end_)
-+				in_ram = true;
-+			break;
-+		case BOOT_MEM_RESERVED:
-+			if ((start >= start_ && start < end_) ||
-+			    (start < start_ && start + size >= start_))
-+				free = false;
-+			break;
-+		default:
-+			continue;
-+		}
-+	}
-+
-+	return in_ram && free;
-+}
-+
- static void __init print_memory_map(void)
- {
- 	int i;
-@@ -294,11 +323,19 @@ static void __init bootmem_init(void)
- 
- #else  /* !CONFIG_SGI_IP27 */
- 
-+static unsigned long __init bootmap_bytes(unsigned long pages)
-+{
-+	unsigned long bytes = DIV_ROUND_UP(pages, 8);
-+
-+	return ALIGN(bytes, sizeof(long));
-+}
-+
- static void __init bootmem_init(void)
- {
- 	unsigned long reserved_end;
- 	unsigned long mapstart = ~0UL;
- 	unsigned long bootmap_size;
-+	bool bootmap_valid = false;
- 	int i;
- 
- 	/*
-@@ -374,11 +411,42 @@ static void __init bootmem_init(void)
- #endif
- 
- 	/*
--	 * Initialize the boot-time allocator with low memory only.
-+	 * check that mapstart doesn't overlap with any of
-+	 * memory regions that have been reserved through eg. DTB
- 	 */
--	bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
--					 min_low_pfn, max_low_pfn);
-+	bootmap_size = bootmap_bytes(max_low_pfn - min_low_pfn);
-+
-+	bootmap_valid = memory_region_available(PFN_PHYS(mapstart),
-+						bootmap_size);
-+	for (i = 0; i < boot_mem_map.nr_map && !bootmap_valid; i++) {
-+		unsigned long mapstart_addr;
-+
-+		switch (boot_mem_map.map[i].type) {
-+		case BOOT_MEM_RESERVED:
-+			mapstart_addr = PFN_ALIGN(boot_mem_map.map[i].addr +
-+						boot_mem_map.map[i].size);
-+			if (PHYS_PFN(mapstart_addr) < mapstart)
-+				break;
-+
-+			bootmap_valid = memory_region_available(mapstart_addr,
-+								bootmap_size);
-+			if (bootmap_valid)
-+				mapstart = PHYS_PFN(mapstart_addr);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
- 
-+	if (!bootmap_valid)
-+		panic("No memory area to place a bootmap bitmap");
-+
-+	/*
-+	 * Initialize the boot-time allocator with low memory only.
-+	 */
-+	if (bootmap_size != init_bootmem_node(NODE_DATA(0), mapstart,
-+					 min_low_pfn, max_low_pfn))
-+		panic("Unexpected memory size required for bootmap");
- 
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		unsigned long start, end;
 -- 
 2.11.0

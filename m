@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Nov 2017 23:09:13 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:47255 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 00:15:56 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.230]:49379 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993917AbdKHWJGgPiHr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Nov 2017 23:09:06 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 08 Nov 2017 22:08:48 +0000
+        by eddie.linux-mips.org with ESMTP id S23990399AbdKHXPtPduHY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 00:15:49 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 08 Nov 2017 23:15:30 +0000
 Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 8 Nov 2017
- 14:06:46 -0800
-Date:   Wed, 8 Nov 2017 22:06:44 +0000
+ 15:15:29 -0800
+Date:   Wed, 8 Nov 2017 23:15:27 +0000
 From:   James Hogan <james.hogan@mips.com>
-To:     "Maciej W. Rozycki " <macro@mips.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Use SLL by 0 for 32-bit truncation in
- `__read_64bit_c0_split'
-Message-ID: <20171108220643.GP15260@jhogan-linux>
-References: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <macro@linux-mips.org>
+Subject: Re: [PATCH] MIPS: page.h: define virt_to_pfn()
+Message-ID: <20171108231527.GQ15260@jhogan-linux>
+References: <20170309211149.8339-1-f.fainelli@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="E187YRO8KGM40JwS"
+        protocol="application/pgp-signature"; boundary="DBUa/BSa4z6QPQv1"
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1709291502060.12020@tp.orcam.me.uk>
+In-Reply-To: <20170309211149.8339-1-f.fainelli@gmail.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510178927-637137-12452-944941-1
-X-BESS-VER: 2017.12-r1710252241
+X-BESS-ID: 1510182930-452060-12336-83540-1
+X-BESS-VER: 2017.14.1-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186733
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186736
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
 X-BESS-BRTS-Status: 1
 Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60778
+X-archive-position: 60779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,58 +54,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---E187YRO8KGM40JwS
+--DBUa/BSa4z6QPQv1
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 29, 2017 at 04:26:31PM +0100, Maciej W. Rozycki wrote:
-> Optimize `__read_64bit_c0_split' and reduce the instruction count by 1,=
-=20
-> observing that a DSLL/DSRA pair by 32, is equivalent to SLL by 0, which=
-=20
-> architecturally truncates the value requested to 32 bits on 64-bit MIPS=
-=20
-> hardware regardless of whether the input operand is or is not a properly=
-=20
-> sign-extended 32-bit value.
->=20
-> Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-> ---
->  Tested by compilation only to verify syntax correctnes as I do not know=
-=20
-> if this execution path is actually used by any configuration (suggestions=
-=20
-> welcome).  I believe it to be technically correct though, being=20
-> sufficiently straightforward to verify by proofreading, and an obvious=20
-> improvement.
->=20
->  Therefore, please apply.
+Hi Florian,
 
-Thanks, Applied for 4.15.
+On Thu, Mar 09, 2017 at 01:11:49PM -0800, Florian Fainelli wrote:
+> Based on the existing definition of virt_to_page() which already does a
+> PFN_DOWN(vir_to_phys(kaddr)).
+
+I was just wondering if there was a particular motivation for this
+change?
 
 Cheers
 James
 
---E187YRO8KGM40JwS
+>=20
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> ---
+>  arch/mips/include/asm/page.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+> index 5f987598054f..ad461216b5a1 100644
+> --- a/arch/mips/include/asm/page.h
+> +++ b/arch/mips/include/asm/page.h
+> @@ -240,8 +240,8 @@ static inline int pfn_valid(unsigned long pfn)
+> =20
+>  #endif
+> =20
+> -#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys((void *)  =
+   \
+> -								  (kaddr))))
+> +#define virt_to_pfn(kaddr)   	PFN_DOWN(virt_to_phys((void *)(kaddr)))
+> +#define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
+> =20
+>  extern int __virt_addr_valid(const volatile void *kaddr);
+>  #define virt_addr_valid(kaddr)						\
+> --=20
+> 2.9.3
+>=20
+
+--DBUa/BSa4z6QPQv1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloDf/MACgkQbAtpk944
-dnoeuQ//WTBzaIdGliegG3NUnozCe3aPu67GMxNGBURhqqz6mg2ilikrZR2s8lk9
-u4L2naLhpH+mWwucChzxe46SvK+8tLLOGrv9qfK6DAkUw+Ql6utMUKL/Gne4s0dW
-dfvUo7VPBWOzQLnklyXQpmlg7RmmBV3Q2GvJTGH+6G3VVn3IDto1D39b4H8e+bSp
-iqrv7tsy2UvVhPhgp4tbsgt5vqgYc8+/Qatu8wCvrbO1RsXAKMjHkwKmbDR/5eDI
-yA+OGwfn7FTdipEsCZQRrsQ76adhIPnqMrSqwSRF8WHDrQk0kWfBP3uODge2O4QJ
-c2I/K9Kf10Z/SfKwfipPsvbOXDlvoCOh5yjf9J6cpZeRb3UjopYbmDMorv/z1/Qf
-EU7FNg4AE92cMJxWFQyVtpVI/UjWLPQEWUKzISoxFKfN5PFdoxCSyYp2vsBC9EbE
-/12aBX5368K8kRktZw3OZqhWPY9HtX1CxPpa2MxVdWhz+mZb5evL2CUs2pgeb/zx
-6wkKM7pSJVsy/xKyAQ8/IUUcmxsK8ws0Ywv9bGvRheVPUfXzhj63eU4NwEn3F5Q0
-2FfqOXijA1rTiAAMkYzBqzF1mw8/GjQI1lXWsksSGX8xE/y3JqTbcHqYUAdmE2oD
-rDlMZezGbOowqRfpgXo9YnHfppCFTI3hqRbp+E+E332pFa/utMM=
-=RqTU
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloDkAgACgkQbAtpk944
+dnoFwxAAu8k0IGNqPcaZOA5QKetgbTRwiGeL66VGU0KlG7gcU5KFFvslqQYFog52
+WR/wptXdR2Pc5AVfCvBbGUiOe+8KMFvpCY6ezHIAzMNeOCbB7OSKiZ6xILuZMJiS
+8x2sActrUi1TkhXrdMfGG2yMEv3hZcGrY2KgdyQxsH5Khg/sMs3ru11YHBghuG6Y
+mOyaEj+yzGKlanQ1jDd1z1L6AETutrjE0/Qdsrf5T9BR2yc8lxQiAf66PXKXmT0N
+qJTSSQme8Q1c8pd3gZNjFYZkWoLG64jcAfXQiZNqm1hg0BWxOyRlrAq/EiZ0qHU3
+HSUkpAEiyE7kdDCeJtnZWkD9kMpy6D/1zbfjvtvQFX6lk8y47NsmB3K1HeKZIi0J
+AkopbYtW+XmW0A6kkaitB0tmJZLq/62qUv2n10CctznU7wCUATfCRqalS8ErSFO3
+6z25z8wtZJBCmutQjgZy6+vYeWdp60SKZFWHXF/wDhUec0h8n6zG4gc4+mYgwSDG
+MaEkDesVOJMgdLzJDyV4ytJQzxu3JF2maDhXsE3yUtdl2lgNPRz7yn/F0LiRwpn/
+LI3B+2jdUP8yJU2DYwqJQYEmUlXZ5Gmvx1ZBqLZh+W6n/VTNR57OAycO3mY+vWzB
+YP4s7j/ETqK5rN06lVWcLU84Bz7qFO8DQXUSPr2J6wTQKbp1wz4=
+=SfUn
 -----END PGP SIGNATURE-----
 
---E187YRO8KGM40JwS--
+--DBUa/BSa4z6QPQv1--

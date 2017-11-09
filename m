@@ -1,61 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 06:54:32 +0100 (CET)
-Received: from conssluserg-02.nifty.com ([210.131.2.81]:22736 "EHLO
-        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990413AbdKIFyZpVEuQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 06:54:25 +0100
-Received: from mail-yw0-f173.google.com (mail-yw0-f173.google.com [209.85.161.173]) (authenticated)
-        by conssluserg-02.nifty.com with ESMTP id vA95rjQZ008125
-        for <linux-mips@linux-mips.org>; Thu, 9 Nov 2017 14:53:45 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com vA95rjQZ008125
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1510206826;
-        bh=CJUdwFiyJi3Hw2xcYpUnDlGISb01EscKthy/hec4ct8=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=Esyj+7uPLJI1LY9n436/4yHlDfh9WAGIDyELeko7z/xnxXmHRuHaTmsVquT5p5Ff6
-         FkbW5D9I/5iWlkIdU+07Jv3P5wxZmUvY6p7mXoolkT47DSdOt2WX6SiYuCDpBqshla
-         RN9OH13RdMkEpeH/WavA7xdrlx2mXiOkCsmoFGTCmehkFsvffgCAuUiY0ShopGdpjA
-         J7GWJLGEqmYcH1nq1gJDPe3Qcp0f0OPPSw4oav+cXPhUHzBoCP61vLAmijnn7ixpdN
-         q6vScz1fyoMyd8auTE0ZUB+X595BSG4Sj001IRSSmFmOCCXbCXR7pSKsDPWGoSHHcy
-         5Pe0snK6q9s1A==
-X-Nifty-SrcIP: [209.85.161.173]
-Received: by mail-yw0-f173.google.com with SMTP id k11so4401392ywh.1
-        for <linux-mips@linux-mips.org>; Wed, 08 Nov 2017 21:53:45 -0800 (PST)
-X-Gm-Message-State: AJaThX4d+r8mMmF9rHJPXgeNRy/PWjOe7CSFyUJHq7+LdpFp66BoXv2h
-        eMI1JV4PDEckqacsNdJviWV63iPoNmpf7l+9Xts=
-X-Google-Smtp-Source: ABhQp+QHyuNP8i3v5YnpnJjZJnj0YG2TGyRwWZQtH+DPSlvXTg4lYSgUkO5r0/j9jYQdrrIZJXGb4RV/ofuTH1JC/e8=
-X-Received: by 10.37.189.19 with SMTP id f19mr89094ybk.220.1510206824651; Wed,
- 08 Nov 2017 21:53:44 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.37.110.139 with HTTP; Wed, 8 Nov 2017 21:53:04 -0800 (PST)
-In-Reply-To: <20171109053529.GA12717@ravnborg.org>
-References: <1510072307-16819-1-git-send-email-yamada.masahiro@socionext.com>
- <1510072307-16819-2-git-send-email-yamada.masahiro@socionext.com> <20171109053529.GA12717@ravnborg.org>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Thu, 9 Nov 2017 14:53:04 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARyrgRBYOW7NGURnVUhhArL3C46UWiSosveM9KGmvEY4Q@mail.gmail.com>
-Message-ID: <CAK7LNARyrgRBYOW7NGURnVUhhArL3C46UWiSosveM9KGmvEY4Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: create built-in.o automatically if parent
- directory wants it
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 08:48:50 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:55999 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990451AbdKIHsm7RU65 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 08:48:42 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 09 Nov 2017 07:47:22 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 8 Nov 2017
+ 23:47:21 -0800
+Date:   Thu, 9 Nov 2017 07:47:19 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Wim Van Sebroeck <wim@iguana.be>
+CC:     Mathieu Malaterre <malat@debian.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Michal Marek <mmarek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <yamada.masahiro@socionext.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <linux-watchdog@vger.kernel.org>
+Subject: Re: [PATCH 2/3] watchdog: jz4780: Allow selection of jz4740-wdt
+ driver
+Message-ID: <20171109074718.GR15260@jhogan-linux>
+References: <20170908183558.1537-1-malat@debian.org>
+ <20170908183558.1537-2-malat@debian.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="eLe8FOcWSbbyMVJD"
+Content-Disposition: inline
+In-Reply-To: <20170908183558.1537-2-malat@debian.org>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510213641-321457-5728-41757-1
+X-BESS-VER: 2017.12-r1710252241
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186747
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60793
+X-archive-position: 60794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,73 +64,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Sam,
+--eLe8FOcWSbbyMVJD
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for your review.
+Hi Wim,
 
-2017-11-09 14:35 GMT+09:00 Sam Ravnborg <sam@ravnborg.org>:
-> Hi Masahiro.
->
-> Thanks for picking this up.
->
->> A key point is, the parent Makefile knows whether built-in.o is needed
->> or not.  If a subdirectory needs to create built-in.o, its parent can
->> tell the fact when Kbuild descends into it.
-> Good observation!
->>
->> diff --git a/Makefile b/Makefile
->> index 008a4e5..cc0b618 100644
->> --- a/Makefile
->> +++ b/Makefile
->> @@ -1003,7 +1003,7 @@ $(sort $(vmlinux-deps)): $(vmlinux-dirs) ;
->>
->>  PHONY += $(vmlinux-dirs)
->>  $(vmlinux-dirs): prepare scripts
->> -     $(Q)$(MAKE) $(build)=$@
->> +     $(Q)$(MAKE) $(build)=$@ need-builtin=1
->
-> The need-bultin may also be required for the shortcuts
-> that allows one to use:
->
->         make <dir>/
->
->     example:
->
->         make net/
+On Fri, Sep 08, 2017 at 08:35:54PM +0200, Mathieu Malaterre wrote:
+> This driver works for jz4740 & jz4780
+>=20
+> Suggested-by: Maarten ter Huurne <maarten@treewalker.org>
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
 
+I just noticed that though Ralf applied the other two patches in this
+series (defconfig + dt), he hadn't applied this patch.
 
-I do not want to add need-builtin=1 for single targets.
+Please can we have an ack from a watchdog maintainer so this can get
+into 4.15 via the MIPS tree? It could alternatively go via the watchdog
+tree if you prefer.
 
+Thanks
+James
 
-make scripts/
-would create false scripts/built-in.o
-This is odd.
+> ---
+>  drivers/watchdog/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index c722cbfdc7e6..ca200d1f310a 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -1460,7 +1460,7 @@ config INDYDOG
+> =20
+>  config JZ4740_WDT
+>  	tristate "Ingenic jz4740 SoC hardware watchdog"
+> -	depends on MACH_JZ4740
+> +	depends on MACH_JZ4740 || MACH_JZ4780
+>  	select WATCHDOG_CORE
+>  	help
+>  	  Hardware driver for the built-in watchdog timer on Ingenic jz4740 SoC=
+s.
+> --=20
+> 2.11.0
+>=20
+>=20
 
-I wrote the solution in the commit log:
-  $(obj-y) should be still checked to support the single target "%/".
+--eLe8FOcWSbbyMVJD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
 
-If net/Makefile contains at least one obj-y,
-"make net/" will create built-in.o
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloEB/0ACgkQbAtpk944
+dnqjVA/+NBFJj9xGzjZBF7j8SB64O6oIE+ZUb3J6D3PwsWW/jOfxiEPPz7pQmZQ0
+BNkL5TGx2K/kb+TW3qpc5H/80q3WlZzU6Z6XV/gC7JR3SEfuguJxZ7tsavWUsyJD
+g0nWcyb8x6usMvHLQFwDWPApkak4XvLp7p9EkeBrAPGlMeveJAbxBWCwywG92dg3
+BiaVP9JkOV/tz1c4I33vnDKGNedBqPRjrLKcdKqnzddaHXKyaAtoGiLl6UkcaNMb
+l0yuOzz2NVLIuML7dzkYbiqsCoBjOMQo8QI8HOaGFkc+qvZLYJ5f5gDQ2CD8gERU
+mDG52f9xueoHIQIdQ3exAHVrudRrwNXLDaZ7IChj3tert96QWkqeB+zBKpEBpgth
+ojwM7mvSeiX02EPLW5iQCJQejKw/dydN4xWEZHJdGQtCZZXOl3MpVQlrioyJTBzM
+PZIS1XYJpAurF4Ve63s/KcgFOHR0zGSnQMa9ZIov1OlcS9vXOuwM49Dyr3EgjcJC
+lIE1EKTSnfoPSM0o9ft0U6m+ve9IUPcVCfmIm2433N9VPPL9f/WyTDR01D9tXXv3
+EmcV7JU4rHhc2X+y4Jy0tnAsI1iN/sT8VdxoH1D8Ab+4q7MgBNpEHmq84e0rVv5n
+uugOr6IvWBb/rQprex7mL2Tq3KLlF8ZT1DSH5oXVugQSDgTQUgU=
+=UwIM
+-----END PGP SIGNATURE-----
 
-
-
-
-
-> And maybe selftest, documentation shortcuts too?
-> Other than that - looks good.
->
-> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
->
->         Sam
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kbuild" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+--eLe8FOcWSbbyMVJD--

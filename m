@@ -1,51 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 16:46:29 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:55125 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990506AbdKIPqVm9O1X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 16:46:21 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 09 Nov 2017 15:45:27 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 9 Nov 2017
- 07:45:19 -0800
-Date:   Thu, 9 Nov 2017 15:45:17 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Djordje Todorovic <djordje.todorovic@rt-rk.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Fix an n32 core file generation regset support
- regression
-Message-ID: <20171109154517.GY15260@jhogan-linux>
-References: <alpine.DEB.2.00.1710272036270.3886@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 17:02:08 +0100 (CET)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:56317
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990757AbdKIQB53INvX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 17:01:57 +0100
+Received: by mail-pf0-x241.google.com with SMTP id 17so4542394pfn.12;
+        Thu, 09 Nov 2017 08:01:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=m9P0cbt9R8rwpkpBGORlcC8/XVPv0ENWKFbpcAK3Jms=;
+        b=Ft+Y2o5ZOWsi2TNL90mSVzMiUOUXsspgF/PRxz8y4soqNhdo/XcnQCAVCCVz/GJKlj
+         J/RC40QmX4FjZqjC+NNAXZe80/34X30BMJJ6sc8g3SGMHs5anNVmv5eU0FDcgN02WE08
+         h72F7Yy7qduoyr4hnLYAU9P9CeyhyCffaX02LfqG78J1F3i0uE7fAYFAtwYMzASb5phW
+         O3bluvBLGOOC9u1+lD6vNufOVwiZRP7J1yoqSr3wVlMVKwpJ1bR1nhIxgErxjKGXJbzr
+         gXdboBGAKOl86kuN7l/PVlR9GwA8g7NWAgez73UluLRUMTA5jcmn2ExKtvEUNaRnO6xW
+         Y7cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=m9P0cbt9R8rwpkpBGORlcC8/XVPv0ENWKFbpcAK3Jms=;
+        b=CArHiZDaYrAYA8WxwyIjBP5w2XauBQ9dBm8QQ/l3N+o0i5fBuUPgHha3a4NnW58wEq
+         zBnR1XaNrZySDdktIJdk4F4l32xnltW6cQp3HxpYRTFqhvsawLK/FsyVv/DxISjZE3aw
+         NdncMbnjHMT/Rn+X6vCV90ZE5n8FBCYNyziHt7H4GpGXPPrUmqAipcqHHIo8T/sRkeYR
+         iQdXlWrHmzekLguWQYrnQyTiP+0P9gdf4X64Ytbn7di3oiGakV7w2I95JGi2Mdvynz9S
+         fTm1v/0L36RYYPdaD+XSQv7ubkAbfK2lla42TVJEl94cfxkW4taXzExON7s0GEHEZCU/
+         /Apw==
+X-Gm-Message-State: AJaThX77u41AILOCAfq5RSWXW8cWy6d9bT4U5blNdURH1kZzeg7uzOuI
+        ytQVZwObRQTXDsB+fjo34Yg=
+X-Google-Smtp-Source: ABhQp+ST3C4jZ/RZLnKZV6dKxpfNL3XY+hhvfKUguj/gkqLd6YnPXaLt1vucgatgFjr5/NpNISNBpg==
+X-Received: by 10.98.103.93 with SMTP id b90mr988663pfc.2.1510243309007;
+        Thu, 09 Nov 2017 08:01:49 -0800 (PST)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id f24sm15582977pfk.183.2017.11.09.08.01.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 Nov 2017 08:01:48 -0800 (PST)
+Date:   Thu, 9 Nov 2017 08:01:47 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Wim Van Sebroeck <wim@iguana.be>,
+        Mathieu Malaterre <malat@debian.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH 2/3] watchdog: jz4780: Allow selection of jz4740-wdt
+ driver
+Message-ID: <20171109160147.GB19959@roeck-us.net>
+References: <20170908183558.1537-1-malat@debian.org>
+ <20170908183558.1537-2-malat@debian.org>
+ <20171109074718.GR15260@jhogan-linux>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="kUoBhQsr7LsiFken"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1710272036270.3886@tp.orcam.me.uk>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510242326-298554-12052-53724-4
-X-BESS-VER: 2017.12-r1710252241
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186757
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+In-Reply-To: <20171109074718.GR15260@jhogan-linux>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60808
+X-archive-position: 60809
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,119 +81,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---kUoBhQsr7LsiFken
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Nov 09, 2017 at 07:47:19AM +0000, James Hogan wrote:
+> Hi Wim,
+> 
+> On Fri, Sep 08, 2017 at 08:35:54PM +0200, Mathieu Malaterre wrote:
+> > This driver works for jz4740 & jz4780
+> > 
+> > Suggested-by: Maarten ter Huurne <maarten@treewalker.org>
+> > Signed-off-by: Mathieu Malaterre <malat@debian.org>
+> 
+> I just noticed that though Ralf applied the other two patches in this
+> series (defconfig + dt), he hadn't applied this patch.
+> 
+> Please can we have an ack from a watchdog maintainer so this can get
+> into 4.15 via the MIPS tree? It could alternatively go via the watchdog
+> tree if you prefer.
+> 
 
-On Tue, Nov 07, 2017 at 07:09:20PM +0000, Maciej W. Rozycki wrote:
-> Fix a commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")=20
-> regression, then activated by commit 6a9c001b7ec3 ("MIPS: Switch ELF=20
-> core dumper to use regsets.)", that caused n32 processes to dump o32=20
-> core files by failing to set the EF_MIPS_ABI2 flag in the ELF core file=
-=20
-> header's `e_flags' member:
->=20
-> $ file tls-core
-> tls-core: ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYS=
-V), [...]
-> $ ./tls-core
-> Aborted (core dumped)
-> $ file core
-> core: ELF 32-bit MSB core file MIPS, MIPS-I version 1 (SYSV), SVR4-style
-> $=20
->=20
-> Previously the flag was set as the result of a:
->=20
-> #define ELF_CORE_EFLAGS EF_MIPS_ABI2
->=20
-> statement placed in arch/mips/kernel/binfmt_elfn32.c, however in the=20
-> regset case, i.e. when CORE_DUMP_USE_REGSET is set, ELF_CORE_EFLAGS is=20
-> no longer used by `fill_note_info' in fs/binfmt_elf.c, and instead the=20
-> `->e_flags' member of the regset view chosen is.  We have the views=20
-> defined in arch/mips/kernel/ptrace.c, however only an o32 and an n64=20
-> one, and the latter is used for n32 as well.  Consequently an o32 core=20
-> file is incorrectly dumped from n32 processes (the ELF32 vs ELF64 class=
-=20
-> is chosen elsewhere, and the 32-bit one is correctly selected for n32).
->=20
-> Correct the issue then by defining an n32 regset view and using it as=20
-> appropriate.  Issue discovered in GDB testing.
->=20
-> Cc: stable@vger.kernel.org # 3.13+
-> Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+FWIW, according to my logs I did send out a Reviewed-by: some time ago,
+which normally means that I expect it to go through the watchdog tree.
+I wasn't aware that you wanted the patch to go through the mips tree.
+Sorry if I missed that earlier. For the record,
 
-Thanks, queued for 4.15.
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-Cheers
-James
+since I don't care one way or another.
 
-> ---
->  arch/mips/kernel/ptrace.c |   17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->=20
-> linux-mips-regset-view-n32-e-flags-abi2-init.diff
-> Index: linux-sfr/arch/mips/kernel/ptrace.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-sfr.orig/arch/mips/kernel/ptrace.c	2017-10-27 04:55:34.00000000=
-0 +0100
-> +++ linux-sfr/arch/mips/kernel/ptrace.c	2017-10-27 20:07:14.933716000 +01=
-00
-> @@ -618,6 +618,19 @@ static const struct user_regset_view use
->  	.n		=3D ARRAY_SIZE(mips64_regsets),
->  };
-> =20
-> +#ifdef CONFIG_MIPS32_N32
-> +
-> +static const struct user_regset_view user_mipsn32_view =3D {
-> +	.name		=3D "mipsn32",
-> +	.e_flags	=3D EF_MIPS_ABI2,
-> +	.e_machine	=3D ELF_ARCH,
-> +	.ei_osabi	=3D ELF_OSABI,
-> +	.regsets	=3D mips64_regsets,
-> +	.n		=3D ARRAY_SIZE(mips64_regsets),
-> +};
-> +
-> +#endif /* CONFIG_MIPS32_N32 */
-> +
->  #endif /* CONFIG_64BIT */
-> =20
->  const struct user_regset_view *task_user_regset_view(struct task_struct =
-*task)
-> @@ -629,6 +642,10 @@ const struct user_regset_view *task_user
->  	if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
->  		return &user_mips_view;
->  #endif
-> +#ifdef CONFIG_MIPS32_N32
-> +	if (test_tsk_thread_flag(task, TIF_32BIT_ADDR))
-> +		return &user_mipsn32_view;
-> +#endif
->  	return &user_mips64_view;
->  #endif
->  }
+I assume you want me to drop this and the related patches from my own
+watchdpog-next tree to prevent it from showing up in Wim's tree (if
+it isn't already there). Is that correct ?
 
---kUoBhQsr7LsiFken
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Guenter
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloEeA0ACgkQbAtpk944
-dnppcBAArJdLPfDyMAjul83SIqnSmdyw+m5aspJQF9tkVRxYsTCBkoNtdqflIu0L
-pDdkd7bkanGjXnyMJ74d+t9NnOX6wCu7UlH9X59teXnVKkpqeTCdYiUzUX8Bh1/Z
-dU4GwL/iaH7+/8NegkjRFuyCVjKnnas1WaZkFI4KLpjfKfQ2wu/Ifz6uvCe8YExQ
-qe7Cou7F/M8xedAAon8IJkJq2y5fIPhH8MaMOmozq0vunCvcNHTG02p5VWpvYcoF
-UR6m9cJafwTvqd5XP0oz7TPhChA6c0ZjdvIRahnKM3IPHJuK1+9j7D9/FvpjPPIW
-6JYEg/LQiNxpPGWMgEdnLEjpDsNiCOIUuAjt6kCzENnAu7leuVbrZW+MM09zCAGj
-12KHPnhM+IT2AVAQbS1n9HdrN2hvWitnu+XIf6Nmi5kliHtvNOZvzY54FNEezE2K
-xjGuHXssLYRed1HkceKqUv2FH2GFPZgaXG224bakq+72/njzksywbE9+z8dZhLfB
-zw9zSiqg50w4d0qlH4rNrUixKJjQRhmhMylVotcqtkmSvUE063/aiNSUmg4gE4BI
-PJFwW2+WfcsBZVX4BvWhreYdY592VUpSJtHzaaTEuGleFdMdLxsJpgBRdJKzQoZC
-hTyOXKrQS1HgSEzGRwU+YJ4s9hRiiJD/LeYs1/9QvDb14GQXJao=
-=xOU6
------END PGP SIGNATURE-----
-
---kUoBhQsr7LsiFken--
+> Thanks
+> James
+> 
+> > ---
+> >  drivers/watchdog/Kconfig | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> > index c722cbfdc7e6..ca200d1f310a 100644
+> > --- a/drivers/watchdog/Kconfig
+> > +++ b/drivers/watchdog/Kconfig
+> > @@ -1460,7 +1460,7 @@ config INDYDOG
+> >  
+> >  config JZ4740_WDT
+> >  	tristate "Ingenic jz4740 SoC hardware watchdog"
+> > -	depends on MACH_JZ4740
+> > +	depends on MACH_JZ4740 || MACH_JZ4780
+> >  	select WATCHDOG_CORE
+> >  	help
+> >  	  Hardware driver for the built-in watchdog timer on Ingenic jz4740 SoCs.
+> > -- 
+> > 2.11.0
+> > 
+> > 

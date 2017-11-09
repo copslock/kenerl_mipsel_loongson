@@ -1,101 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 15:01:07 +0100 (CET)
-Received: from mailout2.samsung.com ([203.254.224.25]:20428 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991550AbdKIOA6k765K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 15:00:58 +0100
-Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20171109140050epoutp02b7790116b7a776e2b0f5dc2b382cc44b~1b6_qHC5E0074700747epoutp027;
-        Thu,  9 Nov 2017 14:00:50 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20171109140050epoutp02b7790116b7a776e2b0f5dc2b382cc44b~1b6_qHC5E0074700747epoutp027
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 15:01:41 +0100 (CET)
+Received: from mailout3.samsung.com ([203.254.224.33]:55248 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991743AbdKIOBcbVsQK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 15:01:32 +0100
+Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20171109140123epoutp030f1016f00829dba9704ce245d9c86154~1b7dlKlNH3066030660epoutp03r;
+        Thu,  9 Nov 2017 14:01:23 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20171109140123epoutp030f1016f00829dba9704ce245d9c86154~1b7dlKlNH3066030660epoutp03r
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1510236050;
-        bh=p/y61J0BJZWMiFSdig27UK9xKqb61FFs0ZMfQOiyRcg=;
+        s=mail20170921; t=1510236083;
+        bh=2h4j4N8bLGV5N01o/r/tl6uJjHeLIDG/vGTae8lpGyw=;
         h=From:To:Cc:Subject:Date:In-reply-to:References:From;
-        b=pZ2oCaDDSIDNzKFqCYJhu6sjRXNc5FTUov6dK+EjgvJ9OEyakrQI2xAG2/qo7xt+1
-         HJ3nxojvqab4u33EGDTcRSdQznQIpUdITJGt9yY1zBgfkcBn2LzKfE/W+G8SQvnKKl
-         1ntE8GG7nic9M6IhIAT4+qqdi8qXfgyKcPrTnXhI=
+        b=ObdqFdUATvIthZb2zEMseYVHmjWFqN6r+JwuxEp3YrRFXRQoEyVtBQ4VDP6mb+k7e
+         jTaWxcXqY2KKIZdtuGlPIYNytjFtx49HEIyL0ujueWCy1r6JY+z/9znMV51WDoFgq8
+         qQ+d7q8V+7S79ggAfKbJD7jm61mA39jJlavYSycs=
 Received: from epsmges2p4.samsung.com (unknown [182.195.42.72]) by
-        epcas2p2.samsung.com (KnoxPortal) with ESMTP id
-        20171109140049epcas2p222a1e14c3d276cc9d0ae7ff2c65a202e~1b6_H3nFy2988529885epcas2p26;
-        Thu,  9 Nov 2017 14:00:49 +0000 (GMT)
-Received: from epcas2p4.samsung.com ( [182.195.41.56]) by
+        epcas2p1.samsung.com (KnoxPortal) with ESMTP id
+        20171109140123epcas2p1d743c07ad0703014a89712b821369b10~1b7dGeyyr2909729097epcas2p1d;
+        Thu,  9 Nov 2017 14:01:23 +0000 (GMT)
+Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
         epsmges2p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-        21.30.04158.19F540A5; Thu,  9 Nov 2017 23:00:49 +0900 (KST)
+        82.40.04158.2BF540A5; Thu,  9 Nov 2017 23:01:22 +0900 (KST)
 Received: from epsmgms2p2new.samsung.com (unknown [182.195.42.143]) by
         epcas2p3.samsung.com (KnoxPortal) with ESMTP id
-        20171109140048epcas2p3b9077f49a91c0cb3b51ec91132731776~1b68910v51649216492epcas2p3E;
-        Thu,  9 Nov 2017 14:00:48 +0000 (GMT)
-X-AuditID: b6c32a48-905ff7000000103e-19-5a045f91835e
+        20171109140122epcas2p306a513c827cc9705364cfa2753088efb~1b7c46p-21489014890epcas2p34;
+        Thu,  9 Nov 2017 14:01:22 +0000 (GMT)
+X-AuditID: b6c32a48-905ff7000000103e-57-5a045fb2f0d0
 Received: from epmmp1.local.host ( [203.254.227.16]) by
         epsmgms2p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        BC.2F.03859.09F540A5; Thu,  9 Nov 2017 23:00:48 +0900 (KST)
+        A4.3F.03859.2BF540A5; Thu,  9 Nov 2017 23:01:22 +0900 (KST)
 Received: from amdc3058.localnet ([106.120.53.102]) by mmp1.samsung.com
         (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5
-        2014)) with ESMTPA id <0OZ500H5ILLB2NA0@mmp1.samsung.com>; Thu, 09 Nov 2017
-        23:00:48 +0900 (KST)
+        2014)) with ESMTPA id <0OZ500EAQLM95SD0@mmp1.samsung.com>; Thu, 09 Nov 2017
+        23:01:22 +0900 (KST)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 Cc:     linux-mips@linux-mips.org,
         Aleksandar Markovic <aleksandar.markovic@mips.com>,
         Miodrag Dinic <miodrag.dinic@mips.com>,
         Goran Ferenc <goran.ferenc@mips.com>,
-        David Airlie <airlied@linux.ie>, devicetree@vger.kernel.org,
         Douglas Leung <douglas.leung@mips.com>,
-        dri-devel@lists.freedesktop.org,
         James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Paul Burton <paul.burton@mips.com>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v8 3/5] Documentation: Add device tree binding for
- Goldfish FB driver
-Date:   Thu, 09 Nov 2017 15:00:46 +0100
-Message-id: <2050272.eLOeq0HGv7@amdc3058>
+        Raghu Gandham <raghu.gandham@mips.com>
+Subject: Re: [PATCH v8 4/5] video: goldfishfb: Add support for device tree
+ bindings
+Date:   Thu, 09 Nov 2017 15:01:20 +0100
+Message-id: <2028677.JpbK7Rfe55@amdc3058>
 User-Agent: KMail/4.13.3 (Linux/3.13.0-96-generic; KDE/4.13.3; x86_64; ; )
-In-reply-to: <1509729730-26621-4-git-send-email-aleksandar.markovic@rt-rk.com>
+In-reply-to: <1509729730-26621-5-git-send-email-aleksandar.markovic@rt-rk.com>
 MIME-version: 1.0
 Content-transfer-encoding: 7Bit
 Content-type: text/plain; charset="us-ascii"
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOKsWRmVeSWpSXmKPExsWy7bCmhe7EeJYog0nNmha9504yWcz9uILF
-        4t3eqSwW84+cY7U43dzPbHHl63s2i8XvfCy2btrLZnF51xw2iwlTJ7FbLL1+kcni1IzpTBZ9
-        r48xW3x6cpLF4vDsFewWrXuPsDsIeKyZt4bRY9OqTjaPoyvXMnls//aA1eN+93Emj9dHHrJ4
-        3FpzkcXj8ya5AI4oLpuU1JzMstQifbsErowjV5czFfxnqZh2bxdTA+Nsli5GTg4JAROJt/Nm
-        M3YxcnEICexglDjUApIAcb4zSiycO5cZpurx0tXsEIndjBJ3V8JUfWWUWLJuDtgsNgEriYnt
-        qxhBbBEBc4kJP58ygxQxC2xhkdh35TEbSEJYIFriTcdysCIWAVWJn7u+gjXzCmhKdHw7yg5i
-        iwp4SWzZ184EYnMK+Ekc3fcbqkZQ4sfke2A2s4C8xL79U1khbB2Js8fWgT0hITCdXeLjj41A
-        mzmAHBeJ7381IV4Qlnh1fAs7hC0t8WzVRkYIezqjxPbfEhC9mxklVu2eAFVkLXH4+EWoBXwS
-        HYf/skPM5JXoaBOCKPGQeNiyGKrcUeLAu3awH4UEnjJKnN/IO4FRdhaSs2chOXsWkrMXMDKv
-        YhRLLSjOTU8tNiow0StOzC0uzUvXS87P3cQITk5aHjsYD5zzOcQowMGoxMP7YhVzlBBrYllx
-        Ze4hRgkOZiURXpG3QCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8dduuRQgJpCeWpGanphakFsFk
-        mTg4pRoYs7p42E++6fefxdByVfVCWLr95YbNmp8DCwJn9rP8aJ8+ofCxeX3pwqeHtmc837jh
-        sZF83valDIuVi1dPenl29YKb8evl1VPaDjy5wZ3/rU9EvVD6uLpznPyT6T+KXyq6yf6YVXl4
-        Qa2B0qZ6s48CLXoXzAy2xqmvPFodELJkxqczeRkK/kedlViKMxINtZiLihMBv0qvqkoDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIIsWRmVeSWpSXmKPExsVy+t9jAd0J8SxRBj9OSFn0njvJZDH34woW
-        i3d7p7JYzD9yjtXidHM/s8WVr+/ZLBa/87HYumkvm8XlXXPYLCZMncRusfT6RSaLUzOmM1n0
-        vT7GbPHpyUkWi8OzV7BbtO49wu4g4LFm3hpGj02rOtk8jq5cy+Sx/dsDVo/73ceZPF4fecji
-        cWvNRRaPz5vkAjiiuGxSUnMyy1KL9O0SuDKOXF3OVPCfpWLavV1MDYyzWboYOTkkBEwkHi9d
-        zd7FyMUhJLCTUeLvvDYWCOcro8SlvuVsIFVsAlYSE9tXMYLYIgLmEhN+PmUGKWIW2MYi8XBS
-        O1iRsEC0xK3JbcwgNouAqsTPXV/BVvAKaEp0fDvKDmKLCnhJbNnXzgRicwr4SRzd9xtq20RG
-        iYW77jFBNAhK/Jh8D6yZWUBeYt/+qawQtpbE+p3HmSYw8s9CUjYLSdksJGULGJlXMUqmFhTn
-        pucWGxUY5aWW6xUn5haX5qXrJefnbmIERtS2w1r9OxgfL4k/xCjAwajEw+uwljlKiDWxrLgy
-        9xCjBAezkgivyFugEG9KYmVValF+fFFpTmrxIUZpDhYlcV7+/GORQgLpiSWp2ampBalFMFkm
-        Dk6pBkapHCsPX/tbaUs2LbAX9NwY+fif9Y0Vy+qC+R7eToiLvnZDff3fg9z5oa9LZwas47S1
-        cG9b919VtGJdu43p/jWNj64KLVn2OXKB1YotOr+cG15f0WGRemxpWHXF7x+bhFNKxgaFxxH1
-        zwRkt89a1ivN/2htrODS+/8fbzLp32Ksbzn3OPvd3XJKLMUZiYZazEXFiQDn/qL9pAIAAA==
-X-CMS-MailID: 20171109140048epcas2p3b9077f49a91c0cb3b51ec91132731776
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprFKsWRmVeSWpSXmKPExsWy7bCmue6meJYog7XTrS3mflzBYvFu71QW
+        i9PN/cwWi9/5WGzdtJfN4kTfB1aLy7vmsFlMmDqJ3eLK4U9sFqdmTGey6Ht9jNni05OTLBaH
+        Z69gd+D16Nl5htHj6Mq1TB6vjzxk8bi15iKLx+dNcgGsUVw2Kak5mWWpRfp2CVwZ73r+sxT0
+        slRc2PKerYFxB3MXIyeHhICJxItVt1i7GLk4hAR2MErM6+xigXC+M0o8OXyMBaZq56dHUInd
+        jBKzW3vYIZyvjBIf3s4Dm8UmYCUxsX0VI4gtImAuMeHnU2aQImaBK8wSXftmsoEkhAVCJR7t
+        bgdrYBFQlXhzejFQAwcHr4CmxKSTTiBhUQEviS372plAbE4BP4lfTY9ZQWxeAUGJH5PvgV3E
+        LCAvsW//VFYIW0fi7LF1jCC7JATes0k8PPGYEeJsF4njLQ2sELawxKvjW9ghbGmJZ6s2QtVM
+        Z5TY/lsConkzo8Sq3ROgiqwlDh+/CLWBT6Lj8F92kEMlBHglOtqEIEo8JPY/mAFV7iix884e
+        JkioPAWaeesD+wRG2VlIDp+F5PBZSA5fwMi8ilEstaA4Nz212KjARK84Mbe4NC9dLzk/dxMj
+        OMVoeexgPHDO5xCjAAejEg/vi1XMUUKsiWXFlbmHGCU4mJVEeEXeAoV4UxIrq1KL8uOLSnNS
+        iw8xSnOwKInz1m27FiEkkJ5YkpqdmlqQWgSTZeLglGpgnHzucOn5FZ1CRtFa3NbK+Qe8ejb9
+        8C28vnZxYctM54gvK1eH313w8R17z0VmntzbGsIJ0fPSIgMSv0lveeP2qbdodk65vZKebknF
+        vg3hMVuaTnnwrnw5d/nT8BkJB1NOR3z12v3sUL1yw6Q3U96oNkzdPu2/wRldhqw8xzlynmb7
+        959MSppqpcRSnJFoqMVcVJwIAGy8OvQtAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrILMWRmVeSWpSXmKPExsVy+t9jAd1N8SxRBhePa1jM/biCxeLd3qks
+        Fqeb+5ktFr/zsdi6aS+bxYm+D6wWl3fNYbOYMHUSu8WVw5/YLE7NmM5k0ff6GLPFpycnWSwO
+        z17B7sDr0bPzDKPH0ZVrmTxeH3nI4nFrzUUWj8+b5AJYo7hsUlJzMstSi/TtErgy3vX8Zyno
+        Zam4sOU9WwPjDuYuRk4OCQETiZ2fHrGA2EICOxkltjbydDFyAdlfGSWavn5hBUmwCVhJTGxf
+        xQhiiwiYS0z4+ZQZpIhZ4BqzxOslJ9lAEsICoRKPdreDTWURUJV4c3oxUAMHB6+ApsSkk04g
+        YVEBL4kt+9qZQGxOAT+JX02PWSGWPWWUWDFvJVgvr4CgxI/J98AuYhaQl9i3fyorhK0lsX7n
+        caYJjPyzkJTNQlI2C0nZAkbmVYySqQXFuem5xUYFRnmp5XrFibnFpXnpesn5uZsYgRGx7bBW
+        /w7Gx0viDzEKcDAq8fA6rGWOEmJNLCuuzD3EKMHBrCTCK/IWKMSbklhZlVqUH19UmpNafIhR
+        moNFSZyXP/9YpJBAemJJanZqakFqEUyWiYNTqoFx07kdXBxLzhkuSQ6xudlmaSP4P7nhpU3I
+        //5+jaiXOX0LljkLmvOJey0KUXl80PHuHslp+jEuj2bLCG4qfcV3492RpmfPFx62vno+4W2M
+        gzPr40afhXnWM2O25knoPDCw6fe4vuzzHUWJ+9+9H+ScFORin6J7wOCEsM3Ng9IB+b0K3zUn
+        KYcosRRnJBpqMRcVJwIAOxBOroQCAAA=
+X-CMS-MailID: 20171109140122epcas2p306a513c827cc9705364cfa2753088efb
 X-Msg-Generator: CA
 CMS-TYPE: 102P
-X-CMS-RootMailID: 20171109140048epcas2p3b9077f49a91c0cb3b51ec91132731776
-X-RootMTR: 20171109140048epcas2p3b9077f49a91c0cb3b51ec91132731776
+X-CMS-RootMailID: 20171103172320epcas2p2c8f7472bd7f9af088d964b006ca04984
+X-RootMTR: 20171103172320epcas2p2c8f7472bd7f9af088d964b006ca04984
 References: <1509729730-26621-1-git-send-email-aleksandar.markovic@rt-rk.com>
-        <1509729730-26621-4-git-send-email-aleksandar.markovic@rt-rk.com>
-        <CGME20171109140048epcas2p3b9077f49a91c0cb3b51ec91132731776@epcas2p3.samsung.com>
+        <CGME20171103172320epcas2p2c8f7472bd7f9af088d964b006ca04984@epcas2p2.samsung.com>
+        <1509729730-26621-5-git-send-email-aleksandar.markovic@rt-rk.com>
 Return-Path: <b.zolnierkie@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60805
+X-archive-position: 60806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -112,16 +110,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday, November 03, 2017 06:21:36 PM Aleksandar Markovic wrote:
+On Friday, November 03, 2017 06:21:37 PM Aleksandar Markovic wrote:
 > From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 > 
-> Add documentation for DT binding of Goldfish FB driver. The compatible
-> string used by OS for binding the driver is "google,goldfish-fb".
+> Add ability to the Goldfish FB driver to be recognized by OS via DT.
 > 
 > Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
 > Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
 > Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> Acked-by: Rob Herring <robh@kernel.org>
 
 Patch queued for 4.15, thanks.
 

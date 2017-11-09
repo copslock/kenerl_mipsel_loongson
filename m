@@ -1,103 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 15:01:41 +0100 (CET)
-Received: from mailout3.samsung.com ([203.254.224.33]:55248 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991743AbdKIOBcbVsQK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 15:01:32 +0100
-Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
-        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20171109140123epoutp030f1016f00829dba9704ce245d9c86154~1b7dlKlNH3066030660epoutp03r;
-        Thu,  9 Nov 2017 14:01:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20171109140123epoutp030f1016f00829dba9704ce245d9c86154~1b7dlKlNH3066030660epoutp03r
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1510236083;
-        bh=2h4j4N8bLGV5N01o/r/tl6uJjHeLIDG/vGTae8lpGyw=;
-        h=From:To:Cc:Subject:Date:In-reply-to:References:From;
-        b=ObdqFdUATvIthZb2zEMseYVHmjWFqN6r+JwuxEp3YrRFXRQoEyVtBQ4VDP6mb+k7e
-         jTaWxcXqY2KKIZdtuGlPIYNytjFtx49HEIyL0ujueWCy1r6JY+z/9znMV51WDoFgq8
-         qQ+d7q8V+7S79ggAfKbJD7jm61mA39jJlavYSycs=
-Received: from epsmges2p4.samsung.com (unknown [182.195.42.72]) by
-        epcas2p1.samsung.com (KnoxPortal) with ESMTP id
-        20171109140123epcas2p1d743c07ad0703014a89712b821369b10~1b7dGeyyr2909729097epcas2p1d;
-        Thu,  9 Nov 2017 14:01:23 +0000 (GMT)
-Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
-        epsmges2p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-        82.40.04158.2BF540A5; Thu,  9 Nov 2017 23:01:22 +0900 (KST)
-Received: from epsmgms2p2new.samsung.com (unknown [182.195.42.143]) by
-        epcas2p3.samsung.com (KnoxPortal) with ESMTP id
-        20171109140122epcas2p306a513c827cc9705364cfa2753088efb~1b7c46p-21489014890epcas2p34;
-        Thu,  9 Nov 2017 14:01:22 +0000 (GMT)
-X-AuditID: b6c32a48-905ff7000000103e-57-5a045fb2f0d0
-Received: from epmmp1.local.host ( [203.254.227.16]) by
-        epsmgms2p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        A4.3F.03859.2BF540A5; Thu,  9 Nov 2017 23:01:22 +0900 (KST)
-Received: from amdc3058.localnet ([106.120.53.102]) by mmp1.samsung.com
-        (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5
-        2014)) with ESMTPA id <0OZ500EAQLM95SD0@mmp1.samsung.com>; Thu, 09 Nov 2017
-        23:01:22 +0900 (KST)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-Cc:     linux-mips@linux-mips.org,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Douglas Leung <douglas.leung@mips.com>,
-        James Hogan <james.hogan@mips.com>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miodrag Dinic <miodrag.dinic@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>
-Subject: Re: [PATCH v8 4/5] video: goldfishfb: Add support for device tree
- bindings
-Date:   Thu, 09 Nov 2017 15:01:20 +0100
-Message-id: <2028677.JpbK7Rfe55@amdc3058>
-User-Agent: KMail/4.13.3 (Linux/3.13.0-96-generic; KDE/4.13.3; x86_64; ; )
-In-reply-to: <1509729730-26621-5-git-send-email-aleksandar.markovic@rt-rk.com>
-MIME-version: 1.0
-Content-transfer-encoding: 7Bit
-Content-type: text/plain; charset="us-ascii"
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprFKsWRmVeSWpSXmKPExsWy7bCmue6meJYog7XTrS3mflzBYvFu71QW
-        i9PN/cwWi9/5WGzdtJfN4kTfB1aLy7vmsFlMmDqJ3eLK4U9sFqdmTGey6Ht9jNni05OTLBaH
-        Z69gd+D16Nl5htHj6Mq1TB6vjzxk8bi15iKLx+dNcgGsUVw2Kak5mWWpRfp2CVwZ73r+sxT0
-        slRc2PKerYFxB3MXIyeHhICJxItVt1i7GLk4hAR2MErM6+xigXC+M0o8OXyMBaZq56dHUInd
-        jBKzW3vYIZyvjBIf3s4Dm8UmYCUxsX0VI4gtImAuMeHnU2aQImaBK8wSXftmsoEkhAVCJR7t
-        bgdrYBFQlXhzejFQAwcHr4CmxKSTTiBhUQEviS372plAbE4BP4lfTY9ZQWxeAUGJH5PvgV3E
-        LCAvsW//VFYIW0fi7LF1jCC7JATes0k8PPGYEeJsF4njLQ2sELawxKvjW9ghbGmJZ6s2QtVM
-        Z5TY/lsConkzo8Sq3ROgiqwlDh+/CLWBT6Lj8F92kEMlBHglOtqEIEo8JPY/mAFV7iix884e
-        JkioPAWaeesD+wRG2VlIDp+F5PBZSA5fwMi8ilEstaA4Nz212KjARK84Mbe4NC9dLzk/dxMj
-        OMVoeexgPHDO5xCjAAejEg/vi1XMUUKsiWXFlbmHGCU4mJVEeEXeAoV4UxIrq1KL8uOLSnNS
-        iw8xSnOwKInz1m27FiEkkJ5YkpqdmlqQWgSTZeLglGpgnHzucOn5FZ1CRtFa3NbK+Qe8ejb9
-        8C28vnZxYctM54gvK1eH313w8R17z0VmntzbGsIJ0fPSIgMSv0lveeP2qbdodk65vZKebknF
-        vg3hMVuaTnnwrnw5d/nT8BkJB1NOR3z12v3sUL1yw6Q3U96oNkzdPu2/wRldhqw8xzlynmb7
-        959MSppqpcRSnJFoqMVcVJwIAGy8OvQtAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrILMWRmVeSWpSXmKPExsVy+t9jAd1N8SxRBhePa1jM/biCxeLd3qks
-        Fqeb+5ktFr/zsdi6aS+bxYm+D6wWl3fNYbOYMHUSu8WVw5/YLE7NmM5k0ff6GLPFpycnWSwO
-        z17B7sDr0bPzDKPH0ZVrmTxeH3nI4nFrzUUWj8+b5AJYo7hsUlJzMstSi/TtErgy3vX8Zyno
-        Zam4sOU9WwPjDuYuRk4OCQETiZ2fHrGA2EICOxkltjbydDFyAdlfGSWavn5hBUmwCVhJTGxf
-        xQhiiwiYS0z4+ZQZpIhZ4BqzxOslJ9lAEsICoRKPdreDTWURUJV4c3oxUAMHB6+ApsSkk04g
-        YVEBL4kt+9qZQGxOAT+JX02PWSGWPWWUWDFvJVgvr4CgxI/J98AuYhaQl9i3fyorhK0lsX7n
-        caYJjPyzkJTNQlI2C0nZAkbmVYySqQXFuem5xUYFRnmp5XrFibnFpXnpesn5uZsYgRGx7bBW
-        /w7Gx0viDzEKcDAq8fA6rGWOEmJNLCuuzD3EKMHBrCTCK/IWKMSbklhZlVqUH19UmpNafIhR
-        moNFSZyXP/9YpJBAemJJanZqakFqEUyWiYNTqoFx07kdXBxLzhkuSQ6xudlmaSP4P7nhpU3I
-        //5+jaiXOX0LljkLmvOJey0KUXl80PHuHslp+jEuj2bLCG4qfcV3492RpmfPFx62vno+4W2M
-        gzPr40afhXnWM2O25knoPDCw6fe4vuzzHUWJ+9+9H+ScFORin6J7wOCEsM3Ng9IB+b0K3zUn
-        KYcosRRnJBpqMRcVJwIAOxBOroQCAAA=
-X-CMS-MailID: 20171109140122epcas2p306a513c827cc9705364cfa2753088efb
-X-Msg-Generator: CA
-CMS-TYPE: 102P
-X-CMS-RootMailID: 20171103172320epcas2p2c8f7472bd7f9af088d964b006ca04984
-X-RootMTR: 20171103172320epcas2p2c8f7472bd7f9af088d964b006ca04984
-References: <1509729730-26621-1-git-send-email-aleksandar.markovic@rt-rk.com>
-        <CGME20171103172320epcas2p2c8f7472bd7f9af088d964b006ca04984@epcas2p2.samsung.com>
-        <1509729730-26621-5-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <b.zolnierkie@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Nov 2017 16:44:28 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:56650 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990506AbdKIPoTuG-TX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Nov 2017 16:44:19 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 09 Nov 2017 15:44:03 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 9 Nov 2017
+ 07:43:44 -0800
+Date:   Thu, 9 Nov 2017 15:43:42 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <macro@linux-mips.org>
+Subject: Re: [PATCH] MIPS: page.h: define virt_to_pfn()
+Message-ID: <20171109154342.GX15260@jhogan-linux>
+References: <20170309211149.8339-1-f.fainelli@gmail.com>
+ <20171108231527.GQ15260@jhogan-linux>
+ <aa38339b-7f88-3643-cce5-dd60f06d6f13@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="JaUdphvQ2+4F/M7k"
+Content-Disposition: inline
+In-Reply-To: <aa38339b-7f88-3643-cce5-dd60f06d6f13@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510242242-321457-5728-72763-6
+X-BESS-VER: 2017.12-r1710252241
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186757
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60806
+X-archive-position: 60807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: b.zolnierkie@samsung.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -110,19 +56,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday, November 03, 2017 06:21:37 PM Aleksandar Markovic wrote:
-> From: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> 
-> Add ability to the Goldfish FB driver to be recognized by OS via DT.
-> 
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+--JaUdphvQ2+4F/M7k
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Patch queued for 4.15, thanks.
+On Wed, Nov 08, 2017 at 04:05:28PM -0800, Florian Fainelli wrote:
+> On 11/08/2017 03:15 PM, James Hogan wrote:
+> > Hi Florian,
+> >=20
+> > On Thu, Mar 09, 2017 at 01:11:49PM -0800, Florian Fainelli wrote:
+> >> Based on the existing definition of virt_to_page() which already does a
+> >> PFN_DOWN(vir_to_phys(kaddr)).
+> >=20
+> > I was just wondering if there was a particular motivation for this
+> > change?
+>=20
+> Initially that was a part of an experiment to try to build and use ION
+> on MIPS, but I think this dependency somehow got removed. I might have
+> thought about using it for CONFIG_DEBUG_VIRTUAL too.
+>=20
+> In then end I sent it because it sounded like a simple change that could
+> have some use later.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+Okay thanks for clarifying. I've applied for 4.15.
+
+Cheers
+James
+
+--JaUdphvQ2+4F/M7k
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloEd64ACgkQbAtpk944
+dnqG0w/+JbC0dg9ZuMqQtrBkTomBp36bBCmq/S9/ADLVcWGmL6ax0XbP/JGrS2sI
+X24Wo9C0iH6qB7UXH+QjowEHNhSzXJcm88nYLhcZo0sv/3bjw3hsIZ8gxUCFqXwr
+Cfhp+m3fE+A+mD4JiAT/zhavDwXxWuBaCzVciV5Qo/5HZTHNJXxqOpA4p27+QMcz
+dSyTyfNMWj+4q3Bw6C68LMNFXm0xHIS8yoEeB9qd+oCsGSiwMuGNXLM+ZKw/6L0m
+zJMZM4lL3wDPBftL2f1VjOvzUD4onkQCngkgOWxYpwejU7v4xvGuV2o8qmSFyiuf
+zGhcdP8NKQ/V/s7zl/0hzqBCWtkVkxSyN67VMOFYxiLe2F5ozYZQDZJVMrVg1X1m
++EL5YTAjbqLvrkcCW+/cmu+utPwYiiSrDpggejF4Wc4LZGFqJkvC2KESVFRI56A2
+feibbIUUjIckxut33B0m02RBtbnjBMl0KDjOJKVkemHEk5j0wu6TFVkkK+up1Lpt
+zmSrpE2rGy88Hxzv8AyXHJ9v9JWIaeHsmdZjaksKiEPEgBnwJZeQdrZz36mQlizi
+pUkIuX/0PVMO+XnIJrJ69nzV3ly+G4gwTa9eGl0pp0tGHyyLCQBWzyZg1HO37IFB
+Hda9OAGiiN2Oi8HIdIHiD8CM5WlpXPDxFFfY4YkTP+WLQq2XGg4=
+=O2ts
+-----END PGP SIGNATURE-----
+
+--JaUdphvQ2+4F/M7k--

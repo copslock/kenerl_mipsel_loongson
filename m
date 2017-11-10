@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Nov 2017 14:43:29 +0100 (CET)
-Received: from out4-smtp.messagingengine.com ([66.111.4.28]:52089 "EHLO
-        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992273AbdKJNnVoHoYY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Nov 2017 14:43:21 +0100
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id CF08B20BE0;
-        Fri, 10 Nov 2017 08:43:19 -0500 (EST)
-Received: from frontend1 ([10.202.2.160])
-  by compute6.internal (MEProxy); Fri, 10 Nov 2017 08:43:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-sender
-        :x-me-sender:x-sasl-enc; s=fm1; bh=K8XVo9WmaIOtG19CkmwuliZJGEB3k
-        99ZuhcF7d945GU=; b=FVp2w+OkMyqVw3aaoxG/GGYSqqpDgY4+g/CLW5e1a0S43
-        M9qstj7GEX5R6LVS743Ne87fb9rGijx+RK4D18yUwr0Ea9UEm+81d7t5hr9Q0ccQ
-        Lzvns18dTZkJwxmNYJU8RuQ4fu+nJs4F53p+w6BZIgIknic4XGn/R6/bJidvh3Es
-        TJ4S+dhM9dgcKLuyNkkmpSAMAR2/IoPjp5eTVppEpfxiXhy6BBL/dtfrl25/qGAc
-        aFfGGA1QsK3h4seEVi5YiS0KxlqXA1rqSKMYz0pNtuYhKfbjfJezEDoK4y0B/fVV
-        +WDXDMtKVijMNwYtAa/VVD8GkvENbRKTtg9LaxAdQ==
-X-ME-Sender: <xms:96wFWn4hGUtTZkUUNdr5F4UGOOh8-8LS_wA6wHuMTySenm-VxIViAQ>
-Received: from localhost (lfbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 72E0B7E804;
-        Fri, 10 Nov 2017 08:43:19 -0500 (EST)
-Date:   Fri, 10 Nov 2017 14:43:31 +0100
-From:   Greg KH <greg@kroah.com>
-To:     James Hogan <james.hogan@mips.com>
-Cc:     stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
-        James Hogan <jhogan@kernel.org>
-Subject: Re: [PATCH BACKPORT 4.1..4.9] MIPS: SMP: Fix deadlock & online race
-Message-ID: <20171110134331.GF30012@kroah.com>
-References: <20171106211514.29104-1-james.hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Nov 2017 17:47:37 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:33728 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992309AbdKJQraYblpU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Nov 2017 17:47:30 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 10 Nov 2017 16:47:07 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Fri, 10 Nov
+ 2017 08:47:00 -0800
+Date:   Fri, 10 Nov 2017 16:46:58 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: [GIT PULL] Final MIPS fixes for 4.14
+Message-ID: <20171110164657.GW15235@jhogan-linux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pP8l8ytKVQui4K7o"
 Content-Disposition: inline
-In-Reply-To: <20171106211514.29104-1-james.hogan@mips.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <greg@kroah.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510332426-637140-28708-42884-1
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186794
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60829
+X-archive-position: 60830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg@kroah.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,54 +51,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 06, 2017 at 09:15:14PM +0000, James Hogan wrote:
-> From: Matt Redfearn <matt.redfearn@imgtec.com>
-> 
-> commit 9e8c399a88f0b87e41a894911475ed2a8f8dff9e upstream.
-> 
-> Commit 6f542ebeaee0 ("MIPS: Fix race on setting and getting
-> cpu_online_mask") effectively reverted commit 8f46cca1e6c06 ("MIPS: SMP:
-> Fix possibility of deadlock when bringing CPUs online") and thus has
-> reinstated the possibility of deadlock.
-> 
-> The commit was based on testing of kernel v4.4, where the CPU hotplug
-> core code issued a BUG() if the starting CPU is not marked online when
-> the boot CPU returns from __cpu_up. The commit fixes this race (in
-> v4.4), but re-introduces the deadlock situation.
-> 
-> As noted in the commit message, upstream differs in this area. Commit
-> 8df3e07e7f21f ("cpu/hotplug: Let upcoming cpu bring itself fully up")
-> adds a completion event in the CPU hotplug core code, making this race
-> impossible. However, people were unhappy with relying on the core code
-> to do the right thing.
-> 
-> To address the issues both commits were trying to fix, add a second
-> completion event in the MIPS smp hotplug path. It removes the
-> possibility of a race, since the MIPS smp hotplug code now synchronises
-> both the boot and secondary CPUs before they return to the hotplug core
-> code. It also addresses the deadlock by ensuring that the secondary CPU
-> is not marked online before it's counters are synchronised.
-> 
-> This fix should also be backported to fix the race condition introduced
-> by the backport of commit 8f46cca1e6c06 ("MIPS: SMP: Fix possibility of
-> deadlock when bringing CPUs online"), through really that race only
-> existed before commit 8df3e07e7f21f ("cpu/hotplug: Let upcoming cpu
-> bring itself fully up").
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-> Fixes: 6f542ebeaee0 ("MIPS: Fix race on setting and getting cpu_online_mask")
-> CC: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
-> Cc: <stable@vger.kernel.org> # v4.1+: 8f46cca1e6c0: "MIPS: SMP: Fix possibility of deadlock when bringing CPUs online"
-> Cc: <stable@vger.kernel.org> # v4.1+: a00eeede507c: "MIPS: SMP: Use a completion event to signal CPU up"
-> Cc: <stable@vger.kernel.org> # v4.1+: 6f542ebeaee0: "MIPS: Fix race on setting and getting cpu_online_mask"
+--pP8l8ytKVQui4K7o
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-These did not apply to 3.18, so this patch overall did not apply there
-either.
+Hi Linus,
 
-I don't know if you care about 3.18, but if so, can you provide
-backports of these for that tree, and then resend this patch so I can
-queue it up?
+I've gathered a few final short & sweet MIPS bug fixes for v4.14. Please
+consider pulling.
 
-thanks,
+Thanks
+James
 
-greg k-h
+The following changes since commit 39dae59d66acd86d1de24294bd2f343fd5e7a625:
+
+  Linux 4.14-rc8 (2017-11-05 13:05:14 -0800)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_fixes_4.14_2
+
+for you to fetch changes up to b084116f8587b222a2c5ef6dcd846f40f24b9420:
+
+  MIPS: AR7: Ensure that serial ports are properly set up (2017-11-08 14:57:55 +0000)
+
+----------------------------------------------------------------
+Final MIPS fixes for 4.14
+
+A final few MIPS fixes for 4.14:
+
+- Fix BMIPS NULL pointer dereference (4.7)
+- Fix AR7 early GPIO init allocation failure (3.19)
+- Fix dead serial output on certain AR7 platforms (2.6.35)
+
+----------------------------------------------------------------
+Jaedon Shin (1):
+      MIPS: BMIPS: Fix missing cbr address
+
+Jonas Gorski (1):
+      MIPS: AR7: Defer registration of GPIO
+
+Oswald Buddenhagen (1):
+      MIPS: AR7: Ensure that serial ports are properly set up
+
+ arch/mips/ar7/platform.c     | 5 +++++
+ arch/mips/ar7/prom.c         | 2 --
+ arch/mips/kernel/smp-bmips.c | 4 ++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+--pP8l8ytKVQui4K7o
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloF2AEACgkQbAtpk944
+dnqGLg/+MNUKkiKFdZgy/V018TKEq/wCw0eBoa0hA8z6bpdL0N9+U3zFniJ9YGLd
+sRvZQz9O93bmQGKU7fdRw/huxN37Jv7oMIRuQa9BRuPSaWk14hfKPn+lMvi4C/Sg
+5vI1T0UpO8mD5IA70Y9GpUWk3V/VSvmv8WdbupvVrbBfuy6F/toZDVc5K3c1DbO/
+pwOk5jVyaxJuM2ZnXQuPT2BhS90micfRAXNvAMQXHLiA8DcWybEpN3Pn2Dolg1Wq
+KWcY4z1qKTDM9Z9QEtXWg1NeN3zj3d9CB0Raq0SU8iHsnDlN+Z3a+wwWxaohFYcN
+3JThT9IP3nwcl/9cJkrMJtJs0tIuqzAs3Qj2gEBgS7xCJhXy2R7ZFDLh3zeSuC5r
+fCv6p1cySMbfz9WKbaJWpc/wHFQ0TLKb9hENUT8hywOe6Rv3NXDH7GDqKeoKaHQm
+e2wRzug6fK/tf1ukskJdRzD3xD0wMoeSkvqyZ1mfTYhjOvNSCAhfV2A7Uuxd4BuV
+MhVm1Dw/jzfJ8U2ChtxRMfMgzXm9e1dI/nhkS+HVps2mpS0/Ynn6R5HYm1kX8A2s
+UAa9A2Y/y15dIRD2jZ6N9kQsvJX7oNts8DX6aJVRHklabF7hlP4+gKYgaT/MsRUn
+6Pytz5TZ+475pAsaVkg9t2e9C1Gwl2gmoDWYQYuNhzNS/8ePQiU=
+=yn9c
+-----END PGP SIGNATURE-----
+
+--pP8l8ytKVQui4K7o--

@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Nov 2017 18:20:22 +0100 (CET)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:52244
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990590AbdKKRUOEJviC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Nov 2017 18:20:14 +0100
-Received: by mail-pf0-x241.google.com with SMTP id m88so1648829pfi.9
-        for <linux-mips@linux-mips.org>; Sat, 11 Nov 2017 09:20:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id;
-        bh=0v2G6P/+uWwa1Mw4LXxQ/fWON4mum34q565/8gss9pY=;
-        b=m20yWyPrZF+ieU1Fd75gTVjo3EVV6CTzh8soOuKu57U7vDG1tVgmQD8LgXzJJbgyLA
-         9awehV8+/jPi1zP6nSK9X++vn+QzMasyfpCDwprboFccI6EWHBXYrV7ljneUih09Tmnb
-         Nd5B6E1fD0nVWY1CEmfUyEMzT71i12aRhDMJY3up9eoWiPOcn42M2su2hfjzdkDyahPP
-         oYHa8SzvdxZPQUuvEcKhM/cMm4aJdQT3L3+N3mS31FXYCC3rnuvfqYf+k2F4NWIfaydV
-         HcVJjz+BCdl3KIh3srExCrE/SQRq27dqqE8GrZUEAWANvV6pdKCP72Mx2ZkPp56iW4WL
-         BQgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=0v2G6P/+uWwa1Mw4LXxQ/fWON4mum34q565/8gss9pY=;
-        b=Wxn+Bq/6CRfhq/n7poI5JVbYGCDjIcGrStS9+nixYn2AN2k6ZunBH9WdKVVkVH21tw
-         iSiwD/H6wwjWapIJTDh5oiu9GlKr0LMP4aXWUKf4tKu0CtQx0KhpYZz4pF+K8XbV9AoF
-         dAhbdyRirYkxe5b45OVMBAvg5ATESaF5HAJSpoKupeY9ujOdwP/8Garv7ovue9s23rn7
-         heeJ7qU9aLvvupj513udzqqy/y4+SEEZrE5KOwxxJrENZT6aTfjqRG8HFJ4VMFi0DiAs
-         WxPGpSjGFz41Zme5w1xNjolx8Y/bE4P40Vb9QKv2IwbfF+g74vQMCJH6TZ2+OuG3nsZw
-         NzyQ==
-X-Gm-Message-State: AJaThX51I7SS5LZPYME4PgfUVejYyphH97iVxRdymvGI/szkJEq0mcnQ
-        f0q51XTG/sPz4ZKC+wCMqLeVU3CW
-X-Google-Smtp-Source: AGs4zMadJKMHQqoxqhxETYR2F/jT2zvigDN5P+3d1IratAQX+G9Pb5qJhFCoBoUc9ytFlurxEdyLHQ==
-X-Received: by 10.159.244.4 with SMTP id x4mr4071785plr.31.1510420805773;
-        Sat, 11 Nov 2017 09:20:05 -0800 (PST)
-Received: from localhost.localdomain (12.sub-75-208-200.myvzw.com. [75.208.200.12])
-        by smtp.gmail.com with ESMTPSA id c1sm22853795pfa.12.2017.11.11.09.20.04
-        for <linux-mips@linux-mips.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 11 Nov 2017 09:20:04 -0800 (PST)
-From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: implement a "bootargs-append" DT property
-Date:   Sat, 11 Nov 2017 09:19:48 -0800
-Message-Id: <1510420788-25184-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <daniel@gimpelevich.san-francisco.ca.us>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Nov 2017 07:37:07 +0100 (CET)
+Received: from forward101p.mail.yandex.net ([77.88.28.101]:53342 "EHLO
+        forward101p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990408AbdKLGg5tPnrX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Nov 2017 07:36:57 +0100
+Received: from mxback8j.mail.yandex.net (mxback8j.mail.yandex.net [IPv6:2a02:6b8:0:1619::111])
+        by forward101p.mail.yandex.net (Yandex) with ESMTP id E60AF6A8213C;
+        Sun, 12 Nov 2017 09:36:51 +0300 (MSK)
+Received: from smtp1p.mail.yandex.net (smtp1p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:6])
+        by mxback8j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id pcjraMbhqt-apo8SaHp;
+        Sun, 12 Nov 2017 09:36:51 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510468611;
+        bh=u2a71OzCFWDKUMsYaCqUnWzZxTqvAA+o7X+WvHy2bRs=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=EYC0Spw4jHM56bdaNq1XP5I2NP6RxjSrBbJYJpH5Bk42x77R1cRG3MBzx4KnNgSye
+         NWbm2CDhWlcu7HWmVm5Z/s1RDQMRnyNqYlcCHizR2pHKmyb5S0yLRuMl+4gQyyVOXo
+         Pz2NVaCUI7J8raQ2gP8r+ZrVjRdOQOxyWHYNzgc8=
+Received: by smtp1p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 0pMwdlaAMA-amZWoixv;
+        Sun, 12 Nov 2017 09:36:50 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510468610;
+        bh=u2a71OzCFWDKUMsYaCqUnWzZxTqvAA+o7X+WvHy2bRs=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=YNsqavzEQUEaQKcwOX8baGsPXDL+jjQe57O1Toxa4sUT49VgOiRCDXFrhnDD/T8e2
+         3pKgssH35lGFl4N1bHKUeMFiBSbhBMI5QD95CWiizxq2PasG9HSJj3NOUcqBUgRj5B
+         3vhaQ1OC7+tYD/gmrjLpkLb3e/oTFbe4aGgcUm9w=
+Authentication-Results: smtp1p.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   jiaxun.yang@flygoat.com
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 1/4] MIPS: Lonngson64: Copy kernel command line from arcs_cmdline Since lemte-2f/marchtype.c need to get cmdline from loongson.h this patch simply copy kernel command line from arcs_cmdline to fix that issue
+Date:   Sun, 12 Nov 2017 14:36:14 +0800
+Message-Id: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.14.1
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60837
+X-archive-position: 60838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@gimpelevich.san-francisco.ca.us
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,54 +55,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There are two uses for this:
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-1) It may be useful to split a device-specific kernel command line between
-a .dts file and a .dtsi file, with "bootargs" in one and "bootargs-append"
-in the other, such as for variations of a reference board.
-
-2) There are kernel configuration options for prepending "bootargs" to the
-kernel command line that the bootloader has passed, but not for appending.
-A new option for this would be a less future-proof solution, since things
-like this should be in the dtb.
-
-This is tested on MIPS, but it can be useful on other architectures also.
-
-Signed-off-by: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- arch/mips/kernel/setup.c | 3 +++
- drivers/of/fdt.c         | 4 ++++
- 2 files changed, 7 insertions(+)
+ arch/mips/include/asm/mach-loongson64/loongson.h | 6 ++++++
+ arch/mips/loongson64/common/cmdline.c            | 7 +++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index fe39397..95e9bf2 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -826,7 +826,10 @@ static void __init arch_mem_init(char **cmdline_p)
- 	extern void plat_mem_setup(void);
+diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
+index c68c0cc879c6..1edf3a484e6a 100644
+--- a/arch/mips/include/asm/mach-loongson64/loongson.h
++++ b/arch/mips/include/asm/mach-loongson64/loongson.h
+@@ -45,6 +45,12 @@ static inline void prom_init_uart_base(void)
+ #endif
+ }
  
- 	/* call board setup routine */
-+	strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
- 	plat_mem_setup();
-+	if (strncmp(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE) == 0)
-+		boot_command_line[0] = '\0';
++/*
++ * Copy kernel command line from arcs_cmdline
++ */
++#include <asm/setup.h>
++extern char loongson_cmdline[COMMAND_LINE_SIZE];
++
+ /* irq operation functions */
+ extern void bonito_irqdispatch(void);
+ extern void __init bonito_irq_init(void);
+diff --git a/arch/mips/loongson64/common/cmdline.c b/arch/mips/loongson64/common/cmdline.c
+index 01fbed137028..49e172184e15 100644
+--- a/arch/mips/loongson64/common/cmdline.c
++++ b/arch/mips/loongson64/common/cmdline.c
+@@ -21,6 +21,11 @@
  
- 	/*
- 	 * Make sure all kernel memory is in the maps.  The "UP" and
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index ce30c9a..65dbda6 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1127,6 +1127,10 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
- 	p = of_get_flat_dt_prop(node, "bootargs", &l);
- 	if (p != NULL && l > 0)
- 		strlcpy(data, p, min((int)l, COMMAND_LINE_SIZE));
-+	p = of_get_flat_dt_prop(node, "bootargs-append", &l);
-+	if (p != NULL && l > 0)
-+		strlcat(data, p, min_t(int, strlen(data) + l,
-+					COMMAND_LINE_SIZE));
+ #include <loongson.h>
  
- 	/*
- 	 * CONFIG_CMDLINE is meant to be a default in case nothing else
++/* the kernel command line copied from arcs_cmdline */
++#include <linux/export.h>
++char loongson_cmdline[COMMAND_LINE_SIZE];
++EXPORT_SYMBOL(loongson_cmdline);
++
+ void __init prom_init_cmdline(void)
+ {
+ 	int prom_argc;
+@@ -45,4 +50,6 @@ void __init prom_init_cmdline(void)
+ 	}
+ 
+ 	prom_init_machtype();
++	/* copy arcs_cmdline into loongson_cmdline */
++	strncpy(loongson_cmdline, arcs_cmdline, COMMAND_LINE_SIZE);
+ }
 -- 
-1.9.1
+2.14.1

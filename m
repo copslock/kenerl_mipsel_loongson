@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 17:13:51 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:60943 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990426AbdKMQNnOqMCu convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Nov 2017 17:13:43 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 13 Nov 2017 16:12:35 +0000
-Received: from jhogan-linux.mipstec.com (192.168.154.110) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Mon, 13 Nov 2017 08:12:21 -0800
-From:   James Hogan <james.hogan@mips.com>
-To:     David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Daniel Walker <dwalker@fifo99.com>
-CC:     James Hogan <jhogan@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        "Steven J . Hill" <steven.hill@cavium.com>,
-        <linux-edac@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: [PATCH RFC] EDAC: octeon: Fix uninitialized variable warning
-Date:   Mon, 13 Nov 2017 16:12:06 +0000
-Message-ID: <20171113161206.20990-1-james.hogan@mips.com>
-X-Mailer: git-send-email 2.14.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 17:34:42 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:49962 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990425AbdKMQeeaSlqX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Nov 2017 17:34:34 +0100
+Received: from mail-qk0-f180.google.com (mail-qk0-f180.google.com [209.85.220.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 74DAA21904
+        for <linux-mips@linux-mips.org>; Mon, 13 Nov 2017 16:34:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 74DAA21904
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh+dt@kernel.org
+Received: by mail-qk0-f180.google.com with SMTP id 78so20451563qkz.0
+        for <linux-mips@linux-mips.org>; Mon, 13 Nov 2017 08:34:32 -0800 (PST)
+X-Gm-Message-State: AJaThX5dUhc9eKuKI7nJQ4QY0LCQaF4qZrYRZ3D6oGQapbVZaQSA93j5
+        VBghG/Ky23oezqmSSORnnfDXUcpXHHctDh2y3A==
+X-Google-Smtp-Source: AGs4zMaOEt02oiYALkfvFHxgDiA1ySKWumY9QWy/Dpu9GaYP2YxB+rIvc/qTqgSTPujqXjHWovf+gWVkjw6E72DUdt0=
+X-Received: by 10.55.99.214 with SMTP id x205mr15111628qkb.34.1510590871662;
+ Mon, 13 Nov 2017 08:34:31 -0800 (PST)
 MIME-Version: 1.0
+Received: by 10.12.194.73 with HTTP; Mon, 13 Nov 2017 08:34:11 -0800 (PST)
+In-Reply-To: <20171113112312.GZ15260@jhogan-linux>
+References: <1510420788-25184-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
+ <20171113112312.GZ15260@jhogan-linux>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 13 Nov 2017 10:34:11 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJRVB928DVOAVQGrtT_EOuQBHkBhcd9+XFzqemutG65GA@mail.gmail.com>
+Message-ID: <CAL_JsqJRVB928DVOAVQGrtT_EOuQBHkBhcd9+XFzqemutG65GA@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: implement a "bootargs-append" DT property
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510589533-321459-27081-257643-2
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186880
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Return-Path: <robh+dt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60880
+X-archive-position: 60881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: robh+dt@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,56 +56,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <jhogan@kernel.org>
+On Mon, Nov 13, 2017 at 5:23 AM, James Hogan <james.hogan@mips.com> wrote:
+> On Sat, Nov 11, 2017 at 09:19:48AM -0800, Daniel Gimpelevich wrote:
+>> There are two uses for this:
+>>
+>> 1) It may be useful to split a device-specific kernel command line between
+>> a .dts file and a .dtsi file, with "bootargs" in one and "bootargs-append"
+>> in the other, such as for variations of a reference board.
 
-Fix uninitialized variable warning in the Octeon EDAC driver, as seen in
-MIPS cavium_octeon_defconfig builds since v4.14 with Codescape GNU Tools
-2016.05-03:
+What Geert said.
 
-drivers/edac/octeon_edac-lmc.c In function ‘octeon_lmc_edac_poll_o2’:
-drivers/edac/octeon_edac-lmc.c:87:24: warning: ‘((long unsigned int*)&int_reg)[1]’ may be used uninitialized in this function [-Wmaybe-uninitialized]
-  if (int_reg.s.sec_err || int_reg.s.ded_err) {
-                        ^
+>> 2) There are kernel configuration options for prepending "bootargs" to the
+>> kernel command line that the bootloader has passed, but not for appending.
+>> A new option for this would be a less future-proof solution, since things
+>> like this should be in the dtb.
 
-This was introduced in commit 1bc021e81565 ("EDAC: Octeon: Add error
-injection support"), and is fixed by initialising the whole int_reg
-variable to zero before the conditional assignments in the error
-injection case.
+This is a kernel problem. What's the use case where you want the DT to
+override the kernel?
 
-Fixes: 1bc021e81565 ("EDAC: Octeon: Add error injection support")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Daniel Walker <dwalker@fifo99.com>
-Cc: Steven J. Hill <steven.hill@cavium.com>
-Cc: linux-edac@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.15+
----
-Comments appreciated. Is this correct?
+One way you could handle this is make bootargs be multiple strings.
+Well 2 specifically, the first string is prepended and the 2nd is
+appended. That complicates how you'd implement /append-property/
+though as you'd probably want to support both string cat and 2
+strings. Though the latter works more generically without knowing the
+data type.
 
-I've added the stable tag on the assumption that this might matter. If
-not it can be changed. It'd be nice to have it in 4.14 though to silence
-the warning since the driver was added to cavium_octeon_defconfig in
-commit f922bc0ad08b ("MIPS: Octeon: cavium_octeon_defconfig: Enable more
-drivers").
----
- drivers/edac/octeon_edac-lmc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/edac/octeon_edac-lmc.c b/drivers/edac/octeon_edac-lmc.c
-index 9c1ffe3e912b..aeb222ca3ed1 100644
---- a/drivers/edac/octeon_edac-lmc.c
-+++ b/drivers/edac/octeon_edac-lmc.c
-@@ -78,6 +78,7 @@ static void octeon_lmc_edac_poll_o2(struct mem_ctl_info *mci)
- 	if (!pvt->inject)
- 		int_reg.u64 = cvmx_read_csr(CVMX_LMCX_INT(mci->mc_idx));
- 	else {
-+		int_reg.u64 = 0;
- 		if (pvt->error_type == 1)
- 			int_reg.s.sec_err = 1;
- 		if (pvt->error_type == 2)
--- 
-2.14.1
+Rob

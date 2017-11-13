@@ -1,61 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 17:06:45 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:60390 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990425AbdKMQGi5ktSu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Nov 2017 17:06:38 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 38B1BAAC1;
-        Mon, 13 Nov 2017 16:06:38 +0000 (UTC)
-Date:   Mon, 13 Nov 2017 17:06:37 +0100
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Joel Stanley <joel@jms.id.au>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 17:13:51 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:60943 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990426AbdKMQNnOqMCu convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Nov 2017 17:13:43 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 13 Nov 2017 16:12:35 +0000
+Received: from jhogan-linux.mipstec.com (192.168.154.110) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Mon, 13 Nov 2017 08:12:21 -0800
+From:   James Hogan <james.hogan@mips.com>
+To:     David Daney <david.daney@cavium.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
-Subject: Re: linux-next: Tree for Nov 7
-Message-ID: <20171113160637.jhekbdyfpccme3be@dhcp22.suse.cz>
-References: <CACPK8Xfd4nqkf=Lk3n6+TNHAAi327r0dkUfGypZ3TpR0LqfS4Q@mail.gmail.com>
- <20171108142050.7w3yliulxjeco3b7@dhcp22.suse.cz>
- <20171110123054.5pnefm3mczsfv7bz@dhcp22.suse.cz>
- <CACPK8Xe5uUKEytkRiszdX511b_cYTD-z3X=ZsMcNJ-NOYnXfuQ@mail.gmail.com>
- <20171113092006.cjw2njjukt6limvb@dhcp22.suse.cz>
- <20171113094203.aofz2e7kueitk55y@dhcp22.suse.cz>
- <87lgjawgx1.fsf@concordia.ellerman.id.au>
- <20171113120057.555mvrs4fjq5tyng@dhcp22.suse.cz>
- <20171113151641.yfqrecpcxllpn5mq@dhcp22.suse.cz>
- <20171113154939.6ui2fmpokpm7g4oj@dhcp22.suse.cz>
+        Daniel Walker <dwalker@fifo99.com>
+CC:     James Hogan <jhogan@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+        "Steven J . Hill" <steven.hill@cavium.com>,
+        <linux-edac@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: [PATCH RFC] EDAC: octeon: Fix uninitialized variable warning
+Date:   Mon, 13 Nov 2017 16:12:06 +0000
+Message-ID: <20171113161206.20990-1-james.hogan@mips.com>
+X-Mailer: git-send-email 2.14.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20171113154939.6ui2fmpokpm7g4oj@dhcp22.suse.cz>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <mhocko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510589533-321459-27081-257643-2
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186880
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60879
+X-archive-position: 60880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,147 +57,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[Sorry for spamming, this one is the last attempt hopefully]
+From: James Hogan <jhogan@kernel.org>
 
-On Mon 13-11-17 16:49:39, Michal Hocko wrote:
-> On Mon 13-11-17 16:16:41, Michal Hocko wrote:
-> > On Mon 13-11-17 13:00:57, Michal Hocko wrote:
-> > [...]
-> > > Yes, I have mentioned that in the previous email but the amount of code
-> > > would be even larger. Basically every arch which reimplements
-> > > arch_get_unmapped_area would have to special case new MAP_FIXED flag to
-> > > do vma lookup.
-> > 
-> > It turned out that this might be much more easier than I thought after
-> > all. It seems we can really handle that in the common code. This would
-> > mean that we are exposing a new functionality to the userspace though.
-> > Myabe this would be useful on its own though. Just a quick draft (not
-> > even compile tested) whether this makes sense in general. I would be
-> > worried about unexpected behavior when somebody set other bit without a
-> > good reason and we might fail with ENOMEM for such a call now.
-> 
-> Hmm, the bigger problem would be the backward compatibility actually. We
-> would get silent corruptions which is exactly what the flag is trying
-> fix. mmap flags handling really sucks. So I guess we would have to make
-> the flag internal only :/
+Fix uninitialized variable warning in the Octeon EDAC driver, as seen in
+MIPS cavium_octeon_defconfig builds since v4.14 with Codescape GNU Tools
+2016.05-03:
 
-OK, so this one should take care of the backward compatibility while
-still not touching the arch code
+drivers/edac/octeon_edac-lmc.c In function ‘octeon_lmc_edac_poll_o2’:
+drivers/edac/octeon_edac-lmc.c:87:24: warning: ‘((long unsigned int*)&int_reg)[1]’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  if (int_reg.s.sec_err || int_reg.s.ded_err) {
+                        ^
+
+This was introduced in commit 1bc021e81565 ("EDAC: Octeon: Add error
+injection support"), and is fixed by initialising the whole int_reg
+variable to zero before the conditional assignments in the error
+injection case.
+
+Fixes: 1bc021e81565 ("EDAC: Octeon: Add error injection support")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Daniel Walker <dwalker@fifo99.com>
+Cc: Steven J. Hill <steven.hill@cavium.com>
+Cc: linux-edac@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 3.15+
 ---
-commit 39ff9bf8597e79a032da0954aea1f0d77d137765
-Author: Michal Hocko <mhocko@suse.com>
-Date:   Mon Nov 13 17:06:24 2017 +0100
+Comments appreciated. Is this correct?
 
-    mm: introduce MAP_FIXED_SAFE
-    
-    MAP_FIXED is used quite often but it is inherently dangerous because it
-    unmaps an existing mapping covered by the requested range. While this
-    might be might be really desidered behavior in many cases there are
-    others which would rather see a failure than a silent memory corruption.
-    Introduce a new MAP_FIXED_SAFE flag for mmap to achive this behavior.
-    It is a MAP_FIXED extension with a single exception that it fails with
-    ENOMEM if the requested address is already covered by an existing
-    mapping. We still do rely on get_unmaped_area to handle all the arch
-    specific MAP_FIXED treatment and check for a conflicting vma after it
-    returns.
-    
-    Signed-off-by: Michal Hocko <mhocko@suse.com>
+I've added the stable tag on the assumption that this might matter. If
+not it can be changed. It'd be nice to have it in 4.14 though to silence
+the warning since the driver was added to cavium_octeon_defconfig in
+commit f922bc0ad08b ("MIPS: Octeon: cavium_octeon_defconfig: Enable more
+drivers").
+---
+ drivers/edac/octeon_edac-lmc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/alpha/include/uapi/asm/mman.h b/arch/alpha/include/uapi/asm/mman.h
-index 3b26cc62dadb..767bcb8a4c28 100644
---- a/arch/alpha/include/uapi/asm/mman.h
-+++ b/arch/alpha/include/uapi/asm/mman.h
-@@ -31,6 +31,8 @@
- #define MAP_STACK	0x80000		/* give out an address that is best suited for process/thread stacks */
- #define MAP_HUGETLB	0x100000	/* create a huge page mapping */
- 
-+#define MAP_FIXED_SAFE 0x2000000	/* MAP_FIXED which doesn't unmap underlying mapping */
-+
- #define MS_ASYNC	1		/* sync memory asynchronously */
- #define MS_SYNC		2		/* synchronous memory sync */
- #define MS_INVALIDATE	4		/* invalidate the caches */
-diff --git a/arch/mips/include/uapi/asm/mman.h b/arch/mips/include/uapi/asm/mman.h
-index da3216007fe0..c2311eb7219b 100644
---- a/arch/mips/include/uapi/asm/mman.h
-+++ b/arch/mips/include/uapi/asm/mman.h
-@@ -49,6 +49,8 @@
- #define MAP_STACK	0x40000		/* give out an address that is best suited for process/thread stacks */
- #define MAP_HUGETLB	0x80000		/* create a huge page mapping */
- 
-+#define MAP_FIXED_SAFE 0x2000000	/* MAP_FIXED which doesn't unmap underlying mapping */
-+
- /*
-  * Flags for msync
-  */
-diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uapi/asm/mman.h
-index cc9ba1d34779..b06fd830bc6f 100644
---- a/arch/parisc/include/uapi/asm/mman.h
-+++ b/arch/parisc/include/uapi/asm/mman.h
-@@ -25,6 +25,8 @@
- #define MAP_STACK	0x40000		/* give out an address that is best suited for process/thread stacks */
- #define MAP_HUGETLB	0x80000		/* create a huge page mapping */
- 
-+#define MAP_FIXED_SAFE 0x2000000	/* MAP_FIXED which doesn't unmap underlying mapping */
-+
- #define MS_SYNC		1		/* synchronous memory sync */
- #define MS_ASYNC	2		/* sync memory asynchronously */
- #define MS_INVALIDATE	4		/* invalidate the caches */
-diff --git a/arch/xtensa/include/uapi/asm/mman.h b/arch/xtensa/include/uapi/asm/mman.h
-index b15b278aa314..f4b291bca764 100644
---- a/arch/xtensa/include/uapi/asm/mman.h
-+++ b/arch/xtensa/include/uapi/asm/mman.h
-@@ -62,6 +62,8 @@
- # define MAP_UNINITIALIZED 0x0		/* Don't support this flag */
- #endif
- 
-+#define MAP_FIXED_SAFE 0x2000000	/* MAP_FIXED which doesn't unmap underlying mapping */
-+
- /*
-  * Flags for msync
-  */
-diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
-index 203268f9231e..03c518777f83 100644
---- a/include/uapi/asm-generic/mman-common.h
-+++ b/include/uapi/asm-generic/mman-common.h
-@@ -25,6 +25,8 @@
- # define MAP_UNINITIALIZED 0x0		/* Don't support this flag */
- #endif
- 
-+#define MAP_FIXED_SAFE 0x2000000	/* MAP_FIXED which doesn't unmap underlying mapping */
-+
- /*
-  * Flags for mlock
-  */
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 680506faceae..aad8d37f0205 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1358,6 +1358,10 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 	if (mm->map_count > sysctl_max_map_count)
- 		return -ENOMEM;
- 
-+	/* force arch specific MAP_FIXED handling in get_unmapped_area */
-+	if (flags & MAP_FIXED_SAFE)
-+		flags |= MAP_FIXED;
-+
- 	/* Obtain the address to map to. we verify (or select) it and ensure
- 	 * that it represents a valid section of the address space.
- 	 */
-@@ -1365,6 +1369,13 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 	if (offset_in_page(addr))
- 		return addr;
- 
-+	if (flags & MAP_FIXED_SAFE) {
-+		struct vm_area_struct *vma = find_vma(mm, addr);
-+
-+		if (vma && vma->vm_start <= addr)
-+			return -ENOMEM;
-+	}
-+
- 	if (prot == PROT_EXEC) {
- 		pkey = execute_only_pkey(mm);
- 		if (pkey < 0)
-
+diff --git a/drivers/edac/octeon_edac-lmc.c b/drivers/edac/octeon_edac-lmc.c
+index 9c1ffe3e912b..aeb222ca3ed1 100644
+--- a/drivers/edac/octeon_edac-lmc.c
++++ b/drivers/edac/octeon_edac-lmc.c
+@@ -78,6 +78,7 @@ static void octeon_lmc_edac_poll_o2(struct mem_ctl_info *mci)
+ 	if (!pvt->inject)
+ 		int_reg.u64 = cvmx_read_csr(CVMX_LMCX_INT(mci->mc_idx));
+ 	else {
++		int_reg.u64 = 0;
+ 		if (pvt->error_type == 1)
+ 			int_reg.s.sec_err = 1;
+ 		if (pvt->error_type == 2)
 -- 
-Michal Hocko
-SUSE Labs
+2.14.1

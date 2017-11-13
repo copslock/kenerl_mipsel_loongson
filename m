@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:04:53 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54292 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:05:23 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54304 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992346AbdKMNDzlXjpS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:03:55 +0100
+        by eddie.linux-mips.org with ESMTP id S23993060AbdKMND6Qzt6S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:03:58 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2DAD29C;
-        Mon, 13 Nov 2017 13:03:49 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E5C8BAAE;
+        Mon, 13 Nov 2017 13:03:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.13 18/33] MIPS: Fix CM region target definitions
-Date:   Mon, 13 Nov 2017 13:56:39 +0100
-Message-Id: <20171113125612.869712452@linuxfoundation.org>
+        stable@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.13 19/33] MIPS: BMIPS: Fix missing cbr address
+Date:   Mon, 13 Nov 2017 13:56:40 +0100
+Message-Id: <20171113125612.963391013@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171113125611.096767733@linuxfoundation.org>
 References: <20171113125611.096767733@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60866
+X-archive-position: 60867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,53 +47,38 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Jaedon Shin <jaedon.shin@gmail.com>
 
-commit 6a6cba1d945a7511cdfaf338526871195e420762 upstream.
+commit ea4b3afe1eac8f88bb453798a084fba47a1f155a upstream.
 
-The default CM target field in the GCR_BASE register is encoded with 0
-meaning memory & 1 being reserved. However the definitions we use for
-those bits effectively get these two values backwards - likely because
-they were copied from the definitions for the CM regions where the
-target is encoded differently. This results in use setting up GCR_BASE
-with the reserved target value by default, rather than targeting memory
-as intended. Although we currently seem to get away with this it's not a
-great idea to rely upon.
+Fix NULL pointer access in BMIPS3300 RAC flush.
 
-Fix this by changing our macros to match the documentated target values.
-
-The incorrect encoding became used as of commit 9f98f3dd0c51 ("MIPS: Add
-generic CM probe & access code") in the Linux v3.15 cycle, and was
-likely carried forwards from older but unused code introduced by
-commit 39b8d5254246 ("[MIPS] Add support for MIPS CMP platform.") in the
-v2.6.26 cycle.
-
-Fixes: 9f98f3dd0c51 ("MIPS: Add generic CM probe & access code")
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Matt Redfearn <matt.redfearn@mips.com>
-Reviewed-by: James Hogan <jhogan@kernel.org>
-Cc: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Fixes: 738a3f79027b ("MIPS: BMIPS: Add early CPU initialization code")
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Kevin Cernekee <cernekee@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # v3.15+
-Patchwork: https://patchwork.linux-mips.org/patch/17562/
+Patchwork: https://patchwork.linux-mips.org/patch/16423/
 Signed-off-by: James Hogan <jhogan@kernel.org>
-[jhogan@kernel.org: Backported 3.15..4.13]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/include/asm/mips-cm.h |    4 ++--
+ arch/mips/kernel/smp-bmips.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -240,8 +240,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
- #define CM_GCR_BASE_GCRBASE_MSK			(_ULCAST_(0x1ffff) << 15)
- #define CM_GCR_BASE_CMDEFTGT_SHF		0
- #define CM_GCR_BASE_CMDEFTGT_MSK		(_ULCAST_(0x3) << 0)
--#define  CM_GCR_BASE_CMDEFTGT_DISABLED		0
--#define  CM_GCR_BASE_CMDEFTGT_MEM		1
-+#define  CM_GCR_BASE_CMDEFTGT_MEM		0
-+#define  CM_GCR_BASE_CMDEFTGT_RESERVED		1
- #define  CM_GCR_BASE_CMDEFTGT_IOCU0		2
- #define  CM_GCR_BASE_CMDEFTGT_IOCU1		3
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -589,11 +589,11 @@ void __init bmips_cpu_setup(void)
  
+ 		/* Flush and enable RAC */
+ 		cfg = __raw_readl(cbr + BMIPS_RAC_CONFIG);
+-		__raw_writel(cfg | 0x100, BMIPS_RAC_CONFIG);
++		__raw_writel(cfg | 0x100, cbr + BMIPS_RAC_CONFIG);
+ 		__raw_readl(cbr + BMIPS_RAC_CONFIG);
+ 
+ 		cfg = __raw_readl(cbr + BMIPS_RAC_CONFIG);
+-		__raw_writel(cfg | 0xf, BMIPS_RAC_CONFIG);
++		__raw_writel(cfg | 0xf, cbr + BMIPS_RAC_CONFIG);
+ 		__raw_readl(cbr + BMIPS_RAC_CONFIG);
+ 
+ 		cfg = __raw_readl(cbr + BMIPS_RAC_ADDRESS_RANGE);

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:04:24 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54074 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:04:53 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54292 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992996AbdKMNDCyqHNS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:03:02 +0100
+        by eddie.linux-mips.org with ESMTP id S23992346AbdKMNDzlXjpS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:03:55 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 91604AB5;
-        Mon, 13 Nov 2017 13:02:56 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2DAD29C;
+        Mon, 13 Nov 2017 13:03:49 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.9 66/87] MIPS: Fix CM region target definitions
-Date:   Mon, 13 Nov 2017 13:56:23 +0100
-Message-Id: <20171113125621.313640034@linuxfoundation.org>
+Subject: [PATCH 4.13 18/33] MIPS: Fix CM region target definitions
+Date:   Mon, 13 Nov 2017 13:56:39 +0100
+Message-Id: <20171113125612.869712452@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
-In-Reply-To: <20171113125615.304035578@linuxfoundation.org>
-References: <20171113125615.304035578@linuxfoundation.org>
+In-Reply-To: <20171113125611.096767733@linuxfoundation.org>
+References: <20171113125611.096767733@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60865
+X-archive-position: 60866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/include/asm/mips-cm.h
 +++ b/arch/mips/include/asm/mips-cm.h
-@@ -239,8 +239,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
+@@ -240,8 +240,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
  #define CM_GCR_BASE_GCRBASE_MSK			(_ULCAST_(0x1ffff) << 15)
  #define CM_GCR_BASE_CMDEFTGT_SHF		0
  #define CM_GCR_BASE_CMDEFTGT_MSK		(_ULCAST_(0x3) << 0)

@@ -1,59 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 13:01:12 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:43546 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990427AbdKMMBGb3ClG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Nov 2017 13:01:06 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 803A2ABFC;
-        Mon, 13 Nov 2017 12:01:02 +0000 (UTC)
-Date:   Mon, 13 Nov 2017 13:00:57 +0100
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Joel Stanley <joel@jms.id.au>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
-Subject: Re: linux-next: Tree for Nov 7
-Message-ID: <20171113120057.555mvrs4fjq5tyng@dhcp22.suse.cz>
-References: <20171107162217.382cd754@canb.auug.org.au>
- <CACPK8Xfd4nqkf=Lk3n6+TNHAAi327r0dkUfGypZ3TpR0LqfS4Q@mail.gmail.com>
- <20171108142050.7w3yliulxjeco3b7@dhcp22.suse.cz>
- <20171110123054.5pnefm3mczsfv7bz@dhcp22.suse.cz>
- <CACPK8Xe5uUKEytkRiszdX511b_cYTD-z3X=ZsMcNJ-NOYnXfuQ@mail.gmail.com>
- <20171113092006.cjw2njjukt6limvb@dhcp22.suse.cz>
- <20171113094203.aofz2e7kueitk55y@dhcp22.suse.cz>
- <87lgjawgx1.fsf@concordia.ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 13:27:27 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.230]:47271 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbdKMM1UCRL3S convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Nov 2017 13:27:20 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 13 Nov 2017 12:27:11 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 13 Nov
+ 2017 04:25:55 -0800
+Date:   Mon, 13 Nov 2017 12:25:53 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     John Crispin <john@phrozen.org>
+CC:     Mathias Kresin <dev@kresin.me>, <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: ralink: fix MT7628 pinmux
+Message-ID: <20171113122552.GA15260@jhogan-linux>
+References: <1494483075-17816-1-git-send-email-dev@kresin.me>
+ <2ddeb62a-adae-d715-7c77-a27df30db6df@phrozen.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <87lgjawgx1.fsf@concordia.ellerman.id.au>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <mhocko@kernel.org>
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <2ddeb62a-adae-d715-7c77-a27df30db6df@phrozen.org>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510575969-452060-12338-438077-9
+X-BESS-VER: 2017.14.1-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186876
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60849
+X-archive-position: 60850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,52 +56,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon 13-11-17 22:34:50, Michael Ellerman wrote:
-> Hi Michal,
+On Sun, Nov 12, 2017 at 10:55:50AM +0100, John Crispin wrote:
 > 
-> Michal Hocko <mhocko@kernel.org> writes:
-> > On Mon 13-11-17 10:20:06, Michal Hocko wrote:
-> >> [Cc arm and ppc maintainers]
+> 
+> On 11/05/17 08:11, Mathias Kresin wrote:
+> > According to the datasheet the REFCLK pin is shared with GPIO#37 and
+> > the PERST pin is shared with GPIO#36.
 > >
-> > Hmm, it turned out to be a problem on other architectures as well.
-> > CCing more maintainers. For your reference, we are talking about
-> > http://lkml.kernel.org/r/20171023082608.6167-1-mhocko@kernel.org
-> > which has broken architectures which do apply aligning on the mmap
-> > address hint without MAP_FIXED applied. See below my proposed way
-> > around this issue because I belive that the above patch is quite
-> > valuable on its own to be dropped for all archs.
+> > Signed-off-by: Mathias Kresin <dev@kresin.me>
+> Acked-by: John Crispin <john@phrozen.org>
+
+Thanks, both patches applied.
+
+Cheers
+James
+
+> > ---
+> >   arch/mips/ralink/mt7620.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
+> > index 094a0ee..528a6ac 100644
+> > --- a/arch/mips/ralink/mt7620.c
+> > +++ b/arch/mips/ralink/mt7620.c
+> > @@ -144,8 +144,8 @@ static struct rt2880_pmx_func i2c_grp_mt7628[] = {
+> >   	FUNC("i2c", 0, 4, 2),
+> >   };
+> >   
+> > -static struct rt2880_pmx_func refclk_grp_mt7628[] = { FUNC("reclk", 0, 36, 1) };
+> > -static struct rt2880_pmx_func perst_grp_mt7628[] = { FUNC("perst", 0, 37, 1) };
+> > +static struct rt2880_pmx_func refclk_grp_mt7628[] = { FUNC("reclk", 0, 37, 1) };
+> > +static struct rt2880_pmx_func perst_grp_mt7628[] = { FUNC("perst", 0, 36, 1) };
+> >   static struct rt2880_pmx_func wdt_grp_mt7628[] = { FUNC("wdt", 0, 38, 1) };
+> >   static struct rt2880_pmx_func spi_grp_mt7628[] = { FUNC("spi", 0, 7, 4) };
+> >   
 > 
-> I don't really like your solution sorry :)  The fact that you've had to
-> patch seven arches seems like a red flag.
 > 
-> I think this is a generic problem with MAP_FIXED, which I've heard
-> userspace folks complain about in the past.
-
-The thing is that we canno  change MAP_FIXED behavior as it is carved in
-stone
-
-> Currently MAP_FIXED does two things:
->   1. makes addr not a hint but the required address
->   2. blasts any existing mapping
-> 
-> You want 1) but not 2).
-
-+ fail if there is a clashing range
-
-> So the right solution IMHO would be to add a new mmap flag to request
-> that behaviour, ie. a fixed address but iff there is nothing already
-> mapped there.
-> 
-> I don't know the mm code well enough to know if that's hard for some
-> reason, but it *seems* like it should be doable.
-
-Yes, I have mentioned that in the previous email but the amount of code
-would be even larger. Basically every arch which reimplements
-arch_get_unmapped_area would have to special case new MAP_FIXED flag to
-do vma lookup. So this was the most simple solution I could come up
-with. If there was a general interest for MAP_FIXED_SAFE then we can
-introduce it later of course. I would just like the hardening merged
-sooner rather than later.
--- 
-Michal Hocko
-SUSE Labs

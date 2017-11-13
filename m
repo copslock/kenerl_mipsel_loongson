@@ -1,26 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:04:02 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53858 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:04:24 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54074 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993866AbdKMNCdDoqxS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:02:33 +0100
+        by eddie.linux-mips.org with ESMTP id S23992996AbdKMNDCyqHNS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:03:02 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 64977AB7;
-        Mon, 13 Nov 2017 13:02:23 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 91604AB5;
+        Mon, 13 Nov 2017 13:02:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
-        Nicolas Schichan <nschichan@freebox.fr>,
-        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.9 75/87] MIPS: AR7: Ensure that serial ports are properly set up
-Date:   Mon, 13 Nov 2017 13:56:32 +0100
-Message-Id: <20171113125621.983642234@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.9 66/87] MIPS: Fix CM region target definitions
+Date:   Mon, 13 Nov 2017 13:56:23 +0100
+Message-Id: <20171113125621.313640034@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171113125615.304035578@linuxfoundation.org>
 References: <20171113125615.304035578@linuxfoundation.org>
@@ -31,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60864
+X-archive-position: 60865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,40 +47,53 @@ X-list: linux-mips
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Paul Burton <paul.burton@mips.com>
 
-commit b084116f8587b222a2c5ef6dcd846f40f24b9420 upstream.
+commit 6a6cba1d945a7511cdfaf338526871195e420762 upstream.
 
-Without UPF_FIXED_TYPE, the data from the PORT_AR7 uart_config entry is
-never copied, resulting in a dead port.
+The default CM target field in the GCR_BASE register is encoded with 0
+meaning memory & 1 being reserved. However the definitions we use for
+those bits effectively get these two values backwards - likely because
+they were copied from the definitions for the CM regions where the
+target is encoded differently. This results in use setting up GCR_BASE
+with the reserved target value by default, rather than targeting memory
+as intended. Although we currently seem to get away with this it's not a
+great idea to rely upon.
 
-Fixes: 154615d55459 ("MIPS: AR7: Use correct UART port type")
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-[jonas.gorski: add Fixes tag]
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Fix this by changing our macros to match the documentated target values.
+
+The incorrect encoding became used as of commit 9f98f3dd0c51 ("MIPS: Add
+generic CM probe & access code") in the Linux v3.15 cycle, and was
+likely carried forwards from older but unused code introduced by
+commit 39b8d5254246 ("[MIPS] Add support for MIPS CMP platform.") in the
+v2.6.26 cycle.
+
+Fixes: 9f98f3dd0c51 ("MIPS: Add generic CM probe & access code")
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Reported-by: Matt Redfearn <matt.redfearn@mips.com>
+Reviewed-by: James Hogan <jhogan@kernel.org>
+Cc: Matt Redfearn <matt.redfearn@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>
-Cc: Nicolas Schichan <nschichan@freebox.fr>
-Cc: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 Cc: linux-mips@linux-mips.org
-Cc: linux-serial@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17543/
+Cc: <stable@vger.kernel.org> # v3.15+
+Patchwork: https://patchwork.linux-mips.org/patch/17562/
 Signed-off-by: James Hogan <jhogan@kernel.org>
+[jhogan@kernel.org: Backported 3.15..4.13]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- arch/mips/ar7/platform.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/mips-cm.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -576,6 +576,7 @@ static int __init ar7_register_uarts(voi
- 	uart_port.type		= PORT_AR7;
- 	uart_port.uartclk	= clk_get_rate(bus_clk) / 2;
- 	uart_port.iotype	= UPIO_MEM32;
-+	uart_port.flags		= UPF_FIXED_TYPE;
- 	uart_port.regshift	= 2;
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -239,8 +239,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
+ #define CM_GCR_BASE_GCRBASE_MSK			(_ULCAST_(0x1ffff) << 15)
+ #define CM_GCR_BASE_CMDEFTGT_SHF		0
+ #define CM_GCR_BASE_CMDEFTGT_MSK		(_ULCAST_(0x3) << 0)
+-#define  CM_GCR_BASE_CMDEFTGT_DISABLED		0
+-#define  CM_GCR_BASE_CMDEFTGT_MEM		1
++#define  CM_GCR_BASE_CMDEFTGT_MEM		0
++#define  CM_GCR_BASE_CMDEFTGT_RESERVED		1
+ #define  CM_GCR_BASE_CMDEFTGT_IOCU0		2
+ #define  CM_GCR_BASE_CMDEFTGT_IOCU1		3
  
- 	uart_port.line		= 0;

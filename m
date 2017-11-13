@@ -1,29 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:02:16 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53290 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:02:37 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53374 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993418AbdKMNCJMGimS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:02:09 +0100
+        by eddie.linux-mips.org with ESMTP id S23993420AbdKMNCMiVEeS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:02:12 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 811EDAB7;
-        Mon, 13 Nov 2017 13:02:01 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 65EE8AAE;
+        Mon, 13 Nov 2017 13:02:04 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Qais Yousef <qsyousef@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org,
+        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
+        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 67/87] MIPS: SMP: Use a completion event to signal CPU up
-Date:   Mon, 13 Nov 2017 13:56:24 +0100
-Message-Id: <20171113125621.386609934@linuxfoundation.org>
+Subject: [PATCH 4.9 68/87] MIPS: Fix race on setting and getting cpu_online_mask
+Date:   Mon, 13 Nov 2017 13:56:25 +0100
+Message-Id: <20171113125621.475541426@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171113125615.304035578@linuxfoundation.org>
 References: <20171113125615.304035578@linuxfoundation.org>
@@ -34,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60860
+X-archive-position: 60861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,98 +47,66 @@ X-list: linux-mips
 
 ------------------
 
-From: Matt Redfearn <matt.redfearn@imgtec.com>
+From: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
 
-commit a00eeede507c975087b7b8df8cf2c9f88ba285de upstream.
+commit 6f542ebeaee0ee552a902ce3892220fc22c7ec8e upstream.
 
-If a secondary CPU failed to start, for any reason, the CPU requesting
-the secondary to start would get stuck in the loop waiting for the
-secondary to be present in the cpu_callin_map.
+While testing cpu hoptlug (cpu down and up in loops) on kernel 4.4, it was
+observed that occasionally check for cpu online will fail in kernel/cpu.c,
+_cpu_up:
 
-Rather than that, use a completion event to signal that the secondary
-CPU has started and is waiting to synchronise counters.
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git/tree/kernel/cpu.c?h=v4.4.79#n485
+ 518        /* Arch-specific enabling code. */
+ 519        ret = __cpu_up(cpu, idle);
+ 520
+ 521        if (ret != 0)
+ 522                goto out_notify;
+ 523        BUG_ON(!cpu_online(cpu));
 
-Since the CPU presence will no longer be marked in cpu_callin_map,
-remove the redundant test from arch_cpu_idle_dead().
+Reason is race between start_secondary and _cpu_up. cpu_callin_map is set
+before cpu_online_mask. In __cpu_up, cpu_callin_map is waited for, but cpu
+online mask is not, resulting in race in which secondary processor started
+and set cpu_callin_map, but not yet set the online mask,resulting in above
+BUG being hit.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: Jiri Slaby <jslaby@suse.cz>
-Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc: Chris Metcalf <cmetcalf@mellanox.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Qais Yousef <qsyousef@gmail.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
+Upstream differs in the area. cpu_online check is in bringup_wait_for_ap,
+which is after cpu reached AP_ONLINE_IDLE,where secondary passed its start
+function. Nonetheless, fix makes start_secondary safe and not depending on
+other locks throughout the code. It protects as well against cpu_online
+checks put in between sometimes in the future.
+
+Fix this by moving completion after all flags are set.
+
+Signed-off-by: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
+Cc: Alexander Sverdlin <alexander.sverdlin@nokia.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14502/
+Patchwork: https://patchwork.linux-mips.org/patch/16925/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    4 +---
- arch/mips/kernel/smp.c     |   15 +++++++++------
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ arch/mips/kernel/smp.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -50,9 +50,7 @@
- #ifdef CONFIG_HOTPLUG_CPU
- void arch_cpu_idle_dead(void)
- {
--	/* What the heck is this check doing ? */
--	if (!cpumask_test_cpu(smp_processor_id(), &cpu_callin_map))
--		play_dead();
-+	play_dead();
- }
- #endif
- 
 --- a/arch/mips/kernel/smp.c
 +++ b/arch/mips/kernel/smp.c
-@@ -68,6 +68,8 @@ EXPORT_SYMBOL(cpu_sibling_map);
- cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
- EXPORT_SYMBOL(cpu_core_map);
- 
-+static DECLARE_COMPLETION(cpu_running);
-+
- /*
-  * A logcal cpu mask containing only one VPE per core to
-  * reduce the number of IPIs on large MT systems.
-@@ -369,7 +371,7 @@ asmlinkage void start_secondary(void)
+@@ -371,9 +371,6 @@ asmlinkage void start_secondary(void)
  	cpumask_set_cpu(cpu, &cpu_coherent_mask);
  	notify_cpu_starting(cpu);
  
--	cpumask_set_cpu(cpu, &cpu_callin_map);
-+	complete(&cpu_running);
- 	synchronise_count_slave(cpu);
- 
+-	complete(&cpu_running);
+-	synchronise_count_slave(cpu);
+-
  	set_cpu_online(cpu, true);
-@@ -430,7 +432,6 @@ void smp_prepare_boot_cpu(void)
- {
- 	set_cpu_possible(0, true);
- 	set_cpu_online(0, true);
--	cpumask_set_cpu(0, &cpu_callin_map);
- }
  
- int __cpu_up(unsigned int cpu, struct task_struct *tidle)
-@@ -438,11 +439,13 @@ int __cpu_up(unsigned int cpu, struct ta
- 	mp_ops->boot_secondary(cpu, tidle);
+ 	set_cpu_sibling_map(cpu);
+@@ -381,6 +378,9 @@ asmlinkage void start_secondary(void)
  
+ 	calculate_cpu_foreign_map();
+ 
++	complete(&cpu_running);
++	synchronise_count_slave(cpu);
++
  	/*
--	 * Trust is futile.  We should really have timeouts ...
-+	 * We must check for timeout here, as the CPU will not be marked
-+	 * online until the counters are synchronised.
- 	 */
--	while (!cpumask_test_cpu(cpu, &cpu_callin_map)) {
--		udelay(100);
--		schedule();
-+	if (!wait_for_completion_timeout(&cpu_running,
-+					 msecs_to_jiffies(1000))) {
-+		pr_crit("CPU%u: failed to start\n", cpu);
-+		return -EIO;
- 	}
- 
- 	synchronise_count_master(cpu);
+ 	 * irq will be enabled in ->smp_finish(), enabling it too early
+ 	 * is dangerous.

@@ -1,46 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 15:15:43 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:47693 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbdKMOPeAQZFH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 15:15:34 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 13 Nov 2017 14:15:10 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 13 Nov
- 2017 06:15:10 -0800
-Date:   Mon, 13 Nov 2017 14:15:08 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     John Crispin <john@phrozen.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 0/3] arch: mips: pci: cleanups and fixes for mt7620 driver
-Message-ID: <20171113141507.GA31917@jhogan-linux.mipstec.com>
-References: <1487582984-40143-1-git-send-email-john@phrozen.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 15:21:20 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35680 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990426AbdKMOVMPc9FH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Nov 2017 15:21:12 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id vADELBGX009875;
+        Mon, 13 Nov 2017 15:21:11 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id vADELAmh009874;
+        Mon, 13 Nov 2017 15:21:10 +0100
+Date:   Mon, 13 Nov 2017 15:21:10 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     jiaxun.yang@flygoat.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] MIPS: Lonngson64: Copy kernel command line from
+ arcs_cmdline Since lemte-2f/marchtype.c need to get cmdline from loongson.h
+ this patch simply copy kernel command line from arcs_cmdline to fix that
+ issue
+Message-ID: <20171113142110.GA13046@linux-mips.org>
+References: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="r5Pyd7+fXNt84Ff3"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1487582984-40143-1-git-send-email-john@phrozen.org>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510582510-321459-27079-249108-1
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186878
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+In-Reply-To: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60871
+X-archive-position: 60872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,53 +45,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---r5Pyd7+fXNt84Ff3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sun, Nov 12, 2017 at 02:36:14PM +0800, jiaxun.yang@flygoat.com wrote:
+> Date:   Sun, 12 Nov 2017 14:36:14 +0800
+> From: jiaxun.yang@flygoat.com
+> To: ralf@linux-mips.org
+> Cc: linux-mips@linux-mips.org, linux-kernel@vger.kernel.org, Jiaxun Yang
+>  <jiaxun.yang@flygoat.com>
+> Subject: [PATCH 1/4] MIPS: Lonngson64: Copy kernel command line from
+>  arcs_cmdline Since lemte-2f/marchtype.c need to get cmdline from
+>  loongson.h this patch simply copy kernel command line from arcs_cmdline to
+>  fix that issue
 
-On Mon, Feb 20, 2017 at 10:29:41AM +0100, John Crispin wrote:
-> While updating the LEDE kernel to v4.9 i stumbled across a fw compile
-> warnings. While fixing these warnings I also noticed that the BIT() macro
-> was not used.
->=20
-> John Crispin (3):
->   arch: mips: pci: remove duplicate define in mt7620 driver
->   arch: mips: pci: remove KERN_WARN instance inside the mt7620 driver
->   arch: mips: pci: make use of the BIT() macro inside the mt7620 driver
+Please don't cram the entire commit message into the subject line.  The
+standard for commit messages to keep lines only so long that when you
+look at them in "git log" in a 80 column terminal they don't get line
+wrapped or truncated.
 
-Thanks, all applied.
+And what is "lemte-2f/marchtype.c"?  Maybe you meant lemote-2f/machtype.c?
 
-Cheers
-James
+> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> 
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  arch/mips/include/asm/mach-loongson64/loongson.h | 6 ++++++
+>  arch/mips/loongson64/common/cmdline.c            | 7 +++++++
+>  2 files changed, 13 insertions(+)
+> 
+> diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
+> index c68c0cc879c6..1edf3a484e6a 100644
+> --- a/arch/mips/include/asm/mach-loongson64/loongson.h
+> +++ b/arch/mips/include/asm/mach-loongson64/loongson.h
+> @@ -45,6 +45,12 @@ static inline void prom_init_uart_base(void)
+>  #endif
+>  }
+>  
+> +/*
+> + * Copy kernel command line from arcs_cmdline
+> + */
+> +#include <asm/setup.h>
 
->=20
->  arch/mips/pci/pci-mt7620.c |   15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
->=20
-> --=20
-> 1.7.10.4
->=20
+Please group #include lines at the top of the file.
 
---r5Pyd7+fXNt84Ff3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> +extern char loongson_cmdline[COMMAND_LINE_SIZE];
+> +
+>  /* irq operation functions */
+>  extern void bonito_irqdispatch(void);
+>  extern void __init bonito_irq_init(void);
+> diff --git a/arch/mips/loongson64/common/cmdline.c b/arch/mips/loongson64/common/cmdline.c
+> index 01fbed137028..49e172184e15 100644
+> --- a/arch/mips/loongson64/common/cmdline.c
+> +++ b/arch/mips/loongson64/common/cmdline.c
+> @@ -21,6 +21,11 @@
+>  
+>  #include <loongson.h>
+>  
+> +/* the kernel command line copied from arcs_cmdline */
+> +#include <linux/export.h>
+> +char loongson_cmdline[COMMAND_LINE_SIZE];
+> +EXPORT_SYMBOL(loongson_cmdline);
+> +
+>  void __init prom_init_cmdline(void)
+>  {
+>  	int prom_argc;
+> @@ -45,4 +50,6 @@ void __init prom_init_cmdline(void)
+>  	}
+>  
+>  	prom_init_machtype();
+> +	/* copy arcs_cmdline into loongson_cmdline */
+> +	strncpy(loongson_cmdline, arcs_cmdline, COMMAND_LINE_SIZE);
+>  }
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloJqOQACgkQbAtpk944
-dnpynQ//TjDU0q7MWwDWqT5wyBWEOkwUD+M3a39Jcizo8/k8EZT5DGYHlGrZzyID
-I9ZW9nlgZSafvmTr3r3byn9ODtoU0DuoM9Ag3jC/vU9SVNiATY8LPFJUKNTFoCxN
-gwcA5Ex+b2SxepIx66zim7OHlGyxV73IFHqQWAV2s4vArqCThxDOiHsEKv29Sm7c
-UgDinB5zeC0LJ+B9lHTFsBy5amd/HHP3KNf2D2eL6Iav9GYApmntte4nVajjePQl
-ioRyUNiNvMQyzgPOp+SMbdYVSZHy+xxNA7VhlD2A8AR63A1JmAth0NaJ3Q7pd5II
-EOVEjhyK5846Xhm+NrrEAQonqoeu2U6uqisHcAhM6hsGc1C8+FvdqbiiqfHoyaom
-my/Lr35S6o+8JVVEQnTzsSNBqEczWOMb9aL98v04aygWpoZ1A4Pi4TLKCEdAU+NY
-dzXtbeJP9ilBxXTsQK2q8gCUZ8o2xOOvj0Yl1YYAm8E9sylTsFe5cT6c4bDpSNHQ
-PeVqPpq5MiLlPFM0eNJakI0zuZEwy5Jz30abdKzy8UOTpc9SYOEyuDPeL5lZaktQ
-7vn95wj0vzGv9nZrh/ci6ZUhQwJCIlcCrBeBO5rDRG7jBW+Y8cZDngq1z12906n3
-o2qAoOldLusBLz8e/c5F6eY9m1M5l4xnZ7LARwgqoyD1vjF7ejs=
-=0rXo
------END PGP SIGNATURE-----
-
---r5Pyd7+fXNt84Ff3--
+  Ralf

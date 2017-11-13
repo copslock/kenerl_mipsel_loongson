@@ -1,65 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 14:19:09 +0100 (CET)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:43690
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992314AbdKMNTCTq4mS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 14:19:02 +0100
-Received: by mail-qt0-x242.google.com with SMTP id j58so19445613qtj.0
-        for <linux-mips@linux-mips.org>; Mon, 13 Nov 2017 05:19:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=HG7cNdmsTYF3pfC7WJBn4JhV6KAI6O1srQPz1Cir5pU=;
-        b=Yd05VZLDTwjNhUCbFOlExOmEVLgc7/F51GG+0P3ldRpACl3sSNVzACBvsiohrvr1Pf
-         1ZaoWNJpXpaU3sqiYbEfPAkZPohYLTpd0BrnrRDDQm8fGgUByb+zDua/YtOZ1nKUxFh+
-         6QR9Jb3zI7Jct1V/vEUNEN2/kIrXEPWg5PhTDC6jxRTgqhiTeBC0b57rtYVKv/nx0SFJ
-         mHcCw2TEu3wxC4RM6rZpUYDwO6w6E5GrmhL1UH8cf2/YhClhaN7MmNAHwEVND2rPL7Ax
-         FG9Lx9voMN1Lz+TJ25deUAoWBnz5aMnOEW3zNe0g7LXz/pdAq9/yLCKQLjj4DKwHovtz
-         n0vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=HG7cNdmsTYF3pfC7WJBn4JhV6KAI6O1srQPz1Cir5pU=;
-        b=K1EjuQsBQJsnNID8PHbQpPg3HrRLpYn7kJXZo5fNL8l1W0HnXC3Zpn9HItVeA2XeRc
-         ylOT1p9zFDXDNbE4oXSVEiSpmvzrit45QVDfgGWYy2dtX1cvg2XAlv3gaCJ7F61EIe4j
-         +Gs4qmRQ21BFGziGAWGfZ0YCpZe5HBm5WNcefhoS153h8aEmcjC2zGUA5u6bma14gEft
-         aA132Zu7sLab07c4ZDr73IxcM+8OJozqIZsS4O2EbtxRkFpGFaAU2oCmn/9eJWHAYoKO
-         e7dhreaH3ZpFATwNCThb+THtvObIzKjyDgHoU/2SufCHWisGg2Fi9fxNvSnniTANtX1g
-         7zLQ==
-X-Gm-Message-State: AJaThX4jQswW5qOoiMNmQliYbBjtDLEEQ2Y7SjZgdt2QNJOONHzEI0Ba
-        oMzXZmKRzWSbxQxTnvAxBLRbqVNvlUxQ+UNekHunVA==
-X-Google-Smtp-Source: AGs4zMajr/xreRhoUEFoAqYRwbp8+x5UlME87vk9y4nJjmtFrvbrIUR0YNcXsrwsfdJaR7fD97ZuTnWW/s/69QBxVbk=
-X-Received: by 10.237.35.102 with SMTP id i35mr14671984qtc.49.1510579136199;
- Mon, 13 Nov 2017 05:18:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 15:15:43 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:47693 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbdKMOPeAQZFH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 15:15:34 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 13 Nov 2017 14:15:10 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 13 Nov
+ 2017 06:15:10 -0800
+Date:   Mon, 13 Nov 2017 14:15:08 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     John Crispin <john@phrozen.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/3] arch: mips: pci: cleanups and fixes for mt7620 driver
+Message-ID: <20171113141507.GA31917@jhogan-linux.mipstec.com>
+References: <1487582984-40143-1-git-send-email-john@phrozen.org>
 MIME-Version: 1.0
-Received: by 10.200.53.26 with HTTP; Mon, 13 Nov 2017 05:18:55 -0800 (PST)
-In-Reply-To: <1510576953.9806.1.camel@chimera>
-References: <1510420788-25184-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
- <20171113112312.GZ15260@jhogan-linux> <CAMuHMdUtHhSLbrgmOW7gkEUg8pif+Ddc-zZgWzCZ4WL3JTeOKg@mail.gmail.com>
- <1510576953.9806.1.camel@chimera>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 13 Nov 2017 14:18:55 +0100
-X-Google-Sender-Auth: 970NQo4r6VSbV39tr31jT4WHf7Q
-Message-ID: <CAMuHMdUN-3ycB8qgZw62V_18ZjjMnuCe1HdKqf0MT5cE3qy5nQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: implement a "bootargs-append" DT property
-To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-Cc:     James Hogan <james.hogan@mips.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="r5Pyd7+fXNt84Ff3"
+Content-Disposition: inline
+In-Reply-To: <1487582984-40143-1-git-send-email-john@phrozen.org>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1510582510-321459-27079-249108-1
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186878
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60870
+X-archive-position: 60871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,36 +53,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Daniel,
+--r5Pyd7+fXNt84Ff3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 13, 2017 at 1:42 PM, Daniel Gimpelevich
-<daniel@gimpelevich.san-francisco.ca.us> wrote:
-> On Mon, 2017-11-13 at 13:31 +0100, Geert Uytterhoeven wrote:
->> I've seen other use cases, e.g. the extension of the du node's
->> "clocks" and
->> "clock-names" properties from arch/arm64/boot/dts/renesas/r8a7795.dtsi
->> to
->> arch/arm64/boot/dts/renesas/r8a7795-salvator-x.dts.
->>
->> To avoid the proliferation of "-append" versions of existing
->> properties, what
->> about handling this in dtc, by adding support for an
->> "/append-property/"
->> keyword?
->
-> That would not address use case #2 that I mentioned, where the dtb would
-> have a "bootargs-append" property but no "bootargs" property.
+On Mon, Feb 20, 2017 at 10:29:41AM +0100, John Crispin wrote:
+> While updating the LEDE kernel to v4.9 i stumbled across a fw compile
+> warnings. While fixing these warnings I also noticed that the BIT() macro
+> was not used.
+>=20
+> John Crispin (3):
+>   arch: mips: pci: remove duplicate define in mt7620 driver
+>   arch: mips: pci: remove KERN_WARN instance inside the mt7620 driver
+>   arch: mips: pci: make use of the BIT() macro inside the mt7620 driver
 
-For use case #2, you were talking about kernel configuration?
-Isn't that something completely different?
+Thanks, all applied.
 
-Gr{oetje,eeting}s,
+Cheers
+James
 
-                        Geert
+>=20
+>  arch/mips/pci/pci-mt7620.c |   15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>=20
+> --=20
+> 1.7.10.4
+>=20
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--r5Pyd7+fXNt84Ff3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloJqOQACgkQbAtpk944
+dnpynQ//TjDU0q7MWwDWqT5wyBWEOkwUD+M3a39Jcizo8/k8EZT5DGYHlGrZzyID
+I9ZW9nlgZSafvmTr3r3byn9ODtoU0DuoM9Ag3jC/vU9SVNiATY8LPFJUKNTFoCxN
+gwcA5Ex+b2SxepIx66zim7OHlGyxV73IFHqQWAV2s4vArqCThxDOiHsEKv29Sm7c
+UgDinB5zeC0LJ+B9lHTFsBy5amd/HHP3KNf2D2eL6Iav9GYApmntte4nVajjePQl
+ioRyUNiNvMQyzgPOp+SMbdYVSZHy+xxNA7VhlD2A8AR63A1JmAth0NaJ3Q7pd5II
+EOVEjhyK5846Xhm+NrrEAQonqoeu2U6uqisHcAhM6hsGc1C8+FvdqbiiqfHoyaom
+my/Lr35S6o+8JVVEQnTzsSNBqEczWOMb9aL98v04aygWpoZ1A4Pi4TLKCEdAU+NY
+dzXtbeJP9ilBxXTsQK2q8gCUZ8o2xOOvj0Yl1YYAm8E9sylTsFe5cT6c4bDpSNHQ
+PeVqPpq5MiLlPFM0eNJakI0zuZEwy5Jz30abdKzy8UOTpc9SYOEyuDPeL5lZaktQ
+7vn95wj0vzGv9nZrh/ci6ZUhQwJCIlcCrBeBO5rDRG7jBW+Y8cZDngq1z12906n3
+o2qAoOldLusBLz8e/c5F6eY9m1M5l4xnZ7LARwgqoyD1vjF7ejs=
+=0rXo
+-----END PGP SIGNATURE-----
+
+--r5Pyd7+fXNt84Ff3--

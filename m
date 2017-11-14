@@ -1,36 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2017 16:44:33 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:52968 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2017 16:46:42 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:53886 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992334AbdKNPo0CqAJ0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2017 16:44:26 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 14 Nov 2017 15:44:08 +0000
-Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 14 Nov
- 2017 07:43:59 -0800
-Subject: Re: [PATCH] MIPS: ath25: Avoid undefined early_serial_setup() without
- SERIAL_8250_CONSOLE
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@mips.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <1510666157-27252-1-git-send-email-matt.redfearn@mips.com>
- <20171114140534.GA14698@linux-mips.org>
+        by eddie.linux-mips.org with ESMTP id S23992911AbdKNPqfs6ZI0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2017 16:46:35 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 14 Nov 2017 15:46:29 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Tue, 14 Nov 2017 07:44:59 -0800
 From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <c3c985db-3ad7-d5f3-8d3a-065a458b6900@mips.com>
-Date:   Tue, 14 Nov 2017 15:43:43 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/2] MIPS: RB532: Avoid undefined early_serial_setup() without SERIAL_8250_CONSOLE
+Date:   Tue, 14 Nov 2017 15:44:22 +0000
+Message-ID: <1510674263-14065-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20171114140534.GA14698@linux-mips.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1510674247-452059-8516-521135-2
-X-BESS-VER: 2017.14.1-r1710272128
+X-BESS-ID: 1510674389-321459-22243-73736-2
+X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186917
@@ -44,7 +35,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60925
+X-archive-position: 60926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,33 +52,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Currently MIPS allnoconfig with CONFIG_MIKROTIK_RB532=y fails to link due to
+missing support for early_serial_setup():
 
+  LD      vmlinux
+arch/mips/rb532/serial.o: In function `setup_serial_port':
+serial.c:(.init.text+0x14): undefined reference to `early_serial_setup'
 
-On 14/11/17 14:05, Ralf Baechle wrote:
-> On Tue, Nov 14, 2017 at 01:29:17PM +0000, Matt Redfearn wrote:
-> 
->> Currently MIPS allnoconfig with CONFIG_ATH25=y fails to link due to
->> missing support for early_serial_setup():
->>
->>    LD      vmlinux
->> arch/mips/ath25/devices.o: In function ath25_serial_setup':
->> devices.c:(.init.text+0x68): undefined reference to 'early_serial_setup'
->>
->> Rather than adding dependencies to the platform to force inclusion of
->> SERIAL_8250_CONSOLE together with it's dependencies like TTY, HAS_IOMEM,
->> etc, just make ath25_serial_setup() a no-op when the dependency is not
->> selected in the kernel config.
-> 
-> Looks like arch/mips/rb532/serial.c might be suffering from the same
-> issue?
+Rather than adding dependencies to the platform to force inclusion of
+SERIAL_8250_CONSOLE together with it's dependencies like TTY, HAS_IOMEM,
+etc, just exclude arch/mips/rb532/serial.c from the build when it's
+dependency is not selected in the kernel config.
 
-Hi Ralf!
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+---
 
-Indeed it does, and another unmet dependency. Patches incoming.
+ arch/mips/rb532/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
-Matt
-
-> 
->    Ralf
-> 
+diff --git a/arch/mips/rb532/Makefile b/arch/mips/rb532/Makefile
+index efdecdb6e3ea..8186afca2234 100644
+--- a/arch/mips/rb532/Makefile
++++ b/arch/mips/rb532/Makefile
+@@ -2,4 +2,6 @@
+ # Makefile for the RB532 board specific parts of the kernel
+ #
+ 
+-obj-y	 += irq.o time.o setup.o serial.o prom.o gpio.o devices.o
++obj-$(CONFIG_SERIAL_8250_CONSOLE) += serial.o
++
++obj-y	 += irq.o time.o setup.o prom.o gpio.o devices.o
+-- 
+2.7.4

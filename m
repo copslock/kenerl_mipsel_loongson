@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2017 22:45:35 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:39602 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990765AbdKNVp16U0ov (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2017 22:45:27 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 14 Nov 2017 21:44:56 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 14 Nov
- 2017 13:44:01 -0800
-Date:   Tue, 14 Nov 2017 21:43:59 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Dave Taht <dave.taht@gmail.com>
-CC:     <netdev@vger.kernel.org>, <linux-next@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [net-next,1/3] netem: convert to qdisc_watchdog_schedule_ns
-Message-ID: <20171114214359.GI15235@jhogan-linux>
-References: <1510088376-5527-2-git-send-email-dave.taht@gmail.com>
- <20171114211112.GA28794@jhogan-linux.mipstec.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yQrIXZbGokyKU1X6"
-Content-Disposition: inline
-In-Reply-To: <20171114211112.GA28794@jhogan-linux.mipstec.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510695895-321459-2387-26865-2
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186930
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2017 23:13:03 +0100 (CET)
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:53739 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990901AbdKNWM4pRf5v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2017 23:12:56 +0100
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.224.233])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 4252630C004;
+        Tue, 14 Nov 2017 14:12:51 -0800 (PST)
+Received: from stbsrv-and-3.and.broadcom.com (stbsrv-and-3.and.broadcom.com [10.28.16.21])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 9275981EAD;
+        Tue, 14 Nov 2017 14:12:48 -0800 (PST)
+From:   Jim Quinlan <jim2101024@gmail.com>
+To:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     linux-pci@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Jim Quinlan <jim2101024@gmail.com>
+Subject: [PATCH v3 2/8] dt-bindings: pci: Add DT docs for Brcmstb PCIe device
+Date:   Tue, 14 Nov 2017 17:12:06 -0500
+Message-Id: <1510697532-32828-3-git-send-email-jim2101024@gmail.com>
+X-Mailer: git-send-email 1.9.0.138.g2de3478
+In-Reply-To: <1510697532-32828-1-git-send-email-jim2101024@gmail.com>
+References: <1510697532-32828-1-git-send-email-jim2101024@gmail.com>
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60938
+X-archive-position: 60939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,66 +54,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---yQrIXZbGokyKU1X6
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The DT bindings description of the Brcmstb PCIe device is described.  This
+node can be used by almost all Broadcom settop box chips, using
+ARM, ARM64, or MIPS CPU architectures.
 
-On Tue, Nov 14, 2017 at 09:11:12PM +0000, James Hogan wrote:
-> On Tue, Nov 07, 2017 at 12:59:34PM -0800, Dave Taht wrote:
-> > diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-> > index db0228a..443a75d 100644
-> > --- a/net/sched/sch_netem.c
-> > +++ b/net/sched/sch_netem.c
->=20
-> ...
->=20
-> > @@ -305,11 +305,11 @@ static bool loss_event(struct netem_sched_data *q)
-> >   * std deviation sigma.  Uses table lookup to approximate the desired
-> >   * distribution, and a uniformly-distributed pseudo-random source.
-> >   */
-> > -static psched_tdiff_t tabledist(psched_tdiff_t mu, psched_tdiff_t sigm=
-a,
-> > -				struct crndstate *state,
-> > -				const struct disttable *dist)
-> > +static s64 tabledist(s64 mu, s64 sigma,
->=20
-> sigma is used in a modulo operation in this function, which results in
-> this error on a bunch of MIPS configs once it is made 64-bits wide:
->=20
-> net/sched/sch_netem.o In function `tabledist':
-> net/sched/sch_netem.c:330: undefined reference to `__moddi3'
->=20
-> Should that code not be using <linux/math64.h>, i.e. div_s64_rem() now
-> that it is 64bit?
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+---
+ .../devicetree/bindings/pci/brcmstb-pcie.txt       | 59 ++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pci/brcmstb-pcie.txt
 
-For the record, Dave has kindly pointed me at:
-https://patchwork.ozlabs.org/project/netdev/list/?series=3D13554
-
-which fixes the MIPS builds.
-
-Cheers
-James
-
---yQrIXZbGokyKU1X6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAloLY54ACgkQbAtpk944
-dnq0QRAAkHn5lPXmd6rYgKNJteDly4FsWam1JD8LsCZ433WAjDs4D7T/2vO6kAS2
-F3slScj5FuIe61pQEGRMSPEqjF6FaE6gHnhKB0dpAzyYwDAS+pp76cldzJYu0xXU
-Uyapaw4C+eaMSYT9/XVTaFBfke1O2GbXzYwTaCcM549fvqQ2ZRB4AIwoukuCyya6
-+0Cmkeq0R0zfE5IpIvxC8QAVVVAPb5rSDzBRCsQrxYVQKiZtzKdz0xv43WMnmD1R
-Ge4XX4nh1GpAM5G9ZR5lc898dRS+7Swfo/zbaCVcXWs1IoNrW/Q4KmNC8zB4Yq6z
-BJ/QGzjzi3jCj0d7V4rwVbmSa9BWz3P6CCmYvt6fWn+/AEWhgUoRszEaaLJo3yY6
-r0z8tXMxBlzBH/ObhSzqPo7pfeUyCx/UOKxlHPSQDtZXFkN88xcnJ9W88BntVE0a
-S583Y5jM+LPZnJ3R4i1ivZ48L9hFjxcrSqCLd0EUFlCPbkGzyroZRunjLmfPgY+j
-lo2MVnTeLh09NBxPoYsLVa7E6aYdl5NNx2xIb1nYbRlEJhUK9sLqJsfUppsDprLY
-vO6HYyIlxP6GieMxfC99vcXwbN1QMGliGmpv8F1syIWZZJ9hwJFoOngtaIgkStCj
-Bx9OKtBv6fwcdZ/FQoh+v6ENhMiCIv+GBlEXqHxX481QxJh4aXk=
-=lRir
------END PGP SIGNATURE-----
-
---yQrIXZbGokyKU1X6--
+diff --git a/Documentation/devicetree/bindings/pci/brcmstb-pcie.txt b/Documentation/devicetree/bindings/pci/brcmstb-pcie.txt
+new file mode 100644
+index 0000000..a1a9ad5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pci/brcmstb-pcie.txt
+@@ -0,0 +1,59 @@
++Brcmstb PCIe Host Controller Device Tree Bindings
++
++Required Properties:
++- compatible
++  "brcm,bcm7425-pcie" -- for 7425 family MIPS-based SOCs.
++  "brcm,bcm7435-pcie" -- for 7435 family MIPS-based SOCs.
++  "brcm,bcm7445-pcie" -- for 7445 and later ARM based SOCs (not including
++      the 7278).
++  "brcm,bcm7278-pcie"  -- for 7278 family ARM-based SOCs.
++
++- reg -- the register start address and length for the PCIe reg block.
++- interrupts -- two interrupts are specified; the first interrupt is for
++     the PCI host controller and the second is for MSI if the built-in
++     MSI controller is to be used.
++- interrupt-names -- names of the interrupts (above): "pcie" and "msi".
++- #address-cells -- set to <3>.
++- #size-cells -- set to <2>.
++- #interrupt-cells: set to <1>.
++- interrupt-map-mask and interrupt-map, standard PCI properties to define the
++     mapping of the PCIe interface to interrupt numbers.
++- ranges: ranges for the PCI memory and I/O regions.
++- linux,pci-domain -- should be unique per host controller.
++
++Optional Properties:
++- clocks -- phandle of pcie clock.
++- clock-names -- set to "sw_pcie" if clocks is used.
++- dma-ranges -- Specifies the inbound memory mapping regions when
++     an "identity map" is not possible.
++- msi-controller -- this property is typically specified to have the
++     PCIe controller use its internal MSI controller.
++- msi-parent -- set to use an external MSI interrupt controller.
++- brcm,enable-ssc -- (boolean) indicates usage of spread-spectrum clocking.
++- max-link-speed --  (integer) indicates desired generation of link:
++     1 => 2.5 Gbps (gen1), 2 => 5.0 Gbps (gen2), 3 => 8.0 Gbps (gen3).
++
++Example Node:
++
++pcie0: pcie@f0460000 {
++		reg = <0x0 0xf0460000 0x0 0x9310>;
++		interrupts = <0x0 0x0 0x4>;
++		compatible = "brcm,bcm7445-pcie";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		ranges = <0x02000000 0x00000000 0x00000000 0x00000000 0xc0000000 0x00000000 0x08000000
++			  0x02000000 0x00000000 0x08000000 0x00000000 0xc8000000 0x00000000 0x08000000>;
++		#interrupt-cells = <1>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0 0 0 1 &intc 0 47 3
++				 0 0 0 2 &intc 0 48 3
++				 0 0 0 3 &intc 0 49 3
++				 0 0 0 4 &intc 0 50 3>;
++		clocks = <&sw_pcie0>;
++		clock-names = "sw_pcie";
++		msi-parent = <&pcie0>;  /* use PCIe's internal MSI controller */
++		msi-controller;         /* use PCIe's internal MSI controller */
++		brcm,ssc;
++		max-link-speed = <1>;
++		linux,pci-domain = <0>;
++	};
+-- 
+1.9.0.138.g2de3478

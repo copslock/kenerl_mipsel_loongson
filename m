@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2017 19:22:26 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:33573 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990427AbdKMSWRKxXXR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2017 19:22:17 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 13 Nov 2017 18:22:09 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 13 Nov
- 2017 10:21:36 -0800
-Date:   Mon, 13 Nov 2017 18:21:34 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     David Daney <david.daney@cavium.com>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Steven J. Hill" <steven.hill@cavium.com>
-Subject: Re: [PATCH] MIPS: Add iomem resource for kernel bss section.
-Message-ID: <20171113182134.GD31917@jhogan-linux.mipstec.com>
-References: <20171012195034.5758-1-david.daney@cavium.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20171012195034.5758-1-david.daney@cavium.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1510597329-637138-17934-214624-3
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186883
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2017 02:27:43 +0100 (CET)
+Received: from forward104o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::607]:38665
+        "EHLO forward104o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990431AbdKNB1gU6GMW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2017 02:27:36 +0100
+Received: from mxback5g.mail.yandex.net (mxback5g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:166])
+        by forward104o.mail.yandex.net (Yandex) with ESMTP id DF2B1701B73;
+        Tue, 14 Nov 2017 04:27:25 +0300 (MSK)
+Received: from smtp4j.mail.yandex.net (smtp4j.mail.yandex.net [2a02:6b8:0:1619::15:6])
+        by mxback5g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id GYgZpyeWrS-RPseti9N;
+        Tue, 14 Nov 2017 04:27:25 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510622845;
+        bh=RHohLWrIj431ruRKQuaOKafDRUi8dbu8FT4pvjo8kUc=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=gQ4M9jwy8186tSywwytL6Is1MyR63GyqvmCvz2FhUTz1YBka0AwgO4pnbxvR5KehT
+         9rgX+wLGZ6avbg7u4dhoIKSvmFdgBMuA3coCwibRi9Rfb/DQbs5S5KOGp+c9F3E9MZ
+         +GJt2AwPS92IbCOgnr0rtg6ISPt496eT/aXE3VnE=
+Received: by smtp4j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 7l823DlZ0a-RDhC4fGh;
+        Tue, 14 Nov 2017 04:27:17 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510622844;
+        bh=RHohLWrIj431ruRKQuaOKafDRUi8dbu8FT4pvjo8kUc=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=MEhy7LoMyz1H4lb+i9L73X622RRnfSPH55uEj3LFz9PeZMxNmwTDUAhlfyU7+wZGY
+         2GUBW66JzdqiPadoO+5jxZQ5ftjQg/unTDR/zVRqddCZGibOj2CmmTwVpBQhR7Ms5D
+         R4GV7QAjDYVstUzm31MTRCa0hBRm3Q9hRJgPROYY=
+Authentication-Results: smtp4j.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v2 1/4] MIPS: Lonngson64: Copy kernel command line from arcs_cmdline
+Date:   Tue, 14 Nov 2017 09:26:46 +0800
+Message-Id: <20171114012649.29625-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.14.1
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60886
+X-archive-position: 60887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,55 +55,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 12, 2017 at 12:50:34PM -0700, David Daney wrote:
-> The kexec/kdump tools need to know where the .bss is so it can be
-> included in the core dump.  This allows vmcore-dmesg to have access to
-> the dmesg buffers of the crashed kernel as well as allowing the
-> debugger to examine variables in the bss section.
-> 
-> Add a request for the bss resource in addition to the already
-> requested code and data sections.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
+Since lemote-2f/marchtype.c need to get cmdline from loongson.h
+this patch simply copy kernel command line from arcs_cmdline
+to fix that issue
 
-Thanks, applied.
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+ arch/mips/include/asm/mach-loongson64/loongson.h | 6 ++++++
+ arch/mips/loongson64/common/cmdline.c            | 7 +++++++
+ 2 files changed, 13 insertions(+)
 
-Cheers
-James
-
-> ---
->  arch/mips/kernel/setup.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index fe39397..702c678 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -80,6 +80,7 @@ EXPORT_SYMBOL(mips_io_port_base);
->  
->  static struct resource code_resource = { .name = "Kernel code", };
->  static struct resource data_resource = { .name = "Kernel data", };
-> +static struct resource bss_resource = { .name = "Kernel bss", };
->  
->  static void *detect_magic __initdata = detect_memory_region;
->  
-> @@ -927,6 +928,8 @@ static void __init resource_init(void)
->  	code_resource.end = __pa_symbol(&_etext) - 1;
->  	data_resource.start = __pa_symbol(&_etext);
->  	data_resource.end = __pa_symbol(&_edata) - 1;
-> +	bss_resource.start = __pa_symbol(&__bss_start);
-> +	bss_resource.end = __pa_symbol(&__bss_stop) - 1;
->  
->  	for (i = 0; i < boot_mem_map.nr_map; i++) {
->  		struct resource *res;
-> @@ -966,6 +969,7 @@ static void __init resource_init(void)
->  		 */
->  		request_resource(res, &code_resource);
->  		request_resource(res, &data_resource);
-> +		request_resource(res, &bss_resource);
->  		request_crashkernel(res);
->  	}
->  }
-> -- 
-> 2.9.5
-> 
+diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
+index c68c0cc879c6..1edf3a484e6a 100644
+--- a/arch/mips/include/asm/mach-loongson64/loongson.h
++++ b/arch/mips/include/asm/mach-loongson64/loongson.h
+@@ -45,6 +45,12 @@ static inline void prom_init_uart_base(void)
+ #endif
+ }
+ 
++/*
++ * Copy kernel command line from arcs_cmdline
++ */
++#include <asm/setup.h>
++extern char loongson_cmdline[COMMAND_LINE_SIZE];
++
+ /* irq operation functions */
+ extern void bonito_irqdispatch(void);
+ extern void __init bonito_irq_init(void);
+diff --git a/arch/mips/loongson64/common/cmdline.c b/arch/mips/loongson64/common/cmdline.c
+index 01fbed137028..49e172184e15 100644
+--- a/arch/mips/loongson64/common/cmdline.c
++++ b/arch/mips/loongson64/common/cmdline.c
+@@ -21,6 +21,11 @@
+ 
+ #include <loongson.h>
+ 
++/* the kernel command line copied from arcs_cmdline */
++#include <linux/export.h>
++char loongson_cmdline[COMMAND_LINE_SIZE];
++EXPORT_SYMBOL(loongson_cmdline);
++
+ void __init prom_init_cmdline(void)
+ {
+ 	int prom_argc;
+@@ -45,4 +50,6 @@ void __init prom_init_cmdline(void)
+ 	}
+ 
+ 	prom_init_machtype();
++	/* copy arcs_cmdline into loongson_cmdline */
++	strncpy(loongson_cmdline, arcs_cmdline, COMMAND_LINE_SIZE);
+ }
+-- 
+2.14.1

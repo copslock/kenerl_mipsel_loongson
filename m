@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 14:44:42 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:35656 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992185AbdKONoGWCpb0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Nov 2017 14:44:06 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id F0D2F1A4130;
-        Wed, 15 Nov 2017 14:44:00 +0100 (CET)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id C52191A1E8B;
-        Wed, 15 Nov 2017 14:44:00 +0100 (CET)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 14:48:44 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:53173 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990901AbdKONsfaYtL0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Nov 2017 14:48:35 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 15 Nov 2017 13:48:30 +0000
+Received: from [10.20.78.46] (10.20.78.46) by mips01.mipstec.com (10.20.43.31)
+ with Microsoft SMTP Server id 14.3.361.1; Wed, 15 Nov 2017 05:48:20 -0800
+Date:   Wed, 15 Nov 2017 13:48:06 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+CC:     James Hogan <james.hogan@mips.com>,
+        Corey Minyard <cminyard@mvista.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v9 3/3] MIPS: ranchu: Add Ranchu as a new generic-based board
-Date:   Wed, 15 Nov 2017 14:42:20 +0100
-Message-Id: <1510753368-16453-4-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1510753368-16453-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1510753368-16453-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+        Matthew Fortune <matthew.fortune@mips.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        "Jason A. Donenfeld" <jason@zx2c4.com>,
+        "Paul Burton" <paul.burton@mips.com>
+Subject: Re: [PATCH] MIPS: Fix exception entry when CONFIG_EVA enabled
+In-Reply-To: <9a2d2b4b-9b6a-a7e2-78be-ff6a019d6e05@mips.com>
+Message-ID: <alpine.DEB.2.00.1711151334200.3893@tp.orcam.me.uk>
+References: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com> <605f6a96-a843-085c-efc6-a2c0f2afd84a@mvista.com> <20171031234853.GD15260@jhogan-linux> <alpine.DEB.2.00.1711131045460.3893@tp.orcam.me.uk>
+ <9a2d2b4b-9b6a-a7e2-78be-ff6a019d6e05@mips.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1510753708-298555-21235-376250-3
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.51
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186955
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.51 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60957
+X-archive-position: 60958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,237 +58,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@mips.com>
+On Wed, 15 Nov 2017, Matt Redfearn wrote:
 
-Provide amendments to the MIPS generic platform framework so that
-the new generic-based board Ranchu can be chosen to be built.
+> I like the change you propose, however I can't coax GAS to reorder the
+> instructions appropriately. With this patch on top of 4.14:
+> 
+> --- a/arch/mips/include/asm/stackframe.h
+> +++ b/arch/mips/include/asm/stackframe.h
+> @@ -195,14 +195,16 @@
+>                 .set    push
+>                 .set    noat
+>                 .set    reorder
+> -               mfc0    k0, CP0_STATUS
+> -               sll     k0, 3           /* extract cu0 bit */
+> -               .set    noreorder
+> -               bltz    k0, 8f
+> -                move   k0, sp
+> +               mfc0    k1, CP0_STATUS
+> +               sll     k1, 3           /* extract cu0 bit */
+> +
+> +               move    k0, sp
+>                 .if \docfi
+>                 .cfi_register sp, k0
+>                 .endif
+> +
+> +               bltz    k1, 8f
+> +
+>  #ifdef CONFIG_EVA
+>                 /*
+>                  * Flush interAptiv's Return Prediction Stack (RPS) by writing
+> @@ -228,7 +230,6 @@
+>                 MFC0    k0, CP0_ENTRYHI
+>                 MTC0    k0, CP0_ENTRYHI
+>  #endif
+> -               .set    reorder
+>                 /* Called from user mode, new stack. */
+>                 get_saved_sp docfi=\docfi tosp=1
+>  8:
+> 
+> 
+> The generated assembly is:
+> 
+> 80405d00 <handle_int>:
+> 80405d00:       401b6000        mfc0    k1,c0_status
+> 80405d04:       001bd8c0        sll     k1,k1,0x3
+> 80405d08:       03a0d025        move    k0,sp
+> 80405d0c:       07600007        bltz    k1,80405d2c <handle_int+0x2c>
+> 80405d10:       00000000        nop
+> 80405d14:       401a2000        mfc0    k0,c0_context
+> 
+> Apparently GAS has not been able to reorder the move into the branch delay
+> slot for some reason. Any ideas?
 
-The Ranchu board is intended to be used by Android emulator. The name
-"Ranchu" originates from Android development community. "Goldfish" and
-"Ranchu" are terms used for two generations of virtual boards used by
-Android emulator. The name "Ranchu" is a newer one among the two, and
-this patch deals with Ranchu. However, for historical reasons, some
-devices/drivers still contain the name "Goldfish".
+ It could be the `.cfi_register' pseudo-op acting as a scheduling barrier.  
+I think it can be moved further down, beyond the branch, because until 
+clobbered later on $sp still holds the original value, so using either 
+register for frame access or the value itself will yield the same result.
 
-MIPS Ranchu machine includes a number of Goldfish devices. The support
-for Virtio devices is also included. Ranchu board supports up to 16
-Virtio devices which can be attached using Virtio MMIO Bus. This is
-summarized in the following picture:
+ Can you send me .i output from the offending source along with GCC 
+options used to make .o output (use `V=1' with `make' if needed)?  I'll 
+check if my hypothesis is right or find the actual cause otherwise.
 
-       ABUS
-        ||----MIPS CPU
-        ||       |                    IRQs
-        ||----Goldfish PIC------------(32)--------
-        ||                     | | | | | | | | |
-        ||----Goldfish TTY------ | | | | | | | |
-        ||                       | | | | | | | |
-        ||----Goldfish RTC-------- | | | | | | |
-        ||                         | | | | | | |
-        ||----Goldfish FB----------- | | | | | |
-        ||                           | | | | | |
-        ||----Goldfish Events--------- | | | | |
-        ||                             | | | | |
-        ||----Goldfish Audio------------ | | | |
-        ||                               | | | |
-        ||----Goldfish Battery------------ | | |
-        ||                                 | | |
-        ||----Android PIPE------------------ | |
-        ||                                   | |
-        ||----Virtio MMIO Bus                | |
-        ||    |    |    |                    | |
-        ||    |    |   (virtio-block)--------- |
-        ||   (16)  |                           |
-        ||    |   (virtio-net)------------------
-
-Device Tree is created on the QEMU side based on the information about
-devices IO map and IRQ numbers. Kernel will load this DTB using UHI
-boot protocol DTB handover mode.
-
-Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
----
- MAINTAINERS                                   |  7 +++
- arch/mips/configs/generic/board-ranchu.config | 30 ++++++++++
- arch/mips/generic/Kconfig                     | 10 ++++
- arch/mips/generic/Makefile                    |  1 +
- arch/mips/generic/board-ranchu.c              | 85 +++++++++++++++++++++++++++
- 5 files changed, 133 insertions(+)
- create mode 100644 arch/mips/configs/generic/board-ranchu.config
- create mode 100644 arch/mips/generic/board-ranchu.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 381c9c8..72e9b90 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11335,6 +11335,13 @@ S:	Maintained
- F:	Documentation/blockdev/ramdisk.txt
- F:	drivers/block/brd.c
- 
-+RANCHU VIRTUAL BOARD FOR MIPS
-+M:	Miodrag Dinic <miodrag.dinic@mips.com>
-+L:	linux-mips@linux-mips.org
-+S:	Supported
-+F:	arch/mips/generic/board-ranchu.c
-+F:	arch/mips/configs/generic/board-ranchu.config
-+
- RANDOM NUMBER DRIVER
- M:	"Theodore Ts'o" <tytso@mit.edu>
- S:	Maintained
-diff --git a/arch/mips/configs/generic/board-ranchu.config b/arch/mips/configs/generic/board-ranchu.config
-new file mode 100644
-index 0000000..fee9ad4
---- /dev/null
-+++ b/arch/mips/configs/generic/board-ranchu.config
-@@ -0,0 +1,30 @@
-+CONFIG_VIRT_BOARD_RANCHU=y
-+
-+CONFIG_BATTERY_GOLDFISH=y
-+CONFIG_FB=y
-+CONFIG_FB_GOLDFISH=y
-+CONFIG_GOLDFISH=y
-+CONFIG_STAGING=y
-+CONFIG_GOLDFISH_AUDIO=y
-+CONFIG_GOLDFISH_PIC=y
-+CONFIG_GOLDFISH_PIPE=y
-+CONFIG_GOLDFISH_TTY=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_GOLDFISH=y
-+
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_INPUT_KEYBOARD=y
-+CONFIG_KEYBOARD_GOLDFISH_EVENTS=y
-+
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_POWER_SUPPLY=y
-+CONFIG_POWER_RESET=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_POWER_RESET_SYSCON_POWEROFF=y
-+
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_VIRTIO_MMIO=y
-+CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y
-+CONFIG_NETDEVICES=y
-+CONFIG_VIRTIO_NET=y
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index 0b67c46..aedcc21 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -43,4 +43,14 @@ config FIT_IMAGE_FDT_NI169445
- 	  Enable this to include the FDT for the 169445 platform from
- 	  National Instruments in the FIT kernel image.
- 
-+config VIRT_BOARD_RANCHU
-+	bool "Support Ranchu platform for Android emulator"
-+	help
-+	  This enables support for the platform used by Android emulator.
-+
-+	  Ranchu platform consists of a set of virtual devices. This platform
-+	  enables emulation of variety of virtual configurations while using
-+	  Android emulator. Android emulator is based on Qemu, and contains
-+	  the support for the same set of virtual devices.
-+
- endif
-diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
-index 8749673..5fb60c8 100644
---- a/arch/mips/generic/Makefile
-+++ b/arch/mips/generic/Makefile
-@@ -15,3 +15,4 @@ obj-y += proc.o
- obj-$(CONFIG_YAMON_DT_SHIM)		+= yamon-dt.o
- obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
- obj-$(CONFIG_KEXEC)			+= kexec.o
-+obj-$(CONFIG_VIRT_BOARD_RANCHU)	+= board-ranchu.o
-diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
-new file mode 100644
-index 0000000..0efc555
---- /dev/null
-+++ b/arch/mips/generic/board-ranchu.c
-@@ -0,0 +1,85 @@
-+/*
-+ * Support code for virtual Ranchu board for MIPS.
-+ *
-+ * Author: Miodrag Dinic <miodrag.dinic@mips.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/of_address.h>
-+#include <linux/types.h>
-+
-+#include <asm/machine.h>
-+#include <asm/mipsregs.h>
-+#include <asm/time.h>
-+
-+#define GOLDFISH_TIMER_LOW		0x00
-+#define GOLDFISH_TIMER_HIGH		0x04
-+
-+static __init u64 read_rtc_time(void __iomem *base)
-+{
-+	u32 time_low;
-+	u32 time_high;
-+
-+	/*
-+	 * Reading the low address latches the high value
-+	 * as well so there is no fear that we may read
-+	 * inaccurate high value.
-+	 */
-+	time_low = readl(base + GOLDFISH_TIMER_LOW);
-+	time_high = readl(base + GOLDFISH_TIMER_HIGH);
-+
-+	return ((u64)time_high << 32) | time_low;
-+}
-+
-+static __init unsigned int ranchu_measure_hpt_freq(void)
-+{
-+	u64 rtc_start, rtc_current, rtc_delta;
-+	unsigned int start, count;
-+	struct device_node *np;
-+	void __iomem *rtc_base;
-+
-+	np = of_find_compatible_node(NULL, NULL, "google,goldfish-rtc");
-+	if (!np)
-+		panic("%s(): Failed to find 'google,goldfish-rtc' dt node!",
-+		      __func__);
-+
-+	rtc_base = of_iomap(np, 0);
-+	if (!rtc_base)
-+		panic("%s(): Failed to ioremap Goldfish RTC base!", __func__);
-+
-+	/*
-+	 * Poll the nanosecond resolution RTC for one
-+	 * second to calibrate the CPU frequency.
-+	 */
-+	rtc_start = read_rtc_time(rtc_base);
-+	start = read_c0_count();
-+
-+	do {
-+		rtc_current = read_rtc_time(rtc_base);
-+		rtc_delta = rtc_current - rtc_start;
-+	} while (rtc_delta < NSEC_PER_SEC);
-+
-+	count = read_c0_count() - start;
-+
-+	count += 5000;	/* round */
-+	count -= count % 10000;
-+
-+	iounmap(rtc_base);
-+
-+	return count;
-+}
-+
-+static const struct of_device_id ranchu_of_match[] __initconst = {
-+	{
-+		.compatible = "mti,ranchu",
-+	},
-+};
-+
-+MIPS_MACHINE(ranchu) = {
-+	.matches = ranchu_of_match,
-+	.measure_hpt_freq = ranchu_measure_hpt_freq,
-+};
--- 
-2.7.4
+  Maciej

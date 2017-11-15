@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 04:13:07 +0100 (CET)
-Received: from forward101j.mail.yandex.net ([IPv6:2a02:6b8:0:801:2::101]:48746
-        "EHLO forward101j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990395AbdKODM7vICFf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Nov 2017 04:12:59 +0100
-Received: from mxback3o.mail.yandex.net (mxback3o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::1d])
-        by forward101j.mail.yandex.net (Yandex) with ESMTP id B76781242958;
-        Wed, 15 Nov 2017 06:12:50 +0300 (MSK)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 04:13:33 +0100 (CET)
+Received: from forward106j.mail.yandex.net ([5.45.198.249]:34785 "EHLO
+        forward106j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990405AbdKODNBJhMEf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Nov 2017 04:13:01 +0100
+Received: from mxback1g.mail.yandex.net (mxback1g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:162])
+        by forward106j.mail.yandex.net (Yandex) with ESMTP id 4705018030BB;
+        Wed, 15 Nov 2017 06:12:55 +0300 (MSK)
 Received: from smtp1j.mail.yandex.net (smtp1j.mail.yandex.net [2a02:6b8:0:801::ab])
-        by mxback3o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id CSPtKkE6QG-Col4pfAN;
-        Wed, 15 Nov 2017 06:12:50 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715570;
-        bh=Djv1V5f/ckDgNRjLc2jFVyAExdqbYlB3knOkiblymCM=;
+        by mxback1g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id GTraFsx39e-CsmSAwPH;
+        Wed, 15 Nov 2017 06:12:55 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715575;
+        bh=81yZVaZCiqiIne5KdHUeJC4qUcCTh7Y7Vcp2rgHgk90=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=SbA0cVMb9gJTdZCcfwGLo9IGvnvI/u7iRM0qGuw/tm1aBzZcVfUR+O7YW3+Qr+RSJ
-         EJ0mr+WkuzJsVj+I+VQ2/fMBD74cR6E+QyhDOk4u8TPEihmcKNKgGFRjypGHEbN/PZ
-         ZQ15akP9cugyPtOgRiiAsypu+tuZRcNIOw3NH8ms=
-Received: by smtp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id sPMPJaqN4J-Ckc4S2WO;
-        Wed, 15 Nov 2017 06:12:49 +0300
+        b=AeBGNUA/iWx7qBECtevgfB/PTVGudaMJ0RvCI2HsHd/r8ZPV0KpzwHylrFlI6qvO/
+         mYvpS1tljkVR/0Vd0py3wrUT8FSRW4S+i4HA+sdgO0JgWgM8WZJwJXOYLklOvYPkCr
+         sy/f3zaEQqljRZOYyPZip3bejESSLZtzdLZyHN2g=
+Received: by smtp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id sPMPJaqN4J-CpcGjnXg;
+        Wed, 15 Nov 2017 06:12:53 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715569;
-        bh=Djv1V5f/ckDgNRjLc2jFVyAExdqbYlB3knOkiblymCM=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715573;
+        bh=81yZVaZCiqiIne5KdHUeJC4qUcCTh7Y7Vcp2rgHgk90=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=QaDbuN8R0+22MxPuu8ryPJ9XTRYO+lKi9y8UVRGkHFHzGijwJb4MbPxhZiKzaOB/Q
-         OnkUJuo44cU8hfib7LX1WnFciM1GmFBY1ed/zibt2oXROL2DuBAh/70M5Z+hKMzIln
-         5b7VDtYbPW+nfdiehrD2vt9LJM12uHh1hhjotwwI=
+        b=Qhwv1MZdZG4/VjQgJOqDy3iModEFFecrIoNuJ1OREF0qPSoDSGe2eQhgCocWQszIU
+         QRXppyvliVc+zoeY8CZM+FmLlNxoW07xcktHk8fOTy5gdFAVkVD4vMVDDfLVUUSMny
+         s/hvqfQskivKb3F7Jr9rVZaWzC/rVFHUSz8xYVs4=
 Authentication-Results: smtp1j.mail.yandex.net; dkim=pass header.i=@flygoat.com
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v3 1/4] MIPS: Lonngson64: Copy kernel command line from arcs_cmdline
-Date:   Wed, 15 Nov 2017 11:11:52 +0800
-Message-Id: <20171115031155.643-1-jiaxun.yang@flygoat.com>
+Subject: [PATCH v3 2/4] MIPS: Loongson64: lemote-2f move ec_kb3310b.h to include dir and clean up
+Date:   Wed, 15 Nov 2017 11:11:53 +0800
+Message-Id: <20171115031155.643-2-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
+In-Reply-To: <20171115031155.643-1-jiaxun.yang@flygoat.com>
 References: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
+ <20171115031155.643-1-jiaxun.yang@flygoat.com>
 Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60949
+X-archive-position: 60950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,55 +58,447 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since lemote-2f/marchtype.c need to get cmdline from loongson.h
-this patch simply copy kernel command line from arcs_cmdline
-to fix that issue.
+To operate EC from platform driver, this head file need able to be include
+from anywhere. This patch just move ec_kb3310b.h to include dir and
+clean up ec_kb3310b.h.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- arch/mips/include/asm/mach-loongson64/loongson.h | 6 ++++++
- arch/mips/loongson64/common/cmdline.c            | 7 +++++++
- 2 files changed, 13 insertions(+)
+ arch/mips/include/asm/mach-loongson64/ec_kb3310b.h | 170 +++++++++++++++++++
+ arch/mips/loongson64/lemote-2f/ec_kb3310b.c        |   2 +-
+ arch/mips/loongson64/lemote-2f/ec_kb3310b.h        | 188 ---------------------
+ arch/mips/loongson64/lemote-2f/pm.c                |   4 +-
+ arch/mips/loongson64/lemote-2f/reset.c             |   4 +-
+ 5 files changed, 175 insertions(+), 193 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
+ delete mode 100644 arch/mips/loongson64/lemote-2f/ec_kb3310b.h
 
-diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
-index c68c0cc879c6..1edf3a484e6a 100644
---- a/arch/mips/include/asm/mach-loongson64/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson64/loongson.h
-@@ -45,6 +45,12 @@ static inline void prom_init_uart_base(void)
- #endif
+diff --git a/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h b/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
+new file mode 100644
+index 000000000000..2e8690532ea5
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
+@@ -0,0 +1,170 @@
++/*
++ * KB3310B Embedded Controller
++ *
++ *  Copyright (C) 2008 Lemote Inc.
++ *  Author: liujl <liujl@lemote.com>, 2008-03-14
++ *  Copyright (C) 2009 Lemote Inc.
++ *  Author: Wu Zhangjin <wuzhangjin@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef _EC_KB3310B_H
++#define _EC_KB3310B_H
++
++extern unsigned char ec_read(unsigned short addr);
++extern void ec_write(unsigned short addr, unsigned char val);
++extern int ec_query_seq(unsigned char cmd);
++extern int ec_query_event_num(void);
++extern int ec_get_event_num(void);
++
++typedef int (*sci_handler) (int status);
++extern sci_handler yeeloong_report_lid_status;
++
++#define ON	1
++#define OFF	0
++
++#define SCI_IRQ_NUM 0x0A
++
++/*
++ * The following registers are determined by the EC index configuration.
++ * 1, fill the PORT_HIGH as EC register high part.
++ * 2, fill the PORT_LOW as EC register low part.
++ * 3, fill the PORT_DATA as EC register write data or get the data from it.
++ */
++#define	EC_IO_PORT_HIGH	0x0381
++#define	EC_IO_PORT_LOW	0x0382
++#define	EC_IO_PORT_DATA	0x0383
++
++/*
++ * EC delay time is 500us for register and status access
++ */
++#define	EC_REG_DELAY	500	/* unit : us */
++#define	EC_CMD_TIMEOUT	0x1000
++
++/*
++ * EC access port for SCI communication
++ */
++#define	EC_CMD_PORT		0x66
++#define	EC_STS_PORT		0x66
++#define	EC_DAT_PORT		0x62
++#define	CMD_INIT_IDLE_MODE	0xdd
++#define	CMD_EXIT_IDLE_MODE	0xdf
++#define	CMD_INIT_RESET_MODE	0xd8
++#define	CMD_REBOOT_SYSTEM	0x8c
++#define	CMD_GET_EVENT_NUM	0x84
++#define	CMD_PROGRAM_PIECE	0xda
++
++/* Temperature & Fan registers */
++#define	REG_TEMPERATURE_VALUE	0xF458
++#define	REG_FAN_AUTO_MAN_SWITCH 0xF459
++#define	BIT_FAN_AUTO		0
++#define	BIT_FAN_MANUAL		1
++#define	REG_FAN_CONTROL		0xF4D2
++#define	REG_FAN_STATUS		0xF4DA
++#define	REG_FAN_SPEED_HIGH	0xFE22
++#define	REG_FAN_SPEED_LOW	0xFE23
++#define	REG_FAN_SPEED_LEVEL	0xF4CC
++/* Fan speed divider */
++#define	FAN_SPEED_DIVIDER	480000	/* (60*1000*1000/62.5/2)*/
++
++/* Battery registers */
++#define	REG_BAT_DESIGN_CAP_HIGH		0xF77D
++#define	REG_BAT_DESIGN_CAP_LOW		0xF77E
++#define	REG_BAT_FULLCHG_CAP_HIGH	0xF780
++#define	REG_BAT_FULLCHG_CAP_LOW		0xF781
++#define	REG_BAT_DESIGN_VOL_HIGH		0xF782
++#define	REG_BAT_DESIGN_VOL_LOW		0xF783
++#define	REG_BAT_CURRENT_HIGH		0xF784
++#define	REG_BAT_CURRENT_LOW		0xF785
++#define	REG_BAT_VOLTAGE_HIGH		0xF786
++#define	REG_BAT_VOLTAGE_LOW		0xF787
++#define	REG_BAT_TEMPERATURE_HIGH	0xF788
++#define	REG_BAT_TEMPERATURE_LOW		0xF789
++#define	REG_BAT_RELATIVE_CAP_HIGH	0xF492
++#define	REG_BAT_RELATIVE_CAP_LOW	0xF493
++#define	REG_BAT_VENDOR			0xF4C4
++#define	FLAG_BAT_VENDOR_SANYO		0x01
++#define	FLAG_BAT_VENDOR_SIMPLO		0x02
++#define	REG_BAT_CELL_COUNT		0xF4C6
++#define	FLAG_BAT_CELL_3S1P		0x03
++#define	FLAG_BAT_CELL_3S2P		0x06
++#define	REG_BAT_CHARGE			0xF4A2
++#define	FLAG_BAT_CHARGE_DISCHARGE	0x01
++#define	FLAG_BAT_CHARGE_CHARGE		0x02
++#define	FLAG_BAT_CHARGE_ACPOWER		0x00
++#define	REG_BAT_STATUS			0xF4B0
++#define	BIT_BAT_STATUS_LOW		(1 << 5)
++#define	BIT_BAT_STATUS_DESTROY		(1 << 2)
++#define	BIT_BAT_STATUS_FULL		(1 << 1)
++#define	BIT_BAT_STATUS_IN		(1 << 0)
++#define	REG_BAT_CHARGE_STATUS		0xF4B1
++#define	BIT_BAT_CHARGE_STATUS_OVERTEMP	(1 << 2)
++#define	BIT_BAT_CHARGE_STATUS_PRECHG	(1 << 1)
++#define	REG_BAT_STATE			0xF482
++#define	REG_BAT_POWER			0xF440
++#define	BIT_BAT_POWER_S3		(1 << 2)
++#define	BIT_BAT_POWER_ON		(1 << 1)
++#define	BIT_BAT_POWER_ACIN		(1 << 0)
++
++/* Audio: rd/wr */
++#define	REG_AUDIO_VOLUME	0xF46C
++#define	REG_AUDIO_MUTE		0xF4E7
++#define	REG_AUDIO_BEEP		0xF4D0
++/* USB port power or not: rd/wr */
++#define	REG_USB0_FLAG		0xF461
++#define	REG_USB1_FLAG		0xF462
++#define	REG_USB2_FLAG		0xF463
++/* LID */
++#define	REG_LID_DETECT		0xF4BD
++/* CRT */
++#define	REG_CRT_DETECT		0xF4AD
++/* LCD backlight brightness adjust: 9 levels */
++#define	REG_DISPLAY_BRIGHTNESS	0xF4F5
++/* LCD backlight control: off/restore */
++#define	REG_BACKLIGHT_CTRL	0xF7BD
++/* Reset the machine auto-clear: rd/wr */
++#define	REG_RESET		0xF4EC
++/* Light the led: rd/wr */
++#define	REG_LED			0xF4C8
++#define	BIT_LED_RED_POWER	(1 << 0)
++#define	BIT_LED_ORANGE_POWER	(1 << 1)
++#define	BIT_LED_GREEN_CHARGE	(1 << 2)
++#define	BIT_LED_RED_CHARGE	(1 << 3)
++#define	BIT_LED_NUMLOCK		(1 << 4)
++/* Test led mode, all led on/off */
++#define	REG_LED_TEST		0xF4C2
++#define	BIT_LED_TEST_IN		1
++#define	BIT_LED_TEST_OUT	0
++/* Camera on/off */
++#define	REG_CAMERA_STATUS	0xF46A
++#define	REG_CAMERA_CONTROL	0xF7B7
++/* Wlan Status */
++#define	REG_WLAN		0xF4FA
++#define	REG_DISPLAY_LCD		0xF79F
++
++/* SCI Event Number from EC */
++enum {
++	EVENT_LID = 0x23,	/*  Turn on/off LID */
++	EVENT_SWITCHVIDEOMODE,	/*  Fn+F3 for display switch */
++	EVENT_SLEEP,		/*  Fn+F1 for entering sleep mode */
++	EVENT_OVERTEMP,		/*  Over-temperature happened */
++	EVENT_CRT_DETECT,	/*  CRT is connected */
++	EVENT_CAMERA,		/*  Camera on/off */
++	EVENT_USB_OC2,		/*  USB2 Over Current occurred */
++	EVENT_USB_OC0,		/*  USB0 Over Current occurred */
++	EVENT_DISPLAYTOGGLE,	/*  Fn+F2, Turn on/off backlight */
++	EVENT_AUDIO_MUTE,	/*  Fn+F4, Mute on/off */
++	EVENT_DISPLAY_BRIGHTNESS,/* Fn+^/V, LCD backlight brightness adjust */
++	EVENT_AC_BAT,		/*  AC & Battery relative issue */
++	EVENT_AUDIO_VOLUME,	/*  Fn+<|>, Volume adjust */
++	EVENT_WLAN,		/*  Wlan on/off */
++};
++
++#define EVENT_START	EVENT_LID
++#define EVENT_END	EVENT_WLAN
++
++#endif /* !_EC_KB3310B_H */
+diff --git a/arch/mips/loongson64/lemote-2f/ec_kb3310b.c b/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
+index 321822997e76..6e416d55b42a 100644
+--- a/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
++++ b/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
+@@ -15,7 +15,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/delay.h>
+ 
+-#include "ec_kb3310b.h"
++#include <ec_kb3310b.h>
+ 
+ static DEFINE_SPINLOCK(index_access_lock);
+ static DEFINE_SPINLOCK(port_access_lock);
+diff --git a/arch/mips/loongson64/lemote-2f/ec_kb3310b.h b/arch/mips/loongson64/lemote-2f/ec_kb3310b.h
+deleted file mode 100644
+index 5a3f1860d4d2..000000000000
+--- a/arch/mips/loongson64/lemote-2f/ec_kb3310b.h
++++ /dev/null
+@@ -1,188 +0,0 @@
+-/*
+- * KB3310B Embedded Controller
+- *
+- *  Copyright (C) 2008 Lemote Inc.
+- *  Author: liujl <liujl@lemote.com>, 2008-03-14
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- */
+-
+-#ifndef _EC_KB3310B_H
+-#define _EC_KB3310B_H
+-
+-extern unsigned char ec_read(unsigned short addr);
+-extern void ec_write(unsigned short addr, unsigned char val);
+-extern int ec_query_seq(unsigned char cmd);
+-extern int ec_query_event_num(void);
+-extern int ec_get_event_num(void);
+-
+-typedef int (*sci_handler) (int status);
+-extern sci_handler yeeloong_report_lid_status;
+-
+-#define SCI_IRQ_NUM 0x0A
+-
+-/*
+- * The following registers are determined by the EC index configuration.
+- * 1, fill the PORT_HIGH as EC register high part.
+- * 2, fill the PORT_LOW as EC register low part.
+- * 3, fill the PORT_DATA as EC register write data or get the data from it.
+- */
+-#define EC_IO_PORT_HIGH 0x0381
+-#define EC_IO_PORT_LOW	0x0382
+-#define EC_IO_PORT_DATA 0x0383
+-
+-/*
+- * EC delay time is 500us for register and status access
+- */
+-#define EC_REG_DELAY	500	/* unit : us */
+-#define EC_CMD_TIMEOUT	0x1000
+-
+-/*
+- * EC access port for SCI communication
+- */
+-#define EC_CMD_PORT		0x66
+-#define EC_STS_PORT		0x66
+-#define EC_DAT_PORT		0x62
+-#define CMD_INIT_IDLE_MODE	0xdd
+-#define CMD_EXIT_IDLE_MODE	0xdf
+-#define CMD_INIT_RESET_MODE	0xd8
+-#define CMD_REBOOT_SYSTEM	0x8c
+-#define CMD_GET_EVENT_NUM	0x84
+-#define CMD_PROGRAM_PIECE	0xda
+-
+-/* temperature & fan registers */
+-#define REG_TEMPERATURE_VALUE	0xF458
+-#define REG_FAN_AUTO_MAN_SWITCH 0xF459
+-#define BIT_FAN_AUTO		0
+-#define BIT_FAN_MANUAL		1
+-#define REG_FAN_CONTROL		0xF4D2
+-#define BIT_FAN_CONTROL_ON	(1 << 0)
+-#define BIT_FAN_CONTROL_OFF	(0 << 0)
+-#define REG_FAN_STATUS		0xF4DA
+-#define BIT_FAN_STATUS_ON	(1 << 0)
+-#define BIT_FAN_STATUS_OFF	(0 << 0)
+-#define REG_FAN_SPEED_HIGH	0xFE22
+-#define REG_FAN_SPEED_LOW	0xFE23
+-#define REG_FAN_SPEED_LEVEL	0xF4CC
+-/* fan speed divider */
+-#define FAN_SPEED_DIVIDER	480000	/* (60*1000*1000/62.5/2)*/
+-
+-/* battery registers */
+-#define REG_BAT_DESIGN_CAP_HIGH		0xF77D
+-#define REG_BAT_DESIGN_CAP_LOW		0xF77E
+-#define REG_BAT_FULLCHG_CAP_HIGH	0xF780
+-#define REG_BAT_FULLCHG_CAP_LOW		0xF781
+-#define REG_BAT_DESIGN_VOL_HIGH		0xF782
+-#define REG_BAT_DESIGN_VOL_LOW		0xF783
+-#define REG_BAT_CURRENT_HIGH		0xF784
+-#define REG_BAT_CURRENT_LOW		0xF785
+-#define REG_BAT_VOLTAGE_HIGH		0xF786
+-#define REG_BAT_VOLTAGE_LOW		0xF787
+-#define REG_BAT_TEMPERATURE_HIGH	0xF788
+-#define REG_BAT_TEMPERATURE_LOW		0xF789
+-#define REG_BAT_RELATIVE_CAP_HIGH	0xF492
+-#define REG_BAT_RELATIVE_CAP_LOW	0xF493
+-#define REG_BAT_VENDOR			0xF4C4
+-#define FLAG_BAT_VENDOR_SANYO		0x01
+-#define FLAG_BAT_VENDOR_SIMPLO		0x02
+-#define REG_BAT_CELL_COUNT		0xF4C6
+-#define FLAG_BAT_CELL_3S1P		0x03
+-#define FLAG_BAT_CELL_3S2P		0x06
+-#define REG_BAT_CHARGE			0xF4A2
+-#define FLAG_BAT_CHARGE_DISCHARGE	0x01
+-#define FLAG_BAT_CHARGE_CHARGE		0x02
+-#define FLAG_BAT_CHARGE_ACPOWER		0x00
+-#define REG_BAT_STATUS			0xF4B0
+-#define BIT_BAT_STATUS_LOW		(1 << 5)
+-#define BIT_BAT_STATUS_DESTROY		(1 << 2)
+-#define BIT_BAT_STATUS_FULL		(1 << 1)
+-#define BIT_BAT_STATUS_IN		(1 << 0)
+-#define REG_BAT_CHARGE_STATUS		0xF4B1
+-#define BIT_BAT_CHARGE_STATUS_OVERTEMP	(1 << 2)
+-#define BIT_BAT_CHARGE_STATUS_PRECHG	(1 << 1)
+-#define REG_BAT_STATE			0xF482
+-#define BIT_BAT_STATE_CHARGING		(1 << 1)
+-#define BIT_BAT_STATE_DISCHARGING	(1 << 0)
+-#define REG_BAT_POWER			0xF440
+-#define BIT_BAT_POWER_S3		(1 << 2)
+-#define BIT_BAT_POWER_ON		(1 << 1)
+-#define BIT_BAT_POWER_ACIN		(1 << 0)
+-
+-/* other registers */
+-/* Audio: rd/wr */
+-#define REG_AUDIO_VOLUME	0xF46C
+-#define REG_AUDIO_MUTE		0xF4E7
+-#define REG_AUDIO_BEEP		0xF4D0
+-/* USB port power or not: rd/wr */
+-#define REG_USB0_FLAG		0xF461
+-#define REG_USB1_FLAG		0xF462
+-#define REG_USB2_FLAG		0xF463
+-#define BIT_USB_FLAG_ON		1
+-#define BIT_USB_FLAG_OFF	0
+-/* LID */
+-#define REG_LID_DETECT		0xF4BD
+-#define BIT_LID_DETECT_ON	1
+-#define BIT_LID_DETECT_OFF	0
+-/* CRT */
+-#define REG_CRT_DETECT		0xF4AD
+-#define BIT_CRT_DETECT_PLUG	1
+-#define BIT_CRT_DETECT_UNPLUG	0
+-/* LCD backlight brightness adjust: 9 levels */
+-#define REG_DISPLAY_BRIGHTNESS	0xF4F5
+-/* Black screen Status */
+-#define BIT_DISPLAY_LCD_ON	1
+-#define BIT_DISPLAY_LCD_OFF	0
+-/* LCD backlight control: off/restore */
+-#define REG_BACKLIGHT_CTRL	0xF7BD
+-#define BIT_BACKLIGHT_ON	1
+-#define BIT_BACKLIGHT_OFF	0
+-/* Reset the machine auto-clear: rd/wr */
+-#define REG_RESET		0xF4EC
+-#define BIT_RESET_ON		1
+-/* Light the led: rd/wr */
+-#define REG_LED			0xF4C8
+-#define BIT_LED_RED_POWER	(1 << 0)
+-#define BIT_LED_ORANGE_POWER	(1 << 1)
+-#define BIT_LED_GREEN_CHARGE	(1 << 2)
+-#define BIT_LED_RED_CHARGE	(1 << 3)
+-#define BIT_LED_NUMLOCK		(1 << 4)
+-/* Test led mode, all led on/off */
+-#define REG_LED_TEST		0xF4C2
+-#define BIT_LED_TEST_IN		1
+-#define BIT_LED_TEST_OUT	0
+-/* Camera on/off */
+-#define REG_CAMERA_STATUS	0xF46A
+-#define BIT_CAMERA_STATUS_ON	1
+-#define BIT_CAMERA_STATUS_OFF	0
+-#define REG_CAMERA_CONTROL	0xF7B7
+-#define BIT_CAMERA_CONTROL_OFF	0
+-#define BIT_CAMERA_CONTROL_ON	1
+-/* Wlan Status */
+-#define REG_WLAN		0xF4FA
+-#define BIT_WLAN_ON		1
+-#define BIT_WLAN_OFF		0
+-#define REG_DISPLAY_LCD		0xF79F
+-
+-/* SCI Event Number from EC */
+-enum {
+-	EVENT_LID = 0x23,	/*  LID open/close */
+-	EVENT_DISPLAY_TOGGLE,	/*  Fn+F3 for display switch */
+-	EVENT_SLEEP,		/*  Fn+F1 for entering sleep mode */
+-	EVENT_OVERTEMP,		/*  Over-temperature happened */
+-	EVENT_CRT_DETECT,	/*  CRT is connected */
+-	EVENT_CAMERA,		/*  Camera on/off */
+-	EVENT_USB_OC2,		/*  USB2 Over Current occurred */
+-	EVENT_USB_OC0,		/*  USB0 Over Current occurred */
+-	EVENT_BLACK_SCREEN,	/*  Turn on/off backlight */
+-	EVENT_AUDIO_MUTE,	/*  Mute on/off */
+-	EVENT_DISPLAY_BRIGHTNESS,/* LCD backlight brightness adjust */
+-	EVENT_AC_BAT,		/*  AC & Battery relative issue */
+-	EVENT_AUDIO_VOLUME,	/*  Volume adjust */
+-	EVENT_WLAN,		/*  Wlan on/off */
+-	EVENT_END
+-};
+-
+-#endif /* !_EC_KB3310B_H */
+diff --git a/arch/mips/loongson64/lemote-2f/pm.c b/arch/mips/loongson64/lemote-2f/pm.c
+index 6859e934862d..0768739155f6 100644
+--- a/arch/mips/loongson64/lemote-2f/pm.c
++++ b/arch/mips/loongson64/lemote-2f/pm.c
+@@ -88,7 +88,7 @@ EXPORT_SYMBOL(yeeloong_report_lid_status);
+ static void yeeloong_lid_update_task(struct work_struct *work)
+ {
+ 	if (yeeloong_report_lid_status)
+-		yeeloong_report_lid_status(BIT_LID_DETECT_ON);
++		yeeloong_report_lid_status(ON);
  }
  
-+/*
-+ * Copy kernel command line from arcs_cmdline
-+ */
-+#include <asm/setup.h>
-+extern char loongson_cmdline[COMMAND_LINE_SIZE];
-+
- /* irq operation functions */
- extern void bonito_irqdispatch(void);
- extern void __init bonito_irq_init(void);
-diff --git a/arch/mips/loongson64/common/cmdline.c b/arch/mips/loongson64/common/cmdline.c
-index 01fbed137028..49e172184e15 100644
---- a/arch/mips/loongson64/common/cmdline.c
-+++ b/arch/mips/loongson64/common/cmdline.c
-@@ -21,6 +21,11 @@
- 
+ int wakeup_loongson(void)
+@@ -118,7 +118,7 @@ int wakeup_loongson(void)
+ 			/* check the LID status */
+ 			lid_status = ec_read(REG_LID_DETECT);
+ 			/* wakeup cpu when people open the LID */
+-			if (lid_status == BIT_LID_DETECT_ON) {
++			if (lid_status == ON) {
+ 				/* If we call it directly here, the WARNING
+ 				 * will be sent out by getnstimeofday
+ 				 * via "WARN_ON(timekeeping_suspended);"
+diff --git a/arch/mips/loongson64/lemote-2f/reset.c b/arch/mips/loongson64/lemote-2f/reset.c
+index a26ca7fcd7e0..2b72b197c51d 100644
+--- a/arch/mips/loongson64/lemote-2f/reset.c
++++ b/arch/mips/loongson64/lemote-2f/reset.c
+@@ -20,7 +20,7 @@
  #include <loongson.h>
  
-+/* the kernel command line copied from arcs_cmdline */
-+#include <linux/export.h>
-+char loongson_cmdline[COMMAND_LINE_SIZE];
-+EXPORT_SYMBOL(loongson_cmdline);
-+
- void __init prom_init_cmdline(void)
- {
- 	int prom_argc;
-@@ -45,4 +50,6 @@ void __init prom_init_cmdline(void)
- 	}
+ #include <cs5536/cs5536.h>
+-#include "ec_kb3310b.h"
++#include <ec_kb3310b.h>
  
- 	prom_init_machtype();
-+	/* copy arcs_cmdline into loongson_cmdline */
-+	strncpy(loongson_cmdline, arcs_cmdline, COMMAND_LINE_SIZE);
+ static void reset_cpu(void)
+ {
+@@ -81,7 +81,7 @@ static void ml2f_reboot(void)
+ 	reset_cpu();
+ 
+ 	/* sending an reset signal to EC(embedded controller) */
+-	ec_write(REG_RESET, BIT_RESET_ON);
++	ec_write(REG_RESET, ON);
  }
+ 
+ #define yl2f89_reboot ml2f_reboot
 -- 
 2.14.1

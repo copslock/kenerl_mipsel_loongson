@@ -1,64 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2017 23:49:35 +0100 (CET)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:55172
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990901AbdKNWt1e7TM1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2017 23:49:27 +0100
-Received: by mail-pf0-x241.google.com with SMTP id n89so15513542pfk.11
-        for <linux-mips@linux-mips.org>; Tue, 14 Nov 2017 14:49:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version;
-        bh=+Sm51rXotvFNcGdBCXa26PnG8Zi/t1k97C3RlBvZ4xc=;
-        b=d388yoo62G4OtJlCn/e5o9qBDZ00CTUQvqZRvGdD6ZXLKRyjrBEs8iTDhSfrFGi55X
-         5Ki+osUOEmVRCGAdiPoRRS9DkbL8c6pD7lzF+7MuLjU+rRpCCpWGqFk5XjbofE+shizJ
-         Q5vP011M2fizLKG/QW6FMVza+a7tGM3M1dP8rnxVIRzHZG+Ph3rugbrNAJREBBxzxwU/
-         xku9aA7WpjfYFqzRytEND2BvfwnfNiPEmuDMaRTVG71TTuRxLasHLGIPCFL+wUTyP8Hb
-         OQqc/Q2Lyh50r7vlDR+YXLtKhjrVRaBYN3IFmgkUS8e15tT9jxgDxYIfDBw+fE/onhOB
-         m3jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version;
-        bh=+Sm51rXotvFNcGdBCXa26PnG8Zi/t1k97C3RlBvZ4xc=;
-        b=Qy0PvSnwI7WFC1z6AH5XTCjpGVkxC1HHIo8mRUU+FAOspE8XR6oFsZ3xpSYn/p+4EY
-         uDPO37PSWpZc8OdzjJXdVL1Os03wC05VksoClfxKjAWj0ZCy3TwcwS0A85cASI/A5aQz
-         iZmOQguTjbj0ykhvhxv14vLpWod0/8B9+0227azH4xEQMD95XNga4AI9yLLvpcs/Z/E0
-         Vzls+CoTnqIT2E5zPS5eMulrDlEGNBP5J4ljPx1WW88OQvrRPhsL0jJBCrEt+G1IPBAy
-         A7+eLnMLh47NTFNhnRytmkTIcKdpc1iKlnZBOU8ysP1r7Mp6NmOYkJSM7ucNQ3gtgqSH
-         39kg==
-X-Gm-Message-State: AJaThX7l4m6gWb1Yg4cwJX2vKtEj6wkoEqVuR+kMsVerYqoHh8Fl4XS5
-        GU6fUyXvNNvdZbm9/5+F3hTing==
-X-Google-Smtp-Source: AGs4zMa/IjvgTe5behsbJasGRFi9DfC783CxblfUL6Ls43nENByebH52JmH8WaQ+S84VoHicDb/log==
-X-Received: by 10.159.206.198 with SMTP id x6mr13751960plo.35.1510699760767;
-        Tue, 14 Nov 2017 14:49:20 -0800 (PST)
-Received: from xeon-e3 (76-14-207-240.or.wavecable.com. [76.14.207.240])
-        by smtp.gmail.com with ESMTPSA id r80sm41091149pfa.169.2017.11.14.14.49.20
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Nov 2017 14:49:20 -0800 (PST)
-Date:   Tue, 14 Nov 2017 14:49:17 -0800
-From:   Stephen Hemminger <stephen@networkplumber.org>
-To:     James Hogan <james.hogan@mips.com>
-Cc:     Dave Taht <dave.taht@gmail.com>, <netdev@vger.kernel.org>,
-        <linux-next@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [net-next,1/3] netem: convert to qdisc_watchdog_schedule_ns
-Message-ID: <20171114144917.66f0047c@xeon-e3>
-In-Reply-To: <20171114211112.GA28794@jhogan-linux.mipstec.com>
-References: <1510088376-5527-2-git-send-email-dave.taht@gmail.com>
-        <20171114211112.GA28794@jhogan-linux.mipstec.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/.mqhecnEQbKr_PrIAjZI4vC"; protocol="application/pgp-signature"
-Return-Path: <stephen@networkplumber.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 04:13:07 +0100 (CET)
+Received: from forward101j.mail.yandex.net ([IPv6:2a02:6b8:0:801:2::101]:48746
+        "EHLO forward101j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbdKODM7vICFf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Nov 2017 04:12:59 +0100
+Received: from mxback3o.mail.yandex.net (mxback3o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::1d])
+        by forward101j.mail.yandex.net (Yandex) with ESMTP id B76781242958;
+        Wed, 15 Nov 2017 06:12:50 +0300 (MSK)
+Received: from smtp1j.mail.yandex.net (smtp1j.mail.yandex.net [2a02:6b8:0:801::ab])
+        by mxback3o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id CSPtKkE6QG-Col4pfAN;
+        Wed, 15 Nov 2017 06:12:50 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715570;
+        bh=Djv1V5f/ckDgNRjLc2jFVyAExdqbYlB3knOkiblymCM=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
+        b=SbA0cVMb9gJTdZCcfwGLo9IGvnvI/u7iRM0qGuw/tm1aBzZcVfUR+O7YW3+Qr+RSJ
+         EJ0mr+WkuzJsVj+I+VQ2/fMBD74cR6E+QyhDOk4u8TPEihmcKNKgGFRjypGHEbN/PZ
+         ZQ15akP9cugyPtOgRiiAsypu+tuZRcNIOw3NH8ms=
+Received: by smtp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id sPMPJaqN4J-Ckc4S2WO;
+        Wed, 15 Nov 2017 06:12:49 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715569;
+        bh=Djv1V5f/ckDgNRjLc2jFVyAExdqbYlB3knOkiblymCM=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
+        b=QaDbuN8R0+22MxPuu8ryPJ9XTRYO+lKi9y8UVRGkHFHzGijwJb4MbPxhZiKzaOB/Q
+         OnkUJuo44cU8hfib7LX1WnFciM1GmFBY1ed/zibt2oXROL2DuBAh/70M5Z+hKMzIln
+         5b7VDtYbPW+nfdiehrD2vt9LJM12uHh1hhjotwwI=
+Authentication-Results: smtp1j.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v3 1/4] MIPS: Lonngson64: Copy kernel command line from arcs_cmdline
+Date:   Wed, 15 Nov 2017 11:11:52 +0800
+Message-Id: <20171115031155.643-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
+References: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60948
+X-archive-position: 60949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stephen@networkplumber.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,65 +57,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/.mqhecnEQbKr_PrIAjZI4vC
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Since lemote-2f/marchtype.c need to get cmdline from loongson.h
+this patch simply copy kernel command line from arcs_cmdline
+to fix that issue.
 
-On Tue, 14 Nov 2017 21:11:13 +0000
-James Hogan <james.hogan@mips.com> wrote:
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+ arch/mips/include/asm/mach-loongson64/loongson.h | 6 ++++++
+ arch/mips/loongson64/common/cmdline.c            | 7 +++++++
+ 2 files changed, 13 insertions(+)
 
-> On Tue, Nov 07, 2017 at 12:59:34PM -0800, Dave Taht wrote:
-> > diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-> > index db0228a..443a75d 100644
-> > --- a/net/sched/sch_netem.c
-> > +++ b/net/sched/sch_netem.c =20
->=20
-> ...
->=20
-> > @@ -305,11 +305,11 @@ static bool loss_event(struct netem_sched_data *q)
-> >   * std deviation sigma.  Uses table lookup to approximate the desired
-> >   * distribution, and a uniformly-distributed pseudo-random source.
-> >   */
-> > -static psched_tdiff_t tabledist(psched_tdiff_t mu, psched_tdiff_t sigm=
-a,
-> > -				struct crndstate *state,
-> > -				const struct disttable *dist)
-> > +static s64 tabledist(s64 mu, s64 sigma, =20
->=20
-> sigma is used in a modulo operation in this function, which results in
-> this error on a bunch of MIPS configs once it is made 64-bits wide:
->=20
-> net/sched/sch_netem.o In function `tabledist':
-> net/sched/sch_netem.c:330: undefined reference to `__moddi3'
->=20
-> Should that code not be using <linux/math64.h>, i.e. div_s64_rem() now
-> that it is 64bit?
->=20
-> Thanks
-> James
-
-Not really since random is only 32 bit, the sigma value being 64 bit makes
-no sense really.
-
---Sig_/.mqhecnEQbKr_PrIAjZI4vC
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEn2/DRbBb5+dmuDyPgKd/YJXN5H4FAloLcu0ACgkQgKd/YJXN
-5H6Gew/6A/eZ8FnXQLRCZzlYMeJqz3Bl4b0C4HuUYsEZhSZMyu+TTIJyjhpk4tau
-D+VkwNtaOc0J6GmKbvWkb20n08RjN1xAZuNWxL+ohjdLE9SrvMIPzrs+PFiqow8d
-ApL8cOsZFnbuha/ncPyXELf5z8xbDPWIJLM0dh07esNy93ZVMKq6slqjAScinJwE
-/3iW3Ad5XYuC0PxpeodwtswDVxnXhy5zZqZDz26kxQ93eWk1+8biO6vLOTEKuk3J
-jZ0l2r2Lc3npDYO7V6uE/ZRRlyTHULuF28KnrWCKUDuv1FkH2ITNoFeu90BuTT3y
-wzMbqp3e3Z9A0fN6etffh6qPN8gmV3KwiIhzeYd6t6CMwQLH6XVDOxp2W8mic4UK
-UsItxhRDSTv2mRV/PnJmfF6V27MO47XpnD48X0H0iWyxaBmmwgewrpuOlkXlDHxa
-IHxdRfGaglS2U/jxus34T24zFJpyvt6+fjohpMrwq+LW78OLZJm/Y8nzMQ/T1yem
-Y7JD+E20evAjRiZB9hk5RgfqtLfwNf4vXgh8vK72e5CVZIKUCQpZV51bx7ZC9Ob4
-teBfuyJ4s4iv+4uvXG/PeYYxHDgC0WPVuo7+Gxz+/76ghQvL7F4VY97YlhQCGiat
-EEEfDHtrDrAJJQ/NMUUCsD9T8cSAHr41YdSGbBqKwpEzSEZunos=
-=oJr8
------END PGP SIGNATURE-----
-
---Sig_/.mqhecnEQbKr_PrIAjZI4vC--
+diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
+index c68c0cc879c6..1edf3a484e6a 100644
+--- a/arch/mips/include/asm/mach-loongson64/loongson.h
++++ b/arch/mips/include/asm/mach-loongson64/loongson.h
+@@ -45,6 +45,12 @@ static inline void prom_init_uart_base(void)
+ #endif
+ }
+ 
++/*
++ * Copy kernel command line from arcs_cmdline
++ */
++#include <asm/setup.h>
++extern char loongson_cmdline[COMMAND_LINE_SIZE];
++
+ /* irq operation functions */
+ extern void bonito_irqdispatch(void);
+ extern void __init bonito_irq_init(void);
+diff --git a/arch/mips/loongson64/common/cmdline.c b/arch/mips/loongson64/common/cmdline.c
+index 01fbed137028..49e172184e15 100644
+--- a/arch/mips/loongson64/common/cmdline.c
++++ b/arch/mips/loongson64/common/cmdline.c
+@@ -21,6 +21,11 @@
+ 
+ #include <loongson.h>
+ 
++/* the kernel command line copied from arcs_cmdline */
++#include <linux/export.h>
++char loongson_cmdline[COMMAND_LINE_SIZE];
++EXPORT_SYMBOL(loongson_cmdline);
++
+ void __init prom_init_cmdline(void)
+ {
+ 	int prom_argc;
+@@ -45,4 +50,6 @@ void __init prom_init_cmdline(void)
+ 	}
+ 
+ 	prom_init_machtype();
++	/* copy arcs_cmdline into loongson_cmdline */
++	strncpy(loongson_cmdline, arcs_cmdline, COMMAND_LINE_SIZE);
+ }
+-- 
+2.14.1

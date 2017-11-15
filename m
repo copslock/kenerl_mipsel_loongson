@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 04:14:17 +0100 (CET)
-Received: from forward101j.mail.yandex.net ([IPv6:2a02:6b8:0:801:2::101]:48842
-        "EHLO forward101j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991526AbdKODNI4Xq3f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Nov 2017 04:13:08 +0100
-Received: from mxback3j.mail.yandex.net (mxback3j.mail.yandex.net [IPv6:2a02:6b8:0:1619::10c])
-        by forward101j.mail.yandex.net (Yandex) with ESMTP id 845CD1244649;
-        Wed, 15 Nov 2017 06:13:03 +0300 (MSK)
-Received: from smtp1j.mail.yandex.net (smtp1j.mail.yandex.net [2a02:6b8:0:801::ab])
-        by mxback3j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id zsJnHGLmnq-D3iiZ8xc;
-        Wed, 15 Nov 2017 06:13:03 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715583;
-        bh=MrOrknRG+3Xo+cBufeUr67xb+xdeHv+IVTUwXO5v3hQ=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=Jk+ZCwdIm9dfdvwIjy7FwSyMrt69ADwFLEnOqmf9r99jOEtDOpcRJ1bZnE2H/LEqJ
-         UlIoBrsl421ukhTds9jnh9hHLFjD2Q74hETviuyn5i9DGy3LLm1RhgLxUI6i2Zr5Pt
-         ZCNfjs9K5nEdCpa4eYdJXyqEfmfrH1nGDN0FrtBU=
-Received: by smtp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id sPMPJaqN4J-D0cum4CY;
-        Wed, 15 Nov 2017 06:13:02 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1510715583;
-        bh=MrOrknRG+3Xo+cBufeUr67xb+xdeHv+IVTUwXO5v3hQ=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=Jk+ZCwdIm9dfdvwIjy7FwSyMrt69ADwFLEnOqmf9r99jOEtDOpcRJ1bZnE2H/LEqJ
-         UlIoBrsl421ukhTds9jnh9hHLFjD2Q74hETviuyn5i9DGy3LLm1RhgLxUI6i2Zr5Pt
-         ZCNfjs9K5nEdCpa4eYdJXyqEfmfrH1nGDN0FrtBU=
-Authentication-Results: smtp1j.mail.yandex.net; dkim=pass header.i=@flygoat.com
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v3 4/4] MIPS: Loongson64: Load platform device during boot
-Date:   Wed, 15 Nov 2017 11:11:55 +0800
-Message-Id: <20171115031155.643-4-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20171115031155.643-1-jiaxun.yang@flygoat.com>
-References: <20171112063617.26546-1-jiaxun.yang@flygoat.com>
- <20171115031155.643-1-jiaxun.yang@flygoat.com>
-Return-Path: <jiaxun.yang@flygoat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2017 11:33:04 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:54240 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990418AbdKOKc5GQMul convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Nov 2017 11:32:57 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 15 Nov 2017 10:32:49 +0000
+Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 15 Nov
+ 2017 02:32:40 -0800
+Subject: Re: [PATCH] MIPS: Fix exception entry when CONFIG_EVA enabled
+To:     "Maciej W. Rozycki" <macro@mips.com>,
+        James Hogan <james.hogan@mips.com>
+CC:     Corey Minyard <cminyard@mvista.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Matthew Fortune <matthew.fortune@mips.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        "Jason A. Donenfeld" <jason@zx2c4.com>,
+        "Paul Burton" <paul.burton@mips.com>
+References: <1507712360-20657-1-git-send-email-matt.redfearn@mips.com>
+ <605f6a96-a843-085c-efc6-a2c0f2afd84a@mvista.com>
+ <20171031234853.GD15260@jhogan-linux>
+ <alpine.DEB.2.00.1711131045460.3893@tp.orcam.me.uk>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <9a2d2b4b-9b6a-a7e2-78be-ff6a019d6e05@mips.com>
+Date:   Wed, 15 Nov 2017 10:32:37 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
+MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.00.1711131045460.3893@tp.orcam.me.uk>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1510741968-637138-17943-328037-1
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.51
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186949
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
+        Domain Matches Recipient Domain 
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.51 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_RULE7568M, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60952
+X-archive-position: 60953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,61 +67,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch just add pdev during boot to load the platform driver
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- arch/mips/loongson64/lemote-2f/Makefile   |  2 +-
- arch/mips/loongson64/lemote-2f/platform.c | 27 +++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/loongson64/lemote-2f/platform.c
 
-diff --git a/arch/mips/loongson64/lemote-2f/Makefile b/arch/mips/loongson64/lemote-2f/Makefile
-index 08b8abcbfef5..31c90737b98c 100644
---- a/arch/mips/loongson64/lemote-2f/Makefile
-+++ b/arch/mips/loongson64/lemote-2f/Makefile
-@@ -2,7 +2,7 @@
- # Makefile for lemote loongson2f family machines
- #
- 
--obj-y += clock.o machtype.o irq.o reset.o ec_kb3310b.o
-+obj-y += clock.o machtype.o irq.o reset.o ec_kb3310b.o platform.o
- 
- #
- # Suspend Support
-diff --git a/arch/mips/loongson64/lemote-2f/platform.c b/arch/mips/loongson64/lemote-2f/platform.c
-new file mode 100644
-index 000000000000..46922f730a64
---- /dev/null
-+++ b/arch/mips/loongson64/lemote-2f/platform.c
-@@ -0,0 +1,27 @@
-+/*
-+ * Copyright (C) 2017 Jiaxun Yang.
-+ * Author: Jiaxun Yang, jiaxun.yang@flygoat.com
+On 13/11/17 10:47, Maciej W. Rozycki wrote:
+> On Tue, 31 Oct 2017, James Hogan wrote:
+> 
+>>> I looked this over pretty carefully and it looks correct to me.  It
+>>> makes no difference
+>>> in the instructions generated by the non-EVA case.  I shouldn't have
+>>> missed this :(.
+>>>
+>>> Reviewed-by: Corey Minyard <cminyard@mvista.com>
+>>
+>> Yeh, having stared at it for a little while it looks correct to me too.
+>>
+>> Reviewed-by: James Hogan <jhogan@kernel.org>
+> 
+>   How about getting rid of the `noreorder' mode and the manually scheduled
+> delay slot here altogether though, as I outlined?
+> 
+>    Maciej
+> 
+
+Hi Maciej,
+
+I like the change you propose, however I can't coax GAS to reorder the 
+instructions appropriately. With this patch on top of 4.14:
+
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -195,14 +195,16 @@
+                 .set    push
+                 .set    noat
+                 .set    reorder
+-               mfc0    k0, CP0_STATUS
+-               sll     k0, 3           /* extract cu0 bit */
+-               .set    noreorder
+-               bltz    k0, 8f
+-                move   k0, sp
++               mfc0    k1, CP0_STATUS
++               sll     k1, 3           /* extract cu0 bit */
 +
-+ * Copyright (C) 2009 Lemote Inc.
-+ * Author: Wu Zhangjin, wuzhangjin@gmail.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
++               move    k0, sp
+                 .if \docfi
+                 .cfi_register sp, k0
+                 .endif
 +
-+#include <linux/err.h>
-+#include <linux/platform_device.h>
++               bltz    k1, 8f
 +
-+#include <asm/bootinfo.h>
-+
-+static int __init lemote2f_platform_init(void)
-+{
-+	if (mips_machtype != MACH_LEMOTE_YL2F89)
-+		return -ENODEV;
-+
-+	return platform_device_register_simple("yeeloong_laptop", -1, NULL, 0);
-+}
-+
-+arch_initcall(lemote2f_platform_init);
-\ No newline at end of file
--- 
-2.14.1
+  #ifdef CONFIG_EVA
+                 /*
+                  * Flush interAptiv's Return Prediction Stack (RPS) by 
+writing
+@@ -228,7 +230,6 @@
+                 MFC0    k0, CP0_ENTRYHI
+                 MTC0    k0, CP0_ENTRYHI
+  #endif
+-               .set    reorder
+                 /* Called from user mode, new stack. */
+                 get_saved_sp docfi=\docfi tosp=1
+  8:
+
+
+The generated assembly is:
+
+80405d00 <handle_int>:
+80405d00:       401b6000        mfc0    k1,c0_status
+80405d04:       001bd8c0        sll     k1,k1,0x3
+80405d08:       03a0d025        move    k0,sp
+80405d0c:       07600007        bltz    k1,80405d2c <handle_int+0x2c>
+80405d10:       00000000        nop
+80405d14:       401a2000        mfc0    k0,c0_context
+
+Apparently GAS has not been able to reorder the move into the branch 
+delay slot for some reason. Any ideas?
+
+Thanks,
+Matt

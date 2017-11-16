@@ -1,70 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Nov 2017 13:47:00 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.230]:45449 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992325AbdKPMqyFCPTm convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Nov 2017 13:46:54 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 16 Nov 2017 12:45:30 +0000
-Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
- MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
- 14.03.0361.001; Thu, 16 Nov 2017 04:45:30 -0800
-From:   Aleksandar Markovic <Aleksandar.Markovic@mips.com>
-To:     James Hogan <James.Hogan@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Miodrag Dinic <Miodrag.Dinic@mips.com>,
-        Goran Ferenc <Goran.Ferenc@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <Douglas.Leung@mips.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Burton <Paul.Burton@mips.com>,
-        Petar Jovanovic <Petar.Jovanovic@mips.com>,
-        Raghu Gandham <Raghu.Gandham@mips.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: RE: [PATCH v9 3/3] MIPS: ranchu: Add Ranchu as a new generic-based
- board
-Thread-Topic: [PATCH v9 3/3] MIPS: ranchu: Add Ranchu as a new generic-based
- board
-Thread-Index: AQHTXhfOlk9EmIq0B0Sx4ZGVYt9VOaMWg9yAgABte/g=
-Date:   Thu, 16 Nov 2017 12:45:28 +0000
-Message-ID: <BD3A5F1946F2E540A31AF2CE969BAEEEC19ED4@MIPSMAIL01.mipstec.com>
-References: <1510753368-16453-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1510753368-16453-4-git-send-email-aleksandar.markovic@rt-rk.com>,<20171115215910.GB27409@jhogan-linux.mipstec.com>
-In-Reply-To: <20171115215910.GB27409@jhogan-linux.mipstec.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [82.117.201.26]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 00:42:49 +0100 (CET)
+Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:39451
+        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992188AbdKPXmmJ-m5K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 00:42:42 +0100
+Received: by mail-oi0-x242.google.com with SMTP id r190so522613oie.6;
+        Thu, 16 Nov 2017 15:42:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=hpNeYm30ruNAfIduvbbbXwpbFZQ35hFiqhNPvDxd8Fc=;
+        b=G2weztNxVFEquGfqXw0UM5OdKUgm2OiPtW+NVYo0ih8gHfY/tc3vGYB/dRNNZdfzjc
+         bZIz46PbZ/wp1mILzFaXSellaI3KGHSqZTAIBkcWEbpLLzV7Os7GlUc3nKNz3vIIorfv
+         w9wiEUGi70gQ13LIPS2dGYifqD6SHHnV4qphihP0Rj54cRcpTBYusAfwpCwHHIXG8RuZ
+         T5W1QdtiK/21U7kguyGtTFVxN+etUxOtMRgywAKTTMc3fbVcunGIpB3nW6a6vTkXA5FS
+         rDciz7+w23vPWhKA84nVL5YU4BSHm8P501HHIqAQy+BqLoDxDvrBsi6Sc5xAOh20RPvM
+         GhGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=hpNeYm30ruNAfIduvbbbXwpbFZQ35hFiqhNPvDxd8Fc=;
+        b=UKFCXy0PUPOhnw0P+CAfjc/TQQ1JXxWp0n+PrdnO8HBiv9dNkXm4QeX9pU+6kaxyJb
+         EmgJURi1kZ19fqQ16kobmbRzCOEjCULAbug/HHagoNZJe+HgAtgk7saZil0wB967J0in
+         ppxedqRV+28Yu9vg4xbR6FM2+xQL6tcZCe0BSEFcDxTE7OGdRQRbPSL45uHRG+eY6AUX
+         2POtU1TFkLcn5GDueBVn28ZqhmZIrOFZLb7X4gtHVZkPgsgxPDRDcYjXyAJykkgZ8hRM
+         A9nSPYXn0rj9W3eEo681x7Ac/xSnY13+GWGM3uHUuA/+jo02kFC0s8J0VidMMOQ9X+ST
+         wAuQ==
+X-Gm-Message-State: AJaThX7qZRiiFWYes/8se3r6Ku+y++ehtvZ3vl9dB+rIRfohFOpTbCQ3
+        W70W+7NKtcSynclo4QF31oktaNR51VQtjnBinUc=
+X-Google-Smtp-Source: AGs4zMZkyQRu8YBDwgn63Lg+eb+8ZDXJ/v8MsMSM5NzSD9FS1ORMjmNK24rtvqPTwUY95ivcMpONmq0mHekbhYHEBTM=
+X-Received: by 10.202.229.65 with SMTP id c62mr13789oih.128.1510875755767;
+ Thu, 16 Nov 2017 15:42:35 -0800 (PST)
 MIME-Version: 1.0
-X-BESS-ID: 1510836330-452060-13501-65935-1
-X-BESS-VER: 2017.14.1-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.61
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.186992
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.60 MARKETING_SUBJECT      HEADER: Subject contains 
-        popular marketing words 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.61 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-BRTS-Status: 1
-Return-Path: <Aleksandar.Markovic@mips.com>
+Received: by 10.157.43.3 with HTTP; Thu, 16 Nov 2017 15:42:35 -0800 (PST)
+In-Reply-To: <alpine.DEB.2.20.1711160958430.2191@nanos>
+References: <20171110224259.15930-1-deepa.kernel@gmail.com>
+ <CAK8P3a2uD=xV5GKtL+nhVoPckb6uoXztEvXK-iP_OYbct8QvJA@mail.gmail.com>
+ <CABeXuvpy1jbqjeUFHHX-MrJXQLA2QNYbAa6OX7qOpPp4q-mQYQ@mail.gmail.com> <alpine.DEB.2.20.1711160958430.2191@nanos>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 17 Nov 2017 00:42:35 +0100
+X-Google-Sender-Auth: qV6qBbRCPsm0bRHmCYki0BT0dCM
+Message-ID: <CAK8P3a0wxs59T1zW4ahbJXeW6QjStm0mbCFoL_RQexAa6dzh_w@mail.gmail.com>
+Subject: Re: [PATCH 0/9] posix_clocks: Prepare syscalls for 64 bit time_t conversion
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>, cohuck@redhat.com,
+        David Miller <davem@davemloft.net>,
+        Helge Deller <deller@gmx.de>, devel@driverdev.osuosl.org,
+        gerald.schaefer@de.ibm.com, gregkh <gregkh@linuxfoundation.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
+        Paul Mackerras <paulus@samba.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Robert Richter <rric@kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        sebott@linux.vnet.ibm.com, sparclinux <sparclinux@vger.kernel.org>,
+        Stefan Haberland <sth@linux.vnet.ibm.com>,
+        Ursula Braun <ubraun@linux.vnet.ibm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60975
+X-archive-position: 60977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Aleksandar.Markovic@mips.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,59 +104,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> From: James Hogan
-> 
-> Hi Aleksandar,
-> 
-> On Wed, Nov 15, 2017 at 02:42:20PM +0100, Aleksandar Markovic wrote:
-> > diff --git a/arch/mips/configs/generic/board-ranchu.config b/arch/mips/configs/generic/board-ranchu.config
-> > new file mode 100644
-> > index 0000000..fee9ad4
-> > --- /dev/null
-> > +++ b/arch/mips/configs/generic/board-ranchu.config
-> > @@ -0,0 +1,30 @@
-> > +CONFIG_VIRT_BOARD_RANCHU=y
-> 
-> I presume its valid for Ranchu support to be enabled in MIPS32 / MIPS64,
-> and R1 / R2 / R6 kernels? (that's fine if so, just making sure there's
-> no need for a require comment).
+On Thu, Nov 16, 2017 at 10:04 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
+> On Wed, 15 Nov 2017, Deepa Dinamani wrote:
+>> > I had on concern about x32, maybe we should check
+>> > for "COMPAT_USE_64BIT_TIME" before zeroing out the tv_nsec
+>> > bits.
+>>
+>> Thanks, I think you are right. I had the check conditional on
+>> CONFIG_64BIT_TIME and then removed as I forgot why I added it. :)
+>>
+>> > Regarding CONFIG_COMPAT_TIME/CONFIG_64BIT_TIME, would
+>> > it help to just leave out that part for now and unconditionally
+>> > define '__kernel_timespec' as 'timespec' until we are ready to
+>> > convert the architectures?
+>>
+>> Another approach would be to use separate configs:
+>>
+>> 1. To indicate 64 bit time_t syscall support. This will be dependent
+>> on architectures as CONFIG_64BIT_TIME.
+>> We can delete this once all architectures have provided support for this.
+>>
+>> 2. Another config (maybe COMPAT_32BIT_TIME?) to be introduced later,
+>> which will compile out all syscalls/ features that use 32 bit time_t.
+>> This can help build a y2038 safe kernel later.
+>>
+>> Would this work for everyone?
+>
+> Having extra config switches which are selectable by architectures and
+> removed when everything is converted is definitely the right way to go.
+>
+> That allows you to gradually convert stuff w/o inflicting wreckage all over
+> the place.
 
-Yes, Ranchu virtual machine, and Android emulator for that matter, support
-all combinations you mentioned.
+The CONFIG_64BIT_TIME would do that nicely for the new stuff like
+the conditional definition of __kernel_timespec, this one would get
+removed after we convert all architectures.
 
-> 
-> > diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-ranchu.c
-> > new file mode 100644
-> > index 0000000..0efc555
-> > --- /dev/null
-> > +++ b/arch/mips/generic/board-ranchu.c
-> > @@ -0,0 +1,85 @@
-> 
-> ...
-> 
-> > +static __init unsigned int ranchu_measure_hpt_freq(void)
-> > +{
-> 
-> ...
-> 
-> > +     count += 5000;  /* round */
-> > +     count -= count % 10000;
-> 
-> A comment to explain the purpose of the rounding would be helpful. I
-> presume its there just to get a more accurate value since the frequency
-> will always be a round value in practice.
+A second issue is how to control the compilation of the compat syscalls.
+CONFIG_COMPAT_32BIT_TIME handles that and could be defined
+in Kconfig as 'def_bool (!64BIT && CONFIG_64BIT_TIME) || COMPAT',
+this is then just a more readable way of expressing exactly when the
+functions should be built.
 
-An appropriate comment will be added in v10, but v10 will be submitted
-no sooner than next week, to provide enough time for other people wanting
-to review this and other patches.
+For completeness, there may be a third category, depending on how
+we handle things like sys_nanosleep(): Here, we want the native
+sys_nanosleep on 64-bit architectures, and compat_sys_nanosleep()
+to handle the 32-bit time_t variant on both 32-bit and 64-bit targets,
+but our plan is to not have a native 32-bit sys_nanosleep on 32-bit
+architectures any more, as new glibc should call clock_nanosleep()
+with a new syscall number instead. Should we then enclose
+sys_nanosleep in "#if !defined(CONFIG_64BIT_TIME) ||
+defined(CONFIG_64BIT)", or should we try to come up with another
+Kconfig symbol name that expresses this better?
 
-> 
-> Either way this patch looks good to me:
-> Reviewed-by: James Hogan <jhogan@kernel.org>
-> 
-> Thanks!
-> James
-
-I appreciate your review!
-
-Aleksandar
+       Arnd

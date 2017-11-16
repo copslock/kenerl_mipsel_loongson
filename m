@@ -1,59 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Nov 2017 09:35:58 +0100 (CET)
-Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:47092
-        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992143AbdKPIfscAoWE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Nov 2017 09:35:48 +0100
-Received: by mail-pf0-x242.google.com with SMTP id i15so8796782pfa.3;
-        Thu, 16 Nov 2017 00:35:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=KnNuCo7U2WY3c6EZYsIHkUZeAQN+7NA7bXu6+sheReQ=;
-        b=lCC0qGFjn6zM9l04nBvt/OWowDEZH7gZIk9/NnW/XMgxz4AEG9A61itNmuL60pXHRH
-         IG7ODWzoHgAZ2pNZOFLSypvae6V4U/daJgqy/hgukN6Je+oHZhCpxb7n+KfuAcW+6vK/
-         1ZGdkBbgW7CXD9yUmSqNHLXDe31ylEZv9CqxeDUvTGxUz67yxpbo0SQboBF5v1LLtUuy
-         h+80bGWTHXYziJKsmeD+SiPF75/tuTlG0Dzu8xi/U+E+shwElH7JetcoJWGUD7sPzMj3
-         dS/dzsKlDJVhUg2y2IA3pe2Q0JYEbb6L5JHfz5yDBOfspqm6WbyM5V6EMJ9xaPCQB5Sv
-         hDTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=KnNuCo7U2WY3c6EZYsIHkUZeAQN+7NA7bXu6+sheReQ=;
-        b=CZtcGWqBamCRHWjGmXzj5G3oL+vyeUcI7q1tRP3Ad1rbS95r6aX5W/v1vC8DG7eVg+
-         ZcuOs+lGuZy32xvaDgM01maZ2aFqCwXTnGMVrAG7cGwXyZ5FJzgT+ym0RsN/g22mL34c
-         DuLVZUmsAja1FPKqm9WeFAu1XAPzqxfryH+dfl5SMWg14IwmKWevu39UZdBXosj6Lm5N
-         rzeLaQd18/9lz7P1MU/50qOtyeimrTtkMUb3a8LBoIBepB7x20J244xZGJ2XkRPS9F+m
-         sQ9IF/Ft2ko5KuwNPOtjHdR5rLisL1AVX49AH9yEeA0gxJLbo7jIAcc30El93pUAUIxf
-         2mFw==
-X-Gm-Message-State: AJaThX7BZST7NZarnS7n0ckwvA19llDg1sSEb+wp6fpidyJkgmHBMgtt
-        0TkyTztr2hlUtCHAVUr6xMSKhw==
-X-Google-Smtp-Source: AGs4zMaLjKkVtNhl/RNBcXmRjSoeEZK2rKpdpWiA+aASzSiQTbRAL2gKB9WxS+xLtehZuOmyi4GN5g==
-X-Received: by 10.99.130.74 with SMTP id w71mr922614pgd.31.1510821342356;
-        Thu, 16 Nov 2017 00:35:42 -0800 (PST)
-Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id w9sm1706032pfl.19.2017.11.16.00.35.38
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 16 Nov 2017 00:35:41 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     James Hogan <James.Hogan@mips.com>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 2/2] MIPS: Loongson64: Add cache_sync to loongson_dma_map_ops
-Date:   Thu, 16 Nov 2017 16:35:55 +0800
-Message-Id: <1510821355-24694-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Nov 2017 10:05:15 +0100 (CET)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:37418 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990415AbdKPJFIaotQE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Nov 2017 10:05:08 +0100
+Received: from hsi-kbw-5-158-153-52.hsi19.kabel-badenwuerttemberg.de ([5.158.153.52] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1eFG4n-0007xG-0X; Thu, 16 Nov 2017 10:03:13 +0100
+Date:   Thu, 16 Nov 2017 10:04:00 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Deepa Dinamani <deepa.kernel@gmail.com>
+cc:     Arnd Bergmann <arnd@arndb.de>,
+        John Stultz <john.stultz@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>, cohuck@redhat.com,
+        David Miller <davem@davemloft.net>,
+        Helge Deller <deller@gmx.de>, devel@driverdev.osuosl.org,
+        gerald.schaefer@de.ibm.com, gregkh <gregkh@linuxfoundation.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
+        Paul Mackerras <paulus@samba.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Robert Richter <rric@kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        sebott@linux.vnet.ibm.com, sparclinux <sparclinux@vger.kernel.org>,
+        Stefan Haberland <sth@linux.vnet.ibm.com>,
+        Ursula Braun <ubraun@linux.vnet.ibm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH 0/9] posix_clocks: Prepare syscalls for 64 bit time_t
+ conversion
+In-Reply-To: <CABeXuvpy1jbqjeUFHHX-MrJXQLA2QNYbAa6OX7qOpPp4q-mQYQ@mail.gmail.com>
+Message-ID: <alpine.DEB.2.20.1711160958430.2191@nanos>
+References: <20171110224259.15930-1-deepa.kernel@gmail.com> <CAK8P3a2uD=xV5GKtL+nhVoPckb6uoXztEvXK-iP_OYbct8QvJA@mail.gmail.com> <CABeXuvpy1jbqjeUFHHX-MrJXQLA2QNYbAa6OX7qOpPp4q-mQYQ@mail.gmail.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60973
+X-archive-position: 60974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,52 +78,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-To support coherent & non-coherent DMA co-exsistance, we should add
-cache_sync to loongson_dma_map_ops.
+On Wed, 15 Nov 2017, Deepa Dinamani wrote:
+> > I had on concern about x32, maybe we should check
+> > for "COMPAT_USE_64BIT_TIME" before zeroing out the tv_nsec
+> > bits.
+> 
+> Thanks, I think you are right. I had the check conditional on
+> CONFIG_64BIT_TIME and then removed as I forgot why I added it. :)
+> 
+> > Regarding CONFIG_COMPAT_TIME/CONFIG_64BIT_TIME, would
+> > it help to just leave out that part for now and unconditionally
+> > define '__kernel_timespec' as 'timespec' until we are ready to
+> > convert the architectures?
+> 
+> Another approach would be to use separate configs:
+> 
+> 1. To indicate 64 bit time_t syscall support. This will be dependent
+> on architectures as CONFIG_64BIT_TIME.
+> We can delete this once all architectures have provided support for this.
+> 
+> 2. Another config (maybe COMPAT_32BIT_TIME?) to be introduced later,
+> which will compile out all syscalls/ features that use 32 bit time_t.
+> This can help build a y2038 safe kernel later.
+> 
+> Would this work for everyone?
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/dma-mapping.h       | 3 +++
- arch/mips/loongson64/common/dma-swiotlb.c | 1 +
- arch/mips/mm/dma-default.c                | 2 +-
- 3 files changed, 5 insertions(+), 1 deletion(-)
+Having extra config switches which are selectable by architectures and
+removed when everything is converted is definitely the right way to go.
 
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index 0d9418d..5544276 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -37,4 +37,7 @@ static inline void arch_setup_dma_ops(struct device *dev, u64 dma_base,
- #endif
- }
- 
-+void mips_dma_cache_sync(struct device *dev, void *vaddr,
-+		size_t size, enum dma_data_direction direction);
-+
- #endif /* _ASM_DMA_MAPPING_H */
-diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
-index ef07740..17956f2 100644
---- a/arch/mips/loongson64/common/dma-swiotlb.c
-+++ b/arch/mips/loongson64/common/dma-swiotlb.c
-@@ -120,6 +120,7 @@ static const struct dma_map_ops loongson_dma_map_ops = {
- 	.sync_sg_for_device = loongson_dma_sync_sg_for_device,
- 	.mapping_error = swiotlb_dma_mapping_error,
- 	.dma_supported = loongson_dma_supported,
-+	.cache_sync = mips_dma_cache_sync,
- };
- 
- void __init plat_swiotlb_setup(void)
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index e3e94d0..e86bf5d 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -383,7 +383,7 @@ static int mips_dma_supported(struct device *dev, u64 mask)
- 	return plat_dma_supported(dev, mask);
- }
- 
--static void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
-+void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 			 enum dma_data_direction direction)
- {
- 	BUG_ON(direction == DMA_NONE);
--- 
-2.7.0
+That allows you to gradually convert stuff w/o inflicting wreckage all over
+the place.
+
+Thanks,
+
+	tglx

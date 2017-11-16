@@ -1,55 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Nov 2017 09:33:48 +0100 (CET)
-Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:51210
-        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992143AbdKPIdhSeggE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Nov 2017 09:33:37 +0100
-Received: by mail-pg0-x243.google.com with SMTP id p9so20067734pgc.8;
-        Thu, 16 Nov 2017 00:33:37 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Nov 2017 09:35:03 +0100 (CET)
+Received: from mail-pf0-x244.google.com ([IPv6:2607:f8b0:400e:c00::244]:47846
+        "EHLO mail-pf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992143AbdKPIe5U00VE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Nov 2017 09:34:57 +0100
+Received: by mail-pf0-x244.google.com with SMTP id t69so10132846pfg.4;
+        Thu, 16 Nov 2017 00:34:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=yzf7aSzwlAVMR57cMqvwHxDCIeCutjERZnJ0TmkqbRY=;
-        b=ODDteCo5MQR8bSLxOwyFSsPkcIXloPJ043vCWUrpNUOIxNy+gZxNQCX+HNG+s6hyy2
-         aLuLcvodiOIQg36d7Gyxoa2rO8JQmz/eOl4YKOFf9hcLPZLE3pJLCZcbaLwxJSSGnaK3
-         S4wpsfqrcmIp1e7O0Sq6Lnl6XU6CCA9zDELC9+czzZIszkpGDxU9cN9hQO82pfp18ID0
-         Hw1gD1SG9SUODl2qwJ9Lj3/BuBnArubKeIf1q1Jju8hzpKDsfN57DKUuPkP6f20X9VzQ
-         ZfNZ3WrHKWnXrgzxqrx/bWmGEb1QhtudHlbkS3WlNMdyYG0zGYO6t/uzK3etIxwIAJ8o
-         e6RA==
+        bh=Em0Yhm0onPFNWZnvQiQp8xG8ifdEBoR+pa17B7X4o1c=;
+        b=iU3JL/L0MqEeS2PV3jBZqRF0cv418EcoCcuGJV/FEX1hjvAlBfhPtmP7GIVjKY7Y2o
+         xit10rz34d1HISdsVherXEMUfgZ8uqzEssc/eSiUdi8NmvfIFXYVZMfK96StokwXZyar
+         hQ9KR9u4/iDUrT1SXHSOOx0YaRVTxsWPcrXQVL49BQ1IjSnGKwS1eI/+IgXpwJoVU11P
+         cvaU9R3vGwmH9Iq1NjcYWGbvPEFutb08p+B8x54XIytOM9FnzUKnopYPSlm7Rj0XqNAR
+         kxdqAEtMMO2yU6UtvK5oH6sfYLovI+0IDVyYm3ZAq0B2EYglSsph6skZQohZOIUBVjNz
+         EIYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=yzf7aSzwlAVMR57cMqvwHxDCIeCutjERZnJ0TmkqbRY=;
-        b=NwNdq/tSqsGYWJfqKuJclLk1asZ7eXP/0JH2G0rNh5og/F/i3zFN7kF2oczGjkibZE
-         G1p+qUKZJB4ES19HqgasOBQje0f3yE7pp/v905I6io00wCMFEvuAYlv0Gg4i+eZR7SRY
-         2rQ1Xd72dL020DF9ra4TyJlI7//ZAT4Ib8LJkk5FbPPnny97VEUlOnsPIsQTD95TPYno
-         SlN3/5sAKO35NA6H/ZUxBsbXgNmmsMbUbHDE6kyATafyfZM4oNbBrHKLKFHWZDTXgFMj
-         H0NXPttGCaLnEl3QjSuBli1Gw3iJsPEwvicn+pP+GP6/zEcwvNNCmMIlTY+JcsNEmKBP
-         q8ZA==
-X-Gm-Message-State: AJaThX4Ycpq9sUcHtpAnFAlT7cyVSoTs6R1VjxoaNfDNZayDo6gvdW3x
-        5XzT1mJYUTvjK6ACzgGrjcB4ww==
-X-Google-Smtp-Source: AGs4zMZ/TDALGnusjJCdZJvtDVSdfOAF5/VX+2vnfuKBFvvPpoleZSbR7yvUyiRaQ+doJV54GCBMmg==
-X-Received: by 10.98.60.27 with SMTP id j27mr1045567pfa.68.1510821210537;
-        Thu, 16 Nov 2017 00:33:30 -0800 (PST)
+        bh=Em0Yhm0onPFNWZnvQiQp8xG8ifdEBoR+pa17B7X4o1c=;
+        b=uW2NgcGNt5OTQDSXYMkeowIFYyzC/BOJf660O6ak/kC8PtzX4zLDkV8tSRQ9bIh+cH
+         jxdNtETA4rgHdLOEP+bs2f4aHpHZpUwFQnYklsZ23lUXGN4TKlKdzgLBDLZVfHuIusV8
+         7TAUuuK9MJmiewfc2psfJCqhvXudazaSLXn7laBnnM6IfSUdO46O3snTxiHn0h8P8QJ8
+         Mm3ZlzE/ngq6pxSgete566j+3a3ovt6YalWKMFoXZFzvDcG2Ru8mK2j6AL25/TtzAPsE
+         yaVHrET1mpAEx6QJA+m/ypEgDh+hoDgvGtereGzekMtaEmZQEJs0phTnjPf709JOAhgW
+         VKMw==
+X-Gm-Message-State: AJaThX6usnlVoInGprRtDoOf0oXfxW6SnMIvEO1aMMtfAAPE1Ub0xfoF
+        TDV8AxZJLsIwgPOv/LNb4WwlkQ==
+X-Google-Smtp-Source: AGs4zMYGN6udoBZoZ0vm3YHTsffBSvC7Lc6NNEDgXWICedLIJqPeSiMb2F3VgcAv1cAAf15A4g1cmw==
+X-Received: by 10.98.196.155 with SMTP id h27mr1016601pfk.137.1510821290755;
+        Thu, 16 Nov 2017 00:34:50 -0800 (PST)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id m8sm1480095pgc.64.2017.11.16.00.33.27
+        by smtp.gmail.com with ESMTPSA id 73sm1875218pfr.145.2017.11.16.00.34.46
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 16 Nov 2017 00:33:29 -0800 (PST)
+        Thu, 16 Nov 2017 00:34:49 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     James Hogan <James.Hogan@mips.com>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH Resend] MIPS: Ensure VDSO pages mapped above STACK_TOP
-Date:   Thu, 16 Nov 2017 16:33:43 +0800
-Message-Id: <1510821223-24497-1-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>,
+        YunQiang Su <yunqiang.su@imgtec.com>
+Subject: [PATCH 1/2] MIPS: Loongson fix name confict - MEM_RESERVED
+Date:   Thu, 16 Nov 2017 16:35:04 +0800
+Message-Id: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60971
+X-archive-position: 60972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,86 +67,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Unlimited stack size (ulimit -s unlimited) causes kernel to use legacy
-layout for applications. Thus, if VDSO isn't mapped above STACK_TOP, it
-will be mapped at a very low address. This will probably cause an early
-brk() failure, because the application's initial mm->brk is usually
-below VDSO (especially when COMPAT_BRK is enabled) and there is no more
-room to expand its heap.
+MEM_RESERVED is used as a value of enum mem_type in include/linux/
+edac.h. This will make failure to build for Loongson in some case:
+for example with CONFIG_RAS enabled.
 
-This patch reserve 4 MB space above STACK_TOP, and use the low 2 MB for
-VDSO randomization (as a result, VDSO pages can use as much as 2 MB).
+So here rename MEM_RESERVED to SYSTEM_RAM_RESERVED in Loongson code.
 
+Signed-off-by: YunQiang Su <yunqiang.su@imgtec.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/processor.h |  5 +++--
- arch/mips/kernel/vdso.c           | 16 +++++++++++++++-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
+ arch/mips/loongson64/common/mem.c                  | 2 +-
+ arch/mips/loongson64/loongson-3/numa.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index af34afb..7fff032 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -13,6 +13,7 @@
+diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
+index 4f69f08..8c286be 100644
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -4,7 +4,7 @@
  
- #include <linux/atomic.h>
- #include <linux/cpumask.h>
-+#include <linux/sizes.h>
- #include <linux/threads.h>
- 
- #include <asm/cachectl.h>
-@@ -82,9 +83,9 @@ extern unsigned int vced_count, vcei_count;
- 
- /*
-  * One page above the stack is used for branch delay slot "emulation".
-- * See dsemul.c for details.
-+ * See dsemul.c for details, other pages are for VDSO.
-  */
--#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - PAGE_SIZE)
-+#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - SZ_4M)
- 
- /*
-  * This decides where the kernel will search for a free chunk of vm
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index 019035d..6ec4537 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -14,6 +14,7 @@
- #include <linux/init.h>
- #include <linux/ioport.h>
- #include <linux/mm.h>
-+#include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/timekeeper_internal.h>
-@@ -95,6 +96,19 @@ void update_vsyscall_tz(void)
- 	}
- }
- 
-+static unsigned long vdso_base(void)
-+{
-+	unsigned long offset = 0UL;
-+
-+	if (current->flags & PF_RANDOMIZE) {
-+		offset = get_random_int();
-+		offset <<= PAGE_SHIFT;
-+		offset &= 0x1ffffful; /* 2 MB */
-+	}
-+
-+	return STACK_TOP + PAGE_SIZE + offset;
-+}
-+
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- {
- 	struct mips_vdso_image *image = current->thread.abi->vdso;
-@@ -128,7 +142,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 	vvar_size = gic_size + PAGE_SIZE;
- 	size = vvar_size + image->size;
- 
--	base = get_unmapped_area(NULL, 0, size, 0, 0);
-+	base = get_unmapped_area(NULL, vdso_base(), size, 0, 0);
- 	if (IS_ERR_VALUE(base)) {
- 		ret = base;
- 		goto out;
+ #define SYSTEM_RAM_LOW		1
+ #define SYSTEM_RAM_HIGH		2
+-#define MEM_RESERVED		3
++#define SYSTEM_RAM_RESERVED	3
+ #define PCI_IO			4
+ #define PCI_MEM			5
+ #define LOONGSON_CFG_REG	6
+diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/common/mem.c
+index b01d524..c549e52 100644
+--- a/arch/mips/loongson64/common/mem.c
++++ b/arch/mips/loongson64/common/mem.c
+@@ -79,7 +79,7 @@ void __init prom_init_memory(void)
+ 					(u64)loongson_memmap->map[i].mem_size << 20,
+ 					BOOT_MEM_RAM);
+ 				break;
+-			case MEM_RESERVED:
++			case SYSTEM_RAM_RESERVED:
+ 				add_memory_region(loongson_memmap->map[i].mem_start,
+ 					(u64)loongson_memmap->map[i].mem_size << 20,
+ 					BOOT_MEM_RESERVED);
+diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+index f17ef52..9717106 100644
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
+ 			memblock_add_node(PFN_PHYS(start_pfn),
+ 				PFN_PHYS(end_pfn - start_pfn), node);
+ 			break;
+-		case MEM_RESERVED:
++		case SYSTEM_RAM_RESERVED:
+ 			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+ 				(u32)node_id, mem_type, mem_start, mem_size);
+ 			add_memory_region((node_id << 44) + mem_start,
 -- 
 2.7.0

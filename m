@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 03:20:35 +0100 (CET)
-Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:46630
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 03:20:58 +0100 (CET)
+Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:42012
         "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992188AbdKQCUGRLw6V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 03:20:06 +0100
-Received: by mail-pg0-x241.google.com with SMTP id z184so796234pgd.13;
-        Thu, 16 Nov 2017 18:20:06 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23992910AbdKQCUIqNhZV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 03:20:08 +0100
+Received: by mail-pg0-x241.google.com with SMTP id j16so803240pgn.9;
+        Thu, 16 Nov 2017 18:20:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wzoAsWVEjKBeAWNWULFmnNJ9N4ieFZrwprAFIeFKMWI=;
-        b=PCE0wuxHLxflI4LJyHKXHhje2MZUBjFE2fIMqDVBMdPVIT2yX6aXIAry0g9ggHaMR6
-         nE0io9Qq9ynd0kBnkm2YUfG0yIZF2FztrZ/xVaHkIxisLE+5mHYLLI7HBqnMKNZdA336
-         GVUFeCRxbgfsOTrXN+RYp48FCbNlYLV/LA+ONVhHOFU0s+CyHGbA5Yv+wqFluFl1OKkx
-         vynSohkl5qZIEagi87vMe/CVOV+w6Mer0+11PSKggfStqZmeHyzQA2Pr6r8LW/dp5cY5
-         Jj486Tb1JltgchKVh2LBUvQj3GZ+jUApbEVZ7Qx35zdHk4r2pjWn1hyp/AVzvPoBWodo
-         G+7Q==
+        bh=8DmSFBjvG+m9llrc6NA6YP/ALnh8Tdkd8ZcgMhJRxgM=;
+        b=aFAuSnDwwHUmYSkr3CkLWxF127oNyJpqK9fmPT4F8fwSbObZy0yo2XOuV4aFL/Wir2
+         BEi4iWraBxx7216TOehaPSUoI20hOyivDE3O2GFkgFyitcXGjpHytcujQuiZGXJ+ifir
+         IZauKRQcu6nEiSIKd5JBaNr+EO5wfWMQ8m6LWms4NUdQqu1z44OpgIlHoHbNc3VMzWQ+
+         77EX0kWat81BGhKDlcGijnVWYZT/zTWScexlioCxVJus0N9IyxYWr+NbHK9dPnwasr44
+         j/2vdYKLJEagUuEfHnH8YvfWKFOuxzlAcMWqAq39fxpC4weCTsZBypQxRIHxqP58AgN/
+         MG7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=wzoAsWVEjKBeAWNWULFmnNJ9N4ieFZrwprAFIeFKMWI=;
-        b=C5B/YQWl0cds4ejV68VT3bdMwi99Nk5F3YN1KJ21AAIlBcOd7vcFEro9I3/PyUOJW1
-         nxZ034bBO3wTKcLFprpDH8quh5FLQ2lCnmxAAmSLwEnpWjc9rA1p2lta7vTGgnVwI4mI
-         VjiRDn1Gfe4cxEHyK5xQsMJUccIK1EWOh2wC97ANTzoEcAGdp7vXeOfaFHd7cmCa3d95
-         Q3JCqSzR5rFPLBKeGaKCLV0nfOCBIJZgt3TdzKq5BKHVkgdwGk3HCe55VZgvrkIGZ0Ui
-         ntwbvQjBrnjcx3bMR78dRRFYeew8KKCcxdmALpsGti7X0ykOLEpvIg0Z6VZpYZJ22D6g
-         ARrg==
-X-Gm-Message-State: AJaThX7Uxq5jvAVBqEKhQG3JBJ+ZmnkhI9WnoIVOhNmyoQTtCRVMRzQ8
-        uuHrV0o6gj3RQgbx4Pd7VCTEK+V3
-X-Google-Smtp-Source: AGs4zMaKdI9OjyrAJS3c7UKLdrDzx0kYzZ/ZO1AjGVVoiCRwn5gAaWlWz7DW8GabwLU67rZsMBPzvQ==
-X-Received: by 10.159.207.134 with SMTP id z6mr3776493plo.144.1510885199277;
-        Thu, 16 Nov 2017 18:19:59 -0800 (PST)
+        bh=8DmSFBjvG+m9llrc6NA6YP/ALnh8Tdkd8ZcgMhJRxgM=;
+        b=stHpZD6xbx9ABbSwC8RAOOE+szd6GUWA7StYEf5pZyEaLo23xJIZFo/NRYg2ONA9h5
+         WNmlbS4kiIe8XjQmIqkRxu9o4gJP5/ZlfLFXIBgbzIA/pG/aNin5dApKTrbULLTs7G1b
+         REt74y7r8xyhVKa/Fv+6NpKbfdLuREPcU78MZlX9uuQYOwAUWPacmPbVBEWRg+RtJMSV
+         NSvgTpCKqyK5Am/IJSu8Td3ujW5QKZO/jkztUapGDawQqk+46GLcGZMLvKfn2n9h7Nkh
+         uj66CxBlJkxgpnbUYZGb5JANOoSzVhmcOPmzz3tnq9fWXNev6VTzwsKJSjDZ/mdZh7r8
+         LOcQ==
+X-Gm-Message-State: AJaThX6tPyBV/ag42OS+q9HgMb1M2/4JDImnLCWzgD3Kdz1gbJqyErUa
+        s+fOTRJWUlPNNbXu8oaB2+zz6QHA
+X-Google-Smtp-Source: AGs4zMZK0OPdYY+DhwyrLmh9/XiRT6yiCZRDaX+py4+1jhXgiSf2+GF0JTe6MPixaNBxmmZ2x+Kt4w==
+X-Received: by 10.99.177.8 with SMTP id r8mr3598687pgf.237.1510885202156;
+        Thu, 16 Nov 2017 18:20:02 -0800 (PST)
 Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id s4sm5393280pgp.40.2017.11.16.18.19.56
+        by smtp.gmail.com with ESMTPSA id s4sm5393280pgp.40.2017.11.16.18.19.59
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 Nov 2017 18:19:58 -0800 (PST)
+        Thu, 16 Nov 2017 18:20:01 -0800 (PST)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@mips.com>,
@@ -43,9 +43,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Kevin Cernekee <cernekee@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH 1/3] MIPS: BMIPS: Add Broadcom STB power management nodes
-Date:   Fri, 17 Nov 2017 11:19:42 +0900
-Message-Id: <20171117021944.894-2-jaedon.shin@gmail.com>
+Subject: [PATCH 2/3] MIPS: BMIPS: Add Broadcom STB wake-up timer nodes
+Date:   Fri, 17 Nov 2017 11:19:43 +0900
+Message-Id: <20171117021944.894-3-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171117021944.894-1-jaedon.shin@gmail.com>
 References: <20171117021944.894-1-jaedon.shin@gmail.com>
@@ -53,7 +53,7 @@ Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60980
+X-archive-position: 60981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,375 +70,220 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds power management nodes to BCM7xxx MIPS based SoCs.
+Adds wake-up timer device nodes to BCM7xxx MIPS based SoCs.
 
 Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
- arch/mips/boot/dts/brcm/bcm7346.dtsi | 45 ++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7360.dtsi | 45 ++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7362.dtsi | 45 ++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7425.dtsi | 72 ++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7435.dtsi | 72 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 279 insertions(+)
+ arch/mips/boot/dts/brcm/bcm7346.dtsi      | 10 ++++++++++
+ arch/mips/boot/dts/brcm/bcm7358.dtsi      | 10 ++++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi      | 10 ++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi      | 10 ++++++++++
+ arch/mips/boot/dts/brcm/bcm7425.dtsi      | 10 ++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi      | 10 ++++++++++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  4 ++++
+ 12 files changed, 84 insertions(+)
 
 diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-index 02e426fe6013..8aa5b72d652d 100644
+index 8aa5b72d652d..228184dedada 100644
 --- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-@@ -243,6 +243,17 @@
- 			brcm,irq-can-wake;
- 		};
- 
-+		aon_ctrl: syscon@408000 {
-+			compatible = "brcm,brcmstb-aon-ctrl";
-+			reg = <0x408000 0x100>, <0x408200 0x200>;
-+			reg-names = "aon-ctrl", "aon-sram";
-+		};
-+
-+		timers: timer@4067c0 {
-+			compatible = "brcm,brcmstb-timers";
-+			reg = <0x4067c0 0x40>;
-+		};
-+
- 		upg_gio: gpio@406700 {
- 			compatible = "brcm,brcmstb-gpio";
- 			reg = <0x406700 0x60>;
-@@ -484,4 +495,38 @@
+@@ -494,6 +494,16 @@
+ 			interrupt-names = "mspi_done";
  			status = "disabled";
  		};
- 	};
 +
-+	memory_controllers {
-+		compatible = "simple-bus";
-+		ranges = <0x0 0x103b0000 0xa000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		memory-controller@0 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x0 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
++		waketimer: waketimer@408e80 {
++			compatible = "brcm,brcmstb-waketimer";
++			reg = <0x408e80 0x14>;
++			interrupts = <0x3>;
++			interrupt-parent = <&aon_pm_l2_intc>;
++			interrupt-names = "timer";
++			clocks = <&upg_clk>;
++			status = "disabled";
 +		};
-+	};
+ 	};
+ 
+ 	memory_controllers {
+diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
+index 1089d6ebc841..398521c7070f 100644
+--- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
+@@ -362,5 +362,15 @@
+ 			interrupt-names = "mspi_done";
+ 			status = "disabled";
+ 		};
++
++		waketimer: waketimer@408e80 {
++			compatible = "brcm,brcmstb-waketimer";
++			reg = <0x408e80 0x14>;
++			interrupts = <0x3>;
++			interrupt-parent = <&aon_pm_l2_intc>;
++			interrupt-names = "timer";
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
+ 	};
  };
 diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-index 4b87ebec407a..f68285c2dff0 100644
+index f68285c2dff0..28f5a0c1c149 100644
 --- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-@@ -219,6 +219,17 @@
- 			brcm,irq-can-wake;
- 		};
- 
-+		aon_ctrl: syscon@408000 {
-+			compatible = "brcm,brcmstb-aon-ctrl";
-+			reg = <0x408000 0x100>, <0x408200 0x200>;
-+			reg-names = "aon-ctrl", "aon-sram";
-+		};
-+
-+		timers: timer@406680 {
-+			compatible = "brcm,brcmstb-timers";
-+			reg = <0x406680 0x40>;
-+		};
-+
- 		upg_gio: gpio@406500 {
- 			compatible = "brcm,brcmstb-gpio";
- 			reg = <0x406500 0xa0>;
-@@ -403,4 +414,38 @@
+@@ -413,6 +413,16 @@
+ 			interrupt-names = "mspi_done";
  			status = "disabled";
  		};
- 	};
 +
-+	memory_controllers {
-+		compatible = "simple-bus";
-+		ranges = <0x0 0x103b0000 0xa000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		memory-controller@0 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x0 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
++		waketimer: waketimer@408e80 {
++			compatible = "brcm,brcmstb-waketimer";
++			reg = <0x408e80 0x14>;
++			interrupts = <0x3>;
++			interrupt-parent = <&aon_pm_l2_intc>;
++			interrupt-names = "timer";
++			clocks = <&upg_clk>;
++			status = "disabled";
 +		};
-+	};
- };
+ 	};
+ 
+ 	memory_controllers {
 diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index ca657df34b6d..a4bfa5f2b006 100644
+index a4bfa5f2b006..ab2dd57571a0 100644
 --- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -215,6 +215,17 @@
- 			brcm,irq-can-wake;
- 		};
- 
-+		aon_ctrl: syscon@408000 {
-+			compatible = "brcm,brcmstb-aon-ctrl";
-+			reg = <0x408000 0x100>, <0x408200 0x200>;
-+			reg-names = "aon-ctrl", "aon-sram";
-+		};
-+
-+		timers: timer@406680 {
-+			compatible = "brcm,brcmstb-timers";
-+			reg = <0x406680 0x40>;
-+		};
-+
- 		upg_gio: gpio@406500 {
- 			compatible = "brcm,brcmstb-gpio";
- 			reg = <0x406500 0xa0>;
-@@ -399,4 +410,38 @@
+@@ -409,6 +409,16 @@
+ 			interrupt-names = "mspi_done";
  			status = "disabled";
  		};
- 	};
 +
-+	memory_controllers {
-+		compatible = "simple-bus";
-+		ranges = <0x0 0x103b0000 0xa000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		memory-controller@0 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x0 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
++		waketimer: waketimer@408e80 {
++			compatible = "brcm,brcmstb-waketimer";
++			reg = <0x408e80 0x14>;
++			interrupts = <0x3>;
++			interrupt-parent = <&aon_pm_l2_intc>;
++			interrupt-names = "timer";
++			clocks = <&upg_clk>;
++			status = "disabled";
 +		};
-+	};
- };
+ 	};
+ 
+ 	memory_controllers {
 diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-index e4fb9b6e6dce..6cb535235efa 100644
+index 6cb535235efa..23479f988aa5 100644
 --- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-@@ -242,6 +242,17 @@
- 			brcm,irq-can-wake;
- 		};
- 
-+		aon_ctrl: syscon@408000 {
-+			compatible = "brcm,brcmstb-aon-ctrl";
-+			reg = <0x408000 0x100>, <0x408200 0x200>;
-+			reg-names = "aon-ctrl", "aon-sram";
-+		};
-+
-+		timers: timer@4067c0 {
-+			compatible = "brcm,brcmstb-timers";
-+			reg = <0x4067c0 0x40>;
-+		};
-+
- 		upg_gio: gpio@406700 {
- 			compatible = "brcm,brcmstb-gpio";
- 			reg = <0x406700 0x80>;
-@@ -495,4 +506,65 @@
+@@ -505,6 +505,16 @@
+ 			interrupt-names = "mspi_done";
  			status = "disabled";
  		};
++
++		waketimer: waketimer@409580 {
++			compatible = "brcm,brcmstb-waketimer";
++			reg = <0x409580 0x14>;
++			interrupts = <0x3>;
++			interrupt-parent = <&aon_pm_l2_intc>;
++			interrupt-names = "timer";
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
  	};
-+
-+	memory_controllers {
-+		compatible = "simple-bus";
-+		ranges = <0x0 0x103b0000 0x1a000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		memory-controller@0 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x0 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
-+		};
-+
-+		memory-controller@1 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x10000 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
-+		};
-+	};
- };
+ 
+ 	memory_controllers {
 diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index 1484e8990e52..1e0545c7f5b7 100644
+index 1e0545c7f5b7..af75b0123c06 100644
 --- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -257,6 +257,17 @@
- 			brcm,irq-can-wake;
- 		};
- 
-+		aon_ctrl: syscon@408000 {
-+			compatible = "brcm,brcmstb-aon-ctrl";
-+			reg = <0x408000 0x100>, <0x408200 0x200>;
-+			reg-names = "aon-ctrl", "aon-sram";
-+		};
-+
-+		timers: timer@4067c0 {
-+			compatible = "brcm,brcmstb-timers";
-+			reg = <0x4067c0 0x40>;
-+		};
-+
- 		upg_gio: gpio@406700 {
- 			compatible = "brcm,brcmstb-gpio";
- 			reg = <0x406700 0x80>;
-@@ -510,4 +521,65 @@
+@@ -520,6 +520,16 @@
+ 			interrupt-names = "mspi_done";
  			status = "disabled";
  		};
++
++		waketimer: waketimer@409580 {
++			compatible = "brcm,brcmstb-waketimer";
++			reg = <0x409580 0x14>;
++			interrupts = <0x3>;
++			interrupt-parent = <&aon_pm_l2_intc>;
++			interrupt-names = "timer";
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
  	};
-+
-+	memory_controllers {
-+		compatible = "simple-bus";
-+		ranges = <0x0 0x103b0000 0x1a000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		memory-controller@0 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x0 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
-+		};
-+
-+		memory-controller@1 {
-+			compatible = "brcm,brcmstb-memc", "simple-bus";
-+			ranges = <0x0 0x10000 0xa000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			memc-arb@1000 {
-+				compatible = "brcm,brcmstb-memc-arb";
-+				reg = <0x1000 0x248>;
-+			};
-+
-+			memc-ddr@2000 {
-+				compatible = "brcm,brcmstb-memc-ddr";
-+				reg = <0x2000 0x300>;
-+			};
-+
-+			ddr-phy@6000 {
-+				compatible = "brcm,brcmstb-ddr-phy";
-+				reg = <0x6000 0xc8>;
-+			};
-+
-+			shimphy@8000 {
-+				compatible = "brcm,brcmstb-ddr-shimphy";
-+				reg = <0x8000 0x13c>;
-+			};
-+		};
-+	};
+ 
+ 	memory_controllers {
+diff --git a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
+index 9e7d5228f2b7..b50dbb3cbeee 100644
+--- a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
+@@ -114,3 +114,7 @@
+ &mspi {
+ 	status = "okay";
  };
++
++&waketimer {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97358svmb.dts b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
+index 708207a0002d..2986ce353e57 100644
+--- a/arch/mips/boot/dts/brcm/bcm97358svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
+@@ -106,3 +106,7 @@
+ &mspi {
+ 	status = "okay";
+ };
++
++&waketimer {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97360svmb.dts b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
+index 73c6dc9c8c6d..8d48ae317b8c 100644
+--- a/arch/mips/boot/dts/brcm/bcm97360svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
+@@ -109,3 +109,7 @@
+ &mspi {
+ 	status = "okay";
+ };
++
++&waketimer {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+index 37bacfdcf9d9..4a1d0631e9e6 100644
+--- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+@@ -78,3 +78,7 @@
+ &mspi {
+ 	status = "okay";
+ };
++
++&waketimer {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+index ce762c7b2e54..488e12a9e4aa 100644
+--- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+@@ -144,3 +144,7 @@
+ &mspi {
+ 	status = "okay";
+ };
++
++&waketimer {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+index d4dd31a543fd..e14337cc51fd 100644
+--- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+@@ -120,3 +120,7 @@
+ &mspi {
+ 	status = "okay";
+ };
++
++&waketimer {
++	status = "okay";
++};
 -- 
 2.15.0

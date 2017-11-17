@@ -1,60 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 05:31:03 +0100 (CET)
-Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:46391
-        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990476AbdKQEa5NuReO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 05:30:57 +0100
-Received: by mail-pg0-x242.google.com with SMTP id z184so1034093pgd.13
-        for <linux-mips@linux-mips.org>; Thu, 16 Nov 2017 20:30:57 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 05:37:46 +0100 (CET)
+Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:33479
+        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990476AbdKQEhhILoUO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 05:37:37 +0100
+Received: by mail-it0-x243.google.com with SMTP id o130so1521989itg.0;
+        Thu, 16 Nov 2017 20:37:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=knWGb7v5cZX6e2s/N6Z8ILpWA5fZwEqNB5wXTDRykdk=;
-        b=dlnQWRt0rTsRCrd/gbIcSsoMcCveWtfnLZ0I5yMSwZuJUvXtOSLuzq8/3UhSXsfreO
-         Rac+Rw3SWwbI7klcedvhshdEmDhfbKhK+W5xdhv5NL4ZM6aP/HNgyx9R2PoIiDJhLy30
-         P2THtSbm+6ONOOYkg0DHbs6GqXQYOyXC/B/tbfsM58OoHs0HDntPtl5iqrG8I2WMOFnN
-         mefSZ0zbaVwKqIwhdRKLINwkRmtUKYF3zM8Wb38y9m6+CNhTZm+ZGJcUMftCgFh4At4a
-         glG3YbVWuevQqofSxy6OAWCUW9SBWPGxe3huWVsbVpCRQvej3rLFSX0dxIoL5/gj7dow
-         /BwA==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=czzuS22ok3ApxkO9CnOcq9cCz2AEvO8wHVlgIepVukA=;
+        b=mpx1B1Lg4b2BnLKgrw56iJGCPbwC6mmzSoMxpdk9U3J9x1xLWBMGPqonlTpBQS8Xrs
+         FdaXu3IDtnVtXP8/PTmhhusw08Co1dg86jlzotTP5Ik+lyWLQXAcmSQh58JWxR4d3R+r
+         3wA+4O1uwZXrnYpKxsFeV6+aCTkhKOeL/88SdsvdkZ36natkaj6DF24qd9f8ccN1fCiu
+         Dzwxc7I2GrUxp/KawkYUzY9cl6CL1abTuselQutzBNZY65fClBIfGSBmG2UMASC0PJgV
+         tTKWGodpQ7TZqeIUrN8REpHD7S5g4cEFX+dkhWIIbtZTLiVWq1mi5Dxo/xYFDg15H2b+
+         qx2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=knWGb7v5cZX6e2s/N6Z8ILpWA5fZwEqNB5wXTDRykdk=;
-        b=g8vWXeKQ8iltXFEIU81DFoUJHDfk8MYs77XuDSTxSTAlTzwzlHl0JO1R/3YqjvQpBS
-         yEFU3cs3k+XjpW3/8U/SqKdLmyW12rEdDrVk6v+xkIBrPlvIVUrmZjpsoltSQlxMdywD
-         eZgUT28ye1ZKDEihfz6mC3CfRsCuGXe4BWcbzMZne1lGzxg3Vl0C3Q3nDlfm/3sOoR5k
-         GRldQ67/kUpwmxOPB6t6O7XV9lZLVUCtp9pAtJYZecwailG4hAJ9fch3ksFEHxj1KkIa
-         k7NYMk/YqOesB1JAdguKcSyjV9iSFVjXCT4QUfynRpRVJbOMWT5e4vstgkFf/++3KwIe
-         LfpQ==
-X-Gm-Message-State: AJaThX49ODyEDGpxMm+ZtXGMpKdjLjll6OVYbngNlPUQLXAo046Ajz3n
-        F2MXlhsei9sBDWDx66YjuUrEjA==
-X-Google-Smtp-Source: AGs4zMbyRIlQ8nitge4oIZ4LoHC1FYzZ/OnTiqT8Mdvqi7jWWz0Z6jLk3zvZDcs0aDlWywzTT1OGDg==
-X-Received: by 10.159.207.149 with SMTP id z21mr3940379plo.258.1510893051227;
-        Thu, 16 Nov 2017 20:30:51 -0800 (PST)
-Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id a7sm4084984pgc.81.2017.11.16.20.30.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 16 Nov 2017 20:30:50 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Fuxin Zhang <zhangfx@lemote.com>, linux-mips@linux-mips.org,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH V10 4/4] libsas: Align sata_device's rps_resp on a cacheline
-Date:   Fri, 17 Nov 2017 12:30:51 +0800
-Message-Id: <1510893051-376-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=czzuS22ok3ApxkO9CnOcq9cCz2AEvO8wHVlgIepVukA=;
+        b=ifUgwuBcUb3Vmkq1JeecOiKocZnieYjpjQkqQE8iI969ei0JaNt+Z9+l62y49PWEZ+
+         2Fq0xY2BO7msNsiZ+JMG1DyOwt9qBBswp94orLrtbxBbIuqBsWo7G0GMyRhBTIQ2qAfX
+         CouIySHLZb8AX/6+bocE7qSY7s3vpR+QsTFgrp5cbbQSC73z9CaJtfbjg/Wb4swUU5Dy
+         rym0hQJdCpD0+lPj2ldop1h6NPZwSYG4hQm8ZPVo8vmul+BhHp/8QGPtAoogBupzxSts
+         KWToMipdIJ67cSMhiK3jh/yDXA7iJZwR1Dufh6+hCyROjLDd9uZxyqQ2MbjZUEInBrXd
+         E45Q==
+X-Gm-Message-State: AJaThX7M+G+m2UQ0/BGxEEtXd6y0O5t2kgUjY84GCRykyd5C8v/6JQ50
+        Hizn+iMybGy87GtrJNGIvoG+/+YDwjOqwky4jO0=
+X-Google-Smtp-Source: AGs4zMZ/5nZ374YlY3VCMVGLDAqtKeV5nbQCFLEJvh+rTQAVl3zWcxWkhxqfTS+0zwGjD2APNNEA3iOnmtta+dKWlI8=
+X-Received: by 10.36.130.131 with SMTP id t125mr5207450itd.104.1510893450944;
+ Thu, 16 Nov 2017 20:37:30 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.107.28.131 with HTTP; Thu, 16 Nov 2017 20:37:30 -0800 (PST)
+In-Reply-To: <20171115211755.25102-1-james.hogan@mips.com>
+References: <20171115211755.25102-1-james.hogan@mips.com>
+From:   Huacai Chen <chenhuacai@gmail.com>
+Date:   Fri, 17 Nov 2017 12:37:30 +0800
+Message-ID: <CAAhV-H5Bhwxtec7cZKuov2i1F1mHaPHPOV0cD4ZZzWMJVkD1Zw@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: Add Loongson machine dependencies
+To:     James Hogan <james.hogan@mips.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        linux-pm@vger.kernel.org, Keguang Zhang <keguang.zhang@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60986
+X-archive-position: 60987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,40 +69,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The rps_resp buffer in ata_device is a DMA target, but it isn't
-explicitly cacheline aligned. Due to this, adjacent fields can be
-overwritten with stale data from memory on non-coherent architectures.
-As a result, the kernel is sometimes unable to communicate with an
-SATA device behind a SAS expander.
+I think it is better to make LOONGSON1_CPUFREQ depends on
+CPU_LOONGSON1, and LOONGSON2_CPUFREQ depends on CPU_LOONGSON2
 
-Fix this by ensuring that the rps_resp buffer is cacheline aligned.
-
-This issue is similar to that fixed by Commit 84bda12af31f93 ("libata:
-align ap->sector_buf") and Commit 4ee34ea3a12396f35b26 ("libata: Align
-ata_device's id on a cacheline").
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- include/scsi/libsas.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
-index 0f9cbf9..6df6fe0 100644
---- a/include/scsi/libsas.h
-+++ b/include/scsi/libsas.h
-@@ -159,11 +159,11 @@ struct expander_device {
- 
- struct sata_device {
- 	unsigned int class;
--	struct smp_resp        rps_resp; /* report_phy_sata_resp */
- 	u8     port_no;        /* port number, if this is a PM (Port) */
- 
- 	struct ata_port *ap;
- 	struct ata_host ata_host;
-+	struct smp_resp rps_resp ____cacheline_aligned; /* report_phy_sata_resp */
- 	u8     fis[ATA_RESP_FIS_SIZE];
- };
- 
--- 
-2.7.0
+On Thu, Nov 16, 2017 at 5:17 AM, James Hogan <james.hogan@mips.com> wrote:
+> From: James Hogan <jhogan@kernel.org>
+>
+> The MIPS loongson cpufreq drivers don't build unless configured for the
+> correct machine type, due to dependency on machine specific architecture
+> headers and symbols in machine specific platform code.
+>
+> More specifically loongson1-cpufreq.c uses RST_CPU_EN and RST_CPU,
+> neither of which is defined in asm/mach-loongson32/regs-clk.h unless
+> CONFIG_LOONGSON1_LS1B=y, and loongson2_cpufreq.c references
+> loongson2_clockmod_table[], which is only defined in
+> arch/mips/loongson64/lemote-2f/clock.c, i.e. when
+> CONFIG_LEMOTE_MACH2F=y.
+>
+> Add these dependencies to Kconfig to avoid randconfig / allyesconfig
+> build failures (e.g. when based on BMIPS which also has a cpufreq
+> driver).
+>
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: Keguang Zhang <keguang.zhang@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> ---
+>  drivers/cpufreq/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+> index 4ebae43118ef..d8addbce40bc 100644
+> --- a/drivers/cpufreq/Kconfig
+> +++ b/drivers/cpufreq/Kconfig
+> @@ -275,6 +275,7 @@ config BMIPS_CPUFREQ
+>
+>  config LOONGSON2_CPUFREQ
+>         tristate "Loongson2 CPUFreq Driver"
+> +       depends on LEMOTE_MACH2F
+>         help
+>           This option adds a CPUFreq driver for loongson processors which
+>           support software configurable cpu frequency.
+> @@ -287,6 +288,7 @@ config LOONGSON2_CPUFREQ
+>
+>  config LOONGSON1_CPUFREQ
+>         tristate "Loongson1 CPUFreq Driver"
+> +       depends on LOONGSON1_LS1B
+>         help
+>           This option adds a CPUFreq driver for loongson1 processors which
+>           support software configurable cpu frequency.
+> --
+> 2.14.1
+>
+>

@@ -1,97 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 00:42:49 +0100 (CET)
-Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:39451
-        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992188AbdKPXmmJ-m5K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 00:42:42 +0100
-Received: by mail-oi0-x242.google.com with SMTP id r190so522613oie.6;
-        Thu, 16 Nov 2017 15:42:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=hpNeYm30ruNAfIduvbbbXwpbFZQ35hFiqhNPvDxd8Fc=;
-        b=G2weztNxVFEquGfqXw0UM5OdKUgm2OiPtW+NVYo0ih8gHfY/tc3vGYB/dRNNZdfzjc
-         bZIz46PbZ/wp1mILzFaXSellaI3KGHSqZTAIBkcWEbpLLzV7Os7GlUc3nKNz3vIIorfv
-         w9wiEUGi70gQ13LIPS2dGYifqD6SHHnV4qphihP0Rj54cRcpTBYusAfwpCwHHIXG8RuZ
-         T5W1QdtiK/21U7kguyGtTFVxN+etUxOtMRgywAKTTMc3fbVcunGIpB3nW6a6vTkXA5FS
-         rDciz7+w23vPWhKA84nVL5YU4BSHm8P501HHIqAQy+BqLoDxDvrBsi6Sc5xAOh20RPvM
-         GhGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=hpNeYm30ruNAfIduvbbbXwpbFZQ35hFiqhNPvDxd8Fc=;
-        b=UKFCXy0PUPOhnw0P+CAfjc/TQQ1JXxWp0n+PrdnO8HBiv9dNkXm4QeX9pU+6kaxyJb
-         EmgJURi1kZ19fqQ16kobmbRzCOEjCULAbug/HHagoNZJe+HgAtgk7saZil0wB967J0in
-         ppxedqRV+28Yu9vg4xbR6FM2+xQL6tcZCe0BSEFcDxTE7OGdRQRbPSL45uHRG+eY6AUX
-         2POtU1TFkLcn5GDueBVn28ZqhmZIrOFZLb7X4gtHVZkPgsgxPDRDcYjXyAJykkgZ8hRM
-         A9nSPYXn0rj9W3eEo681x7Ac/xSnY13+GWGM3uHUuA/+jo02kFC0s8J0VidMMOQ9X+ST
-         wAuQ==
-X-Gm-Message-State: AJaThX7qZRiiFWYes/8se3r6Ku+y++ehtvZ3vl9dB+rIRfohFOpTbCQ3
-        W70W+7NKtcSynclo4QF31oktaNR51VQtjnBinUc=
-X-Google-Smtp-Source: AGs4zMZkyQRu8YBDwgn63Lg+eb+8ZDXJ/v8MsMSM5NzSD9FS1ORMjmNK24rtvqPTwUY95ivcMpONmq0mHekbhYHEBTM=
-X-Received: by 10.202.229.65 with SMTP id c62mr13789oih.128.1510875755767;
- Thu, 16 Nov 2017 15:42:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 01:32:32 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:38011 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992188AbdKQAcZU-Hfj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 01:32:25 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 17 Nov 2017 00:32:08 +0000
+Received: from [10.20.78.73] (10.20.78.73) by mips01.mipstec.com (10.20.43.31)
+ with Microsoft SMTP Server id 14.3.361.1; Thu, 16 Nov 2017 16:32:07 -0800
+Date:   Fri, 17 Nov 2017 00:31:56 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Joshua Kinard <kumba@gentoo.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux/MIPS <linux-mips@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>
+Subject: Re: [PATCH] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
+In-Reply-To: <39133ddb-6b10-4a7b-6739-6f52fe8aa6a6@gentoo.org>
+Message-ID: <alpine.DEB.2.00.1711162329430.3888@tp.orcam.me.uk>
+References: <5baf0f58-862b-2488-8685-bf7383b19c20@gentoo.org> <alpine.LFD.2.21.1711041423530.23561@eddie.linux-mips.org> <9eea04e2-169d-e8d7-8f93-26e33e3d1145@gentoo.org> <alpine.DEB.2.00.1711141734540.3893@tp.orcam.me.uk>
+ <39133ddb-6b10-4a7b-6739-6f52fe8aa6a6@gentoo.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.157.43.3 with HTTP; Thu, 16 Nov 2017 15:42:35 -0800 (PST)
-In-Reply-To: <alpine.DEB.2.20.1711160958430.2191@nanos>
-References: <20171110224259.15930-1-deepa.kernel@gmail.com>
- <CAK8P3a2uD=xV5GKtL+nhVoPckb6uoXztEvXK-iP_OYbct8QvJA@mail.gmail.com>
- <CABeXuvpy1jbqjeUFHHX-MrJXQLA2QNYbAa6OX7qOpPp4q-mQYQ@mail.gmail.com> <alpine.DEB.2.20.1711160958430.2191@nanos>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 17 Nov 2017 00:42:35 +0100
-X-Google-Sender-Auth: qV6qBbRCPsm0bRHmCYki0BT0dCM
-Message-ID: <CAK8P3a0wxs59T1zW4ahbJXeW6QjStm0mbCFoL_RQexAa6dzh_w@mail.gmail.com>
-Subject: Re: [PATCH 0/9] posix_clocks: Prepare syscalls for 64 bit time_t conversion
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
-        John Stultz <john.stultz@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>, cohuck@redhat.com,
-        David Miller <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh <gregkh@linuxfoundation.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Robert Richter <rric@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        sebott@linux.vnet.ibm.com, sparclinux <sparclinux@vger.kernel.org>,
-        Stefan Haberland <sth@linux.vnet.ibm.com>,
-        Ursula Braun <ubraun@linux.vnet.ibm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1510878727-452059-26975-108287-1
+X-BESS-VER: 2017.14.1-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187020
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60977
+X-archive-position: 60978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -104,57 +52,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 16, 2017 at 10:04 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
-> On Wed, 15 Nov 2017, Deepa Dinamani wrote:
->> > I had on concern about x32, maybe we should check
->> > for "COMPAT_USE_64BIT_TIME" before zeroing out the tv_nsec
->> > bits.
->>
->> Thanks, I think you are right. I had the check conditional on
->> CONFIG_64BIT_TIME and then removed as I forgot why I added it. :)
->>
->> > Regarding CONFIG_COMPAT_TIME/CONFIG_64BIT_TIME, would
->> > it help to just leave out that part for now and unconditionally
->> > define '__kernel_timespec' as 'timespec' until we are ready to
->> > convert the architectures?
->>
->> Another approach would be to use separate configs:
->>
->> 1. To indicate 64 bit time_t syscall support. This will be dependent
->> on architectures as CONFIG_64BIT_TIME.
->> We can delete this once all architectures have provided support for this.
->>
->> 2. Another config (maybe COMPAT_32BIT_TIME?) to be introduced later,
->> which will compile out all syscalls/ features that use 32 bit time_t.
->> This can help build a y2038 safe kernel later.
->>
->> Would this work for everyone?
->
-> Having extra config switches which are selectable by architectures and
-> removed when everything is converted is definitely the right way to go.
->
-> That allows you to gradually convert stuff w/o inflicting wreckage all over
-> the place.
+On Tue, 14 Nov 2017, Joshua Kinard wrote:
 
-The CONFIG_64BIT_TIME would do that nicely for the new stuff like
-the conditional definition of __kernel_timespec, this one would get
-removed after we convert all architectures.
+> >  So we do have to make the result of DSUBU available to SCD and I propose 
+> > to make an obvious update to the piece of code previously posted, which 
+> > still does not require `noreorder' hacks:
+> > 
+> > 		__asm__ __volatile__(
+> > 		"	.set	"MIPS_ISA_LEVEL"			\n"
+> > 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+> > 		"	dsubu	%0, %1, %3				\n"
+> > 		"	move	%1, %0					\n"
+> > 		"	bltz	%0, 1f					\n"
+> > 		"	scd	%1, %2					\n"
+> > 		"\t" __scbeqz "	%1, 1b					\n"
+> > 		"1:							\n"
+> > 		"	.set	mips0					\n"
+> > 		: "=&r" (result), "=&r" (temp),
+> > 		  "+" GCC_OFF_SMALL_ASM() (v->counter)
+> > 		: "Ir" (i));
+> > 
+> > and uses the same instruction count, in terms of both the code size and 
+> > the number of instructions actually executed, because previously BLTZ 
+> > would have its delay slot filled with a NOP and now the MOVE instruction 
+> > will go there.
+> 
+> I thought the delay slot for branch instructions came after the instruction?
+> Shouldn't the "move" go after "bltz", or is this a case where "bltz" has its
+> delay slot before?
 
-A second issue is how to control the compilation of the compat syscalls.
-CONFIG_COMPAT_32BIT_TIME handles that and could be defined
-in Kconfig as 'def_bool (!64BIT && CONFIG_64BIT_TIME) || COMPAT',
-this is then just a more readable way of expressing exactly when the
-functions should be built.
+ In terms of the program flow you want the move operation ahead of the 
+branch.
 
-For completeness, there may be a third category, depending on how
-we handle things like sys_nanosleep(): Here, we want the native
-sys_nanosleep on 64-bit architectures, and compat_sys_nanosleep()
-to handle the 32-bit time_t variant on both 32-bit and 64-bit targets,
-but our plan is to not have a native 32-bit sys_nanosleep on 32-bit
-architectures any more, as new glibc should call clock_nanosleep()
-with a new syscall number instead. Should we then enclose
-sys_nanosleep in "#if !defined(CONFIG_64BIT_TIME) ||
-defined(CONFIG_64BIT)", or should we try to come up with another
-Kconfig symbol name that expresses this better?
+ Of course we have the architectural peculiarity of branch delay slots, 
+but in the MIPS assembly language they have been intended to be generally 
+hidden from the programmer.  This is why the original MIPSCO assembler 
+scheduled delay slots, which included branch delay slots, but also load 
+delay slots, coprocessor transfer delay slots, etc., where the given 
+architecture level had them, so that the programmer could write code as if 
+there were no delay slots and let the tool optimise it.  
 
-       Arnd
+ And GAS normally does that as well, where possible by swapping a branch 
+with the preceding instruction, or otherwise, i.e. where there is a data 
+dependency or the instruction is not allowed in a delay slot for some 
+reason, by inserting a NOP.
+
+ GAS also has a way to disable delay slot scheduling, with the `.set 
+noreorder' pseudo-op (with `.set reorder' undoing the effect).  In this 
+mode of operation, sometimes called the `noreorder' mode, GAS assembles 
+source code as it is and it is the programmer's responsibility to satisfy 
+various pipeline requirements, including branch delay slots in particular, 
+i.e. an instruction has to be put there explicitly, even if it is a NOP.
+
+ This mode will typically be used by a compiler for its assembly output. 
+This mode is not recommended to use in handcoded assembly unless 
+specifically required for a good reason.  One such reason is optimising 
+code where there is a data dependency between a branch and its delay-slot 
+instruction, e.g.:
+
+	.set	noreorder
+	bnez	$2, 0b
+	 addiu	$2, -1
+	.set	reorder
+
+which avoids clobbering a temporary register and is smaller/quicker then a 
+functional equivalent that does not schedule the delay slot manually like:
+
+	move	$3, $2
+	addiu	$2, -1
+	bnez	$3, 0b
+
+(in this case GAS will move the ADDIU instruction into the delay slot of 
+the BNEZ instruction, because there is no data dependency between the 
+two instructions).  And of course if you just write:
+
+	addiu	$2, -1
+	bnez	$2, 0b
+
+then the semantics of this sequence will be different from the first one 
+above, because the addition precedes rather than following the branch and 
+$2 is a data dependency between the two instructions.  This data 
+dependency will also make GAS put a NOP into the delay slot of the BNEZ 
+instruction instead of moving ADDIU there.
+
+ So in the piece I proposed at the top GAS will move the MOVE instruction 
+into the delay slot of BLTZ -- that is unless it is in a dumb mode where 
+it always uses NOPs, as recently discovered in the discussion here: 
+<https://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=alpine.DEB.2.00.1711151425100.3893%40tp.orcam.me.uk>.  
+But that's just been a bug in our build system, which will hopefully be 
+fixed soon; we ought to assume smart scheduling normally (delay-slot 
+scheduling makes debugging trickier sometimes, in which case using the 
+dumb mode can help).
+
+> And I am safe in assuming the same change also applies for the non-64-bit case
+> earlier that uses sc and subu?  The changes to the rest of the code also look
+> good?  Don't want to miss any other quirky bugs :)
+
+ Yeah, `atomic_sub_if_positive' suffers from the same problem, and the 
+rest looks good to me; also none of the other pieces of code uses the 
+`noreorder' mode.
+
+  Maciej

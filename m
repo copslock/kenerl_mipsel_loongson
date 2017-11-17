@@ -1,101 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 11:46:53 +0100 (CET)
-Received: from mail-ot0-x244.google.com ([IPv6:2607:f8b0:4003:c0f::244]:43151
-        "EHLO mail-ot0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990435AbdKQKqofesxu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 11:46:44 +0100
-Received: by mail-ot0-x244.google.com with SMTP id 105so1654937oth.10;
-        Fri, 17 Nov 2017 02:46:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=1vyNq+EHBC8NnFMSNPJ+YwxKo11zW+jQbDUJcx5jxUE=;
-        b=tyqQquwgD3qIpku4gJnoTL31dQhnDKSAO+Y8udRuEjBTtWyGbhAVIOwThrRexrZ5ZX
-         kNC6Geow3tgPjGYCmKhYKk2H//iCPjrylwXy0hzQIns4xQLTSTKcqNB+YRgOBaHLXZQL
-         9nWiI+jBhzcpTUZpMFWg4r307iJEB8Pgitovm6jEfcTToL9VKjVwCjtQmW4cWz4TJoRA
-         T2UT3Vc6NH+YNWD+f9cqCMXTPLrw1kx0SiZ1X33ecr06TXuh5zVq0cDWxASyxRlytfdj
-         mZAOOwj3M2N/TbFo2bxBEKIH7ADymHC1A4ZaNGqFVNEsb/lRTRzIQ6YUANz/wUTTFnNT
-         leUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=1vyNq+EHBC8NnFMSNPJ+YwxKo11zW+jQbDUJcx5jxUE=;
-        b=YBOP9MfIwutmiLd5lQgC+P/2IGGnNzeVC0Q1WNN3tx6QmZSQqb+/tpn9ovjSfx/oAd
-         J7pPrWsWeGqRc3ne2Onu2EY6IxoO4LALI0ituEN7VEgcaec4qEl1jlq+RceIKlU1rc++
-         ATKNPbozZrULI9fEZmufIrPZ9FvkbqMSQWUSxcz7y2g33/l3lrALKng2PelmKPVj6g64
-         QTrWaoMnthhVSDsWswlyu1Jo7WgxnE/ns7dvJl3MTcsWvNSRlHHT/G8pFaMxg8LQxBET
-         P6v+o18w4UfivozfH0N02HkhzRP6DU39+7W75K0LfU24EdhVkcpdVXcxp8rotSmUaa5X
-         oM+Q==
-X-Gm-Message-State: AJaThX7D8pfjx84FRuuv5M+Zxj9HrFhx/meGU9ur5c3vPM94f6JAb9OS
-        OHXunKCoq0icPGszno4akYFyVjv4/0tlBv08MOo=
-X-Google-Smtp-Source: AGs4zMaDssPJEJIEa9z3OGN90NRx74HGthjVhzbrPEujNz5kQnW9O0HC2gM4W9z+Y0M1xg1WoGbfKmnLEtI1lt/4DNE=
-X-Received: by 10.157.34.20 with SMTP id o20mr906100ota.104.1510915598244;
- Fri, 17 Nov 2017 02:46:38 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 16:24:06 +0100 (CET)
+Received: from resqmta-po-05v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:164]:33574
+        "EHLO resqmta-po-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990590AbdKQPX5k4yuK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 16:23:57 +0100
+Received: from resomta-po-03v.sys.comcast.net ([96.114.154.227])
+        by resqmta-po-05v.sys.comcast.net with ESMTP
+        id FiRDe0fzPsdQ7FiSIeM9UC; Fri, 17 Nov 2017 15:21:22 +0000
+Received: from [192.168.1.13] ([73.173.137.35])
+        by resomta-po-03v.sys.comcast.net with SMTP
+        id FiSGeWcWRuXCzFiSHevIyE; Fri, 17 Nov 2017 15:21:22 +0000
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Linux/MIPS <linux-mips@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: [PATCH v3] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
+Message-ID: <23fb0d7b-347a-195d-38f3-383ac59cc69d@gentoo.org>
+Date:   Fri, 17 Nov 2017 10:21:00 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Received: by 10.157.43.3 with HTTP; Fri, 17 Nov 2017 02:46:37 -0800 (PST)
-In-Reply-To: <alpine.DEB.2.20.1711171138510.7700@nanos>
-References: <20171110224259.15930-1-deepa.kernel@gmail.com>
- <CAK8P3a2uD=xV5GKtL+nhVoPckb6uoXztEvXK-iP_OYbct8QvJA@mail.gmail.com>
- <CABeXuvpy1jbqjeUFHHX-MrJXQLA2QNYbAa6OX7qOpPp4q-mQYQ@mail.gmail.com>
- <alpine.DEB.2.20.1711160958430.2191@nanos> <CAK8P3a0wxs59T1zW4ahbJXeW6QjStm0mbCFoL_RQexAa6dzh_w@mail.gmail.com>
- <alpine.DEB.2.20.1711170954000.1709@nanos> <CAK8P3a3fcVKTwoqN0CxYchzcFqUZPBeko=oYsA9eNxu4bQoYyw@mail.gmail.com>
- <alpine.DEB.2.20.1711171049180.1709@nanos> <CAK8P3a10N42rBO8XBrZWYOCwVB8jayjgZu2oa8FSpHTzszQacQ@mail.gmail.com>
- <alpine.DEB.2.20.1711171138510.7700@nanos>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 17 Nov 2017 11:46:37 +0100
-X-Google-Sender-Auth: PIetoqAfyFJkmB7GALjYAUP603A
-Message-ID: <CAK8P3a1J0C5A+SzVWDz52ZkawG1HZYj2cR6oc=DL=QrXgYaiHg@mail.gmail.com>
-Subject: Re: [PATCH 0/9] posix_clocks: Prepare syscalls for 64 bit time_t conversion
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
-        John Stultz <john.stultz@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>, cohuck@redhat.com,
-        David Miller <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh <gregkh@linuxfoundation.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Robert Richter <rric@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        sebott@linux.vnet.ibm.com, sparclinux <sparclinux@vger.kernel.org>,
-        Stefan Haberland <sth@linux.vnet.ibm.com>,
-        Ursula Braun <ubraun@linux.vnet.ibm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfHEFxPmFpiLoP99CYbdRxEar2OST0XxQVz4tLJ1eSuYhTETcuD87w668J3o8/wCDuMT77C7OXVpKJR7A123QX6cnVhdkPXPl/dXj8Clx87CfuDsvD5om
+ f3YRVsan3gkLnruQCaml5uqUVBYuLFsArwdc2qfsWQhLDW6zZ/jKajB4oo/nFp87ZnQX5aKZleEc+/LzMG8bk6nIAoHhzeeI/wMPTcrO1Xd9KzUlg+zTiZJk
+ j3qcqFGCO5qEWBdLVQV6C6dqFQJwPNMVXyob+es+M9woIhp1h6uGMzJoIFbzUUGh
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60994
+X-archive-position: 60995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -108,50 +48,391 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 17, 2017 at 11:40 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
-> On Fri, 17 Nov 2017, Arnd Bergmann wrote:
->> On Fri, Nov 17, 2017 at 10:54 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
->> > On Fri, 17 Nov 2017, Arnd Bergmann wrote:
->> >> On Fri, Nov 17, 2017 at 9:58 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
->> >>
->> >> No, syscall that existing 32-bit user space enters would be handled by
->> >> compat_sys_nanosleep() on both 32-bit and 64-bit kernels at that
->> >> point. The idea here is to make the code path more uniform between
->> >> 32-bit and 64-bit kernels.
->> >
->> > So on a 32bit system compat_sys_nanosleep() would be the legacy
->> > sys_nanosleep() with the existing syscall number, but you don't want to
->> > introduce a new sys_nanosleep64() for 32bit. That makes a lot of sense.
->> >
->> > So back to your original question whether to use #if (MAGIC logic) or a
->> > separate config symbol. Please use the latter, these magic logic constructs
->> > are harder to read and prone to get wrong at some point. Having the
->> > decision logic in one place is always the right thing to do.
->>
->> How about this:
->>
->> config LEGACY_TIME_SYSCALLS
->>       def_bool 64BIT || !64BIT_TIME
->>       help
->>         This controls the compilation of the following system calls:
->> time, stime,
->>         gettimeofday, settimeofday, adjtimex, nanosleep, alarm, getitimer,
->>         setitimer, select, utime, utimes, futimesat, and
->> {old,new}{l,f,}stat{,64}.
->>         These all pass 32-bit time_t arguments on 32-bit architectures and
->>         are replaced by other interfaces (e.g. posix timers and clocks, statx).
->>         C libraries implementing 64-bit time_t in 32-bit architectures have to
->>         implement the handles by wrapping around the newer interfaces.
->
-> s/handles/handling/ ????
+From: Joshua Kinard <kumba@gentoo.org>
 
-I meant "handlers".
+This patch reduces down the conditionals in MIPS atomic code that deal
+with a silicon bug in early R10000 cpus that required a workaround of
+a branch-likely instruction following a store-conditional in order to
+to guarantee the whole ll/sc sequence is atomic.  As the only real
+difference is a branch-likely instruction (beqzl) over a standard
+branch (beqz), the conditional is reduced down to down to a single
+preprocessor check at the top to pick the required instruction.
 
->>         New architectures should not explicitly disable this.
->
-> New architectures should never enable this, right?
+This requires writing the uses in assembler, thus we discard the
+non-R10000 case that uses a mixture of a C do...while loop with
+embedded assembler that was added back in commit 7837314d141c.  A note
+found in the git log for empty commit 5999eca25c1f is also addressed
+and all uses of the 'noreorder' directive are eliminated, allowing GAS
+to handle scheduling of the assembler.
 
-Right, I got an extra "not". I guess if Deepa incorporates the new option,
-she can also improve my English ;-)
+The macro definition for the branch instruction and the code comment
+derives from a patch sent in earlier by Paul Burton for various cmpxchg
+cleanups.
 
-         Arnd
+Cc: linux-mips@linux-mips.org
+Cc: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+Tested-by: Joshua Kinard <kumba@gentoo.org>
+
+---
+Changes in v3:
+- Make the result of subu/dsubu available to sc/scd in
+  atomic_sub_if_positive and atomic64_sub_if_positive while still
+  avoiding the use of 'noreorder'.
+
+Changes in v2:
+- Incorporate suggestions from upstream to atomic_sub_if_positive
+  and atomic64_sub_if_positive to avoid memory barriers, as those
+  are already implied and to eliminate the '.noreorder' directive
+  and corner case of subu/dsubu's output not getting used in the
+  branch-likely case due to being in the branch delay slot.
+
+---
+ arch/mips/include/asm/atomic.h |  199 +++++--------------------------
+ 1 file changed, 38 insertions(+), 161 deletions(-)
+
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 0ab176bdb8e8..629c4fca26a9 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -22,6 +22,17 @@
+ #include <asm/cmpxchg.h>
+ #include <asm/war.h>
+ 
++/*
++ * Using a branch-likely instruction to check the result of an sc instruction
++ * works around a bug present in R10000 CPUs prior to revision 3.0 that could
++ * cause ll-sc sequences to execute non-atomically.
++ */
++#if R10000_LLSC_WAR
++# define __scbeqz "beqzl"
++#else
++# define __scbeqz "beqz"
++#endif
++
+ #define ATOMIC_INIT(i)	  { (i) }
+ 
+ /*
+@@ -44,31 +55,18 @@
+ #define ATOMIC_OP(op, c_op, asm_op)					      \
+ static __inline__ void atomic_##op(int i, atomic_t * v)			      \
+ {									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		int temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	ll	%0, %1		# atomic_" #op "	\n"   \
+ 		"	" #asm_op " %0, %2				\n"   \
+ 		"	sc	%0, %1					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)	      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		int temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	ll	%0, %1		# atomic_" #op "\n"   \
+-			"	" #asm_op " %0, %2			\n"   \
+-			"	sc	%0, %1				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)  \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!temp));				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -83,36 +81,20 @@ static __inline__ int atomic_##op##_return_relaxed(int i, atomic_t * v)	      \
+ {									      \
+ 	int result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		int temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	ll	%1, %2		# atomic_" #op "_return	\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	sc	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		int temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	ll	%1, %2	# atomic_" #op "_return	\n"   \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	sc	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "+" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp; result c_op i;				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -131,36 +113,20 @@ static __inline__ int atomic_fetch_##op##_relaxed(int i, atomic_t * v)	      \
+ {									      \
+ 	int result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		int temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	ll	%1, %2		# atomic_fetch_" #op "	\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	sc	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	move	%0, %1					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		int temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	ll	%1, %2	# atomic_fetch_" #op "	\n"   \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	sc	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "+" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp;						      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -218,38 +184,17 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 
+ 	smp_mb__before_llsc();
+ 
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {
+-		int temp;
+-
+-		__asm__ __volatile__(
+-		"	.set	arch=r4000				\n"
+-		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
+-		"	subu	%0, %1, %3				\n"
+-		"	bltz	%0, 1f					\n"
+-		"	sc	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqzl	%0, 1b					\n"
+-		"	 subu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
+-		"1:							\n"
+-		"	.set	mips0					\n"
+-		: "=&r" (result), "=&r" (temp),
+-		  "+" GCC_OFF_SMALL_ASM() (v->counter)
+-		: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)
+-		: "memory");
+-	} else if (kernel_uses_llsc) {
++	if (kernel_uses_llsc) {
+ 		int temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	"MIPS_ISA_LEVEL"			\n"
+ 		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
+ 		"	subu	%0, %1, %3				\n"
++		"	move	%1, %0					\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	sc	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqz	%0, 1b					\n"
+-		"	 subu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	sc	%1, %2					\n"
++		"\t" __scbeqz "	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+@@ -386,31 +331,18 @@ static __inline__ int __atomic_add_unless(atomic_t *v, int a, int u)
+ #define ATOMIC64_OP(op, c_op, asm_op)					      \
+ static __inline__ void atomic64_##op(long i, atomic64_t * v)		      \
+ {									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		long temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	lld	%0, %1		# atomic64_" #op "	\n"   \
+ 		"	" #asm_op " %0, %2				\n"   \
+ 		"	scd	%0, %1					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)	      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		long temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	lld	%0, %1		# atomic64_" #op "\n" \
+-			"	" #asm_op " %0, %2			\n"   \
+-			"	scd	%0, %1				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)      \
+-			: "Ir" (i));					      \
+-		} while (unlikely(!temp));				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -425,37 +357,20 @@ static __inline__ long atomic64_##op##_return_relaxed(long i, atomic64_t * v) \
+ {									      \
+ 	long result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		long temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	lld	%1, %2		# atomic64_" #op "_return\n"  \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	scd	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		long temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	lld	%1, %2	# atomic64_" #op "_return\n"  \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	scd	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "=" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)	      \
+-			: "memory");					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp; result c_op i;				      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -474,37 +389,20 @@ static __inline__ long atomic64_fetch_##op##_relaxed(long i, atomic64_t * v)  \
+ {									      \
+ 	long result;							      \
+ 									      \
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {			      \
++	if (kernel_uses_llsc) {						      \
+ 		long temp;						      \
+ 									      \
+ 		__asm__ __volatile__(					      \
+-		"	.set	arch=r4000				\n"   \
++		"	.set	"MIPS_ISA_LEVEL"			\n"   \
+ 		"1:	lld	%1, %2		# atomic64_fetch_" #op "\n"   \
+ 		"	" #asm_op " %0, %1, %3				\n"   \
+ 		"	scd	%0, %2					\n"   \
+-		"	beqzl	%0, 1b					\n"   \
++		"\t" __scbeqz "	%0, 1b					\n"   \
+ 		"	move	%0, %1					\n"   \
+ 		"	.set	mips0					\n"   \
+ 		: "=&r" (result), "=&r" (temp),				      \
+ 		  "+" GCC_OFF_SMALL_ASM() (v->counter)			      \
+ 		: "Ir" (i));						      \
+-	} else if (kernel_uses_llsc) {					      \
+-		long temp;						      \
+-									      \
+-		do {							      \
+-			__asm__ __volatile__(				      \
+-			"	.set	"MIPS_ISA_LEVEL"		\n"   \
+-			"	lld	%1, %2	# atomic64_fetch_" #op "\n"   \
+-			"	" #asm_op " %0, %1, %3			\n"   \
+-			"	scd	%0, %2				\n"   \
+-			"	.set	mips0				\n"   \
+-			: "=&r" (result), "=&r" (temp),			      \
+-			  "=" GCC_OFF_SMALL_ASM() (v->counter)		      \
+-			: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)	      \
+-			: "memory");					      \
+-		} while (unlikely(!result));				      \
+-									      \
+-		result = temp;						      \
+ 	} else {							      \
+ 		unsigned long flags;					      \
+ 									      \
+@@ -563,42 +461,21 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
+ 
+ 	smp_mb__before_llsc();
+ 
+-	if (kernel_uses_llsc && R10000_LLSC_WAR) {
+-		long temp;
+-
+-		__asm__ __volatile__(
+-		"	.set	arch=r4000				\n"
+-		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+-		"	dsubu	%0, %1, %3				\n"
+-		"	bltz	%0, 1f					\n"
+-		"	scd	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqzl	%0, 1b					\n"
+-		"	 dsubu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
+-		"1:							\n"
+-		"	.set	mips0					\n"
+-		: "=&r" (result), "=&r" (temp),
+-		  "=" GCC_OFF_SMALL_ASM() (v->counter)
+-		: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)
+-		: "memory");
+-	} else if (kernel_uses_llsc) {
++	if (kernel_uses_llsc) {
+ 		long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	"MIPS_ISA_LEVEL"			\n"
+ 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+ 		"	dsubu	%0, %1, %3				\n"
++		"	move	%1, %0					\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	scd	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqz	%0, 1b					\n"
+-		"	 dsubu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	scd	%1, %2					\n"
++		"\t" __scbeqz "	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+-		  "+" GCC_OFF_SMALL_ASM() (v->counter)
++		  "=" GCC_OFF_SMALL_ASM() (v->counter)
+ 		: "Ir" (i));
+ 	} else {
+ 		unsigned long flags;

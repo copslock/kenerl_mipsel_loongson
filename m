@@ -1,31 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 18:46:58 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:46757 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 18:50:51 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:55180 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdKQRqvJZexR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 18:46:51 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 17 Nov 2017 17:46:43 +0000
+        by eddie.linux-mips.org with ESMTP id S23990511AbdKQRuohDgFR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 18:50:44 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 17 Nov 2017 17:50:32 +0000
 Received: from [10.20.78.89] (10.20.78.89) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Fri, 17 Nov 2017 09:46:43 -0800
-Date:   Fri, 17 Nov 2017 17:45:29 +0000
+ with Microsoft SMTP Server id 14.3.361.1; Fri, 17 Nov 2017 09:50:26 -0800
+Date:   Fri, 17 Nov 2017 17:50:14 +0000
 From:   "Maciej W. Rozycki" <macro@mips.com>
 To:     Joshua Kinard <kumba@gentoo.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Linux/MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
-In-Reply-To: <23fb0d7b-347a-195d-38f3-383ac59cc69d@gentoo.org>
-Message-ID: <alpine.DEB.2.00.1711171715020.3888@tp.orcam.me.uk>
-References: <23fb0d7b-347a-195d-38f3-383ac59cc69d@gentoo.org>
+        Linux/MIPS <linux-mips@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>
+Subject: Re: [PATCH] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
+In-Reply-To: <99b32188-75eb-35fc-6ce4-f028bfefd6ed@gentoo.org>
+Message-ID: <alpine.DEB.2.00.1711171747120.3888@tp.orcam.me.uk>
+References: <5baf0f58-862b-2488-8685-bf7383b19c20@gentoo.org> <alpine.LFD.2.21.1711041423530.23561@eddie.linux-mips.org> <9eea04e2-169d-e8d7-8f93-26e33e3d1145@gentoo.org> <alpine.DEB.2.00.1711141734540.3893@tp.orcam.me.uk> <39133ddb-6b10-4a7b-6739-6f52fe8aa6a6@gentoo.org>
+ <alpine.DEB.2.00.1711162329430.3888@tp.orcam.me.uk> <99b32188-75eb-35fc-6ce4-f028bfefd6ed@gentoo.org>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1510940803-637138-21350-155560-1
+X-BESS-ID: 1510941032-637138-21349-155744-1
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187049
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187050
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
@@ -36,7 +35,7 @@ Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60997
+X-archive-position: 60998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,113 +54,13 @@ X-list: linux-mips
 
 On Fri, 17 Nov 2017, Joshua Kinard wrote:
 
-> This patch reduces down the conditionals in MIPS atomic code that deal
-> with a silicon bug in early R10000 cpus that required a workaround of
-> a branch-likely instruction following a store-conditional in order to
-> to guarantee the whole ll/sc sequence is atomic.  As the only real
-> difference is a branch-likely instruction (beqzl) over a standard
-> branch (beqz), the conditional is reduced down to down to a single
+> Ah!  I thought that when writing inline assembler, it was taken as-is by the
+> compiler and not messed with.  I didn't think that gas would still move things
+> around w/o the 'noreorder' directive being set.  Thank you for the explanation.
 
- s/down to down to/down to/
-
-> preprocessor check at the top to pick the required instruction.
-> 
-> This requires writing the uses in assembler, thus we discard the
-> non-R10000 case that uses a mixture of a C do...while loop with
-> embedded assembler that was added back in commit 7837314d141c.  A note
-> found in the git log for empty commit 5999eca25c1f is also addressed
-
- Please use `commit 7837314d141c ("MIPS: Get rid of branches to 
-.subsections.")', `commit 5999eca25c1f ("[MIPS] Improve branch prediction 
-in ll/sc atomic operations.")' style in commit descriptions.  Please also 
-pass your changes through `scripts/checkpatch.pl', which would have 
-pointed it out.
-
- Also why do you think commit 5999eca25c1f was empty?  It certainly does 
-not show up as empty for me.  Did you quote the correct commit ID?  I 
-think it would be good too if you clarified which note in that commit you 
-have specifically referred to.
-
-> ---
-> Changes in v3:
-> - Make the result of subu/dsubu available to sc/scd in
->   atomic_sub_if_positive and atomic64_sub_if_positive while still
->   avoiding the use of 'noreorder'.
-> 
-> Changes in v2:
-> - Incorporate suggestions from upstream to atomic_sub_if_positive
->   and atomic64_sub_if_positive to avoid memory barriers, as those
->   are already implied and to eliminate the '.noreorder' directive
->   and corner case of subu/dsubu's output not getting used in the
->   branch-likely case due to being in the branch delay slot.
-
- I think the BEQZL delay slot bug fixes to `atomic_sub_if_positive' and 
-`atomic64_sub_if_positive' should be split off and submitted separately as 
-a preparatory patch, so that they can be backported to stable branches; 
-please do so.  It'll also make your original clean up that follows 
-clearer.
-
-> @@ -563,42 +461,21 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
->  
->  	smp_mb__before_llsc();
->  
-> -	if (kernel_uses_llsc && R10000_LLSC_WAR) {
-> -		long temp;
-> -
-> -		__asm__ __volatile__(
-> -		"	.set	arch=r4000				\n"
-> -		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
-> -		"	dsubu	%0, %1, %3				\n"
-> -		"	bltz	%0, 1f					\n"
-> -		"	scd	%0, %2					\n"
-> -		"	.set	noreorder				\n"
-> -		"	beqzl	%0, 1b					\n"
-> -		"	 dsubu	%0, %1, %3				\n"
-> -		"	.set	reorder					\n"
-> -		"1:							\n"
-> -		"	.set	mips0					\n"
-> -		: "=&r" (result), "=&r" (temp),
-> -		  "=" GCC_OFF_SMALL_ASM() (v->counter)
-> -		: "Ir" (i), GCC_OFF_SMALL_ASM() (v->counter)
-> -		: "memory");
-> -	} else if (kernel_uses_llsc) {
-> +	if (kernel_uses_llsc) {
->  		long temp;
->  
->  		__asm__ __volatile__(
->  		"	.set	"MIPS_ISA_LEVEL"			\n"
->  		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
->  		"	dsubu	%0, %1, %3				\n"
-> +		"	move	%1, %0					\n"
->  		"	bltz	%0, 1f					\n"
-> -		"	scd	%0, %2					\n"
-> -		"	.set	noreorder				\n"
-> -		"	beqz	%0, 1b					\n"
-> -		"	 dsubu	%0, %1, %3				\n"
-> -		"	.set	reorder					\n"
-> +		"	scd	%1, %2					\n"
-> +		"\t" __scbeqz "	%1, 1b					\n"
->  		"1:							\n"
->  		"	.set	mips0					\n"
->  		: "=&r" (result), "=&r" (temp),
-> -		  "+" GCC_OFF_SMALL_ASM() (v->counter)
-> +		  "=" GCC_OFF_SMALL_ASM() (v->counter)
-
- This is wrong, `v->counter' is both read and written, so `+' has to stay.
-
- Otherwise OK, I think.  Perhaps you can split off another patch, just to 
-fix up the mess with constraints, which should be either:
-
-		: "=&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)
-                : "Ir" (i));
-
-if there is no result or:
-
-		: "=&r" (result), "=&r" (temp),
-		  "+" GCC_OFF_SMALL_ASM() (v->counter)
-		: "Ir" (i));
-
-if there is one.  This would be patch #2 in the series then and would make 
-the final review easier I believe.
+ GCC always sets the `reorder' mode for inline assembly pieces even if it 
+has chosen to use the `noreorder' mode outside.  This is required for 
+compatibility with code written before GCC started using the `noreorder' 
+mode if nothing else.
 
   Maciej

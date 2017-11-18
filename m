@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Nov 2017 18:50:51 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:55180 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdKQRuohDgFR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Nov 2017 18:50:44 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 17 Nov 2017 17:50:32 +0000
-Received: from [10.20.78.89] (10.20.78.89) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Fri, 17 Nov 2017 09:50:26 -0800
-Date:   Fri, 17 Nov 2017 17:50:14 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Joshua Kinard <kumba@gentoo.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux/MIPS <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>
-Subject: Re: [PATCH] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
-In-Reply-To: <99b32188-75eb-35fc-6ce4-f028bfefd6ed@gentoo.org>
-Message-ID: <alpine.DEB.2.00.1711171747120.3888@tp.orcam.me.uk>
-References: <5baf0f58-862b-2488-8685-bf7383b19c20@gentoo.org> <alpine.LFD.2.21.1711041423530.23561@eddie.linux-mips.org> <9eea04e2-169d-e8d7-8f93-26e33e3d1145@gentoo.org> <alpine.DEB.2.00.1711141734540.3893@tp.orcam.me.uk> <39133ddb-6b10-4a7b-6739-6f52fe8aa6a6@gentoo.org>
- <alpine.DEB.2.00.1711162329430.3888@tp.orcam.me.uk> <99b32188-75eb-35fc-6ce4-f028bfefd6ed@gentoo.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Nov 2017 05:07:56 +0100 (CET)
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:42814 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990491AbdKREHtWpQOX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Nov 2017 05:07:49 +0100
+Received: from mail-yw0-f177.google.com (mail-yw0-f177.google.com [209.85.161.177]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id vAI475Ax007935
+        for <linux-mips@linux-mips.org>; Sat, 18 Nov 2017 13:07:05 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com vAI475Ax007935
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1510978026;
+        bh=jFIqLRMBg+RvF21gaJFaXb7aL1H4ve9fYNkrt46s+dY=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=YwLLnrWFLzJt6L4sp0XMtJYWrIoT9jSC7tpO0If9rWPQ+v2uFw09TLGYbkz38JXcF
+         Xl6CrE62NTJbHaL7hfnHP6/HVb3YgZ612y1zgdcesBJEAPG3wRKS62SdN1yBSLlNFY
+         x795fnf3DNNZltEHMRnQOoMwzZowRFJHd4s4Ugna9tQ0LUkhVZuD18MJ2T7aaNQLfg
+         svOT/oEta+c8TTEyBap6MxrJG+wS9xYdfxcFGvC0g6CPdXrTLrkHoCiOKL6YlYpR5V
+         /F5t5Cjex3j0WzOdkCdiue9gFgqRTg3waC5+/kPnuCwYuAxae783dzLA+yRvxsBU8R
+         yty8P0PWjxPCw==
+X-Nifty-SrcIP: [209.85.161.177]
+Received: by mail-yw0-f177.google.com with SMTP id a4so2430582ywh.3
+        for <linux-mips@linux-mips.org>; Fri, 17 Nov 2017 20:07:05 -0800 (PST)
+X-Gm-Message-State: AJaThX4KmBh2gX1FTz95AHAd12qP3FLeYgDDX3LzYAvykkLIZoDGtrOn
+        EJEjyo3NJowJMNJZb6p/jgOg+QRMD7SlFZTuDkU=
+X-Google-Smtp-Source: AGs4zMaBjGzQqQNOHXyRKhkEgQ++3cXka5qZSyLL6YWi+qpzFWJT6/RJZ/UIZ9hn20UoFzfg1mLzs/QhlzTULkor8XI=
+X-Received: by 10.129.160.141 with SMTP id x135mr4565447ywg.209.1510978024522;
+ Fri, 17 Nov 2017 20:07:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1510941032-637138-21349-155744-1
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187050
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Received: by 10.37.110.139 with HTTP; Fri, 17 Nov 2017 20:06:24 -0800 (PST)
+In-Reply-To: <1510072307-16819-2-git-send-email-yamada.masahiro@socionext.com>
+References: <1510072307-16819-1-git-send-email-yamada.masahiro@socionext.com> <1510072307-16819-2-git-send-email-yamada.masahiro@socionext.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Sat, 18 Nov 2017 13:06:24 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASt+4oNw3niSOcM=++Z8D0CF5jy8z1d2oz7Lp=CT2b6tg@mail.gmail.com>
+Message-ID: <CAK7LNASt+4oNw3niSOcM=++Z8D0CF5jy8z1d2oz7Lp=CT2b6tg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kbuild: create built-in.o automatically if parent
+ directory wants it
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <mmarek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60998
+X-archive-position: 60999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,15 +68,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 17 Nov 2017, Joshua Kinard wrote:
+2017-11-08 1:31 GMT+09:00 Masahiro Yamada <yamada.masahiro@socionext.com>:
+> "obj-y += foo/" syntax requires Kbuild to visit the "foo" subdirectory
+> and link built-in.o from that directory.  This means foo/Makefile is
+> responsible for creating built-in.o even if there is no object to
+> link (in this case, built-in.o is an empty archive).
+>
+> We have had several fixups like commit 4b024242e8a4 ("kbuild: Fix
+> linking error built-in.o no such file or directory"), then ended up
+> with a complex condition as follows:
+>
+>   ifneq ($(strip $(obj-y) $(obj-m) $(obj-) $(subdir-m) $(lib-target)),)
+>   builtin-target := $(obj)/built-in.o
+>   endif
+>
+> We still have more cases not covered by the above, so we need to add
+>   obj- := dummy.o
+> in several places just for creating empty built-in.o.
+>
+> A key point is, the parent Makefile knows whether built-in.o is needed
+> or not.  If a subdirectory needs to create built-in.o, its parent can
+> tell the fact when Kbuild descends into it.
+>
+> If non-empty $(need-builtin) flag is passed from the parent, built-in.o
+> should be created.  $(obj-y) should be still checked to support the
+> single target "%/".  All of ugly tricks will go away.
+>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+>
 
-> Ah!  I thought that when writing inline assembler, it was taken as-is by the
-> compiler and not messed with.  I didn't think that gas would still move things
-> around w/o the 'noreorder' directive being set.  Thank you for the explanation.
+Applied to linux-kbuild/kbuild.
 
- GCC always sets the `reorder' mode for inline assembly pieces even if it 
-has chosen to use the `noreorder' mode outside.  This is required for 
-compatibility with code written before GCC started using the `noreorder' 
-mode if nothing else.
 
-  Maciej
+
+-- 
+Best Regards
+Masahiro Yamada

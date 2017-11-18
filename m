@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Nov 2017 05:07:56 +0100 (CET)
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:42814 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990491AbdKREHtWpQOX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Nov 2017 05:07:49 +0100
-Received: from mail-yw0-f177.google.com (mail-yw0-f177.google.com [209.85.161.177]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id vAI475Ax007935
-        for <linux-mips@linux-mips.org>; Sat, 18 Nov 2017 13:07:05 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com vAI475Ax007935
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Nov 2017 05:09:51 +0100 (CET)
+Received: from conssluserg-03.nifty.com ([210.131.2.82]:19628 "EHLO
+        conssluserg-03.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990491AbdKREJo3cIQX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Nov 2017 05:09:44 +0100
+Received: from mail-yw0-f169.google.com (mail-yw0-f169.google.com [209.85.161.169]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id vAI498nQ019435;
+        Sat, 18 Nov 2017 13:09:08 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com vAI498nQ019435
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1510978026;
-        bh=jFIqLRMBg+RvF21gaJFaXb7aL1H4ve9fYNkrt46s+dY=;
+        s=dec2015msa; t=1510978149;
+        bh=73KPPMhYvXxlC/R3uUyYOxIh37T7/+gSYP/colYGGIA=;
         h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=YwLLnrWFLzJt6L4sp0XMtJYWrIoT9jSC7tpO0If9rWPQ+v2uFw09TLGYbkz38JXcF
-         Xl6CrE62NTJbHaL7hfnHP6/HVb3YgZ612y1zgdcesBJEAPG3wRKS62SdN1yBSLlNFY
-         x795fnf3DNNZltEHMRnQOoMwzZowRFJHd4s4Ugna9tQ0LUkhVZuD18MJ2T7aaNQLfg
-         svOT/oEta+c8TTEyBap6MxrJG+wS9xYdfxcFGvC0g6CPdXrTLrkHoCiOKL6YlYpR5V
-         /F5t5Cjex3j0WzOdkCdiue9gFgqRTg3waC5+/kPnuCwYuAxae783dzLA+yRvxsBU8R
-         yty8P0PWjxPCw==
-X-Nifty-SrcIP: [209.85.161.177]
-Received: by mail-yw0-f177.google.com with SMTP id a4so2430582ywh.3
-        for <linux-mips@linux-mips.org>; Fri, 17 Nov 2017 20:07:05 -0800 (PST)
-X-Gm-Message-State: AJaThX4KmBh2gX1FTz95AHAd12qP3FLeYgDDX3LzYAvykkLIZoDGtrOn
-        EJEjyo3NJowJMNJZb6p/jgOg+QRMD7SlFZTuDkU=
-X-Google-Smtp-Source: AGs4zMaBjGzQqQNOHXyRKhkEgQ++3cXka5qZSyLL6YWi+qpzFWJT6/RJZ/UIZ9hn20UoFzfg1mLzs/QhlzTULkor8XI=
-X-Received: by 10.129.160.141 with SMTP id x135mr4565447ywg.209.1510978024522;
- Fri, 17 Nov 2017 20:07:04 -0800 (PST)
+        b=PpqPr0EVrtvWb3iPguXE10/mAWoqDQNpbVNPGyjK4WIjJ6o/FxnD+GC24uFDStrIQ
+         zBa+28UustuZlC1qea821II8U14/+4QWzAT1d34na6gOG1cdaWN5Jl7Fe05onfQdHP
+         jWSedovrizkFCdcYqjEVclTjrArrV7DZlx96A70bhVV1ymr5lo5J9i5Dxh3p+WwYIL
+         mjKrTaWCJ/bnelLAo+IomGVq9mHXaZDP/pF/K774aTe1OGatha69TgFfDD+K+XoYNs
+         5PZjKcud/NebxKMZjOZpQ9VcA/1z4cYr++7GZO0UWYh+3shg4hTxlgCagBZ44Wt5Rn
+         ChXhFjjeJoqUA==
+X-Nifty-SrcIP: [209.85.161.169]
+Received: by mail-yw0-f169.google.com with SMTP id q37so2405443ywa.12;
+        Fri, 17 Nov 2017 20:09:08 -0800 (PST)
+X-Gm-Message-State: AJaThX6eeG3tQTNrZ6fwg1WcGEfQbyazKjnLpQxVQbyoCkeiyzCbuPBl
+        bAJXkW6Fbcwoi3eJ7+VCT9eUoCBVoRYoeMp+fHk=
+X-Google-Smtp-Source: AGs4zMaxAsCbuhORjEiNGvhJD0NLHsIj5BC/hH1wSBUPgHf+DktMfUmIiHs0UVTI2kxBYmEUqvOnO8kuuXB9ps+wnM0=
+X-Received: by 10.129.36.206 with SMTP id k197mr2708261ywk.485.1510978147860;
+ Fri, 17 Nov 2017 20:09:07 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.37.110.139 with HTTP; Fri, 17 Nov 2017 20:06:24 -0800 (PST)
-In-Reply-To: <1510072307-16819-2-git-send-email-yamada.masahiro@socionext.com>
-References: <1510072307-16819-1-git-send-email-yamada.masahiro@socionext.com> <1510072307-16819-2-git-send-email-yamada.masahiro@socionext.com>
+Received: by 10.37.110.139 with HTTP; Fri, 17 Nov 2017 20:08:27 -0800 (PST)
+In-Reply-To: <1510072307-16819-3-git-send-email-yamada.masahiro@socionext.com>
+References: <1510072307-16819-1-git-send-email-yamada.masahiro@socionext.com> <1510072307-16819-3-git-send-email-yamada.masahiro@socionext.com>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Sat, 18 Nov 2017 13:06:24 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASt+4oNw3niSOcM=++Z8D0CF5jy8z1d2oz7Lp=CT2b6tg@mail.gmail.com>
-Message-ID: <CAK7LNASt+4oNw3niSOcM=++Z8D0CF5jy8z1d2oz7Lp=CT2b6tg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: create built-in.o automatically if parent
- directory wants it
-To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>
+Date:   Sat, 18 Nov 2017 13:08:27 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATMJMr-DSP=aukpbuOffBFwY-hP6a4NJenrCcivt5HmMw@mail.gmail.com>
+Message-ID: <CAK7LNATMJMr-DSP=aukpbuOffBFwY-hP6a4NJenrCcivt5HmMw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] kbuild: remove all dummy assignments to obj-
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
@@ -45,13 +43,18 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <mmarek@suse.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alexei Starovoitov <ast@kernel.org>, netdev@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 60999
+X-archive-position: 61000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,38 +72,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 2017-11-08 1:31 GMT+09:00 Masahiro Yamada <yamada.masahiro@socionext.com>:
-> "obj-y += foo/" syntax requires Kbuild to visit the "foo" subdirectory
-> and link built-in.o from that directory.  This means foo/Makefile is
-> responsible for creating built-in.o even if there is no object to
-> link (in this case, built-in.o is an empty archive).
->
-> We have had several fixups like commit 4b024242e8a4 ("kbuild: Fix
-> linking error built-in.o no such file or directory"), then ended up
-> with a complex condition as follows:
->
->   ifneq ($(strip $(obj-y) $(obj-m) $(obj-) $(subdir-m) $(lib-target)),)
->   builtin-target := $(obj)/built-in.o
->   endif
->
-> We still have more cases not covered by the above, so we need to add
->   obj- := dummy.o
-> in several places just for creating empty built-in.o.
->
-> A key point is, the parent Makefile knows whether built-in.o is needed
-> or not.  If a subdirectory needs to create built-in.o, its parent can
-> tell the fact when Kbuild descends into it.
->
-> If non-empty $(need-builtin) flag is passed from the parent, built-in.o
-> should be created.  $(obj-y) should be still checked to support the
-> single target "%/".  All of ugly tricks will go away.
+> Now kbuild core scripts create empty built-in.o where necessary.
+> Remove "obj- := dummy.o" tricks.
 >
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > ---
 >
 
 Applied to linux-kbuild/kbuild.
-
-
 
 -- 
 Best Regards

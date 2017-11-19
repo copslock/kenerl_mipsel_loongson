@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2017 15:31:23 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54176 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2017 15:31:53 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54298 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992128AbdKSObPFssTi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Nov 2017 15:31:15 +0100
+        by eddie.linux-mips.org with ESMTP id S23992248AbdKSObYBW35i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Nov 2017 15:31:24 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7ABE4516;
-        Sun, 19 Nov 2017 14:31:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8116F516;
+        Sun, 19 Nov 2017 14:31:17 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Jayachandran C <jchandra@broadcom.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@verizon.com>
-Subject: [PATCH 3.18 27/38] MIPS: init: Ensure reserved memory regions are not added to bootmem
-Date:   Sun, 19 Nov 2017 15:29:43 +0100
-Message-Id: <20171119142923.230181182@linuxfoundation.org>
+Subject: [PATCH 3.18 28/38] MIPS: Netlogic: Exclude netlogic,xlp-pic code from XLR builds
+Date:   Sun, 19 Nov 2017 15:29:44 +0100
+Message-Id: <20171119142923.276804677@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171119142921.807414664@linuxfoundation.org>
 References: <20171119142921.807414664@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61006
+X-archive-position: 61007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,39 +47,61 @@ X-list: linux-mips
 
 ------------------
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
 
-[ Upstream commit e89ef66d7682f031f026eee6bba03c8c2248d2a9 ]
+[ Upstream commit 9799270affc53414da96e77e454a5616b39cdab0 ]
 
-Memories managed through boot_mem_map are generally expected to define
-non-crossing areas. However, if part of a larger memory block is marked
-as reserved, it would still be added to bootmem allocator as an
-available block and could end up being overwritten by the allocator.
+Code in arch/mips/netlogic/common/irq.c which handles the XLP PIC fails
+to build in XLR configurations due to cpu_is_xlp9xx not being defined,
+leading to the following build failure:
 
-Prevent this by explicitly marking the memory as reserved it if exists
-in the range used by bootmem allocator.
+    arch/mips/netlogic/common/irq.c: In function ‘xlp_of_pic_init’:
+    arch/mips/netlogic/common/irq.c:298:2: error: implicit declaration
+    of function ‘cpu_is_xlp9xx’ [-Werror=implicit-function-declaration]
+      if (cpu_is_xlp9xx()) {
+      ^
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Although the code was conditional upon CONFIG_OF which is indirectly
+selected by CONFIG_NLM_XLP_BOARD but not CONFIG_NLM_XLR_BOARD, the
+failing XLR with CONFIG_OF configuration can be configured manually or
+by randconfig.
+
+Fix the build failure by making the affected XLP PIC code conditional
+upon CONFIG_CPU_XLP which is used to guard the inclusion of
+asm/netlogic/xlp-hal/xlp.h that provides the required cpu_is_xlp9xx
+function.
+
+[ralf@linux-mips.org: Fixed up as per Jayachandran's suggestion.]
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Jayachandran C <jchandra@broadcom.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14608/
+Patchwork: https://patchwork.linux-mips.org/patch/14524/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/setup.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/netlogic/common/irq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -427,6 +427,10 @@ static void __init bootmem_init(void)
- 			continue;
- 		default:
- 			/* Not usable memory */
-+			if (start > min_low_pfn && end < max_low_pfn)
-+				reserve_bootmem(boot_mem_map.map[i].addr,
-+						boot_mem_map.map[i].size,
-+						BOOTMEM_DEFAULT);
- 			continue;
- 		}
+--- a/arch/mips/netlogic/common/irq.c
++++ b/arch/mips/netlogic/common/irq.c
+@@ -275,7 +275,7 @@ asmlinkage void plat_irq_dispatch(void)
+ 	do_IRQ(nlm_irq_to_xirq(node, i));
+ }
  
+-#ifdef CONFIG_OF
++#ifdef CONFIG_CPU_XLP
+ static const struct irq_domain_ops xlp_pic_irq_domain_ops = {
+ 	.xlate = irq_domain_xlate_onetwocell,
+ };
+@@ -348,7 +348,7 @@ void __init arch_init_irq(void)
+ #if defined(CONFIG_CPU_XLR)
+ 	nlm_setup_fmn_irq();
+ #endif
+-#if defined(CONFIG_OF)
++#ifdef CONFIG_CPU_XLP
+ 	of_irq_init(xlp_pic_irq_ids);
+ #endif
+ }

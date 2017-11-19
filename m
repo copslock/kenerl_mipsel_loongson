@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2017 04:06:09 +0100 (CET)
-Received: from resqmta-ch2-07v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:39]:60120
-        "EHLO resqmta-ch2-07v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990720AbdKSDGCFUSah (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Nov 2017 04:06:02 +0100
-Received: from resomta-ch2-17v.sys.comcast.net ([69.252.207.113])
-        by resqmta-ch2-07v.sys.comcast.net with ESMTP
-        id GFtBeLyhu4gARGFtKehFkp; Sun, 19 Nov 2017 03:03:30 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2017 04:33:05 +0100 (CET)
+Received: from resqmta-ch2-02v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:34]:46980
+        "EHLO resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990428AbdKSDczQISKF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Nov 2017 04:32:55 +0100
+Received: from resomta-ch2-07v.sys.comcast.net ([69.252.207.103])
+        by resqmta-ch2-02v.sys.comcast.net with ESMTP
+        id GGJJewTxakmbEGGJJeFYif; Sun, 19 Nov 2017 03:30:21 +0000
 Received: from [192.168.1.13] ([73.173.137.35])
-        by resomta-ch2-17v.sys.comcast.net with SMTP
-        id GFtIe7KX3RomNGFtJeQhfc; Sun, 19 Nov 2017 03:03:30 +0000
-Subject: Re: [PATCH v3] MIPS: Cleanup R10000_LLSC_WAR logic in atomic.h
+        by resomta-ch2-07v.sys.comcast.net with SMTP
+        id GGJHeciw8LTOcGGJIeHQqz; Sun, 19 Nov 2017 03:30:20 +0000
 From:   Joshua Kinard <kumba@gentoo.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Subject: [PATCH] MIPS: Fix delay slot bug in `atomic*_sub_if_positive' for
+ R10000_LLSC_WAR
+To:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@mips.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Linux/MIPS <linux-mips@linux-mips.org>
-References: <23fb0d7b-347a-195d-38f3-383ac59cc69d@gentoo.org>
- <alpine.DEB.2.00.1711171715020.3888@tp.orcam.me.uk>
- <ddc2ba6e-ab17-114c-fdc2-bdb2900bc57a@gentoo.org>
-Message-ID: <7ea6747e-4d60-52e1-6ec8-447b5ca41e5a@gentoo.org>
-Date:   Sat, 18 Nov 2017 22:03:04 -0500
+        "Maciej W. Rozycki" <macro@mips.com>
+Cc:     Linux/MIPS <linux-mips@linux-mips.org>
+Message-ID: <db476905-551e-63af-c208-20224c9bd675@gentoo.org>
+Date:   Sat, 18 Nov 2017 22:29:56 -0500
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
  Thunderbird/52.4.0
 MIME-Version: 1.0
-In-Reply-To: <ddc2ba6e-ab17-114c-fdc2-bdb2900bc57a@gentoo.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfH6DhDdvI5PLdYiwPfPBNKzTEqpEE8YvlEqjbYaRPJak4yDd/fOPByK2sK3fgWwk0QnIHLTVmAyRn0ntgreAK1j1Q+j8gMYFzEs+5hM9wJBkRs8xuGmF
- kyBN3yt+NOW5xMyDu0XliL5q7GIw3MXFx7GqLqxO0lhrP44byo6GoqD5hpIoLQp1GTo+lTY6tWPXCq1gs+wvcqMMkaeF1T8DorOJsrzCIqW/U+NiqyC2UhgB
- ZQW3YWJuXJLZ61yqrM3/hDUC5L6p02j0UKFzP/bokVsba3a/oC34oj4wv0RFzfCgniuHJo9tKhWVL80mA06kSAHw4zt+PlTASMGarzVJI2s=
+X-CMAE-Envelope: MS4wfMCNHqVQT9olArZj+xLteDV5oq2koDk4XeDsalz3rn98LN2MFTOH8GM1/7cVsDyLF6AtOgv99F7cR6iEFs3l4NsTR5VBQumi6w5AfigYIaTRcMhPotHz
+ sPxuEYR6EDb/wTdkVoEJ8z/nYLOwtaRtRBe4ixUlkcfwq3Ft9sBSIkzb+69o7yps76PQ9HSCXd5Z/lrS2S427gLA5ZdFhsPWkSyay7zpGCI7cdcCeWEoY+77
+ Hg+0mI3H4aXy06NonqltUcGjBblkDqUlPHIGC3LgexY=
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61002
+X-archive-position: 61003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,41 +48,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/18/2017 21:18, Joshua Kinard wrote:
-> On 11/17/2017 12:45, Maciej W. Rozycki wrote:
+From: Joshua Kinard <kumba@gentoo.org>
 
-[snip]
+This patch fixes an old bug in MIPS ll/sc atomics, in the
+`atomic_sub_if_positive' and `atomic64_sub_if_positive' functions, for
+the R10000_LLSC_WAR case where the result of the subu/dsubu instruction
+would potentially not be made available to the sc/scd instruction due
+to being in the delay-slot of the branch-likely (beqzl) instruction.
 
->>
->>  I think the BEQZL delay slot bug fixes to `atomic_sub_if_positive' and 
->> `atomic64_sub_if_positive' should be split off and submitted separately as 
->> a preparatory patch, so that they can be backported to stable branches; 
->> please do so.  It'll also make your original clean up that follows 
->> clearer.
-> 
-> I'll make it a stand-alone patch.  Will also CC stable for backporting.
+This also removes the need for the `noreorder' directive, allowing GAS
+to use delay slot scheduling as needed.
 
-Actually, thinking about it some, I think a separate patch strictly for stable
-that only fixes the beqzl case, and leaves the beqz case alone, makes more
-sense.  Because for the preparatory patch, the subu/dsubu issue really only
-affects the beqzl case.  But I am applying the same fix to the beqz case to
-make the follow-on patch to collapse the R10000_LLSC_WAR cases down clearer,
-and I don't think this follow-on patch will need to be backported.
+The same fix is also applied to the standard branch (beqz) case in
+preparation for a follow-up patch that will cleanup/merge the
+R10000_LLSC_WAR and non-R10K sections together.
 
-Or is a patch for stable really needed, since the branch-likely case really
-only applies to R10K machines, which right now in mainline means IP27 and IP28?
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+Tested-by: Joshua Kinard <kumba@gentoo.org>
 
-I'll skip on CC'ing stable right now so I can get both patches queued up.  Can
-re-visit if it's deemed to really be an issue.
+---
+ arch/mips/include/asm/atomic.h |   32 +++++++++++--------------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 0ab176bdb8e8..0babf2775d8e 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -225,12 +225,10 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 		"	.set	arch=r4000				\n"
+ 		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
+ 		"	subu	%0, %1, %3				\n"
++		"	move	%1, %0					\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	sc	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqzl	%0, 1b					\n"
+-		"	 subu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	sc	%1, %2					\n"
++		"	beqzl	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+@@ -244,12 +242,10 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 		"	.set	"MIPS_ISA_LEVEL"			\n"
+ 		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
+ 		"	subu	%0, %1, %3				\n"
++		"	move	%1, %0					\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	sc	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqz	%0, 1b					\n"
+-		"	 subu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	sc	%1, %2					\n"
++		"	beqz	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+@@ -570,12 +566,10 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
+ 		"	.set	arch=r4000				\n"
+ 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+ 		"	dsubu	%0, %1, %3				\n"
++		"	move	%1, %0					\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	scd	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqzl	%0, 1b					\n"
+-		"	 dsubu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	scd	%1, %2					\n"
++		"	beqzl	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),
+@@ -589,12 +583,10 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
+ 		"	.set	"MIPS_ISA_LEVEL"			\n"
+ 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
+ 		"	dsubu	%0, %1, %3				\n"
++		"	move	%1, %0					\n"
+ 		"	bltz	%0, 1f					\n"
+-		"	scd	%0, %2					\n"
+-		"	.set	noreorder				\n"
+-		"	beqz	%0, 1b					\n"
+-		"	 dsubu	%0, %1, %3				\n"
+-		"	.set	reorder					\n"
++		"	scd	%1, %2					\n"
++		"	beqz	%1, 1b					\n"
+ 		"1:							\n"
+ 		"	.set	mips0					\n"
+ 		: "=&r" (result), "=&r" (temp),

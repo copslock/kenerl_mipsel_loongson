@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2017 15:41:30 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:55836 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2017 15:41:54 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55848 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992998AbdKSOlXRUvhi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Nov 2017 15:41:23 +0100
+        by eddie.linux-mips.org with ESMTP id S23993005AbdKSOlZmAFvi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Nov 2017 15:41:25 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 717F74A3;
-        Sun, 19 Nov 2017 14:41:16 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 31DD3516;
+        Sun, 19 Nov 2017 14:41:19 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+        stable@vger.kernel.org,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@verizon.com>
-Subject: [PATCH 4.9 51/72] MIPS: End asm function prologue macros with .insn
-Date:   Sun, 19 Nov 2017 15:38:55 +0100
-Message-Id: <20171119143534.465385588@linuxfoundation.org>
+Subject: [PATCH 4.9 52/72] MIPS: init: Ensure bootmem does not corrupt reserved memory
+Date:   Sun, 19 Nov 2017 15:38:56 +0100
+Message-Id: <20171119143534.503928418@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171119143532.376035495@linuxfoundation.org>
 References: <20171119143532.376035495@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61013
+X-archive-position: 61014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,74 +47,129 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
 
-[ Upstream commit 08889582b8aa0bbc01a1e5a0033b9f98d2e11caa ]
+[ Upstream commit d9b5b658210f28ed9f70c757d553e679d76e2986 ]
 
-When building a kernel targeting a microMIPS ISA, recent GNU linkers
-will fail the link if they cannot determine that the target of a branch
-or jump is microMIPS code, with errors such as the following:
+Current init code initialises bootmem allocator with all of the low
+memory that it assumes is available, but does not check for reserved
+memory block, which can lead to corruption of data that may be stored
+there.
+Move bootmem's allocation map to a location that does not cross any
+reserved regions
 
-    mips-img-linux-gnu-ld: arch/mips/built-in.o: .text+0x542c:
-    Unsupported jump between ISA modes; consider recompiling with
-    interlinking enabled.
-    mips-img-linux-gnu-ld: final link failed: Bad value
-
-or:
-
-    ./arch/mips/include/asm/uaccess.h:1017: warning: JALX to a
-    non-word-aligned address
-
-Placing anything other than an instruction at the start of a function
-written in assembly appears to trigger such errors. In order to prepare
-for allowing us to follow function prologue macros with an EXPORT_SYMBOL
-invocation, end the prologue macros (LEAD, NESTED & FEXPORT) with a
-.insn directive. This ensures that the start of the function is marked
-as code, which always makes sense for functions & safely prevents us
-from hitting the link errors described above.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14508/
+Patchwork: https://patchwork.linux-mips.org/patch/14609/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/asm.h |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/mips/kernel/setup.c |   74 +++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 71 insertions(+), 3 deletions(-)
 
---- a/arch/mips/include/asm/asm.h
-+++ b/arch/mips/include/asm/asm.h
-@@ -54,7 +54,8 @@
- 		.align	2;				\
- 		.type	symbol, @function;		\
- 		.ent	symbol, 0;			\
--symbol:		.frame	sp, 0, ra
-+symbol:		.frame	sp, 0, ra;			\
-+		.insn
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -153,6 +153,35 @@ void __init detect_memory_region(phys_ad
+ 	add_memory_region(start, size, BOOT_MEM_RAM);
+ }
  
- /*
-  * NESTED - declare nested routine entry point
-@@ -63,8 +64,9 @@ symbol:		.frame	sp, 0, ra
- 		.globl	symbol;				\
- 		.align	2;				\
- 		.type	symbol, @function;		\
--		.ent	symbol, 0;			 \
--symbol:		.frame	sp, framesize, rpc
-+		.ent	symbol, 0;			\
-+symbol:		.frame	sp, framesize, rpc;		\
-+		.insn
++bool __init memory_region_available(phys_addr_t start, phys_addr_t size)
++{
++	int i;
++	bool in_ram = false, free = true;
++
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		phys_addr_t start_, end_;
++
++		start_ = boot_mem_map.map[i].addr;
++		end_ = boot_mem_map.map[i].addr + boot_mem_map.map[i].size;
++
++		switch (boot_mem_map.map[i].type) {
++		case BOOT_MEM_RAM:
++			if (start >= start_ && start + size <= end_)
++				in_ram = true;
++			break;
++		case BOOT_MEM_RESERVED:
++			if ((start >= start_ && start < end_) ||
++			    (start < start_ && start + size >= start_))
++				free = false;
++			break;
++		default:
++			continue;
++		}
++	}
++
++	return in_ram && free;
++}
++
+ static void __init print_memory_map(void)
+ {
+ 	int i;
+@@ -332,11 +361,19 @@ static void __init bootmem_init(void)
  
- /*
-  * END - mark end of function
-@@ -86,7 +88,7 @@ symbol:
- #define FEXPORT(symbol)					\
- 		.globl	symbol;				\
- 		.type	symbol, @function;		\
--symbol:
-+symbol:		.insn
+ #else  /* !CONFIG_SGI_IP27 */
  
- /*
-  * ABS - export absolute symbol
++static unsigned long __init bootmap_bytes(unsigned long pages)
++{
++	unsigned long bytes = DIV_ROUND_UP(pages, 8);
++
++	return ALIGN(bytes, sizeof(long));
++}
++
+ static void __init bootmem_init(void)
+ {
+ 	unsigned long reserved_end;
+ 	unsigned long mapstart = ~0UL;
+ 	unsigned long bootmap_size;
++	bool bootmap_valid = false;
+ 	int i;
+ 
+ 	/*
+@@ -430,11 +467,42 @@ static void __init bootmem_init(void)
+ #endif
+ 
+ 	/*
+-	 * Initialize the boot-time allocator with low memory only.
++	 * check that mapstart doesn't overlap with any of
++	 * memory regions that have been reserved through eg. DTB
+ 	 */
+-	bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
+-					 min_low_pfn, max_low_pfn);
++	bootmap_size = bootmap_bytes(max_low_pfn - min_low_pfn);
++
++	bootmap_valid = memory_region_available(PFN_PHYS(mapstart),
++						bootmap_size);
++	for (i = 0; i < boot_mem_map.nr_map && !bootmap_valid; i++) {
++		unsigned long mapstart_addr;
++
++		switch (boot_mem_map.map[i].type) {
++		case BOOT_MEM_RESERVED:
++			mapstart_addr = PFN_ALIGN(boot_mem_map.map[i].addr +
++						boot_mem_map.map[i].size);
++			if (PHYS_PFN(mapstart_addr) < mapstart)
++				break;
++
++			bootmap_valid = memory_region_available(mapstart_addr,
++								bootmap_size);
++			if (bootmap_valid)
++				mapstart = PHYS_PFN(mapstart_addr);
++			break;
++		default:
++			break;
++		}
++	}
+ 
++	if (!bootmap_valid)
++		panic("No memory area to place a bootmap bitmap");
++
++	/*
++	 * Initialize the boot-time allocator with low memory only.
++	 */
++	if (bootmap_size != init_bootmem_node(NODE_DATA(0), mapstart,
++					 min_low_pfn, max_low_pfn))
++		panic("Unexpected memory size required for bootmap");
+ 
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+ 		unsigned long start, end;

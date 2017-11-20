@@ -1,69 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Nov 2017 15:03:39 +0100 (CET)
-Received: from mail-pf0-x244.google.com ([IPv6:2607:f8b0:400e:c00::244]:44442
-        "EHLO mail-pf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992157AbdKTODah1EJL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Nov 2017 15:03:30 +0100
-Received: by mail-pf0-x244.google.com with SMTP id r14so849910pfl.11;
-        Mon, 20 Nov 2017 06:03:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=t2KKpeoLDmlsm62v2AUbbVFcp69nzRlOBhJ3SJDQQbk=;
-        b=sOm93t44redo2rPmtI79E7HmZL+VV0H9OQW1AHA7NwqvV+22Gmo5SsLWOFlrrBwc8S
-         6ahCwgxWuh9mXLQN2cNYTrIC7R93wNBY2pzMOeMhkEiTE+x+CuEEW49MtTyuo7Q/3abU
-         wY+DCbrExMXlzI58Ovits9Y7gwT5scYRkJa6aZlRVky2v4FXNgyqXQ/7nJ78sbgYwNE8
-         Y2ycZ5LIK2WFs/+kNDpAYQYRfA+UrLiA2xiFE90gARuzIaO479rnUM4f2TCHY9jCvtXu
-         bJ9tHBrQDZGk+6k49B3J5KVLssCsrA9v6FerI4aTtpcrJ7OFP2dJZKPnDmbant/qsBcu
-         vPvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=t2KKpeoLDmlsm62v2AUbbVFcp69nzRlOBhJ3SJDQQbk=;
-        b=k0t+jarWxOP2V60pDzDjo+5UEBFpC9Zu9T+I/e81uflS/mAFhSVTBicTQEqDHNa9mj
-         Cm0yDVNsbb6y5qyZ2Y4QELdqik4KkfqDGZkHEKy2eSdnTm2tDos38HaHKh0o+GbXDrY/
-         G4VP3p6KjobJOmOl441uzrmffK8bmT9vuEaFJdZEb74Iu+msKfoE4OYnzYHxSnC42QKL
-         Gl5tVnS68ewrAYUcbG1Ekdo3SqH5GOUpap//2s517z5Fw/5KAfo8u1DGbMZkKAb32Zih
-         eISNV2NdTczLGP/gCfJyG/paA2SuOjLbJvu04AD/1mp7G4CnqMEiEW4XbLILQwYT26uW
-         rvYw==
-X-Gm-Message-State: AJaThX7qgK+4+2dmphhaFgFlKS/3QIEErTDcmjv3wrkXK/4e50QB4A6P
-        wcFKJcgbux2b/M3sZ8pfrUw=
-X-Google-Smtp-Source: AGs4zMb4msvW3rmxfGKCO12yJWX7S4pvQ/k6S+uIpl6hdNQzuzLro6XjepZZgfSd7zZ5hmbEAxEsFQ==
-X-Received: by 10.99.53.72 with SMTP id c69mr13565088pga.225.1511186603925;
-        Mon, 20 Nov 2017 06:03:23 -0800 (PST)
-Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id 73sm23178831pfr.145.2017.11.20.06.03.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Nov 2017 06:03:22 -0800 (PST)
-Subject: Re: [22/26] MIPS: generic: Introduce generic DT-based board support
-To:     James Hogan <james.hogan@mips.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Nov 2017 15:51:09 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57288 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992248AbdKTOvDKGm2D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Nov 2017 15:51:03 +0100
+Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 117B2BA9;
+        Mon, 20 Nov 2017 14:50:55 +0000 (UTC)
+Date:   Mon, 20 Nov 2017 15:51:01 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Marcin Nowakowski <marcin.nowakowski@mips.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org
-References: <20160826153725.11629-23-paul.burton@imgtec.com>
- <20171119034325.GA17384@roeck-us.net>
- <20171120102507.GD27409@jhogan-linux.mipstec.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <5e88e3d4-3c4b-b5eb-0b32-d0c0902e14c2@roeck-us.net>
-Date:   Mon, 20 Nov 2017 06:03:21 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+        Sasha Levin <alexander.levin@verizon.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: Fwd: stable-rc/linux-4.4.y build: 182 builds: 60 failed, 122
+ passed, 60 errors, 60 warnings (v4.4.99-60-g803704b287d8)
+Message-ID: <20171120145101.GC3175@kroah.com>
+References: <5a11b2d4.17f71c0a.5dc3f.fef5@mx.google.com>
+ <CAK8P3a2QcYoFHFrR+DPFs1Oo6Li1NO=VMxoAyoh=yWF24j4YMg@mail.gmail.com>
+ <CAK8P3a1TCQR1gDRL_Ns5tTJyj8x_NJupM74i8rKpUZ0hRa1mcQ@mail.gmail.com>
+ <8a278610-716d-321e-a403-6c8e74b05c82@mips.com>
 MIME-Version: 1.0
-In-Reply-To: <20171120102507.GD27409@jhogan-linux.mipstec.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <groeck7@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8a278610-716d-321e-a403-6c8e74b05c82@mips.com>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61022
+X-archive-position: 61023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,49 +49,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/20/2017 02:25 AM, James Hogan wrote:
-> On Sat, Nov 18, 2017 at 07:43:25PM -0800, Guenter Roeck wrote:
->> On Fri, Aug 26, 2016 at 04:37:21PM +0100, Paul Burton wrote:
->>> Introduce a "generic" platform, which aims to be board-agnostic by
->>> making use of device trees passed by the boot protocol defined in the
->>> MIPS UHI (Universal Hosting Interface) specification. Provision is made
->>> for supporting boards which use a legacy boot protocol that can't be
->>> changed, but adding support for such boards or any others is left to
->>> followon patches.
->>>
->>> Right now the built kernels expect to be loaded to 0x80100000, ie. in
->>> kseg0. This is fine for the vast majority of MIPS platforms, but
->>> nevertheless it would be good to remove this limitation in the future by
->>> mapping the kernel via the TLB such that it can be loaded anywhere & map
->>> itself appropriately.
->>>
->>> Configuration is handled by dynamically generating configs using
->>> scripts/kconfig/merge_config.sh, somewhat similar to the way powerpc
->>> makes use of it. This allows for variations upon the configuration, eg.
->>> differing architecture revisions or subsets of driver support for
->>> differing boards, to be handled without having a large number of
->>> defconfig files.
->>>
->>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->>
->> Guess it is known that this patch causes failures when building
->> "allmodconfig" on test systems such as 0day; it was reported by 0day
->> some two months ago. nevertheless, the patch found its way into mainline
->> without fix. Does anyone care, or should I simply disable "allmodconfig"
->> test builds for mips ?
+On Mon, Nov 20, 2017 at 10:41:24AM +0100, Marcin Nowakowski wrote:
+> Hi Arnd, Greg,
 > 
-> Hi Guenter,
+> On 19.11.2017 21:55, Arnd Bergmann wrote:
+> > [Adding the others to cc]
+> > 
+> > ---------- Forwarded message ----------
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > Date: Sun, Nov 19, 2017 at 9:53 PM
+> > Subject: Re: stable-rc/linux-4.4.y build: 182 builds: 60 failed, 122
+> > passed, 60 errors, 60 warnings (v4.4.99-60-g803704b287d8)
+> > To: "kernelci.org bot" <bot@kernelci.org>, gregkh <gregkh@linuxfoundation.org>
+> > Cc: Tom Gall <tom.gall@linaro.org>, Sumit Semwal
+> > <sumit.semwal@linaro.org>, Amit Pundir <amit.pundir@linaro.org>, Arnd
+> > Bergmann <arnd.bergmann@linaro.org>, Anmar Oueja
+> > <anmar.oueja@linaro.org>
+> > 
+> > 
+> > On Sun, Nov 19, 2017 at 5:35 PM, kernelci.org bot <bot@kernelci.org> wrote:
+> > > stable-rc/linux-4.4.y build: 182 builds: 60 failed, 122 passed, 60 errors, 60 warnings (v4.4.99-60-g803704b287d8)
+> > > 
+> > > Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.4.y/kernel/v4.4.99-60-g803704b287d8/
+> > > 
+> > > Tree: stable-rc
+> > > Branch: linux-4.4.y
+> > > Git Describe: v4.4.99-60-g803704b287d8
+> > > Git Commit: 803704b287d89efcd70fade9e650176282a1d766
+> > > Git URL: http://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> > > Built: 4 unique architectures
+> > > 
+> > > Build Failures Detected:
+> > > 
+> > > mips:    gcc version 6.3.0 (GCC)
+> > > 
+> > >      allnoconfig: FAIL
+> > >      ar7_defconfig: FAIL
+> > >      ath79_defconfig: FAIL
+> > >      bcm47xx_defconfig: FAIL
+> > > ...
+> > > 
+> > > Errors summary:
+> > > 
+> > >       60  arch/mips/kernel/setup.c:439:8: error: implicit declaration of function 'PHYS_PFN' [-Werror=implicit-function-declaration]
+> > 
+> > All mips builds failed with this error, apparently caused by the
+> > backport of d9b5b658210f2 ("MIPS: init: Ensure bootmem does not
+> > corrupt reserved memory").
+> > 
 > 
-> I can't find any emails from 0day in relation to this patch (I've also
-> dug about on the kbuild-all archives without success). Could you link to
-> or quote the build failure you're referring to.
-> 
-> Thanks
-> James
-> 
+> The following change:
+> 8f235d1a3eb71 ('mm: add PHYS_PFN, use it in __phys_to_pfn()')
+> needs to be backported prior to d9b5b658210f2 to add the missing macro
+> definition.
 
-It was much older than two months, actually.
+Thanks, now queued up, hopefully this fixes the build issues.
 
-https://lkml.org/lkml/2016/12/15/33
-
-Guenter
+greg k-h

@@ -1,48 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Nov 2017 14:56:34 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:58384 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Nov 2017 16:45:46 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:51706 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991258AbdKUN41qqxHY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Nov 2017 14:56:27 +0100
+        id S23991258AbdKUPpgCycVJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Nov 2017 16:45:36 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id CDDDD1A47FA;
-        Tue, 21 Nov 2017 14:56:21 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id 0746E1A20B7;
+        Tue, 21 Nov 2017 16:45:30 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id A62A41A1E79;
-        Tue, 21 Nov 2017 14:56:21 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id D95CD1A1E67;
+        Tue, 21 Nov 2017 16:45:29 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
-Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dengcheng Zhu <dengcheng.zhu@mips.com>,
-        Ding Tianhong <dingtianhong@huawei.com>,
+Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Douglas Leung <douglas.leung@mips.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
         Goran Ferenc <goran.ferenc@mips.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        James Cowgill <James.Cowgill@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <james.hogan@mips.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Marc Zyngier <marc.zyngier@arm.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
         Paul Burton <paul.burton@mips.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
         Raghu Gandham <raghu.gandham@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Saeger <tom.saeger@oracle.com>
-Subject: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
-Date:   Tue, 21 Nov 2017 14:56:12 +0100
-Message-Id: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com>
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v10 0/3] MIPS: Add virtual Ranchu board as a generic-based board
+Date:   Tue, 21 Nov 2017 16:44:52 +0100
+Message-Id: <1511279122-12916-1-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61027
+X-archive-position: 61028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,107 +51,169 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Miodrag Dinic <miodrag.dinic@mips.com>
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-Add a new kernel parameter to override the default behavior related
-to the decision whether to set up stack as non-executable in function
-mips_elf_read_implies_exec().
+v9->v10:
 
-The new parameter is used to control non executable stack and heap,
-regardless of PT_GNU_STACK entry. This does apply to both stack and
-heap, despite the name.
+    - added comment in code segment related to measuring frequency
+    - rebased to the latest code
 
-Allowed values:
+v8->v9:
 
-nonxstack=on	Force non-exec stack & heap
-nonxstack=off	Force executable stack & heap
+    - cleaned up PIC initialization details
+    - added missing '\n' to pr_err() invocations
+    - removed two Goldfish FB patches, since they got accepted
+    - rebased to the latest code
 
-If this parameter is omitted, kernel behavior remains the same as it
-was before this patch is applied.
+v7->v8:
 
-This functionality is convenient during debugging and is especially
-useful for Android development where non-exec stack is required.
+    - cleaned commit message for patch #2
+    - cleaned GPL licence text for patch #2
+    - revised Goldfish PIC error and info messages
+    - simplified code around MIPS_MACHINE() for Ranchu
+    - changed an instance of "__initdata" to "__initconst" in Ranchu
+    - rebased to the latest code
 
-Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 11 +++++++
- arch/mips/kernel/elf.c                          | 39 +++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+v6->v7:
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index b74e133..99464ee 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2614,6 +2614,17 @@
- 			noexec32=off: disable non-executable mappings
- 				read implies executable mappings
- 
-+	nonxstack	[MIPS]
-+			Force setting up stack and heap as non-executable or
-+			executable regardless of PT_GNU_STACK entry. Both
-+			stack and heap are affected, despite the name. Valid
-+			arguments: on, off.
-+			nonxstack=on:	Force non-executable stack and heap
-+			nonxstack=off:	Force executable stack and heap
-+			If ommited, stack and heap will or will not be set
-+			up as non-executable depending on PT_GNU_STACK
-+			entry and possibly other factors.
-+
- 	nofpu		[MIPS,SH] Disable hardware FPU at boot time.
- 
- 	nofxsr		[BUGS=X86-32] Disables x86 floating point extended
-diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-index 731325a..28ef7f3 100644
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -326,8 +326,47 @@ void mips_set_personality_nan(struct arch_elf_state *state)
- 	}
- }
- 
-+static int nonxstack = EXSTACK_DEFAULT;
-+
-+/*
-+ * kernel parameter: nonxstack=on|off
-+ *
-+ *   Force setting up stack and heap as non-executable or
-+ *   executable regardless of PT_GNU_STACK entry. Both
-+ *   stack and heap are affected, despite the name. Valid
-+ *   arguments: on, off.
-+ *
-+ *     nonxstack=on:   Force non-executable stack and heap
-+ *     nonxstack=off:  Force executable stack and heap
-+ *
-+ *   If ommited, stack and heap will or will not be set
-+ *   up as non-executable depending on PT_GNU_STACK
-+ *   entry and possibly other factors.
-+ */
-+static int __init nonxstack_setup(char *str)
-+{
-+	if (!strcmp(str, "on"))
-+		nonxstack = EXSTACK_DISABLE_X;
-+	else if (!strcmp(str, "off"))
-+		nonxstack = EXSTACK_ENABLE_X;
-+	else
-+		pr_err("Malformed nonxstack format! nonxstack=on|off\n");
-+
-+	return 1;
-+}
-+__setup("nonxstack=", nonxstack_setup);
-+
- int mips_elf_read_implies_exec(void *elf_ex, int exstack)
- {
-+	switch (nonxstack) {
-+	case EXSTACK_DISABLE_X:
-+		return 0;
-+	case EXSTACK_ENABLE_X:
-+		return 1;
-+	default:
-+		break;
-+	}
-+
- 	if (exstack != EXSTACK_DISABLE_X) {
- 		/* The binary doesn't request a non-executable stack */
- 		return 1;
+    - improved commit message for patch 5 (Add Ranchu as a...)
+    - added code comments for segment that reads clock high/low
+    - revised usage of "u32", "u64" variables in Ranchu code
+    - revised header inclusion in Ranchu code
+    - added code comments for segment that reads clock high/low
+    - improved displayed message for Ranchu in Kconfig
+    - added a Ranchu-specific file as maintained in MAINTAINERS
+    - added proper handling of an error case in PIC initialization
+    - improved error messages issued during PIC initialization
+    - rebased to the latest code
+
+v5->v6:
+
+    - revised cascading handling code in Goldfish PIC implementation
+    - used more generic node name in Goldfish PIC documentation file
+    - used more generic node name in Goldfish FB documentation file
+    - corrected several minor items in both documentation files
+    - revisited copyright messages in two source files
+    - rebased to the latest code
+
+v4->v5:
+
+    - removed RTC clock-related patches since they are already applied
+    - removed 8042-related patch since this issue is expected to be
+      resolved on the whole platform level
+    - redesigned Goldfish PIC driver
+    - updated email addresses in commit messages and MAINTAINERS file
+      to contain "@mips.com" instead of "@imgtec.com"
+    - used "MIPS" instead of "Mips" in commit messages
+    - rebased to the latest code
+
+v3->v4:
+
+    - corrected RTC clock patch so that it does not cause build
+      errors for some targets, and limited compile support to MIPS
+      architecture, since it is the only case where this driver is
+      used
+    - changed titles of patches 2 and 4 to make them consistent
+      with commit messages of corresponding directories
+    - applied "checkpatch --strict" to the whole series and
+      corrected several instances of reported warnings
+    - rebased to the latest code
+
+v2->v3:
+
+    - fixed configuration dependency for VIRTIO_NET and
+        RTC_DRV_GOLDFISH
+    - fixed frequency calculation in ranchu_measure_hpt_freq()
+    - use DT info instead of hard-coding RTC base in
+        ranchu_measure_hpt_freq()
+    - Goldfish PIC reworked to follow legacy irq domain paradigm
+    - Goldfish RTC reimplemented to support alarm functionality
+    - added COMPILE_TEST to Goldfish PIC & RTC to extend compile
+        test coverage
+    - corrected location of documentation for Goldfish FB
+    - added a patch on unselecting ARCH_MIGHT_HAVE_PC_SERIO
+    - removed two patches on i8042 as not needed in new organization
+    - removed the patch on separate MIPS Android config as not needed
+    - rebased to the latest code
+
+v1->v2:
+
+    - patch on RTC driver cleaned up
+    - added drivers for virtio console and net to the Ranchu board
+    - minor improvements in commit messages
+    - updated recipient lists using get_maintainer.pl
+    - rebased to the latest code
+
+This series adds MIPS Ranchu virtual machine used by Android emulator.
+The board relies on the concept of MIPS generic boards, and utilizes
+generic board framework for build and device organization.
+
+The Ranchu board is intended to be used by Android emulator.The name
+"Ranchu" originates from Android development community. "Goldfish" and
+"Ranchu" are names for two generations of virtual boards used by
+Android emulator. "Ranchu" is a newer one among the two, and this
+series deals with Ranchu. However, for historical reasons, some file,
+device, and variable names in this series still contain the word
+"Goldfish".
+
+MIPS Ranchu machine includes a number of Goldfish devices. The
+support for Virtio devices is also included. Ranchu board supports
+up to 16 virtio devices which can be attached using virtio MMIO Bus.
+This is summarized in the following picture:
+
+       ABUS
+        ||----MIPS CPU
+        ||       |                    IRQs
+        ||----Goldfish PIC------------(32)--------
+        ||                     | | | | | | | | |
+        ||----Goldfish TTY------ | | | | | | | |
+        ||                       | | | | | | | |
+        ||----Goldfish RTC-------- | | | | | | |
+        ||                         | | | | | | |
+        ||----Goldfish FB----------- | | | | | |
+        ||                           | | | | | |
+        ||----Goldfish Events--------- | | | | |
+        ||                             | | | | |
+        ||----Goldfish Audio------------ | | | |
+        ||                               | | | |
+        ||----Goldfish Battery------------ | | |
+        ||                                 | | |
+        ||----Android PIPE------------------ | |
+        ||                                   | |
+        ||----Virtio MMIO Bus                | |
+        ||    |    |    |                    | |
+        ||    |    |   (virtio-block)--------- |
+        ||   (16)  |                           |
+        ||    |   (virtio-net)------------------
+
+
+Device Tree is created on the QEMU side based on the information about
+devices IO map and IRQ numbers. Kernel will load this DTB using UHI
+boot protocol.
+
+Checkpatch script outputs a small number of warnings if applied to
+this series. We did not correct the code, since we think the code is
+correct for those particular cases of checkpatch warnings.
+
+Miodrag Dinic (3):
+  Documentation: Add device tree binding for Goldfish PIC driver
+  irqchip/irq-goldfish-pic: Add Goldfish PIC driver
+  MIPS: ranchu: Add Ranchu as a new generic-based board
+
+ .../interrupt-controller/google,goldfish-pic.txt   |  30 +++++
+ MAINTAINERS                                        |  13 ++
+ arch/mips/configs/generic/board-ranchu.config      |  30 +++++
+ arch/mips/generic/Kconfig                          |  10 ++
+ arch/mips/generic/Makefile                         |   1 +
+ arch/mips/generic/board-ranchu.c                   |  92 ++++++++++++++
+ drivers/irqchip/Kconfig                            |   8 ++
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-goldfish-pic.c                 | 139 +++++++++++++++++++++
+ 9 files changed, 324 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+ create mode 100644 arch/mips/configs/generic/board-ranchu.config
+ create mode 100644 arch/mips/generic/board-ranchu.c
+ create mode 100644 drivers/irqchip/irq-goldfish-pic.c
+
 -- 
 2.7.4

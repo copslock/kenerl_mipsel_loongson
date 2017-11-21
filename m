@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Nov 2017 14:52:54 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:57058 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Nov 2017 14:56:34 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:58384 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990588AbdKUNwq32gVY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Nov 2017 14:52:46 +0100
+        id S23991258AbdKUN41qqxHY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Nov 2017 14:56:27 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 1BC4B1A47D5;
-        Tue, 21 Nov 2017 14:52:40 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id CDDDD1A47FA;
+        Tue, 21 Nov 2017 14:56:21 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.111])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id E91751A1E2E;
-        Tue, 21 Nov 2017 14:52:39 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id A62A41A1E79;
+        Tue, 21 Nov 2017 14:56:21 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
-        Miodrag Dinic <aleksandar.markovic@mips.com>,
-        Christoffer Dall <cdall@linaro.org>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Dengcheng Zhu <dengcheng.zhu@mips.com>,
         Ding Tianhong <dingtianhong@huawei.com>,
         Douglas Leung <douglas.leung@mips.com>,
@@ -34,15 +34,15 @@ Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Tom Saeger <tom.saeger@oracle.com>
-Subject: [PATCH] MIPS: Add nonxstack=on|off kernel parameter
-Date:   Tue, 21 Nov 2017 14:52:17 +0100
-Message-Id: <1511272339-10327-1-git-send-email-aleksandar.markovic@rt-rk.com>
+Subject: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+Date:   Tue, 21 Nov 2017 14:56:12 +0100
+Message-Id: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61026
+X-archive-position: 61027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,7 +66,7 @@ to the decision whether to set up stack as non-executable in function
 mips_elf_read_implies_exec().
 
 The new parameter is used to control non executable stack and heap,
-regardless of PT_GNU_STACK entry. This does apply to both steak and
+regardless of PT_GNU_STACK entry. This does apply to both stack and
 heap, despite the name.
 
 Allowed values:
@@ -81,7 +81,7 @@ This functionality is convenient during debugging and is especially
 useful for Android development where non-exec stack is required.
 
 Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-Signed-off-by: Miodrag Dinic <aleksandar.markovic@mips.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
 ---
  Documentation/admin-guide/kernel-parameters.txt | 11 +++++++
  arch/mips/kernel/elf.c                          | 39 +++++++++++++++++++++++++

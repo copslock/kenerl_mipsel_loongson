@@ -1,47 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Nov 2017 01:04:21 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:37823 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992280AbdKUAEPECysn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Nov 2017 01:04:15 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 21 Nov 2017 00:03:16 +0000
-Received: from jhogan-linux.mipstec.com (192.168.154.110) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Mon, 20 Nov 2017 16:03:17 -0800
-From:   James Hogan <james.hogan@mips.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Guenter Roeck <linux@roeck-us.net>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, James Hogan <jhogan@kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: Fix CPS SMP NS16550 UART defaults
-Date:   Tue, 21 Nov 2017 00:02:40 +0000
-Message-ID: <20171121000240.4058-1-james.hogan@mips.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <5e88e3d4-3c4b-b5eb-0b32-d0c0902e14c2@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Nov 2017 04:32:25 +0100 (CET)
+Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:36148
+        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990398AbdKUDcOZ5O3T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Nov 2017 04:32:14 +0100
+Received: by mail-pg0-x243.google.com with SMTP id k190so4423787pga.3;
+        Mon, 20 Nov 2017 19:32:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cmDJpWAl5dA/sejKMUjeM37sbvGwBsP7avcpOKULlJc=;
+        b=T6zFvPAcd7xGP/1M197oq1FsoBrLSMo+o3mfqTPMrWsX0KMUU3kUgsfwsaqE2M2a2w
+         yBn43yOVWpOWhmwOP6Jw8q3943D0Wi4KdoaCjU82yIUG7McBrhNCpst3Z5Zqf3Op0KE9
+         n6t2kF9kOXcryNBMUlS6lzLWyertL91Wcpw0KwgIrHhYK/FhHhvCkAtDvaZhW133mxdC
+         NXbszC0jQiXGhq0oxfpwcwU9AZO3NJsV86Tgp0R/yCqQ4e/yAIoKdAxeSiMYKLbjaM7f
+         qQFSGWupQDc4ciirKhPmChpHE0HKiFUyHSo9OfP5s868LoaZS6coB4rSz9d5X4Phmk45
+         BilA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cmDJpWAl5dA/sejKMUjeM37sbvGwBsP7avcpOKULlJc=;
+        b=ILH9sKcxKQdrAV1pcNa5Kn7c5rkCh/6B5lTJKAW50pHh7PQ+rBFe4UgJ/UV3d8yfJJ
+         c7fyu6fmbIX4uOkIFqSP7AaUOrt0LdTeTW5M/8GIPJ2dR2JyFIhOAysbZzQVR9v2MQNx
+         6wL8nHBCVOtlGd+6RoeChGgsy1tVst5nHAa8EpyLRzkzCpgcvjm1WTI553anDUkx7P0r
+         REtQPYNVq4gx3Q6LfZTKPsoi5S4vous/gHHNE9zuOVqigD3P34d6Y5kUZfO/f+MXb2am
+         jqcS+tOBLPlKKISUf5t6WomdwCWEQ1MuHcS6z8LCCNZTgZcXfD1YxW4HVuN2gzukxOuA
+         3r+w==
+X-Gm-Message-State: AJaThX6bIZHn2MsQNeBFhVlcpCsxehAwDy+fAnu2gyu7EC/CqUsk/KgS
+        0T2wVZb2xcEjulnGZa5F+XCCNg==
+X-Google-Smtp-Source: AGs4zMYjznLrC8F2VIr3C/QLWtRoEwDbMhP0L3UEbxHVcvLjvUxQwqhgQIpvC4Osrx4E31IkHm4mjw==
+X-Received: by 10.84.141.36 with SMTP id 33mr16077122plu.247.1511235127454;
+        Mon, 20 Nov 2017 19:32:07 -0800 (PST)
+Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id h75sm9031664pfj.68.2017.11.20.19.32.06
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 20 Nov 2017 19:32:06 -0800 (PST)
+Subject: Re: [PATCH] MIPS: Fix CPS SMP NS16550 UART defaults
+To:     James Hogan <james.hogan@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-kernel@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
 References: <5e88e3d4-3c4b-b5eb-0b32-d0c0902e14c2@roeck-us.net>
+ <20171121000240.4058-1-james.hogan@mips.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <286daa85-6bae-939a-a2a4-53ec08b7c340@roeck-us.net>
+Date:   Mon, 20 Nov 2017 19:32:05 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1511222596-637139-12578-366385-1
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187137
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+In-Reply-To: <20171121000240.4058-1-james.hogan@mips.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61024
+X-archive-position: 61025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,77 +75,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <jhogan@kernel.org>
+On 11/20/2017 04:02 PM, James Hogan wrote:
+> From: James Hogan <jhogan@kernel.org>
+> 
+> The MIPS_CPS_NS16550_BASE and MIPS_CPS_NS16550_SHIFT options have no
+> defaults for non-Malta platforms which select SYS_SUPPORTS_MIPS_CPS
+> (i.e. the pistachio and generic platforms). This is problematic for
+> automated allyesconfig and allmodconfig builds based on these platforms,
+> since make silentoldconfig tries to ask the user for values, and
+> especially since v4.15 where the default platform was switched to
+> generic.
+> 
+> Default these options to 0 and arrange for MIPS_CPS_NS16550 to be no
+> when using that default base address, so that the option only has an
+> effect when the default is provided (i.e. Malta) or when a value is
+> provided by the user.
+> 
+> Fixes: 609cf6f2291a ("MIPS: CPS: Early debug using an ns16550-compatible UART")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Reviewed-by: Paul Burton <paul.burton@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-mips@linux-mips.org
+> ---
+> Guenter: I'm guessing this is the problem you're referring to.
 
-The MIPS_CPS_NS16550_BASE and MIPS_CPS_NS16550_SHIFT options have no
-defaults for non-Malta platforms which select SYS_SUPPORTS_MIPS_CPS
-(i.e. the pistachio and generic platforms). This is problematic for
-automated allyesconfig and allmodconfig builds based on these platforms,
-since make silentoldconfig tries to ask the user for values, and
-especially since v4.15 where the default platform was switched to
-generic.
+Yes.
 
-Default these options to 0 and arrange for MIPS_CPS_NS16550 to be no
-when using that default base address, so that the option only has an
-effect when the default is provided (i.e. Malta) or when a value is
-provided by the user.
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Fixes: 609cf6f2291a ("MIPS: CPS: Early debug using an ns16550-compatible UART")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-mips@linux-mips.org
----
-Guenter: I'm guessing this is the problem you're referring to.
----
- arch/mips/Kconfig.debug | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+mips:allmodconfig still fails to build with this patch applied, but elsewhere.
 
-diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
-index 464af5e025d6..0749c3724543 100644
---- a/arch/mips/Kconfig.debug
-+++ b/arch/mips/Kconfig.debug
-@@ -124,30 +124,36 @@ config SCACHE_DEBUGFS
- 
- 	  If unsure, say N.
- 
--menuconfig MIPS_CPS_NS16550
-+menuconfig MIPS_CPS_NS16550_BOOL
- 	bool "CPS SMP NS16550 UART output"
- 	depends on MIPS_CPS
- 	help
- 	  Output debug information via an ns16550 compatible UART if exceptions
- 	  occur early in the boot process of a secondary core.
- 
--if MIPS_CPS_NS16550
-+if MIPS_CPS_NS16550_BOOL
-+
-+config MIPS_CPS_NS16550
-+	def_bool MIPS_CPS_NS16550_BASE != 0
- 
- config MIPS_CPS_NS16550_BASE
- 	hex "UART Base Address"
- 	default 0x1b0003f8 if MIPS_MALTA
-+	default 0
- 	help
- 	  The base address of the ns16550 compatible UART on which to output
- 	  debug information from the early stages of core startup.
- 
-+	  This is only used if non-zero.
-+
- config MIPS_CPS_NS16550_SHIFT
- 	int "UART Register Shift"
--	default 0 if MIPS_MALTA
-+	default 0
- 	help
- 	  The number of bits to shift ns16550 register indices by in order to
- 	  form their addresses. That is, log base 2 of the span between
- 	  adjacent ns16550 registers in the system.
- 
--endif # MIPS_CPS_NS16550
-+endif # MIPS_CPS_NS16550_BOOL
- 
- endmenu
--- 
-2.14.1
+In file included from /opt/buildbot/slave/hwmon-testing/build/include/linux/bcma/bcma.h:10:0,
+                  from /opt/buildbot/slave/hwmon-testing/build/drivers/bcma/bcma_private.h:9,
+                  from /opt/buildbot/slave/hwmon-testing/build/drivers/bcma/main.c:8:
+/opt/buildbot/slave/hwmon-testing/build/include/linux/bcma/bcma_driver_pci.h:218:24: error: field 'pci_controller' has incomplete type
+
+Guenter

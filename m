@@ -1,48 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 12:34:25 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:36976 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991033AbdKVLbmoyox8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 12:31:42 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 22 Nov 2017 11:31:35 +0000
-Received: from jhogan-linux.mipstec.com (192.168.154.110) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Wed, 22 Nov 2017 03:31:00 -0800
-From:   James Hogan <james.hogan@mips.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 6/7] MIPS: XPA: Standardise readx/writex accessors
-Date:   Wed, 22 Nov 2017 11:30:32 +0000
-Message-ID: <ee83f3d40494dcad3b7cad073c9829ecf9cce2cd.1511349998.git-series.jhogan@kernel.org>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
-References: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1511350289-637139-12581-475811-2
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 4.30
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187190
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        1.80 BSF_SC0_MV0735_3       META:  
-        2.50 BSF_SC0_MV0735         META: custom rule MV0735 
-X-BESS-Outbound-Spam-Status: SCORE=4.30 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_MV0735_3, BSF_SC0_MV0735
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2017 00:16:36 +0100 (CET)
+Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:38634
+        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990426AbdKVXQ3VWZqb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2017 00:16:29 +0100
+Received: by mail-lf0-x242.google.com with SMTP id c188so12534444lfd.5;
+        Wed, 22 Nov 2017 15:16:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=f7kekL+tDLpAfD7UKD4CZjhwNHsEnMwAb7XKMdFARUA=;
+        b=p4DhwHBMNBmm+j4BxkGp5D1grY7u5dqrRluIqncDWAO4LkWBBLempJDpRhflegnjKw
+         7oF8N7RiQjcbOOeaEWbJvL5nTYC6DycLGNss3gDfDMdpY8tu8W7I2MsKesAQozMAN8ir
+         Cg/OGg11vvzIVDAM/WRGzd/71oKpfssz7hCKh8Irex7UJBlmJ9aPjnjnuhoHlF+Sly6E
+         qdEGmOdOz0HcKwA7W2HeJ0x/cX3qu1uE42LR1FoOw0m3Myo9dsqa73KrW+r0V154N2SH
+         NyXgxABTub3nvGAMfT46E5aqwsMDn3EFd2sPBqw6ouLAAbPBN5iJ0RqvSTD7+dAF4WRm
+         AMHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=f7kekL+tDLpAfD7UKD4CZjhwNHsEnMwAb7XKMdFARUA=;
+        b=bkJoWB8h8mVv38wDO4U2mDhvclpxVJYG3SKIctA2V+8oDLQYIFtAUZvPcRuRapyYlv
+         umdZLawl+szDsE5lathnpbPZY3S2UcpHwiXRg5IiJW9k66rSZH41Mlr8iasRJ7Rz1xVJ
+         +qtdmlQo4p/ud+p01bR234tVQCEFJKt8//zNGmdgm1jhCvnqxDUCY3Ija6hc14fFQGZY
+         yNMIQiDld06tRZHkGyW5NrgbdLjMb9hMix5IhyvFjyXPFILT00a082/j9mtrRoJejmhW
+         cyYFJjlZoxeZJU2J1rFUWq0J6cf1ekrDsfrWW/ClXAkaa7Y31eajz5VxKKrwxWfW3n4A
+         cFMQ==
+X-Gm-Message-State: AJaThX7gU3W6QgKiQQJESIC0SiRQqODNzmwR80FOIu2Z5F2pYbjS6nij
+        wJQ/m5itEhuXYXCMQMNGZX6Xruio
+X-Google-Smtp-Source: AGs4zMahQMfguYHVrz/rO2VCq0njBmB+CwxirJpzDr9flRsc+DZNBQGNirykNbsdO9l1WkYGnYISZQ==
+X-Received: by 10.25.83.131 with SMTP id h3mr6784397lfl.173.1511392583314;
+        Wed, 22 Nov 2017 15:16:23 -0800 (PST)
+Received: from localhost.localdomain ([195.254.138.66])
+        by smtp.gmail.com with ESMTPSA id 75sm3894207lja.84.2017.11.22.15.16.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 22 Nov 2017 15:16:22 -0800 (PST)
+From:   Vasyl Gomonovych <gomonovych@gmail.com>
+To:     ralf@linux-mips.org, paul.burton@mips.com,
+        pure.logic@nexus-software.ie, akpm@linux-foundation.org,
+        bart.vanassche@sandisk.com, vladimir.murzin@arm.com,
+        l.stach@pengutronix.de, alexander.h.duyck@intel.com,
+        linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, gomonovych@gmail.com
+Subject: [PATCH] MIPS: dma-default: Use vma_pages helper
+Date:   Thu, 23 Nov 2017 00:16:12 +0100
+Message-Id: <1511392572-9254-1-git-send-email-gomonovych@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <gomonovych@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61055
+X-archive-position: 61056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: gomonovych@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,85 +66,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <jhogan@kernel.org>
+Use vma_pages function on vma object instead of explicit computation.
+arch/mips/mm/dma-default.c:182:34-40: WARNING: Consider using vma_pages helper on vma
+Generated by: scripts/coccinelle/api/vma_pages.cocci
 
-Now that we are using assembler macros to implement XPA instructions on
-toolchains which don't support them, pass Cop0 register names to the
-__{readx,writex}_32bit_c0_register macros in $n format rather than
-register numbers. Also pass a register select which may be useful in
-future (for example for MemoryMapID field of WatchHi registers on
-I6500).
-
-This is to make them consistent with the normal Cop0 register access
-macros which they were originally based on.
-
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
 ---
- arch/mips/include/asm/mipsregs.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/mips/mm/dma-default.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index f2b9af887e83..5b901deab52a 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1499,7 +1499,7 @@ _ASM_MACRO_2R_1S(mthc0, rt, rd, sel,
- #define _ASM_SET_XPA ".set\txpa\n\t"
- #endif
- 
--#define __readx_32bit_c0_register(source)				\
-+#define __readx_32bit_c0_register(source, sel)				\
- ({									\
- 	unsigned int __res;						\
- 									\
-@@ -1507,23 +1507,23 @@ _ASM_MACRO_2R_1S(mthc0, rt, rd, sel,
- 	"	.set	push					\n"	\
- 	"	.set	mips32r2				\n"	\
- 	_ASM_SET_XPA							\
--	"	mfhc0	%0, $%1					\n"	\
-+	"	mfhc0	%0, " #source ", %1			\n"	\
- 	"	.set	pop					\n"	\
- 	: "=r" (__res)							\
--	: "i" (source));						\
-+	: "i" (sel));							\
- 	__res;								\
- })
- 
--#define __writex_32bit_c0_register(register, value)			\
-+#define __writex_32bit_c0_register(register, sel, value)		\
- do {									\
- 	__asm__ __volatile__(						\
- 	"	.set	push					\n"	\
- 	"	.set	mips32r2				\n"	\
- 	_ASM_SET_XPA							\
--	"	mthc0	%z0, $%1				\n"	\
-+	"	mthc0	%z0, " #register ", %1			\n"	\
- 	"	.set	pop					\n"	\
- 	:								\
--	: "Jr" (value), "i" (register));				\
-+	: "Jr" (value), "i" (sel));					\
- } while (0)
- 
- #define read_c0_index()		__read_32bit_c0_register($0, 0)
-@@ -1535,14 +1535,14 @@ do {									\
- #define read_c0_entrylo0()	__read_ulong_c0_register($2, 0)
- #define write_c0_entrylo0(val)	__write_ulong_c0_register($2, 0, val)
- 
--#define readx_c0_entrylo0()	__readx_32bit_c0_register(2)
--#define writex_c0_entrylo0(val)	__writex_32bit_c0_register(2, val)
-+#define readx_c0_entrylo0()	__readx_32bit_c0_register($2, 0)
-+#define writex_c0_entrylo0(val)	__writex_32bit_c0_register($2, 0, val)
- 
- #define read_c0_entrylo1()	__read_ulong_c0_register($3, 0)
- #define write_c0_entrylo1(val)	__write_ulong_c0_register($3, 0, val)
- 
--#define readx_c0_entrylo1()	__readx_32bit_c0_register(3)
--#define writex_c0_entrylo1(val)	__writex_32bit_c0_register(3, val)
-+#define readx_c0_entrylo1()	__readx_32bit_c0_register($3, 0)
-+#define writex_c0_entrylo1(val)	__writex_32bit_c0_register($3, 0, val)
- 
- #define read_c0_conf()		__read_32bit_c0_register($3, 0)
- #define write_c0_conf(val)	__write_32bit_c0_register($3, 0, val)
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index c01bd20d0208..bfd504c92719 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -179,7 +179,7 @@ static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+ 	void *cpu_addr, dma_addr_t dma_addr, size_t size,
+ 	unsigned long attrs)
+ {
+-	unsigned long user_count = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
++	unsigned long user_count = vma_pages(vma);
+ 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+ 	unsigned long addr = (unsigned long)cpu_addr;
+ 	unsigned long off = vma->vm_pgoff;
 -- 
-git-series 0.9.1
+1.9.1

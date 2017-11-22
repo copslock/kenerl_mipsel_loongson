@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 12:31:39 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:33670 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 12:32:02 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.244]:51306 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990409AbdKVLbcPHKm8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 12:31:32 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 22 Nov 2017 11:31:27 +0000
+        by eddie.linux-mips.org with ESMTP id S23990424AbdKVLbfqKj78 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 12:31:35 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 22 Nov 2017 11:31:23 +0000
 Received: from jhogan-linux.mipstec.com (192.168.154.110) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Wed, 22 Nov 2017 03:30:51 -0800
+ 14.3.361.1; Wed, 22 Nov 2017 03:30:50 -0800
 From:   James Hogan <james.hogan@mips.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/7] MIPS: Add helpers for assembler macro instructions
-Date:   Wed, 22 Nov 2017 11:30:27 +0000
-Message-ID: <b13de64d5dfd644423f5804a3c70d722c9d33105.1511349998.git-series.jhogan@kernel.org>
+Subject: [PATCH 0/7] MIPS: Add asm macros for unsupported instructions
+Date:   Wed, 22 Nov 2017 11:30:26 +0000
+Message-ID: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
 X-Mailer: git-send-email 2.14.1
-In-Reply-To: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
-References: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1511350286-298552-755-64361-1
+X-BESS-ID: 1511350282-298553-10914-324717-3
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 4.30
@@ -38,7 +36,7 @@ Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61048
+X-archive-position: 61049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,141 +55,59 @@ X-list: linux-mips
 
 From: James Hogan <jhogan@kernel.org>
 
-Implement a parse_r assembler macro in asm/mipsregs.h to parse a
-register in $n form, and a few C macros for defining assembler macro
-instructions. These can be used to more transparently support older
-binutils versions which don't support for example the msa, virt, xpa, or
-crc instructions.
+This patch series implements Ralf's idea[1] for better supporting older
+assembler versions which don't implement newer instructions, in inline
+assembly. It has a number of benefits which are described in the
+individual patches, but its also particularly beneficial for Marcin's
+CRC patchset.
 
-In particular they overcome the difficulty of turning a register name in
-$n form into an instruction encoding suitable for giving to .word /
-.hword, which is particularly problematic when needed from inline
-assembly where the compiler is responsible for register allocation.
-Traditionally this had required the use of $at and an extra MOV
-instruction, but for CRC instructions with multiple GP register operands
-that approach becomes more difficult.
+So far I've converted the VZ, XPA, and MSA abstractions to use it.
+Old style abstractions remain for MT and DSP instructions, which are
+left for future patches.
 
-Three assembler macro creation helpers are added:
+There are also other abstraction macros in <asm/asmmacro.h> for use in
+.S files (particularly for MSA), which similarly don't handle $n
+register naming and use the $at move trick. Cleaning these up to use
+something like parse_r is also left for future patches.
 
- - _ASM_MACRO_0(OP, ENC)
-   This is to define an assembler macro for an instruction which has no
-   operands, for example the VZ TLBGR instruction.
+[1] https://www.linux-mips.org/archives/linux-mips/2017-10/msg00043.html
 
- - _ASM_MACRO_2R(OP, R1, R2, ENC)
-   This is to define an assembler macro for an instruction which has 2
-   register operands, for example the CFCMSA instruction.
+Patch overview:
 
- - _ASM_MACRO_3R(OP, R1, R2, R3, ENC)
-   This is to define an assembler macro for an instruction which has 3
-   register operands, for example the crc32 instructions.
+Patch 1 adds some helpers to streamline the construction of assembler
+macros for instructions unimplemented in the current assembler. It is
+needed for the other patches.
 
- - _ASM_MACRO_2R_1S(OP, R1, R2, SEL3, ENC)
-   This is to define an assembler macro for a Cop0 move instruction,
-   with 2 register operands and an optional register select operand
-   which defaults to 0, for example the VZ MFGC0 instruction.
+Patches 2-3 update the VZ helpers to make use of the new assembler macro
+helpers, and make the VZ helpers consistent with the normal c0 register
+helpers now that it is possible to do so.
 
-Suggested-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: James Hogan <jhogan@kernel.org>
+Patches 4-6 update the XPA helpers to make use of the new assembler
+macro helpers, and to use the instructions provided by the assembler if
+they are available. These are also changed to be consistent with the
+normal register helpers now that it is possible to do so.
+
+Patch 7 updates the MSA control register helpers to make use of the new
+assembler macro helpers.
+
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Marcin Nowakowski <marcin.nowakowski@mips.com>
 Cc: linux-mips@linux-mips.org
----
- arch/mips/include/asm/mipsregs.h | 83 +++++++++++++++++++++++++++++++++-
- 1 file changed, 83 insertions(+)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 6b1f1ad0542c..972698557b4b 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1181,6 +1181,89 @@ static inline int mm_insn_16bit(u16 insn)
- #endif
- 
- /*
-+ * parse_r var, r - Helper assembler macro for parsing register names.
-+ *
-+ * This converts the register name in $n form provided in \r to the
-+ * corresponding register number, which is assigned to the variable \var. It is
-+ * needed to allow explicit encoding of instructions in inline assembly where
-+ * registers are chosen by the compiler in $n form, allowing us to avoid using
-+ * fixed register numbers.
-+ *
-+ * It also allows newer instructions (not implemented by the assembler) to be
-+ * transparently implemented using assembler macros, instead of needing separate
-+ * cases depending on toolchain support.
-+ *
-+ * Simple usage example:
-+ * __asm__ __volatile__("parse_r __rt, %0\n\t"
-+ *			".insn\n\t"
-+ *			"# di    %0\n\t"
-+ *			".word   (0x41606000 | (__rt << 16))"
-+ *			: "=r" (status);
-+ */
-+
-+/* Match an individual register number and assign to \var */
-+#define _IFC_REG(n)				\
-+	".ifc	\\r, $" #n "\n\t"		\
-+	"\\var	= " #n "\n\t"			\
-+	".endif\n\t"
-+
-+__asm__(".macro	parse_r var r\n\t"
-+	"\\var	= -1\n\t"
-+	_IFC_REG(0)  _IFC_REG(1)  _IFC_REG(2)  _IFC_REG(3)
-+	_IFC_REG(4)  _IFC_REG(5)  _IFC_REG(6)  _IFC_REG(7)
-+	_IFC_REG(8)  _IFC_REG(9)  _IFC_REG(10) _IFC_REG(11)
-+	_IFC_REG(12) _IFC_REG(13) _IFC_REG(14) _IFC_REG(15)
-+	_IFC_REG(16) _IFC_REG(17) _IFC_REG(18) _IFC_REG(19)
-+	_IFC_REG(20) _IFC_REG(21) _IFC_REG(22) _IFC_REG(23)
-+	_IFC_REG(24) _IFC_REG(25) _IFC_REG(26) _IFC_REG(27)
-+	_IFC_REG(28) _IFC_REG(29) _IFC_REG(30) _IFC_REG(31)
-+	".iflt	\\var\n\t"
-+	".error	\"Unable to parse register name \\r\"\n\t"
-+	".endif\n\t"
-+	".endm");
-+
-+#undef _IFC_REG
-+
-+/*
-+ * C macros for generating assembler macros for common instruction formats.
-+ *
-+ * The names of the operands can be chosen by the caller, and the encoding of
-+ * register operand \<Rn> is assigned to __<Rn> where it can be accessed from
-+ * the ENC encodings.
-+ */
-+
-+/* Instructions with no operands */
-+#define _ASM_MACRO_0(OP, ENC)						\
-+	__asm__(".macro	" #OP "\n\t"					\
-+		ENC							\
-+		".endm")
-+
-+/* Instructions with 2 register operands */
-+#define _ASM_MACRO_2R(OP, R1, R2, ENC)					\
-+	__asm__(".macro	" #OP " " #R1 ", " #R2 "\n\t"			\
-+		"parse_r __" #R1 ", \\" #R1 "\n\t"			\
-+		"parse_r __" #R2 ", \\" #R2 "\n\t"			\
-+		ENC							\
-+		".endm")
-+
-+/* Instructions with 3 register operands */
-+#define _ASM_MACRO_3R(OP, R1, R2, R3, ENC)				\
-+	__asm__(".macro	" #OP " " #R1 ", " #R2 ", " #R3 "\n\t"		\
-+		"parse_r __" #R1 ", \\" #R1 "\n\t"			\
-+		"parse_r __" #R2 ", \\" #R2 "\n\t"			\
-+		"parse_r __" #R3 ", \\" #R3 "\n\t"			\
-+		ENC							\
-+		".endm")
-+
-+/* Instructions with 2 register operands and 1 optional select operand */
-+#define _ASM_MACRO_2R_1S(OP, R1, R2, SEL3, ENC)				\
-+	__asm__(".macro	" #OP " " #R1 ", " #R2 ", " #SEL3 " = 0\n\t"	\
-+		"parse_r __" #R1 ", \\" #R1 "\n\t"			\
-+		"parse_r __" #R2 ", \\" #R2 "\n\t"			\
-+		ENC							\
-+		".endm")
-+
-+/*
-  * TLB Invalidate Flush
-  */
- static inline void tlbinvf(void)
+James Hogan (7):
+  MIPS: Add helpers for assembler macro instructions
+  MIPS: VZ: Update helpers to use new asm macros
+  MIPS: VZ: Pass GC0 register names in $n format
+  MIPS: XPA: Use XPA instructions in assembly
+  MIPS: XPA: Allow use of $0 (zero) to MTHC0
+  MIPS: XPA: Standardise readx/writex accessors
+  MIPS: MSA: Update helpers to use new asm macros
+
+ arch/mips/Makefile               |   6 +-
+ arch/mips/include/asm/mipsregs.h | 663 +++++++++++++++-----------------
+ arch/mips/include/asm/msa.h      |  63 +---
+ 3 files changed, 356 insertions(+), 376 deletions(-)
+
+base-commit: e0c5f36b2a638fc3298200c385af7f196d3b5cd4
 -- 
 git-series 0.9.1

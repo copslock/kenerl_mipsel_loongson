@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 12:32:27 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:41112 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 12:32:52 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:57671 "EHLO
         19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbdKVLbgm0TE8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 12:31:36 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 22 Nov 2017 11:31:30 +0000
+        by eddie.linux-mips.org with ESMTP id S23990426AbdKVLbiP0PX8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 12:31:38 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 22 Nov 2017 11:31:32 +0000
 Received: from jhogan-linux.mipstec.com (192.168.154.110) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Wed, 22 Nov 2017 03:30:53 -0800
+ 14.3.361.1; Wed, 22 Nov 2017 03:30:54 -0800
 From:   James Hogan <james.hogan@mips.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 2/7] MIPS: VZ: Update helpers to use new asm macros
-Date:   Wed, 22 Nov 2017 11:30:28 +0000
-Message-ID: <ee2caecba43f2e34afde024bdcfc4f9908974ff1.1511349998.git-series.jhogan@kernel.org>
+Subject: [PATCH 3/7] MIPS: VZ: Pass GC0 register names in $n format
+Date:   Wed, 22 Nov 2017 11:30:29 +0000
+Message-ID: <e7c8632d7bf6b5b881de429c5dadead71132ac6b.1511349998.git-series.jhogan@kernel.org>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
 References: <cover.41391a6cc5670b90bb8e77eadd07c712793eab03.1511349998.git-series.jhogan@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1511350289-637139-12581-475811-1
+X-BESS-ID: 1511350286-298552-755-64361-2
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 4.30
@@ -38,7 +38,7 @@ Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61050
+X-archive-position: 61051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,289 +57,463 @@ X-list: linux-mips
 
 From: James Hogan <jhogan@kernel.org>
 
-Update VZ guest register & guest TLB access helpers to use the new
-assembly macros for parsing register names and creating custom assembly
-macro instructions, which has a number of advantages:
-
- - Better code can be generated on toolchains which don't support VZ,
-   more closely matching those which do, since there is no need to
-   bounce values via the $at register. Some differences still remain due
-   to the inability to safely fill branch delay slots and R6 compact
-   branch forbidden slots with explicitly encoded instructions,
-   resulting in some extra NOPs added by the assembler.
-
- - Some code duplication between toolchains which do and don't support
-   VZ instructions is removed, since the helpers are only implemented
-   once. When the toolchain doesn't implement the instruction an
-   assembly macro implements it instead.
-
- - Instruction encodings are kept together in the source.
-
-On a generic kernel with KVM VZ support enabled this change saves about
-2.5KiB of kernel code when TOOLCHAIN_SUPPORTS_VIRT=n, bringing it down
-to about 0.5KiB more than when TOOLCHAIN_SUPPORTS_VIRT=y on r6, and just
-68 bytes more on r2.
+Now that we are using assembler macros to implement VZ instructions on
+toolchains which don't support them, pass VZ guest Cop0 register names
+to the __{read,write}_{32bit,ulong,64bit}_gc0_register macros in $n
+format rather than register numbers. This is to make them consistent
+with the normal root Cop0 register access macros which they were
+originally based on.
 
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/include/asm/mipsregs.h | 164 +++++++-------------------------
- 1 file changed, 37 insertions(+), 127 deletions(-)
+ arch/mips/include/asm/mipsregs.h | 376 ++++++++++++++++----------------
+ 1 file changed, 188 insertions(+), 188 deletions(-)
 
 diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 972698557b4b..361c35243366 100644
+index 361c35243366..000530b18f2e 100644
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -1913,14 +1913,40 @@ do {									\
-  * Macros to access the guest system control coprocessor
-  */
- 
--#ifdef TOOLCHAIN_SUPPORTS_VIRT
-+#ifndef TOOLCHAIN_SUPPORTS_VIRT
-+_ASM_MACRO_2R_1S(mfgc0, rt, rs, sel,
-+	_ASM_INSN_IF_MIPS(0x40600000 | __rt << 16 | __rs << 11 | \\sel)
-+	_ASM_INSN32_IF_MM(0x000004fc | __rt << 21 | __rs << 16 | \\sel << 11));
-+_ASM_MACRO_2R_1S(dmfgc0, rt, rs, sel,
-+	_ASM_INSN_IF_MIPS(0x40600100 | __rt << 16 | __rs << 11 | \\sel)
-+	_ASM_INSN32_IF_MM(0x580004fc | __rt << 21 | __rs << 16 | \\sel << 11));
-+_ASM_MACRO_2R_1S(mtgc0, rt, rd, sel,
-+	_ASM_INSN_IF_MIPS(0x40600200 | __rt << 16 | __rd << 11 | \\sel)
-+	_ASM_INSN32_IF_MM(0x000006fc | __rt << 21 | __rd << 16 | \\sel << 11));
-+_ASM_MACRO_2R_1S(dmtgc0, rt, rd, sel,
-+	_ASM_INSN_IF_MIPS(0x40600300 | __rt << 16 | __rd << 11 | \\sel)
-+	_ASM_INSN32_IF_MM(0x580006fc | __rt << 21 | __rd << 16 | \\sel << 11));
-+_ASM_MACRO_0(tlbgp,    _ASM_INSN_IF_MIPS(0x42000010)
-+		       _ASM_INSN32_IF_MM(0x0000017c));
-+_ASM_MACRO_0(tlbgr,    _ASM_INSN_IF_MIPS(0x42000009)
-+		       _ASM_INSN32_IF_MM(0x0000117c));
-+_ASM_MACRO_0(tlbgwi,   _ASM_INSN_IF_MIPS(0x4200000a)
-+		       _ASM_INSN32_IF_MM(0x0000217c));
-+_ASM_MACRO_0(tlbgwr,   _ASM_INSN_IF_MIPS(0x4200000e)
-+		       _ASM_INSN32_IF_MM(0x0000317c));
-+_ASM_MACRO_0(tlbginvf, _ASM_INSN_IF_MIPS(0x4200000c)
-+		       _ASM_INSN32_IF_MM(0x0000517c));
-+#define _ASM_SET_VIRT ""
-+#else	/* !TOOLCHAIN_SUPPORTS_VIRT */
-+#define _ASM_SET_VIRT ".set\tvirt\n\t"
-+#endif
- 
- #define __read_32bit_gc0_register(source, sel)				\
- ({ int __res;								\
- 	__asm__ __volatile__(						\
+@@ -1947,10 +1947,10 @@ _ASM_MACRO_0(tlbginvf, _ASM_INSN_IF_MIPS(0x4200000c)
  		".set\tpush\n\t"					\
  		".set\tmips32r2\n\t"					\
--		".set\tvirt\n\t"					\
-+		_ASM_SET_VIRT						\
- 		"mfgc0\t%0, $%1, %2\n\t"				\
+ 		_ASM_SET_VIRT						\
+-		"mfgc0\t%0, $%1, %2\n\t"				\
++		"mfgc0\t%0, " #source ", %1\n\t"			\
  		".set\tpop"						\
  		: "=r" (__res)						\
-@@ -1933,8 +1959,8 @@ do {									\
- 	__asm__ __volatile__(						\
+-		: "i" (source), "i" (sel));				\
++		: "i" (sel));						\
+ 	__res;								\
+ })
+ 
+@@ -1960,10 +1960,10 @@ _ASM_MACRO_0(tlbginvf, _ASM_INSN_IF_MIPS(0x4200000c)
  		".set\tpush\n\t"					\
  		".set\tmips64r2\n\t"					\
--		".set\tvirt\n\t"					\
--		"dmfgc0\t%0, $%1, %2\n\t"			\
-+		_ASM_SET_VIRT						\
-+		"dmfgc0\t%0, $%1, %2\n\t"				\
+ 		_ASM_SET_VIRT						\
+-		"dmfgc0\t%0, $%1, %2\n\t"				\
++		"dmfgc0\t%0, " #source ", %1\n\t"			\
  		".set\tpop"						\
  		: "=r" (__res)						\
- 		: "i" (source), "i" (sel));				\
-@@ -1946,7 +1972,7 @@ do {									\
- 	__asm__ __volatile__(						\
+-		: "i" (source), "i" (sel));				\
++		: "i" (sel));						\
+ 	__res;								\
+ })
+ 
+@@ -1973,10 +1973,10 @@ do {									\
  		".set\tpush\n\t"					\
  		".set\tmips32r2\n\t"					\
--		".set\tvirt\n\t"					\
-+		_ASM_SET_VIRT						\
- 		"mtgc0\t%z0, $%1, %2\n\t"				\
+ 		_ASM_SET_VIRT						\
+-		"mtgc0\t%z0, $%1, %2\n\t"				\
++		"mtgc0\t%z0, " #register ", %1\n\t"			\
  		".set\tpop"						\
  		: : "Jr" ((unsigned int)(value)),			\
-@@ -1958,75 +1984,13 @@ do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
- 		".set\tmips64r2\n\t"					\
--		".set\tvirt\n\t"					\
-+		_ASM_SET_VIRT						\
- 		"dmtgc0\t%z0, $%1, %2\n\t"				\
- 		".set\tpop"						\
- 		: : "Jr" (value),					\
- 		    "i" (register), "i" (sel));				\
+-		    "i" (register), "i" (sel));				\
++		    "i" (sel));						\
  } while (0)
  
--#else	/* TOOLCHAIN_SUPPORTS_VIRT */
--
--#define __read_32bit_gc0_register(source, sel)				\
--({ int __res;								\
--	__asm__ __volatile__(						\
--		".set\tpush\n\t"					\
--		".set\tnoat\n\t"					\
--		"# mfgc0\t$1, $%1, %2\n\t"				\
--		_ASM_INSN_IF_MIPS(0x40610000 | %1 << 11 | %2)		\
--		_ASM_INSN32_IF_MM(0x002004fc | %1 << 16 | %2 << 11)	\
--		"move\t%0, $1\n\t"					\
--		".set\tpop"						\
--		: "=r" (__res)						\
--		: "i" (source), "i" (sel));				\
--	__res;								\
--})
--
--#define __read_64bit_gc0_register(source, sel)				\
--({ unsigned long long __res;						\
--	__asm__ __volatile__(						\
--		".set\tpush\n\t"					\
--		".set\tnoat\n\t"					\
--		"# dmfgc0\t$1, $%1, %2\n\t"				\
--		_ASM_INSN_IF_MIPS(0x40610100 | %1 << 11 | %2)		\
--		_ASM_INSN32_IF_MM(0x582004fc | %1 << 16 | %2 << 11)	\
--		"move\t%0, $1\n\t"					\
--		".set\tpop"						\
--		: "=r" (__res)						\
--		: "i" (source), "i" (sel));				\
--	__res;								\
--})
--
--#define __write_32bit_gc0_register(register, sel, value)		\
--do {									\
--	__asm__ __volatile__(						\
--		".set\tpush\n\t"					\
--		".set\tnoat\n\t"					\
--		"move\t$1, %z0\n\t"					\
--		"# mtgc0\t$1, $%1, %2\n\t"				\
--		_ASM_INSN_IF_MIPS(0x40610200 | %1 << 11 | %2)		\
--		_ASM_INSN32_IF_MM(0x002006fc | %1 << 16 | %2 << 11)	\
--		".set\tpop"						\
--		: : "Jr" ((unsigned int)(value)),			\
+ #define __write_64bit_gc0_register(register, sel, value)		\
+@@ -1985,10 +1985,10 @@ do {									\
+ 		".set\tpush\n\t"					\
+ 		".set\tmips64r2\n\t"					\
+ 		_ASM_SET_VIRT						\
+-		"dmtgc0\t%z0, $%1, %2\n\t"				\
++		"dmtgc0\t%z0, " #register ", %1\n\t"			\
+ 		".set\tpop"						\
+ 		: : "Jr" (value),					\
 -		    "i" (register), "i" (sel));				\
--} while (0)
--
--#define __write_64bit_gc0_register(register, sel, value)		\
--do {									\
--	__asm__ __volatile__(						\
--		".set\tpush\n\t"					\
--		".set\tnoat\n\t"					\
--		"move\t$1, %z0\n\t"					\
--		"# dmtgc0\t$1, $%1, %2\n\t"				\
--		_ASM_INSN_IF_MIPS(0x40610300 | %1 << 11 | %2)		\
--		_ASM_INSN32_IF_MM(0x582006fc | %1 << 16 | %2 << 11)	\
--		".set\tpop"						\
--		: : "Jr" (value),					\
--		    "i" (register), "i" (sel));				\
--} while (0)
--
--#endif	/* !TOOLCHAIN_SUPPORTS_VIRT */
--
++		    "i" (sel));						\
+ } while (0)
+ 
  #define __read_ulong_gc0_register(reg, sel)				\
- 	((sizeof(unsigned long) == 4) ?					\
- 	(unsigned long) __read_32bit_gc0_register(reg, sel) :		\
-@@ -2664,8 +2628,6 @@ static inline void tlb_write_random(void)
- 		".set reorder");
- }
+@@ -2004,207 +2004,207 @@ do {									\
+ 		__write_64bit_gc0_register(reg, sel, val);		\
+ } while (0)
  
--#ifdef TOOLCHAIN_SUPPORTS_VIRT
--
- /*
-  * Guest TLB operations.
-  *
-@@ -2676,7 +2638,7 @@ static inline void guest_tlb_probe(void)
- 	__asm__ __volatile__(
- 		".set push\n\t"
- 		".set noreorder\n\t"
--		".set virt\n\t"
-+		_ASM_SET_VIRT
- 		"tlbgp\n\t"
- 		".set pop");
- }
-@@ -2686,7 +2648,7 @@ static inline void guest_tlb_read(void)
- 	__asm__ __volatile__(
- 		".set push\n\t"
- 		".set noreorder\n\t"
--		".set virt\n\t"
-+		_ASM_SET_VIRT
- 		"tlbgr\n\t"
- 		".set pop");
- }
-@@ -2696,7 +2658,7 @@ static inline void guest_tlb_write_indexed(void)
- 	__asm__ __volatile__(
- 		".set push\n\t"
- 		".set noreorder\n\t"
--		".set virt\n\t"
-+		_ASM_SET_VIRT
- 		"tlbgwi\n\t"
- 		".set pop");
- }
-@@ -2706,7 +2668,7 @@ static inline void guest_tlb_write_random(void)
- 	__asm__ __volatile__(
- 		".set push\n\t"
- 		".set noreorder\n\t"
--		".set virt\n\t"
-+		_ASM_SET_VIRT
- 		"tlbgwr\n\t"
- 		".set pop");
- }
-@@ -2719,63 +2681,11 @@ static inline void guest_tlbinvf(void)
- 	__asm__ __volatile__(
- 		".set push\n\t"
- 		".set noreorder\n\t"
--		".set virt\n\t"
-+		_ASM_SET_VIRT
- 		"tlbginvf\n\t"
- 		".set pop");
- }
+-#define read_gc0_index()		__read_32bit_gc0_register(0, 0)
+-#define write_gc0_index(val)		__write_32bit_gc0_register(0, 0, val)
++#define read_gc0_index()		__read_32bit_gc0_register($0, 0)
++#define write_gc0_index(val)		__write_32bit_gc0_register($0, 0, val)
  
--#else	/* TOOLCHAIN_SUPPORTS_VIRT */
+-#define read_gc0_entrylo0()		__read_ulong_gc0_register(2, 0)
+-#define write_gc0_entrylo0(val)		__write_ulong_gc0_register(2, 0, val)
++#define read_gc0_entrylo0()		__read_ulong_gc0_register($2, 0)
++#define write_gc0_entrylo0(val)		__write_ulong_gc0_register($2, 0, val)
+ 
+-#define read_gc0_entrylo1()		__read_ulong_gc0_register(3, 0)
+-#define write_gc0_entrylo1(val)		__write_ulong_gc0_register(3, 0, val)
++#define read_gc0_entrylo1()		__read_ulong_gc0_register($3, 0)
++#define write_gc0_entrylo1(val)		__write_ulong_gc0_register($3, 0, val)
+ 
+-#define read_gc0_context()		__read_ulong_gc0_register(4, 0)
+-#define write_gc0_context(val)		__write_ulong_gc0_register(4, 0, val)
++#define read_gc0_context()		__read_ulong_gc0_register($4, 0)
++#define write_gc0_context(val)		__write_ulong_gc0_register($4, 0, val)
+ 
+-#define read_gc0_contextconfig()	__read_32bit_gc0_register(4, 1)
+-#define write_gc0_contextconfig(val)	__write_32bit_gc0_register(4, 1, val)
++#define read_gc0_contextconfig()	__read_32bit_gc0_register($4, 1)
++#define write_gc0_contextconfig(val)	__write_32bit_gc0_register($4, 1, val)
+ 
+-#define read_gc0_userlocal()		__read_ulong_gc0_register(4, 2)
+-#define write_gc0_userlocal(val)	__write_ulong_gc0_register(4, 2, val)
++#define read_gc0_userlocal()		__read_ulong_gc0_register($4, 2)
++#define write_gc0_userlocal(val)	__write_ulong_gc0_register($4, 2, val)
+ 
+-#define read_gc0_xcontextconfig()	__read_ulong_gc0_register(4, 3)
+-#define write_gc0_xcontextconfig(val)	__write_ulong_gc0_register(4, 3, val)
++#define read_gc0_xcontextconfig()	__read_ulong_gc0_register($4, 3)
++#define write_gc0_xcontextconfig(val)	__write_ulong_gc0_register($4, 3, val)
+ 
+-#define read_gc0_pagemask()		__read_32bit_gc0_register(5, 0)
+-#define write_gc0_pagemask(val)		__write_32bit_gc0_register(5, 0, val)
++#define read_gc0_pagemask()		__read_32bit_gc0_register($5, 0)
++#define write_gc0_pagemask(val)		__write_32bit_gc0_register($5, 0, val)
+ 
+-#define read_gc0_pagegrain()		__read_32bit_gc0_register(5, 1)
+-#define write_gc0_pagegrain(val)	__write_32bit_gc0_register(5, 1, val)
++#define read_gc0_pagegrain()		__read_32bit_gc0_register($5, 1)
++#define write_gc0_pagegrain(val)	__write_32bit_gc0_register($5, 1, val)
+ 
+-#define read_gc0_segctl0()		__read_ulong_gc0_register(5, 2)
+-#define write_gc0_segctl0(val)		__write_ulong_gc0_register(5, 2, val)
++#define read_gc0_segctl0()		__read_ulong_gc0_register($5, 2)
++#define write_gc0_segctl0(val)		__write_ulong_gc0_register($5, 2, val)
+ 
+-#define read_gc0_segctl1()		__read_ulong_gc0_register(5, 3)
+-#define write_gc0_segctl1(val)		__write_ulong_gc0_register(5, 3, val)
++#define read_gc0_segctl1()		__read_ulong_gc0_register($5, 3)
++#define write_gc0_segctl1(val)		__write_ulong_gc0_register($5, 3, val)
+ 
+-#define read_gc0_segctl2()		__read_ulong_gc0_register(5, 4)
+-#define write_gc0_segctl2(val)		__write_ulong_gc0_register(5, 4, val)
++#define read_gc0_segctl2()		__read_ulong_gc0_register($5, 4)
++#define write_gc0_segctl2(val)		__write_ulong_gc0_register($5, 4, val)
+ 
+-#define read_gc0_pwbase()		__read_ulong_gc0_register(5, 5)
+-#define write_gc0_pwbase(val)		__write_ulong_gc0_register(5, 5, val)
++#define read_gc0_pwbase()		__read_ulong_gc0_register($5, 5)
++#define write_gc0_pwbase(val)		__write_ulong_gc0_register($5, 5, val)
+ 
+-#define read_gc0_pwfield()		__read_ulong_gc0_register(5, 6)
+-#define write_gc0_pwfield(val)		__write_ulong_gc0_register(5, 6, val)
++#define read_gc0_pwfield()		__read_ulong_gc0_register($5, 6)
++#define write_gc0_pwfield(val)		__write_ulong_gc0_register($5, 6, val)
+ 
+-#define read_gc0_pwsize()		__read_ulong_gc0_register(5, 7)
+-#define write_gc0_pwsize(val)		__write_ulong_gc0_register(5, 7, val)
++#define read_gc0_pwsize()		__read_ulong_gc0_register($5, 7)
++#define write_gc0_pwsize(val)		__write_ulong_gc0_register($5, 7, val)
+ 
+-#define read_gc0_wired()		__read_32bit_gc0_register(6, 0)
+-#define write_gc0_wired(val)		__write_32bit_gc0_register(6, 0, val)
++#define read_gc0_wired()		__read_32bit_gc0_register($6, 0)
++#define write_gc0_wired(val)		__write_32bit_gc0_register($6, 0, val)
+ 
+-#define read_gc0_pwctl()		__read_32bit_gc0_register(6, 6)
+-#define write_gc0_pwctl(val)		__write_32bit_gc0_register(6, 6, val)
 -
--/*
-- * Guest TLB operations.
-- *
-- * It is responsibility of the caller to take care of any TLB hazards.
-- */
--static inline void guest_tlb_probe(void)
--{
--	__asm__ __volatile__(
--		"# tlbgp\n\t"
--		_ASM_INSN_IF_MIPS(0x42000010)
--		_ASM_INSN32_IF_MM(0x0000017c));
--}
+-#define read_gc0_hwrena()		__read_32bit_gc0_register(7, 0)
+-#define write_gc0_hwrena(val)		__write_32bit_gc0_register(7, 0, val)
 -
--static inline void guest_tlb_read(void)
--{
--	__asm__ __volatile__(
--		"# tlbgr\n\t"
--		_ASM_INSN_IF_MIPS(0x42000009)
--		_ASM_INSN32_IF_MM(0x0000117c));
--}
+-#define read_gc0_badvaddr()		__read_ulong_gc0_register(8, 0)
+-#define write_gc0_badvaddr(val)		__write_ulong_gc0_register(8, 0, val)
 -
--static inline void guest_tlb_write_indexed(void)
--{
--	__asm__ __volatile__(
--		"# tlbgwi\n\t"
--		_ASM_INSN_IF_MIPS(0x4200000a)
--		_ASM_INSN32_IF_MM(0x0000217c));
--}
+-#define read_gc0_badinstr()		__read_32bit_gc0_register(8, 1)
+-#define write_gc0_badinstr(val)		__write_32bit_gc0_register(8, 1, val)
 -
--static inline void guest_tlb_write_random(void)
--{
--	__asm__ __volatile__(
--		"# tlbgwr\n\t"
--		_ASM_INSN_IF_MIPS(0x4200000e)
--		_ASM_INSN32_IF_MM(0x0000317c));
--}
+-#define read_gc0_badinstrp()		__read_32bit_gc0_register(8, 2)
+-#define write_gc0_badinstrp(val)	__write_32bit_gc0_register(8, 2, val)
 -
--/*
-- * Guest TLB Invalidate Flush
-- */
--static inline void guest_tlbinvf(void)
--{
--	__asm__ __volatile__(
--		"# tlbginvf\n\t"
--		_ASM_INSN_IF_MIPS(0x4200000c)
--		_ASM_INSN32_IF_MM(0x0000517c));
--}
+-#define read_gc0_count()		__read_32bit_gc0_register(9, 0)
 -
--#endif	/* !TOOLCHAIN_SUPPORTS_VIRT */
+-#define read_gc0_entryhi()		__read_ulong_gc0_register(10, 0)
+-#define write_gc0_entryhi(val)		__write_ulong_gc0_register(10, 0, val)
 -
+-#define read_gc0_compare()		__read_32bit_gc0_register(11, 0)
+-#define write_gc0_compare(val)		__write_32bit_gc0_register(11, 0, val)
+-
+-#define read_gc0_status()		__read_32bit_gc0_register(12, 0)
+-#define write_gc0_status(val)		__write_32bit_gc0_register(12, 0, val)
+-
+-#define read_gc0_intctl()		__read_32bit_gc0_register(12, 1)
+-#define write_gc0_intctl(val)		__write_32bit_gc0_register(12, 1, val)
+-
+-#define read_gc0_cause()		__read_32bit_gc0_register(13, 0)
+-#define write_gc0_cause(val)		__write_32bit_gc0_register(13, 0, val)
+-
+-#define read_gc0_epc()			__read_ulong_gc0_register(14, 0)
+-#define write_gc0_epc(val)		__write_ulong_gc0_register(14, 0, val)
+-
+-#define read_gc0_prid()			__read_32bit_gc0_register(15, 0)
+-
+-#define read_gc0_ebase()		__read_32bit_gc0_register(15, 1)
+-#define write_gc0_ebase(val)		__write_32bit_gc0_register(15, 1, val)
+-
+-#define read_gc0_ebase_64()		__read_64bit_gc0_register(15, 1)
+-#define write_gc0_ebase_64(val)		__write_64bit_gc0_register(15, 1, val)
+-
+-#define read_gc0_config()		__read_32bit_gc0_register(16, 0)
+-#define read_gc0_config1()		__read_32bit_gc0_register(16, 1)
+-#define read_gc0_config2()		__read_32bit_gc0_register(16, 2)
+-#define read_gc0_config3()		__read_32bit_gc0_register(16, 3)
+-#define read_gc0_config4()		__read_32bit_gc0_register(16, 4)
+-#define read_gc0_config5()		__read_32bit_gc0_register(16, 5)
+-#define read_gc0_config6()		__read_32bit_gc0_register(16, 6)
+-#define read_gc0_config7()		__read_32bit_gc0_register(16, 7)
+-#define write_gc0_config(val)		__write_32bit_gc0_register(16, 0, val)
+-#define write_gc0_config1(val)		__write_32bit_gc0_register(16, 1, val)
+-#define write_gc0_config2(val)		__write_32bit_gc0_register(16, 2, val)
+-#define write_gc0_config3(val)		__write_32bit_gc0_register(16, 3, val)
+-#define write_gc0_config4(val)		__write_32bit_gc0_register(16, 4, val)
+-#define write_gc0_config5(val)		__write_32bit_gc0_register(16, 5, val)
+-#define write_gc0_config6(val)		__write_32bit_gc0_register(16, 6, val)
+-#define write_gc0_config7(val)		__write_32bit_gc0_register(16, 7, val)
+-
+-#define read_gc0_lladdr()		__read_ulong_gc0_register(17, 0)
+-#define write_gc0_lladdr(val)		__write_ulong_gc0_register(17, 0, val)
+-
+-#define read_gc0_watchlo0()		__read_ulong_gc0_register(18, 0)
+-#define read_gc0_watchlo1()		__read_ulong_gc0_register(18, 1)
+-#define read_gc0_watchlo2()		__read_ulong_gc0_register(18, 2)
+-#define read_gc0_watchlo3()		__read_ulong_gc0_register(18, 3)
+-#define read_gc0_watchlo4()		__read_ulong_gc0_register(18, 4)
+-#define read_gc0_watchlo5()		__read_ulong_gc0_register(18, 5)
+-#define read_gc0_watchlo6()		__read_ulong_gc0_register(18, 6)
+-#define read_gc0_watchlo7()		__read_ulong_gc0_register(18, 7)
+-#define write_gc0_watchlo0(val)		__write_ulong_gc0_register(18, 0, val)
+-#define write_gc0_watchlo1(val)		__write_ulong_gc0_register(18, 1, val)
+-#define write_gc0_watchlo2(val)		__write_ulong_gc0_register(18, 2, val)
+-#define write_gc0_watchlo3(val)		__write_ulong_gc0_register(18, 3, val)
+-#define write_gc0_watchlo4(val)		__write_ulong_gc0_register(18, 4, val)
+-#define write_gc0_watchlo5(val)		__write_ulong_gc0_register(18, 5, val)
+-#define write_gc0_watchlo6(val)		__write_ulong_gc0_register(18, 6, val)
+-#define write_gc0_watchlo7(val)		__write_ulong_gc0_register(18, 7, val)
+-
+-#define read_gc0_watchhi0()		__read_32bit_gc0_register(19, 0)
+-#define read_gc0_watchhi1()		__read_32bit_gc0_register(19, 1)
+-#define read_gc0_watchhi2()		__read_32bit_gc0_register(19, 2)
+-#define read_gc0_watchhi3()		__read_32bit_gc0_register(19, 3)
+-#define read_gc0_watchhi4()		__read_32bit_gc0_register(19, 4)
+-#define read_gc0_watchhi5()		__read_32bit_gc0_register(19, 5)
+-#define read_gc0_watchhi6()		__read_32bit_gc0_register(19, 6)
+-#define read_gc0_watchhi7()		__read_32bit_gc0_register(19, 7)
+-#define write_gc0_watchhi0(val)		__write_32bit_gc0_register(19, 0, val)
+-#define write_gc0_watchhi1(val)		__write_32bit_gc0_register(19, 1, val)
+-#define write_gc0_watchhi2(val)		__write_32bit_gc0_register(19, 2, val)
+-#define write_gc0_watchhi3(val)		__write_32bit_gc0_register(19, 3, val)
+-#define write_gc0_watchhi4(val)		__write_32bit_gc0_register(19, 4, val)
+-#define write_gc0_watchhi5(val)		__write_32bit_gc0_register(19, 5, val)
+-#define write_gc0_watchhi6(val)		__write_32bit_gc0_register(19, 6, val)
+-#define write_gc0_watchhi7(val)		__write_32bit_gc0_register(19, 7, val)
+-
+-#define read_gc0_xcontext()		__read_ulong_gc0_register(20, 0)
+-#define write_gc0_xcontext(val)		__write_ulong_gc0_register(20, 0, val)
+-
+-#define read_gc0_perfctrl0()		__read_32bit_gc0_register(25, 0)
+-#define write_gc0_perfctrl0(val)	__write_32bit_gc0_register(25, 0, val)
+-#define read_gc0_perfcntr0()		__read_32bit_gc0_register(25, 1)
+-#define write_gc0_perfcntr0(val)	__write_32bit_gc0_register(25, 1, val)
+-#define read_gc0_perfcntr0_64()		__read_64bit_gc0_register(25, 1)
+-#define write_gc0_perfcntr0_64(val)	__write_64bit_gc0_register(25, 1, val)
+-#define read_gc0_perfctrl1()		__read_32bit_gc0_register(25, 2)
+-#define write_gc0_perfctrl1(val)	__write_32bit_gc0_register(25, 2, val)
+-#define read_gc0_perfcntr1()		__read_32bit_gc0_register(25, 3)
+-#define write_gc0_perfcntr1(val)	__write_32bit_gc0_register(25, 3, val)
+-#define read_gc0_perfcntr1_64()		__read_64bit_gc0_register(25, 3)
+-#define write_gc0_perfcntr1_64(val)	__write_64bit_gc0_register(25, 3, val)
+-#define read_gc0_perfctrl2()		__read_32bit_gc0_register(25, 4)
+-#define write_gc0_perfctrl2(val)	__write_32bit_gc0_register(25, 4, val)
+-#define read_gc0_perfcntr2()		__read_32bit_gc0_register(25, 5)
+-#define write_gc0_perfcntr2(val)	__write_32bit_gc0_register(25, 5, val)
+-#define read_gc0_perfcntr2_64()		__read_64bit_gc0_register(25, 5)
+-#define write_gc0_perfcntr2_64(val)	__write_64bit_gc0_register(25, 5, val)
+-#define read_gc0_perfctrl3()		__read_32bit_gc0_register(25, 6)
+-#define write_gc0_perfctrl3(val)	__write_32bit_gc0_register(25, 6, val)
+-#define read_gc0_perfcntr3()		__read_32bit_gc0_register(25, 7)
+-#define write_gc0_perfcntr3(val)	__write_32bit_gc0_register(25, 7, val)
+-#define read_gc0_perfcntr3_64()		__read_64bit_gc0_register(25, 7)
+-#define write_gc0_perfcntr3_64(val)	__write_64bit_gc0_register(25, 7, val)
+-
+-#define read_gc0_errorepc()		__read_ulong_gc0_register(30, 0)
+-#define write_gc0_errorepc(val)		__write_ulong_gc0_register(30, 0, val)
+-
+-#define read_gc0_kscratch1()		__read_ulong_gc0_register(31, 2)
+-#define read_gc0_kscratch2()		__read_ulong_gc0_register(31, 3)
+-#define read_gc0_kscratch3()		__read_ulong_gc0_register(31, 4)
+-#define read_gc0_kscratch4()		__read_ulong_gc0_register(31, 5)
+-#define read_gc0_kscratch5()		__read_ulong_gc0_register(31, 6)
+-#define read_gc0_kscratch6()		__read_ulong_gc0_register(31, 7)
+-#define write_gc0_kscratch1(val)	__write_ulong_gc0_register(31, 2, val)
+-#define write_gc0_kscratch2(val)	__write_ulong_gc0_register(31, 3, val)
+-#define write_gc0_kscratch3(val)	__write_ulong_gc0_register(31, 4, val)
+-#define write_gc0_kscratch4(val)	__write_ulong_gc0_register(31, 5, val)
+-#define write_gc0_kscratch5(val)	__write_ulong_gc0_register(31, 6, val)
+-#define write_gc0_kscratch6(val)	__write_ulong_gc0_register(31, 7, val)
++#define read_gc0_pwctl()		__read_32bit_gc0_register($6, 6)
++#define write_gc0_pwctl(val)		__write_32bit_gc0_register($6, 6, val)
++
++#define read_gc0_hwrena()		__read_32bit_gc0_register($7, 0)
++#define write_gc0_hwrena(val)		__write_32bit_gc0_register($7, 0, val)
++
++#define read_gc0_badvaddr()		__read_ulong_gc0_register($8, 0)
++#define write_gc0_badvaddr(val)		__write_ulong_gc0_register($8, 0, val)
++
++#define read_gc0_badinstr()		__read_32bit_gc0_register($8, 1)
++#define write_gc0_badinstr(val)		__write_32bit_gc0_register($8, 1, val)
++
++#define read_gc0_badinstrp()		__read_32bit_gc0_register($8, 2)
++#define write_gc0_badinstrp(val)	__write_32bit_gc0_register($8, 2, val)
++
++#define read_gc0_count()		__read_32bit_gc0_register($9, 0)
++
++#define read_gc0_entryhi()		__read_ulong_gc0_register($10, 0)
++#define write_gc0_entryhi(val)		__write_ulong_gc0_register($10, 0, val)
++
++#define read_gc0_compare()		__read_32bit_gc0_register($11, 0)
++#define write_gc0_compare(val)		__write_32bit_gc0_register($11, 0, val)
++
++#define read_gc0_status()		__read_32bit_gc0_register($12, 0)
++#define write_gc0_status(val)		__write_32bit_gc0_register($12, 0, val)
++
++#define read_gc0_intctl()		__read_32bit_gc0_register($12, 1)
++#define write_gc0_intctl(val)		__write_32bit_gc0_register($12, 1, val)
++
++#define read_gc0_cause()		__read_32bit_gc0_register($13, 0)
++#define write_gc0_cause(val)		__write_32bit_gc0_register($13, 0, val)
++
++#define read_gc0_epc()			__read_ulong_gc0_register($14, 0)
++#define write_gc0_epc(val)		__write_ulong_gc0_register($14, 0, val)
++
++#define read_gc0_prid()			__read_32bit_gc0_register($15, 0)
++
++#define read_gc0_ebase()		__read_32bit_gc0_register($15, 1)
++#define write_gc0_ebase(val)		__write_32bit_gc0_register($15, 1, val)
++
++#define read_gc0_ebase_64()		__read_64bit_gc0_register($15, 1)
++#define write_gc0_ebase_64(val)		__write_64bit_gc0_register($15, 1, val)
++
++#define read_gc0_config()		__read_32bit_gc0_register($16, 0)
++#define read_gc0_config1()		__read_32bit_gc0_register($16, 1)
++#define read_gc0_config2()		__read_32bit_gc0_register($16, 2)
++#define read_gc0_config3()		__read_32bit_gc0_register($16, 3)
++#define read_gc0_config4()		__read_32bit_gc0_register($16, 4)
++#define read_gc0_config5()		__read_32bit_gc0_register($16, 5)
++#define read_gc0_config6()		__read_32bit_gc0_register($16, 6)
++#define read_gc0_config7()		__read_32bit_gc0_register($16, 7)
++#define write_gc0_config(val)		__write_32bit_gc0_register($16, 0, val)
++#define write_gc0_config1(val)		__write_32bit_gc0_register($16, 1, val)
++#define write_gc0_config2(val)		__write_32bit_gc0_register($16, 2, val)
++#define write_gc0_config3(val)		__write_32bit_gc0_register($16, 3, val)
++#define write_gc0_config4(val)		__write_32bit_gc0_register($16, 4, val)
++#define write_gc0_config5(val)		__write_32bit_gc0_register($16, 5, val)
++#define write_gc0_config6(val)		__write_32bit_gc0_register($16, 6, val)
++#define write_gc0_config7(val)		__write_32bit_gc0_register($16, 7, val)
++
++#define read_gc0_lladdr()		__read_ulong_gc0_register($17, 0)
++#define write_gc0_lladdr(val)		__write_ulong_gc0_register($17, 0, val)
++
++#define read_gc0_watchlo0()		__read_ulong_gc0_register($18, 0)
++#define read_gc0_watchlo1()		__read_ulong_gc0_register($18, 1)
++#define read_gc0_watchlo2()		__read_ulong_gc0_register($18, 2)
++#define read_gc0_watchlo3()		__read_ulong_gc0_register($18, 3)
++#define read_gc0_watchlo4()		__read_ulong_gc0_register($18, 4)
++#define read_gc0_watchlo5()		__read_ulong_gc0_register($18, 5)
++#define read_gc0_watchlo6()		__read_ulong_gc0_register($18, 6)
++#define read_gc0_watchlo7()		__read_ulong_gc0_register($18, 7)
++#define write_gc0_watchlo0(val)		__write_ulong_gc0_register($18, 0, val)
++#define write_gc0_watchlo1(val)		__write_ulong_gc0_register($18, 1, val)
++#define write_gc0_watchlo2(val)		__write_ulong_gc0_register($18, 2, val)
++#define write_gc0_watchlo3(val)		__write_ulong_gc0_register($18, 3, val)
++#define write_gc0_watchlo4(val)		__write_ulong_gc0_register($18, 4, val)
++#define write_gc0_watchlo5(val)		__write_ulong_gc0_register($18, 5, val)
++#define write_gc0_watchlo6(val)		__write_ulong_gc0_register($18, 6, val)
++#define write_gc0_watchlo7(val)		__write_ulong_gc0_register($18, 7, val)
++
++#define read_gc0_watchhi0()		__read_32bit_gc0_register($19, 0)
++#define read_gc0_watchhi1()		__read_32bit_gc0_register($19, 1)
++#define read_gc0_watchhi2()		__read_32bit_gc0_register($19, 2)
++#define read_gc0_watchhi3()		__read_32bit_gc0_register($19, 3)
++#define read_gc0_watchhi4()		__read_32bit_gc0_register($19, 4)
++#define read_gc0_watchhi5()		__read_32bit_gc0_register($19, 5)
++#define read_gc0_watchhi6()		__read_32bit_gc0_register($19, 6)
++#define read_gc0_watchhi7()		__read_32bit_gc0_register($19, 7)
++#define write_gc0_watchhi0(val)		__write_32bit_gc0_register($19, 0, val)
++#define write_gc0_watchhi1(val)		__write_32bit_gc0_register($19, 1, val)
++#define write_gc0_watchhi2(val)		__write_32bit_gc0_register($19, 2, val)
++#define write_gc0_watchhi3(val)		__write_32bit_gc0_register($19, 3, val)
++#define write_gc0_watchhi4(val)		__write_32bit_gc0_register($19, 4, val)
++#define write_gc0_watchhi5(val)		__write_32bit_gc0_register($19, 5, val)
++#define write_gc0_watchhi6(val)		__write_32bit_gc0_register($19, 6, val)
++#define write_gc0_watchhi7(val)		__write_32bit_gc0_register($19, 7, val)
++
++#define read_gc0_xcontext()		__read_ulong_gc0_register($20, 0)
++#define write_gc0_xcontext(val)		__write_ulong_gc0_register($20, 0, val)
++
++#define read_gc0_perfctrl0()		__read_32bit_gc0_register($25, 0)
++#define write_gc0_perfctrl0(val)	__write_32bit_gc0_register($25, 0, val)
++#define read_gc0_perfcntr0()		__read_32bit_gc0_register($25, 1)
++#define write_gc0_perfcntr0(val)	__write_32bit_gc0_register($25, 1, val)
++#define read_gc0_perfcntr0_64()		__read_64bit_gc0_register($25, 1)
++#define write_gc0_perfcntr0_64(val)	__write_64bit_gc0_register($25, 1, val)
++#define read_gc0_perfctrl1()		__read_32bit_gc0_register($25, 2)
++#define write_gc0_perfctrl1(val)	__write_32bit_gc0_register($25, 2, val)
++#define read_gc0_perfcntr1()		__read_32bit_gc0_register($25, 3)
++#define write_gc0_perfcntr1(val)	__write_32bit_gc0_register($25, 3, val)
++#define read_gc0_perfcntr1_64()		__read_64bit_gc0_register($25, 3)
++#define write_gc0_perfcntr1_64(val)	__write_64bit_gc0_register($25, 3, val)
++#define read_gc0_perfctrl2()		__read_32bit_gc0_register($25, 4)
++#define write_gc0_perfctrl2(val)	__write_32bit_gc0_register($25, 4, val)
++#define read_gc0_perfcntr2()		__read_32bit_gc0_register($25, 5)
++#define write_gc0_perfcntr2(val)	__write_32bit_gc0_register($25, 5, val)
++#define read_gc0_perfcntr2_64()		__read_64bit_gc0_register($25, 5)
++#define write_gc0_perfcntr2_64(val)	__write_64bit_gc0_register($25, 5, val)
++#define read_gc0_perfctrl3()		__read_32bit_gc0_register($25, 6)
++#define write_gc0_perfctrl3(val)	__write_32bit_gc0_register($25, 6, val)
++#define read_gc0_perfcntr3()		__read_32bit_gc0_register($25, 7)
++#define write_gc0_perfcntr3(val)	__write_32bit_gc0_register($25, 7, val)
++#define read_gc0_perfcntr3_64()		__read_64bit_gc0_register($25, 7)
++#define write_gc0_perfcntr3_64(val)	__write_64bit_gc0_register($25, 7, val)
++
++#define read_gc0_errorepc()		__read_ulong_gc0_register($30, 0)
++#define write_gc0_errorepc(val)		__write_ulong_gc0_register($30, 0, val)
++
++#define read_gc0_kscratch1()		__read_ulong_gc0_register($31, 2)
++#define read_gc0_kscratch2()		__read_ulong_gc0_register($31, 3)
++#define read_gc0_kscratch3()		__read_ulong_gc0_register($31, 4)
++#define read_gc0_kscratch4()		__read_ulong_gc0_register($31, 5)
++#define read_gc0_kscratch5()		__read_ulong_gc0_register($31, 6)
++#define read_gc0_kscratch6()		__read_ulong_gc0_register($31, 7)
++#define write_gc0_kscratch1(val)	__write_ulong_gc0_register($31, 2, val)
++#define write_gc0_kscratch2(val)	__write_ulong_gc0_register($31, 3, val)
++#define write_gc0_kscratch3(val)	__write_ulong_gc0_register($31, 4, val)
++#define write_gc0_kscratch4(val)	__write_ulong_gc0_register($31, 5, val)
++#define write_gc0_kscratch5(val)	__write_ulong_gc0_register($31, 6, val)
++#define write_gc0_kscratch6(val)	__write_ulong_gc0_register($31, 7, val)
+ 
+ /* Cavium OCTEON (cnMIPS) */
+-#define read_gc0_cvmcount()		__read_ulong_gc0_register(9, 6)
+-#define write_gc0_cvmcount(val)		__write_ulong_gc0_register(9, 6, val)
++#define read_gc0_cvmcount()		__read_ulong_gc0_register($9, 6)
++#define write_gc0_cvmcount(val)		__write_ulong_gc0_register($9, 6, val)
+ 
+-#define read_gc0_cvmctl()		__read_64bit_gc0_register(9, 7)
+-#define write_gc0_cvmctl(val)		__write_64bit_gc0_register(9, 7, val)
++#define read_gc0_cvmctl()		__read_64bit_gc0_register($9, 7)
++#define write_gc0_cvmctl(val)		__write_64bit_gc0_register($9, 7, val)
+ 
+-#define read_gc0_cvmmemctl()		__read_64bit_gc0_register(11, 7)
+-#define write_gc0_cvmmemctl(val)	__write_64bit_gc0_register(11, 7, val)
++#define read_gc0_cvmmemctl()		__read_64bit_gc0_register($11, 7)
++#define write_gc0_cvmmemctl(val)	__write_64bit_gc0_register($11, 7, val)
+ 
+-#define read_gc0_cvmmemctl2()		__read_64bit_gc0_register(16, 6)
+-#define write_gc0_cvmmemctl2(val)	__write_64bit_gc0_register(16, 6, val)
++#define read_gc0_cvmmemctl2()		__read_64bit_gc0_register($16, 6)
++#define write_gc0_cvmmemctl2(val)	__write_64bit_gc0_register($16, 6, val)
+ 
  /*
-  * Manipulate bits in a register.
-  */
+  * Macros to access the floating point coprocessor control registers
 -- 
 git-series 0.9.1

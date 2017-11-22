@@ -1,45 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 03:24:39 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38181 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993023AbdKVCU30Ecpn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 03:20:29 +0100
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1eHKeE-0004YM-QS; Wed, 22 Nov 2017 02:20:22 +0000
-Received: from ben by deadeye with local (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1eHKe8-0003BV-8F; Wed, 22 Nov 2017 02:20:16 +0000
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2017 10:58:34 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.150.245]:49106 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990409AbdKVJ61z84zn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2017 10:58:27 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 22 Nov 2017 09:57:59 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Wed, 22 Nov 2017 01:57:51 -0800
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+CC:     Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        <linux-serial@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        "stable # 4 . 14" <stable@vger.kernel.org>,
+        "Marc Gonzalez" <marc_gonzalez@sigmadesigns.com>,
+        Jiri Slaby <jslaby@suse.com>, <linux-kernel@vger.kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Jeffy Chen <jeffy.chen@rock-chips.com>
+Subject: [PATCH 1/2] serial: 8250_early: Only set divisor if valid clk & baud
+Date:   Wed, 22 Nov 2017 09:57:28 +0000
+Message-ID: <1511344649-27612-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org,
-        "Paul Gortmaker" <paul.gortmaker@windriver.com>,
-        "Mathias Kresin" <dev@kresin.me>,
-        "James Hogan" <james.hogan@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        "Jonas Gorski" <jonas.gorski@gmail.com>
-Date:   Wed, 22 Nov 2017 01:58:13 +0000
-Message-ID: <lsq.1511315893.996214351@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 088/133] MIPS: AR7: allow NULL clock for clk_get_rate
-In-Reply-To: <lsq.1511315892.657723235@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1511344679-637139-12578-470676-3
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187188
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61045
+X-archive-position: 61046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,41 +58,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.51-rc1 review patch.  If anyone has any objections, please let me know.
+If either uartclk or baud are 0, avoid calculating and setting a divisor
+based on them since the output will almost certainly be garbage.
 
-------------------
+This also allows platforms such as the MIPS generic kernel, which has no
+way to know a valid BASE_BASE for the board it is actually booted on at
+compile time, to set BASE_BAUD to 0 and avoid early_8250 setting a bad
+divisor.
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+This fixes a regression caused by commit 31cb9a8575ca ("earlycon:
+initialise baud field of earlycon device structure"), which changed the
+behavior of of_setup_earlycon such that it sets a baud rate in the
+earlycon structure where previously it was left as 0. All boards
+supported by the MIPS generic kernel started outputting garbage from the
+boot console due to an incorrect divisor being set.
 
-commit 585e0e9d02a690c29932b2fc0789835c7b91d448 upstream.
-
-Make the behaviour of clk_get_rate consistent with common clk's
-clk_get_rate by accepting NULL clocks as parameter. Some device
-drivers rely on this, and will cause an OOPS otherwise.
-
-Fixes: 780019ddf02f ("MIPS: AR7: Implement clock API")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reported-by: Mathias Kresin <dev@kresin.me>
-Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16775/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Fixes: 31cb9a8575ca ("earlycon: initialise baud field of earlycon device structure")
+Cc: stable <stable@vger.kernel.org> # 4.14
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
- arch/mips/ar7/clock.c | 3 +++
- 1 file changed, 3 insertions(+)
 
---- a/arch/mips/ar7/clock.c
-+++ b/arch/mips/ar7/clock.c
-@@ -430,6 +430,9 @@ EXPORT_SYMBOL(clk_disable);
+ drivers/tty/serial/8250/8250_early.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250_early.c b/drivers/tty/serial/8250/8250_early.c
+index af72ec32e404..f135c1846477 100644
+--- a/drivers/tty/serial/8250/8250_early.c
++++ b/drivers/tty/serial/8250/8250_early.c
+@@ -125,12 +125,14 @@ static void __init init_port(struct earlycon_device *device)
+ 	serial8250_early_out(port, UART_FCR, 0);	/* no fifo */
+ 	serial8250_early_out(port, UART_MCR, 0x3);	/* DTR + RTS */
  
- unsigned long clk_get_rate(struct clk *clk)
- {
-+	if (!clk)
-+		return 0;
-+
- 	return clk->rate;
+-	divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * device->baud);
+-	c = serial8250_early_in(port, UART_LCR);
+-	serial8250_early_out(port, UART_LCR, c | UART_LCR_DLAB);
+-	serial8250_early_out(port, UART_DLL, divisor & 0xff);
+-	serial8250_early_out(port, UART_DLM, (divisor >> 8) & 0xff);
+-	serial8250_early_out(port, UART_LCR, c & ~UART_LCR_DLAB);
++	if (port->uartclk && device->baud) {
++		divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * device->baud);
++		c = serial8250_early_in(port, UART_LCR);
++		serial8250_early_out(port, UART_LCR, c | UART_LCR_DLAB);
++		serial8250_early_out(port, UART_DLL, divisor & 0xff);
++		serial8250_early_out(port, UART_DLM, (divisor >> 8) & 0xff);
++		serial8250_early_out(port, UART_LCR, c & ~UART_LCR_DLAB);
++	}
  }
- EXPORT_SYMBOL(clk_get_rate);
+ 
+ int __init early_serial8250_setup(struct earlycon_device *device,
+-- 
+2.7.4

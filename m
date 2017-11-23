@@ -1,56 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2017 19:43:51 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:52218 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990593AbdKWSnpOo07r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Nov 2017 19:43:45 +0100
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id EB40E81222;
-        Thu, 23 Nov 2017 18:43:37 +0000 (UTC)
-Received: from [10.36.117.224] (ovpn-117-224.ams2.redhat.com [10.36.117.224])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B37DD1898A;
-        Thu, 23 Nov 2017 18:43:34 +0000 (UTC)
-Subject: Re: [RFC PATCH] KVM: Only register preempt notifiers and load arch
- cpu state as needed
-To:     Christoffer Dall <cdall@linaro.org>
-Cc:     Christoffer Dall <christoffer.dall@linaro.org>,
-        kvm@vger.kernel.org, Andrew Jones <drjones@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Alexander Graf <agraf@suse.com>, kvm-ppc@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-References: <20171123160521.27260-1-christoffer.dall@linaro.org>
- <72357599-798d-14d0-336a-69a083f17863@redhat.com>
- <20171123170642.GA28855@cbox>
- <62ae4eb1-fd57-c525-cd73-e3f646d340e1@redhat.com>
- <20171123174804.GB28855@cbox>
- <acf7f751-d73d-8e16-fe9b-2f1f0e1f5e8d@redhat.com>
- <20171123183214.GC28855@cbox>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <38e20093-9f94-9fbb-12c3-329ce6b8467d@redhat.com>
-Date:   Thu, 23 Nov 2017 19:43:33 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
-MIME-Version: 1.0
-In-Reply-To: <20171123183214.GC28855@cbox>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Thu, 23 Nov 2017 18:43:38 +0000 (UTC)
-Return-Path: <pbonzini@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2017 22:50:24 +0100 (CET)
+Received: from mail-lf0-x243.google.com ([IPv6:2a00:1450:4010:c07::243]:41673
+        "EHLO mail-lf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990765AbdKWVuSDiIaH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2017 22:50:18 +0100
+Received: by mail-lf0-x243.google.com with SMTP id f134so23335294lfg.8;
+        Thu, 23 Nov 2017 13:50:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=4qShSJV99C1epi9pb9j2K0TSaIFWlT8Q6ac/YoulFKo=;
+        b=lNk/ZifgeURT5wlVRej7488KOZ4Qq4aNQhl4+j2gxpNkgfKVV2y1MSGil2Ay1D/bFd
+         ux1+Gv8zWLZqzXfVYAGyZSKVHkXbQe/iJ93WeggYTlHT+YqMtyvr+Ms/MiB86VCugSoU
+         XkDkZUpf5AzABGIFXkyYU2UQoHuJPwI6/8dyJc0Qc21poeF2lrqDXHoKLh7wlXdu0FJG
+         1c/GwbDaQvS4AHER1bh5/wziXz6LLX7luVhuqk2rZ7ngu6JAQZIbnvcZvrX75Dq5LFnf
+         6cZpM/Lh7U1GkW+fn+QZkQFoKd1h6CRSb0nsMKsEmh0dfm5C0ApcFff8PiZZD5a+dxQy
+         D8hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=4qShSJV99C1epi9pb9j2K0TSaIFWlT8Q6ac/YoulFKo=;
+        b=PRVbqOmiydpYyLy06bnybdZ2wSTdfj5roZo4ya6beImrRtuuZi9XbYUPzTBBZOM/y3
+         QKiU82Sar7v+iCVik5OrD4KSEWrZlCD+cQmLd8u/A5jLwS6wbN0nm0QgdvHCxYhfQfNs
+         KNmSuqBmxd1Xsw1A1aiKXkKBMCjWc1tJ/2xkYn8SIPZFO9/aijqsUCghmZ6tSHGhTI/t
+         JB3x+lF7TubigYcfI9BbMtfETTGE+1WdHYsr4fT2tdWxbjjTqnQAC6zWcJq7YGs35yoA
+         mvxWoEprCeht1CCIkvqV03jwqULGwKXWjZgO79qfJlOmT23dAePq3Qn3yOY7M+04Zse7
+         soAw==
+X-Gm-Message-State: AJaThX6B08BxPh0M6MFUI4o+REi3ojI/IysINmzmRbwp8OSPsC6Lwt+P
+        wQVZpyuxAWLT1FbL/Snu7Gc2LZrE
+X-Google-Smtp-Source: AGs4zMbm095drSW/mq2kkR8GGIeEYSJ19qodEHucTGnDUC+Swm5Yk0J6f/z5fBHe+XXzoWW+Bn1e1w==
+X-Received: by 10.25.72.135 with SMTP id v129mr7769529lfa.113.1511473812019;
+        Thu, 23 Nov 2017 13:50:12 -0800 (PST)
+Received: from localhost.localdomain ([195.254.138.66])
+        by smtp.gmail.com with ESMTPSA id z68sm3603378lje.26.2017.11.23.13.50.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 23 Nov 2017 13:50:09 -0800 (PST)
+From:   Vasyl Gomonovych <gomonovych@gmail.com>
+To:     ralf@linux-mips.org, paul.gortmaker@windriver.com,
+        jhogan@kernel.org, linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, gomonovych@gmail.com
+Subject: [PATCH] MIPS: TXx9: Add missing iounmap
+Date:   Thu, 23 Nov 2017 22:49:55 +0100
+Message-Id: <1511473795-20137-1-git-send-email-gomonovych@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <gomonovych@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61070
+X-archive-position: 61071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: gomonovych@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,12 +63,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23/11/2017 19:32, Christoffer Dall wrote:
-> ok, that makes sense.
-> 
-> And just to be clear, you prefer that over storing the ioctl on the vcpu
-> struct, like this:
+Add the missing iounmap() before put_device and
+return from txx9_sramc_init().
 
-Yes, please.
+Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
+---
+ arch/mips/txx9/generic/setup.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Paolo
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 1791a44ee570..6ef5edb85d68 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -965,6 +965,8 @@ void __init txx9_sramc_init(struct resource *r)
+ 	}
+ 	return;
+ exit_put:
++	if (dev->base)
++		iounmap(dev->base);
+ 	put_device(&dev->dev);
+ 	return;
+ }
+-- 
+1.9.1

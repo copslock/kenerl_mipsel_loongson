@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2017 16:36:44 +0100 (CET)
-Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:41063
-        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990511AbdKWPghoTb9X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2017 16:36:37 +0100
-Received: by mail-pl0-x244.google.com with SMTP id u14so2848439plm.8;
-        Thu, 23 Nov 2017 07:36:37 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2017 16:45:36 +0100 (CET)
+Received: from mail-pl0-x241.google.com ([IPv6:2607:f8b0:400e:c01::241]:33469
+        "EHLO mail-pl0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990596AbdKWPpaSBN8X (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2017 16:45:30 +0100
+Received: by mail-pl0-x241.google.com with SMTP id a12so2869039pll.0;
+        Thu, 23 Nov 2017 07:45:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=34pxe1h3YY0OI+duX/k0TnvmNUgI5sFQGvwOcS1TX2s=;
-        b=b+9sQT4rLbVBLAoyhB62WXj+9RrY8EJnrXm+JAe7bHEgmTNo/K2H66QC5Q9xDdTlfX
-         vQvn59Sjqa3x3SnDA9dq/b0kzkHM6C1c2YqWv8GQerfs0huJ8HOxEcXoS31iHcFrRgY5
-         vhsIDX2ShuDgcsxZ6Xh+/jvGVVB/g617pc4b8/h6ehhJ4FiXpRFVbbAozFUBcwHwrXzN
-         r8tAOqgwuTlGD7Y7ocGLPXoVxJRLO/G0pkFRlS8nUI7axeZ0r726ti4wPaZVHDcSCIA0
-         m+XExhWGKcDjkUTO/UwARvWo5Q0VKR55KziFAF5ODtBwz8U0MeCpXE4uvc+Iv2y9mL6D
-         gqRA==
+        bh=tlLmODJWqmLbPug9p7noCXbfyxIX1fEVmWo6/i0Gf34=;
+        b=RLjh3IZigOzTzH0QBNjik7htbRa3+L3NDXWA5JxelTBM32hUgjrsY4g5HHUkjT16Vo
+         w0FxD2nZ1QYeh7IhJXqIcmhFeVHvVV8BhLYlwH/cVpzRXD8TPqQQWO0E0YDxpArnslcx
+         UT0mNtXKbE90bTIC0U1MjCYZJ9r7uaY7hJX+l/XND9ZVuxgoM309Pxo70/z1ChRZKnig
+         Igk3SMmpzUoXvA6E7CT9QZSA4FvTUkE1ALZG0OUPsJXk73cYAwAAy+u30IKLC3Ox5+kX
+         VbwpX5qxe8Bu3fLj8KS3Vgh3zvPm7dmo1tZoBrOVnV2Zg2imgIoGBUuJDPXZtsaRavk/
+         rmgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=34pxe1h3YY0OI+duX/k0TnvmNUgI5sFQGvwOcS1TX2s=;
-        b=iV6X4Dx69jtcwtbQ+FTTAIp7wqZtcp4X7qSYHec3k1O48lWf2e68PQxijgUmaOFnbU
-         TqRgelNn9UU/aP0upXt3EEdrC3iddN5UhZZcVFfQ+ftkaPRjQ5+RMp8CE3MG3pq0mkhW
-         /jQyu6BR/va8rHvq5PI8LW+YC0AbVLa6cxS04ainvBbX1a4wvmyJEC2L/SOyVw3e2+TZ
-         KxfJtwtuy3nbwKp10mr5W1OTnFLs0uhYTAcx4w1RGKidsOD0Y5W8Maw77CnmJwA9JFWA
-         qADxVcmjxfonrErgLCx3AzgsJZo4gcddrbNr0iWjunoKX67iZL0qWJU0BzQ2nfaS+Scy
-         vyIw==
-X-Gm-Message-State: AJaThX6IePccbqnbD15ISXuYegjvko8kN/AgZgsaDiJBqCgMJQSB2FIV
-        0n56v9UROuoREwnG8UMXDUWUNg==
-X-Google-Smtp-Source: AGs4zMY7Tv8FhM3vC/yZNqiPkPCwAAAHCA1erCtCC9QFgJZoZYJX6xTAdVJ/Xzi7u7T/6nevfAroVA==
-X-Received: by 10.84.131.35 with SMTP id 32mr19985429pld.347.1511451391291;
-        Thu, 23 Nov 2017 07:36:31 -0800 (PST)
+        bh=tlLmODJWqmLbPug9p7noCXbfyxIX1fEVmWo6/i0Gf34=;
+        b=Ht27SLU/90BvXjJ4QwCyw0RG+rqwfYLbbl41D4JkYYHDdZwOocOXlXNrve6HMZEOB0
+         KfLDn/oaf6Z+j2QN/SYtwuhjDU3cQRtyRwABWBWuTREo2u4/pGQE+aXAYE8p9OmQCa/h
+         bqYZJf0vhDWZGFkQvwLBkxDqkhVzzT+ew8I8XmSiIERjKg/9qTLJVOaJvy8xA/WJRnRp
+         WS3g4wCj/J6FNoKXwTL42EqWgBdnCy0vQAyPXWky0WDT7DWvegEI8TFEVAROrxmjbqhl
+         cPufAyMhx4AyXpeOlCQ78B+EUWk6Dr2rAzSTicvGn7fplHtUcwGd4+mcBevoVYxer9E5
+         BMTg==
+X-Gm-Message-State: AJaThX5io15fcoG3xEWO6RyEo7PgtpLz3nU6yh+maNclV5AHgItg0E6F
+        teZ7I0JXT3M7V7T/iHJjQo4=
+X-Google-Smtp-Source: AGs4zMa3AC5ayG6CbnFGx/Rb1Nj+xvIQYdKJuV0SyrWoxubWHGFxoJHJXzamf659A2V2Tv9qTCnO6w==
+X-Received: by 10.159.216.131 with SMTP id s3mr25047652plp.434.1511451924259;
+        Thu, 23 Nov 2017 07:45:24 -0800 (PST)
 Received: from localhost.localdomain ([103.16.68.147])
-        by smtp.gmail.com with ESMTPSA id 69sm35189045pft.11.2017.11.23.07.36.28
+        by smtp.gmail.com with ESMTPSA id o123sm33715716pfb.102.2017.11.23.07.45.22
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 23 Nov 2017 07:36:29 -0800 (PST)
+        Thu, 23 Nov 2017 07:45:23 -0800 (PST)
 From:   Arvind Yadav <arvind.yadav.cs@gmail.com>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: ralink: ix platform_get_irq's error checking
-Date:   Thu, 23 Nov 2017 21:06:10 +0530
-Message-Id: <4b30004af37521b2102a4eda7c15f7257437ac85.1511451256.git.arvind.yadav.cs@gmail.com>
+Subject: [PATCH v2] MIPS: ralink: Fix platform_get_irq's error checking
+Date:   Thu, 23 Nov 2017 21:15:10 +0530
+Message-Id: <4b30004af37521b2102a4eda7c15f7257437ac85.1511451615.git.arvind.yadav.cs@gmail.com>
 X-Mailer: git-send-email 2.7.4
 Return-Path: <arvind.yadav.cs@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61058
+X-archive-position: 61059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,6 +68,9 @@ for zero is not correct.
 
 Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
 ---
+changes in v2: Subject spelling was not correct. change FIX in place
+               of 'ix'.
+
  arch/mips/ralink/timer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 

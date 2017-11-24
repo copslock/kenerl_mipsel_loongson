@@ -1,55 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Nov 2017 03:08:45 +0100 (CET)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:36684
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991416AbdKXCIidw7Gm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Nov 2017 03:08:38 +0100
-Received: by mail-pf0-x241.google.com with SMTP id i15so14174009pfa.3;
-        Thu, 23 Nov 2017 18:08:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6DEPr4nhganPYVgOtBdyAtKjZii999Lf1GixBf0Js8s=;
-        b=uzLrty7+f6LRxquGQbI9djk3Hi0AkILHb2I3B0lE+gAc6cobKRxJcbf/mMSegFcwn7
-         5KESC4EyvDjPpgFg2044WnJwbc8tKKk0vjcza3sFCGesv2i8gXQuCsZ+h+m6zVQiP/KE
-         SO5CnBijymsvYnX3HacZfEuSHKinomxaqphZU3EWVYpWGkAK9UKgbU74xwl7+MGbRXjh
-         B7wKX1U9VyTlsaT7TC/CuXMOc+zw71obWWpyryyFG1EbiDnutrrzKEYfAsO3d7rRRp+M
-         pj74zI3Q52vmQ8rRYOiY1OQK+Ln6J7AZW8hZKmD7WHRhOvfazY/rKylOE6KGhIpeQhDU
-         OmuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6DEPr4nhganPYVgOtBdyAtKjZii999Lf1GixBf0Js8s=;
-        b=lrdDwKRvULPqSFlpghFkSolgKd1UJrf2H4oSv3xpgeuCxS6MfpXvNX7MJCLlznLJ8a
-         wydWROREk2doutNjROoxjNbXagy9ZeqIA+ex8zkV4LnrUxzMv+fJaZXc7Se3/GUnM0TN
-         dFtgfqP0lf5txBazaiIsKp/wfEzRBJADLL3aozPipQmswL92O71dmwv5nGSHX1ziknL6
-         zv1hFfklpkxRHaD+hPvhyky4hhIDsIHQkVB7uTqrKi2shNvSmFc0+Gm0YedxY/B6+bju
-         OUgWej9zt8j42NqGHOZQDYZzgmLt6U6IoRmI7IPHhhYErD677kgcmrK/ldZXbsoEV9cJ
-         eUow==
-X-Gm-Message-State: AJaThX6o/1c8egBFpBto43UWZ269UBq69j6TAFB8MvDvrkb751xEWbXj
-        v39oNrqPeZ3xl71kL3XhSBY=
-X-Google-Smtp-Source: AGs4zMZd4EcUrj50M2qxWbXIr1JDEyev/Z9VlIJa/DiBO7aob8R0ilr9CAl61MF7PkwirPNt0iW58Q==
-X-Received: by 10.98.205.5 with SMTP id o5mr24836016pfg.39.1511489311948;
-        Thu, 23 Nov 2017 18:08:31 -0800 (PST)
-Received: from localhost.localdomain ([103.16.68.147])
-        by smtp.gmail.com with ESMTPSA id y83sm36717490pfd.66.2017.11.23.18.08.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 23 Nov 2017 18:08:30 -0800 (PST)
-From:   Arvind Yadav <arvind.yadav.cs@gmail.com>
-To:     john@phrozen.org, ralf@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: ralink: Fix platform_get_irq's error checking
-Date:   Fri, 24 Nov 2017 07:38:20 +0530
-Message-Id: <d8c2d652f7959049e402103586f9c78236632f82.1511489143.git.arvind.yadav.cs@gmail.com>
-X-Mailer: git-send-email 2.7.4
-Return-Path: <arvind.yadav.cs@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Nov 2017 11:26:53 +0100 (CET)
+Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:50466 "EHLO
+        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990720AbdKXK0oxWV7G (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Nov 2017 11:26:44 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 24 Nov 2017 10:26:34 +0000
+Received: from [10.20.78.172] (10.20.78.172) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Fri, 24 Nov 2017
+ 02:26:25 -0800
+Date:   Fri, 24 Nov 2017 10:26:14 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Fredrik Noring <noring@nocrew.org>,
+        John Crispin <blogic@openwrt.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
+In-Reply-To: <20171030175516.GA18586@localhost.localdomain>
+Message-ID: <alpine.DEB.2.00.1711240958370.3865@tp.orcam.me.uk>
+References: <20170916133423.GB32582@localhost.localdomain> <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk> <20170918192428.GA391@localhost.localdomain> <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk> <20170920145440.GB9255@localhost.localdomain>
+ <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk> <20170927172107.GB2631@localhost.localdomain> <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk> <20170930065654.GA7714@localhost.localdomain> <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
+ <20171030175516.GA18586@localhost.localdomain>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1511519194-452059-26980-776060-1
+X-BESS-VER: 2017.14.1-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187254
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61072
+X-archive-position: 61073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arvind.yadav.cs@gmail.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,34 +53,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The platform_get_irq() function returns negative if an error occurs.
-zero or positive number on success. platform_get_irq() error checking
-for zero is not correct.
+Fredrik, John --
 
-Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
----
-changes in v2: Subject spelling was not correct. change FIX in place
-                of 'ix'.
-changes in v3: Return rt->irq instead of -ENOENT.
+ John: can you please see the question below on the machine type you 
+previously fiddled with?
 
- arch/mips/ralink/timer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> >  Given that the R5900 does not expand DSP support anyhow that sounds 
+> > suspicious to me.
+> 
+> I've taken a closer look at the R5900 changes to the DSP kernel code now:
+> 
+> The R5900 has four three-operand instructions: MADD, MADDU, MULT and MULTU.
+> In addition, it has ten instructions for pipeline 1: MULT1, MULTU1, DIV1,
+> DIVU1, MADD1, MADDU1, MFHI1, MFLO1, MTHI1 and MTLO1. Those are the reason
+> (parts of) the cpu_has_dsp infrastructure is used, as shown in the patch
+> below. What are your thoughts on this?
+> 
+> The instructions are specific to the R5900, and notably incompatible with
+> similar ones in the base MIPS32 architecture. They are also distinct from
+> the (also R5900 specific) 128-bit multimedia instructions.
 
-diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
-index d4469b2..4f46a45 100644
---- a/arch/mips/ralink/timer.c
-+++ b/arch/mips/ralink/timer.c
-@@ -109,9 +109,9 @@ static int rt_timer_probe(struct platform_device *pdev)
- 	}
- 
- 	rt->irq = platform_get_irq(pdev, 0);
--	if (!rt->irq) {
-+	if (rt->irq < 0) {
- 		dev_err(&pdev->dev, "failed to load irq\n");
--		return -ENOENT;
-+		return rt->irq;
- 	}
- 
- 	rt->membase = devm_ioremap_resource(&pdev->dev, res);
--- 
-2.7.4
+ They're still upper halves of the architectural HI/LO accumulator and 
+also used by the 128-bit multiply and divide instructions.  I think they 
+should be handled analogously to the 128-bit GPRs, rather than pretending 
+they're a crippled version of the DSP ASE.
+
+> By the way, "machine" is set to "Unknown" and "ASEs implemented" is empty
+> in /proc/cpuinfo. What would be the proper values for the R5900?
+
+ I have no idea what the machine type is supposed to be set to and why it 
+is not omitted by default, given this piece:
+
+		if (mips_get_machine_name())
+			seq_printf(m, "machine\t\t\t: %s\n",
+				mips_get_machine_name());
+
+I think commit 9169a5d01114 ("MIPS: move mips_{set,get}_machine_name() to 
+a more generic place") broke things.  Cc-ing the author for possible 
+input.
+
+ ASEs OTOH are specific to MIPS32 and MIPS64 architectures, as per 
+respective architecture specification volumes (the MIPS16 ASE might be a 
+prominent exception, having been defined as the first ASE ever mid way 
+through between the MIPS IV and MIPS32/MIPS64 ISAs).  As the R5900 is not 
+a MIPS32 or MIPS64 processor (and has no MIPS16 support) it does not have 
+any ASEs implemented.  Vendor-specific architecture extensions do not 
+count as ASEs.
+
+  Maciej

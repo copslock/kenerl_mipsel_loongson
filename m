@@ -1,56 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2017 22:50:24 +0100 (CET)
-Received: from mail-lf0-x243.google.com ([IPv6:2a00:1450:4010:c07::243]:41673
-        "EHLO mail-lf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990765AbdKWVuSDiIaH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2017 22:50:18 +0100
-Received: by mail-lf0-x243.google.com with SMTP id f134so23335294lfg.8;
-        Thu, 23 Nov 2017 13:50:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Nov 2017 03:08:45 +0100 (CET)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:36684
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991416AbdKXCIidw7Gm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Nov 2017 03:08:38 +0100
+Received: by mail-pf0-x241.google.com with SMTP id i15so14174009pfa.3;
+        Thu, 23 Nov 2017 18:08:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=4qShSJV99C1epi9pb9j2K0TSaIFWlT8Q6ac/YoulFKo=;
-        b=lNk/ZifgeURT5wlVRej7488KOZ4Qq4aNQhl4+j2gxpNkgfKVV2y1MSGil2Ay1D/bFd
-         ux1+Gv8zWLZqzXfVYAGyZSKVHkXbQe/iJ93WeggYTlHT+YqMtyvr+Ms/MiB86VCugSoU
-         XkDkZUpf5AzABGIFXkyYU2UQoHuJPwI6/8dyJc0Qc21poeF2lrqDXHoKLh7wlXdu0FJG
-         1c/GwbDaQvS4AHER1bh5/wziXz6LLX7luVhuqk2rZ7ngu6JAQZIbnvcZvrX75Dq5LFnf
-         6cZpM/Lh7U1GkW+fn+QZkQFoKd1h6CRSb0nsMKsEmh0dfm5C0ApcFff8PiZZD5a+dxQy
-         D8hA==
+        bh=6DEPr4nhganPYVgOtBdyAtKjZii999Lf1GixBf0Js8s=;
+        b=uzLrty7+f6LRxquGQbI9djk3Hi0AkILHb2I3B0lE+gAc6cobKRxJcbf/mMSegFcwn7
+         5KESC4EyvDjPpgFg2044WnJwbc8tKKk0vjcza3sFCGesv2i8gXQuCsZ+h+m6zVQiP/KE
+         SO5CnBijymsvYnX3HacZfEuSHKinomxaqphZU3EWVYpWGkAK9UKgbU74xwl7+MGbRXjh
+         B7wKX1U9VyTlsaT7TC/CuXMOc+zw71obWWpyryyFG1EbiDnutrrzKEYfAsO3d7rRRp+M
+         pj74zI3Q52vmQ8rRYOiY1OQK+Ln6J7AZW8hZKmD7WHRhOvfazY/rKylOE6KGhIpeQhDU
+         OmuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=4qShSJV99C1epi9pb9j2K0TSaIFWlT8Q6ac/YoulFKo=;
-        b=PRVbqOmiydpYyLy06bnybdZ2wSTdfj5roZo4ya6beImrRtuuZi9XbYUPzTBBZOM/y3
-         QKiU82Sar7v+iCVik5OrD4KSEWrZlCD+cQmLd8u/A5jLwS6wbN0nm0QgdvHCxYhfQfNs
-         KNmSuqBmxd1Xsw1A1aiKXkKBMCjWc1tJ/2xkYn8SIPZFO9/aijqsUCghmZ6tSHGhTI/t
-         JB3x+lF7TubigYcfI9BbMtfETTGE+1WdHYsr4fT2tdWxbjjTqnQAC6zWcJq7YGs35yoA
-         mvxWoEprCeht1CCIkvqV03jwqULGwKXWjZgO79qfJlOmT23dAePq3Qn3yOY7M+04Zse7
-         soAw==
-X-Gm-Message-State: AJaThX6B08BxPh0M6MFUI4o+REi3ojI/IysINmzmRbwp8OSPsC6Lwt+P
-        wQVZpyuxAWLT1FbL/Snu7Gc2LZrE
-X-Google-Smtp-Source: AGs4zMbm095drSW/mq2kkR8GGIeEYSJ19qodEHucTGnDUC+Swm5Yk0J6f/z5fBHe+XXzoWW+Bn1e1w==
-X-Received: by 10.25.72.135 with SMTP id v129mr7769529lfa.113.1511473812019;
-        Thu, 23 Nov 2017 13:50:12 -0800 (PST)
-Received: from localhost.localdomain ([195.254.138.66])
-        by smtp.gmail.com with ESMTPSA id z68sm3603378lje.26.2017.11.23.13.50.08
+        bh=6DEPr4nhganPYVgOtBdyAtKjZii999Lf1GixBf0Js8s=;
+        b=lrdDwKRvULPqSFlpghFkSolgKd1UJrf2H4oSv3xpgeuCxS6MfpXvNX7MJCLlznLJ8a
+         wydWROREk2doutNjROoxjNbXagy9ZeqIA+ex8zkV4LnrUxzMv+fJaZXc7Se3/GUnM0TN
+         dFtgfqP0lf5txBazaiIsKp/wfEzRBJADLL3aozPipQmswL92O71dmwv5nGSHX1ziknL6
+         zv1hFfklpkxRHaD+hPvhyky4hhIDsIHQkVB7uTqrKi2shNvSmFc0+Gm0YedxY/B6+bju
+         OUgWej9zt8j42NqGHOZQDYZzgmLt6U6IoRmI7IPHhhYErD677kgcmrK/ldZXbsoEV9cJ
+         eUow==
+X-Gm-Message-State: AJaThX6o/1c8egBFpBto43UWZ269UBq69j6TAFB8MvDvrkb751xEWbXj
+        v39oNrqPeZ3xl71kL3XhSBY=
+X-Google-Smtp-Source: AGs4zMZd4EcUrj50M2qxWbXIr1JDEyev/Z9VlIJa/DiBO7aob8R0ilr9CAl61MF7PkwirPNt0iW58Q==
+X-Received: by 10.98.205.5 with SMTP id o5mr24836016pfg.39.1511489311948;
+        Thu, 23 Nov 2017 18:08:31 -0800 (PST)
+Received: from localhost.localdomain ([103.16.68.147])
+        by smtp.gmail.com with ESMTPSA id y83sm36717490pfd.66.2017.11.23.18.08.28
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 23 Nov 2017 13:50:09 -0800 (PST)
-From:   Vasyl Gomonovych <gomonovych@gmail.com>
-To:     ralf@linux-mips.org, paul.gortmaker@windriver.com,
-        jhogan@kernel.org, linux-mips@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, gomonovych@gmail.com
-Subject: [PATCH] MIPS: TXx9: Add missing iounmap
-Date:   Thu, 23 Nov 2017 22:49:55 +0100
-Message-Id: <1511473795-20137-1-git-send-email-gomonovych@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <gomonovych@gmail.com>
+        Thu, 23 Nov 2017 18:08:30 -0800 (PST)
+From:   Arvind Yadav <arvind.yadav.cs@gmail.com>
+To:     john@phrozen.org, ralf@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: ralink: Fix platform_get_irq's error checking
+Date:   Fri, 24 Nov 2017 07:38:20 +0530
+Message-Id: <d8c2d652f7959049e402103586f9c78236632f82.1511489143.git.arvind.yadav.cs@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <arvind.yadav.cs@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61071
+X-archive-position: 61072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gomonovych@gmail.com
+X-original-sender: arvind.yadav.cs@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,26 +62,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the missing iounmap() before put_device and
-return from txx9_sramc_init().
+The platform_get_irq() function returns negative if an error occurs.
+zero or positive number on success. platform_get_irq() error checking
+for zero is not correct.
 
-Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
+Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
 ---
- arch/mips/txx9/generic/setup.c | 2 ++
- 1 file changed, 2 insertions(+)
+changes in v2: Subject spelling was not correct. change FIX in place
+                of 'ix'.
+changes in v3: Return rt->irq instead of -ENOENT.
 
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 1791a44ee570..6ef5edb85d68 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -965,6 +965,8 @@ void __init txx9_sramc_init(struct resource *r)
+ arch/mips/ralink/timer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
+index d4469b2..4f46a45 100644
+--- a/arch/mips/ralink/timer.c
++++ b/arch/mips/ralink/timer.c
+@@ -109,9 +109,9 @@ static int rt_timer_probe(struct platform_device *pdev)
  	}
- 	return;
- exit_put:
-+	if (dev->base)
-+		iounmap(dev->base);
- 	put_device(&dev->dev);
- 	return;
- }
+ 
+ 	rt->irq = platform_get_irq(pdev, 0);
+-	if (!rt->irq) {
++	if (rt->irq < 0) {
+ 		dev_err(&pdev->dev, "failed to load irq\n");
+-		return -ENOENT;
++		return rt->irq;
+ 	}
+ 
+ 	rt->membase = devm_ioremap_resource(&pdev->dev, res);
 -- 
-1.9.1
+2.7.4

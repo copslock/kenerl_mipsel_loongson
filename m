@@ -1,64 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Nov 2017 15:46:20 +0100 (CET)
-Received: from mail-io0-x22d.google.com ([IPv6:2607:f8b0:4001:c06::22d]:39785
-        "EHLO mail-io0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990487AbdKYOqKCD000 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Nov 2017 15:46:10 +0100
-Received: by mail-io0-x22d.google.com with SMTP id x63so31999666ioe.6;
-        Sat, 25 Nov 2017 06:46:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Nov 2017 21:57:23 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:34229
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990633AbdKYU5QxVut6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Nov 2017 21:57:16 +0100
+Received: by mail-wm0-x243.google.com with SMTP id y82so23786538wmg.1
+        for <linux-mips@linux-mips.org>; Sat, 25 Nov 2017 12:57:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=xIxNngNtXB1K5R+zuN1xZd1Q62J4uPGS88vHns69gPs=;
-        b=I2Hf3M2F/6EVL3n7CHQKa4duEWe6i8YKoBOxq/30qvtVJ5qU5TBBj3ZRKeFweQgWx4
-         yjtimkMEi6tvOu6aRybGCqDh5Tkb/ywcbovMApjWM55+N7GdEZaP2/VIaKxSqELWsR7T
-         h53KDi+xJoq+uY2BknOgke1wOWsOweh1EmjCN2ws/jXVY1qkpK/FjiJBAqToXZ++mvYr
-         dLJWSzsFgrC3IPcF52WV38oHC/KHeHsaJAi5M1n5yhtoL+E1rrVEx/dmxeJLaU/Mnkn8
-         e1gm6JMesSP5QbTVwYwPg0Sg2xlMSo3EbJD0uQvOhPl6PlUsXsNtueRUAtcbu7wxc6I0
-         at4w==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=zJaQtdegKG90+ublPjiiCPHII8+I/tB8qHGuKJMjffA=;
+        b=PviCQ0d8oAI49kNNAUhzTrzq84sWjshrfqOC1PbnLIIc5v56DHCckDJizkXwx2fei6
+         LPQoZCLS4wOyyTzhjAZrKvvs33CIEXpOefTc0TLgc0I4euXgkpNxdSo5TkAcuFVh2hQn
+         3yHmKgcOoib9TCCLvMZB7ZZFVG1cXHkKTwgDw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=xIxNngNtXB1K5R+zuN1xZd1Q62J4uPGS88vHns69gPs=;
-        b=qBEZJ+qroJup1UKkdCXHc/aBsRIVAulHaz/9YwUT/yQXluiLEawYKNC1IUOxmQOSpZ
-         aQstgJ/IGn1WFN7j4gMowoS5tNNxtS6wcPzCxNuYdKsvgmkicI1/GEf7DUMUApxo3Dmd
-         Gotj6nkkdKXqgMX6WIE6Piijax+QYq8haW5VABjTzvStG6WlXhTtEuH38NXgcDNmLeou
-         z5k8UmsrzzfxHk2CySpZ5/1lJ3aRB14l48uGHQ+CBh6zoN+Nmj42FZbsR7JyA+BxFIRw
-         jBYkSwjfiJ5NxWZ8cCQQCaCKhUu3NLoiOpNjEqGjlktHskkN7ELu7kE2jXhBZE7+1yo7
-         lnsg==
-X-Gm-Message-State: AJaThX6sGIAzpKgjx/RyJuymyBCgnLqsgYE6OZp5tbwxeq0y+H9kgiqp
-        +nmO+/k1aT+NEGTXyfhgNDCFAi7Jzdb/lYeEBMk=
-X-Google-Smtp-Source: AGs4zMYCZjXu5LQwgmgn0+LBQiLiSBuAoIoJl5eQ+UXuR8sof+LSWkaLlNx5tisxPUB+CFnn0ra0vDH1ER3J0vg2hRo=
-X-Received: by 10.107.97.16 with SMTP id v16mr33387362iob.263.1511621163561;
- Sat, 25 Nov 2017 06:46:03 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.2.169.20 with HTTP; Sat, 25 Nov 2017 06:46:03 -0800 (PST)
-In-Reply-To: <CANc+2y5VzWx+kLBO+=aWHLE5OGAGvuB_eVAzJ52ZVy79ad9Nxg@mail.gmail.com>
-References: <20170918140241.24003-1-prasannatsmkumar@gmail.com>
- <20171012143011.GA30173@gondor.apana.org.au> <CANc+2y5VzWx+kLBO+=aWHLE5OGAGvuB_eVAzJ52ZVy79ad9Nxg@mail.gmail.com>
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Sat, 25 Nov 2017 20:16:03 +0530
-Message-ID: <CANc+2y6DSjrsQj9kSz1go4-v+WVG2YcxeDc6Ehgm-bbf4qG+=A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] crypto: Add driver for JZ4780 PRNG
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>, linux-mips@linux-mips.org,
-        Mathieu Malaterre <malat@debian.org>, noloader@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <prasannatsmkumar@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=zJaQtdegKG90+ublPjiiCPHII8+I/tB8qHGuKJMjffA=;
+        b=lRbNciZ0fwG5DVa/hrBZa5szO3VBAnNFwesBokrjahh73pHR5eTwXmcEMIbK8+Lda/
+         lGSVW/QBT3JJND6bvgt2eYgw5Jn+HLsSeIPcIpCh5YoQycT1BkOR2KccMg2Zm9rdxL5F
+         KOWb0tuqKq9r3vnYrsYBMhJCuOxOd+KvuZpH6yBbuNExcHZBZFHCYunFA/Mkn79ZU92U
+         7xwFxdoz0SBFZnoGRFtzSZADKoi6DsjO6zooCSAB8RAh4/vISiRfEzAFAyOcDB8ccuUO
+         o+1cZoSZEPQJ5V5kh9AP4UZzNiJHkxpgXYDGTOhmEL+mMbizhT/dww6HgfisfT1hHErW
+         UD5Q==
+X-Gm-Message-State: AJaThX6d+Qff47NU3xAp1BA2TWiiEFuhM5/x+Ty3vhgk4f3oTqW27RWa
+        aNgFEeqLZMJcVe8fY7NkPukwXg==
+X-Google-Smtp-Source: AGs4zMYgN7Xo3i2RmwFeYuDIDDsiDMqc29tvlXvTKso2L1/WvrkaczDz3oifagSgv93+WsUo0kViwg==
+X-Received: by 10.28.169.198 with SMTP id s189mr12358463wme.65.1511643431388;
+        Sat, 25 Nov 2017 12:57:11 -0800 (PST)
+Received: from localhost.localdomain (x50d2404e.cust.hiper.dk. [80.210.64.78])
+        by smtp.gmail.com with ESMTPSA id z37sm15157577wrc.31.2017.11.25.12.57.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 25 Nov 2017 12:57:10 -0800 (PST)
+From:   Christoffer Dall <christoffer.dall@linaro.org>
+To:     kvm@vger.kernel.org
+Cc:     Andrew Jones <drjones@redhat.com>,
+        Christoffer Dall <christoffer.dall@linaro.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Alexander Graf <agraf@suse.com>, kvm-ppc@vger.kernel.org,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
+Subject: [PATCH 00/15] Move vcpu_load and vcpu_put calls to arch code
+Date:   Sat, 25 Nov 2017 21:57:03 +0100
+Message-Id: <20171125205718.7731-1-christoffer.dall@linaro.org>
+X-Mailer: git-send-email 2.14.2
+Return-Path: <christoffer.dall@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61076
+X-archive-position: 61077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: christoffer.dall@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,43 +68,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+Some architectures may decide to do different things during
+kvm_arch_vcpu_load depending on the ioctl being executed.  For example,
+arm64 is about to do significant work in vcpu load/put when running a
+vcpu, but it's problematic to do this for any other vcpu ioctl than
+KVM_RUN.
 
-On 12 October 2017 at 22:59, PrasannaKumar Muralidharan
-<prasannatsmkumar@gmail.com> wrote:
-> Hi Herbert,
->
-> On 12 October 2017 at 20:00, Herbert Xu <herbert@gondor.apana.org.au> wrote:
->> On Mon, Sep 18, 2017 at 07:32:37PM +0530, PrasannaKumar Muralidharan wrote:
->>> This patch series adds support of pseudo random number generator found
->>> in Ingenic's JZ4780 and X1000 SoC.
->>>
->>> Create cgublock node which has CGU and RNG node as its children. The
->>> cgublock node uses "simple-bus" compatible which helps in exposing CGU
->>> and RNG nodes without changing CGU driver. Add 'syscon' compatible in
->>> CGU node in jz4780.dtsi. The jz4780-rng driver uses regmap exposed via
->>> syscon interface to access the RNG registers. CGU driver is not
->>> modified in this patch set as registers used by CGU driver and this
->>> driver are different.
->>>
->>> PrasannaKumar Muralidharan (4):
->>>   crypto: jz4780-rng: Add JZ4780 PRNG devicetree binding documentation
->>>   crypto: jz4780-rng: Add Ingenic JZ4780 hardware PRNG driver
->>>   crypto: jz4780-rng: Add RNG node to jz4780.dtsi
->>>   crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
->>
->> Please indicate which patches are intended to go through the crypto
->> trees.
->
-> From https://patchwork.linux-mips.org/patch/17162/ I expect the same.
-> Either all patches go via crypto tree or via mips tree.
-> The dtsi changes is not yet acked by MIPS / JZ4780 maintainer. Let's
-> wait for it.
->
-> Thanks,
-> PrasannaKumar
+Further, while it may be possible to call kvm_arch_vcpu_load() for a
+number of non-KVM_RUN ioctls, it makes the KVM/ARM code more difficult
+to reason about, especially after my optimization series, because a lot
+of things can now happen, where we have to consider if we're really in
+the process of running a vcpu or not.
 
-Should I do anything more for this series?
+This series will first move the vcpu_load() and vcpu_put() calls in the
+arch generic dispatch function into each case of the switch statement
+and then, one-by-one, pushed the calls down into the architecture
+specific code making the changes for each ioctl as required.
 
 Thanks,
-PrasannaKumar
+-Christoffer
+
+Christoffer Dall (15):
+  KVM: Prepare for moving vcpu_load/vcpu_put into arch specific code
+  KVM: Factor out vcpu->pid adjustment for KVM_RUN
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_run
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_get_regs
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_set_regs
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_get_sregs
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_set_sregs
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_get_mpstate
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_set_mpstate
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_translate
+  KVM: Move vcpu_load to arch-specific
+    kvm_arch_vcpu_ioctl_set_guest_debug
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_get_fpu
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_set_fpu
+  KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl
+  KVM: arm/arm64: Avoid vcpu_load for other vcpu ioctls than KVM_RUN
+
+ arch/arm64/kvm/guest.c     |  17 +++++--
+ arch/mips/kvm/mips.c       |  72 +++++++++++++++++++--------
+ arch/powerpc/kvm/book3s.c  |  38 +++++++++++++-
+ arch/powerpc/kvm/booke.c   |  65 +++++++++++++++++++-----
+ arch/powerpc/kvm/powerpc.c |  24 ++++++---
+ arch/s390/kvm/kvm-s390.c   | 119 +++++++++++++++++++++++++++++++++++++-------
+ arch/x86/kvm/x86.c         | 121 ++++++++++++++++++++++++++++++++++++++-------
+ include/linux/kvm_host.h   |   2 +
+ virt/kvm/arm/arm.c         |  91 +++++++++++++++++++++++++---------
+ virt/kvm/kvm_main.c        |  43 +++++++---------
+ 10 files changed, 463 insertions(+), 129 deletions(-)
+
+-- 
+2.14.2

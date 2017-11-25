@@ -1,45 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Nov 2017 11:40:47 +0100 (CET)
-Received: from 19pmail.ess.barracuda.com ([64.235.154.231]:56423 "EHLO
-        19pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990504AbdKXKkkBfXqG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Nov 2017 11:40:40 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 24 Nov 2017 10:40:32 +0000
-Received: from [10.20.78.172] (10.20.78.172) by mips01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Fri, 24 Nov 2017
- 02:39:40 -0800
-Date:   Fri, 24 Nov 2017 10:39:29 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Fredrik Noring <noring@nocrew.org>, John Crispin <john@phrozen.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-In-Reply-To: <alpine.DEB.2.00.1711240958370.3865@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1711241038320.3865@tp.orcam.me.uk>
-References: <20170916133423.GB32582@localhost.localdomain> <alpine.DEB.2.00.1709171001160.16752@tp.orcam.me.uk> <20170918192428.GA391@localhost.localdomain> <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk> <20170920145440.GB9255@localhost.localdomain>
- <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk> <20170927172107.GB2631@localhost.localdomain> <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk> <20170930065654.GA7714@localhost.localdomain> <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
- <20171030175516.GA18586@localhost.localdomain> <alpine.DEB.2.00.1711240958370.3865@tp.orcam.me.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Nov 2017 15:46:20 +0100 (CET)
+Received: from mail-io0-x22d.google.com ([IPv6:2607:f8b0:4001:c06::22d]:39785
+        "EHLO mail-io0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990487AbdKYOqKCD000 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Nov 2017 15:46:10 +0100
+Received: by mail-io0-x22d.google.com with SMTP id x63so31999666ioe.6;
+        Sat, 25 Nov 2017 06:46:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=xIxNngNtXB1K5R+zuN1xZd1Q62J4uPGS88vHns69gPs=;
+        b=I2Hf3M2F/6EVL3n7CHQKa4duEWe6i8YKoBOxq/30qvtVJ5qU5TBBj3ZRKeFweQgWx4
+         yjtimkMEi6tvOu6aRybGCqDh5Tkb/ywcbovMApjWM55+N7GdEZaP2/VIaKxSqELWsR7T
+         h53KDi+xJoq+uY2BknOgke1wOWsOweh1EmjCN2ws/jXVY1qkpK/FjiJBAqToXZ++mvYr
+         dLJWSzsFgrC3IPcF52WV38oHC/KHeHsaJAi5M1n5yhtoL+E1rrVEx/dmxeJLaU/Mnkn8
+         e1gm6JMesSP5QbTVwYwPg0Sg2xlMSo3EbJD0uQvOhPl6PlUsXsNtueRUAtcbu7wxc6I0
+         at4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=xIxNngNtXB1K5R+zuN1xZd1Q62J4uPGS88vHns69gPs=;
+        b=qBEZJ+qroJup1UKkdCXHc/aBsRIVAulHaz/9YwUT/yQXluiLEawYKNC1IUOxmQOSpZ
+         aQstgJ/IGn1WFN7j4gMowoS5tNNxtS6wcPzCxNuYdKsvgmkicI1/GEf7DUMUApxo3Dmd
+         Gotj6nkkdKXqgMX6WIE6Piijax+QYq8haW5VABjTzvStG6WlXhTtEuH38NXgcDNmLeou
+         z5k8UmsrzzfxHk2CySpZ5/1lJ3aRB14l48uGHQ+CBh6zoN+Nmj42FZbsR7JyA+BxFIRw
+         jBYkSwjfiJ5NxWZ8cCQQCaCKhUu3NLoiOpNjEqGjlktHskkN7ELu7kE2jXhBZE7+1yo7
+         lnsg==
+X-Gm-Message-State: AJaThX6sGIAzpKgjx/RyJuymyBCgnLqsgYE6OZp5tbwxeq0y+H9kgiqp
+        +nmO+/k1aT+NEGTXyfhgNDCFAi7Jzdb/lYeEBMk=
+X-Google-Smtp-Source: AGs4zMYCZjXu5LQwgmgn0+LBQiLiSBuAoIoJl5eQ+UXuR8sof+LSWkaLlNx5tisxPUB+CFnn0ra0vDH1ER3J0vg2hRo=
+X-Received: by 10.107.97.16 with SMTP id v16mr33387362iob.263.1511621163561;
+ Sat, 25 Nov 2017 06:46:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1511520032-452059-26972-777329-9
-X-BESS-VER: 2017.14.1-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187255
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Received: by 10.2.169.20 with HTTP; Sat, 25 Nov 2017 06:46:03 -0800 (PST)
+In-Reply-To: <CANc+2y5VzWx+kLBO+=aWHLE5OGAGvuB_eVAzJ52ZVy79ad9Nxg@mail.gmail.com>
+References: <20170918140241.24003-1-prasannatsmkumar@gmail.com>
+ <20171012143011.GA30173@gondor.apana.org.au> <CANc+2y5VzWx+kLBO+=aWHLE5OGAGvuB_eVAzJ52ZVy79ad9Nxg@mail.gmail.com>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Sat, 25 Nov 2017 20:16:03 +0530
+Message-ID: <CANc+2y6DSjrsQj9kSz1go4-v+WVG2YcxeDc6Ehgm-bbf4qG+=A@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] crypto: Add driver for JZ4780 PRNG
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Paul Cercueil <paul@crapouillou.net>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>, linux-mips@linux-mips.org,
+        Mathieu Malaterre <malat@debian.org>, noloader@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61074
+X-archive-position: 61076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,53 +71,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fredrik, John --
+Hi Ralf,
 
-[Sending again, with John's address corrected.]
+On 12 October 2017 at 22:59, PrasannaKumar Muralidharan
+<prasannatsmkumar@gmail.com> wrote:
+> Hi Herbert,
+>
+> On 12 October 2017 at 20:00, Herbert Xu <herbert@gondor.apana.org.au> wrote:
+>> On Mon, Sep 18, 2017 at 07:32:37PM +0530, PrasannaKumar Muralidharan wrote:
+>>> This patch series adds support of pseudo random number generator found
+>>> in Ingenic's JZ4780 and X1000 SoC.
+>>>
+>>> Create cgublock node which has CGU and RNG node as its children. The
+>>> cgublock node uses "simple-bus" compatible which helps in exposing CGU
+>>> and RNG nodes without changing CGU driver. Add 'syscon' compatible in
+>>> CGU node in jz4780.dtsi. The jz4780-rng driver uses regmap exposed via
+>>> syscon interface to access the RNG registers. CGU driver is not
+>>> modified in this patch set as registers used by CGU driver and this
+>>> driver are different.
+>>>
+>>> PrasannaKumar Muralidharan (4):
+>>>   crypto: jz4780-rng: Add JZ4780 PRNG devicetree binding documentation
+>>>   crypto: jz4780-rng: Add Ingenic JZ4780 hardware PRNG driver
+>>>   crypto: jz4780-rng: Add RNG node to jz4780.dtsi
+>>>   crypto: jz4780-rng: Enable PRNG support in CI20 defconfig
+>>
+>> Please indicate which patches are intended to go through the crypto
+>> trees.
+>
+> From https://patchwork.linux-mips.org/patch/17162/ I expect the same.
+> Either all patches go via crypto tree or via mips tree.
+> The dtsi changes is not yet acked by MIPS / JZ4780 maintainer. Let's
+> wait for it.
+>
+> Thanks,
+> PrasannaKumar
 
- John: can you please see the question below on the machine type you 
-previously fiddled with?
+Should I do anything more for this series?
 
-> >  Given that the R5900 does not expand DSP support anyhow that sounds 
-> > suspicious to me.
-> 
-> I've taken a closer look at the R5900 changes to the DSP kernel code now:
-> 
-> The R5900 has four three-operand instructions: MADD, MADDU, MULT and MULTU.
-> In addition, it has ten instructions for pipeline 1: MULT1, MULTU1, DIV1,
-> DIVU1, MADD1, MADDU1, MFHI1, MFLO1, MTHI1 and MTLO1. Those are the reason
-> (parts of) the cpu_has_dsp infrastructure is used, as shown in the patch
-> below. What are your thoughts on this?
-> 
-> The instructions are specific to the R5900, and notably incompatible with
-> similar ones in the base MIPS32 architecture. They are also distinct from
-> the (also R5900 specific) 128-bit multimedia instructions.
-
- They're still upper halves of the architectural HI/LO accumulator and 
-also used by the 128-bit multiply and divide instructions.  I think they 
-should be handled analogously to the 128-bit GPRs, rather than pretending 
-they're a crippled version of the DSP ASE.
-
-> By the way, "machine" is set to "Unknown" and "ASEs implemented" is empty
-> in /proc/cpuinfo. What would be the proper values for the R5900?
-
- I have no idea what the machine type is supposed to be set to and why it 
-is not omitted by default, given this piece:
-
-		if (mips_get_machine_name())
-			seq_printf(m, "machine\t\t\t: %s\n",
-				mips_get_machine_name());
-
-I think commit 9169a5d01114 ("MIPS: move mips_{set,get}_machine_name() to 
-a more generic place") broke things.  Cc-ing the author for possible 
-input.
-
- ASEs OTOH are specific to MIPS32 and MIPS64 architectures, as per 
-respective architecture specification volumes (the MIPS16 ASE might be a 
-prominent exception, having been defined as the first ASE ever mid way 
-through between the MIPS IV and MIPS32/MIPS64 ISAs).  As the R5900 is not 
-a MIPS32 or MIPS64 processor (and has no MIPS16 support) it does not have 
-any ASEs implemented.  Vendor-specific architecture extensions do not 
-count as ASEs.
-
-  Maciej
+Thanks,
+PrasannaKumar

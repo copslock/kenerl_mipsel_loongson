@@ -1,74 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 20:32:02 +0100 (CET)
-Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:46820
-        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990451AbdK0TbpQl-uE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2017 20:31:45 +0100
-Received: by mail-qk0-x243.google.com with SMTP id b85so33959714qkc.13;
-        Mon, 27 Nov 2017 11:31:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 20:58:35 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:34467
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990451AbdK0T62PstnE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2017 20:58:28 +0100
+Received: by mail-wm0-x244.google.com with SMTP id y82so29336272wmg.1
+        for <linux-mips@linux-mips.org>; Mon, 27 Nov 2017 11:58:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=sIhZn+zKYpwy5GyyTYlPrZOmZeKQCcv1rHiEVmapG5c=;
-        b=JDBJzwJuQWTUNMMVp+vt6znZyBA1P1jOkG+B8MmbwQgVqEvo/282yoj5ZcxmTiUGG5
-         MAPQNWe9Uat9XrL8z/V5ibqUinemSQCPMMQywdMHDoQdsyG8espL3CQ2x/CrxDe+mDz+
-         lidJT+g0ZqOzs+pcaOdnUvWN8M5GJYNj1IzAxjxYFo4pKpODRt/+p6wp7qeXCuuqbGPE
-         jddsjutFNWjImWL3dKkkiyQFZJOaGX3wdOFhilufFkGvN/jEmZPERv5OkjNn0/DekrIv
-         Hxj7xY1d3reL6yjavzPxEoUucbC6SDY6ZXdqXBRtR49YM5hHDBv7WxMEYxxAkcqrPF6W
-         QHww==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=drii4VC21cYSgewg27i8aG5wvuWZeKM6WM9XjJ9wyck=;
+        b=a81zEZHOj113jHMGrmVn2CFZFitzWPxVcbQunJwmVQk8wns3VFgrzKN6M9ngQy7tGi
+         E5Um6IlCgXgfEboupI0gtwCv+6r+ntEymIpsGSrZpnYNCGI+G5TYvivqNzSCMs7chH7p
+         kfU1U9Wf4ysXxwWEURFZ0xJlKKAvqDmh1ubb8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=sIhZn+zKYpwy5GyyTYlPrZOmZeKQCcv1rHiEVmapG5c=;
-        b=gPlBoTQBcrLVWtl6257z49FeQBsB4pOwxJxQqT6CRsuCaKBaRObOeIjOZqwMezajx2
-         F3qlDhPyga8y1CY5krHOye0WdeJ7ddjKbgxGVlcgDDRIkDFJpNo7iKY8PcW4tyxSzjtk
-         L5ZTR2YyyDZquAire4ro2Ea740hk99n4RXrxUXiby6fMIkWJwK2B6wha6u3SrGvuh0vP
-         5IyI9V3AoUrqnprLoFfre8zQZlBEB8U9WcMUhX2h8c+B8Wces+58QJ+KCcW75avm9aL9
-         CEIPXjQXXf7U015ctfWdgueDWRjIB2hQgqFjSOEs78fnNL9B7/msZrBF2Uy0K3NexxYt
-         kTHw==
-X-Gm-Message-State: AJaThX5mvKDxQSFYfOAZcvO5DxC2whl0l2D1EBPqxnfmFcqO0DkGP0dq
-        YnLeFQDgXbbTu2TTEWWW98U=
-X-Google-Smtp-Source: AGs4zMaSvCrUCy16vwae1z4URnohJrbo+55Ak9gHMSIdq4hz2r3doW0sq8eisYXyrImyQG0GnQX+TQ==
-X-Received: by 10.55.90.4 with SMTP id o4mr46533153qkb.296.1511811099302;
-        Mon, 27 Nov 2017 11:31:39 -0800 (PST)
-Received: from deepa-ubuntu.hsd1.ca.comcast.net ([2601:647:5000:6620:c989:f9fb:4217:7274])
-        by smtp.gmail.com with ESMTPSA id s1sm1400151qts.29.2017.11.27.11.31.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Nov 2017 11:31:38 -0800 (PST)
-From:   Deepa Dinamani <deepa.kernel@gmail.com>
-To:     tglx@linutronix.de, john.stultz@linaro.org
-Cc:     linux-kernel@vger.kernel.org, arnd@arndb.de,
-        y2038@lists.linaro.org, acme@kernel.org, benh@kernel.crashing.org,
-        borntraeger@de.ibm.com, catalin.marinas@arm.com,
-        cmetcalf@mellanox.com, cohuck@redhat.com, davem@davemloft.net,
-        deller@gmx.de, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh@linuxfoundation.org,
-        heiko.carstens@de.ibm.com, hoeppner@linux.vnet.ibm.com,
-        hpa@zytor.com, jejb@parisc-linux.org, jwi@linux.vnet.ibm.com,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        mark.rutland@arm.com, mingo@redhat.com, mpe@ellerman.id.au,
-        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
-        paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
-        rostedt@goodmis.org, rric@kernel.org, schwidefsky@de.ibm.com,
-        sebott@linux.vnet.ibm.com, sparclinux@vger.kernel.org,
-        sth@linux.vnet.ibm.com, ubraun@linux.vnet.ibm.com,
-        will.deacon@arm.com, x86@kernel.org
-Subject: [PATCH v2 02/10] include: Move compat_timespec/ timeval to compat_time.h
-Date:   Mon, 27 Nov 2017 11:30:29 -0800
-Message-Id: <20171127193037.8711-3-deepa.kernel@gmail.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20171127193037.8711-1-deepa.kernel@gmail.com>
-References: <20171127193037.8711-1-deepa.kernel@gmail.com>
-Return-Path: <deepa.kernel@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=drii4VC21cYSgewg27i8aG5wvuWZeKM6WM9XjJ9wyck=;
+        b=NApcl5XyYnivdPosQF02nYg2RjsxEaFeKzuKCDgPUDzsz8T1OKKLvw82DDFjZoGW7/
+         TXh2dRjIOEJ5ABxeJaV4Ni/n1llpSaQYtwW+wikyzx4KqcP4gLqVwyaQhNdleEgXG2al
+         r0nV00VPKQCusUoDaq2y8J+AWYDb3Ir7ebi23RcQVvS26cJz9tYHPQgbdzbUpSNgZ2VV
+         AhGJdahtb5NXm5saqBHJ4cse2Za0yIzHEyCa5yzbYoWCEX+6iQYbAufP3ilPy/MnF+gc
+         uAXdBBn9avKpsLFL9qgmteCnnVNcEsl5ff2NqY72qFlriiEAeUyr2bl7W3j45+A56yXg
+         36xg==
+X-Gm-Message-State: AJaThX6ZwoFCV5ktdLjnGT2zmrRrbqiMwEsKbXVyAgcvNSAm1y+xoAgd
+        THlN6Rktm2PLJ5xGxS/vQ4qDaA==
+X-Google-Smtp-Source: AGs4zMZNCCoIg4dbQKFFCJX4UfRMF6nypn1ewCxD0pcDqcDC/c0bsuRJ+bszYmbhumUMtPqNauJa7Q==
+X-Received: by 10.28.198.75 with SMTP id w72mr17561063wmf.2.1511812702727;
+        Mon, 27 Nov 2017 11:58:22 -0800 (PST)
+Received: from localhost (x50d2404e.cust.hiper.dk. [80.210.64.78])
+        by smtp.gmail.com with ESMTPSA id j13sm4229371wre.55.2017.11.27.11.58.21
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 27 Nov 2017 11:58:21 -0800 (PST)
+Date:   Mon, 27 Nov 2017 20:58:30 +0100
+From:   Christoffer Dall <cdall@linaro.org>
+To:     Paolo Bonzini <pbonzini@redhat.com>
+Cc:     Christoffer Dall <christoffer.dall@linaro.org>,
+        kvm@vger.kernel.org, Andrew Jones <drjones@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Alexander Graf <agraf@suse.com>, kvm-ppc@vger.kernel.org,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 01/15] KVM: Prepare for moving vcpu_load/vcpu_put into
+ arch specific code
+Message-ID: <20171127195830.GB16941@cbox>
+References: <20171125205718.7731-1-christoffer.dall@linaro.org>
+ <20171125205718.7731-2-christoffer.dall@linaro.org>
+ <838db374-6040-c805-82f3-187a2cdfc40d@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <838db374-6040-c805-82f3-187a2cdfc40d@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <christoffer.dall@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61106
+X-archive-position: 61107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deepa.kernel@gmail.com
+X-original-sender: cdall@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,650 +77,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All the current architecture specific defines for these
-are the same. Refactor these common defines to a common
-header file.
+On Mon, Nov 27, 2017 at 05:53:01PM +0100, Paolo Bonzini wrote:
+> On 25/11/2017 21:57, Christoffer Dall wrote:
+> > In preparation for moving calls to vcpu_load() and vcpu_put() into the
+> > architecture specific implementations of the KVM vcpu ioctls, move the
+> > calls in the main kvm_vcpu_ioctl() dispatcher function to each case
+> > of the ioctl select statement.  This allows us to move the vcpu_load()
+> > and vcpu_put() calls into architecture specific implementations of vcpu
+> > ioctls, one by one.
+> > 
+> > Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
+> > ---
+> >  virt/kvm/kvm_main.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 48 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index 9deb5a245b83..fafafcc38b5a 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> > @@ -2528,16 +2528,15 @@ static long kvm_vcpu_ioctl(struct file *filp,
+> >  		return kvm_arch_vcpu_ioctl(filp, ioctl, arg);
+> >  #endif
+> >  
+> > -
+> > -	r = vcpu_load(vcpu);
+> > -	if (r)
+> > -		return r;
+> >  	switch (ioctl) {
+> >  	case KVM_RUN: {
+> >  		struct pid *oldpid;
+> >  		r = -EINVAL;
+> >  		if (arg)
+> >  			goto out;
+> > +		r = vcpu_load(vcpu);
+> > +		if (r)
+> > +			goto out;
+> >  		oldpid = rcu_access_pointer(vcpu->pid);
+> 
+> If it is not a problem for ARM, maybe it would actually be best to leave
+> the locking in kvm_vcpu_ioctl (with the already existing exception of
+> KVM_INTERRUPT).  This would make vcpu_load void, and would also let you
+> keep the PID adjustment in common code.  This would be more similar to
+> the previous version, but without introducing __vcpu_load/__vcpu_put.
 
-The new common linux/compat_time.h is also useful as it
-will eventually be used to hold all the defines that
-are needed for compat time types that support non y2038
-safe types. New architectures need not have to define these
-new types as they will only use new y2038 safe syscalls.
-This file can be deleted after y2038 when we stop supporting
-non y2038 safe syscalls.
+Yes, that's not a problem for ARM, and it was actually what I started
+out with, and you can see the result here (rebased on v4.15-rc1):
 
-The patch also requires an operation similar to:
+git://git.kernel.org/pub/scm/linux/kernel/git/cdall/linux.git vcpu-load-put-keeplock
 
-git grep "asm/compat\.h" | cut -d ":" -f 1 |  xargs -n 1 sed -i -e "s%asm/compat.h%linux/compat.h%g"
+I got a bit into getting rid of the (IMHO) ugly ifdef-shortcut
+dispatcher code, and thus reworked it to the submitted version.
 
-Cc: acme@kernel.org
-Cc: benh@kernel.crashing.org
-Cc: borntraeger@de.ibm.com
-Cc: catalin.marinas@arm.com
-Cc: cmetcalf@mellanox.com
-Cc: cohuck@redhat.com
-Cc: davem@davemloft.net
-Cc: deller@gmx.de
-Cc: devel@driverdev.osuosl.org
-Cc: gerald.schaefer@de.ibm.com
-Cc: gregkh@linuxfoundation.org
-Cc: heiko.carstens@de.ibm.com
-Cc: hoeppner@linux.vnet.ibm.com
-Cc: hpa@zytor.com
-Cc: jejb@parisc-linux.org
-Cc: jwi@linux.vnet.ibm.com
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: mark.rutland@arm.com
-Cc: mingo@redhat.com
-Cc: mpe@ellerman.id.au
-Cc: oberpar@linux.vnet.ibm.com
-Cc: oprofile-list@lists.sf.net
-Cc: paulus@samba.org
-Cc: peterz@infradead.org
-Cc: ralf@linux-mips.org
-Cc: rostedt@goodmis.org
-Cc: rric@kernel.org
-Cc: schwidefsky@de.ibm.com
-Cc: sebott@linux.vnet.ibm.com
-Cc: sparclinux@vger.kernel.org
-Cc: sth@linux.vnet.ibm.com
-Cc: ubraun@linux.vnet.ibm.com
-Cc: will.deacon@arm.com
-Cc: x86@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
- arch/arm64/include/asm/compat.h   | 11 -----------
- arch/arm64/include/asm/stat.h     |  1 +
- arch/arm64/kernel/hw_breakpoint.c |  1 -
- arch/arm64/kernel/perf_regs.c     |  2 +-
- arch/arm64/kernel/process.c       |  1 -
- arch/mips/include/asm/compat.h    | 11 -----------
- arch/mips/kernel/signal32.c       |  2 +-
- arch/parisc/include/asm/compat.h  | 11 -----------
- arch/powerpc/include/asm/compat.h | 11 -----------
- arch/powerpc/kernel/asm-offsets.c |  2 +-
- arch/powerpc/oprofile/backtrace.c |  2 +-
- arch/s390/hypfs/hypfs_sprp.c      |  1 -
- arch/s390/include/asm/compat.h    | 11 -----------
- arch/s390/include/asm/elf.h       |  3 +--
- arch/s390/kvm/priv.c              |  1 -
- arch/s390/pci/pci_clp.c           |  1 -
- arch/sparc/include/asm/compat.h   | 11 -----------
- arch/tile/include/asm/compat.h    | 11 -----------
- arch/x86/events/core.c            |  2 +-
- arch/x86/include/asm/compat.h     | 11 -----------
- arch/x86/include/asm/ftrace.h     |  2 +-
- arch/x86/include/asm/sys_ia32.h   |  2 +-
- arch/x86/kernel/sys_x86_64.c      |  2 +-
- drivers/s390/block/dasd_ioctl.c   |  1 -
- drivers/s390/char/fs3270.c        |  1 -
- drivers/s390/char/sclp_ctl.c      |  1 -
- drivers/s390/char/vmcp.c          |  1 -
- drivers/s390/cio/chsc_sch.c       |  1 -
- drivers/s390/net/qeth_core_main.c |  2 +-
- drivers/staging/pi433/pi433_if.c  |  2 +-
- include/linux/compat.h            |  1 +
- include/linux/compat_time.h       | 19 +++++++++++++++++++
- 32 files changed, 32 insertions(+), 110 deletions(-)
- create mode 100644 include/linux/compat_time.h
+Going back and looking, it's nicer to avoid the pid adjustment call, and
+having vcpu_load be void is also convenient, but we're stuck with the
+ifdef.  I guess I lean towards your suggestion as well, given that my
+problem with the ifdef is not a technical one, but an aesthetic one.
 
-diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
-index a3c7f271ad4c..977b5064afc1 100644
---- a/arch/arm64/include/asm/compat.h
-+++ b/arch/arm64/include/asm/compat.h
-@@ -34,7 +34,6 @@
- 
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef s32		compat_pid_t;
- typedef u16		__compat_uid_t;
-@@ -66,16 +65,6 @@ typedef u32		compat_ulong_t;
- typedef u64		compat_u64;
- typedef u32		compat_uptr_t;
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- struct compat_stat {
- #ifdef __AARCH64EB__
- 	short		st_dev;
-diff --git a/arch/arm64/include/asm/stat.h b/arch/arm64/include/asm/stat.h
-index 15e35598ac40..eab738019707 100644
---- a/arch/arm64/include/asm/stat.h
-+++ b/arch/arm64/include/asm/stat.h
-@@ -20,6 +20,7 @@
- 
- #ifdef CONFIG_COMPAT
- 
-+#include <linux/compat_time.h>
- #include <asm/compat.h>
- 
- /*
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index 749f81779420..bfa2b78cf0e3 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -29,7 +29,6 @@
- #include <linux/ptrace.h>
- #include <linux/smp.h>
- 
--#include <asm/compat.h>
- #include <asm/current.h>
- #include <asm/debug-monitors.h>
- #include <asm/hw_breakpoint.h>
-diff --git a/arch/arm64/kernel/perf_regs.c b/arch/arm64/kernel/perf_regs.c
-index 1d091d048d04..929fc369d0be 100644
---- a/arch/arm64/kernel/perf_regs.c
-+++ b/arch/arm64/kernel/perf_regs.c
-@@ -5,7 +5,7 @@
- #include <linux/bug.h>
- #include <linux/sched/task_stack.h>
- 
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/perf_regs.h>
- #include <asm/ptrace.h>
- 
-diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-index b2adcce7bc18..1acb3097d35b 100644
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -52,7 +52,6 @@
- #include <linux/thread_info.h>
- 
- #include <asm/alternative.h>
--#include <asm/compat.h>
- #include <asm/cacheflush.h>
- #include <asm/exec.h>
- #include <asm/fpsimd.h>
-diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-index 49691331ada4..ccbf14e33282 100644
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -14,7 +14,6 @@
- 
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef s32		compat_suseconds_t;
- 
-@@ -46,16 +45,6 @@ typedef u32		compat_ulong_t;
- typedef u64		compat_u64;
- typedef u32		compat_uptr_t;
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- struct compat_stat {
- 	compat_dev_t	st_dev;
- 	s32		st_pad1[3];
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index cf5c7c05e5a3..a6b04c70a8cb 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -14,7 +14,7 @@
- #include <linux/signal.h>
- #include <linux/syscalls.h>
- 
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/compat-signal.h>
- #include <linux/uaccess.h>
- #include <asm/unistd.h>
-diff --git a/arch/parisc/include/asm/compat.h b/arch/parisc/include/asm/compat.h
-index acf8aa07cbe0..90f844b16beb 100644
---- a/arch/parisc/include/asm/compat.h
-+++ b/arch/parisc/include/asm/compat.h
-@@ -13,7 +13,6 @@
- 
- typedef u32	compat_size_t;
- typedef s32	compat_ssize_t;
--typedef s32	compat_time_t;
- typedef s32	compat_clock_t;
- typedef s32	compat_pid_t;
- typedef u32	__compat_uid_t;
-@@ -40,16 +39,6 @@ typedef u32	compat_ulong_t;
- typedef u64	compat_u64;
- typedef u32	compat_uptr_t;
- 
--struct compat_timespec {
--	compat_time_t		tv_sec;
--	s32			tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t		tv_sec;
--	s32			tv_usec;
--};
--
- struct compat_stat {
- 	compat_dev_t		st_dev;	/* dev_t is 32 bits on parisc */
- 	compat_ino_t		st_ino;	/* 32 bits */
-diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
-index 8a2aecfe9b02..517dbcfc2240 100644
---- a/arch/powerpc/include/asm/compat.h
-+++ b/arch/powerpc/include/asm/compat.h
-@@ -17,7 +17,6 @@
- 
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef s32		compat_pid_t;
- typedef u32		__compat_uid_t;
-@@ -45,16 +44,6 @@ typedef u32		compat_ulong_t;
- typedef u64		compat_u64;
- typedef u32		compat_uptr_t;
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- struct compat_stat {
- 	compat_dev_t	st_dev;
- 	compat_ino_t	st_ino;
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 6b958414b4e0..a25cbe6482e2 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -42,7 +42,7 @@
- #include <asm/paca.h>
- #include <asm/lppaca.h>
- #include <asm/cache.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/mmu.h>
- #include <asm/hvcall.h>
- #include <asm/xics.h>
-diff --git a/arch/powerpc/oprofile/backtrace.c b/arch/powerpc/oprofile/backtrace.c
-index ecc66d5f02c9..11ff763c03ad 100644
---- a/arch/powerpc/oprofile/backtrace.c
-+++ b/arch/powerpc/oprofile/backtrace.c
-@@ -11,7 +11,7 @@
- #include <linux/sched.h>
- #include <asm/processor.h>
- #include <linux/uaccess.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/oprofile_impl.h>
- 
- #define STACK_SP(STACK)		*(STACK)
-diff --git a/arch/s390/hypfs/hypfs_sprp.c b/arch/s390/hypfs/hypfs_sprp.c
-index ae0ed8dd5f1b..5d85a039391c 100644
---- a/arch/s390/hypfs/hypfs_sprp.c
-+++ b/arch/s390/hypfs/hypfs_sprp.c
-@@ -13,7 +13,6 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
--#include <asm/compat.h>
- #include <asm/diag.h>
- #include <asm/sclp.h>
- #include "hypfs.h"
-diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
-index 5e6a63641a5f..7e587eb9fb58 100644
---- a/arch/s390/include/asm/compat.h
-+++ b/arch/s390/include/asm/compat.h
-@@ -53,7 +53,6 @@
- 
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef s32		compat_pid_t;
- typedef u16		__compat_uid_t;
-@@ -97,16 +96,6 @@ typedef struct {
- 	u32 gprs_high[NUM_GPRS];
- } s390_compat_regs_high;
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- struct compat_stat {
- 	compat_dev_t	st_dev;
- 	u16		__pad1;
-diff --git a/arch/s390/include/asm/elf.h b/arch/s390/include/asm/elf.h
-index 1a61b1b997f2..3e15c77c7c9a 100644
---- a/arch/s390/include/asm/elf.h
-+++ b/arch/s390/include/asm/elf.h
-@@ -126,7 +126,7 @@
-  */
- 
- #include <asm/ptrace.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/syscall.h>
- #include <asm/user.h>
- 
-@@ -136,7 +136,6 @@ typedef s390_regs elf_gregset_t;
- typedef s390_fp_regs compat_elf_fpregset_t;
- typedef s390_compat_regs compat_elf_gregset_t;
- 
--#include <linux/compat.h>
- #include <linux/sched/mm.h>	/* for task_struct */
- #include <asm/mmu_context.h>
- 
-diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
-index c954ac49eee4..07eebba4bd37 100644
---- a/arch/s390/kvm/priv.c
-+++ b/arch/s390/kvm/priv.c
-@@ -29,7 +29,6 @@
- #include <asm/gmap.h>
- #include <asm/io.h>
- #include <asm/ptrace.h>
--#include <asm/compat.h>
- #include <asm/sclp.h>
- #include "gaccess.h"
- #include "kvm-s390.h"
-diff --git a/arch/s390/pci/pci_clp.c b/arch/s390/pci/pci_clp.c
-index 93cd0f1ca12b..19b2d2a9b43d 100644
---- a/arch/s390/pci/pci_clp.c
-+++ b/arch/s390/pci/pci_clp.c
-@@ -19,7 +19,6 @@
- #include <linux/uaccess.h>
- #include <asm/pci_debug.h>
- #include <asm/pci_clp.h>
--#include <asm/compat.h>
- #include <asm/clp.h>
- #include <uapi/asm/clp.h>
- 
-diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
-index fa38c78de0f0..5b49b6a66cdb 100644
---- a/arch/sparc/include/asm/compat.h
-+++ b/arch/sparc/include/asm/compat.h
-@@ -11,7 +11,6 @@
- 
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef s32		compat_pid_t;
- typedef u16		__compat_uid_t;
-@@ -39,16 +38,6 @@ typedef u32		compat_ulong_t;
- typedef u64		compat_u64;
- typedef u32		compat_uptr_t;
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- struct compat_stat {
- 	compat_dev_t	st_dev;
- 	compat_ino_t	st_ino;
-diff --git a/arch/tile/include/asm/compat.h b/arch/tile/include/asm/compat.h
-index 62a7b83025dd..21ab5b80f5c7 100644
---- a/arch/tile/include/asm/compat.h
-+++ b/arch/tile/include/asm/compat.h
-@@ -29,7 +29,6 @@ typedef u32		compat_ulong_t;
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
- typedef s32		compat_off_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef u32		compat_ino_t;
- typedef u32		compat_caddr_t;
-@@ -59,16 +58,6 @@ typedef unsigned long compat_elf_greg_t;
- #define COMPAT_ELF_NGREG (sizeof(struct pt_regs) / sizeof(compat_elf_greg_t))
- typedef compat_elf_greg_t compat_elf_gregset_t[COMPAT_ELF_NGREG];
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- #define compat_stat stat
- #define compat_statfs statfs
- 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 140d33288e78..6b8961912781 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2391,7 +2391,7 @@ static unsigned long get_segment_base(unsigned int segment)
- 
- #ifdef CONFIG_IA32_EMULATION
- 
--#include <asm/compat.h>
-+#include <linux/compat.h>
- 
- static inline int
- perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *entry)
-diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
-index 2cbd75dd2fd3..160804ed875e 100644
---- a/arch/x86/include/asm/compat.h
-+++ b/arch/x86/include/asm/compat.h
-@@ -17,7 +17,6 @@
- 
- typedef u32		compat_size_t;
- typedef s32		compat_ssize_t;
--typedef s32		compat_time_t;
- typedef s32		compat_clock_t;
- typedef s32		compat_pid_t;
- typedef u16		__compat_uid_t;
-@@ -46,16 +45,6 @@ typedef u32		compat_u32;
- typedef u64 __attribute__((aligned(4))) compat_u64;
- typedef u32		compat_uptr_t;
- 
--struct compat_timespec {
--	compat_time_t	tv_sec;
--	s32		tv_nsec;
--};
--
--struct compat_timeval {
--	compat_time_t	tv_sec;
--	s32		tv_usec;
--};
--
- struct compat_stat {
- 	compat_dev_t	st_dev;
- 	u16		__pad1;
-diff --git a/arch/x86/include/asm/ftrace.h b/arch/x86/include/asm/ftrace.h
-index 09ad88572746..db25aa15b705 100644
---- a/arch/x86/include/asm/ftrace.h
-+++ b/arch/x86/include/asm/ftrace.h
-@@ -49,7 +49,7 @@ int ftrace_int3_handler(struct pt_regs *regs);
- #if !defined(__ASSEMBLY__) && !defined(COMPILE_OFFSETS)
- 
- #if defined(CONFIG_FTRACE_SYSCALLS) && defined(CONFIG_IA32_EMULATION)
--#include <asm/compat.h>
-+#include <linux/compat.h>
- 
- /*
-  * Because ia32 syscalls do not map to x86_64 syscall numbers
-diff --git a/arch/x86/include/asm/sys_ia32.h b/arch/x86/include/asm/sys_ia32.h
-index 82c34ee25a65..8527b26ad36f 100644
---- a/arch/x86/include/asm/sys_ia32.h
-+++ b/arch/x86/include/asm/sys_ia32.h
-@@ -16,7 +16,7 @@
- #include <linux/linkage.h>
- #include <linux/types.h>
- #include <linux/signal.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/ia32.h>
- 
- /* ia32/sys_ia32.c */
-diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
-index 676774b9bb8d..9d8ea652e31c 100644
---- a/arch/x86/kernel/sys_x86_64.c
-+++ b/arch/x86/kernel/sys_x86_64.c
-@@ -19,7 +19,7 @@
- #include <linux/elf.h>
- 
- #include <asm/elf.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/ia32.h>
- #include <asm/syscalls.h>
- #include <asm/mpx.h>
-diff --git a/drivers/s390/block/dasd_ioctl.c b/drivers/s390/block/dasd_ioctl.c
-index 7bdc6aaa0ba3..2016e0ed5865 100644
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -18,7 +18,6 @@
- #include <linux/fs.h>
- #include <linux/blkpg.h>
- #include <linux/slab.h>
--#include <asm/compat.h>
- #include <asm/ccwdev.h>
- #include <asm/schid.h>
- #include <asm/cmb.h>
-diff --git a/drivers/s390/char/fs3270.c b/drivers/s390/char/fs3270.c
-index 61822480a2a0..16a4e8528bbc 100644
---- a/drivers/s390/char/fs3270.c
-+++ b/drivers/s390/char/fs3270.c
-@@ -19,7 +19,6 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- 
--#include <asm/compat.h>
- #include <asm/ccwdev.h>
- #include <asm/cio.h>
- #include <asm/ebcdic.h>
-diff --git a/drivers/s390/char/sclp_ctl.c b/drivers/s390/char/sclp_ctl.c
-index a78cea0c3a09..248b5db3eaa8 100644
---- a/drivers/s390/char/sclp_ctl.c
-+++ b/drivers/s390/char/sclp_ctl.c
-@@ -14,7 +14,6 @@
- #include <linux/init.h>
- #include <linux/ioctl.h>
- #include <linux/fs.h>
--#include <asm/compat.h>
- #include <asm/sclp_ctl.h>
- #include <asm/sclp.h>
- 
-diff --git a/drivers/s390/char/vmcp.c b/drivers/s390/char/vmcp.c
-index 17e411c57576..948ce82a7725 100644
---- a/drivers/s390/char/vmcp.c
-+++ b/drivers/s390/char/vmcp.c
-@@ -23,7 +23,6 @@
- #include <linux/mutex.h>
- #include <linux/cma.h>
- #include <linux/mm.h>
--#include <asm/compat.h>
- #include <asm/cpcmd.h>
- #include <asm/debug.h>
- #include <asm/vmcp.h>
-diff --git a/drivers/s390/cio/chsc_sch.c b/drivers/s390/cio/chsc_sch.c
-index 0015729d917d..8d9f36625ba5 100644
---- a/drivers/s390/cio/chsc_sch.c
-+++ b/drivers/s390/cio/chsc_sch.c
-@@ -16,7 +16,6 @@
- #include <linux/miscdevice.h>
- #include <linux/kernel_stat.h>
- 
--#include <asm/compat.h>
- #include <asm/cio.h>
- #include <asm/chsc.h>
- #include <asm/isc.h>
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index 98a7f84540ab..a93591c6c9b0 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -27,7 +27,7 @@
- #include <asm/chpid.h>
- #include <asm/io.h>
- #include <asm/sysinfo.h>
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #include <asm/diag.h>
- #include <asm/cio.h>
- #include <asm/ccwdev.h>
-diff --git a/drivers/staging/pi433/pi433_if.c b/drivers/staging/pi433/pi433_if.c
-index 2a205c6173dc..473831ff8745 100644
---- a/drivers/staging/pi433/pi433_if.c
-+++ b/drivers/staging/pi433/pi433_if.c
-@@ -48,7 +48,7 @@
- #include <linux/wait.h>
- #include <linux/spi/spi.h>
- #ifdef CONFIG_COMPAT
--#include <asm/compat.h>
-+#include <linux/compat.h>
- #endif
- 
- #include "pi433_if.h"
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index b24aaf66feb4..2f79dac5ed65 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/types.h>
-+#include <linux/compat_time.h>
- 
- #include <linux/stat.h>
- #include <linux/param.h>	/* for HZ */
-diff --git a/include/linux/compat_time.h b/include/linux/compat_time.h
-new file mode 100644
-index 000000000000..56a54a1e4355
---- /dev/null
-+++ b/include/linux/compat_time.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_COMPAT_TIME_H
-+#define _LINUX_COMPAT_TIME_H
-+
-+#include <linux/types.h>
-+
-+typedef s32		compat_time_t;
-+
-+struct compat_timespec {
-+	compat_time_t	tv_sec;
-+	s32		tv_nsec;
-+};
-+
-+struct compat_timeval {
-+	compat_time_t	tv_sec;
-+	s32		tv_usec;
-+};
-+
-+#endif /* _LINUX_COMPAT_TIME_H */
--- 
-2.14.1
+> 
+> Looks good apart from this doubt!  Thanks,
+> 
+Let me know if you want to have a quick glance at the branch above and
+prefer that I send that as v2.
+
+Thanks,
+-Christoffer

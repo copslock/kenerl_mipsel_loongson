@@ -1,64 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 18:03:28 +0100 (CET)
-Received: from mout.kundenserver.de ([217.72.192.75]:54033 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990408AbdK0RDVZL39h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2017 18:03:21 +0100
-Received: from wuerfel.lan ([109.193.157.232]) by mrelayeu.kundenserver.de
- (mreue105 [212.227.15.145]) with ESMTPA (Nemesis) id
- 0MWjXP-1edz0n0oqR-00Xwgr; Mon, 27 Nov 2017 18:02:46 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     John Stultz <john.stultz@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     y2038@lists.linaro.org, libc-alpha@sourceware.org,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-api@vger.kernel.org,
-        Albert ARIBAUD <albert.aribaud@3adev.fr>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        Dave Martin <Dave.Martin@arm.com>,
-        Mickael GUENE <mickael.guene@st.com>,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Subject: [PATCH 2/3] y2038: elfcore: use __kernel_old_timeval for process times
-Date:   Mon, 27 Nov 2017 18:00:46 +0100
-Message-Id: <20171127170121.634826-2-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-In-Reply-To: <20171127170121.634826-1-arnd@arndb.de>
-References: <20171127170121.634826-1-arnd@arndb.de>
-X-Provags-ID: V03:K0:rpEDa9aUmmfvYKqaSMaHQ23NvD93GuXx5hKnCwcIpI23kBVnIR5
- +o8BM4pjhYnGJMJWsoyqajQsO1ocI2pR1n7dTqmhqwtCgJL4Rxzc+ONJhSra0R0gn0LR9hU
- zZ1Nl80/JJLz3a3/vvso6J7wvuNA4ksZE+R3n98xPbZgm0PH3l9uOlnNOvznf9+2B35fcWB
- VPX8w5GmjaK06+cGnk7Yg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:qH/KOm9gvzw=:QYo8qV/MTbJZln0IAvo1c6
- FdzDJEcoXMviuW6oEo9Pp97Jlo8B9LXjjf/ETBLMjo7DgUdTZzzJFRDWpm8Xl7lx7FH/CquJR
- 451MtsTlsSWobjvk7xsu8UzevFmZGO6pSiKeaRcECUEEwiiIIBqufZE9D/xRKIiFzHXDpWEPY
- nWOKxulexjHZL4WhxYzskVRMb5T8qMLAGeTXCWtZQOMRQ9I18XY6+VDhD5SFGSOj3I/7i58x8
- eeH6Y27M+xwB5ZBZmP9cCDOktHFMMkdSdz0XlwVBrHk3V0rfFPcObp1Esbib6tPW9eDU+qta3
- 8uyhoS+y46b2LBDzqXR9B9gM5eSJAcEeBxZrG9WuO9SxlX0pX5qG+l4fGWOXlMR2AMjoCDb5n
- bmr5cwErEbaymcfxCbvywcQAk35c+ehqpSROsULaqoU8QNvqgZ1lv6e9epnTqhApPdiqBt2cB
- fXVpLD8afRGC8IQGZlcum/3CzO2u9AntpvXN7cu2n/suQYHeYAsFIDOVQlQT29NDKV9edl7NE
- wui5OI/3Z22sFfWMpPOQLZXpvmxV7ThaetlzYkCxKdqz3AuxAACI/lc3ge43xj4v6DCp4sTnR
- aTppKaAcZgA5qj7t3TGBsLKC5q/87uUKCFMEbcGjYtJC0RSoM0U3nLMD4vyuGDBEcPMrrVrgZ
- P7knRxZsN0qZCmDCCQ5HUeyFkNNSS3lOb7TT7B5nngCA3SEsTjMA7pyALt+i/yaTajSLoiATX
- weQysAZTnf2uA94nQc19aIq6DPAtnEnlkNPejw==
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 19:46:44 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:52214 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990513AbdK0SqgMY-KS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2017 19:46:36 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 27 Nov 2017 18:46:27 +0000
+Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
+ Microsoft SMTP Server id 14.3.361.1; Mon, 27 Nov 2017 10:46:02 -0800
+Date:   Mon, 27 Nov 2017 10:46:42 -0800
+From:   Paul Burton <paul.burton@mips.com>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Validate PR_SET_FP_MODE prctl(2) requests against
+ the ABI of the task
+Message-ID: <20171127184642.ny2lad4y6zz6am2b@pburton-laptop>
+References: <alpine.DEB.2.00.1711251259130.3865@tp.orcam.me.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1711251259130.3865@tp.orcam.me.uk>
+User-Agent: NeoMutt/20171013
+X-BESS-ID: 1511808386-637139-12572-749065-8
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187346
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
+        Domain Matches Recipient Domain 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61101
+X-archive-position: 61102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,165 +56,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We store elapsed time for a crashed process in struct elf_prstatus using
-'timeval' structures. Once glibc starts using 64-bit time_t, this becomes
-incompatible with the kernel's idea of timeval since the structure layout
-no longer matches on 32-bit architectures.
+Hi Maciej,
 
-This changes the definition of the elf_prstatus structure to use
-__kernel_old_timeval instead, which is hardcoded to the currently used
-binary layout. There is no risk of overflow in y2038 though, because
-the time values are all relative times, and can store up to 68 years
-of process elapsed time.
+On Mon, Nov 27, 2017 at 09:33:03AM +0000, Maciej W. Rozycki wrote:
+> Fix an API loophole introduced with commit 9791554b45a2 ("MIPS,prctl: 
+> add PR_[GS]ET_FP_MODE prctl options for MIPS"), where the caller of 
+> prctl(2) is incorrectly allowed to make a change to CP0.Status.FR or 
+> CP0.Config5.FRE register bits even if CONFIG_MIPS_O32_FP64_SUPPORT has 
+> not been enabled, despite that an executable requesting the mode 
+> requested via ELF file annotation would not be allowed to run in the 
+> first place, or for n64 and n64 ABI tasks which do not have non-default 
+> modes defined at all.  Add suitable checks to `mips_set_process_fp_mode' 
+> and bail out if an invalid mode change has been requested for the ABI in 
+> effect, even if the FPU hardware or emulation would otherwise allow it.
 
-There is a risk of applications breaking at build time when they
-use the new kernel headers and expect the type to be exactly 'timeval'
-rather than a structure that has the same fields as before. Those
-applications have to be modified to deal with 64-bit time_t anyway.
+This seems reasonable, though in my view more because the FPU emulator
+optimises out code for cases we shouldn't hit via cop1_64bit(). Allowing
+user code to trigger these cases can only lead to odd and incorrect
+behaviour so preventing that makes sense.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/kernel/binfmt_elfn32.c  |  4 ++--
- arch/mips/kernel/binfmt_elfo32.c  |  4 ++--
- arch/parisc/kernel/binfmt_elf32.c |  4 ++--
- fs/binfmt_elf.c                   | 12 ++++++------
- fs/binfmt_elf_fdpic.c             | 12 ++++++------
- fs/compat_binfmt_elf.c            |  4 ++--
- include/uapi/linux/elfcore.h      |  8 ++++----
- 7 files changed, 24 insertions(+), 24 deletions(-)
+> Always succeed however without taking any further action if the mode 
+> requested is the same as one already in effect, regardless of whether 
+> any mode change, should it be requested, would actually be allowed for 
+> the task concerned.
 
-diff --git a/arch/mips/kernel/binfmt_elfn32.c b/arch/mips/kernel/binfmt_elfn32.c
-index 89b234844534..2fe2d5573289 100644
---- a/arch/mips/kernel/binfmt_elfn32.c
-+++ b/arch/mips/kernel/binfmt_elfn32.c
-@@ -100,7 +100,7 @@ jiffies_to_compat_timeval(unsigned long jiffies, struct compat_timeval *value)
- #undef TASK_SIZE
- #define TASK_SIZE TASK_SIZE32
- 
--#undef ns_to_timeval
--#define ns_to_timeval ns_to_compat_timeval
-+#undef ns_to_kernel_old_timeval
-+#define ns_to_kernel_old_timeval ns_to_compat_timeval
- 
- #include "../../../fs/binfmt_elf.c"
-diff --git a/arch/mips/kernel/binfmt_elfo32.c b/arch/mips/kernel/binfmt_elfo32.c
-index a88c59db3d48..d3c37583ef91 100644
---- a/arch/mips/kernel/binfmt_elfo32.c
-+++ b/arch/mips/kernel/binfmt_elfo32.c
-@@ -103,7 +103,7 @@ jiffies_to_compat_timeval(unsigned long jiffies, struct compat_timeval *value)
- #undef TASK_SIZE
- #define TASK_SIZE TASK_SIZE32
- 
--#undef ns_to_timeval
--#define ns_to_timeval ns_to_compat_timeval
-+#undef ns_to_kernel_old_timeval
-+#define ns_to_kernel_old_timeval ns_to_compat_timeval
- 
- #include "../../../fs/binfmt_elf.c"
-diff --git a/arch/parisc/kernel/binfmt_elf32.c b/arch/parisc/kernel/binfmt_elf32.c
-index 20dfa081ed0b..ad3ea00c64f7 100644
---- a/arch/parisc/kernel/binfmt_elf32.c
-+++ b/arch/parisc/kernel/binfmt_elf32.c
-@@ -92,7 +92,7 @@ struct elf_prpsinfo32
- 	current->thread.map_base = DEFAULT_MAP_BASE32; \
- 	current->thread.task_size = DEFAULT_TASK_SIZE32 \
- 
--#undef ns_to_timeval
--#define ns_to_timeval ns_to_compat_timeval
-+#undef ns_to_kernel_old_timeval
-+#define ns_to_kernel_old_timeval ns_to_compat_timeval
- 
- #include "../../../fs/binfmt_elf.c"
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 83732fef510d..7ae716db7d99 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1500,18 +1500,18 @@ static void fill_prstatus(struct elf_prstatus *prstatus,
- 		 * group-wide total, not its individual thread total.
- 		 */
- 		thread_group_cputime(p, &cputime);
--		prstatus->pr_utime = ns_to_timeval(cputime.utime);
--		prstatus->pr_stime = ns_to_timeval(cputime.stime);
-+		prstatus->pr_utime = ns_to_kernel_old_timeval(cputime.utime);
-+		prstatus->pr_stime = ns_to_kernel_old_timeval(cputime.stime);
- 	} else {
- 		u64 utime, stime;
- 
- 		task_cputime(p, &utime, &stime);
--		prstatus->pr_utime = ns_to_timeval(utime);
--		prstatus->pr_stime = ns_to_timeval(stime);
-+		prstatus->pr_utime = ns_to_kernel_old_timeval(utime);
-+		prstatus->pr_stime = ns_to_kernel_old_timeval(stime);
- 	}
- 
--	prstatus->pr_cutime = ns_to_timeval(p->signal->cutime);
--	prstatus->pr_cstime = ns_to_timeval(p->signal->cstime);
-+	prstatus->pr_cutime = ns_to_kernel_old_timeval(p->signal->cutime);
-+	prstatus->pr_cstime = ns_to_kernel_old_timeval(p->signal->cstime);
- }
- 
- static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 429326b6e2e7..89717459224b 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -1362,17 +1362,17 @@ static void fill_prstatus(struct elf_prstatus *prstatus,
- 		 * group-wide total, not its individual thread total.
- 		 */
- 		thread_group_cputime(p, &cputime);
--		prstatus->pr_utime = ns_to_timeval(cputime.utime);
--		prstatus->pr_stime = ns_to_timeval(cputime.stime);
-+		prstatus->pr_utime = ns_to_kernel_old_timeval(cputime.utime);
-+		prstatus->pr_stime = ns_to_kernel_old_timeval(cputime.stime);
- 	} else {
- 		u64 utime, stime;
- 
- 		task_cputime(p, &utime, &stime);
--		prstatus->pr_utime = ns_to_timeval(utime);
--		prstatus->pr_stime = ns_to_timeval(stime);
-+		prstatus->pr_utime = ns_to_kernel_old_timeval(utime);
-+		prstatus->pr_stime = ns_to_kernel_old_timeval(stime);
- 	}
--	prstatus->pr_cutime = ns_to_timeval(p->signal->cutime);
--	prstatus->pr_cstime = ns_to_timeval(p->signal->cstime);
-+	prstatus->pr_cutime = ns_to_kernel_old_timeval(p->signal->cutime);
-+	prstatus->pr_cstime = ns_to_kernel_old_timeval(p->signal->cstime);
- 
- 	prstatus->pr_exec_fdpic_loadmap = p->mm->context.exec_fdpic_loadmap;
- 	prstatus->pr_interp_fdpic_loadmap = p->mm->context.interp_fdpic_loadmap;
-diff --git a/fs/compat_binfmt_elf.c b/fs/compat_binfmt_elf.c
-index 504b3c3539dc..5df608af1306 100644
---- a/fs/compat_binfmt_elf.c
-+++ b/fs/compat_binfmt_elf.c
-@@ -51,8 +51,8 @@
- #define elf_prstatus	compat_elf_prstatus
- #define elf_prpsinfo	compat_elf_prpsinfo
- 
--#undef ns_to_timeval
--#define ns_to_timeval ns_to_compat_timeval
-+#undef ns_to_kernel_old_timeval
-+#define ns_to_kernel_old_timeval ns_to_compat_timeval
- 
- /*
-  * To use this file, asm/elf.h must define compat_elf_check_arch.
-diff --git a/include/uapi/linux/elfcore.h b/include/uapi/linux/elfcore.h
-index 0b2c9e16e345..baf03562306d 100644
---- a/include/uapi/linux/elfcore.h
-+++ b/include/uapi/linux/elfcore.h
-@@ -53,10 +53,10 @@ struct elf_prstatus
- 	pid_t	pr_ppid;
- 	pid_t	pr_pgrp;
- 	pid_t	pr_sid;
--	struct timeval pr_utime;	/* User time */
--	struct timeval pr_stime;	/* System time */
--	struct timeval pr_cutime;	/* Cumulative user time */
--	struct timeval pr_cstime;	/* Cumulative system time */
-+	struct __kernel_old_timeval pr_utime;	/* User time */
-+	struct __kernel_old_timeval pr_stime;	/* System time */
-+	struct __kernel_old_timeval pr_cutime;	/* Cumulative user time */
-+	struct __kernel_old_timeval pr_cstime;	/* Cumulative system time */
- #if 0
- 	long	pr_instr;		/* Current instruction */
- #endif
--- 
-2.9.0
+This seems like a distinct change that I think would be worth splitting
+out to a separate patch.
+
+Both changes look good to me though, so feel free to add:
+
+    Reviewed-by: Paul Burton <paul.burton@mips.com>
+
+Thanks,
+    Paul
+
+> Cc: stable@vger.kernel.org # 4.0+
+> Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+> ---
+>  arch/mips/kernel/process.c |   12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> linux-mips-prctl-fp-mode-o32-fp64.diff
+> Index: linux-sfr-test/arch/mips/kernel/process.c
+> ===================================================================
+> --- linux-sfr-test.orig/arch/mips/kernel/process.c	2017-11-25 12:40:55.868109000 +0000
+> +++ linux-sfr-test/arch/mips/kernel/process.c	2017-11-25 12:41:56.411578000 +0000
+> @@ -705,6 +705,18 @@ int mips_set_process_fp_mode(struct task
+>  	struct task_struct *t;
+>  	int max_users;
+>  
+> +	/* If nothing to change, return right away, successfully.  */
+> +	if (value == mips_get_process_fp_mode(task))
+> +		return 0;
+> +
+> +	/* Only accept a mode change if 64-bit FP enabled for o32.  */
+> +	if (!IS_ENABLED(CONFIG_MIPS_O32_FP64_SUPPORT))
+> +		return -EOPNOTSUPP;
+> +
+> +	/* And only for o32 tasks.  */
+> +	if (IS_ENABLED(CONFIG_64BIT) && !test_thread_flag(TIF_32BIT_REGS))
+> +		return -EOPNOTSUPP;
+> +
+>  	/* Check the value is valid */
+>  	if (value & ~known_bits)
+>  		return -EOPNOTSUPP;

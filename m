@@ -1,39 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 16:06:44 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56158 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990408AbdK0PGfiDa7B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2017 16:06:35 +0100
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 77C00B9E;
-        Mon, 27 Nov 2017 15:06:22 +0000 (UTC)
-Date:   Mon, 27 Nov 2017 16:06:27 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     James Hogan <james.hogan@mips.com>
-Cc:     john@phrozen.org, ralf@linux-mips.org, stable@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: WTF: patch "[PATCH] MIPS: pci: Remove KERN_WARN instance inside
- the mt7620 driver" was seriously submitted to be applied to the 4.9-stable
- tree?
-Message-ID: <20171127150627.GC31337@kroah.com>
-References: <1511786146225230@kroah.com>
- <20171127124036.GA11276@jhogan-linux.mipstec.com>
- <20171127125649.GA13615@kroah.com>
- <20171127141300.GB11276@jhogan-linux.mipstec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 17:53:23 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:55800 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990451AbdK0QxNsAbwh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Nov 2017 17:53:13 +0100
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 244DFC04AC5C;
+        Mon, 27 Nov 2017 16:53:07 +0000 (UTC)
+Received: from [10.36.116.17] (ovpn-116-17.ams2.redhat.com [10.36.116.17])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id A4E4F5C54A;
+        Mon, 27 Nov 2017 16:53:02 +0000 (UTC)
+Subject: Re: [PATCH 01/15] KVM: Prepare for moving vcpu_load/vcpu_put into
+ arch specific code
+To:     Christoffer Dall <christoffer.dall@linaro.org>, kvm@vger.kernel.org
+Cc:     Andrew Jones <drjones@redhat.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Alexander Graf <agraf@suse.com>, kvm-ppc@vger.kernel.org,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
+References: <20171125205718.7731-1-christoffer.dall@linaro.org>
+ <20171125205718.7731-2-christoffer.dall@linaro.org>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <838db374-6040-c805-82f3-187a2cdfc40d@redhat.com>
+Date:   Mon, 27 Nov 2017 17:53:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
+In-Reply-To: <20171125205718.7731-2-christoffer.dall@linaro.org>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20171127141300.GB11276@jhogan-linux.mipstec.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Mon, 27 Nov 2017 16:53:07 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61099
+X-archive-position: 61100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,56 +57,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 27, 2017 at 02:13:00PM +0000, James Hogan wrote:
-> On Mon, Nov 27, 2017 at 01:56:49PM +0100, Greg KH wrote:
-> > On Mon, Nov 27, 2017 at 12:40:36PM +0000, James Hogan wrote:
-> > > Hi Greg,
-> > > 
-> > > On Mon, Nov 27, 2017 at 01:35:46PM +0100, gregkh@linuxfoundation.org wrote:
-> > > > The patch below was submitted to be applied to the 4.9-stable tree.
-> > > > 
-> > > > I fail to see how this patch meets the stable kernel rules as found at
-> > > > Documentation/process/stable-kernel-rules.rst.
-> > > > 
-> > > > I could be totally wrong, and if so, please respond to 
-> > > > <stable@vger.kernel.org> and let me know why this patch should be
-> > > > applied.  Otherwise, it is now dropped from my patch queues, never to be
-> > > > seen again.
-> > > 
-> > > I should have adjusted the commit message. KERN_WARN doesn't exist so it
-> > > actually fixes a build error as well as switching to pr_warn().
-> > 
-> > What build error?  I have not heard of this breaking the build on 4.9
-> > for the past year, is it in some config that no one uses?  :)
+On 25/11/2017 21:57, Christoffer Dall wrote:
+> In preparation for moving calls to vcpu_load() and vcpu_put() into the
+> architecture specific implementations of the KVM vcpu ioctls, move the
+> calls in the main kvm_vcpu_ioctl() dispatcher function to each case
+> of the ioctl select statement.  This allows us to move the vcpu_load()
+> and vcpu_put() calls into architecture specific implementations of vcpu
+> ioctls, one by one.
 > 
-> The LEDE project has been carrying the patch [1] since February when
-> they added 4.9 support (their 4.4 support had a slightly earlier version
-> of the driver added with just a plain printk, no KERN_WARN).
+> Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
+> ---
+>  virt/kvm/kvm_main.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 48 insertions(+), 5 deletions(-)
 > 
-> They have both CONFIG_SOC_MT7620 and CONFIG_PCI=y in their ralink mt7620
-> config [2], and they are keeping up to date with stable releases [3], so
-> I have no doubt they would appreciate having the patch applied to
-> upstream stable to reduce their delta.
-> 
-> The only defconfigs in mainline which enable this platform
-> (CONFIG_SOC_MT7620) are omega2p_defconfig and vocore2_defconfig, which
-> were added in August by Harvey to help widen our internal continuous
-> build & boot test coverage. Neither defconfig enables CONFIG_PCI yet
-> which is required to see the build failure below, but regardless it is a
-> valid configuration which LEDE is actively using.
-> 
-> arch/mips/pci/pci-mt7620.c: In function ‘wait_pciephy_busy’:
-> arch/mips/pci/pci-mt7620.c:123:11: error: ‘KERN_WARN’ undeclared (first use in this function)
->     printk(KERN_WARN "PCIE-PHY retry failed.\n");
->            ^~~~~~~~~
-> 
-> John: I'm not familiar with the hardware, but would it be appropriate to
-> add CONFIG_PCI=y to either of those 2 defconfigs (omega2p_defconfig and
-> vocore2_defconfig) so this driver gets some upstream build[/boot]
-> testing?
-> 
-> Anyway, hopefully that helps allay stable backport concerns.
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 9deb5a245b83..fafafcc38b5a 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2528,16 +2528,15 @@ static long kvm_vcpu_ioctl(struct file *filp,
+>  		return kvm_arch_vcpu_ioctl(filp, ioctl, arg);
+>  #endif
+>  
+> -
+> -	r = vcpu_load(vcpu);
+> -	if (r)
+> -		return r;
+>  	switch (ioctl) {
+>  	case KVM_RUN: {
+>  		struct pid *oldpid;
+>  		r = -EINVAL;
+>  		if (arg)
+>  			goto out;
+> +		r = vcpu_load(vcpu);
+> +		if (r)
+> +			goto out;
+>  		oldpid = rcu_access_pointer(vcpu->pid);
 
-Yes, thanks, that explains it a lot better, now queued up.
+If it is not a problem for ARM, maybe it would actually be best to leave
+the locking in kvm_vcpu_ioctl (with the already existing exception of
+KVM_INTERRUPT).  This would make vcpu_load void, and would also let you
+keep the PID adjustment in common code.  This would be more similar to
+the previous version, but without introducing __vcpu_load/__vcpu_put.
 
-greg k-h
+Looks good apart from this doubt!  Thanks,
+
+Paolo

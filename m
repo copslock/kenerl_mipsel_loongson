@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:45:14 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35424 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:45:43 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35440 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992289AbdK1KoZboDt- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:44:25 +0100
+        by eddie.linux-mips.org with ESMTP id S23992309AbdK1Ko2WkOZ- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:44:28 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2EFE1360;
-        Tue, 28 Nov 2017 10:44:19 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0825CAEF;
+        Tue, 28 Nov 2017 10:44:21 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Djordje Todorovic <djordje.todorovic@rt-rk.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 051/193] MIPS: Fix an n32 core file generation regset support regression
-Date:   Tue, 28 Nov 2017 11:24:58 +0100
-Message-Id: <20171128100615.813929497@linuxfoundation.org>
+        stable@vger.kernel.org, Mirko Parthey <mirko.parthey@web.de>,
+        Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.14 052/193] MIPS: BCM47XX: Fix LED inversion for WRT54GSv1
+Date:   Tue, 28 Nov 2017 11:24:59 +0100
+Message-Id: <20171128100615.907860841@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171128100613.638270407@linuxfoundation.org>
 References: <20171128100613.638270407@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61128
+X-archive-position: 61129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,81 +46,34 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@mips.com>
+From: Mirko Parthey <mirko.parthey@web.de>
 
-commit 547da673173de51f73887377eb275304775064ad upstream.
+commit 56a46acf62af5ba44fca2f3f1c7c25a2d5385b19 upstream.
 
-Fix a commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-regression, then activated by commit 6a9c001b7ec3 ("MIPS: Switch ELF
-core dumper to use regsets.)", that caused n32 processes to dump o32
-core files by failing to set the EF_MIPS_ABI2 flag in the ELF core file
-header's `e_flags' member:
+The WLAN LED on the Linksys WRT54GSv1 is active low, but the software
+treats it as active high. Fix the inverted logic.
 
-$ file tls-core
-tls-core: ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYSV), [...]
-$ ./tls-core
-Aborted (core dumped)
-$ file core
-core: ELF 32-bit MSB core file MIPS, MIPS-I version 1 (SYSV), SVR4-style
-$
-
-Previously the flag was set as the result of a:
-
-statement placed in arch/mips/kernel/binfmt_elfn32.c, however in the
-regset case, i.e. when CORE_DUMP_USE_REGSET is set, ELF_CORE_EFLAGS is
-no longer used by `fill_note_info' in fs/binfmt_elf.c, and instead the
-`->e_flags' member of the regset view chosen is.  We have the views
-defined in arch/mips/kernel/ptrace.c, however only an o32 and an n64
-one, and the latter is used for n32 as well.  Consequently an o32 core
-file is incorrectly dumped from n32 processes (the ELF32 vs ELF64 class
-is chosen elsewhere, and the 32-bit one is correctly selected for n32).
-
-Correct the issue then by defining an n32 regset view and using it as
-appropriate.  Issue discovered in GDB testing.
-
-Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Djordje Todorovic <djordje.todorovic@rt-rk.com>
+Fixes: 7bb26b169116 ("MIPS: BCM47xx: Fix LEDs on WRT54GS V1.0")
+Signed-off-by: Mirko Parthey <mirko.parthey@web.de>
+Looks-ok-by: Rafał Miłecki <zajec5@gmail.com>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17617/
+Patchwork: https://patchwork.linux-mips.org/patch/16071/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/mips/bcm47xx/leds.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -618,6 +618,19 @@ static const struct user_regset_view use
- 	.n		= ARRAY_SIZE(mips64_regsets),
+--- a/arch/mips/bcm47xx/leds.c
++++ b/arch/mips/bcm47xx/leds.c
+@@ -331,7 +331,7 @@ bcm47xx_leds_linksys_wrt54g3gv2[] __init
+ /* Verified on: WRT54GS V1.0 */
+ static const struct gpio_led
+ bcm47xx_leds_linksys_wrt54g_type_0101[] __initconst = {
+-	BCM47XX_GPIO_LED(0, "green", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
++	BCM47XX_GPIO_LED(0, "green", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
+ 	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
+ 	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
  };
- 
-+#ifdef CONFIG_MIPS32_N32
-+
-+static const struct user_regset_view user_mipsn32_view = {
-+	.name		= "mipsn32",
-+	.e_flags	= EF_MIPS_ABI2,
-+	.e_machine	= ELF_ARCH,
-+	.ei_osabi	= ELF_OSABI,
-+	.regsets	= mips64_regsets,
-+	.n		= ARRAY_SIZE(mips64_regsets),
-+};
-+
-+#endif /* CONFIG_MIPS32_N32 */
-+
- #endif /* CONFIG_64BIT */
- 
- const struct user_regset_view *task_user_regset_view(struct task_struct *task)
-@@ -629,6 +642,10 @@ const struct user_regset_view *task_user
- 	if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
- 		return &user_mips_view;
- #endif
-+#ifdef CONFIG_MIPS32_N32
-+	if (test_tsk_thread_flag(task, TIF_32BIT_ADDR))
-+		return &user_mipsn32_view;
-+#endif
- 	return &user_mips64_view;
- #endif
- }

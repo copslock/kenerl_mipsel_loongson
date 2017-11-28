@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:47:02 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35568 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:47:27 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35580 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990426AbdK1KpDCH0B- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:45:03 +0100
+        by eddie.linux-mips.org with ESMTP id S23992346AbdK1KpGN7Rz- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:45:06 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6D300360;
-        Tue, 28 Nov 2017 10:44:56 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B4899AF3;
+        Tue, 28 Nov 2017 10:44:59 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4.14 048/193] MIPS: Fix odd fp register warnings with MIPS64r2
-Date:   Tue, 28 Nov 2017 11:24:55 +0100
-Message-Id: <20171128100615.610734359@linuxfoundation.org>
+Subject: [PATCH 4.14 049/193] MIPS: Fix MIPS64 FP save/restore on 32-bit kernels
+Date:   Tue, 28 Nov 2017 11:24:56 +0100
+Message-Id: <20171128100615.647821523@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171128100613.638270407@linuxfoundation.org>
 References: <20171128100613.638270407@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61132
+X-archive-position: 61133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,75 +48,119 @@ X-list: linux-mips
 
 From: James Hogan <jhogan@kernel.org>
 
-commit c7fd89a6407ea3a44a2a2fa12d290162c42499c4 upstream.
+commit 22b8ba765a726d90e9830ff6134c32b04f12c10f upstream.
 
-Building 32-bit MIPS64r2 kernels produces warnings like the following
-on certain toolchains (such as GNU assembler 2.24.90, but not GNU
-assembler 2.28.51) since commit 22b8ba765a72 ("MIPS: Fix MIPS64 FP
-save/restore on 32-bit kernels"), due to the exposure of fpu_save_16odd
-from fpu_save_double and fpu_restore_16odd from fpu_restore_double:
+32-bit kernels can be configured to support MIPS64, in which case
+neither CONFIG_64BIT or CONFIG_CPU_MIPS32_R* will be set. This causes
+the CP0_Status.FR checks at the point of floating point register save
+and restore to be compiled out, which results in odd FP registers not
+being saved or restored to the task or signal context even when
+CP0_Status.FR is set.
 
-arch/mips/kernel/r4k_fpu.S:47: Warning: float register should be even, was 1
-...
-arch/mips/kernel/r4k_fpu.S:59: Warning: float register should be even, was 1
-...
+Fix the ifdefs to use CONFIG_CPU_MIPSR2 and CONFIG_CPU_MIPSR6, which are
+enabled for the relevant revisions of either MIPS32 or MIPS64, along
+with some other CPUs such as Octeon (r2), Loongson1 (r2), XLP (r2),
+Loongson 3A R2.
 
-This appears to be because .set mips64r2 does not change the FPU ABI to
-64-bit when -march=mips64r2 (or e.g. -march=xlp) is provided on the
-command line on that toolchain, from the default FPU ABI of 32-bit due
-to the -mabi=32. This makes access to the odd FPU registers invalid.
+The suspect code originates from commit 597ce1723e0f ("MIPS: Support for
+64-bit FP with O32 binaries") in v3.14, however the code in
+__enable_fpu() was consistent and refused to set FR=1, falling back to
+software FPU emulation. This was suboptimal but should be functionally
+correct.
 
-Fix by explicitly changing the FPU ABI with .set fp=64 directives in
-fpu_save_16odd and fpu_restore_16odd, and moving the undefine of fp up
-in asmmacro.h so fp doesn't turn into $30.
+Commit fcc53b5f6c38 ("MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6
+CPU") in v4.2 (and stable tagged back to 4.0) later introduced the bug
+by updating __enable_fpu() to set FR=1 but failing to update the other
+similar ifdefs to enable FR=1 state handling.
 
-Fixes: 22b8ba765a72 ("MIPS: Fix MIPS64 FP save/restore on 32-bit kernels")
+Fixes: fcc53b5f6c38 ("MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6 CPU")
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17656/
+Patchwork: https://patchwork.linux-mips.org/patch/16739/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/asmmacro.h |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/asmmacro.h |    8 ++++----
+ arch/mips/kernel/r4k_fpu.S       |   20 ++++++++++----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
 --- a/arch/mips/include/asm/asmmacro.h
 +++ b/arch/mips/include/asm/asmmacro.h
-@@ -19,6 +19,9 @@
- #include <asm/asmmacro-64.h>
- #endif
- 
-+/* preprocessor replaces the fp in ".set fp=64" with $30 otherwise */
-+#undef fp
-+
- /*
-  * Helper macros for generating raw instruction encodings.
-  */
-@@ -105,6 +108,7 @@
- 	.macro	fpu_save_16odd thread
- 	.set	push
- 	.set	mips64r2
-+	.set	fp=64
- 	SET_HARDFLOAT
- 	sdc1	$f1,  THREAD_FPR1(\thread)
- 	sdc1	$f3,  THREAD_FPR3(\thread)
-@@ -163,6 +167,7 @@
- 	.macro	fpu_restore_16odd thread
- 	.set	push
- 	.set	mips64r2
-+	.set	fp=64
- 	SET_HARDFLOAT
- 	ldc1	$f1,  THREAD_FPR1(\thread)
- 	ldc1	$f3,  THREAD_FPR3(\thread)
-@@ -234,9 +239,6 @@
+@@ -130,8 +130,8 @@
  	.endm
  
- #ifdef TOOLCHAIN_SUPPORTS_MSA
--/* preprocessor replaces the fp in ".set fp=64" with $30 otherwise */
--#undef fp
--
- 	.macro	_cfcmsa	rd, cs
+ 	.macro	fpu_save_double thread status tmp
+-#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
+-		defined(CONFIG_CPU_MIPS32_R6)
++#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
++		defined(CONFIG_CPU_MIPSR6)
+ 	sll	\tmp, \status, 5
+ 	bgez	\tmp, 10f
+ 	fpu_save_16odd \thread
+@@ -189,8 +189,8 @@
+ 	.endm
+ 
+ 	.macro	fpu_restore_double thread status tmp
+-#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
+-		defined(CONFIG_CPU_MIPS32_R6)
++#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
++		defined(CONFIG_CPU_MIPSR6)
+ 	sll	\tmp, \status, 5
+ 	bgez	\tmp, 10f				# 16 register mode?
+ 
+--- a/arch/mips/kernel/r4k_fpu.S
++++ b/arch/mips/kernel/r4k_fpu.S
+@@ -40,8 +40,8 @@
+  */
+ LEAF(_save_fp)
+ EXPORT_SYMBOL(_save_fp)
+-#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
+-		defined(CONFIG_CPU_MIPS32_R6)
++#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
++		defined(CONFIG_CPU_MIPSR6)
+ 	mfc0	t0, CP0_STATUS
+ #endif
+ 	fpu_save_double a0 t0 t1		# clobbers t1
+@@ -52,8 +52,8 @@ EXPORT_SYMBOL(_save_fp)
+  * Restore a thread's fp context.
+  */
+ LEAF(_restore_fp)
+-#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
+-		defined(CONFIG_CPU_MIPS32_R6)
++#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
++		defined(CONFIG_CPU_MIPSR6)
+ 	mfc0	t0, CP0_STATUS
+ #endif
+ 	fpu_restore_double a0 t0 t1		# clobbers t1
+@@ -246,11 +246,11 @@ LEAF(_save_fp_context)
+ 	cfc1	t1, fcr31
+ 	.set	pop
+ 
+-#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2) || \
+-		defined(CONFIG_CPU_MIPS32_R6)
++#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2) || \
++		defined(CONFIG_CPU_MIPSR6)
  	.set	push
+ 	SET_HARDFLOAT
+-#ifdef CONFIG_CPU_MIPS32_R2
++#ifdef CONFIG_CPU_MIPSR2
  	.set	mips32r2
+ 	.set	fp=64
+ 	mfc0	t0, CP0_STATUS
+@@ -314,11 +314,11 @@ LEAF(_save_fp_context)
+ LEAF(_restore_fp_context)
+ 	EX	lw t1, 0(a1)
+ 
+-#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPS32_R2)  || \
+-		defined(CONFIG_CPU_MIPS32_R6)
++#if defined(CONFIG_64BIT) || defined(CONFIG_CPU_MIPSR2)  || \
++		defined(CONFIG_CPU_MIPSR6)
+ 	.set	push
+ 	SET_HARDFLOAT
+-#ifdef CONFIG_CPU_MIPS32_R2
++#ifdef CONFIG_CPU_MIPSR2
+ 	.set	mips32r2
+ 	.set	fp=64
+ 	mfc0	t0, CP0_STATUS

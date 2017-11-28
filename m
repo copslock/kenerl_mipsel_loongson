@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:34:30 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33558 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:34:55 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33578 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992186AbdK1KeEH5-m- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:34:04 +0100
+        by eddie.linux-mips.org with ESMTP id S23992198AbdK1KeJPiFv- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:34:09 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2C710AF3;
-        Tue, 28 Nov 2017 10:33:57 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D9856A73;
+        Tue, 28 Nov 2017 10:34:02 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4.9 024/138] MIPS: Fix odd fp register warnings with MIPS64r2
-Date:   Tue, 28 Nov 2017 11:22:05 +0100
-Message-Id: <20171128100546.489662154@linuxfoundation.org>
+        Djordje Todorovic <djordje.todorovic@rt-rk.com>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.9 026/138] MIPS: Fix an n32 core file generation regset support regression
+Date:   Tue, 28 Nov 2017 11:22:07 +0100
+Message-Id: <20171128100546.614120028@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171128100544.706504901@linuxfoundation.org>
 References: <20171128100544.706504901@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61122
+X-archive-position: 61123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,77 +47,81 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <jhogan@kernel.org>
+From: Maciej W. Rozycki <macro@mips.com>
 
-commit c7fd89a6407ea3a44a2a2fa12d290162c42499c4 upstream.
+commit 547da673173de51f73887377eb275304775064ad upstream.
 
-Building 32-bit MIPS64r2 kernels produces warnings like the following
-on certain toolchains (such as GNU assembler 2.24.90, but not GNU
-assembler 2.28.51) since commit 22b8ba765a72 ("MIPS: Fix MIPS64 FP
-save/restore on 32-bit kernels"), due to the exposure of fpu_save_16odd
-from fpu_save_double and fpu_restore_16odd from fpu_restore_double:
+Fix a commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+regression, then activated by commit 6a9c001b7ec3 ("MIPS: Switch ELF
+core dumper to use regsets.)", that caused n32 processes to dump o32
+core files by failing to set the EF_MIPS_ABI2 flag in the ELF core file
+header's `e_flags' member:
 
-arch/mips/kernel/r4k_fpu.S:47: Warning: float register should be even, was 1
-...
-arch/mips/kernel/r4k_fpu.S:59: Warning: float register should be even, was 1
-...
+$ file tls-core
+tls-core: ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYSV), [...]
+$ ./tls-core
+Aborted (core dumped)
+$ file core
+core: ELF 32-bit MSB core file MIPS, MIPS-I version 1 (SYSV), SVR4-style
+$
 
-This appears to be because .set mips64r2 does not change the FPU ABI to
-64-bit when -march=mips64r2 (or e.g. -march=xlp) is provided on the
-command line on that toolchain, from the default FPU ABI of 32-bit due
-to the -mabi=32. This makes access to the odd FPU registers invalid.
+Previously the flag was set as the result of a:
 
-Fix by explicitly changing the FPU ABI with .set fp=64 directives in
-fpu_save_16odd and fpu_restore_16odd, and moving the undefine of fp up
-in asmmacro.h so fp doesn't turn into $30.
+statement placed in arch/mips/kernel/binfmt_elfn32.c, however in the
+regset case, i.e. when CORE_DUMP_USE_REGSET is set, ELF_CORE_EFLAGS is
+no longer used by `fill_note_info' in fs/binfmt_elf.c, and instead the
+`->e_flags' member of the regset view chosen is.  We have the views
+defined in arch/mips/kernel/ptrace.c, however only an o32 and an n64
+one, and the latter is used for n32 as well.  Consequently an o32 core
+file is incorrectly dumped from n32 processes (the ELF32 vs ELF64 class
+is chosen elsewhere, and the 32-bit one is correctly selected for n32).
 
-Fixes: 22b8ba765a72 ("MIPS: Fix MIPS64 FP save/restore on 32-bit kernels")
-Signed-off-by: James Hogan <jhogan@kernel.org>
+Correct the issue then by defining an n32 regset view and using it as
+appropriate.  Issue discovered in GDB testing.
+
+Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Djordje Todorovic <djordje.todorovic@rt-rk.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17656/
+Patchwork: https://patchwork.linux-mips.org/patch/17617/
+Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/asmmacro.h |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/mips/kernel/ptrace.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -19,6 +19,9 @@
- #include <asm/asmmacro-64.h>
- #endif
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -647,6 +647,19 @@ static const struct user_regset_view use
+ 	.n		= ARRAY_SIZE(mips64_regsets),
+ };
  
-+/* preprocessor replaces the fp in ".set fp=64" with $30 otherwise */
-+#undef fp
++#ifdef CONFIG_MIPS32_N32
 +
- /*
-  * Helper macros for generating raw instruction encodings.
-  */
-@@ -105,6 +108,7 @@
- 	.macro	fpu_save_16odd thread
- 	.set	push
- 	.set	mips64r2
-+	.set	fp=64
- 	SET_HARDFLOAT
- 	sdc1	$f1,  THREAD_FPR1(\thread)
- 	sdc1	$f3,  THREAD_FPR3(\thread)
-@@ -163,6 +167,7 @@
- 	.macro	fpu_restore_16odd thread
- 	.set	push
- 	.set	mips64r2
-+	.set	fp=64
- 	SET_HARDFLOAT
- 	ldc1	$f1,  THREAD_FPR1(\thread)
- 	ldc1	$f3,  THREAD_FPR3(\thread)
-@@ -234,9 +239,6 @@
- 	.endm
++static const struct user_regset_view user_mipsn32_view = {
++	.name		= "mipsn32",
++	.e_flags	= EF_MIPS_ABI2,
++	.e_machine	= ELF_ARCH,
++	.ei_osabi	= ELF_OSABI,
++	.regsets	= mips64_regsets,
++	.n		= ARRAY_SIZE(mips64_regsets),
++};
++
++#endif /* CONFIG_MIPS32_N32 */
++
+ #endif /* CONFIG_64BIT */
  
- #ifdef TOOLCHAIN_SUPPORTS_MSA
--/* preprocessor replaces the fp in ".set fp=64" with $30 otherwise */
--#undef fp
--
- 	.macro	_cfcmsa	rd, cs
- 	.set	push
- 	.set	mips32r2
+ const struct user_regset_view *task_user_regset_view(struct task_struct *task)
+@@ -658,6 +671,10 @@ const struct user_regset_view *task_user
+ 	if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
+ 		return &user_mips_view;
+ #endif
++#ifdef CONFIG_MIPS32_N32
++	if (test_tsk_thread_flag(task, TIF_32BIT_ADDR))
++		return &user_mipsn32_view;
++#endif
+ 	return &user_mips64_view;
+ #endif
+ }

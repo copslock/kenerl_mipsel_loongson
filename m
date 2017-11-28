@@ -1,70 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 19:18:54 +0100 (CET)
-Received: from mail-lf0-x22d.google.com ([IPv6:2a00:1450:4010:c07::22d]:38288
-        "EHLO mail-lf0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990439AbdK1SSqQ1ypU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 19:18:46 +0100
-Received: by mail-lf0-x22d.google.com with SMTP id e137so870724lfg.5
-        for <linux-mips@linux-mips.org>; Tue, 28 Nov 2017 10:18:46 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 19:40:52 +0100 (CET)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:46278
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbdK1SkoPcgqi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 19:40:44 +0100
+Received: by mail-qt0-x244.google.com with SMTP id r39so1089321qtr.13;
+        Tue, 28 Nov 2017 10:40:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=kiJbfaquJCU5AuNBCHQDLNDUFQDBrNr3cgUeTjtau7E=;
-        b=LxEfKHQGzLTh2UsfF34MrcVhAq/KrYpy16ZCWNypBbHlubuQU/sfGXLJKP1BfazEEK
-         WFXQnTG3m0fXrhjQyGG0loNk3BSx3iy4MK9ogO2dt4mjtgppCIFChDbmQ1UWEMLxEfnP
-         x5vW3uIUWuerJvR8kc6D5xI4denUWG13s7tBKEIEiS8eEWvb4CCRZpwl2Rkc/Q30VulI
-         I4qI/Dp/cF8AxxGWGNXve4OLa9NSy5X29ChoxMb4/msGgh3uIy+3bMwSfhs7ErSiGMrC
-         gNrAjKC4GWuLgi8oOINfcReq4LduL0Wgfk+ED52VxwlJm7ry9fdGc12PFD4UgNz/Pt7+
-         2Okw==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=dKW5Eh0uwLv8fkakNuGUIllDyIsV1d+zPFlIsnZ+Tn0=;
+        b=JD5TWP8oE31uWqwOkc4ONUOaY6FTy2v3re/VZNtpb91pGG16Cru2a40UzqJOsrmT5m
+         Su6vBD3gpa1hhe976UjBHbxUT6ejuAzS7z0VvMZ3gGVj5vPAD7ueJB+fI4saWtdRfg/E
+         I1xCJ2N2szlLlAUyNnLAyH/O94EviQKk0edPOeOrCs7p5HMBMetySH7Z1lZkH/WpMsRr
+         45ZnUDg+4R/ppWCQh+Gj6bu7XxGztUBV9dtu6BTUJsXaco45oIljzxt/CeBQnlon1q2y
+         YA5OM92eSUp9y1F3LLLu3uszjq9s3cXjqswc0VF5BLCDwcRaRCeVnMt/kXCv4KMHrue2
+         Mpxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=kiJbfaquJCU5AuNBCHQDLNDUFQDBrNr3cgUeTjtau7E=;
-        b=dcwplqOMPVT557yy5t2RUqUF66PGVPKrVretXZvh1vPFWw8nK3s0q3VVJYXBiXpJ8A
-         K8K7zj86M87JecAo+uI3fp8rmP7KZ69NN5j6J+uZOk3PuBxUY3b1yYRo9mRwfo7gJsmK
-         7TMT8LOPQCOc3SBGoBHe8TcgyOA+lsr+6oWs50KxSNk3FF4kRFVQGsD7Sn5GlDT560fm
-         hoxZuJaBKD2XIQz+SM+VBwNNLGIZ/XI6aYkAA6ar8cr1ZvyM5m9nUGbSNu+0OziOsO0w
-         4+E74azkqIl7UuS8W3WtxJSMXe0dsgegVdhhVRMAblXLv4oZOVoJaoDn+J5/OwfAB4tT
-         qz3g==
-X-Gm-Message-State: AJaThX7n4CaYeYDqg5CmjBw6dy/44xdKPIg+KZvTL3K0Bv+/QKPsi4y+
-        lYrFW84dhxuQKA7tRUeDo5lqBwH4t2coVwGxmWBnJA==
-X-Google-Smtp-Source: AGs4zMa0nAbvXFQm2cLpg+K4WJ/JQTZqg3ua+Z5jeFpRjg4aAT0BPoo2MxDjNC92G/ZkTe/aSk0xvhFulW76f9nqIPE=
-X-Received: by 10.46.16.138 with SMTP id 10mr12817ljq.115.1511893120173; Tue,
- 28 Nov 2017 10:18:40 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dKW5Eh0uwLv8fkakNuGUIllDyIsV1d+zPFlIsnZ+Tn0=;
+        b=GcaUybX7iW1O58AC90uxR+ffFAWwOADLcv24p+uVUM2G3zbnCHr9ahHgM7Ejv7X5C/
+         /kO1clsRZqbMQB6Fn3YeE9q7tF9WKojk02wgXjjYkQlXUuxQ2fUJXoJNgdaSALD3LpEe
+         kKOBIzbAkuO8qJG35SXA7Lnsq2yCOA/IhP+Rt3sY2DDWhraEqNKI3IAqT3pur+Ed8F2K
+         8ZKginSZbRXCCYWNHn5+c5JGaIgsBreOnP7bWCF/xhtrylliclpJ5OG1Z+L4Sm9lPQ7w
+         yoZyI3dJXr/u0RuPEA2/c2bsSE4PXTxdTgvr1C2FVjBDG9BuGQ39OcexeijlpjBhO4qb
+         TKpQ==
+X-Gm-Message-State: AJaThX6RIMuGd6jfnnDDepJj/lvD20ZsMiUo+HmPvrusAHJ0iednLukh
+        OMaTmy71neyzIyZMsCBlaJo=
+X-Google-Smtp-Source: AGs4zMZNuuubxYW+gctfcDb9Yy0XW2Faeib882xAFWfqx13IQXek/2dYZ7OcefsO+ymEXffb9uAOUA==
+X-Received: by 10.200.45.168 with SMTP id p37mr156036qta.247.1511894437547;
+        Tue, 28 Nov 2017 10:40:37 -0800 (PST)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id d205sm21703522qke.21.2017.11.28.10.40.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 Nov 2017 10:40:36 -0800 (PST)
+Subject: Re: [PATCH 10/13] MIPS: mscc: add ocelot dtsi
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+References: <20171128152643.20463-1-alexandre.belloni@free-electrons.com>
+ <20171128152643.20463-11-alexandre.belloni@free-electrons.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <0596b316-f3a3-6d06-75f4-acad4fde3b5f@gmail.com>
+Date:   Tue, 28 Nov 2017 10:40:31 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Received: by 10.25.109.4 with HTTP; Tue, 28 Nov 2017 10:18:38 -0800 (PST)
-In-Reply-To: <CAK7LNASGYZfQFkM3yMRQaHLUwW5Lhp8CxHGX0bJ9sVja0f=n+A@mail.gmail.com>
-References: <CAK7LNAS1NaqPRhK6FOXN=YTMhLagpSrR2=tXn-uWZbpzr=NeoQ@mail.gmail.com>
- <20171115204231.34914-1-ndesaulniers@google.com> <CAK7LNAQNEHRapzFem3nr7=EWJPYvZby9K7vem-R99ijYNoguEg@mail.gmail.com>
- <CAK7LNASGYZfQFkM3yMRQaHLUwW5Lhp8CxHGX0bJ9sVja0f=n+A@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 28 Nov 2017 10:18:38 -0800
-Message-ID: <CAKwvOdmcthyd1KbxRr54QztBcmeZ7JA=M_7N1xfmVurVOG=77w@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: Set KBUILD_CFLAGS before incl. arch Makefile
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     Behan Webster <behanw@converseincode.com>,
-        =?UTF-8?Q?Jan=2DSimon_M=C3=B6ller?= <dl9pf@gmx.de>,
-        Mark Charlebois <charlebm@gmail.com>,
-        Greg Hackmann <ghackmann@google.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Chris Fries <cfries@google.com>,
-        Michal Marek <mmarek@suse.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, openrisc@lists.librecores.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <ndesaulniers@google.com>
+In-Reply-To: <20171128152643.20463-11-alexandre.belloni@free-electrons.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61160
+X-archive-position: 61161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ndesaulniers@google.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,76 +74,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Masahiro,
+On 11/28/2017 07:26 AM, Alexandre Belloni wrote:
+> Add a device tree include file for the Microsemi Ocelot SoC.
+> 
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> ---
 
-Thanks for merging Chris' patch, and sorry for taking so long to respond.
+> +	ahb {
+> +		compatible = "simple-bus";
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges;
 
-On Wed, Nov 22, 2017 at 8:24 PM, Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
-> Linus suggests to move compiler flag testing to Kconfig.
+You could provide the base address and size of the bus range, such that
+your nodes all become relative to that base address, e.g:
 
-Do you have an LKML link for context?
+		ranges = <0 0x70000000 0x10000>;
 
-On Wed, Nov 15, 2017 at 6:32 PM, Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
-> BTW, I notice another issue.
->
-> If we move clang settings before including arch Makefile,
-> "ifneq ($(CROSS_COMPILE),)" comes early.
->
-> Some arch Makefiles (arch/mips/Makefile, arch/blackfin/Makefile, etc.)
-> set CROSS_COMPILE there if CROSS_COMPILE is not given.
->
-> Then, we have a conflict between two requirements among arch.
->
-> [1] arm64, powerpc use ld-option in their Makefile.
->     So, clang flags must be set before inc. arch Makefile.
-> [2] mips, blackfin, etc. may set CROSS_COMPILE in their Makefile.
->     So, we want to reference CROSS_COMPILE only after inc. arch Makefile
->
-> I have no idea how to solve it.
->
-> At this moment, I guess clang is intended to support
-> only limited architectures.
->
-> It might be OK to be compromised here.
+What a strange physical address to place registers on a MIPS system
+though...
 
-I definitely find it curious that certain arch's define CROSS_COMPILE
-themselves.  The benefit is one less argument to supply at compile
-time, but it assumes that the toolchain always has a certain prefix.
-This makes sense to me when cross compiling, but seems odd when
-compiling natively on that arch as the host and target.  Maybe those
-arch's use that convention, or simply are always cross compiled for?
+> +
+> +		interrupt-parent = <&intc>;
+> +
+> +		cpu_ctrl: syscon@70000000 {
+> +			compatible = "syscon";
+> +			reg = <0x70000000 0x2c>;
+> +		};
 
-Taking a survey of all arch's currently in the kernel via `cd arch; ag
-CROSS_COMPILE` and quickly eyeballing the result:
+Then this becomes:
 
-m68k if not set
-arc if not set
-openrisc for some configs (openrisc/configs/or1ksim_defconfig,
-openrisc/configs/simple_smp_defconfig)
-blackfin if not set
-hexagon for some configs (hexagon/configs/comet_defconfig)
-parisc if not set
-sh if not set
-xtensa if not set
-score always
-arm for some configs (arm/configs/lpc18xx_defconfig)
-h8300 if not set
-mips if not set (and explicitly emptied for some configs,
-mips/configs/nlm_xlr_defconfig )
-unicore32 if not set
-tile if not set
+		syscon@0 {
+			compatible = "syscon";
+			reg = <0x0 0x2c>;
+		};
 
-The * if not set (or not being on the list) seems correct, as the top
-level Makefile will handle this correctly.  Setting it for some
-configs seems curious (not necessarily wrong?), emptying it/always
-setting it via config sounds wrong to me, but maybe those hosts don't
-have toolchains and must always be cross compiled for?
+etc.
 
-For reference, this file in LLVM source defines the supported backend
-targets: https://llvm.org/doxygen/Triple_8h_source.html
+> +
+> +		intc: interrupt-controller@70000070 {
+> +			compatible = "mscc,ocelot-icpu-intr";
+> +			reg = <0x70000070 0x70>;
+> +			#interrupt-cells = <1>;
+> +			interrupt-controller;
+> +			interrupt-parent = <&cpuintc>;
+> +			interrupts = <2>;
+> +		};
+> +
+> +		uart0: serial@70100000 {
+> +			pinctrl-0 = <&uart_pins>;
+> +			pinctrl-names = "default";
+> +			compatible = "ns16550a";
+> +			reg = <0x70100000 0x20>;
+> +			interrupts = <6>;
+> +			clocks = <&ahb_clk>;
+> +			reg-io-width = <4>;
+> +			reg-shift = <2>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		uart2: serial@70100800 {
+> +			pinctrl-0 = <&uart2_pins>;
+> +			pinctrl-names = "default";
+> +			compatible = "ns16550a";
+> +			reg = <0x70100800 0x20>;
+> +			interrupts = <7>;
+> +			clocks = <&ahb_clk>;
+> +			reg-io-width = <4>;
+> +			reg-shift = <2>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		chip_regs: syscon@71070000 {
+> +			compatible = "simple-mfd", "syscon";
+> +			reg = <0x71070000 0x1c>;
+> +
+> +			reset {
+> +				compatible = "mscc,ocelot-chip-reset";
+> +				mscc,cpucontrol = <&cpu_ctrl>;
+> +			};
+> +		};
+> +
+> +		gpio: pinctrl@71070034 {
+> +			compatible = "mscc,ocelot-pinctrl";
+> +			reg = <0x71070034 0x28>;
+> +			gpio-controller;
+> +			#gpio-cells = <2>;
+> +			gpio-ranges = <&gpio 0 0 22>;
+> +
+> +			uart_pins: uart-pins {
+> +				pins = "GPIO_6", "GPIO_7";
+> +				function = "uart";
+> +			};
+> +
+> +			uart2_pins: uart2-pins {
+> +				pins = "GPIO_12", "GPIO_13";
+> +				function = "uart2";
+> +			};
+> +		};
+> +	};
+> +};
+> 
 
-Either way, it sounds like we're all set here, I guess I'm just
-curious about the LKML link/context and why some configs set
-CROSS_COMPILE themselves?
+
+-- 
+Florian

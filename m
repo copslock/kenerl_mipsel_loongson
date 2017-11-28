@@ -1,32 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 16:33:34 +0100 (CET)
-Received: from mail.free-electrons.com ([62.4.15.54]:39375 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992121AbdK1P2DdVVJY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 16:28:03 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id D06CD203AB; Tue, 28 Nov 2017 16:27:57 +0100 (CET)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id A1C8E20900;
-        Tue, 28 Nov 2017 16:27:44 +0100 (CET)
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Subject: [PATCH 12/13] MIPS: defconfigs: add a defconfig for Microsemi SoCs
-Date:   Tue, 28 Nov 2017 16:26:42 +0100
-Message-Id: <20171128152643.20463-13-alexandre.belloni@free-electrons.com>
-X-Mailer: git-send-email 2.15.0
-In-Reply-To: <20171128152643.20463-1-alexandre.belloni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 16:35:08 +0100 (CET)
+Received: from smtprelay0081.hostedemail.com ([216.40.44.81]:52255 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23991965AbdK1Pe5xecwY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 16:34:57 +0100
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 89CFE182CED28;
+        Tue, 28 Nov 2017 15:34:54 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: run83_2a8a272bb1d3e
+X-Filterd-Recvd-Size: 1699
+Received: from XPS-9350 (unknown [47.151.150.235])
+        (Authenticated sender: joe@perches.com)
+        by omf04.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 28 Nov 2017 15:34:52 +0000 (UTC)
+Message-ID: <1511883290.19952.20.camel@perches.com>
+Subject: Re: [PATCH 13/13] MAINTAINERS: Add entry for Microsemi MIPS SoCs
+From:   Joe Perches <joe@perches.com>
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Tue, 28 Nov 2017 07:34:50 -0800
+In-Reply-To: <20171128152643.20463-14-alexandre.belloni@free-electrons.com>
 References: <20171128152643.20463-1-alexandre.belloni@free-electrons.com>
-Return-Path: <alexandre.belloni@free-electrons.com>
+         <20171128152643.20463-14-alexandre.belloni@free-electrons.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.26.1-1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61152
+X-archive-position: 61153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,103 +48,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a defconfg that reaches userspace for Microsemi Ocelot.
+On Tue, 2017-11-28 at 16:26 +0100, Alexandre Belloni wrote:
+> Add myself as a maintainer for the Microsemi MIPS SoCs.
+[]
+> diff --git a/MAINTAINERS b/MAINTAINERS
+[]
+> @@ -9062,6 +9062,13 @@ S:	Maintained
+>  F:	drivers/usb/misc/usb251xb.c
+>  F:	Documentation/devicetree/bindings/usb/usb251xb.txt
+>  
+> +MICROSEMI MIPS SOCS
+> +M:	Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> +L:	linux-mips@linux-mips.org
+> +S:	Maintained
+> +F:	arch/mips/mscc/*
+> +F:	arch/mips/boot/dts/mscc/*
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
----
- arch/mips/configs/mscc_defconfig | 84 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 arch/mips/configs/mscc_defconfig
+Do any of these directories also contain subdirectories?
 
-diff --git a/arch/mips/configs/mscc_defconfig b/arch/mips/configs/mscc_defconfig
-new file mode 100644
-index 000000000000..58cf09b1ae82
---- /dev/null
-+++ b/arch/mips/configs/mscc_defconfig
-@@ -0,0 +1,84 @@
-+CONFIG_MSCC_OCELOT=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_MIPS_ELF_APPENDED_DTB=y
-+CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
-+# CONFIG_SWAP is not set
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+# CONFIG_SHMEM is not set
-+CONFIG_EMBEDDED=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_NETFILTER=y
-+CONFIG_NF_CONNTRACK=y
-+# CONFIG_NF_CT_PROTO_DCCP is not set
-+# CONFIG_NF_CT_PROTO_SCTP is not set
-+# CONFIG_NF_CT_PROTO_UDPLITE is not set
-+CONFIG_NETFILTER_XT_MATCH_IPRANGE=y
-+CONFIG_NETFILTER_XT_MATCH_LIMIT=y
-+CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y
-+CONFIG_IP_NF_IPTABLES=y
-+CONFIG_IP_NF_FILTER=y
-+CONFIG_IP_NF_TARGET_REJECT=y
-+CONFIG_IP6_NF_IPTABLES=y
-+CONFIG_IP6_NF_FILTER=y
-+CONFIG_VLAN_8021Q=y
-+CONFIG_NET_SWITCHDEV=y
-+# CONFIG_WIRELESS is not set
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_NAND_PLATFORM=y
-+CONFIG_MTD_SPI_NOR=y
-+CONFIG_MTD_UBI=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_NETDEVICES=y
-+CONFIG_TUN=y
-+CONFIG_MICROSEMI_PHY=y
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_VT is not set
-+CONFIG_N_GSM=y
-+CONFIG_DEVKMEM=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=2
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-+CONFIG_SERIAL_OF_PLATFORM=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_I2C=y
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_MUX=y
-+CONFIG_SPI=y
-+CONFIG_SPI_BITBANG=y
-+CONFIG_SPI_DESIGNWARE=y
-+CONFIG_SPI_SPIDEV=y
-+CONFIG_GPIO_SYSFS=y
-+CONFIG_POWER_RESET=y
-+CONFIG_POWER_RESET_OCELOT_RESET=y
-+CONFIG_SENSORS_TMP401=y
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_UIO=y
-+CONFIG_UIO_PDRV_GENIRQ=y
-+CONFIG_OVERLAY_FS=y
-+CONFIG_JFFS2_FS=y
-+CONFIG_UBIFS_FS=y
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XZ=y
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_PRINTK_TIME=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0x0
-+# CONFIG_EARLY_PRINTK is not set
-+# CONFIG_CRYPTO_HW is not set
--- 
-2.15.0
+This use of * means only the top level directory files
+are matched by this pattern.
+
+Using just a trailing / instead makes any file in any
+subdirectory also match.
+
+Perhaps:
+
+F:	arch/mips/mscc/
+F:	arch/mips/boot/dts/mscc/

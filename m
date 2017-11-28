@@ -1,94 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2017 23:30:13 +0100 (CET)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:36568
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990416AbdK0WaG2B2iy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2017 23:30:06 +0100
-Received: by mail-it0-x244.google.com with SMTP id y71so11525658ita.1;
-        Mon, 27 Nov 2017 14:30:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=jy+lcuRwNI2bAKCSVe0lxonNzdlf+H33DAqCOHP+mFQ=;
-        b=L4DID3gBL0WwXehcziM36ClOfDdBOsb9JUqLaHoVXlukY2rRZ7o7rQt4VjhDXUW8gN
-         eVgKPPmV/nbOyizWcwRrsTDD5WdAl/9MndBi3ES/1ZkqoxjsZ2qTHOz/iSW1Ei0OVlkB
-         Sr8wxorNuBiday5c3Ar+dpf2y1dDoyOeM7XJJPBOEBlieWckmTRtl1pMvW7VFMLTQb2q
-         MpImX8jESoynD6WA0uB56z8ZHQHUhSbPjdqalN9/90N7Fg38fqDl1+KoMT/RaPeMymz1
-         +f7ZqzNRkwqEYjoCqxSlCR+Umvixuu0//eXZNWG3q+XtkyE3g9qHzokVXjElb4/WX0tO
-         a7Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=jy+lcuRwNI2bAKCSVe0lxonNzdlf+H33DAqCOHP+mFQ=;
-        b=evW3+TteSGl+CsBIaOFKoD54kPEqgz4178jgRXIDFBPKak06FfVJv7pjamxued8iUG
-         q8og9oxakyoQjy1sSTJv11A8J94/ZdqiKQUE+xEwfc6fPFZgE5DDyLaxs5lHQ2bLNvjt
-         QdkBVu8uUFTWaW2o/tQqyhLteQBHsahbkmxzIdm3yKLPTHpecvrpSojeQWrgDabdiLDB
-         sQF0GEQ9nJeQaHJR9L3ixSlAsbHscFmW6aRu5y2kIJAWaYlsGE3AvqoU9JU+y4v78803
-         MTG9P2UEThl61FFgdBFXU9qFl1W03eeomPgPTKRt6sY/edRSG9FuuGo3/Wr4q2/ShvEK
-         OEqQ==
-X-Gm-Message-State: AJaThX6t1RCGmlVq1A2Rhk8IOGsRskbpX2CGQ1yCCBh3fqgoKggprXX9
-        nahPggouboH8mOIFyAohIpldKcm2ctxenZW3OKU=
-X-Google-Smtp-Source: AGs4zMYZC40yPY78vKiQ47ujBbYaHqvgHQSi7STrtqewkxZW/sLpSyK4yrs2Gh5qeZcGYEcGrW503vGqzVyHxFsRgOA=
-X-Received: by 10.36.160.201 with SMTP id o192mr28725915ite.58.1511821800260;
- Mon, 27 Nov 2017 14:30:00 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.107.31.205 with HTTP; Mon, 27 Nov 2017 14:29:59 -0800 (PST)
-In-Reply-To: <CAK8P3a2pcpQqf_TNGVxLBePBSKYhxD90UN-FjBor4d-dKhAwbQ@mail.gmail.com>
-References: <20171127193037.8711-1-deepa.kernel@gmail.com> <CAK8P3a2pcpQqf_TNGVxLBePBSKYhxD90UN-FjBor4d-dKhAwbQ@mail.gmail.com>
-From:   Deepa Dinamani <deepa.kernel@gmail.com>
-Date:   Mon, 27 Nov 2017 14:29:59 -0800
-Message-ID: <CABeXuvrBOSVTNSbEZZMKmuTgWeU_VDqjSZkwGAM+bnPh0-72zA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] posix_clocks: Prepare syscalls for 64 bit time_t conversion
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>, cohuck@redhat.com,
-        David Miller <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh <gregkh@linuxfoundation.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:20:24 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59552 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbdK1KUQe25er (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:20:16 +0100
+Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C3ED7B00;
+        Tue, 28 Nov 2017 10:20:08 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Robert Richter <rric@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        sebott@linux.vnet.ibm.com, sparclinux <sparclinux@vger.kernel.org>,
-        Stefan Haberland <sth@linux.vnet.ibm.com>,
-        Ursula Braun <ubraun@linux.vnet.ibm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <deepa.kernel@gmail.com>
+        Djordje Todorovic <djordje.todorovic@rt-rk.com>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 3.18 10/67] MIPS: Fix an n32 core file generation regset support regression
+Date:   Tue, 28 Nov 2017 11:19:09 +0100
+Message-Id: <20171128100421.668057795@linuxfoundation.org>
+X-Mailer: git-send-email 2.15.0
+In-Reply-To: <20171128100420.274075224@linuxfoundation.org>
+References: <20171128100420.274075224@linuxfoundation.org>
+User-Agent: quilt/0.65
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61111
+X-archive-position: 61113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deepa.kernel@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -101,48 +43,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->> I decided against using LEGACY_TIME_SYSCALLS to conditionally compile
->> legacy time syscalls such as sys_nanosleep because this will need to
->> enclose compat_sys_nanosleep as well. So, defining it as
->>
->> config LEGACY_TIME_SYSCALLS
->>      def_bool 64BIT || !64BIT_TIME
->>
->> will not include compat_sys_nanosleep. We will instead need a new config to
->> exclusively mark legacy syscalls.
->
-> Do you mean we would need to do this separately for native and compat
-> syscalls, and have yet another option, like LEGACY_TIME_SYSCALLS
-> and LEGACY_TIME_COMPAT_SYSCALLS, to cover all cases? I would
-> think that CONFIG_COMPAT_32BIT_TIME handles all the compat versions,
-> while CONFIG_LEGACY_TIME_SYSCALLS handles all the native ones.
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
-I meant sys_nanosleep would be covered by LEGACY_TIME_SYSCALLS, but
-compat_sys_nanosleep would be covered by CONFIG_COMPAT_32BIT_TIME
-along with other compat syscalls.
-So, if we define the LEGACY_TIME_SYSCALLS as
+------------------
 
+From: Maciej W. Rozycki <macro@mips.com>
 
-        "This controls the compilation of the following system calls:
-        time, stime, gettimeofday, settimeofday, adjtimex, nanosleep,
-alarm, getitimer,
-        setitimer, select, utime, utimes, futimesat, and
-{old,new}{l,f,}stat{,64}.
-        These all pass 32-bit time_t arguments on 32-bit architectures and
-        are replaced by other interfaces (e.g. posix timers and clocks, statx).
-        C libraries implementing 64-bit time_t in 32-bit architectures have to
-        implement the handles by wrapping around the newer interfaces.
-        New architectures should not explicitly enable this."
+commit 547da673173de51f73887377eb275304775064ad upstream.
 
-This would not be really true as compat interfaces have nothing to do
-with this config.
+Fix a commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+regression, then activated by commit 6a9c001b7ec3 ("MIPS: Switch ELF
+core dumper to use regsets.)", that caused n32 processes to dump o32
+core files by failing to set the EF_MIPS_ABI2 flag in the ELF core file
+header's `e_flags' member:
 
-I was proposing that we could have LEGACY_TIME_SYSCALLS config, but
-then have all these "deprecated" syscalls be enclosed within this,
-compat or not.
-This will also mean that we will have to come up representing these
-syscalls in the syscall header files.
-This can be a separate patch and this series can be merged as is if
-everyone agrees.
+$ file tls-core
+tls-core: ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYSV), [...]
+$ ./tls-core
+Aborted (core dumped)
+$ file core
+core: ELF 32-bit MSB core file MIPS, MIPS-I version 1 (SYSV), SVR4-style
+$
 
--Deepa
+Previously the flag was set as the result of a:
+
+statement placed in arch/mips/kernel/binfmt_elfn32.c, however in the
+regset case, i.e. when CORE_DUMP_USE_REGSET is set, ELF_CORE_EFLAGS is
+no longer used by `fill_note_info' in fs/binfmt_elf.c, and instead the
+`->e_flags' member of the regset view chosen is.  We have the views
+defined in arch/mips/kernel/ptrace.c, however only an o32 and an n64
+one, and the latter is used for n32 as well.  Consequently an o32 core
+file is incorrectly dumped from n32 processes (the ELF32 vs ELF64 class
+is chosen elsewhere, and the 32-bit one is correctly selected for n32).
+
+Correct the issue then by defining an n32 regset view and using it as
+appropriate.  Issue discovered in GDB testing.
+
+Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Djordje Todorovic <djordje.todorovic@rt-rk.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/17617/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/ptrace.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -522,6 +522,19 @@ static const struct user_regset_view use
+ 	.n		= ARRAY_SIZE(mips64_regsets),
+ };
+ 
++#ifdef CONFIG_MIPS32_N32
++
++static const struct user_regset_view user_mipsn32_view = {
++	.name		= "mipsn32",
++	.e_flags	= EF_MIPS_ABI2,
++	.e_machine	= ELF_ARCH,
++	.ei_osabi	= ELF_OSABI,
++	.regsets	= mips64_regsets,
++	.n		= ARRAY_SIZE(mips64_regsets),
++};
++
++#endif /* CONFIG_MIPS32_N32 */
++
+ #endif /* CONFIG_64BIT */
+ 
+ const struct user_regset_view *task_user_regset_view(struct task_struct *task)
+@@ -533,6 +546,10 @@ const struct user_regset_view *task_user
+ 	if (test_tsk_thread_flag(task, TIF_32BIT_REGS))
+ 		return &user_mips_view;
+ #endif
++#ifdef CONFIG_MIPS32_N32
++	if (test_tsk_thread_flag(task, TIF_32BIT_ADDR))
++		return &user_mipsn32_view;
++#endif
+ 	return &user_mips64_view;
+ #endif
+ }

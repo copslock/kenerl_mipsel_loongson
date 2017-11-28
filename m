@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:44:00 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35280 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:44:24 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35302 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992211AbdK1KnxWCE-- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:43:53 +0100
+        by eddie.linux-mips.org with ESMTP id S23992214AbdK1Kn4CPiT- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:43:56 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7B6ACA73;
-        Tue, 28 Nov 2017 10:43:46 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A72C1B14;
+        Tue, 28 Nov 2017 10:43:49 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ben Hutchings <ben@decadent.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Deng-Cheng Zhu <dengcheng.zhu@mips.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 023/193] MIPS: cmpxchg64() and HAVE_VIRT_CPU_ACCOUNTING_GEN dont work for 32-bit SMP
-Date:   Tue, 28 Nov 2017 11:24:30 +0100
-Message-Id: <20171128100614.611270137@linuxfoundation.org>
+        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
+        John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.14 024/193] MIPS: ralink: Fix MT7628 pinmux
+Date:   Tue, 28 Nov 2017 11:24:31 +0100
+Message-Id: <20171128100614.649262335@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171128100613.638270407@linuxfoundation.org>
 References: <20171128100613.638270407@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61125
+X-archive-position: 61126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,55 +47,36 @@ X-list: linux-mips
 
 ------------------
 
-From: Ben Hutchings <ben@decadent.org.uk>
+From: Mathias Kresin <dev@kresin.me>
 
-commit a3f143106596d739e7fbc4b84c96b1475247d876 upstream.
+commit 8ef4b43cd3794d63052d85898e42424fd3b14d24 upstream.
 
-__cmpxchg64_local_generic() is atomic only w.r.t tasks and interrupts
-on the same CPU (that's what the 'local' means).  We can't use it to
-implement cmpxchg64() in SMP configurations.
+According to the datasheet the REFCLK pin is shared with GPIO#37 and
+the PERST pin is shared with GPIO#36.
 
-So, for 32-bit SMP configurations:
-
-- Don't define cmpxchg64()
-- Don't enable HAVE_VIRT_CPU_ACCOUNTING_GEN, which requires it
-
-Fixes: e2093c7b03c1 ("MIPS: Fall back to generic implementation of ...")
-Fixes: bb877e96bea1 ("MIPS: Add support for full dynticks CPU time accounting")
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Fixes: 53263a1c6852 ("MIPS: ralink: add mt7628an support")
+Signed-off-by: Mathias Kresin <dev@kresin.me>
+Acked-by: John Crispin <john@phrozen.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Deng-Cheng Zhu <dengcheng.zhu@mips.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17413/
+Patchwork: https://patchwork.linux-mips.org/patch/16046/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig               |    2 +-
- arch/mips/include/asm/cmpxchg.h |    2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/ralink/mt7620.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -65,7 +65,7 @@ config MIPS
- 	select HAVE_PERF_EVENTS
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_SYSCALL_TRACEPOINTS
--	select HAVE_VIRT_CPU_ACCOUNTING_GEN
-+	select HAVE_VIRT_CPU_ACCOUNTING_GEN if 64BIT || !SMP
- 	select IRQ_FORCED_THREADING
- 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
- 	select MODULES_USE_ELF_REL if MODULES
---- a/arch/mips/include/asm/cmpxchg.h
-+++ b/arch/mips/include/asm/cmpxchg.h
-@@ -204,8 +204,10 @@ static inline unsigned long __cmpxchg(vo
- #else
- #include <asm-generic/cmpxchg-local.h>
- #define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (n))
-+#ifndef CONFIG_SMP
- #define cmpxchg64(ptr, o, n) cmpxchg64_local((ptr), (o), (n))
- #endif
-+#endif
+--- a/arch/mips/ralink/mt7620.c
++++ b/arch/mips/ralink/mt7620.c
+@@ -145,8 +145,8 @@ static struct rt2880_pmx_func i2c_grp_mt
+ 	FUNC("i2c", 0, 4, 2),
+ };
  
- #undef __scbeqz
+-static struct rt2880_pmx_func refclk_grp_mt7628[] = { FUNC("reclk", 0, 36, 1) };
+-static struct rt2880_pmx_func perst_grp_mt7628[] = { FUNC("perst", 0, 37, 1) };
++static struct rt2880_pmx_func refclk_grp_mt7628[] = { FUNC("reclk", 0, 37, 1) };
++static struct rt2880_pmx_func perst_grp_mt7628[] = { FUNC("perst", 0, 36, 1) };
+ static struct rt2880_pmx_func wdt_grp_mt7628[] = { FUNC("wdt", 0, 38, 1) };
+ static struct rt2880_pmx_func spi_grp_mt7628[] = { FUNC("spi", 0, 7, 4) };
  

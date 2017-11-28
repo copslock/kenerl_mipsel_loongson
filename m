@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:33:39 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33456 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2017 11:34:05 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33538 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991339AbdK1KdbTK0P- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:33:31 +0100
+        by eddie.linux-mips.org with ESMTP id S23990513AbdK1Kd5vDxa- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2017 11:33:57 +0100
 Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EF6ECAF3;
-        Tue, 28 Nov 2017 10:33:24 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 71D88A73;
+        Tue, 28 Nov 2017 10:33:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Mirko Parthey <mirko.parthey@web.de>,
-        Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.9 027/138] MIPS: BCM47XX: Fix LED inversion for WRT54GSv1
-Date:   Tue, 28 Nov 2017 11:22:08 +0100
-Message-Id: <20171128100546.675077224@linuxfoundation.org>
+Subject: [PATCH 4.9 022/138] MIPS: pci: Remove KERN_WARN instance inside the mt7620 driver
+Date:   Tue, 28 Nov 2017 11:22:03 +0100
+Message-Id: <20171128100546.351493751@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171128100544.706504901@linuxfoundation.org>
 References: <20171128100544.706504901@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61120
+X-archive-position: 61121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,34 +46,32 @@ X-list: linux-mips
 
 ------------------
 
-From: Mirko Parthey <mirko.parthey@web.de>
+From: John Crispin <john@phrozen.org>
 
-commit 56a46acf62af5ba44fca2f3f1c7c25a2d5385b19 upstream.
+commit 8593b18ad348733b5d5ddfa0c79dcabf51dff308 upstream.
 
-The WLAN LED on the Linksys WRT54GSv1 is active low, but the software
-treats it as active high. Fix the inverted logic.
+Switch the printk() call to the prefered pr_warn() api.
 
-Fixes: 7bb26b169116 ("MIPS: BCM47xx: Fix LEDs on WRT54GS V1.0")
-Signed-off-by: Mirko Parthey <mirko.parthey@web.de>
-Looks-ok-by: Rafał Miłecki <zajec5@gmail.com>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Fixes: 7e5873d3755c ("MIPS: pci: Add MT7620a PCIE driver")
+Signed-off-by: John Crispin <john@phrozen.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16071/
+Patchwork: https://patchwork.linux-mips.org/patch/15321/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/bcm47xx/leds.c |    2 +-
+ arch/mips/pci/pci-mt7620.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -330,7 +330,7 @@ bcm47xx_leds_linksys_wrt54g3gv2[] __init
- /* Verified on: WRT54GS V1.0 */
- static const struct gpio_led
- bcm47xx_leds_linksys_wrt54g_type_0101[] __initconst = {
--	BCM47XX_GPIO_LED(0, "green", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(0, "green", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
- 	BCM47XX_GPIO_LED(1, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
- 	BCM47XX_GPIO_LED(7, "green", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
- };
+--- a/arch/mips/pci/pci-mt7620.c
++++ b/arch/mips/pci/pci-mt7620.c
+@@ -121,7 +121,7 @@ static int wait_pciephy_busy(void)
+ 		else
+ 			break;
+ 		if (retry++ > WAITRETRY_MAX) {
+-			printk(KERN_WARN "PCIE-PHY retry failed.\n");
++			pr_warn("PCIE-PHY retry failed.\n");
+ 			return -1;
+ 		}
+ 	}

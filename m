@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 01:58:30 +0100 (CET)
-Received: from mail-by2nam01on0054.outbound.protection.outlook.com ([104.47.34.54]:46912
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 01:58:52 +0100 (CET)
+Received: from mail-by2nam01on0040.outbound.protection.outlook.com ([104.47.34.40]:6176
         "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990557AbdK2A5UsgJgi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Nov 2017 01:57:20 +0100
+        id S23990490AbdK2A5i0R20i (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Nov 2017 01:57:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=mvop/gh2X09lH/pHwXFuGG9hNFYkfRhAFs6tVnwDAnQ=;
- b=eO8bLXuucSmk1FHRv5fojNPPsHPLFou3bj42rpBRvTjdFcyThCWgd53njLgnsHPzmgCbPraM3DWb+5iBPx6SD97wfbDs07zd5KJz9Sg9z4wKLxfVLGLi3qNPg2pvqVrHkF1lArZbPz5XAFtvKfftrdCiNx6OnEzf9OcatpBwgic=
+ bh=kMJHq47tao7+34JhyLNbR90ACDXgbKhwBC2bmwTUwpQ=;
+ b=g4Afg+07Nwmqv7BCSRi0HXy6jcEdU0BkZ4Vw2ynvCMQ9BRKOgCrY66aYa9jrYtM22odma7wb/bG7VQqPBXcqDABRw46LPqzGQfSPMXtuLFPZSlWCrEQbZF5h5GD35i7SgKesjdoqfy5jhmNZc3kNrkz9g62vrltVZp1N4ZAWr7Y=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
  CY4PR07MB3495.namprd07.prod.outlook.com (10.171.252.152) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.282.5; Wed, 29 Nov 2017 00:57:12 +0000
+ 15.20.282.5; Wed, 29 Nov 2017 00:57:18 +0000
 From:   David Daney <david.daney@cavium.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@mips.com>, netdev@vger.kernel.org,
@@ -30,9 +30,9 @@ Cc:     linux-kernel@vger.kernel.org,
         Carlos Munoz <cmunoz@cavium.com>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v4 3/8] MIPS: Octeon: Add a global resource manager.
-Date:   Tue, 28 Nov 2017 16:55:35 -0800
-Message-Id: <20171129005540.28829-4-david.daney@cavium.com>
+Subject: [PATCH v4 4/8] MIPS: Octeon: Add Free Pointer Unit (FPA) support.
+Date:   Tue, 28 Nov 2017 16:55:36 -0800
+Message-Id: <20171129005540.28829-5-david.daney@cavium.com>
 X-Mailer: git-send-email 2.14.3
 In-Reply-To: <20171129005540.28829-1-david.daney@cavium.com>
 References: <20171129005540.28829-1-david.daney@cavium.com>
@@ -42,47 +42,47 @@ X-Originating-IP: [50.233.148.156]
 X-ClientProxiedBy: BY2PR07CA0096.namprd07.prod.outlook.com (10.166.107.49) To
  CY4PR07MB3495.namprd07.prod.outlook.com (10.171.252.152)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fbd12fbf-017f-41a2-a971-08d536c42387
+X-MS-Office365-Filtering-Correlation-Id: 71844620-5e68-466c-bc40-08d536c42713
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603199);SRVR:CY4PR07MB3495;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3495;3:1iMC0HqD0MBaBX4aB8X8GtBFrHwnCbh3fRDErSNzkTZaB28gTqcqj3Wu/6pjK2COBl/Cmu9X1U8LIwHn4mdEuVLZpMPCYuc1DHkg/oLc2jSBfg287VEB2QjJ6RIN2KTumJDFb5/unt8hOLmRp5n+olAv7FuPG5mFrne0v26aUv2kM4qq2ujHXHQbTRcFzeLvvdQ+rtDc7ZaJJdzGnwfKkaqi0DbTVOkg2trzH+p8Pxiakerb9kLdP4U90/ozLg3G;25:Ix5xtxa8SuJle9IANR+xPSaY3ZfTg9y0efsxNpbdZ4RcqqRJ8AWZnrCOafx+Mmt/fMbdra9H+1QoYhrHKY+6qfNvOvBulzZaab9zQWP7Z47P0c/hNFDFuMtEG1a26lgBMRL/B9vzWw51CqIVK0bZs/PcW2b86AFBOcUkLar4qVtcD9UZ1ZNr76cYc9cpm0r56SFdi8Q/tVlIhtYQe6EdF6US5/ylfhAdNx1/of7VuBNe48QiCLWE+bVjGZkdovDkYYncy31TFOhJiFSW+0ABu3xsuVlMJuFAmSmWkeQN4G3KDkrBCmcP6BJ5zbgHeTcEwp7aTnRoUh4Ztn8tCEiTiEkypCQD2Xzfs6dewtAk78k=;31:b0AqfLVMRT3iBlTpgjllHhHBPc5Lpt3540LRbp2gifzd3w5ZeUDViOACUZQAVca/fqi7dSaLv5Cqag59Pmi53mOb6VFgvPqvvNT/vUwXKTAdQjOaByc+qpMe5K7d4twFdkzSSgomC9R2qclktLZ915R127pl2X62C+rzgGO8hraDPKETzIPozndNFoWv4SrmRTfg4vWF4OgRR3HEgFPyyskrW0ybH+mlKMiiEazPMqk=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3495;3:6nIFaEf86EE2/MuYaEA8pgBoy222bDn6PTDKTE7dfwJ9M8C7YUWRE7ST+yOy+NKbUgZgLK/IsGqBhIqLqUU0i+/+3SUgoPCdKYMAXSn2ifvhZqtvc5cvNNU8ikkNkweaP82DX2bsfLR8mTvbE9ESqDnfdquUeluq5TO74UGiCb6cs5rtVbzUC9UA8JxFE6+DA12lhzp1psETE1OsH30xBuOkCZjNiTJ9E1IM+7FY+HsPW4207AiwJDsLlwRO3Gaz;25:dyPztlBmsB0Y+N51p7fEuYHnJYkYBCyVH45fecu3VWLg2GX5isUDv1aSRyEbZuExbEkb2ba6bY6rNJ/X3XxIrPvs6TWBSSHLjm8/hcwRmd97Ots6hJJET9FAf+U31O24fzKWkIucOvhDstMleRDw6zAsMHTcmrUafJ++iENJED+hHGGv5xYJofh6k6ztjMACpcefGyjZYq0bIc7nb+iZxivX+KxxNPQWvYCLtpmlDBymEHxcl5JmCXfdOw3pe9dVPkmK16HaQnuvY9iEf3o6I1vhBS/o3uw0fuLIMFcehW0hM8E0FjC5yHuZECCi18YJbw62WAYefWh6y/LQymqZLQ==;31:lfIXvtcUJUZI4Br5eBvjcBBVTW2X6OeOQX2Kl0ObzrKQFmcJL62vuXzY2/yQ/nKHpiT1nuBmOPom+XhkdbFwkBhstYunQdiFmdC7KSiVhYq/tSBMWkN/qOdPKigTElmQUVAUJkb4GxnRdow2AbnntyBe2NMbo0Cgkq91V8CqYqEbXh70M2MmfY5yCD8QTlrevQlgcQV6NlGSY12ctRAMLYZBePiMjuxSbw0m2NvH60c=
 X-MS-TrafficTypeDiagnostic: CY4PR07MB3495:
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3495;20:ccfwzE9iGkvRx6kxDweQYbay6PDGjbvLFlz6kT6alfGWlKvMI5tvCSXn3ja/s5g+HzpTOsFnhDbuQ5NHjYL97ov89e1+hRuog9294d3pSeDuneYmVKuE4p2U4Ei/3eSQgCII79bcFvP9wqos3MnSzx700zbfH2EL9CBX+qjwLHFiK1rMivZydldZTgAt7J4btHvP7Qft3SgKc/f/t5w/80hNWc/I7KpraIy5fAZt0e5BBI1avoyITlX1jlKIOUnA67RPXz1sZSNNyVIIrq43OS65ohjCux/tyBBAxTuFnOLh73flokv/FbJnlLcGbugJ3KCsYqmUMqCsKDzHf9ErC8ajG9S2dZt6Q7IrbB2fTEfo35sPhMXkASnbL4VnwHkFhs2XBgqlTEAqbKuKVe0ilTrdHDfhyG7GcDlNlCyjwAatI45z4qawDyTxrUqIV5hujQq49WizlDX2FvIayCSt1samOaTfuDFabLvjjRyYFFiRDkBooyTRSZ/wlpIK7zpN;4:NYpLdKKKQGv9Dfe5RNps3eYq4gQ/f3GDVtHjfmLjE6Dto75bbMqLdgBZ538HbkfZ/PwEKkMYz7D+acxPVs+wAHkqXBujlRVwQzhUxafY/aY4o8zBxaS0pdCZuuTaOs7kUJRTMF36JiaL2C4XseChWNdDwFloSjcNF3BCWcuc1Y+qKlbj4tm76yL8KER72ggBPpaOS7AVNvYcdMYatZnRYFODEo3qmfLCgpr6ZEL6/qC5FWhJ+QcMmqUL+utd9ujSXLNuWQiVsK1GRKCheI1CYQ==
-X-Microsoft-Antispam-PRVS: <CY4PR07MB34958B0949CE3A052D1070B5973B0@CY4PR07MB3495.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3495;20:C1/c7ga2V9POoCXcp294+vogD3xy9HlfwKIrB3SxtcLgdkt9LEgc2jwkSEiY0pt6oCuCECuF1iYyQ33Kin74g47EP3JZ2VMpa58tcwRdvO5tu4BQlxG2ArPm8WrVnhP3d5RPAorqIsWcBgp012zEwOhRNkPSMJHxPBzM3uzivIyYLoWISX7YyN1m9mCDSUlFof4kilw4OwcszDNAyQ364/gf9Dm2zRs/WU1TFtsUFN6hGMtl5EoNNl3KkWrSybtOfJNrYeRDkETVKEKIXtaxCgyGI2xNwFcLI7lcqL8R3jnJQL11UKdrpClbONdylY/0cktwce38QTXGtPX/Ts0DM+Zv8ZPrd3cSUkrhtM+6AZEzlic33/vh1bG/OzD1KVfPpS1E6Gu8UufBUjAu0ex351bTBTWeH0OEuXR+xvtf1m5wGPsEAgIG1Ur6y02yJxGHtE/IlEHyZqosV6Z4/dntnSBnmoiwnNfinj5aSz0bL6i2rTWdvRvllq3GBIsu2f+L;4:dCYeYmW1KGDaboJpyOAPBazmswxven1vVulvYkYKOpKDCqrvfVcOsm56+MaDU9xpkto7+4Eo8g2zJoQFI3blQfYcADI5jDjnNmqmLiE/JPdc3u2/XSxYiw1jtRIlIJeWMletabRAnkEnUZAsdvkuZvm6ZM0mExVAgjo52Di5IljKb/TabOPW3/KLJBpLVVHzHKS2uJOnF5H+1e9LfK/W+nl6fLok1Puco1q7nK+onucUhgYEKwhp2vYoHKg3HklOZHwCBpAN8+MgNcpXV6oJ9A==
+X-Microsoft-Antispam-PRVS: <CY4PR07MB34952E8A623D894C7E57D025973B0@CY4PR07MB3495.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(5005006)(8121501046)(93006095)(93001095)(10201501046)(3002001)(3231022)(6041248)(20161123560025)(20161123558100)(20161123555025)(20161123564025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(6072148)(201708071742011);SRVR:CY4PR07MB3495;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:CY4PR07MB3495;
 X-Forefront-PRVS: 05066DEDBB
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(39830400002)(346002)(366004)(199003)(189002)(50986999)(16586007)(8676002)(4326008)(305945005)(7736002)(76176999)(101416001)(16526018)(86362001)(575784001)(53936002)(39060400002)(107886003)(66066001)(25786009)(81166006)(81156014)(2906002)(50226002)(2950100002)(1076002)(106356001)(7416002)(8936002)(97736004)(105586002)(72206003)(5660300001)(68736007)(6666003)(33646002)(478600001)(3846002)(6116002)(47776003)(189998001)(36756003)(54906003)(110136005)(51416003)(53416004)(6506006)(316002)(6486002)(48376002)(50466002)(52116002)(6512007)(69596002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3495;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(39830400002)(346002)(366004)(199003)(189002)(50986999)(16586007)(8676002)(4326008)(305945005)(7736002)(76176999)(101416001)(16526018)(86362001)(53936002)(39060400002)(107886003)(66066001)(25786009)(81166006)(81156014)(2906002)(50226002)(2950100002)(1076002)(106356001)(7416002)(8936002)(97736004)(105586002)(72206003)(5660300001)(68736007)(6666003)(33646002)(478600001)(3846002)(6116002)(47776003)(189998001)(36756003)(54906003)(110136005)(51416003)(53416004)(6506006)(316002)(6486002)(48376002)(50466002)(52116002)(6512007)(69596002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3495;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY4PR07MB3495;23:2BR7/+kdDurdkZbMvU7MpPibHbqrYtJt6G6ZpzUqp?=
- =?us-ascii?Q?vy5ntUMc5ELUCy2lxxJvR6rpnmiQ5aWHNncDuZ42lQV74macCn+DlydPmTsi?=
- =?us-ascii?Q?vVMNVniKX/MlJqcmu+UjzvwzUSnn1vqGSH4vG0tCT2G17jGT/ABVUmv67MVD?=
- =?us-ascii?Q?JGeHTxB8003dB4mFFjK++qNGEs+Dpp+MEh66RdniZA1b/zJRHymOWmQv1ryM?=
- =?us-ascii?Q?kmZKEqTGB+NJYwfS5+akqdcIb403LYTs2XMqSQ8DgDIB4j2kcLGz+2VQX+g7?=
- =?us-ascii?Q?M46KL3uxnMgsBVOs+nEtWAj7BGHbnQQjT5aE8HALJgIGqkvWsOZYlEXCUZw6?=
- =?us-ascii?Q?Ey10l4hZfSBGsApItmeX9DKfL8AyqlOzMJXDwuVjAbw4QB+mgrHTnWwZ2hJR?=
- =?us-ascii?Q?8zll5uISlWPfNMEgP/xv/WnjpRVcnvcq8wG//pLRXBhES0jiPZMizapdz1F4?=
- =?us-ascii?Q?6cI6PbKvfnVIHM9nPTweZ/5b7Y2R0XQz+Hi3B35Jjyu0NGGfgtMJZ+5v1Sgq?=
- =?us-ascii?Q?SXPSDxyZJZdzaJFihk9KgjRGeBcmi+ZHse80Ms8F3e30P9sKKjIHGPAczUaI?=
- =?us-ascii?Q?h/cYDG/KrlHYOjG8Nk4fKx/XkQynXOePNUMhtITCwRzhXdrkb58bdKoxhGpf?=
- =?us-ascii?Q?HrdbjnInvF+Cnbi7BU1QJKIYcecjeUUtC4aM3pVskG8hsUcWnVyxD1NeEtG2?=
- =?us-ascii?Q?JaAyq71AsImslHYchPzT9nJpluzEVus/T7Zoo9mRFG8Np//exrxj634vNZab?=
- =?us-ascii?Q?NKtMByLCjdTKJjffrvEf7swpQbQ2SwkI/AYBXE0ptpDzq1pO+g5NkcAVL2c9?=
- =?us-ascii?Q?1vglcX4D5JbqtodmHIokv9T7oTYeI7/sMZ7XlgS9F6TsajX0NI3iftCa0tf4?=
- =?us-ascii?Q?9OxbiIPBBgUDhA34vdKgkWO2d/Ym0g1qzAGFC8vNqnPgRk70ZaxZ3+XoBQ7J?=
- =?us-ascii?Q?WPrDnFNnxOOtnxRGvu2QFSizLU4oIyapD+OUDXMzINXdjd7/1Xs6Z8q95qKj?=
- =?us-ascii?Q?p3jE13pZM2KMu796aEpwqVX97JX1BR0hcMiQmDWbStNEleGVMvMlcYe7ROfL?=
- =?us-ascii?Q?RoaIgheiXejTMgpNqifPqYov6jQOkG2iuIT7DIIJGp8NHH4aOHxEhNX7p4Zh?=
- =?us-ascii?Q?W88gz+RpzHlEvpUqguqobqiSKLnTUEgBzBXlotrXxuGHFR8IP/JbPiJKwbdh?=
- =?us-ascii?Q?2m0liKBHzV0gfwcKd/6beLjVQaZ8Wwa3nbAVYW9go6zSPqLx1ULFscN4u1tC?=
- =?us-ascii?Q?KIdT7zcFfRMGx5zR3y5tEdXhpaHzVtCnpLQZLHBPG11yCPDC7+/8vq/40+qK?=
- =?us-ascii?Q?DEmrTWAGQb3ilJJspTc68U=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3495;6:oJqj9JqiIzVhy8X5UNkXyeUwzBLLlYNQ/uayQNPap4jzHl3vcL3I7dX8apMpEqDe65022m0O1I9MAmTxDIMjZFy6kQmrQnm0qkBesuwosS70UTKU94JYx930aSyaiCpR3mJ8/7JyYalZWhV0GRGFUmfanITy6uCCWZ/jbVN30Ei9mbPASdWEs1Ii9s6Tlnj4I1vxiRBECRAYNP7l3EmLSd4+eHe1/lxJEhLf60HgC1x40oknDiMJHbVAqGDTGnJI2J7Zk1AEAuCHy0BqjQp9wQgpSBnUudOrGFoyyMBGCeBmfnYaISfVWfUENK9RY+vMxTZ6y8LbvR3Z+vN4Oe/7yoZK19Qi9oss2RASDZVgrjA=;5:gsZ+2M2wwn4vPWfpmk3yczv4SRm8suRBMcwsq/5geIF1BM66EeCJYwrMK9ByndE3bqAXHnNd0cDr1Tb8TH/29vC5wDYOSJYk+bi9BYpbM6uWsqx3JNIUZlG/dSr8fBpvLS6psD1NCfamBzFxoMrTtFLUpB9n3bPIk8VP3olswAk=;24:v8hUV6mpD1/fxXYE/ODxeAIRDIjoPB5aWXiwCHRy7GTm+KyEBx5Du/99mHHi88mYZu2B18mTn2Dfrb015vc2vG4JS+Jvzoyvg1FchuBbVXw=;7:VLMVAneElDsKNmHjonB9U2Guv3gnzd+YyOU7UDD6UOCi9Y4M5sCYltlYrSjBgQnLSRcqIi8TpYsW+t91mgrYHlMXOKElP/YHOn2z38XSr2WS5ahMnAsJw6XySHvjpVpgd/CdNVq8WZvSzuo+MKC7z0SUTh94AgWzVROY4QMBh3DPvoS+Py3Od6bNWQKMwoLlHFs/7gOn7lh9xR+g+tr6N8RJkkD/+lrAsRgPaHA6fK8+uW0f+0MzjAxWUuLe2hZX
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY4PR07MB3495;23:1XlV8xIU3cmloM6a2OMzKgTN7pJfk2lCTo8pkUJ4K?=
+ =?us-ascii?Q?jgA6tMu0aQxSyN+nCtFG1jxFLgbAH0t2ANsGSHcPFQuEKgJogw1ftRIqv36n?=
+ =?us-ascii?Q?4xCswcrSgEr6pVKAiA82Dc8BOPeRVFK5SOkorIvOkdsFsPQHNUjmBQ5Pmzu8?=
+ =?us-ascii?Q?TA1pHpEv4kR21AK+Tj4vu492U5fQzDkpiT5PM0gss1YprCRhBGpsmJKvx5Tu?=
+ =?us-ascii?Q?yFoPE4IJD0mnpUaYplsbhzSJAX/+g+bnvuc+2YH+musgeBUO4SAN9fg5CnQ1?=
+ =?us-ascii?Q?2VYrug5MRgt+QcZ828MwmVJWEM8PqwjJ7NDhnzYzvGtG7FgpZsOgwtW30ZLZ?=
+ =?us-ascii?Q?qDYwPTVVW+ySRyzRld2fsSw7apK4oo4xfLwfy3ChB4xZwn2ogPwB8PTrfmI4?=
+ =?us-ascii?Q?PCrLirUJQw2k8WeKWUbONpP8PXtovbldKB/t7jvlnNbEwzENeocyZGJVxiqn?=
+ =?us-ascii?Q?qoO76stw+G43DiYIX65GUnCM2s7lNjVADRDCZWhN12USO371JyZ1kCtXAUns?=
+ =?us-ascii?Q?+HuY/Ppons/NOkaj3jiMdmRX0kOw9m1ZpxatTo3ifFF7McgSg6TaboTltlXI?=
+ =?us-ascii?Q?j1dWWn/Z3FzSCFuuEOlLlGYTpeNznoyMNtKlRlbeW4IYwIGlqCae6Kg7kwGQ?=
+ =?us-ascii?Q?FjH8GX/bSPoGr2kZwlarSIBwP8FI2ORLulRWH3HOz2RF5OpcydS1yB6Wip2b?=
+ =?us-ascii?Q?0mOxPxuTaYLzHu8uAU5euJQIlZGv3aiDXv7iyRWHzj5GikVHMdoPSmSFEtiP?=
+ =?us-ascii?Q?mSGCEwOtTbV1THUBYs1shSBX6n4FW0icXX2wZRGwGcUlRmho8EYzqOIOR/Wt?=
+ =?us-ascii?Q?+0yTcuAdHN3E8dMqg5zJkiuleh259CUWR041/EhiWsdehnXIttbMVP3Y01qm?=
+ =?us-ascii?Q?mINcK7/lEGHySfFcJEiGTTX29gsg0/ZNfVhBimzukz/6kqQsRw4eBmEMN8G5?=
+ =?us-ascii?Q?GloU7IxG4kHB24Ez7jcF/WMLSpH9LWRgZ8gSzyhfB0nA9gToXf99wHQtBJwd?=
+ =?us-ascii?Q?6mFcLq5GJUyteeCbhE0pTABXKlr0ufKyzUMyLv8UZbp2FlP6jTrsjW5wCvMu?=
+ =?us-ascii?Q?aE6eQo+3fhy49BTH3oPYw8HNP5vd1xC6s5thPg3TB9N0v7AMYbXNR8lyu3Ih?=
+ =?us-ascii?Q?XRsaJRlWNRLwXYpb6EmCUbbhZwX1cJDbb1LULFqoDFwnXoXiiXIQfWGXuKX6?=
+ =?us-ascii?Q?nMEo7Dv2b9+G70JPaOeT+XKFQgMVafVuk0LxS4HAJYMYkZCHy36QA0vIqFh3?=
+ =?us-ascii?Q?cr9JHfhzoOYiQjK1fnRHD/A5byDmb/aCRAYD4RvXbnNnxfA9SsBpiU1KvE87?=
+ =?us-ascii?B?QT09?=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3495;6:LhccVmRMPw3A9d0MH83+QEA6uzD2abUjcJnMdyyVE26vh/J4Ut+f526HJFDjF3CQuhHtMiKqJES3pUX4EaF3lcOlpsgd/8lyuLm0t/rSdKK5JL6aZYRUfuqb3nDZlYIA1wm5AX3IFT9veq3ZC723BjgYWQCpBNMZ7EPH5yUKRJ1du4sc/nNCtX7Ifj2FeWta/imaMy6fGoRlGFu2Wa3TCrf2dyXgfBCFPtRUmzj1fAwH4D5ZTKIJBz9w/8i/rws1+S/hAXK9cGS0TJWYufPrvwXUSOo5d1v6du4vciZF9b8amHr0eGsm5dQR5RXVB29Hqnpb9S38gP2ybb649Pbg8Y8UegJ5qu4DOl/k5vkgNOc=;5:ZBRatQd8cBQ6+Pn+hZUMn8xy3Xe+3SKOd6ayP0W7JqklRZXQWa0NswMyWBkilr8G9X7rn/GDIDpbdaDIoYw5UGzT7aXFNwW3uoT/Yxdx0xy+L5TfgB70Xzo7tHdiHjkZ83FirBhMv11hFAHnOob6RHU4u9QIDjkSz+fijxJ/2GM=;24:Q6FW5kSA8VAwEI7Pk0tGUYT6ZnFEjkOsAi2xzSYGZOQprRsnRzYOp6xxMqbcAOaExPVKnn1cUm0vuLi/h64RRcIXTWgJgObIbtXkLQjhDvw=;7:9aqKz7j56VSo6JIsaXJnhmEtQe1wF08HBJ5o9isKQI8dmUBfc43y2WnfC4UlrlU5CRSmiQZ9zGmLBFSk/k2KIm0YD3B8JQVvPwfoYsREK19aEYQQVZyCCgfUrHbK0Kvnwrtwblr3p2R+xtJC7S3e+vrnmsQd1E/si8NmrL25T/r5UlLqvKGWsTKVawR34xh5NEdBVgHpWpqK5Tsww6zFDSSAYZbqYRLsiDT34JQ1C15fG9pnddMzdtvBtYBuS/bo
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2017 00:57:12.3981 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbd12fbf-017f-41a2-a971-08d536c42387
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2017 00:57:18.3578 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71844620-5e68-466c-bc40-08d536c42713
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3495
@@ -90,7 +90,7 @@ Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61173
+X-archive-position: 61174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -109,436 +109,447 @@ X-list: linux-mips
 
 From: Carlos Munoz <cmunoz@cavium.com>
 
-Add a global resource manager to manage tagged pointers within
-bootmem allocated memory. This is used by various functional
-blocks in the Octeon core like the FPA, Ethernet nexus, etc.
+From the hardware user manual: "The FPA is a unit that maintains
+pools of pointers to free L2/DRAM memory. To provide QoS, the pools
+are referenced indirectly through 1024 auras. Both core software
+and hardware units allocate and free pointers."
 
 Signed-off-by: Carlos Munoz <cmunoz@cavium.com>
 Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/cavium-octeon/Makefile       |   3 +-
- arch/mips/cavium-octeon/resource-mgr.c | 371 +++++++++++++++++++++++++++++++++
- arch/mips/include/asm/octeon/octeon.h  |  18 ++
- 3 files changed, 391 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/cavium-octeon/resource-mgr.c
+ arch/mips/cavium-octeon/Kconfig       |   8 +
+ arch/mips/cavium-octeon/Makefile      |   1 +
+ arch/mips/cavium-octeon/octeon-fpa3.c | 364 ++++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/octeon/octeon.h |  15 ++
+ 4 files changed, 388 insertions(+)
+ create mode 100644 arch/mips/cavium-octeon/octeon-fpa3.c
 
+diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+index 204a1670fd9b..ce469f982134 100644
+--- a/arch/mips/cavium-octeon/Kconfig
++++ b/arch/mips/cavium-octeon/Kconfig
+@@ -87,4 +87,12 @@ config OCTEON_ILM
+ 	  To compile this driver as a module, choose M here.  The module
+ 	  will be called octeon-ilm
+ 
++config OCTEON_FPA3
++	tristate "Octeon III fpa driver"
++	help
++	  This option enables a Octeon III driver for the Free Pool Unit (FPA).
++	  The FPA is a hardware unit that manages pools of pointers to free
++	  L2/DRAM memory. This driver provides an interface to reserve,
++	  initialize, and fill fpa pools.
++
+ endif # CAVIUM_OCTEON_SOC
 diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
-index 7c02e542959a..0a299ab8719f 100644
+index 0a299ab8719f..0ef967399702 100644
 --- a/arch/mips/cavium-octeon/Makefile
 +++ b/arch/mips/cavium-octeon/Makefile
-@@ -9,7 +9,8 @@
- # Copyright (C) 2005-2009 Cavium Networks
- #
- 
--obj-y := cpu.o setup.o octeon-platform.o octeon-irq.o csrc-octeon.o
-+obj-y := cpu.o setup.o octeon-platform.o octeon-irq.o csrc-octeon.o \
-+	 resource-mgr.o
- obj-y += dma-octeon.o
- obj-y += octeon-memcpy.o
- obj-y += executive/
-diff --git a/arch/mips/cavium-octeon/resource-mgr.c b/arch/mips/cavium-octeon/resource-mgr.c
+@@ -20,3 +20,4 @@ obj-$(CONFIG_MTD)		      += flash_setup.o
+ obj-$(CONFIG_SMP)		      += smp.o
+ obj-$(CONFIG_OCTEON_ILM)	      += oct_ilm.o
+ obj-$(CONFIG_USB)		      += octeon-usb.o
++obj-$(CONFIG_OCTEON_FPA3)	      += octeon-fpa3.o
+diff --git a/arch/mips/cavium-octeon/octeon-fpa3.c b/arch/mips/cavium-octeon/octeon-fpa3.c
 new file mode 100644
-index 000000000000..ca25fa953402
+index 000000000000..a7c7decdbc9a
 --- /dev/null
-+++ b/arch/mips/cavium-octeon/resource-mgr.c
-@@ -0,0 +1,371 @@
++++ b/arch/mips/cavium-octeon/octeon-fpa3.c
+@@ -0,0 +1,364 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Resource manager for Octeon.
++ * Driver for the Octeon III Free Pool Unit (fpa).
 + *
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
 + *
-+ * Copyright (C) 2017 Cavium, Inc.
++ * Copyright (C) 2015-2017 Cavium, Inc.
 + */
++
 +#include <linux/module.h>
 +
 +#include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-bootmem.h>
-+
-+#define RESOURCE_MGR_BLOCK_NAME		"cvmx-global-resources"
-+#define MAX_RESOURCES			128
-+#define INST_AVAILABLE			-88
-+#define OWNER				0xbadc0de
-+
-+struct global_resource_entry {
-+	struct global_resource_tag tag;
-+	u64 phys_addr;
-+	u64 size;
-+};
-+
-+struct global_resources {
-+#ifdef __LITTLE_ENDIAN_BITFIELD
-+	u32 rlock;
-+	u32 pad;
-+#else
-+	u32 pad;
-+	u32 rlock;
-+#endif
-+	u64 entry_cnt;
-+	struct global_resource_entry resource_entry[];
-+};
-+
-+static struct global_resources *res_mgr_info;
 +
 +
-+/*
-+ * The resource manager interacts with software running outside of the
-+ * Linux kernel, which necessitates locking to maintain data structure
-+ * consistency.  These custom locking functions implement the locking
-+ * protocol, and cannot be replaced by kernel locking functions that
-+ * may use different in-memory structures.
-+ */
++/* Registers are accessed via xkphys */
++#define SET_XKPHYS			(1ull << 63)
++#define NODE_OFFSET			0x1000000000ull
++#define SET_NODE(node)			((node) * NODE_OFFSET)
 +
-+static void res_mgr_lock(void)
++#define FPA_BASE			0x1280000000000ull
++#define SET_FPA_BASE(node)		(SET_XKPHYS + SET_NODE(node) + FPA_BASE)
++
++#define FPA_GEN_CFG(n)			(SET_FPA_BASE(n)           + 0x00000050)
++
++#define FPA_POOLX_CFG(n, p)		(SET_FPA_BASE(n) + (p<<3)  + 0x10000000)
++#define FPA_POOLX_START_ADDR(n, p)	(SET_FPA_BASE(n) + (p<<3)  + 0x10500000)
++#define FPA_POOLX_END_ADDR(n, p)	(SET_FPA_BASE(n) + (p<<3)  + 0x10600000)
++#define FPA_POOLX_STACK_BASE(n, p)	(SET_FPA_BASE(n) + (p<<3)  + 0x10700000)
++#define FPA_POOLX_STACK_END(n, p)	(SET_FPA_BASE(n) + (p<<3)  + 0x10800000)
++#define FPA_POOLX_STACK_ADDR(n, p)	(SET_FPA_BASE(n) + (p<<3)  + 0x10900000)
++
++#define FPA_AURAX_POOL(n, a)		(SET_FPA_BASE(n) + (a<<3)  + 0x20000000)
++#define FPA_AURAX_CFG(n, a)		(SET_FPA_BASE(n) + (a<<3)  + 0x20100000)
++#define FPA_AURAX_CNT(n, a)		(SET_FPA_BASE(n) + (a<<3)  + 0x20200000)
++#define FPA_AURAX_CNT_LIMIT(n, a)	(SET_FPA_BASE(n) + (a<<3)  + 0x20400000)
++#define FPA_AURAX_CNT_THRESHOLD(n, a)	(SET_FPA_BASE(n) + (a<<3)  + 0x20500000)
++#define FPA_AURAX_POOL_LEVELS(n, a)	(SET_FPA_BASE(n) + (a<<3)  + 0x20700000)
++#define FPA_AURAX_CNT_LEVELS(n, a)	(SET_FPA_BASE(n) + (a<<3)  + 0x20800000)
++
++static inline u64 oct_csr_read(u64 addr)
 +{
-+	unsigned int tmp;
-+	u64 lock = (u64)&res_mgr_info->rlock;
-+
-+	__asm__ __volatile__(
-+		".set noreorder\n"
-+		"1: ll   %[tmp], 0(%[addr])\n"
-+		"   bnez %[tmp], 1b\n"
-+		"   li   %[tmp], 1\n"
-+		"   sc   %[tmp], 0(%[addr])\n"
-+		"   beqz %[tmp], 1b\n"
-+		"   nop\n"
-+		".set reorder\n" :
-+		[tmp] "=&r"(tmp) :
-+		[addr] "r"(lock) :
-+		"memory");
++	return __raw_readq((void __iomem *)addr);
 +}
 +
-+static void res_mgr_unlock(void)
++static inline void oct_csr_write(u64 data, u64 addr)
 +{
-+	u64 lock = (u64)&res_mgr_info->rlock;
-+
-+	/* Wait until all resource operations finish before unlocking. */
-+	mb();
-+	__asm__ __volatile__(
-+		"sw $0, 0(%[addr])\n" : :
-+		[addr] "r"(lock) :
-+		"memory");
-+
-+	/* Force a write buffer flush. */
-+	mb();
++	__raw_writeq(data, (void __iomem *)addr);
 +}
 +
-+static int res_mgr_find_resource(struct global_resource_tag tag)
++static DEFINE_MUTEX(octeon_fpa3_lock);
++
++static int get_num_pools(void)
 +{
-+	struct global_resource_entry *res_entry;
-+	int i;
-+
-+	for (i = 0; i < res_mgr_info->entry_cnt; i++) {
-+		res_entry = &res_mgr_info->resource_entry[i];
-+		if (res_entry->tag.lo == tag.lo && res_entry->tag.hi == tag.hi)
-+			return i;
-+	}
-+	return -1;
-+}
-+
-+/**
-+ * res_mgr_create_resource - Create a resource.
-+ * @tag: Identifies the resource.
-+ * @inst_cnt: Number of resource instances to create.
-+ *
-+ * Returns 0 if the source was created successfully.
-+ * Returns <0 for error codes.
-+ */
-+int res_mgr_create_resource(struct global_resource_tag tag, int inst_cnt)
-+{
-+	struct global_resource_entry *res_entry;
-+	u64 size;
-+	u64 *res_addr;
-+	int res_index, i, rc = 0;
-+
-+	res_mgr_lock();
-+
-+	/* Make sure resource doesn't already exist. */
-+	res_index = res_mgr_find_resource(tag);
-+	if (res_index >= 0) {
-+		rc = -1;
-+		goto err;
-+	}
-+
-+	if (res_mgr_info->entry_cnt >= MAX_RESOURCES) {
-+		pr_err("Resource max limit reached, not created\n");
-+		rc = -1;
-+		goto err;
-+	}
-+
-+	/*
-+	 * Each instance is kept in an array of u64s. The first array element
-+	 * holds the number of allocated instances.
-+	 */
-+	size = sizeof(u64) * (inst_cnt + 1);
-+	res_addr = cvmx_bootmem_alloc_range(size, CVMX_CACHE_LINE_SIZE, 0, 0);
-+	if (!res_addr) {
-+		pr_err("Failed to allocate resource. not created\n");
-+		rc = -1;
-+		goto err;
-+	}
-+
-+	/* Initialize the newly created resource. */
-+	*res_addr = inst_cnt;
-+	for (i = 1; i < inst_cnt + 1; i++)
-+		*(res_addr + i) = INST_AVAILABLE;
-+
-+	res_index = res_mgr_info->entry_cnt;
-+	res_entry = &res_mgr_info->resource_entry[res_index];
-+	res_entry->tag.lo = tag.lo;
-+	res_entry->tag.hi = tag.hi;
-+	res_entry->phys_addr = virt_to_phys(res_addr);
-+	res_entry->size = size;
-+	res_mgr_info->entry_cnt++;
-+
-+err:
-+	res_mgr_unlock();
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL(res_mgr_create_resource);
-+
-+/**
-+ * res_mgr_alloc_range - Allocate a range of resource instances.
-+ * @tag: Identifies the resource.
-+ * @req_inst: Requested start of instance range to allocate.
-+ *	      Range instances are guaranteed to be sequential
-+ *	      (-1 for don't care).
-+ * @req_cnt: Number of instances to allocate.
-+ * @use_last_avail: Set to request the last available instance.
-+ * @inst: Updated with the allocated instances.
-+ *
-+ * Returns 0 if the source was created successfully.
-+ * Returns <0 for error codes.
-+ */
-+int res_mgr_alloc_range(struct global_resource_tag tag, int req_inst,
-+			int req_cnt, bool use_last_avail, int *inst)
-+{
-+	struct global_resource_entry *res_entry;
-+	int res_index;
-+	u64 *res_addr;
-+	u64 inst_cnt;
-+	int alloc_cnt, i, rc = -1;
-+
-+	/* Start with no instances allocated. */
-+	for (i = 0; i < req_cnt; i++)
-+		inst[i] = INST_AVAILABLE;
-+
-+	res_mgr_lock();
-+
-+	/* Find the resource. */
-+	res_index = res_mgr_find_resource(tag);
-+	if (res_index < 0) {
-+		pr_err("Resource not found, can't allocate instance\n");
-+		goto err;
-+	}
-+
-+	/* Get resource data. */
-+	res_entry = &res_mgr_info->resource_entry[res_index];
-+	res_addr = phys_to_virt(res_entry->phys_addr);
-+	inst_cnt = *res_addr;
-+
-+	/* Allocate the requested instances. */
-+	if (req_inst >= 0) {
-+		/* Specific instance range requested. */
-+		if (req_inst + req_cnt >= inst_cnt) {
-+			pr_err("Requested instance out of range\n");
-+			goto err;
-+		}
-+
-+		for (i = 0; i < req_cnt; i++) {
-+			if (*(res_addr + req_inst + 1 + i) == INST_AVAILABLE)
-+				inst[i] = req_inst + i;
-+			else {
-+				inst[0] = INST_AVAILABLE;
-+				break;
-+			}
-+		}
-+	} else if (use_last_avail) {
-+		/* Last available instance requested. */
-+		alloc_cnt = 0;
-+		for (i = inst_cnt; i > 0; i--) {
-+			if (*(res_addr + i) == INST_AVAILABLE) {
-+				/*
-+				 * Instance off by 1 (first element holds the
-+				 * count).
-+				 */
-+				inst[alloc_cnt] = i - 1;
-+
-+				alloc_cnt++;
-+				if (alloc_cnt == req_cnt)
-+					break;
-+			}
-+		}
-+
-+		if (i == 0)
-+			inst[0] = INST_AVAILABLE;
-+	} else {
-+		/* Next available instance requested. */
-+		alloc_cnt = 0;
-+		for (i = 1; i <= inst_cnt; i++) {
-+			if (*(res_addr + i) == INST_AVAILABLE) {
-+				/*
-+				 * Instance off by 1 (first element holds the
-+				 * count).
-+				 */
-+				inst[alloc_cnt] = i - 1;
-+
-+				alloc_cnt++;
-+				if (alloc_cnt == req_cnt)
-+					break;
-+			}
-+		}
-+
-+		if (i > inst_cnt)
-+			inst[0] = INST_AVAILABLE;
-+	}
-+
-+	if (inst[0] != INST_AVAILABLE) {
-+		for (i = 0; i < req_cnt; i++)
-+			*(res_addr + inst[i] + 1) = OWNER;
-+		rc = 0;
-+	}
-+
-+err:
-+	res_mgr_unlock();
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL(res_mgr_alloc_range);
-+
-+/**
-+ * res_mgr_alloc - Allocate a resource instance.
-+ * @tag: Identifies the resource.
-+ * @req_inst: Requested instance to allocate (-1 for don't care).
-+ * @use_last_avail: Set to request the last available instance.
-+ *
-+ * Returns: Allocated resource instance if successful.
-+ * Returns <0 for error codes.
-+ */
-+int res_mgr_alloc(struct global_resource_tag tag, int req_inst, bool use_last_avail)
-+{
-+	int inst, rc;
-+
-+	rc = res_mgr_alloc_range(tag, req_inst, 1, use_last_avail, &inst);
-+	if (!rc)
-+		return inst;
-+	return rc;
-+}
-+EXPORT_SYMBOL(res_mgr_alloc);
-+
-+/**
-+ * res_mgr_free_range - Free a resource instance range.
-+ * @tag: Identifies the resource.
-+ * @req_inst: Requested instance to free.
-+ * @req_cnt: Number of instances to free.
-+ */
-+void res_mgr_free_range(struct global_resource_tag tag, const int *inst, int req_cnt)
-+{
-+	struct global_resource_entry *res_entry;
-+	int res_index, i;
-+	u64 *res_addr;
-+
-+	res_mgr_lock();
-+
-+	/* Find the resource. */
-+	res_index = res_mgr_find_resource(tag);
-+	if (res_index < 0) {
-+		pr_err("Resource not found, can't free instance\n");
-+		goto err;
-+	}
-+
-+	/* Get the resource data. */
-+	res_entry = &res_mgr_info->resource_entry[res_index];
-+	res_addr = phys_to_virt(res_entry->phys_addr);
-+
-+	/* Free the resource instances. */
-+	for (i = 0; i < req_cnt; i++) {
-+		/* Instance off by 1 (first element holds the count). */
-+		*(res_addr + inst[i] + 1) = INST_AVAILABLE;
-+	}
-+
-+err:
-+	res_mgr_unlock();
-+}
-+EXPORT_SYMBOL(res_mgr_free_range);
-+
-+/**
-+ * res_mgr_free - Free a resource instance.
-+ * @tag: Identifies the resource.
-+ * @req_inst: Requested instance to free.
-+ */
-+void res_mgr_free(struct global_resource_tag tag, int inst)
-+{
-+	res_mgr_free_range(tag, &inst, 1);
-+}
-+EXPORT_SYMBOL(res_mgr_free);
-+
-+static int __init res_mgr_init(void)
-+{
-+	struct cvmx_bootmem_named_block_desc *block;
-+	int block_size;
-+	u64 addr;
-+
-+	cvmx_bootmem_lock();
-+
-+	/* Search for the resource manager data in boot memory. */
-+	block = cvmx_bootmem_phy_named_block_find(RESOURCE_MGR_BLOCK_NAME, CVMX_BOOTMEM_FLAG_NO_LOCKING);
-+	if (block) {
-+		/* Found. */
-+		res_mgr_info = phys_to_virt(block->base_addr);
-+	} else {
-+		/* Create it. */
-+		block_size = sizeof(struct global_resources) +
-+			sizeof(struct global_resource_entry) * MAX_RESOURCES;
-+		addr = cvmx_bootmem_phy_named_block_alloc(block_size, 0, 0,
-+				CVMX_CACHE_LINE_SIZE, RESOURCE_MGR_BLOCK_NAME,
-+				CVMX_BOOTMEM_FLAG_NO_LOCKING);
-+		if (!addr) {
-+			pr_err("Failed to allocate name block %s\n",
-+			       RESOURCE_MGR_BLOCK_NAME);
-+		} else {
-+			res_mgr_info = phys_to_virt(addr);
-+			memset(res_mgr_info, 0, block_size);
-+		}
-+	}
-+
-+	cvmx_bootmem_unlock();
-+
++	if (OCTEON_IS_MODEL(OCTEON_CN78XX))
++		return 64;
++	if (OCTEON_IS_MODEL(OCTEON_CNF75XX) || OCTEON_IS_MODEL(OCTEON_CN73XX))
++		return 32;
 +	return 0;
 +}
-+device_initcall(res_mgr_init);
++
++static int get_num_auras(void)
++{
++	if (OCTEON_IS_MODEL(OCTEON_CN78XX))
++		return 1024;
++	if (OCTEON_IS_MODEL(OCTEON_CNF75XX) || OCTEON_IS_MODEL(OCTEON_CN73XX))
++		return 512;
++	return 0;
++}
++
++/**
++ * octeon_fpa3_init - Initialize the fpa to default values.
++ * @node: Node of fpa to initialize.
++ *
++ * Returns 0 if successful.
++ * Returns <0 for error codes.
++ */
++int octeon_fpa3_init(int node)
++{
++	static bool init_done[2];
++	u64 data;
++	int aura_cnt, i;
++
++	mutex_lock(&octeon_fpa3_lock);
++
++	if (init_done[node])
++		goto done;
++
++	aura_cnt = get_num_auras();
++	for (i = 0; i < aura_cnt; i++) {
++		oct_csr_write(0x100000000ull, FPA_AURAX_CNT(node, i));
++		oct_csr_write(0xfffffffffull, FPA_AURAX_CNT_LIMIT(node, i));
++		oct_csr_write(0xffffffffeull, FPA_AURAX_CNT_THRESHOLD(node, i));
++	}
++
++	data = oct_csr_read(FPA_GEN_CFG(node));
++	data &= ~GENMASK_ULL(9, 4);
++	data |= 3 << 4;
++	oct_csr_write(data, FPA_GEN_CFG(node));
++
++	init_done[node] = 1;
++ done:
++	mutex_unlock(&octeon_fpa3_lock);
++	return 0;
++}
++EXPORT_SYMBOL(octeon_fpa3_init);
++
++/**
++ * octeon_fpa3_pool_init - Initialize a pool.
++ * @node: Node to initialize pool on.
++ * @pool_num: Requested pool number (-1 for don't care).
++ * @pool: Updated with the initialized pool number.
++ * @pool_stack: Updated with the base of the memory allocated for the pool
++ *		stack.
++ * @num_ptrs: Number of pointers to allocated on the stack.
++ *
++ * Returns 0 if successful.
++ * Returns <0 for error codes.
++ */
++int octeon_fpa3_pool_init(int node, int pool_num, int *pool, void **pool_stack, int num_ptrs)
++{
++	struct global_resource_tag tag;
++	char buf[16];
++	u64 pool_stack_start, pool_stack_end, data;
++	int stack_size, rc = 0;
++
++	mutex_lock(&octeon_fpa3_lock);
++
++	strncpy((char *)&tag.lo, "cvm_pool", 8);
++	snprintf(buf, 16, "_%d......", node);
++	memcpy(&tag.hi, buf, 8);
++
++	res_mgr_create_resource(tag, get_num_pools());
++	*pool = res_mgr_alloc(tag, pool_num, true);
++	if (*pool < 0) {
++		rc = -ENODEV;
++		goto error;
++	}
++
++	oct_csr_write(0, FPA_POOLX_CFG(node, *pool));
++	oct_csr_write(128, FPA_POOLX_START_ADDR(node, *pool));
++	oct_csr_write(GENMASK_ULL(41, 7), FPA_POOLX_END_ADDR(node, *pool));
++
++	stack_size = (DIV_ROUND_UP(num_ptrs, 29) + 1) * 128;
++	*pool_stack = kmalloc_node(stack_size, GFP_KERNEL, node);
++	if (!*pool_stack) {
++		pr_err("Failed to allocate pool stack memory pool=%d\n",
++		       pool_num);
++		rc = -ENOMEM;
++		goto error_stack;
++	}
++
++	pool_stack_start = virt_to_phys(*pool_stack);
++	pool_stack_end = round_down(pool_stack_start + stack_size, 128);
++	pool_stack_start = round_up(pool_stack_start, 128);
++	oct_csr_write(pool_stack_start, FPA_POOLX_STACK_BASE(node, *pool));
++	oct_csr_write(pool_stack_start, FPA_POOLX_STACK_ADDR(node, *pool));
++	oct_csr_write(pool_stack_end, FPA_POOLX_STACK_END(node, *pool));
++
++	data = (2 << 3) | BIT(0);
++	oct_csr_write(data, FPA_POOLX_CFG(node, *pool));
++
++	mutex_unlock(&octeon_fpa3_lock);
++	return 0;
++
++error_stack:
++	res_mgr_free(tag, *pool);
++error:
++	mutex_unlock(&octeon_fpa3_lock);
++	return rc;
++}
++EXPORT_SYMBOL(octeon_fpa3_pool_init);
++
++/**
++ * octeon_fpa3_release_pool - Release a pool.
++ * @node: Node pool is on.
++ * @pool: Pool to release.
++ */
++void octeon_fpa3_release_pool(int node, int pool)
++{
++	struct global_resource_tag tag;
++	char buf[16];
++
++	mutex_lock(&octeon_fpa3_lock);
++
++	strncpy((char *)&tag.lo, "cvm_pool", 8);
++	snprintf(buf, 16, "_%d......", node);
++	memcpy(&tag.hi, buf, 8);
++
++	res_mgr_free(tag, pool);
++
++	mutex_unlock(&octeon_fpa3_lock);
++}
++EXPORT_SYMBOL(octeon_fpa3_release_pool);
++
++/**
++ * octeon_fpa3_aura_init - Initialize an aura.
++ * @node: Node to initialize aura on.
++ * @pool: Pool the aura belongs to.
++ * @aura_num: Requested aura number (-1 for don't care).
++ * @aura: Updated with the initialized aura number.
++ * @num_bufs: Number of buffers in the aura.
++ * @limit: Limit for the aura.
++ *
++ * Returns 0 if successful.
++ * Returns <0 for error codes.
++ */
++int octeon_fpa3_aura_init(int node, int pool, int aura_num, int *aura, int num_bufs, unsigned int limit)
++{
++	struct global_resource_tag tag;
++	char buf[16];
++	u64 data, shift;
++	unsigned int drop, pass;
++	int rc = 0;
++
++	mutex_lock(&octeon_fpa3_lock);
++
++	strncpy((char *)&tag.lo, "cvm_aura", 8);
++	snprintf(buf, 16, "_%d......", node);
++	memcpy(&tag.hi, buf, 8);
++
++	res_mgr_create_resource(tag, get_num_auras());
++	*aura = res_mgr_alloc(tag, aura_num, true);
++	if (*aura < 0) {
++		rc = -ENODEV;
++		goto error;
++	}
++
++	oct_csr_write(0, FPA_AURAX_CFG(node, *aura));
++
++	/* Allow twice the limit before saturation at zero */
++	limit *= 2;
++	data = limit;
++	oct_csr_write(data, FPA_AURAX_CNT_LIMIT(node, *aura));
++	oct_csr_write(data, FPA_AURAX_CNT(node, *aura));
++
++	oct_csr_write(pool, FPA_AURAX_POOL(node, *aura));
++
++	/* No per-pool RED/Drop */
++	oct_csr_write(0, FPA_AURAX_POOL_LEVELS(node, *aura));
++
++	shift = 0;
++	while ((limit >> shift) > 255)
++		shift++;
++
++	drop = (limit - num_bufs / 20) >> shift;	/* 95% */
++	pass = (limit - (num_bufs * 3) / 20) >> shift;	/* 85% */
++
++	/* Enable per aura RED/drop */
++	data = BIT(38) | (shift << 32) | (drop << 16) | (pass << 8);
++	oct_csr_write(data, FPA_AURAX_CNT_LEVELS(node, *aura));
++
++error:
++	mutex_unlock(&octeon_fpa3_lock);
++	return rc;
++}
++EXPORT_SYMBOL(octeon_fpa3_aura_init);
++
++/**
++ * octeon_fpa3_release_aura - Release an aura.
++ * @node: Node to aura is on.
++ * @aura: Aura to release.
++ */
++void octeon_fpa3_release_aura(int node, int aura)
++{
++	struct global_resource_tag tag;
++	char buf[16];
++
++	mutex_lock(&octeon_fpa3_lock);
++
++	strncpy((char *)&tag.lo, "cvm_aura", 8);
++	snprintf(buf, 16, "_%d......", node);
++	memcpy(&tag.hi, buf, 8);
++
++	res_mgr_free(tag, aura);
++
++	mutex_unlock(&octeon_fpa3_lock);
++}
++EXPORT_SYMBOL(octeon_fpa3_release_aura);
++
++/**
++ * octeon_fpa3_alloc - Get a buffer from a aura's pool.
++ * @node: Node to free memory to.
++ * @aura: Aura to free memory to.
++ *
++ * Returns allocated buffer pointer if successful
++ * Returns NULL on error.
++ */
++void *octeon_fpa3_alloc(u64 node, int aura)
++{
++	u64 buf_phys, addr;
++	void *buf = NULL;
++
++	/* Buffer pointers are obtained using load operations */
++	addr = BIT(63) | BIT(48) | (0x29ull << 40) | (node << 36) |
++		(aura << 16);
++	buf_phys = *(u64 *)addr;
++
++	if (buf_phys)
++		buf = phys_to_virt(buf_phys);
++
++	return buf;
++}
++EXPORT_SYMBOL(octeon_fpa3_alloc);
++
++/**
++ * octeon_fpa3_free - Add a buffer back to the aura's pool.
++ * @node: Node to free memory to.
++ * @aura: Aura to free memory to.
++ * @buf: Address of buffer to free to the aura's pool.
++ */
++void octeon_fpa3_free(u64 node, int aura, const void *buf)
++{
++	u64 buf_phys, addr;
++
++	buf_phys = virt_to_phys(buf);
++
++	/* Make sure that any previous writes to memory go out before we free
++	 * this buffer. This also serves as a barrier to prevent GCC from
++	 * reordering operations to after the free.
++	 */
++	wmb();
++
++	/* Buffers are added to fpa pools using store operations */
++	addr = BIT(63) | BIT(48) | (0x29ull << 40) | (node << 36) | (aura << 16);
++	*(u64 *)addr = buf_phys;
++}
++EXPORT_SYMBOL(octeon_fpa3_free);
++
++/**
++ * octeon_fpa3_mem_fill - Add buffers to an aura.
++ * @node: Node to get memory from.
++ * @cache: Memory cache to allocate from.
++ * @aura: Aura to add buffers to.
++ * @num_bufs: Number of buffers to add to the aura.
++ *
++ * Returns 0 if successful.
++ * Returns <0 for error codes.
++ */
++int octeon_fpa3_mem_fill(int node, struct kmem_cache *cache, int aura, int num_bufs)
++{
++	void *mem;
++	int i, rc = 0;
++
++	mutex_lock(&octeon_fpa3_lock);
++
++	for (i = 0; i < num_bufs; i++) {
++		mem = kmem_cache_alloc_node(cache, GFP_KERNEL, node);
++		if (!mem) {
++			pr_err("Failed to allocate memory for aura=%d\n", aura);
++			rc = -ENOMEM;
++			break;
++		}
++		octeon_fpa3_free(node, aura, mem);
++	}
++
++	mutex_unlock(&octeon_fpa3_lock);
++	return rc;
++}
++EXPORT_SYMBOL(octeon_fpa3_mem_fill);
 +
 +MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Cavium, Inc. Octeon resource manager");
++MODULE_DESCRIPTION("Cavium, Inc. Octeon III FPA manager.");
 diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index 92a17d67c1fa..0411efdb465c 100644
+index 0411efdb465c..d184592e6515 100644
 --- a/arch/mips/include/asm/octeon/octeon.h
 +++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -346,6 +346,24 @@ void octeon_mult_restore3_end(void);
- void octeon_mult_restore2(void);
- void octeon_mult_restore2_end(void);
+@@ -10,6 +10,7 @@
  
-+/*
-+ * This definition must be kept in sync with the one in
-+ * cvmx-global-resources.c
-+ */
-+struct global_resource_tag {
-+	uint64_t lo;
-+	uint64_t hi;
-+};
-+
-+void res_mgr_free(struct global_resource_tag tag, int inst);
-+void res_mgr_free_range(struct global_resource_tag tag, const int *inst,
-+			int req_cnt);
-+int res_mgr_alloc(struct global_resource_tag tag, int req_inst,
-+		  bool use_last_avail);
-+int res_mgr_alloc_range(struct global_resource_tag tag, int req_inst,
-+			int req_cnt, bool use_last_avail, int *inst);
-+int res_mgr_create_resource(struct global_resource_tag tag, int inst_cnt);
+ #include <asm/octeon/cvmx.h>
+ #include <asm/bitfield.h>
++#include <linux/slab.h>
+ 
+ extern uint64_t octeon_bootmem_alloc_range_phys(uint64_t size,
+ 						uint64_t alignment,
+@@ -364,6 +365,20 @@ int res_mgr_alloc_range(struct global_resource_tag tag, int req_inst,
+ 			int req_cnt, bool use_last_avail, int *inst);
+ int res_mgr_create_resource(struct global_resource_tag tag, int inst_cnt);
+ 
++#if IS_ENABLED(CONFIG_OCTEON_FPA3)
++int octeon_fpa3_init(int node);
++int octeon_fpa3_pool_init(int node, int pool_num, int *pool, void **pool_stack,
++			  int num_ptrs);
++int octeon_fpa3_aura_init(int node, int pool, int aura_num, int *aura,
++			  int num_bufs, unsigned int limit);
++int octeon_fpa3_mem_fill(int node, struct kmem_cache *cache, int aura,
++			 int num_bufs);
++void octeon_fpa3_free(u64 node, int aura, const void *buf);
++void *octeon_fpa3_alloc(u64 node, int aura);
++void octeon_fpa3_release_pool(int node, int pool);
++void octeon_fpa3_release_aura(int node, int aura);
++#endif
 +
  /**
   * Read a 32bit value from the Octeon NPI register space

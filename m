@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 17:43:34 +0100 (CET)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:36008
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990740AbdK2QlcuseGa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Nov 2017 17:41:32 +0100
-Received: by mail-wm0-x242.google.com with SMTP id b76so7247147wmg.1
-        for <linux-mips@linux-mips.org>; Wed, 29 Nov 2017 08:41:32 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 17:43:58 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:39886
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990484AbdK2Qle1oPna (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Nov 2017 17:41:34 +0100
+Received: by mail-wm0-x243.google.com with SMTP id i11so7184694wmf.4
+        for <linux-mips@linux-mips.org>; Wed, 29 Nov 2017 08:41:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Dc+K6GcI8JciAx3+9nFGUD/9jiDe0Rr3SUqjuPfgac0=;
-        b=gGVSkV4FpQdzCsTJVbXNgsraWua0ZRqIaxFy1fzKxGf6gASTOezngQkQ5gXfjh0rDk
-         VpfWRRzUvwu1fiHAuTHD1HzlFat5y5F3k43LMjQHWpuGaWb1rcpRa6BP6aNv5xe5kSEx
-         hLcH8IEOJ8m9kPKvB2xxEGDkbE4fC5K5BfwIU=
+        bh=+x7Tj1ma7JNOaL50EYqTseGo42XF3O2SwSjAwDF+Wbw=;
+        b=KNJZx6rOmR7Ud97yP0Dpurj2gFyehl7NCP/FShf4lpCkACcZF0JnQOFweebKMoIJGs
+         a5YAQkRGr2sTUVlJS9MakC2iFzQNhMn27gqF5WcNjXhZuKZxx98PLfCSvqjsH8eNKLGS
+         e+kGX8Ln9qat+tW585xuhxUlAKcz0+wt+GQCc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Dc+K6GcI8JciAx3+9nFGUD/9jiDe0Rr3SUqjuPfgac0=;
-        b=bWsK+9DpNdZKRDZys3RGSNmigS7qXcA3G4cX/75h1hpb54FlPrlYdAN4Ffbr+Er+hS
-         IUJmqMr/Bw574f9s7U/rYYleDIUF7D1tN9xMPB9q75ejHBJt6/qxsdbeKACppjZgZeZn
-         s/lwCBnF8xP5xu3Sjs2SwIwvJ9vtff8thlgUT4/y2bbvUFFE+dlZZpYmFVwfGdXhBFiI
-         Cz2jinYvWjys99CCxa1shipDSOfaBlJJCyqIIo9l5F+XgJGEnUrDbL1mfVTbGDflgDaN
-         YNkWep8zfuVR6y+Rpdn2RveRhD9XfSbXunjtYQCQFBltK98tANfkTQXf3vhNXGRdVAL8
-         +ynw==
-X-Gm-Message-State: AJaThX5zJ/xd1KSJLNsSx+S/veDPqSRT4G4m3KRglpZZYN0EZ0gLUHYI
-        auRvDlDyqU7N2pYTpfyzCKO4hg==
-X-Google-Smtp-Source: AGs4zMZdqKqMX+FdFk5QlHszN/MlwPcqcizYnHgHv421QbmgjGhH+UExirxxyySb7D7rYZaGtHr0ag==
-X-Received: by 10.28.31.131 with SMTP id f125mr2776759wmf.18.1511973687444;
-        Wed, 29 Nov 2017 08:41:27 -0800 (PST)
+        bh=+x7Tj1ma7JNOaL50EYqTseGo42XF3O2SwSjAwDF+Wbw=;
+        b=OtGAxtsg09PwrRHaZLdCL55rHzP+rsb2kJSV2sBRu1zmIlda75ylMnvgUdsadSS5G3
+         IaDJFIHpfe0O2NUD0E+/1kBEHLP5l5+maFAZmxjORcWAnVgMx2e6ZstSJeXc4a3kocAc
+         Eat5hA6S+94pZfVQSrGUcoYQheylxKLfi0DuRJ+0L58b1sf/7aMgcSPRERDAs29nEh5y
+         d9yFyhp19M+UGLnM0xwUHl6omzIQSQRujyWkh0vuVpkZaq9FTPSyuySLKsYKJr2WlXuQ
+         nF5+sxiMQaRMWNTfRSqRP+GT51wDj4wBtAVj/XUjZ8fsKqCGU4KiK59+EMkOmIG61Lnf
+         aTcQ==
+X-Gm-Message-State: AJaThX6jSoScswo9B81PhlVLgrFXLiWTjknYl1doB2Yk9nRLQySu+0SG
+        GwFTadTnLcRCkIPcJpZRJVrVEQ==
+X-Google-Smtp-Source: AGs4zMZcPT1zG/d/V2nEM5C8lXr+7/bDIsyScfv7hwUSlupwMwUoRxR3z52PooLq05QqJlY2iObryA==
+X-Received: by 10.28.63.9 with SMTP id m9mr3184329wma.137.1511973689102;
+        Wed, 29 Nov 2017 08:41:29 -0800 (PST)
 Received: from localhost.localdomain (x50d2404e.cust.hiper.dk. [80.210.64.78])
-        by smtp.gmail.com with ESMTPSA id e71sm2080765wma.13.2017.11.29.08.41.25
+        by smtp.gmail.com with ESMTPSA id e71sm2080765wma.13.2017.11.29.08.41.27
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 29 Nov 2017 08:41:26 -0800 (PST)
+        Wed, 29 Nov 2017 08:41:28 -0800 (PST)
 From:   Christoffer Dall <christoffer.dall@linaro.org>
 To:     kvm@vger.kernel.org
 Cc:     Andrew Jones <drjones@redhat.com>,
@@ -44,9 +44,9 @@ Cc:     Andrew Jones <drjones@redhat.com>,
         Alexander Graf <agraf@suse.com>, kvm-ppc@vger.kernel.org,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-Subject: [PATCH v2 05/16] KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_set_regs
-Date:   Wed, 29 Nov 2017 17:41:05 +0100
-Message-Id: <20171129164116.16167-6-christoffer.dall@linaro.org>
+Subject: [PATCH v2 06/16] KVM: Move vcpu_load to arch-specific kvm_arch_vcpu_ioctl_get_sregs
+Date:   Wed, 29 Nov 2017 17:41:06 +0100
+Message-Id: <20171129164116.16167-7-christoffer.dall@linaro.org>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171129164116.16167-1-christoffer.dall@linaro.org>
 References: <20171129164116.16167-1-christoffer.dall@linaro.org>
@@ -54,7 +54,7 @@ Return-Path: <christoffer.dall@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61198
+X-archive-position: 61199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,129 +72,111 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Move vcpu_load() and vcpu_put() into the architecture specific
-implementations of kvm_arch_vcpu_ioctl_set_regs().
+implementations of kvm_arch_vcpu_ioctl_get_sregs().
 
 Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
 ---
- arch/mips/kvm/mips.c      | 3 +++
- arch/powerpc/kvm/book3s.c | 3 +++
- arch/powerpc/kvm/booke.c  | 3 +++
- arch/s390/kvm/kvm-s390.c  | 2 ++
+ arch/powerpc/kvm/book3s.c | 8 +++++++-
+ arch/powerpc/kvm/booke.c  | 9 ++++++++-
+ arch/s390/kvm/kvm-s390.c  | 4 ++++
  arch/x86/kvm/x86.c        | 3 +++
  virt/kvm/kvm_main.c       | 2 --
- 6 files changed, 14 insertions(+), 2 deletions(-)
+ 5 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index adfca57..3a89871 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1151,6 +1151,8 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- {
- 	int i;
- 
-+	vcpu_load(vcpu);
-+
- 	for (i = 1; i < ARRAY_SIZE(vcpu->arch.gprs); i++)
- 		vcpu->arch.gprs[i] = regs->gpr[i];
- 	vcpu->arch.gprs[0] = 0; /* zero is special, and cannot be set. */
-@@ -1158,6 +1160,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 	vcpu->arch.lo = regs->lo;
- 	vcpu->arch.pc = regs->pc;
- 
-+	vcpu_put(vcpu);
- 	return 0;
- }
- 
 diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index d85bfd7..24bc7aa 100644
+index 24bc7aa..6cc2377 100644
 --- a/arch/powerpc/kvm/book3s.c
 +++ b/arch/powerpc/kvm/book3s.c
-@@ -528,6 +528,8 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+@@ -484,7 +484,13 @@ void kvmppc_subarch_vcpu_uninit(struct kvm_vcpu *vcpu)
+ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
+ 				  struct kvm_sregs *sregs)
  {
- 	int i;
- 
-+	vcpu_load(vcpu);
+-	return vcpu->kvm->arch.kvm_ops->get_sregs(vcpu, sregs);
++	int ret;
 +
- 	kvmppc_set_pc(vcpu, regs->pc);
- 	kvmppc_set_cr(vcpu, regs->cr);
- 	kvmppc_set_ctr(vcpu, regs->ctr);
-@@ -548,6 +550,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 	for (i = 0; i < ARRAY_SIZE(regs->gpr); i++)
- 		kvmppc_set_gpr(vcpu, i, regs->gpr[i]);
- 
++	vcpu_load(vcpu);
++	ret = vcpu->kvm->arch.kvm_ops->get_sregs(vcpu, sregs);
 +	vcpu_put(vcpu);
- 	return 0;
++
++	return ret;
  }
  
+ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
 diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index e0e4f04..bcbbedd 100644
+index bcbbedd..f647e12 100644
 --- a/arch/powerpc/kvm/booke.c
 +++ b/arch/powerpc/kvm/booke.c
-@@ -1462,6 +1462,8 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+@@ -1613,11 +1613,18 @@ int kvmppc_set_sregs_ivor(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
+                                   struct kvm_sregs *sregs)
  {
- 	int i;
- 
++	int ret;
++
 +	vcpu_load(vcpu);
 +
- 	vcpu->arch.pc = regs->pc;
- 	kvmppc_set_cr(vcpu, regs->cr);
- 	vcpu->arch.ctr = regs->ctr;
-@@ -1483,6 +1485,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 	for (i = 0; i < ARRAY_SIZE(regs->gpr); i++)
- 		kvmppc_set_gpr(vcpu, i, regs->gpr[i]);
+ 	sregs->pvr = vcpu->arch.pvr;
  
+ 	get_sregs_base(vcpu, sregs);
+ 	get_sregs_arch206(vcpu, sregs);
+-	return vcpu->kvm->arch.kvm_ops->get_sregs(vcpu, sregs);
++	ret = vcpu->kvm->arch.kvm_ops->get_sregs(vcpu, sregs);
++
 +	vcpu_put(vcpu);
- 	return 0;
++	return ret;
  }
  
+ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
 diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 37b7caa..e347643 100644
+index e347643..18011fc 100644
 --- a/arch/s390/kvm/kvm-s390.c
 +++ b/arch/s390/kvm/kvm-s390.c
-@@ -2712,7 +2712,9 @@ static int kvm_arch_vcpu_ioctl_initial_reset(struct kvm_vcpu *vcpu)
- 
- int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+@@ -2737,8 +2737,12 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
+ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
+ 				  struct kvm_sregs *sregs)
  {
 +	vcpu_load(vcpu);
- 	memcpy(&vcpu->run->s.regs.gprs, &regs->gprs, sizeof(regs->gprs));
++
+ 	memcpy(&sregs->acrs, &vcpu->run->s.regs.acrs, sizeof(sregs->acrs));
+ 	memcpy(&sregs->crs, &vcpu->arch.sie_block->gcr, sizeof(sregs->crs));
++
 +	vcpu_put(vcpu);
  	return 0;
  }
  
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 597e1f8..75eacce 100644
+index 75eacce..20a5f67 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -7350,6 +7350,8 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 
- int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+@@ -7400,6 +7400,8 @@ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
  {
+ 	struct desc_ptr dt;
+ 
 +	vcpu_load(vcpu);
 +
- 	vcpu->arch.emulate_regs_need_sync_from_vcpu = true;
- 	vcpu->arch.emulate_regs_need_sync_to_vcpu = false;
- 
-@@ -7379,6 +7381,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
+ 	kvm_get_segment(vcpu, &sregs->cs, VCPU_SREG_CS);
+ 	kvm_get_segment(vcpu, &sregs->ds, VCPU_SREG_DS);
+ 	kvm_get_segment(vcpu, &sregs->es, VCPU_SREG_ES);
+@@ -7431,6 +7433,7 @@ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
+ 		set_bit(vcpu->arch.interrupt.nr,
+ 			(unsigned long *)sregs->interrupt_bitmap);
  
 +	vcpu_put(vcpu);
  	return 0;
  }
  
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 843d481..963e249 100644
+index 963e249..779c03e 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -2572,9 +2572,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
- 			r = PTR_ERR(kvm_regs);
+@@ -2581,9 +2581,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
+ 		r = -ENOMEM;
+ 		if (!kvm_sregs)
  			goto out;
- 		}
 -		vcpu_load(vcpu);
- 		r = kvm_arch_vcpu_ioctl_set_regs(vcpu, kvm_regs);
+ 		r = kvm_arch_vcpu_ioctl_get_sregs(vcpu, kvm_sregs);
 -		vcpu_put(vcpu);
- 		kfree(kvm_regs);
- 		break;
- 	}
+ 		if (r)
+ 			goto out;
+ 		r = -EFAULT;
 -- 
 2.7.4

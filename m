@@ -1,114 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 00:05:16 +0100 (CET)
-Received: from mail-sn1nam02on0041.outbound.protection.outlook.com ([104.47.36.41]:13776
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 00:21:50 +0100 (CET)
+Received: from mail-bl2nam02on0084.outbound.protection.outlook.com ([104.47.38.84]:4704
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990490AbdK2XFJ1GN83 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Nov 2017 00:05:09 +0100
+        id S23990490AbdK2XVlhK5p3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Nov 2017 00:21:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=j3nYMxNNhnSYynoQaT8yaDaBFziu3Hb2zjUejOffGYY=;
- b=QMyqgP7tUpDZHRIsq1nBPZMN639XhjGnmj6BEZTSj71gRL2Xjx9ZEqIKB6V2WVHHUTw74GRoW2t5FMM2L9Z2XXqIhER0TtSYS0tx7xEOt5pgrAvzrH/JQWn5r2nMBQkh+sGSaKIcG+6LVJla3u/FEFii/oPiMq4pYI1zbLb/uTo=
+ bh=86zIvCdj6LudLfSTF/Jq8dcKPcxAftkCIeZ3zhgZsBY=;
+ b=WpUqJDwn98kMq37va94byMiUqG/f+D332+Xe1QosMGGyajss8dpBDILH+pvPPNCboxA57bRVGHpnvunw00qNb0zqLbBtkbpjN+OzEJzcB2VkZVWEx2lYjLJr8wV8bJZuKlwrUf9/DWTlLVu1oC0jeqPOCgpDjtR2SQDR8n87O0U=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
- BN6PR07MB3492.namprd07.prod.outlook.com (10.161.153.31) with Microsoft SMTP
+ CY4PR07MB3494.namprd07.prod.outlook.com (10.171.252.151) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.260.4; Wed, 29 Nov 2017 23:04:56 +0000
-Subject: Re: [PATCH v4 7/8] netdev: octeon-ethernet: Add Cavium Octeon III
- support.
-To:     Andrew Lunn <andrew@lunn.ch>, David Daney <david.daney@cavium.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        James Hogan <james.hogan@mips.com>, netdev@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devel@driverdev.osuosl.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        "Steven J. Hill" <steven.hill@cavium.com>,
-        devicetree@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Carlos Munoz <cmunoz@cavium.com>
-References: <20171129005540.28829-1-david.daney@cavium.com>
- <20171129005540.28829-8-david.daney@cavium.com>
- <20171129225609.GE1706@lunn.ch>
+ 15.20.282.5; Wed, 29 Nov 2017 23:21:30 +0000
+Subject: Re: [PATCH] dt-bindings: Remove leading 0x from bindings notation
+To:     Mathieu Malaterre <malat@debian.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Marco Franchi <marco.franchi@nxp.com>,
+        linux-mips@linux-mips.org
+References: <20171129205515.9009-1-malat@debian.org>
 From:   David Daney <ddaney@caviumnetworks.com>
-Message-ID: <d7fadd2f-3478-6db4-2c57-e6f441631ee2@caviumnetworks.com>
-Date:   Wed, 29 Nov 2017 15:04:53 -0800
+Message-ID: <c7200904-f016-8789-ee5e-fe5a281be215@caviumnetworks.com>
+Date:   Wed, 29 Nov 2017 15:21:27 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.4.0
 MIME-Version: 1.0
-In-Reply-To: <20171129225609.GE1706@lunn.ch>
+In-Reply-To: <20171129205515.9009-1-malat@debian.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: BY2PR07CA0025.namprd07.prod.outlook.com (10.166.107.20) To
- BN6PR07MB3492.namprd07.prod.outlook.com (10.161.153.31)
+X-ClientProxiedBy: BY2PR07CA0089.namprd07.prod.outlook.com (10.166.107.42) To
+ CY4PR07MB3494.namprd07.prod.outlook.com (10.171.252.151)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5b7ec90e-00dd-4348-1579-08d5377d9c88
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603277);SRVR:BN6PR07MB3492;
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3492;3:MbJi5N1Ecrfbnf6n7ss9Vc4PikauN0TOSL5jMSSG+p265eCClrzqKISByDYVOiqmH8wM4D53YqqsSEHXYsGZeMJAiklW+hTquOgZR3Vk+ewXyI6bby95Wronfv2TwL/RHLmbEXOqyAjKR1CNOttQQ3blCaScapa3WyVuFnkcrlGyC1R3mqRhwu9KDcROpjU2FOg0tPAikbPA/vn8e48U/BqGBsq4ZvufDYGI+UzAKYe4B1NUKW1ausmGnjQ7CZzZ;25:5lNzWya7Azy2XEUX4lEkrZ8W83kCS8fVt/nkclPwMLX9VfVujcmwOeDGD+OYfqf5ECET9Nd3pCzpeHbViy8fTdv5La8PjZOM/U/NBqX/z4u0Vpt4LOFf9IIIA50ldaSySegCe6lTdUxOp5SJ9jJOYtH7dP1PnqniOwCisALOWEXUJ6sFNHEMjq9Jj+wtANqVFVZuhKytuwVT6l1GxlGREvmV8LnnKSzigakJscYXyLoQVNuSBkYq0TKLh7vwGVt6u8QbFR2OmdIcumjGPVPNW0m1gh1nJeyCiVojauyBr8pee4ASn9o6xhR5DHOFrB9E7WoGXRBPoC5hNgrMQCBq0Q==;31:CTwhkITSifkT44dzWZOq9DErxcFAloXEv/Hv6+m4IQvlwsDBbMzWbAr6thjFmGINFpvBi5RgCS64xpaK/cMn1o4wPqrnCTe3pPGs3ebNBmblZQEh1QNOcTTlBtQAIOhsiLa7w7ZlLLNkibNkeIXTSkuEePoXhn8nK/JsUMTYuGsJYN+2/Fv4Ib7kHDS83yRkH9uTTZyUm9Df7dvgZ+gmR8+uUPEjBprGpG6NHIuQwKw=
-X-MS-TrafficTypeDiagnostic: BN6PR07MB3492:
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3492;20:b+mM6BT2BRC0gURNe2XuZIXnjtKMB0Z2TA/+jyRq2d1LRQvGVuyDYTdQd4iMqpq5D+8DnIk13Luk2D+dYGQdKBzE8HYa8f8ReF/1mXkkcuMGdmGIgx2QXFez8XkQGrxU/vq2xF4roeuTSIJWI+6/ec/Vt0eywhFWMfxOD6Wlja/dOea0vpFgLWUMRGQjXfFlo9Uk4Tk1gSBiGoOhLvXveIYda3wADgkjPB6HArATJLUGsXRkqvsgRlj7t+1msotOESf+DT9F+fiO0pKjKoKCkeWmU8Hv8QBE3AVnOIEqFMJmbzmAuRG/K7WX0NfCrWqlvjE5h6WXPhmnCp/C2rqnJ8RaOkhOJd58G9vLktOhGm+x0OzQGH243mGCMmpa2a9XuvtgdonWCcv+EszVBVYfBwUqw4660U36/B05jE7XaSJBVUK2g17XGWX4OvggPmGYDRVjGCLI3gOYRrvK96B7qhv8d92D+dCRG84+4ROyKMiv5qMydG1cy8vsoxCM6ESPN/nLIVzEgwGa/5G+tCHVwpjnwjg74eQqAYoMRxxT/XmUGefI7BB0alyN7HCnRbA4D4Phy2mBNMqtPW8q2Rtc0eY80Ur26ad6MkI+yha+424=;4:A3FhnytmqwXku0v0T3cTxKzpwAyJnlA2eCcNgbXE9pLicUVd/T6xqkFb+KnRGmOnEslAGHdQo4OmjF0nlX1UiUcCAU+/pf4OuUNBFxwWpbT1x05VjyABDJWZLXUtC31v/iUbfSa4fhwm3NeobSLheIWRb7uwXw61fXp8X3LMvcvbs5eEtbNZunfkOZN8yIUQO0GhLVRBNNlfYr9jv3Um9fM91h/gnWOENPQEZJbWlmYhzb1zJbnQFCWOhMmajQrNws4aa3ZDqKPPP3kLny3yihwwifPrkXhK9zTvpY8cNIZwZBt1tLapv/eahUBwPTDz
-X-Microsoft-Antispam-PRVS: <BN6PR07MB3492548F70DDADA00A0B2BD9973B0@BN6PR07MB3492.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(21532816269658);
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(5005006)(8121501046)(3231022)(3002001)(10201501046)(93006095)(6041248)(20161123560025)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123555025)(20161123562025)(20161123564025)(6072148)(201708071742011);SRVR:BN6PR07MB3492;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:BN6PR07MB3492;
+X-MS-Office365-Filtering-Correlation-Id: 3c555795-2d45-4d06-e107-08d5377fec55
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603277);SRVR:CY4PR07MB3494;
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3494;3:zyb5ohwycoeqgrVitTrqQ8svU5yakLabFzE6Ug2gqZ9N4Y14YeAOQ4eE0ERnwCuUut+5PUL3P6zgmhfSkxBm9opNdIsruiXNO5IKVh0s6qXynuMbtWNXwHv/+fNlnt2JMIkj7IfpqL18xCdLFZvdUZA4dQVzn7SQcfMP2I8OVCMlj7U+llGg7yxv1e5ppZALQA3S610Nrdtn1Z3jMnR7Ajc4HIYicPCpjNVDrullGNwUuhG//ky+gpBzozPoPpt6;25:b5nYfQCEhrTtjjAGTLAdQZRwfYIqna/iPS5/55qSj+puvS3tnt3GIMDbj7c7nmPKRcRVBIZ5/4DkmsbQ+oXwZKAk3g4qnMByvX+aZb2e++oQaES9vO6Gous5kuDPmlQmjcnfuwMw2lnUVYNu+5J0fMuBmrK+LcmfkiVtvwQoKopz8ym0lZUSFxx0rsHPhQI/xBvSat5sP08O00embw2XbGEqT/6A0WePMVhbDW7etGWC5sEewCE2vNGEiwdO+pIRb4lOslzX/IM0pr9Konrl5dQ6ojvv7NEUFtZj/EYJNwqUPdJLCKcmRjP3N05NtmcLkW5AxC1CdO/hL5md+uxCOg==;31:j6s6xTclqXZlGzt0iju1tO6UQggXkoy2MhFte2hez+ZXN06UkHk3yuqxIyrwjw4+ZgSb4wIrzva/KVWJQFxH3gjtbYipYTjZmSyY7YB39xyJtrZ6QDJ39JqE13WWJBCbWSdnXe1eldtq26qzMYBHD3mTeVf9+iRTUwgi2vbKIjLG+Ks4rW0p+IJWbpsfiHTlc1jV2oJ/Al0T88NJa8DHGjxp19aHrJTpyPaB+iEysXU=
+X-MS-TrafficTypeDiagnostic: CY4PR07MB3494:
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3494;20:dKRP2IByIA/mAhXefoM1K4QgBr8sAleWonEEIZxeqAW0Tx7PrNbDNWk/M+XhCoNHhCsclvMuJb50ABGPdf1bpFfOFOrm33lnu7BHpsqqd7fgi544t3ON0czYiLi+DrN6z54JXjJW7gW7vBOUbXx/Peh1CsY/98IAiKmlJI50Zu/ZR7sDcyL/7TDBf5vh/QybGBkcx/vvaj9bzhF9xtESI4GKpz9LWPss9vfk/GG/oAGbHTfH4/n3AsxZQJUDPGObNmrhHWcdlxcb5aA5d8iJLsl5L+6caobgEnWWOKM2d2Vvp1PEfTpRVifFMip7r+qc1ONhz9wopo1Y9txk4XD2MliJ3qFEIdrmBpTJirwDzF9qsnoQhPyN7iZhZs1mjPZrI1bEnQ0/hFbPyeF5IUI6S7IEw8RTZhSIbyZMaCm8pVvV7Cfc5G8AJo3aKJEjDHgPhBVupE8ek3eDLqGTUUD9B3QdyHbJlITAGj6AhWbGF3f3lSMmWLUBTyyqbXQx4AhCLOe5HsJO2iEgwZxn/9wZOaYbpAxvS/VsFj4p0pNGPfAn7oRETHbOSyCKoryFf7+i2PjiQKT4Pk8xl7GLYBAWVxcc7FNYF+DtXxXFjkA8Xf8=;4:jJhUJFkCgXswWBopZIbRlRQunKix+U6jTD4GlNbiYZOip+kdtjGX2NOs7wxI3/TUUON0JGGCClx2AVcHtTeFp42fMr+CyjQnDyzcol+kfxXtVQdkI+yNov9hnEVL/XS8aRE/hfymO5qBQl1Cl7xJMtfeE4iDhzZW9FtG6zE71HTKLm7VUzXhq4n9cMQuCn7+X4wiqJIcL/qeUUvpblwMYI18ijlBRzD6aFi2sEzkPjCSZOm7iBAlC4RLspWrMlAbtmF49N9/y22q3lRxnCd55A==
+X-Microsoft-Antispam-PRVS: <CY4PR07MB3494AB6B3901061BB5A389D8973B0@CY4PR07MB3494.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(8121501046)(5005006)(3231022)(3002001)(10201501046)(93006095)(6041248)(20161123560025)(20161123555025)(20161123562025)(20161123564025)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:CY4PR07MB3494;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:CY4PR07MB3494;
 X-Forefront-PRVS: 05066DEDBB
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(366004)(376002)(346002)(24454002)(199003)(189002)(23676004)(6666003)(25786009)(68736007)(2906002)(5660300001)(33646002)(8936002)(39060400002)(64126003)(65826007)(42882006)(2950100002)(31686004)(36756003)(230700001)(53936002)(105586002)(6512007)(6306002)(6116002)(106356001)(3846002)(110136005)(54356010)(76176010)(50986010)(53546010)(6246003)(101416001)(107886003)(7416002)(83506002)(6486002)(47776003)(65806001)(81156014)(53416004)(81166006)(67846002)(50466002)(65956001)(4326008)(7736002)(66066001)(8676002)(189998001)(305945005)(54906003)(2486003)(72206003)(966005)(6506006)(69596002)(316002)(478600001)(97736004)(16526018)(229853002)(58126008)(52146003)(31696002)(52116002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR07MB3492;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(346002)(376002)(366004)(199003)(189002)(24454002)(110136005)(316002)(50466002)(6246003)(64126003)(58126008)(65826007)(25786009)(6666003)(31696002)(2950100002)(42882006)(5660300001)(8936002)(6116002)(3846002)(478600001)(8656006)(67846002)(72206003)(47776003)(6512007)(53936002)(16526018)(83506002)(31686004)(65956001)(66066001)(230700001)(4326008)(36756003)(7736002)(305945005)(53416004)(69596002)(6506006)(97736004)(2906002)(101416001)(68736007)(81156014)(229853002)(6486002)(33646002)(23676004)(189998001)(53546010)(106356001)(52146003)(2486003)(105586002)(8676002)(81166006)(52116002)(50986010)(65806001)(54356010)(76176010)(21314002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3494;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCTjZQUjA3TUIzNDkyOzIzOmk4SGxvZGRxTGJzajlZb0RuUHZUMFNKWmF2?=
- =?utf-8?B?MWNpQk8waFUyeUNWSnJ5WkdUNTlndlVXb1VLQS9YR0NyWnUvT0QxTDNLb2tJ?=
- =?utf-8?B?b0ZjdUdwcHcxUW5nbkRCcWtpQjBqQnk4QzVlZ2FGU1pMV011Y0dFZjBGbzRh?=
- =?utf-8?B?SWNQcGJLWXpaQ0RqVE1XRkZLS3Z0UFhncWpPQmFNc2kwMXhuZTJ0SjVjbWdj?=
- =?utf-8?B?Z1RHMVR5SklDWG03RC9aOXJaSW5pU2JIbXRvaVVkTFFpd2duUWp1ZSswcFRB?=
- =?utf-8?B?Z0tkRllRREtVK3ZHWjBVT0FYRHhWdVk0c2JwQzVvR1psSVludnQvUFgzNGtP?=
- =?utf-8?B?NlF6RjUxYUd0S0NNUEFuT2lWRHg1TEx3NlZjUVpUL0FCY2U0MXNzL3RGSjMx?=
- =?utf-8?B?cWJvbFVpT2pBSXJmeS9hcmYraGRTVEc2Tm5tVW9KUDBsbDRNcXh6bjhnNEZ0?=
- =?utf-8?B?WlkvVXNhZnlpcFZtQlcrU29qU01YSWFYcEFlTlNsTWxEZWdGMXVUTWJudmR2?=
- =?utf-8?B?YkIzSEdDbUV0MnF5bXRiZS90NDJONlZNSjgxR2x0alZvd2NjUDM0QXdrbHVX?=
- =?utf-8?B?SWZid3BzTVE4R3g1YTBnLzBFUkJNNFQ1aXVLamNRK2FtNjl3NjBiZzdMeVZI?=
- =?utf-8?B?MEQyMjZaWGphZ2x2bm1LOG5NTFlkdUdIQTc4dHRCL2gzMFhyNzcrUVdpdEw4?=
- =?utf-8?B?YVcvTGpVbDV1ZmVyK2lMSDZLb2hUUkxuWWFmdm5BdzRQM29hQkl1Z1o4VW9r?=
- =?utf-8?B?b1RWdnpFRy9JNjhFeFVTTkZlN1YrVHZRcDNTNEhuam04eDRoTU0vRm1McnI5?=
- =?utf-8?B?alVjMFdZRHBzZkkwSEVOMUFwS2hwWTAvYjlINmFQbnJ6Qjdlemo2cUxqOXZ2?=
- =?utf-8?B?L2l3ckxTaTJGZU55TTRUcGFrVDlabXdWV3BmQ3d1cTZ6N2NFQ3JaTlpQVlgz?=
- =?utf-8?B?MHVPVHZUV2VmUW5BRE4vZ2VndmhPdzdQR1RFbTVTSjV3RjRKY3dHVnNhN0hj?=
- =?utf-8?B?RTBaNnlOVzBReFlrQUo0OW1VdDUwSUtCK0hPNnY4ZmoyMGpaS1JLN1ZyOUN2?=
- =?utf-8?B?THpvY0RGMmVRRGtPclNEK2NsdThyWEJtdURoZERPbElBM0xTRUIzL0g2UGJ6?=
- =?utf-8?B?WGdTWXZXaDBJWUVDeGhxZ3k3Zk82ZzRhNnd2UDNSeE9mSW5hMURPMkdtVVpT?=
- =?utf-8?B?QmpFQm53UnhBUi9UZ1IwZzN1dXk2SXJ4QXB0eEFpZTRmRGlWcWpBVXlGRTFh?=
- =?utf-8?B?NGdBMHdXaDVXc0RQYUFvemZTaWV2diswWkNEbzJhRzF1R3VnQVpwWkVoUmRk?=
- =?utf-8?B?NHl5WWNCNFhGODh3RjRUTHhqV1BKM2gxckxSUlVlWm03T3R1WDVVSzN2WW9Z?=
- =?utf-8?B?Vkt3Wk1oMEFXTXNBdmw3d0hxcjJyUjZTY0xxSnI4L2xwQWR4R0F6cG9lLzNG?=
- =?utf-8?B?SUU0OHIyUmI1VG1zSlNGSmZFbk90aWhYbm1LSWFyK3Zwam5ibXAzcGo0aGRU?=
- =?utf-8?B?MUMyVVd6dXV5UmM0bWtaeVluWDFUN2EyWC91VmM2MUVuNWpmQUlnSU9ZYzVF?=
- =?utf-8?B?NlZ5RWpRaUdtdTBKN0lza2xYeWY1ZEkvdkIwWFplZktoaTRIellZbTduTlJQ?=
- =?utf-8?B?Y2krOHBPdUJFV3o2d2U0bEsrdFByWG96eEV1d05tS2FrMjNHVmhIWDBYd1d4?=
- =?utf-8?B?Wm1NYXVwdno2YWV5bEFrcmhPeWcya01aNndFTW5pSUhrUk9hUjJ3d3FkL3lm?=
- =?utf-8?B?d1VWNGorTXJCNy9tQjYrV1JleFVCTmdhejZKMGorY0p0aTBNTWdZNzhRRW1B?=
- =?utf-8?B?eTRaTlpCU1RYRU1vUWJHNXVlNThBZ0tYcEdYZGJyMFpYRlJPT0dFK2M4c2dz?=
- =?utf-8?B?OThvQkpLVnFobko3a1Q1NHN5TzJiSjYvL1JJbVI1K1pJcWlTV1V1K29PaW1k?=
- =?utf-8?B?aGZEdTRKZFNlU21maTJBZFpQN3hmSjB2TGIvRVdLVXJkamVkcjJQYko1YWhC?=
- =?utf-8?B?SStZSy9zVjB2ZlJ4bTVINUU5Mk5zM29LVVRUcTFLWGJscXJtSW5ZVHFLd2xQ?=
- =?utf-8?B?Vkpyc1F6V0RtbDhpRVNnUG90ci9VV0FoUU95UjB3bEkrWUR6enVZTjJWaEtY?=
- =?utf-8?Q?8HFd63sMKYpSDEnF2n2r+kY=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3492;6:/AGTLEfd/f1wnBhMr0CiTijqu2eFISTu1UpY/zqUsJBbF8xzjpCQaNirCc8mMxv+V50DWHYmdrDokKAcA5As6v3Z2FXIGX3ejF4057+6OvBPA/TsYqY8Drl7KolVR51k0eTr2eAbvLAX+BFeDdi1ipgxgu9h8d+raJ5CMpktSiEr9BkuPJaHOnPR43ft27bAc3eIeN0He1m4Si+GQN/vrm2R5GWOCq15PZ74kTDDC8P/d2B1A6LLZRGy423Qn3AvOi8cyY5eIP712WxvAMnfHuB/eQ46TeJhwz0w5E+k1Yq2giPco3b/JJ1HuowvQGgIl5h1hMLDBt4Zf6ehfWfk+lPU0ZubJM4HWX2CpWR/AyU=;5:x495Deg8yUgYX2TyNc/ddPdhjLl826tGoZSlW2o0dtdBgNk3zxaMMUHfn0bHQRk/lq0E26LjT53mGmLKMMVDu9wd8xQ1A/KEILG5hafEK34adEGbqIRzpoOhNU/kIIPpV8KLzmE2ztazkihbJSWNpAjQd6krmMqkYmJw2PM0Yro=;24:TwfGo3cvv2Ifast5v0xc9nKukeYp7QzefeJ1DjjHxvr7dZEHbIOpKWf0IX2rgEl6JEx5+8shQG816BMId8b4pshprni1LxO97e2hXqAk30g=;7:WOXxT4YC9ZW0vMPzXEOD4zbX3UCKf0pXESK1S6vbv9ttdlvjP+ktIwWzCPuWzLk5NdqtjSld7rzhnJW9nkmhY6bxXJlpRGxtA6g3G5XSn9uN8l0+P4C2i59lESbR3xTs2fZrV5R7xwTJC5NQp4TKJ6lmEl3bbGRfIBIdCnGDvI2ZGZkmLsM8yIQqlzFq3pRRTox//Kd0mVIaEtwXcwbM4wBGfNKkc9bvN4SDm77VwhdKNtK4iBF6StghbF4A+HJX
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtDWTRQUjA3TUIzNDk0OzIzOnduZEg2S1ZSQUpEckZ5QlBJTXlSWWNFbDRn?=
+ =?utf-8?B?cE9DRm95MjJQWjN5cjJTNDZRV0E2blNhVVYrdERnZENvSWJnRll0V2N5UnF4?=
+ =?utf-8?B?d2RpQkdkU0tWZk9jQ2l2bFAwRjlvb3M2VkZKcDl0R1V3MWJJb0pLUXM2L3p3?=
+ =?utf-8?B?WVBCWERrUUZubnN5MjZYNVVpYVdOU3JxeUtPcm02NFNrQ1FEQ2Iyb2VYZmFu?=
+ =?utf-8?B?Qk16dFhNVjZvWHQwSVQ1NmxkUXJpQ0xOWjhhWE1ydnVrRTBjZDl3OVNkMDli?=
+ =?utf-8?B?citiRjZRQjZaR0NHRVhvclJMa2lZRndheFN3empDUUhodmNCNkM5TnBCc2FT?=
+ =?utf-8?B?K29YWU16bDlhNUlleXNpbGxVbzFYa21wRDNTdWNBT1A5RWd1MTFvUXpLTXVO?=
+ =?utf-8?B?ZUJOc1dJWGc0RkN2TTBzLzlhQW4rckxyWnNaL0dGKzFobnlZcElxRkRXbDcz?=
+ =?utf-8?B?U0x1ZjVLeVFYUThFVHFUZ1J0Ui9sM0U4YjJmUFY2N0F0YUcxdWtMNU16TkxG?=
+ =?utf-8?B?Rk9SUTJObk5Yc2VDcFNwZjA4WFVxL1dDZlVBZmRCamxlMkNTc0ZVMjJVNWZH?=
+ =?utf-8?B?d1NQSmIrUVMvMVBhTU15Y0dFbi9HUVlTbFBQeEQ4b0dheTVEVC9qM0xtS3Rl?=
+ =?utf-8?B?V1RCZmRrRjYxb0ZIMFp5eGZjUCtBNTFmS1QwdC9nWmRvYjdRbzRMa21UL2dm?=
+ =?utf-8?B?WnRZMUlEZUF3Rzh0eVl5MVZTSi9Cb21saVNNb2huSkpzK1RzUkk2OWwwRGpl?=
+ =?utf-8?B?SWxmelJuM25oMjhsM1ZwTnAwT0ZKTXpXWTRqZGlwWEJyV0UrZUw1YkY0Z3hy?=
+ =?utf-8?B?THZyL0lhbmZ1RjlUUHEvOEZpU1pFS2MrNkJoWW9kWEZKcXpPcmdRUlo5Yy9E?=
+ =?utf-8?B?cEtweHB4d2pMK3ZjVlovMExYR0ZRMWg3TU9jczhxRE9tL3YrYmFUdldyRXJq?=
+ =?utf-8?B?c3N2TW5Da21EYUVzWXhmR2l4cWlZV0V2Z1MxT2hEeDBRYzF5TW9palI3RjFt?=
+ =?utf-8?B?ZUFUb0dzcjAvQWd2cjRNWnlIMVNiN0N2blgvVVJpU2JIdktTMTNwZi9vTjR1?=
+ =?utf-8?B?V28yTVc5eXMyOTROaXE2a3UvTlhuVE1NVEkySW84RVFiTWp2VzlGQWtIelhQ?=
+ =?utf-8?B?MUJVWCtmcUdtb3RlVGJBc0dVaTVSY0FiUEh0dldtaklJUmJIbWZ6b2hYVFRh?=
+ =?utf-8?B?SWIrTlpidVYrVjBBeEx4YlNhNjRjMkVVZVFBdlQzaFNwWVNvajZPcnU2YUNN?=
+ =?utf-8?B?U3F6djY3MEduOC9vUENzcDdiV0hxMXpFZ0hLMzBteDZnOXl5dndhOGQ5eW03?=
+ =?utf-8?B?cllTeWpwM09aaTFyMmFRQ3FiNVY2aUFvUkxmMGtKcndSQXJQeXl1ZkFVUUdI?=
+ =?utf-8?B?WHVVaUp0RitLM2Z1YVpQTUlMR004VVd4R3k1UGlhcUIxMEI3L1lyK0l1b0s0?=
+ =?utf-8?B?Z3B2QStLZlRxZDYxNllJSERVWXJPK2E4cmFSbTh6Y1c3MG5vckhUNzNvajV1?=
+ =?utf-8?B?WExZRW96RUU3YUh0YnFndElNc3VqSjcrNFQ2bjUvN1BIQ3JaRGNGeTZBSHNm?=
+ =?utf-8?B?WGpXL2V2ekxCV2N4Y2ZDUWpmMWRLN3h0Nm1SRGdWa3FTa3FyRnlTUmY1K1dq?=
+ =?utf-8?B?SmVDc09sMnhMRTZ1MWwrZldEeVpnNkdNRDlWWGkyN2xTK3NFTnhHMGRFV2R3?=
+ =?utf-8?B?WG5XV1ZzbkJqUG9FendpREFJaXBkYll0NTdSSmdITDduQUlZQWlYamhoMm1N?=
+ =?utf-8?B?YkE4V0FqTnBSZTJVb3BrN3ZmU0hZZldoUVd2bjFFTmdEWXVhTVJ4WTBTQmJi?=
+ =?utf-8?B?SHdreVArLzdDZHhZeXFWdFZnYk93eGFkYjE5THplOVNIMFBIeFJRempyOGZL?=
+ =?utf-8?B?NHdKQmhtMWI2OTA4SkFVMnR3K1JSVDZ0VGJSUDZpU3NvWVdadWhDN2xwU0hB?=
+ =?utf-8?B?ZWVRaGYvVU1wM2hGS1FYTXpxSU1XTEQ2ZGpKWmdUcDBiTFRwemhBdXIxQjlO?=
+ =?utf-8?B?QkFuQTNkV1NDSGI4ckpyOCtBVk9jYjgwTVlUUT09?=
+X-Microsoft-Antispam-Message-Info: FGVvMEF4YuswJx/Z9AZknZ8hGtdRf9Mev3fEzjKubJMtzQjyIJsgQyS3GSXeCOlo8Cz7xjwfFR2JwYrc+WGgug==
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3494;6:5GvPHkOtjyfAjjkFTWl34lamQ30s0Gqisyb7c8THHCsK5/N4fUJmceoV9RbPaR51eo1AVYC50L50NUKHUHfx9vk7thbnW9d0N/PrkrYKivS+IHKAnfQLXf/edUZM6GWX3WKtShV8Z9B6dYmWRaeUEOf4KHMKpdJBHJJMD1K2gAC+kYxC3Jm7k9ImDCTP6Y4piRgMln6zdYafe6rYWS9ltMzttuWGzOo6ZGZesL3C9/h23m/OOhKOTKdilnt6NvuqZdPlwmWwJdqCbRcdrlPWXZwgA/ry1u8RiuVjSlhZkWYygZkjUHK4uleJ5XWBxX7ntqVTFUtw0N/YKBcXuPcXMXZo5f0LVKFnevk10j3rNp4=;5:6JEUs75Fzk7dVmb8k2qfLNvOl0tCgqprgJqioiR41PqTQefkkmPEy5HA1zqmUM1a07Fphypc2P3tghZUvUPjV11GEqk3EnVJYGjydfl/1xad2OButD3QqvE0WedHUEZVOczCFBcxl1tcUKCZaCFZwghBGHgGprooLkj/Pmb+jIg=;24:GV4l+w6rVDbdi3Z/1mbfrXey9cS1xWsqfOaJF9eC6OYQACbJWRpsI9f9Eo1Q6zDeHsn8y/kfgC69pfoChZixyfFYVqJxDza12zLPToZhxrM=;7:Q+iFpWSAPKjQsqsbrFZXLShdwAIelIi/RAxkNK68+xd3N3uDf8nBe/aMLXId6G/hJDKnGsxIPl7fRGg3mPbHWjvmacSabCoQ1MSCXYWIe8D5XHYMAVzMJgDKPlhi07PEGrq9dLvLHF7/MJq4kylWQRZLpqH/f/zItmoVIKAfolZ+QSL0xcSrgNf4pW9mzGKtXdGPMvyi5v2htp3FJhnaH7m0fLYnof0onD4QlX5HWpcdPmz/W4VItdFyZyqHhSkt
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2017 23:04:56.6271 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b7ec90e-00dd-4348-1579-08d5377d9c88
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2017 23:21:30.5093 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c555795-2d45-4d06-e107-08d5377fec55
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR07MB3492
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3494
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61230
+X-archive-position: 61231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -125,251 +113,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/29/2017 02:56 PM, Andrew Lunn wrote:
-> On Tue, Nov 28, 2017 at 04:55:39PM -0800, David Daney wrote:
->> +static int bgx_probe(struct platform_device *pdev)
->> +{
->> +	struct mac_platform_data platform_data;
->> +	const __be32 *reg;
->> +	u32 port;
->> +	u64 addr;
->> +	struct device_node *child;
->> +	struct platform_device *new_dev;
->> +	struct platform_device *pki_dev;
->> +	int numa_node, interface;
->> +	int i;
->> +	int r = 0;
->> +	char id[64];
->> +	u64 data;
->> +
->> +	reg = of_get_property(pdev->dev.of_node, "reg", NULL);
->> +	addr = of_translate_address(pdev->dev.of_node, reg);
->> +	interface = (addr >> 24) & 0xf;
->> +	numa_node = (addr >> 36) & 0x7;
+On 11/29/2017 12:55 PM, Mathieu Malaterre wrote:
+> Improve the binding example by removing all the leading 0x to fix the
+> following dtc warnings:
 > 
-> Hi David
-> 
-> You have these two a few times in the code. Maybe add a helper to do
-> it? The NUMA one i assume could go somewhere in the SoC code?
-> 
+> Warning (unit_address_format): Node /XXX unit name should not have leading "0x"
 
-Thanks for looking at it, I will try with helpers.
+How does it fix the warnings?  You are not changing the .dts files that 
+are compiled.
 
+This may also cause the binding documentation to differ from the reality 
+of what the actual device trees contain.
 
-The rest of your comments below raise valid points, I will fix those too.
-
-
-
-
->> +static int bgx_mix_init_from_fdt(void)
->> +{
->> +	struct device_node	*node;
->> +	struct device_node	*parent = NULL;
->> +	int			mix = 0;
 > 
->> +		/* Get the lmac index */
->> +		reg = of_get_property(lmac_fdt_node, "reg", NULL);
->> +		if (!reg)
->> +			goto err;
->> +
->> +		mix_port_lmacs[mix].lmac = *reg;
+> Converted using the following command:
 > 
-> I don't think of_get_property() deals with endianness. Is there any
-> danger of this driver being used on hardware with the other endianness
-> to what you have tested?
+> find Documentation/devicetree/bindings -name "*.txt" -exec sed -i -e 's/([^ ])\@0x([0-9a-f])/$1\@$2/g' {} +
 > 
->> +/**
->> + * bgx_pki_init_from_param - Initialize the list of lmacs that connect to the
->> + *			     pki from information in the "pki_port" parameter.
->> + *
->> + *			     The pki_port parameter format is as follows:
->> + *			     pki_port=nbl
->> + *			     where:
->> + *				n = node
->> + *				b = bgx
->> + *				l = lmac
->> + *
->> + *			     Commas must be used to separate multiple lmacs:
->> + *			     pki_port=000,100,110
->> + *
->> + *			     Asterisks (*) specify all possible characters in
->> + *			     the subset:
->> + *			     pki_port=00* (all lmacs of node0 bgx0).
->> + *
->> + *			     Missing lmacs identifiers default to all
->> + *			     possible characters in the subset:
->> + *			     pki_port=00 (all lmacs on node0 bgx0)
->> + *
->> + *			     Brackets ('[' and ']') specify the valid
->> + *			     characters in the subset:
->> + *			     pki_port=00[01] (lmac0 and lmac1 of node0 bgx0).
->> + *
->> + * Returns 0 if successful.
->> + * Returns <0 for error codes.
+> This is a follow up to commit 48c926cd3414
 > 
-> I've not used kerneldoc much, but i suspect this is wrongly formated:
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+> ---
+> I've also checked using the original perl command that I did not introduce:
 > 
-> https://www.kernel.org/doc/html/v4.9/kernel-documentation.html#function-documentation
+> Warning (unit_address_format): Node /XXX unit name should not have leading 0s
 > 
->> +int bgx_port_ethtool_set_settings(struct net_device	*netdev,
->> +				  struct ethtool_cmd	*cmd)
->> +{
->> +	struct bgx_port_priv *p = bgx_port_netdev2priv(netdev);
->> +
->> +	if (!capable(CAP_NET_ADMIN))
->> +		return -EPERM;
-> 
-> Not required. The enforces this. See dev_ethtool()
-> 
->> +
->> +	if (p->phydev)
->> +		return phy_ethtool_sset(p->phydev, cmd);
->> +
->> +	return -EOPNOTSUPP;
->> +}
->> +EXPORT_SYMBOL(bgx_port_ethtool_set_settings);
->> +
->> +int bgx_port_ethtool_nway_reset(struct net_device *netdev)
->> +{
->> +	struct bgx_port_priv *p = bgx_port_netdev2priv(netdev);
->> +
->> +	if (!capable(CAP_NET_ADMIN))
->> +		return -EPERM;
-> 
-> Also not needed.
-> 
->> +static void bgx_port_adjust_link(struct net_device *netdev)
->> +{
->> +	struct bgx_port_priv	*priv = bgx_port_netdev2priv(netdev);
->> +	bool			link_changed = false;
->> +	unsigned int		link;
->> +	unsigned int		speed;
->> +	unsigned int		duplex;
->> +
->> +	mutex_lock(&priv->lock);
->> +
->> +	if (!priv->phydev->link && priv->last_status.link)
->> +		link_changed = true;
->> +
->> +	if (priv->phydev->link &&
->> +	    (priv->last_status.link != priv->phydev->link ||
->> +	     priv->last_status.duplex != priv->phydev->duplex ||
->> +	     priv->last_status.speed != priv->phydev->speed))
->> +		link_changed = true;
->> +
->> +	link = priv->phydev->link;
->> +	priv->last_status.link = priv->phydev->link;
->> +
->> +	speed = priv->phydev->speed;
->> +	priv->last_status.speed = priv->phydev->speed;
->> +
->> +	duplex = priv->phydev->duplex;
->> +	priv->last_status.duplex = priv->phydev->duplex;
->> +
->> +	mutex_unlock(&priv->lock);
->> +
->> +	if (link_changed) {
->> +		struct port_status status;
->> +
->> +		phy_print_status(priv->phydev);
->> +
->> +		status.link = link ? 1 : 0;
->> +		status.duplex = duplex;
->> +		status.speed = speed;
->> +		if (!link) {
->> +			netif_carrier_off(netdev);
->> +			 /* Let TX drain. FIXME check that it is drained. */
->> +			mdelay(50);
->> +		}
->> +		priv->set_link(priv, status);
->> +		if (link)
->> +			netif_carrier_on(netdev);
-> 
-> The code should do netif_carrier_on/off for you. See phy_link_change()
-> 
->> +static void bgx_port_check_state(struct work_struct *work)
->> +{
->> +	struct bgx_port_priv	*priv;
->> +	struct port_status	status;
->> +
->> +	priv = container_of(work, struct bgx_port_priv, dwork.work);
->> +
->> +	status = priv->get_link(priv);
->> +
->> +	if (!status.link &&
->> +	    priv->mode != PORT_MODE_SGMII && priv->mode != PORT_MODE_RGMII)
->> +		bgx_port_init_xaui_link(priv);
->> +
->> +	if (priv->last_status.link != status.link) {
->> +		priv->last_status.link = status.link;
->> +		if (status.link)
->> +			netdev_info(priv->netdev, "Link is up - %d/%s\n",
->> +				    status.speed,
->> +				    status.duplex == DUPLEX_FULL ? "Full" : "Half");
-> 
-> You already have phy_print_status() in bgx_port_adjust_link(). Do you need this here?
-> 
->> +		else
->> +			netdev_info(priv->netdev, "Link is down\n");
->> +	}
->> +
->> +	mutex_lock(&priv->lock);
->> +	if (priv->work_queued)
->> +		queue_delayed_work(check_state_wq, &priv->dwork, HZ);
->> +	mutex_unlock(&priv->lock);
->> +}
->> +
->> +int bgx_port_enable(struct net_device *netdev)
->> +{
-> 
-> 
->> +	} else {
->> +		priv->phydev = of_phy_connect(netdev, priv->phy_np,
->> +					      bgx_port_adjust_link, 0, priv->phy_mode);
->> +		if (!priv->phydev)
->> +			return -ENODEV;
->> +
->> +		netif_carrier_off(netdev);
->> +
->> +		if (priv->phydev)
-> 
-> You already checked this above.
-> 
->> +			phy_start_aneg(priv->phydev);
->> +	}
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL(bgx_port_enable);
->> +
->> +int bgx_port_change_mtu(struct net_device *netdev, int new_mtu)
->> +{
->> +	struct bgx_port_priv *priv = bgx_port_netdev2priv(netdev);
->> +	int max_frame;
->> +
->> +	if (new_mtu < 60 || new_mtu > 65392) {
-> 
-> See dev_set_mtu(). If you have done your initialisation correctly, this
-> won't happen.
-> 
->> +static int bgx_port_probe(struct platform_device *pdev)
->> +{
->> +	switch (priv->mode) {
->> +	case PORT_MODE_SGMII:
->> +		if (priv->phy_np &&
->> +		    priv->phy_mode != PHY_INTERFACE_MODE_SGMII)
->> +			dev_warn(&pdev->dev, "SGMII phy mode mismatch.\n");
->> +		goto set_link_functions;
->> +	case PORT_MODE_RGMII:
->> +		if (priv->phy_np &&
->> +		    priv->phy_mode != PHY_INTERFACE_MODE_RGMII &&
->> +		    priv->phy_mode != PHY_INTERFACE_MODE_RGMII_ID &&
->> +		    priv->phy_mode != PHY_INTERFACE_MODE_RGMII_RXID &&
->> +		    priv->phy_mode != PHY_INTERFACE_MODE_RGMII_TXID)
-> 
-> phy_interface_mode_is_rgmii()
-> 
-> More later, maybe.
-> 
->       Andrew
+>   Documentation/devicetree/bindings/arm/ccn.txt                |  2 +-
+>   Documentation/devicetree/bindings/arm/omap/crossbar.txt      |  2 +-
+>   .../devicetree/bindings/arm/tegra/nvidia,tegra20-mc.txt      |  2 +-
+>   Documentation/devicetree/bindings/clock/axi-clkgen.txt       |  2 +-
+>   .../devicetree/bindings/clock/brcm,bcm2835-aux-clock.txt     |  2 +-
+>   Documentation/devicetree/bindings/clock/exynos4-clock.txt    |  2 +-
+>   Documentation/devicetree/bindings/clock/exynos5250-clock.txt |  2 +-
+>   Documentation/devicetree/bindings/clock/exynos5410-clock.txt |  2 +-
+>   Documentation/devicetree/bindings/clock/exynos5420-clock.txt |  2 +-
+>   Documentation/devicetree/bindings/clock/exynos5440-clock.txt |  2 +-
+>   .../devicetree/bindings/clock/ti-keystone-pllctrl.txt        |  2 +-
+>   Documentation/devicetree/bindings/clock/zx296702-clk.txt     |  4 ++--
+>   Documentation/devicetree/bindings/crypto/fsl-sec4.txt        |  4 ++--
+>   .../devicetree/bindings/devfreq/event/rockchip-dfi.txt       |  2 +-
+>   Documentation/devicetree/bindings/display/atmel,lcdc.txt     |  4 ++--
+>   Documentation/devicetree/bindings/dma/qcom_hidma_mgmt.txt    |  4 ++--
+>   Documentation/devicetree/bindings/dma/zxdma.txt              |  2 +-
+>   Documentation/devicetree/bindings/gpio/gpio-altera.txt       |  2 +-
+>   Documentation/devicetree/bindings/i2c/i2c-jz4780.txt         |  2 +-
+>   Documentation/devicetree/bindings/iio/pressure/hp03.txt      |  2 +-
+>   .../devicetree/bindings/input/touchscreen/bu21013.txt        |  2 +-
+>   .../devicetree/bindings/interrupt-controller/arm,gic.txt     |  4 ++--
+>   .../bindings/interrupt-controller/img,meta-intc.txt          |  2 +-
+>   .../bindings/interrupt-controller/img,pdc-intc.txt           |  2 +-
+>   .../bindings/interrupt-controller/st,spear3xx-shirq.txt      |  2 +-
+>   Documentation/devicetree/bindings/mailbox/altera-mailbox.txt |  6 +++---
+>   .../devicetree/bindings/mailbox/brcm,iproc-pdc-mbox.txt      |  2 +-
+>   Documentation/devicetree/bindings/media/exynos5-gsc.txt      |  2 +-
+>   Documentation/devicetree/bindings/media/mediatek-vcodec.txt  |  2 +-
+>   Documentation/devicetree/bindings/media/rcar_vin.txt         |  2 +-
+>   Documentation/devicetree/bindings/media/samsung-fimc.txt     |  2 +-
+>   Documentation/devicetree/bindings/media/sh_mobile_ceu.txt    |  2 +-
+>   Documentation/devicetree/bindings/media/video-interfaces.txt | 10 +++++-----
+>   .../devicetree/bindings/memory-controllers/ti/emif.txt       |  2 +-
+>   .../devicetree/bindings/mfd/ti-keystone-devctrl.txt          |  2 +-
+>   Documentation/devicetree/bindings/misc/brcm,kona-smc.txt     |  2 +-
+>   Documentation/devicetree/bindings/mmc/brcm,kona-sdhci.txt    |  2 +-
+>   Documentation/devicetree/bindings/mmc/brcm,sdhci-iproc.txt   |  2 +-
+>   Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt      |  4 ++--
+>   Documentation/devicetree/bindings/mtd/gpmc-nor.txt           |  6 +++---
+>   Documentation/devicetree/bindings/mtd/mtk-nand.txt           |  2 +-
+>   Documentation/devicetree/bindings/net/altera_tse.txt         |  4 ++--
+>   Documentation/devicetree/bindings/net/mdio.txt               |  2 +-
+>   Documentation/devicetree/bindings/net/socfpga-dwmac.txt      |  2 +-
+>   Documentation/devicetree/bindings/nios2/nios2.txt            |  2 +-
+>   Documentation/devicetree/bindings/pci/altera-pcie.txt        |  2 +-
+>   Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.txt     |  2 +-
+>   Documentation/devicetree/bindings/pci/hisilicon-pcie.txt     |  2 +-
+>   Documentation/devicetree/bindings/phy/sun4i-usb-phy.txt      |  2 +-
+>   .../devicetree/bindings/pinctrl/brcm,cygnus-pinmux.txt       |  2 +-
+>   Documentation/devicetree/bindings/pinctrl/pinctrl-atlas7.txt |  4 ++--
+>   Documentation/devicetree/bindings/pinctrl/pinctrl-sirf.txt   |  2 +-
+>   .../devicetree/bindings/pinctrl/rockchip,pinctrl.txt         |  4 ++--
+>   Documentation/devicetree/bindings/regulator/regulator.txt    |  2 +-
+>   Documentation/devicetree/bindings/serial/efm32-uart.txt      |  2 +-
+>   .../devicetree/bindings/serio/allwinner,sun4i-ps2.txt        |  2 +-
+>   .../devicetree/bindings/soc/ti/keystone-navigator-qmss.txt   |  2 +-
+>   Documentation/devicetree/bindings/sound/adi,axi-i2s.txt      |  2 +-
+>   Documentation/devicetree/bindings/sound/adi,axi-spdif-tx.txt |  2 +-
+>   Documentation/devicetree/bindings/sound/ak4613.txt           |  2 +-
+>   Documentation/devicetree/bindings/sound/ak4642.txt           |  2 +-
+>   Documentation/devicetree/bindings/sound/max98371.txt         |  2 +-
+>   Documentation/devicetree/bindings/sound/max9867.txt          |  2 +-
+>   Documentation/devicetree/bindings/sound/renesas,fsi.txt      |  2 +-
+>   Documentation/devicetree/bindings/sound/rockchip-spdif.txt   |  2 +-
+>   Documentation/devicetree/bindings/sound/st,sti-asoc-card.txt |  8 ++++----
+>   Documentation/devicetree/bindings/spi/efm32-spi.txt          |  2 +-
+>   Documentation/devicetree/bindings/thermal/thermal.txt        | 12 ++++++------
+>   Documentation/devicetree/bindings/ufs/ufs-qcom.txt           |  4 ++--
+>   Documentation/devicetree/bindings/ufs/ufshcd-pltfrm.txt      |  2 +-
+>   Documentation/devicetree/bindings/usb/ehci-st.txt            |  2 +-
+>   Documentation/devicetree/bindings/usb/ohci-st.txt            |  2 +-
+>   .../devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt      |  2 +-
+>   73 files changed, 99 insertions(+), 99 deletions(-)
 > 

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 16:22:59 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:49009 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 16:23:27 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:40803 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990484AbdK2PWwOgD2- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Nov 2017 16:22:52 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 29 Nov 2017 15:22:35 +0000
+        by eddie.linux-mips.org with ESMTP id S23990513AbdK2PXSUNuro (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Nov 2017 16:23:18 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 29 Nov 2017 15:21:33 +0000
 Received: from [10.20.78.197] (10.20.78.197) by mips01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Wed, 29 Nov 2017
- 07:22:13 -0800
-Date:   Wed, 29 Nov 2017 15:22:01 +0000
+ 07:21:26 -0800
+Date:   Wed, 29 Nov 2017 15:21:14 +0000
 From:   "Maciej W. Rozycki" <macro@mips.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@mips.com>
@@ -15,15 +15,15 @@ CC:     Paul Burton <Paul.Burton@mips.com>,
         Alex Smith <alex@alex-smith.me.uk>,
         Dave Martin <Dave.Martin@arm.com>, <linux-mips@linux-mips.org>,
         <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 5/5] MIPS: Disallow outsized PTRACE_SETREGSET NT_PRFPREG
- regset accesses
+Subject: [PATCH 4/5] MIPS: Execute any partial write of the last register
+ with PTRACE_SETREGSET
 In-Reply-To: <alpine.DEB.2.00.1711290152040.31156@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1711291450420.31156@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1711291226320.31156@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1711290152040.31156@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1511968953-298554-29173-50307-8
+X-BESS-ID: 1511968892-321458-15266-74779-1
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -38,7 +38,7 @@ Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61189
+X-archive-position: 61190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,30 +55,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Complement commit c23b3d1a5311 ("MIPS: ptrace: Change GP regset to use 
-correct core dump register layout") and also reject outsized 
-PTRACE_SETREGSET requests to the NT_PRFPREG regset, like with the 
-NT_PRSTATUS regset.
+Fix a commit d614fd58a283 ("mips/ptrace: Preserve previous registers for 
+short regset write") bug and allow the last register requested with a 
+ptrace(2) PTRACE_SETREGSET call to be partially written if supplied this 
+way by the caller, like with other register sets.
 
-Cc: stable@vger.kernel.org # v3.17+
-Fixes: c23b3d1a5311 ("MIPS: ptrace: Change GP regset to use correct core dump register layout")
+Cc: stable@vger.kernel.org # v4.11+
+Fixes: d614fd58a283 ("mips/ptrace: Preserve previous registers for short regset write")
 Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 ---
- arch/mips/kernel/ptrace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/kernel/ptrace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-linux-mips-nt-prfpreg-size.diff
+linux-mips-nt-prfpreg-count.diff
 Index: linux-sfr-test/arch/mips/kernel/ptrace.c
 ===================================================================
---- linux-sfr-test.orig/arch/mips/kernel/ptrace.c	2017-11-28 23:52:40.373594000 +0000
-+++ linux-sfr-test/arch/mips/kernel/ptrace.c	2017-11-28 23:52:47.058649000 +0000
-@@ -533,6 +533,9 @@ static int fpr_set(struct task_struct *t
- 	u32 fcr31;
+--- linux-sfr-test.orig/arch/mips/kernel/ptrace.c	2017-11-21 22:12:00.000000000 +0000
++++ linux-sfr-test/arch/mips/kernel/ptrace.c	2017-11-21 22:13:13.471970000 +0000
+@@ -484,7 +484,7 @@ static int fpr_set_msa(struct task_struc
  	int err;
  
-+	if (pos + count > sizeof(elf_fpregset_t))
-+		return -EIO;
-+
- 	init_fp_ctx(target);
- 
- 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
+ 	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
+-	for (i = 0; i < NUM_FPU_REGS && *count >= sizeof(elf_fpreg_t); i++) {
++	for (i = 0; i < NUM_FPU_REGS && *count > 0; i++) {
+ 		err = user_regset_copyin(pos, count, kbuf, ubuf,
+ 					 &fpr_val, i * sizeof(elf_fpreg_t),
+ 					 (i + 1) * sizeof(elf_fpreg_t));

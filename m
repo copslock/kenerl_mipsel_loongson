@@ -1,52 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 18:48:03 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:35816 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992176AbdK2Rr4V3uCV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Nov 2017 18:47:56 +0100
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id B6CA713A42;
-        Wed, 29 Nov 2017 17:47:49 +0000 (UTC)
-Received: from [10.36.117.80] (ovpn-117-80.ams2.redhat.com [10.36.117.80])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6F1A460605;
-        Wed, 29 Nov 2017 17:47:43 +0000 (UTC)
-Subject: Re: [PATCH v2 08/16] KVM: Move vcpu_load to arch-specific
- kvm_arch_vcpu_ioctl_get_mpstate
-To:     Christoffer Dall <christoffer.dall@linaro.org>, kvm@vger.kernel.org
-Cc:     Andrew Jones <drjones@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Alexander Graf <agraf@suse.com>, kvm-ppc@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-References: <20171129164116.16167-1-christoffer.dall@linaro.org>
- <20171129164116.16167-9-christoffer.dall@linaro.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <70d9ce37-8c96-fcf9-b736-20455dfaf440@redhat.com>
-Date:   Wed, 29 Nov 2017 18:47:42 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2017 20:12:25 +0100 (CET)
+Received: from userp1040.oracle.com ([156.151.31.81]:32456 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992181AbdK2TMT2EEsi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Nov 2017 20:12:19 +0100
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id vATJBvm6026419
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Nov 2017 19:11:59 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userv0021.oracle.com (8.14.4/8.14.4) with ESMTP id vATJBsr1006629
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Nov 2017 19:11:54 GMT
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id vATJBnSj017589;
+        Wed, 29 Nov 2017 19:11:51 GMT
+Received: from mwanda (/41.202.241.38)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 29 Nov 2017 11:11:49 -0800
+Date:   Wed, 29 Nov 2017 22:11:38 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Souptick Joarder <jrdr.linux@gmail.com>
+Cc:     David Daney <david.daney@cavium.com>,
+        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, Carlos Munoz <cmunoz@cavium.com>,
+        Rob Herring <robh+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        "Steven J. Hill" <steven.hill@cavium.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        James Hogan <james.hogan@mips.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v4 7/8] netdev: octeon-ethernet: Add Cavium Octeon III
+ support.
+Message-ID: <20171129191138.ntlfw5fb4xacwyun@mwanda>
+References: <20171129005540.28829-1-david.daney@cavium.com>
+ <20171129005540.28829-8-david.daney@cavium.com>
+ <CAFqt6zabdQhyjUc4WsjzJ6CxMr70H3V_JdipJVwRi8LuOG54tA@mail.gmail.com>
+ <CAFqt6zZAPxKm663yEHD0Rx2SPye9Nvoax0RMroDQuF8BpZchsA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20171129164116.16167-9-christoffer.dall@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Wed, 29 Nov 2017 17:47:49 +0000 (UTC)
-Return-Path: <david@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFqt6zZAPxKm663yEHD0Rx2SPye9Nvoax0RMroDQuF8BpZchsA@mail.gmail.com>
+User-Agent: NeoMutt/20170609 (1.8.3)
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61222
+X-archive-position: 61223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david@redhat.com
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,101 +65,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29.11.2017 17:41, Christoffer Dall wrote:
-> Move vcpu_load() and vcpu_put() into the architecture specific
-> implementations of kvm_arch_vcpu_ioctl_get_mpstate().
+On Wed, Nov 29, 2017 at 09:37:15PM +0530, Souptick Joarder wrote:
+> >> +static int bgx_port_sgmii_set_link_speed(struct bgx_port_priv *priv, struct port_status status)
+> >> +{
+> >> +       u64     data;
+> >> +       u64     prtx;
+> >> +       u64     miscx;
+> >> +       int     timeout;
+> >> +
 > 
-> Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
-> ---
->  arch/s390/kvm/kvm-s390.c | 11 +++++++++--
->  arch/x86/kvm/x86.c       |  3 +++
->  virt/kvm/arm/arm.c       |  3 +++
->  virt/kvm/kvm_main.c      |  2 --
->  4 files changed, 15 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index d95b4f1..396fc3d 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -2836,9 +2836,16 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
->  int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
->  				    struct kvm_mp_state *mp_state)
->  {
-> +	int ret;
-> +
-> +	vcpu_load(vcpu);
-> +
->  	/* CHECK_STOP and LOAD are not supported yet */
-> -	return is_vcpu_stopped(vcpu) ? KVM_MP_STATE_STOPPED :
-> -				       KVM_MP_STATE_OPERATING;
-> +	ret = is_vcpu_stopped(vcpu) ? KVM_MP_STATE_STOPPED :
-> +				      KVM_MP_STATE_OPERATING;
-> +
-> +	vcpu_put(vcpu);
-> +	return ret;
->  }
->  
->  int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a31a80a..9bf62c3 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -7440,6 +7440,8 @@ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
->  int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
->  				    struct kvm_mp_state *mp_state)
->  {
-> +	vcpu_load(vcpu);
-> +
->  	kvm_apic_accept_events(vcpu);
->  	if (vcpu->arch.mp_state == KVM_MP_STATE_HALTED &&
->  					vcpu->arch.pv.pv_unhalted)
-> @@ -7447,6 +7449,7 @@ int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
->  	else
->  		mp_state->mp_state = vcpu->arch.mp_state;
->  
-> +	vcpu_put(vcpu);
->  	return 0;
->  }
->  
-> diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
-> index 1f448b2..a717170 100644
-> --- a/virt/kvm/arm/arm.c
-> +++ b/virt/kvm/arm/arm.c
-> @@ -381,11 +381,14 @@ static void vcpu_power_off(struct kvm_vcpu *vcpu)
->  int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
->  				    struct kvm_mp_state *mp_state)
->  {
-> +	vcpu_load(vcpu);
-> +
->  	if (vcpu->arch.power_off)
->  		mp_state->mp_state = KVM_MP_STATE_STOPPED;
->  	else
->  		mp_state->mp_state = KVM_MP_STATE_RUNNABLE;
->  
-> +	vcpu_put(vcpu);
->  	return 0;
->  }
->  
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 19cf2d1..eac3c29 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2603,9 +2603,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
->  	case KVM_GET_MP_STATE: {
->  		struct kvm_mp_state mp_state;
->  
-> -		vcpu_load(vcpu);
->  		r = kvm_arch_vcpu_ioctl_get_mpstate(vcpu, &mp_state);
-> -		vcpu_put(vcpu);
->  		if (r)
->  			goto out;
->  		r = -EFAULT;
+> >> +
+> >> +       switch (status.speed) {
+> >> +       case 10:
+> >
+> > In my opinion, instead of hard coding the value, is it fine to use ENUM ?
+>    Similar comments applicable in other places where hard coded values are used.
 > 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+10 means 10M right?  That's not really a magic number.  It's fine.
 
--- 
+> >> +static int bgx_port_init_xaui_link(struct bgx_port_priv *priv)
+> >> +{
+> 
+> >> +
+> >> +               if (use_ber) {
+> >> +                       timeout = 10000;
+> >> +                       do {
+> >> +                               data =
+> >> +                               oct_csr_read(BGX_SPU_BR_STATUS1(priv->node, priv->bgx, priv->index));
+> >> +                               if (data & BIT(0))
+> >> +                                       break;
+> >> +                               timeout--;
+> >> +                               udelay(1);
+> >> +                       } while (timeout);
+> >
+> > In my opinion, it's better to implement similar kind of loops inside macros.
 
-Thanks,
+I don't understand what you mean here.  For what it's worth this code
+seems clear enough to me (except for the bad indenting of oct_csr_read().
 
-David / dhildenb
+It should be something like:
+				data = oct_csr_read(BGX_SPU_BR_STATUS1(priv->node,
+						priv->bgx, priv->index));
+
+That's over the 80 char limit but so is the original code.
+
+regards,
+dan carpenter

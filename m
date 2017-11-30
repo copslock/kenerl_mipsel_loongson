@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 07:16:43 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 07:17:07 +0100 (CET)
 Received: from mail-sn1nam02on0067.outbound.protection.outlook.com ([104.47.36.67]:20544
         "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990590AbdK3GQLz6Lxy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Nov 2017 07:16:11 +0100
+        id S23990591AbdK3GQMVofHy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Nov 2017 07:16:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=AF5YtXFdZiYRoDo8ZekL31nKCbC/Ftb+o7uEmnPGPQw=;
- b=HrxEVx6IZw2FTSEAkxbK5+PsL5p3OMX/oIU/dfSxp3tMwYoXR0QeEDSYmi93Hf/iJfCE4NxM+sjN3eAt3UW3AGJLRT+6D6by9QFMMby9ZOLnTpCpBBmzdOdQMheCxH+OSqTk5SCPIC/sup5kqkPrtc3KgZ1dpiO1YkWR2RqvfuA=
+ bh=30Jdfaebi/iXenPtSDaBdNNvdTHoa3osSNDKaHeEClw=;
+ b=cj0+MhOen/3Gegb/PfAI8E4Yg78ifc9dL7TcaMWl3ZOs7fDv2WlJeBn5IAVQ2yjGOtzCN3SJpEwbnQRcmPGKnfcdLLTog4XnPnUpn0Q96U9LXOnASn6lViRpYkzhtbSLm2TFwXeBxhR4hs8qSde+QwpOhd5MYh02f/Qbr4LCdsE=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (173.18.42.219) by
  MWHPR0701MB3803.namprd07.prod.outlook.com (2603:10b6:301:7f::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.20.260.4; Thu, 30
- Nov 2017 06:16:02 +0000
+ Nov 2017 06:16:03 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <Steven.Hill@cavium.com>, ralf@linux-mips.org
-Subject: [PATCH v4 2/7] MIPS: Octeon: Update values for CVMX_CIU_FUSE register.
-Date:   Thu, 30 Nov 2017 00:06:16 -0600
-Message-Id: <1512021981-15560-3-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH v4 3/7] MIPS: Octeon: Add Octeon III platforms for console output.
+Date:   Thu, 30 Nov 2017 00:06:17 -0600
+Message-Id: <1512021981-15560-4-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1512021981-15560-1-git-send-email-steven.hill@cavium.com>
 References: <1512021981-15560-1-git-send-email-steven.hill@cavium.com>
@@ -31,46 +31,45 @@ X-Originating-IP: [173.18.42.219]
 X-ClientProxiedBy: CO2PR07CA0074.namprd07.prod.outlook.com (2603:10b6:100::42)
  To MWHPR0701MB3803.namprd07.prod.outlook.com (2603:10b6:301:7f::19)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 36621841-5568-4be4-97e9-08d537b9d511
+X-MS-Office365-Filtering-Correlation-Id: 2a4cd2bf-6936-4012-4080-08d537b9d5dc
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603199);SRVR:MWHPR0701MB3803;
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;3:O54oIizub6z41/srHeJsjGCVM4zc5fx/0f836Y1OiwNAyPXXPXxkgyNYipgyEyCR8Ay40SRWnCGbn2iANXbdiHcmptDyvdOLnT71d2VALdemo2QffyOQXlcCa4HR4P1M+mOJpcJRGzMGndchGJaA2LF/yCnE8PcWEckyGAw9aQREQe3G/kKokmX+JRtnyyIFLNgdw9FEZ6Q70FNpHu2QZWDu/eE/McsnDJm7LTfYj7dyMT+dgk/1QTyQIeDIeekO;25:FrsOY3kunfx5SiohboJoiuKTUXw+XiqB9cA6GcnkU/omfcuUCvm6JUjRu7VRA7T22QMdLRumpqdH6GZL8WPAMxUkKLzG0Ny9FJHGVbt0fgS26mABe5HZ1TnJ1NExYi4zfOyuRY1nq/smFhqJsdl5Y2X7wcDphcScKy/sJunuf+fwvsfZmQD/GJ97IIaoauIZ4gMEEWRp8bK4ZVvWgTuC/yaW3QPi226RaQM1scEo6C01A63HRuTHaiGC87TSJ1cyzVSUfegQf0mZbgKjNDR8Gd3CglHsEY2DB+3+wXWx5cBnqSEvzJDbe9wBp4+S+9Y+bwjyEmhwilk1VwlflMpcwQ==;31:CuzigHqj0adfvvf9SaHn1Lbpj/rELFUVIAekyS439FiVTzpd3cS+evvAfrBzvxi/pFQGvsiB3R0u62su3icbbagY408kagNmWm7YTmTxs74oEDOuGAvguujwZX53jUkdIakY+8Axk+xBtwHxfO6EemfF6CU0iGbn4Vt1qi0h/Uc2a9smgKEAUCeIbzbxutd/SxGaZvMysSvrPpgZSrS/6PXsw+ar0P+8oaMaHnUxRTg=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;3:sa+/IFZrgyjVe+Q9t+CNyrru3bUBkjXhwnYgdnvbgbiP46oTQjbRR2foTSe3vzhzjT0PSzqNwQFZ9xWV0keLBfvwFcp7OSnsnARE36T1T1Q44/SQkqsUIqkBukNK5kdjzobSYX1cv8JOLlDtiYB/gu4Yn1XdVBa8gHsXT2mUW1mLuqeAISXzqRGm7RRmWK16CyThREhqM87TI/rENbW+KE2iipwLoXqyRCnW4yS53SQvrAb21/+1Xn0imtSO4etz;25:RS3AFNKYYWe5VLG/FpUunrRBuem8NxL9aIfSp7iYRuBnizNKXjZ6gWwHm/xoah5A8+o4Stx1zcmjodzrLG8P8xhMGiPjFfgsI/bYv+CgS6zzXOE3f5y97mjHW1lw976Btn2JI1VFCOMNT/PoA1cwfAiV5qopu6KA/58Wpm83NGBxUv9emfbm3HQDeUtzsKQLYTpzsjAl5hP82mpmDjlRdl9EWam6bGnU4XAlytaNxUvF/lrwbzlEuwuRYytZ8ottCb+BwFK+ah/pCuDicL/Hp5LsYgwVlFeCB3RCde82KqVOIhujfG6KgIg8yMQhfOmEGgtkw3udwYTTOUhplpHsFA==;31:TtlHsnh5yLpXM0uDB+foWPD3Q0Iwo40JGVWX4vLkOyeQKMIGAkgn/yCrTHacMiYq1DeLkgqH+bhlknwevTtNb2bM5HV3ekpNm+/CWLp1GpGrIrAHTbBFd4TF/XXZLl7nj+PYbGABob+wnJaEwL8RGty0i0Fh5HXcCi0xu1paJpzm+POQg7luQi2ThJQnez2GfmQTUVXNhQEAVwXhR3FOkki2ySABYdaBapENYdqVENA=
 X-MS-TrafficTypeDiagnostic: MWHPR0701MB3803:
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;20:aVfTX56UglD8TLaBn22WxsdJk2QiWUDmNAPmwZS5EMuYD5PXYJgzvmo06jweA2buHVQ5L1G4tgazBuqUC21hYYIWWCONn22rVZtNcVsx78VbkHuZPk4o9Ssra/oAMzkz02kNyLUE6KrJAUUE4LzigRn8eKVbS0cK6s62M/D9/cWZdMxWA82a+MwH05+yN08ZfpQVEGiaT58ubUHekegmr5Ql9Uz9LV7dHgu+/tG/4zR3j63L6CRlAXxOQS5p8CoXJincPYmsmrBKPOwvu1UqLoH9kC9wkAAYSUY1WbRI2n4fL8oEMz1F+dbtrmvsaW6uRZb/q0CzJw5Nrkxt7AGlEI7it848Lbuf4RNIhY6q0wd/unxdIPF0Yjokl/mLWSPNZMOota/cypc/BTKcWgXkvxgSTa+Fcclm5BzTbIX9XLaN0suXzW7ELaomZDyCTUsyaR3VHpQIPsVnY1Y867ickKCB/OltxGqqHUIxz72krkXnXSO+6Nh3u4U7drt/THRS;4:VrlvfWqJib99L+b9A++sXi0ry2c4MJ+SJI65mzOOPkNSnIb0uJVhlP1f9O+4Ap4nM2MAEpcS7dGbW9n8vMPJmCg1aolBwNf9COJKUKRdnndpmunJ84CgF3c51q8DyEZuPnRoC89KFieZ7WY0+Cg2fE6skYF6FJ5gHNiEt54YxgOon7RZ8e1/GlO8S4vewUdnnSC+dC2F6MijuZ3KR0Mu3yghCNkXPvSk+54awoPFWLKrNC4SAuNlE8bIm7WdbkgdaGciQVFrKlNnCAk4AXP3nA==
-X-Microsoft-Antispam-PRVS: <MWHPR0701MB3803D6B5CC227738380E690080380@MWHPR0701MB3803.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;20:4p3uUPnM+Q0Oy2bpEGfE4SXS7KTTFM7WZmDxM4mSIr0WPSZ3FnFCFY7Lyuu4no+mfcepXMOpf84eJ/tBiQT797bgiSw5fxQNpwRjAO3qNNxgZ5MB4oEmwYloNuMr8Afozo3dsN0FKFgIcwnMZkPGEYXp1pKaU/Kz7SCnrUwljYjmJGq0NMh1I4t9URUOrpKwYg1jz1MRL1c60aTdGtMwo9YrAXPw9L7fKOfii/vjFfSZ0/BmIuLyIbqEg6/v+0ImtvhiB+zwIbIciSxdSmGstI7fb7BJgssvNw4gBj8cknUAQmtc6LLiBnUwakffxzgDEbI5OSf55JQAJrvsQKU/LW+4Gn22RcSBKp0v5tvPEpxvaX0ZgOosekIO7yO9S5DODPxxvGBQ27QOnjvaCV6n5SJgpsI7YojlHSYSpQW5fVzmYftrA8fjZqToTj1PLADSPMO887rueKsYUSqGQneJVP806UhxNlZGn2/ZZHrInBPeYm933FfHFUMuIUFuOiZ9;4:NqhYSumCHOHfRUEiw/yajkVN8VeMyE8VEX3ZI/wbCD49eRoyxhQ6br1gAgrWV2atA+7qfU21NQJTQ3dwxiGiTFp3YMQJNDSUNlFVEMxQbwTApvbVuyPimIKyOAlynwtABlmyp+NlEyVbZ/j210zKzqhn3KJIzjQ5i/cpPQ15yKvsQdF5Z6cCbG1gJvo/gdXl6SB6svHyL+ywbfy4QiaaVMD2XG2cbc83TPhRB5l4j+ltushu6ZWjeKkGo0fwTqJINUph7cSfuzuXxY9WqFQSUw==
+X-Microsoft-Antispam-PRVS: <MWHPR0701MB3803850C39F0FAA313369F8780380@MWHPR0701MB3803.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(5005006)(8121501046)(3231022)(93006095)(93001095)(10201501046)(3002001)(6041248)(20161123560025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123558100)(20161123555025)(20161123564025)(6072148)(201708071742011);SRVR:MWHPR0701MB3803;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:MWHPR0701MB3803;
 X-Forefront-PRVS: 05079D8470
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(366004)(199003)(189002)(101416001)(2361001)(53936002)(72206003)(189998001)(53416004)(51416003)(6512007)(33646002)(2906002)(47776003)(50986010)(36756003)(16586007)(76176010)(50226002)(316002)(6116002)(2950100002)(106356001)(68736007)(6666003)(81166006)(575784001)(3846002)(5660300001)(48376002)(8676002)(25786009)(86362001)(305945005)(450100002)(2351001)(7736002)(8936002)(50466002)(81156014)(105586002)(52116002)(69596002)(4326008)(6916009)(16526018)(6486002)(6506006)(66066001)(97736004)(478600001)(2004002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR0701MB3803;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(366004)(199003)(189002)(101416001)(2361001)(53936002)(72206003)(189998001)(53416004)(51416003)(6512007)(33646002)(2906002)(47776003)(50986010)(36756003)(16586007)(76176010)(50226002)(316002)(6116002)(2950100002)(106356001)(68736007)(6666003)(81166006)(3846002)(5660300001)(48376002)(8676002)(25786009)(86362001)(305945005)(450100002)(2351001)(7736002)(8936002)(50466002)(81156014)(105586002)(52116002)(69596002)(4326008)(6916009)(16526018)(6486002)(6506006)(66066001)(97736004)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR0701MB3803;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR0701MB3803;23:fiScdxEP+9afrA//e+GVxXgyqoifk7uqYT/p3a2?=
- =?us-ascii?Q?YMtBavXnKFyqIIVQylSlNEszZb+lDj5YJFVYChxxWstWZCb828snk28AJL1f?=
- =?us-ascii?Q?/Y5QDwklnTcBG+wrDduWISFkFbcQJzheXptyH9YvFSlZ6Z8smD3Bd/7HcbFH?=
- =?us-ascii?Q?lqGxodOP1ofV5s3jCQxFihGBvvPnKmGrGJ/BWUIv7hzx5TTPVHuhinfNgnDh?=
- =?us-ascii?Q?YnVy+oNBDL5SrZZPz4WOJnzjhmnudyXsoqgh8ZZeWGYKwA4WhGqi3Q2CPRfu?=
- =?us-ascii?Q?vdMUzeDA1wWO44sJIbukymrp1VRvEa6yvR/7/FggR5IK5DJhb3sYqFXwSeTd?=
- =?us-ascii?Q?biidEglqBsYJLsfT7DweYapBPwKOJiyliDuGypj37YBuUTCoPgig3bbzatGr?=
- =?us-ascii?Q?lVa9SbbvhgoBTB+c/hivU9WMLyMfxul0o46KUH926Vq5UANvGkKY4aDn6y9K?=
- =?us-ascii?Q?mvjJYUy4Ue0WoofMzblO2m3c0UKAssyaqAKlNh+Q52tJSf9bp36jaNXJOh+0?=
- =?us-ascii?Q?J97oJXOgerBgd0+PQcULxi/kSLRFKxJExmSLYTHKb6ad7uwEOgrTzAImNd2p?=
- =?us-ascii?Q?S9FD3oJk4Po5EkAH5a0TD3aCwQsSop++5XsVkB0qlD2edVJWdjKDMd7prblf?=
- =?us-ascii?Q?57+6nzllzaUMLvuUoFAyWjJ0Jlg0SCs4S1gUFlGpzRBuar9v69YHmNKegefL?=
- =?us-ascii?Q?BkDvFr10HaUmLVD5ROA7Zno98R94TCSzQ3hqdXbvZOCtoukHF3A0vId9H/nD?=
- =?us-ascii?Q?pVivXl5cE5Gv+7dZbm3pV9C1wEs4uMIslR7j81sMTjvC5Qh3JI61iS1kIW8/?=
- =?us-ascii?Q?ra5nhyC2hx85kG2Nsz3gvtNGdPVGUETVzmJfyMX9WJsuarv6R2tAFZYMhen4?=
- =?us-ascii?Q?mhilwkjbr0pkF6ci1nV0D2SDXwd/YMULfSs204VbkQfUGfCeqjpSez3dXHXc?=
- =?us-ascii?Q?7NYuAkHWPRjY4mlbnzJrFsYDY6TiUXc0dge9SP8j8eJt+i32NImxwia9OFyO?=
- =?us-ascii?Q?2yU+Y8z/RTOP4s9fmhJsxiIZUavMvE+tTVt3BbWYUQtzPp4s60ESOx65tBRf?=
- =?us-ascii?Q?q/2Uun5qnV29OjMraoZQFDe+58OhI6LPFLO9P899Eo8BbawxrM+TksKyApUb?=
- =?us-ascii?Q?p831d7Izjxlf/fZryAmWnm8kchp7hE4DAHNsgz+vLJhVRBUoJN+M9Dc2HItw?=
- =?us-ascii?Q?kjrPj2W32jwCVFWm/Dc6JmEl+frr4Rh/P7ls4tg+EsOmH8u8UXPpjmvFTNmh?=
- =?us-ascii?Q?XoykXfY2ipJGlFfBGFrc=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;6:KxuIYoJEdRiQLo8H3L8J+Npz8R9EXSVm1T0h+Qq55XXmcL6ZS3vBxNp3TN6assI/WRq2skhpypJbge1RGk3rxV3hsOY8mjyuwi/UIWr8Y0fovjDO2symyNlUXfqzEO0N7VdhTJl7aRs0dOY1Lsi0CdOuHOuRHcPklJpomJmuNg1hVvq4Bh2qzUht77f+bSCZzmZXzvk9MPmmCMXInji7jbcZF+IlMHPpSp1PHe61NeWRACLmmy2NM6Bi2i1LYL+9V8Itw0Pc2rTbNNMfqlhcINzSvW3y4qSR4rmyo/65sCy7LTNNN2AaUeGfflMi6u7ennjKN41KOrQqhZhyk9XoZ/yjqj/VSScMlzUTyCY/sZM=;5:2LNK0rKQZJnDTle2ngoVLiIBcVnY3XXR2Mba283L0NiyNkB3dxk4K2bqJlMVkQw775LFWCdv19XKD1JV2hr9n1/qkEQk/Iw1RonfVZt5OSX4p47qzNAPixhVpMW1jdfk4K2vIIDV/XBB2ksq8Vni3neE0J/PXntLpg1Jl5GTlEQ=;24:zxrCJBHke7u5HmXw+197ll+2iAllqcumVon/4E0n2RekOy5xImZF5gU2alK3HleXJYG9pxHlkg/c3cKhnCPnSOuypIMpX9V7i22+cEGHD24=;7:PleWSngcFk0hw+zw1X6EQoP9qk8QjiDLivVanyC12tWSjpsLTK7V+LR6DMTK72ErxuCeKynJsnYqujNDMmHAZ8oHJk+snVKwGqpKo9eDRi+iIT64mLioLf5XQ7V/OMfLNS4K8/CwXRK5+xEgEKZ7N3yS5u2M/7Q/KQrE2wgSUE3U/iM6xLTYRR/APfP0XjBpblde6v0USGLfUV6vFBJXfMvlgfgEb3sqkbsVieP5TgnhKgbIhmBTVDimSrRyaPhx
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR0701MB3803;23:ywG8NCQkMOFrg2rkozRmpsTwqRC4cPvI+mMkvhA?=
+ =?us-ascii?Q?p9ojozDz3C+r3p+xbm1y+ZcViyrTiy8z1MpiQrqq9O+WtpbBKiV16dnZRrkA?=
+ =?us-ascii?Q?8+XmrKGiR7yQJa618h4z9h9tMpcSrVOC+oOUq65BvkVpqEw/aEKFmt0+WGfs?=
+ =?us-ascii?Q?Cla/QcM6mm1dKpTQprwUwvKmbYlhgRio2HZ/8jBgowe34kE8Fpu0b46pRglD?=
+ =?us-ascii?Q?Puv/r9geG07BmKvCqpt+0+pvjitDu6c5eq0njku/xZQc4bnJlua61c12Cg0Z?=
+ =?us-ascii?Q?n1OlM173vLkgJFJET+uYlQ2sQVFQamN+82sH381h9LU1R4hDvNsqRimz0JQk?=
+ =?us-ascii?Q?Sbu+5cvBawBod9v9jpbQPacVkd+RqYN6Dzb0JEDE5uZnn3GYt90v0wwGe6xJ?=
+ =?us-ascii?Q?E0pZbaTY70YmC+faDofM1m5eLL/SfPlaP4/xpu+kFkixoiGNWJOPFsS9HnS3?=
+ =?us-ascii?Q?OIjrApA2+ooSErgrqkjGOh3mnLeiy74znfviSYw7RkEKPteZEOmhrS7Gm7WD?=
+ =?us-ascii?Q?N7YUnsqU+uPHXXYx72pkoskznHwAwDMwN5fu52Vjaci/eQZbdqBze23HVEVM?=
+ =?us-ascii?Q?Xd47JxKQouiUb/ljJYkQuJCkSTROwXckIPCRu4vC3U5ni1ilM9LAg6I+91kE?=
+ =?us-ascii?Q?aZ9HRVtFQeTeHHfCGAblEt4rXIW28k3Hu7zHmIoHHWysm9Fbu5yTFb1jvPzN?=
+ =?us-ascii?Q?Y/6EYfEupp/SVfgfG5RPqu4werPW4XcsmH5cybIARTB/egmjssBLOTYjIzLn?=
+ =?us-ascii?Q?WhEQVbObt8bCpDEIIVyHIWFE9ep0bg8RVTeC5lenIuAhJHcWRqSzH8Uv5dXF?=
+ =?us-ascii?Q?Tv/3t08KUuuaRWIC+npvKsdFC9JFVwsyTBizEe2+q5j86T4DVUN70gmU0tOQ?=
+ =?us-ascii?Q?g5ZO0JvCY0AGpzZMFOF/5DYo0J04RONqY57RHwz3vtYzvQbGrwjqfbVR9CNQ?=
+ =?us-ascii?Q?y9ksqAKddXhankvsEPhYd9udd1Bzssu+2DK1WbedMnMIUndS8WQspYiixA3E?=
+ =?us-ascii?Q?DcgJlkd4CfVuEHt3BNpLoCBx8TuLadxZqvEOAqHhdnQTjGMhxawywqftad/0?=
+ =?us-ascii?Q?x0IHA3bbk3oD9j6UT/yhbdxuwNNEFenHV/ZP16YDN7uyoP5Y6iKHJHP207Bu?=
+ =?us-ascii?Q?7jPDduoRAiyYxbywYXc+BaYyfFMy23lBnGa4i4guMKjo8gaOvuiDfx+ApNfJ?=
+ =?us-ascii?Q?uIchpvrBb6qn+DSQwABG5dYccQhbt2Nl2wPnw?=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;6:yRDwRrMN/qMoFz8jYVKXVPh9lCI3J53P16l1EvtmU30nzlEWs8K/UBoRXCYPiPdxgQy5S5i53fdr3HEeaSxRzRgPoAiWf9hSvwh80hNXNP0abjKufeR7SGhKaaGHRYfaAwwJOPX+i+mOEc+5VlTnLgSDwUbJMhhgqvNtGgsbddMauGESYljCZdIxU4KsM/7/36wlA8xFE0DNjbKMifniWXpR8hzWah5AIVN6rJHvJN8sU0vN0tiab4ZyBBHxslfKmktwFYZtTs4kG6rTUnuT70BUJMoK+qjJAv/zvFBT2GDwzfPB7ngEHIC5jNNRRsrwNJGxSyfH2qQmAJhSpqPZ1KwjmqcGo+npuyRih0yZAjY=;5:gX2QG126r3xSnHKAaBzBggQj1mG4ckyZM9KL23Jdkz7ZoyJHPEWPHzKlU3xXwGtrQsiNF2gZANA+TgvHprN/XSpMncA/asL8h/I6XcWHL56UPAdr36ofjb4UrSp3m8VxqfWEdwBRxaGi6LLO1LG5KL4KcUzEKUFloHhZI4L2798=;24:9TW89o5Fdpwqk8w8zQZPBkcNf0szGo0PaSlRlQfHO/N4+HgI9VYcJTPiXhofmUOYC0FaVnCnTBVCBTITngalByPrAZY6kH/wuQqOOUK1BoQ=;7:Rj7Potj+xdUqF2sfJuize8sszRjk7bDQfdNNx9R04fkHIY8i3EwcxLEbMh44v9YkK2NcMDFZ77FLRSQrBFGyOTu7jfwYZV6726n07M0J0oFC2FAvWbT04be1Xrif37kPjx/3T3wekSB/H5RJfVYJAwR6B5otri2xtcTodWJFx6X/446TaWKS4WFE2XfWFuUracY1bCRgwocdbr/q69M/v+5bLn2gPuY5PrJv5fs6HFFxd/thZ9RWLT7ojEw0q3xa
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2017 06:16:02.1908 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36621841-5568-4be4-97e9-08d537b9d511
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2017 06:16:03.0658 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a4cd2bf-6936-4012-4080-08d537b9d5dc
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR0701MB3803
@@ -78,7 +77,7 @@ Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61233
+X-archive-position: 61234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -97,58 +96,96 @@ X-list: linux-mips
 
 From: "Steven J. Hill" <Steven.Hill@cavium.com>
 
-Values for CVMX_CIU_FUSE register was incorrect for some platforms.
+Support Octeon III platforms when printing out the model and
+SoC information during boot.
 
 Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+Acked-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/octeon/cvmx-ciu-defs.h | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ arch/mips/cavium-octeon/executive/octeon-model.c | 53 ++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
-index af9164b..2ac8168 100644
---- a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
-+++ b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2012 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -43,7 +43,31 @@
- #define CVMX_CIU_EN2_PPX_IP4(offset) (CVMX_ADD_IO_SEG(0x000107000000A400ull) + ((offset) & 15) * 8)
- #define CVMX_CIU_EN2_PPX_IP4_W1C(offset) (CVMX_ADD_IO_SEG(0x000107000000CC00ull) + ((offset) & 15) * 8)
- #define CVMX_CIU_EN2_PPX_IP4_W1S(offset) (CVMX_ADD_IO_SEG(0x000107000000AC00ull) + ((offset) & 15) * 8)
--#define CVMX_CIU_FUSE (CVMX_ADD_IO_SEG(0x0001070000000728ull))
-+#define CVMX_CIU_FUSE CVMX_CIU_FUSE_FUNC()
-+static inline uint64_t CVMX_CIU_FUSE_FUNC(void)
-+{
-+	switch(cvmx_get_octeon_family() & OCTEON_FAMILY_MASK) {
-+	case OCTEON_CN30XX:
-+	case OCTEON_CN31XX:
-+	case OCTEON_CN38XX:
-+	case OCTEON_CN50XX:
-+	case OCTEON_CN52XX:
-+	case OCTEON_CN56XX:
-+	case OCTEON_CN58XX:
-+	case OCTEON_CN61XX:
-+	case OCTEON_CN63XX:
-+	case OCTEON_CN66XX:
-+	case OCTEON_CN68XX:
-+	case OCTEON_CN70XX:
-+	case OCTEON_CNF71XX:
-+	default:
-+		return CVMX_ADD_IO_SEG(0x0001070000000728ull);
-+	case OCTEON_CN73XX:
-+	case OCTEON_CN78XX:
-+	case OCTEON_CNF75XX:
-+		return CVMX_ADD_IO_SEG(0x00010100000001A0ull);
-+	}
-+}
- #define CVMX_CIU_GSTOP (CVMX_ADD_IO_SEG(0x0001070000000710ull))
- #define CVMX_CIU_INT33_SUM0 (CVMX_ADD_IO_SEG(0x0001070000000110ull))
- #define CVMX_CIU_INTX_EN0(offset) (CVMX_ADD_IO_SEG(0x0001070000000200ull) + ((offset) & 63) * 16)
+diff --git a/arch/mips/cavium-octeon/executive/octeon-model.c b/arch/mips/cavium-octeon/executive/octeon-model.c
+index 3410523..069a996 100644
+--- a/arch/mips/cavium-octeon/executive/octeon-model.c
++++ b/arch/mips/cavium-octeon/executive/octeon-model.c
+@@ -67,7 +67,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 	union cvmx_mio_fus_dat2 fus_dat2;
+ 	union cvmx_mio_fus_dat3 fus_dat3;
+ 	char fuse_model[10];
+-	uint32_t fuse_data = 0;
++	uint64_t fuse_data = 0;
+ 	uint64_t l2d_fus3 = 0;
+ 
+ 	if (OCTEON_IS_MODEL(OCTEON_CN3XXX) || OCTEON_IS_MODEL(OCTEON_CN5XXX))
+@@ -453,11 +453,13 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 	}
+ 
+ 	clock_mhz = octeon_get_clock_rate() / 1000000;
+-	if (family[0] != '3') {
++	if (family[0] != '3')
++		goto out;
++
++	if (OCTEON_IS_OCTEON1PLUS() || OCTEON_IS_OCTEON2()) {
+ 		int fuse_base = 384 / 8;
+ 		if (family[0] == '6')
+ 			fuse_base = 832 / 8;
+-
+ 		/* Check for model in fuses, overrides normal decode */
+ 		/* This is _not_ valid for Octeon CN3XXX models */
+ 		fuse_data |= cvmx_fuse_read_byte(fuse_base + 3);
+@@ -486,7 +488,52 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 				family = fuse_model;
+ 			}
+ 		}
++	} else {
++		/* Format for Octeon 3. */
++		fuse_data = cvmx_read_csr(CVMX_MIO_FUS_PDF);
++		if (fuse_data & ((1ULL << 48) - 1)) {
++			char suffix_str[4] = {0};
++			char fuse_suffix[4] = {0};
++			int i;
++			int model = fuse_data & ((1ULL << 17) - 1);
++			int suf_bits = (fuse_data >> 17) & ((1ULL << 15) - 1);
++			for (i = 0; i < 3; i++) {
++				/* A-Z are encoded 1-26, 27-31 are
++				   reserved values. */
++				if ((suf_bits & 0x1f) && (suf_bits & 0x1f) <= 26)
++					suffix_str[i] = 'A' + (suf_bits & 0x1f) - 1;
++				suf_bits = suf_bits >> 5;
++			}
++			if (strlen(suffix_str) && model) {      /* Have both number and suffix in fuses, so both */
++				sprintf(fuse_model, "%d%s", model, suffix_str);
++				core_model = "";
++				family = fuse_model;
++			} else if (strlen(suffix_str) && !model) {      /* Only have suffix, so add suffix to 'normal' model number */
++				sprintf(fuse_model, "%s%s", core_model, suffix_str);
++				core_model = fuse_model;
++			} else if (model) {    /* Don't have suffix, so just use model from fuses */
++				sprintf(fuse_model, "%d", model);
++				core_model = "";
++				family = fuse_model;
++			}
++			/* in case of invalid model suffix bits
++			   only set, we do nothing. */
++
++			/* Check to see if we have a custom type
++			   suffix. */
++			suf_bits = (fuse_data >> 33) & ((1ULL << 15) - 1);
++			for (i = 0; i < 3; i++) {
++				/* A-Z are encoded 1-26, 27-31 are
++				   reserved values. */
++				if ((suf_bits & 0x1f) && (suf_bits & 0x1f) <= 26)
++					fuse_suffix[i] = 'A' + (suf_bits & 0x1f) - 1;
++				suf_bits = suf_bits >> 5;
++			}
++			if (strlen(fuse_suffix))
++				suffix = fuse_suffix;
++		}
+ 	}
++out:
+ 	sprintf(buffer, "CN%s%sp%s-%d-%s", family, core_model, pass, clock_mhz, suffix);
+ 	return buffer;
+ }
 -- 
 2.1.4

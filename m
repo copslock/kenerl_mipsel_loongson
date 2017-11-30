@@ -1,60 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 08:57:45 +0100 (CET)
-Received: from mail-ua0-x242.google.com ([IPv6:2607:f8b0:400c:c08::242]:40956
-        "EHLO mail-ua0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990590AbdK3H5hyts4y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Nov 2017 08:57:37 +0100
-Received: by mail-ua0-x242.google.com with SMTP id i92so5164814uad.7
-        for <linux-mips@linux-mips.org>; Wed, 29 Nov 2017 23:57:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=hYrJSrKCJdWGaJP/X7sq7jttPNFA1G2lz04KkNGd4kY=;
-        b=bH2KFPmTDzBCKHkbUS8EWhSmpNmZ3cLZZOpFrHr6SZXhyOLbmHvKELcUeLg0RnhcWq
-         4gujxtVt4YkBjV3vSLbIKqjnrnapr4MzgCkRGrSLp4mXqWHMF3c9tkpEpm0da6X0u0fP
-         6JBFbwqa7fiCiytFK68lmCFOHyKcY16uXB8VGaIGjKe6A88xCd0btLP/B2SrOhjf/tey
-         MGucDVC2/PoEbMS0WHhFV/xplKIQCtix+m+wRzt19yeiQIj90ThT+V5JCg4hkqlmUUM9
-         inn7WCOBHMOw1C8UDZijJd6tFAB40aZRjupH3XCEu25JWaSswiCgPdkGRs7vXfTwpi91
-         JO9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=hYrJSrKCJdWGaJP/X7sq7jttPNFA1G2lz04KkNGd4kY=;
-        b=HpJPIgW1VVgIThE/mvbisO69e5/r46VI3I9md9NKqGlw0gtMnF/jjhEhO7BS0+gbck
-         y40QiLmphskSj+D+mxMBqqxuWtFt0vfUUd6JVzSiCRWCG/XKgMMlE1e0vZfzKh9X7xr5
-         Bif99V714xCnHJfG2tpp6wzZ2Jh4PASFQ5XBCkuidWFWFkDObn2AofDi3uF1u+XIA9Rc
-         vgoUN6Wc0FOxmw2m73iDQaR7BdeoeSrf9AdJRr7oXHNx7FUm0HWMhRhwv/VFZ3jLa1rC
-         iaEuTpS2Y0kAY2Mz146b82ZhhZLQDus7te9KokMHXtKwFaA84UYXQkjB3UA86m9tGw/6
-         hoow==
-X-Gm-Message-State: AKGB3mIQ/iyzNGg4aSPcW4SH6+HaOOgGoKz7e/9k734Uzhqy5mwAPCuz
-        Vs5QAMpNgGvT88yfjUZil884+rQU3kDFX4t4VWA=
-X-Google-Smtp-Source: AGs4zMbgJq4HAEAoFuLR9RPPrzuC7KCG2rh06pcx/K5Y3ykGuoNUhovLdacJpyQosk8cdEczAMjbWKilVmflkPEqS+E=
-X-Received: by 10.159.62.204 with SMTP id n12mr1233298uaj.85.1512028651766;
- Wed, 29 Nov 2017 23:57:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 10:35:42 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:35398 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990492AbdK3JfcnK2VA convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Nov 2017 10:35:32 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 30 Nov 2017 09:34:16 +0000
+Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
+ MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
+ 14.03.0361.001; Thu, 30 Nov 2017 01:34:16 -0800
+From:   Miodrag Dinic <Miodrag.Dinic@mips.com>
+To:     David Daney <ddaney@caviumnetworks.com>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Aleksandar Markovic <Aleksandar.Markovic@mips.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        DengCheng Zhu <DengCheng.Zhu@mips.com>,
+        "Ding Tianhong" <dingtianhong@huawei.com>,
+        Douglas Leung <Douglas.Leung@mips.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Goran Ferenc <Goran.Ferenc@mips.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        James Cowgill <James.Cowgill@imgtec.com>,
+        James Hogan <James.Hogan@mips.com>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        "Matt Redfearn" <Matt.Redfearn@mips.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        Paul Burton <Paul.Burton@mips.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Petar Jovanovic <Petar.Jovanovic@mips.com>,
+        Raghu Gandham <Raghu.Gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Saeger <tom.saeger@oracle.com>
+Subject: RE: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+Thread-Topic: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+Thread-Index: AQHTYtCGiXJpn3ndkEa756uEAr0gK6Mf1f6AgAPtqzY=
+Date:   Thu, 30 Nov 2017 09:34:15 +0000
+Message-ID: <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com>
+References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com>,<dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com>
+In-Reply-To: <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [82.117.201.26]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 10.176.1.114 with HTTP; Wed, 29 Nov 2017 23:57:11 -0800 (PST)
-In-Reply-To: <c7200904-f016-8789-ee5e-fe5a281be215@caviumnetworks.com>
-References: <20171129205515.9009-1-malat@debian.org> <c7200904-f016-8789-ee5e-fe5a281be215@caviumnetworks.com>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Thu, 30 Nov 2017 08:57:11 +0100
-X-Google-Sender-Auth: bfScJ7r5sjF0WRJAFDKOAcOTvL0
-Message-ID: <CA+7wUszQAjcOkaWyEhJ9GnqL0+PQOvsMx3rOaHMOnq_0HnUDeQ@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Remove leading 0x from bindings notation
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Marco Franchi <marco.franchi@nxp.com>,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <mathieu.malaterre@gmail.com>
+X-BESS-ID: 1512034456-452060-20055-147433-1
+X-BESS-VER: 2017.14.1-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.20
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187456
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.20 PR0N_SUBJECT           META: Subject has letters around special characters (pr0n) 
+X-BESS-Outbound-Spam-Status: SCORE=0.20 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, PR0N_SUBJECT
+X-BESS-BRTS-Status: 1
+Return-Path: <Miodrag.Dinic@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61241
+X-archive-position: 61242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: Miodrag.Dinic@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,140 +85,162 @@ X-list: linux-mips
 
 Hi David,
 
-On Thu, Nov 30, 2017 at 12:21 AM, David Daney <ddaney@caviumnetworks.com> wrote:
-> On 11/29/2017 12:55 PM, Mathieu Malaterre wrote:
->>
->> Improve the binding example by removing all the leading 0x to fix the
->> following dtc warnings:
->>
->> Warning (unit_address_format): Node /XXX unit name should not have leading
->> "0x"
+Sorry for a late response, please find answers in-lined:
+
+> > If this parameter is omitted, kernel behavior remains the same as it
+> > was before this patch is applied.
+> 
+> Do other architectures have a similar hack?
+> 
+> If arm{,64} and x86 don't need this, what would make MIPS so special
+> that we have to carry this around?
+
+Yes, there are similar workarounds. Just a couple lines above
+nonxstack description in the documentation there are :
+	noexec		[IA-64]
+
+	noexec		[X86]
+			On X86-32 available only on PAE configured kernels.
+			noexec=on: enable non-executable mappings (default)
+			noexec=off: disable non-executable mappings
+...
+
+	noexec32	[X86-64]
+			This affects only 32-bit executables.
+			noexec32=on: enable non-executable mappings (default)
+				read doesn't imply executable mappings
+			noexec32=off: disable non-executable mappings
+				read implies executable mappings
+
+> > 
+> > This functionality is convenient during debugging and is especially
+> > useful for Android development where non-exec stack is required.
+> 
+> Why not just set the PT_GNU_STACK flags correctly in the first place?
+
+We do have PT_GNU_STACK flags set correctly, this feature is required to
+workaround CPU revisions which do not have RIXI support.
+
+Kind regards,
+Miodrag
+________________________________________
+From: David Daney [ddaney@caviumnetworks.com]
+Sent: Tuesday, November 21, 2017 9:53 PM
+To: Aleksandar Markovic; linux-mips@linux-mips.org
+Cc: Miodrag Dinic; Aleksandar Markovic; Andrew Morton; DengCheng Zhu; Ding Tianhong; Douglas Leung; Frederic Weisbecker; Goran Ferenc; Ingo Molnar; James Cowgill; James Hogan; Jonathan Corbet; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; Marc Zyngier; Matt Redfearn; Mimi Zohar; Paul Burton; Paul E. McKenney; Petar Jovanovic; Raghu Gandham; Ralf Baechle; Thomas Gleixner; Tom Saeger
+Subject: Re: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+
+On 11/21/2017 05:56 AM, Aleksandar Markovic wrote:
+> From: Miodrag Dinic <miodrag.dinic@mips.com>
 >
+> Add a new kernel parameter to override the default behavior related
+> to the decision whether to set up stack as non-executable in function
+> mips_elf_read_implies_exec().
 >
-> How does it fix the warnings?  You are not changing the .dts files that are
-> compiled.
+> The new parameter is used to control non executable stack and heap,
+> regardless of PT_GNU_STACK entry. This does apply to both stack and
+> heap, despite the name.
+>
+> Allowed values:
+>
+> nonxstack=on  Force non-exec stack & heap
+> nonxstack=off Force executable stack & heap
+>
+> If this parameter is omitted, kernel behavior remains the same as it
+> was before this patch is applied.
 
-I originally only wanted to fix [...]watchdog/ingenic,jz4740-wdt.txt,
-but when I lookup git log, I eventually found out about the commit I
-refer to in my commit message:
+Do other architectures have a similar hack?
 
-https://github.com/torvalds/linux/commit/48c926cd3414
-
-and I simply followed suggestion from Rob:
-
-https://lkml.org/lkml/2017/11/1/965
-
-> This may also cause the binding documentation to differ from the reality of
-> what the actual device trees contain.
-
-
-Chicken or the egg dilemma, but you understand that linux master tree
-still has the original warning:
-
-$ perl -p -i -e 's/\@0+([0-9a-f])/\@$1/g' `find ./ -type f \( -iname
-\*.dtsi -o -iname \*.dts \)`
-$ git diff | diffstat
-[...]
- 40 files changed, 160 insertions(+), 160 deletions(-)
-
-And those are real W=1 actual warnings. Do you want me to re-submit it
-as patch series instead which fix both the documentation side and the
-dts* files ?
+If arm{,64} and x86 don't need this, what would make MIPS so special
+that we have to carry this around?
 
 
 >
->>
->> Converted using the following command:
->>
->> find Documentation/devicetree/bindings -name "*.txt" -exec sed -i -e
->> 's/([^ ])\@0x([0-9a-f])/$1\@$2/g' {} +
->>
->> This is a follow up to commit 48c926cd3414
->>
->> Signed-off-by: Mathieu Malaterre <malat@debian.org>
->> ---
->> I've also checked using the original perl command that I did not
->> introduce:
->>
->> Warning (unit_address_format): Node /XXX unit name should not have leading
->> 0s
->>
->>   Documentation/devicetree/bindings/arm/ccn.txt                |  2 +-
->>   Documentation/devicetree/bindings/arm/omap/crossbar.txt      |  2 +-
->>   .../devicetree/bindings/arm/tegra/nvidia,tegra20-mc.txt      |  2 +-
->>   Documentation/devicetree/bindings/clock/axi-clkgen.txt       |  2 +-
->>   .../devicetree/bindings/clock/brcm,bcm2835-aux-clock.txt     |  2 +-
->>   Documentation/devicetree/bindings/clock/exynos4-clock.txt    |  2 +-
->>   Documentation/devicetree/bindings/clock/exynos5250-clock.txt |  2 +-
->>   Documentation/devicetree/bindings/clock/exynos5410-clock.txt |  2 +-
->>   Documentation/devicetree/bindings/clock/exynos5420-clock.txt |  2 +-
->>   Documentation/devicetree/bindings/clock/exynos5440-clock.txt |  2 +-
->>   .../devicetree/bindings/clock/ti-keystone-pllctrl.txt        |  2 +-
->>   Documentation/devicetree/bindings/clock/zx296702-clk.txt     |  4 ++--
->>   Documentation/devicetree/bindings/crypto/fsl-sec4.txt        |  4 ++--
->>   .../devicetree/bindings/devfreq/event/rockchip-dfi.txt       |  2 +-
->>   Documentation/devicetree/bindings/display/atmel,lcdc.txt     |  4 ++--
->>   Documentation/devicetree/bindings/dma/qcom_hidma_mgmt.txt    |  4 ++--
->>   Documentation/devicetree/bindings/dma/zxdma.txt              |  2 +-
->>   Documentation/devicetree/bindings/gpio/gpio-altera.txt       |  2 +-
->>   Documentation/devicetree/bindings/i2c/i2c-jz4780.txt         |  2 +-
->>   Documentation/devicetree/bindings/iio/pressure/hp03.txt      |  2 +-
->>   .../devicetree/bindings/input/touchscreen/bu21013.txt        |  2 +-
->>   .../devicetree/bindings/interrupt-controller/arm,gic.txt     |  4 ++--
->>   .../bindings/interrupt-controller/img,meta-intc.txt          |  2 +-
->>   .../bindings/interrupt-controller/img,pdc-intc.txt           |  2 +-
->>   .../bindings/interrupt-controller/st,spear3xx-shirq.txt      |  2 +-
->>   Documentation/devicetree/bindings/mailbox/altera-mailbox.txt |  6 +++---
->>   .../devicetree/bindings/mailbox/brcm,iproc-pdc-mbox.txt      |  2 +-
->>   Documentation/devicetree/bindings/media/exynos5-gsc.txt      |  2 +-
->>   Documentation/devicetree/bindings/media/mediatek-vcodec.txt  |  2 +-
->>   Documentation/devicetree/bindings/media/rcar_vin.txt         |  2 +-
->>   Documentation/devicetree/bindings/media/samsung-fimc.txt     |  2 +-
->>   Documentation/devicetree/bindings/media/sh_mobile_ceu.txt    |  2 +-
->>   Documentation/devicetree/bindings/media/video-interfaces.txt | 10
->> +++++-----
->>   .../devicetree/bindings/memory-controllers/ti/emif.txt       |  2 +-
->>   .../devicetree/bindings/mfd/ti-keystone-devctrl.txt          |  2 +-
->>   Documentation/devicetree/bindings/misc/brcm,kona-smc.txt     |  2 +-
->>   Documentation/devicetree/bindings/mmc/brcm,kona-sdhci.txt    |  2 +-
->>   Documentation/devicetree/bindings/mmc/brcm,sdhci-iproc.txt   |  2 +-
->>   Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt      |  4 ++--
->>   Documentation/devicetree/bindings/mtd/gpmc-nor.txt           |  6 +++---
->>   Documentation/devicetree/bindings/mtd/mtk-nand.txt           |  2 +-
->>   Documentation/devicetree/bindings/net/altera_tse.txt         |  4 ++--
->>   Documentation/devicetree/bindings/net/mdio.txt               |  2 +-
->>   Documentation/devicetree/bindings/net/socfpga-dwmac.txt      |  2 +-
->>   Documentation/devicetree/bindings/nios2/nios2.txt            |  2 +-
->>   Documentation/devicetree/bindings/pci/altera-pcie.txt        |  2 +-
->>   Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.txt     |  2 +-
->>   Documentation/devicetree/bindings/pci/hisilicon-pcie.txt     |  2 +-
->>   Documentation/devicetree/bindings/phy/sun4i-usb-phy.txt      |  2 +-
->>   .../devicetree/bindings/pinctrl/brcm,cygnus-pinmux.txt       |  2 +-
->>   Documentation/devicetree/bindings/pinctrl/pinctrl-atlas7.txt |  4 ++--
->>   Documentation/devicetree/bindings/pinctrl/pinctrl-sirf.txt   |  2 +-
->>   .../devicetree/bindings/pinctrl/rockchip,pinctrl.txt         |  4 ++--
->>   Documentation/devicetree/bindings/regulator/regulator.txt    |  2 +-
->>   Documentation/devicetree/bindings/serial/efm32-uart.txt      |  2 +-
->>   .../devicetree/bindings/serio/allwinner,sun4i-ps2.txt        |  2 +-
->>   .../devicetree/bindings/soc/ti/keystone-navigator-qmss.txt   |  2 +-
->>   Documentation/devicetree/bindings/sound/adi,axi-i2s.txt      |  2 +-
->>   Documentation/devicetree/bindings/sound/adi,axi-spdif-tx.txt |  2 +-
->>   Documentation/devicetree/bindings/sound/ak4613.txt           |  2 +-
->>   Documentation/devicetree/bindings/sound/ak4642.txt           |  2 +-
->>   Documentation/devicetree/bindings/sound/max98371.txt         |  2 +-
->>   Documentation/devicetree/bindings/sound/max9867.txt          |  2 +-
->>   Documentation/devicetree/bindings/sound/renesas,fsi.txt      |  2 +-
->>   Documentation/devicetree/bindings/sound/rockchip-spdif.txt   |  2 +-
->>   Documentation/devicetree/bindings/sound/st,sti-asoc-card.txt |  8
->> ++++----
->>   Documentation/devicetree/bindings/spi/efm32-spi.txt          |  2 +-
->>   Documentation/devicetree/bindings/thermal/thermal.txt        | 12
->> ++++++------
->>   Documentation/devicetree/bindings/ufs/ufs-qcom.txt           |  4 ++--
->>   Documentation/devicetree/bindings/ufs/ufshcd-pltfrm.txt      |  2 +-
->>   Documentation/devicetree/bindings/usb/ehci-st.txt            |  2 +-
->>   Documentation/devicetree/bindings/usb/ohci-st.txt            |  2 +-
->>   .../devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt      |  2 +-
->>   73 files changed, 99 insertions(+), 99 deletions(-)
->>
+> This functionality is convenient during debugging and is especially
+> useful for Android development where non-exec stack is required.
+
+Why not just set the PT_GNU_STACK flags correctly in the first place?
+
+>
+> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+> ---
+>   Documentation/admin-guide/kernel-parameters.txt | 11 +++++++
+>   arch/mips/kernel/elf.c                          | 39 +++++++++++++++++++++++++
+>   2 files changed, 50 insertions(+)
+>
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index b74e133..99464ee 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -2614,6 +2614,17 @@
+>                       noexec32=off: disable non-executable mappings
+>                               read implies executable mappings
+>
+> +     nonxstack       [MIPS]
+> +                     Force setting up stack and heap as non-executable or
+> +                     executable regardless of PT_GNU_STACK entry. Both
+> +                     stack and heap are affected, despite the name. Valid
+> +                     arguments: on, off.
+> +                     nonxstack=on:   Force non-executable stack and heap
+> +                     nonxstack=off:  Force executable stack and heap
+> +                     If ommited, stack and heap will or will not be set
+> +                     up as non-executable depending on PT_GNU_STACK
+> +                     entry and possibly other factors.
+> +
+>       nofpu           [MIPS,SH] Disable hardware FPU at boot time.
+>
+>       nofxsr          [BUGS=X86-32] Disables x86 floating point extended
+> diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
+> index 731325a..28ef7f3 100644
+> --- a/arch/mips/kernel/elf.c
+> +++ b/arch/mips/kernel/elf.c
+> @@ -326,8 +326,47 @@ void mips_set_personality_nan(struct arch_elf_state *state)
+>       }
+>   }
+>
+> +static int nonxstack = EXSTACK_DEFAULT;
+> +
+> +/*
+> + * kernel parameter: nonxstack=on|off
+> + *
+> + *   Force setting up stack and heap as non-executable or
+> + *   executable regardless of PT_GNU_STACK entry. Both
+> + *   stack and heap are affected, despite the name. Valid
+> + *   arguments: on, off.
+> + *
+> + *     nonxstack=on:   Force non-executable stack and heap
+> + *     nonxstack=off:  Force executable stack and heap
+> + *
+> + *   If ommited, stack and heap will or will not be set
+> + *   up as non-executable depending on PT_GNU_STACK
+> + *   entry and possibly other factors.
+> + */
+> +static int __init nonxstack_setup(char *str)
+> +{
+> +     if (!strcmp(str, "on"))
+> +             nonxstack = EXSTACK_DISABLE_X;
+> +     else if (!strcmp(str, "off"))
+> +             nonxstack = EXSTACK_ENABLE_X;
+> +     else
+> +             pr_err("Malformed nonxstack format! nonxstack=on|off\n");
+> +
+> +     return 1;
+> +}
+> +__setup("nonxstack=", nonxstack_setup);
+> +
+>   int mips_elf_read_implies_exec(void *elf_ex, int exstack)
+>   {
+> +     switch (nonxstack) {
+> +     case EXSTACK_DISABLE_X:
+> +             return 0;
+> +     case EXSTACK_ENABLE_X:
+> +             return 1;
+> +     default:
+> +             break;
+> +     }
+> +
+>       if (exstack != EXSTACK_DISABLE_X) {
+>               /* The binary doesn't request a non-executable stack */
+>               return 1;
 >

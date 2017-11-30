@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 07:17:29 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 07:17:55 +0100 (CET)
 Received: from mail-sn1nam02on0067.outbound.protection.outlook.com ([104.47.36.67]:20544
         "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990592AbdK3GQMq6Kiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Nov 2017 07:16:12 +0100
+        id S23990593AbdK3GQNN8kxy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Nov 2017 07:16:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=fakpGIr22Hwuo1onX2MSJF3L5DSfmM/EgEDLpubhem0=;
- b=cpj9g2CPIKzhL/XmhQNAdVMbvD1Oi/gKYPceXOcKo2eJv1gpmxtoq/TI+j/sNr6MgKTk8uAGRPHV+YsmF6VoWnNty9joJXEptK2hoHUTktSaFs59cn/12udgLzRuMPWVHBVBqAWBWMs3gexpzpkXX6cKj0Xm6f7f/4eHEmDd6D4=
+ bh=RL38Ub6ueRwznDM0kYcXPTqpgqN/BLoDeq40s6APEk4=;
+ b=nCVr7fUnLRWMnDSBNeGBXGA+5SkTnsxoy9OPMXxwjj+4y2rUhhyg9BPM3Of8zADMivjgLqouEERG17vH8advIwx4XfoIuSEaH5wd03rt1RTPHN1BCNnVM0c6qojYQW6mo5/ZN7GAb9xGx1WObBaRSl7bl4JMpC+CSj1l6vwDsME=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (173.18.42.219) by
@@ -18,10 +18,12 @@ Received: from black.inter.net (173.18.42.219) by
  Nov 2017 06:16:04 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <Steven.Hill@cavium.com>, ralf@linux-mips.org
-Subject: [PATCH v4 4/7] MIPS: Octeon: Remove crufty KEXEC and CRASH_DUMP code.
-Date:   Thu, 30 Nov 2017 00:06:18 -0600
-Message-Id: <1512021981-15560-5-git-send-email-steven.hill@cavium.com>
+Cc:     David Daney <david.daney@cavium.com>, ralf@linux-mips.org,
+        Carlos Munoz <carlos.munoz@caviumnetworks.com>,
+        Corey Minyard <cminyard@mvista.com>
+Subject: [PATCH v4 5/7] MIPS: Octeon: Populate kernel memory from cvmx_bootmem named blocks.
+Date:   Thu, 30 Nov 2017 00:06:19 -0600
+Message-Id: <1512021981-15560-6-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1512021981-15560-1-git-send-email-steven.hill@cavium.com>
 References: <1512021981-15560-1-git-send-email-steven.hill@cavium.com>
@@ -31,46 +33,45 @@ X-Originating-IP: [173.18.42.219]
 X-ClientProxiedBy: CO2PR07CA0074.namprd07.prod.outlook.com (2603:10b6:100::42)
  To MWHPR0701MB3803.namprd07.prod.outlook.com (2603:10b6:301:7f::19)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fa5a0325-15c2-440b-8ab0-08d537b9d647
+X-MS-Office365-Filtering-Correlation-Id: 805440ca-8637-444f-0ed1-08d537b9d6cd
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603199);SRVR:MWHPR0701MB3803;
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;3:khCrHFrehDUp93oZPQcRQIurOAGou9m/5eR4QX3+uKNhK0EG+3+f/xnl5PuherNVvvP7aCC7w7D2DxBHOufklCPzYoWq1ALHrknkzCjV2as5Gr2bAAF6Hl9y2jpbf0os+KkaCZdZiUoZNO0AzpnhhfT9RvbfKPxPKz3Xj7kFcHtdm90pQJV1UAjabiXGLUPdeFKL0+epP9aZnzUgSEE5B8KFJQ2NlIwdQAjuVl5kihBfVujEtSTZ1cDxMgQMcTNe;25:vmp1eZ8M39yvhVwiLcy+dwbEmeB7rahFgXZZvsOExOvs9eBfs2qAHyQKtVKRWm8XQYHybckg0cmm+yEG8y6oHNFL0J7GTAaC2CHjYQ2M42xQ93rbSCaoR9t5Acone6C1u3YE0Z8mu8IFuCER9nJZQL9JXa7DBK4txDml3WcsHhPKoSyqA/3BYF3u3NTqdzT8dXqjshPMfP60cFDNqYthGLG0CllqMO55+URoRCfx8nMpu4XdkiwnPzybnKjG+fD/zHMs9oSMKOIOw0hYoLlnsi2f4lNhzFSxbdqs63W5pzpDRqNRwReN9G/KtHBQwuDOsPcdeqlIXL71Ep45jWGHTA==;31:oTkn/tWLY0sqmgRFxjbiiNMiiba0LNkXdxdW1wQQG2Rlm3qxQJN6HRU4K0ZdWYt/J7dldbdwud6C1FWlE/Zjrf8bZGXWh6bzwn8wwdPsWaLyJ0H3Yrdt3zku3LXkqHjE3cEbFpNRP3cdr2IAVX6Yxv4zyiGtCfUAOa/Vsxs61WvWS0DK+eMIzONSdqmo1sD9FYi8rW3CBC7a7VxPfCm/z3mINY7fdYGSNEX2qgiuxEc=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;3:WdMy4SKP9damtjV9rRReDrERyHnnBzAM8cbxOAomRF/VMYif/X2fZPLSSo5T/Va9dAq+z0XuxouUipI2YlUOCdjqVUmBmJ0SCHHYEYbCZKGbqs8tj2qZ2BV23BDlb1xblqzf1pnt6tb3WsRJeY00omcj/YWmjxVkpLoOLsQBa7+bCXrPsfi9cle0/wgkRXfhzigDfkYEZPQ+1CH6RjVZdnA9HP0tTGSUEulhjjPfCgL/yrdqiEE8umDjBioPjSDI;25:31saLTbZSK5FjGWD1JDaqHYIi8Qrtk2PcNaLnifQL3W2BQhPjiKF6OmXc48fIrf21ZQPF8MuK3MXUkoQ/bYczFawHzSEvTln4ZFnbJoo7jTHKVawEUrEg2ggpnkOt1F/9VYJ6xaW7dBjgyNgAXtKhoeHbi8sf5oDjxCkDsqK8qYOpzzezZsyuvGCpEjMkvBdTUbC48BN0+JEfFisGILFHrcR0nmCgHssRB7mFNUM+7A/TMZU8O1gVCXiJRMVLGkrv5FvlXhuh5JzNlsUh8witVtivIVz1YQ+801w+1+YlAAttNc35B3ndFq423ObV3OVTLuiMZ26rqcmSYF+EAlYug==;31:uF5H37Hc2a91/Me3EoimgxOg6XkZSyBxYMOUUYXuRVena2vm8FDZ2jOwg+PkLLDXX6c9kDQbwBcigjR/BJCpl6jiI8JOkgQ6xYtblpz+NfOpYTm5C0eCx1aRPG7h4xLMPhC9qTsnWeoWBaR6zqXxnrv+/eeXHVhK8cQnHocSMPgTdb08Yr+lJFU1zOkKMtNvV9UnX4j5OWJk2ei4ij3XrktMi/fxtMKkT2AhjfmYfRw=
 X-MS-TrafficTypeDiagnostic: MWHPR0701MB3803:
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;20:yroFX13ug5yXw0+6mKaNZ+IqrqPB8kDFtgdbYJzNhDKq9eNB1qUqKoGR1cB2UzukOQK9zG0q9wNhLcCKjhe3lBwx4JruvgWwyTGUkt3yqFM7oIl0d9dlFdZi14qedpuE1qMhzV2iU0Bh9ntfBhjbvWgQyOYd8Y+hFKgNCLRxzZDbcZBMfChuCoDDSQCjtfCyTLGd/ybhb4/zhs/idEPhzUR0/D5TCHC/9cNVpwdgxooFpaJUkRimugaRF8nKAQ63DGRmYdoHxGYh8zTMv4FyLxpO91e0kvIoDNBwBHoDZG455HRK7oPpkuBX52Wnjdcm81O1C74+I85+z3L0JfR8Fax8CoecPgucFQgOv6rmLNgQ6I4reXXQfLX5kpSuwBXCD+X4GRl6076V1lrq/q12cYp4ie/chDafa9vfAEkyQop9n5O90/P+l5LEYHOTVNVgtTbaCWZ5euKM1usT9mvipTNvuZe55TyYB5Jw1ZGqkae4d2WIgxBRMuCts7d1ppRl;4:LjpRUmrWKWrbIW1ipp2/A1X5I6nTOJxkrAyBDoYvL0x8kArtSwa8OwuwSV5ZUfX5rnaD28vTOK2YZGTYd7BXMwoEaw2TFf+QmFjCs480iWBal9KKccdmDd0/nThT0wYAPwajuyCvTJDa557Rix40TU4pNksV2S5edexhyw1CbpqzXhitsKxpPVf4dgeKF6LMFb+8ulBVbrXxAnOyDR4cOLNqE0y9gpEVmdJM9TfMURjpfg0kgLtWRRafudtUeGg4vFFcb3H2aeP4MO7XhapUtw==
-X-Microsoft-Antispam-PRVS: <MWHPR0701MB380314C1384BECA312B4FD9380380@MWHPR0701MB3803.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;20:/lnBMeFpvy7bu3QqLDPDtjuukbiXRCbw5BMyyzwT/3lsHNXyAbMOfm5281Na4EPJNNAZAmjNGFFz+00sJ7IOY8IyY2ly8WAX4UzU+kFlxV5O78q8DahCPteuigsk6wml3SIzfl0JacR6nnoiAOTQFWmJe8+VulMvAY5+QyEqRbQt8YlLHYGRFTjBMDbeHxLY8pJgKe/l/TTHVdFRjFOMIo125x/Dok9WFaVrRAwUu5SzBW5CtqhK//zZ8d3dcDF0d4QYJGEJ1/P5yTyUh495mdyHogV5UFihLrUwG+zc4Y/4+vHw6/1WHhdKwXjkg0n83QKcC0BZaSJ2+el5AkhZCvbEVXJZLjYk7+8Wo4wR7w57x2XFQGQPOk052ix7Qv8mHda6g63ZrdmGF/wTTs8MSeLtdup6pcHO5y63Q769xzYMXcEGojgndcPSv+u0o9lIu+OSFmoLXW1Wn8mmsiQpZpTcBI0T4/m0iWEm0RrwQWLVHoyC0ypiK3scq0EGtBNc;4:uGnE6n1phFAGZ9rcwLlsr2zrSMxNVYVZM0zhBaMRddB06e8dAvV5AwjdVq3WB27WT0h0amHE2AF7dREowk9CKYCWHnHYkc8FPPHrcQBtPFkzI8so66MYjw/GQPqepNvAPuj6o/R8BEjTDn8BWuPKATq5r5iEb5etNgJU4qYnrUYDtUhHqL70Rmx1z+r1EVWIs7b4zNy48dEj9mqazIUf9dSwuckEFwMioadob0qvDLj4UuyUJw982r0p+LZyDWi8innrkIJ3IgpizMnj/vggFQ==
+X-Microsoft-Antispam-PRVS: <MWHPR0701MB38034C8BAB5CC76CF7DC6FEB80380@MWHPR0701MB3803.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(5005006)(8121501046)(3231022)(93006095)(93001095)(10201501046)(3002001)(6041248)(20161123560025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123558100)(20161123555025)(20161123564025)(6072148)(201708071742011);SRVR:MWHPR0701MB3803;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:MWHPR0701MB3803;
 X-Forefront-PRVS: 05079D8470
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(366004)(199003)(189002)(101416001)(2361001)(53936002)(72206003)(189998001)(53416004)(51416003)(6512007)(33646002)(2906002)(47776003)(50986010)(36756003)(16586007)(76176010)(50226002)(316002)(6116002)(2950100002)(106356001)(68736007)(6666003)(81166006)(575784001)(3846002)(5660300001)(48376002)(8676002)(25786009)(86362001)(305945005)(450100002)(2351001)(7736002)(8936002)(50466002)(81156014)(105586002)(52116002)(69596002)(4326008)(6916009)(16526018)(6486002)(6506006)(66066001)(97736004)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR0701MB3803;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(376002)(346002)(366004)(199003)(189002)(101416001)(2361001)(53936002)(72206003)(189998001)(53416004)(51416003)(6512007)(33646002)(2906002)(47776003)(50986010)(36756003)(16586007)(76176010)(50226002)(316002)(6116002)(2950100002)(106356001)(68736007)(6666003)(81166006)(3846002)(5660300001)(48376002)(8676002)(25786009)(86362001)(305945005)(54906003)(2351001)(7736002)(8936002)(50466002)(81156014)(105586002)(52116002)(69596002)(4326008)(6916009)(16526018)(6486002)(6506006)(66066001)(97736004)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR0701MB3803;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR0701MB3803;23:SxfPAA5VnrcRQ5FwpfZBN5P4bSjTcB/CdLhJ9D/?=
- =?us-ascii?Q?qMbnTUcJHHOY1eS9luhujOKJEXFa2FwtOCf8fDL2z7konU+bPlB+2XyfqaH7?=
- =?us-ascii?Q?Nyhl05VLZ0VttQ86vmUpNtBoWaRjMfbR5Y97GZZ7zVuo6/KxwTPitVAmHbbz?=
- =?us-ascii?Q?khNztaBCEZQ06YSXxKnem1AOJt7suvIJXFgTscMDQ6OzqQjBHeN5g+Y9xVUx?=
- =?us-ascii?Q?nslBegmLU79+nWthnj+HcxFk2MFLRqDr/L0udsc42MFB3zhe1l/0Ej7KwedH?=
- =?us-ascii?Q?j2xRjqz/0vboQ5yFb9xfkdnjGzbpkbBpmUuzYWPJOr2gjF/nn0SMJMFcxpHJ?=
- =?us-ascii?Q?VOkkiHMJjXeM4+RSi8S50B9HvcSwWk3/PMK9A1VdvqBn+7RbnYnQYwDdw0XI?=
- =?us-ascii?Q?5pB+vZt0IwCt0FGB+y831YYTynttNe0TVlVyJMT4w9TbE1ywI4nEZC7ENyWz?=
- =?us-ascii?Q?IhKeYK+EgiJMgbPRMa45IYA2vYNETOoe0dYT+c4c5XgrzOkxRn1VJb8HZr8f?=
- =?us-ascii?Q?GSfgTKsU0SvgKy1Oot5/80jQKD3++l4sy4YfkL8KTCYZd8x07z2gu1cMcBRC?=
- =?us-ascii?Q?UiEP5ScxISfkdM95dSpyKoj0rOGfPDNpnDG839k0OCTnoNayGopKaLKX7pJS?=
- =?us-ascii?Q?umJ6LHjYY6j2nt/QXBOw81kkj0PVFYM9UxpRvqEKJjqBGjDji6ybkNTSyhk/?=
- =?us-ascii?Q?c3MChMKseao5SmkDufF9yvgdb8yPu1C0QypXxDzC8UdB2GpiJa5nCt7Gf8v9?=
- =?us-ascii?Q?XjbdMQdA0TiEtvOj5xrwQOaSxza2LBvnxY4EFSrNvD2ROxmpo7fZmEHxPcpu?=
- =?us-ascii?Q?MP+4vehAn0oLMPex9JOrFLjweGc3wukmD/l2KQ9HVQZNFuwKDaOVPhd6oZT+?=
- =?us-ascii?Q?VjWdG6fh0WuA9t4AA9E5xVpxtk7ImKC5uG4N75C8fDOCZYpPRMppRN/fxtdJ?=
- =?us-ascii?Q?Qbh0F5yFTzN/dvRfp9pJ6glF1CZJr7+/hsiOWCrOlEfrbpRKmSqlDj7wuc9J?=
- =?us-ascii?Q?/vvE7JCYeHZMzIm8yE+hFiLng4MFlOubMgHXtgLLUtHazZDWodMaKflPc9hj?=
- =?us-ascii?Q?tQJwXegsFY9qa7Dv8TFLHsOxhb79flI/pj6fiV1CROcdtcTLPSRrkywRMMse?=
- =?us-ascii?Q?ezK2wdp0RE8eJH7VQ1lYlpgOKdLg0LejLAdDKweHj8VfRe0zfAHcS70jGajt?=
- =?us-ascii?Q?lPDLH/JBrkEujzvpVEpi4T9ke59TDfGDr3xKJggTLBPzh5YML40rhVBa5Tx1?=
- =?us-ascii?Q?a5+29AO1cTQ6hzGqbcAg=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;6:h2WFbakTm5lQA8xPigpRDdLg4j79AYqFd8P8PIWO9mkGDM/Iwkuqw3DOG3urkkJQfzoQd2v5F+WcksPLx2+FLkja0ywKvBiTKeXzpjr/9cfSTalaSrGRRVtO6qDiIIlnat44KuES0mTXv2266OcCWaKEbMcUFMXGPFlxTqYTNLJdLzJ6bi3k0FhLFKqeB1KD8oLvGxIhi0g7eCerWJOZheisZIdRoaZkjs05EyODfuB8Msbkbs41cAarLFRYjOWqvjpdwfXqcT9hmcfjjxauPPCRUp0KNj3iE16GO41NdkeRD+rNCcplqz1GiGklAg3b3+iDrQ+/atc/1gVY6phk1Jq+Zyx1ltCyIZS7G/Hwwmg=;5:NTaTNRI5imYFiQG4CxsNns1GxymLjz/QG1S+Q9rl8lGNfsSHjRD9EPob2DBKebjlkHAcz6fvtUiubo8TycZnYoyjD+0hm4Zc3cX0STA9BGu7ipNC2zB3LRNhLzFIfCwB7dt2YOJwZ8YQtMnN1i7Dw6MkQpzerlp+4XQ5/W53Cew=;24:068yv+vomSjwUVnuT2KHsk5uK0ft9XFkUgqYdGh0s8ZpJZ4S0zw9FE7T/EToIzf6hH46CbGXuTVUMjwIbsrH39H6XCVbtkXVyhk3qZlOyCA=;7:MyXVa4VOpbpl46M1MRxXzw9OfSBhQBw7/ZSFcD5jIAKDX+0+XhKHdsBYDoJD/AKZpv0pzv7tJnNlnb2JZ86GsQZbtt2hDMmgSnh/vBlezFgB/NN87Mqj/CJX/MQ9bXeRMM/PspDwRWLgEUTyHVBkHBO+r9zqC34zzF/rDzsRmFuOD3dIqsJ7YCs2/ujXGqpR2QoehS+kfKb6N0WfFGoL3zV5BiiqtzRRgkHutUs6s2gqqgUJoTfP6EEanovkz3Fh
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR0701MB3803;23:6uQnf4U4xKXxtZH2DLmIrtPqcih2IE0Sdh2Rcxg?=
+ =?us-ascii?Q?nuquR6JvQbvZF9Hg/9NR/cj7b9pOTOOyZ8MrlXRg8+o5uNTbfXaMdys5j2hB?=
+ =?us-ascii?Q?mwAk7NLfsudJoXl5GCFuSjua5uMe0W8MT5QMRk9FBomDGc6Rd9QU/NPkgRNw?=
+ =?us-ascii?Q?s+gTMDq/h1dMldgjbB0stn/UJeQoMj0MKReEGUEWXpZeYdPPLC6+xCxTw44c?=
+ =?us-ascii?Q?DcDKiFanBxNzjtKspPhqbClMpV3uxPreh+ynXKGcDoU9qjQe28YJSqCHm0qO?=
+ =?us-ascii?Q?9XP5xXmpaWpodKCPAPSz/JLUv9hFfOjsASJSKJd6BE2fqqq5ldKMatLudTC0?=
+ =?us-ascii?Q?JcHlftjpTQ37PDsGOEc6wDl6V2Ws7twfNqWDVSWnRYtZRRQYH4VmeeaWzQUf?=
+ =?us-ascii?Q?RyEFMZsjj/0Ii/24taVRZ8VDe9e9PW8Jxr5eFCslIHKzlOxexcNbhICspxyp?=
+ =?us-ascii?Q?5NPUK9M20Y6JKotnfbnQ7/uYs5rAKp8ZWgcmQEWKICGLcX+296DqLapP1zun?=
+ =?us-ascii?Q?tb6kOWG0xk1mUTc00dNwY5bmxA7LRl3yORZEzxL7UCv6QqaP9VoqUQezJGLg?=
+ =?us-ascii?Q?X9+zwU5k9Utz5yBA5jhr7An/4I4SPoB+Ukd9dPK2GRjiNQ9NOhgR59iD/54J?=
+ =?us-ascii?Q?OCHKjF/Qg2hKmpYEPyEaZ4zC6aMfsGMVmldS8kghp8QGbmfGuQYy3YTP28A3?=
+ =?us-ascii?Q?qZ0pyQZfFiFNEhcViC+sqS75JHp5bROqc9PNLw40jj36kxVOG57jz32//G4D?=
+ =?us-ascii?Q?hbN0PWdXHH87voPy1uAXHHdAmprj66+7rINxgNruo/FYcVv7KOD/WxKKrXAh?=
+ =?us-ascii?Q?ENO5b7LF0TEAYCtjfpGKa+o3G8FQTBQOYSYN5RKaj6pOLIvMbygT/jBSnO6R?=
+ =?us-ascii?Q?EdiIBHT4gyncaQSIzWHflGe/X9G4CAINGDePUPr/BxrBthH3hNgwm+9GQTJO?=
+ =?us-ascii?Q?r1/JNqZrSC/mFfNEyMfUa6kUfM9mocnuKY8/qiuDG2UoYR/BkaW4K6TZpMuE?=
+ =?us-ascii?Q?BbX7j26WoOBWZ1acqH1Xc/T7oI5+rWcACHEuLsEhGgCQEv3BEgPQ4B3kJJhx?=
+ =?us-ascii?Q?cmQiPN+EXW2Vl4LjY8kW9zA7r5vf4es31V3vHs8MEGX5vT6YZD5mCVDLi1Bs?=
+ =?us-ascii?Q?3PHrduseVp6MfU3CR/g95M5CJrl385Yn4SrBlf6EJlQGlAd5K0qemxOcbJbN?=
+ =?us-ascii?Q?JsBFUE6U2XiifxXMqHnFEg8ijzka25mneS1A5?=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR0701MB3803;6:BNXdDteyKpRZdLznszXqgFmTrpVTwum5qFu4QmQlggO9LVdvAIUdceUc2jc3hlH/agSBpuHgCdSZaRAsbDHL6KgmQULhF4W8isnT6G/ejw35NTXeOe0r/u6ihr54ttrLPBiv6+TxRdP0nyn4kuq5efgaHoAW4uAz7FRyp2ilp7Jku6nbkAvujYYa3i4xJChg2KK7UWWjS0/DMCMxnFZFD0Od3mWlYnYI+lcJ8s+JjgAgBfisskk/zTBOY0/eJymNs4yjV0CJApwAgDd5GX7PVVNZq1irs2H8zaCC7gDF20kjtpuhiyM0BfjGF3BWW5GSwzxFT/4rs66dD/g2uoKaM/UH8wRyQC1X0o6gfZE/v+A=;5:b11MLLdPjDFI+MbPl5u5iq7O/VolFM+P4isbiVANxDr8nK2cTF3jMaSiStx4UKOWrmpaU5EL4url0ciY1X8xJTf5qS97aLG1xoCyX1h63d/p8GJuJlQ1scFkWHLB68sfEZmmEUUzHEsh+SMrigRKCdeHv2AiLiBPuvMXFZCHaM0=;24:UoWRmAnzwQzOuzgzhjNg0koEoTPewLZbkKJkzA/LSU/kThnwwrzchU55Cn1uKBgkIwu/I+FJLntZN5+oMWVo7gzZtgq1+QMLFQ1YIZbgAik=;7:GZcku/U7VLffeaUcNA/ZUyxaJBf8WuDS4sGai26m99HWhbc6XZdBS7JPHa2yN+ZSwbGhABgcFCwq1OE9gEetJeuXgl1zh3hRH6VMJuCqoOckNoJf62Oq52sEE1aUgXCr624qnC9dqyrox3uxo3a3w0bP2MFtpMuy+SqetE7HDobGrzAjPSSFH9lATAqrrz95DTyJd015FlEajoT15muioGSMxK7gMj4Q85LXTAW+ZRDYokzUjit+Jc14z0eUattU
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2017 06:16:04.2377 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa5a0325-15c2-440b-8ab0-08d537b9d647
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2017 06:16:04.9564 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 805440ca-8637-444f-0ed1-08d537b9d6cd
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR0701MB3803
@@ -78,7 +79,7 @@ Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61235
+X-archive-position: 61236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -95,262 +96,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@cavium.com>
+From: David Daney <david.daney@cavium.com>
 
-Get rid of obsolete KEXEC and CRASH_DUMP code. This is to
-prepare for adding in the new hotplug CPU code.
+Command line syntax is:
 
+  mem=block:block_name1,block_name2,...
+
+A maximum of 4 blocks are currently supported
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Carlos Munoz <carlos.munoz@caviumnetworks.com>
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
 Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-Acked-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/cavium-octeon/setup.c | 168 ++--------------------------------------
- 1 file changed, 7 insertions(+), 161 deletions(-)
+ arch/mips/cavium-octeon/setup.c | 66 ++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 59 insertions(+), 7 deletions(-)
 
 diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index 2085138..46e2bb0 100644
+index 46e2bb0..2855d8d 100644
 --- a/arch/mips/cavium-octeon/setup.c
 +++ b/arch/mips/cavium-octeon/setup.c
-@@ -100,56 +100,6 @@ static void octeon_kexec_smp_down(void *ignored)
- }
- #endif
+@@ -198,6 +198,9 @@ static int octeon_uart;
  
--#define OCTEON_DDR0_BASE    (0x0ULL)
--#define OCTEON_DDR0_SIZE    (0x010000000ULL)
--#define OCTEON_DDR1_BASE    (0x410000000ULL)
--#define OCTEON_DDR1_SIZE    (0x010000000ULL)
--#define OCTEON_DDR2_BASE    (0x020000000ULL)
--#define OCTEON_DDR2_SIZE    (0x3e0000000ULL)
--#define OCTEON_MAX_PHY_MEM_SIZE (16*1024*1024*1024ULL)
--
--static struct kimage *kimage_ptr;
--
--static void kexec_bootmem_init(uint64_t mem_size, uint32_t low_reserved_bytes)
--{
--	int64_t addr;
--	struct cvmx_bootmem_desc *bootmem_desc;
--
--	bootmem_desc = cvmx_bootmem_get_desc();
--
--	if (mem_size > OCTEON_MAX_PHY_MEM_SIZE) {
--		mem_size = OCTEON_MAX_PHY_MEM_SIZE;
--		pr_err("Error: requested memory too large,"
--		       "truncating to maximum size\n");
--	}
--
--	bootmem_desc->major_version = CVMX_BOOTMEM_DESC_MAJ_VER;
--	bootmem_desc->minor_version = CVMX_BOOTMEM_DESC_MIN_VER;
--
--	addr = (OCTEON_DDR0_BASE + reserve_low_mem + low_reserved_bytes);
--	bootmem_desc->head_addr = 0;
--
--	if (mem_size <= OCTEON_DDR0_SIZE) {
--		__cvmx_bootmem_phy_free(addr,
--				mem_size - reserve_low_mem -
--				low_reserved_bytes, 0);
--		return;
--	}
--
--	__cvmx_bootmem_phy_free(addr,
--			OCTEON_DDR0_SIZE - reserve_low_mem -
--			low_reserved_bytes, 0);
--
--	mem_size -= OCTEON_DDR0_SIZE;
--
--	if (mem_size > OCTEON_DDR1_SIZE) {
--		__cvmx_bootmem_phy_free(OCTEON_DDR1_BASE, OCTEON_DDR1_SIZE, 0);
--		__cvmx_bootmem_phy_free(OCTEON_DDR2_BASE,
--				mem_size - OCTEON_DDR1_SIZE, 0);
--	} else
--		__cvmx_bootmem_phy_free(OCTEON_DDR1_BASE, mem_size, 0);
--}
--
- static int octeon_kexec_prepare(struct kimage *image)
- {
- 	int i;
-@@ -181,72 +131,23 @@ static int octeon_kexec_prepare(struct kimage *image)
- 			break;
- 		}
- 	}
--
--	/*
--	 * Information about segments will be needed during pre-boot memory
--	 * initialization.
--	 */
--	kimage_ptr = image;
- 	return 0;
- }
+ extern asmlinkage void handle_int(void);
  
- static void octeon_generic_shutdown(void)
- {
--	int i;
- #ifdef CONFIG_SMP
- 	int cpu;
--#endif
--	struct cvmx_bootmem_desc *bootmem_desc;
--	void *named_block_array_ptr;
- 
--	bootmem_desc = cvmx_bootmem_get_desc();
--	named_block_array_ptr =
--		cvmx_phys_to_ptr(bootmem_desc->named_block_array_addr);
--
--#ifdef CONFIG_SMP
-+	secondary_kexec_args[2] = 0UL; /* running on secondary cpu */
-+	secondary_kexec_args[3] = (unsigned long)octeon_boot_desc_ptr;
- 	/* disable watchdogs */
- 	for_each_online_cpu(cpu)
- 		cvmx_write_csr(CVMX_CIU_WDOGX(cpu_logical_map(cpu)), 0);
- #else
- 	cvmx_write_csr(CVMX_CIU_WDOGX(cvmx_get_core_num()), 0);
--#endif
--	if (kimage_ptr != kexec_crash_image) {
--		memset(named_block_array_ptr,
--			0x0,
--			CVMX_BOOTMEM_NUM_NAMED_BLOCKS *
--			sizeof(struct cvmx_bootmem_named_block_desc));
--		/*
--		 * Mark all memory (except low 0x100000 bytes) as free.
--		 * It is the same thing that bootloader does.
--		 */
--		kexec_bootmem_init(octeon_bootinfo->dram_size*1024ULL*1024ULL,
--				0x100000);
--		/*
--		 * Allocate all segments to avoid their corruption during boot.
--		 */
--		for (i = 0; i < kimage_ptr->nr_segments; i++)
--			cvmx_bootmem_alloc_address(
--				kimage_ptr->segment[i].memsz + 2*PAGE_SIZE,
--				kimage_ptr->segment[i].mem - PAGE_SIZE,
--				PAGE_SIZE);
--	} else {
--		/*
--		 * Do not mark all memory as free. Free only named sections
--		 * leaving the rest of memory unchanged.
--		 */
--		struct cvmx_bootmem_named_block_desc *ptr =
--			(struct cvmx_bootmem_named_block_desc *)
--			named_block_array_ptr;
--
--		for (i = 0; i < bootmem_desc->named_block_num_blocks; i++)
--			if (ptr[i].size)
--				cvmx_bootmem_free_named(ptr[i].name);
--	}
- 	kexec_args[2] = 1UL; /* running on octeon_main_processor */
- 	kexec_args[3] = (unsigned long)octeon_boot_desc_ptr;
--#ifdef CONFIG_SMP
--	secondary_kexec_args[2] = 0UL; /* running on secondary cpu */
--	secondary_kexec_args[3] = (unsigned long)octeon_boot_desc_ptr;
- #endif
- }
- 
-@@ -928,7 +829,6 @@ void __init prom_init(void)
- }
- 
- /* Exclude a single page from the regions obtained in plat_mem_setup. */
--#ifndef CONFIG_CRASH_DUMP
- static __init void memory_exclude_page(u64 addr, u64 *mem, u64 *size)
- {
- 	if (addr > *mem && addr < *mem + *size) {
-@@ -944,7 +844,6 @@ static __init void memory_exclude_page(u64 addr, u64 *mem, u64 *size)
- 		*size -= PAGE_SIZE;
- 	}
- }
--#endif /* CONFIG_CRASH_DUMP */
- 
- void __init fw_init_cmdline(void)
- {
-@@ -975,11 +874,7 @@ void __init plat_mem_setup(void)
- 	uint64_t mem_alloc_size;
++/* Up to four blocks may be specified. */
++static char __initdata named_memory_blocks[4][CVMX_BOOTMEM_NAME_LEN];
++
+ /**
+  * Return non zero if we are currently running in the Octeon simulator
+  *
+@@ -774,7 +777,26 @@ void __init prom_init(void)
+ 	for (i = 0; i < argc; i++) {
+ 		const char *arg =
+ 			cvmx_phys_to_ptr(octeon_boot_desc_ptr->argv[i]);
+-		if ((strncmp(arg, "MEM=", 4) == 0) ||
++		if (strncmp(arg, "mem=block:", 10) == 0) {
++			const char *pos = arg + 10;
++			int j;
++
++			for (j = 0; pos[0] && j < ARRAY_SIZE(named_memory_blocks); j++) {
++				int len;
++				char *comma = strchr(pos, ',');
++				if (comma)
++					len = comma - pos;
++				else
++					len = max(strlen(pos), ARRAY_SIZE(named_memory_blocks[0]));
++				strncpy(named_memory_blocks[j], pos, len);
++				if (comma)
++					pos = comma + 1;
++				else
++					break;
++			}
++			for (j = 0; j < ARRAY_SIZE(named_memory_blocks); j++)
++				pr_err("Named Block[%d] = \"%s\"\n", j, named_memory_blocks[j]);
++		} else if ((strncmp(arg, "MEM=", 4) == 0) ||
+ 		    (strncmp(arg, "mem=", 4) == 0)) {
+ 			max_memory = memparse(arg + 4, &p);
+ 			if (max_memory == 0)
+@@ -875,10 +897,35 @@ void __init plat_mem_setup(void)
  	uint64_t total;
  	uint64_t crashk_end;
--#ifndef CONFIG_CRASH_DUMP
  	int64_t memory;
--	uint64_t kernel_start;
--	uint64_t kernel_size;
--#endif
++	const struct cvmx_bootmem_named_block_desc *named_block;
  
  	total = 0;
  	crashk_end = 0;
-@@ -1020,9 +915,6 @@ void __init plat_mem_setup(void)
+ 
++	if (named_memory_blocks[0][0]) {
++		/* Memory from named blocks only */
++		int i;
++
++		for (i = 0;
++		     named_memory_blocks[i][0] && i < ARRAY_SIZE(named_memory_blocks);
++		     i++) {
++			named_block = cvmx_bootmem_find_named_block(named_memory_blocks[i]);
++			if (!named_block) {
++				pr_err("Error: Couldn't find cvmx_bootmem block \"%s\"",
++				       named_memory_blocks[i]);
++				return;
++			}
++			pr_info("Adding memory from \"%s\": %016lx @ %016lx\n",
++				named_memory_blocks[i],
++				(unsigned long)named_block->size,
++				(unsigned long)named_block->base_addr);
++			add_memory_region(named_block->base_addr, named_block->size,
++					  BOOT_MEM_RAM);
++			total += named_block->size;
++		}
++		goto mem_alloc_done;
++	}
++
+ 	/*
+ 	 * The Mips memory init uses the first memory location for
+ 	 * some memory vectors. When SPARSEMEM is in use, it doesn't
+@@ -901,18 +948,23 @@ void __init plat_mem_setup(void)
+ 		crashk_end = crashk_base + crashk_size;
+ 	}
+ #endif
+-	/*
+-	 * When allocating memory, we want incrementing addresses from
+-	 * bootmem_alloc so the code in add_memory_region can merge
+-	 * regions next to each other.
+-	 */
+ 	cvmx_bootmem_lock();
+ 	while ((boot_mem_map.nr_map < BOOT_MEM_MAP_MAX)
+ 		&& (total < max_memory)) {
++#if defined(CONFIG_64BIT) || defined(CONFIG_64BIT_PHYS_ADDR)
+ 		memory = cvmx_bootmem_phy_alloc(mem_alloc_size,
+ 						__pa_symbol(&_end), -1,
+ 						0x100000,
  						CVMX_BOOTMEM_FLAG_NO_LOCKING);
++#elif defined(CONFIG_HIGHMEM)
++		memory = cvmx_bootmem_phy_alloc(mem_alloc_size, 0, 1ull << 31,
++						0x100000,
++						CVMX_BOOTMEM_FLAG_NO_LOCKING);
++#else
++		memory = cvmx_bootmem_phy_alloc(mem_alloc_size, 0, 512 << 20,
++						0x100000,
++						CVMX_BOOTMEM_FLAG_NO_LOCKING);
++#endif
  		if (memory >= 0) {
  			u64 size = mem_alloc_size;
--#ifdef CONFIG_KEXEC
--			uint64_t end;
--#endif
  
- 			/*
- 			 * exclude a page at the beginning and end of
-@@ -1035,66 +927,20 @@ void __init plat_mem_setup(void)
- 			memory_exclude_page(CVMX_PCIE_BAR1_PHYS_BASE +
- 					    CVMX_PCIE_BAR1_PHYS_SIZE,
- 					    &memory, &size);
--#ifdef CONFIG_KEXEC
--			end = memory + mem_alloc_size;
- 
- 			/*
--			 * This function automatically merges address regions
--			 * next to each other if they are received in
--			 * incrementing order
-+			 * This function automatically merges address
-+			 * regions next to each other if they are
-+			 * received in incrementing order.
- 			 */
--			if (memory < crashk_base && end >  crashk_end) {
--				/* region is fully in */
--				add_memory_region(memory,
--						  crashk_base - memory,
--						  BOOT_MEM_RAM);
--				total += crashk_base - memory;
--				add_memory_region(crashk_end,
--						  end - crashk_end,
--						  BOOT_MEM_RAM);
--				total += end - crashk_end;
--				continue;
--			}
--
--			if (memory >= crashk_base && end <= crashk_end)
--				/*
--				 * Entire memory region is within the new
--				 *  kernel's memory, ignore it.
--				 */
--				continue;
--
--			if (memory > crashk_base && memory < crashk_end &&
--			    end > crashk_end) {
--				/*
--				 * Overlap with the beginning of the region,
--				 * reserve the beginning.
--				  */
--				mem_alloc_size -= crashk_end - memory;
--				memory = crashk_end;
--			} else if (memory < crashk_base && end > crashk_base &&
--				   end < crashk_end)
--				/*
--				 * Overlap with the beginning of the region,
--				 * chop of end.
--				 */
--				mem_alloc_size -= end - crashk_base;
--#endif
--			add_memory_region(memory, mem_alloc_size, BOOT_MEM_RAM);
-+			if (size)
-+				add_memory_region(memory, size, BOOT_MEM_RAM);
- 			total += mem_alloc_size;
--			/* Recovering mem_alloc_size */
--			mem_alloc_size = 4 << 20;
- 		} else {
- 			break;
- 		}
+@@ -942,7 +994,7 @@ void __init plat_mem_setup(void)
  	}
  	cvmx_bootmem_unlock();
--	/* Add the memory region for the kernel. */
--	kernel_start = (unsigned long) _text;
--	kernel_size = _end - _text;
--
--	/* Adjust for physical offset. */
--	kernel_start &= ~0xffffffff80000000ULL;
--	add_memory_region(kernel_start, kernel_size, BOOT_MEM_RAM);
  #endif /* CONFIG_CRASH_DUMP */
- 
+-
++mem_alloc_done:
  #ifdef CONFIG_CAVIUM_RESERVE32
+ 	/*
+ 	 * Now that we've allocated the kernel memory it is safe to
 -- 
 2.1.4

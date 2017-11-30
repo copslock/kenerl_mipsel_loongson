@@ -1,80 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 14:08:30 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:38457 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990592AbdK3NIWjS1Jh convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Nov 2017 14:08:22 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 30 Nov 2017 13:06:53 +0000
-Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
- MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
- 14.03.0361.001; Thu, 30 Nov 2017 05:06:53 -0800
-From:   Miodrag Dinic <Miodrag.Dinic@mips.com>
-To:     James Hogan <James.Hogan@mips.com>
-CC:     David Daney <ddaney@caviumnetworks.com>,
-        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Aleksandar Markovic <Aleksandar.Markovic@mips.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        DengCheng Zhu <DengCheng.Zhu@mips.com>,
-        Ding Tianhong <dingtianhong@huawei.com>,
-        Douglas Leung <Douglas.Leung@mips.com>,
-        "Frederic Weisbecker" <frederic@kernel.org>,
-        Goran Ferenc <Goran.Ferenc@mips.com>,
-        "Ingo Molnar" <mingo@kernel.org>,
-        James Cowgill <James.Cowgill@imgtec.com>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        "Matt Redfearn" <Matt.Redfearn@mips.com>,
-        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2017 19:21:21 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:35704 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994628AbdK3SVLXFOas (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Nov 2017 19:21:11 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 572CA1435;
+        Thu, 30 Nov 2017 09:28:44 -0800 (PST)
+Received: from e103592.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D08143F318;
+        Thu, 30 Nov 2017 09:28:42 -0800 (PST)
+Date:   Thu, 30 Nov 2017 17:28:40 +0000
+From:   Dave Martin <Dave.Martin@arm.com>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
         Paul Burton <Paul.Burton@mips.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Petar Jovanovic <Petar.Jovanovic@mips.com>,
-        Raghu Gandham <Raghu.Gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Saeger <tom.saeger@oracle.com>
-Subject: RE: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
-Thread-Topic: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
-Thread-Index: AQHTYtCGiXJpn3ndkEa756uEAr0gK6Mf1f6AgAPtqzaACYORgP//qhpm
-Date:   Thu, 30 Nov 2017 13:06:53 +0000
-Message-ID: <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com>
-References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com>
- <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com>,<20171130100957.GG5027@jhogan-linux.mipstec.com>
-In-Reply-To: <20171130100957.GG5027@jhogan-linux.mipstec.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [82.117.201.26]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Alex Smith <alex@alex-smith.me.uk>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 4/5] MIPS: Execute any partial write of the last register
+ with PTRACE_SETREGSET
+Message-ID: <20171130172839.GQ22781@e103592.cambridge.arm.com>
+References: <alpine.DEB.2.00.1711290152040.31156@tp.orcam.me.uk>
+ <alpine.DEB.2.00.1711291226320.31156@tp.orcam.me.uk>
 MIME-Version: 1.0
-X-BESS-ID: 1512047213-452059-523-162579-1
-X-BESS-VER: 2017.14.1-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.21
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187461
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
-        Domain Matches Recipient Domain 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.20 PR0N_SUBJECT           META: Subject has letters around special characters (pr0n) 
-X-BESS-Outbound-Spam-Status: SCORE=0.21 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND, PR0N_SUBJECT
-X-BESS-BRTS-Status: 1
-Return-Path: <Miodrag.Dinic@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1711291226320.31156@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <Dave.Martin@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61244
+X-archive-position: 61245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Miodrag.Dinic@mips.com
+X-original-sender: Dave.Martin@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,250 +50,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
-
-> > We do have PT_GNU_STACK flags set correctly, this feature is required to
-> > workaround CPU revisions which do not have RIXI support.
+On Wed, Nov 29, 2017 at 03:21:14PM +0000, Maciej W. Rozycki wrote:
+> Fix a commit d614fd58a283 ("mips/ptrace: Preserve previous registers for 
+> short regset write") bug and allow the last register requested with a 
+> ptrace(2) PTRACE_SETREGSET call to be partially written if supplied this 
+> way by the caller, like with other register sets.
 > 
-> RIXI support can be discovered programatically from CP0_Config3.RXI
-> (cpu_has_rixi in asm/cpu-features.h), so I don't follow why CPUs without
-> RIXI would require a kernel parameter.
+> Cc: stable@vger.kernel.org # v4.11+
+> Fixes: d614fd58a283 ("mips/ptrace: Preserve previous registers for short regset write")
+> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+> ---
+>  arch/mips/kernel/ptrace.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> linux-mips-nt-prfpreg-count.diff
+> Index: linux-sfr-test/arch/mips/kernel/ptrace.c
+> ===================================================================
+> --- linux-sfr-test.orig/arch/mips/kernel/ptrace.c	2017-11-21 22:12:00.000000000 +0000
+> +++ linux-sfr-test/arch/mips/kernel/ptrace.c	2017-11-21 22:13:13.471970000 +0000
+> @@ -484,7 +484,7 @@ static int fpr_set_msa(struct task_struc
+>  	int err;
+>  
+>  	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
+> -	for (i = 0; i < NUM_FPU_REGS && *count >= sizeof(elf_fpreg_t); i++) {
+> +	for (i = 0; i < NUM_FPU_REGS && *count > 0; i++) {
+> 
+>  		err = user_regset_copyin(pos, count, kbuf, ubuf,
+>  					 &fpr_val, i * sizeof(elf_fpreg_t),
+>  					 (i + 1) * sizeof(elf_fpreg_t));
 
-The following patch introduced change in behavior with regards to
-stack & heap execute-ability :
-commit 1a770b85c1f1c1ee37afd7cef5237ffc4c970f04
-Author: Paul Burton <paul.burton@imgtec.com>
-Date:   Fri Jul 8 11:06:20 2016 +0100
+But mips*_regsets[REGSET_FPR].size == sizeof(elf_fpreg_t),
+linux/kernel/regset.c:ptrace_regset() polices
+iov_len % regset->size == 0, and each user_regset_copyout() call here
+transfers sizeof(elf_fpreg_t) bytes, decrementing *count by that
+amount unless something goest wrong in which case we return.
 
-    MIPS: non-exec stack & heap when non-exec PT_GNU_STACK is present
-    
-    The stack and heap have both been executable by default on MIPS until
-    now. This patch changes the default to be non-executable, but only for
-    ELF binaries with a non-executable PT_GNU_STACK header present. This
-    does apply to both the heap & the stack, despite the name PT_GNU_STACK,
-    and this matches the behaviour of other architectures like ARM & x86.
-    
-    Current MIPS toolchains do not produce the PT_GNU_STACK header, which
-    means that we can rely upon this patch not changing the behaviour of
-    existing binaries. The new default will only take effect for newly
-    compiled binaries once toolchains are updated to support PT_GNU_STACK,
-    and since those binaries are newly compiled they can be compiled
-    expecting the change in default behaviour. Again this matches the way in
-    which the ARM & x86 architectures handled their implementations of
-    non-executable memory.
-    
-    Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-    Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-    Cc: Maciej Rozycki <maciej.rozycki@imgtec.com>
-    Cc: Faraz Shahbazker <faraz.shahbazker@imgtec.com>
-    Cc: Raghu Gandham <raghu.gandham@imgtec.com>
-    Cc: Matthew Fortune <matthew.fortune@imgtec.com>
-    Cc: linux-mips@linux-mips.org
-    Patchwork: https://patchwork.linux-mips.org/patch/13765/
-    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+So how do we end up with *count > 0 && *count < sizeof(elf_fpreg_t)
+here?
 
-....
+If we can't end up with that, then this patch doesn't change ABI-
+observable behaviour, unless I've missed something.
 
-When kernel is detecting the type of mapping it should apply :
-
-fs/binfmt_elf.c:
-...
-	if (elf_read_implies_exec(loc->elf_ex, executable_stack))
-		current->personality |= READ_IMPLIES_EXEC;
-...
-
-this effectively calls mips_elf_read_implies_exec() which performs a check:
-...
-	if (!cpu_has_rixi) {
-		/* The CPU doesn't support non-executable memory */
-		return 1;
-	}
-
-	return 0;
-}
-
-This will in turn make stack & heap executable on processors without RIXI, which are practically all processors with MIPS ISA R < 6.
-
-We would like to have an option to override this and force non-executable mappings for such systems.
-
-Kind regards,
-Miodrag
-________________________________________
-From: James Hogan
-Sent: Thursday, November 30, 2017 11:09 AM
-To: Miodrag Dinic
-Cc: David Daney; Aleksandar Markovic; linux-mips@linux-mips.org; Aleksandar Markovic; Andrew Morton; DengCheng Zhu; Ding Tianhong; Douglas Leung; Frederic Weisbecker; Goran Ferenc; Ingo Molnar; James Cowgill; Jonathan Corbet; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; Marc Zyngier; Matt Redfearn; Mimi Zohar; Paul Burton; Paul E. McKenney; Petar Jovanovic; Raghu Gandham; Ralf Baechle; Thomas Gleixner; Tom Saeger
-Subject: Re: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
-
-On Thu, Nov 30, 2017 at 09:34:15AM +0000, Miodrag Dinic wrote:
-> Hi David,
->
-> Sorry for a late response, please find answers in-lined:
->
-> > > If this parameter is omitted, kernel behavior remains the same as it
-> > > was before this patch is applied.
-> >
-> > Do other architectures have a similar hack?
-> >
-> > If arm{,64} and x86 don't need this, what would make MIPS so special
-> > that we have to carry this around?
->
-> Yes, there are similar workarounds. Just a couple lines above
-> nonxstack description in the documentation there are :
->       noexec          [IA-64]
->
->       noexec          [X86]
->                       On X86-32 available only on PAE configured kernels.
->                       noexec=on: enable non-executable mappings (default)
->                       noexec=off: disable non-executable mappings
-> ...
->
->       noexec32        [X86-64]
->                       This affects only 32-bit executables.
->                       noexec32=on: enable non-executable mappings (default)
->                               read doesn't imply executable mappings
->                       noexec32=off: disable non-executable mappings
->                               read implies executable mappings
->
-> > >
-> > > This functionality is convenient during debugging and is especially
-> > > useful for Android development where non-exec stack is required.
-> >
-> > Why not just set the PT_GNU_STACK flags correctly in the first place?
->
-> We do have PT_GNU_STACK flags set correctly, this feature is required to
-> workaround CPU revisions which do not have RIXI support.
-
-RIXI support can be discovered programatically from CP0_Config3.RXI
-(cpu_has_rixi in asm/cpu-features.h), so I don't follow why CPUs without
-RIXI would require a kernel parameter.
+If we can end up with that somehow, then this patch reintroduces the
+issue d614fd58a283 aims to fix, whereby fpr_val can contain
+uninitialised kernel stack which userspace can then obtain via
+PTRACE_GETREGSET.
 
 Cheers
-James
-
->
-> Kind regards,
-> Miodrag
-> ________________________________________
-> From: David Daney [ddaney@caviumnetworks.com]
-> Sent: Tuesday, November 21, 2017 9:53 PM
-> To: Aleksandar Markovic; linux-mips@linux-mips.org
-> Cc: Miodrag Dinic; Aleksandar Markovic; Andrew Morton; DengCheng Zhu; Ding Tianhong; Douglas Leung; Frederic Weisbecker; Goran Ferenc; Ingo Molnar; James Cowgill; James Hogan; Jonathan Corbet; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; Marc Zyngier; Matt Redfearn; Mimi Zohar; Paul Burton; Paul E. McKenney; Petar Jovanovic; Raghu Gandham; Ralf Baechle; Thomas Gleixner; Tom Saeger
-> Subject: Re: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
->
-> On 11/21/2017 05:56 AM, Aleksandar Markovic wrote:
-> > From: Miodrag Dinic <miodrag.dinic@mips.com>
-> >
-> > Add a new kernel parameter to override the default behavior related
-> > to the decision whether to set up stack as non-executable in function
-> > mips_elf_read_implies_exec().
-> >
-> > The new parameter is used to control non executable stack and heap,
-> > regardless of PT_GNU_STACK entry. This does apply to both stack and
-> > heap, despite the name.
-> >
-> > Allowed values:
-> >
-> > nonxstack=on  Force non-exec stack & heap
-> > nonxstack=off Force executable stack & heap
-> >
-> > If this parameter is omitted, kernel behavior remains the same as it
-> > was before this patch is applied.
->
-> Do other architectures have a similar hack?
->
-> If arm{,64} and x86 don't need this, what would make MIPS so special
-> that we have to carry this around?
->
->
-> >
-> > This functionality is convenient during debugging and is especially
-> > useful for Android development where non-exec stack is required.
->
-> Why not just set the PT_GNU_STACK flags correctly in the first place?
->
-> >
-> > Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-> > Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> > ---
-> >   Documentation/admin-guide/kernel-parameters.txt | 11 +++++++
-> >   arch/mips/kernel/elf.c                          | 39 +++++++++++++++++++++++++
-> >   2 files changed, 50 insertions(+)
-> >
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index b74e133..99464ee 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -2614,6 +2614,17 @@
-> >                       noexec32=off: disable non-executable mappings
-> >                               read implies executable mappings
-> >
-> > +     nonxstack       [MIPS]
-> > +                     Force setting up stack and heap as non-executable or
-> > +                     executable regardless of PT_GNU_STACK entry. Both
-> > +                     stack and heap are affected, despite the name. Valid
-> > +                     arguments: on, off.
-> > +                     nonxstack=on:   Force non-executable stack and heap
-> > +                     nonxstack=off:  Force executable stack and heap
-> > +                     If ommited, stack and heap will or will not be set
-> > +                     up as non-executable depending on PT_GNU_STACK
-> > +                     entry and possibly other factors.
-> > +
-> >       nofpu           [MIPS,SH] Disable hardware FPU at boot time.
-> >
-> >       nofxsr          [BUGS=X86-32] Disables x86 floating point extended
-> > diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-> > index 731325a..28ef7f3 100644
-> > --- a/arch/mips/kernel/elf.c
-> > +++ b/arch/mips/kernel/elf.c
-> > @@ -326,8 +326,47 @@ void mips_set_personality_nan(struct arch_elf_state *state)
-> >       }
-> >   }
-> >
-> > +static int nonxstack = EXSTACK_DEFAULT;
-> > +
-> > +/*
-> > + * kernel parameter: nonxstack=on|off
-> > + *
-> > + *   Force setting up stack and heap as non-executable or
-> > + *   executable regardless of PT_GNU_STACK entry. Both
-> > + *   stack and heap are affected, despite the name. Valid
-> > + *   arguments: on, off.
-> > + *
-> > + *     nonxstack=on:   Force non-executable stack and heap
-> > + *     nonxstack=off:  Force executable stack and heap
-> > + *
-> > + *   If ommited, stack and heap will or will not be set
-> > + *   up as non-executable depending on PT_GNU_STACK
-> > + *   entry and possibly other factors.
-> > + */
-> > +static int __init nonxstack_setup(char *str)
-> > +{
-> > +     if (!strcmp(str, "on"))
-> > +             nonxstack = EXSTACK_DISABLE_X;
-> > +     else if (!strcmp(str, "off"))
-> > +             nonxstack = EXSTACK_ENABLE_X;
-> > +     else
-> > +             pr_err("Malformed nonxstack format! nonxstack=on|off\n");
-> > +
-> > +     return 1;
-> > +}
-> > +__setup("nonxstack=", nonxstack_setup);
-> > +
-> >   int mips_elf_read_implies_exec(void *elf_ex, int exstack)
-> >   {
-> > +     switch (nonxstack) {
-> > +     case EXSTACK_DISABLE_X:
-> > +             return 0;
-> > +     case EXSTACK_ENABLE_X:
-> > +             return 1;
-> > +     default:
-> > +             break;
-> > +     }
-> > +
-> >       if (exstack != EXSTACK_DISABLE_X) {
-> >               /* The binary doesn't request a non-executable stack */
-> >               return 1;
-> >
->
->
+---Dave

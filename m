@@ -1,128 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2017 18:38:49 +0100 (CET)
-Received: from mail-by2nam01on0046.outbound.protection.outlook.com ([104.47.34.46]:20256
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2017 18:43:10 +0100 (CET)
+Received: from mail-bl2nam02on0089.outbound.protection.outlook.com ([104.47.38.89]:22665
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991100AbdLARii18w6L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Dec 2017 18:38:38 +0100
+        id S23990754AbdLARnDG6PRL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 1 Dec 2017 18:43:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=IGKj7UexG+a5w0+r6nIY6t/6igrPamG6rqz/JAHnqnE=;
- b=HacDo2fSJ9ozPN6SBOqmCnHS84MQ3sMAeh/Zd1UOF6NDblGSdHgzj35v96ySQliPRyxYc0GZI2EJxtbLxzBL21S+1xz8uQvTwyyooBhFzssQjElPqX81uGe4TbzyAbMe61vs376ESahva6mXk/+ASZlMpsNAcpV6dmNweMVNUtI=
+ bh=oFSH+jtT75Pc8Vz8LyiFOXkCqvdFPxx8f7waiP7GDJA=;
+ b=SoaMAjWxA3HK6zLaZvpxP4qECN/pDIS4uvdAJmuKrWPNxhmj02yUQhX/wqK+Osnp1c0+0/sJnDTyyR71E0tVbe8lZvXdhI7dKgjJMgLEMCk8BZqJ1x9BUmN+6QkDqepzRIcfz1wa/sqCFk6XlxRNqwuuQXaIdV6eAIbkwVWZMK0=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
- MWHPR07MB3504.namprd07.prod.outlook.com (10.164.192.31) with Microsoft SMTP
+ MWHPR07MB3503.namprd07.prod.outlook.com (10.164.192.30) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.282.5; Fri, 1 Dec 2017 17:38:23 +0000
-Subject: Re: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
-To:     Miodrag Dinic <Miodrag.Dinic@mips.com>,
-        James Hogan <James.Hogan@mips.com>
-Cc:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Aleksandar Markovic <Aleksandar.Markovic@mips.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        DengCheng Zhu <DengCheng.Zhu@mips.com>,
-        Ding Tianhong <dingtianhong@huawei.com>,
-        Douglas Leung <Douglas.Leung@mips.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Goran Ferenc <Goran.Ferenc@mips.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        James Cowgill <James.Cowgill@imgtec.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Matt Redfearn <Matt.Redfearn@mips.com>,
-        Mimi Zohar <zohar@linux.vnet.ibm.com>,
-        Paul Burton <Paul.Burton@mips.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Petar Jovanovic <Petar.Jovanovic@mips.com>,
-        Raghu Gandham <Raghu.Gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Saeger <tom.saeger@oracle.com>
-References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com>
- <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com>
- <20171130100957.GG5027@jhogan-linux.mipstec.com>
- <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com>
+ 15.20.282.5; Fri, 1 Dec 2017 17:42:50 +0000
+Subject: Re: [PATCH v4 3/8] MIPS: Octeon: Add a global resource manager.
+To:     Philippe Ombredanne <pombredanne@nexb.com>,
+        Carlos Munoz <cmunoz@cavium.com>
+Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devel@driverdev.osuosl.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Steven J. Hill" <steven.hill@cavium.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        James Hogan <james.hogan@mips.com>
+References: <20171129005540.28829-1-david.daney@cavium.com>
+ <20171129005540.28829-4-david.daney@cavium.com>
+ <20171130225333.GI27409@jhogan-linux.mipstec.com>
+ <CAOFm3uGhRTTrvygBd0dMdzWZQC5kFi8yXuWQsnhDvDLtW2z7aA@mail.gmail.com>
 From:   David Daney <ddaney@caviumnetworks.com>
-Message-ID: <b999a736-8ad6-824f-36aa-e7c4cb7e467d@caviumnetworks.com>
-Date:   Fri, 1 Dec 2017 09:38:20 -0800
+Message-ID: <99dd185d-6e5d-f474-90aa-ebee63045c42@caviumnetworks.com>
+Date:   Fri, 1 Dec 2017 09:42:47 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.4.0
 MIME-Version: 1.0
-In-Reply-To: <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com>
+In-Reply-To: <CAOFm3uGhRTTrvygBd0dMdzWZQC5kFi8yXuWQsnhDvDLtW2z7aA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: SN1PR0701CA0022.namprd07.prod.outlook.com (10.162.96.32) To
- MWHPR07MB3504.namprd07.prod.outlook.com (10.164.192.31)
+X-ClientProxiedBy: SN1PR0701CA0014.namprd07.prod.outlook.com (10.162.96.24) To
+ MWHPR07MB3503.namprd07.prod.outlook.com (10.164.192.30)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7988d111-9532-4ab2-6e38-08d538e25385
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603286);SRVR:MWHPR07MB3504;
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;3:vWdAvcicDaSC9IhD+TTwGzEcqBCmODb44yjgnZjGCYPUe73SG6hWmOrVOfOHDsjRW3mAyy0n0piS0rKgiV4dGzkuitJfW7olTAymzk/wpllTLuvkl8s9BbtjbVLSd0BuM5+PcM+3QQHeIGapsmotGQPDlPpCd60/leC/Wx2+dkNb0Oi1V+I4AmgO3bmrJWsIHRVtMjYtFbEwzks/Zw3ITQGNOIRQ06uDv79vWUQzduLrVV1r3KuUpKyeqRTNIqc/;25:UMfHJuiha7JxBXgjSVZfAEPPiAFyEXRrBKvIw73vYJNpyKOsVCI6eCHLVnbUONG0cGsX5CTEJgCQMb0DEaLisl/gVbhgsGtSjoVxeZFgEeUQ09+ppDO8Owbkv2qaCXi/cDCQsq0F7qVof3Oc+dsv4ExMQNSfV9VeX1pgEcpCUwcwJwN1jEwBjpaXOZefCzHNquaiiAz8AxU89hhxNQ8dtNYAx8qYi1YeOYXfEJgUFpMB9AP0XNXd23/PV0TJ0IrHNKUpgdmy3kAUEbTCqQomZzDjiznVFj4v6nlQ0vrqT9IvHyB83tyXiodw2Nv3ndoEuCTklz/gP7WooHfNKtLzxw==;31:+o25vXsxC+JLHia6PEWIbY1h6vTmq9Ll80Uh1S6HNSO2Ys3LnHV5viXyiJzHXuU3v1d2yXLtqI39S718lgDGK7TldAtzo0h+ZpGaxq3haoicL1hZNH/DDupif9DD8zvUAxTCajgGyg0TwPMT7M0LD6/k7Tn7Hzxz6V2YzEgEqjXAyAmOcNrp8HVXNo+tPRNDe9LPfhJrpS4qUg/zqihKb1S5hFcPBXGvdINlJzNMYsc=
-X-MS-TrafficTypeDiagnostic: MWHPR07MB3504:
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;20:9M5+B8ecsSyXJRls/J5KysK9u75N1AgXUxsI3sj0PbC5R4t5FUYvtkulV/57A4VGHY6ese6lHWaXxw/Tz7wnsaSZmFlbnKpKs7/6U0nuJEl1cMeZGNiBFiuJLZm18pXfGS9CBa01fDIESCZUP3YdrUIyvLAVYxehFUT8u4UBF128rk0ADtH9r/hmFVC3dN6DvIRB9AL7WB4Rz0Y8pslMeIwkSuukft54qJjPVTZtEgv0Oh3rP6aAvYVdesPQMO2vbExSHcLzC7QSgo2dtAYgqa5xsjrJHl2iXAJNnaoz070w03/rpRCOFd2HjnlDWekybyPBkTB7omBiKvUMV67EqLFo5CutBgKF/M9aFuJwETJv862QYiJ5Jn4KxeaUbZjTd9fQLnzvDmTEytmRoMREH423rR/1hsZr0TF0LOW37KxDknqSW1S8uLb0cXXwyQYSJFtiBSJ21tU307u55gg/NK+4m+kBX5bRtXR+5Oy20qiDIhwrhehZR23dy15TOQht8H9OzbtpGOL7u/Dt7QoACfhkUQCDWJXXXE6yrfCCDuWtIBpkB7rwwZIFab3OL//Lgd5vGtklW14VBsiBoPD8iTqGPu8KFHB7HNQzxtmk7+4=;4:ZN1A7KxaZqm4FfCCq0LaIdn4qrbWIJ00e6jAdqwx99+2yDRCJlCGfAhih0QaAdkmTNwRVxdRjaO35docW3V48kTcZ68WfTxIo02C8JEs/wupuVuwSgJKbH+sZ9Rle230VTL1ilPBbuGbMUIBMmxftaB+a8BGv/HqxATXo6iUaC/Mr4I3z213fWvHtljz36tMX1ClcrM4sTsppq0FXomWK9A1pe5mSlzKUfzL1W7AQP5XzKUMsdcnAZqeUVI4Dx/cO3lQ3SLabsqqRNWgkru47g==
-X-Microsoft-Antispam-PRVS: <MWHPR07MB3504FE7294645F19D3B58ADC97390@MWHPR07MB3504.namprd07.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: c2e41c29-f68d-4702-4605-08d538e2f273
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603286);SRVR:MWHPR07MB3503;
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3503;3:tRAI+STYVQLAfPTq1APy/gOlYh+gl7HnhkPaUN6QOL40WDne5ly7sH58PGgMG0lQwwov7dovhOd1Su8cOl/YsZLN8nxUxrrzIWv3g5hbk62jQhQsTgHeyaN2u9XAibpfqZO93W4EVwlCdGr3+n+b6W3Z/FX2T9JUSPYPvO0GIgCMMcuQa/tOKipQq+PK7XI2JSmqINdr/vW5nesg12AL0h1cfZ+wNNRbWKynjH2xNQSLSye35Q8uu8d5vUyyhdNy;25:MKrNOyfQsaMVGzwq8LkGHJLy83h0MAgA3hdVEcBUvEFc6mDhELTUnAM1sgvTgcI7grOqVRoXr4rK/5XH+um5wctvuv2SOeOBl0a3nOMWiUkylxElgib/ExRynazF0V1Jk+ySDBnalb2gTgjDBjrSGgPgxdbzfqaHV2mt4Ac38VYMKjZPNUhzP7iceXCAwsneIT7D5qALTL6Wlg076TvZMLWx9oR1JlGFUQl1SFgVyP+2aCfI/wap3ljQxmPBnulM8MGX355gP69nej8Cw07RRsbnOu/v0z7bAyJQyWiQ/vUod47ejnTh9ik7O0zkheXsUzh2HczKWc48b5lCk+OvNw==;31:etWX+dxg2hM0aWdnRKfGQN4OMcUVccu5Vu3j1FaSZRz4ie+8FwRGBSWRisk9LtMaMrYFZo78To26EvnBgIXaWELlsdf+wE3f94BBRRBt15GZC1DjDjtECLWvGWTv8Imz5Ubv9xU6FMivEA56cU9Hx8mNjLsxePZtw7QRVySp8obhridpD2iDuUnlY0aiPLmi0hiHNoxiPvGNmMPTKg+YNg/7cUYKtZ1P0xT1HpnUCXg=
+X-MS-TrafficTypeDiagnostic: MWHPR07MB3503:
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3503;20:aHuzs6m+xmnUscwkU+pu+gMCMXqJP7KfDl7E5JSjQGtcdpLRehlXjc5sY7Q5FuqoHy3DVw7QbLy8HHLAv6JWaoDcE6lwtpxM9VLute7Bhnbnm6ZwlEv9vfTDGYAgw1bJkpIKElgJ6yTnXiSomxyX0sgB+dwmnb9ZXTWbueM0+egzUakmmROUp29kCy8zbXK9zn+bxrMi+KIQhEzbDfL+VOqKoy/0YiNjDX/DaFsNK5uDU2icpZa8dCWfzCvRGfZh50GKL6gfhJToHLfD8ihvMpvYCS6sFcm1gipa2RAm0nUomVrIkDUS/0LiOwSXGrERlGB3XHIZmrFjoFXTz4FCH4vbiSfOPSPHhCyNqOUxpv748HUK4Xcu7e3MhM1KVzAWxlLYK1e/hXgQxHXo3dX8L4vU0TgdT7mBy0QKKuZAqh3dYRkg9IZFcfvDO/2I8lG4VYlJwu5UObnBDjBJgi2RvoroRkrmRDzx1SghMLN3WZhmNEA2cJi33cR2qeJZUo/VgH5BkFFAbVvIUjYn5dVrK70HB0kuk5uJBJ7Et/JcivDp2CW0ONJFeTJxpsbRy57aw05kLm57qSYepp9/Jng12xFtjTRHuWTgej6rP/wOn/Q=;4:eCQEgEbYGe89VFzRs3ZqGOzepLvNumCvMmG0MIheNmseIfcMSzSW0EQp44U2IlMdmilqQ0ATsFmJJM1myM4RfCcxZFy2OR5Ad/E3k17KR/zsboT+SSnh2nLwdtp1VEaZciiWlWOSGZTYOLjD5ZkIOXCftttAUYv84P18LG8spqjl4T5WrvHNAvc/FE8qNm6IyvrbSw8Ys5xssXJd5XlKIZHkuLY3UYgPxssUCLege49gd2S/iMDjeeg6X9VE4+t1F11tBYgEHRirfazleeur/A==
+X-Microsoft-Antispam-PRVS: <MWHPR07MB3503A810E7742484C6AEAB9597390@MWHPR07MB3503.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(8121501046)(5005006)(3231022)(93006095)(10201501046)(3002001)(6041248)(20161123558100)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123562025)(20161123564025)(20161123555025)(20161123560025)(6072148)(201708071742011);SRVR:MWHPR07MB3504;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:MWHPR07MB3504;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(8121501046)(5005006)(3231022)(10201501046)(3002001)(93006095)(6041248)(20161123562025)(20161123555025)(20161123564025)(20161123558100)(20161123560025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:MWHPR07MB3503;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:MWHPR07MB3503;
 X-Forefront-PRVS: 05087F0C24
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(366004)(346002)(376002)(189002)(24454002)(199003)(6306002)(6512007)(8676002)(58126008)(81166006)(229853002)(93886005)(305945005)(7736002)(36756003)(6486002)(7416002)(6116002)(3846002)(33646002)(97736004)(6506006)(81156014)(966005)(4326008)(23676004)(53936002)(54356011)(2906002)(52116002)(50466002)(2486003)(76176011)(54906003)(52146003)(110136005)(53546010)(72206003)(6246003)(316002)(16526018)(31696002)(8936002)(25786009)(31686004)(53416004)(68736007)(101416001)(67846002)(83506002)(478600001)(65826007)(189998001)(106356001)(42882006)(5660300001)(105586002)(2950100002)(230700001)(69596002)(64126003)(65956001)(47776003)(65806001)(66066001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR07MB3504;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(366004)(346002)(376002)(199003)(189002)(24454002)(6486002)(6512007)(6506006)(33646002)(3846002)(72206003)(189998001)(6246003)(4326008)(39060400002)(53936002)(83506002)(230700001)(93886005)(105586002)(6116002)(106356001)(101416001)(69596002)(65806001)(76176011)(66066001)(67846002)(65956001)(478600001)(68736007)(25786009)(47776003)(36756003)(31696002)(31686004)(50466002)(64126003)(5660300001)(229853002)(16526018)(54906003)(58126008)(110136005)(8936002)(7416002)(7736002)(305945005)(316002)(23676004)(52146003)(2486003)(54356011)(52116002)(65826007)(81166006)(53416004)(97736004)(6666003)(2950100002)(42882006)(2906002)(53546010)(8676002)(81156014)(43860200002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR07MB3503;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtNV0hQUjA3TUIzNTA0OzIzOnR1aWc1cGFXVE5USTJGQWY4enZtOTlFWjd0?=
- =?utf-8?B?cit4a0dTS2dNQkl2YlQ4K2V3dVBqcTFmMUxUT00xQllxanErenFCaHNRMFYy?=
- =?utf-8?B?OGkreE93NDJkb3FuYUp5UEdBYnB3YTNvRHF3WTBucjNlTTRRcmpxdkFhYnpC?=
- =?utf-8?B?MHNkQTdUT1JtakFmYlJINDFCZFNPY1pkT1kxbkJZZDNsR3k5Yy9aK0gra2Y2?=
- =?utf-8?B?aS9SQnY1VDVvME1zdTJhZ0ZtR0M1UTlWRC9YUFdBeWpjdVRDVVlBbG5vK21D?=
- =?utf-8?B?Q2RGRXUrN053dWxTR2pxY3Z4VGJDWWxWZW1MTXErVXFyQ1RvQ0tmdDVHMVo0?=
- =?utf-8?B?emNmY3FvMVI3S3BUMHJmN0E4bWtUWlRkSHVMVHl6TTExVVVON0pQdS9qemJW?=
- =?utf-8?B?MnpwOVRWM1pUcm9NYnZCTm80M0ZNSVZUZ04xQUpjNWY0Ry8zaGZPNm1lZ3Rx?=
- =?utf-8?B?N1FGOWpGN2hHMGxaRFlUTW1aZStkSGIxdUdtV1pxdllaY2drZ2Nua0ZhbFRo?=
- =?utf-8?B?RWdPVkdRNmROclUxa3dOVVloRnQ4NnlQVUFqVE5LazJKWlkybitWQUsxY01h?=
- =?utf-8?B?MzNXcXdaVGVJV1ptTW8wRzhISmhSUWo0NU1KdytWY3Exa2wrd2lwcWpJWjRT?=
- =?utf-8?B?Tmdkdy9oQTkxSlk4eXEyV2VTVlpDYmJJS2VYQXIzVUJqdUdOMC9PMXB2UTVR?=
- =?utf-8?B?ODVNay9xRVNRNHlSTDEzWDBUaVdDdEhkVXBRQkwzd005VzIwVEhQQmRqSzl5?=
- =?utf-8?B?cHVIM2JkYk85SUI4WmZhSDJCdmNZSlgxTW56VGFMcDNzbGRsNG03Vjc3NS9U?=
- =?utf-8?B?QXFzSUFzYkpTVHVta3FaZnMwQngxZTRhVks0SEJaS3djck94MGJCS1VjenNK?=
- =?utf-8?B?TmtrUmlMVmMvcnhsQmZURzNCOGtpekI4LzdmY0k2djVLbkZaUVlIcGQzWlEx?=
- =?utf-8?B?ZThuRkpPMVVhd1Azdnk3QUtaMTBLbW1EMnVFbFJrWXJyUlRPdDcrOEkzV3Zs?=
- =?utf-8?B?MTRZRjlIYitLaWNUNEt3TFRac2c0ei9WR1FxYXVpMkpEU1pla0ZkbzNzK0p1?=
- =?utf-8?B?OFNIS0I2Y09VTENicFpVbENVTDFINFVubElEQlNvcGdoSVdDTTIzNlA1dXdP?=
- =?utf-8?B?MnFZNlRWRWE0ZjUrUExxTldWalNpMzhQc2thKzd0SXdFZjRSYlF0ekR3RVBy?=
- =?utf-8?B?cnUvYVJJV25lMTNTOXNQQ0d4UGNCYy9sWlk1M3V5TE42VXNqYjRRalZ0K2Jv?=
- =?utf-8?B?SldhcU5hNWJ6N2ZCQWdidGlQc0FzR01qMUdYa2JweWlQbUw2K21Bc3B1ZGFt?=
- =?utf-8?B?ZWsvdXYzSU1CdFJ4U21jTTMwcWtPL0FIdTFOOFpHcG1KL2NKMktzTUhVNXJ0?=
- =?utf-8?B?QlpnNFo3SU92bkNubEVrSTZlMlVOUG5pYXBqOCtHaXhPYVFZeGd3M1c1WUxu?=
- =?utf-8?B?dE5nWHU0YnY5L0hLL082NjMzdXFXMktTelFDMlYwSnRjOHZ0cEtCQVJGa1NJ?=
- =?utf-8?B?TXpQU2dEL2FLZU1kT1pPUG4zZ1Y3NUhlM3JyZVN1QlFrajk1QkswTGpkSTk3?=
- =?utf-8?B?RUM0ZXhZSUc3QnlzNWRIRmt1M2pOWTRoM1JiOTU1TmZ4eTFoVGZ5cWZPekVQ?=
- =?utf-8?B?ek5kb0xJUHhma1IxbXpOU1NlYURjVm9oUkh5TExITWVKSXdEcE5UU3R4R1Iz?=
- =?utf-8?B?OW5nbUxlMzVKWWtiOEc0dytFQ0p1Q0REVFpKNFBheVRvVklNSERyVkdFbXd0?=
- =?utf-8?B?bm5GK3haSkFhZnZoTzlOMGl3SWsrL3M4K1RUQ2lCMlE0MHpCb1RFT1FqcFB5?=
- =?utf-8?B?dHYwZUVtdFl0R2lSUTg5eUJyKzVyUTZ0bDFSUTN5amNLTWhjR0JHNEQrUGJO?=
- =?utf-8?B?Z1ZUYmtxVG5ITWR6aFNQK2tQekhmYlJrWEYzWFI2VU4yR3NwM29WU3NMcm5I?=
- =?utf-8?B?dXBSZVJWWVZvVTRkNnIzc2FUZXZ2cGx5RTkraXg1QW9MN2VEK2RpcG1IdCtS?=
- =?utf-8?B?Tytmd2w5VHBueWlIaGdGL2tUQnlZMEdIY2dUazlhSGVSd2srM3VhTHlDWUVR?=
- =?utf-8?Q?RVkY=3D?=
-X-Microsoft-Antispam-Message-Info: mi8yr67OxTExThsmMpFl3LMsvsBLrgOiJMMp/q5GSY0gxrqcfu/4tp1cCZncnlAKgwkm9EvBVtLPzKsOrgPWXw==
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;6:jjOx0vq+k4Qw8tJQ+n8uiTmD9iMWX7mArD+wRA0lhaEf+UHIii21fNvAMua/QKiglj8w5WpdHQle/bS/GMtu3Ogqv6MJKv/1hN5xeg9A60wR39mP6B7nmsFV3NRlYJ9KQvnaJOImF2IebOn7W7fyW7UEGTThI2Pk88xlqomouXnNCkBQP9CsHHIYkd1L/V9QHNs6/KRmK4NeoKGeH3bJ7fZRPcS36JRK1a3d/gJBKPR+azSPEfZf0C4Hr4b0qFCSpzRMm3Tp5AqLkLzRNjGMTK5EZ/PLnvpwTSXQAK6TJ4Mfh7Lp1U1S3VKsh1XZEjpOV8/eOMGWZCrr2E13JFT9JsPWUYrv47oPKg5UGc216Ug=;5:wRnhWbLpAg9wwsj8QASIGDO6krSzn6UExlXHuYuFB2Scn1pvpQai+7DXeB4n8qCA+nGwic4h8wUBE1Hwei7uLbbMTeuprd8iS3hDU1Vn/l7UDxFp/dBCevTVslgdltU8D+NKy9t9gEPw0E460o/aadGw2cqCJFUAB2ucDXQSm/U=;24:pFejL8+Yn1wGL/qyaCubxjIGTwguaKgNpTAaexooY05A+bCLqJ2Ogp/nAw+LE+WOa5wde8J2WOYP3LBo6jmvA9fJdnEk2YAyPnSlLKggPpo=;7:BL6pclJRDi3fG6A0GAzKYx6AasQ/QGlzUiC+Ci9U6FpKMDDSzVuXWa7beibrazPRVUW4cJwyMN5Sy5bhaWNWXfT2Vi6Gp/Ziys/3GIRmlfIUWGH+vqBPx7bovtK15W+ZqR1anyNKqEwxE/UIsoN9jVSrOHB7P0e7Ialh7VeDQtvJWM9fsYdcKgxuELz5HsWIhItwySIQ7SWevOGAhsjNARVKSR7vf7YrmO+Ca/y6WUBdEDTWzaOnp0KhfDAjnujQ
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtNV0hQUjA3TUIzNTAzOzIzOkl2M1BKZ3JKQ2hrall6czkzdFprM2U5d3ZC?=
+ =?utf-8?B?Sy9YU1R4V3IyVHFBanFKNmRjaHIrZ1pXUUcxc2xtVUtIai9hTTFvbkxTRnBa?=
+ =?utf-8?B?MTB6Z3NPMzB4UUNOS2t4aE1RbzVhdzFyVzVpeTBBTkt6dkQ4eFhJQTVlR0l4?=
+ =?utf-8?B?TnFtWTV6UW9PTFgrcHpBQkN5T3ZVWEVnQitaSFYrS2RYZjdJd1JlSUFmZ2pM?=
+ =?utf-8?B?Sk1zWVdzZHJuNTI5RzBLb2t2eE80ZFRXLytSYWJKYUlJMUxybjAyaDVRWHdY?=
+ =?utf-8?B?ZkQzQnhXT1Njblg4UWhRalYzSTZyRU1sTkdqMDQvUkdWb2htRTRRaWgrTjMv?=
+ =?utf-8?B?RnhTU2ZIclVVNW10eEVsL0lYTU80QTMrSitWTHhuUkJseHB6NSs2bHg1TFUy?=
+ =?utf-8?B?cXhpOWplMzlzUFRUTmV2aFd4cVFuOHN2V3loT0xDdEJCcjZEZGdEc2txWXpS?=
+ =?utf-8?B?V2l5R2VNTDlQZ1FFNWU1QWl5cEtQQzh0Z1Q3SFhyTEtvOW1IakFiQmtBbWty?=
+ =?utf-8?B?MExsZlVtNE1LNjlJdHNlTmtzZWFJVDMxS0pZRG00Zzc1SnpsZVE5SlFZQ2wv?=
+ =?utf-8?B?ODBCbS8zdUEydk9MVW8raFhsNVA0bUt2T05UNVJUdVgyUHNVS09tOGN4cE1O?=
+ =?utf-8?B?d2trUnJJcVlSNWdTTldrcUpid2pSM2NUUDVUakNOQTgyOWl5ZHJ4Z0ZXWnF6?=
+ =?utf-8?B?eGo0WE9jeFFYYmsyNXY1Z005czA5dnAxbDFIL1dxVTBLSFQ4eTNhMU5CZlQw?=
+ =?utf-8?B?NmVGZzRYVVhNMnFnOGNxTTM2QU9NbUQvTzh6UzZtVDllVGZzNllOeEx1cTBm?=
+ =?utf-8?B?dlNzUEJIcEN2bmFNaEdSSG1iV05DaXFtTm9jRnVnYUlIeExBTjhrZzhZOTZC?=
+ =?utf-8?B?UEFuM1Y3MnNPTUsxSW9RaVY2SXBEN0Y3clR6ZEdIaHBLYzB2d3BqcU9adzZv?=
+ =?utf-8?B?dThCWjdOU1RLdUR2Yy8xakdvbnM0RVg1M3d6UmhlcEpQaGZ6dVpMYSt3cHhG?=
+ =?utf-8?B?aWx0UXhZOWIwcHB1LzFvVVJqbG1rQ0JUWnlYODcxbEdEaUdJMmlvS2VSNkM1?=
+ =?utf-8?B?SWRPQXQ4S29tc1VlWjhXN0xMeDEybzdGYVV4QnhZa2ovTWpaMXpwUVJ5REJY?=
+ =?utf-8?B?RXhxdWhxUUpOWnkvMHJpMXZYZlRocld4TTRPU24xZUszQ0FkK1BHcW1KM0xY?=
+ =?utf-8?B?K1A0SjdiaVpYS3NBRmptbkpUekZnNmlIdzBmZEZyR1NGVkJJb0d1NG8vb3pU?=
+ =?utf-8?B?UkFwTnFuNUJ6bmJDQmxaRWVpWVdYQWJReHorTjBhanh6b1Y4SVdqNWFKOExw?=
+ =?utf-8?B?cnRHMlFIK1ZBajdMcU1lcmpkbStPcHlGdmcxbWVyK042Slg1TG5xU200eTBp?=
+ =?utf-8?B?VldiazNSRXVGTTVYZGVtaHl0ZjBSN2dNNkk4WDVJZVZqYWthbzJKN0d3dXpL?=
+ =?utf-8?B?NmpJRk9aM0xWSThkRGNvUDZTTnpGTitmVThaa2JlZmpQaFpaRlB4SUVLT3Np?=
+ =?utf-8?B?R09udjdkUzRwNDIrakF5T21sSVlocFRVTmZBaXNEWW9yTHhSblRxRVhHKzRa?=
+ =?utf-8?B?RU5IV2ZmNXdseG5XaFBKOTFucVFRelNuNHJvWHRubDBjN0JldjVGODlYSXFM?=
+ =?utf-8?B?QjRtck8rNzFrUHNpa055SktOUXpONVVqWFpoWDFORzFzNWEvdzMzOENxeXZC?=
+ =?utf-8?B?RXphZzN2RzhlMWNrWTJUanZ5bUVwUnR3L2lJM1o4WGRlUzVRMENaTUxzQitX?=
+ =?utf-8?B?YUtTRGJlYysxR1ZIWkpGWXF5Q3J0TWpybVF6T1hJN2c4RnN0M0FhdUkzaytJ?=
+ =?utf-8?B?NlJkTlJNaU44VmJnT0U1Wk0wTHE4MW1PcEhsU2xxNDJPcHVMSDdHSVkzOTZR?=
+ =?utf-8?B?N2hPQnRPemxHWHM1ZEpsSWhXN1QyaW45Z01mV1ZhOE9rMGMzazl5dlJTV2xk?=
+ =?utf-8?B?amhMZ0pLU21OTVpuaHR6N044NVlkcGhTcDcwOXZQSGRBcWlqbzBHc0hCclh1?=
+ =?utf-8?B?MEljbnA2aXN2c2d6Vm5sNTJDc2Z0MnRqV3RENEY4TzNaV3BhV2JHemtoR0hY?=
+ =?utf-8?B?VVQ2VTdoOS9RMjF3eVo3TFBVeUVNR3dFOE1Ubmh3VUhHUVhzeUtBeDBhek9O?=
+ =?utf-8?B?RWc9PQ==?=
+X-Microsoft-Antispam-Message-Info: J785spvJGdmpQysWkh5tBIbuN+ES+P3ciWIBlJ67aZSeRenjN+0v8i0kcNu8YOlmZX4Sm2ayCvykfYtnIL2btg==
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3503;6:Cr8ivu+WYaNmuZZUbQupbVpkQhfeOf4RmhQltaRQBMrntdNBu1KvR2v8aKL5Uh31p/Dd0ZJrfsoAV+drW6ByAkATL9EURJKOy0j5dkB91CdHxfeG8R3e8Qg4nl9GPIjA4WIvU4RrBHZyRYqU1vkEq07NsH0IaxGb2Seux4XMaSnkD0iOR/BaNqCuqclIPT1ncjd12kMNFJBO72wPFxAeUzytECEOLdHBYMuhpHxMcFiTn7HgHuMGQaLUAQnuOSnm2S4B8ZImDJUz6/8xfQyuugWyuJhW0PpcPMbiy7QoSfCV3HGH+puNAznDd7PLvajJNQEpYyoGDSROOPD9CK0YSVV2oKjpVqL+UW0Lb229Ocg=;5:dd/C4nrK73KYobtDMP/sfD1Po7sMhRADPImOxm+cHKhjZkVskwKcHFI0y9OSq18ovogsl6Peq0a7ZQc6WUcnMdLoGz4DuJpJrxJJ6LuZPIIv2m4c+hqTPY2Azo8SRxgctHcwJNmLd7GJGrTt6rzBZG9N7QYS7YQ9O/806PW6TK0=;24:uBw4GeL/Lh9YF2lNcjxTveC1xTw041F7sBIcF/nOIwJFGrH3qaCffrzLRVqeF4dQ79PpQAepzeF0FJiZRbfdIBamhzz0B6GARCmTXS0a4M0=;7:4d1hqzEIgzip9k2M9zAuD+q8YVWojtj0LJdcwz62jsUprhzZSZ9lUSOnmowC29gcOxnAYkSq9h5fykuIabJPEgt7syuF8+qe4aBuifx9qCLN+QmorkHFNcrxFXFe45QejXSqLpBUXwSQ7B0wiQH2b4EeCZrFkcPagvM3JmbVvs9D1DHwVxdmuGqao000u2l/PLTe+DBxPXpHIxSjZGu3rvxWjzQahyCfJnLtoUZbwuvibP2zgGdUyQSqgOTDaj6M
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2017 17:38:23.3279 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7988d111-9532-4ab2-6e38-08d538e25385
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2017 17:42:50.7015 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2e41c29-f68d-4702-4605-08d538e2f273
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB3504
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB3503
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61263
+X-archive-position: 61264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -139,86 +128,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/30/2017 05:06 AM, Miodrag Dinic wrote:
-> Hi James,
+On 11/30/2017 11:53 PM, Philippe Ombredanne wrote:
+> Carlos,
 > 
->>> We do have PT_GNU_STACK flags set correctly, this feature is required to
->>> workaround CPU revisions which do not have RIXI support.
+> On Thu, Nov 30, 2017 at 11:53 PM, James Hogan <james.hogan@mips.com> wrote:
+>> On Tue, Nov 28, 2017 at 04:55:35PM -0800, David Daney wrote:
+>>> From: Carlos Munoz <cmunoz@cavium.com>
+>>>
+>>> Add a global resource manager to manage tagged pointers within
+>>> bootmem allocated memory. This is used by various functional
+>>> blocks in the Octeon core like the FPA, Ethernet nexus, etc.
+>>>
+>>> Signed-off-by: Carlos Munoz <cmunoz@cavium.com>
+>>> Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
+>>> Signed-off-by: David Daney <david.daney@cavium.com>
+>>> ---
+>>>   arch/mips/cavium-octeon/Makefile       |   3 +-
+>>>   arch/mips/cavium-octeon/resource-mgr.c | 371 +++++++++++++++++++++++++++++++++
+>>>   arch/mips/include/asm/octeon/octeon.h  |  18 ++
+>>>   3 files changed, 391 insertions(+), 1 deletion(-)
+>>>   create mode 100644 arch/mips/cavium-octeon/resource-mgr.c
+>>>
+>>> diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+>>> index 7c02e542959a..0a299ab8719f 100644
+>>> --- a/arch/mips/cavium-octeon/Makefile
+>>> +++ b/arch/mips/cavium-octeon/Makefile
+>>> @@ -9,7 +9,8 @@
+>>>   # Copyright (C) 2005-2009 Cavium Networks
+>>>   #
+>>>
+>>> -obj-y := cpu.o setup.o octeon-platform.o octeon-irq.o csrc-octeon.o
+>>> +obj-y := cpu.o setup.o octeon-platform.o octeon-irq.o csrc-octeon.o \
+>>> +      resource-mgr.o
 >>
->> RIXI support can be discovered programatically from CP0_Config3.RXI
->> (cpu_has_rixi in asm/cpu-features.h), so I don't follow why CPUs without
->> RIXI would require a kernel parameter.
+>> Maybe put that on a separate line like below.
+>>
+>>>   obj-y += dma-octeon.o
+>>>   obj-y += octeon-memcpy.o
+>>>   obj-y += executive/
+>>> diff --git a/arch/mips/cavium-octeon/resource-mgr.c b/arch/mips/cavium-octeon/resource-mgr.c
+>>> new file mode 100644
+>>> index 000000000000..ca25fa953402
+>>> --- /dev/null
+>>> +++ b/arch/mips/cavium-octeon/resource-mgr.c
+>>> @@ -0,0 +1,371 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +/*
+>>> + * Resource manager for Octeon.
+>>> + *
+>>> + * This file is subject to the terms and conditions of the GNU General Public
+>>> + * License.  See the file "COPYING" in the main directory of this archive
+>>> + * for more details.
+>>> + *
+>>> + * Copyright (C) 2017 Cavium, Inc.
+>>> + */
 > 
-> The following patch introduced change in behavior with regards to
-> stack & heap execute-ability :
-> commit 1a770b85c1f1c1ee37afd7cef5237ffc4c970f04
-> Author: Paul Burton <paul.burton@imgtec.com>
-> Date:   Fri Jul 8 11:06:20 2016 +0100
-> 
->      MIPS: non-exec stack & heap when non-exec PT_GNU_STACK is present
->      
->      The stack and heap have both been executable by default on MIPS until
->      now. This patch changes the default to be non-executable, but only for
->      ELF binaries with a non-executable PT_GNU_STACK header present. This
->      does apply to both the heap & the stack, despite the name PT_GNU_STACK,
->      and this matches the behaviour of other architectures like ARM & x86.
->      
->      Current MIPS toolchains do not produce the PT_GNU_STACK header, which
->      means that we can rely upon this patch not changing the behaviour of
->      existing binaries. The new default will only take effect for newly
->      compiled binaries once toolchains are updated to support PT_GNU_STACK,
->      and since those binaries are newly compiled they can be compiled
->      expecting the change in default behaviour. Again this matches the way in
->      which the ARM & x86 architectures handled their implementations of
->      non-executable memory.
->      
->      Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->      Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
->      Cc: Maciej Rozycki <maciej.rozycki@imgtec.com>
->      Cc: Faraz Shahbazker <faraz.shahbazker@imgtec.com>
->      Cc: Raghu Gandham <raghu.gandham@imgtec.com>
->      Cc: Matthew Fortune <matthew.fortune@imgtec.com>
->      Cc: linux-mips@linux-mips.org
->      Patchwork: https://patchwork.linux-mips.org/patch/13765/
->      Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> ....
-> 
-> When kernel is detecting the type of mapping it should apply :
-> 
-> fs/binfmt_elf.c:
-> ...
-> 	if (elf_read_implies_exec(loc->elf_ex, executable_stack))
-> 		current->personality |= READ_IMPLIES_EXEC;
-> ...
-> 
-> this effectively calls mips_elf_read_implies_exec() which performs a check:
-> ...
-> 	if (!cpu_has_rixi) {
-> 		/* The CPU doesn't support non-executable memory */
-> 		return 1;
-> 	}
-> 
-> 	return 0;
-> }
-> 
-> This will in turn make stack & heap executable on processors without RIXI, which are practically all processors with MIPS ISA R < 6.
-> 
+> Since you nicely included an SPDX id, you would not need the
+> boilerplate anymore. e.g. these can go alright?
 
-All Cavium processors since OCTEON Plus (more than ten years ago) 
-support RIXI.
+They may not be strictly speaking necessary, but I don't think they hurt 
+anything.  Unless there is a requirement to strip out the license text, 
+we would stick with it as is.
 
-> We would like to have an option to override this and force non-executable mappings for such systems.
-
-This is what I don't understand.  If a system doesn't support XI, then 
-no mapping can possibly be non-executable.
-
-There may be some utility in disabling the use of the RIXI bits on 
-systems that do support them.  But no command line can conjure 
-functional RIXI on systems that don't support it.
-
-Also, this does nothing for multi-threaded programs where libc sets the 
-permissions on the thread stacks.
-
-If you really need something, at a minimum, use the same parameter name 
-that x86 uses.
+> 
+>>> + * This file is subject to the terms and conditions of the GNU General Public
+>>> + * License.  See the file "COPYING" in the main directory of this archive
+>>> + * for more details.
+> 

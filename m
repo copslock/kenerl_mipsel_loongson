@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Dec 2017 00:18:36 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Dec 2017 00:19:09 +0100 (CET)
 Received: from mail-by2nam03on0043.outbound.protection.outlook.com ([104.47.42.43]:17992
         "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990492AbdLAXSaC82ds (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23991100AbdLAXSag6wns (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 2 Dec 2017 00:18:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=S5CTZFLhcSATBN+m5aY6Ks8BeGwFJyVRGeqXxnvGNaU=;
- b=On+wLrX2dNFYoWs3r59y3ZIr1PmuCU2/LbF5zXhpX6o9Gx92XjquMbN73BA5JNmKLJJDs48oCmESrnJ625yK88Mmjgu4X6boxt+esOhMprIpjU92SgPnsywIkUMvBNLHnNHBBh+fKExzbM5IqmWygDaJ+Rgd3kD9DPJXPHBk2m0=
+ bh=+xGCXfVgT3ZjsVa8BaQUj4vjyihr26dDMshXgQeJcmA=;
+ b=MyhmuHaa3CxXY3J3pSS5DvLAGXuSgDFz2tJsxw9rmgS7EsTc5X7K+lL33IEbg7J0nhwdazEfgSLZvFAx4ddNV8r6fUzZcJG/1QVl7LEmordwUrgf2xPRutTSAQ7aRqNJ1n7on195dKajRDnLloJ0kU9XMA0PxSVWdUtzFocuHKk=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
  DM5PR07MB3499.namprd07.prod.outlook.com (10.164.153.30) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.260.4; Fri, 1 Dec 2017 23:18:18 +0000
+ 15.20.260.4; Fri, 1 Dec 2017 23:18:19 +0000
 From:   David Daney <david.daney@cavium.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@mips.com>, netdev@vger.kernel.org,
@@ -26,57 +26,63 @@ Cc:     linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Philippe Ombredanne <pombredanne@nexb.com>,
+        Carlos Munoz <cmunoz@cavium.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v5 net-next,mips 0/7] Cavium OCTEON-III network driver.
-Date:   Fri,  1 Dec 2017 15:18:00 -0800
-Message-Id: <20171201231807.25266-1-david.daney@cavium.com>
+Subject: [PATCH v5 net-next,mips 1/7] dt-bindings: Add Cavium Octeon Common Ethernet Interface.
+Date:   Fri,  1 Dec 2017 15:18:01 -0800
+Message-Id: <20171201231807.25266-2-david.daney@cavium.com>
 X-Mailer: git-send-email 2.14.3
+In-Reply-To: <20171201231807.25266-1-david.daney@cavium.com>
+References: <20171201231807.25266-1-david.daney@cavium.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [50.233.148.156]
 X-ClientProxiedBy: CO2PR07CA0064.namprd07.prod.outlook.com (10.174.192.32) To
  DM5PR07MB3499.namprd07.prod.outlook.com (10.164.153.30)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a92e9e56-ff6c-4d8d-6acc-08d53911ced7
+X-MS-Office365-Filtering-Correlation-Id: 86fb19c7-e8ab-4c14-3dcb-08d53911d2f5
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603286);SRVR:DM5PR07MB3499;
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3499;3:/JnZ2nPKzdo14ZbnFQq21bnJ568/BBo60EfYGJSCNE738tEJmr7bTMOmmrfNx24q5WxStjPkqk7wOoMioWTu6G7D8AAzhja9lKIuqFVlx4EY3DGlJUGld0XYClfS7/9qQ6OO+2i7MycU+gKHiO5nuK5M4CdVgIQ42cOjY5tLBM//3yOKiyjvNxE8W2svfgAr3v1SgR4mrLInQYqcIyvrhhYZ28efHef3rsst5sOhYhCJr6nO/ecHpgS11vVgbIIl;25:g6BJknMrXJVXi3RibxtW9I9VB1TYEBPJaZWOJSCGfu6z8G/NFagwh2E+BcbvB63EcxG78Xd6XHeYRiI9t1EPgqaAmhWgL7Qfj8gENgfjDwnFg9TmfeSm504AEYswyEfBfGE/qAe3gG2UDp/DIYf4tMMX63a8Fuj1hJxecyuXLHW+0xvn5IP3A6NyAuzBmP+TAgZZzCFsu4PaDi2KlPNgiKl5VzxrY+5+ZtJcdxXokTUTiNDTnzWFFDy1ravqy62yGgxOdOQ/bC43mKHK2+HMgky2MaB+NB7r7ie3f4+xgQXhrW2xM8lYJfgGH7d32+34vYalj4EVV+7tyR+qmHpkpg==;31:bvDXJsYGzFtkNv/w75Ptfpf+lB4tf+2VOYMR7eVOcjbiakipBJS3psbGUEdUuJZt1l1PpahMYVUTVaxSwzH4nQnEY/dKKBmPUpkpf1KqWDIwv+SEeub0pwnV+boY5oXfI3A+tZrrQPeXT4ugWQpfR4ZsJnFi43bFe0WEZhxwl+E7EowMx6Y59aJp4ztg+rQ/I+nMYRKuy8IGRISFUZb7NcHWudKtKCMldLFD/CaIwOI=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3499;3:wHEQqyJM5CoXgnmAyoJLbfqfsH2yPbtfpPaZUTZasVSv31AhNOwsjc4RIiSNaJGWSuNOOLZihDg5/h0RfeC+c8iU8Mnx8+7z6AoFqFm8xuT2XC1xriOAqmHzMybJeBYpSMzNImq0WLbiGYgCbtJSdpLH1bpan3lCXZ48F8gTNH/bLDrPA4UpGXCCnAh+Iu/MToBi/4HncEnKEoZVfsukxw1tJjEWNH2Fow16KmSddtuO5v/l+hO0AKPnlWXwNMuX;25:zFy1biO9B/DNM6y3yRVMI/I8S713u6dIpT9Ti5DxYYfocCBHZnuQ99USSf4KAghXPXQKSZbya4mEkwtr4yxGDpO5YGtv5nFYP+JU8bvTtv0HpKHhmUYVs4qi9FXRFVJVjtgLpHKGixjcri0L9nrlMW7ggjq+7bcMWK+LXz813Tf3d1AOOBS9qudNqhfyDkYOn5mB9FFFFjIFgEdx8tm895CQu0fzbcJaFNAqtyW2r1Z9yhoIqGek5PlpbQIpoHw5R2C8DvzFrN0qo/2MgSOOJ6woF2Nlug6QFAmnMIHYb3erWmP+tpAAgtrvI4YYbvxkiTMt/9R1vBZ1vQR873mnlw==;31:JL1i1Qzf4aVli7nNLtCeLZPFvv1F3C5TjN4dZ8ukWkjlDwe+awh7XxtBlb8KTTN+kwQ2/MBPyLLpnd4jr6zTl8uhfVvKTgKlMLy8IbEDsg0RREWpOKP2EaXkj4T7/Asf+qRyH5WWyZx9ysyClF4yMLQqnotMzc96kbMVdE8SttBnAX9TiGuq9v+xhM/yIQI/ESMeqq5i79Ozz/UXv4orhdTLDoFwrsOZQXWAsruzn5M=
 X-MS-TrafficTypeDiagnostic: DM5PR07MB3499:
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3499;20:NYDMHqC5qgkdcd1IxxjWn1Sw9rsG7DtuoT8yw/Hc3SntI6/Ct1ZrNo9eOcf4pDebOzUpzOxyzynQX1yRFwJ1ao0Z/sEEclLdfrr3s9aN5E3IziT4Rp0c3clKcpTciSV8pFAGeRVIbQg1BXDTz/PnGcjDgMgUwYc6ase0Y+tJYgqr9O/zaj3bvPf7pwTgxkFPZtgFI+ThaHB/ek9Ai4zR8ZW7xVqlSAsbD662Rwao/pP6tBsfb1BFMdyKJDkwUpUgZGTS31j6w7/icliNnz5DJIi4xMaCCdIi0w7mJO8JwhzvH7ZozCCps1GTOfol9TPQNJw+Tpq1dHoRv0a+R+v4L6MHtNc8Q0MLX4XbQ5d6woxrrtHYaiXA4xnocpTlUQ809cRtlfiJM6pJPUHh1nKqE+ogVhMQ5dlh7pP7/T9v7DsJE1MNuz8O9zwaiwFBfLLmbawwaK7ekNQFXx5mv+ynfBy1Avoai30jEQTkTMsd9tpAG945uYAGsZ/uiYVSzbr+;4:k6Xaz8PEOXjbW1LhyPqdG7XdOAfi1Bs7jYr0DDPwmfKeTuxtN3YbgRWZYeE5Jx7JxYgnhrggkDmQaBQrlcQJBmjJLdq5IwuYDd6hE8OBHuiNTXZZTQcCc9++2fJ9sLjCnZXbMXxV/wBHtkNJxhrKz30JZXess2KRx3FFZPBWDJ1EZfaG4K5OQ5eM9gP5+WlTEhTa6H/qY5CIGNwsjpQF2xWQ1Wjj3j8xkfq2W7fObJwRqJEVPOxpVidNAytwoFJKKekl3xTOLTP5VLSrUcoRHw==
-X-Microsoft-Antispam-PRVS: <DM5PR07MB3499F6D93AFED06B9EF94F9D97390@DM5PR07MB3499.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3499;20:cL+c6qT6QnGHd/wZcIACZK284cyftzvtA2hUtSUvr1dzNawglL+HWNxPTJeqlyrICqC+EdDogElxAjByED6p45Z3hbmtLGQR4V48giq0LUtjcxXLmGb3XsjGUFdWtlI8KhB0rly3g/ui2E05FqJCerLcw1D6lZRApC3rhcs690PVDFJk9YWp4qyOgbbBqLEodnV8ujvEFF2OGlWCdhOhZun1uv7Vyb7khbkhKyxou7mLhVWqgPXP/vPET5sUXXcC7rf3beGoFguUmQrun9HAzQrzvVmpkcHjvHlPl0GeCBetaf0fWD7jA/FiRv1dFK7ZtWIjzFfcj3pyncedJSq6ssIA7GPbwxcppW0nL9M1J6ospoA5oCevHWsO66MgQasA+M5OB161EccVIsN+njuBT9beU0Rf7DRmnv16uRZ2cPYQ29DAK4lq2RRC12IgfMUrm4IOz991694Kuogomk8hFwdvoZUQ3bzscWKlCzk1vLa2k154ESonlMRWsKFlVMJy;4:r2hm1bLJTYAjXaz6aSBPSG2LwCiiNcM10fgAYBOdMYaOFTOmpKlJ+pyQCs3m8VVbYE1Ot7GjrSeNpgdtHj2J2h3922jdNUCG4XUTy9zUck+zOS5H5G3jLgWCcUhSiRKJ9L1qCQ16pTkR8GNXDPpoOOcKUI9UKNHLwKVpxnd4m5KkorANiD4NGK6wkFVuZf9v9+6xom/AQgcf6qQspmHsimvc2NfCZjo4W707DDclMlt2l030Ullr+OYGRGIVFD3nyFbDgHtdyj9dKlabrQKHGQ==
+X-Microsoft-Antispam-PRVS: <DM5PR07MB3499D0F81624B03EDD07A69697390@DM5PR07MB3499.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(8121501046)(5005006)(3231022)(93006095)(93001095)(10201501046)(3002001)(6041248)(20161123564025)(20161123555025)(20161123560025)(20161123558100)(20161123562025)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:DM5PR07MB3499;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:DM5PR07MB3499;
 X-Forefront-PRVS: 05087F0C24
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(346002)(376002)(366004)(189002)(199003)(47776003)(72206003)(1076002)(7416002)(50466002)(4326008)(66066001)(16526018)(48376002)(33646002)(6666003)(97736004)(86362001)(68736007)(25786009)(39060400002)(101416001)(478600001)(53416004)(6506006)(106356001)(5660300001)(3846002)(105586002)(36756003)(69596002)(8676002)(6512007)(2906002)(51416003)(53936002)(81156014)(110136005)(6116002)(81166006)(8936002)(7736002)(52116002)(16586007)(316002)(107886003)(189998001)(6486002)(305945005)(50226002)(54906003)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3499;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(979002)(6009001)(346002)(376002)(366004)(189002)(199003)(47776003)(72206003)(1076002)(7416002)(50466002)(4326008)(66066001)(16526018)(48376002)(33646002)(6666003)(76176011)(97736004)(86362001)(68736007)(25786009)(39060400002)(2950100002)(101416001)(478600001)(53416004)(6506006)(106356001)(5660300001)(3846002)(105586002)(36756003)(69596002)(8676002)(6512007)(2906002)(51416003)(53936002)(81156014)(110136005)(6116002)(81166006)(8936002)(7736002)(52116002)(16586007)(316002)(107886003)(189998001)(6486002)(305945005)(50226002)(54906003)(142933001)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3499;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3499;23:UzJ7aYJ0kPHG+Ybd61rp6LtY4FWiVb0jmiF9Egwda?=
- =?us-ascii?Q?kNOecfJWf2XgWttg9RpJ3H/nW3/P0i3DzcRfVmTe4vyXyu5duCcw786TiSp+?=
- =?us-ascii?Q?cwWVG8laejToY5tlogL5vg0nNTc9OLkoVqvr2zkLnVySnN/oAF/kwXpuKqoA?=
- =?us-ascii?Q?eKZzb7bW+1vDnYwYM0Ypn8QAyrEUTJNdcHgHy+6kCOrs8B5o3zhIf/Iv85+0?=
- =?us-ascii?Q?dlKx6EBmJPx4r+dTW8BCl04iaaC6bvoPai5qRhZOoQVMwDA+L0DHcxwttiB1?=
- =?us-ascii?Q?SbI0SOXztGGUquldZJ5Lu1QRR7JSUMRmyCey/tjbTsDVtSJUGPBTYLbRM97X?=
- =?us-ascii?Q?U7Cc3VjYQuB4e8h7yhnEHqQB/J8wJJHpKe+oROgjTO59hI2Ym9fjjvUhVOOs?=
- =?us-ascii?Q?fWNtsY1u9Np/QPdA04oHZpY56yrCI6iKIaDK3TLn8X7aW2f1CD1EKUKAsRB8?=
- =?us-ascii?Q?WjVQRPA9IacxHJvl60nZIpgwa2ffe5ON1qesEVL/XdS7nbc30GTlqHQXmDAM?=
- =?us-ascii?Q?kXl4meyuEzm31MRy9SymKIEbw6ZcSI+sOeogHW5yj+PTM3kFTbgbqYVVsrpb?=
- =?us-ascii?Q?fQh6knN4zOy0OnoGm1hQSnAzkitc1Eo4MBnE/QLbG2nllDs5PYdjEI+xPtEQ?=
- =?us-ascii?Q?6KTLVM1ZLs2Cz5UWT3si7/0cKbTkTUJVj1O+LVV8MqKz69ZDPGUh6I5cLn4L?=
- =?us-ascii?Q?sVs0NGwGzLEsaNdGv3Qnw7amIacPbs+gplkEGkDBkJxsD2WiTZSfbXdTmm4Y?=
- =?us-ascii?Q?C3l3LGibJzyMMBCdrcfkGz8N+29irqo1tB62P6HDZJw4/AOzW2jWC5ZR3+0c?=
- =?us-ascii?Q?HSAcN6/f8tXUh9nTQyrbkDSdfXJ3X5SZ2nft3KHG++GkUdbf4K7bnOmiSMH3?=
- =?us-ascii?Q?K3EBraoM2b+zrmIaIM7RKzDa0gvD2iTPdGTUNemvegcGjiOu3AaL5CZY50+4?=
- =?us-ascii?Q?g/Tjkw800qOj/pxgTV3igSczx8rKuzhV+q7tGANBavSldrcLirLMnYs+o9O9?=
- =?us-ascii?Q?bVbYhZjQHFSBc1DS2aDJgjoRvxQQvowrRagSx99+ZLsHJtuKR6zezExlB1KI?=
- =?us-ascii?Q?H8iZ4dtwmq99h48Lh4bOccdLG5IcBthl1DRhtw9uhrlUQlVMj+P1JsBqvuRS?=
- =?us-ascii?Q?cDuNOqJhzzqeWgxf/wx6FIPeYJFtACa1s/HvdDtQVWb/ELJUHaDdpmHyhmeE?=
- =?us-ascii?Q?S4ViKmKCS/PPhHxyrHf9J5AFHmUMsVQZ6ljWJAi1jdFY9MSbTMMCdridw=3D?=
- =?us-ascii?Q?=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3499;6:AwtHRcTpA2FsWFoYDhMtqgGVlQRQsRw/B4KUnnguXmvjgwF9BJA5xCxiNJeNWLzHQv+Vbap/ppzEqggo15p8+VC1boom77zAUWXgbiezOqfn4ZBFLo5WtVeJfO3JKvRVWfB024o8Tl1Vd+zYc8MeBrsaK7jfCquX3JK4qyptAglNUN7QVlNr8LTmQkeAWcOfdK9J63hhCAMnCq9Vzm3wRaoWQjf1oK7bw/QUOaDLE75qDh9BLcbj94Ey/yjCUj9icyIoE/e/iGDskXjRiNGey7OL021ciGJaEd9IXHCCPTZc+1JrqdmG1Wl4XbQntIJn7wwkrsCnKiMX65TuxOSHnrYn3cTyveL7CKXWsDyPg6M=;5:zOanHZxBEjSlCdSvzjJPH+6NCZBYiaB1bsrhiO5ZR7PViUoYdqTRCpktoSFHzW5Li9zwgPTiUbML5hs7SdaMX1WSB3wgwqFGGEE3Isa8PfrOuK9TG7IDKpZHz907fZ4dXFwSgT7LoO821+hUeKMRqLA8SYSE7/naImJE6+bD+us=;24:FB8SGePSn3TXIu4PeJTtaYwtLhVOrX/BD+/ZKy1t2GPvrVCJs1NQ8+1fvh7JwSyZdOzZbcO+XD5X/T2RaoVNT96D9XfDMZOI/sPcqoof9AM=;7:s3lh4kM9MzpHYd9fTTQtheTN0MQv/dBsNPjmJnXuyTnn3j/R/3pBn4EHmMw2n1eh73EAJ1p0+a48/uXFD35JBRBeBHzoKZ+/My99u/hbmqXHHAsL/KBdEm8bnW3atWRJZyGRcRgyD2qgBciHrVxxVeW2jTOcn6WowZB1CYKifr7EH7bxAYe5gHxdLohWh7BjJY75taH9De18L/RLm7TGm4NtmB0yACNULYBplpMK9tUdSF/+mYqOV4VfszHV1DEM
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3499;23:bza+ktltbWvo1hRL3UW95bR27kSKlWZeoF9MLCsO3?=
+ =?us-ascii?Q?mJKsAmFF05TWY+AXglfqeUeYGTdQhmnX4U4ejtjWPTr/PuDZi9apnRP2qs84?=
+ =?us-ascii?Q?UweSmnTtM6V28KZFm5jjdZA5ExK86+NihXP9+CIT8HB2D7dVggz/jkqBW+Hb?=
+ =?us-ascii?Q?dIejJXBgovslhKWfV3LK8Lzo5adoaOkk9EeBEc2PNjxlQWFxrBECfUiaj4O+?=
+ =?us-ascii?Q?OU6taaTWlDMZ23yDpsSwU5O+KswwXphOUNNSGN5jxPTFTMFEhHTPue3r+2en?=
+ =?us-ascii?Q?Cdhc6AXkLK+1Dokmq0CFY6+wnJDNtDAP+4JnUitLi8igkSziW172ZdtIpqRU?=
+ =?us-ascii?Q?GEMew7aNxkUGj0tUsWLY5kWyRpOG9FbG4A6tpcYFlP1Ip9kSjqu9EH9CQF1S?=
+ =?us-ascii?Q?lrJYX02OKCvUUaIaSSJJAPf6tm21SiMRQAOvAo9fQTpwvSTYJx/PovquUvj0?=
+ =?us-ascii?Q?og0b/RmxTUEfEipNwEUVqrv1+UydVXwTAREtgntA3nr3IsZR61ye9gwcrJYB?=
+ =?us-ascii?Q?Qqvkv1rXarsxbtF7L1+NCqZGCrRaO6YfG2nkxuaJyjczGjG+uc4e3N8N7oWf?=
+ =?us-ascii?Q?IbUuATH86aobIb/VF1xTn5LNTl/g9D7WvZQnoGecjkxZVGGUf1pr3iSu/rZi?=
+ =?us-ascii?Q?nIqMJTpw4wHaXZkpIFvrUTpCOQ4KmtcLBM/3pIe58ZiZpdQMPRxOBPiI3u+2?=
+ =?us-ascii?Q?imewpPgNMBQ5ZPYXd+bjB8HdTNJBfOf/aNmLqo0cEumTqSQtGCTJq7C3dKAe?=
+ =?us-ascii?Q?X1UKYYT5YSh0C/bKuUaucyc93LgZSnOKxGFlDgf4GXYHCrX5sXG3hMpa1SpE?=
+ =?us-ascii?Q?U4InjngW4Fu3ABdsSZG56jcEOmxGj59fFiXPArrIZwiNsZyOkoQYWixnktnT?=
+ =?us-ascii?Q?CUQ6aHV7QE5sOnnadj+0Xq5t+IiwBg84r7ab8WWEyhP2hg+X2ItGdmLdGaov?=
+ =?us-ascii?Q?wX6KHhD9Mf1WzgIoksSYMbXq8SlBILrXFX/dRWt4Ut0vDsdjNZVgvT++hSGW?=
+ =?us-ascii?Q?ENkkaadYaeyQQDNLmb+SMJhdqeMibDB8tfoAyTjdtxzE2xoJc/qKmwLzHsX1?=
+ =?us-ascii?Q?LLDJAlNMI4pxJ82G0L42Cy/AIRzn/Gstv5YLS8/di0fBD/1knI3Fz0vyeZIj?=
+ =?us-ascii?Q?2TVYNOw1tiWiEa4GGpvMO86sLz1PZcNmtvTmgERlRI0VqnJvbl8drF/ZKFLW?=
+ =?us-ascii?Q?b7FCjsPP+B3IQheND1EPk9d9pQrCS4whP2WzMcfaXiI8kbQV5HTywr0fJxig?=
+ =?us-ascii?Q?96/kzF7w5za/UGxgJHf1UwbOtFaBEEGbE7EIqDsGeM07ILb6vc4x/27GFbFI?=
+ =?us-ascii?Q?XHrE2AJ8f/TT1gzewtpjGkEcbhiyW0M72hjUXBcVUudiQCLdCgwO8eW2JD7d?=
+ =?us-ascii?Q?mzd6A=3D=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3499;6:xl4vJimXXKrnu3vtuluudtVvDH7MJCM9bsAkVh+8NRg0sj82RtJuq+xRHqqfkTYMBeCfHQtD5MM6A+HPSPHrLKs+/s8yQvOoSWRR5t20ytYUpU6c+O2HO6y209GjJnRuUrZGwRNV0iqoYiGyW70CXUzuZPV0SSG6xTLrmZ8m9L4a9Y9TGXubnAO7PeYjprOxOp4ysLRKv2oPNsQeDASrfE+UEgvYFPiBpbyFXAuuKTLrP1XWdT4IrCz0Eg5jxJjR/wlCKwCit+pUaDY2IzrDgB/QECQ4/ngwxpW0mZDvfvg+R8R0WqTrj66g9BslOHibMT6jO7mLTr4f5FycJDSlNpCKYaq+weqlkW2ZgcRDuV4=;5:IO/iK1xJimUCqlqlnit1AfwvLj7JsLiV/yyz4bJG1Bz/UHxFtPZ8CFqR8hGfi5B+u7Mw2bWZ2DylGNFu8raGI6GF9ORWWJ/aRalmcDx3xJp8czwAOo1uBSkALffv9nj8iMYhI89j0jO7tREJHmX6KIRfYGFZgJedB/MeAELVPwM=;24:qe0+MNRsrJu1di3zXkcr+rf8Ziaq079hCTBAsmeNSirp5Lef0tZ6kmXb7ZSf+N81AQcJTf8zBPqTa2ecJq2FWu0P6LLAtzqZSxP8KpGPgGc=;7:6qDuhezc4g8w+ZilmeHMGleBC2cjwDA33Wagx9YRyYulRMrVgLWcqaLmYLX/bI1gS8UTfcE4PaHEk3I1eQt6FCIpgYydCtUDWKjd3b25xoakW4D7wMIMUZglXHqJLmnam3uhIVbkOxp2iqK/mlaXCMJ6QQevsda/VqhTnXWJyN9N89B8VfBCCxSU+IGVD8copZqg+cylFhaeFrlrMmYW3E1QOIR2zlSJEW4gU34hetaU5MaTVQoSgHaPTg0BG3/r
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2017 23:18:18.0400 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a92e9e56-ff6c-4d8d-6acc-08d53911ced7
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2017 23:18:19.8213 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86fb19c7-e8ab-4c14-3dcb-08d53911d2f5
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR07MB3499
@@ -84,7 +90,7 @@ Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61269
+X-archive-position: 61270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -101,112 +107,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We are adding the Cavium OCTEON-III network driver.  But since
-interacting with the input and output queues is done via special CPU
-local memory, we also need to add support to the MIPS/Octeon
-architecture code.  Aren't SoCs nice in this way?
+From: Carlos Munoz <cmunoz@cavium.com>
 
-The first five patches add the SoC support needed by the driver, the
-last two add the driver and an entry in MAINTAINERS.
+Add bindings for Common Ethernet Interface (BGX) block.
 
-Since these touch several subsystems (mips, netdev), I would
-propose merging via netdev, but defer to the maintainers if they think
-something else would work better.
-
-A separate pull request was recently done by Steven Hill for the
-firmware required by the driver.
-
-Changes from v4:
-
-o Removed cleanup patch for previous generation SoC "staging" driver,
-  as it will be sent as a follow-on.
-
-o Fixed kernel doc formatting in all patches.
-
-o Removed redundant licensing text boilerplate.
-
-o Reviewed-by: header added to 2/7.
-
-o Rewrote locking code in 3/7 to eliminate inline asm.
-
-Changes from v3:
-
-o Use phy_print_status() instead of open coding the equivalent.
-
-o Print warning on phy mode mismatch.
-
-o Improve dt-bindings and add Acked-by.
-
-Changes from v2:
-
-o Fix PKI (RX path) initialization to work with little endian kernel.
-
-Changes from v1:
-
-o Cleanup and use of standard bindings in the device tree bindings
-  document.
-
-o Added (hopefully) clarifying comments about several OCTEON
-  architectural peculiarities.
-
-o Removed unused testing code from the driver.
-
-o Removed some module parameters that already default to the proper
-  values.
-
-o KConfig cleanup, including testing on x86_64, arm64 and mips.
-
-o Fixed breakage to the driver for previous generation of OCTEON SoCs (in
-  the staging directory still).
-
-o Verified bisectability of the patch set.
-
-Carlos Munoz (5):
-  dt-bindings: Add Cavium Octeon Common Ethernet Interface.
-  MIPS: Octeon: Enable LMTDMA/LMTST operations.
-  MIPS: Octeon: Add a global resource manager.
-  MIPS: Octeon: Add Free Pointer Unit (FPA) support.
-  netdev: octeon-ethernet: Add Cavium Octeon III support.
-
-David Daney (2):
-  MIPS: Octeon: Automatically provision CVMSEG space.
-  MAINTAINERS: Add entry for
-    drivers/net/ethernet/cavium/octeon/octeon3-*
-
- .../devicetree/bindings/net/cavium-bgx.txt         |   61 +
- MAINTAINERS                                        |    6 +
- arch/mips/cavium-octeon/Kconfig                    |   35 +-
- arch/mips/cavium-octeon/Makefile                   |    2 +
- arch/mips/cavium-octeon/octeon-fpa3.c              |  363 ++++
- arch/mips/cavium-octeon/resource-mgr.c             |  351 ++++
- arch/mips/cavium-octeon/setup.c                    |   22 +-
- .../asm/mach-cavium-octeon/kernel-entry-init.h     |   20 +-
- arch/mips/include/asm/mipsregs.h                   |    2 +
- arch/mips/include/asm/octeon/octeon.h              |   45 +-
- arch/mips/include/asm/processor.h                  |    2 +-
- arch/mips/kernel/octeon_switch.S                   |    2 -
- arch/mips/mm/tlbex.c                               |   29 +-
- drivers/net/ethernet/cavium/Kconfig                |   55 +-
- drivers/net/ethernet/cavium/octeon/Makefile        |    6 +
- .../net/ethernet/cavium/octeon/octeon3-bgx-nexus.c |  701 +++++++
- .../net/ethernet/cavium/octeon/octeon3-bgx-port.c  | 2015 +++++++++++++++++++
- drivers/net/ethernet/cavium/octeon/octeon3-core.c  | 2069 ++++++++++++++++++++
- drivers/net/ethernet/cavium/octeon/octeon3-pki.c   |  824 ++++++++
- drivers/net/ethernet/cavium/octeon/octeon3-pko.c   | 1688 ++++++++++++++++
- drivers/net/ethernet/cavium/octeon/octeon3-sso.c   |  301 +++
- drivers/net/ethernet/cavium/octeon/octeon3.h       |  418 ++++
- drivers/staging/octeon/ethernet-defines.h          |    2 +-
- 23 files changed, 8955 insertions(+), 64 deletions(-)
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Carlos Munoz <cmunoz@cavium.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ .../devicetree/bindings/net/cavium-bgx.txt         | 61 ++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/net/cavium-bgx.txt
- create mode 100644 arch/mips/cavium-octeon/octeon-fpa3.c
- create mode 100644 arch/mips/cavium-octeon/resource-mgr.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3-bgx-nexus.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3-bgx-port.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3-core.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3-pki.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3-pko.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3-sso.c
- create mode 100644 drivers/net/ethernet/cavium/octeon/octeon3.h
 
+diff --git a/Documentation/devicetree/bindings/net/cavium-bgx.txt b/Documentation/devicetree/bindings/net/cavium-bgx.txt
+new file mode 100644
+index 000000000000..830c5f08dddd
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/cavium-bgx.txt
+@@ -0,0 +1,61 @@
++* Common Ethernet Interface (BGX) block
++
++Properties:
++
++- compatible: "cavium,octeon-7890-bgx": Compatibility with all cn7xxx SOCs.
++
++- reg: The base address of the BGX block.
++
++- #address-cells: Must be <1>.
++
++- #size-cells: Must be <0>.  BGX addresses have no size component.
++
++A BGX block has several children, each representing an Ethernet
++interface.
++
++
++* Ethernet Interface (BGX port) connects to PKI/PKO
++
++Properties:
++
++- compatible: "cavium,octeon-7890-bgx-port": Compatibility with all
++	      cn7xxx SOCs.
++
++	      "cavium,octeon-7360-xcv": Compatibility with cn73xx SOCs
++	      for RGMII.
++
++- reg: The index of the interface within the BGX block.
++
++Optional properties:
++
++- local-mac-address: Mac address for the interface.
++
++- phy-handle: phandle to the phy node connected to the interface.
++
++- phy-mode: described in ethernet.txt.
++
++- fixed-link: described in fixed-link.txt.
++
++Example:
++
++	ethernet-mac-nexus@11800e0000000 {
++		compatible = "cavium,octeon-7890-bgx";
++		reg = <0x00011800 0xe0000000 0x00000000 0x01000000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethernet@0 {
++			compatible = "cavium,octeon-7360-xcv";
++			reg = <0>;
++			local-mac-address = [ 00 01 23 45 67 89 ];
++			phy-handle = <&phy3>;
++			phy-mode = "rgmii-rxid"
++		};
++		ethernet@1 {
++			compatible = "cavium,octeon-7890-bgx-port";
++			reg = <1>;
++			local-mac-address = [ 00 01 23 45 67 8a ];
++			phy-handle = <&phy4>;
++			phy-mode = "sgmii"
++		};
++	};
 -- 
 2.14.3

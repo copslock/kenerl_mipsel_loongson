@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2017 02:14:30 +0100 (CET)
-Received: from mail-ot0-f196.google.com ([74.125.82.196]:39014 "EHLO
-        mail-ot0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990504AbdLABOWrEDrM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2017 02:14:22 +0100
-Received: by mail-ot0-f196.google.com with SMTP id v21so7821384oth.6;
-        Thu, 30 Nov 2017 17:14:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2017 02:15:53 +0100 (CET)
+Received: from mail-ot0-f194.google.com ([74.125.82.194]:44709 "EHLO
+        mail-ot0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991770AbdLABPqlSCGM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2017 02:15:46 +0100
+Received: by mail-ot0-f194.google.com with SMTP id d27so7807730ote.11;
+        Thu, 30 Nov 2017 17:15:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ugb0b/o+HwJGrB9hAsQxaGhvqhh/zxu/rCkQMThO0a0=;
-        b=g9cUpQuXxEjAdgmoi3N2svWsn8wb4BajZW9hPYNKe33l0aDDnszbe8JOt1PLs94tHv
-         a+yupKTe9kgU91GtytvfVGHbn9VKNDQZ4tMjuvSfHk2SE7TDIcZrVPgubgrjuPNzBTb1
-         sHm/up5G4mw6OZoAgtFT5510NvndtKyJBNIWvdC7+mmtSCoXTS1nPlI7tnYdBahvUHxC
-         6UmAPUFmTY8tLlDsyh5sMzSfthm9EORBt6S/9PGW+8GUnAhCPu1DiM5sYdXcCrOTPmbn
-         Um1h1/AU8sYZG0jtECzHz81079qlbHoy4Yeqqh6oGaEXSZJpbNj6ZNupqMnEZtniIFtd
-         THMg==
-X-Gm-Message-State: AJaThX4Muc2xVpl04oLh2Pnb0p9r1xRI+hLuayQWS/Y9IwBzqjM2ezXc
-        /3IQmv16gGMmlpwbRv1OhA==
-X-Google-Smtp-Source: AGs4zMbhVeqn4nDCSBOL3zzbqAZDS3qYzcS8afbCMJ+9XzKKtkPFhPvKbxcnASL+BpLBlKLL398Jng==
-X-Received: by 10.157.47.137 with SMTP id r9mr6619900otb.108.1512090856582;
-        Thu, 30 Nov 2017 17:14:16 -0800 (PST)
+        bh=HksLHBIUSeh6crz6HUgrpNv2IdFdSgPLVu93BQmyggs=;
+        b=fIwoOWl2kQzT83dj0CPT2KGzO5SXvtuCZ2YMNpqfxWco/w/ZPWB9k5cgjAJJqttacN
+         gBR8cpwRrY3nYQZtTH+peN29LNaUUC2Z9VkeyzLqYABmNurLAzK94bSyIU/Q0NAWF0UU
+         hApu0EcjSrs1Pet05WUFWiE3tfFUqiV3nR7CRS6xe72+5+tdasUQJKBwanvD+2M+mx3/
+         b03Sh6Rwy3bMOzXOqlkjmj3poiVijyftW3HfvczBJvUQyf6b2ZjKfRzOZ91Y8VA/caE4
+         tfzbkQm/CD69sxooei5wHzfuceZY8qvMr70st3JORK0JMpAdlnKooqCJe6EMicm85Sg4
+         9QLQ==
+X-Gm-Message-State: AJaThX5Y5tj+aJ/BKGcynr8C8gTbmartDi66iEWVHMHqbfMD5NDLCk/A
+        YFb43NM78GfOW3kBsLeeyReJJwc=
+X-Google-Smtp-Source: AGs4zMbR7MLmPv+PMTZ3RRZDOluE/fVN5nr0jQ/+8rShQfxlzxT8LA4+RHvHOEVnX9NlC9keZMlCEA==
+X-Received: by 10.157.29.151 with SMTP id y23mr6423107otd.61.1512090940885;
+        Thu, 30 Nov 2017 17:15:40 -0800 (PST)
 Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
-        by smtp.gmail.com with ESMTPSA id p25sm2428967ote.7.2017.11.30.17.14.15
+        by smtp.gmail.com with ESMTPSA id x14sm2263709oia.58.2017.11.30.17.15.40
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 30 Nov 2017 17:14:15 -0800 (PST)
-Date:   Thu, 30 Nov 2017 19:14:15 -0600
+        Thu, 30 Nov 2017 17:15:40 -0800 (PST)
+Date:   Thu, 30 Nov 2017 19:15:39 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc:     James Hogan <james.hogan@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 01/13] dt-bindings: Add vendor prefix for Microsemi
- Corporation
-Message-ID: <20171201011415.2y5qabgofwc5eecd@rob-hp-laptop>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH 02/13] dt-bindings: interrupt-controller: Add binding for
+ the Microsemi Ocelot interrupt controller
+Message-ID: <20171201011539.amiqdbhdcjm5tdhe@rob-hp-laptop>
 References: <20171128152643.20463-1-alexandre.belloni@free-electrons.com>
- <20171128152643.20463-2-alexandre.belloni@free-electrons.com>
- <20171128161014.GG27409@jhogan-linux.mipstec.com>
- <20171128162245.GH21126@piout.net>
+ <20171128152643.20463-3-alexandre.belloni@free-electrons.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20171128162245.GH21126@piout.net>
+In-Reply-To: <20171128152643.20463-3-alexandre.belloni@free-electrons.com>
 User-Agent: NeoMutt/20170609 (1.8.3)
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61253
+X-archive-position: 61254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,26 +62,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 28, 2017 at 05:22:45PM +0100, Alexandre Belloni wrote:
-> On 28/11/2017 at 16:10:14 +0000, James Hogan wrote:
-> > On Tue, Nov 28, 2017 at 04:26:31PM +0100, Alexandre Belloni wrote:
-> > > Microsemi Corporation provides semiconductor and system solutions for
-> > > aerospace & defense, communications, data center and industrial markets.
-> > > 
-> > > Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-> > > ---
-> > > Cc: Rob Herring <robh+dt@kernel.org>
-> > > Cc: devicetree@vger.kernel.org
-> > 
-> > Nit: Usually the Cc list goes before the --- line so that it is included
-> > in the git history (i.e. these people had the opportunity to comment).
-> > 
+On Tue, Nov 28, 2017 at 04:26:32PM +0100, Alexandre Belloni wrote:
+> Add the Device Tree binding documentation for the Microsemi Ocelot
+> interrupt controller that is part of the ICPU. It is connected directly to
+> the MIPS core interrupt controller.
 > 
-> Ok, it depends on the maintainer, some people prefer leaving that out of commit log.
-> I'm fine with adding those back in.
-
-Really? First, I've heard that.
-
-In any case,
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> ---
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> To: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> 
+>  .../interrupt-controller/mscc,ocelot-icpu-intr.txt | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt
 
 Acked-by: Rob Herring <robh@kernel.org>

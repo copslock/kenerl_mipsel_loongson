@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Dec 2017 10:56:55 +0100 (CET)
-Received: from mail.free-electrons.com ([62.4.15.54]:36566 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990437AbdLCJ4s6DVYC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Dec 2017 10:56:48 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 7622420732; Sun,  3 Dec 2017 10:56:41 +0100 (CET)
-Received: from windsurf.lan (LFbn-TOU-1-149-75.w86-201.abo.wanadoo.fr [86.201.231.75])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 430C920374;
-        Sun,  3 Dec 2017 10:56:31 +0100 (CET)
-Date:   Sun, 3 Dec 2017 10:56:31 +0100
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Waldemar Brodkorb <wbx@openadk.org>,
-        James Hogan <james.hogan@mips.com>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
-Message-ID: <20171203105631.5232445a@windsurf.lan>
-In-Reply-To: <20170803225547.6caa602b@windsurf.lan>
-References: <20170803225547.6caa602b@windsurf.lan>
-Organization: Free Electrons
-X-Mailer: Claws Mail 3.15.1-dirty (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Dec 2017 17:27:10 +0100 (CET)
+Received: from shards.monkeyblade.net ([184.105.139.130]:54404 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990489AbdLCQ1DJbtLM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Dec 2017 17:27:03 +0100
+Received: from localhost (pool-173-77-163-229.nycmny.fios.verizon.net [173.77.163.229])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id BD10713E01935;
+        Sun,  3 Dec 2017 08:26:54 -0800 (PST)
+Date:   Sun, 03 Dec 2017 11:26:53 -0500 (EST)
+Message-Id: <20171203.112653.224466614263640515.davem@davemloft.net>
+To:     david.daney@cavium.com
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        james.hogan@mips.com, netdev@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-kernel@vger.kernel.org,
+        steven.hill@cavium.com, devicetree@vger.kernel.org, andrew@lunn.ch,
+        f.fainelli@gmail.com, pombredanne@nexb.com, cmunoz@cavium.com
+Subject: Re: [PATCH v5 net-next,mips 6/7] netdev: octeon-ethernet: Add
+ Cavium Octeon III support.
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20171201231807.25266-7-david.daney@cavium.com>
+References: <20171201231807.25266-1-david.daney@cavium.com>
+        <20171201231807.25266-7-david.daney@cavium.com>
+X-Mailer: Mew version 6.7 on Emacs 25.2 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@free-electrons.com>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 03 Dec 2017 08:26:55 -0800 (PST)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61280
+X-archive-position: 61281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,36 +49,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+From: David Daney <david.daney@cavium.com>
+Date: Fri,  1 Dec 2017 15:18:06 -0800
 
-+James Hogan in Cc.
+> +static char *mix_port;
+> +module_param(mix_port, charp, 0444);
+> +MODULE_PARM_DESC(mix_port, "Specifies which ports connect to MIX interfaces.");
+> +
+> +static char *pki_port;
+> +module_param(pki_port, charp, 0444);
+> +MODULE_PARM_DESC(pki_port, "Specifies which ports connect to the PKI.");
 
-On Thu, 3 Aug 2017 22:55:47 +0200, Thomas Petazzoni wrote:
+Please no module parameters.
 
-> When trying to build the current Linux master with a gcc 7.x toolchain
-> for mips64r6-n32, I'm getting the following build failure:
-> 
-> crypto/scompress.o: In function `.L31':
-> scompress.c:(.text+0x2a0): undefined reference to `__multi3'
-> drivers/base/component.o: In function `.L97':
-> component.c:(.text+0x4a4): undefined reference to `__multi3'
-> drivers/base/component.o: In function `component_master_add_with_match':
-> component.c:(.text+0x8c4): undefined reference to `__multi3'
-> net/core/ethtool.o: In function `ethtool_set_per_queue_coalesce':
-> ethtool.c:(.text+0x1ab0): undefined reference to `__multi3'
-> Makefile:1000: recipe for target 'vmlinux' failed
-> make[2]: *** [vmlinux] Error 1
+Please instead find a way to determine or configure these elements
+at run time with generic configuration interfaces.
+> +
+> +static int bgx_probe(struct platform_device *pdev)
+> +{
+> +	struct mac_platform_data platform_data;
+> +	const __be32 *reg;
+> +	u32 port;
+> +	u64 addr;
+> +	struct device_node *child;
+> +	struct platform_device *new_dev;
+> +	struct platform_device *pki_dev;
+> +	int numa_node, interface;
+> +	int i;
+> +	int r = 0;
+> +	char id[64];
+> +	u64 data;
 
-I'm still facing this problem. There was a lengthy thread about it back
-in August when I reported the problem, but then it calmed down, with no
-real solution proposed.
+Please use reverse-christmas-tree ordering (longest to shortest line) for
+local variable declarations.
 
-Are there plans to fix this at some point?
+Please fix this in your entire submission.
 
-Thanks a lot,
+> +static int bgx_mix_init_from_fdt(void)
+> +{
+> +	struct device_node	*node;
+> +	struct device_node	*parent = NULL;
+> +	int			mix = 0;
+> +
 
-Thomas
--- 
-Thomas Petazzoni, CTO, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Please do not use tabs like this when declaring local variables.
+Much worse, some functions use this style whereas others do not,
+be consistent otherwise your code is very hard to read.
+
+Please fix this for your entire submission not just this specific
+case I am pointing out.
+
+Thanks.

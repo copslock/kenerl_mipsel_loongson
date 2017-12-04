@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2017 21:42:18 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:38195
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994627AbdLDUgOsx7g6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Dec 2017 21:36:14 +0100
-Received: by mail-wm0-x244.google.com with SMTP id 64so16585992wme.3
-        for <linux-mips@linux-mips.org>; Mon, 04 Dec 2017 12:36:14 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2017 21:42:40 +0100 (CET)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:35999
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994628AbdLDUgQVa-B6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Dec 2017 21:36:16 +0100
+Received: by mail-wm0-x242.google.com with SMTP id b76so16708335wmg.1
+        for <linux-mips@linux-mips.org>; Mon, 04 Dec 2017 12:36:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=christofferdall-dk.20150623.gappssmtp.com; s=20150623;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ZmUolxszHLEISu3ZCcad6hveUOgpZrBDUcufGrh29MM=;
-        b=BWZOtAiw74nC4Aw7zNCxXliCOmljsMPrESGG+AliK4NGWRgCEbrBagi5kGShWhauXb
-         +NgATAcrJP7plzBT+9aw6u+bx1qUHmV9GMa8oalViIaYnCMOAi5KH80gAZ3ShBCr/NPw
-         6kLd4gfzEy/shZEl4MfSw5/tNCeOAQmGiBhxnEzCaJ6yeTBC2JWg6yTFn7qo0aCTW/lO
-         urfOVp3IZ1zjKgZWTer0S3jcRdNh5RJoIMWuDHtTlmDb3gv0J1kW091YArl/jULfLxMI
-         pH+k4XVk0K17wPQpB6Qio1iXRBrHDfVThdQYrXaaPKGINsmbwnruq4yTWRymKLWKneWm
-         Aj3w==
+        bh=w7+JCGDxXqRgNaEBotBwTBmOyxryFF6QgFJkBNxEQw0=;
+        b=h/dh5LaopPGXmYs8XtM+73ZeJb3p91UMamvk5JbgHsFslqpln0UfNl/vuiKODM0zsP
+         w4M1VXrPaRGL9EMjKTVhwwgeDSnuK0+2MDNndtzx/DoM6fwdW6MwGi28TdlqEdWtDpJ8
+         WdaPwDZR3L3o90CCMf3CsJmWIZ0lmyoVVpdEmDP1s3EuVstFweGq3vxDtgL48JXHZ6iO
+         W0P3DJ98RAgk0oTvfbv5S2Dz+aI8vohuuMatIgOjn0q+Z5p/LvFvfMlTcNcKF4i/ZEod
+         NNN14AvyYEvalrE0zfeLoL5kIUOOjC2mii7aYAQ5vm9dsljj3gSg+7XyNJPrG0tv5g/v
+         qt9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references;
-        bh=ZmUolxszHLEISu3ZCcad6hveUOgpZrBDUcufGrh29MM=;
-        b=R5sZIhj6i9wnr8hCXZSFfDa4fYCgJFTQSZiP+4f6MdIpqoy6s8fSLvbbHVGdpzV+aY
-         K5JpJw1RVgSBt6ha363GNeq0aoOaMIlRty6i01AcgZgjYCZPE6gZp9nqPcdboQJlZ/us
-         HY3ZvcxSWHszk1ojkmYruXOv+IR9kaLvRboOcpLUA316QWzXQUGSuaJfI9Wyk8LGt74f
-         kwqiLkkYr5yHkQchxPmnsN2TVUZvaj+81B4f+eLRUI68TgN2WMuGx2LovK4FUvZDqpTK
-         cSRlV1DqhcQeM2BWIT1mp0LiDoyfq33xZ7eTGmVY0QWJml+F+ke9G8YRlBXSqGw+l288
-         jqnw==
-X-Gm-Message-State: AJaThX67dGiCotfO2XI5iJOqvVQFcc0dJwtEE8f+pEcYojXGPfeJXfs5
-        gIAqUmr3IGIViA2FrvMXG1engw==
-X-Google-Smtp-Source: AGs4zMZ6RQMSK9ZZHPcHqXGZEVSH5h6Btv7MZMLsYoV2/qLrjYNMM4UZL5FJ2Vv36wQGmcUDiPVlfQ==
-X-Received: by 10.80.166.34 with SMTP id d31mr32321894edc.96.1512419769523;
-        Mon, 04 Dec 2017 12:36:09 -0800 (PST)
+        bh=w7+JCGDxXqRgNaEBotBwTBmOyxryFF6QgFJkBNxEQw0=;
+        b=mqXTVHgvnLBv9m1EugQq7Tir8TWQTeBadmEC8vfRf7Bgc5veHafF3qoB/7A6n8fr91
+         R2ooDTSH54+M3y1SJXaNQTeYELrTyvWgnKeUoFgPhcdksA8zMBFtPaUrO5DQLFZuzcU3
+         Hp8F2V29s84RhBx/vEZkWpYcT7iVTDY7lyuzL52A5eVJrbv5scwEPTTc8MFMTkhoZ4XR
+         fZyZuP2LO2mK86XoGlG1wwlYQ/Q3LwF2k+NCYLMPNgcM0k0RovF03CT03WH7FIoQTRs2
+         Wxck4fYT52Uhg+KhJMIbNsI2530un3itEuQzKltzVxmVyIijs7f1MNDwbqqh9PiwAeJn
+         x/iA==
+X-Gm-Message-State: AJaThX7TDOV350CGiyDQ0c/rqBN0sTD2jBUfnq6wR6GlYRyy1lsjgX4r
+        uj02qNJJUFyhEXYXQXka0Y0TYw==
+X-Google-Smtp-Source: AGs4zMZ6Y4WDcT4SznLIfPz97t6CterTEhftdBUtiB25cG0lA6iTH2+99q2DmJh3M7dXw2PkpRJuwQ==
+X-Received: by 10.80.137.244 with SMTP id h49mr32741666edh.303.1512419771048;
+        Mon, 04 Dec 2017 12:36:11 -0800 (PST)
 Received: from localhost.localdomain (x50d2404e.cust.hiper.dk. [80.210.64.78])
-        by smtp.gmail.com with ESMTPSA id k42sm8434943edb.94.2017.12.04.12.36.08
+        by smtp.gmail.com with ESMTPSA id k42sm8434943edb.94.2017.12.04.12.36.09
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 04 Dec 2017 12:36:08 -0800 (PST)
+        Mon, 04 Dec 2017 12:36:10 -0800 (PST)
 From:   Christoffer Dall <cdall@kernel.org>
 To:     kvm@vger.kernel.org
 Cc:     Andrew Jones <drjones@redhat.com>,
@@ -47,9 +47,9 @@ Cc:     Andrew Jones <drjones@redhat.com>,
         Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-Subject: [PATCH v3 15/16] KVM: arm/arm64: Avoid vcpu_load for other vcpu ioctls than KVM_RUN
-Date:   Mon,  4 Dec 2017 21:35:37 +0100
-Message-Id: <20171204203538.8370-16-cdall@kernel.org>
+Subject: [PATCH v3 16/16] KVM: arm/arm64: Move vcpu_load call after kvm_vcpu_first_run_init
+Date:   Mon,  4 Dec 2017 21:35:38 +0100
+Message-Id: <20171204203538.8370-17-cdall@kernel.org>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171204203538.8370-1-cdall@kernel.org>
 References: <20171204203538.8370-1-cdall@kernel.org>
@@ -57,7 +57,7 @@ Return-Path: <christofferdall@christofferdall.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61302
+X-archive-position: 61303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,102 +76,87 @@ X-list: linux-mips
 
 From: Christoffer Dall <christoffer.dall@linaro.org>
 
-Calling vcpu_load() registers preempt notifiers for this vcpu and calls
-kvm_arch_vcpu_load().  The latter will soon be doing a lot of heavy
-lifting on arm/arm64 and will try to do things such as enabling the
-virtual timer and setting us up to handle interrupts from the timer
-hardware.
-
-Loading state onto hardware registers and enabling hardware to signal
-interrupts can be problematic when we're not actually about to run the
-VCPU, because it makes it difficult to establish the right context when
-handling interrupts from the timer, and it makes the register access
-code difficult to reason about.
-
-Luckily, now when we call vcpu_load in each ioctl implementation, we can
-simply remove the call from the non-KVM_RUN vcpu ioctls, and our
-kvm_arch_vcpu_load() is only used for loading vcpu content to the
-physical CPU when we're actually going to run the vcpu.
+Moving the call to vcpu_load() in kvm_arch_vcpu_ioctl_run() to after
+we've called kvm_vcpu_first_run_init() simplifies some of the vgic and
+there is also no need to do vcpu_load() for things such as handling the
+immediate_exit flag.
 
 Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
 ---
- arch/arm64/kvm/guest.c | 3 ---
- virt/kvm/arm/arm.c     | 9 ---------
- 2 files changed, 12 deletions(-)
+ virt/kvm/arm/arch_timer.c     |  4 ----
+ virt/kvm/arm/arm.c            | 12 +++++-------
+ virt/kvm/arm/vgic/vgic-init.c | 11 -----------
+ 3 files changed, 5 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index d7e3299a7734..959e50d2588c 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -363,8 +363,6 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
- {
- 	int ret = 0;
+diff --git a/virt/kvm/arm/arch_timer.c b/virt/kvm/arm/arch_timer.c
+index 4151250ce8da..801fecfee299 100644
+--- a/virt/kvm/arm/arch_timer.c
++++ b/virt/kvm/arm/arch_timer.c
+@@ -839,11 +839,7 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
+ 		return ret;
  
--	vcpu_load(vcpu);
+ no_vgic:
+-	preempt_disable();
+ 	timer->enabled = 1;
+-	kvm_timer_vcpu_load_vgic(vcpu);
+-	preempt_enable();
 -
- 	trace_kvm_set_guest_debug(vcpu, dbg->control);
- 
- 	if (dbg->control & ~KVM_GUESTDBG_VALID_MASK) {
-@@ -386,7 +384,6 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
- 	}
- 
- out:
--	vcpu_put(vcpu);
- 	return ret;
- }
- 
-diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
-index 8223c59be507..a760ef1803be 100644
---- a/virt/kvm/arm/arm.c
-+++ b/virt/kvm/arm/arm.c
-@@ -381,14 +381,11 @@ static void vcpu_power_off(struct kvm_vcpu *vcpu)
- int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
- 				    struct kvm_mp_state *mp_state)
- {
--	vcpu_load(vcpu);
--
- 	if (vcpu->arch.power_off)
- 		mp_state->mp_state = KVM_MP_STATE_STOPPED;
- 	else
- 		mp_state->mp_state = KVM_MP_STATE_RUNNABLE;
- 
--	vcpu_put(vcpu);
  	return 0;
  }
  
-@@ -397,8 +394,6 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- {
- 	int ret = 0;
+diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
+index a760ef1803be..991f1aa70fb9 100644
+--- a/virt/kvm/arm/arm.c
++++ b/virt/kvm/arm/arm.c
+@@ -622,8 +622,6 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 	if (unlikely(!kvm_vcpu_initialized(vcpu)))
+ 		return -ENOEXEC;
  
 -	vcpu_load(vcpu);
 -
- 	switch (mp_state->mp_state) {
- 	case KVM_MP_STATE_RUNNABLE:
- 		vcpu->arch.power_off = false;
-@@ -410,7 +405,6 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- 		ret = -EINVAL;
+ 	ret = kvm_vcpu_first_run_init(vcpu);
+ 	if (ret)
+ 		goto out;
+@@ -631,13 +629,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 	if (run->exit_reason == KVM_EXIT_MMIO) {
+ 		ret = kvm_handle_mmio_return(vcpu, vcpu->run);
+ 		if (ret)
+-			goto out;
++			return ret;
  	}
  
--	vcpu_put(vcpu);
+-	if (run->immediate_exit) {
+-		ret = -EINTR;
+-		goto out;
+-	}
++	if (run->immediate_exit)
++		return -EINTR;
++
++	vcpu_load(vcpu);
+ 
+ 	if (vcpu->sigset_active)
+ 		sigprocmask(SIG_SETMASK, &vcpu->sigset, &sigsaved);
+diff --git a/virt/kvm/arm/vgic/vgic-init.c b/virt/kvm/arm/vgic/vgic-init.c
+index 62310122ee78..a0688ef52ad7 100644
+--- a/virt/kvm/arm/vgic/vgic-init.c
++++ b/virt/kvm/arm/vgic/vgic-init.c
+@@ -300,17 +300,6 @@ int vgic_init(struct kvm *kvm)
+ 
+ 	dist->initialized = true;
+ 
+-	/*
+-	 * If we're initializing GICv2 on-demand when first running the VCPU
+-	 * then we need to load the VGIC state onto the CPU.  We can detect
+-	 * this easily by checking if we are in between vcpu_load and vcpu_put
+-	 * when we just initialized the VGIC.
+-	 */
+-	preempt_disable();
+-	vcpu = kvm_arm_get_running_vcpu();
+-	if (vcpu)
+-		kvm_vgic_load(vcpu);
+-	preempt_enable();
+ out:
  	return ret;
  }
- 
-@@ -1003,8 +997,6 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 	struct kvm_device_attr attr;
- 	long r;
- 
--	vcpu_load(vcpu);
--
- 	switch (ioctl) {
- 	case KVM_ARM_VCPU_INIT: {
- 		struct kvm_vcpu_init init;
-@@ -1081,7 +1073,6 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 		r = -EINVAL;
- 	}
- 
--	vcpu_put(vcpu);
- 	return r;
- }
- 
 -- 
 2.14.2

@@ -1,78 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2017 15:39:46 +0100 (CET)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55110 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990517AbdLEOjdAU0bq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Dec 2017 15:39:33 +0100
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.21/8.16.0.21) with SMTP id vB5EcvGt089414
-        for <linux-mips@linux-mips.org>; Tue, 5 Dec 2017 09:39:31 -0500
-Received: from e06smtp10.uk.ibm.com (e06smtp10.uk.ibm.com [195.75.94.106])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2env2nvj8u-1
-        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Tue, 05 Dec 2017 09:39:30 -0500
-Received: from localhost
-        by e06smtp10.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
-        Tue, 5 Dec 2017 14:39:25 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp10.uk.ibm.com (192.168.101.140) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 5 Dec 2017 14:39:20 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id vB5EdKrh49283138;
-        Tue, 5 Dec 2017 14:39:20 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D7D4C4C046;
-        Tue,  5 Dec 2017 14:34:11 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4D3374C04A;
-        Tue,  5 Dec 2017 14:34:11 +0000 (GMT)
-Received: from oc7330422307.ibm.com (unknown [9.152.224.133])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  5 Dec 2017 14:34:11 +0000 (GMT)
-Subject: Re: [PATCH v3 03/16] KVM: Move vcpu_load to arch-specific
- kvm_arch_vcpu_ioctl_run
-To:     Christoffer Dall <cdall@kernel.org>, kvm@vger.kernel.org
-Cc:     Andrew Jones <drjones@redhat.com>,
-        Christoffer Dall <christoffer.dall@linaro.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
-        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-References: <20171204203538.8370-1-cdall@kernel.org>
- <20171204203538.8370-4-cdall@kernel.org>
-From:   Christian Borntraeger <borntraeger@de.ibm.com>
-Date:   Tue, 5 Dec 2017 15:39:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2017 21:59:39 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:46322 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990484AbdLEU73ZTmxr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Dec 2017 21:59:29 +0100
+Received: from localhost (unknown [69.55.156.246])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3936721882;
+        Tue,  5 Dec 2017 20:59:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 3936721882
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=helgaas@kernel.org
+Date:   Tue, 5 Dec 2017 14:59:26 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/8] SOC: brcmstb: add memory API
+Message-ID: <20171205205926.GJ23510@bhelgaas-glaptop.roam.corp.google.com>
+References: <1510697532-32828-1-git-send-email-jim2101024@gmail.com>
+ <1510697532-32828-2-git-send-email-jim2101024@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20171204203538.8370-4-cdall@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 17120514-0040-0000-0000-000003F6949E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 17120514-0041-0000-0000-000025F989A6
-Message-Id: <fd7436c1-2c88-5056-a822-b630f1e4ae94@de.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-12-05_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1709140000
- definitions=main-1712050212
-Return-Path: <borntraeger@de.ibm.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1510697532-32828-2-git-send-email-jim2101024@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61310
+X-archive-position: 61311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: borntraeger@de.ibm.com
+X-original-sender: helgaas@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,16 +62,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On 12/04/2017 09:35 PM, Christoffer Dall wrote:
-> From: Christoffer Dall <christoffer.dall@linaro.org>
+On Tue, Nov 14, 2017 at 05:12:05PM -0500, Jim Quinlan wrote:
+> From: Florian Fainelli <f.fainelli@gmail.com>
 > 
-> Move vcpu_load() and vcpu_put() into the architecture specific
-> implementations of kvm_arch_vcpu_ioctl_run().
+> This commit adds a memory API suitable for ascertaining the sizes of
+> each of the N memory controllers in a Broadcom STB chip.  Its first
+> user will be the Broadcom STB PCIe root complex driver, which needs
+> to know these sizes to properly set up DMA mappings for inbound
+> regions.
 > 
-> Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
-
-Reviewed-by: Christian Borntraeger <borntraeger@de.ibm.com> # s390 parts
-
+> We cannot use memblock here or anything like what Linux provides
+> because it collapses adjacent regions within a larger block, and here
+> we actually need per-memory controller addresses and sizes, which is
+> why we resort to manual DT parsing.
+> 
+> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 > ---
+>  drivers/soc/bcm/brcmstb/Makefile |   2 +-
+>  drivers/soc/bcm/brcmstb/memory.c | 172 +++++++++++++++++++++++++++++++++++++++
+>  include/soc/brcmstb/memory_api.h |  25 ++++++
+>  3 files changed, 198 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/soc/bcm/brcmstb/memory.c
+>  create mode 100644 include/soc/brcmstb/memory_api.h
+> 
+> diff --git a/drivers/soc/bcm/brcmstb/Makefile b/drivers/soc/bcm/brcmstb/Makefile
+> index 9120b27..4cea7b6 100644
+> --- a/drivers/soc/bcm/brcmstb/Makefile
+> +++ b/drivers/soc/bcm/brcmstb/Makefile
+> @@ -1 +1 @@
+> -obj-y				+= common.o biuctrl.o
+> +obj-y				+= common.o biuctrl.o memory.o
+> diff --git a/drivers/soc/bcm/brcmstb/memory.c b/drivers/soc/bcm/brcmstb/memory.c
+> new file mode 100644
+> index 0000000..eb647ad9
+> --- /dev/null
+> +++ b/drivers/soc/bcm/brcmstb/memory.c
+
+I sort of assume based on [1] that every new file should have an SPDX
+identifier ("The Linux kernel requires the precise SPDX identifier in
+all source files") and that the actual text of the GPL can be omitted.
+
+Only a few files in drivers/pci currently have an SPDX identifier.  I
+don't know if that's oversight or work-in-progress or what.
+
+[1] https://lkml.kernel.org/r/20171204212120.484179273@linutronix.de
+
+> @@ -0,0 +1,172 @@
+> +/*
+> + * Copyright © 2015-2017 Broadcom
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+> + * GNU General Public License for more details.
+> + *
+> + * A copy of the GPL is available at
+> + * http://www.broadcom.com/licenses/GPLv2.php or from the Free Software
+> + * Foundation at https://www.gnu.org/licenses/ .

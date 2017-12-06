@@ -1,34 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2017 08:05:09 +0100 (CET)
-Received: from smtprelay0108.hostedemail.com ([216.40.44.108]:46661 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990391AbdLFHFCZguQ8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2017 08:05:02 +0100
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id A2DA28E6E;
-        Wed,  6 Dec 2017 07:05:00 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: ice35_82f4b10afcf47
-X-Filterd-Recvd-Size: 2742
-Received: from joe-laptop.perches.com (unknown [47.151.150.235])
-        (Authenticated sender: joe@perches.com)
-        by omf02.hostedemail.com (Postfix) with ESMTPA;
-        Wed,  6 Dec 2017 07:04:59 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Octeon: Fix logging messages with spurious periods after newlines
-Date:   Tue,  5 Dec 2017 23:04:58 -0800
-Message-Id: <ac33924a3e39541330e8f008f3ad0fbda74845d6.1512543855.git.joe@perches.com>
-X-Mailer: git-send-email 2.15.0
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2017 08:50:50 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:47074 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990397AbdLFHumewh1o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2017 08:50:42 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id E3E0820C12; Wed,  6 Dec 2017 08:50:34 +0100 (CET)
+Received: from windsurf.lan (LStLambert-657-1-97-87.w90-63.abo.wanadoo.fr [90.63.216.87])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id B1F64203E2;
+        Wed,  6 Dec 2017 08:50:34 +0100 (CET)
+Date:   Wed, 6 Dec 2017 08:50:34 +0100
+From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        "Waldemar Brodkorb" <wbx@openadk.org>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: Re: undefined reference to `__multi3' when building with gcc 7.x
+Message-ID: <20171206085034.3869dc9d@windsurf.lan>
+In-Reply-To: <20171205234923.GK27409@jhogan-linux.mipstec.com>
+References: <20170803225547.6caa602b@windsurf.lan>
+        <20171203105631.5232445a@windsurf.lan>
+        <20171205234923.GK27409@jhogan-linux.mipstec.com>
+Organization: Free Electrons
+X-Mailer: Claws Mail 3.15.1-dirty (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <thomas.petazzoni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61316
+X-archive-position: 61317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: thomas.petazzoni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,61 +46,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Using a period after a newline causes bad output.
+Hello,
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- arch/mips/cavium-octeon/octeon-irq.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+On Tue, 5 Dec 2017 23:49:24 +0000, James Hogan wrote:
 
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 5b3a3f6a9ad3..b993d9f2c9b9 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -2271,7 +2271,7 @@ static int __init octeon_irq_init_cib(struct device_node *ciu_node,
- 
- 	parent_irq = irq_of_parse_and_map(ciu_node, 0);
- 	if (!parent_irq) {
--		pr_err("ERROR: Couldn't acquire parent_irq for %s\n.",
-+		pr_err("ERROR: Couldn't acquire parent_irq for %s\n",
- 			ciu_node->name);
- 		return -EINVAL;
- 	}
-@@ -2281,7 +2281,7 @@ static int __init octeon_irq_init_cib(struct device_node *ciu_node,
- 
- 	addr = of_get_address(ciu_node, 0, NULL, NULL);
- 	if (!addr) {
--		pr_err("ERROR: Couldn't acquire reg(0) %s\n.", ciu_node->name);
-+		pr_err("ERROR: Couldn't acquire reg(0) %s\n", ciu_node->name);
- 		return -EINVAL;
- 	}
- 	host_data->raw_reg = (u64)phys_to_virt(
-@@ -2289,7 +2289,7 @@ static int __init octeon_irq_init_cib(struct device_node *ciu_node,
- 
- 	addr = of_get_address(ciu_node, 1, NULL, NULL);
- 	if (!addr) {
--		pr_err("ERROR: Couldn't acquire reg(1) %s\n.", ciu_node->name);
-+		pr_err("ERROR: Couldn't acquire reg(1) %s\n", ciu_node->name);
- 		return -EINVAL;
- 	}
- 	host_data->en_reg = (u64)phys_to_virt(
-@@ -2297,7 +2297,7 @@ static int __init octeon_irq_init_cib(struct device_node *ciu_node,
- 
- 	r = of_property_read_u32(ciu_node, "cavium,max-bits", &val);
- 	if (r) {
--		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n.",
-+		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n",
- 			ciu_node->name);
- 		return r;
- 	}
-@@ -2307,7 +2307,7 @@ static int __init octeon_irq_init_cib(struct device_node *ciu_node,
- 					   &octeon_irq_domain_cib_ops,
- 					   host_data);
- 	if (!cib_domain) {
--		pr_err("ERROR: Couldn't irq_domain_add_linear()\n.");
-+		pr_err("ERROR: Couldn't irq_domain_add_linear()\n");
- 		return -ENOMEM;
- 	}
- 
+> > I'm still facing this problem. There was a lengthy thread about it back
+> > in August when I reported the problem, but then it calmed down, with no
+> > real solution proposed.
+> > 
+> > Are there plans to fix this at some point?  
+> 
+> I recently fixed a similar issue in 64r6[el]_defconfig, but its not the
+> same as it applies to all gcc versions on mips64r6. Given Ralf appears
+> to be busy I'll take a look.
+
+Thanks a lot. If you need some help to reproduce the problem, let me
+know, I can provide simple instructions to produce it.
+
+Best regards,
+
+Thomas
 -- 
-2.15.0
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

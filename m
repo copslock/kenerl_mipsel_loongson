@@ -1,46 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2017 18:42:50 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:60138 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2017 18:56:39 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:44813 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990408AbdLFRmk2jtN9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2017 18:42:40 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 06 Dec 2017 17:42:34 +0000
-Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
- Microsoft SMTP Server id 14.3.361.1; Wed, 6 Dec 2017 09:42:15 -0800
-Date:   Wed, 6 Dec 2017 09:43:01 -0800
-From:   Paul Burton <paul.burton@mips.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@mips.com>,
-        James Hogan <jhogan@kernel.org>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: CM: Drop WARN_ON(vp != 0)
-Message-ID: <20171206174301.oup2hcxrbm72s34x@pburton-laptop>
-References: <20171205222822.15034-1-james.hogan@mips.com>
- <20171206135745.GD5238@linux-mips.org>
+        by eddie.linux-mips.org with ESMTP id S23990408AbdLFR4aYgXl9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2017 18:56:30 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 06 Dec 2017 17:54:09 +0000
+Received: from [10.20.78.27] (10.20.78.27) by mips01.mipstec.com (10.20.43.31)
+ with Microsoft SMTP Server id 14.3.361.1; Wed, 6 Dec 2017 09:54:02 -0800
+Date:   Wed, 6 Dec 2017 17:50:52 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Miodrag Dinic <Miodrag.Dinic@mips.com>
+CC:     James Hogan <James.Hogan@mips.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Aleksandar Markovic <Aleksandar.Markovic@mips.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        DengCheng Zhu <DengCheng.Zhu@mips.com>,
+        Ding Tianhong <dingtianhong@huawei.com>,
+        Douglas Leung <Douglas.Leung@mips.com>,
+        "Frederic Weisbecker" <frederic@kernel.org>,
+        Goran Ferenc <Goran.Ferenc@mips.com>,
+        "Ingo Molnar" <mingo@kernel.org>,
+        James Cowgill <James.Cowgill@imgtec.com>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        "Matt Redfearn" <Matt.Redfearn@mips.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        Paul Burton <Paul.Burton@mips.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Petar Jovanovic <Petar.Jovanovic@mips.com>,
+        Raghu Gandham <Raghu.Gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Saeger <tom.saeger@oracle.com>
+Subject: RE: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+In-Reply-To: <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com>
+Message-ID: <alpine.DEB.2.00.1712061657520.4584@tp.orcam.me.uk>
+References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com> <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com> <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com>,<20171130100957.GG5027@jhogan-linux.mipstec.com>
+ <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20171206135745.GD5238@linux-mips.org>
-User-Agent: NeoMutt/20171013
-X-BESS-ID: 1512582152-298552-12292-8028-7
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1512582847-321459-27965-5668-6
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187685
+X-BESS-Outbound-Spam-Score: 0.21
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187686
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+        0.20 PR0N_SUBJECT           META: Subject has letters 
+        around special characters (pr0n) 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.21 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, PR0N_SUBJECT, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
 X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61321
+X-archive-position: 61322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,100 +78,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+Hi Miodrag,
 
-On Wed, Dec 06, 2017 at 02:57:45PM +0100, Ralf Baechle wrote:
-> On Tue, Dec 05, 2017 at 10:28:22PM +0000, James Hogan wrote:
+> When kernel is detecting the type of mapping it should apply :
 > 
-> > Since commit 68923cdc2eb3 ("MIPS: CM: Add cluster & block args to
-> > mips_cm_lock_other()"), mips_smp_send_ipi_mask() has used
-> > mips_cm_lock_other_cpu() with each CPU number, rather than
-> > mips_cm_lock_other() with the first VPE in each core. Prior to r6,
-> > multicore multithreaded systems such as dual-core dual-thread
-> > interAptivs with CPU Idle enabled (e.g. MIPS Creator Ci40) results in
-> > mips_cm_lock_other() repeatedly hitting WARN_ON(vp != 0).
-> > 
-> > There doesn't appear to be anything fundamentally wrong about passing a
-> > non-zero VP/VPE number, even if it is a core's region that is locked
-> > into the other region before r6, so remove that particular WARN_ON().
-> > 
-> > Fixes: 68923cdc2eb3 ("MIPS: CM: Add cluster & block args to mips_cm_lock_other()")
-> > Signed-off-by: James Hogan <jhogan@kernel.org>
-> > Reviewed-by: Paul Burton <paul.burton@mips.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: <stable@vger.kernel.org> # 4.14+
-> > ---
-> >  arch/mips/kernel/mips-cm.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-> > index dd5567b1e305..8f5bd04f320a 100644
-> > --- a/arch/mips/kernel/mips-cm.c
-> > +++ b/arch/mips/kernel/mips-cm.c
-> > @@ -292,7 +292,6 @@ void mips_cm_lock_other(unsigned int cluster, unsigned int core,
-> >  				  *this_cpu_ptr(&cm_core_lock_flags));
-> >  	} else {
-> >  		WARN_ON(cluster != 0);
-> > -		WARN_ON(vp != 0);
+> fs/binfmt_elf.c:
+> ...
+> 	if (elf_read_implies_exec(loc->elf_ex, executable_stack))
+> 		current->personality |= READ_IMPLIES_EXEC;
+> ...
 > 
-> I think the reason is that for a while the combination of SMP/CMP with
-> MT was at the bottom of priorities and nobody really cared about it so
-> a WARN_ON was thrown in.  Which in this case might well itself be a bug!
+> this effectively calls mips_elf_read_implies_exec() which performs a check:
+> ...
+> 	if (!cpu_has_rixi) {
+> 		/* The CPU doesn't support non-executable memory */
+> 		return 1;
+> 	}
 > 
->   Ralf
+> 	return 0;
+> }
+> 
+> This will in turn make stack & heap executable on processors without 
+> RIXI, which are practically all processors with MIPS ISA R < 6.
+> 
+> We would like to have an option to override this and force 
+> non-executable mappings for such systems.
 
-Well, the WARN_ON came about because:
+ Of course you can't force a non-executable mapping with a system where 
+all valid pages are executable, as David has already noted.  Did you mean 
+the other condition, that is:
 
- - Originally mips_cm_lock_other() had no VP argument, because the CM
-   "other" register in CM < 3 has no VP field. ie. the CM "other" region
-   always accesses registers associated with a core rather than a VP(E).
+	if (exstack != EXSTACK_DISABLE_X) {
+		/* The binary doesn't request a non-executable stack */
+		return 1;
+	}
 
- - With CM >= 3 the "other" register (renamed "redirect") gained a VP
-   field & the ability to control the CPC & GIC redirect regions, which
-   were formerly controlled by separate "other" registers in the CPC &
-   GIC register interfaces. In the GIC case the other/redirect region
-   actually targets a VP, not a core.
+?  In which case you do want to respect the lack of the RIXI feature, 
+i.e.:
 
- - Since the CM < 3 other register has no VP field the WARN_ON made
-   sense - if code is actually trying to access registers associated
-   with a particular VP then that's a bug because that's simply not
-   possible. The warning called out those cases by requiring CM < 3
-   paths to explicitly pass VP=0.
+int mips_elf_read_implies_exec(void *elf_ex, int exstack)
+{
+	if (!cpu_has_rixi) {
+		/* The CPU doesn't support non-executable memory */
+		return 1;
+        }
 
-That was all well & good until I added the mips_cm_lock_other_cpu()
-wrapper for convenience. It passes the CPUs cluster, core & VP(E)
-numbers to mips_cm_lock_other() which is problematic if it's used in
-paths that may run on CM < 3. There is only one such case right now, in
-mips_smp_send_ipi_mask() when powering up a CPU in a non-coherent idle
-state. So effectively you have to have the CPS cpuidle driver enabled to
-hit this.
+	switch (nonxstack) {
+	case EXSTACK_DISABLE_X:
+		return 0;
+	case EXSTACK_ENABLE_X:
+		return 1;
+	default:
+		break;
+	}
 
-A potential alternative to this patch would be to have
-mips_cm_lock_other_cpu() check the CM version & use VP=0 for CM < 3, but
-I think the utility of that is questionable so dropping the WARN_ON as
-James has done seems reasonable.
+	if (exstack != EXSTACK_DISABLE_X) {
+		/* The binary doesn't request a non-executable stack */
+		return 1;
+	}
 
-We actually do test mainline, mips-for-linux-next & our internal kernel
-branches a bunch on affected systems, most notably interAptiv in the
-context of either the Boston or Ci40 platforms. Unfortunately that
-didn't catch the bug here because the cpuidle driver isn't enabled in
-the kernel configs that our CI system builds. That's something we'll
-change. If that weren't the case then we ought to have caught this once
-it hit -next. The patchset for multi-cluster support has also shrunk
-quite a lot with the merging of the initial set, so our internal
-branches are now closer to what will next be submitted which also helps
-since we might spot issues even earlier in tests of those internal
-branches.
+	return 0;
+}
 
-Having the mips-for-linux-next branch updated regularly throughout the
-cycle would help immensely in giving us the best chance of catching bugs
-like this in a timely fashion, since when it all happens right before
-the merge window we don't get much testing time on the code actually
-hitting mainline until after it has gone in.
+(I'd replace `break' with `return exstack != EXSTACK_DISABLE_X' and 
+discard the code that follows, but that can be a separate optimisation).
 
-Anyway, hopefully that post-mortem shines some light on what went wrong
-here!
+ What problem are you trying to solve anyway?  Is it not something that 
+can be handled with the `execstack' utility?
 
-Thanks,
-    Paul
+ NB as someone has observed with programs that do not request a 
+non-executable stack we actually propagate the execute permission to all 
+data pages.  Is it not something we would want to handle differently?
+
+  Maciej

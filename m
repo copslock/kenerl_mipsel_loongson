@@ -1,57 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2018 01:53:26 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:54938 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992678AbeEAXxCGrA0C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 May 2018 01:53:02 +0200
-Received: from localhost (unknown [104.132.1.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C1872236F2;
-        Tue,  1 May 2018 23:52:55 +0000 (UTC)
-Subject: Patch "MIPS: Octeon: Fix logging messages with spurious periods after newlines" has been added to the 4.14-stable tree
-To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
-        jhogan@kernel.org, joe@perches.com, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 01 May 2018 16:48:54 -0700
-Message-ID: <1525218534151242@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=xkJU=HU=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63836
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Joe Perches <joe@perches.com>
+Date: Tue, 5 Dec 2017 23:04:58 -0800
+Subject: MIPS: Octeon: Fix logging messages with spurious periods after newlines
+Message-ID: <20171206070458.bctJ5KuLpvoUPXUSK2-jYjP7Eu9FOk8L2qp2_i1zAUc@z>
+
+From: Joe Perches <joe@perches.com>
+
+[ Upstream commit db6775ca6e0353d2618ca7d5e210fc36ad43bbd4 ]
+
+Using a period after a newline causes bad output.
+
+Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
+Signed-off-by: Joe Perches <joe@perches.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/17886/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/cavium-octeon/octeon-irq.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -2271,7 +2271,7 @@ static int __init octeon_irq_init_cib(st
+ 
+ 	parent_irq = irq_of_parse_and_map(ciu_node, 0);
+ 	if (!parent_irq) {
+-		pr_err("ERROR: Couldn't acquire parent_irq for %s\n.",
++		pr_err("ERROR: Couldn't acquire parent_irq for %s\n",
+ 			ciu_node->name);
+ 		return -EINVAL;
+ 	}
+@@ -2283,7 +2283,7 @@ static int __init octeon_irq_init_cib(st
+ 
+ 	addr = of_get_address(ciu_node, 0, NULL, NULL);
+ 	if (!addr) {
+-		pr_err("ERROR: Couldn't acquire reg(0) %s\n.", ciu_node->name);
++		pr_err("ERROR: Couldn't acquire reg(0) %s\n", ciu_node->name);
+ 		return -EINVAL;
+ 	}
+ 	host_data->raw_reg = (u64)phys_to_virt(
+@@ -2291,7 +2291,7 @@ static int __init octeon_irq_init_cib(st
+ 
+ 	addr = of_get_address(ciu_node, 1, NULL, NULL);
+ 	if (!addr) {
+-		pr_err("ERROR: Couldn't acquire reg(1) %s\n.", ciu_node->name);
++		pr_err("ERROR: Couldn't acquire reg(1) %s\n", ciu_node->name);
+ 		return -EINVAL;
+ 	}
+ 	host_data->en_reg = (u64)phys_to_virt(
+@@ -2299,7 +2299,7 @@ static int __init octeon_irq_init_cib(st
+ 
+ 	r = of_property_read_u32(ciu_node, "cavium,max-bits", &val);
+ 	if (r) {
+-		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n.",
++		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n",
+ 			ciu_node->name);
+ 		return r;
+ 	}
+@@ -2309,7 +2309,7 @@ static int __init octeon_irq_init_cib(st
+ 					   &octeon_irq_domain_cib_ops,
+ 					   host_data);
+ 	if (!cib_domain) {
+-		pr_err("ERROR: Couldn't irq_domain_add_linear()\n.");
++		pr_err("ERROR: Couldn't irq_domain_add_linear()\n");
+ 		return -ENOMEM;
+ 	}
+ 
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from joe@perches.com are
 
-    MIPS: Octeon: Fix logging messages with spurious periods after newlines
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-octeon-fix-logging-messages-with-spurious-periods-after-newlines.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.14/mips-octeon-fix-logging-messages-with-spurious-periods-after-newlines.patch

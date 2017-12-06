@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2017 19:34:30 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:58384 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2017 20:25:35 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:60762 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990408AbdLFSeWeEX5G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2017 19:34:22 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 06 Dec 2017 18:33:16 +0000
+        by eddie.linux-mips.org with ESMTP id S23990408AbdLFTZ1WAY76 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2017 20:25:27 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 06 Dec 2017 19:25:14 +0000
 Received: from [10.20.78.27] (10.20.78.27) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Wed, 6 Dec 2017 10:33:07 -0800
-Date:   Wed, 6 Dec 2017 18:32:56 +0000
+ with Microsoft SMTP Server id 14.3.361.1; Wed, 6 Dec 2017 11:24:49 -0800
+Date:   Wed, 6 Dec 2017 19:24:36 +0000
 From:   "Maciej W. Rozycki" <macro@mips.com>
 To:     Dave Martin <Dave.Martin@arm.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
@@ -18,18 +18,18 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
 Subject: Re: [PATCH 4/5] MIPS: Execute any partial write of the last register
  with PTRACE_SETREGSET
-In-Reply-To: <20171201123525.GS22781@e103592.cambridge.arm.com>
-Message-ID: <alpine.DEB.2.00.1712011912120.31156@tp.orcam.me.uk>
+In-Reply-To: <20171201122356.GR22781@e103592.cambridge.arm.com>
+Message-ID: <alpine.DEB.2.00.1712061859120.4584@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1711290152040.31156@tp.orcam.me.uk> <alpine.DEB.2.00.1711291226320.31156@tp.orcam.me.uk> <20171130172839.GQ22781@e103592.cambridge.arm.com> <alpine.DEB.2.00.1711301831540.31156@tp.orcam.me.uk>
- <20171201123525.GS22781@e103592.cambridge.arm.com>
+ <20171201122356.GR22781@e103592.cambridge.arm.com>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1512585195-298554-32343-12141-2
+X-BESS-ID: 1512588313-298552-12296-16495-5
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187686
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187690
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
@@ -40,7 +40,7 @@ Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61325
+X-archive-position: 61326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,45 +59,93 @@ X-list: linux-mips
 
 On Fri, 1 Dec 2017, Dave Martin wrote:
 
-> >  That wasn't actually clarified in the referred commit's description, 
-> > which it should in the first place, and I wasn't able to track down any 
-> > review of your change as submitted, which would be the potential second 
-> > source of such support information.  The description isn't even correct, 
-> > as it states that if a short buffer is supplied, then the old values held 
-> > in thread's registers are preserved, which clearly isn't correct as 
-> > individual registers do get written from the beginning of the regset up to 
-> > the point no more data is available to fill a whole register.
+> >  You are of course right about the (partially) uninitialised variable, and 
+> > I think there are two ways to address it:
+> > 
+> > 1. By preinitialising it, i.e.:
+> > 
+> > 	for (i = 0; i < NUM_FPU_REGS && *count > 0; i++) {
+> > 		fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
+> > 		err = user_regset_copyin(pos, count, kbuf, ubuf,
+> > 					 &fpr_val, i * sizeof(elf_fpreg_t),
+> > 					 (i + 1) * sizeof(elf_fpreg_t));
+> > 		if (err)
+> > 			return err;
+> > 		set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
+> > 	}
+> > 
+> >    but that would be an overkill given that we assert that `count' is a 
+> >    multiple of `sizeof(elf_fpreg_t)'.
 > 
-> FYI, this this patch wasn't discussed on the public lists because of the
-> security implications of kernel stack exposure.  IIRC, James and Ralf
-> were Cc'd on the discussion.
+> Agreed.
+> 
+> Was a partial write to fscr ever supported by this regset?  Your commit
+> message suggested that my patch may have broken that, but I can't see
+> how it was ever possible in the first place... unless .size has been
+> changed for this regset at some point.
+> 
+> If my patch does cause an ABI regression, then it certainly should be
+> fixed though.
 
- That's security by obscurity, I'm afraid.
+ I have looked into it some more, and I can see the upstream check:
 
- While I do agree publicly discussing an exploitable vulnerability while 
-no remedy has been yet made is considered a bad practice, I see no point 
-in keeping it hidden once a fix has been developed and published.  
-Moreover actually publishing all the details of the vulnerability itself 
-(rather than just the fix) is often considered a good way to urge binary 
-software distributors to release patched versions.
+	if (!regset || (kiov->iov_len % regset->size) != 0)
+		return -EIO;
 
- So I think a commit description should still be as accurate as usually.
+has always been there since the introduction of the regset feature, which 
+was with commit 2225a122ae26 ("ptrace: Add support for generic 
+PTRACE_GETREGSET/PTRACE_SETREGSET").  And the core file writer, i.e. 
+`fill_thread_core_info', always operates on whole regsets by taking the 
+size from the regset definition in question itself.
 
-> There's an awkward balance to be struck between giving a full
-> description of the change and the motivation for it, and avoiding
-> announcing publicly exactly how to exploit the bug.  Opinions differ on
-> where the correct balance lies.
+ Which means that my patch does not change the situation, but as far as 
+security is concerned neither did yours, as you addressed an impossible 
+case.  You did improve performance a bit though for the corner case 
+situation of a partial regset access, by avoiding iterating over further 
+FPRs with a call to `user_regset_copyin' once the requested transfer size 
+has been exhausted.
 
- Well, in this situation to exploit this bug you still have to figure out 
-how you can use this potential information leak in practice, so having the 
-mention of a stack variable being partially initialised in the fix's 
-description is IMO hardly a recipe for the potential attacker, while it 
-lets the next reader understand what is really going on there.
+> > 2. Actually assert what we rely on having been enforced by generic code, 
+> >    i.e.:
+> > 
+> > 	BUG_ON(*count % sizeof(elf_fpreg_t));
+> > 	for (i = 0; i < NUM_FPU_REGS && *count > 0; i++) {
+> > 		err = user_regset_copyin(pos, count, kbuf, ubuf,
+> > 					 &fpr_val, i * sizeof(elf_fpreg_t),
+> > 					 (i + 1) * sizeof(elf_fpreg_t));
+> > 		if (err)
+> > 			return err;
+> > 		set_fpr64(&target->thread.fpu.fpr[i], 0, fpr_val);
+> > 	}
+> > 
+> >    so that a discrepancy between generic code and the arch handler is 
+> >    caught should it happen.
+> 
+> The important property is that *count is at least sufficient to fill
+> fpr_val, so that a zero return user_regset_copyin() means fpr_val has
+> been fully initialised with user data.
+> 
+> So while your check is not wrong
+> 
+> (since *count > 0 && *count % sizeof(elf_fpreg_t) == 0 implies
+> *count >= sizeof(elf_fpreg_t))
+> 
+> I don't see how this is an improvement on the original check.
+> 
+> 
+> Either way, maybe adding a comment to explain the purpose of the check
+> would be a good idea.
 
-> So, the commit message was intentionally kept vague, but could have
-> been better in this instance, since it doesn't correctly describe the
-> change as committed.
+ I agree a comment is worth having here given the complex dependency.  
 
- Ack.
+ Therefore, taking what has been observed in the course of this discussion 
+into account and unless either you or someone else has further input I am 
+going to withdraw this patch from the series as recorded in patchwork and 
+submit another one separately that only adds a comment quoting the 
+observations made.  Obviously it won't be a backport candidate, but 5/5 
+does not depend on this change, so I believe there is no need to 
+regenerate and repost the remaining changes from this series.
+
+ Thank you for your input.
 
   Maciej

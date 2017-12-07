@@ -1,59 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2017 12:07:13 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:41970 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990433AbdLGLHEVW5UI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2017 12:07:04 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 07 Dec 2017 11:06:17 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 7 Dec 2017
- 03:05:52 -0800
-Date:   Thu, 7 Dec 2017 11:05:50 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Huacai Chen <chenhc@lemote.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2017 12:17:41 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:45123
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990433AbdLGLRdcBqbI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2017 12:17:33 +0100
+Received: by mail-wm0-x241.google.com with SMTP id 9so12364887wme.4
+        for <linux-mips@linux-mips.org>; Thu, 07 Dec 2017 03:17:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=eut2KpBvjueKRQ0bSTHB/iXIOLkFXtg4jdmPy5F4gf0=;
+        b=WBcGgUCO7xbzC/KKtUgy/+LzZW6TKAQYa7ryY6oR6+4MKJv7lgG3ox63oXJkNqvszZ
+         dHJunAdHb4eTK+nF7Pp8brTG3jENUCPHX0GYN24ukWNHnyNT4Lsr+46MgjWiPLCK2zMQ
+         CrUz+8v1lnxHZ0JO36QZSIPGpP4u63YO9kYW8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=eut2KpBvjueKRQ0bSTHB/iXIOLkFXtg4jdmPy5F4gf0=;
+        b=QARDeGMaUBf/KHYCDAKsLxlyHYyw0SUsmKM+TnpVuEuwIKOpbh9r7wIpf9iCuDZuv9
+         Xq4GaWDuTmZajtBCGCa+euSV0jnmAA0JbZtryrEKDYf8DlFajbghJtFZzUeNLNXfGUN1
+         KEKyYBfQjauVWjinWxnKsYoBaYVA0nq3T8cnkAnjLgK6bp9FXz8+IlzDeVunYquOPJrd
+         iC+3+vXNUK6zFEV1soqhbvKEzUk5sxykfX44fk1Xe5Vd77kbSPKG+EPCLVfFsW8YcL1G
+         pgFAaBhz+rUIuwyndso+hFF5nzI8itw99XC7zTbshXLcN2Unno71NDy9SuPxv+kHrMON
+         rcRQ==
+X-Gm-Message-State: AKGB3mI4Wxw+hQzr0/ionGGo4He1vbEfjTuBVlK2yFK/G2wQfHWRscV8
+        +JGs2JktLxO69RwTdgbZ7eRx2eGlrmI=
+X-Google-Smtp-Source: AGs4zMaxZaEwuY7oS8ox2EpOPvZH1k83bkt81YjrQHAxZX0D1Gf11fsczy3KamsSADVYyKRw3bTQVw==
+X-Received: by 10.28.16.212 with SMTP id 203mr805859wmq.16.1512645447780;
+        Thu, 07 Dec 2017 03:17:27 -0800 (PST)
+Received: from ?IPv6:2a01:e35:879a:6cd0:3e97:eff:fe5b:1402? ([2a01:e35:879a:6cd0:3e97:eff:fe5b:1402])
+        by smtp.googlemail.com with ESMTPSA id q140sm5429183wmd.35.2017.12.07.03.17.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 07 Dec 2017 03:17:27 -0800 (PST)
+Subject: Re: [RFC PATCH] cpuidle/coupled: Handle broadcast enter failures
+To:     James Hogan <james.hogan@mips.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org,
+        Preeti U Murthy <preeti@linux.vnet.ibm.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Rui Wang <wangr@lemote.com>, Binbin Zhou <zhoubb@lemote.com>,
-        Ce Sun <sunc@lemote.com>, Yao Wang <wangyao@lemote.com>,
-        Liangliang Huang <huangll@lemote.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>, <r@hev.cc>,
-        <zhoubb.aaron@gmail.com>, <huanglllzu@163.com>, <513434146@qq.com>,
-        <1393699660@qq.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/1] About MIPS/Loongson maintainance
-Message-ID: <20171207110549.GM27409@jhogan-linux.mipstec.com>
-References: <1512628268-18357-1-git-send-email-chenhc@lemote.com>
- <20171207065759.GC19722@kroah.com>
+        Paul Burton <paul.burton@mips.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+References: <20171205225536.21516-1-james.hogan@mips.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <d74c6e8b-3020-6bed-4cf1-132f41a2c5ff@linaro.org>
+Date:   Thu, 7 Dec 2017 12:17:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="00hq2S6J2Jlg6EbK"
-Content-Disposition: inline
-In-Reply-To: <20171207065759.GC19722@kroah.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1512644777-452060-31779-63263-5
-X-BESS-VER: 2017.14.1-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187715
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+In-Reply-To: <20171205225536.21516-1-james.hogan@mips.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61334
+X-archive-position: 61335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,89 +77,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---00hq2S6J2Jlg6EbK
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 05/12/2017 23:55, James Hogan wrote:
+> From: James Hogan <jhogan@kernel.org>
+> 
+> If the hrtimer based broadcast tick device is in use, the enabling of
+> broadcast ticks by cpuidle may fail when the next broadcast event is
+> brought forward to match the next event due on the local tick device,
+> This is because setting the next event may migrate the hrtimer based
+> broadcast tick to the current CPU, which then makes
+> broadcast_needs_cpu() fail.
+> 
+> This isn't normally a problem as cpuidle handles it by falling back to
+> the deepest idle state not needing broadcast ticks, however when coupled
+> cpuidle is used it can happen after the coupled CPUs have all agreed on
+> a particular idle state, resulting in only one of the CPUs falling back
+> to a shallower state, and an attempt to couple two completely different
+> idle states which may not be safe.
+> 
+> Therefore extend cpuidle_enter_state_coupled() to be able to handle the
+> enabling of broadcast ticks directly, so that a failure can be detected
+> at the higher level, and all coupled CPUs can be made to fall back to
+> the same idle state.
+> 
+> This takes place after the idle state has been initially agreed. Each
+> CPU will then attempt to enable broadcast ticks (if necessary), and upon
+> failure it will update the requested_state[] array before a second
+> coupled parallel barrier so that all coupled CPUs can recognise the
+> change.
+> 
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Frederic Weisbecker <fweisbec@gmail.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> ---
+> Is this an acceptable approach in principle?
+> 
+> Better/cleaner ideas to handle this are most welcome.
+> 
+> This doesn't directly address the problem that some of the time it won't
+> be possible to enter deeper idle states because of the hrtimer based
+> broadcast tick's affinity. The actual case I'm looking at is on MIPS
+> with cpuidle-cps, where the first core cannot (currently) go into a deep
+> idle state requiring broadcast ticks, so it'd be nice if the hrtimer
+> based broadcast tick device could just stay on core 0.
+> ---
 
-On Thu, Dec 07, 2017 at 07:57:59AM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Dec 07, 2017 at 02:31:07PM +0800, Huacai Chen wrote:
-> > Hi, Linus, Stephen, Greg, Ralf and James,
-> >=20
-> > We are kernel developers from Lemote Inc. and Loongson community. We
-> > have already made some contributions in Linux kernel, but we hope we
-> > can do more works.
-> >=20
-> > Of course Loongson is a sub-arch in MIPS, but linux-mips community is
-> > so inactive (Maybe maintainers are too busy?) that too many patches (
-> > Not only for Loongson, but also for other sub-archs) were delayed for
-> > a long time. So we are seeking a more efficient way to make Loongson
-> > patches be merged in upstream.
-> >=20
-> > Now we have a github organization for collaboration:
-> > https://github.com/linux-loongson/linux-loongson.git
->=20
-> Ick, why not get a kernel.org account for your git tree?
->=20
-> > We don't want to replace linux-mips, we just want to find a way to co-
-> > operate with linux-mips. So we will still use the maillist and patchwork
-> > of linux-mips, but we hope we can send pull requests from our github to
-> > linux-next and linux-mainline by ourselves (if there is no objections
-> > to our patches from linux-mips community).
->=20
-> What does the mips maintainers think about this?
->=20
-> Odds are a linux-next tree is fine, but they probably want to merge the
-> trees into their larger mips one for the pulls to Linus, much like the
-> arm-core tree works, right?
+Before commenting this patch, I would like to understand why the couple
+idle state is needed for the MIPS, what in the architecture forces the
+usage of the couple idle state?
 
-I'm not officially a MIPS maintainer but I have donned the hat
-unofficially a few times lately, so FWIW I think the Loongson stuff
-should go through the MIPS tree, since it so often touches core
-architecture code.
+The hrtimer broadcast mechanism is only needed if there isn't a backup
+timer outside of the idle state's power domain. That's the case on this
+platform?
 
-Clearly there have been some issues getting MIPS stuff applied recently,
-but I think the right approach long-term is to try and improve things
-there rather than bypass the MIPS tree altogether.
 
-I believe assigning a co-maintainer would help spread Ralf's load, even
-if that primarily means helping review patches (something we can all
-help with tbh), and being able to ack patches which touch MIPS but need
-to go through other subsystem trees (e.g. I know David Daney was waiting
-on acks for the MIPS portions of the Octeon III ethernet driver series).
+-- 
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-I'm willing to take on that role if Ralf is okay with it. I'm already
-trying to keep track of fixes and spend more time reviewing patches on
-the list, but the more who can help out the better.
-
-The question of who applies patches can't be avoided though. It would
-clearly suck to have all the review in the world but still end up with
-the co-maintainer having to take the reigns at the last minute to get
-those important fixes in, and then have no time to apply anything
-substantial for the merge window.
-
-Cheers
-James
-
---00hq2S6J2Jlg6EbK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlopIIUACgkQbAtpk944
-dno18RAAt6C+pTc9d2Zx5cCHKHZJmVGPuUWRD+SBbBaEylo9NUdI7yLJBsfs8Rm2
-b/ryeHiw9ZOyGuN3n1Ai0f7mGkBVO/QvEBlg53MyeA4m8gx8BPbmO4/sYKq7ljZl
-OzHsucCiyBGNzTNaYlQXRqoWdjlrggKo2RUw7zPYVU/R7oVYQB4Rln+rpcZbU72G
-md2rn4VVUkzQG6QHSqagYf1a4drDm9yMz4veaDWj2p91BFbptJwFMR7r4ndSmGIr
-pClxtFylvIG+W0qFzidxLbDg88J7ZpWsmLFksic/aNnNYEG3gxdla0zo2KA8rNWX
-5dDnMev/xU197qsx59C0zt0VmQdXjJ0DMKjEBKtRa+tvd70D+etNLEyNg1IN+MWp
-5OjEKE+AEw2kngrWzfarDpE/icT3nlZdyS5aISmAQXyryuxW1n5iVvpYpS5b562v
-rGHbQ7zFisfFO74IFyGqi776Sws2P0kvcaXOXZBoVl/kgfchrBP2AIMcG7/oHI1T
-8JjZ0jLqcKJ+7+uGz7gLYvqpU2IkXnrhEZiP2E+RJxrFos5IxwHF05NYNB5gW8R4
-+g07QQRxyFKnB3hfLEKpqXaRiw4uxXQdk2xCSJnZwyfMu0kieB3dvpJtSnPkqd6D
-tQpolZIezD+Dzhg38pfrm3/HsNVWiuP8C39VGlG0h2GVYhGtn7k=
-=9uKS
------END PGP SIGNATURE-----
-
---00hq2S6J2Jlg6EbK--
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

@@ -1,44 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2017 07:58:22 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34502 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990435AbdLGG6AlQP32 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2017 07:58:00 +0100
-Received: from localhost (LFbn-1-12253-150.w90-92.abo.wanadoo.fr [90.92.67.150])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2A7F9C3A;
-        Thu,  7 Dec 2017 06:57:53 +0000 (UTC)
-Date:   Thu, 7 Dec 2017 07:57:59 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        Rui Wang <wangr@lemote.com>, Binbin Zhou <zhoubb@lemote.com>,
-        Ce Sun <sunc@lemote.com>, Yao Wang <wangyao@lemote.com>,
-        Liangliang Huang <huangll@lemote.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>, r@hev.cc,
-        zhoubb.aaron@gmail.com, huanglllzu@163.com, 513434146@qq.com,
-        1393699660@qq.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/1] About MIPS/Loongson maintainance
-Message-ID: <20171207065759.GC19722@kroah.com>
-References: <1512628268-18357-1-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2017 08:14:38 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:54488 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990409AbdLGHO3UZGP2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 7 Dec 2017 08:14:29 +0100
+Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2611C21882;
+        Thu,  7 Dec 2017 07:14:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2611C21882
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+From:   jhogan@kernel.org
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     James Hogan <jhogan@kernel.org>,
+        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: mm: Fix duplicate "const" on insn_table_MM
+Date:   Thu,  7 Dec 2017 07:14:17 +0000
+Message-Id: <20171207071417.30501-1-jhogan@kernel.org>
+X-Mailer: git-send-email 2.13.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1512628268-18357-1-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61330
+X-archive-position: 61331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,36 +43,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 07, 2017 at 02:31:07PM +0800, Huacai Chen wrote:
-> Hi, Linus, Stephen, Greg, Ralf and James,
-> 
-> We are kernel developers from Lemote Inc. and Loongson community. We
-> have already made some contributions in Linux kernel, but we hope we
-> can do more works.
-> 
-> Of course Loongson is a sub-arch in MIPS, but linux-mips community is
-> so inactive (Maybe maintainers are too busy?) that too many patches (
-> Not only for Loongson, but also for other sub-archs) were delayed for
-> a long time. So we are seeking a more efficient way to make Loongson
-> patches be merged in upstream.
-> 
-> Now we have a github organization for collaboration:
-> https://github.com/linux-loongson/linux-loongson.git
+From: James Hogan <jhogan@kernel.org>
 
-Ick, why not get a kernel.org account for your git tree?
+Fix the following gcc 7.x build error on microMIPS builds:
 
-> We don't want to replace linux-mips, we just want to find a way to co-
-> operate with linux-mips. So we will still use the maillist and patchwork
-> of linux-mips, but we hope we can send pull requests from our github to
-> linux-next and linux-mainline by ourselves (if there is no objections
-> to our patches from linux-mips community).
+arch/mips/mm/uasm-micromips.c:43:26: error: duplicate ‘const’ declaration specifier [-Werror=duplicate-decl-specifier]
+ static const struct insn const insn_table_MM[insn_invalid] = {
+                          ^~~~~
 
-What does the mips maintainers think about this?
+The same issue has already been fixed in uasm-mips by commit
+00e06297b351 ("MIPS: mm: remove duplicate "const" qualifier on
+insn_table").
 
-Odds are a linux-next tree is fine, but they probably want to merge the
-trees into their larger mips one for the pulls to Linus, much like the
-arm-core tree works, right?
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Fixes: ce807d5f67ed ("MIPS: Optimize uasm insn lookup.")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/mm/uasm-micromips.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks,
-
-greg k-h
+diff --git a/arch/mips/mm/uasm-micromips.c b/arch/mips/mm/uasm-micromips.c
+index cdb5a191b9d5..9bb6baa45da3 100644
+--- a/arch/mips/mm/uasm-micromips.c
++++ b/arch/mips/mm/uasm-micromips.c
+@@ -40,7 +40,7 @@
+ 
+ #include "uasm.c"
+ 
+-static const struct insn const insn_table_MM[insn_invalid] = {
++static const struct insn insn_table_MM[insn_invalid] = {
+ 	[insn_addu]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_addu32_op), RT | RS | RD},
+ 	[insn_addiu]	= {M(mm_addiu32_op, 0, 0, 0, 0, 0), RT | RS | SIMM},
+ 	[insn_and]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_and_op), RT | RS | RD},
+-- 
+2.13.6

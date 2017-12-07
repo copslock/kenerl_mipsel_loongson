@@ -1,39 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2017 08:21:16 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:55354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990409AbdLGHVJcA9m2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 Dec 2017 08:21:09 +0100
-Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 455FA21985;
-        Thu,  7 Dec 2017 07:21:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 455FA21985
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-From:   James Hogan <jhogan@kernel.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        James Hogan <jhogan@kernel.org>,
-        "Maciej W . Rozycki" <macro@mips.com>,
-        Matthew Fortune <matthew.fortune@mips.com>,
-        Florian Fainelli <florian@openwrt.org>,
-        Waldemar Brodkorb <wbx@openadk.org>, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Implement __multi3 for GCC7 MIPS64r6 builds
-Date:   Thu,  7 Dec 2017 07:20:46 +0000
-Message-Id: <20171207072046.31125-1-jhogan@kernel.org>
-X-Mailer: git-send-email 2.13.6
-In-Reply-To: <20171206085034.3869dc9d@windsurf.lan>
-References: <20171206085034.3869dc9d@windsurf.lan>
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2017 10:29:33 +0100 (CET)
+Received: from forward100o.mail.yandex.net ([37.140.190.180]:47822 "EHLO
+        forward100o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990427AbdLGJ3YQQnDR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2017 10:29:24 +0100
+Received: from mxback9o.mail.yandex.net (mxback9o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::23])
+        by forward100o.mail.yandex.net (Yandex) with ESMTP id 9F6BC2A20BA1;
+        Thu,  7 Dec 2017 12:29:16 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback9o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id CW8d6teHlD-TDk8dAe9;
+        Thu, 07 Dec 2017 12:29:16 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512638956;
+        bh=7NLTLMWAEp+zxnxtP1RDsG6RQjYCx9zq3T7CUTxJBrc=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=Y90sBwj5pv6PEGOJV/9BGH6RKL2TT7O+ZjNm8jWTPccGTY+ohi0cvHO829JdGTcTE
+         fnpgNxDG4ymJD9g6wSv4YgEgrz/3qT5sz+t8/RBYb1XUErOhGvHz6kRFMGy4cj0Oxx
+         ivDZ0fvkT0rSBOJaKRGxEx8t26O7V4Xq1uvnOMnY=
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id pSoQLzwTIB-T4Y4CLav;
+        Thu, 07 Dec 2017 12:29:10 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512638951;
+        bh=7NLTLMWAEp+zxnxtP1RDsG6RQjYCx9zq3T7CUTxJBrc=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=o/jizDFyhTggijbToLXYJlsw4XKhuqJz2zN+biDNqpnN3MjI4/lguCiSbiuoemmzS
+         gt6j9pHi2ztCNDy/stEjrUVswkrAzeN3SaqzgtnrEu05MtaAnvrIRuCcXkVoaWKz52
+         5UCKvgeZNuXgQSRnSpzNeLrbMRTBKAARFD3ro/MA=
+Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1512638934.10724.4.camel@flygoat.com>
+Subject: Re: [PATCH 0/1] About MIPS/Loongson maintainance
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Huacai Chen <chenhc@lemote.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        Rui Wang <wangr@lemote.com>, Binbin Zhou <zhoubb@lemote.com>,
+        Ce Sun <sunc@lemote.com>, Yao Wang <wangyao@lemote.com>,
+        Liangliang Huang <huangll@lemote.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, r@hev.cc,
+        zhoubb.aaron@gmail.com, huanglllzu@163.com, 513434146@qq.com,
+        1393699660@qq.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 07 Dec 2017 17:28:54 +0800
+In-Reply-To: <20171207065759.GC19722@kroah.com>
+References: <1512628268-18357-1-git-send-email-chenhc@lemote.com>
+         <20171207065759.GC19722@kroah.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-+azCMfa6Lx/OZSrgF+Vu"
+X-Mailer: Evolution 3.26.2-1 
+Mime-Version: 1.0
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61332
+X-archive-position: 61333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,145 +72,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-GCC7 is a bit too eager to generate suboptimal __multi3 calls (128bit
-multiply with 128bit result) for MIPS64r6 builds, even in code which
-doesn't explicitly use 128bit types, such as the following:
 
-unsigned long func(unsigned long a, unsigned long b)
-{
-	return a > (~0UL) / b;
-}
+--=-+azCMfa6Lx/OZSrgF+Vu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Which GCC rearanges to:
+On 2017-12-07 07:57 +0100=EF=BC=8CGreg Kroah-Hartman wrote=EF=BC=9A
+> On Thu, Dec 07, 2017 at 02:31:07PM +0800, Huacai Chen wrote:
+> > Hi, Linus, Stephen, Greg, Ralf and James,
+> >=20
+> > We are kernel developers from Lemote Inc. and Loongson community.
+> > We
+> > have already made some contributions in Linux kernel, but we hope
+> > we
+> > can do more works.
+> >=20
+> > Of course Loongson is a sub-arch in MIPS, but linux-mips community
+> > is
+> > so inactive (Maybe maintainers are too busy?) that too many patches
+> > (
+> > Not only for Loongson, but also for other sub-archs) were delayed
+> > for
+> > a long time. So we are seeking a more efficient way to make
+> > Loongson
+> > patches be merged in upstream.
+> >=20
+> > Now we have a github organization for collaboration:
+> > https://github.com/linux-loongson/linux-loongson.git
+>=20
+> Ick, why not get a kernel.org account for your git tree?
 
-return (unsigned __int128)a * (unsigned __int128)b > 0xffffffff;
+Of course we would like to get a kernel.org account. But in order to
+get a kernel.org account, we must have enough kernel developer's PGP
+sigs. In mainland China, it's hard to meet any of them. So wo choose
+GitHub to host our git tree.
+=20
+>=20
+> > We don't want to replace linux-mips, we just want to find a way to
+> > co-
+> > operate with linux-mips. So we will still use the maillist and
+> > patchwork
+> > of linux-mips, but we hope we can send pull requests from our
+> > github to
+> > linux-next and linux-mainline by ourselves (if there is no
+> > objections
+> > to our patches from linux-mips community).
+>=20
+> What does the mips maintainers think about this?
+>=20
+> Odds are a linux-next tree is fine, but they probably want to merge
+> the
+> trees into their larger mips one for the pulls to Linus, much like
+> the
+> arm-core tree works, right?
+Yeah, thanks for your suggestion, we can do like this to reduce work
+load of Linus.
+>=20
+> thanks,
+>=20
+> greg k-h
 
-Therefore implement __multi3, but only for MIPS64r6 with GCC7 as under
-normal circumstances we wouldn't expect any calls to __multi3 to be
-generated from kernel code.
+Jiaxun Yang
+--=-+azCMfa6Lx/OZSrgF+Vu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-Reported-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Maciej W. Rozycki <macro@mips.com>
-Cc: Matthew Fortune <matthew.fortune@mips.com>
-Cc: Florian Fainelli <florian@openwrt.org>
-Cc: Waldemar Brodkorb <wbx@openadk.org>
-Cc: linux-mips@linux-mips.org
----
-This should fix the issue Thomas. Thanks for reporting.
----
- arch/mips/lib/Makefile |  3 ++-
- arch/mips/lib/libgcc.h | 17 +++++++++++++++++
- arch/mips/lib/multi3.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 71 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/lib/multi3.c
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 78c2affeabf8..e84e12655fa8 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -16,4 +16,5 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
- obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
- 
- # libgcc-style stuff needed in the kernel
--obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o ucmpdi2.o
-+obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o multi3.o \
-+	 ucmpdi2.o
-diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
-index 28002ed90c2c..199a7f96282f 100644
---- a/arch/mips/lib/libgcc.h
-+++ b/arch/mips/lib/libgcc.h
-@@ -10,10 +10,18 @@ typedef int word_type __attribute__ ((mode (__word__)));
- struct DWstruct {
- 	int high, low;
- };
-+
-+struct TWstruct {
-+	long long high, low;
-+};
- #elif defined(__LITTLE_ENDIAN)
- struct DWstruct {
- 	int low, high;
- };
-+
-+struct TWstruct {
-+	long long low, high;
-+};
- #else
- #error I feel sick.
- #endif
-@@ -23,4 +31,13 @@ typedef union {
- 	long long ll;
- } DWunion;
- 
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6)
-+typedef int ti_type __attribute__((mode(TI)));
-+
-+typedef union {
-+	struct TWstruct s;
-+	ti_type ti;
-+} TWunion;
-+#endif
-+
- #endif /* __ASM_LIBGCC_H */
-diff --git a/arch/mips/lib/multi3.c b/arch/mips/lib/multi3.c
-new file mode 100644
-index 000000000000..fba123e366c8
---- /dev/null
-+++ b/arch/mips/lib/multi3.c
-@@ -0,0 +1,52 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/export.h>
-+
-+#include "libgcc.h"
-+
-+/*
-+ * GCC 7 suboptimally generates __multi3 calls for mips64r6, so for that
-+ * specific case only we'll implement it here.
-+ *
-+ * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
-+ */
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ == 7)
-+
-+/* multiply 64-bit values, low 64-bits returned */
-+static inline long long notrace dmulu(long long a, long long b)
-+{
-+	long long res;
-+	asm ("dmulu %0,%1,%2" : "=r" (res) : "r" (a), "r" (b));
-+	return res;
-+}
-+
-+/* multiply 64-bit unsigned values, high 64-bits of 128-bit result returned */
-+static inline long long notrace dmuhu(long long a, long long b)
-+{
-+	long long res;
-+	asm ("dmuhu %0,%1,%2" : "=r" (res) : "r" (a), "r" (b));
-+	return res;
-+}
-+
-+/* multiply 128-bit values, low 128-bits returned */
-+ti_type notrace __multi3(ti_type a, ti_type b)
-+{
-+	TWunion res, aa, bb;
-+
-+	aa.ti = a;
-+	bb.ti = b;
-+
-+	/*
-+	 * a * b =           (a.lo * b.lo)
-+	 *         + 2^64  * (a.hi * b.lo + a.lo * b.hi)
-+	 *        [+ 2^128 * (a.hi * b.hi)]
-+	 */
-+	res.s.low = dmulu(aa.s.low, bb.s.low);
-+	res.s.high = dmuhu(aa.s.low, bb.s.low);
-+	res.s.high += dmulu(aa.s.high, bb.s.low);
-+	res.s.high += dmulu(aa.s.low, bb.s.high);
-+
-+	return res.ti;
-+}
-+EXPORT_SYMBOL(__multi3);
-+
-+#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
--- 
-2.13.6
+iQIzBAABCAAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlopCdYACgkQwRGUkHP8
+D2f83BAAjnw9C+WRsNyrvKjnBQswd2+Ha0/lrhHSL6tokyVcmBtfgQJJcJJrtp3+
+JmpgMMlxi638J3j0OpNI9k83BrXKtEWaqoC0Fl02bgYwwUgigskPbgBqZqv/5fAN
+HmxLRRMEK59ssRTkDzg6H0PpuL7ma0hAkhIE+K4ofS/kkBsbM8n54sIPXMhWo8x4
+L82F6jh1Eu5KC6A7fzSOebRxjQfG5WtL8Qhl5/HLuJKEOyczPccUCeor8CE72dtj
+3xz1igF99uqakRX5tJc39XFpkEhDclOQ0E8HTT9piz2rcoWycaeXqmg9QemI5+aR
+PrHJI+0V3Ab0RZJcsDYglKl3CCn3U+JbtCuLuC+/C7TAbvE26gVGyfm69Hj4AItJ
+6Rab6E/Ip9LynZPoW6yKwiTlGhkJj9RQrQ98iILqIoSXeEWfVkz2xLoUk+rdVEHj
+R7Q+BKqJdn87CJm8JQZGDRW8mmk6uunsLgVgIhVNdb02ohUpFrlfd6AezGBHHvgU
+P6d070JZgIO/4Kw4hd88zH70/U81rv4AHfNO+1mg/Fe4t0T+5xy2p5738aGQBVH1
+61b8nzkhcJWvt/b31H0BXRs4a0DHxOpi8ogym/FiJhVaxaT4OtBfOPDaJilPW0yl
+XANG1el3s0FVsqEyQP7tTr/c3ovd8g25nGoodN91pGWXSdA1sfk=
+=T8gT
+-----END PGP SIGNATURE-----
+
+--=-+azCMfa6Lx/OZSrgF+Vu--

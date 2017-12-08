@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 16:52:46 +0100 (CET)
-Received: from mail.free-electrons.com ([62.4.15.54]:40729 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 16:53:11 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:40730 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992037AbdLHPrzQSXjP (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992079AbdLHPrzPsCWP (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 16:47:55 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id ABD422093A; Fri,  8 Dec 2017 16:47:44 +0100 (CET)
+        id E9F0C20953; Fri,  8 Dec 2017 16:47:44 +0100 (CET)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 796C320956;
-        Fri,  8 Dec 2017 16:47:26 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 141BF2095C;
+        Fri,  8 Dec 2017 16:47:27 +0100 (CET)
 From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Subject: [PATCH v2 09/13] MIPS: mscc: Add initial support for Microsemi MIPS SoCs
-Date:   Fri,  8 Dec 2017 16:46:14 +0100
-Message-Id: <20171208154618.20105-10-alexandre.belloni@free-electrons.com>
+Subject: [PATCH v2 11/13] MIPS: mscc: add ocelot PCB123 device tree
+Date:   Fri,  8 Dec 2017 16:46:16 +0100
+Message-Id: <20171208154618.20105-12-alexandre.belloni@free-electrons.com>
 X-Mailer: git-send-email 2.15.1
 In-Reply-To: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
 References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
@@ -22,7 +22,7 @@ Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61371
+X-archive-position: 61372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,215 +39,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Introduce support for the MIPS based Microsemi Ocelot SoCs.
-As the plan is to have all SoCs supported only using device tree, the
-mach directory is simply called mscc.
+Add a device tree for the Microsemi Ocelot PCB123 evaluation board.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
 ---
- arch/mips/Kbuild.platforms |   1 +
- arch/mips/Kconfig          |  24 ++++++++++
- arch/mips/mscc/Makefile    |  11 +++++
- arch/mips/mscc/Platform    |  12 +++++
- arch/mips/mscc/setup.c     | 106 +++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 154 insertions(+)
- create mode 100644 arch/mips/mscc/Makefile
- create mode 100644 arch/mips/mscc/Platform
- create mode 100644 arch/mips/mscc/setup.c
+ arch/mips/boot/dts/mscc/Makefile          |  2 ++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts | 27 +++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb123.dts
 
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index ac7ad54f984f..b3b2f8dc91db 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -18,6 +18,7 @@ platforms += lantiq
- platforms += lasat
- platforms += loongson32
- platforms += loongson64
-+platforms += mscc
- platforms += mti-malta
- platforms += netlogic
- platforms += paravirt
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 350a990fc719..a9db028a0338 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -527,6 +527,30 @@ config MIPS_MALTA
- 	  This enables support for the MIPS Technologies Malta evaluation
- 	  board.
+diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/Makefile
+index f0a155a74e02..09a1c4b97de2 100644
+--- a/arch/mips/boot/dts/mscc/Makefile
++++ b/arch/mips/boot/dts/mscc/Makefile
+@@ -1,3 +1,5 @@
++dtb-$(CONFIG_MSCC_OCELOT)	+= ocelot_pcb123.dtb
++
+ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
  
-+config MSCC_OCELOT
-+	bool "Microsemi Ocelot architecture"
-+	select BOOT_RAW
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select IRQ_MIPS_CPU
-+	select DMA_NONCOHERENT
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_BIG_ENDIAN
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_HAS_EARLY_PRINTK
-+	select USE_GENERIC_EARLY_PRINTK_8250
-+	select MSCC_OCELOT_IRQ
-+	select PINCTRL
-+	select GPIOLIB
-+	select COMMON_CLK
-+	select USE_OF
-+	select BUILTIN_DTB
-+	select LIBFDT
-+	help
-+	  This enables support for the Microsemi Ocelot architecture.
-+	  It builds a generic DT-based kernel image.
-+
- config MACH_PIC32
- 	bool "Microchip PIC32 Family"
- 	help
-diff --git a/arch/mips/mscc/Makefile b/arch/mips/mscc/Makefile
+ # Force kbuild to make empty built-in.o if necessary
+diff --git a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
 new file mode 100644
-index 000000000000..c96b13546730
+index 000000000000..42bd404471f6
 --- /dev/null
-+++ b/arch/mips/mscc/Makefile
-@@ -0,0 +1,11 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+#
-+# Microsemi MIPS SoC support
-+#
-+# License: Dual MIT/GPL
-+# Copyright (c) 2017 Microsemi Corporation
++++ b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
++/* Copyright (c) 2017 Microsemi Corporation */
 +
-+#
-+# Makefile for the Microsemi MIPS SoCs
-+#
-+obj-y := setup.o
-diff --git a/arch/mips/mscc/Platform b/arch/mips/mscc/Platform
-new file mode 100644
-index 000000000000..9ae874c8f136
---- /dev/null
-+++ b/arch/mips/mscc/Platform
-@@ -0,0 +1,12 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+#
-+# Microsemi MIPS SoC support
-+#
-+# License: Dual MIT/GPL
-+# Copyright (c) 2017 Microsemi Corporation
++/dts-v1/;
 +
-+#
-+# Microsemi Ocelot board(s)
-+#
-+platform-$(CONFIG_MSCC_OCELOT) += mscc/
-+load-$(CONFIG_MSCC_OCELOT)	 += 0x80100000
-diff --git a/arch/mips/mscc/setup.c b/arch/mips/mscc/setup.c
-new file mode 100644
-index 000000000000..77803edd7bfd
---- /dev/null
-+++ b/arch/mips/mscc/setup.c
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Microsemi MIPS SoC support
-+ *
-+ * License: Dual MIT/GPL
-+ * Copyright (c) 2017 Microsemi Corporation
-+ */
-+#include <linux/delay.h>
-+#include <linux/export.h>
-+#include <linux/init.h>
-+#include <linux/irq.h>
-+#include <linux/irqchip.h>
-+#include <linux/libfdt.h>
-+#include <linux/of_fdt.h>
-+#include <linux/of_platform.h>
-+#include <linux/reboot.h>
++#include "ocelot.dtsi"
 +
-+#include <asm/time.h>
-+#include <asm/idle.h>
-+#include <asm/prom.h>
-+#include <asm/reboot.h>
++/ {
++	compatible = "mscc,ocelot-pcb123", "mscc,ocelot";
 +
-+static void __init ocelot_earlyprintk_init(void)
-+{
-+	void __iomem *uart_base;
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
 +
-+	uart_base = ioremap_nocache(0x70100000, 0x0f);
-+	setup_8250_early_printk_port((unsigned long)uart_base, 2, 50000);
-+}
++	memory {
++		device_type = "memory";
++		reg = <0x0 0x0e000000>;
++	};
++};
 +
-+void __init prom_init(void)
-+{
-+	/* Sanity check for defunct bootloader */
-+	if (fw_arg0 < 10 && (fw_arg1 & 0xFFF00000) == 0x80000000) {
-+		unsigned int prom_argc = fw_arg0;
-+		const char **prom_argv = (const char **)fw_arg1;
++&uart0 {
++	status = "okay";
++};
 +
-+		if (prom_argc > 1 && strlen(prom_argv[1]) > 0)
-+			/* ignore all built-in args if any f/w args given */
-+			strcpy(arcs_cmdline, prom_argv[1]);
-+	}
-+}
-+
-+void __init prom_free_prom_memory(void)
-+{
-+}
-+
-+unsigned int get_c0_compare_int(void)
-+{
-+	return CP0_LEGACY_COMPARE_IRQ;
-+}
-+
-+void __init plat_time_init(void)
-+{
-+	struct device_node *np;
-+	u32 freq;
-+
-+	np = of_find_node_by_name(NULL, "cpus");
-+	if (!np)
-+		panic("missing 'cpus' DT node");
-+	if (of_property_read_u32(np, "mips-hpt-frequency", &freq) < 0)
-+		panic("missing 'mips-hpt-frequency' property");
-+	of_node_put(np);
-+
-+	mips_hpt_frequency = freq;
-+}
-+
-+void __init arch_init_irq(void)
-+{
-+	irqchip_init();
-+}
-+
-+const char *get_system_type(void)
-+{
-+	return "Microsemi Ocelot";
-+}
-+
-+static void __init ocelot_late_init(void)
-+{
-+	ocelot_earlyprintk_init();
-+}
-+
-+extern void (*late_time_init)(void);
-+
-+void __init plat_mem_setup(void)
-+{
-+	/* This has to be done so late because ioremap needs to work */
-+	late_time_init = ocelot_late_init;
-+
-+	__dt_setup_arch(__dtb_start);
-+}
-+
-+void __init device_tree_init(void)
-+{
-+	if (!initial_boot_params)
-+		return;
-+
-+	unflatten_and_copy_device_tree();
-+}
-+
-+static int __init populate_machine(void)
-+{
-+	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
-+	return 0;
-+}
-+arch_initcall(populate_machine);
++&uart2 {
++	status = "okay";
++};
 -- 
 2.15.1

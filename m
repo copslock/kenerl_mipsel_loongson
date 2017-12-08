@@ -1,68 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 05:02:22 +0100 (CET)
-Received: from forward104j.mail.yandex.net ([IPv6:2a02:6b8:0:801:2::107]:58372
-        "EHLO forward104j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990431AbdLHECLgHZIr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 05:02:11 +0100
-Received: from mxback18j.mail.yandex.net (mxback18j.mail.yandex.net [IPv6:2a02:6b8:0:1619::94])
-        by forward104j.mail.yandex.net (Yandex) with ESMTP id 47F5742620;
-        Fri,  8 Dec 2017 07:02:03 +0300 (MSK)
-Received: from smtp2p.mail.yandex.net (smtp2p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:7])
-        by mxback18j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id s5ilH2B4LV-205GqQQW;
-        Fri, 08 Dec 2017 07:02:03 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512705723;
-        bh=W3kbJqESkZc4HEJlKshcpsHzLUVT2DqBfx/sskmDkrg=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=EVdpx0yEVXkW1Pamjdte1njTHyMufKEX/RvZVYltHgffoO7r0MhtgAYHgVzd+1O8c
-         he1MPJfn1LN/pUHiMeU511HIAo59cq04RzvZdDzORu3UvI9OGF+FIKoNqN7y1hSYq+
-         JXQku/iCVFWCjMlBrvLlrAGgiGEeU6RmRFg4NeUk=
-Received: by smtp2p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id xjhMULCYoA-1qYCh4wU;
-        Fri, 08 Dec 2017 07:01:58 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512705719;
-        bh=W3kbJqESkZc4HEJlKshcpsHzLUVT2DqBfx/sskmDkrg=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=V6iPk+o5exBqS30b8SLg2UGeqoKQPdFaTnI8O6zLSKosOrxvCPhCKahTQnRm1HzfR
-         kfbs+tyyF96FNORTh5nMplyZCYOoTdmezC265p041r/f4V/2+rz1FNUUdAwCv+Uv1s
-         6C3qAEKHHmSfTycVpLRWtm35W2i4zUYNTB4Xh4ZM=
-Authentication-Results: smtp2p.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Message-ID: <1512705706.1756.12.camel@flygoat.com>
-Subject: Re: [PATCH 0/1] About MIPS/Loongson maintainance
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     James Hogan <james.hogan@mips.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rui Wang <wangr@lemote.com>, Binbin Zhou <zhoubb@lemote.com>,
-        Ce Sun <sunc@lemote.com>, Yao Wang <wangyao@lemote.com>,
-        Liangliang Huang <huangll@lemote.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, r@hev.cc,
-        zhoubb.aaron@gmail.com, huanglllzu@163.com, 513434146@qq.com,
-        1393699660@qq.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 08 Dec 2017 12:01:46 +0800
-In-Reply-To: <20171207141829.GN27409@jhogan-linux.mipstec.com>
-References: <1512628268-18357-1-git-send-email-chenhc@lemote.com>
-         <20171207065759.GC19722@kroah.com>
-         <20171207110549.GM27409@jhogan-linux.mipstec.com>
-         <1512652210.13996.10.camel@flygoat.com>
-         <20171207141829.GN27409@jhogan-linux.mipstec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 08:01:27 +0100 (CET)
+Received: from mail-it0-x229.google.com ([IPv6:2607:f8b0:4001:c0b::229]:37680
+        "EHLO mail-it0-x229.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990435AbdLHHBTsjG2z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 08:01:19 +0100
+Received: by mail-it0-x229.google.com with SMTP id d137so2786719itc.2
+        for <linux-mips@linux-mips.org>; Thu, 07 Dec 2017 23:01:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=oESnI2wP4cXMECuKJduPTGXVujngMRd87B+g0mU2wCE=;
+        b=VpfP/Ke7DPsvV8dQtrJ1hgbdf8i48Yaeu/ztnbnQfaUKz8KgUucOqz2+XYFAxnWrdC
+         btM+s8kuF8CwF9DgNsKY4ZYiK/bzy+pqMvuCrSEroy/nW2RbDrNWzh3l7SOShH5NGW1z
+         FwADwmJ4o3QjQHmL3QOY2OugSDbOYyTyWXLLYXReRZX23wXV6DRq9LRtec8M8PIqBTko
+         Id+KYr6OOkx/RJUj0tzA7wOFDafmjg0Us9CEjfy7emx2uuKkhY80Ip97ugqT2UiK9CQj
+         DEzN1oLc6cWZ1QUYfdmXBUUM+MzHqBRQdJy7CPzJhFtMvNDj6A7cWM3MZeK8vH8GUm3Z
+         rJ8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=oESnI2wP4cXMECuKJduPTGXVujngMRd87B+g0mU2wCE=;
+        b=ppl+kIaZMBfsXkr0j+ula/sl4sYQnfTr7ilwWcP8q7z4ihB2arEoc6KkQ5lTwQcvM5
+         6ylt9IKmUVWo7jv/ea0MIFLpIKvEK8GSmWcL8TFLUDUk7KWDUQrUFP2sef2T23OgUmo/
+         wqY1FsZe4q7RCVNmNoGy/a7sckP8JAZnUNVRfameZBk5Afm3tUjNt8XbrMLnVAFJoWH8
+         vHbRdMNizRe2/i2Nq908AsdOO/sBwLN91E/IL2OPP2/ei8mI9YNo6gs9/ZcggZ+xvmU7
+         dAU/0AU+WDl8+6hFJHLLGSbPtHcYwi4SmWc5k+8ukSdgliQ69i31stSVRMjdBdV4CjyR
+         GIMg==
+X-Gm-Message-State: AKGB3mK1hG1/RsQLW/MUeUQQYC7dy65+dzU61+IVvm90eOrMi16CVgte
+        XXF0s/ONdX10KwDvixKdsKNehyRlAThCr+6lhRlgzPb4
+X-Google-Smtp-Source: AGs4zMaN092tIK/3oMyX84byF61KcftlqPhHERaVFKdE28d5u1U62UguoSXlq0WX5aHyB3u82P47CMh3O6SuiESK09s=
+X-Received: by 10.107.62.10 with SMTP id l10mr5794966ioa.178.1512716472956;
+ Thu, 07 Dec 2017 23:01:12 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.2.152.46 with HTTP; Thu, 7 Dec 2017 23:00:52 -0800 (PST)
+In-Reply-To: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
+References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Thu, 7 Dec 2017 23:00:52 -0800
+Message-ID: <CAEdQ38G4VTXDGOarmmTac=hP92VJbQHRFxQTaSWQ3j4d63pogg@mail.gmail.com>
+Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
+ next debugging steps?
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-nfs@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Hannes Frederic Sowa <hannes@stressinduktion.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.2-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <jiaxun.yang@flygoat.com>
+Return-Path: <mattst88@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61350
+X-archive-position: 61351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,96 +72,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2017-12-07 Thu 14:18 +0000，James Hogan Wrote：
-> On Thu, Dec 07, 2017 at 09:10:10PM +0800, Jiaxun Yang wrote:
-> > On 2017-12-07 Thu 11:05 +0000，James Hogan Wrote：
-> > > On Thu, Dec 07, 2017 at 07:57:59AM +0100, Greg Kroah-Hartman
-> > > wrote:
-> > > > On Thu, Dec 07, 2017 at 02:31:07PM +0800, Huacai Chen wrote:
-> > > > > Hi, Linus, Stephen, Greg, Ralf and James,
-> > > > > 
-> > > > > We are kernel developers from Lemote Inc. and Loongson
-> > > > > community.
-> > > > > We
-> > > > > have already made some contributions in Linux kernel, but we
-> > > > > hope
-> > > > > we
-> > > > > can do more works.
-> > > > > 
-> > > > > Of course Loongson is a sub-arch in MIPS, but linux-mips
-> > > > > community is
-> > > > > so inactive (Maybe maintainers are too busy?) that too many
-> > > > > patches (
-> > > > > Not only for Loongson, but also for other sub-archs) were
-> > > > > delayed
-> > > > > for
-> > > > > a long time. So we are seeking a more efficient way to make
-> > > > > Loongson
-> > > > > patches be merged in upstream.
-> > > > > 
-> > > > > Now we have a github organization for collaboration:
-> > > > > https://github.com/linux-loongson/linux-loongson.git
-> > > > 
-> > > > Ick, why not get a kernel.org account for your git tree?
-> > > > 
-> > > > > We don't want to replace linux-mips, we just want to find a
-> > > > > way
-> > > > > to co-
-> > > > > operate with linux-mips. So we will still use the maillist
-> > > > > and
-> > > > > patchwork
-> > > > > of linux-mips, but we hope we can send pull requests from our
-> > > > > github to
-> > > > > linux-next and linux-mainline by ourselves (if there is no
-> > > > > objections
-> > > > > to our patches from linux-mips community).
-> > > > 
-> > > > What does the mips maintainers think about this?
-> > > > 
-> > > > Odds are a linux-next tree is fine, but they probably want to
-> > > > merge
-> > > > the
-> > > > trees into their larger mips one for the pulls to Linus, much
-> > > > like
-> > > > the
-> > > > arm-core tree works, right?
-> > > 
-> > > I'm not officially a MIPS maintainer but I have donned the hat
-> > > unofficially a few times lately, so FWIW I think the Loongson
-> > > stuff
-> > > should go through the MIPS tree, since it so often touches core
-> > > architecture code.
-> > 
-> > Yes we are always touching architecture code. For that part, we'll
-> > still submit our patches to linux-mips tree. But we're also
-> > maintaining
-> > many platform code under /arch/mips/loongson64 and also platform
-> > drivers such as hwmon, cpufreq and YeeLoong Laptop driver I'm
-> > trying to
-> > submit recently.
-> 
-> The drivers at least can always go in via the relevant driver
-> subsystem
-> anyway, though of course if they're tightly bound to arch headers
-> that
-> could still be painful, as I found out here when trying to fix some
-> build errors there:
-> https://lkml.kernel.org/r/20171115211755.25102-1-james.hogan@mips.com
-> 
-Yes I noticed that previous maintainer have made some problems. I'm
-going to fix that later. Also we're going to separate code between
-Loongson2 and Loongson3 since they are becoming more and more
-identical. But It will cause a lot of changes under march of loongson64
- that currently maintaining by linux-mips community. Send plenty of
-patches to mailing list would not be a wise way to do that. So we can
-PR these changes to linux-next directly and PR to linux-mips before
-merge window.
-> Cheers
-> James
-> 
-> > For that part, make a pull request might be more
-> > efficient than apply patches to linux-mips for many times. Just as
-> > what
-> > arm architecture did.
--- 
-Jiaxun Yang
+On Sun, Mar 12, 2017 at 6:43 PM, Matt Turner <mattst88@gmail.com> wrote:
+> On a Broadcom BCM91250a MIPS system I can reliably trigger NFS
+> corruption on the first file read.
+>
+> To demonstrate, I downloaded five identical copies of the gcc-5.4.0
+> source tarball. On the NFS server, they hash to the same value:
+>
+> server distfiles # md5sum gcc-5.4.0.tar.bz2*
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
+>
+> On the MIPS system (the NFS client):
+>
+> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2.2
+> 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
+> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
+> 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
+>
+> The first file read will contain some corruption, and it is persistent until...
+>
+> bcm91250a-le distfiles # echo 1 > /proc/sys/vm/drop_caches
+> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
+>
+> the caches are dropped, at which point it reads back properly.
+>
+> Note that the corruption is different across reboots, both in the size
+> of the corruption and the location. I saw 1900~ and 1400~ byte
+> sequences corrupted on separate occasions, which don't correspond to
+> the system's 16kB page size.
+>
+> I've tested kernels from v3.19 to 4.11-rc1+ (master branch from
+> today). All exhibit this behavior with differing frequencies. Earlier
+> kernels seem to reproduce the issue less often, while more recent
+> kernels reliably exhibit the problem every boot.
+>
+> How can I further debug this?
+
+I think I was wrong about the statement about kernels v3.19 to
+4.11-rc1+. I found out I couldn't reproduce with 4.7-rc1 and then
+bisected to 4cd13c21b207e80ddb1144c576500098f2d5f882 ("softirq: Let
+ksoftirqd do its job"). Still reproduces with current tip of Linus'
+tree.
+
+Any ideas? The board's ethernet is an uncommon device supported by
+CONFIG_SB1250_MAC. Something about the ethernet driver maybe?

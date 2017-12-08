@@ -1,84 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 00:29:14 +0100 (CET)
-Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:46719
-        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990436AbdLHX3DeIdH0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 00:29:03 +0100
-Received: by mail-qt0-x241.google.com with SMTP id r39so28773128qtr.13;
-        Fri, 08 Dec 2017 15:29:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=kugTmgi9H01O7gBeivoM3yCZtpzsBHMdrrrEQTH+Sb8=;
-        b=Zh+qkGwCuHv5dycKemi6nEzFUpufa+0jkUMNeGdelc9vgVaSQhvZCuJ840Y5sSci9M
-         a0EDdgseS2VDDl1s2Xcz4XQhvU9263iiJXKQPE81eKn2t5ryh5S5CBkY30axJH0Jti8n
-         bMAj9ARdA2ngBnVlHzXV6bi2ByuRIfsdua1kGLaOX6gqfHGkO1VbPLpCm/aspqaDP9jS
-         CsN3G2am7w+ggHECJidwz9qeYa7kxoyIpLkmmGBk5ydYrzeEmSYv2V4lSSbwdtwyyF9Y
-         6hpzh9/Ft4BWn2XPfzgzpj9piRuSOsHtcT3XAEzaOyvbIywDnjYVwCYZfIVj4qy6ZNUh
-         KGuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=kugTmgi9H01O7gBeivoM3yCZtpzsBHMdrrrEQTH+Sb8=;
-        b=gyGTQQ4n1S14IRrW0K6W37a2l23JXGPxwUT1jZn+0FKSb3YT3/Iq/YUaqsXCoLCRhg
-         tT27DUc+g3Fojohn+BAqmFTWTmKZUQ+po9ZmWNh1lmoDQcuR5P9lnLvllKBjN10SS+56
-         ZaqZTKgJ7o84OwBFghi84eqBqaBA/n7aK6aorru28A94JR8DLFvcRiOajGIVJwAfN4eW
-         Ai49STA+czgGx596STSRu5XNq5TmM/gW8snAAaajbGsa+AFYNsFWw9fciRdxw4GoOiVn
-         THC+M3cRYR+Wk40BwPmKQENyE/TFYTp1KrslgxLxEJfCn70vA4dHxJ1pdWRhOUEPpvPK
-         ToHQ==
-X-Gm-Message-State: AKGB3mIrAiI2Y26KMy19s9ce3HcPNkAakcpCYPGUPgUiau7IoYogvR6k
-        PYhwV8Nn3xCMu+IK7q0K0e4=
-X-Google-Smtp-Source: AGs4zMaGGuCm3fZnMu8kkBgKTKzmHIDjVFtmvgdfZco1ht2J9b+DnhSQUSPBvmur4sMyT9501ZjPYg==
-X-Received: by 10.200.51.107 with SMTP id u40mr18256416qta.152.1512775737270;
-        Fri, 08 Dec 2017 15:28:57 -0800 (PST)
-Received: from ?IPv6:2001:470:d:73f:4d7d:8488:119c:738d? ([2001:470:d:73f:4d7d:8488:119c:738d])
-        by smtp.gmail.com with ESMTPSA id j1sm721801qkc.5.2017.12.08.15.28.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 Dec 2017 15:28:56 -0800 (PST)
-Subject: Re: [PATCH v3 1/8] SOC: brcmstb: add memory API
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Jim Quinlan <jim2101024@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-References: <1510697532-32828-1-git-send-email-jim2101024@gmail.com>
- <1510697532-32828-2-git-send-email-jim2101024@gmail.com>
- <20171205205926.GJ23510@bhelgaas-glaptop.roam.corp.google.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <12a4228d-ab5e-35e4-a65c-24b0e64b1300@gmail.com>
-Date:   Fri, 8 Dec 2017 15:28:53 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 00:57:00 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:53575 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990436AbdLHX4wkkU20 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 00:56:52 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 08 Dec 2017 23:56:40 +0000
+Received: from [10.20.78.44] (10.20.78.44) by mips01.mipstec.com (10.20.43.31)
+ with Microsoft SMTP Server id 14.3.361.1; Fri, 8 Dec 2017 15:52:18 -0800
+Date:   Fri, 8 Dec 2017 23:52:05 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Matthew Fortune <matthew.fortune@mips.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        "Waldemar Brodkorb" <wbx@openadk.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Implement __multi3 for GCC7 MIPS64r6 builds
+In-Reply-To: <20171207072046.31125-1-jhogan@kernel.org>
+Message-ID: <alpine.DEB.2.00.1712082339130.4584@tp.orcam.me.uk>
+References: <20171206085034.3869dc9d@windsurf.lan> <20171207072046.31125-1-jhogan@kernel.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <20171205205926.GJ23510@bhelgaas-glaptop.roam.corp.google.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1512777399-298552-12291-195363-2
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187776
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61382
+X-archive-position: 61383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,57 +53,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, 6 Dec 2017, James Hogan wrote:
 
-
-On 12/05/2017 12:59 PM, Bjorn Helgaas wrote:
-> On Tue, Nov 14, 2017 at 05:12:05PM -0500, Jim Quinlan wrote:
->> From: Florian Fainelli <f.fainelli@gmail.com>
->>
->> This commit adds a memory API suitable for ascertaining the sizes of
->> each of the N memory controllers in a Broadcom STB chip.  Its first
->> user will be the Broadcom STB PCIe root complex driver, which needs
->> to know these sizes to properly set up DMA mappings for inbound
->> regions.
->>
->> We cannot use memblock here or anything like what Linux provides
->> because it collapses adjacent regions within a larger block, and here
->> we actually need per-memory controller addresses and sizes, which is
->> why we resort to manual DT parsing.
->>
->> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
->> ---
->>  drivers/soc/bcm/brcmstb/Makefile |   2 +-
->>  drivers/soc/bcm/brcmstb/memory.c | 172 +++++++++++++++++++++++++++++++++++++++
->>  include/soc/brcmstb/memory_api.h |  25 ++++++
->>  3 files changed, 198 insertions(+), 1 deletion(-)
->>  create mode 100644 drivers/soc/bcm/brcmstb/memory.c
->>  create mode 100644 include/soc/brcmstb/memory_api.h
->>
->> diff --git a/drivers/soc/bcm/brcmstb/Makefile b/drivers/soc/bcm/brcmstb/Makefile
->> index 9120b27..4cea7b6 100644
->> --- a/drivers/soc/bcm/brcmstb/Makefile
->> +++ b/drivers/soc/bcm/brcmstb/Makefile
->> @@ -1 +1 @@
->> -obj-y				+= common.o biuctrl.o
->> +obj-y				+= common.o biuctrl.o memory.o
->> diff --git a/drivers/soc/bcm/brcmstb/memory.c b/drivers/soc/bcm/brcmstb/memory.c
->> new file mode 100644
->> index 0000000..eb647ad9
->> --- /dev/null
->> +++ b/drivers/soc/bcm/brcmstb/memory.c
+> GCC7 is a bit too eager to generate suboptimal __multi3 calls (128bit
+> multiply with 128bit result) for MIPS64r6 builds, even in code which
+> doesn't explicitly use 128bit types, such as the following:
 > 
-> I sort of assume based on [1] that every new file should have an SPDX
-> identifier ("The Linux kernel requires the precise SPDX identifier in
-> all source files") and that the actual text of the GPL can be omitted.
+> unsigned long func(unsigned long a, unsigned long b)
+> {
+> 	return a > (~0UL) / b;
+> }
 > 
-> Only a few files in drivers/pci currently have an SPDX identifier.  I
-> don't know if that's oversight or work-in-progress or what.
+> Which GCC rearanges to:
 > 
-> [1] https://lkml.kernel.org/r/20171204212120.484179273@linutronix.de
+> return (unsigned __int128)a * (unsigned __int128)b > 0xffffffff;
 
-This was submitted before SPDX was consistently enforced tree wide, so
-yes we should fix this.
+ You mean:
 
-Any other comment besides that?
--- 
-Florian
+return (unsigned __int128)a * (unsigned __int128)b > 0xffffffffffffffff;
+
+presumably, or is there another bug here?
+
+> Therefore implement __multi3, but only for MIPS64r6 with GCC7 as under
+> normal circumstances we wouldn't expect any calls to __multi3 to be
+> generated from kernel code.
+
+ That does look bad; I'd expect a `umulditi3' (widening 64-bit by 64-bit 
+unsigned multiplication) kind of operation instead, which should expand 
+internally.  And we only really need to execute DMUHU and then check the 
+result for non-zero here, because the value of the low 64 bits of the 
+product does not matter for the evaluation of the expression.
+
+ I don't know offhand if such a transformation can be handled by GCC as it 
+stands by tweaking the MIPS backend without a corresponding update to the 
+middle end though.
+
+  Maciej

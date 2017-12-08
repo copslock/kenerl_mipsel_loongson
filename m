@@ -1,53 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 17:26:19 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:54546 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990477AbdLHQ0NBZM4s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Dec 2017 17:26:13 +0100
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C908AC074555;
-        Fri,  8 Dec 2017 16:26:06 +0000 (UTC)
-Received: from [10.36.116.132] (ovpn-116-132.ams2.redhat.com [10.36.116.132])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5696E70116;
-        Fri,  8 Dec 2017 16:26:03 +0000 (UTC)
-Subject: Re: [PATCH v3 07/16] KVM: Move vcpu_load to arch-specific
- kvm_arch_vcpu_ioctl_set_sregs
-To:     Christoffer Dall <cdall@kernel.org>, kvm@vger.kernel.org
-Cc:     Andrew Jones <drjones@redhat.com>,
-        Christoffer Dall <christoffer.dall@linaro.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-References: <20171204203538.8370-1-cdall@kernel.org>
- <20171204203538.8370-8-cdall@kernel.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <0faf23f5-3540-47ac-19a9-0f44b2c782a0@redhat.com>
-Date:   Fri, 8 Dec 2017 17:26:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 18:08:10 +0100 (CET)
+Received: from bhuna.collabora.co.uk ([IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3]:34492
+        "EHLO bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbdLHRIBvOS2s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 18:08:01 +0100
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id A702D2705F0
+Date:   Fri, 8 Dec 2017 18:07:55 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 08/13] power: reset: Add a driver for the Microsemi
+ Ocelot reset
+Message-ID: <20171208170755.n6eqgn2jkjh4rbo5@earth>
+References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
+ <20171208154618.20105-9-alexandre.belloni@free-electrons.com>
 MIME-Version: 1.0
-In-Reply-To: <20171204203538.8370-8-cdall@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Fri, 08 Dec 2017 16:26:06 +0000 (UTC)
-Return-Path: <david@redhat.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="he4uuaf73s5d6do6"
+Content-Disposition: inline
+In-Reply-To: <20171208154618.20105-9-alexandre.belloni@free-electrons.com>
+User-Agent: NeoMutt/20171027
+Return-Path: <sebastian.reichel@collabora.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61376
+X-archive-position: 61377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david@redhat.com
+X-original-sender: sebastian.reichel@collabora.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,83 +44,184 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
->  
->  int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-> diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-> index f647e121070e..cdf0be02c95a 100644
-> --- a/arch/powerpc/kvm/booke.c
-> +++ b/arch/powerpc/kvm/booke.c
-> @@ -1632,18 +1632,25 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
->  {
->  	int ret;
->  
-> +	vcpu_load(vcpu);
+--he4uuaf73s5d6do6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Fri, Dec 08, 2017 at 04:46:13PM +0100, Alexandre Belloni wrote:
+> The Microsemi Ocelot SoC has a register allowing to reset the MIPS core.
+> Unfortunately, the syscon-reboot driver can't be used directly (but almos=
+t)
+> as the reset control may be disabled using another register.
+>=20
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+
+Is it safe to apply this and the DT binding patch (once it has Rob's
+Ack-by) via the power-supply tree?
+
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+
+-- Sebastian
+
+>  drivers/power/reset/Kconfig        |  7 ++++
+>  drivers/power/reset/Makefile       |  1 +
+>  drivers/power/reset/ocelot-reset.c | 86 ++++++++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 94 insertions(+)
+>  create mode 100644 drivers/power/reset/ocelot-reset.c
+>=20
+> diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+> index ca0de1a78e85..2372f8e1040d 100644
+> --- a/drivers/power/reset/Kconfig
+> +++ b/drivers/power/reset/Kconfig
+> @@ -113,6 +113,13 @@ config POWER_RESET_MSM
+>  	help
+>  	  Power off and restart support for Qualcomm boards.
+> =20
+> +config POWER_RESET_OCELOT_RESET
+> +	bool "Microsemi Ocelot reset driver"
+> +	depends on MSCC_OCELOT || COMPILE_TEST
+> +	select MFD_SYSCON
+> +	help
+> +	  This driver supports restart for Microsemi Ocelot SoC.
 > +
-> +	ret = -EINVAL;
-
-you can initialize this directly.
-
->  	if (vcpu->arch.pvr != sregs->pvr)
-> -		return -EINVAL;
-> +		goto out;
->  
->  	ret = set_sregs_base(vcpu, sregs);
->  	if (ret < 0)
-> -		return ret;
-> +		goto out;
->  
->  	ret = set_sregs_arch206(vcpu, sregs);
->  	if (ret < 0)
-> -		return ret;
-> +		goto out;
+>  config POWER_RESET_PIIX4_POWEROFF
+>  	tristate "Intel PIIX4 power-off driver"
+>  	depends on PCI
+> diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+> index aeb65edb17b7..df9d92291c67 100644
+> --- a/drivers/power/reset/Makefile
+> +++ b/drivers/power/reset/Makefile
+> @@ -12,6 +12,7 @@ obj-$(CONFIG_POWER_RESET_GPIO_RESTART) +=3D gpio-restar=
+t.o
+>  obj-$(CONFIG_POWER_RESET_HISI) +=3D hisi-reboot.o
+>  obj-$(CONFIG_POWER_RESET_IMX) +=3D imx-snvs-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_MSM) +=3D msm-poweroff.o
+> +obj-$(CONFIG_POWER_RESET_OCELOT_RESET) +=3D ocelot-reset.o
+>  obj-$(CONFIG_POWER_RESET_PIIX4_POWEROFF) +=3D piix4-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_LTC2952) +=3D ltc2952-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_QNAP) +=3D qnap-poweroff.o
+> diff --git a/drivers/power/reset/ocelot-reset.c b/drivers/power/reset/oce=
+lot-reset.c
+> new file mode 100644
+> index 000000000000..1fb14bf17191
+> --- /dev/null
+> +++ b/drivers/power/reset/ocelot-reset.c
+> @@ -0,0 +1,86 @@
+> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> +/*
+> + * Microsemi MIPS SoC reset driver
+> + *
+> + * License: Dual MIT/GPL
+> + * Copyright (c) 2017 Microsemi Corporation
+> + */
+> +#include <linux/delay.h>
+> +#include <linux/io.h>
+> +#include <linux/notifier.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_device.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/reboot.h>
+> +#include <linux/regmap.h>
 > +
-> +	ret = vcpu->kvm->arch.kvm_ops->set_sregs(vcpu, sregs);
->  
-> -	return vcpu->kvm->arch.kvm_ops->set_sregs(vcpu, sregs);
-> +out:
-> +	vcpu_put(vcpu);
-> +	return ret;
->  }
->  
->  int kvmppc_get_one_reg(struct kvm_vcpu *vcpu, u64 id,
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 18011fc4ac49..d95b4f15e52b 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -2729,8 +2729,12 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
->  int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
->  				  struct kvm_sregs *sregs)
->  {
-> +	vcpu_load(vcpu);
+> +struct ocelot_reset_context {
+> +	struct regmap *chip_regs;
+> +	struct regmap *cpu_ctrl;
+> +	struct notifier_block restart_handler;
+> +};
 > +
->  	memcpy(&vcpu->run->s.regs.acrs, &sregs->acrs, sizeof(sregs->acrs));
->  	memcpy(&vcpu->arch.sie_block->gcr, &sregs->crs, sizeof(sregs->crs));
+> +#define ICPU_CFG_CPU_SYSTEM_CTRL_RESET 0x20
+> +#define CORE_RST_PROTECT BIT(2)
 > +
-> +	vcpu_put(vcpu);
->  	return 0;
->  }
->  
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 20a5f6776eea..a31a80aee0b9 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -7500,15 +7500,19 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
->  	int mmu_reset_needed = 0;
->  	int pending_vec, max_bits, idx;
->  	struct desc_ptr dt;
-> +	int ret;
+> +#define CHIP_REGS_SOFT_RST 0x8
+> +#define SOFT_CHIP_RST BIT(0)
 > +
-> +	vcpu_load(vcpu);
->  
-> +	ret = -EINVAL;
+> +static int ocelot_restart_handle(struct notifier_block *this,
+> +				 unsigned long mode, void *cmd)
+> +{
+> +	struct ocelot_reset_context *ctx =3D container_of(this, struct
+> +							ocelot_reset_context,
+> +							restart_handler);
+> +
+> +	/* Make sure the core is not protected from reset */
+> +	regmap_update_bits(ctx->cpu_ctrl, ICPU_CFG_CPU_SYSTEM_CTRL_RESET,
+> +			   CORE_RST_PROTECT, 0);
+> +
+> +	regmap_write(ctx->chip_regs, CHIP_REGS_SOFT_RST, SOFT_CHIP_RST);
+> +
+> +	pr_emerg("Unable to restart system\n");
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static int ocelot_reset_probe(struct platform_device *pdev)
+> +{
+> +	struct ocelot_reset_context *ctx;
+> +	struct device *dev =3D &pdev->dev;
+> +	int err;
+> +
+> +	ctx =3D devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
+> +	if (!ctx)
+> +		return -ENOMEM;
+> +
+> +	ctx->chip_regs =3D syscon_node_to_regmap(of_get_parent(dev->of_node));
+> +	if (IS_ERR(ctx->chip_regs))
+> +		return PTR_ERR(ctx->chip_regs);
+> +
+> +	ctx->cpu_ctrl =3D syscon_regmap_lookup_by_compatible("mscc,ocelot-cpu-s=
+yscon");
+> +	if (IS_ERR(ctx->cpu_ctrl))
+> +		return PTR_ERR(ctx->cpu_ctrl);
+> +
+> +	ctx->restart_handler.notifier_call =3D ocelot_restart_handle;
+> +	ctx->restart_handler.priority =3D 192;
+> +	err =3D register_restart_handler(&ctx->restart_handler);
+> +	if (err)
+> +		dev_err(dev, "can't register restart notifier (err=3D%d)\n", err);
+> +
+> +	return err;
+> +}
+> +
+> +static const struct of_device_id ocelot_reset_of_match[] =3D {
+> +	{ .compatible =3D "mscc,ocelot-chip-reset" },
+> +	{}
+> +};
+> +
+> +static struct platform_driver ocelot_reset_driver =3D {
+> +	.probe =3D ocelot_reset_probe,
+> +	.driver =3D {
+> +		.name =3D "ocelot-chip-reset",
+> +		.of_match_table =3D ocelot_reset_of_match,
+> +	},
+> +};
+> +builtin_platform_driver(ocelot_reset_driver);
+> --=20
+> 2.15.1
+>=20
 
-dito
+--he4uuaf73s5d6do6
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAloqxuoACgkQ2O7X88g7
++poQrBAAg1jPlzymdt0xW9C0sKXlqJHr0DaUXSdQ4zbRSjH55WQR9VJvYGUHKV7v
+zAG4qqbWnwBOxKDHzLShvfgHiKoOCGy83su+eiNwCnUCMDuKnlVNYgorLXwCwwwK
+omCq7qfCD/YrL9kFlJoaV4/JrndpSvSVIbV5YKNVvxXr5o/eVLkpg5KS99CMCFSI
+ESlW5+KmRzQx8YpaJTbmjK2vYhb38Bkj37NfqPS9lN1bL+o59cix9YqN/VDjz0hf
+oX9BaE8CwsFZ6kBge1RP/DhSCoDNDpeUA2d7KW+Ccrwr5kZJ8phcvTaSa7NctYPw
+LR43EzLDm+qBmtqsnStAFEnbkKVwknjV3c+bL2ro0Q6WO5HcBoNJUA/El5IXnOUQ
+oqSRZuTq5hahPL2kqJuZ7jilnIO36792MH+PQBc94pNXSsy0+IGAbc8c3mTh6RDN
+UUGch4IaFDn5kddW0m5z9epSjPfpj9DaXa4wxUOYI6jEfC6e+6cyg6gzNnV6Y8oE
+OUX4dfbrhvzc1xOuuV4okfDuvbaw8kLswHi0y8SenKB+qTZAdbdFuCkpW3UV+4sp
+mf9ysqUOCgCRY5U95RR+HV5rUsa0VlL0Dsd3RHrzo030WavJ0KLaitdBgzJGjGH3
+MQvQ0HGjg0rLrkoHznql6fJDuM+wuWD3dyKcvf7zS6ojeSV/1z4=
+=LdCR
+-----END PGP SIGNATURE-----
 
--- 
-
-Thanks,
-
-David / dhildenb
+--he4uuaf73s5d6do6--

@@ -1,75 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 14:53:01 +0100 (CET)
-Received: from mail-pf0-x231.google.com ([IPv6:2607:f8b0:400e:c00::231]:32977
-        "EHLO mail-pf0-x231.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990439AbdLHNwyZPJRZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 14:52:54 +0100
-Received: by mail-pf0-x231.google.com with SMTP id y89so7342223pfk.0
-        for <linux-mips@linux-mips.org>; Fri, 08 Dec 2017 05:52:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=hBJniWlbydZY/Ul6eI2tSZUtEhBsYGVzQ/vBt1k2Va4=;
-        b=plDNWWVuHERsoxC2LWZveovYzvB89k6MDv7ZUuWVElXsGd2jsmsd8s3B8obt5oXoH0
-         jLTcUvG4Fs0DhTDCL55jxuVlmXf64sZCuuX1rg1smrzbsq2oHDhyYp6hNl1O8J9ImAi6
-         S5UdrYnVSM1FPsTbmMl/0eULo8Uw+PSsEmH0RtMAgo3HYhOHpmlPzunsDKnW8Hk1A/YX
-         TyZAHzuKT8b/ffUC1TEC5yodaULW/uEsigoKQjtciK7VT62qAlLc2iTTvnfS1LZtpqdY
-         LaRUafYNDEuCQ44ahcYN45OULVJBrvVxL5HNb6enqF5NAIGkYkHvJSVn32Tuqp4/rROu
-         sKKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=hBJniWlbydZY/Ul6eI2tSZUtEhBsYGVzQ/vBt1k2Va4=;
-        b=UPK0jcwKfupM/TXXDi5PyKXXyEvXLxNUxperyfSB44rDC48tAvxfpBIxzK7EKDHg3h
-         oQISf3/5ZDQkjbxSu5OFkQWNHfm6VsomtTYYzVssDWynFemF9VSOh3q7nOpr9lZCBmUm
-         0ohA0R1oNZTmUQ+g3kjGlD7YOWmWwaIdNLx+cOejyWmZx+4UlYuLrI9oL0fkm8SoCUd2
-         c9oAt+NWdQ2c9fUL7M33sYuDfRKKjztruDkV0pRYKDCOqILhirhtd7YI4giDB7ibhKly
-         /4jGvGR3JDdk0hNKH8gz37wDeFZbMFkj2FtMkGMRg37OxZe9HEr6ksYqjoNrZoV12nka
-         pFVw==
-X-Gm-Message-State: AJaThX50gdvDWSqStB+9BFez4xKYvVpqOW44uep8kePxRSg/NdEU5En1
-        fKIJFyYt2iEvRLmvrxw77KY=
-X-Google-Smtp-Source: AGs4zMZSs5EgZL4rpJLW49HhL2cBFXekE+kJgjsBMlGxVdqntgKbT++2fQBXikWAEDQzphmccfQhTA==
-X-Received: by 10.99.167.6 with SMTP id d6mr29390322pgf.100.1512741167777;
-        Fri, 08 Dec 2017 05:52:47 -0800 (PST)
-Received: from edumazet-glaptop3.lan (c-67-180-167-114.hsd1.ca.comcast.net. [67.180.167.114])
-        by smtp.googlemail.com with ESMTPSA id m87sm15572068pfi.88.2017.12.08.05.52.45
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 08 Dec 2017 05:52:46 -0800 (PST)
-Message-ID: <1512741164.25033.28.camel@gmail.com>
-Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
- next debugging steps?
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-To:     Eric Dumazet <edumazet@google.com>,
-        Matt Turner <mattst88@gmail.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linux-nfs@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 16:47:47 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:40673 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990474AbdLHPrjnDKsP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 16:47:39 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id E639820973; Fri,  8 Dec 2017 16:47:33 +0100 (CET)
+Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id B8E5F2037E;
+        Fri,  8 Dec 2017 16:47:23 +0100 (CET)
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>
-Date:   Fri, 08 Dec 2017 05:52:44 -0800
-In-Reply-To: <CANn89iJKGRLVNAE99JWiyXcOXveytkjbQAiZ9XPiJc6fyEdFVA@mail.gmail.com>
-References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
-         <CAEdQ38G4VTXDGOarmmTac=hP92VJbQHRFxQTaSWQ3j4d63pogg@mail.gmail.com>
-         <CAEdQ38HcPswBk3pUHzQerFZ=4KjPc5nVYTqNnGQNMk7QbPXuOQ@mail.gmail.com>
-         <CANn89iJKGRLVNAE99JWiyXcOXveytkjbQAiZ9XPiJc6fyEdFVA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1+deb9u1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <eric.dumazet@gmail.com>
+        Jason Cooper <jason@lakedaemon.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+        linux-pm@vger.kernel.org
+Subject: [PATCH v2 00/13] MIPS: add support for the Microsemi MIPS SoCs
+Date:   Fri,  8 Dec 2017 16:46:05 +0100
+Message-Id: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
+X-Mailer: git-send-email 2.15.1
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61358
+X-archive-position: 61359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eric.dumazet@gmail.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,176 +43,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2017-12-08 at 05:42 -0800, Eric Dumazet wrote:
-> On Thu, Dec 7, 2017 at 11:54 PM, Matt Turner <mattst88@gmail.com>
-> wrote:
-> > On Thu, Dec 7, 2017 at 11:00 PM, Matt Turner <mattst88@gmail.com>
-> > wrote:
-> > > On Sun, Mar 12, 2017 at 6:43 PM, Matt Turner <mattst88@gmail.com>
-> > > wrote:
-> > > > On a Broadcom BCM91250a MIPS system I can reliably trigger NFS
-> > > > corruption on the first file read.
-> > > > 
-> > > > To demonstrate, I downloaded five identical copies of the gcc-
-> > > > 5.4.0
-> > > > source tarball. On the NFS server, they hash to the same value:
-> > > > 
-> > > > server distfiles # md5sum gcc-5.4.0.tar.bz2*
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
-> > > > 
-> > > > On the MIPS system (the NFS client):
-> > > > 
-> > > > bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2.2
-> > > > 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
-> > > > bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
-> > > > 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
-> > > > 
-> > > > The first file read will contain some corruption, and it is
-> > > > persistent until...
-> > > > 
-> > > > bcm91250a-le distfiles # echo 1 > /proc/sys/vm/drop_caches
-> > > > bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
-> > > > 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
-> > > > 
-> > > > the caches are dropped, at which point it reads back properly.
-> > > > 
-> > > > Note that the corruption is different across reboots, both in
-> > > > the size
-> > > > of the corruption and the location. I saw 1900~ and 1400~ byte
-> > > > sequences corrupted on separate occasions, which don't
-> > > > correspond to
-> > > > the system's 16kB page size.
-> > > > 
-> > > > I've tested kernels from v3.19 to 4.11-rc1+ (master branch from
-> > > > today). All exhibit this behavior with differing frequencies.
-> > > > Earlier
-> > > > kernels seem to reproduce the issue less often, while more
-> > > > recent
-> > > > kernels reliably exhibit the problem every boot.
-> > > > 
-> > > > How can I further debug this?
-> > > 
-> > > I think I was wrong about the statement about kernels v3.19 to
-> > > 4.11-rc1+. I found out I couldn't reproduce with 4.7-rc1 and then
-> > > bisected to 4cd13c21b207e80ddb1144c576500098f2d5f882 ("softirq:
-> > > Let
-> > > ksoftirqd do its job"). Still reproduces with current tip of
-> > > Linus'
-> > > tree.
-> > > 
-> > > Any ideas? The board's ethernet is an uncommon device supported
-> > > by
-> > > CONFIG_SB1250_MAC. Something about the ethernet driver maybe?
-> > 
-> > With the patch reverted on master (reverts cleanly), NFS corruption
-> > no
-> > longer happens.
-> 
-> Hi Matt.
-> 
-> Thanks for bisecting.
-> 
-> Patch simply exposes an existing bug more often by changing the way
-> driver functions are scheduled.
-> 
-> Which is probably a good thing.
-> 
-> sbmac_intr() looks extremely suspicious to me.
-> 
-> A NAPI driver hard interrupt should simply schedule NAPI.
-> 
-> Apparently, if sbmac_intr() can not grab NAPIF_STATE_SCHED bit, it
-> directly calls sbdma_rx_process() from
-> hard interrupt context.
-> 
-> Insane really.
+Hi,
 
-Please try this fix (not compiled on my x86 laptop, and I had no coffee
-yet, so it might have some trivial errors)
+This patch series adds initial support for the Microsemi MIPS SoCs. It
+is currently focusing on the Microsemi Ocelot (VSC7513, VSC7514).
 
-diff --git a/drivers/net/ethernet/broadcom/sb1250-mac.c b/drivers/net/ethernet/broadcom/sb1250-mac.c
-index ecdef42f0ae63641419a603f0b4eec2fc213c334..3ddd9ca469b280e70509b22fd7d3f449c81fbedc 100644
---- a/drivers/net/ethernet/broadcom/sb1250-mac.c
-+++ b/drivers/net/ethernet/broadcom/sb1250-mac.c
-@@ -287,8 +287,6 @@ static int sbdma_add_rcvbuffer(struct sbmac_softc *sc, struct sbmacdma *d,
- static int sbdma_add_txbuffer(struct sbmacdma *d, struct sk_buff *m);
- static void sbdma_emptyring(struct sbmacdma *d);
- static void sbdma_fillring(struct sbmac_softc *sc, struct sbmacdma *d);
--static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
--			    int work_to_do, int poll);
- static void sbdma_tx_process(struct sbmac_softc *sc, struct sbmacdma *d,
- 			     int poll);
- static int sbmac_initctx(struct sbmac_softc *s);
-@@ -1063,7 +1061,7 @@ static void sbmac_netpoll(struct net_device *netdev)
-  ********************************************************************* */
- 
- static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
--			    int work_to_do, int poll)
-+			    int work_to_do)
- {
- 	struct net_device *dev = sc->sbm_dev;
- 	int curidx;
-@@ -1076,7 +1074,6 @@ static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
- 
- 	prefetch(d);
- 
--again:
- 	/* Check if the HW dropped any frames */
- 	dev->stats.rx_fifo_errors
- 	    += __raw_readq(sc->sbm_rxdma.sbdma_oodpktlost) & 0xffff;
-@@ -1169,10 +1166,7 @@ static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
- 				}
- 				prefetch(sb->data);
- 				prefetch((const void *)(((char *)sb->data)+32));
--				if (poll)
--					dropped = netif_receive_skb(sb);
--				else
--					dropped = netif_rx(sb);
-+				dropped = netif_receive_skb(sb);
- 
- 				if (dropped == NET_RX_DROP) {
- 					dev->stats.rx_dropped++;
-@@ -1201,10 +1195,6 @@ static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
- 		d->sbdma_remptr = SBDMA_NEXTBUF(d,sbdma_remptr);
- 		work_done++;
- 	}
--	if (!poll) {
--		work_to_do = 32;
--		goto again; /* collect fifo drop statistics again */
--	}
- done:
- 	return work_done;
- }
-@@ -2006,11 +1996,6 @@ static irqreturn_t sbmac_intr(int irq,void *dev_instance)
- 			__napi_schedule(&sc->napi);
- 			/* Depend on the exit from poll to reenable intr */
- 		}
--		else {
--			/* may leave some packets behind */
--			sbdma_rx_process(sc,&(sc->sbm_rxdma),
--					 SBMAC_MAX_RXDESCR * 2, 0);
--		}
- 	}
- 	return IRQ_RETVAL(handled);
- }
-@@ -2529,7 +2514,7 @@ static int sbmac_poll(struct napi_struct *napi, int budget)
- 	struct sbmac_softc *sc = container_of(napi, struct sbmac_softc, napi);
- 	int work_done;
- 
--	work_done = sbdma_rx_process(sc, &(sc->sbm_rxdma), budget, 1);
-+	work_done = sbdma_rx_process(sc, &(sc->sbm_rxdma), budget);
- 	sbdma_tx_process(sc, &(sc->sbm_txdma), 1);
- 
- 	if (work_done < budget) {
+It adds support for the IRQ controller, pinmux and gpio controller and
+reset control.
+
+This produces a kernel that can boot to the console.
+
+This is a single series for reference but it can also be taken
+separately by each maintainer as each drivers are independant.
+
+Changes in v2:
+ - removed the wildcard in MAINAINERS
+ - corrected the Cc list
+ - added proper documentation for both syscons
+ - removed the mscc,cpucontrol property
+ - updated the ranges property in the ocelot dtsi
+
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-gpio@vger.kernel.org
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: linux-pm@vger.kernel.org
+
+
+Alexandre Belloni (13):
+  dt-bindings: Add vendor prefix for Microsemi Corporation
+  dt-bindings: interrupt-controller: Add binding for the Microsemi
+    Ocelot interrupt controller
+  irqchip: Add a driver for the Microsemi Ocelot controller
+  dt-bindings: pinctrl: Add bindings for Microsemi Ocelot
+  pinctrl: Add Microsemi Ocelot SoC driver
+  dt-bindings: mips: Add bindings for Microsemi SoCs
+  dt-bindings: power: reset: Document ocelot-reset binding
+  power: reset: Add a driver for the Microsemi Ocelot reset
+  MIPS: mscc: Add initial support for Microsemi MIPS SoCs
+  MIPS: mscc: add ocelot dtsi
+  MIPS: mscc: add ocelot PCB123 device tree
+  MIPS: defconfigs: add a defconfig for Microsemi SoCs
+  MAINTAINERS: Add entry for Microsemi MIPS SoCs
+
+ .../interrupt-controller/mscc,ocelot-icpu-intr.txt |  22 +
+ Documentation/devicetree/bindings/mips/mscc.txt    |  46 ++
+ .../bindings/pinctrl/mscc,ocelot-pinctrl.txt       |  39 ++
+ .../bindings/power/reset/ocelot-reset.txt          |  17 +
+ .../devicetree/bindings/vendor-prefixes.txt        |   1 +
+ MAINTAINERS                                        |   7 +
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  24 +
+ arch/mips/boot/dts/Makefile                        |   1 +
+ arch/mips/boot/dts/mscc/Makefile                   |   6 +
+ arch/mips/boot/dts/mscc/ocelot.dtsi                | 115 +++++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts          |  27 ++
+ arch/mips/configs/mscc_defconfig                   |  84 ++++
+ arch/mips/mscc/Makefile                            |  11 +
+ arch/mips/mscc/Platform                            |  12 +
+ arch/mips/mscc/setup.c                             | 106 +++++
+ drivers/irqchip/Kconfig                            |   5 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-mscc-ocelot.c                  | 109 +++++
+ drivers/pinctrl/Kconfig                            |  10 +
+ drivers/pinctrl/Makefile                           |   1 +
+ drivers/pinctrl/pinctrl-ocelot.c                   | 505 +++++++++++++++++++++
+ drivers/power/reset/Kconfig                        |   7 +
+ drivers/power/reset/Makefile                       |   1 +
+ drivers/power/reset/ocelot-reset.c                 |  86 ++++
+ 25 files changed, 1244 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/mscc.txt
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/mscc,ocelot-pinctrl.txt
+ create mode 100644 Documentation/devicetree/bindings/power/reset/ocelot-reset.txt
+ create mode 100644 arch/mips/boot/dts/mscc/Makefile
+ create mode 100644 arch/mips/boot/dts/mscc/ocelot.dtsi
+ create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+ create mode 100644 arch/mips/configs/mscc_defconfig
+ create mode 100644 arch/mips/mscc/Makefile
+ create mode 100644 arch/mips/mscc/Platform
+ create mode 100644 arch/mips/mscc/setup.c
+ create mode 100644 drivers/irqchip/irq-mscc-ocelot.c
+ create mode 100644 drivers/pinctrl/pinctrl-ocelot.c
+ create mode 100644 drivers/power/reset/ocelot-reset.c
+
+-- 
+2.15.1

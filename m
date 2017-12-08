@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 16:48:16 +0100 (CET)
-Received: from mail.free-electrons.com ([62.4.15.54]:40680 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 16:48:44 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:40687 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990475AbdLHPrjrVw4P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 16:47:39 +0100
+        by eddie.linux-mips.org with ESMTP id S23990477AbdLHPrkI5WLP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2017 16:47:40 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 3BF0220972; Fri,  8 Dec 2017 16:47:34 +0100 (CET)
+        id 9292D2037F; Fri,  8 Dec 2017 16:47:34 +0100 (CET)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 157B42037F;
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 6197820391;
         Fri,  8 Dec 2017 16:47:24 +0100 (CET)
 From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Subject: [PATCH v2 01/13] dt-bindings: Add vendor prefix for Microsemi Corporation
-Date:   Fri,  8 Dec 2017 16:46:06 +0100
-Message-Id: <20171208154618.20105-2-alexandre.belloni@free-electrons.com>
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: [PATCH v2 02/13] dt-bindings: interrupt-controller: Add binding for the Microsemi Ocelot interrupt controller
+Date:   Fri,  8 Dec 2017 16:46:07 +0100
+Message-Id: <20171208154618.20105-3-alexandre.belloni@free-electrons.com>
 X-Mailer: git-send-email 2.15.1
 In-Reply-To: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
 References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
@@ -22,7 +24,7 @@ Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61360
+X-archive-position: 61361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,26 +41,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Microsemi Corporation provides semiconductor and system solutions for
-aerospace & defense, communications, data center and industrial markets.
+Add the Device Tree binding documentation for the Microsemi Ocelot
+interrupt controller that is part of the ICPU. It is connected directly to
+the MIPS core interrupt controller.
 
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
 Acked-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
- 1 file changed, 1 insertion(+)
+ .../interrupt-controller/mscc,ocelot-icpu-intr.txt | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
-index 0994bdd82cd3..7b880084fd37 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.txt
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
-@@ -219,6 +219,7 @@ motorola	Motorola, Inc.
- moxa	Moxa Inc.
- mpl	MPL AG
- mqmaker	mqmaker Inc.
-+mscc	Microsemi Corporation
- msi	Micro-Star International Co. Ltd.
- mti	Imagination Technologies Ltd. (formerly MIPS Technologies Inc.)
- multi-inno	Multi-Inno Technology Co.,Ltd
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt b/Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt
+new file mode 100644
+index 000000000000..b47a8a02b17b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt
+@@ -0,0 +1,22 @@
++Microsemi Ocelot SoC ICPU Interrupt Controller
++
++Required properties:
++
++- compatible : should be "mscc,ocelot-icpu-intr"
++- reg : Specifies base physical address and size of the registers.
++- interrupt-controller : Identifies the node as an interrupt controller
++- #interrupt-cells : Specifies the number of cells needed to encode an
++  interrupt source. The value shall be 1.
++- interrupt-parent : phandle of the CPU interrupt controller.
++- interrupts : Specifies the CPU interrupt the controller is connected to.
++
++Example:
++
++		intc: interrupt-controller@70000070 {
++			compatible = "mscc,ocelot-icpu-intr";
++			reg = <0x70000070 0x70>;
++			#interrupt-cells = <1>;
++			interrupt-controller;
++			interrupt-parent = <&cpuintc>;
++			interrupts = <2>;
++		};
 -- 
 2.15.1

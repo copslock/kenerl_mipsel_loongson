@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 01:11:53 +0100 (CET)
-Received: from mail-bn3nam01on0088.outbound.protection.outlook.com ([104.47.33.88]:35584
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2017 01:12:24 +0100 (CET)
+Received: from mail-bn3nam01on0054.outbound.protection.outlook.com ([104.47.33.54]:62912
         "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990427AbdLHAKCAtbvA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Dec 2017 01:10:02 +0100
+        id S23991526AbdLHAKO364gA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 8 Dec 2017 01:10:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=fdvPLLqLfpJyNA4u/YMGcnAnRGFLyPaxU0PrV2HKspo=;
- b=LvV920xxDpOZe6MlHrOv0nanqN4KP7Ox6vXsIVgTRzgs4lUDeXe7Gt76lu7QWqCNDA0GHllFbAkjM/bvU9moh0CYLK+4qz6UiWhwWcpl3Xobx6wWjcarvwzc/6CPBS1GiwaOCkRiSxCbtGaXvx0TXzpCSEATaRtQAZdpiDwbqo4=
+ bh=ToX0XFkodJPEskvjYmH/sfsiaWp675ikHiLFNxjahCE=;
+ b=a2i5xlcUxvfG6kYUQc6GEa2UfflIrUh5XEMWBY3NQzTcIAajUV9Zu/sNnHL686jFKaNanpo5WmZ3HW2lMzD3unKbG8TVjRm00Ble2IOv7DsiS9DtLzJ8HifGkhMBICakagSVpPeefSXX7dKORzEoykN+nb+87vSuOY1Z2DXQbXo=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
  MWHPR07MB3504.namprd07.prod.outlook.com (10.164.192.31) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.302.9; Fri, 8 Dec 2017 00:09:56 +0000
+ 15.20.302.9; Fri, 8 Dec 2017 00:09:58 +0000
 From:   David Daney <david.daney@cavium.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@mips.com>, netdev@vger.kernel.org,
@@ -26,10 +26,12 @@ Cc:     linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Philippe Ombredanne <pombredanne@nexb.com>,
+        Carlos Munoz <cmunoz@cavium.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v6 net-next,mips 4/7] staging: octeon: Remove USE_ASYNC_IOBDMA macro.
-Date:   Thu,  7 Dec 2017 16:09:31 -0800
-Message-Id: <20171208000934.6554-5-david.daney@cavium.com>
+Subject: [PATCH v6 net-next,mips 5/7] MIPS: Octeon: Add a global resource manager.
+Date:   Thu,  7 Dec 2017 16:09:32 -0800
+Message-Id: <20171208000934.6554-6-david.daney@cavium.com>
 X-Mailer: git-send-email 2.14.3
 In-Reply-To: <20171208000934.6554-1-david.daney@cavium.com>
 References: <20171208000934.6554-1-david.daney@cavium.com>
@@ -39,47 +41,46 @@ X-Originating-IP: [50.233.148.156]
 X-ClientProxiedBy: CO2PR07CA0068.namprd07.prod.outlook.com (10.174.192.36) To
  MWHPR07MB3504.namprd07.prod.outlook.com (10.164.192.31)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8360842b-90ba-4c1c-c0bb-08d53dd0040a
+X-MS-Office365-Filtering-Correlation-Id: ca7a627f-958d-4fd7-00e6-08d53dd007e8
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(5600026)(4604075)(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(2017052603307);SRVR:MWHPR07MB3504;
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;3:swQ3fq+sWV+nnuOrsytZq2q7pBla51NY0rfxRKSZjiyneHY48NRQ3WYwzdRsZOU+Lgam3A7WZ2FBTa6kL39Txfzcj/+4xl9uQL6acDiWNPDTPM5Xm2aYYrdb3lriSFe1f0CXxIYloSLNNOioS3eP7BFpGjnJI7bXRnU9Ga/rOsz7yr2/iAP39RZtxDC+g8aa68wSYjYe8ADWXmj8teMeAbQHaPGKrJ1VyzB0Y84nZHMnppSfMrbe+hkJ3h35Tj3/;25:spnl6CyTse44Fl5y4Fbisg1/a4cQOhXbFHPfQwiO2NOX67/qjAqN6Qdnk+oR8Vz+4bJMOg5cP3Ch9l/u4dm7cMKBzCDl6hHaDc9TJ1kuwgjsWuwUwB61LCKTpgzvebNDYGuO7jJ4nYKnhHbq7xNFrm/g3QI0A8DdNeZ98CkecpB6PUFc8Zy8J//YHtiEDhbdSVUGkcQm1kEh4OcB/OkXOPCy21/Xb+khmvVFLK1ocwV7kKYCuQdbC7epSeZhso71vBZ9aTPy/uVkRImJ2dUwScZbfQvG8jSH/IeUA/kKYY7ydgsW4S2Xj2rRsvJznq8ZC+XZWmV/v1gCkgieySF+MQ==;31:BgJ4tVOUvb2JIVQAIu2WPV3VTkqzzrUU6rtXi5F8C1dfut2S49pH+s4jDCnHI2NVUWEGryTtR3eZtn8J7bea4WepSkpLHlXWZt55xoxxMuRR5sGTRrcAtAl4HXeR5jQhFhk8fRI/V2YeWLzUi/+AAUqQJRkwDNQVbNIA62GLnxkcP6Sg9LL8TJXbTd4niNdYQVVhQh99i0qqnSXiAXKWNDPEnJgr72rDT2LgJ4opmy8=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;3:Tn9T2x/yraqOHMRynC5FuSBFiRXY6FLqkm12+DLU3DRaj3zB9+HNh85nNIETYOJ+fYtbladejvJ71JIcRK4ua2WYK3uT/gbDi6pu5njAor5v7qnk4X4MKdwtEkevLgyidFAXb3y5/nfVOzFyhhLsVVM+QP9960YoXJcYjqp6naam3heBbe/sA1EFpVWveV0IN8ozeZf3zMZ+9NDmuA4obWTW1HLVp6E7lRTANcw3TsSS84hD3ITPXNJEArTmILBP;25:4Ty+9qMVxxGXNHxrc7kvR/sdi0qSaxpDq2VgOu+yAGNQgkFFAid/uR5OaA8miZm2/7fPKEKXELNpBmAHs9hrrKwmu4iJK6IohUGHEpaakf2ifmOqkOukVgu1zPIYGQGjhTGz69UXXrEt6crYkgHdGta6RuHWFkrzb1i/7bzc6gn2txX42C8Uh6aDGA7/JSydxnvJqicoYqow7LH763MCwqL7yagB9Wy7bj4cnEXCta1dMfTfXnFZCZHCedzLpUJ0ioBH3YYJdUgZb+kb0Zo2HyNhWca/ncS0SdIBYzz0X+CXgBjB2UjwMF9Fn/KqEK7a3TaB49pk5D0rpYkVmMrgiQ==;31:kkkJ2CvWiXQHUfdcAuxcnqrhAg+pqk6GFeEirZEwB1V07QJAoWAoN3TH9CoV1wLLEr+5FDChZ1hxTwMiR5xN8Tb2KmDtFJwdtEcrWMJPvop3s9itNJPbhSuKQfFbhQZUR6qR4tsaMImjssJ11Q5ag6pXKgncWL85HpFa03N+WrebR7evuK/frnXK9bmm1ehUzFlM3BczRIrJPCNirQS3xzCz60xloEGe41Hdkj8bMcg=
 X-MS-TrafficTypeDiagnostic: MWHPR07MB3504:
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;20:vkgt0L7kfdMRYnnT9x4DS1NKEii5TjVRGJCbCBWt4fB2yRKj5m1r2ngpvO/ul64CO740QBVGa7q78mJUBUcqK6cPPvSPIa5jEG5nNsBW8yZfoLLceJR4aFuqjL+xMw/esqGb53UqRa/rNwO/eL+v4H7pqetmIRQjjW8UQHEbp3K9UONQdexPUV135owV46pe3HlUaLCK26mHTYOCqlOoa0dncOyHQiv5il7CAiajCq29DcbOiBsDHOHijTz+X6DBzz4TOeTSaGn91mhtrRJkzDRjaIpaW3H1+Rr8WcSSgMadL7+94wgdFQqu69Pd+VcMtzUWjH6x72LpUdeNIyxMTAsERSiTS5Zy3oCJI6lnzawT7vV2KzBa0Ab7m8W1VFTEC5ADEfcEVdnMbzWdysoPBLHXCiaKuhCuwXdqSHU88drSoEahb6iAyhGCFywuTe9VEEHcealvjZpdg8KNNv9yP85A2BDKn5JO5A4FpTCIvc8j2rentk0xwoI8TznXPC/i;4:7IQmvLguQ8wp3iKiQDFuvkTt3JVI+s3xLA9BFdFKOvK0MUcClYnHUko2y1Ajzin5t6ODKCtMkEJOCW0gsIzH8Gr39zDOS74AEy/nSezZpj+9XwaR48Yr2QHLtP2G1uZ16KGWEdPkK5cU/qjEj1Gc4f8W/iHfSMWYJePeL6YRxrRJnbA0EePAgfxKRqFLVi/1hkAnoNDVuXaTVuCo1RVHjCQ3RmDRNl+BEoWC5sxrmVt+Ba5lBL9Ycw18+DP40RNzUMKC/xwnHY1HyQaGj5l3lg==
-X-Microsoft-Antispam-PRVS: <MWHPR07MB35042DDC67560256BB33384897300@MWHPR07MB3504.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;20:ULAPN0fmSxUhyLpXdCIbUORaRb5kPWNr1gmNekjbsDt0nRpy3ywocPA78iE3QX+G6B9WI8bKPaLKKSK0nx0tiaReY9KmRPWGyvjkwJHbIg5ZIc4MPH1P8OUpnYw3F0gSY2+x7KZNpkg1oEZWdHnV6Al5bdqZ0Flho9ZZgdjfxuuwHVS/jfd30fj95k4LRI1SZTnY96W+2xNlHe7BGTr+ydzrTgubfGc33gwnD8Z/Gf+hgNKN/ko/6SwOyvGUxaHwhSXOm+2bwt7FvGefjViOP3OVbN6UZG7fDzzlAgoqYADqfUWuFC26neoCeSudJXOmwR+BBYUwAqD7nhtQwE2sR1JXdrTLEdrNj6VMxKIz2GVhuF4g92VgMUPiUKPhrzp6GzYiuBaKcRTynATMJ1NUKVCZUFqDgtnCCoD3BvCqk1hPAi0hYAY5d2JUFq4QbT006bgrL3fTPlD1PQsN+d3IxbpJjzk8LE5NhFZa+QQChpv4RLZBe6ZpvigKExxKt9MW;4:uRKkOyFhu5QURhDIWIMzkkescbo1BRgzsBoNwSscKrqfzmpWifOIbni0fSnd+BI96ggHFMQ3mteBMmI70H8ZIFUEsen6TdnVAI2xuIoOQcwtoi9uhgjWYl0hP3E/BrqaOVHZcSkgAgCcve2GmNjFfI/M7/9ncXwS+0OXqyxa/YR4AG3PGeAFL7CPZw57JRPjOZCopz9bykFLhqeYGDBYhg7w+V0HJkdRHU3tH64cs8Mt4NK22BUernRmciGjcmYbWFpz+FIvHAOttG6Ne1upzA==
+X-Microsoft-Antispam-PRVS: <MWHPR07MB3504D6396BC14724DECF8DFD97300@MWHPR07MB3504.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(2401047)(8121501046)(5005006)(10201501046)(3231022)(93006095)(93001095)(3002001)(6041248)(201703131423075)(201702281528075)(201703061421075)(201703061406153)(20161123564025)(20161123558100)(20161123555025)(20161123562025)(20161123560025)(6072148)(201708071742011);SRVR:MWHPR07MB3504;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:MWHPR07MB3504;
 X-Forefront-PRVS: 0515208626
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(979002)(366004)(346002)(376002)(199004)(189003)(86362001)(105586002)(106356001)(81166006)(81156014)(8676002)(69596002)(6512007)(47776003)(107886003)(66066001)(48376002)(4326008)(39060400002)(7736002)(50466002)(305945005)(53416004)(53936002)(51416003)(52116002)(68736007)(36756003)(76176011)(6486002)(6506006)(8936002)(50226002)(478600001)(33646002)(72206003)(16526018)(25786009)(3846002)(6116002)(97736004)(16586007)(316002)(2906002)(7416002)(1076002)(54906003)(110136005)(6666003)(5660300001)(2950100002)(142933001)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR07MB3504;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(366004)(346002)(376002)(199004)(189003)(575784001)(86362001)(105586002)(106356001)(81166006)(81156014)(8676002)(69596002)(6512007)(47776003)(107886003)(66066001)(48376002)(4326008)(39060400002)(7736002)(50466002)(305945005)(53416004)(53936002)(51416003)(52116002)(68736007)(36756003)(76176011)(6486002)(6506006)(8936002)(50226002)(478600001)(33646002)(72206003)(16526018)(25786009)(3846002)(6116002)(97736004)(16586007)(316002)(2906002)(7416002)(1076002)(54906003)(110136005)(6666003)(5660300001)(2950100002)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR07MB3504;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR07MB3504;23:PHmSJrkyst88t/m3UxUqwbcEoya0VoCmH6lF37SvO?=
- =?us-ascii?Q?/s3GL6j55kX8FjFQQJO+HAV4f0fX0hb+xBAgOZ1LzzqqkCDMA89SA2+VyslP?=
- =?us-ascii?Q?D6tvqj24WhsXnmfc+UeKgxCbNj9BB7XhM5IrZGt64QCWpbFGHHeYJk4Ac+YW?=
- =?us-ascii?Q?DPhv4hPC0r75Ng8B5zMFe3c5pS+C00rG17UY9Cf7V1CubwNpOG9s3rGS94oL?=
- =?us-ascii?Q?amvmsfmy4te7oHGL1dHYW/KLu2fYiRK2GdVtOu4pymRO//5U6GtmTL37w7uY?=
- =?us-ascii?Q?HAxA5iyafIqHTCKUZU3gmnt6yLhUCQ0QXiMg9iHxbkO5ckz0Szr0lK5i7ORC?=
- =?us-ascii?Q?v3n8bZAnCPZkp9BBftiAkNBbyeQZ6VzM1zqVKyjv1zfbJDkWHIfNuWPuRIm3?=
- =?us-ascii?Q?aTtGV+m+hHfwjdHqqZ/3bbO5AysTvZpurLU7kFiya0B1R0m5oafk+IuLj4og?=
- =?us-ascii?Q?w65Vk9+qONPh7HXf6pt7oMAFR8ME5R3JXlI1o+ZpM0CdXq3yNibwizXxCBP4?=
- =?us-ascii?Q?Ph9m5bkKQJAxNIHaFBsqr5zqBR5aGSWHQMd6OFMAQKHEUyq2Hl9lkgiZP1+i?=
- =?us-ascii?Q?MadKq84e6PuafiLEgUxGVRvtZxplou26vT9c4n2yMdtw4TeEPjIYpQbCPvc+?=
- =?us-ascii?Q?AI35iWoxYqY6w7HxFa7GeRKtcZ9bni/b3Zv8s4NR+Z0CdKTKno7uF8mhfOY+?=
- =?us-ascii?Q?jjoES0vT/5zzaIvgxocAorjvYYxTR7xMY2ahQmtglsW+woFk4Ii6qxukPMWP?=
- =?us-ascii?Q?svosLogkTdY/Ve0BwLNy0VUKuiWuwcroHvQZxyW5Bkb1RM/5tTy2Eba7JhAT?=
- =?us-ascii?Q?iWiILjazCsSnhvVdEdmllN2rrrbbsoK/RuXIlFHbstjb0riJrJPzwry5XmcX?=
- =?us-ascii?Q?lg3kSRfrDnrOvu/btjD2GL58QkUzC5tcu4LFhxfgGcR2QmJBYS4v/GHO8NU1?=
- =?us-ascii?Q?8EY/LQeKuwkE6tjJZq1XaSXj3G+6QtFvgVJ2329c+Gf6VCZ7DSu45EBEg/cP?=
- =?us-ascii?Q?YLIVYDjwco6dxWip5o2al13QilomyqKIRcuxWIf3Ue6RR4oaqK+YOLWJjzvf?=
- =?us-ascii?Q?tLg7B1swTs7omk6h3ILELWCvV8BFEqzFCP3kT5bH2sPP2xoGSt22Vg+y2iGY?=
- =?us-ascii?Q?PIgHKHiwDIAmD1YUiFS2d05TDYP2wpP6Jbejjlr/a0TpcuK5Xj27WlrtD5j+?=
- =?us-ascii?Q?6lyU+iTxsDTsVNOpOeYRy7VvwnpdQvs+Cev2bbTOXi6b/scRakkCq+/HLA3c?=
- =?us-ascii?Q?/XpfB6pJrTvXA4oAgq7LX9kT6VJSUIjgHgYNJCX++9EJjKfoIvBDWGB36Lt0?=
- =?us-ascii?B?UT09?=
-X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;6:+9I5WUwdUzOVDZhqzqJnnW5inS1THGM6Up7MalObPAmMCM30wLUddFPoQb+b7d7Z5xJffoWRE8Q5SclQOKC3rHAfoS5rzm7xMXQxIEa3/Oa3ZRxzVLbb6SOV4tQLlE7vTZBYfK49jL7fzLqioOo14AD75OgKy6WPxKqf3rlYf7NbYBR+J364feltfFPtBzLUzsYu5KoWKs3QAxo71VisqZ2zqlTpQMFhz66uorDwPKgtvG0LaoVbZS/JCFqEy3aUT0Z47s3+INJfnth/na1Tv2olYJvOc7qvNOAQjUhh1u4Gz6fzo5dLE7HAK2ka+ZlMWogPZOSrwg1ARD5d+gqcu+SzQ4lXkfW1WM35Kqy5iD4=;5:WxYiAHQkv+RK4zMSfv0maTJ+K909G2qJ4q9w6MT5dvJo2F5SkpYLnCKm3dc+jOuFKZ8FnITNErQaIsLXgZO9zx4wCY45byXRVCCC14gV8Ht5Z9bI/eoRr0DeLZOCKJUv9dLyNr5ONuevDxo1M1cYm0ChL9arLIJd1cuf2M6rua4=;24:MNNGYgBOoAUAxiP2PlqYEzylYR6GzthhbSeilxhUMNXyUZfSGSKNwXB6lFA3oIGrQwlEZb4h2eErTvIomLINTMYbrV+bblOEDCaWzwuePRY=;7:/0+/NT7LyvYrz7tBVRecR7ZXZIVeEtCaTfMavOlEcLoiDlnaxwuz7eS3Q+oF5dwqOBkcHsIPRJi5CVq4CKPGy8OiUYIMAhVeQAm0nbD1yWIyqDh5S18i1yyzafmKaPti42yYqgQCvXqz/YsRrsBO14TYbhADUsAV5S1eX6sq6M3hpX+MKc+VBVwqnwZdDSd/eG94sQZBsvsT5TMPJYRMIZMcwOZdWPYl+Om8zOdNfGB2UGkznjxMc/E5UKUY9cyX
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MWHPR07MB3504;23:ImyE3B3uAxUmxz3WHsuEL2u6RfsN8MKbfiiSQSi1X?=
+ =?us-ascii?Q?BlEDPTgi3dCdST90bVXOJOS+qBLl5QJsaKM4+IUiB34koMk5TZntrhDtiS1b?=
+ =?us-ascii?Q?7epm8Vn/rJpsuJYpfICa2xhPzqwz8s8PjkgCghTaIO2qfVkJ6HVqCJwaT7Qq?=
+ =?us-ascii?Q?vZlxn53wHHBZCHJbm9Q0b9qSrmqZa5jzd1Sr5fzTC5fr+6MBLjM9q1T/bFq3?=
+ =?us-ascii?Q?8S5sa+YeZtZuUpU+djHp7SRTDHyZxOTUYKWc66mdAFx73gWrWUlczXfTMHWq?=
+ =?us-ascii?Q?ZBQyLeXFDEAiL8sfyZvrxEQDuY/5RNGWtUC6H4+xJ+XQ6lb/h18BjEwd66bg?=
+ =?us-ascii?Q?V2U4hAiKO7b46s3Z1+269Adkn+eFbFQJsWxmsPCQU5Vfp9k+0mXcVW+7hqpb?=
+ =?us-ascii?Q?Cr8Zleq1KkadGP1QymY2cUCV0oYlE/dztL4JbtKTIWuhG8KdjPE/3EShliSq?=
+ =?us-ascii?Q?40B1BgopG/QyMxyGInkwnza4w6w2NAA8fOtYNnxR3wSyBkTO3hh7YFE3/srV?=
+ =?us-ascii?Q?9hfK28puSHN/2RPSgvmMjSe5CiWNgCDPZOyPtGhnYNvtEsz4pS8OEHVxCu15?=
+ =?us-ascii?Q?ErOSxfEfT6h+MGj4if78DNj7rxYLozCJVBC0+JKBzDAjZv+DJd0X2IpppISL?=
+ =?us-ascii?Q?EZOx9dt9Vkoict2czT9K/SvvA70Xb6H2hBhzhi4fngbnzIi+agkl9cocdhKn?=
+ =?us-ascii?Q?9r6BHFzDstPY2KvLMQSzX6mM/CVPv9eejKI4bvzHYyO7EMKU4F1Srh5Sdhpt?=
+ =?us-ascii?Q?pdvB5zWtL6W7WZzzrC5KoUfO84WUtE/ThWb/1omYMRKCN5wmytxX+xF3KR/I?=
+ =?us-ascii?Q?qqEj2DzO2HtAJDppQw7WRH9YfqeELOZssxpuzv8saMN7+WYx/FJ1FK5Dui9X?=
+ =?us-ascii?Q?Pn9vcwdvSOJVXIwojOVyhFeHJiwfo9UPOpBnSq7LiyBQi+TZNA+E17+KAfqN?=
+ =?us-ascii?Q?pciFtrZaWWmn18iO8Xx3jytFf6yDtSRqqD09bFqmQyL3+YQSkc+Bt+/r0RNW?=
+ =?us-ascii?Q?HXiV6dk1fQY8PkNWyVFebCGAwIpfiRz/79dhDYu4Jxl8LjSE9OdEC34oQciI?=
+ =?us-ascii?Q?WJ7lwTMgjq457N5tdgz0noFQzZ0DXa/MDlgLTiyxxx4Zn1WWFCpDFXKg06LN?=
+ =?us-ascii?Q?5CZ8IHsehdnH+FbCMF33n3KjF9VoDjU39FUEiGcq5jlDf1Kf0j0TGLGOvGyD?=
+ =?us-ascii?Q?Q7pF02dJQxsmkf5erCBAXkbTixBY78oRta9jSBzXPUt9cY8GaxZM2anjA=3D?=
+ =?us-ascii?Q?=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;MWHPR07MB3504;6:HLpeT9HjI1sZOBNEDY7yJIK+QCllsfYxzKOlGTbj+/yiZj2zZwi4Kf6yDRWPVaDFfXrr5kADL3JnIqJAoFTNRum1okUu952ukmdRhz13J7ygLMUzkVYsQKIWRfItMfQem5yshFoKk/2SY1l1s1FnEbebuIz+7xmOYRDIR/LdebwSZIfRpEjQ+acxOArRBiTzdZfbzBpvl2ar8lRteXwKHlDL0lFOvlcXBIIi7WC4Exj62kUo5b48JmGcoVmUzeGrg2xbXKF+ilcJpL+WaORJGyi6TK3dOEkVKKu9gq0BH5ssBe94EN/GePcVncxdDeLnShh1HLxOuyc92MtwjpOUim6M6YcJtCoX9gFb49+vT6w=;5:qzY7MFwXSXvfwC6PuG6cd9BEO3sIRfaDsRKfvd5N2vKVXP6iM/PSInjPbjze5GB+QecEp2iHJRILrFAvz8zbZ5ToDF4ycWeORKCG8RbckpUjzRHew07cmG3/u6ZqBuwH7+GuHMVEjyzS1Jn/uwtMJJXgz8tc4IgNpfO07lSDXRk=;24:QTz7SwgJ7v1DhadPATok9KOyeRjSqUgDffNdxllXg0Z5ROJAz66yRVULONf5/Vlt6awAmnahxpakTzyIINJ3cRdtuiF4GBKKzzDgrZMoQio=;7:qix53R+lAbw047TH9udt7odkFMthvMiGi6jJzk9pwFAKkzN3FLn9j8BtqtQJ0Lb3bWkbwZ0o7RlOAPagez80SDt4lvV8P4vB8AKuNwbVo7dttC1Np4Jz+RVs+VlIeWUhAyn15ceIGetPPJerixqYCC1toGrEUbJTaNBSqYuFfwv8AQVkzqFwStrSFy8W9C/K4qCZki2/GXcpnQe03J4TWoVFVTeoWpsTwMfpjjcevs0eZmtgebRL9xw3A1oyT6Bp
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2017 00:09:56.8879 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8360842b-90ba-4c1c-c0bb-08d53dd0040a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2017 00:09:58.3098 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca7a627f-958d-4fd7-00e6-08d53dd007e8
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB3504
@@ -87,7 +88,7 @@ Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61346
+X-archive-position: 61347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,229 +105,419 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Previous patch sets USE_ASYNC_IOBDMA to 1 unconditionally.  Remove
-USE_ASYNC_IOBDMA from all if statements.  Remove dead code caused by
-the change.
+From: Carlos Munoz <cmunoz@cavium.com>
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a global resource manager to manage tagged pointers within
+bootmem allocated memory. This is used by various functional
+blocks in the Octeon core like the FPA, Ethernet nexus, etc.
+
+Signed-off-by: Carlos Munoz <cmunoz@cavium.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- drivers/staging/octeon/ethernet-defines.h |  6 ---
- drivers/staging/octeon/ethernet-rx.c      | 25 ++++-----
- drivers/staging/octeon/ethernet-tx.c      | 85 ++++++++++---------------------
- 3 files changed, 37 insertions(+), 79 deletions(-)
+ arch/mips/cavium-octeon/Makefile       |   1 +
+ arch/mips/cavium-octeon/resource-mgr.c | 351 +++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/octeon/octeon.h  |  18 ++
+ 3 files changed, 370 insertions(+)
+ create mode 100644 arch/mips/cavium-octeon/resource-mgr.c
 
-diff --git a/drivers/staging/octeon/ethernet-defines.h b/drivers/staging/octeon/ethernet-defines.h
-index e898df25b87f..21438c804a43 100644
---- a/drivers/staging/octeon/ethernet-defines.h
-+++ b/drivers/staging/octeon/ethernet-defines.h
-@@ -10,10 +10,6 @@
+diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+index 7c02e542959a..28c0bb75d1a4 100644
+--- a/arch/mips/cavium-octeon/Makefile
++++ b/arch/mips/cavium-octeon/Makefile
+@@ -10,6 +10,7 @@
+ #
  
- /*
-  * A few defines are used to control the operation of this driver:
-- *  USE_ASYNC_IOBDMA
-- *      Use asynchronous IO access to hardware. This uses Octeon's asynchronous
-- *      IOBDMAs to issue IO accesses without stalling. Set this to zero
-- *      to disable this. Note that IOBDMAs require CVMSEG.
-  *  REUSE_SKBUFFS_WITHOUT_FREE
-  *      Allows the TX path to free an skbuff into the FPA hardware pool. This
-  *      can significantly improve performance for forwarding and bridging, but
-@@ -32,8 +28,6 @@
- #define REUSE_SKBUFFS_WITHOUT_FREE  1
- #endif
- 
--#define USE_ASYNC_IOBDMA	1
--
- /* Maximum number of SKBs to try to free per xmit packet. */
- #define MAX_OUT_QUEUE_DEPTH 1000
- 
-diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
-index 1a44291318ee..dd76c99d5ae0 100644
---- a/drivers/staging/octeon/ethernet-rx.c
-+++ b/drivers/staging/octeon/ethernet-rx.c
-@@ -201,11 +201,9 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
- 	/* Prefetch cvm_oct_device since we know we need it soon */
- 	prefetch(cvm_oct_device);
- 
--	if (USE_ASYNC_IOBDMA) {
--		/* Save scratch in case userspace is using it */
--		CVMX_SYNCIOBDMA;
--		old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
--	}
-+	/* Save scratch in case userspace is using it */
-+	CVMX_SYNCIOBDMA;
-+	old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
- 
- 	/* Only allow work for our group (and preserve priorities) */
- 	if (OCTEON_IS_MODEL(OCTEON_CN68XX)) {
-@@ -220,10 +218,8 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
- 			       BIT(rx_group->group));
- 	}
- 
--	if (USE_ASYNC_IOBDMA) {
--		cvmx_pow_work_request_async(CVMX_SCR_SCRATCH, CVMX_POW_NO_WAIT);
--		did_work_request = 1;
--	}
-+	cvmx_pow_work_request_async(CVMX_SCR_SCRATCH, CVMX_POW_NO_WAIT);
-+	did_work_request = 1;
- 
- 	while (rx_count < budget) {
- 		struct sk_buff *skb = NULL;
-@@ -232,7 +228,7 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
- 		cvmx_wqe_t *work;
- 		int port;
- 
--		if (USE_ASYNC_IOBDMA && did_work_request)
-+		if (did_work_request)
- 			work = cvmx_pow_work_response_async(CVMX_SCR_SCRATCH);
- 		else
- 			work = cvmx_pow_work_request_sync(CVMX_POW_NO_WAIT);
-@@ -260,7 +256,7 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
- 			sizeof(void *));
- 		prefetch(pskb);
- 
--		if (USE_ASYNC_IOBDMA && rx_count < (budget - 1)) {
-+		if (rx_count < (budget - 1)) {
- 			cvmx_pow_work_request_async_nocheck(CVMX_SCR_SCRATCH,
- 							    CVMX_POW_NO_WAIT);
- 			did_work_request = 1;
-@@ -403,10 +399,9 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
- 		cvmx_write_csr(CVMX_POW_PP_GRP_MSKX(coreid), old_group_mask);
- 	}
- 
--	if (USE_ASYNC_IOBDMA) {
--		/* Restore the scratch area */
--		cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
--	}
-+	/* Restore the scratch area */
-+	cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
+ obj-y := cpu.o setup.o octeon-platform.o octeon-irq.o csrc-octeon.o
++obj-y += resource-mgr.o
+ obj-y += dma-octeon.o
+ obj-y += octeon-memcpy.o
+ obj-y += executive/
+diff --git a/arch/mips/cavium-octeon/resource-mgr.c b/arch/mips/cavium-octeon/resource-mgr.c
+new file mode 100644
+index 000000000000..74efda5420ff
+--- /dev/null
++++ b/arch/mips/cavium-octeon/resource-mgr.c
+@@ -0,0 +1,351 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Resource manager for Octeon.
++ *
++ * Copyright (C) 2017 Cavium, Inc.
++ */
++#include <linux/module.h>
 +
- 	cvm_oct_rx_refill_pool(0);
- 
- 	return rx_count;
-diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
-index 31f35025d19e..2eede0907924 100644
---- a/drivers/staging/octeon/ethernet-tx.c
-+++ b/drivers/staging/octeon/ethernet-tx.c
-@@ -179,23 +179,18 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
- 		qos = 0;
- 	}
- 
--	if (USE_ASYNC_IOBDMA) {
--		/* Save scratch in case userspace is using it */
--		CVMX_SYNCIOBDMA;
--		old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
--		old_scratch2 = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
--
--		/*
--		 * Fetch and increment the number of packets to be
--		 * freed.
--		 */
--		cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH + 8,
--					       FAU_NUM_PACKET_BUFFERS_TO_FREE,
--					       0);
--		cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH,
--					       priv->fau + qos * 4,
--					       MAX_SKB_TO_FREE);
--	}
-+	/* Save scratch in case userspace is using it */
-+	CVMX_SYNCIOBDMA;
-+	old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
-+	old_scratch2 = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
++#include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-bootmem.h>
 +
-+	/* Fetch and increment the number of packets to be freed. */
-+	cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH + 8,
-+				       FAU_NUM_PACKET_BUFFERS_TO_FREE,
-+				       0);
-+	cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH,
-+				       priv->fau + qos * 4,
-+				       MAX_SKB_TO_FREE);
++#define RESOURCE_MGR_BLOCK_NAME		"cvmx-global-resources"
++#define MAX_RESOURCES			128
++#define INST_AVAILABLE			-88
++#define OWNER				0xbadc0de
++
++struct global_resource_entry {
++	struct global_resource_tag tag;
++	u64 phys_addr;
++	u64 size;
++};
++
++struct global_resources {
++#ifdef __LITTLE_ENDIAN_BITFIELD
++	u32 rlock;
++	u32 pad;
++#else
++	u32 pad;
++	u32 rlock;
++#endif
++	u64 entry_cnt;
++	struct global_resource_entry resource_entry[];
++};
++
++static struct global_resources *res_mgr_info;
++
++
++/*
++ * The resource manager interacts with software running outside of the
++ * Linux kernel, which necessitates locking to maintain data structure
++ * consistency.  These custom locking functions implement the locking
++ * protocol, and cannot be replaced by kernel locking functions that
++ * may use different in-memory structures.
++ */
++
++static void res_mgr_lock(void)
++{
++	while (cmpxchg(&res_mgr_info->rlock, 0, 1))
++		; /* Loop while not zero */
++	rmb();
++}
++
++static void res_mgr_unlock(void)
++{
++	/* Wait until all resource operations finish before unlocking. */
++	wmb();
++	WRITE_ONCE(res_mgr_info->rlock, 0);
++	/* Force a write buffer flush. */
++	wmb();
++}
++
++static int res_mgr_find_resource(struct global_resource_tag tag)
++{
++	struct global_resource_entry *res_entry;
++	int i;
++
++	for (i = 0; i < res_mgr_info->entry_cnt; i++) {
++		res_entry = &res_mgr_info->resource_entry[i];
++		if (res_entry->tag.lo == tag.lo && res_entry->tag.hi == tag.hi)
++			return i;
++	}
++	return -1;
++}
++
++/**
++ * res_mgr_create_resource() - Create a resource.
++ * @tag: Identifies the resource.
++ * @inst_cnt: Number of resource instances to create.
++ *
++ * Returns 0 if the source was created successfully.
++ * Returns < 0 for error codes.
++ */
++int res_mgr_create_resource(struct global_resource_tag tag, int inst_cnt)
++{
++	struct global_resource_entry *res_entry;
++	u64 size;
++	u64 *res_addr;
++	int res_index, i, rc = 0;
++
++	res_mgr_lock();
++
++	/* Make sure resource doesn't already exist. */
++	res_index = res_mgr_find_resource(tag);
++	if (res_index >= 0) {
++		rc = -EEXIST;
++		goto err;
++	}
++
++	if (res_mgr_info->entry_cnt >= MAX_RESOURCES) {
++		pr_err("Resource max limit reached, not created\n");
++		rc = -ENOSPC;
++		goto err;
++	}
++
++	/*
++	 * Each instance is kept in an array of u64s. The first array element
++	 * holds the number of allocated instances.
++	 */
++	size = sizeof(u64) * (inst_cnt + 1);
++	res_addr = cvmx_bootmem_alloc_range(size, CVMX_CACHE_LINE_SIZE, 0, 0);
++	if (!res_addr) {
++		pr_err("Failed to allocate resource. not created\n");
++		rc = -ENOMEM;
++		goto err;
++	}
++
++	/* Initialize the newly created resource. */
++	*res_addr = inst_cnt;
++	for (i = 1; i <= inst_cnt; i++)
++		res_addr[i] = INST_AVAILABLE;
++
++	res_index = res_mgr_info->entry_cnt;
++	res_entry = &res_mgr_info->resource_entry[res_index];
++	res_entry->tag = tag;
++	res_entry->phys_addr = virt_to_phys(res_addr);
++	res_entry->size = size;
++	res_mgr_info->entry_cnt++;
++
++err:
++	res_mgr_unlock();
++
++	return rc;
++}
++EXPORT_SYMBOL(res_mgr_create_resource);
++
++/**
++ * res_mgr_alloc_range() - Allocate a range of resource instances.
++ * @tag: Identifies the resource.
++ * @req_inst: Requested start of instance range to allocate.
++ *	      Range instances are guaranteed to be sequential
++ *	      (-1 for don't care).
++ * @req_cnt: Number of instances to allocate.
++ * @use_last_avail: Set to request the last available instance.
++ * @inst: Updated with the allocated instances.
++ *
++ * Returns 0 if the source was created successfully.
++ * Returns < 0 for error codes.
++ */
++int res_mgr_alloc_range(struct global_resource_tag tag, int req_inst,
++			int req_cnt, bool use_last_avail, int *inst)
++{
++	struct global_resource_entry *res_entry;
++	int res_index;
++	u64 *res_addr;
++	u64 inst_cnt;
++	int alloc_cnt, i, rc = -ENOENT;
++
++	/* Start with no instances allocated. */
++	for (i = 0; i < req_cnt; i++)
++		inst[i] = INST_AVAILABLE;
++
++	res_mgr_lock();
++
++	/* Find the resource. */
++	res_index = res_mgr_find_resource(tag);
++	if (res_index < 0) {
++		pr_err("Resource not found, can't allocate instance\n");
++		goto err;
++	}
++
++	/* Get resource data. */
++	res_entry = &res_mgr_info->resource_entry[res_index];
++	res_addr = phys_to_virt(res_entry->phys_addr);
++	inst_cnt = *res_addr;
++
++	/* Allocate the requested instances. */
++	if (req_inst >= 0) {
++		/* Specific instance range requested. */
++		if (req_inst + req_cnt >= inst_cnt) {
++			pr_err("Requested instance out of range\n");
++			goto err;
++		}
++
++		for (i = 0; i < req_cnt; i++) {
++			if (*(res_addr + req_inst + 1 + i) == INST_AVAILABLE) {
++				inst[i] = req_inst + i;
++			} else {
++				inst[0] = INST_AVAILABLE;
++				break;
++			}
++		}
++	} else if (use_last_avail) {
++		/* Last available instance requested. */
++		alloc_cnt = 0;
++		for (i = inst_cnt; i > 0; i--) {
++			if (*(res_addr + i) == INST_AVAILABLE) {
++				/*
++				 * Instance off by 1 (first element holds the
++				 * count).
++				 */
++				inst[alloc_cnt] = i - 1;
++
++				alloc_cnt++;
++				if (alloc_cnt == req_cnt)
++					break;
++			}
++		}
++
++		if (i == 0)
++			inst[0] = INST_AVAILABLE;
++	} else {
++		/* Next available instance requested. */
++		alloc_cnt = 0;
++		for (i = 1; i <= inst_cnt; i++) {
++			if (*(res_addr + i) == INST_AVAILABLE) {
++				/*
++				 * Instance off by 1 (first element holds the
++				 * count).
++				 */
++				inst[alloc_cnt] = i - 1;
++
++				alloc_cnt++;
++				if (alloc_cnt == req_cnt)
++					break;
++			}
++		}
++
++		if (i > inst_cnt)
++			inst[0] = INST_AVAILABLE;
++	}
++
++	if (inst[0] != INST_AVAILABLE) {
++		for (i = 0; i < req_cnt; i++)
++			*(res_addr + inst[i] + 1) = OWNER;
++		rc = 0;
++	}
++
++err:
++	res_mgr_unlock();
++
++	return rc;
++}
++EXPORT_SYMBOL(res_mgr_alloc_range);
++
++/**
++ * res_mgr_alloc() - Allocate a resource instance.
++ * @tag: Identifies the resource.
++ * @req_inst: Requested instance to allocate (-1 for don't care).
++ * @use_last_avail: Set to request the last available instance.
++ *
++ * Returns: Allocated resource instance if successful.
++ * Returns <0 for error codes.
++ */
++int res_mgr_alloc(struct global_resource_tag tag, int req_inst,
++		  bool use_last_avail)
++{
++	int inst, rc;
++
++	rc = res_mgr_alloc_range(tag, req_inst, 1, use_last_avail, &inst);
++	if (!rc)
++		return inst;
++	return rc;
++}
++EXPORT_SYMBOL(res_mgr_alloc);
++
++/**
++ * res_mgr_free_range() - Free a resource instance range.
++ * @tag: Identifies the resource.
++ * @inst: Requested instance to free.
++ * @req_cnt: Number of instances to free.
++ */
++void res_mgr_free_range(struct global_resource_tag tag, const int *inst,
++			int req_cnt)
++{
++	struct global_resource_entry *res_entry;
++	int res_index, i;
++	u64 *res_addr;
++
++	res_mgr_lock();
++
++	/* Find the resource. */
++	res_index = res_mgr_find_resource(tag);
++	if (res_index < 0) {
++		pr_err("Resource not found, can't free instance\n");
++		goto err;
++	}
++
++	/* Get the resource data. */
++	res_entry = &res_mgr_info->resource_entry[res_index];
++	res_addr = phys_to_virt(res_entry->phys_addr);
++
++	/* Free the resource instances. */
++	for (i = 0; i < req_cnt; i++) {
++		/* Instance off by 1 (first element holds the count). */
++		*(res_addr + inst[i] + 1) = INST_AVAILABLE;
++	}
++
++err:
++	res_mgr_unlock();
++}
++EXPORT_SYMBOL(res_mgr_free_range);
++
++/**
++ * res_mgr_free() - Free a resource instance.
++ * @tag: Identifies the resource.
++ * @req_inst: Requested instance to free.
++ */
++void res_mgr_free(struct global_resource_tag tag, int inst)
++{
++	res_mgr_free_range(tag, &inst, 1);
++}
++EXPORT_SYMBOL(res_mgr_free);
++
++static int __init res_mgr_init(void)
++{
++	struct cvmx_bootmem_named_block_desc *block;
++	int block_size;
++	u64 addr;
++
++	cvmx_bootmem_lock();
++
++	/* Search for the resource manager data in boot memory. */
++	block = cvmx_bootmem_phy_named_block_find(RESOURCE_MGR_BLOCK_NAME,
++						  CVMX_BOOTMEM_FLAG_NO_LOCKING);
++	if (block) {
++		/* Found. */
++		res_mgr_info = phys_to_virt(block->base_addr);
++	} else {
++		/* Create it. */
++		block_size = sizeof(struct global_resources) +
++			sizeof(struct global_resource_entry) * MAX_RESOURCES;
++		addr = cvmx_bootmem_phy_named_block_alloc(block_size, 0, 0,
++				CVMX_CACHE_LINE_SIZE, RESOURCE_MGR_BLOCK_NAME,
++				CVMX_BOOTMEM_FLAG_NO_LOCKING);
++		if (!addr) {
++			pr_err("Failed to allocate name block %s\n",
++			       RESOURCE_MGR_BLOCK_NAME);
++		} else {
++			res_mgr_info = phys_to_virt(addr);
++			memset(res_mgr_info, 0, block_size);
++		}
++	}
++
++	cvmx_bootmem_unlock();
++
++	return 0;
++}
++device_initcall(res_mgr_init);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Cavium, Inc. Octeon resource manager");
+diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
+index f01af2469874..4dafeaf262b5 100644
+--- a/arch/mips/include/asm/octeon/octeon.h
++++ b/arch/mips/include/asm/octeon/octeon.h
+@@ -346,6 +346,24 @@ void octeon_mult_restore3_end(void);
+ void octeon_mult_restore2(void);
+ void octeon_mult_restore2_end(void);
  
- 	/*
- 	 * We have space for 6 segment pointers, If there will be more
-@@ -204,22 +199,11 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (unlikely(skb_shinfo(skb)->nr_frags > 5)) {
- 		if (unlikely(__skb_linearize(skb))) {
- 			queue_type = QUEUE_DROP;
--			if (USE_ASYNC_IOBDMA) {
--				/*
--				 * Get the number of skbuffs in use
--				 * by the hardware
--				 */
--				CVMX_SYNCIOBDMA;
--				skb_to_free =
--					cvmx_scratch_read64(CVMX_SCR_SCRATCH);
--			} else {
--				/*
--				 * Get the number of skbuffs in use
--				 * by the hardware
--				 */
--				skb_to_free = cvmx_fau_fetch_and_add32(
--					priv->fau + qos * 4, MAX_SKB_TO_FREE);
--			}
-+			/* Get the number of skbuffs in use by the
-+			 * hardware
-+			 */
-+			CVMX_SYNCIOBDMA;
-+			skb_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
- 			skb_to_free = cvm_oct_adjust_skb_to_free(skb_to_free,
- 								 priv->fau +
- 								 qos * 4);
-@@ -387,18 +371,10 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
- 		pko_command.s.ipoffp1 = skb_network_offset(skb) + 1;
- 	}
- 
--	if (USE_ASYNC_IOBDMA) {
--		/* Get the number of skbuffs in use by the hardware */
--		CVMX_SYNCIOBDMA;
--		skb_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
--		buffers_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
--	} else {
--		/* Get the number of skbuffs in use by the hardware */
--		skb_to_free = cvmx_fau_fetch_and_add32(priv->fau + qos * 4,
--						       MAX_SKB_TO_FREE);
--		buffers_to_free =
--		    cvmx_fau_fetch_and_add32(FAU_NUM_PACKET_BUFFERS_TO_FREE, 0);
--	}
-+	/* Get the number of skbuffs in use by the hardware */
-+	CVMX_SYNCIOBDMA;
-+	skb_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
-+	buffers_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
- 
- 	skb_to_free = cvm_oct_adjust_skb_to_free(skb_to_free,
- 						 priv->fau + qos * 4);
-@@ -416,9 +392,7 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
- 	} else {
- 		queue_type = QUEUE_HW;
- 	}
--	if (USE_ASYNC_IOBDMA)
--		cvmx_fau_async_fetch_and_add32(
--				CVMX_SCR_SCRATCH, FAU_TOTAL_TX_TO_CLEAN, 1);
-+	cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH, FAU_TOTAL_TX_TO_CLEAN, 1);
- 
- 	spin_lock_irqsave(&priv->tx_free_list[qos].lock, flags);
- 
-@@ -488,16 +462,11 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
- 		dev_kfree_skb_any(t);
- 	}
- 
--	if (USE_ASYNC_IOBDMA) {
--		CVMX_SYNCIOBDMA;
--		total_to_clean = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
--		/* Restore the scratch area */
--		cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
--		cvmx_scratch_write64(CVMX_SCR_SCRATCH + 8, old_scratch2);
--	} else {
--		total_to_clean = cvmx_fau_fetch_and_add32(
--						FAU_TOTAL_TX_TO_CLEAN, 1);
--	}
-+	CVMX_SYNCIOBDMA;
-+	total_to_clean = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
-+	/* Restore the scratch area */
-+	cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
-+	cvmx_scratch_write64(CVMX_SCR_SCRATCH + 8, old_scratch2);
- 
- 	if (total_to_clean & 0x3ff) {
- 		/*
++/*
++ * This definition must be kept in sync with the one in
++ * cvmx-global-resources.c
++ */
++struct global_resource_tag {
++	uint64_t lo;
++	uint64_t hi;
++};
++
++void res_mgr_free(struct global_resource_tag tag, int inst);
++void res_mgr_free_range(struct global_resource_tag tag, const int *inst,
++			int req_cnt);
++int res_mgr_alloc(struct global_resource_tag tag, int req_inst,
++		  bool use_last_avail);
++int res_mgr_alloc_range(struct global_resource_tag tag, int req_inst,
++			int req_cnt, bool use_last_avail, int *inst);
++int res_mgr_create_resource(struct global_resource_tag tag, int inst_cnt);
++
+ /**
+  * Read a 32bit value from the Octeon NPI register space
+  *
 -- 
 2.14.3

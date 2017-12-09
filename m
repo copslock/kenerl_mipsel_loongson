@@ -1,53 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 08:21:50 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:53123 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990393AbdLIHVngzcnO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 08:21:43 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Sat, 09 Dec 2017 07:21:18 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Fri, 8 Dec 2017
- 23:16:01 -0800
-Date:   Sat, 9 Dec 2017 07:15:58 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Matthew Fortune <matthew.fortune@mips.com>,
-        Florian Fainelli <florian@openwrt.org>,
-        "Waldemar Brodkorb" <wbx@openadk.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Implement __multi3 for GCC7 MIPS64r6 builds
-Message-ID: <20171209071558.GQ5027@jhogan-linux.mipstec.com>
-References: <20171206085034.3869dc9d@windsurf.lan>
- <20171207072046.31125-1-jhogan@kernel.org>
- <alpine.DEB.2.00.1712082339130.4584@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 09:30:04 +0100 (CET)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:37278
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990434AbdLII34jXn1w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 09:29:56 +0100
+Received: by mail-wm0-x242.google.com with SMTP id f140so6398536wmd.2
+        for <linux-mips@linux-mips.org>; Sat, 09 Dec 2017 00:29:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexb-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=pK3HSWgGIidCTvl0p+iiMKC0yD3R6+W187hhklvXMCI=;
+        b=eR2Sq8lMFbALhZPWj0f9zCponln7aK04gmlatcHBHakQSlYb7AFClt8xa22/vpooh/
+         RyDoLBljvnaytC8zn+srnjgjWh9hs70oreZBJTU32TnH/XIfOrEi/3UlntPO3cWiQM9O
+         YRXynpg8WexhlSYmuXSDg+wsEIis74P9SXEbBqTxJ29CnlBdPJND+ppzPz2Mp3yOEkds
+         nuwWHN3XrY49jC68BlyDgMKizoK+dcUhhXR1XM9bviHaYez52hDTy73dfizBUA0B3We5
+         w3XShWAfM7fXtsU3x6/yixStd7aY9ToMyaLF+x9q4g498k6xMAQ/V8CDIA7P6uYVXPWz
+         0RPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=pK3HSWgGIidCTvl0p+iiMKC0yD3R6+W187hhklvXMCI=;
+        b=ENuzkdUjDI4NANmRt1kcPCn1ZdyNAc4MZxQJbhAqGVp/Hf/6+RWtpbYi/t5Lf26g7y
+         iCMeHnR135KHkdtKysDs8GGfMXhNJywOjBBt5WWau1I+uryaLt1iEa1XNSNOKJfB06xi
+         RNZUgWKzaPetRVaPUgtu1sg3R0n4PQpOE0ympjwxn3vtDyopyS59oFk0qg83HsmyHQZ2
+         GdRlvt9ClQGBy7skujbm8FZ0dExFnsFr42NzNzKMMUoWo+x+rvMFFtlf0sExHchcM/6v
+         0vXEDDFkY2mJP9Vyh+zK2yshO2fBrCjADwGeD/YCzYrkaOhw/QcZWGxXn9KSY6yGUzHy
+         Cz1Q==
+X-Gm-Message-State: AKGB3mItcFmrgayvrvViur0T1Zy9sYRW2/bMLS9VVNoPB4JnLDb87hIJ
+        etTSUUjWm+1iR99JbUV67AHPZuQsD2ACv+Sk9JT7hQ==
+X-Google-Smtp-Source: AGs4zMZpmVyh8OhbQ4nnU7zm/ninIPghHb7q438KcpokdBLSaXuN/WxRhaqq8dmT8okDTeJn8ZapFVGlOFqv38cw6dA=
+X-Received: by 10.28.136.15 with SMTP id k15mr5581301wmd.147.1512808191011;
+ Sat, 09 Dec 2017 00:29:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Lez9QO3Seu3ycz0M"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1712082339130.4584@tp.orcam.me.uk>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1512804077-298553-1353-36009-4
-X-BESS-VER: 2017.14-r1710272128
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187791
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: by 10.223.157.195 with HTTP; Sat, 9 Dec 2017 00:29:10 -0800 (PST)
+In-Reply-To: <20171209064953.8984-3-jiaxun.yang@flygoat.com>
+References: <20171209064953.8984-1-jiaxun.yang@flygoat.com> <20171209064953.8984-3-jiaxun.yang@flygoat.com>
+From:   Philippe Ombredanne <pombredanne@nexb.com>
+Date:   Sat, 9 Dec 2017 09:29:10 +0100
+Message-ID: <CAOFm3uEVduGvpWQNRofAe5_Lb01g+YZSuoaikq1-PPjaUS27FQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] MIPS: Loongson64: lemote-2f move ec_kb3310b.h to
+ include dir and clean up
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     James Hogan <james.hogan@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <pombredanne@nexb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61390
+X-archive-position: 61391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: pombredanne@nexb.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,80 +67,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Lez9QO3Seu3ycz0M
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Dea Jiaxun,
 
-On Fri, Dec 08, 2017 at 11:52:05PM +0000, Maciej W. Rozycki wrote:
-> On Wed, 6 Dec 2017, James Hogan wrote:
->=20
-> > GCC7 is a bit too eager to generate suboptimal __multi3 calls (128bit
-> > multiply with 128bit result) for MIPS64r6 builds, even in code which
-> > doesn't explicitly use 128bit types, such as the following:
-> >=20
-> > unsigned long func(unsigned long a, unsigned long b)
-> > {
-> > 	return a > (~0UL) / b;
-> > }
-> >=20
-> > Which GCC rearanges to:
-> >=20
-> > return (unsigned __int128)a * (unsigned __int128)b > 0xffffffff;
->=20
->  You mean:
->=20
-> return (unsigned __int128)a * (unsigned __int128)b > 0xffffffffffffffff;
->=20
-> presumably, or is there another bug here?
+On Sat, Dec 9, 2017 at 7:49 AM, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
+> To operate EC from platform driver, this head file need able to be include
+> from anywhere. This patch just move ec_kb3310b.h to include dir and
+> clean up ec_kb3310b.h.
+>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  arch/mips/include/asm/mach-loongson64/ec_kb3310b.h | 170 +++++++++++++++++++
+>  arch/mips/loongson64/lemote-2f/ec_kb3310b.c        |   2 +-
+>  arch/mips/loongson64/lemote-2f/ec_kb3310b.h        | 188 ---------------------
+>  arch/mips/loongson64/lemote-2f/pm.c                |   4 +-
+>  arch/mips/loongson64/lemote-2f/reset.c             |   4 +-
+>  5 files changed, 175 insertions(+), 193 deletions(-)
+>  create mode 100644 arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
+>  delete mode 100644 arch/mips/loongson64/lemote-2f/ec_kb3310b.h
+>
+> diff --git a/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h b/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
+> new file mode 100644
+> index 000000000000..2e8690532ea5
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
+> @@ -0,0 +1,170 @@
+> +/*
+> + * KB3310B Embedded Controller
+> + *
+> + *  Copyright (C) 2008 Lemote Inc.
+> + *  Author: liujl <liujl@lemote.com>, 2008-03-14
+> + *  Copyright (C) 2009 Lemote Inc.
+> + *  Author: Wu Zhangjin <wuzhangjin@gmail.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + */
 
-Yes, thats what was meant. It was copy + pasted from Ralf's analysis.
+Have you considered using the new SPDX ids instead of this fine but
+long license boilerplate?
+That would be very gentle of you if you did!
+You can check Thomas documentation patches, as well as Linus comments
+on the topic.
 
-Thanks
-James
-
->=20
-> > Therefore implement __multi3, but only for MIPS64r6 with GCC7 as under
-> > normal circumstances we wouldn't expect any calls to __multi3 to be
-> > generated from kernel code.
->=20
->  That does look bad; I'd expect a `umulditi3' (widening 64-bit by 64-bit=
-=20
-> unsigned multiplication) kind of operation instead, which should expand=
-=20
-> internally.  And we only really need to execute DMUHU and then check the=
-=20
-> result for non-zero here, because the value of the low 64 bits of the=20
-> product does not matter for the evaluation of the expression.
->=20
->  I don't know offhand if such a transformation can be handled by GCC as i=
-t=20
-> stands by tweaking the MIPS backend without a corresponding update to the=
-=20
-> middle end though.
->=20
->   Maciej
->=20
-
---Lez9QO3Seu3ycz0M
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlorjaQACgkQbAtpk944
-dnpOHg/9FuZMj0CBaimhlDSKJQyCTNXyeo8J35r6kNvuzA8DTgyy6iNp8jArKW7n
-TOcZ+J7TwILmn5ctcnh/MspP1Il9GNsGKloA5Y/2O+fxMPKrHP3Ii61gaFeSyx71
-6dEJvWXM2g7HgRzbxdLQXvi+AaYYVMMJnd0wcmNeAbjNfce7LPPucJG6k0wstniV
-7czBU03w8p55bW52AROsWoGZecunhg3TTHBP62SHN2OWJKrZheU+iCUGRbX1VF9k
-EArihU5Vf41llju3rpB+HJDwWTvI2Gf+GSaU5C4Q+KPKvcwMS8D+4aQg6JLRvQgT
-RyygqYYv6MjgFQJcp3iNeYNRPA5uJzjoHcM6NSCTi0yiLcSSFhpS8o8rlRjRy8Tl
-J/oCef+DUQAoyeqcHSmRr6R8upilBtTlBSpTTeBUliqQhX7jY5312XU/JjkW351g
-AeyO6lMug0r5GzAAR9jNuXJP521I44bAVov+hvDoysrrII7JqKnoMwuWIx6pLGQ3
-dGHXbDTrx37u4FiNk2zZcBUA/JxECNDBYDKfbCV0tOtnHB1nhtyLLYsW2R+O4M1P
-99jJAoRmRZVX911AcAr+fdBkW4wtIIvuJyxLaBkQj53U+HtAG0XbsmFoz9Pfv6LX
-90owZ8tGn8EPMkIbHvJDOpPU3cKIjnPy6ge32wxTd+yq2svETfs=
-=wUSm
------END PGP SIGNATURE-----
-
---Lez9QO3Seu3ycz0M--
+-- 
+Cordially
+Philippe Ombredanne

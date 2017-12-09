@@ -1,60 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 09:30:04 +0100 (CET)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:37278
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990434AbdLII34jXn1w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 09:29:56 +0100
-Received: by mail-wm0-x242.google.com with SMTP id f140so6398536wmd.2
-        for <linux-mips@linux-mips.org>; Sat, 09 Dec 2017 00:29:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 22:04:16 +0100 (CET)
+Received: from mail-it0-x234.google.com ([IPv6:2607:f8b0:4001:c0b::234]:38876
+        "EHLO mail-it0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990421AbdLIVEJbrM05 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 22:04:09 +0100
+Received: by mail-it0-x234.google.com with SMTP id r6so9313740itr.3
+        for <linux-mips@linux-mips.org>; Sat, 09 Dec 2017 13:04:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexb-com.20150623.gappssmtp.com; s=20150623;
+        d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=pK3HSWgGIidCTvl0p+iiMKC0yD3R6+W187hhklvXMCI=;
-        b=eR2Sq8lMFbALhZPWj0f9zCponln7aK04gmlatcHBHakQSlYb7AFClt8xa22/vpooh/
-         RyDoLBljvnaytC8zn+srnjgjWh9hs70oreZBJTU32TnH/XIfOrEi/3UlntPO3cWiQM9O
-         YRXynpg8WexhlSYmuXSDg+wsEIis74P9SXEbBqTxJ29CnlBdPJND+ppzPz2Mp3yOEkds
-         nuwWHN3XrY49jC68BlyDgMKizoK+dcUhhXR1XM9bviHaYez52hDTy73dfizBUA0B3We5
-         w3XShWAfM7fXtsU3x6/yixStd7aY9ToMyaLF+x9q4g498k6xMAQ/V8CDIA7P6uYVXPWz
-         0RPw==
+        bh=Bod7kIHrz0OfXlOC8BH24PF/a38T6dyLGxw8FEo5BIs=;
+        b=RNygVlDZcKr7TydcwipdDp9N1/hQXgI5dtW9xJyDLQuoXFb6bDeYNnTai8wYZGvxnU
+         H6wgeTayuBlWzxS0BnBaxMg7CJuHHHyZD3CdxnFt9VfuFAdkQ1RfqN6kroxr0dcd1uRV
+         noR+CZSDYC/3GYwQZch2s3So9zTQvGD6UcY3RrwAULmmilSleGn1jSfFRSYOfoaHHB/u
+         KiylHbTvlI2pb7kXpYwdPzSVt0wW7YLBncC2/SKnA2Q/O+SKH0TpH+CBdYBhDfoyBFsQ
+         J1O0bhXnY/eVRqa4FuQXXOG+Y6otA4VxLbC1hqI9vgCyKOzjemwcCRcyArCaeV/Q8FoO
+         1e9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=pK3HSWgGIidCTvl0p+iiMKC0yD3R6+W187hhklvXMCI=;
-        b=ENuzkdUjDI4NANmRt1kcPCn1ZdyNAc4MZxQJbhAqGVp/Hf/6+RWtpbYi/t5Lf26g7y
-         iCMeHnR135KHkdtKysDs8GGfMXhNJywOjBBt5WWau1I+uryaLt1iEa1XNSNOKJfB06xi
-         RNZUgWKzaPetRVaPUgtu1sg3R0n4PQpOE0ympjwxn3vtDyopyS59oFk0qg83HsmyHQZ2
-         GdRlvt9ClQGBy7skujbm8FZ0dExFnsFr42NzNzKMMUoWo+x+rvMFFtlf0sExHchcM/6v
-         0vXEDDFkY2mJP9Vyh+zK2yshO2fBrCjADwGeD/YCzYrkaOhw/QcZWGxXn9KSY6yGUzHy
-         Cz1Q==
-X-Gm-Message-State: AKGB3mItcFmrgayvrvViur0T1Zy9sYRW2/bMLS9VVNoPB4JnLDb87hIJ
-        etTSUUjWm+1iR99JbUV67AHPZuQsD2ACv+Sk9JT7hQ==
-X-Google-Smtp-Source: AGs4zMZpmVyh8OhbQ4nnU7zm/ninIPghHb7q438KcpokdBLSaXuN/WxRhaqq8dmT8okDTeJn8ZapFVGlOFqv38cw6dA=
-X-Received: by 10.28.136.15 with SMTP id k15mr5581301wmd.147.1512808191011;
- Sat, 09 Dec 2017 00:29:51 -0800 (PST)
+        bh=Bod7kIHrz0OfXlOC8BH24PF/a38T6dyLGxw8FEo5BIs=;
+        b=uHBZVOw2+sEk4M8EqNlIbtm36uttB7slNd5N1Fji90pX+oplY5K5gRtUgpb93+6X5T
+         8dAdqJpv50WOxHB3oBVBjU5n+tTdaIIQLIqzCcyj3S5vBFSwe/4JsywsjiBsEQFoUgwn
+         PoQEjguiWH99OSm6yzUZz1BoyFtVXGK2wbPSErt+Dyp0aqqh1X798Gd9pSquAiJZT1b5
+         EZ5pwADGYBJR16ALky1BVRzBE5WqtpcJueApP7zRzsr6+dh2eaKCycVg3Rlkc5bkecMX
+         AIkGGuIJUMaeMi25ijKHEbbcBqz/hCgVR2hac/vSwnfFJtassW95dNaXwjCRs8uJIzer
+         QjgQ==
+X-Gm-Message-State: AKGB3mKim99O6v/qlyyPYKCScyWQPkv+JmPH2axfNqgN8g0f2MNQ9HoW
+        n6Os7eGHXn5pZs2ESo92AyGzCbTsJlH9ZM4Mjnc=
+X-Google-Smtp-Source: AGs4zMblZeNToTLQTS9VAnbluc9X5vfBKN44pGi7iwHTJtXIhv2lByL5PHYyuYixjAb9l2bW7FONn0a4C+oQt5RHI4s=
+X-Received: by 10.36.189.140 with SMTP id x134mr12233578ite.26.1512853442971;
+ Sat, 09 Dec 2017 13:04:02 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.223.157.195 with HTTP; Sat, 9 Dec 2017 00:29:10 -0800 (PST)
-In-Reply-To: <20171209064953.8984-3-jiaxun.yang@flygoat.com>
-References: <20171209064953.8984-1-jiaxun.yang@flygoat.com> <20171209064953.8984-3-jiaxun.yang@flygoat.com>
-From:   Philippe Ombredanne <pombredanne@nexb.com>
-Date:   Sat, 9 Dec 2017 09:29:10 +0100
-Message-ID: <CAOFm3uEVduGvpWQNRofAe5_Lb01g+YZSuoaikq1-PPjaUS27FQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/5] MIPS: Loongson64: lemote-2f move ec_kb3310b.h to
- include dir and clean up
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     James Hogan <james.hogan@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        LKML <linux-kernel@vger.kernel.org>
+Received: by 10.2.152.46 with HTTP; Sat, 9 Dec 2017 13:03:42 -0800 (PST)
+In-Reply-To: <1512767781.25033.30.camel@gmail.com>
+References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
+ <CAEdQ38G4VTXDGOarmmTac=hP92VJbQHRFxQTaSWQ3j4d63pogg@mail.gmail.com>
+ <CAEdQ38HcPswBk3pUHzQerFZ=4KjPc5nVYTqNnGQNMk7QbPXuOQ@mail.gmail.com>
+ <CANn89iJKGRLVNAE99JWiyXcOXveytkjbQAiZ9XPiJc6fyEdFVA@mail.gmail.com>
+ <1512741164.25033.28.camel@gmail.com> <CAEdQ38HEduSTY38Noj4peaMN_G++5sLJfqzCMkd3M4pPNTpU_Q@mail.gmail.com>
+ <1512767781.25033.30.camel@gmail.com>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Sat, 9 Dec 2017 13:03:42 -0800
+Message-ID: <CAEdQ38H+jUF3OXpe13Vfm=QZE3iHa=B7PpXkpbek1PnY2E1u5w@mail.gmail.com>
+Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
+ next debugging steps?
+To:     Eric Dumazet <eric.dumazet@gmail.com>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-nfs@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        Hannes Frederic Sowa <hannes@stressinduktion.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <pombredanne@nexb.com>
+Return-Path: <mattst88@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61391
+X-archive-position: 61392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pombredanne@nexb.com
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,50 +79,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Dea Jiaxun,
-
-On Sat, Dec 9, 2017 at 7:49 AM, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
-> To operate EC from platform driver, this head file need able to be include
-> from anywhere. This patch just move ec_kb3310b.h to include dir and
-> clean up ec_kb3310b.h.
+On Fri, Dec 8, 2017 at 1:16 PM, Eric Dumazet <eric.dumazet@gmail.com> wrote:
+> On Fri, 2017-12-08 at 12:26 -0800, Matt Turner wrote:
+>>
+>> Thanks for the quick reply!
+>>
+>> I tried the patch on top of master, but unfortunately the corruption
+>> still occurs.
 >
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->  arch/mips/include/asm/mach-loongson64/ec_kb3310b.h | 170 +++++++++++++++++++
->  arch/mips/loongson64/lemote-2f/ec_kb3310b.c        |   2 +-
->  arch/mips/loongson64/lemote-2f/ec_kb3310b.h        | 188 ---------------------
->  arch/mips/loongson64/lemote-2f/pm.c                |   4 +-
->  arch/mips/loongson64/lemote-2f/reset.c             |   4 +-
->  5 files changed, 175 insertions(+), 193 deletions(-)
->  create mode 100644 arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
->  delete mode 100644 arch/mips/loongson64/lemote-2f/ec_kb3310b.h
+> You might try replacing in sbdma_add_rcvbuffer()
 >
-> diff --git a/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h b/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
-> new file mode 100644
-> index 000000000000..2e8690532ea5
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-loongson64/ec_kb3310b.h
-> @@ -0,0 +1,170 @@
-> +/*
-> + * KB3310B Embedded Controller
-> + *
-> + *  Copyright (C) 2008 Lemote Inc.
-> + *  Author: liujl <liujl@lemote.com>, 2008-03-14
-> + *  Copyright (C) 2009 Lemote Inc.
-> + *  Author: Wu Zhangjin <wuzhangjin@gmail.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + */
+> sb_new = netdev_alloc_skb(dev, size);
+>
+> by
+>
+> sb_new = alloc_skb(size, GFP_ATOMIC);
+>
+> Maybe the device does not like having a frame spanning 2 pages.
 
-Have you considered using the new SPDX ids instead of this fine but
-long license boilerplate?
-That would be very gentle of you if you did!
-You can check Thomas documentation patches, as well as Linus comments
-on the topic.
-
--- 
-Cordially
-Philippe Ombredanne
+No such luck. I also gave changing the page size from 16K to 4K a shot
+without success.

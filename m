@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 07:52:19 +0100 (CET)
-Received: from forward104p.mail.yandex.net ([77.88.28.107]:33959 "EHLO
-        forward104p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990508AbdLIGupL895O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 07:50:45 +0100
-Received: from mxback8j.mail.yandex.net (mxback8j.mail.yandex.net [IPv6:2a02:6b8:0:1619::111])
-        by forward104p.mail.yandex.net (Yandex) with ESMTP id B8CA2183C0A;
-        Sat,  9 Dec 2017 09:50:39 +0300 (MSK)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 07:52:45 +0100 (CET)
+Received: from forward102p.mail.yandex.net ([IPv6:2a02:6b8:0:1472:2741:0:8b7:102]:40027
+        "EHLO forward102p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990589AbdLIGuvI15iO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 07:50:51 +0100
+Received: from mxback6o.mail.yandex.net (mxback6o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::20])
+        by forward102p.mail.yandex.net (Yandex) with ESMTP id BA02C43045D1;
+        Sat,  9 Dec 2017 09:50:43 +0300 (MSK)
 Received: from smtp3o.mail.yandex.net (smtp3o.mail.yandex.net [2a02:6b8:0:1a2d::27])
-        by mxback8j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 5X7RM8vCBp-odkqKM65;
-        Sat, 09 Dec 2017 09:50:39 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512802239;
-        bh=seLlQXE+rGngYPAW7VMtOoVoLGDbRswfjcv+qBOQ8p8=;
+        by mxback6o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id gQY6siNjKM-ohU8BQ1j;
+        Sat, 09 Dec 2017 09:50:43 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512802243;
+        bh=DjmLBsOlrQefkbw0JIjtYZGetDSxpvRThdmKrYdKZKk=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=TGNZYxON5nBPUDFuJjchz8oDeRs1QNYw23Hb8c7J93arsuCtvy6+b+EQz5nBEUAlO
-         RBKORD6KOnWbKjbqPRBGT6EgLsHS+TRZ3xrDR726tZXb0KD1OH65IlLoFfjNyMMEh4
-         ALeGuuYxnQx/BiVVs49eqkeooN/S36pqf0atDmRE=
-Received: by smtp3o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id jBC3v0GG1J-oap4twBR;
-        Sat, 09 Dec 2017 09:50:38 +0300
+        b=GY5HCJrFePoKOORLmhPf+TxhQZNp0+9CgrhMsZNgI9s3BgHTac0XiPigC49ffD3cw
+         BPXkcj+HV/E5uIQOsj12lC/pv9YIdNeOL9ETyWgu6mTXhcwsTju4grVfZSeWY1tQC8
+         BTWtvOaLT7dWNJ3BLd/vn96qC8i8MvcwJ7cBVPvE=
+Received: by smtp3o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id jBC3v0GG1J-oepapQNa;
+        Sat, 09 Dec 2017 09:50:41 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512802238;
-        bh=seLlQXE+rGngYPAW7VMtOoVoLGDbRswfjcv+qBOQ8p8=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1512802242;
+        bh=DjmLBsOlrQefkbw0JIjtYZGetDSxpvRThdmKrYdKZKk=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=R54VJo7QUXplO2uoTgDvhuD2uBmJFXzpkuDtop+BmbGWDljQSyXQNiDspDLrbSw1J
-         dCGhnsyBQrkrXjzvW279IGDg24mqlRI9rW2E/ivyWLMNFUh3QFij4hjzVKAeXYUCLW
-         UXtiRp05fVO1Fgk811gSkZFSLiihTAqcAxxrmKmo=
+        b=wXP3rTQpZ6/sA+1w5wJKHzeWqq0U2aMUTmySnhJMk6RIMBmJaAPRDrP3NaW2vnbvo
+         R/Dc2/LtwcdaNgtM7BAgq4l4OqE5+9GyrhgMB57ZZrn5nknX37dsqRW5+c/p2wI2Km
+         9X4MWKQ22eOEvIa3X6tXW1FQnvINSySsTN3h+q8g=
 Authentication-Results: smtp3o.mail.yandex.net; dkim=pass header.i=@flygoat.com
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     James Hogan <james.hogan@mips.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v4 4/5] MIPS: Loongson64: Load platform device during boot
-Date:   Sat,  9 Dec 2017 14:49:52 +0800
-Message-Id: <20171209064953.8984-5-jiaxun.yang@flygoat.com>
+Subject: [PATCH v4 5/5] MAINTAINERS: Add entry for Lemote YeeLoong Extra Driver
+Date:   Sat,  9 Dec 2017 14:49:53 +0800
+Message-Id: <20171209064953.8984-6-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <20171209064953.8984-1-jiaxun.yang@flygoat.com>
 References: <20171209064953.8984-1-jiaxun.yang@flygoat.com>
@@ -40,7 +40,7 @@ Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61388
+X-archive-position: 61389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,62 +57,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch just add pdev during boot to load the platform driver
+Add myself as a maintainer of Lemote YeeLoong Extra driver
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- arch/mips/loongson64/lemote-2f/Makefile   |  2 +-
- arch/mips/loongson64/lemote-2f/platform.c | 29 +++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 1 deletion(-)
- create mode 100755 arch/mips/loongson64/lemote-2f/platform.c
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ mode change 100644 => 100755 MAINTAINERS
 
-diff --git a/arch/mips/loongson64/lemote-2f/Makefile b/arch/mips/loongson64/lemote-2f/Makefile
-index 08b8abcbfef5..31c90737b98c 100644
---- a/arch/mips/loongson64/lemote-2f/Makefile
-+++ b/arch/mips/loongson64/lemote-2f/Makefile
-@@ -2,7 +2,7 @@
- # Makefile for lemote loongson2f family machines
- #
+diff --git a/MAINTAINERS b/MAINTAINERS
+old mode 100644
+new mode 100755
+index 1c3feffb1c1c..f576db163986
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7619,6 +7619,12 @@ W:	http://legousb.sourceforge.net/
+ S:	Maintained
+ F:	drivers/usb/misc/legousbtower.c
  
--obj-y += clock.o machtype.o irq.o reset.o ec_kb3310b.o
-+obj-y += clock.o machtype.o irq.o reset.o ec_kb3310b.o platform.o
- 
- #
- # Suspend Support
-diff --git a/arch/mips/loongson64/lemote-2f/platform.c b/arch/mips/loongson64/lemote-2f/platform.c
-new file mode 100755
-index 000000000000..c7de7d621075
---- /dev/null
-+++ b/arch/mips/loongson64/lemote-2f/platform.c
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright (C) 2017 Jiaxun Yang.
-+ * Author: Jiaxun Yang, jiaxun.yang@flygoat.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
++Lemote YeeLoong EXTRAS DRIVER
++M:	Jiaxun Yang <jiaxun.yang@flygoat.com>
++S:	Maintained
++F:	drivers/platform/mips/yeeloong_laptop.c
 +
-+#include <linux/err.h>
-+#include <linux/platform_device.h>
 +
-+#include <asm/bootinfo.h>
-+
-+static struct platform_device yeeloong_pdev = {
-+	.name = "yeeloong_laptop",
-+	.id = -1,
-+};
-+
-+static int __init lemote2f_platform_init(void)
-+{
-+	if (mips_machtype != MACH_LEMOTE_YL2F89)
-+		return -ENODEV;
-+	
-+	return platform_device_register(&yeeloong_pdev);
-+}
-+
-+arch_initcall(lemote2f_platform_init);
+ LG2160 MEDIA DRIVER
+ M:	Michael Krufky <mkrufky@linuxtv.org>
+ L:	linux-media@vger.kernel.org
 -- 
 2.15.0

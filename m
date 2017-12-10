@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Dec 2017 18:48:26 +0100 (CET)
-Received: from mout.web.de ([212.227.15.3]:57572 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990412AbdLJRsTKG6s- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 10 Dec 2017 18:48:19 +0100
-Received: from [192.168.1.3] ([77.182.0.113]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M6DjG-1fHhC43JVa-00yAoi; Sun, 10
- Dec 2017 18:48:11 +0100
-To:     linux-mips@linux-mips.org,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH] TC: Delete an error message for a failed memory allocation in
- tc_bus_add_devices()
-Message-ID: <bfb63956-346c-aa17-5b06-fbe19ff0a5e3@users.sourceforge.net>
-Date:   Sun, 10 Dec 2017 18:48:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:McujoTB788FJuXRNq/BnD1/Gfui+daf9xZDAzeFxdXmslsG4zsy
- n3NBNZmD9VjeTz6a8+MmjU/GGiG40nTISXyAyQE4byUbQHegKHlKCXApi9eNSbnpbvr8y45
- AQVt57CEHs9jG3wYaYHQKKCjkCRwJpTVFI+3UnvCHnn8tpyoeCJtuCE8lkfTpGdtDMC7exH
- 2aU+FVXLPEXYeXT8VFD/w==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:IhW8XMYxImo=:vlCTu/GhE22e6w2h0FW2Z7
- yTFNTo1kar6A1isXe+/dL1LQecAGCnWwzEt9DHusSB8cfjy5EIPa7LG8g49IjMidBuVp7oNYU
- TD1/H4a6j1z6PX3Y5EFcETYMM5dXPGJqRelO2XSvvqzfY8ZRxrymNjt34hhd8Z9db7/LxXdd5
- 9nqGGKI8qdR1c0X6DVQUiIHYdDXKIxG0pvg0peqM75EIPlkmahIPN2J47dJRAeidHtvlLI4zL
- hs6bFiRUgYnBCJG/zrEjJtpHzkfOctWrKAyJEpHBkQcmQpx2IHPFEGqMCmWNx17g/Lc0OCWy+
- aWt6IOFoXMx2ZBSPd9zstcN9LLQkh/aeNcKN2WAcoSLp2Bp/hGurZJSnmLTS64yVlLkFouRXg
- 6oje/E2Ptxbc6FC/6+tX33QlMp1mI0rEscvTXiLeLDiCmVSPVMTszzU+rTGrIx53+lSdlloie
- dueWAX61MYcs30XCMC7S+S6S6zP7ZDQh96MNdvCheTGfBJ8QeU3ZxPAHfv+fxgxUGSEfkrNTe
- /cshgLd05UiuDg/VxxGQEXbI1qN7WJc498oKUCGx/3izbml1cFPD4tGxvZw31RBYZtzQhi7G8
- 7DtjqlLQhEhLgARzB0xvwn3MWToi5BOksJ2yVwMphPPihSa5L3zG/yuOFrjKC443ibGL/twMT
- wIHCXhDevf6aM6VP0nLuJv2RGhbpxDNMYsdyDDyCAQh6GRngfKweb3cEVGPCvwGfz5Ezm8lnA
- 59xzWPZR1+SIUdJydqhx6EdxZfPU8JSoP1XImsFvQ3KQtDlasDfd8MejF1euxCEC+n2mi1EMu
- FtTdA9hK9mRO8HlLaR+cJenQwRDOVy4jAB40kg1Vd5VUl1HSMY=
-Return-Path: <elfring@users.sourceforge.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Dec 2017 19:20:47 +0100 (CET)
+Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:37977
+        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990421AbdLJSUh06m0- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Dec 2017 19:20:37 +0100
+Received: by mail-pf0-x243.google.com with SMTP id u25so9889047pfg.5;
+        Sun, 10 Dec 2017 10:20:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=aYrcLpL5PtQRNd+EFsu9C9w3E7zmMfFGJfG4uOB3BJY=;
+        b=iw0TGEJ6geohipMHqvN7VOju+v5J5Lh7BbOTd8cpUGhM5Fww9NFqtDIikKmf/J2ttQ
+         r8rgPKO18imOYvTqfyGK1IregMVoDVUBSAsykcj/f51Mj1x7my/v/vCPC55RvqvNFh3f
+         ZhyVhye3syizim0l4cStY41Mwdhhh8lldGGUGYcA7eIo7Sy3rdMC8oREG5N0Ur28EM32
+         2tdGNS7L/oxgBiG0pvZPYpIBcpEmSkoZJ+3ZkFCojEUc+8bMHmL1bgIIgYupV0jqcLB3
+         8cEOzYxopKfS1o74MQUAvm9/5BjEE8x2ACwBrvFM0eRLkZK48lYGtxnodKPNdBh7V/16
+         IHug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=aYrcLpL5PtQRNd+EFsu9C9w3E7zmMfFGJfG4uOB3BJY=;
+        b=S6J6MRVRluj+/krhUIF/AFf/so6ZKXwTOXUtj1y4t8ovJK00pzSIxKhmXfr1cdy6Ae
+         4yp1FSV+2AcweS+gqBb7o4g5s5g0N+ELTng6tndcIA4JNCe/FiMZz6FSOGETl95cn+dK
+         SfeLrryiWVIjdZUKT609ppqncMgNpDxwYh5icwrWWL/q81jvMnJSMcNyKTm5/ZKNslCd
+         4a93cqblRSRJk9mXFDjcYZTV1tcTSDkaOD7T6K4vUTXlfaaMywkQnL/iXHI+nfdtsRVH
+         XA3IFS3a/l2gLRIAakYe77ESylL2kMPoOfdtVmj9/IgG3xS5ZF+c7iUbsnn0C4LupZ2K
+         A5nA==
+X-Gm-Message-State: AKGB3mIzS+WAuz7wZgv1Yxlrj0ZZQvtnhKEN2n7a1y9c1wuIk7jhEGwB
+        CVIMLDN8nxcq+hiJbOU97qVvV4Ab
+X-Google-Smtp-Source: AGs4zMbfK8pw8PI78gL2B5BZMNEfehx6khcL66XOSzOOuSeyHi7iEdTB2i1tysX/zfbPmFHhnRgYUA==
+X-Received: by 10.98.149.72 with SMTP id p69mr5002124pfd.76.1512930029013;
+        Sun, 10 Dec 2017 10:20:29 -0800 (PST)
+Received: from krishna-pc.photonmax3g.wifi ([49.200.244.9])
+        by smtp.gmail.com with ESMTPSA id w19sm24817595pfa.127.2017.12.10.10.20.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 10 Dec 2017 10:20:28 -0800 (PST)
+From:   Pravin Shedge <pravin.shedge4linux@gmail.com>
+To:     ralf@linux-mips.org, jhogan@kernel.org, paul.burton@mips.com,
+        Steven.Hill@cavium.com, alex.belits@cavium.com,
+        linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, pravin.shedge4linux@gmail.com
+Subject: [PATCH 35/45] arch/mips: remove duplicate includes
+Date:   Sun, 10 Dec 2017 23:50:17 +0530
+Message-Id: <1512930017-4573-1-git-send-email-pravin.shedge4linux@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <pravin.shedge4linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61394
+X-archive-position: 61395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: pravin.shedge4linux@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,34 +64,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 10 Dec 2017 18:42:42 +0100
+These duplicate includes have been found with scripts/checkincludes.pl but
+they have been removed manually to avoid removing false positives.
 
-Omit an extra message for a memory allocation failure in this function.
-
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Pravin Shedge <pravin.shedge4linux@gmail.com>
 ---
- drivers/tc/tc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/mips/mm/init.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/tc/tc.c b/drivers/tc/tc.c
-index 3be9519654e5..2deb3768a9f6 100644
---- a/drivers/tc/tc.c
-+++ b/drivers/tc/tc.c
-@@ -82,10 +82,9 @@ static void __init tc_bus_add_devices(struct tc_bus *tbus)
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 84b7b59..400676c 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -30,7 +30,6 @@
+ #include <linux/hardirq.h>
+ #include <linux/gfp.h>
+ #include <linux/kcore.h>
+-#include <linux/export.h>
+ #include <linux/initrd.h>
  
- 		/* Found a board, allocate it an entry in the list */
- 		tdev = kzalloc(sizeof(*tdev), GFP_KERNEL);
--		if (!tdev) {
--			pr_err("tc%x: unable to allocate tc_dev\n", slot);
-+		if (!tdev)
- 			goto out_err;
--		}
-+
- 		dev_set_name(&tdev->dev, "tc%x", slot);
- 		tdev->bus = tbus;
- 		tdev->dev.parent = &tbus->dev;
+ #include <asm/asm-offsets.h>
+@@ -46,7 +45,6 @@
+ #include <asm/pgalloc.h>
+ #include <asm/tlb.h>
+ #include <asm/fixmap.h>
+-#include <asm/maar.h>
+ 
+ /*
+  * We have up to 8 empty zeroed pages so we can map one of the right colour
 -- 
-2.15.1
+2.7.4

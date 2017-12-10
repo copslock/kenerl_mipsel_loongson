@@ -1,79 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2017 22:37:20 +0100 (CET)
-Received: from mail-pl0-x243.google.com ([IPv6:2607:f8b0:400e:c01::243]:41322
-        "EHLO mail-pl0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990421AbdLIVhMfdST0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2017 22:37:12 +0100
-Received: by mail-pl0-x243.google.com with SMTP id g2so2354829pli.8
-        for <linux-mips@linux-mips.org>; Sat, 09 Dec 2017 13:37:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=QJqhuvmNDiGQ7DsgsalIVrxOlgVf9VjD/WOjlBXo85w=;
-        b=O8oqdulP5aJRLt8XpkApkWzqvvFKOfcMFxrxald0Bk6J3duLxUHKpeMW7pyllWrNvZ
-         M6wJYixWgn1XRZ4peFRjMNihrRssHqhaUoA15hyrq0xjY7GX3fjK+2/mAidSMlwe85je
-         VY4p6VbmT14MyF+5qHQmdv4pX9jDgSw+DdsW6x2LPEh6ZLcFyv7BRywv+r0X+qVBIFdO
-         OlObTXtr0VsnzIBFy+tDSQmDdXDVkZ9LOpPQ51mWKbFpEZPhB+pRIenEUwpKSgRLjxYl
-         SPvJbzPF8aG/hCuB9Fv5tqx1ab2rkBoZyeQ0g6MsDMkDu9z/QCNmBk5gh4P5jF6O460W
-         QE1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=QJqhuvmNDiGQ7DsgsalIVrxOlgVf9VjD/WOjlBXo85w=;
-        b=kd1E3Gtymmbd9qz1j4ZaAwX1A7shq+VQlcDV3NsqMgSrXZUC5v0geWab/Zjv9XnxEA
-         laGrq8XXI4HZYLI6wDvOVRiDV/XJrrZ36CRrzCqQwzFCDNYKy7D+tfKsdw5ER77ZwgnE
-         1N2Y2lFOtENjq4PDRrENQ2CJhCb5ltrPWRCaXVRt0tYvopcPl97R4L9tNfcikHzXuOD0
-         Ds7POyDdHpcgAlXwtgrQLdzbUZ3rIpOWle6jSalOyXLIAp7kOpLWgpkJvvG0Quo6F7bk
-         XSmoMhcS7clAHoaqGVeSbmaLfUZYbsxIXQBk+PKkVMS2g0te2G+d1895waqHLFrwfryb
-         AAhQ==
-X-Gm-Message-State: AJaThX77MtAffFBK7zFzDQgH5SzQ8/xlUcs6nbPst4KSPGmKRWxkrxou
-        9EGegJKcIlK0w3R1Z0g+CQs=
-X-Google-Smtp-Source: AGs4zMaVkaWvzYjhfvgBwyAz41RyRJXJ07vI4zJ2frv5OSy9ROioxqItimO/AlcmLNMFZEMJSfCk0g==
-X-Received: by 10.84.244.2 with SMTP id g2mr33970824pll.170.1512855425938;
-        Sat, 09 Dec 2017 13:37:05 -0800 (PST)
-Received: from edumazet-glaptop3.lan (c-67-180-167-114.hsd1.ca.comcast.net. [67.180.167.114])
-        by smtp.googlemail.com with ESMTPSA id a6sm17174732pff.158.2017.12.09.13.37.03
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 09 Dec 2017 13:37:04 -0800 (PST)
-Message-ID: <1512855422.25033.34.camel@gmail.com>
-Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
- next debugging steps?
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     Eric Dumazet <edumazet@google.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linux-nfs@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>
-Date:   Sat, 09 Dec 2017 13:37:02 -0800
-In-Reply-To: <CAEdQ38H+jUF3OXpe13Vfm=QZE3iHa=B7PpXkpbek1PnY2E1u5w@mail.gmail.com>
-References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
-         <CAEdQ38G4VTXDGOarmmTac=hP92VJbQHRFxQTaSWQ3j4d63pogg@mail.gmail.com>
-         <CAEdQ38HcPswBk3pUHzQerFZ=4KjPc5nVYTqNnGQNMk7QbPXuOQ@mail.gmail.com>
-         <CANn89iJKGRLVNAE99JWiyXcOXveytkjbQAiZ9XPiJc6fyEdFVA@mail.gmail.com>
-         <1512741164.25033.28.camel@gmail.com>
-         <CAEdQ38HEduSTY38Noj4peaMN_G++5sLJfqzCMkd3M4pPNTpU_Q@mail.gmail.com>
-         <1512767781.25033.30.camel@gmail.com>
-         <CAEdQ38H+jUF3OXpe13Vfm=QZE3iHa=B7PpXkpbek1PnY2E1u5w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1+deb9u1 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Dec 2017 18:48:26 +0100 (CET)
+Received: from mout.web.de ([212.227.15.3]:57572 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990412AbdLJRsTKG6s- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 10 Dec 2017 18:48:19 +0100
+Received: from [192.168.1.3] ([77.182.0.113]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M6DjG-1fHhC43JVa-00yAoi; Sun, 10
+ Dec 2017 18:48:11 +0100
+To:     linux-mips@linux-mips.org,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+From:   SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: [PATCH] TC: Delete an error message for a failed memory allocation in
+ tc_bus_add_devices()
+Message-ID: <bfb63956-346c-aa17-5b06-fbe19ff0a5e3@users.sourceforge.net>
+Date:   Sun, 10 Dec 2017 18:48:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-Return-Path: <eric.dumazet@gmail.com>
+X-Provags-ID: V03:K0:McujoTB788FJuXRNq/BnD1/Gfui+daf9xZDAzeFxdXmslsG4zsy
+ n3NBNZmD9VjeTz6a8+MmjU/GGiG40nTISXyAyQE4byUbQHegKHlKCXApi9eNSbnpbvr8y45
+ AQVt57CEHs9jG3wYaYHQKKCjkCRwJpTVFI+3UnvCHnn8tpyoeCJtuCE8lkfTpGdtDMC7exH
+ 2aU+FVXLPEXYeXT8VFD/w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:IhW8XMYxImo=:vlCTu/GhE22e6w2h0FW2Z7
+ yTFNTo1kar6A1isXe+/dL1LQecAGCnWwzEt9DHusSB8cfjy5EIPa7LG8g49IjMidBuVp7oNYU
+ TD1/H4a6j1z6PX3Y5EFcETYMM5dXPGJqRelO2XSvvqzfY8ZRxrymNjt34hhd8Z9db7/LxXdd5
+ 9nqGGKI8qdR1c0X6DVQUiIHYdDXKIxG0pvg0peqM75EIPlkmahIPN2J47dJRAeidHtvlLI4zL
+ hs6bFiRUgYnBCJG/zrEjJtpHzkfOctWrKAyJEpHBkQcmQpx2IHPFEGqMCmWNx17g/Lc0OCWy+
+ aWt6IOFoXMx2ZBSPd9zstcN9LLQkh/aeNcKN2WAcoSLp2Bp/hGurZJSnmLTS64yVlLkFouRXg
+ 6oje/E2Ptxbc6FC/6+tX33QlMp1mI0rEscvTXiLeLDiCmVSPVMTszzU+rTGrIx53+lSdlloie
+ dueWAX61MYcs30XCMC7S+S6S6zP7ZDQh96MNdvCheTGfBJ8QeU3ZxPAHfv+fxgxUGSEfkrNTe
+ /cshgLd05UiuDg/VxxGQEXbI1qN7WJc498oKUCGx/3izbml1cFPD4tGxvZw31RBYZtzQhi7G8
+ 7DtjqlLQhEhLgARzB0xvwn3MWToi5BOksJ2yVwMphPPihSa5L3zG/yuOFrjKC443ibGL/twMT
+ wIHCXhDevf6aM6VP0nLuJv2RGhbpxDNMYsdyDDyCAQh6GRngfKweb3cEVGPCvwGfz5Ezm8lnA
+ 59xzWPZR1+SIUdJydqhx6EdxZfPU8JSoP1XImsFvQ3KQtDlasDfd8MejF1euxCEC+n2mi1EMu
+ FtTdA9hK9mRO8HlLaR+cJenQwRDOVy4jAB40kg1Vd5VUl1HSMY=
+Return-Path: <elfring@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61393
+X-archive-position: 61394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eric.dumazet@gmail.com
+X-original-sender: elfring@users.sourceforge.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,32 +60,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 2017-12-09 at 13:03 -0800, Matt Turner wrote:
-> On Fri, Dec 8, 2017 at 1:16 PM, Eric Dumazet <eric.dumazet@gmail.com>
-> wrote:
-> > On Fri, 2017-12-08 at 12:26 -0800, Matt Turner wrote:
-> > > 
-> > > Thanks for the quick reply!
-> > > 
-> > > I tried the patch on top of master, but unfortunately the
-> > > corruption
-> > > still occurs.
-> > 
-> > You might try replacing in sbdma_add_rcvbuffer()
-> > 
-> > sb_new = netdev_alloc_skb(dev, size);
-> > 
-> > by
-> > 
-> > sb_new = alloc_skb(size, GFP_ATOMIC);
-> > 
-> > Maybe the device does not like having a frame spanning 2 pages.
-> 
-> No such luck. I also gave changing the page size from 16K to 4K a
-> shot
-> without success.
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sun, 10 Dec 2017 18:42:42 +0100
 
+Omit an extra message for a memory allocation failure in this function.
 
-If your hist is SMP, could you try running it with one CPU only ?
+This issue was detected by using the Coccinelle software.
 
-Sorry, I have no more ideas :/
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+---
+ drivers/tc/tc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/tc/tc.c b/drivers/tc/tc.c
+index 3be9519654e5..2deb3768a9f6 100644
+--- a/drivers/tc/tc.c
++++ b/drivers/tc/tc.c
+@@ -82,10 +82,9 @@ static void __init tc_bus_add_devices(struct tc_bus *tbus)
+ 
+ 		/* Found a board, allocate it an entry in the list */
+ 		tdev = kzalloc(sizeof(*tdev), GFP_KERNEL);
+-		if (!tdev) {
+-			pr_err("tc%x: unable to allocate tc_dev\n", slot);
++		if (!tdev)
+ 			goto out_err;
+-		}
++
+ 		dev_set_name(&tdev->dev, "tc%x", slot);
+ 		tdev->bus = tbus;
+ 		tdev->dev.parent = &tbus->dev;
+-- 
+2.15.1

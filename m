@@ -1,67 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2017 16:18:40 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:46197
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2017 16:22:44 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:38846
         "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990487AbdLKPSdTwS1N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Dec 2017 16:18:33 +0100
-Received: by mail-wm0-x241.google.com with SMTP id r78so15180316wme.5
-        for <linux-mips@linux-mips.org>; Mon, 11 Dec 2017 07:18:29 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23990436AbdLKPWgYKsoN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Dec 2017 16:22:36 +0100
+Received: by mail-wm0-x241.google.com with SMTP id 64so14807081wme.3
+        for <linux-mips@linux-mips.org>; Mon, 11 Dec 2017 07:22:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=89JfGKsK3Asbyqks7rL5Pk7KJHHqEqBh/Ephso427Ko=;
-        b=gMbDZOpjo1VUU1MeQGU87QoAtxyxUpOUHc+fav7nEh+ur+78Rnr7UTRaXE3Mlv2WOg
-         AqUdA8Fli0fK2j5dfZWgCQxS75h2ZrwosInTs3zXpBV8t8TMFM43JGRbGTskTfGl3zDs
-         EyYxmYsTPJaCBKlI6xRjwhDrW7Vk9at5CqRhY=
+        bh=IJjPTf2PRnJQN0yIqccUsMxy/K//KENNZECPcIz+hXg=;
+        b=VAsgpVA8SkwA5SjqRASisELhY9/8/vElKAEIvlhdwgS/MDTvyjWzyoMKCgIsgm76Va
+         9KMjbGCBP4aONCg1sAfX8dwoviztvrEG/7iBmwMz1PjGZz3rngy7xLhl8TnKwZZtstRY
+         6fPWWVRWC0XmqYnluTIsEzw+58mKAGeeKU5R0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=89JfGKsK3Asbyqks7rL5Pk7KJHHqEqBh/Ephso427Ko=;
-        b=sPJx32tB0S5TMiVHzUHosx4JxzDPy7Xk4fSjQ6ICBpOeyE9zREW4poOEQexIXeacVF
-         uUwopQ2s4OyPmp7B54r3x6g7IzazgWt3KslrvwqD161PSiDR19UpSMiTnfzM9DSPvnb5
-         jhJtUx2dV4ElI8sM8YxQDEFFZgFWUE7TcMtlJntolL6O3NCx7agb1YVMXvTQEvG4oLpJ
-         Iv9S7UwY5CwlhzgxjioYi/NnJlyf9FlYhcFHpR23oUsl6nt5DpZZ1MqrkYps0nkHxAj0
-         s7zVJJIp0pF8qMBB0ESh1HHi/T/10A49qVPDK3If/Osn66bLCounr3XQC7xX2irA0vmh
-         Pc9A==
-X-Gm-Message-State: AKGB3mLRoEXx0/06tBqD11x//hifJgOOdJdol9pXzTRthvh7s0tTuvpu
-        9RVBPdDJT4i5iMeo+Zh+Enuk1g==
-X-Google-Smtp-Source: ACJfBotv3srJINiqlY3rG5G2A4BOklSLJpnpNCQF00RBnmBBhhYgnJKw/YGHNAXCs7JwAbs+4rkaDQ==
-X-Received: by 10.80.143.67 with SMTP id 61mr1481378edy.219.1513005503845;
-        Mon, 11 Dec 2017 07:18:23 -0800 (PST)
+        bh=IJjPTf2PRnJQN0yIqccUsMxy/K//KENNZECPcIz+hXg=;
+        b=U4H+1GRjyEX07G3qO1gokxg9fQdLhqHI2QSMfJZJPwgNhnPj6Ru81bIfPqw4ijsxA6
+         zUcWz6AHCypqSAavFfIcP0zkkC1cvphG4zlXI2akopLx6eIm7RK2bO6NnbxAQvxPeXEu
+         RzHJJFx/eyOlruEvEV0IeYUWKf6/idVUvjyfxw8m/jEpNcAtNPmG1YTFjPu95TIKUw+e
+         deUsvGNenr9sFQAv61bck29uGgo72MMoqxrtIJlg2Z+wBnOC0Kh6ZVB1kZxwK9ph2Kri
+         JwY7e1LyInNyibzhKEeewH4Ps3OV7jKtXewnPZaqlWrMJfjLbydNH0sljo3Dnh69pqX0
+         nG6w==
+X-Gm-Message-State: AKGB3mKKeuodmiWLqiMLvlC1LqADSxtL8e8v5Zgg/4JP4cNMrIys568L
+        HrUVi32UZbjSyPu158Bh25f7iw==
+X-Google-Smtp-Source: ACJfBouule4mQB7hPb8IYd9bi4ItXbL0KMtyQqWRh9gzNqtU2QliNbLr977ScPqT7Bguh0JWbC+ObA==
+X-Received: by 10.80.214.202 with SMTP id l10mr1523253edj.58.1513005750951;
+        Mon, 11 Dec 2017 07:22:30 -0800 (PST)
 Received: from localhost (x50d2404e.cust.hiper.dk. [80.210.64.78])
-        by smtp.gmail.com with ESMTPSA id e46sm7088186edb.93.2017.12.11.07.18.21
+        by smtp.gmail.com with ESMTPSA id b7sm6504114eda.60.2017.12.11.07.22.29
         (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 11 Dec 2017 07:18:22 -0800 (PST)
-Date:   Mon, 11 Dec 2017 16:18:18 +0100
+        Mon, 11 Dec 2017 07:22:29 -0800 (PST)
+Date:   Mon, 11 Dec 2017 16:22:26 +0100
 From:   Christoffer Dall <christoffer.dall@linaro.org>
 To:     Cornelia Huck <cohuck@redhat.com>
-Cc:     Christoffer Dall <cdall@kernel.org>, kvm@vger.kernel.org,
-        Andrew Jones <drjones@redhat.com>,
+Cc:     Christoffer Dall <cdall@kernel.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        kvm@vger.kernel.org, Andrew Jones <drjones@redhat.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         Marc Zyngier <marc.zyngier@arm.com>,
         kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
         Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
         linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 11/16] KVM: Move vcpu_load to arch-specific
- kvm_arch_vcpu_ioctl_set_guest_debug
-Message-ID: <20171211151818.GI910@cbox>
+Subject: Re: [PATCH v3 14/16] KVM: Move vcpu_load to arch-specific
+ kvm_arch_vcpu_ioctl
+Message-ID: <20171211152226.GJ910@cbox>
 References: <20171204203538.8370-1-cdall@kernel.org>
- <20171204203538.8370-12-cdall@kernel.org>
- <20171211133943.236f18be.cohuck@redhat.com>
+ <20171204203538.8370-15-cdall@kernel.org>
+ <20171211141241.2129a84c.cohuck@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20171211133943.236f18be.cohuck@redhat.com>
+In-Reply-To: <20171211141241.2129a84c.cohuck@redhat.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <christoffer.dall@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61416
+X-archive-position: 61417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,101 +78,191 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 11, 2017 at 01:39:43PM +0100, Cornelia Huck wrote:
-> On Mon,  4 Dec 2017 21:35:33 +0100
+On Mon, Dec 11, 2017 at 02:12:41PM +0100, Cornelia Huck wrote:
+> On Mon,  4 Dec 2017 21:35:36 +0100
 > Christoffer Dall <cdall@kernel.org> wrote:
 > 
 > > From: Christoffer Dall <christoffer.dall@linaro.org>
 > > 
-> > Move vcpu_load() and vcpu_put() into the architecture specific
-> > implementations of kvm_arch_vcpu_ioctl_set_guest_debug().
+> > Move the calls to vcpu_load() and vcpu_put() in to the architecture
+> > specific implementations of kvm_arch_vcpu_ioctl() which dispatches
+> > further architecture-specific ioctls on to other functions.
 > > 
-> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> > Some architectures support asynchronous vcpu ioctls which cannot call
+> > vcpu_load() or take the vcpu->mutex, because that would prevent
+> > concurrent execution with a running VCPU, which is the intended purpose
+> > of these ioctls, for example because they inject interrupts.
+> > 
+> > We repeat the separate checks for these specifics in the architecture
+> > code for MIPS, S390 and PPC, and avoid taking the vcpu->mutex and
+> > calling vcpu_load for these ioctls.
+> > 
 > > Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
 > > ---
-> >  arch/arm64/kvm/guest.c    | 15 ++++++++++++---
-> >  arch/powerpc/kvm/book3s.c |  2 ++
-> >  arch/powerpc/kvm/booke.c  | 19 +++++++++++++------
-> >  arch/s390/kvm/kvm-s390.c  | 16 ++++++++++++----
-> >  arch/x86/kvm/x86.c        |  4 +++-
-> >  virt/kvm/kvm_main.c       |  2 --
-> >  6 files changed, 42 insertions(+), 16 deletions(-)
+> >  arch/mips/kvm/mips.c       | 49 +++++++++++++++++++++++----------------
+> >  arch/powerpc/kvm/powerpc.c | 13 ++++++-----
+> >  arch/s390/kvm/kvm-s390.c   | 19 ++++++++-------
+> >  arch/x86/kvm/x86.c         | 22 +++++++++++++-----
+> >  virt/kvm/arm/arm.c         | 58 ++++++++++++++++++++++++++++++++--------------
+> >  virt/kvm/kvm_main.c        |  2 --
+> >  6 files changed, 103 insertions(+), 60 deletions(-)
 > > 
+> > diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+> > index 3a898712d6cd..4a039341dc29 100644
+> > --- a/arch/mips/kvm/mips.c
+> > +++ b/arch/mips/kvm/mips.c
+> > @@ -913,56 +913,65 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
+> >  	void __user *argp = (void __user *)arg;
+> >  	long r;
+> >  
+> > +	if (ioctl == KVM_INTERRUPT) {
 > 
-> > diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-> > index 1b491b89cd43..7cb0e2677e60 100644
-> > --- a/arch/powerpc/kvm/booke.c
-> > +++ b/arch/powerpc/kvm/booke.c
-> > @@ -2018,12 +2018,15 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
-> >  {
-> >  	struct debug_reg *dbg_reg;
-> >  	int n, b = 0, w = 0;
-> > +	int ret = 0;
+> I would add a comment here that this ioctl is async to vcpu execution,
+> so it is understandable why you skip the vcpu_load().
+
+Yes, that would be appropriate.
+
+> 
+> [As an aside, it is nice that this is now more obvious when looking at
+> the architectures' handlers.]
+> 
+
+Agreed.
+
+> > +		struct kvm_mips_interrupt irq;
+> > +
+> > +		if (copy_from_user(&irq, argp, sizeof(irq)))
+> > +			return -EFAULT;
+> > +		kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
+> > +			  irq.irq);
+> > +
+> > +		return kvm_vcpu_ioctl_interrupt(vcpu, &irq);
+> > +	}
 > > +
 > > +	vcpu_load(vcpu);
-> >  
-> >  	if (!(dbg->control & KVM_GUESTDBG_ENABLE)) {
-> >  		vcpu->arch.dbg_reg.dbcr0 = 0;
-> >  		vcpu->guest_debug = 0;
-> >  		kvm_guest_protect_msr(vcpu, MSR_DE, false);
-> > -		return 0;
-> > +		goto out;
-> >  	}
-> >  
-> >  	kvm_guest_protect_msr(vcpu, MSR_DE, true);
-> > @@ -2055,8 +2058,9 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
-> >  #endif
-> >  
-> >  	if (!(vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP))
-> > -		return 0;
-> > +		goto out;
-> >  
-> > +	ret = -EINVAL;
-> >  	for (n = 0; n < (KVMPPC_BOOKE_IAC_NUM + KVMPPC_BOOKE_DAC_NUM); n++) {
-> >  		uint64_t addr = dbg->arch.bp[n].addr;
-> >  		uint32_t type = dbg->arch.bp[n].type;
-> > @@ -2067,21 +2071,24 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
-> >  		if (type & ~(KVMPPC_DEBUG_WATCH_READ |
-> >  			     KVMPPC_DEBUG_WATCH_WRITE |
-> >  			     KVMPPC_DEBUG_BREAKPOINT))
-> > -			return -EINVAL;
-> > +			goto out;
-> >  
-> >  		if (type & KVMPPC_DEBUG_BREAKPOINT) {
-> >  			/* Setting H/W breakpoint */
-> >  			if (kvmppc_booke_add_breakpoint(dbg_reg, addr, b++))
-> > -				return -EINVAL;
-> > +				goto out;
-> >  		} else {
-> >  			/* Setting H/W watchpoint */
-> >  			if (kvmppc_booke_add_watchpoint(dbg_reg, addr,
-> >  							type, w++))
-> > -				return -EINVAL;
-> > +				goto out;
-> >  		}
-> >  	}
-> >  
-> > -	return 0;
-> > +	ret = 0;
+> > +
+> >  	switch (ioctl) {
 > 
-> I would probably set the -EINVAL in the individual branches (so it is
-> clear that something is wrong, and it is not just a benign exit as in
-> the cases above), but your code is correct as well.
-
-I think that's better as well actually.  I got probably got a little
-used to that pattern after looking the main dispatcher function for a
-while.  I'm happy to change it.
-
-> > +out:
+> (...)
+> 
+> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> > index c06bc9552438..6b5dd3a25fe8 100644
+> > --- a/arch/powerpc/kvm/powerpc.c
+> > +++ b/arch/powerpc/kvm/powerpc.c
+> > @@ -1617,16 +1617,16 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+> >  	void __user *argp = (void __user *)arg;
+> >  	long r;
+> >  
+> > -	switch (ioctl) {
+> > -	case KVM_INTERRUPT: {
+> > +	if (ioctl == KVM_INTERRUPT) {
+> 
+> Same here.
+> 
+> >  		struct kvm_interrupt irq;
+> > -		r = -EFAULT;
+> >  		if (copy_from_user(&irq, argp, sizeof(irq)))
+> > -			goto out;
+> > -		r = kvm_vcpu_ioctl_interrupt(vcpu, &irq);
+> > -		goto out;
+> > +			return -EFAULT;
+> > +		return kvm_vcpu_ioctl_interrupt(vcpu, &irq);
+> >  	}
+> >  
+> > +	vcpu_load(vcpu);
+> > +
+> > +	switch (ioctl) {
+> >  	case KVM_ENABLE_CAP:
+> >  	{
+> >  		struct kvm_enable_cap cap;
+> > @@ -1666,6 +1666,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+> >  	}
+> >  
+> >  out:
 > > +	vcpu_put(vcpu);
-> > +	return ret;
+> >  	return r;
 > >  }
 > >  
-> >  void kvmppc_booke_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> > index 43278f334ce3..cd067b63d77f 100644
+> > --- a/arch/s390/kvm/kvm-s390.c
+> > +++ b/arch/s390/kvm/kvm-s390.c
+> > @@ -3743,24 +3743,25 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+> >  	case KVM_S390_IRQ: {
+> >  		struct kvm_s390_irq s390irq;
+> >  
+> > -		r = -EFAULT;
+> >  		if (copy_from_user(&s390irq, argp, sizeof(s390irq)))
+> > -			break;
+> > -		r = kvm_s390_inject_vcpu(vcpu, &s390irq);
+> > -		break;
+> > +			return -EFAULT;
+> > +		return kvm_s390_inject_vcpu(vcpu, &s390irq);
+> >  	}
+> >  	case KVM_S390_INTERRUPT: {
+> >  		struct kvm_s390_interrupt s390int;
+> >  		struct kvm_s390_irq s390irq;
+> >  
+> > -		r = -EFAULT;
+> >  		if (copy_from_user(&s390int, argp, sizeof(s390int)))
+> > -			break;
+> > +			return -EFAULT;
+> >  		if (s390int_to_s390irq(&s390int, &s390irq))
+> >  			return -EINVAL;
+> > -		r = kvm_s390_inject_vcpu(vcpu, &s390irq);
+> > -		break;
+> > +		return kvm_s390_inject_vcpu(vcpu, &s390irq);
+> >  	}
+> > +	}
 > 
-> In any case,
+> I find the special casing with the immediate return a bit ugly. Maybe
+> introduce a helper async_vcpu_ioctl() or so that sets -ENOIOCTLCMD in
+> its default case and return here if ret != -ENOIOCTLCMD? Christian,
+> what do you think?
 > 
-> Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+> > +
+> > +	vcpu_load(vcpu);
+> > +
+> > +	switch (ioctl) {
+> >  	case KVM_S390_STORE_STATUS:
+> >  		idx = srcu_read_lock(&vcpu->kvm->srcu);
+> >  		r = kvm_s390_vcpu_store_status(vcpu, arg);
+> > @@ -3883,6 +3884,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+> >  	default:
+> >  		r = -ENOTTY;
+> >  	}
+> > +
+> > +	vcpu_put(vcpu);
+> >  	return r;
+> >  }
+> >  
+> 
+> (...)
+> 
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index 06751bbecd58..ad5f83159a15 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> > @@ -2693,9 +2693,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
+> >  		break;
+> >  	}
+> >  	default:
+> > -		vcpu_load(vcpu);
+> >  		r = kvm_arch_vcpu_ioctl(filp, ioctl, arg);
+> > -		vcpu_put(vcpu);
+> >  	}
+> >  out:
+> >  	mutex_unlock(&vcpu->mutex);
+> 
+> It would be nice if we could get rid of the special casing at the
+> beginning of this function, but as it would involve not taking the
+> mutex for special cases (and not releasing it for those special cases),
+> I don't see an elegant way to do that.
 
-Thanks!
+I would also have liked that, and that's essentially what I had in the
+first version, but Paolo thought the result was too high an increase in
+complexity in the architecture-specfic functions throughout.  I don't
+have any better suggestions either.
+
+Thanks,
 -Christoffer

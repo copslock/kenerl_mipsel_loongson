@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2017 13:09:22 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:40284 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2017 13:13:45 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:47094 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990491AbdLKMJPEymH7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 11 Dec 2017 13:09:15 +0100
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        id S23990492AbdLKMNfOg3C7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 11 Dec 2017 13:13:35 +0100
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 71C2285546;
-        Mon, 11 Dec 2017 12:09:08 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id A9B935F739;
+        Mon, 11 Dec 2017 12:13:27 +0000 (UTC)
 Received: from gondolin (ovpn-117-94.ams2.redhat.com [10.36.117.94])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5EBEE5E9C1;
-        Mon, 11 Dec 2017 12:09:05 +0000 (UTC)
-Date:   Mon, 11 Dec 2017 13:09:03 +0100
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7073A2D076;
+        Mon, 11 Dec 2017 12:13:24 +0000 (UTC)
+Date:   Mon, 11 Dec 2017 13:13:21 +0100
 From:   Cornelia Huck <cohuck@redhat.com>
 To:     Christoffer Dall <cdall@kernel.org>
 Cc:     kvm@vger.kernel.org, Andrew Jones <drjones@redhat.com>,
@@ -24,23 +24,23 @@ Cc:     kvm@vger.kernel.org, Andrew Jones <drjones@redhat.com>,
         Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 05/16] KVM: Move vcpu_load to arch-specific
- kvm_arch_vcpu_ioctl_set_regs
-Message-ID: <20171211130903.74faf434.cohuck@redhat.com>
-In-Reply-To: <20171204203538.8370-6-cdall@kernel.org>
+Subject: Re: [PATCH v3 06/16] KVM: Move vcpu_load to arch-specific
+ kvm_arch_vcpu_ioctl_get_sregs
+Message-ID: <20171211131321.787ce16f.cohuck@redhat.com>
+In-Reply-To: <20171204203538.8370-7-cdall@kernel.org>
 References: <20171204203538.8370-1-cdall@kernel.org>
-        <20171204203538.8370-6-cdall@kernel.org>
+        <20171204203538.8370-7-cdall@kernel.org>
 Organization: Red Hat GmbH
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Mon, 11 Dec 2017 12:09:08 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Mon, 11 Dec 2017 12:13:27 +0000 (UTC)
 Return-Path: <cohuck@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61404
+X-archive-position: 61405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,22 +57,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon,  4 Dec 2017 21:35:27 +0100
+On Mon,  4 Dec 2017 21:35:28 +0100
 Christoffer Dall <cdall@kernel.org> wrote:
 
 > From: Christoffer Dall <christoffer.dall@linaro.org>
 > 
 > Move vcpu_load() and vcpu_put() into the architecture specific
-> implementations of kvm_arch_vcpu_ioctl_set_regs().
+> implementations of kvm_arch_vcpu_ioctl_get_sregs().
 > 
 > Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
 > ---
->  arch/mips/kvm/mips.c      | 3 +++
->  arch/powerpc/kvm/book3s.c | 3 +++
->  arch/powerpc/kvm/booke.c  | 3 +++
->  arch/s390/kvm/kvm-s390.c  | 2 ++
+>  arch/powerpc/kvm/book3s.c | 8 +++++++-
+>  arch/powerpc/kvm/booke.c  | 9 ++++++++-
+>  arch/s390/kvm/kvm-s390.c  | 4 ++++
 >  arch/x86/kvm/x86.c        | 3 +++
 >  virt/kvm/kvm_main.c       | 2 --
->  6 files changed, 14 insertions(+), 2 deletions(-)
+>  5 files changed, 22 insertions(+), 4 deletions(-)
 
 Reviewed-by: Cornelia Huck <cohuck@redhat.com>

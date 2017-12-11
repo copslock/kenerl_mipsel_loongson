@@ -1,71 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2017 10:19:38 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:34608
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbdLKJTbqZKv9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Dec 2017 10:19:31 +0100
-Received: by mail-wm0-x243.google.com with SMTP id y82so12314239wmg.1
-        for <linux-mips@linux-mips.org>; Mon, 11 Dec 2017 01:19:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xG75J/MCYrAAx2rG6EGc/KJJFMK36f+JruBbyYOYwBQ=;
-        b=LWou24NiMgcviOV+gj1ajhFZsVzdd2q1MDO1FPb4MFGBNn7Vl8X3dEuDUSxgwIVN9y
-         0Zi/yLcOcTfTrdju0D+xIUgrIjPlU1qnKlubIbHBc5gSK2FtWu4tMru4xn4/Ye9HSss/
-         fh4771DcYF6XfDcW+Vr2Gn3Q5BtzEjmcDGREs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xG75J/MCYrAAx2rG6EGc/KJJFMK36f+JruBbyYOYwBQ=;
-        b=ZF6TNzu8UP0IF8FQApsjHS5i+lUVjCKEHrk3xRrNlS/SaO/os52F7K8j/0E169BP/v
-         1D00IVRwTudG49FisPiVG9o/VcyWkgQj9fIfBmaQ3B7YMMTPT0a9bEtx0uQPjjT2DlwF
-         CzGQD78Som7yGezvYTrx+MiKksjrjT/9J2m8MS6hPGSmzkKbqbj6Fo7sxn03RuASBi+7
-         u0xlkC30P8mQnvL4854TMzvb1jI8tHPSjoOwwU/i64QJoa9GPPngtg5pGupify/lr0EJ
-         e44XevML8470i6W0LruyDdjnaeZa6IGtEf2bGfIgmYQ3VdV9LODdVkD/rqFriHa36VeI
-         H8fA==
-X-Gm-Message-State: AKGB3mJKssXrpgrj4qkau//+JaccFC1fUyeEhbGP9RaZdnor+g3dVqgI
-        fDQk3ioPdb0yr/Mnag5FGbuCkA==
-X-Google-Smtp-Source: ACJfBouKDCcVvE3yPKe1fDuOJkW2a0nU8Nv60wOyA2ICRevpFLvGm3ZCFcv0Hpo0krqSV9q/wUusqA==
-X-Received: by 10.80.152.6 with SMTP id g6mr232954edb.28.1512983966271;
-        Mon, 11 Dec 2017 01:19:26 -0800 (PST)
-Received: from localhost (x50d2404e.cust.hiper.dk. [80.210.64.78])
-        by smtp.gmail.com with ESMTPSA id c30sm6299550edf.1.2017.12.11.01.19.24
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 11 Dec 2017 01:19:25 -0800 (PST)
-Date:   Mon, 11 Dec 2017 10:19:21 +0100
-From:   Christoffer Dall <christoffer.dall@linaro.org>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Christoffer Dall <cdall@kernel.org>, kvm@vger.kernel.org,
-        Andrew Jones <drjones@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2017 12:51:21 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:35968 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990484AbdLKLvOU0Sw7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 11 Dec 2017 12:51:14 +0100
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 4514520273;
+        Mon, 11 Dec 2017 11:51:07 +0000 (UTC)
+Received: from gondolin (ovpn-117-94.ams2.redhat.com [10.36.117.94])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E10BF4D75A;
+        Mon, 11 Dec 2017 11:51:03 +0000 (UTC)
+Date:   Mon, 11 Dec 2017 12:51:01 +0100
+From:   Cornelia Huck <cohuck@redhat.com>
+To:     Christoffer Dall <cdall@kernel.org>
+Cc:     kvm@vger.kernel.org, Andrew Jones <drjones@redhat.com>,
+        Christoffer Dall <christoffer.dall@linaro.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         Marc Zyngier <marc.zyngier@arm.com>,
         kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
         Paul Mackerras <paulus@ozlabs.org>, kvm-ppc@vger.kernel.org,
         Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 07/16] KVM: Move vcpu_load to arch-specific
- kvm_arch_vcpu_ioctl_set_sregs
-Message-ID: <20171211091921.GE910@cbox>
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 01/16] KVM: Take vcpu->mutex outside vcpu_load
+Message-ID: <20171211125101.662dc8b1.cohuck@redhat.com>
+In-Reply-To: <20171204203538.8370-2-cdall@kernel.org>
 References: <20171204203538.8370-1-cdall@kernel.org>
- <20171204203538.8370-8-cdall@kernel.org>
- <0faf23f5-3540-47ac-19a9-0f44b2c782a0@redhat.com>
+        <20171204203538.8370-2-cdall@kernel.org>
+Organization: Red Hat GmbH
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0faf23f5-3540-47ac-19a9-0f44b2c782a0@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <christoffer.dall@linaro.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Mon, 11 Dec 2017 11:51:07 +0000 (UTC)
+Return-Path: <cohuck@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61399
+X-archive-position: 61400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: christoffer.dall@linaro.org
+X-original-sender: cohuck@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,86 +56,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 08, 2017 at 05:26:02PM +0100, David Hildenbrand wrote:
-> 
-> >  
-> >  int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-> > diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-> > index f647e121070e..cdf0be02c95a 100644
-> > --- a/arch/powerpc/kvm/booke.c
-> > +++ b/arch/powerpc/kvm/booke.c
-> > @@ -1632,18 +1632,25 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
-> >  {
-> >  	int ret;
-> >  
-> > +	vcpu_load(vcpu);
-> > +
-> > +	ret = -EINVAL;
-> 
-> you can initialize this directly.
-> 
-> >  	if (vcpu->arch.pvr != sregs->pvr)
-> > -		return -EINVAL;
-> > +		goto out;
-> >  
-> >  	ret = set_sregs_base(vcpu, sregs);
-> >  	if (ret < 0)
-> > -		return ret;
-> > +		goto out;
-> >  
-> >  	ret = set_sregs_arch206(vcpu, sregs);
-> >  	if (ret < 0)
-> > -		return ret;
-> > +		goto out;
-> > +
-> > +	ret = vcpu->kvm->arch.kvm_ops->set_sregs(vcpu, sregs);
-> >  
-> > -	return vcpu->kvm->arch.kvm_ops->set_sregs(vcpu, sregs);
-> > +out:
-> > +	vcpu_put(vcpu);
-> > +	return ret;
-> >  }
-> >  
-> >  int kvmppc_get_one_reg(struct kvm_vcpu *vcpu, u64 id,
-> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> > index 18011fc4ac49..d95b4f15e52b 100644
-> > --- a/arch/s390/kvm/kvm-s390.c
-> > +++ b/arch/s390/kvm/kvm-s390.c
-> > @@ -2729,8 +2729,12 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-> >  int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
-> >  				  struct kvm_sregs *sregs)
-> >  {
-> > +	vcpu_load(vcpu);
-> > +
-> >  	memcpy(&vcpu->run->s.regs.acrs, &sregs->acrs, sizeof(sregs->acrs));
-> >  	memcpy(&vcpu->arch.sie_block->gcr, &sregs->crs, sizeof(sregs->crs));
-> > +
-> > +	vcpu_put(vcpu);
-> >  	return 0;
-> >  }
-> >  
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index 20a5f6776eea..a31a80aee0b9 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -7500,15 +7500,19 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
-> >  	int mmu_reset_needed = 0;
-> >  	int pending_vec, max_bits, idx;
-> >  	struct desc_ptr dt;
-> > +	int ret;
-> > +
-> > +	vcpu_load(vcpu);
-> >  
-> > +	ret = -EINVAL;
-> 
-> dito
+On Mon,  4 Dec 2017 21:35:23 +0100
+Christoffer Dall <cdall@kernel.org> wrote:
 
-Sure.
+> From: Christoffer Dall <christoffer.dall@linaro.org>
+> 
+> As we're about to call vcpu_load() from architecture-specific
+> implementations of the KVM vcpu ioctls, but yet we access data
+> structures protected by the vcpu->mutex in the generic code, factor
+> this logic out from vcpu_load().
+> 
+> x86 is the only architecture which calls vcpu_load() outside of the main
+> vcpu ioctl function, and these calls will no longer take the vcpu mutex
+> following this patch.  However, with the exception of
+> kvm_arch_vcpu_postcreate (see below), the callers are either in the
+> creation or destruction path of the VCPU, which means there cannot be
+> any concurrent access to the data structure, because the file descriptor
+> is not yet accessible, or is already gone.
+> 
+> kvm_arch_vcpu_postcreate makes the newly created vcpu potentially
+> accessible by other in-kernel threads through the kvm->vcpus array, and
+> we therefore take the vcpu mutex in this case directly.
+> 
+> Signed-off-by: Christoffer Dall <christoffer.dall@linaro.org>
+> ---
+>  arch/x86/kvm/vmx.c       |  4 +---
+>  arch/x86/kvm/x86.c       | 20 +++++++-------------
+>  include/linux/kvm_host.h |  2 +-
+>  virt/kvm/kvm_main.c      | 17 ++++++-----------
+>  4 files changed, 15 insertions(+), 28 deletions(-)
 
-> 
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
-
-Thanks for the review!
--Christoffer
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>

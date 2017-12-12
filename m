@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Dec 2017 10:59:08 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:59354 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Dec 2017 10:59:35 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:57999 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992336AbdLLJ6rLyw9C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Dec 2017 10:58:47 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 12 Dec 2017 09:58:40 +0000
+        by eddie.linux-mips.org with ESMTP id S23992391AbdLLJ6xT1SwC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Dec 2017 10:58:53 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 12 Dec 2017 09:58:46 +0000
 Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Tue, 12 Dec 2017 01:58:40 -0800
+ 14.3.361.1; Tue, 12 Dec 2017 01:58:48 -0800
 From:   Matt Redfearn <matt.redfearn@mips.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 CC:     <linux-mips@linux-mips.org>
-Subject: [RFC PATCH 01/16] MIPS: VDSO: Prevent use of smp_processor_id()
-Date:   Tue, 12 Dec 2017 09:57:47 +0000
-Message-ID: <1513072682-1371-2-git-send-email-matt.redfearn@mips.com>
+Subject: [RFC PATCH 02/16] MIPS: bpf: Add emit_load_cpu helper to load current CPU ID
+Date:   Tue, 12 Dec 2017 09:57:48 +0000
+Message-ID: <1513072682-1371-3-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1513072682-1371-1-git-send-email-matt.redfearn@mips.com>
 References: <1513072682-1371-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1513072719-298555-4532-274402-1
+X-BESS-ID: 1513072726-637138-2175-866742-1
 X-BESS-VER: 2017.14-r1710272128
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -34,7 +34,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61431
+X-archive-position: 61432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,61 +51,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+Add a helper function to load rA with the current CPU ID. This replaces
+the inline version. The SEEN_OFF flag appears redundant as the offset is
+a compile time constant and can be inlined into the emitted load
+instruction.
 
-VDSO code should not be using smp_processor_id(), since it is executed
-in user mode.
-Introduce a VDSO-specific path which will cause a compile-time
-or link-time error (depending upon support for __compiletime_error) if
-the VDSO ever incorrectly attempts to use smp_processor_id().
-
-[Matt Redfearn <matt.redfearn@imgtec.com>: Move before change to
-smp_processor_id in series]
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-
 ---
 
- arch/mips/include/asm/smp.h | 12 +++++++++++-
- arch/mips/vdso/Makefile     |  3 ++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ arch/mips/net/bpf_jit.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 88ebd83b3bf9..056a6bf13491 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -25,7 +25,17 @@ extern cpumask_t cpu_sibling_map[];
- extern cpumask_t cpu_core_map[];
- extern cpumask_t cpu_foreign_map[];
+diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+index 44b925005dd3..ae2ff1f08d5a 100644
+--- a/arch/mips/net/bpf_jit.c
++++ b/arch/mips/net/bpf_jit.c
+@@ -518,6 +518,14 @@ static inline void emit_jr(unsigned int reg, struct jit_ctx *ctx)
+ 	emit_instr(ctx, jr, reg);
+ }
  
--#define raw_smp_processor_id() (current_thread_info()->cpu)
-+static inline int raw_smp_processor_id(void)
++static inline void emit_load_cpu(unsigned int reg, struct jit_ctx *ctx)
 +{
-+#if defined(__VDSO__)
-+	extern int vdso_smp_processor_id(void)
-+		__compiletime_error("VDSO should not call smp_processor_id()");
-+	return vdso_smp_processor_id();
-+#else
-+	return current_thread_info()->cpu;
-+#endif
++	/* A = current_thread_info()->cpu */
++	BUILD_BUG_ON(FIELD_SIZEOF(struct thread_info, cpu) != 4);
++	/* $28/gp points to the thread_info struct */
++	emit_load(reg, 28, offsetof(struct thread_info, cpu), ctx);
 +}
-+#define raw_smp_processor_id raw_smp_processor_id
- 
- /* Map from cpu id to sequential logical cpu number.  This will only
-    not be idempotent when cpus failed to come on-line.	*/
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index ce196046ac3e..477c463c89ec 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -7,7 +7,8 @@ ccflags-vdso := \
- 	$(filter -I%,$(KBUILD_CFLAGS)) \
- 	$(filter -E%,$(KBUILD_CFLAGS)) \
- 	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
--	$(filter -march=%,$(KBUILD_CFLAGS))
-+	$(filter -march=%,$(KBUILD_CFLAGS)) \
-+	-D__VDSO__
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
- 	-O2 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
++
+ static inline u16 align_sp(unsigned int num)
+ {
+ 	/* Double word alignment for 32-bit, quadword for 64-bit */
+@@ -1115,14 +1123,9 @@ static int build_body(struct jit_ctx *ctx)
+ 			}
+ #endif
+ 			break;
+-		case BPF_ANC | SKF_AD_CPU:
+-			ctx->flags |= SEEN_A | SEEN_OFF;
+-			/* A = current_thread_info()->cpu */
+-			BUILD_BUG_ON(FIELD_SIZEOF(struct thread_info,
+-						  cpu) != 4);
+-			off = offsetof(struct thread_info, cpu);
+-			/* $28/gp points to the thread_info struct */
+-			emit_load(r_A, 28, off, ctx);
++		case BPF_ANC |  SKF_AD_CPU:
++			ctx->flags |= SEEN_A;
++			emit_load_cpu(r_A, ctx);
+ 			break;
+ 		case BPF_ANC | SKF_AD_IFINDEX:
+ 			/* A = skb->dev->ifindex */
 -- 
 2.7.4

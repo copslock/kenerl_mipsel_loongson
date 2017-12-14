@@ -1,39 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Dec 2017 17:54:35 +0100 (CET)
-Received: from smtp3-g21.free.fr ([212.27.42.3]:52628 "EHLO smtp3-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Dec 2017 23:51:51 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:60360 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990398AbdLNQy0WR8pz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Dec 2017 17:54:26 +0100
-Received: from macbookpro.malat.net (unknown [78.225.226.121])
-        by smtp3-g21.free.fr (Postfix) with ESMTP id B5FC913F8CC;
-        Thu, 14 Dec 2017 17:54:24 +0100 (CET)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
-        id EF93810C2FC3; Thu, 14 Dec 2017 17:53:58 +0100 (CET)
-From:   Mathieu Malaterre <malat@debian.org>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Paul Burton <paul.burton@mips.com>,
+        id S23990398AbdLNWvpMoi8s (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Dec 2017 23:51:45 +0100
+Received: from localhost (unknown [69.71.4.159])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 74D9021879;
+        Thu, 14 Dec 2017 22:51:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 74D9021879
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=helgaas@kernel.org
+Date:   Thu, 14 Dec 2017 16:51:33 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Harvey Hunt <harvey.hunt@imgtec.com>,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mips: dts: Remove leading 0x and 0s from bindings notation
-Date:   Thu, 14 Dec 2017 17:53:56 +0100
-Message-Id: <20171214165358.28058-1-malat@debian.org>
-X-Mailer: git-send-email 2.11.0
-Return-Path: <mathieu@macbookpro.malat.net>
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 3/8] PCI: brcmstb: Add Broadcom STB PCIe host
+ controller driver
+Message-ID: <20171214225133.GM30595@bhelgaas-glaptop.roam.corp.google.com>
+References: <1510697532-32828-1-git-send-email-jim2101024@gmail.com>
+ <1510697532-32828-4-git-send-email-jim2101024@gmail.com>
+ <20171212221642.GB95453@bhelgaas-glaptop.roam.corp.google.com>
+ <CANCKTBvtqNWZYXpLdUnEWwA2=14XhJ6adR5muOAYubY_1SxZWw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANCKTBvtqNWZYXpLdUnEWwA2=14XhJ6adR5muOAYubY_1SxZWw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61469
+X-archive-position: 61470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: helgaas@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,80 +65,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Improve the DTS files by removing all the leading "0x" and zeros to fix the
-following dtc warnings:
+On Wed, Dec 13, 2017 at 06:53:53PM -0500, Jim Quinlan wrote:
+> On Tue, Dec 12, 2017 at 5:16 PM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > On Tue, Nov 14, 2017 at 05:12:07PM -0500, Jim Quinlan wrote:
+> >> This commit adds the basic Broadcom STB PCIe controller.  Missing is
+> >> the ability to process MSI and also handle dma-ranges for inbound
+> >> memory accesses.  These two functionalities are added in subsequent
+> >> commits.
+> >>
+> >> The PCIe block contains an MDIO interface.  This is a local interface
+> >> only accessible by the PCIe controller.  It cannot be used or shared
+> >> by any other HW.  As such, the small amount of code for this
+> >> controller is included in this driver as there is little upside to put
+> >> it elsewhere.
+> ...
 
-Warning (unit_address_format): Node /XXX unit name should not have leading "0x"
+> >> +static bool brcm_pcie_valid_device(struct brcm_pcie *pcie, struct pci_bus *bus,
+> >> +                                int dev)
+> >> +{
+> >> +     if (pci_is_root_bus(bus)) {
+> >> +             if (dev > 0)
+> >> +                     return false;
+> >> +     } else {
+> >> +             /* If there is no link, then there is no device */
+> >> +             if (!brcm_pcie_link_up(pcie))
+> >> +                     return false;
+> >
+> > This is racy, since the link can go down after you check but before
+> > you do the config access.  I assume your hardware can deal with a
+> > config access that targets a link that is down?
+> 
+> Yes, that can happen but there is really nothing that can be done if
+> the link goes down in that vulnerability window.  What do you suggest
+> doing?
 
-and
+Most hardware drops writes and returns ~0 on reads if the link is
+down.  I assume your hardware does something similar, and that should
+be enough.  You shouldn't have to check whether the link is up.
 
-Warning (unit_address_format): Node /XXX unit name should not have leading 0s
+The hardware might report errors, e.g., via AER, if the link is down.
+And we might not not handle those nicely.  If we have issues there, we
+should find out and fix them.
 
-Converted using the following command:
+I see that dwc, altera, rockchip, and xilinx all do check for link up
+there, too.  I can't remember if they had a legitimate reason, or if I
+just missed it.
 
-find . -type f \( -iname *.dts -o -iname *.dtsi \) -exec sed -E -i -e "s/@0x([0-9a-fA-F\.]+)\s?\{/@\L\1 \{/g" -e "s/@0+([0-9a-fA-F\.]+)\s?\{/@\L\1 \{/g" {} +
+> >> +static void brcm_pcie_remove_controller(struct brcm_pcie *pcie)
+> >> +{
+> >> +     struct list_head *pos, *q;
+> >> +     struct brcm_pcie *tmp;
+> >> +
+> >> +     mutex_lock(&brcm_pcie_lock);
+> >> +     list_for_each_safe(pos, q, &brcm_pcie) {
+> >> +             tmp = list_entry(pos, struct brcm_pcie, list);
+> >> +             if (tmp == pcie) {
+> >> +                     list_del(pos);
+> >> +                     if (list_empty(&brcm_pcie))
+> >> +                             num_memc = 0;
+> >> +                     break;
+> >> +             }
+> >> +     }
+> >> +     mutex_unlock(&brcm_pcie_lock);
+> >
+> > I'm missing something.  I don't see that num_memc is ever set to
+> > anything *other* than zero.
+> The num_memc is set and used in the dma commit.  I will remove its
+> declaration from this commit.
 
-For simplicity, two sed expressions were used to solve each warnings separately.
+Thanks, that will make the patches much easier to read.
 
-To make the regex expression more robust a few other issues were resolved,
-namely setting unit-address to lower case, and adding a whitespace before the
-the opening curly brace:
+> >> +     pcie->id = of_get_pci_domain_nr(dn);
+> >
+> > Why do you call of_get_pci_domain_nr() directly?  No other driver
+> > does.
+> 
+> We use the domain as the controller number (id).  We use the id to
+> identify and fix a HW bug that only affects the 2nd controller; see
+> the clause
+> " } else if (of_machine_is_compatible("brcm,bcm7278a0")) {".
 
-https://elinux.org/Device_Tree_Linux#Linux_conventions
+pci_register_host_bridge() already sets bus->domain_nr for every host
+bridge.  That path calls of_get_pci_domain_nr() eventually.   But I
+guess that's too late for your use case, because you have this:
 
-This is a follow up to commit 4c9847b7375a ("dt-bindings: Remove leading 0x from bindings notation")
+  brcm_pcie_probe
+    brcm_pcie_setup
+      brcm_pcie_bridge_sw_init_set
+        if (of_machine_is_compatible("brcm,bcm7278a0")) {
+          offset = pcie->id ? ...                    <--- use
+    pci_scan_root_bus_bridge
+      pci_register_host_bridge
+        bus->domain_nr = pci_bus_find_domain_nr      <--- available
 
-Reported-by: David Daney <ddaney@caviumnetworks.com>
-Suggested-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
- arch/mips/boot/dts/img/boston.dts   | 2 +-
- arch/mips/boot/dts/ingenic/ci20.dts | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+I guess you haven't added a binding for brcm,bcm7278a0 yet?
 
-diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
-index 2cd49b60e030..1bd105428f61 100644
---- a/arch/mips/boot/dts/img/boston.dts
-+++ b/arch/mips/boot/dts/img/boston.dts
-@@ -157,7 +157,7 @@
- 					#address-cells = <1>;
- 					#size-cells = <0>;
- 
--					rtc@0x68 {
-+					rtc@68 {
- 						compatible = "st,m41t81s";
- 						reg = <0x68>;
- 					};
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index a4cc52214dbd..7d5e49e40b0d 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -110,22 +110,22 @@
- 					reg = <0x0 0x0 0x0 0x800000>;
- 				};
- 
--				partition@0x800000 {
-+				partition@800000 {
- 					label = "u-boot";
- 					reg = <0x0 0x800000 0x0 0x200000>;
- 				};
- 
--				partition@0xa00000 {
-+				partition@a00000 {
- 					label = "u-boot-env";
- 					reg = <0x0 0xa00000 0x0 0x200000>;
- 				};
- 
--				partition@0xc00000 {
-+				partition@c00000 {
- 					label = "boot";
- 					reg = <0x0 0xc00000 0x0 0x4000000>;
- 				};
- 
--				partition@0x8c00000 {
-+				partition@8c00000 {
- 					label = "system";
- 					reg = <0x0 0x4c00000 0x1 0xfb400000>;
- 				};
--- 
-2.11.0
+I'm not really sure that using the linux,pci-domain DT property is the
+best way to distinguish the two controllers.  Maybe Rob has an
+opinion?
+
+> >> +     if (pcie->id < 0)
+> >> +             return pcie->id;
+
+Bjorn

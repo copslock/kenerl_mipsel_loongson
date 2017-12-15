@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 17:52:51 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:52353 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 17:53:11 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:52393 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990410AbdLOQwlz8WKR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Dec 2017 17:52:41 +0100
+        id S23993086AbdLOQw4MMW8R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Dec 2017 17:52:56 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 9B7061A4E98;
-        Fri, 15 Dec 2017 17:52:36 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id D96821A4EA5;
+        Fri, 15 Dec 2017 17:52:50 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.43])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 7F3A31A4BA8;
-        Fri, 15 Dec 2017 17:52:36 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id BE3C11A4BA8;
+        Fri, 15 Dec 2017 17:52:50 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
-Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        Dengcheng Zhu <dengcheng.zhu@mips.com>,
-        Douglas Leung <douglas.leung@mips.com>,
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        devicetree@vger.kernel.org, Douglas Leung <douglas.leung@mips.com>,
         Goran Ferenc <goran.ferenc@mips.com>,
         James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org,
-        Matt Redfearn <matt.redfearn@mips.com>,
+        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
         Miodrag Dinic <miodrag.dinic@mips.com>,
-        Paul Burton <paul.burton@mips.com>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
         Raghu Gandham <raghu.gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 0/2] MIPS: Augment CPC support
-Date:   Fri, 15 Dec 2017 17:51:58 +0100
-Message-Id: <1513356723-7393-1-git-send-email-aleksandar.markovic@rt-rk.com>
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH 1/2] dt-bindings: Document mti,mips-cpc binding
+Date:   Fri, 15 Dec 2017 17:51:59 +0100
+Message-Id: <1513356723-7393-2-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1513356723-7393-1-git-send-email-aleksandar.markovic@rt-rk.com>
+References: <1513356723-7393-1-git-send-email-aleksandar.markovic@rt-rk.com>
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61481
+X-archive-position: 61482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,25 +49,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Aleksandar Markovic <aleksandar.markovic@mips.com>
+From: Paul Burton <paul.burton@mips.com>
 
-This series is based on two patches from the series submitted some
-time ago (30 Aug 2016):
+Document a binding for the MIPS Cluster Power Controller (CPC) which
+simply allows the device tree to specify where the CPC registers should
+be mapped.
 
-https://www.linux-mips.org/archives/linux-mips/2016-08/msg00456.html
-
-Both patches deal with MIPS Cluster Power Controller (CPC) support.
-More specifically, they add device tree related functionalities to
-that support.
-
-Paul Burton (2):
-  dt-bindings: Document mti,mips-cpc binding
-  MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
-
- Documentation/devicetree/bindings/misc/mti,mips-cpc.txt |  8 ++++++++
- arch/mips/kernel/mips-cpc.c                             | 13 +++++++++++++
- 2 files changed, 21 insertions(+)
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+---
+ Documentation/devicetree/bindings/misc/mti,mips-cpc.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
 
+diff --git a/Documentation/devicetree/bindings/misc/mti,mips-cpc.txt b/Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
+new file mode 100644
+index 0000000..92eb08f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
+@@ -0,0 +1,8 @@
++Binding for MIPS Cluster Power Controller (CPC).
++
++This binding allows a system to specify where the CPC registers should be
++mapped using device tree.
++
++Required properties:
++compatible : Should be "mti,mips-cpc".
++regs: Should describe the address & size of the CPC register region.
 -- 
 2.7.4

@@ -1,68 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 15:05:28 +0100 (CET)
-Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:39362
-        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992176AbdLOOFV2oiFs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Dec 2017 15:05:21 +0100
-Received: by mail-lf0-x241.google.com with SMTP id 6so2065677lfa.6
-        for <linux-mips@linux-mips.org>; Fri, 15 Dec 2017 06:05:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=L108c2RYQVfbSSBJykedDU9j03DmiZ3R3pZXsKHPj4g=;
-        b=bxdjOcyjZyDin8iuZLBO3JJXGng8zIQbZWPxPVzRIEsZ/tdTVWgOUNyMJYTX5o4hhx
-         Y7xa9Cyu6qfp7SfRSOl/WAuiAeJmQx0uAdl8XQ1bw5117NsQbU0ou5ylyRuhgeKs4slg
-         gzRpxCFCTAxL6YcICyP3YqDUbUheY3yXe8pKgK4mAwGk+ENt6zX+d9y7aQd65/hx4DXK
-         6ZggX4ktq9kjnEB8+ZTbKpRqo2JmMnpzYaVjmdtfnR6KvfrHQLMv9V+5endNfwsRcLJc
-         087iOfFJaxqvfzGGdW6zQgiZpWLwE6NRTxeQmCPNLK0WfcakJ5c3Gpauuxd1uP+J5qsf
-         LO/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=L108c2RYQVfbSSBJykedDU9j03DmiZ3R3pZXsKHPj4g=;
-        b=nYLsTdCYJFfbAseS/nNbNUZe+L3WJ/QBvhOoyjaXLi5V5EucyMJjxEyUZiBTjB7ZB1
-         qkjGyWSPCsPJuTE/4dYwYT+c0OOSV/6SFe1R0xJCZu3HJfJXEBu4WGutsxh3o1VLkVv1
-         U5Lbav6eGay1BETsin5+mkhvGsAt4BH9RjGChg4BfZyXGKNn/7sgrs7XaGDvK75zbXsG
-         fKRWpE0ZVu/NRuhWbsLhlUc2G08/RUx2OPib6NAvVUYq/D8iv+3xH1enzPaHlkd0I6SD
-         27wStfiW8OyiBlph8ldaw1RVNFxymDeXyUkAz1Dsz58ZLQZ+ZvVxS3Nxj35CrGew6nGz
-         lNcw==
-X-Gm-Message-State: AKGB3mKxaCw63YDS3sNZaovSdrV6oLi99lgRtuU5ujQ3hQoMWU9tzBVx
-        5cJTF8yC+dVV3TwckK0gGBM=
-X-Google-Smtp-Source: ACJfBouKWQ8zDYg0vrOPW7CN93JZml/O1enU5XN1WS/fF6tkI7NAHQw9xgGNQS6zGy7ECWqKbFmkgA==
-X-Received: by 10.25.147.221 with SMTP id w90mr6501407lfk.126.1513346715673;
-        Fri, 15 Dec 2017 06:05:15 -0800 (PST)
-Received: from upc8.baikal.int (mail.baikalelectronics.com. [87.245.175.226])
-        by smtp.gmail.com with ESMTPSA id 39sm1268777ljb.49.2017.12.15.06.05.14
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 15 Dec 2017 06:05:14 -0800 (PST)
-Subject: Re: [P5600 && EVA memory caching question] PCI region
-To:     James Hogan <james.hogan@mips.com>
-Cc:     linux-mips@linux-mips.org, paul.burton@mips.com
-References: <6132c323-32a7-1d38-b77c-a191be22faa4@gmail.com>
- <20171206114611.GM5027@jhogan-linux.mipstec.com>
- <330a5200-531f-fcfa-674a-c81fb3144e92@gmail.com>
- <20171214152138.GV5027@jhogan-linux.mipstec.com>
-From:   Yuri Frolov <crashing.kernel@gmail.com>
-Message-ID: <ca9adcbc-9777-46a0-ce0b-15e83e01fc72@gmail.com>
-Date:   Fri, 15 Dec 2017 17:05:12 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
-MIME-Version: 1.0
-In-Reply-To: <20171214152138.GV5027@jhogan-linux.mipstec.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-Return-Path: <crashing.kernel@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 17:49:48 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:51839 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990410AbdLOQtlkJ25R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Dec 2017 17:49:41 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 865851A4EA5;
+        Fri, 15 Dec 2017 17:49:35 +0100 (CET)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw774-lin.domain.local (rtrkw774-lin.domain.local [10.10.13.43])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 658251A4BA8;
+        Fri, 15 Dec 2017 17:49:35 +0100 (CET)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Hogan <james.hogan@mips.com>,
+        linux-kernel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v11 0/3] MIPS: Add virtual Ranchu board as a generic-based board
+Date:   Fri, 15 Dec 2017 17:48:41 +0100
+Message-Id: <1513356553-7238-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61476
+X-archive-position: 61477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: crashing.kernel@gmail.com
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,64 +51,173 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, James
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-On 12/14/2017 06:21 PM, James Hogan wrote:
-> Hi Yuri,
->
-> On Thu, Dec 14, 2017 at 06:03:11PM +0300, Yuri Frolov wrote:
->> Hi, James.
->>
->> Do I understand correctly, that in case of CONFIG_EVA=y, any logical
->> address from 0x00000000 - 0xBFFFFFFF (3G) range accessed from the kernel
->> space is:
->> 1) Unmapped (no TLB translations)
->> 2) Is mapped 1:1 to physical addresses? E.g, readl from 0x20000000 is,
->> in fact a read from physical address 0x20000000? I mean, in legacy
->> memory mapping scheme, logical addresses 0x80000000 - 0xBFFFFFFF in
->> kernel space were being translated to the physical addresses from the
->> low 512Mb (phys 0x00000000 - 0x20000000), no such bits stripping or
->> something for EVA, the mapping is 1:1?
-> That depends on the EVA configuration. The hardware is fairly flexible
-> (which is both useful and painful - making supporting EVA from
-> multiplatform kernels particularly awkward), but that is one possible
-> configuration.
->
-> E.g. ideally you probably want to keep seg5 (0x00000000..0x3FFFFFFF)
-> MUSK (TLB mapped for user & kernel) so that null dereferences from
-> kernel code are safely caught, but that costs you 1GB of directly
-> accessible physical address space from kernel mode.
-So, do I understand correctly, that provided we have these TLB entries 
-in kernel,
+v10->v11:
 
-Index: 71 pgmask=16kb va=c0038000 asid=00
-         [ri=0 xi=0 pa=200e0000 c=2 d=1 v=1 g=1] [ri=0 xi=0 pa=00000000 
-c=0 d=0 v=0 g=1]
-Index: 72 pgmask=16kb va=c0040000 asid=00
-         [ri=0 xi=0 pa=200c0000 c=2 d=1 v=1 g=1] [ri=0 xi=0 pa=200c4000 
-c=2 d=1 v=1 g=1]
+    - rebased to the latest code
 
-u32 l;
+v9->v10:
 
-l = readl((const volatile void *)(0x200c0000 + 0x20))
-and
-l = *(u32 *)(0xc0040000+ 0x20)
+    - added comment in code segment related to measuring frequency
+    - rebased to the latest code
 
-should return the same value?
->
->> As for userspace addresses, the addresses from the 0x00000000 -
->> 0xBFFFFFFF range are:
->> 1) Overlayed with the range which is directly accessible from the kernel
->> space
-> Yes. Userland accesses access through tlb, kernel direct, and kernel eva
-> accesses (LWE/SWE etc) access through tlb from kernel
->
->> 2) These addresses are mapped in userland, so, read from logical address
->> 0x20000000 in userland may result in read from any physical address
->> located in range 0x00000000 - 0xBFFFFFFF as defined by TLB for that
->> particular userland thread?
-> Yes, though it could in theory be any physical address mapped by the
-> TLB, not just that range.
->
-> Cheers
-> James
+v8->v9:
+
+    - cleaned up PIC initialization details
+    - added missing '\n' to pr_err() invocations
+    - removed two Goldfish FB patches, since they got accepted
+    - rebased to the latest code
+
+v7->v8:
+
+    - cleaned commit message for patch #2
+    - cleaned GPL licence text for patch #2
+    - revised Goldfish PIC error and info messages
+    - simplified code around MIPS_MACHINE() for Ranchu
+    - changed an instance of "__initdata" to "__initconst" in Ranchu
+    - rebased to the latest code
+
+v6->v7:
+
+    - improved commit message for patch 5 (Add Ranchu as a...)
+    - added code comments for segment that reads clock high/low
+    - revised usage of "u32", "u64" variables in Ranchu code
+    - revised header inclusion in Ranchu code
+    - added code comments for segment that reads clock high/low
+    - improved displayed message for Ranchu in Kconfig
+    - added a Ranchu-specific file as maintained in MAINTAINERS
+    - added proper handling of an error case in PIC initialization
+    - improved error messages issued during PIC initialization
+    - rebased to the latest code
+
+v5->v6:
+
+    - revised cascading handling code in Goldfish PIC implementation
+    - used more generic node name in Goldfish PIC documentation file
+    - used more generic node name in Goldfish FB documentation file
+    - corrected several minor items in both documentation files
+    - revisited copyright messages in two source files
+    - rebased to the latest code
+
+v4->v5:
+
+    - removed RTC clock-related patches since they are already applied
+    - removed 8042-related patch since this issue is expected to be
+      resolved on the whole platform level
+    - redesigned Goldfish PIC driver
+    - updated email addresses in commit messages and MAINTAINERS file
+      to contain "@mips.com" instead of "@imgtec.com"
+    - used "MIPS" instead of "Mips" in commit messages
+    - rebased to the latest code
+
+v3->v4:
+
+    - corrected RTC clock patch so that it does not cause build
+      errors for some targets, and limited compile support to MIPS
+      architecture, since it is the only case where this driver is
+      used
+    - changed titles of patches 2 and 4 to make them consistent
+      with commit messages of corresponding directories
+    - applied "checkpatch --strict" to the whole series and
+      corrected several instances of reported warnings
+    - rebased to the latest code
+
+v2->v3:
+
+    - fixed configuration dependency for VIRTIO_NET and
+        RTC_DRV_GOLDFISH
+    - fixed frequency calculation in ranchu_measure_hpt_freq()
+    - use DT info instead of hard-coding RTC base in
+        ranchu_measure_hpt_freq()
+    - Goldfish PIC reworked to follow legacy irq domain paradigm
+    - Goldfish RTC reimplemented to support alarm functionality
+    - added COMPILE_TEST to Goldfish PIC & RTC to extend compile
+        test coverage
+    - corrected location of documentation for Goldfish FB
+    - added a patch on unselecting ARCH_MIGHT_HAVE_PC_SERIO
+    - removed two patches on i8042 as not needed in new organization
+    - removed the patch on separate MIPS Android config as not needed
+    - rebased to the latest code
+
+v1->v2:
+
+    - patch on RTC driver cleaned up
+    - added drivers for virtio console and net to the Ranchu board
+    - minor improvements in commit messages
+    - updated recipient lists using get_maintainer.pl
+    - rebased to the latest code
+
+This series adds MIPS Ranchu virtual machine used by Android emulator.
+The board relies on the concept of MIPS generic boards, and utilizes
+generic board framework for build and device organization.
+
+The Ranchu board is intended to be used by Android emulator.The name
+"Ranchu" originates from Android development community. "Goldfish" and
+"Ranchu" are names for two generations of virtual boards used by
+Android emulator. "Ranchu" is a newer one among the two, and this
+series deals with Ranchu. However, for historical reasons, some file,
+device, and variable names in this series still contain the word
+"Goldfish".
+
+MIPS Ranchu machine includes a number of Goldfish devices. The
+support for Virtio devices is also included. Ranchu board supports
+up to 16 virtio devices which can be attached using virtio MMIO Bus.
+This is summarized in the following picture:
+
+       ABUS
+        ||----MIPS CPU
+        ||       |                    IRQs
+        ||----Goldfish PIC------------(32)--------
+        ||                     | | | | | | | | |
+        ||----Goldfish TTY------ | | | | | | | |
+        ||                       | | | | | | | |
+        ||----Goldfish RTC-------- | | | | | | |
+        ||                         | | | | | | |
+        ||----Goldfish FB----------- | | | | | |
+        ||                           | | | | | |
+        ||----Goldfish Events--------- | | | | |
+        ||                             | | | | |
+        ||----Goldfish Audio------------ | | | |
+        ||                               | | | |
+        ||----Goldfish Battery------------ | | |
+        ||                                 | | |
+        ||----Android PIPE------------------ | |
+        ||                                   | |
+        ||----Virtio MMIO Bus                | |
+        ||    |    |    |                    | |
+        ||    |    |   (virtio-block)--------- |
+        ||   (16)  |                           |
+        ||    |   (virtio-net)------------------
+
+
+Device Tree is created on the QEMU side based on the information about
+devices IO map and IRQ numbers. Kernel will load this DTB using UHI
+boot protocol.
+
+Checkpatch script outputs a small number of warnings if applied to
+this series. We did not correct the code, since we think the code is
+correct for those particular cases of checkpatch warnings.
+
+Miodrag Dinic (3):
+  Documentation: Add device tree binding for Goldfish PIC driver
+  irqchip/irq-goldfish-pic: Add Goldfish PIC driver
+  MIPS: ranchu: Add Ranchu as a new generic-based board
+
+ .../interrupt-controller/google,goldfish-pic.txt   |  30 +++++
+ MAINTAINERS                                        |  13 ++
+ arch/mips/configs/generic/board-ranchu.config      |  30 +++++
+ arch/mips/generic/Kconfig                          |  10 ++
+ arch/mips/generic/Makefile                         |   1 +
+ arch/mips/generic/board-ranchu.c                   |  92 ++++++++++++++
+ drivers/irqchip/Kconfig                            |   8 ++
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-goldfish-pic.c                 | 139 +++++++++++++++++++++
+ 9 files changed, 324 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
+ create mode 100644 arch/mips/configs/generic/board-ranchu.config
+ create mode 100644 arch/mips/generic/board-ranchu.c
+ create mode 100644 drivers/irqchip/irq-goldfish-pic.c
+
+-- 
+2.7.4

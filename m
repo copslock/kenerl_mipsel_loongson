@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 20:50:56 +0100 (CET)
-Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:40964
-        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991685AbdLOTusi5Me- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Dec 2017 20:50:48 +0100
-Received: by mail-io0-x243.google.com with SMTP id o2so3777124ioe.8;
-        Fri, 15 Dec 2017 11:50:48 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 20:54:12 +0100 (CET)
+Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:34074
+        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991685AbdLOTyEt2Z1- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Dec 2017 20:54:04 +0100
+Received: by mail-it0-x242.google.com with SMTP id m11so30841469iti.1;
+        Fri, 15 Dec 2017 11:54:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=R0TD0p4OgN+wX4CKlEo5gsWfENWGA8AU5ebSsAf/RIA=;
-        b=Jx2ru9PcHM+Whd3LUEkwlewQAM6UvfT5gFADtCSPnQ3Q1Pfd5PgO06172W6mV1Jhs/
-         /RNCQHUfxHkPyR7GNsGgMEd3a4n8aBmCnUzPfm1Tu/sbCKaLm/RTAVTnlJUZ13x6hebz
-         wy/nCJc/IlAkFh0dvXwPrcuft/3Oy5O7v2aEBBfbCs0E+7cwuSuacEjgvl3H7kqpvnmX
-         2EHt0Zd1vjJ6iIXWQ4PMwbIP/oFOlQoNDLsbso7uR0dsKdPBKUteu6DKMs+jY0IH0aRp
-         4Z6U63FElguVFriYItSyFcHs/F0o+zNtihlTJHPCZTcbgJzp3QADD8UTdZFxqR/LyWRO
-         FmXQ==
+        bh=qNXjziDNIT0ucunAPRrUtZmvb3Pfz01EpfvpMvIBkw0=;
+        b=RwBYSrQXXTPTBpZmy756e8Ftykn/oib5+3RUZRZadHYR25k9Ev9aQwhvt9Ih8Yfp7x
+         mpBpgQYhrQQZdNC4/YdC8sN0lTx1pJduMTLQLvXSw9CCCqsAHzfC1lYDgLZqAcdcJHe9
+         OD75r6E6q1Ck2VTi4gkkJyaAIO0xVCez+3DYsqYA2Pl3hqaTbsRR+HePK0m2qsb28DsI
+         jMd4c8F0zwSywGbK20/jULo7P8gA2rZVAIdW250pqymVEQ8r1gnvktpOGrs6YJ3qhEXb
+         4rhlSPbFaQuuTzHVGGo5pe2G/jXaWNgo1NrFM/dtmwdDDbiNC7c+s4Is4tgC2T8Gbunu
+         5zpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=R0TD0p4OgN+wX4CKlEo5gsWfENWGA8AU5ebSsAf/RIA=;
-        b=bOg1L6p/nIrvDpe2j07IbLiNzI17hV25bbQ+CchVtnU9+wGxQf0ut6b8EwtvCAvNCl
-         ZnQKInuqFQ0lmVjkdOx2/CpCJew5icQHj4gHVld7MGOY3RGbaJQe7ulhIxTyS+e6y1H2
-         X3A/F2sGu6S4T4BW1JUO9EDijvlkmxwYH43KoqVitweqmS3BwUQ+GCUmwaXnL3yYlw/2
-         maX0tmcVirU+M4mnl5uSLGJFcuYysvbyKPPhW3AHMre2HpKXBogy3IN76qV7CN+EdxbF
-         pjcdAP0AIotrio9Vl1C+o5a4SWMVp/1sm80133a+v3dTJLUW1bPqKDRkKPKyXS/XiJAI
-         9H+g==
-X-Gm-Message-State: AKGB3mJo50rpkA3cJ2i6SZTjRUMJvR7hMXRWslKvLGjnL4E3RVx6wbWF
-        8AuaaDbxcCS5AGy9ci2m3vppymW6UIhlSytkZOA=
-X-Google-Smtp-Source: ACJfBoth512UhfuwQy5J0u0/jUFKugEpSmEVjCXRDH13O36elRVcpAahEq33GY49mtbdLELTxjGXn0Frlcr+b0pDiP8=
-X-Received: by 10.107.137.33 with SMTP id l33mr3374942iod.190.1513367442316;
- Fri, 15 Dec 2017 11:50:42 -0800 (PST)
+        bh=qNXjziDNIT0ucunAPRrUtZmvb3Pfz01EpfvpMvIBkw0=;
+        b=O5PYpSr2cYf6kg1V6Gy+oMO7yTLvxmzW3rJHb/9SLnE9wu7bgxVvKC/FGkFbDEeOTJ
+         40tfq/pEi8dH+aYzH5qdYlMFJIFHZQJRF37+xq6Y1CZ1waIu+/52kf3apCZa4zShSaQA
+         HsdSN29r1NVCq3GvK56OYVkWJEuoBbrbQ1LqXFx2hAW1JmsjCHEUf11RAhsE5Ia8udwo
+         hoHoP7SrRnWAKdqb/HT0/ZdU8+3JW2ZgYGvWGtVqteGny4TvaYg7oDYB41gQcVxXwyYi
+         6VBatR2nF9q6U4tSABzoL0zv1s9SpaCnzYOodFEIF7KbPUCjfZcOBnB7c+e9hdWax76i
+         we/g==
+X-Gm-Message-State: AKGB3mK1DKlLfy1F+3qVaxIJhgWBwnfejwRWnh4Bkaleusz6ka+sVx6k
+        yDC1f4EIzFJxXb3kj5zdnipwAooTx1sWj2qzar4=
+X-Google-Smtp-Source: ACJfBou9swlUz2QV+AxJ9dNtOdbruDJr4woOfZzO2Oe7AF1hjjb4mMwH4JTSbyE6qPm1mZo0T8UdSWIYG2wUh4f+1Cg=
+X-Received: by 10.36.111.82 with SMTP id x79mr9874245itb.81.1513367638452;
+ Fri, 15 Dec 2017 11:53:58 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.107.16.227 with HTTP; Fri, 15 Dec 2017 11:50:41 -0800 (PST)
-In-Reply-To: <20171215171440.GB32131@red-moon>
+Received: by 10.107.16.227 with HTTP; Fri, 15 Dec 2017 11:53:57 -0800 (PST)
+In-Reply-To: <20171214225133.GM30595@bhelgaas-glaptop.roam.corp.google.com>
 References: <1510697532-32828-1-git-send-email-jim2101024@gmail.com>
- <1510697532-32828-2-git-send-email-jim2101024@gmail.com> <20171205205926.GJ23510@bhelgaas-glaptop.roam.corp.google.com>
- <CANCKTBvoXpF-H8Pck5TsH+7tNM=di1-uoedqACE+kjNEAUodYg@mail.gmail.com>
- <20171212211404.GA95453@bhelgaas-glaptop.roam.corp.google.com> <20171215171440.GB32131@red-moon>
+ <1510697532-32828-4-git-send-email-jim2101024@gmail.com> <20171212221642.GB95453@bhelgaas-glaptop.roam.corp.google.com>
+ <CANCKTBvtqNWZYXpLdUnEWwA2=14XhJ6adR5muOAYubY_1SxZWw@mail.gmail.com> <20171214225133.GM30595@bhelgaas-glaptop.roam.corp.google.com>
 From:   Jim Quinlan <jim2101024@gmail.com>
-Date:   Fri, 15 Dec 2017 14:50:41 -0500
-Message-ID: <CANCKTBsFQ7iTeaJ9GjELhYrY-e1C12-+b=EMy=p7npZutFVvvQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/8] SOC: brcmstb: add memory API
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
+Date:   Fri, 15 Dec 2017 14:53:57 -0500
+Message-ID: <CANCKTBvFhHb57JdG01aiSypBAcUeLzY3Dhuh5xP-_F5k_NcAhA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/8] PCI: brcmstb: Add Broadcom STB PCIe host
+ controller driver
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -68,7 +67,7 @@ Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61488
+X-archive-position: 61489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,81 +84,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 15, 2017 at 12:14 PM, Lorenzo Pieralisi
-<lorenzo.pieralisi@arm.com> wrote:
-> On Tue, Dec 12, 2017 at 03:14:04PM -0600, Bjorn Helgaas wrote:
->> [+cc Lorenzo]
->>
->> On Tue, Dec 12, 2017 at 03:53:28PM -0500, Jim Quinlan wrote:
->> > On Tue, Dec 5, 2017 at 3:59 PM, Bjorn Helgaas <helgaas@kernel.org> wrote:
->> > > On Tue, Nov 14, 2017 at 05:12:05PM -0500, Jim Quinlan wrote:
->> > >> From: Florian Fainelli <f.fainelli@gmail.com>
->> > >>
->> > >> This commit adds a memory API suitable for ascertaining the sizes of
->> > >> each of the N memory controllers in a Broadcom STB chip.  Its first
->> > >> user will be the Broadcom STB PCIe root complex driver, which needs
->> > >> to know these sizes to properly set up DMA mappings for inbound
->> > >> regions.
->> > >>
->> > >> We cannot use memblock here or anything like what Linux provides
->> > >> because it collapses adjacent regions within a larger block, and here
->> > >> we actually need per-memory controller addresses and sizes, which is
->> > >> why we resort to manual DT parsing.
->> > >>
->> > >> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
->> > >> ---
->> > >>  drivers/soc/bcm/brcmstb/Makefile |   2 +-
->> > >>  drivers/soc/bcm/brcmstb/memory.c | 172 +++++++++++++++++++++++++++++++++++++++
->> > >>  include/soc/brcmstb/memory_api.h |  25 ++++++
->> > >>  3 files changed, 198 insertions(+), 1 deletion(-)
->> > >>  create mode 100644 drivers/soc/bcm/brcmstb/memory.c
->> > >>  create mode 100644 include/soc/brcmstb/memory_api.h
->> > >>
->> > >> diff --git a/drivers/soc/bcm/brcmstb/Makefile b/drivers/soc/bcm/brcmstb/Makefile
->> > >> index 9120b27..4cea7b6 100644
->> > >> --- a/drivers/soc/bcm/brcmstb/Makefile
->> > >> +++ b/drivers/soc/bcm/brcmstb/Makefile
->> > >> @@ -1 +1 @@
->> > >> -obj-y                                += common.o biuctrl.o
->> > >> +obj-y                                += common.o biuctrl.o memory.o
->> > >> diff --git a/drivers/soc/bcm/brcmstb/memory.c b/drivers/soc/bcm/brcmstb/memory.c
->> > >> new file mode 100644
->> > >> index 0000000..eb647ad9
->> > >> --- /dev/null
->> > >> +++ b/drivers/soc/bcm/brcmstb/memory.c
->> > >
->> > > I sort of assume based on [1] that every new file should have an SPDX
->> > > identifier ("The Linux kernel requires the precise SPDX identifier in
->> > > all source files") and that the actual text of the GPL can be omitted.
->> > >
->> > > Only a few files in drivers/pci currently have an SPDX identifier.  I
->> > > don't know if that's oversight or work-in-progress or what.
->> > >
->> > > [1] https://lkml.kernel.org/r/20171204212120.484179273@linutronix.de
->> > >
+On Thu, Dec 14, 2017 at 5:51 PM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> On Wed, Dec 13, 2017 at 06:53:53PM -0500, Jim Quinlan wrote:
+>> On Tue, Dec 12, 2017 at 5:16 PM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+>> > On Tue, Nov 14, 2017 at 05:12:07PM -0500, Jim Quinlan wrote:
+>> >> This commit adds the basic Broadcom STB PCIe controller.  Missing is
+>> >> the ability to process MSI and also handle dma-ranges for inbound
+>> >> memory accesses.  These two functionalities are added in subsequent
+>> >> commits.
+>> >>
+>> >> The PCIe block contains an MDIO interface.  This is a local interface
+>> >> only accessible by the PCIe controller.  It cannot be used or shared
+>> >> by any other HW.  As such, the small amount of code for this
+>> >> controller is included in this driver as there is little upside to put
+>> >> it elsewhere.
+>> ...
+>
+>> >> +static bool brcm_pcie_valid_device(struct brcm_pcie *pcie, struct pci_bus *bus,
+>> >> +                                int dev)
+>> >> +{
+>> >> +     if (pci_is_root_bus(bus)) {
+>> >> +             if (dev > 0)
+>> >> +                     return false;
+>> >> +     } else {
+>> >> +             /* If there is no link, then there is no device */
+>> >> +             if (!brcm_pcie_link_up(pcie))
+>> >> +                     return false;
 >> >
->> > Bjorn, Did you get a chance to review the other commits of this
->> > submission (V3)?  I would like any additional feedback before I send
->> > out a V4 with SPDX fixes.  Thanks, JimQ
+>> > This is racy, since the link can go down after you check but before
+>> > you do the config access.  I assume your hardware can deal with a
+>> > config access that targets a link that is down?
 >>
->> Lorenzo is taking over drivers/pci/host/* and he'll no doubt have some
->> comments when he gets to this.  I'll point out a few quick formatting
->> things in the meantime.
+>> Yes, that can happen but there is really nothing that can be done if
+>> the link goes down in that vulnerability window.  What do you suggest
+>> doing?
 >
-> I need some time to review the code but overall I am quite worried about
-> patches 1 and 4 in particular, it is ok to have platform host bridge
-> drivers but we can't rewrite a DMA layer for a specific host bridge, I
-> really do not like that - it is just not manageable from a maintenance
-> perspective for the mainline kernel.
+> Most hardware drops writes and returns ~0 on reads if the link is
+> down.  I assume your hardware does something similar, and that should
+> be enough.  You shouldn't have to check whether the link is up.
+Unfortunately our HW is quite unforgiving and effects a synchronous or
+asynchronous abort when doing a config access when the link or power
+has gone down on the EP.  I will open a discussion with the PCIe HW
+folks regarding why our controller does not behave like "most
+hardware".  Thanks, Jim
 >
-> Lorenzo
-Hi Lorenzo,
-First I note that the file drivers/pci/host/vmd.c appears to do the
-same thing -- rewrite a layer over the DMA ops.  Secondly, there seems
-to be no other way to accomplish what we need to do, especially that
-will work with ARM, ARM64, and MIPs.  Someone raised the same point
-you did and suggested I involve ARM/ARM64 maintainers, so I expanded
-my "--to" list to include Russell.  I'm open to ideas.  I've asked the
-HW PCIe folks to redesign the controller to accommodate an
-identity-map for inbound memory, but it will be a while if that
-happens, if ever. --Jim
+> The hardware might report errors, e.g., via AER, if the link is down.
+> And we might not not handle those nicely.  If we have issues there, we
+> should find out and fix them.
+>
+> I see that dwc, altera, rockchip, and xilinx all do check for link up
+> there, too.  I can't remember if they had a legitimate reason, or if I
+> just missed it.
+>
+>> >> +static void brcm_pcie_remove_controller(struct brcm_pcie *pcie)
+>> >> +{
+>> >> +     struct list_head *pos, *q;
+>> >> +     struct brcm_pcie *tmp;
+>> >> +
+>> >> +     mutex_lock(&brcm_pcie_lock);
+>> >> +     list_for_each_safe(pos, q, &brcm_pcie) {
+>> >> +             tmp = list_entry(pos, struct brcm_pcie, list);
+>> >> +             if (tmp == pcie) {
+>> >> +                     list_del(pos);
+>> >> +                     if (list_empty(&brcm_pcie))
+>> >> +                             num_memc = 0;
+>> >> +                     break;
+>> >> +             }
+>> >> +     }
+>> >> +     mutex_unlock(&brcm_pcie_lock);
+>> >
+>> > I'm missing something.  I don't see that num_memc is ever set to
+>> > anything *other* than zero.
+>> The num_memc is set and used in the dma commit.  I will remove its
+>> declaration from this commit.
+>
+> Thanks, that will make the patches much easier to read.
+>
+>> >> +     pcie->id = of_get_pci_domain_nr(dn);
+>> >
+>> > Why do you call of_get_pci_domain_nr() directly?  No other driver
+>> > does.
+>>
+>> We use the domain as the controller number (id).  We use the id to
+>> identify and fix a HW bug that only affects the 2nd controller; see
+>> the clause
+>> " } else if (of_machine_is_compatible("brcm,bcm7278a0")) {".
+>
+> pci_register_host_bridge() already sets bus->domain_nr for every host
+> bridge.  That path calls of_get_pci_domain_nr() eventually.   But I
+> guess that's too late for your use case, because you have this:
+>
+>   brcm_pcie_probe
+>     brcm_pcie_setup
+>       brcm_pcie_bridge_sw_init_set
+>         if (of_machine_is_compatible("brcm,bcm7278a0")) {
+>           offset = pcie->id ? ...                    <--- use
+>     pci_scan_root_bus_bridge
+>       pci_register_host_bridge
+>         bus->domain_nr = pci_bus_find_domain_nr      <--- available
+>
+> I guess you haven't added a binding for brcm,bcm7278a0 yet?
+>
+> I'm not really sure that using the linux,pci-domain DT property is the
+> best way to distinguish the two controllers.  Maybe Rob has an
+> opinion?
+>
+>> >> +     if (pcie->id < 0)
+>> >> +             return pcie->id;
+>
+> Bjorn

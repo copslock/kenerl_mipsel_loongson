@@ -1,64 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 09:00:09 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:33018
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990410AbdLOIACMiFD0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Dec 2017 09:00:02 +0100
-Received: by mail-wm0-x241.google.com with SMTP id g130so29560638wme.0
-        for <linux-mips@linux-mips.org>; Fri, 15 Dec 2017 00:00:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexb-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=UHTrDQk9k1IvxcCl5q3UFJEbRXDVovLlk/u7DPp4npA=;
-        b=PVBIIrnI0ZU8rtfKwH4ZN0fIytJmsBul+I6m9tDW43vRejBNlBZVyC/DDo2ff/XJGO
-         IkiDIAgpHBHbJ6O0b/EWRW/Uf2zkUxX0+SUXQf4kxLQPKzZ1+M7R+ZKNKh9JmFgjfVt7
-         maFgfIf/d6F6IKdYm1EFbtWPKULwbPuMb8wp1yxbzjX2FNge7z2P3H8ZaT4ZGzqNFfPo
-         bVtY2sFZsygbZ9DrsymavRUiKJIO/DKQvyKmu83GzP/kntwENGY177WdF6/576qnwQT8
-         Fe8k0DD+HgBd65XtGyeqGSd2IYsxVwS2ivx/x2bWHWhtpa+wcNyG/X0L0aXlcADDEQid
-         YbYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=UHTrDQk9k1IvxcCl5q3UFJEbRXDVovLlk/u7DPp4npA=;
-        b=Ov4CySQwOPQS9WNnGi+LRAwIVwGwUUXKYjYvDVnQt8jxX23NYadWU3w2f9QT0Xy6gJ
-         7ns6ILnxMN4xIZYavLV+g1/nsSKkSfo/9Z3mRae/uZ44ZMcCGFiZGWoyUbCK9uzwAdvb
-         spd+bX71UkZP1i3bGiCuqbn66yUgXvX3zXXxq7TzIbGkbtuOS7EKZzw+NgnPWoVgSp0L
-         z9p/nWf3LrgpcRi3LlG9FKDwlEu4GkHeHG4OA4wPDu44qghDP53B56dY7YkE0QzM//ZI
-         HRbYGWys6en7mn0XgVZxQ5pN1dVFy8Q8cS09oJ2Adp+sN/dun8NmNuJvXnqUQrne4jyu
-         KCXA==
-X-Gm-Message-State: AKGB3mKYwqkL+gsEdF1p2iIA0v2foQgsXRBTyx1uEPKZch9GgTa7auu2
-        +j6snZAZDloKYHreEA6RMuDi0rlxTHpDxmdap08sIw==
-X-Google-Smtp-Source: ACJfBoumSAUVL8KoatN+nIX6wooW2BZfOaLv4v/mYyli2UGNqj5I3+HQrPXx+Ph1nlKlB9a5+H7PjvlliZR6qfzHM/U=
-X-Received: by 10.28.26.139 with SMTP id a133mr4285662wma.90.1513324796464;
- Thu, 14 Dec 2017 23:59:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 10:11:31 +0100 (CET)
+Received: from [39.42.113.148] ([39.42.113.148]:59649 "EHLO [39.42.113.148]"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990502AbdLOJLYwMJDm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Dec 2017 10:11:24 +0100
+Message-ID: <68506FD2.15990065@taoswebcenter.com>
+Date:   Fri, 15 Dec 2017 14:11:24 +0500
+From:   Concetta <Concetta_Gooderham@taoswebcenter.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:27.0) Gecko/20100101 Thunderbird/27.0
 MIME-Version: 1.0
-Received: by 10.223.157.195 with HTTP; Thu, 14 Dec 2017 23:59:15 -0800 (PST)
-In-Reply-To: <CACRpkdZaaZArEhw3iWaQagrKa__+DcrzSY4i7PWNYwhUiNtm4A@mail.gmail.com>
-References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
- <20171208154618.20105-6-alexandre.belloni@free-electrons.com>
- <CACRpkdZ=+pFZYteq=wM=z-CGejY+dX_SqhtDbbGBn+q60arQ4w@mail.gmail.com>
- <CAOFm3uF_OjqK0cQ1A4Xkp8kZab+afqPsnF5rB9=a7Dym9jiU4w@mail.gmail.com> <CACRpkdZaaZArEhw3iWaQagrKa__+DcrzSY4i7PWNYwhUiNtm4A@mail.gmail.com>
-From:   Philippe Ombredanne <pombredanne@nexb.com>
-Date:   Fri, 15 Dec 2017 08:59:15 +0100
-Message-ID: <CAOFm3uFsM5Bbb2V-HYKf1kJgHokjUkuRLTht+7gO=-sxJ50faA@mail.gmail.com>
-Subject: Re: [PATCH v2 05/13] pinctrl: Add Microsemi Ocelot SoC driver
-To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <pombredanne@nexb.com>
+To:     <linux-mips@linux-mips.org>
+Subject: Scan
+Content-Type: multipart/mixed;
+Return-Path: <Concetta_Gooderham@taoswebcenter.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61472
+X-archive-position: 61473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pombredanne@nexb.com
+X-original-sender: Concetta_Gooderham@taoswebcenter.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,35 +32,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Alexandre, Linux
+boundary="------------045322619376007959678412"
 
-On Fri, Dec 15, 2017 at 12:53 AM, Linus Walleij
-<linus.walleij@linaro.org> wrote:
-> On Wed, Dec 13, 2017 at 10:23 AM, Philippe Ombredanne
-> <pombredanne@nexb.com> wrote:
->> On Wed, Dec 13, 2017 at 9:15 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
->>>> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
->>>
->>> Wow never saw that before. OK I guess.
->>
->> That's the new thing. Less legalese boilerplate, and more code for the
->> better IMHO.
->>
->> You can check the doc patches from Thomas for details [1]
->>
->> [1] https://lkml.org/lkml/2017/12/4/934
->
-> Yeah I'm aware of this part, but I didn't see that combined license
-> before.
->
-> What is the reason for not just using GPL 2 here?
+This is a multi-part message in MIME format.
+--------------045322619376007959678412
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Linus,
-That'a a question for Alexandre that submitted this patch in the first
-place, not me.
 
-Alexandre?
+--
+Thanks & Regards
+Concetta Gooderham
 
--- 
-Cordially
-Philippe Ombredanne
+
+--------------045322619376007959678412
+Content-Type: application/octet-stream;
+name="Scan_00815.7z"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+filename="Scan_00815.7z"
+
+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
+
+--------------045322619376007959678412--

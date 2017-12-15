@@ -1,25 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 10:11:31 +0100 (CET)
-Received: from [39.42.113.148] ([39.42.113.148]:59649 "EHLO [39.42.113.148]"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990502AbdLOJLYwMJDm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Dec 2017 10:11:24 +0100
-Message-ID: <68506FD2.15990065@taoswebcenter.com>
-Date:   Fri, 15 Dec 2017 14:11:24 +0500
-From:   Concetta <Concetta_Gooderham@taoswebcenter.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:27.0) Gecko/20100101 Thunderbird/27.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2017 10:36:46 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:54518 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990488AbdLOJgiIHYp1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Dec 2017 10:36:38 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 15 Dec 2017 09:36:29 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Fri, 15 Dec 2017 01:35:22 -0800
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <jhogan@kernel.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        <linux-kernel@vger.kernel.org>,
+        "Paul Burton" <paul.burton@mips.com>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 1/2] MIPS: SMP-CPS: Remove duplicate assignment of core in play_dead
+Date:   Fri, 15 Dec 2017 09:34:53 +0000
+Message-ID: <1513330494-21249-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-Subject: Scan
-Content-Type: multipart/mixed;
-Return-Path: <Concetta_Gooderham@taoswebcenter.com>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1513330589-321458-17146-63023-8
+X-BESS-VER: 2017.14-r1710272128
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.50
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.187999
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.50 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61473
+X-archive-position: 61474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Concetta_Gooderham@taoswebcenter.com
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,63 +55,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-boundary="------------045322619376007959678412"
+The merge of commit f875a832d2028 ("MIPS: Abstract CPU core & VP(E) ID
+access through accessor functions") ended up creating a duplicate
+assignment of core during the rebase on commit bac06cf0fb9d ("MIPS:
+smp-cps: Fix potentially uninitialised value of core"). Remove the
+duplicate.
 
-This is a multi-part message in MIME format.
---------------045322619376007959678412
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+---
 
+ arch/mips/kernel/smp-cps.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---
-Thanks & Regards
-Concetta Gooderham
-
-
---------------045322619376007959678412
-Content-Type: application/octet-stream;
-name="Scan_00815.7z"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-filename="Scan_00815.7z"
-
-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
-
---------------045322619376007959678412--
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index ecc1a853f48d..03f1026ad148 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -439,8 +439,6 @@ void play_dead(void)
+ 	pr_debug("CPU%d going offline\n", cpu);
+ 
+ 	if (cpu_has_mipsmt || cpu_has_vp) {
+-		core = cpu_core(&cpu_data[cpu]);
+-
+ 		/* Look for another online VPE within the core */
+ 		for_each_online_cpu(cpu_death_sibling) {
+ 			if (!cpus_are_siblings(cpu, cpu_death_sibling))
+-- 
+2.7.4

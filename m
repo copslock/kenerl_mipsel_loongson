@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Dec 2017 16:00:31 +0100 (CET)
-Received: from forward100o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::600]:57613
-        "EHLO forward100o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992391AbdLPO6ekdn9S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Dec 2017 15:58:34 +0100
-Received: from mxback9j.mail.yandex.net (mxback9j.mail.yandex.net [IPv6:2a02:6b8:0:1619::112])
-        by forward100o.mail.yandex.net (Yandex) with ESMTP id D717D2A20A15;
-        Sat, 16 Dec 2017 17:58:28 +0300 (MSK)
-Received: from smtp3p.mail.yandex.net (smtp3p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:8])
-        by mxback9j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id MwPA7S0FWb-wSOW3Opg;
-        Sat, 16 Dec 2017 17:58:28 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1513436308;
-        bh=4GBPq2NP8qkkgO8AnPlAH5TaCFSxKicxu9ESDkpceCc=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=GQ7Sk90T1hDKf/ITtw6UvNIdZU+8Aa/jWXzkea0KiCjeZyCKPlLqTqUBx8t16hp0Z
-         9cW/HEX8kaTPUoGo+mmP6Zh3xJbvmCscd1lkRb4pGwIOAQMJtqk3A8t/mFeFFgWUAt
-         EKuP7/+ScOcxwul9pa7OSooXQ/1LEZnEbz6zM/7U=
-Received: by smtp3p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 6waszUSHIG-wPsGMs7d;
-        Sat, 16 Dec 2017 17:58:27 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1513436307;
-        bh=4GBPq2NP8qkkgO8AnPlAH5TaCFSxKicxu9ESDkpceCc=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=alRBflgO62ncmnYhARqFn7uB5s1oUc/MdTKz/+Myba5EXCnAgbWY4RFeDGr5f2ibt
-         yMWCsPwZFgosxPBisX723f9txUULC69TTLPqMdboDkvNMcQgi0yMN6IYyfSgTOXkPs
-         c8IMMHVChpwSq0QjGEeSD9XU8shlJkpolZJgvwu8=
-Authentication-Results: smtp3p.mail.yandex.net; dkim=pass header.i=@flygoat.com
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Huacai Chan <chenhc@lemote.com>, linux-kernel@vger.kernel.org,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v5 5/5] MAINTAINERS: Add entry for Lemote YeeLoong Extra Driver
-Date:   Sat, 16 Dec 2017 22:57:51 +0800
-Message-Id: <20171216145751.3486-6-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.15.1
-In-Reply-To: <20171216145751.3486-1-jiaxun.yang@flygoat.com>
-References: <20171216145751.3486-1-jiaxun.yang@flygoat.com>
-Return-Path: <jiaxun.yang@flygoat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Dec 2017 19:26:55 +0100 (CET)
+Received: from mail-ot0-f193.google.com ([74.125.82.193]:42223 "EHLO
+        mail-ot0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990510AbdLPS0qymYCa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Dec 2017 19:26:46 +0100
+Received: by mail-ot0-f193.google.com with SMTP id i1so10375187oth.9
+        for <linux-mips@linux-mips.org>; Sat, 16 Dec 2017 10:26:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=aoguokzR/G0j2rr0u4cJzPxvSkESzMw1PsI40gsVIa0=;
+        b=O83kPKmVYBNs/5NiN6UANMJlQo6Dwskj8DgRP1DA1OcDSwUbdzc6tjkMlDujDQiz58
+         KKdNnE8jrLD0oY5DmzoBK2wwQsL0gwtuwzHVddNt8vg0bi42ca3SgzZ1w1lnNPZrBf3C
+         CFPuAhwI5hZqV04Wrf0wmTMPVP+ASUBVmg9ce4Ei5VPC21Agn4Y90DVfUt1hTCIj/O0d
+         fAcirW/yi15P5cIhCywiYYv4OOfYOUbnay3Si5TqZOTi0zyCzNcIaONpoHEVHRGa+FmG
+         JctDIEmlwN08CQ+KYmedWoGKiaGGWaCHp94v8QyELACiCa8uP/oXFiRyrWPo4HCB7kwX
+         hpew==
+X-Gm-Message-State: AKGB3mKrU7PjmHrY4rYsZbgsXWwaCKoagVfSAdG0WBF6vehOPVGbZd/i
+        SycMF6S6CS5TdndyEfBp5Q==
+X-Google-Smtp-Source: ACJfBouQkHgkKD3hBtrOP4RaW8J9Km8sTwzILVZkqzHZis9APDyGLCx64mCK1AsIoITt9KraA8FEpw==
+X-Received: by 10.157.14.151 with SMTP id 23mr10349420otj.234.1513448800775;
+        Sat, 16 Dec 2017 10:26:40 -0800 (PST)
+Received: from localhost (mobile-107-107-190-84.mycingular.net. [107.107.190.84])
+        by smtp.gmail.com with ESMTPSA id j50sm4395620otb.30.2017.12.16.10.26.39
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 16 Dec 2017 10:26:40 -0800 (PST)
+Date:   Sat, 16 Dec 2017 12:26:38 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+Cc:     linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        devicetree@vger.kernel.org, Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        James Hogan <james.hogan@mips.com>,
+        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>
+Subject: Re: [PATCH 1/2] dt-bindings: Document mti,mips-cpc binding
+Message-ID: <20171216182638.3vd2rbkyos74e4jo@rob-hp-laptop>
+References: <1513356723-7393-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1513356723-7393-2-git-send-email-aleksandar.markovic@rt-rk.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1513356723-7393-2-git-send-email-aleksandar.markovic@rt-rk.com>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61499
+X-archive-position: 61500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,32 +67,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add myself as a maintainer of Lemote YeeLoong Extra driver
+On Fri, Dec 15, 2017 at 05:51:59PM +0100, Aleksandar Markovic wrote:
+> From: Paul Burton <paul.burton@mips.com>
+> 
+> Document a binding for the MIPS Cluster Power Controller (CPC) which
+> simply allows the device tree to specify where the CPC registers should
+> be mapped.
+> 
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+> ---
+>  Documentation/devicetree/bindings/misc/mti,mips-cpc.txt | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/misc/mti,mips-cpc.txt b/Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
+> new file mode 100644
+> index 0000000..92eb08f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
+> @@ -0,0 +1,8 @@
+> +Binding for MIPS Cluster Power Controller (CPC).
+> +
+> +This binding allows a system to specify where the CPC registers should be
+> +mapped using device tree.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
- mode change 100644 => 100755 MAINTAINERS
+Not really where you map registers, but where they are located.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-old mode 100644
-new mode 100755
-index cdd6365a59d9..d2de627828a0
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7890,6 +7890,12 @@ W:	http://legousb.sourceforge.net/
- S:	Maintained
- F:	drivers/usb/misc/legousbtower.c
- 
-+Lemote YeeLoong EXTRAS DRIVER
-+M:	Jiaxun Yang <jiaxun.yang@flygoat.com>
-+S:	Maintained
-+F:	drivers/platform/mips/yeeloong_laptop.c
-+
-+
- LG2160 MEDIA DRIVER
- M:	Michael Krufky <mkrufky@linuxtv.org>
- L:	linux-media@vger.kernel.org
--- 
-2.15.1
+> +
+> +Required properties:
+> +compatible : Should be "mti,mips-cpc".
+
+Only one version of the block?
+
+> +regs: Should describe the address & size of the CPC register region.
+> -- 
+> 2.7.4
+> 

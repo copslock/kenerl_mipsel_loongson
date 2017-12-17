@@ -1,61 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Dec 2017 19:29:36 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:39533
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990921AbdLPS306ptia (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Dec 2017 19:29:26 +0100
-Received: by mail-wm0-x241.google.com with SMTP id i11so22816893wmf.4
-        for <linux-mips@linux-mips.org>; Sat, 16 Dec 2017 10:29:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Dec 2017 17:03:27 +0100 (CET)
+Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:32870
+        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbdLQQDUlSCiz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Dec 2017 17:03:20 +0100
+Received: by mail-wr0-x243.google.com with SMTP id v21so1265238wrc.0;
+        Sun, 17 Dec 2017 08:03:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexb-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=eSau6KrxQSQTTmhi/R3bLmRgcljlDucyhDQf1MdKWJo=;
-        b=E9rM6xszUJGNwfp3q+5RMK2LECpzR9mxZZgW6x8HnqS+AwvGc4kuXm9xfvJUwwGp9W
-         LszJhm2G/uAGJVyyKoPI+5dXAXNtbpqKr6nk91SsSy0KN+n9iKHagO19edZbD8PY4U67
-         WqQgVYMnejH7t9Eq2BaoQS/7yFBifa6Ur51WhMFlf1JmgE5asJFZSIhpSPllEOoIF5Gv
-         DDvaJYKS5Io/MzFUxIGuk8L1AUetRJJfrJeVdj1VwlbLhqY4ciUA0oU5WjFnDrWcvN7o
-         TZaqwkwAOI6IKw1c/cf1rVcC20W3WI3IewEUYr8gcJRSu3hg4RUOb5PXS1smvv1I3now
-         mKLw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vpO1cY683t0+lK5mzUFmZV7kCASza6in4gjQZXHEQak=;
+        b=f2nuT5j1GjoL4JL4EerXj6k3scI7Yt3dX8Y7PMF6mG04EwPG77rA4RKBHiifCIDy1z
+         cnjV+yw9e2KAs13hSREOzgH/keZZh8P0dDwttW/m/mxr2Px76bxHyv/6JC9QFAKO8uqq
+         mi4VhFvF3n3dJyLpwpkSbSmMQ5Ke7UAc7KBPZ8iu59kEiiEszxJIBZB1IqgbeCvfM9o5
+         exT5vdudQhzRHLS35HMJNht35p0BwWiEmbhfCvYcNx3PNepxHlMMaKC8L3s0Hlhy45TB
+         XTUo1v2Dyr8lkZy238cEtMhf5uWIyC6dQH91O+IPvZVt8POPzKj/t9JcMnkGZ/DXmTBo
+         1OTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=eSau6KrxQSQTTmhi/R3bLmRgcljlDucyhDQf1MdKWJo=;
-        b=rB3hq8HwN2MonGO3PorBpZydDmFn9sMynhNwAnwiaoUdU1P5K88L2vn+Cdqqfjs+2r
-         WfSf1/WEAzFa0nPEHqXtS2ZwtwhFQAoIZe9Okq2ouPaD6AqPFcnLPatMv9LgQn/6LkrM
-         z5WjrmJ0gRBfupzIjzWQ8+NNF4iLLWKUf3kz06V9Q3/DxreMPzBcOHrGWuAepPv90A/A
-         Z5tQQTkO3nsTmVGrSY8r6xAqaSRwTGrCRHyY8bCahSWTjvGfOaVDF2O4hPbf3beWNzb1
-         nuy5UGfSGy04HxYpuqihdvEDkYNKwq6KCvik/MCEymo+IzSXUJT1lkSO16c623OxnvNH
-         0Thg==
-X-Gm-Message-State: AKGB3mI6Gxtd33rJAiwLSbUS4LDyQloW09sKQcmtUSvKoosDNRvgyiEK
-        8tEqRjW7u5DXxWsSpdml4z/1QpssZhipk2IUQusPlA==
-X-Google-Smtp-Source: ACJfBos4/tEUKugN8wOaQqllliCKb475Pq0FHSLUwLbrkmVXYUR2wCvzcl5afhVFc42TP4rh+6O2WY16L0S2kG82gNQ=
-X-Received: by 10.28.27.206 with SMTP id b197mr8623366wmb.96.1513448961513;
- Sat, 16 Dec 2017 10:29:21 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.223.157.195 with HTTP; Sat, 16 Dec 2017 10:28:40 -0800 (PST)
-In-Reply-To: <20171216145751.3486-4-jiaxun.yang@flygoat.com>
-References: <20171216145751.3486-1-jiaxun.yang@flygoat.com> <20171216145751.3486-4-jiaxun.yang@flygoat.com>
-From:   Philippe Ombredanne <pombredanne@nexb.com>
-Date:   Sat, 16 Dec 2017 19:28:40 +0100
-Message-ID: <CAOFm3uHEmY-0y5qUDpLW+WLyi+TJd6LeV4qRhbhaXmCtX05mbw@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] MIPS: Loongson64: Yeeloong add platform driver
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Huacai Chan <chenhc@lemote.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <pombredanne@nexb.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vpO1cY683t0+lK5mzUFmZV7kCASza6in4gjQZXHEQak=;
+        b=YVMJ7fPV0V1lULDktTLIawssdONhr1yAVL2ZYRQID6k2h14fAQXMs1+RzdeCPJm3tt
+         xPpfivuq0GUkryWplIL2jSO3aNyeM1nR+zTyeXoQlxwdZLc7CSBK4MFi5F0Qci1LypdF
+         xsQqaAsOEdQXBbkPulgxRGW3d1FxaJymQ1EUogCSlnw7J/o3+yuQEB2QWpncYYsHsEP7
+         yPlpAUaDrl8WkaRiIGNeJBhMr4/6CW+Yi46LQ1ZcXIpuYmU2J78HdQBTnEc2BatLXalK
+         wgraOWdIZEh7wtrOV6XCKeuQ+936KFmlU5aBQO63HrDplO2dUOk1xXzrozxxpUco0iIe
+         /JOg==
+X-Gm-Message-State: AKGB3mIvLyh+WdA6VVomKyKV4FNFrgCWM/NGHoMFEQApQx0+I79ZpVH8
+        KM6mVPBhRs2n5Dp+8guLppw=
+X-Google-Smtp-Source: ACJfBosg+4rxUzoWUeOhquQtdw1WVe864GBsxO3enzT0z8qjSOoNsNgFNcAecTbHX+fcRUgVBqtBgA==
+X-Received: by 10.223.196.6 with SMTP id v6mr14681499wrf.236.1513526595304;
+        Sun, 17 Dec 2017 08:03:15 -0800 (PST)
+Received: from localhost.localdomain ([2001:470:9e39::48e])
+        by smtp.gmail.com with ESMTPSA id e197sm6336019wmf.4.2017.12.17.08.03.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 17 Dec 2017 08:03:14 -0800 (PST)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     netdev@vger.kernel.org, linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com
+Subject: [PATCH 0/4] bcm63xx_enet: remove mac_id usage
+Date:   Sun, 17 Dec 2017 17:02:51 +0100
+Message-Id: <20171217160255.30342-1-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.13.2
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61501
+X-archive-position: 61503
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pombredanne@nexb.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,43 +65,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Dear Jiaxun,
+This patchset aims at reducing the platform device id number usage with
+the target of making it eventually possible to probe the driver through OF.
 
-On Sat, Dec 16, 2017 at 3:57 PM, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
-> Yeeloong is a laptop with a MIPS Loongson 2F processor, AMD CS5536
-> chipset, and KB3310B controller.
+Runtested on BCM6358.
 
-<snip>
+Since the patches touch mostly net/, they should go through net-next.
 
-> --- /dev/null
-> +++ b/drivers/platform/mips/yeeloong_laptop.c
-> @@ -0,0 +1,1142 @@
-> +/*
-> + * Driver for YeeLoong laptop extras
-> + *
-> + *  Copyright (C) 2017 Jiaxun Yang.
-> + *  Author: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> + *
-> + *  Copyright (C) 2009 Lemote Inc.
-> + *  Author: Wu Zhangjin <wuzhangjin@gmail.com>, Liu Junliang <liujl@lemote.com>
-> + *
-> + *  Fixes: Petr Pisar <petr.pisar@atlas.cz>, 2012, 2013, 2014, 2015.
-> + *
-> + *  This program is free software; you can redistribute it and/or modify
-> + *  it under the terms of the GNU General Public License version 2 as
-> + *  published by the Free Software Foundation.
-> + */
+Jonas Gorski (4):
+  bcm63xx_enet: just use "enet" as the clock name
+  bcm63xx_enet: use platform data for dma channel numbers
+  bcm63xx_enet: remove pointless mac_id check
+  bcm63xx_enet: use platform device id directly for miibus name
 
-Would you mind using the new SPDX tags here. See Thomas patches [1]
-
-> +MODULE_LICENSE("GPL");
-
-Also please make sure your module license (here GPL 2.0 or later per
-module.h) matches your top level license tag  correctly (here GPL 2.0
-only)?
-
-[1] https://lkml.org/lkml/2017/12/4/934
+ arch/mips/bcm63xx/dev-enet.c                        |  8 ++++++++
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_enet.h     |  4 ++++
+ drivers/net/ethernet/broadcom/bcm63xx_enet.c        | 21 +++++----------------
+ drivers/net/ethernet/broadcom/bcm63xx_enet.h        |  3 ---
+ 4 files changed, 17 insertions(+), 19 deletions(-)
 
 -- 
-Cordially
-Philippe Ombredanne
+1.9.1

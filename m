@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Dec 2017 17:03:56 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:36526
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990596AbdLQQDVsQXDz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Dec 2017 17:03:21 +0100
-Received: by mail-wm0-x243.google.com with SMTP id b76so25467354wmg.1;
-        Sun, 17 Dec 2017 08:03:21 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Dec 2017 17:04:19 +0100 (CET)
+Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:42719
+        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990921AbdLQQDWn54uz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Dec 2017 17:03:22 +0100
+Received: by mail-wr0-x241.google.com with SMTP id s66so11938708wrc.9;
+        Sun, 17 Dec 2017 08:03:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=w27KZXIwfBNaATUSSccmRx/zCZmE47tJ8h3os6vaOhs=;
-        b=XPwz0Cf1PfyjyTQqunrn8vmggm1SGkdtNKa3dabolaZqFFnVT99At653oVppR1Huwm
-         ZtGTXoSFlWZY969xo2GAJBMzE5TDxqosb/PbJo5ADcYFVUIA5Ylw3yRisHOvj+8ui8v2
-         Ijz8KfUduS8Xf8xz8ncVzt688xJZWb0j0twzLTTfSPOR5pmHxo9KR2Hsozqh8DSHvp9H
-         gIBILaPQY8Y04SlTfsyIQle1rOCUw1jOvv47+Jrko7lb7qOshdVK2igaBKUhVqG0QoeY
-         PFY7ONe4j1dD7tbEJyvi296q1tzik1U3zX114mviebA70mwmT5kYDep2WP2uABkyDAr1
-         SAJQ==
+        bh=Sz94BientDdbnXedge4DCQdUgDFRrgLWuCMGlT/8utA=;
+        b=hKM6ijxuB9RvUGawfyIR3HR6D0mHwC/A3nAGStuFaMYp5IqSHfCf0x57Hbs1zocVTA
+         zusbb0x7qt4N8OY6SNWoQa5pAer9d5yFpM/XPROVuw6MX66Rb18R7ylM2DEYOVixT7xl
+         FgBJSGho1EZAm5lVrnV5qrVOweXdrrCi6saoeqYGBziho/MxbfdpfFyHrIp/G1YGEcPo
+         j9iMe7MPWpBWk/Pc3V+j7mK7kGsTOoZKXmPs640wFo2YvR3Q6vFRjhopUKJqv6zWkQxB
+         uLmGSbPSd6rcfQ46teSa9+W9mcT8FdNqLR032zwqFZI//V2wC06YSMAGFBRDrsaXPxUT
+         w2pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=w27KZXIwfBNaATUSSccmRx/zCZmE47tJ8h3os6vaOhs=;
-        b=IpWGuyIR+B+AmOvG2EUO8Ze2zRF8cz0m4ucYL10bvkgfWB6XNUMsHbrZGx7uwKVXB/
-         YhwqQuBDHG49G2dzeq0OjTWizy17HE4tV4PEkQ60KKTcsyLaDAMqcakEvFK0qCKU3OgP
-         lCmsBoZ3/mx2hzxoXZ+A64WfQO3Buyh6z+V5cL/y0/LOlvq5bZQhXcgSFyWmSy8vrlvi
-         QFlndo9rBRzlOfLNd7E2UnhJQa7dA2lDdPUfiyfi8ozKKAlRL4YWNWCUWI1ojTX07Va+
-         mBHWZBYSwzX0gOQIvDLo+p1XJ0/+Vg5t6r23s27d8VC7rio0DH2VNszcga5ZzdLK8Tyd
-         2yUA==
-X-Gm-Message-State: AKGB3mKefzfmNAInLf0WM7IqW2paQpxj7UAmK9iwZsm+9pQtWslkZgSM
-        ekd6KXWBORbG9uKW0ZS7iTQ=
-X-Google-Smtp-Source: ACJfBotsPFX8KfZNCWgGfnip9XLx+6mODToxSbLf+R2qvKW0Qu9i+lYpLGLvgE1Hs/6gkbUQdTjmWQ==
-X-Received: by 10.28.5.198 with SMTP id 189mr9850289wmf.29.1513526596411;
-        Sun, 17 Dec 2017 08:03:16 -0800 (PST)
+        bh=Sz94BientDdbnXedge4DCQdUgDFRrgLWuCMGlT/8utA=;
+        b=HP58e3KgFk4pQPuykxcWUzIMfAANtDU1EwooZID/qnkaypmRUucl2n8/+v3F6QAJd9
+         IIaq1rEposn/YjHsvsLJ9seGSebfw21Kwd8YVhMKj8Cglv7JBD/J/w1ohYSaFw/iN0RU
+         LI8XgaErr8JFE3DVC1fz0V2jRBqtHMrJpqOuUEUdgmGM+dFuhiaSWCDiZiGS2WjeP3AH
+         eSySnYdz4fGeLAmzMaFOX/7bWq7RYT+rAZCJhvLuFoocJH3+flJ/IOvzrMdyDXk5eoFZ
+         iDcfMwYCQKoVlLDsm380/BiRc0gfAAHnwcGjT6PCdRe6Lhku3wlfVGj+w4B3J7AWGBPU
+         Ks8w==
+X-Gm-Message-State: AKGB3mLmtkG4FNC8R9Y0SDbl/f3/BzoX4camXVLUTR8RnOrc6rpXs0/3
+        kDoJtprKWH7Ls9AVaYsGgb4=
+X-Google-Smtp-Source: ACJfBouG4ucvIE6ROzwozkeuqiKTSMynl6JEq8JFJfk+JH9V+k7p7xiXokjEB9Sy+yQloG3a4VJhHw==
+X-Received: by 10.223.170.150 with SMTP id h22mr14952411wrc.26.1513526597458;
+        Sun, 17 Dec 2017 08:03:17 -0800 (PST)
 Received: from localhost.localdomain ([2001:470:9e39::48e])
-        by smtp.gmail.com with ESMTPSA id e197sm6336019wmf.4.2017.12.17.08.03.15
+        by smtp.gmail.com with ESMTPSA id e197sm6336019wmf.4.2017.12.17.08.03.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 17 Dec 2017 08:03:15 -0800 (PST)
+        Sun, 17 Dec 2017 08:03:17 -0800 (PST)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
 To:     netdev@vger.kernel.org, linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "David S. Miller" <davem@davemloft.net>,
         Florian Fainelli <f.fainelli@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com
-Subject: [PATCH 1/4] bcm63xx_enet: just use "enet" as the clock name
-Date:   Sun, 17 Dec 2017 17:02:52 +0100
-Message-Id: <20171217160255.30342-2-jonas.gorski@gmail.com>
+Subject: [PATCH 2/4] bcm63xx_enet: use platform data for dma channel numbers
+Date:   Sun, 17 Dec 2017 17:02:53 +0100
+Message-Id: <20171217160255.30342-3-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 2.13.2
 In-Reply-To: <20171217160255.30342-1-jonas.gorski@gmail.com>
 References: <20171217160255.30342-1-jonas.gorski@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61504
+X-archive-position: 61505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,41 +68,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that we have the individual clocks available as "enet" we
-don't need to rely on the device id for them anymore.
+To reduce the reliance on device ids, pass the dma channel numbers to
+the enet devices as platform data.
 
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- drivers/net/ethernet/broadcom/bcm63xx_enet.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/mips/bcm63xx/dev-enet.c                          |  8 ++++++++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_enet.h |  4 ++++
+ drivers/net/ethernet/broadcom/bcm63xx_enet.c          | 11 ++---------
+ 3 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.c b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-index d9346e2ac720..5a5886345da2 100644
---- a/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-+++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-@@ -1716,7 +1716,6 @@ static int bcm_enet_probe(struct platform_device *pdev)
- 	struct bcm63xx_enet_platform_data *pd;
- 	struct resource *res_mem, *res_irq, *res_irq_rx, *res_irq_tx;
- 	struct mii_bus *bus;
--	const char *clk_name;
- 	int i, ret;
- 
- 	if (!bcm_enet_shared_base[0])
-@@ -1757,14 +1756,12 @@ static int bcm_enet_probe(struct platform_device *pdev)
- 	if (priv->mac_id == 0) {
- 		priv->rx_chan = 0;
- 		priv->tx_chan = 1;
--		clk_name = "enet0";
- 	} else {
- 		priv->rx_chan = 2;
- 		priv->tx_chan = 3;
--		clk_name = "enet1";
+diff --git a/arch/mips/bcm63xx/dev-enet.c b/arch/mips/bcm63xx/dev-enet.c
+index e8284771d620..07b4c65a88a4 100644
+--- a/arch/mips/bcm63xx/dev-enet.c
++++ b/arch/mips/bcm63xx/dev-enet.c
+@@ -265,6 +265,14 @@ int __init bcm63xx_enet_register(int unit,
+ 		dpd->dma_chan_width = ENETDMA_CHAN_WIDTH;
  	}
  
--	priv->mac_clk = devm_clk_get(&pdev->dev, clk_name);
-+	priv->mac_clk = devm_clk_get(&pdev->dev, "enet");
++	if (unit == 0) {
++		dpd->rx_chan = 0;
++		dpd->tx_chan = 1;
++	} else {
++		dpd->rx_chan = 2;
++		dpd->tx_chan = 3;
++	}
++
+ 	ret = platform_device_register(pdev);
+ 	if (ret)
+ 		return ret;
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_enet.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_enet.h
+index c0bd47444cff..da39e4d326ba 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_enet.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_enet.h
+@@ -55,6 +55,10 @@ struct bcm63xx_enet_platform_data {
+ 
+ 	/* DMA descriptor shift */
+ 	unsigned int dma_desc_shift;
++
++	/* dma channel ids */
++	int rx_chan;
++	int tx_chan;
+ };
+ 
+ /*
+diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.c b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
+index 5a5886345da2..e603a6fe6349 100644
+--- a/drivers/net/ethernet/broadcom/bcm63xx_enet.c
++++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
+@@ -1752,15 +1752,6 @@ static int bcm_enet_probe(struct platform_device *pdev)
+ 	priv->irq_tx = res_irq_tx->start;
+ 	priv->mac_id = pdev->id;
+ 
+-	/* get rx & tx dma channel id for this mac */
+-	if (priv->mac_id == 0) {
+-		priv->rx_chan = 0;
+-		priv->tx_chan = 1;
+-	} else {
+-		priv->rx_chan = 2;
+-		priv->tx_chan = 3;
+-	}
+-
+ 	priv->mac_clk = devm_clk_get(&pdev->dev, "enet");
  	if (IS_ERR(priv->mac_clk)) {
  		ret = PTR_ERR(priv->mac_clk);
- 		goto out;
+@@ -1792,6 +1783,8 @@ static int bcm_enet_probe(struct platform_device *pdev)
+ 		priv->dma_chan_width = pd->dma_chan_width;
+ 		priv->dma_has_sram = pd->dma_has_sram;
+ 		priv->dma_desc_shift = pd->dma_desc_shift;
++		priv->rx_chan = pd->rx_chan;
++		priv->tx_chan = pd->tx_chan;
+ 	}
+ 
+ 	if (priv->mac_id == 0 && priv->has_phy && !priv->use_external_mii) {
 -- 
 2.13.2

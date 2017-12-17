@@ -1,61 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Dec 2017 17:05:03 +0100 (CET)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35236
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991534AbdLQQDZAGF1z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Dec 2017 17:03:25 +0100
-Received: by mail-wr0-x244.google.com with SMTP id z104so2998724wrb.2;
-        Sun, 17 Dec 2017 08:03:24 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Dec 2017 17:59:43 +0100 (CET)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:42233
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbdLQQ7hM80Fl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Dec 2017 17:59:37 +0100
+Received: by mail-io0-x244.google.com with SMTP id x67so1297790ioi.9;
+        Sun, 17 Dec 2017 08:59:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=gEtf1b6b8xM7vtvcIuT/adaeyiuLdF3ms8NE6QwmSSk=;
-        b=XUwr84PnxYB96g/DJZ5IQc/741tvkmwAt0q3bbLokLnOporxzsIR+q8VyY9Bp3IPiR
-         7gKoeILxDip18MMcF+4+yQS3+moeV3Je5cGmLwwxeR0StlxOkc1RT1hYwtZpjEuA98YO
-         y51eqXCiQ1CwnyG28DjJQUwboj00GWsiKJp8DeN1dgczhB7UfdMjJeM9WkEROg1NdfTz
-         4nCMEJuZHmZzKYwS/paVylyRGxue9VNxnp37d8NTxVGm0v32YSfYv95Gr8m7PuQGft2g
-         KeYZkOPR6uz9p4eEu27gL9nVbIoHdiIt+70NH+JOGPF3giBjZsGrEBhPvfOZk8KPmeOK
-         BYSw==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=Pazk3p0n8bEWa3m8ODZ6jQHVbQSh5ZiEJtYXlUVo+CA=;
+        b=UR5xAYFFEXvIO4fMEucuVH3uuVsAWPEQBDZ39oG7dyhqS7hanC4OJLGJw2hSVFQM4D
+         Q5CfbBb9QxhB69lmb3WIIhKkATnucvlfc6lq0GsKrzK4QNwAh8tIJPPNU4UgJpYaaH/i
+         XoQUp9PjNzaidcibChkMJT/XCga+oqWBN7oicfzhDIuhqV6qUtkgyHk8gTD7aAWaw6IU
+         wxJ2NRDXGQs0nlU3u0JGl2BfpdCzc431EbxkhqM39fBLfsf5Lw1TCPbTosAlNmJv+2QT
+         8O3NzkWORjTTCNWMBPmCCAL0Q2WYP7tndJfyqmOhHnBhQNWSiOhhg0m+eKqDleI+JTHW
+         eN0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=gEtf1b6b8xM7vtvcIuT/adaeyiuLdF3ms8NE6QwmSSk=;
-        b=o/ofh77yHLEHe9VUb398R1ucAsSZW5L9NIRdcGHhPNepjWRdysYQieQJgJh6duj/db
-         PKefXbRnzj8C8OtwzondJ47g8RWgD+TT6w7/Me5N89OUm268cmVzKw++MENiz/247ETq
-         e/ihntfMvrlnpK8K6agbNTc00hodcrR2cZUJ093rvOsZQzNSvsNZXgJeVuVL9UDhmv/2
-         D3Zizug8Arqebb4K3ZWsbdjz4bzFJFSvSsuhZkWn+lC6LslDsZb9r4T1qopB5/5yhHpK
-         8sjDJO3u5SqqVStAUoN+tSeooSqR20LEvohZ8quMpBRMcABCkwyjc1WWRmVA1o53cJtn
-         xw7A==
-X-Gm-Message-State: AKGB3mIpN4gH09kSYttjng/MgzuuvLhfVCuOmqHHigw/25c/qUeLHBHG
-        G2POhoAS7P5Zc4fIZKtZF83+dg==
-X-Google-Smtp-Source: ACJfBosel9UFZYnTkh2TJwwz9ZuHnD4NzlQG2cLBO/oBQWEiuqWrhPbNLBcJHO6S4pXZUUJvVELiCQ==
-X-Received: by 10.223.182.147 with SMTP id j19mr14709002wre.159.1513526599696;
-        Sun, 17 Dec 2017 08:03:19 -0800 (PST)
-Received: from localhost.localdomain ([2001:470:9e39::48e])
-        by smtp.gmail.com with ESMTPSA id e197sm6336019wmf.4.2017.12.17.08.03.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 17 Dec 2017 08:03:19 -0800 (PST)
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-To:     netdev@vger.kernel.org, linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com
-Subject: [PATCH 4/4] bcm63xx_enet: use platform device id directly for miibus name
-Date:   Sun, 17 Dec 2017 17:02:55 +0100
-Message-Id: <20171217160255.30342-5-jonas.gorski@gmail.com>
-X-Mailer: git-send-email 2.13.2
-In-Reply-To: <20171217160255.30342-1-jonas.gorski@gmail.com>
-References: <20171217160255.30342-1-jonas.gorski@gmail.com>
-Return-Path: <jonas.gorski@gmail.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=Pazk3p0n8bEWa3m8ODZ6jQHVbQSh5ZiEJtYXlUVo+CA=;
+        b=gMzyy1kvvzV3XnH41JojDvEaGcrbfzw05yHpEzD6IPkbjPfCOK+5rmFgo1uDIMBPqe
+         hg9uiq6DKrwE3FhnZ3RXEOQsAu4BDjzoobfQH0g6K83zIOvyfzVxpKG0TQWU2fowl1L5
+         y4nsdy/8GIT6ZtJMvOYT7QskxYSc9eMaMwGyNYUCGGC9a0z2JnIRgMQI0OaZTpJsTOu0
+         mgZhXpCG+NUBwZJXW+BdIIxwVcdxmOreZTlg02n0mdOEoFH6K4s+8JyOV1Qtdk3CoiLR
+         xVJJ3052DckXknZmZGbtlWwfKgyZ4n3ywdw+mCRjQoYrAQ7DWhI4vv8VgyeJsJ9klUMM
+         sA9Q==
+X-Gm-Message-State: AKGB3mKbv3PBD9KdblvxqPcxlkPCmen4ibqbTtmitx35G+aRNmTchbyy
+        yakhqErytBytkaRlXa4YdvEqb+81VEPn226I3+E=
+X-Google-Smtp-Source: ACJfBos6fKlO24fxPw/jHmr3BTTkhYiLd0i2zsao8YtSiXolW2s3QPLS3czoxsIci96N9V04Pl2dwyAjMouH7dMGsgE=
+X-Received: by 10.107.97.16 with SMTP id v16mr18831202iob.263.1513529970690;
+ Sun, 17 Dec 2017 08:59:30 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.2.169.20 with HTTP; Sun, 17 Dec 2017 08:59:30 -0800 (PST)
+In-Reply-To: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
+References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Sun, 17 Dec 2017 22:29:30 +0530
+Message-ID: <CANc+2y5t8RRvuSsVvAJRNtfFx_T0wCGsSVd7Vb03boiX8AnbUw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/13] MIPS: add support for the Microsemi MIPS SoCs
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+        linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61507
+X-archive-position: 61508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,50 +71,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Directly use the platform device for generating the miibus name. This
-removes the last user of bcm_enet_priv::mac_id and we can remove the
-field.
+Hi Alexandre,
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
----
- drivers/net/ethernet/broadcom/bcm63xx_enet.c | 3 +--
- drivers/net/ethernet/broadcom/bcm63xx_enet.h | 3 ---
- 2 files changed, 1 insertion(+), 5 deletions(-)
+With very small amount of code in arch/mips this series looks really nice.
 
-diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.c b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-index d4519c621d08..1fbbbabe7588 100644
---- a/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-+++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
-@@ -1750,7 +1750,6 @@ static int bcm_enet_probe(struct platform_device *pdev)
- 	dev->irq = priv->irq = res_irq->start;
- 	priv->irq_rx = res_irq_rx->start;
- 	priv->irq_tx = res_irq_tx->start;
--	priv->mac_id = pdev->id;
- 
- 	priv->mac_clk = devm_clk_get(&pdev->dev, "enet");
- 	if (IS_ERR(priv->mac_clk)) {
-@@ -1818,7 +1817,7 @@ static int bcm_enet_probe(struct platform_device *pdev)
- 		bus->priv = priv;
- 		bus->read = bcm_enet_mdio_read_phylib;
- 		bus->write = bcm_enet_mdio_write_phylib;
--		sprintf(bus->id, "%s-%d", pdev->name, priv->mac_id);
-+		sprintf(bus->id, "%s-%d", pdev->name, pdev->id);
- 
- 		/* only probe bus where we think the PHY is, because
- 		 * the mdio read operation return 0 instead of 0xffff
-diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.h b/drivers/net/ethernet/broadcom/bcm63xx_enet.h
-index 5a66728d4776..1d3c917eb830 100644
---- a/drivers/net/ethernet/broadcom/bcm63xx_enet.h
-+++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.h
-@@ -193,9 +193,6 @@ struct bcm_enet_mib_counters {
- 
- struct bcm_enet_priv {
- 
--	/* mac id (from platform device id) */
--	int mac_id;
--
- 	/* base remapped address of device */
- 	void __iomem *base;
- 
--- 
-2.13.2
+On 8 December 2017 at 21:16, Alexandre Belloni
+<alexandre.belloni@free-electrons.com> wrote:
+> Hi,
+>
+> This patch series adds initial support for the Microsemi MIPS SoCs. It
+> is currently focusing on the Microsemi Ocelot (VSC7513, VSC7514).
+>
+> It adds support for the IRQ controller, pinmux and gpio controller and
+> reset control.
+>
+> This produces a kernel that can boot to the console.
+>
+> This is a single series for reference but it can also be taken
+> separately by each maintainer as each drivers are independant.
+>
+> Changes in v2:
+>  - removed the wildcard in MAINAINERS
+>  - corrected the Cc list
+>  - added proper documentation for both syscons
+>  - removed the mscc,cpucontrol property
+>  - updated the ranges property in the ocelot dtsi
+>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: linux-gpio@vger.kernel.org
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+>
+>
+> Alexandre Belloni (13):
+>   dt-bindings: Add vendor prefix for Microsemi Corporation
+>   dt-bindings: interrupt-controller: Add binding for the Microsemi
+>     Ocelot interrupt controller
+>   irqchip: Add a driver for the Microsemi Ocelot controller
+>   dt-bindings: pinctrl: Add bindings for Microsemi Ocelot
+>   pinctrl: Add Microsemi Ocelot SoC driver
+>   dt-bindings: mips: Add bindings for Microsemi SoCs
+>   dt-bindings: power: reset: Document ocelot-reset binding
+>   power: reset: Add a driver for the Microsemi Ocelot reset
+>   MIPS: mscc: Add initial support for Microsemi MIPS SoCs
+>   MIPS: mscc: add ocelot dtsi
+>   MIPS: mscc: add ocelot PCB123 device tree
+>   MIPS: defconfigs: add a defconfig for Microsemi SoCs
+>   MAINTAINERS: Add entry for Microsemi MIPS SoCs
+>
+>  .../interrupt-controller/mscc,ocelot-icpu-intr.txt |  22 +
+>  Documentation/devicetree/bindings/mips/mscc.txt    |  46 ++
+>  .../bindings/pinctrl/mscc,ocelot-pinctrl.txt       |  39 ++
+>  .../bindings/power/reset/ocelot-reset.txt          |  17 +
+>  .../devicetree/bindings/vendor-prefixes.txt        |   1 +
+>  MAINTAINERS                                        |   7 +
+>  arch/mips/Kbuild.platforms                         |   1 +
+>  arch/mips/Kconfig                                  |  24 +
+>  arch/mips/boot/dts/Makefile                        |   1 +
+>  arch/mips/boot/dts/mscc/Makefile                   |   6 +
+>  arch/mips/boot/dts/mscc/ocelot.dtsi                | 115 +++++
+>  arch/mips/boot/dts/mscc/ocelot_pcb123.dts          |  27 ++
+>  arch/mips/configs/mscc_defconfig                   |  84 ++++
+>  arch/mips/mscc/Makefile                            |  11 +
+>  arch/mips/mscc/Platform                            |  12 +
+>  arch/mips/mscc/setup.c                             | 106 +++++
+>  drivers/irqchip/Kconfig                            |   5 +
+>  drivers/irqchip/Makefile                           |   1 +
+>  drivers/irqchip/irq-mscc-ocelot.c                  | 109 +++++
+>  drivers/pinctrl/Kconfig                            |  10 +
+>  drivers/pinctrl/Makefile                           |   1 +
+>  drivers/pinctrl/pinctrl-ocelot.c                   | 505 +++++++++++++++++++++
+>  drivers/power/reset/Kconfig                        |   7 +
+>  drivers/power/reset/Makefile                       |   1 +
+>  drivers/power/reset/ocelot-reset.c                 |  86 ++++
+>  25 files changed, 1244 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mscc,ocelot-icpu-intr.txt
+>  create mode 100644 Documentation/devicetree/bindings/mips/mscc.txt
+>  create mode 100644 Documentation/devicetree/bindings/pinctrl/mscc,ocelot-pinctrl.txt
+>  create mode 100644 Documentation/devicetree/bindings/power/reset/ocelot-reset.txt
+>  create mode 100644 arch/mips/boot/dts/mscc/Makefile
+>  create mode 100644 arch/mips/boot/dts/mscc/ocelot.dtsi
+>  create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+>  create mode 100644 arch/mips/configs/mscc_defconfig
+>  create mode 100644 arch/mips/mscc/Makefile
+>  create mode 100644 arch/mips/mscc/Platform
+>  create mode 100644 arch/mips/mscc/setup.c
+>  create mode 100644 drivers/irqchip/irq-mscc-ocelot.c
+>  create mode 100644 drivers/pinctrl/pinctrl-ocelot.c
+>  create mode 100644 drivers/power/reset/ocelot-reset.c
+>
+> --
+> 2.15.1
+>
+>
+
+Except for irqchip driver and pinctrl driver other parts of the series is
+Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+
+Regards,
+PrasannaKumar

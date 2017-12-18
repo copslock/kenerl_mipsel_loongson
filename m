@@ -1,55 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Dec 2017 14:23:34 +0100 (CET)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:40903
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992176AbdLRNX07Y8Yr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Dec 2017 14:23:26 +0100
-Received: by mail-it0-x244.google.com with SMTP id f190so27516864ita.5;
-        Mon, 18 Dec 2017 05:23:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Dec 2017 14:26:48 +0100 (CET)
+Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:36234
+        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992176AbdLRN0i5w11n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Dec 2017 14:26:38 +0100
+Received: by mail-it0-x241.google.com with SMTP id d16so27612274itj.1;
+        Mon, 18 Dec 2017 05:26:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=CePqoquTsd7jpsi2aQ4BY9cftJlm+4zrHNgCHEWvsr4=;
-        b=KhBdrgkJaJ4WXY2UVlURyIEgDwieZTe6/MRVuayFgzdklZBpELdcVqygDUczv0C59z
-         TJmSafesJLXpmfEJCgp3nYdLurvrLZbxf4I2wn9F3b9QXs8iyl/FYoKb2aXmz69lE/U6
-         9tg8rtvAvFXP3rXFvQoHICkJ/qKly66dC1Y1XIhvogkt6WPxj7JgBXwDKaeDbI5n2bL4
-         w8F3bIjotg7nJVg49pmIlaWjJeRV5D83jYpfiXUNZSVOUm3b86cUaRkfmbcD17OpmtXv
-         saHMhdj3o+uCtcPtBNkkDkA7h0j3A7NAosR/Sb3II3szoJndc5GkE6uERWiHrSsSgh4y
-         YViQ==
+        bh=uu9Sk+kqyA61UdDg0ryx74dB+dnPXpTtKbrafeY4foQ=;
+        b=YhJrr4cYSuYGBdkzE+PKL0z+Toyo/mM/s5RboXIQQiWJ2PKO2WEENUiZu1z8mcaAji
+         GaKGmd7+tH880TThnDIMxz8ku5Q6K8J1SYqjOX1Up/aAjFvDLtueQ6OrXTqgRlCUBHER
+         CZEs+kAqV2z4dwGEqgOUoElMhphqkYqutPeewihcQzwJZS25jnATGhvj9s7xQxaaVwgd
+         2e2U87i4RgzcM6NdT32gjv036v/rNSqza4h4EbUdwFdk+0GEh/dnDWYMreMH5ckHG2+8
+         otqVvCdRGRD3lynK8eVb+Yr77uNcpWNTtWSI60GhMxTO1id+lzu00xKQC/oJ42SDu76k
+         CBYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=CePqoquTsd7jpsi2aQ4BY9cftJlm+4zrHNgCHEWvsr4=;
-        b=cWhGoD6+EQnt6UUhMHlH1PIfQtK0ZzzucerzL8sUCHqJo5t4T3Z4XucrDxsveAX8DN
-         9lifrS0kj/RPbGKwUJHP6AYrUVEO3kinliqbo+LdUgNabTeBlrXtVVfdWqg2gzGvLGEK
-         yE/R6SwSTg6YQAYTiKIooM7e+G8IMzmDs5yP3EAVhwzzvNe3VV8BB/lDtFQrJ8fAtHQN
-         4w2Ox/bseE+SvDNWdGa46mnDqtZ5ufmbUcCAI6fwxxMYoqAA8woczZaMLTfmewd+hvin
-         S21aEFuwExyWxG9wxDIh5mIwS5zpOBOBVglKul33m/O7jsNFCSKJSQMpry6urehB876V
-         lL2Q==
-X-Gm-Message-State: AKGB3mLGH+G7A+NEqPkwClBIeFipmsnI8sQeBiJW45aMLQtLWS294rW4
-        V7uzZDASIHmajYSpyW5cxrUZ9sevR78Xd7nyF7+uSC/1
-X-Google-Smtp-Source: ACJfBos2v9otfcOzBQUCWDkI4bo2amKdWceInoO+TY6v+U97eDqJcLAxWRSpGJwCeE6o89abBiwdK6Sdrxs44lD8/hg=
-X-Received: by 10.36.70.146 with SMTP id j140mr11405319itb.66.1513603400435;
- Mon, 18 Dec 2017 05:23:20 -0800 (PST)
+        bh=uu9Sk+kqyA61UdDg0ryx74dB+dnPXpTtKbrafeY4foQ=;
+        b=JwG+GvBbXPJtyJCnToW+rQ8V/ncr1tGUdp+qcpQvf1q4cGNQf+LPwdic9/uslkxhx9
+         9PkzpddUO/U35O8Z7TasvSP/JBldoMWaHr3DMi3oBIYelLQS6gqObfkuE9ocvwAfRKae
+         y10H4rhJAs6R8Qq9lqO76AFBaGC17TUe5f9ljU653GFv2b5ILQINKLORnGkZO8V05Hsa
+         v57pLeDmeoth74RiARV+iKAHctEP94HogzJZpxa3qL+uUFSGU6JBJ33HPYuiG0oHN1qk
+         BlGCyVUSu1lyXfp1lUrD4IJ/wSWMQP4SARaSHEK2b0zrwOHUyDnXJPYT7MNPcOi7wHom
+         GHbg==
+X-Gm-Message-State: AKGB3mJwZrGD6brNoztXLbVv1Zpy1tDei68zq7t9tzJX1Mkcf15gW70Q
+        ibSMDfuh9tOb/qVwnr/7m+RMj1JiX4hJsrcCXus=
+X-Google-Smtp-Source: ACJfBotfuMBQ0/E4fm9LRe4ZJ3TRaXXF4H2Yka60q/2Ielg/phzuDT6+XFw2NPjMTQdSDAIiU+ZVF6PUX2Z+BBIWY5k=
+X-Received: by 10.36.217.208 with SMTP id p199mr19958000itg.106.1513603590635;
+ Mon, 18 Dec 2017 05:26:30 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.2.169.20 with HTTP; Mon, 18 Dec 2017 05:23:20 -0800 (PST)
-In-Reply-To: <20171208154618.20105-10-alexandre.belloni@free-electrons.com>
-References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com> <20171208154618.20105-10-alexandre.belloni@free-electrons.com>
+Received: by 10.2.169.20 with HTTP; Mon, 18 Dec 2017 05:26:30 -0800 (PST)
+In-Reply-To: <20171208154618.20105-9-alexandre.belloni@free-electrons.com>
+References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com> <20171208154618.20105-9-alexandre.belloni@free-electrons.com>
 From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Mon, 18 Dec 2017 18:53:20 +0530
-Message-ID: <CANc+2y4YicFJ4i1Wuan4oh+z=6cG7K-HKTm0Cp2z8xnHD2bedw@mail.gmail.com>
-Subject: Re: [PATCH v2 09/13] MIPS: mscc: Add initial support for Microsemi
- MIPS SoCs
+Date:   Mon, 18 Dec 2017 18:56:30 +0530
+Message-ID: <CANc+2y5itUahW9s9buhUxkM-tYQQqT3EU4JYGZaZk_a6rpN+Bg@mail.gmail.com>
+Subject: Re: [PATCH v2 08/13] power: reset: Add a driver for the Microsemi
+ Ocelot reset
 To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        open list <linux-kernel@vger.kernel.org>
+        open list <linux-kernel@vger.kernel.org>,
+        Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61511
+X-archive-position: 61512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,216 +71,142 @@ Hi Alexandre,
 
 On 8 December 2017 at 21:16, Alexandre Belloni
 <alexandre.belloni@free-electrons.com> wrote:
-> Introduce support for the MIPS based Microsemi Ocelot SoCs.
-> As the plan is to have all SoCs supported only using device tree, the
-> mach directory is simply called mscc.
+> The Microsemi Ocelot SoC has a register allowing to reset the MIPS core.
+> Unfortunately, the syscon-reboot driver can't be used directly (but almost)
+> as the reset control may be disabled using another register.
 >
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: linux-pm@vger.kernel.org
 > Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
 > ---
->  arch/mips/Kbuild.platforms |   1 +
->  arch/mips/Kconfig          |  24 ++++++++++
->  arch/mips/mscc/Makefile    |  11 +++++
->  arch/mips/mscc/Platform    |  12 +++++
->  arch/mips/mscc/setup.c     | 106 +++++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 154 insertions(+)
->  create mode 100644 arch/mips/mscc/Makefile
->  create mode 100644 arch/mips/mscc/Platform
->  create mode 100644 arch/mips/mscc/setup.c
+>  drivers/power/reset/Kconfig        |  7 ++++
+>  drivers/power/reset/Makefile       |  1 +
+>  drivers/power/reset/ocelot-reset.c | 86 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 94 insertions(+)
+>  create mode 100644 drivers/power/reset/ocelot-reset.c
 >
-> diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-> index ac7ad54f984f..b3b2f8dc91db 100644
-> --- a/arch/mips/Kbuild.platforms
-> +++ b/arch/mips/Kbuild.platforms
-> @@ -18,6 +18,7 @@ platforms += lantiq
->  platforms += lasat
->  platforms += loongson32
->  platforms += loongson64
-> +platforms += mscc
->  platforms += mti-malta
->  platforms += netlogic
->  platforms += paravirt
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 350a990fc719..a9db028a0338 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -527,6 +527,30 @@ config MIPS_MALTA
->           This enables support for the MIPS Technologies Malta evaluation
->           board.
->
-> +config MSCC_OCELOT
-> +       bool "Microsemi Ocelot architecture"
-> +       select BOOT_RAW
-> +       select CEVT_R4K
-> +       select CSRC_R4K
-> +       select IRQ_MIPS_CPU
-> +       select DMA_NONCOHERENT
-> +       select SYS_HAS_CPU_MIPS32_R2
-> +       select SYS_SUPPORTS_32BIT_KERNEL
-> +       select SYS_SUPPORTS_BIG_ENDIAN
-> +       select SYS_SUPPORTS_LITTLE_ENDIAN
-> +       select SYS_HAS_EARLY_PRINTK
-> +       select USE_GENERIC_EARLY_PRINTK_8250
-> +       select MSCC_OCELOT_IRQ
-> +       select PINCTRL
-> +       select GPIOLIB
-> +       select COMMON_CLK
-> +       select USE_OF
-> +       select BUILTIN_DTB
-> +       select LIBFDT
-> +       help
-> +         This enables support for the Microsemi Ocelot architecture.
-> +         It builds a generic DT-based kernel image.
-> +
->  config MACH_PIC32
->         bool "Microchip PIC32 Family"
+> diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+> index ca0de1a78e85..2372f8e1040d 100644
+> --- a/drivers/power/reset/Kconfig
+> +++ b/drivers/power/reset/Kconfig
+> @@ -113,6 +113,13 @@ config POWER_RESET_MSM
 >         help
-> diff --git a/arch/mips/mscc/Makefile b/arch/mips/mscc/Makefile
-> new file mode 100644
-> index 000000000000..c96b13546730
-> --- /dev/null
-> +++ b/arch/mips/mscc/Makefile
-> @@ -0,0 +1,11 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +#
-> +# Microsemi MIPS SoC support
-> +#
-> +# License: Dual MIT/GPL
-> +# Copyright (c) 2017 Microsemi Corporation
+>           Power off and restart support for Qualcomm boards.
+>
+> +config POWER_RESET_OCELOT_RESET
+> +       bool "Microsemi Ocelot reset driver"
+> +       depends on MSCC_OCELOT || COMPILE_TEST
+> +       select MFD_SYSCON
+> +       help
+> +         This driver supports restart for Microsemi Ocelot SoC.
 > +
-> +#
-> +# Makefile for the Microsemi MIPS SoCs
-> +#
-> +obj-y := setup.o
-> diff --git a/arch/mips/mscc/Platform b/arch/mips/mscc/Platform
+>  config POWER_RESET_PIIX4_POWEROFF
+>         tristate "Intel PIIX4 power-off driver"
+>         depends on PCI
+> diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+> index aeb65edb17b7..df9d92291c67 100644
+> --- a/drivers/power/reset/Makefile
+> +++ b/drivers/power/reset/Makefile
+> @@ -12,6 +12,7 @@ obj-$(CONFIG_POWER_RESET_GPIO_RESTART) += gpio-restart.o
+>  obj-$(CONFIG_POWER_RESET_HISI) += hisi-reboot.o
+>  obj-$(CONFIG_POWER_RESET_IMX) += imx-snvs-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_MSM) += msm-poweroff.o
+> +obj-$(CONFIG_POWER_RESET_OCELOT_RESET) += ocelot-reset.o
+>  obj-$(CONFIG_POWER_RESET_PIIX4_POWEROFF) += piix4-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_LTC2952) += ltc2952-poweroff.o
+>  obj-$(CONFIG_POWER_RESET_QNAP) += qnap-poweroff.o
+> diff --git a/drivers/power/reset/ocelot-reset.c b/drivers/power/reset/ocelot-reset.c
 > new file mode 100644
-> index 000000000000..9ae874c8f136
+> index 000000000000..1fb14bf17191
 > --- /dev/null
-> +++ b/arch/mips/mscc/Platform
-> @@ -0,0 +1,12 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +#
-> +# Microsemi MIPS SoC support
-> +#
-> +# License: Dual MIT/GPL
-> +# Copyright (c) 2017 Microsemi Corporation
-> +
-> +#
-> +# Microsemi Ocelot board(s)
-> +#
-> +platform-$(CONFIG_MSCC_OCELOT) += mscc/
-> +load-$(CONFIG_MSCC_OCELOT)      += 0x80100000
-> diff --git a/arch/mips/mscc/setup.c b/arch/mips/mscc/setup.c
-> new file mode 100644
-> index 000000000000..77803edd7bfd
-> --- /dev/null
-> +++ b/arch/mips/mscc/setup.c
-> @@ -0,0 +1,106 @@
+> +++ b/drivers/power/reset/ocelot-reset.c
+> @@ -0,0 +1,86 @@
 > +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 > +/*
-> + * Microsemi MIPS SoC support
+> + * Microsemi MIPS SoC reset driver
 > + *
 > + * License: Dual MIT/GPL
 > + * Copyright (c) 2017 Microsemi Corporation
 > + */
 > +#include <linux/delay.h>
-> +#include <linux/export.h>
-> +#include <linux/init.h>
-> +#include <linux/irq.h>
-> +#include <linux/irqchip.h>
-> +#include <linux/libfdt.h>
-> +#include <linux/of_fdt.h>
-> +#include <linux/of_platform.h>
+> +#include <linux/io.h>
+> +#include <linux/notifier.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_device.h>
+> +#include <linux/platform_device.h>
 > +#include <linux/reboot.h>
+> +#include <linux/regmap.h>
 > +
-> +#include <asm/time.h>
-> +#include <asm/idle.h>
-> +#include <asm/prom.h>
-> +#include <asm/reboot.h>
+> +struct ocelot_reset_context {
+> +       struct regmap *chip_regs;
+> +       struct regmap *cpu_ctrl;
+> +       struct notifier_block restart_handler;
+> +};
 > +
-> +static void __init ocelot_earlyprintk_init(void)
+> +#define ICPU_CFG_CPU_SYSTEM_CTRL_RESET 0x20
+> +#define CORE_RST_PROTECT BIT(2)
+> +
+> +#define CHIP_REGS_SOFT_RST 0x8
+> +#define SOFT_CHIP_RST BIT(0)
+> +
+> +static int ocelot_restart_handle(struct notifier_block *this,
+> +                                unsigned long mode, void *cmd)
 > +{
-> +       void __iomem *uart_base;
+> +       struct ocelot_reset_context *ctx = container_of(this, struct
+> +                                                       ocelot_reset_context,
+> +                                                       restart_handler);
 > +
-> +       uart_base = ioremap_nocache(0x70100000, 0x0f);
-> +       setup_8250_early_printk_port((unsigned long)uart_base, 2, 50000);
+> +       /* Make sure the core is not protected from reset */
+> +       regmap_update_bits(ctx->cpu_ctrl, ICPU_CFG_CPU_SYSTEM_CTRL_RESET,
+> +                          CORE_RST_PROTECT, 0);
+> +
+> +       regmap_write(ctx->chip_regs, CHIP_REGS_SOFT_RST, SOFT_CHIP_RST);
+> +
+> +       pr_emerg("Unable to restart system\n");
+> +       return NOTIFY_DONE;
 > +}
 > +
-> +void __init prom_init(void)
+> +static int ocelot_reset_probe(struct platform_device *pdev)
 > +{
-> +       /* Sanity check for defunct bootloader */
-> +       if (fw_arg0 < 10 && (fw_arg1 & 0xFFF00000) == 0x80000000) {
-> +               unsigned int prom_argc = fw_arg0;
-> +               const char **prom_argv = (const char **)fw_arg1;
+> +       struct ocelot_reset_context *ctx;
+> +       struct device *dev = &pdev->dev;
+> +       int err;
 > +
-> +               if (prom_argc > 1 && strlen(prom_argv[1]) > 0)
-> +                       /* ignore all built-in args if any f/w args given */
-> +                       strcpy(arcs_cmdline, prom_argv[1]);
-> +       }
+> +       ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
+> +       if (!ctx)
+> +               return -ENOMEM;
+> +
+> +       ctx->chip_regs = syscon_node_to_regmap(of_get_parent(dev->of_node));
+> +       if (IS_ERR(ctx->chip_regs))
+> +               return PTR_ERR(ctx->chip_regs);
+> +
+> +       ctx->cpu_ctrl = syscon_regmap_lookup_by_compatible("mscc,ocelot-cpu-syscon");
+> +       if (IS_ERR(ctx->cpu_ctrl))
+> +               return PTR_ERR(ctx->cpu_ctrl);
+> +
+> +       ctx->restart_handler.notifier_call = ocelot_restart_handle;
+> +       ctx->restart_handler.priority = 192;
+> +       err = register_restart_handler(&ctx->restart_handler);
+> +       if (err)
+> +               dev_err(dev, "can't register restart notifier (err=%d)\n", err);
+> +
+> +       return err;
 > +}
 > +
-> +void __init prom_free_prom_memory(void)
-> +{
-> +}
+> +static const struct of_device_id ocelot_reset_of_match[] = {
+> +       { .compatible = "mscc,ocelot-chip-reset" },
+> +       {}
+> +};
 > +
-> +unsigned int get_c0_compare_int(void)
-> +{
-> +       return CP0_LEGACY_COMPARE_IRQ;
-> +}
-> +
-> +void __init plat_time_init(void)
-> +{
-> +       struct device_node *np;
-> +       u32 freq;
-> +
-> +       np = of_find_node_by_name(NULL, "cpus");
-> +       if (!np)
-> +               panic("missing 'cpus' DT node");
-> +       if (of_property_read_u32(np, "mips-hpt-frequency", &freq) < 0)
-> +               panic("missing 'mips-hpt-frequency' property");
-> +       of_node_put(np);
-> +
-> +       mips_hpt_frequency = freq;
-> +}
-> +
-> +void __init arch_init_irq(void)
-> +{
-> +       irqchip_init();
-> +}
-> +
-> +const char *get_system_type(void)
-> +{
-> +       return "Microsemi Ocelot";
-> +}
-> +
-> +static void __init ocelot_late_init(void)
-> +{
-> +       ocelot_earlyprintk_init();
-> +}
-> +
-> +extern void (*late_time_init)(void);
-> +
-> +void __init plat_mem_setup(void)
-> +{
-> +       /* This has to be done so late because ioremap needs to work */
-> +       late_time_init = ocelot_late_init;
-> +
-> +       __dt_setup_arch(__dtb_start);
-> +}
-> +
-> +void __init device_tree_init(void)
-> +{
-> +       if (!initial_boot_params)
-> +               return;
-> +
-> +       unflatten_and_copy_device_tree();
-> +}
-> +
-> +static int __init populate_machine(void)
-> +{
-> +       of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
-> +       return 0;
-> +}
-> +arch_initcall(populate_machine);
+> +static struct platform_driver ocelot_reset_driver = {
+> +       .probe = ocelot_reset_probe,
+> +       .driver = {
+> +               .name = "ocelot-chip-reset",
+> +               .of_match_table = ocelot_reset_of_match,
+> +       },
+> +};
+> +builtin_platform_driver(ocelot_reset_driver);
 > --
 > 2.15.1
 >

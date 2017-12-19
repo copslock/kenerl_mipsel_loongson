@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2017 19:45:06 +0100 (CET)
-Received: from mga14.intel.com ([192.55.52.115]:25579 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994644AbdLSSpAJU9C7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Dec 2017 19:45:00 +0100
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Dec 2017 10:44:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.45,427,1508828400"; 
-   d="scan'208";a="19613992"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 19 Dec 2017 10:44:55 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 19508EC; Tue, 19 Dec 2017 20:44:54 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] FIRMWARE: bcm47xx_nvram: Replace mac address parsing
-Date:   Tue, 19 Dec 2017 20:44:54 +0200
-Message-Id: <20171219184454.74604-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.15.1
-Return-Path: <andriy.shevchenko@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2017 21:09:34 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:59284 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994649AbdLSUJ1bso1u (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Dec 2017 21:09:27 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 7766520741; Tue, 19 Dec 2017 21:09:15 +0100 (CET)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 506A8206FC;
+        Tue, 19 Dec 2017 21:09:15 +0100 (CET)
+Date:   Tue, 19 Dec 2017 21:09:15 +0100
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 09/13] MIPS: mscc: Add initial support for Microsemi
+ MIPS SoCs
+Message-ID: <20171219200915.GP15162@piout.net>
+References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
+ <20171208154618.20105-10-alexandre.belloni@free-electrons.com>
+ <CANc+2y4BroVz4eZOeb_ygYH42kg4WPP0y_t4OUuVd50OBSDgXQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANc+2y4BroVz4eZOeb_ygYH42kg4WPP0y_t4OUuVd50OBSDgXQ@mail.gmail.com>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61519
+X-archive-position: 61520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andriy.shevchenko@linux.intel.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,63 +45,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace sscanf() with mac_pton().
+Hi,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/firmware/broadcom/Kconfig         |  1 +
- drivers/firmware/broadcom/bcm47xx_sprom.c | 20 +++++---------------
- 2 files changed, 6 insertions(+), 15 deletions(-)
+On 19/12/2017 at 20:27:02 +0530, PrasannaKumar Muralidharan wrote:
+> Given the fact that setup code is very small and most of it is generic
+> code I strongly believe that it is plausible to make use of generic
+> code completely. Please have a look at [1] and [2].
+> 
+> 1. https://patchwork.kernel.org/patch/9655699/
+> 2. https://patchwork.kernel.org/patch/9655697/
+> 
+> PS: My rb tag stays if this could not be done immediately.
+> 
 
-diff --git a/drivers/firmware/broadcom/Kconfig b/drivers/firmware/broadcom/Kconfig
-index 5e29f83e7b39..c041dcb7ea52 100644
---- a/drivers/firmware/broadcom/Kconfig
-+++ b/drivers/firmware/broadcom/Kconfig
-@@ -13,6 +13,7 @@ config BCM47XX_NVRAM
- config BCM47XX_SPROM
- 	bool "Broadcom SPROM driver"
- 	depends on BCM47XX_NVRAM
-+	select GENERIC_NET_UTILS
- 	help
- 	  Broadcom devices store configuration data in SPROM. Accessing it is
- 	  specific to the bus host type, e.g. PCI(e) devices have it mapped in
-diff --git a/drivers/firmware/broadcom/bcm47xx_sprom.c b/drivers/firmware/broadcom/bcm47xx_sprom.c
-index 62aa3cf09b4d..2b18a1608c1c 100644
---- a/drivers/firmware/broadcom/bcm47xx_sprom.c
-+++ b/drivers/firmware/broadcom/bcm47xx_sprom.c
-@@ -137,20 +137,6 @@ static void nvram_read_leddc(const char *prefix, const char *name,
- 	*leddc_off_time = (val >> 16) & 0xff;
- }
- 
--static void bcm47xx_nvram_parse_macaddr(char *buf, u8 macaddr[6])
--{
--	if (strchr(buf, ':'))
--		sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0],
--			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
--			&macaddr[5]);
--	else if (strchr(buf, '-'))
--		sscanf(buf, "%hhx-%hhx-%hhx-%hhx-%hhx-%hhx", &macaddr[0],
--			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
--			&macaddr[5]);
--	else
--		pr_warn("Can not parse mac address: %s\n", buf);
--}
--
- static void nvram_read_macaddr(const char *prefix, const char *name,
- 			       u8 val[6], bool fallback)
- {
-@@ -161,7 +147,11 @@ static void nvram_read_macaddr(const char *prefix, const char *name,
- 	if (err < 0)
- 		return;
- 
--	bcm47xx_nvram_parse_macaddr(buf, val);
-+	strreplace(buf, '-', ':');
-+	if (mac_pton(buf, val))
-+		return;
-+
-+	pr_warn("Can not parse mac address: %s\n", buf);
- }
- 
- static void nvram_read_alpha2(const char *prefix, const char *name,
+I think we had that discussion on the previous version:
+https://www.linux-mips.org/archives/linux-mips/2017-11/msg00532.html
+
+I can't test on the sead3 so I'd prefer not changing its code right now.
+
 -- 
-2.15.1
+Alexandre Belloni, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

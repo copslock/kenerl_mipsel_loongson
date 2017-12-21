@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 16:19:10 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:58664 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990430AbdLUPTCA0YcN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 16:19:02 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 21 Dec 2017 15:15:17 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 21 Dec
- 2017 07:14:45 -0800
-Date:   Thu, 21 Dec 2017 15:14:43 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        "stable # v4 . 9+" <stable@vger.kernel.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        <linux-kernel@vger.kernel.org>, Paul Burton <paul.burton@mips.com>
-Subject: Re: [PATCH 1/3] MIPS: c-r4k: instruction_hazard should immediately
- follow cache op
-Message-ID: <20171221151443.GG5027@jhogan-linux.mipstec.com>
-References: <1513854965-3880-1-git-send-email-matt.redfearn@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <1513854965-3880-1-git-send-email-matt.redfearn@mips.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1513869315-637137-31546-67179-14
-X-BESS-VER: 2017.16-r1712182224
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 16:21:31 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:56692 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990486AbdLUPU6cBxtN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Dec 2017 16:20:58 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id E45C81A540B;
+        Thu, 21 Dec 2017 16:20:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw774-lin.domain.local (unknown [10.10.13.43])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id C56231A5408;
+        Thu, 21 Dec 2017 16:20:50 +0100 (CET)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        James Hogan <james.hogan@mips.com>,
+        linux-kernel@vger.kernel.org,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2 0/2] MIPS: Augment CPC support
+Date:   Thu, 21 Dec 2017 16:20:22 +0100
+Message-Id: <1513869627-15391-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61537
+X-archive-position: 61538
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,71 +49,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 21, 2017 at 11:16:02AM +0000, Matt Redfearn wrote:
-> During ftrace initialisation, placeholder instructions in the prologue
-> of every kernel function not marked "notrace" are replaced with nops.
-> After the instructions are written (to the dcache), flush_icache_range()
-> is used to ensure that the icache will be updated with these replaced
-> instructions. Currently there is an instruction_hazard guard at the end
-> of __r4k_flush_icache_range, since a hazard can be created if the CPU
-> has already begun fetching the instructions that have have been
-> replaced. The placement, however, ignores the calls to preempt_enable(),
-> both in __r4k_flush_icache_range and r4k_on_each_cpu. When
-> CONFIG_PREEMPT is enabled, these expand out to at least calls to
-> preempt_count_sub(). The lack of an instruction hazard between icache
-> invalidate and the execution of preempt_count_sub, in rare
-> circumstances, was observed to cause weird crashes on Ci40, where the
-> CPU would end up taking a kernel unaligned access exception from the
-> middle of do_ade(), which it somehow reached from preempt_count_sub
-> without executing the start of do_ade.
-> 
-> Since the instruction hazard exists immediately after the dcache is
-> written back and icache invalidated, place the instruction_hazard()
-> within __local_r4k_flush_icache_range. The one at the end of
-> __r4k_flush_icache_range is too late, since all of the functions in the
-> call path of preempt_enable have already been executed, so remove it.
-> 
-> This fixes the crashes during ftrace initialisation on Ci40.
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> Cc: stable <stable@vger.kernel.org> # v4.9+
-> 
-> ---
-> 
->  arch/mips/mm/c-r4k.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 6f534b209971..ce7a54223504 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -760,6 +760,8 @@ static inline void __local_r4k_flush_icache_range(unsigned long start,
->  			break;
->  		}
->  	}
-> +	/* Hazard to force new i-fetch */
-> +	instruction_hazard();
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
 
-By the sounds of it that is a hardware bug, that it didn't try and
-execute either the old instruction or the new instruction. Maybe an
-expanded comment would be worthwhile here. If it wasn't for that issue
-it would I suppose be safe for it to be directly before the
-preempt_enable() in __r4k_flush_icache_range().
+v1->v2:
 
-Cheers
-James
+    - corrected wording in commit messages and documentation text
+    - expanded cover letter to better explain the context of proposed
+        changes
+    - rebased to the latest code
 
->  }
->  
->  static inline void local_r4k_flush_icache_range(unsigned long start,
-> @@ -817,7 +819,6 @@ static void __r4k_flush_icache_range(unsigned long start, unsigned long end,
->  	}
->  	r4k_on_each_cpu(args.type, local_r4k_flush_icache_range_ipi, &args);
->  	preempt_enable();
-> -	instruction_hazard();
->  }
->  
->  static void r4k_flush_icache_range(unsigned long start, unsigned long end)
-> -- 
-> 2.7.4
-> 
+This series is based on two patches from the larger series submitted
+some time ago (30 Aug 2016):
+
+https://www.linux-mips.org/archives/linux-mips/2016-08/msg00456.html
+
+Both patches deal with MIPS Cluster Power Controller (CPC) support.
+More specifically, they add device tree related functionalities to
+that support.
+
+This functionality is needed for further development of kernel support
+for generic-based MIPS platforms that must be DT-based and will at the
+same time make more extensive use of CPC.
+
+Paul Burton (2):
+  dt-bindings: Document mti,mips-cpc binding
+  MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
+
+ Documentation/devicetree/bindings/misc/mti,mips-cpc.txt |  8 ++++++++
+ arch/mips/kernel/mips-cpc.c                             | 13 +++++++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
+
+-- 
+2.7.4

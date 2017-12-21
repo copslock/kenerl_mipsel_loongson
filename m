@@ -1,37 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 15:41:11 +0100 (CET)
-Received: from mga03.intel.com ([134.134.136.65]:17806 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990437AbdLUOlDPCloN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Dec 2017 15:41:03 +0100
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Dec 2017 06:40:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.45,436,1508828400"; 
-   d="scan'208";a="13637716"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 21 Dec 2017 06:40:57 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 1751429B; Thu, 21 Dec 2017 16:40:56 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2] FIRMWARE: bcm47xx_nvram: Replace mac address parsing
-Date:   Thu, 21 Dec 2017 16:40:55 +0200
-Message-Id: <20171221144055.3840-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.15.1
-Return-Path: <andriy.shevchenko@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 15:59:31 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:46641 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990491AbdLUO7U4OizN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 15:59:20 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 21 Dec 2017 14:58:14 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 21 Dec
+ 2017 06:58:03 -0800
+Date:   Thu, 21 Dec 2017 14:58:02 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        "stable # v4 . 9+" <stable@vger.kernel.org>,
+        Huacai Chen <chenhc@lemote.com>,
+        <linux-kernel@vger.kernel.org>, Paul Burton <paul.burton@mips.com>
+Subject: Re: [PATCH 2/3] MIPS: Add barrier between dcache & icache flushes
+Message-ID: <20171221145801.GF5027@jhogan-linux.mipstec.com>
+References: <1513854965-3880-1-git-send-email-matt.redfearn@mips.com>
+ <1513854965-3880-2-git-send-email-matt.redfearn@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <1513854965-3880-2-git-send-email-matt.redfearn@mips.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1513868291-637139-14881-69467-13
+X-BESS-VER: 2017.16-r1712182224
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188220
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61535
+X-archive-position: 61536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andriy.shevchenko@linux.intel.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,62 +57,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace sscanf() with mac_pton().
+On Thu, Dec 21, 2017 at 11:16:03AM +0000, Matt Redfearn wrote:
+> Index-based cache operations may be arbitrarily reordered by out of
+> order CPUs. Thus code which writes back the dcache & then invalidates
+> the icache using indexed cache ops must include a barrier between
+> operating on the 2 caches in order to prevent the scenario in which:
+> 
+>   - icache invalidation occurs.
+>   - icache fetch occurs, due to speculation.
+>   - dcache writeback occurs.
+> 
+> If the above were allowed to happen then the icache would contain stale
+> data. Forcing the dcache writeback to complete before the icache
+> invalidation avoids this.
+> 
+> Similarly, the MIPS CM version 2 and above serialises D->I hit-based
+> cache operations to the same address, but older CMs and systems without
+> a MIPS CM do not and require the same barrier to ensure ordering.
+> 
+> To ensure these conditions, always enforce a barrier between D and I
+> cache operations.
+> 
+> Suggested-by: Leonid Yegoshin <Leonid.Yegoshin@mips.com>
+> Suggested-by: Paul Burton <paul.burton@mips.com>
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: James Hogan <james.hogan@mips.com>
+> Cc: stable <stable@vger.kernel.org> # v4.9+
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-- use negative condition to be consistent with the rest code
- drivers/firmware/broadcom/Kconfig         |  1 +
- drivers/firmware/broadcom/bcm47xx_sprom.c | 18 +++---------------
- 2 files changed, 4 insertions(+), 15 deletions(-)
+Looks reasonable to me,
 
-diff --git a/drivers/firmware/broadcom/Kconfig b/drivers/firmware/broadcom/Kconfig
-index 5e29f83e7b39..c041dcb7ea52 100644
---- a/drivers/firmware/broadcom/Kconfig
-+++ b/drivers/firmware/broadcom/Kconfig
-@@ -13,6 +13,7 @@ config BCM47XX_NVRAM
- config BCM47XX_SPROM
- 	bool "Broadcom SPROM driver"
- 	depends on BCM47XX_NVRAM
-+	select GENERIC_NET_UTILS
- 	help
- 	  Broadcom devices store configuration data in SPROM. Accessing it is
- 	  specific to the bus host type, e.g. PCI(e) devices have it mapped in
-diff --git a/drivers/firmware/broadcom/bcm47xx_sprom.c b/drivers/firmware/broadcom/bcm47xx_sprom.c
-index 62aa3cf09b4d..4787f86c8ac1 100644
---- a/drivers/firmware/broadcom/bcm47xx_sprom.c
-+++ b/drivers/firmware/broadcom/bcm47xx_sprom.c
-@@ -137,20 +137,6 @@ static void nvram_read_leddc(const char *prefix, const char *name,
- 	*leddc_off_time = (val >> 16) & 0xff;
- }
- 
--static void bcm47xx_nvram_parse_macaddr(char *buf, u8 macaddr[6])
--{
--	if (strchr(buf, ':'))
--		sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0],
--			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
--			&macaddr[5]);
--	else if (strchr(buf, '-'))
--		sscanf(buf, "%hhx-%hhx-%hhx-%hhx-%hhx-%hhx", &macaddr[0],
--			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
--			&macaddr[5]);
--	else
--		pr_warn("Can not parse mac address: %s\n", buf);
--}
--
- static void nvram_read_macaddr(const char *prefix, const char *name,
- 			       u8 val[6], bool fallback)
- {
-@@ -161,7 +147,9 @@ static void nvram_read_macaddr(const char *prefix, const char *name,
- 	if (err < 0)
- 		return;
- 
--	bcm47xx_nvram_parse_macaddr(buf, val);
-+	strreplace(buf, '-', ':');
-+	if (!mac_pton(buf, val))
-+		pr_warn("Can not parse mac address: %s\n", buf);
- }
- 
- static void nvram_read_alpha2(const char *prefix, const char *name,
--- 
-2.15.1
+Reviewed-by: James Hogan <jhogan@kernel.org>
+
+Cheers
+James
+
+> ---
+> 
+>  arch/mips/mm/c-r4k.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index ce7a54223504..b7186d47184b 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -741,6 +741,9 @@ static inline void __local_r4k_flush_icache_range(unsigned long start,
+>  			else
+>  				blast_dcache_range(start, end);
+>  		}
+> +
+> +		/* Ensure dcache operation has completed */
+> +		mb();
+>  	}
+>  
+>  	if (type == R4K_INDEX ||
+> -- 
+> 2.7.4
+> 

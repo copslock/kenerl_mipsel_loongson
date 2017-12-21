@@ -1,53 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 16:32:32 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:56813 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990430AbdLUPcXFUMSb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 16:32:23 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 21 Dec 2017 15:30:26 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 21 Dec
- 2017 07:30:06 -0800
-Date:   Thu, 21 Dec 2017 15:30:05 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        "stable # v4 . 9+" <stable@vger.kernel.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        <linux-kernel@vger.kernel.org>, Paul Burton <paul.burton@mips.com>
-Subject: Re: [PATCH 1/3] MIPS: c-r4k: instruction_hazard should immediately
- follow cache op
-Message-ID: <20171221153004.GH5027@jhogan-linux.mipstec.com>
-References: <1513854965-3880-1-git-send-email-matt.redfearn@mips.com>
- <20171221151443.GG5027@jhogan-linux.mipstec.com>
- <a6bfa1da-806f-a852-f33f-309cd153c596@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 17:42:35 +0100 (CET)
+Received: from mx2.mailbox.org ([80.241.60.215]:54041 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991359AbdLUQm2JlpRE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Dec 2017 17:42:28 +0100
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 8ED064D031;
+        Thu, 21 Dec 2017 17:42:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id jQjiVqQ-oOJL; Thu, 21 Dec 2017 17:42:18 +0100 (CET)
+Subject: Re: [PATCH v2] FIRMWARE: bcm47xx_nvram: Replace mac address parsing
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+References: <20171221144055.3840-1-andriy.shevchenko@linux.intel.com>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <4671dc40-8c6e-2525-bed0-89e7844026a4@hauke-m.de>
+Date:   Thu, 21 Dec 2017 17:42:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <a6bfa1da-806f-a852-f33f-309cd153c596@mips.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1513870224-452059-9817-93841-1
-X-BESS-VER: 2017.16.1-r1712081705
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188221
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
-        Domain Matches Recipient Domain 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+In-Reply-To: <20171221144055.3840-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61542
+X-archive-position: 61543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,94 +47,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 21, 2017 at 03:19:35PM +0000, Matt Redfearn wrote:
-> Hi James,
-> 
-> On 21/12/17 15:14, James Hogan wrote:
-> > On Thu, Dec 21, 2017 at 11:16:02AM +0000, Matt Redfearn wrote:
-> >> During ftrace initialisation, placeholder instructions in the prologue
-> >> of every kernel function not marked "notrace" are replaced with nops.
-> >> After the instructions are written (to the dcache), flush_icache_range()
-> >> is used to ensure that the icache will be updated with these replaced
-> >> instructions. Currently there is an instruction_hazard guard at the end
-> >> of __r4k_flush_icache_range, since a hazard can be created if the CPU
-> >> has already begun fetching the instructions that have have been
-> >> replaced. The placement, however, ignores the calls to preempt_enable(),
-> >> both in __r4k_flush_icache_range and r4k_on_each_cpu. When
-> >> CONFIG_PREEMPT is enabled, these expand out to at least calls to
-> >> preempt_count_sub(). The lack of an instruction hazard between icache
-> >> invalidate and the execution of preempt_count_sub, in rare
-> >> circumstances, was observed to cause weird crashes on Ci40, where the
-> >> CPU would end up taking a kernel unaligned access exception from the
-> >> middle of do_ade(), which it somehow reached from preempt_count_sub
-> >> without executing the start of do_ade.
-> >>
-> >> Since the instruction hazard exists immediately after the dcache is
-> >> written back and icache invalidated, place the instruction_hazard()
-> >> within __local_r4k_flush_icache_range. The one at the end of
-> >> __r4k_flush_icache_range is too late, since all of the functions in the
-> >> call path of preempt_enable have already been executed, so remove it.
-> >>
-> >> This fixes the crashes during ftrace initialisation on Ci40.
-> >>
-> >> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> >> Cc: stable <stable@vger.kernel.org> # v4.9+
-> >>
-> >> ---
-> >>
-> >>   arch/mips/mm/c-r4k.c | 3 ++-
-> >>   1 file changed, 2 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> >> index 6f534b209971..ce7a54223504 100644
-> >> --- a/arch/mips/mm/c-r4k.c
-> >> +++ b/arch/mips/mm/c-r4k.c
-> >> @@ -760,6 +760,8 @@ static inline void __local_r4k_flush_icache_range(unsigned long start,
-> >>   			break;
-> >>   		}
-> >>   	}
-> >> +	/* Hazard to force new i-fetch */
-> >> +	instruction_hazard();
-> > 
-> > By the sounds of it that is a hardware bug, that it didn't try and
-> > execute either the old instruction or the new instruction.
-> 
-> Yeah, possibly.
-> 
->   Maybe an
-> > expanded comment would be worthwhile here. If it wasn't for that issue
-> > it would I suppose be safe for it to be directly before the
-> > preempt_enable() in __r4k_flush_icache_range().
-> 
-> No - there's another preempt_enable() in r4k_on_each_cpu (noted in the 
-> commit message) so by the time the local CPU gets to the 
-> preempt_enable() in __r4k_flush_icache_range, it has potentially already 
-> executed the preempt_enable path and died. That's why I put it here.
 
-Right, but it wouldn't matter since it would still execute valid code?
 
-Cheers
-James
+On 12/21/2017 03:40 PM, Andy Shevchenko wrote:
+> Replace sscanf() with mac_pton().
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
+
+The patch looks good, but I haven't tested them on my devices.
+
+> ---
+> - use negative condition to be consistent with the rest code
+>  drivers/firmware/broadcom/Kconfig         |  1 +
+>  drivers/firmware/broadcom/bcm47xx_sprom.c | 18 +++---------------
+>  2 files changed, 4 insertions(+), 15 deletions(-)
 > 
-> Thanks,
-> Matt
+> diff --git a/drivers/firmware/broadcom/Kconfig b/drivers/firmware/broadcom/Kconfig
+> index 5e29f83e7b39..c041dcb7ea52 100644
+> --- a/drivers/firmware/broadcom/Kconfig
+> +++ b/drivers/firmware/broadcom/Kconfig
+> @@ -13,6 +13,7 @@ config BCM47XX_NVRAM
+>  config BCM47XX_SPROM
+>  	bool "Broadcom SPROM driver"
+>  	depends on BCM47XX_NVRAM
+> +	select GENERIC_NET_UTILS
+>  	help
+>  	  Broadcom devices store configuration data in SPROM. Accessing it is
+>  	  specific to the bus host type, e.g. PCI(e) devices have it mapped in
+> diff --git a/drivers/firmware/broadcom/bcm47xx_sprom.c b/drivers/firmware/broadcom/bcm47xx_sprom.c
+> index 62aa3cf09b4d..4787f86c8ac1 100644
+> --- a/drivers/firmware/broadcom/bcm47xx_sprom.c
+> +++ b/drivers/firmware/broadcom/bcm47xx_sprom.c
+> @@ -137,20 +137,6 @@ static void nvram_read_leddc(const char *prefix, const char *name,
+>  	*leddc_off_time = (val >> 16) & 0xff;
+>  }
+>  
+> -static void bcm47xx_nvram_parse_macaddr(char *buf, u8 macaddr[6])
+> -{
+> -	if (strchr(buf, ':'))
+> -		sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0],
+> -			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
+> -			&macaddr[5]);
+> -	else if (strchr(buf, '-'))
+> -		sscanf(buf, "%hhx-%hhx-%hhx-%hhx-%hhx-%hhx", &macaddr[0],
+> -			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
+> -			&macaddr[5]);
+> -	else
+> -		pr_warn("Can not parse mac address: %s\n", buf);
+> -}
+> -
+>  static void nvram_read_macaddr(const char *prefix, const char *name,
+>  			       u8 val[6], bool fallback)
+>  {
+> @@ -161,7 +147,9 @@ static void nvram_read_macaddr(const char *prefix, const char *name,
+>  	if (err < 0)
+>  		return;
+>  
+> -	bcm47xx_nvram_parse_macaddr(buf, val);
+> +	strreplace(buf, '-', ':');
+> +	if (!mac_pton(buf, val))
+> +		pr_warn("Can not parse mac address: %s\n", buf);
+>  }
+>  
+>  static void nvram_read_alpha2(const char *prefix, const char *name,
 > 
-> > 
-> > Cheers
-> > James
-> > 
-> >>   }
-> >>   
-> >>   static inline void local_r4k_flush_icache_range(unsigned long start,
-> >> @@ -817,7 +819,6 @@ static void __r4k_flush_icache_range(unsigned long start, unsigned long end,
-> >>   	}
-> >>   	r4k_on_each_cpu(args.type, local_r4k_flush_icache_range_ipi, &args);
-> >>   	preempt_enable();
-> >> -	instruction_hazard();
-> >>   }
-> >>   
-> >>   static void r4k_flush_icache_range(unsigned long start, unsigned long end)
-> >> -- 
-> >> 2.7.4
-> >>

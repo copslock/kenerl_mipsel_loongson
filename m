@@ -1,53 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 14:41:48 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:33662 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990437AbdLUNllWfvvZ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Dec 2017 14:41:41 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 21 Dec 2017 13:41:34 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 21 Dec
- 2017 05:41:22 -0800
-Date:   Thu, 21 Dec 2017 13:41:20 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Yuri Frolov <crashing.kernel@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <paul.burton@mips.com>
-Subject: Re: [P5600 && EVA memory caching question] PCI region
-Message-ID: <20171221134119.GE5027@jhogan-linux.mipstec.com>
-References: <6132c323-32a7-1d38-b77c-a191be22faa4@gmail.com>
- <20171206114611.GM5027@jhogan-linux.mipstec.com>
- <330a5200-531f-fcfa-674a-c81fb3144e92@gmail.com>
- <20171214152138.GV5027@jhogan-linux.mipstec.com>
- <ca9adcbc-9777-46a0-ce0b-15e83e01fc72@gmail.com>
- <20171215232821.GA5027@jhogan-linux.mipstec.com>
- <b8706fae-aea8-99b5-f91d-37690eff6949@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <b8706fae-aea8-99b5-f91d-37690eff6949@gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1513863693-298555-26274-40651-2
-X-BESS-VER: 2017.16-r1712182224
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188219
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 15:41:11 +0100 (CET)
+Received: from mga03.intel.com ([134.134.136.65]:17806 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990437AbdLUOlDPCloN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Dec 2017 15:41:03 +0100
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Dec 2017 06:40:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.45,436,1508828400"; 
+   d="scan'208";a="13637716"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 21 Dec 2017 06:40:57 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 1751429B; Thu, 21 Dec 2017 16:40:56 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2] FIRMWARE: bcm47xx_nvram: Replace mac address parsing
+Date:   Thu, 21 Dec 2017 16:40:55 +0200
+Message-Id: <20171221144055.3840-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.15.1
+Return-Path: <andriy.shevchenko@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61534
+X-archive-position: 61535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: andriy.shevchenko@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,112 +44,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 20, 2017 at 06:11:04PM +0300, Yuri Frolov wrote:
-> Hi, James
-> 
-> On 12/16/2017 02:28 AM, James Hogan wrote:
-> > On Fri, Dec 15, 2017 at 05:05:12PM +0300, Yuri Frolov wrote:
-> >> Hi, James
-> >>
-> >> On 12/14/2017 06:21 PM, James Hogan wrote:
-> >>> Hi Yuri,
-> >>>
-> >>> On Thu, Dec 14, 2017 at 06:03:11PM +0300, Yuri Frolov wrote:
-> >>>> Hi, James.
-> >>>>
-> >>>> Do I understand correctly, that in case of CONFIG_EVA=y, any logical
-> >>>> address from 0x00000000 - 0xBFFFFFFF (3G) range accessed from the kernel
-> >>>> space is:
-> >>>> 1) Unmapped (no TLB translations)
-> >>>> 2) Is mapped 1:1 to physical addresses? E.g, readl from 0x20000000 is,
-> >>>> in fact a read from physical address 0x20000000? I mean, in legacy
-> >>>> memory mapping scheme, logical addresses 0x80000000 - 0xBFFFFFFF in
-> >>>> kernel space were being translated to the physical addresses from the
-> >>>> low 512Mb (phys 0x00000000 - 0x20000000), no such bits stripping or
-> >>>> something for EVA, the mapping is 1:1?
-> >>> That depends on the EVA configuration. The hardware is fairly flexible
-> >>> (which is both useful and painful - making supporting EVA from
-> >>> multiplatform kernels particularly awkward), but that is one possible
-> >>> configuration.
-> >>>
-> >>> E.g. ideally you probably want to keep seg5 (0x00000000..0x3FFFFFFF)
-> >>> MUSK (TLB mapped for user & kernel) so that null dereferences from
-> >>> kernel code are safely caught, but that costs you 1GB of directly
-> >>> accessible physical address space from kernel mode.
-> >> So, do I understand correctly, that provided we have these TLB entries
-> >> in kernel,
-> >>
-> >> Index: 71 pgmask=16kb va=c0038000 asid=00
-> >>           [ri=0 xi=0 pa=200e0000 c=2 d=1 v=1 g=1] [ri=0 xi=0 pa=00000000
-> >> c=0 d=0 v=0 g=1]
-> >> Index: 72 pgmask=16kb va=c0040000 asid=00
-> >>           [ri=0 xi=0 pa=200c0000 c=2 d=1 v=1 g=1] [ri=0 xi=0 pa=200c4000
-> >> c=2 d=1 v=1 g=1]
-> >>
-> >> u32 l;
-> >>
-> >> l = readl((const volatile void *)(0x200c0000 + 0x20))
-> > assuming you have segment5 (0x00000000..0x3FFFFFFF) set to MUSUK, with
-> > PA 0 (i.e. direct 1:1 mapping), it'd access PA 0x200c0020, but
-> > presumably the segment will be configured to be cached (CCA 3) or cached
-> > coherent (CCA 5).
-> >
-> >> and
-> >> l = *(u32 *)(0xc0040000+ 0x20)
-> > this will access physical addres 0x200c0020 uncached (CCA 2).
-> >
-> >> should return the same value?
-> > So that would depend I think on whether there is a dirty value in the
-> > cache. Possibly not. The cached mapping would see the dirty value. The
-> > uncached mapping may see a stale value straight from RAM.
-> >
-> > Cheers
-> > James
-> I'm looking at arch/mips/include/asm//mach-malta/kernel-entry-init.h and 
-> there is a definition for SegCtl2:
-> 
->          /* SegCtl2 */
->          li      t0, ((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |      \
->                  (6 << MIPS_SEGCFG_PA_SHIFT) |                           \
->                  (1 << MIPS_SEGCFG_EU_SHIFT)) |                          \
->                  (((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |         \
->                  (4 << MIPS_SEGCFG_PA_SHIFT) |                           \
->                  (1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
-> 
-> it defines, that kernel logical addresses from the range 0x00000000 - 
-> 0x7fffffff are unmapped (no tlbs) and dictates, that in order to get a 
-> physical address for any logical addresses from 0x00000000 - 0x3fffffff 
-> range in kernel space, bits [31:29] of the logical address must be 
-> changed to 100,
-> and (again in kernel space) for any logical addresses from 0x40000000 - 
-> 0x7fffffff range, bits [31:29] of the logical address must be changed to 
-> 110, right?
+Replace sscanf() with mac_pton().
 
-yes, the Malta implementation is slightly ugly as it relies on a
-hardware physical memory alias of RAM starting at PA 0x80000000.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+- use negative condition to be consistent with the rest code
+ drivers/firmware/broadcom/Kconfig         |  1 +
+ drivers/firmware/broadcom/bcm47xx_sprom.c | 18 +++---------------
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-> 
-> What physical addresses will logical addresses 0x00000000 and 0x20000000 
-> be translated in kernel space?.. logical 0x00000000 --> physical 
-> 0x80000000, and logical 0x20000000 --> .... 0x80000000 too?
-
-VA 0x20000000 -> PA 0xa0000000, since seg4 and seg5 are 1GB segments, so
-its only bits 30 and up that can be changed. I seem to remember the bit
-corresponding to bit 29 isn't even writable in the SegCtl2 register.
-
-Does that clarify things?
-
-Cheers
-James
-
-> Since we must to change bits [31:29], we have to change bit 29 ('1') in 
-> logical address 0x200000000 to '0' (since PA for this range is 100).
-> 
-> So, what physical addresses will all logical addresses which have '1' at 
-> 29 bit be translated, if we define PA as 100 and 110 in SegCtl2? It 
-> looks like there's no flat translation of logical addresses to physical 
-> addresses in kernel space, and this is obviously just not correct, there 
-> is something simple I've been overlooking.
-> 
-> Thank you,
-> Yuri
+diff --git a/drivers/firmware/broadcom/Kconfig b/drivers/firmware/broadcom/Kconfig
+index 5e29f83e7b39..c041dcb7ea52 100644
+--- a/drivers/firmware/broadcom/Kconfig
++++ b/drivers/firmware/broadcom/Kconfig
+@@ -13,6 +13,7 @@ config BCM47XX_NVRAM
+ config BCM47XX_SPROM
+ 	bool "Broadcom SPROM driver"
+ 	depends on BCM47XX_NVRAM
++	select GENERIC_NET_UTILS
+ 	help
+ 	  Broadcom devices store configuration data in SPROM. Accessing it is
+ 	  specific to the bus host type, e.g. PCI(e) devices have it mapped in
+diff --git a/drivers/firmware/broadcom/bcm47xx_sprom.c b/drivers/firmware/broadcom/bcm47xx_sprom.c
+index 62aa3cf09b4d..4787f86c8ac1 100644
+--- a/drivers/firmware/broadcom/bcm47xx_sprom.c
++++ b/drivers/firmware/broadcom/bcm47xx_sprom.c
+@@ -137,20 +137,6 @@ static void nvram_read_leddc(const char *prefix, const char *name,
+ 	*leddc_off_time = (val >> 16) & 0xff;
+ }
+ 
+-static void bcm47xx_nvram_parse_macaddr(char *buf, u8 macaddr[6])
+-{
+-	if (strchr(buf, ':'))
+-		sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0],
+-			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
+-			&macaddr[5]);
+-	else if (strchr(buf, '-'))
+-		sscanf(buf, "%hhx-%hhx-%hhx-%hhx-%hhx-%hhx", &macaddr[0],
+-			&macaddr[1], &macaddr[2], &macaddr[3], &macaddr[4],
+-			&macaddr[5]);
+-	else
+-		pr_warn("Can not parse mac address: %s\n", buf);
+-}
+-
+ static void nvram_read_macaddr(const char *prefix, const char *name,
+ 			       u8 val[6], bool fallback)
+ {
+@@ -161,7 +147,9 @@ static void nvram_read_macaddr(const char *prefix, const char *name,
+ 	if (err < 0)
+ 		return;
+ 
+-	bcm47xx_nvram_parse_macaddr(buf, val);
++	strreplace(buf, '-', ':');
++	if (!mac_pton(buf, val))
++		pr_warn("Can not parse mac address: %s\n", buf);
+ }
+ 
+ static void nvram_read_alpha2(const char *prefix, const char *name,
+-- 
+2.15.1

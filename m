@@ -1,69 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 19:21:39 +0100 (CET)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:41037
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990483AbdLUSVb4MiW3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 19:21:31 +0100
-Received: by mail-lf0-x242.google.com with SMTP id f18so28908134lfg.8;
-        Thu, 21 Dec 2017 10:21:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 22:01:16 +0100 (CET)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:36857
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990437AbdLUVBJMRnwn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 22:01:09 +0100
+Received: by mail-wr0-x244.google.com with SMTP id u19so19864901wrc.3;
+        Thu, 21 Dec 2017 13:01:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ebK9lAbAXYMHVPdPFGIaOGNl4O82DsV9HQtAbJ7mGsc=;
-        b=Qg3q+lvMLlGpoNHnkzTDebIHYiEJZ2r4aN7vxY/1HtFnTlwLIRP0IoBGgo5amfXqvd
-         yKvVVLAj4ChKFRL1UJv/vNaZYwePRO88eXp62IvMs3guJc+WZ+9cQEVmZHylwRJJuMTs
-         E0oYOmE+eX8hGI0a5q/7lzSrgV3oRvQWwoE7OxruWLe0Ewq4zGWFBk/dNtsAkUiuRTIl
-         f7kfL2oB72XZaYMz6qZsorKIxhInXNGu0Yf4niiHgQm9gelXdcsQ1C5jheFK6xrZjJ/e
-         7lWXQwztL8BM17iNxGcw4cKPIFbBHSqlxFQMV9lORIRQb866mfq1dCsNsyICtzPu2YF/
-         0Smg==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=+MdXkdR21+nW7ZBzHc1JhZ6l8CmkE64gt2QSAI9YpWw=;
+        b=d90+UEdRjmfMRYbSdt0V13AvlJFDCOtARLgOD9GOr4VUc5XAbJX+XRNLCf+6EbzE8O
+         PjLfVlCYkcjtzOzB6OJVPdDoapeZhurHmArn0OO0ZPGrcJV3kOfrJDk8GoUCRLgxdEfh
+         ak4ZRZUksHKuXTG89PToSRGwmDs55akXDGnFCeKKO8AK9mKSxwbv4FPzDgDM0KcHbYJF
+         EH7FHEBtPFsHhmeVZ+Q4njARmDsk7VRZK1YYhmHBrFkUTC17SjP+B+JPxTQOqrT+6duV
+         tmHvInt65LIuUULcjC3VyGVE9T99AtlbVwqbAicodsnqwIjpHY5K/qjvQsbzpiV6XCHu
+         JyPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ebK9lAbAXYMHVPdPFGIaOGNl4O82DsV9HQtAbJ7mGsc=;
-        b=rnofGo+2tkrVjcSaeZ6QH/jwEOx5Q9dbYyOrQ/2LW3YiS2tYOV7jhgUOw3a/8/jhaZ
-         iT4HQLlKpeomyFC6Sa4nnIZsBdYPqPxif+bbC1sWpUx9g3dd6bDok3O+vEyN61kokKqK
-         TMtbVQQpQOFCtaYtn6n1RZjzH9tYR+YogB+lRAIn9xVhIrgbg6PljjQ8QksDtISUfoBp
-         6MAVttlzS5hLT4ioSUrd3rG6FZeQ5dN0jyBOUBx6vm/qvD074CD55jY6mDzH7cti0LGs
-         tYqVyWY7nUWRBEO5xJjgk1PV7L23pQqUY3ntTAYbmzTjgU4yTtJLhZfyALYQzdouJme1
-         CQiQ==
-X-Gm-Message-State: AKGB3mL6mwAj4Nfgn8wYcZeT1uWTX6MsgxmDDv2sd9ZSzjetq2FnF8JA
-        m/MNiM40YIdsrIs4EN2NYSk=
-X-Google-Smtp-Source: ACJfBoth0304svb/PzlWWjlv5j0hK23c2Oinr2LkSMsHc5aMfQNmZis57J1bh56EsNsEHtjCc8usSw==
-X-Received: by 10.46.93.91 with SMTP id r88mr7450500ljb.39.1513880485402;
-        Thu, 21 Dec 2017 10:21:25 -0800 (PST)
-Received: from mobilestation ([176.59.45.45])
-        by smtp.gmail.com with ESMTPSA id b75sm4499319lfe.47.2017.12.21.10.21.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 21 Dec 2017 10:21:24 -0800 (PST)
-Date:   Thu, 21 Dec 2017 21:21:27 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>,
-        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        Peter Wotton <Peter.Wotton@mips.com>
-Cc:     ralf@linux-mips.org, rabinv@axis.com, james.hogan@mips.com,
-        Marcin.Nowakowski@mips.com, f.fainelli@gmail.com, kumba@gentoo.org,
-        Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Paul.Burton@mips.com
-Subject: Re: [RFC] MIPS memblock: Remove bootmem code and switch to NO_BOOTMEM
-Message-ID: <20171221182127.GA3161@mobilestation>
-References: <20171219201400.GA10185@mobilestation>
- <65E0D1C69B83F54F8D5C962B651A2DEC026B902C@MIPSMAIL01.mipstec.com>
- <a3865a42-d0cf-f48d-3bda-e3cd85f5b49b@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a3865a42-d0cf-f48d-3bda-e3cd85f5b49b@mips.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references;
+        bh=+MdXkdR21+nW7ZBzHc1JhZ6l8CmkE64gt2QSAI9YpWw=;
+        b=ZwpWq/9glD/qNe0eg731X67cdJaBZQ3rSz9z0OpfqvIA2jG0LkitP7VRxEpG2Nwa2W
+         MAnbDMN8TGREB6xsec3TaZDeOp43sDshr1lNnuWXl1eyMwzFZmYcPXVWyrOCWMxLR7hM
+         ZH3FN+uTCwg8+fAjNAZTCHf6XaXe9/JK2q4FEetvloUv9ISc4anGV0LTLjnoCwn7vz6v
+         kfMtZChwFD0dbQI7ta84SrkTOZ1K7kCagim5eY94eA+8l9DFQOzJvO7REMJPYCe+t96a
+         Rxs8PBiD5rIvTRtz/2FUVO/VHUrx9Or1kksQor0CTMLEkZHGkCmKXyLh+pNA+w2rh0Mn
+         KQsQ==
+X-Gm-Message-State: AKGB3mLO4xwSlRrLG8F8JjsznJ/O5GM0qL+Fw79SRdbuKl/aX/TG8euX
+        1JyWFPLvN+L3GUEoBKXi1OQ=
+X-Google-Smtp-Source: ACJfBos140vuaAsDz336Mh9Sb3Fv/m/BEy+BZt5HhVnoBXiFHMpVGEPeoXmZbkygR3SAKy+Bnqx6qg==
+X-Received: by 10.223.151.205 with SMTP id t13mr11578857wrb.271.1513890063682;
+        Thu, 21 Dec 2017 13:01:03 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
+        by smtp.gmail.com with ESMTPSA id m70sm4338264wma.36.2017.12.21.13.01.02
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 21 Dec 2017 13:01:03 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id CB72C10C0A0E; Thu, 21 Dec 2017 22:01:01 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        "# v4 . 11" <stable@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] MIPS: fix incorrect mem=X@Y handling
+Date:   Thu, 21 Dec 2017 22:00:59 +0100
+Message-Id: <20171221210100.12002-1-malat@debian.org>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <1504609608-7694-1-git-send-email-marcin.nowakowski@imgtec.com>
+References: <1504609608-7694-1-git-send-email-marcin.nowakowski@imgtec.com>
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61545
+X-archive-position: 61546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,64 +70,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello folks,
+From: Marcin Nowakowski <marcin.nowakowski@mips.com>
 
-> > -----Original Message-----
-> > From: Peter Wotton
-> > Sent: 20 December 2017 16:18
-> > To: 'Serge Semin'
-> > Cc: Paul Burton; Matt Redfearn; 'james.hogan@imips.com'; Marcin
-> > Nowakowski
-> > Subject: RE: [RFC] MIPS memblock: Remove bootmem code and switch to
-> > NO_BOOTMEM
-> > 
-> > Hi Serge,
-> > The imgtec.com email addresses have changed to mips.com following the
-> > sale of the MIPS division, so forwarding email for Marcin, MattR, James and
-> > Paul (altho' they'll have also received via the LMO list) Regards Peter.
-> > Regards
-> > Peter.
-> >
+Change 73fbc1eba7ff added a fix to ensure that the memory range between
+PHYS_OFFSET and low memory address specified by mem= cmdline argument is
+not later processed by free_all_bootmem.
+This change was incorrect for systems where the commandline specifies
+more than 1 mem argument, as it will cause all memory between
+PHYS_OFFSET and each of the memory offsets to be marked as reserved,
+which results in parts of the RAM marked as reserved (Creator CI20's
+u-boot has a default commandline argument 'mem=256M@0x0
+mem=768M@0x30000000').
 
-Thanks Peter. I'll be sending the email to the @mips.com domain then.
+Change the behaviour to ensure that only the range between PHYS_OFFSET
+and the lowest start address of the memories is marked as protected.
 
-> From: Alexander Sverdlin
-> To: 'Serge Semin'
-> Hello Serge,
-> 
-> On 19/12/17 21:14, Serge Semin wrote:
-> > Almost a year ago I sent a patchset to the Linux MIPS community. The main target of the patchset
-> > was to get rid from the old bootmem allocator usage at the MIPS architecture. Additionally I had
-> > a problem with CMA usage on my MIPS machine due to some struct page-related issue. Moving to the
-> > memblock allocator fixed the problem and gave us benefits like smaller memory consumption,
-> > powerful memblock API to be used within the arch code.
-> 
-> [...]
-> 
-> > @alexander.sverdlin@nokia.com. Do you still possess the Octeon MIPS64 platform to test the patchset?
-> 
-> yes, I'd like to test such a serious change on Octeon2. Please include me in the distribution list.
->
+This change also ensures that the range is marked protected even if it's
+only defined through the devicetree and not only via commandline
+arguments.
 
-Great Alexander! I'll keep you informed then CCing to your email.
+Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
+Fixes: 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing")
+Cc: <stable@vger.kernel.org> # v4.11
+---
+v2: Use updated email adress, add tag for stable.
+ arch/mips/kernel/setup.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-> From: Matt Redfearn
-> To: 'Serge Semin'
-> 
-> Yes, we are definitely still interested!
-> 
-> We have a bunch of MIPS hardware here which we can test any patches you
-> submit with, and should be able to lend a hand to cover as many different
-> platforms as we can.
-> 
-> Thanks,
-> Matt
-> 
-
-Hello Matt. It's great! I'll start reworking the patchset asap and keep you
-informed when it's finished. Additional notes will be also provided about the
-platforms, which for my opinion might not work and couldn't be properly
-quick-fixed.
-
-Regards,
--Sergey
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 702c678de116..f19d61224c71 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -375,6 +375,7 @@ static void __init bootmem_init(void)
+ 	unsigned long reserved_end;
+ 	unsigned long mapstart = ~0UL;
+ 	unsigned long bootmap_size;
++	phys_addr_t ramstart = ~0UL;
+ 	bool bootmap_valid = false;
+ 	int i;
+ 
+@@ -395,6 +396,21 @@ static void __init bootmem_init(void)
+ 	max_low_pfn = 0;
+ 
+ 	/*
++	 * Reserve any memory between the start of RAM and PHYS_OFFSET
++	 */
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
++			continue;
++
++		ramstart = min(ramstart, boot_mem_map.map[i].addr);
++	}
++
++	if (ramstart > PHYS_OFFSET)
++		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
++				  BOOT_MEM_RESERVED);
++
++
++	/*
+ 	 * Find the highest page frame number we have available.
+ 	 */
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+@@ -664,9 +680,6 @@ static int __init early_parse_mem(char *p)
+ 
+ 	add_memory_region(start, size, BOOT_MEM_RAM);
+ 
+-	if (start && start > PHYS_OFFSET)
+-		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
+-				BOOT_MEM_RESERVED);
+ 	return 0;
+ }
+ early_param("mem", early_parse_mem);
+-- 
+2.11.0

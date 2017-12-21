@@ -1,72 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 13:40:51 +0100 (CET)
-Received: from mail-lf0-x233.google.com ([IPv6:2a00:1450:4010:c07::233]:43995
-        "EHLO mail-lf0-x233.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbdLUMkoCqxaE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 13:40:44 +0100
-Received: by mail-lf0-x233.google.com with SMTP id o26so13514445lfc.10
-        for <linux-mips@linux-mips.org>; Thu, 21 Dec 2017 04:40:44 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 14:36:27 +0100 (CET)
+Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:44365
+        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990437AbdLUNgUh8AFZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 14:36:20 +0100
+Received: by mail-it0-x243.google.com with SMTP id b5so10696577itc.3;
+        Thu, 21 Dec 2017 05:36:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:from:cc:references:message-id:date:user-agent:mime-version
-         :in-reply-to:content-transfer-encoding:content-language;
-        bh=t+stg/Y7tXjouPoF7541+XyaCF5xWgVhsyq4uxN7AEE=;
-        b=C7y3xHHuaXMp+OihffxrBcmxJIXJnqDg11Wd5ucRoJjFYslEhkbBNLbpda3FloC1gu
-         PMze1ig6cgc79ZowX3RkWM8IAFetFmHUCVCXrx2XUpPOiFca93wwd3DgccADY4mFVyIA
-         EX+ldQRpA1WzbeHrVoVeo/1/78RjGbVSxT/u+yQNjl4lgvHcdZsgALwNWvrRVn9j9tLq
-         1UcEksS3cuj5sPCX4QgYAMtHnGjYLjIRs7z5ERQdhg2mEDTus+OfoAv1agNm6bXX9NlM
-         gXZtBpJF0Klti2urdOdRjsN66IR0UDJXJXEw4canqO1uy5ecOv+wly6eJ8aGfC//UPrZ
-         +oYg==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=7mqLHAp94DQ5OB9P3PMI8QtMybZxgIN202VcOV3hAOs=;
+        b=JwUUI7aWx1nF3b8sex6dgnU9yhG5Wax/xqOXVIdUkJfY+Dv6grL3U1JJlMM5nA7A/h
+         d5Nw45D2PlpDkh8j0O+LoQZoOaYp/FaMYvdxNoE1F07cwx6OkvWPq0jpRZ9Xa5h+Ip5C
+         9Qp0K4BnwyLUr02SsnAFP6UH5ExIQaFxgP3Fru5TnIW4OhPnBcwQX/vEYxSJcx8X0SvL
+         MI1Acquk18MD2BvKe/aAmmVdsvQUcdXUtJQZKZ2WOg2v1r5M2pN+DWCBLgXKQqyjE/M3
+         kQVMZMospqwkR9hw5WR2ZqIHV4CxqM5Ic3GiBmicL8vzu1ffgbBycVE4UNidPzppiHWP
+         RN6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=t+stg/Y7tXjouPoF7541+XyaCF5xWgVhsyq4uxN7AEE=;
-        b=EhX1vH1UFrA0Yq9kZVhNikhmMU1Jg+Nyq/75D9fls1A41duBFBJ/uvkB12AUtdCaTX
-         hitIYUVPhO3LYfyh45NWdo26p4/LqF7y4RGwme7rGmwdHTJb9tinm3Pj1Q+BB3K3kMoF
-         RkEedXSVFFcYEPAfZtnH2qPl8WprBzZBwJKa28BGgV3SF/eTYW+oVtp2RLI8B9sgRRj1
-         RcflrRTyJOCLwYWglsXVoh1KXCIlt/WSJgX+qdlQf8fQXYHRk5OGkKyTs/gSd8c5ROmY
-         Vne4ArzPWOVkIoW5kJOBtfRXxT7/Pqu0DhW94DrqNqtsESIoAXuIS1+Cbx1O9z4sAzKN
-         GtRg==
-X-Gm-Message-State: AKGB3mLkhvk/sWDdH5B2aAdkNNMgs3ASTM+ND+NDVCpR6DP4q2OlVVKL
-        vYzG1j2DANqeTMcFAz9hKGo2h94g
-X-Google-Smtp-Source: ACJfBoscWPD6WHjuYI1C4wzxaR6AyJu9NoBXHjqUFv72CHZzg8Wv6XlcHPSIeQD/06ALDRHL6Hdgpw==
-X-Received: by 10.46.80.73 with SMTP id v9mr1951632ljd.93.1513860038361;
-        Thu, 21 Dec 2017 04:40:38 -0800 (PST)
-Received: from upc8.baikal.int (mail.baikalelectronics.com. [87.245.175.226])
-        by smtp.gmail.com with ESMTPSA id u19sm4325777lfc.59.2017.12.21.04.40.37
-        for <linux-mips@linux-mips.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 21 Dec 2017 04:40:37 -0800 (PST)
-Subject: Re: [P5600 && EVA memory caching question] PCI region
-From:   Yuri Frolov <crashing.kernel@gmail.com>
-Cc:     linux-mips@linux-mips.org
-References: <6132c323-32a7-1d38-b77c-a191be22faa4@gmail.com>
- <20171206114611.GM5027@jhogan-linux.mipstec.com>
- <330a5200-531f-fcfa-674a-c81fb3144e92@gmail.com>
- <20171214152138.GV5027@jhogan-linux.mipstec.com>
- <ca9adcbc-9777-46a0-ce0b-15e83e01fc72@gmail.com>
- <20171215232821.GA5027@jhogan-linux.mipstec.com>
- <b8706fae-aea8-99b5-f91d-37690eff6949@gmail.com>
-Message-ID: <0f3d62c8-ab8f-f652-8efc-a98e16dd64ca@gmail.com>
-Date:   Thu, 21 Dec 2017 15:40:36 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=7mqLHAp94DQ5OB9P3PMI8QtMybZxgIN202VcOV3hAOs=;
+        b=rvFvS3RSeb9nIn4F+XWkEqAzxNLOSSlSgz5wtq2Rs2+HtrYTIWnkExJlxbvw7QPCh3
+         gnv0XgQuHeDr5w9tFlAPNMmtHFYLem5ZED2914GA1I/yGherqLa+AuyT8wA6882lP8dM
+         REghbTP0eZU1xuyzxIakt2NkkhvEEe2JHzDHJKtr9zlXN88wGs40fufU1EaDu5v/nMhV
+         2uSo6UCbVH7TanrWiXPOgPbKwlNn5d6ET0R7/KjrQIzMVujWbi1/+3qO0d6qhw42DM3n
+         8X4/7JrEOQQJFopu/EQwJSH7HM2giTfzargthyCsop+AYp2OHmfSsmSTQ6g7rQSMHVda
+         49Hw==
+X-Gm-Message-State: AKGB3mJ6eHuNuv1LLhVQqMCzEOLx9101wuvxkKzgUy1cR7dnc9SOFvO9
+        X5wfS/AJX+xBM1nGFy13vbhyO9vZ5aI1qsudAVA=
+X-Google-Smtp-Source: ACJfBou3GQAAKOrsriqiv6YwQPxMOr2Z55FFHtMN4At3NzYp3pzG4QEmzigliQDZz/hIwNE0pEe2Q/BDI5WcYeHHXdU=
+X-Received: by 10.36.70.146 with SMTP id j140mr10077927itb.66.1513863374348;
+ Thu, 21 Dec 2017 05:36:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <b8706fae-aea8-99b5-f91d-37690eff6949@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-To:     unlisted-recipients:; (no To-header on input)
-Return-Path: <crashing.kernel@gmail.com>
+Received: by 10.2.169.20 with HTTP; Thu, 21 Dec 2017 05:36:13 -0800 (PST)
+In-Reply-To: <20171219200915.GP15162@piout.net>
+References: <20171208154618.20105-1-alexandre.belloni@free-electrons.com>
+ <20171208154618.20105-10-alexandre.belloni@free-electrons.com>
+ <CANc+2y4BroVz4eZOeb_ygYH42kg4WPP0y_t4OUuVd50OBSDgXQ@mail.gmail.com> <20171219200915.GP15162@piout.net>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Thu, 21 Dec 2017 19:06:13 +0530
+Message-ID: <CANc+2y5JFuVhgcen48yjE3GuzzZttmuU_NeKpSzxBQ2AidsDwQ@mail.gmail.com>
+Subject: Re: [PATCH v2 09/13] MIPS: mscc: Add initial support for Microsemi
+ MIPS SoCs
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61532
+X-archive-position: 61533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: crashing.kernel@gmail.com
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,44 +68,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
- > I'm looking at arch/mips/include/asm//mach-malta/kernel-entry-init.h 
-and there is a definition for
- > SegCtl2:
+Hi Alexandre,
 
+On 20 December 2017 at 01:39, Alexandre Belloni
+<alexandre.belloni@free-electrons.com> wrote:
+> Hi,
 >
->         /* SegCtl2 */
->         li      t0, ((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |      \
->                 (6 << MIPS_SEGCFG_PA_SHIFT) |                           \
->                 (1 << MIPS_SEGCFG_EU_SHIFT)) |                          \
->                 (((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |         \
->                 (4 << MIPS_SEGCFG_PA_SHIFT) |                           \
->                 (1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+> On 19/12/2017 at 20:27:02 +0530, PrasannaKumar Muralidharan wrote:
+>> Given the fact that setup code is very small and most of it is generic
+>> code I strongly believe that it is plausible to make use of generic
+>> code completely. Please have a look at [1] and [2].
+>>
+>> 1. https://patchwork.kernel.org/patch/9655699/
+>> 2. https://patchwork.kernel.org/patch/9655697/
+>>
+>> PS: My rb tag stays if this could not be done immediately.
+>>
 >
-> it defines, that kernel logical addresses from the range 0x00000000 - 
-> 0x7fffffff are unmapped (no tlbs) and dictates, that in order to get a 
-> physical address for any logical addresses from 0x00000000 - 
-> 0x3fffffff range in kernel space, bits [31:29] of the logical address 
-> must be changed to 100,
-> and (again in kernel space) for any logical addresses from 0x40000000 
-> - 0x7fffffff range, bits [31:29] of the logical address must be 
-> changed to 110, right?
+> I think we had that discussion on the previous version:
+> https://www.linux-mips.org/archives/linux-mips/2017-11/msg00532.html
 >
-> What physical addresses will logical addresses 0x00000000 and 
-> 0x20000000 be translated in kernel space?.. logical 0x00000000 --> 
-> physical 0x80000000, and logical 0x20000000 --> .... 0x80000000 too?
-> Since we must to change bits [31:29], we have to change bit 29 ('1') 
-> in logical address 0x200000000 to '0' (since PA for this range is 100).
+> I can't test on the sead3 so I'd prefer not changing its code right now.
 >
-> So, what physical addresses will all logical addresses which have '1' 
-> at 29 bit be translated, if we define PA as 100 and 110 in SegCtl2? It 
-> looks like there's no flat translation of logical addresses to 
-> physical addresses in kernel space, and this is obviously just not 
-> correct, there is something simple I've been overlooking.
->
-> Thank you,
-> Yuri
+> --
+> Alexandre Belloni, Free Electrons
+> Embedded Linux and Kernel engineering
+> http://free-electrons.com
 
-The only way this scheme can work, is that 'these bits are used' phrase 
-from Table 3.5 CFG (Segment Configuration) Field Description means not 
-'these bits substitute bits [31:29] in virtual address', but 'these bits 
-are 'OR'-ed with bits [31:29] in virtual address.
+Sorry I missed it. Your v1 did not show up in my mailbox somehow even
+though I am subscribed to linux-mips mailing list. Hope generic code
+can be used in future.
+
+Regards,
+PrasannaKumar

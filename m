@@ -1,38 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Dec 2017 09:41:41 +0100 (CET)
-Received: from [128.1.224.119] ([128.1.224.119]:50498 "EHLO ringil.hmeau.com"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990491AbdLVIldoHaIG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Dec 2017 09:41:33 +0100
-Received: from gondolin.me.apana.org.au ([192.168.0.6] helo=gondolin.hengli.com.au)
-        by norbury.hmeau.com with esmtp (Exim 4.80 #3 (Debian))
-        id 1eSItR-0002YG-RY; Fri, 22 Dec 2017 19:41:25 +1100
-Received: from herbert by gondolin.hengli.com.au with local (Exim 4.80)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1eSItL-00086B-Jv; Fri, 22 Dec 2017 19:41:19 +1100
-Date:   Fri, 22 Dec 2017 19:41:19 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     James Hogan <james.hogan@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linux-crypto@vger.kernel.org
-Subject: Re: [PATCH] lib/mpi: Fix umul_ppmm() for MIPS64r6
-Message-ID: <20171222084119.GC30924@gondor.apana.org.au>
-References: <20171205233135.1763-1-james.hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Dec 2017 09:53:09 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37304 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990793AbdLVIxCjs-zG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Dec 2017 09:53:02 +0100
+Received: from localhost (LFbn-1-12262-44.w90-92.abo.wanadoo.fr [90.92.75.44])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2BC338D9;
+        Fri, 22 Dec 2017 08:52:55 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.4 74/78] MIPS: math-emu: Fix final emulation phase for certain instructions
+Date:   Fri, 22 Dec 2017 09:46:55 +0100
+Message-Id: <20171222084605.295826249@linuxfoundation.org>
+X-Mailer: git-send-email 2.15.1
+In-Reply-To: <20171222084556.909780563@linuxfoundation.org>
+References: <20171222084556.909780563@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20171205233135.1763-1-james.hogan@mips.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <herbert@gondor.apana.org.au>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61552
+X-archive-position: 61553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: herbert@gondor.apana.org.au
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,46 +50,181 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Dec 05, 2017 at 11:31:35PM +0000, James Hogan wrote:
-> From: James Hogan <jhogan@kernel.org>
-> 
-> Current MIPS64r6 toolchains aren't able to generate efficient
-> DMULU/DMUHU based code for the C implementation of umul_ppmm(), which
-> performs an unsigned 64 x 64 bit multiply and returns the upper and
-> lower 64-bit halves of the 128-bit result. Instead it widens the 64-bit
-> inputs to 128-bits and emits a __multi3 intrinsic call to perform a 128
-> x 128 multiply. This is both inefficient, and it results in a link error
-> since we don't include __multi3 in MIPS linux.
-> 
-> For example commit 90a53e4432b1 ("cfg80211: implement regdb signature
-> checking") merged in v4.15-rc1 recently broke the 64r6_defconfig and
-> 64r6el_defconfig builds by indirectly selecting MPILIB. The same build
-> errors can be reproduced on older kernels by enabling e.g. CRYPTO_RSA:
-> 
-> lib/mpi/generic_mpih-mul1.o: In function `mpihelp_mul_1':
-> lib/mpi/generic_mpih-mul1.c:50: undefined reference to `__multi3'
-> lib/mpi/generic_mpih-mul2.o: In function `mpihelp_addmul_1':
-> lib/mpi/generic_mpih-mul2.c:49: undefined reference to `__multi3'
-> lib/mpi/generic_mpih-mul3.o: In function `mpihelp_submul_1':
-> lib/mpi/generic_mpih-mul3.c:49: undefined reference to `__multi3'
-> lib/mpi/mpih-div.o In function `mpihelp_divrem':
-> lib/mpi/mpih-div.c:205: undefined reference to `__multi3'
-> lib/mpi/mpih-div.c:142: undefined reference to `__multi3'
-> 
-> Therefore add an efficient MIPS64r6 implementation of umul_ppmm() using
-> inline assembly and the DMULU/DMUHU instructions, to prevent __multi3
-> calls being emitted.
-> 
-> Fixes: 7fd08ca58ae6 ("MIPS: Add build support for the MIPS R6 ISA")
-> Signed-off-by: James Hogan <jhogan@kernel.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-crypto@vger.kernel.org
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+------------------
+
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
+
+commit 409fcace9963c1e8d2cb0f7ac62e8b34d47ef979 upstream.
+
+Fix final phase of <CLASS|MADDF|MSUBF|MAX|MIN|MAXA|MINA>.<D|S>
+emulation. Provide proper generation of SIGFPE signal and updating
+debugfs FP exception stats in cases of any exception flags set in
+preceding phases of emulation.
+
+CLASS.<D|S> instruction may generate "Unimplemented Operation" FP
+exception. <MADDF|MSUBF>.<D|S> instructions may generate "Inexact",
+"Unimplemented Operation", "Invalid Operation", "Overflow", and
+"Underflow" FP exceptions. <MAX|MIN|MAXA|MINA>.<D|S> instructions
+can generate "Unimplemented Operation" and "Invalid Operation" FP
+exceptions.
+
+The proper final processing of the cases when any FP exception
+flag is set is achieved by replacing "break" statement with "goto
+copcsr" statement. With such solution, this patch brings the final
+phase of emulation of the above instructions consistent with the
+one corresponding to the previously implemented emulation of other
+related FPU instructions (ADD, SUB, etc.).
+
+Fixes: 38db37ba069f ("MIPS: math-emu: Add support for the MIPS R6 CLASS FPU instruction")
+Fixes: e24c3bec3e8e ("MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction")
+Fixes: 83d43305a1df ("MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU instruction")
+Fixes: a79f5f9ba508 ("MIPS: math-emu: Add support for the MIPS R6 MAX{, A} FPU instruction")
+Fixes: 4e9561b20e2f ("MIPS: math-emu: Add support for the MIPS R6 MIN{, A} FPU instruction")
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Douglas Leung <douglas.leung@mips.com>
+Cc: Goran Ferenc <goran.ferenc@mips.com>
+Cc: "Maciej W. Rozycki" <macro@imgtec.com>
+Cc: Miodrag Dinic <miodrag.dinic@mips.com>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Petar Jovanovic <petar.jovanovic@mips.com>
+Cc: Raghu Gandham <raghu.gandham@mips.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/17581/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/math-emu/cp1emu.c |   28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1777,7 +1777,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			SPFROMREG(fd, MIPSInst_FD(ir));
+ 			rv.s = ieee754sp_maddf(fd, fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmsubf_op: {
+@@ -1790,7 +1790,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			SPFROMREG(fd, MIPSInst_FD(ir));
+ 			rv.s = ieee754sp_msubf(fd, fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case frint_op: {
+@@ -1814,7 +1814,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.w = ieee754sp_2008class(fs);
+ 			rfmt = w_fmt;
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmin_op: {
+@@ -1826,7 +1826,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(ft, MIPSInst_FT(ir));
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.s = ieee754sp_fmin(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmina_op: {
+@@ -1838,7 +1838,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(ft, MIPSInst_FT(ir));
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.s = ieee754sp_fmina(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmax_op: {
+@@ -1850,7 +1850,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(ft, MIPSInst_FT(ir));
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.s = ieee754sp_fmax(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmaxa_op: {
+@@ -1862,7 +1862,7 @@ static int fpu_emu(struct pt_regs *xcp,
+ 			SPFROMREG(ft, MIPSInst_FT(ir));
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.s = ieee754sp_fmaxa(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fabs_op:
+@@ -2095,7 +2095,7 @@ copcsr:
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			DPFROMREG(fd, MIPSInst_FD(ir));
+ 			rv.d = ieee754dp_maddf(fd, fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmsubf_op: {
+@@ -2108,7 +2108,7 @@ copcsr:
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			DPFROMREG(fd, MIPSInst_FD(ir));
+ 			rv.d = ieee754dp_msubf(fd, fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case frint_op: {
+@@ -2132,7 +2132,7 @@ copcsr:
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.w = ieee754dp_2008class(fs);
+ 			rfmt = w_fmt;
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmin_op: {
+@@ -2144,7 +2144,7 @@ copcsr:
+ 			DPFROMREG(ft, MIPSInst_FT(ir));
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.d = ieee754dp_fmin(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmina_op: {
+@@ -2156,7 +2156,7 @@ copcsr:
+ 			DPFROMREG(ft, MIPSInst_FT(ir));
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.d = ieee754dp_fmina(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmax_op: {
+@@ -2168,7 +2168,7 @@ copcsr:
+ 			DPFROMREG(ft, MIPSInst_FT(ir));
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.d = ieee754dp_fmax(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fmaxa_op: {
+@@ -2180,7 +2180,7 @@ copcsr:
+ 			DPFROMREG(ft, MIPSInst_FT(ir));
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+ 			rv.d = ieee754dp_fmaxa(fs, ft);
+-			break;
++			goto copcsr;
+ 		}
+ 
+ 		case fabs_op:

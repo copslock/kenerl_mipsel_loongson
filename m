@@ -1,54 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2017 23:15:13 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:47525 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990486AbdLUWPGKsfLy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2017 23:15:06 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 21 Dec 2017 22:14:01 +0000
-Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
- Microsoft SMTP Server id 14.3.361.1; Thu, 21 Dec 2017 14:11:46 -0800
-Date:   Thu, 21 Dec 2017 14:12:43 -0800
-From:   Paul Burton <paul.burton@mips.com>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-CC:     <linux-mips@linux-mips.org>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        Dengcheng Zhu <dengcheng.zhu@mips.com>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        James Hogan <james.hogan@mips.com>,
-        <linux-kernel@vger.kernel.org>,
-        "Matt Redfearn" <matt.redfearn@mips.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v2 0/2] MIPS: Augment CPC support
-Message-ID: <20171221221242.w2kcgob3e2of75cr@pburton-laptop>
-References: <1513869627-15391-1-git-send-email-aleksandar.markovic@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Dec 2017 08:08:31 +0100 (CET)
+Received: from [128.1.224.119] ([128.1.224.119]:50172 "EHLO ringil.hmeau.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990407AbdLVHIXeKZcX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Dec 2017 08:08:23 +0100
+Received: from gondolin.me.apana.org.au ([192.168.0.6] helo=gondolin.hengli.com.au)
+        by norbury.hmeau.com with esmtp (Exim 4.80 #3 (Debian))
+        id 1eSHRG-00028i-Sj; Fri, 22 Dec 2017 18:08:14 +1100
+Received: from herbert by gondolin.hengli.com.au with local (Exim 4.80)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1eSHRA-000780-5d; Fri, 22 Dec 2017 18:08:08 +1100
+Date:   Fri, 22 Dec 2017 18:08:08 +1100
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] lib/mpi: Fix umul_ppmm() for MIPS64r6
+Message-ID: <20171222070808.GB27149@gondor.apana.org.au>
+References: <20171205233135.1763-1-james.hogan@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1513869627-15391-1-git-send-email-aleksandar.markovic@rt-rk.com>
-User-Agent: NeoMutt/20171215
-X-BESS-ID: 1513894440-452060-28500-124939-7
-X-BESS-VER: 2017.16.1-r1712081705
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188234
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+In-Reply-To: <20171205233135.1763-1-james.hogan@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <herbert@gondor.apana.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61547
+X-archive-position: 61548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: herbert@gondor.apana.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,47 +45,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Aleksandar,
+On Tue, Dec 05, 2017 at 11:31:35PM +0000, James Hogan wrote:
+> From: James Hogan <jhogan@kernel.org>
+> 
+> Current MIPS64r6 toolchains aren't able to generate efficient
+> DMULU/DMUHU based code for the C implementation of umul_ppmm(), which
+> performs an unsigned 64 x 64 bit multiply and returns the upper and
+> lower 64-bit halves of the 128-bit result. Instead it widens the 64-bit
+> inputs to 128-bits and emits a __multi3 intrinsic call to perform a 128
+> x 128 multiply. This is both inefficient, and it results in a link error
+> since we don't include __multi3 in MIPS linux.
+> 
+> For example commit 90a53e4432b1 ("cfg80211: implement regdb signature
+> checking") merged in v4.15-rc1 recently broke the 64r6_defconfig and
+> 64r6el_defconfig builds by indirectly selecting MPILIB. The same build
+> errors can be reproduced on older kernels by enabling e.g. CRYPTO_RSA:
+> 
+> lib/mpi/generic_mpih-mul1.o: In function `mpihelp_mul_1':
+> lib/mpi/generic_mpih-mul1.c:50: undefined reference to `__multi3'
+> lib/mpi/generic_mpih-mul2.o: In function `mpihelp_addmul_1':
+> lib/mpi/generic_mpih-mul2.c:49: undefined reference to `__multi3'
+> lib/mpi/generic_mpih-mul3.o: In function `mpihelp_submul_1':
+> lib/mpi/generic_mpih-mul3.c:49: undefined reference to `__multi3'
+> lib/mpi/mpih-div.o In function `mpihelp_divrem':
+> lib/mpi/mpih-div.c:205: undefined reference to `__multi3'
+> lib/mpi/mpih-div.c:142: undefined reference to `__multi3'
+> 
+> Therefore add an efficient MIPS64r6 implementation of umul_ppmm() using
+> inline assembly and the DMULU/DMUHU instructions, to prevent __multi3
+> calls being emitted.
+> 
+> Fixes: 7fd08ca58ae6 ("MIPS: Add build support for the MIPS R6 ISA")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-crypto@vger.kernel.org
+> ---
+> Please can somebody apply this fix for v4.15, as the MIPS 64r6_defconfig
+> and 64r6el_defconfig builds are broken without it.
 
-On Thu, Dec 21, 2017 at 04:20:22PM +0100, Aleksandar Markovic wrote:
-> From: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> 
-> v1->v2:
-> 
->     - corrected wording in commit messages and documentation text
->     - expanded cover letter to better explain the context of proposed
->         changes
->     - rebased to the latest code
-> 
-> This series is based on two patches from the larger series submitted
-> some time ago (30 Aug 2016):
-> 
-> https://www.linux-mips.org/archives/linux-mips/2016-08/msg00456.html
-> 
-> Both patches deal with MIPS Cluster Power Controller (CPC) support.
-> More specifically, they add device tree related functionalities to
-> that support.
-> 
-> This functionality is needed for further development of kernel support
-> for generic-based MIPS platforms that must be DT-based and will at the
-> same time make more extensive use of CPC.
-
-FWIW:
-
-    Reviewed-by: Paul Burton <paul.burton@mips.com>
+I can take this but I'd like to see an ack from someone on the
+MIPS side.
 
 Thanks,
-    Paul
-
-> Paul Burton (2):
->   dt-bindings: Document mti,mips-cpc binding
->   MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
-> 
->  Documentation/devicetree/bindings/misc/mti,mips-cpc.txt |  8 ++++++++
->  arch/mips/kernel/mips-cpc.c                             | 13 +++++++++++++
->  2 files changed, 21 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/misc/mti,mips-cpc.txt
-> 
-> -- 
-> 2.7.4
-> 
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

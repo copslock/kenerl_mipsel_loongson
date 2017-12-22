@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Dec 2017 09:53:09 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37304 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Dec 2017 09:58:09 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38804 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990793AbdLVIxCjs-zG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Dec 2017 09:53:02 +0100
+        by eddie.linux-mips.org with ESMTP id S23990633AbdLVI6BJIPhG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Dec 2017 09:58:01 +0100
 Received: from localhost (LFbn-1-12262-44.w90-92.abo.wanadoo.fr [90.92.75.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2BC338D9;
-        Fri, 22 Dec 2017 08:52:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3DA9889F;
+        Fri, 22 Dec 2017 08:57:54 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -20,12 +20,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
         Raghu Gandham <raghu.gandham@mips.com>,
         linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.4 74/78] MIPS: math-emu: Fix final emulation phase for certain instructions
-Date:   Fri, 22 Dec 2017 09:46:55 +0100
-Message-Id: <20171222084605.295826249@linuxfoundation.org>
+Subject: [PATCH 4.9 102/104] MIPS: math-emu: Fix final emulation phase for certain instructions
+Date:   Fri, 22 Dec 2017 09:47:08 +0100
+Message-Id: <20171222084617.434198121@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.1
-In-Reply-To: <20171222084556.909780563@linuxfoundation.org>
-References: <20171222084556.909780563@linuxfoundation.org>
+In-Reply-To: <20171222084609.262099650@linuxfoundation.org>
+References: <20171222084609.262099650@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -33,7 +33,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61553
+X-archive-position: 61554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,7 +50,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -102,7 +102,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/math-emu/cp1emu.c
 +++ b/arch/mips/math-emu/cp1emu.c
-@@ -1777,7 +1777,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1781,7 +1781,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			SPFROMREG(fd, MIPSInst_FD(ir));
  			rv.s = ieee754sp_maddf(fd, fs, ft);
@@ -111,7 +111,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmsubf_op: {
-@@ -1790,7 +1790,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1794,7 +1794,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			SPFROMREG(fd, MIPSInst_FD(ir));
  			rv.s = ieee754sp_msubf(fd, fs, ft);
@@ -120,7 +120,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case frint_op: {
-@@ -1814,7 +1814,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1818,7 +1818,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			rv.w = ieee754sp_2008class(fs);
  			rfmt = w_fmt;
@@ -129,7 +129,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmin_op: {
-@@ -1826,7 +1826,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1830,7 +1830,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(ft, MIPSInst_FT(ir));
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			rv.s = ieee754sp_fmin(fs, ft);
@@ -138,7 +138,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmina_op: {
-@@ -1838,7 +1838,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1842,7 +1842,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(ft, MIPSInst_FT(ir));
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			rv.s = ieee754sp_fmina(fs, ft);
@@ -147,7 +147,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmax_op: {
-@@ -1850,7 +1850,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1854,7 +1854,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(ft, MIPSInst_FT(ir));
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			rv.s = ieee754sp_fmax(fs, ft);
@@ -156,7 +156,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmaxa_op: {
-@@ -1862,7 +1862,7 @@ static int fpu_emu(struct pt_regs *xcp,
+@@ -1866,7 +1866,7 @@ static int fpu_emu(struct pt_regs *xcp,
  			SPFROMREG(ft, MIPSInst_FT(ir));
  			SPFROMREG(fs, MIPSInst_FS(ir));
  			rv.s = ieee754sp_fmaxa(fs, ft);
@@ -165,7 +165,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fabs_op:
-@@ -2095,7 +2095,7 @@ copcsr:
+@@ -2110,7 +2110,7 @@ copcsr:
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			DPFROMREG(fd, MIPSInst_FD(ir));
  			rv.d = ieee754dp_maddf(fd, fs, ft);
@@ -174,7 +174,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmsubf_op: {
-@@ -2108,7 +2108,7 @@ copcsr:
+@@ -2123,7 +2123,7 @@ copcsr:
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			DPFROMREG(fd, MIPSInst_FD(ir));
  			rv.d = ieee754dp_msubf(fd, fs, ft);
@@ -183,7 +183,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case frint_op: {
-@@ -2132,7 +2132,7 @@ copcsr:
+@@ -2147,7 +2147,7 @@ copcsr:
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			rv.w = ieee754dp_2008class(fs);
  			rfmt = w_fmt;
@@ -192,7 +192,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmin_op: {
-@@ -2144,7 +2144,7 @@ copcsr:
+@@ -2159,7 +2159,7 @@ copcsr:
  			DPFROMREG(ft, MIPSInst_FT(ir));
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			rv.d = ieee754dp_fmin(fs, ft);
@@ -201,7 +201,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmina_op: {
-@@ -2156,7 +2156,7 @@ copcsr:
+@@ -2171,7 +2171,7 @@ copcsr:
  			DPFROMREG(ft, MIPSInst_FT(ir));
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			rv.d = ieee754dp_fmina(fs, ft);
@@ -210,7 +210,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmax_op: {
-@@ -2168,7 +2168,7 @@ copcsr:
+@@ -2183,7 +2183,7 @@ copcsr:
  			DPFROMREG(ft, MIPSInst_FT(ir));
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			rv.d = ieee754dp_fmax(fs, ft);
@@ -219,7 +219,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  
  		case fmaxa_op: {
-@@ -2180,7 +2180,7 @@ copcsr:
+@@ -2195,7 +2195,7 @@ copcsr:
  			DPFROMREG(ft, MIPSInst_FT(ir));
  			DPFROMREG(fs, MIPSInst_FS(ir));
  			rv.d = ieee754dp_fmaxa(fs, ft);

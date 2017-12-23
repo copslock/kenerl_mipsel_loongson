@@ -1,21 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Dec 2017 12:11:03 +0100 (CET)
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2173 "EHLO huawei.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Dec 2017 12:12:04 +0100 (CET)
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2234 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990483AbdLWLK4gh250 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Dec 2017 12:10:56 +0100
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 1849EE65CBA79;
-        Sat, 23 Dec 2017 19:10:38 +0800 (CST)
+        id S23990491AbdLWLL5B0t70 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 23 Dec 2017 12:11:57 +0100
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 296E052AC3BF2;
+        Sat, 23 Dec 2017 19:11:37 +0800 (CST)
 Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.361.1; Sat, 23 Dec 2017 19:10:32 +0800
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.361.1; Sat, 23 Dec 2017 19:11:32 +0800
 From:   Yisheng Xie <xieyisheng1@huawei.com>
 To:     <linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>
-CC:     <ysxie@foxmail.com>, Yisheng Xie <xieyisheng1@huawei.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH v3 23/27] MIPS: pci: replace devm_ioremap_nocache with devm_ioremap
-Date:   Sat, 23 Dec 2017 19:02:03 +0800
-Message-ID: <1514026923-33665-1-git-send-email-xieyisheng1@huawei.com>
+CC:     <ysxie@foxmail.com>, <ulf.hansson@linaro.org>,
+        <linux-mmc@vger.kernel.org>, <boris.brezillon@free-electrons.com>,
+        <richard@nod.at>, <marek.vasut@gmail.com>,
+        <cyrille.pitchen@wedev4u.fr>, <linux-mtd@lists.infradead.org>,
+        <alsa-devel@alsa-project.org>, <wim@iguana.be>,
+        <linux@roeck-us.net>, <linux-watchdog@vger.kernel.org>,
+        <b.zolnierkie@samsung.com>, <linux-fbdev@vger.kernel.org>,
+        <linus.walleij@linaro.org>, <linux-gpio@vger.kernel.org>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <lgirdwood@gmail.com>, <broonie@kernel.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <marc.zyngier@arm.com>, <arnd@arndb.de>,
+        <andriy.shevchenko@linux.intel.com>,
+        <industrypack-devel@lists.sourceforge.net>, <wg@grandegger.com>,
+        <mkl@pengutronix.de>, <linux-can@vger.kernel.org>,
+        <mchehab@kernel.org>, <linux-media@vger.kernel.org>,
+        <a.zummo@towertech.it>, <alexandre.belloni@free-electrons.com>,
+        <linux-rtc@vger.kernel.org>, <daniel.vetter@intel.com>,
+        <jani.nikula@linux.intel.com>, <seanpaul@chromium.org>,
+        <airlied@linux.ie>, <dri-devel@lists.freedesktop.org>,
+        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <tj@kernel.org>,
+        <linux-ide@vger.kernel.org>, <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        <dvhart@infradead.org>, <andy@infradead.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <jakub.kicinski@netronome.com>, <davem@davemloft.net>,
+        <nios2-dev@lists.rocketboards.org>, <netdev@vger.kernel.org>,
+        <vinod.koul@intel.com>, <dan.j.williams@intel.com>,
+        <dmaengine@vger.kernel.org>, <jslaby@suse.com>,
+        Yisheng Xie <xieyisheng1@huawei.com>
+Subject: [PATCH v3 27/27] devres: kill devm_ioremap_nocache
+Date:   Sat, 23 Dec 2017 19:02:59 +0800
+Message-ID: <1514026979-33838-1-git-send-email-xieyisheng1@huawei.com>
 X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -25,7 +53,7 @@ Return-Path: <xieyisheng1@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61559
+X-archive-position: 61560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,34 +70,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Default ioremap is ioremap_nocache, so devm_ioremap has the same
-function with devm_ioremap_nocache, which can just be killed to
-save the size of devres.o
+Now, nobody use devm_ioremap_nocache anymore, can it can just be
+removed. After this patch the size of devres.o will be reduced from
+20304 bytes to 18992 bytes.
 
-This patch is to use use devm_ioremap instead of devm_ioremap_nocache,
-which should not have any function change but prepare for killing
-devm_ioremap_nocache.
-
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Suggested-by: Greg KH <gregkh@linuxfoundation.org>
 Signed-off-by: Yisheng Xie <xieyisheng1@huawei.com>
 ---
- arch/mips/pci/pci-ar2315.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/driver-model/devres.txt   |  1 -
+ include/linux/io.h                      |  2 --
+ lib/devres.c                            | 29 -----------------------------
+ scripts/coccinelle/free/devm_free.cocci |  2 --
+ 4 files changed, 34 deletions(-)
 
-diff --git a/arch/mips/pci/pci-ar2315.c b/arch/mips/pci/pci-ar2315.c
-index b4fa641..8f3baf1 100644
---- a/arch/mips/pci/pci-ar2315.c
-+++ b/arch/mips/pci/pci-ar2315.c
-@@ -428,8 +428,7 @@ static int ar2315_pci_probe(struct platform_device *pdev)
- 	apc->mem_res.flags = IORESOURCE_MEM;
+diff --git a/Documentation/driver-model/devres.txt b/Documentation/driver-model/devres.txt
+index c180045..c3fddb5 100644
+--- a/Documentation/driver-model/devres.txt
++++ b/Documentation/driver-model/devres.txt
+@@ -292,7 +292,6 @@ IOMAP
+   devm_ioport_map()
+   devm_ioport_unmap()
+   devm_ioremap()
+-  devm_ioremap_nocache()
+   devm_ioremap_wc()
+   devm_ioremap_resource() : checks resource, requests memory region, ioremaps
+   devm_iounmap()
+diff --git a/include/linux/io.h b/include/linux/io.h
+index 32e30e8..a9c7270 100644
+--- a/include/linux/io.h
++++ b/include/linux/io.h
+@@ -75,8 +75,6 @@ static inline void devm_ioport_unmap(struct device *dev, void __iomem *addr)
  
- 	/* Remap PCI config space */
--	apc->cfg_mem = devm_ioremap_nocache(dev, res->start,
--					    AR2315_PCI_CFG_SIZE);
-+	apc->cfg_mem = devm_ioremap(dev, res->start, AR2315_PCI_CFG_SIZE);
- 	if (!apc->cfg_mem) {
- 		dev_err(dev, "failed to remap PCI config space\n");
- 		return -ENOMEM;
+ void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
+ 			   resource_size_t size);
+-void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
+-				   resource_size_t size);
+ void __iomem *devm_ioremap_wc(struct device *dev, resource_size_t offset,
+ 				   resource_size_t size);
+ void devm_iounmap(struct device *dev, void __iomem *addr);
+diff --git a/lib/devres.c b/lib/devres.c
+index 5f2aedd..f818fcf 100644
+--- a/lib/devres.c
++++ b/lib/devres.c
+@@ -44,35 +44,6 @@ void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
+ EXPORT_SYMBOL(devm_ioremap);
+ 
+ /**
+- * devm_ioremap_nocache - Managed ioremap_nocache()
+- * @dev: Generic device to remap IO address for
+- * @offset: Resource address to map
+- * @size: Size of map
+- *
+- * Managed ioremap_nocache().  Map is automatically unmapped on driver
+- * detach.
+- */
+-void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
+-				   resource_size_t size)
+-{
+-	void __iomem **ptr, *addr;
+-
+-	ptr = devres_alloc(devm_ioremap_release, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
+-		return NULL;
+-
+-	addr = ioremap_nocache(offset, size);
+-	if (addr) {
+-		*ptr = addr;
+-		devres_add(dev, ptr);
+-	} else
+-		devres_free(ptr);
+-
+-	return addr;
+-}
+-EXPORT_SYMBOL(devm_ioremap_nocache);
+-
+-/**
+  * devm_ioremap_wc - Managed ioremap_wc()
+  * @dev: Generic device to remap IO address for
+  * @offset: Resource address to map
+diff --git a/scripts/coccinelle/free/devm_free.cocci b/scripts/coccinelle/free/devm_free.cocci
+index c990d2c..36b8752 100644
+--- a/scripts/coccinelle/free/devm_free.cocci
++++ b/scripts/coccinelle/free/devm_free.cocci
+@@ -51,8 +51,6 @@ expression x;
+ |
+  x = devm_ioremap(...)
+ |
+- x = devm_ioremap_nocache(...)
+-|
+  x = devm_ioport_map(...)
+ )
+ 
 -- 
 1.8.3.1

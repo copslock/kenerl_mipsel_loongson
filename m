@@ -1,49 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Dec 2017 12:04:51 +0100 (CET)
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2172 "EHLO huawei.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Dec 2017 12:11:03 +0100 (CET)
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2173 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990483AbdLWLEmZFNs0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Dec 2017 12:04:42 +0100
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id EB8E2F09D9266;
-        Sat, 23 Dec 2017 19:04:22 +0800 (CST)
+        id S23990483AbdLWLK4gh250 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 23 Dec 2017 12:10:56 +0100
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 1849EE65CBA79;
+        Sat, 23 Dec 2017 19:10:38 +0800 (CST)
 Received: from linux-ibm.site (10.175.102.37) by
  DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.361.1; Sat, 23 Dec 2017 19:04:14 +0800
+ 14.3.361.1; Sat, 23 Dec 2017 19:10:32 +0800
 From:   Yisheng Xie <xieyisheng1@huawei.com>
 To:     <linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>
-CC:     <ysxie@foxmail.com>, <ulf.hansson@linaro.org>,
-        <linux-mmc@vger.kernel.org>, <boris.brezillon@free-electrons.com>,
-        <richard@nod.at>, <marek.vasut@gmail.com>,
-        <cyrille.pitchen@wedev4u.fr>, <linux-mtd@lists.infradead.org>,
-        <alsa-devel@alsa-project.org>, <wim@iguana.be>,
-        <linux@roeck-us.net>, <linux-watchdog@vger.kernel.org>,
-        <b.zolnierkie@samsung.com>, <linux-fbdev@vger.kernel.org>,
-        <linus.walleij@linaro.org>, <linux-gpio@vger.kernel.org>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <lgirdwood@gmail.com>, <broonie@kernel.org>, <tglx@linutronix.de>,
-        <jason@lakedaemon.net>, <marc.zyngier@arm.com>, <arnd@arndb.de>,
-        <andriy.shevchenko@linux.intel.com>,
-        <industrypack-devel@lists.sourceforge.net>, <wg@grandegger.com>,
-        <mkl@pengutronix.de>, <linux-can@vger.kernel.org>,
-        <mchehab@kernel.org>, <linux-media@vger.kernel.org>,
-        <a.zummo@towertech.it>, <alexandre.belloni@free-electrons.com>,
-        <linux-rtc@vger.kernel.org>, <daniel.vetter@intel.com>,
-        <jani.nikula@linux.intel.com>, <seanpaul@chromium.org>,
-        <airlied@linux.ie>, <dri-devel@lists.freedesktop.org>,
-        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <tj@kernel.org>,
-        <linux-ide@vger.kernel.org>, <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <dvhart@infradead.org>, <andy@infradead.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        <jakub.kicinski@netronome.com>, <davem@davemloft.net>,
-        <nios2-dev@lists.rocketboards.org>, <netdev@vger.kernel.org>,
-        <vinod.koul@intel.com>, <dan.j.williams@intel.com>,
-        <dmaengine@vger.kernel.org>, <jslaby@suse.com>,
-        Yisheng Xie <xieyisheng1@huawei.com>
-Subject: [PATCH v3 00/27] kill devm_ioremap_nocache
-Date:   Sat, 23 Dec 2017 18:55:25 +0800
-Message-ID: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
+CC:     <ysxie@foxmail.com>, Yisheng Xie <xieyisheng1@huawei.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: [PATCH v3 23/27] MIPS: pci: replace devm_ioremap_nocache with devm_ioremap
+Date:   Sat, 23 Dec 2017 19:02:03 +0800
+Message-ID: <1514026923-33665-1-git-send-email-xieyisheng1@huawei.com>
 X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -53,7 +25,7 @@ Return-Path: <xieyisheng1@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61558
+X-archive-position: 61559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,118 +42,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+Default ioremap is ioremap_nocache, so devm_ioremap has the same
+function with devm_ioremap_nocache, which can just be killed to
+save the size of devres.o
 
-When I tried to use devm_ioremap function and review related code, I found
-devm_ioremap and devm_ioremap_nocache is almost the same with each other,
-except one use ioremap while the other use ioremap_nocache. While ioremap's
-default function is ioremap_nocache, so devm_ioremap_nocache also have the
-same function with devm_ioremap, which can just be killed to reduce the size
-of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
+This patch is to use use devm_ioremap instead of devm_ioremap_nocache,
+which should not have any function change but prepare for killing
+devm_ioremap_nocache.
 
-I have posted two versions, which use macro instead of function for
-devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
-devm_ioremap_nocache for no need to keep a macro around for the duplicate
-thing. So here comes v3 and please help to review.
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Yisheng Xie <xieyisheng1@huawei.com>
+---
+ arch/mips/pci/pci-ar2315.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks so much!
-Yisheng Xie
-
-[1] https://lkml.org/lkml/2017/11/20/135
-[2] https://lkml.org/lkml/2017/11/25/21
-
-Yisheng Xie (27):
-  ASOC: replace devm_ioremap_nocache with devm_ioremap
-  spi: replace devm_ioremap_nocache with devm_ioremap
-  staging: replace devm_ioremap_nocache with devm_ioremap
-  ipack: replace devm_ioremap_nocache with devm_ioremap
-  media: replace devm_ioremap_nocache with devm_ioremap
-  gpio: replace devm_ioremap_nocache with devm_ioremap
-  mmc: replace devm_ioremap_nocache with devm_ioremap
-  PCI: replace devm_ioremap_nocache with devm_ioremap
-  platform/x86: replace devm_ioremap_nocache with devm_ioremap
-  tty: replace devm_ioremap_nocache with devm_ioremap
-  video: replace devm_ioremap_nocache with devm_ioremap
-  rtc: replace devm_ioremap_nocache with devm_ioremap
-  char: replace devm_ioremap_nocache with devm_ioremap
-  mtd: nand: replace devm_ioremap_nocache with devm_ioremap
-  dmaengine: replace devm_ioremap_nocache with devm_ioremap
-  ata: replace devm_ioremap_nocache with devm_ioremap
-  irqchip: replace devm_ioremap_nocache with devm_ioremap
-  pinctrl: replace devm_ioremap_nocache with devm_ioremap
-  drm: replace devm_ioremap_nocache with devm_ioremap
-  regulator: replace devm_ioremap_nocache with devm_ioremap
-  watchdog: replace devm_ioremap_nocache with devm_ioremap
-  tools/testing/nvdimm: replace devm_ioremap_nocache with devm_ioremap
-  MIPS: pci: replace devm_ioremap_nocache with devm_ioremap
-  can: replace devm_ioremap_nocache with devm_ioremap
-  wireless: replace devm_ioremap_nocache with devm_ioremap
-  ethernet: replace devm_ioremap_nocache with devm_ioremap
-  devres: kill devm_ioremap_nocache
-
- Documentation/driver-model/devres.txt           |  1 -
- arch/mips/pci/pci-ar2315.c                      |  3 +--
- drivers/ata/pata_arasan_cf.c                    |  3 +--
- drivers/ata/pata_octeon_cf.c                    |  9 ++++----
- drivers/ata/pata_rb532_cf.c                     |  2 +-
- drivers/char/hw_random/bcm63xx-rng.c            |  3 +--
- drivers/char/hw_random/octeon-rng.c             | 10 ++++-----
- drivers/dma/altera-msgdma.c                     |  3 +--
- drivers/dma/sprd-dma.c                          |  4 ++--
- drivers/gpio/gpio-ath79.c                       |  3 +--
- drivers/gpio/gpio-em.c                          |  6 ++---
- drivers/gpio/gpio-htc-egpio.c                   |  4 ++--
- drivers/gpio/gpio-xgene.c                       |  3 +--
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c |  2 +-
- drivers/gpu/drm/msm/msm_drv.c                   |  2 +-
- drivers/gpu/drm/sti/sti_dvo.c                   |  3 +--
- drivers/gpu/drm/sti/sti_hda.c                   |  4 ++--
- drivers/gpu/drm/sti/sti_hdmi.c                  |  2 +-
- drivers/gpu/drm/sti/sti_tvout.c                 |  2 +-
- drivers/gpu/drm/sti/sti_vtg.c                   |  2 +-
- drivers/ipack/devices/ipoctal.c                 | 13 +++++------
- drivers/irqchip/irq-renesas-intc-irqpin.c       |  4 ++--
- drivers/media/platform/tegra-cec/tegra_cec.c    |  4 ++--
- drivers/mmc/host/sdhci-acpi.c                   |  3 +--
- drivers/mtd/nand/fsl_upm.c                      |  4 ++--
- drivers/net/can/sja1000/sja1000_platform.c      |  4 ++--
- drivers/net/ethernet/altera/altera_tse_main.c   |  3 +--
- drivers/net/ethernet/ethoc.c                    |  8 +++----
- drivers/net/ethernet/lantiq_etop.c              |  4 ++--
- drivers/net/ethernet/ti/netcp_core.c            |  2 +-
- drivers/net/wireless/ath/ath9k/ahb.c            |  2 +-
- drivers/pci/dwc/pci-dra7xx.c                    |  2 +-
- drivers/pinctrl/bcm/pinctrl-ns2-mux.c           |  2 +-
- drivers/pinctrl/bcm/pinctrl-nsp-mux.c           |  4 ++--
- drivers/pinctrl/freescale/pinctrl-imx1-core.c   |  2 +-
- drivers/pinctrl/pinctrl-amd.c                   |  4 ++--
- drivers/platform/x86/intel_pmc_core.c           |  5 ++---
- drivers/regulator/ti-abb-regulator.c            |  6 ++---
- drivers/rtc/rtc-sh.c                            |  4 ++--
- drivers/spi/spi-jcore.c                         |  3 +--
- drivers/staging/fsl-mc/bus/mc-io.c              |  8 +++----
- drivers/tty/mips_ejtag_fdc.c                    |  4 ++--
- drivers/tty/serial/8250/8250_omap.c             |  3 +--
- drivers/tty/serial/lantiq.c                     |  3 +--
- drivers/tty/serial/meson_uart.c                 |  3 +--
- drivers/tty/serial/owl-uart.c                   |  2 +-
- drivers/tty/serial/pic32_uart.c                 |  4 ++--
- drivers/video/fbdev/mbx/mbxfb.c                 |  9 ++++----
- drivers/video/fbdev/mmp/hw/mmp_ctrl.c           |  2 +-
- drivers/video/fbdev/pxa168fb.c                  |  4 ++--
- drivers/watchdog/bcm63xx_wdt.c                  |  4 ++--
- drivers/watchdog/rc32434_wdt.c                  |  4 ++--
- include/linux/io.h                              |  2 --
- lib/devres.c                                    | 29 -------------------------
- scripts/coccinelle/free/devm_free.cocci         |  2 --
- sound/soc/au1x/ac97c.c                          |  4 ++--
- sound/soc/au1x/i2sc.c                           |  4 ++--
- sound/soc/intel/atom/sst/sst_acpi.c             | 20 ++++++++---------
- sound/soc/intel/boards/mfld_machine.c           |  4 ++--
- sound/soc/sh/fsi.c                              |  4 ++--
- tools/testing/nvdimm/Kbuild                     |  2 +-
- tools/testing/nvdimm/test/iomap.c               |  2 +-
- 62 files changed, 109 insertions(+), 168 deletions(-)
-
+diff --git a/arch/mips/pci/pci-ar2315.c b/arch/mips/pci/pci-ar2315.c
+index b4fa641..8f3baf1 100644
+--- a/arch/mips/pci/pci-ar2315.c
++++ b/arch/mips/pci/pci-ar2315.c
+@@ -428,8 +428,7 @@ static int ar2315_pci_probe(struct platform_device *pdev)
+ 	apc->mem_res.flags = IORESOURCE_MEM;
+ 
+ 	/* Remap PCI config space */
+-	apc->cfg_mem = devm_ioremap_nocache(dev, res->start,
+-					    AR2315_PCI_CFG_SIZE);
++	apc->cfg_mem = devm_ioremap(dev, res->start, AR2315_PCI_CFG_SIZE);
+ 	if (!apc->cfg_mem) {
+ 		dev_err(dev, "failed to remap PCI config space\n");
+ 		return -ENOMEM;
 -- 
 1.8.3.1

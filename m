@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Dec 2017 21:57:58 +0100 (CET)
-Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:43799
-        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991685AbdLYUzuvwJVN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Dec 2017 21:55:50 +0100
-Received: by mail-wr0-x242.google.com with SMTP id w68so20980908wrc.10
-        for <linux-mips@linux-mips.org>; Mon, 25 Dec 2017 12:55:50 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Dec 2017 21:58:30 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:47052
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991985AbdLYUz5nOxFN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Dec 2017 21:55:57 +0100
+Received: by mail-wm0-x241.google.com with SMTP id r78so33010581wme.5
+        for <linux-mips@linux-mips.org>; Mon, 25 Dec 2017 12:55:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=MRffbjiLeyjj2fnVRwnCqOYkBRlzupnaUjrp51GxkdQ=;
-        b=EqWAojXMgPu+1baBQF6G0MLP29rwhAdUquUIQrK4g/IKvR6EYcBc4tdodAKD/loSas
-         pZW1QDkvzEuohNpuWYK4kvHEe0y9kMm//i8B1ShacQJjXJc8tzpW+wEB+n9OZg/+meD0
-         24qWlrva+eHP8UG7Qty0sENHpbqujA8Gev8iI=
+        bh=nmovwwxZQQa2ugEDLnXxoU69CsqWUnhsDto5qVfQljI=;
+        b=FoybLdU34h7tD2YvNo1TOxrVEvcKxDgXeKMEmlTyHo14rK82VWAM7Gt4bG28T0C9j2
+         PlA5sqnwmPwYuhY3eMCsxXR2D9oaM0zNKDSw5VLk2RKm/LC0aaMgOXCdXgiHjieBY5D9
+         6dHlDOePmBPWtmBMMmFiCQS3T86vTRkDOcgI4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=MRffbjiLeyjj2fnVRwnCqOYkBRlzupnaUjrp51GxkdQ=;
-        b=VsRDhExYAUNbV5kYCu+RIrL3ENAmYSkOXwtcfSdszS//gyJA2bp7vX4xAmF8AxQODQ
-         Owx3tCYfjOTTyH+J73bHP/4m13r6/RMKr/V89RIvZulgTA9mQE6dQ6AqP3zkq2QMbww6
-         +4n4ghsMOfZJfMQ4REUwzmRQyVI2/W59vslVJeQngK0o/z20SqpFrsgMnAN1GmigU84z
-         4Tui0Afvbz+Ow+tgyX4TGXXKHS/rEyofnDHtyaXurb6y9OuwmmbB6R+h6Z+i9B6q3G07
-         JGeIJcQBTiL+jfCsBYzCLvadSlUiviG8pfdhiFCWh6EBSSFNzu9g2va11LBMkPx+5RXn
-         RpLw==
-X-Gm-Message-State: AKGB3mLLdvQxaW37p9VtbxW6WiYl1Jyrt90xoVKSqCwX66F5020OIR5x
-        VKDP/EjIXHKF0cuX1q0clOIYrg==
-X-Google-Smtp-Source: ACJfBotUrp3L90RGWMrFyWF6+YtS6dvkZJ0ZeV5j5/i2RqH0AnB0boZQQWyYGaz0n5wZOiociu1dMw==
-X-Received: by 10.223.154.19 with SMTP id z19mr22388200wrb.260.1514235345374;
-        Mon, 25 Dec 2017 12:55:45 -0800 (PST)
+        bh=nmovwwxZQQa2ugEDLnXxoU69CsqWUnhsDto5qVfQljI=;
+        b=EPzc8R/TN6NH3Tvly0vbQCFkqUdahnbDYujdzt+wAdBr4z2bESghbaoNw+kzWykUaC
+         G6EdUxlvQTygywG/MhmJDtx3LjuoUSXnLpT//2iw1lZa7uOb4v1T5oz7OtXUYqUQo0Xw
+         4Zzk8RcG1uiHhYXnhoi2Rsr1B/Vl7uEHh1px8VBr7XAmG7ULOeAP24Iq4KGIT0UyKDsI
+         ZoIJqa4J+uFxVp7GOAcWiktmFzDEQLtncnbpcoKkV1HJ7PZLNq/zRuhjnyblsw2JsKmp
+         5esCIW/e7syhz/3fiU2+DcpxfX8Z7hz3GLk3NzSnmAkXv+a7YNomjr9VIUmcfbJipkws
+         YaOw==
+X-Gm-Message-State: AKGB3mJgWIXiR91Jc4YVnWqjhYxCTJtRVbTke90g0xF0XDGpjzvJtSbt
+        JJJtm4yYa51NrU89RR/D4noXfA==
+X-Google-Smtp-Source: ACJfBouSgIxtYrj51f7q3xEziJb3fJlQCFfKo17xCJ8hKXbNdYyAV4MmDu6vDezlowjQgsHETpwrUQ==
+X-Received: by 10.28.130.208 with SMTP id e199mr19345255wmd.75.1514235352290;
+        Mon, 25 Dec 2017 12:55:52 -0800 (PST)
 Received: from localhost.localdomain ([160.171.216.245])
-        by smtp.gmail.com with ESMTPSA id y42sm39552441wrc.96.2017.12.25.12.55.40
+        by smtp.gmail.com with ESMTPSA id y42sm39552441wrc.96.2017.12.25.12.55.45
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 25 Dec 2017 12:55:44 -0800 (PST)
+        Mon, 25 Dec 2017 12:55:51 -0800 (PST)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
@@ -64,9 +64,9 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v5 6/8] kernel/jump_label: abstract jump_entry member accessors
-Date:   Mon, 25 Dec 2017 20:54:38 +0000
-Message-Id: <20171225205440.14575-7-ard.biesheuvel@linaro.org>
+Subject: [PATCH v5 7/8] arm64/kernel: jump_label: use relative references
+Date:   Mon, 25 Dec 2017 20:54:39 +0000
+Message-Id: <20171225205440.14575-8-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20171225205440.14575-1-ard.biesheuvel@linaro.org>
 References: <20171225205440.14575-1-ard.biesheuvel@linaro.org>
@@ -74,7 +74,7 @@ Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61577
+X-archive-position: 61578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,427 +91,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation of allowing architectures to use relative references
-in jump_label entries [which can dramatically reduce the memory
-footprint], introduce abstractions for references to the 'code' and
-'key' members of struct jump_entry.
+On a randomly chosen distro kernel build for arm64, vmlinux.o shows the
+following sections, containing jump label entries, and the associated
+RELA relocation records, respectively:
+
+  ...
+  [38088] __jump_table      PROGBITS         0000000000000000  00e19f30
+       000000000002ea10  0000000000000000  WA       0     0     8
+  [38089] .rela__jump_table RELA             0000000000000000  01fd8bb0
+       000000000008be30  0000000000000018   I      38178   38088     8
+  ...
+
+In other words, we have 190 KB worth of 'struct jump_entry' instances,
+and 573 KB worth of RELA entries to relocate each entry's code, target
+and key members. This means the RELA section occupies 10% of the .init
+segment, and the two sections combined represent 5% of vmlinux's entire
+memory footprint.
+
+So let's switch from 64-bit absolute references to 32-bit relative
+references: this reduces the size of the __jump_table by 50%, and gets
+rid of the RELA section entirely.
+
+Note that this requires some extra care in the sorting routine, given
+that the offsets change when entries are moved around in the jump_entry
+table.
 
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- arch/arm/include/asm/jump_label.h     | 27 ++++++++++++++
- arch/arm64/include/asm/jump_label.h   | 27 ++++++++++++++
- arch/mips/include/asm/jump_label.h    | 27 ++++++++++++++
- arch/powerpc/include/asm/jump_label.h | 27 ++++++++++++++
- arch/s390/include/asm/jump_label.h    | 20 +++++++++++
- arch/sparc/include/asm/jump_label.h   | 27 ++++++++++++++
- arch/tile/include/asm/jump_label.h    | 27 ++++++++++++++
- arch/x86/include/asm/jump_label.h     | 27 ++++++++++++++
- kernel/jump_label.c                   | 38 +++++++++-----------
- 9 files changed, 225 insertions(+), 22 deletions(-)
+ arch/arm64/include/asm/jump_label.h | 27 ++++++++++++--------
+ arch/arm64/kernel/jump_label.c      | 22 +++++++++++++---
+ 2 files changed, 36 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/include/asm/jump_label.h b/arch/arm/include/asm/jump_label.h
-index e12d7d096fc0..7b05b404063a 100644
---- a/arch/arm/include/asm/jump_label.h
-+++ b/arch/arm/include/asm/jump_label.h
-@@ -45,5 +45,32 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
-+{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
-+
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
- #endif  /* __ASSEMBLY__ */
- #endif
 diff --git a/arch/arm64/include/asm/jump_label.h b/arch/arm64/include/asm/jump_label.h
-index 1b5e0e843c3a..9d6e46355c89 100644
+index 9d6e46355c89..5cec68616125 100644
 --- a/arch/arm64/include/asm/jump_label.h
 +++ b/arch/arm64/include/asm/jump_label.h
-@@ -62,5 +62,32 @@ struct jump_entry {
- 	jump_label_t key;
+@@ -30,8 +30,8 @@ static __always_inline bool arch_static_branch(struct static_key *key, bool bran
+ {
+ 	asm goto("1: nop\n\t"
+ 		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".align 3\n\t"
+-		 ".quad 1b, %l[l_yes], %c0\n\t"
++		 ".align 2\n\t"
++		 ".long 1b - ., %l[l_yes] - ., %c0 - .\n\t"
+ 		 ".popsection\n\t"
+ 		 :  :  "i"(&((char *)key)[branch]) :  : l_yes);
+ 
+@@ -44,8 +44,8 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ {
+ 	asm goto("1: b %l[l_yes]\n\t"
+ 		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".align 3\n\t"
+-		 ".quad 1b, %l[l_yes], %c0\n\t"
++		 ".align 2\n\t"
++		 ".long 1b - ., %l[l_yes] - ., %c0 - .\n\t"
+ 		 ".popsection\n\t"
+ 		 :  :  "i"(&((char *)key)[branch]) :  : l_yes);
+ 
+@@ -57,19 +57,26 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ typedef u64 jump_label_t;
+ 
+ struct jump_entry {
+-	jump_label_t code;
+-	jump_label_t target;
+-	jump_label_t key;
++	s32 code;
++	s32 target;
++	s32 key;
  };
  
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
+ static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
+ {
+-	return entry->code;
++	return (jump_label_t)&entry->code + entry->code;
 +}
 +
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
++static inline jump_label_t jump_entry_target(const struct jump_entry *entry)
 +{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
++	return (jump_label_t)&entry->target + entry->target;
+ }
+ 
+ static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
+ {
+-	return (struct static_key *)((unsigned long)entry->key & ~1UL);
++	unsigned long key = (unsigned long)&entry->key + entry->key;
 +
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
++	return (struct static_key *)(key & ~1UL);
+ }
+ 
+ static inline bool jump_entry_is_branch(const struct jump_entry *entry)
+@@ -87,7 +94,7 @@ static inline void jump_entry_set_module_init(struct jump_entry *entry)
+ 	entry->code = 0;
+ }
+ 
+-#define jump_label_swap		NULL
++void jump_label_swap(void *a, void *b, int size);
+ 
  #endif  /* __ASSEMBLY__ */
  #endif	/* __ASM_JUMP_LABEL_H */
-diff --git a/arch/mips/include/asm/jump_label.h b/arch/mips/include/asm/jump_label.h
-index e77672539e8e..70df9293dc49 100644
---- a/arch/mips/include/asm/jump_label.h
-+++ b/arch/mips/include/asm/jump_label.h
-@@ -66,5 +66,32 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
-+{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
-+
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
- #endif  /* __ASSEMBLY__ */
- #endif /* _ASM_MIPS_JUMP_LABEL_H */
-diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
-index 9a287e0ac8b1..412b2699c9f6 100644
---- a/arch/powerpc/include/asm/jump_label.h
-+++ b/arch/powerpc/include/asm/jump_label.h
-@@ -59,6 +59,33 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
-+{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
-+
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
- #else
- #define ARCH_STATIC_BRANCH(LABEL, KEY)		\
- 1098:	nop;					\
-diff --git a/arch/s390/include/asm/jump_label.h b/arch/s390/include/asm/jump_label.h
-index 40f651292aa7..3d4a08e9514b 100644
---- a/arch/s390/include/asm/jump_label.h
-+++ b/arch/s390/include/asm/jump_label.h
-@@ -50,5 +50,25 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline jump_label_t jump_entry_key(const struct jump_entry *entry)
-+{
-+	return entry->key;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
- #endif  /* __ASSEMBLY__ */
- #endif
-diff --git a/arch/sparc/include/asm/jump_label.h b/arch/sparc/include/asm/jump_label.h
-index 94eb529dcb77..18e893687f7c 100644
---- a/arch/sparc/include/asm/jump_label.h
-+++ b/arch/sparc/include/asm/jump_label.h
-@@ -48,5 +48,32 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
-+{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
-+
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
- #endif  /* __ASSEMBLY__ */
- #endif
-diff --git a/arch/tile/include/asm/jump_label.h b/arch/tile/include/asm/jump_label.h
-index cde7573f397b..86acaa6ff33d 100644
---- a/arch/tile/include/asm/jump_label.h
-+++ b/arch/tile/include/asm/jump_label.h
-@@ -55,4 +55,31 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
-+{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
-+
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
- #endif /* _ASM_TILE_JUMP_LABEL_H */
-diff --git a/arch/x86/include/asm/jump_label.h b/arch/x86/include/asm/jump_label.h
-index 8c0de4282659..009ff2699d07 100644
---- a/arch/x86/include/asm/jump_label.h
-+++ b/arch/x86/include/asm/jump_label.h
-@@ -74,6 +74,33 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-+{
-+	return entry->code;
-+}
-+
-+static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
-+{
-+	return (struct static_key *)((unsigned long)entry->key & ~1UL);
-+}
-+
-+static inline bool jump_entry_is_branch(const struct jump_entry *entry)
-+{
-+	return (unsigned long)entry->key & 1UL;
-+}
-+
-+static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
-+{
-+	return entry->code == 0;
-+}
-+
-+static inline void jump_entry_set_module_init(struct jump_entry *entry)
-+{
-+	entry->code = 0;
-+}
-+
-+#define jump_label_swap		NULL
-+
- #else	/* __ASSEMBLY__ */
- 
- .macro STATIC_JUMP_IF_TRUE target, key, def
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 8594d24e4adc..baed094ab8d1 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -37,10 +37,12 @@ static int jump_label_cmp(const void *a, const void *b)
- 	const struct jump_entry *jea = a;
- 	const struct jump_entry *jeb = b;
- 
--	if (jea->key < jeb->key)
-+	if ((unsigned long)jump_entry_key(jea) <
-+	    (unsigned long)jump_entry_key(jeb))
- 		return -1;
- 
--	if (jea->key > jeb->key)
-+	if ((unsigned long)jump_entry_key(jea) >
-+	    (unsigned long)jump_entry_key(jeb))
- 		return 1;
- 
- 	return 0;
-@@ -53,7 +55,8 @@ jump_label_sort_entries(struct jump_entry *start, struct jump_entry *stop)
- 
- 	size = (((unsigned long)stop - (unsigned long)start)
- 					/ sizeof(struct jump_entry));
--	sort(start, size, sizeof(struct jump_entry), jump_label_cmp, NULL);
-+	sort(start, size, sizeof(struct jump_entry), jump_label_cmp,
-+	     jump_label_swap);
- }
- 
- static void jump_label_update(struct static_key *key);
-@@ -254,8 +257,8 @@ EXPORT_SYMBOL_GPL(jump_label_rate_limit);
- 
- static int addr_conflict(struct jump_entry *entry, void *start, void *end)
+diff --git a/arch/arm64/kernel/jump_label.c b/arch/arm64/kernel/jump_label.c
+index c2dd1ad3e648..2b8e459e91f7 100644
+--- a/arch/arm64/kernel/jump_label.c
++++ b/arch/arm64/kernel/jump_label.c
+@@ -25,12 +25,12 @@
+ void arch_jump_label_transform(struct jump_entry *entry,
+ 			       enum jump_label_type type)
  {
--	if (entry->code <= (unsigned long)end &&
--		entry->code + JUMP_LABEL_NOP_SIZE > (unsigned long)start)
-+	if (jump_entry_code(entry) <= (unsigned long)end &&
-+	    jump_entry_code(entry) + JUMP_LABEL_NOP_SIZE > (unsigned long)start)
- 		return 1;
+-	void *addr = (void *)entry->code;
++	void *addr = (void *)jump_entry_code(entry);
+ 	u32 insn;
  
- 	return 0;
-@@ -314,16 +317,6 @@ static inline void static_key_set_linked(struct static_key *key)
- 	key->type |= JUMP_TYPE_LINKED;
+ 	if (type == JUMP_LABEL_JMP) {
+-		insn = aarch64_insn_gen_branch_imm(entry->code,
+-						   entry->target,
++		insn = aarch64_insn_gen_branch_imm(jump_entry_code(entry),
++						   jump_entry_target(entry),
+ 						   AARCH64_INSN_BRANCH_NOLINK);
+ 	} else {
+ 		insn = aarch64_insn_gen_nop();
+@@ -50,4 +50,20 @@ void arch_jump_label_transform_static(struct jump_entry *entry,
+ 	 */
  }
  
--static inline struct static_key *jump_entry_key(struct jump_entry *entry)
--{
--	return (struct static_key *)((unsigned long)entry->key & ~1UL);
--}
--
--static bool jump_entry_branch(struct jump_entry *entry)
--{
--	return (unsigned long)entry->key & 1UL;
--}
--
- /***
-  * A 'struct static_key' uses a union such that it either points directly
-  * to a table of 'struct jump_entry' or to a linked list of modules which in
-@@ -348,7 +341,7 @@ static enum jump_label_type jump_label_type(struct jump_entry *entry)
- {
- 	struct static_key *key = jump_entry_key(entry);
- 	bool enabled = static_key_enabled(key);
--	bool branch = jump_entry_branch(entry);
-+	bool branch = jump_entry_is_branch(entry);
- 
- 	/* See the comment in linux/jump_label.h */
- 	return enabled ^ branch;
-@@ -364,7 +357,8 @@ static void __jump_label_update(struct static_key *key,
- 		 * kernel_text_address() verifies we are not in core kernel
- 		 * init code, see jump_label_invalidate_module_init().
- 		 */
--		if (entry->code && kernel_text_address(entry->code))
-+		if (jump_entry_is_module_init(entry) &&
-+		    kernel_text_address(jump_entry_code(entry)))
- 			arch_jump_label_transform(entry, jump_label_type(entry));
- 	}
- }
-@@ -417,7 +411,7 @@ static enum jump_label_type jump_label_init_type(struct jump_entry *entry)
- {
- 	struct static_key *key = jump_entry_key(entry);
- 	bool type = static_key_type(key);
--	bool branch = jump_entry_branch(entry);
-+	bool branch = jump_entry_is_branch(entry);
- 
- 	/* See the comment in linux/jump_label.h */
- 	return type ^ branch;
-@@ -541,7 +535,7 @@ static int jump_label_add_module(struct module *mod)
- 			continue;
- 
- 		key = iterk;
--		if (within_module(iter->key, mod)) {
-+		if (within_module((unsigned long)key, mod)) {
- 			static_key_set_entries(key, iter);
- 			continue;
- 		}
-@@ -591,7 +585,7 @@ static void jump_label_del_module(struct module *mod)
- 
- 		key = jump_entry_key(iter);
- 
--		if (within_module(iter->key, mod))
-+		if (within_module((unsigned long)key, mod))
- 			continue;
- 
- 		/* No memory during module load */
-@@ -634,8 +628,8 @@ static void jump_label_invalidate_module_init(struct module *mod)
- 	struct jump_entry *iter;
- 
- 	for (iter = iter_start; iter < iter_stop; iter++) {
--		if (within_module_init(iter->code, mod))
--			iter->code = 0;
-+		if (within_module_init(jump_entry_code(iter), mod))
-+			jump_entry_set_module_init(iter);
- 	}
- }
- 
++void jump_label_swap(void *a, void *b, int size)
++{
++	long delta = (unsigned long)a - (unsigned long)b;
++	struct jump_entry *jea = a;
++	struct jump_entry *jeb = b;
++	struct jump_entry tmp = *jea;
++
++	jea->code	= jeb->code - delta;
++	jea->target	= jeb->target - delta;
++	jea->key	= jeb->key - delta;
++
++	jeb->code	= tmp.code + delta;
++	jeb->target	= tmp.target + delta;
++	jeb->key	= tmp.key + delta;
++}
++
+ #endif	/* HAVE_JUMP_LABEL */
 -- 
 2.11.0

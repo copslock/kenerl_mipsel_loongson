@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Dec 2017 21:57:09 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:44549
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991258AbdLYUzjnLA8N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Dec 2017 21:55:39 +0100
-Received: by mail-wm0-x244.google.com with SMTP id t8so32809426wmc.3
-        for <linux-mips@linux-mips.org>; Mon, 25 Dec 2017 12:55:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Dec 2017 21:57:33 +0100 (CET)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:39708
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990493AbdLYUzpfeq8N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Dec 2017 21:55:45 +0100
+Received: by mail-wr0-x244.google.com with SMTP id o101so4775783wrb.6
+        for <linux-mips@linux-mips.org>; Mon, 25 Dec 2017 12:55:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=MNuvKMvZr3GVfTz4MvnzswRbek+xsbzeG112C9Cor2w=;
-        b=BMyTz7wp+Fxi1An3WUb91pRiOr+As7YcLQ8dArfHH7VtK2l4fc4Q3OOhL1nUxsLzhY
-         KktWHlX+oWyjSJ3k1LQBpLpOIOsvMCPm+09fRDyD0xkV4StB6nNg1EUEWFpX6FmjYupi
-         FamwgJg598YU7xHeL8gkuXiyPYyWKDrKfX6ro=
+        bh=FeRUkMrB+h9OzAG6tsXZHgHhFJKOYm9CVFNsKuS7D+M=;
+        b=Q1HREJftT2aZs/JqWZHOsaU2Z+TagXl6eJx5d8qWSHZLETi/xqSxljw9g7z/0zATGE
+         duUGBNR37ud1cZgQ+9l7EbvqnYeqHzsK4SsA2kf1hhrWK+rl77iGjFYfxJozrsjDhnwN
+         bXow+s9jmxFGkTsydCr38z9kopa8/WalpD6Z0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=MNuvKMvZr3GVfTz4MvnzswRbek+xsbzeG112C9Cor2w=;
-        b=p+LFDasORZ3U0avDtVT8nQ0Hn0CeXMD2+tGT4LVRWdbNZ+U6kGjrrzFchJxZblOEkw
-         5QW7Zo6HBaay7K6x2tLvDeEsO39l340uUgv0196ZRgfGsz++2eNrW/eS0CH5ohePFuPg
-         qn6iGOXWg9u1oKnmmrc3oDj6m4Zk2b1fkC/fkgqE0l6cUxjjrBcxyAFn3piU6saSZELA
-         AeQqkyo3PyrUS1rzMiq3yawYQ6y7DTrKOaGite30V2lTRUaekdBoROvSPNV409Dp5qFp
-         L8ev4HewuFPaBSih0eLsN8aEwTl0Id/7sJa92FZFxHUUtVHntn6JNQxXdHeS2rSddkER
-         QeHw==
-X-Gm-Message-State: AKGB3mJd3q89i0Fbmo46SFJ+1vwuH0PG3Qik2PMtXgf+vMVIrE1pdFtU
-        hKIVmDqv+0wgnVT7bzDfSljYYdlHRGM=
-X-Google-Smtp-Source: ACJfBotJqEF4AzBdlQ9WvPmZlo2Y4TFclh0gtk2pMwFp0BFOk8FVD97q5jqfKG37YLKwrHDEH+Helg==
-X-Received: by 10.28.9.146 with SMTP id 140mr22114484wmj.117.1514235334349;
-        Mon, 25 Dec 2017 12:55:34 -0800 (PST)
+        bh=FeRUkMrB+h9OzAG6tsXZHgHhFJKOYm9CVFNsKuS7D+M=;
+        b=FxFD7Nw7F6TbZicKFgwZBO4gYFoX8oLzJjFXHCaCbKXZ2lqz8MpNYcbTr2PnIywFk8
+         wt22WpkXSECux7k+aaz+yQGG9IjtCrC8CuNrWebVrroMDzkkWKejV7D9BsbVwS2wwpwz
+         3GFpfTu/GJQdHfLSkOeWDXSSts5yr1jQqnUh/o0wO093kb1i/i9sTreD2GpuT+goEIlv
+         QZT/kHtRfjTVxwI4uau/NKBTyq18tgB1PG3KVxoYphhRNeYSaXR5j7haSl8LBQEQfznq
+         MVcGzaPH/92cn9Pt7IwPldZylvWjjOVUWUMokawIWnBMpZB1J89wIDCgyNSC4lYsT225
+         SOkA==
+X-Gm-Message-State: AKGB3mLeEBxvqfR+dvT0CJ4j0ytXTIVMJvEWXzjat9khv658j4naMLht
+        VKtuF2VTBWSaJts4SKSdQB6BzA==
+X-Google-Smtp-Source: ACJfBoteICRvaVw9H9mJJrSL01+aQZvdzUzxu8wJD6cpdtXwoYC93Xxnvuqng/n5TPl+pbzXvxrMJg==
+X-Received: by 10.223.145.230 with SMTP id 93mr21913104wri.190.1514235340172;
+        Mon, 25 Dec 2017 12:55:40 -0800 (PST)
 Received: from localhost.localdomain ([160.171.216.245])
-        by smtp.gmail.com with ESMTPSA id y42sm39552441wrc.96.2017.12.25.12.55.29
+        by smtp.gmail.com with ESMTPSA id y42sm39552441wrc.96.2017.12.25.12.55.34
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 25 Dec 2017 12:55:33 -0800 (PST)
+        Mon, 25 Dec 2017 12:55:39 -0800 (PST)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
@@ -64,9 +64,9 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v5 4/8] PCI: Add support for relative addressing in quirk tables
-Date:   Mon, 25 Dec 2017 20:54:36 +0000
-Message-Id: <20171225205440.14575-5-ard.biesheuvel@linaro.org>
+Subject: [PATCH v5 5/8] kernel: tracepoints: add support for relative references
+Date:   Mon, 25 Dec 2017 20:54:37 +0000
+Message-Id: <20171225205440.14575-6-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20171225205440.14575-1-ard.biesheuvel@linaro.org>
 References: <20171225205440.14575-1-ard.biesheuvel@linaro.org>
@@ -74,7 +74,7 @@ Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61575
+X-archive-position: 61576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,86 +91,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow the PCI quirk tables to be emitted in a way that avoids absolute
-references to the hook functions. This reduces the size of the entries,
-and, more importantly, makes them invariant under runtime relocation
-(e.g., for KASLR)
+To avoid the need for relocating absolute references to tracepoint
+structures at boot time when running relocatable kernels (which may
+take a disproportionate amount of space), add the option to emit
+these tables as relative references instead.
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- drivers/pci/quirks.c | 13 ++++++++++---
- include/linux/pci.h  | 20 ++++++++++++++++++++
- 2 files changed, 30 insertions(+), 3 deletions(-)
+ include/linux/tracepoint.h | 19 ++++++--
+ kernel/tracepoint.c        | 50 +++++++++++---------
+ 2 files changed, 42 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 10684b17d0bd..b6d51b4d5ce1 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3556,9 +3556,16 @@ static void pci_do_fixups(struct pci_dev *dev, struct pci_fixup *f,
- 		     f->vendor == (u16) PCI_ANY_ID) &&
- 		    (f->device == dev->device ||
- 		     f->device == (u16) PCI_ANY_ID)) {
--			calltime = fixup_debug_start(dev, f->hook);
--			f->hook(dev);
--			fixup_debug_report(dev, calltime, f->hook);
-+			void (*hook)(struct pci_dev *dev);
+diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
+index a26ffbe09e71..d02bf1a695e8 100644
+--- a/include/linux/tracepoint.h
++++ b/include/linux/tracepoint.h
+@@ -228,6 +228,19 @@ extern void syscall_unregfunc(void);
+ 		return static_key_false(&__tracepoint_##name.key);	\
+ 	}
+ 
 +#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
-+			hook = (void *)((unsigned long)&f->hook_offset +
-+					f->hook_offset);
++#define __TRACEPOINT_ENTRY(name)					 \
++	asm("	.section \"__tracepoints_ptrs\", \"a\"		     \n" \
++	    "	.balign 4					     \n" \
++	    "	.long " VMLINUX_SYMBOL_STR(__tracepoint_##name) " - .\n" \
++	    "	.previous					     \n")
 +#else
-+			hook = f->hook;
++#define __TRACEPOINT_ENTRY(name)					 \
++	static struct tracepoint * const __tracepoint_ptr_##name __used	 \
++	__attribute__((section("__tracepoints_ptrs"))) =		 \
++		&__tracepoint_##name
 +#endif
-+			calltime = fixup_debug_start(dev, hook);
-+			hook(dev);
-+			fixup_debug_report(dev, calltime, hook);
- 		}
++
+ /*
+  * We have no guarantee that gcc and the linker won't up-align the tracepoint
+  * structures, so we create an array of pointers that will be used for iteration
+@@ -237,11 +250,9 @@ extern void syscall_unregfunc(void);
+ 	static const char __tpstrtab_##name[]				 \
+ 	__attribute__((section("__tracepoints_strings"))) = #name;	 \
+ 	struct tracepoint __tracepoint_##name				 \
+-	__attribute__((section("__tracepoints"))) =			 \
++	__attribute__((section("__tracepoints"), used)) =		 \
+ 		{ __tpstrtab_##name, STATIC_KEY_INIT_FALSE, reg, unreg, NULL };\
+-	static struct tracepoint * const __tracepoint_ptr_##name __used	 \
+-	__attribute__((section("__tracepoints_ptrs"))) =		 \
+-		&__tracepoint_##name;
++	__TRACEPOINT_ENTRY(name);
+ 
+ #define DEFINE_TRACE(name)						\
+ 	DEFINE_TRACE_FN(name, NULL, NULL);
+diff --git a/kernel/tracepoint.c b/kernel/tracepoint.c
+index 685c50ae6300..05649fef106c 100644
+--- a/kernel/tracepoint.c
++++ b/kernel/tracepoint.c
+@@ -327,6 +327,28 @@ int tracepoint_probe_unregister(struct tracepoint *tp, void *probe, void *data)
+ }
+ EXPORT_SYMBOL_GPL(tracepoint_probe_unregister);
+ 
++static void for_each_tracepoint_range(struct tracepoint * const *begin,
++		struct tracepoint * const *end,
++		void (*fct)(struct tracepoint *tp, void *priv),
++		void *priv)
++{
++	if (!begin)
++		return;
++
++	if (IS_ENABLED(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)) {
++		const int *iter;
++
++		for (iter = (const int *)begin; iter < (const int *)end; iter++)
++			fct((struct tracepoint *)((unsigned long)iter + *iter),
++			    priv);
++	} else {
++		struct tracepoint * const *iter;
++
++		for (iter = begin; iter < end; iter++)
++			fct(*iter, priv);
++	}
++}
++
+ #ifdef CONFIG_MODULES
+ bool trace_module_has_bad_taint(struct module *mod)
+ {
+@@ -391,15 +413,9 @@ EXPORT_SYMBOL_GPL(unregister_tracepoint_module_notifier);
+  * Ensure the tracer unregistered the module's probes before the module
+  * teardown is performed. Prevents leaks of probe and data pointers.
+  */
+-static void tp_module_going_check_quiescent(struct tracepoint * const *begin,
+-		struct tracepoint * const *end)
++static void tp_module_going_check_quiescent(struct tracepoint *tp, void *priv)
+ {
+-	struct tracepoint * const *iter;
+-
+-	if (!begin)
+-		return;
+-	for (iter = begin; iter < end; iter++)
+-		WARN_ON_ONCE((*iter)->funcs);
++	WARN_ON_ONCE(tp->funcs);
  }
  
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index c170c9250c8b..e8c34afb5d4a 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1792,7 +1792,11 @@ struct pci_fixup {
- 	u16 device;		/* You can use PCI_ANY_ID here of course */
- 	u32 class;		/* You can use PCI_ANY_ID here too */
- 	unsigned int class_shift;	/* should be 0, 8, 16 */
-+#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
-+	signed int hook_offset;
-+#else
- 	void (*hook)(struct pci_dev *dev);
-+#endif
- };
+ static int tracepoint_module_coming(struct module *mod)
+@@ -450,8 +466,9 @@ static void tracepoint_module_going(struct module *mod)
+ 			 * Called the going notifier before checking for
+ 			 * quiescence.
+ 			 */
+-			tp_module_going_check_quiescent(mod->tracepoints_ptrs,
+-				mod->tracepoints_ptrs + mod->num_tracepoints);
++			for_each_tracepoint_range(mod->tracepoints_ptrs,
++				mod->tracepoints_ptrs + mod->num_tracepoints,
++				tp_module_going_check_quiescent, NULL);
+ 			break;
+ 		}
+ 	}
+@@ -503,19 +520,6 @@ static __init int init_tracepoints(void)
+ __initcall(init_tracepoints);
+ #endif /* CONFIG_MODULES */
  
- enum pci_fixup_pass {
-@@ -1806,12 +1810,28 @@ enum pci_fixup_pass {
- 	pci_fixup_suspend_late,	/* pci_device_suspend_late() */
- };
- 
-+#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
-+#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-+				    class_shift, hook)			\
-+	__ADDRESSABLE(hook)						\
-+	asm(".section "	#sec ", \"a\"				\n"	\
-+	    ".balign	16					\n"	\
-+	    ".short "	#vendor ", " #device "			\n"	\
-+	    ".long "	#class ", " #class_shift "		\n"	\
-+	    ".long "	VMLINUX_SYMBOL_STR(hook) " - .		\n"	\
-+	    ".previous						\n");
-+#define DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-+				  class_shift, hook)			\
-+	__DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-+				  class_shift, hook)
-+#else
- /* Anonymous variables would be nice... */
- #define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, class,	\
- 				  class_shift, hook)			\
- 	static const struct pci_fixup __PASTE(__pci_fixup_##name,__LINE__) __used	\
- 	__attribute__((__section__(#section), aligned((sizeof(void *)))))    \
- 		= { vendor, device, class, class_shift, hook };
-+#endif
- 
- #define DECLARE_PCI_FIXUP_CLASS_EARLY(vendor, device, class,		\
- 					 class_shift, hook)		\
+-static void for_each_tracepoint_range(struct tracepoint * const *begin,
+-		struct tracepoint * const *end,
+-		void (*fct)(struct tracepoint *tp, void *priv),
+-		void *priv)
+-{
+-	struct tracepoint * const *iter;
+-
+-	if (!begin)
+-		return;
+-	for (iter = begin; iter < end; iter++)
+-		fct(*iter, priv);
+-}
+-
+ /**
+  * for_each_kernel_tracepoint - iteration on all kernel tracepoints
+  * @fct: callback
 -- 
 2.11.0

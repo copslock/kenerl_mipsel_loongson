@@ -1,67 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Dec 2017 16:26:28 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:41719 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990426AbdLYP0UEkrJf convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Dec 2017 16:26:20 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 25 Dec 2017 15:24:53 +0000
-Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
- MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
- 14.03.0361.001; Mon, 25 Dec 2017 07:23:53 -0800
-From:   Aleksandar Markovic <Aleksandar.Markovic@mips.com>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <Douglas.Leung@mips.com>,
-        Goran Ferenc <Goran.Ferenc@mips.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        James Hogan <James.Hogan@mips.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miodrag Dinic <Miodrag.Dinic@mips.com>,
-        Paul Burton <Paul.Burton@mips.com>,
-        Petar Jovanovic <Petar.Jovanovic@mips.com>,
-        Raghu Gandham <Raghu.Gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: RE: [PATCH v11 0/3] MIPS: Add virtual Ranchu board as a
- generic-based board
-Thread-Topic: [PATCH v11 0/3] MIPS: Add virtual Ranchu board as a
- generic-based board
-Thread-Index: AQHTdcSzmHZkWEPSD0KVrWyNSeBmOKNUPQ2k
-Date:   Mon, 25 Dec 2017 15:23:52 +0000
-Message-ID: <BD3A5F1946F2E540A31AF2CE969BAEEEC28217@MIPSMAIL01.mipstec.com>
-References: <1513356553-7238-1-git-send-email-aleksandar.markovic@rt-rk.com>
-In-Reply-To: <1513356553-7238-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [82.117.201.26]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Dec 2017 18:43:49 +0100 (CET)
+Received: from mail-pl0-x241.google.com ([IPv6:2607:f8b0:400e:c01::241]:47031
+        "EHLO mail-pl0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990426AbdLYRnlSymMW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Dec 2017 18:43:41 +0100
+Received: by mail-pl0-x241.google.com with SMTP id i6so16867995plt.13;
+        Mon, 25 Dec 2017 09:43:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=GD6f0QMjongdb1Lr5FxFbDlgm/RJdwszNEf/wNSd6A4=;
+        b=soNdCE+/SPm2oqDYTUysp4UgPSuUsfFr6uPnMCWqkOVi8cx1E30ESaQTE5pCnaLw5e
+         MqBTOWiEP7buqr7A7Ylla4jOc5UiLFfBxPOCaqT/OQm8DdWqtgWFAEyS8dEolVL13EgW
+         0x8Xj6xe6lkoCGIwo5qZYqyw4t70LMJuRZQfWuTJv8aE0s2TsyLY33T4IqErZIgSI/8T
+         Sc4nLFCW92rRhreLfQprWmpi3+qIU+0pXGDTlTeVYTz5V2H4Rf3pztxfTi4PP8LE71uK
+         zpo/fAyFjzXg3UcY3WERO4RdBIScZnBxVgmJKLgeoPC4Ba4Da8N9JSrrMMHkSijPlVGO
+         6jIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=GD6f0QMjongdb1Lr5FxFbDlgm/RJdwszNEf/wNSd6A4=;
+        b=Go2jzRobCXATHlsxAwyi+g7zr0yDwfW5J1hnPkPyVW9TKoWMWEUDmCq4BHZ8nViD8a
+         75ihMbeomHmbcy56bGzJevhtFfz6I0Ew08kNmLdp+qX03tUcVvPVyWwzCPGtVqqlEvva
+         qKhP+SriFgXKSjfsvhq0dOo87whgPk/HV+aae9+Me1+wz+xggK8sNWRWWPEtTIpQcyeN
+         kZNfqNMXlo1MdMI9vwyuwG7Wu+OopWNUWqlQ3GMRojTljDRtmNVu4CySy25IGPv/o7Kx
+         hMFrVHLf4ku6nKQBu2AsKHvh1V/nzNM0IXMG2naV0eTYRsjAYy2XQVtnJ1xkJD5M/9No
+         FCXQ==
+X-Gm-Message-State: AKGB3mIXRhL1tqvrLFRfN9buNsNuy5LHEW7W2u1TTRdPgrR0+b9bZN2O
+        sNDf54FOlMoVE/1FDXaCHlc=
+X-Google-Smtp-Source: ACJfBou9oDHcjGwXi3TX0ZbZUG61S7N7gZQ+/l7TouRquG7MtKK/7C2L58z9E68YWTjjzlS86dNZ4Q==
+X-Received: by 10.84.168.162 with SMTP id f31mr22835321plb.249.1514223814676;
+        Mon, 25 Dec 2017 09:43:34 -0800 (PST)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id e70sm29560830pfc.185.2017.12.25.09.43.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 25 Dec 2017 09:43:34 -0800 (PST)
+Date:   Mon, 25 Dec 2017 09:43:33 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-kernel@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        linux-mips@linux-mips.org
+Subject: Re: MIPS: Fix CPS SMP NS16550 UART defaults
+Message-ID: <20171225174333.GA28567@roeck-us.net>
+References: <20171121000240.4058-1-james.hogan@mips.com>
 MIME-Version: 1.0
-X-BESS-ID: 1514215492-321457-23977-129977-11
-X-BESS-VER: 2017.16-r1712230000
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.60
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188338
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
-X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
-X-BESS-BRTS-Status: 1
-Return-Path: <Aleksandar.Markovic@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20171121000240.4058-1-james.hogan@mips.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61569
+X-archive-position: 61570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Aleksandar.Markovic@mips.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,181 +72,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ping
-________________________________________
-From: Aleksandar Markovic [aleksandar.markovic@rt-rk.com]
-Sent: Friday, December 15, 2017 5:48 PM
-To: linux-mips@linux-mips.org
-Cc: Aleksandar Markovic; David S. Miller; Douglas Leung; Goran Ferenc; Greg Kroah-Hartman; James Hogan; linux-kernel@vger.kernel.org; Mauro Carvalho Chehab; Miodrag Dinic; Paul Burton; Petar Jovanovic; Raghu Gandham; Ralf Baechle; Randy Dunlap
-Subject: [PATCH v11 0/3] MIPS: Add virtual Ranchu board as a generic-based board
+On Tue, Nov 21, 2017 at 12:02:40AM +0000, James Hogan wrote:
+> From: James Hogan <jhogan@kernel.org>
+> 
+> The MIPS_CPS_NS16550_BASE and MIPS_CPS_NS16550_SHIFT options have no
+> defaults for non-Malta platforms which select SYS_SUPPORTS_MIPS_CPS
+> (i.e. the pistachio and generic platforms). This is problematic for
+> automated allyesconfig and allmodconfig builds based on these platforms,
+> since make silentoldconfig tries to ask the user for values, and
+> especially since v4.15 where the default platform was switched to
+> generic.
+> 
+> Default these options to 0 and arrange for MIPS_CPS_NS16550 to be no
+> when using that default base address, so that the option only has an
+> effect when the default is provided (i.e. Malta) or when a value is
+> provided by the user.
+> 
+> Fixes: 609cf6f2291a ("MIPS: CPS: Early debug using an ns16550-compatible UART")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Reviewed-by: Paul Burton <paul.burton@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-mips@linux-mips.org
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-From: Aleksandar Markovic <aleksandar.markovic@mips.com>
+Still not applied, mips builds still broken both in mainline and -next
+(and worse in -next). Doesn't 0day report all this breakage automatically ?
 
-v10->v11:
+Guenter
 
-    - rebased to the latest code
-
-v9->v10:
-
-    - added comment in code segment related to measuring frequency
-    - rebased to the latest code
-
-v8->v9:
-
-    - cleaned up PIC initialization details
-    - added missing '\n' to pr_err() invocations
-    - removed two Goldfish FB patches, since they got accepted
-    - rebased to the latest code
-
-v7->v8:
-
-    - cleaned commit message for patch #2
-    - cleaned GPL licence text for patch #2
-    - revised Goldfish PIC error and info messages
-    - simplified code around MIPS_MACHINE() for Ranchu
-    - changed an instance of "__initdata" to "__initconst" in Ranchu
-    - rebased to the latest code
-
-v6->v7:
-
-    - improved commit message for patch 5 (Add Ranchu as a...)
-    - added code comments for segment that reads clock high/low
-    - revised usage of "u32", "u64" variables in Ranchu code
-    - revised header inclusion in Ranchu code
-    - added code comments for segment that reads clock high/low
-    - improved displayed message for Ranchu in Kconfig
-    - added a Ranchu-specific file as maintained in MAINTAINERS
-    - added proper handling of an error case in PIC initialization
-    - improved error messages issued during PIC initialization
-    - rebased to the latest code
-
-v5->v6:
-
-    - revised cascading handling code in Goldfish PIC implementation
-    - used more generic node name in Goldfish PIC documentation file
-    - used more generic node name in Goldfish FB documentation file
-    - corrected several minor items in both documentation files
-    - revisited copyright messages in two source files
-    - rebased to the latest code
-
-v4->v5:
-
-    - removed RTC clock-related patches since they are already applied
-    - removed 8042-related patch since this issue is expected to be
-      resolved on the whole platform level
-    - redesigned Goldfish PIC driver
-    - updated email addresses in commit messages and MAINTAINERS file
-      to contain "@mips.com" instead of "@imgtec.com"
-    - used "MIPS" instead of "Mips" in commit messages
-    - rebased to the latest code
-
-v3->v4:
-
-    - corrected RTC clock patch so that it does not cause build
-      errors for some targets, and limited compile support to MIPS
-      architecture, since it is the only case where this driver is
-      used
-    - changed titles of patches 2 and 4 to make them consistent
-      with commit messages of corresponding directories
-    - applied "checkpatch --strict" to the whole series and
-      corrected several instances of reported warnings
-    - rebased to the latest code
-
-v2->v3:
-
-    - fixed configuration dependency for VIRTIO_NET and
-        RTC_DRV_GOLDFISH
-    - fixed frequency calculation in ranchu_measure_hpt_freq()
-    - use DT info instead of hard-coding RTC base in
-        ranchu_measure_hpt_freq()
-    - Goldfish PIC reworked to follow legacy irq domain paradigm
-    - Goldfish RTC reimplemented to support alarm functionality
-    - added COMPILE_TEST to Goldfish PIC & RTC to extend compile
-        test coverage
-    - corrected location of documentation for Goldfish FB
-    - added a patch on unselecting ARCH_MIGHT_HAVE_PC_SERIO
-    - removed two patches on i8042 as not needed in new organization
-    - removed the patch on separate MIPS Android config as not needed
-    - rebased to the latest code
-
-v1->v2:
-
-    - patch on RTC driver cleaned up
-    - added drivers for virtio console and net to the Ranchu board
-    - minor improvements in commit messages
-    - updated recipient lists using get_maintainer.pl
-    - rebased to the latest code
-
-This series adds MIPS Ranchu virtual machine used by Android emulator.
-The board relies on the concept of MIPS generic boards, and utilizes
-generic board framework for build and device organization.
-
-The Ranchu board is intended to be used by Android emulator.The name
-"Ranchu" originates from Android development community. "Goldfish" and
-"Ranchu" are names for two generations of virtual boards used by
-Android emulator. "Ranchu" is a newer one among the two, and this
-series deals with Ranchu. However, for historical reasons, some file,
-device, and variable names in this series still contain the word
-"Goldfish".
-
-MIPS Ranchu machine includes a number of Goldfish devices. The
-support for Virtio devices is also included. Ranchu board supports
-up to 16 virtio devices which can be attached using virtio MMIO Bus.
-This is summarized in the following picture:
-
-       ABUS
-        ||----MIPS CPU
-        ||       |                    IRQs
-        ||----Goldfish PIC------------(32)--------
-        ||                     | | | | | | | | |
-        ||----Goldfish TTY------ | | | | | | | |
-        ||                       | | | | | | | |
-        ||----Goldfish RTC-------- | | | | | | |
-        ||                         | | | | | | |
-        ||----Goldfish FB----------- | | | | | |
-        ||                           | | | | | |
-        ||----Goldfish Events--------- | | | | |
-        ||                             | | | | |
-        ||----Goldfish Audio------------ | | | |
-        ||                               | | | |
-        ||----Goldfish Battery------------ | | |
-        ||                                 | | |
-        ||----Android PIPE------------------ | |
-        ||                                   | |
-        ||----Virtio MMIO Bus                | |
-        ||    |    |    |                    | |
-        ||    |    |   (virtio-block)--------- |
-        ||   (16)  |                           |
-        ||    |   (virtio-net)------------------
-
-
-Device Tree is created on the QEMU side based on the information about
-devices IO map and IRQ numbers. Kernel will load this DTB using UHI
-boot protocol.
-
-Checkpatch script outputs a small number of warnings if applied to
-this series. We did not correct the code, since we think the code is
-correct for those particular cases of checkpatch warnings.
-
-Miodrag Dinic (3):
-  Documentation: Add device tree binding for Goldfish PIC driver
-  irqchip/irq-goldfish-pic: Add Goldfish PIC driver
-  MIPS: ranchu: Add Ranchu as a new generic-based board
-
- .../interrupt-controller/google,goldfish-pic.txt   |  30 +++++
- MAINTAINERS                                        |  13 ++
- arch/mips/configs/generic/board-ranchu.config      |  30 +++++
- arch/mips/generic/Kconfig                          |  10 ++
- arch/mips/generic/Makefile                         |   1 +
- arch/mips/generic/board-ranchu.c                   |  92 ++++++++++++++
- drivers/irqchip/Kconfig                            |   8 ++
- drivers/irqchip/Makefile                           |   1 +
- drivers/irqchip/irq-goldfish-pic.c                 | 139 +++++++++++++++++++++
- 9 files changed, 324 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/google,goldfish-pic.txt
- create mode 100644 arch/mips/configs/generic/board-ranchu.config
- create mode 100644 arch/mips/generic/board-ranchu.c
- create mode 100644 drivers/irqchip/irq-goldfish-pic.c
-
---
-2.7.4
+> ---
+> Guenter: I'm guessing this is the problem you're referring to.
+> ---
+>  arch/mips/Kconfig.debug | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+> index 464af5e025d6..0749c3724543 100644
+> --- a/arch/mips/Kconfig.debug
+> +++ b/arch/mips/Kconfig.debug
+> @@ -124,30 +124,36 @@ config SCACHE_DEBUGFS
+>  
+>  	  If unsure, say N.
+>  
+> -menuconfig MIPS_CPS_NS16550
+> +menuconfig MIPS_CPS_NS16550_BOOL
+>  	bool "CPS SMP NS16550 UART output"
+>  	depends on MIPS_CPS
+>  	help
+>  	  Output debug information via an ns16550 compatible UART if exceptions
+>  	  occur early in the boot process of a secondary core.
+>  
+> -if MIPS_CPS_NS16550
+> +if MIPS_CPS_NS16550_BOOL
+> +
+> +config MIPS_CPS_NS16550
+> +	def_bool MIPS_CPS_NS16550_BASE != 0
+>  
+>  config MIPS_CPS_NS16550_BASE
+>  	hex "UART Base Address"
+>  	default 0x1b0003f8 if MIPS_MALTA
+> +	default 0
+>  	help
+>  	  The base address of the ns16550 compatible UART on which to output
+>  	  debug information from the early stages of core startup.
+>  
+> +	  This is only used if non-zero.
+> +
+>  config MIPS_CPS_NS16550_SHIFT
+>  	int "UART Register Shift"
+> -	default 0 if MIPS_MALTA
+> +	default 0
+>  	help
+>  	  The number of bits to shift ns16550 register indices by in order to
+>  	  form their addresses. That is, log base 2 of the span between
+>  	  adjacent ns16550 registers in the system.
+>  
+> -endif # MIPS_CPS_NS16550
+> +endif # MIPS_CPS_NS16550_BOOL
+>  
+>  endmenu

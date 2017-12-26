@@ -1,85 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Dec 2017 11:23:32 +0100 (CET)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:37757
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990433AbdLZKXXj40Gd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Dec 2017 11:23:23 +0100
-Received: by mail-it0-x244.google.com with SMTP id d137so22423272itc.2
-        for <linux-mips@linux-mips.org>; Tue, 26 Dec 2017 02:23:23 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Dec 2017 11:46:29 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:42405
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990418AbdLZKqVImYQ5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Dec 2017 11:46:21 +0100
+Received: by mail-wm0-x243.google.com with SMTP id b199so34711774wme.1;
+        Tue, 26 Dec 2017 02:46:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=ktfpf63jqZ/wg4QgFlPeSUkAR8Ff6TIuwyzngdyivF8=;
-        b=GREoIvY+Jk5GoW5CHfDl0sWE6QjqM4N+CPX3oPU3YbtxHGuH8XRkIPN3HPSjQZEuyp
-         Skb4B4r0hm8TlM15PLOz9KL50howOgldY9GtzVwX8/CPNck/gYelgmUUngogrZtMmt+f
-         KR1zOumeg1W4nlVQ20q78Ic2sJwuNZgBtpcEc=
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1WTV63n6FI7aaFv956CQQdbwiW7uIRQu9xdNpeQgxLg=;
+        b=sQylpYqTHb/HSRkrGh8Mtw/UrshBB4I78osXCK/fnUIDpqpn24ocFF9ernoetAXg3x
+         VJE8rYVO90HLjJRUh/hwxST1fFHV8IfXl5iWj0CsWeBMC4/DflLflbQEQIaGnD437o7J
+         DMtpbIF7dsOPN26rTDQ0TWVQakbFwa7Qavckg7Znll1kQAZT28kmQMWl7916vHT9vyO1
+         d1iS3ITxYPhsj470ArMSvklQDbViNdEqEwuGgVSDMMgz5ilM0HKG6GXrdtgPOiBi6baS
+         ST8auZ1DD9X1v8bhszkRHzRDWQ53cUln1gHIaoOsvWf/Wdwz4EYrtz5cX5cV1/k4WPT+
+         aMBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=ktfpf63jqZ/wg4QgFlPeSUkAR8Ff6TIuwyzngdyivF8=;
-        b=ZUzTQgcTHPBh15qxR5lakCKXZj1cXCPSL0lt2TUoNHOwTEFvLzDFdylxuVm2FsX5gk
-         vXexQinqWKI0gj5pkI4ld9SdtNjzwS5CEoBgpBhg4dH9eXyNW6RFAYQVJP1jLF+Asykk
-         jICGP7JUxbOaxMkZ6H5+7rrgFOGLUiCidEtZNSTItQBntdPS6nRpwBe2Bqc1Ysh93ncc
-         WcLXgzV+JU4AgxG/MHuJ0PABtvfUt8YZWiy4UYa5cWLvMjFwJH+NJVmQXD7sEiTCFDdZ
-         s1jIrwl7+2qxNanbwKk9mA5neMiS0BbsW/0Fn3juLl5Fr3Tuc+DXLHZ4kyA4p4f3+Izp
-         Ii6w==
-X-Gm-Message-State: AKGB3mLGJFGyT0uUW0U9ETrIDPw9qf4Jt50dNoWpaziD1oJuhUGYfDPt
-        xVMkD+NohL+SHaDMWNsdqH8hqA1mwnX2ugvinYGH7g==
-X-Google-Smtp-Source: ACJfBotL7QdQFZWLVnVckxJFzFENNm0jpcXWr3uelYEFRGjGQqGU83/cjfSuxykrMcw+jW9SwRneqVH7P90iDUXV+FE=
-X-Received: by 10.36.219.214 with SMTP id c205mr31365678itg.65.1514283795865;
- Tue, 26 Dec 2017 02:23:15 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.107.52.14 with HTTP; Tue, 26 Dec 2017 02:23:15 -0800 (PST)
-In-Reply-To: <201712261806.hJg043uc%fengguang.wu@intel.com>
-References: <20171225205440.14575-7-ard.biesheuvel@linaro.org> <201712261806.hJg043uc%fengguang.wu@intel.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 26 Dec 2017 10:23:15 +0000
-Message-ID: <CAKv+Gu_9L8LDe72FJDDhWVA4G9ZWcuxQnxWRtFMKgH=AhMOiZQ@mail.gmail.com>
-Subject: Re: [PATCH v5 6/8] kernel/jump_label: abstract jump_entry member accessors
-To:     kbuild test robot <lkp@intel.com>
-Cc:     kbuild-all@01.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=1WTV63n6FI7aaFv956CQQdbwiW7uIRQu9xdNpeQgxLg=;
+        b=GDO+CwQ9Wr4BlTUi5vlu2IOeg/teu68LWlD/ElvGZA+M8cbTn5Nsfe6SEVSFN4pQkf
+         ZXHAAEn2KC9FKgK+0lOFcZGOsmqcXeQepPjzZ3iRVNa2bDXN25fQw1MdgBDHjCHurgZV
+         kTPn1QuLgWvEdFFvGBERHL5LLumUMnAtfiFcYh2SAWCmiqSqZ3QeG6u4bbWDRznQkD5Y
+         qXz5MYqZF/KiisYlxdJcBl5gbinKjv+o3GgmY3JzripdnTAkL3vbu0uC54sYviaCM+Rz
+         9MfUldUsJ/9hlrfuTxQ7DAs7LwkNjhms2eEHrVwwu53ZOAZU5nbUqKO9v9DD4QXmtGZc
+         aZJw==
+X-Gm-Message-State: AKGB3mKBqUZIXJTNrPILyTwhVW+nKrgD86WPZLkFByFvZjAHFiVg+M2d
+        BaxsNfdrrHFjJp73Be0AC0A=
+X-Google-Smtp-Source: ACJfBossKWzQPS/Q0KhdZ2m8B7oiNQSD7mFC7hSG7ezinEoh7dYlYmr8kCfHyCrcy7PnH9Z2NVFq2A==
+X-Received: by 10.28.140.206 with SMTP id o197mr18701644wmd.43.1514285175543;
+        Tue, 26 Dec 2017 02:46:15 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
+        by smtp.gmail.com with ESMTPSA id y124sm13405323wmb.42.2017.12.26.02.46.14
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 26 Dec 2017 02:46:14 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id 76D1110C1B2E; Tue, 26 Dec 2017 11:46:13 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     Aleksandar Markovic <aleksandar.markovic@mips.com>
+Cc:     Mathieu Malaterre <malat@debian.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Garnier <thgarnie@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Paul Mackerras <paulus@samba.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Petr Mladek <pmladek@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        James Morris <james.l.morris@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nicolas Pitre <nico@linaro.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <ard.biesheuvel@linaro.org>
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Goran Ferenc <goran.ferenc@imgtec.com>,
+        James Hogan <jhogan@kernel.org>,
+        Douglas Leung <douglas.leung@imgtec.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] MIPS: math-emu: Do not export function `srl128`
+Date:   Tue, 26 Dec 2017 11:45:50 +0100
+Message-Id: <20171226104554.19612-1-malat@debian.org>
+X-Mailer: git-send-email 2.11.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61592
+X-archive-position: 61593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ard.biesheuvel@linaro.org
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,34 +75,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26 December 2017 at 10:19, kbuild test robot <lkp@intel.com> wrote:
-> Hi Ard,
->
-> I love your patch! Yet something to improve:
->
-> [auto build test ERROR on linus/master]
-> [also build test ERROR on v4.15-rc5 next-20171222]
-> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
->
-> url:    https://github.com/0day-ci/linux/commits/Ard-Biesheuvel/add-support-for-relative-references-in-special-sections/20171226-164147
-> config: s390-allmodconfig (attached as .config)
-> compiler: s390x-linux-gnu-gcc (Debian 7.2.0-11) 7.2.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         make.cross ARCH=s390
->
+Fix non-fatal warning:
 
-I guess the diffstat gives it away:
+arch/mips/math-emu/dp_maddf.c:19:6: warning: no previous prototype for ‘srl128’ [-Wmissing-prototypes]
+ void srl128(u64 *hptr, u64 *lptr, int count)
 
->  arch/arm/include/asm/jump_label.h     | 27 ++++++++++++++
->  arch/arm64/include/asm/jump_label.h   | 27 ++++++++++++++
->  arch/mips/include/asm/jump_label.h    | 27 ++++++++++++++
->  arch/powerpc/include/asm/jump_label.h | 27 ++++++++++++++
->  arch/s390/include/asm/jump_label.h    | 20 +++++++++++
->  arch/sparc/include/asm/jump_label.h   | 27 ++++++++++++++
->  arch/tile/include/asm/jump_label.h    | 27 ++++++++++++++
->  arch/x86/include/asm/jump_label.h     | 27 ++++++++++++++
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/mips/math-emu/dp_maddf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Will fix in the next revision.
+diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
+index 7ad79ed411f5..0e2278a47f43 100644
+--- a/arch/mips/math-emu/dp_maddf.c
++++ b/arch/mips/math-emu/dp_maddf.c
+@@ -16,7 +16,7 @@
+ 
+ 
+ /* 128 bits shift right logical with rounding. */
+-void srl128(u64 *hptr, u64 *lptr, int count)
++static void srl128(u64 *hptr, u64 *lptr, int count)
+ {
+ 	u64 low;
+ 
+-- 
+2.11.0

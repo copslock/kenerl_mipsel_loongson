@@ -1,49 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Dec 2017 05:22:12 +0100 (CET)
-Received: from forward100o.mail.yandex.net ([37.140.190.180]:50016 "EHLO
-        forward100o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990408AbdLZEWFwDYSE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Dec 2017 05:22:05 +0100
-Received: from mxback14j.mail.yandex.net (mxback14j.mail.yandex.net [IPv6:2a02:6b8:0:1619::90])
-        by forward100o.mail.yandex.net (Yandex) with ESMTP id 9BEA22A22AEE;
-        Tue, 26 Dec 2017 07:21:57 +0300 (MSK)
-Received: from smtp1p.mail.yandex.net (smtp1p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:6])
-        by mxback14j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id iHkMyDZUHA-Lv44KFhh;
-        Tue, 26 Dec 2017 07:21:57 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514262117;
-        bh=mWsamBy/M+bD66Z2nOkcDtwdp+6ymDpMCLTySLpx15w=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=VxlC5c1/7ZyMxmtHAvuwO4kGLk0Ywh+SspEvBEL9YG/kNjtmJyjpeWoUAVtrpuguY
-         zsL6mJAeh28h6XFktsdeWh6bsQP91hPBOAnmnaiyLK/c0SdWEZXuaudIMfdr4/HUF8
-         v5HVJ0LzmEkZD+jhLjkPRiKY+jsX79Phr2/SSR9s=
-Received: by smtp1p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id UmMYrqi78G-Lq4mB0bn;
-        Tue, 26 Dec 2017 07:21:55 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514262115;
-        bh=mWsamBy/M+bD66Z2nOkcDtwdp+6ymDpMCLTySLpx15w=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=N32uhH9O9gmmR6EF4xfxbhRRsxbiLP6Ns3wkJPYlqjIcxo+PyZOIUpoyGDqahudLD
-         EEF0yD1w8ZjZ2unFbyuk8uv+LfL/rcwu722rKDAu7G/KDPBNxLSRHGzDLoRsBk1WK6
-         ZJ/zw9WVAiQDgDnmOmuLqzhV4yD4fs3sVz1AHpBA=
-Authentication-Results: smtp1p.mail.yandex.net; dkim=pass header.i=@flygoat.com
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     James Hogan <james.hogan@mips.com>,
-        Huacai CHen <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH] MIPS: Loongson64: Drop 32-bit support for Loongson 2E/2F devices
-Date:   Tue, 26 Dec 2017 12:21:38 +0800
-Message-Id: <20171226042138.13227-1-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.15.1
-Return-Path: <jiaxun.yang@flygoat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Dec 2017 07:33:38 +0100 (CET)
+Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:35144
+        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990408AbdLZGdc3vbHI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Dec 2017 07:33:32 +0100
+Received: by mail-pf0-x242.google.com with SMTP id j124so18445947pfc.2;
+        Mon, 25 Dec 2017 22:33:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=P39i4IZrOIWsCeSTY6owOcZRuwJ5VV1s4kcL9xZstOU=;
+        b=l/bFr4i4xF7PCcWw01cy598nYV2jecbPWukbazJVmAlNPVQIlE7x0fyZeu6bsHB4PW
+         DDp7XX1SiZ/bIv6ix8EppLFSpNANG63IM0HUT4kP2Xf9BU3Yct09G2ku6/3ZsAVStj0t
+         21BMVL4N4N9cXLEB/xIgDd8Wt/JFPL1yQO7xrU5bvS6PkhlklreX1gMz7HaTP3eA5/gG
+         7gnAJWgrs4vq/yVsurfHV+PPkeKzAHtiPjjbecyT/IJGxCTsz7aBE/ZwW8JflIgf3up8
+         IIQ8SPT6NFE1BDSlp8a0WGA1LwHRgLeai6NaFspNGKS3EUQv2NXvbI1cdReZ1Tg79a3p
+         mUmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=P39i4IZrOIWsCeSTY6owOcZRuwJ5VV1s4kcL9xZstOU=;
+        b=exrShkbMLFpnTZE+tRHrUWmDbCTEDOaV+L8K08sAkR+pW0pXIwJmZenOsSZEsnnSfd
+         wosLhKfbGgfheXMCWnQCsRPu9z6e9BcR15KGsP60nB3CsS649X/gFzrFjyaoxE3JJ/d8
+         HzY+/H7m+Xya6vx6JGQt4pTh+tgtwrOiXNlkzTMJeMYwDPQDXWXTRTN3FYYXl10A+mN/
+         WRyntk3LIz/XRdVr0pfXyDC6d4i1o2FwQzNVS99p8HQz6A982FBIScVCLNdJwaae5uCC
+         nhULUT41BCj1kWYUqjSVSyNDEGkCamCEiJvkRlFY7ltyNLnAUzhKuCS4faopQlCJhW0j
+         fzWA==
+X-Gm-Message-State: AKGB3mLEat/fL6HzxWrpBhLwoqoYI4JUVB5BTkZ6VtxKlVitawWA6W1g
+        Rv8Cl6bMnbKtMck7MfCyREQ=
+X-Google-Smtp-Source: ACJfBoufRoy+c2zUZwhRmbgub3r64rBX1eySBgtHCFizVJkgedyTy8UqgJD5sMcg+MCmvXmpF+B2oA==
+X-Received: by 10.99.102.1 with SMTP id a1mr4861091pgc.357.1514270005735;
+        Mon, 25 Dec 2017 22:33:25 -0800 (PST)
+Received: from localhost.localdomain ([103.16.68.147])
+        by smtp.gmail.com with ESMTPSA id h69sm59911895pfk.166.2017.12.25.22.33.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 25 Dec 2017 22:33:25 -0800 (PST)
+From:   Arvind Yadav <arvind.yadav.cs@gmail.com>
+To:     nsekhar@ti.com, khilman@kernel.org, linux@armlinux.org.uk,
+        kaloz@openwrt.org, khalasa@piap.pl, aaro.koskinen@iki.fi,
+        tony@atomide.com, jason@lakedaemon.net, andrew@lunn.ch,
+        sebastian.hesselbarth@gmail.com,
+        gregory.clement@free-electrons.com, daniel@zonque.org,
+        haojian.zhuang@gmail.com, marek.vasut@gmail.com,
+        slapin@ossfans.org, jic23@cam.ac.uk, kgene@kernel.org,
+        krzk@kernel.org, ralf@linux-mips.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: [PATCH 01/11 v2] MIPS: Alchemy: constify gpio_led
+Date:   Tue, 26 Dec 2017 12:03:08 +0530
+Message-Id: <de0879ef47b96776e3f18a1889c41d976a677b21.1514267721.git.arvind.yadav.cs@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <arvind.yadav.cs@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61587
+X-archive-position: 61588
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: arvind.yadav.cs@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,32 +71,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Make loongson64 a pure 64-bit mach.
+gpio_led are not supposed to change at runtime.
+struct gpio_led_platform_data working with const gpio_led
+provided by <linux/leds.h>. So mark the non-const structs
+as const.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
 ---
- arch/mips/loongson64/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+changes in v2:
+              The GPIO LED driver can be built as a module, it can
+              be loaded after the init sections have gone away.
+              So removed '__initconst'.
 
-diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
-index 0d249fc3cfe9..a7d9a9241ac4 100644
---- a/arch/mips/loongson64/Kconfig
-+++ b/arch/mips/loongson64/Kconfig
-@@ -17,7 +17,6 @@ config LEMOTE_FULOONG2E
- 	select I8259
- 	select ISA
- 	select IRQ_MIPS_CPU
--	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_HIGHMEM
-@@ -49,7 +48,6 @@ config LEMOTE_MACH2F
- 	select ISA
- 	select SYS_HAS_CPU_LOONGSON2F
- 	select SYS_HAS_EARLY_PRINTK
--	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ arch/mips/alchemy/board-gpr.c  | 2 +-
+ arch/mips/alchemy/board-mtx1.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
+index 328d697..4e79dbd 100644
+--- a/arch/mips/alchemy/board-gpr.c
++++ b/arch/mips/alchemy/board-gpr.c
+@@ -190,7 +190,7 @@ static struct platform_device gpr_mtd_device = {
+ /*
+  * LEDs
+  */
+-static struct gpio_led gpr_gpio_leds[] = {
++static const struct gpio_led gpr_gpio_leds[] = {
+ 	{	/* green */
+ 		.name			= "gpr:green",
+ 		.gpio			= 4,
+diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
+index 85bb756..aab55aa 100644
+--- a/arch/mips/alchemy/board-mtx1.c
++++ b/arch/mips/alchemy/board-mtx1.c
+@@ -145,7 +145,7 @@ static struct platform_device mtx1_wdt = {
+ 	.resource = mtx1_wdt_res,
+ };
+ 
+-static struct gpio_led default_leds[] = {
++static const struct gpio_led default_leds[] = {
+ 	{
+ 		.name	= "mtx1:green",
+ 		.gpio = 211,
 -- 
-2.15.1
+2.7.4

@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Dec 2017 04:27:58 +0100 (CET)
-Received: from forward104o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::607]:45281
-        "EHLO forward104o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990400AbdLZD0uUOVME (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Dec 2017 04:26:50 +0100
-Received: from mxback6g.mail.yandex.net (mxback6g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:167])
-        by forward104o.mail.yandex.net (Yandex) with ESMTP id F348D703411;
-        Tue, 26 Dec 2017 06:26:37 +0300 (MSK)
-Received: from smtp4j.mail.yandex.net (smtp4j.mail.yandex.net [2a02:6b8:0:1619::15:6])
-        by mxback6g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id ajL9MJKaLY-Qb48NEhD;
-        Tue, 26 Dec 2017 06:26:37 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514258797;
-        bh=slO9uOihf1qbhcwWc8boFOnyrccI8X7nXRwE+y7lMFk=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=NZGEA00b56XcBbFpXaSNW0lv7nRFm4QCw3+HqfTjomOE3VsZUskr/Tc5BEr9lZKI8
-         Cm3uZG8MuxbVIsBSIAtbZzoGKSdIbj9+yx6CPAsdc+l4ZW3MTExZ+HI6DZvrFQCvhz
-         mxAaVXsQ3q0xtEmflmiQOWmXCcz2FsYS90g5iprI=
-Received: by smtp4j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id NFRULz4HAX-QXxSBYvW;
-        Tue, 26 Dec 2017 06:26:35 +0300
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Dec 2017 05:22:12 +0100 (CET)
+Received: from forward100o.mail.yandex.net ([37.140.190.180]:50016 "EHLO
+        forward100o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990408AbdLZEWFwDYSE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Dec 2017 05:22:05 +0100
+Received: from mxback14j.mail.yandex.net (mxback14j.mail.yandex.net [IPv6:2a02:6b8:0:1619::90])
+        by forward100o.mail.yandex.net (Yandex) with ESMTP id 9BEA22A22AEE;
+        Tue, 26 Dec 2017 07:21:57 +0300 (MSK)
+Received: from smtp1p.mail.yandex.net (smtp1p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:6])
+        by mxback14j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id iHkMyDZUHA-Lv44KFhh;
+        Tue, 26 Dec 2017 07:21:57 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514262117;
+        bh=mWsamBy/M+bD66Z2nOkcDtwdp+6ymDpMCLTySLpx15w=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=VxlC5c1/7ZyMxmtHAvuwO4kGLk0Ywh+SspEvBEL9YG/kNjtmJyjpeWoUAVtrpuguY
+         zsL6mJAeh28h6XFktsdeWh6bsQP91hPBOAnmnaiyLK/c0SdWEZXuaudIMfdr4/HUF8
+         v5HVJ0LzmEkZD+jhLjkPRiKY+jsX79Phr2/SSR9s=
+Received: by smtp1p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id UmMYrqi78G-Lq4mB0bn;
+        Tue, 26 Dec 2017 07:21:55 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514258796;
-        bh=slO9uOihf1qbhcwWc8boFOnyrccI8X7nXRwE+y7lMFk=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=OtofTzDWEDxgcwFIB7+qfWlRl28FyGmLVcf12nEWiMWOP1qU0BE922lAmQALQsAip
-         +toRME5Lm8bvXN/UzXnSd139nLlJiFGjLBvUjQX6wWy5kFJXjLlhYBZIC5CFWzpZ2y
-         99rhaTQOGRr+iDx4GxiY196WGnFmNXOADB0qcI6o=
-Authentication-Results: smtp4j.mail.yandex.net; dkim=pass header.i=@flygoat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514262115;
+        bh=mWsamBy/M+bD66Z2nOkcDtwdp+6ymDpMCLTySLpx15w=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=N32uhH9O9gmmR6EF4xfxbhRRsxbiLP6Ns3wkJPYlqjIcxo+PyZOIUpoyGDqahudLD
+         EEF0yD1w8ZjZ2unFbyuk8uv+LfL/rcwu722rKDAu7G/KDPBNxLSRHGzDLoRsBk1WK6
+         ZJ/zw9WVAiQDgDnmOmuLqzhV4yD4fs3sVz1AHpBA=
+Authentication-Results: smtp1p.mail.yandex.net; dkim=pass header.i=@flygoat.com
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     James Hogan <james.hogan@mips.com>,
         Huacai CHen <chenhc@lemote.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v6 4/4] MAINTAINERS: Add entry for Lemote YeeLoong Extra Driver
-Date:   Tue, 26 Dec 2017 11:26:02 +0800
-Message-Id: <20171226032602.11417-5-jiaxun.yang@flygoat.com>
+Subject: [PATCH] MIPS: Loongson64: Drop 32-bit support for Loongson 2E/2F devices
+Date:   Tue, 26 Dec 2017 12:21:38 +0800
+Message-Id: <20171226042138.13227-1-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.15.1
-In-Reply-To: <20171226032602.11417-1-jiaxun.yang@flygoat.com>
-References: <20171226032602.11417-1-jiaxun.yang@flygoat.com>
 Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61586
+X-archive-position: 61587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,32 +56,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add myself as a maintainer of Lemote YeeLoong Extra driver
+Make loongson64 a pure 64-bit mach.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
- mode change 100644 => 100755 MAINTAINERS
+ arch/mips/loongson64/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-old mode 100644
-new mode 100755
-index a6e86e20761e..5a7c0d4b233a
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7873,6 +7873,12 @@ W:	http://legousb.sourceforge.net/
- S:	Maintained
- F:	drivers/usb/misc/legousbtower.c
- 
-+Lemote YeeLoong EXTRAS DRIVER
-+M:	Jiaxun Yang <jiaxun.yang@flygoat.com>
-+L:	linux-mips@linux-mips.org
-+S:	Maintained
-+F:	drivers/platform/mips/yeeloong_laptop.c
-+
- LG2160 MEDIA DRIVER
- M:	Michael Krufky <mkrufky@linuxtv.org>
- L:	linux-media@vger.kernel.org
+diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+index 0d249fc3cfe9..a7d9a9241ac4 100644
+--- a/arch/mips/loongson64/Kconfig
++++ b/arch/mips/loongson64/Kconfig
+@@ -17,7 +17,6 @@ config LEMOTE_FULOONG2E
+ 	select I8259
+ 	select ISA
+ 	select IRQ_MIPS_CPU
+-	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_HIGHMEM
+@@ -49,7 +48,6 @@ config LEMOTE_MACH2F
+ 	select ISA
+ 	select SYS_HAS_CPU_LOONGSON2F
+ 	select SYS_HAS_EARLY_PRINTK
+-	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
 -- 
 2.15.1

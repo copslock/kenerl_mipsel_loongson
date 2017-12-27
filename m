@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Dec 2017 09:52:19 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:37813
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990656AbdL0IvKAKSFM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Dec 2017 09:51:10 +0100
-Received: by mail-wm0-x243.google.com with SMTP id f140so38110368wmd.2
-        for <linux-mips@linux-mips.org>; Wed, 27 Dec 2017 00:51:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Dec 2017 09:52:43 +0100 (CET)
+Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:41733
+        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990765AbdL0IvQGHsJM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Dec 2017 09:51:16 +0100
+Received: by mail-wr0-x243.google.com with SMTP id p69so27373630wrb.8
+        for <linux-mips@linux-mips.org>; Wed, 27 Dec 2017 00:51:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=lwLLrS7mueZ/zWj6YdhKL1lPIayLUTMzei7H77VCkQk=;
-        b=QtJm4zXVhuLpsXWoyJuUQkhle/5dXy0JI2WcpXmhBquEjre0C3BUPD5ch/f18mczrf
-         DiLO3OML2FGRfJ8GotRLc7hdIbjGDa2Qbkl4gX/eiHwmkj4/1YkM4Ig4gS7IqJTnbFTL
-         WjUFiGZM9AzmnZmYJOL1Yzn18Jf3xY0BnuVrs=
+        bh=MNuvKMvZr3GVfTz4MvnzswRbek+xsbzeG112C9Cor2w=;
+        b=AJ/zr34aK0sT46fTFsfCFR1G30dXqEZ4pyPPilfvxKN86s3tJsT9l08DRTgEjFquhT
+         JRk6X/cAvjr272ahonxRSd8HJ3zdzM93Lqw+0YW3ftpE5HIFcpceZ42qkfgsPKlN5E1z
+         Khsmi+imR9JlPH8hPy3YgBFyJyeMNX7h8Otkk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=lwLLrS7mueZ/zWj6YdhKL1lPIayLUTMzei7H77VCkQk=;
-        b=LLxWK1bkddaspdYubrNaNFmQ+84vnR9y3ae4UsmtqClr3HStpmBxfN55IXrHQg4zuJ
-         4RefoCi9FIBBmOUiI2R2snVWLINyzviKZWt2IPS/FVDbKjv2Q988ErVqE48RpviJitCS
-         G/eJy65RSwZkSlPiMBxOJnwhJRhuR4GRyfXDeNybY1PJbpyyTn1UgkiULNU9GcKL+ZKp
-         5gT1BxIpbps3ZornsQtkgc+uGtzhFES9vRN9LnBTHtR86thQOmV8ZNBxYOcn6A7+LeWO
-         LqMMF5xA3satRVXkpy8HmZSPNCOsgcBk7mTkPmeZQ9pkiBWucbcS1Tc9KpNbG5Ffi0D+
-         sA2g==
-X-Gm-Message-State: AKGB3mIkO2x8xDiduAS/FQphCOWwOvlLPPdPFmAN5Lnyv00ZSF0Bcmy9
-        jW4OtJ5Q2j5LVMERgw/UEvJcWg==
-X-Google-Smtp-Source: ACJfBot0inkAlmr5FQIjJNTM1vazAQDEswgp3dZpbx+Oj3HOtYfLH/QszPwIXDUOH92Dd/WcC2BeBg==
-X-Received: by 10.28.160.23 with SMTP id j23mr21304907wme.54.1514364664371;
-        Wed, 27 Dec 2017 00:51:04 -0800 (PST)
+        bh=MNuvKMvZr3GVfTz4MvnzswRbek+xsbzeG112C9Cor2w=;
+        b=tUPMVGjP6l1CUzsGupLvHwQVAEKtP1+9PmHvwGDBxqa7op5xvfupiCCoTqlFGcfOZC
+         lOpiR8vdkIK6JYPpcYlz7U68y+RMzgXgzCHf5Xi4W2iRE3iThtMxph4qOArt4AT2hZYS
+         Fut9SpYYH8gh+qqOa5dlm8f+3HxVKFkcxXnNpAFDYaKbyrBBZm0uxQzHHsCxdfoGA0fD
+         7GCoPDZ/Pt98K2dt77btPEiyiszwZS7nXzNS2CDaYEuNMxekz/Rdxy/ymMLlM58BQsUv
+         Sy7RRpZYdlYJONsf5EXEy9Wjt5b83bP157NvtW/wWCzm3FDJDQyptLQXd4Wya1gQJzxL
+         2diQ==
+X-Gm-Message-State: AKGB3mI3PmzpGWfQRxrJ31gatwUArkqD3+tfgE+bRYFx+Xm9RQR/k8fR
+        0C3yCyf9ZnV9tHYvn4b6aCHV/w==
+X-Google-Smtp-Source: ACJfBos/0cnMbX6ZBILgv/NQNSLwvsuHQPxQ32RaUdWLfJWWQdNKAT38iz9NXGzY3ET47ttS3ob/DQ==
+X-Received: by 10.223.128.9 with SMTP id 9mr19838598wrk.70.1514364670694;
+        Wed, 27 Dec 2017 00:51:10 -0800 (PST)
 Received: from localhost.localdomain ([105.137.110.132])
-        by smtp.gmail.com with ESMTPSA id q74sm32677226wmg.22.2017.12.27.00.50.57
+        by smtp.gmail.com with ESMTPSA id q74sm32677226wmg.22.2017.12.27.00.51.04
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 27 Dec 2017 00:51:03 -0800 (PST)
+        Wed, 27 Dec 2017 00:51:09 -0800 (PST)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
@@ -64,9 +64,9 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v6 3/8] init: allow initcall tables to be emitted using relative references
-Date:   Wed, 27 Dec 2017 08:50:28 +0000
-Message-Id: <20171227085033.22389-4-ard.biesheuvel@linaro.org>
+Subject: [PATCH v6 4/8] PCI: Add support for relative addressing in quirk tables
+Date:   Wed, 27 Dec 2017 08:50:29 +0000
+Message-Id: <20171227085033.22389-5-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
 References: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
@@ -74,7 +74,7 @@ Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61620
+X-archive-position: 61621
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,197 +91,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow the initcall tables to be emitted using relative references that
-are only half the size on 64-bit architectures and don't require fixups
-at runtime on relocatable kernels.
+Allow the PCI quirk tables to be emitted in a way that avoids absolute
+references to the hook functions. This reduces the size of the entries,
+and, more importantly, makes them invariant under runtime relocation
+(e.g., for KASLR)
 
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: James Morris <james.l.morris@oracle.com>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- include/linux/init.h   | 44 +++++++++++++++-----
- init/main.c            | 32 +++++++-------
- kernel/printk/printk.c |  4 +-
- security/security.c    |  4 +-
- 4 files changed, 53 insertions(+), 31 deletions(-)
+ drivers/pci/quirks.c | 13 ++++++++++---
+ include/linux/pci.h  | 20 ++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/init.h b/include/linux/init.h
-index ea1b31101d9e..125bbea99c6b 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -109,8 +109,24 @@
- typedef int (*initcall_t)(void);
- typedef void (*exitcall_t)(void);
- 
--extern initcall_t __con_initcall_start[], __con_initcall_end[];
--extern initcall_t __security_initcall_start[], __security_initcall_end[];
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 10684b17d0bd..b6d51b4d5ce1 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3556,9 +3556,16 @@ static void pci_do_fixups(struct pci_dev *dev, struct pci_fixup *f,
+ 		     f->vendor == (u16) PCI_ANY_ID) &&
+ 		    (f->device == dev->device ||
+ 		     f->device == (u16) PCI_ANY_ID)) {
+-			calltime = fixup_debug_start(dev, f->hook);
+-			f->hook(dev);
+-			fixup_debug_report(dev, calltime, f->hook);
++			void (*hook)(struct pci_dev *dev);
 +#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
-+typedef signed int initcall_entry_t;
-+
-+static inline initcall_t initcall_from_entry(initcall_entry_t *entry)
-+{
-+	return (initcall_t)((unsigned long)entry + *entry);
-+}
++			hook = (void *)((unsigned long)&f->hook_offset +
++					f->hook_offset);
 +#else
-+typedef initcall_t initcall_entry_t;
-+
-+static inline initcall_t initcall_from_entry(initcall_entry_t *entry)
-+{
-+	return *entry;
-+}
++			hook = f->hook;
 +#endif
-+
-+extern initcall_entry_t __con_initcall_start[], __con_initcall_end[];
-+extern initcall_entry_t __security_initcall_start[], __security_initcall_end[];
++			calltime = fixup_debug_start(dev, hook);
++			hook(dev);
++			fixup_debug_report(dev, calltime, hook);
+ 		}
+ }
  
- /* Used for contructor calls. */
- typedef void (*ctor_fn_t)(void);
-@@ -160,9 +176,20 @@ extern bool initcall_debug;
-  * as KEEP() in the linker script.
-  */
- 
--#define __define_initcall(fn, id) \
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index c170c9250c8b..e8c34afb5d4a 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1792,7 +1792,11 @@ struct pci_fixup {
+ 	u16 device;		/* You can use PCI_ANY_ID here of course */
+ 	u32 class;		/* You can use PCI_ANY_ID here too */
+ 	unsigned int class_shift;	/* should be 0, 8, 16 */
 +#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
-+#define ___define_initcall(fn, id, __sec)			\
-+	__ADDRESSABLE(fn)					\
-+	asm(".section	\"" #__sec ".init\", \"a\"	\n"	\
-+	"__initcall_" #fn #id ":			\n"	\
-+	    ".long "	VMLINUX_SYMBOL_STR(fn) " - .	\n"	\
-+	    ".previous					\n");
++	signed int hook_offset;
 +#else
-+#define ___define_initcall(fn, id, __sec) \
- 	static initcall_t __initcall_##fn##id __used \
--	__attribute__((__section__(".initcall" #id ".init"))) = fn;
-+		__attribute__((__section__(#__sec ".init"))) = fn;
+ 	void (*hook)(struct pci_dev *dev);
 +#endif
-+
-+#define __define_initcall(fn, id) ___define_initcall(fn, id, .initcall##id)
+ };
  
- /*
-  * Early initcalls run before initializing SMP.
-@@ -201,13 +228,8 @@ extern bool initcall_debug;
- #define __exitcall(fn)						\
- 	static exitcall_t __exitcall_##fn __exit_call = fn
+ enum pci_fixup_pass {
+@@ -1806,12 +1810,28 @@ enum pci_fixup_pass {
+ 	pci_fixup_suspend_late,	/* pci_device_suspend_late() */
+ };
  
--#define console_initcall(fn)					\
--	static initcall_t __initcall_##fn			\
--	__used __section(.con_initcall.init) = fn
--
--#define security_initcall(fn)					\
--	static initcall_t __initcall_##fn			\
--	__used __section(.security_initcall.init) = fn
-+#define console_initcall(fn)	___define_initcall(fn,, .con_initcall)
-+#define security_initcall(fn)	___define_initcall(fn,, .security_initcall)
++#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
++#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				    class_shift, hook)			\
++	__ADDRESSABLE(hook)						\
++	asm(".section "	#sec ", \"a\"				\n"	\
++	    ".balign	16					\n"	\
++	    ".short "	#vendor ", " #device "			\n"	\
++	    ".long "	#class ", " #class_shift "		\n"	\
++	    ".long "	VMLINUX_SYMBOL_STR(hook) " - .		\n"	\
++	    ".previous						\n");
++#define DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				  class_shift, hook)			\
++	__DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				  class_shift, hook)
++#else
+ /* Anonymous variables would be nice... */
+ #define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, class,	\
+ 				  class_shift, hook)			\
+ 	static const struct pci_fixup __PASTE(__pci_fixup_##name,__LINE__) __used	\
+ 	__attribute__((__section__(#section), aligned((sizeof(void *)))))    \
+ 		= { vendor, device, class, class_shift, hook };
++#endif
  
- struct obs_kernel_param {
- 	const char *str;
-diff --git a/init/main.c b/init/main.c
-index 7b606fc48482..2cbe3c2804ab 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -845,18 +845,18 @@ int __init_or_module do_one_initcall(initcall_t fn)
- }
- 
- 
--extern initcall_t __initcall_start[];
--extern initcall_t __initcall0_start[];
--extern initcall_t __initcall1_start[];
--extern initcall_t __initcall2_start[];
--extern initcall_t __initcall3_start[];
--extern initcall_t __initcall4_start[];
--extern initcall_t __initcall5_start[];
--extern initcall_t __initcall6_start[];
--extern initcall_t __initcall7_start[];
--extern initcall_t __initcall_end[];
--
--static initcall_t *initcall_levels[] __initdata = {
-+extern initcall_entry_t __initcall_start[];
-+extern initcall_entry_t __initcall0_start[];
-+extern initcall_entry_t __initcall1_start[];
-+extern initcall_entry_t __initcall2_start[];
-+extern initcall_entry_t __initcall3_start[];
-+extern initcall_entry_t __initcall4_start[];
-+extern initcall_entry_t __initcall5_start[];
-+extern initcall_entry_t __initcall6_start[];
-+extern initcall_entry_t __initcall7_start[];
-+extern initcall_entry_t __initcall_end[];
-+
-+static initcall_entry_t *initcall_levels[] __initdata = {
- 	__initcall0_start,
- 	__initcall1_start,
- 	__initcall2_start,
-@@ -882,7 +882,7 @@ static char *initcall_level_names[] __initdata = {
- 
- static void __init do_initcall_level(int level)
- {
--	initcall_t *fn;
-+	initcall_entry_t *fn;
- 
- 	strcpy(initcall_command_line, saved_command_line);
- 	parse_args(initcall_level_names[level],
-@@ -892,7 +892,7 @@ static void __init do_initcall_level(int level)
- 		   NULL, &repair_env_string);
- 
- 	for (fn = initcall_levels[level]; fn < initcall_levels[level+1]; fn++)
--		do_one_initcall(*fn);
-+		do_one_initcall(initcall_from_entry(fn));
- }
- 
- static void __init do_initcalls(void)
-@@ -923,10 +923,10 @@ static void __init do_basic_setup(void)
- 
- static void __init do_pre_smp_initcalls(void)
- {
--	initcall_t *fn;
-+	initcall_entry_t *fn;
- 
- 	for (fn = __initcall_start; fn < __initcall0_start; fn++)
--		do_one_initcall(*fn);
-+		do_one_initcall(initcall_from_entry(fn));
- }
- 
- /*
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index b9006617710f..0516005261c7 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2611,7 +2611,7 @@ EXPORT_SYMBOL(unregister_console);
-  */
- void __init console_init(void)
- {
--	initcall_t *call;
-+	initcall_entry_t *call;
- 
- 	/* Setup the default TTY line discipline. */
- 	n_tty_init();
-@@ -2622,7 +2622,7 @@ void __init console_init(void)
- 	 */
- 	call = __con_initcall_start;
- 	while (call < __con_initcall_end) {
--		(*call)();
-+		initcall_from_entry(call)();
- 		call++;
- 	}
- }
-diff --git a/security/security.c b/security/security.c
-index 1cd8526cb0b7..f648eeff06de 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -45,10 +45,10 @@ static __initdata char chosen_lsm[SECURITY_NAME_MAX + 1] =
- 
- static void __init do_security_initcalls(void)
- {
--	initcall_t *call;
-+	initcall_entry_t *call;
- 	call = __security_initcall_start;
- 	while (call < __security_initcall_end) {
--		(*call) ();
-+		initcall_from_entry(call)();
- 		call++;
- 	}
- }
+ #define DECLARE_PCI_FIXUP_CLASS_EARLY(vendor, device, class,		\
+ 					 class_shift, hook)		\
 -- 
 2.11.0

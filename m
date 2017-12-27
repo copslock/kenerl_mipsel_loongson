@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Dec 2017 21:11:32 +0100 (CET)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:37024
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990475AbdL0ULZ6UwnF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Dec 2017 21:11:25 +0100
-Received: by mail-it0-x244.google.com with SMTP id d137so26646920itc.2
-        for <linux-mips@linux-mips.org>; Wed, 27 Dec 2017 12:11:25 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Dec 2017 21:13:53 +0100 (CET)
+Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:41505
+        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbdL0UNqNF38F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Dec 2017 21:13:46 +0100
+Received: by mail-it0-x242.google.com with SMTP id x28so26203051ita.0;
+        Wed, 27 Dec 2017 12:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=VVfQQocN2/lcA25k4kJ1I4Rwj8JbQqo8xX8ZWGTSl94=;
-        b=a4cQOZe2sfju8bSqJ0qAmWf5/vMFTmsOJq5hTej7j1gu+XOJ0enWWN+21RX6MmdxNw
-         25UlQHFalc98jqrMjB3oo5WErmPqP7v7mbvfY2F6ADttJRnAj/oxVC375PiwZYSqF5Vc
-         yZ0GPYGlcKdfdpSAs69o5pohFBvvOJ5aMAr9c=
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=y1zLnRsmXXGFXesYN0eRihOtHfQLadMIkbeHN6QmeKU=;
+        b=O0uNLWPl+yES4teePaloy6NhiEct4/e9c5DLKI6TpSsyp04oowcXizuSvyuHGHcTky
+         ed2nAXZEYNNfz6/AcxkoChRcQEI1zStjttiW6/tQY3ZZ/aemK6v3D1Q+iYhyf3QyLV4e
+         UjRAh1xvwsgc7c2GipNe320RUDIg03hBnhcvik/1SoqjfrHkZCGw0HRu0g3FvXUXas82
+         FYTriSgIPVVjGd7D5bQonWo64vsr3xJIUXRxulUoffPXK7KE0bSmb4/qCL4Q5xVkeTMR
+         WzG9esPEFrxJSQi4c7bnzsbVneIU9KReZd4Ea8ZY1Ms6fGO+u82FvWomdvbZRNuApFdn
+         yPaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=VVfQQocN2/lcA25k4kJ1I4Rwj8JbQqo8xX8ZWGTSl94=;
-        b=HDXwZ/Fl09A1668s0vbTl7ewIvJG02daqf5/y2MRv2zcnWKqMlAqiMOCfIT+GrW+/q
-         jKZjQeBcEbIJvm0HaGg6YbgHQkyfwW1793zP2FUY9u042LCOz+zLM+xSORIr2Q9YvJud
-         gOvD6zNKMyNBNRF+zYvnh4QM5KbkU8H3Giq7GfjLGPAvXd9K0g+/3O1RrlX1S2PYNQi2
-         PoicnNXByOfi5w05ajsBeTSZFugXA+RGfC4JSgOUCotzwjsyPaP+nCx9OF05RRASqdIf
-         ykierAa95Pa2jJkHYtMgqUnD++0B7i3KuDhtYqpygpj3xg7QD4EovZLNyjpou1nJhheW
-         sz3Q==
-X-Gm-Message-State: AKGB3mIuWKhqLvDygBcct8BlDlZSSB3JPGR9FlYpF89vIaPmTHVKXsL/
-        Rv/Y8ss1VI+tqWSJC+syGzZheK+/1OOengS5HyC/gw==
-X-Google-Smtp-Source: ACJfBovxOVrb4nV15YNIZBCprDiihlqdv2F49aYrTomyY089VW8RYpbh58RbbT8uZYUF72QDmjT7GFLgUv2YsmXyqVo=
-X-Received: by 10.36.55.138 with SMTP id r132mr38187909itr.34.1514405480032;
- Wed, 27 Dec 2017 12:11:20 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=y1zLnRsmXXGFXesYN0eRihOtHfQLadMIkbeHN6QmeKU=;
+        b=i6RUetUw1a1p/bigfEk6xHAfmjWL2HFT16myEntxZ+K/IdCX/gVluWBtGkFEL9Ma+4
+         6AbAC4uvc3KRhCsbskM75+fdwS7o/FOlp5tfwWW2SwDuUQExg6akZyAEp5FhvzrXYdJv
+         DAJCIE3bsXsrbASOEcmVyDspTNonNgYvsICQtvwWAmh6x3AiKoFPU7ZS8tPDtfAuajqW
+         c1uIRVPYbMMB2cjnvii8rRRPv0J/di4MTew2n4BMssNvJ06bfs1ZhXQAdL+qE7ODJRpw
+         F/Xxn75Ies+4roS6QI18MOdKj9UCxkVyYfInP0LMeI0R2C4bH5T+Rit7ca2RT4maM71u
+         TXIA==
+X-Gm-Message-State: AKGB3mJaszAnVjCkPvnAjS18rOkbTTYBPjVc7D3jLvfpLsK2+sObBaCH
+        7c5zJp6v7S2fM/tYjEfh4b4p3tfMJvb8p+M2dvU=
+X-Google-Smtp-Source: ACJfBouHQF3HCwAL6Z7Hr48fXhmEvAfjfuIAjXcFh0K0KgUog6BIjTxv/ralvjD1yDoZCa8vElMmZOQCcyoUYcXXb98=
+X-Received: by 10.36.87.79 with SMTP id u76mr37140380ita.123.1514405620280;
+ Wed, 27 Dec 2017 12:13:40 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.107.52.14 with HTTP; Wed, 27 Dec 2017 12:11:19 -0800 (PST)
-In-Reply-To: <CA+55aFxqJqJq_7VUzBVTppgXFPc-8Ou55iLsZjp3fr6B2gRyTQ@mail.gmail.com>
+Received: by 10.107.20.11 with HTTP; Wed, 27 Dec 2017 12:13:39 -0800 (PST)
+In-Reply-To: <CAKv+Gu-2NUzsakN2rcM_5fqD0ubr+6ZXSc+5sjZZPbU3wj_Xsg@mail.gmail.com>
 References: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
  <20171227085033.22389-3-ard.biesheuvel@linaro.org> <CA+55aFxqJqJq_7VUzBVTppgXFPc-8Ou55iLsZjp3fr6B2gRyTQ@mail.gmail.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Wed, 27 Dec 2017 20:11:19 +0000
-Message-ID: <CAKv+Gu-2NUzsakN2rcM_5fqD0ubr+6ZXSc+5sjZZPbU3wj_Xsg@mail.gmail.com>
+ <CAKv+Gu-2NUzsakN2rcM_5fqD0ubr+6ZXSc+5sjZZPbU3wj_Xsg@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 27 Dec 2017 12:13:39 -0800
+X-Google-Sender-Auth: zVgzX-d_nJG16JgRrmDHiOqLn_4
+Message-ID: <CA+55aFzygF6P3v5VxyBucZfn-tg58jeV6qwt0y7QGmmNiKYghQ@mail.gmail.com>
 Subject: Re: [PATCH v6 2/8] module: use relative references for __ksymtab entries
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -73,15 +78,15 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "the arch/x86 maintainers" <x86@kernel.org>,
         Ingo Molnar <mingo@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <ard.biesheuvel@linaro.org>
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61639
+X-archive-position: 61640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ard.biesheuvel@linaro.org
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,35 +99,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 27 December 2017 at 20:07, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-> On Wed, Dec 27, 2017 at 12:50 AM, Ard Biesheuvel
-> <ard.biesheuvel@linaro.org> wrote:
->> diff --git a/include/linux/compiler.h b/include/linux/compiler.h
->> index 52e611ab9a6c..fe752d365334 100644
->> --- a/include/linux/compiler.h
->> +++ b/include/linux/compiler.h
->> @@ -327,4 +327,15 @@ static __always_inline void __write_once_size(volatile void *p, void *res, int s
->>         compiletime_assert(__native_word(t),                            \
->>                 "Need native word sized stores/loads for atomicity.")
->>
->> +/*
->> + * Force the compiler to emit 'sym' as a symbol, so that we can reference
->> + * it from inline assembler. Necessary in case 'sym' could be inlined
->> + * otherwise, or eliminated entirely due to lack of references that are
->> + * visibile to the compiler.
->> + */
->> +#define __ADDRESSABLE(sym) \
->> +       static void *__attribute__((section(".discard.text"), used))    \
->> +               __PASTE(__discard_##sym, __LINE__)(void)                \
->> +                       { return (void *)&sym; }                        \
->> +
->>  #endif /* __LINUX_COMPILER_H */
+On Wed, Dec 27, 2017 at 12:11 PM, Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
 >
-> Isn't this logically the point where you should add the arm64
-> vmlinux.lds.S change, and explain how ".discard.text" turns into
-> ".init.discard.text" for some odd arm64 reason?
->
+> I tried to keep the generic patches generic, so perhaps I should just
+> put the arm64 vmlinux.lds.S change in a patch on its own?
 
-I tried to keep the generic patches generic, so perhaps I should just
-put the arm64 vmlinux.lds.S change in a patch on its own?
+I guess it doesn't matter, but regardless of where it gets introduced
+I would like to see the explanation for where the heck that magical
+".init.discard.text" comes from. It's definitely not obvious from the
+patches, and is presumably some odd arm64 special case.
+
+                Linus

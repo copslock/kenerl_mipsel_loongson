@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Dec 2017 20:55:11 +0100 (CET)
-Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:33822
-        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990475AbdL0TzFI160F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Dec 2017 20:55:05 +0100
-Received: by mail-io0-x243.google.com with SMTP id q188so12068327iod.1;
-        Wed, 27 Dec 2017 11:55:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Dec 2017 21:00:02 +0100 (CET)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:46856
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990493AbdL0T7ys1hVF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Dec 2017 20:59:54 +0100
+Received: by mail-io0-x244.google.com with SMTP id x129so36332865iod.13
+        for <linux-mips@linux-mips.org>; Wed, 27 Dec 2017 11:59:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=8dE6k4Y9YtFyT/mk5ZWXCmhZmPUhg/Os7HUQamu5w8w=;
-        b=DQJFyankOkMTCbWbXWAU6L6RnLaJxWvXNfylsJSb3OjLlNIjXplTHpAxY2j7iFwTE6
-         +zTeXGxa3KVDytpXJaky6tp9JOUwPTNoak4dZ1KTOVk3KC94dR7YFcccnyV6tpd4eKKk
-         O5d49r9REHyglx+NggqY970QmOn13pwnCIXFEy0cBJg05vhp5lWFCAsKo6gMi/HzbAkf
-         uvvE/XgV7d98P1Ja3y/p7bFwgXm3PQaNag/gu3Szeks2MplQbRkDj+DzP4j3jRb2sRZp
-         Nrzrm93poMPRLS8w335Ny4+zojFCvmzL0JP8e/2A8LNHzPsH6mAWUmWwKRqhtjunxl/T
-         i0Vw==
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=Xfs91tE3NYFRnce+RSnL2Pb8Taf+Hyi37Lrqb7czqH0=;
+        b=EprJboss/zq53Ezzq6KNGyGBgTzAfNqd1fYfCOc+76fiLNXwy7UcySKfoSFdpGLYVQ
+         qT19czGghnFFicRwh2RRegLbi/IBvP5K5d6QMFGxC2Rzokg0Ra2w/H5kTsh9vhKBw/Yr
+         XOvqMmlAL2sPc3xadqyJ0Gbq/TJp4uhFh2Nyk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=8dE6k4Y9YtFyT/mk5ZWXCmhZmPUhg/Os7HUQamu5w8w=;
-        b=OV+DXow22Cwid9jolqX5UQiUsNecdom+SMRHjpyYy4uYJtFRx2gKvRRxBOBcd1HbRD
-         0EroCzxZS4flM/pAzxlyxzhUGaEGk6CD5pR/Vgggg55QE8MMbbGJtK45a5UpV8hNWHjs
-         +9tCf7li4HKGxvnt9nwVLInGCPw4syPAuBRQBFVL/UHq50/quBhM9iStdoTtxy7Q3sRd
-         luJ7NNImjoxeJHYNrci6Y7lTTZb62Nv16Sl0qbarBBhCNyncKwn6lq+7bqISc1sm3de2
-         aAVV1Q+1G6Esk9CAbVMdvfWhQePVSC2eP2PjxivG+kDtz2siQnwr/UrOqoVJtKS0t2pa
-         gDsQ==
-X-Gm-Message-State: AKGB3mKJTJRCyyPDkzh8/Mx0TXdMmVcGvryPpM2PoiMlvxy4Z2MFO2Tk
-        yxCB7S/623ILtTNQk+UH+Dm8GB8VBYI1YVEMUpI=
-X-Google-Smtp-Source: ACJfBovho/EPwV1aFmboR5wymxSm+gjGCUOe5GvdwyhUKDTtCTbtec/WXjZv6hSoUnCnmGZipLyayhevFAQsEs/1rE8=
-X-Received: by 10.107.132.75 with SMTP id g72mr35132894iod.46.1514404498735;
- Wed, 27 Dec 2017 11:54:58 -0800 (PST)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=Xfs91tE3NYFRnce+RSnL2Pb8Taf+Hyi37Lrqb7czqH0=;
+        b=csrLM6bJWtqSbpFeK8dQM+qWj1VuW/iEul57lUY3YJwnONR3DuB5B+SZNKPurMCM1h
+         4MAiAaxOsLEuXGBlLhrGZP+eBr36thRg09wEmYgLNMMH0LAclxC8YZAg6JlgSwZ7ixsL
+         LYGVERh3wdE9v3L4ZgMYGbkidTSl6/Ecd0XnTyKTl5DUzbc53OXAxcdb/3kNT2cpgcHT
+         CdfUzEa2/izzzMqizbQmo8oCOd+1u/+tVvQH8bkSdRGbnE60a6OExXbZpPxpayQAFKLY
+         l4BnxE3Yd2o2a1j6FenkmtXBCh7mcd4bKds/WpMsh+3vTuLqkbGzy7AvcFwLdN3x4Odn
+         PzVg==
+X-Gm-Message-State: AKGB3mJiaaiM0fNnR895ZwfVnwOoepbWiV0+Csrsk2Y/RsTuvJ9bFIkY
+        U037xpfeP+aG59FQEU5TW4pbgmEbwyyOT2se++l1WQ==
+X-Google-Smtp-Source: ACJfBosgnJhuEEENvYq+Tv9lrnLXw07tv2H7wXviR/kyi22HwdIkvbCSXs/tTnIA8QURU8/vovHlu1fpsi6GO4+8MN4=
+X-Received: by 10.107.133.34 with SMTP id h34mr37848770iod.253.1514404786217;
+ Wed, 27 Dec 2017 11:59:46 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.107.20.11 with HTTP; Wed, 27 Dec 2017 11:54:58 -0800 (PST)
-In-Reply-To: <20171227085033.22389-2-ard.biesheuvel@linaro.org>
-References: <20171227085033.22389-1-ard.biesheuvel@linaro.org> <20171227085033.22389-2-ard.biesheuvel@linaro.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 27 Dec 2017 11:54:58 -0800
-X-Google-Sender-Auth: 6bjh7dFtl7Zli1Z_Vx_qS2q2nLY
-Message-ID: <CA+55aFyJg=-PfrVV1kw_bqKKd9Uk+q2FS4pqPp-og_DDbhhaFw@mail.gmail.com>
+Received: by 10.107.52.14 with HTTP; Wed, 27 Dec 2017 11:59:45 -0800 (PST)
+In-Reply-To: <CA+55aFyJg=-PfrVV1kw_bqKKd9Uk+q2FS4pqPp-og_DDbhhaFw@mail.gmail.com>
+References: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
+ <20171227085033.22389-2-ard.biesheuvel@linaro.org> <CA+55aFyJg=-PfrVV1kw_bqKKd9Uk+q2FS4pqPp-og_DDbhhaFw@mail.gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Wed, 27 Dec 2017 19:59:45 +0000
+Message-ID: <CAKv+Gu_rzc3=9Uip-CmJHf5rs9mfbx5ap_VZN73tmBMiJZ25TQ@mail.gmail.com>
 Subject: Re: [PATCH v6 1/8] arch: enable relative relocations for arm64,
  power, x86, s390 and x86
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -76,15 +73,15 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         sparclinux@vger.kernel.org,
         "the arch/x86 maintainers" <x86@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <linus971@gmail.com>
+Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61636
+X-archive-position: 61637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: ard.biesheuvel@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,27 +94,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 27, 2017 at 12:50 AM, Ard Biesheuvel
-<ard.biesheuvel@linaro.org> wrote:
-> diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-> index 7da3e5c366a0..49ae5b43fe2b 100644
-> --- a/arch/arm64/kernel/vmlinux.lds.S
-> +++ b/arch/arm64/kernel/vmlinux.lds.S
-> @@ -156,7 +156,7 @@ SECTIONS
->                 CON_INITCALL
->                 SECURITY_INITCALL
->                 INIT_RAM_FS
-> -               *(.init.rodata.* .init.bss)     /* from the EFI stub */
-> +               *(.init.rodata.* .init.bss .init.discard.*)     /* EFI stub */
->         }
->         .exit.data : {
->                 ARM_EXIT_KEEP(EXIT_DATA)
+On 27 December 2017 at 19:54, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+> On Wed, Dec 27, 2017 at 12:50 AM, Ard Biesheuvel
+> <ard.biesheuvel@linaro.org> wrote:
+>> diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+>> index 7da3e5c366a0..49ae5b43fe2b 100644
+>> --- a/arch/arm64/kernel/vmlinux.lds.S
+>> +++ b/arch/arm64/kernel/vmlinux.lds.S
+>> @@ -156,7 +156,7 @@ SECTIONS
+>>                 CON_INITCALL
+>>                 SECURITY_INITCALL
+>>                 INIT_RAM_FS
+>> -               *(.init.rodata.* .init.bss)     /* from the EFI stub */
+>> +               *(.init.rodata.* .init.bss .init.discard.*)     /* EFI stub */
+>>         }
+>>         .exit.data : {
+>>                 ARM_EXIT_KEEP(EXIT_DATA)
+>
+> Weren't you supposed to explain this part in the commit message?
+>
 
-Weren't you supposed to explain this part in the commit message?
+Oops. Apologies, I indeed forgot to update the commit log.
 
-It isn't obvious why this is mixed up with the Kconfig changes, and
-somebody already asked about it. The commit message only talks about
-the Kconfig changes, and then suddenly there's that odd vmlinux.lds.S
-change in there...
+> It isn't obvious why this is mixed up with the Kconfig changes, and
+> somebody already asked about it. The commit message only talks about
+> the Kconfig changes, and then suddenly there's that odd vmlinux.lds.S
+> change in there...
+>
 
-              Linus
+Yeah. It doesn't make sense to respin right away for just that, so I
+will give people some time to respond, and respin in a week or so.

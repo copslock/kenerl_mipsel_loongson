@@ -1,68 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 22:31:18 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:43109
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990506AbdL1Va0NLjvH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 22:30:26 +0100
-Received: by mail-wm0-x243.google.com with SMTP id n138so45753238wmg.2;
-        Thu, 28 Dec 2017 13:30:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 00:24:52 +0100 (CET)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:38818
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990486AbdL1XYoSA8qO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 00:24:44 +0100
+Received: by mail-io0-x241.google.com with SMTP id 87so35535203ior.5
+        for <linux-mips@linux-mips.org>; Thu, 28 Dec 2017 15:24:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=PBPmc4DROt+sHKDLnAgUM+xs9Pmc3QG4TlcOrffjcIg=;
-        b=E1MQg+zXYxIFYak1JtAQx3d7a3dXhwLZX1QjnEsezWv2ZVmpNsU6gFkoyssn/5G7Eb
-         i2h5/xJG/1PSMEulQOoe4mvxuftMmcR3KUjDoZA7pAK0nGNsfVvFbRgUbMXxzFmeMFB4
-         LqhewU8bGndJLO6O/q9BaE3liImgs1PqVoE5US7qSxvZVGGi6mtgdZuV9tiIvP+rYm8G
-         LtybT5QNLc0R5e2OW3Z02XBUCD2PEK1xYpG1b6dc/tjQVOuWrRt/UNtd0zYt9LvsmKC9
-         aF8S6EWgsxL4Sr6GieDvs/aP/EUEAtDJr1cenVvyAb9CATDavj6Lwq7gFhCKn4LPmnJ4
-         ybNg==
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=5YmjNvodi+GHUVXPIsIfo7pnye0NuYIdv4EzQP6nscw=;
+        b=QEFwuuuzO89cK5vFmp5rScQw8cQ7T2TWXlfu9WSWht4GhaZ+1BFmU7HEUIdmv/1+b3
+         wzvP1Rk0l/3UkquqTolvSZaCDs2gzK9NK+kJRBptmXx/Qlk/qwasMCKzcCTuBeJMIvv3
+         vFt+OlfJgBgQgXDNYkgV3x7sbVOQlUn9LnHbM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references;
-        bh=PBPmc4DROt+sHKDLnAgUM+xs9Pmc3QG4TlcOrffjcIg=;
-        b=r3tqwgIciGQl232EcqL7qVddU129aSCa8uYEiippAoSjuW+Bh5z2iRkkuGMdkVDXEX
-         rqRv3TQyTfsYyT3AAmyhQorgcVcnabdLDFfGaroL5aJPgHVf+Kv288ozURQmD4LJIE3C
-         YgCUkGBJgr3ZRhm8VAaCinu8oCw59lCFjxZuQDS/snLssQhIs/xUTH1UegfeO277wUqm
-         zC8707AYz/vbF3bWXck/8effeXNZ/fjPjCyEdXev1h2RSG4vkuOUoQImfjJ3PB9Sg/t5
-         5wCCEqv5s8XGe7vJceJqPweqTlps7doDg9bYUXxOYAkUMmC+ox1V/PuDUQxE7sGFZxrm
-         +AVg==
-X-Gm-Message-State: AKGB3mKFhfw64OVuFfkxdYNxw3S1GNPgKJ0ItFkvBWkx9OIXSjkEb/2w
-        9mQCY9FTOtJpxRntsRLzqvo=
-X-Google-Smtp-Source: ACJfBot23jEBXEAVbKRgPt0V0NU7jXE0LKPLJUKDnJlZ0knlAeXsTHUS004uUMhFMkpfvp1f/44kwg==
-X-Received: by 10.28.71.136 with SMTP id m8mr28289263wmi.89.1514496620707;
-        Thu, 28 Dec 2017 13:30:20 -0800 (PST)
-Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
-        by smtp.gmail.com with ESMTPSA id 62sm21606161wmo.33.2017.12.28.13.30.19
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 28 Dec 2017 13:30:20 -0800 (PST)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
-        id 2009A10C32F6; Thu, 28 Dec 2017 22:30:19 +0100 (CET)
-From:   Mathieu Malaterre <malat@debian.org>
-To:     Marcin Nowakowski <marcin.nowakowski@mips.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zubair.Kakakhel@mips.com, Mathieu Malaterre <malat@debian.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=5YmjNvodi+GHUVXPIsIfo7pnye0NuYIdv4EzQP6nscw=;
+        b=nSQovOxxfqojJldV8Bv2bFqEB2UmmQo/7i2X6/rKDdFkLcflvLhjHKidg9Npv5zRg2
+         hqjeI2VWh/WxXpAhP6W06IZrItU1umb3ob40/HVqGrRLNpQtEfLTFTyuviHIxlc1YKt8
+         fTL31o5btqOOHnBA1P0xE2IfRAjXotitRgxB2daEVRFRfwSZdDrgk0qitDnFEw3K+M/0
+         MbQBWi7EbkBR+WhRrt7eLrJat9I7XWQWSJC6m/42ycy7qXFN3TMPFG0J9EmG4nYAwJox
+         BMoO3m3O6W7Nbqr5yaSRuuvgBb+zt9TuPcND4w+kILcsNnpG3+SfSMXb7ci3Gt8xxEM7
+         DcwQ==
+X-Gm-Message-State: AKGB3mIzc5OiCYyjzZ0ToljmF3xgzLDzRyRWkLbhEBHh9Mkvu2QLOksC
+        OAm7xOsBLdL/m6bavHoTCQdtNUOKEsTE3xIY2B0TrA==
+X-Google-Smtp-Source: ACJfBov9IrD+oyivAkgz96hraKRzxmVMopgDGZFTijSh8nlxAFcEjIGtTzycbi1+DfEx0Rx8e3vLwdvJk3OsLprnSHE=
+X-Received: by 10.107.151.142 with SMTP id z136mr44520388iod.248.1514503477791;
+ Thu, 28 Dec 2017 15:24:37 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.107.52.14 with HTTP; Thu, 28 Dec 2017 15:24:37 -0800 (PST)
+In-Reply-To: <20171228104207.117ee0ff@gandalf.local.home>
+References: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
+ <20171227085033.22389-6-ard.biesheuvel@linaro.org> <20171228104207.117ee0ff@gandalf.local.home>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Thu, 28 Dec 2017 23:24:37 +0000
+Message-ID: <CAKv+Gu-R6yf8C=ZgO8G5vmR+MZtFTijRg6+tH+qscT4ycy1PrQ@mail.gmail.com>
+Subject: Re: [PATCH v6 5/8] kernel: tracepoints: add support for relative references
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH v2 2/2] dts: Probe efuse for CI20
-Date:   Thu, 28 Dec 2017 22:29:53 +0100
-Message-Id: <20171228212954.2922-3-malat@debian.org>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20171228212954.2922-1-malat@debian.org>
-References: <20171228212954.2922-1-malat@debian.org>
-Return-Path: <mathieu.malaterre@gmail.com>
+        Arnd Bergmann <arnd@arndb.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Garnier <thgarnie@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Paul Mackerras <paulus@samba.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Petr Mladek <pmladek@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        James Morris <james.l.morris@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nicolas Pitre <nico@linaro.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Jessica Yu <jeyu@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mips <linux-mips@linux-mips.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux@vger.kernel.org,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61694
+X-archive-position: 61695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: ard.biesheuvel@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,23 +93,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS Creator CI20 comes with JZ4780 SoC. Provides access to the efuse block
-using jz4780 efuse driver.
+On 28 December 2017 at 15:42, Steven Rostedt <rostedt@goodmis.org> wrote:
+> On Wed, 27 Dec 2017 08:50:30 +0000
+> Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+>
+>> To avoid the need for relocating absolute references to tracepoint
+>> structures at boot time when running relocatable kernels (which may
+>> take a disproportionate amount of space), add the option to emit
+>> these tables as relative references instead.
+>>
+>
+> I gave this patch a quick skim over. It appears to not modify anything
+> when CONFIG_HAVE_PREL32_RELOCATIONS is not defined. I haven't
+> thoroughly reviewed it or tested it. But if it doesn't break anything,
+> I'm fine giving you an ack.
+>
+> Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+>
 
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
- arch/mips/configs/ci20_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+Thank you Steven.
 
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-index b5f4ad8f2c45..62c63617e97a 100644
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -171,3 +171,5 @@ CONFIG_STACKTRACE=y
- # CONFIG_FTRACE is not set
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="earlycon console=ttyS4,115200 clk_ignore_unused"
-+CONFIG_NVMEM=y
-+CONFIG_JZ4780_EFUSE=y
--- 
-2.11.0
+I should mention though (as you don't appear to recall) that an
+earlier version of this patch triggered an issue for you
+
+https://marc.info/?l=linux-arch&m=150584374820168&w=2
+
+but I have never managed to reproduce it, neither at the time nor
+currently with this v6.
+
+
+ard@bezzzef:~/linux-2.6$ sudo tools/testing/selftests/ftrace/ftracetest
+=== Ftrace unit tests ===
+[1] Basic trace file check [PASS]
+[2] Basic test for tracers [PASS]
+[3] Basic trace clock test [PASS]
+[4] Basic event tracing check [PASS]
+[5] event tracing - enable/disable with event level files [PASS]
+[6] event tracing - restricts events based on pid [PASS]
+[7] event tracing - enable/disable with subsystem level files [PASS]
+[8] event tracing - enable/disable with top level files [PASS]
+[9] ftrace - function graph filters with stack tracer [PASS]
+[10] ftrace - function graph filters [PASS]
+[11] ftrace - test for function event triggers [PASS]
+[12] ftrace - function glob filters [PASS]
+[13] ftrace - function pid filters [PASS]
+[14] ftrace - function profiler with function tracing [PASS]
+[15] ftrace - test reading of set_ftrace_filter [PASS]
+[16] ftrace - test for function traceon/off triggers [PASS]
+[17] Test creation and deletion of trace instances while setting an event [PASS]
+[18] Test creation and deletion of trace instances [PASS]
+[19] Kprobe dynamic event - adding and removing [PASS]
+[20] Kprobe dynamic event - busy event check [PASS]
+[21] Kprobe dynamic event with arguments [PASS]
+[22] Kprobes event arguments with types [PASS]
+[23] Kprobe event auto/manual naming [PASS]
+[24] Kprobe dynamic event with function tracer [PASS]
+[25] Kprobe dynamic event - probing module [PASS]
+[26] Kretprobe dynamic event with arguments [PASS]
+[27] Kretprobe dynamic event with maxactive [PASS]
+[28] Register/unregister many kprobe events [PASS]
+[29] event trigger - test event enable/disable trigger [PASS]
+[30] event trigger - test trigger filter [PASS]
+[31] event trigger - test histogram modifiers [PASS]
+[32] event trigger - test histogram trigger [PASS]
+[33] event trigger - test multiple histogram triggers [PASS]
+[34] event trigger - test snapshot-trigger [PASS]
+[35] event trigger - test stacktrace-trigger [PASS]
+[36] event trigger - test traceon/off trigger [PASS]
+[37] (instance)  Basic test for tracers [PASS]
+[38] (instance)  Basic trace clock test [PASS]
+[39] (instance)  event tracing - enable/disable with event level files [PASS]
+[40] (instance)  event tracing - restricts events based on pid [PASS]
+[41] (instance)  event tracing - enable/disable with subsystem level
+files [PASS]
+[42] (instance)  ftrace - test for function event triggers [PASS]
+[43] (instance)  ftrace - test for function traceon/off triggers [PASS]
+[44] (instance)  event trigger - test event enable/disable trigger [PASS]
+[45] (instance)  event trigger - test trigger filter [PASS]
+[46] (instance)  event trigger - test histogram modifiers [PASS]
+[47] (instance)  event trigger - test histogram trigger [PASS]
+[48] (instance)  event trigger - test multiple histogram triggers [PASS]
+
+# of passed:  48
+# of failed:  0
+# of unresolved:  0
+# of untested:  0
+# of unsupported:  0
+# of xfailed:  0
+# of undefined(test bug):  0

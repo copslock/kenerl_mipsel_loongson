@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 19:38:55 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:34930 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 19:39:54 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:35240 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990633AbdL1SihXbu7O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 19:38:37 +0100
+        with ESMTP id S23990633AbdL1Sjpo9FfO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 19:39:45 +0100
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id F2FD56079C; Thu, 28 Dec 2017 18:38:35 +0000 (UTC)
+        id 4853F60858; Thu, 28 Dec 2017 18:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1514486316;
-        bh=pCek1Z9atUFj0HH5XFTyLvrYS03hjjiXowjgDXXThbE=;
+        s=default; t=1514486381;
+        bh=8rxL9hDPsAm4uGaEJQZsNcpJbGX7JVbRfGH8v04XyBI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jEn40lzJdHXk6wBk5rdJ1U3GYT3LV14LF0LIvCF5GZNYK7Vml5Ps1sFc5AXvc9IZn
-         QUIHDDGoRXRExf65zgdenEvrJF59/OqogM4b0yDkxlHW7dZ067kKHvLfbI9Zh1rUMh
-         j5OWaM2vlDGpbOtf3+5i2fh2IdM0sZBVjGzhiSJM=
+        b=nhQuzSDw3+lQ7Q3VwA9QDPKOksKbLi/byY69uZ85DI8uFCMUlZOefx/1qh7u1mRI9
+         GrNoEnYTJZ40KcavDVazpjtbNhPS59l+DkNASB1GArwaRFiA7k6ZPOcfd/UI7Y1l65
+         ge6VnBtqBTLl8mrf7BdbXXwbtGTwPWTqJFDVSdJ0=
 Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5693D6071B;
-        Thu, 28 Dec 2017 18:38:35 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C40F56071B;
+        Thu, 28 Dec 2017 18:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1514486315;
-        bh=pCek1Z9atUFj0HH5XFTyLvrYS03hjjiXowjgDXXThbE=;
+        s=default; t=1514486380;
+        bh=8rxL9hDPsAm4uGaEJQZsNcpJbGX7JVbRfGH8v04XyBI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=otpz8j+PLMXxDqMA83H9SQe+tSvfyWamZ3UZdB2unCkTpMYa4lWkd3vj3nnArT1lO
-         AnzWsuxmwveaUMqZI7YDbTfM2UP7oGHWub/IhGSQbwx+v9QCNntqxFAM6neqJyCNzV
-         6+KDRVtOZHQbIBR1PDf6IJZx8qGad50dh9Vgf9/I=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5693D6071B
+        b=khHT+UZ0ClgFZzVnqt9RWjKgi4LucQGzeibf888k2db5zle5R/1Fnl9FSsSNLKhWz
+         71MWsZVdWlncLGpvGjflHnESP3CXFbGITS6O7dmojuYIxbsJqeq+eEo3Wf+4/FHFNM
+         WjdX2sUhOa3I6BoGDMTFDsgLYWRNnfJEm3iOE4rk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C40F56071B
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
-Date:   Thu, 28 Dec 2017 10:38:34 -0800
+Date:   Thu, 28 Dec 2017 10:39:40 -0800
 From:   Stephen Boyd <sboyd@codeaurora.org>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -38,21 +38,21 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 06/15] clk: Add Ingenic jz4770 CGU driver
-Message-ID: <20171228183834.GL7997@codeaurora.org>
+Subject: Re: [PATCH v4 04/15] clk: ingenic: Add code to enable/disable PLLs
+Message-ID: <20171228183940.GM7997@codeaurora.org>
 References: <20170702163016.6714-2-paul@crapouillou.net>
  <20171228135634.30000-1-paul@crapouillou.net>
- <20171228135634.30000-7-paul@crapouillou.net>
+ <20171228135634.30000-5-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20171228135634.30000-7-paul@crapouillou.net>
+In-Reply-To: <20171228135634.30000-5-paul@crapouillou.net>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61684
+X-archive-position: 61685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,11 +70,10 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 12/28, Paul Cercueil wrote:
-> Add support for the clocks provided by the CGU in the Ingenic JZ4770
-> SoC.
+> This commit permits the PLLs to be dynamically enabled and disabled when
+> their children clocks are enabled and disabled.
 > 
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
 > ---
 
 Acked-by: Stephen Boyd <sboyd@codeaurora.org>

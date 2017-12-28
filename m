@@ -1,31 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 18:13:55 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40409 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 18:14:21 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40528 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991258AbdL1RN2TdH0B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 18:13:28 +0100
+        by eddie.linux-mips.org with ESMTP id S23991827AbdL1RNbGo9LB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 18:13:31 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1eUbkD-0005gY-KH; Thu, 28 Dec 2017 17:13:25 +0000
+        id 1eUbkC-0005gP-PH; Thu, 28 Dec 2017 17:13:24 +0000
 Received: from ben by deadeye with local (Exim 4.90_RC3)
         (envelope-from <ben@decadent.org.uk>)
-        id 1eUbk9-0007ga-Dy; Thu, 28 Dec 2017 17:13:21 +0000
+        id 1eUbk9-0007iR-W1; Thu, 28 Dec 2017 17:13:21 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "Matt Redfearn" <matt.redfearn@mips.com>,
+CC:     akpm@linux-foundation.org,
+        "Yoshihiro YUNOMAE" <yoshihiro.yunomae.ez@hitachi.com>,
+        linux-mips@linux-mips.org,
+        "Nicolas Schichan" <nschichan@freebox.fr>,
+        linux-serial@vger.kernel.org,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         "James Hogan" <jhogan@kernel.org>,
+        "Jonas Gorski" <jonas.gorski@gmail.com>,
+        "Florian Fainelli" <f.fainelli@gmail.com>,
         "Ralf Baechle" <ralf@linux-mips.org>,
-        "Paul Burton" <paul.burton@mips.com>
+        "Oswald Buddenhagen" <oswald.buddenhagen@gmx.de>
 Date:   Thu, 28 Dec 2017 17:05:44 +0000
-Message-ID: <lsq.1514480744.561600054@decadent.org.uk>
+Message-ID: <lsq.1514480744.874677113@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 154/204] MIPS: Fix CM region target definitions
+Subject: [PATCH 3.16 177/204] MIPS: AR7: Ensure that serial ports are
+ properly set up
 In-Reply-To: <lsq.1514480743.579539031@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -34,7 +41,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61676
+X-archive-position: 61677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,52 +62,39 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-commit 6a6cba1d945a7511cdfaf338526871195e420762 upstream.
+commit b084116f8587b222a2c5ef6dcd846f40f24b9420 upstream.
 
-The default CM target field in the GCR_BASE register is encoded with 0
-meaning memory & 1 being reserved. However the definitions we use for
-those bits effectively get these two values backwards - likely because
-they were copied from the definitions for the CM regions where the
-target is encoded differently. This results in use setting up GCR_BASE
-with the reserved target value by default, rather than targeting memory
-as intended. Although we currently seem to get away with this it's not a
-great idea to rely upon.
+Without UPF_FIXED_TYPE, the data from the PORT_AR7 uart_config entry is
+never copied, resulting in a dead port.
 
-Fix this by changing our macros to match the documentated target values.
-
-The incorrect encoding became used as of commit 9f98f3dd0c51 ("MIPS: Add
-generic CM probe & access code") in the Linux v3.15 cycle, and was
-likely carried forwards from older but unused code introduced by
-commit 39b8d5254246 ("[MIPS] Add support for MIPS CMP platform.") in the
-v2.6.26 cycle.
-
-Fixes: 9f98f3dd0c51 ("MIPS: Add generic CM probe & access code")
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Matt Redfearn <matt.redfearn@mips.com>
-Reviewed-by: James Hogan <jhogan@kernel.org>
-Cc: Matt Redfearn <matt.redfearn@mips.com>
+Fixes: 154615d55459 ("MIPS: AR7: Use correct UART port type")
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+[jonas.gorski: add Fixes tag]
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>
+Cc: Nicolas Schichan <nschichan@freebox.fr>
+Cc: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17562/
+Cc: linux-serial@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/17543/
 Signed-off-by: James Hogan <jhogan@kernel.org>
-[bwh: Backported to 3.16: adjust context]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/include/asm/mips-cm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/ar7/platform.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -173,8 +173,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
- #define CM_GCR_BASE_GCRBASE_MSK			(_ULCAST_(0x1ffff) << 15)
- #define CM_GCR_BASE_CMDEFTGT_SHF		0
- #define CM_GCR_BASE_CMDEFTGT_MSK		(_ULCAST_(0x3) << 0)
--#define  CM_GCR_BASE_CMDEFTGT_DISABLED		0
--#define  CM_GCR_BASE_CMDEFTGT_MEM		1
-+#define  CM_GCR_BASE_CMDEFTGT_MEM		0
-+#define  CM_GCR_BASE_CMDEFTGT_RESERVED		1
- #define  CM_GCR_BASE_CMDEFTGT_IOCU0		2
- #define  CM_GCR_BASE_CMDEFTGT_IOCU1		3
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -581,6 +581,7 @@ static int __init ar7_register_uarts(voi
+ 	uart_port.type		= PORT_AR7;
+ 	uart_port.uartclk	= clk_get_rate(bus_clk) / 2;
+ 	uart_port.iotype	= UPIO_MEM32;
++	uart_port.flags		= UPF_FIXED_TYPE;
+ 	uart_port.regshift	= 2;
  
+ 	uart_port.line		= 0;

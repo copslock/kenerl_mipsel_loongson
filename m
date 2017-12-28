@@ -1,63 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 16:39:03 +0100 (CET)
-Received: from mail-ua0-x244.google.com ([IPv6:2607:f8b0:400c:c08::244]:36732
-        "EHLO mail-ua0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990491AbdL1Piz6iRbd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 16:38:55 +0100
-Received: by mail-ua0-x244.google.com with SMTP id a25so21013951uak.3;
-        Thu, 28 Dec 2017 07:38:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=q+BGJYSyv3LZBf8E72U1z/hjs4EYe6OnWMbmkiVnQJ0=;
-        b=KK0rWaxxJtCn2KO+ZBLwFXqzbImJt/8mNuYJwURyACDTB1JQ4klkhr5u8Jkh7rkvCW
-         MulbCu76CwxaJQ46mx4rR8Us6K4mUw/RR+Af8WTVvXXet3Y2C+aPk2bB/TbumrzK4DFZ
-         iyRwdGLbNpWeN34RoBY9+13o13buR/k8GHVIiA+xTqKTkhF1jrXZ+4RSrLSwoeF4jhbi
-         HRUJ5iNoYRoZSdzwJIn+c0S5jJCHAINgw1qlA9a1bXa+NRxpCGQxwPlV4NA1hcr5S9tx
-         3NGQMfsDRPMTrWkAbNlTYqzvTd4CdTGEtIa9N2HkbdbKKr1LzreNGj2Umvzs9affe1dX
-         5e9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=q+BGJYSyv3LZBf8E72U1z/hjs4EYe6OnWMbmkiVnQJ0=;
-        b=CwAz/tpdtFe8LXm6xMzuSCErKAW/dNFZGr/Dbo+HRoBG7Y1rRSQxR72GPvl7lomSQj
-         ANZfxlG5LFJlEblpREXCKf0fMzeDkANaHP+PQMfjnvlFE5gqz+Xf2O8HUO3wJANXUnhv
-         xIW+9ZhyphklMzBxTyAmojusKlrgF1q0XBbKkXSWZ4+fc+7HCUBQuyYxwomN6rchzWg+
-         mcQRoV7ZXHXN0cX2fwbBdnnNE0EzTOXt36V+YXP4Ii4eTk7fHWKWolh3aiArnnL2rJuE
-         lyJm8PVyK8cvqk/KPPE2lCgfPNSSToWiQrM1/v+HVXtkFgmt7/JGgCaV/Vpn9+TJO6GO
-         oMFw==
-X-Gm-Message-State: AKGB3mJC0M4VT47sWw45xQ5z98djBQKluoPE9T+yX/v1h+fJF1OIF2Ku
-        3xnNtqcZU34NmwECccpmwrNI16rsSMnwYIRi1fM=
-X-Google-Smtp-Source: ACJfBov5L/CzLzNnELeeyIrC8CDcHxWnhATYvhIsrX1bnnWi3HLpmzwb+7elGpG8JTUpFDCCKqNvsNmfwX7iz6pZkqA=
-X-Received: by 10.176.80.24 with SMTP id b24mr16815836uaa.187.1514475529705;
- Thu, 28 Dec 2017 07:38:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 16:42:25 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:57816 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990493AbdL1PmRKj2Sd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Dec 2017 16:42:17 +0100
+Received: from gandalf.local.home (cpe-172-100-180-131.stny.res.rr.com [172.100.180.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6EF46217C3;
+        Thu, 28 Dec 2017 15:42:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 6EF46217C3
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=rostedt@goodmis.org
+Date:   Thu, 28 Dec 2017 10:42:07 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Garnier <thgarnie@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Paul Mackerras <paulus@samba.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Petr Mladek <pmladek@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        James Morris <james.l.morris@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nicolas Pitre <nico@linaro.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Jessica Yu <jeyu@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v6 5/8] kernel: tracepoints: add support for relative
+ references
+Message-ID: <20171228104207.117ee0ff@gandalf.local.home>
+In-Reply-To: <20171227085033.22389-6-ard.biesheuvel@linaro.org>
+References: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
+        <20171227085033.22389-6-ard.biesheuvel@linaro.org>
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 10.176.70.2 with HTTP; Thu, 28 Dec 2017 07:38:29 -0800 (PST)
-In-Reply-To: <20171114110211.GA5823@jhogan-linux.mipstec.com>
-References: <20171029152721.6770-1-jonas.gorski@gmail.com> <20171029152721.6770-4-jonas.gorski@gmail.com>
- <20171114110211.GA5823@jhogan-linux.mipstec.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Thu, 28 Dec 2017 16:38:29 +0100
-Message-ID: <CAOiHx==rL82D4NMz8t15jMr8m5oQmhkAzc+9r6qA0WMgbS-b9w@mail.gmail.com>
-Subject: Re: [PATCH RFC 3/3] MIPS: AR7: ensure the port type's FCR value is used
-To:     James Hogan <james.hogan@mips.com>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-serial@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Schichan <nschichan@freebox.fr>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <jonas.gorski@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <SRS0=oC7H=DY=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61662
+X-archive-position: 61663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,44 +73,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14 November 2017 at 12:02, James Hogan <james.hogan@mips.com> wrote:
-> On Sun, Oct 29, 2017 at 04:27:21PM +0100, Jonas Gorski wrote:
->> Since commit aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt
->> trigger I/F of FIFO buffers"), the port's default FCR value isn't used
->> in serial8250_do_set_termios anymore, but copied over once in
->> serial8250_config_port and then modified as needed.
->>
->> Unfortunately, serial8250_config_port will never be called if the port
->> is shared between kernel and userspace, and the port's flag doesn't have
->> UPF_BOOT_AUTOCONF, which would trigger a serial8250_config_port as well.
->>
->> This causes garbled output from userspace:
->>
->> [    5.220000] random: procd urandom read with 49 bits of entropy available
->> ers
->>    [kee
->>
->> Fix this by forcing it to be configured on boot, resulting in the
->> expected output:
->>
->> [    5.250000] random: procd urandom read with 50 bits of entropy available
->> Press the [f] key and hit [enter] to enter failsafe mode
->> Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
->>
->> Fixes: aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt trigger I/F of FIFO buffers")
->> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
->> ---
->> I'm not sure if this is just AR7's issue, or if this points to a general
->> issue for UARTs used as kernel console and login console with the "fixed"
->> commit.
->
-> Thanks. Given nobody seems to have objected, I've applied to my
-> mips-fixes branch, with stable tag for 3.17+.
+On Wed, 27 Dec 2017 08:50:30 +0000
+Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
 
-Hmm, I don't see it in
-https://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git/log/?h=mips-fixes
-- did you maybe forget to push?
+> To avoid the need for relocating absolute references to tracepoint
+> structures at boot time when running relocatable kernels (which may
+> take a disproportionate amount of space), add the option to emit
+> these tables as relative references instead.
+> 
 
+I gave this patch a quick skim over. It appears to not modify anything
+when CONFIG_HAVE_PREL32_RELOCATIONS is not defined. I haven't
+thoroughly reviewed it or tested it. But if it doesn't break anything,
+I'm fine giving you an ack.
 
-Regards
-Jonas
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+
+--  Steve

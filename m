@@ -1,75 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 22:03:52 +0100 (CET)
-Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:44259
-        "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990486AbdL1VDobcvNZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 22:03:44 +0100
-Received: by mail-pg0-x241.google.com with SMTP id i5so4282390pgq.11;
-        Thu, 28 Dec 2017 13:03:44 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 22:30:26 +0100 (CET)
+Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:37794
+        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990486AbdL1VaTWAMjH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 22:30:19 +0100
+Received: by mail-wr0-x243.google.com with SMTP id f8so29458617wre.4;
+        Thu, 28 Dec 2017 13:30:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=dS3mjhqIZ98R/eRVC94/WGkOe+2SwATB2PI8pdnsN5g=;
-        b=RwXXbnGN9yUKNXlbm62YmCLiLa0TF3pzobLN6pZQgEjla1Fud8cDoK2RaWgsW9GGY3
-         XhxAp8lfVO18KFznL0u0aGdNfp3s9UbdhIJ9SRSTemNHAE3ZiYfhOakcmBi67GRzsie6
-         BQ5FjK1si0g5+ZDjgXsdXBqWBM9kmBP8yKZtB/04dLcF6db7MWkntvYCxTxbabOFuP8e
-         v9ynehupxh8O7+prnfTA7N35w40HJkPvAfNFo4eOXFamMHt5f69TEZCwLpZZrMyHNztH
-         8nWTR29qyrXnuIkDCGE537GjzAdtJwbfhHeUYyM+53WRAg0kuHUbkBPtfZvrJcJICImj
-         kiMg==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=PCeqksEvtJzi8IRN3Tr9ndQQSSlncjM5YKxT7M90uuE=;
+        b=BWcW9smKYkEthMMzYmlmiHhcQPfk9eNwZhRjHoz392kBvmPYucreY2x2V7QGn9OBSn
+         0wHmLD8+brQaiOJCPB9bCpegXb4R4p3Rrr9d7Lz+IsDE4qG7VUd3RaS2rKAKc0PubJqz
+         pDhD825X1pS78T+uRNsv5nUplQSExs7uF17qvdBCl1XUu8QFJnekMY576DxmLwttqpyR
+         V3DEV4j+0VTGi0Xwj90jYjF/xcMvdkRbDEYvfFzoPahsWtCpb6Pvas52ldn0hUIAd9ei
+         Fm2oBbuATAm0rjHKsHu7jCxpRWt5mGPz2loeKeETkmorUAed4kxB4UmbmalIRkKTIjqa
+         9e+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=dS3mjhqIZ98R/eRVC94/WGkOe+2SwATB2PI8pdnsN5g=;
-        b=Cdqon8Mt2ZeUS/vEHtgsfU898sCgmiHSlmJFbG33YqRlXmTiGqeAXjSnHsyyjai/cW
-         +IxvUZrmddwZcfyUy4/SYqpUGy3wctJ58LDCTio0aFiYGw9sT+w5UGDiT7l/Te24PYjw
-         BSkenAiakEN1iBdvbE/1+K5hFx6tlTcQS8C+db6AQCt2CmIep9FznFUou1NABVLoyEX3
-         8zQW0rtjReclPm4JF2YVkQqL4izlv1klZqO2kPjfe+HpWBc9r8yn2UqA/8XuGnIM/v1B
-         UptRumizHN6H6UNH0iq8ijlc4UGnwBO3E9MTywtCYljapxA6kMkovwayMmIWktg4WM7K
-         zv7Q==
-X-Gm-Message-State: AKGB3mLGGHqK7MCFmGUeLh0AMVBGzcCOvXAQew0c6yNHyQS0Uol0R6Oa
-        5I0opmJj6rPEKEGv6q5PhL4=
-X-Google-Smtp-Source: ACJfBouOmr1FS7GQANJntMPmb8D/jKKxtgyP7jZUnxYjzfWWE1ALnqwWVpkpfZXTHHF0MToOMFMIUw==
-X-Received: by 10.98.16.90 with SMTP id y87mr33245970pfi.116.1514495017738;
-        Thu, 28 Dec 2017 13:03:37 -0800 (PST)
-Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id i20sm72277856pfj.58.2017.12.28.13.03.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 28 Dec 2017 13:03:36 -0800 (PST)
-Subject: Re: [PATCH 2/7] watchdog: jz4740: Use devm_* functions
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=PCeqksEvtJzi8IRN3Tr9ndQQSSlncjM5YKxT7M90uuE=;
+        b=VaiN0vviq2XAciN5PqVLo9xWD/WVQonFmdKXWkzfBstd3KOv4mPaorqSKiuWKROs7N
+         a4BSOcauLAn82fXZ7xYfGyT/ULujwuiN4o1v3UgrUS8pHslRHQefpUYdEWL5bhq3nnNi
+         38e4pIMCDy2oMchkc7+SXvpnjbfgSIyEdtlXYNHBl4sPx5jUMsoOXVlQ1OAmhcQ+AaTJ
+         mGdvYfIF0spkpZzqF4V+UwfBJIXLtld5RB4JCesfl+zn9K5qtO53kpwdepYLmBOsdmgx
+         THuP98xvxkj3VWlHtHFOcffatgy83CQ5Fu7kwhdJcKPoACfkjjJpUtQYEpPqTcXIQ8wT
+         FjSg==
+X-Gm-Message-State: AKGB3mLOGVgHBuoZ2AduK6fWoTepdGo8nuCWHCocnalJEwCCOfA8Y8ie
+        QrqzWEFlj+BQCA0pdCO0RnQ=
+X-Google-Smtp-Source: ACJfBot1fMAm5/1eMom8S0hIgdB0nTS9st1QY3DdcbogpROVtXSDXWULMkT5sGechyXJW58tiCA6Hg==
+X-Received: by 10.223.133.162 with SMTP id 31mr28507612wrt.251.1514496613689;
+        Thu, 28 Dec 2017 13:30:13 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
+        by smtp.gmail.com with ESMTPSA id m68sm41002635wmi.28.2017.12.28.13.30.12
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 28 Dec 2017 13:30:13 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id CC3A510C32F6; Thu, 28 Dec 2017 22:30:11 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     Marcin Nowakowski <marcin.nowakowski@mips.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Zubair.Kakakhel@mips.com, Mathieu Malaterre <malat@debian.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Wim Van Sebroeck <wim@iguana.be>, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-watchdog@vger.kernel.org
-References: <20171228162939.3928-1-paul@crapouillou.net>
- <20171228162939.3928-3-paul@crapouillou.net>
- <9778afd4-5841-0d48-cde3-c02872623a5f@roeck-us.net>
- <1514491167.6093.0@smtp.crapouillou.net>
- <994187b3-113c-88ef-8ebd-cd57d0c833a0@roeck-us.net>
- <1514492538.6093.1@smtp.crapouillou.net>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <de7b629e-35b6-a55c-d7ca-57c145fa30ae@roeck-us.net>
-Date:   Thu, 28 Dec 2017 13:03:35 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
-MIME-Version: 1.0
-In-Reply-To: <1514492538.6093.1@smtp.crapouillou.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <groeck7@gmail.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH v2 0/2] Add efuse driver for Ingenic JZ4780 SoC
+Date:   Thu, 28 Dec 2017 22:29:51 +0100
+Message-Id: <20171228212954.2922-1-malat@debian.org>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61691
+X-archive-position: 61692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,93 +72,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/28/2017 12:22 PM, Paul Cercueil wrote:
-> 
-> 
-> Le jeu. 28 déc. 2017 à 21:19, Guenter Roeck <linux@roeck-us.net> a écrit :
->> On 12/28/2017 11:59 AM, Paul Cercueil wrote:
->>> Hi Guenter,
->>>
->>> Le jeu. 28 déc. 2017 à 18:48, Guenter Roeck <linux@roeck-us.net> a écrit :
->>>> On 12/28/2017 08:29 AM, Paul Cercueil wrote:
->>>>> - Use devm_clk_get instead of clk_get
->>>>> - Use devm_watchdog_register_device instead of watchdog_register_device
->>>>>
->>>>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>>>> ---
->>>>>   drivers/watchdog/jz4740_wdt.c | 27 ++++++++-------------------
->>>>>   1 file changed, 8 insertions(+), 19 deletions(-)
->>>>>
->>>>> diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
->>>>> index 6955deb100ef..92d6ca8ceb49 100644
->>>>> --- a/drivers/watchdog/jz4740_wdt.c
->>>>> +++ b/drivers/watchdog/jz4740_wdt.c
->>>>> @@ -178,40 +178,29 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
->>>>>         res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>>>>       drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->>>>> -    if (IS_ERR(drvdata->base)) {
->>>>> -        ret = PTR_ERR(drvdata->base);
->>>>> -        goto err_out;
->>>>> -    }
->>>>> +    if (IS_ERR(drvdata->base))
->>>>> +        return PTR_ERR(drvdata->base);
->>>>>   -    drvdata->rtc_clk = clk_get(&pdev->dev, "rtc");
->>>>> +    drvdata->rtc_clk = devm_clk_get(&pdev->dev, "rtc");
->>>>>       if (IS_ERR(drvdata->rtc_clk)) {
->>>>>           dev_err(&pdev->dev, "cannot find RTC clock\n");
->>>>> -        ret = PTR_ERR(drvdata->rtc_clk);
->>>>> -        goto err_out;
->>>>> +        return PTR_ERR(drvdata->rtc_clk);
->>>>>       }
->>>>>   -    ret = watchdog_register_device(&drvdata->wdt);
->>>>> +    ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
->>>>>       if (ret < 0)
->>>>> -        goto err_disable_clk;
->>>>> +        return ret;
->>>>>         platform_set_drvdata(pdev, drvdata);
->>>>> -    return 0;
->>>>>   -err_disable_clk:
->>>>> -    clk_put(drvdata->rtc_clk);
->>>>> -err_out:
->>>>> -    return ret;
->>>>> +    return 0;
->>>>>   }
->>>>>     static int jz4740_wdt_remove(struct platform_device *pdev)
->>>>>   {
->>>>>       struct jz4740_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
->>>>>   -    jz4740_wdt_stop(&drvdata->wdt);
->>>>> -    watchdog_unregister_device(&drvdata->wdt);
->>>>> -    clk_put(drvdata->rtc_clk);
->>>>> -
->>>>> -    return 0;
->>>>> +    return jz4740_wdt_stop(&drvdata->wdt);
->>>>
->>>> If the watchdog is running, the module can not be unloaded. Even if that wasn't
->>>> the case, this defeats both WDIOF_MAGICCLOSE and watchdog_set_nowayout().
->>>> Are you sure this is what you want ? If so, please call
->>>> watchdog_stop_on_unregister() before registration; this clarifies that this
->>>> is what you want, and you can drop the remove function.
->>>>
->>>> Thanks,
->>>> Guenter
->>>
->>> This patch does not change the behaviour. We always used that driver built-in; what
->>> should the behaviour be when unloading the module? Keep the watchdog hardware running
->>> if configured for 'nowayout'?
->>>
->>
->> One can still unload the driver. If you are fine with bypassing/dfeating nowayout
->> and WDIOF_MAGICCLOSE, may I ask why those are enabled in the first place ?
->>
-> 
-> Who knows? That code is very old :)
+This patchset bring support for read-only access to the JZ4780 efuse as found
+on MIPS Creator CI20.
 
-Probably copied from some other driver w/o thinking much about it.
+To keep the driver as simple as possible, it was not possible to re-use most of
+the nvmem core functionalities. This driver is not compatible with the original
+efuse driver as found in the custom linux kernel from upstream (1), in
+particular it does not expose to the users neither:
+`/sys/devices/platform/*/chip_id` nor `/sys/devices/platform/*/user_id`.
 
-> I'm fine with removing the remove() function completely, if you think it makes more sense.
-> 
+The goal of this driver is to provide access to the MAC address to the dm9000
+driver.
 
-Yes, I do, but I won't insist on it either.
+(1) https://github.com/ZubairLK/CI20_linux/commit/6efd4ffca7dcfaff0794ab60cd6922ce96c60419
 
-Thanks,
-Guenter
+Changes in v2:
+Properly handle offset and byte value from the main entry point.
+Also add a commit message in patch #2.
+
+Mathieu Malaterre (1):
+  dts: Probe efuse for CI20
+
+PrasannaKumar Muralidharan (1):
+  nvmem: add driver for JZ4780 efuse
+
+ .../ABI/testing/sysfs-driver-jz4780-efuse          |  16 ++
+ .../bindings/nvmem/ingenic,jz4780-efuse.txt        |  17 ++
+ MAINTAINERS                                        |   5 +
+ arch/mips/boot/dts/ingenic/jz4780.dtsi             |  40 ++-
+ arch/mips/configs/ci20_defconfig                   |   2 +
+ drivers/nvmem/Kconfig                              |  10 +
+ drivers/nvmem/Makefile                             |   2 +
+ drivers/nvmem/jz4780-efuse.c                       | 305 +++++++++++++++++++++
+ 8 files changed, 385 insertions(+), 12 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+ create mode 100644 Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+ create mode 100644 drivers/nvmem/jz4780-efuse.c
+
+-- 
+2.11.0

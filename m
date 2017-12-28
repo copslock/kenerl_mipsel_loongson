@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 15:00:09 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:50170 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 15:00:38 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:50468 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990633AbdL1N44fqM45 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 14:56:56 +0100
+        with ESMTP id S23990718AbdL1N45kQHg5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 14:56:57 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -13,18 +13,18 @@ Cc:     Mark Rutland <mark.rutland@arm.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v4 07/15] MIPS: Setup boot_command_line before plat_mem_setup
-Date:   Thu, 28 Dec 2017 14:56:26 +0100
-Message-Id: <20171228135634.30000-8-paul@crapouillou.net>
+Subject: [PATCH v4 08/15] MIPS: ingenic: Use common cmdline handling code
+Date:   Thu, 28 Dec 2017 14:56:27 +0100
+Message-Id: <20171228135634.30000-9-paul@crapouillou.net>
 In-Reply-To: <20171228135634.30000-1-paul@crapouillou.net>
 References: <20170702163016.6714-2-paul@crapouillou.net>
  <20171228135634.30000-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514469415; bh=C42VohELTi1WIIKZTF8sWTIPsDczmGR0maxr7SOcNHU=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=TSqlvRNLk4y6cr1IRxFDvUSPnyVrtGqqpCiRz4S9zd0Lb5tzSbSDJuzIf3n9KXABzA6boMxO534s4usGuiGXeSQvxPFnFAhC9ZnO0gGoW6pnmLJm7QwlKFqO+7Z+8dkg5733tR9F/LB/QesXwJA8x1qqq9j8zTDi5LphdoOo9GA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514469417; bh=Q/M6rAjjgQUZ3iqnQqDtw+goiQ11NGhNqO72BhMVqzQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=jIPsmJpIY3cfWVGVwVFr6bk6t1nh53R3bUl7x3yXBkUr/GG4IQLdhvskZSmoSdzkdZYEuqMSCxqAyBx6eDZf3AS8LbhWFX385h3eDlFm/2+VvA1Yd2FpbwXaubn3rbxpWL8WEQeuCqNOJpsuzKB8d2mwaknyRR0bcBQ3sOywTr8=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61653
+X-archive-position: 61654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,83 +43,60 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-Platforms using DT will typically call __dt_setup_arch from
-plat_mem_setup. This in turn calls early_init_dt_scan. When
-CONFIG_CMDLINE is set, this leads to its value being copied into
-boot_command_line by early_init_dt_scan_chosen. If this happens before
-the code setting up boot_command_line in arch_mem_init runs, that code
-will go on to append CONFIG_CMDLINE (via builtin_cmdline) to
-boot_command_line again, duplicating it. For some command line
-parameters (eg. earlycon) this can be a problem. Set up
-boot_command_line before early_init_dt_scan_chosen gets called such that
-it will not write CONFIG_CMDLINE in this scenario & the arguments aren't
-duplicated.
+jz4740_init_cmdline appends all arguments from argv (in fw_arg1) to
+arcs_cmdline, up to argc (in fw_arg0). The common code in
+fw_init_cmdline will do the exact same thing when run on a system where
+fw_arg0 isn't a pointer to kseg0 (it'll also set _fw_envp but we don't
+use it). Remove the custom implementation & use the generic code.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/kernel/setup.c | 39 ++++++++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 19 deletions(-)
+ arch/mips/jz4740/prom.c | 24 ++----------------------
+ 1 file changed, 2 insertions(+), 22 deletions(-)
 
- v2: New patch in this series
+ v2: No change
  v3: No change
  v4: No change
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 702c678de116..85bc601e9a0d 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -826,25 +826,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	struct memblock_region *reg;
- 	extern void plat_mem_setup(void);
+diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
+index 47e857194ce6..a62dd8e6ecf9 100644
+--- a/arch/mips/jz4740/prom.c
++++ b/arch/mips/jz4740/prom.c
+@@ -20,33 +20,13 @@
+ #include <linux/serial_reg.h>
  
--	/* call board setup routine */
--	plat_mem_setup();
--
--	/*
--	 * Make sure all kernel memory is in the maps.  The "UP" and
--	 * "DOWN" are opposite for initdata since if it crosses over
--	 * into another memory section you don't want that to be
--	 * freed when the initdata is freed.
--	 */
--	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
--			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
--			 BOOT_MEM_RAM);
--	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
--			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
--			 BOOT_MEM_INIT_RAM);
--
--	pr_info("Determined physical RAM map:\n");
--	print_memory_map();
--
- #if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
- 	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
- #else
-@@ -872,6 +853,26 @@ static void __init arch_mem_init(char **cmdline_p)
- 	}
- #endif
- #endif
-+
-+	/* call board setup routine */
-+	plat_mem_setup();
-+
-+	/*
-+	 * Make sure all kernel memory is in the maps.  The "UP" and
-+	 * "DOWN" are opposite for initdata since if it crosses over
-+	 * into another memory section you don't want that to be
-+	 * freed when the initdata is freed.
-+	 */
-+	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
-+			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
-+			 BOOT_MEM_RAM);
-+	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
-+			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
-+			 BOOT_MEM_INIT_RAM);
-+
-+	pr_info("Determined physical RAM map:\n");
-+	print_memory_map();
-+
- 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ #include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/mach-jz4740/base.h>
  
- 	*cmdline_p = command_line;
+-static __init void jz4740_init_cmdline(int argc, char *argv[])
+-{
+-	unsigned int count = COMMAND_LINE_SIZE - 1;
+-	int i;
+-	char *dst = &(arcs_cmdline[0]);
+-	char *src;
+-
+-	for (i = 1; i < argc && count; ++i) {
+-		src = argv[i];
+-		while (*src && count) {
+-			*dst++ = *src++;
+-			--count;
+-		}
+-		*dst++ = ' ';
+-	}
+-	if (i > 1)
+-		--dst;
+-
+-	*dst = 0;
+-}
+-
+ void __init prom_init(void)
+ {
+-	jz4740_init_cmdline((int)fw_arg0, (char **)fw_arg1);
+ 	mips_machtype = MACH_INGENIC_JZ4740;
++	fw_init_cmdline();
+ }
+ 
+ void __init prom_free_prom_memory(void)
 -- 
 2.11.0

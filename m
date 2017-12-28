@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 15:00:38 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:50468 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 15:01:04 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:50752 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990718AbdL1N45kQHg5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 14:56:57 +0100
+        with ESMTP id S23990793AbdL1N46wtNG5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 14:56:58 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -12,19 +12,19 @@ Cc:     Mark Rutland <mark.rutland@arm.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v4 08/15] MIPS: ingenic: Use common cmdline handling code
-Date:   Thu, 28 Dec 2017 14:56:27 +0100
-Message-Id: <20171228135634.30000-9-paul@crapouillou.net>
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v4 09/15] MIPS: platform: add machtype IDs for more Ingenic SoCs
+Date:   Thu, 28 Dec 2017 14:56:28 +0100
+Message-Id: <20171228135634.30000-10-paul@crapouillou.net>
 In-Reply-To: <20171228135634.30000-1-paul@crapouillou.net>
 References: <20170702163016.6714-2-paul@crapouillou.net>
  <20171228135634.30000-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514469417; bh=Q/M6rAjjgQUZ3iqnQqDtw+goiQ11NGhNqO72BhMVqzQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=jIPsmJpIY3cfWVGVwVFr6bk6t1nh53R3bUl7x3yXBkUr/GG4IQLdhvskZSmoSdzkdZYEuqMSCxqAyBx6eDZf3AS8LbhWFX385h3eDlFm/2+VvA1Yd2FpbwXaubn3rbxpWL8WEQeuCqNOJpsuzKB8d2mwaknyRR0bcBQ3sOywTr8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514469418; bh=D2tfagRlOwtCA/fXQyndKYYYXYtCF/xn3VnoSp5WMHY=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=tKijB2DYvzp8RtNDZEUl1km1oR+hEfe7Y5iTCLQMualS5SIVOxu6CqNrt37xGdEvn1rNfmIcr+XHeVYC2GMWYanX8Ln4SQuWfk9rDPKV+PLK5cX4lV4lBasONt7mElIKUD/xl8LvBGyudpj1Hh4+fH0kC1gZeXHz0bzVGnGSFS0=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61654
+X-archive-position: 61655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,62 +41,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+Add a machtype ID for the JZ4780 SoC, which was missing, and one for the
+newly supported JZ4770 SoC.
 
-jz4740_init_cmdline appends all arguments from argv (in fw_arg1) to
-arcs_cmdline, up to argc (in fw_arg0). The common code in
-fw_init_cmdline will do the exact same thing when run on a system where
-fw_arg0 isn't a pointer to kseg0 (it'll also set _fw_envp but we don't
-use it). Remove the custom implementation & use the generic code.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/jz4740/prom.c | 24 ++----------------------
- 1 file changed, 2 insertions(+), 22 deletions(-)
+ arch/mips/include/asm/bootinfo.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
  v2: No change
  v3: No change
  v4: No change
 
-diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
-index 47e857194ce6..a62dd8e6ecf9 100644
---- a/arch/mips/jz4740/prom.c
-+++ b/arch/mips/jz4740/prom.c
-@@ -20,33 +20,13 @@
- #include <linux/serial_reg.h>
+diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
+index e26a093bb17a..a301a8f4bc66 100644
+--- a/arch/mips/include/asm/bootinfo.h
++++ b/arch/mips/include/asm/bootinfo.h
+@@ -79,6 +79,8 @@ enum loongson_machine_type {
+  */
+ #define  MACH_INGENIC_JZ4730	0	/* JZ4730 SOC		*/
+ #define  MACH_INGENIC_JZ4740	1	/* JZ4740 SOC		*/
++#define  MACH_INGENIC_JZ4770	2	/* JZ4770 SOC		*/
++#define  MACH_INGENIC_JZ4780	3	/* JZ4780 SOC		*/
  
- #include <asm/bootinfo.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-jz4740/base.h>
- 
--static __init void jz4740_init_cmdline(int argc, char *argv[])
--{
--	unsigned int count = COMMAND_LINE_SIZE - 1;
--	int i;
--	char *dst = &(arcs_cmdline[0]);
--	char *src;
--
--	for (i = 1; i < argc && count; ++i) {
--		src = argv[i];
--		while (*src && count) {
--			*dst++ = *src++;
--			--count;
--		}
--		*dst++ = ' ';
--	}
--	if (i > 1)
--		--dst;
--
--	*dst = 0;
--}
--
- void __init prom_init(void)
- {
--	jz4740_init_cmdline((int)fw_arg0, (char **)fw_arg1);
- 	mips_machtype = MACH_INGENIC_JZ4740;
-+	fw_init_cmdline();
- }
- 
- void __init prom_free_prom_memory(void)
+ extern char *system_type;
+ const char *get_system_type(void);
 -- 
 2.11.0

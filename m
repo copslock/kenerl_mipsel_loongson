@@ -1,71 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 17:39:33 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:39810 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990718AbdL1QjWOJusB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 Dec 2017 17:39:22 +0100
-Received: from gandalf.local.home (cpe-172-100-180-131.stny.res.rr.com [172.100.180.131])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E1D9218B1;
-        Thu, 28 Dec 2017 16:39:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1E1D9218B1
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=rostedt@goodmis.org
-Date:   Thu, 28 Dec 2017 11:39:15 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Garnier <thgarnie@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Paul Mackerras <paulus@samba.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Petr Mladek <pmladek@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        James Morris <james.l.morris@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nicolas Pitre <nico@linaro.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mips <linux-mips@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Subject: Re: [PATCH v6 8/8] x86/kernel: jump_table: use relative references
-Message-ID: <20171228113915.47838609@gandalf.local.home>
-In-Reply-To: <CAKv+Gu9Gza=RN_v_H-G7m7-qKg9B4Xf4GFvd_H-Gut-V3eabmA@mail.gmail.com>
-References: <20171227085033.22389-1-ard.biesheuvel@linaro.org>
-        <20171227085033.22389-9-ard.biesheuvel@linaro.org>
-        <20171228111926.28e82877@gandalf.local.home>
-        <CAKv+Gu9Gza=RN_v_H-G7m7-qKg9B4Xf4GFvd_H-Gut-V3eabmA@mail.gmail.com>
-X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 18:13:33 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40051 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990921AbdL1RNXh4CqB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 18:13:23 +0100
+Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1eUbk2-0005Yu-LJ; Thu, 28 Dec 2017 17:13:14 +0000
+Received: from ben by deadeye with local (Exim 4.90_RC3)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1eUbjy-0007Nt-ED; Thu, 28 Dec 2017 17:13:10 +0000
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <SRS0=oC7H=DY=goodmis.org=rostedt@kernel.org>
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org,
+        "Yoshihiro YUNOMAE" <yoshihiro.yunomae.ez@hitachi.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        linux-serial@vger.kernel.org,
+        "Oswald Buddenhagen" <oswald.buddenhagen@gmx.de>,
+        linux-mips@linux-mips.org, "James Hogan" <jhogan@kernel.org>,
+        "Jonas Gorski" <jonas.gorski@gmail.com>,
+        "Florian Fainelli" <f.fainelli@gmail.com>,
+        "Nicolas Schichan" <nschichan@freebox.fr>
+Date:   Thu, 28 Dec 2017 16:59:12 +0000
+Message-ID: <lsq.1514480352.53205939@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.2 82/94] MIPS: AR7: Ensure that serial ports are
+ properly set up
+In-Reply-To: <lsq.1514480348.981935392@decadent.org.uk>
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61674
+X-archive-position: 61675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,47 +57,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 28 Dec 2017 16:26:07 +0000
-Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+3.2.97-rc1 review patch.  If anyone has any objections, please let me know.
 
-> On 28 December 2017 at 16:19, Steven Rostedt <rostedt@goodmis.org> wrote:
-> > On Wed, 27 Dec 2017 08:50:33 +0000
-> > Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
-> >  
-> >>  static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
-> >>  {
-> >> -     return entry->code;
-> >> +     return (jump_label_t)&entry->code + entry->code;  
-> >
-> > I'm paranoid about doing arithmetic on abstract types. What happens in
-> > the future if jump_label_t becomes a pointer? You will get a different
-> > result.
-> >  
-> 
-> In general, I share your concern. In this case, however, jump_label_t
-> is typedef'd three lines up and is never used anywhere else.
+------------------
 
-I would agree if this was in a .c file, but it's in a header file,
-which causes me to be more paranoid.
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-> 
-> > Could we switch these calculations to something like:
-> >
-> >         return (jump_label_t)((long)&entrty->code + entry->code);
-> >  
-> 
-> jump_label_t is local to this .h file, so it can be defined as u32 or
-> u64 depending on the word size. I don't mind adding the extra cast,
-> but I am not sure if your paranoia is justified in this particular
-> case. Perhaps we should just use 'unsigned long' throughout?
+commit b084116f8587b222a2c5ef6dcd846f40f24b9420 upstream.
 
-Actually, that may be better. Have the return value be jump_label_t,
-but the cast be "unsigned long". That way it should always work.
+Without UPF_FIXED_TYPE, the data from the PORT_AR7 uart_config entry is
+never copied, resulting in a dead port.
 
-static inline jump_label_t jump_entry_code(...)
-{
-	return (unsigned long)&entry->code + entry->code;
-}
+Fixes: 154615d55459 ("MIPS: AR7: Use correct UART port type")
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+[jonas.gorski: add Fixes tag]
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>
+Cc: Nicolas Schichan <nschichan@freebox.fr>
+Cc: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Cc: linux-mips@linux-mips.org
+Cc: linux-serial@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/17543/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/ar7/platform.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
--- Steve
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -541,6 +541,7 @@ static int __init ar7_register_uarts(voi
+ 	uart_port.type		= PORT_AR7;
+ 	uart_port.uartclk	= clk_get_rate(bus_clk) / 2;
+ 	uart_port.iotype	= UPIO_MEM32;
++	uart_port.flags		= UPF_FIXED_TYPE;
+ 	uart_port.regshift	= 2;
+ 
+ 	uart_port.line		= 0;

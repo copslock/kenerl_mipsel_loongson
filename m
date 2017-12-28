@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 17:32:02 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:50562 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 17:32:27 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:50804 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990718AbdL1Q36qGaIB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 17:29:58 +0100
+        with ESMTP id S23990793AbdL1Q37jeymB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 17:29:59 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -12,17 +12,17 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 4/7] MIPS: jz4740: dts: Add bindings for the jz4740-wdt driver
-Date:   Thu, 28 Dec 2017 17:29:36 +0100
-Message-Id: <20171228162939.3928-5-paul@crapouillou.net>
+Subject: [PATCH 6/7] MIPS: qi_lb60: Enable the jz4740-wdt driver
+Date:   Thu, 28 Dec 2017 17:29:38 +0100
+Message-Id: <20171228162939.3928-7-paul@crapouillou.net>
 In-Reply-To: <20171228162939.3928-1-paul@crapouillou.net>
 References: <20171228162939.3928-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514478597; bh=az47tk85wCuLJeuJp/vOXpsxo06lQK1yQkcSwk/sFJs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=IZdA3Rn4tx38MKSNSt/stllBKcNtM1wdJWDtpIZ0hKnutIHNCmxu9nkIObL75bxtpw4vIpCc2bi+yS8WcPxJj7EbB25E7WyC9jMTmD3fqf2Fi+DnflPjjNC+SC1aFhA553o8JzSHZy/k03i9lolHg/SJftKw3LIrJUbGuIUHxIo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514478599; bh=rjYJ75XnjTJhboyaxDNHtzQ8QHFXaUC0+2lHZlhi4cc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=RQVVQOf/Z0M5HTfIF6dhQSvbHvpTZikJgoWbog6NnIYcKkPQFokNRmpAJ8u94fgcYCHYbbf+nf/lOqQoYkFYwoXhsYu9Aj+WNX87yqwntNJbUWEKXJWhDE9Uas688EBr+mjudQl4CbG5PeDOhbmoXbcbTy1Vx/q7JK7KCIJ0pBQ=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61671
+X-archive-position: 61672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,60 +39,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Also remove the watchdog platform_device from platform.c, since it
-wasn't used anywhere anyway.
+The watchdog is an useful piece of hardware, so there's no reason not to
+enable it.
+
+This commit enables the Kconfig option in the qi_lb60 defconfig.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/boot/dts/ingenic/jz4740.dtsi |  8 ++++++++
- arch/mips/jz4740/platform.c            | 16 ----------------
- 2 files changed, 8 insertions(+), 16 deletions(-)
+ arch/mips/configs/qi_lb60_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index cd5185bb90ae..26c6b561d6f7 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -45,6 +45,14 @@
- 		#clock-cells = <1>;
- 	};
- 
-+	watchdog: watchdog@10002000 {
-+		compatible = "ingenic,jz4740-watchdog";
-+		reg = <0x10002000 0x10>;
-+
-+		clocks = <&cgu JZ4740_CLK_RTC>;
-+		clock-names = "rtc";
-+	};
-+
- 	rtc_dev: rtc@10003000 {
- 		compatible = "ingenic,jz4740-rtc";
- 		reg = <0x10003000 0x40>;
-diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
-index 5b7cdd67a9d9..cbc5f8e87230 100644
---- a/arch/mips/jz4740/platform.c
-+++ b/arch/mips/jz4740/platform.c
-@@ -233,22 +233,6 @@ struct platform_device jz4740_adc_device = {
- 	.resource	= jz4740_adc_resources,
- };
- 
--/* Watchdog */
--static struct resource jz4740_wdt_resources[] = {
--	{
--		.start = JZ4740_WDT_BASE_ADDR,
--		.end   = JZ4740_WDT_BASE_ADDR + 0x10 - 1,
--		.flags = IORESOURCE_MEM,
--	},
--};
--
--struct platform_device jz4740_wdt_device = {
--	.name	       = "jz4740-wdt",
--	.id	       = -1,
--	.num_resources = ARRAY_SIZE(jz4740_wdt_resources),
--	.resource      = jz4740_wdt_resources,
--};
--
- /* PWM */
- struct platform_device jz4740_pwm_device = {
- 	.name = "jz4740-pwm",
+diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
+index 3f1333517405..ba8e1c56b626 100644
+--- a/arch/mips/configs/qi_lb60_defconfig
++++ b/arch/mips/configs/qi_lb60_defconfig
+@@ -73,6 +73,8 @@ CONFIG_POWER_SUPPLY=y
+ CONFIG_BATTERY_JZ4740=y
+ CONFIG_CHARGER_GPIO=y
+ # CONFIG_HWMON is not set
++CONFIG_WATCHDOG=y
++CONFIG_JZ4740_WDT=y
+ CONFIG_MFD_JZ4740_ADC=y
+ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED_VOLTAGE=y
 -- 
 2.11.0

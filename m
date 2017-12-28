@@ -1,51 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 18:14:21 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40528 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991827AbdL1RNbGo9LB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 18:13:31 +0100
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1eUbkC-0005gP-PH; Thu, 28 Dec 2017 17:13:24 +0000
-Received: from ben by deadeye with local (Exim 4.90_RC3)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1eUbk9-0007iR-W1; Thu, 28 Dec 2017 17:13:21 +0000
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Dec 2017 18:34:16 +0100 (CET)
+Received: from mail-ua0-x241.google.com ([IPv6:2607:f8b0:400c:c08::241]:35239
+        "EHLO mail-ua0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990718AbdL1ReFxvup2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Dec 2017 18:34:05 +0100
+Received: by mail-ua0-x241.google.com with SMTP id g16so13820937uak.2;
+        Thu, 28 Dec 2017 09:34:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=HyLY9+B4w7fbm8EGHEMapQYPRyiB/P+wwXfHM+8dpMU=;
+        b=UKRvuUgrSi/LXfslgPGsQ0j/744WN6yK9aNsfZUreRD7zseOGy7YXrh6qaIJX9wxSB
+         tCM0n2VnJR/Xnt5g8KhngheoI8co22ozpUfOk1/gArpnRSuRt9eKcrCoGL7xSG4XytoG
+         SMovK5pGdRrXkNFDm6XLo8LZX//MWcnmY+23ra3NrA095vXb9eh/IWjsA2oZf1tjXLqn
+         mMVVRWXHl4daHZPdwm/wGD/xx9Up1jpBo3VDUZp1nVgAauLndeP82JlE63IsEH3NGy3O
+         8LSaULrJUlFaominBRBXobTH7Uf3wymKh3/+eaSxFJ70bvWeHg0+G2i8J8E1lMp4j393
+         VJrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=HyLY9+B4w7fbm8EGHEMapQYPRyiB/P+wwXfHM+8dpMU=;
+        b=PO9X8kzkuW72sy9+ZGD1eUiJnaUssDPx6CJL9dnHX7ayI4U3OfgZtrAYrHw6OsdOe2
+         KRAQwpmb5bSQbFzMHjpEMjvnpeprLvmg8JEBeg03qFHR0f7Qqam/XjZb+2NdLI5lWsV2
+         pUWgOVq8jUxogmzbReHR+Wutx9AUOsHch/udalSJYMhB9RzOxxhCkACdXSBv37NIU4C8
+         dkxaeKv/QEJGGbQqBWlFrTWzbQE5AeOpS0kwPadCVUM6yNdtOkL0nrEk6C6EXjkrB/dI
+         oe+Mtbjwpy6wksVF5J+nArtgTcbq8qNttaGoRFQs+dqN5LxmdJvltmqx60EXjhm/uqdV
+         GIQw==
+X-Gm-Message-State: AKGB3mIk+z5wKkVXq7brIEdJUceCnOxtBHhMiZS1m/WX1Fu/DFaBfw4V
+        Jo2GrFQt+kQvxVdbmFCYWNiptIQT6HcO2XJVYYI=
+X-Google-Smtp-Source: ACJfBosFmaUifowNryy9aeSZ1BDw7EZu9TTJ7H34L/gF5qojUaTDlY4PwlX2hK06myc+xGmAAvhoKqFk5vLW2BTpd6o=
+X-Received: by 10.159.60.25 with SMTP id u25mr35387592uah.57.1514482439563;
+ Thu, 28 Dec 2017 09:33:59 -0800 (PST)
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org,
-        "Yoshihiro YUNOMAE" <yoshihiro.yunomae.ez@hitachi.com>,
-        linux-mips@linux-mips.org,
-        "Nicolas Schichan" <nschichan@freebox.fr>,
-        linux-serial@vger.kernel.org,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "James Hogan" <jhogan@kernel.org>,
-        "Jonas Gorski" <jonas.gorski@gmail.com>,
-        "Florian Fainelli" <f.fainelli@gmail.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Oswald Buddenhagen" <oswald.buddenhagen@gmx.de>
-Date:   Thu, 28 Dec 2017 17:05:44 +0000
-Message-ID: <lsq.1514480744.874677113@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 177/204] MIPS: AR7: Ensure that serial ports are
- properly set up
-In-Reply-To: <lsq.1514480743.579539031@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: by 10.176.49.1 with HTTP; Thu, 28 Dec 2017 09:33:39 -0800 (PST)
+In-Reply-To: <20171228162939.3928-6-paul@crapouillou.net>
+References: <20171228162939.3928-1-paul@crapouillou.net> <20171228162939.3928-6-paul@crapouillou.net>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Thu, 28 Dec 2017 18:33:39 +0100
+X-Google-Sender-Auth: lWa1Ra2lT3_V0WVFZbqknDtV-BY
+Message-ID: <CA+7wUswad_8CvHtLOJDRy9WcVKoqwqyaMOGXFQzjYZ4_4oDmFg@mail.gmail.com>
+Subject: Re: [PATCH 5/7] MIPS: jz4780: dts: Fix watchdog node
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        linux-watchdog@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61677
+X-archive-position: 61678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,43 +71,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.52-rc1 review patch.  If anyone has any objections, please let me know.
+Hi Paul,
 
-------------------
+On Thu, Dec 28, 2017 at 5:29 PM, Paul Cercueil <paul@crapouillou.net> wrote:
+> - The previous node requested a memory area of 0x100 bytes, while the
+>   driver only manipulates four registers present in the first 0x10 bytes.
+>
+> - The driver requests for the "rtc" clock, but the previous node did not
+>   provide any.
+>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> index 9b5794667aee..a52f59bf58c7 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> @@ -221,7 +221,10 @@
+>
+>         watchdog: watchdog@10002000 {
+>                 compatible = "ingenic,jz4780-watchdog";
+> -               reg = <0x10002000 0x100>;
+> +               reg = <0x10002000 0x10>;
+> +
+> +               clocks = <&cgu JZ4780_CLK_RTCLK>;
+> +               clock-names = "rtc";
+>         };
+>
+>         nemc: nemc@13410000 {
+> --
+> 2.11.0
+>
+>
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Looks good, thanks for fixing my mess. Tested on MIPS Creator CI20:
 
-commit b084116f8587b222a2c5ef6dcd846f40f24b9420 upstream.
+Dec 28 17:27:50 ci20 watchdog[17531]: starting daemon (5.14):
+Dec 28 17:27:50 ci20 watchdog[17531]: int=1s realtime=yes sync=no
+soft=no mla=0 mem=0
+Dec 28 17:27:50 ci20 watchdog[17531]: ping: no machine to check
+Dec 28 17:27:50 ci20 watchdog[17531]: file: no file to check
+Dec 28 17:27:50 ci20 watchdog[17531]: pidfile: no server process to check
+Dec 28 17:27:50 ci20 watchdog[17531]: interface: no interface to check
+Dec 28 17:27:50 ci20 watchdog[17531]: temperature: no sensors to check
+Dec 28 17:27:50 ci20 watchdog[17531]: test=none(0) repair=none(0)
+alive=/dev/watchdog heartbeat=none to=root no_act=no force=no
+Dec 28 17:27:50 ci20 watchdog[17531]: watchdog now set to 60 seconds
+Dec 28 17:27:50 ci20 watchdog[17531]: hardware watchdog identity:
+jz4740 Watchdog
 
-Without UPF_FIXED_TYPE, the data from the PORT_AR7 uart_config entry is
-never copied, resulting in a dead port.
+pkill + reboot = ok
 
-Fixes: 154615d55459 ("MIPS: AR7: Use correct UART port type")
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-[jonas.gorski: add Fixes tag]
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>
-Cc: Nicolas Schichan <nschichan@freebox.fr>
-Cc: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Cc: linux-mips@linux-mips.org
-Cc: linux-serial@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17543/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/ar7/platform.c | 1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -581,6 +581,7 @@ static int __init ar7_register_uarts(voi
- 	uart_port.type		= PORT_AR7;
- 	uart_port.uartclk	= clk_get_rate(bus_clk) / 2;
- 	uart_port.iotype	= UPIO_MEM32;
-+	uart_port.flags		= UPF_FIXED_TYPE;
- 	uart_port.regshift	= 2;
- 
- 	uart_port.line		= 0;
+Reviewed-by: Mathieu Malaterre <malat@debian.org>

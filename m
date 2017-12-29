@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:27:51 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:40898 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:28:12 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:43983 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992160AbdL2IUzi92EC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:20:55 +0100
+        by eddie.linux-mips.org with ESMTP id S23992170AbdL2IU7HAsoC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:20:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=CIg3Tb/MIA3sbpgB82OZCeysJYra+xA3YC9awVKB9rs=; b=oTaqC+aSOJJ4QgeFbwZIWlG97
-        yVtYiAIGzY93Vqsf9dxPPsuDNssS6JoF4RIt4kF5uYud+Pd1Qg6cDg7oZitfF3QuO1JRDLJ6MmKOp
-        PL9uqK3HnANoMVaZrnsXPYBMaIT3jcO9L2eXnlNYfur8e8D0s5eQYGK0PVj1UsaJBGrVoxQoSINs5
-        UaJ2VWz63xQW+Jg+hNQm7GySBcQHexsdRKL4VN7fbXS0w0FAL0iqhZhA2GFQQAiaXxJVI3o37dwlk
-        HPEvF0ySq/jj6D35lEALpa1YLQi+b3NPV4rRmCdFDaFLsHUR3iSWVQOOcX/2+9u2dJzDkuYgu0tPC
-        wjCMI8ccA==;
+         bh=Afn0YIn1zKrL1IQlc79HRm4W+e1XRPY6Gc2rdlD9BfI=; b=u4h8CixrlYv6SFgN3KjxnWXRB
+        X1nDoNzIwvSS8CoFKpZeDjK1i5ZsEju0KS5WmVS9hQPgQXNYHW1FDWFfNBDETM2fQrH6QSLF3snm/
+        a9JzhAw9xq8y7s6bcHwMO779C/znn8e7doxN5z4OXUhb+6uQeWltYqWigjMSy1sZfSCsFb0vBSJrr
+        LSeptsgtkxMEyvSYgxBlzcSUA8cmsLKySzaBtthBsgHCYZDl+AgI2Nr2+kL7fUlNZFQ+FUmTx3CL5
+        7MKWLKAZK2F5qv3BbXDshMfAIOFjHFNt5ebgypDtL6kZJb79YbeDipyGY8TLXNpCDjlGGKhmUpGGS
+        c1dWLFHfg==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpuD-00019U-J5; Fri, 29 Dec 2017 08:20:42 +0000
+        id 1eUpuH-0001FK-Ug; Fri, 29 Dec 2017 08:20:46 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 19/67] microblaze: remove the dead !NOT_COHERENT_CACHE dma code
-Date:   Fri, 29 Dec 2017 09:18:23 +0100
-Message-Id: <20171229081911.2802-20-hch@lst.de>
+Subject: [PATCH 20/67] s390: move s390_pci_dma_ops to asm/pci_dma.h
+Date:   Fri, 29 Dec 2017 09:18:24 +0100
+Message-Id: <20171229081911.2802-21-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61716
+X-archive-position: 61717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,70 +60,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This is not needed in drivers, so move it to a private header.
+
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/microblaze/kernel/dma.c | 28 ----------------------------
- 1 file changed, 28 deletions(-)
+ arch/s390/include/asm/dma-mapping.h | 2 --
+ arch/s390/include/asm/pci_dma.h     | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/microblaze/kernel/dma.c b/arch/microblaze/kernel/dma.c
-index 49b09648679b..031d889670f5 100644
---- a/arch/microblaze/kernel/dma.c
-+++ b/arch/microblaze/kernel/dma.c
-@@ -15,42 +15,18 @@
- #include <linux/bug.h>
- #include <asm/cacheflush.h>
+diff --git a/arch/s390/include/asm/dma-mapping.h b/arch/s390/include/asm/dma-mapping.h
+index 2ec7240c1ada..bdc2455483f6 100644
+--- a/arch/s390/include/asm/dma-mapping.h
++++ b/arch/s390/include/asm/dma-mapping.h
+@@ -9,8 +9,6 @@
+ #include <linux/dma-debug.h>
+ #include <linux/io.h>
  
--#define NOT_COHERENT_CACHE
+-extern const struct dma_map_ops s390_pci_dma_ops;
 -
- static void *dma_nommu_alloc_coherent(struct device *dev, size_t size,
- 				       dma_addr_t *dma_handle, gfp_t flag,
- 				       unsigned long attrs)
+ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
  {
--#ifdef NOT_COHERENT_CACHE
- 	return consistent_alloc(flag, size, dma_handle);
--#else
--	void *ret;
--	struct page *page;
--	int node = dev_to_node(dev);
--
--	/* ignore region specifiers */
--	flag  &= ~(__GFP_HIGHMEM);
--
--	page = alloc_pages_node(node, flag, get_order(size));
--	if (page == NULL)
--		return NULL;
--	ret = page_address(page);
--	memset(ret, 0, size);
--	*dma_handle = virt_to_phys(ret);
--
--	return ret;
--#endif
- }
+ 	return &dma_noop_ops;
+diff --git a/arch/s390/include/asm/pci_dma.h b/arch/s390/include/asm/pci_dma.h
+index e8d9161fa17a..419fac7a62c0 100644
+--- a/arch/s390/include/asm/pci_dma.h
++++ b/arch/s390/include/asm/pci_dma.h
+@@ -201,4 +201,7 @@ void dma_cleanup_tables(unsigned long *);
+ unsigned long *dma_walk_cpu_trans(unsigned long *rto, dma_addr_t dma_addr);
+ void dma_update_cpu_trans(unsigned long *entry, void *page_addr, int flags);
  
- static void dma_nommu_free_coherent(struct device *dev, size_t size,
- 				     void *vaddr, dma_addr_t dma_handle,
- 				     unsigned long attrs)
- {
--#ifdef NOT_COHERENT_CACHE
- 	consistent_free(size, vaddr);
--#else
--	free_pages((unsigned long)vaddr, get_order(size));
--#endif
- }
- 
- static inline void __dma_sync(unsigned long paddr,
-@@ -186,12 +162,8 @@ int dma_nommu_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
- 	if (off >= count || user_count > (count - off))
- 		return -ENXIO;
- 
--#ifdef NOT_COHERENT_CACHE
- 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
- 	pfn = consistent_virt_to_pfn(cpu_addr);
--#else
--	pfn = virt_to_pfn(cpu_addr);
--#endif
- 	return remap_pfn_range(vma, vma->vm_start, pfn + off,
- 			       vma->vm_end - vma->vm_start, vma->vm_page_prot);
- #else
++extern const struct dma_map_ops s390_pci_dma_ops;
++
++
+ #endif
 -- 
 2.14.2

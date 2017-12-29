@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:33:34 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:38892 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:33:59 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:50662 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994628AbdL2IV4ni-CC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:21:56 +0100
+        by eddie.linux-mips.org with ESMTP id S23994627AbdL2IWBcSMUC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:22:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=PueC7iQeB2bQtfDtw8oTIUmzv3wZ1dKWeI2kB84Y3Y0=; b=rSZN0AyCANhkknmx/Lxzky47O
-        CULA8Z8ug64ZSEJnJ0n+Ge/zpYBZHGm8ydNTuzbxcDKkOaM/q1tIXNGiavrduBimi1It34c7tLlhg
-        wpGjNOoHd0hnLeTgzxMzRgTUjMJi7R+p2QHVq4elrm7NUR8a2S7gT1SehHWf3Ra3sHCTQz/CAQUmx
-        nMzTCMwPt0RS2IWGPjRmgmQu89KvgRihBRUIOyVwkbJWgZmUmRPrrSFSrJ0vN/H9GbqHx1Gi7/AHY
-        y3Nlk4sTt4h/snqOj4eWet73uP3Sjle5tL8ezzKBh4fl24GbRhBqTY8T9cEjXdfY8i1X3ux2iClCt
-        cE+qrQz3g==;
+         bh=IYQl3xRo4uwfa9pXddWi0GVjN+Lzs3lc5tiHNMKL/K8=; b=g9GstYBTJUiy9VNohzY6B3tL7
+        hWg9n/gdASRZQIK6LxNBFV7Ev4Ew3/y9MrlAAdNWUKl043OREzpJF13cMO7YYrxFDGziTdCjvZITx
+        iscQINE4r87USqAGqnlvHYyelzGBpS1Hl+OUDKhDhh581y97/WUfUaEHRRTfmCOqnPlKRJlTkJHiJ
+        CjptK2NcMOoJRNZRui5DJUmft2W8eKVhcl9fVlA+6Xo/C12EZAduIjcEw9wHvdA/x6JT1YWP3tuzu
+        BvaYYoelgvJFgeRIxrMc4CytPcQ9rbapyiy/ZGEVi8eMkTulPV6VxUMkk2deprLPex95tU7z9R1H3
+        HaGpTkJHw==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpv7-0002NF-S0; Fri, 29 Dec 2017 08:21:38 +0000
+        id 1eUpvC-0002UP-A1; Fri, 29 Dec 2017 08:21:42 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 32/67] dma-direct: add support for allocation from ZONE_DMA and ZONE_DMA32
-Date:   Fri, 29 Dec 2017 09:18:36 +0100
-Message-Id: <20171229081911.2802-33-hch@lst.de>
+Subject: [PATCH 33/67] dma-direct: reject too small dma masks
+Date:   Fri, 29 Dec 2017 09:18:37 +0100
+Message-Id: <20171229081911.2802-34-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61729
+X-archive-position: 61730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,40 +62,57 @@ X-list: linux-mips
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- lib/dma-direct.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/linux/dma-direct.h |  1 +
+ lib/dma-direct.c           | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
+diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+index 4788bf0bf683..bcdb1a3e4b1f 100644
+--- a/include/linux/dma-direct.h
++++ b/include/linux/dma-direct.h
+@@ -42,5 +42,6 @@ void *dma_direct_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ 		gfp_t gfp, unsigned long attrs);
+ void dma_direct_free(struct device *dev, size_t size, void *cpu_addr,
+ 		dma_addr_t dma_addr, unsigned long attrs);
++int dma_direct_supported(struct device *dev, u64 mask);
+ 
+ #endif /* _LINUX_DMA_DIRECT_H */
 diff --git a/lib/dma-direct.c b/lib/dma-direct.c
-index 7e913728e099..2e9b9494610c 100644
+index 2e9b9494610c..5bb289483efc 100644
 --- a/lib/dma-direct.c
 +++ b/lib/dma-direct.c
-@@ -12,6 +12,14 @@
+@@ -123,6 +123,24 @@ static int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl,
+ 	return nents;
+ }
  
- #define DIRECT_MAPPING_ERROR		0
- 
-+/*
-+ * Most architectures use ZONE_DMA for the first 16 Megabytes, but
-+ * some use it for entirely different regions:
-+ */
-+#ifndef ARCH_ZONE_DMA_BITS
-+#define ARCH_ZONE_DMA_BITS 24
++int dma_direct_supported(struct device *dev, u64 mask)
++{
++#ifdef CONFIG_ZONE_DMA
++	if (mask < DMA_BIT_MASK(ARCH_ZONE_DMA_BITS))
++		return 0;
++#else
++	/*
++	 * Because 32-bit DMA masks are so common we expect every architecture
++	 * to be able to satisfy them - either by not supporting more physical
++	 * memory, or by providing a ZONE_DMA32.  If neither is the case, the
++	 * architecture needs to use an IOMMU instead of the direct mapping.
++	 */
++	if (mask < DMA_BIT_MASK(32))
++		return 0;
 +#endif
++	return 1;
++}
 +
- static bool
- check_addr(struct device *dev, dma_addr_t dma_addr, size_t size,
- 		const char *caller)
-@@ -40,6 +48,12 @@ void *dma_direct_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	int page_order = get_order(size);
- 	struct page *page = NULL;
- 
-+	/* GFP_DMA32 and GFP_DMA are no ops without the corresponding zones: */
-+	if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
-+		gfp |= GFP_DMA32;
-+	else if (dev->coherent_dma_mask < DMA_BIT_MASK(ARCH_ZONE_DMA_BITS))
-+		gfp |= GFP_DMA;
-+
- again:
- 	/* CMA can be used only in the context which permits sleeping */
- 	if (gfpflags_allow_blocking(gfp)) {
+ static int dma_direct_mapping_error(struct device *dev, dma_addr_t dma_addr)
+ {
+ 	return dma_addr == DIRECT_MAPPING_ERROR;
+@@ -133,6 +151,7 @@ const struct dma_map_ops dma_direct_ops = {
+ 	.free			= dma_direct_free,
+ 	.map_page		= dma_direct_map_page,
+ 	.map_sg			= dma_direct_map_sg,
++	.dma_supported		= dma_direct_supported,
+ 	.mapping_error		= dma_direct_mapping_error,
+ 	.is_phys		= true,
+ };
 -- 
 2.14.2

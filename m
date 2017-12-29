@@ -1,27 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:49:20 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:40424 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994629AbdL2IYg34iK4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:24:36 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=oS+xl71GzieSI0T6QEMuSalsxBIkFPjG1v4ZiXneDMk=; b=bNGlS51JxpxvU3A+Q89/e+wxp
-        YV4SQKQD1K8lbdS6yCkK+ELFpHIVSPXkAUxSYCNZX1A+5vqtnbqwOjtBpfzTJiNf29RmjelbKH2NU
-        wgSs2DLNmGJXsyU2woliE5FYw8H2pjbJJ6M92tEWKlNu13xVAJWF9vFzmMHey2tBwqkWBGEZlaFPg
-        uELF59HtFIl2a5Z9uM6hgMkcVezxeDgiz4eVCe/JvbMC4WDPtomMCmyXNRPYpFr7FSQvdbqcbgf2V
-        lxdGtvh0YPom9/hMku+Th+DeEmn3f5aFm0Q8a4qkDuZSQh/3pE5Zh9fX7aCv+rWyf2PDbnXxuqi9N
-        HRwY4n8GQ==;
-Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpxb-00048U-NE; Fri, 29 Dec 2017 08:24:12 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     iommu@lists.linux-foundation.org
-Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 11:12:28 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:40166
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990412AbdL2KMWZlb2f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 11:12:22 +0100
+Received: by mail-wm0-x241.google.com with SMTP id f206so47275022wmf.5
+        for <linux-mips@linux-mips.org>; Fri, 29 Dec 2017 02:12:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=OZDKQObnogCo43/g0ZefdMeItSxZ/d1jpfe8RdFWxFc=;
+        b=A1dyY1BvC81xdajAaWe5z6Iod6eMrkXkCitK1deR7L6htbFsYIvEK/HdbyI6HodMKZ
+         sbn5FwmNuHKzpKbfV0hH/O4ObLYRlUQjxosVGUMMRq+StM8KaucLTwmd/4eTI8pnosCv
+         O3z7n7OvBMWKS2DppdyEiK6rhNS3qNU3z4kP+t+auEYs9M5Oqcvwo0I9k2DLfbmwV//2
+         sqWGOCudUxtlua44JMnRNsk4xFZpM6Z6ZB/tpbniEd9ha1qDcOzmTs6+yJEzuBtzqHIY
+         GImtxUK4KKmUt+oISe07ZXBZePl0GTQ8J+nT/kInjx2jj+fmacU+mE4gKOSjW5l8Z0H0
+         ri6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=OZDKQObnogCo43/g0ZefdMeItSxZ/d1jpfe8RdFWxFc=;
+        b=V0ybGVnFAyUQHlHJmC/hdqqSju0WSBFmKNp8sXHOWzQ7mfVnXRC0vDkF2bUF8mKKd5
+         j57HilkP/HdxogHIUl24NTEaq+wFWZgKQ+pubSRn70alp+aNDn/CIkPLSkeWKvfQFnYJ
+         I6jYnxREXIppjMzlEuk7/q+qgNcBpRgJ+jAV+j0/wkXvEQg0jMmAXwhMNNrscUhBWzkV
+         nFB9TT0gIpEK5YNlXkeHfsw0R+jT1oYFM9YtNhGbXCbpWkdemmoGj8b22IF/N6eP3WyD
+         6NdCNLws6x/rkPGLfEfmdgh4bvaCm7BzuQaNEz06iXNenfRV1TXo5/dYPgyKD2utDunK
+         DFKw==
+X-Gm-Message-State: AKGB3mJLqmM0CrQ3oBANutyC3h7NexZyjBLqduPJBdvN22Rs8CZ80SuY
+        cOHQvft2PvWDIMhkhlpgosTyxeIRq3iKMgXLj+s=
+X-Google-Smtp-Source: ACJfBosLJCIjjyZdEo2TG9SRtMNEVoq6KpqimhlUTIaKQq3elGsw6/PWwHHbb6+Xm8+4TOM09Ngu876BshXxDLd1Gw0=
+X-Received: by 10.28.46.136 with SMTP id u130mr30846598wmu.127.1514542336990;
+ Fri, 29 Dec 2017 02:12:16 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.223.153.163 with HTTP; Fri, 29 Dec 2017 02:11:56 -0800 (PST)
+In-Reply-To: <20171229081911.2802-18-hch@lst.de>
+References: <20171229081911.2802-1-hch@lst.de> <20171229081911.2802-18-hch@lst.de>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Fri, 29 Dec 2017 21:11:56 +1100
+Message-ID: <CAGRGNgW1qwLcCAvU2Jc=3_7b-0Bu016to3cQUgVsc+ca0No_6g@mail.gmail.com>
+Subject: Re: [PATCH 17/67] microblaze: rename dma_direct to dma_microblaze
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        "Mailing List, Arm" <linux-arm-kernel@lists.infradead.org>,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
         linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
@@ -29,25 +51,20 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         Michal Simek <monstr@monstr.eu>, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         patches@groups.riscv.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 67/67] swiotlb: remove various exports
-Date:   Fri, 29 Dec 2017 09:19:11 +0100
-Message-Id: <20171229081911.2802-68-hch@lst.de>
-X-Mailer: git-send-email 2.14.2
-In-Reply-To: <20171229081911.2802-1-hch@lst.de>
-References: <20171229081911.2802-1-hch@lst.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infradead.org>
+        linux-arch@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <julian.calaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61764
+X-archive-position: 61765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: julian.calaby@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,120 +77,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All these symbols are only used by arch dma_ops implementations or
-xen-swiotlb.  None of which can be modular.
+Hi Christoph,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- lib/swiotlb.c | 13 -------------
- 1 file changed, 13 deletions(-)
+On Fri, Dec 29, 2017 at 7:18 PM, Christoph Hellwig <hch@lst.de> wrote:
+> This frees the dma_direct_* namespace for a generic implementation.
 
-diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-index 77a40b508db8..823e1055a394 100644
---- a/lib/swiotlb.c
-+++ b/lib/swiotlb.c
-@@ -591,7 +591,6 @@ phys_addr_t swiotlb_tbl_map_single(struct device *hwdev,
- 
- 	return tlb_addr;
- }
--EXPORT_SYMBOL_GPL(swiotlb_tbl_map_single);
- 
- /*
-  * Allocates bounce buffer and returns its kernel virtual address.
-@@ -661,7 +660,6 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
- 	}
- 	spin_unlock_irqrestore(&io_tlb_lock, flags);
- }
--EXPORT_SYMBOL_GPL(swiotlb_tbl_unmap_single);
- 
- void swiotlb_tbl_sync_single(struct device *hwdev, phys_addr_t tlb_addr,
- 			     size_t size, enum dma_data_direction dir,
-@@ -693,7 +691,6 @@ void swiotlb_tbl_sync_single(struct device *hwdev, phys_addr_t tlb_addr,
- 		BUG();
- 	}
- }
--EXPORT_SYMBOL_GPL(swiotlb_tbl_sync_single);
- 
- static void *
- swiotlb_alloc_buffer(struct device *dev, size_t size, dma_addr_t *dma_handle)
-@@ -827,7 +824,6 @@ dma_addr_t swiotlb_map_page(struct device *dev, struct page *page,
- 
- 	return __phys_to_dma(dev, io_tlb_overflow_buffer);
- }
--EXPORT_SYMBOL_GPL(swiotlb_map_page);
- 
- /*
-  * Unmap a single streaming mode DMA translation.  The dma_addr and size must
-@@ -868,7 +864,6 @@ void swiotlb_unmap_page(struct device *hwdev, dma_addr_t dev_addr,
- {
- 	unmap_single(hwdev, dev_addr, size, dir, attrs);
- }
--EXPORT_SYMBOL_GPL(swiotlb_unmap_page);
- 
- /*
-  * Make physical memory consistent for a single streaming mode DMA translation
-@@ -906,7 +901,6 @@ swiotlb_sync_single_for_cpu(struct device *hwdev, dma_addr_t dev_addr,
- {
- 	swiotlb_sync_single(hwdev, dev_addr, size, dir, SYNC_FOR_CPU);
- }
--EXPORT_SYMBOL(swiotlb_sync_single_for_cpu);
- 
- void
- swiotlb_sync_single_for_device(struct device *hwdev, dma_addr_t dev_addr,
-@@ -914,7 +908,6 @@ swiotlb_sync_single_for_device(struct device *hwdev, dma_addr_t dev_addr,
- {
- 	swiotlb_sync_single(hwdev, dev_addr, size, dir, SYNC_FOR_DEVICE);
- }
--EXPORT_SYMBOL(swiotlb_sync_single_for_device);
- 
- /*
-  * Map a set of buffers described by scatterlist in streaming mode for DMA.
-@@ -966,7 +959,6 @@ swiotlb_map_sg_attrs(struct device *hwdev, struct scatterlist *sgl, int nelems,
- 	}
- 	return nelems;
- }
--EXPORT_SYMBOL(swiotlb_map_sg_attrs);
- 
- /*
-  * Unmap a set of streaming mode DMA translations.  Again, cpu read rules
-@@ -986,7 +978,6 @@ swiotlb_unmap_sg_attrs(struct device *hwdev, struct scatterlist *sgl,
- 		unmap_single(hwdev, sg->dma_address, sg_dma_len(sg), dir,
- 			     attrs);
- }
--EXPORT_SYMBOL(swiotlb_unmap_sg_attrs);
- 
- /*
-  * Make physical memory consistent for a set of streaming mode DMA translations
-@@ -1014,7 +1005,6 @@ swiotlb_sync_sg_for_cpu(struct device *hwdev, struct scatterlist *sg,
- {
- 	swiotlb_sync_sg(hwdev, sg, nelems, dir, SYNC_FOR_CPU);
- }
--EXPORT_SYMBOL(swiotlb_sync_sg_for_cpu);
- 
- void
- swiotlb_sync_sg_for_device(struct device *hwdev, struct scatterlist *sg,
-@@ -1022,14 +1012,12 @@ swiotlb_sync_sg_for_device(struct device *hwdev, struct scatterlist *sg,
- {
- 	swiotlb_sync_sg(hwdev, sg, nelems, dir, SYNC_FOR_DEVICE);
- }
--EXPORT_SYMBOL(swiotlb_sync_sg_for_device);
- 
- int
- swiotlb_dma_mapping_error(struct device *hwdev, dma_addr_t dma_addr)
- {
- 	return (dma_addr == __phys_to_dma(hwdev, io_tlb_overflow_buffer));
- }
--EXPORT_SYMBOL(swiotlb_dma_mapping_error);
- 
- /*
-  * Return whether the given device DMA address mask can be supported
-@@ -1042,7 +1030,6 @@ swiotlb_dma_supported(struct device *hwdev, u64 mask)
- {
- 	return __phys_to_dma(hwdev, io_tlb_end - 1) <= mask;
- }
--EXPORT_SYMBOL(swiotlb_dma_supported);
- 
- #ifdef CONFIG_DMA_DIRECT_OPS
- void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+Don't you mean "dma_nommu" not "dma_microblaze" in the subject line?
+
+Thanks,
+
 -- 
-2.14.2
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/

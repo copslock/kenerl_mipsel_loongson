@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:22:39 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:47641 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:23:06 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:36664 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990486AbdL2IUCqOxOC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:20:02 +0100
+        by eddie.linux-mips.org with ESMTP id S23990506AbdL2IUDvTFLC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:20:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=lioZeBjyjc+4CAz8dtiEETXglDGPc45H4sAX28X9kuQ=; b=WAacVvo8TnV+mB4lc+lLSyoV2
-        GefalCzYkq22+/8yoxhH42qphPyjkUx408ktHL86S7Y2Odtoy7DhdbzyaEWZh3cmQyKhALTaTd5gw
-        0fuTk6mX1fbF0cOWH7+1zGopmXYlcdUjtLmrY58VTUd/EkaCD1s45A9pFiNTKJFCdLFCFS6GXXQW9
-        kth/f+OCGqeN845ktnXqWNXJwj32Yx/r2+LSNpXW3VIDM1v2AMFjIMgonSJIVxhn+lpc+Zu6zulXR
-        lugLgaIzcNEz/qgzVRfeqJXsgngJ46yaUtCurp0KPoU9ms2gCBuED1BJa+uPJEcsCWazN/2NLgOCS
-        i4W2eYNuQ==;
+         bh=0JuEE1unvevJ5PXqHKEqQaNX4Nl1WkCrydQ4fDGvEz4=; b=MWDluzQz7YabNI2B/3OQy+A2n
+        opgvgPhMANbomhkv05tmdnwvwoYYcIkum22hVekDO6tvNuxxrscsvUCo3RN5skSj3vah6qr8Fj8YB
+        2x8IpyZZe5zsFp1TcTSA7p822IoxVIb2da/jnAonsTDtgPGHHGC8PbVAs3VFwV47mkmy071OVYGuQ
+        XvaJjo53I8NipSsRXEo9MR4dTK8zVI1cKFNJXvoIgaNf8jycE6MIeeOW9IbnsNm8om68g4IpFDbfd
+        LgE7FAqk7e/UwOCAcgjhyzRRHJ4SOJABBVrn1T4IfH10lBvFUH7A6/+LJEyO2RhqTzpte/aTxzk5c
+        5AO33t7KA==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUptQ-0000Am-GV; Fri, 29 Dec 2017 08:19:53 +0000
+        id 1eUptH-0008VO-Ly; Fri, 29 Dec 2017 08:19:44 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 08/67] powerpc: remove unused flush_write_buffers definition
-Date:   Fri, 29 Dec 2017 09:18:12 +0100
-Message-Id: <20171229081911.2802-9-hch@lst.de>
+Subject: [PATCH 06/67] hexagon: remove unused flush_write_buffers definition
+Date:   Fri, 29 Dec 2017 09:18:10 +0100
+Message-Id: <20171229081911.2802-7-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61704
+X-archive-position: 61705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,22 +62,21 @@ X-list: linux-mips
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/powerpc/include/asm/dma-mapping.h | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/hexagon/include/asm/io.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
-index 5a6cbe11db6f..592c7f418aa0 100644
---- a/arch/powerpc/include/asm/dma-mapping.h
-+++ b/arch/powerpc/include/asm/dma-mapping.h
-@@ -107,9 +107,6 @@ static inline void set_dma_offset(struct device *dev, dma_addr_t off)
- 		dev->archdata.dma_offset = off;
+diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
+index 66f5e9a61efc..9e8621d94ee9 100644
+--- a/arch/hexagon/include/asm/io.h
++++ b/arch/hexagon/include/asm/io.h
+@@ -330,8 +330,6 @@ static inline void outsl(unsigned long port, const void *buffer, int count)
+ 	}
  }
  
--/* this will be removed soon */
--#define flush_write_buffers()
+-#define flush_write_buffers() do { } while (0)
 -
- #define HAVE_ARCH_DMA_SET_MASK 1
- extern int dma_set_mask(struct device *dev, u64 dma_mask);
+ #endif /* __KERNEL__ */
  
+ #endif
 -- 
 2.14.2

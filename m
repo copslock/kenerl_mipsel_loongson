@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:28:12 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:43983 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:28:40 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:59031 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992170AbdL2IU7HAsoC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:20:59 +0100
+        by eddie.linux-mips.org with ESMTP id S23992243AbdL2IVC0zDdC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:21:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Afn0YIn1zKrL1IQlc79HRm4W+e1XRPY6Gc2rdlD9BfI=; b=u4h8CixrlYv6SFgN3KjxnWXRB
-        X1nDoNzIwvSS8CoFKpZeDjK1i5ZsEju0KS5WmVS9hQPgQXNYHW1FDWFfNBDETM2fQrH6QSLF3snm/
-        a9JzhAw9xq8y7s6bcHwMO779C/znn8e7doxN5z4OXUhb+6uQeWltYqWigjMSy1sZfSCsFb0vBSJrr
-        LSeptsgtkxMEyvSYgxBlzcSUA8cmsLKySzaBtthBsgHCYZDl+AgI2Nr2+kL7fUlNZFQ+FUmTx3CL5
-        7MKWLKAZK2F5qv3BbXDshMfAIOFjHFNt5ebgypDtL6kZJb79YbeDipyGY8TLXNpCDjlGGKhmUpGGS
-        c1dWLFHfg==;
+         bh=eg3FoMyX47+08LQfB+VADoF49XFCp9/mxmidhro7i7k=; b=d7qtnqlhDxSs/fjn4TyeuLNbB
+        JZKYBXfjjhVEMqln+n4jo8XnWltIbS8+q/R3R9oKx+fo0VG/A1GrT6wMh5JRQSBLEy3q3xjwc4GBs
+        CPBI1QFxVlTomTOW37gi0ShCOFh+5Gf+Rav93VIAyWL8Jszzbkjr5OToT67QwfhTKtYwgG1gMnI4H
+        kwrh4+TD1blW+IjqabKMdRgE/Wxf7a3vWRad5hiZMnQrEWGovBVnUQY6ttvHpjGwh3P83kgG/RD8N
+        HFX62BzWk+pLLtbkacZAGwsB75DB2iZ5Rup6e/s+mMYXS6CCtZDYByrwlcnO7nMgNeLd6XjN7R0G3
+        bvb4pEXww==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpuH-0001FK-Ug; Fri, 29 Dec 2017 08:20:46 +0000
+        id 1eUpuM-0001M5-I6; Fri, 29 Dec 2017 08:20:51 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 20/67] s390: move s390_pci_dma_ops to asm/pci_dma.h
-Date:   Fri, 29 Dec 2017 09:18:24 +0100
-Message-Id: <20171229081911.2802-21-hch@lst.de>
+Subject: [PATCH 21/67] dma-mapping: warn when there is no coherent_dma_mask
+Date:   Fri, 29 Dec 2017 09:18:25 +0100
+Message-Id: <20171229081911.2802-22-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61717
+X-archive-position: 61718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,38 +60,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is not needed in drivers, so move it to a private header.
+These days all devices should have a DMA coherent mask, and most dma_ops
+implementations rely on that fact.  But just to be sure add an assert to
+ring the warning bell if that is not the case.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/s390/include/asm/dma-mapping.h | 2 --
- arch/s390/include/asm/pci_dma.h     | 3 +++
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ include/linux/dma-mapping.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/include/asm/dma-mapping.h b/arch/s390/include/asm/dma-mapping.h
-index 2ec7240c1ada..bdc2455483f6 100644
---- a/arch/s390/include/asm/dma-mapping.h
-+++ b/arch/s390/include/asm/dma-mapping.h
-@@ -9,8 +9,6 @@
- #include <linux/dma-debug.h>
- #include <linux/io.h>
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index e77e2dec4723..2779d544485c 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -520,6 +520,7 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
+ 	void *cpu_addr;
  
--extern const struct dma_map_ops s390_pci_dma_ops;
--
- static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- {
- 	return &dma_noop_ops;
-diff --git a/arch/s390/include/asm/pci_dma.h b/arch/s390/include/asm/pci_dma.h
-index e8d9161fa17a..419fac7a62c0 100644
---- a/arch/s390/include/asm/pci_dma.h
-+++ b/arch/s390/include/asm/pci_dma.h
-@@ -201,4 +201,7 @@ void dma_cleanup_tables(unsigned long *);
- unsigned long *dma_walk_cpu_trans(unsigned long *rto, dma_addr_t dma_addr);
- void dma_update_cpu_trans(unsigned long *entry, void *page_addr, int flags);
+ 	BUG_ON(!ops);
++	WARN_ON_ONCE(!dev->coherent_dma_mask);
  
-+extern const struct dma_map_ops s390_pci_dma_ops;
-+
-+
- #endif
+ 	if (dma_alloc_from_dev_coherent(dev, size, dma_handle, &cpu_addr))
+ 		return cpu_addr;
 -- 
 2.14.2

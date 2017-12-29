@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:21:22 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:43588 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:21:45 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:34676 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990487AbdL2ITx5yolC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:19:53 +0100
+        by eddie.linux-mips.org with ESMTP id S23990425AbdL2IUBfvQjC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:20:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4cdVq1WsJPdLN8m3rv5GkH4HcAWJpLXxQfk840qmbmg=; b=TD6mA/LLTq9CwvnYdGlNYWVBe
-        hZttMP+AQS05e/y06wjuisud3IvhRPlNr3u4NJ7/6dI/X7yeWMLWEl/ELkS+UezxOP4Of1LTD81/X
-        vo42ji5jX3EcGA0J2aJjhBBHIMIdwIf3EhXYLpb0s/6nrdYlb79FVGLcEQDQp4Rh4hHrPfcCP3T3k
-        JPdp6qC77S3NtLwgX4FRhuHKT+uaoEsK8K91qnKdvgKXu7VWCm2ykQs1p9qVZcsK5HOoUxpXnMbyL
-        A7FHrfbhjiq4nfBZBL/FfzxDwPyR0ghaHPQIYFG/oooM8R0QdnP1TUoy5o6sY/vSIeydVg9FNU2li
-        0treALUQA==;
+         bh=S/GH44cRGA0qPZti+sTqqqVKSE2/SlUTJm6LzCR7sTw=; b=mJVnkiPbEtWUx6ywtnc+JdvsS
+        m2hgsnA0chPCWVzRUFkDxRNPweP9kVfd24W5VZmWLFc4ouicicRyGcXt2BiqFjhgwquMKrf5Z8VSM
+        CTGyOAy/CJ9SFmsTZAl0/BTsKfmLt9GR4lU0EiryGgKxNZNflMVznKXLtyHtZt4/2H1cqqMTlfBZP
+        h5JeKTSeA1vbttORg4job73Ox4MfGBLfER5qCKb4bPcTdfADMrhy6gGLdBUbgMMliybFsL5viB50/
+        wFp0UtG1X/vCHnwrVDTXlJYKNHy42ss0DB/pe4U0KDS4vIK58bbvC2Eu9K7PHt0ORrKzbOIOpuCyD
+        cApqe/Vmg==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpt8-0008OF-Pv; Fri, 29 Dec 2017 08:19:35 +0000
+        id 1eUptM-00006L-6J; Fri, 29 Dec 2017 08:19:48 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 04/67] arm64: don't override dma_max_pfn
-Date:   Fri, 29 Dec 2017 09:18:08 +0100
-Message-Id: <20171229081911.2802-5-hch@lst.de>
+Subject: [PATCH 07/67] m32r: remove unused flush_write_buffers definition
+Date:   Fri, 29 Dec 2017 09:18:11 +0100
+Message-Id: <20171229081911.2802-8-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61701
+X-archive-position: 61702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,32 +60,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The generic version now takes dma_pfn_offset into account, so there is no
-more need for an architecture override.
-
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/arm64/include/asm/dma-mapping.h | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/m32r/include/asm/io.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/dma-mapping.h b/arch/arm64/include/asm/dma-mapping.h
-index 0df756b24863..eada887a93bf 100644
---- a/arch/arm64/include/asm/dma-mapping.h
-+++ b/arch/arm64/include/asm/dma-mapping.h
-@@ -76,14 +76,5 @@ static inline void dma_mark_clean(void *addr, size_t size)
- {
- }
+diff --git a/arch/m32r/include/asm/io.h b/arch/m32r/include/asm/io.h
+index 1b653bb16f9a..a4272d8f0d9c 100644
+--- a/arch/m32r/include/asm/io.h
++++ b/arch/m32r/include/asm/io.h
+@@ -191,8 +191,6 @@ static inline void _writel(unsigned long l, unsigned long addr)
  
--/* Override for dma_max_pfn() */
--static inline unsigned long dma_max_pfn(struct device *dev)
--{
--	dma_addr_t dma_max = (dma_addr_t)*dev->dma_mask;
+ #define mmiowb()
+ 
+-#define flush_write_buffers() do { } while (0)  /* M32R_FIXME */
 -
--	return (ulong)dma_to_phys(dev, dma_max) >> PAGE_SHIFT;
--}
--#define dma_max_pfn(dev) dma_max_pfn(dev)
--
- #endif	/* __KERNEL__ */
- #endif	/* __ASM_DMA_MAPPING_H */
+ static inline void
+ memset_io(volatile void __iomem *addr, unsigned char val, int count)
+ {
 -- 
 2.14.2

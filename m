@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:40:55 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:37479 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:41:23 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:54002 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994660AbdL2IXEBdvsC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:23:04 +0100
+        by eddie.linux-mips.org with ESMTP id S23994663AbdL2IXJ3fpdJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:23:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=WZKbZA3eIEV5oOUX91JJ5Mb57W7gg00NIrYhXQ3cah0=; b=cNcclhc/cLfSyPGxneEr5nRE8
-        bY8Jekv+nBNoehd9P7xSVWWDpnHKIjypIAZrFXmnTHfCYcGNq8fquzJ6cQVWjXW42pd0UxsmpFUSd
-        fksaI4AbSyWKnq3n90NqTX5tSnw0p7wISsKon4qI38gnl5iOumx+7X1wTQj5mkGJ03Ju0Pnv59ld9
-        1/W/1J2Kzg9hVkEqz68vZl3M2Co6zUuPZqujXfiowtjmNP7+B5NY2CDQTL6uYOc3pWGZlsIuBBRqR
-        CV2nvEu0BrPQYX5cCY4gpppOuFPkGdYG0v+Ksv7YMS1R2fgK9ct09xHrabZVDnMCVzCTYAK70rUGC
-        kD2JeVQEg==;
+         bh=p3vgCQXrDnda2/WFmLsq0tbPPXmf96G94BW/MOzrLv0=; b=I8XiC3DCfFX4+km8rB+g26wHe
+        52A70U7Nuw+FUx28Ys2XJasOtPGXnQJftYaUM1FDZOyBNsSHniee76VQeLjDijfHdhqMwC3xSdeg5
+        SeN4UjX2oSWWTagCDv99GINGoJHf+xprTBklKB9Elnwn3AfdxqiYYelB/q87rO5Wtf+jT73KodPWo
+        PJnV757w4tM9JLcVd3IATUGhLK4djTZLTRECDWUzRKu1pH95nLk6k+kLOCvHlVcC/BRm+sACtIcT+
+        85ifwp+jxo9zF1VCsAe7Mllh40LEr6ud/kvJ4mHCjFMIrbLjIxNTe59HtbIAaDeMAoOwnsRtejVm2
+        fBHqcQphw==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpw9-00038o-ML; Fri, 29 Dec 2017 08:22:42 +0000
+        id 1eUpwI-0003F3-G7; Fri, 29 Dec 2017 08:22:51 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 47/67] swiotlb: wire up ->dma_supported in swiotlb_dma_ops
-Date:   Fri, 29 Dec 2017 09:18:51 +0100
-Message-Id: <20171229081911.2802-48-hch@lst.de>
+Subject: [PATCH 49/67] swiotlb: refactor coherent buffer freeing
+Date:   Fri, 29 Dec 2017 09:18:53 +0100
+Message-Id: <20171229081911.2802-50-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61745
+X-archive-position: 61746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,24 +60,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-To properly reject too small DMA masks based on the addressability of the
-bounce buffer.
+Factor out a new swiotlb_free_buffer helper that checks if an address
+is allocated from the swiotlb bounce buffer, and if yes frees it.
+
+This allows to simplify the swiotlb_free implemenation that uses
+dma_direct_free to free the non-bounce buffer allocations.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- lib/swiotlb.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/swiotlb.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
 diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-index 9c100f0173bf..e0b8980334c3 100644
+index a14fff30ee9d..adb4dd0091fa 100644
 --- a/lib/swiotlb.c
 +++ b/lib/swiotlb.c
-@@ -1125,5 +1125,6 @@ const struct dma_map_ops swiotlb_dma_ops = {
- 	.unmap_sg		= swiotlb_unmap_sg_attrs,
- 	.map_page		= swiotlb_map_page,
- 	.unmap_page		= swiotlb_unmap_page,
-+	.dma_supported		= swiotlb_dma_supported,
- };
- #endif /* CONFIG_DMA_DIRECT_OPS */
+@@ -773,22 +773,31 @@ swiotlb_alloc_coherent(struct device *hwdev, size_t size,
+ }
+ EXPORT_SYMBOL(swiotlb_alloc_coherent);
+ 
++static bool swiotlb_free_buffer(struct device *dev, size_t size,
++		dma_addr_t dma_addr)
++{
++	phys_addr_t phys_addr = dma_to_phys(dev, dma_addr);
++
++	WARN_ON_ONCE(irqs_disabled());
++
++	if (!is_swiotlb_buffer(phys_addr))
++		return false;
++
++	/*
++	 * DMA_TO_DEVICE to avoid memcpy in swiotlb_tbl_unmap_single.
++	 * DMA_ATTR_SKIP_CPU_SYNC is optional.
++	 */
++	swiotlb_tbl_unmap_single(dev, phys_addr, size, DMA_TO_DEVICE,
++				 DMA_ATTR_SKIP_CPU_SYNC);
++	return true;
++}
++
+ void
+ swiotlb_free_coherent(struct device *hwdev, size_t size, void *vaddr,
+ 		      dma_addr_t dev_addr)
+ {
+-	phys_addr_t paddr = dma_to_phys(hwdev, dev_addr);
+-
+-	WARN_ON(irqs_disabled());
+-	if (!is_swiotlb_buffer(paddr))
++	if (!swiotlb_free_buffer(hwdev, size, dev_addr))
+ 		free_pages((unsigned long)vaddr, get_order(size));
+-	else
+-		/*
+-		 * DMA_TO_DEVICE to avoid memcpy in swiotlb_tbl_unmap_single.
+-		 * DMA_ATTR_SKIP_CPU_SYNC is optional.
+-		 */
+-		swiotlb_tbl_unmap_single(hwdev, paddr, size, DMA_TO_DEVICE,
+-					 DMA_ATTR_SKIP_CPU_SYNC);
+ }
+ EXPORT_SYMBOL(swiotlb_free_coherent);
+ 
+@@ -1103,9 +1112,7 @@ void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ void swiotlb_free(struct device *dev, size_t size, void *vaddr,
+ 		dma_addr_t dma_addr, unsigned long attrs)
+ {
+-	if (is_swiotlb_buffer(dma_to_phys(dev, dma_addr)))
+-		swiotlb_free_coherent(dev, size, vaddr, dma_addr);
+-	else
++	if (!swiotlb_free_buffer(dev, size, dma_addr))
+ 		dma_direct_free(dev, size, vaddr, dma_addr, attrs);
+ }
+ 
 -- 
 2.14.2

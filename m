@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:44:03 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:39998 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:44:28 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:52318 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993086AbdL2IXiB83Ac (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:23:38 +0100
+        by eddie.linux-mips.org with ESMTP id S23994674AbdL2IXnAL0J7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:23:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=8KpO5Xt8AsLvC7+uYTdlCjY1ufli+t1solsOWE87rJk=; b=dq1JlzyyqjM2/0TkGVlPxJnfn
-        KFqk77wnYEj8Pp66F42erqvQwK+wqHMCFsUfTutNCG3jDgVEaKc0J4JvZJsAjtVXZxGV0erqXfFjS
-        LmCc340dcCKO8c7WvxE7WvoieuJEPOzBO3uLqRZs7WT9RFWqxvulxqH9fxJI8kJ/JW2mG7+5MvPh4
-        LG1d+YOj+hRqx9hDKJoMhPotuICbU0XH4LWCf4em7fhk5Z6TUdZNwlPbHWAolUs0mXoZzlVOCXqA2
-        PWdAlZ9fQBriE1o/Hafjtw5Pko/wcJZHYPhF+YE/1+qTRmIo8Fvu73YLU369BFAK3uj2nmv4e+gED
-        lNHNqNGJw==;
+         bh=ufI92MH35kThGqLZI/KmEQ1BFEKHUPP5/DsPsJKlPB0=; b=gaFPAIqavofE+01pEMdfQwGEP
+        poBKW5aSM9qYy5j+kW7uFmi0TjNqfJhk2XJWoX69wyx60fuNk3Hsvi7uUdZK23AggDET9USrVX7Wb
+        NzTIx4Ng2CsGhm1a6QcHOGKE2fHwCC0r3d5Lt1dwMbEPLmUtsAHtT1A7QUEnWucpc1RuLd3P76hfr
+        JjDOM8eZo5A0C64AH9n/2HhKty5SEU6rQBXGDyGRY8ARyL4in8rEl2pPL8gM4VPl83HUFsbuggchb
+        WvP/xKiC9Wvjc8LvV8p+yMR2F2UVRXMM66SldC2wCSqmNoKZNRvGvf5Qx77BQ5cLQYlkIhwNe8fBQ
+        2xecJeQhA==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpwj-0003YB-Kf; Fri, 29 Dec 2017 08:23:18 +0000
+        id 1eUpwo-0003bD-Dd; Fri, 29 Dec 2017 08:23:23 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 55/67] ia64: replace ZONE_DMA with ZONE_DMA32
-Date:   Fri, 29 Dec 2017 09:18:59 +0100
-Message-Id: <20171229081911.2802-56-hch@lst.de>
+Subject: [PATCH 56/67] ia64: use generic swiotlb_ops
+Date:   Fri, 29 Dec 2017 09:19:00 +0100
+Message-Id: <20171229081911.2802-57-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61752
+X-archive-position: 61753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,92 +60,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ia64 uses ZONE_DMA for allocations below 32-bits.  These days we
-name the zone for that ZONE_DMA32, which will allow to use the
-dma-direct and generic swiotlb code as-is, so rename it.
+These are identical to the ia64 ops, and would also support CMA
+if enabled on ia64.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/ia64/Kconfig              | 2 +-
- arch/ia64/kernel/pci-swiotlb.c | 2 +-
- arch/ia64/mm/contig.c          | 4 ++--
- arch/ia64/mm/discontig.c       | 8 ++++----
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ arch/ia64/Kconfig                |  5 +++++
+ arch/ia64/hp/common/hwsw_iommu.c |  4 ++--
+ arch/ia64/hp/common/sba_iommu.c  |  6 +++---
+ arch/ia64/kernel/pci-swiotlb.c   | 38 +++-----------------------------------
+ 4 files changed, 13 insertions(+), 40 deletions(-)
 
 diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 4d18fca885ee..888acdb163cb 100644
+index 888acdb163cb..29148fe4bf5a 100644
 --- a/arch/ia64/Kconfig
 +++ b/arch/ia64/Kconfig
-@@ -66,7 +66,7 @@ config 64BIT
- 	select ATA_NONSTANDARD if ATA
- 	default y
+@@ -146,6 +146,7 @@ config IA64_GENERIC
+ 	bool "generic"
+ 	select NUMA
+ 	select ACPI_NUMA
++	select DMA_DIRECT_OPS
+ 	select SWIOTLB
+ 	select PCI_MSI
+ 	help
+@@ -166,6 +167,7 @@ config IA64_GENERIC
  
--config ZONE_DMA
-+config ZONE_DMA32
- 	def_bool y
- 	depends on !IA64_SGI_SN2
+ config IA64_DIG
+ 	bool "DIG-compliant"
++	select DMA_DIRECT_OPS
+ 	select SWIOTLB
  
+ config IA64_DIG_VTD
+@@ -181,6 +183,7 @@ config IA64_HP_ZX1
+ 
+ config IA64_HP_ZX1_SWIOTLB
+ 	bool "HP-zx1/sx1000 with software I/O TLB"
++	select DMA_DIRECT_OPS
+ 	select SWIOTLB
+ 	help
+ 	  Build a kernel that runs on HP zx1 and sx1000 systems even when they
+@@ -204,6 +207,7 @@ config IA64_SGI_UV
+ 	bool "SGI-UV"
+ 	select NUMA
+ 	select ACPI_NUMA
++	select DMA_DIRECT_OPS
+ 	select SWIOTLB
+ 	help
+ 	  Selecting this option will optimize the kernel for use on UV based
+@@ -214,6 +218,7 @@ config IA64_SGI_UV
+ 
+ config IA64_HP_SIM
+ 	bool "Ski-simulator"
++	select DMA_DIRECT_OPS
+ 	select SWIOTLB
+ 	depends on !PM
+ 
+diff --git a/arch/ia64/hp/common/hwsw_iommu.c b/arch/ia64/hp/common/hwsw_iommu.c
+index 41279f0442bd..58969039bed2 100644
+--- a/arch/ia64/hp/common/hwsw_iommu.c
++++ b/arch/ia64/hp/common/hwsw_iommu.c
+@@ -19,7 +19,7 @@
+ #include <linux/export.h>
+ #include <asm/machvec.h>
+ 
+-extern const struct dma_map_ops sba_dma_ops, ia64_swiotlb_dma_ops;
++extern const struct dma_map_ops sba_dma_ops;
+ 
+ /* swiotlb declarations & definitions: */
+ extern int swiotlb_late_init_with_default_size (size_t size);
+@@ -38,7 +38,7 @@ static inline int use_swiotlb(struct device *dev)
+ const struct dma_map_ops *hwsw_dma_get_ops(struct device *dev)
+ {
+ 	if (use_swiotlb(dev))
+-		return &ia64_swiotlb_dma_ops;
++		return &swiotlb_dma_ops;
+ 	return &sba_dma_ops;
+ }
+ EXPORT_SYMBOL(hwsw_dma_get_ops);
+diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+index d68849ad2ee1..6f05aba9012f 100644
+--- a/arch/ia64/hp/common/sba_iommu.c
++++ b/arch/ia64/hp/common/sba_iommu.c
+@@ -2093,7 +2093,7 @@ static int __init acpi_sba_ioc_init_acpi(void)
+ /* This has to run before acpi_scan_init(). */
+ arch_initcall(acpi_sba_ioc_init_acpi);
+ 
+-extern const struct dma_map_ops ia64_swiotlb_dma_ops;
++extern const struct dma_map_ops swiotlb_dma_ops;
+ 
+ static int __init
+ sba_init(void)
+@@ -2108,7 +2108,7 @@ sba_init(void)
+ 	 * a successful kdump kernel boot is to use the swiotlb.
+ 	 */
+ 	if (is_kdump_kernel()) {
+-		dma_ops = &ia64_swiotlb_dma_ops;
++		dma_ops = &swiotlb_dma_ops;
+ 		if (swiotlb_late_init_with_default_size(64 * (1<<20)) != 0)
+ 			panic("Unable to initialize software I/O TLB:"
+ 				  " Try machvec=dig boot option");
+@@ -2130,7 +2130,7 @@ sba_init(void)
+ 		 * If we didn't find something sba_iommu can claim, we
+ 		 * need to setup the swiotlb and switch to the dig machvec.
+ 		 */
+-		dma_ops = &ia64_swiotlb_dma_ops;
++		dma_ops = &swiotlb_dma_ops;
+ 		if (swiotlb_late_init_with_default_size(64 * (1<<20)) != 0)
+ 			panic("Unable to find SBA IOMMU or initialize "
+ 			      "software I/O TLB: Try machvec=dig boot option");
 diff --git a/arch/ia64/kernel/pci-swiotlb.c b/arch/ia64/kernel/pci-swiotlb.c
-index f1ae873a8c35..4a9a6e58ad6a 100644
+index 4a9a6e58ad6a..0f8d5fbd86bd 100644
 --- a/arch/ia64/kernel/pci-swiotlb.c
 +++ b/arch/ia64/kernel/pci-swiotlb.c
-@@ -20,7 +20,7 @@ static void *ia64_swiotlb_alloc_coherent(struct device *dev, size_t size,
- 					 unsigned long attrs)
+@@ -6,8 +6,7 @@
+ #include <linux/cache.h>
+ #include <linux/module.h>
+ #include <linux/dma-mapping.h>
+-
+-#include <asm/swiotlb.h>
++#include <linux/swiotlb.h>
+ #include <asm/dma.h>
+ #include <asm/iommu.h>
+ #include <asm/machvec.h>
+@@ -15,40 +14,9 @@
+ int swiotlb __read_mostly;
+ EXPORT_SYMBOL(swiotlb);
+ 
+-static void *ia64_swiotlb_alloc_coherent(struct device *dev, size_t size,
+-					 dma_addr_t *dma_handle, gfp_t gfp,
+-					 unsigned long attrs)
+-{
+-	if (dev->coherent_dma_mask != DMA_BIT_MASK(64))
+-		gfp |= GFP_DMA32;
+-	return swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
+-}
+-
+-static void ia64_swiotlb_free_coherent(struct device *dev, size_t size,
+-				       void *vaddr, dma_addr_t dma_addr,
+-				       unsigned long attrs)
+-{
+-	swiotlb_free_coherent(dev, size, vaddr, dma_addr);
+-}
+-
+-const struct dma_map_ops ia64_swiotlb_dma_ops = {
+-	.alloc = ia64_swiotlb_alloc_coherent,
+-	.free = ia64_swiotlb_free_coherent,
+-	.map_page = swiotlb_map_page,
+-	.unmap_page = swiotlb_unmap_page,
+-	.map_sg = swiotlb_map_sg_attrs,
+-	.unmap_sg = swiotlb_unmap_sg_attrs,
+-	.sync_single_for_cpu = swiotlb_sync_single_for_cpu,
+-	.sync_single_for_device = swiotlb_sync_single_for_device,
+-	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
+-	.sync_sg_for_device = swiotlb_sync_sg_for_device,
+-	.dma_supported = swiotlb_dma_supported,
+-	.mapping_error = swiotlb_dma_mapping_error,
+-};
+-
+ void __init swiotlb_dma_init(void)
  {
- 	if (dev->coherent_dma_mask != DMA_BIT_MASK(64))
--		gfp |= GFP_DMA;
-+		gfp |= GFP_DMA32;
- 	return swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
+-	dma_ops = &ia64_swiotlb_dma_ops;
++	dma_ops = &swiotlb_dma_ops;
+ 	swiotlb_init(1);
  }
  
-diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
-index 52715a71aede..7d64b30913d1 100644
---- a/arch/ia64/mm/contig.c
-+++ b/arch/ia64/mm/contig.c
-@@ -237,9 +237,9 @@ paging_init (void)
- 	unsigned long max_zone_pfns[MAX_NR_ZONES];
- 
- 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
--#ifdef CONFIG_ZONE_DMA
-+#ifdef CONFIG_ZONE_DMA32
- 	max_dma = virt_to_phys((void *) MAX_DMA_ADDRESS) >> PAGE_SHIFT;
--	max_zone_pfns[ZONE_DMA] = max_dma;
-+	max_zone_pfns[ZONE_DMA32] = max_dma;
+@@ -60,7 +28,7 @@ void __init pci_swiotlb_init(void)
+ 		printk(KERN_INFO "PCI-DMA: Re-initialize machine vector.\n");
+ 		machvec_init("dig");
+ 		swiotlb_init(1);
+-		dma_ops = &ia64_swiotlb_dma_ops;
++		dma_ops = &swiotlb_dma_ops;
+ #else
+ 		panic("Unable to find Intel IOMMU");
  #endif
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
- 
-diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-index 9b2d994cddf6..ac46f0d60b66 100644
---- a/arch/ia64/mm/discontig.c
-+++ b/arch/ia64/mm/discontig.c
-@@ -38,7 +38,7 @@ struct early_node_data {
- 	struct ia64_node_data *node_data;
- 	unsigned long pernode_addr;
- 	unsigned long pernode_size;
--#ifdef CONFIG_ZONE_DMA
-+#ifdef CONFIG_ZONE_DMA32
- 	unsigned long num_dma_physpages;
- #endif
- 	unsigned long min_pfn;
-@@ -669,7 +669,7 @@ static __init int count_node_pages(unsigned long start, unsigned long len, int n
- {
- 	unsigned long end = start + len;
- 
--#ifdef CONFIG_ZONE_DMA
-+#ifdef CONFIG_ZONE_DMA32
- 	if (start <= __pa(MAX_DMA_ADDRESS))
- 		mem_data[node].num_dma_physpages +=
- 			(min(end, __pa(MAX_DMA_ADDRESS)) - start) >>PAGE_SHIFT;
-@@ -724,8 +724,8 @@ void __init paging_init(void)
- 	}
- 
- 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
--#ifdef CONFIG_ZONE_DMA
--	max_zone_pfns[ZONE_DMA] = max_dma;
-+#ifdef CONFIG_ZONE_DMA32
-+	max_zone_pfns[ZONE_DMA32] = max_dma;
- #endif
- 	max_zone_pfns[ZONE_NORMAL] = max_pfn;
- 	free_area_init_nodes(max_zone_pfns);
 -- 
 2.14.2

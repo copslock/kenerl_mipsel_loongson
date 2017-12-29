@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:36:45 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:53601 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2017 09:37:13 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:46237 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994642AbdL2IW1arAmC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:22:27 +0100
+        by eddie.linux-mips.org with ESMTP id S23994647AbdL2IWc1ZYuC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2017 09:22:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=abpvdwL2tCzDnXOD5F5LsLv9sD9WVcYeU1Qw53xWjCI=; b=VTxX86IDHTqoDf2+a8nuYV8gJ
-        4i+WDrVz9P/uLcSCiIOlKi5qqF+sGThlXnnzLgWz6fSuWy6byWAkPK7ax0aAQOUVoqb7EAszvOs95
-        L59oX5ZmP2dG9DxxlIvY1H63o1if41MXvk6SROfIAIgxF5/yOEzsCI42mldKRdSKwPD9P+3EcvJpL
-        Y8MVaP3eE+4tIZFWNncy7T8eqWCoqOYQdZlZMXTGSyd6fEpp6TIWTcw6Ss+sp7Qnu+tL836w9oGkq
-        XisBGCA5XhKz7TSJ47syMIXR23uuDsHqMXgy4WlbszxCxtqObKW+caaRYK8eGlQ8QA1894IzqJ3EW
-        /uTNiejpQ==;
+         bh=imiqSEBnStmDFE/tPs/3mX7hIPb4fHI2giwB1/K08XE=; b=iS8uY+LL6e0HpNS6Mu+WOp+16
+        V021uBELL/8PBKjdJbmIOOhhDO/hdWiXfwzYocJzRtDRCGGvewzjsipwt6BwtxHOA/PL9xanjXtgb
+        udcinAzAya/1/RR3Zm/PB9HcetGMXrK0sIcHgN5NtN0+ho/AbaFuLTqw8EPsvwHbxO3ghTvLKcPMi
+        Qon/S0JYvDXhmBkP9BctX+LBbjCgN6jmfln//+l+fVU/MpihKphcAiUUeod6fJP4larO7iygiwJHS
+        rej4LlH4ibg34bh7ciYBvzGcg8IYLwGqJOaPzJydVZCrI01bQF1aibVYBN8AH+0OlSEo4JC6+HZou
+        6/Ytytifw==;
 Received: from 77.117.237.29.wireless.dyn.drei.com ([77.117.237.29] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eUpvX-0002ji-55; Fri, 29 Dec 2017 08:22:03 +0000
+        id 1eUpvf-0002oo-Hn; Fri, 29 Dec 2017 08:22:12 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
@@ -32,9 +32,9 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 38/67] x86/amd_gart: clean up gart_alloc_coherent
-Date:   Fri, 29 Dec 2017 09:18:42 +0100
-Message-Id: <20171229081911.2802-39-hch@lst.de>
+Subject: [PATCH 40/67] iommu/intel-iommu: use dma_direct_* helpers for the direct mapping case
+Date:   Fri, 29 Dec 2017 09:18:44 +0100
+Message-Id: <20171229081911.2802-41-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20171229081911.2802-1-hch@lst.de>
 References: <20171229081911.2802-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+bc2f3f92dc59fc4fc549+5241+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61736
+X-archive-position: 61737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,62 +60,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Don't rely on the gfp mask from dma_alloc_coherent_gfp_flags to make the
-fallback decision, and streamline the code flow a bit.
+This simplifies the code a bit, and prepares for future cleanups.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/x86/kernel/amd_gart_64.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/iommu/Kconfig       |  1 +
+ drivers/iommu/intel-iommu.c | 17 ++++++++---------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
-index 52e3abcf3e70..92054815023e 100644
---- a/arch/x86/kernel/amd_gart_64.c
-+++ b/arch/x86/kernel/amd_gart_64.c
-@@ -484,26 +484,26 @@ gart_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_addr,
- 	unsigned long align_mask;
- 	struct page *page;
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index dc7c1914645d..df171cb85822 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -143,6 +143,7 @@ config DMAR_TABLE
+ config INTEL_IOMMU
+ 	bool "Support for Intel IOMMU using DMA Remapping Devices"
+ 	depends on PCI_MSI && ACPI && (X86 || IA64_GENERIC)
++	select DMA_DIRECT_OPS
+ 	select IOMMU_API
+ 	select IOMMU_IOVA
+ 	select DMAR_TABLE
+diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
+index 921caf4f0c3e..0de8bfe89061 100644
+--- a/drivers/iommu/intel-iommu.c
++++ b/drivers/iommu/intel-iommu.c
+@@ -31,6 +31,7 @@
+ #include <linux/pci.h>
+ #include <linux/dmar.h>
+ #include <linux/dma-mapping.h>
++#include <linux/dma-direct.h>
+ #include <linux/mempool.h>
+ #include <linux/memory.h>
+ #include <linux/cpu.h>
+@@ -3712,17 +3713,12 @@ static void *intel_alloc_coherent(struct device *dev, size_t size,
+ 	struct page *page = NULL;
+ 	int order;
  
--	if (force_iommu && !(flag & GFP_DMA)) {
--		flag &= ~(__GFP_DMA | __GFP_HIGHMEM | __GFP_DMA32);
--		page = alloc_pages(flag | __GFP_ZERO, get_order(size));
--		if (!page)
--			return NULL;
++	if (iommu_no_mapping(dev))
++		return dma_direct_alloc(dev, size, dma_handle, flags, attrs);
++
+ 	size = PAGE_ALIGN(size);
+ 	order = get_order(size);
 -
--		align_mask = (1UL << get_order(size)) - 1;
--		paddr = dma_map_area(dev, page_to_phys(page), size,
--				     DMA_BIDIRECTIONAL, align_mask);
--
--		flush_gart();
--		if (paddr != bad_dma_addr) {
--			*dma_addr = paddr;
--			return page_address(page);
--		}
--		__free_pages(page, get_order(size));
--	} else
-+	if (!force_iommu || dev->coherent_dma_mask <= DMA_BIT_MASK(24))
- 		return dma_direct_alloc(dev, size, dma_addr, flag, attrs);
+-	if (!iommu_no_mapping(dev))
+-		flags &= ~(GFP_DMA | GFP_DMA32);
+-	else if (dev->coherent_dma_mask < dma_get_required_mask(dev)) {
+-		if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
+-			flags |= GFP_DMA;
+-		else
+-			flags |= GFP_DMA32;
+-	}
++	flags &= ~(GFP_DMA | GFP_DMA32);
  
--	return NULL;
-+	flag &= ~(__GFP_DMA | __GFP_HIGHMEM | __GFP_DMA32);
-+	page = alloc_pages(flag | __GFP_ZERO, get_order(size));
-+	if (!page)
-+		return NULL;
-+
-+	align_mask = (1UL << get_order(size)) - 1;
-+	paddr = dma_map_area(dev, page_to_phys(page), size, DMA_BIDIRECTIONAL,
-+			align_mask);
-+
-+	flush_gart();
-+	if (unlikely(paddr == bad_dma_addr)) {
-+		__free_pages(page, get_order(size));
-+		return NULL;
-+	}
-+
-+	*dma_addr = paddr;
-+	return page_address(page);
- }
+ 	if (gfpflags_allow_blocking(flags)) {
+ 		unsigned int count = size >> PAGE_SHIFT;
+@@ -3758,6 +3754,9 @@ static void intel_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	int order;
+ 	struct page *page = virt_to_page(vaddr);
  
- /* free a coherent mapping */
++	if (iommu_no_mapping(dev))
++		return dma_direct_free(dev, size, vaddr, dma_handle, attrs);
++
+ 	size = PAGE_ALIGN(size);
+ 	order = get_order(size);
+ 
 -- 
 2.14.2

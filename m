@@ -1,43 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Dec 2017 11:56:42 +0100 (CET)
-Received: from verein.lst.de ([213.95.11.211]:46200 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990412AbdL3K4gSuqiN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 30 Dec 2017 11:56:36 +0100
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id D9516DE8A2; Sat, 30 Dec 2017 11:56:35 +0100 (CET)
-Date:   Sat, 30 Dec 2017 11:56:35 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Vladimir Murzin <vladimir.murzin@arm.com>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, x86@kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org, patches@groups.riscv.org,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
-        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: consolidate direct dma mapping and swiotlb support
-Message-ID: <20171230105635.GA23696@lst.de>
-References: <20171229081911.2802-1-hch@lst.de> <23fee3bb-61ce-1735-b264-3acc0109c858@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <23fee3bb-61ce-1735-b264-3acc0109c858@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Dec 2017 14:51:40 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:36736 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990412AbdL3NvcJJQT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Dec 2017 14:51:32 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v2 2/8] watchdog: jz4740: Use devm_* functions
+Date:   Sat, 30 Dec 2017 14:51:02 +0100
+Message-Id: <20171230135108.6834-2-paul@crapouillou.net>
+In-Reply-To: <20171230135108.6834-1-paul@crapouillou.net>
+References: <20171228162939.3928-2-paul@crapouillou.net>
+ <20171230135108.6834-1-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514641891; bh=gPm3Cy8HDg2aGN25PrFTosZKWHDtubTfrMqAjwiGdhs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=cPMzwOCBZkrCAP5BpqbmdNbuVXtaoCfIXkOqG/C4d6MC5FGrmG+YT3XB0AZMzkvWhiyRKSg+KSaxbIlFZkeWVMxnopQgdPlb72/AaYhVL4p+2L83pYwFyuqTdeN8biMuDl+kz1eimvP2aAyRK0nKDlWKD92hIHuT3c71AtBkRck=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61777
+X-archive-position: 61778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,11 +40,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 29, 2017 at 10:52:14AM +0000, Vladimir Murzin wrote:
-> Is it available in your dma-mapping.git or somewhere else?
+- Use devm_clk_get instead of clk_get
+- Use devm_watchdog_register_device instead of watchdog_register_device
 
-  git://git.infradead.org/users/hch/misc.git dma-direct
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+---
+ drivers/watchdog/jz4740_wdt.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-Gitweb:
+ v2: No change
 
-  http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-direct
+diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
+index 6955deb100ef..92d6ca8ceb49 100644
+--- a/drivers/watchdog/jz4740_wdt.c
++++ b/drivers/watchdog/jz4740_wdt.c
+@@ -178,40 +178,29 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(drvdata->base)) {
+-		ret = PTR_ERR(drvdata->base);
+-		goto err_out;
+-	}
++	if (IS_ERR(drvdata->base))
++		return PTR_ERR(drvdata->base);
+ 
+-	drvdata->rtc_clk = clk_get(&pdev->dev, "rtc");
++	drvdata->rtc_clk = devm_clk_get(&pdev->dev, "rtc");
+ 	if (IS_ERR(drvdata->rtc_clk)) {
+ 		dev_err(&pdev->dev, "cannot find RTC clock\n");
+-		ret = PTR_ERR(drvdata->rtc_clk);
+-		goto err_out;
++		return PTR_ERR(drvdata->rtc_clk);
+ 	}
+ 
+-	ret = watchdog_register_device(&drvdata->wdt);
++	ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
+ 	if (ret < 0)
+-		goto err_disable_clk;
++		return ret;
+ 
+ 	platform_set_drvdata(pdev, drvdata);
+-	return 0;
+ 
+-err_disable_clk:
+-	clk_put(drvdata->rtc_clk);
+-err_out:
+-	return ret;
++	return 0;
+ }
+ 
+ static int jz4740_wdt_remove(struct platform_device *pdev)
+ {
+ 	struct jz4740_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
+ 
+-	jz4740_wdt_stop(&drvdata->wdt);
+-	watchdog_unregister_device(&drvdata->wdt);
+-	clk_put(drvdata->rtc_clk);
+-
+-	return 0;
++	return jz4740_wdt_stop(&drvdata->wdt);
+ }
+ 
+ static struct platform_driver jz4740_wdt_driver = {
+-- 
+2.11.0

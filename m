@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Dec 2017 19:30:34 +0100 (CET)
-Received: from forward103j.mail.yandex.net ([5.45.198.246]:33815 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Dec 2017 19:30:58 +0100 (CET)
+Received: from forward103j.mail.yandex.net ([5.45.198.246]:33836 "EHLO
         forward103j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990437AbdL3S30Qn9Bc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Dec 2017 19:29:26 +0100
-Received: from mxback8g.mail.yandex.net (mxback8g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:169])
-        by forward103j.mail.yandex.net (Yandex) with ESMTP id 7E6D934C2AE8;
-        Sat, 30 Dec 2017 21:29:20 +0300 (MSK)
+        by eddie.linux-mips.org with ESMTP id S23990485AbdL3S32iYcNc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Dec 2017 19:29:28 +0100
+Received: from mxback3j.mail.yandex.net (mxback3j.mail.yandex.net [IPv6:2a02:6b8:0:1619::10c])
+        by forward103j.mail.yandex.net (Yandex) with ESMTP id 38CAC34C3EE3;
+        Sat, 30 Dec 2017 21:29:23 +0300 (MSK)
 Received: from smtp3p.mail.yandex.net (smtp3p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:8])
-        by mxback8g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id Z7Y4RaYu7W-TKtmOfSU;
-        Sat, 30 Dec 2017 21:29:20 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514658560;
-        bh=0Sr/BbMQyfnpMqGPgm6j8p9IPSm+DRc5J06NIOYmSiA=;
+        by mxback3j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 0RrhuuFG2d-TNM8E0Tm;
+        Sat, 30 Dec 2017 21:29:23 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514658563;
+        bh=0grInaLATVgStJlPIr6RyU0wkF4WU16AoZS/V6Jxz8Y=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=Ali6ZWhdwNGAIDUOST+1wiGzjs3CHZwHSA+SS6KfYSPTGNu41Qcwi1hxbW6nkQDlg
-         AAtnB2OdldxetPUAFsSKHSMIsPpKfQ9wwE5QGpunToeGpXkVDlMPiBzYezwnGJPdPm
-         SgO1JU4+m0SV46tkTiMJsO3g9T8Q2wY+jkDDGasM=
-Received: by smtp3p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 6PdmBEypOo-THT4E8Lq;
-        Sat, 30 Dec 2017 21:29:19 +0300
+        b=aRn+eOJhNn8UcsdkREuczMoy99Nq+bYcpLtlt2jxYHcc/mOb/6djYUQlhfbqdWu3s
+         yOjWkc3jKEH6OwljzwXTOakBfzOLFSCyXN6akbjFEZfzkku5v1VwSPUja3lWPVO3bm
+         X9i3/3pQIlJ2FF1E6KNHsB9qereny+RnvbbcRZsE=
+Received: by smtp3p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 6PdmBEypOo-TKT4dft3;
+        Sat, 30 Dec 2017 21:29:22 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514658559;
-        bh=0Sr/BbMQyfnpMqGPgm6j8p9IPSm+DRc5J06NIOYmSiA=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514658562;
+        bh=0grInaLATVgStJlPIr6RyU0wkF4WU16AoZS/V6Jxz8Y=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=EREsyh3b6EaUzWnTfivRsXNVat33YgDLdKYPRC9X1Av1jPM1rjZk9cfpcUhF9uF/7
-         jH58GH7qNYfXrvfrZhSovybQKPzJ2qlsWV2o4Z8qOO48hqGE57DrSDfRGdobZnZPZD
-         oT2ihWZFOrK56QYGXHc/gQmCla8C0UhAo7BcVtj0=
+        b=kND1x/KWWzbgIAQA5UC7fQhaHGy73VlfuGuz9PSB4IlJijnT3lUawoqbITyqSdt2r
+         /JoE2UtQAT4lzsVh3C8nPE4l4DR93hHChJHCHLUoJgW2O3t+i3/dElB7XiuGoeL3Lc
+         OtIlRarqiH8hWxh8UyB7Gnk4NFmdlw0eBSXloons=
 Authentication-Results: smtp3p.mail.yandex.net; dkim=pass header.i=@flygoat.com
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -32,9 +32,9 @@ Cc:     Philippe Ombredanne <pombredanne@nexb.com>,
         Linux MIPS <linux-mips@linux-mips.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCHv2 4/8] MIPS: Loongson64: cleanup all lemote-2f files to use SPDX Identifier
-Date:   Sun, 31 Dec 2017 02:28:27 +0800
-Message-Id: <20171230182830.6496-5-jiaxun.yang@flygoat.com>
+Subject: [PATCHv2 5/8] MIPS: Loongson64: cleanup all loongson-3 files to use SPDX Identifier
+Date:   Sun, 31 Dec 2017 02:28:28 +0800
+Message-Id: <20171230182830.6496-6-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.15.1
 In-Reply-To: <20171230182830.6496-1-jiaxun.yang@flygoat.com>
 References: <20171226132339.7356-1-jiaxun.yang@flygoat.com>
@@ -43,7 +43,7 @@ Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61794
+X-archive-position: 61795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,137 +64,100 @@ To reduce unnecessary license text.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- arch/mips/loongson64/lemote-2f/Makefile     | 1 +
- arch/mips/loongson64/lemote-2f/clock.c      | 5 ++---
- arch/mips/loongson64/lemote-2f/ec_kb3310b.c | 6 ++----
- arch/mips/loongson64/lemote-2f/irq.c        | 6 ++----
- arch/mips/loongson64/lemote-2f/machtype.c   | 6 ++----
- arch/mips/loongson64/lemote-2f/pm.c         | 6 ++----
- arch/mips/loongson64/lemote-2f/reset.c      | 6 ++----
- 7 files changed, 13 insertions(+), 23 deletions(-)
+ arch/mips/loongson64/loongson-3/Makefile   |  1 +
+ arch/mips/loongson64/loongson-3/cop2-ex.c  |  5 ++---
+ arch/mips/loongson64/loongson-3/numa.c     |  7 ++-----
+ arch/mips/loongson64/loongson-3/platform.c |  6 ++----
+ arch/mips/loongson64/loongson-3/smp.c      | 12 ++----------
+ 5 files changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/arch/mips/loongson64/lemote-2f/Makefile b/arch/mips/loongson64/lemote-2f/Makefile
-index 31c90737b98c..d81fdf50eaa4 100644
---- a/arch/mips/loongson64/lemote-2f/Makefile
-+++ b/arch/mips/loongson64/lemote-2f/Makefile
+diff --git a/arch/mips/loongson64/loongson-3/Makefile b/arch/mips/loongson64/loongson-3/Makefile
+index 44bc1482158b..317f9a4b3ff8 100644
+--- a/arch/mips/loongson64/loongson-3/Makefile
++++ b/arch/mips/loongson64/loongson-3/Makefile
 @@ -1,3 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0
  #
- # Makefile for lemote loongson2f family machines
+ # Makefile for Loongson-3 family machines
  #
-diff --git a/arch/mips/loongson64/lemote-2f/clock.c b/arch/mips/loongson64/lemote-2f/clock.c
-index 8281334df9c8..f8847e78a03e 100644
---- a/arch/mips/loongson64/lemote-2f/clock.c
-+++ b/arch/mips/loongson64/lemote-2f/clock.c
-@@ -1,10 +1,9 @@
+diff --git a/arch/mips/loongson64/loongson-3/cop2-ex.c b/arch/mips/loongson64/loongson-3/cop2-ex.c
+index 621d6af5f6eb..9dae0f539ee5 100644
+--- a/arch/mips/loongson64/loongson-3/cop2-ex.c
++++ b/arch/mips/loongson64/loongson-3/cop2-ex.c
+@@ -1,7 +1,6 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
  /*
-  * Copyright (C) 2006 - 2008 Lemote Inc. & Institute of Computing Technology
-  * Author: Yanhua, yanh@lemote.com
-  *
 - * This file is subject to the terms and conditions of the GNU General Public
 - * License.  See the file "COPYING" in the main directory of this archive
 - * for more details.
+  *
+  * Copyright (C) 2014 Lemote Corporation.
+  *   written by Huacai Chen <chenhc@lemote.com>
+diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+index f17ef520799a..51faecd95f21 100644
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -1,14 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++
+ /*
+  * Copyright (C) 2010 Loongson Inc. & Lemote Inc. &
+  *                    Institute of Computing Technology
+  * Author:  Xiang Gao, gaoxiang@ict.ac.cn
+  *          Huacai Chen, chenhc@lemote.com
+  *          Xiaofu Meng, Shuangshuang Zhang
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
   */
- #include <linux/clk.h>
- #include <linux/cpufreq.h>
-diff --git a/arch/mips/loongson64/lemote-2f/ec_kb3310b.c b/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
-index 6e416d55b42a..7b0b5727aaba 100644
---- a/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
-+++ b/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+diff --git a/arch/mips/loongson64/loongson-3/platform.c b/arch/mips/loongson64/loongson-3/platform.c
+index 25a97cc0ee33..908cfa130512 100644
+--- a/arch/mips/loongson64/loongson-3/platform.c
++++ b/arch/mips/loongson64/loongson-3/platform.c
 @@ -1,13 +1,11 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
- /*
-  * Basic KB3310B Embedded Controller support for the YeeLoong 2F netbook
-  *
-  *  Copyright (C) 2008 Lemote Inc.
-  *  Author: liujl <liujl@lemote.com>, 2008-04-20
-  *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-  */
- 
- #include <linux/io.h>
-diff --git a/arch/mips/loongson64/lemote-2f/irq.c b/arch/mips/loongson64/lemote-2f/irq.c
-index 9e33e45aa17c..6db9800bdfba 100644
---- a/arch/mips/loongson64/lemote-2f/irq.c
-+++ b/arch/mips/loongson64/lemote-2f/irq.c
-@@ -1,11 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
- /*
-  * Copyright (C) 2007 Lemote Inc.
-  * Author: Fuxin Zhang, zhangfx@lemote.com
-  *
-- *  This program is free software; you can redistribute	 it and/or modify it
-- *  under  the terms of	 the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the	License, or (at your
-- *  option) any later version.
-  */
- 
- #include <linux/export.h>
-diff --git a/arch/mips/loongson64/lemote-2f/machtype.c b/arch/mips/loongson64/lemote-2f/machtype.c
-index b55e6eece5e0..2f0f11811d45 100644
---- a/arch/mips/loongson64/lemote-2f/machtype.c
-+++ b/arch/mips/loongson64/lemote-2f/machtype.c
-@@ -1,11 +1,9 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
  /*
   * Copyright (C) 2009 Lemote Inc.
   * Author: Wu Zhangjin, wuzhangjin@gmail.com
+  *         Xiang Yu, xiangy@lemote.com
+  *         Chen Huacai, chenhc@lemote.com
   *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
 - * Free Software Foundation;  either version 2 of the  License, or (at your
 - * option) any later version.
   */
- #include <asm/bootinfo.h>
  
-diff --git a/arch/mips/loongson64/lemote-2f/pm.c b/arch/mips/loongson64/lemote-2f/pm.c
-index 0768739155f6..f7e8318424b6 100644
---- a/arch/mips/loongson64/lemote-2f/pm.c
-+++ b/arch/mips/loongson64/lemote-2f/pm.c
-@@ -1,13 +1,11 @@
+ #include <linux/err.h>
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 8501109bb0f0..34a86607a011 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -1,17 +1,9 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
  /*
-  *  Lemote loongson2f family machines' specific suspend support
+  * Copyright (C) 2010, 2011, 2012, Lemote, Inc.
+  * Author: Chen Huacai, chenhc@lemote.com
   *
-  *  Copyright (C) 2009 Lemote Inc.
-  *  Author: Wu Zhangjin <wuzhangjin@gmail.com>
-  *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
   */
  
- #include <linux/suspend.h>
-diff --git a/arch/mips/loongson64/lemote-2f/reset.c b/arch/mips/loongson64/lemote-2f/reset.c
-index 2b72b197c51d..26ff59df5c48 100644
---- a/arch/mips/loongson64/lemote-2f/reset.c
-+++ b/arch/mips/loongson64/lemote-2f/reset.c
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
- /* Board-specific reboot/shutdown routines
-  *
-  * Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
-@@ -5,10 +7,6 @@
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
-  *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-  */
- 
- #include <linux/io.h>
+ #include <linux/init.h>
 -- 
 2.15.1

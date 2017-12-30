@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Dec 2017 14:51:40 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:36736 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Dec 2017 14:52:02 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:36546 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990412AbdL3NvcJJQT0 (ORCPT
+        with ESMTP id S23990421AbdL3Nvc0fJX0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 30 Dec 2017 14:51:32 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -12,18 +12,17 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 2/8] watchdog: jz4740: Use devm_* functions
-Date:   Sat, 30 Dec 2017 14:51:02 +0100
-Message-Id: <20171230135108.6834-2-paul@crapouillou.net>
-In-Reply-To: <20171230135108.6834-1-paul@crapouillou.net>
+Subject: [PATCH v2 1/8] watchdog: JZ4740: Disable clock after stopping counter
+Date:   Sat, 30 Dec 2017 14:51:01 +0100
+Message-Id: <20171230135108.6834-1-paul@crapouillou.net>
+In-Reply-To: <20171228162939.3928-2-paul@crapouillou.net>
 References: <20171228162939.3928-2-paul@crapouillou.net>
- <20171230135108.6834-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514641891; bh=gPm3Cy8HDg2aGN25PrFTosZKWHDtubTfrMqAjwiGdhs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=cPMzwOCBZkrCAP5BpqbmdNbuVXtaoCfIXkOqG/C4d6MC5FGrmG+YT3XB0AZMzkvWhiyRKSg+KSaxbIlFZkeWVMxnopQgdPlb72/AaYhVL4p+2L83pYwFyuqTdeN8biMuDl+kz1eimvP2aAyRK0nKDlWKD92hIHuT3c71AtBkRck=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514641890; bh=DfNLGtgkVAdoBDPJaV/O/b71c+4GokNl7f9avjKmWLw=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=UazRKEfPsr1nlFJTTBC9LEVaMOue+gsltBRG+PQrlDFEJkg6QB2MOL+3Tl5ePpsSEIlHYu8hDUR3OhIKGKPTW1mpDnONN7QZ0GQlpDLPYK0NzMIBc87CZaGgNKiK6JSQFnLkDJ6vcAcSPqgmkIg7lWBzqyr4GWQWaYFwL8+fnc4=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61778
+X-archive-position: 61779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,68 +39,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-- Use devm_clk_get instead of clk_get
-- Use devm_watchdog_register_device instead of watchdog_register_device
+Previously, the clock was disabled first, which makes the watchdog
+component insensitive to register writes.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/watchdog/jz4740_wdt.c | 27 ++++++++-------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+ drivers/watchdog/jz4740_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
  v2: No change
 
 diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
-index 6955deb100ef..92d6ca8ceb49 100644
+index 20627f22baf6..6955deb100ef 100644
 --- a/drivers/watchdog/jz4740_wdt.c
 +++ b/drivers/watchdog/jz4740_wdt.c
-@@ -178,40 +178,29 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
--	if (IS_ERR(drvdata->base)) {
--		ret = PTR_ERR(drvdata->base);
--		goto err_out;
--	}
-+	if (IS_ERR(drvdata->base))
-+		return PTR_ERR(drvdata->base);
- 
--	drvdata->rtc_clk = clk_get(&pdev->dev, "rtc");
-+	drvdata->rtc_clk = devm_clk_get(&pdev->dev, "rtc");
- 	if (IS_ERR(drvdata->rtc_clk)) {
- 		dev_err(&pdev->dev, "cannot find RTC clock\n");
--		ret = PTR_ERR(drvdata->rtc_clk);
--		goto err_out;
-+		return PTR_ERR(drvdata->rtc_clk);
- 	}
- 
--	ret = watchdog_register_device(&drvdata->wdt);
-+	ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
- 	if (ret < 0)
--		goto err_disable_clk;
-+		return ret;
- 
- 	platform_set_drvdata(pdev, drvdata);
--	return 0;
- 
--err_disable_clk:
--	clk_put(drvdata->rtc_clk);
--err_out:
--	return ret;
-+	return 0;
- }
- 
- static int jz4740_wdt_remove(struct platform_device *pdev)
+@@ -124,8 +124,8 @@ static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
  {
- 	struct jz4740_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
+ 	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
  
--	jz4740_wdt_stop(&drvdata->wdt);
--	watchdog_unregister_device(&drvdata->wdt);
--	clk_put(drvdata->rtc_clk);
--
--	return 0;
-+	return jz4740_wdt_stop(&drvdata->wdt);
+-	jz4740_timer_disable_watchdog();
+ 	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
++	jz4740_timer_disable_watchdog();
+ 
+ 	return 0;
  }
- 
- static struct platform_driver jz4740_wdt_driver = {
 -- 
 2.11.0

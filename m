@@ -1,61 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Dec 2017 12:17:54 +0100 (CET)
-Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:35967
-        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990428AbdLaLRqQRRpe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Dec 2017 12:17:46 +0100
-Received: by mail-wr0-x242.google.com with SMTP id u19so38513871wrc.3
-        for <linux-mips@linux-mips.org>; Sun, 31 Dec 2017 03:17:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexb-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=NdO+yV7BdmTLmYw67nv8JTnCI7xlNXd9RC4Nx5LaCwA=;
-        b=UQ7o2bzjoI1LLPntDx1KFPq2a8rmjomyFeYAP3wxf+Ti9hv1z1cUxUFAB9Pbq1JkHd
-         kzTO24XDcdsli8HELCJIbr2zd0lwUtwjMCp4F0zYuX1qPq98ECAOnckxxQwmmG9VYRMU
-         L3M+xCH5E1PyWtD21xUh8BEEWAmZsN0fh7ARAKe9FrZekMeR+7/f7kLFDc1EdzfKolx1
-         3TAiq9+Qwp8U6QN488YK7bqw4dvFj1BknZt6CB0rEDOQ+KUCsB7BwNlxW4vlgerwbXQu
-         ivletE0J1ZDGh32QfNJZJt/L+sBsNfsy74W9xXZWtNzHIzxVZo/2DH6w97SKXiRcw5Kw
-         8NrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=NdO+yV7BdmTLmYw67nv8JTnCI7xlNXd9RC4Nx5LaCwA=;
-        b=KGiZxjX3Kri+nW/40QzACyRooLOccV/OlQCvbOo4a0FrMQIac6LoQLpPTWJyrLWueW
-         mtqhimElb9W6Jes+O0EBRFDlAmM6ujUS/cedjMmQYnQnkFZp9/raHOc5QTS0hDBWuP9P
-         hFJPdveXV6mrBKB3FTJXE/vj3G3NoRG6pafuAKqTv6S9F/z68Yh/9N7OPAWCdmoqWb3a
-         QieQ3ftk4UQt2zUVLslkMDPG/roFlb1G7iC8Y/fbnZKZTbRXZStr3SoqVTFXSkWVX4SE
-         mL3rtiOxiti6SEhF4yySklVKCN9vS5KqdwyBieo5P/iFp6uu1KryYTL1tuQf2YLNWxIZ
-         jvHw==
-X-Gm-Message-State: AKGB3mKohnPBoCzOJJLXTiU7S+9wKjVTLZvPFIVlm++KMM9M+Py0CRLB
-        K2K5GDvIxP+PbLvLOdJJq0wtNw5tcvFkNKOqkCi8XQ==
-X-Google-Smtp-Source: ACJfBotnYcyIRY3QG1iyD/F9TG315xjvmyrMnkjmTcp1/AucbvrpJne21c95zn7H4mZ7p4GBI9yihDWVCjthtdJj0Jk=
-X-Received: by 10.223.191.2 with SMTP id p2mr25751736wrh.81.1514719060679;
- Sun, 31 Dec 2017 03:17:40 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.223.157.206 with HTTP; Sun, 31 Dec 2017 03:17:00 -0800 (PST)
-In-Reply-To: <20171230182830.6496-2-jiaxun.yang@flygoat.com>
-References: <20171226132339.7356-1-jiaxun.yang@flygoat.com>
- <20171230182830.6496-1-jiaxun.yang@flygoat.com> <20171230182830.6496-2-jiaxun.yang@flygoat.com>
-From:   Philippe Ombredanne <pombredanne@nexb.com>
-Date:   Sun, 31 Dec 2017 12:17:00 +0100
-Message-ID: <CAOFm3uFM+7n_YaKBkZV6jV4VHCBhtGhUTLbB4uedMaCa+nf3PA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Dec 2017 14:14:44 +0100 (CET)
+Received: from forward106j.mail.yandex.net ([5.45.198.249]:36566 "EHLO
+        forward106j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990426AbdLaNOiPv1pe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Dec 2017 14:14:38 +0100
+Received: from mxback9o.mail.yandex.net (mxback9o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::23])
+        by forward106j.mail.yandex.net (Yandex) with ESMTP id 4D1D71802E1C;
+        Sun, 31 Dec 2017 16:14:31 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback9o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id e4upMUXNnk-EUXG9b4h;
+        Sun, 31 Dec 2017 16:14:31 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514726071;
+        bh=PO0nXIRujH+tTNChOYko5tOCN4CvMOrgdl5DJVMq7n0=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=erkE7TwwHGA0wTXaaYhlzr0phbqornAIvT5avYom3OiY5G/TD2eEkWG3LBcpOxM2t
+         6wvtrR3pbRyEq89s40HZTfs3BBduHA3pck6egGKHAbyAQGaJ71Wuu+2E5EBSBvT0YD
+         GsgoPIcMifnENPuODcXIcyFYJNS1j552Wp1PzB9s=
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id Fy6EKbjVTQ-EQ6OWuCe;
+        Sun, 31 Dec 2017 16:14:28 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514726069;
+        bh=PO0nXIRujH+tTNChOYko5tOCN4CvMOrgdl5DJVMq7n0=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=TR+T1P8TUC3KAoyQyWWDvY3MSqDmIHcIdRyaxuSKBTnQZ8eBiswpYR7gF1BSvkN5y
+         xgnuCBBLbVF21+EB38jEgQaMWZrR80k98J0CjLnDrZDclax4ft5vIm1w42eJzwMDHk
+         oGz7VIDkfHkB6wXkdW72JfupCjCruzYAb/3xHpEY=
+Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1514726063.1668.7.camel@flygoat.com>
 Subject: Re: [PATCHv2 1/8] MIPS: Loongson64: cleanup all cs5536 files to use
  SPDX Identifier
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Philippe Ombredanne <pombredanne@nexb.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Linux MIPS <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <pombredanne@nexb.com>
+        LKML <linux-kernel@vger.kernel.org>,
+        Huacai Chen <chenhc@lemote.com>
+Date:   Sun, 31 Dec 2017 21:14:23 +0800
+In-Reply-To: <CAOFm3uFM+7n_YaKBkZV6jV4VHCBhtGhUTLbB4uedMaCa+nf3PA@mail.gmail.com>
+References: <20171226132339.7356-1-jiaxun.yang@flygoat.com>
+         <20171230182830.6496-1-jiaxun.yang@flygoat.com>
+         <20171230182830.6496-2-jiaxun.yang@flygoat.com>
+         <CAOFm3uFM+7n_YaKBkZV6jV4VHCBhtGhUTLbB4uedMaCa+nf3PA@mail.gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-ShmUMIMlyQsBzwm8+SDI"
+X-Mailer: Evolution 3.26.2-1 
+Mime-Version: 1.0
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61798
+X-archive-position: 61799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pombredanne@nexb.com
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,52 +66,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Dec 30, 2017 at 7:28 PM, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
-> To reduce unnecessary license text.
->
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->  arch/mips/loongson64/common/cs5536/Makefile       | 1 +
->  arch/mips/loongson64/common/cs5536/cs5536_acc.c   | 6 ++----
->  arch/mips/loongson64/common/cs5536/cs5536_ehci.c  | 6 ++----
->  arch/mips/loongson64/common/cs5536/cs5536_ide.c   | 6 ++----
->  arch/mips/loongson64/common/cs5536/cs5536_isa.c   | 6 ++----
->  arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c | 6 ++----
->  arch/mips/loongson64/common/cs5536/cs5536_ohci.c  | 6 ++----
->  arch/mips/loongson64/common/cs5536/cs5536_pci.c   | 7 ++-----
->  8 files changed, 15 insertions(+), 29 deletions(-)
->
-> diff --git a/arch/mips/loongson64/common/cs5536/Makefile b/arch/mips/loongson64/common/cs5536/Makefile
-> index f12e64007347..b0c805a0dcc6 100644
-> --- a/arch/mips/loongson64/common/cs5536/Makefile
-> +++ b/arch/mips/loongson64/common/cs5536/Makefile
-> @@ -1,3 +1,4 @@
-> +# SPDX-License-Identifier: GPL-2.0
->  #
->  # Makefile for CS5536 support.
->  #
-> diff --git a/arch/mips/loongson64/common/cs5536/cs5536_acc.c b/arch/mips/loongson64/common/cs5536/cs5536_acc.c
-> index ab4d6cc57384..ba0474bb4a3d 100644
-> --- a/arch/mips/loongson64/common/cs5536/cs5536_acc.c
-> +++ b/arch/mips/loongson64/common/cs5536/cs5536_acc.c
-> @@ -1,3 +1,5 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
->  /*
->   * the ACC Virtual Support Module of AMD CS5536
->   *
-> @@ -7,10 +9,6 @@
->   * Copyright (C) 2009 Lemote, Inc.
->   * Author: Wu Zhangjin, wuzhangjin@gmail.com
->   *
-> - * This program is free software; you can redistribute it and/or modify it
-> - * under  the terms of the GNU General  Public License as published by the
-> - * Free Software Foundation;  either version 2 of the  License, or (at your
-> - * option) any later version.
->   */
 
-Did you CC the original authors? You would need their signoff or at
-least an ack IMHO
--- 
-Cordially
-Philippe Ombredanne
+--=-ShmUMIMlyQsBzwm8+SDI
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On 2017-12-31 Sun 12:17 +0100=EF=BC=8CPhilippe Ombredanne wrote=EF=BC=9A
+> Did you CC the original authors? You would need their signoff or at
+> least an ack IMHO
+
+Yeah, I CC Huacai Chen in v1 as the Lemote staff who in charge of
+Loongson's mainline kernel. Can he sign-off for all the original
+authors who were from ICT and Lemote?
+As far as I know, some authors are no longer working in Lemote. And I
+can't see their new email addresses so it may hard to get their ack or
+sign-off.
+Thanks for your adivce.
+
+--
+Best Regards
+Jiaxun Yang
+
+--=-ShmUMIMlyQsBzwm8+SDI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpI4q8ACgkQwRGUkHP8
+D2c1yhAAhVhBOLt+0emRLqgAbx+5Pg8EYcc3EJXThZzbmK6nK/atwUcJXO74np53
+udRd3OF5MAidb4/5/JmRKADQHiJ4sowXZufQv4TzSCwZy1vPmTbBhxbsxhOP9z+3
+GcwPWAhO0ulmI28eHDjsxh6NHXnfob6P3/gMPLgP4KbzA26tDBUMXzVXMZDTzAsu
+vRbJl94sKiCaYkb304JwVGuZ2uVPrl1L1netiH9bcJhXaXJao+LMGpWYCviFamDv
+cypr9QNKNd5gVm97TMbAO7KkcZMhyKGom2ZdwJ7Np/H0N0e/OPm4U/6JaDQM11S6
+Sb6d1o0cTwB5S5BL+jLryMse4AuRiSH9j9gkjqCFs09uUwAP7sRgwIZXDJFDozuX
+FFcYX4HaKMp0Cf7McEq5Vb6KHdfyJzVYEDJUVzAOXXfcnJt3oNcL8luH9/eaz5se
+8kqjHzVwIej5ZPb0Jt+LDDAD0S4UdnnRgpS57DHXvDBqrvKohmpR3YSVWkfrTOHq
+59FfKP4eyn4AnE1TsBj7vBm4I0xGgbF5DzZVc+6BXuWKO8MMIUD2CapPDIGu9WPU
+svmd+7U58nJXia0OgKbF3rPZVs9CkdYk7rh/6yvmeqlVGM1YyV8+AWWHzpCIHRlD
+OYIl/tPXN95557EofKlGEeGrxVRf3drDRZXlvPOrDN/9K1NNmBA=
+=trBS
+-----END PGP SIGNATURE-----
+
+--=-ShmUMIMlyQsBzwm8+SDI--

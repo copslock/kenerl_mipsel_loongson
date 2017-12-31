@@ -1,59 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Dec 2017 14:14:44 +0100 (CET)
-Received: from forward106j.mail.yandex.net ([5.45.198.249]:36566 "EHLO
-        forward106j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990426AbdLaNOiPv1pe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Dec 2017 14:14:38 +0100
-Received: from mxback9o.mail.yandex.net (mxback9o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::23])
-        by forward106j.mail.yandex.net (Yandex) with ESMTP id 4D1D71802E1C;
-        Sun, 31 Dec 2017 16:14:31 +0300 (MSK)
-Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
-        by mxback9o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id e4upMUXNnk-EUXG9b4h;
-        Sun, 31 Dec 2017 16:14:31 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514726071;
-        bh=PO0nXIRujH+tTNChOYko5tOCN4CvMOrgdl5DJVMq7n0=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=erkE7TwwHGA0wTXaaYhlzr0phbqornAIvT5avYom3OiY5G/TD2eEkWG3LBcpOxM2t
-         6wvtrR3pbRyEq89s40HZTfs3BBduHA3pck6egGKHAbyAQGaJ71Wuu+2E5EBSBvT0YD
-         GsgoPIcMifnENPuODcXIcyFYJNS1j552Wp1PzB9s=
-Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id Fy6EKbjVTQ-EQ6OWuCe;
-        Sun, 31 Dec 2017 16:14:28 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514726069;
-        bh=PO0nXIRujH+tTNChOYko5tOCN4CvMOrgdl5DJVMq7n0=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=TR+T1P8TUC3KAoyQyWWDvY3MSqDmIHcIdRyaxuSKBTnQZ8eBiswpYR7gF1BSvkN5y
-         xgnuCBBLbVF21+EB38jEgQaMWZrR80k98J0CjLnDrZDclax4ft5vIm1w42eJzwMDHk
-         oGz7VIDkfHkB6wXkdW72JfupCjCruzYAb/3xHpEY=
-Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Message-ID: <1514726063.1668.7.camel@flygoat.com>
-Subject: Re: [PATCHv2 1/8] MIPS: Loongson64: cleanup all cs5536 files to use
- SPDX Identifier
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     Philippe Ombredanne <pombredanne@nexb.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Huacai Chen <chenhc@lemote.com>
-Date:   Sun, 31 Dec 2017 21:14:23 +0800
-In-Reply-To: <CAOFm3uFM+7n_YaKBkZV6jV4VHCBhtGhUTLbB4uedMaCa+nf3PA@mail.gmail.com>
-References: <20171226132339.7356-1-jiaxun.yang@flygoat.com>
-         <20171230182830.6496-1-jiaxun.yang@flygoat.com>
-         <20171230182830.6496-2-jiaxun.yang@flygoat.com>
-         <CAOFm3uFM+7n_YaKBkZV6jV4VHCBhtGhUTLbB4uedMaCa+nf3PA@mail.gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-ShmUMIMlyQsBzwm8+SDI"
-X-Mailer: Evolution 3.26.2-1 
-Mime-Version: 1.0
-Return-Path: <jiaxun.yang@flygoat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Dec 2017 14:40:23 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:34485
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbdLaNkQygc3a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Dec 2017 14:40:16 +0100
+Received: by mail-wm0-x241.google.com with SMTP id y82so10817424wmg.1
+        for <linux-mips@linux-mips.org>; Sun, 31 Dec 2017 05:40:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=owfd/YVR/EzDiMXyNdt2qlnnnm75UX6BTgVMALTYcGc=;
+        b=jKae8n48cRp4UDuCUX/DPv9YXEEwtkhcYFDJQeAFf7+zUL5/W1N6gS19IzVVIDDF3K
+         GZWKHf96rTHVF5TZ1NZ/lpxoLZaOE599fET1erdywYTlqnSlsXMLf5TDXywGtpAUIrSl
+         w2pJLmtVGAQ+XgFMjXS14c7+Qdqz/7isM9slzVuDO1iHMxYMnzwd4X3FSUYz/xl54pqE
+         VqxYB3b1h0jb+tYL+IGuPXxQxp4vrLvpgHsNUvDr4h7YsSWLjZZv4y62T7hpf+t0a2nJ
+         rSPyiDAHh6pBBN+DFuyLXJqZXnOK0RwDaph9dO7F/Xq/eHhrsrR4R2GgZmIDmU19ACtq
+         5raA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=owfd/YVR/EzDiMXyNdt2qlnnnm75UX6BTgVMALTYcGc=;
+        b=Z89OwRA0Va4yTtVXWQFCGGs/zSvayLqtX1A5I3q5o+yVIKBadhqRqw6pm9LCSf0pP8
+         3XflpbfNK66NVKpoFomCaG6WG9SyC7dcpe1+aeY11hj1nmeZz29eX77Mp5M0HXuAmQGn
+         jp6wtJ7Nxcc+yh3ywKptgDNXeubM26ZN+CllM8ZTIYkJ3F0aB3Ws0nq0G3tK/e7nFQJg
+         kjDtAgIkGK70dMEb0SlmdCwd2hp/r8fbuhkhmOU15SVvlf026WmmHv1G1m3BlxTG4lp+
+         65b87YCGGYvimEPQPk5bNPo1N29ZHSENkKU1h6aRpbHqLhFC4ZHfldczczEMERbbJEIN
+         trfA==
+X-Gm-Message-State: AKGB3mJKRV82lW1xmdNoPaYi6gBA65ULUCvSC1hjCrMCmkmv06CNaYdG
+        NL6rB0RYFXldeb6ar3e4kZabRw==
+X-Google-Smtp-Source: ACJfBovu2i2vZ6D5GC6XkK7LYH+ifTLlk01NXuIs6iIW+XzCCxtiY7oo/ukI7G/HcysWPq4No/Vn3w==
+X-Received: by 10.80.136.228 with SMTP id d91mr53099728edd.296.1514727610747;
+        Sun, 31 Dec 2017 05:40:10 -0800 (PST)
+Received: from [192.168.178.80] (D4CCACC7.cm-2.dynamic.ziggo.nl. [212.204.172.199])
+        by smtp.gmail.com with ESMTPSA id 33sm36390377edt.57.2017.12.31.05.40.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 31 Dec 2017 05:40:10 -0800 (PST)
+Subject: Re: [PATCH 01/33] clk_ops: change round_rate() to return unsigned
+ long
+To:     Mikko Perttunen <cyndis@kapsi.fi>, mturquette@baylibre.com,
+        sboyd@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-rpi-kernel@lists.infradead.org,
+        patches@opensource.cirrus.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org,
+        freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
+        linux-rtc@vger.kernel.org
+References: <1514596392-22270-1-git-send-email-pure.logic@nexus-software.ie>
+ <1514596392-22270-2-git-send-email-pure.logic@nexus-software.ie>
+ <9f4bef5a-8a71-6f30-5cfb-5e8fe133e3d3@kapsi.fi>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Message-ID: <6d83a5c3-6589-24bc-4ca5-4d1bbca47432@nexus-software.ie>
+Date:   Sun, 31 Dec 2017 13:40:07 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
+MIME-Version: 1.0
+In-Reply-To: <9f4bef5a-8a71-6f30-5cfb-5e8fe133e3d3@kapsi.fi>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <pure.logic@nexus-software.ie>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61799
+X-archive-position: 61800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: pure.logic@nexus-software.ie
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,47 +88,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 30/12/17 16:36, Mikko Perttunen wrote:
+> FWIW, we had this problem some years ago with the Tegra CPU clock - then 
+> it was determined that a simpler solution was to have the determine_rate 
+> callback support unsigned long rates - so clock drivers that need to 
+> return rates higher than 2^31 can instead implement the determine_rate 
+> callback. That is what's currently implemented.
+> 
+> Mikko
 
---=-ShmUMIMlyQsBzwm8+SDI
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Granted we could work around it but, having both zero and less than zero 
+indicate error means you can't support larger than LONG_MAX which is I 
+think worth fixing.
 
-On 2017-12-31 Sun 12:17 +0100=EF=BC=8CPhilippe Ombredanne wrote=EF=BC=9A
-> Did you CC the original authors? You would need their signoff or at
-> least an ack IMHO
-
-Yeah, I CC Huacai Chen in v1 as the Lemote staff who in charge of
-Loongson's mainline kernel. Can he sign-off for all the original
-authors who were from ICT and Lemote?
-As far as I know, some authors are no longer working in Lemote. And I
-can't see their new email addresses so it may hard to get their ack or
-sign-off.
-Thanks for your adivce.
-
---
-Best Regards
-Jiaxun Yang
-
---=-ShmUMIMlyQsBzwm8+SDI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpI4q8ACgkQwRGUkHP8
-D2c1yhAAhVhBOLt+0emRLqgAbx+5Pg8EYcc3EJXThZzbmK6nK/atwUcJXO74np53
-udRd3OF5MAidb4/5/JmRKADQHiJ4sowXZufQv4TzSCwZy1vPmTbBhxbsxhOP9z+3
-GcwPWAhO0ulmI28eHDjsxh6NHXnfob6P3/gMPLgP4KbzA26tDBUMXzVXMZDTzAsu
-vRbJl94sKiCaYkb304JwVGuZ2uVPrl1L1netiH9bcJhXaXJao+LMGpWYCviFamDv
-cypr9QNKNd5gVm97TMbAO7KkcZMhyKGom2ZdwJ7Np/H0N0e/OPm4U/6JaDQM11S6
-Sb6d1o0cTwB5S5BL+jLryMse4AuRiSH9j9gkjqCFs09uUwAP7sRgwIZXDJFDozuX
-FFcYX4HaKMp0Cf7McEq5Vb6KHdfyJzVYEDJUVzAOXXfcnJt3oNcL8luH9/eaz5se
-8kqjHzVwIej5ZPb0Jt+LDDAD0S4UdnnRgpS57DHXvDBqrvKohmpR3YSVWkfrTOHq
-59FfKP4eyn4AnE1TsBj7vBm4I0xGgbF5DzZVc+6BXuWKO8MMIUD2CapPDIGu9WPU
-svmd+7U58nJXia0OgKbF3rPZVs9CkdYk7rh/6yvmeqlVGM1YyV8+AWWHzpCIHRlD
-OYIl/tPXN95557EofKlGEeGrxVRf3drDRZXlvPOrDN/9K1NNmBA=
-=trBS
------END PGP SIGNATURE-----
-
---=-ShmUMIMlyQsBzwm8+SDI--
+---
+bod

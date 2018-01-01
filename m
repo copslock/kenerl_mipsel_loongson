@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jan 2018 20:08:21 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:44143
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992105AbeAATILjBBnI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jan 2018 20:08:11 +0100
-Received: by mail-wm0-x243.google.com with SMTP id t8so58181311wmc.3
-        for <linux-mips@linux-mips.org>; Mon, 01 Jan 2018 11:08:10 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jan 2018 20:43:42 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:40249
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992105AbeAATnYqMP2a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jan 2018 20:43:24 +0100
+Received: by mail-wm0-x244.google.com with SMTP id f206so57901639wmf.5
+        for <linux-mips@linux-mips.org>; Mon, 01 Jan 2018 11:43:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
         bh=vUUR0tJYTMHvVhQCEqIfB0OSfUqJQGm8pahYPJLlFG8=;
-        b=lCFftovHg/FAKc9WsoB5F6GLaKPYYnB0vp+XdkTw5dWW5EPIKbGIB2W2FZfIelSxF5
-         k9pYtZl/3NWk2HGEaSNva4NrrlkD5r0qelYBAKtH/jH6A3AOi/mWGHTT+mXVDfLa3FC3
-         /x/Tp8fj0nIuNBUS9l7N1o74CqT3o0aejSvx/IJRI4XLbMiHC49yKk5OfViaSmWAdTGy
-         3xhOitzmK3wk8oFSRM9hyf+cGQ2kcmr+xPfd8z2+Y4EWit+HKinjQek6m54jktAcaNPj
-         OECUJgDKGpCe2cehvpf+m6on8/kBQkbdsjxDkScAjxQKXPnpk9x1c+/rsd4Qbo0Rn8fF
-         cZ3A==
+        b=k1VEa6j21lRFfvXWmioLOazsmm+bGun4RRncwTNriWEjrhGKTOhTBDrMLJxRGHJH0x
+         1t7XHL16inhhOVYP+zfYYtXezdbeK/Sl6UytsS/YLbpiaY1RK+JHc/AYJdQH3pFC4G0Z
+         HHvFpqOQN/AFa3UYwXFwgaacX9faF1BDxLYQwygW1fNDDi5KCZdp9zLboNCP6xR9AAg5
+         sjvxVqDbm2ke6QM4CvuKv/HjjOT0XK3SRTcRbi9Ak6Syigzgfn6TreCKXo64Lbb4Hg0/
+         scPlaX3O4HW5ixI2/nOrImrp+Dcuos51zkcWTwnEnNER968F7i4QFlrKDuIqN6nMAlMc
+         +kLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
         bh=vUUR0tJYTMHvVhQCEqIfB0OSfUqJQGm8pahYPJLlFG8=;
-        b=DWoqiTNiUB57G9ZH9qtdjKA8+QihUKdmdp5oib5JRQjWMCg8eVD3LL6rXMXG7F/Q2Q
-         z8TYoduhIwomM3FBy2+P3/b41aD/mH7OpGYAwnW4nnaegRT/0gstpqMX/HyBo7t/FvN6
-         JJfeXmpxgoeGuge5pJbV2QiDE85VwE6TlGGJDn93K/hd+wJVNyMGZKnc4NoOT7trqquP
-         EdbDfDgnkvvstFPeVFg0U/bULTDx4atj2G7YY1ecm6+5s7ANkdiOv7uCeQb9Kp3b968C
-         JJLdNUkZnEzKzutP/sbHpOntm3Q6ATY9X77UhufXVnXsGsGxg+VrzgSuSdiDxS/nWlFp
-         VsvQ==
-X-Gm-Message-State: AKGB3mKSvCbm0ojehjMfUzlgf3yG5WrgCaflfGcYGom7GaStX04D2WYe
-        J/EF0PAfoKz44DYWcR3Lv0JhIg==
-X-Google-Smtp-Source: ACJfBotnHkQ7QJ6P49cI/UkG+do2lWxLizu64ovxDEUzPYu39ExHXJpccTcSMIchlpvcgjMpiIKfYw==
-X-Received: by 10.80.208.150 with SMTP id v22mr57235580edd.62.1514833684830;
-        Mon, 01 Jan 2018 11:08:04 -0800 (PST)
+        b=M0oY59iViaZkLT6DsEf8Izazwtdb92p06cOdGWQTTy1PmNdDAtmNX4CWrquZUSa3ex
+         +sAhlIyC4XCAyn0oBsMqnPwuaoV5lSTighaQl2IG7h1IfVONSF11CLrniyMj3AkYpRaI
+         UK+ABo/C8f9axlRL8PbbjRCYraU6uV2ay+Kzs2wIkqxHpABsreA/uFHYfIHc5nH/q75L
+         8fnpCX+euY0eHmj9Y69JMQxddC1BDkVFYTXY5+0UysMxrvylZVQWpMZOVCh5RjezzQHi
+         0K9Sm/t6PGxTFecag5Tv6JawVLO6oz4ncJLHUvxyJwFxzcUnuB+gcKJ8zS4Faf01pV03
+         aG8g==
+X-Gm-Message-State: AKGB3mIAx5qPGmnveT5B3Ia4/9ZaKfC92D9haXCTJDzUzBoS2jah4fLB
+        +z0SddmUPL5HAY8xD9xQaMKTPw==
+X-Google-Smtp-Source: ACJfBotnldH2cYTvL3zt94UE0tAgZYW/VGmhlQKDovZ/pOv6gmyttsUGz2LA5b/UO66wZdTrxHnUqg==
+X-Received: by 10.80.213.90 with SMTP id f26mr15775680edj.225.1514835798758;
+        Mon, 01 Jan 2018 11:43:18 -0800 (PST)
 Received: from localhost.localdomain (D4CCACC7.cm-2.dynamic.ziggo.nl. [212.204.172.199])
-        by smtp.gmail.com with ESMTPSA id v15sm33236633edb.41.2018.01.01.11.08.03
+        by smtp.gmail.com with ESMTPSA id w2sm39361075edb.4.2018.01.01.11.43.17
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 01 Jan 2018 11:08:04 -0800 (PST)
+        Mon, 01 Jan 2018 11:43:18 -0800 (PST)
 From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
 To:     mturquette@baylibre.com, sboyd@codeaurora.org,
         linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
@@ -51,17 +51,17 @@ Cc:     Bryan O'Donoghue <pure.logic@nexus-software.ie>,
         linux-mediatek@lists.infradead.org,
         freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
         linux-rtc@vger.kernel.org
-Subject: [PATCH v2 01/34] clk_ops: change round_rate() to return unsigned long
-Date:   Mon,  1 Jan 2018 19:07:28 +0000
-Message-Id: <1514833681-30737-2-git-send-email-pure.logic@nexus-software.ie>
+Subject: [PATCH v3 01/34] clk_ops: change round_rate() to return unsigned long
+Date:   Mon,  1 Jan 2018 19:42:40 +0000
+Message-Id: <1514835793-1104-2-git-send-email-pure.logic@nexus-software.ie>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1514833681-30737-1-git-send-email-pure.logic@nexus-software.ie>
-References: <1514833681-30737-1-git-send-email-pure.logic@nexus-software.ie>
+In-Reply-To: <1514835793-1104-1-git-send-email-pure.logic@nexus-software.ie>
+References: <1514835793-1104-1-git-send-email-pure.logic@nexus-software.ie>
 Return-Path: <pure.logic@nexus-software.ie>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61805
+X-archive-position: 61806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

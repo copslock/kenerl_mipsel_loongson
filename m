@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 00:12:52 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:32893 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 00:57:16 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:34746 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992105AbeAAXMou0nxt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Jan 2018 00:12:44 +0100
+        id S23992105AbeAAX5Cs2K4C (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 2 Jan 2018 00:57:02 +0100
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 1E01CAAF1;
-        Mon,  1 Jan 2018 23:12:42 +0000 (UTC)
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 7764CAAB5;
+        Mon,  1 Jan 2018 23:57:00 +0000 (UTC)
 From:   NeilBrown <neilb@suse.com>
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Date:   Tue, 02 Jan 2018 10:12:25 +1100
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Andrzej Hajda <a.hajda@samsung.com>,
+To:     Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org
+Date:   Tue, 02 Jan 2018 10:56:49 +1100
+Cc:     Andrzej Hajda <a.hajda@samsung.com>,
         Aaro Koskinen <aaro.koskinen@nokia.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Rob Herring <robh@kernel.org>,
         Alexander Sverdlin <alexander.sverdlin@gmail.com>,
         Peter Hurley <peter@hurleysoftware.com>,
         linux-kernel@vger.kernel.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@mips.com>,
         Jaedon Shin <jaedon.shin@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
+        James Hogan <james.hogan@mips.com>,
         Jonas Gorski <jogo@openwrt.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH] MIPS: Fix early CM probing
 In-Reply-To: <1454953591-19491-1-git-send-email-paul.burton@imgtec.com>
 References: <1454953591-19491-1-git-send-email-paul.burton@imgtec.com>
-Message-ID: <87fu7pfa1y.fsf@notabene.neil.brown.name>
+Message-ID: <878tdhf7zy.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
 Content-Type: multipart/signed; boundary="=-=-=";
         micalg=pgp-sha256; protocol="application/pgp-signature"
@@ -35,7 +33,7 @@ Return-Path: <neilb@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61807
+X-archive-position: 61808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,6 +53,9 @@ X-list: linux-mips
 --=-=-=
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
+
+
+[Resending with some addresses converted to @mips.com]
 
 On Mon, Feb 08 2016, Paul Burton wrote:
 
@@ -177,18 +178,18 @@ Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlpKwFkACgkQOeye3VZi
-gbm6cBAAmtsL4pvZ9MMU3xFoGj7empwNbLTuylauasX60Yabp84r153AY8g5aBRw
-OkAzFL2/jAEcYS7+hOz4AIsdzyH4kuSpQdyRs5somsyw5prvb0K+m/syPI4eg/Au
-v9pK2HJ2QwoE3hnVbxbwfVTW7G5xFavPxRJkke5R65CMiUVnsxXHG9HuGgEFeUgi
-ISL6siOcAVWYpWXSH5AxghUk52YRDvoe7kC+RK9PxfWB90guU7zhoABb6tRdVOpp
-8+NSrnQ8BacLt+LMHWsxBCntVNPpi7UxxBWEUrEWhJaiBQfxz57MrPVO/PG5UFMm
-87P/nKC7xhCENkc//vQyZXYR/HnGIVjXwm0qc3KzZ/3tiq5aSSaE+ENPNcCpMuCS
-87q7CG2qw7iPznVwP6wnyx+ST4E8Qx+3XUoQUJH1VQtzQLBzsDTGxPG67pQrkZnU
-RzqS9uOO++1j+ghNJsLxKoX/BKYZyfpITdAQuNVxFJljwD6x15P/a5SbwriAeD2y
-1FCQQFZlbAoZKXbNcMvz7UeLHmJ77TChb5lQlUE1z4/67wHjkUrASkviq30DThQv
-kK7DqU7IgMDW2w7JqCYOFIOn3uxqrnWrrlLz2Vl9gsdod7adGjMcO6xRamzRKR+4
-J7G/do6235G7Pc+nj/0ggrjqKZHNLLx53MCHKj7iTJT0XHi4+38=
-=HLWU
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlpKysEACgkQOeye3VZi
+gblAmQ/+MpouWN+mYjwK/baeNRRdgO5B75CXfthTAIaXgnbImnkjY4aeDsEGFAoW
+x0NDURJEHu4RyZPkHg4/+y7rsnMTYmHmFbUiawtJFmrepq14yBArTiEfHlM5D76c
+CYbLzZVfDVBsp1LRgG8p9b7S7z7pGnxLZUeuDDPqh8sReztTHumNBZ+2t3a6eFHl
+jTWl1L0KRkVDpUQIqp8wyNu/2WaSxxL1uiEJ3mTVTgaMr1OMnavWM7FkLtf2FYEq
+kDlJAzehne1Rs1Qn9AVU9yRZ4dRZIyyeIK/2YuTC6emfeTyb5Hc+oIaRbatXxbMR
+SY2/kufIEqpA33zCDbiY9zM1QrEQTqFGCiIEDo6IR25p4X6wv8M1QVwW8b1aabl5
+JXV9rvyvRFjmCNAkh9a5CQ846H8chU2xxAz530G7Xlb4FCODZzA4pof6lnLa/Xmk
+OHXCQD3lS0rE19nr0dwG4BwWdWHRgeAR9c9dlKHH3PoDHLqgLCpJVEZilabFw1sA
+tBMdTAzEDmR06RvR3xD3s2exgGxhJ/eeMoU5SMoFvUQj85Gek8R1cvSsIQEg/4eK
+jYT5oe9fWkA2zLxD/rTNnenLYFF+HtbOCocTQ4/6mDzUQ66RUOnEOBVjEanzL44L
+QjXuEGK7rTwRm3oce9w2fRZPOdp5M1AX1EyYPMc4EYReMO1aD9Y=
+=Xnd0
 -----END PGP SIGNATURE-----
 --=-=-=--

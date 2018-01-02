@@ -1,66 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 19:55:45 +0100 (CET)
-Received: from mail-ua0-x243.google.com ([IPv6:2607:f8b0:400c:c08::243]:35132
-        "EHLO mail-ua0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990475AbeABSzihzCc0 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Jan 2018 19:55:38 +0100
-Received: by mail-ua0-x243.google.com with SMTP id g16so20529281uak.2;
-        Tue, 02 Jan 2018 10:55:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=o2JaF/AgITKESM/OQX/15Io2wII/VABOnNkRgh8HBsk=;
-        b=tgslJfOTJScfv2rDktQg1A9ruaZavfTvIqb57OyGKV2sdlVuKwkfogNAwYwq0wHXvW
-         GuHdzvYNQbIaaG8lr0V/Ip9ob/39EBngHwINZgYAIngmCBy21VPL0HFpRxI196/Yvf3P
-         M+kwhOOot5qc8ZCh5USHIx5Bc8ci5WfqJdZcghAi7lv8KzwWszMfqbk0nnjQMAXzUGIm
-         A0Rl+JGhw/pMzKG7sOUmQd1Taa3lg9HxoUIX3xQZRmCHDTRuLyuFex7MfrLE/xpmNUNY
-         CCnOxzNKOhU9CUqjkaiXbQfMdcVa/PtMnXANE4HYe+vdSHyP0njT8zSqGWG2SgwFMH/Y
-         itew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=o2JaF/AgITKESM/OQX/15Io2wII/VABOnNkRgh8HBsk=;
-        b=K8lSkpT9gFctG2FiWB4MJY8UT1rYELVrOq606g4WRKHwxrdaX+tcHSyIHulCLgBaRG
-         LNU0zNVZmqPXo8oMlQgiWvaz4LCVeQ8MGTSz+8x+1yYUrNyqTMquatQFgPh1gKtq3LOK
-         P0Nxo7bb8ECv84lIBrVGfopvkxJn4suFWY5K8n+E2+dONaJqPeno1PNjp15Flnf5Cg2O
-         81XQagSXSCgx/aW1t6nOoigW6L1d0s7lGSLn/XqZ447NfWs1TiUnMliRnyphVOiOvIgz
-         o2AcVZfMrd/dq4DIgk/E8b5up9tzConMAYInSwEVo3kDPI2brNLB9dQoixklu01HLz9f
-         0fYA==
-X-Gm-Message-State: AKGB3mIAsKxP2NAiQ3QxOdBNaQYJr9cOa5kMEOWcRSH0uxqcpiF746bl
-        jjsBYMHsbQJnoN2mUtPe9sdHyK0bLcSG5gvyxjk=
-X-Google-Smtp-Source: ACJfBotqqYtZoAzwvtA7iVK40o1IjC2f4RU2iXXC8mvUaxA1R8j/BiCFQZYoXbtyyFwxyv4wbBBvJpLyNowthbsOfE0=
-X-Received: by 10.176.5.161 with SMTP id e30mr26129138uae.17.1514919332353;
- Tue, 02 Jan 2018 10:55:32 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 20:02:10 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:54748 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990397AbeABTCEUN440 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 20:02:04 +0100
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id E567060B21; Tue,  2 Jan 2018 19:02:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1514919720;
+        bh=IELztHxCzx86LDbmOqCceN/1fWwiZQT0o+uJ3XuUy3s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fDxRNs/KYf2KyDT1GXR/INz6pb4DQiu82Q0cIUYvnIh3g9ABVsffieHwPF5N3fdK9
+         1S5O06GWFMfwvqJjjlnwnfw+PyvWa6ZNiGQNOlUqpj/4tGgb4n6O3AZSZYPFsXD8wJ
+         7J4Y1ExHXqReJlbmJ9lm1kdKj7ya6/zYjFnQsPAM=
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7ADE260555;
+        Tue,  2 Jan 2018 19:02:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1514919720;
+        bh=IELztHxCzx86LDbmOqCceN/1fWwiZQT0o+uJ3XuUy3s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fDxRNs/KYf2KyDT1GXR/INz6pb4DQiu82Q0cIUYvnIh3g9ABVsffieHwPF5N3fdK9
+         1S5O06GWFMfwvqJjjlnwnfw+PyvWa6ZNiGQNOlUqpj/4tGgb4n6O3AZSZYPFsXD8wJ
+         7J4Y1ExHXqReJlbmJ9lm1kdKj7ya6/zYjFnQsPAM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7ADE260555
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
+Date:   Tue, 2 Jan 2018 11:01:59 -0800
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Cc:     Mikko Perttunen <cyndis@kapsi.fi>, mturquette@baylibre.com,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-rpi-kernel@lists.infradead.org,
+        patches@opensource.cirrus.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org,
+        freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
+        linux-rtc@vger.kernel.org
+Subject: Re: [PATCH 01/33] clk_ops: change round_rate() to return unsigned
+ long
+Message-ID: <20180102190159.GH7997@codeaurora.org>
+References: <1514596392-22270-1-git-send-email-pure.logic@nexus-software.ie>
+ <1514596392-22270-2-git-send-email-pure.logic@nexus-software.ie>
+ <9f4bef5a-8a71-6f30-5cfb-5e8fe133e3d3@kapsi.fi>
+ <6d83a5c3-6589-24bc-4ca5-4d1bbca47432@nexus-software.ie>
 MIME-Version: 1.0
-Received: by 10.176.4.199 with HTTP; Tue, 2 Jan 2018 10:55:11 -0800 (PST)
-In-Reply-To: <20180102093127.GM5027@jhogan-linux.mipstec.com>
-References: <20171226113717.15074-1-malat@debian.org> <20171226113717.15074-2-malat@debian.org>
- <20180102093127.GM5027@jhogan-linux.mipstec.com>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Tue, 2 Jan 2018 19:55:11 +0100
-X-Google-Sender-Auth: UbWEhII2zPm3BpNY8_AKW9na-gc
-Message-ID: <CA+7wUszh=xpNMsZXS0fNu2Vcp=GK9xkzfog5qB2_LGizhadv1Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Remove a warning when PHYS_OFFSET is 0x0
-To:     James Hogan <james.hogan@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mathieu.malaterre@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d83a5c3-6589-24bc-4ca5-4d1bbca47432@nexus-software.ie>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61865
+X-archive-position: 61866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,36 +78,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+On 12/31, Bryan O'Donoghue wrote:
+> On 30/12/17 16:36, Mikko Perttunen wrote:
+> >FWIW, we had this problem some years ago with the Tegra CPU clock
+> >- then it was determined that a simpler solution was to have the
+> >determine_rate callback support unsigned long rates - so clock
+> >drivers that need to return rates higher than 2^31 can instead
+> >implement the determine_rate callback. That is what's currently
+> >implemented.
+> >
+> >Mikko
+> 
+> Granted we could work around it but, having both zero and less than
+> zero indicate error means you can't support larger than LONG_MAX
+> which is I think worth fixing.
+> 
 
-On Tue, Jan 2, 2018 at 10:31 AM, James Hogan <james.hogan@mips.com> wrote:
-> On Tue, Dec 26, 2017 at 12:37:14PM +0100, Mathieu Malaterre wrote:
->> Rewrite the comparison in `else if` statement, case where `min_low_pfn >
->> ARCH_PFN_OFFSET` has already been checked in the first `if` statement:
->>
->>   if (min_low_pfn > ARCH_PFN_OFFSET) {
->>
->> Fix non-fatal warning:
->>
->> arch/mips/kernel/setup.c: In function ‘bootmem_init’:
->> arch/mips/kernel/setup.c:461:25: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
->>   } else if (min_low_pfn < ARCH_PFN_OFFSET) {
->>                          ^
->
-> What compiler version is that with out of interest? It isn't exactly new
-> code.
+Ok. But can you implement the determine_rate op instead of the
+round_rate op for your clk? It's not a work-around, it's the
+preferred solution. That would allow rates larger than 2^31 for
+the clk without pushing through a change to all the drivers to
+express zero as "error" and non-zero as the rounded rate.
 
-I've clarified in v2, that this happen during compilation using W=1
+I'm not entirely opposed to this approach, because we probably
+don't care to pass the particular error value from a clk provider
+to a clk consumer about what the error is. It's actually what we
+proposed as the solution for clk_round_rate() to return values
+larger than LONG_MAX to consumers. But doing that consumer API
+change or this provider side change is going to require us to
+evaluate all the consumers of these clks to make sure they don't
+check for some error value that's less than zero. This series
+does half the work, by changing the provider side, while ignoring
+the consumer side and any potential fallout of the less than zero
+to zero return value change.
 
-For reference:
-
-$ mipsel-linux-gnu-gcc -dumpversion
-6.3.0
-
-
->>
->> Signed-off-by: Mathieu Malaterre <malat@debian.org>
->
-> Reviewed-by: James Hogan <jhogan@kernel.org>
-
-Thanks !
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

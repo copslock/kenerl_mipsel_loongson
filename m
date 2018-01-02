@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 21:06:50 +0100 (CET)
-Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:41430
-        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992404AbeABUGXSCIZJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 21:06:23 +0100
-Received: by mail-wr0-x242.google.com with SMTP id p69so40725974wrb.8
-        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 12:06:23 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 21:07:19 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:45090
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992645AbeABUG3xBW8J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 21:06:29 +0100
+Received: by mail-wm0-x244.google.com with SMTP id 9so62960360wme.4
+        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 12:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8wbbwFOWuQMFP0SKy8UHj3NriHdOJ7kBnwcJ7OnyKjo=;
-        b=DYml98nl5C9dxpX8PaphCwO1AwOOVT37wBSgEpvuWvz1+8lzAEk4lAznRm97Y/6LxX
-         Y4BE3AmmwB7ErSHppbzjssrLWql23m3K278dd7UPXIhPBJLssy7YFhsS3HVTTffQ0BvS
-         xMwTDlpUaHy6gjzAk7kS/8JHmrEGXAcyxkyKE=
+        bh=9pf2nmv48uHqsDbsl+hfOY5WaUyvrm1nnNGc9/9m6Qg=;
+        b=JvakjjXXh2ftac/uQdStpmRnyog8dVy1B1dV3/FBRYhclGcwN1Nf1ULl77WmER9ry4
+         qNvpqUIkOxaXMPtj6B3oJYPN87PgdaiNOi0rNpCB5XAS3BaMGwa31IA7QPoscn3u7sb0
+         uOQNLx6iterfuYqWKriCvDY/4G6QygREzc7s0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=8wbbwFOWuQMFP0SKy8UHj3NriHdOJ7kBnwcJ7OnyKjo=;
-        b=bNS3hitVUuLJalj5lXogtJdE5dfqJg8A4e9+UYTiGyIaf3hOkXUKMDPGYUvvDxyaq2
-         c9pJSXVGPo+vj5uTJtPSu2eWZwzTFlTY9Fh2WMtJ5uay4WqNbFSu5MvUMKIN6Cj3XtfL
-         lQBFg5nOoSPnZMFnPKec2Epmkt9+gxq0NhUBjWkkSjj1qFGGCzbyPKDwtspiKe/o+SFk
-         RkPo23/Kf9JSGRUtk/jfAkinIrjcwHneOqeZrjAxE8HFzOFBHKjfmFZTkbd6s/5EcXbg
-         37877KBzaOf5VbK/JTIBbFTCE0KyKe30L+FQDGljXbp5KVDLZlsa6dVLus0AbDtoydCN
-         9y3g==
-X-Gm-Message-State: AKGB3mLbJJ/ovUyG912M8CYR3oZRnvvSnzuVC86tWtiyDV7NoQ5og4uK
-        1p6tOdkQ9c8N5J+v/X8jV+vhkQ==
-X-Google-Smtp-Source: ACJfBovJAzTpyTVLr4ekaaR7FsRgcOGRNFzsjbQL6nJa68x+hu03fqzi0XJ5w66c6hCO+U0seRwJLg==
-X-Received: by 10.223.151.146 with SMTP id s18mr20037055wrb.180.1514923577962;
-        Tue, 02 Jan 2018 12:06:17 -0800 (PST)
+        bh=9pf2nmv48uHqsDbsl+hfOY5WaUyvrm1nnNGc9/9m6Qg=;
+        b=ULuXmJv8vVkCPvC3IO1pQuNJrLL3Cz3rUoBmiaJqGyT3okYyVA3KSZQ3zm2jfvVlNx
+         XzxL5RC92t3OFDRgJmgo11ZsFeLwlxDXmOxv8LkYabg39734Mj8ZZ0t+0iFC6s6ELaNn
+         Y4HL9JISdKi9WRQR7Kp7iWkYkcf2QL62PyxQ0smFaCFwQx4GomYvZX98RPcSNf9UbBfQ
+         vStF+TtAghqqOElTrdHvUzGUiZaa83dt9Yrzs95dyDvsvIKcp5q9gk/oowpdSq+2I0oQ
+         Z64jQyglgH3HcL/Q4RKW2abHmQszJvvIZRHDFDlK1K8Xx1n2RShBg7W/5WJ0m2CmeU+w
+         nk6A==
+X-Gm-Message-State: AKGB3mIz0AIu9CeRPRQOU5GUwdtGK2dfblnCiEit2RnBgyUhWDrqBYHA
+        0mtgAYDMZOZ+QtVVSOP5rfCbcQ==
+X-Google-Smtp-Source: ACJfBosJ1YaW1H55WuPG4HZVNPR5sIYnqVBwvoCMpxmVYCKJYkCCK0WTpzNAV4SV0UZHkdO9ReayGQ==
+X-Received: by 10.28.97.194 with SMTP id v185mr11849434wmb.21.1514923584444;
+        Tue, 02 Jan 2018 12:06:24 -0800 (PST)
 Received: from localhost.localdomain ([160.89.138.198])
-        by smtp.gmail.com with ESMTPSA id m70sm19128526wma.36.2018.01.02.12.06.12
+        by smtp.gmail.com with ESMTPSA id m70sm19128526wma.36.2018.01.02.12.06.18
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jan 2018 12:06:17 -0800 (PST)
+        Tue, 02 Jan 2018 12:06:23 -0800 (PST)
 From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
@@ -63,10 +63,11 @@ Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Jessica Yu <jeyu@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v7 01/10] arch: enable relative relocations for arm64, power and x86
-Date:   Tue,  2 Jan 2018 20:05:40 +0000
-Message-Id: <20180102200549.22984-2-ard.biesheuvel@linaro.org>
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        matt@codeblueprint.co.uk
+Subject: [PATCH v7 02/10] module: allow symbol exports to be disabled
+Date:   Tue,  2 Jan 2018 20:05:41 +0000
+Message-Id: <20180102200549.22984-3-ard.biesheuvel@linaro.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180102200549.22984-1-ard.biesheuvel@linaro.org>
 References: <20180102200549.22984-1-ard.biesheuvel@linaro.org>
@@ -74,7 +75,7 @@ Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61868
+X-archive-position: 61869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,84 +92,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Before updating certain subsystems to use place relative 32-bit
-relocations in special sections, to save space  and reduce the
-number of absolute relocations that need to be processed at runtime
-by relocatable kernels, introduce the Kconfig symbol and define it
-for some architectures that should be able to support and benefit
-from it.
+To allow existing C code to be incorporated into the decompressor or
+the UEFI stub, introduce a CPP macro that turns all EXPORT_SYMBOL_xxx
+declarations into nops, and #define it in places where such exports
+are undesirable. Note that this gets rid of a rather dodgy redefine
+of linux/export.h's header guard.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: x86@kernel.org
+Cc: matt@codeblueprint.co.uk
+Cc: keescook@chromium.org
+Cc: jeyu@kernel.org
 Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- arch/Kconfig         | 10 ++++++++++
- arch/arm64/Kconfig   |  1 +
- arch/powerpc/Kconfig |  1 +
- arch/x86/Kconfig     |  1 +
- 4 files changed, 13 insertions(+)
+ arch/x86/boot/compressed/kaslr.c      | 5 +----
+ drivers/firmware/efi/libstub/Makefile | 3 ++-
+ include/linux/export.h                | 9 +++++++++
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 400b9e1b2f27..dbc036a7bd1b 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -959,4 +959,14 @@ config REFCOUNT_FULL
- 	  against various use-after-free conditions that can be used in
- 	  security flaw exploits.
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 8199a6187251..3a2a6d7049e4 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -23,11 +23,8 @@
+  * _ctype[] in lib/ctype.c is needed by isspace() of linux/ctype.h.
+  * While both lib/ctype.c and lib/cmdline.c will bring EXPORT_SYMBOL
+  * which is meaningless and will cause compiling error in some cases.
+- * So do not include linux/export.h and define EXPORT_SYMBOL(sym)
+- * as empty.
+  */
+-#define _LINUX_EXPORT_H
+-#define EXPORT_SYMBOL(sym)
++#define __DISABLE_EXPORTS
  
-+config HAVE_ARCH_PREL32_RELOCATIONS
-+	bool
-+	help
-+	  May be selected by an architecture if it supports place-relative
-+	  32-bit relocations, both in the toolchain and in the module loader,
-+	  in which case relative references can be used in special sections
-+	  for PCI fixup, initcalls etc which are only half the size on 64 bit
-+	  architectures, and don't require runtime relocation on relocatable
-+	  kernels.
+ #include "misc.h"
+ #include "error.h"
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index adaa4a964f0c..312bd0b64a61 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -20,7 +20,8 @@ cflags-$(CONFIG_EFI_ARMSTUB)	+= -I$(srctree)/scripts/dtc/libfdt
+ KBUILD_CFLAGS			:= $(cflags-y) -DDISABLE_BRANCH_PROFILING \
+ 				   -D__NO_FORTIFY \
+ 				   $(call cc-option,-ffreestanding) \
+-				   $(call cc-option,-fno-stack-protector)
++				   $(call cc-option,-fno-stack-protector) \
++				   -D__DISABLE_EXPORTS
+ 
+ GCOV_PROFILE			:= n
+ KASAN_SANITIZE			:= n
+diff --git a/include/linux/export.h b/include/linux/export.h
+index 1a1dfdb2a5c6..6dba2fb08f77 100644
+--- a/include/linux/export.h
++++ b/include/linux/export.h
+@@ -83,6 +83,15 @@ extern struct module __this_module;
+  */
+ #define __EXPORT_SYMBOL(sym, sec)	=== __KSYM_##sym ===
+ 
++#elif defined(__DISABLE_EXPORTS)
 +
- source "kernel/gcov/Kconfig"
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index c9a7e9e1414f..66c7b9ab2a3d 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -89,6 +89,7 @@ config ARM64
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
-+	select HAVE_ARCH_PREL32_RELOCATIONS
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index c51e6ce42e7a..e172478e2ae7 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -177,6 +177,7 @@ config PPC
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-+	select HAVE_ARCH_PREL32_RELOCATIONS
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index d4fc98c50378..9f2bb853aedb 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -115,6 +115,7 @@ config X86
- 	select HAVE_ARCH_MMAP_RND_BITS		if MMU
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if MMU && COMPAT
- 	select HAVE_ARCH_COMPAT_MMAP_BASES	if MMU && COMPAT
-+	select HAVE_ARCH_PREL32_RELOCATIONS
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
++/*
++ * Allow symbol exports to be disabled completely so that C code may
++ * be reused in other execution contexts such as the UEFI stub or the
++ * decompressor.
++ */
++#define __EXPORT_SYMBOL(sym, sec)
++
+ #elif defined(CONFIG_TRIM_UNUSED_KSYMS)
+ 
+ #include <generated/autoksyms.h>
 -- 
 2.11.0

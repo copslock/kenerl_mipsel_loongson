@@ -1,71 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 18:58:14 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:32800
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990754AbeABR6HnrQa9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 18:58:07 +0100
-Received: by mail-wm0-x241.google.com with SMTP id g130so17221944wme.0
-        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 09:58:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=+gggkiyiFTBKYrF+5GBqbrt3XdecogKXK4dg5Xs9UrE=;
-        b=C82VI3ds81cHlVlaOwEX9zNpgGwMyhUNcjGiJ9Z+Q55vwYwnI+4J2gsMkVhi3CQBDb
-         E4grIEsHvb3aDDtOIfRpJw+9qKxDItwFo3JLpRr7QIMcCgrlNf/jRCTjP14LAfxterj0
-         z1hqMhCFKpfOsGnxKAAyubJyjdlB1AZ46K6XU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=+gggkiyiFTBKYrF+5GBqbrt3XdecogKXK4dg5Xs9UrE=;
-        b=gM3BRsyGYMOYpFzm9X+iAJAISszPI/J6Ol36j+d8aicKVwHqVFAdBBs8yVhPLKtM6o
-         qpBfDQeHNb9cBksAJ05T4OOh18Yl9Qw8qXBavkw1mVWLz98qBfWNuIumq+c9tq+KH++Q
-         NIikpTqgNDrpFrk2khs32PgkakD5vkIF2t/lN6ZFRImlW6h/YJxiNSmHLaBuMx67euxd
-         7mVX8Prq4YyOeu7pLUwu2rO9WNlidhv/xwPHGfNzUVf8EUIWaS0V6nH+gECyNPF7fcp3
-         0t+UANyMAYiM/YA+YM9TKEHyEc6SYWJUy8cpCZsHOr9AA8Yhltot+CSk4kvCDJxv1Smc
-         J7sQ==
-X-Gm-Message-State: AKGB3mL+iZR/KTD9JIoPV2Zs9qvaSe2qLPnDVPH9OPPc4f7Tjp33HlZY
-        HwQtvcrlbUyCc6BpGSANlxkeCa8BTO8=
-X-Google-Smtp-Source: ACJfBos0mBZWRoi7UaSF0sECTa1dYYi8TVU3w3pT8xEgWZXJSB0EKD2UvBx4RZU+jv+F5z2UYVt/Ew==
-X-Received: by 10.28.61.87 with SMTP id k84mr35342176wma.48.1514915882177;
-        Tue, 02 Jan 2018 09:58:02 -0800 (PST)
-Received: from [192.168.0.20] (cpc90716-aztw32-2-0-cust92.18-1.cable.virginm.net. [86.26.100.93])
-        by smtp.googlemail.com with ESMTPSA id 139sm22537120wmp.7.2018.01.02.09.58.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jan 2018 09:58:01 -0800 (PST)
-Subject: Re: [PATCH v2 0/2] Add efuse driver for Ingenic JZ4780 SoC
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zubair.Kakakhel@mips.com, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org
-References: <20171228212954.2922-1-malat@debian.org>
- <828981e5-c23c-8dc4-55e4-23b65b33908b@linaro.org>
- <CANc+2y5cEoqEkqEr9b-APApd42HXQczFWJfGv+MWPNRdWpQr7Q@mail.gmail.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Message-ID: <11f64a94-2500-6c5f-d6f9-2db68fcf9c58@linaro.org>
-Date:   Tue, 2 Jan 2018 17:58:00 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 19:37:13 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:40168 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbeABShF3ZWe0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 19:37:05 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 02 Jan 2018 18:35:42 +0000
+Received: from [10.20.78.169] (10.20.78.169) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Tue, 2 Jan 2018
+ 10:35:20 -0800
+Date:   Tue, 2 Jan 2018 18:35:08 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Miodrag Dinic <Miodrag.Dinic@mips.com>
+CC:     Paul Burton <Paul.Burton@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        Aleksandar Markovic <Aleksandar.Markovic@mips.com>,
+        James Hogan <James.Hogan@mips.com>,
+        "David Daney" <ddaney@caviumnetworks.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        DengCheng Zhu <DengCheng.Zhu@mips.com>,
+        Ding Tianhong <dingtianhong@huawei.com>,
+        Douglas Leung <Douglas.Leung@mips.com>,
+        "Frederic Weisbecker" <frederic@kernel.org>,
+        Goran Ferenc <Goran.Ferenc@mips.com>,
+        "Ingo Molnar" <mingo@kernel.org>,
+        James Cowgill <James.Cowgill@imgtec.com>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        "Matt Redfearn" <Matt.Redfearn@mips.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Petar Jovanovic <Petar.Jovanovic@mips.com>,
+        Raghu Gandham <Raghu.Gandham@mips.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Tom Saeger" <tom.saeger@oracle.com>
+Subject: RE: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+In-Reply-To: <48924BBB91ABDE4D9335632A6B179DD6A8E6B2@MIPSMAIL01.mipstec.com>
+Message-ID: <alpine.DEB.2.00.1801021830110.31257@tp.orcam.me.uk>
+References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com> <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com> <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com> <20171130100957.GG5027@jhogan-linux.mipstec.com>
+ <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com> <alpine.DEB.2.00.1712061657520.4584@tp.orcam.me.uk>,<20171206182400.6va3pqdmgisbino7@pburton-laptop> <48924BBB91ABDE4D9335632A6B179DD6A8E6B2@MIPSMAIL01.mipstec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <CANc+2y5cEoqEkqEr9b-APApd42HXQczFWJfGv+MWPNRdWpQr7Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <srinivas.kandagatla@linaro.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1514918139-321459-14509-231746-8
+X-BESS-VER: 2017.16-r1712230000
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.21
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188580
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.20 PR0N_SUBJECT           META: Subject has letters 
+        around special characters (pr0n) 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.21 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, PR0N_SUBJECT, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61861
+X-archive-position: 61862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: srinivas.kandagatla@linaro.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,45 +79,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Miodrag,
 
-
-On 02/01/18 16:17, PrasannaKumar Muralidharan wrote:
-> Hi Srinivas,
+> > I presume what you
+> > actually want here is for the kernel to lie & indicate to whatever part
+> > of Android that performs this check that the stack is non-executable
+> > even when it is really executable?
 > 
-> On 2 January 2018 at 17:31, Srinivas Kandagatla
-> <srinivas.kandagatla@linaro.org> wrote:
->>
->>
->> On 28/12/17 21:29, Mathieu Malaterre wrote:
->>>
->>> This patchset bring support for read-only access to the JZ4780 efuse as
->>> found
->>> on MIPS Creator CI20.
->>>
->>> To keep the driver as simple as possible, it was not possible to re-use
->>> most of
->>> the nvmem core functionalities. This driver is not compatible with the
->>> original
->>
->> Can you explain a bit more on not able to re-use nvmem core?
->>
->> If you are referring to adding nvmem cell entires in sysfs, This should
->> probably go in to nvmem core, rather that in individual providers.
->> This is one of the feature my todo list, will try to come up with some thing
->> soon.
-> 
-> We could not find a way to expose different sized segments using nvmem
-> framework. Do you have any pointers for this?
+> Basically yes, because we do not have other options at this point.
 
-This does not exist at the moment, but it should be very much doable to 
-add this functionality to nvmem core.
+ Please make the purpose of this option unambiguous in documentation then, 
+along with suitable precautionary notes about any adverse consequences of 
+its use.
 
-I will keep you loop if I manage to post this patch soon.
-
---srini
-> We were not aware of the fact that nvmem does not expose individual
-> cell entries in sysfs.
-> 
-> Regards,
-> PrasannaKumar
-> 
+  Maciej

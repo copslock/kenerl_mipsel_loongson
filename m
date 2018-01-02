@@ -1,51 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 14:40:21 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:35235 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992692AbeABNkNCBsT2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 14:40:13 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 02 Jan 2018 13:39:49 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 2 Jan 2018
- 05:39:46 -0800
-Date:   Tue, 2 Jan 2018 13:39:45 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Huacai CHen <chenhc@lemote.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Loongson64: Drop 32-bit support for Loongson 2E/2F
- devices
-Message-ID: <20180102133944.GO5027@jhogan-linux.mipstec.com>
-References: <20171226042138.13227-1-jiaxun.yang@flygoat.com>
- <20180102084759.GL5027@jhogan-linux.mipstec.com>
- <1514899786.1694.6.camel@flygoat.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="l4IMblsHEWQg+b+m"
-Content-Disposition: inline
-In-Reply-To: <1514899786.1694.6.camel@flygoat.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1514900389-321458-22647-215238-1
-X-BESS-VER: 2017.16-r1712230000
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188572
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:09:10 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:57646 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992692AbeABPJDwPu39 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:09:03 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Maarten ter Huurne <maarten@treewalker.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v5 04/15] clk: ingenic: Add code to enable/disable PLLs
+Date:   Tue,  2 Jan 2018 16:08:37 +0100
+Message-Id: <20180102150848.11314-4-paul@crapouillou.net>
+In-Reply-To: <20180102150848.11314-1-paul@crapouillou.net>
+References: <20180102150848.11314-1-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905743; bh=kxXkkcvAOsXaja1OluzyInZwC1s97AtCDsfFHk5xo84=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=i8nMHBWyVCl8inBVQCI6B8dJbSfSwSBg15hzu5IXT4DGzU/a0aAgG6T9nlu9BtnnZldUJt+DrRMa9MY+xJ7GZw1cB4y5aj8jLOUSoGO/KTv69ZXjJ4xJ+AuKNzGy8fi/fRQvnrY6CFecpwD2J19oCTufhd7OYYqsMIG3bLJ5pAo=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61827
+X-archive-position: 61828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,51 +36,170 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---l4IMblsHEWQg+b+m
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This commit permits the PLLs to be dynamically enabled and disabled when
+their children clocks are enabled and disabled.
 
-On Tue, Jan 02, 2018 at 09:29:46PM +0800, Jiaxun Yang wrote:
-> On 2018-01-02 Tue 08:48 +0000=EF=BC=8CJames Hogan Wrote=EF=BC=9A
-> > On Tue, Dec 26, 2017 at 12:21:38PM +0800, Jiaxun Yang wrote:
-> > > Make loongson64 a pure 64-bit mach.
-> >=20
-> > Please expand to provide some rationale behind the change. Was 32-bit
-> > support broken at runtime, or broken at build time, or are we simply
-> > no
->=20
-> The 32-bit support was broken at runtime, it doesn't boot anymore,
-> witch is hard to debug because even early printk isn't working, also
-> there are some build warnings. Some newer bootloader may not support
-> 32-bit ELF. So we decide to drop 32-bit support.
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+---
+ drivers/clk/ingenic/cgu.c | 89 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 74 insertions(+), 15 deletions(-)
 
-Okay, please put that in the commit message so that somebody digging
-through the history later (perhaps summarising what is new in the next
-release) can understand the *why* as well as the what.
+ v2: No change
+ v3: No change
+ v4: No change
+ v5: No change
 
-Cheers
-James
-
---l4IMblsHEWQg+b+m
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpLi6AACgkQbAtpk944
-dnoeMw/6A3VTDVgKw0mKGZeyhJl82QQZ3eE+n06u4iRDNxB+bEoluGpbmm9NEv75
-U9EB9GymoOCA0dZLlX5qI4aStZuMgHKzZo+QQQX1ADHOJfpfncG+Y8nwlPTENLPh
-Fk0wYylBUgFoRq7DaC3yOF/LqM5z9pjo9WSq7qK4nixedtGzjkXhh+hOwXhSfUEh
-/Ufsu5Yg7KMcmoUG6Z3KIOV6ZwqhnLw2bKLez9Hw7L29oSPECww5LgChaY3NftLR
-brJlYqMQNabnPLUM9kAtNhhdbDvoEt+25C9XuNFX6ED8XxMRmo2bU2OY94cQ6tDw
-HXTvsY5EoRUShVUwiGiSQpMC+QrKqcaPQv0le7J2YPB5Poe5s3aIsWz9AKSF9W7S
-i06vVum23fTcj34EYay3Rbr2z+hRqIqmA753EU/NvVzGGzWtSH26oMS3mSb8YqmN
-ecj9Mak1SW4RbYn7UxpoNfdfciQPdcYFqPeEEftG0hWU4pn/Qa0VXmHsBinCEt2v
-j77nJjoogBxNbCvOh4btyVSPDwM3HXOXQYoApWP4GtbBSbO927J2nxeG91WI/PMt
-prG92AFRJwAg+yk1HUoxETLB0XBf+CABOZ/2FeqMA/Tuura3NylDxeWWJODZdTzE
-oFn9ahwaaNPt6RahBlTATjjdRpPJQAyJBz6IB4F5RqeiUgiawUs=
-=l6v8
------END PGP SIGNATURE-----
-
---l4IMblsHEWQg+b+m--
+diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+index 381c4a17a1fc..56a712c9075f 100644
+--- a/drivers/clk/ingenic/cgu.c
++++ b/drivers/clk/ingenic/cgu.c
+@@ -107,9 +107,6 @@ ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	if (bypass)
+ 		return parent_rate;
+ 
+-	if (!enable)
+-		return 0;
+-
+ 	for (od = 0; od < pll_info->od_max; od++) {
+ 		if (pll_info->od_encoding[od] == od_enc)
+ 			break;
+@@ -153,17 +150,25 @@ ingenic_pll_calc(const struct ingenic_cgu_clk_info *clk_info,
+ 	return div_u64((u64)parent_rate * m, n * od);
+ }
+ 
+-static long
+-ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
+-		       unsigned long *prate)
++static inline const struct ingenic_cgu_clk_info *to_clk_info(
++		struct ingenic_clk *ingenic_clk)
+ {
+-	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
+ 	struct ingenic_cgu *cgu = ingenic_clk->cgu;
+ 	const struct ingenic_cgu_clk_info *clk_info;
+ 
+ 	clk_info = &cgu->clock_info[ingenic_clk->idx];
+ 	BUG_ON(clk_info->type != CGU_CLK_PLL);
+ 
++	return clk_info;
++}
++
++static long
++ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
++		       unsigned long *prate)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
++
+ 	return ingenic_pll_calc(clk_info, req_rate, *prate, NULL, NULL, NULL);
+ }
+ 
+@@ -171,19 +176,14 @@ static int
+ ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
+ 		     unsigned long parent_rate)
+ {
+-	const unsigned timeout = 100;
+ 	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
+ 	struct ingenic_cgu *cgu = ingenic_clk->cgu;
+-	const struct ingenic_cgu_clk_info *clk_info;
+-	const struct ingenic_cgu_pll_info *pll_info;
++	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
++	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
+ 	unsigned long rate, flags;
+-	unsigned m, n, od, i;
++	unsigned int m, n, od;
+ 	u32 ctl;
+ 
+-	clk_info = &cgu->clock_info[ingenic_clk->idx];
+-	BUG_ON(clk_info->type != CGU_CLK_PLL);
+-	pll_info = &clk_info->pll;
+-
+ 	rate = ingenic_pll_calc(clk_info, req_rate, parent_rate,
+ 			       &m, &n, &od);
+ 	if (rate != req_rate)
+@@ -202,6 +202,26 @@ ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
+ 	ctl &= ~(GENMASK(pll_info->od_bits - 1, 0) << pll_info->od_shift);
+ 	ctl |= pll_info->od_encoding[od - 1] << pll_info->od_shift;
+ 
++	writel(ctl, cgu->base + pll_info->reg);
++	spin_unlock_irqrestore(&cgu->lock, flags);
++
++	return 0;
++}
++
++static int ingenic_pll_enable(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
++	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
++	const unsigned int timeout = 100;
++	unsigned long flags;
++	unsigned int i;
++	u32 ctl;
++
++	spin_lock_irqsave(&cgu->lock, flags);
++	ctl = readl(cgu->base + pll_info->reg);
++
+ 	ctl &= ~BIT(pll_info->bypass_bit);
+ 	ctl |= BIT(pll_info->enable_bit);
+ 
+@@ -223,10 +243,48 @@ ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
+ 	return 0;
+ }
+ 
++static void ingenic_pll_disable(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
++	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
++	unsigned long flags;
++	u32 ctl;
++
++	spin_lock_irqsave(&cgu->lock, flags);
++	ctl = readl(cgu->base + pll_info->reg);
++
++	ctl &= ~BIT(pll_info->enable_bit);
++
++	writel(ctl, cgu->base + pll_info->reg);
++	spin_unlock_irqrestore(&cgu->lock, flags);
++}
++
++static int ingenic_pll_is_enabled(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
++	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
++	unsigned long flags;
++	u32 ctl;
++
++	spin_lock_irqsave(&cgu->lock, flags);
++	ctl = readl(cgu->base + pll_info->reg);
++	spin_unlock_irqrestore(&cgu->lock, flags);
++
++	return !!(ctl & BIT(pll_info->enable_bit));
++}
++
+ static const struct clk_ops ingenic_pll_ops = {
+ 	.recalc_rate = ingenic_pll_recalc_rate,
+ 	.round_rate = ingenic_pll_round_rate,
+ 	.set_rate = ingenic_pll_set_rate,
++
++	.enable = ingenic_pll_enable,
++	.disable = ingenic_pll_disable,
++	.is_enabled = ingenic_pll_is_enabled,
+ };
+ 
+ /*
+@@ -601,6 +659,7 @@ static int ingenic_register_clock(struct ingenic_cgu *cgu, unsigned idx)
+ 		}
+ 	} else if (caps & CGU_CLK_PLL) {
+ 		clk_init.ops = &ingenic_pll_ops;
++		clk_init.flags |= CLK_SET_RATE_GATE;
+ 
+ 		caps &= ~CGU_CLK_PLL;
+ 
+-- 
+2.11.0

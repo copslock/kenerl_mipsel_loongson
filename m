@@ -1,60 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:39:02 +0100 (CET)
-Received: from mail-oi0-f66.google.com ([209.85.218.66]:44938 "EHLO
-        mail-oi0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992692AbeABPiyCf7Q1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:38:54 +0100
-Received: by mail-oi0-f66.google.com with SMTP id g6so17499777oib.11
-        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 07:38:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=X/U+k3Ny2XOo388OUNhKt4uH11BkrwwmcEvGm7IOkQw=;
-        b=cFWkdj3LmXU2evnSj74TpcWahZmRVQhnPYOuECHSwp6mXjOsnuk2jzNXeB/QJJfNCi
-         +HMJELGOtZBCU6n5XZwsbs8VipuXOKHmRkGuP4xthQSdRldzVCFQkYHzOXSKkT5AHrme
-         C4TpdcbGx3bB46CEeIFaIgMTTX+cOfL9ZAuoM3G9FMR4Kg5MrKMPY0z5dqtOsU/SGI/Z
-         U4wddHzjujuVHeOvQoo1BtLXA/SNhs7JeiTDhia5gFmVFdS6zWq0hQ+W98JOL8LN6unS
-         Bulrgacv3pIsZNk2/7obfmrE8FIC4YndhtfzzdYUKr7WIehD5Z87W+698elUwQOQNKm1
-         THEw==
-X-Gm-Message-State: AKGB3mLLhq9HgcaO0U5dFbTSFC1IEhTWc50bz0yK7XbQpZFJSrAO7oqR
-        Kzf09DnHToVc2kVpjIwcQQ==
-X-Google-Smtp-Source: ACJfBouQcdiGccMmtqJ9+DbnYGJKH+18bmEEzL8719bcOu/QHCIj118sKP9nyHSR2xyTNJUs4TtEmA==
-X-Received: by 10.202.102.13 with SMTP id a13mr26990306oic.69.1514907527853;
-        Tue, 02 Jan 2018 07:38:47 -0800 (PST)
-Received: from localhost ([166.137.104.41])
-        by smtp.gmail.com with ESMTPSA id l66sm18853326oia.24.2018.01.02.07.38.47
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 02 Jan 2018 07:38:47 -0800 (PST)
-Date:   Tue, 2 Jan 2018 09:38:46 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-Cc:     linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        devicetree@vger.kernel.org, Douglas Leung <douglas.leung@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        James Hogan <james.hogan@mips.com>,
-        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: Document mti,mips-cpc binding
-Message-ID: <20180102153846.luphqiy7zn5nl4x6@rob-hp-laptop>
-References: <1514385475-23921-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1514385475-23921-2-git-send-email-aleksandar.markovic@rt-rk.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1514385475-23921-2-git-send-email-aleksandar.markovic@rt-rk.com>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:39:53 +0100 (CET)
+Received: from forward103p.mail.yandex.net ([77.88.28.106]:34636 "EHLO
+        forward103p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992692AbeABPjqs3Pe1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:39:46 +0100
+Received: from mxback11j.mail.yandex.net (mxback11j.mail.yandex.net [IPv6:2a02:6b8:0:1619::84])
+        by forward103p.mail.yandex.net (Yandex) with ESMTP id 31B6321829D1;
+        Tue,  2 Jan 2018 18:39:37 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback11j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id CZD2mY2KI3-dZuGA3J0;
+        Tue, 02 Jan 2018 18:39:37 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514907577;
+        bh=I4/8rFy4IjB4J0UDNuif7iXV7PP16Y8S/s52ntzcEaQ=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=Pun+eqfGf6AmlNpF96VNOmROsxCPQj7oJI/vQcXpx7e76U1707dYEngGORPyBp6wq
+         XmyeGG9WcYueOJt++OV8QWg27AXwSATD31J/re/1uyAjeT+MIZ1H3NvcaKJCQosYsc
+         Sxs00KlyJ3wG15zTGrT+rKAI7D/rqite7d8tJ9p0=
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 3G1MmcJZtH-dVjCfgFs;
+        Tue, 02 Jan 2018 18:39:34 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514907574;
+        bh=I4/8rFy4IjB4J0UDNuif7iXV7PP16Y8S/s52ntzcEaQ=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=kaBtV+P55sLxK0b2c+mMp876Dp/7nuJYrkO5iUlYyTXmQzqaDpYiRWTIzj6phZzgo
+         p9o9rv8Qp7P5O+U/M8q/X0nBsGVOcNuWnRew0sVbhs1HdfD3SuhFqkzOYJ3cKRvGWu
+         hvSd0HanE0xarXHFLYZKY93Kz0Dux2B/ro4xr93o=
+Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Huacai CHen <chenhc@lemote.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v2] MIPS: Loongson64: Drop 32-bit support for Loongson 2E/2F devices
+Date:   Tue,  2 Jan 2018 23:39:17 +0800
+Message-Id: <20180102153917.4563-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.15.1
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61843
+X-archive-position: 61844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,17 +56,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 27, 2017 at 03:37:51PM +0100, Aleksandar Markovic wrote:
-> From: Paul Burton <paul.burton@mips.com>
-> 
-> Document a binding for the MIPS Cluster Power Controller (CPC) that
-> allows the device tree to specify where the CPC registers are located.
-> 
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> ---
->  Documentation/devicetree/bindings/power/mti,mips-cpc.txt | 8 ++++++++
->  1 file changed, 8 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+The 32-bit support was broken at runtime, it doesn't boot anymore,
+witch is hard to debug because even early printk isn't working, also
+there are some build warnings. Some newer bootloader may not support
+32-bit ELF. So we decide to drop 32-bit support.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Make loongson64 a pure 64-bit arch.
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+ arch/mips/loongson64/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+index 0d249fc3cfe9..a7d9a9241ac4 100644
+--- a/arch/mips/loongson64/Kconfig
++++ b/arch/mips/loongson64/Kconfig
+@@ -17,7 +17,6 @@ config LEMOTE_FULOONG2E
+ 	select I8259
+ 	select ISA
+ 	select IRQ_MIPS_CPU
+-	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_HIGHMEM
+@@ -49,7 +48,6 @@ config LEMOTE_MACH2F
+ 	select ISA
+ 	select SYS_HAS_CPU_LOONGSON2F
+ 	select SYS_HAS_EARLY_PRINTK
+-	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-- 
+2.15.1

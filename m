@@ -1,72 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 19:37:13 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:40168 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990475AbeABShF3ZWe0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 19:37:05 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 02 Jan 2018 18:35:42 +0000
-Received: from [10.20.78.169] (10.20.78.169) by mips01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Tue, 2 Jan 2018
- 10:35:20 -0800
-Date:   Tue, 2 Jan 2018 18:35:08 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Miodrag Dinic <Miodrag.Dinic@mips.com>
-CC:     Paul Burton <Paul.Burton@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
-        Aleksandar Markovic <Aleksandar.Markovic@mips.com>,
-        James Hogan <James.Hogan@mips.com>,
-        "David Daney" <ddaney@caviumnetworks.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        DengCheng Zhu <DengCheng.Zhu@mips.com>,
-        Ding Tianhong <dingtianhong@huawei.com>,
-        Douglas Leung <Douglas.Leung@mips.com>,
-        "Frederic Weisbecker" <frederic@kernel.org>,
-        Goran Ferenc <Goran.Ferenc@mips.com>,
-        "Ingo Molnar" <mingo@kernel.org>,
-        James Cowgill <James.Cowgill@imgtec.com>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        "Matt Redfearn" <Matt.Redfearn@mips.com>,
-        Mimi Zohar <zohar@linux.vnet.ibm.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Petar Jovanovic <Petar.Jovanovic@mips.com>,
-        Raghu Gandham <Raghu.Gandham@mips.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Tom Saeger" <tom.saeger@oracle.com>
-Subject: RE: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
-In-Reply-To: <48924BBB91ABDE4D9335632A6B179DD6A8E6B2@MIPSMAIL01.mipstec.com>
-Message-ID: <alpine.DEB.2.00.1801021830110.31257@tp.orcam.me.uk>
-References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com> <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com> <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com> <20171130100957.GG5027@jhogan-linux.mipstec.com>
- <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com> <alpine.DEB.2.00.1712061657520.4584@tp.orcam.me.uk>,<20171206182400.6va3pqdmgisbino7@pburton-laptop> <48924BBB91ABDE4D9335632A6B179DD6A8E6B2@MIPSMAIL01.mipstec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 19:52:49 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:41073
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990397AbeABSwnQ3gB0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 19:52:43 +0100
+Received: by mail-wm0-x241.google.com with SMTP id g75so63035512wme.0;
+        Tue, 02 Jan 2018 10:52:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=LnCiy6CW7EhIJHKJLn7gKNTJV3qY33Eqr9Y+hRIiKcg=;
+        b=Joap2VViucZx6hRn9wmNpgc4TbfwymcGBzO3vkesMKC2JSuZViZ0N9hts9mUoFzL8I
+         VrOgKaaQ0c2Z2vTpsmuwTGrkIIrBtR7AWLb7u6OmGqq5fMPKqz1CwNSk7oftZ1yErDTu
+         vyTuuC6HxkSaRzg0GOPsBnh4m0bwhJgG+x7vM3jO/cBR8P1WK0L7pTSiH5x8Ru42NLPB
+         YuhrnL+nS5uB0T3xTsRRW7Trf3UNOs1UpGvfBWRqHWsp8CMrI08leKmhJuI6gpyOIgQl
+         qj+3+1rJiHAw//DSm3F5IHj3evm2zX3kxJXZ0TmV9UjEcE7OJalJDDP57/XmDVvZDy07
+         JnWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references:mime-version:content-transfer-encoding;
+        bh=LnCiy6CW7EhIJHKJLn7gKNTJV3qY33Eqr9Y+hRIiKcg=;
+        b=nQzmvKkNaDg0TeXOjx1gcTp5/DIBdWNMvnlx+RtoOIEGnVmluxxroCktVytGVY4ABM
+         yviuMpKu6ERVqIL/SrhvLYeOkaj2PucOMpXzCWR+xobeCc2IcyckKpDq1snq2Le57VgQ
+         xccFDjj6VxC7DZZ9AuR+9EilZcHz6RyK9NC2j9hEdwnCLF/K4XJIM+XspQHE/gTWLqBt
+         OxLsItfo/67EBZ1A15LVf6TNWhswijMS9sbc+lAqe7bgk/sTcmx66NcvzoyFzCCSgEM7
+         CxH80k6CKNbYFYk8fQ4geLwgh2yFJwcFVlC7Yw+RiEa9w+Ra2Gl9GYD40r//OtAVrxwJ
+         dH5A==
+X-Gm-Message-State: AKGB3mLIAsnKCQBjNiVvTH98imIkkHx8HBRdgNTzgB5UW5yMmXR/L3PJ
+        vL9BjdOmlq6a+1dZ84yrRuc=
+X-Google-Smtp-Source: ACJfBoudRZ59Acc5pr50dO6JXCAZd6WOBibwKYdyDOTpXADy9etc+eBZYjxZ3tnhZUgspK+itD1Glg==
+X-Received: by 10.28.227.132 with SMTP id a126mr4041946wmh.41.1514919157651;
+        Tue, 02 Jan 2018 10:52:37 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
+        by smtp.gmail.com with ESMTPSA id n33sm10357805wrn.76.2018.01.02.10.52.36
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 02 Jan 2018 10:52:36 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id 9349510C2747; Tue,  2 Jan 2018 19:52:35 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] MIPS: Make declaration for function `memory_region_available` static
+Date:   Tue,  2 Jan 2018 19:52:21 +0100
+Message-Id: <20180102185222.9111-1-malat@debian.org>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20171226113717.15074-1-malat@debian.org>
+References: <20171226113717.15074-1-malat@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1514918139-321459-14509-231746-8
-X-BESS-VER: 2017.16-r1712230000
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.21
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188580
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.20 PR0N_SUBJECT           META: Subject has letters 
-        around special characters (pr0n) 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.21 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, PR0N_SUBJECT, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61862
+X-archive-position: 61863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,17 +73,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Miodrag,
+Fix non-fatal warning during compilation using W=1:
 
-> > I presume what you
-> > actually want here is for the kernel to lie & indicate to whatever part
-> > of Android that performs this check that the stack is non-executable
-> > even when it is really executable?
-> 
-> Basically yes, because we do not have other options at this point.
+arch/mips/kernel/setup.c:158:13: warning: no previous prototype for ‘memory_region_available’ [-Wmissing-prototypes]
+ bool __init memory_region_available(phys_addr_t start, phys_addr_t size)
+             ^~~~~~~~~~~~~~~~~~~~~~~
 
- Please make the purpose of this option unambiguous in documentation then, 
-along with suitable precautionary notes about any adverse consequences of 
-its use.
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+v2: Prefer static declaration, clarify W=1 in commit message
+ arch/mips/kernel/setup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  Maciej
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index f19d61224c71..68db4bdd3255 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -155,7 +155,8 @@ void __init detect_memory_region(phys_addr_t start, phys_addr_t sz_min, phys_add
+ 	add_memory_region(start, size, BOOT_MEM_RAM);
+ }
+ 
+-bool __init memory_region_available(phys_addr_t start, phys_addr_t size)
++static bool __init __maybe_unused memory_region_available(phys_addr_t start,
++	phys_addr_t size)
+ {
+ 	int i;
+ 	bool in_ram = false, free = true;
+-- 
+2.11.0

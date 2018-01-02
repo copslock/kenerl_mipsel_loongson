@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 17:17:19 +0100 (CET)
-Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:38261
-        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993096AbeABQRMjKJi1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 17:17:12 +0100
-Received: by mail-io0-x241.google.com with SMTP id 87so45238342ior.5;
-        Tue, 02 Jan 2018 08:17:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 17:18:07 +0100 (CET)
+Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:36702
+        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993885AbeABQR7iJTN1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 17:17:59 +0100
+Received: by mail-it0-x242.google.com with SMTP id d16so39882283itj.1;
+        Tue, 02 Jan 2018 08:17:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=6N4GdDqzBxE6SE9OmJjkVUEkIcUo6+uKgcLDdsNptBk=;
-        b=kk4N5k9ivBBz4qo63l8sScOolo6oqE2RnhpgumMXCtJLpbTFem85Dz7rrYGDPzXDk/
-         G2aD5fA4PZXx9U6oZyeoMblJOTtP9PZR7Mu7UE8NU6SmEtREna6dkTMCWJQwOkwTlHaR
-         EV+gmyUpCYjxX3T2RfMxovunhp/wicS7uSZEZAuCkkeZ9MdQ3wm8vFvwTwAdwlQc4Pb3
-         92ZK+sBPsgdalZ+foCmpwnQdM4gVtPeKcxbauqAlfpL1yQkAgAETotjUaTJfUbmNdbe1
-         MPkxIcpvawDO+ZDcjAIkmSewQzpBI68oabTxlS/tStj68W0jfQlKoHdsluIxnmrLf4oB
-         9R8w==
+        bh=ItTZOdFoQgr9KKDIcJSBYFBfNSbE+/oI/Ovh2qkJslM=;
+        b=u1HIJIys+1vDKKY++8RHMHiXiE5ayMa4QopQhW7ZtCbVoJpMUEhr3uxbeovczG1tR4
+         RCcgZl0VxX4eYbpaQ79GYIKqwXI3p3MJ1r8RGKWyZo0+7+bbMGI/nd4oaH2pqW1MC2CF
+         DGiZBJgBjVcIe1SznKnHKivw+Z/AZK6/tm2kZI9JVS+q6XyKUc6lwXhTr59Qxp91rNhT
+         r0eZM4WoMnKhM5AJrq7Lt8lawxckvbtrRVxLrdeFDEoT+xEek8W3TSW+J9nIoOF5Q4hb
+         9QpZVSd1A7t41dei4g1bh3WzFGa78mufhepFsbwB/q/GXynbGkilDbWZvMQorfCjIZZZ
+         aOsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=6N4GdDqzBxE6SE9OmJjkVUEkIcUo6+uKgcLDdsNptBk=;
-        b=cNTqgFV2DlqcCkzLQEmANEDRtXiVX7inNza5DxlYfPyDZls8qMkERDGXRLjRrYHnqN
-         EZN+cZMFWD2MnzbIwLussHsQ+JYDn5vcU+q2vxE7XM8nV186XoFXmYAYZabP+UoiHoyQ
-         fEHmsisL1QV1xflsi+RGDcFIlE7PJNRyOHzIL65kYt+ZxJUv3+ebTfFFQnteVBFzbWrR
-         5bovSq8r5LvsbaabVeErFBo3O+0pEHRyjPF9eAPEitdInbtdeeWVppRkKcjbHqIi33xy
-         SQOP67omafN6WEBY9ktzmc6dETI/bR90kJoMIhm5SnT0emW6MXwQIUPWmoRNcs36Sfcb
-         E/mQ==
-X-Gm-Message-State: AKGB3mLZGk9bs+ijfXDIsPT1CIyIv9qoIah6ugN+woVKs9MCh+qNWZzx
-        wWkBcmCgqx/78ZGeWloWSff3eYx8LSJxhGA9tWM=
-X-Google-Smtp-Source: ACJfBouCp7bVvtIVOK+JOfpxQX7sHrObhZoaAKFiifLtIO145b1lzSKLyMnhzUaN6bP073OKkkA2Q6cGn/7sXY9T1yQ=
-X-Received: by 10.107.107.13 with SMTP id g13mr760306ioc.263.1514909826410;
- Tue, 02 Jan 2018 08:17:06 -0800 (PST)
+        bh=ItTZOdFoQgr9KKDIcJSBYFBfNSbE+/oI/Ovh2qkJslM=;
+        b=EdBnzqO6P2eInLw22HgloHA1tgEE1/m0H95khCfk0nWton/RQHfW/s0ORyslNlENfo
+         ssn4Ik8F+Oz+eitYT+DyoTlvUfWHa0MLogMK0zEdbWCkLz7k97XSsCIx7C7np7S85wuu
+         PFz+4AnEfyHV7VKkmI3NsW1bkMj1CnTnog1+YQgy1zxZ9A+cG7IlMKDLFXslp3hv7XRE
+         ZKaIpJbSHSdElNo1sPUcyT5/s1JaPCgSQvUSXzjvMei1Np+/Smlk34uwwxW7JONFj7bA
+         Vc0iWqgv/lEfFD7cEhD1ctdbdQfYY0+HFi6FsiREF1sBlcirsAREUbj/GhXXFNeASarL
+         g82A==
+X-Gm-Message-State: AKGB3mKiWRb3WdfVHq/hLKLxE+1CpnaWKJx0clwQqPv16d0lCOD3JpWm
+        6cIe0c2E9evbiRCjGj/Xx9maUcA+vTwvd62kaFVYydVO
+X-Google-Smtp-Source: ACJfBovQv8P9l3WoIqlZPK7uVoJ0RCLsxYW0Q5bS+7s8R76ZEBt1IdIuTcHudtXxrE2kS3qEVQNMogNEYf9qeoUMoxQ=
+X-Received: by 10.36.236.4 with SMTP id g4mr46700508ith.33.1514909873497; Tue,
+ 02 Jan 2018 08:17:53 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.2.144.208 with HTTP; Tue, 2 Jan 2018 08:17:05 -0800 (PST)
-In-Reply-To: <828981e5-c23c-8dc4-55e4-23b65b33908b@linaro.org>
-References: <20171228212954.2922-1-malat@debian.org> <828981e5-c23c-8dc4-55e4-23b65b33908b@linaro.org>
+Received: by 10.2.144.208 with HTTP; Tue, 2 Jan 2018 08:17:53 -0800 (PST)
+In-Reply-To: <3ec9ddab-f855-8c39-4d75-d35be7bd6731@linaro.org>
+References: <20171228212954.2922-1-malat@debian.org> <20171228212954.2922-2-malat@debian.org>
+ <3ec9ddab-f855-8c39-4d75-d35be7bd6731@linaro.org>
 From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Tue, 2 Jan 2018 21:47:05 +0530
-Message-ID: <CANc+2y5cEoqEkqEr9b-APApd42HXQczFWJfGv+MWPNRdWpQr7Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Add efuse driver for Ingenic JZ4780 SoC
+Date:   Tue, 2 Jan 2018 21:47:53 +0530
+Message-ID: <CANc+2y7_Bx7APkD2pDEQUT9cJqXEUCPkDQuzO_GP1qENabnNeQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] nvmem: add driver for JZ4780 efuse
 To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Cc:     Mathieu Malaterre <malat@debian.org>,
         Marcin Nowakowski <marcin.nowakowski@mips.com>,
@@ -54,7 +55,7 @@ Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61849
+X-archive-position: 61850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,34 +72,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Srinivas,
+Hi Srini,
 
-On 2 January 2018 at 17:31, Srinivas Kandagatla
+On 2 January 2018 at 17:32, Srinivas Kandagatla
 <srinivas.kandagatla@linaro.org> wrote:
 >
 >
 > On 28/12/17 21:29, Mathieu Malaterre wrote:
 >>
->> This patchset bring support for read-only access to the JZ4780 efuse as
->> found
->> on MIPS Creator CI20.
+>> From: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 >>
->> To keep the driver as simple as possible, it was not possible to re-use
->> most of
->> the nvmem core functionalities. This driver is not compatible with the
->> original
+>> This patch brings support for the JZ4780 efuse. Currently it only expose
+>> a read only access to the entire 8K bits efuse memory.
+>>
+>> Tested-by: Mathieu Malaterre <malat@debian.org>
+>> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+>> ---
 >
-> Can you explain a bit more on not able to re-use nvmem core?
+> Please split this patch, as you are mixing code, documentation, dts and
+> MAINTAINER changes here.
 >
-> If you are referring to adding nvmem cell entires in sysfs, This should
-> probably go in to nvmem core, rather that in individual providers.
-> This is one of the feature my todo list, will try to come up with some thing
-> soon.
+> Without which patch can not be reviewed!!
 
-We could not find a way to expose different sized segments using nvmem
-framework. Do you have any pointers for this?
-We were not aware of the fact that nvmem does not expose individual
-cell entries in sysfs.
+Sure, will do it soon.
+
+>
+> Thanks,
+> Srini
+>
+>>   .../ABI/testing/sysfs-driver-jz4780-efuse          |  16 ++
+>
+>
+>>   .../bindings/nvmem/ingenic,jz4780-efuse.txt        |  17 ++
+>>   MAINTAINERS                                        |   5 +
+>>   arch/mips/boot/dts/ingenic/jz4780.dtsi             |  40 ++-
+>>   drivers/nvmem/Kconfig                              |  10 +
+>>   drivers/nvmem/Makefile                             |   2 +
+>>   drivers/nvmem/jz4780-efuse.c                       | 305
+>> +++++++++++++++++++++
+>>   7 files changed, 383 insertions(+), 12 deletions(-)
+>
+> ...
 
 Regards,
 PrasannaKumar

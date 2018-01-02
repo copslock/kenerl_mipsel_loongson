@@ -1,52 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 10:52:39 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:45653 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992105AbeABJwbx5yvu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 10:52:31 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 02 Jan 2018 09:52:03 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 2 Jan 2018
- 01:51:58 -0800
-Date:   Tue, 2 Jan 2018 09:51:26 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Mathieu Malaterre <malat@debian.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        Goran Ferenc <goran.ferenc@imgtec.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] MIPS: add declaration for function
- `memory_region_available`
-Message-ID: <20180102095125.GO27409@jhogan-linux.mipstec.com>
-References: <20171226113717.15074-1-malat@debian.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 11:22:49 +0100 (CET)
+Received: from mail-qk0-x241.google.com ([IPv6:2607:f8b0:400d:c09::241]:46472
+        "EHLO mail-qk0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992368AbeABKWmt6RYu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 11:22:42 +0100
+Received: by mail-qk0-x241.google.com with SMTP id b132so30872212qkc.13
+        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 02:22:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=DupaeiNXsDWygiRVgtfsKPUINeaJaV348XGOK9lsg80=;
+        b=lCk9wujKfZymYa7JqYtJXtn2/ROYLa/vzw2Okj5z+vUnEEsITFufJ1lwwfIkj3A2YC
+         K8++Du8YII+O5w3D4VeU62pmXJejEZND/rQ5mqNkU/X8YoT1y5/JgKF9hqaBXFXeb9c1
+         b66Qr5iB8ZDH/Y9WMVq/I3DBRzExUUhvPSXY4yv+Jtzf+jyqjrKFdHoH7Hnkmr+sDktL
+         FltAdE4sHBWGAyJ2Dew1ACkDBrbZuV2Fl60t4skSGcJ97Wt98miLsNx+u9GzIABzDrOv
+         Bj4VyZD1lKqjUj2EG0VehXHac86unszodSAxbe6DUYol+NQO9HrSKC5uI0IKEzd4KpjI
+         4ZmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=DupaeiNXsDWygiRVgtfsKPUINeaJaV348XGOK9lsg80=;
+        b=fKRvV6bYKpTvbyfz4QUNjm8/0nFnWLPISg1UPRRALf5TgZ9V02EcIEe8hXcG+sOZVH
+         fuYEpSt5Q+RZP5Bfmw5zAjNzr/BQWyuPG4nvXK6m00ewBgWCF6VIZq3v7vT4l96Ej0bh
+         NdWNs9Q54knKdofiR8rKnFqE5nMJIJdPb6QpEEhO3sbT5AfsmbMZkh9pXiHjZhXD67tn
+         uNouKti95DlA1YHgRJlB0/f8Net28timUlDj7J0Lwkr3jOoycBAJqfwBmyqtXg9/9AAC
+         /Y/M3LjlI5wFH4VaNcJyO3VpuQF4XxqYpkdVvT3JVev/cjPYIk+uOPtyAjn5306lDbtI
+         em6w==
+X-Gm-Message-State: AKGB3mJNgx2w5jx2Kz5sGxsJfoGAFTbzr5nGgF7WOtNrV/cycAW1blKY
+        UQiIG3D4Ou2Kf5CpFf5gXvCdrHZtpdTyQXTLrA8=
+X-Google-Smtp-Source: ACJfBotpUn04/iPHRmqXRSAZsei+qXeww2+evIQPQqX9pZWkSC+cn8CI1RCizr+dMgmSftgyTZq2OI1MLeWI2jEYTIk=
+X-Received: by 10.55.99.140 with SMTP id x134mr46992825qkb.35.1514888556259;
+ Tue, 02 Jan 2018 02:22:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="b/Q3JWIUAuLE0ZFy"
-Content-Disposition: inline
-In-Reply-To: <20171226113717.15074-1-malat@debian.org>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1514886723-321457-1407-205804-1
-X-BESS-VER: 2017.16-r1712230000
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188568
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: by 10.237.44.66 with HTTP; Tue, 2 Jan 2018 02:22:35 -0800 (PST)
+In-Reply-To: <878tdgtwzp.fsf@concordia.ellerman.id.au>
+References: <20171229081911.2802-1-hch@lst.de> <20171229081911.2802-17-hch@lst.de>
+ <878tdgtwzp.fsf@concordia.ellerman.id.au>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 2 Jan 2018 11:22:35 +0100
+X-Google-Sender-Auth: bAs4gokVWCk_l9xeOiP8R7Xf4Lg
+Message-ID: <CAMuHMdWWus2kNSOzS94k-3678826W1YjKwCWTquu3hBLZ80cvw@mail.gmail.com>
+Subject: Re: [PATCH 16/67] powerpc: rename dma_direct_ to dma_nommu_
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-ia64@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        patches@groups.riscv.org,
+        "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Simek <monstr@monstr.eu>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61816
+X-archive-position: 61817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,71 +88,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---b/Q3JWIUAuLE0ZFy
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jan 2, 2018 at 10:45 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Christoph Hellwig <hch@lst.de> writes:
+>
+>> We want to use the dma_direct_ namespace for a generic implementation,
+>> so rename powerpc to the second best choice: dma_nommu_.
+>
+> I'm not a fan of "nommu". Some of the users of direct ops *are* using an
+> IOMMU, they're just setting up a 1:1 mapping once at init time, rather
+> than mapping dynamically.
+>
+> Though I don't have a good idea for a better name, maybe "1to1",
+> "linear", "premapped" ?
 
-On Tue, Dec 26, 2017 at 12:37:13PM +0100, Mathieu Malaterre wrote:
-> Fix non-fatal warning:
->=20
-> arch/mips/kernel/setup.c:158:13: warning: no previous prototype for =E2=
-=80=98memory_region_available=E2=80=99 [-Wmissing-prototypes]
->  bool __init memory_region_available(phys_addr_t start, phys_addr_t size)
->              ^~~~~~~~~~~~~~~~~~~~~~~
+"identity"?
 
-It only seems to be referenced from that one file, so making it static
-and __maybe_unused to handle the configs it isn't used would probably be
-better.
+Gr{oetje,eeting}s,
 
-Thanks
-James
+                        Geert
 
->=20
-> Signed-off-by: Mathieu Malaterre <malat@debian.org>
-> ---
->  arch/mips/include/asm/bootinfo.h | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/boo=
-tinfo.h
-> index e26a093bb17a..32e3c9a2c5a0 100644
-> --- a/arch/mips/include/asm/bootinfo.h
-> +++ b/arch/mips/include/asm/bootinfo.h
-> @@ -108,6 +108,7 @@ extern struct boot_mem_map boot_mem_map;
-> =20
->  extern void add_memory_region(phys_addr_t start, phys_addr_t size, long =
-type);
->  extern void detect_memory_region(phys_addr_t start, phys_addr_t sz_min, =
- phys_addr_t sz_max);
-> +extern bool memory_region_available(phys_addr_t start, phys_addr_t size);
-> =20
->  extern void prom_init(void);
->  extern void prom_free_prom_memory(void);
-> --=20
-> 2.11.0
->=20
->=20
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
---b/Q3JWIUAuLE0ZFy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpLVh0ACgkQbAtpk944
-dnrWyg/9F0b1Yp4MQ5jkWeYgbvTy9qKLOyGwUnN7GyKT7eabDd1KOhNYfgwJupbk
-t8wO0Q/u3iuuSzaBh2oyMcoKMaucmmpN80iTx9OflmQNrfF+ho2ds8gOJUu71RFL
-IwNzwNszA7TS0fk1ua5GHvAfgDEVyPTQ6oQnYU9AdhLGP7J5cm0eEs5ghfiaKxKN
-9RWMXmY6rJ2QMCeDszESJtlv5kIWUyR0GQsrbJbAppG9Y5ScUi06fqy+43GSEJ96
-ucGRazzcgVyKwNlMqpG/kv0bUTe1rpMrW51AyrC6D9o6vcMntziT1GQ3sdN9ztEo
-FjUS1FFQ/X2//Q/XAZ+aZrgfE0ocxAdckANnXQpRMK2c60bb3+daQj1uzYCcFSF4
-ASf2BC8H9XDgI/fHchpNI7RkzDgm3Flrv9XVlU/51xkzk82GQeGxdx50I9yoChAB
-ZJG/NMNt37l+nuOqHiFkh6rXnONEKhTWvaMmGy4g+gwN3FqbXOaZJhLSnsamW1PY
-+R3rMDbp1OHQL3Qzn3tV+ZF8iU8Mi9ilkpe1OIZbrMVaty2smR5gUKq8iFvJI0MG
-CZucwH/+npI7OZhaYJSsOEP//ZfRglGlD39oadO5nyPrpT6l1XYOoMgws28/YTIt
-00JKu+JgDU1xSCpmincgCH2qnOnkrw7FnEavwittGRDUphzz790=
-=gcKV
------END PGP SIGNATURE-----
-
---b/Q3JWIUAuLE0ZFy--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

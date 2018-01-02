@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:10:55 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:57828 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:11:22 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:58194 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992956AbeABPJEg25M9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:09:04 +0100
+        with ESMTP id S23993049AbeABPJG2SR79 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:09:06 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 05/15] dt-bindings: clock: Add jz4770-cgu.h header
-Date:   Tue,  2 Jan 2018 16:08:38 +0100
-Message-Id: <20180102150848.11314-5-paul@crapouillou.net>
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v5 07/15] MIPS: Setup boot_command_line before plat_mem_setup
+Date:   Tue,  2 Jan 2018 16:08:40 +0100
+Message-Id: <20180102150848.11314-7-paul@crapouillou.net>
 In-Reply-To: <20180102150848.11314-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905744; bh=HunR9/2K77ndJtWmtW90Gsow8P/1ZxiehsZEJqRx5e8=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qs3949VEB74pUSONlDge/g5D52Xi5m1IroZgO53I6L/ioyPwc1n8JdiU+p8CbMw7ArbQ15magH9DPtAh5q962Tcs2tGkTnUlfM3wNb4T2m1Ke99uFvXgd1IItI5GyATSzC/9jigmsrlEEnzOOIK7EQZPLYTxJudGS1BDS/G/Ioo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905745; bh=G/oYW87EuTtnw74sFiY8TQAQ9jCg4jp5dvR8NbkO1jQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=UCPtSjeFJLYmhG/1zeQHHifG8CDpkFnSlm2/IX8O0XQCh5m3KP6odu9LGdaJdqEFC3sFONS8W9C/szrOEK+PfECOdASgXA2iugmsVa6/241rraGdNm74Owa8zICOwMUMK6sv1Z49a+dAR1D0hrQpr076hi3kWNMyQITiVk/n0gs=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61832
+X-archive-position: 61833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,83 +36,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This will be used from the devicetree bindings to specify the clocks
-that should be obtained from the jz4770-cgu driver.
+From: Paul Burton <paul.burton@imgtec.com>
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+Platforms using DT will typically call __dt_setup_arch from
+plat_mem_setup. This in turn calls early_init_dt_scan. When
+CONFIG_CMDLINE is set, this leads to its value being copied into
+boot_command_line by early_init_dt_scan_chosen. If this happens before
+the code setting up boot_command_line in arch_mem_init runs, that code
+will go on to append CONFIG_CMDLINE (via builtin_cmdline) to
+boot_command_line again, duplicating it. For some command line
+parameters (eg. earlycon) this can be a problem. Set up
+boot_command_line before early_init_dt_scan_chosen gets called such that
+it will not write CONFIG_CMDLINE in this scenario & the arguments aren't
+duplicated.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- include/dt-bindings/clock/jz4770-cgu.h | 58 ++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
- create mode 100644 include/dt-bindings/clock/jz4770-cgu.h
+ arch/mips/kernel/setup.c | 39 ++++++++++++++++++++-------------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
- v3: New patch in this series
+ v2: New patch in this series
+ v3: No change
  v4: No change
- v5: Use SPDX license identifier
+ v5: No change
 
-diff --git a/include/dt-bindings/clock/jz4770-cgu.h b/include/dt-bindings/clock/jz4770-cgu.h
-new file mode 100644
-index 000000000000..d68a7695a1f8
---- /dev/null
-+++ b/include/dt-bindings/clock/jz4770-cgu.h
-@@ -0,0 +1,58 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * This header provides clock numbers for the ingenic,jz4770-cgu DT binding.
-+ */
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 702c678de116..85bc601e9a0d 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -826,25 +826,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	struct memblock_region *reg;
+ 	extern void plat_mem_setup(void);
+ 
+-	/* call board setup routine */
+-	plat_mem_setup();
+-
+-	/*
+-	 * Make sure all kernel memory is in the maps.  The "UP" and
+-	 * "DOWN" are opposite for initdata since if it crosses over
+-	 * into another memory section you don't want that to be
+-	 * freed when the initdata is freed.
+-	 */
+-	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
+-			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
+-			 BOOT_MEM_RAM);
+-	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
+-			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
+-			 BOOT_MEM_INIT_RAM);
+-
+-	pr_info("Determined physical RAM map:\n");
+-	print_memory_map();
+-
+ #if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
+ 	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+ #else
+@@ -872,6 +853,26 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	}
+ #endif
+ #endif
 +
-+#ifndef __DT_BINDINGS_CLOCK_JZ4770_CGU_H__
-+#define __DT_BINDINGS_CLOCK_JZ4770_CGU_H__
++	/* call board setup routine */
++	plat_mem_setup();
 +
-+#define JZ4770_CLK_EXT		0
-+#define JZ4770_CLK_OSC32K	1
-+#define JZ4770_CLK_PLL0		2
-+#define JZ4770_CLK_PLL1		3
-+#define JZ4770_CLK_CCLK		4
-+#define JZ4770_CLK_H0CLK	5
-+#define JZ4770_CLK_H1CLK	6
-+#define JZ4770_CLK_H2CLK	7
-+#define JZ4770_CLK_C1CLK	8
-+#define JZ4770_CLK_PCLK		9
-+#define JZ4770_CLK_MMC0_MUX	10
-+#define JZ4770_CLK_MMC0		11
-+#define JZ4770_CLK_MMC1_MUX	12
-+#define JZ4770_CLK_MMC1		13
-+#define JZ4770_CLK_MMC2_MUX	14
-+#define JZ4770_CLK_MMC2		15
-+#define JZ4770_CLK_CIM		16
-+#define JZ4770_CLK_UHC		17
-+#define JZ4770_CLK_GPU		18
-+#define JZ4770_CLK_BCH		19
-+#define JZ4770_CLK_LPCLK_MUX	20
-+#define JZ4770_CLK_GPS		21
-+#define JZ4770_CLK_SSI_MUX	22
-+#define JZ4770_CLK_PCM_MUX	23
-+#define JZ4770_CLK_I2S		24
-+#define JZ4770_CLK_OTG		25
-+#define JZ4770_CLK_SSI0		26
-+#define JZ4770_CLK_SSI1		27
-+#define JZ4770_CLK_SSI2		28
-+#define JZ4770_CLK_PCM0		29
-+#define JZ4770_CLK_PCM1		30
-+#define JZ4770_CLK_DMA		31
-+#define JZ4770_CLK_I2C0		32
-+#define JZ4770_CLK_I2C1		33
-+#define JZ4770_CLK_I2C2		34
-+#define JZ4770_CLK_UART0	35
-+#define JZ4770_CLK_UART1	36
-+#define JZ4770_CLK_UART2	37
-+#define JZ4770_CLK_UART3	38
-+#define JZ4770_CLK_IPU		39
-+#define JZ4770_CLK_ADC		40
-+#define JZ4770_CLK_AIC		41
-+#define JZ4770_CLK_AUX		42
-+#define JZ4770_CLK_VPU		43
-+#define JZ4770_CLK_UHC_PHY	44
-+#define JZ4770_CLK_OTG_PHY	45
-+#define JZ4770_CLK_EXT512	46
-+#define JZ4770_CLK_RTC		47
++	/*
++	 * Make sure all kernel memory is in the maps.  The "UP" and
++	 * "DOWN" are opposite for initdata since if it crosses over
++	 * into another memory section you don't want that to be
++	 * freed when the initdata is freed.
++	 */
++	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
++			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
++			 BOOT_MEM_RAM);
++	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
++			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
++			 BOOT_MEM_INIT_RAM);
 +
-+#endif /* __DT_BINDINGS_CLOCK_JZ4770_CGU_H__ */
++	pr_info("Determined physical RAM map:\n");
++	print_memory_map();
++
+ 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 
+ 	*cmdline_p = command_line;
 -- 
 2.11.0

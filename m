@@ -1,41 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 09:41:14 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:56211 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 09:48:32 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:59703 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992916AbeABIlDh098x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 09:41:03 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 02 Jan 2018 08:40:34 +0000
+        by eddie.linux-mips.org with ESMTP id S23990475AbeABIsY4jTOx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 09:48:24 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 02 Jan 2018 08:48:02 +0000
 Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 2 Jan 2018
- 00:40:32 -0800
-Date:   Tue, 2 Jan 2018 08:40:31 +0000
+ 00:48:01 -0800
+Date:   Tue, 2 Jan 2018 08:48:00 +0000
 From:   James Hogan <james.hogan@mips.com>
-To:     Jonas Gorski <jonas.gorski@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        <linux-serial@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Schichan <nschichan@freebox.fr>
-Subject: Re: [PATCH RFC 3/3] MIPS: AR7: ensure the port type's FCR value is
- used
-Message-ID: <20180102084030.GK5027@jhogan-linux.mipstec.com>
-References: <20171029152721.6770-1-jonas.gorski@gmail.com>
- <20171029152721.6770-4-jonas.gorski@gmail.com>
- <20171114110211.GA5823@jhogan-linux.mipstec.com>
- <CAOiHx==rL82D4NMz8t15jMr8m5oQmhkAzc+9r6qA0WMgbS-b9w@mail.gmail.com>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Huacai CHen <chenhc@lemote.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Loongson64: Drop 32-bit support for Loongson 2E/2F
+ devices
+Message-ID: <20180102084759.GL5027@jhogan-linux.mipstec.com>
+References: <20171226042138.13227-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zBZpvCNcoXwafAjP"
+        protocol="application/pgp-signature"; boundary="qpqR4wE1CEr+Roqx"
 Content-Disposition: inline
-In-Reply-To: <CAOiHx==rL82D4NMz8t15jMr8m5oQmhkAzc+9r6qA0WMgbS-b9w@mail.gmail.com>
+In-Reply-To: <20171226042138.13227-1-jiaxun.yang@flygoat.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1514882433-637138-32443-384931-1
+X-BESS-ID: 1514882882-637140-17979-382223-1
 X-BESS-VER: 2017.16-r1712230000
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188567
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188374
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
@@ -46,7 +39,7 @@ Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61812
+X-archive-position: 61813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,86 +56,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---zBZpvCNcoXwafAjP
+--qpqR4wE1CEr+Roqx
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 28, 2017 at 04:38:29PM +0100, Jonas Gorski wrote:
-> On 14 November 2017 at 12:02, James Hogan <james.hogan@mips.com> wrote:
-> > On Sun, Oct 29, 2017 at 04:27:21PM +0100, Jonas Gorski wrote:
-> >> Since commit aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt
-> >> trigger I/F of FIFO buffers"), the port's default FCR value isn't used
-> >> in serial8250_do_set_termios anymore, but copied over once in
-> >> serial8250_config_port and then modified as needed.
-> >>
-> >> Unfortunately, serial8250_config_port will never be called if the port
-> >> is shared between kernel and userspace, and the port's flag doesn't ha=
-ve
-> >> UPF_BOOT_AUTOCONF, which would trigger a serial8250_config_port as wel=
-l.
-> >>
-> >> This causes garbled output from userspace:
-> >>
-> >> [    5.220000] random: procd urandom read with 49 bits of entropy avai=
-lable
-> >> ers
-> >>    [kee
-> >>
-> >> Fix this by forcing it to be configured on boot, resulting in the
-> >> expected output:
-> >>
-> >> [    5.250000] random: procd urandom read with 50 bits of entropy avai=
-lable
-> >> Press the [f] key and hit [enter] to enter failsafe mode
-> >> Press the [1], [2], [3] or [4] key and hit [enter] to select the debug=
- level
-> >>
-> >> Fixes: aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt trigg=
-er I/F of FIFO buffers")
-> >> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-> >> ---
-> >> I'm not sure if this is just AR7's issue, or if this points to a gener=
-al
-> >> issue for UARTs used as kernel console and login console with the "fix=
-ed"
-> >> commit.
-> >
-> > Thanks. Given nobody seems to have objected, I've applied to my
-> > mips-fixes branch, with stable tag for 3.17+.
->=20
-> Hmm, I don't see it in
-> https://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git/log/?h=3D=
-mips-fixes
-> - did you maybe forget to push?
+On Tue, Dec 26, 2017 at 12:21:38PM +0800, Jiaxun Yang wrote:
+> Make loongson64 a pure 64-bit mach.
 
-Ralf reappeared so I delegated the patch to him in patchwork, and he has
-apparently marked it as accepted.
-
-But perhaps that only just happened and he hasn't pushed yet. Ralf?
+Please expand to provide some rationale behind the change. Was 32-bit
+support broken at runtime, or broken at build time, or are we simply no
+longer interested in supporting it?
 
 Cheers
 James
 
---zBZpvCNcoXwafAjP
+>=20
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  arch/mips/loongson64/Kconfig | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+> index 0d249fc3cfe9..a7d9a9241ac4 100644
+> --- a/arch/mips/loongson64/Kconfig
+> +++ b/arch/mips/loongson64/Kconfig
+> @@ -17,7 +17,6 @@ config LEMOTE_FULOONG2E
+>  	select I8259
+>  	select ISA
+>  	select IRQ_MIPS_CPU
+> -	select SYS_SUPPORTS_32BIT_KERNEL
+>  	select SYS_SUPPORTS_64BIT_KERNEL
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+>  	select SYS_SUPPORTS_HIGHMEM
+> @@ -49,7 +48,6 @@ config LEMOTE_MACH2F
+>  	select ISA
+>  	select SYS_HAS_CPU_LOONGSON2F
+>  	select SYS_HAS_EARLY_PRINTK
+> -	select SYS_SUPPORTS_32BIT_KERNEL
+>  	select SYS_SUPPORTS_64BIT_KERNEL
+>  	select SYS_SUPPORTS_HIGHMEM
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+> --=20
+> 2.15.1
+>=20
+
+--qpqR4wE1CEr+Roqx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpLRX4ACgkQbAtpk944
-dnowVQ//TBNJ/KpQTDvxPtW4e0XF19xuu9crVUf8Nm4F6cX4x2jPk8sHjWadYG8x
-yDP7KQBiHhAQH4uJcpPaH6ViwBNKqhHaDphrjTDF33qbOxvTqfH6GRy8aPo4ZE1U
-NblrXfxGvO2YnOTbtYHsErh13wUqmjQanRD81OrH8CU+CI5Bcwz+TBl8LsWipR9V
-0TAO+3fb007SHUVQI0yLQ/cuwz++GBJbtJoCBgVBAyhQXdYbgHiPkBuaQxtSChrk
-lZSsaTDHKKO6Fl/Myr9yh0ld+3Et1wYfcLbRTCOJ8XNK+wokzPc3FltFLXMSW1E1
-fFLyYzXaduBt8cCmgyzBh+D9OazErqtr+sJR4L4M7wX5dOU9aC+aEYxZ7wNJl34S
-CznuIEsvAmtWZC0LBSFNjb5Lb9/n2G2tep73Zikart9KU7lP35Tcpljv60ujxF1o
-YJmWx+4GDle+kYLEzrkEtMm7P5rqFOT5DNvH466JdQWBK0AdqwNnTLoliIBpoTMw
-Z6c0Aj0Nr43/ic4TxA3mgvRbgDbj2Pwipsak+to+WxoG73HFNR+quadNvYxYEcy5
-TsMD/1dZzNCbp4wh+MlexuqKqZNG1EkIVYvbnzfzbtyq4nL3cwEPcDeeTvKlrnxt
-zIQnpaaJf21maRZRC/vUeRG5P9YS/S/R4hOhifAMzV8YFShXLdQ=
-=Xw6n
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpLRz8ACgkQbAtpk944
+dnqjig/+JxblzZ2hMk1sXm5Hw01j2UIugN2CVoJYPOn5iAg0p+U5eZddjHaSksgi
+/dk0mXqeSYxRnaMjwy05CMjNX2mghEZLKVDdZ4YTDhmdQfDBvOuwoVsaUEtByC1c
+X4T1y+47Pg42Okp1OYQ92aCO1tqcJUxXF5zHMldaozJpoYG5Cx5i17QMwu2JEM8W
+Tb1AVKL9dnOxlL7x7woNrWYRVZaqwTcD2Doq6oxJAajQbEpr2mXfd0DQo+bBg4ya
+q1aOo73Tpyuzp25p3l0zv9bcvCYs/MI4YBb7ja4C/7CvabK47kJm8oCZWZbUdkDZ
+c+4ueVniOXG6lPiwiXdbMEM6Ne6/MbfNNYRTqGaB7EVZ55Aj9isq6Zr2Mr9YaOWb
+kS8ArZBEshD1MMnwBzAzFbXcvek4gGg6gV77MDrqdXnR/pt86U/oEhdv09SJFxBK
+h31wP7+XsRJgIM+HQFyO3rl6tfBa70aZs8yI310of4N2MTnx8ST6aqAFTgTyuG3A
+QWA1Oet0Jo+JnqO3IOcxfSQwJVlrnpWuGuSjqxW7lr3lVd7VBOMSNCQEWiBRw96c
+HfFXaxca9UwV2Tzy43D2qZc5cVn3Se8o4iTAmFDX0iE406KoSo4fsLSbLSXwJ6vG
+fZibMswSi/gW9Z8JCOd9jw05P3PYXLTt9A99FYMwyxhHHqSxPAM=
+=PIu1
 -----END PGP SIGNATURE-----
 
---zBZpvCNcoXwafAjP--
+--qpqR4wE1CEr+Roqx--

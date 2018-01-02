@@ -1,25 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:14:11 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:58912 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:14:36 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:58372 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993153AbeABPJKWJX29 (ORCPT
+        with ESMTP id S23993497AbeABPJKq3sw9 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:09:10 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 11/15] MIPS: ingenic: Initial JZ4770 support
-Date:   Tue,  2 Jan 2018 16:08:44 +0100
-Message-Id: <20180102150848.11314-11-paul@crapouillou.net>
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
+Subject: [PATCH v5 13/15] MIPS: JZ4770: Workaround for corrupted DMA transfers
+Date:   Tue,  2 Jan 2018 16:08:46 +0100
+Message-Id: <20180102150848.11314-13-paul@crapouillou.net>
 In-Reply-To: <20180102150848.11314-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905749; bh=3kHVgLqf6PdRkgLeTjVxl7PTQcSifbwZfALi6R8rOac=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=frbaiMmKmX+YWPeJ3fxVgYB6Xm6a+o9NdGEeFq4QS3Av7lt40VtCji5J+gVzOuOmlAntpwg86lr1RFirFKSyPzqXOOEx8hJs4He4cy6n77ybDQF19q59x3dpizYnyqVX2+E0Vfn2ez7cubejqvgDBwxMdtpmIf/VpEQ0CueQEfc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905750; bh=dTfJik2im2jPDplei/QC5vsTOUNtoW7r9Inph/wxplQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=GG/b52VW5yvSQFWtYMaV+2JkS52dZqXGhtD9up46gb26xctesdRDf1AT7vgm/FcKPNXj3cIpNjbjR8n5cEjIcReaiTd4Nh6SaMFXRCRBkQPU3jBFSUw+/BKKHlhU7sekaaZIxeSfo6xs6zU4lvrsB6i81O5HL6A4lnboJUFV7qk=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61839
+X-archive-position: 61840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,269 +35,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Provide just enough bits (clocks, clocksource, uart) to allow a kernel
-to boot on the JZ4770 SoC to a initramfs userspace.
+From: Maarten ter Huurne <maarten@treewalker.org>
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+We have seen MMC DMA transfers read corrupted data from SDRAM when
+a burst interval ends at physical address 0x10000000. To avoid this
+problem, we remove the final page of low memory from the memory map.
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
 ---
- arch/mips/boot/dts/ingenic/jz4770.dtsi | 212 +++++++++++++++++++++++++++++++++
- arch/mips/jz4740/Kconfig               |   6 +
- arch/mips/jz4740/time.c                |   2 +-
- 3 files changed, 219 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/boot/dts/ingenic/jz4770.dtsi
+ arch/mips/jz4740/setup.c | 24 ++++++++++++++++++++++++
+ arch/mips/kernel/setup.c |  8 ++++++++
+ 2 files changed, 32 insertions(+)
 
  v2: No change
  v3: No change
  v4: No change
- v5: Use SPDX license identifier
+ v5: No change
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-new file mode 100644
-index 000000000000..7c2804f3f5f1
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-@@ -0,0 +1,212 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <dt-bindings/clock/jz4770-cgu.h>
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ingenic,jz4770";
-+
-+	cpuintc: interrupt-controller {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
-+
-+	intc: interrupt-controller@10001000 {
-+		compatible = "ingenic,jz4770-intc";
-+		reg = <0x10001000 0x40>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <2>;
-+	};
-+
-+	ext: ext {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
-+	osc32k: osc32k {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <32768>;
-+	};
-+
-+	cgu: jz4770-cgu@10000000 {
-+		compatible = "ingenic,jz4770-cgu";
-+		reg = <0x10000000 0x100>;
-+
-+		clocks = <&ext>, <&osc32k>;
-+		clock-names = "ext", "osc32k";
-+
-+		#clock-cells = <1>;
-+	};
-+
-+	pinctrl: pin-controller@10010000 {
-+		compatible = "ingenic,jz4770-pinctrl";
-+		reg = <0x10010000 0x600>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		gpa: gpio@0 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <0>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 0 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <17>;
-+		};
-+
-+		gpb: gpio@1 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <1>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 32 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <16>;
-+		};
-+
-+		gpc: gpio@2 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <2>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 64 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <15>;
-+		};
-+
-+		gpd: gpio@3 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <3>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 96 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <14>;
-+		};
-+
-+		gpe: gpio@4 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <4>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 128 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <13>;
-+		};
-+
-+		gpf: gpio@5 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <5>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 160 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <12>;
-+		};
-+	};
-+
-+	uart0: serial@10030000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10030000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART0>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <5>;
-+
-+		status = "disabled";
-+	};
-+
-+	uart1: serial@10031000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10031000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART1>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <4>;
-+
-+		status = "disabled";
-+	};
-+
-+	uart2: serial@10032000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10032000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART2>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <3>;
-+
-+		status = "disabled";
-+	};
-+
-+	uart3: serial@10033000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10033000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART3>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <2>;
-+
-+		status = "disabled";
-+	};
-+
-+	uhc: uhc@13430000 {
-+		compatible = "generic-ohci";
-+		reg = <0x13430000 0x1000>;
-+
-+		clocks = <&cgu JZ4770_CLK_UHC>, <&cgu JZ4770_CLK_UHC_PHY>;
-+		assigned-clocks = <&cgu JZ4770_CLK_UHC>;
-+		assigned-clock-rates = <48000000>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <20>;
-+
-+		status = "disabled";
-+	};
-+};
-diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index 643af2012e14..29a9361a2b77 100644
---- a/arch/mips/jz4740/Kconfig
-+++ b/arch/mips/jz4740/Kconfig
-@@ -18,6 +18,12 @@ config MACH_JZ4740
- 	bool
- 	select SYS_HAS_CPU_MIPS32_R1
+diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+index afd84ee966e8..6948b133a15d 100644
+--- a/arch/mips/jz4740/setup.c
++++ b/arch/mips/jz4740/setup.c
+@@ -23,6 +23,7 @@
  
-+config MACH_JZ4770
-+	bool
-+	select MIPS_CPU_SCACHE
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_HIGHMEM
+ #include <asm/bootinfo.h>
+ #include <asm/mips_machine.h>
++#include <asm/page.h>
+ #include <asm/prom.h>
+ 
+ #include <asm/mach-jz4740/base.h>
+@@ -102,6 +103,29 @@ void __init arch_init_irq(void)
+ 	irqchip_init();
+ }
+ 
++/*
++ * We have seen MMC DMA transfers read corrupted data from SDRAM when a burst
++ * interval ends at physical address 0x10000000. To avoid this problem, we
++ * remove the final page of low memory from the memory map.
++ */
++void __init jz4770_reserve_unsafe_for_dma(void)
++{
++	int i;
 +
- config MACH_JZ4780
- 	bool
- 	select MIPS_CPU_SCACHE
-diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-index bb1ad5119da4..2ca9160f642a 100644
---- a/arch/mips/jz4740/time.c
-+++ b/arch/mips/jz4740/time.c
-@@ -113,7 +113,7 @@ static struct clock_event_device jz4740_clockevent = {
- #ifdef CONFIG_MACH_JZ4740
- 	.irq = JZ4740_IRQ_TCU0,
- #endif
--#ifdef CONFIG_MACH_JZ4780
-+#if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
- 	.irq = JZ4780_IRQ_TCU2,
- #endif
- };
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		struct boot_mem_map_entry *entry = boot_mem_map.map + i;
++
++		if (entry->type != BOOT_MEM_RAM)
++			continue;
++
++		if (entry->addr + entry->size != 0x10000000)
++			continue;
++
++		entry->size -= PAGE_SIZE;
++		break;
++	}
++}
++
+ static int __init jz4740_machine_setup(void)
+ {
+ 	mips_machine_setup();
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 85bc601e9a0d..5a2c20145aee 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -879,6 +879,14 @@ static void __init arch_mem_init(char **cmdline_p)
+ 
+ 	parse_early_param();
+ 
++#ifdef CONFIG_MACH_JZ4770
++	if (current_cpu_type() == CPU_JZRISC &&
++				mips_machtype == MACH_INGENIC_JZ4770) {
++		extern void __init jz4770_reserve_unsafe_for_dma(void);
++		jz4770_reserve_unsafe_for_dma();
++	}
++#endif
++
+ 	if (usermem) {
+ 		pr_info("User-defined physical RAM map:\n");
+ 		print_memory_map();
 -- 
 2.11.0

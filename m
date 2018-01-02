@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 17:26:56 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:46074 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994626AbeABQ0irOfMp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 17:26:38 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE78680D;
-        Tue,  2 Jan 2018 08:26:32 -0800 (PST)
-Received: from [10.1.78.252] (unknown [10.1.78.252])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B445C3F53D;
-        Tue,  2 Jan 2018 08:26:28 -0800 (PST)
-Subject: Re: [PATCH 26/67] dma-direct: use phys_to_dma
-To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
-Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, x86@kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org, patches@groups.riscv.org,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
-        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20171229081911.2802-1-hch@lst.de>
- <20171229081911.2802-27-hch@lst.de>
-From:   Vladimir Murzin <vladimir.murzin@arm.com>
-Message-ID: <76092d0d-3e74-9433-5fae-afc512e34b20@arm.com>
-Date:   Tue, 2 Jan 2018 16:26:27 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 17:32:48 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:44786 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994553AbeABQcl1rJNp convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 17:32:41 +0100
+Date:   Tue, 02 Jan 2018 17:32:27 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v5 10/15] MIPS: ingenic: Add machine info for supported
+ boards
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        devicetree@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
+Message-Id: <1514910747.3623.0@smtp.crapouillou.net>
+In-Reply-To: <CANc+2y7ePJ9PwXQp2EQS_CFj541iOkWLbZm7K3U0G7j0bx4RDg@mail.gmail.com>
+References: <20180102150848.11314-1-paul@crapouillou.net>
+        <20180102150848.11314-10-paul@crapouillou.net>
+        <CANc+2y7ePJ9PwXQp2EQS_CFj541iOkWLbZm7K3U0G7j0bx4RDg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20171229081911.2802-27-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <vladimir.murzin@arm.com>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514910755; bh=N+qnHMu3xpYjTSv/kCpXA+qYYYF0jejaeFZkfWzd5dE=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=DoU399wtTffbwQNB50HnPGvfn12J8mV5uVcUI4cV4WxKpax4mG4zTXS2FIXmmz4M6qCigMgPOfIWEpP9rOszfbppmJ2Avch/67sRGoFaSLQNmk95qQ/+gaDEExWkESCmNIXBatsEJwEsszg4829sRv9opK/Pq91SCEAkg+GyqC4=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61852
+X-archive-position: 61853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vladimir.murzin@arm.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,73 +43,166 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29/12/17 08:18, Christoph Hellwig wrote:
-> This means it uses whatever linear remapping scheme that the architecture
-> provides is used in the generic dma_direct ops.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  lib/dma-direct.c | 18 +++++++-----------
->  1 file changed, 7 insertions(+), 11 deletions(-)
-> 
-> diff --git a/lib/dma-direct.c b/lib/dma-direct.c
-> index 439db40854b7..0e087650e86b 100644
-> --- a/lib/dma-direct.c
-> +++ b/lib/dma-direct.c
-> @@ -1,12 +1,11 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
-> - *	lib/dma-noop.c
-> - *
-> - * DMA operations that map to physical addresses without flushing memory.
-> + * DMA operations that map physical memory directly without using an IOMMU or
-> + * flushing caches.
->   */
->  #include <linux/export.h>
->  #include <linux/mm.h>
-> -#include <linux/dma-mapping.h>
-> +#include <linux/dma-direct.h>
->  #include <linux/scatterlist.h>
->  #include <linux/pfn.h>
->  
-> @@ -17,7 +16,7 @@ static void *dma_direct_alloc(struct device *dev, size_t size,
->  
->  	ret = (void *)__get_free_pages(gfp, get_order(size));
->  	if (ret)
-> -		*dma_handle = virt_to_phys(ret) - PFN_PHYS(dev->dma_pfn_offset);
-> +		*dma_handle = phys_to_dma(dev, virt_to_phys(ret));
->  
->  	return ret;
->  }
-> @@ -32,7 +31,7 @@ static dma_addr_t dma_direct_map_page(struct device *dev, struct page *page,
->  		unsigned long offset, size_t size, enum dma_data_direction dir,
->  		unsigned long attrs)
->  {
-> -	return page_to_phys(page) + offset - PFN_PHYS(dev->dma_pfn_offset);
-> +	return phys_to_dma(dev, page_to_phys(page)) + offset;
->  }
->  
->  static int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl,
-> @@ -42,12 +41,9 @@ static int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl,
->  	struct scatterlist *sg;
->  
->  	for_each_sg(sgl, sg, nents, i) {
-> -		dma_addr_t offset = PFN_PHYS(dev->dma_pfn_offset);
-> -		void *va;
-> -
->  		BUG_ON(!sg_page(sg));
-> -		va = sg_virt(sg);
-> -		sg_dma_address(sg) = (dma_addr_t)virt_to_phys(va) - offset;
-> +
-> +		sg_dma_address(sg) = phys_to_dma(dev, sg_phys(sg));
->  		sg_dma_len(sg) = sg->length;
->  	}
->  
-> 
+Hi PrasannaKumar,
 
-From ARM NOMMU perspective
+Le mar. 2 janv. 2018 à 17:02, PrasannaKumar Muralidharan 
+<prasannatsmkumar@gmail.com> a écrit :
+> Hi Paul,
+> 
+> On 2 January 2018 at 20:38, Paul Cercueil <paul@crapouillou.net> 
+> wrote:
+>>  This makes sure that 'mips_machtype' will be initialized to the SoC
+>>  version used on the board.
+>> 
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  ---
+>>   arch/mips/Kconfig         |  1 +
+>>   arch/mips/jz4740/Makefile |  2 +-
+>>   arch/mips/jz4740/boards.c | 12 ++++++++++++
+>>   arch/mips/jz4740/setup.c  | 34 +++++++++++++++++++++++++++++-----
+>>   4 files changed, 43 insertions(+), 6 deletions(-)
+>>   create mode 100644 arch/mips/jz4740/boards.c
+>> 
+>>   v2: No change
+>>   v3: No change
+>>   v4: No change
+>>   v5: Use SPDX license identifier
+>> 
+>>  diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>>  index 350a990fc719..83243e427e36 100644
+>>  --- a/arch/mips/Kconfig
+>>  +++ b/arch/mips/Kconfig
+>>  @@ -376,6 +376,7 @@ config MACH_INGENIC
+>>          select BUILTIN_DTB
+>>          select USE_OF
+>>          select LIBFDT
+>>  +       select MIPS_MACHINE
+>> 
+>>   config LANTIQ
+>>          bool "Lantiq based platforms"
+>>  diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
+>>  index 88d6aa7d000b..fc2d3b3c4a80 100644
+>>  --- a/arch/mips/jz4740/Makefile
+>>  +++ b/arch/mips/jz4740/Makefile
+>>  @@ -6,7 +6,7 @@
+>>   # Object file lists.
+>> 
+>>   obj-y += prom.o time.o reset.o setup.o \
+>>  -       platform.o timer.o
+>>  +       platform.o timer.o boards.o
+>> 
+>>   CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
+>> 
+>>  diff --git a/arch/mips/jz4740/boards.c b/arch/mips/jz4740/boards.c
+>>  new file mode 100644
+>>  index 000000000000..13b0bddd8cb7
+>>  --- /dev/null
+>>  +++ b/arch/mips/jz4740/boards.c
+>>  @@ -0,0 +1,12 @@
+>>  +// SPDX-License-Identifier: GPL-2.0
+>>  +/*
+>>  + * Ingenic boards support
+>>  + * Copyright 2017, Paul Cercueil <paul@crapouillou.net>
+>>  + */
+>>  +
+>>  +#include <asm/bootinfo.h>
+>>  +#include <asm/mips_machine.h>
+>>  +
+>>  +MIPS_MACHINE(MACH_INGENIC_JZ4740, "qi,lb60", "Qi Hardware Ben 
+>> Nanonote", NULL);
+>>  +MIPS_MACHINE(MACH_INGENIC_JZ4780, "img,ci20",
+>>  +                       "Imagination Technologies CI20", NULL);
+>>  diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+>>  index 6d0152321819..afd84ee966e8 100644
+>>  --- a/arch/mips/jz4740/setup.c
+>>  +++ b/arch/mips/jz4740/setup.c
+>>  @@ -22,6 +22,7 @@
+>>   #include <linux/of_fdt.h>
+>> 
+>>   #include <asm/bootinfo.h>
+>>  +#include <asm/mips_machine.h>
+>>   #include <asm/prom.h>
+>> 
+>>   #include <asm/mach-jz4740/base.h>
+>>  @@ -53,16 +54,34 @@ static void __init jz4740_detect_mem(void)
+>>          add_memory_region(0, size, BOOT_MEM_RAM);
+>>   }
+>> 
+>>  +static unsigned long __init get_board_mach_type(const void *fdt)
+>>  +{
+>>  +       const struct mips_machine *mach;
+>>  +
+>>  +       for (mach = (struct mips_machine *)&__mips_machines_start;
+>>  +                       mach < (struct mips_machine 
+>> *)&__mips_machines_end;
+>>  +                       mach++) {
+>>  +               if (!fdt_node_check_compatible(fdt, 0, 
+>> mach->mach_id))
+>>  +                       return mach->mach_type;
+>>  +       }
+>>  +
+>>  +       return MACH_INGENIC_JZ4740;
+>>  +}
+>>  +
+>>   void __init plat_mem_setup(void)
+>>   {
+>>          int offset;
+>> 
+>>  +       if (!early_init_dt_scan(__dtb_start))
+>>  +               return;
+>>  +
+>>          jz4740_reset_init();
+>>  -       __dt_setup_arch(__dtb_start);
+>> 
+>>          offset = fdt_path_offset(__dtb_start, "/memory");
+>>          if (offset < 0)
+>>                  jz4740_detect_mem();
+>>  +
+>>  +       mips_machtype = get_board_mach_type(__dtb_start);
+>>   }
+>> 
+>>   void __init device_tree_init(void)
+>>  @@ -75,13 +94,18 @@ void __init device_tree_init(void)
+>> 
+>>   const char *get_system_type(void)
+>>   {
+>>  -       if (IS_ENABLED(CONFIG_MACH_JZ4780))
+>>  -               return "JZ4780";
+>>  -
+>>  -       return "JZ4740";
+>>  +       return mips_get_machine_name();
+>>   }
+>> 
+>>   void __init arch_init_irq(void)
+>>   {
+>>          irqchip_init();
+>>   }
+>>  +
+>>  +static int __init jz4740_machine_setup(void)
+>>  +{
+>>  +       mips_machine_setup();
+>>  +
+>>  +       return 0;
+>>  +}
+>>  +arch_initcall(jz4740_machine_setup);
+>>  --
+>>  2.11.0
+>> 
+>> 
+> 
+> Why add another file in arch/mips/jz4740/? I think declaring a machine
+> and compatible string in dts would suffice. Please feel free to
+> correct me if I am wrong.
+> 
+> Regards,
+> PrasannaKumar
 
-Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
+The point of this commit is, first, to have a textual description of 
+the board
+that can then be retrieved in dmesg; then, to properly initialize the
+mips_machtype early in the boot process. I think you are right and we 
+could
+have both things just with "model" and "compatible" nodes in devicetree.
 
-Thanks
-Vladimir
+Regards,
+-Paul

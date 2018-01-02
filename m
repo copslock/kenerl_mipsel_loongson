@@ -1,71 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 13:02:37 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:42123
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992821AbeABMCRti4oa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 13:02:17 +0100
-Received: by mail-wm0-x241.google.com with SMTP id b141so14224671wme.1
-        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 04:02:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=xfm4uNmV3HoBAPLdtsqHN+e54pBK6QYyagHaVhf/MKI=;
-        b=CHSdO9gHFBXDq2qJFIVIu5t1jYBz8LYicqepA2HGppy7FgvpEilS2UQwdj++tz+s3x
-         ETX1pjh4wsxaD7k2buDr+Sn2iNzgAm4BqBMMfFVUgAROfaoncS2PB60pK1auyz+l9Me6
-         GEWPdNgW5LSe+4rZ4SJgu/oWSDGzJeaGZxaMg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=xfm4uNmV3HoBAPLdtsqHN+e54pBK6QYyagHaVhf/MKI=;
-        b=qGwltkopl+UL7t4FPG5xEwZZatymhSmH2kyh9N0J8BU+WvGA/R5N+7RJBITppSjoLB
-         KqQUqRCgBVS6jPFyDVvrIAEHkIwXJ2pJwg1fnVcwDgqWInrHEktBZcJfp5gPv7i2J0mL
-         feA5ZzSZjf1rzMx0EPeFr82vfoozscdq45y3b+mHrDPEwHjeroLaAnpjEDsafak+ATIX
-         ihQ44YMyt6Zd4Fxwp7mA76LFa5acgryWJZWaYssTGrx4J6VKMVHQoNBbAOWbKv96r4Iz
-         pnl/0iYUcv8vOMR+AueNMlGyb7n9y8mkRYyHn9m3CtFyCOl/HKFznN9kwBnyYMZ9zvLe
-         QvNA==
-X-Gm-Message-State: AKGB3mJpu8ci020n9g+QIkBKqmcIjHkOelJDuTZbvd567W+ZT9urZL4A
-        tQRdRp4jLD2lp1hu7YVzvNhrui4VrUk=
-X-Google-Smtp-Source: ACJfBou/zT8gPCRIYqeRy7a4vCNXWuKIxLgYsCd8Atc7XJFpfnWVKeOy0BopdJxAPc4yXH1N4LXnmg==
-X-Received: by 10.80.175.161 with SMTP id h30mr62503464edd.292.1514894532322;
-        Tue, 02 Jan 2018 04:02:12 -0800 (PST)
-Received: from [192.168.0.20] (cpc90716-aztw32-2-0-cust92.18-1.cable.virginm.net. [86.26.100.93])
-        by smtp.googlemail.com with ESMTPSA id y28sm35523527edi.95.2018.01.02.04.02.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jan 2018 04:02:11 -0800 (PST)
-Subject: Re: [PATCH v2 1/2] nvmem: add driver for JZ4780 efuse
-To:     Mathieu Malaterre <malat@debian.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zubair.Kakakhel@mips.com,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-References: <20171228212954.2922-1-malat@debian.org>
- <20171228212954.2922-2-malat@debian.org>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Message-ID: <3ec9ddab-f855-8c39-4d75-d35be7bd6731@linaro.org>
-Date:   Tue, 2 Jan 2018 12:02:10 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <20171228212954.2922-2-malat@debian.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <srinivas.kandagatla@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 14:31:24 +0100 (CET)
+Received: from forward105p.mail.yandex.net ([77.88.28.108]:48382 "EHLO
+        forward105p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992692AbeABNbQX1Ou2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 14:31:16 +0100
+Received: from mxback15j.mail.yandex.net (mxback15j.mail.yandex.net [IPv6:2a02:6b8:0:1619::91])
+        by forward105p.mail.yandex.net (Yandex) with ESMTP id 661CD4082AD6;
+        Tue,  2 Jan 2018 16:31:10 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback15j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id a1Mw8NY5Xn-V97CbTIM;
+        Tue, 02 Jan 2018 16:31:10 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514899870;
+        bh=kY362TJwvfpm/RKdTDXeygP5ZUlIXVg9sx5TijnXdvE=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=S6gZ7h5/sDB51qIIAu/sJnn7gc8rotOQnW57TKolZd7baJ2kqCWCHOVGp88jmVT94
+         qy/EZM4qwY7Q96/xz+Gtyqqq+rrONYf2N2mIKt2+ROXEzC1ZE6xORUOjNzEv5zfoL2
+         uOPtHgwwgismCZfgcsgdfOK8dL8ZyZAQOrwhYjsg=
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id nAU1d9GSIs-V5jaVLDg;
+        Tue, 02 Jan 2018 16:31:08 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1514899868;
+        bh=kY362TJwvfpm/RKdTDXeygP5ZUlIXVg9sx5TijnXdvE=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=vruGbL/mpzovmOC22Aem7Odt3QIOZvpXEM2NPyDUrM4ELTvert8f6ItqgKpsvskrT
+         eELtldgdYzUkkf/Q6wqRDJcMBycuwJ/jb/jCSPFHn0EtkYlWOYet9A98HI1g6Vh6nb
+         mBSLNd/XQnTHv8pPGwDIIaMxyCrpCx/Bcroc9MPs=
+Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1514899786.1694.6.camel@flygoat.com>
+Subject: Re: [PATCH] MIPS: Loongson64: Drop 32-bit support for Loongson
+ 2E/2F devices
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Huacai CHen <chenhc@lemote.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 02 Jan 2018 21:29:46 +0800
+In-Reply-To: <20180102084759.GL5027@jhogan-linux.mipstec.com>
+References: <20171226042138.13227-1-jiaxun.yang@flygoat.com>
+         <20180102084759.GL5027@jhogan-linux.mipstec.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-LNNzY7WAO/8auJxPJvMY"
+X-Mailer: Evolution 3.26.2-1 
+Mime-Version: 1.0
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61825
+X-archive-position: 61826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: srinivas.kandagatla@linaro.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,33 +64,80 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
+--=-LNNzY7WAO/8auJxPJvMY
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 28/12/17 21:29, Mathieu Malaterre wrote:
-> From: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-> 
-> This patch brings support for the JZ4780 efuse. Currently it only expose
-> a read only access to the entire 8K bits efuse memory.
-> 
-> Tested-by: Mathieu Malaterre <malat@debian.org>
-> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-> Signed-off-by: Mathieu Malaterre <malat@debian.org>
-> ---
-Please split this patch, as you are mixing code, documentation, dts and 
-MAINTAINER changes here.
+On 2018-01-02 Tue 08:48 +0000=EF=BC=8CJames Hogan Wrote=EF=BC=9A
+> On Tue, Dec 26, 2017 at 12:21:38PM +0800, Jiaxun Yang wrote:
+> > Make loongson64 a pure 64-bit mach.
+>=20
+> Please expand to provide some rationale behind the change. Was 32-bit
+> support broken at runtime, or broken at build time, or are we simply
+> no
 
-Without which patch can not be reviewed!!
+The 32-bit support was broken at runtime, it doesn't boot anymore,
+witch is hard to debug because even early printk isn't working, also
+there are some build warnings. Some newer bootloader may not support
+32-bit ELF. So we decide to drop 32-bit support.
 
+Jiaxun
 
-Thanks,
-Srini
+> longer interested in supporting it?
+>=20
+> Cheers
+> James
+>=20
+> >=20
+> > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> > ---
+> >  arch/mips/loongson64/Kconfig | 2 --
+> >  1 file changed, 2 deletions(-)
+> >=20
+> > diff --git a/arch/mips/loongson64/Kconfig
+> > b/arch/mips/loongson64/Kconfig
+> > index 0d249fc3cfe9..a7d9a9241ac4 100644
+> > --- a/arch/mips/loongson64/Kconfig
+> > +++ b/arch/mips/loongson64/Kconfig
+> > @@ -17,7 +17,6 @@ config LEMOTE_FULOONG2E
+> >  	select I8259
+> >  	select ISA
+> >  	select IRQ_MIPS_CPU
+> > -	select SYS_SUPPORTS_32BIT_KERNEL
+> >  	select SYS_SUPPORTS_64BIT_KERNEL
+> >  	select SYS_SUPPORTS_LITTLE_ENDIAN
+> >  	select SYS_SUPPORTS_HIGHMEM
+> > @@ -49,7 +48,6 @@ config LEMOTE_MACH2F
+> >  	select ISA
+> >  	select SYS_HAS_CPU_LOONGSON2F
+> >  	select SYS_HAS_EARLY_PRINTK
+> > -	select SYS_SUPPORTS_32BIT_KERNEL
+> >  	select SYS_SUPPORTS_64BIT_KERNEL
+> >  	select SYS_SUPPORTS_HIGHMEM
+> >  	select SYS_SUPPORTS_LITTLE_ENDIAN
+> > --=20
+> > 2.15.1
+> >=20
+--=-LNNzY7WAO/8auJxPJvMY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
->   .../ABI/testing/sysfs-driver-jz4780-efuse          |  16 ++
+-----BEGIN PGP SIGNATURE-----
 
->   .../bindings/nvmem/ingenic,jz4780-efuse.txt        |  17 ++
->   MAINTAINERS                                        |   5 +
->   arch/mips/boot/dts/ingenic/jz4780.dtsi             |  40 ++-
->   drivers/nvmem/Kconfig                              |  10 +
->   drivers/nvmem/Makefile                             |   2 +
->   drivers/nvmem/jz4780-efuse.c                       | 305 +++++++++++++++++++++
->   7 files changed, 383 insertions(+), 12 deletions(-)
-...
+iQIzBAABCAAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpLiUoACgkQwRGUkHP8
+D2fAaBAAhdChxcc5FO55HxcBavFetEQadYehVWZUoKDzo/SPfAWkQJJ4hvXBJoOX
+DH/0YelGB+wCOIJuD9N9nIhOQ5TkooL1K0MYZc8WGMd86hpOiRySshClBYy/U+t8
+AhS0yRwifGeOkoCr6RdlCPidlAZQYOE00f/ir3oNWtK+XFGn3psf5q9LxfjuE/Rc
+510a+Jb6VNnOULUWohFvbRHW7MsTrGECUH/z7F8wJD5XOh0LcU/ESnloxRYQTJWC
+1nsuXteeakvp6WZqt5E+2cPqYgp0nUYsDbNK1noJGlg2u9M5ep8FCmy3w78DnY+Q
+LCBmvpDdstgT+bd9G/ZsmmCzHWL9aC5dR8VWlULDKMtat0lgQkXVRetn2kWEhGyB
+T0mZMrnrFt0TUvGMf3s+2Hvvc/ccfSVCCdxBpsnKgn1n4YKXWTl4XwEgi4g3mdCP
+ogEBBcmKk2Yaz6lq88/MSIRpjvBKjAspM+nD4QNstP2s3nc8bzqlVAUY2DapVlek
+etwjRgIHtLduqSgVG+rVhzJrThsCghFfuXd2NTNVyo7bRn2dbAFvSiGADm2yrXFX
+x1m5uh4goqqH2fREdTXMSYw6ijBOOHj52CzJOdr14Vh6qjHqlK+0o8DcgCu9T4BZ
+kSqFX7K48KiYI7FQr8s7qgI2Gdjr6om06CYcwwlMGAxhuAN8POI=
+=X4Js
+-----END PGP SIGNATURE-----
+
+--=-LNNzY7WAO/8auJxPJvMY--

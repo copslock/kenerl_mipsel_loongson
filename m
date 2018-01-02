@@ -1,36 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 17:32:48 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:44786 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994553AbeABQcl1rJNp convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 17:32:41 +0100
-Date:   Tue, 02 Jan 2018 17:32:27 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v5 10/15] MIPS: ingenic: Add machine info for supported
- boards
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        devicetree@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Message-Id: <1514910747.3623.0@smtp.crapouillou.net>
-In-Reply-To: <CANc+2y7ePJ9PwXQp2EQS_CFj541iOkWLbZm7K3U0G7j0bx4RDg@mail.gmail.com>
-References: <20180102150848.11314-1-paul@crapouillou.net>
-        <20180102150848.11314-10-paul@crapouillou.net>
-        <CANc+2y7ePJ9PwXQp2EQS_CFj541iOkWLbZm7K3U0G7j0bx4RDg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 17:38:02 +0100 (CET)
+Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:36140
+        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994553AbeABQhxidimp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 17:37:53 +0100
+Received: by mail-io0-x243.google.com with SMTP id i143so29358190ioa.3;
+        Tue, 02 Jan 2018 08:37:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=gEp8sub2EiUqQvo61VEfOm8QzgFbh7P1EFsBrIlNMxw=;
+        b=sJRencxp7cxge7lm/HBBRfEdlWgM3gKLxQOoJUZnJZc2ZJdsdY/aq3WwX2QbsCU7ud
+         cDPd8lSMjONyVhU9e3dXlMPv7jhbBhGh2UMOQJ+lAmk7vF7mwXhAhN/oc6fiLUxeamwb
+         9JamH5ZfXxMe7829pbzueL301CJNW9pqtDPIBzkACTYfZ6YRRoFGs8GVJ7Qr6Fb+4qU1
+         +itI3+sS/qj3dr/TMkyP/pUpmORflzJWH8Rj64QtrOoxeEgmM+08Ot9uJJHiNgZwTpwe
+         5Ofo6b/PooaWBs3QVdq3hvr5oI0CD6PfH1ZIzwmxhQ5+eE98aHlZAa9pJ39fH7sCAZae
+         K1Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=gEp8sub2EiUqQvo61VEfOm8QzgFbh7P1EFsBrIlNMxw=;
+        b=p2B0jUBCo8O2Ebf8+VwmVIHmtvD2UEOqkgyuY1dnZpGBq+FJMId8C9kV/DyunZmtXy
+         fYOTUV4o+JSSnPBrlweJ7th5SLmmhB2LV0Tqa3+yeumpDiw1p7/uM3Hgd8ekW1R83snB
+         HsL6JEBRspz5J4SZIohskY+6VtpCCgloVMnSAbqGrU3rZcubDasgO7DiPxJCG43CA5am
+         +ef6vbHy225CvffKKnS2o28sGI2nDKz1hu9sbZUxpFlv6VgwrsbvJ/63R/HiQR65nMsv
+         WQdwpT2wb5ngQACPmnf4DWmhZV5WTG3YyHsc8EpwSaKFXPBbguaFdynCPQM3ulwPyXtg
+         yBaQ==
+X-Gm-Message-State: AKGB3mIQDlvTa5LbZWxEk3pbI6oAHdlzl1S/7HqR3ZSAfNGN7QtC4NHc
+        PgvhSaQCL5MLi31/cK8RpU1C7PeVhLmUakGXRRMQhPJ//iw=
+X-Google-Smtp-Source: ACJfBosbptLXMvQpXQ0NPbR5v+LJtOabyjLKDU53QZpQm9fAvPHivdheVLqMudQ6zAFPD8+GydtSyQbN6wXnPGRGmVs=
+X-Received: by 10.107.142.11 with SMTP id q11mr47652144iod.165.1514911067191;
+ Tue, 02 Jan 2018 08:37:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514910755; bh=N+qnHMu3xpYjTSv/kCpXA+qYYYF0jejaeFZkfWzd5dE=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=DoU399wtTffbwQNB50HnPGvfn12J8mV5uVcUI4cV4WxKpax4mG4zTXS2FIXmmz4M6qCigMgPOfIWEpP9rOszfbppmJ2Avch/67sRGoFaSLQNmk95qQ/+gaDEExWkESCmNIXBatsEJwEsszg4829sRv9opK/Pq91SCEAkg+GyqC4=
-Return-Path: <paul@crapouillou.net>
+Received: by 10.2.144.208 with HTTP; Tue, 2 Jan 2018 08:37:46 -0800 (PST)
+In-Reply-To: <20171230135108.6834-5-paul@crapouillou.net>
+References: <20171228162939.3928-2-paul@crapouillou.net> <20171230135108.6834-1-paul@crapouillou.net>
+ <20171230135108.6834-5-paul@crapouillou.net>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Tue, 2 Jan 2018 22:07:46 +0530
+Message-ID: <CANc+2y5ZUM_ZzXaGgbx9b7O1GF4GrbaYsv97G+akvhP2d2VVUA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/8] MIPS: jz4740: dts: Add bindings for the jz4740-wdt driver
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61853
+X-archive-position: 61854
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,166 +72,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi PrasannaKumar,
+Hi Paul,
 
-Le mar. 2 janv. 2018 à 17:02, PrasannaKumar Muralidharan 
-<prasannatsmkumar@gmail.com> a écrit :
-> Hi Paul,
-> 
-> On 2 January 2018 at 20:38, Paul Cercueil <paul@crapouillou.net> 
-> wrote:
->>  This makes sure that 'mips_machtype' will be initialized to the SoC
->>  version used on the board.
->> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>   arch/mips/Kconfig         |  1 +
->>   arch/mips/jz4740/Makefile |  2 +-
->>   arch/mips/jz4740/boards.c | 12 ++++++++++++
->>   arch/mips/jz4740/setup.c  | 34 +++++++++++++++++++++++++++++-----
->>   4 files changed, 43 insertions(+), 6 deletions(-)
->>   create mode 100644 arch/mips/jz4740/boards.c
->> 
->>   v2: No change
->>   v3: No change
->>   v4: No change
->>   v5: Use SPDX license identifier
->> 
->>  diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->>  index 350a990fc719..83243e427e36 100644
->>  --- a/arch/mips/Kconfig
->>  +++ b/arch/mips/Kconfig
->>  @@ -376,6 +376,7 @@ config MACH_INGENIC
->>          select BUILTIN_DTB
->>          select USE_OF
->>          select LIBFDT
->>  +       select MIPS_MACHINE
->> 
->>   config LANTIQ
->>          bool "Lantiq based platforms"
->>  diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
->>  index 88d6aa7d000b..fc2d3b3c4a80 100644
->>  --- a/arch/mips/jz4740/Makefile
->>  +++ b/arch/mips/jz4740/Makefile
->>  @@ -6,7 +6,7 @@
->>   # Object file lists.
->> 
->>   obj-y += prom.o time.o reset.o setup.o \
->>  -       platform.o timer.o
->>  +       platform.o timer.o boards.o
->> 
->>   CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
->> 
->>  diff --git a/arch/mips/jz4740/boards.c b/arch/mips/jz4740/boards.c
->>  new file mode 100644
->>  index 000000000000..13b0bddd8cb7
->>  --- /dev/null
->>  +++ b/arch/mips/jz4740/boards.c
->>  @@ -0,0 +1,12 @@
->>  +// SPDX-License-Identifier: GPL-2.0
->>  +/*
->>  + * Ingenic boards support
->>  + * Copyright 2017, Paul Cercueil <paul@crapouillou.net>
->>  + */
->>  +
->>  +#include <asm/bootinfo.h>
->>  +#include <asm/mips_machine.h>
->>  +
->>  +MIPS_MACHINE(MACH_INGENIC_JZ4740, "qi,lb60", "Qi Hardware Ben 
->> Nanonote", NULL);
->>  +MIPS_MACHINE(MACH_INGENIC_JZ4780, "img,ci20",
->>  +                       "Imagination Technologies CI20", NULL);
->>  diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
->>  index 6d0152321819..afd84ee966e8 100644
->>  --- a/arch/mips/jz4740/setup.c
->>  +++ b/arch/mips/jz4740/setup.c
->>  @@ -22,6 +22,7 @@
->>   #include <linux/of_fdt.h>
->> 
->>   #include <asm/bootinfo.h>
->>  +#include <asm/mips_machine.h>
->>   #include <asm/prom.h>
->> 
->>   #include <asm/mach-jz4740/base.h>
->>  @@ -53,16 +54,34 @@ static void __init jz4740_detect_mem(void)
->>          add_memory_region(0, size, BOOT_MEM_RAM);
->>   }
->> 
->>  +static unsigned long __init get_board_mach_type(const void *fdt)
->>  +{
->>  +       const struct mips_machine *mach;
->>  +
->>  +       for (mach = (struct mips_machine *)&__mips_machines_start;
->>  +                       mach < (struct mips_machine 
->> *)&__mips_machines_end;
->>  +                       mach++) {
->>  +               if (!fdt_node_check_compatible(fdt, 0, 
->> mach->mach_id))
->>  +                       return mach->mach_type;
->>  +       }
->>  +
->>  +       return MACH_INGENIC_JZ4740;
->>  +}
->>  +
->>   void __init plat_mem_setup(void)
->>   {
->>          int offset;
->> 
->>  +       if (!early_init_dt_scan(__dtb_start))
->>  +               return;
->>  +
->>          jz4740_reset_init();
->>  -       __dt_setup_arch(__dtb_start);
->> 
->>          offset = fdt_path_offset(__dtb_start, "/memory");
->>          if (offset < 0)
->>                  jz4740_detect_mem();
->>  +
->>  +       mips_machtype = get_board_mach_type(__dtb_start);
->>   }
->> 
->>   void __init device_tree_init(void)
->>  @@ -75,13 +94,18 @@ void __init device_tree_init(void)
->> 
->>   const char *get_system_type(void)
->>   {
->>  -       if (IS_ENABLED(CONFIG_MACH_JZ4780))
->>  -               return "JZ4780";
->>  -
->>  -       return "JZ4740";
->>  +       return mips_get_machine_name();
->>   }
->> 
->>   void __init arch_init_irq(void)
->>   {
->>          irqchip_init();
->>   }
->>  +
->>  +static int __init jz4740_machine_setup(void)
->>  +{
->>  +       mips_machine_setup();
->>  +
->>  +       return 0;
->>  +}
->>  +arch_initcall(jz4740_machine_setup);
->>  --
->>  2.11.0
->> 
->> 
-> 
-> Why add another file in arch/mips/jz4740/? I think declaring a machine
-> and compatible string in dts would suffice. Please feel free to
-> correct me if I am wrong.
-> 
-> Regards,
-> PrasannaKumar
+On 30 December 2017 at 19:21, Paul Cercueil <paul@crapouillou.net> wrote:
+> Also remove the watchdog platform_device from platform.c, since it
+> wasn't used anywhere anyway.
+>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  arch/mips/boot/dts/ingenic/jz4740.dtsi |  8 ++++++++
+>  arch/mips/jz4740/platform.c            | 16 ----------------
+>  2 files changed, 8 insertions(+), 16 deletions(-)
+>
+>  v2: No change
+>
+> diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> index cd5185bb90ae..26c6b561d6f7 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> @@ -45,6 +45,14 @@
+>                 #clock-cells = <1>;
+>         };
+>
+> +       watchdog: watchdog@10002000 {
+> +               compatible = "ingenic,jz4740-watchdog";
+> +               reg = <0x10002000 0x10>;
+> +
+> +               clocks = <&cgu JZ4740_CLK_RTC>;
+> +               clock-names = "rtc";
+> +       };
+> +
 
-The point of this commit is, first, to have a textual description of 
-the board
-that can then be retrieved in dmesg; then, to properly initialize the
-mips_machtype early in the boot process. I think you are right and we 
-could
-have both things just with "model" and "compatible" nodes in devicetree.
+The watchdog driver calls jz4740_timer_enable_watchdog and
+jz4740_timer_disable_watchdog which defined in
+arch/mips/jz4740/timer.c. It accesses registers iomapped by timer
+code. Declaring register size as 0x10 does not show the real picture.
+Better use register size as 0x100 and let timer, wdt, pwm drivers to
+share them.
+
+Code from one of your branches
+(https://github.com/OpenDingux/linux/blob/for-upstream-clocksource/arch/mips/boot/dts/ingenic/jz4740.dtsi)
+does it. Can you prepare a patch series and send it?
+I have a patch set that moves timer code out of arch/mips/jz4740/ and
+does a similar thing for watchdog and pwm. As your new timer driver is
+better than the existing one I have not sent my patches yet. I would
+like to see it getting mainlined as it paves way for removing most of
+code in arch/mips/jz4740.
+
+>         rtc_dev: rtc@10003000 {
+>                 compatible = "ingenic,jz4740-rtc";
+>                 reg = <0x10003000 0x40>;
+> diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
+> index 5b7cdd67a9d9..cbc5f8e87230 100644
+> --- a/arch/mips/jz4740/platform.c
+> +++ b/arch/mips/jz4740/platform.c
+> @@ -233,22 +233,6 @@ struct platform_device jz4740_adc_device = {
+>         .resource       = jz4740_adc_resources,
+>  };
+>
+> -/* Watchdog */
+> -static struct resource jz4740_wdt_resources[] = {
+> -       {
+> -               .start = JZ4740_WDT_BASE_ADDR,
+> -               .end   = JZ4740_WDT_BASE_ADDR + 0x10 - 1,
+> -               .flags = IORESOURCE_MEM,
+> -       },
+> -};
+> -
+> -struct platform_device jz4740_wdt_device = {
+> -       .name          = "jz4740-wdt",
+> -       .id            = -1,
+> -       .num_resources = ARRAY_SIZE(jz4740_wdt_resources),
+> -       .resource      = jz4740_wdt_resources,
+> -};
+> -
+>  /* PWM */
+>  struct platform_device jz4740_pwm_device = {
+>         .name = "jz4740-pwm",
+> --
+> 2.11.0
+>
+>
 
 Regards,
--Paul
+PrasannaKumar

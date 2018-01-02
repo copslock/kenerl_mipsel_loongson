@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:10:27 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:57460 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2018 16:10:55 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:57828 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992916AbeABPJEKZzr9 (ORCPT
+        with ESMTP id S23992956AbeABPJEg25M9 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2018 16:09:04 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -9,17 +9,17 @@ Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 03/15] clk: ingenic: support PLLs with no bypass bit
-Date:   Tue,  2 Jan 2018 16:08:36 +0100
-Message-Id: <20180102150848.11314-3-paul@crapouillou.net>
+Subject: [PATCH v5 05/15] dt-bindings: clock: Add jz4770-cgu.h header
+Date:   Tue,  2 Jan 2018 16:08:38 +0100
+Message-Id: <20180102150848.11314-5-paul@crapouillou.net>
 In-Reply-To: <20180102150848.11314-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905742; bh=9VHv3wlW97zGK/5erDfMxFgwmGxrueFmWmGOQv6f+4E=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=CBGyn+YBGdVgdDWZBPAwOBiLPIp7Elp493NfEt4IAJQqXXBBBFwVF+QOxe2mqUqLq6KK4ntGnro+IKmiTBIaolr7qLNs5LkxOsaLQN7MPwXSLrVDutTLgEsanQd0fWKiTFNlmkR/VwawaobOH3bajGGtTiFiNetQ/jRI+R0XuQc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514905744; bh=HunR9/2K77ndJtWmtW90Gsow8P/1ZxiehsZEJqRx5e8=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qs3949VEB74pUSONlDge/g5D52Xi5m1IroZgO53I6L/ioyPwc1n8JdiU+p8CbMw7ArbQ15magH9DPtAh5q962Tcs2tGkTnUlfM3wNb4T2m1Ke99uFvXgd1IItI5GyATSzC/9jigmsrlEEnzOOIK7EQZPLYTxJudGS1BDS/G/Ioo=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61831
+X-archive-position: 61832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,55 +36,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The second PLL of the JZ4770 does not have a bypass bit.
-This commit makes it possible to support it with the current common CGU
-code.
+This will be used from the devicetree bindings to specify the clocks
+that should be obtained from the jz4770-cgu driver.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Acked-by: Stephen Boyd <sboyd@codeaurora.org>
 ---
- drivers/clk/ingenic/cgu.c | 3 ++-
- drivers/clk/ingenic/cgu.h | 2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ include/dt-bindings/clock/jz4770-cgu.h | 58 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 include/dt-bindings/clock/jz4770-cgu.h
 
- v2: No change
- v3: No change
+ v3: New patch in this series
  v4: No change
- v5: No change
+ v5: Use SPDX license identifier
 
-diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
-index a2e73a6d60fd..381c4a17a1fc 100644
---- a/drivers/clk/ingenic/cgu.c
-+++ b/drivers/clk/ingenic/cgu.c
-@@ -100,7 +100,8 @@ ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	n += pll_info->n_offset;
- 	od_enc = ctl >> pll_info->od_shift;
- 	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
--	bypass = !!(ctl & BIT(pll_info->bypass_bit));
-+	bypass = !pll_info->no_bypass_bit &&
-+		 !!(ctl & BIT(pll_info->bypass_bit));
- 	enable = !!(ctl & BIT(pll_info->enable_bit));
- 
- 	if (bypass)
-diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
-index f1527cf75b3f..9da34910bd80 100644
---- a/drivers/clk/ingenic/cgu.h
-+++ b/drivers/clk/ingenic/cgu.h
-@@ -48,6 +48,7 @@
-  * @bypass_bit: the index of the bypass bit in the PLL control register
-  * @enable_bit: the index of the enable bit in the PLL control register
-  * @stable_bit: the index of the stable bit in the PLL control register
-+ * @no_bypass_bit: if set, the PLL has no bypass functionality
-  */
- struct ingenic_cgu_pll_info {
- 	unsigned reg;
-@@ -58,6 +59,7 @@ struct ingenic_cgu_pll_info {
- 	u8 bypass_bit;
- 	u8 enable_bit;
- 	u8 stable_bit;
-+	bool no_bypass_bit;
- };
- 
- /**
+diff --git a/include/dt-bindings/clock/jz4770-cgu.h b/include/dt-bindings/clock/jz4770-cgu.h
+new file mode 100644
+index 000000000000..d68a7695a1f8
+--- /dev/null
++++ b/include/dt-bindings/clock/jz4770-cgu.h
+@@ -0,0 +1,58 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * This header provides clock numbers for the ingenic,jz4770-cgu DT binding.
++ */
++
++#ifndef __DT_BINDINGS_CLOCK_JZ4770_CGU_H__
++#define __DT_BINDINGS_CLOCK_JZ4770_CGU_H__
++
++#define JZ4770_CLK_EXT		0
++#define JZ4770_CLK_OSC32K	1
++#define JZ4770_CLK_PLL0		2
++#define JZ4770_CLK_PLL1		3
++#define JZ4770_CLK_CCLK		4
++#define JZ4770_CLK_H0CLK	5
++#define JZ4770_CLK_H1CLK	6
++#define JZ4770_CLK_H2CLK	7
++#define JZ4770_CLK_C1CLK	8
++#define JZ4770_CLK_PCLK		9
++#define JZ4770_CLK_MMC0_MUX	10
++#define JZ4770_CLK_MMC0		11
++#define JZ4770_CLK_MMC1_MUX	12
++#define JZ4770_CLK_MMC1		13
++#define JZ4770_CLK_MMC2_MUX	14
++#define JZ4770_CLK_MMC2		15
++#define JZ4770_CLK_CIM		16
++#define JZ4770_CLK_UHC		17
++#define JZ4770_CLK_GPU		18
++#define JZ4770_CLK_BCH		19
++#define JZ4770_CLK_LPCLK_MUX	20
++#define JZ4770_CLK_GPS		21
++#define JZ4770_CLK_SSI_MUX	22
++#define JZ4770_CLK_PCM_MUX	23
++#define JZ4770_CLK_I2S		24
++#define JZ4770_CLK_OTG		25
++#define JZ4770_CLK_SSI0		26
++#define JZ4770_CLK_SSI1		27
++#define JZ4770_CLK_SSI2		28
++#define JZ4770_CLK_PCM0		29
++#define JZ4770_CLK_PCM1		30
++#define JZ4770_CLK_DMA		31
++#define JZ4770_CLK_I2C0		32
++#define JZ4770_CLK_I2C1		33
++#define JZ4770_CLK_I2C2		34
++#define JZ4770_CLK_UART0	35
++#define JZ4770_CLK_UART1	36
++#define JZ4770_CLK_UART2	37
++#define JZ4770_CLK_UART3	38
++#define JZ4770_CLK_IPU		39
++#define JZ4770_CLK_ADC		40
++#define JZ4770_CLK_AIC		41
++#define JZ4770_CLK_AUX		42
++#define JZ4770_CLK_VPU		43
++#define JZ4770_CLK_UHC_PHY	44
++#define JZ4770_CLK_OTG_PHY	45
++#define JZ4770_CLK_EXT512	46
++#define JZ4770_CLK_RTC		47
++
++#endif /* __DT_BINDINGS_CLOCK_JZ4770_CGU_H__ */
 -- 
 2.11.0

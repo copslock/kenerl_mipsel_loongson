@@ -1,77 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 07:42:41 +0100 (CET)
-Received: from szxga07-in.huawei.com ([45.249.212.35]:54228 "EHLO huawei.com"
-        rhost-flags-OK-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992105AbeACGmeHhtBE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jan 2018 07:42:34 +0100
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 63909D6F4E5A;
-        Wed,  3 Jan 2018 14:42:23 +0800 (CST)
-Received: from [127.0.0.1] (10.177.29.40) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.361.1; Wed, 3 Jan 2018
- 14:42:23 +0800
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-To:     christophe leroy <christophe.leroy@c-s.fr>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Greg KH <gregkh@linuxfoundation.org>, <starvik@axis.com>,
-        <jesper.nilsson@axis.com>, <tony.luck@intel.com>,
-        <fenghua.yu@intel.com>, <jonas@southpole.se>, <shorne@gmail.com>,
-        <dhowells@redhat.com>
-References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com>
- <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
- <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
- <6c0ade63-f4d3-d44d-c622-b091eb2ba902@huawei.com>
-CC:     <linux-kernel@vger.kernel.org>, <ysxie@foxmail.com>,
-        <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>,
-        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
-        <marek.vasut@gmail.com>, <cyrille.pitchen@wedev4u.fr>,
-        <linux-mtd@lists.infradead.org>, <alsa-devel@alsa-project.org>,
-        <wim@iguana.be>, <linux-watchdog@vger.kernel.org>,
-        <b.zolnierkie@samsung.com>, <linux-fbdev@vger.kernel.org>,
-        <linus.walleij@linaro.org>, <linux-gpio@vger.kernel.org>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <lgirdwood@gmail.com>, <broonie@kernel.org>, <tglx@linutronix.de>,
-        <jason@lakedaemon.net>, <marc.zyngier@arm.com>, <arnd@arndb.de>,
-        <andriy.shevchenko@linux.intel.com>,
-        <industrypack-devel@lists.sourceforge.net>, <wg@grandegger.com>,
-        <mkl@pengutronix.de>, <linux-can@vger.kernel.org>,
-        <mchehab@kernel.org>, <linux-media@vger.kernel.org>,
-        <a.zummo@towertech.it>, <alexandre.belloni@free-electrons.com>,
-        <linux-rtc@vger.kernel.org>, <daniel.vetter@intel.com>,
-        <jani.nikula@linux.intel.com>, <seanpaul@chromium.org>,
-        <airlied@linux.ie>, <dri-devel@lists.freedesktop.org>,
-        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <tj@kernel.org>,
-        <linux-ide@vger.kernel.org>, <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <dvhart@infradead.org>, <andy@infradead.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        <jakub.kicinski@netronome.com>, <davem@davemloft.net>,
-        <nios2-dev@lists.rocketboards.org>, <netdev@vger.kernel.org>,
-        <vinod.koul@intel.com>, <dan.j.williams@intel.com>,
-        <dmaengine@vger.kernel.org>, <jslaby@suse.com>,
-        <linux-cris-kernel@axis.com>, <linux-ia64@vger.kernel.org>,
-        <openrisc@lists.librecores.org>, <linux-am33-list@redhat.com>
-From:   Yisheng Xie <xieyisheng1@huawei.com>
-Message-ID: <e9f6805c-2dd7-f9c6-d615-5e25cff241a3@huawei.com>
-Date:   Wed, 3 Jan 2018 14:42:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 08:49:49 +0100 (CET)
+Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:34802
+        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990754AbeACHtmgDu5i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jan 2018 08:49:42 +0100
+Received: by mail-qk0-x242.google.com with SMTP id g81so615107qke.1
+        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 23:49:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=dg1gZQ0XTPl5ik865QhgMxj2iYnvoVLLg0Ri4903uJ4=;
+        b=UQUCMDYTa6Xir3yzlWynpdu5ZxwVqJkJqkGHy9g61baXK0r6dv8OcyPAGJ+1WoxIwS
+         IDsSaywI5gpGGex2l+3JD9ZfHtzLePQS13BKIe8nXZ4GhunrN83t+KO9A8+HppZ1a+8e
+         dOiFjt0Qj0aKNR67MQWmJH2YwNL4bxRdhj92HDX4muLFujZQ7XWovpYKMhNXFwpcz8tX
+         tRg6wY90t4s2xBD5NHiz4m3BfRe+wF9QVZdazO0cPDmQwpUunuyoR9PQMj58oLJQbM62
+         kQaGI9XnmEtm3arUBS+KLMzGtLcJ4eJe6mdi8QZgrgsxMCVzWcXrsv9y+4woGCUhGCCp
+         H+tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=dg1gZQ0XTPl5ik865QhgMxj2iYnvoVLLg0Ri4903uJ4=;
+        b=CcsbIxGo4ccp/1hPV/PhCQYm7WKBiCkMnL+4AVwBXrjDR6sZMESONrNjrybQk2oobF
+         joSXh4DbpL1CiakQBmr558zmv8JdpUapDRFwrF7TSyIGcZxvNVBH/b9fMv8bm9Ccz12X
+         gYMaCwIEaHKugorRfAIBTACaOljISMC09ejesl/voBPEhGXYXuuTu+Z/1eJdNmfOXFq6
+         0rf2BB1AWMZE6cWuuYPkRxOjtgt2NumUpMV0Oh0GImo9fPxGICZtQVlqwFBet6dz5ZcL
+         YW2h9adP3EoGILqXGPfORYhQ8NnO1iKIfpHueWjdPIN0MTqzyuDSQPKiTerEEfYYIXTR
+         fHDQ==
+X-Gm-Message-State: AKGB3mLClXI3do+jqpS2Yk1x3EzLpVe4khBs3n1wGi93WsmnqinzjfNX
+        5qSGLvM9Jfm7cGZrV2bmhn+Ub899wDV2TMgHGBI=
+X-Google-Smtp-Source: ACJfBosjKbQ3lZy+Ip0KcMk6EGDf7VZMtuMoPU4vodAfZ0xh/mp9uKJMqwr3QljTEFf2n85CWmBPVY3pXtHAmk/D7nI=
+X-Received: by 10.55.75.19 with SMTP id y19mr723121qka.45.1514965776374; Tue,
+ 02 Jan 2018 23:49:36 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <6c0ade63-f4d3-d44d-c622-b091eb2ba902@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.29.40]
-X-CFilter-Loop: Reflected
-Return-Path: <xieyisheng1@huawei.com>
+Received: by 10.237.44.66 with HTTP; Tue, 2 Jan 2018 23:49:35 -0800 (PST)
+In-Reply-To: <87h8s3cvel.fsf@concordia.ellerman.id.au>
+References: <20171229081911.2802-1-hch@lst.de> <20171229081911.2802-17-hch@lst.de>
+ <878tdgtwzp.fsf@concordia.ellerman.id.au> <CAMuHMdWWus2kNSOzS94k-3678826W1YjKwCWTquu3hBLZ80cvw@mail.gmail.com>
+ <87h8s3cvel.fsf@concordia.ellerman.id.au>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 3 Jan 2018 08:49:35 +0100
+X-Google-Sender-Auth: oqSUvd2ZdU5LGG2QV3eD-O97YFc
+Message-ID: <CAMuHMdWYDz_jHNxQ-B8944520R-myzHkjkL1rKWUjA38inU7cw@mail.gmail.com>
+Subject: Re: [PATCH 16/67] powerpc: rename dma_direct_ to dma_nommu_
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-ia64@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        patches@groups.riscv.org,
+        "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Simek <monstr@monstr.eu>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61884
+X-archive-position: 61885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xieyisheng1@huawei.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,119 +89,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+ cris/ia64/mn10300/openrisc maintainers
+Hi Michael,
 
-On 2017/12/25 9:09, Yisheng Xie wrote:
-> hi Christophe and Greg,
-> 
-> On 2017/12/24 16:55, christophe leroy wrote:
->>
->>
->> Le 23/12/2017 à 16:57, Guenter Roeck a écrit :
->>> On 12/23/2017 05:48 AM, Greg KH wrote:
->>>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
->>>>> Hi all,
->>>>>
->>>>> When I tried to use devm_ioremap function and review related code, I found
->>>>> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
->>>>> except one use ioremap while the other use ioremap_nocache.
->>>>
->>>> For all arches?  Really?  Look at MIPS, and x86, they have different
->>>> functions.
->>>>
+On Wed, Jan 3, 2018 at 7:24 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Geert Uytterhoeven <geert@linux-m68k.org> writes:
+>
+>> On Tue, Jan 2, 2018 at 10:45 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>> Christoph Hellwig <hch@lst.de> writes:
 >>>
->>> Both mips and x86 end up mapping the same function, but other arches don't.
->>> mn10300 is one where ioremap and ioremap_nocache are definitely different.
+>>>> We want to use the dma_direct_ namespace for a generic implementation,
+>>>> so rename powerpc to the second best choice: dma_nommu_.
+>>>
+>>> I'm not a fan of "nommu". Some of the users of direct ops *are* using an
+>>> IOMMU, they're just setting up a 1:1 mapping once at init time, rather
+>>> than mapping dynamically.
+>>>
+>>> Though I don't have a good idea for a better name, maybe "1to1",
+>>> "linear", "premapped" ?
 >>
->> alpha: identical
->> arc: identical
->> arm: identical
->> arm64: identical
->> cris: different        <==
->> frv: identical
->> hexagone: identical
->> ia64: different        <==
->> m32r: identical
->> m68k: identical
->> metag: identical
->> microblaze: identical
->> mips: identical
->> mn10300: different     <==
->> nios: identical
->> openrisc: different    <==
->> parisc: identical
->> riscv: identical
->> s390: identical
->> sh: identical
->> sparc: identical
->> tile: identical
->> um: rely on asm/generic
->> unicore32: identical
->> x86: identical
->> asm/generic (no mmu): identical
-> 
-> Wow, that's correct, sorry for I have just checked the main archs, I means
-> x86,arm, arm64, mips.
-> 
-> However, I stall have no idea about why these 4 archs want different ioremap
-> function with others. Drivers seems cannot aware this? If driver call ioremap
-> want he really want for there 4 archs, cache or nocache?
+>> "identity"?
+>
+> I think that would be wrong, but thanks for trying to help :)
+>
+> The address on the device side is sometimes (often?) offset from the CPU
+> address. So eg. the device can DMA to RAM address 0x0 using address
+> 0x800000000000000.
+>
+> Identity would imply 0 == 0 etc.
+>
+> I think "bijective" is the correct term, but that's probably a bit
+> esoteric.
 
-Could you please help about this? it is out of my knowledge.
+OK, didn't know about the offset.
+Then "linear" is what we tend to use, right?
 
-Thanks
-Yisheng
+Gr{oetje,eeting}s,
 
-> 
->>
->> So 4 among all arches seems to have ioremap() and ioremap_nocache() being different.
->>
->> Could we have a define set by the 4 arches on which ioremap() and ioremap_nocache() are different, something like HAVE_DIFFERENT_IOREMAP_NOCACHE ?
-> 
-> Then, what the HAVE_DIFFERENT_IOREMAP_NOCACHE is uesed for ?
-> 
-> Thanks
-> Yisheng
->>
->> Christophe
->>
->>>
->>> Guenter
->>>
->>>>> While ioremap's
->>>>> default function is ioremap_nocache, so devm_ioremap_nocache also have the
->>>>> same function with devm_ioremap, which can just be killed to reduce the size
->>>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
->>>>>
->>>>> I have posted two versions, which use macro instead of function for
->>>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
->>>>> devm_ioremap_nocache for no need to keep a macro around for the duplicate
->>>>> thing. So here comes v3 and please help to review.
->>>>
->>>> I don't think this can be done, what am I missing?  These functions are
->>>> not identical, sorry for missing that before.
-> 
-> Never mind, I should checked all the arches, sorry about that.
-> 
->>>>
->>>> thanks,
->>>>
->>>> greg k-h
->>>>
->>>
->>> -- 
->>> To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
->>> the body of a message to majordomo@vger.kernel.org
->>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->>
->> ---
->> L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
->> https://www.avast.com/antivirus
->>
->>
->> .
->>
-> 
-> 
-> .
-> 
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

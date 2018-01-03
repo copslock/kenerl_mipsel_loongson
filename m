@@ -1,114 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 17:15:13 +0100 (CET)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:38599
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990415AbeACQPGGksFg convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jan 2018 17:15:06 +0100
-Received: by mail-qk0-x244.google.com with SMTP id l19so2128455qke.5;
-        Wed, 03 Jan 2018 08:15:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=oF1Dvsn6T9aQ43p6FtHzXNZdEVZ4JbUxCppQHO2d5tE=;
-        b=lqGAP1MeVstOlXSiLUxV9zu1w/w3143EqXCWShrspO+6YMIfku9Xe0FX5P/a5mb8la
-         QIvNFhPmCc6AlUo0A9nJxG1/lsOOgWXMV+UAMpg0XLFb/YQoMiL1a6Jzc8IG01voRl1E
-         HlzkxaNaqSB5ipRdx1KptmFAnQIrJ/b3aU2SIVn4L9EunQaLY0agK5s57Ccm/imuV7Kt
-         MjoHQ6+7BKnd3KT0VeJLUmxR/6e/WuTFiITBZqtMc/OfJO+agaOGC2UzUJEl8/oGhbha
-         nttyAK1lsN7Rpt+6ErSsvpMg/hemdcqhUuESLug0g//5+AaQ/h4zv1o/bwWG/PGNynOj
-         SuUA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 21:02:31 +0100 (CET)
+Received: from mail-ot0-f196.google.com ([74.125.82.196]:47003 "EHLO
+        mail-ot0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990493AbeACUCTBvRMa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jan 2018 21:02:19 +0100
+Received: by mail-ot0-f196.google.com with SMTP id v40so2191387ote.13;
+        Wed, 03 Jan 2018 12:02:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=oF1Dvsn6T9aQ43p6FtHzXNZdEVZ4JbUxCppQHO2d5tE=;
-        b=IJe15i45ZS7NwYUqFnLu/Hhfl0a0l5Hc5fBocO/Ok00D00bAIMHoZG/m1we5xTX9z6
-         U3O3wzjPqDatopszQYAlmuHjlKfAdbs29r5H2t1e+5bjhZyJdgEdN4KPdgfZERgZx7cz
-         1uwZQdgdAp9lDkOJP0bDWtIpPMOqQbtZomXhzG1LS7BWv1/yY2Vs5YAqDHZnwqqXQSx5
-         tWwswIv76oPKW6dgmZFoZggbNOFHbgMAjyiRr9OkGsr8cPmZn91Mtum+LQDy3BNjLr3L
-         EkgADCKVTHk7L+l9YGc56s9k2Wzxqd5VeCjArWFubIG38UZweJnr0Lc0+LbFSy6tg/WL
-         V91g==
-X-Gm-Message-State: AKGB3mJH/pPCBMnNIZvR/hMVyt1kOcn15t/JNz6fZFRLdZo7qlnQRvtp
-        3f9QVGz0ZRucygslwtjDD9KdAOhqifWEOX/IrnM=
-X-Google-Smtp-Source: ACJfBoupAtRFw2rD5glxWgL9Im39cR1N7T1/74BN/cKEPsWW0Uvp+JffvGNB+wwd5HQyLl2Uy9nGKE0ReoQC61bJApo=
-X-Received: by 10.55.212.204 with SMTP id s73mr2274151qks.142.1514996099668;
- Wed, 03 Jan 2018 08:14:59 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rskena7Kp2NJZXN57vvhE6H4q7gpSoSoHF6ormVrjHM=;
+        b=tLW9URl5FtH9xviNdNiUOG9z2FCz/QCnFrlfAjgS9qfR+QkLKCYZLaHVsBLYjYz08J
+         qeW0TqMRNha7PXAVFoEEmfDFSYWeI/2VzlZ20FJt/ii73PfeLp8gxMurfXPJ6Nv6B4/Y
+         9UiR556A+bzX7/3SEKde8hJWPJhHfQuXqDzURmxWcENX4DoWRKllw8BK5Gp+pPr5JmS9
+         VrjuUUoMFd/F+7QYGjfftoinanOqcT8DkmUxvhOl81V4jEQC0FoEt3ER6ddUqEMwHWjc
+         Ibeec/EvnLAgV07x7/1xptljUQGKRibviFp9Ax55CUz8mrg2FSWL4aZe4Kdfo2yqS6eA
+         YYbg==
+X-Gm-Message-State: AKGB3mICZjQmwLPW/nXxbSSc0OIfg6IZBDEw6fc4RsQV+BoUr6mdgoW/
+        KAr6qO63xxVmouhQj1es+g==
+X-Google-Smtp-Source: ACJfBot1FJHrp4eNThxKyaj4tOPjfaer9VtPAUAp0V667Q8gYKZTmv9CR893wDXk/GOE7Gr2oETBnw==
+X-Received: by 10.157.34.227 with SMTP id y90mr1549185ota.302.1515009732649;
+        Wed, 03 Jan 2018 12:02:12 -0800 (PST)
+Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
+        by smtp.gmail.com with ESMTPSA id y56sm754298oty.18.2018.01.03.12.02.11
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 03 Jan 2018 12:02:12 -0800 (PST)
+Date:   Wed, 3 Jan 2018 14:02:11 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Zubair.Kakakhel@mips.com,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 1/2] nvmem: add driver for JZ4780 efuse
+Message-ID: <20180103200211.u56tqesyumsofoff@rob-hp-laptop>
+References: <20171228212954.2922-1-malat@debian.org>
+ <20171228212954.2922-2-malat@debian.org>
 MIME-Version: 1.0
-Received: by 10.237.33.208 with HTTP; Wed, 3 Jan 2018 08:14:59 -0800 (PST)
-In-Reply-To: <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
-References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com> <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
- <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 3 Jan 2018 17:14:59 +0100
-X-Google-Sender-Auth: XmZbrjTGIM5ekE0HLckVzGksStI
-Message-ID: <CAK8P3a3i0bKvG56ha9_hzO=z80sVxCQhaeFn6QW3AwbwZs3HPg@mail.gmail.com>
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-To:     christophe leroy <christophe.leroy@c-s.fr>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Yisheng Xie <xieyisheng1@huawei.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ysxie@foxmail.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Richard Weinberger <richard@nod.at>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        alsa-devel@alsa-project.org, Wim Van Sebroeck <wim@iguana.be>,
-        linux-watchdog@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        industrypack-devel@lists.sourceforge.net, wg@grandegger.com,
-        mkl@pengutronix.de, linux-can@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        linux-rtc@vger.kernel.org, Daniel Vetter <daniel.vetter@intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Sean Paul <seanpaul@chromium.org>,
-        David Airlie <airlied@linux.ie>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>, Tejun Heo <tj@kernel.org>,
-        IDE-ML <linux-ide@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        devel@driverdev.osuosl.org, Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        David Miller <davem@davemloft.net>,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>,
-        Networking <netdev@vger.kernel.org>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        dmaengine@vger.kernel.org, Jiri Slaby <jslaby@suse.com>,
-        David Howells <dhowells@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20171228212954.2922-2-malat@debian.org>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61890
+X-archive-position: 61891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -121,99 +67,164 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Dec 24, 2017 at 9:55 AM, christophe leroy
-<christophe.leroy@c-s.fr> wrote:
-> Le 23/12/2017 à 16:57, Guenter Roeck a écrit :
->>
->> On 12/23/2017 05:48 AM, Greg KH wrote:
->>>
->>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
->>>>
->>>> Hi all,
->>>>
->>>> When I tried to use devm_ioremap function and review related code, I
->>>> found
->>>> devm_ioremap and devm_ioremap_nocache is almost the same with each
->>>> other,
->>>> except one use ioremap while the other use ioremap_nocache.
->>>
->>>
->>> For all arches?  Really?  Look at MIPS, and x86, they have different
->>> functions.
->>>
->>
->> Both mips and x86 end up mapping the same function, but other arches
->> don't.
->> mn10300 is one where ioremap and ioremap_nocache are definitely different.
->
->
-> alpha: identical
-> arc: identical
-> arm: identical
-> arm64: identical
-> cris: different        <==
-> frv: identical
-> hexagone: identical
-> ia64: different        <==
-> m32r: identical
-> m68k: identical
-> metag: identical
-> microblaze: identical
-> mips: identical
-> mn10300: different     <==
-> nios: identical
-> openrisc: different    <==
-> parisc: identical
-> riscv: identical
-> s390: identical
-> sh: identical
-> sparc: identical
-> tile: identical
-> um: rely on asm/generic
-> unicore32: identical
-> x86: identical
-> asm/generic (no mmu): identical
->
-> So 4 among all arches seems to have ioremap() and ioremap_nocache() being
-> different.
->
-> Could we have a define set by the 4 arches on which ioremap() and
-> ioremap_nocache() are different, something like
-> HAVE_DIFFERENT_IOREMAP_NOCACHE ?
+On Thu, Dec 28, 2017 at 10:29:52PM +0100, Mathieu Malaterre wrote:
+> From: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+> 
+> This patch brings support for the JZ4780 efuse. Currently it only expose
+> a read only access to the entire 8K bits efuse memory.
+> 
+> Tested-by: Mathieu Malaterre <malat@debian.org>
+> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+> ---
+>  .../ABI/testing/sysfs-driver-jz4780-efuse          |  16 ++
+>  .../bindings/nvmem/ingenic,jz4780-efuse.txt        |  17 ++
 
-I wonder if those are actually correct or not. What I found looking at
-those architectures:
+Please split bindings to separate patch.
 
-- openrisc only has one driver using ioremap (drivers/net/ethernet/ethoc.c)
-  and that calls ioremap_nocache(). Presumably the authors went with the
-  implementation for ioremap that made sense (using default attributes)
-  rather than the one that actually works (using uncached).
+>  MAINTAINERS                                        |   5 +
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi             |  40 ++-
 
-- On ia64, ioremap() checks the attributes for the physical
-  address based on firmware tables and then picks either cached
-  or uncached mappings. ioremap_nocache() does the same but
-  returns NULL instead of a cached mapping for anything that is
-  not an MMIO address. Presumably it would just work to always
-  call ioremap().
+dts files should also be separate.
 
-- mn10300 appears to be wrong, broken by David Howells in
-  commit 83c2dc15ce82 ("MN10300: Handle cacheable PCI regions
-  in pci_iomap()") for any driver calling ioremap() by to get uncached
-  memory, if I understand the comment for commit 34f1bdee1910
-   ("mn10300: switch to GENERIC_PCI_IOMAP") correctly: it
-  seems that PCI addresses include the 'uncached' bit by default
-  to get the right behavior, but dropping that bit breaks it.
+>  drivers/nvmem/Kconfig                              |  10 +
+>  drivers/nvmem/Makefile                             |   2 +
+>  drivers/nvmem/jz4780-efuse.c                       | 305 +++++++++++++++++++++
+>  7 files changed, 383 insertions(+), 12 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+>  create mode 100644 Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+>  create mode 100644 drivers/nvmem/jz4780-efuse.c
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-driver-jz4780-efuse b/Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+> new file mode 100644
+> index 000000000000..bb6f5d6ceea0
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+> @@ -0,0 +1,16 @@
+> +What:		/sys/devices/*/<our-device>/nvmem
+> +Date:		December 2017
+> +Contact:	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+> +Description:	read-only access to the efuse on the Ingenic JZ4780 SoC
+> +		The SoC has a one time programmable 8K efuse that is
+> +		split into segments. The driver supports read only.
+> +		The segments are
+> +		0x000   64 bit Random Number
+> +		0x008  128 bit Ingenic Chip ID
+> +		0x018  128 bit Customer ID
+> +		0x028 3520 bit Reserved
+> +		0x1E0    8 bit Protect Segment
+> +		0x1E1 2296 bit HDMI Key
+> +		0x300 2048 bit Security boot key
 
-- cris seems similar to mn10300 in hardware, using an phys address
-  bit for uncached access. There are two callers in arch code that
-  appear to rely on the cachable output of ioremap()
-arch/cris/arch-v32/kernel/signal.c:
-__ioremap_prot(virt_to_phys(data), PAGE_SIZE, PAGE_SIGNAL_TRAMPOLINE);
-arch/cris/arch-v32/mm/intmem.c:         intmem_virtual =
-ioremap(MEM_INTMEM_START + RESERVED_SIZE,
-  It's unclear whether ioremap_nocache() actually has any users
-  on cris, or whether it was only added for compile-time testing,
-  and calling plain ioremap() would always work too (assuming we
-  pass the phys address with the uncached-bit set).
+Why do these need to be exposed to userspace?
 
-       Arnd
+sysfs is 1 value per file and this is lots of different things. 
+
+We already have ways to feed random data (entropy) to the system. And we 
+have a way to expose SoC ID info to userspace (socdev).
+
+> +Users:		any user space application which wants to read the Chip
+> +		and Customer ID
+> diff --git a/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt b/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+> new file mode 100644
+> index 000000000000..cd6d67ec22fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+> @@ -0,0 +1,17 @@
+> +Ingenic JZ EFUSE driver bindings
+> +
+> +Required properties:
+> +- "compatible"		Must be set to "ingenic,jz4780-efuse"
+> +- "reg"			Register location and length
+> +- "clocks"		Handle for the ahb clock for the efuse.
+> +- "clock-names"		Must be "bus_clk"
+> +
+> +Example:
+> +
+> +efuse: efuse@134100d0 {
+> +	compatible = "ingenic,jz4780-efuse";
+> +	reg = <0x134100D0 0xFF>;
+> +
+> +	clocks = <&cgu JZ4780_CLK_AHB2>;
+> +	clock-names = "bus_clk";
+> +};
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a6e86e20761e..7a050c20c533 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6902,6 +6902,11 @@ M:	Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+>  S:	Maintained
+>  F:	drivers/dma/dma-jz4780.c
+>  
+> +INGENIC JZ4780 EFUSE Driver
+> +M:	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+> +S:	Maintained
+> +F:	drivers/nvmem/jz4780-efuse.c
+
+Binding file?
+
+> +
+>  INGENIC JZ4780 NAND DRIVER
+>  M:	Harvey Hunt <harveyhuntnexus@gmail.com>
+>  L:	linux-mtd@lists.infradead.org
+> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> index 9b5794667aee..3fb9d916a2ea 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> @@ -224,21 +224,37 @@
+>  		reg = <0x10002000 0x100>;
+>  	};
+>  
+> -	nemc: nemc@13410000 {
+> -		compatible = "ingenic,jz4780-nemc";
+> -		reg = <0x13410000 0x10000>;
+> -		#address-cells = <2>;
+> +
+> +	ahb2: ahb2 {
+> +		compatible = "simple-bus";
+
+This is an unrelated change and should be its own patch.
+
+> +		#address-cells = <1>;
+>  		#size-cells = <1>;
+> -		ranges = <1 0 0x1b000000 0x1000000
+> -			  2 0 0x1a000000 0x1000000
+> -			  3 0 0x19000000 0x1000000
+> -			  4 0 0x18000000 0x1000000
+> -			  5 0 0x17000000 0x1000000
+> -			  6 0 0x16000000 0x1000000>;
+> +		ranges = <>;
+> +
+> +		nemc: nemc@13410000 {
+> +			compatible = "ingenic,jz4780-nemc";
+> +			reg = <0x13410000 0x10000>;
+> +			#address-cells = <2>;
+> +			#size-cells = <1>;
+> +			ranges = <1 0 0x1b000000 0x1000000
+> +				  2 0 0x1a000000 0x1000000
+> +				  3 0 0x19000000 0x1000000
+> +				  4 0 0x18000000 0x1000000
+> +				  5 0 0x17000000 0x1000000
+> +				  6 0 0x16000000 0x1000000>;
+> +
+> +			clocks = <&cgu JZ4780_CLK_NEMC>;
+> +
+> +			status = "disabled";
+> +		};
+>  
+> -		clocks = <&cgu JZ4780_CLK_NEMC>;
+> +		efuse: efuse@134100d0 {
+> +			compatible = "ingenic,jz4780-efuse";
+> +			reg = <0x134100d0 0xff>;
+
+You are creating an overlapping region here with nemc above. Don't do 
+that.
+
+>  
+> -		status = "disabled";
+> +			clocks = <&cgu JZ4780_CLK_AHB2>;
+> +			clock-names = "bus_clk";
+> +		};
+>  	};
+>  
+>  	bch: bch@134d0000 {

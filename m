@@ -1,55 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 11:08:11 +0100 (CET)
-Received: from osg.samsung.com ([64.30.133.232]:50548 "EHLO osg.samsung.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990410AbeACKICkuXo2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jan 2018 11:08:02 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by osg.samsung.com (Postfix) with ESMTP id A359030603;
-        Wed,  3 Jan 2018 02:07:52 -0800 (PST)
-X-Virus-Scanned: Debian amavisd-new at dev.s-opensource.com
-Received: from osg.samsung.com ([127.0.0.1])
-        by localhost (localhost [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bINchcq7wn3D; Wed,  3 Jan 2018 02:07:50 -0800 (PST)
-Received: from vento.lan (179.176.127.141.dynamic.adsl.gvt.net.br [179.176.127.141])
-        by osg.samsung.com (Postfix) with ESMTPSA id 6A578305FB;
-        Wed,  3 Jan 2018 02:07:45 -0800 (PST)
-Date:   Wed, 3 Jan 2018 08:07:42 -0200
-From:   Mauro Carvalho Chehab <mchehab@s-opensource.com>
-To:     Bryan O'Donoghue <pure.logic@nexus-software.ie>
-Cc:     mturquette@baylibre.com, sboyd@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-rpi-kernel@lists.infradead.org,
-        patches@opensource.cirrus.com,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org,
-        freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
-        linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v3 01/34] clk_ops: change round_rate() to return
- unsigned long
-Message-ID: <20180103080742.6ad76c2d@vento.lan>
-In-Reply-To: <1514835793-1104-2-git-send-email-pure.logic@nexus-software.ie>
-References: <1514835793-1104-1-git-send-email-pure.logic@nexus-software.ie>
-        <1514835793-1104-2-git-send-email-pure.logic@nexus-software.ie>
-Organization: Samsung
-X-Mailer: Claws Mail 3.15.1-dirty (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 13:01:43 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:40896 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990410AbeACMBgpU0gv convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jan 2018 13:01:36 +0100
+Date:   Wed, 03 Jan 2018 13:01:06 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v2 5/8] MIPS: jz4740: dts: Add bindings for the jz4740-wdt
+ driver
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Wim Van Sebroeck <wim@iguana.be>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org
+Message-Id: <1514980866.1642.0@smtp.crapouillou.net>
+In-Reply-To: <698e7ae5-9f19-1282-7b82-0e2fd2080906@roeck-us.net>
+References: <20171228162939.3928-2-paul@crapouillou.net>
+        <20171230135108.6834-1-paul@crapouillou.net>
+        <20171230135108.6834-5-paul@crapouillou.net>
+        <CANc+2y5ZUM_ZzXaGgbx9b7O1GF4GrbaYsv97G+akvhP2d2VVUA@mail.gmail.com>
+        <1514911698.3623.1@smtp.crapouillou.net>
+        <698e7ae5-9f19-1282-7b82-0e2fd2080906@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <mchehab@s-opensource.com>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1514980888; bh=T4EambyWRy1srza3KqdJH+XRdmQI/TOjZ2zgKxbGZjs=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=bZnqffxXIMut+sHG0tYOuOJcMmYYSmpR+7kaRsVUuCCAYdJ7OWGXZGcJcLrqcZaIEu+UPQA77B4hvzjHMfFmJKWwUf2Qqr5QyWAg58kruFlRvi2Aw211/CGeyya5kGu+j09SNnQbJb330MBvqFgFXIlk0IlAJ4l+7AtAyHmxoOA=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61887
+X-archive-position: 61888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mchehab@s-opensource.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,35 +49,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Em Mon,  1 Jan 2018 19:42:40 +0000
-Bryan O'Donoghue <pure.logic@nexus-software.ie> escreveu:
 
-> Right now it is not possible to return a value larger than LONG_MAX on 32
-> bit systems. You can pass a rate of ULONG_MAX but can't return anything
-> past LONG_MAX due to the fact both the rounded_rate and negative error
-> codes are represented in the return value of round_rate().
-> 
-> Most implementations either return zero on error or don't return error
-> codes at all. A minority of implementations do return a negative number -
-> typically -EINVAL or -ENODEV.
-> 
-> At the higher level then callers of round_rate() typically and rightly
-> check for a value of <= 0.
-> 
-> It is possible then to convert round_rate() to an unsigned long return
-> value and change error code indication for the minority from -ERRORCODE to
-> a simple 0.
-> 
-> This patch is the first step in making it possible to scale round_rate past
-> LONG_MAX, later patches will change the previously mentioned minority of
-> round_rate() implementations to return zero only on error if those
-> implementations currently return a negative error number. Implementations
-> that do not return an error code of < 0 will be left as-is.
-> 
 
->  drivers/media/platform/omap3isp/isp.c           |  4 ++--
+Le mer. 3 janv. 2018 à 5:46, Guenter Roeck <linux@roeck-us.net> a 
+écrit :
+> On 01/02/2018 08:48 AM, Paul Cercueil wrote:
+>> Hi PrasannaKumar,
+>> 
+>> Le mar. 2 janv. 2018 à 17:37, PrasannaKumar Muralidharan 
+>> <prasannatsmkumar@gmail.com> a écrit :
+>>> Hi Paul,
+>>> 
+>>> On 30 December 2017 at 19:21, Paul Cercueil <paul@crapouillou.net> 
+>>> wrote:
+>>>>  Also remove the watchdog platform_device from platform.c, since it
+>>>>  wasn't used anywhere anyway.
+>>>> 
+>>>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>>>  ---
+>>>>   arch/mips/boot/dts/ingenic/jz4740.dtsi |  8 ++++++++
+>>>>   arch/mips/jz4740/platform.c            | 16 ----------------
+>>>>   2 files changed, 8 insertions(+), 16 deletions(-)
+>>>> 
+>>>>   v2: No change
+>>>> 
+>>>>  diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi 
+>>>> b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+>>>>  index cd5185bb90ae..26c6b561d6f7 100644
+>>>>  --- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
+>>>>  +++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+>>>>  @@ -45,6 +45,14 @@
+>>>>                  #clock-cells = <1>;
+>>>>          };
+>>>> 
+>>>>  +       watchdog: watchdog@10002000 {
+>>>>  +               compatible = "ingenic,jz4740-watchdog";
+>>>>  +               reg = <0x10002000 0x10>;
+>>>>  +
+>>>>  +               clocks = <&cgu JZ4740_CLK_RTC>;
+>>>>  +               clock-names = "rtc";
+>>>>  +       };
+>>>>  +
+>>> 
+>>> The watchdog driver calls jz4740_timer_enable_watchdog and
+>>> jz4740_timer_disable_watchdog which defined in
+>>> arch/mips/jz4740/timer.c. It accesses registers iomapped by timer
+>>> code. Declaring register size as 0x10 does not show the real 
+>>> picture.
+>>> Better use register size as 0x100 and let timer, wdt, pwm drivers to
+>>> share them.
+>> 
+>> As you said, it accesses registers iomapped by timer code. So the 
+>> watchdog
+>> driver doesn't need to iomap them.
+>> 
+>>> Code from one of your branches
+>>> (https://github.com/OpenDingux/linux/blob/for-upstream-clocksource/arch/mips/boot/dts/ingenic/jz4740.dtsi)
+>>> does it. Can you prepare a patch series and send it?
+>>> I have a patch set that moves timer code out of arch/mips/jz4740/ 
+>>> and
+>>> does a similar thing for watchdog and pwm. As your new timer driver 
+>>> is
+>>> better than the existing one I have not sent my patches yet. I would
+>>> like to see it getting mainlined as it paves way for removing most 
+>>> of
+>>> code in arch/mips/jz4740.
+>> 
+>> The whole 'for-upstream-clocksource' branch is supposed to go 
+>> upstream,
+>> but I can't do it in one big patchset without having lots of 
+>> breakages with
+>> my other patchsets (jz4770 SoC support, and jz4740 watchdog updates)
+>> currently under review. That also makes it simpler to upstream than 
+>> having
+>> one single patchset that touches 6 different frameworks (MIPS, irq, 
+>> clocks,
+>> clocksource, watchdog, PWM).
+>> 
+>> So I will submit it in two steps, first the irq/clocks/clocksource 
+>> drivers
+>> (this patchset) hopefully for 4.16, and then the 
+>> platform/watchdog/PWM fixes
+>> for 4.17.
+>> 
+> 
+> I kind of lost it in this exchange, sorry. At this point I don't know 
+> if something
+> is wrong with the watchdog patches, and I have no clue what the 
+> upstream path
+> is supposed to be. My working assumption is that 1) something may be 
+> wrong with
+> the current version of the patches, and, 2), even if not, none of the 
+> patches
+> is expected to find its way upstream through the watchdog subsystem. 
+> Plus, 3),
+> even if some of the patches are supposed to go upstream through the 
+> watchdog
+> subsystem, that won't happen in 4.16, and the patches will be 
+> resubmitted later
+> when they are ready [and will hopefully marked clearly for submission 
+> through
+> the watchdog subsystem].
+> 
+> With that in mind, I'll mark the series for my reference as "not 
+> applicable".
+> If this is wrong please let me know.
+> 
+> Guenter
 
-Acked-by: Mauro Carvalho Chehab <mchehab@s-opensource.com>
+Sorry, my fault, PrasannaKumar mentionned my 'for-upstream-clocksource' 
+branch requesting
+me to submit it upstream, which I am doing in parallel of this one. I 
+thought I was
+answering him in the other patchset's thread, hence the confusion.
 
-Thanks,
-Mauro
+There is nothing wrong with these watchdog patches. Upstream path is 
+through the MIPS tree.
+
+Paul

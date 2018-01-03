@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 08:49:49 +0100 (CET)
-Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:34802
-        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990754AbeACHtmgDu5i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jan 2018 08:49:42 +0100
-Received: by mail-qk0-x242.google.com with SMTP id g81so615107qke.1
-        for <linux-mips@linux-mips.org>; Tue, 02 Jan 2018 23:49:42 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 09:20:19 +0100 (CET)
+Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:45153
+        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992105AbeACIUMeg1Yi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jan 2018 09:20:12 +0100
+Received: by mail-wr0-x241.google.com with SMTP id o15so737868wrf.12
+        for <linux-mips@linux-mips.org>; Wed, 03 Jan 2018 00:20:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=dg1gZQ0XTPl5ik865QhgMxj2iYnvoVLLg0Ri4903uJ4=;
-        b=UQUCMDYTa6Xir3yzlWynpdu5ZxwVqJkJqkGHy9g61baXK0r6dv8OcyPAGJ+1WoxIwS
-         IDsSaywI5gpGGex2l+3JD9ZfHtzLePQS13BKIe8nXZ4GhunrN83t+KO9A8+HppZ1a+8e
-         dOiFjt0Qj0aKNR67MQWmJH2YwNL4bxRdhj92HDX4muLFujZQ7XWovpYKMhNXFwpcz8tX
-         tRg6wY90t4s2xBD5NHiz4m3BfRe+wF9QVZdazO0cPDmQwpUunuyoR9PQMj58oLJQbM62
-         kQaGI9XnmEtm3arUBS+KLMzGtLcJ4eJe6mdi8QZgrgsxMCVzWcXrsv9y+4woGCUhGCCp
-         H+tg==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=sMfETgmfI7U8AQjGPwtH0IDmQDFB2DTP74LNtFVnKSo=;
+        b=FQ9+QZTD8Udp9egL79r8e672KMsgHB6avzwNdtNCuhW9KroGPsHnlxTiSNAr3ZBz4a
+         Qndv3jQ5CGLe9ZFCXyx0qDzZiWCnYt3poQnHocznkL7Ln/tcrx8RjfX8zTy76SG2XWct
+         tR742tSk3XiGgjz0SMXsrjSyqk8b42NcJXlwr9+V+zabv939Yf4XIPYzVDO7oGMlIi7B
+         kbxQiMEJ/a/5UVl+asevb6ZYMFucrefgqLs5PYfyrhbzTTMl4nzyFz4G6TjwHN/UT/S2
+         Mq6qGneEihhwfZaiEbN/MoN3jM8aDMXX/I3qbRVjnAccNGHLhkYEKm2OQWc4B8r6YHsA
+         sgTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=dg1gZQ0XTPl5ik865QhgMxj2iYnvoVLLg0Ri4903uJ4=;
-        b=CcsbIxGo4ccp/1hPV/PhCQYm7WKBiCkMnL+4AVwBXrjDR6sZMESONrNjrybQk2oobF
-         joSXh4DbpL1CiakQBmr558zmv8JdpUapDRFwrF7TSyIGcZxvNVBH/b9fMv8bm9Ccz12X
-         gYMaCwIEaHKugorRfAIBTACaOljISMC09ejesl/voBPEhGXYXuuTu+Z/1eJdNmfOXFq6
-         0rf2BB1AWMZE6cWuuYPkRxOjtgt2NumUpMV0Oh0GImo9fPxGICZtQVlqwFBet6dz5ZcL
-         YW2h9adP3EoGILqXGPfORYhQ8NnO1iKIfpHueWjdPIN0MTqzyuDSQPKiTerEEfYYIXTR
-         fHDQ==
-X-Gm-Message-State: AKGB3mLClXI3do+jqpS2Yk1x3EzLpVe4khBs3n1wGi93WsmnqinzjfNX
-        5qSGLvM9Jfm7cGZrV2bmhn+Ub899wDV2TMgHGBI=
-X-Google-Smtp-Source: ACJfBosjKbQ3lZy+Ip0KcMk6EGDf7VZMtuMoPU4vodAfZ0xh/mp9uKJMqwr3QljTEFf2n85CWmBPVY3pXtHAmk/D7nI=
-X-Received: by 10.55.75.19 with SMTP id y19mr723121qka.45.1514965776374; Tue,
- 02 Jan 2018 23:49:36 -0800 (PST)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=sMfETgmfI7U8AQjGPwtH0IDmQDFB2DTP74LNtFVnKSo=;
+        b=Qw2fH+KeYQxfCC+18pIvoi1cktkpqrLAq/z0ArJIyXv35zh2Si1PuDTWiLBaqGi3Dy
+         U/jvbYoMSYPZBRQaWluApd9Mms90ruKSoij2WEr8yGoFbRzESLI8Kis33qaun7w7ugYe
+         YEbDk+nrcui1FYIQvGwbK/R9LG1CR5R5+fljIKeJFH8brKshpxzcJUpuMxeSMI3a6jiX
+         DqWcy0WagcsXtCjtgFwEMq6knARrL17cGbB2L8G7eSvd/uUdmWnWvoxAJ7VQMG3SQNiy
+         5+hh6bdl4H4GUEGasv/L0fv05tI5dNcdpeYUuGqTDfRQVQky8ZYBqtm8Su65edEvR1+X
+         tI6A==
+X-Gm-Message-State: AKGB3mLl5f4SgzCz5RqAI/yykRuEC3MvtyViiaBUcZnTZClRUlf2Fr5T
+        035U8/45/ULdZvClT5axNrE9gfaSk8KyT44nvvk=
+X-Google-Smtp-Source: ACJfBovkxcUik9Pw0e4DTBdVebqLIFW6U84Gz81Ne7r1ZhLu1BPxwuTdJ8+XabVZBGC9/QEtqP9RocDmEzlnzUOnvdk=
+X-Received: by 10.223.195.99 with SMTP id e32mr730691wrg.10.1514967607103;
+ Wed, 03 Jan 2018 00:20:07 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.237.44.66 with HTTP; Tue, 2 Jan 2018 23:49:35 -0800 (PST)
-In-Reply-To: <87h8s3cvel.fsf@concordia.ellerman.id.au>
+Received: by 10.223.153.163 with HTTP; Wed, 3 Jan 2018 00:19:46 -0800 (PST)
+In-Reply-To: <CAMuHMdWYDz_jHNxQ-B8944520R-myzHkjkL1rKWUjA38inU7cw@mail.gmail.com>
 References: <20171229081911.2802-1-hch@lst.de> <20171229081911.2802-17-hch@lst.de>
  <878tdgtwzp.fsf@concordia.ellerman.id.au> <CAMuHMdWWus2kNSOzS94k-3678826W1YjKwCWTquu3hBLZ80cvw@mail.gmail.com>
- <87h8s3cvel.fsf@concordia.ellerman.id.au>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 3 Jan 2018 08:49:35 +0100
-X-Google-Sender-Auth: oqSUvd2ZdU5LGG2QV3eD-O97YFc
-Message-ID: <CAMuHMdWYDz_jHNxQ-B8944520R-myzHkjkL1rKWUjA38inU7cw@mail.gmail.com>
+ <87h8s3cvel.fsf@concordia.ellerman.id.au> <CAMuHMdWYDz_jHNxQ-B8944520R-myzHkjkL1rKWUjA38inU7cw@mail.gmail.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Wed, 3 Jan 2018 19:19:46 +1100
+Message-ID: <CAGRGNgV+DnZAAtiE5oe8rxp4=_JHJrtSQc8F5jrgN0rgYKfwjA@mail.gmail.com>
 Subject: Re: [PATCH 16/67] powerpc: rename dma_direct_ to dma_nommu_
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Christoph Hellwig <hch@lst.de>,
+        iommu@lists.linux-foundation.org,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         linux-ia64@vger.kernel.org,
         Linux-sh list <linux-sh@vger.kernel.org>,
@@ -60,7 +61,7 @@ Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         patches@groups.riscv.org,
         "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
+        "Mailing List, Arm" <linux-arm-kernel@lists.infradead.org>,
         Michal Simek <monstr@monstr.eu>,
         Parisc List <linux-parisc@vger.kernel.org>,
         Cris <linux-cris-kernel@axis.com>,
@@ -68,15 +69,15 @@ Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
         alpha <linux-alpha@vger.kernel.org>,
         linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <geert.uytterhoeven@gmail.com>
+Return-Path: <julian.calaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61885
+X-archive-position: 61886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: julian.calaby@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,47 +90,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Michael,
+Hi All,
 
-On Wed, Jan 3, 2018 at 7:24 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Geert Uytterhoeven <geert@linux-m68k.org> writes:
+On Wed, Jan 3, 2018 at 6:49 PM, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> Hi Michael,
 >
->> On Tue, Jan 2, 2018 at 10:45 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
->>> Christoph Hellwig <hch@lst.de> writes:
->>>
->>>> We want to use the dma_direct_ namespace for a generic implementation,
->>>> so rename powerpc to the second best choice: dma_nommu_.
->>>
->>> I'm not a fan of "nommu". Some of the users of direct ops *are* using an
->>> IOMMU, they're just setting up a 1:1 mapping once at init time, rather
->>> than mapping dynamically.
->>>
->>> Though I don't have a good idea for a better name, maybe "1to1",
->>> "linear", "premapped" ?
+> On Wed, Jan 3, 2018 at 7:24 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> Geert Uytterhoeven <geert@linux-m68k.org> writes:
 >>
->> "identity"?
+>>> On Tue, Jan 2, 2018 at 10:45 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>>> Christoph Hellwig <hch@lst.de> writes:
+>>>>
+>>>>> We want to use the dma_direct_ namespace for a generic implementation,
+>>>>> so rename powerpc to the second best choice: dma_nommu_.
+>>>>
+>>>> I'm not a fan of "nommu". Some of the users of direct ops *are* using an
+>>>> IOMMU, they're just setting up a 1:1 mapping once at init time, rather
+>>>> than mapping dynamically.
+>>>>
+>>>> Though I don't have a good idea for a better name, maybe "1to1",
+>>>> "linear", "premapped" ?
+>>>
+>>> "identity"?
+>>
+>> I think that would be wrong, but thanks for trying to help :)
+>>
+>> The address on the device side is sometimes (often?) offset from the CPU
+>> address. So eg. the device can DMA to RAM address 0x0 using address
+>> 0x800000000000000.
+>>
+>> Identity would imply 0 == 0 etc.
+>>
+>> I think "bijective" is the correct term, but that's probably a bit
+>> esoteric.
 >
-> I think that would be wrong, but thanks for trying to help :)
->
-> The address on the device side is sometimes (often?) offset from the CPU
-> address. So eg. the device can DMA to RAM address 0x0 using address
-> 0x800000000000000.
->
-> Identity would imply 0 == 0 etc.
->
-> I think "bijective" is the correct term, but that's probably a bit
-> esoteric.
+> OK, didn't know about the offset.
+> Then "linear" is what we tend to use, right?
 
-OK, didn't know about the offset.
-Then "linear" is what we tend to use, right?
+If this is indeed a linear mapping, can we just remove this and
+replace it with the new "generic" mapping being introduced by this
+patchset?
 
-Gr{oetje,eeting}s,
+Thanks,
 
-                        Geert
+-- 
+Julian Calaby
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/

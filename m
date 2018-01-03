@@ -1,68 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 15:28:20 +0100 (CET)
-Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:47086
-        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990419AbeACO2MhEQVb convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 17:15:13 +0100 (CET)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:38599
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990415AbeACQPGGksFg convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jan 2018 15:28:12 +0100
-Received: by mail-it0-x242.google.com with SMTP id c16so1871001itc.5;
-        Wed, 03 Jan 2018 06:28:12 -0800 (PST)
+        Wed, 3 Jan 2018 17:15:06 +0100
+Received: by mail-qk0-x244.google.com with SMTP id l19so2128455qke.5;
+        Wed, 03 Jan 2018 08:15:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Cv9pK0oowxee4CaexEDVvzxuhjfg6pu8JJgdMbaQR/E=;
-        b=dLAP1RNXA+Zh1UsgXybq6ZTGQXsTD10KwEvHJlbx6++Zj2LFMhHiihVmBAdbHtZimB
-         49aR9Ew7N5rxFVp4ckzcaYQ6uFRYF9v6CbiYDwRtmv81OZrNnWxQwe//8AskPzMZQhsG
-         CbsTCVSIL1I9SS9eF5y3E2AhsjYDP4dmcUK4BfUmQyhPXanmQHzFvkvo57OhoMru8Og2
-         EV56K0IwqNBfOvTJe66n9LEw+vhi3Hn249Z77Do+xLDUMmQL2kwAJkwCENQ9BPKA1GYG
-         VMfGQyqSMfhSIdUZ46e7HRbiGqEcu+uZym/x49Nk+p/FcK9svbVrfUQOZegswy3ZSF0A
-         RpaA==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=oF1Dvsn6T9aQ43p6FtHzXNZdEVZ4JbUxCppQHO2d5tE=;
+        b=lqGAP1MeVstOlXSiLUxV9zu1w/w3143EqXCWShrspO+6YMIfku9Xe0FX5P/a5mb8la
+         QIvNFhPmCc6AlUo0A9nJxG1/lsOOgWXMV+UAMpg0XLFb/YQoMiL1a6Jzc8IG01voRl1E
+         HlzkxaNaqSB5ipRdx1KptmFAnQIrJ/b3aU2SIVn4L9EunQaLY0agK5s57Ccm/imuV7Kt
+         MjoHQ6+7BKnd3KT0VeJLUmxR/6e/WuTFiITBZqtMc/OfJO+agaOGC2UzUJEl8/oGhbha
+         nttyAK1lsN7Rpt+6ErSsvpMg/hemdcqhUuESLug0g//5+AaQ/h4zv1o/bwWG/PGNynOj
+         SuUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Cv9pK0oowxee4CaexEDVvzxuhjfg6pu8JJgdMbaQR/E=;
-        b=o5dQI2dWHqz1CfyLheVNBdQ/6a3vjivjWn/1lIq/YZUXvh3EyGEha75PnO1dqzwf+f
-         R4Owd44bD8XXVvUq1Yu4Qs3/hcakwQj994nGTY7n2041oUQgGyK8Uie4XOTVd3XQDvw6
-         R2XJCJykc+ByyE9+1EqUEgw0DcHfvROI3tLR59nPPAfKhmUhlcD5PIR7JoXAqCQbVv7g
-         b/6AipV++Gb34R5/ArN7WQjX+A6518vJnvXfDzK7ErM9K6KeBCfW1gxHK1i2OVS/g4Kh
-         V452GSjgEc5ncaEdUq31Stu5V0eNodM2HIplZTsrZqVF9KNdyUp3Q/cnWQNaHMfu9jgQ
-         pc0w==
-X-Gm-Message-State: AKGB3mKDvH4Frov/652JzlWvbJWoml7szwciwcIpqJgZMCbg9E4VTVBu
-        crAfdb7A6GMNWWm3TjFuCLSY/8Sh+dldcSzlLsM=
-X-Google-Smtp-Source: ACJfBosA+hHrEsIRYEXuUJ/rcOankPmvV99UH7CkoqX8lm/GVE4M8Ffofgu4v7AdPT30dNZ+vEGYITL+LOUywFednGU=
-X-Received: by 10.36.53.12 with SMTP id k12mr2084920ita.136.1514989685222;
- Wed, 03 Jan 2018 06:28:05 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=oF1Dvsn6T9aQ43p6FtHzXNZdEVZ4JbUxCppQHO2d5tE=;
+        b=IJe15i45ZS7NwYUqFnLu/Hhfl0a0l5Hc5fBocO/Ok00D00bAIMHoZG/m1we5xTX9z6
+         U3O3wzjPqDatopszQYAlmuHjlKfAdbs29r5H2t1e+5bjhZyJdgEdN4KPdgfZERgZx7cz
+         1uwZQdgdAp9lDkOJP0bDWtIpPMOqQbtZomXhzG1LS7BWv1/yY2Vs5YAqDHZnwqqXQSx5
+         tWwswIv76oPKW6dgmZFoZggbNOFHbgMAjyiRr9OkGsr8cPmZn91Mtum+LQDy3BNjLr3L
+         EkgADCKVTHk7L+l9YGc56s9k2Wzxqd5VeCjArWFubIG38UZweJnr0Lc0+LbFSy6tg/WL
+         V91g==
+X-Gm-Message-State: AKGB3mJH/pPCBMnNIZvR/hMVyt1kOcn15t/JNz6fZFRLdZo7qlnQRvtp
+        3f9QVGz0ZRucygslwtjDD9KdAOhqifWEOX/IrnM=
+X-Google-Smtp-Source: ACJfBoupAtRFw2rD5glxWgL9Im39cR1N7T1/74BN/cKEPsWW0Uvp+JffvGNB+wwd5HQyLl2Uy9nGKE0ReoQC61bJApo=
+X-Received: by 10.55.212.204 with SMTP id s73mr2274151qks.142.1514996099668;
+ Wed, 03 Jan 2018 08:14:59 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.2.144.208 with HTTP; Wed, 3 Jan 2018 06:28:04 -0800 (PST)
-In-Reply-To: <698e7ae5-9f19-1282-7b82-0e2fd2080906@roeck-us.net>
-References: <20171228162939.3928-2-paul@crapouillou.net> <20171230135108.6834-1-paul@crapouillou.net>
- <20171230135108.6834-5-paul@crapouillou.net> <CANc+2y5ZUM_ZzXaGgbx9b7O1GF4GrbaYsv97G+akvhP2d2VVUA@mail.gmail.com>
- <1514911698.3623.1@smtp.crapouillou.net> <698e7ae5-9f19-1282-7b82-0e2fd2080906@roeck-us.net>
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Wed, 3 Jan 2018 19:58:04 +0530
-Message-ID: <CANc+2y4_saELdhX7SFOAOxSqvZUoDO53zOBQasx3_+UDykJHrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/8] MIPS: jz4740: dts: Add bindings for the jz4740-wdt driver
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Wim Van Sebroeck <wim@iguana.be>, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-watchdog@vger.kernel.org
+Received: by 10.237.33.208 with HTTP; Wed, 3 Jan 2018 08:14:59 -0800 (PST)
+In-Reply-To: <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
+References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
+ <20171223134831.GB10103@kroah.com> <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
+ <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 3 Jan 2018 17:14:59 +0100
+X-Google-Sender-Auth: XmZbrjTGIM5ekE0HLckVzGksStI
+Message-ID: <CAK8P3a3i0bKvG56ha9_hzO=z80sVxCQhaeFn6QW3AwbwZs3HPg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
+To:     christophe leroy <christophe.leroy@c-s.fr>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Yisheng Xie <xieyisheng1@huawei.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ysxie@foxmail.com, Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Richard Weinberger <richard@nod.at>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        alsa-devel@alsa-project.org, Wim Van Sebroeck <wim@iguana.be>,
+        linux-watchdog@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        industrypack-devel@lists.sourceforge.net, wg@grandegger.com,
+        mkl@pengutronix.de, linux-can@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        linux-rtc@vger.kernel.org, Daniel Vetter <daniel.vetter@intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Sean Paul <seanpaul@chromium.org>,
+        David Airlie <airlied@linux.ie>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>, Tejun Heo <tj@kernel.org>,
+        IDE-ML <linux-ide@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        devel@driverdev.osuosl.org, Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Jakub Kicinski <jakub.kicinski@netronome.com>,
+        David Miller <davem@davemloft.net>,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>,
+        Networking <netdev@vger.kernel.org>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        dmaengine@vger.kernel.org, Jiri Slaby <jslaby@suse.com>,
+        David Howells <dhowells@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-Return-Path: <prasannatsmkumar@gmail.com>
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61889
+X-archive-position: 61890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,119 +121,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Guenter,
-
-On 3 January 2018 at 10:16, Guenter Roeck <linux@roeck-us.net> wrote:
-> On 01/02/2018 08:48 AM, Paul Cercueil wrote:
+On Sun, Dec 24, 2017 at 9:55 AM, christophe leroy
+<christophe.leroy@c-s.fr> wrote:
+> Le 23/12/2017 à 16:57, Guenter Roeck a écrit :
 >>
->> Hi PrasannaKumar,
->>
->> Le mar. 2 janv. 2018 à 17:37, PrasannaKumar Muralidharan
->> <prasannatsmkumar@gmail.com> a écrit :
+>> On 12/23/2017 05:48 AM, Greg KH wrote:
 >>>
->>> Hi Paul,
->>>
->>> On 30 December 2017 at 19:21, Paul Cercueil <paul@crapouillou.net> wrote:
+>>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
 >>>>
->>>>  Also remove the watchdog platform_device from platform.c, since it
->>>>  wasn't used anywhere anyway.
+>>>> Hi all,
 >>>>
->>>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>>>  ---
->>>>   arch/mips/boot/dts/ingenic/jz4740.dtsi |  8 ++++++++
->>>>   arch/mips/jz4740/platform.c            | 16 ----------------
->>>>   2 files changed, 8 insertions(+), 16 deletions(-)
->>>>
->>>>   v2: No change
->>>>
->>>>  diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi
->>>> b/arch/mips/boot/dts/ingenic/jz4740.dtsi
->>>>  index cd5185bb90ae..26c6b561d6f7 100644
->>>>  --- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
->>>>  +++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
->>>>  @@ -45,6 +45,14 @@
->>>>                  #clock-cells = <1>;
->>>>          };
->>>>
->>>>  +       watchdog: watchdog@10002000 {
->>>>  +               compatible = "ingenic,jz4740-watchdog";
->>>>  +               reg = <0x10002000 0x10>;
->>>>  +
->>>>  +               clocks = <&cgu JZ4740_CLK_RTC>;
->>>>  +               clock-names = "rtc";
->>>>  +       };
->>>>  +
+>>>> When I tried to use devm_ioremap function and review related code, I
+>>>> found
+>>>> devm_ioremap and devm_ioremap_nocache is almost the same with each
+>>>> other,
+>>>> except one use ioremap while the other use ioremap_nocache.
 >>>
 >>>
->>> The watchdog driver calls jz4740_timer_enable_watchdog and
->>> jz4740_timer_disable_watchdog which defined in
->>> arch/mips/jz4740/timer.c. It accesses registers iomapped by timer
->>> code. Declaring register size as 0x10 does not show the real picture.
->>> Better use register size as 0x100 and let timer, wdt, pwm drivers to
->>> share them.
->>
->>
->> As you said, it accesses registers iomapped by timer code. So the watchdog
->> driver doesn't need to iomap them.
->>
->>> Code from one of your branches
+>>> For all arches?  Really?  Look at MIPS, and x86, they have different
+>>> functions.
 >>>
->>> (https://github.com/OpenDingux/linux/blob/for-upstream-clocksource/arch/mips/boot/dts/ingenic/jz4740.dtsi)
->>> does it. Can you prepare a patch series and send it?
->>> I have a patch set that moves timer code out of arch/mips/jz4740/ and
->>> does a similar thing for watchdog and pwm. As your new timer driver is
->>> better than the existing one I have not sent my patches yet. I would
->>> like to see it getting mainlined as it paves way for removing most of
->>> code in arch/mips/jz4740.
 >>
->>
->> The whole 'for-upstream-clocksource' branch is supposed to go upstream,
->> but I can't do it in one big patchset without having lots of breakages
->> with
->> my other patchsets (jz4770 SoC support, and jz4740 watchdog updates)
->> currently under review. That also makes it simpler to upstream than having
->> one single patchset that touches 6 different frameworks (MIPS, irq,
->> clocks,
->> clocksource, watchdog, PWM).
->>
->> So I will submit it in two steps, first the irq/clocks/clocksource drivers
->> (this patchset) hopefully for 4.16, and then the platform/watchdog/PWM
->> fixes
->> for 4.17.
->>
+>> Both mips and x86 end up mapping the same function, but other arches
+>> don't.
+>> mn10300 is one where ioremap and ioremap_nocache are definitely different.
 >
-> I kind of lost it in this exchange, sorry. At this point I don't know if
-> something
-> is wrong with the watchdog patches, and I have no clue what the upstream
-> path
-
-There is nothing wrong in this watchdog patches.
-
-> is supposed to be. My working assumption is that 1) something may be wrong
-> with
-> the current version of the patches, and, 2), even if not, none of the
-> patches
-> is expected to find its way upstream through the watchdog subsystem. Plus,
-> 3),
-> even if some of the patches are supposed to go upstream through the watchdog
-> subsystem, that won't happen in 4.16, and the patches will be resubmitted
-> later
-> when they are ready [and will hopefully marked clearly for submission
-> through
-> the watchdog subsystem].
 >
-> With that in mind, I'll mark the series for my reference as "not
-> applicable".
-> If this is wrong please let me know.
+> alpha: identical
+> arc: identical
+> arm: identical
+> arm64: identical
+> cris: different        <==
+> frv: identical
+> hexagone: identical
+> ia64: different        <==
+> m32r: identical
+> m68k: identical
+> metag: identical
+> microblaze: identical
+> mips: identical
+> mn10300: different     <==
+> nios: identical
+> openrisc: different    <==
+> parisc: identical
+> riscv: identical
+> s390: identical
+> sh: identical
+> sparc: identical
+> tile: identical
+> um: rely on asm/generic
+> unicore32: identical
+> x86: identical
+> asm/generic (no mmu): identical
+>
+> So 4 among all arches seems to have ioremap() and ioremap_nocache() being
+> different.
+>
+> Could we have a define set by the 4 arches on which ioremap() and
+> ioremap_nocache() are different, something like
+> HAVE_DIFFERENT_IOREMAP_NOCACHE ?
 
-Paul has patches related to timer code. While sending that he would
-send changes to watchdog dts entry also. I was suggesting him to send
-timer patches together with watchdog patches as a single patch series
-but he prefers to send them as separate patch series.
+I wonder if those are actually correct or not. What I found looking at
+those architectures:
 
-I would like to reiterate that there is nothing wrong with this
-watchdog patches. I should have set the correct context in my previous
-email itself. I sincerely apologize for creating this confusion.
+- openrisc only has one driver using ioremap (drivers/net/ethernet/ethoc.c)
+  and that calls ioremap_nocache(). Presumably the authors went with the
+  implementation for ioremap that made sense (using default attributes)
+  rather than the one that actually works (using uncached).
 
-Regards,
-PrasannaKumar
+- On ia64, ioremap() checks the attributes for the physical
+  address based on firmware tables and then picks either cached
+  or uncached mappings. ioremap_nocache() does the same but
+  returns NULL instead of a cached mapping for anything that is
+  not an MMIO address. Presumably it would just work to always
+  call ioremap().
+
+- mn10300 appears to be wrong, broken by David Howells in
+  commit 83c2dc15ce82 ("MN10300: Handle cacheable PCI regions
+  in pci_iomap()") for any driver calling ioremap() by to get uncached
+  memory, if I understand the comment for commit 34f1bdee1910
+   ("mn10300: switch to GENERIC_PCI_IOMAP") correctly: it
+  seems that PCI addresses include the 'uncached' bit by default
+  to get the right behavior, but dropping that bit breaks it.
+
+- cris seems similar to mn10300 in hardware, using an phys address
+  bit for uncached access. There are two callers in arch code that
+  appear to rely on the cachable output of ioremap()
+arch/cris/arch-v32/kernel/signal.c:
+__ioremap_prot(virt_to_phys(data), PAGE_SIZE, PAGE_SIGNAL_TRAMPOLINE);
+arch/cris/arch-v32/mm/intmem.c:         intmem_virtual =
+ioremap(MEM_INTMEM_START + RESERVED_SIZE,
+  It's unclear whether ioremap_nocache() actually has any users
+  on cris, or whether it was only added for compile-time testing,
+  and calling plain ioremap() would always work too (assuming we
+  pass the phys address with the uncached-bit set).
+
+       Arnd

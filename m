@@ -1,60 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jan 2018 21:04:31 +0100 (CET)
-Received: from mail-ot0-f195.google.com ([74.125.82.195]:38451 "EHLO
-        mail-ot0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990493AbeACUEUR5PKa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jan 2018 21:04:20 +0100
-Received: by mail-ot0-f195.google.com with SMTP id h2so83803oti.5;
-        Wed, 03 Jan 2018 12:04:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=j6UZvK6oWf/eqtH2dNayaEtvdNX29AtkFxJeEVpCdvA=;
-        b=jFsDu8qpUcVQ0/3psRhsg7J3WuqG7VGgoQncY0yxuApke3Zx3uv3bah2TH9ed0CGir
-         EFKKLkz1oWLc6iIh/hZuOEAbcB+P7xfeGLP8n5K8AWDUdaD/eJ/RYeh4fbLqLNamVESs
-         PspmKxJ4OInnos87TGslCVHhHpSkZw12Ric+0R+91sK4zH/1nPqsr52mTUfUnhR57IR6
-         0ngRWPY8mHrMXsL9q/XrAI7eM81WlJvJwB4qYl7XgImmXOBFHqaMazTRIHnbTYkIUTDq
-         vof7QZLXTV24zSY9hWD0G1BjMVoTGXbPY3g6iAN3mjO6a4899THXpy8rOwkAC/pceZVV
-         UanA==
-X-Gm-Message-State: AKGB3mJwXyTuhimPbz/O4Zh9B2GIcFVsdqJnWrU9Wox2pDTgbrM6uVPC
-        vSDPcDjHbzakdh/R3NGEQw==
-X-Google-Smtp-Source: ACJfBosofqf1CEm1/H2kbvq3VU8AKCj4arroJIqEdGWfuEzhrYrSkKQydh0iiesay4EdzoyZsW2EPA==
-X-Received: by 10.157.66.182 with SMTP id r51mr1669937ote.32.1515009854429;
-        Wed, 03 Jan 2018 12:04:14 -0800 (PST)
-Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
-        by smtp.gmail.com with ESMTPSA id n13sm723581ota.70.2018.01.03.12.04.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 03 Jan 2018 12:04:13 -0800 (PST)
-Date:   Wed, 3 Jan 2018 14:04:13 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zubair.Kakakhel@mips.com,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 2/2] dts: Probe efuse for CI20
-Message-ID: <20180103200413.cpv6wxeeumaw62l5@rob-hp-laptop>
-References: <20171228212954.2922-1-malat@debian.org>
- <20171228212954.2922-3-malat@debian.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jan 2018 09:06:05 +0100 (CET)
+Received: from pegase1.c-s.fr ([93.17.236.30]:6056 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992273AbeADIF6MYKpD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Jan 2018 09:05:58 +0100
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 3zC0jB2JM2z9ty9F;
+        Thu,  4 Jan 2018 09:05:34 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id EL3Mbyqh6pjl; Thu,  4 Jan 2018 09:05:34 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 3zC0jB02nDz9ty7n;
+        Thu,  4 Jan 2018 09:05:34 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 749968BD47;
+        Thu,  4 Jan 2018 09:05:46 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id tgYrns3zuNWp; Thu,  4 Jan 2018 09:05:46 +0100 (CET)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.40])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id C5CB98B973;
+        Thu,  4 Jan 2018 09:05:45 +0100 (CET)
+Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
+To:     Yisheng Xie <xieyisheng1@huawei.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, ysxie@foxmail.com,
+        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        boris.brezillon@free-electrons.com, richard@nod.at,
+        marek.vasut@gmail.com, cyrille.pitchen@wedev4u.fr,
+        linux-mtd@lists.infradead.org, alsa-devel@alsa-project.org,
+        wim@iguana.be, linux@roeck-us.net, linux-watchdog@vger.kernel.org,
+        b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
+        linus.walleij@linaro.org, linux-gpio@vger.kernel.org,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        lgirdwood@gmail.com, broonie@kernel.org, tglx@linutronix.de,
+        jason@lakedaemon.net, marc.zyngier@arm.com, arnd@arndb.de,
+        andriy.shevchenko@linux.intel.com,
+        industrypack-devel@lists.sourceforge.net, wg@grandegger.com,
+        mkl@pengutronix.de, linux-can@vger.kernel.org, mchehab@kernel.org,
+        linux-media@vger.kernel.org, a.zummo@towertech.it,
+        alexandre.belloni@free-electrons.com, linux-rtc@vger.kernel.org,
+        daniel.vetter@intel.com, jani.nikula@linux.intel.com,
+        seanpaul@chromium.org, airlied@linux.ie,
+        dri-devel@lists.freedesktop.org, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
+        tj@kernel.org, linux-ide@vger.kernel.org, bhelgaas@google.com,
+        linux-pci@vger.kernel.org, devel@driverdev.osuosl.org,
+        dvhart@infradead.org, andy@infradead.org,
+        platform-driver-x86@vger.kernel.org, jakub.kicinski@netronome.com,
+        davem@davemloft.net, nios2-dev@lists.rocketboards.org,
+        netdev@vger.kernel.org, vinod.koul@intel.com,
+        dan.j.williams@intel.com, dmaengine@vger.kernel.org,
+        jslaby@suse.com
+References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
+ <20171223134831.GB10103@kroah.com>
+ <b8ff7f17-7f2c-f220-9833-7ae5bd7343d5@c-s.fr>
+ <8dd19411-5b06-0aa4-fd0e-e5b112c25dcb@huawei.com>
+From:   Christophe LEROY <christophe.leroy@c-s.fr>
+Message-ID: <1eb206ed-95e9-5839-485d-0e549ff3f505@c-s.fr>
+Date:   Thu, 4 Jan 2018 09:05:45 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20171228212954.2922-3-malat@debian.org>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <8dd19411-5b06-0aa4-fd0e-e5b112c25dcb@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
+Return-Path: <christophe.leroy@c-s.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61892
+X-archive-position: 61893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: christophe.leroy@c-s.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,28 +89,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 28, 2017 at 10:29:53PM +0100, Mathieu Malaterre wrote:
-> MIPS Creator CI20 comes with JZ4780 SoC. Provides access to the efuse block
-> using jz4780 efuse driver.
-> 
-> Signed-off-by: Mathieu Malaterre <malat@debian.org>
-> ---
->  arch/mips/configs/ci20_defconfig | 2 ++
 
-Your subject indicates this is a dts patch which it is not.
 
->  1 file changed, 2 insertions(+)
+Le 25/12/2017 à 02:34, Yisheng Xie a écrit :
 > 
-> diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-> index b5f4ad8f2c45..62c63617e97a 100644
-> --- a/arch/mips/configs/ci20_defconfig
-> +++ b/arch/mips/configs/ci20_defconfig
-> @@ -171,3 +171,5 @@ CONFIG_STACKTRACE=y
->  # CONFIG_FTRACE is not set
->  CONFIG_CMDLINE_BOOL=y
->  CONFIG_CMDLINE="earlycon console=ttyS4,115200 clk_ignore_unused"
-> +CONFIG_NVMEM=y
-> +CONFIG_JZ4780_EFUSE=y
-> -- 
-> 2.11.0
 > 
+> On 2017/12/24 17:05, christophe leroy wrote:
+>>
+>>
+>> Le 23/12/2017 à 14:48, Greg KH a écrit :
+>>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
+>>>> Hi all,
+>>>>
+>>>> When I tried to use devm_ioremap function and review related code, I found
+>>>> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
+>>>> except one use ioremap while the other use ioremap_nocache.
+>>>
+>>> For all arches?  Really?  Look at MIPS, and x86, they have different
+>>> functions.
+>>>
+>>>> While ioremap's
+>>>> default function is ioremap_nocache, so devm_ioremap_nocache also have the
+>>>> same function with devm_ioremap, which can just be killed to reduce the size
+>>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
+>>>>
+>>>> I have posted two versions, which use macro instead of function for
+>>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
+>>>> devm_ioremap_nocache for no need to keep a macro around for the duplicate
+>>>> thing. So here comes v3 and please help to review.
+>>>
+>>> I don't think this can be done, what am I missing?  These functions are
+>>> not identical, sorry for missing that before.
+>>
+>> devm_ioremap() and devm_ioremap_nocache() are quite similar, both use devm_ioremap_release() for the release, why not just defining:
+>>
+>> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
+>>                 resource_size_t size, bool nocache)
+>> {
+>> [...]
+>>      if (nocache)
+>>          addr = ioremap_nocache(offset, size);
+>>      else
+>>          addr = ioremap(offset, size);
+>> [...]
+>> }
+>>
+>> then in include/linux/io.h
+>>
+>> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
+>>                 resource_size_t size)
+>> {return __devm_ioremap(dev, offset, size, false);}
+>>
+>> static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
+>>                     resource_size_t size);
+>> {return __devm_ioremap(dev, offset, size, true);}
+> 
+> Yeah, this seems good to me, right now we have devm_ioremap, devm_ioremap_wc, devm_ioremap_nocache
+> May be we can use an enum like:
+> typedef enum {
+> 	DEVM_IOREMAP = 0,
+> 	DEVM_IOREMAP_NOCACHE,
+> 	DEVM_IOREMAP_WC,
+> } devm_ioremap_type;
+> 
+> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
+>                  resource_size_t size)
+>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP);}
+> 
+>   static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
+>                      resource_size_t size);
+>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_NOCACHE);}
+> 
+>   static inline void __iomem *devm_ioremap_wc(struct device *dev, resource_size_t offset,
+>                      resource_size_t size);
+>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_WC);}
+> 
+>   static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
+>                  resource_size_t size, devm_ioremap_type type)
+>   {
+>       void __iomem **ptr, *addr = NULL;
+>   [...]
+>       switch (type){
+>       case DEVM_IOREMAP:
+>           addr = ioremap(offset, size);
+>           break;
+>       case DEVM_IOREMAP_NOCACHE:
+>           addr = ioremap_nocache(offset, size);
+>           break;
+>       case DEVM_IOREMAP_WC:
+>           addr = ioremap_wc(offset, size);
+>           break;
+>       }
+>   [...]
+>   }
+
+
+That looks good to me, will you submit a v4 ?
+
+Christophe
+
+> 
+> Thanks
+> Yisheng
+> 
+>>
+>> Christophe
+>>
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>> -- 
+>>> To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+>>> the body of a message to majordomo@vger.kernel.org
+>>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>>>
+>>
+>> ---
+>> L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
+>> https://www.avast.com/antivirus
+>>
+>>
+>> .
+>>

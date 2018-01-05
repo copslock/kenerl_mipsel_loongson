@@ -1,30 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:31:38 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:37358 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993885AbeAESZhl8-Es (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:37 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Maarten ter Huurne <maarten@treewalker.org>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v6 11/15] MIPS: ingenic: Initial JZ4770 support
-Date:   Fri,  5 Jan 2018 19:25:09 +0100
-Message-Id: <20180105182513.16248-12-paul@crapouillou.net>
-In-Reply-To: <20180105182513.16248-1-paul@crapouillou.net>
-References: <20180102150848.11314-1-paul@crapouillou.net>
- <20180105182513.16248-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176732; bh=wl65y/61xlonYS+dY+N4FVuBEyORfeceYAIzgk40PPQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=anbnydplpINhAvCLaZcnehxaGsPRVQSs8W4BSkn0yUKOYpo2QbvWiPaXxY1PwSu1/RmJRQcAEgrwDhs6USxbtTjXi1TA0WgzV+ptXxMyNkf+eRR+mQBHa3oHDzGSBHePduogzACa+Hjzp9TDVhQ0rNMDpetVChtrz5X1MBoFk5A=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:32:03 +0100 (CET)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:36361
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992917AbeAES3QUBLUs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:29:16 +0100
+Received: by mail-io0-x241.google.com with SMTP id i143so6666227ioa.3
+        for <linux-mips@linux-mips.org>; Fri, 05 Jan 2018 10:29:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=natVfQ+IpNfDeB80W6ycCTiDBBIXVjnw+pa8DYIT330=;
+        b=KALrnFDy8MM9pLP5bOU9GYBonxmPcfISD8r6q+GxCOItQmVdWwPF7KeS0fJH2MPHWI
+         eDhf30aZiVZmPPC0WVE7F0iG3Y3AAWw1MJ8r0d1ccTycxhROWrOQCVdobiiiLGwPmAbS
+         yxvpzmjSas3TSTkXiUjftVshhjIrCwW9dniII=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=natVfQ+IpNfDeB80W6ycCTiDBBIXVjnw+pa8DYIT330=;
+        b=MiC/bhAtgbeobtNqJd0JiIZRwrhz188LTLaXEbuPOZP+MIm2NwmeW2dcz0LMuhCXoQ
+         6LuEn+NXaBgSxsa1onu2xA0+cS6h6D3bxHwQaKeqIPta4jZ4IY1aXyafTCkSujjynMuv
+         FZRz/Q6JY2TfwTCQRtA9VaQv8oETnTnfK1+sNhwVKSI5k8LCulpKytO8PkAZyTrqX4iw
+         j2i1dGmlJq/vQnwr9+9vFG5Cr07Zxr10WyWzAw+AeInqaObB9iOh/ZgaOowS0pBFunoU
+         mmhGxcEMSH5s1pFCFDHu5KLS49sINM5QabkISGW+N5Q+9RGWbASN3UsuvdaGDhZ5NMQA
+         e7rQ==
+X-Gm-Message-State: AKGB3mJfTJN+BQv9kNYRT+e8+BhC0devLuByxXFABkmuPbjqUVTNw6Ma
+        IbWpD0IUxe08SDPtA3dOpUofzyw5EPkh/PmVMIaTvQ==
+X-Google-Smtp-Source: ACJfBotnQeUAaLZnAlB/88WUGMI/ztwB/HqCJ6ZvSjMZR5M+rmV9/DAcmMSw28UHw4m24o+UHEqliFcE9Z6EW3K001A=
+X-Received: by 10.107.160.196 with SMTP id j187mr4176769ioe.186.1515176949978;
+ Fri, 05 Jan 2018 10:29:09 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.107.37.197 with HTTP; Fri, 5 Jan 2018 10:29:09 -0800 (PST)
+In-Reply-To: <20180105182229.pjnlq3l5hzfac4na@armageddon.cambridge.arm.com>
+References: <20180102200549.22984-1-ard.biesheuvel@linaro.org>
+ <20180102200549.22984-8-ard.biesheuvel@linaro.org> <20180105175834.vqgpsme7itsdg54u@armageddon.cambridge.arm.com>
+ <CAKv+Gu8zROE-TDpfbbVi3RPOr8BNcsN_s27Gr-VvMN+-eMU+Hg@mail.gmail.com> <20180105182229.pjnlq3l5hzfac4na@armageddon.cambridge.arm.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Fri, 5 Jan 2018 18:29:09 +0000
+Message-ID: <CAKv+Gu9R=Dmog+omP0xAGmsBiH0rseHAVjob4VA5P3c7i4++hQ@mail.gmail.com>
+Subject: Re: [PATCH v7 07/10] kernel/jump_label: abstract jump_entry member accessors
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Nicolas Pitre <nico@linaro.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        James Morris <james.l.morris@oracle.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Jessica Yu <jeyu@kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Thomas Garnier <thgarnie@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <ard.biesheuvel@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61936
+X-archive-position: 61937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: ard.biesheuvel@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,271 +94,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Provide just enough bits (clocks, clocksource, uart) to allow a kernel
-to boot on the JZ4770 SoC to a initramfs userspace.
+On 5 January 2018 at 18:22, Catalin Marinas <catalin.marinas@arm.com> wrote:
+> On Fri, Jan 05, 2018 at 06:01:33PM +0000, Ard Biesheuvel wrote:
+>> On 5 January 2018 at 17:58, Catalin Marinas <catalin.marinas@arm.com> wrote:
+>> > On Tue, Jan 02, 2018 at 08:05:46PM +0000, Ard Biesheuvel wrote:
+>> >> diff --git a/arch/arm/include/asm/jump_label.h b/arch/arm/include/asm/jump_label.h
+>> >> index e12d7d096fc0..7b05b404063a 100644
+>> >> --- a/arch/arm/include/asm/jump_label.h
+>> >> +++ b/arch/arm/include/asm/jump_label.h
+>> >> @@ -45,5 +45,32 @@ struct jump_entry {
+>> >>       jump_label_t key;
+>> >>  };
+>> >>
+>> >> +static inline jump_label_t jump_entry_code(const struct jump_entry *entry)
+>> >> +{
+>> >> +     return entry->code;
+>> >> +}
+>> >> +
+>> >> +static inline struct static_key *jump_entry_key(const struct jump_entry *entry)
+>> >> +{
+>> >> +     return (struct static_key *)((unsigned long)entry->key & ~1UL);
+>> >> +}
+>> >> +
+>> >> +static inline bool jump_entry_is_branch(const struct jump_entry *entry)
+>> >> +{
+>> >> +     return (unsigned long)entry->key & 1UL;
+>> >> +}
+>> >> +
+>> >> +static inline bool jump_entry_is_module_init(const struct jump_entry *entry)
+>> >> +{
+>> >> +     return entry->code == 0;
+>> >> +}
+>> >> +
+>> >> +static inline void jump_entry_set_module_init(struct jump_entry *entry)
+>> >> +{
+>> >> +     entry->code = 0;
+>> >> +}
+>> >> +
+>> >> +#define jump_label_swap              NULL
+>> >
+>> > Is there any difference between these functions on any of the
+>> > architectures touched? Even with the relative offset, arm64 and x86
+>> > looked the same to me (well, I may have missed some detail).
+>>
+>> No, the latter two are identical everywhere, and the others are the
+>> same modulo absolute vs relative.
+>>
+>> The issue is that the struct definition is per-arch so the accessors
+>> should be as well.
+>
+> Up to this patch, even the jump_entry structure is the same on all
+> architectures (the jump_label_t type differs).
+>
+> With relative offset, can you not just define jump_label_t to s32? At a
+> quick grep in mainline, it doesn't seem to be used outside the structure
+> definition.
+>
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
----
- arch/mips/boot/dts/ingenic/jz4770.dtsi | 212 +++++++++++++++++++++++++++++++++
- arch/mips/jz4740/Kconfig               |   6 +
- arch/mips/jz4740/time.c                |   2 +-
- 3 files changed, 219 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/boot/dts/ingenic/jz4770.dtsi
+I think we can just remove jump_label_t entirely, and replace it with
+unsigned long for absolute, and s32 for relative. Maybe I am missing
+something, but things like
 
- v2: No change
- v3: No change
- v4: No change
- v5: Use SPDX license identifier
- v6: No change
+#ifdef CONFIG_X86_64
+typedef u64 jump_label_t;
+#else
+typedef u32 jump_label_t;
+#endif
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-new file mode 100644
-index 000000000000..7c2804f3f5f1
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-@@ -0,0 +1,212 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <dt-bindings/clock/jz4770-cgu.h>
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ingenic,jz4770";
-+
-+	cpuintc: interrupt-controller {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
-+
-+	intc: interrupt-controller@10001000 {
-+		compatible = "ingenic,jz4770-intc";
-+		reg = <0x10001000 0x40>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <2>;
-+	};
-+
-+	ext: ext {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
-+	osc32k: osc32k {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <32768>;
-+	};
-+
-+	cgu: jz4770-cgu@10000000 {
-+		compatible = "ingenic,jz4770-cgu";
-+		reg = <0x10000000 0x100>;
-+
-+		clocks = <&ext>, <&osc32k>;
-+		clock-names = "ext", "osc32k";
-+
-+		#clock-cells = <1>;
-+	};
-+
-+	pinctrl: pin-controller@10010000 {
-+		compatible = "ingenic,jz4770-pinctrl";
-+		reg = <0x10010000 0x600>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		gpa: gpio@0 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <0>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 0 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <17>;
-+		};
-+
-+		gpb: gpio@1 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <1>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 32 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <16>;
-+		};
-+
-+		gpc: gpio@2 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <2>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 64 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <15>;
-+		};
-+
-+		gpd: gpio@3 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <3>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 96 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <14>;
-+		};
-+
-+		gpe: gpio@4 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <4>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 128 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <13>;
-+		};
-+
-+		gpf: gpio@5 {
-+			compatible = "ingenic,jz4770-gpio";
-+			reg = <5>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 160 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <12>;
-+		};
-+	};
-+
-+	uart0: serial@10030000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10030000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART0>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <5>;
-+
-+		status = "disabled";
-+	};
-+
-+	uart1: serial@10031000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10031000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART1>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <4>;
-+
-+		status = "disabled";
-+	};
-+
-+	uart2: serial@10032000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10032000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART2>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <3>;
-+
-+		status = "disabled";
-+	};
-+
-+	uart3: serial@10033000 {
-+		compatible = "ingenic,jz4770-uart";
-+		reg = <0x10033000 0x100>;
-+
-+		clocks = <&ext>, <&cgu JZ4770_CLK_UART3>;
-+		clock-names = "baud", "module";
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <2>;
-+
-+		status = "disabled";
-+	};
-+
-+	uhc: uhc@13430000 {
-+		compatible = "generic-ohci";
-+		reg = <0x13430000 0x1000>;
-+
-+		clocks = <&cgu JZ4770_CLK_UHC>, <&cgu JZ4770_CLK_UHC_PHY>;
-+		assigned-clocks = <&cgu JZ4770_CLK_UHC>;
-+		assigned-clock-rates = <48000000>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <20>;
-+
-+		status = "disabled";
-+	};
-+};
-diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index 643af2012e14..29a9361a2b77 100644
---- a/arch/mips/jz4740/Kconfig
-+++ b/arch/mips/jz4740/Kconfig
-@@ -18,6 +18,12 @@ config MACH_JZ4740
- 	bool
- 	select SYS_HAS_CPU_MIPS32_R1
- 
-+config MACH_JZ4770
-+	bool
-+	select MIPS_CPU_SCACHE
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_HIGHMEM
-+
- config MACH_JZ4780
- 	bool
- 	select MIPS_CPU_SCACHE
-diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-index bb1ad5119da4..2ca9160f642a 100644
---- a/arch/mips/jz4740/time.c
-+++ b/arch/mips/jz4740/time.c
-@@ -113,7 +113,7 @@ static struct clock_event_device jz4740_clockevent = {
- #ifdef CONFIG_MACH_JZ4740
- 	.irq = JZ4740_IRQ_TCU0,
- #endif
--#ifdef CONFIG_MACH_JZ4780
-+#if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
- 	.irq = JZ4780_IRQ_TCU2,
- #endif
- };
--- 
-2.11.0
+seem a bit pointless to me anyway.
+
+
+>> Perhaps I should introduce two variants two asm-generic, similar to
+>> how we have different flavors of unaligned accessors.
+>
+> You could as well define them directly in kernel/jump_label.h or, if
+> used outside this file, include/linux/jump_label.h.
+>
+
+Perhaps I should define a Kconfig symbol after all for relative jump
+labels, and just keep everything in the same file. The question is
+whether I should use CONFIG_HAVE_ARCH_PREL32_RELOCATIONS for this as
+well.

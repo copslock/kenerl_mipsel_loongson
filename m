@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:27:08 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:35682 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:27:34 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:35838 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992916AbeAESZZenh6s (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:25 +0100
+        with ESMTP id S23992956AbeAESZ1UBLUs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:27 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v6 04/15] clk: ingenic: Add code to enable/disable PLLs
-Date:   Fri,  5 Jan 2018 19:25:02 +0100
-Message-Id: <20180105182513.16248-5-paul@crapouillou.net>
+Subject: [PATCH v6 05/15] dt-bindings: clock: Add jz4770-cgu.h header
+Date:   Fri,  5 Jan 2018 19:25:03 +0100
+Message-Id: <20180105182513.16248-6-paul@crapouillou.net>
 In-Reply-To: <20180105182513.16248-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
  <20180105182513.16248-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176724; bh=UY5YdlJWcj4HnZhBiF0XMiARTEzRQ6k8GFZOU71mKOw=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=spJ3aULVGAyBDljyn9w7V+LdYkzpzR/8tsS8fPSxPjdIeDna9xicqKadf9kaL8mqTZD+Kg8m+Qybtkc1UWOTtUixUKSV+A8HSogwSvNY8Dcha/C1bZuKSlGLDbDslMJNzkxNw9JbVhaLpP41kObwpH3UTgY0yy0A4gc8BBSmQUQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176725; bh=C0u91YjabP2y+T5Rdl2tP8FeT1RR59Ej8AJKf7H6J2k=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=OXvWz3z7OYWwJle6hlU/RAeI3AM/ZsTIM3XJ8LPFyJWr833mvvYm6/coRr1EGcvFbd5zvBanF7pOywDiDZfgZ0eAUgJm+Uo3s/x/J9WDmuqAbTvrLY/LGgn3MNwB9XuWtqyBPxxVG1jmOIEbn5gTUGL04pGcOGKCVTGL4gM1ip0=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61925
+X-archive-position: 61926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,171 +37,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This commit permits the PLLs to be dynamically enabled and disabled when
-their children clocks are enabled and disabled.
+This will be used from the devicetree bindings to specify the clocks
+that should be obtained from the jz4770-cgu driver.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- drivers/clk/ingenic/cgu.c | 89 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 74 insertions(+), 15 deletions(-)
+ include/dt-bindings/clock/jz4770-cgu.h | 58 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 include/dt-bindings/clock/jz4770-cgu.h
 
- v2: No change
- v3: No change
+ v3: New patch in this series
  v4: No change
- v5: No change
+ v5: Use SPDX license identifier
  v6: No change
 
-diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
-index 381c4a17a1fc..56a712c9075f 100644
---- a/drivers/clk/ingenic/cgu.c
-+++ b/drivers/clk/ingenic/cgu.c
-@@ -107,9 +107,6 @@ ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	if (bypass)
- 		return parent_rate;
- 
--	if (!enable)
--		return 0;
--
- 	for (od = 0; od < pll_info->od_max; od++) {
- 		if (pll_info->od_encoding[od] == od_enc)
- 			break;
-@@ -153,17 +150,25 @@ ingenic_pll_calc(const struct ingenic_cgu_clk_info *clk_info,
- 	return div_u64((u64)parent_rate * m, n * od);
- }
- 
--static long
--ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
--		       unsigned long *prate)
-+static inline const struct ingenic_cgu_clk_info *to_clk_info(
-+		struct ingenic_clk *ingenic_clk)
- {
--	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
- 	struct ingenic_cgu *cgu = ingenic_clk->cgu;
- 	const struct ingenic_cgu_clk_info *clk_info;
- 
- 	clk_info = &cgu->clock_info[ingenic_clk->idx];
- 	BUG_ON(clk_info->type != CGU_CLK_PLL);
- 
-+	return clk_info;
-+}
+diff --git a/include/dt-bindings/clock/jz4770-cgu.h b/include/dt-bindings/clock/jz4770-cgu.h
+new file mode 100644
+index 000000000000..d68a7695a1f8
+--- /dev/null
++++ b/include/dt-bindings/clock/jz4770-cgu.h
+@@ -0,0 +1,58 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * This header provides clock numbers for the ingenic,jz4770-cgu DT binding.
++ */
 +
-+static long
-+ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
-+		       unsigned long *prate)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
++#ifndef __DT_BINDINGS_CLOCK_JZ4770_CGU_H__
++#define __DT_BINDINGS_CLOCK_JZ4770_CGU_H__
 +
- 	return ingenic_pll_calc(clk_info, req_rate, *prate, NULL, NULL, NULL);
- }
- 
-@@ -171,19 +176,14 @@ static int
- ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
- 		     unsigned long parent_rate)
- {
--	const unsigned timeout = 100;
- 	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
- 	struct ingenic_cgu *cgu = ingenic_clk->cgu;
--	const struct ingenic_cgu_clk_info *clk_info;
--	const struct ingenic_cgu_pll_info *pll_info;
-+	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
-+	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
- 	unsigned long rate, flags;
--	unsigned m, n, od, i;
-+	unsigned int m, n, od;
- 	u32 ctl;
- 
--	clk_info = &cgu->clock_info[ingenic_clk->idx];
--	BUG_ON(clk_info->type != CGU_CLK_PLL);
--	pll_info = &clk_info->pll;
--
- 	rate = ingenic_pll_calc(clk_info, req_rate, parent_rate,
- 			       &m, &n, &od);
- 	if (rate != req_rate)
-@@ -202,6 +202,26 @@ ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
- 	ctl &= ~(GENMASK(pll_info->od_bits - 1, 0) << pll_info->od_shift);
- 	ctl |= pll_info->od_encoding[od - 1] << pll_info->od_shift;
- 
-+	writel(ctl, cgu->base + pll_info->reg);
-+	spin_unlock_irqrestore(&cgu->lock, flags);
++#define JZ4770_CLK_EXT		0
++#define JZ4770_CLK_OSC32K	1
++#define JZ4770_CLK_PLL0		2
++#define JZ4770_CLK_PLL1		3
++#define JZ4770_CLK_CCLK		4
++#define JZ4770_CLK_H0CLK	5
++#define JZ4770_CLK_H1CLK	6
++#define JZ4770_CLK_H2CLK	7
++#define JZ4770_CLK_C1CLK	8
++#define JZ4770_CLK_PCLK		9
++#define JZ4770_CLK_MMC0_MUX	10
++#define JZ4770_CLK_MMC0		11
++#define JZ4770_CLK_MMC1_MUX	12
++#define JZ4770_CLK_MMC1		13
++#define JZ4770_CLK_MMC2_MUX	14
++#define JZ4770_CLK_MMC2		15
++#define JZ4770_CLK_CIM		16
++#define JZ4770_CLK_UHC		17
++#define JZ4770_CLK_GPU		18
++#define JZ4770_CLK_BCH		19
++#define JZ4770_CLK_LPCLK_MUX	20
++#define JZ4770_CLK_GPS		21
++#define JZ4770_CLK_SSI_MUX	22
++#define JZ4770_CLK_PCM_MUX	23
++#define JZ4770_CLK_I2S		24
++#define JZ4770_CLK_OTG		25
++#define JZ4770_CLK_SSI0		26
++#define JZ4770_CLK_SSI1		27
++#define JZ4770_CLK_SSI2		28
++#define JZ4770_CLK_PCM0		29
++#define JZ4770_CLK_PCM1		30
++#define JZ4770_CLK_DMA		31
++#define JZ4770_CLK_I2C0		32
++#define JZ4770_CLK_I2C1		33
++#define JZ4770_CLK_I2C2		34
++#define JZ4770_CLK_UART0	35
++#define JZ4770_CLK_UART1	36
++#define JZ4770_CLK_UART2	37
++#define JZ4770_CLK_UART3	38
++#define JZ4770_CLK_IPU		39
++#define JZ4770_CLK_ADC		40
++#define JZ4770_CLK_AIC		41
++#define JZ4770_CLK_AUX		42
++#define JZ4770_CLK_VPU		43
++#define JZ4770_CLK_UHC_PHY	44
++#define JZ4770_CLK_OTG_PHY	45
++#define JZ4770_CLK_EXT512	46
++#define JZ4770_CLK_RTC		47
 +
-+	return 0;
-+}
-+
-+static int ingenic_pll_enable(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
-+	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
-+	const unsigned int timeout = 100;
-+	unsigned long flags;
-+	unsigned int i;
-+	u32 ctl;
-+
-+	spin_lock_irqsave(&cgu->lock, flags);
-+	ctl = readl(cgu->base + pll_info->reg);
-+
- 	ctl &= ~BIT(pll_info->bypass_bit);
- 	ctl |= BIT(pll_info->enable_bit);
- 
-@@ -223,10 +243,48 @@ ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
- 	return 0;
- }
- 
-+static void ingenic_pll_disable(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
-+	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
-+	unsigned long flags;
-+	u32 ctl;
-+
-+	spin_lock_irqsave(&cgu->lock, flags);
-+	ctl = readl(cgu->base + pll_info->reg);
-+
-+	ctl &= ~BIT(pll_info->enable_bit);
-+
-+	writel(ctl, cgu->base + pll_info->reg);
-+	spin_unlock_irqrestore(&cgu->lock, flags);
-+}
-+
-+static int ingenic_pll_is_enabled(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info = to_clk_info(ingenic_clk);
-+	const struct ingenic_cgu_pll_info *pll_info = &clk_info->pll;
-+	unsigned long flags;
-+	u32 ctl;
-+
-+	spin_lock_irqsave(&cgu->lock, flags);
-+	ctl = readl(cgu->base + pll_info->reg);
-+	spin_unlock_irqrestore(&cgu->lock, flags);
-+
-+	return !!(ctl & BIT(pll_info->enable_bit));
-+}
-+
- static const struct clk_ops ingenic_pll_ops = {
- 	.recalc_rate = ingenic_pll_recalc_rate,
- 	.round_rate = ingenic_pll_round_rate,
- 	.set_rate = ingenic_pll_set_rate,
-+
-+	.enable = ingenic_pll_enable,
-+	.disable = ingenic_pll_disable,
-+	.is_enabled = ingenic_pll_is_enabled,
- };
- 
- /*
-@@ -601,6 +659,7 @@ static int ingenic_register_clock(struct ingenic_cgu *cgu, unsigned idx)
- 		}
- 	} else if (caps & CGU_CLK_PLL) {
- 		clk_init.ops = &ingenic_pll_ops;
-+		clk_init.flags |= CLK_SET_RATE_GATE;
- 
- 		caps &= ~CGU_CLK_PLL;
- 
++#endif /* __DT_BINDINGS_CLOCK_JZ4770_CGU_H__ */
 -- 
 2.11.0

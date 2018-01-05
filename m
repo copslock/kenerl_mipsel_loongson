@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 11:33:13 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:58348 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 11:33:57 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:53984 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992396AbeAEKcZu5u0u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 11:32:25 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 05 Jan 2018 10:32:19 +0000
+        by eddie.linux-mips.org with ESMTP id S23990656AbeAEKdqZoLbu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 11:33:46 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 05 Jan 2018 10:33:37 +0000
 Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Fri, 5 Jan 2018 02:32:17 -0800
+ 14.3.361.1; Fri, 5 Jan 2018 02:32:29 -0800
 From:   Matt Redfearn <matt.redfearn@mips.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        Paul Burton <paul.burton@mips.com>,
+        "Marc Zyngier" <marc.zyngier@arm.com>,
+        Jason Cooper <jason@lakedaemon.net>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 3/6] MIPS: Generic: Support GIC in EIC mode
-Date:   Fri, 5 Jan 2018 10:31:07 +0000
-Message-ID: <1515148270-9391-4-git-send-email-matt.redfearn@mips.com>
+Subject: [PATCH 4/6] irqchip/mips-gic: Always attempt to enable EIC mode
+Date:   Fri, 5 Jan 2018 10:31:08 +0000
+Message-ID: <1515148270-9391-5-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1515148270-9391-1-git-send-email-matt.redfearn@mips.com>
 References: <1515148270-9391-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1515148338-637139-22014-548897-1
+X-BESS-ID: 1515148415-298554-4845-324352-2
 X-BESS-VER: 2017.16-r1712230000
 X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.60
+X-BESS-Outbound-Spam-Score: 0.00
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188674
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
-X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
 X-BESS-BRTS-Status: 1
 Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61907
+X-archive-position: 61908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,69 +56,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The GIC supports running in External Interrupt Controller (EIC) mode,
-and will signal this via cpu_has_veic if enabled in hardware. Currently
-the generic kernel will panic if cpu_has_veic is set - but the GIC can
-legitimately set this flag if either configured to boot in EIC mode, or
-if the GIC driver enables this mode. Make the kernel not panic in this
-case, and instead just check if the GIC is present. If so, use it's CPU
-local interrupt routing functions. If an EIC is present, but it is not
-the GIC, then the kernel does not know how to get the VIRQ for the CPU
-local interrupts and should panic. Support for alternative EICs being
-present is needed here for the generic kernel to support them.
+The MIPS GIC supports running in External Interrupt Controller (EIC)
+mode, in which the GIC can raise up to 64 separate interrupts rather
+than the usual 6. This mode is enabled by setting bit GIC_VL_CTL.EIC. If
+the bit sticks, then EIC mode is present and becomes enabled. Otherwise
+this bit is read-only 0 and setting it will have no effect.
+The CP0 register Config3 bit VEIC indicates the status of EIC mode, and
+effectively reflects GIC_VL_CTL.EIC. After attempting to enable EIC
+mode, read back Config3.VEIC to determine if VEIC mode is present and
+has been activated. If so, update the boot CPU flags to reflect that
+VEIC mode is now active.
 
-Suggested-by: Paul Burton <paul.burton@mips.com>
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
 
- arch/mips/generic/irq.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-mips-gic.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/generic/irq.c b/arch/mips/generic/irq.c
-index 394f8161e462..cb7fdaeef426 100644
---- a/arch/mips/generic/irq.c
-+++ b/arch/mips/generic/irq.c
-@@ -22,10 +22,10 @@ int get_c0_fdc_int(void)
- {
- 	int mips_cpu_fdc_irq;
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index ef92a4d2038e..ee391f42e97d 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -725,6 +725,9 @@ static int __init gic_of_init(struct device_node *node,
+ 	gic_shared_intrs >>= __ffs(GIC_CONFIG_NUMINTERRUPTS);
+ 	gic_shared_intrs = (gic_shared_intrs + 1) * 8;
  
--	if (cpu_has_veic)
--		panic("Unimplemented!");
--	else if (mips_gic_present())
-+	if (mips_gic_present())
- 		mips_cpu_fdc_irq = gic_get_c0_fdc_int();
-+	else if (cpu_has_veic)
-+		panic("Unimplemented!");
- 	else if (cp0_fdc_irq >= 0)
- 		mips_cpu_fdc_irq = MIPS_CPU_IRQ_BASE + cp0_fdc_irq;
- 	else
-@@ -38,10 +38,10 @@ int get_c0_perfcount_int(void)
- {
- 	int mips_cpu_perf_irq;
- 
--	if (cpu_has_veic)
--		panic("Unimplemented!");
--	else if (mips_gic_present())
-+	if (mips_gic_present())
- 		mips_cpu_perf_irq = gic_get_c0_perfcount_int();
-+	else if (cpu_has_veic)
-+		panic("Unimplemented!");
- 	else if (cp0_perfcount_irq >= 0)
- 		mips_cpu_perf_irq = MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
- 	else
-@@ -54,10 +54,10 @@ unsigned int get_c0_compare_int(void)
- {
- 	int mips_cpu_timer_irq;
- 
--	if (cpu_has_veic)
--		panic("Unimplemented!");
--	else if (mips_gic_present())
-+	if (mips_gic_present())
- 		mips_cpu_timer_irq = gic_get_c0_compare_int();
-+	else if (cpu_has_veic)
-+		panic("Unimplemented!");
- 	else
- 		mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE + cp0_compare_irq;
- 
++	/* Enable EIC mode if supported. */
++	mips_gic_enable_eic();
++
+ 	if (cpu_has_veic) {
+ 		/* Always use vector 1 in EIC mode */
+ 		gic_cpu_pin = 0;
 -- 
 2.7.4

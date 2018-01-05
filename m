@@ -1,97 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:11:50 +0100 (CET)
-Received: from mail-by2nam01on0085.outbound.protection.outlook.com ([104.47.34.85]:42943
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:12:11 +0100 (CET)
+Received: from mail-bn3nam01on0053.outbound.protection.outlook.com ([104.47.33.53]:29216
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992368AbeAESLjnxbs8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 5 Jan 2018 19:11:39 +0100
+        id S23992916AbeAESL77VUU8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 5 Jan 2018 19:11:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=yvn6gUE40Tpnj5CuNbPwclz0+X7rwBvUBtSObatBl/g=;
- b=PnUbKq/VATZGCBCQxG/+jTb3WAXGG2YmNBUH/3AzgxZi+9WNOUD6KctQ5ZgrpGYdbM+cx8UcwJBtK6pjqxX8TLcLZ8aTm+nqUMF4CUefIppglSjP5jEnVYS8+XVmX2a8EdcDsRo8EvmfVTvfNDZVNI6OdzS1fRNRANaNXxzqUaw=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@cavium.com; 
+ bh=E59iCSih8pmyQtP/54l9n/rrXGy2ryG/62+MMORkXEQ=;
+ b=bu8Y2bLyW5zQQgSEn4lPsgT/4bNLMVUkJw7k3b0/0Jl82m0bAso0eXiYItdHokBUzPl42WyEtmSf0PZaKbwQ54nr8JAu+QAa3xjnw0SX7hL7G5i9OLl/z6uV9uLSEo1lh1iVpt3GejZy85RHTM0JiD0p5b5ywWAeaAFbi/Ol7eU=
 Received: from ddl.caveonetworks.com (50.233.148.156) by
- CY4PR07MB3493.namprd07.prod.outlook.com (10.171.252.150) with Microsoft SMTP
+ DM5PR07MB3498.namprd07.prod.outlook.com (10.164.153.29) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.366.8; Fri, 5 Jan 2018 18:11:28 +0000
-Subject: Re: [PATCH 1/2] MIPS: Watch: Avoid duplication of bits in
- mips_install_watch_registers.
+ 15.20.345.14; Fri, 5 Jan 2018 18:11:49 +0000
+Subject: Re: [PATCH 2/2] MIPS: Watch: Avoid duplication of bits in
+ mips_read_watch_registers
 To:     Matt Redfearn <matt.redfearn@mips.com>, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 References: <1514892682-30328-1-git-send-email-matt.redfearn@mips.com>
+ <1514892682-30328-2-git-send-email-matt.redfearn@mips.com>
 From:   David Daney <ddaney@caviumnetworks.com>
-Message-ID: <cb4784cd-fce3-55fc-2281-88f5922ff309@caviumnetworks.com>
-Date:   Fri, 5 Jan 2018 10:11:24 -0800
+Message-ID: <eaeae3ba-11d7-778c-e536-6a086a6ade6f@caviumnetworks.com>
+Date:   Fri, 5 Jan 2018 10:11:46 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.5.0
 MIME-Version: 1.0
-In-Reply-To: <1514892682-30328-1-git-send-email-matt.redfearn@mips.com>
+In-Reply-To: <1514892682-30328-2-git-send-email-matt.redfearn@mips.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: SN1PR0701CA0065.namprd07.prod.outlook.com (10.163.126.33)
- To CY4PR07MB3493.namprd07.prod.outlook.com (10.171.252.150)
+X-ClientProxiedBy: SN1PR0701CA0050.namprd07.prod.outlook.com (10.163.126.18)
+ To DM5PR07MB3498.namprd07.prod.outlook.com (10.164.153.29)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 204b2b0b-79c5-4612-7bb2-08d55467bdf2
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603307)(7153060);SRVR:CY4PR07MB3493;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3493;3:JVfeGzzch1kdIYZaVWEmEaLCIyEtKsKpCm5xorkiu8OftzcF0Nl21jcOhSs01bALX2NuqxdxDVgJ7T267er7ZvpX/p9+B3CX2tUXy9i/ehYgTFsltlWWICD911WP+hzU+uhlG8gJPNQHJ+myuehfyODQz1ktjeeWcokUzByCf3+Q1PtwALV5bevToGFGLq1J0qF7OSWjW55N1yZbqyDNOX/Zm2Z+zH6WdoGAi3qRv7K/0NQrpFUm6m9bcX0fcAoo;25:IEir2IwFsWxEsOVsDKvJFet3xMBbWBS0HjXsaUlpMPh+3jK9WlmAlbO03cK/C/XSdaBJvWGibv/cZVnSL8+rzRmgw4WmoeJYROFOeulBoGTxkOES9pZnc+HK70AcWJG7ZCI+Zou29g3g+A/wBMVxqAHVqIVw7MkTcfMwV2j5lN88808+RUlGniVAZeAkL4bRlGJXDyYUlkpxtgZ/dTJaHUVPBTED/Zh9w1kfQwx3oPrN93reBq+DnP/Ve2q3OxBxv998ffhM4f8WDWwnfon0R0i1gZenfoqwmZGntq8nCCeVjrPv/Z//RUvgB3gcA4GbhaA7Qz6kLwG5ejGMOsamIg==;31:z4aR4DWQrEivax7Qn8wF4wcBp2L/ix7XkLl4ke7Lfvy1prCXnCQoZTob79sSmtlJUSe8miUBECgMouR0R6OOi+8esCusNfoiFh8potENcb5dhAlCwD0swnppWIUhjRCKjkJhq2ttaERNvnDjWJ8IABELRnhlKMTI/3gdrca7KgKILNbyJbulszkLbkC3bQLdBAqo9m5teCjhX+hmR+43b9fcWvqWv3UjVZXLmPbqhtQ=
-X-MS-TrafficTypeDiagnostic: CY4PR07MB3493:
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3493;20:1jHmofIm1KbbsWhTsIxKJAO1PvsHYQHDSQCvaJMprSuyaHUyU64zALsqLFD3Kq0+YRNlEPqBIeaTVgIAn5O6wmM+h0tBzPpPFzbbnVR9bI9inag6E02nvJcKZl8zdwaDTP2XBjy1+kVGbbjo7zElP9IVXNhDm4uWbqrgsjxtRPIlL/lzU+7wQP8Jts2ktOdRloWRJRW83sCMq9xjuN3TurpwRDqk+svm8EXeW4zMAI4cZRJ30ZL5wzImnXN3l1uE8Lo9HTY26fHtUUEJqKy3wJKa8VYuELcFfnoHjcZX1/p2VAAjF4A9wvf6tdnD+XoxC44IEFeV1H7RZxpaxVWRkIM/tLQ+LAWOwTtHxaDMS03LP+TURDTHWhK03rH/jkF/EAbakH9qC7E7DXPDIHnc+SNM3NSgNlzUoZ1TNHa+5aISyg7B80rcffRx8lNJLUPZ0uG0o4Wm3HF4v2uZWJfiumyHea992Fq6SSquFg9Aq7Tdwuu/HAcAH7WBmlWT/nriA/b+dbFK+Ia4msKetVkQz/NIVoYZ9YKjomxvhRsXeV8WFaLW7o3YVOqSzCgg0bTkBvGwFjhr0Dt7UtlqyIuZb3q84svCkj0eGuH6JDxUFtw=;4:v4m9S8mM5gVFozsT3tIz1rG1PNtRluNO8VnWE9auqowjRIecd0yBE1pRsy8TY7bQ6DDrH4P+K8VSbmgUL8L9xb5FBhWQBv5MSY4niS5DOiBkUDM0BqqRFGTojB0TaokpH25ZSCU2yfwwdcYCz5aLafP//znP027edX1pBTe9W0ZxDITkinbgdYvtNO+LATC7LXqKXHDCA9pwsDcYJ+NnzTCKffnGiOlh8U0hDQkunk4kEzhRwfWyBrb8UH++mVYly8EsNwVP1AIvbOaG7fDpwA==
-X-Microsoft-Antispam-PRVS: <CY4PR07MB3493EB7907762B5908A30182971C0@CY4PR07MB3493.namprd07.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: c27e94b6-259d-4445-73ed-08d55467ca63
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(4534020)(4602075)(4627115)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603307)(7153060);SRVR:DM5PR07MB3498;
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3498;3:Cz9LwurQnrtG9ppVOA2P/zqFuQVygPnSVHvIzJ9EjzMrdaUSiBJMh+VAIxrdHkUP6v3Z64xJPDlXVoV/jWjNzzb9ll8FYa+rKiPyPdKvD4cgXrg/zoDIDWRCNGqXcU0/sOKyOeDSZXrKXG7uOGntS8+aqMEMIQjbX46+9Iq5KntpzTrM9e33XiFN5d/s7tsd0zi5daM8Jnt0rxmYOXPhGvTVt2IiZFTJgVPzaigZMHW0uR2meyAaU7vPWvT8PNDl;25:NDc2T+PD+Gxfw2MyDGcuVOvyzl9Ba+z2KjYNzBREOVVcMRrcr3w3tAW8bkX94LdjG+G2rhN3m2Og6kfuLuIX1/+r+WTga/XlYT9fnEywpg+CbKY9GF8bB728OhkTMSAlTEfxbxX6L3lDrXj1NMxnWT4T0T9UPk2e8OcTahebBW2qskHeG2suK11nxXSssh0KgaQRHTo/PUoqbew+LRWdOdAYDqxZNR10lg7KviZPYZekIJEj7evKm/3izvMX0TMxEXgHZuOsGmFpWmbAkU1p1v3N9gtR7krfb8YCYS1Df1qMhQ2tgYRQHIGVyVa8aqc1pRlu2ESwcFHMI0xDHOx7Mg==;31:fdlGSgl52+YAsgyR886u30ZlD2EaPY5haJk6CQZwb0YYqptfX9HpXNUP2VVlvFAP5vadrbspn9wmec90tLgcna9U9WyqeDk05dO6L+xijjUPMougE79aBMAQvsNOxXVyFd5Vec6JynWccA1zKXiiyrZFo0lzCU+GmYjMlZi7KuG6L7vYSRegLnWikBu7T3z6xJBvuIr21bCRcZoRvTGVDda3M1AdlstGAreYx7k3C80=
+X-MS-TrafficTypeDiagnostic: DM5PR07MB3498:
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=David.Daney@cavium.com; 
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3498;20:eEMFCEAOoRz5nwoO6ay6IkxPUb/lA9ihnu9hTBmsbZ9qBD8TbwUCb1xlJCOCsJt7JmckOIScG5V0h8ygQbCx3zX2Ln6RRiy5TWM25YgAzCnjJ4B85lol9ivLZLIdaXWaFH1wKAUKNzKwN5e8VJegb/vKA5LbCFAQrASS4PpHxS5Ul1kPudZPR5UdXo5jrUiGTBxvjhBIsg6rQHVv9hKO9pftj6TqKoV9u+uRqag90JErhjM5oU2jc2FFqzJtf1BF1XLXSPqsZBJeSmzDZyucXrGEFNHzyN+15p1h2XIU3zQtoqa2Ql2DsEnOnMmzZAnEOysYnhGPoehWl8OKXYBK1g2gPj8KL+GQVp248rtvZAko+f+2nv2PDlLHUcvvmixahcHiZtwO8lC/y7LNrBFOH7AodfZF6OFrWvxclXOQY3uT45aCJnfIRbA1jjJGRFwiMt9m+3cKjTSvfvt1kS7ZiJvHkp5E1u6uR0DX1ZAdV8Y/JTBqLH6BkE1CPoDfH3sBjQQRZPHlstZPc0CVULT2wglPwuymNOuI/fpaV+yYkeuTvY19j4J7uSt2zF0i3Cf62Md342B23jt7wUSv44RlKOwiYAqbK/EPaye+COE4bYs=;4:DIJkUM4rRXOglvi4fY2gNXX62Qn6fNlbS65r9xBupCOMhKz9yXx/I/WW9BB3BpoaeqYZne6zq+cMYsTVluvb2udRxdWVm5Pe6Y3ZM7vRJlg96jQQIYYRJ7uWkkfXOraVURXDNV7600XkH72eDsU4U72dw4dYL6q76dtCFqCb37GEN7ROfRug6/TCjrqxXtPtJPHTGBTrAVuY7XQ4MoDtT1vXX5GMqNZ7dUySa4soD1yordRuq9/yQn7FERi/+0y36z7QKarzhqpwSU30tvc5fA==
+X-Microsoft-Antispam-PRVS: <DM5PR07MB34989B6EA5FBACCCD8321BBC971C0@DM5PR07MB3498.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040470)(2401047)(8121501046)(5005006)(3231023)(944501075)(3002001)(10201501046)(93006095)(6041268)(20161123558120)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123564045)(6072148)(201708071742011);SRVR:CY4PR07MB3493;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:CY4PR07MB3493;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040470)(2401047)(8121501046)(5005006)(93006095)(3002001)(3231023)(944501075)(10201501046)(6041268)(20161123562045)(20161123558120)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:DM5PR07MB3498;BCL:0;PCL:0;RULEID:(100000803101)(100110400095);SRVR:DM5PR07MB3498;
 X-Forefront-PRVS: 05437568AA
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(376002)(39380400002)(366004)(39860400002)(346002)(396003)(199004)(189003)(24454002)(6486002)(47776003)(81166006)(106356001)(81156014)(72206003)(6512007)(36756003)(65826007)(25786009)(5660300001)(65956001)(69596002)(2906002)(65806001)(16526018)(66066001)(229853002)(105586002)(6246003)(8936002)(6116002)(3846002)(8676002)(83506002)(7736002)(23676004)(52146003)(31696002)(2486003)(68736007)(52116002)(305945005)(67846002)(316002)(50466002)(230700001)(97736004)(386003)(2950100002)(6506007)(31686004)(6666003)(53546011)(42882006)(76176011)(58126008)(478600001)(53936002)(53416004)(64126003)(4326008);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3493;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(346002)(376002)(366004)(39860400002)(396003)(39380400002)(199004)(189003)(24454002)(42882006)(478600001)(68736007)(72206003)(31686004)(2906002)(50466002)(53416004)(53936002)(230700001)(69596002)(58126008)(65956001)(16526018)(66066001)(5660300001)(65806001)(83506002)(386003)(97736004)(2950100002)(4326008)(25786009)(53546011)(31696002)(65826007)(6506007)(6666003)(3846002)(6116002)(47776003)(316002)(305945005)(36756003)(81166006)(81156014)(8676002)(52116002)(23676004)(2486003)(52146003)(6486002)(6512007)(76176011)(105586002)(106356001)(64126003)(6246003)(7736002)(229853002)(67846002)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3498;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtDWTRQUjA3TUIzNDkzOzIzOmY3cVNYbzR5WlBkY05mMk9OWkNXcHJRdWpy?=
- =?utf-8?B?NTZ3WVNwRHZqaGpYVWFvSnB1LzZuRlEwTDJPV3BEblAxZFN0Vzlqa0lnYk8r?=
- =?utf-8?B?Z0hac2pLRDIwRzY5b2QvVG9ZSGFpVjFac2wrUHl6SzIxL05HWFZma0lqS2dm?=
- =?utf-8?B?MnVLNFBLWUszekpyajdEZ3M1Ym1NR0UvRFJKTExsdFRoNkxIei84ckZZYnVP?=
- =?utf-8?B?K3A3aktacXRzRGRSUUZwZEtDTzdMbDNkdWltaU5xWE50Ym1SSUFaTEQ0eFVl?=
- =?utf-8?B?cWVaTVBZK01aVTBTUC9pSGVSY3drZGFyb2dCdTVML1RlY0t6eXRTNUpNSGtj?=
- =?utf-8?B?S0hCbW1OUGRMalVDNUlTazA1dW5xeXFiQm0rMjRjWEgyQkFlUDRPZnArWUth?=
- =?utf-8?B?WjJvT1ptb1Y3eGpkODRhNTlMN0pxa2s1dExSRHQwK0pBQ0loN3VaejN6Rm13?=
- =?utf-8?B?K0RnWTBvbEV3Y0ZreWU1RFdZcHJHRDhJbEs3clhiNnNHeVl4a3NmRTBVWUFW?=
- =?utf-8?B?OGxsNXVDR2d3cEpRUGNjV3QxY0FtNzhBdGdMUVUxMDc3YjVKbUdNWFA4N1U2?=
- =?utf-8?B?WmM1Y24vREhQeTBxMlhsdXBsRk9GUGVyZk1VdlprYitRUkxldklqUmdnNEtR?=
- =?utf-8?B?bFgyV01GZVFCSWlXQkVTbStFeXJEU3o4Z1NCYXNFU1I4aEl0eDBabmdudWJY?=
- =?utf-8?B?TythRmgwVi9vVUNYZ01WUE4veUFYREttRnJOa3piNGZIMElNYnllZjNaUmg1?=
- =?utf-8?B?RzNraXRhc0g5Z2p2Wm44U01vN050aFpRRzU2UE9FZEtBNW15RUdmYlRGOE9v?=
- =?utf-8?B?d1djWlBYQ0xmU0FicDFsNmpnOUpjbDdQQ2ppTnAzcjlIYkdTaVVzZk9iZ3lz?=
- =?utf-8?B?MkJteGZ6Y0xwalBTMVJZT2FzdFR6OHcxZWhCaS9WOW1mQVZacU1ubTZWU00y?=
- =?utf-8?B?TWhqNUZJMEZxYmNQc0R5dHNucm9oaS9kMEgxd0dvRlprR2hxdk1NNVVtVDhP?=
- =?utf-8?B?RE9vL1BMMHBia2lYS2NvSmNyN3FwSko5aXBoZlhWeHJ2YVhIMEM4VEpJa3Y3?=
- =?utf-8?B?d0dwME5TZlRWWGxjdVFPQWxFYkYyWnV6NzU0SUZXa3NIQU9qblpkWkswb3lS?=
- =?utf-8?B?T29LQmpBTnBUQlYrRmhXWUI0R3QwZ3c1anhQU0VIaVpydndRVElKR3l6V2Na?=
- =?utf-8?B?SVFVVHlvZ3Zsd3U5dXljWWcvbWhpZyt0V05oNVlYU3NDSWorL29hNTVXWW9U?=
- =?utf-8?B?Z29qSGVtd0Rjei9aZjZoWWd1OEc0aVAvZnpIZGxyekFyYVRUVldyVWhNKzRC?=
- =?utf-8?B?U2h5TXhSWkp2NlZ0UkZlbjBjbGdtTHJGK0hmdndUVnhVcTg0Z1V6SWh6SEhK?=
- =?utf-8?B?b3FKN2RlSFE2Z2g2bERiNmRlVHI5MzZORDY2M3dXL1ArblRPOC9jODJJYy9a?=
- =?utf-8?B?eVdkWDVXSUk4RmE1WERMTnBGblNzWmExNXl0b1ZyNlFRT3FhNytROWlvQStx?=
- =?utf-8?B?dDVZTFd3R081VEkzVGpMM1FGOEQ4bXBJbGlPUitSYms0TFZIZ1hMSU1TY3Ay?=
- =?utf-8?B?K0NuaFFUUzBxTDBmZEE2V1h0RExwTzh6ZWlPRk9ZbGYvM1M1M2NlcSsrYllB?=
- =?utf-8?B?alorTnR6ek1WamhPZ21vQTU4R2Y4ZzF6SEtqTk9WdkQ5cDBRK2d5UldhQnBS?=
- =?utf-8?B?Tng1a1RuS0tPR1phQUx6RndjRjJGOHp5TmVaVE1jUFZ6alkwS2JQSVBvS1d0?=
- =?utf-8?B?ai9jck10QTBwQ3poazhSNXE0ejY0aUVsUjFmb1Fra0dPWVhUdTZYSVh6ZmNm?=
- =?utf-8?B?U3RwS3kyNS90MDZpUU04dmVyTjR0V1NkUVVXVUc3ODBkWWxFVlJ0ZlEyUTZ3?=
- =?utf-8?Q?NCs+dZmFf5xzjw6aseLwHngvTIDXwnCT?=
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3493;6:YajnLqVF+z21BqWJhrhUciZyoEmU+jzRGtVlTSOFsmv87EuP2lHNNhB4ftuOaGo7+odCRbwm6Rv5O4tDLF+ctGWOptt14CUrxWODZsAqXlvXzYEoKGEaXDDwvyYUzaJE3YEsmfqNME0ZktH//lqosqngn7ptcOI3jPW5oXt3rBBhmD5I5o/cIAYkFNppjdP5bUhOeAjuEF+38Ihd73dtPmVxGapVoCvNYe+2foEhvOUr9FSh5mWpZ3UcDCavl+y89KzooIaBRk1cJmSFeYzjq3a2W2+4TmmfOmKf2dqiiWr4lwLcpAtGrOo5f8CO2mS8PcG6yktFsaeCIFsoFT93/RUt+KBIEuRpDMcjgFVVWvg=;5:ii8Ntvqebd3v3twALE+nQ5RGKYS2KpPZ0lJhlK7GAjhBGAEjVgi4Piiqah94cv16iEeeE6Lb+FIX5XlrsNtyljmd5cVQgVHmEAnyeky945Ghs8PoCSO24F07HymPEDGz5TRO+s6aNHQzb7decFIEYL5bIYaM3ZWAwdO3B9xUKOE=;24:WcWImRtlXaFrHP9sOntSpskT0x6nGN8uCAkJox1u55UwHockxw5IIUhmt/LcbHITFxebFWeGvviFZ5+afm94NAOEqLskAUBcaZApU/Gp6Io=;7:wX2geml3jTx9IjV+a9QEG6OY1rh1dV3NUDnvyUgWA6DwqF2IVpVi8yCNOuaVu6ISK5TMe7TVZ2OTJkCcUBei6yy5EHmfcV9J0lMOGDc08BAA1ohyU20HxbImkl0paX59rEvs2jRAZzgJMf4ntxkqbGPoleiduO763e35Gtbn/ep7aVWis/DyHTBh29JsZZANiCit/Vg/uZB5dwwad9ScYgeMuynXknKFA0phkoJX/+mySL2YqATyoWiV3H97Fb41
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtETTVQUjA3TUIzNDk4OzIzOlkrUDdKeHAxcm1qMkZUQlQ1NFZmcmhPeHEx?=
+ =?utf-8?B?OGtkZHBUb3NKdGVQTGpCd1V1UGpGVXczSzZZUEMvVTYzb21LNXZQWkRRWk5N?=
+ =?utf-8?B?YkMrUGZZY3hUTS9YVytzZGcxQTUzTnh6dEdzTlJUckM4RVY0d1hHUUdwK2lq?=
+ =?utf-8?B?ZXZMTTlSNGFmY1FRalp2bkZFNEVyTDIxNU8xWmN5ZlJQR2FFYm9ETWVrYUh2?=
+ =?utf-8?B?Wld5NGw4TXMySEQ0Vm5wbm91MnZZejNjUnJNMW8yeVBZU29LelFQdFd5b0lq?=
+ =?utf-8?B?UStKZVE4TnhHN1Zld3loMzJHNHhrOXFLYllJMlV2WWkyMkJubllucXovQ1hl?=
+ =?utf-8?B?SVVqM2N6U2pPeUU4MHFJbncwSGZBZ1k1bTJ3eXAzeHp6Uy9hUGVBTFVlemt6?=
+ =?utf-8?B?aUxOVGJBSTFXZm4rbk00ZnVYVFFxV3FJK1NiZzVqd0s0Mkt6Y3Rkb1NPbnlh?=
+ =?utf-8?B?NXorRWM1MCtQUHBvQUQydVJ0LzEvQUx5Qk5LVno5K2E2K0JpaHJNaE43cnB5?=
+ =?utf-8?B?TDNhajRxbnQzV2NFN2NFZCtBcC92QmY2bEViTktFVEM5NWJ2alFDZDJEdXZz?=
+ =?utf-8?B?d1crNUI5c2lHSC9kOUZIYlo3RXJhUGtsaE9aWDhiaFBrUmxpcjhFNnYzNnZ2?=
+ =?utf-8?B?bFVoSW9IZzNmZFIxV01kY241Z0lxdStZK2h4Z1FrR2pUMGd5OEdCUUd1MVJV?=
+ =?utf-8?B?eDh0NWRhZE9wSEdscFFJWng0T2h4bFE1U0pSWENraldhRkVJZWdUWjhOQWR6?=
+ =?utf-8?B?L1F4bE5yaHBKOG15aVpQdFgwaVlMcXZwRTZER3lRY0twL0l4ZEc0WDN6ejBT?=
+ =?utf-8?B?SE9NQkUyK1BYM3c2S3Zqa0d1clNCWVlEL2N4UDYwTSs1c1oyazdhNUtNd1Iy?=
+ =?utf-8?B?NTBNazVuZHkxa3JRMnhtTlhLZjdtTEV6MGV3a2dUT2ZwemE2b1JiaXNPWnBD?=
+ =?utf-8?B?bHVVSFRHMmlVWnluUmZjb0x1clYyVUxHbklzS2lDQWN1QzdFMU9nNGpnSnFm?=
+ =?utf-8?B?YWxtNHlZcEVSOGFEWUR6R1RZS0xOZ0dudmFjK244WC9rZnFUWDRtYU5nZVc4?=
+ =?utf-8?B?MmIyYlhnZXJlcm9CbUd2R1lDYkJ2QU81S0xmM2RlaEhhLzFkcGE0WXVoMVNm?=
+ =?utf-8?B?NGI5dUtNSXo2dndnSkozUkszai9xWnk3UUtQSjJyb2hmbGtzSlhrNVVUV01T?=
+ =?utf-8?B?RThOeGhzL2tSeWdLUk5BbFRmYWJpOUlHbHJYaFY0YkEwUStXZmNzYlk5YnA1?=
+ =?utf-8?B?V2RPRUJTWnVLT2dxU2ZBZ0dMekpIcnBkWlZuUFhBL2lFZklaUWdxWXl1TDI4?=
+ =?utf-8?B?L21PdUZ4T0xGVlRNSGxuWkdSSVVXZnE0U1p1MUI3WVhQeHpFMzRoZ201QWlV?=
+ =?utf-8?B?TWE4NDJ5YU9pejdwMG5LZm1qNE1wbGZKamE4aXhyZGhWaGcrdnY5RjJUZDM0?=
+ =?utf-8?B?SUJQd0VwZDdneGxhbEMvQjAvMTRERXNmekRyeVpyZEsvWGVodnVCTGQxOUww?=
+ =?utf-8?B?dGZJeVJOQXcrcHZIcWF1ZllDem9UVUx0dzhpdVp0TVR5eWhlVnIzaktPV0Ix?=
+ =?utf-8?B?TzNGYXZFVytxYVpGUmxEOFNqLzdlNWh4SWNHTzhicVIweUxrVXBKaElTeDFM?=
+ =?utf-8?B?dVhXWTJiU01zTElwU0wrNVBwOUJqK3Z3OVFUMDFHZWVaZzRMczFKUy9hN2Fy?=
+ =?utf-8?B?eHJGYmd3dDE5NVNMZkhHSlZjMHdSbWVJbHY2a3I5cHJ3Ukp1ckh1N2g2bkhX?=
+ =?utf-8?B?QmkvR2FmMEp2SnNIOU5HZVdkWERyRFBCUEJhVm1vam1IZ1FiTmYwQ3FqcGlr?=
+ =?utf-8?B?cllBeHVHdzB2ai9FQ0diclAwYzdpeURTMUsrTVJOd0RBQVhXaC9hbGRtWEY3?=
+ =?utf-8?Q?mDnRkhNe0B27efpgNF5HuVbKmvN10H6J?=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3498;6:ypHesCF2Fhcy8wWQg9L4grHx8f0jAc60ADT0g1k1DFajv047vLfbZNDFm1HirZcaNnpLOgYA+rp/ypioyPClIOe8k49ME/S7aJAWZwoK+KM/8puxnzQufCsIiLg692XznXrHhe+PZwCqIJkXt5Me27YYgs7d/wzcDfkz47TMwgj0QuAL7KuVbkrOpCNWjLGmsk0UBsxSn4KhLavduWL3srRn1TgroYPMNoDSm1ImJixJiu9LbXgtl9RfNIFXA1Q7WJymqpohQPz/S2SiBGRgS2+uQx249DMa1M4SKr/42frIm1ltdPMSMr+1DacihP589kg/FpnsOawWMe9r2kPTcxDvl0G3TzV6O4sZlElaJBQ=;5:NS+M8pxD3F69WdiQUlUvLy7SMzA/rMXjzNrJJwKqOSl1/QcMWECNBLZzJJ7sYIOwBfLcbVxwrX5yvL1KvYVQ7Rv+7CwrLQ6Vot4RDOEs9ueHwnDsEMxVE1G49ShiuntNtdj5NdNrcW8mu4HdWoAl9HiCybKk9rrIk6TRylK89dw=;24:aVFmKQJ2rX6ECt8YuDSrgIqhL0lP2NoHFBS7jGkIImD5mxuz/p5aqg6eT6kip2hrpPN7a60npe2ZwJjDdyUkrVKhkJv6tujcjaAGX2xHF0I=;7:kGIkzUxUuAJlGYOVL5aFtNcbVZTKYgIeb27g/DAUoldBiC/0l51Ir8NzAxQCKr4tLKCeIv1ocZMJtZpD6lKcQPujW9IodZ1+50eVinCRexYTN1WLRQrC7WnMZBCWp2dSARoTHt8H4Tj/5U84Y3R7w5mj4hqf/MAbLdOF9cZa8gIKEeuBpQgpL08PVHgVg1va+4nGJbkLLYfEifA1dTi9zg+315KzE0zLKO8DxjayqeTMHDZdX1vRSdZ4nlxkzDSd
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2018 18:11:28.3255 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 204b2b0b-79c5-4612-7bb2-08d55467bdf2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2018 18:11:49.1985 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c27e94b6-259d-4445-73ed-08d55467ca63
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3493
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR07MB3498
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61918
+X-archive-position: 61919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -109,58 +110,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 01/02/2018 03:31 AM, Matt Redfearn wrote:
-> Currently the bits to be set in the watchhi register in addition to that
-> requested by the user is defined inline for each register. To avoid
-> this, define the bits once and or that in for each register.
+> Currently the bits to be masked when watchhi is read is defined inline
+> for each register. To avoid this, define the bits once and mask each
+> register with that value.
 > 
 > Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 
-Looks like a good cleanup/simplification...
-
 Acked-by: David Daney <david.daney@cavium.com>
+
 
 > ---
 > 
->   arch/mips/kernel/watch.c | 17 +++++++----------
->   1 file changed, 7 insertions(+), 10 deletions(-)
+>   arch/mips/kernel/watch.c | 14 ++++++--------
+>   1 file changed, 6 insertions(+), 8 deletions(-)
 > 
 > diff --git a/arch/mips/kernel/watch.c b/arch/mips/kernel/watch.c
-> index 19fcab7348b1..329d2209521d 100644
+> index 329d2209521d..0e61a5b7647f 100644
 > --- a/arch/mips/kernel/watch.c
 > +++ b/arch/mips/kernel/watch.c
-> @@ -18,27 +18,24 @@
->   void mips_install_watch_registers(struct task_struct *t)
+> @@ -48,21 +48,19 @@ void mips_read_watch_registers(void)
 >   {
->   	struct mips3264_watch_reg_state *watches = &t->thread.watch.mips3264;
-> +	unsigned int watchhi = MIPS_WATCHHI_G |		/* Trap all ASIDs */
-> +			       MIPS_WATCHHI_IRW;	/* Clear result bits */
+>   	struct mips3264_watch_reg_state *watches =
+>   		&current->thread.watch.mips3264;
+> +	unsigned int watchhi_mask = MIPS_WATCHHI_MASK | MIPS_WATCHHI_IRW;
 > +
 >   	switch (current_cpu_data.watch_reg_use_cnt) {
 >   	default:
 >   		BUG();
 >   	case 4:
->   		write_c0_watchlo3(watches->watchlo[3]);
-> -		/* Write 1 to the I, R, and W bits to clear them, and
-> -		   1 to G so all ASIDs are trapped. */
-> -		write_c0_watchhi3(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
-> -				  watches->watchhi[3]);
-> +		write_c0_watchhi3(watchhi | watches->watchhi[3]);
+> -		watches->watchhi[3] = (read_c0_watchhi3() &
+> -				       (MIPS_WATCHHI_MASK | MIPS_WATCHHI_IRW));
+> +		watches->watchhi[3] = (read_c0_watchhi3() & watchhi_mask);
 >   	case 3:
->   		write_c0_watchlo2(watches->watchlo[2]);
-> -		write_c0_watchhi2(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
-> -				  watches->watchhi[2]);
-> +		write_c0_watchhi2(watchhi | watches->watchhi[2]);
+> -		watches->watchhi[2] = (read_c0_watchhi2() &
+> -				       (MIPS_WATCHHI_MASK | MIPS_WATCHHI_IRW));
+> +		watches->watchhi[2] = (read_c0_watchhi2() & watchhi_mask);
 >   	case 2:
->   		write_c0_watchlo1(watches->watchlo[1]);
-> -		write_c0_watchhi1(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
-> -				  watches->watchhi[1]);
-> +		write_c0_watchhi1(watchhi | watches->watchhi[1]);
+> -		watches->watchhi[1] = (read_c0_watchhi1() &
+> -				       (MIPS_WATCHHI_MASK | MIPS_WATCHHI_IRW));
+> +		watches->watchhi[1] = (read_c0_watchhi1() & watchhi_mask);
 >   	case 1:
->   		write_c0_watchlo0(watches->watchlo[0]);
-> -		write_c0_watchhi0(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
-> -				  watches->watchhi[0]);
-> +		write_c0_watchhi0(watchhi | watches->watchhi[0]);
+> -		watches->watchhi[0] = (read_c0_watchhi0() &
+> -				       (MIPS_WATCHHI_MASK | MIPS_WATCHHI_IRW));
+> +		watches->watchhi[0] = (read_c0_watchhi0() & watchhi_mask);
 >   	}
->   }
->   
+>   	if (current_cpu_data.watch_reg_use_cnt == 1 &&
+>   	    (watches->watchhi[0] & MIPS_WATCHHI_IRW) == 0) {
 > 

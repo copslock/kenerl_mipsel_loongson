@@ -1,47 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 22:56:39 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:40131 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992615AbeAEV4YrVs-g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 22:56:24 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 05 Jan 2018 21:55:49 +0000
-Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
- Microsoft SMTP Server id 14.3.361.1; Fri, 5 Jan 2018 13:55:46 -0800
-Date:   Fri, 5 Jan 2018 13:56:54 -0800
-From:   Paul Burton <paul.burton@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 23:07:54 +0100 (CET)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:56446 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992615AbeAEWHlUoiIg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 23:07:41 +0100
+Received: from darkstar.musicnaut.iki.fi (85-76-72-218-nat.elisa-mobile.fi [85.76.72.218])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 29D9A1A2613;
+        Sat,  6 Jan 2018 00:07:39 +0200 (EET)
+Date:   Sat, 6 Jan 2018 00:07:38 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     James Hogan <jhogan@kernel.org>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "David Daney" <david.daney@cavium.com>,
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        David Daney <david.daney@cavium.com>,
         John Crispin <john@phrozen.org>,
-        "Florian Fainelli" <f.fainelli@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Matt Redfearn <matt.redfearn@mips.com>
 Subject: Re: [PATCH] MAINTAINERS: Add James as MIPS co-maintainer
-Message-ID: <20180105215654.bm2dasgyqy5pj6wr@pburton-laptop>
+Message-ID: <20180105220738.djuitbrlucfttohy@darkstar.musicnaut.iki.fi>
 References: <20180105213647.28850-1-jhogan@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20180105213647.28850-1-jhogan@kernel.org>
-User-Agent: NeoMutt/20171215
-X-BESS-ID: 1515189349-452060-10411-24855-1
-X-BESS-VER: 2017.17.1-r1712222329
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188692
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61940
+X-archive-position: 61941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,24 +44,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+Hi,
 
 On Fri, Jan 05, 2018 at 09:36:47PM +0000, James Hogan wrote:
 > I've been taking on some co-maintainer duties already, so lets make it
 > official in the MAINTAINERS file.
-
-Yes please! Especially if this means more consistent & responsive
-maintainership in between merge windows I'm all for it.
-
-I'm not sure which is more appropriate here, but please consider either
-of these valid:
-
-  Acked-by: Paul Burton <paul.burton@mips.com>
-  Reviewed-by: Paul Burton <paul.burton@mips.com>
-
-Thanks,
-    Paul
-
+> 
 > Link: https://lkml.kernel.org/r/33db77a2-32e4-6b2c-d463-9d116ba55623@imgtec.com
 > Link: https://lkml.kernel.org/r/20171207110549.GM27409@jhogan-linux.mipstec.com
 > Signed-off-by: James Hogan <jhogan@kernel.org>
@@ -82,6 +60,11 @@ Thanks,
 > Cc: Florian Fainelli <f.fainelli@gmail.com>
 > Cc: Matt Redfearn <matt.redfearn@mips.com>
 > Cc: linux-mips@linux-mips.org
+
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+A.
+
 > ---
 >  MAINTAINERS | 1 +
 >  1 file changed, 1 insertion(+)
@@ -100,4 +83,5 @@ Thanks,
 >  T:	git git://git.linux-mips.org/pub/scm/ralf/linux.git
 > -- 
 > 2.13.6
+> 
 > 

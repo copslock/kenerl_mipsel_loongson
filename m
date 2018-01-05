@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:30:49 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:31:11 +0100 (CET)
 Received: from outils.crapouillou.net ([89.234.176.41]:37198 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993623AbeAESZfMFwjs (ORCPT
+        with ESMTP id S23993853AbeAESZfzICJs (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:35 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -9,18 +9,18 @@ Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v6 14/15] devicetree/bindings: Add GCW vendor prefix
-Date:   Fri,  5 Jan 2018 19:25:12 +0100
-Message-Id: <20180105182513.16248-15-paul@crapouillou.net>
+Subject: [PATCH v6 15/15] MIPS: ingenic: Initial GCW Zero support
+Date:   Fri,  5 Jan 2018 19:25:13 +0100
+Message-Id: <20180105182513.16248-16-paul@crapouillou.net>
 In-Reply-To: <20180105182513.16248-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
  <20180105182513.16248-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176734; bh=y/G8YvEJ04+Uo87qjduOj9E0W5MFM1i5vgYcRSRiXwc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=MBElUq342de0DpvMLCNyafUFrVBzjus8/iT+QxV5HtZR3b2EXYEiW/uLs/yRLtMn8V1Ovxp6yHtX781WKo9TP0Wpdm0UJMYrucmcQAoiWb5N/t+qvrlALRjSQXvBb8QawtnITPzFGZ5fRa+Qgw9/l0hJhY27P1kKDp0RDQUhQKU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176735; bh=d6fM/RxT/aSwZs/XWcIn9xUJZj495xWht89cnHj7mCU=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=ErZbZnhunvpWmkrHTd8lLJD/XZP83iOg8yGVwzA4xGHYpgA/IrSKcrDUf8MS4SpbaT7mvHiLSGSShRf2plw/Kb4JAHDvGJjVFtUf+xCygu83BFdqYCfw3KgtQLUMCQ3gQ4HQ6L1vDzU5ZLdo25CZsP4TeDHw6L3QxshAxqgxE64=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61934
+X-archive-position: 61935
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,32 +37,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Game Consoles Worldwide, mostly known under the acronym GCW, is the
-creator of the GCW Zero open-source video game system.
+The GCW Zero (http://www.gcw-zero.com) is a retro-gaming focused
+handheld game console, successfully kickstarted in ~2012, running Linux.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Mathieu Malaterre <malat@debian.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/boot/dts/ingenic/Makefile |  1 +
+ arch/mips/boot/dts/ingenic/gcw0.dts | 62 +++++++++++++++++++++++++++++++++++++
+ arch/mips/configs/gcw0_defconfig    | 27 ++++++++++++++++
+ arch/mips/jz4740/Kconfig            |  4 +++
+ 4 files changed, 94 insertions(+)
+ create mode 100644 arch/mips/boot/dts/ingenic/gcw0.dts
+ create mode 100644 arch/mips/configs/gcw0_defconfig
 
- v2: It's 'Game Consoles Worldwide', not 'Games Consoles Worldwide'
+ v2: No change
  v3: No change
  v4: No change
- v5: No change
- v6: No change
+ v5: Use SPDX license identifier
+     Drop custom CROSS_COMPILE from defconfig
+ v6: Add "model" property in devicetree
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
-index 0994bdd82cd3..f40f4da39937 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.txt
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
-@@ -123,6 +123,7 @@ focaltech	FocalTech Systems Co.,Ltd
- friendlyarm	Guangzhou FriendlyARM Computer Tech Co., Ltd
- fsl	Freescale Semiconductor
- fujitsu	Fujitsu Ltd.
-+gcw Game Consoles Worldwide
- ge	General Electric Company
- geekbuying	GeekBuying
- gef	GE Fanuc Intelligent Platforms Embedded Systems, Inc.
+diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
+index 6a31759839b4..5b1361a89e02 100644
+--- a/arch/mips/boot/dts/ingenic/Makefile
++++ b/arch/mips/boot/dts/ingenic/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
++dtb-$(CONFIG_JZ4770_GCW0)	+= gcw0.dtb
+ dtb-$(CONFIG_JZ4780_CI20)	+= ci20.dtb
+ 
+ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+diff --git a/arch/mips/boot/dts/ingenic/gcw0.dts b/arch/mips/boot/dts/ingenic/gcw0.dts
+new file mode 100644
+index 000000000000..5cd76ac9cfba
+--- /dev/null
++++ b/arch/mips/boot/dts/ingenic/gcw0.dts
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: GPL-2.0
++/dts-v1/;
++
++#include "jz4770.dtsi"
++
++/ {
++	compatible = "gcw,zero", "ingenic,jz4770";
++	model = "GCW Zero";
++
++	aliases {
++		serial0 = &uart0;
++		serial1 = &uart1;
++		serial2 = &uart2;
++		serial3 = &uart3;
++	};
++
++	chosen {
++		stdout-path = "serial2:57600n8";
++	};
++
++	board {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "simple-bus";
++		ranges = <>;
++
++		otg_phy: otg-phy {
++			compatible = "usb-nop-xceiv";
++			clocks = <&cgu JZ4770_CLK_OTG_PHY>;
++			clock-names = "main_clk";
++		};
++	};
++};
++
++&ext {
++	clock-frequency = <12000000>;
++};
++
++&uart2 {
++	status = "okay";
++};
++
++&cgu {
++	/* Put high-speed peripherals under PLL1, such that we can change the
++	 * PLL0 frequency on demand without having to suspend peripherals.
++	 * We use a rate of 432 MHz, which is the least common multiple of
++	 * 27 MHz (required by TV encoder) and 48 MHz (required by USB host).
++	 */
++	assigned-clocks =
++		<&cgu JZ4770_CLK_PLL1>,
++		<&cgu JZ4770_CLK_UHC>;
++	assigned-clock-parents =
++		<0>,
++		<&cgu JZ4770_CLK_PLL1>;
++	assigned-clock-rates =
++		<432000000>;
++};
++
++&uhc {
++	/* The WiFi module is connected to the UHC. */
++	status = "okay";
++};
+diff --git a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
+new file mode 100644
+index 000000000000..99ac1fa3b35f
+--- /dev/null
++++ b/arch/mips/configs/gcw0_defconfig
+@@ -0,0 +1,27 @@
++CONFIG_MACH_INGENIC=y
++CONFIG_JZ4770_GCW0=y
++CONFIG_HIGHMEM=y
++# CONFIG_BOUNCE is not set
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_SECCOMP is not set
++CONFIG_NO_HZ_IDLE=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_EMBEDDED=y
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_NETDEVICES=y
++CONFIG_SERIAL_8250=y
++# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_INGENIC=y
++CONFIG_USB=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_NOP_USB_XCEIV=y
++CONFIG_TMPFS=y
+diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
+index 29a9361a2b77..4dd0c446ecec 100644
+--- a/arch/mips/jz4740/Kconfig
++++ b/arch/mips/jz4740/Kconfig
+@@ -8,6 +8,10 @@ config JZ4740_QI_LB60
+ 	bool "Qi Hardware Ben NanoNote"
+ 	select MACH_JZ4740
+ 
++config JZ4770_GCW0
++	bool "Game Consoles Worldwide GCW Zero"
++	select MACH_JZ4770
++
+ config JZ4780_CI20
+ 	bool "MIPS Creator CI20"
+ 	select MACH_JZ4780
 -- 
 2.11.0

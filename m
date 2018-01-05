@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:31:11 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:37198 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:31:38 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:37358 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993853AbeAESZfzICJs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:35 +0100
+        with ESMTP id S23993885AbeAESZhl8-Es (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:37 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v6 15/15] MIPS: ingenic: Initial GCW Zero support
-Date:   Fri,  5 Jan 2018 19:25:13 +0100
-Message-Id: <20180105182513.16248-16-paul@crapouillou.net>
+Subject: [PATCH v6 11/15] MIPS: ingenic: Initial JZ4770 support
+Date:   Fri,  5 Jan 2018 19:25:09 +0100
+Message-Id: <20180105182513.16248-12-paul@crapouillou.net>
 In-Reply-To: <20180105182513.16248-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
  <20180105182513.16248-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176735; bh=d6fM/RxT/aSwZs/XWcIn9xUJZj495xWht89cnHj7mCU=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=ErZbZnhunvpWmkrHTd8lLJD/XZP83iOg8yGVwzA4xGHYpgA/IrSKcrDUf8MS4SpbaT7mvHiLSGSShRf2plw/Kb4JAHDvGJjVFtUf+xCygu83BFdqYCfw3KgtQLUMCQ3gQ4HQ6L1vDzU5ZLdo25CZsP4TeDHw6L3QxshAxqgxE64=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176732; bh=wl65y/61xlonYS+dY+N4FVuBEyORfeceYAIzgk40PPQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=anbnydplpINhAvCLaZcnehxaGsPRVQSs8W4BSkn0yUKOYpo2QbvWiPaXxY1PwSu1/RmJRQcAEgrwDhs6USxbtTjXi1TA0WgzV+ptXxMyNkf+eRR+mQBHa3oHDzGSBHePduogzACa+Hjzp9TDVhQ0rNMDpetVChtrz5X1MBoFk5A=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61935
+X-archive-position: 61936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,153 +37,271 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The GCW Zero (http://www.gcw-zero.com) is a retro-gaming focused
-handheld game console, successfully kickstarted in ~2012, running Linux.
+Provide just enough bits (clocks, clocksource, uart) to allow a kernel
+to boot on the JZ4770 SoC to a initramfs userspace.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Mathieu Malaterre <malat@debian.org>
+Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 ---
- arch/mips/boot/dts/ingenic/Makefile |  1 +
- arch/mips/boot/dts/ingenic/gcw0.dts | 62 +++++++++++++++++++++++++++++++++++++
- arch/mips/configs/gcw0_defconfig    | 27 ++++++++++++++++
- arch/mips/jz4740/Kconfig            |  4 +++
- 4 files changed, 94 insertions(+)
- create mode 100644 arch/mips/boot/dts/ingenic/gcw0.dts
- create mode 100644 arch/mips/configs/gcw0_defconfig
+ arch/mips/boot/dts/ingenic/jz4770.dtsi | 212 +++++++++++++++++++++++++++++++++
+ arch/mips/jz4740/Kconfig               |   6 +
+ arch/mips/jz4740/time.c                |   2 +-
+ 3 files changed, 219 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/boot/dts/ingenic/jz4770.dtsi
 
  v2: No change
  v3: No change
  v4: No change
  v5: Use SPDX license identifier
-     Drop custom CROSS_COMPILE from defconfig
- v6: Add "model" property in devicetree
+ v6: No change
 
-diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
-index 6a31759839b4..5b1361a89e02 100644
---- a/arch/mips/boot/dts/ingenic/Makefile
-+++ b/arch/mips/boot/dts/ingenic/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
-+dtb-$(CONFIG_JZ4770_GCW0)	+= gcw0.dtb
- dtb-$(CONFIG_JZ4780_CI20)	+= ci20.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-diff --git a/arch/mips/boot/dts/ingenic/gcw0.dts b/arch/mips/boot/dts/ingenic/gcw0.dts
+diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
 new file mode 100644
-index 000000000000..5cd76ac9cfba
+index 000000000000..7c2804f3f5f1
 --- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/gcw0.dts
-@@ -0,0 +1,62 @@
++++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
+@@ -0,0 +1,212 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
 +
-+#include "jz4770.dtsi"
++#include <dt-bindings/clock/jz4770-cgu.h>
 +
 +/ {
-+	compatible = "gcw,zero", "ingenic,jz4770";
-+	model = "GCW Zero";
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ingenic,jz4770";
 +
-+	aliases {
-+		serial0 = &uart0;
-+		serial1 = &uart1;
-+		serial2 = &uart2;
-+		serial3 = &uart3;
++	cpuintc: interrupt-controller {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
 +	};
 +
-+	chosen {
-+		stdout-path = "serial2:57600n8";
++	intc: interrupt-controller@10001000 {
++		compatible = "ingenic,jz4770-intc";
++		reg = <0x10001000 0x40>;
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <2>;
 +	};
 +
-+	board {
++	ext: ext {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++	};
++
++	osc32k: osc32k {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++	};
++
++	cgu: jz4770-cgu@10000000 {
++		compatible = "ingenic,jz4770-cgu";
++		reg = <0x10000000 0x100>;
++
++		clocks = <&ext>, <&osc32k>;
++		clock-names = "ext", "osc32k";
++
++		#clock-cells = <1>;
++	};
++
++	pinctrl: pin-controller@10010000 {
++		compatible = "ingenic,jz4770-pinctrl";
++		reg = <0x10010000 0x600>;
++
 +		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		ranges = <>;
++		#size-cells = <0>;
 +
-+		otg_phy: otg-phy {
-+			compatible = "usb-nop-xceiv";
-+			clocks = <&cgu JZ4770_CLK_OTG_PHY>;
-+			clock-names = "main_clk";
++		gpa: gpio@0 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <0>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 0 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <17>;
++		};
++
++		gpb: gpio@1 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <1>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 32 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <16>;
++		};
++
++		gpc: gpio@2 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <2>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 64 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <15>;
++		};
++
++		gpd: gpio@3 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <3>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 96 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <14>;
++		};
++
++		gpe: gpio@4 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <4>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 128 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <13>;
++		};
++
++		gpf: gpio@5 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <5>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 160 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <12>;
 +		};
 +	};
-+};
 +
-+&ext {
-+	clock-frequency = <12000000>;
-+};
++	uart0: serial@10030000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10030000 0x100>;
 +
-+&uart2 {
-+	status = "okay";
-+};
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART0>;
++		clock-names = "baud", "module";
 +
-+&cgu {
-+	/* Put high-speed peripherals under PLL1, such that we can change the
-+	 * PLL0 frequency on demand without having to suspend peripherals.
-+	 * We use a rate of 432 MHz, which is the least common multiple of
-+	 * 27 MHz (required by TV encoder) and 48 MHz (required by USB host).
-+	 */
-+	assigned-clocks =
-+		<&cgu JZ4770_CLK_PLL1>,
-+		<&cgu JZ4770_CLK_UHC>;
-+	assigned-clock-parents =
-+		<0>,
-+		<&cgu JZ4770_CLK_PLL1>;
-+	assigned-clock-rates =
-+		<432000000>;
-+};
++		interrupt-parent = <&intc>;
++		interrupts = <5>;
 +
-+&uhc {
-+	/* The WiFi module is connected to the UHC. */
-+	status = "okay";
++		status = "disabled";
++	};
++
++	uart1: serial@10031000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10031000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART1>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <4>;
++
++		status = "disabled";
++	};
++
++	uart2: serial@10032000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10032000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART2>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <3>;
++
++		status = "disabled";
++	};
++
++	uart3: serial@10033000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10033000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART3>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <2>;
++
++		status = "disabled";
++	};
++
++	uhc: uhc@13430000 {
++		compatible = "generic-ohci";
++		reg = <0x13430000 0x1000>;
++
++		clocks = <&cgu JZ4770_CLK_UHC>, <&cgu JZ4770_CLK_UHC_PHY>;
++		assigned-clocks = <&cgu JZ4770_CLK_UHC>;
++		assigned-clock-rates = <48000000>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <20>;
++
++		status = "disabled";
++	};
 +};
-diff --git a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
-new file mode 100644
-index 000000000000..99ac1fa3b35f
---- /dev/null
-+++ b/arch/mips/configs/gcw0_defconfig
-@@ -0,0 +1,27 @@
-+CONFIG_MACH_INGENIC=y
-+CONFIG_JZ4770_GCW0=y
-+CONFIG_HIGHMEM=y
-+# CONFIG_BOUNCE is not set
-+CONFIG_PREEMPT_VOLUNTARY=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_NETDEVICES=y
-+CONFIG_SERIAL_8250=y
-+# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_INGENIC=y
-+CONFIG_USB=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
-+CONFIG_NOP_USB_XCEIV=y
-+CONFIG_TMPFS=y
 diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index 29a9361a2b77..4dd0c446ecec 100644
+index 643af2012e14..29a9361a2b77 100644
 --- a/arch/mips/jz4740/Kconfig
 +++ b/arch/mips/jz4740/Kconfig
-@@ -8,6 +8,10 @@ config JZ4740_QI_LB60
- 	bool "Qi Hardware Ben NanoNote"
- 	select MACH_JZ4740
+@@ -18,6 +18,12 @@ config MACH_JZ4740
+ 	bool
+ 	select SYS_HAS_CPU_MIPS32_R1
  
-+config JZ4770_GCW0
-+	bool "Game Consoles Worldwide GCW Zero"
-+	select MACH_JZ4770
++config MACH_JZ4770
++	bool
++	select MIPS_CPU_SCACHE
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_HIGHMEM
 +
- config JZ4780_CI20
- 	bool "MIPS Creator CI20"
- 	select MACH_JZ4780
+ config MACH_JZ4780
+ 	bool
+ 	select MIPS_CPU_SCACHE
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+index bb1ad5119da4..2ca9160f642a 100644
+--- a/arch/mips/jz4740/time.c
++++ b/arch/mips/jz4740/time.c
+@@ -113,7 +113,7 @@ static struct clock_event_device jz4740_clockevent = {
+ #ifdef CONFIG_MACH_JZ4740
+ 	.irq = JZ4740_IRQ_TCU0,
+ #endif
+-#ifdef CONFIG_MACH_JZ4780
++#if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
+ 	.irq = JZ4780_IRQ_TCU2,
+ #endif
+ };
 -- 
 2.11.0

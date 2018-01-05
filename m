@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:25:54 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:35252 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 19:26:19 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:35364 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992368AbeAESZWfZXis (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:22 +0100
+        with ESMTP id S23992615AbeAESZXFDoBs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 19:25:23 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         Paul Burton <paul.burton@mips.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH v6 00/15] JZ4770 SoC support
-Date:   Fri,  5 Jan 2018 19:24:58 +0100
-Message-Id: <20180105182513.16248-1-paul@crapouillou.net>
-In-Reply-To: <20180102150848.11314-1-paul@crapouillou.net>
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v6 02/15] clk: ingenic: Fix recalc_rate for clocks with fixed divider
+Date:   Fri,  5 Jan 2018 19:25:00 +0100
+Message-Id: <20180105182513.16248-3-paul@crapouillou.net>
+In-Reply-To: <20180105182513.16248-1-paul@crapouillou.net>
 References: <20180102150848.11314-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176720; bh=Drj/JLLEmyRJnWl/SIFKxKNXyBGrDlmHk9TuGWKpI7s=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=C95Jxxmhx5pmx9KJqUItHuuR3/7ZAKHqgLfisyuwIdF9UtrvJz7HiP7nnbTEJU31I6yndFZdDyMdtQ2FtKM7eajxp5/21F43LRa9qcGuVCqwf8KIP9+54gu7Mf64Tq5PtEjuBatq/6Rh/ypLbsJgE6wGAfwthRngS5clP/XGb0U=
+ <20180105182513.16248-1-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1515176722; bh=HcLymhcsGnPNscx4L955AmxE8fYSTdDhYJR9lHWcZKw=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=MSAZNU4cuTe473J26xs+EN+EOBh5Ql8Nc+ZKw19uUwd+zmSmf26MJLqRvzQHYPBZFMz0v8kxpHVZ2rYcczDJ0r0bqwSEfD/1h0eN9JlTfljOQ3ABunlcOzNeKXhms/yFTl3GoPOpEOkbyjtFyHNiUONQuoNwKjjwVsR1XSNXZ8w=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61922
+X-archive-position: 61923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,19 +37,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+Previously, the clocks with a fixed divider would report their rate
+as being the same as the one of their parent, independently of the
+divider in use. This commit fixes this behaviour.
 
-This is the V6 (and hopefully last) version of my JZ4770 patchset.
+This went unnoticed as neither the jz4740 nor the jz4780 CGU code
+have clocks with fixed dividers yet.
 
-- In patches 07-08/15 I simply updated Paul Burton's email address
-  from @imgtec.com to @mips.com.
-- Patch 10/15 changed, now I only init mips_machtype from devicetree
-  instead of using MIPS_MACHINE in platform code, as suggested by
-  Prasanna Kumar.
-- Patch 15/15 has a minor addition, I added a "model" property in the
-  devicetree.
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+---
+ drivers/clk/ingenic/cgu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The rest (patches 01->06, 09, 11->14) are untouched.
+ v2: No changes
+ v3: No changes
+ v4: No changes
+ v5: No changes
+ v6: No changes
 
-Greetings,
-Paul
+diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+index ab393637f7b0..a2e73a6d60fd 100644
+--- a/drivers/clk/ingenic/cgu.c
++++ b/drivers/clk/ingenic/cgu.c
+@@ -328,6 +328,8 @@ ingenic_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 		div *= clk_info->div.div;
+ 
+ 		rate /= div;
++	} else if (clk_info->type & CGU_CLK_FIXDIV) {
++		rate /= clk_info->fixdiv.div;
+ 	}
+ 
+ 	return rate;
+-- 
+2.11.0

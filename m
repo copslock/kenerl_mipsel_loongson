@@ -1,55 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 17:34:16 +0100 (CET)
-Received: from mail-oi0-f65.google.com ([209.85.218.65]:46899 "EHLO
-        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992105AbeAEQeHnX7TG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jan 2018 17:34:07 +0100
-Received: by mail-oi0-f65.google.com with SMTP id t81so3433208oih.13;
-        Fri, 05 Jan 2018 08:34:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=x5frxPVyUZ+yqbP1Sutc+tiIMs93PfO6Lv12JfoV+CY=;
-        b=l3vuHFF5f9oTEy6GJpB125adizAXxGVgMs+1D+NbAso3epXnFfi5Zz3lK3dK4hOWZV
-         OeGC57R5NnwZmQrUqDvv59WpWPUec1b7SWThdc3xO4M3GCXLIgF2dwdXSrONA6N5/sr3
-         EUhNR4EA5ooOKOMuddtSbCJA29Y/C/gPETrelFmxqzdrGzn2hqKIxMg5bKt1/ttLH/o8
-         bl7+/xBg/02/2+XOF03mLhEGkz7el9sqk81k0v5TSd55vfbMo4xBrXOAFTcS+/EEei4/
-         IHNsJSX8X2AQpPhgAwHbm0vhIDRRU9lXap+tcpjoDKtNxYmpt4U4GFB2agu2lc/EkXeC
-         97zg==
-X-Gm-Message-State: AKGB3mKUvomiH+HQZTgi2KENcQT5DTYmimmlwtV85FwmqoE3/9h1gBSG
-        0j6eHdotmoruc39BpSed4w==
-X-Google-Smtp-Source: ACJfBovX7/I4HcPQB6rFCVCS9xLWcBa0Cz0cl7v168abbbfFsG4a2suptv1v0L0LRmM1EUO8KF1nAw==
-X-Received: by 10.202.74.80 with SMTP id x77mr1940941oia.199.1515170041526;
-        Fri, 05 Jan 2018 08:34:01 -0800 (PST)
-Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
-        by smtp.gmail.com with ESMTPSA id w11sm1899744otg.29.2018.01.05.08.34.00
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 05 Jan 2018 08:34:00 -0800 (PST)
-Date:   Fri, 5 Jan 2018 10:34:00 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v5 05/15] dt-bindings: clock: Add jz4770-cgu.h header
-Message-ID: <20180105163400.qg6q7znrv4s5wrfd@rob-hp-laptop>
-References: <20180102150848.11314-1-paul@crapouillou.net>
- <20180102150848.11314-5-paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jan 2018 18:41:34 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:52036 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992368AbeAERl16fqb8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 5 Jan 2018 18:41:27 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BEEA01435;
+        Fri,  5 Jan 2018 09:41:20 -0800 (PST)
+Received: from armageddon.cambridge.arm.com (armageddon.cambridge.arm.com [10.1.206.84])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AB893F581;
+        Fri,  5 Jan 2018 09:41:15 -0800 (PST)
+Date:   Fri, 5 Jan 2018 17:41:12 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        linux-s390@vger.kernel.org, Nicolas Pitre <nico@linaro.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        James Morris <james.l.morris@oracle.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Garnier <thgarnie@google.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Jessica Yu <jeyu@kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v7 05/10] PCI: Add support for relative addressing in
+ quirk tables
+Message-ID: <20180105174112.jk3mvo5qwg7l4vzo@armageddon.cambridge.arm.com>
+References: <20180102200549.22984-1-ard.biesheuvel@linaro.org>
+ <20180102200549.22984-6-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180102150848.11314-5-paul@crapouillou.net>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <20180102200549.22984-6-ard.biesheuvel@linaro.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <catalin.marinas@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61911
+X-archive-position: 61913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: catalin.marinas@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,15 +71,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 02, 2018 at 04:08:38PM +0100, Paul Cercueil wrote:
-> This will be used from the devicetree bindings to specify the clocks
-> that should be obtained from the jz4770-cgu driver.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Acked-by: Stephen Boyd <sboyd@codeaurora.org>
-> ---
->  include/dt-bindings/clock/jz4770-cgu.h | 58 ++++++++++++++++++++++++++++++++++
->  1 file changed, 58 insertions(+)
->  create mode 100644 include/dt-bindings/clock/jz4770-cgu.h
+On Tue, Jan 02, 2018 at 08:05:44PM +0000, Ard Biesheuvel wrote:
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 10684b17d0bd..b6d51b4d5ce1 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -3556,9 +3556,16 @@ static void pci_do_fixups(struct pci_dev *dev, struct pci_fixup *f,
+>  		     f->vendor == (u16) PCI_ANY_ID) &&
+>  		    (f->device == dev->device ||
+>  		     f->device == (u16) PCI_ANY_ID)) {
+> -			calltime = fixup_debug_start(dev, f->hook);
+> -			f->hook(dev);
+> -			fixup_debug_report(dev, calltime, f->hook);
+> +			void (*hook)(struct pci_dev *dev);
+> +#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
+> +			hook = (void *)((unsigned long)&f->hook_offset +
+> +					f->hook_offset);
+> +#else
+> +			hook = f->hook;
+> +#endif
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+More of a nitpick but I've seen this pattern in several places in your
+code, maybe worth defining a macro (couldn't come up with a better
+name):
+
+#define offset_to_ptr(off) \
+	((void *)((unsigned long)&(off) + (off)))
+
+-- 
+Catalin

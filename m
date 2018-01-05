@@ -1,55 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2018 17:05:24 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33898 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994619AbeDXPEmaz10E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2018 17:04:42 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 059C7596;
-        Tue, 24 Apr 2018 15:04:35 +0000 (UTC)
-Subject: Patch "MIPS: Generic: Support GIC in EIC mode" has been added to the 4.14-stable tree
-To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
-        jhogan@kernel.org, linux-mips@linux-mips.org,
-        matt.redfearn@mips.com, paul.burton@mips.com, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 24 Apr 2018 17:01:06 +0200
-Message-ID: <152458206614977@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63732
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Matt Redfearn <matt.redfearn@mips.com>
+Date: Fri, 5 Jan 2018 10:31:07 +0000
+Subject: MIPS: Generic: Support GIC in EIC mode
+Message-ID: <20180105103107.3zaOFyqzxN4YA8b3vIgjyGDp5VtD6dvoabE4G1Tu-QA@z>
+
+From: Matt Redfearn <matt.redfearn@mips.com>
 
 
-This is a note to let you know that I've just added the patch titled
+[ Upstream commit 7bf8b16d1b60419c865e423b907a05f413745b3e ]
 
-    MIPS: Generic: Support GIC in EIC mode
+The GIC supports running in External Interrupt Controller (EIC) mode,
+and will signal this via cpu_has_veic if enabled in hardware. Currently
+the generic kernel will panic if cpu_has_veic is set - but the GIC can
+legitimately set this flag if either configured to boot in EIC mode, or
+if the GIC driver enables this mode. Make the kernel not panic in this
+case, and instead just check if the GIC is present. If so, use it's CPU
+local interrupt routing functions. If an EIC is present, but it is not
+the GIC, then the kernel does not know how to get the VIRQ for the CPU
+local interrupts and should panic. Support for alternative EICs being
+present is needed here for the generic kernel to support them.
 
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+Suggested-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/18191/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/generic/irq.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-The filename of the patch is:
-     mips-generic-support-gic-in-eic-mode.patch
-and it can be found in the queue-4.14 subdirectory.
+--- a/arch/mips/generic/irq.c
++++ b/arch/mips/generic/irq.c
+@@ -22,10 +22,10 @@ int get_c0_fdc_int(void)
+ {
+ 	int mips_cpu_fdc_irq;
+ 
+-	if (cpu_has_veic)
+-		panic("Unimplemented!");
+-	else if (mips_gic_present())
++	if (mips_gic_present())
+ 		mips_cpu_fdc_irq = gic_get_c0_fdc_int();
++	else if (cpu_has_veic)
++		panic("Unimplemented!");
+ 	else if (cp0_fdc_irq >= 0)
+ 		mips_cpu_fdc_irq = MIPS_CPU_IRQ_BASE + cp0_fdc_irq;
+ 	else
+@@ -38,10 +38,10 @@ int get_c0_perfcount_int(void)
+ {
+ 	int mips_cpu_perf_irq;
+ 
+-	if (cpu_has_veic)
+-		panic("Unimplemented!");
+-	else if (mips_gic_present())
++	if (mips_gic_present())
+ 		mips_cpu_perf_irq = gic_get_c0_perfcount_int();
++	else if (cpu_has_veic)
++		panic("Unimplemented!");
+ 	else if (cp0_perfcount_irq >= 0)
+ 		mips_cpu_perf_irq = MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+ 	else
+@@ -54,10 +54,10 @@ unsigned int get_c0_compare_int(void)
+ {
+ 	int mips_cpu_timer_irq;
+ 
+-	if (cpu_has_veic)
+-		panic("Unimplemented!");
+-	else if (mips_gic_present())
++	if (mips_gic_present())
+ 		mips_cpu_timer_irq = gic_get_c0_compare_int();
++	else if (cpu_has_veic)
++		panic("Unimplemented!");
+ 	else
+ 		mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE + cp0_compare_irq;
+ 
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+
+Patches currently in stable-queue which might be from matt.redfearn@mips.com are
+
+queue-4.14/mips-generic-support-gic-in-eic-mode.patch
+queue-4.14/mips-txx9-use-is_builtin-for-config_leds_class.patch
+queue-4.14/mips-generic-fix-machine-compatible-matching.patch

@@ -1,33 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Jan 2018 01:09:51 +0100 (CET)
-Received: from mail.free-electrons.com ([62.4.15.54]:47529 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993124AbeAFAJogLswH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Jan 2018 01:09:44 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 9265C2072B; Sat,  6 Jan 2018 01:09:37 +0100 (CET)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 5C97320391;
-        Sat,  6 Jan 2018 01:09:37 +0100 (CET)
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Subject: [PATCH v3] pinctrl: Add Microsemi Ocelot SoC driver
-Date:   Sat,  6 Jan 2018 01:09:26 +0100
-Message-Id: <20180106000926.13770-1-alexandre.belloni@free-electrons.com>
-X-Mailer: git-send-email 2.15.1
-In-Reply-To: <CACRpkdZ=+pFZYteq=wM=z-CGejY+dX_SqhtDbbGBn+q60arQ4w@mail.gmail.com>
-References: <CACRpkdZ=+pFZYteq=wM=z-CGejY+dX_SqhtDbbGBn+q60arQ4w@mail.gmail.com>
-Return-Path: <alexandre.belloni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Jan 2018 01:53:46 +0100 (CET)
+Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:42413
+        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbeAFAxjYWd8P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Jan 2018 01:53:39 +0100
+Received: by mail-qk0-x243.google.com with SMTP id d202so8059804qkc.9;
+        Fri, 05 Jan 2018 16:53:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=gYHmLzYDscfAm1bj4bTa5VTyEPkxXkJgh6TEoHS9rpQ=;
+        b=qH0KMHOrNPgJjQsAspP280Fn9olPCWI1NuWDh8rOJ5YjvhHCSxSC8TSbmxMRXqApEY
+         cuRNNkXHRdS/qNvt8O4M+GjfhE1ez3E9GpUkxykeZFBX7KkcFuPlMMdkXTEcc8JEX8t/
+         MiHayRo2+3kZ5YhzZJ0CMzAivxOQ0MRho/Ac0Z23Shqb7CyOuJznqEPgX2HRKdK3xJsw
+         gLgc9GE2FZfZN5sxWvmBitTUY59fEsXw4yBx9ZUKLK3gs2OS4hRnVwzZmEuzDAgcJXwZ
+         LHiqNbJMSep/+H8Xtgez2nIz0sicdlre3WAjfvTRKUwb8//ozTrf+46dBzvE3oHI5gfT
+         BvSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gYHmLzYDscfAm1bj4bTa5VTyEPkxXkJgh6TEoHS9rpQ=;
+        b=lIv51ryDtk+XrRavTtS3RZkntVZParjA3r+Ldk4RGGMnSjX++/oLyOMHpdcz05MC5U
+         jzS8z4BazxIjkoZ1v6vmf1WMMpkfujmEaMwPCnlZOlEMGJsXGcCk3hu4A7LzbkBYk4FF
+         aGaBXnJQFmUAv0vSakW3xaVfiZ6zbDbmSLECDEsTzx+ASZb9cmXHnQ/leP7FLUVDviWV
+         66T4rNTmSoCmbeeslBVC+SUhlXAvmFG2gfEY39j1eswoTOgUWD1DWrsHrT27+1+dfYu/
+         sz8/iVUDZS3MIb0jywTuhLvmnYlGGbXV8IhLCvwSU5tya0rvAOVFhv2ricm6kl+cRZhg
+         g5Eg==
+X-Gm-Message-State: AKwxytdl5iovVI88NOMGbdFLDbEkOaOL3WW9pnKvnMBC8FwuHIF/52lJ
+        r4dOzG5COgIl9LFZgAPfOl8=
+X-Google-Smtp-Source: ACJfBov2M6+temhYdTqW2C2G4WKA/Um7J8o8Qk5LWX4LpD4W4NOHkorrm6crausJ2HKcPHZyarh3qg==
+X-Received: by 10.233.216.70 with SMTP id u67mr6303751qkf.305.1515200013155;
+        Fri, 05 Jan 2018 16:53:33 -0800 (PST)
+Received: from [10.69.41.93] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id q12sm4295094qtk.32.2018.01.05.16.53.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 05 Jan 2018 16:53:32 -0800 (PST)
+Subject: Re: [PATCH] MAINTAINERS: Add James as MIPS co-maintainer
+To:     James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        David Daney <david.daney@cavium.com>,
+        John Crispin <john@phrozen.org>,
+        Matt Redfearn <matt.redfearn@mips.com>
+References: <20180105213647.28850-1-jhogan@kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <ddd06175-24e8-7bd5-e938-b817ab4c26d3@gmail.com>
+Date:   Fri, 5 Jan 2018 16:53:29 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
+MIME-Version: 1.0
+In-Reply-To: <20180105213647.28850-1-jhogan@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61948
+X-archive-position: 61949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,574 +76,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Microsemi Ocelot SoC has a few pins that can be used as GPIOs or take
-multiple other functions. Add a driver for the pinmuxing and the GPIOs.
+On 01/05/2018 01:36 PM, James Hogan wrote:
+> I've been taking on some co-maintainer duties already, so lets make it
+> official in the MAINTAINERS file.
+> 
+> Link: https://lkml.kernel.org/r/33db77a2-32e4-6b2c-d463-9d116ba55623@imgtec.com
+> Link: https://lkml.kernel.org/r/20171207110549.GM27409@jhogan-linux.mipstec.com
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: John Crispin <john@phrozen.org>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: linux-mips@linux-mips.org
 
-There is currently no support for interrupts.
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
----
- - use  pinctrl_gpio_direction_input/output from
-   ocelot_gpio_direction_input/output
- - add a comment for ALT0/ALT1
- - fill .max_register of ocelot_pinctrl_regmap_config
-
- drivers/pinctrl/Kconfig          |  11 +
- drivers/pinctrl/Makefile         |   1 +
- drivers/pinctrl/pinctrl-ocelot.c | 511 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 523 insertions(+)
- create mode 100644 drivers/pinctrl/pinctrl-ocelot.c
-
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 4571cc098b76..640fb829935a 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -343,6 +343,17 @@ config PINCTRL_RK805
- 	help
- 	  This selects the pinctrl driver for RK805.
- 
-+config PINCTRL_OCELOT
-+	bool "Pinctrl driver for the Microsemi Ocelot SoCs"
-+	default y
-+	depends on OF
-+	depends on MSCC_OCELOT || COMPILE_TEST
-+	select GPIOLIB
-+	select GENERIC_PINCONF
-+	select GENERIC_PINCTRL_GROUPS
-+	select GENERIC_PINMUX_FUNCTIONS
-+	select REGMAP_MMIO
-+
- source "drivers/pinctrl/aspeed/Kconfig"
- source "drivers/pinctrl/bcm/Kconfig"
- source "drivers/pinctrl/berlin/Kconfig"
-diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
-index d0d4844f8022..b1cae074a949 100644
---- a/drivers/pinctrl/Makefile
-+++ b/drivers/pinctrl/Makefile
-@@ -45,6 +45,7 @@ obj-$(CONFIG_PINCTRL_ST) 	+= pinctrl-st.o
- obj-$(CONFIG_PINCTRL_ZYNQ)	+= pinctrl-zynq.o
- obj-$(CONFIG_PINCTRL_INGENIC)	+= pinctrl-ingenic.o
- obj-$(CONFIG_PINCTRL_RK805)	+= pinctrl-rk805.o
-+obj-$(CONFIG_PINCTRL_OCELOT)	+= pinctrl-ocelot.o
- 
- obj-$(CONFIG_ARCH_ASPEED)	+= aspeed/
- obj-y				+= bcm/
-diff --git a/drivers/pinctrl/pinctrl-ocelot.c b/drivers/pinctrl/pinctrl-ocelot.c
-new file mode 100644
-index 000000000000..01a50d969111
---- /dev/null
-+++ b/drivers/pinctrl/pinctrl-ocelot.c
-@@ -0,0 +1,511 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Microsemi SoCs pinctrl driver
-+ *
-+ * Author: <alexandre.belloni@free-electrons.com>
-+ * License: Dual MIT/GPL
-+ * Copyright (c) 2017 Microsemi Corporation
-+ */
-+
-+#include <linux/gpio/driver.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/of_device.h>
-+#include <linux/of_platform.h>
-+#include <linux/pinctrl/pinctrl.h>
-+#include <linux/pinctrl/pinmux.h>
-+#include <linux/pinctrl/pinconf.h>
-+#include <linux/pinctrl/pinconf-generic.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+
-+#include "core.h"
-+#include "pinconf.h"
-+#include "pinmux.h"
-+
-+#define OCELOT_GPIO_OUT_SET	0x0
-+#define OCELOT_GPIO_OUT_CLR	0x4
-+#define OCELOT_GPIO_OUT		0x8
-+#define OCELOT_GPIO_IN		0xc
-+#define OCELOT_GPIO_OE		0x10
-+#define OCELOT_GPIO_INTR	0x14
-+#define OCELOT_GPIO_INTR_ENA	0x18
-+#define OCELOT_GPIO_INTR_IDENT	0x1c
-+#define OCELOT_GPIO_ALT0	0x20
-+#define OCELOT_GPIO_ALT1	0x24
-+#define OCELOT_GPIO_SD_MAP	0x28
-+
-+#define OCELOT_PINS		22
-+#define OCELOT_FUNC_PER_PIN	4
-+
-+enum {
-+	FUNC_NONE,
-+	FUNC_GPIO,
-+	FUNC_IRQ0_IN,
-+	FUNC_IRQ0_OUT,
-+	FUNC_IRQ1_IN,
-+	FUNC_IRQ1_OUT,
-+	FUNC_MIIM1,
-+	FUNC_PCI_WAKE,
-+	FUNC_PTP0,
-+	FUNC_PTP1,
-+	FUNC_PTP2,
-+	FUNC_PTP3,
-+	FUNC_PWM,
-+	FUNC_RECO_CLK0,
-+	FUNC_RECO_CLK1,
-+	FUNC_SFP0,
-+	FUNC_SFP1,
-+	FUNC_SFP2,
-+	FUNC_SFP3,
-+	FUNC_SFP4,
-+	FUNC_SFP5,
-+	FUNC_SG0,
-+	FUNC_SI,
-+	FUNC_TACHO,
-+	FUNC_TWI,
-+	FUNC_TWI_SCL_M,
-+	FUNC_UART,
-+	FUNC_UART2,
-+	FUNC_MAX
-+};
-+
-+static const char *const ocelot_function_names[] = {
-+	[FUNC_NONE]		= "none",
-+	[FUNC_GPIO]		= "gpio",
-+	[FUNC_IRQ0_IN]		= "irq0_in",
-+	[FUNC_IRQ0_OUT]		= "irq0_out",
-+	[FUNC_IRQ1_IN]		= "irq1_in",
-+	[FUNC_IRQ1_OUT]		= "irq1_out",
-+	[FUNC_MIIM1]		= "miim1",
-+	[FUNC_PCI_WAKE]		= "pci_wake",
-+	[FUNC_PTP0]		= "ptp0",
-+	[FUNC_PTP1]		= "ptp1",
-+	[FUNC_PTP2]		= "ptp2",
-+	[FUNC_PTP3]		= "ptp3",
-+	[FUNC_PWM]		= "pwm",
-+	[FUNC_RECO_CLK0]	= "reco_clk0",
-+	[FUNC_RECO_CLK1]	= "reco_clk1",
-+	[FUNC_SFP0]		= "sfp0",
-+	[FUNC_SFP1]		= "sfp1",
-+	[FUNC_SFP2]		= "sfp2",
-+	[FUNC_SFP3]		= "sfp3",
-+	[FUNC_SFP4]		= "sfp4",
-+	[FUNC_SFP5]		= "sfp5",
-+	[FUNC_SG0]		= "sg0",
-+	[FUNC_SI]		= "si",
-+	[FUNC_TACHO]		= "tacho",
-+	[FUNC_TWI]		= "twi",
-+	[FUNC_TWI_SCL_M]	= "twi_scl_m",
-+	[FUNC_UART]		= "uart",
-+	[FUNC_UART2]		= "uart2",
-+};
-+
-+struct ocelot_pmx_func {
-+	const char **groups;
-+	unsigned int ngroups;
-+};
-+
-+struct ocelot_pin_caps {
-+	unsigned int pin;
-+	unsigned char functions[OCELOT_FUNC_PER_PIN];
-+};
-+
-+struct ocelot_pinctrl {
-+	struct device *dev;
-+	struct pinctrl_dev *pctl;
-+	struct gpio_chip gpio_chip;
-+	struct regmap *map;
-+	struct ocelot_pmx_func func[FUNC_MAX];
-+};
-+
-+#define OCELOT_P(p, f0, f1, f2)						\
-+static struct ocelot_pin_caps ocelot_pin_##p = {			\
-+	.pin = p,							\
-+	.functions = {							\
-+			FUNC_GPIO, FUNC_##f0, FUNC_##f1, FUNC_##f2,	\
-+	},								\
-+}
-+
-+OCELOT_P(0,  SG0,       NONE,      NONE);
-+OCELOT_P(1,  SG0,       NONE,      NONE);
-+OCELOT_P(2,  SG0,       NONE,      NONE);
-+OCELOT_P(3,  SG0,       NONE,      NONE);
-+OCELOT_P(4,  IRQ0_IN,   IRQ0_OUT,  TWI);
-+OCELOT_P(5,  IRQ1_IN,   IRQ1_OUT,  PCI_WAKE);
-+OCELOT_P(6,  UART,      TWI_SCL_M, NONE);
-+OCELOT_P(7,  UART,      TWI_SCL_M, NONE);
-+OCELOT_P(8,  SI,        TWI_SCL_M, IRQ0_OUT);
-+OCELOT_P(9,  SI,        TWI_SCL_M, IRQ1_OUT);
-+OCELOT_P(10, PTP2,      TWI_SCL_M, SFP0);
-+OCELOT_P(11, PTP3,      TWI_SCL_M, SFP1);
-+OCELOT_P(12, UART2,     TWI_SCL_M, SFP2);
-+OCELOT_P(13, UART2,     TWI_SCL_M, SFP3);
-+OCELOT_P(14, MIIM1,     TWI_SCL_M, SFP4);
-+OCELOT_P(15, MIIM1,     TWI_SCL_M, SFP5);
-+OCELOT_P(16, TWI,       NONE,      SI);
-+OCELOT_P(17, TWI,       TWI_SCL_M, SI);
-+OCELOT_P(18, PTP0,      TWI_SCL_M, NONE);
-+OCELOT_P(19, PTP1,      TWI_SCL_M, NONE);
-+OCELOT_P(20, RECO_CLK0, TACHO,     NONE);
-+OCELOT_P(21, RECO_CLK1, PWM,       NONE);
-+
-+#define OCELOT_PIN(n) {						\
-+	.number = n,						\
-+	.name = "GPIO_"#n,					\
-+	.drv_data = &ocelot_pin_##n				\
-+}
-+
-+static const struct pinctrl_pin_desc ocelot_pins[] = {
-+	OCELOT_PIN(0),
-+	OCELOT_PIN(1),
-+	OCELOT_PIN(2),
-+	OCELOT_PIN(3),
-+	OCELOT_PIN(4),
-+	OCELOT_PIN(5),
-+	OCELOT_PIN(6),
-+	OCELOT_PIN(7),
-+	OCELOT_PIN(8),
-+	OCELOT_PIN(9),
-+	OCELOT_PIN(10),
-+	OCELOT_PIN(11),
-+	OCELOT_PIN(12),
-+	OCELOT_PIN(13),
-+	OCELOT_PIN(14),
-+	OCELOT_PIN(15),
-+	OCELOT_PIN(16),
-+	OCELOT_PIN(17),
-+	OCELOT_PIN(18),
-+	OCELOT_PIN(19),
-+	OCELOT_PIN(20),
-+	OCELOT_PIN(21),
-+};
-+
-+static int ocelot_get_functions_count(struct pinctrl_dev *pctldev)
-+{
-+	return ARRAY_SIZE(ocelot_function_names);
-+}
-+
-+static const char *ocelot_get_function_name(struct pinctrl_dev *pctldev,
-+					    unsigned int function)
-+{
-+	return ocelot_function_names[function];
-+}
-+
-+static int ocelot_get_function_groups(struct pinctrl_dev *pctldev,
-+				      unsigned int function,
-+				      const char *const **groups,
-+				      unsigned *const num_groups)
-+{
-+	struct ocelot_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
-+
-+	*groups  = info->func[function].groups;
-+	*num_groups = info->func[function].ngroups;
-+
-+	return 0;
-+}
-+
-+static int ocelot_pin_function_idx(unsigned int pin, unsigned int function)
-+{
-+	struct ocelot_pin_caps *p = ocelot_pins[pin].drv_data;
-+	int i;
-+
-+	for (i = 0; i < OCELOT_FUNC_PER_PIN; i++) {
-+		if (function == p->functions[i])
-+			return i;
-+	}
-+
-+	return -1;
-+}
-+
-+static int ocelot_pinmux_set_mux(struct pinctrl_dev *pctldev,
-+				 unsigned int selector, unsigned int group)
-+{
-+	struct ocelot_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
-+	struct ocelot_pin_caps *pin = ocelot_pins[group].drv_data;
-+	int f;
-+
-+	f = ocelot_pin_function_idx(group, selector);
-+	if (f < 0)
-+		return -EINVAL;
-+
-+	/*
-+	 * f is encoded on two bits.
-+	 * bit 0 of f goes in BIT(pin) of ALT0, bit 1 of f goes in BIT(pin) of
-+	 * ALT1
-+	 * This is racy because both registers can't be updated at the same time
-+	 * but it doesn't matter much for now.
-+	 */
-+	regmap_update_bits(info->map, OCELOT_GPIO_ALT0, BIT(pin->pin),
-+			   f << pin->pin);
-+	regmap_update_bits(info->map, OCELOT_GPIO_ALT1, BIT(pin->pin),
-+			   f << (pin->pin - 1));
-+
-+	return 0;
-+}
-+
-+static int ocelot_gpio_set_direction(struct pinctrl_dev *pctldev,
-+				     struct pinctrl_gpio_range *range,
-+				     unsigned int pin, bool input)
-+{
-+	struct ocelot_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
-+
-+	regmap_update_bits(info->map, OCELOT_GPIO_OE, BIT(pin),
-+			   input ? BIT(pin) : 0);
-+
-+	return 0;
-+}
-+
-+static int ocelot_gpio_request_enable(struct pinctrl_dev *pctldev,
-+				      struct pinctrl_gpio_range *range,
-+				      unsigned int offset)
-+{
-+	struct ocelot_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
-+
-+	regmap_update_bits(info->map, OCELOT_GPIO_ALT0, BIT(offset), 0);
-+	regmap_update_bits(info->map, OCELOT_GPIO_ALT1, BIT(offset), 0);
-+
-+	return 0;
-+}
-+
-+static const struct pinmux_ops ocelot_pmx_ops = {
-+	.get_functions_count = ocelot_get_functions_count,
-+	.get_function_name = ocelot_get_function_name,
-+	.get_function_groups = ocelot_get_function_groups,
-+	.set_mux = ocelot_pinmux_set_mux,
-+	.gpio_set_direction = ocelot_gpio_set_direction,
-+	.gpio_request_enable = ocelot_gpio_request_enable,
-+};
-+
-+static int ocelot_pctl_get_groups_count(struct pinctrl_dev *pctldev)
-+{
-+	return ARRAY_SIZE(ocelot_pins);
-+}
-+
-+static const char *ocelot_pctl_get_group_name(struct pinctrl_dev *pctldev,
-+					      unsigned int group)
-+{
-+	return ocelot_pins[group].name;
-+}
-+
-+static int ocelot_pctl_get_group_pins(struct pinctrl_dev *pctldev,
-+				      unsigned int group,
-+				      const unsigned int **pins,
-+				      unsigned int *num_pins)
-+{
-+	*pins = &ocelot_pins[group].number;
-+	*num_pins = 1;
-+
-+	return 0;
-+}
-+
-+static const struct pinctrl_ops ocelot_pctl_ops = {
-+	.get_groups_count = ocelot_pctl_get_groups_count,
-+	.get_group_name = ocelot_pctl_get_group_name,
-+	.get_group_pins = ocelot_pctl_get_group_pins,
-+	.dt_node_to_map = pinconf_generic_dt_node_to_map_pin,
-+	.dt_free_map = pinconf_generic_dt_free_map,
-+};
-+
-+static struct pinctrl_desc ocelot_desc = {
-+	.name = "ocelot-pinctrl",
-+	.pins = ocelot_pins,
-+	.npins = ARRAY_SIZE(ocelot_pins),
-+	.pctlops = &ocelot_pctl_ops,
-+	.pmxops = &ocelot_pmx_ops,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int ocelot_create_group_func_map(struct device *dev,
-+					struct ocelot_pinctrl *info)
-+{
-+	u16 pins[ARRAY_SIZE(ocelot_pins)];
-+	int f, npins, i;
-+
-+	for (f = 0; f < FUNC_MAX; f++) {
-+		for (npins = 0, i = 0; i < ARRAY_SIZE(ocelot_pins); i++) {
-+			if (ocelot_pin_function_idx(i, f) >= 0)
-+				pins[npins++] = i;
-+		}
-+
-+		info->func[f].ngroups = npins;
-+		info->func[f].groups = devm_kzalloc(dev, npins *
-+							 sizeof(char *),
-+							 GFP_KERNEL);
-+		if (!info->func[f].groups)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < npins; i++)
-+			info->func[f].groups[i] = ocelot_pins[pins[i]].name;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ocelot_pinctrl_register(struct platform_device *pdev,
-+				   struct ocelot_pinctrl *info)
-+{
-+	int ret;
-+
-+	ret = ocelot_create_group_func_map(&pdev->dev, info);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Unable to create group func map.\n");
-+		return ret;
-+	}
-+
-+	info->pctl = devm_pinctrl_register(&pdev->dev, &ocelot_desc, info);
-+	if (IS_ERR(info->pctl)) {
-+		dev_err(&pdev->dev, "Failed to register pinctrl\n");
-+		return PTR_ERR(info->pctl);
-+	}
-+
-+	return 0;
-+}
-+
-+static int ocelot_gpio_get(struct gpio_chip *chip, unsigned int offset)
-+{
-+	struct ocelot_pinctrl *info = gpiochip_get_data(chip);
-+	unsigned int val;
-+
-+	regmap_read(info->map, OCELOT_GPIO_IN, &val);
-+
-+	return !!(val & BIT(offset));
-+}
-+
-+static void ocelot_gpio_set(struct gpio_chip *chip, unsigned int offset,
-+			    int value)
-+{
-+	struct ocelot_pinctrl *info = gpiochip_get_data(chip);
-+
-+	if (value)
-+		regmap_write(info->map, OCELOT_GPIO_OUT_SET, BIT(offset));
-+	else
-+		regmap_write(info->map, OCELOT_GPIO_OUT_CLR, BIT(offset));
-+}
-+
-+static int ocelot_gpio_get_direction(struct gpio_chip *chip,
-+				     unsigned int offset)
-+{
-+	struct ocelot_pinctrl *info = gpiochip_get_data(chip);
-+	unsigned int val;
-+
-+	regmap_read(info->map, OCELOT_GPIO_OE, &val);
-+
-+	return !(val & BIT(offset));
-+}
-+
-+static int ocelot_gpio_direction_input(struct gpio_chip *chip,
-+				       unsigned int offset)
-+{
-+	return pinctrl_gpio_direction_input(chip->base + offset);
-+}
-+
-+static int ocelot_gpio_direction_output(struct gpio_chip *chip,
-+					unsigned int offset, int value)
-+{
-+	struct ocelot_pinctrl *info = gpiochip_get_data(chip);
-+	unsigned int pin = BIT(offset);
-+
-+	if (value)
-+		regmap_write(info->map, OCELOT_GPIO_OUT_SET, pin);
-+	else
-+		regmap_write(info->map, OCELOT_GPIO_OUT_CLR, pin);
-+
-+	return pinctrl_gpio_direction_output(chip->base + offset);
-+}
-+
-+static const struct gpio_chip ocelot_gpiolib_chip = {
-+	.request = gpiochip_generic_request,
-+	.free = gpiochip_generic_free,
-+	.set = ocelot_gpio_set,
-+	.get = ocelot_gpio_get,
-+	.get_direction = ocelot_gpio_get_direction,
-+	.direction_input = ocelot_gpio_direction_input,
-+	.direction_output = ocelot_gpio_direction_output,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int ocelot_gpiochip_register(struct platform_device *pdev,
-+				    struct ocelot_pinctrl *info)
-+{
-+	struct gpio_chip *gc;
-+	int ret;
-+
-+	info->gpio_chip = ocelot_gpiolib_chip;
-+
-+	gc = &info->gpio_chip;
-+	gc->ngpio = OCELOT_PINS;
-+	gc->parent = &pdev->dev;
-+	gc->base = 0;
-+	gc->of_node = info->dev->of_node;
-+	gc->label = "ocelot-gpio";
-+
-+	ret = devm_gpiochip_add_data(&pdev->dev, gc, info);
-+	if (ret)
-+		return ret;
-+
-+	/* TODO: this can be used as an irqchip but no board is using that */
-+
-+	return 0;
-+}
-+
-+static const struct regmap_config ocelot_pinctrl_regmap_config = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.reg_stride = 4,
-+	.max_register = 0x64,
-+};
-+
-+static const struct of_device_id ocelot_pinctrl_of_match[] = {
-+	{ .compatible = "mscc,ocelot-pinctrl" },
-+	{},
-+};
-+
-+int ocelot_pinctrl_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct ocelot_pinctrl *info;
-+	void __iomem *base;
-+	int ret;
-+
-+	info = devm_kzalloc(dev, sizeof(*info), GFP_KERNEL);
-+	if (!info)
-+		return -ENOMEM;
-+
-+	base = devm_ioremap_resource(dev,
-+			platform_get_resource(pdev, IORESOURCE_MEM, 0));
-+	if (IS_ERR(base)) {
-+		dev_err(dev, "Failed to ioremap registers\n");
-+		return PTR_ERR(base);
-+	}
-+
-+	info->map = devm_regmap_init_mmio(dev, base,
-+					  &ocelot_pinctrl_regmap_config);
-+	if (IS_ERR(info->map)) {
-+		dev_err(dev, "Failed to create regmap\n");
-+		return PTR_ERR(info->map);
-+	}
-+	dev_set_drvdata(dev, info->map);
-+	info->dev = dev;
-+
-+	ret = ocelot_pinctrl_register(pdev, info);
-+	if (ret)
-+		return ret;
-+
-+	ret = ocelot_gpiochip_register(pdev, info);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static struct platform_driver ocelot_pinctrl_driver = {
-+	.driver = {
-+		.name = "pinctrl-ocelot",
-+		.of_match_table = of_match_ptr(ocelot_pinctrl_of_match),
-+		.suppress_bind_attrs = true,
-+	},
-+	.probe = ocelot_pinctrl_probe,
-+};
-+builtin_platform_driver(ocelot_pinctrl_driver);
+Thanks James!
 -- 
-2.15.1
+Florian

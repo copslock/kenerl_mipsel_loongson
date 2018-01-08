@@ -1,62 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Jan 2018 17:19:41 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:36898
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991526AbeAGQTd1pdeW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Jan 2018 17:19:33 +0100
-Received: by mail-wm0-x241.google.com with SMTP id f140so10197843wmd.2
-        for <linux-mips@linux-mips.org>; Sun, 07 Jan 2018 08:19:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexb-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=l4G6co0AviQxlDOx6IUmsG+Fem8LiWfkXDydwGM3NxI=;
-        b=wrM6LE0iaRNZ2zFG+YLoE74JriwaBm42vnGIztHFRN1DEEcTDg2bGuezby5LjXERtf
-         Lf6qqEyWFvvr7Kg5EQtKeumr44CrXIBc0u26290HAjoL8D0Dv2PHjHvEle20sgqS9BFW
-         UKKIHNXJ/0n8yqsqIHh7eUZD5oSYlNnITPCabT9Ye6N5h72H0K2GJ66KdyuxilU3qR/J
-         +gl45XUrATFMBQ9xhh3GrDBfZfNMG8jVuxmpg0x21FaciGREQ09w5L5g9NZiQxza7Ekl
-         fU0Doczmp/MPktn7+xnsGH7EgHGgkldTAxB1d8TatcJOLfN1GEMmYue0KjlIXo9/rCbx
-         swbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=l4G6co0AviQxlDOx6IUmsG+Fem8LiWfkXDydwGM3NxI=;
-        b=M1YATARPWp1tnab2rCZN4MI1GCglcGMzip87d5Z2MipC9BIFnEZl6IXiK6XKTUaAL/
-         A6fi5tKPp1691KztTbV1tdW7VVI5yu5q4EkJluETv/Rrdqz7wy9UuOAP+5EgcHcM3SG0
-         ZGEbsauSQcJEg7mnu5nIGWadGdqjGOxYEYrWgBLVE2gO19poIlfS3BCKmmk7O+y3z0kf
-         21xuyp163TfcZafAo0I4rYOPFQoynQCsz3n1wDQSaNUh06WT1XEEbauE3DbC+A6qYd6l
-         7SiFvcw1ap0qRwn7jIe0V2U/PQ419aVQbgvtj0dFD9a4NNxoCbqMfUgRuV9PLC8tHuk1
-         p4PA==
-X-Gm-Message-State: AKGB3mK5rpGuKhPsaFtW5GQmwnlRHiC9jyVan1CW5AWpaRKelzOC45Pf
-        m/7LJciNljg7+7G15tbMUgNk1yeN4FVLoudCF+cXxw==
-X-Google-Smtp-Source: ACJfBosvjeDnxKoqRXXcmI1ByLNwB458cbxU/f/Fbu9YxtaFLVEC5t8HKHrTEzsVKGTnQQoa/rlNUR0Lis01MCTTskU=
-X-Received: by 10.28.17.149 with SMTP id 143mr7229764wmr.96.1515341967929;
- Sun, 07 Jan 2018 08:19:27 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jan 2018 09:56:45 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:54737 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990409AbeAHI4iH9U0I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Jan 2018 09:56:38 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 08 Jan 2018 08:56:14 +0000
+Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 8 Jan 2018
+ 00:55:50 -0800
+Subject: Re: [PATCH] MAINTAINERS: Add James as MIPS co-maintainer
+To:     James Hogan <jhogan@kernel.org>, <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@mips.com>,
+        David Daney <david.daney@cavium.com>,
+        John Crispin <john@phrozen.org>,
+        Florian Fainelli <f.fainelli@gmail.com>
+References: <20180105213647.28850-1-jhogan@kernel.org>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <5f7e9f47-c077-662e-eb6b-f9c8a2cdd339@mips.com>
+Date:   Mon, 8 Jan 2018 08:55:47 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Received: by 10.223.157.206 with HTTP; Sun, 7 Jan 2018 08:18:47 -0800 (PST)
-In-Reply-To: <20180105182513.16248-16-paul@crapouillou.net>
-References: <20180102150848.11314-1-paul@crapouillou.net> <20180105182513.16248-1-paul@crapouillou.net>
- <20180105182513.16248-16-paul@crapouillou.net>
-From:   Philippe Ombredanne <pombredanne@nexb.com>
-Date:   Sun, 7 Jan 2018 17:18:47 +0100
-Message-ID: <CAOFm3uHr0a5Poz+PKUC=KpjTcowZUGr6pSxgPN+j8URr=Nu3pA@mail.gmail.com>
-Subject: Re: [PATCH v6 15/15] MIPS: ingenic: Initial GCW Zero support
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Paul Burton <paul.burton@mips.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <pombredanne@nexb.com>
+In-Reply-To: <20180105213647.28850-1-jhogan@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1515401774-298554-7132-131400-2
+X-BESS-VER: 2017.16-r1712230000
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188758
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61952
+X-archive-position: 61953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pombredanne@nexb.com
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,31 +58,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 5, 2018 at 7:25 PM, Paul Cercueil <paul@crapouillou.net> wrote:
-> The GCW Zero (http://www.gcw-zero.com) is a retro-gaming focused
-> handheld game console, successfully kickstarted in ~2012, running Linux.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Acked-by: Mathieu Malaterre <malat@debian.org>
+Hi James
+
+On 05/01/18 21:36, James Hogan wrote:
+> I've been taking on some co-maintainer duties already, so lets make it
+> official in the MAINTAINERS file.
+> 
+> Link: https://lkml.kernel.org/r/33db77a2-32e4-6b2c-d463-9d116ba55623@imgtec.com
+> Link: https://lkml.kernel.org/r/20171207110549.GM27409@jhogan-linux.mipstec.com
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: John Crispin <john@phrozen.org>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: linux-mips@linux-mips.org
+
+Yes please! I think with you and Ralf on the case we should be able to 
+get patches merged much quicker! This would be great!
+
+Acked-by: Matt Redfearn <matt.redfearn@mips.com>
+
+Matt
+
 > ---
->  arch/mips/boot/dts/ingenic/Makefile |  1 +
->  arch/mips/boot/dts/ingenic/gcw0.dts | 62 +++++++++++++++++++++++++++++++++++++
->  arch/mips/configs/gcw0_defconfig    | 27 ++++++++++++++++
->  arch/mips/jz4740/Kconfig            |  4 +++
->  4 files changed, 94 insertions(+)
->  create mode 100644 arch/mips/boot/dts/ingenic/gcw0.dts
->  create mode 100644 arch/mips/configs/gcw0_defconfig
->
->  v2: No change
->  v3: No change
->  v4: No change
->  v5: Use SPDX license identifier
->      Drop custom CROSS_COMPILE from defconfig
->  v6: Add "model" property in devicetree
-
-For the use of SPDX tags for the whole patch set: thank you!
-
-Acked-by: Philippe Ombredanne <pombredanne@nexb.com>
--- 
-Cordially
-Philippe Ombredanne
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2d3d750b19c0..61bccbd3715f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8983,6 +8983,7 @@ F:	drivers/usb/image/microtek.*
+>   
+>   MIPS
+>   M:	Ralf Baechle <ralf@linux-mips.org>
+> +M:	James Hogan <jhogan@kernel.org>
+>   L:	linux-mips@linux-mips.org
+>   W:	http://www.linux-mips.org/
+>   T:	git git://git.linux-mips.org/pub/scm/ralf/linux.git
+> 

@@ -1,68 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 04:13:54 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:33390 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990403AbeAIDNrYGEUM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Jan 2018 04:13:47 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9837B60BEA; Tue,  9 Jan 2018 03:13:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1515467624;
-        bh=qDmadMIpbbSNwDjLeXmAPKUnirVBzkl+XuhZLBfDG9s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EACt1qTUxC+q6/WrRWKatZc+SKKGa3Gk8P2jSneczFrHs81nPJtDBIim0ZpJsUKbI
-         T7giKanW40RTTsKwtrGULygJalEf8to0poyIWEHMrt5V6RPUqZNc4Ojx0achRQaWOd
-         mMe3HuoSbt08rJSojVKfDmhAJMGG4eimmVyBEizw=
-Received: from codeaurora.org (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: rkuo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA26D6034E;
-        Tue,  9 Jan 2018 03:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1515467623;
-        bh=qDmadMIpbbSNwDjLeXmAPKUnirVBzkl+XuhZLBfDG9s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CaSD8Xagm9ls9G66PxhEy5W0fs+FE8NYbQzSV5CsqTgn+C+zXDVwdcB/Wb4hoXlkI
-         O671cD0fqdANV8WAuRDyTJWE4wvAZ1sf65r7r1ge1SAvNTPv6XH2r+M7ewEAiLZQFT
-         luRKpcDvBSY7gz1kcTRR7uktQk73kv8CdAvd0cGY=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CA26D6034E
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=rkuo@codeaurora.org
-Date:   Mon, 8 Jan 2018 21:13:39 -0600
-From:   Richard Kuo <rkuo@codeaurora.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     iommu@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        patches@groups.riscv.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/67] hexagon: remove unused flush_write_buffers
- definition
-Message-ID: <20180109031339.GA4196@codeaurora.org>
-References: <20171229081911.2802-1-hch@lst.de>
- <20171229081911.2802-7-hch@lst.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20171229081911.2802-7-hch@lst.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <rkuo@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 12:48:06 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:60191 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992404AbeAILr7YMVlJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 9 Jan 2018 12:47:59 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id AAA1E1A5914
+        for <linux-mips@linux-mips.org>; Tue,  9 Jan 2018 12:47:53 +0100 (CET)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw774-lin.domain.local (unknown [10.10.13.43])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 910741A1EAB
+        for <linux-mips@linux-mips.org>; Tue,  9 Jan 2018 12:47:53 +0100 (CET)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Subject: [PATCH v5] MIPS: Add noexec=on|off kernel parameter
+Date:   Tue,  9 Jan 2018 12:47:49 +0100
+Message-Id: <1515498469-13815-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61954
+X-archive-position: 61955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rkuo@codeaurora.org
+X-original-sender: aleksandar.markovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,35 +37,131 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 29, 2017 at 09:18:10AM +0100, Christoph Hellwig wrote:
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/hexagon/include/asm/io.h | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
-> index 66f5e9a61efc..9e8621d94ee9 100644
-> --- a/arch/hexagon/include/asm/io.h
-> +++ b/arch/hexagon/include/asm/io.h
-> @@ -330,8 +330,6 @@ static inline void outsl(unsigned long port, const void *buffer, int count)
->  	}
->  }
->  
-> -#define flush_write_buffers() do { } while (0)
-> -
->  #endif /* __KERNEL__ */
->  
->  #endif
-> -- 
-> 2.14.2
-> 
+From: Miodrag Dinic <miodrag.dinic@mips.com>
 
-For Hexagon:
+Add a new kernel parameter to override the default behavior related to
+the decision whether to indicate stack as non-executable or executable
+(regardless of PT_GNU_STACK entry or CPU RIXI support) in function
+mips_elf_read_implies_exec().
 
-Acked-by: Richard Kuo <rkuo@codeaurora.org>
+Allowed values:
 
+noexec=on:	force indicating non-exec stack & heap
+noexec=off:	force indicating executable stack & heap
 
+If this parameter is omitted, kernel behavior remains the same as it
+was before this patch is applied.
+
+This functionality is convenient during debugging and is especially
+useful for Android development where indication of non-executable
+stack is required.
+
+NOTE: Using noexec=on on a system without CPU XI support is not
+recommended since there is no actual HW support that provide
+non-executable stack and heap. Use only for debugging purposes and
+not in a production environment.
+
+Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+---
+In the last version, code comments, documentation, and commit message
+are modified to better explain the purpose and nature of this option.
+A precautionary note is added as well.
+---
+ Documentation/admin-guide/kernel-parameters.txt | 19 ++++++++++
+ arch/mips/kernel/elf.c                          | 48 +++++++++++++++++++++++++
+ 2 files changed, 67 insertions(+)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index af7104a..64c562a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2600,6 +2600,25 @@
+ 			noexec=on: enable non-executable mappings (default)
+ 			noexec=off: disable non-executable mappings
+ 
++	noexec		[MIPS]
++			Force indicating stack and heap as non-executable or
++			executable regardless of PT_GNU_STACK entry or CPU XI
++			(execute inhibit) support. Valid valuess are: on, off.
++			noexec=on:  force indicating non-executable
++				    stack and heap
++			noexec=off: force indicating executable
++				    stack and heap
++			If this parameter is omitted, stack and heap will be
++			indicated non-executable or executable as they are
++			actually set up, which depends on PT_GNU_STACK entry
++			and possibly other factors (for instance, CPU XI
++			support).
++			NOTE: Using noexec=on on a system without CPU XI
++			support	is not recommended since there is no actual
++			HW support that provide non-executable stack/heap.
++			Use only for debugging purposes and not in a
++			production environment.
++
+ 	nosmap		[X86]
+ 			Disable SMAP (Supervisor Mode Access Prevention)
+ 			even if it is supported by processor.
+diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
+index 731325a..9bb40cc 100644
+--- a/arch/mips/kernel/elf.c
++++ b/arch/mips/kernel/elf.c
+@@ -326,8 +326,56 @@ void mips_set_personality_nan(struct arch_elf_state *state)
+ 	}
+ }
+ 
++static int noexec = EXSTACK_DEFAULT;
++
++/*
++ * kernel parameter: noexec=on|off
++ *
++ * Force indicating stack and heap as non-executable or
++ * executable regardless of PT_GNU_STACK entry or CPU XI
++ * (execute inhibit) support. Valid valuess are: on, off.
++ *
++ * noexec=on:  force indicating non-executable
++ *             stack and heap
++ * noexec=off: force indicating executable
++ *             stack and heap
++ *
++ * If this parameter is omitted, stack and heap will be
++ * indicated non-executable or executable as they are
++ * actually set up, which depends on PT_GNU_STACK entry
++ * and possibly other factors (for instance, CPU XI
++ * support).
++ *
++ * NOTE: Using noexec=on on a system without CPU XI
++ * support is not recommended since there is no actual
++ * HW support that provide non-executable stack/heap.
++ * Use only for debugging purposes and not in a
++ * production environment.
++ */
++static int __init noexec_setup(char *str)
++{
++	if (!strcmp(str, "on"))
++		noexec = EXSTACK_DISABLE_X;
++	else if (!strcmp(str, "off"))
++		noexec = EXSTACK_ENABLE_X;
++	else
++		pr_err("Malformed noexec format! noexec=on|off\n");
++
++	return 1;
++}
++__setup("noexec=", noexec_setup);
++
+ int mips_elf_read_implies_exec(void *elf_ex, int exstack)
+ {
++	switch (noexec) {
++	case EXSTACK_DISABLE_X:
++		return 0;
++	case EXSTACK_ENABLE_X:
++		return 1;
++	default:
++		break;
++	}
++
+ 	if (exstack != EXSTACK_DISABLE_X) {
+ 		/* The binary doesn't request a non-executable stack */
+ 		return 1;
 -- 
-Employee of Qualcomm Innovation Center, Inc.
-Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum, 
-a Linux Foundation Collaborative Project
+2.7.4

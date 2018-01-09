@@ -1,26 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 12:48:06 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:60191 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 12:57:56 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:35051 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992404AbeAILr7YMVlJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Jan 2018 12:47:59 +0100
+        id S23992404AbeAIL5t2L7EJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 9 Jan 2018 12:57:49 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id AAA1E1A5914
-        for <linux-mips@linux-mips.org>; Tue,  9 Jan 2018 12:47:53 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id 5605E1A5902;
+        Tue,  9 Jan 2018 12:57:42 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (unknown [10.10.13.43])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 910741A1EAB
-        for <linux-mips@linux-mips.org>; Tue,  9 Jan 2018 12:47:53 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 2AA6B1A5767;
+        Tue,  9 Jan 2018 12:57:42 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
+Cc:     Miodrag Dinic <miodrag.dinic@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Borislav Petkov <bp@suse.de>,
+        Christoffer Dall <cdall@linaro.org>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        Ding Tianhong <dingtianhong@huawei.com>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        James Cowgill <James.Cowgill@imgtec.com>,
+        James Hogan <james.hogan@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Levin, Alexander (Sasha Levin)" <alexander.levin@verizon.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Saeger <tom.saeger@oracle.com>
 Subject: [PATCH v5] MIPS: Add noexec=on|off kernel parameter
-Date:   Tue,  9 Jan 2018 12:47:49 +0100
-Message-Id: <1515498469-13815-1-git-send-email-aleksandar.markovic@rt-rk.com>
+Date:   Tue,  9 Jan 2018 12:57:16 +0100
+Message-Id: <1515499039-13963-1-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61955
+X-archive-position: 61956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

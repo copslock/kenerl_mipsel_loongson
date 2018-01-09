@@ -1,38 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 15:07:19 +0100 (CET)
-Received: from mail.free-electrons.com ([62.4.15.54]:52077 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993599AbeAIOHMhRS4l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Jan 2018 15:07:12 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id AE8532072F; Tue,  9 Jan 2018 15:07:04 +0100 (CET)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 81F27206A6;
-        Tue,  9 Jan 2018 15:07:04 +0100 (CET)
-Date:   Tue, 9 Jan 2018 15:07:05 +0100
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] pinctrl: Add Microsemi Ocelot SoC driver
-Message-ID: <20180109140705.GC2719@piout.net>
-References: <CACRpkdZ=+pFZYteq=wM=z-CGejY+dX_SqhtDbbGBn+q60arQ4w@mail.gmail.com>
- <20180106000926.13770-1-alexandre.belloni@free-electrons.com>
- <CACRpkdaCfjW7hWS1VnC6MR+j48=Q0uo7OSMA_6G90D7Cz7NMZA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 16:38:37 +0100 (CET)
+Received: from verein.lst.de ([213.95.11.211]:60037 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993885AbeAIPibBCRZz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 9 Jan 2018 16:38:31 +0100
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id AC85368CFA; Tue,  9 Jan 2018 16:38:26 +0100 (CET)
+Date:   Tue, 9 Jan 2018 16:38:26 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, x86@kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-m68k@lists.linux-m68k.org, patches@groups.riscv.org,
+        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
+        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 16/67] powerpc: rename dma_direct_ to dma_nommu_
+Message-ID: <20180109153826.GA10086@lst.de>
+References: <20171229081911.2802-1-hch@lst.de> <20171229081911.2802-17-hch@lst.de> <878tdgtwzp.fsf@concordia.ellerman.id.au> <20180104084930.GB3251@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACRpkdaCfjW7hWS1VnC6MR+j48=Q0uo7OSMA_6G90D7Cz7NMZA@mail.gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <alexandre.belloni@free-electrons.com>
+In-Reply-To: <20180104084930.GB3251@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61958
+X-archive-position: 61959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,31 +50,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/01/2018 at 14:56:36 +0100, Linus Walleij wrote:
-> On Sat, Jan 6, 2018 at 1:09 AM, Alexandre Belloni
-> <alexandre.belloni@free-electrons.com> wrote:
+On Thu, Jan 04, 2018 at 09:49:30AM +0100, Christoph Hellwig wrote:
+> On Tue, Jan 02, 2018 at 08:45:30PM +1100, Michael Ellerman wrote:
+> > Christoph Hellwig <hch@lst.de> writes:
+> > 
+> > > We want to use the dma_direct_ namespace for a generic implementation,
+> > > so rename powerpc to the second best choice: dma_nommu_.
+> > 
+> > I'm not a fan of "nommu". Some of the users of direct ops *are* using an
+> > IOMMU, they're just setting up a 1:1 mapping once at init time, rather
+> > than mapping dynamically.
+> > 
+> > Though I don't have a good idea for a better name, maybe "1to1",
+> > "linear", "premapped" ?
 > 
-> > The Microsemi Ocelot SoC has a few pins that can be used as GPIOs or take
-> > multiple other functions. Add a driver for the pinmuxing and the GPIOs.
-> >
-> > There is currently no support for interrupts.
-> >
-> > Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-> > ---
-> >  - use  pinctrl_gpio_direction_input/output from
-> >    ocelot_gpio_direction_input/output
-> >  - add a comment for ALT0/ALT1
-> >  - fill .max_register of ocelot_pinctrl_regmap_config
+> It seems like a nice counter part to the dma_iommu_ops used just about
+> anywhere else in ppc.
 > 
-> Patch applied. And it looks very good too.
-> 
-> This was all I had to do, right? No dependent patches?
-> 
+> But I'll happily take any maintainer bike shed decision for the next
+> series.  Remember that in a merge window or two it will hopefully
+> go away in favor of the new generic dma_direct ops.
 
-Nothing more for you, thanks! I'll get back to this driver if there is
-interest in having IRQ support but I don't think this will happen soon.
-
--- 
-Alexandre Belloni, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Michael, please suggest what name you want for the next iteration,
+I don't want to hold up the series on a naming bikeshed.

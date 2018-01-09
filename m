@@ -1,51 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jan 2018 09:56:45 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:54737 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990409AbeAHI4iH9U0I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Jan 2018 09:56:38 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 08 Jan 2018 08:56:14 +0000
-Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 8 Jan 2018
- 00:55:50 -0800
-Subject: Re: [PATCH] MAINTAINERS: Add James as MIPS co-maintainer
-To:     James Hogan <jhogan@kernel.org>, <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        John Crispin <john@phrozen.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-References: <20180105213647.28850-1-jhogan@kernel.org>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <5f7e9f47-c077-662e-eb6b-f9c8a2cdd339@mips.com>
-Date:   Mon, 8 Jan 2018 08:55:47 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 04:13:54 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:33390 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990403AbeAIDNrYGEUM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Jan 2018 04:13:47 +0100
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9837B60BEA; Tue,  9 Jan 2018 03:13:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1515467624;
+        bh=qDmadMIpbbSNwDjLeXmAPKUnirVBzkl+XuhZLBfDG9s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EACt1qTUxC+q6/WrRWKatZc+SKKGa3Gk8P2jSneczFrHs81nPJtDBIim0ZpJsUKbI
+         T7giKanW40RTTsKwtrGULygJalEf8to0poyIWEHMrt5V6RPUqZNc4Ojx0achRQaWOd
+         mMe3HuoSbt08rJSojVKfDmhAJMGG4eimmVyBEizw=
+Received: from codeaurora.org (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: rkuo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA26D6034E;
+        Tue,  9 Jan 2018 03:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1515467623;
+        bh=qDmadMIpbbSNwDjLeXmAPKUnirVBzkl+XuhZLBfDG9s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CaSD8Xagm9ls9G66PxhEy5W0fs+FE8NYbQzSV5CsqTgn+C+zXDVwdcB/Wb4hoXlkI
+         O671cD0fqdANV8WAuRDyTJWE4wvAZ1sf65r7r1ge1SAvNTPv6XH2r+M7ewEAiLZQFT
+         luRKpcDvBSY7gz1kcTRR7uktQk73kv8CdAvd0cGY=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CA26D6034E
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=rkuo@codeaurora.org
+Date:   Mon, 8 Jan 2018 21:13:39 -0600
+From:   Richard Kuo <rkuo@codeaurora.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        patches@groups.riscv.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>, x86@kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/67] hexagon: remove unused flush_write_buffers
+ definition
+Message-ID: <20180109031339.GA4196@codeaurora.org>
+References: <20171229081911.2802-1-hch@lst.de>
+ <20171229081911.2802-7-hch@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <20180105213647.28850-1-jhogan@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1515401774-298554-7132-131400-2
-X-BESS-VER: 2017.16-r1712230000
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188758
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20171229081911.2802-7-hch@lst.de>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <rkuo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61953
+X-archive-position: 61954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: rkuo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,44 +75,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James
-
-On 05/01/18 21:36, James Hogan wrote:
-> I've been taking on some co-maintainer duties already, so lets make it
-> official in the MAINTAINERS file.
-> 
-> Link: https://lkml.kernel.org/r/33db77a2-32e4-6b2c-d463-9d116ba55623@imgtec.com
-> Link: https://lkml.kernel.org/r/20171207110549.GM27409@jhogan-linux.mipstec.com
-> Signed-off-by: James Hogan <jhogan@kernel.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: David Daney <david.daney@cavium.com>
-> Cc: John Crispin <john@phrozen.org>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Matt Redfearn <matt.redfearn@mips.com>
-> Cc: linux-mips@linux-mips.org
-
-Yes please! I think with you and Ralf on the case we should be able to 
-get patches merged much quicker! This would be great!
-
-Acked-by: Matt Redfearn <matt.redfearn@mips.com>
-
-Matt
-
+On Fri, Dec 29, 2017 at 09:18:10AM +0100, Christoph Hellwig wrote:
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+>  arch/hexagon/include/asm/io.h | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2d3d750b19c0..61bccbd3715f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8983,6 +8983,7 @@ F:	drivers/usb/image/microtek.*
->   
->   MIPS
->   M:	Ralf Baechle <ralf@linux-mips.org>
-> +M:	James Hogan <jhogan@kernel.org>
->   L:	linux-mips@linux-mips.org
->   W:	http://www.linux-mips.org/
->   T:	git git://git.linux-mips.org/pub/scm/ralf/linux.git
+> diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
+> index 66f5e9a61efc..9e8621d94ee9 100644
+> --- a/arch/hexagon/include/asm/io.h
+> +++ b/arch/hexagon/include/asm/io.h
+> @@ -330,8 +330,6 @@ static inline void outsl(unsigned long port, const void *buffer, int count)
+>  	}
+>  }
+>  
+> -#define flush_write_buffers() do { } while (0)
+> -
+>  #endif /* __KERNEL__ */
+>  
+>  #endif
+> -- 
+> 2.14.2
 > 
+
+For Hexagon:
+
+Acked-by: Richard Kuo <rkuo@codeaurora.org>
+
+
+-- 
+Employee of Qualcomm Innovation Center, Inc.
+Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum, 
+a Linux Foundation Collaborative Project

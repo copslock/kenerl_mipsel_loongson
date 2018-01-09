@@ -1,43 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 16:38:37 +0100 (CET)
-Received: from verein.lst.de ([213.95.11.211]:60037 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993885AbeAIPibBCRZz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Jan 2018 16:38:31 +0100
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id AC85368CFA; Tue,  9 Jan 2018 16:38:26 +0100 (CET)
-Date:   Tue, 9 Jan 2018 16:38:26 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, x86@kernel.org,
-        linux-snps-arc@lists.infradead.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 16:53:40 +0100 (CET)
+Received: from bastet.se.axis.com ([195.60.68.11]:35368 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990427AbeAIPx1p6rSz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Jan 2018 16:53:27 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id 37659183E8;
+        Tue,  9 Jan 2018 16:53:20 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id 1j9dfNq2IT8E; Tue,  9 Jan 2018 16:53:19 +0100 (CET)
+Received: from boulder03.se.axis.com (boulder03.se.axis.com [10.0.8.17])
+        by bastet.se.axis.com (Postfix) with ESMTPS id 3727F183C3;
+        Tue,  9 Jan 2018 16:53:18 +0100 (CET)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1D76B1E074;
+        Tue,  9 Jan 2018 16:53:18 +0100 (CET)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0ECAB1E070;
+        Tue,  9 Jan 2018 16:53:18 +0100 (CET)
+Received: from thoth.se.axis.com (unknown [10.0.2.173])
+        by boulder03.se.axis.com (Postfix) with ESMTP;
+        Tue,  9 Jan 2018 16:53:18 +0100 (CET)
+Received: from lnxjespern3.se.axis.com (lnxjespern3.se.axis.com [10.88.4.8])
+        by thoth.se.axis.com (Postfix) with ESMTP id F34382DFD;
+        Tue,  9 Jan 2018 16:53:17 +0100 (CET)
+Received: by lnxjespern3.se.axis.com (Postfix, from userid 363)
+        id EDE55800EF; Tue,  9 Jan 2018 16:53:17 +0100 (CET)
+Date:   Tue, 9 Jan 2018 16:53:17 +0100
+From:   Jesper Nilsson <jesper.nilsson@axis.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
+        x86@kernel.org, linux-snps-arc@lists.infradead.org,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-m68k@lists.linux-m68k.org, patches@groups.riscv.org,
         linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
         linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
         linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 16/67] powerpc: rename dma_direct_ to dma_nommu_
-Message-ID: <20180109153826.GA10086@lst.de>
-References: <20171229081911.2802-1-hch@lst.de> <20171229081911.2802-17-hch@lst.de> <878tdgtwzp.fsf@concordia.ellerman.id.au> <20180104084930.GB3251@lst.de>
+Subject: Re: [PATCH 34/67] cris: use dma-direct
+Message-ID: <20180109155317.GN32368@axis.com>
+References: <20171229081911.2802-1-hch@lst.de>
+ <20171229081911.2802-35-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180104084930.GB3251@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+In-Reply-To: <20171229081911.2802-35-hch@lst.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+Return-Path: <jesper.nilsson@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61959
+X-archive-position: 61960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: jesper.nilsson@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,26 +73,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 04, 2018 at 09:49:30AM +0100, Christoph Hellwig wrote:
-> On Tue, Jan 02, 2018 at 08:45:30PM +1100, Michael Ellerman wrote:
-> > Christoph Hellwig <hch@lst.de> writes:
-> > 
-> > > We want to use the dma_direct_ namespace for a generic implementation,
-> > > so rename powerpc to the second best choice: dma_nommu_.
-> > 
-> > I'm not a fan of "nommu". Some of the users of direct ops *are* using an
-> > IOMMU, they're just setting up a 1:1 mapping once at init time, rather
-> > than mapping dynamically.
-> > 
-> > Though I don't have a good idea for a better name, maybe "1to1",
-> > "linear", "premapped" ?
+On Fri, Dec 29, 2017 at 09:18:38AM +0100, Christoph Hellwig wrote:
+> cris currently has an incomplete direct mapping dma_map_ops implementation
+> is PCI support is enabled.  Replace it with the fully feature generic
+> dma-direct implementation.
 > 
-> It seems like a nice counter part to the dma_iommu_ops used just about
-> anywhere else in ppc.
-> 
-> But I'll happily take any maintainer bike shed decision for the next
-> series.  Remember that in a merge window or two it will hopefully
-> go away in favor of the new generic dma_direct ops.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Michael, please suggest what name you want for the next iteration,
-I don't want to hold up the series on a naming bikeshed.
+For CRIS:
+
+Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
+
+> ---
+>  arch/cris/Kconfig                       |  4 ++
+>  arch/cris/arch-v32/drivers/pci/Makefile |  2 +-
+>  arch/cris/arch-v32/drivers/pci/dma.c    | 78 ---------------------------------
+>  arch/cris/include/asm/Kbuild            |  1 +
+>  arch/cris/include/asm/dma-mapping.h     | 20 ---------
+>  5 files changed, 6 insertions(+), 99 deletions(-)
+>  delete mode 100644 arch/cris/arch-v32/drivers/pci/dma.c
+>  delete mode 100644 arch/cris/include/asm/dma-mapping.h
+> 
+
+/^JN - Jesper Nilsson
+-- 
+               Jesper Nilsson -- jesper.nilsson@axis.com

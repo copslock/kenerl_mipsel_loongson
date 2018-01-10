@@ -1,32 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 14:16:37 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:46450 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994039AbeAJNQ2YfnUa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Jan 2018 14:16:28 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 15:56:23 +0100 (CET)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:47702 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990502AbeAJO4PICLZ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 15:56:15 +0100
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34923F;
-        Wed, 10 Jan 2018 05:16:21 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 37EC915A2;
+        Wed, 10 Jan 2018 06:56:07 -0800 (PST)
 Received: from [10.1.210.88] (e110467-lin.cambridge.arm.com [10.1.210.88])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 182E43F581;
-        Wed, 10 Jan 2018 05:16:18 -0800 (PST)
-Subject: Re: [PATCH 22/22] arm64: use swiotlb_alloc and swiotlb_free
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E92F3F487;
+        Wed, 10 Jan 2018 06:56:03 -0800 (PST)
+Subject: Re: [PATCH 11/33] dma-mapping: move swiotlb arch helpers to a new
+ header
 To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
-Cc:     linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        Michal Simek <monstr@monstr.eu>, linux-ia64@vger.kernel.org,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
+Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, x86@kernel.org,
         Konrad Rzeszutek Wilk <konrad@darnok.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20180110080932.14157-1-hch@lst.de>
- <20180110080932.14157-23-hch@lst.de>
+        linux-snps-arc@lists.infradead.org,
+        linux-m68k@lists.linux-m68k.org, patches@groups.riscv.org,
+        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
+        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20180110080027.13879-1-hch@lst.de>
+ <20180110080027.13879-12-hch@lst.de>
 From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <af49a676-142b-fd37-a395-67d76f7d35fa@arm.com>
-Date:   Wed, 10 Jan 2018 13:16:17 +0000
+Message-ID: <3721b4ba-0685-255e-06b9-6e60678a1a92@arm.com>
+Date:   Wed, 10 Jan 2018 14:56:01 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.5.0
 MIME-Version: 1.0
-In-Reply-To: <20180110080932.14157-23-hch@lst.de>
+In-Reply-To: <20180110080027.13879-12-hch@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -34,7 +40,7 @@ Return-Path: <robin.murphy@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62034
+X-archive-position: 62035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,112 +57,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/01/18 08:09, Christoph Hellwig wrote:
-> The generic swiotlb_alloc and swiotlb_free routines already take care
-> of CMA allocations and adding GFP_DMA32 where needed, so use them
-> instead of the arm specific helpers.
-
-It took a while to satisfy myself that the GFP_DMA(32) handling ends up 
-equivalent to the current behaviour, but I think it checks out. This 
-will certainly help with the long-overdue cleanup of this file that I've 
-had sat around half-finished for ages.
-
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-
+On 10/01/18 08:00, Christoph Hellwig wrote:
+> phys_to_dma, dma_to_phys and dma_capable are helpers published by
+> architecture code for use of swiotlb and xen-swiotlb only.  Drivers are
+> not supposed to use these directly, but use the DMA API instead.
+> 
+> Move these to a new asm/dma-direct.h helper, included by a
+> linux/dma-direct.h wrapper that provides the default linear mapping
+> unless the architecture wants to override it.
+> 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   arch/arm64/Kconfig          |  1 +
->   arch/arm64/mm/dma-mapping.c | 46 +++------------------------------------------
->   2 files changed, 4 insertions(+), 43 deletions(-)
-> 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 6b6985f15d02..53205c02b18a 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -59,6 +59,7 @@ config ARM64
->   	select COMMON_CLK
->   	select CPU_PM if (SUSPEND || CPU_IDLE)
->   	select DCACHE_WORD_ACCESS
-> +	select DMA_DIRECT_OPS
->   	select EDAC_SUPPORT
->   	select FRAME_POINTER
->   	select GENERIC_ALLOCATOR
-> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-> index 0d641875b20e..a96ec0181818 100644
-> --- a/arch/arm64/mm/dma-mapping.c
-> +++ b/arch/arm64/mm/dma-mapping.c
-> @@ -91,46 +91,6 @@ static int __free_from_pool(void *start, size_t size)
->   	return 1;
->   }
->   
-> -static void *__dma_alloc_coherent(struct device *dev, size_t size,
-> -				  dma_addr_t *dma_handle, gfp_t flags,
-> -				  unsigned long attrs)
-> -{
-> -	if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
-> -	    dev->coherent_dma_mask <= DMA_BIT_MASK(32))
-> -		flags |= GFP_DMA32;
-> -	if (dev_get_cma_area(dev) && gfpflags_allow_blocking(flags)) {
-> -		struct page *page;
-> -		void *addr;
-> -
-> -		page = dma_alloc_from_contiguous(dev, size >> PAGE_SHIFT,
-> -						 get_order(size), flags);
-> -		if (!page)
-> -			return NULL;
-> -
-> -		*dma_handle = phys_to_dma(dev, page_to_phys(page));
-> -		addr = page_address(page);
-> -		memset(addr, 0, size);
-> -		return addr;
-> -	} else {
-> -		return swiotlb_alloc_coherent(dev, size, dma_handle, flags);
-> -	}
-> -}
-> -
-> -static void __dma_free_coherent(struct device *dev, size_t size,
-> -				void *vaddr, dma_addr_t dma_handle,
-> -				unsigned long attrs)
-> -{
-> -	bool freed;
-> -	phys_addr_t paddr = dma_to_phys(dev, dma_handle);
-> -
-> -
-> -	freed = dma_release_from_contiguous(dev,
-> -					phys_to_page(paddr),
-> -					size >> PAGE_SHIFT);
-> -	if (!freed)
-> -		swiotlb_free_coherent(dev, size, vaddr, dma_handle);
-> -}
-> -
->   static void *__dma_alloc(struct device *dev, size_t size,
->   			 dma_addr_t *dma_handle, gfp_t flags,
->   			 unsigned long attrs)
-> @@ -152,7 +112,7 @@ static void *__dma_alloc(struct device *dev, size_t size,
->   		return addr;
->   	}
->   
-> -	ptr = __dma_alloc_coherent(dev, size, dma_handle, flags, attrs);
-> +	ptr = swiotlb_alloc(dev, size, dma_handle, flags, attrs);
->   	if (!ptr)
->   		goto no_mem;
->   
-> @@ -173,7 +133,7 @@ static void *__dma_alloc(struct device *dev, size_t size,
->   	return coherent_ptr;
->   
->   no_map:
-> -	__dma_free_coherent(dev, size, ptr, *dma_handle, attrs);
-> +	swiotlb_free(dev, size, ptr, *dma_handle, attrs);
->   no_mem:
->   	return NULL;
->   }
-> @@ -191,7 +151,7 @@ static void __dma_free(struct device *dev, size_t size,
->   			return;
->   		vunmap(vaddr);
->   	}
-> -	__dma_free_coherent(dev, size, swiotlb_addr, dma_handle, attrs);
-> +	swiotlb_free(dev, size, swiotlb_addr, dma_handle, attrs);
->   }
->   
->   static dma_addr_t __swiotlb_map_page(struct device *dev, struct page *page,
-> 
+[...]
+>   drivers/crypto/marvell/cesa.c                      |  1 +
+>   drivers/mtd/nand/qcom_nandc.c                      |  1 +
+
+I took a look at these, and it seems their phys_to_dma() usage is doing 
+the thing which we subsequently formalised as dma_map_resource(). I've 
+had a crack at a quick patch to update the CESA driver; qcom_nandc looks 
+slightly more complex in that the changes probably need to span the BAM 
+dmaengine driver as well.
+
+In the process, though, I stumbled across gen_pool_dma_alloc() - yuck, 
+something needs doing there, for sure...
+
+Robin.

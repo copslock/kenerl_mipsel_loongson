@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:04:08 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:58515 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:04:31 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:37057 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993981AbeAJIBGnZ3cS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:01:06 +0100
+        by eddie.linux-mips.org with ESMTP id S23991619AbeAJIBJDKehS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:01:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=m0FQ4a4ZxoB2cHk6bXDHjO6pdh6D5z/ak3wK1MTP8hI=; b=gf2sM1SNMhwTh1OQNKwTKN7ur
-        h5gYlJeIrZwZd+5CCxYmpszd0FUT5FtqNCKaMH3BWuRfUgyxZ9k8xsqmxswkOYbN8LtOYXUsNc+4h
-        M5sR3CXn8bMJo60T/DQFv6yfoa9cFuPDLm6es2WjMhWVVfelwCIkHQUWpjhs4cbG/TFOVoe2/2JB/
-        IjTTuhH3vIbJx3sSajTRH7nNmlPiWaM5enUU76Bywv3pkq160yH8hsHaHyz8LUsXPfKtKBWkjsCeB
-        7LCMReltY3ZlyJJc7f+Gek+AXdeGK9Rv8Eju5AVsyN89/jDeARfz025p7nl6jEz/J4waZCD0qIewd
-        glYYKTtyg==;
+         bh=vdePqvUj61iE5s31eV5JeBeZN5vOIc09n73lsDtN5eM=; b=QpNBo8oYzrGHj4CwTetTJha0Z
+        UyEYBO0DCP+EeW97RJx5ok1hVQBwU9JS+6jrWBgVPZEKGyL5+w0PaHD9Fl1z5mAzY/xePkbwaBqte
+        2hC6ZX2JYeHYkShYNlm1eBUTwXwymmqLfXXMOdGle2EIU3VD2G+WtDJZ0gwoaDrGwWfzoudfSmp/1
+        XEREverTx13IbzGP2s3ldJyQ53dOCdRXe+R4lQ1PhI9f9AWAWAnHnF8MuGLXK6nwKB7FNEeqNzLJI
+        XMwns6jpw81yDN7QjKccZEpNT0emEocRjbJFJ8KfmRw3fHZ2Qtaoqz+Cdolhf/IoPhfLg+ZuTzspF
+        VBaphlIow==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZBJe-0004GQ-TN; Wed, 10 Jan 2018 08:00:55 +0000
+        id 1eZBJi-0004LE-1c; Wed, 10 Jan 2018 08:00:58 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,9 +32,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 08/33] s390: remove the unused dma_capable helper
-Date:   Wed, 10 Jan 2018 09:00:02 +0100
-Message-Id: <20180110080027.13879-9-hch@lst.de>
+Subject: [PATCH 09/33] dma-mapping: take dma_pfn_offset into account in dma_max_pfn
+Date:   Wed, 10 Jan 2018 09:00:03 +0100
+Message-Id: <20180110080027.13879-10-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180110080027.13879-1-hch@lst.de>
 References: <20180110080027.13879-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+ddff6d03254b98e050e8+5253+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61973
+X-archive-position: 61974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,26 +60,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This makes sure the generic version can be used with architectures /
+devices that have a DMA offset in the direct mapping.
+
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/s390/include/asm/dma-mapping.h | 7 -------
- 1 file changed, 7 deletions(-)
+ include/linux/dma-mapping.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/dma-mapping.h b/arch/s390/include/asm/dma-mapping.h
-index eaf490f9c5bc..2ec7240c1ada 100644
---- a/arch/s390/include/asm/dma-mapping.h
-+++ b/arch/s390/include/asm/dma-mapping.h
-@@ -16,11 +16,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &dma_noop_ops;
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 81ed9b2d84dc..d84951865be7 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -692,7 +692,7 @@ static inline int dma_set_seg_boundary(struct device *dev, unsigned long mask)
+ #ifndef dma_max_pfn
+ static inline unsigned long dma_max_pfn(struct device *dev)
+ {
+-	return *dev->dma_mask >> PAGE_SHIFT;
++	return (*dev->dma_mask >> PAGE_SHIFT) + dev->dma_pfn_offset;
  }
+ #endif
  
--static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
--{
--	if (!dev->dma_mask)
--		return false;
--	return addr + size - 1 <= *dev->dma_mask;
--}
--
- #endif /* _ASM_S390_DMA_MAPPING_H */
 -- 
 2.14.2

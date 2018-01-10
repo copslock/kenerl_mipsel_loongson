@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:02:58 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:43835 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:03:19 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:57429 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992336AbeAJIA6l96IS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:00:58 +0100
+        by eddie.linux-mips.org with ESMTP id S23992917AbeAJIA7uyTFS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:00:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=2lQf+iUE0etj+DXwQLMAdazaZ3TD1HeSJN/sy8+g38U=; b=s7DLfEbnBwWH34zmfKFmCUzNH
-        DbmKtGcKTytqjFV+wFIS7BxEiDMeqJLmf6I5NokTNhX72Y8QyzA/Z9cox2/EGsjyXjcdxH40SIumi
-        aWe8jCSQgU0AAuuz8L5XJnteXIRyjuK7REPybnVoSrkUSWx3Z5eINjMqwkC0jgrAxdC5AEoKjGYQZ
-        5S8vXYLwF6ZML5cJoKF1bs6mANioAYIPI1eTHpxIufXorcasbQOYqRStPMDhIQiYWoD+Qr7g21P8Z
-        LQ5HMIXJtvLPlhO3oFy0vzYUqMU3GrAzSBJWL41IjUaWtE1uM37zjP29BuSiwRPUOURCEWQooUpZg
-        3PT7IAiCA==;
+         bh=5m3sWHu0i/1ncT32uHmlD/yLwHLhNTmcfacRCc4qzec=; b=ohqEQAUxjiZ0O5Tez1M1ePR+u
+        ENKjSnfmoYpmSmUcDupqSMMCSUUqyHh7dgxMbUAeenHSKaSVY1Ehf7v16Guak+6vnLr+FRXy9dchk
+        j3cT5UIl1b9Rj1EKm5BZnmYmI3mxUbUCC22LmafBhP20RFuEizqtxwviUkTjbMI6TZO/var14jzr4
+        BdnYyRSPl+UnQQMJJ05SUpeOsfZOeKuxUJfZ7MWCX//8Gi7Tlz89nEhKYNCUSpaWOuLf7YXl5Igbo
+        WPO3OfGOEmK+/hsN0FE/sk6hlp8GOhOGeOQZGf/3Muhc6ZLm3yKweKKrQAayS6oEXl+qHTHPMqowK
+        q9v17j6RA==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZBJV-00044f-RP; Wed, 10 Jan 2018 08:00:46 +0000
+        id 1eZBJY-00048A-Oh; Wed, 10 Jan 2018 08:00:49 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,9 +32,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 05/33] arc: remove CONFIG_ARC_PLAT_NEEDS_PHYS_TO_DMA
-Date:   Wed, 10 Jan 2018 08:59:59 +0100
-Message-Id: <20180110080027.13879-6-hch@lst.de>
+Subject: [PATCH 06/33] m32r: remove the unused dma_capable helper
+Date:   Wed, 10 Jan 2018 09:00:00 +0100
+Message-Id: <20180110080027.13879-7-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180110080027.13879-1-hch@lst.de>
 References: <20180110080027.13879-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+ddff6d03254b98e050e8+5253+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61970
+X-archive-position: 61971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,112 +60,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We always use the stub definitions, so remove the unused other code.
-
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Vineet Gupta <vgupta@synopsys.com>
 ---
- arch/arc/Kconfig                   |  3 ---
- arch/arc/include/asm/dma-mapping.h |  7 -------
- arch/arc/mm/dma.c                  | 14 +++++++-------
- 3 files changed, 7 insertions(+), 17 deletions(-)
+ arch/m32r/include/asm/dma-mapping.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-index 9d5fd00d9e91..f3a80cf164cc 100644
---- a/arch/arc/Kconfig
-+++ b/arch/arc/Kconfig
-@@ -463,9 +463,6 @@ config ARCH_PHYS_ADDR_T_64BIT
- config ARCH_DMA_ADDR_T_64BIT
- 	bool
+diff --git a/arch/m32r/include/asm/dma-mapping.h b/arch/m32r/include/asm/dma-mapping.h
+index 336ffe60814b..8967fb659691 100644
+--- a/arch/m32r/include/asm/dma-mapping.h
++++ b/arch/m32r/include/asm/dma-mapping.h
+@@ -14,11 +14,4 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ 	return &dma_noop_ops;
+ }
  
--config ARC_PLAT_NEEDS_PHYS_TO_DMA
--	bool
+-static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
+-{
+-	if (!dev->dma_mask)
+-		return false;
+-	return addr + size - 1 <= *dev->dma_mask;
+-}
 -
- config ARC_KVADDR_SIZE
- 	int "Kernel Virtual Address Space size (MB)"
- 	range 0 512
-diff --git a/arch/arc/include/asm/dma-mapping.h b/arch/arc/include/asm/dma-mapping.h
-index 94285031c4fb..7a16824bfe98 100644
---- a/arch/arc/include/asm/dma-mapping.h
-+++ b/arch/arc/include/asm/dma-mapping.h
-@@ -11,13 +11,6 @@
- #ifndef ASM_ARC_DMA_MAPPING_H
- #define ASM_ARC_DMA_MAPPING_H
- 
--#ifndef CONFIG_ARC_PLAT_NEEDS_PHYS_TO_DMA
--#define plat_dma_to_phys(dev, dma_handle) ((phys_addr_t)(dma_handle))
--#define plat_phys_to_dma(dev, paddr) ((dma_addr_t)(paddr))
--#else
--#include <plat/dma.h>
--#endif
--
- extern const struct dma_map_ops arc_dma_ops;
- 
- static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
-diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
-index e9d93604ad0f..1dcc404b5aec 100644
---- a/arch/arc/mm/dma.c
-+++ b/arch/arc/mm/dma.c
-@@ -60,7 +60,7 @@ static void *arc_dma_alloc(struct device *dev, size_t size,
- 	/* This is linear addr (0x8000_0000 based) */
- 	paddr = page_to_phys(page);
- 
--	*dma_handle = plat_phys_to_dma(dev, paddr);
-+	*dma_handle = paddr;
- 
- 	/* This is kernel Virtual address (0x7000_0000 based) */
- 	if (need_kvaddr) {
-@@ -92,7 +92,7 @@ static void *arc_dma_alloc(struct device *dev, size_t size,
- static void arc_dma_free(struct device *dev, size_t size, void *vaddr,
- 		dma_addr_t dma_handle, unsigned long attrs)
- {
--	phys_addr_t paddr = plat_dma_to_phys(dev, dma_handle);
-+	phys_addr_t paddr = dma_handle;
- 	struct page *page = virt_to_page(paddr);
- 	int is_non_coh = 1;
- 
-@@ -111,7 +111,7 @@ static int arc_dma_mmap(struct device *dev, struct vm_area_struct *vma,
- {
- 	unsigned long user_count = vma_pages(vma);
- 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
--	unsigned long pfn = __phys_to_pfn(plat_dma_to_phys(dev, dma_addr));
-+	unsigned long pfn = __phys_to_pfn(dma_addr);
- 	unsigned long off = vma->vm_pgoff;
- 	int ret = -ENXIO;
- 
-@@ -175,7 +175,7 @@ static dma_addr_t arc_dma_map_page(struct device *dev, struct page *page,
- 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
- 		_dma_cache_sync(paddr, size, dir);
- 
--	return plat_phys_to_dma(dev, paddr);
-+	return paddr;
- }
- 
- /*
-@@ -190,7 +190,7 @@ static void arc_dma_unmap_page(struct device *dev, dma_addr_t handle,
- 			       size_t size, enum dma_data_direction dir,
- 			       unsigned long attrs)
- {
--	phys_addr_t paddr = plat_dma_to_phys(dev, handle);
-+	phys_addr_t paddr = handle;
- 
- 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
- 		_dma_cache_sync(paddr, size, dir);
-@@ -224,13 +224,13 @@ static void arc_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
- static void arc_dma_sync_single_for_cpu(struct device *dev,
- 		dma_addr_t dma_handle, size_t size, enum dma_data_direction dir)
- {
--	_dma_cache_sync(plat_dma_to_phys(dev, dma_handle), size, DMA_FROM_DEVICE);
-+	_dma_cache_sync(dma_handle, size, DMA_FROM_DEVICE);
- }
- 
- static void arc_dma_sync_single_for_device(struct device *dev,
- 		dma_addr_t dma_handle, size_t size, enum dma_data_direction dir)
- {
--	_dma_cache_sync(plat_dma_to_phys(dev, dma_handle), size, DMA_TO_DEVICE);
-+	_dma_cache_sync(dma_handle, size, DMA_TO_DEVICE);
- }
- 
- static void arc_dma_sync_sg_for_cpu(struct device *dev,
+ #endif /* _ASM_M32R_DMA_MAPPING_H */
 -- 
 2.14.2

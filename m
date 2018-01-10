@@ -1,33 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jan 2018 19:31:12 +0100 (CET)
-Received: from verein.lst.de ([213.95.11.211]:60937 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993599AbeAISbGCQjRh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Jan 2018 19:31:06 +0100
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id E3E9668CFA; Tue,  9 Jan 2018 19:31:03 +0100 (CET)
-Date:   Tue, 9 Jan 2018 19:31:03 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:00:53 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:53187 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991619AbeAJIAq1uAmS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:00:46 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=SOywdknrZ4bbNdt4Uig2NdNyk/e51kyVkWYDr2cMVJ8=; b=Wf8bk37GdXU6lEh3iz/vA69WN
+        XqaH/ORCCoeA9/iSmMd1EYYr7qXLFQiYungbsBR21tUmEUSiE+7NQqEL9FGSchrQDZu01vwoC7pcb
+        6v4rgfMx4hNxeEDUvvzMC7+7Kizjpz7w4kio1AiVOeVDcCRRlO3pzo72mgjf4uIzm7OvdrkykpvXH
+        6nEdfwIna9TIsqV7+RkyuFs++PzE4PoPxdoZ45O3wkJxOOAoX5y3ruudhslAyIQdo7KA9Woh4L0f/
+        z2q6T8zjoJLP1/HNGssL++MxSyJpXVe/Odxv5CLFWwsF6xIiVrdhJpXxQf+vrcdYrwgFuxm4K856i
+        t3379dkYw==;
+Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
+        id 1eZBJH-0003yJ-4R; Wed, 10 Jan 2018 08:00:31 +0000
 From:   Christoph Hellwig <hch@lst.de>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Huacai Chen <chenhc@lemote.com>, Christoph Hellwig <hch@lst.de>,
-        David Daney <ddaney@cavium.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: mb() calls in octeon / loongson swiotlb dma_map_ops
-Message-ID: <20180109183103.GA13983@lst.de>
-References: <20171230160928.GB3883@lst.de> <CAAhV-H4fzuocu6wx3kmTO96vY-0YkRqQboqtRVXzn7b0YZSS6Q@mail.gmail.com> <0fa48a91-6987-85e8-49fc-d39c5461be1e@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0fa48a91-6987-85e8-49fc-d39c5461be1e@caviumnetworks.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+To:     iommu@lists.linux-foundation.org
+Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-cris-kernel@axis.com, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, patches@groups.riscv.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        x86@kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: consolidate direct dma mapping V3
+Date:   Wed, 10 Jan 2018 08:59:54 +0100
+Message-Id: <20180110080027.13879-1-hch@lst.de>
+X-Mailer: git-send-email 2.14.2
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+ddff6d03254b98e050e8+5253+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61963
+X-archive-position: 61965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,22 +58,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 04, 2018 at 05:21:17PM -0800, David Daney wrote:
-> It has been a while since I wrote that code.  It is possible that the 
-> barriers are redundant.
->
-> On OCTEON, we the primitive that accomplishes the DMA-Sync operation is the 
-> MIPS "SYNC" instruction, which ensures that all stores are committed to the 
-> coherency point (L2 Cache) before the DMA is initiated.  The mb(), is 
-> implemented as SYNC, so we use that instead of open coding the 'asm 
-> volatile("sync" ::: "memory);' in the SWIOTLB operations.
+Almost every architecture supports a direct dma mapping implementation,
+where no iommu is used and the device dma address is a 1:1 mapping to
+the physical address or has a simple linear offset.  Currently the
+code for this implementation is most duplicated over the architectures,
+and the duplicated again in the swiotlb code, and then duplicated again
+for special cases like the x86 memory encryption DMA ops.
 
-Ok.  And given that apparently octeon only uses swiotlb ops that's where
-they were fitted in, instead of dma_cache_wback.
+This series takes the existing very simple dma-noop dma mapping
+implementation, enhances it with all the x86 features and quirks, and
+creates a common set of architecture hooks for it and the swiotlb code.
 
-> Does the SWIOTLB DMA mapping code chain to the underlying systems DMA 
-> mapping?  If so, the barriers there would be all that is necessary.
+It then switches a number of architectures to this generic
+direct map implemention.
 
-It doesn't.  But it also seems the underlying mips_default_dma_map_ops
-ops is using entirely different interface for cache writeback before
-dma.
+Note that for now this only handles architectures that do cache coherent
+DMA, but a similar consolidation for non-coherent architectures is in the
+work for later merge windows.
+
+A git tree is also available:
+
+   git://git.infradead.org/users/hch/misc.git dma-direct.3
+
+Gitweb:
+
+   http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-direct.3
+
+Changes since V1:
+ - fixed a few patch description typos
+ - fixed a few printk formats
+ - fixed an off by one in dma_coherent_ok
+ - add a few Reviewed-by/Acked-by tags.
+ - moved the swiotlb consolidation to a new series
+ - dropped a few patches for now to not overwhelem the x86
+   maintainers.  They will be resubmitted in the next merge window

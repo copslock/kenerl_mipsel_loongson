@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 13:22:36 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:45664 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993981AbeAJMW3TNGfX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 13:22:29 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 13:58:33 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:46122 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993588AbeAJM6ZaOEna (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Jan 2018 13:58:25 +0100
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 577E71435;
-        Wed, 10 Jan 2018 04:22:22 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C8BB1435;
+        Wed, 10 Jan 2018 04:58:18 -0800 (PST)
 Received: from [10.1.210.88] (e110467-lin.cambridge.arm.com [10.1.210.88])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D3323F581;
-        Wed, 10 Jan 2018 04:22:20 -0800 (PST)
-Subject: Re: [PATCH 10/22] swiotlb: refactor coherent buffer allocation
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0CA4F3F581;
+        Wed, 10 Jan 2018 04:58:15 -0800 (PST)
+Subject: Re: [PATCH 21/22] arm64: replace ZONE_DMA with ZONE_DMA32
 To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
 Cc:     linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
         Michal Simek <monstr@monstr.eu>, linux-ia64@vger.kernel.org,
@@ -19,14 +19,14 @@ Cc:     linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>,
         linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 References: <20180110080932.14157-1-hch@lst.de>
- <20180110080932.14157-11-hch@lst.de>
+ <20180110080932.14157-22-hch@lst.de>
 From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <cecc98cf-2e6a-a7bc-7390-d6dcced038c4@arm.com>
-Date:   Wed, 10 Jan 2018 12:22:18 +0000
+Message-ID: <0371cef8-d980-96da-9cb5-3609c39be18a@arm.com>
+Date:   Wed, 10 Jan 2018 12:58:14 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.5.0
 MIME-Version: 1.0
-In-Reply-To: <20180110080932.14157-11-hch@lst.de>
+In-Reply-To: <20180110080932.14157-22-hch@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -34,7 +34,7 @@ Return-Path: <robin.murphy@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62032
+X-archive-position: 62033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,184 +52,125 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 10/01/18 08:09, Christoph Hellwig wrote:
-> Factor out a new swiotlb_alloc_buffer helper that allocates DMA coherent
-> memory from the swiotlb bounce buffer.
-> 
-> This allows to simplify the swiotlb_alloc implemenation that uses
-> dma_direct_alloc to try to allocate a reachable buffer first.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->   lib/swiotlb.c | 122 +++++++++++++++++++++++++++++++---------------------------
->   1 file changed, 65 insertions(+), 57 deletions(-)
-> 
-> diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-> index 1a147f1354a1..bf2d19ee91c1 100644
-> --- a/lib/swiotlb.c
-> +++ b/lib/swiotlb.c
-> @@ -709,75 +709,79 @@ void swiotlb_tbl_sync_single(struct device *hwdev, phys_addr_t tlb_addr,
->   }
->   EXPORT_SYMBOL_GPL(swiotlb_tbl_sync_single);
->   
-> -void *
-> -swiotlb_alloc_coherent(struct device *hwdev, size_t size,
-> -		       dma_addr_t *dma_handle, gfp_t flags)
-> +static inline bool dma_coherent_ok(struct device *dev, dma_addr_t addr,
-> +		size_t size)
->   {
-> -	bool warn = !(flags & __GFP_NOWARN);
-> -	dma_addr_t dev_addr;
-> -	void *ret;
-> -	int order = get_order(size);
-> -	u64 dma_mask = DMA_BIT_MASK(32);
-> +	u64 mask = DMA_BIT_MASK(32);
->   
-> -	if (hwdev && hwdev->coherent_dma_mask)
-> -		dma_mask = hwdev->coherent_dma_mask;
-> +	if (dev && dev->coherent_dma_mask)
-> +		mask = dev->coherent_dma_mask;
-> +	return addr + size - 1 <= mask;
-> +}
->   
-> -	ret = (void *)__get_free_pages(flags, order);
-> -	if (ret) {
-> -		dev_addr = swiotlb_virt_to_bus(hwdev, ret);
-> -		if (dev_addr + size - 1 > dma_mask) {
-> -			/*
-> -			 * The allocated memory isn't reachable by the device.
-> -			 */
-> -			free_pages((unsigned long) ret, order);
-> -			ret = NULL;
-> -		}
-> -	}
-> -	if (!ret) {
-> -		/*
-> -		 * We are either out of memory or the device can't DMA to
-> -		 * GFP_DMA memory; fall back on map_single(), which
-> -		 * will grab memory from the lowest available address range.
-> -		 */
-> -		phys_addr_t paddr = map_single(hwdev, 0, size, DMA_FROM_DEVICE,
-> -					       warn ? 0 : DMA_ATTR_NO_WARN);
-> -		if (paddr == SWIOTLB_MAP_ERROR)
-> -			goto err_warn;
-> +static void *
-> +swiotlb_alloc_buffer(struct device *dev, size_t size, dma_addr_t *dma_handle,
-> +		unsigned long attrs)
-> +{
-> +	phys_addr_t phys_addr;
-> +
-> +	if (swiotlb_force == SWIOTLB_NO_FORCE)
-> +		goto out_warn;
->   
-> -		ret = phys_to_virt(paddr);
-> -		dev_addr = swiotlb_phys_to_dma(hwdev, paddr);
-> +	phys_addr = swiotlb_tbl_map_single(dev,
-> +			swiotlb_phys_to_dma(dev, io_tlb_start),
-> +			0, size, DMA_FROM_DEVICE, 0);
-> +	if (phys_addr == SWIOTLB_MAP_ERROR)
-> +		goto out_warn;
->   
-> -		/* Confirm address can be DMA'd by device */
-> -		if (dev_addr + size - 1 > dma_mask) {
-> -			printk("hwdev DMA mask = 0x%016Lx, dev_addr = 0x%016Lx\n",
-> -			       (unsigned long long)dma_mask,
-> -			       (unsigned long long)dev_addr);
-> +	*dma_handle = swiotlb_phys_to_dma(dev, phys_addr);
+> arm64 uses ZONE_DMA for allocations below 32-bits.  These days we
+> name the zone for that ZONE_DMA32, which will allow to use the
+> dma-direct and generic swiotlb code as-is, so rename it.
 
-nit: this should probably go after the dma_coherent_ok() check (as with 
-the original logic).
+I do wonder if we could also "upgrade" GFP_DMA to GFP_DMA32 somehow when 
+!ZONE_DMA - there are almost certainly arm64 drivers out there using a 
+combination of GFP_DMA and streaming mappings which will no longer get 
+the guaranteed 32-bit addresses they expect after this. I'm not sure 
+quite how feasible that is, though :/
 
->   
-> -			/*
-> -			 * DMA_TO_DEVICE to avoid memcpy in unmap_single.
-> -			 * The DMA_ATTR_SKIP_CPU_SYNC is optional.
-> -			 */
-> -			swiotlb_tbl_unmap_single(hwdev, paddr,
-> -						 size, DMA_TO_DEVICE,
-> -						 DMA_ATTR_SKIP_CPU_SYNC);
-> -			goto err_warn;
-> -		}
-> -	}
-> +	if (dma_coherent_ok(dev, *dma_handle, size))
-> +		goto out_unmap;
->   
-> -	*dma_handle = dev_addr;
-> -	memset(ret, 0, size);
-> +	memset(phys_to_virt(phys_addr), 0, size);
-> +	return phys_to_virt(phys_addr);
->   
-> -	return ret;
-> +out_unmap:
-> +	dev_warn(dev, "hwdev DMA mask = 0x%016Lx, dev_addr = 0x%016Lx\n",
-> +		(unsigned long long)(dev ? dev->coherent_dma_mask : 0),
-> +		(unsigned long long)*dma_handle);
->   
-> -err_warn:
-> -	if (warn && printk_ratelimit()) {
-> -		pr_warn("swiotlb: coherent allocation failed for device %s size=%zu\n",
-> -			dev_name(hwdev), size);
-> +	/*
-> +	 * DMA_TO_DEVICE to avoid memcpy in unmap_single.
-> +	 * DMA_ATTR_SKIP_CPU_SYNC is optional.
-> +	 */
-> +	swiotlb_tbl_unmap_single(dev, phys_addr, size, DMA_TO_DEVICE,
-> +			DMA_ATTR_SKIP_CPU_SYNC);
-> +out_warn:
-> +	if ((attrs & DMA_ATTR_NO_WARN) && printk_ratelimit()) {
-> +		dev_warn(dev,
-> +			"swiotlb: coherent allocation failed, size=%zu\n",
-> +			size);
->   		dump_stack();
->   	}
-> -
->   	return NULL;
->   }
-> +
-> +void *
-> +swiotlb_alloc_coherent(struct device *hwdev, size_t size,
-> +		       dma_addr_t *dma_handle, gfp_t flags)
-> +{
-> +	int order = get_order(size);
-> +	unsigned long attrs = (flags & __GFP_NOWARN) ? DMA_ATTR_NO_WARN : 0;
-> +	void *ret;
-> +
-> +	ret = (void *)__get_free_pages(flags, order);
-> +	if (ret) {
-> +		*dma_handle = swiotlb_virt_to_bus(hwdev, ret);
-> +		if (dma_coherent_ok(hwdev, *dma_handle, size)) {
-> +			memset(ret, 0, size);
-> +			return ret;
-> +		}
+That said, I do agree that this is an appropriate change (the legacy of 
+GFP_DMA is obviously horrible), so, provided we get plenty of time to 
+find and fix the fallout when it lands:
 
-Aren't we leaking the pages here?
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
 Robin.
 
-> +	}
-> +
-> +	return swiotlb_alloc_buffer(hwdev, size, dma_handle, attrs);
-> +}
->   EXPORT_SYMBOL(swiotlb_alloc_coherent);
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   arch/arm64/Kconfig          |  2 +-
+>   arch/arm64/mm/dma-mapping.c |  6 +++---
+>   arch/arm64/mm/init.c        | 16 ++++++++--------
+>   3 files changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index c9a7e9e1414f..6b6985f15d02 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -227,7 +227,7 @@ config GENERIC_CSUM
+>   config GENERIC_CALIBRATE_DELAY
+>   	def_bool y
 >   
->   static bool swiotlb_free_buffer(struct device *dev, size_t size,
-> @@ -1103,6 +1107,10 @@ void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+> -config ZONE_DMA
+> +config ZONE_DMA32
+>   	def_bool y
+>   
+>   config HAVE_GENERIC_GUP
+> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+> index 6840426bbe77..0d641875b20e 100644
+> --- a/arch/arm64/mm/dma-mapping.c
+> +++ b/arch/arm64/mm/dma-mapping.c
+> @@ -95,9 +95,9 @@ static void *__dma_alloc_coherent(struct device *dev, size_t size,
+>   				  dma_addr_t *dma_handle, gfp_t flags,
+>   				  unsigned long attrs)
 >   {
->   	void *vaddr;
+> -	if (IS_ENABLED(CONFIG_ZONE_DMA) &&
+> +	if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
+>   	    dev->coherent_dma_mask <= DMA_BIT_MASK(32))
+> -		flags |= GFP_DMA;
+> +		flags |= GFP_DMA32;
+>   	if (dev_get_cma_area(dev) && gfpflags_allow_blocking(flags)) {
+>   		struct page *page;
+>   		void *addr;
+> @@ -397,7 +397,7 @@ static int __init atomic_pool_init(void)
+>   		page = dma_alloc_from_contiguous(NULL, nr_pages,
+>   						 pool_size_order, GFP_KERNEL);
+>   	else
+> -		page = alloc_pages(GFP_DMA, pool_size_order);
+> +		page = alloc_pages(GFP_DMA32, pool_size_order);
 >   
-> +	/* temporary workaround: */
-> +	if (gfp & __GFP_NOWARN)
-> +		attrs |= DMA_ATTR_NO_WARN;
-> +
->   	/*
->   	 * Don't print a warning when the first allocation attempt fails.
->   	 * swiotlb_alloc_coherent() will print a warning when the DMA memory
-> @@ -1112,7 +1120,7 @@ void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
->   
->   	vaddr = dma_direct_alloc(dev, size, dma_handle, gfp, attrs);
->   	if (!vaddr)
-> -		vaddr = swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
-> +		vaddr = swiotlb_alloc_buffer(dev, size, dma_handle, attrs);
->   	return vaddr;
+>   	if (page) {
+>   		int ret;
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 00e7b900ca41..8f03276443c9 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -217,7 +217,7 @@ static void __init reserve_elfcorehdr(void)
 >   }
+>   #endif /* CONFIG_CRASH_DUMP */
+>   /*
+> - * Return the maximum physical address for ZONE_DMA (DMA_BIT_MASK(32)). It
+> + * Return the maximum physical address for ZONE_DMA32 (DMA_BIT_MASK(32)). It
+>    * currently assumes that for memory starting above 4G, 32-bit devices will
+>    * use a DMA offset.
+>    */
+> @@ -233,8 +233,8 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
+>   {
+>   	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
 >   
+> -	if (IS_ENABLED(CONFIG_ZONE_DMA))
+> -		max_zone_pfns[ZONE_DMA] = PFN_DOWN(max_zone_dma_phys());
+> +	if (IS_ENABLED(CONFIG_ZONE_DMA32))
+> +		max_zone_pfns[ZONE_DMA32] = PFN_DOWN(max_zone_dma_phys());
+>   	max_zone_pfns[ZONE_NORMAL] = max;
+>   
+>   	free_area_init_nodes(max_zone_pfns);
+> @@ -251,9 +251,9 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
+>   	memset(zone_size, 0, sizeof(zone_size));
+>   
+>   	/* 4GB maximum for 32-bit only capable devices */
+> -#ifdef CONFIG_ZONE_DMA
+> +#ifdef CONFIG_ZONE_DMA32
+>   	max_dma = PFN_DOWN(arm64_dma_phys_limit);
+> -	zone_size[ZONE_DMA] = max_dma - min;
+> +	zone_size[ZONE_DMA32] = max_dma - min;
+>   #endif
+>   	zone_size[ZONE_NORMAL] = max - max_dma;
+>   
+> @@ -266,10 +266,10 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
+>   		if (start >= max)
+>   			continue;
+>   
+> -#ifdef CONFIG_ZONE_DMA
+> +#ifdef CONFIG_ZONE_DMA32
+>   		if (start < max_dma) {
+>   			unsigned long dma_end = min(end, max_dma);
+> -			zhole_size[ZONE_DMA] -= dma_end - start;
+> +			zhole_size[ZONE_DMA32] -= dma_end - start;
+>   		}
+>   #endif
+>   		if (end > max_dma) {
+> @@ -467,7 +467,7 @@ void __init arm64_memblock_init(void)
+>   	early_init_fdt_scan_reserved_mem();
+>   
+>   	/* 4GB maximum for 32-bit only capable devices */
+> -	if (IS_ENABLED(CONFIG_ZONE_DMA))
+> +	if (IS_ENABLED(CONFIG_ZONE_DMA32))
+>   		arm64_dma_phys_limit = max_zone_dma_phys();
+>   	else
+>   		arm64_dma_phys_limit = PHYS_MASK + 1;
 > 

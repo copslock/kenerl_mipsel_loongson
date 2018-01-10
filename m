@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 12:59:49 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:45126 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 13:06:44 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:45242 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992243AbeAJL7mdg22X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Jan 2018 12:59:42 +0100
+        id S23992243AbeAJMGfioceX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Jan 2018 13:06:35 +0100
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 631FD1435;
-        Wed, 10 Jan 2018 03:59:35 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 675801435;
+        Wed, 10 Jan 2018 04:06:27 -0800 (PST)
 Received: from [10.1.210.88] (e110467-lin.cambridge.arm.com [10.1.210.88])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 98BFF3F581;
-        Wed, 10 Jan 2018 03:59:31 -0800 (PST)
-Subject: Re: [PATCH 20/33] dma-mapping: clear harmful GFP_* flags in common
- code
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A91CB3F581;
+        Wed, 10 Jan 2018 04:06:23 -0800 (PST)
+Subject: Re: [PATCH 27/33] dma-direct: use node local allocations for coherent
+ memory
 To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
 Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
@@ -25,14 +25,14 @@ Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
         linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
         linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 References: <20180110080027.13879-1-hch@lst.de>
- <20180110080027.13879-21-hch@lst.de>
+ <20180110080027.13879-28-hch@lst.de>
 From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <27b90341-f9d0-356f-0194-1c7203a3f93e@arm.com>
-Date:   Wed, 10 Jan 2018 11:59:30 +0000
+Message-ID: <3672aa56-b85c-5d2c-0c0e-709031b0c0a0@arm.com>
+Date:   Wed, 10 Jan 2018 12:06:22 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.5.0
 MIME-Version: 1.0
-In-Reply-To: <20180110080027.13879-21-hch@lst.de>
+In-Reply-To: <20180110080027.13879-28-hch@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -40,7 +40,7 @@ Return-Path: <robin.murphy@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62028
+X-archive-position: 62029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,31 +58,30 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 10/01/18 08:00, Christoph Hellwig wrote:
-[...]
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index 9f28b2fa329e..88bcb1a8211d 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -518,6 +518,13 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
->   	if (dma_alloc_from_dev_coherent(dev, size, dma_handle, &cpu_addr))
->   		return cpu_addr;
->   
-> +	/*
-> +	 * Let the implementation decide on the zone to allocate from, and
-> +	 * decide on the way of zeroing the memory given that the memory
-> +	 * returned should always be zeroed.
-> +	 */
+> To preserve the x86 behavior.
 
-Just a note that if we're all happy to enshrine the "allocations are 
-always zeroed" behaviour in the API (I am too, for the record), we 
-should remember to follow up once the dust settles to update the docs 
-and I guess just #define dma_zalloc_coherent dma_alloc_coherent.
+And combined with patch 10/22 of the SWIOTLB refactoring, this means 
+SWIOTLB allocations will also end up NUMA-aware, right? Great, that's 
+what we want on arm64 too :)
 
-Robin.
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
-> +	flag &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM | __GFP_ZERO);
-> +
->   	if (!arch_dma_alloc_attrs(&dev, &flag))
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   lib/dma-direct.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/dma-direct.c b/lib/dma-direct.c
+> index a9ae98be7af3..f04a424f91fa 100644
+> --- a/lib/dma-direct.c
+> +++ b/lib/dma-direct.c
+> @@ -38,7 +38,7 @@ static void *dma_direct_alloc(struct device *dev, size_t size,
+>   	if (gfpflags_allow_blocking(gfp))
+>   		page = dma_alloc_from_contiguous(dev, count, page_order, gfp);
+>   	if (!page)
+> -		page = alloc_pages(gfp, page_order);
+> +		page = alloc_pages_node(dev_to_node(dev), gfp, page_order);
+>   	if (!page)
 >   		return NULL;
->   	if (!ops->alloc)
+>   
 > 

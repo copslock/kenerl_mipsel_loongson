@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:14:29 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:40832 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:14:53 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:44453 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994652AbeAJICVlAz4S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:02:21 +0100
+        by eddie.linux-mips.org with ESMTP id S23992170AbeAJIJniJtIS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:09:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=qLMBnGBgqkewwHo8PqZ7pyXUSA8cUYYRLu7htx6D/Ks=; b=G5TNQ6zxnv/5ZH98BqOIatX1G
-        mvQlqgOVRoRuuZARKZykgXITyvfUne6kaoIuJ7EdlzoWEYG9TnJIz4zMPl7kW2wVIocDbPz3cUolG
-        YOwzF+j2+bX3PKSe888QG+9hc1md5bGnwZvQ7KbnF4Ere7U6xNCoDDB1jgDGoml5VMN5UBbpz4kDO
-        MkuwcN90NlH8F6Lzu463OxC1JYFC9u/qiaf8JrvBERV5wDa4J6iZYyQfbbipdBjsDeZAVZ1m2z6gz
-        1vuFsx56+BWqYNaFyJaR8GcV0VoDrwF3zjiU2N4jNT5Bykvscvv5PUT/7sXDjai5hOiWb6ILVQWKj
-        cQzyGHh0Q==;
+         bh=1UUZMo5mlrsYXTAjzzhfnKwWeOydpa00tbu+ULpftag=; b=Nb6g8SN+2YOkDyMrcH2kwLCuG
+        D5ap6952d0byVhFZHcvzj4f3RgcdKnkyphH6bJEcF/2b7SJTjIPVwpeZITK/FZUytO7l/AuEnXW32
+        lNaWidLfzK3QFMHxi30R7xHlrF7T3l3z7tzv3me3oZ+PUhRrWT9IzSfs0aNCW/8RfCm+HhfzExu+R
+        w/XWc0t359nDUrdFQaRB9vNXxBcyg9oWavNwGXbuc9E7xhuPDgy6zBYHkMztYaxrYG7ctxXZzXYKq
+        pdagUpqXO5Yt3dpyqhOOdLbLB4XjHGhByhg9XxOADEdvVGWrqNl9KAbEiVw89Plz1qjRCDuwtBLDr
+        UvHowZxkA==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZBKr-00062I-RN; Wed, 10 Jan 2018 08:02:10 +0000
+        id 1eZBS2-0007db-ND; Wed, 10 Jan 2018 08:09:35 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-cris-kernel@axis.com, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, patches@groups.riscv.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Michal Simek <monstr@monstr.eu>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= 
+        <ckoenig.leichtzumerken@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 33/33] h8300: use dma-direct
-Date:   Wed, 10 Jan 2018 09:00:27 +0100
-Message-Id: <20180110080027.13879-34-hch@lst.de>
+Subject: consolidate swiotlb dma_map implementations
+Date:   Wed, 10 Jan 2018 09:09:10 +0100
+Message-Id: <20180110080932.14157-1-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
-In-Reply-To: <20180110080027.13879-1-hch@lst.de>
-References: <20180110080027.13879-1-hch@lst.de>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Return-Path: <BATV+ddff6d03254b98e050e8+5253+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61998
+X-archive-position: 61999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,146 +55,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace the bare-bones h8300 direct dma mapping implementation with
-the fully featured generic dma-direct one.
+A lot of architectures have essentially identical dma_map_ops
+implementations to use swiotlb.  This series adds new generic
+swiotlb_alloc/free helpers that take the attrs argument exposed
+in dma_map_ops, and which do an enhanced direct allocation
+modelled after x86 and reused from the dma-direct code, and
+then switches most architectures over to it.  The only exceptions
+are mips, which requires additional cache flushing which will
+need a new abstraction, and x86 itself which will be handled in
+a later series with other x86 dma mapping changes.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/h8300/Kconfig                   |  1 +
- arch/h8300/include/asm/Kbuild        |  1 +
- arch/h8300/include/asm/dma-mapping.h | 12 -------
- arch/h8300/kernel/Makefile           |  2 +-
- arch/h8300/kernel/dma.c              | 66 ------------------------------------
- 5 files changed, 3 insertions(+), 79 deletions(-)
- delete mode 100644 arch/h8300/include/asm/dma-mapping.h
- delete mode 100644 arch/h8300/kernel/dma.c
+To support the generic code a few architectures that currently
+use ZONE_DMA/GFP_DMA for <= 32-bit allocations are switched to
+implement ZONE_DMA32 instead.
 
-diff --git a/arch/h8300/Kconfig b/arch/h8300/Kconfig
-index f8d3fde08190..091d6d04b5e5 100644
---- a/arch/h8300/Kconfig
-+++ b/arch/h8300/Kconfig
-@@ -23,6 +23,7 @@ config H8300
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_HASH
- 	select CPU_NO_EFFICIENT_FFS
-+	select DMA_DIRECT_OPS
- 
- config CPU_BIG_ENDIAN
- 	def_bool y
-diff --git a/arch/h8300/include/asm/Kbuild b/arch/h8300/include/asm/Kbuild
-index bc077491d299..642752c94306 100644
---- a/arch/h8300/include/asm/Kbuild
-+++ b/arch/h8300/include/asm/Kbuild
-@@ -9,6 +9,7 @@ generic-y += delay.h
- generic-y += device.h
- generic-y += div64.h
- generic-y += dma.h
-+generic-y += dma-mapping.h
- generic-y += emergency-restart.h
- generic-y += exec.h
- generic-y += extable.h
-diff --git a/arch/h8300/include/asm/dma-mapping.h b/arch/h8300/include/asm/dma-mapping.h
-deleted file mode 100644
-index 21bb1fc3a6f1..000000000000
---- a/arch/h8300/include/asm/dma-mapping.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _H8300_DMA_MAPPING_H
--#define _H8300_DMA_MAPPING_H
--
--extern const struct dma_map_ops h8300_dma_map_ops;
--
--static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
--{
--	return &h8300_dma_map_ops;
--}
--
--#endif
-diff --git a/arch/h8300/kernel/Makefile b/arch/h8300/kernel/Makefile
-index b62e830525c6..307aa51576dd 100644
---- a/arch/h8300/kernel/Makefile
-+++ b/arch/h8300/kernel/Makefile
-@@ -7,7 +7,7 @@ extra-y := vmlinux.lds
- 
- obj-y := process.o traps.o ptrace.o \
- 	 signal.o setup.o syscalls.o \
--	 irq.o entry.o dma.o
-+	 irq.o entry.o
- 
- obj-$(CONFIG_ROMKERNEL) += head_rom.o
- obj-$(CONFIG_RAMKERNEL) += head_ram.o
-diff --git a/arch/h8300/kernel/dma.c b/arch/h8300/kernel/dma.c
-deleted file mode 100644
-index d44ba5db4ac3..000000000000
---- a/arch/h8300/kernel/dma.c
-+++ /dev/null
-@@ -1,66 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file COPYING in the main directory of this archive
-- * for more details.
-- */
--
--#include <linux/dma-mapping.h>
--#include <linux/kernel.h>
--#include <linux/scatterlist.h>
--#include <linux/module.h>
--#include <asm/pgalloc.h>
--
--static void *dma_alloc(struct device *dev, size_t size,
--		       dma_addr_t *dma_handle, gfp_t gfp,
--		       unsigned long attrs)
--{
--	void *ret;
--
--	if (dev == NULL || (*dev->dma_mask < 0xffffffff))
--		gfp |= GFP_DMA;
--	ret = (void *)__get_free_pages(gfp, get_order(size));
--
--	if (ret != NULL) {
--		memset(ret, 0, size);
--		*dma_handle = virt_to_phys(ret);
--	}
--	return ret;
--}
--
--static void dma_free(struct device *dev, size_t size,
--		     void *vaddr, dma_addr_t dma_handle,
--		     unsigned long attrs)
--
--{
--	free_pages((unsigned long)vaddr, get_order(size));
--}
--
--static dma_addr_t map_page(struct device *dev, struct page *page,
--				  unsigned long offset, size_t size,
--				  enum dma_data_direction direction,
--				  unsigned long attrs)
--{
--	return page_to_phys(page) + offset;
--}
--
--static int map_sg(struct device *dev, struct scatterlist *sgl,
--		  int nents, enum dma_data_direction direction,
--		  unsigned long attrs)
--{
--	struct scatterlist *sg;
--	int i;
--
--	for_each_sg(sgl, sg, nents, i) {
--		sg->dma_address = sg_phys(sg);
--	}
--
--	return nents;
--}
--
--const struct dma_map_ops h8300_dma_map_ops = {
--	.alloc = dma_alloc,
--	.free = dma_free,
--	.map_page = map_page,
--	.map_sg = map_sg,
--};
--EXPORT_SYMBOL(h8300_dma_map_ops);
--- 
-2.14.2
+This series is based on the previously sent series to consolidate
+the direct dma mapping implementation.  A git tree with this
+series as well as the prerequisites is available here:
+
+   git://git.infradead.org/users/hch/misc.git swiotlb
+
+Gitweb:
+
+   http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/swiotlb

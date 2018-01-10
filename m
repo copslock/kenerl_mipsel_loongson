@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:17:03 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:55894 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:17:27 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:39052 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994669AbeAJIJ7ZVi5S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:09:59 +0100
+        by eddie.linux-mips.org with ESMTP id S23994668AbeAJIKAJidtS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:10:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=DgKNtmtnfrb67w2UZZvhEi/nvx2WYMDX9ccCF+EdPFI=; b=g4hl9PT/uRHOYtrVM3JUwbZBd
-        AKsp+2v5K1xUYf/HIAWQdcHo/XxGCD42To7F42dE30EKcu8gOTUaD/YPVYPLFOpvsxXWtfceBzpvy
-        oWtTu1RBHT6JWN8A6IyrvPPVrc34DQZvFMezyU8+Bden0HoU098Exq6mJsvL2AfXr9H+GU3g2+q4R
-        lrYl0gjpfdifk3n+QTFK7MgGT5NyYzVtYrH3flvMhq9XFFitFMzPm02RUtsVThH+PKIHoGbj8ou8h
-        CZTvhfRiO6ozVAqnmIOo2+QphHuG9LxGj2xBHWOgAicZ1sZ6ib1euPfCnIiegsWrwGWE28hzKrEnR
-        X4A7mr8Jw==;
+         bh=6vkRRgORy0vPtJ1cH6DSIzixDt+/vRPSHAexgo3+7/k=; b=Srw9mqvya3OgG7WpJ86lTvtqG
+        nBm90k0tH/HZCpXNDAyUiTIb9SvIK5hdVZ8vqzFw+hlzLhLj4YRdf0dVhcuVFKdP9wEaTrAfEonev
+        ca6J+a69hsODE/HvXnnJD2DFap3M5lPUeBIQez+wmCN5Nutv6B1PW/1rdBGqeRxJQnDZ4nbxsO0Kj
+        ExPRFOHZWhGqLpqrB3xBTIFgurkiMe4OCKfKfQlBt+0qUCMWP9po8YfGA4npzEfKJmUfIbbrCcG9X
+        bDZCd3Y1AXwqk9uHLOsTt9LEzQiFxV5kL2HxpYtpSMfQUcIl7NAlV8G8UeCYe2uXNHXE4HWvxkMqj
+        XfJG6kbzQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZBSH-0007w3-HI; Wed, 10 Jan 2018 08:09:49 +0000
+        id 1eZBSK-0007zw-BS; Wed, 10 Jan 2018 08:09:52 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -29,9 +29,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 05/22] x86: rename swiotlb_dma_ops
-Date:   Wed, 10 Jan 2018 09:09:15 +0100
-Message-Id: <20180110080932.14157-6-hch@lst.de>
+Subject: [PATCH 06/22] swiotlb: rename swiotlb_free to swiotlb_exit
+Date:   Wed, 10 Jan 2018 09:09:16 +0100
+Message-Id: <20180110080932.14157-7-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180110080932.14157-1-hch@lst.de>
 References: <20180110080932.14157-1-hch@lst.de>
@@ -40,7 +40,7 @@ Return-Path: <BATV+ddff6d03254b98e050e8+5253+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62004
+X-archive-position: 62005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,34 +57,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We'll need that name for a generic implementation soon.
-
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/x86/kernel/pci-swiotlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/dma-swiotlb.c | 2 +-
+ arch/x86/kernel/pci-swiotlb.c     | 2 +-
+ include/linux/swiotlb.h           | 4 ++--
+ lib/swiotlb.c                     | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/arch/powerpc/kernel/dma-swiotlb.c b/arch/powerpc/kernel/dma-swiotlb.c
+index 506ac4fafac5..88f3963ca30f 100644
+--- a/arch/powerpc/kernel/dma-swiotlb.c
++++ b/arch/powerpc/kernel/dma-swiotlb.c
+@@ -121,7 +121,7 @@ static int __init check_swiotlb_enabled(void)
+ 	if (ppc_swiotlb_enable)
+ 		swiotlb_print_info();
+ 	else
+-		swiotlb_free();
++		swiotlb_exit();
+ 
+ 	return 0;
+ }
 diff --git a/arch/x86/kernel/pci-swiotlb.c b/arch/x86/kernel/pci-swiotlb.c
-index 9d3e35c33d94..0d77603c2f50 100644
+index 0d77603c2f50..0ee0f8f34251 100644
 --- a/arch/x86/kernel/pci-swiotlb.c
 +++ b/arch/x86/kernel/pci-swiotlb.c
-@@ -48,7 +48,7 @@ void x86_swiotlb_free_coherent(struct device *dev, size_t size,
- 		dma_generic_free_coherent(dev, size, vaddr, dma_addr, attrs);
- }
- 
--static const struct dma_map_ops swiotlb_dma_ops = {
-+static const struct dma_map_ops x86_swiotlb_dma_ops = {
- 	.mapping_error = swiotlb_dma_mapping_error,
- 	.alloc = x86_swiotlb_alloc_coherent,
- 	.free = x86_swiotlb_free_coherent,
-@@ -112,7 +112,7 @@ void __init pci_swiotlb_init(void)
+@@ -120,7 +120,7 @@ void __init pci_swiotlb_late_init(void)
  {
- 	if (swiotlb) {
- 		swiotlb_init(0);
--		dma_ops = &swiotlb_dma_ops;
-+		dma_ops = &x86_swiotlb_dma_ops;
- 	}
+ 	/* An IOMMU turned us off. */
+ 	if (!swiotlb)
+-		swiotlb_free();
++		swiotlb_exit();
+ 	else {
+ 		printk(KERN_INFO "PCI-DMA: "
+ 		       "Using software bounce buffering for IO (SWIOTLB)\n");
+diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+index 24ed817082ee..606375e35d87 100644
+--- a/include/linux/swiotlb.h
++++ b/include/linux/swiotlb.h
+@@ -115,10 +115,10 @@ extern int
+ swiotlb_dma_supported(struct device *hwdev, u64 mask);
+ 
+ #ifdef CONFIG_SWIOTLB
+-extern void __init swiotlb_free(void);
++extern void __init swiotlb_exit(void);
+ unsigned int swiotlb_max_segment(void);
+ #else
+-static inline void swiotlb_free(void) { }
++static inline void swiotlb_exit(void) { }
+ static inline unsigned int swiotlb_max_segment(void) { return 0; }
+ #endif
+ 
+diff --git a/lib/swiotlb.c b/lib/swiotlb.c
+index 125c1062119f..cf5311908fa9 100644
+--- a/lib/swiotlb.c
++++ b/lib/swiotlb.c
+@@ -417,7 +417,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+ 	return -ENOMEM;
  }
  
+-void __init swiotlb_free(void)
++void __init swiotlb_exit(void)
+ {
+ 	if (!io_tlb_orig_addr)
+ 		return;
 -- 
 2.14.2

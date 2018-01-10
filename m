@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:01:42 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:46793 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2018 09:02:07 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:56211 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992126AbeAJIArv69jS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:00:47 +0100
+        by eddie.linux-mips.org with ESMTP id S23992160AbeAJIAvJmV6S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jan 2018 09:00:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=0JuEE1unvevJ5PXqHKEqQaNX4Nl1WkCrydQ4fDGvEz4=; b=UAC+8ksEkuDEi73It5/kWVF/Y
-        Y6BUVIwbddZyn5Xo3ac9Udve4li1qA31zzIobX3tgk39lJlXYUipNZo3PMytVWfxHOovvzvU55T2H
-        UJAZiGDBnlZzpkeVDlWigyl5u3iPd2V80d7L8O9thN9Kcffj/adkXUyNTHzhIW0mz5TU8MA58jMzH
-        GV7LGBlKaalHhg0+3hDO4GiRS4oR1bvjE3wAziaZ7tS8cmOss6IN2RjFQVM3weiRZ3iMe0zXDRoRD
-        1FICzN08X3Y0G4K4kqP8qSrzfaKiDZ0cp84RmJUyd6TBlFL4C15PCJGdsPMr7X+26RK7NGDJtd3Au
-        boyhqSzQw==;
+         bh=S/GH44cRGA0qPZti+sTqqqVKSE2/SlUTJm6LzCR7sTw=; b=WLQTUKD8pcaI2DfNFDzu97MUy
+        GGfzuDewlZ4vvLDweb301Vr4PN7cvdmxVEwno58viqb9K3j5UM6w4aDJuPHB2cBAALJzEqoQwDPxW
+        NXbw+YC8fhP1bEaN+3iAVN1lAVdvnUVb8DjdECPBBTl/8yWHojrrESujdMVlbSg+uRD1qkrU/DdZA
+        puJ1w0ZLsFPAErIz58cvpUUbk4ig1aG1nZZ3ZYFcFSfb6K3L01bgiOpoWwF81dEUJ5d+pRfHZFg48
+        QxCj0mIxJaH/jeVDP/wVR29vWEDjCQLT6d4KUSvE2qp5oQCG0WyA0/5Ea5Ah6qVgYZxnF+UEZRbXS
+        /59Noz1iQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZBJN-0003yf-92; Wed, 10 Jan 2018 08:00:37 +0000
+        id 1eZBJQ-0003zT-5H; Wed, 10 Jan 2018 08:00:40 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,9 +32,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 02/33] hexagon: remove unused flush_write_buffers definition
-Date:   Wed, 10 Jan 2018 08:59:56 +0100
-Message-Id: <20180110080027.13879-3-hch@lst.de>
+Subject: [PATCH 03/33] m32r: remove unused flush_write_buffers definition
+Date:   Wed, 10 Jan 2018 08:59:57 +0100
+Message-Id: <20180110080027.13879-4-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180110080027.13879-1-hch@lst.de>
 References: <20180110080027.13879-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+ddff6d03254b98e050e8+5253+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 61967
+X-archive-position: 61968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,21 +62,21 @@ X-list: linux-mips
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/hexagon/include/asm/io.h | 2 --
+ arch/m32r/include/asm/io.h | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
-index 66f5e9a61efc..9e8621d94ee9 100644
---- a/arch/hexagon/include/asm/io.h
-+++ b/arch/hexagon/include/asm/io.h
-@@ -330,8 +330,6 @@ static inline void outsl(unsigned long port, const void *buffer, int count)
- 	}
- }
+diff --git a/arch/m32r/include/asm/io.h b/arch/m32r/include/asm/io.h
+index 1b653bb16f9a..a4272d8f0d9c 100644
+--- a/arch/m32r/include/asm/io.h
++++ b/arch/m32r/include/asm/io.h
+@@ -191,8 +191,6 @@ static inline void _writel(unsigned long l, unsigned long addr)
  
--#define flush_write_buffers() do { } while (0)
+ #define mmiowb()
+ 
+-#define flush_write_buffers() do { } while (0)  /* M32R_FIXME */
 -
- #endif /* __KERNEL__ */
- 
- #endif
+ static inline void
+ memset_io(volatile void __iomem *addr, unsigned char val, int count)
+ {
 -- 
 2.14.2

@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2018 00:21:38 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:34551 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990435AbeAJXV33dQyI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Jan 2018 00:21:29 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 10 Jan 2018 23:21:01 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 10 Jan
- 2018 15:20:47 -0800
-Date:   Wed, 10 Jan 2018 23:20:45 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Paul Burton <paul.burton@mips.com>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v6 13/15] MIPS: JZ4770: Workaround for corrupted DMA
- transfers
-Message-ID: <20180110232045.GX27409@jhogan-linux.mipstec.com>
-References: <20180102150848.11314-1-paul@crapouillou.net>
- <20180105182513.16248-1-paul@crapouillou.net>
- <20180105182513.16248-14-paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2018 16:09:17 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:55658 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992002AbeAKPJI49BCN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 11 Jan 2018 16:09:08 +0100
+Received: from mail-qk0-f169.google.com (mail-qk0-f169.google.com [209.85.220.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5DB8521104;
+        Thu, 11 Jan 2018 15:08:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 5DB8521104
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
+Received: by mail-qk0-f169.google.com with SMTP id r8so4639118qke.6;
+        Thu, 11 Jan 2018 07:08:59 -0800 (PST)
+X-Gm-Message-State: AKwxytdwbp74sy3rXqiC3FoVRWYc2rR2sc+jy4D57UIKjPcrFuy9AePX
+        qgywVPl1p3oMnlT1PdZDMvDtceQrtLxR6CcTVQ==
+X-Google-Smtp-Source: ACJfBovot1X9Hwq4kRit8ahFahAw5ysBlZBpdePacH3eK3HfqgRQnJRSdEmum5yJb3j9tlQULcd8ua7slB08IiwyWJA=
+X-Received: by 10.55.76.84 with SMTP id z81mr514711qka.296.1515683338431; Thu,
+ 11 Jan 2018 07:08:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3a/Z8KDuKqDOIvAo"
-Content-Disposition: inline
-In-Reply-To: <20180105182513.16248-14-paul@crapouillou.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1515626459-321457-6967-12859-6
-X-BESS-VER: 2017.17-r1801091856
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188856
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Received: by 10.12.149.88 with HTTP; Thu, 11 Jan 2018 07:08:37 -0800 (PST)
+In-Reply-To: <CANc+2y5Y9fYh5V5OG_o+-92-uLYew7yNObLGTYPhGyx2eExywA@mail.gmail.com>
+References: <20171228212954.2922-1-malat@debian.org> <20171228212954.2922-2-malat@debian.org>
+ <20180103200211.u56tqesyumsofoff@rob-hp-laptop> <CANc+2y5Y9fYh5V5OG_o+-92-uLYew7yNObLGTYPhGyx2eExywA@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Thu, 11 Jan 2018 09:08:37 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJHHPJY0Yg+kmMbjZVsq=VVC0dPgtvXoN+sxL9gjBtMLA@mail.gmail.com>
+Message-ID: <CAL_JsqJHHPJY0Yg+kmMbjZVsq=VVC0dPgtvXoN+sxL9gjBtMLA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] nvmem: add driver for JZ4780 efuse
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Zubair.Kakakhel@mips.com,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62059
+X-archive-position: 62060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,125 +62,190 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---3a/Z8KDuKqDOIvAo
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, Jan 6, 2018 at 6:43 AM, PrasannaKumar Muralidharan
+<prasannatsmkumar@gmail.com> wrote:
+> Hi Rob,
+>
+> On 4 January 2018 at 01:32, Rob Herring <robh@kernel.org> wrote:
+>> On Thu, Dec 28, 2017 at 10:29:52PM +0100, Mathieu Malaterre wrote:
+>>> From: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+>>>
+>>> This patch brings support for the JZ4780 efuse. Currently it only expose
+>>> a read only access to the entire 8K bits efuse memory.
+>>>
+>>> Tested-by: Mathieu Malaterre <malat@debian.org>
+>>> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+>>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+>>> ---
+>>>  .../ABI/testing/sysfs-driver-jz4780-efuse          |  16 ++
+>>>  .../bindings/nvmem/ingenic,jz4780-efuse.txt        |  17 ++
+>>
+>> Please split bindings to separate patch.
+>>
+>>>  MAINTAINERS                                        |   5 +
+>>>  arch/mips/boot/dts/ingenic/jz4780.dtsi             |  40 ++-
+>>
+>> dts files should also be separate.
+>>
+>>>  drivers/nvmem/Kconfig                              |  10 +
+>>>  drivers/nvmem/Makefile                             |   2 +
+>>>  drivers/nvmem/jz4780-efuse.c                       | 305 +++++++++++++++++++++
+>>>  7 files changed, 383 insertions(+), 12 deletions(-)
+>>>  create mode 100644 Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+>>>  create mode 100644 Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+>>>  create mode 100644 drivers/nvmem/jz4780-efuse.c
+>>>
+>>> diff --git a/Documentation/ABI/testing/sysfs-driver-jz4780-efuse b/Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+>>> new file mode 100644
+>>> index 000000000000..bb6f5d6ceea0
+>>> --- /dev/null
+>>> +++ b/Documentation/ABI/testing/sysfs-driver-jz4780-efuse
+>>> @@ -0,0 +1,16 @@
+>>> +What:                /sys/devices/*/<our-device>/nvmem
+>>> +Date:                December 2017
+>>> +Contact:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+>>> +Description: read-only access to the efuse on the Ingenic JZ4780 SoC
+>>> +             The SoC has a one time programmable 8K efuse that is
+>>> +             split into segments. The driver supports read only.
+>>> +             The segments are
+>>> +             0x000   64 bit Random Number
+>>> +             0x008  128 bit Ingenic Chip ID
+>>> +             0x018  128 bit Customer ID
+>>> +             0x028 3520 bit Reserved
+>>> +             0x1E0    8 bit Protect Segment
+>>> +             0x1E1 2296 bit HDMI Key
+>>> +             0x300 2048 bit Security boot key
+>>
+>> Why do these need to be exposed to userspace?
+>>
+>> sysfs is 1 value per file and this is lots of different things.
+>>
+>> We already have ways to feed random data (entropy) to the system. And we
+>> have a way to expose SoC ID info to userspace (socdev).
+>
+> Currently ingenic chip id is not used anywhere. The vendor BSP exposed
+> only chip id and customer id. Should we do the same? Please provide
+> your suggestion.
 
-On Fri, Jan 05, 2018 at 07:25:11PM +0100, Paul Cercueil wrote:
-> From: Maarten ter Huurne <maarten@treewalker.org>
->=20
-> We have seen MMC DMA transfers read corrupted data from SDRAM when
-> a burst interval ends at physical address 0x10000000. To avoid this
-> problem, we remove the final page of low memory from the memory map.
->=20
-> Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
-> ---
->  arch/mips/jz4740/setup.c | 24 ++++++++++++++++++++++++
->  arch/mips/kernel/setup.c |  8 ++++++++
->  2 files changed, 32 insertions(+)
->=20
->  v2: No change
->  v3: No change
->  v4: No change
->  v5: No change
->  v6: No change
->=20
-> diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-> index cd89536fbba1..18c57c4bf47e 100644
-> --- a/arch/mips/jz4740/setup.c
-> +++ b/arch/mips/jz4740/setup.c
-> @@ -22,6 +22,7 @@
->  #include <linux/of_fdt.h>
-> =20
->  #include <asm/bootinfo.h>
-> +#include <asm/page.h>
->  #include <asm/prom.h>
-> =20
->  #include <asm/mach-jz4740/base.h>
-> @@ -103,3 +104,26 @@ void __init arch_init_irq(void)
->  {
->  	irqchip_init();
->  }
-> +
-> +/*
-> + * We have seen MMC DMA transfers read corrupted data from SDRAM when a =
-burst
-> + * interval ends at physical address 0x10000000. To avoid this problem, =
-we
-> + * remove the final page of low memory from the memory map.
-> + */
-> +void __init jz4770_reserve_unsafe_for_dma(void)
-> +{
-> +	int i;
-> +
-> +	for (i =3D 0; i < boot_mem_map.nr_map; i++) {
-> +		struct boot_mem_map_entry *entry =3D boot_mem_map.map + i;
-> +
-> +		if (entry->type !=3D BOOT_MEM_RAM)
-> +			continue;
-> +
-> +		if (entry->addr + entry->size !=3D 0x10000000)
-> +			continue;
-> +
-> +		entry->size -=3D PAGE_SIZE;
-> +		break;
-> +	}
-> +}
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 85bc601e9a0d..5a2c20145aee 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -879,6 +879,14 @@ static void __init arch_mem_init(char **cmdline_p)
-> =20
->  	parse_early_param();
-> =20
-> +#ifdef CONFIG_MACH_JZ4770
-> +	if (current_cpu_type() =3D=3D CPU_JZRISC &&
-> +				mips_machtype =3D=3D MACH_INGENIC_JZ4770) {
-> +		extern void __init jz4770_reserve_unsafe_for_dma(void);
-> +		jz4770_reserve_unsafe_for_dma();
-> +	}
-> +#endif
+No. Don't create an ABI if you don't really need it.
 
-Hmm, a little bit ugly. I'm guessing the plat_mem_setup() callback is
-too early since mem=3D parameters won't have been taken into account yet
-=66rom parse_early_param().
+>
+>>> +Users:               any user space application which wants to read the Chip
+>>> +             and Customer ID
+>>> diff --git a/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt b/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+>>> new file mode 100644
+>>> index 000000000000..cd6d67ec22fc
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
+>>> @@ -0,0 +1,17 @@
+>>> +Ingenic JZ EFUSE driver bindings
+>>> +
+>>> +Required properties:
+>>> +- "compatible"               Must be set to "ingenic,jz4780-efuse"
+>>> +- "reg"                      Register location and length
+>>> +- "clocks"           Handle for the ahb clock for the efuse.
+>>> +- "clock-names"              Must be "bus_clk"
+>>> +
+>>> +Example:
+>>> +
+>>> +efuse: efuse@134100d0 {
+>>> +     compatible = "ingenic,jz4780-efuse";
+>>> +     reg = <0x134100D0 0xFF>;
+>>> +
+>>> +     clocks = <&cgu JZ4780_CLK_AHB2>;
+>>> +     clock-names = "bus_clk";
+>>> +};
+>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>> index a6e86e20761e..7a050c20c533 100644
+>>> --- a/MAINTAINERS
+>>> +++ b/MAINTAINERS
+>>> @@ -6902,6 +6902,11 @@ M:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+>>>  S:   Maintained
+>>>  F:   drivers/dma/dma-jz4780.c
+>>>
+>>> +INGENIC JZ4780 EFUSE Driver
+>>> +M:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+>>> +S:   Maintained
+>>> +F:   drivers/nvmem/jz4780-efuse.c
+>>
+>> Binding file?
+>
+> Sorry, missed it. Will add it.
+>
+>>> +
+>>>  INGENIC JZ4780 NAND DRIVER
+>>>  M:   Harvey Hunt <harveyhuntnexus@gmail.com>
+>>>  L:   linux-mtd@lists.infradead.org
+>>> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+>>> index 9b5794667aee..3fb9d916a2ea 100644
+>>> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
+>>> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+>>> @@ -224,21 +224,37 @@
+>>>               reg = <0x10002000 0x100>;
+>>>       };
+>>>
+>>> -     nemc: nemc@13410000 {
+>>> -             compatible = "ingenic,jz4780-nemc";
+>>> -             reg = <0x13410000 0x10000>;
+>>> -             #address-cells = <2>;
+>>> +
+>>> +     ahb2: ahb2 {
+>>> +             compatible = "simple-bus";
+>>
+>> This is an unrelated change and should be its own patch.
+>
+> The efuse register address range is a subset of address range of nemc.
+> So decided to make nemc and efuse as nodes with parent node ahb2. This
+> is required for efuse driver to work. I am not able to understand what
+> you mean by unrelated change. Can you please explain it?
+>
+>>> +             #address-cells = <1>;
+>>>               #size-cells = <1>;
+>>> -             ranges = <1 0 0x1b000000 0x1000000
+>>> -                       2 0 0x1a000000 0x1000000
+>>> -                       3 0 0x19000000 0x1000000
+>>> -                       4 0 0x18000000 0x1000000
+>>> -                       5 0 0x17000000 0x1000000
+>>> -                       6 0 0x16000000 0x1000000>;
+>>> +             ranges = <>;
+>>> +
+>>> +             nemc: nemc@13410000 {
+>>> +                     compatible = "ingenic,jz4780-nemc";
+>>> +                     reg = <0x13410000 0x10000>;
+>>> +                     #address-cells = <2>;
+>>> +                     #size-cells = <1>;
+>>> +                     ranges = <1 0 0x1b000000 0x1000000
+>>> +                               2 0 0x1a000000 0x1000000
+>>> +                               3 0 0x19000000 0x1000000
+>>> +                               4 0 0x18000000 0x1000000
+>>> +                               5 0 0x17000000 0x1000000
+>>> +                               6 0 0x16000000 0x1000000>;
+>>> +
+>>> +                     clocks = <&cgu JZ4780_CLK_NEMC>;
+>>> +
+>>> +                     status = "disabled";
+>>> +             };
+>>>
+>>> -             clocks = <&cgu JZ4780_CLK_NEMC>;
+>>> +             efuse: efuse@134100d0 {
+>>> +                     compatible = "ingenic,jz4780-efuse";
+>>> +                     reg = <0x134100d0 0xff>;
+>>
+>> You are creating an overlapping region here with nemc above. Don't do
+>> that.
+>
+> Should "reg = <0x13410000 0x10000>;" be used instead?
 
-Is /memreserve/ in FDT of any value here or is it all too late due to
-old DTs?
+No, that still overlaps with nemc. What's in registers 0x00-0xcf and
+0x1d0-0xffff? Either get rid of this node altogether and make the
+driver for nemc also instantiate the efuse driver (DT is not the only
+way to instantiate drivers), or create sub-nodes under nemc for each
+distinct h/w block in the 13410000-13420000 address space.
 
-Cheers
-James
+Or a third option is make nemc reg:
 
-> +
->  	if (usermem) {
->  		pr_info("User-defined physical RAM map:\n");
->  		print_memory_map();
-> --=20
-> 2.11.0
->=20
->=20
+reg = <0x13410000 0xd0>, <0x134101d0 0xfe30>;
 
---3a/Z8KDuKqDOIvAo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+But I suspect that is wrong and you probably have some other function in there.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpWn80ACgkQbAtpk944
-dnq+xRAAr/Cp+9CEwAzShn3Rp1AIyPrzeort8Me/PN20nImRnv1zdmrJniNs92RH
-+x/U+w+4dj6lr30HY71aOJPywEU4YuWpQMph+9M4pGfJesPxavcZyttQFbG2C74j
-pFUbxHjAYqyEkg19+pKmLiKz/tY6ZQYR6iGIj4vm/p09jQC+oQ7UyiLuDsonk6NB
-f20OUd2WGxGAy1bTGOZlfGeXvEETa6Jz67WurQB7coH64QtiwL71RJLs1NikpyP/
-FtrkEh9ODxgxjXxx1w+rhy1A9mmfvMlUhavOm5b2Um26skWCVWX6MZiB/gMA9ZG1
-NVQwpI8AHpJsZPvvW/+KRPCVATFjQj1Ftzh2+WsnA7ywUHVOYh4ref099z3fKcq+
-DxwDSMadzUHxpYGkJAzeQlfSVkdKQWHYs8ilKbIY7hzAENXPGe3aAs7yWzijJhXG
-VOLBRfuU0K867S/dghmgVLTqc+jlj9PcOMPSmcZfTWZzE9bNvAPZBFERRTex+ACV
-KXLvP4T+FnTAd415QTYQWVdmGcz2TeS/Di8i8P4uDbqLr+YcJikXuxsT/LSqyNXS
-AbbPxaSKxkjgO1E4tNb6JnN+MNIwRKqLAIZYxft78Ry5Vid5htDs2UgsZMU9Yzlr
-NF78hRSWyxCVeN9VJ8Kc9JS5PfU7BtwiB7GHIgE7CELu0JRaphE=
-=+zQE
------END PGP SIGNATURE-----
-
---3a/Z8KDuKqDOIvAo--
+Rob

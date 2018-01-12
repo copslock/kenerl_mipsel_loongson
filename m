@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:53:30 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:59842 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:55:45 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:51801 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994554AbeALInOxHntJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:43:14 +0100
+        by eddie.linux-mips.org with ESMTP id S23994559AbeALInTb5lpJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:43:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=JFd3P/E85+9wVttch5YmzKsSBAZ9EJUnydKoA/xSCVQ=; b=l+Ivm+72WDswpWL2C9+jia63F
-        HKOyFnECuq5MpKOobFkC6oUq4Kvmjt5gV7nQJSeZJHj4YNFpfaV6O6o/DufPVLexaJpBDtcMoG3cb
-        aQmv1qT7jzG3PwaePyuUJxU//kbzlIySR7RWkLLQYE3IMcNJWobI+IYOqW6r4YrUXKShWALZMLPoS
-        YEMv4o7X80OoFxHy6E9bxxAwStdipzVyJ55vRtqifcCWvA0BrjinnFHJWncWXJiZgHje67c+/h5zl
-        GIIxb0IhkyrTP4JdtbxbNh4KGSOGiAkBHnFpT1dmsL6QwtfCFJJDURpuvN1FMob7/zPEphu2IGY+X
-        GBaIvrFxQ==;
+         bh=eYgZKjuBGo4iF5w9wsb/Dx9CzH0M9u2BNwH1yjSCXIQ=; b=Vw5gq+baWWRjhQ5To6Fbo1LDd
+        lx0PDxYr2XXcRZCLIA4685v2zbTZpaJDKMUhU3KLKmc6SYxvBpdnKXPURJbgObC6VpPL7sXjf8PrV
+        Njs+bhCpBCDsShvSD2ULqDLFuwdvY3n261pm51Cl8VT0mJimvFRGy8tXS8qNycb47wriqEojoCkfA
+        MGpUB+iZdd+dN2M+FBadamhDXmpro9DVdYfbPWFeQGgx6LsZQhu1UGnxBFecQcv2kURReljwjFbZR
+        E1oW+ixJm0AhN541N+Kctfwb60VsQLsGLlC8GUht0cFAgvnGgSbDAlGihXcbxEemjkV1Gby9e6t4D
+        FdKMeMy/A==;
 Received: from [188.21.167.3] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZuvZ-0007VK-7j; Fri, 12 Jan 2018 08:43:05 +0000
+        id 1eZuvc-0007aV-Gc; Fri, 12 Jan 2018 08:43:09 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,9 +32,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 09/34] dma-mapping: take dma_pfn_offset into account in dma_max_pfn
-Date:   Fri, 12 Jan 2018 09:42:07 +0100
-Message-Id: <20180112084232.2857-10-hch@lst.de>
+Subject: [PATCH 10/34] arm64: don't override dma_max_pfn
+Date:   Fri, 12 Jan 2018 09:42:08 +0100
+Message-Id: <20180112084232.2857-11-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180112084232.2857-1-hch@lst.de>
 References: <20180112084232.2857-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+b628242e4f103a69f336+5255+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62071
+X-archive-position: 62072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,27 +60,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This makes sure the generic version can be used with architectures /
-devices that have a DMA offset in the direct mapping.
+The generic version now takes dma_pfn_offset into account, so there is no
+more need for an architecture override.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 ---
- include/linux/dma-mapping.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/dma-mapping.h | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 81ed9b2d84dc..d84951865be7 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -692,7 +692,7 @@ static inline int dma_set_seg_boundary(struct device *dev, unsigned long mask)
- #ifndef dma_max_pfn
- static inline unsigned long dma_max_pfn(struct device *dev)
+diff --git a/arch/arm64/include/asm/dma-mapping.h b/arch/arm64/include/asm/dma-mapping.h
+index 0df756b24863..eada887a93bf 100644
+--- a/arch/arm64/include/asm/dma-mapping.h
++++ b/arch/arm64/include/asm/dma-mapping.h
+@@ -76,14 +76,5 @@ static inline void dma_mark_clean(void *addr, size_t size)
  {
--	return *dev->dma_mask >> PAGE_SHIFT;
-+	return (*dev->dma_mask >> PAGE_SHIFT) + dev->dma_pfn_offset;
  }
- #endif
  
+-/* Override for dma_max_pfn() */
+-static inline unsigned long dma_max_pfn(struct device *dev)
+-{
+-	dma_addr_t dma_max = (dma_addr_t)*dev->dma_mask;
+-
+-	return (ulong)dma_to_phys(dev, dma_max) >> PAGE_SHIFT;
+-}
+-#define dma_max_pfn(dev) dma_max_pfn(dev)
+-
+ #endif	/* __KERNEL__ */
+ #endif	/* __ASM_DMA_MAPPING_H */
 -- 
 2.14.2

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:58:25 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:39945 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:58:56 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:45905 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994591AbeALIoDG2tmJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:44:03 +0100
+        by eddie.linux-mips.org with ESMTP id S23994553AbeALIoJITCBJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:44:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=r+fqxY8bxuU6DxfwU2ZFYMFoYgWuQA09Pc8q0OQxKNY=; b=NsM/VYrp9hdhNwV4Gntx6kCej
-        zcv/XZV9OmSBSzFsNADydh2sta8EW6sDhAZ9QWY8Hr9j1PaROQEVzi+5tShTLhcFf6zh3ipklyLka
-        kxlm6zCbWRtWHF89bGQKwpNQm/KqMFee/R+CDm/1HHTXZ9OQ5e4Lz3t4C/vQv9368W1orRxqh8GZC
-        wQRk72Vbsla0RV30kmqsckZkUz/tJkJZl/T/4C3hN8Vq89GAfX4ibGmHPK1AJ8fwosB6hNTQNifPG
-        LTXcUtg7xQWcjWtX0Zu7tVGCq1bhWqC8jnNQ66fTxMEufgCVsleFqbCj6KrBIzO3DRzBU+7V/smkE
-        ckazwFR5Q==;
+         bh=daXQo6Y99hwpSpRDFBCb2+LAWBz1XhosisIRKsz/OLU=; b=cXXon/DSrsFaQMuqMZ3Ylv5OE
+        OzvJL0X/Y+fqcgnelwYtGPYiGxBeWNczHty1nmepn/VG4J8cDFm5JbANFafpa/t5f8Es24QdQVljN
+        ZBfULscNYmWXV314WJRoms4hB4bsan4XklBkay2eHlAF955IcXMPz4BSSzZtftTdOnXI+Qo3vi33k
+        uI8BxqaWhzvmDkYbpLJ08tCUVOEK/edEtZgeLJTICakI6CO8nXh3RBRYrcpYTbsAmLPEQd5U/xKI4
+        ptSjjvAG88UF6H3GDhwRelC/XpXp+3Gr3CqZCNK2pSXbnRgTWrkGEst5dApDoZUX+XSZVm/QWLeaA
+        Blo/YsRQA==;
 Received: from [188.21.167.3] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZuvw-0007zW-PT; Fri, 12 Jan 2018 08:43:29 +0000
+        id 1eZuvz-00083a-Rm; Fri, 12 Jan 2018 08:43:32 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,9 +32,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 16/34] microblaze: rename dma_direct to dma_nommu
-Date:   Fri, 12 Jan 2018 09:42:14 +0100
-Message-Id: <20180112084232.2857-17-hch@lst.de>
+Subject: [PATCH 17/34] microblaze: remove dma_nommu_dma_supported
+Date:   Fri, 12 Jan 2018 09:42:15 +0100
+Message-Id: <20180112084232.2857-18-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180112084232.2857-1-hch@lst.de>
 References: <20180112084232.2857-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+b628242e4f103a69f336+5255+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62078
+X-archive-position: 62079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,165 +60,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This frees the dma_direct_* namespace for a generic implementation.
+Always returning 1 is the same behavior as not supplying a method at all.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/microblaze/include/asm/dma-mapping.h |  4 +--
- arch/microblaze/kernel/dma.c              | 48 +++++++++++++++----------------
- 2 files changed, 26 insertions(+), 26 deletions(-)
+ arch/microblaze/kernel/dma.c | 6 ------
+ arch/parisc/kernel/pci-dma.c | 7 -------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/arch/microblaze/include/asm/dma-mapping.h b/arch/microblaze/include/asm/dma-mapping.h
-index 6b9ea39405b8..add50c1373bf 100644
---- a/arch/microblaze/include/asm/dma-mapping.h
-+++ b/arch/microblaze/include/asm/dma-mapping.h
-@@ -18,11 +18,11 @@
- /*
-  * Available generic sets of operations
-  */
--extern const struct dma_map_ops dma_direct_ops;
-+extern const struct dma_map_ops dma_nommu_ops;
- 
- static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- {
--	return &dma_direct_ops;
-+	return &dma_nommu_ops;
- }
- 
- #endif	/* _ASM_MICROBLAZE_DMA_MAPPING_H */
 diff --git a/arch/microblaze/kernel/dma.c b/arch/microblaze/kernel/dma.c
-index 990bf9ea0ec6..450803e5731a 100644
+index 450803e5731a..b45d8f8967af 100644
 --- a/arch/microblaze/kernel/dma.c
 +++ b/arch/microblaze/kernel/dma.c
-@@ -17,7 +17,7 @@
- 
- #define NOT_COHERENT_CACHE
- 
--static void *dma_direct_alloc_coherent(struct device *dev, size_t size,
-+static void *dma_nommu_alloc_coherent(struct device *dev, size_t size,
- 				       dma_addr_t *dma_handle, gfp_t flag,
- 				       unsigned long attrs)
- {
-@@ -42,7 +42,7 @@ static void *dma_direct_alloc_coherent(struct device *dev, size_t size,
- #endif
- }
- 
--static void dma_direct_free_coherent(struct device *dev, size_t size,
-+static void dma_nommu_free_coherent(struct device *dev, size_t size,
- 				     void *vaddr, dma_addr_t dma_handle,
- 				     unsigned long attrs)
- {
-@@ -69,7 +69,7 @@ static inline void __dma_sync(unsigned long paddr,
- 	}
- }
- 
--static int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl,
-+static int dma_nommu_map_sg(struct device *dev, struct scatterlist *sgl,
- 			     int nents, enum dma_data_direction direction,
- 			     unsigned long attrs)
- {
-@@ -89,12 +89,12 @@ static int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl,
+@@ -89,11 +89,6 @@ static int dma_nommu_map_sg(struct device *dev, struct scatterlist *sgl,
  	return nents;
  }
  
--static int dma_direct_dma_supported(struct device *dev, u64 mask)
-+static int dma_nommu_dma_supported(struct device *dev, u64 mask)
- {
- 	return 1;
- }
- 
--static inline dma_addr_t dma_direct_map_page(struct device *dev,
-+static inline dma_addr_t dma_nommu_map_page(struct device *dev,
+-static int dma_nommu_dma_supported(struct device *dev, u64 mask)
+-{
+-	return 1;
+-}
+-
+ static inline dma_addr_t dma_nommu_map_page(struct device *dev,
  					     struct page *page,
  					     unsigned long offset,
- 					     size_t size,
-@@ -106,7 +106,7 @@ static inline dma_addr_t dma_direct_map_page(struct device *dev,
- 	return page_to_phys(page) + offset;
- }
- 
--static inline void dma_direct_unmap_page(struct device *dev,
-+static inline void dma_nommu_unmap_page(struct device *dev,
- 					 dma_addr_t dma_address,
- 					 size_t size,
- 					 enum dma_data_direction direction,
-@@ -122,7 +122,7 @@ static inline void dma_direct_unmap_page(struct device *dev,
- }
- 
- static inline void
--dma_direct_sync_single_for_cpu(struct device *dev,
-+dma_nommu_sync_single_for_cpu(struct device *dev,
- 			       dma_addr_t dma_handle, size_t size,
- 			       enum dma_data_direction direction)
- {
-@@ -136,7 +136,7 @@ dma_direct_sync_single_for_cpu(struct device *dev,
- }
- 
- static inline void
--dma_direct_sync_single_for_device(struct device *dev,
-+dma_nommu_sync_single_for_device(struct device *dev,
- 				  dma_addr_t dma_handle, size_t size,
- 				  enum dma_data_direction direction)
- {
-@@ -150,7 +150,7 @@ dma_direct_sync_single_for_device(struct device *dev,
- }
- 
- static inline void
--dma_direct_sync_sg_for_cpu(struct device *dev,
-+dma_nommu_sync_sg_for_cpu(struct device *dev,
- 			   struct scatterlist *sgl, int nents,
- 			   enum dma_data_direction direction)
- {
-@@ -164,7 +164,7 @@ dma_direct_sync_sg_for_cpu(struct device *dev,
- }
- 
- static inline void
--dma_direct_sync_sg_for_device(struct device *dev,
-+dma_nommu_sync_sg_for_device(struct device *dev,
- 			      struct scatterlist *sgl, int nents,
- 			      enum dma_data_direction direction)
- {
-@@ -178,7 +178,7 @@ dma_direct_sync_sg_for_device(struct device *dev,
- }
- 
- static
--int dma_direct_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
-+int dma_nommu_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
- 			     void *cpu_addr, dma_addr_t handle, size_t size,
- 			     unsigned long attrs)
- {
-@@ -204,20 +204,20 @@ int dma_direct_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
+@@ -209,7 +204,6 @@ const struct dma_map_ops dma_nommu_ops = {
+ 	.free			= dma_nommu_free_coherent,
+ 	.mmap			= dma_nommu_mmap_coherent,
+ 	.map_sg			= dma_nommu_map_sg,
+-	.dma_supported		= dma_nommu_dma_supported,
+ 	.map_page		= dma_nommu_map_page,
+ 	.unmap_page		= dma_nommu_unmap_page,
+ 	.sync_single_for_cpu	= dma_nommu_sync_single_for_cpu,
+diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
+index c0dfd892f70c..91bc0cac03a1 100644
+--- a/arch/parisc/kernel/pci-dma.c
++++ b/arch/parisc/kernel/pci-dma.c
+@@ -75,11 +75,6 @@ void dump_resmap(void)
+ static inline void dump_resmap(void) {;}
  #endif
+ 
+-static int pa11_dma_supported( struct device *dev, u64 mask)
+-{
+-	return 1;
+-}
+-
+ static inline int map_pte_uncached(pte_t * pte,
+ 		unsigned long vaddr,
+ 		unsigned long size, unsigned long *paddr_ptr)
+@@ -579,7 +574,6 @@ static void pa11_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
  }
  
--const struct dma_map_ops dma_direct_ops = {
--	.alloc		= dma_direct_alloc_coherent,
--	.free		= dma_direct_free_coherent,
--	.mmap		= dma_direct_mmap_coherent,
--	.map_sg		= dma_direct_map_sg,
--	.dma_supported	= dma_direct_dma_supported,
--	.map_page	= dma_direct_map_page,
--	.unmap_page	= dma_direct_unmap_page,
--	.sync_single_for_cpu		= dma_direct_sync_single_for_cpu,
--	.sync_single_for_device		= dma_direct_sync_single_for_device,
--	.sync_sg_for_cpu		= dma_direct_sync_sg_for_cpu,
--	.sync_sg_for_device		= dma_direct_sync_sg_for_device,
-+const struct dma_map_ops dma_nommu_ops = {
-+	.alloc			= dma_nommu_alloc_coherent,
-+	.free			= dma_nommu_free_coherent,
-+	.mmap			= dma_nommu_mmap_coherent,
-+	.map_sg			= dma_nommu_map_sg,
-+	.dma_supported		= dma_nommu_dma_supported,
-+	.map_page		= dma_nommu_map_page,
-+	.unmap_page		= dma_nommu_unmap_page,
-+	.sync_single_for_cpu	= dma_nommu_sync_single_for_cpu,
-+	.sync_single_for_device	= dma_nommu_sync_single_for_device,
-+	.sync_sg_for_cpu	= dma_nommu_sync_sg_for_cpu,
-+	.sync_sg_for_device	= dma_nommu_sync_sg_for_device,
- };
--EXPORT_SYMBOL(dma_direct_ops);
-+EXPORT_SYMBOL(dma_nommu_ops);
+ const struct dma_map_ops pcxl_dma_ops = {
+-	.dma_supported =	pa11_dma_supported,
+ 	.alloc =		pa11_dma_alloc,
+ 	.free =			pa11_dma_free,
+ 	.map_page =		pa11_dma_map_page,
+@@ -616,7 +610,6 @@ static void pcx_dma_free(struct device *dev, size_t size, void *vaddr,
+ }
  
- /* Number of entries preallocated for DMA-API debugging */
- #define PREALLOC_DMA_DEBUG_ENTRIES (1 << 16)
+ const struct dma_map_ops pcx_dma_ops = {
+-	.dma_supported =	pa11_dma_supported,
+ 	.alloc =		pcx_dma_alloc,
+ 	.free =			pcx_dma_free,
+ 	.map_page =		pa11_dma_map_page,
 -- 
 2.14.2

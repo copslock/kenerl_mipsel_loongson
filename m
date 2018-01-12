@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:43:26 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:44056 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:47:33 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:53306 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992275AbeALImvv7Y9J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:42:51 +0100
+        by eddie.linux-mips.org with ESMTP id S23992336AbeALImwSqikJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:42:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=SNz+heJjLqa7Gmy3j8AZWHZoPZwuLVSLUitp5FTk0JE=; b=f9JF5zcb4MAbg/gkENMpJGj7f
-        jiKm7zTUbILGRTipbd8/c5IJcWPmmMAJUTBOcw5pbyhyaOsaG3HMcAI61GjXQ7w0H5AzEwglyHmNS
-        XbxrCd05qe6v+NnMusbl7Tr7ZTv9rNb+NN7iGB5+ADh4HNBK0nSv+3OxlBOnY/gcFP/EagUQm5Iiy
-        rkIqxi23fKQO7RThYzVen2yGRaO0PBu0A60qVOJ5K1wIdRkdoyhHiBvB63D4GYjtp/gSUUJ8nojpJ
-        m5Zm6CaLLbuOHH65AI+/7lklpC9b+XfypKM6jd1FCmUJxTZDzOWermNrEKMrKUjPDnFpG9bloOLil
-        OksvrlRCQ==;
+         bh=c7DuEybEs8F7edtbdN4VvcyDfEtoPkOaoU/c5shCm4k=; b=s/5C7299FEkxYRhXjynMUdopK
+        Fz0VhPswQcobpIhwbbjbu+K4PGySHPVqQK2V1rS1QIQ1befs/XZClq1GGrz6uoePEKN1rXjfHB0Ip
+        FCmJVaZeikVVSmfRWyM2xdH05n1Uc43+gLi7WjT1gccTmQ6IDBFmBUYr4lVPonDbHHACGZC0GOsZ1
+        +7qJ1hScjGV3p/dNB5NRqjLkabyUmYY6YGUWjHQ6Znl86dp6EzNzQYtER23ftpPSodR/0e350+Fls
+        dcWr0lj44bHAOS8CUuKEGYT5rsHP1Lpgudu+TyPPtPTrqt4xCgn794UNmCbRePg6GYe053Cz4UW7C
+        uRQd0dXyg==;
 Received: from [188.21.167.3] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZuv8-00073r-Jm; Fri, 12 Jan 2018 08:42:39 +0000
+        id 1eZuv5-00073a-Gs; Fri, 12 Jan 2018 08:42:36 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,18 +32,16 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 01/34] alpha: mark jensen as broken
-Date:   Fri, 12 Jan 2018 09:41:59 +0100
-Message-Id: <20180112084232.2857-2-hch@lst.de>
+Subject: consolidate direct dma mapping V4
+Date:   Fri, 12 Jan 2018 09:41:58 +0100
+Message-Id: <20180112084232.2857-1-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
-In-Reply-To: <20180112084232.2857-1-hch@lst.de>
-References: <20180112084232.2857-1-hch@lst.de>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Return-Path: <BATV+b628242e4f103a69f336+5255+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62063
+X-archive-position: 62064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,25 +58,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CONFIG_ALPHA_JENSEN has failed to compile since commit 6aca0503
-("alpha/dma: use common noop dma ops"), so mark it as broken.
+Almost every architecture supports a direct dma mapping implementation,
+where no iommu is used and the device dma address is a 1:1 mapping to
+the physical address or has a simple linear offset.  Currently the
+code for this implementation is most duplicated over the architectures,
+and the duplicated again in the swiotlb code, and then duplicated again
+for special cases like the x86 memory encryption DMA ops.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/alpha/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+This series takes the existing very simple dma-noop dma mapping
+implementation, enhances it with all the x86 features and quirks, and
+creates a common set of architecture hooks for it and the swiotlb code.
 
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index b31b974a03cb..e96adcbcab41 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -209,6 +209,7 @@ config ALPHA_EIGER
- 
- config ALPHA_JENSEN
- 	bool "Jensen"
-+	depends on BROKEN
- 	help
- 	  DEC PC 150 AXP (aka Jensen): This is a very old Digital system - one
- 	  of the first-generation Alpha systems. A number of these systems
--- 
-2.14.2
+It then switches a number of architectures to this generic
+direct map implemention.
+
+Note that for now this only handles architectures that do cache coherent
+DMA, but a similar consolidation for non-coherent architectures is in the
+work for later merge windows.
+
+A git tree is also available:
+
+   git://git.infradead.org/users/hch/misc.git dma-direct.3
+
+Gitweb:
+
+   http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-direct.3
+
+Changes since V3
+ - new patch to fix an off-by-one in mips dma_capable
+Changes since V2:
+ - fixed a few patch description typos
+ - fixed a few printk formats
+ - fixed an off by one in dma_coherent_ok
+ - add a few Reviewed-by/Acked-by tags.
+ - moved the swiotlb consolidation to a new series
+ - dropped a few patches for now to not overwhelem the x86
+   maintainers.  They will be resubmitted in the next merge window

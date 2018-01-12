@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:47:33 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:53306 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:48:48 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:35983 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992336AbeALImwSqikJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:42:52 +0100
+        by eddie.linux-mips.org with ESMTP id S23992692AbeALImyZdamJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:42:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
-        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
+        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=c7DuEybEs8F7edtbdN4VvcyDfEtoPkOaoU/c5shCm4k=; b=s/5C7299FEkxYRhXjynMUdopK
-        Fz0VhPswQcobpIhwbbjbu+K4PGySHPVqQK2V1rS1QIQ1befs/XZClq1GGrz6uoePEKN1rXjfHB0Ip
-        FCmJVaZeikVVSmfRWyM2xdH05n1Uc43+gLi7WjT1gccTmQ6IDBFmBUYr4lVPonDbHHACGZC0GOsZ1
-        +7qJ1hScjGV3p/dNB5NRqjLkabyUmYY6YGUWjHQ6Znl86dp6EzNzQYtER23ftpPSodR/0e350+Fls
-        dcWr0lj44bHAOS8CUuKEGYT5rsHP1Lpgudu+TyPPtPTrqt4xCgn794UNmCbRePg6GYe053Cz4UW7C
-        uRQd0dXyg==;
+         bh=S/GH44cRGA0qPZti+sTqqqVKSE2/SlUTJm6LzCR7sTw=; b=W1/lECL7R5lo9HdLZeatJinP+
+        wgT3hKDtIsfq9gqF1vb4UJzW7pEQr8BDKJJJBnBmBWTMVeeTfRDvYJ1UbbbSEqdwrbf7pkQ79pSuA
+        Ik6w2EgzPLUsYrawrGpN3o4NmKzkmaKRHRfTp7NRMvEATc/n4tlFcCSXD7mBCWPYkywUG+rW6GcJD
+        2SBaKMmc71CrTl7FrDptm1XauK3ZQiplQvl2VNckH9ob6QGdAIh3qgiyBwbrxf1Wdosx8jtCMUs55
+        YnihDbfujfyirth/zPr9kaQhvudpX1VsdR3yj067UigRqMVzemz9JeTf/dWq7g6rL+pbZwEpw9UK3
+        wf4BnE19Q==;
 Received: from [188.21.167.3] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZuv5-00073a-Gs; Fri, 12 Jan 2018 08:42:36 +0000
+        id 1eZuvE-00074c-Hn; Fri, 12 Jan 2018 08:42:45 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,16 +32,18 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: consolidate direct dma mapping V4
-Date:   Fri, 12 Jan 2018 09:41:58 +0100
-Message-Id: <20180112084232.2857-1-hch@lst.de>
+Subject: [PATCH 03/34] m32r: remove unused flush_write_buffers definition
+Date:   Fri, 12 Jan 2018 09:42:01 +0100
+Message-Id: <20180112084232.2857-4-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
+In-Reply-To: <20180112084232.2857-1-hch@lst.de>
+References: <20180112084232.2857-1-hch@lst.de>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Return-Path: <BATV+b628242e4f103a69f336+5255+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62064
+X-archive-position: 62065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,39 +60,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Almost every architecture supports a direct dma mapping implementation,
-where no iommu is used and the device dma address is a 1:1 mapping to
-the physical address or has a simple linear offset.  Currently the
-code for this implementation is most duplicated over the architectures,
-and the duplicated again in the swiotlb code, and then duplicated again
-for special cases like the x86 memory encryption DMA ops.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/m32r/include/asm/io.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-This series takes the existing very simple dma-noop dma mapping
-implementation, enhances it with all the x86 features and quirks, and
-creates a common set of architecture hooks for it and the swiotlb code.
-
-It then switches a number of architectures to this generic
-direct map implemention.
-
-Note that for now this only handles architectures that do cache coherent
-DMA, but a similar consolidation for non-coherent architectures is in the
-work for later merge windows.
-
-A git tree is also available:
-
-   git://git.infradead.org/users/hch/misc.git dma-direct.3
-
-Gitweb:
-
-   http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-direct.3
-
-Changes since V3
- - new patch to fix an off-by-one in mips dma_capable
-Changes since V2:
- - fixed a few patch description typos
- - fixed a few printk formats
- - fixed an off by one in dma_coherent_ok
- - add a few Reviewed-by/Acked-by tags.
- - moved the swiotlb consolidation to a new series
- - dropped a few patches for now to not overwhelem the x86
-   maintainers.  They will be resubmitted in the next merge window
+diff --git a/arch/m32r/include/asm/io.h b/arch/m32r/include/asm/io.h
+index 1b653bb16f9a..a4272d8f0d9c 100644
+--- a/arch/m32r/include/asm/io.h
++++ b/arch/m32r/include/asm/io.h
+@@ -191,8 +191,6 @@ static inline void _writel(unsigned long l, unsigned long addr)
+ 
+ #define mmiowb()
+ 
+-#define flush_write_buffers() do { } while (0)  /* M32R_FIXME */
+-
+ static inline void
+ memset_io(volatile void __iomem *addr, unsigned char val, int count)
+ {
+-- 
+2.14.2

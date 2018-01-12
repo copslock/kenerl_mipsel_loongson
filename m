@@ -1,72 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 10:12:47 +0100 (CET)
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2237 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994652AbeALJMko5QXJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Jan 2018 10:12:40 +0100
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 69019EF43A06A;
-        Fri, 12 Jan 2018 17:12:20 +0800 (CST)
-Received: from [127.0.0.1] (10.177.29.40) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.361.1; Fri, 12 Jan 2018
- 17:12:19 +0800
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-To:     Christophe LEROY <christophe.leroy@c-s.fr>,
-        Greg KH <gregkh@linuxfoundation.org>
-References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com>
- <b8ff7f17-7f2c-f220-9833-7ae5bd7343d5@c-s.fr>
- <8dd19411-5b06-0aa4-fd0e-e5b112c25dcb@huawei.com>
- <1eb206ed-95e9-5839-485d-0e549ff3f505@c-s.fr>
-CC:     <linux-kernel@vger.kernel.org>, <ysxie@foxmail.com>,
-        <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>,
-        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
-        <marek.vasut@gmail.com>, <cyrille.pitchen@wedev4u.fr>,
-        <linux-mtd@lists.infradead.org>, <alsa-devel@alsa-project.org>,
-        <wim@iguana.be>, <linux@roeck-us.net>,
-        <linux-watchdog@vger.kernel.org>, <b.zolnierkie@samsung.com>,
-        <linux-fbdev@vger.kernel.org>, <linus.walleij@linaro.org>,
-        <linux-gpio@vger.kernel.org>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <tglx@linutronix.de>, <jason@lakedaemon.net>,
-        <marc.zyngier@arm.com>, <arnd@arndb.de>,
-        <andriy.shevchenko@linux.intel.com>,
-        <industrypack-devel@lists.sourceforge.net>, <wg@grandegger.com>,
-        <mkl@pengutronix.de>, <linux-can@vger.kernel.org>,
-        <mchehab@kernel.org>, <linux-media@vger.kernel.org>,
-        <a.zummo@towertech.it>, <alexandre.belloni@free-electrons.com>,
-        <linux-rtc@vger.kernel.org>, <daniel.vetter@intel.com>,
-        <jani.nikula@linux.intel.com>, <seanpaul@chromium.org>,
-        <airlied@linux.ie>, <dri-devel@lists.freedesktop.org>,
-        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <tj@kernel.org>,
-        <linux-ide@vger.kernel.org>, <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <dvhart@infradead.org>, <andy@infradead.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        <jakub.kicinski@netronome.com>, <davem@davemloft.net>,
-        <nios2-dev@lists.rocketboards.org>, <netdev@vger.kernel.org>,
-        <vinod.koul@intel.com>, <dan.j.williams@intel.com>,
-        <dmaengine@vger.kernel.org>, <jslaby@suse.com>
-From:   Yisheng Xie <xieyisheng1@huawei.com>
-Message-ID: <ff498c83-d1ee-7553-e20c-a07369f8dad6@huawei.com>
-Date:   Fri, 12 Jan 2018 17:12:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 14:17:07 +0100 (CET)
+Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:42377
+        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994661AbeALNQ7I1A8d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 14:16:59 +0100
+Received: by mail-qt0-x242.google.com with SMTP id c2so5943745qtn.9
+        for <linux-mips@linux-mips.org>; Fri, 12 Jan 2018 05:16:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=S2VrLKhJHAh0dKuEQzWxiXtDw8x8Tb9LRCIrg9P3Uaw=;
+        b=P/wxkDz2beGylQBR9RyNJ9PnCii8w3iBPW0P9Q6NNegs/ZWGGxytI0Ja23Knak7C8p
+         Q9/I7HxiNIIZ9Urt/OLEqB+zzs34hFHPHl7cw9kKKe66avfcDtXySQncdqrgDFhnqs6J
+         cd9gfnosdYAhg3J4HRhncgDCm0HOlDQRAw92wEeusfZGBRrVWXSPfxxcHJU+DeU/3Cun
+         elKEbYpnCCS+4DNph1sZVxYzunlcENYa8ormU+wTSloKbVb2v89y/U29ykC026WT/DEo
+         4XKBhrrEgJk9oWLmxLryNOzV854BsYZQfr+s7LfkfPW2r9/yLSefjVvsMb/AFp0EqU1Y
+         R2Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=S2VrLKhJHAh0dKuEQzWxiXtDw8x8Tb9LRCIrg9P3Uaw=;
+        b=IpEND9En2maBwT+7jZbYphx8+fenQq4DYzjTvKLhKJTE+Fcn6eWyw/3TpIW0v8pkII
+         cyf0M2e+7EEdG4mGRObU+3h2p9PWvBKbE9WhRdmSluYLnFxluwe4lHP1WaNI6/hd7rky
+         0YC/OkHZp/QvNTezEaFCBk8D3CqQGV6GpRYOWJVHWP2zJLCN1E9HV5JUgUSWg74hfULB
+         +9Q7sGzh9nmshNIJK2eF778MEAeTQ5jUQhkuPZq1kvicWLpm1pE21j9q9eTld33kTZXP
+         nVI5Tjj3tSGEE8IMZjEaLXgEfLwEV/3m+F1MrxAJW73vcd0CVC4ZbvpX4782bsvJZGHo
+         /52A==
+X-Gm-Message-State: AKwxytfVXfYwQsDJfMdoyJUO4qJmoCgre5ErV1kYv91KiT+AymodweA0
+        hLgxhiHzTZsSrvgnkA+OzxA=
+X-Google-Smtp-Source: ACJfBosIJnvehbcZesAIlg3FnmupYOzJxD/5ZELthFKCLIXLRfBPNpU4Pn5uQMp7msA/ZNkw1emEwA==
+X-Received: by 10.237.55.71 with SMTP id i65mr10940082qtb.224.1515763012723;
+        Fri, 12 Jan 2018 05:16:52 -0800 (PST)
+Received: from localhost.localdomain (209-6-200-48.s4398.c3-0.smr-ubr2.sbo-smr.ma.cable.rcncustomer.com. [209.6.200.48])
+        by smtp.gmail.com with ESMTPSA id 24sm6324251qkv.64.2018.01.12.05.16.50
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 12 Jan 2018 05:16:51 -0800 (PST)
+Date:   Fri, 12 Jan 2018 08:16:48 -0500
+From:   Konrad Rzeszutek Wilk <konrad@darnok.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-cris-kernel@axis.com, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, patches@groups.riscv.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        x86@kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 19/33] dma-mapping: warn when there is no
+ coherent_dma_mask
+Message-ID: <20180112131646.GA26900@localhost.localdomain>
+References: <20180110080027.13879-1-hch@lst.de>
+ <20180110080027.13879-20-hch@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <1eb206ed-95e9-5839-485d-0e549ff3f505@c-s.fr>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.29.40]
-X-CFilter-Loop: Reflected
-Return-Path: <xieyisheng1@huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180110080027.13879-20-hch@lst.de>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <konrad.r.wilk@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62097
+X-archive-position: 62098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xieyisheng1@huawei.com
+X-original-sender: konrad@darnok.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,112 +82,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Christophe ，
+On Wed, Jan 10, 2018 at 09:00:13AM +0100, Christoph Hellwig wrote:
+> These days all devices should have a DMA coherent mask, and most dma_ops
+> implementations rely on that fact.  But just to be sure add an assert to
+> ring the warning bell if that is not the case.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-On 2018/1/4 16:05, Christophe LEROY wrote:
+Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> ---
+>  include/linux/dma-mapping.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index d84951865be7..9f28b2fa329e 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -513,6 +513,7 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
+>  	void *cpu_addr;
+>  
+>  	BUG_ON(!ops);
+> +	WARN_ON_ONCE(!dev->coherent_dma_mask);
+>  
+>  	if (dma_alloc_from_dev_coherent(dev, size, dma_handle, &cpu_addr))
+>  		return cpu_addr;
+> -- 
+> 2.14.2
 > 
-> Le 25/12/2017 à 02:34, Yisheng Xie a écrit :
->>
->>
->> On 2017/12/24 17:05, christophe leroy wrote:
->>>
->>>
->>> Le 23/12/2017 à 14:48, Greg KH a écrit :
->>>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
->>>>> Hi all,
->>>>>
->>>>> When I tried to use devm_ioremap function and review related code, I found
->>>>> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
->>>>> except one use ioremap while the other use ioremap_nocache.
->>>>
->>>> For all arches?  Really?  Look at MIPS, and x86, they have different
->>>> functions.
->>>>
->>>>> While ioremap's
->>>>> default function is ioremap_nocache, so devm_ioremap_nocache also have the
->>>>> same function with devm_ioremap, which can just be killed to reduce the size
->>>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
->>>>>
->>>>> I have posted two versions, which use macro instead of function for
->>>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
->>>>> devm_ioremap_nocache for no need to keep a macro around for the duplicate
->>>>> thing. So here comes v3 and please help to review.
->>>>
->>>> I don't think this can be done, what am I missing?  These functions are
->>>> not identical, sorry for missing that before.
->>>
->>> devm_ioremap() and devm_ioremap_nocache() are quite similar, both use devm_ioremap_release() for the release, why not just defining:
->>>
->>> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
->>>                 resource_size_t size, bool nocache)
->>> {
->>> [...]
->>>      if (nocache)
->>>          addr = ioremap_nocache(offset, size);
->>>      else
->>>          addr = ioremap(offset, size);
->>> [...]
->>> }
->>>
->>> then in include/linux/io.h
->>>
->>> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->>>                 resource_size_t size)
->>> {return __devm_ioremap(dev, offset, size, false);}
->>>
->>> static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->>>                     resource_size_t size);
->>> {return __devm_ioremap(dev, offset, size, true);}
->>
->> Yeah, this seems good to me, right now we have devm_ioremap, devm_ioremap_wc, devm_ioremap_nocache
->> May be we can use an enum like:
->> typedef enum {
->>     DEVM_IOREMAP = 0,
->>     DEVM_IOREMAP_NOCACHE,
->>     DEVM_IOREMAP_WC,
->> } devm_ioremap_type;
->>
->> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->>                  resource_size_t size)
->>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP);}
->>
->>   static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->>                      resource_size_t size);
->>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_NOCACHE);}
->>
->>   static inline void __iomem *devm_ioremap_wc(struct device *dev, resource_size_t offset,
->>                      resource_size_t size);
->>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_WC);}
->>
->>   static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
->>                  resource_size_t size, devm_ioremap_type type)
->>   {
->>       void __iomem **ptr, *addr = NULL;
->>   [...]
->>       switch (type){
->>       case DEVM_IOREMAP:
->>           addr = ioremap(offset, size);
->>           break;
->>       case DEVM_IOREMAP_NOCACHE:
->>           addr = ioremap_nocache(offset, size);
->>           break;
->>       case DEVM_IOREMAP_WC:
->>           addr = ioremap_wc(offset, size);
->>           break;
->>       }
->>   [...]
->>   }
-> 
-> 
-> That looks good to me, will you submit a v4 ?
-
-Sorry for late response. And I will submit the v4 as your suggestion.
-
-Thanks
-Yisheng
-
-> 
-> Christophe
-> 
->>

@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:42:59 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:50283 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 09:43:26 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:44056 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992243AbeALImvlFHXJ (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992275AbeALImvv7Y9J (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 09:42:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
@@ -9,15 +9,15 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=0JuEE1unvevJ5PXqHKEqQaNX4Nl1WkCrydQ4fDGvEz4=; b=hZHSLjMvsigCBXJ47mmr9diLZ
-        Z84MoJwcuwapBgWTtutrU9+MaqhlFtUT0sJhLGEo1jZ1qbdSPUubodyVwkf1VvEnJveiRhO3NomAX
-        izyvRctoRboXqzn/WdqtFrg31w4V1BKWN9Z34GVuuMIgTGT/DxWYg4fjvXJ8XXSR/J8I0UQ9HTUOE
-        M8WIbDNfavWjfO2eFeWiVvJGn3zq4emUb/2JY5uctAvxf4ww2/PceApJ5Mdg1fcSpZAHsqTfeqdjM
-        Uq3LpF/J5ao4aVD+SriWbJXFdvgbhvxMbT+T/mWnksl0BGxN/KwSLQqbFEnPjJlqVH8xX380C1S52
-        sNYAZCdRw==;
+         bh=SNz+heJjLqa7Gmy3j8AZWHZoPZwuLVSLUitp5FTk0JE=; b=f9JF5zcb4MAbg/gkENMpJGj7f
+        jiKm7zTUbILGRTipbd8/c5IJcWPmmMAJUTBOcw5pbyhyaOsaG3HMcAI61GjXQ7w0H5AzEwglyHmNS
+        XbxrCd05qe6v+NnMusbl7Tr7ZTv9rNb+NN7iGB5+ADh4HNBK0nSv+3OxlBOnY/gcFP/EagUQm5Iiy
+        rkIqxi23fKQO7RThYzVen2yGRaO0PBu0A60qVOJ5K1wIdRkdoyhHiBvB63D4GYjtp/gSUUJ8nojpJ
+        m5Zm6CaLLbuOHH65AI+/7lklpC9b+XfypKM6jd1FCmUJxTZDzOWermNrEKMrKUjPDnFpG9bloOLil
+        OksvrlRCQ==;
 Received: from [188.21.167.3] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
-        id 1eZuvB-00073z-FK; Fri, 12 Jan 2018 08:42:41 +0000
+        id 1eZuv8-00073r-Jm; Fri, 12 Jan 2018 08:42:39 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
@@ -32,9 +32,9 @@ Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
         sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         x86@kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 02/34] hexagon: remove unused flush_write_buffers definition
-Date:   Fri, 12 Jan 2018 09:42:00 +0100
-Message-Id: <20180112084232.2857-3-hch@lst.de>
+Subject: [PATCH 01/34] alpha: mark jensen as broken
+Date:   Fri, 12 Jan 2018 09:41:59 +0100
+Message-Id: <20180112084232.2857-2-hch@lst.de>
 X-Mailer: git-send-email 2.14.2
 In-Reply-To: <20180112084232.2857-1-hch@lst.de>
 References: <20180112084232.2857-1-hch@lst.de>
@@ -43,7 +43,7 @@ Return-Path: <BATV+b628242e4f103a69f336+5255+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62062
+X-archive-position: 62063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,23 +60,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+CONFIG_ALPHA_JENSEN has failed to compile since commit 6aca0503
+("alpha/dma: use common noop dma ops"), so mark it as broken.
+
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/hexagon/include/asm/io.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/alpha/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
-index 66f5e9a61efc..9e8621d94ee9 100644
---- a/arch/hexagon/include/asm/io.h
-+++ b/arch/hexagon/include/asm/io.h
-@@ -330,8 +330,6 @@ static inline void outsl(unsigned long port, const void *buffer, int count)
- 	}
- }
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index b31b974a03cb..e96adcbcab41 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -209,6 +209,7 @@ config ALPHA_EIGER
  
--#define flush_write_buffers() do { } while (0)
--
- #endif /* __KERNEL__ */
- 
- #endif
+ config ALPHA_JENSEN
+ 	bool "Jensen"
++	depends on BROKEN
+ 	help
+ 	  DEC PC 150 AXP (aka Jensen): This is a very old Digital system - one
+ 	  of the first-generation Alpha systems. A number of these systems
 -- 
 2.14.2

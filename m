@@ -1,70 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jan 2018 14:40:01 +0100 (CET)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:45868
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994667AbeALNjxQRPin (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jan 2018 14:39:53 +0100
-Received: by mail-qt0-x242.google.com with SMTP id g10so6016847qtj.12
-        for <linux-mips@linux-mips.org>; Fri, 12 Jan 2018 05:39:53 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jan 2018 22:41:06 +0100 (CET)
+Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:41940
+        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992645AbeANVk7H6Kdj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Jan 2018 22:40:59 +0100
+Received: by mail-pf0-x242.google.com with SMTP id j3so7169972pfh.8
+        for <linux-mips@linux-mips.org>; Sun, 14 Jan 2018 13:40:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=F7priq2MEaSyMMZmuQVarmhLva+6mZO2OqCIRFGrftk=;
-        b=JTmNuqaGGOWdtA+6Z7Vu07BH6I9plazPbQtCMedb9P5rxfnPykZspzCbJzE40hvxAL
-         lu+UmZIWMd/74m/Ubs/r1FdRC2FLV5S0/17zo6avchy0SmS/almc1LjTCEwOHZaYGgdP
-         yPzzAckoYQCQO8ffCNgDnzGzqBMFvBH4LcJxZ607mZ/El4yJOklxGm2569ttPfefl683
-         sBOwFDXRJDrvCsgRE4NTa92Jik/LfTcb2HZFenoIMgx/87PNGJSApTn1Lnok3FtzTXK3
-         HsNmHVDNZzWLPNG2bE8ZQZWKsA1mb7sOfQRBOP3LfpjZGFXg9FTRRbbCMr4hDuGd/zBN
-         W6lQ==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=x3RWKwRLvywrAqmAbTKden0sWSnlabUakVfWUcupsR8=;
+        b=bohUPOokAT/+7oRbgfaO9bUrT9KBn+tGFqxOIDlFOvRdZMhXf4GaOGpx3zAOKVUCSS
+         85NNZL5/MVcuowHxurwoYf9DwtNRUnS1drz8x/VQvG+LU8cVjws2dY2OCSZWshqmu+dO
+         tDwsMyQG5WVvivgBMU1zqxlBlJyxHD3J/W7N51r9ELo1w45QvYT9sShkcTv/vyMMJkYo
+         OTf8MxPckFLA4M+tymRDzVTf6PamHMBpPC2KOLe3SHQDADOVXVq47bOcWCiq1ClJkwAs
+         jP8PcbQn+DyvrRsreRjCtRVVuNzmlzsuvHzr1DnjWVVnAMgYnT26X0P/LaScG3EBJwGM
+         POCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=F7priq2MEaSyMMZmuQVarmhLva+6mZO2OqCIRFGrftk=;
-        b=HNlTe0CK8fg1WpUcmmPNZEDuC8zPpTTEpHKtdCQTAGjeyrzFBoqilxZFHPROWLY90l
-         iaBxCpkeJYs+n5HoHbReSH4ht+maMnUgE9Ay/q1sLP7NBTSSLOTiOOVJ+qpj9bVrwX9D
-         2QeDy3jdUMiqsZUbNa2eYeGgFmLCxjZz8JV4naK3+z93WkZ3jgMLmkocW6+Cdo0eKmj/
-         rv6rIkUksMlMR/lu/kZ7wFbzNddjoURHLYNh0mb31eYIBenO+XB+62kUp0Lm5o42ql70
-         a+aAx2d4BuWZAnF4kXUDyYX3DwBr1oUw7iW3EIVxcHx59i36s50ygXnM3gQgg+hdPhyo
-         NrNw==
-X-Gm-Message-State: AKwxytdo/KEgZOpTfWCJ8jIS9UmdC39C56CXf6HQimEMYRaicpMhmJVS
-        ET1VsijrljhZiYOh8XKmau0=
-X-Google-Smtp-Source: ACJfBouYXhE5BfvUBC2izv8g2+e6xD6r/deGN/OcgoKJaD+uRB3vymLNwfM4OZzrw2vZYmEgzandVw==
-X-Received: by 10.200.18.131 with SMTP id y3mr38048923qti.95.1515764384517;
-        Fri, 12 Jan 2018 05:39:44 -0800 (PST)
-Received: from localhost.localdomain (209-6-200-48.s4398.c3-0.smr-ubr2.sbo-smr.ma.cable.rcncustomer.com. [209.6.200.48])
-        by smtp.gmail.com with ESMTPSA id 92sm5879103qky.72.2018.01.12.05.39.42
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 12 Jan 2018 05:39:43 -0800 (PST)
-Date:   Fri, 12 Jan 2018 08:39:41 -0500
-From:   Konrad Rzeszutek Wilk <konrad@darnok.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     iommu@lists.linux-foundation.org, Michal Simek <monstr@monstr.eu>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Christian =?iso-8859-1?Q?K=F6nig?= 
-        <ckoenig.leichtzumerken@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        x86@kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/22] swiotlb: rename swiotlb_free to swiotlb_exit
-Message-ID: <20180112133939.GF26900@localhost.localdomain>
-References: <20180110080932.14157-1-hch@lst.de>
- <20180110080932.14157-7-hch@lst.de>
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=x3RWKwRLvywrAqmAbTKden0sWSnlabUakVfWUcupsR8=;
+        b=H7qLsozT9C5KLMCZ2VDS57FWCJSMMQhUm5mM3nq+gSnnAPoBj6nRotkupCkglIE8EF
+         GOBfD5VGwqiWXpRTcvrDIkEmFRZeOp0BatsOWk9WnMqJaOJUGKlBIEVWKz/Z9osy0DNM
+         ItNojYjKctK4JVYOAnhZY+0Rn9OprLMTg39QJTZoA+4WT3KCtDUNWtu614jphB0dbEI+
+         ZoFo2lOjdjTCh1ZyWSgfCnKM7ghvXmNeXXYTHOxOgb723ZttdJJ5+rZV3sjexMU6M7Co
+         TI6b2GZ7DINH9tFp499bxKUalfeyyFKHH14MIC+EasFKU0+wh64Xxn+2SRWyjf7jMX/I
+         P8yQ==
+X-Gm-Message-State: AKGB3mJ3kH2rXyPxqelEGm/mqNs7EaYkt4KAPrlSDVayGHdeWfZ5Z/XP
+        nPa3sTQNYzqwR5tyC0d58cfzlw==
+X-Google-Smtp-Source: ACJfBovDoESYfqqM24pRi96AriOEu1I7oGR3nfoUX9KcVkzZXoINW9srpkTOJji3IAh5YOs//LpYWw==
+X-Received: by 10.99.124.24 with SMTP id x24mr24145191pgc.351.1515966052213;
+        Sun, 14 Jan 2018 13:40:52 -0800 (PST)
+Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id x17sm11052739pge.50.2018.01.14.13.40.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 14 Jan 2018 13:40:51 -0800 (PST)
+Subject: Re: [PATCH] bcma: Fix 'allmodconfig' and BCMA builds on MIPS targets
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        James Hogan <jhogan@kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+References: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <db5915ed-fc50-292f-c86b-4da7f3f0eddd@roeck-us.net>
+Date:   Sun, 14 Jan 2018 13:40:50 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180110080932.14157-7-hch@lst.de>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <konrad.r.wilk@gmail.com>
+In-Reply-To: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62103
+X-archive-position: 62105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: konrad@darnok.org
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,75 +75,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 10, 2018 at 09:09:16AM +0100, Christoph Hellwig wrote:
+[ copying linux-mips ]
 
-OK?
-
-Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/kernel/dma-swiotlb.c | 2 +-
->  arch/x86/kernel/pci-swiotlb.c     | 2 +-
->  include/linux/swiotlb.h           | 4 ++--
->  lib/swiotlb.c                     | 2 +-
->  4 files changed, 5 insertions(+), 5 deletions(-)
+On 01/14/2018 01:34 PM, Guenter Roeck wrote:
+> Mips builds with BCMA host mode enabled fail in mainline and -next
+> with:
 > 
-> diff --git a/arch/powerpc/kernel/dma-swiotlb.c b/arch/powerpc/kernel/dma-swiotlb.c
-> index 506ac4fafac5..88f3963ca30f 100644
-> --- a/arch/powerpc/kernel/dma-swiotlb.c
-> +++ b/arch/powerpc/kernel/dma-swiotlb.c
-> @@ -121,7 +121,7 @@ static int __init check_swiotlb_enabled(void)
->  	if (ppc_swiotlb_enable)
->  		swiotlb_print_info();
->  	else
-> -		swiotlb_free();
-> +		swiotlb_exit();
->  
->  	return 0;
->  }
-> diff --git a/arch/x86/kernel/pci-swiotlb.c b/arch/x86/kernel/pci-swiotlb.c
-> index 0d77603c2f50..0ee0f8f34251 100644
-> --- a/arch/x86/kernel/pci-swiotlb.c
-> +++ b/arch/x86/kernel/pci-swiotlb.c
-> @@ -120,7 +120,7 @@ void __init pci_swiotlb_late_init(void)
->  {
->  	/* An IOMMU turned us off. */
->  	if (!swiotlb)
-> -		swiotlb_free();
-> +		swiotlb_exit();
->  	else {
->  		printk(KERN_INFO "PCI-DMA: "
->  		       "Using software bounce buffering for IO (SWIOTLB)\n");
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index 24ed817082ee..606375e35d87 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -115,10 +115,10 @@ extern int
->  swiotlb_dma_supported(struct device *hwdev, u64 mask);
->  
->  #ifdef CONFIG_SWIOTLB
-> -extern void __init swiotlb_free(void);
-> +extern void __init swiotlb_exit(void);
->  unsigned int swiotlb_max_segment(void);
->  #else
-> -static inline void swiotlb_free(void) { }
-> +static inline void swiotlb_exit(void) { }
->  static inline unsigned int swiotlb_max_segment(void) { return 0; }
->  #endif
->  
-> diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-> index 125c1062119f..cf5311908fa9 100644
-> --- a/lib/swiotlb.c
-> +++ b/lib/swiotlb.c
-> @@ -417,7 +417,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
->  	return -ENOMEM;
->  }
->  
-> -void __init swiotlb_free(void)
-> +void __init swiotlb_exit(void)
->  {
->  	if (!io_tlb_orig_addr)
->  		return;
-> -- 
-> 2.14.2
+> In file included from include/linux/bcma/bcma.h:10:0,
+>                   from drivers/bcma/bcma_private.h:9,
+> 		 from drivers/bcma/main.c:8:
+> include/linux/bcma/bcma_driver_pci.h:218:24: error:
+> 	field 'pci_controller' has incomplete type
+> 
+> Bisect points to commit d41e6858ba58c ("MIPS: Kconfig: Set default MIPS
+> system type as generic") as the culprit. Analysis shows that the commmit
+> changes PCI configuration and enables PCI_DRIVERS_GENERIC. This in turn
+> disables PCI_DRIVERS_LEGACY. 'struct pci_controller' is, however, only
+> defined if PCI_DRIVERS_LEGACY is enabled.
+> 
+> Ultimately that means that BCMA_DRIVER_PCI_HOSTMODE depends on
+> PCI_DRIVERS_LEGACY. Add the missing dependency.
+> 
+> Fixes: d41e6858ba58c ("MIPS: Kconfig: Set default MIPS system type as ...")
+> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> I am aware that this problem has been reported several times. I have
+> not been able to find a fix, but I may have missed it. If so, my
+> apologies for the noise.
+> 
+I should have said "I have not been able to find a patch fixing it".
+
+> Also note that this is not the only fix required; commit d41e6858ba58c,
+> as simple as it looks like, does a pretty good job messing up
+> "mips:allmodconfig" builds.
+> 
+... nor did I find patch(es) fixing the other build problem(s) introduced
+by d41e6858ba58c.
+
+Guenter
+
+>   drivers/bcma/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+> index 02d78f6cecbb..ba8acca036df 100644
+> --- a/drivers/bcma/Kconfig
+> +++ b/drivers/bcma/Kconfig
+> @@ -55,7 +55,7 @@ config BCMA_DRIVER_PCI
+>   
+>   config BCMA_DRIVER_PCI_HOSTMODE
+>   	bool "Driver for PCI core working in hostmode"
+> -	depends on MIPS && BCMA_DRIVER_PCI
+> +	depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY
+>   	help
+>   	  PCI core hostmode operation (external PCI bus).
+>   
 > 

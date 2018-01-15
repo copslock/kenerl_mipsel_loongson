@@ -1,54 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 21:31:38 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:52244 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990474AbeAOUbbdpOxx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Jan 2018 21:31:31 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 15 Jan 2018 20:30:39 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 15 Jan
- 2018 12:30:25 -0800
-Date:   Mon, 15 Jan 2018 20:30:23 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     Paul Burton <paul.burton@mips.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 21:55:09 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:37196 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994630AbeAOUzBmDSdx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Jan 2018 21:55:01 +0100
+Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22A7E21781;
+        Mon, 15 Jan 2018 20:54:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 22A7E21781
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+From:   James Hogan <jhogan@kernel.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     James Hogan <jhogan@kernel.org>, John Crispin <john@phrozen.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Paul Burton <paul.burton@mips.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] bcma: Fix 'allmodconfig' and BCMA builds on MIPS targets
-Message-ID: <20180115203022.GE5027@jhogan-linux.mipstec.com>
-References: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
- <20180115102336.GC29126@saruman>
- <20180115171053.6nvstoufw4y6ar4s@pburton-laptop>
- <61e41256-f0d3-11f7-06ca-768fab84914d@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <61e41256-f0d3-11f7-06ca-768fab84914d@roeck-us.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1516048237-298554-4210-8445-10
-X-BESS-VER: 2017.17-r1801091856
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189018
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH for-4.15] MIPS: Fix undefined reference to physical_memsize
+Date:   Mon, 15 Jan 2018 20:54:35 +0000
+Message-Id: <20180115205435.8745-1-jhogan@kernel.org>
+X-Mailer: git-send-email 2.13.6
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62137
+X-archive-position: 62138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,135 +43,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 15, 2018 at 12:05:48PM -0800, Guenter Roeck wrote:
-> On 01/15/2018 09:10 AM, Paul Burton wrote:
-> > Hello,
-> > 
-> > On Mon, Jan 15, 2018 at 10:23:37AM +0000, James Hogan wrote:
-> >> On Sun, Jan 14, 2018 at 01:34:02PM -0800, Guenter Roeck wrote:
-> >>> Mips builds with BCMA host mode enabled fail in mainline and -next
-> >>> with:
-> >>>
-> >>> In file included from include/linux/bcma/bcma.h:10:0,
-> >>>                   from drivers/bcma/bcma_private.h:9,
-> >>> 		 from drivers/bcma/main.c:8:
-> >>> include/linux/bcma/bcma_driver_pci.h:218:24: error:
-> >>> 	field 'pci_controller' has incomplete type
-> >>>
-> >>> Bisect points to commit d41e6858ba58c ("MIPS: Kconfig: Set default MIPS
-> >>> system type as generic") as the culprit. Analysis shows that the commmit
-> >>> changes PCI configuration and enables PCI_DRIVERS_GENERIC. This in turn
-> >>> disables PCI_DRIVERS_LEGACY. 'struct pci_controller' is, however, only
-> >>> defined if PCI_DRIVERS_LEGACY is enabled.
-> >>>
-> >>> Ultimately that means that BCMA_DRIVER_PCI_HOSTMODE depends on
-> >>> PCI_DRIVERS_LEGACY. Add the missing dependency.
-> >>>
-> >>> Fixes: d41e6858ba58c ("MIPS: Kconfig: Set default MIPS system type as ...")
-> >>
-> >> Well, technically I think commit c5611df96804 ("MIPS: PCI: Introduce
-> >> CONFIG_PCI_DRIVERS_LEGACY") is to blame (Cc'ing paul), and the first bad
-> >> commit would be commit eed0eabd12ef ("MIPS: generic: Introduce generic
-> >> DT-based board support") which selects PCI_DRIVERS_GENERIC and is the
-> >> only platform to do so. Both commits were first in v4.9-rc1 and I can
-> >> reproduce this problem at that latter commit with the appropriate
-> >> configuration.
-> > 
-> > Ah - yes if I recall correctly my assumption was that the MIPS-specific
-> > struct pci_controller was only used by the MIPS-specific PCI drivers
-> > under arch/mips/pci/, which are only built when configured for the
-> > appropriate platform.
-> > 
-> > In this case use of that MIPS-specific struct pci_controller has spread
-> > beyond arch/mips/ & the user can be configured in for platforms other
-> > than the one that will actually use the driver, including the generic
-> > platform which moves towards more generic PCI drivers in
-> > drivers/pci/host/.
-> > 
-> >> But yes clearly the mentioned commit does also expose that existing
-> >> problem more widely and to the default allmodconfig, and it looks like a
-> >> reasonable approach for now, so if some mention of the other two commits
-> >> is added:
-> >>
-> >> Reviewed-by: James Hogan <jhogan@kernel.org>
-> > 
-> > Likewise, with the "Fixes:" tag fixed:
-> > 
-> >      Reviewed-by: Paul Burton <paul.burton@mips.com>
-> > 
-> 
-> Unfortunately, that alone doesn't fix the problem. SSB driver dependencies
-> are also broken, and in much worse shape. I had to add dependencies in five
-> places to get it to build, and the result is so messy that I won't even try
-> to submit it.
+Since commit d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type
+as generic") switched the default platform to the "generic" platform,
+allmodconfig has been failing with the following linker error (among
+other errors):
 
-Oh, thats interesting. When I tried this earlier I just added "&&
-PCI_DRIVERS_LEGACY" to the SSB_PCIHOST_POSSIBLE dependencies, but I was
-waiting for Paul's feedback before submitting a similar patch.
+arch/mips/kernel/vpe-mt.o In function `vpe_run':
+(.text+0x59c): undefined reference to `physical_memsize'
 
-But that wasn't -next, it was mainline + mips fixes branch + individual
-fixes:
+The Lantiq platform already worked around the same issue in commit
+9050d50e2244 ("MIPS: lantiq: Set physical_memsize") by declaring
+physical_memsize with the initial value of 0 (on the assumption that the
+actual memory size will be hard-coded in the loaded VPE firmware), and
+the Malta platform already provided physical_memsize.
 
-> And if that is fixed, mips:allmodconfig still doesn't build -
-> the next error is an undefined reference to physical_memsize in
-> arch/mips/kernel/vpe-mt.o.
+Since all other platforms will fail to link with the VPE loader enabled,
+only allow Lantiq and Malta platforms to enable it, by way of a
+SYS_SUPPORTS_VPE_LOADER which is selected by those two platforms and
+which MIPS_VPE_LOADER depends on. SYS_SUPPORTS_MULTITHREADING is now a
+dependency of SYS_SUPPORTS_VPE_LOADER so that Kconfig emits a warning if
+SYS_SUPPORTS_VPE_LOADER is selected without SYS_SUPPORTS_MULTITHREADING.
 
-That one is fairly easy to fix properly, I'll hopefully submit something
-this evening.
+Fixes: d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type as generic")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: John Crispin <john@phrozen.org>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/Kconfig | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-> 
-> I wonder if I should just stop trying to build allmodconfig for mips.
-> Any thoughts ?
-
-With a few fixes applied it should be buildable I think. Sorry its been
-late in the cycle before we've been able to get fixes merged.
-
-Cheers
-James
-
-> 
-> Guenter
-> 
-> > Thanks,
-> >      Paul
-> > 
-> >> Having it in 4.15 would be great.
-> >>
-> >> Cheers
-> >> James
-> >>
-> >>> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-> >>> Cc: James Hogan <jhogan@kernel.org>
-> >>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> >>> ---
-> >>> I am aware that this problem has been reported several times. I have
-> >>> not been able to find a fix, but I may have missed it. If so, my
-> >>> apologies for the noise.
-> >>>
-> >>> Also note that this is not the only fix required; commit d41e6858ba58c,
-> >>> as simple as it looks like, does a pretty good job messing up
-> >>> "mips:allmodconfig" builds.
-> >>>
-> >>>   drivers/bcma/Kconfig | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
-> >>> index 02d78f6cecbb..ba8acca036df 100644
-> >>> --- a/drivers/bcma/Kconfig
-> >>> +++ b/drivers/bcma/Kconfig
-> >>> @@ -55,7 +55,7 @@ config BCMA_DRIVER_PCI
-> >>>   
-> >>>   config BCMA_DRIVER_PCI_HOSTMODE
-> >>>   	bool "Driver for PCI core working in hostmode"
-> >>> -	depends on MIPS && BCMA_DRIVER_PCI
-> >>> +	depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY
-> >>>   	help
-> >>>   	  PCI core hostmode operation (external PCI bus).
-> >>>   
-> >>> -- 
-> >>> 2.7.4
-> >>>
-> > 
-> > 
-> > 
-> 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 659e0079487f..8e0b3702f1c0 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -390,6 +390,7 @@ config LANTIQ
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_MIPS16
+ 	select SYS_SUPPORTS_MULTITHREADING
++	select SYS_SUPPORTS_VPE_LOADER
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select GPIOLIB
+ 	select SWAP_IO_SPACE
+@@ -517,6 +518,7 @@ config MIPS_MALTA
+ 	select SYS_SUPPORTS_MIPS16
+ 	select SYS_SUPPORTS_MULTITHREADING
+ 	select SYS_SUPPORTS_SMARTMIPS
++	select SYS_SUPPORTS_VPE_LOADER
+ 	select SYS_SUPPORTS_ZBOOT
+ 	select SYS_SUPPORTS_RELOCATABLE
+ 	select USE_OF
+@@ -2282,9 +2284,16 @@ config MIPSR2_TO_R6_EMULATOR
+ 	  The only reason this is a build-time option is to save ~14K from the
+ 	  final kernel image.
+ 
++config SYS_SUPPORTS_VPE_LOADER
++	bool
++	depends on SYS_SUPPORTS_MULTITHREADING
++	help
++	  Indicates that the platform supports the VPE loader, and provides
++	  physical_memsize.
++
+ config MIPS_VPE_LOADER
+ 	bool "VPE loader support."
+-	depends on SYS_SUPPORTS_MULTITHREADING && MODULES
++	depends on SYS_SUPPORTS_VPE_LOADER && MODULES
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select MIPS_MT
+-- 
+2.13.6

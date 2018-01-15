@@ -1,39 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 10:10:11 +0100 (CET)
-Received: from verein.lst.de ([213.95.11.211]:57570 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990488AbeAOJKEageYY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Jan 2018 10:10:04 +0100
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 513C36FA82; Mon, 15 Jan 2018 10:10:02 +0100 (CET)
-Date:   Mon, 15 Jan 2018 10:10:02 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
-        linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>,
-        linux-ia64@vger.kernel.org,
-        Christian =?iso-8859-1?Q?K=F6nig?= 
-        <ckoenig.leichtzumerken@gmail.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
-        Konrad Rzeszutek Wilk <konrad@darnok.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 10/22] swiotlb: refactor coherent buffer allocation
-Message-ID: <20180115091002.GA398@lst.de>
-References: <20180110080932.14157-1-hch@lst.de> <20180110080932.14157-11-hch@lst.de> <cecc98cf-2e6a-a7bc-7390-d6dcced038c4@arm.com> <20180110154649.GA18529@lst.de> <03c25dda-30da-9169-a8a1-1720ec741b9d@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 11:11:51 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:44722 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992828AbeAOKLnsklHK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 11:11:43 +0100
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7772160A00; Mon, 15 Jan 2018 10:11:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1516011097;
+        bh=Fvm6Bkz/aaGg+TDMmgXzKBnU+mH4xDvmXymcMcPgiC8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=McVMBaZ5/zUd/e/Xo22ELHhDpga2qyyXpsItlUhy1E/taqp3j39pjFCPbmez2S4q9
+         sQ6xVcayPGyDab2qsTTGeBakIcgHnb9ckEAEUNHjtefoncmkbcfsSXBkAS3gdxvhxH
+         VFwou1p2pmN2FJ9aAy2FD77kcAmNBbXDUXXBdoZg=
+Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 544E8601A1;
+        Mon, 15 Jan 2018 10:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1516011096;
+        bh=Fvm6Bkz/aaGg+TDMmgXzKBnU+mH4xDvmXymcMcPgiC8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=WEjVmBBcInzB6e7ACdmCnDuIu/AzbMxorRJJBPazSxIu3NGwlVuYlCR5V6NYIPLmP
+         1NgxjH7un2NuCsHtAXSSRn6YLhPs37J3jcINhzYovB4INszwsYqyAs8szucUHy7ck/
+         2NjvwNRI62ur22S2p1NkSzHniIcatgO7vq0r6fh4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 544E8601A1
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        James Hogan <jhogan@kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        matt.redfearn@mips.com
+Subject: Re: [PATCH] bcma: Fix 'allmodconfig' and BCMA builds on MIPS targets
+References: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
+        <db5915ed-fc50-292f-c86b-4da7f3f0eddd@roeck-us.net>
+Date:   Mon, 15 Jan 2018 12:11:33 +0200
+In-Reply-To: <db5915ed-fc50-292f-c86b-4da7f3f0eddd@roeck-us.net> (Guenter
+        Roeck's message of "Sun, 14 Jan 2018 13:40:50 -0800")
+Message-ID: <87vag31ley.fsf@purkki.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <03c25dda-30da-9169-a8a1-1720ec741b9d@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62106
+X-archive-position: 62107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,16 +67,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 10, 2018 at 05:02:30PM +0000, Robin Murphy wrote:
->>>
->>> Aren't we leaking the pages here?
->>
->> Yes, that free_pages got lost somewhere in the rebases, I've added
->> it back.
+Guenter Roeck <linux@roeck-us.net> writes:
+
+> [ copying linux-mips ]
 >
-> Cool.
+> On 01/14/2018 01:34 PM, Guenter Roeck wrote:
+>> Mips builds with BCMA host mode enabled fail in mainline and -next
+>> with:
+>>
+>> In file included from include/linux/bcma/bcma.h:10:0,
+>>                   from drivers/bcma/bcma_private.h:9,
+>> 		 from drivers/bcma/main.c:8:
+>> include/linux/bcma/bcma_driver_pci.h:218:24: error:
+>> 	field 'pci_controller' has incomplete type
+>>
+>> Bisect points to commit d41e6858ba58c ("MIPS: Kconfig: Set default MIPS
+>> system type as generic") as the culprit. Analysis shows that the commmit
+>> changes PCI configuration and enables PCI_DRIVERS_GENERIC. This in turn
+>> disables PCI_DRIVERS_LEGACY. 'struct pci_controller' is, however, only
+>> defined if PCI_DRIVERS_LEGACY is enabled.
+>>
+>> Ultimately that means that BCMA_DRIVER_PCI_HOSTMODE depends on
+>> PCI_DRIVERS_LEGACY. Add the missing dependency.
+>>
+>> Fixes: d41e6858ba58c ("MIPS: Kconfig: Set default MIPS system type as ...")
+>> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+>> Cc: James Hogan <jhogan@kernel.org>
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>> ---
+>> I am aware that this problem has been reported several times. I have
+>> not been able to find a fix, but I may have missed it. If so, my
+>> apologies for the noise.
+>>
+> I should have said "I have not been able to find a patch fixing it".
+>
+>> Also note that this is not the only fix required; commit d41e6858ba58c,
+>> as simple as it looks like, does a pretty good job messing up
+>> "mips:allmodconfig" builds.
+>>
+> ... nor did I find patch(es) fixing the other build problem(s) introduced
+> by d41e6858ba58c.
 
-FYI, here is the fixed version, I don't want to re-send the whole
-series for this fix:
+As I forgot to cc linux-mips on my previous email: I'm planning to queue
+this for v4.15.
 
-http://git.infradead.org/users/hch/misc.git/commitdiff/0176adb004065d6815a8e67946752df4cd947c5b
+Over the weeked I got this bcma patch, but don't know if it's related or
+not:
+
+bcma: Prevent build of PCI host features in module
+https://patchwork.kernel.org/patch/10161087/
+
+And Guenter's patch is:
+
+https://patchwork.kernel.org/patch/10162839/
+
+Which one should I take? Adding also Matt.
+
+And Matt also submitted similar patch for ssb:
+
+ssb: Prevent build of PCI host features in module
+https://patchwork.kernel.org/patch/10161131/
+
+-- 
+Kalle Valo

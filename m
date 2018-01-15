@@ -1,60 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 11:11:51 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:44722 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992828AbeAOKLnsklHK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 11:11:43 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7772160A00; Mon, 15 Jan 2018 10:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516011097;
-        bh=Fvm6Bkz/aaGg+TDMmgXzKBnU+mH4xDvmXymcMcPgiC8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=McVMBaZ5/zUd/e/Xo22ELHhDpga2qyyXpsItlUhy1E/taqp3j39pjFCPbmez2S4q9
-         sQ6xVcayPGyDab2qsTTGeBakIcgHnb9ckEAEUNHjtefoncmkbcfsSXBkAS3gdxvhxH
-         VFwou1p2pmN2FJ9aAy2FD77kcAmNBbXDUXXBdoZg=
-Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 544E8601A1;
-        Mon, 15 Jan 2018 10:11:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516011096;
-        bh=Fvm6Bkz/aaGg+TDMmgXzKBnU+mH4xDvmXymcMcPgiC8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WEjVmBBcInzB6e7ACdmCnDuIu/AzbMxorRJJBPazSxIu3NGwlVuYlCR5V6NYIPLmP
-         1NgxjH7un2NuCsHtAXSSRn6YLhPs37J3jcINhzYovB4INszwsYqyAs8szucUHy7ck/
-         2NjvwNRI62ur22S2p1NkSzHniIcatgO7vq0r6fh4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 544E8601A1
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        James Hogan <jhogan@kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        matt.redfearn@mips.com
-Subject: Re: [PATCH] bcma: Fix 'allmodconfig' and BCMA builds on MIPS targets
-References: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
-        <db5915ed-fc50-292f-c86b-4da7f3f0eddd@roeck-us.net>
-Date:   Mon, 15 Jan 2018 12:11:33 +0200
-In-Reply-To: <db5915ed-fc50-292f-c86b-4da7f3f0eddd@roeck-us.net> (Guenter
-        Roeck's message of "Sun, 14 Jan 2018 13:40:50 -0800")
-Message-ID: <87vag31ley.fsf@purkki.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 12:18:26 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:36590 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992866AbeAOLSScM7xV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 12:18:18 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 15 Jan 2018 11:17:18 +0000
+Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Mon, 15 Jan
+ 2018 03:16:59 -0800
+Subject: Re: [PATCH] bcma: Prevent build of PCI host features in module
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Guenter Roeck" <linux@roeck-us.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+References: <1515767119-17117-1-git-send-email-matt.redfearn@mips.com>
+ <87zi5f1lm0.fsf@purkki.adurom.net>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <85b96369-ebd6-1f04-13c2-1757ac716723@mips.com>
+Date:   Mon, 15 Jan 2018 11:16:57 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <kvalo@codeaurora.org>
+In-Reply-To: <87zi5f1lm0.fsf@purkki.adurom.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1516015037-452060-11649-383533-9
+X-BESS-VER: 2017.17.1-r1801090054
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.50
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189004
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.50 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62107
+X-archive-position: 62108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,66 +59,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Guenter Roeck <linux@roeck-us.net> writes:
+Hi Kalle,
 
-> [ copying linux-mips ]
->
-> On 01/14/2018 01:34 PM, Guenter Roeck wrote:
->> Mips builds with BCMA host mode enabled fail in mainline and -next
->> with:
+On 15/01/18 10:07, Kalle Valo wrote:
+> Matt Redfearn <matt.redfearn@mips.com> writes:
+> 
+>> Attempting to build bcma.ko with BCMA_DRIVER_PCI_HOSTMODE=y results in
+>> a build error due to use of symbols not exported from vmlinux:
 >>
->> In file included from include/linux/bcma/bcma.h:10:0,
->>                   from drivers/bcma/bcma_private.h:9,
->> 		 from drivers/bcma/main.c:8:
->> include/linux/bcma/bcma_driver_pci.h:218:24: error:
->> 	field 'pci_controller' has incomplete type
+>> ERROR: "pcibios_enable_device" [drivers/bcma/bcma.ko] undefined!
+>> ERROR: "register_pci_controller" [drivers/bcma/bcma.ko] undefined!
+>> make[1]: *** [scripts/Makefile.modpost:92: __modpost] Error 1
 >>
->> Bisect points to commit d41e6858ba58c ("MIPS: Kconfig: Set default MIPS
->> system type as generic") as the culprit. Analysis shows that the commmit
->> changes PCI configuration and enables PCI_DRIVERS_GENERIC. This in turn
->> disables PCI_DRIVERS_LEGACY. 'struct pci_controller' is, however, only
->> defined if PCI_DRIVERS_LEGACY is enabled.
+>> To prevent this, don't allow the host mode feature to be built if
+>> CONFIG_BCMA=m
 >>
->> Ultimately that means that BCMA_DRIVER_PCI_HOSTMODE depends on
->> PCI_DRIVERS_LEGACY. Add the missing dependency.
+>> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 >>
->> Fixes: d41e6858ba58c ("MIPS: Kconfig: Set default MIPS system type as ...")
->> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
->> Cc: James Hogan <jhogan@kernel.org>
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 >> ---
->> I am aware that this problem has been reported several times. I have
->> not been able to find a fix, but I may have missed it. If so, my
->> apologies for the noise.
 >>
-> I should have said "I have not been able to find a patch fixing it".
->
->> Also note that this is not the only fix required; commit d41e6858ba58c,
->> as simple as it looks like, does a pretty good job messing up
->> "mips:allmodconfig" builds.
+>>   drivers/bcma/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
-> ... nor did I find patch(es) fixing the other build problem(s) introduced
-> by d41e6858ba58c.
+>> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+>> index 02d78f6cecbb..4294784b9cf1 100644
+>> --- a/drivers/bcma/Kconfig
+>> +++ b/drivers/bcma/Kconfig
+>> @@ -55,7 +55,7 @@ config BCMA_DRIVER_PCI
+>>   
+>>   config BCMA_DRIVER_PCI_HOSTMODE
+>>   	bool "Driver for PCI core working in hostmode"
+>> -	depends on MIPS && BCMA_DRIVER_PCI
+>> +	depends on MIPS && BCMA_DRIVER_PCI && BCMA = y
+> 
+> Is this a new regression? Do you know the commit which broke this?
 
-As I forgot to cc linux-mips on my previous email: I'm planning to queue
-this for v4.15.
+As far as I can see, pcibios_enable_device and register_pci_controller 
+have never being exported symbols from vmlinux, and an allmodconfig 
+build with CONFIG_MIPS_COBALT=y (MIPS cobalt platform) which attempts to 
+put this this functionality into a module would never have linked 
+successfully. As such it can be traced back to when this functionality 
+was added, 49dc9577155576b10ff79f0c1486c816b01f58bf ("bcma: add PCIe 
+host controller").
 
-Over the weeked I got this bcma patch, but don't know if it's related or
-not:
+> 
+> Is it somehow related to this:
+> 
+> bcma: Fix 'allmodconfig' and BCMA builds on MIPS targets
+> https://patchwork.kernel.org/patch/10162839/
+> 
+> Or are these two separate issues?
+> 
 
-bcma: Prevent build of PCI host features in module
-https://patchwork.kernel.org/patch/10161087/
+Separate issues - that one fixes allmodconfig when CONFIG_MIPS_GENERIC=y 
+(MIPS generic platform) which does not define the struct pci_controller 
+- that error was really introduced when that struct definition was 
+removed for the generic platform by 
+c5611df968047fb0b38156497b4242730ef66108 ("MIPS: PCI: Introduce 
+CONFIG_PCI_DRIVERS_LEGACY").
 
-And Guenter's patch is:
+I think both patches are valid since they fix errors building 
+allmodconfig on 2 separate MIPS platforms.
 
-https://patchwork.kernel.org/patch/10162839/
-
-Which one should I take? Adding also Matt.
-
-And Matt also submitted similar patch for ssb:
-
-ssb: Prevent build of PCI host features in module
-https://patchwork.kernel.org/patch/10161131/
-
--- 
-Kalle Valo
+Thanks,
+Matt

@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 13:44:43 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50338 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 13:45:07 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50352 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994727AbeAOMngo52eK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 13:43:36 +0100
+        by eddie.linux-mips.org with ESMTP id S23994667AbeAOMnjnpJqK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 13:43:39 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 523931210;
-        Mon, 15 Jan 2018 12:43:30 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 239B6120E;
+        Mon, 15 Jan 2018 12:43:32 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
+        James Hogan <james.hogan@mips.com>,
+        Paul Burton <Paul.Burton@mips.com>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Dave Martin <Dave.Martin@arm.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 07/96] MIPS: Validate PR_SET_FP_MODE prctl(2) requests against the ABI of the task
-Date:   Mon, 15 Jan 2018 13:34:06 +0100
-Message-Id: <20180115123404.971879731@linuxfoundation.org>
+Subject: [PATCH 4.9 08/96] MIPS: Factor out NT_PRFPREG regset access helpers
+Date:   Mon, 15 Jan 2018 13:34:07 +0100
+Message-Id: <20180115123405.060988177@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.1
 In-Reply-To: <20180115123404.270241256@linuxfoundation.org>
 References: <20180115123404.270241256@linuxfoundation.org>
@@ -26,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62126
+X-archive-position: 62127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,56 +51,179 @@ X-list: linux-mips
 
 From: Maciej W. Rozycki <macro@mips.com>
 
-commit b67336eee3fcb8ecedc6c13e2bf88aacfa3151e2 upstream.
+commit a03fe72572c12e98f4173f8a535f32468e48b6ec upstream.
 
-Fix an API loophole introduced with commit 9791554b45a2 ("MIPS,prctl:
-add PR_[GS]ET_FP_MODE prctl options for MIPS"), where the caller of
-prctl(2) is incorrectly allowed to make a change to CP0.Status.FR or
-CP0.Config5.FRE register bits even if CONFIG_MIPS_O32_FP64_SUPPORT has
-not been enabled, despite that an executable requesting the mode
-requested via ELF file annotation would not be allowed to run in the
-first place, or for n64 and n64 ABI tasks which do not have non-default
-modes defined at all.  Add suitable checks to `mips_set_process_fp_mode'
-and bail out if an invalid mode change has been requested for the ABI in
-effect, even if the FPU hardware or emulation would otherwise allow it.
+In preparation to fix a commit 72b22bbad1e7 ("MIPS: Don't assume 64-bit
+FP registers for FP regset") FCSR access regression factor out
+NT_PRFPREG regset access helpers for the non-MSA and the MSA variants
+respectively, to avoid having to deal with excessive indentation in the
+actual fix.
 
-Always succeed however without taking any further action if the mode
-requested is the same as one already in effect, regardless of whether
-any mode change, should it be requested, would actually be allowed for
-the task concerned.
+No functional change, however use `target->thread.fpu.fpr[0]' rather
+than `target->thread.fpu.fpr[i]' for FGR holding type size determination
+as there's no `i' variable to refer to anymore, and for the factored out
+`i' variable declaration use `unsigned int' rather than `unsigned' as
+its type, following the common style.
 
 Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
-Reviewed-by: Paul Burton <paul.burton@mips.com>
+Fixes: 72b22bbad1e7 ("MIPS: Don't assume 64-bit FP registers for FP regset")
 Cc: James Hogan <james.hogan@mips.com>
+Cc: Paul Burton <Paul.Burton@mips.com>
+Cc: Alex Smith <alex@alex-smith.me.uk>
+Cc: Dave Martin <Dave.Martin@arm.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17800/
+Patchwork: https://patchwork.linux-mips.org/patch/17925/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/kernel/ptrace.c |  108 +++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 83 insertions(+), 25 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -683,6 +683,18 @@ int mips_set_process_fp_mode(struct task
- 	struct task_struct *t;
- 	int max_users;
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -439,25 +439,36 @@ static int gpr64_set(struct task_struct
  
-+	/* If nothing to change, return right away, successfully.  */
-+	if (value == mips_get_process_fp_mode(task))
-+		return 0;
+ #endif /* CONFIG_64BIT */
+ 
+-static int fpr_get(struct task_struct *target,
+-		   const struct user_regset *regset,
+-		   unsigned int pos, unsigned int count,
+-		   void *kbuf, void __user *ubuf)
++/*
++ * Copy the floating-point context to the supplied NT_PRFPREG buffer,
++ * !CONFIG_CPU_HAS_MSA variant.  FP context's general register slots
++ * correspond 1:1 to buffer slots.
++ */
++static int fpr_get_fpa(struct task_struct *target,
++		       unsigned int *pos, unsigned int *count,
++		       void **kbuf, void __user **ubuf)
+ {
+-	unsigned i;
+-	int err;
+-	u64 fpr_val;
+-
+-	/* XXX fcr31  */
++	return user_regset_copyout(pos, count, kbuf, ubuf,
++				   &target->thread.fpu,
++				   0, sizeof(elf_fpregset_t));
++}
+ 
+-	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
+-		return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+-					   &target->thread.fpu,
+-					   0, sizeof(elf_fpregset_t));
++/*
++ * Copy the floating-point context to the supplied NT_PRFPREG buffer,
++ * CONFIG_CPU_HAS_MSA variant.  Only lower 64 bits of FP context's
++ * general register slots are copied to buffer slots.
++ */
++static int fpr_get_msa(struct task_struct *target,
++		       unsigned int *pos, unsigned int *count,
++		       void **kbuf, void __user **ubuf)
++{
++	unsigned int i;
++	u64 fpr_val;
++	int err;
+ 
+ 	for (i = 0; i < NUM_FPU_REGS; i++) {
+ 		fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
+-		err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
++		err = user_regset_copyout(pos, count, kbuf, ubuf,
+ 					  &fpr_val, i * sizeof(elf_fpreg_t),
+ 					  (i + 1) * sizeof(elf_fpreg_t));
+ 		if (err)
+@@ -467,27 +478,54 @@ static int fpr_get(struct task_struct *t
+ 	return 0;
+ }
+ 
+-static int fpr_set(struct task_struct *target,
++/* Copy the floating-point context to the supplied NT_PRFPREG buffer.  */
++static int fpr_get(struct task_struct *target,
+ 		   const struct user_regset *regset,
+ 		   unsigned int pos, unsigned int count,
+-		   const void *kbuf, const void __user *ubuf)
++		   void *kbuf, void __user *ubuf)
+ {
+-	unsigned i;
+ 	int err;
+-	u64 fpr_val;
+ 
+ 	/* XXX fcr31  */
+ 
+-	init_fp_ctx(target);
++	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
++		err = fpr_get_fpa(target, &pos, &count, &kbuf, &ubuf);
++	else
++		err = fpr_get_msa(target, &pos, &count, &kbuf, &ubuf);
 +
-+	/* Only accept a mode change if 64-bit FP enabled for o32.  */
-+	if (!IS_ENABLED(CONFIG_MIPS_O32_FP64_SUPPORT))
-+		return -EOPNOTSUPP;
++	return err;
++}
+ 
+-	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
+-		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
+-					  &target->thread.fpu,
+-					  0, sizeof(elf_fpregset_t));
++/*
++ * Copy the supplied NT_PRFPREG buffer to the floating-point context,
++ * !CONFIG_CPU_HAS_MSA variant.   Buffer slots correspond 1:1 to FP
++ * context's general register slots.
++ */
++static int fpr_set_fpa(struct task_struct *target,
++		       unsigned int *pos, unsigned int *count,
++		       const void **kbuf, const void __user **ubuf)
++{
++	return user_regset_copyin(pos, count, kbuf, ubuf,
++				  &target->thread.fpu,
++				  0, sizeof(elf_fpregset_t));
++}
 +
-+	/* And only for o32 tasks.  */
-+	if (IS_ENABLED(CONFIG_64BIT) && !test_thread_flag(TIF_32BIT_REGS))
-+		return -EOPNOTSUPP;
++/*
++ * Copy the supplied NT_PRFPREG buffer to the floating-point context,
++ * CONFIG_CPU_HAS_MSA variant.  Buffer slots are copied to lower 64
++ * bits only of FP context's general register slots.
++ */
++static int fpr_set_msa(struct task_struct *target,
++		       unsigned int *pos, unsigned int *count,
++		       const void **kbuf, const void __user **ubuf)
++{
++	unsigned int i;
++	u64 fpr_val;
++	int err;
+ 
+ 	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
+-	for (i = 0; i < NUM_FPU_REGS && count >= sizeof(elf_fpreg_t); i++) {
+-		err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
++	for (i = 0; i < NUM_FPU_REGS && *count >= sizeof(elf_fpreg_t); i++) {
++		err = user_regset_copyin(pos, count, kbuf, ubuf,
+ 					 &fpr_val, i * sizeof(elf_fpreg_t),
+ 					 (i + 1) * sizeof(elf_fpreg_t));
+ 		if (err)
+@@ -498,6 +536,26 @@ static int fpr_set(struct task_struct *t
+ 	return 0;
+ }
+ 
++/* Copy the supplied NT_PRFPREG buffer to the floating-point context.  */
++static int fpr_set(struct task_struct *target,
++		   const struct user_regset *regset,
++		   unsigned int pos, unsigned int count,
++		   const void *kbuf, const void __user *ubuf)
++{
++	int err;
 +
- 	/* Check the value is valid */
- 	if (value & ~known_bits)
- 		return -EOPNOTSUPP;
++	/* XXX fcr31  */
++
++	init_fp_ctx(target);
++
++	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
++		err = fpr_set_fpa(target, &pos, &count, &kbuf, &ubuf);
++	else
++		err = fpr_set_msa(target, &pos, &count, &kbuf, &ubuf);
++
++	return err;
++}
++
+ enum mips_regset {
+ 	REGSET_GPR,
+ 	REGSET_FPR,

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 13:38:12 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:47658 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 13:38:41 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:47678 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994626AbeAOMg6XUdkK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 13:36:58 +0100
+        by eddie.linux-mips.org with ESMTP id S23994628AbeAOMg7H4dNK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 13:36:59 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C5F5811EB;
-        Mon, 15 Jan 2018 12:36:49 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AE75711E9;
+        Mon, 15 Jan 2018 12:36:52 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -15,9 +15,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Alex Smith <alex@alex-smith.me.uk>,
         Dave Martin <Dave.Martin@arm.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.18 10/46] MIPS: Factor out NT_PRFPREG regset access helpers
-Date:   Mon, 15 Jan 2018 13:33:18 +0100
-Message-Id: <20180115123328.452121886@linuxfoundation.org>
+Subject: [PATCH 3.18 11/46] MIPS: Guard against any partial write attempt with PTRACE_SETREGSET
+Date:   Mon, 15 Jan 2018 13:33:19 +0100
+Message-Id: <20180115123328.567280393@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.1
 In-Reply-To: <20180115123327.303455538@linuxfoundation.org>
 References: <20180115123327.303455538@linuxfoundation.org>
@@ -28,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62113
+X-archive-position: 62114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,19 +51,17 @@ X-list: linux-mips
 
 From: Maciej W. Rozycki <macro@mips.com>
 
-commit a03fe72572c12e98f4173f8a535f32468e48b6ec upstream.
+commit dc24d0edf33c3e15099688b6bbdf7bdc24bf6e91 upstream.
 
-In preparation to fix a commit 72b22bbad1e7 ("MIPS: Don't assume 64-bit
-FP registers for FP regset") FCSR access regression factor out
-NT_PRFPREG regset access helpers for the non-MSA and the MSA variants
-respectively, to avoid having to deal with excessive indentation in the
-actual fix.
+Complement commit d614fd58a283 ("mips/ptrace: Preserve previous
+registers for short regset write") and ensure that no partial register
+write attempt is made with PTRACE_SETREGSET, as we do not preinitialize
+any temporaries used to hold incoming register data and consequently
+random data could be written.
 
-No functional change, however use `target->thread.fpu.fpr[0]' rather
-than `target->thread.fpu.fpr[i]' for FGR holding type size determination
-as there's no `i' variable to refer to anymore, and for the factored out
-`i' variable declaration use `unsigned int' rather than `unsigned' as
-its type, following the common style.
+It is the responsibility of the caller, such as `ptrace_regset', to
+arrange for writes to span whole registers only, so here we only assert
+that it has indeed happened.
 
 Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 Fixes: 72b22bbad1e7 ("MIPS: Don't assume 64-bit FP registers for FP regset")
@@ -73,154 +71,39 @@ Cc: Alex Smith <alex@alex-smith.me.uk>
 Cc: Dave Martin <Dave.Martin@arm.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17925/
+Patchwork: https://patchwork.linux-mips.org/patch/17926/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |  106 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 82 insertions(+), 24 deletions(-)
+ arch/mips/kernel/ptrace.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 --- a/arch/mips/kernel/ptrace.c
 +++ b/arch/mips/kernel/ptrace.c
-@@ -400,25 +400,36 @@ static int gpr64_set(struct task_struct
- 
- #endif /* CONFIG_64BIT */
- 
--static int fpr_get(struct task_struct *target,
--		   const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   void *kbuf, void __user *ubuf)
-+/*
-+ * Copy the floating-point context to the supplied NT_PRFPREG buffer,
-+ * !CONFIG_CPU_HAS_MSA variant.  FP context's general register slots
-+ * correspond 1:1 to buffer slots.
-+ */
-+static int fpr_get_fpa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       void **kbuf, void __user **ubuf)
- {
--	unsigned i;
--	int err;
--	u64 fpr_val;
--
--	/* XXX fcr31  */
-+	return user_regset_copyout(pos, count, kbuf, ubuf,
-+				   &target->thread.fpu,
-+				   0, sizeof(elf_fpregset_t));
-+}
- 
--	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
--		return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
--					   &target->thread.fpu,
--					   0, sizeof(elf_fpregset_t));
-+/*
-+ * Copy the floating-point context to the supplied NT_PRFPREG buffer,
-+ * CONFIG_CPU_HAS_MSA variant.  Only lower 64 bits of FP context's
-+ * general register slots are copied to buffer slots.
-+ */
-+static int fpr_get_msa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       void **kbuf, void __user **ubuf)
-+{
-+	unsigned int i;
-+	u64 fpr_val;
-+	int err;
- 
- 	for (i = 0; i < NUM_FPU_REGS; i++) {
- 		fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
--		err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+		err = user_regset_copyout(pos, count, kbuf, ubuf,
- 					  &fpr_val, i * sizeof(elf_fpreg_t),
- 					  (i + 1) * sizeof(elf_fpreg_t));
- 		if (err)
-@@ -428,25 +439,54 @@ static int fpr_get(struct task_struct *t
+@@ -497,7 +497,15 @@ static int fpr_set_msa(struct task_struc
  	return 0;
  }
  
--static int fpr_set(struct task_struct *target,
-+/* Copy the floating-point context to the supplied NT_PRFPREG buffer.  */
-+static int fpr_get(struct task_struct *target,
+-/* Copy the supplied NT_PRFPREG buffer to the floating-point context.  */
++/*
++ * Copy the supplied NT_PRFPREG buffer to the floating-point context.
++ *
++ * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
++ * which is supposed to have been guaranteed by the kernel before
++ * calling us, e.g. in `ptrace_regset'.  We enforce that requirement,
++ * so that we can safely avoid preinitializing temporaries for
++ * partial register writes.
++ */
+ static int fpr_set(struct task_struct *target,
  		   const struct user_regset *regset,
  		   unsigned int pos, unsigned int count,
--		   const void *kbuf, const void __user *ubuf)
-+		   void *kbuf, void __user *ubuf)
+@@ -505,6 +513,8 @@ static int fpr_set(struct task_struct *t
  {
--	unsigned i;
  	int err;
--	u64 fpr_val;
  
++	BUG_ON(count % sizeof(elf_fpreg_t));
++
  	/* XXX fcr31  */
  
--	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
--		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
--					  &target->thread.fpu,
--					  0, sizeof(elf_fpregset_t));
-+	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
-+		err = fpr_get_fpa(target, &pos, &count, &kbuf, &ubuf);
-+	else
-+		err = fpr_get_msa(target, &pos, &count, &kbuf, &ubuf);
-+
-+	return err;
-+}
-+
-+/*
-+ * Copy the supplied NT_PRFPREG buffer to the floating-point context,
-+ * !CONFIG_CPU_HAS_MSA variant.   Buffer slots correspond 1:1 to FP
-+ * context's general register slots.
-+ */
-+static int fpr_set_fpa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       const void **kbuf, const void __user **ubuf)
-+{
-+	return user_regset_copyin(pos, count, kbuf, ubuf,
-+				  &target->thread.fpu,
-+				  0, sizeof(elf_fpregset_t));
-+}
-+
-+/*
-+ * Copy the supplied NT_PRFPREG buffer to the floating-point context,
-+ * CONFIG_CPU_HAS_MSA variant.  Buffer slots are copied to lower 64
-+ * bits only of FP context's general register slots.
-+ */
-+static int fpr_set_msa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       const void **kbuf, const void __user **ubuf)
-+{
-+	unsigned int i;
-+	u64 fpr_val;
-+	int err;
- 
- 	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
--	for (i = 0; i < NUM_FPU_REGS && count >= sizeof(elf_fpreg_t); i++) {
--		err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-+	for (i = 0; i < NUM_FPU_REGS && *count >= sizeof(elf_fpreg_t); i++) {
-+		err = user_regset_copyin(pos, count, kbuf, ubuf,
- 					 &fpr_val, i * sizeof(elf_fpreg_t),
- 					 (i + 1) * sizeof(elf_fpreg_t));
- 		if (err)
-@@ -457,6 +497,24 @@ static int fpr_set(struct task_struct *t
- 	return 0;
- }
- 
-+/* Copy the supplied NT_PRFPREG buffer to the floating-point context.  */
-+static int fpr_set(struct task_struct *target,
-+		   const struct user_regset *regset,
-+		   unsigned int pos, unsigned int count,
-+		   const void *kbuf, const void __user *ubuf)
-+{
-+	int err;
-+
-+	/* XXX fcr31  */
-+
-+	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
-+		err = fpr_set_fpa(target, &pos, &count, &kbuf, &ubuf);
-+	else
-+		err = fpr_set_msa(target, &pos, &count, &kbuf, &ubuf);
-+
-+	return err;
-+}
-+
- enum mips_regset {
- 	REGSET_GPR,
- 	REGSET_FPR,
+ 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))

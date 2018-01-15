@@ -1,68 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jan 2018 22:41:06 +0100 (CET)
-Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:41940
-        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992645AbeANVk7H6Kdj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Jan 2018 22:40:59 +0100
-Received: by mail-pf0-x242.google.com with SMTP id j3so7169972pfh.8
-        for <linux-mips@linux-mips.org>; Sun, 14 Jan 2018 13:40:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=x3RWKwRLvywrAqmAbTKden0sWSnlabUakVfWUcupsR8=;
-        b=bohUPOokAT/+7oRbgfaO9bUrT9KBn+tGFqxOIDlFOvRdZMhXf4GaOGpx3zAOKVUCSS
-         85NNZL5/MVcuowHxurwoYf9DwtNRUnS1drz8x/VQvG+LU8cVjws2dY2OCSZWshqmu+dO
-         tDwsMyQG5WVvivgBMU1zqxlBlJyxHD3J/W7N51r9ELo1w45QvYT9sShkcTv/vyMMJkYo
-         OTf8MxPckFLA4M+tymRDzVTf6PamHMBpPC2KOLe3SHQDADOVXVq47bOcWCiq1ClJkwAs
-         jP8PcbQn+DyvrRsreRjCtRVVuNzmlzsuvHzr1DnjWVVnAMgYnT26X0P/LaScG3EBJwGM
-         POCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=x3RWKwRLvywrAqmAbTKden0sWSnlabUakVfWUcupsR8=;
-        b=H7qLsozT9C5KLMCZ2VDS57FWCJSMMQhUm5mM3nq+gSnnAPoBj6nRotkupCkglIE8EF
-         GOBfD5VGwqiWXpRTcvrDIkEmFRZeOp0BatsOWk9WnMqJaOJUGKlBIEVWKz/Z9osy0DNM
-         ItNojYjKctK4JVYOAnhZY+0Rn9OprLMTg39QJTZoA+4WT3KCtDUNWtu614jphB0dbEI+
-         ZoFo2lOjdjTCh1ZyWSgfCnKM7ghvXmNeXXYTHOxOgb723ZttdJJ5+rZV3sjexMU6M7Co
-         TI6b2GZ7DINH9tFp499bxKUalfeyyFKHH14MIC+EasFKU0+wh64Xxn+2SRWyjf7jMX/I
-         P8yQ==
-X-Gm-Message-State: AKGB3mJ3kH2rXyPxqelEGm/mqNs7EaYkt4KAPrlSDVayGHdeWfZ5Z/XP
-        nPa3sTQNYzqwR5tyC0d58cfzlw==
-X-Google-Smtp-Source: ACJfBovDoESYfqqM24pRi96AriOEu1I7oGR3nfoUX9KcVkzZXoINW9srpkTOJji3IAh5YOs//LpYWw==
-X-Received: by 10.99.124.24 with SMTP id x24mr24145191pgc.351.1515966052213;
-        Sun, 14 Jan 2018 13:40:52 -0800 (PST)
-Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id x17sm11052739pge.50.2018.01.14.13.40.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 14 Jan 2018 13:40:51 -0800 (PST)
-Subject: Re: [PATCH] bcma: Fix 'allmodconfig' and BCMA builds on MIPS targets
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        James Hogan <jhogan@kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-References: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <db5915ed-fc50-292f-c86b-4da7f3f0eddd@roeck-us.net>
-Date:   Sun, 14 Jan 2018 13:40:50 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 10:10:11 +0100 (CET)
+Received: from verein.lst.de ([213.95.11.211]:57570 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990488AbeAOJKEageYY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Jan 2018 10:10:04 +0100
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 513C36FA82; Mon, 15 Jan 2018 10:10:02 +0100 (CET)
+Date:   Mon, 15 Jan 2018 10:10:02 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>,
+        linux-ia64@vger.kernel.org,
+        Christian =?iso-8859-1?Q?K=F6nig?= 
+        <ckoenig.leichtzumerken@gmail.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+        Konrad Rzeszutek Wilk <konrad@darnok.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 10/22] swiotlb: refactor coherent buffer allocation
+Message-ID: <20180115091002.GA398@lst.de>
+References: <20180110080932.14157-1-hch@lst.de> <20180110080932.14157-11-hch@lst.de> <cecc98cf-2e6a-a7bc-7390-d6dcced038c4@arm.com> <20180110154649.GA18529@lst.de> <03c25dda-30da-9169-a8a1-1720ec741b9d@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <1515965642-16259-1-git-send-email-linux@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <groeck7@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03c25dda-30da-9169-a8a1-1720ec741b9d@arm.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62105
+X-archive-position: 62106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,61 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[ copying linux-mips ]
+On Wed, Jan 10, 2018 at 05:02:30PM +0000, Robin Murphy wrote:
+>>>
+>>> Aren't we leaking the pages here?
+>>
+>> Yes, that free_pages got lost somewhere in the rebases, I've added
+>> it back.
+>
+> Cool.
 
-On 01/14/2018 01:34 PM, Guenter Roeck wrote:
-> Mips builds with BCMA host mode enabled fail in mainline and -next
-> with:
-> 
-> In file included from include/linux/bcma/bcma.h:10:0,
->                   from drivers/bcma/bcma_private.h:9,
-> 		 from drivers/bcma/main.c:8:
-> include/linux/bcma/bcma_driver_pci.h:218:24: error:
-> 	field 'pci_controller' has incomplete type
-> 
-> Bisect points to commit d41e6858ba58c ("MIPS: Kconfig: Set default MIPS
-> system type as generic") as the culprit. Analysis shows that the commmit
-> changes PCI configuration and enables PCI_DRIVERS_GENERIC. This in turn
-> disables PCI_DRIVERS_LEGACY. 'struct pci_controller' is, however, only
-> defined if PCI_DRIVERS_LEGACY is enabled.
-> 
-> Ultimately that means that BCMA_DRIVER_PCI_HOSTMODE depends on
-> PCI_DRIVERS_LEGACY. Add the missing dependency.
-> 
-> Fixes: d41e6858ba58c ("MIPS: Kconfig: Set default MIPS system type as ...")
-> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> I am aware that this problem has been reported several times. I have
-> not been able to find a fix, but I may have missed it. If so, my
-> apologies for the noise.
-> 
-I should have said "I have not been able to find a patch fixing it".
+FYI, here is the fixed version, I don't want to re-send the whole
+series for this fix:
 
-> Also note that this is not the only fix required; commit d41e6858ba58c,
-> as simple as it looks like, does a pretty good job messing up
-> "mips:allmodconfig" builds.
-> 
-... nor did I find patch(es) fixing the other build problem(s) introduced
-by d41e6858ba58c.
-
-Guenter
-
->   drivers/bcma/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
-> index 02d78f6cecbb..ba8acca036df 100644
-> --- a/drivers/bcma/Kconfig
-> +++ b/drivers/bcma/Kconfig
-> @@ -55,7 +55,7 @@ config BCMA_DRIVER_PCI
->   
->   config BCMA_DRIVER_PCI_HOSTMODE
->   	bool "Driver for PCI core working in hostmode"
-> -	depends on MIPS && BCMA_DRIVER_PCI
-> +	depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY
->   	help
->   	  PCI core hostmode operation (external PCI bus).
->   
-> 
+http://git.infradead.org/users/hch/misc.git/commitdiff/0176adb004065d6815a8e67946752df4cd947c5b

@@ -1,26 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 13:45:36 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50366 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2018 13:47:47 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:52418 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994731AbeAOMnmcQqqK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 13:43:42 +0100
+        by eddie.linux-mips.org with ESMTP id S23994758AbeAOMrdLGcvK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2018 13:47:33 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E821B1211;
-        Mon, 15 Jan 2018 12:43:35 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4A15911F8;
+        Mon, 15 Jan 2018 12:47:26 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
-        James Hogan <james.hogan@mips.com>,
-        Paul Burton <Paul.Burton@mips.com>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        Dave Martin <Dave.Martin@arm.com>, linux-mips@linux-mips.org,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 09/96] MIPS: Guard against any partial write attempt with PTRACE_SETREGSET
-Date:   Mon, 15 Jan 2018 13:34:08 +0100
-Message-Id: <20180115123405.170317702@linuxfoundation.org>
+Subject: [PATCH 4.14 007/118] MIPS: Validate PR_SET_FP_MODE prctl(2) requests against the ABI of the task
+Date:   Mon, 15 Jan 2018 13:33:54 +0100
+Message-Id: <20180115123415.748247737@linuxfoundation.org>
 X-Mailer: git-send-email 2.15.1
-In-Reply-To: <20180115123404.270241256@linuxfoundation.org>
-References: <20180115123404.270241256@linuxfoundation.org>
+In-Reply-To: <20180115123415.325497625@linuxfoundation.org>
+References: <20180115123415.325497625@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -28,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62128
+X-archive-position: 62129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,65 +43,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Maciej W. Rozycki <macro@mips.com>
 
-commit dc24d0edf33c3e15099688b6bbdf7bdc24bf6e91 upstream.
+commit b67336eee3fcb8ecedc6c13e2bf88aacfa3151e2 upstream.
 
-Complement commit d614fd58a283 ("mips/ptrace: Preserve previous
-registers for short regset write") and ensure that no partial register
-write attempt is made with PTRACE_SETREGSET, as we do not preinitialize
-any temporaries used to hold incoming register data and consequently
-random data could be written.
+Fix an API loophole introduced with commit 9791554b45a2 ("MIPS,prctl:
+add PR_[GS]ET_FP_MODE prctl options for MIPS"), where the caller of
+prctl(2) is incorrectly allowed to make a change to CP0.Status.FR or
+CP0.Config5.FRE register bits even if CONFIG_MIPS_O32_FP64_SUPPORT has
+not been enabled, despite that an executable requesting the mode
+requested via ELF file annotation would not be allowed to run in the
+first place, or for n64 and n64 ABI tasks which do not have non-default
+modes defined at all.  Add suitable checks to `mips_set_process_fp_mode'
+and bail out if an invalid mode change has been requested for the ABI in
+effect, even if the FPU hardware or emulation would otherwise allow it.
 
-It is the responsibility of the caller, such as `ptrace_regset', to
-arrange for writes to span whole registers only, so here we only assert
-that it has indeed happened.
+Always succeed however without taking any further action if the mode
+requested is the same as one already in effect, regardless of whether
+any mode change, should it be requested, would actually be allowed for
+the task concerned.
 
 Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Fixes: 72b22bbad1e7 ("MIPS: Don't assume 64-bit FP registers for FP regset")
+Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+Reviewed-by: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <james.hogan@mips.com>
-Cc: Paul Burton <Paul.Burton@mips.com>
-Cc: Alex Smith <alex@alex-smith.me.uk>
-Cc: Dave Martin <Dave.Martin@arm.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17926/
+Patchwork: https://patchwork.linux-mips.org/patch/17800/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/mips/kernel/process.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -536,7 +536,15 @@ static int fpr_set_msa(struct task_struc
- 	return 0;
- }
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -705,6 +705,18 @@ int mips_set_process_fp_mode(struct task
+ 	struct task_struct *t;
+ 	int max_users;
  
--/* Copy the supplied NT_PRFPREG buffer to the floating-point context.  */
-+/*
-+ * Copy the supplied NT_PRFPREG buffer to the floating-point context.
-+ *
-+ * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
-+ * which is supposed to have been guaranteed by the kernel before
-+ * calling us, e.g. in `ptrace_regset'.  We enforce that requirement,
-+ * so that we can safely avoid preinitializing temporaries for
-+ * partial register writes.
-+ */
- static int fpr_set(struct task_struct *target,
- 		   const struct user_regset *regset,
- 		   unsigned int pos, unsigned int count,
-@@ -544,6 +552,8 @@ static int fpr_set(struct task_struct *t
- {
- 	int err;
- 
-+	BUG_ON(count % sizeof(elf_fpreg_t));
++	/* If nothing to change, return right away, successfully.  */
++	if (value == mips_get_process_fp_mode(task))
++		return 0;
 +
- 	/* XXX fcr31  */
- 
- 	init_fp_ctx(target);
++	/* Only accept a mode change if 64-bit FP enabled for o32.  */
++	if (!IS_ENABLED(CONFIG_MIPS_O32_FP64_SUPPORT))
++		return -EOPNOTSUPP;
++
++	/* And only for o32 tasks.  */
++	if (IS_ENABLED(CONFIG_64BIT) && !test_thread_flag(TIF_32BIT_REGS))
++		return -EOPNOTSUPP;
++
+ 	/* Check the value is valid */
+ 	if (value & ~known_bits)
+ 		return -EOPNOTSUPP;

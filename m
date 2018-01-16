@@ -1,23 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:49:12 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:40360 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:49:43 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:40788 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994651AbeAPPsOi2lLE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 16:48:14 +0100
+        with ESMTP id S23994641AbeAPPsPUzToE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 16:48:15 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH v7 00/14] JZ4770 and GCW0 patchset
-Date:   Tue, 16 Jan 2018 16:47:50 +0100
-Message-Id: <20180116154804.21150-1-paul@crapouillou.net>
-In-Reply-To: <20180105182513.16248-2-paul@crapouillou.net>
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v7 03/14] clk: ingenic: support PLLs with no bypass bit
+Date:   Tue, 16 Jan 2018 16:47:53 +0100
+Message-Id: <20180116154804.21150-4-paul@crapouillou.net>
+In-Reply-To: <20180116154804.21150-1-paul@crapouillou.net>
 References: <20180105182513.16248-2-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516117692; bh=HPHOGtnPq2rnWlOmj5B9YT4KP2giQQSPt+rFg4MoubQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=sjKh8ReqAT162kkg6BydDjULaJY3mWACYvspJzMeBdoRs31689fC+k5smA3ghR6RIfwjxFr6chMLyLqLcJ7IhSHENaJZPe6v5AWuGKVS6JwRe43yF/qkH2zflkShaD6Lhq10hPFU8j867S3S5FMvxkuUiFqgr9dPdinYLRD+aF8=
+ <20180116154804.21150-1-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516117694; bh=+qkY/usEHwzfhzPw5BiHMinPRsjEQRjvNcisT1qARgc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=rj2QjEXwPr76/cxPNZCvPEichmvcMllII+Wc1mSL3KIxQxrV9xeBMrn9aiC9LWf0kP+DMMRsuNl0+/k/axKuUnBVuOz94Oz2qIP0IF+Gv4bWrw05PzEgieI6sI5VfKa/J2L+15WlMyaoOYe7LzDx+Lk9bWk3vbe5WdIYovquUoI=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62178
+X-archive-position: 62179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,17 +36,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+The second PLL of the JZ4770 does not have a bypass bit.
+This commit makes it possible to support it with the current common CGU
+code.
 
-Here is the V7 of my JZ4770 and GCW0 patch series.
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+---
+ drivers/clk/ingenic/cgu.c | 3 ++-
+ drivers/clk/ingenic/cgu.h | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-What changed from V6:
-- In patch 10/14 I reverted a change that prevented the system
-  name/model from being correctly initialized
-- The patch dealing with the MMC DMA hardware issue has been dropped,
-  since we couldn't reproduce the corruption issue. I can always send a
-  separate patch if we find a way to reliably trigger the bug.
-- All the rest is untouched.
+ v2: No change
+ v3: No change
+ v4: No change
+ v5: No change
+ v6: No change
+ v7: No change
 
-Greetings,
--Paul
+diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+index a2e73a6d60fd..381c4a17a1fc 100644
+--- a/drivers/clk/ingenic/cgu.c
++++ b/drivers/clk/ingenic/cgu.c
+@@ -100,7 +100,8 @@ ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	n += pll_info->n_offset;
+ 	od_enc = ctl >> pll_info->od_shift;
+ 	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
+-	bypass = !!(ctl & BIT(pll_info->bypass_bit));
++	bypass = !pll_info->no_bypass_bit &&
++		 !!(ctl & BIT(pll_info->bypass_bit));
+ 	enable = !!(ctl & BIT(pll_info->enable_bit));
+ 
+ 	if (bypass)
+diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
+index f1527cf75b3f..9da34910bd80 100644
+--- a/drivers/clk/ingenic/cgu.h
++++ b/drivers/clk/ingenic/cgu.h
+@@ -48,6 +48,7 @@
+  * @bypass_bit: the index of the bypass bit in the PLL control register
+  * @enable_bit: the index of the enable bit in the PLL control register
+  * @stable_bit: the index of the stable bit in the PLL control register
++ * @no_bypass_bit: if set, the PLL has no bypass functionality
+  */
+ struct ingenic_cgu_pll_info {
+ 	unsigned reg;
+@@ -58,6 +59,7 @@ struct ingenic_cgu_pll_info {
+ 	u8 bypass_bit;
+ 	u8 enable_bit;
+ 	u8 stable_bit;
++	bool no_bypass_bit;
+ };
+ 
+ /**
+-- 
+2.11.0

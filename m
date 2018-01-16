@@ -1,53 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 10:31:02 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:55898 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994584AbeAPJaquDAMs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 10:30:46 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E80280D;
-        Tue, 16 Jan 2018 01:30:38 -0800 (PST)
-Received: from armageddon.cambridge.arm.com (armageddon.cambridge.arm.com [10.1.206.84])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 337D03F41F;
-        Tue, 16 Jan 2018 01:30:32 -0800 (PST)
-Date:   Tue, 16 Jan 2018 09:30:29 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Deepa Dinamani <deepa.kernel@gmail.com>
-Cc:     tglx@linutronix.de, john.stultz@linaro.org,
-        linux-kernel@vger.kernel.org, arnd@arndb.de,
-        y2038@lists.linaro.org, acme@kernel.org, benh@kernel.crashing.org,
-        borntraeger@de.ibm.com, cmetcalf@mellanox.com, cohuck@redhat.com,
-        davem@davemloft.net, deller@gmx.de, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh@linuxfoundation.org,
-        heiko.carstens@de.ibm.com, hoeppner@linux.vnet.ibm.com,
-        hpa@zytor.com, jejb@parisc-linux.org, jwi@linux.vnet.ibm.com,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        mark.rutland@arm.com, mingo@redhat.com, mpe@ellerman.id.au,
-        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
-        paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
-        rostedt@goodmis.org, rric@kernel.org, schwidefsky@de.ibm.com,
-        sebott@linux.vnet.ibm.com, sparclinux@vger.kernel.org,
-        sth@linux.vnet.ibm.com, ubraun@linux.vnet.ibm.com,
-        will.deacon@arm.com, x86@kernel.org
-Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to
- compat_time.h
-Message-ID: <20180116093029.gzse6xs4sjx43znp@armageddon.cambridge.arm.com>
-References: <20180116021818.24791-1-deepa.kernel@gmail.com>
- <20180116021818.24791-3-deepa.kernel@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180116021818.24791-3-deepa.kernel@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <catalin.marinas@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 11:13:14 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:60483 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994559AbeAPKNEauyts (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 11:13:04 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 132EF208CA; Tue, 16 Jan 2018 11:12:58 +0100 (CET)
+Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id DBAF0208BD;
+        Tue, 16 Jan 2018 11:12:47 +0100 (CET)
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org
+Subject: [PATCH v3 0/8] MIPS: add support for the Microsemi MIPS SoCs
+Date:   Tue, 16 Jan 2018 11:12:32 +0100
+Message-Id: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
+X-Mailer: git-send-email 2.15.1
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62161
+X-archive-position: 62162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: catalin.marinas@arm.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,19 +39,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 15, 2018 at 06:18:10PM -0800, Deepa Dinamani wrote:
-> All the current architecture specific defines for these
-> are the same. Refactor these common defines to a common
-> header file.
-> 
-> The new common linux/compat_time.h is also useful as it
-> will eventually be used to hold all the defines that
-> are needed for compat time types that support non y2038
-> safe types. New architectures need not have to define these
-> new types as they will only use new y2038 safe syscalls.
-> This file can be deleted after y2038 when we stop supporting
-> non y2038 safe syscalls.
+Hi,
 
-For arm64:
+This patch series adds initial support for the Microsemi MIPS SoCs. It
+is currently focusing on the Microsemi Ocelot (VSC7513, VSC7514).
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+It also adds support for the reset controller.
+
+This produces a kernel that can boot to the console.
+
+This is a single series for reference but the reset driver can be taken
+separately.
+
+Changes in v3:
+ - removed the pinctrl driver as it has already been taken
+ - removed the irqchip driver as the bindings have been acked and will not
+   change
+ - changed the reset controller bindings following Rob's review
+
+Changes in v2:
+ - removed the wildcard in MAINAINERS
+ - corrected the Cc list
+ - added proper documentation for both syscons
+ - removed the mscc,cpucontrol property
+ - updated the ranges property in the ocelot dtsi
+
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: linux-pm@vger.kernel.org
+
+Alexandre Belloni (8):
+  dt-bindings: mips: Add bindings for Microsemi SoCs
+  dt-bindings: power: reset: Document ocelot-reset binding
+  power: reset: Add a driver for the Microsemi Ocelot reset
+  MIPS: mscc: Add initial support for Microsemi MIPS SoCs
+  MIPS: mscc: add ocelot dtsi
+  MIPS: mscc: add ocelot PCB123 device tree
+  MIPS: defconfigs: add a defconfig for Microsemi SoCs
+  MAINTAINERS: Add entry for Microsemi MIPS SoCs
+
+ Documentation/devicetree/bindings/mips/mscc.txt    |  44 +++++++++
+ .../bindings/power/reset/ocelot-reset.txt          |  14 +++
+ MAINTAINERS                                        |   7 ++
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  24 +++++
+ arch/mips/boot/dts/Makefile                        |   1 +
+ arch/mips/boot/dts/mscc/Makefile                   |   6 ++
+ arch/mips/boot/dts/mscc/ocelot.dtsi                | 110 +++++++++++++++++++++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts          |  27 +++++
+ arch/mips/configs/mscc_defconfig                   |  84 ++++++++++++++++
+ arch/mips/mscc/Makefile                            |  11 +++
+ arch/mips/mscc/Platform                            |  12 +++
+ arch/mips/mscc/setup.c                             | 106 ++++++++++++++++++++
+ drivers/power/reset/Kconfig                        |   7 ++
+ drivers/power/reset/Makefile                       |   1 +
+ drivers/power/reset/ocelot-reset.c                 |  88 +++++++++++++++++
+ 16 files changed, 543 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/mscc.txt
+ create mode 100644 Documentation/devicetree/bindings/power/reset/ocelot-reset.txt
+ create mode 100644 arch/mips/boot/dts/mscc/Makefile
+ create mode 100644 arch/mips/boot/dts/mscc/ocelot.dtsi
+ create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+ create mode 100644 arch/mips/configs/mscc_defconfig
+ create mode 100644 arch/mips/mscc/Makefile
+ create mode 100644 arch/mips/mscc/Platform
+ create mode 100644 arch/mips/mscc/setup.c
+ create mode 100644 drivers/power/reset/ocelot-reset.c
+
+-- 
+2.15.1

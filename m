@@ -1,57 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 04:10:50 +0100 (CET)
-Received: from mail-pl0-x242.google.com ([IPv6:2607:f8b0:400e:c01::242]:45322
-        "EHLO mail-pl0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990405AbeAPDKjnDr2z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 04:10:39 +0100
-Received: by mail-pl0-x242.google.com with SMTP id p5so5088661plo.12;
-        Mon, 15 Jan 2018 19:10:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 04:11:27 +0100 (CET)
+Received: from mail-pl0-x243.google.com ([IPv6:2607:f8b0:400e:c01::243]:45327
+        "EHLO mail-pl0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990405AbeAPDLTaPhNz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 04:11:19 +0100
+Received: by mail-pl0-x243.google.com with SMTP id p5so5089731plo.12;
+        Mon, 15 Jan 2018 19:11:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=CJhbew8hQEm7cMsSKvUxmuBdyoEjoh5xlCffVNEUDIc=;
-        b=GD6cPom01kc6nOhQ5kDU/Qw57VIVMbSYf3EuVOno+AOlZfsMLhEQR6dGy+8RP0wxsJ
-         Ad4KUqIvrTSDQBnFZbcoo0zHXdR/Ao50SOXTFXv+hP1UpOdnprIObs6KUdXhYVFEp0bP
-         dz2NkUTJ1jxTHn5VoGpvxzzkoX/gtg8giwdqLmz31AK5HyQrB3PkDpPHZJ2uFwzmPMhn
-         tHMlMzTFS0pSJKGUIi2WfJPG7J33uIWaNWrGMHOZ+y0HklVFwn0UhQeQ04lX/cosejqU
-         ezOSvbc71F9+F4mtymALzx4f2DtueIekaG7fwDCk5UjgsViTjfv190QzLHMFucGXlUrI
-         Xllw==
+        bh=mW0+lGzQK6wicHPE91EDn4KxDqEWEr7EPuzgcVMovkk=;
+        b=ph0pm8yJvu/z2R8Mv00t2fo9z6m/5Ftwc7ZDodPQp09bYrBcXCshPcmEwEuSv2bO8z
+         S61ICmM0aJy8hdDQ/1K5yhpmMYhbJytEaQFqY4FdhjaWb9esB1xlaAUIS6oqY68SxBy/
+         h5Iq0+Fo+rrOwMDTTepDAwasijKwixii/SCH/JPC4cD4UK3uEXG1FQDsNOiLevfppev2
+         1bwgrtOQqzfLSGJMP1JoXkYAMKe+WmmGk4/2tNSlK/qQkeJgZSimoQeToAF4XpWFmz3e
+         S6fExsETF2aaXjdTOKHGQMnpOCLz/sAfDp+Vn+6DfdxJODHR5D0r+VvT8XVcTg7caGMC
+         C5qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
          :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=CJhbew8hQEm7cMsSKvUxmuBdyoEjoh5xlCffVNEUDIc=;
-        b=I8uT1PGaiY62xgNaYnZ5PWFlDdLlc5MfYZFMv0oYXyx8rpkEjmDQmxpzswfr/iPLyk
-         RSOaYeAW1BeICsSg69d7qN07PQBaTgJZ3lnLbI9dQae7lC4XRj9f3o5zcAR1SDOjMsqz
-         WQAR1qq+OJjY/YfZGA66Xd2/Ml6Yd2sEnE1zphg0LiVRXRY3oqgQpKSTp7Hbm3Cd31Bh
-         yASN/Rku+3WSJaAD09tBwomn+o3nPG5eA7fmHBsYpz2vP6g79+izAO9+UpylLu1jA6IT
-         Lyxsy3yhGeTx01K/OTWNYfyzi802BI6D4eZfjqhaqfDSp7v/16oZ6WDVTB4SA9HvuqiT
-         KwAQ==
-X-Gm-Message-State: AKGB3mJWyuo/wnjZSo3NTiLtcLSN4B5axawltASc9y1pD2i+Ox5tGpdU
-        TBOHyj70ILyO1oW1CCoskE8=
-X-Google-Smtp-Source: ACJfBovGV3I7z//HY0JOMpbfKKNvuX4VOTosZkmxnEdwcrltqLHV5HksSLHqlkHBvwfCqFSrq94NMA==
-X-Received: by 10.84.248.151 with SMTP id q23mr26034711pll.274.1516072233229;
-        Mon, 15 Jan 2018 19:10:33 -0800 (PST)
+        bh=mW0+lGzQK6wicHPE91EDn4KxDqEWEr7EPuzgcVMovkk=;
+        b=r1HYqjaeDCdtEMXf28Gg4SZRruslC+Mtc9K+guPACVoKR9yjaMAxOd1yZ4JlRkSdVi
+         NtqvA0xn1R/q4uabHbsfWO03avkcOYbZDDlwAzuQRcA+LmJL2graKaU+U8E4PdvdKJTa
+         KI1yG2eLzDIYLNW8gphqvk0MH1Z7gF2oTHSaQdMP7bdcrLHmeT04bHVV743M/Y1bM+5V
+         LFwWnQwOyaQIX05RkpkDITsbscasc+snaXEWB0Ru81SQsc9l7hzSSmR+zt0A4XRDi3PZ
+         JcjXNb5Cb+nHxDVyxEUJqX06OAbm0+fhcN2vphHNKN2UWSXun+Vk8+u2PRV/nMF0s79U
+         SFYg==
+X-Gm-Message-State: AKGB3mLgKPOpx44/9PK1a4MTNGZ6GCvPEJ/9j+r4iem0fsVD3Lqr/oNv
+        iKPHGOXdnOZJZ0qtS2/c2G46nQ==
+X-Google-Smtp-Source: ACJfBoulIf3Hw8rxMzvjNoavm5MJ713DrgU9k8WwPQD+FrLtTLmj+K4ndT+IOtotO0moBGc9P0SS/w==
+X-Received: by 10.84.131.79 with SMTP id 73mr37736981pld.405.1516072270901;
+        Mon, 15 Jan 2018 19:11:10 -0800 (PST)
 Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id 15sm1159119pfi.97.2018.01.15.19.10.32
+        by smtp.gmail.com with ESMTPSA id w27sm963558pge.54.2018.01.15.19.11.09
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 15 Jan 2018 19:10:32 -0800 (PST)
-Subject: Re: [PATCH for-4.15] MIPS: Fix undefined reference to
- physical_memsize
-To:     James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     John Crispin <john@phrozen.org>, Hauke Mehrtens <hauke@hauke-m.de>,
-        Paul Burton <paul.burton@mips.com>,
+        Mon, 15 Jan 2018 19:11:10 -0800 (PST)
+Subject: Re: [PATCH for-4.15] ssb: Disable PCI host for PCI_DRIVERS_GENERIC
+To:     James Hogan <jhogan@kernel.org>, Michael Buesch <m@bues.ch>,
+        linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>
-References: <20180115205435.8745-1-jhogan@kernel.org>
+References: <20180115211714.24009-1-jhogan@kernel.org>
 From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <dcf989dc-9956-cdfe-c096-3438acfc41b3@roeck-us.net>
-Date:   Mon, 15 Jan 2018 19:10:31 -0800
+Message-ID: <3fcbf2f9-bc54-36a6-51ef-26c070c1aa69@roeck-us.net>
+Date:   Mon, 15 Jan 2018 19:11:09 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.5.0
 MIME-Version: 1.0
-In-Reply-To: <20180115205435.8745-1-jhogan@kernel.org>
+In-Reply-To: <20180115211714.24009-1-jhogan@kernel.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -59,7 +58,7 @@ Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62152
+X-archive-position: 62153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,80 +75,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/15/2018 12:54 PM, James Hogan wrote:
+On 01/15/2018 01:17 PM, James Hogan wrote:
 > Since commit d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type
-> as generic") switched the default platform to the "generic" platform,
-> allmodconfig has been failing with the following linker error (among
-> other errors):
+> as generic") changed the default MIPS platform to the "generic"
+> platform, which uses PCI_DRIVERS_GENERIC instead of PCI_DRIVERS_LEGACY,
+> various files in drivers/ssb/ have failed to build.
 > 
-> arch/mips/kernel/vpe-mt.o In function `vpe_run':
-> (.text+0x59c): undefined reference to `physical_memsize'
+> This is particularly due to the existence of struct pci_controller being
+> dependent on PCI_DRIVERS_LEGACY since commit c5611df96804 ("MIPS: PCI:
+> Introduce CONFIG_PCI_DRIVERS_LEGACY"), so add that dependency to Kconfig
+> to prevent these files being built for the "generic" platform including
+> all{yes,mod}config builds.
 > 
-> The Lantiq platform already worked around the same issue in commit
-> 9050d50e2244 ("MIPS: lantiq: Set physical_memsize") by declaring
-> physical_memsize with the initial value of 0 (on the assumption that the
-> actual memory size will be hard-coded in the loaded VPE firmware), and
-> the Malta platform already provided physical_memsize.
-> 
-> Since all other platforms will fail to link with the VPE loader enabled,
-> only allow Lantiq and Malta platforms to enable it, by way of a
-> SYS_SUPPORTS_VPE_LOADER which is selected by those two platforms and
-> which MIPS_VPE_LOADER depends on. SYS_SUPPORTS_MULTITHREADING is now a
-> dependency of SYS_SUPPORTS_VPE_LOADER so that Kconfig emits a warning if
-> SYS_SUPPORTS_VPE_LOADER is selected without SYS_SUPPORTS_MULTITHREADING.
-> 
-> Fixes: d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type as generic")
+> Fixes: c5611df96804 ("MIPS: PCI: Introduce CONFIG_PCI_DRIVERS_LEGACY")
 > Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Michael Buesch <m@bues.ch>
 > Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: John Crispin <john@phrozen.org>
-> Cc: Hauke Mehrtens <hauke@hauke-m.de>
 > Cc: Paul Burton <paul.burton@mips.com>
 > Cc: Matt Redfearn <matt.redfearn@imgtec.com>
 > Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-wireless@vger.kernel.org
 > Cc: linux-mips@linux-mips.org
 
 Tested-by: Guenter Roeck <linux@roeck-us.net>
 
 > ---
->   arch/mips/Kconfig | 11 ++++++++++-
->   1 file changed, 10 insertions(+), 1 deletion(-)
+>   drivers/ssb/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 659e0079487f..8e0b3702f1c0 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -390,6 +390,7 @@ config LANTIQ
->   	select SYS_SUPPORTS_32BIT_KERNEL
->   	select SYS_SUPPORTS_MIPS16
->   	select SYS_SUPPORTS_MULTITHREADING
-> +	select SYS_SUPPORTS_VPE_LOADER
->   	select SYS_HAS_EARLY_PRINTK
->   	select GPIOLIB
->   	select SWAP_IO_SPACE
-> @@ -517,6 +518,7 @@ config MIPS_MALTA
->   	select SYS_SUPPORTS_MIPS16
->   	select SYS_SUPPORTS_MULTITHREADING
->   	select SYS_SUPPORTS_SMARTMIPS
-> +	select SYS_SUPPORTS_VPE_LOADER
->   	select SYS_SUPPORTS_ZBOOT
->   	select SYS_SUPPORTS_RELOCATABLE
->   	select USE_OF
-> @@ -2282,9 +2284,16 @@ config MIPSR2_TO_R6_EMULATOR
->   	  The only reason this is a build-time option is to save ~14K from the
->   	  final kernel image.
+> diff --git a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+> index d8e4219c2324..71c73766ee22 100644
+> --- a/drivers/ssb/Kconfig
+> +++ b/drivers/ssb/Kconfig
+> @@ -32,7 +32,7 @@ config SSB_BLOCKIO
 >   
-> +config SYS_SUPPORTS_VPE_LOADER
-> +	bool
-> +	depends on SYS_SUPPORTS_MULTITHREADING
-> +	help
-> +	  Indicates that the platform supports the VPE loader, and provides
-> +	  physical_memsize.
-> +
->   config MIPS_VPE_LOADER
->   	bool "VPE loader support."
-> -	depends on SYS_SUPPORTS_MULTITHREADING && MODULES
-> +	depends on SYS_SUPPORTS_VPE_LOADER && MODULES
->   	select CPU_MIPSR2_IRQ_VI
->   	select CPU_MIPSR2_IRQ_EI
->   	select MIPS_MT
+>   config SSB_PCIHOST_POSSIBLE
+>   	bool
+> -	depends on SSB && (PCI = y || PCI = SSB)
+> +	depends on SSB && (PCI = y || PCI = SSB) && PCI_DRIVERS_LEGACY
+>   	default y
+>   
+>   config SSB_PCIHOST
 > 

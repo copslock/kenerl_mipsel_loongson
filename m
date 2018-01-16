@@ -1,54 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2018 17:05:08 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33866 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991668AbeDXPEjZUm5E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2018 17:04:39 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B783B504;
-        Tue, 24 Apr 2018 15:04:30 +0000 (UTC)
-Subject: Patch "MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}" has been added to the 4.14-stable tree
-To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
-        jhogan@kernel.org, linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 24 Apr 2018 17:01:06 +0200
-Message-ID: <152458206665215@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63731
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <jhogan@kernel.org>
+Date: Tue, 16 Jan 2018 21:38:24 +0000
+Subject: MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}
+Message-ID: <20180116213824.Z1aVQP3uV7NKZYTefqYnQg80JwAxR5dBNjbjW92DzzI@z>
+
+From: James Hogan <jhogan@kernel.org>
 
 
-This is a note to let you know that I've just added the patch titled
+[ Upstream commit 5f2483eb2423152445b39f2db59d372f523e664e ]
 
-    MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}
+Make doesn't expand shell style "vmlinuz.{32,ecoff,bin,srec}" to the 4
+separate files, so none of these files get cleaned up by make clean.
+List the files separately instead.
 
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+Fixes: ec3352925b74 ("MIPS: Remove all generated vmlinuz* files on "make clean"")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/18491/
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/boot/compressed/Makefile |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-The filename of the patch is:
-     mips-fix-clean-of-vmlinuz.-32-ecoff-bin-srec.patch
-and it can be found in the queue-4.14 subdirectory.
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -133,4 +133,8 @@ vmlinuz.srec: vmlinuz
+ uzImage.bin: vmlinuz.bin FORCE
+ 	$(call if_changed,uimage,none)
+ 
+-clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec}
++clean-files += $(objtree)/vmlinuz
++clean-files += $(objtree)/vmlinuz.32
++clean-files += $(objtree)/vmlinuz.ecoff
++clean-files += $(objtree)/vmlinuz.bin
++clean-files += $(objtree)/vmlinuz.srec
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+
+Patches currently in stable-queue which might be from jhogan@kernel.org are
+
+queue-4.14/mips-generic-support-gic-in-eic-mode.patch
+queue-4.14/mips-txx9-use-is_builtin-for-config_leds_class.patch
+queue-4.14/mips-generic-fix-machine-compatible-matching.patch
+queue-4.14/mips-fix-clean-of-vmlinuz.-32-ecoff-bin-srec.patch

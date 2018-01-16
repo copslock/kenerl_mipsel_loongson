@@ -1,29 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:54:15 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:42522 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994682AbeAPPs0SEBFE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 16:48:26 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
-Cc:     Maarten ter Huurne <maarten@treewalker.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v7 14/14] MIPS: ingenic: Initial GCW Zero support
-Date:   Tue, 16 Jan 2018 16:48:04 +0100
-Message-Id: <20180116154804.21150-15-paul@crapouillou.net>
-In-Reply-To: <20180116154804.21150-1-paul@crapouillou.net>
-References: <20180105182513.16248-2-paul@crapouillou.net>
- <20180116154804.21150-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516117704; bh=Xa3dYX7/MrSx6EUvB/SCtGZZnzcss0R5Gfd3Jf6F3o8=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=E9REr7E/pDN1FEIZn3NN98J2xoEsaeZvw1pFdIgk5NmPsX85xCe8fBILGPeAfd8CNMxfd1t0x7/dQMENTMbYXZf65leJHt/Ea9xittYJnxNXpNU7Sasqk958zncZJCoJYoCg6xuCtbgEHYU/LIZtfWRMY8ia47TD+kpgx8u5G0c=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 20:16:45 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:60212 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994634AbeAPTQiWmYqL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 20:16:38 +0100
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 6B3E5605A4; Tue, 16 Jan 2018 19:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1516130196;
+        bh=xer2VscLd1W3OrSdRqPZybL6fttrRhR8tYUk+XUY0Mk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Q3E2MDbDKTDamg/cRqpEiddIEm7/PumaQwzzO6dD+W+IrZ1+hTcNgOsjZ1lIl+yg8
+         kyNKtX1S8tO9J7hOfm4/KzYLyf3UMrQ3A39z9i7eBbKTE6SFlVZRa+nWju6ngrJajZ
+         KjNjYo60pIlLcDiVFITQe1uftZXk23g5ij2dsQdE=
+Received: from potku.adurom.net (a88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D5C76021C;
+        Tue, 16 Jan 2018 19:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1516130195;
+        bh=xer2VscLd1W3OrSdRqPZybL6fttrRhR8tYUk+XUY0Mk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=j9mr6L1rsxc4b8qAQHGloR//o3qSyyllPfquQfdATfXXjJFDech5MTs1cdAzYPowB
+         KN+mXS4wxfpqBE1hzTCUWoy9HltdnFigKIEZaf7/LMK0UhA5tAkTOlF7LYOimGa1Zb
+         DIZM4EW4RvdK5m+pi5fliKjYAKUpOmKiXQUmcrec=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D5C76021C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [for-4.15] ssb: Disable PCI host for PCI_DRIVERS_GENERIC
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20180115211714.24009-1-jhogan@kernel.org>
+References: <20180115211714.24009-1-jhogan@kernel.org>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Guenter Roeck <linux@roeck-us.net>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20180116191636.6B3E5605A4@smtp.codeaurora.org>
+Date:   Tue, 16 Jan 2018 19:16:36 +0000 (UTC)
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62190
+X-archive-position: 62191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,155 +66,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The GCW Zero (http://www.gcw-zero.com) is a retro-gaming focused
-handheld game console, successfully kickstarted in ~2012, running Linux.
+James Hogan <jhogan@kernel.org> wrote:
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Mathieu Malaterre <malat@debian.org>
-Acked-by: Philippe Ombredanne <pombredanne@nexb.com>
----
- arch/mips/boot/dts/ingenic/Makefile |  1 +
- arch/mips/boot/dts/ingenic/gcw0.dts | 62 +++++++++++++++++++++++++++++++++++++
- arch/mips/configs/gcw0_defconfig    | 27 ++++++++++++++++
- arch/mips/jz4740/Kconfig            |  4 +++
- 4 files changed, 94 insertions(+)
- create mode 100644 arch/mips/boot/dts/ingenic/gcw0.dts
- create mode 100644 arch/mips/configs/gcw0_defconfig
+> Since commit d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type
+> as generic") changed the default MIPS platform to the "generic"
+> platform, which uses PCI_DRIVERS_GENERIC instead of PCI_DRIVERS_LEGACY,
+> various files in drivers/ssb/ have failed to build.
+> 
+> This is particularly due to the existence of struct pci_controller being
+> dependent on PCI_DRIVERS_LEGACY since commit c5611df96804 ("MIPS: PCI:
+> Introduce CONFIG_PCI_DRIVERS_LEGACY"), so add that dependency to Kconfig
+> to prevent these files being built for the "generic" platform including
+> all{yes,mod}config builds.
+> 
+> Fixes: c5611df96804 ("MIPS: PCI: Introduce CONFIG_PCI_DRIVERS_LEGACY")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Michael Buesch <m@bues.ch>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
 
- v2: No change
- v3: No change
- v4: No change
- v5: Use SPDX license identifier
-     Drop custom CROSS_COMPILE from defconfig
- v6: Add "model" property in devicetree
- v7: No change
+Patch applied to wireless-drivers.git, thanks.
 
-diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
-index 6a31759839b4..5b1361a89e02 100644
---- a/arch/mips/boot/dts/ingenic/Makefile
-+++ b/arch/mips/boot/dts/ingenic/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
-+dtb-$(CONFIG_JZ4770_GCW0)	+= gcw0.dtb
- dtb-$(CONFIG_JZ4780_CI20)	+= ci20.dtb
- 
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-diff --git a/arch/mips/boot/dts/ingenic/gcw0.dts b/arch/mips/boot/dts/ingenic/gcw0.dts
-new file mode 100644
-index 000000000000..35f0291e8d38
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/gcw0.dts
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+
-+#include "jz4770.dtsi"
-+
-+/ {
-+	compatible = "gcw,zero", "ingenic,jz4770";
-+	model = "GCW Zero";
-+
-+	aliases {
-+		serial0 = &uart0;
-+		serial1 = &uart1;
-+		serial2 = &uart2;
-+		serial3 = &uart3;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial2:57600n8";
-+	};
-+
-+	board {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		otg_phy: otg-phy {
-+			compatible = "usb-nop-xceiv";
-+			clocks = <&cgu JZ4770_CLK_OTG_PHY>;
-+			clock-names = "main_clk";
-+		};
-+	};
-+};
-+
-+&ext {
-+	clock-frequency = <12000000>;
-+};
-+
-+&uart2 {
-+	status = "okay";
-+};
-+
-+&cgu {
-+	/* Put high-speed peripherals under PLL1, such that we can change the
-+	 * PLL0 frequency on demand without having to suspend peripherals.
-+	 * We use a rate of 432 MHz, which is the least common multiple of
-+	 * 27 MHz (required by TV encoder) and 48 MHz (required by USB host).
-+	 */
-+	assigned-clocks =
-+		<&cgu JZ4770_CLK_PLL1>,
-+		<&cgu JZ4770_CLK_UHC>;
-+	assigned-clock-parents =
-+		<0>,
-+		<&cgu JZ4770_CLK_PLL1>;
-+	assigned-clock-rates =
-+		<432000000>;
-+};
-+
-+&uhc {
-+	/* The WiFi module is connected to the UHC. */
-+	status = "okay";
-+};
-diff --git a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
-new file mode 100644
-index 000000000000..99ac1fa3b35f
---- /dev/null
-+++ b/arch/mips/configs/gcw0_defconfig
-@@ -0,0 +1,27 @@
-+CONFIG_MACH_INGENIC=y
-+CONFIG_JZ4770_GCW0=y
-+CONFIG_HIGHMEM=y
-+# CONFIG_BOUNCE is not set
-+CONFIG_PREEMPT_VOLUNTARY=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_NETDEVICES=y
-+CONFIG_SERIAL_8250=y
-+# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_INGENIC=y
-+CONFIG_USB=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
-+CONFIG_NOP_USB_XCEIV=y
-+CONFIG_TMPFS=y
-diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index 29a9361a2b77..4dd0c446ecec 100644
---- a/arch/mips/jz4740/Kconfig
-+++ b/arch/mips/jz4740/Kconfig
-@@ -8,6 +8,10 @@ config JZ4740_QI_LB60
- 	bool "Qi Hardware Ben NanoNote"
- 	select MACH_JZ4740
- 
-+config JZ4770_GCW0
-+	bool "Game Consoles Worldwide GCW Zero"
-+	select MACH_JZ4770
-+
- config JZ4780_CI20
- 	bool "MIPS Creator CI20"
- 	select MACH_JZ4780
+58eae1416b80 ssb: Disable PCI host for PCI_DRIVERS_GENERIC
+
 -- 
-2.11.0
+https://patchwork.kernel.org/patch/10165371/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

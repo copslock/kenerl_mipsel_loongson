@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:52:18 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:41758 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:52:44 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:41914 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994674AbeAPPsVQoRyE (ORCPT
+        with ESMTP id S23994675AbeAPPsVyxnyE (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 16:48:21 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Maarten ter Huurne <maarten@treewalker.org>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v7 09/14] MIPS: platform: add machtype IDs for more Ingenic SoCs
-Date:   Tue, 16 Jan 2018 16:47:59 +0100
-Message-Id: <20180116154804.21150-10-paul@crapouillou.net>
+Subject: [PATCH v7 10/14] MIPS: ingenic: Detect machtype from SoC compatible string
+Date:   Tue, 16 Jan 2018 16:48:00 +0100
+Message-Id: <20180116154804.21150-11-paul@crapouillou.net>
 In-Reply-To: <20180116154804.21150-1-paul@crapouillou.net>
 References: <20180105182513.16248-2-paul@crapouillou.net>
  <20180116154804.21150-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516117700; bh=/kjlOg1iaBxCUdf4xAYUjJT+6M7VAQp++G36xr1uCkE=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=dfXbIv9QByMo8t3CMnqivPChp0gaXJufpEFBMWxlRelxkETFpZpv0l7liv1Q18U9GJH34lWVY+goNVsv7amX8Xjah42akLfqM8R0zmv14XwDPQdiYZqqmemTplBFHsV6/OpyH4hycwUfCouUd8qjEV3CCFJWV3REJ0URaqaWRbM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516117701; bh=IbPxky1FF9Xu0Bz/LYXQGVTyd+Uv/J7CQcJv6h5y0t8=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Ey3lqs7ypt8hAmysfEnvc+g+f/q/wLRoJYGiaLBAf9t7UjDDaQTVYPo4gX05gEZ0EI/MHjpLOYdbXHCissfcckxLxRKB5T//VQCF6oh8tTwDhpkLQlSdO804O+g/5TtTAXdTdHS7YyL7Pxlzm8ZBQiPYE+x+T+rT+uEKyIdC54Y=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62185
+X-archive-position: 62186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,35 +36,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a machtype ID for the JZ4780 SoC, which was missing, and one for the
-newly supported JZ4770 SoC.
+Previously, the mips_machtype variable was always initialized
+to MACH_INGENIC_JZ4740 even if running on different SoCs.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Reviewed-by: James Hogan <jhogan@kernel.org>
 ---
- arch/mips/include/asm/bootinfo.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/jz4740/prom.c  |  1 -
+ arch/mips/jz4740/setup.c | 22 +++++++++++++++++++---
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
  v2: No change
  v3: No change
  v4: No change
- v5: No change
- v6: No change
- v7: No change
+ v5: Use SPDX license identifier
+ v6: Init mips_machtype from DT compatible string instead of using
+     MIPS_MACHINE
+ v7: Fix system name not initialized
 
-diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
-index e26a093bb17a..a301a8f4bc66 100644
---- a/arch/mips/include/asm/bootinfo.h
-+++ b/arch/mips/include/asm/bootinfo.h
-@@ -79,6 +79,8 @@ enum loongson_machine_type {
-  */
- #define  MACH_INGENIC_JZ4730	0	/* JZ4730 SOC		*/
- #define  MACH_INGENIC_JZ4740	1	/* JZ4740 SOC		*/
-+#define  MACH_INGENIC_JZ4770	2	/* JZ4770 SOC		*/
-+#define  MACH_INGENIC_JZ4780	3	/* JZ4780 SOC		*/
+diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
+index a62dd8e6ecf9..eb9f2f97bedb 100644
+--- a/arch/mips/jz4740/prom.c
++++ b/arch/mips/jz4740/prom.c
+@@ -25,7 +25,6 @@
  
- extern char *system_type;
- const char *get_system_type(void);
+ void __init prom_init(void)
+ {
+-	mips_machtype = MACH_INGENIC_JZ4740;
+ 	fw_init_cmdline();
+ }
+ 
+diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+index 6d0152321819..afb40f8bce96 100644
+--- a/arch/mips/jz4740/setup.c
++++ b/arch/mips/jz4740/setup.c
+@@ -53,6 +53,16 @@ static void __init jz4740_detect_mem(void)
+ 	add_memory_region(0, size, BOOT_MEM_RAM);
+ }
+ 
++static unsigned long __init get_board_mach_type(const void *fdt)
++{
++	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4780"))
++		return MACH_INGENIC_JZ4780;
++	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4770"))
++		return MACH_INGENIC_JZ4770;
++
++	return MACH_INGENIC_JZ4740;
++}
++
+ void __init plat_mem_setup(void)
+ {
+ 	int offset;
+@@ -63,6 +73,8 @@ void __init plat_mem_setup(void)
+ 	offset = fdt_path_offset(__dtb_start, "/memory");
+ 	if (offset < 0)
+ 		jz4740_detect_mem();
++
++	mips_machtype = get_board_mach_type(__dtb_start);
+ }
+ 
+ void __init device_tree_init(void)
+@@ -75,10 +87,14 @@ void __init device_tree_init(void)
+ 
+ const char *get_system_type(void)
+ {
+-	if (IS_ENABLED(CONFIG_MACH_JZ4780))
++	switch (mips_machtype) {
++	case MACH_INGENIC_JZ4780:
+ 		return "JZ4780";
+-
+-	return "JZ4740";
++	case MACH_INGENIC_JZ4770:
++		return "JZ4770";
++	default:
++		return "JZ4740";
++	}
+ }
+ 
+ void __init arch_init_irq(void)
 -- 
 2.11.0

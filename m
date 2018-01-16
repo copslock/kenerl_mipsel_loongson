@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 15:06:50 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:48916 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 15:10:33 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:49830 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994626AbeAPOGoK7K4V convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 15:06:44 +0100
-Date:   Tue, 16 Jan 2018 15:06:27 +0100
+        with ESMTP id S23991096AbeAPOK0fi3GV convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 15:10:26 +0100
+Date:   Tue, 16 Jan 2018 15:10:20 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v6 10/15] MIPS: ingenic: Detect machtype from SoC
- compatible string
+Subject: Re: [PATCH v6 13/15] MIPS: JZ4770: Workaround for corrupted DMA
+ transfers
 To:     James Hogan <james.hogan@mips.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Message-Id: <1516111587.1648.0@smtp.crapouillou.net>
-In-Reply-To: <20180110222712.GU27409@jhogan-linux.mipstec.com>
+Message-Id: <1516111821.1648.1@smtp.crapouillou.net>
+In-Reply-To: <20180110232045.GX27409@jhogan-linux.mipstec.com>
 References: <20180102150848.11314-1-paul@crapouillou.net>
         <20180105182513.16248-1-paul@crapouillou.net>
-        <20180105182513.16248-11-paul@crapouillou.net>
-        <20180110222712.GU27409@jhogan-linux.mipstec.com>
+        <20180105182513.16248-14-paul@crapouillou.net>
+        <20180110232045.GX27409@jhogan-linux.mipstec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516111597; bh=ShS4aCcKbezKhZQJpy+98RbwGTW3DGmN7lvgOsftRpo=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=tmNZ5it44UVSNZV/5vYaQ+8UDWJrberO3F7BMSGzYB10mthBxiYRLsPBV8V10H7qgSxlEfkBmQjEqNsI2CHGDOogBCotqxq1WXpLi2STdMmgtw8U/p6jbQL5T3YqH2W92F5Foa9dRYjzwLTzs+BIRuPMXHrQg4oBxioRf3brLHQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1516111825; bh=Mdt3xMoZbE0eLAEBI0cKUJbc4yGIWGasXP8MKpoPSjg=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=ORWah4iyBLXlbnmMEvQxgq1PnKlOxqyMIlIlkbt5SSgHwbol+UKkuIv72QxHDNF1WDauRgcX0tjuPAiRAU09W9WtPb735ZXKrslfrIfMH36SgF7P75XADygSDNqQcno6CROz6A9K7UejrOKNwRbs0PtAKK8XSMjne/IgIJV0KcA=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62171
+X-archive-position: 62172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,74 +45,69 @@ X-list: linux-mips
 
 Hi James,
 
-Le mer. 10 janv. 2018 à 23:27, James Hogan <james.hogan@mips.com> a 
+Le jeu. 11 janv. 2018 à 0:20, James Hogan <james.hogan@mips.com> a 
 écrit :
-> On Fri, Jan 05, 2018 at 07:25:08PM +0100, Paul Cercueil wrote:
->>  Previously, the mips_machtype variable was always initialized
->>  to MACH_INGENIC_JZ4740 even if running on different SoCs.
->> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>   arch/mips/jz4740/prom.c  |  1 -
->>   arch/mips/jz4740/setup.c | 26 ++++++++++++++++++++++----
->>   2 files changed, 22 insertions(+), 5 deletions(-)
->> 
->>   v2: No change
->>   v3: No change
->>   v4: No change
->>   v5: Use SPDX license identifier
->>   v6: Init mips_machtype from DT compatible string instead of using
->>       MIPS_MACHINE
->> 
->>  diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
->>  index a62dd8e6ecf9..eb9f2f97bedb 100644
->>  --- a/arch/mips/jz4740/prom.c
->>  +++ b/arch/mips/jz4740/prom.c
->>  @@ -25,7 +25,6 @@
->> 
->>   void __init prom_init(void)
->>   {
->>  -	mips_machtype = MACH_INGENIC_JZ4740;
->>   	fw_init_cmdline();
->>   }
->> 
->>  diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
->>  index 6d0152321819..cd89536fbba1 100644
->>  --- a/arch/mips/jz4740/setup.c
->>  +++ b/arch/mips/jz4740/setup.c
->>  @@ -53,16 +53,30 @@ static void __init jz4740_detect_mem(void)
->>   	add_memory_region(0, size, BOOT_MEM_RAM);
->>   }
->> 
->>  +static unsigned long __init get_board_mach_type(const void *fdt)
+> On Fri, Jan 05, 2018 at 07:25:11PM +0100, Paul Cercueil wrote:
+>>  [...]
+>>  +
+>>  +/*
+>>  + * We have seen MMC DMA transfers read corrupted data from SDRAM 
+>> when a burst
+>>  + * interval ends at physical address 0x10000000. To avoid this 
+>> problem, we
+>>  + * remove the final page of low memory from the memory map.
+>>  + */
+>>  +void __init jz4770_reserve_unsafe_for_dma(void)
 >>  +{
->>  +	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4780"))
->>  +		return MACH_INGENIC_JZ4780;
->>  +	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4770"))
->>  +		return MACH_INGENIC_JZ4770;
+>>  +	int i;
 >>  +
->>  +	return MACH_INGENIC_JZ4740;
+>>  +	for (i = 0; i < boot_mem_map.nr_map; i++) {
+>>  +		struct boot_mem_map_entry *entry = boot_mem_map.map + i;
+>>  +
+>>  +		if (entry->type != BOOT_MEM_RAM)
+>>  +			continue;
+>>  +
+>>  +		if (entry->addr + entry->size != 0x10000000)
+>>  +			continue;
+>>  +
+>>  +		entry->size -= PAGE_SIZE;
+>>  +		break;
+>>  +	}
 >>  +}
->>  +
->>   void __init plat_mem_setup(void)
->>   {
->>   	int offset;
+>>  diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+>>  index 85bc601e9a0d..5a2c20145aee 100644
+>>  --- a/arch/mips/kernel/setup.c
+>>  +++ b/arch/mips/kernel/setup.c
+>>  @@ -879,6 +879,14 @@ static void __init arch_mem_init(char 
+>> **cmdline_p)
 >> 
->>  +	if (!early_init_dt_scan(__dtb_start))
->>  +		return;
->>  +
->>   	jz4740_reset_init();
->>  -	__dt_setup_arch(__dtb_start);
+>>   	parse_early_param();
+>> 
+>>  +#ifdef CONFIG_MACH_JZ4770
+>>  +	if (current_cpu_type() == CPU_JZRISC &&
+>>  +				mips_machtype == MACH_INGENIC_JZ4770) {
+>>  +		extern void __init jz4770_reserve_unsafe_for_dma(void);
+>>  +		jz4770_reserve_unsafe_for_dma();
+>>  +	}
+>>  +#endif
 > 
-> Is it intentional that by removing this we no longer set the machine
-> name, so it'll default to "unknown"? The commit message doesn't 
-> mention
-> that change.
+> Hmm, a little bit ugly. I'm guessing the plat_mem_setup() callback is
+> too early since mem= parameters won't have been taken into account yet
+> from parse_early_param().
+> 
+> Is /memreserve/ in FDT of any value here or is it all too late due to
+> old DTs?
 > 
 > Cheers
 > James
 
-You're right, thank you for spotting that. I'll send a revised version 
-ASAP.
+When trying to test whether or not /memreserve/ fixes the corruption 
+bug we were
+having, we ran into the problem that we can't reproduce it anymore. 
+Sigh.
+
+So I'll skip this patch in the next patchset version, and handle this 
+later if
+it reappears.
 
 -Paul

@@ -1,59 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 20:16:45 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:60212 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994634AbeAPTQiWmYqL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 20:16:38 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6B3E5605A4; Tue, 16 Jan 2018 19:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516130196;
-        bh=xer2VscLd1W3OrSdRqPZybL6fttrRhR8tYUk+XUY0Mk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Q3E2MDbDKTDamg/cRqpEiddIEm7/PumaQwzzO6dD+W+IrZ1+hTcNgOsjZ1lIl+yg8
-         kyNKtX1S8tO9J7hOfm4/KzYLyf3UMrQ3A39z9i7eBbKTE6SFlVZRa+nWju6ngrJajZ
-         KjNjYo60pIlLcDiVFITQe1uftZXk23g5ij2dsQdE=
-Received: from potku.adurom.net (a88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 22:39:08 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:48710 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994634AbeAPViv020yg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Jan 2018 22:38:51 +0100
+Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D5C76021C;
-        Tue, 16 Jan 2018 19:16:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516130195;
-        bh=xer2VscLd1W3OrSdRqPZybL6fttrRhR8tYUk+XUY0Mk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=j9mr6L1rsxc4b8qAQHGloR//o3qSyyllPfquQfdATfXXjJFDech5MTs1cdAzYPowB
-         KN+mXS4wxfpqBE1hzTCUWoy9HltdnFigKIEZaf7/LMK0UhA5tAkTOlF7LYOimGa1Zb
-         DIZM4EW4RvdK5m+pi5fliKjYAKUpOmKiXQUmcrec=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D5C76021C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [for-4.15] ssb: Disable PCI host for PCI_DRIVERS_GENERIC
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20180115211714.24009-1-jhogan@kernel.org>
-References: <20180115211714.24009-1-jhogan@kernel.org>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20180116191636.6B3E5605A4@smtp.codeaurora.org>
-Date:   Tue, 16 Jan 2018 19:16:36 +0000 (UTC)
-Return-Path: <kvalo@codeaurora.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id DDE6721746;
+        Tue, 16 Jan 2018 21:38:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DDE6721746
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+From:   James Hogan <jhogan@kernel.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     James Hogan <jhogan@kernel.org>
+Subject: [PATCH] MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}
+Date:   Tue, 16 Jan 2018 21:38:24 +0000
+Message-Id: <20180116213824.29229-1-jhogan@kernel.org>
+X-Mailer: git-send-email 2.13.6
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62191
+X-archive-position: 62192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,35 +39,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-James Hogan <jhogan@kernel.org> wrote:
+Make doesn't expand shell style "vmlinuz.{32,ecoff,bin,srec}" to the 4
+separate files, so none of these files get cleaned up by make clean.
+List the files separately instead.
 
-> Since commit d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type
-> as generic") changed the default MIPS platform to the "generic"
-> platform, which uses PCI_DRIVERS_GENERIC instead of PCI_DRIVERS_LEGACY,
-> various files in drivers/ssb/ have failed to build.
-> 
-> This is particularly due to the existence of struct pci_controller being
-> dependent on PCI_DRIVERS_LEGACY since commit c5611df96804 ("MIPS: PCI:
-> Introduce CONFIG_PCI_DRIVERS_LEGACY"), so add that dependency to Kconfig
-> to prevent these files being built for the "generic" platform including
-> all{yes,mod}config builds.
-> 
-> Fixes: c5611df96804 ("MIPS: PCI: Introduce CONFIG_PCI_DRIVERS_LEGACY")
-> Signed-off-by: James Hogan <jhogan@kernel.org>
-> Cc: Michael Buesch <m@bues.ch>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Tested-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: ec3352925b74 ("MIPS: Remove all generated vmlinuz* files on "make clean"")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/boot/compressed/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Patch applied to wireless-drivers.git, thanks.
-
-58eae1416b80 ssb: Disable PCI host for PCI_DRIVERS_GENERIC
-
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index c675eece389a..adce180f3ee4 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -133,4 +133,8 @@ vmlinuz.srec: vmlinuz
+ uzImage.bin: vmlinuz.bin FORCE
+ 	$(call if_changed,uimage,none)
+ 
+-clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec}
++clean-files += $(objtree)/vmlinuz
++clean-files += $(objtree)/vmlinuz.32
++clean-files += $(objtree)/vmlinuz.ecoff
++clean-files += $(objtree)/vmlinuz.bin
++clean-files += $(objtree)/vmlinuz.srec
 -- 
-https://patchwork.kernel.org/patch/10165371/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.13.6

@@ -1,59 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:22:49 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:38788 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994630AbeAPPWlOamEf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 16:22:41 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 837E46083C; Tue, 16 Jan 2018 15:22:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516116158;
-        bh=Uuo6o96uj8B5eKKAzhQpmiUAYDQx2y1kms/S9sIU7BQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=MDdHJdQGLTmHIduB3Wh9Thv006+N7orMaKPUBVvOrz/A4/VJwq7a53mp2yRVPgaeI
-         aZLxF1hmydECXyDmu/aYP40oQ8tjBgmqXIPSToYlJyM8Ccs2C8icHVzym9wRqaxlqw
-         W54NeqUx64C66twLF19RTZLqV8M6/kezK+mij/+g=
-Received: from potku.adurom.net (a88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 16:34:57 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:35224 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994675AbeAPPesQcx1E (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Jan 2018 16:34:48 +0100
+Received: from gandalf.local.home (cpe-172-100-180-131.stny.res.rr.com [172.100.180.131])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 25184601D4;
-        Tue, 16 Jan 2018 15:22:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516116157;
-        bh=Uuo6o96uj8B5eKKAzhQpmiUAYDQx2y1kms/S9sIU7BQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=bCKpi8prX9ohwl2Z+U9CQCgpWtKHyutsVbbhOr1nmsT96ZU6x8O4ZfvHQerg3+sj5
-         s8F+aeag/yJIMUoKwjTZXks+L3hCBR6AVT95uxSV5zfSpk0mYl4E9+QJV7EysIGT7w
-         WAUA1oCyVxDJlx3HfClXFa/pkdZymeXVMOkih8rw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 25184601D4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id C29C221742;
+        Tue, 16 Jan 2018 15:34:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C29C221742
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=rostedt@goodmis.org
+Date:   Tue, 16 Jan 2018 10:34:33 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Deepa Dinamani <deepa.kernel@gmail.com>
+Cc:     tglx@linutronix.de, john.stultz@linaro.org,
+        linux-kernel@vger.kernel.org, arnd@arndb.de,
+        y2038@lists.linaro.org, acme@kernel.org, benh@kernel.crashing.org,
+        borntraeger@de.ibm.com, catalin.marinas@arm.com,
+        cmetcalf@mellanox.com, cohuck@redhat.com, davem@davemloft.net,
+        deller@gmx.de, devel@driverdev.osuosl.org,
+        gerald.schaefer@de.ibm.com, gregkh@linuxfoundation.org,
+        heiko.carstens@de.ibm.com, hoeppner@linux.vnet.ibm.com,
+        hpa@zytor.com, jejb@parisc-linux.org, jwi@linux.vnet.ibm.com,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        mark.rutland@arm.com, mingo@redhat.com, mpe@ellerman.id.au,
+        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
+        paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
+        rric@kernel.org, schwidefsky@de.ibm.com, sebott@linux.vnet.ibm.com,
+        sparclinux@vger.kernel.org, sth@linux.vnet.ibm.com,
+        ubraun@linux.vnet.ibm.com, will.deacon@arm.com, x86@kernel.org
+Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to
+ compat_time.h
+Message-ID: <20180116103433.0a1356d3@gandalf.local.home>
+In-Reply-To: <20180116021818.24791-3-deepa.kernel@gmail.com>
+References: <20180116021818.24791-1-deepa.kernel@gmail.com>
+        <20180116021818.24791-3-deepa.kernel@gmail.com>
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [for-4.15] ssb: Disable PCI host for PCI_DRIVERS_GENERIC
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20180115211714.24009-1-jhogan@kernel.org>
-References: <20180115211714.24009-1-jhogan@kernel.org>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20180116152238.837E46083C@smtp.codeaurora.org>
-Date:   Tue, 16 Jan 2018 15:22:38 +0000 (UTC)
-Return-Path: <kvalo@codeaurora.org>
+Return-Path: <SRS0=m/JJ=EL=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62174
+X-archive-position: 62175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,33 +62,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-James Hogan <jhogan@kernel.org> wrote:
+On Mon, 15 Jan 2018 18:18:10 -0800
+Deepa Dinamani <deepa.kernel@gmail.com> wrote:
 
-> Since commit d41e6858ba58 ("MIPS: Kconfig: Set default MIPS system type
-> as generic") changed the default MIPS platform to the "generic"
-> platform, which uses PCI_DRIVERS_GENERIC instead of PCI_DRIVERS_LEGACY,
-> various files in drivers/ssb/ have failed to build.
-> 
-> This is particularly due to the existence of struct pci_controller being
-> dependent on PCI_DRIVERS_LEGACY since commit c5611df96804 ("MIPS: PCI:
-> Introduce CONFIG_PCI_DRIVERS_LEGACY"), so add that dependency to Kconfig
-> to prevent these files being built for the "generic" platform including
-> all{yes,mod}config builds.
-> 
-> Fixes: c5611df96804 ("MIPS: PCI: Introduce CONFIG_PCI_DRIVERS_LEGACY")
-> Signed-off-by: James Hogan <jhogan@kernel.org>
-> Cc: Michael Buesch <m@bues.ch>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Tested-by: Guenter Roeck <linux@roeck-us.net>
+> diff --git a/arch/x86/include/asm/ftrace.h b/arch/x86/include/asm/ftrace.h
+> index 09ad88572746..db25aa15b705 100644
+> --- a/arch/x86/include/asm/ftrace.h
+> +++ b/arch/x86/include/asm/ftrace.h
 
-I'm planning to push this to 4.15 but not sure if there's enough time.
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 
--- 
-https://patchwork.kernel.org/patch/10165371/
+-- Steve
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> @@ -49,7 +49,7 @@ int ftrace_int3_handler(struct pt_regs *regs);
+>  #if !defined(__ASSEMBLY__) && !defined(COMPILE_OFFSETS)
+>  
+>  #if defined(CONFIG_FTRACE_SYSCALLS) && defined(CONFIG_IA32_EMULATION)
+> -#include <asm/compat.h>
+> +#include <linux/compat.h>
+>  
+>  /*
+>   * Because ia32 syscalls do not map to x86_64 syscall numbers

@@ -1,43 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 23:06:50 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:50784 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994668AbeAPWGnx6-ng (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Jan 2018 23:06:43 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74ECE2171F;
-        Tue, 16 Jan 2018 22:06:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 74ECE2171F
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 16 Jan 2018 22:06:31 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v7 10/14] MIPS: ingenic: Detect machtype from SoC
- compatible string
-Message-ID: <20180116220630.GD29126@saruman>
-References: <20180105182513.16248-2-paul@crapouillou.net>
- <20180116154804.21150-1-paul@crapouillou.net>
- <20180116154804.21150-11-paul@crapouillou.net>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Hf61M2y+wYpnELGG"
-Content-Disposition: inline
-In-Reply-To: <20180116154804.21150-11-paul@crapouillou.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 23:22:36 +0100 (CET)
+Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:57712 "EHLO
+        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994669AbeAPWW3U5ltg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 23:22:29 +0100
+Received: from localhost.localdomain (85-76-68-43-nat.elisa-mobile.fi [85.76.68.43])
+        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id 5DD60200A1;
+        Wed, 17 Jan 2018 00:22:28 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: bcm47xx: enable ZBOOT support
+Date:   Wed, 17 Jan 2018 00:21:44 +0200
+Message-Id: <20180116222144.20359-1-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.9.2
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62194
+X-archive-position: 62195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,122 +38,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Enable ZBOOT support. The WRT54GL router's bootloader limits kernel
+size to 3 MB with the normal load address, which is a bit challenging
+vmlinux size with modern Linux. A compressed kernel allows booting
+much bigger kernels.
 
---Hf61M2y+wYpnELGG
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/Kconfig          | 1 +
+ arch/mips/bcm47xx/Platform | 1 +
+ 2 files changed, 2 insertions(+)
 
-On Tue, Jan 16, 2018 at 04:48:00PM +0100, Paul Cercueil wrote:
-> Previously, the mips_machtype variable was always initialized
-> to MACH_INGENIC_JZ4740 even if running on different SoCs.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  arch/mips/jz4740/prom.c  |  1 -
->  arch/mips/jz4740/setup.c | 22 +++++++++++++++++++---
->  2 files changed, 19 insertions(+), 4 deletions(-)
->=20
->  v2: No change
->  v3: No change
->  v4: No change
->  v5: Use SPDX license identifier
->  v6: Init mips_machtype from DT compatible string instead of using
->      MIPS_MACHINE
->  v7: Fix system name not initialized
->=20
-> diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
-> index a62dd8e6ecf9..eb9f2f97bedb 100644
-> --- a/arch/mips/jz4740/prom.c
-> +++ b/arch/mips/jz4740/prom.c
-> @@ -25,7 +25,6 @@
-> =20
->  void __init prom_init(void)
->  {
-> -	mips_machtype =3D MACH_INGENIC_JZ4740;
->  	fw_init_cmdline();
->  }
-> =20
-> diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-> index 6d0152321819..afb40f8bce96 100644
-> --- a/arch/mips/jz4740/setup.c
-> +++ b/arch/mips/jz4740/setup.c
-> @@ -53,6 +53,16 @@ static void __init jz4740_detect_mem(void)
->  	add_memory_region(0, size, BOOT_MEM_RAM);
->  }
-> =20
-> +static unsigned long __init get_board_mach_type(const void *fdt)
-> +{
-> +	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4780"))
-> +		return MACH_INGENIC_JZ4780;
-> +	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4770"))
-> +		return MACH_INGENIC_JZ4770;
-
-Based on the assumption that fdt will always be non-NULL since commit
-ffb1843d059c ("MIPS: JZ4740: require & include DT"):
-
-Reviewed-by: James Hogan <jhogan@kernel.org>
-
-Cheers
-James
-
-> +
-> +	return MACH_INGENIC_JZ4740;
-> +}
-> +
->  void __init plat_mem_setup(void)
->  {
->  	int offset;
-> @@ -63,6 +73,8 @@ void __init plat_mem_setup(void)
->  	offset =3D fdt_path_offset(__dtb_start, "/memory");
->  	if (offset < 0)
->  		jz4740_detect_mem();
-> +
-> +	mips_machtype =3D get_board_mach_type(__dtb_start);
->  }
-> =20
->  void __init device_tree_init(void)
-> @@ -75,10 +87,14 @@ void __init device_tree_init(void)
-> =20
->  const char *get_system_type(void)
->  {
-> -	if (IS_ENABLED(CONFIG_MACH_JZ4780))
-> +	switch (mips_machtype) {
-> +	case MACH_INGENIC_JZ4780:
->  		return "JZ4780";
-> -
-> -	return "JZ4740";
-> +	case MACH_INGENIC_JZ4770:
-> +		return "JZ4770";
-> +	default:
-> +		return "JZ4740";
-> +	}
->  }
-> =20
->  void __init arch_init_irq(void)
-> --=20
-> 2.11.0
->=20
-
---Hf61M2y+wYpnELGG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlped2YACgkQbAtpk944
-dnrE0g//YvX0bWzNFweVaQ56+ZG87QlEb4C/+YFfWbizaH/3Vp/15VfJAVPmULVI
-I7d68yukNWGIInE2PGn+Cc3vkaRtGTzvZwqnChWPYnuLeVujOJoFSaQ+AYTynfRL
-aOHvMxRfA6FZ/ZlSPgybY4cEPj0mXdImiB/P45DcDLfZxJ81G5Gpe6pU7OY/DDxL
-JOYDIjLXBWNctnZwAb6yTzXAfL0T+y/IciLupZECz+Z/1pWoHSup0plKvZUWahzN
-K5TupyXSoZk61ht9avNigv0vtHnMxK4GbqmcYAwSSmeKhuX/27al1uJa4NQVtzHY
-8kS0AhvFhvJW4DxsyK9zZS+ktQiP2zfJccxbYhM7AfkME44b+Uci0oXxkcLuxoNy
-JJ+rWJFTe8yP8VdsS09V0CF5MHgQY2L9GYuTi/OP04eI6vG9ILMcjbBW1DoC7qDD
-zRX7eXpoiQzf4YCQCcjERQ3bWGmFEtWpWcZ5ft5HRc5X4tc0hLJthZ6bRN4+8S3t
-0esFEklIWfNhM3q4oziUC16h33Ae2jlyFkqdwSeLGjg4nj4Mxlyf8T1NN0LsY4RI
-EutsK6e0j6IPYw7R2ZweKhck4BwsIGu9cTpteQrIoSB6HXsZrmDnnSSPNR781S60
-98q25dCk0xYCxVKPUwEQaIVoepBS6AE5xjT3qhJb5SH7a8aYCrk=
-=u6Xx
------END PGP SIGNATURE-----
-
---Hf61M2y+wYpnELGG--
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 350a990..1a8cd3b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -253,6 +253,7 @@ config BCM47XX
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_MIPS16
++	select SYS_SUPPORTS_ZBOOT
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select USE_GENERIC_EARLY_PRINTK_8250
+ 	select GPIOLIB
+diff --git a/arch/mips/bcm47xx/Platform b/arch/mips/bcm47xx/Platform
+index 874b7ca..70783b7 100644
+--- a/arch/mips/bcm47xx/Platform
++++ b/arch/mips/bcm47xx/Platform
+@@ -5,3 +5,4 @@ platform-$(CONFIG_BCM47XX)	+= bcm47xx/
+ cflags-$(CONFIG_BCM47XX)	+=					\
+ 		-I$(srctree)/arch/mips/include/asm/mach-bcm47xx
+ load-$(CONFIG_BCM47XX)		:= 0xffffffff80001000
++zload-$(CONFIG_BCM47XX)		+= 0xffffffff80400000
+-- 
+2.9.2

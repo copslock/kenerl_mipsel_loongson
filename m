@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 22:43:34 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:41434 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994634AbeAPVn0Kd5Tg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jan 2018 22:43:26 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 16 Jan 2018 21:42:59 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 16 Jan
- 2018 13:42:17 -0800
-Date:   Tue, 16 Jan 2018 21:42:16 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Daniel Sabogal <dsabogalcc@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Fix vmlinuz build when ZBOOT is selected
-Message-ID: <20180116214215.GY27409@jhogan-linux.mipstec.com>
-References: <20180116032954.13722-1-dsabogalcc@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2018 23:06:50 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:50784 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994668AbeAPWGnx6-ng (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Jan 2018 23:06:43 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 74ECE2171F;
+        Tue, 16 Jan 2018 22:06:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 74ECE2171F
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 16 Jan 2018 22:06:31 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v7 10/14] MIPS: ingenic: Detect machtype from SoC
+ compatible string
+Message-ID: <20180116220630.GD29126@saruman>
+References: <20180105182513.16248-2-paul@crapouillou.net>
+ <20180116154804.21150-1-paul@crapouillou.net>
+ <20180116154804.21150-11-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="I33OQG5IFrqF2BWt"
+        protocol="application/pgp-signature"; boundary="Hf61M2y+wYpnELGG"
 Content-Disposition: inline
-In-Reply-To: <20180116032954.13722-1-dsabogalcc@gmail.com>
+In-Reply-To: <20180116154804.21150-11-paul@crapouillou.net>
 User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1516138974-298553-5699-1135-13
-X-BESS-VER: 2017.17-r1801091856
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189051
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62193
+X-archive-position: 62194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,64 +50,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---I33OQG5IFrqF2BWt
+
+--Hf61M2y+wYpnELGG
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 15, 2018 at 10:29:54PM -0500, Daniel Sabogal wrote:
-> vmlinuz is not built by default for platforms using
-> COMPRESSION_FNAME (e.g. Malta) due to an erroneous
-> check on ZBOOT
+On Tue, Jan 16, 2018 at 04:48:00PM +0100, Paul Cercueil wrote:
+> Previously, the mips_machtype variable was always initialized
+> to MACH_INGENIC_JZ4740 even if running on different SoCs.
 >=20
-> Signed-off-by: Daniel Sabogal <dsabogalcc@gmail.com>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  arch/mips/jz4740/prom.c  |  1 -
+>  arch/mips/jz4740/setup.c | 22 +++++++++++++++++++---
+>  2 files changed, 19 insertions(+), 4 deletions(-)
+>=20
+>  v2: No change
+>  v3: No change
+>  v4: No change
+>  v5: Use SPDX license identifier
+>  v6: Init mips_machtype from DT compatible string instead of using
+>      MIPS_MACHINE
+>  v7: Fix system name not initialized
+>=20
+> diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
+> index a62dd8e6ecf9..eb9f2f97bedb 100644
+> --- a/arch/mips/jz4740/prom.c
+> +++ b/arch/mips/jz4740/prom.c
+> @@ -25,7 +25,6 @@
+> =20
+>  void __init prom_init(void)
+>  {
+> -	mips_machtype =3D MACH_INGENIC_JZ4740;
+>  	fw_init_cmdline();
+>  }
+> =20
+> diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+> index 6d0152321819..afb40f8bce96 100644
+> --- a/arch/mips/jz4740/setup.c
+> +++ b/arch/mips/jz4740/setup.c
+> @@ -53,6 +53,16 @@ static void __init jz4740_detect_mem(void)
+>  	add_memory_region(0, size, BOOT_MEM_RAM);
+>  }
+> =20
+> +static unsigned long __init get_board_mach_type(const void *fdt)
+> +{
+> +	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4780"))
+> +		return MACH_INGENIC_JZ4780;
+> +	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4770"))
+> +		return MACH_INGENIC_JZ4770;
+
+Based on the assumption that fdt will always be non-NULL since commit
+ffb1843d059c ("MIPS: JZ4740: require & include DT"):
 
 Reviewed-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
-> ---
->  arch/mips/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 9f6a26d72f9f..0f20f84de53b 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -228,7 +228,7 @@ libs-y				+=3D arch/mips/fw/lib/
->  #
->  # Kernel compression
->  #
-> -ifdef SYS_SUPPORTS_ZBOOT
-> +ifdef CONFIG_SYS_SUPPORTS_ZBOOT
->  COMPRESSION_FNAME		=3D vmlinuz
->  else
->  COMPRESSION_FNAME		=3D vmlinux
+> +
+> +	return MACH_INGENIC_JZ4740;
+> +}
+> +
+>  void __init plat_mem_setup(void)
+>  {
+>  	int offset;
+> @@ -63,6 +73,8 @@ void __init plat_mem_setup(void)
+>  	offset =3D fdt_path_offset(__dtb_start, "/memory");
+>  	if (offset < 0)
+>  		jz4740_detect_mem();
+> +
+> +	mips_machtype =3D get_board_mach_type(__dtb_start);
+>  }
+> =20
+>  void __init device_tree_init(void)
+> @@ -75,10 +87,14 @@ void __init device_tree_init(void)
+> =20
+>  const char *get_system_type(void)
+>  {
+> -	if (IS_ENABLED(CONFIG_MACH_JZ4780))
+> +	switch (mips_machtype) {
+> +	case MACH_INGENIC_JZ4780:
+>  		return "JZ4780";
+> -
+> -	return "JZ4740";
+> +	case MACH_INGENIC_JZ4770:
+> +		return "JZ4770";
+> +	default:
+> +		return "JZ4740";
+> +	}
+>  }
+> =20
+>  void __init arch_init_irq(void)
 > --=20
-> 2.15.0
->=20
+> 2.11.0
 >=20
 
---I33OQG5IFrqF2BWt
+--Hf61M2y+wYpnELGG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpecbcACgkQbAtpk944
-dnrkPw//al49jHwchaInwl2UuqX+7GQ7VtrMi2jEH0Z7wbmpLgCNGPfI3al9mTtJ
-3xZznjKoFYOCi/k3ye91oXAp3Jzh+OvX2N26CT8UoKxB8vsF7BGTp4MzZenIj4JI
-d4Nx94RfjnrhgZQMvb4eHLw6Bi283+VfkzgJDi8G5Ms7ozwJb1qj/zcbiHrsZUt5
-5fp0cfolPrptzt6I07JDlgpTD0D/rH/O+J0vp0p3Ml5L2an5ksvWJJyXZWtS/Ltm
-BJ6SEIGMb8qFNRgPqnettCVSLbtUQnHz1/uXZytXZ1N5EQGseNKN5r9/3XSvGnnZ
-TIp4wP6p00GvKReJCjys4LsFWV6CnvAqxzZJgP0XSc0ULca0XPAFo27/bIa8hnqg
-4pBpHwqH3qUzmoCPhvXT2NRPrXQs495Krvkl7h9wIgL6PiPbE3IxfJt91VNsNjK7
-jHLvhpFxKQg4ycmfnJ9Ey1PGKVOlhk/YuO7TUTm/ZfZvo2KJK7GmsFavlq27mcBn
-JzclmVTgMWaaP5rWhP0uVUC/ACxT/9gNEEA2sPYKv4YQVp+Pg5C+kB2t15iy5mGA
-K9O8Wl+Bs2N/ube2vEAAOIAl2oBwdrEezW1VpQUpTk17RDw6dV9UbSnnD07ozl3I
-YlW0mfFyO+PfCRzfW7CQghPTJqKApb3Dx2ri2HbywV0zD9a1D/w=
-=IDTh
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlped2YACgkQbAtpk944
+dnrE0g//YvX0bWzNFweVaQ56+ZG87QlEb4C/+YFfWbizaH/3Vp/15VfJAVPmULVI
+I7d68yukNWGIInE2PGn+Cc3vkaRtGTzvZwqnChWPYnuLeVujOJoFSaQ+AYTynfRL
+aOHvMxRfA6FZ/ZlSPgybY4cEPj0mXdImiB/P45DcDLfZxJ81G5Gpe6pU7OY/DDxL
+JOYDIjLXBWNctnZwAb6yTzXAfL0T+y/IciLupZECz+Z/1pWoHSup0plKvZUWahzN
+K5TupyXSoZk61ht9avNigv0vtHnMxK4GbqmcYAwSSmeKhuX/27al1uJa4NQVtzHY
+8kS0AhvFhvJW4DxsyK9zZS+ktQiP2zfJccxbYhM7AfkME44b+Uci0oXxkcLuxoNy
+JJ+rWJFTe8yP8VdsS09V0CF5MHgQY2L9GYuTi/OP04eI6vG9ILMcjbBW1DoC7qDD
+zRX7eXpoiQzf4YCQCcjERQ3bWGmFEtWpWcZ5ft5HRc5X4tc0hLJthZ6bRN4+8S3t
+0esFEklIWfNhM3q4oziUC16h33Ae2jlyFkqdwSeLGjg4nj4Mxlyf8T1NN0LsY4RI
+EutsK6e0j6IPYw7R2ZweKhck4BwsIGu9cTpteQrIoSB6HXsZrmDnnSSPNR781S60
+98q25dCk0xYCxVKPUwEQaIVoepBS6AE5xjT3qhJb5SH7a8aYCrk=
+=u6Xx
 -----END PGP SIGNATURE-----
 
---I33OQG5IFrqF2BWt--
+--Hf61M2y+wYpnELGG--

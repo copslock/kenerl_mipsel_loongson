@@ -1,69 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 18:32:12 +0100 (CET)
-Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:32781
-        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994679AbeAQRcEeqR22 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 18:32:04 +0100
-Received: by mail-it0-x241.google.com with SMTP id c102so15419212itd.0;
-        Wed, 17 Jan 2018 09:32:04 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 19:58:52 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:35871
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994685AbeAQS6qQlXJu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 19:58:46 +0100
+Received: by mail-wm0-x244.google.com with SMTP id f3so17932932wmc.1;
+        Wed, 17 Jan 2018 10:58:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=b/YRpP5+BmuDwNZmqpasQ9+WTU7UmNOdUiABJ+mbKu0=;
-        b=t3U1oMRlJlAK+HrKsuzoSsiyGMAbQAOoJ1u4Bm5qGfC5Scrj5/rWJ6xxm4Zmq14sCn
-         ZlOL2n6mk4uX70kdAYdN4X9D9zyGkr7Hjivn10gq7xGtaOWhXQEv4mwPwLhheiYF6FUM
-         agt1/fF2ZdPgEOfB3ZPgoOhezIGgtSJkzFp3r4tNuby8bbuwWR31Nv9Q23lj5Q77ENtx
-         7OLNCUeplbhLJu1BEI1Bten07mz6LewdNsojMv6Ssw73lO4Hva4Jer/62qh67FkABoWF
-         i0D8zbjcUnjIkNH+8xDF8oc1Iblcq2n4YmPo3NpV2SBo72ZBUwwLFMNv5ZYvtu8pk1I7
-         qV3w==
+        h=from:to:cc:subject:date:message-id;
+        bh=xsosCAjSkK54Qmf+zrTWComgbQmEpaazDnZmdspYUf0=;
+        b=AtdgD4GNd+JbGZawHdWtMEdD7hCZRM6mASF/aoz5AEw6YsN2rFPDAuEszGeNEOm9q3
+         PEOk83fIJ5ov7f5QAeEy03XMJHJf8u98GQAa3h2ENs/lPmiF3bsAj33ja3ACPhr9erl+
+         YPM0u+hH+Kic9940euQfS/ZIjpySXy6gkrdL/XV+mYuclshfQ60t7/eYcwSEiGWMUfyp
+         FC/tcC1+UNFTIIzS4trLe7en6rgKw9VtQ+d7M2n5pCzd7FEJxFXSebwUpd/CSeqU6gP7
+         cVPm0Npfg5frvSVVisvU2JVBbQO1Tme+zcCl8qIIXjOBacfq/LYZXZQ6r4XHrWcko/yB
+         Y4fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=b/YRpP5+BmuDwNZmqpasQ9+WTU7UmNOdUiABJ+mbKu0=;
-        b=XAbvksi/rj/E6SqCsR2fSGuIgkHUz2z99OxuojxU/oLmx+TTdnidijLHOkrum8x3OQ
-         1BGOnwbamzICakefx+lqoQk88JGFjQRZKeaNVlhx9i3/pIO2IuEcMWYoL872oCGCRle3
-         phkLWp9B8RN1pZ7Huc+iD2Koykn3ZLLg6bqOWvLQcHZraFCZ1CNO6qRFXTIILZNglsqW
-         aM3hMQ7DUOhzh9GAqV1dPMgEO3qmicaEPzlw77V2UsUHi5AXpaRnAyXMvTmxW5Jj6VnN
-         IIc8Ayy5sVfojCrgZvJIGne2r0pLzMsb6DGKy2dS2sUhKaitvCzC0szPJ8IiRfdrjIVe
-         h2LA==
-X-Gm-Message-State: AKwxytff74hL1giMpM88n/HbOsboyyI/VZSLKoiKKzgY7C9VOwKAVU7b
-        6uZFPtNysOHR/F1pe/D+TD/OJQRO4a0zq89e3ps=
-X-Google-Smtp-Source: ACJfBosW5w370LeHrejFf5640LnWUeCEuKksBZrvCXkIkzPjAHjbxDIyathHKMgYMjW6Qw6SBnvwLYOThknBYn/OcNU=
-X-Received: by 10.36.31.5 with SMTP id d5mr13873003itd.136.1516210317834; Wed,
- 17 Jan 2018 09:31:57 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.2.144.208 with HTTP; Wed, 17 Jan 2018 09:31:57 -0800 (PST)
-In-Reply-To: <CAL_JsqJHHPJY0Yg+kmMbjZVsq=VVC0dPgtvXoN+sxL9gjBtMLA@mail.gmail.com>
-References: <20171228212954.2922-1-malat@debian.org> <20171228212954.2922-2-malat@debian.org>
- <20180103200211.u56tqesyumsofoff@rob-hp-laptop> <CANc+2y5Y9fYh5V5OG_o+-92-uLYew7yNObLGTYPhGyx2eExywA@mail.gmail.com>
- <CAL_JsqJHHPJY0Yg+kmMbjZVsq=VVC0dPgtvXoN+sxL9gjBtMLA@mail.gmail.com>
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Wed, 17 Jan 2018 23:01:57 +0530
-Message-ID: <CANc+2y4nBcVPUjTiXXDDUD_qph0zHAmr-SDCt74C8gCZdNQ4Fw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] nvmem: add driver for JZ4780 efuse
-To:     Rob Herring <robh@kernel.org>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zubair.Kakakhel@mips.com,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <prasannatsmkumar@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=xsosCAjSkK54Qmf+zrTWComgbQmEpaazDnZmdspYUf0=;
+        b=PUPZfAkJ1pboI19unPWsGGd6+Rn/Qef1SsiWfU0EtCmJXgtdIR18qJJfkON/UZ5aJj
+         309v5g4JrCq3SO4t+9CAFQgtKitxuDyeCalFKjaf1QiF03w/Dn3/w7taKYZRpR1Kre/O
+         t31xrNqCLw9g25Sp8d9mV0L7zlaTAegDAIoTYtrqCCO7rZjz1XY87pUDuDbtjSdrq9/n
+         FAHNjlidWT3zSgkKd1CZJ2O42zUXdnECA9blQzUU3YenTF7hoxvR4q6TQgMJJuN/1QuV
+         TjHS4u+dNqeBSSR9G4Pbj1xN+5LiDT7lGAhkhvQnSz63QSRNS5QGXGlnc4WZ1s2NXiyo
+         ggKg==
+X-Gm-Message-State: AKwxytfpP3/hqS7t8foNFhFDgG9tPMcePmDx5bcSu7QlViW2pw3SV9uJ
+        USSxsjP7eLxb4u6ejcTe9d14bjU3
+X-Google-Smtp-Source: ACJfBosRMSJhLxjhhLazkTIyaixkrIn8vcS/p16Lt4ZaNhLWwkwF+hZMHlKMEm92K+DQR1mwbmmGZA==
+X-Received: by 10.28.32.15 with SMTP id g15mr2745000wmg.22.1516215520722;
+        Wed, 17 Jan 2018 10:58:40 -0800 (PST)
+Received: from Red.local (LFbn-MAR-1-494-174.w2-15.abo.wanadoo.fr. [2.15.82.174])
+        by smtp.googlemail.com with ESMTPSA id p10sm9643330wrh.61.2018.01.17.10.58.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 17 Jan 2018 10:58:40 -0800 (PST)
+From:   Corentin Labbe <clabbe.montjoie@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Corentin Labbe <clabbe.montjoie@gmail.com>
+Subject: [PATCH] MIPS: fix typo BIG_ENDIAN to CPU_BIG_ENDIAN
+Date:   Wed, 17 Jan 2018 19:56:38 +0100
+Message-Id: <20180117185638.22426-1-clabbe.montjoie@gmail.com>
+X-Mailer: git-send-email 2.13.6
+Return-Path: <clabbe.montjoie@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62204
+X-archive-position: 62205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: clabbe.montjoie@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,219 +63,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Rob,
+MIPS_GENERIC select some options with condition on BIG_ENDIAN which do
+not exists.
+Replace BIG_ENDIAN by CPU_BIG_ENDIAN which is the correct kconfig name.
+Note that BMIP_GENERIC do the same which confirm that this patch is
+needed.
 
-On 11 January 2018 at 20:38, Rob Herring <robh@kernel.org> wrote:
-> On Sat, Jan 6, 2018 at 6:43 AM, PrasannaKumar Muralidharan
-> <prasannatsmkumar@gmail.com> wrote:
->> Hi Rob,
->>
->> On 4 January 2018 at 01:32, Rob Herring <robh@kernel.org> wrote:
->>> On Thu, Dec 28, 2017 at 10:29:52PM +0100, Mathieu Malaterre wrote:
->>>> From: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->>>>
->>>> This patch brings support for the JZ4780 efuse. Currently it only expose
->>>> a read only access to the entire 8K bits efuse memory.
->>>>
->>>> Tested-by: Mathieu Malaterre <malat@debian.org>
->>>> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->>>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
->>>> ---
->>>>  .../ABI/testing/sysfs-driver-jz4780-efuse          |  16 ++
->>>>  .../bindings/nvmem/ingenic,jz4780-efuse.txt        |  17 ++
->>>
->>> Please split bindings to separate patch.
->>>
->>>>  MAINTAINERS                                        |   5 +
->>>>  arch/mips/boot/dts/ingenic/jz4780.dtsi             |  40 ++-
->>>
->>> dts files should also be separate.
->>>
->>>>  drivers/nvmem/Kconfig                              |  10 +
->>>>  drivers/nvmem/Makefile                             |   2 +
->>>>  drivers/nvmem/jz4780-efuse.c                       | 305 +++++++++++++++++++++
->>>>  7 files changed, 383 insertions(+), 12 deletions(-)
->>>>  create mode 100644 Documentation/ABI/testing/sysfs-driver-jz4780-efuse
->>>>  create mode 100644 Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
->>>>  create mode 100644 drivers/nvmem/jz4780-efuse.c
->>>>
->>>> diff --git a/Documentation/ABI/testing/sysfs-driver-jz4780-efuse b/Documentation/ABI/testing/sysfs-driver-jz4780-efuse
->>>> new file mode 100644
->>>> index 000000000000..bb6f5d6ceea0
->>>> --- /dev/null
->>>> +++ b/Documentation/ABI/testing/sysfs-driver-jz4780-efuse
->>>> @@ -0,0 +1,16 @@
->>>> +What:                /sys/devices/*/<our-device>/nvmem
->>>> +Date:                December 2017
->>>> +Contact:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->>>> +Description: read-only access to the efuse on the Ingenic JZ4780 SoC
->>>> +             The SoC has a one time programmable 8K efuse that is
->>>> +             split into segments. The driver supports read only.
->>>> +             The segments are
->>>> +             0x000   64 bit Random Number
->>>> +             0x008  128 bit Ingenic Chip ID
->>>> +             0x018  128 bit Customer ID
->>>> +             0x028 3520 bit Reserved
->>>> +             0x1E0    8 bit Protect Segment
->>>> +             0x1E1 2296 bit HDMI Key
->>>> +             0x300 2048 bit Security boot key
->>>
->>> Why do these need to be exposed to userspace?
->>>
->>> sysfs is 1 value per file and this is lots of different things.
->>>
->>> We already have ways to feed random data (entropy) to the system. And we
->>> have a way to expose SoC ID info to userspace (socdev).
->>
->> Currently ingenic chip id is not used anywhere. The vendor BSP exposed
->> only chip id and customer id. Should we do the same? Please provide
->> your suggestion.
->
-> No. Don't create an ABI if you don't really need it.
->
->>
->>>> +Users:               any user space application which wants to read the Chip
->>>> +             and Customer ID
->>>> diff --git a/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt b/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
->>>> new file mode 100644
->>>> index 000000000000..cd6d67ec22fc
->>>> --- /dev/null
->>>> +++ b/Documentation/devicetree/bindings/nvmem/ingenic,jz4780-efuse.txt
->>>> @@ -0,0 +1,17 @@
->>>> +Ingenic JZ EFUSE driver bindings
->>>> +
->>>> +Required properties:
->>>> +- "compatible"               Must be set to "ingenic,jz4780-efuse"
->>>> +- "reg"                      Register location and length
->>>> +- "clocks"           Handle for the ahb clock for the efuse.
->>>> +- "clock-names"              Must be "bus_clk"
->>>> +
->>>> +Example:
->>>> +
->>>> +efuse: efuse@134100d0 {
->>>> +     compatible = "ingenic,jz4780-efuse";
->>>> +     reg = <0x134100D0 0xFF>;
->>>> +
->>>> +     clocks = <&cgu JZ4780_CLK_AHB2>;
->>>> +     clock-names = "bus_clk";
->>>> +};
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index a6e86e20761e..7a050c20c533 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -6902,6 +6902,11 @@ M:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
->>>>  S:   Maintained
->>>>  F:   drivers/dma/dma-jz4780.c
->>>>
->>>> +INGENIC JZ4780 EFUSE Driver
->>>> +M:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->>>> +S:   Maintained
->>>> +F:   drivers/nvmem/jz4780-efuse.c
->>>
->>> Binding file?
->>
->> Sorry, missed it. Will add it.
->>
->>>> +
->>>>  INGENIC JZ4780 NAND DRIVER
->>>>  M:   Harvey Hunt <harveyhuntnexus@gmail.com>
->>>>  L:   linux-mtd@lists.infradead.org
->>>> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
->>>> index 9b5794667aee..3fb9d916a2ea 100644
->>>> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
->>>> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
->>>> @@ -224,21 +224,37 @@
->>>>               reg = <0x10002000 0x100>;
->>>>       };
->>>>
->>>> -     nemc: nemc@13410000 {
->>>> -             compatible = "ingenic,jz4780-nemc";
->>>> -             reg = <0x13410000 0x10000>;
->>>> -             #address-cells = <2>;
->>>> +
->>>> +     ahb2: ahb2 {
->>>> +             compatible = "simple-bus";
->>>
->>> This is an unrelated change and should be its own patch.
->>
->> The efuse register address range is a subset of address range of nemc.
->> So decided to make nemc and efuse as nodes with parent node ahb2. This
->> is required for efuse driver to work. I am not able to understand what
->> you mean by unrelated change. Can you please explain it?
->>
->>>> +             #address-cells = <1>;
->>>>               #size-cells = <1>;
->>>> -             ranges = <1 0 0x1b000000 0x1000000
->>>> -                       2 0 0x1a000000 0x1000000
->>>> -                       3 0 0x19000000 0x1000000
->>>> -                       4 0 0x18000000 0x1000000
->>>> -                       5 0 0x17000000 0x1000000
->>>> -                       6 0 0x16000000 0x1000000>;
->>>> +             ranges = <>;
->>>> +
->>>> +             nemc: nemc@13410000 {
->>>> +                     compatible = "ingenic,jz4780-nemc";
->>>> +                     reg = <0x13410000 0x10000>;
->>>> +                     #address-cells = <2>;
->>>> +                     #size-cells = <1>;
->>>> +                     ranges = <1 0 0x1b000000 0x1000000
->>>> +                               2 0 0x1a000000 0x1000000
->>>> +                               3 0 0x19000000 0x1000000
->>>> +                               4 0 0x18000000 0x1000000
->>>> +                               5 0 0x17000000 0x1000000
->>>> +                               6 0 0x16000000 0x1000000>;
->>>> +
->>>> +                     clocks = <&cgu JZ4780_CLK_NEMC>;
->>>> +
->>>> +                     status = "disabled";
->>>> +             };
->>>>
->>>> -             clocks = <&cgu JZ4780_CLK_NEMC>;
->>>> +             efuse: efuse@134100d0 {
->>>> +                     compatible = "ingenic,jz4780-efuse";
->>>> +                     reg = <0x134100d0 0xff>;
->>>
->>> You are creating an overlapping region here with nemc above. Don't do
->>> that.
->>
->> Should "reg = <0x13410000 0x10000>;" be used instead?
->
-> No, that still overlaps with nemc. What's in registers 0x00-0xcf and
-> 0x1d0-0xffff? Either get rid of this node altogether and make the
-> driver for nemc also instantiate the efuse driver (DT is not the only
-> way to instantiate drivers), or create sub-nodes under nemc for each
-> distinct h/w block in the 13410000-13420000 address space.
+Fixes: eed0eabd12ef0 ("MIPS: generic: Introduce generic DT-based board support")
+Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+---
+ arch/mips/Kconfig | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-My idea was not to change nemc driver.
-
-By "create sub-nodes under nemc" do you mean something like below?
-nemc: nemc@13410000 {
-                     compatible = "ingenic,jz4780-nemc";
-                     reg = <0x13410000 0x10000>;
-                     <...>
-                     status = "disabled";
-
-                     efuse: efuse@134101d0 {
-                                          compatible = "ingenic,jz4780-efuse";
-                                          reg = <0x134100d0 0xff>;
-                     }
-}
-
-Will this instantiate efuse driver? I do not know how to do that with
-sub-node. I will explore more on this.
-
-> Or a third option is make nemc reg:
->
-> reg = <0x13410000 0xd0>, <0x134101d0 0xfe30>;
->
-> But I suspect that is wrong and you probably have some other function in there.
->
-> Rob
-
-If the efuse block were to use a different base register address (that
-does not overlap with nemc register range) in future SoC how the node
-should be? Using nemc to instantiate efuse won't be the best choice if
-that happens.
-
-Thanks,
-PrasannaKumar
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 13c6e5cb6055..504e78ff0b00 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -119,12 +119,12 @@ config MIPS_GENERIC
+ 	select SYS_SUPPORTS_MULTITHREADING
+ 	select SYS_SUPPORTS_RELOCATABLE
+ 	select SYS_SUPPORTS_SMARTMIPS
+-	select USB_EHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
+-	select USB_EHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
+-	select USB_OHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
+-	select USB_OHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
+-	select USB_UHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
+-	select USB_UHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
++	select USB_EHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
++	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
++	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
+ 	select USE_OF
+ 	help
+ 	  Select this to build a kernel which aims to support multiple boards,
+-- 
+2.13.6

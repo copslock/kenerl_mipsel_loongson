@@ -1,65 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 23:29:31 +0100 (CET)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:43752
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994709AbeAQWXntEvnT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 23:23:43 +0100
-Received: by mail-lf0-x242.google.com with SMTP id o89so19873654lfg.10;
-        Wed, 17 Jan 2018 14:23:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AIoHly5CZcj8thz+1JzoIQ1MOffbGF581jPe7JjVNfI=;
-        b=Iwm6A9IgVkBqdC4s+kfx8uqnuR12WULUrJRPog5BXOErzo8OULh9PXEisy1Yv1cy2D
-         XQsTLSq5F/58aPLrYI8Sxl2IAIr8q3jujnmpDm/dOSOQvyXar8imkIOMEyiS8L681Y5k
-         6M+xlOwXX+v9itw4nSJbU5+Wy2Vpzn/Xo4dcoAby0dYv2EnrXd8SAukjovz10p9o2/Dy
-         jE1qfNPPEMPMid6iH3P/zeRjkaL4sRpsXzc77oMJY0REJ/qcU71F9j7CcVkrZeE6AhNY
-         qS9X2wBvkcK+zkUVbh9IZRLKcLTTOjFgpj8FaO+NVrvXT2w8B7i6BXAEwAuXuY/0R+Dn
-         z1EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=AIoHly5CZcj8thz+1JzoIQ1MOffbGF581jPe7JjVNfI=;
-        b=Vh0Wm2dhM3dgSkRXipLIS347eXhyLzAARaBBD4VbICPE6RvX9cUEuwu0J9VJfEX8Bo
-         yiBaG1nRearvO83Fk23pISHRS8H7i1rI5+zruLPZQB84uSgOUKpeeRRSkJm7NlKpBHI/
-         F2y0aKIDAvlUBt5bMHofEgF6ALtLhbSbEFuCrrcHS37+ZJuK/iQOp2jkUW2gn2O3WCDP
-         J2StpAiEmNgbg+cfumi1I99qbdMgYR3dOUF3fnChnM0nsYaqkRJ3dzQac149CK+M+Xqm
-         VqXlVZU+Cq5gW5b4V22JUMx1gqsQO9uFsvEYkgwnBPO0BcFs2+sx6tmdK7UKdcM4y8qQ
-         cUHw==
-X-Gm-Message-State: AKwxytd6u/GEPhU4Mqw26etedRyG8P5gD188F0+/W7zSDiLLdu4nbqCg
-        pAVHEUpEKxkIvrMhWUuDdZnSFaVD
-X-Google-Smtp-Source: ACJfBou03fTK6Xsz7w4ec7o17OmQtJPUXDDg061hmLo6vM6lhwh36h9r6vWFUCAqYfTS+HKm7PH7fg==
-X-Received: by 10.46.32.216 with SMTP id g85mr8430143lji.133.1516227818122;
-        Wed, 17 Jan 2018 14:23:38 -0800 (PST)
-Received: from linux.local ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id l203sm953867lfb.59.2018.01.17.14.23.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 17 Jan 2018 14:23:37 -0800 (PST)
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     ralf@linux-mips.org, miodrag.dinic@mips.com, jhogan@kernel.org,
-        goran.ferenc@mips.com, david.daney@cavium.com,
-        paul.gortmaker@windriver.com, paul.burton@mips.com,
-        alex.belits@cavium.com, Steven.Hill@cavium.com
-Cc:     alexander.sverdlin@nokia.com, matt.redfearn@mips.com,
-        kumba@gentoo.org, marcin.nowakowski@mips.com, James.hogan@mips.com,
-        Peter.Wotton@mips.com, Sergey.Semin@t-platforms.ru,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 14/14] MIPS: memblock: Deactivate bootmem allocator
-Date:   Thu, 18 Jan 2018 01:23:12 +0300
-Message-Id: <20180117222312.14763-15-fancer.lancer@gmail.com>
-X-Mailer: git-send-email 2.12.0
-In-Reply-To: <20180117222312.14763-1-fancer.lancer@gmail.com>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
-Return-Path: <fancer.lancer@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 00:59:07 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:60572 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994702AbeAQX67j8qTV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Jan 2018 00:58:59 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9000220C09;
+        Wed, 17 Jan 2018 23:58:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9000220C09
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 17 Jan 2018 23:58:47 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/13] MIPS: mscc: Add initial support for Microsemi MIPS
+ SoCs
+Message-ID: <20180117235846.GA25314@saruman>
+References: <20171128152643.20463-1-alexandre.belloni@free-electrons.com>
+ <20171128152643.20463-10-alexandre.belloni@free-electrons.com>
+ <20171128160137.GF27409@jhogan-linux.mipstec.com>
+ <20171128165359.GJ21126@piout.net>
+ <20171128173151.GD5027@jhogan-linux.mipstec.com>
+ <20171128195002.dcq7i2wqmstkn3rr@pburton-laptop>
+ <20171129163819.GN21126@piout.net>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
+Content-Disposition: inline
+In-Reply-To: <20171129163819.GN21126@piout.net>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62225
+X-archive-position: 62226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,33 +54,171 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Memblock allocator can be successfully used from now for early
-memory management
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
----
- arch/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--HlL+5n6rz5pIUxbD
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 725b5ece7..a6c4fb6b6 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -4,7 +4,6 @@ config MIPS
- 	default y
- 	select ARCH_BINFMT_ELF_STATE
- 	select ARCH_CLOCKSOURCE_DATA
--	select ARCH_DISCARD_MEMBLOCK
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-@@ -57,6 +57,7 @@ config MIPS
- 	select HAVE_IRQ_TIME_ACCOUNTING
- 	select HAVE_KPROBES
- 	select HAVE_KRETPROBES
-+	select NO_BOOTMEM
- 	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MOD_ARCH_SPECIFIC
--- 
-2.12.0
+On Wed, Nov 29, 2017 at 05:38:19PM +0100, Alexandre Belloni wrote:
+> Hi Paul,
+>=20
+> On 28/11/2017 at 11:50:02 -0800, Paul Burton wrote:
+> > On Tue, Nov 28, 2017 at 05:31:51PM +0000, James Hogan wrote:
+> > > On Tue, Nov 28, 2017 at 05:53:59PM +0100, Alexandre Belloni wrote:
+> > > > On 28/11/2017 at 16:01:38 +0000, James Hogan wrote:
+> > > > > On Tue, Nov 28, 2017 at 04:26:39PM +0100, Alexandre Belloni wrote:
+> > > > > > Introduce support for the MIPS based Microsemi Ocelot SoCs.
+> > > > > > As the plan is to have all SoCs supported only using device tre=
+e, the
+> > > > > > mach directory is simply called mscc.
+> > > > >=20
+> > > > > Nice. Have you considered adding this to the existing multiplatfo=
+rm
+> > > > > "generic" platform? See for example commit b35565bb16a5 ("MIPS: g=
+eneric:
+> > > > > Add support for MIPSfpga") for the latest platform to be converte=
+d.
+> > > > >=20
+> > > >=20
+> > > > I didn't because we are currently booting using an old redboot with=
+ its
+> > > > own boot protocol and at boot, the register read by the sead3 code =
+is
+> > > > completely random (it actually matched once).
+> > > >=20
+> > > > Do you consider that mandatory to get the platform upstream?
+> > >=20
+> > > No, however if it is practical to do so I think it might be the best =
+way
+> > > forward (even if generic+YAMON support is mutually exclusive of
+> > > generic+redboot, though hopefully there is some way to avoid that).
+> > >=20
+> > > Paul on Cc, he may have thoughts on this one.
+> >=20
+> > We could certainly look at tightening the checks in the SEAD-3 code to
+> > avoid the false positive.
+> >=20
+> > Could you share any details of the boot protocol you're using with
+> > redboot? One option might be for the SEAD-3 code to check that the
+> > arguments the bootloader provided look "YAMON-like", so long as the 2
+> > protocols differ sufficiently.
+> >=20
+>=20
+> I didn't look closely at the redboot code yet but it ends up with
+> something like:
+>  - argc =3D=3D fw_arg0
+>  - argv =3D=3D fw_arg1
+>     - not sure yet what is in argv[0]
+>     - kernel commande line in argv[1]
+>  - fw_arg2 is a pointer to a structure like:
+>         struct parmblock {
+>             t_env_var memsize;
+>         };
+>     with:
+>         typedef struct
+>         {
+>             char *name;
+>             char *val;
+>         } t_env_var;
+>    this is the size of the RAM but I'm not using it because it is in the
+>    device tree.
+>=20
+> Does that help?
+
+That basically matches what YAMON provides. I can't see a nice way to
+support both in the same kernel.
+
+Processor ID is no good since Malta (not yet mainline added to
+"generic") uses the same address for the ID, and can support a much
+bigger range of cores.
+
+Poking at random I/O always feels a bit risky.
+
+Some safety checked environment checking (Paul says modetty0 should
+always be in there for YAMON) might work.
+
+Does Ocelot have a read-only ID register with a specific value? We'd
+have to add prioritisation of the legacy board detection to rely on
+that.
+
+If all else fails, we could still make them mutually exclusive,
+something roughly like below would work but its a bit clumsy as all the
+ocelot config options would still get enabled when sead3 is enabled,
+even though some of the drivers may not be useful. The detection &
+co-existence can always be improved later. What do you think?
+
+We can't #require CONFIG_LEGACY_BOARD_SEAD3=3Dn unfortunately since it
+only checks the base config, not the already merged board configs.
+
+Cheers
+James
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 0f20f84de53b..bfdefc013358 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -537,6 +537,10 @@ generic_defconfig:
+ # now that the boards have been converted to use the generic kernel they a=
+re
+ # wrappers around the generic rules above.
+ #
++.PHONY: ocelot_defconfig
++ocelot_defconfig:
++	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=3Docelot
++
+ .PHONY: sead3_defconfig
+ sead3_defconfig:
+ 	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=3Dsead-3
+diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/conf=
+igs/generic/board-ocelot.config
+new file mode 100644
+index 000000000000..b22a4570d05c
+--- /dev/null
++++ b/arch/mips/configs/generic/board-ocelot.config
+@@ -0,0 +1,3 @@
++# require CONFIG_32BIT=3Dy
++
++CONFIG_LEGACY_BOARD_OCELOT=3Dy
+diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
+index 52e0286a1612..fac8b936c468 100644
+--- a/arch/mips/generic/Kconfig
++++ b/arch/mips/generic/Kconfig
+@@ -27,6 +27,14 @@ config LEGACY_BOARD_SEAD3
+ 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
+ 	  development boards, which boot using a legacy boot protocol.
+=20
++comment "MSCC Ocelot doesn't work with SEAD3 enabled"
++	depends on LEGACY_BOARD_SEAD3
++
++config LEGACY_BOARD_OCELOT
++	bool "Support MSCC Ocelot boards"
++	depends on LEGACY_BOARD_SEAD3=3Dn
++	select LEGACY_BOARDS
++
+ comment "FIT/UHI Boards"
+=20
+ config FIT_IMAGE_FDT_BOSTON
+
+--HlL+5n6rz5pIUxbD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpf4zAACgkQbAtpk944
+dnp8kxAAr7BOza7uM5gnOI2ZV8h33mFLHyWUnZLdWpXhNOkZnzRhISlZ+aHLc5Bh
+I7zql+D4wGELgTtTbd352GuOTzXSkCBM2AwME8fcyD5PmhErFpamngL3GKBmY/Mp
+n74Q9x0W/P6ZtOTiVytRJP8t0BsbC4MBw4GsR0Y6mjjUSsreHF89V7Q9hyQfxE6Z
+O6G19tD/FK4PoGcCVw65/91i3A3Pjtl5jMwGOg58kCbBE2B3p9E7T6dkXgklay8W
+KjitKRDBBYb1zjqh+NHsXj0rizcqSkU23DzOQYslYkDUej3nx0ItwB9iJJ+hj/5T
+Ygisiek7r6h6+cU+lxl28U7ML70/4EkshlMO9pCtO3nTSc+OJ1wQnCcFA1AcGwSM
+StneSoeaBGuGpb5Ny7DuFoAO6Ttmh1KaEQNU+S4bss+AJ8STjj8w5bRYrGmbInW2
+Lm3k0xJRg2E9fBGEMr2Np1W133ryPT1VTjJjgBEjxbQFc8Py2z459sLsMosPT6RE
+hCRZBSGOtaNivkqAugIyqcxO9r8Bl/JhrxZr7ZJShURKxrF2YkqpgpnpCgzI27rj
+TfhDud+OQpM3foqUQZ8yndeBxerJmRJ+VmeBwt+U7TOZpt0o16AOXCCMH2GuqEVK
+mYj2CgxBN6sXkd6N8qJzyUxkusqa9cASFo+CexOEhQQ0HjJjW/g=
+=EmHX
+-----END PGP SIGNATURE-----
+
+--HlL+5n6rz5pIUxbD--

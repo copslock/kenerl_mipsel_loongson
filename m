@@ -1,60 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 12:32:34 +0100 (CET)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35821
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991172AbeAQLc0z95qU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 12:32:26 +0100
-Received: by mail-wr0-x244.google.com with SMTP id g38so15278631wrd.2;
-        Wed, 17 Jan 2018 03:32:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 14:20:21 +0100 (CET)
+Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:42902
+        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994679AbeAQNUIIKvN4 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 17 Jan 2018 14:20:08 +0100
+Received: by mail-lf0-x241.google.com with SMTP id q17so11744945lfa.9;
+        Wed, 17 Jan 2018 05:20:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=IBvWGulZaa87PCsta/V6fTbzQIYFdhyVbXMkQ/qWQjs=;
-        b=VLg5hEqLWduh27WHhnmdXDVQ8uoNe/0L3HjiZDW+wZTzTAAyufEZ/O04i2faHLAFFK
-         hInCymCW9MDw3gj/pvp7N+gllQxPz/s1BwRwGxDVbFubtcGMR0bBFKDxSSS8wEDFFOgo
-         y6Gc7RrW0JRp5C0C5MurtGj9d+U24moe37cZt5K3Hn9vr74FJCVxybW2Iwhc0mPokJWG
-         4PSMmRK/Sq10JrcT5/g7RvN2oYfGcr2hiMIhNQUi8tt7CaeCKZl3M4k4vMFPYwUd1gba
-         DZcGDciSiEvAKFjpXCO668F24qtsSqfdjwGmXVT40uD9pAhqjC9+oVnfR6pEWQ2epHXt
-         3nQw==
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=GeiPfXvu6FwFgaloYzOlN0xgF/+mmZSVHSxtq3BSpb0=;
+        b=cau/fJssZk1PKXThbjetOovedsne/Ys9gpsWy/tZS+G9fqgeNB1uzz1jxirkyKFixE
+         Lkfv7z6YMYBtmdJ3jZnQ+q33X9Q5nmo38ywzgbkNxNclGgG6ro+S/DDHlbSv8+SbDZjX
+         /eF8HChBP9PE2uytukAok5YIYS9urf8IJCnwf9QhoYrSfYoEKM31YXfzYV1UTJG6DAiX
+         tjqDG+uLZC8nmvbgabRfpMJR2PUeGYfsjW3sXpy+40+G9SQUwtMcdZ6kYAEFrOmdxp+E
+         aH0GkGk9pwqHglw7NcDvmunIjA4/BV3avYKVTTObehs3wU61ngtFN+TBLYfCrkkYDS6g
+         qgtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=IBvWGulZaa87PCsta/V6fTbzQIYFdhyVbXMkQ/qWQjs=;
-        b=a8jiIBydOTfSuptrrwPbOmmVfY8IPS7qTYhtIPtNO12RVbb3PToDhzLViaJJ4SWIQP
-         bwnfo596JmLDPbRlYyGdrmyTc04+m6zL/vtocdGocEWIp50+3G8w9KZFoZ4yrTxihJYu
-         TWAyuZWJmQgdZo5PaXwNHQd41Fu4AvHUbWdpO/9BFrJe8FbbeSZqNtCB+4Su/l1qfl41
-         e9bKduCJtNU89gig2IJJQKYkXAsnafAP4UVyx7GiznBnO96lGZwn2Lzko+sJ39y2vIZ3
-         RsDA3XxD/IXYf5siAYLsDTOGHmMi4f0/GggRK09IWy077KGHT6LxoeRneYDjJlEmigFE
-         4uoA==
-X-Gm-Message-State: AKwxytdRDIi9ayYn7OeJpsJ8BTwSgHKZAnOjP7/2mWbE1tDfqd3x1HxK
-        h1qV0pDbtk3SGooRd+vUK1A=
-X-Google-Smtp-Source: ACJfBouJpxL/HHyv/Z4kyiD4Lc6vNd2rHoBWnhg8lbe5aHOE581qVwlGWX4RjEvEIswd6raK7PXLeA==
-X-Received: by 10.223.178.26 with SMTP id u26mr2224950wra.149.1516188741388;
-        Wed, 17 Jan 2018 03:32:21 -0800 (PST)
-Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
-        by smtp.gmail.com with ESMTPSA id a34sm7126307wra.18.2018.01.17.03.32.20
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 17 Jan 2018 03:32:20 -0800 (PST)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
-        id 766FB10C2EA9; Wed, 17 Jan 2018 12:32:19 +0100 (CET)
-From:   Mathieu Malaterre <malat@debian.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: ftrace: Remove pointer comparison to 0 in prepare_ftrace_return
-Date:   Wed, 17 Jan 2018 12:31:57 +0100
-Message-Id: <20180117113157.25768-1-malat@debian.org>
-X-Mailer: git-send-email 2.11.0
-Return-Path: <mathieu.malaterre@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=GeiPfXvu6FwFgaloYzOlN0xgF/+mmZSVHSxtq3BSpb0=;
+        b=YAJjtWvhQYJTf7jejUCDJ5zlPw/wNBgvH1XdPS7KeVM9x2ce5I7nJd+EYM55o7PgYe
+         DosFeAbtqNAuYKTDl+AFE6TKBVY92sAKNyFU1/ZHDCfSHNCzt7TkxSWkuPL7nU3MYlTd
+         8ZIrkM4RS+pknCj0Vfe6mPXE1TOATkVvApIdTU+pt1BK2B4ZseeMKGt0Ta4aRAhHYEEZ
+         Nf72qFTNohmUfGkCxZIjn14JAtd2imPl0blHzmQh2rHrhlPYqT8oWV4qongPaH6H+Q2J
+         tObHWx5ZkUh4FcK8XQFqN6vvqTUk1PLj9b0EVO3O8Vt8/VNU8kbcmo5wWvW4mbyBv9p/
+         S00Q==
+X-Gm-Message-State: AKwxytdsppWcatKOowER0qtX8bhUiuySz8mfIrejUG6RiDgWogfTm71V
+        bxmTyiHOsahlSYRedA3AJbI=
+X-Google-Smtp-Source: ACJfBosNVBmSBLkte4iiLmCK0r3P4IFQmxTQWeg1qOBB3ApnF3L8Q7Lr13glKOSQfpWnltDq8SHcoQ==
+X-Received: by 10.46.83.74 with SMTP id t10mr23790989ljd.127.1516195202237;
+        Wed, 17 Jan 2018 05:20:02 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id i130sm420223lfi.46.2018.01.17.05.20.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 17 Jan 2018 05:20:01 -0800 (PST)
+Date:   Wed, 17 Jan 2018 16:34:18 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Matt Redfearn <matt.redfearn@mips.com>,
+        "Palmer Dabbelt" <palmer@sifive.com>
+Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: use generic GCC library routines from lib/
+Message-Id: <20180117163418.ba77b2f72298092fb843fda7@gmail.com>
+In-Reply-To: <20180117090348.GA20406@mredfearn-linux>
+References: <20180117065121.30437-1-antonynpavlov@gmail.com>
+        <20180117090348.GA20406@mredfearn-linux>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.25; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62199
+X-archive-position: 62200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,27 +73,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace pointer comparison to 0 with NULL in prepare_ftrace_return
-to improve code readability. Identified with coccinelle script
-'badzero.cocci'.
+On Wed, 17 Jan 2018 09:03:48 +0000
+Matt Redfearn <matt.redfearn@mips.com> wrote:
 
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
- arch/mips/kernel/ftrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi,
+> 
+> On Wed, Jan 17, 2018 at 09:51:21AM +0300, Antony Pavlov wrote:
+> > The commit b35cd9884fa5 ("lib: Add shared copies of
+> > some GCC library routines") makes it possible
+> > to share generic GCC library routines by several
+> > architectures.
+> > 
+> > This commit removes several generic GCC library
+> > routines from arch/mips/lib/ in favour of similar
+> > routines from lib/.
+> > 
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: Palmer Dabbelt <palmer@sifive.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: linux-mips@linux-mips.org
+> > Cc: linux-kernel@vger.kernel.org
+> > ---
+> >  arch/mips/Kconfig       |  5 +++++
+> >  arch/mips/lib/Makefile  |  2 +-
+> >  arch/mips/lib/ashldi3.c | 30 ------------------------------
+> >  arch/mips/lib/ashrdi3.c | 32 --------------------------------
+> >  arch/mips/lib/cmpdi2.c  | 28 ----------------------------
+> >  arch/mips/lib/lshrdi3.c | 30 ------------------------------
+> >  arch/mips/lib/ucmpdi2.c | 22 ----------------------
+> >  7 files changed, 6 insertions(+), 143 deletions(-)
+> >  delete mode 100644 arch/mips/lib/ashldi3.c
+> >  delete mode 100644 arch/mips/lib/ashrdi3.c
+> >  delete mode 100644 arch/mips/lib/cmpdi2.c
+> >  delete mode 100644 arch/mips/lib/lshrdi3.c
+> >  delete mode 100644 arch/mips/lib/ucmpdi2.c
+> > 
+> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> > index 350a990fc719..9cd49ee848c6 100644
+> > --- a/arch/mips/Kconfig
+> > +++ b/arch/mips/Kconfig
+> > @@ -73,6 +73,11 @@ config MIPS
+> >  	select RTC_LIB if !MACH_LOONGSON64
+> >  	select SYSCTL_EXCEPTION_TRACE
+> >  	select VIRT_TO_BUS
+> > +	select GENERIC_ASHLDI3
+> > +	select GENERIC_ASHRDI3
+> > +	select GENERIC_LSHRDI3
+> > +	select GENERIC_CMPDI2
+> > +	select GENERIC_UCMPDI2
+> 
+> Please preserve alphabetical order
 
-diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index 99285be0e088..7f3dfdbc3657 100644
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -361,7 +361,7 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
- 	 * If fails when getting the stack address of the non-leaf function's
- 	 * ra, stop function graph tracer and return
- 	 */
--	if (parent_ra_addr == 0)
-+	if (parent_ra_addr == NULL)
- 		goto out;
- #endif
- 	/* *parent_ra_addr = return_hooker; */
+Ok, I'll fix order in v2 patch.
+
+> > --- a/arch/mips/lib/ucmpdi2.c
+> > +++ /dev/null
+> > @@ -1,22 +0,0 @@
+> > -// SPDX-License-Identifier: GPL-2.0
+> > -#include <linux/export.h>
+> > -
+> > -#include "libgcc.h"
+> > -
+> > -word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+> 
+> The version of __ucmpdi2 in /lib/ is not marked notrace. We have seen
+> issues before with compiler intrinsics not being marked notrace - see
+> aedcfbe06558 ("MIPS: lib: Mark intrinsics notrace")
+> 
+> Please ensure that the /lib/ version is equivalent before switching to
+> that version.
+
+Good shot! I have missed this 'notrace'.
+
+lib/ucmpdi2.c differ from other GCC library routines files from lib
+related to my patch (ashldi3.c, ashrdi3.c, cmpdi2.c, lshrdi3.c):
+only lib/ucmpdi2.c has no 'notrace' flag. In other details the files
+look equivalent. The files arch/mips/lib/libgcc.h and include/linux/libgcc.h
+have no fundamental differences.
+
+to Palmer:
+Can we add notrace to lib/ucmpdi2.c?
+It looks like that nobody (even RISC-V code)
+uses GENERIC_CMPDI2 and GENERIC_UCMPDI2. Why?
+Do you use them in your local branches?
+
 -- 
-2.11.0
+Best regards,
+  Antony Pavlov

@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 10:04:25 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:44563 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992391AbeAQJERQ7pti (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 10:04:17 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 17 Jan 2018 09:04:05 +0000
-Received: from mredfearn-linux (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 17 Jan
- 2018 01:03:52 -0800
-Date:   Wed, 17 Jan 2018 09:03:48 +0000
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        "Palmer Dabbelt" <palmer@sifive.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: use generic GCC library routines from lib/
-Message-ID: <20180117090348.GA20406@mredfearn-linux>
-References: <20180117065121.30437-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20180117065121.30437-1-antonynpavlov@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1516179845-637138-6696-342194-1
-X-BESS-VER: 2017.17-r1801091856
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.60
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189064
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
-X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 10:54:40 +0100 (CET)
+Received: from forward101o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::601]:41509
+        "EHLO forward101o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992391AbeAQJy0TylOI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 10:54:26 +0100
+Received: from mxback9j.mail.yandex.net (mxback9j.mail.yandex.net [IPv6:2a02:6b8:0:1619::112])
+        by forward101o.mail.yandex.net (Yandex) with ESMTP id 8B6D21344688;
+        Wed, 17 Jan 2018 12:54:19 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback9j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id XumCuWoHGu-sIE4dACk;
+        Wed, 17 Jan 2018 12:54:19 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516182859;
+        bh=wWFyBHCIWPwzTh7bbN3K2gqwFe41nGGO+ZhOPJeXXzU=;
+        h=Message-ID:Subject:From:To:Cc:Date;
+        b=DN60Zd1jBAgsBzK3y+XXYiyTTguY1Kw4ysO1fR8/EE7PtXiDatQ9HuQhzPukUkzUy
+         UzPNzl5I3zugsfCF1P8AnDJzoc0459MJ9c+9MhjqQMWNlJF6daKJoGVzFtHCDv4LS1
+         G71URte1YsAHEy8GP1r7knyiecVbt6Msl/MAoxR0=
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id eogNcVakEx-rgUOnOO4;
+        Wed, 17 Jan 2018 12:54:14 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516182857;
+        bh=wWFyBHCIWPwzTh7bbN3K2gqwFe41nGGO+ZhOPJeXXzU=;
+        h=Message-ID:Subject:From:To:Cc:Date;
+        b=Kfvl3HcbtNI6DTH4gpMPKUH8RuLILxBsl7+3wihqE5zXBwt4C9TaRblNWfUItnlDJ
+         FHL8c9CGZAd7pza1aDSjBVxzZ06t456YJtBKmNARsa3JswKEQKygABepZzVoYfcQyL
+         J0c/Ba7mRGMS88z1fJjhsj/HOJ24rpZ/ldqj7138=
+Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1516182767.23672.1.camel@flygoat.com>
+Subject: About Loongson platforms' directories
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Huacai Chen <chenhc@lemote.com>
+Date:   Wed, 17 Jan 2018 17:52:47 +0800
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-wVxaFXtWQpMyfg8KjnF4"
+X-Mailer: Evolution 3.26.3-1 
+Mime-Version: 1.0
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62197
+X-archive-position: 62198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,251 +59,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
 
-On Wed, Jan 17, 2018 at 09:51:21AM +0300, Antony Pavlov wrote:
-> The commit b35cd9884fa5 ("lib: Add shared copies of
-> some GCC library routines") makes it possible
-> to share generic GCC library routines by several
-> architectures.
-> 
-> This commit removes several generic GCC library
-> routines from arch/mips/lib/ in favour of similar
-> routines from lib/.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Palmer Dabbelt <palmer@sifive.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  arch/mips/Kconfig       |  5 +++++
->  arch/mips/lib/Makefile  |  2 +-
->  arch/mips/lib/ashldi3.c | 30 ------------------------------
->  arch/mips/lib/ashrdi3.c | 32 --------------------------------
->  arch/mips/lib/cmpdi2.c  | 28 ----------------------------
->  arch/mips/lib/lshrdi3.c | 30 ------------------------------
->  arch/mips/lib/ucmpdi2.c | 22 ----------------------
->  7 files changed, 6 insertions(+), 143 deletions(-)
->  delete mode 100644 arch/mips/lib/ashldi3.c
->  delete mode 100644 arch/mips/lib/ashrdi3.c
->  delete mode 100644 arch/mips/lib/cmpdi2.c
->  delete mode 100644 arch/mips/lib/lshrdi3.c
->  delete mode 100644 arch/mips/lib/ucmpdi2.c
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 350a990fc719..9cd49ee848c6 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -73,6 +73,11 @@ config MIPS
->  	select RTC_LIB if !MACH_LOONGSON64
->  	select SYSCTL_EXCEPTION_TRACE
->  	select VIRT_TO_BUS
-> +	select GENERIC_ASHLDI3
-> +	select GENERIC_ASHRDI3
-> +	select GENERIC_LSHRDI3
-> +	select GENERIC_CMPDI2
-> +	select GENERIC_UCMPDI2
+--=-wVxaFXtWQpMyfg8KjnF4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Please preserve alphabetical order
+Hi, MIPS maintainers
 
->  
->  menu "Machine selection"
->  
-> diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-> index 78c2affeabf8..195ab4cb0840 100644
-> --- a/arch/mips/lib/Makefile
-> +++ b/arch/mips/lib/Makefile
-> @@ -16,4 +16,4 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
->  obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
->  
->  # libgcc-style stuff needed in the kernel
-> -obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o ucmpdi2.o
-> +obj-y += bswapsi.o bswapdi.o
-> diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
-> deleted file mode 100644
-> index 24cd6903e797..000000000000
-> --- a/arch/mips/lib/ashldi3.c
-> +++ /dev/null
-> @@ -1,30 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -#include <linux/export.h>
-> -
-> -#include "libgcc.h"
-> -
-> -long long notrace __ashldi3(long long u, word_type b)
-> -{
-> -	DWunion uu, w;
-> -	word_type bm;
-> -
-> -	if (b == 0)
-> -		return u;
-> -
-> -	uu.ll = u;
-> -	bm = 32 - b;
-> -
-> -	if (bm <= 0) {
-> -		w.s.low = 0;
-> -		w.s.high = (unsigned int) uu.s.low << -bm;
-> -	} else {
-> -		const unsigned int carries = (unsigned int) uu.s.low >> bm;
-> -
-> -		w.s.low = (unsigned int) uu.s.low << b;
-> -		w.s.high = ((unsigned int) uu.s.high << b) | carries;
-> -	}
-> -
-> -	return w.ll;
-> -}
-> -
-> -EXPORT_SYMBOL(__ashldi3);
-> diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
-> deleted file mode 100644
-> index 23f5295af51e..000000000000
-> --- a/arch/mips/lib/ashrdi3.c
-> +++ /dev/null
-> @@ -1,32 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -#include <linux/export.h>
-> -
-> -#include "libgcc.h"
-> -
-> -long long notrace __ashrdi3(long long u, word_type b)
-> -{
-> -	DWunion uu, w;
-> -	word_type bm;
-> -
-> -	if (b == 0)
-> -		return u;
-> -
-> -	uu.ll = u;
-> -	bm = 32 - b;
-> -
-> -	if (bm <= 0) {
-> -		/* w.s.high = 1..1 or 0..0 */
-> -		w.s.high =
-> -		    uu.s.high >> 31;
-> -		w.s.low = uu.s.high >> -bm;
-> -	} else {
-> -		const unsigned int carries = (unsigned int) uu.s.high << bm;
-> -
-> -		w.s.high = uu.s.high >> b;
-> -		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-> -	}
-> -
-> -	return w.ll;
-> -}
-> -
-> -EXPORT_SYMBOL(__ashrdi3);
-> diff --git a/arch/mips/lib/cmpdi2.c b/arch/mips/lib/cmpdi2.c
-> deleted file mode 100644
-> index 93cfc785927d..000000000000
-> --- a/arch/mips/lib/cmpdi2.c
-> +++ /dev/null
-> @@ -1,28 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -#include <linux/export.h>
-> -
-> -#include "libgcc.h"
-> -
-> -word_type notrace __cmpdi2(long long a, long long b)
-> -{
-> -	const DWunion au = {
-> -		.ll = a
-> -	};
-> -	const DWunion bu = {
-> -		.ll = b
-> -	};
-> -
-> -	if (au.s.high < bu.s.high)
-> -		return 0;
-> -	else if (au.s.high > bu.s.high)
-> -		return 2;
-> -
-> -	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
-> -		return 0;
-> -	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
-> -		return 2;
-> -
-> -	return 1;
-> -}
-> -
-> -EXPORT_SYMBOL(__cmpdi2);
-> diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-> deleted file mode 100644
-> index 914b971aca3b..000000000000
-> --- a/arch/mips/lib/lshrdi3.c
-> +++ /dev/null
-> @@ -1,30 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -#include <linux/export.h>
-> -
-> -#include "libgcc.h"
-> -
-> -long long notrace __lshrdi3(long long u, word_type b)
-> -{
-> -	DWunion uu, w;
-> -	word_type bm;
-> -
-> -	if (b == 0)
-> -		return u;
-> -
-> -	uu.ll = u;
-> -	bm = 32 - b;
-> -
-> -	if (bm <= 0) {
-> -		w.s.high = 0;
-> -		w.s.low = (unsigned int) uu.s.high >> -bm;
-> -	} else {
-> -		const unsigned int carries = (unsigned int) uu.s.high << bm;
-> -
-> -		w.s.high = (unsigned int) uu.s.high >> b;
-> -		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-> -	}
-> -
-> -	return w.ll;
-> -}
-> -
-> -EXPORT_SYMBOL(__lshrdi3);
-> diff --git a/arch/mips/lib/ucmpdi2.c b/arch/mips/lib/ucmpdi2.c
-> deleted file mode 100644
-> index c31c78ca4175..000000000000
-> --- a/arch/mips/lib/ucmpdi2.c
-> +++ /dev/null
-> @@ -1,22 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -#include <linux/export.h>
-> -
-> -#include "libgcc.h"
-> -
-> -word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+Recently Loongson has released their now SystemOnChip chip called
+Loongson2K, and I'm going to submit patches for that chip soon. But I
+noticed that currently,  Loongson64 code in mainline kernel is pretty
+in confusion. We mixed loongson2e/2f/3a/3b together in
+/arch/mips/loongson64, but they don't have many similarities. 2E/2F are
+legacy products that don't support many features such as EFI or SMBIOS,
+only a little code can be reused with 3 series. After discussed with
+another maintainer Huacai Chen, we thought we can separate 2E/2F with 3
+series and make 4 directories.
 
-The version of __ucmpdi2 in /lib/ is not marked notrace. We have seen
-issues before with compiler intrinsics not being marked notrace - see
-aedcfbe06558 ("MIPS: lib: Mark intrinsics notrace")
+/loongson-1 (Loongson 1B/1C Micro Control Units formal loongson32)
+/loongson-2ef (Loongson 2E/2F legacy CPU machines formal
+loongson64/lemote-2f fuloong-2e)
+/loongson-2soc (Loongson2H/2K SoCs will be submited latter)
+/loongson-3 (Loongson 3A/3B CPU machines formal loongson64/loongson3)
 
-Please ensure that the /lib/ version is equivalent before switching to
-that version.
+So we can maintain code for different family chips easier. Just ask if
+anybody have a better idea about that.
 
-Thanks,
-Matt
+BTW: My recent patches have been ignored for a long time. Probably
+because Ralf didn't appear for a long time. Just ask if these patches
+can get a chance to be applied. And I don't know what's the proper
+upstream for me, Ralf's mips-next or James's mips-next?
+--=20
+Jiaxun Yang
+--=-wVxaFXtWQpMyfg8KjnF4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-> -{
-> -	const DWunion au = {.ll = a};
-> -	const DWunion bu = {.ll = b};
-> -
-> -	if ((unsigned int) au.s.high < (unsigned int) bu.s.high)
-> -		return 0;
-> -	else if ((unsigned int) au.s.high > (unsigned int) bu.s.high)
-> -		return 2;
-> -	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
-> -		return 0;
-> -	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
-> -		return 2;
-> -	return 1;
-> -}
-> -
-> -EXPORT_SYMBOL(__ucmpdi2);
-> -- 
-> 2.15.1
-> 
-> 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpfHO8ACgkQwRGUkHP8
+D2cR2BAAkgj7GSMLRhXCNAu4LQ6JHst9IN4qmfDdvxCTaUmLLN3bsYNXFWwe4fMI
+u4gvlVG1/pV3Ye5Oujxbss8HYUyxsaZDq8IauLduhJRVxHtynbvnJaKMkDPcYMId
+Puh2D4Xs4/cJlFCSIC3ZJgTt/znpPLJgLUjVUhgS5eUrR72I/umeEjOfmgRxTIGo
+LMRjPOGdiljwWlB3vGl04Vli3TQbWx+4BZmDWFcxz83o9qj7EQHx4Vyct2UyqpF6
+1eqop85hgY6YlHnutL/HUfoQYmlWDy/n+F29BLqlBhfAvVS+jtL+MtyKjyaAXnpe
+1GZmSYoI2Mx0P8TDpN1tFhRTgb2hqfUgYQUsnVt9fBqRF/Tnf9tAserbcn1+mJfU
+KNT1SLXtcqWGj370F3MrNdnkQXc1VHeYMJnSg1qwHnSlSA735aO4L0bveKhscg1Z
+MQfyf1NZJjC+w55xLL+cZReogd6CGFzqm/l2HRwb55IIr5EEpm/J3t02K8joKbqx
+wN2zWumy1qJ7sKxo6pwjb8PNGJWFHC/dyViZRaXQeLjliBfsYbsgbWTMBLBgMaIG
+GD05i3wAUEisNsmB1yT0ipHkPCShf+S6M2+wSKPE+XKB1iCgcHJA6klIH91aY+qY
+FlOWkXBEx/4bvkSDbzx3nJW8YnvX02udlddX0z7cK0HcH8j5CHE=
+=1FWG
+-----END PGP SIGNATURE-----
+
+--=-wVxaFXtWQpMyfg8KjnF4--

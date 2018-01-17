@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 23:24:19 +0100 (CET)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:43749
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994688AbeAQWX1YD2zC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 23:23:27 +0100
-Received: by mail-lf0-x242.google.com with SMTP id o89so19872887lfg.10;
-        Wed, 17 Jan 2018 14:23:27 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 23:24:45 +0100 (CET)
+Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:33951
+        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994689AbeAQWX2pxBhK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 23:23:28 +0100
+Received: by mail-lf0-x244.google.com with SMTP id k19so3753952lfj.1;
+        Wed, 17 Jan 2018 14:23:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=37mp3H8Yx67iAapj8s5cUFrXkBq8B+mYLLWt6ZQCNw4=;
-        b=lfpYolJrCaMnUVfDebLnu0ydCazvqmGK8QQ6lwNGHvAoveQjgotDLHeRhr3zk/+NKS
-         BDjQkuKoovadtYbxv/pF/Z9ZvuAN93CYgvXCOmPc5jcGus32iB+pd/ENXZ3FUr82XRwL
-         R6d8hBaQ/UAk01OgZSJZI8ZEuQC4DmX6knIVQvhtL3wg3rUTdUZjd/C8NeDfgKMwXi3c
-         8Z91/5xOG2pwFVfGG6a6mE9qPcwtGs7FP8J9d9M59x15SCUW59D4/8LTS/EfpkrbGZLo
-         /6/cYPhxHncv0fOIbvc0y9epkHfYD7YlEUlBS5R1ShSEs/1cSDLDC9W4y/IrL8fwbe+3
-         fubA==
+        bh=EM5WBQSdvNARQ0W1G58JbrRkzcTWMVVuI+l+ysgt3U8=;
+        b=ZW1D+mX5zxjBkE2SFH+Q/FdLN4zYI3ROxjDxD68/Jmy5iKXratux9HLIytF3bYMPri
+         ZpgBnwyu18Q+m2n+nZ3S9ozwKOldYdz6EwbplSwhyfANcys5VeKeiUyk6IaIAd3iq4GB
+         U4yZfDeAnqYU/iQbXuJ+/BH1L9s+YzJJFhOq+SkEaykyqvFZHOf7Hu1ak+pOpfT5WzVH
+         dy7+q5czdD5WqaZGoKIx5gCnZ3PbNyG7vg/hmuE4Qdf2JiCJE0SnaqhtveomfskUJ6g9
+         7ZxcaTlXgZ9eFQU41Aq5SNfzpwXNGW8ra/bIxl7KA/Ar3TL6orI3a/6aVQ647jyrfZJW
+         HgHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=37mp3H8Yx67iAapj8s5cUFrXkBq8B+mYLLWt6ZQCNw4=;
-        b=aTrLPpUxU2q7IfpEYX11rCBQ7e9cSFfAiuFC41h0Be6seH5pgTdOZZysCOuG9+SWHA
-         6SFtU0/90C2bXF5ucpft8Vo01CSosnutP+PjdqB05PV/LYz7EsfYCN5bNffp091sX2AJ
-         29EMsJvvIaGO+SLijRz1djz+M2cFIrf3onVI/UKbU+rZg2Zb0s7tGgOEOTY8Ps1jFVOi
-         7G59RHzoFCHUNsHVBOu5eAWSekJNiEMkbZ+ufcaQTq4IpqDygwuts/XorcukqbFC3X4b
-         1RfQB+ael4owHMWlswcvjT4si51fg/P3yXPVIVdbjb45drobXhb7LYHgjO0Et5KKjlJ2
-         Nbzg==
-X-Gm-Message-State: AKwxytfgkoV0lOJgdVA/CASznwJDPR/zxFVC/aGoCrG4/R8vFM6bktUN
-        PotGUQyOf69PzIrNcwshEZfVU/ey
-X-Google-Smtp-Source: ACJfBosSv4ZNXmUtDibS+EP5tF1wrL6NJcauAJ8tXnxFpo9lSPOBUQHDApSYSR72CqdR5FtHM85SvQ==
-X-Received: by 10.46.99.199 with SMTP id s68mr4500835lje.50.1516227801678;
-        Wed, 17 Jan 2018 14:23:21 -0800 (PST)
+        bh=EM5WBQSdvNARQ0W1G58JbrRkzcTWMVVuI+l+ysgt3U8=;
+        b=tby3W2sLbIA5oGG7q4XrMbV0l3NWPBNHHqGZhPej2UYI1/f829oZ2K2C/utD2VyLvX
+         h8STw1Ux5iKs7ioDERBMD2ocraS0XMrXihgVwQ9KVFDMqMU9jIh7NURt0GaBCPYrbArJ
+         Bzrh9fzsVeBS/MOSrxGj2B0A1BS1GuPiv3iJeNi0EywI+oKPQtMBbfD0jbAISbN2txI+
+         xqZZrQvMtONKYfuU/QYMPxk5Y9tVjURR5xyb+hrE2mWiDExHZP6qdT1noK90e3IiJN3V
+         Y4kgTOrBEEmZwiRofVSbak/yH+tcC+aLLbHEFwspC2KGidja6nROHq4Z6tveDOzRMtHr
+         TLVQ==
+X-Gm-Message-State: AKwxyteX6QwOmjXWaBLjQ/wAOCsu+jWDzudMcL03SGQm8IYJ4dIwTtbS
+        2nlaUgrkF6/CuQ2Va4JXGpeANZQA
+X-Google-Smtp-Source: ACJfBouCm1hx1SKe2yHaW3HBUTwSWyutkwcE8ek7lCTWkpTS8V9RV/24BtjVDl+1uIfSjiOgOuVFWg==
+X-Received: by 10.46.62.7 with SMTP id l7mr9606320lja.25.1516227803054;
+        Wed, 17 Jan 2018 14:23:23 -0800 (PST)
 Received: from linux.local ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id l203sm953867lfb.59.2018.01.17.14.23.20
+        by smtp.gmail.com with ESMTPSA id l203sm953867lfb.59.2018.01.17.14.23.21
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 17 Jan 2018 14:23:21 -0800 (PST)
+        Wed, 17 Jan 2018 14:23:22 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, miodrag.dinic@mips.com, jhogan@kernel.org,
         goran.ferenc@mips.com, david.daney@cavium.com,
@@ -45,9 +45,9 @@ Cc:     alexander.sverdlin@nokia.com, matt.redfearn@mips.com,
         Peter.Wotton@mips.com, Sergey.Semin@t-platforms.ru,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 02/14] MIPS: memblock: Surely map BSS kernel memory section
-Date:   Thu, 18 Jan 2018 01:23:00 +0300
-Message-Id: <20180117222312.14763-3-fancer.lancer@gmail.com>
+Subject: [PATCH 03/14] MIPS: memblock: Reserve initrd memory in memblock
+Date:   Thu, 18 Jan 2018 01:23:01 +0300
+Message-Id: <20180117222312.14763-4-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20180117222312.14763-1-fancer.lancer@gmail.com>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
@@ -55,7 +55,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62213
+X-archive-position: 62214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,27 +72,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The current MIPS code makes sure the kernel code/data/init
-sections are in the maps, but BSS should also be there.
+There is no reserve_bootmem() method in the nobootmem interface,
+so we need to replace it with memblock-specific one.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/kernel/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 76e9e2075..0d21c9e04 100644
+index 0d21c9e04..1b8246e6c 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -845,6 +845,9 @@ static void __init arch_mem_init(char **cmdline_p)
- 	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
- 			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
- 			 BOOT_MEM_INIT_RAM);
-+	arch_mem_addpart(PFN_DOWN(__pa_symbol(&__bss_start)) << PAGE_SHIFT,
-+			 PFN_UP(__pa_symbol(&__bss_stop)) << PAGE_SHIFT,
-+			 BOOT_MEM_RAM);
+@@ -330,7 +330,7 @@ static void __init finalize_initrd(void)
  
- 	pr_info("Determined physical RAM map:\n");
- 	print_memory_map();
+ 	maybe_bswap_initrd();
+ 
+-	reserve_bootmem(__pa(initrd_start), size, BOOTMEM_DEFAULT);
++	memblock_reserve(__pa(initrd_start), size);
+ 	initrd_below_start_ok = 1;
+ 
+ 	pr_info("Initial ramdisk at: 0x%lx (%lu bytes)\n",
 -- 
 2.12.0

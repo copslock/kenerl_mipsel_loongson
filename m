@@ -1,66 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 14:20:21 +0100 (CET)
-Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:42902
-        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994679AbeAQNUIIKvN4 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Jan 2018 14:20:08 +0100
-Received: by mail-lf0-x241.google.com with SMTP id q17so11744945lfa.9;
-        Wed, 17 Jan 2018 05:20:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=GeiPfXvu6FwFgaloYzOlN0xgF/+mmZSVHSxtq3BSpb0=;
-        b=cau/fJssZk1PKXThbjetOovedsne/Ys9gpsWy/tZS+G9fqgeNB1uzz1jxirkyKFixE
-         Lkfv7z6YMYBtmdJ3jZnQ+q33X9Q5nmo38ywzgbkNxNclGgG6ro+S/DDHlbSv8+SbDZjX
-         /eF8HChBP9PE2uytukAok5YIYS9urf8IJCnwf9QhoYrSfYoEKM31YXfzYV1UTJG6DAiX
-         tjqDG+uLZC8nmvbgabRfpMJR2PUeGYfsjW3sXpy+40+G9SQUwtMcdZ6kYAEFrOmdxp+E
-         aH0GkGk9pwqHglw7NcDvmunIjA4/BV3avYKVTTObehs3wU61ngtFN+TBLYfCrkkYDS6g
-         qgtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=GeiPfXvu6FwFgaloYzOlN0xgF/+mmZSVHSxtq3BSpb0=;
-        b=YAJjtWvhQYJTf7jejUCDJ5zlPw/wNBgvH1XdPS7KeVM9x2ce5I7nJd+EYM55o7PgYe
-         DosFeAbtqNAuYKTDl+AFE6TKBVY92sAKNyFU1/ZHDCfSHNCzt7TkxSWkuPL7nU3MYlTd
-         8ZIrkM4RS+pknCj0Vfe6mPXE1TOATkVvApIdTU+pt1BK2B4ZseeMKGt0Ta4aRAhHYEEZ
-         Nf72qFTNohmUfGkCxZIjn14JAtd2imPl0blHzmQh2rHrhlPYqT8oWV4qongPaH6H+Q2J
-         tObHWx5ZkUh4FcK8XQFqN6vvqTUk1PLj9b0EVO3O8Vt8/VNU8kbcmo5wWvW4mbyBv9p/
-         S00Q==
-X-Gm-Message-State: AKwxytdsppWcatKOowER0qtX8bhUiuySz8mfIrejUG6RiDgWogfTm71V
-        bxmTyiHOsahlSYRedA3AJbI=
-X-Google-Smtp-Source: ACJfBosNVBmSBLkte4iiLmCK0r3P4IFQmxTQWeg1qOBB3ApnF3L8Q7Lr13glKOSQfpWnltDq8SHcoQ==
-X-Received: by 10.46.83.74 with SMTP id t10mr23790989ljd.127.1516195202237;
-        Wed, 17 Jan 2018 05:20:02 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id i130sm420223lfi.46.2018.01.17.05.20.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 17 Jan 2018 05:20:01 -0800 (PST)
-Date:   Wed, 17 Jan 2018 16:34:18 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>,
-        "Palmer Dabbelt" <palmer@sifive.com>
-Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: use generic GCC library routines from lib/
-Message-Id: <20180117163418.ba77b2f72298092fb843fda7@gmail.com>
-In-Reply-To: <20180117090348.GA20406@mredfearn-linux>
-References: <20180117065121.30437-1-antonynpavlov@gmail.com>
-        <20180117090348.GA20406@mredfearn-linux>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.25; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 14:25:53 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:44357 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993497AbeAQNZqoz8Jo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 14:25:46 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 17 Jan 2018 13:25:24 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 17 Jan
+ 2018 05:25:14 -0800
+Date:   Wed, 17 Jan 2018 13:25:13 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>
+Subject: Re: About Loongson platforms' directories
+Message-ID: <20180117132512.GG5027@jhogan-linux.mipstec.com>
+References: <1516182767.23672.1.camel@flygoat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="UKsZWh/ZtaJX4ozz"
+Content-Disposition: inline
+In-Reply-To: <1516182767.23672.1.camel@flygoat.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1516195522-321459-8816-53779-11
+X-BESS-VER: 2017.17-r1801091856
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189070
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62200
+X-archive-position: 62201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,90 +56,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 17 Jan 2018 09:03:48 +0000
-Matt Redfearn <matt.redfearn@mips.com> wrote:
+--UKsZWh/ZtaJX4ozz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Hi,
-> 
-> On Wed, Jan 17, 2018 at 09:51:21AM +0300, Antony Pavlov wrote:
-> > The commit b35cd9884fa5 ("lib: Add shared copies of
-> > some GCC library routines") makes it possible
-> > to share generic GCC library routines by several
-> > architectures.
-> > 
-> > This commit removes several generic GCC library
-> > routines from arch/mips/lib/ in favour of similar
-> > routines from lib/.
-> > 
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > Cc: Palmer Dabbelt <palmer@sifive.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: linux-kernel@vger.kernel.org
-> > ---
-> >  arch/mips/Kconfig       |  5 +++++
-> >  arch/mips/lib/Makefile  |  2 +-
-> >  arch/mips/lib/ashldi3.c | 30 ------------------------------
-> >  arch/mips/lib/ashrdi3.c | 32 --------------------------------
-> >  arch/mips/lib/cmpdi2.c  | 28 ----------------------------
-> >  arch/mips/lib/lshrdi3.c | 30 ------------------------------
-> >  arch/mips/lib/ucmpdi2.c | 22 ----------------------
-> >  7 files changed, 6 insertions(+), 143 deletions(-)
-> >  delete mode 100644 arch/mips/lib/ashldi3.c
-> >  delete mode 100644 arch/mips/lib/ashrdi3.c
-> >  delete mode 100644 arch/mips/lib/cmpdi2.c
-> >  delete mode 100644 arch/mips/lib/lshrdi3.c
-> >  delete mode 100644 arch/mips/lib/ucmpdi2.c
-> > 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index 350a990fc719..9cd49ee848c6 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -73,6 +73,11 @@ config MIPS
-> >  	select RTC_LIB if !MACH_LOONGSON64
-> >  	select SYSCTL_EXCEPTION_TRACE
-> >  	select VIRT_TO_BUS
-> > +	select GENERIC_ASHLDI3
-> > +	select GENERIC_ASHRDI3
-> > +	select GENERIC_LSHRDI3
-> > +	select GENERIC_CMPDI2
-> > +	select GENERIC_UCMPDI2
-> 
-> Please preserve alphabetical order
+On Wed, Jan 17, 2018 at 05:52:47PM +0800, Jiaxun Yang wrote:
+> Hi, MIPS maintainers
+>=20
+> Recently Loongson has released their now SystemOnChip chip called
+> Loongson2K, and I'm going to submit patches for that chip soon. But I
+> noticed that currently,  Loongson64 code in mainline kernel is pretty
+> in confusion. We mixed loongson2e/2f/3a/3b together in
+> /arch/mips/loongson64, but they don't have many similarities. 2E/2F are
+> legacy products that don't support many features such as EFI or SMBIOS,
 
-Ok, I'll fix order in v2 patch.
+Can you expand on these. To what extent is Loongson's EFI similar to the
+EFI from the x86 world? Do these allow multiple new platforms to be
+supported more easily without much new platform code (like devicetree
+support would)?
 
-> > --- a/arch/mips/lib/ucmpdi2.c
-> > +++ /dev/null
-> > @@ -1,22 +0,0 @@
-> > -// SPDX-License-Identifier: GPL-2.0
-> > -#include <linux/export.h>
-> > -
-> > -#include "libgcc.h"
-> > -
-> > -word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
-> 
-> The version of __ucmpdi2 in /lib/ is not marked notrace. We have seen
-> issues before with compiler intrinsics not being marked notrace - see
-> aedcfbe06558 ("MIPS: lib: Mark intrinsics notrace")
-> 
-> Please ensure that the /lib/ version is equivalent before switching to
-> that version.
+> only a little code can be reused with 3 series. After discussed with
+> another maintainer Huacai Chen, we thought we can separate 2E/2F with 3
+> series and make 4 directories.
+>=20
+> /loongson-1 (Loongson 1B/1C Micro Control Units formal loongson32)
+> /loongson-2ef (Loongson 2E/2F legacy CPU machines formal
+> loongson64/lemote-2f fuloong-2e)
+> /loongson-2soc (Loongson2H/2K SoCs will be submited latter)
+> /loongson-3 (Loongson 3A/3B CPU machines formal loongson64/loongson3)
+>=20
+> So we can maintain code for different family chips easier. Just ask if
+> anybody have a better idea about that.
 
-Good shot! I have missed this 'notrace'.
+I believe the general approach in the ARM camp since Linus put his foot
+down about the proliferation of platform code is to have it all
+devicetree based rather than littering the arch directories with
+platform devices. That way a single multiplatform kernel can boot on a
+variety of different platforms with the DT provided by the bootloader or
+appended to the kernel.
 
-lib/ucmpdi2.c differ from other GCC library routines files from lib
-related to my patch (ashldi3.c, ashrdi3.c, cmpdi2.c, lshrdi3.c):
-only lib/ucmpdi2.c has no 'notrace' flag. In other details the files
-look equivalent. The files arch/mips/lib/libgcc.h and include/linux/libgcc.h
-have no fundamental differences.
+As well as cleaning up and reducing platform code it also simplifies the
+work for distributions since they only need a small number of kernel
+builds.
 
-to Palmer:
-Can we add notrace to lib/ucmpdi2.c?
-It looks like that nobody (even RISC-V code)
-uses GENERIC_CMPDI2 and GENERIC_UCMPDI2. Why?
-Do you use them in your local branches?
+On that front MIPS has the "generic" platform (Paul CC'd) which is
+effectively a multi-platform configuration. It is possible to produce a
+single ITB file which contains a kernel and multiple device tree files
+for different platforms which the bootloader can choose from. It may be
+possible to also boot using legacy boot protocols too, though it depends
+on how it differs from the MIPS UHI spec (so a single kernel could boot
+on either platform), and it may require some form of DT shim to set up a
+DT for the kernel to use internally.
 
--- 
-Best regards,
-  Antony Pavlov
+What challenges would you foresee if Loongson headed this way? (even if
+it was a single separate loongson platform in the kernel source). It may
+require some driver revamping, and the boot protocol might be an issue
+for it to share with the other "generic" platforms. Each new board
+potentially becomes easier to upstream though since the only new arch
+code is devicetree, and the rest is drivers in various other subsystems.
+
+That's the way things should be heading in my opinion (and already are).
+
+>=20
+> BTW: My recent patches have been ignored for a long time. Probably
+> because Ralf didn't appear for a long time. Just ask if these patches
+> can get a chance to be applied. And I don't know what's the proper
+> upstream for me, Ralf's mips-next or James's mips-next?
+
+Currently Ralf's mips-next, though there isn't a lot there yet and the
+merge window is imminent...
+
+Cheers
+James
+
+--UKsZWh/ZtaJX4ozz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpfTp4ACgkQbAtpk944
+dnroxQ/+MJ6rJNBlrDNxs493Ylzw6CO47If3SlnnOOgJqh2d/7gV6pFZnBUWkYG3
+Az/ygG3s+Y96zvMopRDgdPMv9WkPfMIYtir7KpZpQXF3jK06gbne+loHx+CBCi38
+Xs0KOMiVpeuOqIDHeumMKUrdDlJ28QmRtWvDHvIp7/gBwdPFVWAtnRu5WxpJRqIo
+8oXZFbZcsyIIIct7OTa1wK8TEvPgUBeZLByfB7CICLx+jdUqfaQlN7yeAX6EHG63
+2rzK5wTadeoDhgS9vmzoCEjxWZr+El3kyDr62DnO3790DIGAyJ2buNh2dKzWg2w+
+MS4xMtifU3IlNAgU5LGnsctROXt4MQ7AtF1htR+SG+aYJcGDnjUFvroJqq5Gx1R6
+gtRJBOw6UIODWQLNwzLnit7zthk8YksZD2Ukb464TrwZNKMFDTAs4i/fjFJLQZal
+XutrxckgJGDgYq6GF7tOHSEfw/NgiueQnfmeIXoXSYBahE5RnLVT60bN5zqzFRFc
+3LgpXfgvWT9x1x80T2uSKju2Rhjtebr+M74rqZDR3/TU77LR9qwhGI3BgEYEKmUu
+vhVfUx+gtEoz+7bN4wb7Eax8RXr86cugeylnjXJOxbrxgVI5mmtKalUHDHNGL8Lx
+Uss6zvKpKiMmlpmoybivjI/MXMGvpmauvbijW5Mobu7/3eSVVNI=
+=ngA/
+-----END PGP SIGNATURE-----
+
+--UKsZWh/ZtaJX4ozz--

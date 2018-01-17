@@ -1,52 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 10:54:40 +0100 (CET)
-Received: from forward101o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::601]:41509
-        "EHLO forward101o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992391AbeAQJy0TylOI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 10:54:26 +0100
-Received: from mxback9j.mail.yandex.net (mxback9j.mail.yandex.net [IPv6:2a02:6b8:0:1619::112])
-        by forward101o.mail.yandex.net (Yandex) with ESMTP id 8B6D21344688;
-        Wed, 17 Jan 2018 12:54:19 +0300 (MSK)
-Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
-        by mxback9j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id XumCuWoHGu-sIE4dACk;
-        Wed, 17 Jan 2018 12:54:19 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516182859;
-        bh=wWFyBHCIWPwzTh7bbN3K2gqwFe41nGGO+ZhOPJeXXzU=;
-        h=Message-ID:Subject:From:To:Cc:Date;
-        b=DN60Zd1jBAgsBzK3y+XXYiyTTguY1Kw4ysO1fR8/EE7PtXiDatQ9HuQhzPukUkzUy
-         UzPNzl5I3zugsfCF1P8AnDJzoc0459MJ9c+9MhjqQMWNlJF6daKJoGVzFtHCDv4LS1
-         G71URte1YsAHEy8GP1r7knyiecVbt6Msl/MAoxR0=
-Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id eogNcVakEx-rgUOnOO4;
-        Wed, 17 Jan 2018 12:54:14 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516182857;
-        bh=wWFyBHCIWPwzTh7bbN3K2gqwFe41nGGO+ZhOPJeXXzU=;
-        h=Message-ID:Subject:From:To:Cc:Date;
-        b=Kfvl3HcbtNI6DTH4gpMPKUH8RuLILxBsl7+3wihqE5zXBwt4C9TaRblNWfUItnlDJ
-         FHL8c9CGZAd7pza1aDSjBVxzZ06t456YJtBKmNARsa3JswKEQKygABepZzVoYfcQyL
-         J0c/Ba7mRGMS88z1fJjhsj/HOJ24rpZ/ldqj7138=
-Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Message-ID: <1516182767.23672.1.camel@flygoat.com>
-Subject: About Loongson platforms' directories
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Huacai Chen <chenhc@lemote.com>
-Date:   Wed, 17 Jan 2018 17:52:47 +0800
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-wVxaFXtWQpMyfg8KjnF4"
-X-Mailer: Evolution 3.26.3-1 
-Mime-Version: 1.0
-Return-Path: <jiaxun.yang@flygoat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 12:32:34 +0100 (CET)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35821
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991172AbeAQLc0z95qU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 12:32:26 +0100
+Received: by mail-wr0-x244.google.com with SMTP id g38so15278631wrd.2;
+        Wed, 17 Jan 2018 03:32:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=IBvWGulZaa87PCsta/V6fTbzQIYFdhyVbXMkQ/qWQjs=;
+        b=VLg5hEqLWduh27WHhnmdXDVQ8uoNe/0L3HjiZDW+wZTzTAAyufEZ/O04i2faHLAFFK
+         hInCymCW9MDw3gj/pvp7N+gllQxPz/s1BwRwGxDVbFubtcGMR0bBFKDxSSS8wEDFFOgo
+         y6Gc7RrW0JRp5C0C5MurtGj9d+U24moe37cZt5K3Hn9vr74FJCVxybW2Iwhc0mPokJWG
+         4PSMmRK/Sq10JrcT5/g7RvN2oYfGcr2hiMIhNQUi8tt7CaeCKZl3M4k4vMFPYwUd1gba
+         DZcGDciSiEvAKFjpXCO668F24qtsSqfdjwGmXVT40uD9pAhqjC9+oVnfR6pEWQ2epHXt
+         3nQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=IBvWGulZaa87PCsta/V6fTbzQIYFdhyVbXMkQ/qWQjs=;
+        b=a8jiIBydOTfSuptrrwPbOmmVfY8IPS7qTYhtIPtNO12RVbb3PToDhzLViaJJ4SWIQP
+         bwnfo596JmLDPbRlYyGdrmyTc04+m6zL/vtocdGocEWIp50+3G8w9KZFoZ4yrTxihJYu
+         TWAyuZWJmQgdZo5PaXwNHQd41Fu4AvHUbWdpO/9BFrJe8FbbeSZqNtCB+4Su/l1qfl41
+         e9bKduCJtNU89gig2IJJQKYkXAsnafAP4UVyx7GiznBnO96lGZwn2Lzko+sJ39y2vIZ3
+         RsDA3XxD/IXYf5siAYLsDTOGHmMi4f0/GggRK09IWy077KGHT6LxoeRneYDjJlEmigFE
+         4uoA==
+X-Gm-Message-State: AKwxytdRDIi9ayYn7OeJpsJ8BTwSgHKZAnOjP7/2mWbE1tDfqd3x1HxK
+        h1qV0pDbtk3SGooRd+vUK1A=
+X-Google-Smtp-Source: ACJfBouJpxL/HHyv/Z4kyiD4Lc6vNd2rHoBWnhg8lbe5aHOE581qVwlGWX4RjEvEIswd6raK7PXLeA==
+X-Received: by 10.223.178.26 with SMTP id u26mr2224950wra.149.1516188741388;
+        Wed, 17 Jan 2018 03:32:21 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
+        by smtp.gmail.com with ESMTPSA id a34sm7126307wra.18.2018.01.17.03.32.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 17 Jan 2018 03:32:20 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id 766FB10C2EA9; Wed, 17 Jan 2018 12:32:19 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: ftrace: Remove pointer comparison to 0 in prepare_ftrace_return
+Date:   Wed, 17 Jan 2018 12:31:57 +0100
+Message-Id: <20180117113157.25768-1-malat@debian.org>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62198
+X-archive-position: 62199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,58 +67,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Replace pointer comparison to 0 with NULL in prepare_ftrace_return
+to improve code readability. Identified with coccinelle script
+'badzero.cocci'.
 
---=-wVxaFXtWQpMyfg8KjnF4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/mips/kernel/ftrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi, MIPS maintainers
-
-Recently Loongson has released their now SystemOnChip chip called
-Loongson2K, and I'm going to submit patches for that chip soon. But I
-noticed that currently,  Loongson64 code in mainline kernel is pretty
-in confusion. We mixed loongson2e/2f/3a/3b together in
-/arch/mips/loongson64, but they don't have many similarities. 2E/2F are
-legacy products that don't support many features such as EFI or SMBIOS,
-only a little code can be reused with 3 series. After discussed with
-another maintainer Huacai Chen, we thought we can separate 2E/2F with 3
-series and make 4 directories.
-
-/loongson-1 (Loongson 1B/1C Micro Control Units formal loongson32)
-/loongson-2ef (Loongson 2E/2F legacy CPU machines formal
-loongson64/lemote-2f fuloong-2e)
-/loongson-2soc (Loongson2H/2K SoCs will be submited latter)
-/loongson-3 (Loongson 3A/3B CPU machines formal loongson64/loongson3)
-
-So we can maintain code for different family chips easier. Just ask if
-anybody have a better idea about that.
-
-BTW: My recent patches have been ignored for a long time. Probably
-because Ralf didn't appear for a long time. Just ask if these patches
-can get a chance to be applied. And I don't know what's the proper
-upstream for me, Ralf's mips-next or James's mips-next?
---=20
-Jiaxun Yang
---=-wVxaFXtWQpMyfg8KjnF4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpfHO8ACgkQwRGUkHP8
-D2cR2BAAkgj7GSMLRhXCNAu4LQ6JHst9IN4qmfDdvxCTaUmLLN3bsYNXFWwe4fMI
-u4gvlVG1/pV3Ye5Oujxbss8HYUyxsaZDq8IauLduhJRVxHtynbvnJaKMkDPcYMId
-Puh2D4Xs4/cJlFCSIC3ZJgTt/znpPLJgLUjVUhgS5eUrR72I/umeEjOfmgRxTIGo
-LMRjPOGdiljwWlB3vGl04Vli3TQbWx+4BZmDWFcxz83o9qj7EQHx4Vyct2UyqpF6
-1eqop85hgY6YlHnutL/HUfoQYmlWDy/n+F29BLqlBhfAvVS+jtL+MtyKjyaAXnpe
-1GZmSYoI2Mx0P8TDpN1tFhRTgb2hqfUgYQUsnVt9fBqRF/Tnf9tAserbcn1+mJfU
-KNT1SLXtcqWGj370F3MrNdnkQXc1VHeYMJnSg1qwHnSlSA735aO4L0bveKhscg1Z
-MQfyf1NZJjC+w55xLL+cZReogd6CGFzqm/l2HRwb55IIr5EEpm/J3t02K8joKbqx
-wN2zWumy1qJ7sKxo6pwjb8PNGJWFHC/dyViZRaXQeLjliBfsYbsgbWTMBLBgMaIG
-GD05i3wAUEisNsmB1yT0ipHkPCShf+S6M2+wSKPE+XKB1iCgcHJA6klIH91aY+qY
-FlOWkXBEx/4bvkSDbzx3nJW8YnvX02udlddX0z7cK0HcH8j5CHE=
-=1FWG
------END PGP SIGNATURE-----
-
---=-wVxaFXtWQpMyfg8KjnF4--
+diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+index 99285be0e088..7f3dfdbc3657 100644
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -361,7 +361,7 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+ 	 * If fails when getting the stack address of the non-leaf function's
+ 	 * ra, stop function graph tracer and return
+ 	 */
+-	if (parent_ra_addr == 0)
++	if (parent_ra_addr == NULL)
+ 		goto out;
+ #endif
+ 	/* *parent_ra_addr = return_hooker; */
+-- 
+2.11.0

@@ -1,49 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 14:25:53 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:44357 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993497AbeAQNZqoz8Jo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2018 14:25:46 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 17 Jan 2018 13:25:24 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 17 Jan
- 2018 05:25:14 -0800
-Date:   Wed, 17 Jan 2018 13:25:13 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2018 17:00:23 +0100 (CET)
+Received: from forward106o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::609]:54545
+        "EHLO forward106o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994684AbeAQQAPa20BW convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 17 Jan 2018 17:00:15 +0100
+Received: from mxback7g.mail.yandex.net (mxback7g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:168])
+        by forward106o.mail.yandex.net (Yandex) with ESMTP id 0E15D782F47;
+        Wed, 17 Jan 2018 19:00:08 +0300 (MSK)
+Received: from smtp2o.mail.yandex.net (smtp2o.mail.yandex.net [2a02:6b8:0:1a2d::26])
+        by mxback7g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id VIfFogNqYE-0508SN0B;
+        Wed, 17 Jan 2018 19:00:08 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516204808;
+        bh=E/iCWYwyI89L0rNWM28v7K7QAlYK+/T4e3b6sUzfdQo=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References;
+        b=ryEaZGtoFunHpIKkaCZM2fzF6mpRH3PDkZEf0H5BpFjLaLLCZqGgJeJ2T91MABQsa
+         FD62QTqKPwmFZBstwhGgFtJUJ0Ei7bmsBDZtTBq/30iCus2yZUxiX0udAo24/t1acF
+         J3Hi5g3K106qHd+LzxpZHwk8YTc3lDqnwhbjV05E=
+Received: by smtp2o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id gC3J2XXXJr-04X0GlAi;
+        Wed, 17 Jan 2018 19:00:04 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516204805;
+        bh=E/iCWYwyI89L0rNWM28v7K7QAlYK+/T4e3b6sUzfdQo=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References;
+        b=ZgmWex+SG/yhC16i5hFJOLvggBNm//DnvUuVJjAmmfB5r9WXz9DFk3jRrBJEigY8y
+         i7WrjnWHTj/EgrQpLJfwSqTGtNt1h7Qe5ZZojPnke1pqwQFDX3OF0/GGZ7CqeSXG4p
+         PjXy5EPQllDg+9UwLfqqePC8h8hWb3GhVCTBtmbY=
+Authentication-Results: smtp2o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>
 Subject: Re: About Loongson platforms' directories
-Message-ID: <20180117132512.GG5027@jhogan-linux.mipstec.com>
-References: <1516182767.23672.1.camel@flygoat.com>
+Date:   Wed, 17 Jan 2018 23:59:53 +0800
+Message-ID: <2307410.P6mT3GKBU8@flygoat-x230>
+User-Agent: KMail/5.2.3 (Linux/4.14.0-2-rt-amd64; KDE/5.37.0; x86_64; ; )
+In-Reply-To: <20180117132512.GG5027@jhogan-linux.mipstec.com>
+References: <1516182767.23672.1.camel@flygoat.com> <20180117132512.GG5027@jhogan-linux.mipstec.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UKsZWh/ZtaJX4ozz"
-Content-Disposition: inline
-In-Reply-To: <1516182767.23672.1.camel@flygoat.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1516195522-321459-8816-53779-11
-X-BESS-VER: 2017.17-r1801091856
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189070
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62201
+X-archive-position: 62202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,99 +63,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---UKsZWh/ZtaJX4ozz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2018年1月17日星期三 CST 下午1:25:13 James Hogan wrote:
+>
+> Can you expand on these. To what extent is Loongson's EFI similar to the
+> EFI from the x86 world? Do these allow multiple new platforms to be
+> supported more easily without much new platform code (like devicetree
+> support would)?
+Hi James
 
-On Wed, Jan 17, 2018 at 05:52:47PM +0800, Jiaxun Yang wrote:
-> Hi, MIPS maintainers
->=20
-> Recently Loongson has released their now SystemOnChip chip called
-> Loongson2K, and I'm going to submit patches for that chip soon. But I
-> noticed that currently,  Loongson64 code in mainline kernel is pretty
-> in confusion. We mixed loongson2e/2f/3a/3b together in
-> /arch/mips/loongson64, but they don't have many similarities. 2E/2F are
-> legacy products that don't support many features such as EFI or SMBIOS,
+Since I'm not familiar with loongson-3 platform, It's hard for me to expand 
+difference between X86's EFI and Loongson's EFI. Maybe Huacai can explain that 
+exactly. Here is a SPEC for reference (in Chinese):http://ftp.loongnix.org/
+doc/05spec/%E9%BE%99%E8%8A%AFCPU%E5%BC%80%E5%8F%91%E7%B3%BB%E7%BB%9F%E5%9B%BA
+%E4%BB%B6%E4%B8%8E%E5%86%85%E6%A0%B8%E6%8E%A5%E5%8F%A3%E8%AF%A6%E7%BB
+%86%E8%A7%84%E8%8C%83V2.0.pdf . As far as I know, new platform with same 
+chipsets can be supported by SMBIOS without any addition code in kernel. 
+However, that feature is only avliable for Loongson-3.
 
-Can you expand on these. To what extent is Loongson's EFI similar to the
-EFI from the x86 world? Do these allow multiple new platforms to be
-supported more easily without much new platform code (like devicetree
-support would)?
+> 
+> I believe the general approach in the ARM camp since Linus put his foot
+> down about the proliferation of platform code is to have it all
+> devicetree based rather than littering the arch directories with
+> platform devices. That way a single multiplatform kernel can boot on a
+> variety of different platforms with the DT provided by the bootloader or
+> appended to the kernel.
 
-> only a little code can be reused with 3 series. After discussed with
-> another maintainer Huacai Chen, we thought we can separate 2E/2F with 3
-> series and make 4 directories.
->=20
-> /loongson-1 (Loongson 1B/1C Micro Control Units formal loongson32)
-> /loongson-2ef (Loongson 2E/2F legacy CPU machines formal
-> loongson64/lemote-2f fuloong-2e)
-> /loongson-2soc (Loongson2H/2K SoCs will be submited latter)
-> /loongson-3 (Loongson 3A/3B CPU machines formal loongson64/loongson3)
->=20
-> So we can maintain code for different family chips easier. Just ask if
-> anybody have a better idea about that.
+> 
+> As well as cleaning up and reducing platform code it also simplifies the
+> work for distributions since they only need a small number of kernel
+> builds.
 
-I believe the general approach in the ARM camp since Linus put his foot
-down about the proliferation of platform code is to have it all
-devicetree based rather than littering the arch directories with
-platform devices. That way a single multiplatform kernel can boot on a
-variety of different platforms with the DT provided by the bootloader or
-appended to the kernel.
+Yes I would like to do so. Loongson-2K have a limited support with DeviceTree 
+(OpenFirmware) by U-Boot bootloader. Later SoC chips will also support DT as I 
+know.
+But Loongson-1 series and 2E/2F only have leagcy boot support, no EFI, no DT, 
+even not all bootloader support machtype (in boot cmdline). That's why we want 
+to creat different entries for these platforms.
 
-As well as cleaning up and reducing platform code it also simplifies the
-work for distributions since they only need a small number of kernel
-builds.
+Loongson's bootloader is pretty in mass. Loongson-3 is using both PMON2000 v3 
+and KunLunBIOS(A close-source EFI bootloader), Loongson-2E/2F is using 
+PMON2000 v1 (also third-part out of tree U-boot support but not working 
+perfectly). Loongson-1 is only using PMON2000. Newer SoCs will support both 
+PMON2000 v3 and U-boot .  PMON2000 have no DT support but I decide to submit 
+only DT support to mainline.
 
-On that front MIPS has the "generic" platform (Paul CC'd) which is
-effectively a multi-platform configuration. It is possible to produce a
-single ITB file which contains a kernel and multiple device tree files
-for different platforms which the bootloader can choose from. It may be
-possible to also boot using legacy boot protocols too, though it depends
-on how it differs from the MIPS UHI spec (so a single kernel could boot
-on either platform), and it may require some form of DT shim to set up a
-DT for the kernel to use internally.
+> 
+> On that front MIPS has the "generic" platform (Paul CC'd) which is
+> effectively a multi-platform configuration. It is possible to produce a
+> single ITB file which contains a kernel and multiple device tree files
+> for different platforms which the bootloader can choose from. It may be
+> possible to also boot using legacy boot protocols too, though it depends
+> on how it differs from the MIPS UHI spec (so a single kernel could boot
+> on either platform), and it may require some form of DT shim to set up a
+> DT for the kernel to use internally.
+> 
+> What challenges would you foresee if Loongson headed this way? (even if
+> it was a single separate loongson platform in the kernel source). It may
+> require some driver revamping, and the boot protocol might be an issue
+> for it to share with the other "generic" platforms. Each new board
+> potentially becomes easier to upstream though since the only new arch
+> code is devicetree, and the rest is drivers in various other subsystems.
+> 
 
-What challenges would you foresee if Loongson headed this way? (even if
-it was a single separate loongson platform in the kernel source). It may
-require some driver revamping, and the boot protocol might be an issue
-for it to share with the other "generic" platforms. Each new board
-potentially becomes easier to upstream though since the only new arch
-code is devicetree, and the rest is drivers in various other subsystems.
+Loongson isn't purchasing any IP core and made all the things by themself so 
+we can't reuse most drivers already in kernel. We have to write many platform 
+drivers such as PCI, BridgeChip, EC, addtion arch_init for chip and etc. 
+That's why we prefer entries for Loongson platforms. Or generic may be filled 
+with our platform drivers. Also for now loongson64 already have plenty of 
+driver. I don't want to spend time in turn them to generic for other MIPS 
+chips because they are not general....
 
-That's the way things should be heading in my opinion (and already are).
+> That's the way things should be heading in my opinion (and already are).
+> 
 
->=20
-> BTW: My recent patches have been ignored for a long time. Probably
-> because Ralf didn't appear for a long time. Just ask if these patches
-> can get a chance to be applied. And I don't know what's the proper
-> upstream for me, Ralf's mips-next or James's mips-next?
+Thanks
 
-Currently Ralf's mips-next, though there isn't a lot there yet and the
-merge window is imminent...
 
-Cheers
-James
 
---UKsZWh/ZtaJX4ozz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpfTp4ACgkQbAtpk944
-dnroxQ/+MJ6rJNBlrDNxs493Ylzw6CO47If3SlnnOOgJqh2d/7gV6pFZnBUWkYG3
-Az/ygG3s+Y96zvMopRDgdPMv9WkPfMIYtir7KpZpQXF3jK06gbne+loHx+CBCi38
-Xs0KOMiVpeuOqIDHeumMKUrdDlJ28QmRtWvDHvIp7/gBwdPFVWAtnRu5WxpJRqIo
-8oXZFbZcsyIIIct7OTa1wK8TEvPgUBeZLByfB7CICLx+jdUqfaQlN7yeAX6EHG63
-2rzK5wTadeoDhgS9vmzoCEjxWZr+El3kyDr62DnO3790DIGAyJ2buNh2dKzWg2w+
-MS4xMtifU3IlNAgU5LGnsctROXt4MQ7AtF1htR+SG+aYJcGDnjUFvroJqq5Gx1R6
-gtRJBOw6UIODWQLNwzLnit7zthk8YksZD2Ukb464TrwZNKMFDTAs4i/fjFJLQZal
-XutrxckgJGDgYq6GF7tOHSEfw/NgiueQnfmeIXoXSYBahE5RnLVT60bN5zqzFRFc
-3LgpXfgvWT9x1x80T2uSKju2Rhjtebr+M74rqZDR3/TU77LR9qwhGI3BgEYEKmUu
-vhVfUx+gtEoz+7bN4wb7Eax8RXr86cugeylnjXJOxbrxgVI5mmtKalUHDHNGL8Lx
-Uss6zvKpKiMmlpmoybivjI/MXMGvpmauvbijW5Mobu7/3eSVVNI=
-=ngA/
------END PGP SIGNATURE-----
-
---UKsZWh/ZtaJX4ozz--
+-- 
+--
+Jiaxun Yang

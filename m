@@ -1,42 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 14:41:12 +0100 (CET)
-Received: from mga02.intel.com ([134.134.136.20]:62807 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990401AbeARNlE7gn5A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Jan 2018 14:41:04 +0100
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jan 2018 05:41:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.46,377,1511856000"; 
-   d="scan'208";a="27504072"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by orsmga002.jf.intel.com with ESMTP; 18 Jan 2018 05:40:58 -0800
-Message-ID: <1516282857.7000.1057.camel@linux.intel.com>
-Subject: Re: [PATCH v2] FIRMWARE: bcm47xx_nvram: Replace mac address parsing
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Date:   Thu, 18 Jan 2018 15:40:57 +0200
-In-Reply-To: <4671dc40-8c6e-2525-bed0-89e7844026a4@hauke-m.de>
-References: <20171221144055.3840-1-andriy.shevchenko@linux.intel.com>
-         <4671dc40-8c6e-2525-bed0-89e7844026a4@hauke-m.de>
-Organization: Intel Finland Oy
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.3-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <andriy.shevchenko@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 16:09:42 +0100 (CET)
+Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:41781
+        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992956AbeARPJevussT convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Jan 2018 16:09:34 +0100
+Received: by mail-oi0-x243.google.com with SMTP id n81so15891942oig.8;
+        Thu, 18 Jan 2018 07:09:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:user-agent:in-reply-to:references:mime-version
+         :content-transfer-encoding:subject:to:cc:from:message-id;
+        bh=voxFTxjqBui0NgMl62vcZGxWMIPMj6tbb8OOyE3g0n0=;
+        b=cMJRpujj4LtYpwJ5/7a399NoPKd1R9ztyfntuUfeG3TSSbmiZA0AjW7XY6r4gw5pY8
+         oe4Tl5Qj7wsSO6c3kyYDy5NjAaODGp153+WpwO5xe5YZurUtMRpaZ3EydpAjBpD+Hh/r
+         FvX2YqZC9GepFIphTEGdZc2kNrTZF3y9eiqUSWjjgTJ8SV7iDhVZv4xoP0qRs/N2PfVe
+         1Qpz2ogCuikAainb4jXKhXj0vqpE5yhTBdkEggFOO9FOn26Cit6/lJBNpHlZTJ805Vk7
+         TB++QTYTG2x9bwkXe/r5VP5ikcZCYf/+c8cysO4TCKM32aa2W/2OshF1zSoF4HHKwng0
+         YmRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:user-agent:in-reply-to:references
+         :mime-version:content-transfer-encoding:subject:to:cc:from
+         :message-id;
+        bh=voxFTxjqBui0NgMl62vcZGxWMIPMj6tbb8OOyE3g0n0=;
+        b=KcBepOI6vYga3k9tT+CBKZG6RKTrg/7ohpIAT93Eh0e7JOAhiy3qPpV7whoGiGfPp1
+         Yd5h61AhIHb9afzy71lcUxL/ZqAv6rBk1XlP5rQq9mk2BzGS+SLY63xESNZRFrsADoYl
+         h/e8UCNDwVB9WSExiHsbr+Q2u/hd969T7vpSzMSpPBRUt6v5PXT1aWCpWg3BEfy4WKQJ
+         Oz4B4XvbnXrv8xs7fxcMZi/rj2GH5YC/T3muXz684upZHadwIfwwNOBkH/CB58ptFqy2
+         tN4RdrQ9QR5e+jUfsrL90KSZySE2uo4zsLB6quQJrkVKv/sLsBT8HycUrmZdl/g0O1mi
+         guzg==
+X-Gm-Message-State: AKwxytdC2IN9nPLcVvp52UEjwTx4Gs/MXpGk5Zz5QK2Vr3vf3YREAhMJ
+        4ozlJK2jTmsh8kK7FCGLobc=
+X-Google-Smtp-Source: ACJfBotiISvTtlZciKFHR57d8W3hbFTWOA/P6K+QFktlwQBa3lzkbqq/rw1zeTqtCNnifhmGv+UCYQ==
+X-Received: by 10.202.219.66 with SMTP id s63mr3234057oig.168.1516288168325;
+        Thu, 18 Jan 2018 07:09:28 -0800 (PST)
+Received: from nexus5x-flo.lan (ip68-109-195-31.pv.oc.cox.net. [68.109.195.31])
+        by smtp.gmail.com with ESMTPSA id s35sm3396077otd.50.2018.01.18.07.09.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Jan 2018 07:09:27 -0800 (PST)
+Date:   Thu, 18 Jan 2018 07:09:23 -0800
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20180118073123.GA15766@lst.de>
+References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com> <1516058925-46522-5-git-send-email-jim2101024@gmail.com> <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com> <20180118073123.GA15766@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Subject: Re: [PATCH v4 4/8] PCI: brcmstb: Add dma-range mapping for inbound     traffic
+To:     Christoph Hellwig <hch@lst.de>, Rob Herring <robh+dt@kernel.org>
+CC:     Jim Quinlan <jim2101024@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <EDAEFB0F-BB7C-444A-B282-F178F5ADFCBF@gmail.com>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62232
+X-archive-position: 62233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andriy.shevchenko@linux.intel.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,86 +91,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2017-12-21 at 17:42 +0100, Hauke Mehrtens wrote:
-> 
-> On 12/21/2017 03:40 PM, Andy Shevchenko wrote:
-> > Replace sscanf() with mac_pton().
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-> 
-> The patch looks good, but I haven't tested them on my devices.
+On January 17, 2018 11:31:23 PM PST, Christoph Hellwig <hch@lst.de> wrote:
+>On Wed, Jan 17, 2018 at 08:15:33PM -0600, Rob Herring wrote:
+>> > (a) overriding/redefining the dma_to_phys() and phys_to_dma() calls
+>> > that are used by the dma_ops routines.  This is the approach of
+>> >
+>> >         arch/mips/cavium-octeon/dma-octeon.c
+>> 
+>> MIPS is rarely an example to follow. :)
+>
+>But in this case it actually is the example to follow as told
+>previously.
+>
+>NAK again for these chained dma ops that only create problems.
 
-Any news on this, anyone?
-
-> > ---
-> > - use negative condition to be consistent with the rest code
-> >  drivers/firmware/broadcom/Kconfig         |  1 +
-> >  drivers/firmware/broadcom/bcm47xx_sprom.c | 18 +++---------------
-> >  2 files changed, 4 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/drivers/firmware/broadcom/Kconfig
-> > b/drivers/firmware/broadcom/Kconfig
-> > index 5e29f83e7b39..c041dcb7ea52 100644
-> > --- a/drivers/firmware/broadcom/Kconfig
-> > +++ b/drivers/firmware/broadcom/Kconfig
-> > @@ -13,6 +13,7 @@ config BCM47XX_NVRAM
-> >  config BCM47XX_SPROM
-> >  	bool "Broadcom SPROM driver"
-> >  	depends on BCM47XX_NVRAM
-> > +	select GENERIC_NET_UTILS
-> >  	help
-> >  	  Broadcom devices store configuration data in SPROM.
-> > Accessing it is
-> >  	  specific to the bus host type, e.g. PCI(e) devices have
-> > it mapped in
-> > diff --git a/drivers/firmware/broadcom/bcm47xx_sprom.c
-> > b/drivers/firmware/broadcom/bcm47xx_sprom.c
-> > index 62aa3cf09b4d..4787f86c8ac1 100644
-> > --- a/drivers/firmware/broadcom/bcm47xx_sprom.c
-> > +++ b/drivers/firmware/broadcom/bcm47xx_sprom.c
-> > @@ -137,20 +137,6 @@ static void nvram_read_leddc(const char
-> > *prefix, const char *name,
-> >  	*leddc_off_time = (val >> 16) & 0xff;
-> >  }
-> >  
-> > -static void bcm47xx_nvram_parse_macaddr(char *buf, u8 macaddr[6])
-> > -{
-> > -	if (strchr(buf, ':'))
-> > -		sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
-> > &macaddr[0],
-> > -			&macaddr[1], &macaddr[2], &macaddr[3],
-> > &macaddr[4],
-> > -			&macaddr[5]);
-> > -	else if (strchr(buf, '-'))
-> > -		sscanf(buf, "%hhx-%hhx-%hhx-%hhx-%hhx-%hhx",
-> > &macaddr[0],
-> > -			&macaddr[1], &macaddr[2], &macaddr[3],
-> > &macaddr[4],
-> > -			&macaddr[5]);
-> > -	else
-> > -		pr_warn("Can not parse mac address: %s\n", buf);
-> > -}
-> > -
-> >  static void nvram_read_macaddr(const char *prefix, const char
-> > *name,
-> >  			       u8 val[6], bool fallback)
-> >  {
-> > @@ -161,7 +147,9 @@ static void nvram_read_macaddr(const char
-> > *prefix, const char *name,
-> >  	if (err < 0)
-> >  		return;
-> >  
-> > -	bcm47xx_nvram_parse_macaddr(buf, val);
-> > +	strreplace(buf, '-', ':');
-> > +	if (!mac_pton(buf, val))
-> > +		pr_warn("Can not parse mac address: %s\n", buf);
-> >  }
-> >  
-> >  static void nvram_read_alpha2(const char *prefix, const char *name,
-> > 
+Care to explain what should be done instead?
 
 -- 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Intel Finland Oy
+Florian

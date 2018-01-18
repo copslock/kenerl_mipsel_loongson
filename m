@@ -1,56 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 02:59:46 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:47486 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 03:16:09 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:50064 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994711AbeARB7hIE37X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Jan 2018 02:59:37 +0100
-Received: from mail-qt0-f177.google.com (mail-qt0-f177.google.com [209.85.216.177])
+        id S23994706AbeARCQCIuPjX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Jan 2018 03:16:02 +0100
+Received: from mail-qt0-f182.google.com (mail-qt0-f182.google.com [209.85.216.182])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0DC3321781;
-        Thu, 18 Jan 2018 01:59:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 0DC3321781
+        by mail.kernel.org (Postfix) with ESMTPSA id 3AAC92176E;
+        Thu, 18 Jan 2018 02:15:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 3AAC92176E
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh@kernel.org
-Received: by mail-qt0-f177.google.com with SMTP id s3so26642257qtb.10;
-        Wed, 17 Jan 2018 17:59:30 -0800 (PST)
-X-Gm-Message-State: AKwxyteBjGNERRaA5klJ81m8OaqpcxSxvtyusoSqhTQbkEXlvrKIeFf1
-        obKc8LR6RBdxgny1K4Y5vrWKCcPVuOVoC3UTAA==
-X-Google-Smtp-Source: ACJfBovTbyNmsASnTsjNJHzVJEJ1TwJF48LnZyupZHlU0BdfQXXOxhNGGUq7aZW88tCsrg3oOED+leYcUx2kX69GP4Y=
-X-Received: by 10.200.0.18 with SMTP id a18mr14336310qtg.162.1516240769135;
- Wed, 17 Jan 2018 17:59:29 -0800 (PST)
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh+dt@kernel.org
+Received: by mail-qt0-f182.google.com with SMTP id i1so9894488qtj.8;
+        Wed, 17 Jan 2018 18:15:55 -0800 (PST)
+X-Gm-Message-State: AKwxytfVS2WqhVkG+FfpucPZxy+I/2HcnUnpRPXJU0q8KR0ZWzILLD+0
+        R+WDb7E0xhWm/rt7OtkFxF4AARKX+8D4Z3ul3w==
+X-Google-Smtp-Source: ACJfBosVlCnQpR1cnLqz06F3GV76pJxnbVI2VVRdI/Eu2dO8YvCnvlmLx15wqhFBywk/nbTVlZoSu4/Dxor379zX7JY=
+X-Received: by 10.237.38.5 with SMTP id z5mr24869197qtc.180.1516241754350;
+ Wed, 17 Jan 2018 18:15:54 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.12.130.36 with HTTP; Wed, 17 Jan 2018 17:59:08 -0800 (PST)
-In-Reply-To: <CANc+2y4nBcVPUjTiXXDDUD_qph0zHAmr-SDCt74C8gCZdNQ4Fw@mail.gmail.com>
-References: <20171228212954.2922-1-malat@debian.org> <20171228212954.2922-2-malat@debian.org>
- <20180103200211.u56tqesyumsofoff@rob-hp-laptop> <CANc+2y5Y9fYh5V5OG_o+-92-uLYew7yNObLGTYPhGyx2eExywA@mail.gmail.com>
- <CAL_JsqJHHPJY0Yg+kmMbjZVsq=VVC0dPgtvXoN+sxL9gjBtMLA@mail.gmail.com> <CANc+2y4nBcVPUjTiXXDDUD_qph0zHAmr-SDCt74C8gCZdNQ4Fw@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 17 Jan 2018 19:59:08 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ9FQyOO_yaHjjMvwvL_CrWrZz7r4hom6n5hgdx0Z=RNw@mail.gmail.com>
-Message-ID: <CAL_JsqJ9FQyOO_yaHjjMvwvL_CrWrZz7r4hom6n5hgdx0Z=RNw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] nvmem: add driver for JZ4780 efuse
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Zubair.Kakakhel@mips.com,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+Received: by 10.12.130.36 with HTTP; Wed, 17 Jan 2018 18:15:33 -0800 (PST)
+In-Reply-To: <1516058925-46522-5-git-send-email-jim2101024@gmail.com>
+References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com> <1516058925-46522-5-git-send-email-jim2101024@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 17 Jan 2018 20:15:33 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com>
+Message-ID: <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com>
+Subject: Re: [PATCH v4 4/8] PCI: brcmstb: Add dma-range mapping for inbound traffic
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        open list <linux-kernel@vger.kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh@kernel.org>
+Return-Path: <robh+dt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62228
+X-archive-position: 62229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: robh+dt@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,95 +71,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 17, 2018 at 11:31 AM, PrasannaKumar Muralidharan
-<prasannatsmkumar@gmail.com> wrote:
-> Hi Rob,
+On Mon, Jan 15, 2018 at 5:28 PM, Jim Quinlan <jim2101024@gmail.com> wrote:
+> The Broadcom STB PCIe host controller is intimately related to the
+> memory subsystem.  This close relationship adds complexity to how cpu
+> system memory is mapped to PCIe memory.  Ideally, this mapping is an
+> identity mapping, or an identity mapping off by a constant.  Not so in
+> this case.
 >
-> On 11 January 2018 at 20:38, Rob Herring <robh@kernel.org> wrote:
->> On Sat, Jan 6, 2018 at 6:43 AM, PrasannaKumar Muralidharan
->> <prasannatsmkumar@gmail.com> wrote:
->>> Hi Rob,
->>>
->>> On 4 January 2018 at 01:32, Rob Herring <robh@kernel.org> wrote:
->>>> On Thu, Dec 28, 2017 at 10:29:52PM +0100, Mathieu Malaterre wrote:
->>>>> From: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-
-[...]
-
->>>>> +             nemc: nemc@13410000 {
->>>>> +                     compatible = "ingenic,jz4780-nemc";
->>>>> +                     reg = <0x13410000 0x10000>;
->>>>> +                     #address-cells = <2>;
->>>>> +                     #size-cells = <1>;
->>>>> +                     ranges = <1 0 0x1b000000 0x1000000
->>>>> +                               2 0 0x1a000000 0x1000000
->>>>> +                               3 0 0x19000000 0x1000000
->>>>> +                               4 0 0x18000000 0x1000000
->>>>> +                               5 0 0x17000000 0x1000000
->>>>> +                               6 0 0x16000000 0x1000000>;
->>>>> +
->>>>> +                     clocks = <&cgu JZ4780_CLK_NEMC>;
->>>>> +
->>>>> +                     status = "disabled";
->>>>> +             };
->>>>>
->>>>> -             clocks = <&cgu JZ4780_CLK_NEMC>;
->>>>> +             efuse: efuse@134100d0 {
->>>>> +                     compatible = "ingenic,jz4780-efuse";
->>>>> +                     reg = <0x134100d0 0xff>;
->>>>
->>>> You are creating an overlapping region here with nemc above. Don't do
->>>> that.
->>>
->>> Should "reg = <0x13410000 0x10000>;" be used instead?
->>
->> No, that still overlaps with nemc. What's in registers 0x00-0xcf and
->> 0x1d0-0xffff? Either get rid of this node altogether and make the
->> driver for nemc also instantiate the efuse driver (DT is not the only
->> way to instantiate drivers), or create sub-nodes under nemc for each
->> distinct h/w block in the 13410000-13420000 address space.
+> Consider the Broadcom reference board BCM97445LCC_4X8 which has 6 GB
+> of system memory.  Here is how the PCIe controller maps the
+> system memory to PCIe memory:
 >
-> My idea was not to change nemc driver.
+>   memc0-a@[        0....3fffffff] <=> pci@[        0....3fffffff]
+>   memc0-b@[100000000...13fffffff] <=> pci@[ 40000000....7fffffff]
+>   memc1-a@[ 40000000....7fffffff] <=> pci@[ 80000000....bfffffff]
+>   memc1-b@[300000000...33fffffff] <=> pci@[ c0000000....ffffffff]
+>   memc2-a@[ 80000000....bfffffff] <=> pci@[100000000...13fffffff]
+>   memc2-b@[c00000000...c3fffffff] <=> pci@[140000000...17fffffff]
 >
-> By "create sub-nodes under nemc" do you mean something like below?
-
-Yes.
-
-> nemc: nemc@13410000 {
->                      compatible = "ingenic,jz4780-nemc";
->                      reg = <0x13410000 0x10000>;
->                      <...>
->                      status = "disabled";
-
-Though having disabled here is strange. We'd normally ignore all the
-child nodes.
-
+> Although there are some "gaps" that can be added between the
+> individual mappings by software, the permutation of memory regions for
+> the most part is fixed by HW.  The solution of having something close
+> to an identity mapping is not possible.
 >
->                      efuse: efuse@134101d0 {
->                                           compatible = "ingenic,jz4780-efuse";
->                                           reg = <0x134100d0 0xff>;
->                      }
-> }
+> The idea behind this HW design is that the same PCIe module can
+> act as an RC or EP, and if it acts as an EP it concatenates all
+> of system memory into a BAR so anything can be accessed.  Unfortunately,
+> when the PCIe block is in the role of an RC it also presents this
+> "BAR" to downstream PCIe devices, rather than offering an identity map
+> between its system memory and PCIe space.
 >
-> Will this instantiate efuse driver? I do not know how to do that with
-> sub-node. I will explore more on this.
-
-The nemc driver just needs to call of_platform_default_populate.
-
->> Or a third option is make nemc reg:
->>
->> reg = <0x13410000 0xd0>, <0x134101d0 0xfe30>;
->>
->> But I suspect that is wrong and you probably have some other function in there.
->>
->> Rob
+> Suppose that an endpoint driver allocs some DMA memory.  Suppose this
+> memory is located at 0x6000_0000, which is in the middle of memc1-a.
+> The driver wants a dma_addr_t value that it can pass on to the EP to
+> use.  Without doing any custom mapping, the EP will use this value for
+> DMA: the driver will get a dma_addr_t equal to 0x6000_0000.  But this
+> won't work; the device needs a dma_addr_t that reflects the PCIe space
+> address, namely 0xa000_0000.
 >
-> If the efuse block were to use a different base register address (that
-> does not overlap with nemc register range) in future SoC how the node
-> should be? Using nemc to instantiate efuse won't be the best choice if
-> that happens.
+> So, essentially the solution to this problem must modify the
+> dma_addr_t returned by the DMA routines routines.  There are two
+> ways (I know of) of doing this:
+>
+> (a) overriding/redefining the dma_to_phys() and phys_to_dma() calls
+> that are used by the dma_ops routines.  This is the approach of
+>
+>         arch/mips/cavium-octeon/dma-octeon.c
 
-Then you will have a different compatible for nemc (because it is
-different) and then the driver should skip the above step.
+MIPS is rarely an example to follow. :)
 
-Rob
+> In ARM and ARM64 these two routines are defiend in asm/dma-mapping.h
+> as static inline functions.
+>
+> (b) Subscribe to a notifier that notifies when a device is added to a
+> bus.  When this happens, set_dma_ops() can be called for the device.
+> This method is mentioned in:
+>
+>     http://lxr.free-electrons.com/source/drivers/of/platform.c?v=3.16#L152
+
+Why refer to an external website when you can just refer to the source
+of the project this patch applies to directly.
+
+> where it says as a comment
+>
+>     "In case if platform code need to use own special DMA
+>     configuration, it can use Platform bus notifier and
+>     handle BUS_NOTIFY_ADD_DEVICE event to fix up DMA
+>     configuration."
+
+In the current tree, this comment is in drivers/of/device.c.
+
+> Solution (b) is what this commit does.  It uses its own set of
+> dma_ops which are wrappers around the arch_dma_ops.  The
+> wrappers translate the dma addresses before/after invoking
+> the arch_dma_ops, as appropriate.

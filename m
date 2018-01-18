@@ -1,64 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 03:16:09 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:50064 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994706AbeARCQCIuPjX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Jan 2018 03:16:02 +0100
-Received: from mail-qt0-f182.google.com (mail-qt0-f182.google.com [209.85.216.182])
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 04:30:50 +0100 (CET)
+Received: from forward106p.mail.yandex.net ([77.88.28.109]:47973 "EHLO
+        forward106p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990407AbeARDanVHi3A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2018 04:30:43 +0100
+Received: from mxback10o.mail.yandex.net (mxback10o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::24])
+        by forward106p.mail.yandex.net (Yandex) with ESMTP id 9BBDA2D82D05;
+        Thu, 18 Jan 2018 06:30:33 +0300 (MSK)
+Received: from smtp3o.mail.yandex.net (smtp3o.mail.yandex.net [2a02:6b8:0:1a2d::27])
+        by mxback10o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id hacqDg0MbX-UWjupbSA;
+        Thu, 18 Jan 2018 06:30:33 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516246233;
+        bh=i+K5eXL7q8ZG32rudBpohJwQOBdJPp2VC5ls+1pvnG8=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References;
+        b=idGIVVFQWbCvss2kDhixRo1wz0BiDCTBeiGxEeKcIL4y3q66DE9AteRhjGfbGTF82
+         KTq6Ot+o/xLFDP/Hdv5AgGASw60IvffIY0cmEnQq79o84mBnWWFyc79+EKL3xu91UN
+         0AS0I628cVoxrw+l+oGKZeU7snRq21Ql8b+Dlo08=
+Received: by smtp3o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 9z0J0CK4o6-UUviTxaO;
+        Thu, 18 Jan 2018 06:30:30 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3AAC92176E;
-        Thu, 18 Jan 2018 02:15:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 3AAC92176E
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh+dt@kernel.org
-Received: by mail-qt0-f182.google.com with SMTP id i1so9894488qtj.8;
-        Wed, 17 Jan 2018 18:15:55 -0800 (PST)
-X-Gm-Message-State: AKwxytfVS2WqhVkG+FfpucPZxy+I/2HcnUnpRPXJU0q8KR0ZWzILLD+0
-        R+WDb7E0xhWm/rt7OtkFxF4AARKX+8D4Z3ul3w==
-X-Google-Smtp-Source: ACJfBosVlCnQpR1cnLqz06F3GV76pJxnbVI2VVRdI/Eu2dO8YvCnvlmLx15wqhFBywk/nbTVlZoSu4/Dxor379zX7JY=
-X-Received: by 10.237.38.5 with SMTP id z5mr24869197qtc.180.1516241754350;
- Wed, 17 Jan 2018 18:15:54 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.12.130.36 with HTTP; Wed, 17 Jan 2018 18:15:33 -0800 (PST)
-In-Reply-To: <1516058925-46522-5-git-send-email-jim2101024@gmail.com>
-References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com> <1516058925-46522-5-git-send-email-jim2101024@gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Wed, 17 Jan 2018 20:15:33 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com>
-Message-ID: <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/8] PCI: brcmstb: Add dma-range mapping for inbound traffic
-To:     Jim Quinlan <jim2101024@gmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516246231;
+        bh=i+K5eXL7q8ZG32rudBpohJwQOBdJPp2VC5ls+1pvnG8=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References;
+        b=p7KXMwCKjUMsQvHOZC49sCSL346LSrYtem1xKComCmyMcGpZjiXxh3+PQmdOL2zI2
+         kLpcnmVDzaQnOj3qCAaHgilyQi5lRxQ9g1E6MPNhtvx7XahU64+gnmqZ2qjY/BmZAz
+         SQt7LqhE7rSZupj+jA68XUYwcnsKfOzV291P0T40=
+Authentication-Results: smtp3o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Cc:     James Hogan <james.hogan@mips.com>,
         Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh+dt@kernel.org>
+        Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>
+Subject: Re: About Loongson platforms' directories
+Date:   Thu, 18 Jan 2018 11:30:24 +0800
+Message-ID: <2742517.CtLEXR2uX9@flygoat-x230>
+User-Agent: KMail/5.2.3 (Linux/4.14.0-2-rt-amd64; KDE/5.37.0; x86_64; ; )
+In-Reply-To: <CANc+2y4-Y9vb26K4Re8seR8vwrp4v2v8EzqsO9i-iZqWPuf41Q@mail.gmail.com>
+References: <1516182767.23672.1.camel@flygoat.com> <2307410.P6mT3GKBU8@flygoat-x230> <CANc+2y4-Y9vb26K4Re8seR8vwrp4v2v8EzqsO9i-iZqWPuf41Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart4642449.heELgOEIkd"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62229
+X-archive-position: 62230
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh+dt@kernel.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,77 +62,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 15, 2018 at 5:28 PM, Jim Quinlan <jim2101024@gmail.com> wrote:
-> The Broadcom STB PCIe host controller is intimately related to the
-> memory subsystem.  This close relationship adds complexity to how cpu
-> system memory is mapped to PCIe memory.  Ideally, this mapping is an
-> identity mapping, or an identity mapping off by a constant.  Not so in
-> this case.
->
-> Consider the Broadcom reference board BCM97445LCC_4X8 which has 6 GB
-> of system memory.  Here is how the PCIe controller maps the
-> system memory to PCIe memory:
->
->   memc0-a@[        0....3fffffff] <=> pci@[        0....3fffffff]
->   memc0-b@[100000000...13fffffff] <=> pci@[ 40000000....7fffffff]
->   memc1-a@[ 40000000....7fffffff] <=> pci@[ 80000000....bfffffff]
->   memc1-b@[300000000...33fffffff] <=> pci@[ c0000000....ffffffff]
->   memc2-a@[ 80000000....bfffffff] <=> pci@[100000000...13fffffff]
->   memc2-b@[c00000000...c3fffffff] <=> pci@[140000000...17fffffff]
->
-> Although there are some "gaps" that can be added between the
-> individual mappings by software, the permutation of memory regions for
-> the most part is fixed by HW.  The solution of having something close
-> to an identity mapping is not possible.
->
-> The idea behind this HW design is that the same PCIe module can
-> act as an RC or EP, and if it acts as an EP it concatenates all
-> of system memory into a BAR so anything can be accessed.  Unfortunately,
-> when the PCIe block is in the role of an RC it also presents this
-> "BAR" to downstream PCIe devices, rather than offering an identity map
-> between its system memory and PCIe space.
->
-> Suppose that an endpoint driver allocs some DMA memory.  Suppose this
-> memory is located at 0x6000_0000, which is in the middle of memc1-a.
-> The driver wants a dma_addr_t value that it can pass on to the EP to
-> use.  Without doing any custom mapping, the EP will use this value for
-> DMA: the driver will get a dma_addr_t equal to 0x6000_0000.  But this
-> won't work; the device needs a dma_addr_t that reflects the PCIe space
-> address, namely 0xa000_0000.
->
-> So, essentially the solution to this problem must modify the
-> dma_addr_t returned by the DMA routines routines.  There are two
-> ways (I know of) of doing this:
->
-> (a) overriding/redefining the dma_to_phys() and phys_to_dma() calls
-> that are used by the dma_ops routines.  This is the approach of
->
->         arch/mips/cavium-octeon/dma-octeon.c
+--nextPart4642449.heELgOEIkd
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 
-MIPS is rarely an example to follow. :)
+On 2018=E5=B9=B41=E6=9C=8817=E6=97=A5=E6=98=9F=E6=9C=9F=E4=B8=89 CST =E4=B8=
+=8B=E5=8D=8810:04:46 PrasannaKumar Muralidharan wrote:
 
-> In ARM and ARM64 these two routines are defiend in asm/dma-mapping.h
-> as static inline functions.
->
-> (b) Subscribe to a notifier that notifies when a device is added to a
-> bus.  When this happens, set_dma_ops() can be called for the device.
-> This method is mentioned in:
->
->     http://lxr.free-electrons.com/source/drivers/of/platform.c?v=3.16#L152
+>=20
+> It is possible to use DT even if boot loader does not supply it. The
+> dtb can be append to the kernel and kernel can be configured to pick
+> it up.
 
-Why refer to an external website when you can just refer to the source
-of the project this patch applies to directly.
+Hi PrasannaKumar
 
-> where it says as a comment
->
->     "In case if platform code need to use own special DMA
->     configuration, it can use Platform bus notifier and
->     handle BUS_NOTIFY_ADD_DEVICE event to fix up DMA
->     configuration."
+Yes I know about that. But I think it's not necessary to introduce DT suppo=
+rt=20
+for current Loongson platforms. Now, all machines with same SoC or CPU or M=
+CU=20
+can share their kernel. 2E/2F differ platforms by machtype, 3 is using EFI=
+=20
+just like DT. For loongson-mcu their is only one reference design in kernel=
+=2E=20
+Introduce DT support will make whole boot progress more complex.
 
-In the current tree, this comment is in drivers/of/device.c.
+Loongson-2K have DT support in bootloader.
 
-> Solution (b) is what this commit does.  It uses its own set of
-> dma_ops which are wrappers around the arch_dma_ops.  The
-> wrappers translate the dma addresses before/after invoking
-> the arch_dma_ops, as appropriate.
+>=20
+> I think James is talking about having little to no platform code in
+> arch/mips/loongson/. It is preferred to have Loongson specific drivers
+> in driver/<hw-specific-framework> as it would help using common code
+> the framework provides. Any change to driver will go via the
+> respective framework maintainer (for example change to Loongson rtc
+> driver can be submitted to the rtc maintainer) which will reduce mips
+> maintainer burden and also increases responsiveness in getting the
+> changes merged.
+
+Yeah, some drivers should put into their own subsystems. That's what we'll =
+do=20
+during seprate the machs. But other drivers such as PM or PCI can only put =
+in=20
+MIPS arch. Platform code should be reduced by DT and EFI, but for older=20
+systems (2e/2f), we still need some platform code. Since there will be no m=
+ore=20
+new device for these systems, I think it's acceptable.
+=20
+=2D-
+Jiaxun Yang
+--nextPart4642449.heELgOEIkd
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpgFNAACgkQwRGUkHP8
+D2cuXxAAlpeoMay/X8WOzuEKiNbWHCXHZBft2xFcMzkL31x4OpYmXgC9mHFThaXZ
++GW1cQl+UtYHR66owlvBq/6+rxEEnxRtgn0DnUxcHIxIRbG0l5OEpNTFBSq7gP+4
+kyCnbSdGKRuDkxWQYQMbCb3Y38dRgVLTzqcVFkV378st9YGgOd6ZbY6JCEpCxUjK
+nM++bP7vD774BeNKbNoZ/Os5L/UrmHgvErDnSXZOknNoKv0BqvU0wCqk8zctud6N
+dnWvaNAfm8C+bAFKZXtoJRp6CkLuiiVNwUyufrYSTKGz3jrkAuRfruM1tzz94Utz
+gen7DebQaLf8kN3r72n13BfIsz+UwjVub+uiverNYyc/xBF1BlZe+XhPAWByckyb
+hi50ItmhqdDhjTcivYkwyUOzqEU7Icg2lK1yW/NGq6mmNJP6Rww00Tzph8x82L31
+0SG4NJmLTZbSYxEdCzOrOQTAdbiRPiUCt8bx+V2tYhUwCKmF15vlWcWJpOuoC1cy
+1MDG30Ewx8hwsTMwKlfxlicBSX300AO44QxnzjdcroAwj7Pf7efjNkSYUDCPQyK7
+MWK98escFU5/jVuA8KAzazMZAeF5xrkhynHa2LZc82p7/BWIHOCxOetS62EAxnWY
+P8RJ7UeEVu13dOzbtUuhzIe05dzvX50/nBWcNjFnv8mKAcI6788=
+=P+Zr
+-----END PGP SIGNATURE-----
+
+--nextPart4642449.heELgOEIkd--

@@ -1,47 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 00:59:07 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:60572 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994702AbeAQX67j8qTV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Jan 2018 00:58:59 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9000220C09;
-        Wed, 17 Jan 2018 23:58:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9000220C09
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 17 Jan 2018 23:58:47 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/13] MIPS: mscc: Add initial support for Microsemi MIPS
- SoCs
-Message-ID: <20180117235846.GA25314@saruman>
-References: <20171128152643.20463-1-alexandre.belloni@free-electrons.com>
- <20171128152643.20463-10-alexandre.belloni@free-electrons.com>
- <20171128160137.GF27409@jhogan-linux.mipstec.com>
- <20171128165359.GJ21126@piout.net>
- <20171128173151.GD5027@jhogan-linux.mipstec.com>
- <20171128195002.dcq7i2wqmstkn3rr@pburton-laptop>
- <20171129163819.GN21126@piout.net>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
-Content-Disposition: inline
-In-Reply-To: <20171129163819.GN21126@piout.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 02:35:16 +0100 (CET)
+Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:44809
+        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994706AbeARBfIYotKX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2018 02:35:08 +0100
+Received: by mail-pg0-x244.google.com with SMTP id m20so12585947pgc.11
+        for <linux-mips@linux-mips.org>; Wed, 17 Jan 2018 17:35:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dO1mqa5mpFy3C9dsxFhM3g5Qye/hm791XlPQDQI8mFo=;
+        b=WjN3kM1ZpmPlvM/UegWLG/FDbLuyXtjimsXNaZ3G1yYkzzmkrnjDOn07zLVx2gEE5p
+         YdSsXn1u+rKdoKwX2zk4RZFpo+Hyj6A9Hrqz27LQzw1HKGxh+/1Xabtqvqkn4uvRqdrM
+         zA+4Pym1Noh5zWy6AZfkmzQNFqniLH1RYEOmSpvAevqtwUyr5WEdd94JqoQ1j12/5lIV
+         VxFj0R0xDWD19NymWdKkE0c1HSB4xn8ydZoplx4jNGfeUu39ZwVu7OO6hbTBQh195n98
+         WB4+GlSwVGWRWpO9YwsbbO3eDjLJhGCXEJbCaPLEqARrMg7/Tc0bMHfZV0Q359fhjIoz
+         wxMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=dO1mqa5mpFy3C9dsxFhM3g5Qye/hm791XlPQDQI8mFo=;
+        b=tB/2aO32NHv2ar8RGkwGCnw7TGzJchGHa0QBNL2sWu5N26+qrhemV0nbNA9dIHXkIf
+         3986fyWh+h3ufNvKP7LbsZL+aXOfY7OjL2fPYmMmegu47nSTLo1lxrzZnlEPJYGJ/m2c
+         5cK/bmgRAuqyS7Tr1pKCA5fzVluRP5Aw5HBlUYB8ZCt3x+TTDp47goW/+P7+riBZmjaq
+         OoQ7SO1X7sLBSyGgizWW+/IcuKzwbmrdX22nPm3E1WvuKB9tMY0gtODNzW84Qx84Sapz
+         qDDnMcu+DUt9O38qov7ihaNKrcDkbH1AFgq4vEeUber99CNVqNJratdxHlSbH51w1q2j
+         nvAA==
+X-Gm-Message-State: AKwxytc/+AfgO7RByQkpG6/urCplZC5jR33bKSkyiBf2E7EKu10c3soO
+        lzs11iwC/Ftu+9TRwQ6+LZviiBTKy/4=
+X-Google-Smtp-Source: ACJfBouP5PVoIIrx0HnufEc0GBbDt3eF9RF2/H4JxWdbnu6iZwkabaf/wAuKljKC5V0GsNiQv9xlkQ==
+X-Received: by 10.159.207.135 with SMTP id z7mr8869239plo.242.1516239300317;
+        Wed, 17 Jan 2018 17:35:00 -0800 (PST)
+Received: from localhost ([12.206.222.5])
+        by smtp.gmail.com with ESMTPSA id s14sm10086050pfa.158.2018.01.17.17.34.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 17 Jan 2018 17:34:59 -0800 (PST)
+Date:   Wed, 17 Jan 2018 17:34:59 -0800 (PST)
+X-Google-Original-Date: Wed, 17 Jan 2018 17:34:57 PST (-0800)
+Subject:     Re: [PATCH] MIPS: use generic GCC library routines from lib/
+In-Reply-To: <20180117065121.30437-1-antonynpavlov@gmail.com>
+CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org
+From:   Palmer Dabbelt <palmer@sifive.com>
+To:     antonynpavlov@gmail.com
+Message-ID: <mhng-796aa108-a59e-433a-a037-925fbfaf905e@palmer-si-x1c4>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <palmer@sifive.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62226
+X-archive-position: 62227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: palmer@sifive.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,171 +69,248 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Ah, thanks for reminding me -- I'd originally posted a patch set that converted 
+every other port to use these routines, but I ended up dropping all those.  
+Here's my original MIPS attempt
 
---HlL+5n6rz5pIUxbD
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+    https://marc.info/?l=linux-mips&m=149677651707103&w=2
 
-On Wed, Nov 29, 2017 at 05:38:19PM +0100, Alexandre Belloni wrote:
-> Hi Paul,
->=20
-> On 28/11/2017 at 11:50:02 -0800, Paul Burton wrote:
-> > On Tue, Nov 28, 2017 at 05:31:51PM +0000, James Hogan wrote:
-> > > On Tue, Nov 28, 2017 at 05:53:59PM +0100, Alexandre Belloni wrote:
-> > > > On 28/11/2017 at 16:01:38 +0000, James Hogan wrote:
-> > > > > On Tue, Nov 28, 2017 at 04:26:39PM +0100, Alexandre Belloni wrote:
-> > > > > > Introduce support for the MIPS based Microsemi Ocelot SoCs.
-> > > > > > As the plan is to have all SoCs supported only using device tre=
-e, the
-> > > > > > mach directory is simply called mscc.
-> > > > >=20
-> > > > > Nice. Have you considered adding this to the existing multiplatfo=
-rm
-> > > > > "generic" platform? See for example commit b35565bb16a5 ("MIPS: g=
-eneric:
-> > > > > Add support for MIPSfpga") for the latest platform to be converte=
-d.
-> > > > >=20
-> > > >=20
-> > > > I didn't because we are currently booting using an old redboot with=
- its
-> > > > own boot protocol and at boot, the register read by the sead3 code =
-is
-> > > > completely random (it actually matched once).
-> > > >=20
-> > > > Do you consider that mandatory to get the platform upstream?
-> > >=20
-> > > No, however if it is practical to do so I think it might be the best =
-way
-> > > forward (even if generic+YAMON support is mutually exclusive of
-> > > generic+redboot, though hopefully there is some way to avoid that).
-> > >=20
-> > > Paul on Cc, he may have thoughts on this one.
-> >=20
-> > We could certainly look at tightening the checks in the SEAD-3 code to
-> > avoid the false positive.
-> >=20
-> > Could you share any details of the boot protocol you're using with
-> > redboot? One option might be for the SEAD-3 code to check that the
-> > arguments the bootloader provided look "YAMON-like", so long as the 2
-> > protocols differ sufficiently.
-> >=20
->=20
-> I didn't look closely at the redboot code yet but it ends up with
-> something like:
->  - argc =3D=3D fw_arg0
->  - argv =3D=3D fw_arg1
->     - not sure yet what is in argv[0]
->     - kernel commande line in argv[1]
->  - fw_arg2 is a pointer to a structure like:
->         struct parmblock {
->             t_env_var memsize;
->         };
->     with:
->         typedef struct
->         {
->             char *name;
->             char *val;
->         } t_env_var;
->    this is the size of the RAM but I'm not using it because it is in the
->    device tree.
->=20
-> Does that help?
+Given that, I think you can also drop arch/mips/lib/libgcc.h -- if it's used 
+from anywhere else, it should be possible to use include/linux/libgcc.h 
+instead.
 
-That basically matches what YAMON provides. I can't see a nice way to
-support both in the same kernel.
+Assuming it still seems sane do to that I can go give the rest of the patch set 
+another shot.  I'm a bit new to this, but I think I should do something like
 
-Processor ID is no good since Malta (not yet mainline added to
-"generic") uses the same address for the ID, and can support a much
-bigger range of cores.
+Reviewed-by: Palmer Dabbelt <palmer@sifive.com>
 
-Poking at random I/O always feels a bit risky.
+Thanks!
 
-Some safety checked environment checking (Paul says modetty0 should
-always be in there for YAMON) might work.
-
-Does Ocelot have a read-only ID register with a specific value? We'd
-have to add prioritisation of the legacy board detection to rely on
-that.
-
-If all else fails, we could still make them mutually exclusive,
-something roughly like below would work but its a bit clumsy as all the
-ocelot config options would still get enabled when sead3 is enabled,
-even though some of the drivers may not be useful. The detection &
-co-existence can always be improved later. What do you think?
-
-We can't #require CONFIG_LEGACY_BOARD_SEAD3=3Dn unfortunately since it
-only checks the base config, not the already merged board configs.
-
-Cheers
-James
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 0f20f84de53b..bfdefc013358 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -537,6 +537,10 @@ generic_defconfig:
- # now that the boards have been converted to use the generic kernel they a=
-re
- # wrappers around the generic rules above.
- #
-+.PHONY: ocelot_defconfig
-+ocelot_defconfig:
-+	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=3Docelot
-+
- .PHONY: sead3_defconfig
- sead3_defconfig:
- 	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=3Dsead-3
-diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/conf=
-igs/generic/board-ocelot.config
-new file mode 100644
-index 000000000000..b22a4570d05c
---- /dev/null
-+++ b/arch/mips/configs/generic/board-ocelot.config
-@@ -0,0 +1,3 @@
-+# require CONFIG_32BIT=3Dy
-+
-+CONFIG_LEGACY_BOARD_OCELOT=3Dy
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index 52e0286a1612..fac8b936c468 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -27,6 +27,14 @@ config LEGACY_BOARD_SEAD3
- 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
- 	  development boards, which boot using a legacy boot protocol.
-=20
-+comment "MSCC Ocelot doesn't work with SEAD3 enabled"
-+	depends on LEGACY_BOARD_SEAD3
-+
-+config LEGACY_BOARD_OCELOT
-+	bool "Support MSCC Ocelot boards"
-+	depends on LEGACY_BOARD_SEAD3=3Dn
-+	select LEGACY_BOARDS
-+
- comment "FIT/UHI Boards"
-=20
- config FIT_IMAGE_FDT_BOSTON
-
---HlL+5n6rz5pIUxbD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpf4zAACgkQbAtpk944
-dnp8kxAAr7BOza7uM5gnOI2ZV8h33mFLHyWUnZLdWpXhNOkZnzRhISlZ+aHLc5Bh
-I7zql+D4wGELgTtTbd352GuOTzXSkCBM2AwME8fcyD5PmhErFpamngL3GKBmY/Mp
-n74Q9x0W/P6ZtOTiVytRJP8t0BsbC4MBw4GsR0Y6mjjUSsreHF89V7Q9hyQfxE6Z
-O6G19tD/FK4PoGcCVw65/91i3A3Pjtl5jMwGOg58kCbBE2B3p9E7T6dkXgklay8W
-KjitKRDBBYb1zjqh+NHsXj0rizcqSkU23DzOQYslYkDUej3nx0ItwB9iJJ+hj/5T
-Ygisiek7r6h6+cU+lxl28U7ML70/4EkshlMO9pCtO3nTSc+OJ1wQnCcFA1AcGwSM
-StneSoeaBGuGpb5Ny7DuFoAO6Ttmh1KaEQNU+S4bss+AJ8STjj8w5bRYrGmbInW2
-Lm3k0xJRg2E9fBGEMr2Np1W133ryPT1VTjJjgBEjxbQFc8Py2z459sLsMosPT6RE
-hCRZBSGOtaNivkqAugIyqcxO9r8Bl/JhrxZr7ZJShURKxrF2YkqpgpnpCgzI27rj
-TfhDud+OQpM3foqUQZ8yndeBxerJmRJ+VmeBwt+U7TOZpt0o16AOXCCMH2GuqEVK
-mYj2CgxBN6sXkd6N8qJzyUxkusqa9cASFo+CexOEhQQ0HjJjW/g=
-=EmHX
------END PGP SIGNATURE-----
-
---HlL+5n6rz5pIUxbD--
+On Tue, 16 Jan 2018 22:51:21 PST (-0800), antonynpavlov@gmail.com wrote:
+> The commit b35cd9884fa5 ("lib: Add shared copies of
+> some GCC library routines") makes it possible
+> to share generic GCC library routines by several
+> architectures.
+>
+> This commit removes several generic GCC library
+> routines from arch/mips/lib/ in favour of similar
+> routines from lib/.
+>
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Cc: Palmer Dabbelt <palmer@sifive.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  arch/mips/Kconfig       |  5 +++++
+>  arch/mips/lib/Makefile  |  2 +-
+>  arch/mips/lib/ashldi3.c | 30 ------------------------------
+>  arch/mips/lib/ashrdi3.c | 32 --------------------------------
+>  arch/mips/lib/cmpdi2.c  | 28 ----------------------------
+>  arch/mips/lib/lshrdi3.c | 30 ------------------------------
+>  arch/mips/lib/ucmpdi2.c | 22 ----------------------
+>  7 files changed, 6 insertions(+), 143 deletions(-)
+>  delete mode 100644 arch/mips/lib/ashldi3.c
+>  delete mode 100644 arch/mips/lib/ashrdi3.c
+>  delete mode 100644 arch/mips/lib/cmpdi2.c
+>  delete mode 100644 arch/mips/lib/lshrdi3.c
+>  delete mode 100644 arch/mips/lib/ucmpdi2.c
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 350a990fc719..9cd49ee848c6 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -73,6 +73,11 @@ config MIPS
+>  	select RTC_LIB if !MACH_LOONGSON64
+>  	select SYSCTL_EXCEPTION_TRACE
+>  	select VIRT_TO_BUS
+> +	select GENERIC_ASHLDI3
+> +	select GENERIC_ASHRDI3
+> +	select GENERIC_LSHRDI3
+> +	select GENERIC_CMPDI2
+> +	select GENERIC_UCMPDI2
+>
+>  menu "Machine selection"
+>
+> diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+> index 78c2affeabf8..195ab4cb0840 100644
+> --- a/arch/mips/lib/Makefile
+> +++ b/arch/mips/lib/Makefile
+> @@ -16,4 +16,4 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
+>  obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
+>
+>  # libgcc-style stuff needed in the kernel
+> -obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o ucmpdi2.o
+> +obj-y += bswapsi.o bswapdi.o
+> diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
+> deleted file mode 100644
+> index 24cd6903e797..000000000000
+> --- a/arch/mips/lib/ashldi3.c
+> +++ /dev/null
+> @@ -1,30 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#include <linux/export.h>
+> -
+> -#include "libgcc.h"
+> -
+> -long long notrace __ashldi3(long long u, word_type b)
+> -{
+> -	DWunion uu, w;
+> -	word_type bm;
+> -
+> -	if (b == 0)
+> -		return u;
+> -
+> -	uu.ll = u;
+> -	bm = 32 - b;
+> -
+> -	if (bm <= 0) {
+> -		w.s.low = 0;
+> -		w.s.high = (unsigned int) uu.s.low << -bm;
+> -	} else {
+> -		const unsigned int carries = (unsigned int) uu.s.low >> bm;
+> -
+> -		w.s.low = (unsigned int) uu.s.low << b;
+> -		w.s.high = ((unsigned int) uu.s.high << b) | carries;
+> -	}
+> -
+> -	return w.ll;
+> -}
+> -
+> -EXPORT_SYMBOL(__ashldi3);
+> diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
+> deleted file mode 100644
+> index 23f5295af51e..000000000000
+> --- a/arch/mips/lib/ashrdi3.c
+> +++ /dev/null
+> @@ -1,32 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#include <linux/export.h>
+> -
+> -#include "libgcc.h"
+> -
+> -long long notrace __ashrdi3(long long u, word_type b)
+> -{
+> -	DWunion uu, w;
+> -	word_type bm;
+> -
+> -	if (b == 0)
+> -		return u;
+> -
+> -	uu.ll = u;
+> -	bm = 32 - b;
+> -
+> -	if (bm <= 0) {
+> -		/* w.s.high = 1..1 or 0..0 */
+> -		w.s.high =
+> -		    uu.s.high >> 31;
+> -		w.s.low = uu.s.high >> -bm;
+> -	} else {
+> -		const unsigned int carries = (unsigned int) uu.s.high << bm;
+> -
+> -		w.s.high = uu.s.high >> b;
+> -		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
+> -	}
+> -
+> -	return w.ll;
+> -}
+> -
+> -EXPORT_SYMBOL(__ashrdi3);
+> diff --git a/arch/mips/lib/cmpdi2.c b/arch/mips/lib/cmpdi2.c
+> deleted file mode 100644
+> index 93cfc785927d..000000000000
+> --- a/arch/mips/lib/cmpdi2.c
+> +++ /dev/null
+> @@ -1,28 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#include <linux/export.h>
+> -
+> -#include "libgcc.h"
+> -
+> -word_type notrace __cmpdi2(long long a, long long b)
+> -{
+> -	const DWunion au = {
+> -		.ll = a
+> -	};
+> -	const DWunion bu = {
+> -		.ll = b
+> -	};
+> -
+> -	if (au.s.high < bu.s.high)
+> -		return 0;
+> -	else if (au.s.high > bu.s.high)
+> -		return 2;
+> -
+> -	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
+> -		return 0;
+> -	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
+> -		return 2;
+> -
+> -	return 1;
+> -}
+> -
+> -EXPORT_SYMBOL(__cmpdi2);
+> diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
+> deleted file mode 100644
+> index 914b971aca3b..000000000000
+> --- a/arch/mips/lib/lshrdi3.c
+> +++ /dev/null
+> @@ -1,30 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#include <linux/export.h>
+> -
+> -#include "libgcc.h"
+> -
+> -long long notrace __lshrdi3(long long u, word_type b)
+> -{
+> -	DWunion uu, w;
+> -	word_type bm;
+> -
+> -	if (b == 0)
+> -		return u;
+> -
+> -	uu.ll = u;
+> -	bm = 32 - b;
+> -
+> -	if (bm <= 0) {
+> -		w.s.high = 0;
+> -		w.s.low = (unsigned int) uu.s.high >> -bm;
+> -	} else {
+> -		const unsigned int carries = (unsigned int) uu.s.high << bm;
+> -
+> -		w.s.high = (unsigned int) uu.s.high >> b;
+> -		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
+> -	}
+> -
+> -	return w.ll;
+> -}
+> -
+> -EXPORT_SYMBOL(__lshrdi3);
+> diff --git a/arch/mips/lib/ucmpdi2.c b/arch/mips/lib/ucmpdi2.c
+> deleted file mode 100644
+> index c31c78ca4175..000000000000
+> --- a/arch/mips/lib/ucmpdi2.c
+> +++ /dev/null
+> @@ -1,22 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#include <linux/export.h>
+> -
+> -#include "libgcc.h"
+> -
+> -word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+> -{
+> -	const DWunion au = {.ll = a};
+> -	const DWunion bu = {.ll = b};
+> -
+> -	if ((unsigned int) au.s.high < (unsigned int) bu.s.high)
+> -		return 0;
+> -	else if ((unsigned int) au.s.high > (unsigned int) bu.s.high)
+> -		return 2;
+> -	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
+> -		return 0;
+> -	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
+> -		return 2;
+> -	return 1;
+> -}
+> -
+> -EXPORT_SYMBOL(__ucmpdi2);

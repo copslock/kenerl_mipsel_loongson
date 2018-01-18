@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 21:33:22 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:42359 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 23:28:27 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:54514 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbeARUdNYnddN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2018 21:33:13 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 18 Jan 2018 20:31:39 +0000
+        by eddie.linux-mips.org with ESMTP id S23990425AbeARW2TTmSNb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2018 23:28:19 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 18 Jan 2018 22:27:02 +0000
 Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Thu, 18 Jan
- 2018 12:30:55 -0800
-Date:   Thu, 18 Jan 2018 20:30:53 +0000
+ 2018 14:26:06 -0800
+Date:   Thu, 18 Jan 2018 22:26:04 +0000
 From:   James Hogan <james.hogan@mips.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v7 11/14] MIPS: ingenic: Initial JZ4770 support
-Message-ID: <20180118203052.GF27409@jhogan-linux.mipstec.com>
-References: <20180105182513.16248-2-paul@crapouillou.net>
- <20180116154804.21150-1-paul@crapouillou.net>
- <20180116154804.21150-12-paul@crapouillou.net>
- <20180117212853.GC27409@jhogan-linux.mipstec.com>
- <1516295670.1423.0@smtp.crapouillou.net>
+To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        <devicetree@vger.kernel.org>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: Document mti,mips-cpc binding
+Message-ID: <20180118222603.GG27409@jhogan-linux.mipstec.com>
+References: <1514385475-23921-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1514385475-23921-2-git-send-email-aleksandar.markovic@rt-rk.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="G2kvLHdEX2DcGdqq"
+        protocol="application/pgp-signature"; boundary="f9lFb+Z4UT82L8vr"
 Content-Disposition: inline
-In-Reply-To: <1516295670.1423.0@smtp.crapouillou.net>
+In-Reply-To: <1514385475-23921-2-git-send-email-aleksandar.markovic@rt-rk.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1516307495-452059-11115-9228-3
-X-BESS-VER: 2017.17.1-r1801152154
+X-BESS-ID: 1516314421-637138-9128-76600-8
+X-BESS-VER: 2017.17-r1801171719
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189121
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189125
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
@@ -42,7 +47,7 @@ Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62244
+X-archive-position: 62245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,83 +64,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---G2kvLHdEX2DcGdqq
+--f9lFb+Z4UT82L8vr
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 18, 2018 at 06:14:30PM +0100, Paul Cercueil wrote:
-> Hi James,
+On Wed, Dec 27, 2017 at 03:37:51PM +0100, Aleksandar Markovic wrote:
+> From: Paul Burton <paul.burton@mips.com>
 >=20
-> Le mer. 17 janv. 2018 =C3=A0 22:28, James Hogan <james.hogan@mips.com> a=
-=20
-> =C3=A9crit :
-> > On Tue, Jan 16, 2018 at 04:48:01PM +0100, Paul Cercueil wrote:
-> >>  Provide just enough bits (clocks, clocksource, uart) to allow a=20
-> >> kernel
-> >>  to boot on the JZ4770 SoC to a initramfs userspace.
-> >>=20
-> >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> >>  Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-> >=20
-> >=20
-> >>  diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-> >>  index bb1ad5119da4..2ca9160f642a 100644
-> >>  --- a/arch/mips/jz4740/time.c
-> >>  +++ b/arch/mips/jz4740/time.c
-> >>  @@ -113,7 +113,7 @@ static struct clock_event_device=20
-> >> jz4740_clockevent =3D {
-> >>   #ifdef CONFIG_MACH_JZ4740
-> >>   	.irq =3D JZ4740_IRQ_TCU0,
-> >>   #endif
-> >>  -#ifdef CONFIG_MACH_JZ4780
-> >>  +#if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
-> >>   	.irq =3D JZ4780_IRQ_TCU2,
-> >>   #endif
-> >>   };
-> >>  --
-> >>  2.11.0
-> >>=20
-> >=20
-> > MACH_INGENIC selects SYS_SUPPORTS_ZBOOT_UART16550, so I wonder whether
-> > arch/mips/boot/compressed/uart-16550.c needs updating for JZ4770 like
-> > commit ba9e72c2290f ("MIPS: Fix build with DEBUG_ZBOOT and=20
-> > MACH_JZ4780")
-> > does for JZ4780.
-> >=20
-> > Otherwise the non-DT bits look reasonable (I've not really looked
-> > properly at the DT):
-> > Reviewed-by: James Hogan <jhogan@kernel.org>
-> >=20
-> > Cheers
-> > James
+> Document a binding for the MIPS Cluster Power Controller (CPC) that
+> allows the device tree to specify where the CPC registers are located.
 >=20
-> I will fix it in a separate patch, if you don't mind.
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+> ---
+>  Documentation/devicetree/bindings/power/mti,mips-cpc.txt | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/mti,mips-cpc.=
+txt
+>=20
+> diff --git a/Documentation/devicetree/bindings/power/mti,mips-cpc.txt b/D=
+ocumentation/devicetree/bindings/power/mti,mips-cpc.txt
+> new file mode 100644
 
-Sure,
+Is it worth adding to the MIPS GENERIC PLATFORM entry of MAINTAINERS,
+given that it directly benefits it?
 
 Cheers
 James
 
---G2kvLHdEX2DcGdqq
+> index 0000000..c6b8251
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+> @@ -0,0 +1,8 @@
+> +Binding for MIPS Cluster Power Controller (CPC).
+> +
+> +This binding allows a system to specify where the CPC registers are
+> +located.
+> +
+> +Required properties:
+> +compatible : Should be "mti,mips-cpc".
+> +regs: Should describe the address & size of the CPC register region.
+> --=20
+> 2.7.4
+>=20
+
+--f9lFb+Z4UT82L8vr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlphA/wACgkQbAtpk944
-dnqNrxAAiomxWwHL1ajIRwecdeAIRqKGOgMlRc2M9KjLXS2GCcKGP8ANL1SSiWby
-VAyZVgDGQPgF08vo7/NBAMpS+tRkMyA5XYB4XRHvcxHZliM0/yPvwvQuxRlhNwXY
-al8WhJrY4Hb+BMw32mJdrpAj7A5EIZchA4sX37Un5031dizWGeR42rZnLcCL9WHd
-pbuEA9XeMNQ7DsCRI1+M+FKR9POXYOuQR1WW982uhNvPxqrQWuFQy89B1kRalDZG
-b/zTpOCRFZ7v4uIoHXOuM8G7ZdUjDNp9thxkB0lhtxA2fGAFRzF3g55K2d8NW8VC
-N2enEoJFTjPWi+gFGZusnLCk73vA8BlAA01RdpXuukUyDj7dTgmchXh26XY1WZhh
-DtzOr3UnMpglaX3n5j/9cFI3IhxGLSIF9hWJLmffqMfYK3j70knR1BZCmI0x9kOu
-vH9mTDD5pc1VRExwnACPsRw7bxEhTfB8pFsBP5A30pEzryGnMiMjRSeZ/Sbh72tQ
-o5877Kbz5beXWJ5CWGiRJzmKr+z7qxHhdW2CEBcUSAN/LLlsQOcwXEHJWQMQ+yDE
-dWt+t4le0gkFVm1/R5vsutg6U+uCJLJQ48Z+9vGm0sQHM6EGdw7E8Z086rZsoIfG
-DeTfyQJqJvpNZ50gKff/oT/N4zw+3PRdyBH78yKet1WtnyKS/lc=
-=aC0a
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlphHvsACgkQbAtpk944
+dnosoRAApbUmU9krdm+eQh/ArkjZmYh/onFKo1q9QNghYNVom4vHzCF7hRQZCYcP
+6EJo6/x6JMyFwaM4/dTZ6NghInx2wrHGSbOMFbL8Il4LtlzXi2lmDoV0oX4P2SUD
++TEfbKUHoANRdq9eck8nM+heqsJkF/MZ++ykD/FUjRwkoKG9rgh7wwLaPtnHNCX1
+fY6qwTxboy1gKWOfBV9kMAM7sHzztRdDbPnlOVup1MSXShCOgzK1y2GSLIdRZyl3
+flTJUJojdv7OAzBKAZrqM8ldYqKLEiEkBR+APRH4OvnWHkcVtd0/iQ1ntGZVz1Hf
+3XNGZARH+K1JwIfmpy4ZbeSog5dn74KjSY0dhI5wgCisOP2MGuOxwnJ2hl+nbXYF
+Xa9YYbftxOw4+XiBCQPjT6euJemnXgo7pW4i7LWPk3caOic0IOlGQgQCUYZ3AHBy
+03iSOBFDCHhCQSLDWY2EMTA4b5JvI/tU8qAc2yGU51U3rTG6Q4uucGHrlIaMgApZ
+e9u/CFmCr0uxj9GL2enaejO44YlgG5B8Ql+94IDDCMa7D7slwcyVp5t+5Gko55fS
+mAcrKo1/0LdSoy24XxmWc730WZJBxcvteCFAgnsjiC5rr/bMmzqjpWAmM3f1D6eV
+vUk3q/D6KN9mIqfDJ19cvaurOsfS2gtULF3CC9uchu8iWaLFJds=
+=6/vD
 -----END PGP SIGNATURE-----
 
---G2kvLHdEX2DcGdqq--
+--f9lFb+Z4UT82L8vr--

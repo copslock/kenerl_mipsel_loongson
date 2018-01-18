@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 17:06:08 +0100 (CET)
-Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:42292
-        "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbeARQGAQJ1An (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2018 17:06:32 +0100 (CET)
+Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:38911
+        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993497AbeARQGA5sFKn (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2018 17:06:00 +0100
-Received: by mail-pg0-x241.google.com with SMTP id q67so14596081pga.9
+Received: by mail-pg0-x244.google.com with SMTP id y27so8597908pgc.5
         for <linux-mips@linux-mips.org>; Thu, 18 Jan 2018 08:06:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sifive.com; s=google;
         h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
          :content-transfer-encoding;
-        bh=v2TKKQZbIePiJCi/hVZ5vkWBTBrpv0HSgByaEoB/Km0=;
-        b=ljgI7gm1uosVg5yOzxKrOnoLhUgeMAWrNsvahf8SG3cX4uFo9MDim2Y3/UCy+09NGe
-         AQM0ehCZhdh5EgCc/4OyXntALm0NbnHqzS2l5NKejI5nyYnBHAfZjXxbzdY8BLRpQZVp
-         pqFVgeAlxvSw0gP3srxJXRKViqPVf7zxsdE4tTOz9H975SR7nVqULwIwBn6C6ddIo/ka
-         /BKVbjihePmYbK05LyiXQIHuxTl3lPEoBGMT/ZCVLRfPU0nWMgg9HkVz/BtmFfqJcWVA
-         0kg4grqxiuH0lSuWXvVSJRPYqneym61RGEFoaVomARPeunErhhewmpmre/c5teWI53aT
-         DTow==
+        bh=Y7DTgaP6T2CXSU3utq8eVBvjt0pxh/0uLv3M6kDseys=;
+        b=G6CokSPzQ8CKmFhjnvRg4NSVAazvhe6+P+KgnNAtPepJPkFlZvdHmP0zyiPxE0algi
+         nODezfd7AZ5sppUyvOt21zvMBqOF3wVmx/OaL2P7mb0svHsOeKRLiu82xlelfbcDpRGR
+         +Zi7OpnT64OFYHmI/NUt04ETkZSYuqu98Cjo3m8wCBl8u5jJns7e+tJ1OQk9hD36mBka
+         +0FgiXdZtwaJOh1ghwE7xWSu92k00jgc23jEjMIUsiJsycxANoYe81V/rABFbpQhqgcA
+         MTtBp/aC9+44Vyv9S9TnFo+qJE6GI+cBxi1WYHGsM3TpnGzAa0KR8GUHMRWQlHLz+4Pm
+         REhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
          :mime-version:content-transfer-encoding;
-        bh=v2TKKQZbIePiJCi/hVZ5vkWBTBrpv0HSgByaEoB/Km0=;
-        b=rE9JsDVlDrJCwgc1kNDC5oaKXSC48SjHV9AxoqXEHW+cROkwh/OPA5C8UjuPWKa9xA
-         ZHjSmimxvNtbUvLomQkIdIBEywk3wB5NX9oVMY4LtybeIx3bzhC1e0yNQg9nNeo8DapH
-         CZ8ROEq9uDUJ2qDMxOZkgARv2Oa3TTrMGdcdOFmbUWmPQv0bov6miwZtlJEx05f3Nth7
-         V+p00iiYVfjm0kyakHdJdba7XnkQePYFrQdtOA2CM3CBokEyKr/Qa3PyoCjHJXIKVCn1
-         cW+Fz4hdSod+zueer+YjTdmhz27NsmWCUyENWqrJVjrsYzQlZkfFBeJH5OI5H+1wOIOl
-         4DqA==
-X-Gm-Message-State: AKwxytdf1dcs0xG8+jmxLJCmkBitW9zTUcaUTHNg6keSpOO5cMdNs9uG
-        nhGULOVtVMDeXKOyWJMgwglhZg==
-X-Google-Smtp-Source: ACJfBosNqutvHsYbdi0tInJzxzXr6oXdtVQrWRtQYyeMI+FUtPdsueA/zfVNhd5rMhyR7AL8YFzkKg==
-X-Received: by 10.98.161.16 with SMTP id b16mr17505876pff.34.1516291553210;
-        Thu, 18 Jan 2018 08:05:53 -0800 (PST)
+        bh=Y7DTgaP6T2CXSU3utq8eVBvjt0pxh/0uLv3M6kDseys=;
+        b=SjRfqyW7cNfW3WtQP7lu51KDWBFaP8YdQMJYaXEZqeZMj7MoW9LGdVZuHvlfYsT+TE
+         QPnNMTCFTG2lFUl+mh7K7B+i2kHjrGeN0gbKOyomtAIxrOpzzMPozl6FlgU7xpfXIeza
+         rq3/FVFU1Eoqy2GQ/mwATmG5eP/RH03JWtH13oiBSM1IbkTchPYzjCzVm1H+XYZVkVgq
+         mOSytw+hOt0foz8HPdU27gEaSI9sAPUPj4K3/cn0UGPqHwAvnTnEUCI93XJETBbjPUpR
+         B/mwTQ5sbTXOmIRXHUyfwsapBQU97bKNeGlaj0c36yp9xn+a0RQ+BdbWzbhsA2ZIAeBh
+         KkcQ==
+X-Gm-Message-State: AKwxyte9yjNLWUd5P7KZZhDdaOg/TPUMSX+ufh3u25jDupb0c6elnwb/
+        F2FPS0vqWyv1BPFGH88BpmWYbA==
+X-Google-Smtp-Source: ACJfBotVfck7rZBbX2dvr5YMfPyQrou2W7oPd5mgE4ZXf+oggEFhvFuPhwLj/S2U+WbfwC87z29P3Q==
+X-Received: by 2002:a17:902:48c8:: with SMTP id u8-v6mr6631plh.272.1516291554501;
+        Thu, 18 Jan 2018 08:05:54 -0800 (PST)
 Received: from localhost ([12.206.222.5])
-        by smtp.gmail.com with ESMTPSA id f1sm11232587pgo.46.2018.01.18.08.05.52
+        by smtp.gmail.com with ESMTPSA id n7sm974854pgd.10.2018.01.18.08.05.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jan 2018 08:05:52 -0800 (PST)
-Date:   Thu, 18 Jan 2018 08:05:52 -0800 (PST)
-X-Google-Original-Date: Thu, 18 Jan 2018 08:01:55 PST (-0800)
+        Thu, 18 Jan 2018 08:05:54 -0800 (PST)
+Date:   Thu, 18 Jan 2018 08:05:54 -0800 (PST)
+X-Google-Original-Date: Thu, 18 Jan 2018 08:05:33 PST (-0800)
 Subject:     Re: [PATCH] MIPS: use generic GCC library routines from lib/
-In-Reply-To: <20180117090348.GA20406@mredfearn-linux>
-CC:     antonynpavlov@gmail.com, linux-mips@linux-mips.org,
+In-Reply-To: <20180117163418.ba77b2f72298092fb843fda7@gmail.com>
+CC:     matt.redfearn@mips.com, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, ralf@linux-mips.org
 From:   Palmer Dabbelt <palmer@sifive.com>
-To:     matt.redfearn@mips.com
-Message-ID: <mhng-ba1775dd-1e19-4734-ae7b-24683d58037a@palmer-si-x1c4>
+To:     antonynpavlov@gmail.com
+Message-ID: <mhng-f0aef9cf-df3a-41a8-a108-1a409394351a@palmer-si-x1c4>
 Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
@@ -52,7 +52,7 @@ Return-Path: <palmer@sifive.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62235
+X-archive-position: 62236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,258 +69,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 17 Jan 2018 01:03:48 PST (-0800), matt.redfearn@mips.com wrote:
-> Hi,
+On Wed, 17 Jan 2018 05:34:18 PST (-0800), antonynpavlov@gmail.com wrote:
+> On Wed, 17 Jan 2018 09:03:48 +0000
+> Matt Redfearn <matt.redfearn@mips.com> wrote:
 >
-> On Wed, Jan 17, 2018 at 09:51:21AM +0300, Antony Pavlov wrote:
->> The commit b35cd9884fa5 ("lib: Add shared copies of
->> some GCC library routines") makes it possible
->> to share generic GCC library routines by several
->> architectures.
->>
->> This commit removes several generic GCC library
->> routines from arch/mips/lib/ in favour of similar
->> routines from lib/.
->>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> Cc: Palmer Dabbelt <palmer@sifive.com>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Cc: linux-mips@linux-mips.org
->> Cc: linux-kernel@vger.kernel.org
->> ---
->>  arch/mips/Kconfig       |  5 +++++
->>  arch/mips/lib/Makefile  |  2 +-
->>  arch/mips/lib/ashldi3.c | 30 ------------------------------
->>  arch/mips/lib/ashrdi3.c | 32 --------------------------------
->>  arch/mips/lib/cmpdi2.c  | 28 ----------------------------
->>  arch/mips/lib/lshrdi3.c | 30 ------------------------------
->>  arch/mips/lib/ucmpdi2.c | 22 ----------------------
->>  7 files changed, 6 insertions(+), 143 deletions(-)
->>  delete mode 100644 arch/mips/lib/ashldi3.c
->>  delete mode 100644 arch/mips/lib/ashrdi3.c
->>  delete mode 100644 arch/mips/lib/cmpdi2.c
->>  delete mode 100644 arch/mips/lib/lshrdi3.c
->>  delete mode 100644 arch/mips/lib/ucmpdi2.c
->>
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 350a990fc719..9cd49ee848c6 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -73,6 +73,11 @@ config MIPS
->>  	select RTC_LIB if !MACH_LOONGSON64
->>  	select SYSCTL_EXCEPTION_TRACE
->>  	select VIRT_TO_BUS
->> +	select GENERIC_ASHLDI3
->> +	select GENERIC_ASHRDI3
->> +	select GENERIC_LSHRDI3
->> +	select GENERIC_CMPDI2
->> +	select GENERIC_UCMPDI2
+>> Hi,
+>> 
+>> On Wed, Jan 17, 2018 at 09:51:21AM +0300, Antony Pavlov wrote:
+>> > The commit b35cd9884fa5 ("lib: Add shared copies of
+>> > some GCC library routines") makes it possible
+>> > to share generic GCC library routines by several
+>> > architectures.
+>> > 
+>> > This commit removes several generic GCC library
+>> > routines from arch/mips/lib/ in favour of similar
+>> > routines from lib/.
+>> > 
+>> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> > Cc: Palmer Dabbelt <palmer@sifive.com>
+>> > Cc: Ralf Baechle <ralf@linux-mips.org>
+>> > Cc: linux-mips@linux-mips.org
+>> > Cc: linux-kernel@vger.kernel.org
+>> > ---
+>> >  arch/mips/Kconfig       |  5 +++++
+>> >  arch/mips/lib/Makefile  |  2 +-
+>> >  arch/mips/lib/ashldi3.c | 30 ------------------------------
+>> >  arch/mips/lib/ashrdi3.c | 32 --------------------------------
+>> >  arch/mips/lib/cmpdi2.c  | 28 ----------------------------
+>> >  arch/mips/lib/lshrdi3.c | 30 ------------------------------
+>> >  arch/mips/lib/ucmpdi2.c | 22 ----------------------
+>> >  7 files changed, 6 insertions(+), 143 deletions(-)
+>> >  delete mode 100644 arch/mips/lib/ashldi3.c
+>> >  delete mode 100644 arch/mips/lib/ashrdi3.c
+>> >  delete mode 100644 arch/mips/lib/cmpdi2.c
+>> >  delete mode 100644 arch/mips/lib/lshrdi3.c
+>> >  delete mode 100644 arch/mips/lib/ucmpdi2.c
+>> > 
+>> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> > index 350a990fc719..9cd49ee848c6 100644
+>> > --- a/arch/mips/Kconfig
+>> > +++ b/arch/mips/Kconfig
+>> > @@ -73,6 +73,11 @@ config MIPS
+>> >  	select RTC_LIB if !MACH_LOONGSON64
+>> >  	select SYSCTL_EXCEPTION_TRACE
+>> >  	select VIRT_TO_BUS
+>> > +	select GENERIC_ASHLDI3
+>> > +	select GENERIC_ASHRDI3
+>> > +	select GENERIC_LSHRDI3
+>> > +	select GENERIC_CMPDI2
+>> > +	select GENERIC_UCMPDI2
+>> 
+>> Please preserve alphabetical order
 >
-> Please preserve alphabetical order
+> Ok, I'll fix order in v2 patch.
 >
->>
->>  menu "Machine selection"
->>
->> diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
->> index 78c2affeabf8..195ab4cb0840 100644
->> --- a/arch/mips/lib/Makefile
->> +++ b/arch/mips/lib/Makefile
->> @@ -16,4 +16,4 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
->>  obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
->>
->>  # libgcc-style stuff needed in the kernel
->> -obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o ucmpdi2.o
->> +obj-y += bswapsi.o bswapdi.o
->> diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
->> deleted file mode 100644
->> index 24cd6903e797..000000000000
->> --- a/arch/mips/lib/ashldi3.c
->> +++ /dev/null
->> @@ -1,30 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0
->> -#include <linux/export.h>
->> -
->> -#include "libgcc.h"
->> -
->> -long long notrace __ashldi3(long long u, word_type b)
->> -{
->> -	DWunion uu, w;
->> -	word_type bm;
->> -
->> -	if (b == 0)
->> -		return u;
->> -
->> -	uu.ll = u;
->> -	bm = 32 - b;
->> -
->> -	if (bm <= 0) {
->> -		w.s.low = 0;
->> -		w.s.high = (unsigned int) uu.s.low << -bm;
->> -	} else {
->> -		const unsigned int carries = (unsigned int) uu.s.low >> bm;
->> -
->> -		w.s.low = (unsigned int) uu.s.low << b;
->> -		w.s.high = ((unsigned int) uu.s.high << b) | carries;
->> -	}
->> -
->> -	return w.ll;
->> -}
->> -
->> -EXPORT_SYMBOL(__ashldi3);
->> diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
->> deleted file mode 100644
->> index 23f5295af51e..000000000000
->> --- a/arch/mips/lib/ashrdi3.c
->> +++ /dev/null
->> @@ -1,32 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0
->> -#include <linux/export.h>
->> -
->> -#include "libgcc.h"
->> -
->> -long long notrace __ashrdi3(long long u, word_type b)
->> -{
->> -	DWunion uu, w;
->> -	word_type bm;
->> -
->> -	if (b == 0)
->> -		return u;
->> -
->> -	uu.ll = u;
->> -	bm = 32 - b;
->> -
->> -	if (bm <= 0) {
->> -		/* w.s.high = 1..1 or 0..0 */
->> -		w.s.high =
->> -		    uu.s.high >> 31;
->> -		w.s.low = uu.s.high >> -bm;
->> -	} else {
->> -		const unsigned int carries = (unsigned int) uu.s.high << bm;
->> -
->> -		w.s.high = uu.s.high >> b;
->> -		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
->> -	}
->> -
->> -	return w.ll;
->> -}
->> -
->> -EXPORT_SYMBOL(__ashrdi3);
->> diff --git a/arch/mips/lib/cmpdi2.c b/arch/mips/lib/cmpdi2.c
->> deleted file mode 100644
->> index 93cfc785927d..000000000000
->> --- a/arch/mips/lib/cmpdi2.c
->> +++ /dev/null
->> @@ -1,28 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0
->> -#include <linux/export.h>
->> -
->> -#include "libgcc.h"
->> -
->> -word_type notrace __cmpdi2(long long a, long long b)
->> -{
->> -	const DWunion au = {
->> -		.ll = a
->> -	};
->> -	const DWunion bu = {
->> -		.ll = b
->> -	};
->> -
->> -	if (au.s.high < bu.s.high)
->> -		return 0;
->> -	else if (au.s.high > bu.s.high)
->> -		return 2;
->> -
->> -	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
->> -		return 0;
->> -	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
->> -		return 2;
->> -
->> -	return 1;
->> -}
->> -
->> -EXPORT_SYMBOL(__cmpdi2);
->> diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
->> deleted file mode 100644
->> index 914b971aca3b..000000000000
->> --- a/arch/mips/lib/lshrdi3.c
->> +++ /dev/null
->> @@ -1,30 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0
->> -#include <linux/export.h>
->> -
->> -#include "libgcc.h"
->> -
->> -long long notrace __lshrdi3(long long u, word_type b)
->> -{
->> -	DWunion uu, w;
->> -	word_type bm;
->> -
->> -	if (b == 0)
->> -		return u;
->> -
->> -	uu.ll = u;
->> -	bm = 32 - b;
->> -
->> -	if (bm <= 0) {
->> -		w.s.high = 0;
->> -		w.s.low = (unsigned int) uu.s.high >> -bm;
->> -	} else {
->> -		const unsigned int carries = (unsigned int) uu.s.high << bm;
->> -
->> -		w.s.high = (unsigned int) uu.s.high >> b;
->> -		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
->> -	}
->> -
->> -	return w.ll;
->> -}
->> -
->> -EXPORT_SYMBOL(__lshrdi3);
->> diff --git a/arch/mips/lib/ucmpdi2.c b/arch/mips/lib/ucmpdi2.c
->> deleted file mode 100644
->> index c31c78ca4175..000000000000
->> --- a/arch/mips/lib/ucmpdi2.c
->> +++ /dev/null
->> @@ -1,22 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0
->> -#include <linux/export.h>
->> -
->> -#include "libgcc.h"
->> -
->> -word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+>> > --- a/arch/mips/lib/ucmpdi2.c
+>> > +++ /dev/null
+>> > @@ -1,22 +0,0 @@
+>> > -// SPDX-License-Identifier: GPL-2.0
+>> > -#include <linux/export.h>
+>> > -
+>> > -#include "libgcc.h"
+>> > -
+>> > -word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+>> 
+>> The version of __ucmpdi2 in /lib/ is not marked notrace. We have seen
+>> issues before with compiler intrinsics not being marked notrace - see
+>> aedcfbe06558 ("MIPS: lib: Mark intrinsics notrace")
+>> 
+>> Please ensure that the /lib/ version is equivalent before switching to
+>> that version.
 >
-> The version of __ucmpdi2 in /lib/ is not marked notrace. We have seen
-> issues before with compiler intrinsics not being marked notrace - see
-> aedcfbe06558 ("MIPS: lib: Mark intrinsics notrace")
+> Good shot! I have missed this 'notrace'.
 >
-> Please ensure that the /lib/ version is equivalent before switching to
-> that version.
+> lib/ucmpdi2.c differ from other GCC library routines files from lib
+> related to my patch (ashldi3.c, ashrdi3.c, cmpdi2.c, lshrdi3.c):
+> only lib/ucmpdi2.c has no 'notrace' flag. In other details the files
+> look equivalent. The files arch/mips/lib/libgcc.h and include/linux/libgcc.h
+> have no fundamental differences.
+>
+> to Palmer:
+> Can we add notrace to lib/ucmpdi2.c?
 
-IIRC we marked the others as notrace for a similar reason, I must have just 
-missed this one somehow.  I can submit a patch.
+Works for me.  Do you want to add a patch to this set?  Since it's a dependency 
+of this patch it seems to make a bit more sense to just keep here.  Mine looks like
 
-Thanks!
+    commit dba01764391cbd6e636595f7b957357b2cf2c14a
+    Author: Palmer Dabbelt <palmer@sifive.com>
+    Date:   Thu Jan 18 07:47:35 2018 -0800
+    
+        Add notrace to lib/ucmpdi2.c
+    
+        As part of the MIPS conversion to use the generic GCC library routines,
+        Matt Redfearn discovered that I'd missed a notrace on __ucmpdi2().  This
+        patch rectifies the problem.
+    
+        CC: Matt Redfearn <matt.redfearn@mips.com>
+        CC: Antony Pavlov <antonynpavlov@gmail.com>
+        Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+    
+    diff --git a/lib/ucmpdi2.c b/lib/ucmpdi2.c
+    index 25ca2d4c1e19..597998169a96 100644
+    --- a/lib/ucmpdi2.c
+    +++ b/lib/ucmpdi2.c
+    @@ -17,7 +17,7 @@
+     #include <linux/module.h>
+     #include <linux/libgcc.h>
+    
+    -word_type __ucmpdi2(unsigned long long a, unsigned long long b)
+    +word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+     {
+     	const DWunion au = {.ll = a};
+     	const DWunion bu = {.ll = b};
 
->
-> Thanks,
-> Matt
->
->> -{
->> -	const DWunion au = {.ll = a};
->> -	const DWunion bu = {.ll = b};
->> -
->> -	if ((unsigned int) au.s.high < (unsigned int) bu.s.high)
->> -		return 0;
->> -	else if ((unsigned int) au.s.high > (unsigned int) bu.s.high)
->> -		return 2;
->> -	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
->> -		return 0;
->> -	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
->> -		return 2;
->> -	return 1;
->> -}
->> -
->> -EXPORT_SYMBOL(__ucmpdi2);
->> --
->> 2.15.1
->>
->>
+> It looks like that nobody (even RISC-V code)
+> uses GENERIC_CMPDI2 and GENERIC_UCMPDI2. Why?
+> Do you use them in your local branches?
+
+I'd meant to convert every arch port over to using the generic routines, but it 
+sort of just got lost in the shuffle.  I'll resurrect that patch set.

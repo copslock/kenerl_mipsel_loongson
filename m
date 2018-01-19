@@ -1,35 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 16:42:30 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:36272 "EHLO mail.rt-rk.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 16:42:54 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:36300 "EHLO mail.rt-rk.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990656AbeASPmTvE17t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 Jan 2018 16:42:19 +0100
+        id S23992079AbeASPmf30CJt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Jan 2018 16:42:35 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 793DD1A4816;
-        Fri, 19 Jan 2018 16:42:14 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTP id 43D0F1A4AC6;
+        Fri, 19 Jan 2018 16:42:27 +0100 (CET)
 X-Virus-Scanned: amavisd-new at rt-rk.com
 Received: from rtrkw774-lin.domain.local (unknown [10.10.13.43])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 566A21A47B2;
-        Fri, 19 Jan 2018 16:42:14 +0100 (CET)
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 17D861A4AC2;
+        Fri, 19 Jan 2018 16:42:27 +0100 (CET)
 From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
 To:     linux-mips@linux-mips.org
 Cc:     Paul Burton <paul.burton@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Douglas Leung <douglas.leung@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Hogan <james.hogan@mips.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Miodrag Dinic <miodrag.dinic@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        James Hogan <james.hogan@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Matt Redfearn <matt.redfearn@mips.com>,
         Petar Jovanovic <petar.jovanovic@mips.com>,
         Raghu Gandham <raghu.gandham@mips.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v4 1/2] dt-bindings: Document mti,mips-cpc binding
-Date:   Fri, 19 Jan 2018 16:40:48 +0100
-Message-Id: <1516376459-25672-2-git-send-email-aleksandar.markovic@rt-rk.com>
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v4 2/2] MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
+Date:   Fri, 19 Jan 2018 16:40:49 +0100
+Message-Id: <1516376459-25672-3-git-send-email-aleksandar.markovic@rt-rk.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1516376459-25672-1-git-send-email-aleksandar.markovic@rt-rk.com>
 References: <1516376459-25672-1-git-send-email-aleksandar.markovic@rt-rk.com>
@@ -37,7 +34,7 @@ Return-Path: <aleksandar.markovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62250
+X-archive-position: 62251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,43 +53,51 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@mips.com>
 
-Document a binding for the MIPS Cluster Power Controller (CPC) that
-allows the device tree to specify where the CPC registers are located.
+Reading mips_cpc_base value from the DT allows each platform to
+define it according to its needs. This is especially convenient
+for MIPS_GENERIC kernel where this kind of information should be
+determined in runtime.
+
+Use mti,mips-cpc compatible string with just a reg property to
+specify the register location for your platform.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/power/mti,mips-cpc.txt | 8 ++++++++
- MAINTAINERS                                              | 1 +
- 2 files changed, 9 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+ arch/mips/kernel/mips-cpc.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/mti,mips-cpc.txt b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
-new file mode 100644
-index 0000000..c6b8251
---- /dev/null
-+++ b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
-@@ -0,0 +1,8 @@
-+Binding for MIPS Cluster Power Controller (CPC).
+diff --git a/arch/mips/kernel/mips-cpc.c b/arch/mips/kernel/mips-cpc.c
+index 19c88d7..fcf9af4 100644
+--- a/arch/mips/kernel/mips-cpc.c
++++ b/arch/mips/kernel/mips-cpc.c
+@@ -10,6 +10,8 @@
+ 
+ #include <linux/errno.h>
+ #include <linux/percpu.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/spinlock.h>
+ 
+ #include <asm/mips-cps.h>
+@@ -22,6 +24,17 @@ static DEFINE_PER_CPU_ALIGNED(unsigned long, cpc_core_lock_flags);
+ 
+ phys_addr_t __weak mips_cpc_default_phys_base(void)
+ {
++	struct device_node *cpc_node;
++	struct resource res;
++	int err;
 +
-+This binding allows a system to specify where the CPC registers are
-+located.
++	cpc_node = of_find_compatible_node(of_root, NULL, "mti,mips-cpc");
++	if (cpc_node) {
++		err = of_address_to_resource(cpc_node, 0, &res);
++		if (!err)
++			return res.start;
++	}
 +
-+Required properties:
-+compatible : Should be "mti,mips-cpc".
-+regs: Should describe the address & size of the CPC register region.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1899480..cca71b8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9108,6 +9108,7 @@ MIPS GENERIC PLATFORM
- M:	Paul Burton <paul.burton@mips.com>
- L:	linux-mips@linux-mips.org
- S:	Supported
-+F:	Documentation/devicetree/bindings/power/mti,mips-cpc.txt
- F:	arch/mips/generic/
- F:	arch/mips/tools/generic-board-config.sh
+ 	return 0;
+ }
  
 -- 
 2.7.4

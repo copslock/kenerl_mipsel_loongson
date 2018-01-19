@@ -1,73 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 15:27:18 +0100 (CET)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:33213
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990439AbeASO1LIzaKZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jan 2018 15:27:11 +0100
-Received: by mail-lf0-x244.google.com with SMTP id t139so2324955lff.0;
-        Fri, 19 Jan 2018 06:27:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=spV4CuHMSF1gRaZrohj5QorcwxDTML8S0GqjujVSTIM=;
-        b=JXHUdetFMoqvprPdxOcIjWUP75SlLV+DCAkixqIhW4o8JHqxT0jis/gMdfbDsrWbWe
-         ygoroVY8W+YEXW02hh0g0YMPvL0HCA+cMtP5IbuzhE00Fg8lw9HlXSBayAOdKUD2MawS
-         PYRfjgE5z/clO48t90lWtjkVWE9SICU1kkCFSQa+cNV+kPBHgrodiaDez0RbCinZK6PT
-         CduwBMHH6RP+N2ylTHVVTnXS7WTmY73gXbjTfEd5ClL9XWIIWcUNLCxlwfaPl+tR70nh
-         8wfIzGze+U1MlTzbyLL7PhCpav+hTLGD/Ae7FJy13dhZBt/3HCc15IIEbqpMfhRWDVqv
-         zz+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=spV4CuHMSF1gRaZrohj5QorcwxDTML8S0GqjujVSTIM=;
-        b=DT+YUcKIcUnbrxleVOAbyplUI4fIkPVpq4QqAzERgNNfVtYrX6YNjILFyiemxUj+ou
-         6LqcNRvES3kynJnujoY8fomhpP3MdRU6x56+E8UUoVqb/IsAnvCJ6iBfYOoywRiqx66n
-         +5W+jxIDJ2GdFIp1PqbnmfG5i1ESaWReI/4x7dxqTcesSNn65biGfWCy1Vtwe5eKhTY7
-         ylwcIgdH/j/oNoOChBWdR258RKRV37LrsKQiY61cFdo2S5jKIH3OP7M76tyMrDmislhM
-         qZGBbALKR1slc25FbEXa7yzGfR1ZmkMWA0ctFg1oLeanQgRcqLdWSrSlpdvoIXzhWlcR
-         cDPg==
-X-Gm-Message-State: AKwxytccmvFVKPhJVsuOPKeKF591vqSh96UKDAJ9YoOaFSXgLGMCDrDT
-        1Xq5ZKwhaeB2rgobYY8j7Ow=
-X-Google-Smtp-Source: AH8x225VQGwdfoc9oF56BydO6H2Y+lS5fNyKICkVIMXzdym8gMqo3ePHJXidPR8gsnOqFU1j0l1Hmg==
-X-Received: by 10.46.126.5 with SMTP id z5mr711443ljc.84.1516372025223;
-        Fri, 19 Jan 2018 06:27:05 -0800 (PST)
-Received: from mobilestation ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id v17sm1738360ljv.38.2018.01.19.06.27.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jan 2018 06:27:04 -0800 (PST)
-Date:   Fri, 19 Jan 2018 17:27:12 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, ralf@linux-mips.org,
-        miodrag.dinic@mips.com, jhogan@kernel.org, goran.ferenc@mips.com,
-        david.daney@cavium.com, paul.gortmaker@windriver.com,
-        paul.burton@mips.com, alex.belits@cavium.com,
-        Steven.Hill@cavium.com, alexander.sverdlin@nokia.com,
-        kumba@gentoo.org, marcin.nowakowski@mips.com, James.hogan@mips.com,
-        Peter.Wotton@mips.com, Sergey.Semin@t-platforms.ru,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 11/14] MIPS: memblock: Print out kernel virtual mem layout
-Message-ID: <20180119142712.GA3101@mobilestation>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180117222312.14763-12-fancer.lancer@gmail.com>
- <cce36f73-4381-f830-3422-1cef8ad9e622@gmail.com>
- <20180118201856.GA996@mobilestation>
- <b2797958-d217-9c8d-10ca-b9bc43ae585b@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 16:09:34 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:34264 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990604AbeASPJZfkRTZ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Jan 2018 16:09:25 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 19 Jan 2018 15:08:28 +0000
+Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
+ MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
+ 14.03.0361.001; Fri, 19 Jan 2018 07:07:48 -0800
+From:   Aleksandar Markovic <Aleksandar.Markovic@mips.com>
+To:     James Hogan <James.Hogan@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <Paul.Burton@mips.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Douglas Leung <Douglas.Leung@mips.com>,
+        "Goran Ferenc" <Goran.Ferenc@mips.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Miodrag Dinic" <Miodrag.Dinic@mips.com>,
+        Petar Jovanovic <Petar.Jovanovic@mips.com>,
+        Raghu Gandham <Raghu.Gandham@mips.com>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: RE: [PATCH v3 1/2] dt-bindings: Document mti,mips-cpc binding
+Thread-Topic: [PATCH v3 1/2] dt-bindings: Document mti,mips-cpc binding
+Thread-Index: AQHTfyBvfdBTv3V2HUaS+qFUDeaua6N63oIAgACQTf0=
+Date:   Fri, 19 Jan 2018 15:07:48 +0000
+Message-ID: <BD3A5F1946F2E540A31AF2CE969BAEEE12393C77@MIPSMAIL01.mipstec.com>
+References: <1514385475-23921-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <1514385475-23921-2-git-send-email-aleksandar.markovic@rt-rk.com>,<20180118222603.GG27409@jhogan-linux.mipstec.com>
+In-Reply-To: <20180118222603.GG27409@jhogan-linux.mipstec.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [82.117.201.26]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2797958-d217-9c8d-10ca-b9bc43ae585b@mips.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+X-BESS-ID: 1516374507-298554-31496-62213-4
+X-BESS-VER: 2017.17-r1801171719
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189150
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
+        Domain Matches Recipient Domain 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Aleksandar.Markovic@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62247
+X-archive-position: 62248
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: Aleksandar.Markovic@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,59 +72,148 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 19, 2018 at 07:59:43AM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
-
-Hello Matt,
-
-> Hi Serge,
-> 
-> 
-> 
-> On 18/01/18 20:18, Serge Semin wrote:
-> >On Thu, Jan 18, 2018 at 12:03:03PM -0800, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> >>On 01/17/2018 02:23 PM, Serge Semin wrote:
-> >>>It is useful to have the kernel virtual memory layout printed
-> >>>at boot time so to have the full information about the booted
-> >>>kernel. In some cases it might be unsafe to have virtual
-> >>>addresses freely visible in logs, so the %pK format is used if
-> >>>one want to hide them.
-> >>>
-> >>>Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> >>
-> >>I personally like having that information because that helps debug and
-> >>have a quick reference, but there appears to be a trend to remove this
-> >>in the name of security:
-> >>
-> >>https://patchwork.kernel.org/patch/10124007/
-> >>
-> >>maybe hide this behind a configuration option?
+> On Wed, Dec 27, 2017 at 03:37:51PM +0100, Aleksandar Markovic wrote:
+> > From: Paul Burton <paul.burton@mips.com>
 > >
-> >Yeah, arm code was the place I picked the function up.) But in my case
-> >I've used %pK so the pointers would disappear from logging when
-> >kptr_restrict sysctl is 1 or 2.
-> >I agree, that we might need to make the printouts optional. If there is
-> >any kernel config, which for instance increases the kernel security we
-> >could also use it or anything else to discard the printouts at compile
-> >time.
-> 
-> 
-> Certainly, when KASLR is active it would be preferable to hide this
-> information, so you could use CONFIG_RELOCATABLE. The existing KASLR stuff
-> additionally hides this kind of information behind CONFIG_DEBUG_KERNEL, so
-> that only people actively debugging the kernel see it:
-> 
-> http://elixir.free-electrons.com/linux/v4.15-rc8/source/arch/mips/kernel/setup.c#L604
-
-Ok. I'll hide the printouts behind both of that config macros in the next patchset
-version.
-
-Regards,
--Sergey
-
-> 
-> Thanks,
-> Matt
-> 
+> > Document a binding for the MIPS Cluster Power Controller (CPC) that
+> > allows the device tree to specify where the CPC registers are located.
 > >
-> >>-- 
-> >>Florian
+> > Signed-off-by: Paul Burton <paul.burton@mips.com>
+> > Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+> > ---
+> >  Documentation/devicetree/bindings/power/mti,mips-cpc.txt | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+> >
+> > diff --git a/Documentation/devicetree/bindings/power/mti,mips-cpc.txt b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+> > new file mode 100644
+> 
+> Is it worth adding to the MIPS GENERIC PLATFORM entry of MAINTAINERS,
+> given that it directly benefits it?
+> 
+> Cheers
+> James
+
+If nobody objects, in the v4 of this series, as a part of this particular patch, I am going to add the line:
+
+F:       Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+
+to the following segment in MAINTAINERS file:
+
+MIPS GENERIC PLATFORM
+M:      Paul Burton <paul.burton@mips.com>
+L:      linux-mips@linux-mips.org
+S:      Supported
+F:      arch/mips/generic/
+F:      arch/mips/tools/generic-board-config.sh
+
+v4 is planned to be sent by the end of the day.
+
+Thanks,
+Aleksandar
+From aleksandar.markovic@rt-rk.com Fri Jan 19 16:42:01 2018
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 16:42:08 +0100 (CET)
+Received: from mx2.rt-rk.com ([89.216.37.149]:36203 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990604AbeASPmBh0zqt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Jan 2018 16:42:01 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id 2EB3E1A4AEC;
+        Fri, 19 Jan 2018 16:41:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkw774-lin.domain.local (unknown [10.10.13.43])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id E7C711A4AE8;
+        Fri, 19 Jan 2018 16:41:54 +0100 (CET)
+From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        Douglas Leung <douglas.leung@mips.com>,
+        Goran Ferenc <goran.ferenc@mips.com>,
+        James Hogan <james.hogan@mips.com>,
+        linux-kernel@vger.kernel.org,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Petar Jovanovic <petar.jovanovic@mips.com>,
+        Raghu Gandham <raghu.gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH v4 0/2] MIPS: Augment CPC support
+Date:   Fri, 19 Jan 2018 16:40:47 +0100
+Message-Id: <1516376459-25672-1-git-send-email-aleksandar.markovic@rt-rk.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <aleksandar.markovic@rt-rk.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 62249
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: aleksandar.markovic@rt-rk.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
+Content-Length: 1664
+Lines: 52
+
+From: Aleksandar Markovic <aleksandar.markovic@mips.com>
+
+v3->v4:
+
+    - documentation patch now contains updating of MAINTAINERS file
+    - rebased to the latest code
+
+v2->v3:
+
+    - changed documentation file location from
+        devicetree/bindings/misc to devicetree/bindings/power
+    - minor commit message improvements
+    - rebased to the latest code
+
+v1->v2:
+
+    - corrected wording in commit messages and documentation text
+    - expanded cover letter to better explain the context of proposed
+        changes
+    - rebased to the latest code
+
+This series is based on two patches from the larger series submitted
+some time ago (30 Aug 2016):
+
+https://www.linux-mips.org/archives/linux-mips/2016-08/msg00456.html
+
+Both patches deal with MIPS Cluster Power Controller (CPC) support.
+More specifically, they add device tree related functionalities to
+that support.
+
+This functionality is needed for further development of kernel support
+for generic-based MIPS platforms that must be DT-based and will at the
+same time make more extensive use of CPC.
+
+This series is reviewed by the original author of the above-mentioned
+larger series:
+
+Reviewed-by: Paul Burton <paul.burton@mips.com>
+
+Paul Burton (2):
+  dt-bindings: Document mti,mips-cpc binding
+  MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
+
+ Documentation/devicetree/bindings/power/mti,mips-cpc.txt |  8 ++++++++
+ MAINTAINERS                                              |  1 +
+ arch/mips/kernel/mips-cpc.c                              | 13 +++++++++++++
+ 3 files changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+
+-- 
+2.7.4

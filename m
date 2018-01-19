@@ -1,44 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 16:42:54 +0100 (CET)
-Received: from mx2.rt-rk.com ([89.216.37.149]:36300 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992079AbeASPmf30CJt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 Jan 2018 16:42:35 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id 43D0F1A4AC6;
-        Fri, 19 Jan 2018 16:42:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkw774-lin.domain.local (unknown [10.10.13.43])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 17D861A4AC2;
-        Fri, 19 Jan 2018 16:42:27 +0100 (CET)
-From:   Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-To:     linux-mips@linux-mips.org
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        Dengcheng Zhu <dengcheng.zhu@mips.com>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        James Hogan <james.hogan@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v4 2/2] MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
-Date:   Fri, 19 Jan 2018 16:40:49 +0100
-Message-Id: <1516376459-25672-3-git-send-email-aleksandar.markovic@rt-rk.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1516376459-25672-1-git-send-email-aleksandar.markovic@rt-rk.com>
-References: <1516376459-25672-1-git-send-email-aleksandar.markovic@rt-rk.com>
-Return-Path: <aleksandar.markovic@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2018 20:20:44 +0100 (CET)
+Received: from mail-oi0-f68.google.com ([209.85.218.68]:35507 "EHLO
+        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990754AbeASTUel24U6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jan 2018 20:20:34 +0100
+Received: by mail-oi0-f68.google.com with SMTP id b11so1849747oif.2;
+        Fri, 19 Jan 2018 11:20:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=GxRzjEcH5yR3b2HUZZipNIlJddZVL0yVORQ20ja45fg=;
+        b=FaFtP1FskbLvFTeJVAa0qlOINgkj9jWgujFqRQS9q6FabtwcOItWsHc86qVZ06GV/A
+         Jn/JXEH9f22nw5Bpg1m3SZ3OcF219S66ooEhYrdO5mKjLpwuPpki3fLCdjbNMTTZTtqd
+         8LZBYt5vSK7ZJzSEEPFJDkVtwlXM9IhVxeHybxX+mkPSeLZQ6y5gWGTK6kQrKucyBxi8
+         CKNZsUoEpErucddDEyqyP12uv+MekRS04kKnRQTYUldlIJnqCS3PYl4Zb2adg8i38G4f
+         WO88tg8DTRzy+PWCfx2Mz18CuTVtJF66vF+6QJQZ9oQG5MTHF/gwxWuYGXQXEMM4aUaS
+         ZdYw==
+X-Gm-Message-State: AKwxytezthZo+OIQNu5Md2nRDGx+vpNMTfHabiz/eMPBexUCNl+Xi5D3
+        DayjrhUZoeYmAddmgPnOUw==
+X-Google-Smtp-Source: ACJfBovpwF61Ph+pVi+YQJi84ZZ1je6tSW7A0kkC3lWjMuN63RXaaRGJ+aWpfcOyO36l51P8kMLKow==
+X-Received: by 10.202.84.146 with SMTP id i140mr5797840oib.176.1516389628294;
+        Fri, 19 Jan 2018 11:20:28 -0800 (PST)
+Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
+        by smtp.gmail.com with ESMTPSA id c32sm4714997otb.79.2018.01.19.11.20.27
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 19 Jan 2018 11:20:27 -0800 (PST)
+Date:   Fri, 19 Jan 2018 13:20:26 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 2/8] dt-bindings: pci: Add DT docs for Brcmstb PCIe
+ device
+Message-ID: <20180119192026.b3bhiercl45u2mga@rob-hp-laptop>
+References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com>
+ <1516058925-46522-3-git-send-email-jim2101024@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1516058925-46522-3-git-send-email-jim2101024@gmail.com>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62251
+X-archive-position: 62252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksandar.markovic@rt-rk.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,53 +76,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@mips.com>
+On Mon, Jan 15, 2018 at 06:28:39PM -0500, Jim Quinlan wrote:
+> The DT bindings description of the Brcmstb PCIe device is described.  This
+> node can be used by almost all Broadcom settop box chips, using
+> ARM, ARM64, or MIPS CPU architectures.
+> 
+> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+> ---
+>  .../devicetree/bindings/pci/brcmstb-pcie.txt       | 59 ++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/pci/brcmstb-pcie.txt
 
-Reading mips_cpc_base value from the DT allows each platform to
-define it according to its needs. This is especially convenient
-for MIPS_GENERIC kernel where this kind of information should be
-determined in runtime.
-
-Use mti,mips-cpc compatible string with just a reg property to
-specify the register location for your platform.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
----
- arch/mips/kernel/mips-cpc.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/arch/mips/kernel/mips-cpc.c b/arch/mips/kernel/mips-cpc.c
-index 19c88d7..fcf9af4 100644
---- a/arch/mips/kernel/mips-cpc.c
-+++ b/arch/mips/kernel/mips-cpc.c
-@@ -10,6 +10,8 @@
- 
- #include <linux/errno.h>
- #include <linux/percpu.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/spinlock.h>
- 
- #include <asm/mips-cps.h>
-@@ -22,6 +24,17 @@ static DEFINE_PER_CPU_ALIGNED(unsigned long, cpc_core_lock_flags);
- 
- phys_addr_t __weak mips_cpc_default_phys_base(void)
- {
-+	struct device_node *cpc_node;
-+	struct resource res;
-+	int err;
-+
-+	cpc_node = of_find_compatible_node(of_root, NULL, "mti,mips-cpc");
-+	if (cpc_node) {
-+		err = of_address_to_resource(cpc_node, 0, &res);
-+		if (!err)
-+			return res.start;
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.7.4
+I acked v3. Please add acks when posting new versions.

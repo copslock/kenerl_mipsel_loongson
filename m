@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jan 2018 08:31:39 +0100 (CET)
-Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:36609
-        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeATHbZKv7mt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Jan 2018 08:31:25 +0100
-Received: by mail-io0-x241.google.com with SMTP id l17so4491952ioc.3;
-        Fri, 19 Jan 2018 23:31:25 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jan 2018 08:41:44 +0100 (CET)
+Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:45931
+        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990391AbeATHlfqNzMt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Jan 2018 08:41:35 +0100
+Received: by mail-it0-x244.google.com with SMTP id x42so4637041ita.4;
+        Fri, 19 Jan 2018 23:41:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=UmziYxfg7n7RhPSP4/jyO0Z9NfcQUXy0CWHVy2Hg90I=;
-        b=YtMxZR58qA+8SuXkIHfKS5qriOgr23+rOxtvR/ZtOoYRIo4pmyEWSMW5XRGJVGDxg2
-         CvYCimN9vu6Y/+c5sQTT7aUYa1lGulnmXYxwTXZanzUxGmiMzhqFXBqt2cysu3q7KyKI
-         yfusJRnCaSFxXLSwviGNPTrOpC72pNCmDQMWQwHUZtuyPxYKNCWeN5rejzUpx8IC8jZX
-         BRF2MDK8lZ9mt1H+aQlzJe5fJmqHMtt26g2rHJyC3TVUqfP4utUPWTFFsGbTnH79jEpQ
-         X9MRpT9VXY7Rl25QfGrTsbq+16pVDjHVPT07ND19btP4Aw/QHZTZNFINDBOkcyxG1jFX
-         eQaw==
+        bh=A7t7ztCnqmiGVSpWgDm/jAyrFO6I53ltGIZes6Mrtdw=;
+        b=LbvKrsgp/P5tU3db0m7KDfRoJ6r2oVlZbqDP1vl+Odtir6Vxc25ucyB1Y/mU/9kMr5
+         5Vm+r6yELqDyWcAriJi1CNE471zmH4fULy7jlTuf1ZNp9cgC7lsi7f4XmiBCKDQoGAhK
+         VtU7TR8SlH7GTbwhGhGPcdpOLiE7TM4s5J8b1TbzlohrQMScZoIegvIPLr9Kd+xM9MiN
+         +PiX7YuyAJFNmUHk4S5IDKctoKPUuAyAguKzRa83j5W2FoZwQUodbeRqiVEiDNjb401U
+         JucNLm95qZpS2Lona68yJtM/OaHzHLFCIyRxBich2SghCyLRqKwHb5kFmVftNzuEXlp1
+         5qMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=UmziYxfg7n7RhPSP4/jyO0Z9NfcQUXy0CWHVy2Hg90I=;
-        b=W3LELoIB0AiEJWyZbXOIKZC12YrHU7OWItgiseh9jSdrBn2qtmffgRVlkSV/ClA12j
-         CyJMViuykG25VjvNsjXe4SJ4cJSp6HTUJiqkadK9cZmOqY0MSDv/ooDuabazTQVdO21m
-         m4y6oMuMpZj6FM2lcartmlKlzXBx2cZ5OJrpedKX2To5GcjiwpLcebiSmLTZRe+jIcWa
-         uBCAl6Y/hJ8Oe72AYqGFWGGr/yZu/rZx7zOYO/7VXT7TBod8eMfX37bFpL6Okz6OvVbf
-         vL3ePzUKaBgL0cdJYg97d2sa/w67cKUZ53aGTWL9Mva4Lp/3+mcs/5eOrMMYaejgUt8b
-         E3xQ==
-X-Gm-Message-State: AKwxytc7t/+VFnLJSLBKUmSsFRceTsLJOJkmlfu3LFqybcef1hKsPKK/
-        zG+R54FeLZKCf9hltm4r3+yMrzgAZDZNNn18xnI=
-X-Google-Smtp-Source: AH8x227W8VPnb1Be84w4nTAvEAd/ixjOqwzXWv/z0N2MieA3yN0tpxpo9FF7bSDvVh9xwQwUsse/WmGMKiBejvLvFI0=
-X-Received: by 10.107.158.211 with SMTP id h202mr1025986ioe.129.1516433478539;
- Fri, 19 Jan 2018 23:31:18 -0800 (PST)
+        bh=A7t7ztCnqmiGVSpWgDm/jAyrFO6I53ltGIZes6Mrtdw=;
+        b=jnnMWVxrLILooiiBv20C7eEBDKd5P/DphBf4GdVo5tnMu1M0Np7u91J529foy9AKkl
+         ef8jqcWopk5FrIUgHZsnHw6ZSjTKgB9oY4qFzXKjty4rWUJm6MuNN/zVgpyxPv4tZ+Up
+         In9Z/2YP6f89KeJKeP4r/fTato/OJ4n+AGgTyeN8l6wW8SHW1Hu028UQpGV/bjVVZWZU
+         rImcbFVbuBduTMZt8xSX+xpnb4Qk+BxBeFnRn5kRnTZTnbBn+TZ853fpd/QeocSBYlA3
+         j3rX7C7ROYiNqQhsNPxGrLqh90zFw0oHjtcAN0xdHDLf9oGfangnMLZNDkq/ZLAjWxs2
+         jS7g==
+X-Gm-Message-State: AKwxyteNEYXgEl+8LUOUowDYPsmx1ZF23cXwsJj55kNo30lg9o5TUmjb
+        G59e/vKj7+MMwB/j7gll2u90sI0xARl1Le7cpa0=
+X-Google-Smtp-Source: AH8x227a2STT/3gS7P77V2xjkHb/z1vWJb7NwNMQ6UjQo7mwEysHHpkoh+w+g2j+obYdlvwqI0SAp0cqSyl1/kFsvN0=
+X-Received: by 10.36.135.138 with SMTP id f132mr833920ite.144.1516434089371;
+ Fri, 19 Jan 2018 23:41:29 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.2.165.9 with HTTP; Fri, 19 Jan 2018 23:31:17 -0800 (PST)
-In-Reply-To: <20171230135108.6834-3-paul@crapouillou.net>
+Received: by 10.2.165.9 with HTTP; Fri, 19 Jan 2018 23:41:28 -0800 (PST)
+In-Reply-To: <20171230135108.6834-4-paul@crapouillou.net>
 References: <20171228162939.3928-2-paul@crapouillou.net> <20171230135108.6834-1-paul@crapouillou.net>
- <20171230135108.6834-3-paul@crapouillou.net>
+ <20171230135108.6834-4-paul@crapouillou.net>
 From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Sat, 20 Jan 2018 13:01:17 +0530
-Message-ID: <CANc+2y7CT150cO61RfRgc6hCLEasx+NmqCacZtaFPKLgTPyt4w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/8] watchdog: JZ4740: Register a restart handler
+Date:   Sat, 20 Jan 2018 13:11:28 +0530
+Message-ID: <CANc+2y4z-_++zUG8DUR6+zZYjc26AyJjU-yX+Lx37TSRXb4u0g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] watchdog: JZ4740: Drop module remove function
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -57,7 +57,7 @@ Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62257
+X-archive-position: 62258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -77,52 +77,56 @@ X-list: linux-mips
 Hi Paul,
 
 On 30 December 2017 at 19:21, Paul Cercueil <paul@crapouillou.net> wrote:
-> The watchdog driver can restart the system by simply configuring the
-> hardware for a timeout of 0 seconds.
+> When the watchdog was configured for nowayout, and after the
+> userspace watchdog daemon closed the dev node without sending the
+> magic character, unloading this module stopped the watchdog
+> hardware, which was clearly a problem.
+>
+> Besides, unloading the module is not possible when the userspace
+> watchdog daemon is running, so it's safe to assume that we don't
+> need to stop the watchdog hardware in the jz4740_wdt_remove()
+> function.
+>
+> For this reason, the jz4740_wdt_remove() function can then be
+> dropped alltogether.
 >
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 > ---
->  drivers/watchdog/jz4740_wdt.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  drivers/watchdog/jz4740_wdt.c | 8 --------
+>  1 file changed, 8 deletions(-)
 >
->  v2: No change
+>  v2: New patch in this series
 >
 > diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
-> index 92d6ca8ceb49..fa7f49a3212c 100644
+> index fa7f49a3212c..02b9b8e946a2 100644
 > --- a/drivers/watchdog/jz4740_wdt.c
 > +++ b/drivers/watchdog/jz4740_wdt.c
-> @@ -130,6 +130,14 @@ static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
+> @@ -205,16 +205,8 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
 >         return 0;
 >  }
 >
-> +static int jz4740_wdt_restart(struct watchdog_device *wdt_dev,
-> +                             unsigned long action, void *data)
-> +{
-> +       wdt_dev->timeout = 0;
-> +       jz4740_wdt_start(wdt_dev);
-> +       return 0;
-> +}
-> +
->  static const struct watchdog_info jz4740_wdt_info = {
->         .options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
->         .identity = "jz4740 Watchdog",
-> @@ -141,6 +149,7 @@ static const struct watchdog_ops jz4740_wdt_ops = {
->         .stop = jz4740_wdt_stop,
->         .ping = jz4740_wdt_ping,
->         .set_timeout = jz4740_wdt_set_timeout,
-> +       .restart = jz4740_wdt_restart,
->  };
->
->  #ifdef CONFIG_OF
+> -static int jz4740_wdt_remove(struct platform_device *pdev)
+> -{
+> -       struct jz4740_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
+> -
+> -       return jz4740_wdt_stop(&drvdata->wdt);
+> -}
+> -
+>  static struct platform_driver jz4740_wdt_driver = {
+>         .probe = jz4740_wdt_probe,
+> -       .remove = jz4740_wdt_remove,
+>         .driver = {
+>                 .name = "jz4740-wdt",
+>                 .of_match_table = of_match_ptr(jz4740_wdt_of_matches),
 > --
 > 2.11.0
 >
 >
 
-Noticed that min_timeout of the watchdog device is set to 1 but this
-function calls start with timeout set to 0. Even though this works I
-feel it is better to set min_timeout to 0.
+As ".remove" is removed and wdt is required for restarting the system
+I am thinking that stop callback is also not required. If so does it
+makes sense to remove the stop callback? I can submit a patch for the
+same once this patch series goes in.
 
 Regards,
 PrasannaKumar

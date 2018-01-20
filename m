@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jan 2018 16:59:59 +0100 (CET)
-Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:33812
-        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeATP7vNyUb0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Jan 2018 16:59:51 +0100
-Received: by mail-io0-x242.google.com with SMTP id c17so5231665iod.1;
-        Sat, 20 Jan 2018 07:59:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jan 2018 17:04:49 +0100 (CET)
+Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:36663
+        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990397AbeATQEmSQi50 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Jan 2018 17:04:42 +0100
+Received: by mail-it0-x241.google.com with SMTP id p124so5377348ite.1;
+        Sat, 20 Jan 2018 08:04:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=yhAGoMNTJ78K6NWBaeMCqRMDXJ5FhzjeGArJqWSv4sQ=;
-        b=VxlgJLR7SuZboxCBVMNAv8rC3FkqknfqO+G7+6oAsDsuJsuBwxTmqUY8e8LfTgfCIr
-         ixsE/n70iZ/cAdRAQtQ1nmxluQPqZphn7n/LdrlQbLC2RBT1N7gPxvdY4xak6n4UVzNb
-         FIbbLGQq7zSMn7Xiyia+XH0M907H1+P/O5A+6pofZdEFMZ4SYhK+Qo6AfyLBBfTBOtCj
-         YGIbNRmRpUnCdYfgjyz4LVQuMPOqa/jhBeS7cZfxdmNLEibxBzRTtUQ+D5ZlxtL42OIA
-         9+9AIWnmFC+xD77mlgHwayk35gMXZ930JMlOJW4sFxweN/IL8/72g92tI9UQcAx7SRm1
-         caUQ==
+        bh=zJomkRSHQ/MoTEtJIp4qzYBQvn8e9JSDKqzCp+EdC3k=;
+        b=CDPjCU2IGu2vfjYVH75V0mFWgIlKaoQBhaNEJp3gzqcsigaMr53/PY4Eiq/De49WHv
+         gM2EADJM3+WTdfXr8qzMHPGSZ+h13m7TV2rdwHNGmpN6Y82D+RWri1ZcKs/D2ovRyudm
+         zoT6SFJT8bbxELb/Q6yRfsnonHsZJ0M5ym3pgjVWOmZD62asSMpWghYnh5cN3l1qbLVu
+         Tks3kWtT1GilQt4pr8p6GQzGDinOjNk7tXWVAg/Bw8MIsmpKQkr/ZbRc4tXFNpDgJJkS
+         lit3MZWS1e+wMM4vzQzZFQo9y5KMdpPShUw2JgZ//IeYVcSbXdjs5b0RpOpNRasRaf5M
+         75DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=yhAGoMNTJ78K6NWBaeMCqRMDXJ5FhzjeGArJqWSv4sQ=;
-        b=BvkCqiviZNDC+DSxEIvirIx4myjQhOXr4j9MohQF9R+4bktiQoT8g1nJ/IaCAeeJQI
-         wpL9mDYoHU9GN2l7mz8X81ovLGPRJ6mliia4pRZqwX93HDiJoHoboBGisbYWS9QZjcoh
-         4Fw7knRo94TMEUW/i3NQBSwcZp7G2K8PvDg71IbqtWDkS8b5MyiEGxlF7n0U9q95Esa0
-         ECjnNFcs+EiHrY7p5y5xYI+sZMG3TJVGAxHeLqe/j4dRwB5sBgaIyw18s4CEXLkuwHR4
-         swXNvs87ZC5wPmK+gwjFwIAMs6gEFyR0bmCTFw9oPtGYOK7AHUZuVUQGEa5clAUedylA
-         4mVw==
-X-Gm-Message-State: AKwxyte4LG8vHPYixuVubIsSR8JaejvVRbBt5QClLoqLeXPIQksZDNEB
-        qAKvcKNlOnnKwyNm25BylzLrgPmfbk0X1NOOiUYflo/I
-X-Google-Smtp-Source: AH8x227eweEbRYJwE6LxlvH5oAervbfhKQ0S+CU/F3Q+eBUPFA/+V+wRoplhPD3FSG075vjn/4Y0fOGPePXMIfURAsk=
-X-Received: by 10.107.79.19 with SMTP id d19mr2061064iob.263.1516463984590;
- Sat, 20 Jan 2018 07:59:44 -0800 (PST)
+        bh=zJomkRSHQ/MoTEtJIp4qzYBQvn8e9JSDKqzCp+EdC3k=;
+        b=bqXDt3TpZZ6Svyok+7H5r2761tawzDxiitz+00T0P8fSVE+KlnccA3tWst8BcbsoR7
+         eYAc1G2EEiXUf/EfrdiC9Jgy7PMdyJ6Vsxb00oGA+ErIzcANanJwuZo7HQ/k4erJJk2r
+         zSpFTQVJGyRfWCc1RVCzJw6LE4vySNMXMowEf10iuLoj5kV2zNuUlN1JBDacYCzq69dv
+         GW7OnmFhHXuIf2kCmyD2zl3KL1HRCdKSjo6C4iPuMXilT5rf9Evck5uV9piyW0nWrYno
+         htVnUEuwAXM/bnlnMBSRyvbN/KJfF2Kuz806fsOYoyJ/95LT/zAAJ3d7NeSNx+PdltZh
+         +LQg==
+X-Gm-Message-State: AKwxytduRXgVUImz0gfmWGRtrTF7wj4bZWOGaoj4s38Jjas8+x3FpWtA
+        c8p+BJiL2IO9zMemNVVAni9xrguxPndTbt69SZ01m8EiWgY=
+X-Google-Smtp-Source: AH8x227M0OQ4HEp5UrJ6R87x+PRMkzenYHa5GbFO7+7Go5r74stzpENYD6XeTBOBNJYXQF3mVi2Vn2rBMQrRZzWD1tQ=
+X-Received: by 10.36.31.5 with SMTP id d5mr2152081itd.136.1516464275650; Sat,
+ 20 Jan 2018 08:04:35 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.2.165.9 with HTTP; Sat, 20 Jan 2018 07:59:43 -0800 (PST)
-In-Reply-To: <71845801-7edf-9e49-8591-2a4caf11c45b@roeck-us.net>
+Received: by 10.2.165.9 with HTTP; Sat, 20 Jan 2018 08:04:35 -0800 (PST)
+In-Reply-To: <20061de8-fa1f-93eb-eb9b-089c699018aa@roeck-us.net>
 References: <20171228162939.3928-2-paul@crapouillou.net> <20171230135108.6834-1-paul@crapouillou.net>
- <20171230135108.6834-4-paul@crapouillou.net> <CANc+2y4z-_++zUG8DUR6+zZYjc26AyJjU-yX+Lx37TSRXb4u0g@mail.gmail.com>
- <71845801-7edf-9e49-8591-2a4caf11c45b@roeck-us.net>
+ <20171230135108.6834-3-paul@crapouillou.net> <CANc+2y7CT150cO61RfRgc6hCLEasx+NmqCacZtaFPKLgTPyt4w@mail.gmail.com>
+ <20061de8-fa1f-93eb-eb9b-089c699018aa@roeck-us.net>
 From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Sat, 20 Jan 2018 21:29:43 +0530
-Message-ID: <CANc+2y6OhA8tFZq-toek5ed1Kt-Dv8Jy0+E4HFqQGg8WYGygSg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/8] watchdog: JZ4740: Drop module remove function
+Date:   Sat, 20 Jan 2018 21:34:35 +0530
+Message-ID: <CANc+2y52ObW773=20=-gbztvoH0DSRSO1N5Srf3WYcKLZbPNBg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] watchdog: JZ4740: Register a restart handler
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -58,7 +58,7 @@ Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62262
+X-archive-position: 62263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -77,76 +77,72 @@ X-list: linux-mips
 
 Hi Guenter,
 
-On 20 January 2018 at 21:20, Guenter Roeck <linux@roeck-us.net> wrote:
-> On 01/19/2018 11:41 PM, PrasannaKumar Muralidharan wrote:
+On 20 January 2018 at 21:15, Guenter Roeck <linux@roeck-us.net> wrote:
+> On 01/19/2018 11:31 PM, PrasannaKumar Muralidharan wrote:
 >>
 >> Hi Paul,
 >>
 >> On 30 December 2017 at 19:21, Paul Cercueil <paul@crapouillou.net> wrote:
 >>>
->>> When the watchdog was configured for nowayout, and after the
->>> userspace watchdog daemon closed the dev node without sending the
->>> magic character, unloading this module stopped the watchdog
->>> hardware, which was clearly a problem.
->>>
->>> Besides, unloading the module is not possible when the userspace
->>> watchdog daemon is running, so it's safe to assume that we don't
->>> need to stop the watchdog hardware in the jz4740_wdt_remove()
->>> function.
->>>
->>> For this reason, the jz4740_wdt_remove() function can then be
->>> dropped alltogether.
+>>> The watchdog driver can restart the system by simply configuring the
+>>> hardware for a timeout of 0 seconds.
 >>>
 >>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 >>> ---
->>>   drivers/watchdog/jz4740_wdt.c | 8 --------
->>>   1 file changed, 8 deletions(-)
+>>>   drivers/watchdog/jz4740_wdt.c | 9 +++++++++
+>>>   1 file changed, 9 insertions(+)
 >>>
->>>   v2: New patch in this series
+>>>   v2: No change
 >>>
 >>> diff --git a/drivers/watchdog/jz4740_wdt.c
 >>> b/drivers/watchdog/jz4740_wdt.c
->>> index fa7f49a3212c..02b9b8e946a2 100644
+>>> index 92d6ca8ceb49..fa7f49a3212c 100644
 >>> --- a/drivers/watchdog/jz4740_wdt.c
 >>> +++ b/drivers/watchdog/jz4740_wdt.c
->>> @@ -205,16 +205,8 @@ static int jz4740_wdt_probe(struct platform_device
->>> *pdev)
+>>> @@ -130,6 +130,14 @@ static int jz4740_wdt_stop(struct watchdog_device
+>>> *wdt_dev)
 >>>          return 0;
 >>>   }
 >>>
->>> -static int jz4740_wdt_remove(struct platform_device *pdev)
->>> -{
->>> -       struct jz4740_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
->>> -
->>> -       return jz4740_wdt_stop(&drvdata->wdt);
->>> -}
->>> -
->>>   static struct platform_driver jz4740_wdt_driver = {
->>>          .probe = jz4740_wdt_probe,
->>> -       .remove = jz4740_wdt_remove,
->>>          .driver = {
->>>                  .name = "jz4740-wdt",
->>>                  .of_match_table = of_match_ptr(jz4740_wdt_of_matches),
+>>> +static int jz4740_wdt_restart(struct watchdog_device *wdt_dev,
+>>> +                             unsigned long action, void *data)
+>>> +{
+>>> +       wdt_dev->timeout = 0;
+>>> +       jz4740_wdt_start(wdt_dev);
+>>> +       return 0;
+>>> +}
+>>> +
+>>>   static const struct watchdog_info jz4740_wdt_info = {
+>>>          .options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING |
+>>> WDIOF_MAGICCLOSE,
+>>>          .identity = "jz4740 Watchdog",
+>>> @@ -141,6 +149,7 @@ static const struct watchdog_ops jz4740_wdt_ops = {
+>>>          .stop = jz4740_wdt_stop,
+>>>          .ping = jz4740_wdt_ping,
+>>>          .set_timeout = jz4740_wdt_set_timeout,
+>>> +       .restart = jz4740_wdt_restart,
+>>>   };
+>>>
+>>>   #ifdef CONFIG_OF
 >>> --
 >>> 2.11.0
 >>>
 >>>
 >>
->> As ".remove" is removed and wdt is required for restarting the system
->> I am thinking that stop callback is also not required. If so does it
->> makes sense to remove the stop callback? I can submit a patch for the
->> same once this patch series goes in.
+>> Noticed that min_timeout of the watchdog device is set to 1 but this
+>> function calls start with timeout set to 0. Even though this works I
+>> feel it is better to set min_timeout to 0.
 >>
-> The remove function was removed because it would otherwise be an empty
-> function. Since it is optional, it can and should be removed if it does not
-> do anything. If the stop function is removed, it is no longer possible
-> to stop the watchdog. Why would this make sense, and why would it make sense
-> to drop the stop function if there is no remove function ?
+>
+> No. That would be wrong. If you want to be pedantic, write a new function
+> __jz4740_wdt_set_timeout(u16 clock_div, u16 timeout_value) and call it
+> instead, but don't mess with min_timeout.
 >
 > Guenter
->
 
-I missed the fact that stopping is watchdog is possible. Sorry for the noise.
+What is the effect of changing min_timeout? I could see only
+validation checks with it.
 
 Thanks,
 PrasannaKumar

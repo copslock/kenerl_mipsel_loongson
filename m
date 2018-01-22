@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jan 2018 14:34:34 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42776 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990723AbeAVNe1RUanF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Jan 2018 14:34:27 +0100
-Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DF9EA1046;
-        Mon, 22 Jan 2018 13:34:20 +0000 (UTC)
-Date:   Mon, 22 Jan 2018 14:34:20 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     stable@vger.kernel.org, Jonas Gorski <jonas.gorski@gmail.com>,
-        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Schichan <nschichan@freebox.fr>
-Subject: Re: [PATCH RFC 3/3] MIPS: AR7: ensure the port type's FCR value is
- used
-Message-ID: <20180122133420.GA5222@kroah.com>
-References: <20171029152721.6770-1-jonas.gorski@gmail.com>
- <20171029152721.6770-4-jonas.gorski@gmail.com>
- <20180122130718.GA22211@saruman>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jan 2018 17:35:45 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:54496 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991068AbeAVQfiHYwaH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Jan 2018 17:35:38 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 22 Jan 2018 16:35:26 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Mon, 22 Jan 2018 08:35:02 -0800
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     Serge Semin <fancer.lancer@gmail.com>
+CC:     <linux-mips@linux-mips.org>, Matt Redfearn <matt.redfearn@mips.com>
+Subject: [PATCH] MIPS: KASLR: Drop relocatable fixup from reservation_init
+Date:   Mon, 22 Jan 2018 16:33:31 +0000
+Message-ID: <1516638811-24880-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <20180117222312.14763-1-fancer.lancer@gmail.com>
+References: <20180117222312.14763-1-fancer.lancer@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180122130718.GA22211@saruman>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1516638909-321457-30083-1530-4
+X-BESS-VER: 2017.17-r1801171719
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189240
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62267
+X-archive-position: 62268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,45 +51,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 22, 2018 at 01:07:19PM +0000, James Hogan wrote:
-> Hi stable maintainers,
-> 
-> On Sun, Oct 29, 2017 at 04:27:21PM +0100, Jonas Gorski wrote:
-> > Since commit aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt
-> > trigger I/F of FIFO buffers"), the port's default FCR value isn't used
-> > in serial8250_do_set_termios anymore, but copied over once in
-> > serial8250_config_port and then modified as needed.
-> > 
-> > Unfortunately, serial8250_config_port will never be called if the port
-> > is shared between kernel and userspace, and the port's flag doesn't have
-> > UPF_BOOT_AUTOCONF, which would trigger a serial8250_config_port as well.
-> > 
-> > This causes garbled output from userspace:
-> > 
-> > [    5.220000] random: procd urandom read with 49 bits of entropy available
-> > ers
-> >    [kee
-> > 
-> > Fix this by forcing it to be configured on boot, resulting in the
-> > expected output:
-> > 
-> > [    5.250000] random: procd urandom read with 50 bits of entropy available
-> > Press the [f] key and hit [enter] to enter failsafe mode
-> > Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
-> > 
-> > Fixes: aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt trigger I/F of FIFO buffers")
-> > Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-> 
-> Please can this patch be applied to stable branches 3.17+. It is now
-> merged into mainline as commit 0a5191efe06b ("MIPS: AR7: ensure the port
-> type's FCR value is used").
-> 
-> Commit b084116f8587 ("MIPS: AR7: Ensure that serial ports are properly
-> set up") is a prerequisite for it to apply cleanly, but is already
-> tagged for stable.
+A recent change ("MIPS: memblock: Discard bootmem initialization")
+removed the reservation of all memory below the kernel's _end symbol in
+bootmem. This makes the call to free_bootmem unnecessary, since the
+memory region is no longer marked reserved.
 
-Now snuck into this round of stable -rc review :)
+Additionally, ("MIPS: memblock: Print out kernel virtual mem
+layout") added a display of the kernel's virtual memory layout, so
+printing the relocation information at this point is redundant.
 
-thanks,
+Remove this section of code.
 
-greg k-h
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+
+---
+
+This patch (or a derivative of it) tidies up some of the bootmem init code
+when CONFIG_RELOCATABLE is active during the switch to memblock - please
+can you include in the series?
+
+Thanks,
+Matt
+---
+ arch/mips/kernel/setup.c | 23 -----------------------
+ 1 file changed, 23 deletions(-)
+
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 99bfaa6b9279..a0eac8160750 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -536,29 +536,6 @@ static void __init reservation_init(void)
+ 		}
+ 	}
+ 
+-#ifdef CONFIG_RELOCATABLE
+-	/*
+-	 * The kernel reserves all memory below its _end symbol as bootmem,
+-	 * but the kernel may now be at a much higher address. The memory
+-	 * between the original and new locations may be returned to the system.
+-	 */
+-	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
+-		unsigned long offset;
+-		extern void show_kernel_relocation(const char *level);
+-
+-		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+-		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+-
+-#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
+-		/*
+-		 * This information is necessary when debugging the kernel
+-		 * But is a security vulnerability otherwise!
+-		 */
+-		show_kernel_relocation(KERN_INFO);
+-#endif
+-	}
+-#endif
+-
+ 	/*
+ 	 * Reserve initrd memory if needed.
+ 	 */
+-- 
+2.7.4

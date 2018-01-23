@@ -1,54 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 14:20:41 +0100 (CET)
-Received: from verein.lst.de ([213.95.11.211]:47194 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992781AbeAWNUeeRMYJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Jan 2018 14:20:34 +0100
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 5463B68C35; Tue, 23 Jan 2018 14:20:33 +0100 (CET)
-Date:   Tue, 23 Jan 2018 14:20:33 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Florian Fainelli <florian.fainelli@broadcom.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jim Quinlan <jim2101024@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-pci@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v4 4/8] PCI: brcmstb: Add dma-range mapping for inbound
-        traffic
-Message-ID: <20180123132033.GA21438@lst.de>
-References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com> <1516058925-46522-5-git-send-email-jim2101024@gmail.com> <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com> <20180118073123.GA15766@lst.de> <EDAEFB0F-BB7C-444A-B282-F178F5ADFCBF@gmail.com> <20180118152331.GA24461@lst.de> <d62226a2-a92c-cdcb-4a9b-e69ab677bc60@broadcom.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d62226a2-a92c-cdcb-4a9b-e69ab677bc60@broadcom.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 14:38:18 +0100 (CET)
+Received: from smtp-fw-6002.amazon.com ([52.95.49.90]:12533 "EHLO
+        smtp-fw-6002.amazon.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992692AbeAWNiLGnNbj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2018 14:38:11 +0100
+X-IronPort-AV: E=Sophos;i="5.46,401,1511827200"; 
+   d="scan'208";a="328726135"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-2b-baacba05.us-west-2.amazon.com) ([10.124.125.6])
+  by smtp-border-fw-out-6002.iad6.amazon.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 23 Jan 2018 13:38:08 +0000
+Received: from uecb1d7364e75593fe229.ant.amazon.com (pdx2-ws-svc-lb17-vlan3.amazon.com [10.247.140.70])
+        by email-inbound-relay-2b-baacba05.us-west-2.amazon.com (8.14.7/8.14.7) with ESMTP id w0NDc6f3075705
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Tue, 23 Jan 2018 13:38:07 GMT
+Received: from uecb1d7364e75593fe229.ant.amazon.com (localhost [127.0.0.1])
+        by uecb1d7364e75593fe229.ant.amazon.com (8.15.2/8.15.2/Debian-3) with ESMTP id w0NDc5Ho026856;
+        Tue, 23 Jan 2018 13:38:05 GMT
+Received: (from luisbg@localhost)
+        by uecb1d7364e75593fe229.ant.amazon.com (8.15.2/8.15.2/Submit) id w0NDc5t4026853;
+        Tue, 23 Jan 2018 13:38:05 GMT
+From:   Luis de Bethencourt <luisbg@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Joe Perches <joe@perches.com>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, linux-mips@linux-mips.org,
+        Luis de Bethencourt <luisbg@kernel.org>
+Subject: [PATCH] MIPS: Fix trailing semicolon
+Date:   Tue, 23 Jan 2018 13:38:03 +0000
+Message-Id: <20180123133803.26789-1-luisbg@kernel.org>
+X-Mailer: git-send-email 2.15.1
+Return-Path: <prvs=5540a0381=luisbg@amazon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62280
+X-archive-position: 62281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: luisbg@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,50 +48,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 19, 2018 at 11:47:54AM -0800, Florian Fainelli wrote:
-> How can this work well in the context of a loadable module for instance?
-> For MIPS, this would mean that we have to override phys_to_dma() and
-> dma_to_phys() in the platform that is *susceptible* to use this PCIe
-> controller (arch/mips/bmips) which is fine, but there, we essentially
-> need to find a way to make this dynamic based on whether the PCIe
-> controller is loaded or not.
-> 
-> As you might have seen from this patch, what needs to be done is highly
-> dependent on the processor architecture and its memory controller
-> physical memory map, so I don't see how we are in any better situation
-> if we need to replicate 3 times across MIPS, ARM and ARM64 how the
-> addresses need to be mangled.
-> 
-> Are you suggesting we somehow decouple the memory mangling part into a
-> portion that can be built into the kernel image (so phys_to_dma() and
-> dma_to_phys() is resolved at vmlinux link time) and can be selected by
-> different architectures that need it? If so, yikes.
+The trailing semicolon is an empty statement that does no operation.
+Removing it since it doesn't do anything.
 
-On architectures with crazy PCIe controllers (this seems to include
-mips, arm, arm64 and x86 thanks to the weird SOCs) we will need a
-a few different memory maps, yes.  Take a look at
-arch/x86/pci/sta2x11-fixup.c, preferably from a tree where the worst
-issues are fixed:
+Signed-off-by: Luis de Bethencourt <luisbg@kernel.org>
+---
 
-http://git.infradead.org/users/hch/misc.git/blob/refs/heads/dma-direct-all:/arch/x86/pci/sta2x11-fixup.c
+Hi,
 
-Overriding phys_to_dma and dma_to_phys is required if you need to
-support swiotlb, and chances are with a broken PCIe controller on
-arm64 or mips64 you eventuall will.
+After fixing the same thing in drivers/staging/rtl8723bs/, Joe Perches
+suggested I fix it treewide [0].
 
-This sta2x11 code should probably be lifted to common code in
-one form or another eventually, althought it will need another
-fair round of cleanups for now.
+Best regards 
+Luis
 
-> I can see value in having a generic mechanism, ala X86_DMA_REMAP
-> allowing architectures to have the ability to override phys_to_dma() and
-> dma_to_phys() but right now, especially if we look at
-> arch/x86/pci/sta2x11-fixup.c this really appears to be quite messy and
-> equally ugly than stacking operations...
-> 
-> What is the actual problem you want to avoid with the stacking of DMA
-> operations, is it because it becomes harder to audit, or are there are
-> other reasons?
 
-Audit, consolidate into a single dma-direct implementation and properly
-support swiotlb out of the box.
+[0] http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/2018-January/115410.html
+[1] http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/2018-January/115390.html
+
+ arch/mips/include/asm/checksum.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
+index 77cad232a1c6..e8161e4dfde7 100644
+--- a/arch/mips/include/asm/checksum.h
++++ b/arch/mips/include/asm/checksum.h
+@@ -110,7 +110,7 @@ __wsum csum_partial_copy_nocheck(const void *src, void *dst,
+  */
+ static inline __sum16 csum_fold(__wsum csum)
+ {
+-	u32 sum = (__force u32)csum;;
++	u32 sum = (__force u32)csum;
+ 
+ 	sum += (sum << 16);
+ 	csum = (sum < csum);
+-- 
+2.15.1

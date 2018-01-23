@@ -1,62 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 15:04:01 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:39708 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991534AbeAWODzBuZ9j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2018 15:03:55 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 23 Jan 2018 14:01:56 +0000
-Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 23 Jan
- 2018 06:01:55 -0800
-Subject: Re: [PATCH 00/14] MIPS: memblock: Switch arch code to NO_BOOTMEM
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 15:18:21 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:52204 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992821AbeAWOSLeCKCj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Jan 2018 15:18:11 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6AC32178B;
+        Tue, 23 Jan 2018 14:18:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E6AC32178B
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 23 Jan 2018 14:17:57 +0000
+From:   James Hogan <jhogan@kernel.org>
 To:     Mathieu Malaterre <malat@debian.org>
-CC:     Serge Semin <fancer.lancer@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        James Hogan <jhogan@kernel.org>, <goran.ferenc@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        <paul.gortmaker@windriver.com>, Paul Burton <paul.burton@mips.com>,
-        <alex.belits@cavium.com>, <Steven.Hill@cavium.com>,
-        <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        James Hogan <James.hogan@mips.com>,
-        Peter Wotton <Peter.Wotton@mips.com>,
-        <Sergey.Semin@t-platforms.ru>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <2fd1f530-e6c6-a528-5827-c3ecc8b4a81c@mips.com>
- <CA+7wUszvJfqCfii59zppSbkGsVNyLDM2Jk8F3zrzr_NJxvFsWw@mail.gmail.com>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <c6e7bedc-bbe3-0166-3ed8-8f8012fad132@mips.com>
-Date:   Tue, 23 Jan 2018 14:01:50 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Cc:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        "# v4 . 11" <stable@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] MIPS: fix incorrect mem=X@Y handling
+Message-ID: <20180123141756.GE22211@saruman>
+References: <1504609608-7694-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <20171221210100.12002-1-malat@debian.org>
 MIME-Version: 1.0
-In-Reply-To: <CA+7wUszvJfqCfii59zppSbkGsVNyLDM2Jk8F3zrzr_NJxvFsWw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1516716115-298552-30417-28852-1
-X-BESS-VER: 2017.17-r1801171719
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.50
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189273
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.50 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="YkJPYEFdoxh/AXLE"
+Content-Disposition: inline
+In-Reply-To: <20171221210100.12002-1-malat@debian.org>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62283
+X-archive-position: 62284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,119 +49,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Mathieu,
 
-On 23/01/18 11:29, Mathieu Malaterre wrote:
-> Hi Matt,
-> 
-> On Mon, Jan 22, 2018 at 5:36 PM, Matt Redfearn <matt.redfearn@mips.com> wrote:
->>
->> Hi Serge,
->>
->>
->> On 17/01/18 22:22, Serge Semin wrote:
->>>
->>> Even though it's common to see the architecture code using both
->>> bootmem and memblock early memory allocators, it's not good for
->>> multiple reasons. First of all, it's redundant to have two
->>> early memory allocator while one would be more than enough from
->>> functionality and stability points of view. Secondly, some new
->>> features introduced in the kernel utilize the methods of the most
->>> modern allocator ignoring the older one. It means the architecture
->>> code must keep the both subsystems up synchronized with information
->>> about memory regions and reservations, which leads to the code
->>> complexity increase, that obviously increases bugs probability.
->>> Finally it's better to keep all the architectures code unified for
->>> better readability and code simplification. All these reasons lead
->>> to one conclusion - arch code should use just one memory allocator,
->>> which is supposed to be memblock as the most modern and already
->>> utilized by the most of the kernel platforms. This patchset is
->>> mostly about it.
->>>
->>> One more reason why the MIPS arch code should finally move to
->>> memblock is a BUG somewhere in the initialization process, when
->>> CMA is activated:
->>>
->>> [    0.248762] BUG: Bad page state in process swapper/0  pfn:01f93
->>> [    0.255415] page:8205b0ac count:0 mapcount:-127 mapping:  (null) index:0x1
->>> [    0.263172] flags: 0x40000000()
->>> [    0.266723] page dumped because: nonzero mapcount
->>> [    0.272049] Modules linked in:
->>> [    0.275511] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.4.88-module #5
->>> [    0.282900] Stack : 00000000 00000000 80b6dd6a 0000003a 00000000 00000000 80930000 8092bff4
->>>             86073a14 80ac88c7 809f21ac 00000000 00000001 80b6998c 00000400 00000000
->>>             80a00000 801822e8 80b6dd68 00000000 00000002 00000000 809f8024 86077ccc
->>>             80b80000 801e9328 809fcbc0 00000000 00000400 00010000 86077ccc 86073a14
->>>             00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
->>>             ...
->>> [    0.323148] Call Trace:
->>> [    0.325935] [<8010e7c4>] show_stack+0x8c/0xa8
->>> [    0.330859] [<80404814>] dump_stack+0xd4/0x110
->>> [    0.335879] [<801f0bc0>] bad_page+0xfc/0x14c
->>> [    0.340710] [<801f0e04>] free_pages_prepare+0x1f4/0x330
->>> [    0.346632] [<801f36c4>] __free_pages_ok+0x2c/0x104
->>> [    0.352154] [<80b23a40>] init_cma_reserved_pageblock+0x5c/0x74
->>> [    0.358761] [<80b29390>] cma_init_reserved_areas+0x1b4/0x240
->>> [    0.365170] [<8010058c>] do_one_initcall+0xe8/0x27c
->>> [    0.370697] [<80b14e60>] kernel_init_freeable+0x200/0x2c4
->>> [    0.376828] [<808faca4>] kernel_init+0x14/0x104
->>> [    0.381939] [<80107598>] ret_from_kernel_thread+0x14/0x1c
->>>
->>> The bugus pfn seems to be the one allocated for bootmem allocator
->>> pages and hasn't been freed before letting the CMA working with its
->>> areas. Anyway the bug is solved by this patchset.
->>>
->>> Another reason why this patchset is useful is that it fixes the fdt
->>> reserved-memory nodes functionality for MIPS. Really it's bug to have
->>> the fdt reserved nodes scanning before the memblock is
->>> fully initialized (calling early_init_fdt_scan_reserved_mem before
->>> bootmem_init is called). Additionally no-map flag of the
->>> reserved-memory node hasn't been taking into account. This patchset
->>> fixes all of these.
->>>
->>> As you probably remember I already did another attempt to merge a
->>> similar functionality into the kernel. This time the patchset got
->>> to be less complex (14 patches vs 21 last time) and fixes the
->>> platform code like SGI IP27 and Loongson3, which due to being
->>> NUMA introduce its own memory initialization process. Although
->>> I have much doubt in SGI IP27 code operability in the first place,
->>> since it got prom_meminit() method of early memory initialization,
->>> which hasn't been called at any other place in the kernel. It must
->>> have been left there unrenamed after arch/mips/mips-boards/generic
->>> code had been discarded.
->>>
->>> Here are the list of folks, who agreed to perform some tests of
->>> the patchset:
->>> Alexander Sverdlin <alexander.sverdlin@nokia.com> - Octeon2
->>> Matt Redfearn <matt.redfearn@mips.com> - Loongson3, etc
->>
->>
->>
->> I have applied and tested these patches on various platforms that we have available here, and the kernel appears to boot and get to userspace as normal on the following platforms:
->>
->> UTM8 (Cavium Octeon III)
->> Creator CI20
-> 
-> A bit off-topic, but could you please Acked one of Marcin's patch that
-> I re-submitted:
-> 
-> https://patchwork.linux-mips.org/patch/17986/
-> 
-> I believe CI20 wont boot from upstream kernel, since you are testing
-> patch I am guessing you have a running system (unless of course you
-> tweaked your u-boot env vars or use another different patch).
-> 
+--YkJPYEFdoxh/AXLE
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Indeed, with the factory default arguments the kernel does not boot 
-since 73fbc1eba7ff. Those arguments are redundant though since the 
-memory is discovered via device tree. Testing locally we do not use 
-those arguments. Anyway, the patch mentioned does not seem to break 
-anything and does fix this issue so I've replied with my Tested-by.
+On Thu, Dec 21, 2017 at 10:00:59PM +0100, Mathieu Malaterre wrote:
+> From: Marcin Nowakowski <marcin.nowakowski@mips.com>
+>=20
+> Change 73fbc1eba7ff added a fix to ensure that the memory range between
 
-Thanks,
-Matt
+Please refer to commits with e.g. commit 73fbc1eba7ff ("MIPS: fix
+mem=3DX@Y commandline processing").
 
+> PHYS_OFFSET and low memory address specified by mem=3D cmdline argument is
+> not later processed by free_all_bootmem.
+> This change was incorrect for systems where the commandline specifies
+> more than 1 mem argument, as it will cause all memory between
+> PHYS_OFFSET and each of the memory offsets to be marked as reserved,
+> which results in parts of the RAM marked as reserved (Creator CI20's
+> u-boot has a default commandline argument 'mem=3D256M@0x0
+> mem=3D768M@0x30000000').
+>=20
+> Change the behaviour to ensure that only the range between PHYS_OFFSET
+> and the lowest start address of the memories is marked as protected.
+>=20
+> This change also ensures that the range is marked protected even if it's
+> only defined through the devicetree and not only via commandline
+> arguments.
+>=20
+> Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
+> Fixes: 73fbc1eba7ff ("MIPS: fix mem=3DX@Y commandline processing")
+> Cc: <stable@vger.kernel.org> # v4.11
 
+I'm guessing that should technically be v4.11+
 
-> Thanks for your help
-> 
+> ---
+> v2: Use updated email adress, add tag for stable.
+>  arch/mips/kernel/setup.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 702c678de116..f19d61224c71 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -375,6 +375,7 @@ static void __init bootmem_init(void)
+>  	unsigned long reserved_end;
+>  	unsigned long mapstart =3D ~0UL;
+>  	unsigned long bootmap_size;
+> +	phys_addr_t ramstart =3D ~0UL;
+
+Although practically it might not matter, technically phys_addr_t may be
+64-bits (CONFIG_PHYS_ADDR_T_64BIT) even on a 32-bit kernels, in which
+case ~0UL may not be sufficiently large.
+
+Maybe that should be ~(phys_addr_t)0, or perhaps (phys_addr_t)ULLONG_MAX
+to match add_memory_region().
+
+>  	bool bootmap_valid =3D false;
+>  	int i;
+> =20
+> @@ -395,6 +396,21 @@ static void __init bootmem_init(void)
+>  	max_low_pfn =3D 0;
+> =20
+>  	/*
+> +	 * Reserve any memory between the start of RAM and PHYS_OFFSET
+> +	 */
+> +	for (i =3D 0; i < boot_mem_map.nr_map; i++) {
+> +		if (boot_mem_map.map[i].type !=3D BOOT_MEM_RAM)
+> +			continue;
+> +
+> +		ramstart =3D min(ramstart, boot_mem_map.map[i].addr);
+
+Is it worth incorporating this into the existing loop below ...
+
+> +	}
+> +
+> +	if (ramstart > PHYS_OFFSET)
+> +		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
+> +				  BOOT_MEM_RESERVED);
+
+=2E.. and this then placed below that loop?
+
+Otherwise I can't find fault with this patch, though i'm not intimately
+familiar with bootmem.
+
+Cheers
+James
+
+> +
+> +
+> +	/*
+>  	 * Find the highest page frame number we have available.
+>  	 */
+>  	for (i =3D 0; i < boot_mem_map.nr_map; i++) {
+> @@ -664,9 +680,6 @@ static int __init early_parse_mem(char *p)
+> =20
+>  	add_memory_region(start, size, BOOT_MEM_RAM);
+> =20
+> -	if (start && start > PHYS_OFFSET)
+> -		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
+> -				BOOT_MEM_RESERVED);
+>  	return 0;
+>  }
+>  early_param("mem", early_parse_mem);
+> --=20
+> 2.11.0
+>=20
+
+--YkJPYEFdoxh/AXLE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpnRA4ACgkQbAtpk944
+dnp22Q/8De+B5OeBDSwCcBMxj10ZQK8NplvIZyNvT4eo/V0myFjVitdj33gWUyAI
+zSeI1wPi+XwpTbc9ODPTOh9troPXCt4RQ3AjFL28A+L/fCDmsMGpKcWQeT2n4p+H
+2pfN9zW4/viVyQoAKdpNYdTW5llMbxiI9n4Hu9y0UgWaSR/2tx9pNDUX2jYVuidM
+Vu9Ruw4TpPPoxSlGzp3KHwC281UqqNAxq/gV+SM1LW5PxRjln/ZnMlmlyX/kVauS
+/8qre8JgAPb3gXH1B2GJ9xAnfPK+SnpnaEqTKKzLzs71EjhDoBDuPzrUj1zdJ97q
+h1f9vdN6ZsuhzSGQt8y4g3RuqQtf5e+NhEdNJwuKnmJomb/5/nCPEKRWPiylH9S/
+aPOS7zX0ijdEgg95X6YH/ryNLE/W4RfUl0unxq+qU7A0jWJ9CC8D2bGA0xsEqCeI
+7Un0fhF5MmIxXLN2CtnUyKqjpJCr1ocvPPxX5velCja0jxWfZf5eBSFG1hOl/uMP
+ju/IPPQHacA9C7pGY8Xhhoh8vII2ZvpTXGT07VvZ3xgBWaBZdv0igwptxNIZpeym
+YaF3tTNfBwPKitpCDLvVa6Yekm3ZWSPAERpNtejtrCGW4nrTHZb3ZKMS8Vknk2XV
+D5anqso1+FyMhYsyeaom/CgTZQSmC59Nt44Wq2ZNW3IXhHEMEkE=
+=D+jJ
+-----END PGP SIGNATURE-----
+
+--YkJPYEFdoxh/AXLE--

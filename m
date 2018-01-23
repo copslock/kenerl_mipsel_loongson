@@ -1,71 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 20:10:58 +0100 (CET)
-Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:42841
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 20:27:07 +0100 (CET)
+Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:45762
         "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992391AbeAWTKotACIx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2018 20:10:44 +0100
-Received: by mail-lf0-x241.google.com with SMTP id q17so1977850lfa.9;
-        Tue, 23 Jan 2018 11:10:44 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23992391AbeAWT1AGyL3k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2018 20:27:00 +0100
+Received: by mail-lf0-x241.google.com with SMTP id x196so2022855lfd.12;
+        Tue, 23 Jan 2018 11:27:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=8kZw+Vu4twJT6+sjj/7UQ7pAIeFULECYL/fdT8NXu+8=;
-        b=d/y34GiNApWpO+obbGL3LHmnGDD5mgLXksW61LnOygvPpJD6Mukd88qNt4kq7klHuf
-         1D61EXFB9Zu3TzOkQZ7HtQ7qlegCmKmKaARt61bQXPt1mlmrseMROfopsfQqqDJ8PrCt
-         aa/sXsBIEFb3uJ21wQabyM7hQg66Iqwf5oaV4/ysnC8HT/IkHX+IHItdXwBcZq9xelPF
-         ZrScC29vw73IBAbPPBVvmsZMu1s/M4S4BIeW8PFiOrptSoTxLBU7oB6nUe5t5pdezBo3
-         hIzFbtOnAXs3TvJr/SRDxvIxfMV1f0FSNqAt5RzybFEZB2oi7QdKZ24JO4wOB15FFcov
-         seCQ==
+        bh=cJoobnKXN+e9dCufi7fRrxkRGEJx1e4zTzd1fsJyUUE=;
+        b=uzz8wlRLnsoUSWQ4KeooK1mcYM9PWmhnOq7J+6vEEHmGjauTdGfu/At3BUJQy2APde
+         1ppWcIM09qH6ETp8aW95ahQ31P11pwEDxt+5tGDJmiAQ+w7UknOpOg0kjK3iOK+WXi8a
+         BxdbuyOJeviEJvppdQsm8Q+uzZr9Z1h4CA+roPkotdhSzDfgGafrHOai+z6ZDzuNcGuY
+         ZQGCfHKqpFGsOMoUCsw+SZcj/tYhrgcDBBC/h8PR+MAHWFTczzh5SnipZsL1oO+fPXan
+         VaU09afaxCnuQcXeYe/Ghk5UFZOiLkQpP762lFEhBBAlthiIYTbXllWZhCIYluxu2H+d
+         1KvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=8kZw+Vu4twJT6+sjj/7UQ7pAIeFULECYL/fdT8NXu+8=;
-        b=uMJJxcl6nNoe+G7GmuQaNEN7KXBbtZH3egXC6EGpwFEofDvFy+xtyUUSSM3T6M4t4V
-         WeBAFjJDCvq6w2tacPw2EsOSjaqcNkHv/u3lv4fgqVZuT4EaCPCZxcB07nbtTdFVJrf3
-         MdjRO4eGc0m0ltjmznv0lj3GwXHyAWiBVbHgBa3iYO9mXH/txUL4CrfO4OXSbsrXBI/i
-         j5bRk5l/SAaGSHbHakO9U/f0QJLKkb//fUjAKiw6QfaJZm8pWBHoddulQsqGH3hOV2L2
-         LH1gDW/SPquLVIKVIL5/KyortEqOt7CkGUrhUQPoMhsi8lZY91O1wZM7MPLx6v+4CP4Y
-         xFyw==
-X-Gm-Message-State: AKwxytcU1yVT28/++fDcJIgXGhTaB/ors6bokZA+bBTljuS4o69JDtBx
-        fY27LV9mJtOZM+6uerjVh6s=
-X-Google-Smtp-Source: AH8x226u8U+Y0/bNqqUrMgdECbliyDQtV7+3EUqBjoalTPaErheP7D9SifDpCJ0Nwn7OHhttmC/1KQ==
-X-Received: by 10.46.8.89 with SMTP id g25mr1872470ljd.47.1516734639007;
-        Tue, 23 Jan 2018 11:10:39 -0800 (PST)
+        bh=cJoobnKXN+e9dCufi7fRrxkRGEJx1e4zTzd1fsJyUUE=;
+        b=CO4qHzPFSZDyHmwF+6tHLYbkcfwwBbF0JsjJTZlvsZggf31g18aIMneNcph15UD42Z
+         jpYXNimr59Y6nnzbpY3elOU1fXAxgHd/eg6wjtV8gEU8yr/scw74mvw7J2E/HcK7lh+T
+         jcGsojMmtbGKD9/7XuXkpOSG3mfoLpmMrndj1zPylKK9LHJeSwX/FwEaJfbE1XCfbk/z
+         xA3G+YKxKqoO94Uw5ruZDlW0XBupqanEbhQa+arjXRpnmCTBOaAnigL7P79Y91RVZfWY
+         EOlOkgYc2nfUs7SlqUl6rsMzsmmNxY0zBDE9/bKTW4HyH+6YO23f5MUfMDf9fd+VvGs2
+         M/hQ==
+X-Gm-Message-State: AKwxyteyelg9eqpiEB05MIFOYYPlxl/Y3zYxLBiceJ1qKGfwoX0b0jnN
+        Z5ODrenztBq+VA7Gd7Qk9tg=
+X-Google-Smtp-Source: AH8x226eKP3MjghvtmlUyt8dwbKWOGbeSsaQ2Vlqu47L//86u/tYDSZhQwWyvHfeVVDknQSDNWNkkA==
+X-Received: by 10.46.91.211 with SMTP id m80mr1809326lje.107.1516735614484;
+        Tue, 23 Jan 2018 11:26:54 -0800 (PST)
 Received: from mobilestation ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id f27sm157644lfb.6.2018.01.23.11.10.37
+        by smtp.gmail.com with ESMTPSA id x7sm3107412ljc.9.2018.01.23.11.26.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Jan 2018 11:10:38 -0800 (PST)
-Date:   Tue, 23 Jan 2018 22:10:51 +0300
+        Tue, 23 Jan 2018 11:26:53 -0800 (PST)
+Date:   Tue, 23 Jan 2018 22:27:07 +0300
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, ralf@linux-mips.org,
-        miodrag.dinic@mips.com, jhogan@kernel.org, goran.ferenc@mips.com,
-        david.daney@cavium.com, paul.gortmaker@windriver.com,
-        paul.burton@mips.com, alex.belits@cavium.com,
-        Steven.Hill@cavium.com, alexander.sverdlin@nokia.com,
-        kumba@gentoo.org, marcin.nowakowski@mips.com, James.hogan@mips.com,
+Cc:     ralf@linux-mips.org, miodrag.dinic@mips.com, jhogan@kernel.org,
+        goran.ferenc@mips.com, david.daney@cavium.com,
+        paul.gortmaker@windriver.com, paul.burton@mips.com,
+        alex.belits@cavium.com, Steven.Hill@cavium.com,
+        alexander.sverdlin@nokia.com, kumba@gentoo.org,
+        marcin.nowakowski@mips.com, James.hogan@mips.com,
         Peter.Wotton@mips.com, Sergey.Semin@t-platforms.ru,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 11/14] MIPS: memblock: Print out kernel virtual mem layout
-Message-ID: <20180123191051.GA28147@mobilestation>
+Subject: Re: [PATCH 02/14] MIPS: memblock: Surely map BSS kernel memory
+ section
+Message-ID: <20180123192707.GB28147@mobilestation>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180117222312.14763-12-fancer.lancer@gmail.com>
- <cce36f73-4381-f830-3422-1cef8ad9e622@gmail.com>
- <20180118201856.GA996@mobilestation>
- <b2797958-d217-9c8d-10ca-b9bc43ae585b@mips.com>
- <20180119142712.GA3101@mobilestation>
- <eef02082-c3b1-e42b-d5ff-1c0d5cb8d708@mips.com>
+ <20180117222312.14763-3-fancer.lancer@gmail.com>
+ <3fbb8850-bf34-d698-299a-f1cd62d063ae@mips.com>
+ <20180122214746.GC32024@mobilestation>
+ <8a26c7cd-966f-90d4-96c9-2f974808c2f4@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <eef02082-c3b1-e42b-d5ff-1c0d5cb8d708@mips.com>
+In-Reply-To: <8a26c7cd-966f-90d4-96c9-2f974808c2f4@mips.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62287
+X-archive-position: 62288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,96 +83,88 @@ X-list: linux-mips
 
 Hello Matt,
 
-On Tue, Jan 23, 2018 at 03:35:14PM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
+On Tue, Jan 23, 2018 at 11:03:27AM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
 > Hi Serge,
 > 
-> On 19/01/18 14:27, Serge Semin wrote:
-> >On Fri, Jan 19, 2018 at 07:59:43AM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
-> >
+> On 22/01/18 21:47, Serge Semin wrote:
 > >Hello Matt,
 > >
+> >On Mon, Jan 22, 2018 at 04:35:26PM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
 > >>Hi Serge,
 > >>
+> >>On 17/01/18 22:23, Serge Semin wrote:
+> >>>The current MIPS code makes sure the kernel code/data/init
+> >>>sections are in the maps, but BSS should also be there.
 > >>
-> >>
-> >>On 18/01/18 20:18, Serge Semin wrote:
-> >>>On Thu, Jan 18, 2018 at 12:03:03PM -0800, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> >>>>On 01/17/2018 02:23 PM, Serge Semin wrote:
-> >>>>>It is useful to have the kernel virtual memory layout printed
-> >>>>>at boot time so to have the full information about the booted
-> >>>>>kernel. In some cases it might be unsafe to have virtual
-> >>>>>addresses freely visible in logs, so the %pK format is used if
-> >>>>>one want to hide them.
-> >>>>>
-> >>>>>Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> >>>>
-> >>>>I personally like having that information because that helps debug and
-> >>>>have a quick reference, but there appears to be a trend to remove this
-> >>>>in the name of security:
-> >>>>
-> >>>>https://patchwork.kernel.org/patch/10124007/
-> >>>>
-> >>>>maybe hide this behind a configuration option?
-> >>>
-> >>>Yeah, arm code was the place I picked the function up.) But in my case
-> >>>I've used %pK so the pointers would disappear from logging when
-> >>>kptr_restrict sysctl is 1 or 2.
-> >>>I agree, that we might need to make the printouts optional. If there is
-> >>>any kernel config, which for instance increases the kernel security we
-> >>>could also use it or anything else to discard the printouts at compile
-> >>>time.
-> >>
-> >>
-> >>Certainly, when KASLR is active it would be preferable to hide this
-> >>information, so you could use CONFIG_RELOCATABLE. The existing KASLR stuff
-> >>additionally hides this kind of information behind CONFIG_DEBUG_KERNEL, so
-> >>that only people actively debugging the kernel see it:
-> >>
-> >>http://elixir.free-electrons.com/linux/v4.15-rc8/source/arch/mips/kernel/setup.c#L604
+> >>Quite right - it should. But this was protected against by reserving all
+> >>bootmem up to the _end symbol here:
+> >>http://elixir.free-electrons.com/linux/v4.15-rc8/source/arch/mips/kernel/setup.c#L388
+> >>Which you remove in the next patch in this series. I'm not sure it is worth
 > >
-> >Ok. I'll hide the printouts behind both of that config macros in the next patchset
-> >version.
+> >Right. Missed that part. The old code just doesn't set the kernel memory free
+> >calling the free_bootmem() method for non-reserved parts below reserved_end.
+> >
+> >>disentangling the reserved_end stuff from the next patch to make this into a
+> >>single logical change of reserving just .bss rather than everything below
+> >>_end.
+> >
+> >Good point. I'll move this change into the "[PATCH 05/14] MIPS: memblock:
+> >Add reserved memory regions to memblock". It logically belongs to that place.
+> >Since basically by the arch_mem_addpart() calls we reserve all the kernel
 > 
 > 
-> Another thing to note - since ad67b74d2469d ("printk: hash addresses printed
-> with %p") %pK at this time in the boot process is useless since the RNG is
-> not sufficiently initialised and all prints end up being "(ptrval)". Hence
-> after v4.15-rc2 we end up with output like:
+> Actually I was wrong - it's not this sequence of arch_mem_addpart's that
+> reserves the kernels memory. At least on DT based systems, it's pretty
+> likely that these regions will overlap with the system memory already added.
+> of_scan_flat_dt will look for the memory node and add it via
+> early_init_dt_add_memory_arch.
+> These calls to add the kernel text, init and bss detect that they overlap
+> with the already present system memory, so don't get added, here:
+> http://elixir.free-electrons.com/linux/v4.15-rc9/source/arch/mips/kernel/setup.c#L759
 > 
-> [    0.000000] Kernel virtual memory layout:
-> [    0.000000]     lowmem  : 0x(ptrval) - 0x(ptrval)  ( 256 MB)
-> [    0.000000]       .text : 0x(ptrval) - 0x(ptrval)  (7374 kB)
-> [    0.000000]       .data : 0x(ptrval) - 0x(ptrval)  (1901 kB)
-> [    0.000000]       .init : 0x(ptrval) - 0x(ptrval)  (1600 kB)
-> [    0.000000]       .bss  : 0x(ptrval) - 0x(ptrval)  ( 415 kB)
-> [    0.000000]     vmalloc : 0x(ptrval) - 0x(ptrval)  (1023 MB)
-> [    0.000000]     fixmap  : 0x(ptrval) - 0x(ptrval)  (  68 kB)
+> As such, when we print out the content of boot_mem_map, we only have a
+> single entry:
+> 
+> [    0.000000] Determined physical RAM map:
+> [    0.000000]  memory: 10000000 @ 00000000 (usable)
+> 
+> 
+> >memory now I'd also merged them into a single call for the range [_text, _end].
+> >What do you think?
+> 
+> 
+> I think that this patch makes sense in case the .bss is for some reason not
+> covered by an existing entry, but I would leave it as a separate patch.
+> 
+> Your [PATCH 05/14] MIPS: memblock: Add reserved memory regions to memblock
+> is actually self-contained since it replaces reserving all memory up to _end
+> with the single reservation of the kernel's whole size
+> 
+> +	size = __pa_symbol(&_end) - __pa_symbol(&_text);
+> +	memblock_reserve(__pa_symbol(&_text), size);
+> 
+> 
+> Which I think is definitely an improvement since it is much clearer.
 > 
 
-It must be some bug in the algo. What point in the %pK then? According to
-the documentation the only way to see the pointers is when (kptr_restrict == 0).
-But if it is we don't get into the restricted_pointer() method at all:
-http://elixir.free-electrons.com/linux/v4.15-rc9/source/lib/vsprintf.c#L1934
-In this case the vsprintf() executes the method ptr_to_id(), which of course
-default to _not_ leak addresses, and hash it before printing.
+Alright lets sum it up. First of all, yeah, you are right, arch_mem_addpart()
+is created to make sure the kernel memory is added to the memblock/bootmem pool.
+The previous arch code was leaving such the memory range non-freed since it was
+higher the reserved_end, so to make sure the early memory allocations wouldn't
+be made from the pages, where kernel actually resides.
 
-Really %pK isn't supposed to be dependent from RNG at all since kptr_restrict
-doesn't do any value randomization.
+In my code I still wanted to make sure the kernel memory is in the memblock pool.
+But I also noticed, that .bss memory range wouldn't be added to the pool if neither
+dts nor platform-specific code added any memory to the boot_mem_map pool. So I
+decided to fix it. The actual kernel memory reservation is performed after all
+the memory regions are declared by the code you cited. It's essential to do
+the [_text, _end] memory range reservation there, otherwise memblock may
+allocate from the memory range occupied by the kernel code/data.
 
-> 
-> The %px format specifier was added for cases such as this, where we really
-> want to print the unmodified address. And as long as this function is
-> suitably guarded to only do this when KASLR is deactivated /
-> CONFIG_DEBUG_KERNEL is activated, etc, then we are not unwittingly leaking
-> information - we are deliberately making it available.
-> 
-
-If %pK would work as it's stated by the kernel documentation:
-https://www.kernel.org/doc/Documentation/printk-formats.txt
-then the only change I'd suggest to have here is to close the kernel memory
-layout printout method by the CONFIG_DEBUG_KERNEL ifdef-macro. The kptr_restrict
-should default to 1/2 if the KASLR is activated:
-https://lwn.net/Articles/444556/
+Since you agree with leaving it in the separate patch, I'd only suggest to
+call the arch_mem_addpart() method for just one range [_text, _end] instead of
+doing it three times for a separate _text, _data and bss sections. What do you
+think?
 
 Regards,
 -Sergey
@@ -186,9 +177,28 @@ Regards,
 > >-Sergey
 > >
 > >>
+> >>Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
+> >>
 > >>Thanks,
 > >>Matt
 > >>
 > >>>
-> >>>>-- 
-> >>>>Florian
+> >>>Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+> >>>---
+> >>>  arch/mips/kernel/setup.c | 3 +++
+> >>>  1 file changed, 3 insertions(+)
+> >>>
+> >>>diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> >>>index 76e9e2075..0d21c9e04 100644
+> >>>--- a/arch/mips/kernel/setup.c
+> >>>+++ b/arch/mips/kernel/setup.c
+> >>>@@ -845,6 +845,9 @@ static void __init arch_mem_init(char **cmdline_p)
+> >>>  	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
+> >>>  			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
+> >>>  			 BOOT_MEM_INIT_RAM);
+> >>>+	arch_mem_addpart(PFN_DOWN(__pa_symbol(&__bss_start)) << PAGE_SHIFT,
+> >>>+			 PFN_UP(__pa_symbol(&__bss_stop)) << PAGE_SHIFT,
+> >>>+			 BOOT_MEM_RAM);
+> >>>  	pr_info("Determined physical RAM map:\n");
+> >>>  	print_memory_map();
+> >>>

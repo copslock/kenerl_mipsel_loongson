@@ -1,67 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 20:36:22 +0100 (CET)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:40909
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992391AbeAWTgQM2snk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2018 20:36:16 +0100
-Received: by mail-lf0-x244.google.com with SMTP id h92so2079533lfi.7
-        for <linux-mips@linux-mips.org>; Tue, 23 Jan 2018 11:36:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=KnPNDa5vVgxQ1CH4HMSBawCpkT67+Y6KwqmWhTjlqz0=;
-        b=phoHDO+jQ6UXTGKoUcdCQeB7HEaoiaEuDbsjS9rz8qaPHtmKYYXIMzP1Vy02Xy7+OK
-         lVvQ/cOjhZzAItHGrZDTHZdWfS4PjsbFBFHrGCF+GDotRv8LSoXYtvFcJ3xjKPnjLjgP
-         dVe98SCxi9jdTPTZk1GUyVeaxaOHfmnJkmVE23zWO7kgbrGFLdwv/oHXmpk1+FFETJkd
-         cFaKdNwgtYhNjo6kmKr22qwUxb+wqQOSmCU+ZQOpgFujAwduE7UX9ego1UIXX1YnWg+k
-         S7eccb6l9Y3ASbpecRX3lom3plMi4fdO9A/dQkAZISis+C4EyPOUOvtTGCsIrX4YyEtf
-         JLfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=KnPNDa5vVgxQ1CH4HMSBawCpkT67+Y6KwqmWhTjlqz0=;
-        b=N8CZahLXcQnp3+5XwEhYWEG3iL2oha/kgUKuh6/UYVYtLaAV5UmtuFizjlJ8n+GShH
-         Ng1pR1gMVaOoVUroJNDEkRQjLkwBJpx80GbHelJvcZL9CEgS5izaa4f8jx/BmA4RSdAY
-         fg/x7pjn6u1emtGHqBhkWE+UUp8RPlmMxBXFwK30A5q+YVccdrRpBDhr6G36KCR6JOvm
-         hHiLmYRiRljEuaQ2pJm9YOGAodhBqmGFnO7/niw+G/u6f0ZVEOb/nmRtbRHHwJlCSIh1
-         ILAkNKFNF4MpeZSSQ9I8HoCi7NiIk2KQU6t1eGqV6U10vFTpoAoc5T6iXjxvIoeNGWFz
-         IIBA==
-X-Gm-Message-State: AKwxytfSorOrCu6XsDXJes9+ODoHDip8j3IbUamjnkR15aECO/ZdrYQQ
-        ACBV4Q3ll1VXAkHexnLEghAwpU8D
-X-Google-Smtp-Source: AH8x2249XWqJVkFqpR9yv5NZMS3YUonbX7WufdPREa6YtWSw0x4XmIKpBSHGSY9dsuW+d8tQvzxCAg==
-X-Received: by 10.46.58.6 with SMTP id h6mr1937388lja.2.1516736170717;
-        Tue, 23 Jan 2018 11:36:10 -0800 (PST)
-Received: from mobilestation ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id q77sm166816lfd.17.2018.01.23.11.36.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Jan 2018 11:36:10 -0800 (PST)
-Date:   Tue, 23 Jan 2018 22:36:23 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 12/14] MIPS: memblock: Discard bootmem from Loongson3 code
-Message-ID: <20180123193623.GC28147@mobilestation>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 01:00:21 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:45230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992866AbeAXAALuBIR0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Jan 2018 01:00:11 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A0A6721715;
+        Tue, 23 Jan 2018 23:59:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A0A6721715
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 23 Jan 2018 23:59:35 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Serge Semin <fancer.lancer@gmail.com>
+Cc:     ralf@linux-mips.org, miodrag.dinic@mips.com, goran.ferenc@mips.com,
+        david.daney@cavium.com, paul.gortmaker@windriver.com,
+        paul.burton@mips.com, alex.belits@cavium.com,
+        Steven.Hill@cavium.com, alexander.sverdlin@nokia.com,
+        matt.redfearn@mips.com, kumba@gentoo.org,
+        marcin.nowakowski@mips.com, Peter.Wotton@mips.com,
+        Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 14/14] MIPS: memblock: Deactivate bootmem allocator
+Message-ID: <20180123235934.GA5446@saruman>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180117222312.14763-13-fancer.lancer@gmail.com>
- <1516746524.20678.6.camel@flygoat.com>
+ <20180117222312.14763-15-fancer.lancer@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1516746524.20678.6.camel@flygoat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+In-Reply-To: <20180117222312.14763-15-fancer.lancer@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62289
+X-archive-position: 62290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,39 +53,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello Jiaxun,
 
-On Tue, Jan 23, 2018 at 10:28:44PM +0000, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
-> 在 2018-01-18四的 01:23 +0300，Serge Semin写道：
-> Hi Serge
-> 
-> > Loongson64/3 runs its own code to initialize memory allocator in
-> > case of NUMA configuration is selected. So in order to move to the
-> > pure memblock utilization we discard the bootmem allocator usage
-> > and insert the memblock reservation method for
-> > kernel/addrspace_offset
-> > memory regions.
-> 
-> Thanks for your patch. However, In my test, the system didn't boot
-> anymore with your patch. Since I don't have any lowlevel debug
-> instuments(ejtag or something). I can't provide any detail about the
-> problem. Just let you know that we have a problem here.
-> 
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for performing the tests of the patchset. I really appreciate this.
-Regarding the problems you got. You must be doing something wrong, since
-Matt Redfearn already did the tests on Loongson3:
-https://lkml.org/lkml/2018/1/22/610
-and the kernel turns out to be booting without troubles.
+On Thu, Jan 18, 2018 at 01:23:12AM +0300, Serge Semin wrote:
+> Memblock allocator can be successfully used from now for early
+> memory management
+>=20
+> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 
-So could you make sure, that you did everything right? Particularly, you
-said the patch (singular) isn't working. But this patch functionality depends
-on the whole patchset. Did you apply all the patches I sent and fully rebuild
-the kernel then?
+Am I correct that intermediate commits in this patchset (i.e. bisection)
+may not work correctly, since bootmem will have been stripped out but
+NO_BOOTMEM=3Dn and memblock may not be properly operational yet?
 
-Regards,
--Sergey
+If so, is there a way to switch without breaking bisection that doesn't
+involve squashing most of the series into a single atomic commit?
 
-> 
-> --
-> Jiaxun Yang
+Cheers
+James
+
+> ---
+>  arch/mips/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 725b5ece7..a6c4fb6b6 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -4,7 +4,6 @@ config MIPS
+>  	default y
+>  	select ARCH_BINFMT_ELF_STATE
+>  	select ARCH_CLOCKSOURCE_DATA
+> -	select ARCH_DISCARD_MEMBLOCK
+>  	select ARCH_HAS_ELF_RANDOMIZE
+>  	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+>  	select ARCH_MIGHT_HAVE_PC_PARPORT
+> @@ -57,6 +57,7 @@ config MIPS
+>  	select HAVE_IRQ_TIME_ACCOUNTING
+>  	select HAVE_KPROBES
+>  	select HAVE_KRETPROBES
+> +	select NO_BOOTMEM
+>  	select HAVE_MEMBLOCK
+>  	select HAVE_MEMBLOCK_NODE_MAP
+>  	select HAVE_MOD_ARCH_SPECIFIC
+> --=20
+> 2.12.0
+>=20
+
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpnzGYACgkQbAtpk944
+dnr+oQ/9F5E9TnPGQ9SqXnOrWYvBM0KWGAig2x6tF4EVsWAdAanOVamebvKQJ0Rb
+SyIOARAYRoG4+xRg5pypfj4QKgpKpwjOm9s5qQHRyC16D4LA5RAQ06EtDl0Icwpq
+6ccELDsrS7kj2rC4518vSMs1WDUDLIxvvDgQo9xOsDFtsSftu+luE07NG0PacbgE
+J4e46YxioK3vcyJ78z5nh0NiVBUub0UrNhGo2Q2kgg/en1Je3eXMAIcJ2ft2oDEv
+PEiRUFcihSNezkoxIAJx1T5Jw5rZGewsn+r8rmHa2K6ErlbnZN2+5Cta5c8TcExV
+3R/TjU4QlIUqywfGI+ObdywmCerTlZPOM9zlel6OaPnXJlMU4KyfysOftFKdqkY0
+Wr8ZIsWApy1CNsja36ps0gqxpd9mAOHKiw13ts08a6LcnPtY8FJhkBP25A72EM7X
+hgRjcRuylraOeGNCanYDTfYXa8h8CDcH4QYSSl9kvj2ooAC2hCYTxq3c/FO7zBqZ
+6VIgKHhyqeNnvkgNuCN5vTQcU+cptuAhgMAJp1B3Xjx7KRRabvbluaIzjdnLqp/K
+fofFLRgr5/BdNSA4Pk7WlDAgz9hcIFLKzf7jHvipdmmriOP0YjtAnrdDPLVLGr5C
+TrdL0ZwCmoxB7pTjliTeP/PLdNXSV0gkHvvdiS0d9M2c6RTwR4s=
+=cwSt
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

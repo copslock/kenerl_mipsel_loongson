@@ -1,42 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 15:18:21 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:52204 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992821AbeAWOSLeCKCj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Jan 2018 15:18:11 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E6AC32178B;
-        Tue, 23 Jan 2018 14:18:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E6AC32178B
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 23 Jan 2018 14:17:57 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        "# v4 . 11" <stable@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MIPS: fix incorrect mem=X@Y handling
-Message-ID: <20180123141756.GE22211@saruman>
-References: <1504609608-7694-1-git-send-email-marcin.nowakowski@imgtec.com>
- <20171221210100.12002-1-malat@debian.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="YkJPYEFdoxh/AXLE"
-Content-Disposition: inline
-In-Reply-To: <20171221210100.12002-1-malat@debian.org>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2018 15:29:06 +0100 (CET)
+Received: from forward103j.mail.yandex.net ([IPv6:2a02:6b8:0:801:2::106]:54560
+        "EHLO forward103j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992821AbeAWO26qVytF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2018 15:28:58 +0100
+Received: from mxback5j.mail.yandex.net (mxback5j.mail.yandex.net [IPv6:2a02:6b8:0:1619::10e])
+        by forward103j.mail.yandex.net (Yandex) with ESMTP id F28B734C3CFE;
+        Tue, 23 Jan 2018 17:28:51 +0300 (MSK)
+Received: from smtp3p.mail.yandex.net (smtp3p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:8])
+        by mxback5j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id n2LOo8Eho2-SpoKvFnT;
+        Tue, 23 Jan 2018 17:28:51 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516717731;
+        bh=mEtc8zsPuzvi0ppFJYMuKbT+gLDOo88pyI5LigjB3LM=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=gCc930CrvqZ0kqatIHI7rBWwvMcFugpcgQA7xX//XTRV2A/ZdM7uGV9AyI+Qjssor
+         7j11GnJ0AYHZ+fNIjuUOmDlSzEZ/CFiWv7MCaq18gO4M/Im0QmbWA+3YtNLPHT1+9U
+         qfWIzXBM0guGBQm2HEL6G8kqkUgbJ9aAAxofNdPE=
+Received: by smtp3p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id WyZQJr2GSk-Snd0HRxx;
+        Tue, 23 Jan 2018 17:28:50 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1516717731;
+        bh=mEtc8zsPuzvi0ppFJYMuKbT+gLDOo88pyI5LigjB3LM=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=gCc930CrvqZ0kqatIHI7rBWwvMcFugpcgQA7xX//XTRV2A/ZdM7uGV9AyI+Qjssor
+         7j11GnJ0AYHZ+fNIjuUOmDlSzEZ/CFiWv7MCaq18gO4M/Im0QmbWA+3YtNLPHT1+9U
+         qfWIzXBM0guGBQm2HEL6G8kqkUgbJ9aAAxofNdPE=
+Authentication-Results: smtp3p.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1516746524.20678.6.camel@flygoat.com>
+Subject: Re: [PATCH 12/14] MIPS: memblock: Discard bootmem from Loongson3
+ code
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Serge Semin <fancer.lancer@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Tue, 23 Jan 2018 22:28:44 +0000
+In-Reply-To: <20180117222312.14763-13-fancer.lancer@gmail.com>
+References: <20180117222312.14763-1-fancer.lancer@gmail.com>
+         <20180117222312.14763-13-fancer.lancer@gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-s/MyWgNO68vY8ht4D1sc"
+X-Mailer: Evolution 3.26.4 
+Mime-Version: 1.0
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62284
+X-archive-position: 62285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,134 +62,49 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---YkJPYEFdoxh/AXLE
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+--=-s/MyWgNO68vY8ht4D1sc
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 21, 2017 at 10:00:59PM +0100, Mathieu Malaterre wrote:
-> From: Marcin Nowakowski <marcin.nowakowski@mips.com>
->=20
-> Change 73fbc1eba7ff added a fix to ensure that the memory range between
+=E5=9C=A8 2018-01-18=E5=9B=9B=E7=9A=84 01:23 +0300=EF=BC=8CSerge Semin=E5=
+=86=99=E9=81=93=EF=BC=9A
+Hi Serge
 
-Please refer to commits with e.g. commit 73fbc1eba7ff ("MIPS: fix
-mem=3DX@Y commandline processing").
+> Loongson64/3 runs its own code to initialize memory allocator in
+> case of NUMA configuration is selected. So in order to move to the
+> pure memblock utilization we discard the bootmem allocator usage
+> and insert the memblock reservation method for
+> kernel/addrspace_offset
+> memory regions.
 
-> PHYS_OFFSET and low memory address specified by mem=3D cmdline argument is
-> not later processed by free_all_bootmem.
-> This change was incorrect for systems where the commandline specifies
-> more than 1 mem argument, as it will cause all memory between
-> PHYS_OFFSET and each of the memory offsets to be marked as reserved,
-> which results in parts of the RAM marked as reserved (Creator CI20's
-> u-boot has a default commandline argument 'mem=3D256M@0x0
-> mem=3D768M@0x30000000').
->=20
-> Change the behaviour to ensure that only the range between PHYS_OFFSET
-> and the lowest start address of the memories is marked as protected.
->=20
-> This change also ensures that the range is marked protected even if it's
-> only defined through the devicetree and not only via commandline
-> arguments.
->=20
-> Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
-> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
-> Fixes: 73fbc1eba7ff ("MIPS: fix mem=3DX@Y commandline processing")
-> Cc: <stable@vger.kernel.org> # v4.11
+Thanks for your patch. However, In my test, the system didn't boot
+anymore with your patch. Since I don't have any lowlevel debug
+instuments(ejtag or something). I can't provide any detail about the
+problem. Just let you know that we have a problem here.
 
-I'm guessing that should technically be v4.11+
 
-> ---
-> v2: Use updated email adress, add tag for stable.
->  arch/mips/kernel/setup.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
->=20
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 702c678de116..f19d61224c71 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -375,6 +375,7 @@ static void __init bootmem_init(void)
->  	unsigned long reserved_end;
->  	unsigned long mapstart =3D ~0UL;
->  	unsigned long bootmap_size;
-> +	phys_addr_t ramstart =3D ~0UL;
-
-Although practically it might not matter, technically phys_addr_t may be
-64-bits (CONFIG_PHYS_ADDR_T_64BIT) even on a 32-bit kernels, in which
-case ~0UL may not be sufficiently large.
-
-Maybe that should be ~(phys_addr_t)0, or perhaps (phys_addr_t)ULLONG_MAX
-to match add_memory_region().
-
->  	bool bootmap_valid =3D false;
->  	int i;
-> =20
-> @@ -395,6 +396,21 @@ static void __init bootmem_init(void)
->  	max_low_pfn =3D 0;
-> =20
->  	/*
-> +	 * Reserve any memory between the start of RAM and PHYS_OFFSET
-> +	 */
-> +	for (i =3D 0; i < boot_mem_map.nr_map; i++) {
-> +		if (boot_mem_map.map[i].type !=3D BOOT_MEM_RAM)
-> +			continue;
-> +
-> +		ramstart =3D min(ramstart, boot_mem_map.map[i].addr);
-
-Is it worth incorporating this into the existing loop below ...
-
-> +	}
-> +
-> +	if (ramstart > PHYS_OFFSET)
-> +		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
-> +				  BOOT_MEM_RESERVED);
-
-=2E.. and this then placed below that loop?
-
-Otherwise I can't find fault with this patch, though i'm not intimately
-familiar with bootmem.
-
-Cheers
-James
-
-> +
-> +
-> +	/*
->  	 * Find the highest page frame number we have available.
->  	 */
->  	for (i =3D 0; i < boot_mem_map.nr_map; i++) {
-> @@ -664,9 +680,6 @@ static int __init early_parse_mem(char *p)
-> =20
->  	add_memory_region(start, size, BOOT_MEM_RAM);
-> =20
-> -	if (start && start > PHYS_OFFSET)
-> -		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
-> -				BOOT_MEM_RESERVED);
->  	return 0;
->  }
->  early_param("mem", early_parse_mem);
-> --=20
-> 2.11.0
->=20
-
---YkJPYEFdoxh/AXLE
+--
+Jiaxun Yang
+--=-s/MyWgNO68vY8ht4D1sc
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpnRA4ACgkQbAtpk944
-dnp22Q/8De+B5OeBDSwCcBMxj10ZQK8NplvIZyNvT4eo/V0myFjVitdj33gWUyAI
-zSeI1wPi+XwpTbc9ODPTOh9troPXCt4RQ3AjFL28A+L/fCDmsMGpKcWQeT2n4p+H
-2pfN9zW4/viVyQoAKdpNYdTW5llMbxiI9n4Hu9y0UgWaSR/2tx9pNDUX2jYVuidM
-Vu9Ruw4TpPPoxSlGzp3KHwC281UqqNAxq/gV+SM1LW5PxRjln/ZnMlmlyX/kVauS
-/8qre8JgAPb3gXH1B2GJ9xAnfPK+SnpnaEqTKKzLzs71EjhDoBDuPzrUj1zdJ97q
-h1f9vdN6ZsuhzSGQt8y4g3RuqQtf5e+NhEdNJwuKnmJomb/5/nCPEKRWPiylH9S/
-aPOS7zX0ijdEgg95X6YH/ryNLE/W4RfUl0unxq+qU7A0jWJ9CC8D2bGA0xsEqCeI
-7Un0fhF5MmIxXLN2CtnUyKqjpJCr1ocvPPxX5velCja0jxWfZf5eBSFG1hOl/uMP
-ju/IPPQHacA9C7pGY8Xhhoh8vII2ZvpTXGT07VvZ3xgBWaBZdv0igwptxNIZpeym
-YaF3tTNfBwPKitpCDLvVa6Yekm3ZWSPAERpNtejtrCGW4nrTHZb3ZKMS8Vknk2XV
-D5anqso1+FyMhYsyeaom/CgTZQSmC59Nt44Wq2ZNW3IXhHEMEkE=
-=D+jJ
+iQIzBAABCAAdFiEEmAN5vv6/v0d+oE75wRGUkHP8D2cFAlpntxwACgkQwRGUkHP8
+D2cMAw//dYQJdyFPAue/1OhaM44yI20efQ+iBu6uHU1weWq7bV/cAqTnZ45YYkip
+HMyscS1zIm5CrecmyzdqFQEfb8J6wb7JcofQucsWeBrT6UisiT26JseOrxxZjf+X
+t/ijcfPGOVlY3f4kcS7vs+ZfXCeF/3uvUdGDDcen7rspWcEw2KfG4J+ImevrtGhU
+CgrEJHQko/XvFJ4DW/Yo7HE1lb/jitHGLI0ovS0M6nDiv+mrYWfLu4zFLh4dBjDt
+EnD8sAfS+7SehYvLDJ0as7GgQzrbrhdZqHCN+VY5vvRH+2umYfQhw/uPxFmyKpJm
+1ASbtSraFyrFIF1HJ72lG+FSwWDG1cICFQEXXZ+hwJTyWnMJwZgdFPGCE5vV3dlz
+d/aUNYVJQT63vhyoNVthKcVqRrRbUvG5FFeIIjGs50wLXL0kt9EOrS/FJ/lU5zi+
+GBeKr35Gn6HmW7Qn+0rCkcd3AD4Sts0PhO+J1T5gy7JaXgqWxapThr55UE8nn8zX
+UKDiUHv6Fh4BHbLV0xnBF747S18vspiG0MJ2gcp9PGUqGoD6HyJvpIpTl2ooQ3eI
+SyudMrt11TFlPIusUh9qHi0h9GZys2HLkozRYlsrNIjynVdiEWnX6pVG148Xs2IU
+wHk9OE62uvvM1+MSCB7ab6s4O+B5/0dwl9zaWs4eooZwsx+tCdQ=
+=yAql
 -----END PGP SIGNATURE-----
 
---YkJPYEFdoxh/AXLE--
+--=-s/MyWgNO68vY8ht4D1sc--

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 21:55:00 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:48920 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 22:23:00 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:51306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991359AbeAXUyv5s6pU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Jan 2018 21:54:51 +0100
+        id S23991359AbeAXVWwF6IXU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Jan 2018 22:22:52 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC9FD21785;
-        Wed, 24 Jan 2018 20:54:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org BC9FD21785
+        by mail.kernel.org (Postfix) with ESMTPSA id BCA5421778;
+        Wed, 24 Jan 2018 21:22:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org BCA5421778
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 24 Jan 2018 20:54:16 +0000
+Date:   Wed, 24 Jan 2018 21:22:19 +0000
 From:   James Hogan <jhogan@kernel.org>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 1/8] MIPS: Loongson-3: Enable Store Fill Buffer at runtime
-Message-ID: <20180124205415.GH5446@saruman>
+        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/8] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
+Message-ID: <20180124212218.GI5446@saruman>
 References: <1502330433-16670-1-git-send-email-chenhc@lemote.com>
- <1502330433-16670-2-git-send-email-chenhc@lemote.com>
+ <1502330682-16812-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0OWHXb1mYLuhj1Ox"
+        protocol="application/pgp-signature"; boundary="fmvA4kSBHQVZhkR6"
 Content-Disposition: inline
-In-Reply-To: <1502330433-16670-2-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1502330682-16812-1-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62319
+X-archive-position: 62320
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,165 +51,62 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---0OWHXb1mYLuhj1Ox
+--fmvA4kSBHQVZhkR6
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 10, 2017 at 10:00:26AM +0800, Huacai Chen wrote:
-> New Loongson-3 (Loongson-3A R2, Loongson-3A R3, and newer) has SFB
-> (Store Fill Buffer) which can improve the performance of memory access.
-> Now, SFB enablement is controlled by CONFIG_LOONGSON3_ENHANCEMENT, and
-> the generic kernel has no benefit from SFB (even it is running on a new
-> Loongson-3 machine). With this patch, we can enable SFB at runtime by
-> detecting the CPU type (the expense is war_io_reorder_wmb() will always
-> be a 'sync', which will hurt the performance of old Loongson-3).
+On Thu, Aug 10, 2017 at 10:04:36AM +0800, Huacai Chen wrote:
+> For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
+> only flush Node-0's scache. So we add r4k_blast_scache_node() by using
+> (CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
+> start address.
 >=20
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  arch/mips/include/asm/io.h                         |  2 +-
->  .../asm/mach-loongson64/kernel-entry-init.h        | 38 +++++++++++++---=
-------
->  arch/mips/include/asm/mipsregs.h                   |  2 ++
->  3 files changed, 25 insertions(+), 17 deletions(-)
->=20
-> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> index ecabc00..d3e38af 100644
-> --- a/arch/mips/include/asm/io.h
-> +++ b/arch/mips/include/asm/io.h
-> @@ -304,7 +304,7 @@ static inline void iounmap(const volatile void __iome=
-m *addr)
->  #undef __IS_KSEG1
+> Cc: stable@vger.kernel.org
+
+I believe Loongson 3 support was added in 3.15, so the following is
+probably slightly better:
+
+Cc: <stable@vger.kernel.org> # 3.15+
+
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index 81d6a15..7b242e8 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
+>  		r4k_blast_scache =3D blast_scache128;
 >  }
 > =20
-> -#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANC=
-EMENT)
-> +#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_CPU_LOONGSON3)
->  #define war_io_reorder_wmb()		wmb()
->  #else
->  #define war_io_reorder_wmb()		do { } while (0)
-> diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/=
-arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> index 8393bc54..4b7f58a 100644
-> --- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> +++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> @@ -19,19 +19,22 @@
->  	.set	push
->  	.set	mips64
->  	/* Set LPA on LOONGSON3 config3 */
-> -	mfc0	t0, $16, 3
-> +	mfc0	t0, CP0_CONFIG3
->  	or	t0, (0x1 << 7)
-> -	mtc0	t0, $16, 3
-> +	mtc0	t0, CP0_CONFIG3
->  	/* Set ELPA on LOONGSON3 pagegrain */
-> -	mfc0	t0, $5, 1
-> +	mfc0	t0, CP0_PAGEGRAIN
+> +static void (* r4k_blast_scache_node)(long node);
 
-Please don't mix cleanups with functional changes.
+Checkpatch objects to the space after '*'.
 
-Separately, both the cleanup and the main change look good to me.
+Other than those minor things this patch looks reasonable I think
+
+Reviewed-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
->  	or	t0, (0x1 << 29)
-> -	mtc0	t0, $5, 1
-> -#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-> +	mtc0	t0, CP0_PAGEGRAIN
->  	/* Enable STFill Buffer */
-> -	mfc0	t0, $16, 6
-> +	mfc0	t0, CP0_PRID
-> +	andi	t0, 0xffff
-> +	slti	t0, 0x6308
-> +	bnez	t0, 1f
-> +	mfc0	t0, CP0_CONFIG6
->  	or	t0, 0x100
-> -	mtc0	t0, $16, 6
-> -#endif
-> +	mtc0	t0, CP0_CONFIG6
-> +1:
->  	_ehb
->  	.set	pop
->  #endif
-> @@ -45,19 +48,22 @@
->  	.set	push
->  	.set	mips64
->  	/* Set LPA on LOONGSON3 config3 */
-> -	mfc0	t0, $16, 3
-> +	mfc0	t0, CP0_CONFIG3
->  	or	t0, (0x1 << 7)
-> -	mtc0	t0, $16, 3
-> +	mtc0	t0, CP0_CONFIG3
->  	/* Set ELPA on LOONGSON3 pagegrain */
-> -	mfc0	t0, $5, 1
-> +	mfc0	t0, CP0_PAGEGRAIN
->  	or	t0, (0x1 << 29)
-> -	mtc0	t0, $5, 1
-> -#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-> +	mtc0	t0, CP0_PAGEGRAIN
->  	/* Enable STFill Buffer */
-> -	mfc0	t0, $16, 6
-> +	mfc0	t0, CP0_PRID
-> +	andi	t0, 0xffff
-> +	slti	t0, 0x6308
-> +	bnez	t0, 1f
-> +	mfc0	t0, CP0_CONFIG6
->  	or	t0, 0x100
-> -	mtc0	t0, $16, 6
-> -#endif
-> +	mtc0	t0, CP0_CONFIG6
-> +1:
->  	_ehb
->  	.set	pop
->  #endif
-> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mip=
-sregs.h
-> index dbb0ece..cb1ebc6 100644
-> --- a/arch/mips/include/asm/mipsregs.h
-> +++ b/arch/mips/include/asm/mipsregs.h
-> @@ -50,6 +50,7 @@
->  #define CP0_CONF $3
->  #define CP0_CONTEXT $4
->  #define CP0_PAGEMASK $5
-> +#define CP0_PAGEGRAIN $5, 1
->  #define CP0_SEGCTL0 $5, 2
->  #define CP0_SEGCTL1 $5, 3
->  #define CP0_SEGCTL2 $5, 4
-> @@ -76,6 +77,7 @@
->  #define CP0_CONFIG $16
->  #define CP0_CONFIG3 $16, 3
->  #define CP0_CONFIG5 $16, 5
-> +#define CP0_CONFIG6 $16, 6
->  #define CP0_LLADDR $17
->  #define CP0_WATCHLO $18
->  #define CP0_WATCHHI $19
-> --=20
-> 2.7.0
->=20
->=20
->=20
->=20
-
---0OWHXb1mYLuhj1Ox
+--fmvA4kSBHQVZhkR6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpo8nEACgkQbAtpk944
-dnrb+w//dLh6/h21qSAXZ+fIj1IjH4Lq+1ZQSWpUY3lrOonW9w6ptXg2dt+ajTqA
-10HOD3P1k2+bjlLElnXuCgif5Ai3p2via/XN45xdsk8lzrYmrpQfxXiyTPC3AREt
-Av2F5FfNQegnBWQPfTgYQdeL12lJcF8kujeelHokdTVy77CCYRbKnnve0txaupVS
-TJdFyHafroB9hAbNU4RuUeXF2L4zQfaMI0kdxfEnDrcbiQqNPwufRtQOW3fb4hO9
-liAsvjZJmBxcv70+VRO0tFBdqmqX7/uwuYOeNduKOBZVBTJfETuk4zOUgDEyJG7A
-357DTJYlkiKmR43kLOElTFuNA9PgVgBnxhVHGgpxG/6GxYxafjp/JPHFUunUAUk5
-bbJBDCzRUiqTzKIG81U9zvzAEEx3T5HlwkMHJVofO0GuH17f6sIlVyI+pakW/FuR
-EyfnjJ1a+GBvgipkiPRA+jwfyh3bYbOr2NaGerNVyiLQhCX1KBmhMWKw0x2vRCZz
-K0USohK3NopVjGAodjUanMXhKChyHbwKKhLz5AMHWezlRqjsIJInOYZed6uDcowy
-hDpFBMpkANVE5cxTe0Fd/9+YUcXBWO9vEa0oL7h0uvtaLPOR46GEdd6V9+Ou/dKQ
-fmYkwHO9UYNqW78jZ03m9h4JXOfgw1M3kXclwdJSARfkPpI+XU8=
-=eXzc
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpo+QoACgkQbAtpk944
+dnrX7w//WDBWeF7vkLNrddADTrconmI8f4rzHbgPDs53FEz67zgGXv1uNQ9R9Ugg
+R0jCorYs5DssjneQ03SQy+TT0Pb4KGD4+c/xl7XOrzEFl/BVlQdAyRRqwGv4btnv
+aheE1+XWfnIqhYMAmXTnIybE1XK/goMW0KqgptQLAw6zOK47z47jgWkMRTveYJf+
+mTetnOWv0IvSIZQpcBQRQ4a9pnjsjgnOLfuALEt1ygz7JJDEjRt4Odcq4kZ+jg+X
+VNDKm8urbXP5k/ZTI/38ehmQvx2w46PobfkyypiCpIZXbsuOK+ANqLJI3shW/4oj
+R26Z6xu7030MLw6eo7k2mob9LdC5go3Ic86/D1rDanST1QiR3YJ924bB02vdsVbH
+skMidHfjI33OVn6CsU9MvUmHXH4PxkSw6MAjumbQ972chqF3ASdtitGzyK3LiMSO
+RbU3otxnETimDVzGlOkpFY/OmKcu8RZIlzDts/ku9/zC/tWr541fdsgaKik1B7Q8
+kEtR8OV9Ty6OCMhVlX3ySrDa9gyHW29U9Ma5DvDCvCPNvPcSFjLT8e4uOL8knVEp
+y6SbdEYhifeg9AW4L8JD5hCAfVS/xjxY9zS+dgcSa3tF3j3ByvxahuMoGJsbxnca
+ulAtNlDeXgCm8Sgu7IwZz3TtXxm+3ljPEH3mH8J7wrG6qyd3WLQ=
+=lkZq
 -----END PGP SIGNATURE-----
 
---0OWHXb1mYLuhj1Ox--
+--fmvA4kSBHQVZhkR6--

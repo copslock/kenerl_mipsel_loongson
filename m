@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 02:40:37 +0100 (CET)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:39801
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992827AbeAXBkbW8ReZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 02:40:31 +0100
-Received: by mail-qt0-x242.google.com with SMTP id f4so6550223qtj.6;
-        Tue, 23 Jan 2018 17:40:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 02:41:03 +0100 (CET)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:46538
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992866AbeAXBkdWlMxZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 02:40:33 +0100
+Received: by mail-qt0-x244.google.com with SMTP id o35so6530258qtj.13;
+        Tue, 23 Jan 2018 17:40:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Fow40j2y787sFw6ew76IAgUNpTcSGHU0TwIurh4JYqc=;
-        b=eHT8Vi8fGWdYmhzH1dXCY0pWrK8uai/RmbSiBXLSBAmFhBgtNs+fvCAdIhHTJznFWE
-         esif+9R97o9KmqNCtVuIBUqSjQZPceACgJ7lpa2GTr/USR9uBOaJYhdK+oJxIZ7cbxZB
-         +S299y5SaXvXrPY3E8kmDTdD1Pf+fpQ16uluCWr6wSqVcIwelBKIVjFnhNWeIea+IqyZ
-         l3MVFZu2mgYsdH/aKjG05b+8C8/LpVaZAErnSYB7VQHX4KqpjDW2/wYvKXD65GQU2GZV
-         m8rcsyeWz+RfoTA6f/Qt+6BUzO/Eo6OH9WZvWYDMZJ7+2ilBUbsMoykSloIL6HP0u2tN
-         ovmQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=iltQzQ8BCSfNRNmrnou22xF62QAmV+Ai+Ol+PhW+B1U=;
+        b=CBaSR9CUF2PWVpWbid7ppx9xOXLz3Bk4/22fhbrKjtInW7pRBqijtWLLByUoiX2mdZ
+         gUqexrFvyckdVD7iCU6155aeKfjrSzzZDKCfJ3vgifK5YMFCzdb5Jxzkt7/ePAoDziBX
+         4dCmhkKF0ijh3JcGeyxJuc1CIV4m8cp0gFBUrUII9CeGVt+I1bOrjXzxCJaK6Jrnt+wk
+         MAWmmmLxnlBgbtui9SfFXK0j1tcWN9hCYX4hpDub/QF65ih6n7h+FMpSWkXp2m3WyyqE
+         /rJR0Yiruh560cKsPP5uxhRaGFUUeqdnltmYv0jd03ekdIerT7rDVaJv/NzTd+8ytoFr
+         CfLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Fow40j2y787sFw6ew76IAgUNpTcSGHU0TwIurh4JYqc=;
-        b=lQ4whgVPr5PXcg41I7Jr+Xx7keayHKItiqMtVJjc7TuqN8LnJqwDo5NOYzbdCITxQO
-         A+meWDoRtjsK0rmP0qi66STjJcCBYnEMRqebtk1tqwxre8kgPW6QMtQPcW3MdymLkKtt
-         FT8/ME0kAEWp48aXUGT3LDohpzEajA/mG1YTbiTeJZwM029sP7jXgLj7sG/YbMBYJoHe
-         EJUDisiMNoeFBC5FnOoVMs6exGb45b1DYK1w0AfKOttIqEFT+NMsP5MYc+zzWSSvvr+v
-         Lk8IhxEutsi0XXiRDNB0yg9AjNiROHoB4wbneHjGl8PHt3Liy5+T7bf/CfNfgYRCOVga
-         OJTw==
-X-Gm-Message-State: AKwxyteczIOV+SvZtBgudt/ENdGIE3rVMayz2+Y2A93XKjCoiqZmWkcW
-        O0Emwf+gRBT7SYXbEnk+iS9wuKYl
-X-Google-Smtp-Source: AH8x225c77rnwNo/R5pTeJtmUVA7j2cQK5jPjFOPBCbX0vtk7f9cwJex5OMe4RD1TR89yacn8k7BQg==
-X-Received: by 10.55.124.3 with SMTP id x3mr6446006qkc.179.1516758024850;
-        Tue, 23 Jan 2018 17:40:24 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=iltQzQ8BCSfNRNmrnou22xF62QAmV+Ai+Ol+PhW+B1U=;
+        b=g1cgTVucUSXo2FvPgiiM6+LZTDG8P6gOoR+ma/nzJ281AUPpGxk7Byx6LNmLe3IDHw
+         z3KPtwfZtvapIk00dccm+DMs1XTGk+yLz+pJL+/tg00NoRRlHXxg2ydFPYld0zOkNvvw
+         yDNXF+udsZcLigDr8X1hQipH5ckEQ8vpzc5qZNoJkDy0ROwk8K3OwePvYHJXGyZCLTRq
+         v245rO/SetHqGbIdD8oG/qbKcvQK0ZkP7hbEqb9/1qwVM/F2SlIAJoN3pEtSzLFqAVGJ
+         eCGEBbwZRpaizpzBwSQZ0Z5w+/HtTproc/xzDCmufHI4sd15NSWfpClH6Y7Sq3q9tseo
+         urwQ==
+X-Gm-Message-State: AKwxytfTLe4K4AJY0IdeWLA+m5BQKGmt/7rYk/VBaW57PuV41IIcIpRe
+        CZQoLHzetgpqDIKAf1F3t8yeVK88
+X-Google-Smtp-Source: AH8x226nIkPpGQ9IXQk7OMT7PyqA74oQwuk6mV3ZAQJL1rpt2hxrzXQuOfuA1ZcFeM1W9iJsPsphFw==
+X-Received: by 10.55.64.21 with SMTP id n21mr6879349qka.293.1516758027252;
+        Tue, 23 Jan 2018 17:40:27 -0800 (PST)
 Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.250])
-        by smtp.gmail.com with ESMTPSA id u123sm6071154qkd.21.2018.01.23.17.40.22
+        by smtp.gmail.com with ESMTPSA id u123sm6071154qkd.21.2018.01.23.17.40.24
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 23 Jan 2018 17:40:23 -0800 (PST)
+        Tue, 23 Jan 2018 17:40:26 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     jhogan@kernel.org, david.daney@cavium.com, paul.burton@mips.com,
@@ -45,15 +46,17 @@ Cc:     jhogan@kernel.org, david.daney@cavium.com, paul.burton@mips.com,
         Bart Van Assche <bart.vanassche@sandisk.com>,
         Doug Ledford <dledford@redhat.com>,
         linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 0/2] MIPS: generic dma-coherence.h inclusion
-Date:   Tue, 23 Jan 2018 17:40:08 -0800
-Message-Id: <1516758010-7641-1-git-send-email-f.fainelli@gmail.com>
+Subject: [PATCH 1/2] MIPS: Allow including mach-generic/dma-coherence.h
+Date:   Tue, 23 Jan 2018 17:40:09 -0800
+Message-Id: <1516758010-7641-2-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1516758010-7641-1-git-send-email-f.fainelli@gmail.com>
+References: <1516758010-7641-1-git-send-email-f.fainelli@gmail.com>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62291
+X-archive-position: 62292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,28 +73,95 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+Check whether a platform is already defining any of the functions we
+provide in mach-generic/dma-coherence.h. This is a preliminary change to
+allow cleaning up machine's dma-coherence.h files.
 
-This patch series does update mach-generic/dma-coherence.h to test whether a
-machine is already defining any of the functions. This is aimed at avoiding the
-need for every single platform to redefine its own functions, as well as make
-us future proof in case we need to add new infrastructure, which I am about to.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ arch/mips/include/asm/mach-generic/dma-coherence.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Thanks
-
-Florian Fainelli (2):
-  MIPS: Allow including mach-generic/dma-coherence.h
-  MIPS: Update dma-coherence.h files
-
- arch/mips/include/asm/mach-ath25/dma-coherence.h   | 10 +++++---
- arch/mips/include/asm/mach-bmips/dma-coherence.h   | 24 +++++--------------
- .../include/asm/mach-cavium-octeon/dma-coherence.h | 14 +++++++----
- arch/mips/include/asm/mach-generic/dma-coherence.h | 16 +++++++++++++
- arch/mips/include/asm/mach-ip27/dma-coherence.h    | 28 +++++-----------------
- arch/mips/include/asm/mach-ip32/dma-coherence.h    | 16 ++++++-------
- arch/mips/include/asm/mach-jazz/dma-coherence.h    | 24 ++++++-------------
- .../include/asm/mach-loongson64/dma-coherence.h    | 16 ++++++-------
- 8 files changed, 67 insertions(+), 81 deletions(-)
-
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 61addb1677e9..e6e7dfa15801 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -11,29 +11,38 @@
+ 
+ struct device;
+ 
++#ifndef plat_map_dma_mem
+ static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+ 	size_t size)
+ {
+ 	return virt_to_phys(addr);
+ }
++#endif
+ 
++#ifndef plat_map_dma_mem_page
+ static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+ 	struct page *page)
+ {
+ 	return page_to_phys(page);
+ }
++#endif
+ 
++#ifndef plat_dma_addr_to_phys
+ static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+ 	dma_addr_t dma_addr)
+ {
+ 	return dma_addr;
+ }
++#endif
+ 
++#ifndef plat_unmap_dma_mem
+ static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction)
+ {
+ }
++#endif
+ 
++#ifndef plat_dma_supported
+ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ {
+ 	/*
+@@ -46,7 +55,9 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 
+ 	return 1;
+ }
++#endif
+ 
++#ifndef plat_device_is_coherent
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ #ifdef CONFIG_DMA_PERDEV_COHERENT
+@@ -63,6 +74,7 @@ static inline int plat_device_is_coherent(struct device *dev)
+ 	}
+ #endif
+ }
++#endif
+ 
+ #ifndef plat_post_dma_flush
+ static inline void plat_post_dma_flush(struct device *dev)
+@@ -71,15 +83,19 @@ static inline void plat_post_dma_flush(struct device *dev)
+ #endif
+ 
+ #ifdef CONFIG_SWIOTLB
++#ifndef phys_to_dma
+ static inline dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
+ {
+ 	return paddr;
+ }
++#endif
+ 
++#ifndef dma_to_phys
+ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
+ {
+ 	return daddr;
+ }
+ #endif
++#endif /* CONFIG_SWIOTLB */
+ 
+ #endif /* __ASM_MACH_GENERIC_DMA_COHERENCE_H */
 -- 
 2.7.4

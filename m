@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 02:48:34 +0100 (CET)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:34842
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992869AbeAXBrmVkW2Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 02:47:42 +0100
-Received: by mail-qt0-x242.google.com with SMTP id g14so6616961qti.2;
-        Tue, 23 Jan 2018 17:47:42 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 02:48:56 +0100 (CET)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:34842
+        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992916AbeAXBrpLI9oZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 02:47:45 +0100
+Received: by mail-qt0-x241.google.com with SMTP id g14so6617247qti.2;
+        Tue, 23 Jan 2018 17:47:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=+6rqXv9AXTcBwc+TsrwbZvOmQ4mk4O2j8RbNBCpW2Xc=;
-        b=V8/l4EQkQyRWStDTtO0nQAmPzA+t31Zp1PU1ooNmTRUB/K/Eg2ul4UP990P4pTaggu
-         dgbq84q+tv8mzgSKUQCSUuEtI9A6AUVFuc3ztEF0rJSbtGqzKZEkEKqCNwLu+NVhNk3c
-         71ywy3O3ZzQt6vVQq5MtGDakf3/7KP79IOwNiNILoVnZc4fTBoZ7oaqbvRn8JmA6ElVX
-         fyPAVLvhVx6q9fz4IB4fpoJ9qqqp6AwEZ4mDrPJ0XheO8vr4enSy2cYP0UZvYqC76pY1
-         BJ28NO0rLXsZ/2WPeJiDKU3/u/aPwrbJcTlVInNnJgTEr70nDOt39Uszl2x8Q8uIMh8Z
-         W0eQ==
+        bh=BnDTluNVEiTRNtn6MkoodG0OyYj08+RmuECmthT6LgM=;
+        b=TaK0b1hf0Iy05zglWazPjMS7sq/O/hPDPVf3I8h0VHrFTw6WNX0RDheLELFBSk2r2k
+         WL2haHC+izdm/RxeHSPO4ZL3Tj9Z1++4YBBzU9+4B/YWvu/hLmpN31IfbYx1+ZJyP7QC
+         QADlI/xcJMVlLSLJYp9Y7wV63z58KE7XbPpHsc05H+V0UiqmAb9ed2LqqB2Gk9sF0v1H
+         w2zWOYDcwu8vcImU1bFrpC6A43AdpfrCp/cwd2lOQpqy8ENXDxd9IsUiZqVAXpIlxFq5
+         XfA/aSWJipUzUQWaC96qhCddacsALRYxXjsuxJuGA7shwYpkNbQlMISR0S0NGixRxv9+
+         E+rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=+6rqXv9AXTcBwc+TsrwbZvOmQ4mk4O2j8RbNBCpW2Xc=;
-        b=U0GTVr2n7emJLRW/WTZc4+z1ilqmLmQZkEJqLy0ZEaqOdlFaYGt4HeT1RlNIFgsa5V
-         MJUItXnClPqXEdHbGJ4Xh3x4tQFhV+cdQ4EMt1TJkTY/5q9GPAaNnSJ9jbPc2mogC6SY
-         EvF3dLqzWAGPcCBbtQvHuY7WyDgGZd3IvqQfyKgqZczTgsd4UmDfnKk5UyUzQkeICLHw
-         EwvAGDH6Am0wxpUNax5MYgx0SZyzmdFvP48PWuZaedBtIzUstuxVxjoBnOeH7ndGgN9N
-         sGmULOPE7Sl6mF/RUKj3a/gXGgCLMhfa6PmCFvOWmpq/wQ50pJirUgAslBqQ/WJ+KUqZ
-         6Rqg==
-X-Gm-Message-State: AKwxyteEHxyWzyvFv0p/hMx2U3slyVH/vYv7cwYQQpSeG5gyF/S5uQSl
-        FbagFhdyziqVJjp+WCZXIqYxU7IF
-X-Google-Smtp-Source: AH8x2274TK/aTQNKDg18boJtiaKmSezB7DAKrA0uUCXZrVv3IPCU9CdJkNDmOOO94/FFfot897lgHw==
-X-Received: by 10.237.62.137 with SMTP id n9mr6676086qtf.143.1516758455494;
-        Tue, 23 Jan 2018 17:47:35 -0800 (PST)
+        bh=BnDTluNVEiTRNtn6MkoodG0OyYj08+RmuECmthT6LgM=;
+        b=Dl7qGnwtLVY2QMhmzElBoP6v7LOwNs0t5lJxk/NGs+ZUJialiNxTdHYchIZzePlIvn
+         brb/1zeLzrXrG1xjdNcwTWiv34GjtOIcG1T6OWjx8LGB+AxIqhE1peqFRNXu4KJl8TCM
+         MthpeTbKYZ6p32mAJjky5xY3KicAnDqGjptGdBruNVQUoaseE5IrLIvyrrKdYa0DtjZ9
+         iKLdvWb23Q2TrCC8r929BFSoaJSm+n4twWDg5HRruTKk5t+bJUk8Jp/8lW9jJNfdGfG0
+         vQqseUxS20IWW7QkQ3hBs1CgoSPHd7g5Wcyb3ZE+iypaAIUXJvxxUZmpxbYto4Mg4n44
+         I/Dw==
+X-Gm-Message-State: AKwxytfb2NPvddeTt3s+2NFsczLQ69tYvu9aDPkSGspjIcH5dvQqhvfp
+        DPR4WDlEEeq1bmPQ6krrrnFyNI+A
+X-Google-Smtp-Source: AH8x224Ebz8BMUOhGh4Q4m5SU9BYT8Wic9u6AXCYLOW4VdMltlKiVwjUjL7gl5LEarD3+LR6usOIog==
+X-Received: by 10.55.16.160 with SMTP id 32mr6735469qkq.151.1516758459058;
+        Tue, 23 Jan 2018 17:47:39 -0800 (PST)
 Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.250])
-        by smtp.gmail.com with ESMTPSA id x7sm1465605qtx.51.2018.01.23.17.47.32
+        by smtp.gmail.com with ESMTPSA id x7sm1465605qtx.51.2018.01.23.17.47.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 23 Jan 2018 17:47:34 -0800 (PST)
+        Tue, 23 Jan 2018 17:47:38 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -62,9 +62,9 @@ Cc:     Florian Fainelli <florian.fainelli@broadcom.com>,
         Vladimir Murzin <vladimir.murzin@arm.com>,
         Bart Van Assche <bart.vanassche@sandisk.com>,
         linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH RFC 2/6] MIPS: Allow platforms to override mapping/unmapping coherent
-Date:   Tue, 23 Jan 2018 17:47:02 -0800
-Message-Id: <1516758426-8127-3-git-send-email-f.fainelli@gmail.com>
+Subject: [PATCH RFC 3/6] MIPS: BMIPS: Avoid referencing CKSEG1
+Date:   Tue, 23 Jan 2018 17:47:03 -0800
+Message-Id: <1516758426-8127-4-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1516758426-8127-1-git-send-email-f.fainelli@gmail.com>
 References: <1516758426-8127-1-git-send-email-f.fainelli@gmail.com>
@@ -72,7 +72,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62296
+X-archive-position: 62297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,76 +91,48 @@ X-list: linux-mips
 
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-In preparation for allowing support for Broadcom's eXtended Kseg0/1
-feature, allow platforms to override how coherent DMA mappings are done
-by providing plat_map_coherent() and plat_unmap_coherent() hooks, which
-default to the current implementation with CAC/UNCAC unless changed.
+bmips_smp_movevec() references the CKSEG1 constant, which is about to be
+updated in order to support processors that might enable eXtended
+KSEG0/1. In doing so, we will generate a reference to a function, which
+is obviously not permissible within assembly. Fortunately,
+bmips_smp_movevec() is only used on BMIPS4350 which does not support
+eXtended KSEG0/1.
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/include/asm/mach-generic/dma-coherence.h | 16 ++++++++++++++++
- arch/mips/mm/dma-default.c                         | 10 +++++++---
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ arch/mips/kernel/bmips_vec.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
-index e6e7dfa15801..42a1546e7d10 100644
---- a/arch/mips/include/asm/mach-generic/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
-@@ -98,4 +98,20 @@ static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
- #endif
- #endif /* CONFIG_SWIOTLB */
+diff --git a/arch/mips/kernel/bmips_vec.S b/arch/mips/kernel/bmips_vec.S
+index 921a5fa55da6..10ea69f3859f 100644
+--- a/arch/mips/kernel/bmips_vec.S
++++ b/arch/mips/kernel/bmips_vec.S
+@@ -39,7 +39,7 @@
  
-+#ifndef plat_map_coherent
-+static inline int plat_map_coherent(dma_addr_t handle, void *cac_va, size_t size,
-+				    void **uncac_va, gfp_t gfp)
-+{
-+	*uncac_va = UNCAC_ADDR(cac_va);
-+	return 0;
-+}
-+#endif
-+
-+#ifndef plat_unmap_coherent
-+static inline void *plat_unmap_coherent(void *addr)
-+{
-+	return CAC_ADDR(addr);
-+}
-+#endif
-+
- #endif /* __ASM_MACH_GENERIC_DMA_COHERENCE_H */
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index e3e94d05f0fd..f82f00dcc841 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -151,7 +151,11 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
- 	if (!(attrs & DMA_ATTR_NON_CONSISTENT) &&
- 	    !plat_device_is_coherent(dev)) {
- 		dma_cache_wback_inv((unsigned long) ret, size);
--		ret = UNCAC_ADDR(ret);
-+		if (plat_map_coherent(*dma_handle, ret, PFN_ALIGN(size),
-+				      &ret, gfp)) {
-+			free_pages((unsigned long)ret, size);
-+			ret = NULL;
-+		}
- 	}
+ LEAF(bmips_smp_movevec)
+ 	la	k0, 1f
+-	li	k1, CKSEG1
++	li	k1, 0xa0000000
+ 	or	k0, k1
+ 	jr	k0
  
- 	return ret;
-@@ -167,7 +171,7 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
+@@ -58,7 +58,7 @@ LEAF(bmips_smp_movevec)
+ 	mfc0	k1, $22, 3
+ 	srl	k1, 16
+ 	andi	k1, 0x8000
+-	or	k1, CKSEG1 | BMIPS_RELO_VECTOR_CONTROL_0
++	or	k1, 0xa0000000 | BMIPS_RELO_VECTOR_CONTROL_0
+ 	or	k0, k1
+ 	li	k1, 0xa0080000
+ 	sw	k1, 0(k0)
+@@ -67,7 +67,7 @@ LEAF(bmips_smp_movevec)
+ 	wait
  
- 	if (!(attrs & DMA_ATTR_NON_CONSISTENT) && !plat_device_is_coherent(dev))
--		addr = CAC_ADDR(addr);
-+		addr = (unsigned long)plat_unmap_coherent(vaddr);
- 
- 	page = virt_to_page((void *) addr);
- 
-@@ -187,7 +191,7 @@ static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
- 	int ret = -ENXIO;
- 
- 	if (!plat_device_is_coherent(dev))
--		addr = CAC_ADDR(addr);
-+		addr = (unsigned long)plat_unmap_coherent((void *)addr);
- 
- 	pfn = page_to_pfn(virt_to_page((void *)addr));
- 
+ 	la	k0, bmips_reset_nmi_vec
+-	li	k1, CKSEG1
++	li	k1, 0xa0000000
+ 	or	k0, k1
+ 	jr	k0
+ END(bmips_smp_movevec)
 -- 
 2.7.4

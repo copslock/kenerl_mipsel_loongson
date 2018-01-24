@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 14:33:13 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:52372 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 15:03:14 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:56008 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990395AbeAXNdBl8YF8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Jan 2018 14:33:01 +0100
+        id S23990406AbeAXODHjUd58 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Jan 2018 15:03:07 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B0CF2214EE;
-        Wed, 24 Jan 2018 13:32:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B0CF2214EE
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F74420B80;
+        Wed, 24 Jan 2018 14:02:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 5F74420B80
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 24 Jan 2018 13:32:29 +0000
+Date:   Wed, 24 Jan 2018 14:02:35 +0000
 From:   James Hogan <jhogan@kernel.org>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        YunQiang Su <yunqiang.su@imgtec.com>
-Subject: Re: [PATCH 1/2] MIPS: Loongson fix name confict - MEM_RESERVED
-Message-ID: <20180124133228.GE5446@saruman>
-References: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
+        Jayachandran C <jchandra@broadcom.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 2/2] MIPS: Loongson64: Add cache_sync to
+ loongson_dma_map_ops
+Message-ID: <20180124140234.GF5446@saruman>
+References: <1510821355-24694-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vv4Sf/kQfcwinyKX"
+        protocol="application/pgp-signature"; boundary="yH1ZJFh+qWm+VodA"
 Content-Disposition: inline
-In-Reply-To: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1510821355-24694-1-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62313
+X-archive-position: 62314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,97 +52,126 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---vv4Sf/kQfcwinyKX
+--yH1ZJFh+qWm+VodA
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 16, 2017 at 04:35:04PM +0800, Huacai Chen wrote:
-> MEM_RESERVED is used as a value of enum mem_type in include/linux/
-> edac.h. This will make failure to build for Loongson in some case:
-> for example with CONFIG_RAS enabled.
+On Thu, Nov 16, 2017 at 04:35:55PM +0800, Huacai Chen wrote:
+> To support coherent & non-coherent DMA co-exsistance, we should add
+> cache_sync to loongson_dma_map_ops.
 >=20
-> So here rename MEM_RESERVED to SYSTEM_RAM_RESERVED in Loongson code.
->=20
-> Signed-off-by: YunQiang Su <yunqiang.su@imgtec.com>
 > Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
-Reviewed-by: James Hogan <jhogan@kernel.org>
+I presume this was broken by commit c9eb6172c328 ("dma-mapping: turn
+dma_cache_sync into a dma_map_ops method") in 4.15-rc1? (Christoph Cc'd)
+
+In that case:
+
+1) we should have a fixes tag:
+Fixes: c9eb6172c328 ("dma-mapping: turn dma_cache_sync into a dma_map_ops m=
+ethod")
+
+2) we should get this into 4.15 final (though its probably pushing it a
+bit now).
+
+3) Loongson might not be the only MIPS platform that was broken by that
+commit. Octeon appears to be coherent, so thats fine. However Netlogic
+appears not to be (Jayachandran Cc'd).
+
+Should the following be added?
+
+diff --git a/arch/mips/netlogic/common/nlm-dma.c b/arch/mips/netlogic/commo=
+n/nlm-dma.c
+index 0ec9d9da6d51..58049da72c82 100644
+--- a/arch/mips/netlogic/common/nlm-dma.c
++++ b/arch/mips/netlogic/common/nlm-dma.c
+@@ -79,7 +79,8 @@ const struct dma_map_ops nlm_swiotlb_dma_ops =3D {
+ 	.sync_sg_for_cpu =3D swiotlb_sync_sg_for_cpu,
+ 	.sync_sg_for_device =3D swiotlb_sync_sg_for_device,
+ 	.mapping_error =3D swiotlb_dma_mapping_error,
+-	.dma_supported =3D swiotlb_dma_supported
++	.dma_supported =3D swiotlb_dma_supported,
++	.cache_sync =3D mips_dma_cache_sync,
+ };
+=20
+ void __init plat_swiotlb_setup(void)
 
 Cheers
 James
 
 > ---
->  arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
->  arch/mips/loongson64/common/mem.c                  | 2 +-
->  arch/mips/loongson64/loongson-3/numa.c             | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  arch/mips/include/asm/dma-mapping.h       | 3 +++
+>  arch/mips/loongson64/common/dma-swiotlb.c | 1 +
+>  arch/mips/mm/dma-default.c                | 2 +-
+>  3 files changed, 5 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mi=
-ps/include/asm/mach-loongson64/boot_param.h
-> index 4f69f08..8c286be 100644
-> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> @@ -4,7 +4,7 @@
+> diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/=
+dma-mapping.h
+> index 0d9418d..5544276 100644
+> --- a/arch/mips/include/asm/dma-mapping.h
+> +++ b/arch/mips/include/asm/dma-mapping.h
+> @@ -37,4 +37,7 @@ static inline void arch_setup_dma_ops(struct device *de=
+v, u64 dma_base,
+>  #endif
+>  }
 > =20
->  #define SYSTEM_RAM_LOW		1
->  #define SYSTEM_RAM_HIGH		2
-> -#define MEM_RESERVED		3
-> +#define SYSTEM_RAM_RESERVED	3
->  #define PCI_IO			4
->  #define PCI_MEM			5
->  #define LOONGSON_CFG_REG	6
-> diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/com=
-mon/mem.c
-> index b01d524..c549e52 100644
-> --- a/arch/mips/loongson64/common/mem.c
-> +++ b/arch/mips/loongson64/common/mem.c
-> @@ -79,7 +79,7 @@ void __init prom_init_memory(void)
->  					(u64)loongson_memmap->map[i].mem_size << 20,
->  					BOOT_MEM_RAM);
->  				break;
-> -			case MEM_RESERVED:
-> +			case SYSTEM_RAM_RESERVED:
->  				add_memory_region(loongson_memmap->map[i].mem_start,
->  					(u64)loongson_memmap->map[i].mem_size << 20,
->  					BOOT_MEM_RESERVED);
-> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson6=
-4/loongson-3/numa.c
-> index f17ef52..9717106 100644
-> --- a/arch/mips/loongson64/loongson-3/numa.c
-> +++ b/arch/mips/loongson64/loongson-3/numa.c
-> @@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
->  			memblock_add_node(PFN_PHYS(start_pfn),
->  				PFN_PHYS(end_pfn - start_pfn), node);
->  			break;
-> -		case MEM_RESERVED:
-> +		case SYSTEM_RAM_RESERVED:
->  			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
->  				(u32)node_id, mem_type, mem_start, mem_size);
->  			add_memory_region((node_id << 44) + mem_start,
+> +void mips_dma_cache_sync(struct device *dev, void *vaddr,
+> +		size_t size, enum dma_data_direction direction);
+> +
+>  #endif /* _ASM_DMA_MAPPING_H */
+> diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongs=
+on64/common/dma-swiotlb.c
+> index ef07740..17956f2 100644
+> --- a/arch/mips/loongson64/common/dma-swiotlb.c
+> +++ b/arch/mips/loongson64/common/dma-swiotlb.c
+> @@ -120,6 +120,7 @@ static const struct dma_map_ops loongson_dma_map_ops =
+=3D {
+>  	.sync_sg_for_device =3D loongson_dma_sync_sg_for_device,
+>  	.mapping_error =3D swiotlb_dma_mapping_error,
+>  	.dma_supported =3D loongson_dma_supported,
+> +	.cache_sync =3D mips_dma_cache_sync,
+>  };
+> =20
+>  void __init plat_swiotlb_setup(void)
+> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+> index e3e94d0..e86bf5d 100644
+> --- a/arch/mips/mm/dma-default.c
+> +++ b/arch/mips/mm/dma-default.c
+> @@ -383,7 +383,7 @@ static int mips_dma_supported(struct device *dev, u64=
+ mask)
+>  	return plat_dma_supported(dev, mask);
+>  }
+> =20
+> -static void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t =
+size,
+> +void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+>  			 enum dma_data_direction direction)
+>  {
+>  	BUG_ON(direction =3D=3D DMA_NONE);
 > --=20
 > 2.7.0
 >=20
 
---vv4Sf/kQfcwinyKX
+--yH1ZJFh+qWm+VodA
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpoiuwACgkQbAtpk944
-dnpfiBAApnIlXTFrZYPBHSLJAElbkMQNVo09f9nsASIrLLdqist6jLm8mn5+ycbD
-MoyXW3n2QrLZP38WxwJUFrNk2mHAkSF5W6uJK8RXNRcQivFjZqZCNr/5+kgIw1TT
-BJECapQ50kgjH0isHF/fGCEKg9ftXwTf4d0mu3ysBxUeT0Er/GHWmosUFyCXrV68
-aCwm12idGb6OsIIdvLOuHWb/vAxBgsu8kE+Ayx8y2miHm+fKti5MlHalcebkxJ2d
-xwdaFxDxYq4YlJQCIb44wKCGq9USUKQGX1upI3qC2aIx9AJ8BZNS7JwrVNz9c3Jm
-QAk3BH8GP1Yqw/2gWMOhUgAC8j6uelyHyp5oyB79RMUPtC+Otq1cN5eCm1oswNdN
-aR1E99bhZk8BgzqOKbYMcXtDWtyhTbxL7DOVRA5dVQkfnyGBigTBs7LP9l4Hu1VQ
-Hzgfz5h6GEcRJGFY8NCyXnHrbdcxRCGc1gaGnm6CH5mLCDNMBmIUWP8OTfig8qd2
-b8nvaoeVxJwhS2UwMOGn3+zsP+Mf0p1DWdshzuHc2HJWX4Mlo+dpd4SK0rMbtJrv
-hJc9euFWQQCYHaiGAVRlkTpMnqBBTsINs/41245fk9uocyoz4H1pBFohoeZqDoeg
-+JJD5WWjcHuKNg2GkogOBlbjn4XP3UHVsPNPWbHrkqma2EvZABc=
-=gnL8
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpokfoACgkQbAtpk944
+dnps3hAArlwhRcAOu6RIxL9kI5EuW/dFEuu4ecgENvN+XVcAVgmhxb+T68YAoxrT
+Cqy8hlyjYm8twFtMnv4LuTQ1HuL8vlLjkfFXsSlRXUxOEvTzalIw/9pYqLqxYxCF
+9iftxkGPKVNdMw6W8b0hkEYSC1bqhCcyjYlH9dVIIT5Zy5HupfAXARzD6nBvvk88
+oztAQLElc7RFOnVvjmJkNiNYfgU1/iUDsoxWfkiwbPQ9Ako6kcMu14PqoF2v0A9d
+Afe+fRwvPgWBlsI7Mj7pogCTTwbo4ag6h60am4RUuZSIZZUPGAovW5FW0Vja9rql
+boqXjQ2x5sV/Wpu8wVKFEsinwPSR+I10wm/SYi97ZTOTnYvRNSgdCtSuyAlcaXDz
+tR5So6v7sUN4pvCFkCZo8Rvrkb+F1RxFxrcMdP9EcdfCNwfimMVGXzS8STZZByoi
+29xf9O6H473Ff4o0HZfgjy6Wr2H1GHjto+SDe6WT3evn6ymg4y1CDDm6+dree9g9
+shs94puP4OjXP6MeI5yPTJX5DjTTvuCI+NAj6KLsEqDlrcROYihtKBML6b9LEKGr
+AoGVRNTqro954oOflxgfKRQTskgmz+E4a8ekjOVut6/NzTyEAPJ41ym4h+42/ZY9
+67x82wXaKMeenYc+FyhMnr1KZJ1su7Lh8fd36ILDpyu2vGYa+Ps=
+=rptS
 -----END PGP SIGNATURE-----
 
---vv4Sf/kQfcwinyKX--
+--yH1ZJFh+qWm+VodA--

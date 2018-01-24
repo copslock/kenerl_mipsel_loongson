@@ -1,46 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 01:00:21 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:45230 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992866AbeAXAALuBIR0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Jan 2018 01:00:11 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A0A6721715;
-        Tue, 23 Jan 2018 23:59:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A0A6721715
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 23 Jan 2018 23:59:35 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Serge Semin <fancer.lancer@gmail.com>
-Cc:     ralf@linux-mips.org, miodrag.dinic@mips.com, goran.ferenc@mips.com,
-        david.daney@cavium.com, paul.gortmaker@windriver.com,
-        paul.burton@mips.com, alex.belits@cavium.com,
-        Steven.Hill@cavium.com, alexander.sverdlin@nokia.com,
-        matt.redfearn@mips.com, kumba@gentoo.org,
-        marcin.nowakowski@mips.com, Peter.Wotton@mips.com,
-        Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 14/14] MIPS: memblock: Deactivate bootmem allocator
-Message-ID: <20180123235934.GA5446@saruman>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180117222312.14763-15-fancer.lancer@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
-Content-Disposition: inline
-In-Reply-To: <20180117222312.14763-15-fancer.lancer@gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 02:40:37 +0100 (CET)
+Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:39801
+        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992827AbeAXBkbW8ReZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 02:40:31 +0100
+Received: by mail-qt0-x242.google.com with SMTP id f4so6550223qtj.6;
+        Tue, 23 Jan 2018 17:40:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Fow40j2y787sFw6ew76IAgUNpTcSGHU0TwIurh4JYqc=;
+        b=eHT8Vi8fGWdYmhzH1dXCY0pWrK8uai/RmbSiBXLSBAmFhBgtNs+fvCAdIhHTJznFWE
+         esif+9R97o9KmqNCtVuIBUqSjQZPceACgJ7lpa2GTr/USR9uBOaJYhdK+oJxIZ7cbxZB
+         +S299y5SaXvXrPY3E8kmDTdD1Pf+fpQ16uluCWr6wSqVcIwelBKIVjFnhNWeIea+IqyZ
+         l3MVFZu2mgYsdH/aKjG05b+8C8/LpVaZAErnSYB7VQHX4KqpjDW2/wYvKXD65GQU2GZV
+         m8rcsyeWz+RfoTA6f/Qt+6BUzO/Eo6OH9WZvWYDMZJ7+2ilBUbsMoykSloIL6HP0u2tN
+         ovmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Fow40j2y787sFw6ew76IAgUNpTcSGHU0TwIurh4JYqc=;
+        b=lQ4whgVPr5PXcg41I7Jr+Xx7keayHKItiqMtVJjc7TuqN8LnJqwDo5NOYzbdCITxQO
+         A+meWDoRtjsK0rmP0qi66STjJcCBYnEMRqebtk1tqwxre8kgPW6QMtQPcW3MdymLkKtt
+         FT8/ME0kAEWp48aXUGT3LDohpzEajA/mG1YTbiTeJZwM029sP7jXgLj7sG/YbMBYJoHe
+         EJUDisiMNoeFBC5FnOoVMs6exGb45b1DYK1w0AfKOttIqEFT+NMsP5MYc+zzWSSvvr+v
+         Lk8IhxEutsi0XXiRDNB0yg9AjNiROHoB4wbneHjGl8PHt3Liy5+T7bf/CfNfgYRCOVga
+         OJTw==
+X-Gm-Message-State: AKwxyteczIOV+SvZtBgudt/ENdGIE3rVMayz2+Y2A93XKjCoiqZmWkcW
+        O0Emwf+gRBT7SYXbEnk+iS9wuKYl
+X-Google-Smtp-Source: AH8x225c77rnwNo/R5pTeJtmUVA7j2cQK5jPjFOPBCbX0vtk7f9cwJex5OMe4RD1TR89yacn8k7BQg==
+X-Received: by 10.55.124.3 with SMTP id x3mr6446006qkc.179.1516758024850;
+        Tue, 23 Jan 2018 17:40:24 -0800 (PST)
+Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.250])
+        by smtp.gmail.com with ESMTPSA id u123sm6071154qkd.21.2018.01.23.17.40.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 23 Jan 2018 17:40:23 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     jhogan@kernel.org, david.daney@cavium.com, paul.burton@mips.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Bart Van Assche <bart.vanassche@sandisk.com>,
+        Doug Ledford <dledford@redhat.com>,
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 0/2] MIPS: generic dma-coherence.h inclusion
+Date:   Tue, 23 Jan 2018 17:40:08 -0800
+Message-Id: <1516758010-7641-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62290
+X-archive-position: 62291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,75 +70,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi all,
 
---TB36FDmn/VVEgNH/
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series does update mach-generic/dma-coherence.h to test whether a
+machine is already defining any of the functions. This is aimed at avoiding the
+need for every single platform to redefine its own functions, as well as make
+us future proof in case we need to add new infrastructure, which I am about to.
 
-On Thu, Jan 18, 2018 at 01:23:12AM +0300, Serge Semin wrote:
-> Memblock allocator can be successfully used from now for early
-> memory management
->=20
-> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Thanks
 
-Am I correct that intermediate commits in this patchset (i.e. bisection)
-may not work correctly, since bootmem will have been stripped out but
-NO_BOOTMEM=3Dn and memblock may not be properly operational yet?
+Florian Fainelli (2):
+  MIPS: Allow including mach-generic/dma-coherence.h
+  MIPS: Update dma-coherence.h files
 
-If so, is there a way to switch without breaking bisection that doesn't
-involve squashing most of the series into a single atomic commit?
+ arch/mips/include/asm/mach-ath25/dma-coherence.h   | 10 +++++---
+ arch/mips/include/asm/mach-bmips/dma-coherence.h   | 24 +++++--------------
+ .../include/asm/mach-cavium-octeon/dma-coherence.h | 14 +++++++----
+ arch/mips/include/asm/mach-generic/dma-coherence.h | 16 +++++++++++++
+ arch/mips/include/asm/mach-ip27/dma-coherence.h    | 28 +++++-----------------
+ arch/mips/include/asm/mach-ip32/dma-coherence.h    | 16 ++++++-------
+ arch/mips/include/asm/mach-jazz/dma-coherence.h    | 24 ++++++-------------
+ .../include/asm/mach-loongson64/dma-coherence.h    | 16 ++++++-------
+ 8 files changed, 67 insertions(+), 81 deletions(-)
 
-Cheers
-James
-
-> ---
->  arch/mips/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 725b5ece7..a6c4fb6b6 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -4,7 +4,6 @@ config MIPS
->  	default y
->  	select ARCH_BINFMT_ELF_STATE
->  	select ARCH_CLOCKSOURCE_DATA
-> -	select ARCH_DISCARD_MEMBLOCK
->  	select ARCH_HAS_ELF_RANDOMIZE
->  	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> @@ -57,6 +57,7 @@ config MIPS
->  	select HAVE_IRQ_TIME_ACCOUNTING
->  	select HAVE_KPROBES
->  	select HAVE_KRETPROBES
-> +	select NO_BOOTMEM
->  	select HAVE_MEMBLOCK
->  	select HAVE_MEMBLOCK_NODE_MAP
->  	select HAVE_MOD_ARCH_SPECIFIC
-> --=20
-> 2.12.0
->=20
-
---TB36FDmn/VVEgNH/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpnzGYACgkQbAtpk944
-dnr+oQ/9F5E9TnPGQ9SqXnOrWYvBM0KWGAig2x6tF4EVsWAdAanOVamebvKQJ0Rb
-SyIOARAYRoG4+xRg5pypfj4QKgpKpwjOm9s5qQHRyC16D4LA5RAQ06EtDl0Icwpq
-6ccELDsrS7kj2rC4518vSMs1WDUDLIxvvDgQo9xOsDFtsSftu+luE07NG0PacbgE
-J4e46YxioK3vcyJ78z5nh0NiVBUub0UrNhGo2Q2kgg/en1Je3eXMAIcJ2ft2oDEv
-PEiRUFcihSNezkoxIAJx1T5Jw5rZGewsn+r8rmHa2K6ErlbnZN2+5Cta5c8TcExV
-3R/TjU4QlIUqywfGI+ObdywmCerTlZPOM9zlel6OaPnXJlMU4KyfysOftFKdqkY0
-Wr8ZIsWApy1CNsja36ps0gqxpd9mAOHKiw13ts08a6LcnPtY8FJhkBP25A72EM7X
-hgRjcRuylraOeGNCanYDTfYXa8h8CDcH4QYSSl9kvj2ooAC2hCYTxq3c/FO7zBqZ
-6VIgKHhyqeNnvkgNuCN5vTQcU+cptuAhgMAJp1B3Xjx7KRRabvbluaIzjdnLqp/K
-fofFLRgr5/BdNSA4Pk7WlDAgz9hcIFLKzf7jHvipdmmriOP0YjtAnrdDPLVLGr5C
-TrdL0ZwCmoxB7pTjliTeP/PLdNXSV0gkHvvdiS0d9M2c6RTwR4s=
-=cwSt
------END PGP SIGNATURE-----
-
---TB36FDmn/VVEgNH/--
+-- 
+2.7.4

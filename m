@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 14:19:27 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:49632 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 14:33:13 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:52372 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990406AbeAXNTVBqxaf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Jan 2018 14:19:21 +0100
+        id S23990395AbeAXNdBl8YF8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Jan 2018 14:33:01 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBF0020B80;
-        Wed, 24 Jan 2018 13:19:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org EBF0020B80
+        by mail.kernel.org (Postfix) with ESMTPSA id B0CF2214EE;
+        Wed, 24 Jan 2018 13:32:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B0CF2214EE
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 24 Jan 2018 13:18:49 +0000
+Date:   Wed, 24 Jan 2018 13:32:29 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Huacai CHen <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 3/4] MIPS: Loongson64: Load platform device during boot
-Message-ID: <20180124131848.GD5446@saruman>
-References: <20171226032602.11417-1-jiaxun.yang@flygoat.com>
- <20171226032602.11417-4-jiaxun.yang@flygoat.com>
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        YunQiang Su <yunqiang.su@imgtec.com>
+Subject: Re: [PATCH 1/2] MIPS: Loongson fix name confict - MEM_RESERVED
+Message-ID: <20180124133228.GE5446@saruman>
+References: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="AkbCVLjbJ9qUtAXD"
+        protocol="application/pgp-signature"; boundary="vv4Sf/kQfcwinyKX"
 Content-Disposition: inline
-In-Reply-To: <20171226032602.11417-4-jiaxun.yang@flygoat.com>
+In-Reply-To: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62312
+X-archive-position: 62313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,100 +50,97 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---AkbCVLjbJ9qUtAXD
+--vv4Sf/kQfcwinyKX
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 26, 2017 at 11:26:01AM +0800, Jiaxun Yang wrote:
-> This patch just add pdev during boot to load the platform driver
+On Thu, Nov 16, 2017 at 04:35:04PM +0800, Huacai Chen wrote:
+> MEM_RESERVED is used as a value of enum mem_type in include/linux/
+> edac.h. This will make failure to build for Loongson in some case:
+> for example with CONFIG_RAS enabled.
 >=20
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->  arch/mips/loongson64/lemote-2f/Makefile   |  2 +-
->  arch/mips/loongson64/lemote-2f/platform.c | 25 +++++++++++++++++++++++++
->  2 files changed, 26 insertions(+), 1 deletion(-)
->  create mode 100644 arch/mips/loongson64/lemote-2f/platform.c
+> So here rename MEM_RESERVED to SYSTEM_RAM_RESERVED in Loongson code.
 >=20
-> diff --git a/arch/mips/loongson64/lemote-2f/Makefile b/arch/mips/loongson=
-64/lemote-2f/Makefile
-> index 08b8abcbfef5..31c90737b98c 100644
-> --- a/arch/mips/loongson64/lemote-2f/Makefile
-> +++ b/arch/mips/loongson64/lemote-2f/Makefile
-> @@ -2,7 +2,7 @@
->  # Makefile for lemote loongson2f family machines
->  #
-> =20
-> -obj-y +=3D clock.o machtype.o irq.o reset.o ec_kb3310b.o
-> +obj-y +=3D clock.o machtype.o irq.o reset.o ec_kb3310b.o platform.o
-> =20
->  #
->  # Suspend Support
-> diff --git a/arch/mips/loongson64/lemote-2f/platform.c b/arch/mips/loongs=
-on64/lemote-2f/platform.c
-> new file mode 100644
-> index 000000000000..e0007f6c456a
-> --- /dev/null
-> +++ b/arch/mips/loongson64/lemote-2f/platform.c
-> @@ -0,0 +1,25 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*=20
+> Signed-off-by: YunQiang Su <yunqiang.su@imgtec.com>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
-Trailing whitespace
-
-> +* Copyright (C) 2017 Jiaxun Yang <jiaxun.yang@flygoat.com>
-> +*
-> +*/
-
-Checkpatch complains about missing spaces to align the '*' on each line
-of this block comment.
+Reviewed-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
-> +
-> +#include <linux/err.h>
-> +#include <linux/platform_device.h>
-> +
-> +#include <asm/bootinfo.h>
-> +
-> +static struct platform_device yeeloong_pdev =3D {
-> +	.name =3D "yeeloong_laptop",
-> +	.id =3D -1,
-> +};
-> +
-> +static int __init lemote2f_platform_init(void)
-> +{
-> +	if (mips_machtype !=3D MACH_LEMOTE_YL2F89)
-> +		return -ENODEV;
-> +
-> +	return platform_device_register(&yeeloong_pdev);
-> +}
-> +
-> +arch_initcall(lemote2f_platform_init);
+> ---
+>  arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
+>  arch/mips/loongson64/common/mem.c                  | 2 +-
+>  arch/mips/loongson64/loongson-3/numa.c             | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mi=
+ps/include/asm/mach-loongson64/boot_param.h
+> index 4f69f08..8c286be 100644
+> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
+> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+> @@ -4,7 +4,7 @@
+> =20
+>  #define SYSTEM_RAM_LOW		1
+>  #define SYSTEM_RAM_HIGH		2
+> -#define MEM_RESERVED		3
+> +#define SYSTEM_RAM_RESERVED	3
+>  #define PCI_IO			4
+>  #define PCI_MEM			5
+>  #define LOONGSON_CFG_REG	6
+> diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/com=
+mon/mem.c
+> index b01d524..c549e52 100644
+> --- a/arch/mips/loongson64/common/mem.c
+> +++ b/arch/mips/loongson64/common/mem.c
+> @@ -79,7 +79,7 @@ void __init prom_init_memory(void)
+>  					(u64)loongson_memmap->map[i].mem_size << 20,
+>  					BOOT_MEM_RAM);
+>  				break;
+> -			case MEM_RESERVED:
+> +			case SYSTEM_RAM_RESERVED:
+>  				add_memory_region(loongson_memmap->map[i].mem_start,
+>  					(u64)loongson_memmap->map[i].mem_size << 20,
+>  					BOOT_MEM_RESERVED);
+> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson6=
+4/loongson-3/numa.c
+> index f17ef52..9717106 100644
+> --- a/arch/mips/loongson64/loongson-3/numa.c
+> +++ b/arch/mips/loongson64/loongson-3/numa.c
+> @@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
+>  			memblock_add_node(PFN_PHYS(start_pfn),
+>  				PFN_PHYS(end_pfn - start_pfn), node);
+>  			break;
+> -		case MEM_RESERVED:
+> +		case SYSTEM_RAM_RESERVED:
+>  			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+>  				(u32)node_id, mem_type, mem_start, mem_size);
+>  			add_memory_region((node_id << 44) + mem_start,
 > --=20
-> 2.15.1
+> 2.7.0
 >=20
 
---AkbCVLjbJ9qUtAXD
+--vv4Sf/kQfcwinyKX
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpoh7IACgkQbAtpk944
-dnq8NA/+OfLE3rYTZuiHGYcabBMAXWLaoBZzCHH5mXtkLB93f+yRS2hl3blKSD/8
-wNPmxcoHgIchI8LfJDNnPEkaKp7sb+5OX/NcuyryMP80HQn0H5t/j+MGUSwIhCh8
-179DNk1ZHJN0VrOYrggHrormhPz6Kw/SpJzHamoN4g33aTj512pokhRjz6DFnR2X
-sN1lMdEeZvgjSRqagkyQ9QPdy7FD7Bqvs6BC4YnltPFlcLhjuixAYP4W1E40TVEU
-+vt8i5p8VfswRL+XlQrIXdntM/YHw4gs75hGUmASLCwGazRQY7bqlFz9fNlwuPH5
-kQb52goBT3ri2+QDbSwPF1NARf3hB2H9LTrjaadjY7GPM6l1LLjdD2zE0dPplNeI
-/KMmuxUyVKd4hkodprmOl2GPw8YhZzTHqRgjMrT13om37v5s/aNVHdSWk71pm529
-BjKlOv4S8Fqy1fc8Fz1EtlX6SZsbE6FNPRdnbvGfNGylIP7RpHmfoU6oS4fWr/bv
-CVooxtbrnoO5CJleTZqh5JwH29+rDCOMG0N9YoemW4GIRN8JAkujmaQvcpLlUclF
-s1KhjzoqEu338i8Zg+gVBgVEr/I1DsUtLaTu+NuMfj8zbPPOj7NSGNDdCvSsiggH
-1XxBIUY2L017tJDxkxWjiEOjR10xq6thISngqZSCu9qi66IiCPY=
-=7gFH
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpoiuwACgkQbAtpk944
+dnpfiBAApnIlXTFrZYPBHSLJAElbkMQNVo09f9nsASIrLLdqist6jLm8mn5+ycbD
+MoyXW3n2QrLZP38WxwJUFrNk2mHAkSF5W6uJK8RXNRcQivFjZqZCNr/5+kgIw1TT
+BJECapQ50kgjH0isHF/fGCEKg9ftXwTf4d0mu3ysBxUeT0Er/GHWmosUFyCXrV68
+aCwm12idGb6OsIIdvLOuHWb/vAxBgsu8kE+Ayx8y2miHm+fKti5MlHalcebkxJ2d
+xwdaFxDxYq4YlJQCIb44wKCGq9USUKQGX1upI3qC2aIx9AJ8BZNS7JwrVNz9c3Jm
+QAk3BH8GP1Yqw/2gWMOhUgAC8j6uelyHyp5oyB79RMUPtC+Otq1cN5eCm1oswNdN
+aR1E99bhZk8BgzqOKbYMcXtDWtyhTbxL7DOVRA5dVQkfnyGBigTBs7LP9l4Hu1VQ
+Hzgfz5h6GEcRJGFY8NCyXnHrbdcxRCGc1gaGnm6CH5mLCDNMBmIUWP8OTfig8qd2
+b8nvaoeVxJwhS2UwMOGn3+zsP+Mf0p1DWdshzuHc2HJWX4Mlo+dpd4SK0rMbtJrv
+hJc9euFWQQCYHaiGAVRlkTpMnqBBTsINs/41245fk9uocyoz4H1pBFohoeZqDoeg
++JJD5WWjcHuKNg2GkogOBlbjn4XP3UHVsPNPWbHrkqma2EvZABc=
+=gnL8
 -----END PGP SIGNATURE-----
 
---AkbCVLjbJ9qUtAXD--
+--vv4Sf/kQfcwinyKX--

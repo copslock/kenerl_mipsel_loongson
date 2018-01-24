@@ -1,71 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 09:28:25 +0100 (CET)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:39104
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990474AbeAXI2SNmAFP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 09:28:18 +0100
-Received: by mail-lf0-x242.google.com with SMTP id w27so2800809lfd.6;
-        Wed, 24 Jan 2018 00:28:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=cIQ47jZjsehZRMwfhXsS74qYUBnrcIAHpJWbG70dS1Q=;
-        b=Ompz72UDTTbyKBmVharPusG07VYHxKZWVR2A0wSrWAMH5klCdlecO8fom7zrH7Sl4M
-         oxzevqzbgoil+WpTB39gRSCC3gNkO8RHlJAy/xJXe8WJ2ppcw8rNhHUrRnxBERTphilh
-         dqCCrFwR4q/nKJ5yjzXDuSARweoOd0l2YPMUwc+hj/l/KVyNRxgeDDAG+DFLw/+TGNm2
-         vHwIkmVGyeYu/0vSQg0gWozoepeXOW6guW0S0mNowanvWgwpPnTCfCTUFmB+V6do8rib
-         hRT5MEiINlu220tzbrEmRJLPwHDwdEJbv3LZky4eRLyJD4rZ6/ARwkN22hMZ5+LMi5WD
-         mKfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=cIQ47jZjsehZRMwfhXsS74qYUBnrcIAHpJWbG70dS1Q=;
-        b=sOa4LAnve1H2pfWvuleiDBEEIkY57+ky9rXAkMngQOPIXJHOPkif80GHpXGw9c0aEy
-         q/3mw9ExCD/KPXYy9u8XvZfLKcz7m80a0GBRjGNIv5uJB03RKqX+vMnopyyRT65t0ZXd
-         XEeUatUdfmjTSYm8w9wxCxpgNR+bzaAmWyCI5yuuxAU2wFFP0iZzHmEAMv58QVExFd3v
-         3D1jB0OJrfWae7csa2wCLlhdo5ufKo9b3TUutPRy1oNJ4PxQcRFZXgRu1UV6oO9eVQkm
-         SAppk5mhqvv5MT9jkGhiu/OIFAnlqXgv+/fQrL4pS5O2pIsfSGmoD1UR5QBcjT6PmqsT
-         UpHg==
-X-Gm-Message-State: AKwxytdLNZjFkcTgnGmbvO5U3gRtZVhsdApPVxpTEoH+kmy7WBFlJh8v
-        TIkxXImCUV3nkoMcjzyxnNU=
-X-Google-Smtp-Source: AH8x225H1TG0lJf0gdY/OxXgbyykTApiNTV/taCyuFd9KmsWxSuvzOd8FPBklNaRkTcQnfsmZLR+rg==
-X-Received: by 10.46.54.19 with SMTP id d19mr2747916lja.72.1516782492524;
-        Wed, 24 Jan 2018 00:28:12 -0800 (PST)
-Received: from mobilestation ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id k86sm3407590ljb.23.2018.01.24.00.28.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jan 2018 00:28:11 -0800 (PST)
-Date:   Wed, 24 Jan 2018 11:28:26 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     ralf@linux-mips.org, miodrag.dinic@mips.com, goran.ferenc@mips.com,
-        david.daney@cavium.com, paul.gortmaker@windriver.com,
-        paul.burton@mips.com, alex.belits@cavium.com,
-        Steven.Hill@cavium.com, alexander.sverdlin@nokia.com,
-        matt.redfearn@mips.com, kumba@gentoo.org,
-        marcin.nowakowski@mips.com, Peter.Wotton@mips.com,
-        Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 14/14] MIPS: memblock: Deactivate bootmem allocator
-Message-ID: <20180124082826.GC31120@mobilestation>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 10:48:37 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:34862 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990474AbeAXJs3ZF3YV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 10:48:29 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 24 Jan 2018 09:46:22 +0000
+Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 24 Jan
+ 2018 01:46:12 -0800
+Subject: Re: [PATCH 11/14] MIPS: memblock: Print out kernel virtual mem layout
+To:     Serge Semin <fancer.lancer@gmail.com>
+CC:     Florian Fainelli <f.fainelli@gmail.com>, <ralf@linux-mips.org>,
+        <miodrag.dinic@mips.com>, <jhogan@kernel.org>,
+        <goran.ferenc@mips.com>, <david.daney@cavium.com>,
+        <paul.gortmaker@windriver.com>, <paul.burton@mips.com>,
+        <alex.belits@cavium.com>, <Steven.Hill@cavium.com>,
+        <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
+        <marcin.nowakowski@mips.com>, <James.hogan@mips.com>,
+        <Peter.Wotton@mips.com>, <Sergey.Semin@t-platforms.ru>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180117222312.14763-15-fancer.lancer@gmail.com>
- <20180123235934.GA5446@saruman>
+ <20180117222312.14763-12-fancer.lancer@gmail.com>
+ <cce36f73-4381-f830-3422-1cef8ad9e622@gmail.com>
+ <20180118201856.GA996@mobilestation>
+ <b2797958-d217-9c8d-10ca-b9bc43ae585b@mips.com>
+ <20180119142712.GA3101@mobilestation>
+ <eef02082-c3b1-e42b-d5ff-1c0d5cb8d708@mips.com>
+ <20180123191051.GA28147@mobilestation>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <e751ccda-ab57-dfe8-0a16-25bb5368337c@mips.com>
+Date:   Wed, 24 Jan 2018 09:46:07 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180123235934.GA5446@saruman>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+In-Reply-To: <20180123191051.GA28147@mobilestation>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1516787182-452060-22891-56327-1
+X-BESS-VER: 2017.17.1-r1801152154
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189306
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62303
+X-archive-position: 62304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,75 +69,132 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 23, 2018 at 11:59:35PM +0000, James Hogan <jhogan@kernel.org> wrote:
-> On Thu, Jan 18, 2018 at 01:23:12AM +0300, Serge Semin wrote:
-> > Memblock allocator can be successfully used from now for early
-> > memory management
-> > 
-> > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Hi Serge,
+
+On 23/01/18 19:10, Serge Semin wrote:
+> Hello Matt,
 > 
-> Am I correct that intermediate commits in this patchset (i.e. bisection)
-> may not work correctly, since bootmem will have been stripped out but
-> NO_BOOTMEM=n and memblock may not be properly operational yet?
+> On Tue, Jan 23, 2018 at 03:35:14PM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
+>> Hi Serge,
+>>
+>> On 19/01/18 14:27, Serge Semin wrote:
+>>> On Fri, Jan 19, 2018 at 07:59:43AM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
+>>>
+>>> Hello Matt,
+>>>
+>>>> Hi Serge,
+>>>>
+>>>>
+>>>>
+>>>> On 18/01/18 20:18, Serge Semin wrote:
+>>>>> On Thu, Jan 18, 2018 at 12:03:03PM -0800, Florian Fainelli <f.fainelli@gmail.com> wrote:
+>>>>>> On 01/17/2018 02:23 PM, Serge Semin wrote:
+>>>>>>> It is useful to have the kernel virtual memory layout printed
+>>>>>>> at boot time so to have the full information about the booted
+>>>>>>> kernel. In some cases it might be unsafe to have virtual
+>>>>>>> addresses freely visible in logs, so the %pK format is used if
+>>>>>>> one want to hide them.
+>>>>>>>
+>>>>>>> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+>>>>>>
+>>>>>> I personally like having that information because that helps debug and
+>>>>>> have a quick reference, but there appears to be a trend to remove this
+>>>>>> in the name of security:
+>>>>>>
+>>>>>> https://patchwork.kernel.org/patch/10124007/
+>>>>>>
+>>>>>> maybe hide this behind a configuration option?
+>>>>>
+>>>>> Yeah, arm code was the place I picked the function up.) But in my case
+>>>>> I've used %pK so the pointers would disappear from logging when
+>>>>> kptr_restrict sysctl is 1 or 2.
+>>>>> I agree, that we might need to make the printouts optional. If there is
+>>>>> any kernel config, which for instance increases the kernel security we
+>>>>> could also use it or anything else to discard the printouts at compile
+>>>>> time.
+>>>>
+>>>>
+>>>> Certainly, when KASLR is active it would be preferable to hide this
+>>>> information, so you could use CONFIG_RELOCATABLE. The existing KASLR stuff
+>>>> additionally hides this kind of information behind CONFIG_DEBUG_KERNEL, so
+>>>> that only people actively debugging the kernel see it:
+>>>>
+>>>> http://elixir.free-electrons.com/linux/v4.15-rc8/source/arch/mips/kernel/setup.c#L604
+>>>
+>>> Ok. I'll hide the printouts behind both of that config macros in the next patchset
+>>> version.
+>>
+>>
+>> Another thing to note - since ad67b74d2469d ("printk: hash addresses printed
+>> with %p") %pK at this time in the boot process is useless since the RNG is
+>> not sufficiently initialised and all prints end up being "(ptrval)". Hence
+>> after v4.15-rc2 we end up with output like:
+>>
+>> [    0.000000] Kernel virtual memory layout:
+>> [    0.000000]     lowmem  : 0x(ptrval) - 0x(ptrval)  ( 256 MB)
+>> [    0.000000]       .text : 0x(ptrval) - 0x(ptrval)  (7374 kB)
+>> [    0.000000]       .data : 0x(ptrval) - 0x(ptrval)  (1901 kB)
+>> [    0.000000]       .init : 0x(ptrval) - 0x(ptrval)  (1600 kB)
+>> [    0.000000]       .bss  : 0x(ptrval) - 0x(ptrval)  ( 415 kB)
+>> [    0.000000]     vmalloc : 0x(ptrval) - 0x(ptrval)  (1023 MB)
+>> [    0.000000]     fixmap  : 0x(ptrval) - 0x(ptrval)  (  68 kB)
+>>
 > 
-
-Yes. You're absolutely right. The kernel will be buildable, but most
-likely isn't operable until the PATCH 14 deactivates bootmem allocator.
-
-> If so, is there a way to switch without breaking bisection that doesn't
-> involve squashing most of the series into a single atomic commit?
+> It must be some bug in the algo. What point in the %pK then? According to
+> the documentation the only way to see the pointers is when (kptr_restrict == 0).
+> But if it is we don't get into the restricted_pointer() method at all:
+> http://elixir.free-electrons.com/linux/v4.15-rc9/source/lib/vsprintf.c#L1934
+> In this case the vsprintf() executes the method ptr_to_id(), which of course
+> default to _not_ leak addresses, and hash it before printing.
 > 
+> Really %pK isn't supposed to be dependent from RNG at all since kptr_restrict
+> doesn't do any value randomization.
 
-I don't think so. There is no way to switch without squashing at all,
-at least since the alteration involves arch and platforms code, which
-all relied on the bootmem allocator. Here is the list of patches, which
-need to be combined to have the bisection unbroken:
-[PATCH 03/14] MIPS: memblock: Reserve initrd memory in memblock
-[PATCH 04/14] MIPS: memblock: Discard bootmem initialization
-[PATCH 05/14] MIPS: memblock: Add reserved memory regions to memblock
-[PATCH 06/14] MIPS: memblock: Reserve kdump/crash regions in memblock
-[PATCH 07/14] MIPS: memblock: Mark present sparsemem sections
-[PATCH 08/14] MIPS: memblock: Simplify DMA contiguous reservation
-[PATCH 09/14] MIPS: memblock: Allow memblock regions resize
-[PATCH 12/14] MIPS: memblock: Discard bootmem from Loongson3 code
-[PATCH 13/14] MIPS: memblock: Discard bootmem from SGI IP27 code
-[PATCH 14/14] MIPS: memblock: Deactivate bootmem allocator
 
-So the patches 03-09 imply the functional alterations so the arch code
-would work correctly with memblock, the patches 13-14 alter the
-platforms code of the specific NUMA devices like Loongson and
-SGI IP27. After it's done the bootmem can be finally deactivated.
+That was true until v4.15-rc2. The behavior of %pK was changed without 
+that being reflected in the documentation. A patch 
+(https://patchwork.kernel.org/patch/10124413/) is in progress to update 
+this.
 
-Regards,
--Sergey
-
-> Cheers
-> James
 > 
-> > ---
-> >  arch/mips/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index 725b5ece7..a6c4fb6b6 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -4,7 +4,6 @@ config MIPS
-> >  	default y
-> >  	select ARCH_BINFMT_ELF_STATE
-> >  	select ARCH_CLOCKSOURCE_DATA
-> > -	select ARCH_DISCARD_MEMBLOCK
-> >  	select ARCH_HAS_ELF_RANDOMIZE
-> >  	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
-> >  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> > @@ -57,6 +57,7 @@ config MIPS
-> >  	select HAVE_IRQ_TIME_ACCOUNTING
-> >  	select HAVE_KPROBES
-> >  	select HAVE_KRETPROBES
-> > +	select NO_BOOTMEM
-> >  	select HAVE_MEMBLOCK
-> >  	select HAVE_MEMBLOCK_NODE_MAP
-> >  	select HAVE_MOD_ARCH_SPECIFIC
-> > -- 
-> > 2.12.0
-> > 
+>>
+>> The %px format specifier was added for cases such as this, where we really
+>> want to print the unmodified address. And as long as this function is
+>> suitably guarded to only do this when KASLR is deactivated /
+>> CONFIG_DEBUG_KERNEL is activated, etc, then we are not unwittingly leaking
+>> information - we are deliberately making it available.
+>>
+> 
+> If %pK would work as it's stated by the kernel documentation:
+> https://www.kernel.org/doc/Documentation/printk-formats.txt
+> then the only change I'd suggest to have here is to close the kernel memory
+> layout printout method by the CONFIG_DEBUG_KERNEL ifdef-macro. The kptr_restrict
+> should default to 1/2 if the KASLR is activated:
+> https://lwn.net/Articles/444556/
+
+Yeah, again, the documentation is no longer correct, and %pK will always 
+be hashed, and before the RNG is initialized it does not even hash it, 
+just returning "(ptrval)".  So I'd recommend guarding with 
+CONFIG_DEBUG_KERNEL and switching the format specifier to %px.
+
+Thanks,
+Matt
+
+> 
+> Regards,
+> -Sergey
+> 
+>> Thanks,
+>> Matt
+>>
+>>>
+>>> Regards,
+>>> -Sergey
+>>>
+>>>>
+>>>> Thanks,
+>>>> Matt
+>>>>
+>>>>>
+>>>>>> -- 
+>>>>>> Florian

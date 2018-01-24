@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 22:23:00 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:51306 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 22:48:24 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:55034 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991359AbeAXVWwF6IXU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Jan 2018 22:22:52 +0100
+        id S23990474AbeAXVsQPUwPi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Jan 2018 22:48:16 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BCA5421778;
-        Wed, 24 Jan 2018 21:22:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org BCA5421778
+        by mail.kernel.org (Postfix) with ESMTPSA id D182B21717;
+        Wed, 24 Jan 2018 21:48:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D182B21717
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 24 Jan 2018 21:22:19 +0000
+Date:   Wed, 24 Jan 2018 21:47:43 +0000
 From:   James Hogan <jhogan@kernel.org>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -19,21 +19,23 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/8] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
-Message-ID: <20180124212218.GI5446@saruman>
+Subject: Re: [PATCH 3/8] MIPS: Ensure pmd_present() returns false after
+ pmd_mknotpresent()
+Message-ID: <20180124214742.GJ5446@saruman>
 References: <1502330433-16670-1-git-send-email-chenhc@lemote.com>
  <1502330682-16812-1-git-send-email-chenhc@lemote.com>
+ <1502330682-16812-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fmvA4kSBHQVZhkR6"
+        protocol="application/pgp-signature"; boundary="5cSRzy0VGBWAML+b"
 Content-Disposition: inline
-In-Reply-To: <1502330682-16812-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1502330682-16812-2-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62320
+X-archive-position: 62321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,62 +53,78 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---fmvA4kSBHQVZhkR6
+--5cSRzy0VGBWAML+b
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 10, 2017 at 10:04:36AM +0800, Huacai Chen wrote:
-> For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
-> only flush Node-0's scache. So we add r4k_blast_scache_node() by using
-> (CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
-> start address.
+On Thu, Aug 10, 2017 at 10:04:37AM +0800, Huacai Chen wrote:
+> This patch is borrowed from ARM64 to ensure pmd_present() returns false
+
+I presume you're referring to commit 5bb1cc0ff9a6 ("arm64: Ensure
+pmd_present() returns false after pmd_mknotpresent()"). I think it would
+be worth mentioning that specifically.
+
+> after pmd_mknotpresent(). This is needed for THP.
 >=20
 > Cc: stable@vger.kernel.org
 
-I believe Loongson 3 support was added in 3.15, so the following is
-probably slightly better:
+Back to what version? 3.8 when THP was added?
 
-Cc: <stable@vger.kernel.org> # 3.15+
-
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 81d6a15..7b242e8 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
->  		r4k_blast_scache =3D blast_scache128;
->  }
-> =20
-> +static void (* r4k_blast_scache_node)(long node);
-
-Checkpatch objects to the space after '*'.
-
-Other than those minor things this patch looks reasonable I think
-
+Otherwise it looks reasonable:
 Reviewed-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
---fmvA4kSBHQVZhkR6
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/asm/pgtable-64.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/p=
+gtable-64.h
+> index 67fe6dc..a2252c2 100644
+> --- a/arch/mips/include/asm/pgtable-64.h
+> +++ b/arch/mips/include/asm/pgtable-64.h
+> @@ -271,6 +271,11 @@ static inline int pmd_bad(pmd_t pmd)
+> =20
+>  static inline int pmd_present(pmd_t pmd)
+>  {
+> +#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+> +	if (unlikely(pmd_val(pmd) & _PAGE_HUGE))
+> +		return pmd_val(pmd) & _PAGE_PRESENT;
+> +#endif
+> +
+>  	return pmd_val(pmd) !=3D (unsigned long) invalid_pte_table;
+>  }
+> =20
+> --=20
+> 2.7.0
+>=20
+>=20
+>=20
+>=20
+
+--5cSRzy0VGBWAML+b
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpo+QoACgkQbAtpk944
-dnrX7w//WDBWeF7vkLNrddADTrconmI8f4rzHbgPDs53FEz67zgGXv1uNQ9R9Ugg
-R0jCorYs5DssjneQ03SQy+TT0Pb4KGD4+c/xl7XOrzEFl/BVlQdAyRRqwGv4btnv
-aheE1+XWfnIqhYMAmXTnIybE1XK/goMW0KqgptQLAw6zOK47z47jgWkMRTveYJf+
-mTetnOWv0IvSIZQpcBQRQ4a9pnjsjgnOLfuALEt1ygz7JJDEjRt4Odcq4kZ+jg+X
-VNDKm8urbXP5k/ZTI/38ehmQvx2w46PobfkyypiCpIZXbsuOK+ANqLJI3shW/4oj
-R26Z6xu7030MLw6eo7k2mob9LdC5go3Ic86/D1rDanST1QiR3YJ924bB02vdsVbH
-skMidHfjI33OVn6CsU9MvUmHXH4PxkSw6MAjumbQ972chqF3ASdtitGzyK3LiMSO
-RbU3otxnETimDVzGlOkpFY/OmKcu8RZIlzDts/ku9/zC/tWr541fdsgaKik1B7Q8
-kEtR8OV9Ty6OCMhVlX3ySrDa9gyHW29U9Ma5DvDCvCPNvPcSFjLT8e4uOL8knVEp
-y6SbdEYhifeg9AW4L8JD5hCAfVS/xjxY9zS+dgcSa3tF3j3ByvxahuMoGJsbxnca
-ulAtNlDeXgCm8Sgu7IwZz3TtXxm+3ljPEH3mH8J7wrG6qyd3WLQ=
-=lkZq
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpo/v4ACgkQbAtpk944
+dnrkBg//aueYrO2f/dLcawtIl0v+kNhLGcLd1Ibhk85nuq9R5RQ5IiUmYq/go+0A
+20B4izQN4h3WhQPF7P1y5A9WC6L7SM9qkwnAAyhImbYYdBBL/7HfRZydPUy2vWp1
+yjt6n4yOLXH1urTlLLd39PQz4hProTc0WHgsMQW1t+bT8Kr9cCcvdiLMF3Fv//py
+HcGYwpW4kJWxB1zuDXaQLo/vVPlG/kw81eFKWnKNCuH2P8BWtHeiWxZdOwi0AIBA
+it3zvmPD2eU6ahghmQnJzS23FSwDdzY7Lr9WaqMyQjXVR/ibhbDbyyyO86zl/rZs
+C9vO9u2h/hkz7oji4zRjuAY7EHhk+y3JAsCEBAGKzyPV8k43iA3apW4ZOycVjTNg
+o/pv3rrKhhHGBYh0XIP4rhV4lYZELZjDTcKO/nch2UETvO224mpFRAlPijxvaQuJ
+hqsBQxpFKHFuQl7RnAH9foUn5QtzBruUrtkN32BCyME2m3AOe00dXvB8/sn6lnnD
+6OgEalvrgMwdrW8GZ0mnUYx30Ru2o+KrEyMT7f52d2g06QhFt7z/2INNd96o77ER
+Sj5lcfRJsPVZH+77yAcTF7aDHY+f18DSUFOtje94g7OCUukqm3zVzx20ST3i95Vr
+O/GHm8fjFQ+1hboYKX/0OBbl7L58RgBFrm2NA7EauQK1ftlJ7CE=
+=ZBCM
 -----END PGP SIGNATURE-----
 
---fmvA4kSBHQVZhkR6--
+--5cSRzy0VGBWAML+b--

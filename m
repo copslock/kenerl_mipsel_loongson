@@ -1,77 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 11:08:38 +0100 (CET)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:40416
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990406AbeAXKIWwcOEV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 11:08:22 +0100
-Received: by mail-lf0-x244.google.com with SMTP id h92so4450311lfi.7;
-        Wed, 24 Jan 2018 02:08:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2018 12:42:33 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:38145
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbeAXLm1HAzS2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2018 12:42:27 +0100
+Received: by mail-wm0-x241.google.com with SMTP id 141so7939047wme.3;
+        Wed, 24 Jan 2018 03:42:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=PHwqi/vrpI5kQF4mQGYSGX4Mlv+55wL6uHq2bye0vZw=;
-        b=vSavkhHHrgOgD+m00EIm7hy1A7V6k6HCAhGG5hsvcXXPIr0F06KQunkZQcNgfO98TD
-         ytGZKbEetl8E+No4fGhPXj0i+qkdKHWvhPlx1XFdLjKvyP4HKRHREdfeAIufsANx9Sz3
-         Eg/MqdIQabj1p7Kv6Xeaw2/vcEiPjl4DfeXzz6jvHLSPoGY4EOlBxwSxtxahOB+7t7aY
-         MHqfxQiimelEk+zRxBTCshuPolAHfu6NTEfw4gO5t9INfe3/qj66wNBT7OpClRPWq3AK
-         FWjgV0Jc9fSEdfZfBF9CdAJIXF5BLygL8gGC8XemAL2HYwGSQD0Q0By0IgocUsqEQ+ZY
-         uOOg==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=DTB+FHvDVLWyEqN8a0PXAhjJPbaxuvYJgZoWnSTZAaI=;
+        b=pmBCMABXN04H22W3ugByXKc/A2KtcvmozNYM5gub8NApIi/PQVcT28NSanSlSs2lXo
+         Mh7wSlqakYhHK2NLbWncmWFv0sTI7DPHe2SX18GhiyOcmPvG5lrbniOraJ/qge68tLRu
+         ccVHlSm8pyLTZpA17rLT2lPSjscLrT9jAVxVsjp1Bnq9FJTlQ0zkWGioaQByxopIKyjg
+         ipo5/DRSYyFJ3iUzDpPVQawtydBTXPrniuaWFkNly4bJok29XNisFvxvRAgvrBoubJJk
+         ilVXPnVtby80bk2DxoGDZzbZl0hI9nKlxOC3OCSl4GfLiTGHaldK2r21gdUVYtPqfFLd
+         pPZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=PHwqi/vrpI5kQF4mQGYSGX4Mlv+55wL6uHq2bye0vZw=;
-        b=F5E8ury/0nKHo7dS1z84EgQ3cdANdIks8a1MfGTmOPRJtq2K+GkTjz9mETMhOolRy6
-         Bq4DupdnzbIcjI1SjF4aRuDVIndLzrLp5CPqegTfU9xgxAbeHBeXucPXj9EMmHzQZnhl
-         O6FqFPi+Ub5i1PSaG5jEgwAKBBusga2jJjgDak/wyyWkw2Mw5POIcQ/ZNBPBVbO14mvc
-         +CtM8WAQY5oyslUCSFUPbv1qD5K23c953dai4MPvO8Fs182SicgSzQMBYpKsQXD2wVIw
-         aAZQoTrccM76Q9q4btalAun0kzkCc9SEFIqoQ0TN/5rNxMzc4DoTcpzzjmvt+gYak1b2
-         cqDg==
-X-Gm-Message-State: AKwxytfHSfjgLdHdwAkc+odKZnKfYAUBEINTdZVtMl0a9rzjGWX4w9Wx
-        NAKnUrNfvI/U6QUbKD7SFKY=
-X-Google-Smtp-Source: AH8x224WGQG4kIRxgAZqj8SDgAatrP7+VrNfhxfg33vfCQZFl9gLKFaEl1e/AU+UC2yJyrkWe4ciYw==
-X-Received: by 10.46.84.70 with SMTP id y6mr3291880ljd.36.1516788497343;
-        Wed, 24 Jan 2018 02:08:17 -0800 (PST)
-Received: from mobilestation ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id q123sm1404479ljq.24.2018.01.24.02.08.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jan 2018 02:08:16 -0800 (PST)
-Date:   Wed, 24 Jan 2018 13:08:31 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, ralf@linux-mips.org,
-        miodrag.dinic@mips.com, jhogan@kernel.org, goran.ferenc@mips.com,
-        david.daney@cavium.com, paul.gortmaker@windriver.com,
-        paul.burton@mips.com, alex.belits@cavium.com,
-        Steven.Hill@cavium.com, alexander.sverdlin@nokia.com,
-        kumba@gentoo.org, marcin.nowakowski@mips.com, James.hogan@mips.com,
-        Peter.Wotton@mips.com, Sergey.Semin@t-platforms.ru,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 11/14] MIPS: memblock: Print out kernel virtual mem layout
-Message-ID: <20180124100831.GB2281@mobilestation>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180117222312.14763-12-fancer.lancer@gmail.com>
- <cce36f73-4381-f830-3422-1cef8ad9e622@gmail.com>
- <20180118201856.GA996@mobilestation>
- <b2797958-d217-9c8d-10ca-b9bc43ae585b@mips.com>
- <20180119142712.GA3101@mobilestation>
- <eef02082-c3b1-e42b-d5ff-1c0d5cb8d708@mips.com>
- <20180123191051.GA28147@mobilestation>
- <e751ccda-ab57-dfe8-0a16-25bb5368337c@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e751ccda-ab57-dfe8-0a16-25bb5368337c@mips.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references;
+        bh=DTB+FHvDVLWyEqN8a0PXAhjJPbaxuvYJgZoWnSTZAaI=;
+        b=XyQzuRqC6gPpRf4j+uhJMFQiTB6LR4iVvoA3HdzxhlTTmj7hwBa0x/uc9W/ROK505x
+         TYatT3895hJYWLa/wjMHIon5W5BeTEp3WGBrlnllEWEwwt2HLGwHGla7UQpe/4qoBhiY
+         tvF59blA95Dg1WXvDzLCkTQcohABYDgKno2LqZniX4FhsIkakc3Bn/UcTpjlaN8V07Th
+         wZbn5i4EMxPOi1PSCTOoV85p5t07+5ovr2HLaOB72azQVGabqjFZXLEJ8rcvriDsvzRY
+         6y5Jc+34iU8526sMl8MqsY+QC2USzuaAKW23PNC/CDwnsqVV0cblyzzQSTVdGlOcni+A
+         13EA==
+X-Gm-Message-State: AKwxytdmGsZQVKz/suwP1lGuA1wtcGPZ3p6fAvgmjXiu8K4jMuhrgTsc
+        P/h81AsEA92XpK2slnpmes0=
+X-Google-Smtp-Source: AH8x225MTEKHOqyEmpgUkXFkc9yxLD4T2OOfnbaFF7h3LoWDKTvR8wFjK+sisBMLqjieHjWDM/1fDA==
+X-Received: by 10.28.184.82 with SMTP id i79mr4586824wmf.6.1516794140866;
+        Wed, 24 Jan 2018 03:42:20 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
+        by smtp.gmail.com with ESMTPSA id 78sm52532wmm.22.2018.01.24.03.42.19
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 24 Jan 2018 03:42:20 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id CEE3F10C32FB; Wed, 24 Jan 2018 12:42:18 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Harvey Hunt <harvey.hunt@imgtec.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] mips: dts: Remove leading 0x and 0s from bindings notation
+Date:   Wed, 24 Jan 2018 12:42:07 +0100
+Message-Id: <20180124114210.26457-1-malat@debian.org>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20171214165358.28058-1-malat@debian.org>
+References: <20171214165358.28058-1-malat@debian.org>
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62307
+X-archive-position: 62308
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,142 +78,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello Matt,
+Improve the DTS files by removing all the leading "0x" and zeros to fix the
+following dtc warnings:
 
-On Wed, Jan 24, 2018 at 09:46:07AM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
-> Hi Serge,
-> 
-> On 23/01/18 19:10, Serge Semin wrote:
-> >Hello Matt,
-> >
-> >On Tue, Jan 23, 2018 at 03:35:14PM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
-> >>Hi Serge,
-> >>
-> >>On 19/01/18 14:27, Serge Semin wrote:
-> >>>On Fri, Jan 19, 2018 at 07:59:43AM +0000, Matt Redfearn <matt.redfearn@mips.com> wrote:
-> >>>
-> >>>Hello Matt,
-> >>>
-> >>>>Hi Serge,
-> >>>>
-> >>>>
-> >>>>
-> >>>>On 18/01/18 20:18, Serge Semin wrote:
-> >>>>>On Thu, Jan 18, 2018 at 12:03:03PM -0800, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> >>>>>>On 01/17/2018 02:23 PM, Serge Semin wrote:
-> >>>>>>>It is useful to have the kernel virtual memory layout printed
-> >>>>>>>at boot time so to have the full information about the booted
-> >>>>>>>kernel. In some cases it might be unsafe to have virtual
-> >>>>>>>addresses freely visible in logs, so the %pK format is used if
-> >>>>>>>one want to hide them.
-> >>>>>>>
-> >>>>>>>Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> >>>>>>
-> >>>>>>I personally like having that information because that helps debug and
-> >>>>>>have a quick reference, but there appears to be a trend to remove this
-> >>>>>>in the name of security:
-> >>>>>>
-> >>>>>>https://patchwork.kernel.org/patch/10124007/
-> >>>>>>
-> >>>>>>maybe hide this behind a configuration option?
-> >>>>>
-> >>>>>Yeah, arm code was the place I picked the function up.) But in my case
-> >>>>>I've used %pK so the pointers would disappear from logging when
-> >>>>>kptr_restrict sysctl is 1 or 2.
-> >>>>>I agree, that we might need to make the printouts optional. If there is
-> >>>>>any kernel config, which for instance increases the kernel security we
-> >>>>>could also use it or anything else to discard the printouts at compile
-> >>>>>time.
-> >>>>
-> >>>>
-> >>>>Certainly, when KASLR is active it would be preferable to hide this
-> >>>>information, so you could use CONFIG_RELOCATABLE. The existing KASLR stuff
-> >>>>additionally hides this kind of information behind CONFIG_DEBUG_KERNEL, so
-> >>>>that only people actively debugging the kernel see it:
-> >>>>
-> >>>>http://elixir.free-electrons.com/linux/v4.15-rc8/source/arch/mips/kernel/setup.c#L604
-> >>>
-> >>>Ok. I'll hide the printouts behind both of that config macros in the next patchset
-> >>>version.
-> >>
-> >>
-> >>Another thing to note - since ad67b74d2469d ("printk: hash addresses printed
-> >>with %p") %pK at this time in the boot process is useless since the RNG is
-> >>not sufficiently initialised and all prints end up being "(ptrval)". Hence
-> >>after v4.15-rc2 we end up with output like:
-> >>
-> >>[    0.000000] Kernel virtual memory layout:
-> >>[    0.000000]     lowmem  : 0x(ptrval) - 0x(ptrval)  ( 256 MB)
-> >>[    0.000000]       .text : 0x(ptrval) - 0x(ptrval)  (7374 kB)
-> >>[    0.000000]       .data : 0x(ptrval) - 0x(ptrval)  (1901 kB)
-> >>[    0.000000]       .init : 0x(ptrval) - 0x(ptrval)  (1600 kB)
-> >>[    0.000000]       .bss  : 0x(ptrval) - 0x(ptrval)  ( 415 kB)
-> >>[    0.000000]     vmalloc : 0x(ptrval) - 0x(ptrval)  (1023 MB)
-> >>[    0.000000]     fixmap  : 0x(ptrval) - 0x(ptrval)  (  68 kB)
-> >>
-> >
-> >It must be some bug in the algo. What point in the %pK then? According to
-> >the documentation the only way to see the pointers is when (kptr_restrict == 0).
-> >But if it is we don't get into the restricted_pointer() method at all:
-> >http://elixir.free-electrons.com/linux/v4.15-rc9/source/lib/vsprintf.c#L1934
-> >In this case the vsprintf() executes the method ptr_to_id(), which of course
-> >default to _not_ leak addresses, and hash it before printing.
-> >
-> >Really %pK isn't supposed to be dependent from RNG at all since kptr_restrict
-> >doesn't do any value randomization.
-> 
-> 
-> That was true until v4.15-rc2. The behavior of %pK was changed without that
-> being reflected in the documentation. A patch
-> (https://patchwork.kernel.org/patch/10124413/) is in progress to update
-> this.
-> 
-> >
-> >>
-> >>The %px format specifier was added for cases such as this, where we really
-> >>want to print the unmodified address. And as long as this function is
-> >>suitably guarded to only do this when KASLR is deactivated /
-> >>CONFIG_DEBUG_KERNEL is activated, etc, then we are not unwittingly leaking
-> >>information - we are deliberately making it available.
-> >>
-> >
-> >If %pK would work as it's stated by the kernel documentation:
-> >https://www.kernel.org/doc/Documentation/printk-formats.txt
-> >then the only change I'd suggest to have here is to close the kernel memory
-> >layout printout method by the CONFIG_DEBUG_KERNEL ifdef-macro. The kptr_restrict
-> >should default to 1/2 if the KASLR is activated:
-> >https://lwn.net/Articles/444556/
-> 
-> Yeah, again, the documentation is no longer correct, and %pK will always be
-> hashed, and before the RNG is initialized it does not even hash it, just
-> returning "(ptrval)".  So I'd recommend guarding with CONFIG_DEBUG_KERNEL
-> and switching the format specifier to %px.
-> 
+Warning (unit_address_format): Node /XXX unit name should not have leading "0x"
 
-Oh, it isn't the bug then) I'll do as you suggest and replace %pK with
-%px closing the code by CONFIG_DEBUG_KERNEL macro.
+and
 
-Regards,
--Sergey
+Warning (unit_address_format): Node /XXX unit name should not have leading 0s
 
-> Thanks,
-> Matt
-> 
-> >
-> >Regards,
-> >-Sergey
-> >
-> >>Thanks,
-> >>Matt
-> >>
-> >>>
-> >>>Regards,
-> >>>-Sergey
-> >>>
-> >>>>
-> >>>>Thanks,
-> >>>>Matt
-> >>>>
-> >>>>>
-> >>>>>>-- 
-> >>>>>>Florian
+Converted using the following command:
+
+find . -type f \( -iname *.dts -o -iname *.dtsi \) -exec sed -E -i -e "s/@0x([0-9a-fA-F\.]+)\s?\{/@\L\1 \{/g" -e "s/@0+([0-9a-fA-F\.]+)\s?\{/@\L\1 \{/g" {} +
+
+For simplicity, two sed expressions were used to solve each warnings separately.
+
+To make the regex expression more robust a few other issues were resolved,
+namely setting unit-address to lower case, and adding a whitespace before the
+the opening curly brace:
+
+https://elinux.org/Device_Tree_Linux#Linux_conventions
+
+This is a follow up to commit 4c9847b7375a ("dt-bindings: Remove leading 0x from bindings notation")
+
+Reported-by: David Daney <ddaney@caviumnetworks.com>
+Suggested-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/mips/boot/dts/img/boston.dts   | 2 +-
+ arch/mips/boot/dts/ingenic/ci20.dts | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
+index 2cd49b60e030..1bd105428f61 100644
+--- a/arch/mips/boot/dts/img/boston.dts
++++ b/arch/mips/boot/dts/img/boston.dts
+@@ -157,7 +157,7 @@
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
+ 
+-					rtc@0x68 {
++					rtc@68 {
+ 						compatible = "st,m41t81s";
+ 						reg = <0x68>;
+ 					};
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+index a4cc52214dbd..7d5e49e40b0d 100644
+--- a/arch/mips/boot/dts/ingenic/ci20.dts
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -110,22 +110,22 @@
+ 					reg = <0x0 0x0 0x0 0x800000>;
+ 				};
+ 
+-				partition@0x800000 {
++				partition@800000 {
+ 					label = "u-boot";
+ 					reg = <0x0 0x800000 0x0 0x200000>;
+ 				};
+ 
+-				partition@0xa00000 {
++				partition@a00000 {
+ 					label = "u-boot-env";
+ 					reg = <0x0 0xa00000 0x0 0x200000>;
+ 				};
+ 
+-				partition@0xc00000 {
++				partition@c00000 {
+ 					label = "boot";
+ 					reg = <0x0 0xc00000 0x0 0x4000000>;
+ 				};
+ 
+-				partition@0x8c00000 {
++				partition@8c00000 {
+ 					label = "system";
+ 					reg = <0x0 0x4c00000 0x1 0xfb400000>;
+ 				};
+-- 
+2.11.0

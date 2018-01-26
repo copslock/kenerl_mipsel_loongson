@@ -1,56 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jan 2018 15:56:58 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:57482 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jan 2018 18:02:08 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:55566 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991172AbeAZO4vJicWD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Jan 2018 15:56:51 +0100
+        with ESMTP id S23991066AbeAZRCAv7EVC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Jan 2018 18:02:00 +0100
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D8DD060A08; Fri, 26 Jan 2018 14:56:47 +0000 (UTC)
+        id 62AD760A5F; Fri, 26 Jan 2018 17:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516978607;
-        bh=mdwulGhsLrb73+BQWp3gzfbrVDFeFKrQ9Qrp0vLoZyE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=W0jPwjES3t2igx2On+hrUs4UlMMJWf2+KkOCyrVDC3LtWV20+jtyhc7WXaXmsBlnT
-         NN5O+grNnXsmEQoY1JUlb8fyQhr7LhJ4iiyZdk7AZD0fn5xVM9etfROHEoQxLXYIuf
-         p9P8m6UyXJG2Sa7LnFPSZYiuWCdZFH2IxWFjZ4FU=
-Received: from potku.adurom.net (88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        s=default; t=1516986114;
+        bh=P9Q7JoUscm/qlo56fogiL3dIptqCqSb8248Ml7yFR9Y=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=VqTgsaZH50Sl7oZwYPxysmD2Vc3QNE3bY6DoFTpv9uUa//ZV4aGvRloa4tJGySy9k
+         CaU/qmZqiG/9PNR3ryrhNJLjYO1K8Vv9P0tZSzUIhcH7dRexefUvqPUz38V1wzgCyK
+         khtCR2n1KIsL0TqCpnlGXMXGIZ/ptwqT59voWjXI=
+Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CAA3860218;
-        Fri, 26 Jan 2018 14:56:44 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0EF686032C;
+        Fri, 26 Jan 2018 17:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1516978606;
-        bh=mdwulGhsLrb73+BQWp3gzfbrVDFeFKrQ9Qrp0vLoZyE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=T+clyMxjAaHvw/+ztFrntDGJIyoXFIbjXlxKh69W92j1TlHO7bIA2ZFWA6Yg7AUb9
-         yjhCR+JIYL++kleQknnpByj2oBvVImh3wtpWSkvimdYFfpu3IS2W/njNNviOCyLcCh
-         H1ErO3qfB5pkrJGBZQ/qr99j0nFdVx4KBhsdCUqs=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CAA3860218
+        s=default; t=1516986113;
+        bh=P9Q7JoUscm/qlo56fogiL3dIptqCqSb8248Ml7yFR9Y=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=jSLlsOt3a2pfElVTB7IrgI8L+HDZMnGEdt5+yvguDzbnBW2SCUHB6Z1SC4YHEvV37
+         FSEm098hXrmMNLCCzZnjmZXf4kOGN0Nb0f3nar3jksTJ1X9+c8iaTnRXmqu0pbp+3e
+         Qau7xtDs2dXXayhkKwFDNStyaGiF607r0vu149eA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0EF686032C
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: ssb: Do not disable PCI host on non-Mips
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <87vafpq7t2.fsf@turtle.gmx.de>
-References: <87vafpq7t2.fsf@turtle.gmx.de>
-To:     Sven Joachim <svenjoac@gmx.de>
-Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Sven Joachim <svenjoac@gmx.de>, Michael Buesch <m@bues.ch>,
+        linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
         Guenter Roeck <linux@roeck-us.net>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20180126145647.D8DD060A08@smtp.codeaurora.org>
-Date:   Fri, 26 Jan 2018 14:56:47 +0000 (UTC)
+Subject: Re: [PATCH] ssb: Do not disable PCI host on non-Mips
+References: <87vafpq7t2.fsf@turtle.gmx.de> <20180126100902.GN5446@saruman>
+        <87fu6su1mv.fsf@kamboji.qca.qualcomm.com>
+Date:   Fri, 26 Jan 2018 19:01:49 +0200
+In-Reply-To: <87fu6su1mv.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
+        of "Fri, 26 Jan 2018 16:37:44 +0200")
+Message-ID: <87tvv8r1tu.fsf@purkki.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62339
+X-archive-position: 62340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,23 +67,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Sven Joachim <svenjoac@gmx.de> wrote:
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-> After upgrading an old laptop to 4.15-rc9, I found that the eth0 and
-> wlan0 interfaces had disappeared.  It turns out that the b43 and b44
-> drivers require SSB_PCIHOST_POSSIBLE which depends on
-> PCI_DRIVERS_LEGACY, a config option that only exists on Mips.
-> 
-> Fixes: 58eae1416b80 ("ssb: Disable PCI host for PCI_DRIVERS_GENERIC")
-> Cc: stable@vger.org
-> Signed-off-by: Sven Joachim <svenjoac@gmx.de>
-> Reviewed-by: James Hogan <jhogan@kernel.org>
+> James Hogan <jhogan@kernel.org> writes:
+>
+>> On Fri, Jan 26, 2018 at 10:38:01AM +0100, Sven Joachim wrote:
+>>> After upgrading an old laptop to 4.15-rc9, I found that the eth0 and
+>>> wlan0 interfaces had disappeared.  It turns out that the b43 and b44
+>>> drivers require SSB_PCIHOST_POSSIBLE which depends on
+>>> PCI_DRIVERS_LEGACY, a config option that only exists on Mips.
+>>> 
+>>> Fixes: 58eae1416b80 ("ssb: Disable PCI host for PCI_DRIVERS_GENERIC")
+>>> Cc: stable@vger.org
+>>> Signed-off-by: Sven Joachim <svenjoac@gmx.de>
+>>
+>> Whoops, thats a very good point. I hadn't twigged that
+>> PCI_DRIVERS_LEGACY was MIPS specific (one of the disadvantages of using
+>> "tig grep" I suppose!).
+>>
+>> Reviewed-by: James Hogan <jhogan@kernel.org>
+>>
+>> I think this is obviously correct, so it'd be great to squeeze it into
+>> 4.15 final.
+>
+> I'm not sure if I'm able to get it to 4.15 as it has go via the net
+> tree, and we have only two days before the (likely) final release, but
+> I'll try.
 
-Patch applied to wireless-drivers.git, thanks.
-
-a9e6d44ddecc ssb: Do not disable PCI host on non-Mips
+Too late, Dave already sent his last pull request for 4.15. This will be
+in 4.16.
 
 -- 
-https://patchwork.kernel.org/patch/10185397/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Kalle Valo

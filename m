@@ -1,46 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jan 2018 18:45:37 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:50434 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991172AbeAZRpaF8Ypx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Jan 2018 18:45:30 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B28DD217AB;
-        Fri, 26 Jan 2018 17:45:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B28DD217AB
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 26 Jan 2018 17:45:18 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Sven Joachim <svenjoac@gmx.de>, Michael Buesch <m@bues.ch>,
-        linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] ssb: Do not disable PCI host on non-Mips
-Message-ID: <20180126174517.GA7637@saruman>
-References: <87vafpq7t2.fsf@turtle.gmx.de>
- <20180126100902.GN5446@saruman>
- <87fu6su1mv.fsf@kamboji.qca.qualcomm.com>
- <87tvv8r1tu.fsf@purkki.adurom.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jan 2018 18:46:58 +0100 (CET)
+Received: from mail-io0-x22c.google.com ([IPv6:2607:f8b0:4001:c06::22c]:40341
+        "EHLO mail-io0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993029AbeAZRqv1k75x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Jan 2018 18:46:51 +0100
+Received: by mail-io0-x22c.google.com with SMTP id t22so1234136ioa.7;
+        Fri, 26 Jan 2018 09:46:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=63vpePTo/Gxz4tLg+VvXG6N1DvFEAltssPjs8xZShw0=;
+        b=jFX1OcMy5jgzcFsv0oKMfnqxU0r07u/pKgGcKeKRoAxlTftPWCK5FWeTHutytwCrBE
+         RAF6Y9z1/f/DaKHVEhu64EZQ/wKo3VM0SKNnWcHSg/lsnH6L2anABqRFr6P/TV/H9hG6
+         0brlNwJPFajFESq5mrqlOKLzkriFfJBdsFis0C1Oyl3PnWDX5oaxdKOQ24gTbqU7v7Oq
+         cLnAop5S0Nxf3l9FmcEQ6uY8F8Ic9lOLP7H7ETqQsElXjE6yPWfF91SCqWyMkCCFgiRE
+         4l/lJ3SN/oj7N8wE9iErW+hetbw8cwqbf0n5wjjQ8tkIBwJa43C7iDiXWRmHiv+cau6v
+         u8Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=63vpePTo/Gxz4tLg+VvXG6N1DvFEAltssPjs8xZShw0=;
+        b=c9+HGlhewpg7RoUKteoKkPfmhvoT2TfH4cYAhrSfHm5QcZwqtKJ6mUOtM49ZSfVqQl
+         qwEgi615hIa0gjpShkwxsvToFNrhVdjf+WbdQ7V444aiv9B8TcArVXqRSsz2CmzBCuNz
+         EZwRaycvkhX/EIDmVIFcd/1RmWEdgoDl2wPaLXWzazlT8pq5F6joYSrhnMLCW0u6/uRy
+         XfNlRR+jnAjhO/8qTa4ic58K+VWT0U3HUGvrk3h1gDGXCNIQu+Q5tMhvNj4KCUPjFZWO
+         ILml6lP9RajwQ2Sl/I5G/QTgJPcFK2Ov/HjJzffONMxZ7X3pkI6tvo+wT9nSMwb+T9Mm
+         dvzQ==
+X-Gm-Message-State: AKwxytdnE45fEt7wxMDtU3K9irQI5uirzmI5lzQ4TeH2nmrJnG2ZmSaU
+        0T9wFU7bqaGcpzSkcVFHdM2Fg6Jlxk+PTPtPCjU=
+X-Google-Smtp-Source: AH8x224iiw9mgigr0wnjK3HlUOIfja3F/gyzgzYh3GRBiZfx2VCQ3c0uiU9Ik7aZLg7GTyH0eOlPoMYCLRIYQdh9pyg=
+X-Received: by 10.107.132.224 with SMTP id o93mr3544245ioi.58.1516988805129;
+ Fri, 26 Jan 2018 09:46:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
-Content-Disposition: inline
-In-Reply-To: <87tvv8r1tu.fsf@purkki.adurom.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.107.8.9 with HTTP; Fri, 26 Jan 2018 09:46:44 -0800 (PST)
+In-Reply-To: <20180126075343.GB2356@lst.de>
+References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com>
+ <1516058925-46522-5-git-send-email-jim2101024@gmail.com> <CAL_JsqKpWNJXNpKS5qC99N0+H_P37DcRE-rN9HFwT5tVmRFCNw@mail.gmail.com>
+ <20180118073123.GA15766@lst.de> <EDAEFB0F-BB7C-444A-B282-F178F5ADFCBF@gmail.com>
+ <20180118152331.GA24461@lst.de> <d62226a2-a92c-cdcb-4a9b-e69ab677bc60@broadcom.com>
+ <20180123132033.GA21438@lst.de> <f746f9d5-b12d-9ffc-83e3-3851b4de6e52@gmail.com>
+ <20180126075343.GB2356@lst.de>
+From:   Jim Quinlan <jim2101024@gmail.com>
+Date:   Fri, 26 Jan 2018 12:46:44 -0500
+Message-ID: <CANCKTBszKRp7gYKE=S3fA0=MoOVFFkO6PgmR476t3HAJ9US2gg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/8] PCI: brcmstb: Add dma-range mapping for inbound traffic
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62341
+X-archive-position: 62342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,67 +90,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, Jan 26, 2018 at 2:53 AM, Christoph Hellwig <hch@lst.de> wrote:
+> On Wed, Jan 24, 2018 at 12:04:58PM -0800, Florian Fainelli wrote:
+>> This looks nicer than the current shape, but this still requires to
+>> register a PCI fixup to override phys_to_dma() and dma_to_phys(), and it
+>> would appear that you have dodged my question about how this is supposed
+>> to fit with an entirely modular PCIe root complex driver? Are you
+>> suggesting that we split the module into a built-in part and a modular part?
+>
+> I don't think entirely modular PCI root bridges should be a focal point
+> for the design.  If we happen to support them by other design choices:
+> fine, but they should not be a priority.
 
---DocE+STaALJfprDB
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I disagree.  If there is one common thing our customers request  it is
+the ability to remove (or control the insmod of after boot)  the pcie
+RC driver.  I didn't add this in as a "nice-to-have".
 
-On Fri, Jan 26, 2018 at 07:01:49PM +0200, Kalle Valo wrote:
-> Kalle Valo <kvalo@codeaurora.org> writes:
->=20
-> > James Hogan <jhogan@kernel.org> writes:
-> >
-> >> On Fri, Jan 26, 2018 at 10:38:01AM +0100, Sven Joachim wrote:
-> >>> After upgrading an old laptop to 4.15-rc9, I found that the eth0 and
-> >>> wlan0 interfaces had disappeared.  It turns out that the b43 and b44
-> >>> drivers require SSB_PCIHOST_POSSIBLE which depends on
-> >>> PCI_DRIVERS_LEGACY, a config option that only exists on Mips.
-> >>>=20
-> >>> Fixes: 58eae1416b80 ("ssb: Disable PCI host for PCI_DRIVERS_GENERIC")
-> >>> Cc: stable@vger.org
-> >>> Signed-off-by: Sven Joachim <svenjoac@gmx.de>
-> >>
-> >> Whoops, thats a very good point. I hadn't twigged that
-> >> PCI_DRIVERS_LEGACY was MIPS specific (one of the disadvantages of using
-> >> "tig grep" I suppose!).
-> >>
-> >> Reviewed-by: James Hogan <jhogan@kernel.org>
-> >>
-> >> I think this is obviously correct, so it'd be great to squeeze it into
-> >> 4.15 final.
-> >
-> > I'm not sure if I'm able to get it to 4.15 as it has go via the net
-> > tree, and we have only two days before the (likely) final release, but
-> > I'll try.
->=20
-> Too late, Dave already sent his last pull request for 4.15. This will be
-> in 4.16.
+>
+> That being said if we have core dma mapping or PCIe code that has
+> a list of offsets and the root complex only populates them it should
+> work just fine.
 
-Okay, thanks anyway (and sorry again!).
+I'm looking at arch/arm/include/asm/dma-mapping.h.  In addition to
+overriding dma_to_phsy() and phys_to_dma(), it looks like I may have
+to define __arch_pfn_to_dma(), __arch_dma_to_pfn(),
+__arch_dma_to_virt(), __arch_virt_to_dma().  Do  you agree or is this
+not necessary?  If it is, this seems more intrusive than our
+pcie-brcmstb-dma.c solution which  doesn't require tentacles into
+major include files and Kconfigs.
 
-Cheers
-James
+Another issue is that our function wrappers -- depending upon whether
+we are dealing with a pci device or not -- will have to possibly call
+the actual ARM and ARM64 definitions of these functions, which have
+been of course #ifdef'd out.  This means that our code must contain
+identical copies of these functions' code and that the code must
+somehow be kept in sync.  Do you see a solution to this?
 
---DocE+STaALJfprDB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpraQwACgkQbAtpk944
-dnpSLQ/9Gg3MY7IqQYTE9ZHANZ6fyDd3B890rU4BNFoqtiAnckGlRonyWc7mhfaf
-0/L3N9LDzJchxY+h8WLdzWEXm4l2tZkmnHExK8H4cfM7Ge3GGf+NUqHb8cYC4bN7
-Obx7/rxJhhdQFHNOlKq4ZVyLARZ4fIn9nrCU0/qOZvCeIj1Yf2lR7Jwfa19MnVuQ
-ewPt6DY1iYxeAVYOVNAetCkvOBAsQepa9LTFNY/7WQcD1MlHU3TDeH3+/nmGHDX9
-CrRlezScTP2nK9dBA+NuYlJMzzsevkg29tUW2N328lS2gLF3WzoEXkDJW5/9ZeV6
-WGZlVkpTThqp8/XT3yVCKwUPegQFHDtx52dxDWapedq+elvdP+c+k3yBfIq6nMsP
-HfZ2xJMDKNoKAsCykcANeJC3tFm3LDEwaoq1lScmV75WfSX+cFAHitiuopa0taZ+
-5C//vGuTFbug505UxgGm8tmAReL7i15fPwYr2fTLSGakop66uMuKxa7LnYNrJT9d
-R9Y9EE5wONMByu/Ga9429IqlsO6+D2VQccW0FchebIqeAVnC8JsSnnCXCUiUJQPS
-KsIBeavuOHOkba2w869+OWFjNEO6MKOhkCWHGVChg9/nVMpGfGxAsjJ65FKn2Wo/
-8oxSrzovGxdclJCcrLr6jP2Dn7FNmobkOTUpncuc/57c+sJ0Kmc=
-=+Osn
------END PGP SIGNATURE-----
-
---DocE+STaALJfprDB--
+Jim

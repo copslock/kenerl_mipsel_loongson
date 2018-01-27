@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2018 04:12:28 +0100 (CET)
-Received: from mail-pl0-x242.google.com ([IPv6:2607:f8b0:400e:c01::242]:40729
-        "EHLO mail-pl0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeA0DMUQnjRB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Jan 2018 04:12:20 +0100
-Received: by mail-pl0-x242.google.com with SMTP id g18so157884plo.7;
-        Fri, 26 Jan 2018 19:12:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2018 04:12:49 +0100 (CET)
+Received: from mail-pl0-x243.google.com ([IPv6:2607:f8b0:400e:c01::243]:37860
+        "EHLO mail-pl0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990401AbeA0DMmHvOUB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Jan 2018 04:12:42 +0100
+Received: by mail-pl0-x243.google.com with SMTP id ay8so156696plb.4;
+        Fri, 26 Jan 2018 19:12:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=+PF+99+oOxKQFehx2Sun3wtHhJbGENVX0ICVDP7YZ1k=;
-        b=HUzuTO/6HRiQDTDZ9H0J66s3opl+YGyOl3TJ/6uHq0TT4NI4bFAcwmZuhHBGIHzu/a
-         thfe8cTePKpTDLkkSK31KymSCqtUpHc3LTd7ihjmNfrID1X52VYKVAFMj5Kk+6fl8d7v
-         VQsxVVnCgvIZB2ocRUFMaML+LvW9yW8mFN4l9oZHj8DuYZbqLM2T9hXShbP5+f7wJHVo
-         79Xp4zEVxRfjUfdk1WcM4jdgGor0D1dGOpRsDhQikqenRRfBmrVwOAfe0HuJjEN+DFh3
-         6DlsQvb2qVSSKhurFMWyqUJkEvo9a/xDMVM4PwPACysdQ95eg8NEDeZMebKRjA23WaUG
-         O+UQ==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=ePqY9quNIZ0Ox5Ljy0S0rb/uNdfGzfQ2jKKFk4O0ZPk=;
+        b=up4t8+RbHZxI+sXLYTHj2LWb947ncedSeIsE/LDkg+DnXqLRqjgRIUijKF2DhaTMQX
+         CgBlk/JPCJN4Dgj+bh8ZdNjNdgCRmfys68FTGaXLuHXYpl4iHLhip8z2na+e8EV7iUBf
+         MBjxE1SNYK2A0XMaBU8SugdKBAxzx1uXcobD2s2SVieeFsEBU/2mvhc7kwRQYw265hkM
+         zhwYnaNHYOmGBpHwXcOPRa9nvwjfRQ8kBxXNIUyGkRAQ4UT8zNwZlMv2IC8qFf6JX+eX
+         wYmjT/jTlU+0AHpnUjKVVy0FM12r/qRfyhrCqgRzAmGa82gPfpARObXjam4OuUX4oVk4
+         9n/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=+PF+99+oOxKQFehx2Sun3wtHhJbGENVX0ICVDP7YZ1k=;
-        b=QMgLYaIOa+rbck/6nQGS0iIIndBrxudome3yiQiDnRl8QAtK88xMU7mSIHgSadtdl/
-         qfPzIu6L2lDX/ZTkx0cdMTN/e3KaX4nGd1VlVWD/4Lyi4FdyBZOLteMHMkiAbK15SuTx
-         9VK1NS1Av7tkaIS09f74kd2cmugNkPbxiLHVfGyl4kg/tJNSoMFHynRXewY/N1Wg2GZx
-         sazqtiSAN3IEL9rZvLg9ljL/nGFqKejsPDVK9ndcDKQge0RFSdZw0+pozNH+YzNStnD/
-         ojo4DYGgacbLoL2ZVQDIiKYlSrhyknjaJzPzw98FWL+2cvk1/hxeiSbHipfkx4Qohu/0
-         Uo2A==
-X-Gm-Message-State: AKwxytcAy6ytVvK2z4W80aFRT/lgRKrlIWgswL0c7h28Z5HH0HV471MO
-        VJNEJ1z0wC1Gk9haYO5akz2oOw==
-X-Google-Smtp-Source: AH8x22712LjFqK9ROjPQOH73ZfenskP0sNnVVzGGk+7uD2zbU4PLY0hVGAjdJUeba65KO5L67MeeNA==
-X-Received: by 2002:a17:902:968b:: with SMTP id n11-v6mr16024354plp.168.1517022731871;
-        Fri, 26 Jan 2018 19:12:11 -0800 (PST)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references;
+        bh=ePqY9quNIZ0Ox5Ljy0S0rb/uNdfGzfQ2jKKFk4O0ZPk=;
+        b=Z/tP9GSJOC8/LtVEW1SFoecnqxhNuRGhGRfd8/tpDjMxXnhFnbN03u0gbmYGD08G3g
+         tvX5FcjlX39iEq4vtUMRhSZ2nWJPWXMX8GUzRaI2lVdgKmmOSmRNlxiEW36ckrFexWhY
+         FNJM2UHx7j9qhXzOuv21aILIGWyRZ8+PKjPWSOcR4z951JSgWrlRwjamF//qm4DkDdKm
+         mqhFdCOGCGZXq9yRA8noLO6j7R4sw0gi21ysdTRjXa/voD4KTj4Rr3RWbHvdi3ZFHiO6
+         ohR+QEVXVhaMMJE75WqrVDhXdk3fLB2RQv5yNtxrW2lyU2weLh8mDboD+3W03UAa0+uy
+         kd6g==
+X-Gm-Message-State: AKwxytdHMfPE3JULDfw8c/r5DiHIPaJNaVp+CCdVPYJURu+3e66IDo0Q
+        6ZLaViTGa3awLYrLv+pvoSUNjg==
+X-Google-Smtp-Source: AH8x227DV0mR0JKxaHLXrKX3gYZadaKn6yibguXDtSPsoKtlpvgNFNbchsPQzW3tL42uKPug+0cI8A==
+X-Received: by 2002:a17:902:203:: with SMTP id 3-v6mr16521366plc.413.1517022755828;
+        Fri, 26 Jan 2018 19:12:35 -0800 (PST)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id w16sm4775884pfk.18.2018.01.26.19.12.09
+        by smtp.gmail.com with ESMTPSA id w16sm4775884pfk.18.2018.01.26.19.12.33
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 26 Jan 2018 19:12:11 -0800 (PST)
+        Fri, 26 Jan 2018 19:12:35 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     James Hogan <james.hogan@mips.com>,
@@ -41,15 +42,17 @@ Cc:     James Hogan <james.hogan@mips.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 00/12] MIPS: Loongson: new features and improvements
-Date:   Sat, 27 Jan 2018 11:12:20 +0800
-Message-Id: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V2 01/12] MIPS: Loongson: Add Loongson-3A R3.1 basic support
+Date:   Sat, 27 Jan 2018 11:12:21 +0800
+Message-Id: <1517022752-3053-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
+References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62343
+X-archive-position: 62344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,80 +69,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset is prepared for the next 4.16 release for Linux/MIPS. It
-add Loongson-3A R3.1 support, enable Loongson-3's SFB at runtime, adds
-"model name" and "CPU MHz" knobs in /proc/cpuinfo which is needed by
-some userspace tools, adds Loongson-3 kexec/kdump and CPUFreq support,
-fixes CPU UART irq delivery problem, and introduces WAR_LLSC_MB to
-improve stability.
+Loongson-3A R3.1 is the bugfix revision of Loongson-3A R3.
 
-V1 -> V2:
-1, Add Loongson-3A R3.1 basic support.
-2, Fix CPU UART irq delivery problem.
-3, Improve code and descriptions (Thank James Hogan).
-4, Sync the code to upstream.
+All Loongson-3 CPU family:
 
-Huacai Chen(12):
- MIPS: Loongson: Add Loongson-3A R3.1 basic support.
- MIPS: Loongson-3: Define and use some CP0 registers.
- MIPS: Loongson-3: Enable Store Fill Buffer at runtime.
- MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3.
- MIPS: Loongson fix name confict - MEM_RESERVED.
- MIPS: Ensure pmd_present() returns false after pmd_mknotpresent().
- MIPS: Add __cpu_full_name[] to make CPU names more human-readable.
- MIPS: Align kernel load address to 64KB.
- MIPS: Loongson: Add kexec/kdump support.
- MIPS: Loongson: Make CPUFreq usable for Loongson-3.
- MIPS: Loongson-3: Fix CPU UART irq delivery problem.
- MIPS: Loongson: Introduce and use WAR_LLSC_MB.
+Code-name         Brand-name       PRId
+Loongson-3A R1    Loongson-3A1000  0x6305
+Loongson-3A R2    Loongson-3A2000  0x6308
+Loongson-3A R3    Loongson-3A3000  0x6309
+Loongson-3A R3.1  Loongson-3A3000  0x630d
+Loongson-3B R1    Loongson-3B1000  0x6306
+Loongson-3B R2    Loongson-3B1500  0x6307
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/boot/compressed/calc_vmlinuz_load_addr.c |   5 +-
- arch/mips/include/asm/atomic.h                     |  18 +-
- arch/mips/include/asm/barrier.h                    |   6 +
- arch/mips/include/asm/bitops.h                     |  15 ++
- arch/mips/include/asm/cmpxchg.h                    |   9 +-
- arch/mips/include/asm/cpu-info.h                   |   2 +
- arch/mips/include/asm/cpu.h                        |  51 ++---
- arch/mips/include/asm/edac.h                       |   5 +-
- arch/mips/include/asm/futex.h                      |  18 +-
- arch/mips/include/asm/io.h                         |   2 +-
- arch/mips/include/asm/local.h                      |  10 +-
- arch/mips/include/asm/mach-loongson64/boot_param.h |   3 +-
- .../asm/mach-loongson64/kernel-entry-init.h        |  38 ++--
- arch/mips/include/asm/mach-loongson64/loongson.h   |   1 +
- arch/mips/include/asm/mipsregs.h                   |   2 +
- arch/mips/include/asm/pgtable-64.h                 |   5 +
- arch/mips/include/asm/pgtable.h                    |   5 +-
- arch/mips/include/asm/r4kcache.h                   |  34 +++
- arch/mips/include/asm/time.h                       |   2 +
- arch/mips/kernel/cpu-probe.c                       |  28 ++-
- arch/mips/kernel/proc.c                            |   7 +
- arch/mips/kernel/relocate_kernel.S                 |  30 +++
- arch/mips/kernel/smp.c                             |   3 +-
- arch/mips/kernel/syscall.c                         |   2 +
- arch/mips/kernel/time.c                            |   2 +
- arch/mips/loongson64/Kconfig                       |   1 +
- arch/mips/loongson64/Platform                      |   3 +
- arch/mips/loongson64/common/env.c                  |  24 ++-
- arch/mips/loongson64/common/mem.c                  |   2 +-
- arch/mips/loongson64/common/platform.c             |  13 +-
- arch/mips/loongson64/common/reset.c                | 119 +++++++++++
- arch/mips/loongson64/loongson-3/Makefile           |   2 +-
- arch/mips/loongson64/loongson-3/clock.c            | 191 +++++++++++++++++
- arch/mips/loongson64/loongson-3/irq.c              |  41 +---
- arch/mips/loongson64/loongson-3/numa.c             |   2 +-
- arch/mips/loongson64/loongson-3/smp.c              |   8 +-
- arch/mips/loongson64/loongson-3/smp.h              |   1 +
- arch/mips/mm/c-r4k.c                               |  42 +++-
- arch/mips/mm/tlbex.c                               |  11 +
- drivers/cpufreq/Kconfig                            |  13 ++
- drivers/cpufreq/Makefile                           |   1 +
- drivers/cpufreq/loongson3_cpufreq.c                | 236 +++++++++++++++++++++
- drivers/platform/mips/cpu_hwmon.c                  |   3 +-
- 43 files changed, 893 insertions(+), 123 deletions(-)
- create mode 100644 arch/mips/loongson64/loongson-3/clock.c
- create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
---
+ arch/mips/include/asm/cpu.h           | 51 ++++++++++++++++++-----------------
+ arch/mips/kernel/cpu-probe.c          |  3 ++-
+ arch/mips/loongson64/common/env.c     |  3 ++-
+ arch/mips/loongson64/loongson-3/smp.c |  3 ++-
+ drivers/platform/mips/cpu_hwmon.c     |  3 ++-
+ 5 files changed, 34 insertions(+), 29 deletions(-)
+
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index d39324c..4fbb069 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -225,31 +225,32 @@
+  * Definitions for 7:0 on legacy processors
+  */
+ 
+-#define PRID_REV_TX4927		0x0022
+-#define PRID_REV_TX4937		0x0030
+-#define PRID_REV_R4400		0x0040
+-#define PRID_REV_R3000A		0x0030
+-#define PRID_REV_R3000		0x0020
+-#define PRID_REV_R2000A		0x0010
+-#define PRID_REV_TX3912		0x0010
+-#define PRID_REV_TX3922		0x0030
+-#define PRID_REV_TX3927		0x0040
+-#define PRID_REV_VR4111		0x0050
+-#define PRID_REV_VR4181		0x0050	/* Same as VR4111 */
+-#define PRID_REV_VR4121		0x0060
+-#define PRID_REV_VR4122		0x0070
+-#define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
+-#define PRID_REV_VR4130		0x0080
+-#define PRID_REV_34K_V1_0_2	0x0022
+-#define PRID_REV_LOONGSON1B	0x0020
+-#define PRID_REV_LOONGSON1C	0x0020	/* Same as Loongson-1B */
+-#define PRID_REV_LOONGSON2E	0x0002
+-#define PRID_REV_LOONGSON2F	0x0003
+-#define PRID_REV_LOONGSON3A_R1	0x0005
+-#define PRID_REV_LOONGSON3B_R1	0x0006
+-#define PRID_REV_LOONGSON3B_R2	0x0007
+-#define PRID_REV_LOONGSON3A_R2	0x0008
+-#define PRID_REV_LOONGSON3A_R3	0x0009
++#define PRID_REV_TX4927			0x0022
++#define PRID_REV_TX4937			0x0030
++#define PRID_REV_R4400			0x0040
++#define PRID_REV_R3000A			0x0030
++#define PRID_REV_R3000			0x0020
++#define PRID_REV_R2000A			0x0010
++#define PRID_REV_TX3912			0x0010
++#define PRID_REV_TX3922			0x0030
++#define PRID_REV_TX3927			0x0040
++#define PRID_REV_VR4111			0x0050
++#define PRID_REV_VR4181			0x0050	/* Same as VR4111 */
++#define PRID_REV_VR4121			0x0060
++#define PRID_REV_VR4122			0x0070
++#define PRID_REV_VR4181A		0x0070	/* Same as VR4122 */
++#define PRID_REV_VR4130			0x0080
++#define PRID_REV_34K_V1_0_2		0x0022
++#define PRID_REV_LOONGSON1B		0x0020
++#define PRID_REV_LOONGSON1C		0x0020	/* Same as Loongson-1B */
++#define PRID_REV_LOONGSON2E		0x0002
++#define PRID_REV_LOONGSON2F		0x0003
++#define PRID_REV_LOONGSON3A_R1		0x0005
++#define PRID_REV_LOONGSON3B_R1		0x0006
++#define PRID_REV_LOONGSON3B_R2		0x0007
++#define PRID_REV_LOONGSON3A_R2		0x0008
++#define PRID_REV_LOONGSON3A_R3_0	0x0009
++#define PRID_REV_LOONGSON3A_R3_1	0x000d
+ 
+ /*
+  * Older processors used to encode processor version and revision in two
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index cf3fd54..83317d6 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1834,7 +1834,8 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+ 			break;
+-		case PRID_REV_LOONGSON3A_R3:
++		case PRID_REV_LOONGSON3A_R3_0:
++		case PRID_REV_LOONGSON3A_R3_1:
+ 			c->cputype = CPU_LOONGSON3;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
+index 1e8a955..8f68ee0 100644
+--- a/arch/mips/loongson64/common/env.c
++++ b/arch/mips/loongson64/common/env.c
+@@ -198,7 +198,8 @@ void __init prom_init_env(void)
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R1:
+ 		case PRID_REV_LOONGSON3A_R2:
+-		case PRID_REV_LOONGSON3A_R3:
++		case PRID_REV_LOONGSON3A_R3_0:
++		case PRID_REV_LOONGSON3A_R3_1:
+ 			cpu_clock_freq = 900000000;
+ 			break;
+ 		case PRID_REV_LOONGSON3B_R1:
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 8501109..fea95d0 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -682,7 +682,8 @@ void play_dead(void)
+ 			(void *)CKSEG1ADDR((unsigned long)loongson3a_r1_play_dead);
+ 		break;
+ 	case PRID_REV_LOONGSON3A_R2:
+-	case PRID_REV_LOONGSON3A_R3:
++	case PRID_REV_LOONGSON3A_R3_0:
++	case PRID_REV_LOONGSON3A_R3_1:
+ 		play_dead_at_ckseg1 =
+ 			(void *)CKSEG1ADDR((unsigned long)loongson3a_r2r3_play_dead);
+ 		break;
+diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+index 322de58..f66521c 100644
+--- a/drivers/platform/mips/cpu_hwmon.c
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -30,7 +30,8 @@ int loongson3_cpu_temp(int cpu)
+ 	case PRID_REV_LOONGSON3B_R2:
+ 		reg = ((reg >> 8) & 0xff) - 100;
+ 		break;
+-	case PRID_REV_LOONGSON3A_R3:
++	case PRID_REV_LOONGSON3A_R3_0:
++	case PRID_REV_LOONGSON3A_R3_1:
+ 		reg = (reg & 0xffff)*731/0x4000 - 273;
+ 		break;
+ 	}
+-- 
 2.7.0

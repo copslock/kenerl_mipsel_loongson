@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2018 04:19:00 +0100 (CET)
-Received: from mail-pl0-x241.google.com ([IPv6:2607:f8b0:400e:c01::241]:40747
-        "EHLO mail-pl0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeA0DSxL62BB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Jan 2018 04:18:53 +0100
-Received: by mail-pl0-x241.google.com with SMTP id g18so163492plo.7;
-        Fri, 26 Jan 2018 19:18:50 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2018 04:20:10 +0100 (CET)
+Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:34100
+        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990400AbeA0DUCvT80B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Jan 2018 04:20:02 +0100
+Received: by mail-pg0-x242.google.com with SMTP id r19so1379826pgn.1;
+        Fri, 26 Jan 2018 19:20:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=CKmy+73KSUBc3MbGk8jLLAKPYfURmA3+1yJc5Fi7oSI=;
-        b=OgYbNyN8FjRMyY3DyETthK0BzJtrBFLcwjzUFtmRqa4ySxq6coPQvjuiWwnELeBAnX
-         XsDhARbsAwUMn6IqH59JWqMaPuhe+oUfugiNOg5vubahyYYnJ6C0sk+pg4b0hHIlGS5V
-         4iT3LLn/QHB+w16biDiNR8EN2tRr+oXcBeiv2Wa/I9c7F6FbG8kHUM9Et+nubH1e36KP
-         Q9dziqg2t6ppgDMS5hmu5V2pSK3HvegxmdOv1uGj33a5vmzuP3HjaUDEHMOQf2UaMEPI
-         dalgOdtZgkz1VeH10ei4lEBm5P3607p7vJ6at3vNkTYr6wHV9i5xCvDzIMG1oGq9RRqD
-         ar2g==
+        bh=x+VlLtDGzTzOSbw9NC9vsk1vyDxlC8AEWgbAr1Yj+oM=;
+        b=P/4KNaRyaaCTCiZ9h6sp3YdkPiuyTMFoChmAE6p4kRCpX9g7rL7jskJpdO8tV6q5Aw
+         iASLks2jvab8zZrdcT/W9sdzOMbTX8TG+wlMXGSXHHWhT6N9kv/2/hNuXqMZ68z+7GP5
+         6+O5IK8l/0RtbPp8tLPRudnn/f5KhQxX6x4WqGlv8b8pcKWL4gtj0cXDSFsup0AXSvOT
+         ABVs1MGg/rEpU4HN7VTzUJMT8B9aQjYyY61DpRPl13SR6w7cAonX3m81gRMJ79iVFqzJ
+         Q1sCkqU8jqgP8sZIIFBZEkuuZc/zX7t/+tIeaaJGhrnk36JJcFLrkdpPVzIZVMq4dqJS
+         yk5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references;
-        bh=CKmy+73KSUBc3MbGk8jLLAKPYfURmA3+1yJc5Fi7oSI=;
-        b=b/pLAK8S6Uv5FaNmwJ+taV/glIIkb0QF5sXFs2K9OPEScbq9Ja8TGvuvoxZl23WbHU
-         pmkY8FCem6FTjDrPEcBxYHNYf4Z2LcP3wg3qVEclE7J/RzbpU4Rnpr5v5EZefiSt1k3+
-         yTdQIZYrw8WMLEbs5gbI6lKjHumjIquTlOqfSmv8zgr97erAM1Em/BzshghZoxGvFj36
-         5n5qwln848Ua77knd0UmSuwWPp4iRlvanz5FvNeeNVbiKBTOp8yl2t32O+1NlCkaQzFA
-         OgKiuYjFLF49n1TXfB2qB3h1R4ptQeRclY1VY8K/sWKyKpFi1+jYWZfoSe3y36NlSlWo
-         YYhQ==
-X-Gm-Message-State: AKwxyte449+2MD+HXn2dYKR/Y+XtEa+FTxC1YHsd5JQL5VgglMjDfb9q
-        cnK7Hb1KxALG3/ZTxvQW6AMyqA==
-X-Google-Smtp-Source: AH8x224FwygxM9mPaZJ1gyYt5xxRBtrqN7SBbc+XpBS/YLC7VXuF4kPi0MJXNwTSsjqGNX16b3LJ3Q==
-X-Received: by 2002:a17:902:481:: with SMTP id e1-v6mr13863364ple.228.1517023124829;
-        Fri, 26 Jan 2018 19:18:44 -0800 (PST)
+        bh=x+VlLtDGzTzOSbw9NC9vsk1vyDxlC8AEWgbAr1Yj+oM=;
+        b=YsS2p6eeb8wOHEzMJMyAi9TN3HWQIDx76F1PA0mjdHK77jZdJDx5q/TfYyGMTtzqxc
+         /+q75mE3DnWJFmP22hM4BKUPXOreNBxDrpoON3jAiDs5kvaC2egp4FbGXe+8tVuftBvv
+         epXi2fNxxxY3hXDL1BX/Ocuua1d0AG0MdInLPbrnEvw3jinfHPT5LKc7I7cqDtRLxlmo
+         j3eE9IUmdGQ3CLRu+HB0FehL1mnl0wCjDgwjnYa9xm222rfuNoLvLfP0X7gU+2i4t2Z5
+         rf3I6UDVCQHjkrrom0Ihz/WOxyYe7suWHaa9vQiFeSJo/9pEyS9/Zoy/ZgNSWEK09UOS
+         TtCA==
+X-Gm-Message-State: AKwxytdjMMS4GJN+RMg+XwFpxNuPPbj6AWl2LDoATsnUeTAFSCGO3V9n
+        Mr9F40lFkH+dm2p6mvc3bggvtA==
+X-Google-Smtp-Source: AH8x2265fjT9NVeyqYgg5M1GY3/19SFYPmLyI095pUwRNV+MXcI+jongErRRedDL2CT9MMfMujLerA==
+X-Received: by 10.98.192.134 with SMTP id g6mr20799833pfk.91.1517023194457;
+        Fri, 26 Jan 2018 19:19:54 -0800 (PST)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id 184sm17833607pfg.87.2018.01.26.19.18.42
+        by smtp.gmail.com with ESMTPSA id c184sm21448274pfg.57.2018.01.26.19.19.51
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 26 Jan 2018 19:18:44 -0800 (PST)
+        Fri, 26 Jan 2018 19:19:53 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     James Hogan <james.hogan@mips.com>,
@@ -42,10 +42,11 @@ Cc:     James Hogan <james.hogan@mips.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
-        "# 3 . 15+" <stable@vger.kernel.org>
-Subject: [PATCH V2 04/12] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
-Date:   Sat, 27 Jan 2018 11:19:05 +0800
-Message-Id: <1517023145-14293-1-git-send-email-chenhc@lemote.com>
+        "# 3 . 15+" <stable@vger.kernel.org>,
+        YunQiang Su <yunqiang.su@imgtec.com>
+Subject: [PATCH V2 05/12] MIPS: Loongson fix name confict - MEM_RESERVED
+Date:   Sat, 27 Jan 2018 11:20:17 +0800
+Message-Id: <1517023217-17479-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
 References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
@@ -53,7 +54,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62347
+X-archive-position: 62348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,145 +71,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
-only flush Node-0's scache. So we add r4k_blast_scache_node() by using
-(CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
-start address.
+MEM_RESERVED is used as a value of enum mem_type in include/linux/
+edac.h. This will make failure to build for Loongson in some case:
+for example with CONFIG_RAS enabled.
+
+So here rename MEM_RESERVED to SYSTEM_RAM_RESERVED in Loongson code.
 
 Cc: <stable@vger.kernel.org> # 3.15+
+Reviewed-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: YunQiang Su <yunqiang.su@imgtec.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/r4kcache.h | 34 ++++++++++++++++++++++++++++++++
- arch/mips/mm/c-r4k.c             | 42 +++++++++++++++++++++++++++++++++-------
- 2 files changed, 69 insertions(+), 7 deletions(-)
+ arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
+ arch/mips/loongson64/common/mem.c                  | 2 +-
+ arch/mips/loongson64/loongson-3/numa.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index 7f12d7e..c1f2806 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -747,4 +747,38 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
- __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
- __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
+index 4f69f08..8c286be 100644
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -4,7 +4,7 @@
  
-+#ifndef pa_to_nid
-+#define pa_to_nid(addr) 0
-+#endif
-+
-+#ifndef NODE_ADDRSPACE_SHIFT
-+#define nid_to_addrbase(nid) 0
-+#else
-+#define nid_to_addrbase(nid) (nid << NODE_ADDRSPACE_SHIFT)
-+#endif
-+
-+#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
-+static inline void blast_##pfx##cache##lsize##_node(long node)		\
-+{									\
-+	unsigned long start = CAC_BASE | nid_to_addrbase(node);		\
-+	unsigned long end = start + current_cpu_data.desc.waysize;	\
-+	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
-+	unsigned long ws_end = current_cpu_data.desc.ways <<		\
-+			       current_cpu_data.desc.waybit;		\
-+	unsigned long ws, addr;						\
-+									\
-+	__##pfx##flush_prologue						\
-+									\
-+	for (ws = 0; ws < ws_end; ws += ws_inc)				\
-+		for (addr = start; addr < end; addr += lsize * 32)	\
-+			cache##lsize##_unroll32(addr|ws, indexop);	\
-+									\
-+	__##pfx##flush_epilogue						\
-+}
-+
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
-+__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
-+
- #endif /* _ASM_R4KCACHE_H */
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 6f534b20..155f5f5 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
- 		r4k_blast_scache = blast_scache128;
- }
- 
-+static void (*r4k_blast_scache_node)(long node);
-+
-+static void r4k_blast_scache_node_setup(void)
-+{
-+	unsigned long sc_lsize = cpu_scache_line_size();
-+
-+	if (current_cpu_type() != CPU_LOONGSON3)
-+		r4k_blast_scache_node = (void *)cache_noop;
-+	else if (sc_lsize == 16)
-+		r4k_blast_scache_node = blast_scache16_node;
-+	else if (sc_lsize == 32)
-+		r4k_blast_scache_node = blast_scache32_node;
-+	else if (sc_lsize == 64)
-+		r4k_blast_scache_node = blast_scache64_node;
-+	else if (sc_lsize == 128)
-+		r4k_blast_scache_node = blast_scache128_node;
-+}
-+
- static inline void local_r4k___flush_cache_all(void * args)
- {
- 	switch (current_cpu_type()) {
- 	case CPU_LOONGSON2:
--	case CPU_LOONGSON3:
- 	case CPU_R4000SC:
- 	case CPU_R4000MC:
- 	case CPU_R4400SC:
-@@ -480,6 +497,10 @@ static inline void local_r4k___flush_cache_all(void * args)
- 		r4k_blast_scache();
- 		break;
- 
-+	case CPU_LOONGSON3:
-+		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
-+		break;
-+
- 	case CPU_BMIPS5000:
- 		r4k_blast_scache();
- 		__sync();
-@@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- 
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
--		if (size >= scache_size)
--			r4k_blast_scache();
--		else
-+		if (size >= scache_size) {
-+			if (current_cpu_type() != CPU_LOONGSON3)
-+				r4k_blast_scache();
-+			else
-+				r4k_blast_scache_node(pa_to_nid(addr));
-+		} else
- 			blast_scache_range(addr, addr + size);
- 		preempt_enable();
- 		__sync();
-@@ -872,9 +896,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- 
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
--		if (size >= scache_size)
--			r4k_blast_scache();
--		else {
-+		if (size >= scache_size) {
-+			if (current_cpu_type() != CPU_LOONGSON3)
-+				r4k_blast_scache();
-+			else
-+				r4k_blast_scache_node(pa_to_nid(addr));
-+		} else {
- 			/*
- 			 * There is no clearly documented alignment requirement
- 			 * for the cache instruction on MIPS processors and
-@@ -1905,6 +1932,7 @@ void r4k_cache_init(void)
- 	r4k_blast_scache_page_setup();
- 	r4k_blast_scache_page_indexed_setup();
- 	r4k_blast_scache_setup();
-+	r4k_blast_scache_node_setup();
- #ifdef CONFIG_EVA
- 	r4k_blast_dcache_user_page_setup();
- 	r4k_blast_icache_user_page_setup();
+ #define SYSTEM_RAM_LOW		1
+ #define SYSTEM_RAM_HIGH		2
+-#define MEM_RESERVED		3
++#define SYSTEM_RAM_RESERVED	3
+ #define PCI_IO			4
+ #define PCI_MEM			5
+ #define LOONGSON_CFG_REG	6
+diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/common/mem.c
+index b01d524..c549e52 100644
+--- a/arch/mips/loongson64/common/mem.c
++++ b/arch/mips/loongson64/common/mem.c
+@@ -79,7 +79,7 @@ void __init prom_init_memory(void)
+ 					(u64)loongson_memmap->map[i].mem_size << 20,
+ 					BOOT_MEM_RAM);
+ 				break;
+-			case MEM_RESERVED:
++			case SYSTEM_RAM_RESERVED:
+ 				add_memory_region(loongson_memmap->map[i].mem_start,
+ 					(u64)loongson_memmap->map[i].mem_size << 20,
+ 					BOOT_MEM_RESERVED);
+diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+index f17ef52..9717106 100644
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
+ 			memblock_add_node(PFN_PHYS(start_pfn),
+ 				PFN_PHYS(end_pfn - start_pfn), node);
+ 			break;
+-		case MEM_RESERVED:
++		case SYSTEM_RAM_RESERVED:
+ 			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+ 				(u32)node_id, mem_type, mem_start, mem_size);
+ 			add_memory_region((node_id << 44) + mem_start,
 -- 
 2.7.0

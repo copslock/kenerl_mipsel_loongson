@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2018 13:30:42 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:37830 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994668AbeA2MaetGBip (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Jan 2018 13:30:34 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 119E120C48;
-        Mon, 29 Jan 2018 12:30:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 119E120C48
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 29 Jan 2018 12:30:19 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: TXx9: use IS_BUILTIN() for CONFIG_LEDS_CLASS
-Message-ID: <20180129123018.GB7637@saruman>
-References: <1517225205-10374-1-git-send-email-matt.redfearn@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2018 21:06:06 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33324 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994683AbeA2UF7NXfn1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2018 21:05:59 +0100
+Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4F7732E8F;
+        Mon, 29 Jan 2018 12:58:26 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jonas Gorski <jonas.gorski@gmail.com>,
+        Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Schichan <nschichan@freebox.fr>,
+        linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 3.18 19/52] MIPS: AR7: ensure the port types FCR value is used
+Date:   Mon, 29 Jan 2018 13:56:37 +0100
+Message-Id: <20180129123629.035172662@linuxfoundation.org>
+X-Mailer: git-send-email 2.16.1
+In-Reply-To: <20180129123628.168904217@linuxfoundation.org>
+References: <20180129123628.168904217@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1517225205-10374-1-git-send-email-matt.redfearn@mips.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62360
+X-archive-position: 62361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,67 +46,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 29, 2018 at 11:26:45AM +0000, Matt Redfearn wrote:
-> When commit b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
-> added board support for the RBTX4939, it added a call to
-> led_classdev_register even if the LED class is built as a module.
-> Built-in arch code cannot call module code directly like this. Commit
-> b33b44073734 ("MIPS: TXX9: use IS_ENABLED() macro") subsequently
-> changed the inclusion of this code to a single check that
-> CONFIG_LEDS_CLASS is either builtin or a module, but the same issue
-> remains.
-> This leads to MIPS allmodconfig builds failing when CONFIG_MACH_TX49XX=y
-> is set:
-> 
-> arch/mips/txx9/rbtx4939/setup.o: In function `rbtx4939_led_probe':
-> setup.c:(.init.text+0xc0): undefined reference to `of_led_classdev_register'
-> make: *** [Makefile:999: vmlinux] Error 1
-> 
-> Fix this by using the IS_BUILTIN() macro instead.
-> 
-> Fixes: b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
-> Fixes: b33b44073734 ("MIPS: TXX9: use IS_ENABLED() macro")
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
-Well, I don't think the latter did anything wrong or made anything
-worse, so shouldn't really be implicated by "Fixes:", but other than
-that it looks like a reasonable workaround (even if ideally the
-driverlet would be separate from the device instantiation):
+------------------
 
-Reviewed-by: James Hogan <jhogan@kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-Thanks
-James
+commit 0a5191efe06b5103909206e4fbcff81d30283f8e upstream.
 
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> 
-> ---
-> 
->  arch/mips/txx9/rbtx4939/setup.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
-> index 8b937300fb7f..fd26fadc8617 100644
-> --- a/arch/mips/txx9/rbtx4939/setup.c
-> +++ b/arch/mips/txx9/rbtx4939/setup.c
-> @@ -186,7 +186,7 @@ static void __init rbtx4939_update_ioc_pen(void)
->  
->  #define RBTX4939_MAX_7SEGLEDS	8
->  
-> -#if IS_ENABLED(CONFIG_LEDS_CLASS)
-> +#if IS_BUILTIN(CONFIG_LEDS_CLASS)
->  static u8 led_val[RBTX4939_MAX_7SEGLEDS];
->  struct rbtx4939_led_data {
->  	struct led_classdev cdev;
-> @@ -261,7 +261,7 @@ static inline void rbtx4939_led_setup(void)
->  
->  static void __rbtx4939_7segled_putc(unsigned int pos, unsigned char val)
->  {
-> -#if IS_ENABLED(CONFIG_LEDS_CLASS)
-> +#if IS_BUILTIN(CONFIG_LEDS_CLASS)
->  	unsigned long flags;
->  	local_irq_save(flags);
->  	/* bit7: reserved for LED class */
-> -- 
-> 2.7.4
-> 
+Since commit aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt
+trigger I/F of FIFO buffers"), the port's default FCR value isn't used
+in serial8250_do_set_termios anymore, but copied over once in
+serial8250_config_port and then modified as needed.
+
+Unfortunately, serial8250_config_port will never be called if the port
+is shared between kernel and userspace, and the port's flag doesn't have
+UPF_BOOT_AUTOCONF, which would trigger a serial8250_config_port as well.
+
+This causes garbled output from userspace:
+
+[    5.220000] random: procd urandom read with 49 bits of entropy available
+ers
+   [kee
+
+Fix this by forcing it to be configured on boot, resulting in the
+expected output:
+
+[    5.250000] random: procd urandom read with 50 bits of entropy available
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+
+Fixes: aef9a7bd9b67 ("serial/uart/8250: Add tunable RX interrupt trigger I/F of FIFO buffers")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Yoshihiro YUNOMAE <yoshihiro.yunomae.ez@hitachi.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Nicolas Schichan <nschichan@freebox.fr>
+Cc: linux-mips@linux-mips.org
+Cc: linux-serial@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/17544/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/ar7/platform.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -581,7 +581,7 @@ static int __init ar7_register_uarts(voi
+ 	uart_port.type		= PORT_AR7;
+ 	uart_port.uartclk	= clk_get_rate(bus_clk) / 2;
+ 	uart_port.iotype	= UPIO_MEM32;
+-	uart_port.flags		= UPF_FIXED_TYPE;
++	uart_port.flags		= UPF_FIXED_TYPE | UPF_BOOT_AUTOCONF;
+ 	uart_port.regshift	= 2;
+ 
+ 	uart_port.line		= 0;

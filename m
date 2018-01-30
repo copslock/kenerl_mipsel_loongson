@@ -1,51 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2018 21:28:04 +0100 (CET)
-Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:64904 "EHLO
-        ste-ftg-msa2.bahnhof.se" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23994678AbeA2U14rK1lf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2018 21:27:56 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTP id A0F043F3B8;
-        Mon, 29 Jan 2018 21:27:46 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from ste-ftg-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id maBmuhFI_FM3; Mon, 29 Jan 2018 21:27:33 +0100 (CET)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by ste-ftg-msa2.bahnhof.se (Postfix) with ESMTPA id EC91F3F366;
-        Mon, 29 Jan 2018 21:27:17 +0100 (CET)
-Date:   Mon, 29 Jan 2018 21:27:16 +0100
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>,
-        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] MIPS: Add basic R5900 support
-Message-ID: <20180129202715.GA4817@localhost.localdomain>
-References: <alpine.DEB.2.00.1709182055090.16752@tp.orcam.me.uk>
- <20170920145440.GB9255@localhost.localdomain>
- <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
- <20170927172107.GB2631@localhost.localdomain>
- <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
- <20170930065654.GA7714@localhost.localdomain>
- <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
- <20171029172016.GA2600@localhost.localdomain>
- <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
- <20171111160422.GA2332@localhost.localdomain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20171111160422.GA2332@localhost.localdomain>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <noring@nocrew.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jan 2018 20:07:52 +0100 (CET)
+Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:44936
+        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994744AbeA3THp51eq8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Jan 2018 20:07:45 +0100
+Received: by mail-lf0-x244.google.com with SMTP id v188so16961010lfa.11;
+        Tue, 30 Jan 2018 11:07:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=ohlAZVaha05HlLEXzfPN/XNqEi9JWpDwTcxRL4PSXVE=;
+        b=KfKbyfBzsXrxydoZfWL+p1OlB2gokb2QQ61GSUPuWGuNlRBGefgSc8/7AjuYlF/EQS
+         g7dBm1JMW03TV7dUaNapEfNzHWpUEkyZgdEtwYTcneHdsthcH3fiuZwtI3snZT43LkEh
+         sZUPYjBuxV5EnzuqKXZ0RzY6qnmVbYly2zUYb/9/HeuJKCP8ry5DpAEt5oMmQm27NqlB
+         yWXptOuvyaOaqY0iUi/ZaX9Nhhqd6Rdcj0Eekecsl/KZAniXTEUk/RI0jGqkx4zccPFG
+         0gBWGRV5TdsRHNDXprP+BL7oU1R12z1Hi+nNMVdC3kl3wJJLJ86dhXNaAXQjy8QsTsDc
+         ovTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=ohlAZVaha05HlLEXzfPN/XNqEi9JWpDwTcxRL4PSXVE=;
+        b=CYGcEA3oy6Rv/QgI2y/JPvgMawMsLzUvUblpkMdvMMv8xmLEAqWnYKEfIkUncNzyk0
+         E6Zg2lPBgGcp4jHRSie/fVyhZiMlEcVty6jbpXOIfRXVCgi5lLKR5O5MtvPLMy01uc8P
+         Lg0dzZLHAAsW5FhXee7eVyYFaD3RmajxC+82b/tnddh4YMlT2lgKDKHGyAIV39QzPh0F
+         Nkm+U/kHNE+4HjAXKMG3Zit+bbtyfIrcfxELPTUfUXNHlKEDmRHBkoDOq8ajdRzN3Fsy
+         dH9ExCe8ueG0o02O11gp6cb840eFI7/THpT0RSYsWPQYBrq7OJ0ZT8AbeVXa1vtZ6+On
+         slsg==
+X-Gm-Message-State: AKwxytdHEpaZXx6HgFYuW8sjl5Hzl4Uz/u/s9hLGtusJGupzwrSsSjXV
+        Nbyad+vky0aLSfV4Hi1Qhog=
+X-Google-Smtp-Source: AH8x224O5y9xf/w9C8kU0LJZXdYI7RPT9jSqB3uzBB6ZvdRG5lEEFfD6CfR99CUc7OSLXzeGqdV6kA==
+X-Received: by 10.25.113.2 with SMTP id m2mr15994861lfc.71.1517339260288;
+        Tue, 30 Jan 2018 11:07:40 -0800 (PST)
+Received: from huvuddator.lan (ua-213-113-106-221.cust.bredbandsbolaget.se. [213.113.106.221])
+        by smtp.gmail.com with ESMTPSA id s65sm3547115lfi.93.2018.01.30.11.07.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Jan 2018 11:07:39 -0800 (PST)
+From:   Ulf Magnusson <ulfalizer@gmail.com>
+To:     linux-kbuild@vger.kernel.org
+Cc:     yamada.masahiro@socionext.com, mcgrof@kernel.org,
+        Ulf Magnusson <ulfalizer@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 07/10] MIPS: BCM63XX: kconfig: Remove empty help text
+Date:   Tue, 30 Jan 2018 20:05:29 +0100
+Message-Id: <20180130190555.6577-8-ulfalizer@gmail.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180130190555.6577-1-ulfalizer@gmail.com>
+References: <20180130190555.6577-1-ulfalizer@gmail.com>
+Return-Path: <ulfalizer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62364
+X-archive-position: 62365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: ulfalizer@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,31 +76,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej & Jürgen,
+In preparation for adding a warning ("kconfig: Warn if help text is
+blank"): https://lkml.org/lkml/2018/1/30/516
 
-I have updated the PS2 patchset to v4.15 now. For the initial submission,
-I'm hoping to include device drivers for USB and serial support. The first
-20 or so patches are ready for review, with 5-10 additional patches needing
-clean-ups.
+Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
+---
+ arch/mips/bcm63xx/boards/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-USB maintainer Alan Stern has previewed the PS2 OHCI driver:
-
-https://marc.info/?l=linux-usb&m=151198476018400
-
-Simple devices such as a USB keyboard work. Jürgen Urban has reported
-issues with USB mass storage devices, possibly due to lost interrupts.
-
-I tried a wireless AR9271 USB device. It had at least two problems: First
-error was "ath9k_htc: Unable to allocate URBs", due to the (very) limited
-amount of reserved IOP memory (256 kb). I then adjusted a few hardcoded
-ath9k_htc buffer limits. The following error was "ath9k_htc: Target is
-unresponsive" which remains to investigate.
-
-Jürgen: In ps2_uart.c for v4.15, the init_timer call needs to be replaced
-with timer_setup.
-
-Work in progress:
-
-https://github.com/frno7/linux/tree/ps2-v4.15-n0
-
-Fredrik
+diff --git a/arch/mips/bcm63xx/boards/Kconfig b/arch/mips/bcm63xx/boards/Kconfig
+index 6ff0a7481081..f60d96610ace 100644
+--- a/arch/mips/bcm63xx/boards/Kconfig
++++ b/arch/mips/bcm63xx/boards/Kconfig
+@@ -7,6 +7,5 @@ choice
+ config BOARD_BCM963XX
+        bool "Generic Broadcom 963xx boards"
+ 	select SSB
+-       help
+ 
+ endchoice
+-- 
+2.14.1

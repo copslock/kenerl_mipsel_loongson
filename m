@@ -1,56 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jan 2018 20:25:10 +0100 (CET)
-Received: from mail-lf0-x243.google.com ([IPv6:2a00:1450:4010:c07::243]:46699
-        "EHLO mail-lf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994747AbeA3TZD3i8W- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Jan 2018 20:25:03 +0100
-Received: by mail-lf0-x243.google.com with SMTP id q194so17018511lfe.13;
-        Tue, 30 Jan 2018 11:25:03 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jan 2018 20:25:30 +0100 (CET)
+Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:43143
+        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994752AbeA3TZGcU1BO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Jan 2018 20:25:06 +0100
+Received: by mail-lf0-x244.google.com with SMTP id o89so17020641lfg.10;
+        Tue, 30 Jan 2018 11:25:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ohlAZVaha05HlLEXzfPN/XNqEi9JWpDwTcxRL4PSXVE=;
-        b=lvabyb/NZw/mXJGkPJGeVy9Aq9wZwiScvLz5VvszySU9CkOMMA2lg5SCyEapKPResD
-         Js+isphvlangdoayhzgxUWXx5NY/2xlPXQFlxiPiSOkh++C/Hz+l/PnwbSm/470lFq1H
-         eb3Looc58WK6BoIotP4IRwpzl4AtdzRm4/G6QbIMMK/uGFMR2w2lsfsQ41766r0Kr7Kt
-         aJkQcku3eyDQ2FqeX5DukoarfD6PRbbvFL8rl/x6lYAoiU+plAXbgV3bGT8VcE0iMSJw
-         ijYmLc8tRqSSSdCniM1FafyEHlnForoayfHKnzYzSt9lb8C9H7wy+h6mdZkfKDzs2uTv
-         WEzg==
+        bh=DrxXdiWWbNjvXacFDQ80uUw3x4XjUJ6shA9HeDmAfRg=;
+        b=JLAUvznQB33BI+M27QLzHVzOzTkuGHquN2zg9U1bsa1XVuIPHVbN5lDGRo/dmacSve
+         movy1gFWOe/qLr083/Xwv6X7g+bdvUIQJTqUh1EPd476hpo7NNiA4N8RjGIqDsPiFb/d
+         wXOTlqNn3161DLEDYfPlval99qWjud/AyF9g7TCvA04XK0kFZxu4Dz2oRGKX1+f/KJta
+         Sre09UJTNBarnqQEOPIROLCf1LkWpoyjhpEmsJjbKYpWeEm7dxy8v3KGCKQ0YrG/Xno2
+         aEZYLE9yBitSRBpxj3PHz945Y6IFjb5AnEiDz4y86y7HeBHPDcsQP0k/YxQrSfvgwPWc
+         cm/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=ohlAZVaha05HlLEXzfPN/XNqEi9JWpDwTcxRL4PSXVE=;
-        b=cHM/EleHga60GdCHQYeWSCS2MT7oiuPRVKCYJI6vpUJaGEc2Ym0olNm2JZ5LxvwLYZ
-         3BToYZ8k/e4zvElMyhCxTcavpSPJm5n+Y5390mF6UD3THCabCJr/WA/hzRFEhnBUXPT+
-         Jr5/aVrIy1SbtFPADob9mD9tCUtCC6/yVmbgeVwJpMUMuNYqzDH0evXaUwXe17mOBamI
-         kEdPef21TZNZS9dHZzBmxtt6IFf/oxI4FoUGKe5dY8QmdZfdlA+C7dJKjJDX6NrRS2Vx
-         b2A3uERiJfke+gM5MHtMq5hdI0Fr2tqkqMNmABmkhZnadyjPqp3UvNNGrPRY12yTS4OT
-         p3pw==
-X-Gm-Message-State: AKwxytdRzf/UVTSJ+EGqmUpbG4jMlSPPTQuT2/dmza683BHJumX71PoU
-        NmCnpiJmqSEQIkPFL9hq2dY=
-X-Google-Smtp-Source: AH8x224YJLgbzygoqZTBZs5TPUrgU03XP/yxvgpLyDSgC7QKx7Mdkzxin4YmHjI6G9+JVCf04V5bhg==
-X-Received: by 10.25.209.205 with SMTP id i196mr17288517lfg.43.1517340298002;
-        Tue, 30 Jan 2018 11:24:58 -0800 (PST)
+        bh=DrxXdiWWbNjvXacFDQ80uUw3x4XjUJ6shA9HeDmAfRg=;
+        b=LEIYk91CUR5ke3sEjFg8EOm6JLkp9opMGAJHq2AsPfqMR3oCDmRDNc1CQNnVKfOkOt
+         GlkLcLlZMsrG9HxkE2rpkuHTJdPCNGi0+nLcpEaGfmW7+YRzDCBcpxCE22zisxDDrUvm
+         QoNVEYjtwOE+upArd5EYLsh5sdRm6etmcq/4h9pVaH6Uupffj/SfY16OF+Wm6J41evxc
+         RW8DiMECSW/MoO35IWWD9oaBQ5k2Lyat/dp3XWyRkwOhcTgWhDySseoDe0tzvnl9fOio
+         HjxZ8OEGcpT1FVQxoq2MlGYY+NdOXHp0UYMgdzGMWFaqRnemIFGst75gFFNLzP9EM31W
+         y4Kw==
+X-Gm-Message-State: AKwxytdBF7bFmR+ef8UmbB3qY3g/YB5og8kplfas64eR2fwOpzhqBGcC
+        SDHppd66JZUn7pS8X4ByTCI=
+X-Google-Smtp-Source: AH8x227Ic25610EmmxLCrh23sR/ZzQWbIcwBxEJssgBeavqx3cgr3xpswzidLXUIfLHMI6DZw1E4wQ==
+X-Received: by 10.25.23.27 with SMTP id n27mr10604680lfi.89.1517340301208;
+        Tue, 30 Jan 2018 11:25:01 -0800 (PST)
 Received: from huvuddator.lan (ua-213-113-106-221.cust.bredbandsbolaget.se. [213.113.106.221])
-        by smtp.gmail.com with ESMTPSA id l16sm3534818lfk.65.2018.01.30.11.24.56
+        by smtp.gmail.com with ESMTPSA id l16sm3534818lfk.65.2018.01.30.11.25.00
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 30 Jan 2018 11:24:57 -0800 (PST)
+        Tue, 30 Jan 2018 11:25:00 -0800 (PST)
 From:   Ulf Magnusson <ulfalizer@gmail.com>
 To:     linux-kbuild@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, yamada.masahiro@socionext.com,
         mcgrof@kernel.org, Ulf Magnusson <ulfalizer@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 07/10] MIPS: BCM63XX: kconfig: Remove empty help text
-Date:   Tue, 30 Jan 2018 20:23:02 +0100
-Message-Id: <20180130192349.8420-8-ulfalizer@gmail.com>
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Subject: [PATCH v2 08/10] MIPS: kconfig: Remove empty help text
+Date:   Tue, 30 Jan 2018 20:23:03 +0100
+Message-Id: <20180130192349.8420-9-ulfalizer@gmail.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180130192349.8420-1-ulfalizer@gmail.com>
 References: <20180130192349.8420-1-ulfalizer@gmail.com>
@@ -58,7 +51,7 @@ Return-Path: <ulfalizer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62367
+X-archive-position: 62368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,19 +73,20 @@ blank"): https://lkml.org/lkml/2018/1/30/516
 
 Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
 ---
- arch/mips/bcm63xx/boards/Kconfig | 1 -
+ arch/mips/Kconfig | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/bcm63xx/boards/Kconfig b/arch/mips/bcm63xx/boards/Kconfig
-index 6ff0a7481081..f60d96610ace 100644
---- a/arch/mips/bcm63xx/boards/Kconfig
-+++ b/arch/mips/bcm63xx/boards/Kconfig
-@@ -7,6 +7,5 @@ choice
- config BOARD_BCM963XX
-        bool "Generic Broadcom 963xx boards"
- 	select SSB
--       help
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ab98569994f0..57cd591e7b28 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2326,7 +2326,6 @@ config MIPS_VPE_LOADER_TOM
+ config MIPS_VPE_APSP_API
+ 	bool "Enable support for AP/SP API (RTLX)"
+ 	depends on MIPS_VPE_LOADER
+-	help
  
- endchoice
+ config MIPS_VPE_APSP_API_CMP
+ 	bool
 -- 
 2.14.1

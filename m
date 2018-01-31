@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2018 23:25:47 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:53500 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2018 23:26:11 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:53522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994777AbeAaWZk7NtpC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 31 Jan 2018 23:25:40 +0100
+        id S23994802AbeAaWZlUaOTC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Jan 2018 23:25:41 +0100
 Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D84621798;
-        Wed, 31 Jan 2018 22:25:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9D84621798
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D43521796;
+        Wed, 31 Jan 2018 22:25:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9D43521796
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
 From:   James Hogan <jhogan@kernel.org>
@@ -18,10 +18,10 @@ Cc:     linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         Corentin Labbe <clabbe.montjoie@gmail.com>,
-        linux-usb@vger.kernel.org
-Subject: [PATCH 1/2] usb: Move USB_UHCI_BIG_ENDIAN_* out of USB_SUPPORT
-Date:   Wed, 31 Jan 2018 22:24:45 +0000
-Message-Id: <05aec8b194d01871c2e9f62ce38d68b56dff59ca.1517437177.git-series.jhogan@kernel.org>
+        sparclinux@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [PATCH 2/2] sparc,leon: Select USB_UHCI_BIG_ENDIAN_{MMIO,DESC}
+Date:   Wed, 31 Jan 2018 22:24:46 +0000
+Message-Id: <fb8ebffece031b246324cef5ad3afd75cf3795dd.1517437177.git-series.jhogan@kernel.org>
 X-Mailer: git-send-email 2.13.6
 In-Reply-To: <cover.a68aa8a51a9733579dc929dcc4367a56b22f0c75.1517437177.git-series.jhogan@kernel.org>
 References: <cover.a68aa8a51a9733579dc929dcc4367a56b22f0c75.1517437177.git-series.jhogan@kernel.org>
@@ -31,7 +31,7 @@ Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62383
+X-archive-position: 62384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,64 +48,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move the Kconfig symbols USB_UHCI_BIG_ENDIAN_MMIO and
-USB_UHCI_BIG_ENDIAN_DESC out of drivers/usb/host/Kconfig, which is
-conditional upon USB && USB_SUPPORT, so that it can be freely selected
-by platform Kconfig symbols in architecture code.
-
-For example once the MIPS_GENERIC platform selects are fixed in the
-patch "MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN", the MIPS
-32r6_defconfig warns like so:
-
-warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB)
-warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_DESC which has unmet direct dependencies (USB_SUPPORT && USB)
+Now that USB_UHCI_BIG_ENDIAN_MMIO and USB_UHCI_BIG_ENDIAN_DESC are moved
+outside of the USB_SUPPORT conditional, simply select them from
+SPARC_LEON rather than by the symbol's defaults in drivers/usb/Kconfig,
+similar to how it is done for USB_EHCI_BIG_ENDIAN_MMIO and
+USB_EHCI_BIG_ENDIAN_DESC.
 
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Cc: sparclinux@vger.kernel.org
 Cc: linux-usb@vger.kernel.org
 ---
- drivers/usb/Kconfig      | 8 ++++++++
- drivers/usb/host/Kconfig | 8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/sparc/Kconfig  | 2 ++
+ drivers/usb/Kconfig | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 6bf594ace663..8767e45f1b2b 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -430,6 +430,8 @@ config SPARC_LEON
+ 	depends on SPARC32
+ 	select USB_EHCI_BIG_ENDIAN_MMIO
+ 	select USB_EHCI_BIG_ENDIAN_DESC
++	select USB_UHCI_BIG_ENDIAN_MMIO
++	select USB_UHCI_BIG_ENDIAN_DESC
+ 	---help---
+ 	  If you say Y here if you are running on a SPARC-LEON processor.
+ 	  The LEON processor is a synthesizable VHDL model of the
 diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
-index f699abab1787..65812a2f60b4 100644
+index 65812a2f60b4..148f3ee70286 100644
 --- a/drivers/usb/Kconfig
 +++ b/drivers/usb/Kconfig
-@@ -19,6 +19,14 @@ config USB_EHCI_BIG_ENDIAN_MMIO
- config USB_EHCI_BIG_ENDIAN_DESC
- 	bool
+@@ -21,11 +21,9 @@ config USB_EHCI_BIG_ENDIAN_DESC
  
-+config USB_UHCI_BIG_ENDIAN_MMIO
-+	bool
-+	default y if SPARC_LEON
-+
-+config USB_UHCI_BIG_ENDIAN_DESC
-+	bool
-+	default y if SPARC_LEON
-+
+ config USB_UHCI_BIG_ENDIAN_MMIO
+ 	bool
+-	default y if SPARC_LEON
+ 
+ config USB_UHCI_BIG_ENDIAN_DESC
+ 	bool
+-	default y if SPARC_LEON
+ 
  menuconfig USB_SUPPORT
  	bool "USB support"
- 	depends on HAS_IOMEM
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index b80a94e632af..2763a640359f 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -625,14 +625,6 @@ config USB_UHCI_ASPEED
-        bool
-        default y if ARCH_ASPEED
- 
--config USB_UHCI_BIG_ENDIAN_MMIO
--	bool
--	default y if SPARC_LEON
--
--config USB_UHCI_BIG_ENDIAN_DESC
--	bool
--	default y if SPARC_LEON
--
- config USB_FHCI_HCD
- 	tristate "Freescale QE USB Host Controller support"
- 	depends on OF_GPIO && QE_GPIO && QUICC_ENGINE
 -- 
 git-series 0.9.1

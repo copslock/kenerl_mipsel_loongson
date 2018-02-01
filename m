@@ -1,35 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 13:01:14 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:36300 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 13:03:50 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:36390 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994833AbeBAMBGzUMFN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Feb 2018 13:01:06 +0100
+        id S23994833AbeBAMDnY0ccN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Feb 2018 13:03:43 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1903421748;
-        Thu,  1 Feb 2018 12:00:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1903421748
+        by mail.kernel.org (Postfix) with ESMTPSA id 7E6CE21748;
+        Thu,  1 Feb 2018 12:03:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 7E6CE21748
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 1 Feb 2018 12:00:29 +0000
+Date:   Thu, 1 Feb 2018 12:03:06 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Corentin Labbe <clabbe.montjoie@gmail.com>
-Cc:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: fix typo BIG_ENDIAN to CPU_BIG_ENDIAN
-Message-ID: <20180201120028.GG7637@saruman>
-References: <20180117185638.22426-1-clabbe.montjoie@gmail.com>
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: ftrace: Remove pointer comparison to 0 in
+ prepare_ftrace_return
+Message-ID: <20180201120306.GH7637@saruman>
+References: <20180117113157.25768-1-malat@debian.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DO5DiztRLs659m5i"
+        protocol="application/pgp-signature"; boundary="j2AXaZ4YhVcLc+PQ"
 Content-Disposition: inline
-In-Reply-To: <20180117185638.22426-1-clabbe.montjoie@gmail.com>
+In-Reply-To: <20180117113157.25768-1-malat@debian.org>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62393
+X-archive-position: 62394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,79 +50,65 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---DO5DiztRLs659m5i
+--j2AXaZ4YhVcLc+PQ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 17, 2018 at 07:56:38PM +0100, Corentin Labbe wrote:
-> MIPS_GENERIC select some options with condition on BIG_ENDIAN which do
-> not exists.
-> Replace BIG_ENDIAN by CPU_BIG_ENDIAN which is the correct kconfig name.
-> Note that BMIP_GENERIC do the same which confirm that this patch is
-> needed.
+On Wed, Jan 17, 2018 at 12:31:57PM +0100, Mathieu Malaterre wrote:
+> Replace pointer comparison to 0 with NULL in prepare_ftrace_return
+> to improve code readability. Identified with coccinelle script
+> 'badzero.cocci'.
 >=20
-> Fixes: eed0eabd12ef0 ("MIPS: generic: Introduce generic DT-based board su=
-pport")
-> Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
 
-I've already applied this to my 4.16 branch, with minor commit message
-tweaks.
+I've applied to my 4.16 branch,
 
 Thanks
 James
 
 > ---
->  arch/mips/Kconfig | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>  arch/mips/kernel/ftrace.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 13c6e5cb6055..504e78ff0b00 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -119,12 +119,12 @@ config MIPS_GENERIC
->  	select SYS_SUPPORTS_MULTITHREADING
->  	select SYS_SUPPORTS_RELOCATABLE
->  	select SYS_SUPPORTS_SMARTMIPS
-> -	select USB_EHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
-> -	select USB_EHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
-> -	select USB_OHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
-> -	select USB_OHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
-> -	select USB_UHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
-> -	select USB_UHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
-> +	select USB_EHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-> +	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-> +	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-> +	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-> +	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-> +	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
->  	select USE_OF
->  	help
->  	  Select this to build a kernel which aims to support multiple boards,
+> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+> index 99285be0e088..7f3dfdbc3657 100644
+> --- a/arch/mips/kernel/ftrace.c
+> +++ b/arch/mips/kernel/ftrace.c
+> @@ -361,7 +361,7 @@ void prepare_ftrace_return(unsigned long *parent_ra_a=
+ddr, unsigned long self_ra,
+>  	 * If fails when getting the stack address of the non-leaf function's
+>  	 * ra, stop function graph tracer and return
+>  	 */
+> -	if (parent_ra_addr =3D=3D 0)
+> +	if (parent_ra_addr =3D=3D NULL)
+>  		goto out;
+>  #endif
+>  	/* *parent_ra_addr =3D return_hooker; */
 > --=20
-> 2.13.6
+> 2.11.0
 >=20
 >=20
 
---DO5DiztRLs659m5i
+--j2AXaZ4YhVcLc+PQ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpzAVwACgkQbAtpk944
-dnrH7Q/+Lp4UzuPKR6f5I35cJB+hJGjkAepslzexB7fXOUptOsMr7R5ufxkDrntF
-TGIB/OHDlmgvDF5gU2J3pBa4EdulLi+Pe/zU63qSZy2eug+1qzcqcvYGQMJ2V5uZ
-X7R50fZ0XfvRCgmQkXcVkY74uzeL3CZR16jHtZqlELOorEPtPN/qBgebLNWwRL2p
-IVoWIgio6h2ajeNAi5QUQHyNCi3iaQhovDEgfJsZ/6ShZKA/dP1DnUjBGnxDqzE3
-+oPPRc368hPDIglwogM4pqCI7a+v2sdIYiCH2TioW9qSk4SdxtsKTld49s+c9lci
-F/II4s4N9MjIiev0AkeAy+JfuZyqEPo7FJzhLSW87LZBaSEPdepeFCLZ6DIfHHo0
-UwgReUlaegaWvtwH0CBnnLGOCN3uNlqqgYn13sBME8/y+Fo9Dj5KK/5/LWygo11b
-MAj2aR9Oaetp9kS9ZZbaHb+qCMbToFOA+J/xVC/ssnF1yqW3BfsW2qEfuPs4yuda
-HDB4BhSn4ih0nnqNsthZNqA/RTpUN0+Lt004zFJY+C5g4HVg6LSpBhoOsfHfmKey
-NmpZPgtSxFPEbD+ZVEjQPPTiMgKOQuk75ZSosGwuXSxc9tc8CSMgXEVLEnjkCeD/
-yGhqQa35Ljd7arUim8/iRrgKvJDv7M9N1HBDBKZpO2QHd2fwVIc=
-=yxLU
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpzAfkACgkQbAtpk944
+dnrhQQ/9FJfs6Jryq+qC61qbYP6a7SwG53uTSZseQ/wngdpe4jcmX/L5PKDyLCfL
+0ILvV3oRsqsdUUl7uRCBO3MNPB0VvVreRy6mUXie3SiAnIqKfqVmGTzE27kUhHMD
+P7+/0YTTYpliOTIw2eOInRcCrR3TtPCCOXSJTnvROzO5OcqPRR2qTk+mVWK5trC8
+Ohf4cjfiFwj0SC0Iy5LtTS0isKPrc9/ipv6m4MoseE4/Tav1p6S6xt18f/CJqMfT
+guRJdjNBYgi6fGTeQjJ6Ug2/DgEyD6ZjjHTD4VeGvmkwnQ+tuOXrzzmlh8vo0vfD
+d79jKCtmZPsVRUhNP4zKQ7X1ME89XX0GsxXwDSC9xAs6piiUXxwshCrXuu2d+mRP
+G5XJ/gRq7PRm+aGBlPJLkYKk3+HmnvcEP7V+fcZIRJ0k4ljHJMSNN7J1RiAdfS1Q
+vmru+L9jXMkQV2AjgTjp01bMn51HgIXgcnAGeNyXtNwdJ15+b99eGBKc0/4R113i
+kHIFwf5BeaYxNaO47HKqMTBs+jimBvoidCsrJ87ZT2CZGbIdZN64UUp6EWirGMIM
+64/yRi/aoAvZeDzbQkaFRkT8ATxY7sqlpRiOCgGBqLBvjvSOSqM1GDFmCXs7egLX
+l9hzBPMyxGKT3oSZrD5pnnr+ukLZqOFRnREnB2UP1BfmrRdSsEw=
+=X1Q3
 -----END PGP SIGNATURE-----
 
---DO5DiztRLs659m5i--
+--j2AXaZ4YhVcLc+PQ--

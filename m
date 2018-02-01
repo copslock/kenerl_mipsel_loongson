@@ -1,42 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 17:21:21 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:38160 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994845AbeBAQVOXav4z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Feb 2018 17:21:14 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 612FA21748;
-        Thu,  1 Feb 2018 16:21:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 612FA21748
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 1 Feb 2018 16:20:58 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        YunQiang Su <yunqiang.su@imgtec.com>
-Subject: Re: [PATCH 1/2] MIPS: Loongson fix name confict - MEM_RESERVED
-Message-ID: <20180201162057.GP7637@saruman>
-References: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 18:12:44 +0100 (CET)
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:43817 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994833AbeBARMgrdraz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2018 18:12:36 +0100
+Received: from mail-vk0-f46.google.com (mail-vk0-f46.google.com [209.85.213.46]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id w11HBou8020264;
+        Fri, 2 Feb 2018 02:11:50 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com w11HBou8020264
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1517505110;
+        bh=EApA63iqdSjk6RJBEzZVRzS12wult6h3oKv+NmK3koQ=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=1yh3QorZLLW8lUjrKvHNyNZvJwI+mfJnpzhYfauxd91ju186LgiXPJVgd791DV5HY
+         eDnPc/3qHI+RuCyNbdd8uV+PToExn5aHjNhOKuUzW/Yi0wN41oY8hEqT8V6JCRuIqb
+         /83yCcUheMPW8CprcjsJz4v7qxnUHDyTxZErt3j4WFc7mDa7XwSeLmvTk207N+Njm0
+         5uWVSCxrzyR+n5p+5Nq5aYhUgRVyymDjF/SQzN79a4/H96MyZRwnsUqCA7SL3eFZqf
+         pLt6QOyjoFbvy2EHXkQl7vlpiLNwrg2b/9i4IWRlcCCUSqL1v/wxrvjqt7D7gqfmuv
+         YQ1GaNYhgu7Lw==
+X-Nifty-SrcIP: [209.85.213.46]
+Received: by mail-vk0-f46.google.com with SMTP id e125so11731439vkh.13;
+        Thu, 01 Feb 2018 09:11:50 -0800 (PST)
+X-Gm-Message-State: AKwxytfnauQMS6D2brTZxCvkfy2eEcXgcJ3ahm6c/yIbsH3nwJ5HXiF0
+        h4hnPgI3aruwWK59W15vfdHfuupWsKyu8SXyp60=
+X-Google-Smtp-Source: AH8x224J15gACqddXhOo/Uu7bgyTuXCwsmtYhB6Vt6ioa0yZw5b6fr5HuTB75mNoJ5h+IJRerCi/d7TsOmNgBgYdcNk=
+X-Received: by 10.31.92.142 with SMTP id q136mr29161598vkb.29.1517505109243;
+ Thu, 01 Feb 2018 09:11:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="V7BlxAaPrdhzdIM1"
-Content-Disposition: inline
-In-Reply-To: <1510821304-24626-1-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.159.49.90 with HTTP; Thu, 1 Feb 2018 09:11:08 -0800 (PST)
+In-Reply-To: <20180131093434.20050-9-ulfalizer@gmail.com>
+References: <20180131093434.20050-1-ulfalizer@gmail.com> <20180131093434.20050-9-ulfalizer@gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Fri, 2 Feb 2018 02:11:08 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATYoPzzHgNw8JfCDcCMATBGjf6r8R91RWgd4jMxYmgipg@mail.gmail.com>
+Message-ID: <CAK7LNATYoPzzHgNw8JfCDcCMATBGjf6r8R91RWgd4jMxYmgipg@mail.gmail.com>
+Subject: Re: [PATCH 08/11] MIPS: kconfig: Remove blank help text
+To:     Ulf Magnusson <ulfalizer@gmail.com>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Luis R. Rodriguez" <mcgrof@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Paul Bolle <pebolle@tiscali.nl>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62403
+X-archive-position: 62404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,98 +66,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---V7BlxAaPrdhzdIM1
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Nov 16, 2017 at 04:35:04PM +0800, Huacai Chen wrote:
-> MEM_RESERVED is used as a value of enum mem_type in include/linux/
-> edac.h. This will make failure to build for Loongson in some case:
-> for example with CONFIG_RAS enabled.
->=20
-> So here rename MEM_RESERVED to SYSTEM_RAM_RESERVED in Loongson code.
->=20
-> Signed-off-by: YunQiang Su <yunqiang.su@imgtec.com>
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-
-Applied to my 4.16 branch.
-
-Thanks
-James
-
+2018-01-31 18:34 GMT+09:00 Ulf Magnusson <ulfalizer@gmail.com>:
+> Blank help texts are probably either a typo, a Kconfig misunderstanding,
+> or some kind of half-committing to adding a help text (in which case a
+> TODO comment would be clearer, if the help text really can't be added
+> right away).
+>
+> Best to remove them, IMO.
+>
+> Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
 > ---
->  arch/mips/include/asm/mach-loongson64/boot_param.h | 2 +-
->  arch/mips/loongson64/common/mem.c                  | 2 +-
->  arch/mips/loongson64/loongson-3/numa.c             | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mi=
-ps/include/asm/mach-loongson64/boot_param.h
-> index 4f69f08..8c286be 100644
-> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> @@ -4,7 +4,7 @@
-> =20
->  #define SYSTEM_RAM_LOW		1
->  #define SYSTEM_RAM_HIGH		2
-> -#define MEM_RESERVED		3
-> +#define SYSTEM_RAM_RESERVED	3
->  #define PCI_IO			4
->  #define PCI_MEM			5
->  #define LOONGSON_CFG_REG	6
-> diff --git a/arch/mips/loongson64/common/mem.c b/arch/mips/loongson64/com=
-mon/mem.c
-> index b01d524..c549e52 100644
-> --- a/arch/mips/loongson64/common/mem.c
-> +++ b/arch/mips/loongson64/common/mem.c
-> @@ -79,7 +79,7 @@ void __init prom_init_memory(void)
->  					(u64)loongson_memmap->map[i].mem_size << 20,
->  					BOOT_MEM_RAM);
->  				break;
-> -			case MEM_RESERVED:
-> +			case SYSTEM_RAM_RESERVED:
->  				add_memory_region(loongson_memmap->map[i].mem_start,
->  					(u64)loongson_memmap->map[i].mem_size << 20,
->  					BOOT_MEM_RESERVED);
-> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson6=
-4/loongson-3/numa.c
-> index f17ef52..9717106 100644
-> --- a/arch/mips/loongson64/loongson-3/numa.c
-> +++ b/arch/mips/loongson64/loongson-3/numa.c
-> @@ -166,7 +166,7 @@ static void __init szmem(unsigned int node)
->  			memblock_add_node(PFN_PHYS(start_pfn),
->  				PFN_PHYS(end_pfn - start_pfn), node);
->  			break;
-> -		case MEM_RESERVED:
-> +		case SYSTEM_RAM_RESERVED:
->  			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
->  				(u32)node_id, mem_type, mem_start, mem_size);
->  			add_memory_region((node_id << 44) + mem_start,
-> --=20
-> 2.7.0
->=20
 
---V7BlxAaPrdhzdIM1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
+FYI.
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpzPmkACgkQbAtpk944
-dnoOww//cOSeQo2a1ojUc7EsO35I8e3FGJyyjBVzXtgWQUuVAzzV5yxY4nttSceH
-4PeyTTLirZDuxlbXOiekqctL7z70Z4a7qEeqa6kAwXmptwM7pgJ+K4mZA9EAs3+R
-0I3K5utjJhdsc+1o6bCPzQamasQ0E6g68MD1761N+Un5/as9OaTzWsTreSzS5rK3
-LpT3u2amV9bt0piGiwuwRBK1s7Id5o9zhcKJP2gNUXQwjrsuAmJttsBVkq9D+cyq
-djG3WGee71wNWm48aTZyofPi9+2KQVeheXkPXRxs22oisOo5vzJp9r9B43bnetsn
-E78z3CLVIJ5gzU8qQiJux6jGeI7gpb5ETGU11WUteoffL/x74ZSNFhw2lwuSibU7
-hnnd0Bj0jLOolMfFa0t1oeanjAgPh1sSfVBOSjgsYBRi1Q5o7e0l+7glbLUQnrqq
-TPhu6/b+jfjqnq5S0ymK/0z1UC5xAx0P6BTyMoSGGgn3a8Ijal9eocq09KPk2GQF
-qhiSymu0p0NxCnaZMQtcRG1hS7tjF0G1Biv4nsHrCx9URN6xklU485SZvHg+77qw
-SekmQLZtfjXo4IGMnBxbqhUsk/z5SyMltGMZ1hxsv+1BbeOBxft2riLpxNAIr3Yf
-5PSC4+twWfSxMLI9RbEGEoyD8wg/uIJTXvOrQiKwWfFmnDJOkVc=
-=LjVK
------END PGP SIGNATURE-----
+I picked up this patch to kbuild
+because I need this to suppress warning messages
+introduced by 11/11.
 
---V7BlxAaPrdhzdIM1--
+I am planning to send a PR for this series next week.
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

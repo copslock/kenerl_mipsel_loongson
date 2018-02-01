@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 12:39:59 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:41894 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994828AbeBALjuB6OFN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2018 12:39:50 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 01 Feb 2018 11:39:43 +0000
-Received: from WR-NOWAKOWSKI.mipstec.com (192.168.159.143) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Thu, 1 Feb 2018 03:37:48 -0800
-From:   Marcin Nowakowski <marcin.nowakowski@mips.com>
-To:     Mathieu Malaterre <malat@debian.org>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v3] MIPS: fix incorrect mem=X@Y handling
-Date:   Thu, 1 Feb 2018 12:37:21 +0100
-Message-ID: <20180201113721.24776-1-marcin.nowakowski@mips.com>
-X-Mailer: git-send-email 2.14.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 12:53:10 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:35700 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994828AbeBALxDkh9WN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Feb 2018 12:53:03 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 302E421799;
+        Thu,  1 Feb 2018 11:52:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 302E421799
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Thu, 1 Feb 2018 11:52:24 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rui Wang <wangr@lemote.com>, Binbin Zhou <zhoubb@lemote.com>,
+        Ce Sun <sunc@lemote.com>, Yao Wang <wangyao@lemote.com>,
+        Liangliang Huang <huangll@lemote.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>, r@hev.cc,
+        zhoubb.aaron@gmail.com, huanglllzu@163.com, 513434146@qq.com,
+        1393699660@qq.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] MAINTAINERS: Add Loongson-2/Loongson-3 maintainers
+Message-ID: <20180201115223.GD7637@saruman>
+References: <1512628268-18357-1-git-send-email-chenhc@lemote.com>
+ <1512628268-18357-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.159.143]
-X-BESS-ID: 1517485181-637140-31752-183159-6
-X-BESS-VER: 2018.1-r1801290438
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.20
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189582
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.20 PR0N_SUBJECT           META: Subject has letters around special characters (pr0n) 
-X-BESS-Outbound-Spam-Status: SCORE=0.20 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, PR0N_SUBJECT
-X-BESS-BRTS-Status: 1
-Return-Path: <Marcin.Nowakowski@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="RIYY1s2vRbPFwWeW"
+Content-Disposition: inline
+In-Reply-To: <1512628268-18357-2-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62389
+X-archive-position: 62390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,88 +58,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing") added a
-fix to ensure that the memory range between PHYS_OFFSET and low memory
-address specified by mem= cmdline argument is not later processed by
-free_all_bootmem.  This change was incorrect for systems where the
-commandline specifies more than 1 mem argument, as it will cause all
-memory between PHYS_OFFSET and each of the memory offsets to be marked
-as reserved, which results in parts of the RAM marked as reserved
-(Creator CI20's u-boot has a default commandline argument 'mem=256M@0x0
-mem=768M@0x30000000').
 
-Change the behaviour to ensure that only the range between PHYS_OFFSET
-and the lowest start address of the memories is marked as protected.
+--RIYY1s2vRbPFwWeW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This change also ensures that the range is marked protected even if it's
-only defined through the devicetree and not only via commandline
-arguments.
+On Thu, Dec 07, 2017 at 02:31:08PM +0800, Huacai Chen wrote:
+> Add Jiaxun Yang as the MIPS/Loongson-2 maintainer and add Huacai Chen
+> as the MIPS/Loongson-3 maintainer.
+>=20
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  MAINTAINERS | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cdd6365..bf449da 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9141,6 +9141,26 @@ F:	arch/mips/include/asm/mach-loongson32/
+>  F:	drivers/*/*loongson1*
+>  F:	drivers/*/*/*loongson1*
+> =20
+> +MIPS/LOONGSON2 ARCHITECTURE
+> +M:	Jiaxun Yang <jiaxun.yang@flygoat.com>
+> +L:	linux-mips@linux-mips.org
+> +S:	Maintained
+> +F:	arch/mips/loongson64/*{2e/2f}*
+> +F:	arch/mips/include/asm/mach-loongson64/
+> +F:	drivers/platform/mips/
+> +F:	drivers/*/*loongson2*
+> +F:	drivers/*/*/*loongson2*
+> +
+> +MIPS/LOONGSON3 ARCHITECTURE
+> +M:	Huacai Chen <chenhc@lemote.com>
+> +L:	linux-mips@linux-mips.org
+> +S:	Maintained
+> +F:	arch/mips/loongson64/
+> +F:	arch/mips/include/asm/mach-loongson64/
+> +F:	drivers/platform/mips/
+> +F:	drivers/*/*loongson3*
+> +F:	drivers/*/*/*loongson3*
 
-Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
-Fixes: 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing")
-Cc: <stable@vger.kernel.org> # v4.11+
----
-v3: Update stable version, code cleanup as suggested by James Hogan
-v2: Use updated email adress, add tag for stable.
----
- arch/mips/kernel/setup.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+Ralf applied this patch without the drivers/platform/mips/ changes,
+adding that instead to the main MIPS entry. I have already cherry picked
+both into my 4.16 branch.
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 702c678de116..e4a1581ce822 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -375,6 +375,7 @@ static void __init bootmem_init(void)
- 	unsigned long reserved_end;
- 	unsigned long mapstart = ~0UL;
- 	unsigned long bootmap_size;
-+	phys_addr_t ramstart = (phys_addr_t)ULLONG_MAX;
- 	bool bootmap_valid = false;
- 	int i;
- 
-@@ -395,7 +396,8 @@ static void __init bootmem_init(void)
- 	max_low_pfn = 0;
- 
- 	/*
--	 * Find the highest page frame number we have available.
-+	 * Find the highest page frame number we have available
-+	 * and the lowest used RAM address
- 	 */
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		unsigned long start, end;
-@@ -407,6 +409,8 @@ static void __init bootmem_init(void)
- 		end = PFN_DOWN(boot_mem_map.map[i].addr
- 				+ boot_mem_map.map[i].size);
- 
-+		ramstart = min(ramstart, boot_mem_map.map[i].addr);
-+
- #ifndef CONFIG_HIGHMEM
- 		/*
- 		 * Skip highmem here so we get an accurate max_low_pfn if low
-@@ -436,6 +440,13 @@ static void __init bootmem_init(void)
- 		mapstart = max(reserved_end, start);
- 	}
- 
-+	/*
-+	 * Reserve any memory between the start of RAM and PHYS_OFFSET
-+	 */
-+	if (ramstart > PHYS_OFFSET)
-+		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
-+				  BOOT_MEM_RESERVED);
-+
- 	if (min_low_pfn >= max_low_pfn)
- 		panic("Incorrect memory mapping !!!");
- 	if (min_low_pfn > ARCH_PFN_OFFSET) {
-@@ -664,9 +675,6 @@ static int __init early_parse_mem(char *p)
- 
- 	add_memory_region(start, size, BOOT_MEM_RAM);
- 
--	if (start && start > PHYS_OFFSET)
--		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
--				BOOT_MEM_RESERVED);
- 	return 0;
- }
- early_param("mem", early_parse_mem);
--- 
-2.14.1
+Thanks
+James
+
+> +
+>  MIPS RINT INSTRUCTION EMULATION
+>  M:	Aleksandar Markovic <aleksandar.markovic@mips.com>
+>  L:	linux-mips@linux-mips.org
+> --=20
+> 2.7.0
+>=20
+
+--RIYY1s2vRbPFwWeW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpy/3cACgkQbAtpk944
+dnoo2Q//RSrmp9HvCILdTaw/uWRWBiTo4rdwwfz6dUZwkXb4n6vDVDl099kZty7E
+AyKvo0dE9c5WLYgxf7s9zL9rE1/k6uzTBtQNwEiMLcl9onwv7+CgyglJ1RH5VXGt
+g8yyuWNONGGW2Y4GXz1YN+Ti+AAarIniVgybqgldOH0L5PMQlHDx/aJUheFC7ent
+HRKhzgqhch16VZR/w1+Iw2NBdqKcAJYtChI0Ns1olj9SJz68gwh0gVCMWY2v6lal
+B/TyF0fOS8Aud6+3/DYXBEm4shcH4coP2FBcmnl+/Bq3JjbrYhfLaOmzNcApMvCk
+r4FjT0+ynNOO2LT+ptRwx1WRTHVpMd2S62q5UyBB/6cMyVhMzTpfZEuHlhEVCzH+
+oBksYvCZefYLGxYzZF5DyDPRpqVAV54IJW15J55A4Gb+eIrxs6IIInOM93Y2XzJK
+/QleBGEhHczP4w86FuFi7Sqhvh4rZ06cb17ny8BN8tByjyAGIsw7KrVi4Yalq9nz
+YG/nSqbREiN3cOxnPmVyy4muOeK6fXT4zArneP4TDrIMjPLr4FzAG62WHbC5YfUl
+T2BibSGINIuzJ58AgqeLCHQfT7fSTDU107cxwdnYXbgfJoOA+cHG8+wlF5GVryP9
+4EFOwqd5QaW6Ekl5mJ8uB8tSFXTpUXJPQYtHeux1D/lFddZ6PjI=
+=b0VP
+-----END PGP SIGNATURE-----
+
+--RIYY1s2vRbPFwWeW--

@@ -1,48 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 17:06:16 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:36896 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2018 17:07:19 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:36990 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994839AbeBAQGH6tHIz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Feb 2018 17:06:07 +0100
+        id S23994841AbeBAQHKP6WBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Feb 2018 17:07:10 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 81A632178E;
-        Thu,  1 Feb 2018 16:05:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 81A632178E
+        by mail.kernel.org (Postfix) with ESMTPSA id 692B12178E;
+        Thu,  1 Feb 2018 16:07:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 692B12178E
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 1 Feb 2018 16:05:54 +0000
+Date:   Thu, 1 Feb 2018 16:06:58 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Aleksandar Markovic <aleksandar.markovic@rt-rk.com>
-Cc:     linux-mips@linux-mips.org, Miodrag Dinic <miodrag.dinic@mips.com>,
-        Goran Ferenc <goran.ferenc@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Douglas Leung <douglas.leung@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Petar Jovanovic <petar.jovanovic@mips.com>,
-        Raghu Gandham <raghu.gandham@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v12 3/3] MIPS: ranchu: Add Ranchu as a new generic-based
- board
-Message-ID: <20180201160553.GL7637@saruman>
-References: <1514562138-13774-1-git-send-email-aleksandar.markovic@rt-rk.com>
- <1514562138-13774-4-git-send-email-aleksandar.markovic@rt-rk.com>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] MIPS: Watch: Avoid duplication of bits in
+ mips_install_watch_registers.
+Message-ID: <20180201160657.GM7637@saruman>
+References: <1514892682-30328-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Z9t8O/5YJLB6LEUl"
+        protocol="application/pgp-signature"; boundary="GeDkoc8jIzHasOdk"
 Content-Disposition: inline
-In-Reply-To: <1514562138-13774-4-git-send-email-aleksandar.markovic@rt-rk.com>
+In-Reply-To: <1514892682-30328-1-git-send-email-matt.redfearn@mips.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62399
+X-archive-position: 62400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,286 +48,91 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---Z9t8O/5YJLB6LEUl
+--GeDkoc8jIzHasOdk
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 29, 2017 at 04:41:47PM +0100, Aleksandar Markovic wrote:
-> From: Miodrag Dinic <miodrag.dinic@mips.com>
+On Tue, Jan 02, 2018 at 11:31:21AM +0000, Matt Redfearn wrote:
+> Currently the bits to be set in the watchhi register in addition to that
+> requested by the user is defined inline for each register. To avoid
+> this, define the bits once and or that in for each register.
 >=20
-> Provide amendments to the MIPS generic platform framework so that
-> the new generic-based board Ranchu can be chosen to be built.
->=20
-> The Ranchu board is intended to be used by Android emulator. The name
-> "Ranchu" originates from Android development community. "Goldfish" and
-> "Ranchu" are terms used for two generations of virtual boards used by
-> Android emulator. The name "Ranchu" is a newer one among the two, and
-> this patch deals with Ranchu. However, for historical reasons, some
-> devices/drivers still contain the name "Goldfish".
->=20
-> MIPS Ranchu machine includes a number of Goldfish devices. The support
-> for Virtio devices is also included. Ranchu board supports up to 16
-> Virtio devices which can be attached using Virtio MMIO Bus. This is
-> summarized in the following picture:
->=20
->        ABUS
->         ||----MIPS CPU
->         ||       |                    IRQs
->         ||----Goldfish PIC------------(32)--------
->         ||                     | | | | | | | | |
->         ||----Goldfish TTY------ | | | | | | | |
->         ||                       | | | | | | | |
->         ||----Goldfish RTC-------- | | | | | | |
->         ||                         | | | | | | |
->         ||----Goldfish FB----------- | | | | | |
->         ||                           | | | | | |
->         ||----Goldfish Events--------- | | | | |
->         ||                             | | | | |
->         ||----Goldfish Audio------------ | | | |
->         ||                               | | | |
->         ||----Goldfish Battery------------ | | |
->         ||                                 | | |
->         ||----Android PIPE------------------ | |
->         ||                                   | |
->         ||----Virtio MMIO Bus                | |
->         ||    |    |    |                    | |
->         ||    |    |   (virtio-block)--------- |
->         ||   (16)  |                           |
->         ||    |   (virtio-net)------------------
->=20
-> Device Tree is created on the QEMU side based on the information about
-> devices IO map and IRQ numbers. Kernel will load this DTB using UHI
-> boot protocol DTB handover mode.
->=20
-> Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
-> Signed-off-by: Goran Ferenc <goran.ferenc@mips.com>
-> Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-> Reviewed-by: James Hogan <jhogan@kernel.org>
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 
-Applied to my 4.16 branch,
+Both patches applied to my 4.16 branch,
 
 Thanks
 James
 
 > ---
->  MAINTAINERS                                   |  7 ++
->  arch/mips/configs/generic/board-ranchu.config | 30 +++++++++
->  arch/mips/generic/Kconfig                     | 10 +++
->  arch/mips/generic/Makefile                    |  1 +
->  arch/mips/generic/board-ranchu.c              | 92 +++++++++++++++++++++=
-++++++
->  5 files changed, 140 insertions(+)
->  create mode 100644 arch/mips/configs/generic/board-ranchu.config
->  create mode 100644 arch/mips/generic/board-ranchu.c
 >=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e163873..95679c4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11442,6 +11442,13 @@ S:	Maintained
->  F:	Documentation/blockdev/ramdisk.txt
->  F:	drivers/block/brd.c
+>  arch/mips/kernel/watch.c | 17 +++++++----------
+>  1 file changed, 7 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/arch/mips/kernel/watch.c b/arch/mips/kernel/watch.c
+> index 19fcab7348b1..329d2209521d 100644
+> --- a/arch/mips/kernel/watch.c
+> +++ b/arch/mips/kernel/watch.c
+> @@ -18,27 +18,24 @@
+>  void mips_install_watch_registers(struct task_struct *t)
+>  {
+>  	struct mips3264_watch_reg_state *watches =3D &t->thread.watch.mips3264;
+> +	unsigned int watchhi =3D MIPS_WATCHHI_G |		/* Trap all ASIDs */
+> +			       MIPS_WATCHHI_IRW;	/* Clear result bits */
+> +
+>  	switch (current_cpu_data.watch_reg_use_cnt) {
+>  	default:
+>  		BUG();
+>  	case 4:
+>  		write_c0_watchlo3(watches->watchlo[3]);
+> -		/* Write 1 to the I, R, and W bits to clear them, and
+> -		   1 to G so all ASIDs are trapped. */
+> -		write_c0_watchhi3(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
+> -				  watches->watchhi[3]);
+> +		write_c0_watchhi3(watchhi | watches->watchhi[3]);
+>  	case 3:
+>  		write_c0_watchlo2(watches->watchlo[2]);
+> -		write_c0_watchhi2(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
+> -				  watches->watchhi[2]);
+> +		write_c0_watchhi2(watchhi | watches->watchhi[2]);
+>  	case 2:
+>  		write_c0_watchlo1(watches->watchlo[1]);
+> -		write_c0_watchhi1(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
+> -				  watches->watchhi[1]);
+> +		write_c0_watchhi1(watchhi | watches->watchhi[1]);
+>  	case 1:
+>  		write_c0_watchlo0(watches->watchlo[0]);
+> -		write_c0_watchhi0(MIPS_WATCHHI_G | MIPS_WATCHHI_IRW |
+> -				  watches->watchhi[0]);
+> +		write_c0_watchhi0(watchhi | watches->watchhi[0]);
+>  	}
+>  }
 > =20
-> +RANCHU VIRTUAL BOARD FOR MIPS
-> +M:	Miodrag Dinic <miodrag.dinic@mips.com>
-> +L:	linux-mips@linux-mips.org
-> +S:	Supported
-> +F:	arch/mips/generic/board-ranchu.c
-> +F:	arch/mips/configs/generic/board-ranchu.config
-> +
->  RANDOM NUMBER DRIVER
->  M:	"Theodore Ts'o" <tytso@mit.edu>
->  S:	Maintained
-> diff --git a/arch/mips/configs/generic/board-ranchu.config b/arch/mips/co=
-nfigs/generic/board-ranchu.config
-> new file mode 100644
-> index 0000000..fee9ad4
-> --- /dev/null
-> +++ b/arch/mips/configs/generic/board-ranchu.config
-> @@ -0,0 +1,30 @@
-> +CONFIG_VIRT_BOARD_RANCHU=3Dy
-> +
-> +CONFIG_BATTERY_GOLDFISH=3Dy
-> +CONFIG_FB=3Dy
-> +CONFIG_FB_GOLDFISH=3Dy
-> +CONFIG_GOLDFISH=3Dy
-> +CONFIG_STAGING=3Dy
-> +CONFIG_GOLDFISH_AUDIO=3Dy
-> +CONFIG_GOLDFISH_PIC=3Dy
-> +CONFIG_GOLDFISH_PIPE=3Dy
-> +CONFIG_GOLDFISH_TTY=3Dy
-> +CONFIG_RTC_CLASS=3Dy
-> +CONFIG_RTC_DRV_GOLDFISH=3Dy
-> +
-> +CONFIG_INPUT_EVDEV=3Dy
-> +CONFIG_INPUT_KEYBOARD=3Dy
-> +CONFIG_KEYBOARD_GOLDFISH_EVENTS=3Dy
-> +
-> +CONFIG_MAGIC_SYSRQ=3Dy
-> +CONFIG_POWER_SUPPLY=3Dy
-> +CONFIG_POWER_RESET=3Dy
-> +CONFIG_POWER_RESET_SYSCON=3Dy
-> +CONFIG_POWER_RESET_SYSCON_POWEROFF=3Dy
-> +
-> +CONFIG_VIRTIO_BLK=3Dy
-> +CONFIG_VIRTIO_CONSOLE=3Dy
-> +CONFIG_VIRTIO_MMIO=3Dy
-> +CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=3Dy
-> +CONFIG_NETDEVICES=3Dy
-> +CONFIG_VIRTIO_NET=3Dy
-> diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-> index 52e0286..2ff3b17 100644
-> --- a/arch/mips/generic/Kconfig
-> +++ b/arch/mips/generic/Kconfig
-> @@ -49,4 +49,14 @@ config FIT_IMAGE_FDT_XILFPGA
->  	  Enable this to include the FDT for the MIPSfpga platform
->  	  from Imagination Technologies in the FIT kernel image.
-> =20
-> +config VIRT_BOARD_RANCHU
-> +	bool "Support Ranchu platform for Android emulator"
-> +	help
-> +	  This enables support for the platform used by Android emulator.
-> +
-> +	  Ranchu platform consists of a set of virtual devices. This platform
-> +	  enables emulation of variety of virtual configurations while using
-> +	  Android emulator. Android emulator is based on Qemu, and contains
-> +	  the support for the same set of virtual devices.
-> +
->  endif
-> diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
-> index 8749673..5fb60c8 100644
-> --- a/arch/mips/generic/Makefile
-> +++ b/arch/mips/generic/Makefile
-> @@ -15,3 +15,4 @@ obj-y +=3D proc.o
->  obj-$(CONFIG_YAMON_DT_SHIM)		+=3D yamon-dt.o
->  obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+=3D board-sead3.o
->  obj-$(CONFIG_KEXEC)			+=3D kexec.o
-> +obj-$(CONFIG_VIRT_BOARD_RANCHU)	+=3D board-ranchu.o
-> diff --git a/arch/mips/generic/board-ranchu.c b/arch/mips/generic/board-r=
-anchu.c
-> new file mode 100644
-> index 0000000..ea451b8
-> --- /dev/null
-> +++ b/arch/mips/generic/board-ranchu.c
-> @@ -0,0 +1,92 @@
-> +/*
-> + * Support code for virtual Ranchu board for MIPS.
-> + *
-> + * Author: Miodrag Dinic <miodrag.dinic@mips.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify =
-it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at y=
-our
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/of_address.h>
-> +#include <linux/types.h>
-> +
-> +#include <asm/machine.h>
-> +#include <asm/mipsregs.h>
-> +#include <asm/time.h>
-> +
-> +#define GOLDFISH_TIMER_LOW		0x00
-> +#define GOLDFISH_TIMER_HIGH		0x04
-> +
-> +static __init u64 read_rtc_time(void __iomem *base)
-> +{
-> +	u32 time_low;
-> +	u32 time_high;
-> +
-> +	/*
-> +	 * Reading the low address latches the high value
-> +	 * as well so there is no fear that we may read
-> +	 * inaccurate high value.
-> +	 */
-> +	time_low =3D readl(base + GOLDFISH_TIMER_LOW);
-> +	time_high =3D readl(base + GOLDFISH_TIMER_HIGH);
-> +
-> +	return ((u64)time_high << 32) | time_low;
-> +}
-> +
-> +static __init unsigned int ranchu_measure_hpt_freq(void)
-> +{
-> +	u64 rtc_start, rtc_current, rtc_delta;
-> +	unsigned int start, count;
-> +	struct device_node *np;
-> +	void __iomem *rtc_base;
-> +
-> +	np =3D of_find_compatible_node(NULL, NULL, "google,goldfish-rtc");
-> +	if (!np)
-> +		panic("%s(): Failed to find 'google,goldfish-rtc' dt node!",
-> +		      __func__);
-> +
-> +	rtc_base =3D of_iomap(np, 0);
-> +	if (!rtc_base)
-> +		panic("%s(): Failed to ioremap Goldfish RTC base!", __func__);
-> +
-> +	/*
-> +	 * Poll the nanosecond resolution RTC for one
-> +	 * second to calibrate the CPU frequency.
-> +	 */
-> +	rtc_start =3D read_rtc_time(rtc_base);
-> +	start =3D read_c0_count();
-> +
-> +	do {
-> +		rtc_current =3D read_rtc_time(rtc_base);
-> +		rtc_delta =3D rtc_current - rtc_start;
-> +	} while (rtc_delta < NSEC_PER_SEC);
-> +
-> +	count =3D read_c0_count() - start;
-> +
-> +	/*
-> +	 * Make sure the frequency will be a round number.
-> +	 * Without this correction, the returned value may vary
-> +	 * between subsequent emulation executions.
-> +	 *
-> +	 * TODO: Set this value using device tree.
-> +	 */
-> +	count +=3D 5000;
-> +	count -=3D count % 10000;
-> +
-> +	iounmap(rtc_base);
-> +
-> +	return count;
-> +}
-> +
-> +static const struct of_device_id ranchu_of_match[] __initconst =3D {
-> +	{
-> +		.compatible =3D "mti,ranchu",
-> +	},
-> +};
-> +
-> +MIPS_MACHINE(ranchu) =3D {
-> +	.matches =3D ranchu_of_match,
-> +	.measure_hpt_freq =3D ranchu_measure_hpt_freq,
-> +};
 > --=20
 > 2.7.4
 >=20
+>=20
 
---Z9t8O/5YJLB6LEUl
+--GeDkoc8jIzHasOdk
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpzOuEACgkQbAtpk944
-dnpZiQ/+I6oBHfiF5A16H32Tz4V+pWGgIB3MC0IV85s9kcOS+w+QOq0Xep/9Be12
-9ALUJEIk4xcBNCzfnsFfNqc7w7Q/VpdMsiFMpO8bMsRyqaCMjjKHVMQSdk+5Cm4j
-W4acIqBNki0wr6a3AWvbJuOgy4gYZbPNyS9JodR7FIPf1uu+nk732cIuTxYIwpf5
-6QLiI6zsgGjNmvy1c94bR1zfjnqZ2ZaEieXIB9Dx6U1jsrWk4GYsu2cnmguGjVXh
-7vo4jTudSQVKRUjdQdi1bhnnQvFuR7jrWDx4razig88N19fMK4LMmUn77v7H2hfi
-ba+gs5TiJLCpOslWVYAlwbtRgXJrn0SsALn8vOAwpZaDNnLUUJKnuKhLa7gwWqnR
-sea+dd6vqTSxtnUYpfI8/+n4Lhzp9tzWTtYSuT97KYnqhtip7zDUqZQ5OAUveGux
-U5tr8BQfLat53chBKsPYysPdq14v4D3SH20pJxnXSHms9j7EnAwCvD9PlPHMyNE5
-4L+yrAVK+l75VWY2wD2igYtp4TZ0Tjg20+1JeWqV2wF4nQ5DQWpll5sQZrT2Lv4O
-eLPfvg14yQwxsLXf/c1B7IgpJtAC+h5PAha0vC4kQ5Us0sSRUMcy2ui3dIaMjCFF
-qJ47OmeUEe+HjY2ek2SYsgiMRotMKyWXRnd0LMJoYWX8JkXV5SA=
-=ODB0
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlpzOyEACgkQbAtpk944
+dnqcEA//ey4MjAsAsgt4tVImD9hWyqv3sJzrevqq9ivESDGML3z6Tq3bJJ1Mzzc6
+X7Ss/vAD806bw4mQzNBy2tB4RD+0rnwuHboO88JTfaqsBkNqsxmW6924hIkXEPsS
+7jG1VlvU/XQroEODEVn+XpV5HhWNVAK6etRqfMfWrcJ0STAkYLIFfpO03fQcIcRV
+DgsNdhjuQ9c4b39XM34nTZkNYOueVoTXcxjak8DmCTKuptQx2ZS7+KqJfmUnRTYL
+W7FFjpou3+WTz91gj5P8DDybycAN49hSO4C9mgTiZTlRAEDce9Wk8YRnwn2kNQTc
+wsakg0NVTBe2ErbPOVCnubXCtJKRMoyG1BlDqqbrP/v094Gh2Z+M5cJTnOa8AcMT
+5cnFQHT4UtFrcCElFhYionfR3uT5j550wOFCIK6qAOwSGqOWXzfEECKPLNoyPpKv
+B0EMHlx0MbxBcXZ21sPFg5oEroV2WBZK+HqVUzlpkHQ22OiMKh0Iti9WR5SDzEkO
+3td+6Av20M3cxpqw42BkrgkdhsEng7dUpNZr6xwHISIEhLpELwu9Lqa73So90/Cq
+DJJ/eom+2pURA0tP4pKpdw/n3MpjrdT6Resg7+5WgEAkBB1mxXET8dvY2KFmQZ1/
+hziXlGoxNoN0lZzJNRsVnrPtl8DF/QINrBJxWFjLveV5xdGxbdw=
+=WzTH
 -----END PGP SIGNATURE-----
 
---Z9t8O/5YJLB6LEUl--
+--GeDkoc8jIzHasOdk--

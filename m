@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2018 04:56:39 +0100 (CET)
-Received: from mail-lf0-x243.google.com ([IPv6:2a00:1450:4010:c07::243]:44174
-        "EHLO mail-lf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991025AbeBBDzM4X6I0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Feb 2018 04:55:12 +0100
-Received: by mail-lf0-x243.google.com with SMTP id v188so29426215lfa.11;
-        Thu, 01 Feb 2018 19:55:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2018 04:57:08 +0100 (CET)
+Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:41090
+        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994846AbeBBDzQxRew0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Feb 2018 04:55:16 +0100
+Received: by mail-lf0-x244.google.com with SMTP id f136so29434460lff.8;
+        Thu, 01 Feb 2018 19:55:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=sjRAUl87kIegWEIMHZzr7JdOnoFmHax22DhSBJQMzT0=;
-        b=hLRlSNZ51RxHwDULI62dwlLQw6SyOgDDIFCnC1ZXYOt2V888CGkcQGcecDiYwsXY1V
-         6T8nTryBvxFQu0Rj75/7TCSwsprwz9PcbIpNmaEuME5Ie0cu+c7RieYMwwJxi8Qt50q7
-         6EQCJnWDZULTh+473pTutOVZ2qeCDnPdyr2elkQEZhSlgOM7bXtNq15FzVt+AqKsd8PN
-         roko/i7B6Ycpoj9gB5jgz7vMOrM6Hm8Fo5uHpu3MLzM52cT8ipLLmxu21dJ3YBKhlkj1
-         Dmo3YY3BEHT8J0qLTD/h/gyfXD7KpAm0lJWYN2P5eFdAY150uVovEWDCDk+HWh1Syp8x
-         Kriw==
+        bh=4T822ZZmQ+EmmT3oOcrw8cWfGXb3ryq63lVTfFBzVH4=;
+        b=WIfCnFc2dTYQSvg8bcWGGQsOPO/v4T/qzk19Cn8FGqlLI/1a23V1Nn1D3I15kvYBMl
+         8iczTm04Z04Dr/1rU0ikzxCCbwDao3XUulmlb66s7Ybspy+xVoJoMCJGf8ueDh1WWOP8
+         WDWkpvY8+4wafhbzXrXbzGU4PEdJx6gynavhV6uAN6Y7vAnstoCM+V7AQsH9Yp9TkdpP
+         sFvK4npScoWSWClqbh07yB3D80yBJzPxVrgFgz1k3m5xWnm0cVa7v0fKF2KM8J+2ezgJ
+         SlP+sLL6jB5Aeuh278shr8rGdyjAK+UTolDkd2dAVcaUScDfvO5ftRl4td62rGgf1mor
+         0GIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=sjRAUl87kIegWEIMHZzr7JdOnoFmHax22DhSBJQMzT0=;
-        b=rM9ltyYh4fHLMtoh12LC7B3imELLJMSSqRomKqsqYaor/mQwie16CkV+GaXpDPOcrQ
-         wOKNjrXeYu2MKdt1kQcK6rPbxVheWPI7kr85gdFFxHcGilzWgxw8KRdUoumNH8+v8eXN
-         ADL65jaOQomZ1YC5mUee9ugmFC++Ly/ywCIM7Yc3oM91aeDsnIMfTJqToYE16IZHF/QA
-         LHu5Zj1hmFDLR0TNd5cL4otR8gTfvtsBW/u0MhnGpQRqmL+cWBnz1uTkH3AvglxLQMGd
-         wLPid1s6ODpp3SfwIlVohZjF8aP6bMSqKtz1c/MvGoqCcxaQk9FuXQe139TGSQcGTyUr
-         PnjQ==
-X-Gm-Message-State: AKwxytd8qKValToK1hHfKZuFX75bRHxtrSrXXFamWysjNlUqNvIXigzT
-        8+oiCWbnJYd1Hj9vn2dOc0kbSvJi
-X-Google-Smtp-Source: AH8x226LDzJkDQYWyySFH9nJk3CmjDqfcxan4eiUSlD9j0X4VwFGT+9q9D9zWDgJcbkt7BbP0NdexQ==
-X-Received: by 10.46.41.12 with SMTP id u12mr11095980lje.52.1517543707172;
-        Thu, 01 Feb 2018 19:55:07 -0800 (PST)
+        bh=4T822ZZmQ+EmmT3oOcrw8cWfGXb3ryq63lVTfFBzVH4=;
+        b=eReTOenVrZeJEEkiNaUO0Ku0Dq9Kcemppp6G0kJyoVfwNdhdBkY4wkcrIb0ZZoc1kU
+         b/CuKUz4W82kLJaZtOLG497LsBgR1r6DG+j9PKSHzIP9e/nknrs+PpQOz6ez+P3x2sYV
+         e1qvujaaWrRR/EWLGwXopvEPrs1C/HK+lpdFWQZwkZ0vEFK/Sl02ipWZ4j4x+P1N5lyV
+         j4rtxSMhyuwgs+yToFUHzGxs+x5B71rhXR6TIHTrPMWePxenaXIdGP+8KKYsqa54FR+1
+         eCw9V+wOK0vLQXLcBGPFEtlO0FDV53ySg2E5WLts1ZsHeOTzxYbNdYjhtgqQ/+Pe3N9V
+         zEqA==
+X-Gm-Message-State: AKwxyte/eQgfqY/anwRofobzbCy95re865s65hmjnC1p4lJJVOon6Vdl
+        y8PN36W+4SUP/m58COa8q/Hn3KEK
+X-Google-Smtp-Source: AH8x224A3n1jcAS5KmVhcRUSYx0YYqPGhhmt8nK3Fynn9g0t/yVPPstyC6uqoKxsZVo8i2MU2YWuug==
+X-Received: by 10.46.117.29 with SMTP id q29mr19137666ljc.65.1517543709867;
+        Thu, 01 Feb 2018 19:55:09 -0800 (PST)
 Received: from linux.local ([95.79.164.146])
-        by smtp.gmail.com with ESMTPSA id f14sm190934lje.84.2018.02.01.19.55.05
+        by smtp.gmail.com with ESMTPSA id f14sm190934lje.84.2018.02.01.19.55.08
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 01 Feb 2018 19:55:06 -0800 (PST)
+        Thu, 01 Feb 2018 19:55:09 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, miodrag.dinic@mips.com, jhogan@kernel.org,
         goran.ferenc@mips.com, david.daney@cavium.com,
@@ -43,11 +43,10 @@ To:     ralf@linux-mips.org, miodrag.dinic@mips.com, jhogan@kernel.org,
 Cc:     alexander.sverdlin@nokia.com, matt.redfearn@mips.com,
         kumba@gentoo.org, marcin.nowakowski@mips.com, James.hogan@mips.com,
         Peter.Wotton@mips.com, Sergey.Semin@t-platforms.ru,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH v2 03/15] MIPS: memblock: Reserve initrd memory in memblock
-Date:   Fri,  2 Feb 2018 06:54:46 +0300
-Message-Id: <20180202035458.30456-4-fancer.lancer@gmail.com>
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 05/15] MIPS: KASLR: Drop relocatable fixup from reservation_init
+Date:   Fri,  2 Feb 2018 06:54:48 +0300
+Message-Id: <20180202035458.30456-6-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20180202035458.30456-1-fancer.lancer@gmail.com>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
@@ -56,7 +55,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62410
+X-archive-position: 62411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,26 +72,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is no reserve_bootmem() method in the nobootmem interface,
-so we need to replace it with memblock-specific one.
+From: Matt Redfearn <matt.redfearn@mips.com>
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+A recent change ("MIPS: memblock: Discard bootmem initialization")
+removed the reservation of all memory below the kernel's _end symbol in
+bootmem. This makes the call to free_bootmem unnecessary, since the
+memory region is no longer marked reserved.
+
+Additionally, ("MIPS: memblock: Print out kernel virtual mem
+layout") added a display of the kernel's virtual memory layout, so
+printing the relocation information at this point is redundant.
+
+Remove this section of code.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
- arch/mips/kernel/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/setup.c | 23 -----------------------
+ 1 file changed, 23 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index f502cd702fa7..a015cee353be 100644
+index b5fcacf71b3f..cf3674977170 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -330,7 +330,7 @@ static void __init finalize_initrd(void)
+@@ -528,29 +528,6 @@ static void __init bootmem_init(void)
+ 		memory_present(0, start, end);
+ 	}
  
- 	maybe_bswap_initrd();
- 
--	reserve_bootmem(__pa(initrd_start), size, BOOTMEM_DEFAULT);
-+	memblock_reserve(__pa(initrd_start), size);
- 	initrd_below_start_ok = 1;
- 
- 	pr_info("Initial ramdisk at: 0x%lx (%lu bytes)\n",
+-#ifdef CONFIG_RELOCATABLE
+-	/*
+-	 * The kernel reserves all memory below its _end symbol as bootmem,
+-	 * but the kernel may now be at a much higher address. The memory
+-	 * between the original and new locations may be returned to the system.
+-	 */
+-	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
+-		unsigned long offset;
+-		extern void show_kernel_relocation(const char *level);
+-
+-		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+-		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+-
+-#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
+-		/*
+-		 * This information is necessary when debugging the kernel
+-		 * But is a security vulnerability otherwise!
+-		 */
+-		show_kernel_relocation(KERN_INFO);
+-#endif
+-	}
+-#endif
+-
+ 	/*
+ 	 * Reserve initrd memory if needed.
+ 	 */
 -- 
 2.12.0

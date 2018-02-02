@@ -1,66 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2018 18:42:13 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:58482 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990477AbeBBRmDf7DK7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Feb 2018 18:42:03 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 02 Feb 2018 17:40:42 +0000
-Received: from [10.20.78.136] (10.20.78.136) by mips01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Fri, 2 Feb 2018
- 09:38:13 -0800
-Date:   Fri, 2 Feb 2018 17:38:00 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-CC:     <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kevin Cernekee" <cernekee@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Thomas Meyer <thomas@m3y3r.de>,
-        Bryan O'Donoghue <pure.logic@nexus-software.ie>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "Michal Hocko" <mhocko@suse.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        "Vladimir Murzin" <vladimir.murzin@arm.com>,
-        Bart Van Assche <bart.vanassche@sandisk.com>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RFC 3/6] MIPS: BMIPS: Avoid referencing CKSEG1
-In-Reply-To: <1516758426-8127-4-git-send-email-f.fainelli@gmail.com>
-Message-ID: <alpine.DEB.2.00.1802012034400.4191@tp.orcam.me.uk>
-References: <1516758426-8127-1-git-send-email-f.fainelli@gmail.com> <1516758426-8127-4-git-send-email-f.fainelli@gmail.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2018 18:47:57 +0100 (CET)
+Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:59226 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991025AbeBBRrsUAdj7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Feb 2018 18:47:48 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=wOahYfPH3eqAbGWl///EiVWN8yzu/m5QdifGTHB8Dgc=; b=bWdqdLJiICz/HhEQHmVEEI9V5I
+        b2NnwYz3+AT9i6+gB90OLvygXVj+ETZUSoe4TY2NtRL1Ou2id6xAZwEf3UpLgaU44Cpx7JjjkQUP3
+        etDxjgstCKm66c3EY/JUQ8XY6Ivaeunqcb+BTwgb8tSrTnTqiOFnsiZlhrFRMwrqTP3Kl+2Qc44Ou
+        TEJzNs5IBKctMdwM4eoAEUgV1xZQG08+UMNH/3LlgcjU/Ui7UJL72bQSYxJbnr0VBvgxF0AsSfrsx
+        MZiu506SOcRAg/Z80PEz4X36xfUD/2XBHdrL18WV2G9A4x+vZrlAqDWJVfy2nGPbWeBgO1dzgxy7+
+        nmOySb5Q==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=dragon.site)
+        by merlin.infradead.org with esmtpsa (Exim 4.89 #1 (Red Hat Linux))
+        id 1ehfQv-0003Qh-7c; Fri, 02 Feb 2018 17:47:29 +0000
+Subject: Re: [PATCH 22/34] dma-mapping: add an arch_dma_supported hook
+To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
+Cc:     Konrad Rzeszutek Wilk <konrad@darnok.org>,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-cris-kernel@axis.com, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, patches@groups.riscv.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        x86@kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20180112084232.2857-1-hch@lst.de>
+ <20180112084232.2857-23-hch@lst.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <5d7dfb29-eeef-2280-13c9-5260e9104f67@infradead.org>
+Date:   Fri, 2 Feb 2018 09:47:23 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1517593241-321458-20196-2127-13
-X-BESS-VER: 2018.1-r1801290438
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189619
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+In-Reply-To: <20180112084232.2857-23-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <rdunlap@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62425
+X-archive-position: 62426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: rdunlap@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,20 +65,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 23 Jan 2018, Florian Fainelli wrote:
+On 01/12/2018 12:42 AM, Christoph Hellwig wrote:
+> To implement the x86 forbid_dac and iommu_sac_force we want an arch hook
+> so that it can apply the global options across all dma_map_ops
+> implementations.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/x86/include/asm/dma-mapping.h |  3 +++
+>  arch/x86/kernel/pci-dma.c          | 19 ++++++++++++-------
+>  include/linux/dma-mapping.h        | 11 +++++++++++
+>  3 files changed, 26 insertions(+), 7 deletions(-)
 
-> bmips_smp_movevec() references the CKSEG1 constant, which is about to be
-> updated in order to support processors that might enable eXtended
-> KSEG0/1. In doing so, we will generate a reference to a function, which
-> is obviously not permissible within assembly. Fortunately,
-> bmips_smp_movevec() is only used on BMIPS4350 which does not support
-> eXtended KSEG0/1.
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index 88bcb1a8211d..d67742dad904 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -576,6 +576,14 @@ static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * This is a hack for the legacy x86 forbid_dac and iommu_sac_force. Please
+> + * don't use this is new code.
 
- Can you please avoid replacing the macro with a hardcoded magic number 
-though, so that it retains the high-level meaning?
+                     in new code.
 
- Define another macro, say MIPS_ARCH_CKSEG1, and use it here instead, and 
-possibly elsewhere too.  You could complement it with BMIPS_XKS01_CKSEG1 
-if necessary too (I haven't thoroughly looked through your patches).
+> + */
+> +#ifndef arch_dma_supported
+> +#define arch_dma_supported(dev, mask)	(1)
+> +#endif
 
-  Maciej
+
+-- 
+~Randy

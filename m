@@ -1,37 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2018 15:38:11 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:47300 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990435AbeBBOiFFji0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Feb 2018 15:38:05 +0100
-Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 02A27214DA;
-        Fri,  2 Feb 2018 14:37:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 02A27214DA
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-From:   James Hogan <jhogan@kernel.org>
-To:     linux-mips@linux-mips.org
-Cc:     Greg Ungerer <gerg@linux-m68k.org>,
-        James Hogan <jhogan@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2018 18:42:13 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:58482 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990477AbeBBRmDf7DK7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Feb 2018 18:42:03 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 02 Feb 2018 17:40:42 +0000
+Received: from [10.20.78.136] (10.20.78.136) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Fri, 2 Feb 2018
+ 09:38:13 -0800
+Date:   Fri, 2 Feb 2018 17:38:00 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     <linux-mips@linux-mips.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: CPS: Fix MIPS_ISA_LEVEL_RAW fallout
-Date:   Fri,  2 Feb 2018 14:36:40 +0000
-Message-Id: <20180202143640.24490-1-jhogan@kernel.org>
-X-Mailer: git-send-email 2.13.6
-In-Reply-To: <20180202120658.GA8479@saruman>
-References: <20180202120658.GA8479@saruman>
-Return-Path: <jhogan@kernel.org>
+        "Kevin Cernekee" <cernekee@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Meyer <thomas@m3y3r.de>,
+        Bryan O'Donoghue <pure.logic@nexus-software.ie>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "Michal Hocko" <mhocko@suse.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        "Vladimir Murzin" <vladimir.murzin@arm.com>,
+        Bart Van Assche <bart.vanassche@sandisk.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC 3/6] MIPS: BMIPS: Avoid referencing CKSEG1
+In-Reply-To: <1516758426-8127-4-git-send-email-f.fainelli@gmail.com>
+Message-ID: <alpine.DEB.2.00.1802012034400.4191@tp.orcam.me.uk>
+References: <1516758426-8127-1-git-send-email-f.fainelli@gmail.com> <1516758426-8127-4-git-send-email-f.fainelli@gmail.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1517593241-321458-20196-2127-13
+X-BESS-VER: 2018.1-r1801290438
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189619
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62424
+X-archive-position: 62425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,82 +73,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 17278a91e04f ("MIPS: CPS: Fix r1 .set mt assembler warning")
-added .set MIPS_ISA_LEVEL_RAW to silence warnings about .set mt on r1,
-however this can result in a MOVE being encoded as a 64-bit DADDU
-instruction on certain version of binutils (e.g. 2.22), and reserved
-instruction exceptions at runtime on 32-bit hardware.
+On Tue, 23 Jan 2018, Florian Fainelli wrote:
 
-Reduce the sizes of the push/pop sections to include only instructions
-that are part of the MT ASE or which won't convert to 64-bit
-instructions after .set mips64r2/mips64r6.
+> bmips_smp_movevec() references the CKSEG1 constant, which is about to be
+> updated in order to support processors that might enable eXtended
+> KSEG0/1. In doing so, we will generate a reference to a function, which
+> is obviously not permissible within assembly. Fortunately,
+> bmips_smp_movevec() is only used on BMIPS4350 which does not support
+> eXtended KSEG0/1.
 
-Reported-by: Greg Ungerer <gerg@linux-m68k.org>
-Fixes: 17278a91e04f ("MIPS: CPS: Fix r1 .set mt assembler warning")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.15
----
-Greg: Please can you test this patch.
----
- arch/mips/kernel/cps-vec.S | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ Can you please avoid replacing the macro with a hardcoded magic number 
+though, so that it retains the high-level meaning?
 
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index e68e6e04063a..1025f937ab0e 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -388,15 +388,16 @@ LEAF(mips_cps_boot_vpes)
- 
- #elif defined(CONFIG_MIPS_MT)
- 
--	.set	push
--	.set	MIPS_ISA_LEVEL_RAW
--	.set	mt
--
- 	/* If the core doesn't support MT then return */
- 	has_mt	t0, 5f
- 
- 	/* Enter VPE configuration state */
-+	.set	push
-+	.set	MIPS_ISA_LEVEL_RAW
-+	.set	mt
- 	dvpe
-+	.set	pop
-+
- 	PTR_LA	t1, 1f
- 	jr.hb	t1
- 	 nop
-@@ -422,6 +423,10 @@ LEAF(mips_cps_boot_vpes)
- 	mtc0	t0, CP0_VPECONTROL
- 	ehb
- 
-+	.set	push
-+	.set	MIPS_ISA_LEVEL_RAW
-+	.set	mt
-+
- 	/* Skip the VPE if its TC is not halted */
- 	mftc0	t0, CP0_TCHALT
- 	beqz	t0, 2f
-@@ -495,6 +500,8 @@ LEAF(mips_cps_boot_vpes)
- 	ehb
- 	evpe
- 
-+	.set	pop
-+
- 	/* Check whether this VPE is meant to be running */
- 	li	t0, 1
- 	sll	t0, t0, a1
-@@ -509,7 +516,7 @@ LEAF(mips_cps_boot_vpes)
- 1:	jr.hb	t0
- 	 nop
- 
--2:	.set	pop
-+2:
- 
- #endif /* CONFIG_MIPS_MT_SMP */
- 
--- 
-2.13.6
+ Define another macro, say MIPS_ARCH_CKSEG1, and use it here instead, and 
+possibly elsewhere too.  You could complement it with BMIPS_XKS01_CKSEG1 
+if necessary too (I haven't thoroughly looked through your patches).
+
+  Maciej

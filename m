@@ -1,81 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2018 19:05:54 +0100 (CET)
-Received: from mail-by2nam03on0117.outbound.protection.outlook.com ([104.47.42.117]:28192
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990439AbeBCSFreoNaK convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Feb 2018 19:05:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=qqXbZ50AQTyyVG64uxkLBCV2APfSQu/1y9BGMytmWho=;
- b=A9cuo50exRP/ovXAjjo1h7BFfYHKsrP5T8I4/+y+6/OB6QGP+8Jf/00onz6Grt3SP3Rgk7XXU9fYlmI0VPlDg7gRgT/Sm/HX6+kYShEENBBZ2h73Ky5b2ez/1Fv/ie8krOap1Ib8ap+JRE/oy/8jFlH556bYRjd8i4g0sFd2/Ic=
-Received: from BL0PR2101MB1027.namprd21.prod.outlook.com (52.132.20.161) by
- BL0PR2101MB1089.namprd21.prod.outlook.com (52.132.24.23) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.506.1; Sat, 3 Feb 2018 18:05:36 +0000
-Received: from BL0PR2101MB1027.namprd21.prod.outlook.com
- ([fe80::a8da:b5d9:d710:9bf9]) by BL0PR2101MB1027.namprd21.prod.outlook.com
- ([fe80::a8da:b5d9:d710:9bf9%3]) with mapi id 15.20.0485.006; Sat, 3 Feb 2018
- 18:05:36 +0000
-From:   Sasha Levin <Alexander.Levin@microsoft.com>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL for 4.4 11/32] lib/mpi: Fix umul_ppmm() for MIPS64r6
-Thread-Topic: [PATCH AUTOSEL for 4.4 11/32] lib/mpi: Fix umul_ppmm() for
- MIPS64r6
-Thread-Index: AQHTnRlvwOqr5yORREqmpyspv1W4uQ==
-Date:   Sat, 3 Feb 2018 18:04:29 +0000
-Message-ID: <20180203180413.7438-11-alexander.levin@microsoft.com>
-References: <20180203180413.7438-1-alexander.levin@microsoft.com>
-In-Reply-To: <20180203180413.7438-1-alexander.levin@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [52.168.54.252]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;BL0PR2101MB1089;7:LiaKToRV1l1eUDTMY0qkfaSYjkVY5GbzQ72j4PjFaBokx82n0w0xflrLOjbY+oFIxCk02Sso+Wsbax0sRVxB3GeHGzXREZPIy33euYyPze+g2WEioHnSAGo8vreXSmg7Eb1K/s4ih69LLsoROl4dosR8bm1hxyc3yxUjDzi8fpEeEhmUtygrwsUQo4uezd+iHbfTjVDbfOU5ls+G+T1MExKbrkB4gk/GqhekIlsNP3ZzhdYDx+7LzdQqMASa7sP3
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 42bb685e-37be-40c2-0b9f-08d56b30b9ed
-x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(4534165)(4627221)(201703031133081)(201702281549075)(5600026)(4604075)(3008032)(2017052603307)(7193020);SRVR:BL0PR2101MB1089;
-x-ms-traffictypediagnostic: BL0PR2101MB1089:
-x-microsoft-antispam-prvs: <BL0PR2101MB108981EF31C15B3C3DD6EBE5FBF80@BL0PR2101MB1089.namprd21.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(9452136761055);
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(61425038)(6040501)(2401047)(5005006)(8121501046)(3002001)(10201501046)(3231101)(2400082)(944501161)(93006095)(93001095)(6055026)(61426038)(61427038)(6041288)(20161123562045)(20161123560045)(20161123558120)(20161123564045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:BL0PR2101MB1089;BCL:0;PCL:0;RULEID:;SRVR:BL0PR2101MB1089;
-x-forefront-prvs: 05724A8921
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39380400002)(396003)(39860400002)(376002)(366004)(346002)(199004)(189003)(86362001)(575784001)(106356001)(22452003)(4326008)(97736004)(25786009)(6666003)(2950100002)(5660300001)(2906002)(81156014)(105586002)(3280700002)(8676002)(8936002)(6116002)(68736007)(81166006)(3660700001)(86612001)(2900100001)(107886003)(3846002)(1076002)(102836004)(26005)(6346003)(66066001)(10090500001)(76176011)(6506007)(10290500003)(186003)(6486002)(14454004)(59450400001)(6436002)(53936002)(72206003)(316002)(305945005)(7736002)(99286004)(54906003)(110136005)(36756003)(2501003)(5250100002)(6512007)(478600001)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:BL0PR2101MB1089;H:BL0PR2101MB1027.namprd21.prod.outlook.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-message-info: EDoWiX6lCqDghk+ENyshAxatBrVlqWUMvzd+n8P781XYmbtOJ/2k8/BebFT3ExoOVP+qkVqPW2IXuhAErFxTDg==
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2018 00:49:54 +0100 (CET)
+Received: from icp-osb-irony-out5.external.iinet.net.au ([203.59.1.221]:39609
+        "EHLO icp-osb-irony-out5.external.iinet.net.au" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990864AbeBDXtob4T0t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Feb 2018 00:49:44 +0100
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2CIAABcm3da/zXSMGcNThkBAQEBAQEBA?=
+ =?us-ascii?q?QEBAQEHAQEBAQGDIIEXgRiDZZkTAQEBAQEBBoE0fJhkLYUYAoMPFQEBAQEBAQE?=
+ =?us-ascii?q?BAoY2AQEBAQIBI1YFCwsNAQMDAQIBAgImAgJPCAYNBgIBAYokBRi/b26CJyGEX?=
+ =?us-ascii?q?4NyggYBAQEBAQEBAQEBAQEBAQEBAQEbBYEPg1uDJIIwKYJPNoMvBIUGgmUFpCQ?=
+ =?us-ascii?q?BiBmEApYkh2mNbYtFNYFzMxoIKAiDA4JSAgEcghhmjl0BAQE?=
+X-IPAS-Result: =?us-ascii?q?A2CIAABcm3da/zXSMGcNThkBAQEBAQEBAQEBAQEHAQEBAQG?=
+ =?us-ascii?q?DIIEXgRiDZZkTAQEBAQEBBoE0fJhkLYUYAoMPFQEBAQEBAQEBAoY2AQEBAQIBI?=
+ =?us-ascii?q?1YFCwsNAQMDAQIBAgImAgJPCAYNBgIBAYokBRi/b26CJyGEX4NyggYBAQEBAQE?=
+ =?us-ascii?q?BAQEBAQEBAQEBAQEbBYEPg1uDJIIwKYJPNoMvBIUGgmUFpCQBiBmEApYkh2mNb?=
+ =?us-ascii?q?YtFNYFzMxoIKAiDA4JSAgEcghhmjl0BAQE?=
+X-IronPort-AV: E=Sophos;i="5.46,462,1511798400"; 
+   d="scan'208";a="39847353"
+Received: from unknown (HELO [172.16.0.22]) ([103.48.210.53])
+  by icp-osb-irony-out5.iinet.net.au with ESMTP; 05 Feb 2018 07:49:33 +0800
+Subject: Re: [PATCH] MIPS: CPS: Fix r1 .set mt assembler warning
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <079ec8f9-d2c2-9e29-278e-48e76bbb8de7@linux-m68k.org>
+ <20180202120658.GA8479@saruman>
+From:   Greg Ungerer <gerg@linux-m68k.org>
+Message-ID: <8e34deb4-33c3-9bdb-8ffb-b93516f16a84@linux-m68k.org>
+Date:   Mon, 5 Feb 2018 09:49:37 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42bb685e-37be-40c2-0b9f-08d56b30b9ed
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Feb 2018 18:04:29.8933
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR2101MB1089
-Return-Path: <Alexander.Levin@microsoft.com>
+In-Reply-To: <20180202120658.GA8479@saruman>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <gerg@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62434
+X-archive-position: 62435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Alexander.Levin@microsoft.com
+X-original-sender: gerg@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,78 +55,220 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <jhogan@kernel.org>
+Hi James,
 
-[ Upstream commit bbc25bee37d2b32cf3a1fab9195b6da3a185614a ]
+On 02/02/18 22:06, James Hogan wrote:
+> On Fri, Feb 02, 2018 at 01:34:20PM +1000, Greg Ungerer wrote:
+>> James Hogan wrote:
+>>> From 17278a91e04f858155d54bee5528ba4fbcec6f87 Mon Sep 17 00:00:00 2001
+>>> From: James Hogan <jhogan@kernel.org>
+>>> Date: Tue, 14 Nov 2017 12:01:20 +0000
+>>> Subject: [PATCH] MIPS: CPS: Fix r1 .set mt assembler warning
+>>>
+>>> MIPS CPS has a build warning on kernels configured for MIPS32R1 or
+>>> MIPS64R1, due to the use of .set mt without a prior .set mips{32,64}r2:
+>>>
+>>> arch/mips/kernel/cps-vec.S Assembler messages:
+>>> arch/mips/kernel/cps-vec.S:238: Warning: the `mt' extension requires MIPS32 revision 2 or greater
+>>>
+>>> Add .set MIPS_ISA_LEVEL_RAW before .set mt to silence the warning.
+>>
+>> This change breaks booting for me on a MediaTek MT7621 platform:
+>>
+>>   ...
+>>   Calibrating delay loop... 586.13 BogoMIPS (lpj=2930688)^M
+>>   pid_max: default: 32768 minimum: 301^M
+>>   Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)^M
+>>   Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)^M
+>>   Hierarchical SRCU implementation.^M
+>>   smp: Bringing up secondary CPUs ...^M
+>>   Reserved instruction in kernel code[#1]:^M
+>>   CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.15.0-ac0 #3^M
+>>   $ 0   : 00000000 00000001 00000000 00000000^M
+>>   $ 4   : 8501dd80 00000001 00000004 00000000^M
+>>   $ 8   : 00000004 00000002 00000001 ffffffff^M
+>>   $12   : 00000000 00000400 00000003 8501de00^M
+>>   $16   : 807d5ca0 8501dd80 00000000 00000001^M
+>>   $20   : 80842814 00000000 00000001 000000e0^M
+>>   $24   : fffffffc 00000001                  ^M
+>>   $28   : 85026000 85027de0 00000020 80013538^M
+>>   Hi    : 00000006^M
+>>   Lo    : 8e778000^M
+>>   epc   : 80656620 mips_cps_boot_vpes+0x4c/0x160^M
+>>   ra    : 80013538 cps_boot_secondary+0x280/0x440^M
+>>   Status: 11000403        KERNEL EXL IE ^M
+>>   Cause : 50800028 (ExcCode 0a)^M
+>>   PrId  : 0001992f (MIPS 1004Kc)^M
+>>
+>> If I revert the patch then I can boot up again, all works as expected.
+>>
+>> I am not exactly using a pure mainline 4.15 source base though.
+>> (I have a bunch of additional changes to make this platform actually work).
+>>
+>> But this patch certainly does trap as above when present. I am using
+>> a gcc-5.4.0/binutils-2.25.1 toolchain.
+>>
+>> Any thoughts?
+> 
+> Hmm, sorry about that.
+> 
+> If there is some more of the log which shows code around the EPC
+> (usually a few lines below where you stopped), that would be helpful to
+> see exactly whats happening. Perhaps it has used a 64-bit instruction.
 
-Current MIPS64r6 toolchains aren't able to generate efficient
-DMULU/DMUHU based code for the C implementation of umul_ppmm(), which
-performs an unsigned 64 x 64 bit multiply and returns the upper and
-lower 64-bit halves of the 128-bit result. Instead it widens the 64-bit
-inputs to 128-bits and emits a __multi3 intrinsic call to perform a 128
-x 128 multiply. This is both inefficient, and it results in a link error
-since we don't include __multi3 in MIPS linux.
+Sorry, yes, I snipped that a little too much. Below is the full boot log:
 
-For example commit 90a53e4432b1 ("cfg80211: implement regdb signature
-checking") merged in v4.15-rc1 recently broke the 64r6_defconfig and
-64r6el_defconfig builds by indirectly selecting MPILIB. The same build
-errors can be reproduced on older kernels by enabling e.g. CRYPTO_RSA:
+Linux version 4.15.0-ac0 (gerg@goober) (gcc version 5.4.0 (GCC)) #2 SMP Mon Feb 5 08:58:57 AEST 2018
+SoC Type: MediaTek MT7621 ver:1 eco:3
+bootconsole [early0] enabled
+CPU0 revision is: 0001992f (MIPS 1004Kc)
+MIPS: machine is Accelerated Concepts 6310-EX
+Determined physical RAM map:
+ memory: 08000000 @ 00000000 (usable)
+Initial ramdisk at: 0x84000000 (16777216 bytes)
+VPE topology {2,2} total 4
+Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
+Primary data cache 32kB, 4-way, PIPT, no aliases, linesize 32 bytes
+MIPS secondary cache 256kB, 8-way, linesize 32 bytes.
+Zone ranges:
+  Normal   [mem 0x0000000000000000-0x0000000007ffffff]
+Movable zone start for each node
+Early memory node ranges
+  node   0: [mem 0x0000000000000000-0x0000000007ffffff]
+Initmem setup node 0 [mem 0x0000000000000000-0x0000000007ffffff]
+random: get_random_bytes called from start_kernel+0x90/0x4b4 with crng_init=0
+percpu: Embedded 15 pages/cpu @(ptrval) s30336 r8192 d22912 u61440
+Built 1 zonelists, mobility grouping on.  Total pages: 32512
+Kernel command line: console=ttyS0,57600 rd_start=0x84000000 rd_size=0x01000000
+Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
+Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Writing ErrCtl register=0004ae58
+Readback ErrCtl register=0004ae58
+Memory: 104556K/131072K available (6492K kernel code, 227K rwdata, 1452K rodata, 264K init, 262K bss, 26516K reserved, 0K cma-reserved)
+SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+Hierarchical RCU implementation.
+NR_IRQS: 256
+clocksource: GIC: mask: 0xfffffffff max_cycles: 0xfffffffff, max_idle_ns: 34750190079 ns
+sched_clock: 32 bits at 100 Hz, resolution 10000000ns, wraps every 21474836475000000ns
+Calibrating delay loop... 586.13 BogoMIPS (lpj=2930688)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Hierarchical SRCU implementation.
+smp: Bringing up secondary CPUs ...
+Reserved instruction in kernel code[#1]:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.15.0-ac0 #2
+$ 0   : 00000000 00000001 00000000 00000000
+$ 4   : 8501dd80 00000001 00000004 00000000
+$ 8   : 00000004 00000002 00000001 ffffffff
+$12   : 00000000 00000400 00000003 8501de00
+$16   : 807d5ca0 8501dd80 00000000 00000001
+$20   : 80842814 00000000 00000001 000000e0
+$24   : fffffffc 00000001                  
+$28   : 85026000 85027de0 00000020 80013538
+Hi    : 00000006
+Lo    : 8e778000
+epc   : 80656620 mips_cps_boot_vpes+0x4c/0x160
+ra    : 80013538 cps_boot_secondary+0x280/0x440
+Status: 11000403	KERNEL EXL IE 
+Cause : 50800028 (ExcCode 0a)
+PrId  : 0001992f (MIPS 1004Kc)
+Modules linked in:
+Process swapper/0 (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
+Stack : 00000000 807d6170 00000004 00000000 00000001 00000001 00000000 807e0000
+        00000000 807d6170 00000004 00000000 00000000 80012424 807de840 807de81c
+        8074dfe4 00000001 00000001 80028bf4 811191e4 00000001 00000000 807e0000
+        00000000 811191e4 00000001 80029ac8 807d6068 807e0000 80750ebc 85027e8c
+        00000000 8006d584 807d6064 807d0000 807d6068 807e0000 807d0000 00000001
+        ...
+Call Trace:
+[<(ptrval)>] mips_cps_boot_vpes+0x4c/0x160
+[<(ptrval)>] cps_boot_secondary+0x280/0x440
+[<(ptrval)>] __cpu_up+0x20/0x88
+[<(ptrval)>] bringup_cpu+0x24/0x110
+[<(ptrval)>] cpu_up+0x128/0x270
+[<(ptrval)>] smp_init+0xdc/0x134
+[<(ptrval)>] kernel_init_freeable+0xac/0x240
+[<(ptrval)>] kernel_init+0x14/0x110
+[<(ptrval)>] ret_from_kernel_thread+0x14/0x1c
+Code: 35290002  40890001  000000c0 <01c0c02d> 240d0000  31c80001  1100002b  00000000  40080801 
 
-lib/mpi/generic_mpih-mul1.o: In function `mpihelp_mul_1':
-lib/mpi/generic_mpih-mul1.c:50: undefined reference to `__multi3'
-lib/mpi/generic_mpih-mul2.o: In function `mpihelp_addmul_1':
-lib/mpi/generic_mpih-mul2.c:49: undefined reference to `__multi3'
-lib/mpi/generic_mpih-mul3.o: In function `mpihelp_submul_1':
-lib/mpi/generic_mpih-mul3.c:49: undefined reference to `__multi3'
-lib/mpi/mpih-div.o In function `mpihelp_divrem':
-lib/mpi/mpih-div.c:205: undefined reference to `__multi3'
-lib/mpi/mpih-div.c:142: undefined reference to `__multi3'
+---[ end trace 0daa832a1a349425 ]---
+Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
 
-Therefore add an efficient MIPS64r6 implementation of umul_ppmm() using
-inline assembly and the DMULU/DMUHU instructions, to prevent __multi3
-calls being emitted.
+---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
 
-Fixes: 7fd08ca58ae6 ("MIPS: Add build support for the MIPS R6 ISA")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-mips@linux-mips.org
-Cc: linux-crypto@vger.kernel.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
----
- lib/mpi/longlong.h | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/lib/mpi/longlong.h b/lib/mpi/longlong.h
-index b90e255c2a68..d2ecf0a09180 100644
---- a/lib/mpi/longlong.h
-+++ b/lib/mpi/longlong.h
-@@ -671,7 +671,23 @@ do {						\
- 	**************  MIPS/64  **************
- 	***************************************/
- #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
--#if (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
-+#if defined(__mips_isa_rev) && __mips_isa_rev >= 6
-+/*
-+ * GCC ends up emitting a __multi3 intrinsic call for MIPS64r6 with the plain C
-+ * code below, so we special case MIPS64r6 until the compiler can do better.
-+ */
-+#define umul_ppmm(w1, w0, u, v)						\
-+do {									\
-+	__asm__ ("dmulu %0,%1,%2"					\
-+		 : "=d" ((UDItype)(w0))					\
-+		 : "d" ((UDItype)(u)),					\
-+		   "d" ((UDItype)(v)));					\
-+	__asm__ ("dmuhu %0,%1,%2"					\
-+		 : "=d" ((UDItype)(w1))					\
-+		 : "d" ((UDItype)(u)),					\
-+		   "d" ((UDItype)(v)));					\
-+} while (0)
-+#elif (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
- #define umul_ppmm(w1, w0, u, v) \
- do {									\
- 	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\
--- 
-2.11.0
+A "mips-linux-objdump -d" around that PC gives:
+
+80656610:       40090001        mfc0    t1,c0_mvpcontrol
+80656614:       35290002        ori     t1,t1,0x2
+80656618:       40890001        mtc0    t1,c0_mvpcontrol
+8065661c:       000000c0        ehb
+80656620:       01c0c02d        0x1c0c02d
+80656624:       240d0000        li      t5,0
+80656628:       31c80001        andi    t0,t6,0x1
+8065662c:       1100002b        beqz    t0,806566dc <mips_cps_boot_vpes+0x108>
+80656630:       00000000        nop
+
+So it can't decode that "01c0c02d"...
+
+
+> When I build 32r2el_defconfig, that EPC (relative to mips_cps_boot_vpes)
+> is a move instruction, which is implemented with OR (which should be
+> safe on MIPS32 and MIPS64), both with binutils 2.28ish and 2.24ish (MTI
+> / IMG toolchains, so they may have additional patches).
+
+I am using a strait binutils-2.25.1 and gcc-5.4.0 with no additional patches applied.
+(configured with "mips-linux" as the target archiecture).
+
+Regards
+Greg
+
+
+> I'll try limiting the .set mt to code that needs it.
+> 
+> Thanks
+> James
+> 
+>>
+>> Regards
+>> Greg
+>>
+>>
+>>> Fixes: 245a7868d2f2 ("MIPS: smp-cps: rework core/VPE initialisation")
+>>> Signed-off-by: James Hogan <jhogan@kernel.org>
+>>> Cc: Paul Burton <paul.burton@mips.com>
+>>> Cc: James Hogan <james.hogan@mips.com>
+>>> Cc: James Hogan <jhogan@kernel.org>
+>>> Cc: Paul Burton <paul.burton@mips.com>
+>>> Cc: linux-mips@linux-mips.org
+>>> Patchwork: https://patchwork.linux-mips.org/patch/17699/
+>>> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+>>> ---
+>>>  arch/mips/kernel/cps-vec.S | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+>>> index c7ed260..e68e6e0 100644
+>>> --- a/arch/mips/kernel/cps-vec.S
+>>> +++ b/arch/mips/kernel/cps-vec.S
+>>> @@ -235,6 +235,7 @@ LEAF(mips_cps_core_init)
+>>>         has_mt  t0, 3f
+>>>
+>>>         .set    push
+>>> +       .set    MIPS_ISA_LEVEL_RAW
+>>>         .set    mt
+>>>
+>>>         /* Only allow 1 TC per VPE to execute... */
+>>> @@ -388,6 +389,7 @@ LEAF(mips_cps_boot_vpes)
+>>>  #elif defined(CONFIG_MIPS_MT)
+>>>
+>>>         .set    push
+>>> +       .set    MIPS_ISA_LEVEL_RAW
+>>>         .set    mt
+>>>
+>>>         /* If the core doesn't support MT then return */
+>>> -- 
+>>> 1.9.1
+>>

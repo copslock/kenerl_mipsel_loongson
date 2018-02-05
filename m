@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2018 15:11:36 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:41532 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991248AbeBEOL0gEOBM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 5 Feb 2018 15:11:26 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11638217AB;
-        Mon,  5 Feb 2018 14:11:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 11638217AB
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 5 Feb 2018 14:11:11 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] MIPS: Generic: Support GIC in EIC mode
-Message-ID: <20180205141110.GC8479@saruman>
-References: <1515148270-9391-1-git-send-email-matt.redfearn@mips.com>
- <1515148270-9391-4-git-send-email-matt.redfearn@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2018 17:51:30 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:32871 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992336AbeBEQvX0cA32 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Feb 2018 17:51:23 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 05 Feb 2018 16:50:08 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Mon, 5 Feb 2018 08:45:44 -0800
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <marc.zyngier@arm.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] irqchip: mips-gic: Avoid spuriously handling masked interrupts
+Date:   Mon, 5 Feb 2018 16:45:36 +0000
+Message-ID: <1517849136-29508-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="GPJrCs/72TxItFYR"
-Content-Disposition: inline
-In-Reply-To: <1515148270-9391-4-git-send-email-matt.redfearn@mips.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1517849406-321458-23044-1056-2
+X-BESS-VER: 2018.1-r1801290438
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189699
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62440
+X-archive-position: 62441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,107 +53,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Commit 7778c4b27cbe ("irqchip: mips-gic: Use pcpu_masks to avoid reading
+GIC_SH_MASK*") removed the read of the hardware mask register when
+handling shared interrupts, instead using the driver's shadow pcpu_masks
+entry as the effective mask. Unfortunately this did not take account of
+the write to pcpu_masks during gic_shared_irq_domain_map, which
+effectively unmasks the interrupt early. If an interrupt is asserted,
+gic_handle_shared_int decodes and processes the interrupt even though it
+has not yet been unmasked via gic_unmask_irq, which also sets the
+appropriate bit in pcpu_masks.
 
---GPJrCs/72TxItFYR
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On the MIPS Boston board, when a console command line of
+"console=ttyS0,115200n8r" is passed, the modem status IRQ is enabled in
+the UART, which is immediately raised to the GIC. The interrupt has been
+mapped, but no handler has yet been registered, nor is it expected to be
+unmasked. However, the write to pcpu_masks in gic_shared_irq_domain_map
+has effectively unmasked it, resulting in endless reports of:
 
-On Fri, Jan 05, 2018 at 10:31:07AM +0000, Matt Redfearn wrote:
-> The GIC supports running in External Interrupt Controller (EIC) mode,
-> and will signal this via cpu_has_veic if enabled in hardware. Currently
-> the generic kernel will panic if cpu_has_veic is set - but the GIC can
-> legitimately set this flag if either configured to boot in EIC mode, or
-> if the GIC driver enables this mode. Make the kernel not panic in this
-> case, and instead just check if the GIC is present. If so, use it's CPU
-> local interrupt routing functions. If an EIC is present, but it is not
-> the GIC, then the kernel does not know how to get the VIRQ for the CPU
-> local interrupts and should panic. Support for alternative EICs being
-> present is needed here for the generic kernel to support them.
->=20
-> Suggested-by: Paul Burton <paul.burton@mips.com>
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+[    5.058454] irq 13, desc: ffffffff80a7ad80, depth: 1, count: 0, unhandled: 0
+[    5.062057] ->handle_irq():  ffffffff801b1838,
+[    5.062175] handle_bad_irq+0x0/0x2c0
 
-Applied for 4.16,
+Where IRQ 13 is the UART interrupt.
 
-Thanks
-James
+To fix this, just remove the write to pcpu_masks in
+gic_shared_irq_domain_map. The existing write in gic_unmask_irq is the
+correct place for what is now the effective unmasking.
 
-> ---
->=20
->  arch/mips/generic/irq.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
->=20
-> diff --git a/arch/mips/generic/irq.c b/arch/mips/generic/irq.c
-> index 394f8161e462..cb7fdaeef426 100644
-> --- a/arch/mips/generic/irq.c
-> +++ b/arch/mips/generic/irq.c
-> @@ -22,10 +22,10 @@ int get_c0_fdc_int(void)
->  {
->  	int mips_cpu_fdc_irq;
-> =20
-> -	if (cpu_has_veic)
-> -		panic("Unimplemented!");
-> -	else if (mips_gic_present())
-> +	if (mips_gic_present())
->  		mips_cpu_fdc_irq =3D gic_get_c0_fdc_int();
-> +	else if (cpu_has_veic)
-> +		panic("Unimplemented!");
->  	else if (cp0_fdc_irq >=3D 0)
->  		mips_cpu_fdc_irq =3D MIPS_CPU_IRQ_BASE + cp0_fdc_irq;
->  	else
-> @@ -38,10 +38,10 @@ int get_c0_perfcount_int(void)
->  {
->  	int mips_cpu_perf_irq;
-> =20
-> -	if (cpu_has_veic)
-> -		panic("Unimplemented!");
-> -	else if (mips_gic_present())
-> +	if (mips_gic_present())
->  		mips_cpu_perf_irq =3D gic_get_c0_perfcount_int();
-> +	else if (cpu_has_veic)
-> +		panic("Unimplemented!");
->  	else if (cp0_perfcount_irq >=3D 0)
->  		mips_cpu_perf_irq =3D MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
->  	else
-> @@ -54,10 +54,10 @@ unsigned int get_c0_compare_int(void)
->  {
->  	int mips_cpu_timer_irq;
-> =20
-> -	if (cpu_has_veic)
-> -		panic("Unimplemented!");
-> -	else if (mips_gic_present())
-> +	if (mips_gic_present())
->  		mips_cpu_timer_irq =3D gic_get_c0_compare_int();
-> +	else if (cpu_has_veic)
-> +		panic("Unimplemented!");
->  	else
->  		mips_cpu_timer_irq =3D MIPS_CPU_IRQ_BASE + cp0_compare_irq;
-> =20
-> --=20
-> 2.7.4
->=20
->=20
+Fixes: 7778c4b27cbe ("irqchip: mips-gic: Use pcpu_masks to avoid reading GIC_SH_MASK*")
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Reviewed-by: Paul Burton <paul.burton@mips.com>
 
---GPJrCs/72TxItFYR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+---
 
------BEGIN PGP SIGNATURE-----
+ drivers/irqchip/irq-mips-gic.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlp4Zf4ACgkQbAtpk944
-dnpmqRAAgGyAzHlWAHXSmt3JsBdhMG6TDEiC45tPdIp9aoieDRduQYtyPnf4t094
-XCZ1w0kOnTn7rEPYX5+sN776jf0vhZbBZRHwBqaqJ1IWl5uOIrFJ76FeVBsWMu4f
-vGSG5HbsmB+3bN/qN9eRqHag87w/bacok3GYHZSh+IY5pVsrTJ94c9jNbwcstrMb
-NAQwEN/mg+rUmxsqqWBs0HEvESpMQu2DEars03R77SoxiT/1uAcoUqzG9MtqxlgM
-2DFq2LZyPcvV2/MN2MW33sggoft2qhJFWXVCgYXfstujBXCjQ/ejpBQz/mVoPJH6
-4c9/ZHgjmlNozSQFYJihIiX/5wotkj0F9uPmL6sJkgNk09XjhYTuGFHEMPeM2wij
-aa7wtvws+u9irEpmCG+HyayresjEf80LLYCsLtgv0QKLF6KT7w2Oyw2j2b/ryjzo
-0zoXHDHoUm5AJGvRiEAaqvFgqQL8mW6DWQ+6YfHxaChnoucxBPsVvpF5WD4mWqMj
-HuAMIGeQNbX7foxrG7jj/whxuAWxZA3UixYjReFYMZ585v0czTtOUumjbkUBN/2L
-m1qryQ99U/uZrhl8G8aKrx5JTFFegkd7zOj1Y6oL2sXfSiISSKPP4BKU/t/vo4yn
-tCoRSDaa4yt/rFxvgvtieTY1/Czj7OP5RWkGOJJiOBNCnqL+NNk=
-=yjFj
------END PGP SIGNATURE-----
-
---GPJrCs/72TxItFYR--
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index b2cfc6d66d74..2c3684ba46e5 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -429,8 +429,6 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | shared_cpu_pin);
+ 	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
+-	gic_clear_pcpu_masks(intr);
+-	set_bit(intr, per_cpu_ptr(pcpu_masks, cpu));
+ 	irq_data_update_effective_affinity(data, cpumask_of(cpu));
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+ 
+-- 
+2.7.4

@@ -1,68 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2018 21:10:11 +0100 (CET)
-Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:32873
-        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991534AbeBFUKEIEhJO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Feb 2018 21:10:04 +0100
-Received: by mail-qt0-x243.google.com with SMTP id d8so3997393qtm.0;
-        Tue, 06 Feb 2018 12:10:04 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2018 03:36:54 +0100 (CET)
+Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:34131
+        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992368AbeBGCgsDJ-Ml (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Feb 2018 03:36:48 +0100
+Received: by mail-pg0-x244.google.com with SMTP id s73so1943194pgc.1;
+        Tue, 06 Feb 2018 18:36:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=PSRCp3FThBwEKeZsZVrOcuBBygqfu+w49bm1Cdv0mNQ=;
-        b=ol/KMsni3FS9JTN7FZj75U0Ki6V2nIht/GyJ4wp++WUBAzShjMBen8FIFQHnDVW1iu
-         L1cDbSHn7iCp+wp3QMxweK6GvmgVnae+M3dC1AA8lyZq/0COK9znafj5H7ezTHmUCST+
-         f1WRalJsYnU0X3DS23eKeJaJT0meOOGmYO8WiIeIeGi8dSQnmzZEeD4bhP2x4iHg2JJO
-         BeRZHoNvUt4mHCq+vq0QUP91JbPHWl2Gc6/2XoRolpLMNrCIlUN9LFDIXLVTtdBhV+JZ
-         nfSzaKFhHf4Ovork8DUkfKeUD6YgTmxcXxCHWKHem7l1krlFCnqstdzFskyk4xG7BceM
-         xPUw==
+        h=from:to:cc:subject:date:message-id;
+        bh=UjbifgPHINX3otfBd9DkfuobXRLbZuqxSCfJ2+lLt+4=;
+        b=IsbDIT2pNiWiopeaI1KDFRn4u+eL5gXkfbUNDhy8cz69Ng34iBLJ2zqafHJAEjibFO
+         kkNgyjkV8nGH7bSWEQoCdyjGma7syj8zZnwPIII53IMqnY1qvLxDLlfpbqq8qhBO/nYq
+         NN5uqJKtdon2LCAfVmHapZrLgATrI5jfrSXwXk2R8EJ/CwO2aUN6b9BHsxu4fHnLkDtj
+         GGFknhYb7482VxtJCNwEpuyurhYM/V5NsNb+VPDwHRxAcMKUvCFB1ocC1er1JhuIdCEI
+         TkKPHKRXzbwqJ+eA5/k2iZxwNjIDSsZV8wqtilI686AQuaB7wry8YJzT+R4oCxOS0U/A
+         uk+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=PSRCp3FThBwEKeZsZVrOcuBBygqfu+w49bm1Cdv0mNQ=;
-        b=BwfK/NbXSA0PXdrDGKjrzHXDZ1hdXzFxMVQlWfOT1VP0dXwpcMbGXIC7TDJZjZ1Ink
-         xOzLDtvpRZWj87AH2IShGZfZH5960FoIHLNOwaBvz+7aDnoNskNjd+mItYs0JwUrKzPw
-         tADeBTWHkQISn14uX7FoaH8beqxa+rFIPTfvBy7eX64F0a6cFKGEYKgKf0NsZwVkZ9aR
-         m4ehZtWO9C72qBXHdK18K7t6bBN7RvGORU4XtqibOQAEUpfH5iKcLPQFk8Kal4XftTb5
-         M5k7LjeXfjAgdtHxxWMEyVg3AkDibzNo89M5igsAz+dW8CFDx2aohHDga06TMh0iAGac
-         wCiw==
-X-Gm-Message-State: APf1xPDcazHjQzAUb5W0JwkOGtIInOpeBdHtdXB1Y6uaykYnYo61t73I
-        xzrjeLkKFIjdJxZMQ/vv2ilq2zUa
-X-Google-Smtp-Source: AH8x224DgrsDGT1Ol+CY/LfR0/EeM1UzCqCCTjGb3NUWc4CDrki3+Lw5rWj/+mzm39+1DyZF7qZV6w==
-X-Received: by 10.237.32.68 with SMTP id 62mr5638925qta.340.1517947797105;
-        Tue, 06 Feb 2018 12:09:57 -0800 (PST)
-Received: from [10.69.41.93] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id b22sm8549158qta.25.2018.02.06.12.09.54
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=UjbifgPHINX3otfBd9DkfuobXRLbZuqxSCfJ2+lLt+4=;
+        b=Q8T2vpRCuMrThpturm743wU8MSVymCmm6NvM7sgeFZ4swKQFEskWAi+gWWfh7Vszuh
+         AE0udM8MSUG5mXClaQkFerYKKYPlE3XVbwxFVmZ4wz0bb5uehrHwOMN4scVQvEakUh0Q
+         SOl7D7iW7AFqhQvLFghYIsoIwv5qnn+uRLBPHor/2tASQVOvVbaybeKygOYN7VAm06rq
+         r5Sufy+gCxodeEJmD9Js6yeE9LnS/bA1YojRTw4t6b3b5w0plp4E2owqr4GcBbVUK7ln
+         w+cO+SrjLEmFzwe+xkvfrjKDjvr+PEFcSw/5X156QHSE2+BKZ6yDyojwvjOn5QNjfwLh
+         VgaQ==
+X-Gm-Message-State: APf1xPCAs46xZocXNoZ4oHbBwpgKY/NLBD1SOeLHeIilkj4APB7AIX9R
+        y+7m0MWlFHROHaviGY0Djzcnolze
+X-Google-Smtp-Source: AH8x225BFscsHp+Z83VLj8cYXKaaRYWcBS0mwM7pJE5GLK4UFOfF5trbhIcOLLIlNb5N1aTD9qQbFg==
+X-Received: by 10.99.176.15 with SMTP id h15mr3628358pgf.374.1517971001187;
+        Tue, 06 Feb 2018 18:36:41 -0800 (PST)
+Received: from localhost.localdomain ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id m9sm654627pff.59.2018.02.06.18.36.38
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Feb 2018 12:09:55 -0800 (PST)
-Subject: Re: [PATCH] MIPS: BMIPS: Fix section mismatch warning
-To:     James Hogan <jhogan@kernel.org>,
+        Tue, 06 Feb 2018 18:36:40 -0800 (PST)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
         Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org
-References: <20180206031321.34599-1-jaedon.shin@gmail.com>
- <20180206173525.GE8479@saruman>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <8e34b651-165e-5a07-2764-337cbe7b9ffb@gmail.com>
-Date:   Tue, 6 Feb 2018 12:09:48 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
-MIME-Version: 1.0
-In-Reply-To: <20180206173525.GE8479@saruman>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: BMIPS: Enable CONFIG_SOC_BRCMSTB
+Date:   Wed,  7 Feb 2018 11:36:27 +0900
+Message-Id: <20180207023627.7898-1-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.16.1
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62445
+X-archive-position: 62446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,27 +65,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/06/2018 09:35 AM, James Hogan wrote:
-> On Tue, Feb 06, 2018 at 12:13:21PM +0900, Jaedon Shin wrote:
->> Remove the __init annotation from bmips_cpu_setup() to avoid the
->> following warning.
->>
->> WARNING: vmlinux.o(.text+0x35c950): Section mismatch in reference from the function brcmstb_pm_s3() to the function .init.text:bmips_cpu_setup()
->> The function brcmstb_pm_s3() references
->> the function __init bmips_cpu_setup().
->> This is often because brcmstb_pm_s3 lacks a __init
->> annotation or the annotation of bmips_cpu_setup is wrong.
->>
->> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> 
-> Reviewed-by: James Hogan <jhogan@kernel.org>
-> 
-> Should CONFIG_BRCMSTB_PM=y be in any of the bmips defconfigs to get some
-> build coverage of this?
+Enable CONFIG_SOC_BRCMSTB in bmips_stb_defconfig. CONFIG_BRCMSTB_PM is
+also enabled by default option in Kconfig.
 
-That would be a good idea, Jaedon, do you want to submit a patch doing
-that or should I?
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+---
+ arch/mips/configs/bmips_stb_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+diff --git a/arch/mips/configs/bmips_stb_defconfig b/arch/mips/configs/bmips_stb_defconfig
+index 3cefa6bc01dd..47aecb8750e6 100644
+--- a/arch/mips/configs/bmips_stb_defconfig
++++ b/arch/mips/configs/bmips_stb_defconfig
+@@ -72,6 +72,7 @@ CONFIG_USB_EHCI_HCD_PLATFORM=y
+ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_OHCI_HCD_PLATFORM=y
+ CONFIG_USB_STORAGE=y
++CONFIG_SOC_BRCMSTB=y
+ CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_EXT4_FS_SECURITY=y
 -- 
-Florian
+2.16.1

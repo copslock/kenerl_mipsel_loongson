@@ -1,41 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2018 16:09:28 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:52080 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990434AbeBGPJUyiFOL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Feb 2018 16:09:20 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C64F204EE;
-        Wed,  7 Feb 2018 15:09:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 5C64F204EE
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 7 Feb 2018 15:09:07 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-Cc:     davem@davemloft.net, Alice Michael <alice.michael@intel.com>,
-        netdev@vger.kernel.org, nhorman@redhat.com, sassmann@redhat.com,
-        jogreene@redhat.com, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [net-next,06/15] i40e: change flags to use 64 bits
-Message-ID: <20180207150907.GB5092@saruman>
-References: <20180126212459.4246-7-jeffrey.t.kirsher@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2018 17:43:50 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:34456 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990434AbeBGQnm7LynV convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Feb 2018 17:43:42 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 07 Feb 2018 16:43:36 +0000
+Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
+ MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
+ 14.03.0361.001; Wed, 7 Feb 2018 08:27:10 -0800
+From:   Aleksandar Markovic <Aleksandar.Markovic@mips.com>
+To:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Goran Ferenc <Goran.Ferenc@mips.com>,
+        Miodrag Dinic <Miodrag.Dinic@mips.com>,
+        Paul Burton <Paul.Burton@mips.com>
+Subject: RE: [PATCH 4/4] MIPS: generic: Don't claim PC parport/serio
+Thread-Topic: [PATCH 4/4] MIPS: generic: Don't claim PC parport/serio
+Thread-Index: AQHTnHNN9y3nUdlIYUyP/og/wzTtPaOZJq4j
+Date:   Wed, 7 Feb 2018 16:27:09 +0000
+Message-ID: <BD3A5F1946F2E540A31AF2CE969BAEEE2517C9A2@MIPSMAIL01.mipstec.com>
+References: <cover.fcf1b08ac94759a5cd4b4303f350734b68872619.1517609353.git-series.jhogan@kernel.org>,<62d0928450232217dcb1979e9c56e02a275bdfd0.1517609353.git-series.jhogan@kernel.org>
+In-Reply-To: <62d0928450232217dcb1979e9c56e02a275bdfd0.1517609353.git-series.jhogan@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [82.117.201.26]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hHWLQfXTYDoKhP50"
-Content-Disposition: inline
-In-Reply-To: <20180126212459.4246-7-jeffrey.t.kirsher@intel.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+X-BESS-ID: 1518021815-298554-7306-1310-1
+X-BESS-VER: 2018.1-r1801291959
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 1.10
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189771
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
+X-BESS-Outbound-Spam-Status: SCORE=1.10 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND, MARKETING_SUBJECT
+X-BESS-BRTS-Status: 1
+Return-Path: <Aleksandar.Markovic@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62454
+X-archive-position: 62455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: Aleksandar.Markovic@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,78 +64,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---hHWLQfXTYDoKhP50
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jan 26, 2018 at 01:24:50PM -0800, Jeff Kirsher wrote:
-> From: Alice Michael <alice.michael@intel.com>
->=20
-> As we have added more flags, we need to now use more
-> bits and have over flooded the 32 bit size.  So
-> make it 64.
->=20
-> Also change all the existing bits to unsigned long long
-> bits.
->=20
-> Signed-off-by: Alice Michael <alice.michael@intel.com>
-> Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
-> Signed-off-by: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+> 
+> ________________________________________
+> From: James Hogan [jhogan@kernel.org]
+> Sent: Friday, February 2, 2018 11:14 PM
+> To: Ralf Baechle; linux-mips@linux-mips.org
+> Cc: Aleksandar Markovic; Goran Ferenc; Miodrag Dinic; James Hogan; Paul Burton
+> Subject: [PATCH 4/4] MIPS: generic: Don't claim PC parport/serio
+> 
+> None of the supported MIPS generic platforms can have the PC parallel
+> port or PC serial port (and we don't yet have to be concerned with
+> Malta which does), and enabling the PC serial driver will result in a
+> panic from i8042_flush during boot. Therefore conditionalise the MIPS
+> selection of ARCH_MIGHT_HAVE_PC_{PARPORT,SERIO} on !MIPS_GENERIC.
+> 
+> This particularly matters since commit f2d0b0d5c171 ("MIPS: ranchu: Add
+> Ranchu as a new generic-based board"), which adds a board fragment which
+> enables INPUT_KEYBOARD. That implicitly enables KEYBOARD_ATKBD which
+> then selects SERIO_I8042 if ARCH_MIGHT_HAVE_PC_SERIO.
+> 
+> We can always select it from specific platforms later.
+> 
+> Fixes: f2d0b0d5c171 ("MIPS: ranchu: Add Ranchu as a new generic-based board")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Miodrag Dinic <miodrag.dinic@mips.com>
+> Cc: Goran Ferenc <goran.ferenc@mips.com>
+> Cc: Aleksandar Markovic <aleksandar.markovic@mips.com>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: linux-mips@linux-mips.org
 > ---
->  drivers/net/ethernet/intel/i40e/i40e.h         | 67 +++++++++++++-------=
-------
->  drivers/net/ethernet/intel/i40e/i40e_ethtool.c |  4 +-
->  2 files changed, 36 insertions(+), 35 deletions(-)
+> Does anybody actually know which MIPS platforms can have these PC
+> devices?
+> ---
+>  arch/mips/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-=2E..
+Acked-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+Acked-by: Miodrag Dinic <miodrag.dinic@mips.com>
+From Aleksandar.Markovic@mips.com Wed Feb  7 17:44:09 2018
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2018 17:44:17 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:52126 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990400AbeBGQnoptfCV convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Feb 2018 17:43:44 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 07 Feb 2018 16:43:34 +0000
+Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
+ MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
+ 14.03.0361.001; Wed, 7 Feb 2018 08:27:04 -0800
+From:   Aleksandar Markovic <Aleksandar.Markovic@mips.com>
+To:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Goran Ferenc <Goran.Ferenc@mips.com>,
+        Miodrag Dinic <Miodrag.Dinic@mips.com>
+Subject: RE: [PATCH 1/4] MIPS: generic: Fix machine compatible matching
+Thread-Topic: [PATCH 1/4] MIPS: generic: Fix machine compatible matching
+Thread-Index: AQHTnHNJz0FFGlj3gU6grt3S0Ed+KaOZI+5b
+Date:   Wed, 7 Feb 2018 16:27:03 +0000
+Message-ID: <BD3A5F1946F2E540A31AF2CE969BAEEE2517B986@MIPSMAIL01.mipstec.com>
+References: <cover.fcf1b08ac94759a5cd4b4303f350734b68872619.1517609353.git-series.jhogan@kernel.org>,<4d44540130007c278068ea4870e3c4efbd171ee6.1517609353.git-series.jhogan@kernel.org>
+In-Reply-To: <4d44540130007c278068ea4870e3c4efbd171ee6.1517609353.git-series.jhogan@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [82.117.201.26]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-BESS-ID: 1518021805-298553-27713-4448-6
+X-BESS-VER: 2018.1-r1801291959
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.60
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189770
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
+X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
+X-BESS-BRTS-Status: 1
+Return-Path: <Aleksandar.Markovic@mips.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 62456
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: Aleksandar.Markovic@mips.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-> @@ -4323,7 +4323,7 @@ static int i40e_set_priv_flags(struct net_device *d=
-ev, u32 flags)
->  	 * originally. We'll just punt with an error and log something in the
->  	 * message buffer.
->  	 */
-> -	if (cmpxchg(&pf->flags, orig_flags, new_flags) !=3D orig_flags) {
-> +	if (cmpxchg64(&pf->flags, orig_flags, new_flags) !=3D orig_flags) {
+> 
+> ________________________________________
+> From: James Hogan [jhogan@kernel.org]
+> Sent: Friday, February 2, 2018 11:14 PM
+> To: Ralf Baechle; linux-mips@linux-mips.org
+> Cc: Aleksandar Markovic; Goran Ferenc; Miodrag Dinic; James Hogan
+> Subject: [PATCH 1/4] MIPS: generic: Fix machine compatible matching
+> 
+> We now have a platform (Ranchu) in the "generic" platform which matches
+> based on the FDT compatible string using mips_machine_is_compatible(),
+> however that function doesn't stop at a blank struct
+> of_device_id::compatible as that is an array in the struct, not a
+> pointer to a string.
+> 
+> Fix the loop completion to check the first byte of the compatible array
+> rather than the address of the compatible array in the struct.
+> 
+> Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Reviewed-by: Paul Burton <paul.burton@mips.com>
+> Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> ---
+>  arch/mips/include/asm/machine.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-This breaks allyesconfig builds on certain architectures, for example
-MIPS 32-bit with SMP enabled, which doesn't support cmpxchg64:
-
-  CC      drivers/net/ethernet/intel/i40e/i40e_ethtool.o  =20
-drivers/net/ethernet/intel/i40e/i40e_ethtool.c: In function =E2=80=98i40e_s=
-et_priv_flags=E2=80=99:
-drivers/net/ethernet/intel/i40e/i40e_ethtool.c:4326:6: error: implicit decl=
-aration of function =E2=80=98cmpxchg64=E2=80=99; did you mean =E2=80=98__cm=
-pxchg=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-  if (cmpxchg64(&pf->flags, orig_flags, new_flags) !=3D orig_flags) {
-      ^~~~~~~~~                                              =20
-      __cmpxchg                                             =20
-
-Should the driver now depend on 64BIT or something?
-
-Cheers
-James
-
---hHWLQfXTYDoKhP50
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlp7FowACgkQbAtpk944
-dnpISw/+KJSNpWcMAm9Ofcr1CoLgRIGHKoMrOsJ2ee4Gmc6NCwY7Zt2dxemT6MFH
-XaJL+WAEm7pCjFhdzzfOcXC4pZ+iMhf42MP+FWQ3k2AncYOtg3PAIjAloXyMKht3
-Y1NWgMfNIbZoqZm4Q0XfVNISuIs2encNJLMe+pQOPVMnBcA2TwNVxsc6LwFOQq8P
-a2/AZKu2f4PN/MkAMJXoL3L1wcCdaN7+yK3lpsdVQFka7NT3CpCyDUdtV6pmytef
-Y/DCdt3sfGVBxa4Em3HVllykN2qcbQrdLZ2/8tYD7eq8HrCRgQFj4rzOAnb/CRgP
-d2y0P6k6uw2S9dycH/F4pL9qUqMWnk2t6twMDA1fySpeIRyndrI/UVVFZQkip0I5
-VeARSENwcSD86RIDZBlpl55k2rZ4v+mf3roRg18eY/dtEDqQ8114wD7dCmabDNT1
-x+WvGeL6c/lXld8rf0fMTsllEQGj36lp/+/tKxlK0IYdvpUSwQ4XOQGZtMrgQDNs
-LtRzpOBGrEcvoRXsiQPCyFMHAa66lKRDcf/4yVBuZwRNJYy1gFBNp6YrJohaJ/Zc
-iI5sOh9wGENGjO47ZBsQP2ywbUbXtnPsswMNqaOvOnNohvxjmUHSARzlrNSntLhl
-FdFX4sQ8YXiblJcvrr/wT4zC4TDBywYwCPFDbblByxHg0TK5QSY=
-=jZUx
------END PGP SIGNATURE-----
-
---hHWLQfXTYDoKhP50--
+Acked-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+Acked-by: Miodrag Dinic <miodrag.dinic@mips.com>

@@ -1,38 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2018 23:23:11 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:44104 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2018 23:32:54 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:33382 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992827AbeBHWXE2PnkZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Feb 2018 23:23:04 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
+        id S23992828AbeBHWcqLv9kW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Feb 2018 23:32:46 +0100
+Received: from mail.kernel.org (unknown [185.189.112.11])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2B64221738;
-        Thu,  8 Feb 2018 22:22:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2B64221738
+        by mail.kernel.org (Postfix) with ESMTPSA id 4202721738;
+        Thu,  8 Feb 2018 22:32:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4202721738
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 8 Feb 2018 22:22:48 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     "Steven J. Hill" <steven.hill@cavium.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH v4 0/7] Add Octeon Hotplug CPU Support.
-Message-ID: <20180208222247.GC31316@saruman>
-References: <1512021981-15560-1-git-send-email-steven.hill@cavium.com>
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=sre@kernel.org
+Date:   Thu, 8 Feb 2018 23:32:36 +0100
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v3 2/8] dt-bindings: power: reset: Document ocelot-reset
+ binding
+Message-ID: <20180208223236.47g2gzi4mb6blxgi@earth.universe>
+References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
+ <20180116101240.5393-3-alexandre.belloni@free-electrons.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WplhKdTI2c8ulnbP"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wpl5yojfuctp43sn"
 Content-Disposition: inline
-In-Reply-To: <1512021981-15560-1-git-send-email-steven.hill@cavium.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180116101240.5393-3-alexandre.belloni@free-electrons.com>
+User-Agent: NeoMutt/20171215
+Return-Path: <sre@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62465
+X-archive-position: 62466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: sre@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,97 +51,78 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---WplhKdTI2c8ulnbP
-Content-Type: text/plain; charset=utf-8
+--wpl5yojfuctp43sn
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Steven,
+Hi,
 
-On Thu, Nov 30, 2017 at 12:06:14AM -0600, Steven J. Hill wrote:
-> This patchset adds working Octeon Hotplug CPU. It has been tested
-> on our 70xx and 78xx develpoment boards. The 70xx has 4 cores and
-> the 78xx has 48 cores. This was also tested on an EdgerouterPRO,
-> which has 2 cores.
+On Tue, Jan 16, 2018 at 11:12:34AM +0100, Alexandre Belloni wrote:
+> Add binding documentation for the Microsemi Ocelot reset block.
 >=20
-> Changes in v4:
-> - Rebased against v4.15-rc1 kernel.
-> - Smaller patchset due to some previous patches going upstream.
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> ---
 
-This series doesn't appear to build even cavium_octeon_defconfig since
-patch 1, and is full of checkpatch errors and warnings.
+Thanks, queued. My public for-next branch is waiting for 4.16-rc1
+tag, though.
 
-Cheers
-James
+-- Sebastian
 
+>  .../devicetree/bindings/power/reset/ocelot-reset.txt       | 14 ++++++++=
+++++++
+>  1 file changed, 14 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/reset/ocelot-=
+reset.txt
 >=20
->=20
-> David Daney (3):
->   MIPS: Octeon: Populate kernel memory from cvmx_bootmem named blocks.
->   MIPS: Add the concept of BOOT_MEM_KERNEL to boot_mem_map.
->   MIPS: Octeon: Add working hotplug CPU support.
->=20
-> Steven J. Hill (4):
->   MIPS: Octeon: Header and file cleaning.
->   MIPS: Octeon: Update values for CVMX_CIU_FUSE register.
->   MIPS: Octeon: Add Octeon III platforms for console output.
->   MIPS: Octeon: Remove crufty KEXEC and CRASH_DUMP code.
->=20
->  arch/mips/Kconfig                                  |   2 +-
->  .../cavium-octeon/executive/cvmx-helper-board.c    |   2 +-
->  .../cavium-octeon/executive/cvmx-helper-jtag.c     |   1 +
->  .../cavium-octeon/executive/cvmx-helper-rgmii.c    |   1 +
->  .../cavium-octeon/executive/cvmx-helper-sgmii.c    |   1 +
->  .../mips/cavium-octeon/executive/cvmx-helper-spi.c |   1 +
->  .../cavium-octeon/executive/cvmx-helper-xaui.c     |   1 +
->  arch/mips/cavium-octeon/executive/cvmx-helper.c    |   1 +
->  arch/mips/cavium-octeon/executive/cvmx-pko.c       |   1 +
->  arch/mips/cavium-octeon/executive/cvmx-spi.c       |   1 +
->  arch/mips/cavium-octeon/executive/octeon-model.c   |  53 ++++-
->  arch/mips/cavium-octeon/octeon-platform.c          |   1 +
->  arch/mips/cavium-octeon/octeon_boot.h              |  95 --------
->  arch/mips/cavium-octeon/setup.c                    | 246 +++++++--------=
-------
->  arch/mips/cavium-octeon/smp.c                      | 234 +++++++--------=
------
->  arch/mips/include/asm/bootinfo.h                   |   1 +
->  arch/mips/include/asm/mach-cavium-octeon/irq.h     |   8 +
->  .../asm/mach-cavium-octeon/kernel-entry-init.h     |  58 ++++-
->  arch/mips/include/asm/mipsregs.h                   |   1 +
->  arch/mips/include/asm/octeon/cvmx-asm.h            |   6 +-
->  arch/mips/include/asm/octeon/cvmx-ciu-defs.h       | 169 ++++++--------
->  arch/mips/include/asm/octeon/cvmx-coremask.h       |  26 ++-
->  arch/mips/include/asm/octeon/cvmx-sysinfo.h        |   4 +-
->  arch/mips/include/asm/octeon/cvmx.h                |  32 +--
->  arch/mips/include/asm/octeon/octeon.h              |   2 +
->  arch/mips/kernel/setup.c                           |  30 ++-
->  26 files changed, 427 insertions(+), 551 deletions(-)
->  delete mode 100644 arch/mips/cavium-octeon/octeon_boot.h
->=20
+> diff --git a/Documentation/devicetree/bindings/power/reset/ocelot-reset.t=
+xt b/Documentation/devicetree/bindings/power/reset/ocelot-reset.txt
+> new file mode 100644
+> index 000000000000..1b4213eb3473
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/reset/ocelot-reset.txt
+> @@ -0,0 +1,14 @@
+> +Microsemi Ocelot reset controller
+> +
+> +The DEVCPU_GCB:CHIP_REGS have a SOFT_RST register that can be used to re=
+set the
+> +SoC MIPS core.
+> +
+> +Required Properties:
+> + - compatible: "mscc,ocelot-chip-reset"
+> +
+> +Example:
+> +	reset@1070008 {
+> +		compatible =3D "mscc,ocelot-chip-reset";
+> +		reg =3D <0x1070008 0x4>;
+> +	};
+> +
 > --=20
-> 2.1.4
->=20
+> 2.15.1
 >=20
 
---WplhKdTI2c8ulnbP
+--wpl5yojfuctp43sn
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlp8zbcACgkQbAtpk944
-dnoBgA//f4nRp6N1RyUfa9L8eqq8lKApzLCDsotYi/U9Q2Nffh4hR4OU8axtnD2d
-nC+BDhkPp85ZeSOBLTFOvjzV5ClaufPdvQLU+h1dx1gvhzVQl0B+D3no3lGYCfzu
-f4Kjum36h94n8NnNTxafYxo4NQDjBhJpoMiqnOFQ9uUdXeQVennHnSbtU1w9xrMJ
-L0nrr2pKSvgNyTJZEUM1zT0BxsFr4p2T7y27uQlA7EIDZQ/YZWYUJGDwunzlCDa7
-UUOUuA04FEkYVcUMWlpGPNdoHF2e9s4vG/f424KkCxr1gZ5NKRWLfn2CQkPG53VM
-ky+nfbJnYuaP4rLHwx+iqWmrZTKXh+CVwutPuxjd9GDa3eYmzLWuNngCIFV0blgn
-gvAcUL+YUDirrH1deZC2AcQW484qc4OGF0vtIM6MBdYnYhlXaTQB6oHQaQayAy/i
-3L4KT1Hfk74ueAq8mixhX0MQk5KcLOGjZaX1WsJXyoSnTDWmfbQTjouiglX0L8sJ
-uCEldQqDAOXEpT875fd+ZYqp7gIXO7hWWl5yJRs2Aysw6Cf4IHxuVFlxMyA71RmY
-I2JjygMImIz5+09sL6pTuzmqiihEYnBXmGLs4fqOJTDL1VfiQV58N92rmnqDdEft
-oj5pB03qqSQxqSjDhgysGWMhcipo+wtthrD9Xhbga41vP6PiGQc=
-=rwAK
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAlp8z/4ACgkQ2O7X88g7
++pqtghAAgiEC59PSz82T7Q3MqiphoBzYiWxy1CoAtoheS2dFaM7E/EMJUSXJdD/z
+JSGXtbkL4PsJ7Xxn5kcl3mg/fEQT/AjhnSA8K09CnfYrflySatb+aggMbSYjuvV2
++QlAyTPHwQl6WdhYbhurrl/OsR2tuU8D9iD1Jy9On8XbwGRrZ9Lmgq2bVko9RAYV
+SIMnssSBeigwkcLGzFS7CJVOYByKrNjhY9daqUzIoG9SShqV6dz47owLVSgpGojn
+e4DnkoIAD+GxLvMQx+vfTmmOzj25geJtyAGZOKQtd/JJJ0IpDK5BCQlL1nnR+nbD
+opoKWErAaBr5gLxABnIrBfvfZak39tQ7dPPlK1iUMPCrdANjBdgTCyizZilim3/u
+0lNd6GlA1Xz1AoQiUhjSyAT2Kqqx9b5DHgF9opcUZ1Tu7S/m12NkZSTcfpw1YCEI
+vu/fLCVQD9qiplZZ6yrM6BlKKx1bnPOFBaQHOVWQkn2zZ3VM+6wHMzHKToH3c0lb
+zJs00jQ96NrG/lJwz+iDUhzuhHV/7qaWEUFfRrLy1Js/gHOIC/uS7pZ5jvNSgPUx
+9Winvj3lMCCQnujmNplG5DsHe3+rWRWgfHEETM5r89/ncN2bnIJ9eh2vTokaK5dh
+d4UEv1ig4U7t27o+cOJy4FhUatzGLezI3or/pGmA4fst2HUzhDs=
+=Ubpn
 -----END PGP SIGNATURE-----
 
---WplhKdTI2c8ulnbP--
+--wpl5yojfuctp43sn--

@@ -1,42 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2018 23:33:16 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:33658 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992916AbeBHWdBqnf5W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Feb 2018 23:33:01 +0100
-Received: from mail.kernel.org (unknown [185.189.112.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8A97D21738;
-        Thu,  8 Feb 2018 22:32:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 8A97D21738
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=sre@kernel.org
-Date:   Thu, 8 Feb 2018 23:32:52 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 3/8] power: reset: Add a driver for the Microsemi
- Ocelot reset
-Message-ID: <20180208223252.oldyitedhjnpixfw@earth.universe>
-References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
- <20180116101240.5393-4-alexandre.belloni@free-electrons.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="elfl32zc3amnzwwo"
-Content-Disposition: inline
-In-Reply-To: <20180116101240.5393-4-alexandre.belloni@free-electrons.com>
-User-Agent: NeoMutt/20171215
-Return-Path: <sre@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Feb 2018 03:11:10 +0100 (CET)
+Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:35922
+        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992866AbeBICLD1YNvm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Feb 2018 03:11:03 +0100
+Received: by mail-pg0-x244.google.com with SMTP id j9so1578192pgv.3
+        for <linux-mips@linux-mips.org>; Thu, 08 Feb 2018 18:11:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=465ADEDqd6gnMa+m44C7Iat5vnXRvIOYZZWHJapYBE4=;
+        b=Tm/zsTOrcdy725k2QGzQlaOupfOZrFaDNDP5Z6BpJ6L6pF+ZUqwXz0BBAbF2h7NCyt
+         6Kg0vRxL8l092LcZjlyHWzACeKwUAqLcLKTkO2t6qaSwvYFbcNXD//p6keTWS6yg5S/X
+         yna7XhNIFuGZyKewhsmRcidSWN4b5UlY86Odj4h0sp9k+apgBtwhKfGVOuWQFRfFdKdP
+         2ovT/DWummeZUdEltwynlA0AIP3UzjmLW8glTk+J2SIi4wcVqui+T97DWTv0kU49OaS3
+         DQc7yk/Ju38n4ZadJnqak+F2Cz1zJzCdpSDjvCXd0GWydJewwCK5783lS5kDrPUfyHce
+         lHTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=465ADEDqd6gnMa+m44C7Iat5vnXRvIOYZZWHJapYBE4=;
+        b=R4qqCDvG4g9sQOVxBfeg/ojc9Phn3DljhatvzXcb15QP3i70XDEykncSbV2Otvi2iv
+         ssZ9zpqFL04GH7pKETQFbRGk5kADKOOy30N12RirHj+GufApRpe5qYOydGudRq7jTZeG
+         woiFytzIJ0bS/6PWoOoYbrC0S1GfLxyXD+qn109E3co7RAm/LN/yrA8LnhkOLQcu4UJv
+         +VEBSxyPKSflqv3s5lt+ER3aNVY6/jQ7X1r6YZ2dplF7fmjs6jMlI7pzezvFf0bqSkv8
+         cphrN9bEKEWsAwqA9GqsWy/LL7lAOiI3xS0nABce+U0iEpwOMlgez4uk2b/RqMvrMcOa
+         CLsw==
+X-Gm-Message-State: APf1xPBqiU+g5TmN7H0r1BR8l7lVew0H1UyxFziL47oA2WDFJMy6HBpK
+        fQFbA5mYrJXNo+gEZFFfDwk=
+X-Google-Smtp-Source: AH8x225+0a4woUk1KBd7b3+yeCbliUYP2Ncz76I8OMKbHyV0UYEaO866Le41XWOCmNyQWtBu38kk+w==
+X-Received: by 10.98.141.208 with SMTP id p77mr1099514pfk.5.1518142256837;
+        Thu, 08 Feb 2018 18:10:56 -0800 (PST)
+Received: from localhost.localdomain ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id e9sm2240413pgv.14.2018.02.08.18.10.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 08 Feb 2018 18:10:56 -0800 (PST)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH] irqchip: Use %px to print pointer value
+Date:   Fri,  9 Feb 2018 11:10:31 +0900
+Message-Id: <20180209021031.20631-1-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.16.1
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62467
+X-archive-position: 62468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sre@kernel.org
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,185 +70,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+pointers printed with %p are hashed. Use %px instead of %p to print
+pointer value.
 
---elfl32zc3amnzwwo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+---
+ drivers/irqchip/irq-bcm7038-l1.c | 2 +-
+ drivers/irqchip/irq-bcm7120-l2.c | 2 +-
+ drivers/irqchip/irq-brcmstb-l2.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Hi,
-
-On Tue, Jan 16, 2018 at 11:12:35AM +0100, Alexandre Belloni wrote:
-> The Microsemi Ocelot SoC has a register allowing to reset the MIPS core.
-> Unfortunately, the syscon-reboot driver can't be used directly (but almos=
-t)
-> as the reset control may be disabled using another register.
->=20
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: linux-pm@vger.kernel.org
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-> ---
-
-Thanks, queued. My for-next branch is waiting for 4.16-rc1 tag, though.
-
--- Sebastian
-
->  drivers/power/reset/Kconfig        |  7 +++
->  drivers/power/reset/Makefile       |  1 +
->  drivers/power/reset/ocelot-reset.c | 88 ++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 96 insertions(+)
->  create mode 100644 drivers/power/reset/ocelot-reset.c
->=20
-> diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
-> index ca0de1a78e85..2372f8e1040d 100644
-> --- a/drivers/power/reset/Kconfig
-> +++ b/drivers/power/reset/Kconfig
-> @@ -113,6 +113,13 @@ config POWER_RESET_MSM
->  	help
->  	  Power off and restart support for Qualcomm boards.
-> =20
-> +config POWER_RESET_OCELOT_RESET
-> +	bool "Microsemi Ocelot reset driver"
-> +	depends on MSCC_OCELOT || COMPILE_TEST
-> +	select MFD_SYSCON
-> +	help
-> +	  This driver supports restart for Microsemi Ocelot SoC.
-> +
->  config POWER_RESET_PIIX4_POWEROFF
->  	tristate "Intel PIIX4 power-off driver"
->  	depends on PCI
-> diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
-> index aeb65edb17b7..df9d92291c67 100644
-> --- a/drivers/power/reset/Makefile
-> +++ b/drivers/power/reset/Makefile
-> @@ -12,6 +12,7 @@ obj-$(CONFIG_POWER_RESET_GPIO_RESTART) +=3D gpio-restar=
-t.o
->  obj-$(CONFIG_POWER_RESET_HISI) +=3D hisi-reboot.o
->  obj-$(CONFIG_POWER_RESET_IMX) +=3D imx-snvs-poweroff.o
->  obj-$(CONFIG_POWER_RESET_MSM) +=3D msm-poweroff.o
-> +obj-$(CONFIG_POWER_RESET_OCELOT_RESET) +=3D ocelot-reset.o
->  obj-$(CONFIG_POWER_RESET_PIIX4_POWEROFF) +=3D piix4-poweroff.o
->  obj-$(CONFIG_POWER_RESET_LTC2952) +=3D ltc2952-poweroff.o
->  obj-$(CONFIG_POWER_RESET_QNAP) +=3D qnap-poweroff.o
-> diff --git a/drivers/power/reset/ocelot-reset.c b/drivers/power/reset/oce=
-lot-reset.c
-> new file mode 100644
-> index 000000000000..5a13a5cc8188
-> --- /dev/null
-> +++ b/drivers/power/reset/ocelot-reset.c
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +/*
-> + * Microsemi MIPS SoC reset driver
-> + *
-> + * License: Dual MIT/GPL
-> + * Copyright (c) 2017 Microsemi Corporation
-> + */
-> +#include <linux/delay.h>
-> +#include <linux/io.h>
-> +#include <linux/notifier.h>
-> +#include <linux/mfd/syscon.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/reboot.h>
-> +#include <linux/regmap.h>
-> +
-> +struct ocelot_reset_context {
-> +	void __iomem *base;
-> +	struct regmap *cpu_ctrl;
-> +	struct notifier_block restart_handler;
-> +};
-> +
-> +#define ICPU_CFG_CPU_SYSTEM_CTRL_RESET 0x20
-> +#define CORE_RST_PROTECT BIT(2)
-> +
-> +#define SOFT_CHIP_RST BIT(0)
-> +
-> +static int ocelot_restart_handle(struct notifier_block *this,
-> +				 unsigned long mode, void *cmd)
-> +{
-> +	struct ocelot_reset_context *ctx =3D container_of(this, struct
-> +							ocelot_reset_context,
-> +							restart_handler);
-> +
-> +	/* Make sure the core is not protected from reset */
-> +	regmap_update_bits(ctx->cpu_ctrl, ICPU_CFG_CPU_SYSTEM_CTRL_RESET,
-> +			   CORE_RST_PROTECT, 0);
-> +
-> +	writel(SOFT_CHIP_RST, ctx->base);
-> +
-> +	pr_emerg("Unable to restart system\n");
-> +	return NOTIFY_DONE;
-> +}
-> +
-> +static int ocelot_reset_probe(struct platform_device *pdev)
-> +{
-> +	struct ocelot_reset_context *ctx;
-> +	struct resource *res;
-> +
-> +	struct device *dev =3D &pdev->dev;
-> +	int err;
-> +
-> +	ctx =3D devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
-> +	if (!ctx)
-> +		return -ENOMEM;
-> +
-> +	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	ctx->base =3D devm_ioremap_resource(dev, res);
-> +	if (IS_ERR(ctx->base))
-> +		return PTR_ERR(ctx->base);
-> +
-> +	ctx->cpu_ctrl =3D syscon_regmap_lookup_by_compatible("mscc,ocelot-cpu-s=
-yscon");
-> +	if (IS_ERR(ctx->cpu_ctrl))
-> +		return PTR_ERR(ctx->cpu_ctrl);
-> +
-> +	ctx->restart_handler.notifier_call =3D ocelot_restart_handle;
-> +	ctx->restart_handler.priority =3D 192;
-> +	err =3D register_restart_handler(&ctx->restart_handler);
-> +	if (err)
-> +		dev_err(dev, "can't register restart notifier (err=3D%d)\n", err);
-> +
-> +	return err;
-> +}
-> +
-> +static const struct of_device_id ocelot_reset_of_match[] =3D {
-> +	{ .compatible =3D "mscc,ocelot-chip-reset" },
-> +	{}
-> +};
-> +
-> +static struct platform_driver ocelot_reset_driver =3D {
-> +	.probe =3D ocelot_reset_probe,
-> +	.driver =3D {
-> +		.name =3D "ocelot-chip-reset",
-> +		.of_match_table =3D ocelot_reset_of_match,
-> +	},
-> +};
-> +builtin_platform_driver(ocelot_reset_driver);
-> --=20
-> 2.15.1
->=20
-
---elfl32zc3amnzwwo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAlp80BQACgkQ2O7X88g7
-+pqGkxAAlKqfq9/Gz3C1hr/DQJnZjboBeYaX6Q0QBsNQwOEwDXiOtFFBD988ktR0
-KYi2nRkuAqMvABG4fwLbYXSnU/9+oZn57VLqBgT4mxDskEiIEzqIt4nI7rQZfqcv
-wIEjLTmMLN2RNGfkBQ+RFOldGxf5rOW11wt4cgNIPtbyXSQ9cJHRp2kkVR/yj2hL
-Exm8ROh88YwFLKfvknFR7g/kJ3UGIzc3M+a6hMO17tfCb9+5U2C7p7I0tctjeVqA
-7g9ZyKsmJxC+Xw7mmSZ9FzK9/xPS3snljrjDn+mQRqxIbC8SPKRmsnWTEZZ1qa5n
-cKRAEVAvxJbmgi421cHWoc+3Q5oYyVutnINC+FnHQ6/3M9uQFN2Te/+asy7XA68+
-mH5Y6n3y6RHCA3mmCEYbqs6YDXPGYQdm7rUmo1cndZoYAbum/1x4mUG+hoKfktqL
-XduRsq8McwHqBUq8DVGPKOHWM+JkmWrLRp/8b3WpBuWjWxdxIGIIiZzu/KNC/Uwz
-OZBapUIkSyuvTgyhVIpvzKqT06ZkRPFbJXciwZ61geb9vOhtI8qrUB8Hs7Tu0ddj
-9RMUN+Px5BSmN3Hkzc8COxvonR+/K9I31IdTQXnyE+BqGw4HGyRHlOxkFDbzJTuu
-Ipzk0XfNyJJ9Ek1Y6gxPqGaQd9X9DpDqhsGhrj0Iyt3Y3U+TPaI=
-=UJtJ
------END PGP SIGNATURE-----
-
---elfl32zc3amnzwwo--
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index 55cfb986225b..f604c1d89b3b 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -339,7 +339,7 @@ int __init bcm7038_l1_of_init(struct device_node *dn,
+ 		goto out_unmap;
+ 	}
+ 
+-	pr_info("registered BCM7038 L1 intc (mem: 0x%p, IRQs: %d)\n",
++	pr_info("registered BCM7038 L1 intc (mem: 0x%px, IRQs: %d)\n",
+ 		intc->cpus[0]->map_base, IRQS_PER_WORD * intc->n_words);
+ 
+ 	return 0;
+diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+index 983640eba418..1cc4dd1d584a 100644
+--- a/drivers/irqchip/irq-bcm7120-l2.c
++++ b/drivers/irqchip/irq-bcm7120-l2.c
+@@ -318,7 +318,7 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+ 		}
+ 	}
+ 
+-	pr_info("registered %s intc (mem: 0x%p, parent IRQ(s): %d)\n",
++	pr_info("registered %s intc (mem: 0x%px, parent IRQ(s): %d)\n",
+ 			intc_name, data->map_base[0], data->num_parent_irqs);
+ 
+ 	return 0;
+diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
+index 691d20eb0bec..6760edeeb666 100644
+--- a/drivers/irqchip/irq-brcmstb-l2.c
++++ b/drivers/irqchip/irq-brcmstb-l2.c
+@@ -262,7 +262,7 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
+ 		ct->chip.irq_set_wake = irq_gc_set_wake;
+ 	}
+ 
+-	pr_info("registered L2 intc (mem: 0x%p, parent irq: %d)\n",
++	pr_info("registered L2 intc (mem: 0x%px, parent irq: %d)\n",
+ 			base, parent_irq);
+ 
+ 	return 0;
+-- 
+2.16.1

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Feb 2018 12:08:16 +0100 (CET)
-Received: from mout.gmx.net ([212.227.15.18]:60001 "EHLO mout.gmx.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Feb 2018 12:17:09 +0100 (CET)
+Received: from mout.gmx.net ([212.227.15.15]:34327 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990435AbeBKLIJy0g16 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Feb 2018 12:08:09 +0100
+        id S23990435AbeBKLRC5tzC6 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Feb 2018 12:17:02 +0100
 Received: from [79.235.153.113] ([79.235.153.113]) by
- 3c-app-gmx-bs58.server.lan (via HTTP); Sun, 11 Feb 2018 12:07:58 +0100
+ 3c-app-gmx-bs58.server.lan (via HTTP); Sun, 11 Feb 2018 12:16:52 +0100
 MIME-Version: 1.0
-Message-ID: <trinity-48b02633-0f70-42cc-8d2f-e939cf2787bd-1518347278438@3c-app-gmx-bs58>
+Message-ID: <trinity-48dbde08-290c-4df2-964b-45b5a1b9312e-1518347812124@3c-app-gmx-bs58>
 From:   =?UTF-8?Q?=22J=C3=BCrgen_Urban=22?= <JuergenUrban@gmx.de>
 To:     "Fredrik Noring" <noring@nocrew.org>
 Cc:     "Maciej W. Rozycki" <macro@mips.com>, linux-mips@linux-mips.org
-Subject: Aw: [RFC] MIPS: R5900: The ERET instruction has issues with delay
- slot and CACHE
+Subject: Aw: [RFC] MIPS: R5900: Workaround for CACHE instruction near branch
+ delay slot
 Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 11 Feb 2018 12:07:58 +0100
+Date:   Sun, 11 Feb 2018 12:16:52 +0100
 Importance: normal
 Sensitivity: Normal
-In-Reply-To: <20180211080914.GE2222@localhost.localdomain>
+In-Reply-To: <20180211080132.GD2222@localhost.localdomain>
 References: <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
  <20170927172107.GB2631@localhost.localdomain>
  <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
@@ -27,29 +27,29 @@ References: <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
  <20171111160422.GA2332@localhost.localdomain>
  <20180129202715.GA4817@localhost.localdomain>
  <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180211080914.GE2222@localhost.localdomain>
+ <20180211080132.GD2222@localhost.localdomain>
 Content-Transfer-Encoding: 8BIT
 X-UI-Message-Type: mail
 X-Priority: 3
-X-Provags-ID: V03:K1:pHm3uXdLCredn6aF7LlS6oTHusbxKW6jHQssVzBj2bD
- kR5c87aWugLi+7E2gQYB0DSEXZC0SIUgGNSfjf8SnIJ6N8w+bv
- at7TPxjyVYkiPMxEcjjFI37J0h51Y/xGGvqjfPLkqbtsReb5Fi
- ERoZ7FwPvBLWbFcOffMlzP4SZp6dJg9rdp38QolAF4OsgXDoSU
- llItPM8mH4Ip7i90YV9nVEXKDW2vzWw/8RLMtYct8yQDpRvbGI
- byCtpeJjXTv3Anc58LL1QdWst+W0/yMX4UvbWOio7CJf+Bsxtn itOyag=
-X-UI-Out-Filterresults: notjunk:1;V01:K0:zoSRwGC2cZs=:0+MetLaKJ+qb8Gv1+QaB+J
- YBYompNQrIb6yNZLVxMcEG5rbm/vbkKRRKU6f8N35BGgERPXHio/Wc0o9ugCCmF48vSGkYaar
- 1pgIcpznreCQBa0Bq8QGMmKdZifJFCLBGpC6qVHLMapbGk5yP1veTSNKII7H16sZsUK/ol7ky
- 3u5TDj/CqpIWtbPSwb86Dx9oo2f26jIgwmdl3BYPKUKTcx01aTmU3KtrfaAmUlN38A3Ie0gBU
- 7oRmBX0xRaK/JdAGH7ZOFIclzryO8zHiA4PMmM5agvDr41YxOVuXwUOGiV7oQYXi60SA2uLxb
- Zdpbj4CMmTa2EEpljMZ4U/zzvAiEDh72gczA3AWWI9x6WWldn3ZcOr8UoM9Mwi3KnNzjUCjTu
- OtSZS6unliEWT1oZNCALlI5iZvmDA9JKpW/xMzfKxwx6mjrBhFgUr8S1aXMWs4GAFCgy9vsFU
- TNljziMzIHB8FCJYoc+J86JolL5DUZYtUvVU5TtmklPd1Rn0/qFl
+X-Provags-ID: V03:K1:E/YoRB6eEOOiEcB1yoqAS395fFFaE7NAeodHT9naUTg
+ Wz/sqGP2vFfS1dBwXKY6MCJr8wsE6KWZvkZjlxKfeT39OLgXfl
+ incTUfNZisu9vlFnmO8NBNl4hHbWeluZUKGiTKnNbsfPdmp6vw
+ Q8ppUM/OuZSqz8LweNDx4zwknAHFHKE3r7lBMZhG6vUHeAqyhp
+ tWIz3JEEU16+ufq6UsVCkSRuP+jR5CK5TtUc/q0leyCPOoAlCt
+ mGCc8edEBnKFwr1qRF9qqW8aytEjj1F57SmWlmnX+an5iDKlKl 69Te1I=
+X-UI-Out-Filterresults: notjunk:1;V01:K0:KdHLD/KeKZ4=:rQ8MPsUHCfHYLT2jeSznfQ
+ nQwmo9GjwIa4DjAb0xR0rmCF5eOD8bFvt63ggMb0wwjIUFuz1cj/Qd1uF6KwSfUKI+0W6dBdI
+ +OmwV4ss3OUvS4BwhyMSDGb32P/oY1fETWoHbqudlPDwXMs7KU2unHmiULOqDqwcUXh4/PULx
+ udLMREscYhi6savaJbv64KSRgSkrWrME7vFfnzf9wAkQy7URYnOFLJDzY6F0EoGmi2Ud5TU4/
+ F0rXDd1a7hYLZdvCVSObKaQO5hh2dHnPJR3n2WjOaicTFTlppNOczyIHlbKaoVims+LUDn/na
+ A2+jMqhFR9TkXqE8Kz+0xqd0kClVNTTCT+M0LQkw1G4EioCH1yE+YhsZjpPQrM/z3DWikZ37B
+ w91gfuqby9T8nvzDLFqgin08cjSXgJbadsOqipFDbJVvwMvJZpAo1HsMHAio25xB16tVqDn/t
+ dxBUaTXk6AE0j/hUCZTCHRRLfPQxc7eM3zYrXZRyenMikFOsv1sR
 Return-Path: <JuergenUrban@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62493
+X-archive-position: 62494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,81 +68,101 @@ X-list: linux-mips
 
 Hello Fredrik,
 
-> Gesendet: Sonntag, 11. Februar 2018 um 09:09 Uhr
+> Gesendet: Sonntag, 11. Februar 2018 um 09:01 Uhr
 > Von: "Fredrik Noring" <noring@nocrew.org>
 > An: "Maciej W. Rozycki" <macro@mips.com>, "Jürgen Urban" <JuergenUrban@gmx.de>
 > Cc: linux-mips@linux-mips.org
-> Betreff: [RFC] MIPS: R5900: The ERET instruction has issues with delay slot and CACHE
+> Betreff: [RFC] MIPS: R5900: Workaround for CACHE instruction near branch delay slot
 >
 > Signed-off-by: Fredrik Noring <noring@nocrew.org>
 > ---
 > This change has been ported from v2.6 patches. I have not found any note
 > describing this in the TX79 manual.
 
-The Restriction manual restri_e.pdf from Sony's Linux Toolkit says:
+The 5 NOPs are because of restri_e.pdf (2) Arrangement of Program Code and Data.
 
-(2) Arrangement of Program Code and Cata 
-When arraging program code and data in adjoining addresses, put 5 or more NOP instructions, or a combination of SYNC.P and NOP instructions between them. When the data arranged next to the program code has a specific bit pattern, it is regarded as a CACHE instruction, and may fetch a wrong instruction, destroy the data cache, or affect floating point divide of COP1.
+> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+> index 4008298c1880..a0b0fbedad8c 100644
+> --- a/arch/mips/kernel/genex.S
+> +++ b/arch/mips/kernel/genex.S
+> @@ -52,6 +52,14 @@ NESTED(except_vec3_generic, 0, sp)
+>  #endif
+>  	PTR_L	k0, exception_handlers(k1)
+>  	jr	k0
+> +#ifdef CONFIG_CPU_R5900
+> +	/* There should be nothing which looks like a cache instruction. */
+> +	nop
+> +	nop
+> +	nop
+> +	nop
+> +	nop
+> +#endif
+>  	.set	pop
+>  	END(except_vec3_generic)
+>  
+> @@ -709,6 +717,14 @@ isrdhwr:
+>  	.set	arch=r4000
+>  	eret
+>  	.set	mips0
+> +#ifdef CONFIG_CPU_R5900
+> +	/* There should be nothing which looks like cache instruction. */
+> +	nop
+> +	nop
+> +	nop
+> +	nop
+> +	nop
+> +#endif
+>  #endif
+>  	.set	pop
+>  	END(handle_ri_rdhwr)
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index 761b6c369321..795c490a429f 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -1950,12 +1950,36 @@ void __init *set_except_vector(int n, void *addr)
+>  		u32 *buf = (u32 *)(ebase + 0x200);
+>  		unsigned int k0 = 26;
+>  		if ((handler & jump_mask) == ((ebase + 0x200) & jump_mask)) {
+> +#ifdef CONFIG_CPU_R5900
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +#endif
 
-(17) Undefined Instruction (2) 
-Do not execute the following undefined instructions with specific bit pattern, since they interfere with the operation. 
+The 2 nops are because of FLX05 in tx79architecture.pdf.
 
-a) Undefined instructions which interfere with floating-point calculations 
-Inst[31:26]== 010001 &&
-Inst[25:23]== 1*0 && 
-(Inst[ 5: 9]== 010**1 || inst[5:0]==*1*011) 
-Floating-point calculation results may cling to a certain value. This problem also occurs when this bit pattern 
-exists in the data area next to the program code. Therefore, it is necessary to put 5 or more N0P 
-instructions or a combination of SYNC.P and N0P instructions on the boundary between the program 
-code and data. 
+>  			uasm_i_j(&buf, handler & ~jump_mask);
+>  			uasm_i_nop(&buf);
+> +#ifdef CONFIG_CPU_R5900
+> +			/* There are no data allowed which could be interpreted as cache instruction. */
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +#endif
+>  		} else {
+> +#ifdef CONFIG_CPU_R5900
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +#endif
 
-b) Undefined instructions which affect the data cache 
-Inst[31:26]== 101111 && (Inst[20:16]== 10101 || 10111 || 11001 || 11011 || 11101 || 11110 || lllll) 
-The data cache may be destroyed. An undefined instruction exception does not occcur. 
-
-c) Undefined instructions which affect TLB entries 
-Inst[31:26]==010000 && 
-Inst[25:21]== 1**** && 
-(Inst[ 5: 0]==000** || 0****1 || *01*** || ****1*) 
-TLB entries may be destroyed.
+Same here.
 
 Best regards
 Jürgen
 
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index e23765312e25..b67f31d04716 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -1378,6 +1378,16 @@ static void build_r4000_tlb_refill_handler(void)
->  		uasm_l_leave(&l, p);
->  		uasm_i_eret(&p); /* return from trap */
+>  			UASM_i_LA(&buf, k0, handler);
+>  			uasm_i_jr(&buf, k0);
+>  			uasm_i_nop(&buf);
+> +#ifdef CONFIG_CPU_R5900
+> +			/* There are no data allowed which could be interpreted as cache instruction. */
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +			uasm_i_nop(&buf);
+> +#endif
+>  		}
+>  		local_flush_icache_range(ebase + 0x200, (unsigned long)buf);
 >  	}
-> +
-> +#ifdef CONFIG_CPU_R5900
-> +	/* There should be nothing which can be interpreted as cache instruction. */
-> +	uasm_i_nop(&p);
-> +	uasm_i_nop(&p);
-> +	uasm_i_nop(&p);
-> +	uasm_i_nop(&p);
-> +	uasm_i_nop(&p);
-> +#endif
-> +
->  #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
->  	uasm_l_tlb_huge_update(&l, p);
->  	if (htlb_info.need_reload_pte)
-> @@ -2132,6 +2142,14 @@ build_r4000_tlbchange_handler_tail(u32 **p, struct uasm_label **l,
->  	uasm_l_leave(l, *p);
->  	build_restore_work_registers(p);
->  	uasm_i_eret(p); /* return from trap */
-> +#ifdef CONFIG_CPU_R5900
-> +	/* There should be nothing which can be interpreted as cache instruction. */
-> +	uasm_i_nop(p);
-> +	uasm_i_nop(p);
-> +	uasm_i_nop(p);
-> +	uasm_i_nop(p);
-> +	uasm_i_nop(p);
-> +#endif
->  
->  #ifdef CONFIG_64BIT
->  	build_get_pgd_vmalloc64(p, l, r, tmp, ptr, not_refill);
 >

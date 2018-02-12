@@ -1,67 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 23:18:22 +0100 (CET)
-Received: from mail-vk0-x243.google.com ([IPv6:2607:f8b0:400c:c05::243]:39188
-        "EHLO mail-vk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994554AbeBLWSNxdPXm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 23:18:13 +0100
-Received: by mail-vk0-x243.google.com with SMTP id a63so9732935vkg.6
-        for <linux-mips@linux-mips.org>; Mon, 12 Feb 2018 14:18:13 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 23:37:17 +0100 (CET)
+Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:41425
+        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994559AbeBLWhLJTOax (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 23:37:11 +0100
+Received: by mail-pl0-x244.google.com with SMTP id k8so5670284pli.8;
+        Mon, 12 Feb 2018 14:37:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Eagvr0K+YHaMC6P2qbIxiyZ9hrIDZGrkCABxeUMMKq0=;
-        b=E1/EYJ+gImJwPelG7Zwyw060mF8Wtnp6vwM+ObjfKlyBEmFJ9ySOiRgJIYmBS+hSQi
-         l65VIVKxy9sGeZk8cq1R8/JyBoAxdyyqvexZsJ9tzBus+ymWhCnKUuFC4uPDL4oFhG8c
-         qj5Lwz1+s/Lp9GfbEe3uHgeTqcuKd5TnH8np/iE7sv3AJYFBY/jOsLkgihKoWr9/Az0a
-         BElUnMjIdUtPhNkXFPFDVc/xeJ7QeNUW8ZhS++YrnVQ6wDF5be+Y/xm73addux165JQz
-         xNCx0zd0GEFqEJvm4HVItdwNidfThborRshWyRdO6wVKciJ0kzm7HsveIwIjZxf5nrbs
-         s1gg==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=bNbw5o21kCD+LtdmOOJY5z0RI933IirRkmzkmad/3Q4=;
+        b=COT2y1E5y9obNeGp+xj0p7NpVovsivLxI0thaj7Elmmm/CGGWrVLg7qFJe/nkjwfWX
+         xson7j7BZebGn5aCITyoQd7tIZMj+gF0INOaCkTh04zuW4JGmGebgEjGqSCE+JrvZ6bW
+         LW4gYazgFqZgPB4oxJ1X43uTYMkv3a/G7yioyA7sKS5jL9jx4BKSuykJ3ydJqZaQE0OI
+         uowsSIN4H4gBulvatf762eAfukPkUyb4zbzHNwFebJC9EnPPfkCz6w5JBxpwkShHzDRy
+         +37em2fHbJc5moUup7J3h96Ao50pwpIkb6yCS8SSSerOBHRZtskWmO9Zi7ylCfv0xQK2
+         p8/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Eagvr0K+YHaMC6P2qbIxiyZ9hrIDZGrkCABxeUMMKq0=;
-        b=LGfEc+j6Qqh6QMYFs8oZcP5TUC/6osk6c9seTB+anDp2PhvzHszXaFLQEkFEoqLMUK
-         faw+aefdAm91cmdRUHB3qk+Zohm/THGZDmbXmutd2OBP80doBg31TRRt3ukYJm1v/Edr
-         35LAJM39ZzXHaETgEPlp41iB04T0mMYUztya87kaNWkqEhqbLM/PAkIMfG6cMLfwW4Xf
-         uPf5u+19e7U9R28gcfJqXxKV48KAHG/Uf0HVm4YowMOltyHvTjNmBNS5wwo389CZDDaT
-         w+dwoXgXoNWsw87iI6sSNaUZ2alkdRupn1mTHgJnFgj+GuVB7GEccgu9qZgxh+AUlXs3
-         vcKA==
-X-Gm-Message-State: APf1xPDmkgbwEYQnXddvpTwLLOP/USM5xYP93mpAMO4JCxyn0r6uAI14
-        37hWn6l3EP/zcCmKTvnbBoBUdoGafiov5nNaK0k=
-X-Google-Smtp-Source: AH8x227e1t59s1vBHAyPAl3GtIOoB2KZiiHlwoQhotRBCiro5N6Do1ys4tf/j4/VobRVkAeegVwrcqcPmiGNlq5ukqA=
-X-Received: by 10.31.73.199 with SMTP id w190mr11603045vka.108.1518473887515;
- Mon, 12 Feb 2018 14:18:07 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.176.89.198 with HTTP; Mon, 12 Feb 2018 14:17:47 -0800 (PST)
-In-Reply-To: <6bf05e81-2334-f3ac-08a7-e53ee59bb4c0@arm.com>
-References: <20180209021031.20631-1-jaedon.shin@gmail.com> <ba5fb474-4e45-8d8d-ee5d-9f1a211090e3@arm.com>
- <45424653-235D-4C4B-8908-417943F5283C@gmail.com> <6bf05e81-2334-f3ac-08a7-e53ee59bb4c0@arm.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Mon, 12 Feb 2018 23:17:47 +0100
-Message-ID: <CAOiHx=n7yS2dD9LVeQp7p48Sai51aQHjyLHUQMnBvXjwChoh7g@mail.gmail.com>
-Subject: Re: [PATCH] irqchip: Use %px to print pointer value
-To:     Marc Zyngier <marc.zyngier@arm.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Jaedon Shin <jaedon.shin@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <jonas.gorski@gmail.com>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=bNbw5o21kCD+LtdmOOJY5z0RI933IirRkmzkmad/3Q4=;
+        b=VWPK7zBvPrgbGZNLELbzOp83MXIneDrhSEAIhBjA5gqs7KoMFl6DVpTRgTMe2yJWe0
+         pKqr9//JkUxUYjFqWbQhqCZXD5Aia39tDEZ+mF4ORgaZRQwLbpjVzDaClcXJ9AUGxF2B
+         dpYIwm7DApxPxMzUjqueHRQZNTm89IDIg91OdgFo+nJ5cI/vuWJVBhI5xGzRCN5npfYH
+         qyS4Y0hhEKXJDe8OWnJL1wo5e/yxfhsfYTgjVA4zoV0fPqxCVTTwjLuo1VAU22+GzBzy
+         nNw/LJODFbL3ljOichlTlD3qPYECAtCJJayjHwCjzMcX5HSgfv8YrJOLwNTkD3yWDwDr
+         xbJA==
+X-Gm-Message-State: APf1xPC+KNk3es4TkwGUW5ssd8xmEAR5lTel5RQ7PcnJzthTb07Ci/Dj
+        eiLgYLjFoTzwpcvp5TPpcMI=
+X-Google-Smtp-Source: AH8x227tMN+Jydh3CZR9BNT4x9DGgBNCmAHjAipznS2/XXwGSBoNyvr5WruP/tCH66payG5SlHsw2w==
+X-Received: by 2002:a17:902:6a16:: with SMTP id m22-v6mr12395725plk.142.1518475024053;
+        Mon, 12 Feb 2018 14:37:04 -0800 (PST)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id q68sm23492071pfb.104.2018.02.12.14.37.03
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Feb 2018 14:37:03 -0800 (PST)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
+Date:   Mon, 12 Feb 2018 14:37:01 -0800
+Message-Id: <1518475021-3337-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62506
+X-archive-position: 62507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,89 +63,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 9 February 2018 at 17:04, Marc Zyngier <marc.zyngier@arm.com> wrote:
-> On 09/02/18 15:54, Florian Fainelli wrote:
->> On February 9, 2018 12:51:33 AM PST, Marc Zyngier <marc.zyngier@arm.com> wrote:
->>> On 09/02/18 02:10, Jaedon Shin wrote:
->>>> Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
->>>> pointers printed with %p are hashed. Use %px instead of %p to print
->>>> pointer value.
->>>>
->>>> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
->>>> ---
->>>>  drivers/irqchip/irq-bcm7038-l1.c | 2 +-
->>>>  drivers/irqchip/irq-bcm7120-l2.c | 2 +-
->>>>  drivers/irqchip/irq-brcmstb-l2.c | 2 +-
->>>>  3 files changed, 3 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/drivers/irqchip/irq-bcm7038-l1.c
->>> b/drivers/irqchip/irq-bcm7038-l1.c
->>>> index 55cfb986225b..f604c1d89b3b 100644
->>>> --- a/drivers/irqchip/irq-bcm7038-l1.c
->>>> +++ b/drivers/irqchip/irq-bcm7038-l1.c
->>>> @@ -339,7 +339,7 @@ int __init bcm7038_l1_of_init(struct device_node
->>> *dn,
->>>>             goto out_unmap;
->>>>     }
->>>>
->>>> -   pr_info("registered BCM7038 L1 intc (mem: 0x%p, IRQs: %d)\n",
->>>> +   pr_info("registered BCM7038 L1 intc (mem: 0x%px, IRQs: %d)\n",
->>>>             intc->cpus[0]->map_base, IRQS_PER_WORD * intc->n_words);
->>>>
->>>>     return 0;
->>>> diff --git a/drivers/irqchip/irq-bcm7120-l2.c
->>> b/drivers/irqchip/irq-bcm7120-l2.c
->>>> index 983640eba418..1cc4dd1d584a 100644
->>>> --- a/drivers/irqchip/irq-bcm7120-l2.c
->>>> +++ b/drivers/irqchip/irq-bcm7120-l2.c
->>>> @@ -318,7 +318,7 @@ static int __init bcm7120_l2_intc_probe(struct
->>> device_node *dn,
->>>>             }
->>>>     }
->>>>
->>>> -   pr_info("registered %s intc (mem: 0x%p, parent IRQ(s): %d)\n",
->>>> +   pr_info("registered %s intc (mem: 0x%px, parent IRQ(s): %d)\n",
->>>>                     intc_name, data->map_base[0], data->num_parent_irqs);
->>>>
->>>>     return 0;
->>>> diff --git a/drivers/irqchip/irq-brcmstb-l2.c
->>> b/drivers/irqchip/irq-brcmstb-l2.c
->>>> index 691d20eb0bec..6760edeeb666 100644
->>>> --- a/drivers/irqchip/irq-brcmstb-l2.c
->>>> +++ b/drivers/irqchip/irq-brcmstb-l2.c
->>>> @@ -262,7 +262,7 @@ static int __init brcmstb_l2_intc_of_init(struct
->>> device_node *np,
->>>>             ct->chip.irq_set_wake = irq_gc_set_wake;
->>>>     }
->>>>
->>>> -   pr_info("registered L2 intc (mem: 0x%p, parent irq: %d)\n",
->>>> +   pr_info("registered L2 intc (mem: 0x%px, parent irq: %d)\n",
->>>>                     base, parent_irq);
->>>>
->>>>     return 0;
->>>>
->>>
->>> Why is that something useful to do? This just tells you where the
->>> device
->>> is mapped in the VA space, and I doubt that's a useful information,
->>> hashed pointers or not. Am I missing something obvious?
->>
->> No you are right there is not much value in printing the register
->> virtual address (sometimes there is e.g: on MIPS) either we fix the
->> prints to show the physical address of the base register or we could
->> possibly drop the prints entirely.
->
-> Displaying the PA can be useful if you have several identical blocks in
-> your system and you want to be able to identify them. Given that there
-> is probably only one of these controllers per system, the address is
-> pretty pointless.
+Since commit 60f481b970386 ("i40e: change flags to use 64 bits"),
+the i40e driver uses cmpxchg64(). This causes mips:allmodconfig builds
+to fail with
 
-Multiple instances are actually quite common in the STB SoCs, e.g.
-bcm7362 has one instance of bcm7038-l1, two instances of bcm7120-l2
-and four instances of brcmstb-l2.
+drivers/net/ethernet/intel/i40e/i40e_ethtool.c:
+	In function 'i40e_set_priv_flags':
+drivers/net/ethernet/intel/i40e/i40e_ethtool.c:4443:2: error:
+	implicit declaration of function 'cmpxchg64'
 
+Implement a poor-mans-version of cmpxchg64() to fix the problem for 32-bit
+mips builds. The code is derived from sparc32, but only uses a single
+spinlock.
 
-Regards
-Jonas
+Fixes: 60f481b970386 ("i40e: change flags to use 64 bits")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+Compile-tested only.
 
-P.S: Also What about bcm6345-l1? It also prints it's mapped VAs, not the PAs.
+ arch/mips/include/asm/cmpxchg.h |  3 +++
+ arch/mips/kernel/cmpxchg.c      | 17 +++++++++++++++++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
+index 89e9fb7976fe..9f7b1df95b99 100644
+--- a/arch/mips/include/asm/cmpxchg.h
++++ b/arch/mips/include/asm/cmpxchg.h
+@@ -206,6 +206,9 @@ static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
+ #define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (n))
+ #ifndef CONFIG_SMP
+ #define cmpxchg64(ptr, o, n) cmpxchg64_local((ptr), (o), (n))
++#else
++u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new);
++#define cmpxchg64(ptr, old, new)	__cmpxchg_u64(ptr, old, new)
+ #endif
+ #endif
+ 
+diff --git a/arch/mips/kernel/cmpxchg.c b/arch/mips/kernel/cmpxchg.c
+index 0b9535bc2c53..30216beb2334 100644
+--- a/arch/mips/kernel/cmpxchg.c
++++ b/arch/mips/kernel/cmpxchg.c
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include <linux/bitops.h>
++#include <linux/spinlock.h>
+ #include <asm/cmpxchg.h>
+ 
+ unsigned long __xchg_small(volatile void *ptr, unsigned long val, unsigned int size)
+@@ -107,3 +108,19 @@ unsigned long __cmpxchg_small(volatile void *ptr, unsigned long old,
+ 			return old;
+ 	}
+ }
++
++static DEFINE_SPINLOCK(cmpxchg_lock);
++
++u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new)
++{
++	unsigned long flags;
++	u64 prev;
++
++	spin_lock_irqsave(&cmpxchg_lock, flags);
++	if ((prev = *ptr) == old)
++		*ptr = new;
++	spin_unlock_irqrestore(&cmpxchg_lock, flags);
++
++	return prev;
++}
++EXPORT_SYMBOL(__cmpxchg_u64);
+-- 
+2.7.4

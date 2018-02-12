@@ -1,50 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 16:23:27 +0100 (CET)
-Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:54823 "EHLO
-        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990439AbeBLPXUeoAP3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 16:23:20 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 731BF3F5C1;
-        Mon, 12 Feb 2018 16:23:10 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BnokMvUDUDGh; Mon, 12 Feb 2018 16:23:09 +0100 (CET)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 645F73F5A2;
-        Mon, 12 Feb 2018 16:23:00 +0100 (CET)
-Date:   Mon, 12 Feb 2018 16:22:54 +0100
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>,
-        linux-mips@linux-mips.org
-Subject: Re: [RFC] MIPS: R5900: Workaround for the short loop bug
-Message-ID: <20180212152254.GA2272@localhost.localdomain>
-References: <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
- <20170930065654.GA7714@localhost.localdomain>
- <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
- <20171029172016.GA2600@localhost.localdomain>
- <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
- <20171111160422.GA2332@localhost.localdomain>
- <20180129202715.GA4817@localhost.localdomain>
- <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180211072908.GA2222@localhost.localdomain>
- <alpine.DEB.2.00.1802111311530.3553@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 19:30:49 +0100 (CET)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:38250
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993946AbeBLSalV2oWS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 19:30:41 +0100
+Received: by mail-qt0-x244.google.com with SMTP id k13so695159qtg.5
+        for <linux-mips@linux-mips.org>; Mon, 12 Feb 2018 10:30:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=9C3Rnf/ZRG4JXQPmmV/9ZW9JObqGOZLiVbs+rHG73kA=;
+        b=JdODVO6ViBMdrIlEKaPaVPp9a5Ha9uRdTa4990aKF41M3luDu+TFobnyOMfXCXunGT
+         HOeuGvJ/3J1h1oIpnZ4OZW2V3csaDVTbcxI1d+Pth3XIhMDA86looBv8BnqK4fc3JzAC
+         mLpGlEFOuX5vgDR8Nm9t7vdqQlnm6fH3sxBLvLdbUzCKRPWP8vY2ENPr1PLMznQqxdYa
+         vzVeNnELn9ItNHhXm5vz2OFTK2WW+vqY7XZmS4mWHwEkxrRJjWcIKmWRzAX4BfYfpNrK
+         GBepRQcTrzWtR5vz31jFQIsOeJRp/AP+IaGrYjqd9apa7JFa1P+2iIsVvtmBO+8Pa7aQ
+         MEHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=9C3Rnf/ZRG4JXQPmmV/9ZW9JObqGOZLiVbs+rHG73kA=;
+        b=MLJ68tNwoQed68YMylh3VguWHU9BSoP6WoJaipMK+BNly8noq7FJn5DLrT1LrpfIw7
+         bvmN2CdXXRtv2r7ILfR3OUlfCTwlKAOJrqqBxkF2kRa2rK4JdicrfEqCCu41fbOTpGd9
+         aqIp6DURi1WKqy8xTrN6ht6EE1TBHBaqCVKspgY0vXbJ6/IMRuSIhw/ZSONytwRjlN/f
+         ESqN65lUJZbiY/bsRVsowLolbdPOdfH0ozgon/GaTcEByVSFGnbPf+zXI1Jw/nTpv4Jz
+         2SfpTXBn2Hf9vJLvTOHy59421BDsDYd51qcE8JrDtxgabjzQhAs3Ts3U/7XDj53sIhnk
+         NG0A==
+X-Gm-Message-State: APf1xPDec4iDWfRsoRmNVZQbNlHqx+A7F733YW+Pib7kxb8PjGQiVKDe
+        b3m/u537LjWP4BjyWsq1WeE=
+X-Google-Smtp-Source: AH8x225LhDvKsTISVkfPG4AMyU1+a//0RdzZTqoaRkOVZjfBBJAhWDwNqqSuXpMZREv+e0yyvsA8Lw==
+X-Received: by 10.200.20.13 with SMTP id k13mr21137775qtj.137.1518460235070;
+        Mon, 12 Feb 2018 10:30:35 -0800 (PST)
+Received: from [10.69.41.93] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id j19sm6667106qtc.1.2018.02.12.10.30.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Feb 2018 10:30:33 -0800 (PST)
+Subject: Re: [PATCH] irqchip: Remove hashed address printing
+To:     Jaedon Shin <jaedon.shin@gmail.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20180212021812.3882-1-jaedon.shin@gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <20e9fd4b-ef57-effa-26b6-e0db2b584735@gmail.com>
+Date:   Mon, 12 Feb 2018 10:30:25 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
+In-Reply-To: <20180212021812.3882-1-jaedon.shin@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1802111311530.3553@tp.orcam.me.uk>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <noring@nocrew.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62504
+X-archive-position: 62505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,34 +80,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Many thanks for your prompt and detailed reviews, Maciej,
-
-> > The exact NOP placements in this patch are provisional. Request for comment
-> > on the method to use. I believe there are at least three alternatives:
-> > 
-> > 1. Add #ifdefs or macros in the source code (similar to this patch).
-> > 2. Modify the assembler to automatically insert NOPs as required.
-> > 3. Avoid assembly and use C versions of memcpy etc. instead.
-> > 
-> > This change has been ported from v2.6 patches.
+On 02/11/2018 06:18 PM, Jaedon Shin wrote:
+> Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+> pointers are being hashed when printed. Displaying the virtual memory at
+> bootup time is not helpful. so delete the prints.
 > 
->  I can't tell if this is a porting artefact or whether the reason is 
-> different, but many of these loops contain more than 6 instructions 
-> already, or need fewer than 3 NOPs.  Please review accordingly.
-> 
->  Also can't this be handled automagically by GAS instead?  We have similar 
-> workarounds already implemented, see e.g. `-mfix-vr4130'.  Otherwise this 
-> is looking to me like a candidate for a maintenance nightmare (which the 
-> problem with getting loop instruction counts wrong in your patch is a sign 
-> of).
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
-As noted above, please ignore the NOP details which just barely survived
-from v2.6 (according to the principle that too many NOPs still work, whereas
-too few crash badly), especially since I very much agree with you that it is
-unreasonable to maintain such NOPs by hand and would rather proceed with
-alternative (2) [from the list above] that is to modify the assembler instead.
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Meanwhile, is it possible to run with alternative (3) that is to use C
-fallbacks for the R5900, provided the performance penalty is reasonable?
-
-Fredrik
+Thanks Jaedon!
+-- 
+Florian

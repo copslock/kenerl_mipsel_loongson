@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 10:29:14 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:57084 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 10:32:13 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:39565 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990391AbeBLJ3EpwTbP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 10:29:04 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 12 Feb 2018 09:28:57 +0000
+        by eddie.linux-mips.org with ESMTP id S23990391AbeBLJcGg4GZP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 10:32:06 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 12 Feb 2018 09:32:02 +0000
 Received: from [10.20.78.211] (10.20.78.211) by mips01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Mon, 12 Feb 2018
- 01:26:02 -0800
-Date:   Mon, 12 Feb 2018 09:25:53 +0000
+ 01:29:08 -0800
+Date:   Mon, 12 Feb 2018 09:28:59 +0000
 From:   "Maciej W. Rozycki" <macro@mips.com>
 To:     Fredrik Noring <noring@nocrew.org>
 CC:     =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>,
         <linux-mips@linux-mips.org>
-Subject: Re: [RFC] MIPS: R5900: Workaround for the short loop bug
-In-Reply-To: <20180211072908.GA2222@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1802111311530.3553@tp.orcam.me.uk>
+Subject: Re: [RFC] MIPS: R5900: Workaround exception NOP execution bug
+ (FLX05)
+In-Reply-To: <20180211075608.GC2222@localhost.localdomain>
+Message-ID: <alpine.DEB.2.00.1802111239380.3553@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk> <20170927172107.GB2631@localhost.localdomain> <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk> <20170930065654.GA7714@localhost.localdomain> <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
  <20171029172016.GA2600@localhost.localdomain> <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk> <20171111160422.GA2332@localhost.localdomain> <20180129202715.GA4817@localhost.localdomain> <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180211072908.GA2222@localhost.localdomain>
+ <20180211075608.GC2222@localhost.localdomain>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1518427737-321457-17360-35975-1
+X-BESS-ID: 1518427921-298554-22252-128369-4
 X-BESS-VER: 2018.1-r1801291959
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -36,7 +37,7 @@ Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62498
+X-archive-position: 62499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,41 +56,186 @@ X-list: linux-mips
 
 On Sat, 10 Feb 2018, Fredrik Noring wrote:
 
-> The short loop bug under certain conditions causes loops to execute
-> only once or twice. GCC 2.95 that shipped with Sony PS2 Linux had a
-> patch with the following note:
+> For the R5900, there are cases in which the first two instructions
+> in an exception handler are executed as NOP instructions, when
+> certain exceptions occur and then a bus error occurs immediately
+> before jumping to the exception handler (FLX05).
 > 
->     On the R5900, we must ensure that the compiler never generates
->     loops that satisfy all of the following conditions:
-> 
->     - a loop consists of less than equal to six instructions
->       (including the branch delay slot);
->     - a loop contains only one conditional branch instruction at
->       the end of the loop;
->     - a loop does not contain any other branch or jump instructions;
->     - a branch delay slot of the loop is not NOP (EE 2.9 or later).
-> 
->     We need to do this because of a bug in the chip.
-> 
-> Signed-off-by: Fredrik Noring <noring@nocrew.org>
-> ---
-> The exact NOP placements in this patch are provisional. Request for comment
-> on the method to use. I believe there are at least three alternatives:
-> 
-> 1. Add #ifdefs or macros in the source code (similar to this patch).
-> 2. Modify the assembler to automatically insert NOPs as required.
-> 3. Avoid assembly and use C versions of memcpy etc. instead.
-> 
-> This change has been ported from v2.6 patches.
+> The corrective measure is to place NOP in the first two instruction
+> locations in all exception handlers.
 
- I can't tell if this is a porting artefact or whether the reason is 
-different, but many of these loops contain more than 6 instructions 
-already, or need fewer than 3 NOPs.  Please review accordingly.
+ Well, but it would help if you only patched the handlers which are 
+actually used by the R5900 (and only the handlers and not other code).
 
- Also can't this be handled automagically by GAS instead?  We have similar 
-workarounds already implemented, see e.g. `-mfix-vr4130'.  Otherwise this 
-is looking to me like a candidate for a maintenance nightmare (which the 
-problem with getting loop instruction counts wrong in your patch is a sign 
-of).
+> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+> index c7b64f4a8ad3..4008298c1880 100644
+> --- a/arch/mips/kernel/genex.S
+> +++ b/arch/mips/kernel/genex.S
+> @@ -62,6 +66,8 @@ NESTED(except_vec3_r4000, 0, sp)
+>  	.set	arch=r4000
+>  	.set	noat
+>  #ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+>  	sync.p
+>  #endif
+>  	mfc0	k1, CP0_CAUSE
+
+ This hunk makes no sense, the R5900 does not have virtual coherency 
+exceptions and therefore makes no use of this handler.
+
+> @@ -174,6 +180,10 @@ LEAF(__r4k_wait)
+>  	.align	5
+>  BUILD_ROLLBACK_PROLOGUE handle_int
+>  NESTED(handle_int, PT_SIZE, sp)
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry, this is jumped to from 
+`except_vec3_generic' via the `exception_handlers' dispatcher.
+
+> @@ -275,6 +285,10 @@ NESTED(handle_int, PT_SIZE, sp)
+>   * to fit into space reserved for the exception handler.
+>   */
+>  NESTED(except_vec4, 0, sp)
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+>  1:	j	1b			/* Dummy, will be replaced */
+>  	END(except_vec4)
+
+ This is not going to work as per the comment.  See `set_except_vector'.
+
+> @@ -285,6 +299,10 @@ NESTED(except_vec4, 0, sp)
+>   * unconditional jump to this vector.
+>   */
+>  NESTED(except_vec_ejtag_debug, 0, sp)
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry and can only be jumped to from the 
+firmware, redirected from the 0xffffffffbfc00480 hardwired EJTAG exception 
+entry point (not supported by the R5900 anyway).
+
+> @@ -300,6 +318,10 @@ NESTED(except_vec_ejtag_debug, 0, sp)
+>   */
+>  BUILD_ROLLBACK_PROLOGUE except_vec_vi
+>  NESTED(except_vec_vi, 0, sp)
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is an exception handler entry template for vectored interrupts, 
+which are not supported by the R5900.
+
+> @@ -319,6 +341,10 @@ EXPORT(except_vec_vi_end)
+>   * Complete the register saves and invoke the handler which is passed in $v0
+>   */
+>  NESTED(except_vec_vi_handler, 0, sp)
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry and is called from vectored 
+interrupt handlers.
+
+> @@ -378,6 +404,10 @@ NESTED(except_vec_vi_handler, 0, sp)
+>  NESTED(ejtag_debug_handler, PT_SIZE, sp)
+>  	.set	push
+>  	.set	noat
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry, this can only be reached from one 
+of the dispatchers scattered throughout the arch/mips/ tree.
+
+> @@ -424,6 +454,10 @@ EXPORT(ejtag_debug_buffer)
+>   * unconditional jump to this vector.
+>   */
+>  NESTED(except_vec_nmi, 0, sp)
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry and can only be jumped to from the 
+firmware, redirected from the 0xffffffffbfc00000 hardwired NMI exception 
+entry point.
+
+> @@ -436,6 +470,10 @@ NESTED(nmi_handler, PT_SIZE, sp)
+>  	.cfi_signal_frame
+>  	.set	push
+>  	.set	noat
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry, this can only be reached from one 
+of the dispatchers scattered throughout the arch/mips/ tree.
+
+> @@ -521,6 +559,10 @@ NESTED(nmi_handler, PT_SIZE, sp)
+>  	NESTED(handle_\exception, PT_SIZE, sp)
+>  	.cfi_signal_frame
+>  	.set	noat
+> +#ifdef CONFIG_CPU_R5900
+> +	nop
+> +	nop
+> +#endif
+
+ This is not an exception handler entry, this is jumped to from 
+`except_vec3_generic' via the `exception_handlers' dispatcher.
+
+> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> index 89b425646647..e56f988b5c20 100644
+> --- a/arch/mips/kernel/scall32-o32.S
+> +++ b/arch/mips/kernel/scall32-o32.S
+> @@ -30,6 +30,18 @@ NESTED(handle_sys, PT_SIZE, sp)
+>  	.set	noat
+>  #ifdef CONFIG_CPU_R5900
+>  	/*
+> +	 * For the R5900, there are cases in which the first two instructions
+> +	 * in an exception handler are executed as NOP instructions, when
+> +	 * certain exceptions occur and then a bus error occurs immediately
+> +	 * before jumping to the exception handler (FLX05).
+> +	 *
+> +	 * The corrective measure is to place NOP in the first two instruction
+> +	 * locations in all exception handlers.
+> +	 */
+> +	nop
+> +	nop
+> +
+> +	/*
+
+ Likewise.
+
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index a18b013fd887..fc7ec8f9eed8 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -2049,6 +2054,11 @@ build_r4000_tlbchange_handler_head(u32 **p, struct uasm_label **l,
+>  {
+>  	struct work_registers wr = build_get_work_registers(p);
+>  
+> +#ifdef CONFIG_CPU_R5900
+> +	uasm_i_nop(p);
+> +	uasm_i_nop(p);
+> +#endif
+> +
+
+ Likewise.
+
+ IOW the only places that look relevant to me are: `except_vec3_generic', 
+`build_r4000_tlb_refill_handler' and `set_except_vector'.  Please update 
+your change accordingly.
 
   Maciej

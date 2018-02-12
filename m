@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 10:32:13 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:39565 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2018 10:33:47 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:60960 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990391AbeBLJcGg4GZP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Feb 2018 10:32:06 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 12 Feb 2018 09:32:02 +0000
+        by eddie.linux-mips.org with ESMTP id S23990391AbeBLJdlK0X9P convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 12 Feb 2018 10:33:41 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 12 Feb 2018 09:33:34 +0000
 Received: from [10.20.78.211] (10.20.78.211) by mips01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Mon, 12 Feb 2018
- 01:29:08 -0800
-Date:   Mon, 12 Feb 2018 09:28:59 +0000
+ 01:22:15 -0800
+Date:   Mon, 12 Feb 2018 09:22:06 +0000
 From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [RFC] MIPS: R5900: Workaround exception NOP execution bug
- (FLX05)
-In-Reply-To: <20180211075608.GC2222@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1802111239380.3553@tp.orcam.me.uk>
+To:     =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>,
+        Fredrik Noring <noring@nocrew.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: Aw: [RFC] MIPS: R5900: Use mandatory SYNC.L in exception
+ handlers
+In-Reply-To: <trinity-5d735b1e-9f56-47cc-8f85-3635dd4efe48-1518345226674@3c-app-gmx-bs58>
+Message-ID: <alpine.DEB.2.00.1802111301330.3553@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk> <20170927172107.GB2631@localhost.localdomain> <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk> <20170930065654.GA7714@localhost.localdomain> <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
  <20171029172016.GA2600@localhost.localdomain> <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk> <20171111160422.GA2332@localhost.localdomain> <20180129202715.GA4817@localhost.localdomain> <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180211075608.GC2222@localhost.localdomain>
+ <20180211082913.GF2222@localhost.localdomain> <trinity-5d735b1e-9f56-47cc-8f85-3635dd4efe48-1518345226674@3c-app-gmx-bs58>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1518427921-298554-22252-128369-4
-X-BESS-VER: 2018.1-r1801291959
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-BESS-ID: 1518428013-452059-20512-162088-12
+X-BESS-VER: 2018.1.1-r1801291958
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189937
@@ -37,7 +39,7 @@ Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62499
+X-archive-position: 62500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,188 +56,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 10 Feb 2018, Fredrik Noring wrote:
+Jürgen, Fredrik --
 
-> For the R5900, there are cases in which the first two instructions
-> in an exception handler are executed as NOP instructions, when
-> certain exceptions occur and then a bus error occurs immediately
-> before jumping to the exception handler (FLX05).
+> > Would you be able to explain the notes
+> > 
+> > 	/* In an error exception handler the user space could be uncached. */
+> > 
+> > in the patch ported from v2.6 below?
 > 
-> The corrective measure is to place NOP in the first two instruction
-> locations in all exception handlers.
+> The tx79architecture.pdf says:
+> 2.4 kuseg becomes an uncached area when an error exception (Status.ERL = 1) occurs (FLX04)
+> 2.4.1 Phenomenon
+> There are cases in which kuseg (0x0000_0000 – 0x7FFF_FFFF) becomes uncached in an error exception handler (Status.ERL==1) and data consistency with cached area (kseg, ksseg, kseg0) is lost.
+> 2.4.2 Corrective measures
+> In an error exception handler (Status.ERL==1), when accessing kuseg (0x0000_0000 – 0x7FFF_FFFF), access it after guarding using SYNC.L as follows:
+> SYNC.L
+> SW ku seg
 
- Well, but it would help if you only patched the handlers which are 
-actually used by the R5900 (and only the handlers and not other code).
+ This change makes no sense to me anyway I am afraid.
 
-> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-> index c7b64f4a8ad3..4008298c1880 100644
-> --- a/arch/mips/kernel/genex.S
-> +++ b/arch/mips/kernel/genex.S
-> @@ -62,6 +66,8 @@ NESTED(except_vec3_r4000, 0, sp)
->  	.set	arch=r4000
->  	.set	noat
->  #ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
->  	sync.p
->  #endif
->  	mfc0	k1, CP0_CAUSE
+ At the error level (Status.ERL=1) the user segment becomes unmapped and 
+therefore all KUSEG addresses become physical addresses.  Which means that 
+if any of this code you have patched is called to access user pages, then 
+you have a bigger problem than just the cache going out of sync.
 
- This hunk makes no sense, the R5900 does not have virtual coherency 
-exceptions and therefore makes no use of this handler.
+ The only reason to access KUSEG at the error level is to save/restore 
+register state to/from a dedicated RAM area offset from $zero so that 
+execution is restartable.  Unlike at the exception level you cannot use 
+$k0 and $k1 as temporaries, because an error exception can happen any time 
+including in particular while $k0 and $k1 are in active use at the 
+exception level, so clobbering them would make the system non-restartable 
+(of course receiving an error exception may mean that anyway).
 
-> @@ -174,6 +180,10 @@ LEAF(__r4k_wait)
->  	.align	5
->  BUILD_ROLLBACK_PROLOGUE handle_int
->  NESTED(handle_int, PT_SIZE, sp)
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
+ Code to write/read that dedicated area should be purpose-crafted and the 
+area won't be accessed at any other time, so the issue of being cache 
+coherent or not does not apply as the area will never be accessed with 
+caching operations.
 
- This is not an exception handler entry, this is jumped to from 
-`except_vec3_generic' via the `exception_handlers' dispatcher.
+ I can see the R5900 has additional classes of error exceptions defined, 
+such as debug and performance counter exceptions, which are not related to 
+hardware faults and can happen in regular execution in response to certain 
+conditions requested.  If you want to handle these implementation specific 
+extensions and consequently serve these exceptions, then please take care 
+of all the requirements as code to support them is added.
 
-> @@ -275,6 +285,10 @@ NESTED(handle_int, PT_SIZE, sp)
->   * to fit into space reserved for the exception handler.
->   */
->  NESTED(except_vec4, 0, sp)
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
->  1:	j	1b			/* Dummy, will be replaced */
->  	END(except_vec4)
-
- This is not going to work as per the comment.  See `set_except_vector'.
-
-> @@ -285,6 +299,10 @@ NESTED(except_vec4, 0, sp)
->   * unconditional jump to this vector.
->   */
->  NESTED(except_vec_ejtag_debug, 0, sp)
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is not an exception handler entry and can only be jumped to from the 
-firmware, redirected from the 0xffffffffbfc00480 hardwired EJTAG exception 
-entry point (not supported by the R5900 anyway).
-
-> @@ -300,6 +318,10 @@ NESTED(except_vec_ejtag_debug, 0, sp)
->   */
->  BUILD_ROLLBACK_PROLOGUE except_vec_vi
->  NESTED(except_vec_vi, 0, sp)
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is an exception handler entry template for vectored interrupts, 
-which are not supported by the R5900.
-
-> @@ -319,6 +341,10 @@ EXPORT(except_vec_vi_end)
->   * Complete the register saves and invoke the handler which is passed in $v0
->   */
->  NESTED(except_vec_vi_handler, 0, sp)
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is not an exception handler entry and is called from vectored 
-interrupt handlers.
-
-> @@ -378,6 +404,10 @@ NESTED(except_vec_vi_handler, 0, sp)
->  NESTED(ejtag_debug_handler, PT_SIZE, sp)
->  	.set	push
->  	.set	noat
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is not an exception handler entry, this can only be reached from one 
-of the dispatchers scattered throughout the arch/mips/ tree.
-
-> @@ -424,6 +454,10 @@ EXPORT(ejtag_debug_buffer)
->   * unconditional jump to this vector.
->   */
->  NESTED(except_vec_nmi, 0, sp)
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is not an exception handler entry and can only be jumped to from the 
-firmware, redirected from the 0xffffffffbfc00000 hardwired NMI exception 
-entry point.
-
-> @@ -436,6 +470,10 @@ NESTED(nmi_handler, PT_SIZE, sp)
->  	.cfi_signal_frame
->  	.set	push
->  	.set	noat
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is not an exception handler entry, this can only be reached from one 
-of the dispatchers scattered throughout the arch/mips/ tree.
-
-> @@ -521,6 +559,10 @@ NESTED(nmi_handler, PT_SIZE, sp)
->  	NESTED(handle_\exception, PT_SIZE, sp)
->  	.cfi_signal_frame
->  	.set	noat
-> +#ifdef CONFIG_CPU_R5900
-> +	nop
-> +	nop
-> +#endif
-
- This is not an exception handler entry, this is jumped to from 
-`except_vec3_generic' via the `exception_handlers' dispatcher.
-
-> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-> index 89b425646647..e56f988b5c20 100644
-> --- a/arch/mips/kernel/scall32-o32.S
-> +++ b/arch/mips/kernel/scall32-o32.S
-> @@ -30,6 +30,18 @@ NESTED(handle_sys, PT_SIZE, sp)
->  	.set	noat
->  #ifdef CONFIG_CPU_R5900
->  	/*
-> +	 * For the R5900, there are cases in which the first two instructions
-> +	 * in an exception handler are executed as NOP instructions, when
-> +	 * certain exceptions occur and then a bus error occurs immediately
-> +	 * before jumping to the exception handler (FLX05).
-> +	 *
-> +	 * The corrective measure is to place NOP in the first two instruction
-> +	 * locations in all exception handlers.
-> +	 */
-> +	nop
-> +	nop
-> +
-> +	/*
-
- Likewise.
-
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index a18b013fd887..fc7ec8f9eed8 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -2049,6 +2054,11 @@ build_r4000_tlbchange_handler_head(u32 **p, struct uasm_label **l,
->  {
->  	struct work_registers wr = build_get_work_registers(p);
->  
-> +#ifdef CONFIG_CPU_R5900
-> +	uasm_i_nop(p);
-> +	uasm_i_nop(p);
-> +#endif
-> +
-
- Likewise.
-
- IOW the only places that look relevant to me are: `except_vec3_generic', 
-`build_r4000_tlb_refill_handler' and `set_except_vector'.  Please update 
-your change accordingly.
+ Though as I wrote above it does not look to me like anything specific 
+will be needed -- the handler at entry will save the state necessary for 
+restartability to a dedicated RAM area first and then to the kernel stack, 
+switch the error level off, do the necessary processing, and then reverse 
+the steps before resuming execution interrupted.
 
   Maciej

@@ -1,42 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 00:42:42 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:52240 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994577AbeBLXmfNUnNv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Feb 2018 00:42:35 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FF23217A6;
-        Mon, 12 Feb 2018 23:42:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 6FF23217A6
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 12 Feb 2018 23:42:02 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 00:57:10 +0100 (CET)
+Received: from mail-pg0-x241.google.com ([IPv6:2607:f8b0:400e:c05::241]:41996
+        "EHLO mail-pg0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994584AbeBLX5EH1BSv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 00:57:04 +0100
+Received: by mail-pg0-x241.google.com with SMTP id y8so1363216pgr.9;
+        Mon, 12 Feb 2018 15:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Rg5NeLkwXQ2uamTjxkZwGhA5g32BzL436wa/AHLjcek=;
+        b=P7Jk0pIBvFK9ezUsC+a7T4q1hLHeolCcsVU28Ie9Szjstp+Uc7tPAPMVAWlsy8rjow
+         LrsvwfW6nURy5RqeBvT5EjrMW48NH7DodtUqKO6lMvWTRxFNClAtboCo7LNaqPBAlgO7
+         LAWp7tFz5rLqVbeWLx78vXUiKYqCRe6r1dm3no5NHGX2OG63Qo7WdXRprToYxduU+snI
+         qS90qQhl0z+fxPe7AJe9HzTd8WmBm8rjtVsmt31fEKAUUutRS3+lc+DaAWK3a3XZt0Gz
+         3kyX+3BLN5nMDFvY1LkqZplf4txGqk7fn/9k+Ad3gPZB4lqCTKpe6NEQKsxpSTlngSBK
+         /6KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Rg5NeLkwXQ2uamTjxkZwGhA5g32BzL436wa/AHLjcek=;
+        b=DNp7ewQ+K/Q8vdRLNsoJqsjYL3KNQwMykzVZ1eXMCuBhKF7ex3pnWl2ZL2tYs2icI2
+         F2yF5AF9fyDvuY1QslWrkyrc2SEnXmPs+CXfZA5Gq8RjzRXBBd4rcNofEeLTF1MvB2AQ
+         8sm2h/PU6jtKOp3NJSepOfPmoqLRe5+7fJMskAVUXvGwB2qvmbl1BmfpMWQvUTYd12pQ
+         AYqAD/Yd6CY3W8jYwXEzCZLxQcF45lM49qjF5FxBwWvP5uMAOsWYoDhfZPOK4dKe0GZP
+         XKbWiRpeatXRFCvHfDA4cH9A7tNwJeHjuSHtEIYw9C7ppBk2qiLzVilLnY5DtgI10TwP
+         DSow==
+X-Gm-Message-State: APf1xPDHdbtjvd7KcqN6Bphxc1JvdPJQdC+xclKS92VP+vZYInsLYZQ3
+        jef2tTt7K6U8qcWRukeNLZ0lYtra
+X-Google-Smtp-Source: AH8x224Cg9wwJlNAd+hrf7quN2M9rysa3hjoXDbLgWOwXxKb8gXavQXPyQP3A3cXbisFEo6qd89oSA==
+X-Received: by 10.98.226.22 with SMTP id a22mr12671452pfi.24.1518479817488;
+        Mon, 12 Feb 2018 15:56:57 -0800 (PST)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id a28sm25721405pfe.70.2018.02.12.15.56.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Feb 2018 15:56:56 -0800 (PST)
+Date:   Mon, 12 Feb 2018 15:56:55 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <jhogan@kernel.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org,
         Alice Michael <alice.michael@intel.com>,
         Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
         Shannon Nelson <shannon.nelson@oracle.com>
 Subject: Re: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-Message-ID: <20180212234201.GB4290@saruman>
+Message-ID: <20180212235655.GC5199@roeck-us.net>
 References: <1518475021-3337-1-git-send-email-linux@roeck-us.net>
+ <20180212234201.GB4290@saruman>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="dTy3Mrz/UPE2dbVg"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1518475021-3337-1-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180212234201.GB4290@saruman>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62508
+X-archive-position: 62509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,127 +74,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Mon, Feb 12, 2018 at 11:42:02PM +0000, James Hogan wrote:
+> Hi Guenter,
+> 
+> On Mon, Feb 12, 2018 at 02:37:01PM -0800, Guenter Roeck wrote:
+> > Since commit 60f481b970386 ("i40e: change flags to use 64 bits"),
+> > the i40e driver uses cmpxchg64(). This causes mips:allmodconfig builds
+> > to fail with
+> > 
+> > drivers/net/ethernet/intel/i40e/i40e_ethtool.c:
+> > 	In function 'i40e_set_priv_flags':
+> > drivers/net/ethernet/intel/i40e/i40e_ethtool.c:4443:2: error:
+> > 	implicit declaration of function 'cmpxchg64'
+> > 
+> > Implement a poor-mans-version of cmpxchg64() to fix the problem for 32-bit
+> > mips builds. The code is derived from sparc32, but only uses a single
+> > spinlock.
+> 
+> Will this be implemened for all 32-bit architectures which are currently
+> missing cmpxchg64()?
+> 
+No idea.
 
---dTy3Mrz/UPE2dbVg
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> If so, any particular reason not to do it in generic code?
+> 
+Again, no idea. When the problem was previously seen on sparc32,
+it was implemented there.
 
-Hi Guenter,
+> If not then I think that driver should be fixed to either depend on some
+> appropriate Kconfig symbol or to not use this API since it clearly isn't
+> portable at the moment.
+> 
+Good point.
 
-On Mon, Feb 12, 2018 at 02:37:01PM -0800, Guenter Roeck wrote:
-> Since commit 60f481b970386 ("i40e: change flags to use 64 bits"),
-> the i40e driver uses cmpxchg64(). This causes mips:allmodconfig builds
-> to fail with
->=20
-> drivers/net/ethernet/intel/i40e/i40e_ethtool.c:
-> 	In function 'i40e_set_priv_flags':
-> drivers/net/ethernet/intel/i40e/i40e_ethtool.c:4443:2: error:
-> 	implicit declaration of function 'cmpxchg64'
->=20
-> Implement a poor-mans-version of cmpxchg64() to fix the problem for 32-bit
-> mips builds. The code is derived from sparc32, but only uses a single
-> spinlock.
+> See also Shannon's comment about that specific driver:
+> https://lkml.kernel.org/r/e7c934d7-e5f4-ee1b-0647-c31a98d9e944@oracle.com
+> 
 
-Will this be implemened for all 32-bit architectures which are currently
-missing cmpxchg64()?
+Well, this was an RFC only. Feel free to ignore it.
 
-If so, any particular reason not to do it in generic code?
+FWIW, this is the second time that the call was introduced in the i40 driver.
+After the first time the code was rewritten to avoid the problem, but now it
+came back. Someone must really like it ;-). For my part, I may just blacklist
+the offending driver in my builds; that is less than perfect, but much easier
+than having to deal with the same problem over and over again. Guess I'll wait
+for a while and do just that if the problem isn't fixed in a later RC.
 
-If not then I think that driver should be fixed to either depend on some
-appropriate Kconfig symbol or to not use this API since it clearly isn't
-portable at the moment.
-
-See also Shannon's comment about that specific driver:
-https://lkml.kernel.org/r/e7c934d7-e5f4-ee1b-0647-c31a98d9e944@oracle.com
-
-Cheers
-James
-
->=20
-> Fixes: 60f481b970386 ("i40e: change flags to use 64 bits")
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> Compile-tested only.
->=20
->  arch/mips/include/asm/cmpxchg.h |  3 +++
->  arch/mips/kernel/cmpxchg.c      | 17 +++++++++++++++++
->  2 files changed, 20 insertions(+)
->=20
-> diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpx=
-chg.h
-> index 89e9fb7976fe..9f7b1df95b99 100644
-> --- a/arch/mips/include/asm/cmpxchg.h
-> +++ b/arch/mips/include/asm/cmpxchg.h
-> @@ -206,6 +206,9 @@ static inline unsigned long __cmpxchg(volatile void *=
-ptr, unsigned long old,
->  #define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o),=
- (n))
->  #ifndef CONFIG_SMP
->  #define cmpxchg64(ptr, o, n) cmpxchg64_local((ptr), (o), (n))
-> +#else
-> +u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new);
-> +#define cmpxchg64(ptr, old, new)	__cmpxchg_u64(ptr, old, new)
->  #endif
->  #endif
-> =20
-> diff --git a/arch/mips/kernel/cmpxchg.c b/arch/mips/kernel/cmpxchg.c
-> index 0b9535bc2c53..30216beb2334 100644
-> --- a/arch/mips/kernel/cmpxchg.c
-> +++ b/arch/mips/kernel/cmpxchg.c
-> @@ -9,6 +9,7 @@
->   */
-> =20
->  #include <linux/bitops.h>
-> +#include <linux/spinlock.h>
->  #include <asm/cmpxchg.h>
-> =20
->  unsigned long __xchg_small(volatile void *ptr, unsigned long val, unsign=
-ed int size)
-> @@ -107,3 +108,19 @@ unsigned long __cmpxchg_small(volatile void *ptr, un=
-signed long old,
->  			return old;
->  	}
->  }
-> +
-> +static DEFINE_SPINLOCK(cmpxchg_lock);
-> +
-> +u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new)
-> +{
-> +	unsigned long flags;
-> +	u64 prev;
-> +
-> +	spin_lock_irqsave(&cmpxchg_lock, flags);
-> +	if ((prev =3D *ptr) =3D=3D old)
-> +		*ptr =3D new;
-> +	spin_unlock_irqrestore(&cmpxchg_lock, flags);
-> +
-> +	return prev;
-> +}
-> +EXPORT_SYMBOL(__cmpxchg_u64);
-> --=20
-> 2.7.4
->=20
-
---dTy3Mrz/UPE2dbVg
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqCJkMACgkQbAtpk944
-dno+Hw//T9FYzJDizLYv3MQejxSYFcOh137PFoX4zTU3qFD0gL57LGo6wXgwHH5j
-YW7KzdP/EsNkeRfWBgqk2AaNBWTRUztrV814RTo1R14dFSnPumLOq/IYynmnsDo3
-nvm823NCIcPvtJ9jR2PhrhFlLZuNjqBEfzYr8jdmnBkNeqAixtlpW1prymBJNwNW
-/0O+2RlOlpQITUnDEbPUeZy5XkfvZTJaXZHPlBaxNuwy0iE6suWkR+Fi+XDEV+CG
-8zIezG/kHDYS/JZizymDp5BzMglOXE1WR7VGGKHrJQ+D2Z/qfHEHT/chMc3JF2ce
-DlN7V4yaF8+X/FnkM9A3rSreMQiREvzAB/wGve9bGuQqT5myFr4R40L3Skok9TW7
-LWu9BMvIEGYnqzEgqbutsIweYgcr6vhNtZ13vxJIUtovpcbc/lV8cIBWX1L0WZ6p
-940HR92VgMFJxyEaV52t4BaYb02+SvO3N+w/O3L60nAVcJSnG+4YLFRjY3xd4M/P
-S+RlqK04ZqI8r5Z8srGELWfU8HRYu3GMFhu7nU0CH2+O3GtjdLzmMH5huR3DB8AV
-ZHh9/lXuXfAsIiX9GXvy89rTzd5EJBPLpN9wo0JrMHHCgio/wCi7DmQJC7+p4e4d
-YCHVWYxXKETa1lv8/d84GtvW5Ydb5U2Ga/GPgHyLmfZ7tlWIp9o=
-=PH9W
------END PGP SIGNATURE-----
-
---dTy3Mrz/UPE2dbVg--
+Guenter

@@ -1,56 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 15:25:37 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:57844 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994586AbeBMOZaIDB8X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 15:25:30 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 14:23:47 +0000
-Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 13 Feb
- 2018 06:18:23 -0800
-Subject: Re: [PATCH v2 15/15] MIPS: memblock: Deactivate bootmem allocator
-To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
-        <miodrag.dinic@mips.com>, <jhogan@kernel.org>,
-        <goran.ferenc@mips.com>, <david.daney@cavium.com>,
-        <paul.gortmaker@windriver.com>, <paul.burton@mips.com>,
-        <alex.belits@cavium.com>, <Steven.Hill@cavium.com>
-CC:     <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
-        <marcin.nowakowski@mips.com>, <James.hogan@mips.com>,
-        <Peter.Wotton@mips.com>, <Sergey.Semin@t-platforms.ru>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180202035458.30456-1-fancer.lancer@gmail.com>
- <20180202035458.30456-16-fancer.lancer@gmail.com>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <eeb9647d-967b-d2b3-bd75-ba1ffc270d53@mips.com>
-Date:   Tue, 13 Feb 2018 14:18:18 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 15:33:18 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:49004 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994554AbeBMOdMHconX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Feb 2018 15:33:12 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C82B821723;
+        Tue, 13 Feb 2018 14:33:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C82B821723
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 13 Feb 2018 14:32:40 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        linux-mips@linux-mips.org, "# v4 . 11" <stable@vger.kernel.org>
+Subject: Re: [PATCH v3] MIPS: fix incorrect mem=X@Y handling
+Message-ID: <20180213143239.GE4290@saruman>
+References: <20180201113721.24776-1-marcin.nowakowski@mips.com>
+ <CA+7wUswiOdqunZfnL-6YFJ6gPfj7bXAdHYbetbW_PdQaN28GzQ@mail.gmail.com>
+ <CA+7wUszerm6VQsboY9hhgzEZejFOyKZtoh+eCpAESho-xdmQXw@mail.gmail.com>
+ <20180213133832.GD4290@saruman>
+ <CA+7wUswyQjRvY1=4g785jNBnfAAqSUbyYSWh3qKHieJVhmbxSg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20180202035458.30456-16-fancer.lancer@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1518531827-321458-10263-39762-5
-X-BESS-VER: 2018.1-r1801291959
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189978
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kA1LkgxZ0NN7Mz3A"
+Content-Disposition: inline
+In-Reply-To: <CA+7wUswyQjRvY1=4g785jNBnfAAqSUbyYSWh3qKHieJVhmbxSg@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62528
+X-archive-position: 62529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,42 +51,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Serge,
 
-On 02/02/18 03:54, Serge Semin wrote:
-> Memblock allocator can be successfully used from now for early
-> memory management
-> 
-> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> ---
->   arch/mips/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 350a990fc719..434f756e03e9 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -4,7 +4,6 @@ config MIPS
->   	default y
->   	select ARCH_BINFMT_ELF_STATE
->   	select ARCH_CLOCKSOURCE_DATA
-> -	select ARCH_DISCARD_MEMBLOCK
->   	select ARCH_HAS_ELF_RANDOMIZE
->   	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
->   	select ARCH_MIGHT_HAVE_PC_PARPORT
-> @@ -57,6 +56,7 @@ config MIPS
->   	select HAVE_IRQ_TIME_ACCOUNTING
->   	select HAVE_KPROBES
->   	select HAVE_KRETPROBES
-> +	select NO_BOOTMEM
+--kA1LkgxZ0NN7Mz3A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Please maintain the alphabetical order in config MIPS. It makes 
-conflicts easier to manage.
+On Tue, Feb 13, 2018 at 03:03:24PM +0100, Mathieu Malaterre wrote:
+> James,
+>=20
+> On Tue, Feb 13, 2018 at 2:38 PM, James Hogan <jhogan@kernel.org> wrote:
+> > On Tue, Feb 13, 2018 at 01:14:29PM +0100, Mathieu Malaterre wrote:
+> >> Could you please review the patch v3 ?
+> >
+> > Yes, looks good to me, and Ralf had applied to his test branch so I
+> > presume he's happy with it too. I'll apply for 4.16.
+>=20
+> Hum, just to be sure I understand the process. Which branch are you
+> talking about:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
 
-Thanks,
-Matt
+I was referring to upstream-sfr.git branch=3Dmips-next-test
+https://git.linux-mips.org/cgit/ralf/upstream-sfr.git/log/?h=3Dmips-next-te=
+st
 
->   	select HAVE_MEMBLOCK
->   	select HAVE_MEMBLOCK_NODE_MAP
->   	select HAVE_MOD_ARCH_SPECIFIC
-> 
+(The mips-next branch there is what Ralf puts into linux-next)
+
+I've applied the patch to my mips-fixes branch here:
+git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
+
+Sorry it seems a bit haphazard with multiple trees in use.
+
+Cheers
+James
+
+--kA1LkgxZ0NN7Mz3A
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqC9wcACgkQbAtpk944
+dnpDsQ/9HP9dZ3Vlm/NAkshn5Z7CMRBhqjYIij2rtdNxhtJphoFtNeY8toLh7CLa
+ywNIz2pErakB2mCpb1I6xHPm7eI2HG4INo2hshu2cJEqPFRm+oWZ9hbrfQpPYH7e
+C9zpO+na7hsVTaMRItUtcSo7kljZOx21QeDMRV7mOtiDuW/eTCtr0obk6cf2h/ju
+xhQCoh+honGU/JoeN+3PKrvhvvTUc5CX+GdcBxrNebBIgQu9HPuInaxY/bBijjx5
+cNE+V0GAY/YWjcHeyj9ztCVtUCmEHIxx6fUazl/w6vyMCVh1yNiNStgZOxr/+gpA
+Uj+2KAIOhh4RWdRreiSKItD30oWAmq+36VAWPtbfNd+t4W/h6875U+v75P3uQgni
+AVEvyf5eb7/faThS4keMbi7JfNEtjH/PTsQwe5809mLZ7p+LFbaPtt82hs23f0h3
+5hFI8FAy9S34PpnOrOd2ghJcIg+bsWWEeVLhVaMcMT7iIP6aUt5uvzzD8K4XRglQ
+uHCUN3qd3IbgHUGAUmm4Uhr14SfKcv8mWT6EuWFZD9VkjvcsGHFQv1vErN1i2EEE
+FOlWfA94KITKAoIMPum07RQKjHU6HQKwxCODmOwuxNL61r3aHFtk7otKZBbtlgzL
+jL88wyDeTD2rbqYIIqg23H8tWSdnttKdfYuyRSMRbvByZGS/Bag=
+=OcHK
+-----END PGP SIGNATURE-----
+
+--kA1LkgxZ0NN7Mz3A--

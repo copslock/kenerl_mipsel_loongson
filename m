@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 14:52:02 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:51752 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 14:53:16 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:58423 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994554AbeBMNvwRo0UV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 14:51:52 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 13:50:17 +0000
+        by eddie.linux-mips.org with ESMTP id S23994585AbeBMNxI4YJhV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 14:53:08 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 13:51:40 +0000
 Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 13 Feb
- 2018 05:44:45 -0800
-Subject: Re: [PATCH v2 06/15] MIPS: memblock: Add reserved memory regions to
+ 2018 05:46:02 -0800
+Subject: Re: [PATCH v2 07/15] MIPS: memblock: Reserve kdump/crash regions in
  memblock
 To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
         <miodrag.dinic@mips.com>, <jhogan@kernel.org>,
@@ -20,19 +20,19 @@ CC:     <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
  <20180202035458.30456-1-fancer.lancer@gmail.com>
- <20180202035458.30456-7-fancer.lancer@gmail.com>
+ <20180202035458.30456-8-fancer.lancer@gmail.com>
 From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <ff5e9bd4-2d27-9199-e6e3-759763fc3b6a@mips.com>
-Date:   Tue, 13 Feb 2018 13:44:40 +0000
+Message-ID: <7046eb2c-8d53-bac9-3dd5-0f35816dfe0e@mips.com>
+Date:   Tue, 13 Feb 2018 13:45:57 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.4.0
 MIME-Version: 1.0
-In-Reply-To: <20180202035458.30456-7-fancer.lancer@gmail.com>
+In-Reply-To: <20180202035458.30456-8-fancer.lancer@gmail.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1518529814-637140-1052-163823-8
+X-BESS-ID: 1518529899-298555-24840-62852-6
 X-BESS-VER: 2018.1-r1801291959
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -47,7 +47,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62518
+X-archive-position: 62519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,180 +67,46 @@ X-list: linux-mips
 Hi Serge,
 
 On 02/02/18 03:54, Serge Semin wrote:
-> The memory reservation has to be performed for all the crucial
-> objects like kernel itself, it data and fdt blob. FDT reserved-memory
-> nodes should also be scanned to declare or discard reserved memory
-> regions, but it has to be done after the memblock is fully initialized
-> with low/high RAM (see the function description/code).
-
-Again, if possible, introduce this change before discarding bootmem 
-initialisation, so that the series can be bisected.
-
-
+> Kdump/crashkernel memory regions should be reserved in the
+> memblock allocator so they wouldn't be occupied by any further
+> allocations.
 > 
 > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> ---
->   arch/mips/kernel/setup.c | 96 +++++++++++++++++++++++++++---------------------
->   1 file changed, 54 insertions(+), 42 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index cf3674977170..72853e94c2c7 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -362,6 +362,10 @@ static unsigned long __init init_initrd(void)
->   static void __init bootmem_init(void)
->   {
->   	init_initrd();
-> +}
-> +
-> +static void __init reservation_init(void)
-> +{
->   	finalize_initrd();
->   }
->   
-> @@ -478,60 +482,70 @@ static void __init bootmem_init(void)
->   		memblock_add_node(PFN_PHYS(start), PFN_PHYS(end - start), 0);
->   	}
->   	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
-> +}
-> +
-> +static void __init reservation_init(void)
-> +{
-> +	phys_addr_t size;
-> +	int i;
->   
->   	/*
-> -	 * Register fully available low RAM pages with the bootmem allocator.
-> +	 * Reserve memory occupied by the kernel and it data
->   	 */
-> -	for (i = 0; i < boot_mem_map.nr_map; i++) {
-> -		unsigned long start, end, size;
-> +	size = __pa_symbol(&_end) - __pa_symbol(&_text);
-> +	memblock_reserve(__pa_symbol(&_text), size);
->   
-> -		start = PFN_UP(boot_mem_map.map[i].addr);
-> -		end   = PFN_DOWN(boot_mem_map.map[i].addr
-> -				    + boot_mem_map.map[i].size);
-> +	/*
-> +	 * Handle FDT and it reserved-memory nodes now
-> +	 */
-> +	early_init_fdt_reserve_self();
-> +	early_init_fdt_scan_reserved_mem();
->   
-> -		/*
-> -		 * Reserve usable memory.
-> -		 */
-> -		switch (boot_mem_map.map[i].type) {
-> -		case BOOT_MEM_RAM:
-> -			break;
-> -		case BOOT_MEM_INIT_RAM:
-> -			memory_present(0, start, end);
-> -			continue;
-> -		default:
-> -			/* Not usable memory */
-> -			if (start > min_low_pfn && end < max_low_pfn)
-> -				reserve_bootmem(boot_mem_map.map[i].addr,
-> -						boot_mem_map.map[i].size,
-> -						BOOTMEM_DEFAULT);
-> -			continue;
-> -		}
 
-I think this change maybe belongs in "MIPS: memblock: Discard bootmem 
-initialization"?
+This looks good to me
+
+Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
 
 Thanks,
 Matt
 
-> +	/*
-> +	 * Reserve requested memory ranges with the memblock allocator.
-> +	 */
-> +	for (i = 0; i < boot_mem_map.nr_map; i++) {
-> +		phys_addr_t start, end;
->   
-> -		/*
-> -		 * We are rounding up the start address of usable memory
-> -		 * and at the end of the usable range downwards.
-> -		 */
-> -		if (start >= max_low_pfn)
-> +		if (boot_mem_map.map[i].type == BOOT_MEM_RAM)
->   			continue;
-> -		if (end > max_low_pfn)
-> -			end = max_low_pfn;
-> +
-> +		start = boot_mem_map.map[i].addr;
-> +		end   = boot_mem_map.map[i].addr + boot_mem_map.map[i].size;
-> +		size  = boot_mem_map.map[i].size;
->   
->   		/*
-> -		 * ... finally, is the area going away?
-> +		 * Make sure the region isn't already reserved
->   		 */
-> -		if (end <= start)
-> +		if (memblock_is_region_reserved(start, size)) {
-> +			pr_warn("Reserved region %08zx @ %pa already in-use\n",
-> +				(size_t)size, &start); >   			continue;
-> -		size = end - start;
-> +		}
->   
-> -		/* Register lowmem ranges */
-> -		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
-> -		memory_present(0, start, end);
-> +		switch (boot_mem_map.map[i].type) {
-> +		case BOOT_MEM_ROM_DATA:
-> +		case BOOT_MEM_RESERVED:
-> +		case BOOT_MEM_INIT_RAM:
-> +			memblock_reserve(start, size);
-> +			break;
-> +		case BOOT_MEM_RESERVED_NOMAP:
-> +		default:
-> +			memblock_remove(start, size);
-> +			break;
-> +		}
->   	}
->   
->   	/*
->   	 * Reserve initrd memory if needed.
->   	 */
->   	finalize_initrd();
-> +
-> +	/*
-> +	 * Reserve for hibernation
-> +	 */
-> +	size = __pa_symbol(&__nosave_end) - __pa_symbol(&__nosave_begin);
-> +	memblock_reserve(__pa_symbol(&__nosave_begin), size);
->   }
->   
->   #endif	/* CONFIG_SGI_IP27 */
-> @@ -546,6 +560,7 @@ static void __init bootmem_init(void)
->    * kernel but generic memory management system is still entirely uninitialized.
->    *
->    *  o bootmem_init()
-> + *  o reservation_init()
->    *  o sparse_init()
->    *  o paging_init()
->    *  o dma_contiguous_reserve()
-> @@ -803,10 +818,10 @@ static void __init arch_mem_init(char **cmdline_p)
->   		print_memory_map();
->   	}
->   
-> -	early_init_fdt_reserve_self();
-> -	early_init_fdt_scan_reserved_mem();
-> -
->   	bootmem_init();
-> +
-> +	reservation_init();
-> +
->   #ifdef CONFIG_PROC_VMCORE
+> ---
+>   arch/mips/kernel/setup.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 72853e94c2c7..b2a5b89ae6b2 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -826,17 +826,15 @@ static void __init arch_mem_init(char **cmdline_p)
 >   	if (setup_elfcorehdr && setup_elfcorehdr_size) {
 >   		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
-> @@ -832,9 +847,6 @@ static void __init arch_mem_init(char **cmdline_p)
->   	for_each_memblock(reserved, reg)
->   		if (reg->size != 0)
->   			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-> -
-> -	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-> -			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
->   }
+>   		       setup_elfcorehdr, setup_elfcorehdr_size);
+> -		reserve_bootmem(setup_elfcorehdr, setup_elfcorehdr_size,
+> -				BOOTMEM_DEFAULT);
+> +		memblock_reserve(setup_elfcorehdr, setup_elfcorehdr_size);
+>   	}
+>   #endif
 >   
->   static void __init resource_init(void)
+>   	mips_parse_crashkernel();
+>   #ifdef CONFIG_KEXEC
+>   	if (crashk_res.start != crashk_res.end)
+> -		reserve_bootmem(crashk_res.start,
+> -				crashk_res.end - crashk_res.start + 1,
+> -				BOOTMEM_DEFAULT);
+> +		memblock_reserve(crashk_res.start,
+> +				 crashk_res.end - crashk_res.start + 1);
+>   #endif
+>   	device_tree_init();
+>   	sparse_init();
 > 

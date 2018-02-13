@@ -1,57 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 12:37:41 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:52854 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992896AbeBMLhcFZHFI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 12:37:32 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 11:36:02 +0000
-Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 13 Feb
- 2018 03:30:57 -0800
-Subject: Re: [PATCH v2 05/15] MIPS: KASLR: Drop relocatable fixup from
- reservation_init
-To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
-        <miodrag.dinic@mips.com>, <jhogan@kernel.org>,
-        <goran.ferenc@mips.com>, <david.daney@cavium.com>,
-        <paul.gortmaker@windriver.com>, <paul.burton@mips.com>,
-        <alex.belits@cavium.com>, <Steven.Hill@cavium.com>
-CC:     <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
-        <marcin.nowakowski@mips.com>, <James.hogan@mips.com>,
-        <Peter.Wotton@mips.com>, <Sergey.Semin@t-platforms.ru>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-References: <20180117222312.14763-1-fancer.lancer@gmail.com>
- <20180202035458.30456-1-fancer.lancer@gmail.com>
- <20180202035458.30456-6-fancer.lancer@gmail.com>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <25ae5315-0386-4709-ec73-d265ed342b58@mips.com>
-Date:   Tue, 13 Feb 2018 11:30:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 12:48:22 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:43522 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992896AbeBMLsNcCR8I (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Feb 2018 12:48:13 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3DD221773;
+        Tue, 13 Feb 2018 11:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B3DD221773
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 13 Feb 2018 11:47:38 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [GIT PULL] MIPS changes for 4.16-rc2
+Message-ID: <20180213114737.GC4290@saruman>
 MIME-Version: 1.0
-In-Reply-To: <20180202035458.30456-6-fancer.lancer@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1518521760-637137-26795-167917-12
-X-BESS-VER: 2018.1-r1801291959
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.188374
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="VywGB/WGlW4DM4P8"
+Content-Disposition: inline
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62514
+X-archive-position: 62515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,69 +43,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Serge,
 
-On 02/02/18 03:54, Serge Semin wrote:
-> From: Matt Redfearn <matt.redfearn@mips.com>
-> 
-> A recent change ("MIPS: memblock: Discard bootmem initialization")
-> removed the reservation of all memory below the kernel's _end symbol in
-> bootmem. This makes the call to free_bootmem unnecessary, since the
-> memory region is no longer marked reserved.
-> 
-> Additionally, ("MIPS: memblock: Print out kernel virtual mem
-> layout") added a display of the kernel's virtual memory layout, so
-> printing the relocation information at this point is redundant.
-> 
-> Remove this section of code.
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+--VywGB/WGlW4DM4P8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Missing your SoB.
+Hi Linus,
 
-I think this change should go after you introduce the new mechanism, 
-i.e. after "MIPS: memblock: Print out kernel virtual mem layout", which 
-should probably go nearer the start of the series.
+Please pull the following change, which allows the new Ranchu platform
+to work in SMP configurations.
 
-Thanks,
-Matt
+Thanks
+James
 
-> ---
->   arch/mips/kernel/setup.c | 23 -----------------------
->   1 file changed, 23 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index b5fcacf71b3f..cf3674977170 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -528,29 +528,6 @@ static void __init bootmem_init(void)
->   		memory_present(0, start, end);
->   	}
->   
-> -#ifdef CONFIG_RELOCATABLE
-> -	/*
-> -	 * The kernel reserves all memory below its _end symbol as bootmem,
-> -	 * but the kernel may now be at a much higher address. The memory
-> -	 * between the original and new locations may be returned to the system.
-> -	 */
-> -	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
-> -		unsigned long offset;
-> -		extern void show_kernel_relocation(const char *level);
-> -
-> -		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
-> -		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
-> -
-> -#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
-> -		/*
-> -		 * This information is necessary when debugging the kernel
-> -		 * But is a security vulnerability otherwise!
-> -		 */
-> -		show_kernel_relocation(KERN_INFO);
-> -#endif
-> -	}
-> -#endif
-> -
->   	/*
->   	 * Reserve initrd memory if needed.
->   	 */
-> 
+The following changes since commit 8f2256d8eaf5acef3b49ea27edf79cc1069c4de9:
+
+  MIPS: Malta: Sanitize mouse and keyboard configuration. (2018-02-06 15:50:15 +0000)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git mips_4.16_2
+
+for you to fetch changes up to 791412dafbbfd860e78983d45cf71db603a82f67:
+
+  MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base() (2018-02-08 14:02:01 +0000)
+
+----------------------------------------------------------------
+MIPS changes for 4.16-rc2
+
+A single change (and associated DT binding update) to allow the address
+of the MIPS Cluster Power Controller (CPC) to be chosen by DT, which
+allows SMP to work on generic MIPS kernels where the bootloader hasn't
+configured the CPC address (i.e. the new Ranchu platform).
+
+----------------------------------------------------------------
+Paul Burton (2):
+      dt-bindings: Document mti,mips-cpc binding
+      MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
+
+ Documentation/devicetree/bindings/power/mti,mips-cpc.txt |  8 ++++++++
+ MAINTAINERS                                              |  1 +
+ arch/mips/kernel/mips-cpc.c                              | 13 +++++++++++++
+ 3 files changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+
+--VywGB/WGlW4DM4P8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqC0FkACgkQbAtpk944
+dnpphQ//cTY+unE+36XPpsXUEMzTxQJvvmiBckTwV/lvwvTdmOelvkuKCm3xg1oy
+kt+mVAgYTu5byiKZzTyKGTBMXuRkBIqVkuuNDJsMbtvRRRMRm4JUYhBpZ3oSp34r
+2/CEMuojKWJfMesdF0OKZtMVsGPg5H4ggf+J+BbOJZTaaqFieqly23brFAClgPFF
+Je2r9sscJn7lBuiCmxa0fSVKosOX3mDApRbgoxxNrSoO9yhtE5axmAMA7KoWihdO
+OAzg7KrYzeTY5yR1+WyIrAVp9llDm+lGgE13WuCYNP5PvBtd48rT59do3Gj7hXU4
+p3vovyrUMSW6hdLe6QZ6YDYcNWnN40wnUf4yl5n8tMPORGnjLm7nGrZsoxamuibk
+GVqXrDbXorcbARr1QZCzetuPoN3Nb/gZ8E6aNUvq94klnZkLU0GPvE+w+0iIIYI0
+ICNsPm1OAaQv1FCgjRMhoKR/byIN6oMBvoShSDmpkX/GCvl5oyg0PB56MTkrjo8V
+oJVW29U/AlOAucWRgSJkT2xHcJFcCRLGg4jEaGQeg/6HZjwA/LQ+vrmYwHK2/qRW
+v1z06Kn4/0wsz0kVvAlkq0/BWwTwwG7ouGIIDuWV7O2SxV3UYzSA5+/i8pKRZEyN
+iwrIZvAnO5xulbZr6K6cKRoVZlV8WnEE7tjr7640UfeBxcaA2kw=
+=X9ex
+-----END PGP SIGNATURE-----
+
+--VywGB/WGlW4DM4P8--

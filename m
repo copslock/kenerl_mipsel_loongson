@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 15:13:22 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:44067 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 15:18:26 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:58588 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994614AbeBMONPUnJWV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 15:13:15 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 14:11:08 +0000
+        by eddie.linux-mips.org with ESMTP id S23994614AbeBMOSSza7aV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 15:18:18 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 14:14:51 +0000
 Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
  (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 13 Feb
- 2018 06:05:36 -0800
-Subject: Re: [PATCH v2 12/15] MIPS: memblock: Print out kernel virtual mem
- layout
+ 2018 06:09:29 -0800
+Subject: Re: [PATCH v2 13/15] MIPS: memblock: Discard bootmem from Loongson3
+ code
 To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
         <miodrag.dinic@mips.com>, <jhogan@kernel.org>,
         <goran.ferenc@mips.com>, <david.daney@cavium.com>,
@@ -20,19 +20,19 @@ CC:     <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
 References: <20180117222312.14763-1-fancer.lancer@gmail.com>
  <20180202035458.30456-1-fancer.lancer@gmail.com>
- <20180202035458.30456-13-fancer.lancer@gmail.com>
+ <20180202035458.30456-14-fancer.lancer@gmail.com>
 From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <0448b8d7-48f1-7519-693c-47cdd162d000@mips.com>
-Date:   Tue, 13 Feb 2018 14:05:31 +0000
+Message-ID: <65660251-bc25-c676-b08c-5168885faf5d@mips.com>
+Date:   Tue, 13 Feb 2018 14:09:24 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.4.0
 MIME-Version: 1.0
-In-Reply-To: <20180202035458.30456-13-fancer.lancer@gmail.com>
+In-Reply-To: <20180202035458.30456-14-fancer.lancer@gmail.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1518531066-637140-1058-164716-11
+X-BESS-ID: 1518531291-298552-26922-43867-3
 X-BESS-VER: 2018.1-r1801291959
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -47,7 +47,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62525
+X-archive-position: 62526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,104 +67,70 @@ X-list: linux-mips
 Hi Serge,
 
 On 02/02/18 03:54, Serge Semin wrote:
-> It is useful to have the kernel virtual memory layout printed
-> at boot time so to have the full information about the booted
-> kernel. In some cases it might be unsafe to have virtual
-> addresses freely visible in logs, so the %pK format is used if
-> one want to hide them.
+> Loongson64/3 runs its own code to initialize memory allocator in
+> case of NUMA configuration is selected. So in order to move to the
+> pure memblock utilization we discard the bootmem allocator usage
+> and insert the memblock reservation method for kernel/addrspace_offset
+> memory regions.
+> 
 
-Please could you update the commit message to reflect the guard on 
-CONFIG_DEBUG_KERNEL, and the %pK format is no longer used.
+I don't have a NUMA Loongson to test with, but on a non-NUMA Loongson3 
+machine, tested as a part of the whole series, this works and looks good 
+to me.
 
-It would be better to have this patch either at the start of the series, 
-or the end, since it is not strictly involved in switching between 
-bootmem and memblock.  It would be better to have a short sequence of 
-patches to make that transition, with patches to lead up to that or 
-clean up afterwards at the beginning and end of the series. It will just 
-make any future bisection easier.
+Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
 
 Thanks,
 Matt
 
 
-> 
 > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 > ---
->   arch/mips/mm/init.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 49 insertions(+)
+>   arch/mips/loongson64/loongson-3/numa.c | 16 +++++-----------
+>   1 file changed, 5 insertions(+), 11 deletions(-)
 > 
-> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-> index 84b7b592b834..eec92194d4dc 100644
-> --- a/arch/mips/mm/init.c
-> +++ b/arch/mips/mm/init.c
-> @@ -32,6 +32,7 @@
->   #include <linux/kcore.h>
->   #include <linux/export.h>
->   #include <linux/initrd.h>
-> +#include <linux/sizes.h>
+> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+> index f17ef520799a..2f1ebf496c17 100644
+> --- a/arch/mips/loongson64/loongson-3/numa.c
+> +++ b/arch/mips/loongson64/loongson-3/numa.c
+> @@ -180,7 +180,6 @@ static void __init szmem(unsigned int node)
 >   
->   #include <asm/asm-offsets.h>
->   #include <asm/bootinfo.h>
-> @@ -60,6 +61,53 @@ EXPORT_SYMBOL_GPL(empty_zero_page);
->   EXPORT_SYMBOL(zero_page_mask);
+>   static void __init node_mem_init(unsigned int node)
+>   {
+> -	unsigned long bootmap_size;
+>   	unsigned long node_addrspace_offset;
+>   	unsigned long start_pfn, end_pfn, freepfn;
 >   
->   /*
-> + * Print out the kernel virtual memory layout
-> + */
-> +#define MLK(b, t) (void *)b, (void *)t, ((t) - (b)) >> 10
-> +#define MLM(b, t) (void *)b, (void *)t, ((t) - (b)) >> 20
-> +#define MLK_ROUNDUP(b, t) (void *)b, (void *)t, DIV_ROUND_UP(((t) - (b)), SZ_1K)
-> +static void __init mem_print_kmap_info(void)
-> +{
-> +#ifdef CONFIG_DEBUG_KERNEL
-> +	pr_notice("Kernel virtual memory layout:\n"
-> +		  "    lowmem  : 0x%px - 0x%px  (%4ld MB)\n"
-> +		  "      .text : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "      .data : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "      .init : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "      .bss  : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "    vmalloc : 0x%px - 0x%px  (%4ld MB)\n"
-> +#ifdef CONFIG_HIGHMEM
-> +		  "    pkmap   : 0x%px - 0x%px  (%4ld MB)\n"
-> +#endif
-> +		  "    fixmap  : 0x%px - 0x%px  (%4ld kB)\n",
-> +		  MLM(PAGE_OFFSET, (unsigned long)high_memory),
-> +		  MLK_ROUNDUP(_text, _etext),
-> +		  MLK_ROUNDUP(_sdata, _edata),
-> +		  MLK_ROUNDUP(__init_begin, __init_end),
-> +		  MLK_ROUNDUP(__bss_start, __bss_stop),
-> +		  MLM(VMALLOC_START, VMALLOC_END),
-> +#ifdef CONFIG_HIGHMEM
-> +		  MLM(PKMAP_BASE, (PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE)),
-> +#endif
-> +		  MLK(FIXADDR_START, FIXADDR_TOP));
-> +
-> +	/* Check some fundamental inconsistencies. May add something else? */
-> +#ifdef CONFIG_HIGHMEM
-> +	BUILD_BUG_ON(VMALLOC_END < PAGE_OFFSET);
-> +	BUG_ON(VMALLOC_END < (unsigned long)high_memory);
-> +	BUILD_BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) < PAGE_OFFSET);
-> +	BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) <
-> +		(unsigned long)high_memory);
-> +#endif
-> +	BUILD_BUG_ON(FIXADDR_TOP < PAGE_OFFSET);
-> +	BUG_ON(FIXADDR_TOP < (unsigned long)high_memory);
-> +#endif /* CONFIG_DEBUG_KERNEL */
-> +}
-> +#undef MLK
-> +#undef MLM
-> +#undef MLK_ROUNDUP
-> +
-> +/*
->    * Not static inline because used by IP27 special magic initialization code
->    */
->   void setup_zero_pages(void)
-> @@ -468,6 +516,7 @@ void __init mem_init(void)
->   	free_all_bootmem();
->   	setup_zero_pages();	/* Setup zeroed pages.  */
->   	mem_init_free_highmem();
-> +	mem_print_kmap_info();
->   	mem_init_print_info(NULL);
+> @@ -197,26 +196,21 @@ static void __init node_mem_init(unsigned int node)
 >   
->   #ifdef CONFIG_64BIT
+>   	__node_data[node] = prealloc__node_data + node;
+>   
+> -	NODE_DATA(node)->bdata = &bootmem_node_data[node];
+>   	NODE_DATA(node)->node_start_pfn = start_pfn;
+>   	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
+>   
+> -	bootmap_size = init_bootmem_node(NODE_DATA(node), freepfn,
+> -					start_pfn, end_pfn);
+>   	free_bootmem_with_active_regions(node, end_pfn);
+>   	if (node == 0) /* used by finalize_initrd() */
+>   		max_low_pfn = end_pfn;
+>   
+> -	/* This is reserved for the kernel and bdata->node_bootmem_map */
+> -	reserve_bootmem_node(NODE_DATA(node), start_pfn << PAGE_SHIFT,
+> -		((freepfn - start_pfn) << PAGE_SHIFT) + bootmap_size,
+> -		BOOTMEM_DEFAULT);
+> +	/* This is reserved for the kernel only */
+> +	if (node == 0)
+> +		memblock_reserve(start_pfn << PAGE_SHIFT,
+> +			((freepfn - start_pfn) << PAGE_SHIFT));
+>   
+>   	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
+>   		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
+> -		reserve_bootmem_node(NODE_DATA(node),
+> -				(node_addrspace_offset | 0xfe000000),
+> -				32 << 20, BOOTMEM_DEFAULT);
+> +		memblock_reserve(node_addrspace_offset | 0xfe000000, 32 << 20);
+>   	}
+>   
+>   	sparse_memory_present_with_active_regions(node);
 > 

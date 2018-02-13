@@ -1,64 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 15:53:42 +0100 (CET)
-Received: from mail-ua0-x243.google.com ([IPv6:2607:f8b0:400c:c08::243]:39887
-        "EHLO mail-ua0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994554AbeBMOxfNWe3X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 15:53:35 +0100
-Received: by mail-ua0-x243.google.com with SMTP id r4so11715690uak.6;
-        Tue, 13 Feb 2018 06:53:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=0O7cIMKFrMbDs5s4nCNu+isYGySTudKjdMVrnsX/3Gc=;
-        b=t3QObF0RvHes3xhVBMHIjoP+/zoF4yBoFhV129ADOBX6qg5BflI9T9mF1DqPphex+M
-         o53Tsdy8yRCbe8Sifk7L1/1og+PHrwYhC+uxDrDccv4c/hMY9a26qmQOhA1oY4Rhujot
-         RiPZDirmjaBMjmksPybyh1zpvOsnFQhR+K8nGOjYXZ63Lmtjn2pEhoNnFOsDo4BSGVAV
-         Ldw8tWyay/R03VesHF1tU4v9TsXDyoJAuLu6JHWSlj7RDkm8R26USMH9MVObR06BzN+H
-         7yFSdZkppIVLMlcbSQk4PPnZJtJYUPJOqo11c9znCILu70XUhUlzbMrAJMye+c2EA/pJ
-         dZ6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=0O7cIMKFrMbDs5s4nCNu+isYGySTudKjdMVrnsX/3Gc=;
-        b=hmOHQj9KsVvBDXPRKqVujgWo7LJEeVLP58HnbEh4YAui2k3BxhhR5sFy5dsry0vazo
-         cI3GfERcHTncsIEWRTUDwjfOjp691FvMcFq2qFdCzn1LYAWa01qoTX322LFhYCrn4gPc
-         OGgzLONCujrsBVX//3U4/xi3t1nBoKKB5nEJf8aO7rJYh9+GOm3iMmADVhWM3y6IHbwX
-         Vdp92oIrmAWYCieYf9lI7SQ4lA1GTubBQ3HeHJ61j20QkeDLlJM5+f53eS19dpGn4+7n
-         v/9DWdIkE8bCzdH2fmu3DqxI/8UC2+Xai9Hw+E0/rRZDhdUs1n2rJYqs4zx7lhyyMcA1
-         Azaw==
-X-Gm-Message-State: APf1xPA12Ah3INyTSvqfAm3WKpsF5T2QQtAqjs5B/lbsBVCuGrooTR79
-        /EFqIVSp6FxRX/XX2P7cH6rRxqH0+xgLVFs2bII=
-X-Google-Smtp-Source: AH8x226el3R7xI6Abw7av4jKf4pZf+FRlyHeXib8BiiVs2SDoFUvoja5vnvjnUp9s8iG3ZasTh7SL4KSVdRZhEdUKoQ=
-X-Received: by 10.176.19.243 with SMTP id n48mr1388419uae.14.1518533608813;
- Tue, 13 Feb 2018 06:53:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 17:14:46 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:51954 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994615AbeBMQOkBPcho convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Feb 2018 17:14:40 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 16:12:54 +0000
+Received: from MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563]) by
+ MIPSMAIL01.mipstec.com ([fe80::5c93:1f20:524d:a563%13]) with mapi id
+ 14.03.0361.001; Tue, 13 Feb 2018 08:06:24 -0800
+From:   Aleksandar Markovic <Aleksandar.Markovic@mips.com>
+To:     James Hogan <jhogan@kernel.org>,
+        Miodrag Dinic <Miodrag.Dinic@mips.com>
+CC:     Paul Burton <Paul.Burton@mips.com>,
+        Maciej Rozycki <Maciej.Rozycki@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@rt-rk.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        DengCheng Zhu <DengCheng.Zhu@mips.com>,
+        "Ding Tianhong" <dingtianhong@huawei.com>,
+        Douglas Leung <Douglas.Leung@mips.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Goran Ferenc <Goran.Ferenc@mips.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        James Cowgill <James.Cowgill@imgtec.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Matt Redfearn <Matt.Redfearn@mips.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Petar Jovanovic <Petar.Jovanovic@mips.com>,
+        Raghu Gandham <Raghu.Gandham@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Saeger <tom.saeger@oracle.com>
+Subject: RE: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+Thread-Topic: [PATCH v2] MIPS: Add nonxstack=on|off kernel parameter
+Thread-Index: AQHTYtCG2PpJE/Fo0Ui3SV1RppsO3aMf1f6AgA1nQ4CAAAn5gIAAMXCAgAm9VQCAAAlBAIABH7iAgGMJFICAB5Tqww==
+Date:   Tue, 13 Feb 2018 16:06:22 +0000
+Message-ID: <BD3A5F1946F2E540A31AF2CE969BAEEE298ED6CE@MIPSMAIL01.mipstec.com>
+References: <1511272574-10509-1-git-send-email-aleksandar.markovic@rt-rk.com>
+ <dda5572e-0617-3427-7a90-07b3cf43d808@caviumnetworks.com>
+ <48924BBB91ABDE4D9335632A6B179DD6A8CFEA@MIPSMAIL01.mipstec.com>
+ <20171130100957.GG5027@jhogan-linux.mipstec.com>
+ <48924BBB91ABDE4D9335632A6B179DD6A8D102@MIPSMAIL01.mipstec.com>
+ <alpine.DEB.2.00.1712061657520.4584@tp.orcam.me.uk>
+ <20171206182400.6va3pqdmgisbino7@pburton-laptop>
+ <48924BBB91ABDE4D9335632A6B179DD6A8E6B2@MIPSMAIL01.mipstec.com>,<20180208115559.GA31316@saruman>
+In-Reply-To: <20180208115559.GA31316@saruman>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [82.117.201.26]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 10.159.38.193 with HTTP; Tue, 13 Feb 2018 06:53:08 -0800 (PST)
-In-Reply-To: <20180213143239.GE4290@saruman>
-References: <20180201113721.24776-1-marcin.nowakowski@mips.com>
- <CA+7wUswiOdqunZfnL-6YFJ6gPfj7bXAdHYbetbW_PdQaN28GzQ@mail.gmail.com>
- <CA+7wUszerm6VQsboY9hhgzEZejFOyKZtoh+eCpAESho-xdmQXw@mail.gmail.com>
- <20180213133832.GD4290@saruman> <CA+7wUswyQjRvY1=4g785jNBnfAAqSUbyYSWh3qKHieJVhmbxSg@mail.gmail.com>
- <20180213143239.GE4290@saruman>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Tue, 13 Feb 2018 15:53:08 +0100
-X-Google-Sender-Auth: Rab9j9XZSOHwk4PME60myT4C1BI
-Message-ID: <CA+7wUszvYS4zHZD+m3gRO0GeZ8dUmYRPmqfZR+EkkRb7MuUoRg@mail.gmail.com>
-Subject: Re: [PATCH v3] MIPS: fix incorrect mem=X@Y handling
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        linux-mips@linux-mips.org, "# v4 . 11" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <mathieu.malaterre@gmail.com>
+X-BESS-ID: 1518538372-321459-5008-230-9
+X-BESS-VER: 2018.1-r1801291959
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.20
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189981
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.20 PR0N_SUBJECT           META: Subject has letters around special characters (pr0n) 
+X-BESS-Outbound-Spam-Status: SCORE=0.20 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, PR0N_SUBJECT
+X-BESS-BRTS-Status: 1
+Return-Path: <Aleksandar.Markovic@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62530
+X-archive-position: 62531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: Aleksandar.Markovic@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,37 +91,138 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+> 
+> ________________________________________
+> From: James Hogan [jhogan@kernel.org]
+> Sent: Thursday, February 8, 2018 12:55 PM
+> 
+> Hi,
+> 
+> On Thu, Dec 07, 2017 at 11:33:47AM +0000, Miodrag Dinic wrote:
+> > > On Wed, Dec 06, 2017 at 05:50:52PM +0000, Maciej W. Rozycki wrote:
+> > > >  What problem are you trying to solve anyway?  Is it not something that
+> > > > can be handled with the `execstack' utility?
+> > >
+> > > The commit message states that for Android "non-exec stack is required".
+> > > Is Android checking that then Aleksandar? If so, how?
+> >
+> > Android is using SELinux configured to disallow NX mappings by handling
+> > the following sepolicy rules :
+> > * Executable stack (execstack)
+> > * Executable heap (execheap)
+> > * File-based executable code which has been modified (execmod)
+> > * All other executable memory (execmem)
+> 
+> ...
+> 
+> > The effect of not having some workaround like this in the kernel, would
+> > be to run Android only in SELinux permissive mode.
+> 
+> So you want to override the lack of RIXI so that SELinux sees an
+> RX->RW->RX transition as execmod instead of execmem (since without RIXI
+> its effectively RX->RWX->RX which is execmem)?
+> 
 
-On Tue, Feb 13, 2018 at 3:32 PM, James Hogan <jhogan@kernel.org> wrote:
-> On Tue, Feb 13, 2018 at 03:03:24PM +0100, Mathieu Malaterre wrote:
->> James,
->>
->> On Tue, Feb 13, 2018 at 2:38 PM, James Hogan <jhogan@kernel.org> wrote:
->> > On Tue, Feb 13, 2018 at 01:14:29PM +0100, Mathieu Malaterre wrote:
->> >> Could you please review the patch v3 ?
->> >
->> > Yes, looks good to me, and Ralf had applied to his test branch so I
->> > presume he's happy with it too. I'll apply for 4.16.
->>
->> Hum, just to be sure I understand the process. Which branch are you
->> talking about:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
->
-> I was referring to upstream-sfr.git branch=mips-next-test
-> https://git.linux-mips.org/cgit/ralf/upstream-sfr.git/log/?h=mips-next-test
->
-> (The mips-next branch there is what Ralf puts into linux-next)
->
-> I've applied the patch to my mips-fixes branch here:
-> git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
->
-> Sorry it seems a bit haphazard with multiple trees in use.
+That is correct.
 
-I see it now, sorry for the noise. I was not looking at the right location.
+> 
+> Looking at file_map_prot_check(), it does the execmem check on this
+> condition:
+> 
+> if (default_noexec &&
+>     (prot & PROT_EXEC) && (!file || IS_PRIVATE(file_inode(file)) ||
+>                            (!shared && (prot & PROT_WRITE)))) {
+>         /*
+>          * We are making executable an anonymous mapping or a
+>          * private file mapping that will also be writable.
+>          * This has an additional check.
+>          */
+> 
+> default_noexec is set if VM_DATA_DEFAULT_FLAGS doesn't have the exec
+> flag set, and that flag depends on current->personality &
+> READ_IMPLIES_EXEC, which depends on elf_read_implies_exec(), i.e.
+> mips_elf_read_implies_exec(), and that should already return 1 if RIXI
+> is unavailable.
+> 
+> I.e.
+> 
+> mips_elf_read_implies_exec() == 1
+> 
+> elf_read_implies_exec() == 1
+> 
+> READ_IMPLIES_EXEC will be set in current->personality
+> 
+> VM_DATA_DEFAULT_FLAGS will have VM_EXEC set
+> 
+> default_noexec will be set to 0 in selinux_init()
+> 
+> none of the execmem, execheap, execstack, execmod permission
+> checks should take place.
+> 
+> So whats the problem exactly? Perhaps I misinterpreted something.
 
-Anyway if that answer earlier question 4.11 should be correct, since I
-asked Greg to not backport the earlier patch:
+Thanks, James, for the analysis of this scenario! Hope the additional
+info below will be useful for clarifying this matter.
 
-https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1505915.html
+-------------------
+
+Let me rephrase the scenario (for configurations where cpu_has_rixi
+equals to 0) that you described: (line numbers may be approximate)
+
+
+1. mips_elf_read_implies_exec() will return 1
+    (arch/mips/kernel/elf.c:336)
+
+2. elf_read_implies_exec() will return 1
+    (arch/mips/include/asm/elf.h:513)
+
+3. READ_IMPLIES_EXEC will be set in current->personality
+    (fs/binfmt_elf_fdpic.c:357)
+
+4. VM_DATA_DEFAULT_FLAGS will have VM_EXEC set
+    (while execiting selinux_init() in security/selinux/hooks.c:6644)
+
+5. default_noexec will be set to 0 in selinux_init()
+    (security/selinux/hooks.c:6644)
+
+6. none of the execmem, execstack permission checks should take place.
+
+-------------------
+
+However, in reality, these steps are not executed in this order, but in the following one:
+
+
+4a. VM_DATA_DEFAULT_FLAGS will *NOT* have VM_EXEC set
+    (while execiting selinux_init() in security/selinux/hooks.c:6644)
+
+5a. default_noexec will be set to *1* in selinux_init()
+    (security/selinux/hooks.c:6644)
+
+1. mips_elf_read_implies_exec() will return 1
+    (arch/mips/kernel/elf.c:336)
+
+2. elf_read_implies_exec() will return 1
+    (arch/mips/include/asm/elf.h:513)
+
+3. READ_IMPLIES_EXEC will be set in current->personality
+    (fs/binfmt_elf_fdpic.c:357)
+
+6a. both the execmem, execstack permission checks *do* take place.
+
+------------------
+
+The proposed change does affect the kernel in the sense that it indeed
+hides the executable vulnerability of the system without RIXI support.
+But we have made it unambiguous in the comments what are the
+consequences of using this option.
+
+------------------
+
+
+Regards,
+
+Aleksandar
+
+> 
+> Cheers
+> James

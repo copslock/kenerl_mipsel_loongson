@@ -1,42 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 14:39:14 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:60480 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994554AbeBMNjFfVf8V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Feb 2018 14:39:05 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59A0021777;
-        Tue, 13 Feb 2018 13:38:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 59A0021777
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 13 Feb 2018 13:38:33 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        linux-mips@linux-mips.org, "# v4 . 11" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] MIPS: fix incorrect mem=X@Y handling
-Message-ID: <20180213133832.GD4290@saruman>
-References: <20180201113721.24776-1-marcin.nowakowski@mips.com>
- <CA+7wUswiOdqunZfnL-6YFJ6gPfj7bXAdHYbetbW_PdQaN28GzQ@mail.gmail.com>
- <CA+7wUszerm6VQsboY9hhgzEZejFOyKZtoh+eCpAESho-xdmQXw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 14:52:02 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:51752 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994554AbeBMNvwRo0UV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Feb 2018 14:51:52 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 13 Feb 2018 13:50:17 +0000
+Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 13 Feb
+ 2018 05:44:45 -0800
+Subject: Re: [PATCH v2 06/15] MIPS: memblock: Add reserved memory regions to
+ memblock
+To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
+        <miodrag.dinic@mips.com>, <jhogan@kernel.org>,
+        <goran.ferenc@mips.com>, <david.daney@cavium.com>,
+        <paul.gortmaker@windriver.com>, <paul.burton@mips.com>,
+        <alex.belits@cavium.com>, <Steven.Hill@cavium.com>
+CC:     <alexander.sverdlin@nokia.com>, <kumba@gentoo.org>,
+        <marcin.nowakowski@mips.com>, <James.hogan@mips.com>,
+        <Peter.Wotton@mips.com>, <Sergey.Semin@t-platforms.ru>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+References: <20180117222312.14763-1-fancer.lancer@gmail.com>
+ <20180202035458.30456-1-fancer.lancer@gmail.com>
+ <20180202035458.30456-7-fancer.lancer@gmail.com>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <ff5e9bd4-2d27-9199-e6e3-759763fc3b6a@mips.com>
+Date:   Tue, 13 Feb 2018 13:44:40 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="11Y7aswkeuHtSBEs"
-Content-Disposition: inline
-In-Reply-To: <CA+7wUszerm6VQsboY9hhgzEZejFOyKZtoh+eCpAESho-xdmQXw@mail.gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180202035458.30456-7-fancer.lancer@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1518529814-637140-1052-163823-8
+X-BESS-VER: 2018.1-r1801291959
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.189978
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62517
+X-archive-position: 62518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,174 +64,183 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Serge,
 
---11Y7aswkeuHtSBEs
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 02/02/18 03:54, Serge Semin wrote:
+> The memory reservation has to be performed for all the crucial
+> objects like kernel itself, it data and fdt blob. FDT reserved-memory
+> nodes should also be scanned to declare or discard reserved memory
+> regions, but it has to be done after the memblock is fully initialized
+> with low/high RAM (see the function description/code).
 
-On Tue, Feb 13, 2018 at 01:14:29PM +0100, Mathieu Malaterre wrote:
-> On Thu, Feb 1, 2018 at 1:12 PM, Mathieu Malaterre <malat@debian.org> wrot=
-e:
-> > On Thu, Feb 1, 2018 at 12:37 PM, Marcin Nowakowski
-> > <marcin.nowakowski@mips.com> wrote:
-> >> Commit 73fbc1eba7ff ("MIPS: fix mem=3DX@Y commandline processing") add=
-ed a
-> >> fix to ensure that the memory range between PHYS_OFFSET and low memory
-> >> address specified by mem=3D cmdline argument is not later processed by
-> >> free_all_bootmem.  This change was incorrect for systems where the
-> >> commandline specifies more than 1 mem argument, as it will cause all
-> >> memory between PHYS_OFFSET and each of the memory offsets to be marked
-> >> as reserved, which results in parts of the RAM marked as reserved
-> >> (Creator CI20's u-boot has a default commandline argument 'mem=3D256M@=
-0x0
-> >> mem=3D768M@0x30000000').
-> >>
-> >> Change the behaviour to ensure that only the range between PHYS_OFFSET
-> >> and the lowest start address of the memories is marked as protected.
-> >>
-> >> This change also ensures that the range is marked protected even if it=
-'s
-> >> only defined through the devicetree and not only via commandline
-> >> arguments.
-> >>
-> >> Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
-> >> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
-> >> Fixes: 73fbc1eba7ff ("MIPS: fix mem=3DX@Y commandline processing")
-> >> Cc: <stable@vger.kernel.org> # v4.11+
-> >> ---
-> >> v3: Update stable version, code cleanup as suggested by James Hogan
-> >> v2: Use updated email adress, add tag for stable.
-> >> ---
-> >>  arch/mips/kernel/setup.c | 16 ++++++++++++----
-> >>  1 file changed, 12 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> >> index 702c678de116..e4a1581ce822 100644
-> >> --- a/arch/mips/kernel/setup.c
-> >> +++ b/arch/mips/kernel/setup.c
-> >> @@ -375,6 +375,7 @@ static void __init bootmem_init(void)
-> >>         unsigned long reserved_end;
-> >>         unsigned long mapstart =3D ~0UL;
-> >>         unsigned long bootmap_size;
-> >> +       phys_addr_t ramstart =3D (phys_addr_t)ULLONG_MAX;
-> >>         bool bootmap_valid =3D false;
-> >>         int i;
-> >>
-> >> @@ -395,7 +396,8 @@ static void __init bootmem_init(void)
-> >>         max_low_pfn =3D 0;
-> >>
-> >>         /*
-> >> -        * Find the highest page frame number we have available.
-> >> +        * Find the highest page frame number we have available
-> >> +        * and the lowest used RAM address
-> >>          */
-> >>         for (i =3D 0; i < boot_mem_map.nr_map; i++) {
-> >>                 unsigned long start, end;
-> >> @@ -407,6 +409,8 @@ static void __init bootmem_init(void)
-> >>                 end =3D PFN_DOWN(boot_mem_map.map[i].addr
-> >>                                 + boot_mem_map.map[i].size);
-> >>
-> >> +               ramstart =3D min(ramstart, boot_mem_map.map[i].addr);
-> >> +
-> >>  #ifndef CONFIG_HIGHMEM
-> >>                 /*
-> >>                  * Skip highmem here so we get an accurate max_low_pfn=
- if low
-> >> @@ -436,6 +440,13 @@ static void __init bootmem_init(void)
-> >>                 mapstart =3D max(reserved_end, start);
-> >>         }
-> >>
-> >> +       /*
-> >> +        * Reserve any memory between the start of RAM and PHYS_OFFSET
-> >> +        */
-> >> +       if (ramstart > PHYS_OFFSET)
-> >> +               add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
-> >> +                                 BOOT_MEM_RESERVED);
-> >> +
-> >>         if (min_low_pfn >=3D max_low_pfn)
-> >>                 panic("Incorrect memory mapping !!!");
-> >>         if (min_low_pfn > ARCH_PFN_OFFSET) {
-> >> @@ -664,9 +675,6 @@ static int __init early_parse_mem(char *p)
-> >>
-> >>         add_memory_region(start, size, BOOT_MEM_RAM);
-> >>
-> >> -       if (start && start > PHYS_OFFSET)
-> >> -               add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
-> >> -                               BOOT_MEM_RESERVED);
-> >>         return 0;
-> >>  }
-> >>  early_param("mem", early_parse_mem);
-> >> --
-> >> 2.14.1
-> >>
-> >
-> > Looks good to me:
-> >
-> > $ cat /proc/cpuinfo
-> > system type : JZ4780
-> > machine : Creator CI20
-> > processor : 0
-> > cpu model : Ingenic JZRISC V4.15  FPU V0.0
-> > BogoMIPS : 956.00
-> > wait instruction : yes
-> > microsecond timers : no
-> > tlb_entries : 32
-> > extra interrupt vector : yes
-> > hardware watchpoint : yes, count: 1, address/irw mask: [0x0fff]
-> > isa : mips1 mips2 mips32r1 mips32r2
-> > ASEs implemented :
-> > shadow register sets : 1
-> > kscratch registers : 0
-> > package : 0
-> > core : 0
-> > VCED exceptions : not available
-> > VCEI exceptions : not available
-> > $ uname -a
-> > Linux ci20 4.15.0+ #323 PREEMPT Thu Feb 1 13:08:11 CET 2018 mips GNU/Li=
-nux
-> >
-> > Tested-by: Mathieu Malaterre <malat@debian.org>
-> >
-> > Thanks
->=20
-> Could you please review the patch v3 ?
+Again, if possible, introduce this change before discarding bootmem 
+initialisation, so that the series can be bisected.
 
-Yes, looks good to me, and Ralf had applied to his test branch so I
-presume he's happy with it too. I'll apply for 4.16.
 
-Commit 73fbc1eba7ff ("MIPS: fix mem=3DX@Y commandline processing") which
-this fixes was evidently requested to be backported to stable (unsure
-who by) and added to the 4.9 queue, but then this arose and it was
-removed until this fix is merged (see
-https://patchwork.linux-mips.org/patch/17268/).
+> 
+> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+> ---
+>   arch/mips/kernel/setup.c | 96 +++++++++++++++++++++++++++---------------------
+>   1 file changed, 54 insertions(+), 42 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index cf3674977170..72853e94c2c7 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -362,6 +362,10 @@ static unsigned long __init init_initrd(void)
+>   static void __init bootmem_init(void)
+>   {
+>   	init_initrd();
+> +}
+> +
+> +static void __init reservation_init(void)
+> +{
+>   	finalize_initrd();
+>   }
+>   
+> @@ -478,60 +482,70 @@ static void __init bootmem_init(void)
+>   		memblock_add_node(PFN_PHYS(start), PFN_PHYS(end - start), 0);
+>   	}
+>   	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
+> +}
+> +
+> +static void __init reservation_init(void)
+> +{
+> +	phys_addr_t size;
+> +	int i;
+>   
+>   	/*
+> -	 * Register fully available low RAM pages with the bootmem allocator.
+> +	 * Reserve memory occupied by the kernel and it data
+>   	 */
+> -	for (i = 0; i < boot_mem_map.nr_map; i++) {
+> -		unsigned long start, end, size;
+> +	size = __pa_symbol(&_end) - __pa_symbol(&_text);
+> +	memblock_reserve(__pa_symbol(&_text), size);
+>   
+> -		start = PFN_UP(boot_mem_map.map[i].addr);
+> -		end   = PFN_DOWN(boot_mem_map.map[i].addr
+> -				    + boot_mem_map.map[i].size);
+> +	/*
+> +	 * Handle FDT and it reserved-memory nodes now
+> +	 */
+> +	early_init_fdt_reserve_self();
+> +	early_init_fdt_scan_reserved_mem();
+>   
+> -		/*
+> -		 * Reserve usable memory.
+> -		 */
+> -		switch (boot_mem_map.map[i].type) {
+> -		case BOOT_MEM_RAM:
+> -			break;
+> -		case BOOT_MEM_INIT_RAM:
+> -			memory_present(0, start, end);
+> -			continue;
+> -		default:
+> -			/* Not usable memory */
+> -			if (start > min_low_pfn && end < max_low_pfn)
+> -				reserve_bootmem(boot_mem_map.map[i].addr,
+> -						boot_mem_map.map[i].size,
+> -						BOOTMEM_DEFAULT);
+> -			continue;
+> -		}
 
-Anybody know how far back before 4.11 both of these patches should be
-applied to stable? If not I'll just leave it at 4.11 and if its
-important before then for kexec or whatever they can be requested again.
+I think this change maybe belongs in "MIPS: memblock: Discard bootmem 
+initialization"?
 
-Thanks
-James
+Thanks,
+Matt
 
---11Y7aswkeuHtSBEs
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqC6lgACgkQbAtpk944
-dno45xAAt+faWRXen0r+6bLIFo1ZVOvnMVlRmWplqg2Oo3kvHTPVJYchZYjY+Dz4
-AKtJSlT4KXcEvaRMBQTaPHyfiw51KHXaL6qqaXNLK+xY5Cl9YrwUA6HtZDW+0xV4
-9fwuCo+fOrFzFnK7G6DNGSUsBLwGeFNbYIcWEjmKH61FEWzjXDkNv5xzpZebXZI/
-OAWTa1Tu23e4hGHScN3Gh1nHzsM1+RKWJLPIJeFBF3LkIjJpRg8YeC3RBDosFUJN
-4OFLIlHnhqLTzL9hAmES9VXmbiyfmKBAMciYNydXbL3Cv7MHJ+ZZaf6j3uMZ4lpv
-nNVOhOz3tecr2unYmMiwwqOz0zEX7Y28eTTDMoJX8TpNEajFBN7W8P2Gf6Qc996o
-96VYYNIKOatc9AlwAW7zjXIVw8V2F8BDEIeQg/2dP/ZjoMvT9Gqp9S491jdb9PUK
-ePT2SQ5MKbC4bEN7SqlGd9CX/JMZpUC0hkwmFXeONGPnYmRzwwV4RiXXQWjDmrH/
-v124hIpmY4cNx9LAJ+YFJGt4yQmI2xxlyLo0q1lWdG7YgVEkOFs7LCtpaDK4AlpR
-oRyGv3tXVt6KPCeLG/eejELfMVsFjl+mrSNfzLIXtSxjevUFGBjLou2iju0BiYea
-5Zjf9UFSrRqewnucd/XdWBbnb1tj4dSijo6xc3ij74S0oFVMcQA=
-=Hg1b
------END PGP SIGNATURE-----
-
---11Y7aswkeuHtSBEs--
+> +	/*
+> +	 * Reserve requested memory ranges with the memblock allocator.
+> +	 */
+> +	for (i = 0; i < boot_mem_map.nr_map; i++) {
+> +		phys_addr_t start, end;
+>   
+> -		/*
+> -		 * We are rounding up the start address of usable memory
+> -		 * and at the end of the usable range downwards.
+> -		 */
+> -		if (start >= max_low_pfn)
+> +		if (boot_mem_map.map[i].type == BOOT_MEM_RAM)
+>   			continue;
+> -		if (end > max_low_pfn)
+> -			end = max_low_pfn;
+> +
+> +		start = boot_mem_map.map[i].addr;
+> +		end   = boot_mem_map.map[i].addr + boot_mem_map.map[i].size;
+> +		size  = boot_mem_map.map[i].size;
+>   
+>   		/*
+> -		 * ... finally, is the area going away?
+> +		 * Make sure the region isn't already reserved
+>   		 */
+> -		if (end <= start)
+> +		if (memblock_is_region_reserved(start, size)) {
+> +			pr_warn("Reserved region %08zx @ %pa already in-use\n",
+> +				(size_t)size, &start); >   			continue;
+> -		size = end - start;
+> +		}
+>   
+> -		/* Register lowmem ranges */
+> -		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
+> -		memory_present(0, start, end);
+> +		switch (boot_mem_map.map[i].type) {
+> +		case BOOT_MEM_ROM_DATA:
+> +		case BOOT_MEM_RESERVED:
+> +		case BOOT_MEM_INIT_RAM:
+> +			memblock_reserve(start, size);
+> +			break;
+> +		case BOOT_MEM_RESERVED_NOMAP:
+> +		default:
+> +			memblock_remove(start, size);
+> +			break;
+> +		}
+>   	}
+>   
+>   	/*
+>   	 * Reserve initrd memory if needed.
+>   	 */
+>   	finalize_initrd();
+> +
+> +	/*
+> +	 * Reserve for hibernation
+> +	 */
+> +	size = __pa_symbol(&__nosave_end) - __pa_symbol(&__nosave_begin);
+> +	memblock_reserve(__pa_symbol(&__nosave_begin), size);
+>   }
+>   
+>   #endif	/* CONFIG_SGI_IP27 */
+> @@ -546,6 +560,7 @@ static void __init bootmem_init(void)
+>    * kernel but generic memory management system is still entirely uninitialized.
+>    *
+>    *  o bootmem_init()
+> + *  o reservation_init()
+>    *  o sparse_init()
+>    *  o paging_init()
+>    *  o dma_contiguous_reserve()
+> @@ -803,10 +818,10 @@ static void __init arch_mem_init(char **cmdline_p)
+>   		print_memory_map();
+>   	}
+>   
+> -	early_init_fdt_reserve_self();
+> -	early_init_fdt_scan_reserved_mem();
+> -
+>   	bootmem_init();
+> +
+> +	reservation_init();
+> +
+>   #ifdef CONFIG_PROC_VMCORE
+>   	if (setup_elfcorehdr && setup_elfcorehdr_size) {
+>   		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
+> @@ -832,9 +847,6 @@ static void __init arch_mem_init(char **cmdline_p)
+>   	for_each_memblock(reserved, reg)
+>   		if (reg->size != 0)
+>   			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
+> -
+> -	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
+> -			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+>   }
+>   
+>   static void __init resource_init(void)
+> 

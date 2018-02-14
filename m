@@ -1,41 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2018 23:50:17 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:41036 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994633AbeBMWuJ2LzQH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Feb 2018 23:50:09 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2AC522172D;
-        Tue, 13 Feb 2018 22:50:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2AC522172D
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 13 Feb 2018 22:49:37 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Palmer Dabbelt <palmer@sifive.com>
-Cc:     matt.redfearn@mips.com, antonynpavlov@gmail.com,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] lib: Rename compiler intrinsic selects to GENERIC_LIB_*
-Message-ID: <20180213224937.GF4290@saruman>
-References: <1518182572-23376-1-git-send-email-matt.redfearn@mips.com>
- <mhng-a034032e-b23a-4c52-8965-1e9d6e133f43@palmer-si-x1c4>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 11:36:17 +0100 (CET)
+Received: from mail-ua0-x241.google.com ([IPv6:2607:f8b0:400c:c08::241]:37147
+        "EHLO mail-ua0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991128AbeBNKgKpIhXw convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Feb 2018 11:36:10 +0100
+Received: by mail-ua0-x241.google.com with SMTP id q8so13390830uae.4;
+        Wed, 14 Feb 2018 02:36:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=3swUwf5DOs6xEu0I8RBkfrNNgO6fI7mHnJDCd21Q/cs=;
+        b=GLsGBcgVD5lnkFn3ev6MYrM3023RuDb7ng8h8exkqyoyMB0WFALeJvEghm/MkF+1Uy
+         p8Osl6+wpVLtOOtQVbdqfuHBI6tRusduuVh4QRltmmS4j5y3/wvhS/W9Z8cvb/Z0orSi
+         NUtzyMRwf1kyaqsDj8+2coVmtWjiJfZLQdpWeC/dj1wCHbiN4dVYO5ndCmSAqLeWqhcb
+         DbPQPRjdPPuhdPA1xnsXrYuRIMa8A2WSkSkiaKYnnL3VI0Sq3Dap7giGxTLenweyBefR
+         0YmZsYh1Zd7G/GvxJ1jZuLubauKB2D1Mla2HK92Bp7Xvpj5qIo1yRKg80NsSZJ/S+T1O
+         oWBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=3swUwf5DOs6xEu0I8RBkfrNNgO6fI7mHnJDCd21Q/cs=;
+        b=OHz1PhXPPWAXYHAuSM9Zy4S3EEUlIWBPBG97G7hpZV5PeI1tqtUO3sUcbwEf+WcsMj
+         4DPuA2+2K0nPB9ppr4BRhvtOB5O51qkEx3fXlaJX+UNCZO2V1aGbzH3xooRNt0qduvqA
+         heCxn+ggcc43ft2LQ8qGZvKkZQ4+7egyucdP9slCwvFJnZlBweK5I/UAYp9lEIgoTDx0
+         SFFUcrEYfHh3iBRhAcqaDP90bf4FSZ98xIdVcIREG3lVE7b6bDKi59z7pePR0gJdrzoB
+         hZkbi3BjrzvxGesBM6tohI/W/ZTfOsWgYUgWbo11h/dbv0euIN9M/ySVxLrM+YBwR2eZ
+         5pFw==
+X-Gm-Message-State: APf1xPCwzouWOSPSMe4/yZG6rggN+VDuPFvaU7Jh32QBupyF6NAuqTNL
+        foEJ1oRPzJDHeCkrhto+7s9d5taMkZABvxGqp74=
+X-Google-Smtp-Source: AH8x225BrMrBJXGsQOrU0OVIc8vuLBqlWsDHkcHT/DI02kt31F02Sj/ogXt7XqoyQrygXvbgWKxGno2ku/vnz9faQ8I=
+X-Received: by 10.159.49.135 with SMTP id v7mr4080413uad.17.1518604564439;
+ Wed, 14 Feb 2018 02:36:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="nYySOmuH/HDX6pKp"
-Content-Disposition: inline
-In-Reply-To: <mhng-a034032e-b23a-4c52-8965-1e9d6e133f43@palmer-si-x1c4>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.159.38.193 with HTTP; Wed, 14 Feb 2018 02:35:44 -0800 (PST)
+In-Reply-To: <CA+7wUszh=xpNMsZXS0fNu2Vcp=GK9xkzfog5qB2_LGizhadv1Q@mail.gmail.com>
+References: <20171226113717.15074-1-malat@debian.org> <20171226113717.15074-2-malat@debian.org>
+ <20180102093127.GM5027@jhogan-linux.mipstec.com> <CA+7wUszh=xpNMsZXS0fNu2Vcp=GK9xkzfog5qB2_LGizhadv1Q@mail.gmail.com>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Wed, 14 Feb 2018 11:35:44 +0100
+X-Google-Sender-Auth: aQ_nYBWzh3QMmr9LnMwDDCLL_5U
+Message-ID: <CA+7wUsyNrLzd0fM5B4_89wp8G9g=VHLu=xQ3o4bK47PLv4p1LQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] MIPS: Remove a warning when PHYS_OFFSET is 0x0
+To:     James Hogan <james.hogan@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62533
+X-archive-position: 62534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,128 +73,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Tue, Jan 2, 2018 at 7:55 PM, Mathieu Malaterre <malat@debian.org> wrote:
+> Hi James,
+>
+> On Tue, Jan 2, 2018 at 10:31 AM, James Hogan <james.hogan@mips.com> wrote:
+>> On Tue, Dec 26, 2017 at 12:37:14PM +0100, Mathieu Malaterre wrote:
+>>> Rewrite the comparison in `else if` statement, case where `min_low_pfn >
+>>> ARCH_PFN_OFFSET` has already been checked in the first `if` statement:
+>>>
+>>>   if (min_low_pfn > ARCH_PFN_OFFSET) {
+>>>
+>>> Fix non-fatal warning:
+>>>
+>>> arch/mips/kernel/setup.c: In function ‘bootmem_init’:
+>>> arch/mips/kernel/setup.c:461:25: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
+>>>   } else if (min_low_pfn < ARCH_PFN_OFFSET) {
+>>>                          ^
+>>
+>> What compiler version is that with out of interest? It isn't exactly new
+>> code.
+>
+> I've clarified in v2, that this happen during compilation using W=1
+>
+> For reference:
+>
+> $ mipsel-linux-gnu-gcc -dumpversion
+> 6.3.0
+>
+>
+>>>
+>>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+>>
+>> Reviewed-by: James Hogan <jhogan@kernel.org>
+>
+> Thanks !
 
---nYySOmuH/HDX6pKp
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ping ?
 
-On Tue, Feb 13, 2018 at 01:48:18PM -0800, Palmer Dabbelt wrote:
-> On Fri, 09 Feb 2018 05:22:52 PST (-0800), matt.redfearn@mips.com wrote:
-> > When these are included into arch Kconfig files, maintaining
-> > alphabetical ordering of the selects means these get split up. To allow
-> > for keeping things tidier and alphabetical, rename the selects to
-> > GENERIC_LIB_*
-> >
-> > Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->=20
-> Thanks!  Do you want me to take this in my tree?
->=20
-> Reviewed-by: Palmer Dabbelt <palmer@sifive.com>
-
-Since a new version of the "MIPS: use generic GCC library routines from
-lib/" series would depend on it, and it makes sense for that series to
-go via the MIPS tree, I think it would be simpler for this patch to also
-be taken (with your ack) via the MIPS tree. Is that okay?
-
-Thanks
-James
-
->=20
-> > ---
-> >  arch/riscv/Kconfig |  6 +++---
-> >  lib/Kconfig        | 12 ++++++------
-> >  lib/Makefile       | 12 ++++++------
-> >  3 files changed, 15 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > index 2c6adf12713a..5f1e2188d029 100644
-> > --- a/arch/riscv/Kconfig
-> > +++ b/arch/riscv/Kconfig
-> > @@ -99,9 +99,9 @@ config ARCH_RV32I
-> >  	bool "RV32I"
-> >  	select CPU_SUPPORTS_32BIT_KERNEL
-> >  	select 32BIT
-> > -	select GENERIC_ASHLDI3
-> > -	select GENERIC_ASHRDI3
-> > -	select GENERIC_LSHRDI3
-> > +	select GENERIC_LIB_ASHLDI3
-> > +	select GENERIC_LIB_ASHRDI3
-> > +	select GENERIC_LIB_LSHRDI3
-> >
-> >  config ARCH_RV64I
-> >  	bool "RV64I"
-> > diff --git a/lib/Kconfig b/lib/Kconfig
-> > index c5e84fbcb30b..946d0890aad6 100644
-> > --- a/lib/Kconfig
-> > +++ b/lib/Kconfig
-> > @@ -584,20 +584,20 @@ config STRING_SELFTEST
-> >
-> >  endmenu
-> >
-> > -config GENERIC_ASHLDI3
-> > +config GENERIC_LIB_ASHLDI3
-> >  	bool
-> >
-> > -config GENERIC_ASHRDI3
-> > +config GENERIC_LIB_ASHRDI3
-> >  	bool
-> >
-> > -config GENERIC_LSHRDI3
-> > +config GENERIC_LIB_LSHRDI3
-> >  	bool
-> >
-> > -config GENERIC_MULDI3
-> > +config GENERIC_LIB_MULDI3
-> >  	bool
-> >
-> > -config GENERIC_CMPDI2
-> > +config GENERIC_LIB_CMPDI2
-> >  	bool
-> >
-> > -config GENERIC_UCMPDI2
-> > +config GENERIC_LIB_UCMPDI2
-> >  	bool
-> > diff --git a/lib/Makefile b/lib/Makefile
-> > index d11c48ec8ffd..7e1ef77e86a3 100644
-> > --- a/lib/Makefile
-> > +++ b/lib/Makefile
-> > @@ -252,9 +252,9 @@ obj-$(CONFIG_SBITMAP) +=3D sbitmap.o
-> >  obj-$(CONFIG_PARMAN) +=3D parman.o
-> >
-> >  # GCC library routines
-> > -obj-$(CONFIG_GENERIC_ASHLDI3) +=3D ashldi3.o
-> > -obj-$(CONFIG_GENERIC_ASHRDI3) +=3D ashrdi3.o
-> > -obj-$(CONFIG_GENERIC_LSHRDI3) +=3D lshrdi3.o
-> > -obj-$(CONFIG_GENERIC_MULDI3) +=3D muldi3.o
-> > -obj-$(CONFIG_GENERIC_CMPDI2) +=3D cmpdi2.o
-> > -obj-$(CONFIG_GENERIC_UCMPDI2) +=3D ucmpdi2.o
-> > +obj-$(CONFIG_GENERIC_LIB_ASHLDI3) +=3D ashldi3.o
-> > +obj-$(CONFIG_GENERIC_LIB_ASHRDI3) +=3D ashrdi3.o
-> > +obj-$(CONFIG_GENERIC_LIB_LSHRDI3) +=3D lshrdi3.o
-> > +obj-$(CONFIG_GENERIC_LIB_MULDI3) +=3D muldi3.o
-> > +obj-$(CONFIG_GENERIC_LIB_CMPDI2) +=3D cmpdi2.o
-> > +obj-$(CONFIG_GENERIC_LIB_UCMPDI2) +=3D ucmpdi2.o
-
---nYySOmuH/HDX6pKp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqDa4EACgkQbAtpk944
-dnrexxAAr9wXIGdNT2PyTPao1ezK/P+aQyddq2sONCsHURGcXn3CiPYNTHLktj/W
-Ef92Rxf2cW+vcnWt5mavdy322yE2iiNR6KgYOIkUXhdZ8Jax1xajLZPlcfxsT5en
-sWprcgFwTS5KCfzVxOCcWJtk6NjGfqqje/R/KWMiIzk1yeF7nIalA7lE36rx4CqU
-Q2nlgCNxsNLYnnTFYyYkAQ1RsYiiC2mh8AVF8ZcfWuAili58M2PKWVkHil+hAkBo
-I1OHFBFNYhT7aAxYKxFRKp/6M9lmvmPnB7MPp2kde1iW3AGfF58Lo1lMJ+3ISSr2
-aKBgPoX0MuOi0ZtXOFT7tbNWCiv3xVb4qdhuxF1JTW/W84B+MD9Je7xo6uSeW7hQ
-CjTEBga2C+52pcT/pwoza2Vgj7X3YPZoUh5rJGasY/zo9PMeQOFIqEqj0p9q5rUn
-70zzQ434xp/alcUkzUBN9OkA82mMFW6T5DYBszGolhMI86P/Cojx5qOcO4ORKMWb
-8YHMzCqOJRZkVuRtATRpvCgbzEfF+YPpjBdAaIYJLZP54IgDFqlZJJ6+EBBPFyWD
-DfA+Ob3QzYSR6T8iNoltatOkJiqmAHQUBBtD4cB8I+WjxzbQH+9fZrz45htROZHE
-uQkGIVlYm/k0CVMEbD08GjNLFoxXCxjeUGlivV6woBLES6wGfgk=
-=jPpu
------END PGP SIGNATURE-----
-
---nYySOmuH/HDX6pKp--
+https://patchwork.linux-mips.org/project/linux-mips/list/?series=623

@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 17:51:55 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:40374 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 17:58:04 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:41142 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991128AbeBNQvsrVjWf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Feb 2018 17:51:48 +0100
+        id S23991068AbeBNQ5zQozEf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Feb 2018 17:57:55 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E5F922177D;
-        Wed, 14 Feb 2018 16:51:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E5F922177D
+        by mail.kernel.org (Postfix) with ESMTPSA id 2FC332177D;
+        Wed, 14 Feb 2018 16:57:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2FC332177D
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 14 Feb 2018 16:51:35 +0000
+Date:   Wed, 14 Feb 2018 16:57:43 +0000
 From:   James Hogan <jhogan@kernel.org>
 To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/8] MIPS: mscc: Add initial support for Microsemi
- MIPS SoCs
-Message-ID: <20180214165135.GC3986@saruman>
+Subject: Re: [PATCH v3 5/8] MIPS: mscc: add ocelot dtsi
+Message-ID: <20180214165743.GD3986@saruman>
 References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
- <20180116101240.5393-5-alexandre.belloni@free-electrons.com>
+ <20180116101240.5393-6-alexandre.belloni@free-electrons.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="TiqCXmo5T1hvSQQg"
+        protocol="application/pgp-signature"; boundary="SFyWQ0h3ruR435lw"
 Content-Disposition: inline
-In-Reply-To: <20180116101240.5393-5-alexandre.belloni@free-electrons.com>
+In-Reply-To: <20180116101240.5393-6-alexandre.belloni@free-electrons.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62540
+X-archive-position: 62541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,146 +48,57 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---TiqCXmo5T1hvSQQg
+--SFyWQ0h3ruR435lw
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2018 at 11:12:36AM +0100, Alexandre Belloni wrote:
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 350a990fc719..a9db028a0338 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -527,6 +527,30 @@ config MIPS_MALTA
->  	  This enables support for the MIPS Technologies Malta evaluation
->  	  board.
-> =20
-> +config MSCC_OCELOT
-> +	bool "Microsemi Ocelot architecture"
-> +	select BOOT_RAW
-> +	select CEVT_R4K
-> +	select CSRC_R4K
-> +	select IRQ_MIPS_CPU
-> +	select DMA_NONCOHERENT
-> +	select SYS_HAS_CPU_MIPS32_R2
-> +	select SYS_SUPPORTS_32BIT_KERNEL
-> +	select SYS_SUPPORTS_BIG_ENDIAN
-> +	select SYS_SUPPORTS_LITTLE_ENDIAN
-> +	select SYS_HAS_EARLY_PRINTK
-> +	select USE_GENERIC_EARLY_PRINTK_8250
-> +	select MSCC_OCELOT_IRQ
-> +	select PINCTRL
-> +	select GPIOLIB
-> +	select COMMON_CLK
-> +	select USE_OF
-> +	select BUILTIN_DTB
-> +	select LIBFDT
+On Tue, Jan 16, 2018 at 11:12:37AM +0100, Alexandre Belloni wrote:
+> Add a device tree include file for the Microsemi Ocelot SoC.
+>=20
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
 
-Please sort alphanumerically.
+May I suggest Cc'ing the DT folk on this patch.
 
-> +	help
-> +	  This enables support for the Microsemi Ocelot architecture.
-> +	  It builds a generic DT-based kernel image.
-> +
->  config MACH_PIC32
->  	bool "Microchip PIC32 Family"
->  	help
-
-=2E..
-
-> diff --git a/arch/mips/mscc/Platform b/arch/mips/mscc/Platform
+> diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/M=
+akefile
 > new file mode 100644
-> index 000000000000..9ae874c8f136
+> index 000000000000..f0a155a74e02
 > --- /dev/null
-> +++ b/arch/mips/mscc/Platform
-> @@ -0,0 +1,12 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +#
-> +# Microsemi MIPS SoC support
-> +#
-> +# License: Dual MIT/GPL
-> +# Copyright (c) 2017 Microsemi Corporation
+> +++ b/arch/mips/boot/dts/mscc/Makefile
+> @@ -0,0 +1,4 @@
+> +obj-y				+=3D $(patsubst %.dtb, %.dtb.o, $(dtb-y))
 > +
-> +#
-> +# Microsemi Ocelot board(s)
-> +#
-> +platform-$(CONFIG_MSCC_OCELOT) +=3D mscc/
+> +# Force kbuild to make empty built-in.o if necessary
+> +obj-				+=3D dummy.o
 
-Please use tabs to align
-
-> +load-$(CONFIG_MSCC_OCELOT)	 +=3D 0x80100000
-
-Please drop the space after the tab.
-
-> diff --git a/arch/mips/mscc/setup.c b/arch/mips/mscc/setup.c
-> new file mode 100644
-> index 000000000000..77803edd7bfd
-> --- /dev/null
-> +++ b/arch/mips/mscc/setup.c
-> @@ -0,0 +1,106 @@
-
-=2E..
-
-> +
-> +#include <asm/time.h>
-> +#include <asm/idle.h>
-> +#include <asm/prom.h>
-> +#include <asm/reboot.h>
-
-Please sort these includes alphanumerically if possible.
-
-> +
-> +static void __init ocelot_earlyprintk_init(void)
-> +{
-> +	void __iomem *uart_base;
-> +
-> +	uart_base =3D ioremap_nocache(0x70100000, 0x0f);
-
-Maybe these hex literals (the address at least) can use #defines.
-
-0xf is an odd size when the 2 below indicates 32-bit registers.
-
-
-> +	setup_8250_early_printk_port((unsigned long)uart_base, 2, 50000);
-> +}
-
-=2E..
-
-> +extern void (*late_time_init)(void);
-
-This is already declared in linux/init.h which you include, so I think
-you can drop it.
-
-> +void __init device_tree_init(void)
-> +{
-> +	if (!initial_boot_params)
-> +		return;
-
-I think flatten_and_copy_device_tree() already checks this (with a
-warning), so this could be dropped.
+I don't think you need this since f7adc3124da0 ("kbuild: create
+built-in.o automatically if parent directory wants it"). It was removed
+=66rom other places in bf070bb0e6c6 ("kbuild: remove all dummy assignments
+to obj-").
 
 Cheers
 James
 
---TiqCXmo5T1hvSQQg
+--SFyWQ0h3ruR435lw
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqEaRYACgkQbAtpk944
-dnoUmRAAmSAfy9w+IUOo/+i9DvxR2NNyykOd/IMT+Gu60Mv9MTWo0YsgFNfAYvMT
-LSov9zXoF4z7cC0BmWU8OJ5ai7NjtO0fQyKuLswUlWWVL8Nh3ez9TjwX2VgrJ6+6
-4bvHpoJwDx48P9TyVPpk36hm7WpDGpoCFsxDkNe7PT5FkKLWlVh0io/oFCRCmEdC
-c7dihRSXx/wGTSqvPGMzoC3FQQ6xJrQ9SsvpBBf34zcx3w9ibFeC3uwwg3D5YIeJ
-mSLvD53vdkfgmRaBaDH6k2c40kSHDQQOrXTa1d4tobUvOwebiCF5xLsn+pW6UL+J
-bBFOPaoxOw0do42ph8gbHQ2Zr3PxldQpkU3TclMODWFFYNsAm4gCbJZEscf9z0kT
-IpeQQakRGaTeHpD2Rf3zs10PK7ARFKJV06ZfB4Ca4yuck/AJXVViVyITGkz8TgjF
-sDbnSe443g46EQu7xegrRykx1iRhcAQc+Kdwb1ynFQzTQrZQy+9M24RffFGgyYyo
-ddCWjr8nogQCVpXhX3vsVJHZQ9uh+7aFlqOLokIovHhmkRizbDcG9mANTzyPFKAC
-xmsIa6ijLi+cgWILwEhiN317p/pEepPDgqRltas7MDstHJK+PzRTr4rRtF30RyfB
-pibSrIBEbhde8EqN5W0pTfsTx/FGmLeq0s1G+7vZc9v8Gw4mh7I=
-=a6Jb
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqEaocACgkQbAtpk944
+dnr/eQ/7BOCB34KhnDCkU8TtMAAmYg63tT8gCWBZoH6MLtUED8zftuwL4VbbkRLh
+asip9p1141ReZokYC8HeRVORK+i2PzmIRUPAltvjNAn+QbBl4+q9twMH6fTImzBF
+/OoNSyAQxwPGxffsOXlbIz6xUR9H8JFuErLwOyue490ne6OSBixe/RTFb+0MgLHa
+E6p1JaYCRkwjEWMTUSZpLQ2ogryv+DV5fuRjSQC27XSR/22hMqOEWdEK9C52kOuS
+9cCoPd0gy0wUs9KzBmezceBMRS6pXVbkeMErzl0Uq3UsGlchcz56hRcQ4eCQ33pG
+wHOlP2K+aSadpKaPgpPdirWqRgCfVNta2l0MHAVhNddIYIWuEYs7n+CLrKmm138q
+odWxdku4K4f2+zLpE+FXz80bPxy9Yd1mMnS4aG433GFcVEExlUXNe+1ukBqS1c8w
+ppOUYmxE8L+liKSKl2sskw6/rLMIC/cXQAVbY/xcQw1KtySsFBA4MLRdSg/887qZ
+NzaFX7+BDtaw4Z487Vgs8xRzso60Jbvnry1ehuCfIh7ouSTWaTBWy5nEyHiItgBw
+xdiiJFrbTurR7zbudXC10RaXzXBnTFl0KKImrxT6thj8Tap8Ye+WmbTeklzQuW5i
+/sV3L+eDE1S00+AtV8sRW6PMnnqam1e6MEYByFbEKAVfK5A5eRs=
+=zP3d
 -----END PGP SIGNATURE-----
 
---TiqCXmo5T1hvSQQg--
+--SFyWQ0h3ruR435lw--

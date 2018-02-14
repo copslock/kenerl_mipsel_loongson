@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 12:40:17 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:45436 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 15:00:26 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:39498 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991172AbeBNLkGbuR0Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Feb 2018 12:40:06 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3450A80D;
-        Wed, 14 Feb 2018 03:39:59 -0800 (PST)
-Received: from [10.1.207.62] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 23AC53F487;
-        Wed, 14 Feb 2018 03:39:57 -0800 (PST)
-Subject: Re: [PATCH] irqchip: mips-gic: Avoid spuriously handling masked
- interrupts
-To:     Matt Redfearn <matt.redfearn@mips.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org
-References: <1517849136-29508-1-git-send-email-matt.redfearn@mips.com>
- <bb76fb4e-5e6c-92eb-d79a-96045f74e91b@arm.com>
- <e7ec98be-5a4b-ef54-797d-7e11cf2b14e5@mips.com>
- <5d6348d6-a87f-d3b7-b758-9a2003d9c50e@arm.com>
- <ad04b18e-c05f-0f07-a9ed-a69e20ad4b58@mips.com>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <892584b8-c61e-e9da-1bd3-5187b8194d84@arm.com>
-Date:   Wed, 14 Feb 2018 11:39:56 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        id S23990401AbeBNOAPcL5S3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Feb 2018 15:00:15 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1859F2178D;
+        Wed, 14 Feb 2018 14:00:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1859F2178D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 14 Feb 2018 13:59:43 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] MIPS: Remove a warning when PHYS_OFFSET is 0x0
+Message-ID: <20180214135943.GG4290@saruman>
+References: <20171226113717.15074-1-malat@debian.org>
+ <20171226113717.15074-2-malat@debian.org>
+ <20180102093127.GM5027@jhogan-linux.mipstec.com>
+ <CA+7wUszh=xpNMsZXS0fNu2Vcp=GK9xkzfog5qB2_LGizhadv1Q@mail.gmail.com>
+ <CA+7wUsyNrLzd0fM5B4_89wp8G9g=VHLu=xQ3o4bK47PLv4p1LQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <ad04b18e-c05f-0f07-a9ed-a69e20ad4b58@mips.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="nhYGnrYv1PEJ5gA2"
+Content-Disposition: inline
+In-Reply-To: <CA+7wUsyNrLzd0fM5B4_89wp8G9g=VHLu=xQ3o4bK47PLv4p1LQ@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62536
+X-archive-position: 62537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,82 +54,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14/02/18 11:22, Matt Redfearn wrote:
-> 
-> 
-> On 07/02/18 10:41, Marc Zyngier wrote:
->> On 07/02/18 09:44, Matt Redfearn wrote:
->>> Hi Marc,
->>>
->>> On 07/02/18 09:41, Marc Zyngier wrote:
->>>> On 05/02/18 16:45, Matt Redfearn wrote:
->>>>> Commit 7778c4b27cbe ("irqchip: mips-gic: Use pcpu_masks to avoid reading
->>>>> GIC_SH_MASK*") removed the read of the hardware mask register when
->>>>> handling shared interrupts, instead using the driver's shadow pcpu_masks
->>>>> entry as the effective mask. Unfortunately this did not take account of
->>>>> the write to pcpu_masks during gic_shared_irq_domain_map, which
->>>>> effectively unmasks the interrupt early. If an interrupt is asserted,
->>>>> gic_handle_shared_int decodes and processes the interrupt even though it
->>>>> has not yet been unmasked via gic_unmask_irq, which also sets the
->>>>> appropriate bit in pcpu_masks.
->>>>>
->>>>> On the MIPS Boston board, when a console command line of
->>>>> "console=ttyS0,115200n8r" is passed, the modem status IRQ is enabled in
->>>>> the UART, which is immediately raised to the GIC. The interrupt has been
->>>>> mapped, but no handler has yet been registered, nor is it expected to be
->>>>> unmasked. However, the write to pcpu_masks in gic_shared_irq_domain_map
->>>>> has effectively unmasked it, resulting in endless reports of:
->>>>>
->>>>> [    5.058454] irq 13, desc: ffffffff80a7ad80, depth: 1, count: 0, unhandled: 0
->>>>> [    5.062057] ->handle_irq():  ffffffff801b1838,
->>>>> [    5.062175] handle_bad_irq+0x0/0x2c0
->>>>>
->>>>> Where IRQ 13 is the UART interrupt.
->>>>>
->>>>> To fix this, just remove the write to pcpu_masks in
->>>>> gic_shared_irq_domain_map. The existing write in gic_unmask_irq is the
->>>>> correct place for what is now the effective unmasking.
->>>>>
->>>>> Fixes: 7778c4b27cbe ("irqchip: mips-gic: Use pcpu_masks to avoid reading GIC_SH_MASK*")
->>>>> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->>>>> Reviewed-by: Paul Burton <paul.burton@mips.com>
->>>>>
->>>>> ---
->>>>>
->>>>>    drivers/irqchip/irq-mips-gic.c | 2 --
->>>>>    1 file changed, 2 deletions(-)
->>>>>
->>>>> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
->>>>> index b2cfc6d66d74..2c3684ba46e5 100644
->>>>> --- a/drivers/irqchip/irq-mips-gic.c
->>>>> +++ b/drivers/irqchip/irq-mips-gic.c
->>>>> @@ -429,8 +429,6 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
->>>>>    	spin_lock_irqsave(&gic_lock, flags);
->>>>>    	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | shared_cpu_pin);
->>>>>    	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
->>>>> -	gic_clear_pcpu_masks(intr);
->>>>> -	set_bit(intr, per_cpu_ptr(pcpu_masks, cpu));
->>>>>    	irq_data_update_effective_affinity(data, cpumask_of(cpu));
->>>>>    	spin_unlock_irqrestore(&gic_lock, flags);
->>>>>    
->>>>>
->>>>
->>>> Does this need to be Cc to stable (since it fixes something that was
->>>> merged in 4.14)?
->>>
->>> Sorry, missed stable off the CC list. Yes, it does indeed need to be
->>> backported. Should I resubmit?
->> No need, I'll add that to the patch.
-> 
-> Hi Marc,
-> Not seen this turn up in tip, just wanted to check you're going to pick 
-> it up?
 
-I haven't sent anything to tglx just yet, might do it tomorrow once I
-get a chance.
+--nhYGnrYv1PEJ5gA2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
+On Wed, Feb 14, 2018 at 11:35:44AM +0100, Mathieu Malaterre wrote:
+> On Tue, Jan 2, 2018 at 7:55 PM, Mathieu Malaterre <malat@debian.org> wrot=
+e:
+> > Hi James,
+> >
+> > On Tue, Jan 2, 2018 at 10:31 AM, James Hogan <james.hogan@mips.com> wro=
+te:
+> >> On Tue, Dec 26, 2017 at 12:37:14PM +0100, Mathieu Malaterre wrote:
+> >>> Rewrite the comparison in `else if` statement, case where `min_low_pf=
+n >
+> >>> ARCH_PFN_OFFSET` has already been checked in the first `if` statement:
+> >>>
+> >>>   if (min_low_pfn > ARCH_PFN_OFFSET) {
+> >>>
+> >>> Fix non-fatal warning:
+> >>>
+> >>> arch/mips/kernel/setup.c: In function =E2=80=98bootmem_init=E2=80=99:
+> >>> arch/mips/kernel/setup.c:461:25: warning: comparison of unsigned expr=
+ession < 0 is always false [-Wtype-limits]
+> >>>   } else if (min_low_pfn < ARCH_PFN_OFFSET) {
+> >>>                          ^
+> >>
+> >> What compiler version is that with out of interest? It isn't exactly n=
+ew
+> >> code.
+> >
+> > I've clarified in v2, that this happen during compilation using W=3D1
+> >
+> > For reference:
+> >
+> > $ mipsel-linux-gnu-gcc -dumpversion
+> > 6.3.0
+> >
+> >
+> >>>
+> >>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+> >>
+> >> Reviewed-by: James Hogan <jhogan@kernel.org>
+> >
+> > Thanks !
+>=20
+> ping ?
+>=20
+> https://patchwork.linux-mips.org/project/linux-mips/list/?series=3D623
 
-	M.
--- 
-Jazz is not dead. It just smells funny...
+Yep, both applied for 4.17.
+
+Thanks
+James
+
+--nhYGnrYv1PEJ5gA2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqEQM4ACgkQbAtpk944
+dnohwhAAtZHxZQ+Wpi+Qpsk4COdtQdH94ODF/fw5BoaLm6MA4YcFfrJDXicCL/Fp
+0m4VDCZCDROrqtHWYyDHvweyJGVWmXf+j/9XXn/SKRwKNZonHm8Jgs99xIqP8V+C
+XLWNYj3mxFNtvkKe9QHgnFPSv51P7WU8SJnq+e59CYnOjHCzzlYBrFLDyZB7pOjN
+7VsS3rM6RQAJgxP6lpTZznnrScn9hulqHFU2CGgSWccBBRypGQymkurm+wZvCgSP
+j1K/qUt1bqC36TS5T+WX5gEbO4/S0DoMO9ebRBDRSphNPPUM4cCpJb9t96lbeHss
+j0eDeSCj4uT5wR2x7+7YjYzum6IximlBrwE/V/xq0pw8oj+a0WemFea4np8Aikao
+Y/15lwcajk1qsUZjLHitlDUq8XF7ZsAz1PzrFja1ucPgG+rPuZ6YfWk5W94DHBJ+
+9jaKvluI4VN4jSfA0U5g0VklqBAvbfLok3S8EEQf04oZ4+QLMHfTLd2acODS2ek6
+DJcA2EHAEezOeQTv1AjS8ephCLvxs4OeffXE7A78iBmcwsbsv2OotMbW9ib22pOB
+MPKnUjlcn5GTJk9dAtn9C5CdcKBVqJTrDxhS29RZ4c45dnY7497WpoedJjoc5sZ4
+VFX7fFL3a0SwOKaipRlLz8sc7WbUa6v88MdjNFNKsqbpOHWgcMc=
+=wy3/
+-----END PGP SIGNATURE-----
+
+--nhYGnrYv1PEJ5gA2--

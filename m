@@ -1,66 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 11:36:17 +0100 (CET)
-Received: from mail-ua0-x241.google.com ([IPv6:2607:f8b0:400c:c08::241]:37147
-        "EHLO mail-ua0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991128AbeBNKgKpIhXw convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Feb 2018 11:36:10 +0100
-Received: by mail-ua0-x241.google.com with SMTP id q8so13390830uae.4;
-        Wed, 14 Feb 2018 02:36:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=3swUwf5DOs6xEu0I8RBkfrNNgO6fI7mHnJDCd21Q/cs=;
-        b=GLsGBcgVD5lnkFn3ev6MYrM3023RuDb7ng8h8exkqyoyMB0WFALeJvEghm/MkF+1Uy
-         p8Osl6+wpVLtOOtQVbdqfuHBI6tRusduuVh4QRltmmS4j5y3/wvhS/W9Z8cvb/Z0orSi
-         NUtzyMRwf1kyaqsDj8+2coVmtWjiJfZLQdpWeC/dj1wCHbiN4dVYO5ndCmSAqLeWqhcb
-         DbPQPRjdPPuhdPA1xnsXrYuRIMa8A2WSkSkiaKYnnL3VI0Sq3Dap7giGxTLenweyBefR
-         0YmZsYh1Zd7G/GvxJ1jZuLubauKB2D1Mla2HK92Bp7Xvpj5qIo1yRKg80NsSZJ/S+T1O
-         oWBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=3swUwf5DOs6xEu0I8RBkfrNNgO6fI7mHnJDCd21Q/cs=;
-        b=OHz1PhXPPWAXYHAuSM9Zy4S3EEUlIWBPBG97G7hpZV5PeI1tqtUO3sUcbwEf+WcsMj
-         4DPuA2+2K0nPB9ppr4BRhvtOB5O51qkEx3fXlaJX+UNCZO2V1aGbzH3xooRNt0qduvqA
-         heCxn+ggcc43ft2LQ8qGZvKkZQ4+7egyucdP9slCwvFJnZlBweK5I/UAYp9lEIgoTDx0
-         SFFUcrEYfHh3iBRhAcqaDP90bf4FSZ98xIdVcIREG3lVE7b6bDKi59z7pePR0gJdrzoB
-         hZkbi3BjrzvxGesBM6tohI/W/ZTfOsWgYUgWbo11h/dbv0euIN9M/ySVxLrM+YBwR2eZ
-         5pFw==
-X-Gm-Message-State: APf1xPCwzouWOSPSMe4/yZG6rggN+VDuPFvaU7Jh32QBupyF6NAuqTNL
-        foEJ1oRPzJDHeCkrhto+7s9d5taMkZABvxGqp74=
-X-Google-Smtp-Source: AH8x225BrMrBJXGsQOrU0OVIc8vuLBqlWsDHkcHT/DI02kt31F02Sj/ogXt7XqoyQrygXvbgWKxGno2ku/vnz9faQ8I=
-X-Received: by 10.159.49.135 with SMTP id v7mr4080413uad.17.1518604564439;
- Wed, 14 Feb 2018 02:36:04 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 12:30:00 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:40644 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990412AbeBNL3wR08FY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Feb 2018 12:29:52 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Wed, 14 Feb 2018 11:29:40 +0000
+Received: from [10.150.130.83] (10.150.130.83) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Wed, 14 Feb
+ 2018 03:22:54 -0800
+Subject: Re: [PATCH] irqchip: mips-gic: Avoid spuriously handling masked
+ interrupts
+To:     Marc Zyngier <marc.zyngier@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        <linux-kernel@vger.kernel.org>
+References: <1517849136-29508-1-git-send-email-matt.redfearn@mips.com>
+ <bb76fb4e-5e6c-92eb-d79a-96045f74e91b@arm.com>
+ <e7ec98be-5a4b-ef54-797d-7e11cf2b14e5@mips.com>
+ <5d6348d6-a87f-d3b7-b758-9a2003d9c50e@arm.com>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <ad04b18e-c05f-0f07-a9ed-a69e20ad4b58@mips.com>
+Date:   Wed, 14 Feb 2018 11:22:51 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
 MIME-Version: 1.0
-Received: by 10.159.38.193 with HTTP; Wed, 14 Feb 2018 02:35:44 -0800 (PST)
-In-Reply-To: <CA+7wUszh=xpNMsZXS0fNu2Vcp=GK9xkzfog5qB2_LGizhadv1Q@mail.gmail.com>
-References: <20171226113717.15074-1-malat@debian.org> <20171226113717.15074-2-malat@debian.org>
- <20180102093127.GM5027@jhogan-linux.mipstec.com> <CA+7wUszh=xpNMsZXS0fNu2Vcp=GK9xkzfog5qB2_LGizhadv1Q@mail.gmail.com>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Wed, 14 Feb 2018 11:35:44 +0100
-X-Google-Sender-Auth: aQ_nYBWzh3QMmr9LnMwDDCLL_5U
-Message-ID: <CA+7wUsyNrLzd0fM5B4_89wp8G9g=VHLu=xQ3o4bK47PLv4p1LQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Remove a warning when PHYS_OFFSET is 0x0
-To:     James Hogan <james.hogan@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Miodrag Dinic <miodrag.dinic@mips.com>,
-        Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mathieu.malaterre@gmail.com>
+In-Reply-To: <5d6348d6-a87f-d3b7-b758-9a2003d9c50e@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1518607778-637140-1059-221730-11
+X-BESS-VER: 2018.1-r1801291959
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190013
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62534
+X-archive-position: 62535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,41 +61,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 2, 2018 at 7:55 PM, Mathieu Malaterre <malat@debian.org> wrote:
-> Hi James,
->
-> On Tue, Jan 2, 2018 at 10:31 AM, James Hogan <james.hogan@mips.com> wrote:
->> On Tue, Dec 26, 2017 at 12:37:14PM +0100, Mathieu Malaterre wrote:
->>> Rewrite the comparison in `else if` statement, case where `min_low_pfn >
->>> ARCH_PFN_OFFSET` has already been checked in the first `if` statement:
->>>
->>>   if (min_low_pfn > ARCH_PFN_OFFSET) {
->>>
->>> Fix non-fatal warning:
->>>
->>> arch/mips/kernel/setup.c: In function ‘bootmem_init’:
->>> arch/mips/kernel/setup.c:461:25: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
->>>   } else if (min_low_pfn < ARCH_PFN_OFFSET) {
->>>                          ^
->>
->> What compiler version is that with out of interest? It isn't exactly new
->> code.
->
-> I've clarified in v2, that this happen during compilation using W=1
->
-> For reference:
->
-> $ mipsel-linux-gnu-gcc -dumpversion
-> 6.3.0
->
->
->>>
->>> Signed-off-by: Mathieu Malaterre <malat@debian.org>
->>
->> Reviewed-by: James Hogan <jhogan@kernel.org>
->
-> Thanks !
 
-ping ?
 
-https://patchwork.linux-mips.org/project/linux-mips/list/?series=623
+On 07/02/18 10:41, Marc Zyngier wrote:
+> On 07/02/18 09:44, Matt Redfearn wrote:
+>> Hi Marc,
+>>
+>> On 07/02/18 09:41, Marc Zyngier wrote:
+>>> On 05/02/18 16:45, Matt Redfearn wrote:
+>>>> Commit 7778c4b27cbe ("irqchip: mips-gic: Use pcpu_masks to avoid reading
+>>>> GIC_SH_MASK*") removed the read of the hardware mask register when
+>>>> handling shared interrupts, instead using the driver's shadow pcpu_masks
+>>>> entry as the effective mask. Unfortunately this did not take account of
+>>>> the write to pcpu_masks during gic_shared_irq_domain_map, which
+>>>> effectively unmasks the interrupt early. If an interrupt is asserted,
+>>>> gic_handle_shared_int decodes and processes the interrupt even though it
+>>>> has not yet been unmasked via gic_unmask_irq, which also sets the
+>>>> appropriate bit in pcpu_masks.
+>>>>
+>>>> On the MIPS Boston board, when a console command line of
+>>>> "console=ttyS0,115200n8r" is passed, the modem status IRQ is enabled in
+>>>> the UART, which is immediately raised to the GIC. The interrupt has been
+>>>> mapped, but no handler has yet been registered, nor is it expected to be
+>>>> unmasked. However, the write to pcpu_masks in gic_shared_irq_domain_map
+>>>> has effectively unmasked it, resulting in endless reports of:
+>>>>
+>>>> [    5.058454] irq 13, desc: ffffffff80a7ad80, depth: 1, count: 0, unhandled: 0
+>>>> [    5.062057] ->handle_irq():  ffffffff801b1838,
+>>>> [    5.062175] handle_bad_irq+0x0/0x2c0
+>>>>
+>>>> Where IRQ 13 is the UART interrupt.
+>>>>
+>>>> To fix this, just remove the write to pcpu_masks in
+>>>> gic_shared_irq_domain_map. The existing write in gic_unmask_irq is the
+>>>> correct place for what is now the effective unmasking.
+>>>>
+>>>> Fixes: 7778c4b27cbe ("irqchip: mips-gic: Use pcpu_masks to avoid reading GIC_SH_MASK*")
+>>>> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+>>>> Reviewed-by: Paul Burton <paul.burton@mips.com>
+>>>>
+>>>> ---
+>>>>
+>>>>    drivers/irqchip/irq-mips-gic.c | 2 --
+>>>>    1 file changed, 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+>>>> index b2cfc6d66d74..2c3684ba46e5 100644
+>>>> --- a/drivers/irqchip/irq-mips-gic.c
+>>>> +++ b/drivers/irqchip/irq-mips-gic.c
+>>>> @@ -429,8 +429,6 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+>>>>    	spin_lock_irqsave(&gic_lock, flags);
+>>>>    	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | shared_cpu_pin);
+>>>>    	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
+>>>> -	gic_clear_pcpu_masks(intr);
+>>>> -	set_bit(intr, per_cpu_ptr(pcpu_masks, cpu));
+>>>>    	irq_data_update_effective_affinity(data, cpumask_of(cpu));
+>>>>    	spin_unlock_irqrestore(&gic_lock, flags);
+>>>>    
+>>>>
+>>>
+>>> Does this need to be Cc to stable (since it fixes something that was
+>>> merged in 4.14)?
+>>
+>> Sorry, missed stable off the CC list. Yes, it does indeed need to be
+>> backported. Should I resubmit?
+> No need, I'll add that to the patch.
+
+Hi Marc,
+Not seen this turn up in tip, just wanted to check you're going to pick 
+it up?
+
+Thanks,
+Matt
+
+
+> 
+> Thanks,
+> 
+> 	M.
+> 

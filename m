@@ -1,60 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 22:36:44 +0100 (CET)
-Received: from mga18.intel.com ([134.134.136.126]:14301 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991172AbeBNVgiU-2gM convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Feb 2018 22:36:38 +0100
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Feb 2018 13:36:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.46,514,1511856000"; 
-   d="scan'208";a="17700445"
-Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
-  by orsmga007.jf.intel.com with ESMTP; 14 Feb 2018 13:36:34 -0800
-Received: from orsmsx115.amr.corp.intel.com ([169.254.4.94]) by
- ORSMSX106.amr.corp.intel.com ([169.254.1.97]) with mapi id 14.03.0319.002;
- Wed, 14 Feb 2018 13:36:34 -0800
-From:   "Keller, Jacob E" <jacob.e.keller@intel.com>
-To:     "Michael, Alice" <alice.michael@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        James Hogan <jhogan@kernel.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
-        Shannon Nelson <shannon.nelson@oracle.com>
-Subject: RE: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-Thread-Topic: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-Thread-Index: AQHTpFslw+crNM24eUSynxqRPTqrYKOh97eAgAJsOTCAAArEUA==
-Date:   Wed, 14 Feb 2018 21:36:33 +0000
-Message-ID: <02874ECE860811409154E81DA85FBB5882CDAA1C@ORSMSX115.amr.corp.intel.com>
-References: <1518475021-3337-1-git-send-email-linux@roeck-us.net>
- <20180212234201.GB4290@saruman> <20180212235655.GC5199@roeck-us.net>
- <CD14C679C9B9B1409B02829D9B523C297C4D61@ORSMSX101.amr.corp.intel.com>
-In-Reply-To: <CD14C679C9B9B1409B02829D9B523C297C4D61@ORSMSX101.amr.corp.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiYTVjMjhjNTYtNmM5Yi00OTY2LTk5ODAtNTUwN2U5OWE4Y2QxIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE2LjUuOS4zIiwiVHJ1c3RlZExhYmVsSGFzaCI6IjBOeFJXTHdRV0ZcLzVsN0NXNkhEQkZ3dnVqU2F1VW9IcVM1ZmJLb0ZROU40PSJ9
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.0.0.116
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2018 22:39:28 +0100 (CET)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:52163
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992336AbeBNVjV1AqtM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Feb 2018 22:39:21 +0100
+Received: by mail-wm0-x242.google.com with SMTP id r71so25422086wmd.1
+        for <linux-mips@linux-mips.org>; Wed, 14 Feb 2018 13:39:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexb-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=oDYf7pJD9AuIFnwTR2RoBOSlEI2E9wvEseVLIjqjieY=;
+        b=cyzGcWdo8NwDw5+gpSut0VASA0h85+8u68XK55HAfHFxXzH5A+j0fwSkVWI9FB9daH
+         i3yMNi8pcOCwtwSlMIwxMSGXqkskYVtXW+y9SOZbKgjsj99MFbM3tZN5jjS8ra2vNP2K
+         MInxW1lCwq+C5+ijvIo3FuQilrceDRdAeDIdyN7hh2kW2fvWUzIk2WCBMQi4OaG4gYXD
+         t5vcsigyUdZXhLkZyMfElRxYcNNPPEeDtUOk+3kof7HJujUWKuKA/1NMC0TyJ8YGDwf8
+         r9eKL0N/0twhim1ZG8ioE9WRh5e8xVNGEXHQ242mu53lm7bWKHmAzSO5tbsi4b34on8h
+         cGDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=oDYf7pJD9AuIFnwTR2RoBOSlEI2E9wvEseVLIjqjieY=;
+        b=bMbsnBSep64KVrW0cFqjiPuoawIaK/XwcRsgA6Zh/zVUkdr5eJAMT8OnedIfmYF3Mu
+         6LySC1OH9VImid/BW6NckBXmZLF+hOV6OF0CYFCilHsPA7/oLZP1BZxDYT5kJPiwlEPW
+         9TzOPpj0rtRI7mokmp0zO5mV0uAUEKey7o8YnPztHEP2h64+wEbFTaid+7ufyfvMVLWF
+         uClOMO58907oEasBe+HTJ3g1a0jRb8Tu1eZdYWtIKJe23yUVbSSot8xs4e/0uxfx303q
+         LLreHpxigXRjHJQt9Eop2KChnITXGXwBdqidwWRkhDw2tBrFrsmn1ZG+HeYT1/mt9DQk
+         iteA==
+X-Gm-Message-State: APf1xPBDTxeeqKnTz+oupe+sbKmynWeoxZCH184UaC6kB45lYTc7UdSi
+        S6sKgrokhc3Ba/Ie9LoRp2aBgTu7BeXh9KLAps3itg==
+X-Google-Smtp-Source: AH8x225KC7OIjbw0IJYK+2RTcUSUgY2yKWEO1FF/3ijN0ktpY+Qnjzk+ykRMH5CT46esX65TO/ml+AknGMY79hiRSnY=
+X-Received: by 10.28.45.74 with SMTP id t71mr368293wmt.90.1518644356052; Wed,
+ 14 Feb 2018 13:39:16 -0800 (PST)
 MIME-Version: 1.0
-Return-Path: <jacob.e.keller@intel.com>
+Received: by 10.223.195.139 with HTTP; Wed, 14 Feb 2018 13:38:35 -0800 (PST)
+In-Reply-To: <20180214165135.GC3986@saruman>
+References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
+ <20180116101240.5393-5-alexandre.belloni@free-electrons.com> <20180214165135.GC3986@saruman>
+From:   Philippe Ombredanne <pombredanne@nexb.com>
+Date:   Wed, 14 Feb 2018 22:38:35 +0100
+Message-ID: <CAOFm3uHTMbr=uTHr73JMFkscb86NMgucuopeQt_5AiOUiQZu=g@mail.gmail.com>
+Subject: Re: [PATCH v3 4/8] MIPS: mscc: Add initial support for Microsemi MIPS SoCs
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <pombredanne@nexb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62546
+X-archive-position: 62547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jacob.e.keller@intel.com
+X-original-sender: pombredanne@nexb.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,84 +68,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> -----Original Message-----
-> From: Michael, Alice
-> Sent: Wednesday, February 14, 2018 1:03 PM
-> To: Guenter Roeck <linux@roeck-us.net>; James Hogan <jhogan@kernel.org>;
-> Keller, Jacob E <jacob.e.keller@intel.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>; linux-mips@linux-mips.org; linux-
-> kernel@vger.kernel.org; Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; Shannon
-> Nelson <shannon.nelson@oracle.com>
-> Subject: RE: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-> 
-> As has previously been said, we're going to be removing the need for cmpxchg64.
-> But it takes a little bit of time and work to do so.  I'm adding the dev that is taking
-> care of the work back onto this email thread as well so he can see any concerns with
-> it.
-> 
-> Alice
-> 
-> -----Original Message-----
-> From: Guenter Roeck [mailto:groeck7@gmail.com] On Behalf Of Guenter Roeck
-> Sent: Monday, February 12, 2018 3:57 PM
-> To: James Hogan <jhogan@kernel.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>; linux-mips@linux-mips.org; linux-
-> kernel@vger.kernel.org; Michael, Alice <alice.michael@intel.com>; Kirsher, Jeffrey T
-> <jeffrey.t.kirsher@intel.com>; Shannon Nelson <shannon.nelson@oracle.com>
-> Subject: Re: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-> 
-> On Mon, Feb 12, 2018 at 11:42:02PM +0000, James Hogan wrote:
-> > Hi Guenter,
-> >
-> > On Mon, Feb 12, 2018 at 02:37:01PM -0800, Guenter Roeck wrote:
-> > > Since commit 60f481b970386 ("i40e: change flags to use 64 bits"),
-> > > the i40e driver uses cmpxchg64(). This causes mips:allmodconfig
-> > > builds to fail with
-> > >
-> > > drivers/net/ethernet/intel/i40e/i40e_ethtool.c:
-> > > 	In function 'i40e_set_priv_flags':
-> > > drivers/net/ethernet/intel/i40e/i40e_ethtool.c:4443:2: error:
-> > > 	implicit declaration of function 'cmpxchg64'
-> > >
-> > > Implement a poor-mans-version of cmpxchg64() to fix the problem for
-> > > 32-bit mips builds. The code is derived from sparc32, but only uses
-> > > a single spinlock.
-> >
-> > Will this be implemened for all 32-bit architectures which are
-> > currently missing cmpxchg64()?
-> >
-> No idea.
-> 
-> > If so, any particular reason not to do it in generic code?
-> >
-> Again, no idea. When the problem was previously seen on sparc32, it was
-> implemented there.
-> 
-> > If not then I think that driver should be fixed to either depend on
-> > some appropriate Kconfig symbol or to not use this API since it
-> > clearly isn't portable at the moment.
-> >
-> Good point.
-> 
-> > See also Shannon's comment about that specific driver:
-> > https://lkml.kernel.org/r/e7c934d7-e5f4-ee1b-0647-c31a98d9e944@oracle.
-> > com
-> >
-> 
-> Well, this was an RFC only. Feel free to ignore it.
-> 
-> FWIW, this is the second time that the call was introduced in the i40 driver.
-> After the first time the code was rewritten to avoid the problem, but now it came
-> back. Someone must really like it ;-). For my part, I may just blacklist the offending
-> driver in my builds; that is less than perfect, but much easier than having to deal with
-> the same problem over and over again. Guess I'll wait for a while and do just that if
-> the problem isn't fixed in a later RC.
-> 
-> Guenter
+Alexandre,
 
-Hi,
+On Wed, Feb 14, 2018 at 5:51 PM, James Hogan <jhogan@kernel.org> wrote:
+> On Tue, Jan 16, 2018 at 11:12:36AM +0100, Alexandre Belloni wrote:
 
-I've been working on re-writing some of the code so that the need for a compare-and-exchange in the i40e_set_priv_flags() is not necessary. This mostly involved moving many flags out into an atomic bitops field instead, it should be posted to IWL soon.
+...
 
-Thanks,
-Jake
+>> diff --git a/arch/mips/mscc/Platform b/arch/mips/mscc/Platform
+>> new file mode 100644
+>> index 000000000000..9ae874c8f136
+>> --- /dev/null
+>> +++ b/arch/mips/mscc/Platform
+>> @@ -0,0 +1,12 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
+>> +#
+>> +# Microsemi MIPS SoC support
+>> +#
+>> +# License: Dual MIT/GPL
+
+IMHO you should remove this line as it exactly repeats the
+SPDX-License-Identifier: (GPL-2.0 OR MIT) line in a less clear and
+precise way.
+The whole purpose of the SPDX things is to make licensing eventually
+as clear ass possible
+Thanks!
+-- 
+Cordially
+Philippe Ombredanne

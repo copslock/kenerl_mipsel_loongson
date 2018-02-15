@@ -1,46 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2018 16:12:42 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:49549 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991172AbeBOPMf1YlCY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2018 16:12:35 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 15 Feb 2018 15:12:13 +0000
-Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Thu, 15 Feb 2018 07:01:18 -0800
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
-        Ed Blake <ed.blake@sondrel.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Dengcheng Zhu <dengcheng.zhu@mips.com>,
-        <linux-kernel@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH] MIPS: pm-cps: Block system suspend when a JTAG probe is present
-Date:   Thu, 15 Feb 2018 14:59:19 +0000
-Message-ID: <1518706759-9890-1-git-send-email-matt.redfearn@mips.com>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2018 16:20:33 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34804 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992273AbeBOPUTvDEzY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2018 16:20:19 +0100
+Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A1C8D10A9;
+        Thu, 15 Feb 2018 15:20:12 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        linux-edac <linux-edac@vger.kernel.org>,
+        linux-mips@linux-mips.org, Borislav Petkov <bp@suse.de>
+Subject: [PATCH 3.18 42/45] EDAC, octeon: Fix an uninitialized variable warning
+Date:   Thu, 15 Feb 2018 16:17:33 +0100
+Message-Id: <20180215144124.800102494@linuxfoundation.org>
+X-Mailer: git-send-email 2.16.1
+In-Reply-To: <20180215144115.863307741@linuxfoundation.org>
+References: <20180215144115.863307741@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1518707531-321459-9889-6160-11
-X-BESS-VER: 2018.2-r1802142118
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190054
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62554
+X-archive-position: 62555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,92 +43,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a JTAG probe is connected to a MIPS cluster, then the CPC detects it
-and latches the CPC.STAT_CONF.EJTAG_PROBE bit to 1. While set,
-attempting to send a power-down command to a core will be blocked, and
-the CPC will instead send the core to clock-off state. This can
-interfere with systems fully entering a low power state where all
-cores, CM, GIC, etc are powered down.
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
-Detect that a JTAG probe is / has been connected to the cluster and
-block the suspend attempt.
+------------------
 
-Attempting to suspend the system while a JTAG probe is connected now
-yields:
- # echo mem > /sys/power/state
- [   11.654000] PM: Syncing filesystems ... done.
- [   11.658000] JTAG probe is connected - abort suspend
- -sh: echo: write error: Operation not permitted
- #
+From: James Hogan <jhogan@kernel.org>
 
-To restore suspend, the JTAG probe should be disconnected or put into
-quiescent state. Platform code can then clear the
-CPC.STAT_CONF.EJTAG_PROBE bit.
+commit 544e92581a2ac44607d7cc602c6b54d18656f56d upstream.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Fix an uninitialized variable warning in the Octeon EDAC driver, as seen
+in MIPS cavium_octeon_defconfig builds since v4.14 with Codescape GNU
+Tools 2016.05-03:
+
+  drivers/edac/octeon_edac-lmc.c In function ‘octeon_lmc_edac_poll_o2’:
+  drivers/edac/octeon_edac-lmc.c:87:24: warning: ‘((long unsigned int*)&int_reg)[1]’ may \
+    be used uninitialized in this function [-Wmaybe-uninitialized]
+    if (int_reg.s.sec_err || int_reg.s.ded_err) {
+                        ^
+Iinitialise the whole int_reg variable to zero before the conditional
+assignments in the error injection case.
+
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Acked-by: David Daney <david.daney@cavium.com>
+Cc: linux-edac <linux-edac@vger.kernel.org>
+Cc: linux-mips@linux-mips.org
+Fixes: 1bc021e81565 ("EDAC: Octeon: Add error injection support")
+Link: http://lkml.kernel.org/r/20171113161206.20990-1-james.hogan@mips.com
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
+ drivers/edac/octeon_edac-lmc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
- arch/mips/kernel/pm-cps.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 421e06dfee72..2e0f4bad72b9 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/percpu.h>
- #include <linux/slab.h>
-+#include <linux/suspend.h>
- 
- #include <asm/asm-offsets.h>
- #include <asm/cacheflush.h>
-@@ -670,6 +671,36 @@ static int cps_pm_online_cpu(unsigned int cpu)
- 	return 0;
- }
- 
-+#if defined(CONFIG_PM_SLEEP)
-+static int cps_pm_power_notifier(struct notifier_block *this,
-+				 unsigned long event, void *ptr)
-+{
-+	unsigned int stat;
-+
-+	switch (event) {
-+	case PM_SUSPEND_PREPARE:
-+		stat = read_cpc_cl_stat_conf();
-+		/*
-+		 * If we're attempting to suspend the system and power down all
-+		 * of the cores, the JTAG detect bit indicates that the CPC will
-+		 * instead put the cores into clock-off state. In this state
-+		 * a connected debugger can cause the CPU to attempt
-+		 * interactions with the powered down system. At best this will
-+		 * fail. At worst, it can hang the NoC, requiring a hard reset.
-+		 * To avoid this, just block system suspend if a JTAG probe
-+		 * is detected.
-+		 */
-+		if (stat & CPC_Cx_STAT_CONF_EJTAG_PROBE_MSK) {
-+			pr_warn("JTAG probe is connected - abort suspend\n");
-+			return NOTIFY_BAD;
-+		}
-+		return NOTIFY_DONE;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+}
-+#endif /* CONFIG_PM_SLEEP */
-+
- static int __init cps_pm_init(void)
- {
- 	/* A CM is required for all non-coherent states */
-@@ -705,6 +736,8 @@ static int __init cps_pm_init(void)
- 		pr_warn("pm-cps: no CPC, clock & power gating unavailable\n");
- 	}
- 
-+	pm_notifier(cps_pm_power_notifier, 0);
-+
- 	return cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mips/cps_pm:online",
- 				 cps_pm_online_cpu, NULL);
- }
--- 
-2.7.4
+--- a/drivers/edac/octeon_edac-lmc.c
++++ b/drivers/edac/octeon_edac-lmc.c
+@@ -79,6 +79,7 @@ static void octeon_lmc_edac_poll_o2(stru
+ 	if (!pvt->inject)
+ 		int_reg.u64 = cvmx_read_csr(CVMX_LMCX_INT(mci->mc_idx));
+ 	else {
++		int_reg.u64 = 0;
+ 		if (pvt->error_type == 1)
+ 			int_reg.s.sec_err = 1;
+ 		if (pvt->error_type == 2)

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2018 16:25:09 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38584 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2018 16:29:03 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40640 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992273AbeBOPZCRXHF3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2018 16:25:02 +0100
+        by eddie.linux-mips.org with ESMTP id S23994674AbeBOP24nJwdk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2018 16:28:56 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B7B4BFA3;
-        Thu, 15 Feb 2018 15:24:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DF319109D;
+        Thu, 15 Feb 2018 15:28:49 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         David Daney <david.daney@cavium.com>,
         linux-edac <linux-edac@vger.kernel.org>,
         linux-mips@linux-mips.org, Borislav Petkov <bp@suse.de>
-Subject: [PATCH 4.4 101/108] EDAC, octeon: Fix an uninitialized variable warning
-Date:   Thu, 15 Feb 2018 16:17:38 +0100
-Message-Id: <20180215151236.402501789@linuxfoundation.org>
+Subject: [PATCH 4.9 76/88] EDAC, octeon: Fix an uninitialized variable warning
+Date:   Thu, 15 Feb 2018 16:17:43 +0100
+Message-Id: <20180215151233.025520828@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.1
-In-Reply-To: <20180215151222.267507937@linuxfoundation.org>
-References: <20180215151222.267507937@linuxfoundation.org>
+In-Reply-To: <20180215151222.437136975@linuxfoundation.org>
+References: <20180215151222.437136975@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62556
+X-archive-position: 62557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

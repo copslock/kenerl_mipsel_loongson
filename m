@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2018 13:43:33 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:42658 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990407AbeBOMn1F5pUL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 15 Feb 2018 13:43:27 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2D4EE205F4;
-        Thu, 15 Feb 2018 12:43:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2D4EE205F4
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 15 Feb 2018 12:43:15 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 03/12] MIPS: Loongson-3: Enable Store Fill Buffer at
- runtime
-Message-ID: <20180215124315.GJ3986@saruman>
-References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <1517022752-3053-4-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2018 16:12:42 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:49549 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991172AbeBOPMf1YlCY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2018 16:12:35 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 15 Feb 2018 15:12:13 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Thu, 15 Feb 2018 07:01:18 -0800
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+        Ed Blake <ed.blake@sondrel.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        <linux-kernel@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH] MIPS: pm-cps: Block system suspend when a JTAG probe is present
+Date:   Thu, 15 Feb 2018 14:59:19 +0000
+Message-ID: <1518706759-9890-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="M9pltayyoy9lWEMH"
-Content-Disposition: inline
-In-Reply-To: <1517022752-3053-4-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1518707531-321459-9889-6160-11
+X-BESS-VER: 2018.2-r1802142118
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190054
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62551
+X-archive-position: 62554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,59 +53,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+If a JTAG probe is connected to a MIPS cluster, then the CPC detects it
+and latches the CPC.STAT_CONF.EJTAG_PROBE bit to 1. While set,
+attempting to send a power-down command to a core will be blocked, and
+the CPC will instead send the core to clock-off state. This can
+interfere with systems fully entering a low power state where all
+cores, CM, GIC, etc are powered down.
 
---M9pltayyoy9lWEMH
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Detect that a JTAG probe is / has been connected to the cluster and
+block the suspend attempt.
 
-On Sat, Jan 27, 2018 at 11:12:23AM +0800, Huacai Chen wrote:
-> diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> index 3127391..4b7f58a 100644
-> --- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> +++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> @@ -26,12 +26,15 @@
->  	mfc0	t0, CP0_PAGEGRAIN
->  	or	t0, (0x1 << 29)
->  	mtc0	t0, CP0_PAGEGRAIN
-> -#ifdef CONFIG_LOONGSON3_ENHANCEMENT
->  	/* Enable STFill Buffer */
-> +	mfc0	t0, CP0_PRID
-> +	andi	t0, 0xffff
+Attempting to suspend the system while a JTAG probe is connected now
+yields:
+ # echo mem > /sys/power/state
+ [   11.654000] PM: Syncing filesystems ... done.
+ [   11.658000] JTAG probe is connected - abort suspend
+ -sh: echo: write error: Operation not permitted
+ #
 
-Maybe worth including <asm/cpu.h and doing:
-	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
+To restore suspend, the JTAG probe should be disconnected or put into
+quiescent state. Platform code can then clear the
+CPC.STAT_CONF.EJTAG_PROBE bit.
 
-> +	slti	t0, 0x6308
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 
-and:
-	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
+---
 
-With something like that here and in the other place:
+ arch/mips/kernel/pm-cps.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-Reviewed-by: James Hogan <jhogan@kernel.org>
-
-Cheers
-James
-
---M9pltayyoy9lWEMH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqFgF0ACgkQbAtpk944
-dnpzdxAAu9ZT0kpYz0mEpNYK3aYXMnHp+z/g7e9rvYSntgMpPwZ+tCTuej8V+dT/
-3cFBIOBOKiEhRB3Ycjre3ixEGt8jNaOGLoZDb25RlBPEYjqKd8Brmgncr8DeCsdq
-ZWgz40au/Y8zNYFXyK+sbed9AKBfOCWReFjQ0aAEtzI/qq9yoICdq+4BFHteeaJJ
-GJVcy+zCZXk4gWFv3Zddnt5EiSJ3uBGAAo9NgtmHO/5kaBIRvQEY+mADRPEbWCVf
-BiGohz0Gcb1yKR6b6ActDW8S9/ngFTF/I5suzAzJ4zmRHWWao7O8WABGV1H10kA4
-52+0Fn7uMOaHTv8yANVPIOqz3g1W+EvRAI2r7PVLwWu6RBMdNPW0w7f78nwkzMV9
-cGvk0v0Ozd7ruFgHre5rpDcLDMMZcFDAkMPTHohW0ceM2NLncrAqSvxEokzuJR9O
-CMEWRQfUgPmQ9YUWddptczmOFEb9N18f4zULg+83odMDIa9RjOuExne/yVOpuCGy
-dn/MLROHGgzO4yBarQ4YpHqxYBvgNuYkjTD4S+SY2Nx328UcY7QZ2XNHWSCjHo6P
-ivbuhzHcHNsk4qTsKzIh3220MczANAehn7RfFOCaHCfa6hKVTAXyEqMW0qZqwCM8
-P/O4xcQZKH9sTKrg5196fA72lPIYBQjrn3hl0rcfaDnqwDxdEOg=
-=unaf
------END PGP SIGNATURE-----
-
---M9pltayyoy9lWEMH--
+diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
+index 421e06dfee72..2e0f4bad72b9 100644
+--- a/arch/mips/kernel/pm-cps.c
++++ b/arch/mips/kernel/pm-cps.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/percpu.h>
+ #include <linux/slab.h>
++#include <linux/suspend.h>
+ 
+ #include <asm/asm-offsets.h>
+ #include <asm/cacheflush.h>
+@@ -670,6 +671,36 @@ static int cps_pm_online_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
++#if defined(CONFIG_PM_SLEEP)
++static int cps_pm_power_notifier(struct notifier_block *this,
++				 unsigned long event, void *ptr)
++{
++	unsigned int stat;
++
++	switch (event) {
++	case PM_SUSPEND_PREPARE:
++		stat = read_cpc_cl_stat_conf();
++		/*
++		 * If we're attempting to suspend the system and power down all
++		 * of the cores, the JTAG detect bit indicates that the CPC will
++		 * instead put the cores into clock-off state. In this state
++		 * a connected debugger can cause the CPU to attempt
++		 * interactions with the powered down system. At best this will
++		 * fail. At worst, it can hang the NoC, requiring a hard reset.
++		 * To avoid this, just block system suspend if a JTAG probe
++		 * is detected.
++		 */
++		if (stat & CPC_Cx_STAT_CONF_EJTAG_PROBE_MSK) {
++			pr_warn("JTAG probe is connected - abort suspend\n");
++			return NOTIFY_BAD;
++		}
++		return NOTIFY_DONE;
++	default:
++		return NOTIFY_DONE;
++	}
++}
++#endif /* CONFIG_PM_SLEEP */
++
+ static int __init cps_pm_init(void)
+ {
+ 	/* A CM is required for all non-coherent states */
+@@ -705,6 +736,8 @@ static int __init cps_pm_init(void)
+ 		pr_warn("pm-cps: no CPC, clock & power gating unavailable\n");
+ 	}
+ 
++	pm_notifier(cps_pm_power_notifier, 0);
++
+ 	return cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mips/cps_pm:online",
+ 				 cps_pm_online_cpu, NULL);
+ }
+-- 
+2.7.4

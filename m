@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 13:13:11 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:60632 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeBQMNE4r3Fl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Feb 2018 13:13:04 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Sat, 17 Feb 2018 12:12:57 +0000
-Received: from [10.20.78.31] (10.20.78.31) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Sat, 17 Feb 2018 04:07:28 -0800
-Date:   Sat, 17 Feb 2018 11:57:05 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>,
-        <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 14:38:41 +0100 (CET)
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:60303 "EHLO
+        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992869AbeBQNifUw28s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Feb 2018 14:38:35 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 3E2073F52B;
+        Sat, 17 Feb 2018 14:38:28 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id WXEadoBXXQKk; Sat, 17 Feb 2018 14:38:25 +0100 (CET)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 32C483F4A8;
+        Sat, 17 Feb 2018 14:38:17 +0100 (CET)
+Date:   Sat, 17 Feb 2018 14:38:16 +0100
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+Cc:     =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>,
+        linux-mips@linux-mips.org
 Subject: Re: [RFC v2] MIPS: R5900: Workaround exception NOP execution bug
  (FLX05)
-In-Reply-To: <20180217111644.GA2496@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1802171141260.3553@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk> <20171029172016.GA2600@localhost.localdomain> <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk> <20171111160422.GA2332@localhost.localdomain> <20180129202715.GA4817@localhost.localdomain>
- <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk> <20180211075608.GC2222@localhost.localdomain> <alpine.DEB.2.00.1802111239380.3553@tp.orcam.me.uk> <20180215191502.GA2736@localhost.localdomain> <alpine.DEB.2.00.1802151934180.3553@tp.orcam.me.uk>
+Message-ID: <20180217133815.GB2496@localhost.localdomain>
+References: <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
+ <20171111160422.GA2332@localhost.localdomain>
+ <20180129202715.GA4817@localhost.localdomain>
+ <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
+ <20180211075608.GC2222@localhost.localdomain>
+ <alpine.DEB.2.00.1802111239380.3553@tp.orcam.me.uk>
+ <20180215191502.GA2736@localhost.localdomain>
+ <alpine.DEB.2.00.1802151934180.3553@tp.orcam.me.uk>
  <20180217111644.GA2496@localhost.localdomain>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+ <alpine.DEB.2.00.1802171141260.3553@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1518869576-452060-19043-53687-7
-X-BESS-VER: 2018.2.1-r1802152107
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190123
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1802171141260.3553@tp.orcam.me.uk>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62576
+X-archive-position: 62577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,51 +58,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Fredrik,
+Hi Maciej,
 
-> This was an interesting exercise. I suspect GDB runs out of memory since
+>  If you can't access /proc/kcore with GDB locally, for whatever reason, 
+> then `dd' it (or a part of it); to a regular file and copy it to another 
+> machine. Use cross-GDB if necessary.  With 16 MiB of RAM available only 
+> it can be getting really tight; the kernel itself takes half of it too I 
+> suppose.
+
+Both a (complete) remote copy of kcore, and one shared via v9fs, yield
+"Cannot access memory at address 0x80000000" with a cross-GDB, unfortunately:
+
+> > One can get a little further by sharing /proc using v9fs to obtain:
+> > 
+> > 	# mipsel-linux-gdb -q -c /mnt/kcore
+> > 	[New process 1]
+> > 	Core was generated by `ramdisk_size=16384 crtmode=pal1 video=ps2fb:pal,640x480-32 rd_start=0x8063c000'.
+> > 	#0  0x00000000 in ?? ()
+> > 	(gdb) set architecture mips:5900
+> > 	The target architecture is assumed to be mips:5900
+> > 	(gdb) x /32i 0x80000000
+> > 	   0x80000000:	Cannot access memory at address 0x80000000
+
+By examining the read operations for /proc/kcore, it seems GDB reaches this
+"cannot access" conclusion from the ELF headers.
+
+>  You need to use bus (physical) rather than virtual addresses with 
+> /dev/mem, so:
 > 
-> 	# gdb -q -c /proc/kcore
-> 	[New process 1]
-> 	Segmentation fault
+> # xxd -s 0 -l 256 /dev/mem
 > 
-> with
-> 
-> 	# dmesg | tail -n3
-> 	do_page_fault(): sending SIGSEGV to gdb for invalid read access from 000000a8
-> 	epc = 00953910 in gdb[400000+6d1000]
-> 	ra  = 009538b8 in gdb[400000+6d1000]
-> 
-> to me looks like GDB does a NULL pointer deference (the PS2 has 32 MiB of
-> RAM, of which 16 MiB is used for a ramdisk in my setup). GDB once could
-> handle core files remotely, but this capability is apparently now lost:
-> 
-> https://www.redhat.com/archives/crash-utility/2011-December/msg00019.html
+> or suchlike.
 
- If you can't access /proc/kcore with GDB locally, for whatever reason, 
-then `dd' it (or a part of it); to a regular file and copy it to another 
-machine.  Use cross-GDB if necessary.  With 16 MiB of RAM available only 
-it can be getting really tight; the kernel itself takes half of it too I 
-suppose.
+Ah, the value of the physical address was a misunderstanding on my part. The
+convoluted combination of mipsel-linux-objcopy and mipsel-linux-objdump gets
+the disassembly done without GDB, as shown below. :D
 
-> In this case I'm wondering whether kcore contains proper ELF headers. What
-> is the output of readelf for your kcore? I have this:
+It looks very similar to yours, with additional NOPs and SYNCs required for
+the R5900:
 
- Looks reasonable to me.
+	# ssh ps2 head -c 128 /dev/mem >kcore &&
+	    mipsel-linux-objcopy -I binary -O elf32-little kcore kcore.elf &&
+	    mipsel-linux-objdump -D -m mips:5900 kcore.elf
+	kcore.elf:     file format elf32-little
+	Disassembly of section .data:
+	00000000 <_binary_kcore_start>:
+		...
+	   8:	3c1b8061 	lui	k1,0x8061
+	   c:	0000040f 	sync.p
+	  10:	401a4000 	mfc0	k0,c0_badvaddr
+	  14:	8f7b2c60 	lw	k1,11360(k1)
+	  18:	001ad582 	srl	k0,k0,0x16
+	  1c:	001ad080 	sll	k0,k0,0x2
+	  20:	037ad821 	addu	k1,k1,k0
+	  24:	0000040f 	sync.p
+	  28:	401a2000 	mfc0	k0,c0_context
+	  2c:	8f7b0000 	lw	k1,0(k1)
+	  30:	001ad042 	srl	k0,k0,0x1
+	  34:	335a0ff8 	andi	k0,k0,0xff8
+	  38:	037ad821 	addu	k1,k1,k0
+	  3c:	8f7a0000 	lw	k0,0(k1)
+	  40:	8f7b0004 	lw	k1,4(k1)
+	  44:	001ad142 	srl	k0,k0,0x5
+	  48:	409a1000 	mtc0	k0,c0_entrylo0
+	  4c:	0000040f 	sync.p
+	  50:	001bd942 	srl	k1,k1,0x5
+	  54:	409b1800 	mtc0	k1,c0_entrylo1
+	  58:	0000040f 	sync.p
+	  5c:	42000006 	tlbwr
+	  60:	0000040f 	sync.p
+	  64:	42000018 	eret
+		...
 
-> Returning to the more awkward /dev/mem device, the "bad address" error with
-> for example
-> 
-> 	# xxd -s $(( 0x80000000 )) -l 256 /dev/mem
-> 	xxd: /dev/mem: Bad address
-
- You need to use bus (physical) rather than virtual addresses with 
-/dev/mem, so:
-
-# xxd -s 0 -l 256 /dev/mem
-
-or suchlike.
-
- HTH,
-
-  Maciej
+Fredrik

@@ -1,51 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 21:05:01 +0100 (CET)
-Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:41201 "EHLO
-        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992923AbeBQUEvSq6wG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Feb 2018 21:04:51 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id EC6B33F591;
-        Sat, 17 Feb 2018 21:04:43 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 61WSqaUusy06; Sat, 17 Feb 2018 21:04:41 +0100 (CET)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id E86DE3F4A4;
-        Sat, 17 Feb 2018 21:04:34 +0100 (CET)
-Date:   Sat, 17 Feb 2018 21:04:33 +0100
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>,
-        linux-mips@linux-mips.org
-Subject: Re: [RFC v2] MIPS: R5900: Workaround exception NOP execution bug
- (FLX05)
-Message-ID: <20180217200432.GE2496@localhost.localdomain>
-References: <20180129202715.GA4817@localhost.localdomain>
- <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180211075608.GC2222@localhost.localdomain>
- <alpine.DEB.2.00.1802111239380.3553@tp.orcam.me.uk>
- <20180215191502.GA2736@localhost.localdomain>
- <alpine.DEB.2.00.1802151934180.3553@tp.orcam.me.uk>
- <20180217111644.GA2496@localhost.localdomain>
- <alpine.DEB.2.00.1802171141260.3553@tp.orcam.me.uk>
- <20180217133815.GB2496@localhost.localdomain>
- <alpine.DEB.2.00.1802171418120.3553@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 21:14:14 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:32908 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992923AbeBQUOIS1yHG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Feb 2018 21:14:08 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Sat, 17 Feb 2018 20:13:58 +0000
+Received: from pburton-laptop.mipstec.com (10.20.1.18) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Sat, 17 Feb 2018
+ 12:09:26 -0800
+From:   Paul Burton <paul.burton@mips.com>
+To:     <netdev@vger.kernel.org>
+CC:     Hassan Naveed <hassan.naveed@mips.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>
+Subject: [PATCH v5 00/14] net: pch_gbe: Fixes & MIPS support
+Date:   Sat, 17 Feb 2018 12:10:23 -0800
+Message-ID: <20180217201037.3006-1-paul.burton@mips.com>
+X-Mailer: git-send-email 2.16.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1802171418120.3553@tp.orcam.me.uk>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <noring@nocrew.org>
+Content-Type: text/plain
+X-BESS-ID: 1518898437-298552-4261-69366-5
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190134
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62583
+X-archive-position: 62584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,83 +51,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+The Intel EG20T Platform Controller Hub is used on the MIPS Boston
+development board to provide various peripherals including ethernet.
+This series fixes some issues with the pch_gbe driver discovered whilst
+in use on the Boston board, and implements support for device tree which
+we use to provide the PHY reset GPIO.
 
->  Hmm, whether it works or not seems to depend on GDB version.  It looks to 
-> me like we have a regression here.  Working GDB has:
-> 
-> (gdb) info files
-> Local core dump file:
->         `/proc/kcore', file type elf32-tradlittlemips.
->         0xffffffffc0000000 - 0xfffffffffff94000 is load1
->         0xffffffff80000000 - 0xffffffff90000000 is load2
-> (gdb)
-> 
-> Broken GDB has:
-> 
-> (gdb) info files
-> Local core dump file:
->         `/proc/kcore', file type elf32-tradlittlemips-freebsd.
->         0xffffffffc0000000 - 0xfffffffffff94000 is load1
->         0xffffffff80000000 - 0xffffffff90000000 is load2
-> (gdb)
-> 
-> Notice the different BFD target, `elf32-tradlittlemips-freebsd'.  You're 
-> supposed to be able to override it with `set gnutarget', but that doesn't 
-> seem to impress GDB, e.g.:
-> 
-> (gdb) show gnutarget
-> The current BFD target is "auto".
-> (gdb) set gnutarget elf32-tradlittlemips
-> (gdb) show gnutarget
-> The current BFD target is "elf32-tradlittlemips".
-> (gdb) info files
-> Local core dump file:
->         `/home/mjr/src/kcore', file type elf32-tradlittlemips-freebsd.
->         0xffffffffc0000000 - 0xfffffffffff94000 is load1
->         0xffffffff80000000 - 0xffffffff90000000 is load2
-> (gdb)
-> 
-> I'll see if I can track down what is going on here.
+Applies atop v4.16-rc1.
 
-Thank you for taking a closer look at GDB! However, I don't observe the
-"freebsd" BFD target with a cross-GDB version 8.1 (via v9fs in this case):
+Hassan Naveed (1):
+  net: pch_gbe: Fix TX RX descriptor accesses for big endian systems
 
-	# mipsel-linux-gdb --version | head -n1
-	GNU gdb (GDB) 8.1
-	# mipsel-linux-gdb -q -c /mnt/kcore
-	[New process 1]
-	Core was generated by `ramdisk_size=16384 crtmode=pal1 video=ps2fb:pal,640x480-32 rd_start=0x8062c000'.
-	#0  0x00000000 in ?? ()
-	(gdb) show gnutarget
-	The current BFD target is "auto".
-	(gdb) info files
-	Local core dump file:
-		`/mnt/kcore', file type elf32-tradlittlemips.
-		0xffffffffc0000000 - 0xfffffffffffcd000 is load1
-		0xffffffff80000000 - 0xffffffff80001000 is load2
-		0xffffffff80010000 - 0xffffffff82000000 is load3
-	(gdb) x /32i 0xffffffff80000000
-	   0x80000000:	Cannot access memory at address 0x80000000
-	(gdb) x /32i 0x80000000
-	   0x80000000:	Cannot access memory at address 0x80000000
-	(gdb)
+Paul Burton (13):
+  net: pch_gbe: Mark Minnow PHY reset GPIO active low
+  net: pch_gbe: Pull PHY GPIO handling out of Minnow code
+  dt-bindings: net: Document Intel pch_gbe binding
+  net: pch_gbe: Add device tree support
+  net: pch_gbe: Always reset PHY along with MAC
+  net: pch_gbe: Allow longer for resets
+  net: pch_gbe: Fix handling of TX padding
+  net: pch_gbe: Fold pch_gbe_setup_[rt]ctl into pch_gbe_configure_[rt]x
+  net: pch_gbe: Use pch_gbe_disable_dma_rx() in pch_gbe_configure_rx()
+  net: pch_gbe: Disable TX DMA whilst configuring descriptors
+  net: pch_gbe: Ensure DMA is ordered with descriptor writes
+  ptp: pch: Allow build on MIPS platforms
+  net: pch_gbe: Allow build on MIPS platforms
 
->  Good.  You probably want to add `--adjust-vma=0x80000000' to `objdump', 
-> so that addresses are right.  You can use `-b binary' with `objdump' too, 
-> to avoid the extra `objcopy' step.
+ Documentation/devicetree/bindings/net/pch_gbe.txt  |  25 ++
+ drivers/net/ethernet/oki-semi/pch_gbe/Kconfig      |   2 +-
+ drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h    |  27 +-
+ .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   | 283 ++++++++++++---------
+ drivers/ptp/Kconfig                                |   2 +-
+ 5 files changed, 204 insertions(+), 135 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/pch_gbe.txt
 
-Perfect, thanks!
-
-By the way, what about presenting misaligned SQ instructions like
-
-	# mipsel-linux-gdb -q busybox
-	Reading symbols from busybox...(no debugging symbols found)...done.
-	(gdb) set architecture mips:5900
-	The target architecture is assumed to be mips:5900
-	(gdb) x /i 0x4036b0
-	   0x4036b0:	sq	v1,-6085(zero)
-
-as RDHWR, which is the interpretation with Linux?
-
-Fredrik
+-- 
+2.16.1

@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 21:20:24 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:55642 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994655AbeBQUOj09WOG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Feb 2018 21:14:39 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Sat, 17 Feb 2018 20:14:35 +0000
-Received: from pburton-laptop.mipstec.com (10.20.1.18) by mips01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Sat, 17 Feb 2018
- 12:09:43 -0800
-From:   Paul Burton <paul.burton@mips.com>
-To:     <netdev@vger.kernel.org>
-CC:     Hassan Naveed <hassan.naveed@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 23:14:56 +0100 (CET)
+Received: from vps0.lunn.ch ([185.16.172.187]:35764 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994644AbeBQWOto0xvZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 17 Feb 2018 23:14:49 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=8c+PZ83XqFPhzuXQPr58ySkn/L21rgzs0wu3UXVG4Ug=;
+        b=lf97fW3p/P+/tfvODyJrFSKn+jyZzpMGK6wOeck5JwKsvby+vjX0HMqadUCzmNn4rkblW+SWgqgpGd5ihd9/Eqba6JoRfcwpRt51XAdobGt69Fcsz42jurAyp2ohwX7DIWGNkf+en/xPK8+bqa+AOAmi/3sBlcGPnE9NnREuyHc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1enAke-00062D-8x; Sat, 17 Feb 2018 23:14:36 +0100
+Date:   Sat, 17 Feb 2018 23:14:36 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     netdev@vger.kernel.org, Hassan Naveed <hassan.naveed@mips.com>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>
-Subject: [PATCH v5 14/14] net: pch_gbe: Allow build on MIPS platforms
-Date:   Sat, 17 Feb 2018 12:10:37 -0800
-Message-ID: <20180217201037.3006-15-paul.burton@mips.com>
-X-Mailer: git-send-email 2.16.1
-In-Reply-To: <20180217201037.3006-1-paul.burton@mips.com>
+        "David S . Miller" <davem@davemloft.net>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v5 01/14] net: pch_gbe: Mark Minnow PHY reset GPIO active
+ low
+Message-ID: <20180217221436.GA21315@lunn.ch>
 References: <20180217201037.3006-1-paul.burton@mips.com>
+ <20180217201037.3006-2-paul.burton@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-BESS-ID: 1518898475-321458-309-63343-1
-X-BESS-VER: 2018.2-r1802152108
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190134
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180217201037.3006-2-paul.burton@mips.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62598
+X-archive-position: 62599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,36 +46,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow the pch_gbe driver to be built on MIPS platforms, allowing its use
-on the MIPS Boston development board.
+> @@ -2700,10 +2701,10 @@ static int pch_gbe_minnow_platform_init(struct pci_dev *pdev)
+>  		return ret;
+>  	}
+>  
+> -	gpio_set_value(gpio, 0);
+> -	usleep_range(1250, 1500);
+>  	gpio_set_value(gpio, 1);
+>  	usleep_range(1250, 1500);
+> +	gpio_set_value(gpio, 0);
+> +	usleep_range(1250, 1500);
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: linux-mips@linux-mips.org
-Cc: netdev@vger.kernel.org
+Hi Paul
 
----
+It would be better to rewrite and use the gpiod_ API. The GPIO core
+would then handle active low/active high.
 
-Changes in v5: None
-Changes in v4: None
-Changes in v3: None
-Changes in v2: None
-
- drivers/net/ethernet/oki-semi/pch_gbe/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/Kconfig b/drivers/net/ethernet/oki-semi/pch_gbe/Kconfig
-index 5f7a35212796..4d3809ae75e1 100644
---- a/drivers/net/ethernet/oki-semi/pch_gbe/Kconfig
-+++ b/drivers/net/ethernet/oki-semi/pch_gbe/Kconfig
-@@ -4,7 +4,7 @@
- 
- config PCH_GBE
- 	tristate "OKI SEMICONDUCTOR IOH(ML7223/ML7831) GbE"
--	depends on PCI && (X86_32 || COMPILE_TEST)
-+	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
- 	select MII
- 	select PTP_1588_CLOCK_PCH
- 	select NET_PTP_CLASSIFY
--- 
-2.16.1
+      Andrew

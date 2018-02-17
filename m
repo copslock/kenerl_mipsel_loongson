@@ -1,40 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 23:32:45 +0100 (CET)
-Received: from vps0.lunn.ch ([185.16.172.187]:35777 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994647AbeBQWchPEelS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 17 Feb 2018 23:32:37 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=56kWN/Ik+lSIDkAUPfxMjy1UCPG2wFWZE44ChYN7x6w=;
-        b=SCqZQs8p1CxJeANN9lnIM/qcd9fAr84IC8bW8tQCIt1S0ofLnjo9yKAVtIynFaE83BchfqChjouaM0mY+Tr8Lgmm6khB2z4LMJLU3NG6ruNOPBs/LhX5zUWBOQgR47xGFqTp3PY1COCY13RjJ6Q6CkYbJ3/VIleq5Gfd5dcktiU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1enB1x-0006CZ-BM; Sat, 17 Feb 2018 23:32:29 +0100
-Date:   Sat, 17 Feb 2018 23:32:29 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     netdev@vger.kernel.org, Hassan Naveed <hassan.naveed@mips.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2018 23:53:55 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:32988 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992923AbeBQWxs25fRS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Feb 2018 23:53:48 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Sat, 17 Feb 2018 22:53:18 +0000
+Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
+ Microsoft SMTP Server id 14.3.361.1; Sat, 17 Feb 2018 14:48:50 -0800
+Date:   Sat, 17 Feb 2018 14:50:22 -0800
+From:   Paul Burton <paul.burton@mips.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+CC:     <netdev@vger.kernel.org>, Hassan Naveed <hassan.naveed@mips.com>,
+        "Matt Redfearn" <matt.redfearn@mips.com>,
         "David S . Miller" <davem@davemloft.net>,
-        linux-mips@linux-mips.org, Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 03/14] dt-bindings: net: Document Intel pch_gbe binding
-Message-ID: <20180217223229.GC21315@lunn.ch>
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v5 02/14] net: pch_gbe: Pull PHY GPIO handling out of
+ Minnow code
+Message-ID: <20180217225022.x45ozstehuuunpp3@pburton-laptop>
 References: <20180217201037.3006-1-paul.burton@mips.com>
- <20180217201037.3006-4-paul.burton@mips.com>
+ <20180217201037.3006-3-paul.burton@mips.com>
+ <20180217222933.GB21315@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20180217201037.3006-4-paul.burton@mips.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <andrew@lunn.ch>
+In-Reply-To: <20180217222933.GB21315@lunn.ch>
+User-Agent: NeoMutt/20171215
+X-BESS-ID: 1518907997-637140-2698-63404-6
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190138
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62601
+X-archive-position: 62602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,24 +56,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> @@ -0,0 +1,25 @@
-> +Intel Platform Controller Hub (PCH) GigaBit Ethernet (GBE)
-> +
-> +Required properties:
-> +- compatible:		Should be the PCI vendor & device ID, eg. "pci8086,8802".
-> +- reg:			Should be a PCI device number as specified by the PCI bus
-> +			binding to IEEE Std 1275-1994.
-> +- phy-reset-gpios:	Should be a GPIO list containing a single GPIO that
-> +			resets the attached PHY when active.
-> +
+Hi Andrew,
 
-Hi Paul
+On Sat, Feb 17, 2018 at 11:29:33PM +0100, Andrew Lunn wrote:
+> On Sat, Feb 17, 2018 at 12:10:25PM -0800, Paul Burton wrote:
+> > The MIPS Boston development board uses the Intel EG20T Platform
+> > Controller Hub, including its gigabit ethernet controller, and requires
+> > that its RTL8211E PHY be reset much like the Minnow platform. Pull the
+> > PHY reset GPIO handling out of Minnow-specific code such that it can be
+> > shared by later patches.
+> 
+> Hi Paul
+> 
+> I'm i right in saying the driver currently supports the Atheros AT8031
+> PHY? The same phy which is supported in drivers/net/phy/at803x.c?
 
-Please see Documentation/devicetree/bindings/net/phy.txt. In
-particular:
+It looks like the driver does contain some code relating to that PHY,
+but it's not the one I'm using with the MIPS Boston board - there we
+have a Realtek RTL8211E (as mentioned in the commit message) which is
+working fine alongside this pch_gbe driver too.
 
-reset-gpios: The GPIO phandle and specifier for the PHY reset signal.
+> If so, i think you are doing this all wrong.
 
-You should be conforming to the existing binding.
+Note that this is a driver which is already in mainline, and I didn't
+write it. Claiming that *I* am doing this all wrong is a bit of a
+stretch - all this patch does is make small changes to some existing
+code, which only tangentially relates to a PHY driver, such that it
+ceases to be specific to a single platform.
 
-   Andrew
+> You would be much better off throwing away pch_gbe_phy.c and write a
+> proper MDIO driver. You then get the PHY driver for free, and the MDIO
+> code could will handle your GPIO for you, in the standardised way.
+
+Even if that is true, rewriting the driver's PHY handling would be a
+very separate change to the changes this series make which allow this
+driver to work on a platform besides the Minnowboard. The *only* thing
+this series does relating to the PHY is allow the reset GPIO to be
+handled properly - rewriting the existing PHY handling is beyond it's
+scope.
+
+Note that I do have various cleanups to the driver beyond this series
+which I intend to submit after it is functional for my system[1], so I
+am not saying that I don't care about improving the driver. But please,
+let's do one thing at a time.
+
+Thanks,
+    Paul
+
+[1] https://git.linux-mips.org/cgit/paul/linux.git/log/?h=up417-boston-eth-cleanup

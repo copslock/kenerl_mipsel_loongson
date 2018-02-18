@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Feb 2018 11:30:57 +0100 (CET)
-Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:28422 "EHLO
-        ste-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992828AbeBRKatkWF-U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Feb 2018 11:30:49 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Feb 2018 12:08:58 +0100 (CET)
+Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:35910 "EHLO
+        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992828AbeBRLIuGElIU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Feb 2018 12:08:50 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 25DFB40011;
-        Sun, 18 Feb 2018 11:30:44 +0100 (CET)
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id B56D23F62C;
+        Sun, 18 Feb 2018 12:08:45 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7fI6c_1ZPACQ; Sun, 18 Feb 2018 11:30:40 +0100 (CET)
+Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ua9RdXiG3BFZ; Sun, 18 Feb 2018 12:08:40 +0100 (CET)
 Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
         (Authenticated sender: mb547485)
-        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 0057B4000F;
-        Sun, 18 Feb 2018 11:30:28 +0100 (CET)
-Date:   Sun, 18 Feb 2018 11:30:27 +0100
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 1E51E3F3B0;
+        Sun, 18 Feb 2018 12:08:33 +0100 (CET)
+Date:   Sun, 18 Feb 2018 12:08:31 +0100
 From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>,
-        linux-mips@linux-mips.org
-Subject: Re: Aw: [RFC] MIPS: R5900: Use mandatory SYNC.L in exception handlers
-Message-ID: <20180218103026.GC2577@localhost.localdomain>
-References: <20170930065654.GA7714@localhost.localdomain>
+To:     =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
+Cc:     "Maciej W. Rozycki" <macro@mips.com>, linux-mips@linux-mips.org
+Subject: [RFC] MIPS: R5900: Add mandatory SYNC.P to all M[FT]C0 instructions
+Message-ID: <20180218110830.GD2577@localhost.localdomain>
+References: <alpine.DEB.2.00.1709201705070.16752@tp.orcam.me.uk>
+ <20170927172107.GB2631@localhost.localdomain>
+ <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+ <20170930065654.GA7714@localhost.localdomain>
  <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
  <20171029172016.GA2600@localhost.localdomain>
  <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
  <20171111160422.GA2332@localhost.localdomain>
  <20180129202715.GA4817@localhost.localdomain>
  <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180211082913.GF2222@localhost.localdomain>
- <trinity-5d735b1e-9f56-47cc-8f85-3635dd4efe48-1518345226674@3c-app-gmx-bs58>
- <alpine.DEB.2.00.1802111301330.3553@tp.orcam.me.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1802111301330.3553@tp.orcam.me.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
 User-Agent: Mutt/1.9.1 (2017-09-22)
 Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62607
+X-archive-position: 62608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,46 +57,752 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+Hi Jürgen,
 
->  This change makes no sense to me anyway I am afraid.
-> 
->  At the error level (Status.ERL=1) the user segment becomes unmapped and 
-> therefore all KUSEG addresses become physical addresses.  Which means that 
-> if any of this code you have patched is called to access user pages, then 
-> you have a bigger problem than just the cache going out of sync.
-> 
->  The only reason to access KUSEG at the error level is to save/restore 
-> register state to/from a dedicated RAM area offset from $zero so that 
-> execution is restartable.  Unlike at the exception level you cannot use 
-> $k0 and $k1 as temporaries, because an error exception can happen any time 
-> including in particular while $k0 and $k1 are in active use at the 
-> exception level, so clobbering them would make the system non-restartable 
-> (of course receiving an error exception may mean that anyway).
-> 
->  Code to write/read that dedicated area should be purpose-crafted and the 
-> area won't be accessed at any other time, so the issue of being cache 
-> coherent or not does not apply as the area will never be accessed with 
-> caching operations.
+The Toshiba TX79 manual mandates that all MTC0 instructions must be followed
+by a SYNC.P instruction as a barrier to guarantee COP0 register updates.
+There is one exception to this rule:
+    
+An MTC0 instruction which loads the EntryHi COP0 register can be followed by
+a TLBWI or a TLBWR instruction without having an intervening SYNC.P. This
+special case is handled by a hardware interlock.
 
-Thanks for your detailed description!
-
->  I can see the R5900 has additional classes of error exceptions defined, 
-> such as debug and performance counter exceptions, which are not related to 
-> hardware faults and can happen in regular execution in response to certain 
-> conditions requested.  If you want to handle these implementation specific 
-> extensions and consequently serve these exceptions, then please take care 
-> of all the requirements as code to support them is added.
-
-Yes, hardware breakpoints and hardware performance counters are very
-interesting features to develop after the initial submission.
-
->  Though as I wrote above it does not look to me like anything specific 
-> will be needed -- the handler at entry will save the state necessary for 
-> restartability to a dedicated RAM area first and then to the kernel stack, 
-> switch the error level off, do the necessary processing, and then reverse 
-> the steps before resuming execution interrupted.
-
-Excellent. I will just drop this patch then.
-
+This is documented on page C-28. However, MFC0 does not have a similar note.
+How come it has preceding SYNC.P instructions in this change?
+    
 Fredrik
+
+diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+index feb069cbf44e..8d1e30b94c2d 100644
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -56,9 +56,15 @@
+ 	.endm
+ #else
+ 	.macro	local_irq_enable reg=t0
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	\reg, CP0_STATUS
+ 	ori	\reg, \reg, 1
+ 	mtc0	\reg, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	irq_enable_hazard
+ 	.endm
+ 
+@@ -68,10 +74,16 @@
+ 	addi    \reg, \reg, 1
+ 	sw      \reg, TI_PRE_COUNT($28)
+ #endif
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	\reg, CP0_STATUS
+ 	ori	\reg, \reg, 1
+ 	xori	\reg, \reg, 1
+ 	mtc0	\reg, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	irq_disable_hazard
+ #ifdef CONFIG_PREEMPT
+ 	lw      \reg, TI_PRE_COUNT($28)
+diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
+index 9d3610be2323..a2b653d42151 100644
+--- a/arch/mips/include/asm/irqflags.h
++++ b/arch/mips/include/asm/irqflags.h
+@@ -78,9 +78,15 @@ static inline void arch_local_irq_restore(unsigned long flags)
+ 	/*
+ 	 * Fast, dangerous.  Life is fun, life is good.
+ 	 */
++#ifdef CONFIG_CPU_R5900
++	"	sync.p							\n"
++#endif
+ 	"	mfc0	$1, $12						\n"
+ 	"	ins	$1, %[flags], 0, 1				\n"
+ 	"	mtc0	$1, $12						\n"
++#ifdef CONFIG_CPU_R5900
++	"	sync.p							\n"
++#endif
+ #endif
+ 	"	" __stringify(__irq_disable_hazard) "			\n"
+ 	"	.set	pop						\n"
+@@ -105,10 +111,16 @@ static inline void arch_local_irq_enable(void)
+ #if   defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	"	ei							\n"
+ #else
++#ifdef CONFIG_CPU_R5900
++	"	sync.p							\n"
++#endif
+ 	"	mfc0	$1,$12						\n"
+ 	"	ori	$1,0x1f						\n"
+ 	"	xori	$1,0x1e						\n"
+ 	"	mtc0	$1,$12						\n"
++#ifdef CONFIG_CPU_R5900
++	"	sync.p							\n"
++#endif
+ #endif
+ 	"	" __stringify(__irq_enable_hazard) "			\n"
+ 	"	.set	pop						\n"
+@@ -124,6 +136,9 @@ static inline unsigned long arch_local_save_flags(void)
+ 	asm __volatile__(
+ 	"	.set	push						\n"
+ 	"	.set	reorder						\n"
++#ifdef CONFIG_CPU_R5900
++	"	sync.p							\n"
++#endif
+ 	"	mfc0	%[flags], $12					\n"
+ 	"	.set	pop						\n"
+ 	: [flags] "=r" (flags));
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 6b1f1ad0542c..2e6dad7c02b6 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1245,6 +1245,29 @@ do {								\
+  * Macros to access the system control coprocessor
+  */
+ 
++#ifdef CONFIG_CPU_R5900
++#define __read_32bit_c0_register(source, sel)				\
++({ int __res;								\
++	if (sel == 0)							\
++		__asm__ __volatile__(					\
++			".set push\n\t"					\
++			".set noreorder\n\t"				\
++			"sync.p\n\t"					\
++			"mfc0\t%0, " #source "\n\t"			\
++			".set pop\n\t"					\
++			: "=r" (__res));				\
++	else								\
++		__asm__ __volatile__(					\
++			".set push\n\t"					\
++			".set noreorder\n\t"				\
++			".set\tmips32\n\t"				\
++			"sync.p\n\t"					\
++			"mfc0\t%0, " #source ", " #sel "\n\t"		\
++			".set pop\n\t"					\
++			: "=r" (__res));				\
++	__res;								\
++})
++#else
+ #define __read_32bit_c0_register(source, sel)				\
+ ({ unsigned int __res;							\
+ 	if (sel == 0)							\
+@@ -1259,6 +1282,7 @@ do {								\
+ 			: "=r" (__res));				\
+ 	__res;								\
+ })
++#endif
+ 
+ #define __read_64bit_c0_register(source, sel)				\
+ ({ unsigned long long __res;						\
+@@ -1279,6 +1303,28 @@ do {								\
+ 	__res;								\
+ })
+ 
++#ifdef CONFIG_CPU_R5900
++#define __write_32bit_c0_register(register, sel, value)			\
++do {									\
++	if (sel == 0)							\
++		__asm__ __volatile__(					\
++			".set push\n\t"					\
++			".set noreorder\n\t"				\
++			"mtc0\t%z0, " #register "\n\t"			\
++			"sync.p\n\t"					\
++			".set pop\n\t"					\
++			: : "Jr" ((unsigned int)(value)));		\
++	else								\
++		__asm__ __volatile__(					\
++			".set push\n\t"					\
++			".set noreorder\n\t"				\
++			".set\tmips32\n\t"				\
++			"mtc0\t%z0, " #register ", " #sel "\n\t"	\
++			"sync.p\n\t"					\
++			".set pop\n\t"					\
++			: : "Jr" ((unsigned int)(value)));		\
++} while (0)
++#else
+ #define __write_32bit_c0_register(register, sel, value)			\
+ do {									\
+ 	if (sel == 0)							\
+@@ -1292,6 +1338,7 @@ do {									\
+ 			".set\tmips0"					\
+ 			: : "Jr" ((unsigned int)(value)));		\
+ } while (0)
++#endif
+ 
+ #define __write_64bit_c0_register(register, sel, value)			\
+ do {									\
+@@ -2525,6 +2572,14 @@ static inline void tlb_probe(void)
+ 	__asm__ __volatile__(
+ 		".set noreorder\n\t"
+ 		"tlbp\n\t"
++#ifdef CONFIG_CPU_R5900
++		/* No memory access behind the tlbp instruction. */
++		"sync.p\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"nop\n\t"
++#endif
+ 		".set reorder");
+ }
+ 
+@@ -2550,6 +2605,14 @@ static inline void tlb_read(void)
+ 	__asm__ __volatile__(
+ 		".set noreorder\n\t"
+ 		"tlbr\n\t"
++#ifdef CONFIG_CPU_R5900
++		"sync.p\n\t"
++		/* No branch behind tlbr. */
++		"nop\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"nop\n\t"
++#endif
+ 		".set reorder");
+ 
+ #if MIPS34K_MISSED_ITLB_WAR
+@@ -2570,6 +2633,9 @@ static inline void tlb_write_indexed(void)
+ 	__asm__ __volatile__(
+ 		".set noreorder\n\t"
+ 		"tlbwi\n\t"
++#ifdef CONFIG_CPU_R5900
++		"sync.p\n\t"
++#endif
+ 		".set reorder");
+ }
+ 
+@@ -2578,6 +2644,9 @@ static inline void tlb_write_random(void)
+ 	__asm__ __volatile__(
+ 		".set noreorder\n\t"
+ 		"tlbwr\n\t"
++#ifdef CONFIG_CPU_R5900
++		"sync.p\n\t"
++#endif
+ 		".set reorder");
+ }
+ 
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index cc4fa6f01e0e..14657fa6993b 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -116,6 +116,9 @@
+ 
+ 		/* SMP variation */
+ 		.macro	get_saved_sp docfi=0 tosp=0
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
+ #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
+ 		lui	k1, %hi(kernelsp)
+@@ -140,6 +143,9 @@
+ 		.endm
+ 
+ 		.macro	set_saved_sp stackp temp temp2
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		ASM_CPUID_MFC0	\temp, ASM_SMP_CPUID_REG
+ 		LONG_SRL	\temp, SMP_CPUID_PTRSHIFT
+ 		LONG_S	\stackp, kernelsp(\temp)
+@@ -165,6 +171,9 @@
+ 1:		move	ra, k0
+ 		li	k0, 3
+ 		mtc0	k0, $22
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ #endif /* CONFIG_CPU_JUMP_WORKAROUNDS */
+ #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
+ 		lui	k1, %hi(kernelsp)
+@@ -195,6 +204,9 @@
+ 		.set	push
+ 		.set	noat
+ 		.set	reorder
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	k0, CP0_STATUS
+ 		sll	k0, 3		/* extract cu0 bit */
+ 		.set	noreorder
+@@ -251,15 +263,24 @@
+ 		 * need it to operate correctly
+ 		 */
+ 		LONG_S	$0, PT_R0(sp)
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	v1, CP0_STATUS
+ 		cfi_st	v0, PT_R2, \docfi
+ 		LONG_S	v1, PT_STATUS(sp)
+ 		cfi_st	$4, PT_R4, \docfi
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	v1, CP0_CAUSE
+ 		cfi_st	$5, PT_R5, \docfi
+ 		LONG_S	v1, PT_CAUSE(sp)
+ 		cfi_st	$6, PT_R6, \docfi
+ 		cfi_st	ra, PT_R31, \docfi
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		MFC0	ra, CP0_EPC
+ 		cfi_st	$7, PT_R7, \docfi
+ #ifdef CONFIG_64BIT
+@@ -273,6 +294,9 @@
+ 		cfi_st	$25, PT_R25, \docfi
+ 		cfi_st	$28, PT_R28, \docfi
+ 
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		/* Set thread_info if we're coming from user mode */
+ 		mfc0	k0, CP0_STATUS
+ 		sll	k0, 3		/* extract cu0 bit */
+@@ -447,10 +471,16 @@
+ 		.set	reorder
+ 		.set	noat
+ 		RESET_MMR
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	a0, CP0_STATUS
+ 		ori	a0, STATMASK
+ 		xori	a0, STATMASK
+ 		mtc0	a0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		li	v1, ST0_CU1 | ST0_FR | ST0_IM
+ 		and	a0, v1
+ 		LONG_L	v0, PT_STATUS(sp)
+@@ -458,8 +488,14 @@
+ 		and	v0, v1
+ 		or	v0, a0
+ 		mtc0	v0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		LONG_L	v1, PT_EPC(sp)
+ 		MTC0	v1, CP0_EPC
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		cfi_ld	$31, PT_R31, \docfi
+ 		cfi_ld	$28, PT_R28, \docfi
+ 		cfi_ld	$25, PT_R25, \docfi
+@@ -502,11 +538,17 @@
+  * Set cp0 enable bit as sign that we're running on the kernel stack
+  */
+ 		.macro	CLI
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	t0, CP0_STATUS
+ 		li	t1, ST0_CU0 | STATMASK
+ 		or	t0, t1
+ 		xori	t0, STATMASK
+ 		mtc0	t0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		irq_disable_hazard
+ 		.endm
+ 
+@@ -515,11 +557,17 @@
+  * Set cp0 enable bit as sign that we're running on the kernel stack
+  */
+ 		.macro	STI
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	t0, CP0_STATUS
+ 		li	t1, ST0_CU0 | STATMASK
+ 		or	t0, t1
+ 		xori	t0, STATMASK & ~1
+ 		mtc0	t0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		irq_enable_hazard
+ 		.endm
+ 
+@@ -529,6 +577,9 @@
+  * Set cp0 enable bit as sign that we're running on the kernel stack
+  */
+ 		.macro	KMODE
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		mfc0	t0, CP0_STATUS
+ 		li	t1, ST0_CU0 | (STATMASK & ~1)
+ #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+@@ -539,6 +590,9 @@
+ 		or	t0, t1
+ 		xori	t0, STATMASK & ~1
+ 		mtc0	t0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++		sync.p
++#endif
+ 		irq_disable_hazard
+ 		.endm
+ 
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 37b9383eacd3..c7b64f4a8ad3 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -33,8 +33,14 @@ NESTED(except_vec3_generic, 0, sp)
+ 	.set	push
+ 	.set	noat
+ #if R5432_CP0_INTERRUPT_WAR
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k0, CP0_INDEX
+ #endif
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k1, CP0_CAUSE
+ 	andi	k1, k1, 0x7c
+ #ifdef CONFIG_64BIT
+@@ -55,6 +61,9 @@ NESTED(except_vec3_r4000, 0, sp)
+ 	.set	push
+ 	.set	arch=r4000
+ 	.set	noat
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k1, CP0_CAUSE
+ 	li	k0, 31<<2
+ 	andi	k1, k1, 0x7c
+@@ -78,10 +87,16 @@ NESTED(except_vec3_r4000, 0, sp)
+ 	 * load / store will be re-executed.
+ 	 */
+ handle_vced:
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k0, CP0_BADVADDR
+ 	li	k1, -4					# Is this ...
+ 	and	k0, k1					# ... really needed?
+ 	mtc0	zero, CP0_TAGLO
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	cache	Index_Store_Tag_D, (k0)
+ 	cache	Hit_Writeback_Inv_SD, (k0)
+ #ifdef CONFIG_PROC_FS
+@@ -93,6 +108,9 @@ handle_vced:
+ 	eret
+ 
+ handle_vcei:
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k0, CP0_BADVADDR
+ 	cache	Hit_Writeback_Inv_SD, (k0)		# also cleans pi
+ #ifdef CONFIG_PROC_FS
+@@ -138,12 +156,18 @@ LEAF(__r4k_wait)
+ 	FEXPORT(rollback_\handler)
+ 	.set	push
+ 	.set	noat
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k0, CP0_EPC
+ 	PTR_LA	k1, __r4k_wait
+ 	ori	k0, 0x1f	/* 32 byte rollback region */
+ 	xori	k0, 0x1f
+ 	bne	k0, k1, \handler
+ 	MTC0	k0, CP0_EPC
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	.set pop
+ 	.endm
+ 
+@@ -164,11 +188,17 @@ NESTED(handle_int, PT_SIZE, sp)
+ 	 */
+ 	.set	push
+ 	.set	noat
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k0, CP0_STATUS
+ #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+ 	and	k0, ST0_IEP
+ 	bnez	k0, 1f
+ 
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k0, CP0_EPC
+ 	.set	noreorder
+ 	j	k0
+@@ -349,6 +379,9 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	.set	push
+ 	.set	noat
+ 	MTC0	k0, CP0_DESAVE
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k0, CP0_DEBUG
+ 
+ 	sll	k0, k0, 30	# Check for SDBBP.
+@@ -364,6 +397,9 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	LONG_L	k1, 0(k0)
+ 
+ ejtag_return:
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k0, CP0_DESAVE
+ 	.set	mips32
+ 	deret
+@@ -448,6 +484,9 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.endm
+ 
+ 	.macro	__build_clear_ade
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	t0, CP0_BADVADDR
+ 	PTR_S	t0, PT_BVADDR(sp)
+ 	KMODE
+@@ -531,16 +570,28 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.set	noat
+ 	.set	noreorder
+ 	/* check if TLB contains a entry for EPC */
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k1, CP0_ENTRYHI
+ 	andi	k1, MIPS_ENTRYHI_ASID | MIPS_ENTRYHI_ASIDX
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k0, CP0_EPC
+ 	PTR_SRL	k0, _PAGE_SHIFT + 1
+ 	PTR_SLL	k0, _PAGE_SHIFT + 1
+ 	or	k1, k0
+ 	MTC0	k1, CP0_ENTRYHI
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mtc0_tlbw_hazard
+ 	tlbp
+ 	tlb_probe_hazard
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k1, CP0_INDEX
+ 	.set	pop
+ 	bltz	k1, handle_ri	/* slow path */
+@@ -553,6 +604,9 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.set	noreorder
+ 	/* MIPS32:    0x7c03e83b: rdhwr v1,$29 */
+ 	/* microMIPS: 0x007d6b3c: rdhwr v1,$29 */
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k1, CP0_EPC
+ #if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS64_R2)
+ 	and	k0, k1, 1
+@@ -583,6 +637,9 @@ isrdhwr:
+ 	/* The insn is rdhwr.  No need to check CAUSE.BD here. */
+ 	get_saved_sp	/* k1 := current_thread_info */
+ 	.set	noreorder
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	k0, CP0_EPC
+ #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+ 	ori	k1, _THREAD_MASK
+@@ -600,6 +657,9 @@ isrdhwr:
+ 	.set	noat
+ #endif
+ 	MTC0	k0, CP0_EPC
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	/* I hope three instructions between MTC0 and ERET are enough... */
+ 	ori	k1, _THREAD_MASK
+ 	xori	k1, _THREAD_MASK
+diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+index d1bb506adc10..e4df507d63a6 100644
+--- a/arch/mips/kernel/head.S
++++ b/arch/mips/kernel/head.S
+@@ -34,10 +34,16 @@
+ 	 */
+ 	.macro	setup_c0_status set clr
+ 	.set	push
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	t0, CP0_STATUS
+ 	or	t0, ST0_CU0|\set|0x1f|\clr
+ 	xor	t0, 0x1f|\clr
+ 	mtc0	t0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	.set	noreorder
+ 	sll	zero,3				# ehb
+ 	.set	pop
+@@ -130,6 +136,9 @@ dtb_found:
+ #endif
+ 
+ 	MTC0		zero, CP0_CONTEXT	# clear context register
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	PTR_LA		$28, init_thread_union
+ 	/* Set the SP after an empty pt_regs.  */
+ 	PTR_LI		sp, _THREAD_SIZE - 32 - PT_SIZE
+diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
+index 8e3a6020c613..3959ae0af7a5 100644
+--- a/arch/mips/kernel/r4k_fpu.S
++++ b/arch/mips/kernel/r4k_fpu.S
+@@ -98,10 +98,16 @@ LEAF(_init_msa_upper)
+ 	SET_HARDFLOAT
+ 
+ LEAF(_init_fpu)
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	t0, CP0_STATUS
+ 	li	t1, ST0_CU1
+ 	or	t0, t1
+ 	mtc0	t0, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	enable_fpu_hazard
+ 
+ 	ctc1	a0, fcr31
+diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
+index 17cf9341c1cf..6a5838977986 100644
+--- a/arch/mips/kernel/r4k_switch.S
++++ b/arch/mips/kernel/r4k_switch.S
+@@ -26,6 +26,9 @@
+  */
+ 	.align	5
+ 	LEAF(resume)
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	t1, CP0_STATUS
+ 	LONG_S	t1, THREAD_STATUS(a0)
+ 	cpu_save_nonscratch a0
+@@ -46,6 +49,9 @@
+ 
+ 	PTR_ADDU	t0, $28, _THREAD_SIZE - 32
+ 	set_saved_sp	t0, t1, t2
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	t1, CP0_STATUS		/* Do we really need this? */
+ 	li	a3, 0xff01
+ 	and	t1, a3
+@@ -54,6 +60,9 @@
+ 	and	a2, a3
+ 	or	a2, t1
+ 	mtc0	a2, CP0_STATUS
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	move	v0, a0
+ 	jr	ra
+ 	END(resume)
+diff --git a/arch/mips/mm/cex-gen.S b/arch/mips/mm/cex-gen.S
+index 45dff5cd4b8e..c5075651229c 100644
+--- a/arch/mips/mm/cex-gen.S
++++ b/arch/mips/mm/cex-gen.S
+@@ -27,11 +27,17 @@
+ 	 * in the cache, we may not be able to recover.	 As a
+ 	 * first-order desperate measure, turn off KSEG0 cacheing.
+ 	 */
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	mfc0	k0,CP0_CONFIG
+ 	li	k1,~CONF_CM_CMASK
+ 	and	k0,k0,k1
+ 	ori	k0,k0,CONF_CM_UNCACHED
+ 	mtc0	k0,CP0_CONFIG
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	/* Give it a few cycles to sink in... */
+ 	nop
+ 	nop
+diff --git a/arch/mips/mm/tlbex-fault.S b/arch/mips/mm/tlbex-fault.S
+index 77db401fc620..fe2b2c61cca7 100644
+--- a/arch/mips/mm/tlbex-fault.S
++++ b/arch/mips/mm/tlbex-fault.S
+@@ -14,6 +14,9 @@
+ 	NESTED(tlb_do_page_fault_\write, PT_SIZE, sp)
+ 	.cfi_signal_frame
+ 	SAVE_ALL docfi=1
++#ifdef CONFIG_CPU_R5900
++	sync.p
++#endif
+ 	MFC0	a2, CP0_BADVADDR
+ 	KMODE
+ 	move	a0, sp
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 79b9f2ad3ff5..a18b013fd887 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -691,6 +691,9 @@ static void build_restore_pagemask(u32 **p, struct uasm_reloc **r,
+ 			uasm_i_mtc0(p, 0, C0_PAGEMASK);
+ 		}
+ 	}
++#ifdef CONFIG_CPU_R5900
++	uasm_i_syncp(p);
++#endif
+ }
+ 
+ static void build_huge_tlb_write_entry(u32 **p, struct uasm_label **l,
+@@ -703,6 +706,9 @@ static void build_huge_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	uasm_i_lui(p, tmp, PM_HUGE_MASK >> 16);
+ 	uasm_i_ori(p, tmp, tmp, PM_HUGE_MASK & 0xffff);
+ 	uasm_i_mtc0(p, tmp, C0_PAGEMASK);
++#ifdef CONFIG_CPU_R5900
++	uasm_i_syncp(p);
++#endif
+ 
+ 	build_tlb_write_entry(p, l, r, wmode);
+ 
+@@ -959,21 +965,21 @@ void build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+ {
+ 	if (pgd_reg != -1) {
+ 		/* pgd is in pgd_reg */
+-		uasm_i_mfc0(p, ptr, c0_kscratch(), pgd_reg);
+-		uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
++		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
++		UASM_i_MFC0(p, tmp, C0_BADVADDR); /* get faulting address */
+ 	} else {
+ 		long pgdc = (long)pgd_current;
+ 
+ 		/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
+ #ifdef CONFIG_SMP
+-		uasm_i_mfc0(p, ptr, SMP_CPUID_REG);
++		UASM_i_MFC0(p, ptr, SMP_CPUID_REG);
+ 		UASM_i_LA_mostly(p, tmp, pgdc);
+ 		uasm_i_srl(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
+ 		uasm_i_addu(p, ptr, tmp, ptr);
+ #else
+ 		UASM_i_LA_mostly(p, ptr, pgdc);
+ #endif
+-		uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
++		UASM_i_MFC0(p, tmp, C0_BADVADDR); /* get faulting address */
+ 		uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
+ 	}
+ 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */

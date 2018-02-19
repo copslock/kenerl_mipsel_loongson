@@ -1,47 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 17:56:55 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:53353 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994655AbeBSQ4qgTMon (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Feb 2018 17:56:46 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 19 Feb 2018 16:55:58 +0000
-Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Mon, 19 Feb 2018 08:55:21 -0800
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     Kees Cook <keescook@chromium.org>,
-        "Dmitry V . Levin" <ldv@altlinux.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-CC:     <kernel-hardening@lists.openwall.com>, <linux-mips@linux-mips.org>,
-        "Matt Redfearn" <matt.redfearn@mips.com>
-Subject: [PATCH] signals: Move put_compat_sigset to compat.h to silence hardened usercopy
-Date:   Mon, 19 Feb 2018 16:55:06 +0000
-Message-ID: <1519059306-30135-1-git-send-email-matt.redfearn@mips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1515636190-24061-1-git-send-email-keescook@chromium.org>
-References: <1515636190-24061-1-git-send-email-keescook@chromium.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 19:07:14 +0100 (CET)
+Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:39003
+        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994644AbeBSSHFV-zwG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Feb 2018 19:07:05 +0100
+Received: by mail-lf0-x244.google.com with SMTP id h78so655923lfg.6
+        for <linux-mips@linux-mips.org>; Mon, 19 Feb 2018 10:07:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=wIBAv9n5UaXeVXuohqJpGYh3DTqQTCsnXkUQpWTG93g=;
+        b=SDBRXYEQ1Z/1mr6KZI9UtMUYjZHTxMsQtsV5cdS8uSdumjFDQQGBIVjCngwhS9imxX
+         Jnm7nueBVQLs/tK1jWTX2rxwmQAe0u2zZsxDP53VJ2iU1fmb4nmAhkXhUJ2ndwAqdoHf
+         uQoC7D1tQlTFhsiBopwQ6MQbRw8lAvH6gbXtA39lIjdW8SNrV3PRYZ9PCnJ3Rm4I/KUx
+         oF/xb4sG2Jk8RBXCEhSdvgVLE2ubp+qzGhDBF8EtMDeLLEVHG/NsvpNXprzWogCAJtHy
+         tRQjhh9iX0ymKr0rXT4H5IWUZUPPD8Op0Pid2DkNiTQyeMERbuGEWplik3zQzWxyJ3nn
+         OEjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=wIBAv9n5UaXeVXuohqJpGYh3DTqQTCsnXkUQpWTG93g=;
+        b=S7mY2Jgz0yq/iS9kaET4nzIHn6ZLSKciq0XdE4ibzSYgqLY18gSuwd/XOratGu58iM
+         jLUtDg45sRFurlhsnrPO0yY7xlqVWjszB0XRHPeC2dzRFo1NF7BG0kYYVLYWWEZ16vkX
+         bhQc6escwctOnKyTTZNN41UNFmMgKCWsMunnRy/B2ypAsNchbF4kswNJ9YqzA2INLAlh
+         zMWWvuJJ5lUHPot7OL+nI8rc5LAIK4riTZxcMvQa7dtxxEydoET2bbB+96iNedJ/tS4j
+         83WlsRfwc/EV0VcLLxrxG8rK9N4zwGH6YfE6BRuYJ9AhNzgQQ37xp2TpH40i/4UnBrit
+         rRYA==
+X-Gm-Message-State: APf1xPD4oo7CHzSasAEdhLQ6HnnF+nSlycutZ3MPL95E4u8GeULHdDbd
+        qa/jasWzS0zG4sA5a0nKs4I62w==
+X-Google-Smtp-Source: AH8x226F8kHJ7BS+etRnrqXTAA9vpBReadXAwLbu+x0KevyVMxFoBskVDdp7Sd71WhdjOfWQZlSyKQ==
+X-Received: by 10.46.50.3 with SMTP id y3mr7561691ljy.90.1519063619211;
+        Mon, 19 Feb 2018 10:06:59 -0800 (PST)
+Received: from localhost.localdomain (t109.niisi.ras.ru. [193.232.173.109])
+        by smtp.gmail.com with ESMTPSA id i6sm4922316lji.26.2018.02.19.10.06.58
+        for <linux-mips@linux-mips.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 19 Feb 2018 10:06:58 -0800 (PST)
+Date:   Mon, 19 Feb 2018 21:06:56 +0300
+From:   Peter Mamonov <pmamonov@gmail.com>
+To:     linux-mips@linux-mips.org
+Subject: fcntl64 syscall causes user program stack corruption
+Message-ID: <20180219180655.wiotjqubelp7ywxs@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1519059351-321457-31242-22847-5
-X-BESS-VER: 2018.2-r1802152108
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190190
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <pmamonov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62623
+X-archive-position: 62624
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: pmamonov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,143 +67,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since commit afcc90f8621e ("usercopy: WARN() on slab cache usercopy
-region violations"), MIPS systems booting with a compat root filesystem
-emit a warning when copying compat siginfo to userspace:
+Hello,
 
-WARNING: CPU: 0 PID: 953 at mm/usercopy.c:81 usercopy_warn+0x98/0xe8
-Bad or missing usercopy whitelist? Kernel memory exposure attempt
-detected from SLAB object 'task_struct' (offset 1432, size 16)!
-Modules linked in:
-CPU: 0 PID: 953 Comm: S01logging Not tainted 4.16.0-rc2 #10
-Stack : ffffffff808c0000 0000000000000000 0000000000000001 65ac85163f3bdc4a
-	65ac85163f3bdc4a 0000000000000000 90000000ff667ab8 ffffffff808c0000
-	00000000000003f8 ffffffff808d0000 00000000000000d1 0000000000000000
-	000000000000003c 0000000000000000 ffffffff808c8ca8 ffffffff808d0000
-	ffffffff808d0000 ffffffff80810000 fffffc0000000000 ffffffff80785c30
-	0000000000000009 0000000000000051 90000000ff667eb0 90000000ff667db0
-	000000007fe0d938 0000000000000018 ffffffff80449958 0000000020052798
-	ffffffff808c0000 90000000ff664000 90000000ff667ab0 00000000100c0000
-	ffffffff80698810 0000000000000000 0000000000000000 0000000000000000
-	0000000000000000 0000000000000000 ffffffff8010d02c 65ac85163f3bdc4a
-	...
-Call Trace:
-[<ffffffff8010d02c>] show_stack+0x9c/0x130
-[<ffffffff80698810>] dump_stack+0x90/0xd0
-[<ffffffff80137b78>] __warn+0x100/0x118
-[<ffffffff80137bdc>] warn_slowpath_fmt+0x4c/0x70
-[<ffffffff8021e4a8>] usercopy_warn+0x98/0xe8
-[<ffffffff8021e68c>] __check_object_size+0xfc/0x250
-[<ffffffff801bbfb8>] put_compat_sigset+0x30/0x88
-[<ffffffff8011af24>] setup_rt_frame_n32+0xc4/0x160
-[<ffffffff8010b8b4>] do_signal+0x19c/0x230
-[<ffffffff8010c408>] do_notify_resume+0x60/0x78
-[<ffffffff80106f50>] work_notifysig+0x10/0x18
----[ end trace 88fffbf69147f48a ]---
+After upgrading the Linux kernel to the recent version I've found that the 
+Firefox browser from the Debian 8 (jessie),mipsel stopped working: it causes 
+Bus Error exception at startup. The problem is reproducible with the QEMU 
+virtual machine (qemu-system-mips64el). Thorough investigation revealed that 
+the following syscall in /lib/mipsel-linux-gnu/libpthread-2.19.so causes 
+Firefox's stack corruption at address 0x7fff5770:
 
-Commit 5905429ad856 ("fork: Provide usercopy whitelisting for
-task_struct") noted that:
+	0x77fabd28:  li      v0,4220
+	0x77fabd2c:  syscall
 
-"While the blocked and saved_sigmask fields of task_struct are copied to
-userspace (via sigmask_to_save() and setup_rt_frame()), it is always
-copied with a static length (i.e. sizeof(sigset_t))."
+Relevant registers contents are as follows:
 
-However, this is not true in the case of compat signals, whose sigset
-is copied by put_compat_sigset and receives size as an argument.
+		  zero       at       v0       v1       a0       a1       a2       a3
+	 R0   00000000 300004e0 0000107c 77c2e6b0 00000006 0000000e 7fff574c 7fff5770 
 
-At most call sites, put_compat_sigset is copying a sigset from the
-current task_struct. This triggers a warning when
-CONFIG_HARDENED_USERCOPY is active. However, by marking this function as
-static inline, the warning can be avoided because in all of these cases
-the size is constant at compile time, which is allowed. The only site
-where this is not the case is handling the rt_sigpending syscall, but
-there the copy is being made from a stack local variable so does not
-trigger the warning.
+The stack corruption is caused by the following patch:
 
-Move put_compat_sigset to compat.h, and mark it static inline. This
-fixes the WARN on MIPS.
+	commit 8c6657cb50cb037ff58b3f6a547c6569568f3527
+	Author: Al Viro <viro@zeniv.linux.org.uk>
+	Date:   Mon Jun 26 23:51:31 2017 -0400
+	
+	    Switch flock copyin/copyout primitives to copy_{from,to}_user()
+	    
+	    ... and lose HAVE_ARCH_...; if copy_{to,from}_user() on an
+	    architecture sucks badly enough to make it a problem, we have
+	    a worse problem.
+	    
+	    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-Fixes: afcc90f8621e ("usercopy: WARN() on slab cache usercopy region violations")
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
----
+Reverting the change in put_compat_flock() introduced by the patch prevents the 
+stack corruption:
 
- include/linux/compat.h | 26 ++++++++++++++++++++++++--
- kernel/compat.c        | 19 -------------------
- 2 files changed, 24 insertions(+), 21 deletions(-)
+	diff --git a/fs/fcntl.c b/fs/fcntl.c
+	index 0345a46b8856..c55afd836e5d 100644
+	--- a/fs/fcntl.c
+	+++ b/fs/fcntl.c
+	@@ -550,25 +550,27 @@ static int get_compat_flock64(struct flock *kfl, const struct compat_flock64 __u
+	 
+	 static int put_compat_flock(const struct flock *kfl, struct compat_flock __user *ufl)
+	 {
+	-       struct compat_flock fl;
+	-
+	-       memset(&fl, 0, sizeof(struct compat_flock));
+	-       copy_flock_fields(&fl, kfl);
+	-       if (copy_to_user(ufl, &fl, sizeof(struct compat_flock)))
+	+       if (!access_ok(VERIFY_WRITE, ufl, sizeof(*ufl)) ||
+	+           __put_user(kfl->l_type, &ufl->l_type) ||
+	+           __put_user(kfl->l_whence, &ufl->l_whence) ||
+	+           __put_user(kfl->l_start, &ufl->l_start) ||
+	+           __put_user(kfl->l_len, &ufl->l_len) ||
+	+           __put_user(kfl->l_pid, &ufl->l_pid))
+	                return -EFAULT;
+	        return 0;
+	 }
 
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 8a9643857c4a..c4139c7a0de0 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -17,6 +17,7 @@
- #include <linux/if.h>
- #include <linux/fs.h>
- #include <linux/aio_abi.h>	/* for aio_context_t */
-+#include <linux/uaccess.h>
- #include <linux/unistd.h>
- 
- #include <asm/compat.h>
-@@ -550,8 +551,29 @@ asmlinkage long compat_sys_settimeofday(struct compat_timeval __user *tv,
- asmlinkage long compat_sys_adjtimex(struct compat_timex __user *utp);
- 
- extern int get_compat_sigset(sigset_t *set, const compat_sigset_t __user *compat);
--extern int put_compat_sigset(compat_sigset_t __user *compat,
--			     const sigset_t *set, unsigned int size);
-+
-+/*
-+ * Defined inline such that size can be compile time constant, which avoids
-+ * CONFIG_HARDENED_USERCOPY complaining about copies from task_struct
-+ */
-+static inline int
-+put_compat_sigset(compat_sigset_t __user *compat, const sigset_t *set,
-+		  unsigned int size)
-+{
-+	/* size <= sizeof(compat_sigset_t) <= sizeof(sigset_t) */
-+#ifdef __BIG_ENDIAN
-+	compat_sigset_t v;
-+	switch (_NSIG_WORDS) {
-+	case 4: v.sig[7] = (set->sig[3] >> 32); v.sig[6] = set->sig[3];
-+	case 3: v.sig[5] = (set->sig[2] >> 32); v.sig[4] = set->sig[2];
-+	case 2: v.sig[3] = (set->sig[1] >> 32); v.sig[2] = set->sig[1];
-+	case 1: v.sig[1] = (set->sig[0] >> 32); v.sig[0] = set->sig[0];
-+	}
-+	return copy_to_user(compat, &v, size) ? -EFAULT : 0;
-+#else
-+	return copy_to_user(compat, set, size) ? -EFAULT : 0;
-+#endif
-+}
- 
- asmlinkage long compat_sys_migrate_pages(compat_pid_t pid,
- 		compat_ulong_t maxnode, const compat_ulong_t __user *old_nodes,
-diff --git a/kernel/compat.c b/kernel/compat.c
-index 3247fe761f60..3f5fa8902e7d 100644
---- a/kernel/compat.c
-+++ b/kernel/compat.c
-@@ -488,25 +488,6 @@ get_compat_sigset(sigset_t *set, const compat_sigset_t __user *compat)
- }
- EXPORT_SYMBOL_GPL(get_compat_sigset);
- 
--int
--put_compat_sigset(compat_sigset_t __user *compat, const sigset_t *set,
--		  unsigned int size)
--{
--	/* size <= sizeof(compat_sigset_t) <= sizeof(sigset_t) */
--#ifdef __BIG_ENDIAN
--	compat_sigset_t v;
--	switch (_NSIG_WORDS) {
--	case 4: v.sig[7] = (set->sig[3] >> 32); v.sig[6] = set->sig[3];
--	case 3: v.sig[5] = (set->sig[2] >> 32); v.sig[4] = set->sig[2];
--	case 2: v.sig[3] = (set->sig[1] >> 32); v.sig[2] = set->sig[1];
--	case 1: v.sig[1] = (set->sig[0] >> 32); v.sig[0] = set->sig[0];
--	}
--	return copy_to_user(compat, &v, size) ? -EFAULT : 0;
--#else
--	return copy_to_user(compat, set, size) ? -EFAULT : 0;
--#endif
--}
--
- #ifdef CONFIG_NUMA
- COMPAT_SYSCALL_DEFINE6(move_pages, pid_t, pid, compat_ulong_t, nr_pages,
- 		       compat_uptr_t __user *, pages32,
--- 
-2.7.4
+Actually, the change introduced by the patch is ok. However, it looks like 
+there is either a mismatch of sizeof(struct compat_flock) between the kernel 
+and the user space or a mismatch of types used by the kernel and the user 
+space.  Despite the fact that the user space is built for a different kernel 
+version (3.16), I believe this syscall should work fine with it, since `struct 
+compat_flock` did not change since the 3.16.  So, probably, the problem is 
+caused by some discrepancies which were hidden until "Switch flock 
+copyin/copyout..." patch.
+
+Please, give your comments.
+
+Regards,
+Peter

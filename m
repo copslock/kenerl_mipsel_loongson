@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 23:19:34 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:52830 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 00:07:41 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:60270 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994664AbeBSWTVcqtDR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Feb 2018 23:19:21 +0100
+        id S23994664AbeBSXHbo2FJh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Feb 2018 00:07:31 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FC7A2177E;
-        Mon, 19 Feb 2018 22:19:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4FC7A2177E
+        by mail.kernel.org (Postfix) with ESMTPSA id B91462177B;
+        Mon, 19 Feb 2018 23:07:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B91462177B
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 19 Feb 2018 22:19:06 +0000
+Date:   Mon, 19 Feb 2018 23:07:20 +0000
 From:   James Hogan <jhogan@kernel.org>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        "# 3 . 15+" <stable@vger.kernel.org>
-Subject: Re: [PATCH V2 04/12] MIPS: c-r4k: Add r4k_blast_scache_node for
- Loongson-3
-Message-ID: <20180219221906.GB6245@saruman>
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 08/12] MIPS: Align kernel load address to 64KB
+Message-ID: <20180219230719.GC6245@saruman>
 References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <1517023145-14293-1-git-send-email-chenhc@lemote.com>
+ <1517023336-17575-1-git-send-email-chenhc@lemote.com>
+ <1517023336-17575-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="l76fUT7nc3MelDdI"
+        protocol="application/pgp-signature"; boundary="da4uJneut+ArUgXk"
 Content-Disposition: inline
-In-Reply-To: <1517023145-14293-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1517023336-17575-2-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62626
+X-archive-position: 62627
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,139 +51,81 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---l76fUT7nc3MelDdI
+--da4uJneut+ArUgXk
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 27, 2018 at 11:19:05AM +0800, Huacai Chen wrote:
-> For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
-> only flush Node-0's scache. So we add r4k_blast_scache_node() by using
-> (CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
-> start address.
+On Sat, Jan 27, 2018 at 11:22:15AM +0800, Huacai Chen wrote:
+> KEXEC assume kernel align to PAGE_SIZE, and 64KB is the largest
+> PAGE_SIZE.
+
+Please expand, maybe referring to sanity_check_segment_list() which does
+the actual check. Maybe something like this:
+
+ Kexec needs the new kernel's load address to be aligned on a page
+ boundary (see sanity_check_segment_list()), but on MIPS the default
+ vmlinuz load address is only explicitly aligned to 16 bytes.
+
+ Since the largest PAGE_SIZE supported by MIPS kernels is 64KB, increase
+ the alignment calculated by calc_vmlinuz_load_addr to 64KB.
+
+
+I suppose it'd be a bit ugly for the kexec userland code to increase the
+size of the load segment downwards to make it page aligned...
+
 >=20
-> Cc: <stable@vger.kernel.org> # 3.15+
 > Signed-off-by: Huacai Chen <chenhc@lemote.com>
 > ---
->  arch/mips/include/asm/r4kcache.h | 34 ++++++++++++++++++++++++++++++++
->  arch/mips/mm/c-r4k.c             | 42 +++++++++++++++++++++++++++++++++-=
-------
->  2 files changed, 69 insertions(+), 7 deletions(-)
+>  arch/mips/boot/compressed/calc_vmlinuz_load_addr.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4k=
-cache.h
-> index 7f12d7e..c1f2806 100644
-> --- a/arch/mips/include/asm/r4kcache.h
-> +++ b/arch/mips/include/asm/r4kcache.h
-> @@ -747,4 +747,38 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_I=
-nv_SD, , )
->  __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
->  __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+> diff --git a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c b/arch/mi=
+ps/boot/compressed/calc_vmlinuz_load_addr.c
+> index 37fe58c..1dcaef4 100644
+> --- a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
+> +++ b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
+> @@ -45,11 +45,10 @@ int main(int argc, char *argv[])
+>  	vmlinuz_load_addr =3D vmlinux_load_addr + vmlinux_size;
 > =20
-> +#ifndef pa_to_nid
-> +#define pa_to_nid(addr) 0
-> +#endif
-> +
-> +#ifndef NODE_ADDRSPACE_SHIFT
+>  	/*
+> -	 * Align with 16 bytes: "greater than that used for any standard data
+> -	 * types by a MIPS compiler." -- See MIPS Run Linux (Second Edition).
+> +	 * Align with 64KB: KEXEC assume kernel align to PAGE_SIZE
 
-To be sure you get the right definition of both of these if they exist,
-and wherever this header is included, we should explicitly #include the
-appropriate header (asm/mmzone.h?) from this header.
+"Align to 64KB: kexec needs load sections to be aligned to PAGE_SIZE,
+which may be as large as 64KB depending on the kernel configuration".
 
-> +#define nid_to_addrbase(nid) 0
-> +#else
-> +#define nid_to_addrbase(nid) (nid << NODE_ADDRSPACE_SHIFT)
-
-Technically this should have parentheses around nid.
-
-It seems slightly inconsistent to have pa_to_nid() defined in mmzone.h,
-but not the reverse nid_to_addrbase(). NODE_ADDRSPACE_SHIFT is very
-loongson specific afterall.
-
-Would it make sense to move it into
-arch/mips/include/asm/mach-loongson64/mmzone.h and put the 0 definition
-in #ifndef nid_to_addrbase?
-
-> +#endif
-> +
-> +#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
-
-I think this is worthy of a quick comment to explain that this is very
-specific to Loongson3.
-
->  #endif /* _ASM_R4KCACHE_H */
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 6f534b20..155f5f5 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-
-=2E..
-
-> @@ -480,6 +497,10 @@ static inline void local_r4k___flush_cache_all(void =
-* args)
->  		r4k_blast_scache();
->  		break;
+>  	 */
 > =20
-> +	case CPU_LOONGSON3:
-> +		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
+> -	vmlinuz_load_addr +=3D (16 - vmlinux_size % 16);
+> +	vmlinuz_load_addr +=3D (65536 - vmlinux_size % 65536);
 
-I assume this can't use cpu_to_node() because it needs to work even when
-NUMA=3Dn? If so, I think it deserves a brief comment to explain that.
-
-> +		break;
-> +
->  	case CPU_BMIPS5000:
->  		r4k_blast_scache();
->  		__sync();
-> @@ -839,9 +860,12 @@ static void r4k_dma_cache_wback_inv(unsigned long ad=
-dr, unsigned long size)
-> =20
->  	preempt_disable();
->  	if (cpu_has_inclusive_pcaches) {
-> -		if (size >=3D scache_size)
-> -			r4k_blast_scache();
-> -		else
-> +		if (size >=3D scache_size) {
-> +			if (current_cpu_type() !=3D CPU_LOONGSON3)
-> +				r4k_blast_scache();
-> +			else
-> +				r4k_blast_scache_node(pa_to_nid(addr));
-
-If I read this right, addr is a virtual address so this feels a bit
-hacky, but I suppose its harmless since it'll probably always be memory
-in xkphys space where pa_to_nid() will do the right thing. Perhaps a
-comment along the lines of:
-/* This assumes that addr is in XKPhys */
-
-> +		} else
-
-Please keep braces consistent, i.e. add to the trailing else statement
-too.
-
-Other than those niggles, the actual mechanism looks reasonable to me.
+Personally I find (64 * 1024) (or even SZ_64K) easier to read, but no
+big deal.
 
 Thanks
 James
 
---l76fUT7nc3MelDdI
+--da4uJneut+ArUgXk
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqLTVQACgkQbAtpk944
-dno60w/7BVWyDh7C6Ta3WbzQ7sRDj+/TySq0AuMWiK5Ii+vs4HLET/As3t2EqOTC
-z1qVyvT9hdXz5zEQ0anxw6z/r2k21b75GzQmmSY0antZ/BNw/wJQyv7/io1Zcwli
-RMy0e00SB6YerbTBJMeCft9T2UtzB9WF8aDOaUgaQjXtPd2KX3tmpsfKf3S9A7Sk
-GAbp1NvpI1hGvV1skhslIhe6g8eATY+lxz7BeDLWYfKEI7oWugPH8tqY4a5za1mN
-0iAeRWwbaZmUmLGw1Y2wB/W7tIlLgjK3XBWWt9wmB0qPEDsG1IYETzGfvQj+kzWG
-VpMuKigTFIYCbIq8Byb1xPjZsbfzJLMtZlx9t8Hb+zUWyZfpV+vF/+eREnOHSnhc
-4ARNJOuefILi/RC24lrdd90huH/El7R0Af9kZW9/z7ZUjfVC4OAJfapFTt5vYlRM
-hNPladJ4wx2t4sJPmVgCHympDX/D2ByIBl7hl86aL9HJVhaRwwquDKWa/U+MiVXq
-9yB06fCMLhCCizUyJaZwF+Zr3Dv6aJiWfaLe1CJYAZw/vK0dDFETm9FFMNi+2Gf2
-ySwnWvutvb7P9HTDZvMZo1QKg7GDiYy41KR2+Jiy+FG4POC6aqU9xtcHKfk3VV84
-7CvyInzCboUkTFl/aZPFpwjT8UYPiDUA/Z8sHQxPt0BLRqOnmAc=
-=oxtR
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqLWKcACgkQbAtpk944
+dnqMfQ//QMrdugVsYDFS+FByrY6qnvU0u/rNP8JV3c8vDnDy0YK+ZNxSRXxCchh2
+h/iY6TNHQb2VG9fLoCnzXEyT8dAYDPpr3jWqdTrVx2mmtm6utQatWY+rAgYb4cw9
+cJKi8Cz6zhHchyTumdaoFMhnjx2RJB4Ijg6uYCqyWGh9qNgZblKSFRy3Jf7EM9lW
+ZqrDriAHrj1TfscUAf2pkmnJ0rgG9eGR6azmaEJzBeuKBgvWmzO5N112nxclvfxW
+Dd05IeyoOpzdsM6AAeedGrMjzyh0Hp8iew4gK8twtwst12ydsIaW9uC9eX+mkPcs
+VXr6+5oy23zaWmMcd2+BMrkaw5IOY9LW7J/Ib8fi77+NOtoAgSVr205egw0VRj7+
+BnAL5ctSDukq6NsbgHhKe9e+wuMQcATQ5xZcLTAefk6QmwdWF8VkF60BkPmj7fL8
+thUNeQTJWCvMsXrS2jf+u8NN9JH/2qDFHBd9Saku4K1czk3QZvYj4ZJlsS06NpQP
+3geCwkYZqX8/wyDeJ47rOVw+o8+gRQ0asq0bZLQVx8V+5WPhiau5EHZDrPF8o5OX
+Iwlxge2nzqJyzAlRpoWiCx65FEN5bQkLIXOeKwEakYs5915oFcffeyRauAz71UOu
+/AJk7fX3wIsUsL4xxiClNTuFIOCDH2ueuGdh1kQ8tPlMVDan/FE=
+=tFvT
 -----END PGP SIGNATURE-----
 
---l76fUT7nc3MelDdI--
+--da4uJneut+ArUgXk--

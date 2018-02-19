@@ -1,49 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 11:13:19 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:58994 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992105AbeBSKNL5Yj0k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Feb 2018 11:13:11 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 19 Feb 2018 10:12:55 +0000
-Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Mon, 19 Feb 2018 02:11:43 -0800
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
-        Ed Blake <ed.blake@sondrel.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 15:00:52 +0100 (CET)
+Received: from smtp-out4.electric.net ([192.162.216.184]:61487 "EHLO
+        smtp-out4.electric.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992973AbeBSOAoIx2pC convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Feb 2018 15:00:44 +0100
+Received: from 1enlzb-0008qE-Uh by out4d.electric.net with emc1-ok (Exim 4.87)
+        (envelope-from <David.Laight@ACULAB.COM>)
+        id 1enlzc-0008wM-VB; Mon, 19 Feb 2018 06:00:32 -0800
+Received: by emcmailer; Mon, 19 Feb 2018 06:00:32 -0800
+Received: from [156.67.243.126] (helo=AcuMS.aculab.com)
+        by out4d.electric.net with esmtps (TLSv1.2:ECDHE-RSA-AES256-SHA384:256)
+        (Exim 4.87)
+        (envelope-from <David.Laight@ACULAB.COM>)
+        id 1enlzb-0008qE-Uh; Mon, 19 Feb 2018 06:00:31 -0800
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 19 Feb 2018 14:01:25 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Mon, 19 Feb 2018 14:01:25 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Paul Burton' <paul.burton@mips.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     Hassan Naveed <hassan.naveed@mips.com>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        "Bryan O'Donoghue" <bryan.odonoghue@imgtec.com>,
-        Dengcheng Zhu <dengcheng.zhu@mips.com>,
-        <linux-kernel@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v2] MIPS: pm-cps: Block system suspend when a JTAG probe is present
-Date:   Mon, 19 Feb 2018 10:11:09 +0000
-Message-ID: <1519035069-31012-1-git-send-email-matt.redfearn@mips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1518706759-9890-1-git-send-email-matt.redfearn@mips.com>
-References: <1518706759-9890-1-git-send-email-matt.redfearn@mips.com>
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH v5 07/14] net: pch_gbe: Fix handling of TX padding
+Thread-Topic: [PATCH v5 07/14] net: pch_gbe: Fix handling of TX padding
+Thread-Index: AQHTqCzRjfXXBHe1nUOj8GyASlELI6Orwr4w
+Date:   Mon, 19 Feb 2018 14:01:25 +0000
+Message-ID: <33d3777368d244a79c6287b2e955853f@AcuMS.aculab.com>
+References: <20180217201037.3006-1-paul.burton@mips.com>
+ <20180217201037.3006-8-paul.burton@mips.com>
+In-Reply-To: <20180217201037.3006-8-paul.burton@mips.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.33]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-X-BESS-ID: 1519035173-298555-1632-143268-11
-X-BESS-VER: 2018.2-r1802152108
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190183
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+X-Outbound-IP: 156.67.243.126
+X-Env-From: David.Laight@ACULAB.COM
+X-Proto: esmtps
+X-Revdns: 
+X-HELO: AcuMS.aculab.com
+X-TLS:  TLSv1.2:ECDHE-RSA-AES256-SHA384:256
+X-Authenticated_ID: 
+X-PolicySMART: 3396946, 3397078
+X-Virus-Status: Scanned by VirusSMART (s)
+X-Virus-Status: Scanned by VirusSMART (c)
+Return-Path: <David.Laight@ACULAB.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62619
+X-archive-position: 62620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: David.Laight@ACULAB.COM
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,96 +74,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a JTAG probe is connected to a MIPS cluster, then the CPC detects it
-and latches the CPC.STAT_CONF.EJTAG_PROBE bit to 1. While set,
-attempting to send a power-down command to a core will be blocked, and
-the CPC will instead send the core to clock-off state. This can
-interfere with systems fully entering a low power state where all
-cores, CM, GIC, etc are powered down.
+From: Paul Burton
+> Sent: 17 February 2018 20:11
+> 
+> The ethernet controller found in the Intel EG20T Platform Controller
+> Hub requires that we place 2 bytes of padding between the ethernet
+> header & the packet payload. Our pch_gbe driver handles this by copying
+> packets to be transmitted to a temporary struct skb with the padding
+> bytes inserted
+...
 
-Detect that a JTAG probe is / has been connected to the cluster and
-block the suspend attempt.
+Uggg WFT is the driver doing that for?
 
-Attempting to suspend the system while a JTAG probe is connected now
-yields:
- # echo mem > /sys/power/state
- [   11.654000] PM: Syncing filesystems ... done.
- [   11.658000] JTAG probe is connected - abort suspend
- -sh: echo: write error: Operation not permitted
- #
+I'd guess that the two byte pad is there so that a 4 byte aligned
+frame is still 4 byte aligned when the 14 byte ethernet header is added.
+So instead of copying the entire frame the MAC header should be built
+(or rebuilt?) two bytes further from the actual data.
 
-To restore suspend, the JTAG probe should be disconnected or put into
-quiescent state. Platform code can then clear the
-CPC.STAT_CONF.EJTAG_PROBE bit.
-
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-
----
-
-Changes in v2:
-Fixed CPC_Cx_STAT_CONF_EJTAG_PROBE_MSK -> CPC_Cx_STAT_CONF_EJTAG_PROBE -
-thanks kbuild test robot!
-
- arch/mips/kernel/pm-cps.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 421e06dfee72..a17d85d51576 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/percpu.h>
- #include <linux/slab.h>
-+#include <linux/suspend.h>
- 
- #include <asm/asm-offsets.h>
- #include <asm/cacheflush.h>
-@@ -670,6 +671,36 @@ static int cps_pm_online_cpu(unsigned int cpu)
- 	return 0;
- }
- 
-+#if defined(CONFIG_PM_SLEEP)
-+static int cps_pm_power_notifier(struct notifier_block *this,
-+				 unsigned long event, void *ptr)
-+{
-+	unsigned int stat;
-+
-+	switch (event) {
-+	case PM_SUSPEND_PREPARE:
-+		stat = read_cpc_cl_stat_conf();
-+		/*
-+		 * If we're attempting to suspend the system and power down all
-+		 * of the cores, the JTAG detect bit indicates that the CPC will
-+		 * instead put the cores into clock-off state. In this state
-+		 * a connected debugger can cause the CPU to attempt
-+		 * interactions with the powered down system. At best this will
-+		 * fail. At worst, it can hang the NoC, requiring a hard reset.
-+		 * To avoid this, just block system suspend if a JTAG probe
-+		 * is detected.
-+		 */
-+		if (stat & CPC_Cx_STAT_CONF_EJTAG_PROBE) {
-+			pr_warn("JTAG probe is connected - abort suspend\n");
-+			return NOTIFY_BAD;
-+		}
-+		return NOTIFY_DONE;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+}
-+#endif /* CONFIG_PM_SLEEP */
-+
- static int __init cps_pm_init(void)
- {
- 	/* A CM is required for all non-coherent states */
-@@ -705,6 +736,8 @@ static int __init cps_pm_init(void)
- 		pr_warn("pm-cps: no CPC, clock & power gating unavailable\n");
- 	}
- 
-+	pm_notifier(cps_pm_power_notifier, 0);
-+
- 	return cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mips/cps_pm:online",
- 				 cps_pm_online_cpu, NULL);
- }
--- 
-2.7.4
+	David

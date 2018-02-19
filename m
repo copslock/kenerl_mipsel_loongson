@@ -1,69 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 03:17:45 +0100 (CET)
-Received: from mail-ot0-x244.google.com ([IPv6:2607:f8b0:4003:c0f::244]:45897
-        "EHLO mail-ot0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994650AbeBSCRhdcFDx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Feb 2018 03:17:37 +0100
-Received: by mail-ot0-x244.google.com with SMTP id f11so1770678otj.12
-        for <linux-mips@linux-mips.org>; Sun, 18 Feb 2018 18:17:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=aj81d2Jc3hscmAX+oeSGsvBotpBxamOYP2KuoQcrrp4=;
-        b=sDblaCZ7j0sFbJ3iJgAHvrOwkKSMEy66hgot01llK722MXkqYzUpevj1cYV9hqRFuJ
-         e16ZXApLKc2jw0diSL4JEzsvotU5DEmzCLo3PKin+KDRsF1JwzSYcKX/oOuDtiMv1g6b
-         Q2KHO5X1RJCY0RX7qP68y6q5VRTpM8Re3xOQlufesFgeDTPWM9RNVkIXZ70lWJhizXBZ
-         UgXsLUTjW4G6B4qztJF2enEW3FDRjTLC9l+TVCHG8yr5zbOz1HQBQuNhPUVe9kuIkbsN
-         yzgkJNFEkG3YZhzqX9ER813gyGJw35eZ4ztr2L12/yEpLsf7gOWk3Jl7pUD+YYYMv4k+
-         7Y0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aj81d2Jc3hscmAX+oeSGsvBotpBxamOYP2KuoQcrrp4=;
-        b=Sq9TmB8MqLX1F5er7KGRnCh2cyGhrD/BWQ32A9X/en19/pyELxdsQsofWwNCH3PN2J
-         Urt366rgeon2LqRWNeHNZ6pJWAS5zakduZrGDvD/GXM0hzi6raD2O3kh3Ws6g7D2yf1G
-         5rgtC7HkwndAd+zFKnyxfWxnvfGxwCIMl9p7+B7QiRPseXwtMCZz9VtyTxVKjZWPqJA7
-         MqrafjcgxBveUW59mmx4hyVSGPCDxUACxJTPCoNOgLth9julqx53uKbiERGBm3yA7oLF
-         nLTGnWR1YF1wpxJsGbakLT0jNWbE9NNoXKIb7c5MqkxJK7GzCNnJz+TUAj8ZDda9VrK6
-         p9hg==
-X-Gm-Message-State: APf1xPDPDWHdRCc3mc1am+Zpwe1aHYze7eLjS0cjFThqP5jubY6EVNg3
-        8fpQn8kjC3Juu1LV0uKS+PfcqohX
-X-Google-Smtp-Source: AH8x227n8retxPk+8F0ezXSEBM1qaoD+HLnTVQBYQsqNHza4gMeQ0IH9MVaPNtWbGHwb0m6dv7o6VQ==
-X-Received: by 10.157.75.144 with SMTP id k16mr2757134otf.201.1519006650712;
-        Sun, 18 Feb 2018 18:17:30 -0800 (PST)
-Received: from [192.168.1.3] (ip68-109-195-31.pv.oc.cox.net. [68.109.195.31])
-        by smtp.gmail.com with ESMTPSA id j67sm4559835otc.10.2018.02.18.18.17.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 18 Feb 2018 18:17:29 -0800 (PST)
-Subject: Re: [PATCH v5 00/14] net: pch_gbe: Fixes & MIPS support
-To:     David Miller <davem@davemloft.net>, paul.burton@mips.com
-Cc:     netdev@vger.kernel.org, hassan.naveed@mips.com,
-        matt.redfearn@mips.com, linux-mips@linux-mips.org
-References: <20180217201037.3006-1-paul.burton@mips.com>
- <20180218.103112.1461192916516173265.davem@davemloft.net>
- <20180218170310.lpwjtnxe6awrhgen@pburton-laptop>
- <20180218.201529.723706104813615973.davem@davemloft.net>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <5075d1c4-804b-d1c5-a109-87fdc20dbc73@gmail.com>
-Date:   Sun, 18 Feb 2018 18:17:25 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 11:13:19 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:58994 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992105AbeBSKNL5Yj0k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Feb 2018 11:13:11 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 19 Feb 2018 10:12:55 +0000
+Received: from mredfearn-linux.mipstec.com (10.150.130.83) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Mon, 19 Feb 2018 02:11:43 -0800
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+        Ed Blake <ed.blake@sondrel.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        "Bryan O'Donoghue" <bryan.odonoghue@imgtec.com>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        <linux-kernel@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH v2] MIPS: pm-cps: Block system suspend when a JTAG probe is present
+Date:   Mon, 19 Feb 2018 10:11:09 +0000
+Message-ID: <1519035069-31012-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1518706759-9890-1-git-send-email-matt.redfearn@mips.com>
+References: <1518706759-9890-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
-In-Reply-To: <20180218.201529.723706104813615973.davem@davemloft.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+X-BESS-ID: 1519035173-298555-1632-143268-11
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190183
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62618
+X-archive-position: 62619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,33 +56,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+If a JTAG probe is connected to a MIPS cluster, then the CPC detects it
+and latches the CPC.STAT_CONF.EJTAG_PROBE bit to 1. While set,
+attempting to send a power-down command to a core will be blocked, and
+the CPC will instead send the core to clock-off state. This can
+interfere with systems fully entering a low power state where all
+cores, CM, GIC, etc are powered down.
 
+Detect that a JTAG probe is / has been connected to the cluster and
+block the suspend attempt.
 
-On 02/18/2018 05:15 PM, David Miller wrote:
-> From: Paul Burton <paul.burton@mips.com>
-> Date: Sun, 18 Feb 2018 09:03:10 -0800
-> 
->> Hi David,
->>
->> On Sun, Feb 18, 2018 at 10:31:12AM -0500, David Miller wrote:
->>> Nobody is going to see and apply these patches if you don't CC: the
->>> Linux networking development list, netdev@vger.kernel.org
->>
->> You're replying to mail that was "To: netdev@vger.kernel.org" and I see
->> the whole series in the archives[1] so it definitely reached the list.
->>
->> I'm not sure I see the problem?
-> 
-> Sorry.
-> 
-> The issue is that your patch series didn't make it into patchwork
-> properly, I wonder what happened since you did send it to netdev.
-> 
-> Hmmm...
+Attempting to suspend the system while a JTAG probe is connected now
+yields:
+ # echo mem > /sys/power/state
+ [   11.654000] PM: Syncing filesystems ... done.
+ [   11.658000] JTAG probe is connected - abort suspend
+ -sh: echo: write error: Operation not permitted
+ #
 
-The guys at buildroot seem to have seen a number of their patches not
-making it to patchwork, thread starts here:
+To restore suspend, the JTAG probe should be disconnected or put into
+quiescent state. Platform code can then clear the
+CPC.STAT_CONF.EJTAG_PROBE bit.
 
-http://buildroot-busybox.2317881.n4.nabble.com/patchwork-ozlabs-org-down-and-e-mails-not-recorded-td183918.html
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+
+---
+
+Changes in v2:
+Fixed CPC_Cx_STAT_CONF_EJTAG_PROBE_MSK -> CPC_Cx_STAT_CONF_EJTAG_PROBE -
+thanks kbuild test robot!
+
+ arch/mips/kernel/pm-cps.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
+index 421e06dfee72..a17d85d51576 100644
+--- a/arch/mips/kernel/pm-cps.c
++++ b/arch/mips/kernel/pm-cps.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/percpu.h>
+ #include <linux/slab.h>
++#include <linux/suspend.h>
+ 
+ #include <asm/asm-offsets.h>
+ #include <asm/cacheflush.h>
+@@ -670,6 +671,36 @@ static int cps_pm_online_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
++#if defined(CONFIG_PM_SLEEP)
++static int cps_pm_power_notifier(struct notifier_block *this,
++				 unsigned long event, void *ptr)
++{
++	unsigned int stat;
++
++	switch (event) {
++	case PM_SUSPEND_PREPARE:
++		stat = read_cpc_cl_stat_conf();
++		/*
++		 * If we're attempting to suspend the system and power down all
++		 * of the cores, the JTAG detect bit indicates that the CPC will
++		 * instead put the cores into clock-off state. In this state
++		 * a connected debugger can cause the CPU to attempt
++		 * interactions with the powered down system. At best this will
++		 * fail. At worst, it can hang the NoC, requiring a hard reset.
++		 * To avoid this, just block system suspend if a JTAG probe
++		 * is detected.
++		 */
++		if (stat & CPC_Cx_STAT_CONF_EJTAG_PROBE) {
++			pr_warn("JTAG probe is connected - abort suspend\n");
++			return NOTIFY_BAD;
++		}
++		return NOTIFY_DONE;
++	default:
++		return NOTIFY_DONE;
++	}
++}
++#endif /* CONFIG_PM_SLEEP */
++
+ static int __init cps_pm_init(void)
+ {
+ 	/* A CM is required for all non-coherent states */
+@@ -705,6 +736,8 @@ static int __init cps_pm_init(void)
+ 		pr_warn("pm-cps: no CPC, clock & power gating unavailable\n");
+ 	}
+ 
++	pm_notifier(cps_pm_power_notifier, 0);
++
+ 	return cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mips/cps_pm:online",
+ 				 cps_pm_online_cpu, NULL);
+ }
 -- 
-Florian
+2.7.4

@@ -1,43 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 00:55:06 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:36468 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994664AbeBSXy5PXhja (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Feb 2018 00:54:57 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 643FB21716;
-        Mon, 19 Feb 2018 23:54:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 643FB21716
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 19 Feb 2018 23:54:44 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 09/12] MIPS: Loongson: Add kexec/kdump support
-Message-ID: <20180219235444.GD6245@saruman>
-References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <1517023336-17575-1-git-send-email-chenhc@lemote.com>
- <1517023336-17575-3-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 00:55:43 +0100 (CET)
+Received: from mail-vk0-x242.google.com ([IPv6:2607:f8b0:400c:c05::242]:41087
+        "EHLO mail-vk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994664AbeBSXzf1HFUa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 00:55:35 +0100
+Received: by mail-vk0-x242.google.com with SMTP id t201so6666233vke.8
+        for <linux-mips@linux-mips.org>; Mon, 19 Feb 2018 15:55:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=073+sWRB2vXD7MiVQvn8SSw0E321xCM9Buft4ZORgDQ=;
+        b=mBGC0dqTk66l8Y+wGUpUxwYFUAfDJLLsnod7JKG7depWse9NPl0kEGfTRIxiSEYwwd
+         QMHDh8LST7CKP7LQ0S6AlDDpjXwBwPm8ZO4rk9bTMY/qEwnIYZMcyYTyq6xZfO6k38Fg
+         lo2mdpEmcyTU0ktfF+T7486XiqLEH3/XbUe4AyR7Zp+LCeqDJrx2sDTrHTsfiEFMa+5b
+         pRwdF6uMxsYOCb68dMvwT3aXu8p8X5piHp0NiCV1GWUnRLFtItGnwmoAmMF1vXN9x/ge
+         l9N0guPAt7UYdMKTfi+0opj73QmkTBriZOnwtb/c2J60njBKtYDg4AV5ruwoYtgac/px
+         fh7w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=073+sWRB2vXD7MiVQvn8SSw0E321xCM9Buft4ZORgDQ=;
+        b=fTuSbjhNUokX6AqwvXZrsdVrlCZ9nib0gMlCM4qDskSwIRwDfS1rSjtpT3iBuRHmk8
+         neDli3SlIfLdOakOu2fh/rSC+5AqIsjEqNaTy9vFod6Krgi3Oz5BSNWCKpKYj7UcjTNR
+         /dV8Vdfk+B4bX/yc+nF+OZGVFtUcqHlX/l8lQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=073+sWRB2vXD7MiVQvn8SSw0E321xCM9Buft4ZORgDQ=;
+        b=WgSLx3L6khOc8mtoaaa6PBX9llyehRPRtCNqDh9L1uxDAbE1PENG1utJFtw9kIj/IW
+         X6EffiG8G9xwbmQ/e/QGKT8kqKVJ8nm5bGQ+tzfOJ5TrhRNmNYJPUrRFJQFVSD3LwdGN
+         kkWwr3gCyYIiIEb9jQIyFZs9ed/rJYtN72Bic+fLKBGJa/5g6KFOWlWkevJTvAhKAsI2
+         wqIpsatiyQHEXZjhXh6SfVZwO3vSLWm44ccwEvRlTCwKe75u+ytuulwIE28kzdrNVHH2
+         xgbfkO+LTpiLvFNpkf7mo3LTXthINqrKn+V6bHABCC6wnv7/9OAlSujY2DbxS5u5mGLZ
+         oIyg==
+X-Gm-Message-State: APf1xPAq1jx9lpmQDL1QYko5dEi0CyD0pJ1FLRt9sfZfHQhOtoug0Vmo
+        0dNjKUBu8y47YXQCCyw4XBegqQtFPQGpIfgk0UOjBA==
+X-Google-Smtp-Source: AH8x225Y6GTrDyrlo/wJQnZi9EUW33UOzvGvMWQ9ls9TWxReQ12/XGni0cCWoSNolk/opRBSTkZOTRBWFaj+/gWZzFA=
+X-Received: by 10.31.168.20 with SMTP id r20mr11760161vke.149.1519084528722;
+ Mon, 19 Feb 2018 15:55:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9dgjiU4MmWPVapMU"
-Content-Disposition: inline
-In-Reply-To: <1517023336-17575-3-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.31.242.140 with HTTP; Mon, 19 Feb 2018 15:55:27 -0800 (PST)
+In-Reply-To: <1519059306-30135-1-git-send-email-matt.redfearn@mips.com>
+References: <1515636190-24061-1-git-send-email-keescook@chromium.org> <1519059306-30135-1-git-send-email-matt.redfearn@mips.com>
+From:   Kees Cook <keescook@chromium.org>
+Date:   Mon, 19 Feb 2018 15:55:27 -0800
+X-Google-Sender-Auth: tfbN8S4MwshYZOq-_pnLIHkLB1E
+Message-ID: <CAGXu5jKtrJ6Nmses_pM-qkXAkOPXAxwT+V3B+omqu0tx4xEh8w@mail.gmail.com>
+Subject: Re: [PATCH] signals: Move put_compat_sigset to compat.h to silence
+ hardened usercopy
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     "Dmitry V . Levin" <ldv@altlinux.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Kernel Hardening <kernel-hardening@lists.openwall.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62628
+X-archive-position: 62629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,311 +77,158 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Mon, Feb 19, 2018 at 8:55 AM, Matt Redfearn <matt.redfearn@mips.com> wrote:
+> Since commit afcc90f8621e ("usercopy: WARN() on slab cache usercopy
+> region violations"), MIPS systems booting with a compat root filesystem
+> emit a warning when copying compat siginfo to userspace:
+>
+> WARNING: CPU: 0 PID: 953 at mm/usercopy.c:81 usercopy_warn+0x98/0xe8
+> Bad or missing usercopy whitelist? Kernel memory exposure attempt
+> detected from SLAB object 'task_struct' (offset 1432, size 16)!
+> Modules linked in:
+> CPU: 0 PID: 953 Comm: S01logging Not tainted 4.16.0-rc2 #10
+> Stack : ffffffff808c0000 0000000000000000 0000000000000001 65ac85163f3bdc4a
+>         65ac85163f3bdc4a 0000000000000000 90000000ff667ab8 ffffffff808c0000
+>         00000000000003f8 ffffffff808d0000 00000000000000d1 0000000000000000
+>         000000000000003c 0000000000000000 ffffffff808c8ca8 ffffffff808d0000
+>         ffffffff808d0000 ffffffff80810000 fffffc0000000000 ffffffff80785c30
+>         0000000000000009 0000000000000051 90000000ff667eb0 90000000ff667db0
+>         000000007fe0d938 0000000000000018 ffffffff80449958 0000000020052798
+>         ffffffff808c0000 90000000ff664000 90000000ff667ab0 00000000100c0000
+>         ffffffff80698810 0000000000000000 0000000000000000 0000000000000000
+>         0000000000000000 0000000000000000 ffffffff8010d02c 65ac85163f3bdc4a
+>         ...
+> Call Trace:
+> [<ffffffff8010d02c>] show_stack+0x9c/0x130
+> [<ffffffff80698810>] dump_stack+0x90/0xd0
+> [<ffffffff80137b78>] __warn+0x100/0x118
+> [<ffffffff80137bdc>] warn_slowpath_fmt+0x4c/0x70
+> [<ffffffff8021e4a8>] usercopy_warn+0x98/0xe8
+> [<ffffffff8021e68c>] __check_object_size+0xfc/0x250
+> [<ffffffff801bbfb8>] put_compat_sigset+0x30/0x88
+> [<ffffffff8011af24>] setup_rt_frame_n32+0xc4/0x160
+> [<ffffffff8010b8b4>] do_signal+0x19c/0x230
+> [<ffffffff8010c408>] do_notify_resume+0x60/0x78
+> [<ffffffff80106f50>] work_notifysig+0x10/0x18
+> ---[ end trace 88fffbf69147f48a ]---
+>
+> Commit 5905429ad856 ("fork: Provide usercopy whitelisting for
+> task_struct") noted that:
+>
+> "While the blocked and saved_sigmask fields of task_struct are copied to
+> userspace (via sigmask_to_save() and setup_rt_frame()), it is always
+> copied with a static length (i.e. sizeof(sigset_t))."
+>
+> However, this is not true in the case of compat signals, whose sigset
+> is copied by put_compat_sigset and receives size as an argument.
+>
+> At most call sites, put_compat_sigset is copying a sigset from the
+> current task_struct. This triggers a warning when
+> CONFIG_HARDENED_USERCOPY is active. However, by marking this function as
+> static inline, the warning can be avoided because in all of these cases
+> the size is constant at compile time, which is allowed. The only site
+> where this is not the case is handling the rt_sigpending syscall, but
+> there the copy is being made from a stack local variable so does not
+> trigger the warning.
+>
+> Move put_compat_sigset to compat.h, and mark it static inline. This
+> fixes the WARN on MIPS.
+>
+> Fixes: afcc90f8621e ("usercopy: WARN() on slab cache usercopy region violations")
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 
---9dgjiU4MmWPVapMU
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the catch and fix!
 
-On Sat, Jan 27, 2018 at 11:22:16AM +0800, Huacai Chen wrote:
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Acked-by: Kees Cook <keescook@chromium.org>
 
-Please add a commit message.
-
-Worth Cc'ing kexec maintainers?
+-Kees
 
 > ---
->  arch/mips/kernel/relocate_kernel.S    |  30 +++++++++
->  arch/mips/loongson64/common/env.c     |   8 +++
->  arch/mips/loongson64/common/reset.c   | 119 ++++++++++++++++++++++++++++=
-++++++
->  arch/mips/loongson64/loongson-3/smp.c |   4 ++
->  4 files changed, 161 insertions(+)
->=20
-> diff --git a/arch/mips/kernel/relocate_kernel.S b/arch/mips/kernel/reloca=
-te_kernel.S
-> index c6bbf21..e73edc7 100644
-> --- a/arch/mips/kernel/relocate_kernel.S
-> +++ b/arch/mips/kernel/relocate_kernel.S
-> @@ -135,6 +135,36 @@ LEAF(kexec_smp_wait)
->  #else
->  	sync
->  #endif
+>
+>  include/linux/compat.h | 26 ++++++++++++++++++++++++--
+>  kernel/compat.c        | 19 -------------------
+>  2 files changed, 24 insertions(+), 21 deletions(-)
+>
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index 8a9643857c4a..c4139c7a0de0 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -17,6 +17,7 @@
+>  #include <linux/if.h>
+>  #include <linux/fs.h>
+>  #include <linux/aio_abi.h>     /* for aio_context_t */
+> +#include <linux/uaccess.h>
+>  #include <linux/unistd.h>
+>
+>  #include <asm/compat.h>
+> @@ -550,8 +551,29 @@ asmlinkage long compat_sys_settimeofday(struct compat_timeval __user *tv,
+>  asmlinkage long compat_sys_adjtimex(struct compat_timex __user *utp);
+>
+>  extern int get_compat_sigset(sigset_t *set, const compat_sigset_t __user *compat);
+> -extern int put_compat_sigset(compat_sigset_t __user *compat,
+> -                            const sigset_t *set, unsigned int size);
 > +
-> +#ifdef CONFIG_CPU_LOONGSON3
-> +	/* s0:prid s1:initfn */
-> +	/* t0:base t1:cpuid t2:node t3:core t9:count */
-> +	mfc0  t1, $15, 1
-
-Can you use CP0_EBASE from mipsregs.h?
-
-> +	andi  t1, 0x3ff
-
-MIPS_EBASE_CPUNUM
-
-> +	dli   t0, 0x900000003ff01000
-
-Whats that?
-
-> +	andi  t3, t1, 0x3
-> +	sll   t3, 8               /* get core id */
-> +	or    t0, t0, t3
-
-Do you have the INS instruction on loongson? Does it make sense to do
-this, even if only for readability?
-	dins	t0, t1, 8, 2
-
-> +	andi  t2, t1, 0xc
-> +	dsll  t2, 42              /* get node id */
-> +	or    t0, t0, t2
-
-Does it make sense to do this, especially for readability (44 vs 42)?
-	dext	t2, t1, 2, 2
-	dins	t0, t2, 44, 2
-
-> +	mfc0  s0, $15, 0
-
-CP0_PRID
-
-> +	andi  s0, s0, 0xf
-> +	blt   s0, 0x6, 1f         /* Loongson-3A1000 */
-> +	bgt   s0, 0x7, 1f         /* Loongson-3A2000/3A3000 */
-
-> +	dsrl  t2, 30              /* Loongson-3B1000/3B1500 need bit15:14 */
-> +	or    t0, t0, t2
-
-maybe:
-	dins	t0, t2, 14, 2
-
-> +1:	li    t9, 0x100           /* wait for init loop */
-> +2:	addiu t9, -1              /* limit mailbox access */
-> +	bnez  t9, 2b
-> +	ld    s1, 0x20(t0)        /* get PC via mailbox */
-> +	beqz  s1, 1b
-> +	ld    sp, 0x28(t0)        /* get SP via mailbox */
-> +	ld    gp, 0x30(t0)        /* get GP via mailbox */
-> +	ld    a1, 0x38(t0)
-> +	jr    s1                  /* jump to initial PC */
+> +/*
+> + * Defined inline such that size can be compile time constant, which avoids
+> + * CONFIG_HARDENED_USERCOPY complaining about copies from task_struct
+> + */
+> +static inline int
+> +put_compat_sigset(compat_sigset_t __user *compat, const sigset_t *set,
+> +                 unsigned int size)
+> +{
+> +       /* size <= sizeof(compat_sigset_t) <= sizeof(sigset_t) */
+> +#ifdef __BIG_ENDIAN
+> +       compat_sigset_t v;
+> +       switch (_NSIG_WORDS) {
+> +       case 4: v.sig[7] = (set->sig[3] >> 32); v.sig[6] = set->sig[3];
+> +       case 3: v.sig[5] = (set->sig[2] >> 32); v.sig[4] = set->sig[2];
+> +       case 2: v.sig[3] = (set->sig[1] >> 32); v.sig[2] = set->sig[1];
+> +       case 1: v.sig[1] = (set->sig[0] >> 32); v.sig[0] = set->sig[0];
+> +       }
+> +       return copy_to_user(compat, &v, size) ? -EFAULT : 0;
+> +#else
+> +       return copy_to_user(compat, set, size) ? -EFAULT : 0;
 > +#endif
-> +
->  	j		s1
->  	END(kexec_smp_wait)
->  #endif
-> diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/com=
-mon/env.c
-> index 2928ac5..990a2d69 100644
-> --- a/arch/mips/loongson64/common/env.c
-> +++ b/arch/mips/loongson64/common/env.c
-> @@ -72,6 +72,7 @@ void __init prom_init_env(void)
-> =20
->  	pr_info("memsize=3D%u, highmemsize=3D%u\n", memsize, highmemsize);
->  #else
-> +	int i;
->  	struct boot_params *boot_p;
->  	struct loongson_params *loongson_p;
->  	struct system_loongson *esys;
-> @@ -149,6 +150,13 @@ void __init prom_init_env(void)
->  	loongson_sysconf.nr_cpus =3D ecpu->nr_cpus;
->  	loongson_sysconf.boot_cpu_id =3D ecpu->cpu_startup_core_id;
->  	loongson_sysconf.reserved_cpus_mask =3D ecpu->reserved_cores_mask;
-> +#ifdef CONFIG_KEXEC
-> +	loongson_sysconf.boot_cpu_id =3D get_ebase_cpunum();
-> +	for (i =3D 0; i < loongson_sysconf.boot_cpu_id; i++)
-> +		loongson_sysconf.reserved_cpus_mask |=3D (1<<i);
-
-maybe this?
-	loongson_sysconf.reserved_cpus_mask |=3D
-		(1 << loongson_sysconf.boot_cpu_id) - 1;
-
-> +	pr_info("Boot CPU ID is being fixed from %d to %d\n",
-> +		ecpu->cpu_startup_core_id, loongson_sysconf.boot_cpu_id);
-> +#endif
->  	if (ecpu->nr_cpus > NR_CPUS || ecpu->nr_cpus =3D=3D 0)
->  		loongson_sysconf.nr_cpus =3D NR_CPUS;
->  	loongson_sysconf.nr_nodes =3D (loongson_sysconf.nr_cpus +
-> diff --git a/arch/mips/loongson64/common/reset.c b/arch/mips/loongson64/c=
-ommon/reset.c
-> index a60715e..5f65a4e 100644
-> --- a/arch/mips/loongson64/common/reset.c
-> +++ b/arch/mips/loongson64/common/reset.c
-> @@ -11,9 +11,14 @@
->   */
->  #include <linux/init.h>
->  #include <linux/pm.h>
-> +#include <linux/cpu.h>
-> +#include <linux/slab.h>
-> +#include <linux/delay.h>
-> +#include <linux/kexec.h>
-> =20
->  #include <asm/idle.h>
->  #include <asm/reboot.h>
-> +#include <asm/bootinfo.h>
-
-alphabetical ordering wherever possible please.
-
-> =20
->  #include <loongson.h>
->  #include <boot_param.h>
-> @@ -80,12 +85,126 @@ static void loongson_halt(void)
->  	}
+> +}
+>
+>  asmlinkage long compat_sys_migrate_pages(compat_pid_t pid,
+>                 compat_ulong_t maxnode, const compat_ulong_t __user *old_nodes,
+> diff --git a/kernel/compat.c b/kernel/compat.c
+> index 3247fe761f60..3f5fa8902e7d 100644
+> --- a/kernel/compat.c
+> +++ b/kernel/compat.c
+> @@ -488,25 +488,6 @@ get_compat_sigset(sigset_t *set, const compat_sigset_t __user *compat)
 >  }
-> =20
-> +#ifdef CONFIG_KEXEC
-> +
-> +/* 0X80000000~0X80200000 is safe */
-> +#define MAX_ARGS	64
-> +#define KEXEC_CTRL_CODE	0XFFFFFFFF80100000UL
-> +#define KEXEC_ARGV_ADDR	0XFFFFFFFF80108000UL
+>  EXPORT_SYMBOL_GPL(get_compat_sigset);
+>
+> -int
+> -put_compat_sigset(compat_sigset_t __user *compat, const sigset_t *set,
+> -                 unsigned int size)
+> -{
+> -       /* size <= sizeof(compat_sigset_t) <= sizeof(sigset_t) */
+> -#ifdef __BIG_ENDIAN
+> -       compat_sigset_t v;
+> -       switch (_NSIG_WORDS) {
+> -       case 4: v.sig[7] = (set->sig[3] >> 32); v.sig[6] = set->sig[3];
+> -       case 3: v.sig[5] = (set->sig[2] >> 32); v.sig[4] = set->sig[2];
+> -       case 2: v.sig[3] = (set->sig[1] >> 32); v.sig[2] = set->sig[1];
+> -       case 1: v.sig[1] = (set->sig[0] >> 32); v.sig[0] = set->sig[0];
+> -       }
+> -       return copy_to_user(compat, &v, size) ? -EFAULT : 0;
+> -#else
+> -       return copy_to_user(compat, set, size) ? -EFAULT : 0;
+> -#endif
+> -}
+> -
+>  #ifdef CONFIG_NUMA
+>  COMPAT_SYSCALL_DEFINE6(move_pages, pid_t, pid, compat_ulong_t, nr_pages,
+>                        compat_uptr_t __user *, pages32,
+> --
+> 2.7.4
+>
 
-lower case 0x please.
 
-> +#define KEXEC_ARGV_SIZE	3060
-> +#define KEXEC_ENVP_SIZE	4500
-> +
-> +void *kexec_argv;
-> +void *kexec_envp;
-> +extern const size_t relocate_new_kernel_size;
 
-A couple of other architectures have moved this declaration to
-asm/kexec.h.
-
-> +
-> +static int loongson_kexec_prepare(struct kimage *image)
-> +{
-> +	int i, argc =3D 0;
-> +	unsigned int *argv;
-> +	char *str, *ptr, *bootloader =3D "kexec";
-> +
-> +	/* argv at offset 0, argv[] at offset KEXEC_ARGV_SIZE/2 */
-> +	argv =3D (unsigned int *)kexec_argv;
-
-the cast is redundant as kexec_argv is void *.
-
-> +	argv[argc++] =3D (unsigned int)(KEXEC_ARGV_ADDR + KEXEC_ARGV_SIZE/2);
-> +
-> +	for (i =3D 0; i < image->nr_segments; i++) {
-> +		if (!strncmp(bootloader, (char *)image->segment[i].buf,
-> +				strlen(bootloader))) {
-> +			/*
-> +			 * convert command line string to array
-> +			 * of parameters (as bootloader does).
-> +			 */
-> +			int offt;
-> +			memcpy(kexec_argv + KEXEC_ARGV_SIZE/2, image->segment[i].buf, KEXEC_A=
-RGV_SIZE/2);
-> +			str =3D (char *)kexec_argv + KEXEC_ARGV_SIZE/2;
-> +			ptr =3D strchr(str, ' ');
-> +
-> +			while (ptr && (argc < MAX_ARGS)) {
-> +				*ptr =3D '\0';
-> +				if (ptr[1] !=3D ' ') {
-> +					offt =3D (int)(ptr - str + 1);
-> +					argv[argc] =3D KEXEC_ARGV_ADDR + KEXEC_ARGV_SIZE/2 + offt;
-> +					argc++;
-> +				}
-> +				ptr =3D strchr(ptr + 1, ' ');
-> +			}
-> +			break;
-> +		}
-> +	}
-> +
-> +	kexec_args[0] =3D argc;
-> +	kexec_args[1] =3D fw_arg1;
-> +	kexec_args[2] =3D fw_arg2;
-> +	image->control_code_page =3D virt_to_page((void *)KEXEC_CTRL_CODE);
-> +
-> +	return 0;
-> +}
-> +
-> +#ifdef CONFIG_SMP
-> +static void kexec_smp_down(void *ignored)
-> +{
-> +	int cpu =3D smp_processor_id();
-> +
-> +	local_irq_disable();
-> +	set_cpu_online(cpu, false);
-> +	while (!atomic_read(&kexec_ready_to_reboot))
-> +		cpu_relax();
-> +
-> +	asm volatile (
-> +	"	sync					\n"
-> +	"	synci	($0)				\n");
-
-The intermediate assembly looks nicer, and you'd get fewer checkpatch
-complaints, if you do something more like this:
-	asm volatile ("sync\n\t"
-		      "synci ($0)");
-
-> +
-> +	relocated_kexec_smp_wait(NULL);
-> +}
-> +#endif
-> +
-> +static void loongson_kexec_shutdown(void)
-> +{
-> +#ifdef CONFIG_SMP
-> +	int cpu;
-> +
-> +	for_each_possible_cpu(cpu)
-> +		if (!cpu_online(cpu))
-> +			cpu_up(cpu); /* Everyone should go to reboot_code_buffer */
-
-long line=20
-
-> +
-> +	smp_call_function(kexec_smp_down, NULL, 0);
-> +	smp_wmb();
-
-This probably needs a comment to explain what smp_rmb() it pairs with,
-or what writes need a barrier between them and why. It certainly isn't
-clear from reading the code.
-
-> +	while (num_online_cpus() > 1) {
-> +		mdelay(1);
-> +		cpu_relax();
-> +	}
-> +#endif
-> +	memcpy((void *)fw_arg1, kexec_argv, KEXEC_ARGV_SIZE);
-> +	memcpy((void *)fw_arg2, kexec_envp, KEXEC_ENVP_SIZE);
-> +}
-
-> diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64=
-/loongson-3/smp.c
-> index 470e9c1..1e21ac4 100644
-> --- a/arch/mips/loongson64/loongson-3/smp.c
-> +++ b/arch/mips/loongson64/loongson-3/smp.c
-> @@ -387,6 +387,10 @@ static void __init loongson3_smp_setup(void)
->  	ipi_status0_regs_init();
->  	ipi_en0_regs_init();
->  	ipi_mailbox_buf_init();
-> +
-> +	for (i =3D 0; i < loongson_sysconf.nr_cpus; i++)
-> +		loongson3_ipi_write64(0, (void *)(ipi_mailbox_buf[i]+0x0));
-
-what does that do? Please consider adding a comment.
-
-Cheers
-James
-
---9dgjiU4MmWPVapMU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqLY8QACgkQbAtpk944
-dnpOEQ/8Djzf8dKj4FDr41710i1c17GPhx407bLUu9g6RA0GEOptIJUvlRnrsMG9
-zeUOmFWwgfh1XB5/tjYksKjj/tC798F+lmRyVHRe1/cJxtvfCDoMkq5n4Oh0Nb6/
-0NJOSP/lijwLyX9YigbbYkHmrxp8XpjHS4CxC1y5LpKQ3VouMGftMFoRkd/1PX1H
-l2dkMcu/dYRT5tdehQ0MrW8Bm9aXIzNPh7QSJZ694SAiTQoiDXA611qgNQymktih
-kD1sOoDg7WrNL5M6ULKFzun9dSvGBPvOAPuLd7xNwEqnj0n/t9pLsC/m8ldBBpFk
-g44wQQK/hF17A4MqcrMsHVGMcYuF3LhRo0+q/40q2WyPXA5mM5zNF4ZEPPD8ysWI
-/WDpqdgofDfEybS7HB5WBFXQF6YBywTPPFTXxrkEkXj6J5HPX4EWznx5UFjcQrJ0
-vqFFX9/uQ6XgmVSNDsIeB75KJB7RDvHVnnxn47YS1UgaAR3uhfLa6udbUY4FZGv6
-b3USex0Mbqm8ntwEv1WNj1OugtADlMc7eVTA77C+9i0T4V2FHtTyj0OXR83agvD0
-QsE+CzKFQZZ2Ed09YXZ40qkeYHTThzNA4E+2kUIr5Q9QhOwKelR7AEfateU7CRql
-NTCzQuY00X//DJiwR7Wv+fu4ju0pGXnXg3DD/XjXjxpZgOvki+c=
-=vZn4
------END PGP SIGNATURE-----
-
---9dgjiU4MmWPVapMU--
+-- 
+Kees Cook
+Pixel Security

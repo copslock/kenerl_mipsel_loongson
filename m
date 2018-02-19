@@ -1,67 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 15:00:52 +0100 (CET)
-Received: from smtp-out4.electric.net ([192.162.216.184]:61487 "EHLO
-        smtp-out4.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992973AbeBSOAoIx2pC convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Feb 2018 15:00:44 +0100
-Received: from 1enlzb-0008qE-Uh by out4d.electric.net with emc1-ok (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1enlzc-0008wM-VB; Mon, 19 Feb 2018 06:00:32 -0800
-Received: by emcmailer; Mon, 19 Feb 2018 06:00:32 -0800
-Received: from [156.67.243.126] (helo=AcuMS.aculab.com)
-        by out4d.electric.net with esmtps (TLSv1.2:ECDHE-RSA-AES256-SHA384:256)
-        (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1enlzb-0008qE-Uh; Mon, 19 Feb 2018 06:00:31 -0800
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 19 Feb 2018 14:01:25 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 19 Feb 2018 14:01:25 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Paul Burton' <paul.burton@mips.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     Hassan Naveed <hassan.naveed@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2018 17:41:14 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:37098 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993928AbeBSQlHAeYUn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Feb 2018 17:41:07 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 19 Feb 2018 16:40:49 +0000
+Received: from localhost (10.20.1.18) by mips01.mipstec.com (10.20.43.31) with
+ Microsoft SMTP Server id 14.3.361.1; Mon, 19 Feb 2018 08:40:49 -0800
+Date:   Mon, 19 Feb 2018 08:42:23 -0800
+From:   Paul Burton <paul.burton@mips.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Hassan Naveed <hassan.naveed@mips.com>,
         Matt Redfearn <matt.redfearn@mips.com>,
         "David S . Miller" <davem@davemloft.net>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH v5 07/14] net: pch_gbe: Fix handling of TX padding
-Thread-Topic: [PATCH v5 07/14] net: pch_gbe: Fix handling of TX padding
-Thread-Index: AQHTqCzRjfXXBHe1nUOj8GyASlELI6Orwr4w
-Date:   Mon, 19 Feb 2018 14:01:25 +0000
-Message-ID: <33d3777368d244a79c6287b2e955853f@AcuMS.aculab.com>
+Subject: Re: [PATCH v5 07/14] net: pch_gbe: Fix handling of TX padding
+Message-ID: <20180219164223.plclfvimcyiqzh4h@pburton-laptop>
 References: <20180217201037.3006-1-paul.burton@mips.com>
  <20180217201037.3006-8-paul.burton@mips.com>
-In-Reply-To: <20180217201037.3006-8-paul.burton@mips.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.33]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ <33d3777368d244a79c6287b2e955853f@AcuMS.aculab.com>
 MIME-Version: 1.0
-X-Outbound-IP: 156.67.243.126
-X-Env-From: David.Laight@ACULAB.COM
-X-Proto: esmtps
-X-Revdns: 
-X-HELO: AcuMS.aculab.com
-X-TLS:  TLSv1.2:ECDHE-RSA-AES256-SHA384:256
-X-Authenticated_ID: 
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (s)
-X-Virus-Status: Scanned by VirusSMART (c)
-Return-Path: <David.Laight@ACULAB.COM>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <33d3777368d244a79c6287b2e955853f@AcuMS.aculab.com>
+User-Agent: NeoMutt/20171215
+X-BESS-ID: 1519058449-321458-23600-5067-1
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190190
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62620
+X-archive-position: 62621
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,21 +56,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton
-> Sent: 17 February 2018 20:11
+Hi David,
+
+On Mon, Feb 19, 2018 at 02:01:25PM +0000, David Laight wrote:
+> From: Paul Burton
+> > Sent: 17 February 2018 20:11
+> > 
+> > The ethernet controller found in the Intel EG20T Platform Controller
+> > Hub requires that we place 2 bytes of padding between the ethernet
+> > header & the packet payload. Our pch_gbe driver handles this by copying
+> > packets to be transmitted to a temporary struct skb with the padding
+> > bytes inserted
+> ...
 > 
-> The ethernet controller found in the Intel EG20T Platform Controller
-> Hub requires that we place 2 bytes of padding between the ethernet
-> header & the packet payload. Our pch_gbe driver handles this by copying
-> packets to be transmitted to a temporary struct skb with the padding
-> bytes inserted
-...
+> Uggg WFT is the driver doing that for?
+> 
+> I'd guess that the two byte pad is there so that a 4 byte aligned
+> frame is still 4 byte aligned when the 14 byte ethernet header is added.
+> So instead of copying the entire frame the MAC header should be built
+> (or rebuilt?) two bytes further from the actual data.
 
-Uggg WFT is the driver doing that for?
+I agree - the pch_gbe driver is pretty bad and does a lot of things
+wrong. Frankly I'm amazed it's in tree, but it is & one patch series
+isn't going to fix all of its shortcomings.
 
-I'd guess that the two byte pad is there so that a 4 byte aligned
-frame is still 4 byte aligned when the 14 byte ethernet header is added.
-So instead of copying the entire frame the MAC header should be built
-(or rebuilt?) two bytes further from the actual data.
+So whilst I totally agree that copying around the whole frame is awful,
+it's a separate problem to the length used for DMA mapping being
+incorrect which is what this patch addresses & I'd rather not start
+adding more & more fixes or cleanups into this initial series before the
+driver is even functional on my hardware.
 
-	David
+Thanks,
+    Paul

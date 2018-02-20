@@ -1,121 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 19:45:44 +0100 (CET)
-Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:36051
-        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994692AbeBTSpgXGRfK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 19:45:36 +0100
-Received: by mail-lf0-x241.google.com with SMTP id t79so5644745lfe.3
-        for <linux-mips@linux-mips.org>; Tue, 20 Feb 2018 10:45:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=/EJYfOtSu0t1Pq8JWDVMB6vqIvu2+ZNIDz5WASpxqKE=;
-        b=dQKGx7h+Brn8GRqZVo2bHOXBMj8rhSd9UR7vd07cZrBRVDo7xj93xsaVZu1M5gUisI
-         /Js0gQLP7znMx9GASVbcGLJI6wm4waPKqYnjn3jsDvAlX9j0DYqQrpttWe/T+S/li2zn
-         eV077TB/yGyvU/+0I4PiWUMd5rRWNx8IQ0mSU4qR+9bs4u2fU6FJaqbZLCWE9AtHGjee
-         2QKCBmUBd1PSrbeIf80IO+NtItgzUOjIEUMsRkzOwOqFU9DF9IfpBDmbd41mloUfDavm
-         ZwtwOSNVsOo8fyBOWhMzuvGrshN2Mp1DtOYnx/rB5mvrm1Bk+VF4SdbnQ8L0rQYJeeTT
-         IYjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=/EJYfOtSu0t1Pq8JWDVMB6vqIvu2+ZNIDz5WASpxqKE=;
-        b=uOM43dBWlyphoVDJsutnyLQzCLB9RJwGa8jmpL3tzaSiu9KoFImf6SLZwFXH0SyPyA
-         Z5v0G90f4jjXMuC48O0Yuw0MGj6X2s3+i/JIOc3fZOkhvnkJCKYvGXYgCFn2R2z9l5Jr
-         0Uokui4J9yvTk6UrfkCUjcyVaw92oSaSs40v77HC19iyiTkEt54Mud3ZVaKKtgPfrVaj
-         PWlFFIOypdKQgPsCLBpAp+vi9e9jfdfkmHBrwE/BKxR/tuhKENGs4F7MF7M0fhMdVBG9
-         7yTugQZTRLT70+mC5ek6XmNzHU0R9GU+3enQuZJOnQoyRi0PoV8W2nZfnJv5FKD/2aB0
-         JujA==
-X-Gm-Message-State: APf1xPASHWRHmTyZHQ7eFScCHy1pfiYTL1+2rk5USxlBVzYyaBDpl1mW
-        WHXk18KgbXCp79YIXKUtxPU=
-X-Google-Smtp-Source: AH8x225Ou+XfqrZoRYIPrCm9UpwiheiAfbk1LRLhf8riq9GnNpMwODul68jyGig7keIBSx9E8oMRGQ==
-X-Received: by 10.46.19.17 with SMTP id 17mr430659ljt.102.1519152329632;
-        Tue, 20 Feb 2018 10:45:29 -0800 (PST)
-Received: from gmail.com (c-2ec27091-74736162.cust.telenor.se. [46.194.112.145])
-        by smtp.gmail.com with ESMTPSA id j69sm4453707lfk.16.2018.02.20.10.45.24
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 20 Feb 2018 10:45:28 -0800 (PST)
-Date:   Tue, 20 Feb 2018 19:45:22 +0100
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Jimmy Vance <jimmy.vance@hpe.com>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Andreas Werner <andreas.werner@men.de>,
-        Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Zwane Mwaikambo <zwanem@gmail.com>,
-        Jim Cromie <jim.cromie@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Mans Rullgard <mans@mansr.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Jun Nie <jun.nie@linaro.org>,
-        Baoyou Xie <baoyou.xie@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-mips@linux-mips.org, linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
-Subject: Re: [PATCH v2] watchdog: add SPDX identifiers for watchdog subsystem
-Message-ID: <20180220184522.GF24311@gmail.com>
-References: <20180220104542.32286-1-marcus.folkesson@gmail.com>
- <20180220124955.GA17814@sophia>
- <20180220132103.GD24311@gmail.com>
- <48db897e-8a61-a5bc-5a61-56349cafaa10@roeck-us.net>
- <20180220153326.GE24311@gmail.com>
- <20180220181427.GA25467@sophia>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 22:43:09 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:47764 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994696AbeBTVnB6TniS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Feb 2018 22:43:01 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C2E7021795;
+        Tue, 20 Feb 2018 21:42:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C2E7021795
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 20 Feb 2018 21:42:49 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 10/12] MIPS: Loongson: Make CPUFreq usable for
+ Loongson-3
+Message-ID: <20180220214248.GE6245@saruman>
+References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
+ <1517023381-17624-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="OgApRN/oydYDdnYz"
+        protocol="application/pgp-signature"; boundary="so9zsI5B81VjUb/o"
 Content-Disposition: inline
-In-Reply-To: <20180220181427.GA25467@sophia>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <marcus.folkesson@gmail.com>
+In-Reply-To: <1517023381-17624-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62656
+X-archive-position: 62657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcus.folkesson@gmail.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -129,171 +51,66 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---OgApRN/oydYDdnYz
-Content-Type: text/plain; charset=us-ascii
+--so9zsI5B81VjUb/o
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2018 at 01:14:27PM -0500, William Breathitt Gray wrote:
-> On Tue, Feb 20, 2018 at 04:33:26PM +0100, Marcus Folkesson wrote:
-> >On Tue, Feb 20, 2018 at 07:13:43AM -0800, Guenter Roeck wrote:
-> >> On 02/20/2018 05:21 AM, Marcus Folkesson wrote:
-> >> > Hello William,
-> >> >=20
-> >> > On Tue, Feb 20, 2018 at 07:49:55AM -0500, William Breathitt Gray wro=
-te:
-> >> > > On Tue, Feb 20, 2018 at 11:45:31AM +0100, Marcus Folkesson wrote:
-> >> > > > - Add SPDX identifier
-> >> > > > - Remove boiler plate license text
-> >> > > > - If MODULE_LICENSE and boiler plate does not match, go for boil=
-er plate
-> >> > > >   license
-> >> > > >=20
-> >> > > > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> >> > > > Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
-> >> > > > Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> >> > > > Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-> >> > > > Acked-by: Michal Simek <michal.simek@xilinx.com>
-> >> > > > ---
-> >> > > >=20
-> >> > > > Notes:
-> >> > > >     v2:
-> >> > > >     	- Put back removed copyright texts for meson_gxbb_wdt and c=
-oh901327_wdt
-> >> > > >     	- Change to BSD-3-Clause for meson_gxbb_wdt
-> >> > > >     v1: Please have an extra look at meson_gxbb_wdt.c
-> >> > >=20
-> >> > > [...]
-> >> > >=20
-> >> > > > diff --git a/drivers/watchdog/ebc-c384_wdt.c b/drivers/watchdog/=
-ebc-c384_wdt.c
-> >> > > > index 2170b275ea01..c173b6f5c866 100644
-> >> > > > --- a/drivers/watchdog/ebc-c384_wdt.c
-> >> > > > +++ b/drivers/watchdog/ebc-c384_wdt.c
-> >> > > > @@ -1,15 +1,8 @@
-> >> > > > +// SPDX-License-Identifier: GPL-2.0
-> >> > > > /*
-> >> > > >   * Watchdog timer driver for the WinSystems EBC-C384
-> >> > > >   * Copyright (C) 2016 William Breathitt Gray
-> >> > > >   *
-> >
-> >The copyright is untouched?
-> >
-> >> > > > - * This program is free software; you can redistribute it and/o=
-r modify
-> >> > > > - * it under the terms of the GNU General Public License, versio=
-n 2, as
-> >> > > > - * published by the Free Software Foundation.
-> >> > > > - *
-> >> > > > - * This program is distributed in the hope that it will be usef=
-ul, but
-> >> > > > - * WITHOUT ANY WARRANTY; without even the implied warranty of
-> >> > > > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See th=
-e GNU
-> >> > > > - * General Public License for more details.
-> >> > > >   */
-> >> > > > #include <linux/device.h>
-> >> > > > #include <linux/dmi.h>
-> >> >=20
-> >> > Thank you for your feedback!
-> >> > >=20
-> >> > > I have no problem with adding a SPDX line to the top of this file,=
- but
-> >> > > use "SPDX-License-Identifier: GPL-2.0-only" as I was very intentio=
-nal
-> >> > > with the selection of GPL version 2 only when I published this cod=
-e.
-> >> >=20
-> >> > SPDX-License-Identifier: GPL-2.0
-> >> > Is GPL-2.0 only [1], so it respects your choice of license.
->=20
-> Ah, this should be fine then. :)
->=20
+On Sat, Jan 27, 2018 at 11:22:59AM +0800, Huacai Chen wrote:
+> Loongson-3A/3B support frequency scaling. But due to hardware
+> limitation, Loongson-3A's frequency scaling is not independent for
+> each core, we suggest enable Loongson-3A's CPUFreq only when there is
+> one core online.
 
-Good!
+Does the code do anything to enforce that?
 
-> >> >=20
-> >> > >=20
-> >> > > Furthermore, please do not remove the existing copyright text; alt=
-hough
-> >> >=20
-> >>=20
-> >> It is not a matter if you CAN keep a copyright. You MUST NOT remove a =
-copyright.
-> >> As long as you do, the series is
-> >>=20
-> >> Nacked-by: Guenter Roeck <linux@roeck-us.net>
-> >>=20
-> >> Guenter
-> >
-> >I'm sorry, I do not see where the copyright is removed unless you count
-> >the license text as part of the copyright.
-> >
-> >Can you please point it out?
-> >
-> >>=20
-> >> > The copyright text:
-> >> >=20
-> >> >   Copyright (C) 2016 William Breathitt Gray
-> >> >=20
-> >> > Is still in the file.
-> >
-> >^^^
-> >
-> >> >=20
-> >> >=20
-> >> > > it's just boilerplate for some, I was careful with the selection of
-> >> > > these words, and I worry the SPDX line only -- despite its useful
-> >> > > conciseness -- may lead to misunderstandings about my intentioned
-> >> > > license for this code.
-> >> >=20
-> >> > I'm not sure I understand your concerns here, the SPDX identifier is
-> >> > a shorthand for the GPL 2.0 only license. See [1] - Linux kernel lic=
-ensing rules.
-> >> >=20
-> >> > One of the biggest benefits with SPDX identifier is that it is hard =
-to verify
-> >> > boiler plate licenses due to formatting, types, different formulatio=
-ns and so on.
-> >> >=20
-> >> > If still worrying, I think we could keep the license text as
-> >> > well.
->=20
-> I'm sorry for the confusion, I should have wrote "license text" rather
-> than "copyright text" in my previous message. I agree with the benefits
+If not, should it?
 
-No problem at all.
+Will it just work suboptimally if you tried?
 
-> of utilizing the SPDX identifier, and I see the addition of the SPDX
-> line as useful, but I would prefer the original license text remain as
-> well.
+>  arch/mips/include/asm/mach-loongson64/loongson.h |   1 +
+>  arch/mips/kernel/smp.c                           |   3 +-
+>  arch/mips/loongson64/Kconfig                     |   1 +
+>  arch/mips/loongson64/common/platform.c           |  13 +-
+>  arch/mips/loongson64/loongson-3/Makefile         |   2 +-
+>  arch/mips/loongson64/loongson-3/clock.c          | 191 ++++++++++++++++++
+>  drivers/cpufreq/Kconfig                          |  13 ++
+>  drivers/cpufreq/Makefile                         |   1 +
+>  drivers/cpufreq/loongson3_cpufreq.c              | 236 +++++++++++++++++++++++
 
-Of course, I will keep the the original license intact for v3.
->=20
-> William Breathitt Gray
->=20
+This could presumably be fairly neatly divided into 3 separate changes:
+- New clocks driver
+- New cpufreq driver
+- Minimal platform changes in arch/mips to instantiate the drivers
 
-Best regards
-Marcus Folkesson
+Please can you use the common clock framework i.e. a driver in
+drivers/clk/, rather than adding yet another implementation of the clk
+api in arch/mips/.
 
---OgApRN/oydYDdnYz
+Each change needs the appropriate maintainers on Cc or you'll never get
+the required review.
+
+Cheers
+James
+
+--so9zsI5B81VjUb/o
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAlqMbL0ACgkQiIBOb1ld
-UjJFERAAhuwiBVxCWQs5NKL67h+hidriNHH3ALoXrhBhYQiVIzKyIiNPCHkpf/4C
-DmquQEuSbAWQoLN73scR5mBRF74ZTu2Oj+BFvu1KS/oj3xdMm0fWBSBkIhyPIFXp
-9pjItNmj3OBhODRP472IRlUxDh9LRnNYL20cpwYpUAVQIrM8HHWDl6W6RH5SKXIf
-CcU1L4Y1i7M5Ir+wuc9bhGPBcHtZopQT7MQh2I/gImWdLVfrPObTsk8KpByaZoCe
-oWAeZSxJRldTPjL+2X8N7lyabRV/Xvrvg4mJUUFXUfjUY1guIae3xbEMI2Ko/Avu
-W0zsXNuBy+37KmW4PTZpIEoK0aaN8vipUBcGmwHYXtTDFHATKxjTugw6+VK2Wpj7
-vjnLUXOVTcZFdt+wWJd7rpHaRfUGhG3aBu+fi73AoAzQSSQM8X9blHgk4yJ4VDiv
-dzS60EDoWoew3PprwJIo8ytO4SnMBIglBeuiaa+V9NORc5tczwkwUiH6aStr/KEa
-+L5OiKgiIVIUU1hAlClazpwF/O6I7KH2RHqIM8oSr7SXas0viPy4IXnwDmwr3wBD
-DPeBD79K+Txb+EnKC5D/Z9Wu769rwAZ2TYgMjTQWN8W5hgaXwkB6MJVcJKNmlaxQ
-8TRf6C+lhOCazPIbV18ltcQFWBT35DnO2mGWa6lnArJrfBN2zVg=
-=N61S
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMllIACgkQbAtpk944
+dno6Ug//UmGffPuyqd5e9UPPfrbcnvHp2dtKJjgYxg/ch6OKUOIpm/jY3jzk6Ao+
+u0AvpX212ScwDKtBIYhxf9zl9GZA5ZC797yXAhKkLVmNXYVhWecBf3cgtEwMlAFS
+TYA3x7kJqQfUgEQ6XFDt+1kCtNv/DWK8Ab76iNv0Su4ttaysv6IQsFcuHiv298C0
+J0kAS9PJ7+Oau2mdKZGJuFTCVm3TE5EgQxkYFwWE1IUvH+9yi47GEckELQQx+b+N
+wFMEbaphuv6qCnzRMhXBC80pHjzb9/MAbPk0LuwhC9H4vX/pPFGFtCvyVAizCI8Y
+X8cO7myWxx4ZT7LMFvV1m7eZ1jbiD0oNZwJq4bkL7iFy74wwW8g4WVBb/h29+zp4
+mqjOcyYo2RQgNWnlnK7o0/qsAB7c+YKIR/0u3szR06FUsI6u5HSbL3QKsdmomZnd
+y5Tgwo2bQ0HUnlebQBaSapGReBn6gtgoGQkS1cIDWRSlyTU7gfrt8NPvvuchlK8y
+rBIlDMeUiKz+b4Cj9+XzW4jKiRCN4D4qnfzdUPOKUJ0kcclXJVA5XMe7rShlmqS3
+zARVqCeJuv7uSmh5dL5Dn3EyGq+jwOZ11CmUwkrMlTzbJV0umeQAXP5jY6vaZQOc
+f9VrSvaZ9TAafv7Y5bkQQuPxhLDUUhALn1cTqTRO7jq2evrLgfw=
+=G1Yu
 -----END PGP SIGNATURE-----
 
---OgApRN/oydYDdnYz--
+--so9zsI5B81VjUb/o--

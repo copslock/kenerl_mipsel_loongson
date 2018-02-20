@@ -1,58 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 23:59:23 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:40860 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994692AbeBTW7QVk7j5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 23:59:16 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 20 Feb 2018 22:58:55 +0000
-Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 20 Feb
- 2018 14:58:48 -0800
-Date:   Tue, 20 Feb 2018 22:58:46 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-CC:     Huacai Chen <chenhc@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 08/12] MIPS: Align kernel load address to 64KB
-Message-ID: <20180220225845.GG29460@jhogan-linux.mipstec.com>
-References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <1517023336-17575-1-git-send-email-chenhc@lemote.com>
- <1517023336-17575-2-git-send-email-chenhc@lemote.com>
- <20180219230719.GC6245@saruman>
- <alpine.DEB.2.00.1802202206490.3553@tp.orcam.me.uk>
- <20180220222542.GF29460@jhogan-linux.mipstec.com>
- <alpine.DEB.2.00.1802202249410.3553@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 00:01:59 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:34220 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994709AbeBTXBqcq3t5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Feb 2018 00:01:46 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 293C02177B;
+        Tue, 20 Feb 2018 23:01:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 293C02177B
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 20 Feb 2018 23:01:15 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2 6/8] MIPS: Loongson64: cleanup all mach files to use
+ SPDX Identifier
+Message-ID: <20180220230115.GH6245@saruman>
+References: <20171226132339.7356-1-jiaxun.yang@flygoat.com>
+ <20171230182830.6496-1-jiaxun.yang@flygoat.com>
+ <20171230182830.6496-7-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PpAOPzA3dXsRhoo+"
+        protocol="application/pgp-signature"; boundary="xHbokkKX1kTiQeDC"
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1802202249410.3553@tp.orcam.me.uk>
+In-Reply-To: <20171230182830.6496-7-jiaxun.yang@flygoat.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-BESS-ID: 1519167532-452060-16015-12713-3
-X-BESS-VER: 2018.2.1-r1802152107
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190241
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
-        Domain Matches Recipient Domain 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62663
+X-archive-position: 62664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,71 +51,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---PpAOPzA3dXsRhoo+
+
+--xHbokkKX1kTiQeDC
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2018 at 10:53:19PM +0000, Maciej W. Rozycki wrote:
-> On Tue, 20 Feb 2018, James Hogan wrote:
+On Sun, Dec 31, 2017 at 02:28:29AM +0800, Jiaxun Yang wrote:
+> To reduce unnecessary license text.
 >=20
-> > > >  Since the largest PAGE_SIZE supported by MIPS kernels is 64KB, inc=
-rease
-> > > >  the alignment calculated by calc_vmlinuz_load_addr to 64KB.
-> > >=20
-> > >  But why does it have to be hardcoded?  Shouldn't it be inherited fro=
-m=20
-> > > the image being loaded?  I'm missing bits of context here, but that=
-=20
-> > > would be either CONFIG_PAGE_SIZE_* settings or the ELF program header=
-'s=20
-> > > `p_align' value, depending on how this code operates.  Wasting say 60=
-kB=20
-> > > of memory on smaller systems due to excessive alignment might not be =
-a=20
-> > > good idea.
-> >=20
-> > I presume there's nothing to stop a kernel with 64KB pages (and hence
-> > requiring 64KB alignment of load sections) loading a new kernel with 4KB
-> > pages (which is the one we're looking at).
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  arch/mips/loongson64/Makefile | 1 +
+>  arch/mips/loongson64/Platform | 1 +
+>  2 files changed, 2 insertions(+)
 >=20
->  As I say, I'm missing bits of context.  If you say that a 64kiB-page=20
-> kernel loads a 4kiB-page kernel, then the alignment for the latter is=20
-> obviously 4kiB.  So I repeat my question: why hardcode the alignment to=
-=20
-> 64kiB while we only need 4kiB in this case?
+> diff --git a/arch/mips/loongson64/Makefile b/arch/mips/loongson64/Makefile
+> index 4fe3d88fc361..64b270c70607 100644
+> --- a/arch/mips/loongson64/Makefile
+> +++ b/arch/mips/loongson64/Makefile
+> @@ -1,3 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0=20
 
-Because its the 1st kernel which is doing the kexec'ing of the 2nd
-kernel. The 2nd kernel might not even have kexec enabled, but you still
-might want to boot it using kexec.
+whitespace at end of line
 
-The only alternative is for the kexec userland tools to be able to
-automatically adjust the load segments to load a bit more before the
-start of the kernel image so that its aligned, and i'm not sure how
-universally safe that would be.
+>  #
+>  # Common code for all Loongson based systems
+>  #
+> diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+> index 0fce4608aa88..ceffdace758e 100644
+> --- a/arch/mips/loongson64/Platform
+> +++ b/arch/mips/loongson64/Platform
+> @@ -1,3 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0=20
+
+same
 
 Cheers
 James
 
---PpAOPzA3dXsRhoo+
+--xHbokkKX1kTiQeDC
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMqCUACgkQbAtpk944
-dnoReQ//bBnMVurSWEYMcJ0owqonmERnm+5CGtmIUFTAZLzeeMAnu38gxUZEmGDk
-pjM20k9/9JaJY41WhC6D7ciI/HrAeowCw9c0Vj4/o2SlTYcj5VqV0IO/HdMZ1yZR
-xE7zpsH+/uv064SjVSeJnqUqwEoQUkr9QyKuYJ2AWLDpLoQriDb2otJZ/KtHnDGr
-bFqz+HJUekbotbUPjcRj1HYO+aQPXGXSW81X7HzMEQY+LCji6zrTpF5kRb2pOU4k
-rG1apTiG5Be06qQ0o8O8JrIvIVWKAP/sfw/BgxbHLe1KII4TOG4n5hcxdDnAxRze
-rKlUatz4ZJPGlC/BUqbPOUBi3TsbkcPdCJQ6lcfRiFfDaKT2mZ4gucGMta9HmhAo
-e57siAmJhEeykiAD/k9NoJFmWhWHETzBaTsCWMMloM97jlwamq4RStwkskFP6HMf
-tGqPfiYoOxOtueAiTQ07aidBqrwqb8nl56PQ702v0MyVs/v/QxCBt+YlxWqPgKto
-08au/TJBICbXgyXlOyC7Rj5gxnKWcMG9oxx7utiHHF5pyNSJniZmp1AZgb8kjJOH
-XC3EGa2XvYHovCb1aoPs/VB5ZtANmm6wMJby/9WPM+Tkk7ksPMvwWT+S1GPaoQ2Q
-cYLR5Mox0IUwYk13LeTxQdSaT+De+r6wvpi0pjZs/yD5/kIOqoQ=
-=Yk6l
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMqLoACgkQbAtpk944
+dnpVkA/+L/zPthBFiarZCX9WOVePDaQtrzHzgxzib9Hox7K2X9nwYJvgvuCqENOY
+MPC60seSN08+/gN2ejoySsdzjuxyyoyNyYdqU7jKRT38QEYq47gOmjYFRiB2dl4U
+2TKI1uhntZnr/tlkl59alll00JIvez5cMsXsE9z07+K46Yb9JnGn+7f/FVBsQR52
+p5LeM3IaIkcbtCUxPfC3Opl9KKMJLT370ejkdhs0f6ptQ0uelV3hwUHEuex4uL1n
+DhA7HxT9J6hCGNtLGf/x5/oRlfLhlHuEbcJGCVB+/6afYXSH6j+TdgHXbwvopI0s
+NDofxAWVT8f0UIefK2RDdv3GS5vi875ktqMTKp2BM75PTe/QLVAjzwWLp7oycts2
+V7Ghq9YOkAC7/DJtmZEbLJlANwcjBNOlYJDTdvqMBrTaVyUP4HpMQgw3A/tm+Dgj
+8w7nRg1fEleTlufDXp3QPhAQTogT5MDBULjwH8fEvXimrpB2BKiL3ZDmlNVwHVkf
+6DryeIXru9LsZDlvA/Ey6v9W0Tnng8dcjfXK+pKSJ8G9nQ64DNoRJrm+1m/hQCdo
+UflxpKst1tOSfozpoFayorUgDFbp5LnnXOZG2j3JgmAbzYbhku0oeYSagR+absyj
+YBEPfbbSeNwPEXziCrlHrbVswTp4CMOcrF5Pl/ydy8PhPwW6Dlw=
+=HZU6
 -----END PGP SIGNATURE-----
 
---PpAOPzA3dXsRhoo+--
+--xHbokkKX1kTiQeDC--

@@ -1,43 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 23:22:18 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:54102 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994696AbeBTWWGv-UoS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Feb 2018 23:22:06 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37CC421104;
-        Tue, 20 Feb 2018 22:21:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 37CC421104
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 20 Feb 2018 22:21:53 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 23:26:31 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:33486 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994692AbeBTW0YDwVg5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 23:26:24 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 20 Feb 2018 22:26:01 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 20 Feb
+ 2018 14:25:44 -0800
+Date:   Tue, 20 Feb 2018 22:25:42 +0000
+From:   James Hogan <james.hogan@mips.com>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+CC:     Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 12/12] MIPS: Loongson: Introduce and use WAR_LLSC_MB
-Message-ID: <20180220222153.GG6245@saruman>
+Subject: Re: [PATCH V2 08/12] MIPS: Align kernel load address to 64KB
+Message-ID: <20180220222542.GF29460@jhogan-linux.mipstec.com>
 References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <1517023381-17624-1-git-send-email-chenhc@lemote.com>
- <1517023381-17624-3-git-send-email-chenhc@lemote.com>
+ <1517023336-17575-1-git-send-email-chenhc@lemote.com>
+ <1517023336-17575-2-git-send-email-chenhc@lemote.com>
+ <20180219230719.GC6245@saruman>
+ <alpine.DEB.2.00.1802202206490.3553@tp.orcam.me.uk>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vJguvTgX93MxBIIe"
+        protocol="application/pgp-signature"; boundary="Pgaa2uWPnPrfixyx"
 Content-Disposition: inline
-In-Reply-To: <1517023381-17624-3-git-send-email-chenhc@lemote.com>
+In-Reply-To: <alpine.DEB.2.00.1802202206490.3553@tp.orcam.me.uk>
 User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1519165560-298554-4207-8796-4
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190239
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
+        Domain Matches Recipient Domain 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62660
+X-archive-position: 62661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,127 +63,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---vJguvTgX93MxBIIe
+--Pgaa2uWPnPrfixyx
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 27, 2018 at 11:23:01AM +0800, Huacai Chen wrote:
-> On the Loongson-2G/2H/3A/3B there is a hardware flaw that ll/sc and
-> lld/scd is very weak ordering. We should add sync instructions before
-> each ll/lld and after the last sc/scd to workaround. Otherwise, this
-> flaw will cause deadlock occationally (e.g. when doing heavy load test
-> with LTP).
+On Tue, Feb 20, 2018 at 10:14:39PM +0000, Maciej W. Rozycki wrote:
+> On Mon, 19 Feb 2018, James Hogan wrote:
+>=20
+> > > KEXEC assume kernel align to PAGE_SIZE, and 64KB is the largest
+> > > PAGE_SIZE.
+> >=20
+> > Please expand, maybe referring to sanity_check_segment_list() which does
+> > the actual check. Maybe something like this:
+> >=20
+> >  Kexec needs the new kernel's load address to be aligned on a page
+> >  boundary (see sanity_check_segment_list()), but on MIPS the default
+> >  vmlinuz load address is only explicitly aligned to 16 bytes.
+> >=20
+> >  Since the largest PAGE_SIZE supported by MIPS kernels is 64KB, increase
+> >  the alignment calculated by calc_vmlinuz_load_addr to 64KB.
+>=20
+>  But why does it have to be hardcoded?  Shouldn't it be inherited from=20
+> the image being loaded?  I'm missing bits of context here, but that=20
+> would be either CONFIG_PAGE_SIZE_* settings or the ELF program header's=
+=20
+> `p_align' value, depending on how this code operates.  Wasting say 60kB=
+=20
+> of memory on smaller systems due to excessive alignment might not be a=20
+> good idea.
 
-How confident are you that this is the minimal change required to fix
-the issue? Is the problem well understood?
-
-It'd be helpful to have some more details about the flaw if you have
-them.
-
-I.e. does it really have to be done on every loop iteration (such that
-using WEAK_REORDERING_BEYOND_LLSC is insufficient)?
-
-> diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomi=
-c.h
-> index 0ab176b..99a6d01 100644
-> --- a/arch/mips/include/asm/atomic.h
-> +++ b/arch/mips/include/asm/atomic.h
-> @@ -62,6 +62,7 @@ static __inline__ void atomic_##op(int i, atomic_t * v)=
-			      \
->  		do {							      \
->  			__asm__ __volatile__(				      \
->  			"	.set	"MIPS_ISA_LEVEL"		\n"   \
-> +			__WAR_LLSC_MB					      \
->  			"	ll	%0, %1		# atomic_" #op "\n"   \
->  			"	" #asm_op " %0, %2			\n"   \
->  			"	sc	%0, %1				\n"   \
-> @@ -69,6 +70,7 @@ static __inline__ void atomic_##op(int i, atomic_t * v)=
-			      \
->  			: "=3D&r" (temp), "+" GCC_OFF_SMALL_ASM() (v->counter)  \
->  			: "Ir" (i));					      \
->  		} while (unlikely(!temp));				      \
-> +		__asm__ __volatile__(__WAR_LLSC_MB : : :"memory");	      \
-
-This still results in an additional compiler barrier on other platforms,
-so if it must remain it needs abstracting.
-
-> diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barr=
-ier.h
-> index 0e8e6af..268d921 100644
-> --- a/arch/mips/include/asm/barrier.h
-> +++ b/arch/mips/include/asm/barrier.h
-> @@ -203,6 +203,12 @@
->  #define __WEAK_LLSC_MB		"		\n"
->  #endif
-> =20
-> +#if defined(CONFIG_LOONGSON3) && defined(CONFIG_SMP) /* Loongson-3's LLS=
-C workaround */
-> +#define __WAR_LLSC_MB		"	sync	\n"
-> +#else
-> +#define __WAR_LLSC_MB		"		\n"
-> +#endif
-
-A comment explaining the whole issue would be helpful for others trying
-to decipher this.
-
-> diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
-> index 0fce460..3700dcf 100644
-> --- a/arch/mips/loongson64/Platform
-> +++ b/arch/mips/loongson64/Platform
-> @@ -23,6 +23,9 @@ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
->  endif
-> =20
->  cflags-$(CONFIG_CPU_LOONGSON3)	+=3D -Wa,--trap
-> +ifneq ($(call as-option,-Wa$(comma)-mfix-loongson3-llsc,),)
-> +  cflags-$(CONFIG_CPU_LOONGSON3) +=3D -Wa$(comma)-mno-fix-loongson3-llsc
-> +endif
-
-Could this be a separate patch?
-
-This needs more explanation.
-- What does this do exactly?
-- Why are you turning *OFF* the compiler fix?
-- Was some fix we don't want already in use by default?
-
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 3d3dfba..a507ba7 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -919,6 +919,8 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **=
-l, struct uasm_reloc **r,
->  		 * to mimic that here by taking a load/istream page
->  		 * fault.
->  		 */
-> +		if (current_cpu_type() =3D=3D CPU_LOONGSON3)
-> +			uasm_i_sync(p, 0);
-
-I suggest abstracting this out with a nice comment explaining why it is
-necessary.
+I presume there's nothing to stop a kernel with 64KB pages (and hence
+requiring 64KB alignment of load sections) loading a new kernel with 4KB
+pages (which is the one we're looking at).
 
 Cheers
 James
 
---vJguvTgX93MxBIIe
+--Pgaa2uWPnPrfixyx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMn4EACgkQbAtpk944
-dnr5cQ/8DB5SKdGbNqhZmtoL1rGq0H5XuKHH39yp2F5qog+cm8v0wiw3KTO4FPK3
-YZVI4QvzFrzZMLr0wzsCTzOk2N/gUVOB8LDjrU7aUADztllGhwfyQDZbIUvXA7Jf
-hQtvTDdfug/RGmtjR5mDvf3WoXkeZENTfmiQ9L33YKi/OQbwW2uccszVK9YXZ2G9
-hYrdBsyJWjWNuRGp/Ed8VWNrYgKgCGZxjxaRB4Ldqpvvc/bLtlcoMUS5KWT5MsFI
-vqXgTHDHRADguEJvdQNZwEvG17yqb04rTa8oPGkibFSESgBsy5BDRNB8EIm2GD3J
-0bzHZQaLaaVhpnZ+kU6ij5J/dkuKmDNXF1OVtdxkE+kRXN2jO1BDUZqS2JEgweSj
-71krSJHpXS+r0ZKX8xzp7S2Ewt/CdyPVo7BFqxE1yx1uQxH17lcQm17YVoJdrLkn
-uX8TK+qSEja2lV91I2jcjE7znv9/sALKp++aTtqCiDdkrZ8cCyNHB+QMkuzzf8nf
-xFgN986A7PoG5IdBrEmKuzme+UqU4BeZAqUwNK2xDL/Sre7BVAuWB9DWV+2l/LtD
-k7MR86nFH3eIXQWaFvIk2KqdVPfolBfzqKmif9JTIBQ8pa9YDmH3sgG0YOfDDyMI
-sHSkMN4P8H56f7SDDJkPx+cg2Mqvjw9Ot7YbnwlLQDAxmtNbAa8=
-=4sK3
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMoGYACgkQbAtpk944
+dno25A//XtsxH5AbHEFymyrh43gEVCe/2gtNsVDTPH0eg9zrSo538G57eFCFjsCI
+uABuJLoFUsf4cFz2OthP1JHMcRpns/meJIbEKBNpTuTBr56ofhPyCc6jSgSEoTYW
+4/fhF4hoZXLw4MHeC3sBkmZBKzeLkDIyJULBdq4Gud1BA/QIDMNqUadhJZeBncja
+vpu6v4vLVnC0BNiFxNVcA5Kj9joHv+PwV0wUhU98vYj+f1ux4HrUs9sJ7TDMoQrG
+qm/xO8vyaQfFES2r4YTLXHUmQmOMHSP5NNudebU9fBSvlR52QzC8+8j/qYhlxOs3
+oGCHVkafbD5bIXPQAx1woAFDef+7x8D/GT9NGNurLLyDzJGuk30CsGoX1lKfWJrx
+LKPs67FR76Ak17wiPFBHPyb9VjV+sz1o41LaaMoKIJ10KZQNXSh7biGdM1DF0bgA
+ic+ztcHelXAJCw4oE0/QIBBZav3ATk/GhiCsEHc2njaYWjsA6BwuYA+iXuA3PC2o
+mWoCadJWEWWGN9WATTqUWw065s1WvDd3XItJow5lFVSeH3CFyx/1bMi1iVnrDc3m
+yWYDxmnR7/qgKwANSc5Pf+SW/WuBfsi5QKL+i8TLJa9s3i2Aks1jkmMbyVWa9fPd
+Q8lPyIBWwp4+gRuMdlwY0GNHQ9oy0oiQoQJWsHleLCfrlaJz0Fs=
+=G/mW
 -----END PGP SIGNATURE-----
 
---vJguvTgX93MxBIIe--
+--Pgaa2uWPnPrfixyx--

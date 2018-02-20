@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 13:50:20 +0100 (CET)
-Received: from mail-yb0-x243.google.com ([IPv6:2607:f8b0:4002:c09::243]:40550
-        "EHLO mail-yb0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994684AbeBTMuKlfhP1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 13:50:10 +0100
-Received: by mail-yb0-x243.google.com with SMTP id i15-v6so3884403ybg.7
-        for <linux-mips@linux-mips.org>; Tue, 20 Feb 2018 04:50:10 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 14:21:24 +0100 (CET)
+Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:39251
+        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994686AbeBTNVQURrC1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 14:21:16 +0100
+Received: by mail-lf0-x241.google.com with SMTP id h78so4132103lfg.6
+        for <linux-mips@linux-mips.org>; Tue, 20 Feb 2018 05:21:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=byKJGfnbKvzJbMtIXntFX85ARosKvyaw6K0Z7kupIOw=;
-        b=Wlz2tyHkAN5NzEQXJxrw67mC7k2DcnkqBE0GhPaD0bzzKWw69+hzpf5j5R8w4Pi5MK
-         XDQBLTRars5G9DojsH7zWd0AtPGVjwIPDyx6n7d6AILf7vx7BMyLtBERQeLwgdi0i472
-         oDPyQWd8ekkLbOftCvrbsJXpdV5OxRU6e/3p/Rjb183g+BapeACCTdhgXz1I3+ula4RV
-         E4dLpHJ4+oJ3K1j6HmqUL8S+UF6gIXO6z2VLgH7Egdcm4Fbbij18mrA7tZBEiar7e4vV
-         Ozq253WvCyXIN1hqqpyzVu/YDwmnx6ZB6m769VFUKwDTB9jB1jIPiv9+MpKFkjQJlHyK
-         Y7Lw==
+        bh=vi5zczWEWi6koQgg1e50mnGe9xDiyeRRBUwPaQ5+9lc=;
+        b=gsK+B3c2BlS9/pTPlGKwjWhTD6X8EaA0PSytVK2uoiDX+OcvDaT+HkbamYj1cvWlzD
+         4/pEGlGI4Kka+y2naVjL8NNfBbi0RmWZM2AMQw//vLK1yxHXXIc3faAHJJ5GunyiL2v0
+         17B8qk91TRGMnBQeRlmV9yZ5EU4eo3jxEUaxoSrTnOaqtQ9WUtSNHzlx/an6hYUVmEe8
+         IdkUfkY3TJJuBgEFIUOIXQrI1L4ULvkJLKvHSO3g+n0kZGI3yGP/HjAiHMeV/UamiuLH
+         5OORWQfiWk+5Xbekxh5z18a2nKF0BK4R/mna6WkdwpFzDuk+vZG4lFNEJjykELRdlfw7
+         ek3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=byKJGfnbKvzJbMtIXntFX85ARosKvyaw6K0Z7kupIOw=;
-        b=crZ1pLzHbvgrKa2raWZOLR/MwH9P0SmmgdmhUNxzUbRlYO+tOnNs5sd96D6vaCrjuM
-         sv9hV3Ph2BqmU6etgeaUOoxhUx1dKUzFGOzQgyejjz1inL5YoWGB8PoHPcFGepYd0//I
-         bBY/C3MFhsvzZ2ZIPJu8I84W9DR0RUfB8yJFvZXsGAv0ywtOxKnTxlvCnKBTPB0HMGdV
-         p+lhn3Lk7lk+c17EnygbvUN//2RO2MVCNgWO5ugmpcmoaq9tlk8QzFmyPnL3WRkJOWcl
-         wf/MkRqfN+ju0rxzqBcWALOHBtgvr1Moefv4p7Bd6cv2ocwuvge0fLXyO8TeeeCrHyxc
-         Zo8g==
-X-Gm-Message-State: APf1xPCN+9W7FdFqWqKo0qDjhH390E3yaFAg4SQnloybsi7UuG385/XZ
-        y1tY8WSZBoinGKHwGF8NKYw=
-X-Google-Smtp-Source: AH8x224mDgEi0DdQJXTFPsuPWY33qQvpyHGIwxfBe1gyHC/DMSyijV2IgzAJH7E3frSSyKGv9XQMSA==
-X-Received: by 10.37.200.194 with SMTP id y185mr12887689ybf.243.1519131004398;
-        Tue, 20 Feb 2018 04:50:04 -0800 (PST)
-Received: from sophia ([72.188.97.40])
-        by smtp.gmail.com with ESMTPSA id m184sm9876557ywe.98.2018.02.20.04.50.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Feb 2018 04:50:03 -0800 (PST)
-Date:   Tue, 20 Feb 2018 07:49:55 -0500
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+        bh=vi5zczWEWi6koQgg1e50mnGe9xDiyeRRBUwPaQ5+9lc=;
+        b=uhJWiU+WTJa/NJjcglkLSDIBjc2Hymqq/d54I5ynnPevz87my67yYbhVM0QhxMZEnT
+         PanRqiUldCTlT6ZSR8SepJqH6r+N/SfhaXtZ/dSpN9iNOwzxZityyn2jTy4eOS5XhyOO
+         MU44vy1UvnfQe9S+DS8tX2SPfWVWApuP/1Os0O1Yb1EfVr/dMe3AloPhJb5fe+8LHdBb
+         UHbnllyswsVJV7eOvwjGs+bPI6cT+WS+snr3WtzxC5v7uGa0keRmWUrKJCNoKLRZIFph
+         2CIxps/Gxn+CEo2r1LjlcvC8SznrXY8cZ9kRd6PYRqmXgiE0I9FUJ9ndc1tHEAjwWahF
+         uXWA==
+X-Gm-Message-State: APf1xPCGdremx5l96y7eq+n06hXCFYLDkoYHoW9/z2cMQu9qhLwYcY6T
+        naAUD9OMPxBLYBTiHuOQygY=
+X-Google-Smtp-Source: AH8x225TJN76c2wZCrkGPQM8ewWm0peupuMMm1yi2h5LFwL8O5t6nRk2Bc+o5agxP0v90wCjiohdcw==
+X-Received: by 10.25.202.9 with SMTP id a9mr13122998lfg.144.1519132870545;
+        Tue, 20 Feb 2018 05:21:10 -0800 (PST)
+Received: from gmail.com (c-2ec27091-74736162.cust.telenor.se. [46.194.112.145])
+        by smtp.gmail.com with ESMTPSA id d77sm5371221ljd.31.2018.02.20.05.21.05
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 20 Feb 2018 05:21:09 -0800 (PST)
+Date:   Tue, 20 Feb 2018 14:21:03 +0100
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
 Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         Guenter Roeck <linux@roeck-us.net>,
         Joel Stanley <joel@jms.id.au>,
@@ -94,22 +94,24 @@ Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
 Subject: Re: [PATCH v2] watchdog: add SPDX identifiers for watchdog subsystem
-Message-ID: <20180220124955.GA17814@sophia>
+Message-ID: <20180220132103.GD24311@gmail.com>
 References: <20180220104542.32286-1-marcus.folkesson@gmail.com>
+ <20180220124955.GA17814@sophia>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="MZf7D3rAEoQgPanC"
 Content-Disposition: inline
-In-Reply-To: <20180220104542.32286-1-marcus.folkesson@gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <vilhelm.gray@gmail.com>
+In-Reply-To: <20180220124955.GA17814@sophia>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <marcus.folkesson@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62647
+X-archive-position: 62648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vilhelm.gray@gmail.com
+X-original-sender: marcus.folkesson@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -122,62 +124,130 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Feb 20, 2018 at 11:45:31AM +0100, Marcus Folkesson wrote:
->- Add SPDX identifier
->- Remove boiler plate license text
->- If MODULE_LICENSE and boiler plate does not match, go for boiler plate
->  license
->
->Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
->Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
->Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
->Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
->Acked-by: Michal Simek <michal.simek@xilinx.com>
->---
->
->Notes:
->    v2:
->    	- Put back removed copyright texts for meson_gxbb_wdt and coh901327_wdt
->    	- Change to BSD-3-Clause for meson_gxbb_wdt
->    v1: Please have an extra look at meson_gxbb_wdt.c
 
-[...]
+--MZf7D3rAEoQgPanC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->diff --git a/drivers/watchdog/ebc-c384_wdt.c b/drivers/watchdog/ebc-c384_wdt.c
->index 2170b275ea01..c173b6f5c866 100644
->--- a/drivers/watchdog/ebc-c384_wdt.c
->+++ b/drivers/watchdog/ebc-c384_wdt.c
->@@ -1,15 +1,8 @@
->+// SPDX-License-Identifier: GPL-2.0
-> /*
->  * Watchdog timer driver for the WinSystems EBC-C384
->  * Copyright (C) 2016 William Breathitt Gray
->  *
->- * This program is free software; you can redistribute it and/or modify
->- * it under the terms of the GNU General Public License, version 2, as
->- * published by the Free Software Foundation.
->- *
->- * This program is distributed in the hope that it will be useful, but
->- * WITHOUT ANY WARRANTY; without even the implied warranty of
->- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
->- * General Public License for more details.
->  */
-> #include <linux/device.h>
-> #include <linux/dmi.h>
+Hello William,
 
-I have no problem with adding a SPDX line to the top of this file, but
-use "SPDX-License-Identifier: GPL-2.0-only" as I was very intentional
-with the selection of GPL version 2 only when I published this code.
+On Tue, Feb 20, 2018 at 07:49:55AM -0500, William Breathitt Gray wrote:
+> On Tue, Feb 20, 2018 at 11:45:31AM +0100, Marcus Folkesson wrote:
+> >- Add SPDX identifier
+> >- Remove boiler plate license text
+> >- If MODULE_LICENSE and boiler plate does not match, go for boiler plate
+> >  license
+> >
+> >Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> >Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+> >Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> >Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> >Acked-by: Michal Simek <michal.simek@xilinx.com>
+> >---
+> >
+> >Notes:
+> >    v2:
+> >    	- Put back removed copyright texts for meson_gxbb_wdt and coh901327=
+_wdt
+> >    	- Change to BSD-3-Clause for meson_gxbb_wdt
+> >    v1: Please have an extra look at meson_gxbb_wdt.c
+>=20
+> [...]
+>=20
+> >diff --git a/drivers/watchdog/ebc-c384_wdt.c b/drivers/watchdog/ebc-c384=
+_wdt.c
+> >index 2170b275ea01..c173b6f5c866 100644
+> >--- a/drivers/watchdog/ebc-c384_wdt.c
+> >+++ b/drivers/watchdog/ebc-c384_wdt.c
+> >@@ -1,15 +1,8 @@
+> >+// SPDX-License-Identifier: GPL-2.0
+> > /*
+> >  * Watchdog timer driver for the WinSystems EBC-C384
+> >  * Copyright (C) 2016 William Breathitt Gray
+> >  *
+> >- * This program is free software; you can redistribute it and/or modify
+> >- * it under the terms of the GNU General Public License, version 2, as
+> >- * published by the Free Software Foundation.
+> >- *
+> >- * This program is distributed in the hope that it will be useful, but
+> >- * WITHOUT ANY WARRANTY; without even the implied warranty of
+> >- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> >- * General Public License for more details.
+> >  */
+> > #include <linux/device.h>
+> > #include <linux/dmi.h>
 
-Furthermore, please do not remove the existing copyright text; although
-it's just boilerplate for some, I was careful with the selection of
-these words, and I worry the SPDX line only -- despite its useful
-conciseness -- may lead to misunderstandings about my intentioned
-license for this code.
+Thank you for your feedback!
+>=20
+> I have no problem with adding a SPDX line to the top of this file, but
+> use "SPDX-License-Identifier: GPL-2.0-only" as I was very intentional
+> with the selection of GPL version 2 only when I published this code.
 
-For the time being, I can't Ack this patch with the changes it makes
-currently:
+SPDX-License-Identifier: GPL-2.0
+Is GPL-2.0 only [1], so it respects your choice of license.
 
-        Nacked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+>=20
+> Furthermore, please do not remove the existing copyright text; although
 
-William Breathitt Gray
+The copyright text:
+
+ Copyright (C) 2016 William Breathitt Gray
+
+Is still in the file.
+
+
+> it's just boilerplate for some, I was careful with the selection of
+> these words, and I worry the SPDX line only -- despite its useful
+> conciseness -- may lead to misunderstandings about my intentioned
+> license for this code.
+
+I'm not sure I understand your concerns here, the SPDX identifier is
+a shorthand for the GPL 2.0 only license. See [1] - Linux kernel licensing =
+rules.
+
+One of the biggest benefits with SPDX identifier is that it is hard to veri=
+fy
+boiler plate licenses due to formatting, types, different formulations and =
+so on.
+
+If still worrying, I think we could keep the license text as
+well.
+
+>=20
+> For the time being, I can't Ack this patch with the changes it makes
+> currently:
+>=20
+>         Nacked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+>=20
+> William Breathitt Gray
+
+Please let me know if I got you wrong at some point.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/license-rules.rst
+
+Best regards
+Marcus Folkesson
+
+--MZf7D3rAEoQgPanC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAlqMILgACgkQiIBOb1ld
+UjK9Ag//RFYuvmLZSH6GnP5gGk0/GBMTVPPr95tPUKj2LxlQrPBqoWqCdFXnuHf1
+da0hos+DEBo8xaRPtbvitCeWo3m3MgCG4RTCU/HKqTinyis52XV95y3YXGrMT6T9
+kH/hukr9/oIIlKpz5bAIR9vfwo2hd2M1KkBsc5hYhloWY83jbuYTAEUcmogipLAu
+5pPJIHWig0yHga6nTaUxwhyVShgX0qSiYfHihliemt+9reU5jtLDeDc3u5UrGiTg
+6E2GeQYv9mA07s9xzWdHTAoyUx3sMCwAJ65F6u4E89uiQjVr7KFz7HvlMJswnehn
+xWqnN8L2fNNaUxxDrJ7aEwPy1dMbiVjxdOoIl9ivc4mDe+DpD6N0bxPEk6bj1hbR
+pMLtfoBZHQZok1lzvQk8B0EPvnfOEJsntjsb09R6io+28dU+z1KlZwFHZ7PJ4g0l
+lnb64yyNupUMsG7zRyAC8Hq5bJbFGf0aZMOHD/NuZul/2+k3cNuUJUVUqV2wndyk
+VduFlrBiDRk9mjFPnqlsnOgFVteAROyineIzMEeOPio05wMQ7/KJRKLxxL8TZNmw
+j6TtRSFPIZZTFmpR8Xu5Ezxm32qb/5umECl2WqPkauzEWL3erJxngioWLp2q7vTy
+988Zz12kOcwGHl6N2F9FCbeoO4z8Bj9zSZMYezU/f3LR+SLaAy0=
+=96Xu
+-----END PGP SIGNATURE-----
+
+--MZf7D3rAEoQgPanC--

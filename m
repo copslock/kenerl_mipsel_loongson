@@ -1,44 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 22:49:50 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:50546 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994696AbeBTVtjrwSyS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Feb 2018 22:49:39 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DBF4D21104;
-        Tue, 20 Feb 2018 21:49:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DBF4D21104
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 20 Feb 2018 21:49:26 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 23:15:14 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:57775 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994696AbeBTWPEYsA1S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 23:15:04 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 20 Feb 2018 22:14:51 +0000
+Received: from [10.20.78.55] (10.20.78.55) by mips01.mipstec.com (10.20.43.31)
+ with Microsoft SMTP Server id 14.3.361.1; Tue, 20 Feb 2018 14:14:49 -0800
+Date:   Tue, 20 Feb 2018 22:14:39 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V2 11/12] MIPS: Loongson-3: Fix CPU UART irq delivery
- problem
-Message-ID: <20180220214925.GF6245@saruman>
-References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <1517023381-17624-1-git-send-email-chenhc@lemote.com>
- <1517023381-17624-2-git-send-email-chenhc@lemote.com>
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 08/12] MIPS: Align kernel load address to 64KB
+In-Reply-To: <20180219230719.GC6245@saruman>
+Message-ID: <alpine.DEB.2.00.1802202206490.3553@tp.orcam.me.uk>
+References: <1517022752-3053-1-git-send-email-chenhc@lemote.com> <1517023336-17575-1-git-send-email-chenhc@lemote.com> <1517023336-17575-2-git-send-email-chenhc@lemote.com> <20180219230719.GC6245@saruman>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vA66WO2vHvL/CRSR"
-Content-Disposition: inline
-In-Reply-To: <1517023381-17624-2-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1519164889-298552-32213-36277-6
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190238
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62658
+X-archive-position: 62659
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,57 +53,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Mon, 19 Feb 2018, James Hogan wrote:
 
---vA66WO2vHvL/CRSR
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > KEXEC assume kernel align to PAGE_SIZE, and 64KB is the largest
+> > PAGE_SIZE.
+> 
+> Please expand, maybe referring to sanity_check_segment_list() which does
+> the actual check. Maybe something like this:
+> 
+>  Kexec needs the new kernel's load address to be aligned on a page
+>  boundary (see sanity_check_segment_list()), but on MIPS the default
+>  vmlinuz load address is only explicitly aligned to 16 bytes.
+> 
+>  Since the largest PAGE_SIZE supported by MIPS kernels is 64KB, increase
+>  the alignment calculated by calc_vmlinuz_load_addr to 64KB.
 
-On Sat, Jan 27, 2018 at 11:23:00AM +0800, Huacai Chen wrote:
-> Masking/unmasking the CPU UART irq in CP0_Status (and redirecting it to
-> other CPUs) may cause interrupts be lost, especially in multi-package
-> machines (Package-0's UART irq cannot be delivered to others). So make
-> mask_loongson_irq() and unmask_loongson_irq() be no-ops.
->=20
-> Cc: stable@vger.kernel.org
+ But why does it have to be hardcoded?  Shouldn't it be inherited from 
+the image being loaded?  I'm missing bits of context here, but that 
+would be either CONFIG_PAGE_SIZE_* settings or the ELF program header's 
+`p_align' value, depending on how this code operates.  Wasting say 60kB 
+of memory on smaller systems due to excessive alignment might not be a 
+good idea.
 
-=2E..
-
-> -static inline void mask_loongson_irq(struct irq_data *d)
-> -{
-> -	clear_c0_status(0x100 << (d->irq - MIPS_CPU_IRQ_BASE));
-> -	irq_disable_hazard();
-> -
-> -	/* Workaround: UART IRQ may deliver to any core */
-
-Wouldn't removing this self-described "workaround" bring back the
-original problem?
-
-At the very least you need a much better explanation of why these
-workarounds are no longer applicable and can be safely removed.
-
-Cheers
-James
-
---vA66WO2vHvL/CRSR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMl+UACgkQbAtpk944
-dnqUFBAAvg7WSKz2ApPsBOLQnIwbygmQ7fyZJ2lw62i8gIa6QgY6ODhicsWkSWa0
-jD5rO4T4W19CGhDMsA1mDsHusOE81F5T4uajYzfu7oK2dh2GTpD0ASUYs20ktkST
-6K5mvpM+DNJk5OIK+k+X/sayIW5fcYF1mpxvkoNZr132E+WUgWlEzvu/D4U92SPv
-5pJEsqR2ruxQwvTJAFjXpVZdq4F/Gt1PwBFtiwyriyvJ6dtOXnN8cc1Rsg1GPgOf
-jlMQlx72yCs1e/U1eRIRuOqrc7TnX1WHv+zfIC4z9I6Yx1oBx0/etNA8N4re52EY
-KVeO+Ra8okUCbjZRHluOXDRHqsUgI2XbymJl0OArxm5M9FYp6CmD9Ky2o2msYywU
-ENWgimiGp72peNSdodbHsrFthraxxfSMwdxiufJ8fhPGQuwfJ3JzKFdBjZuPaNoO
-KuMBtwfEbW3I+RUN/5pSegIsp9Gi+1xifj27zHJ6iQG19g/30oJNMXRb2G86+eXj
-nyB5u5B0RwsEc9FtuHoyCijbzT36HkwRLqKzSIG7f37jSqkeO5A1wICH7Ojc2Qp0
-APsDvprDAH2FwzrWOrRlKGJDY5/jeCot4Gqs2p+gYHJ6Y1dUDC28zC/qhv+aG3uS
-ybdRbMmRv5Y1S7fPf4ZcBs/0Q5GBrCvsvOQFt5sU1gQiSH3muTk=
-=oZtf
------END PGP SIGNATURE-----
-
---vA66WO2vHvL/CRSR--
+  Maciej

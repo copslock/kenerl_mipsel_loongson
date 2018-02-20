@@ -1,48 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 15:42:30 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:47142 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994686AbeBTOmRz24iI convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Feb 2018 15:42:17 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 20 Feb 2018 14:42:01 +0000
-Received: from [10.20.78.55] (10.20.78.55) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Tue, 20 Feb 2018 06:41:31 -0800
-Date:   Tue, 20 Feb 2018 14:41:21 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Fredrik Noring <noring@nocrew.org>
-CC:     =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [RFC v2] MIPS: R5900: Workaround exception NOP execution bug
- (FLX05)
-In-Reply-To: <20180218084723.GA2577@localhost.localdomain>
-Message-ID: <alpine.DEB.2.00.1802201410300.3553@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk> <20171029172016.GA2600@localhost.localdomain> <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk> <20171111160422.GA2332@localhost.localdomain> <20180129202715.GA4817@localhost.localdomain>
- <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk> <20180211075608.GC2222@localhost.localdomain> <alpine.DEB.2.00.1802111239380.3553@tp.orcam.me.uk> <20180215191502.GA2736@localhost.localdomain> <alpine.DEB.2.00.1802151934180.3553@tp.orcam.me.uk>
- <20180218084723.GA2577@localhost.localdomain>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 16:14:12 +0100 (CET)
+Received: from mail-pl0-x241.google.com ([IPv6:2607:f8b0:400e:c01::241]:36888
+        "EHLO mail-pl0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994692AbeBTPN5PCdQI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 16:13:57 +0100
+Received: by mail-pl0-x241.google.com with SMTP id ay8so7564503plb.4
+        for <linux-mips@linux-mips.org>; Tue, 20 Feb 2018 07:13:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=y34bTknDNKXY+MEzQSqwAz/ZO1mzx4llC5TzgdiaIRw=;
+        b=cOHSDrhilFFMQlfyFSxiiHDgc6PPK2h0SI24+h0TOI3AQ1ATDhtxNJobE0sC6zpapv
+         rO2pswNogmE7F2HbyrjTFSlhVyD6Fbck0JoracYtGvOdOquGq0OziNeMk4WsFBWZJtLy
+         2oNcnqxwiMerEAjZPMPqp8lSODItbEA4JKnZqb0+YKmYdZvJmh+A4OsvMHH0D5m1+HM6
+         Jirt8PJvsnhzCVS5aV93LNm6oZO08aDrUW+9+/9MCi6V6lpO9/5WUDO1WHiMopCekmGX
+         fw1W7IHYeIZ+nPBT/UPw1gr/ddvawqayunTKEtGGfELhk/4wleX6sfD6yDXkSTvcvouA
+         se9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=y34bTknDNKXY+MEzQSqwAz/ZO1mzx4llC5TzgdiaIRw=;
+        b=Zq0mwLhrlQQmND+L4JYRfdIZQnepkfeJHlPGc2WbqtHls/iFjIRQa7PHn/NyrfrCfZ
+         0Ds63Qpe1NTba4NEhkK2vbGkhStTy0nNpoc7UGKpFRvjouqreXwogCSnxr1KwCMp0cHa
+         SmGH7uk1l31MCdTgx/AwnFYOKK7iaJbzjtluNpPzwIJ6GGNXbzGOF7f1TEX5LfFXdTAl
+         KVkntVDCe91KSdyI6ZiSKHGfxqlRCjewZFRj6qX1fs3bj7rfhm17J4ULvj9BfS8F6XfS
+         tIMJI5qncBH4B3ZYW6punoLFLSSdhVBrX+hMivzHdUxhZlOs4Z9YiYhizbEcufi+PNqV
+         w85g==
+X-Gm-Message-State: APf1xPBq+WvHliCxrdkwr7HnDRNvOt5kql4xk6gI1RE1c+3HDiafTr+y
+        HF4has0HXOSy1SFowLeeOmo=
+X-Google-Smtp-Source: AH8x224fX7bOUGsPtGUHYfTrxSKH2PQibDq4aRlyJY3v5ywdhjB4c0zTFUSbyqgLImz8XdDypS+4dQ==
+X-Received: by 2002:a17:902:d68a:: with SMTP id v10-v6mr17615278ply.206.1519139630832;
+        Tue, 20 Feb 2018 07:13:50 -0800 (PST)
+Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id e125sm9874049pgc.76.2018.02.20.07.13.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Feb 2018 07:13:48 -0800 (PST)
+Subject: Re: [PATCH v2] watchdog: add SPDX identifiers for watchdog subsystem
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Jimmy Vance <jimmy.vance@hpe.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Andreas Werner <andreas.werner@men.de>,
+        Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Zwane Mwaikambo <zwanem@gmail.com>,
+        Jim Cromie <jim.cromie@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        Mans Rullgard <mans@mansr.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Jun Nie <jun.nie@linaro.org>,
+        Baoyou Xie <baoyou.xie@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-mips@linux-mips.org, linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
+References: <20180220104542.32286-1-marcus.folkesson@gmail.com>
+ <20180220124955.GA17814@sophia> <20180220132103.GD24311@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <48db897e-8a61-a5bc-5a61-56349cafaa10@roeck-us.net>
+Date:   Tue, 20 Feb 2018 07:13:43 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-BESS-ID: 1519137720-321457-25678-17499-3
-X-BESS-VER: 2018.2-r1802152108
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190222
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+In-Reply-To: <20180220132103.GD24311@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62650
+X-archive-position: 62651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,43 +126,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 18 Feb 2018, Fredrik Noring wrote:
-
-> > Substitute `mips:5900' for `mips:isa32r2' to get R5900 disassembly.  If 
-> > you want to see raw machine code too, use `disassemble -r', but watch out 
-> > for the syntax, which is different.  As you can see the trailing NOPs 
-> > required are already there. :)
+On 02/20/2018 05:21 AM, Marcus Folkesson wrote:
+> Hello William,
 > 
-> Due to trailing zeroes, I suppose. :)
-
- It's no coincidence and we use it to our advantage that an all-zeros 
-pattern is the canonical NOP instruction encoding.
-
-> >  A handler for SIO is needed if SIOInt can be asserted without kernel 
-> > control by PS/2 hardware.  Otherwise handlers will only be needed once the 
-> > kernel has means to enable the respective exceptions.
+> On Tue, Feb 20, 2018 at 07:49:55AM -0500, William Breathitt Gray wrote:
+>> On Tue, Feb 20, 2018 at 11:45:31AM +0100, Marcus Folkesson wrote:
+>>> - Add SPDX identifier
+>>> - Remove boiler plate license text
+>>> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
+>>>   license
+>>>
+>>> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+>>> Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+>>> Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+>>> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+>>> Acked-by: Michal Simek <michal.simek@xilinx.com>
+>>> ---
+>>>
+>>> Notes:
+>>>     v2:
+>>>     	- Put back removed copyright texts for meson_gxbb_wdt and coh901327_wdt
+>>>     	- Change to BSD-3-Clause for meson_gxbb_wdt
+>>>     v1: Please have an extra look at meson_gxbb_wdt.c
+>>
+>> [...]
+>>
+>>> diff --git a/drivers/watchdog/ebc-c384_wdt.c b/drivers/watchdog/ebc-c384_wdt.c
+>>> index 2170b275ea01..c173b6f5c866 100644
+>>> --- a/drivers/watchdog/ebc-c384_wdt.c
+>>> +++ b/drivers/watchdog/ebc-c384_wdt.c
+>>> @@ -1,15 +1,8 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> /*
+>>>   * Watchdog timer driver for the WinSystems EBC-C384
+>>>   * Copyright (C) 2016 William Breathitt Gray
+>>>   *
+>>> - * This program is free software; you can redistribute it and/or modify
+>>> - * it under the terms of the GNU General Public License, version 2, as
+>>> - * published by the Free Software Foundation.
+>>> - *
+>>> - * This program is distributed in the hope that it will be useful, but
+>>> - * WITHOUT ANY WARRANTY; without even the implied warranty of
+>>> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+>>> - * General Public License for more details.
+>>>   */
+>>> #include <linux/device.h>
+>>> #include <linux/dmi.h>
 > 
-> Serial I/O requires soldering for the PS2. Jürgen Urban, Rick Gaiser, and
-> others have it and they can more easily debug the early boot stages. The
-> proposed PS2 serial driver uses a 20 ms timer and polling instead of SIOInt:
+> Thank you for your feedback!
+>>
+>> I have no problem with adding a SPDX line to the top of this file, but
+>> use "SPDX-License-Identifier: GPL-2.0-only" as I was very intentional
+>> with the selection of GPL version 2 only when I published this code.
 > 
-> https://github.com/frno7/linux/blob/ps2-v4.15-n7/drivers/tty/serial/ps2-uart.c
+> SPDX-License-Identifier: GPL-2.0
+> Is GPL-2.0 only [1], so it respects your choice of license.
+> 
+>>
+>> Furthermore, please do not remove the existing copyright text; although
+> 
 
- So it looks like a random SIOInt is not supposed to happen and therefore 
-I think a handler is not needed for the initial submission of the port if 
-at all.
+It is not a matter if you CAN keep a copyright. You MUST NOT remove a copyright.
+As long as you do, the series is
 
-> I don't have a serial port. My setup consists of ssh over a wireless RT3070*
-> USB device. Obviously a great number of things could potentially fail in
-> that chain but it is surprisingly reliable. :)
+Nacked-by: Guenter Roeck <linux@roeck-us.net>
 
- This has prompted me to look at what PS2 hardware provides and it indeed 
-seems lacking in basic I/O connectivity.  What could one expect from a 
-game console anyway?
+Guenter
 
- Do you use the netconsole then too?  Using a USB serial port adapter 
-would be an alternative, although not a very powerful one either, because 
-you need to have many parts of the OS initialised before you can get to 
-such a port.
-
-  Maciej
+> The copyright text:
+> 
+>   Copyright (C) 2016 William Breathitt Gray
+> 
+> Is still in the file.
+> 
+> 
+>> it's just boilerplate for some, I was careful with the selection of
+>> these words, and I worry the SPDX line only -- despite its useful
+>> conciseness -- may lead to misunderstandings about my intentioned
+>> license for this code.
+> 
+> I'm not sure I understand your concerns here, the SPDX identifier is
+> a shorthand for the GPL 2.0 only license. See [1] - Linux kernel licensing rules.
+> 
+> One of the biggest benefits with SPDX identifier is that it is hard to verify
+> boiler plate licenses due to formatting, types, different formulations and so on.
+> 
+> If still worrying, I think we could keep the license text as
+> well.
+> 
+>>
+>> For the time being, I can't Ack this patch with the changes it makes
+>> currently:
+>>
+>>          Nacked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+>>
+>> William Breathitt Gray
+> 
+> Please let me know if I got you wrong at some point.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/license-rules.rst
+> 
+> Best regards
+> Marcus Folkesson
+> 

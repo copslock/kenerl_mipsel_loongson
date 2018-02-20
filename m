@@ -1,45 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 10:59:54 +0100 (CET)
-Received: from mail-lf0-x243.google.com ([IPv6:2a00:1450:4010:c07::243]:43817
-        "EHLO mail-lf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994664AbeBTJ7k3maE1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2018 10:59:40 +0100
-Received: by mail-lf0-x243.google.com with SMTP id q69so3299583lfi.10
-        for <linux-mips@linux-mips.org>; Tue, 20 Feb 2018 01:59:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 11:15:46 +0100 (CET)
+Received: from mail-co1nam03on0066.outbound.protection.outlook.com ([104.47.40.66]:10022
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990421AbeBTKPhfzMo1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Feb 2018 11:15:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Qwa4SQrVatsgWd2Lp+5+mVC9YE9t/ISywWWQYAOuk34=;
-        b=suG7QAkHQSBN0Opkr11ODEtDlUGIbQhAggMinBJt1pCZU/a8wZgvUQWdqmkH/iMic2
-         CuoIuIuq2GDgCQP6ANzmyXImAaXnmqaBY7+YvJOpWN8zceNaILNhlqSEYPBDQ5sO4Bnh
-         3zaQKeI15/7XcQj3cKwCFUVFL4iz7cSZZUSNcGahIsB348QclRCG9boQBd+E+uvOGwLs
-         B2wfCX4EiR1t3tv4+zVBnJo7Nb6bP8aNmlYzPA16pdLeUm7k1gZrZUClC7ZBvQi1P+2S
-         YMKM3TJlp3PzVOPms1eDAt44VhkhoCLSp7oph5+G4JGqDHK7kJWrf62xLY407u+01NVT
-         VIig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Qwa4SQrVatsgWd2Lp+5+mVC9YE9t/ISywWWQYAOuk34=;
-        b=oZaHdLbzm5V7rMGTKNsrdDtfeSSqOMp+HRErJMqWs6A85lS9+V1Q4/DAxaJdAav1tP
-         3/3nGILWxDC6iyua2n821e6481Sfd2IAX2LZLiQbvbqIg2kVPNvxfnmkcKKbqrzeoWFm
-         UvWUVh0fmSBXsSAa2b5nX2Umr5r/TfrMt7oJ+7X5tzcMVuZScJ5ajvHCJ+LC3nEkoZSS
-         BGH5CV/5P0PKOe/J8mHsuBYBhCVR2xbZM6oswGIRoszkFiNsWYTAVo+682C3O2ZDlJu0
-         mFc+fil8zHG4HjWkbjps/0nhxWeJP/ayKGodhLhFxKUlrpJyE4p51tfeyYg7ppIGoFv5
-         wJWQ==
-X-Gm-Message-State: APf1xPB5rDPIUY5QFqGbBSNhCMQzzducz4mAlE9my7p2okRnT41EgYLa
-        3zp5Pa2Mru+9Wx8zRrAUZZw=
-X-Google-Smtp-Source: AH8x224mQY5VQp0LFhQgclscy6IcIBA6Ha9l6uUNpgfDfZ7pN1FRmDi3zdqacb2pGmrimdC237N7dQ==
-X-Received: by 10.25.225.130 with SMTP id l2mr11910132lfk.110.1519120774587;
-        Tue, 20 Feb 2018 01:59:34 -0800 (PST)
-Received: from gmail.com (c-2ec27091-74736162.cust.telenor.se. [46.194.112.145])
-        by smtp.gmail.com with ESMTPSA id t69sm3199871ljb.36.2018.02.20.01.59.29
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 20 Feb 2018 01:59:33 -0800 (PST)
-Date:   Tue, 20 Feb 2018 10:59:26 +0100
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Neil Armstrong <narmstrong@baylibre.com>
-Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+ d=xilinx.onmicrosoft.com; s=selector1-xilinx-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=3OyEXCTGS23gji30cjdgHbRn5xkgX5U9oXJo02Q1uRQ=;
+ b=K2pmp61Mi+R96gxJPEM2Cryjh0WYSFpaef2PgvrkYoyKZr8cAfiDlkBRXKYgVekpzuCqwWipW3gv2WquyeJ4+CPM7xUhdPysBU25ag6DYTTSj5e+rvJGDnbs94orgRqCTR0FPIc9RufyY+j9d8XLV+wpZJ0kWbWVOnR5wmF+JL4=
+Received: from SN4PR0201CA0065.namprd02.prod.outlook.com (10.171.31.155) by
+ BY2PR02MB1332.namprd02.prod.outlook.com (10.162.79.27) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
+ 15.20.506.18; Tue, 20 Feb 2018 10:15:17 +0000
+Received: from CY1NAM02FT043.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::203) by SN4PR0201CA0065.outlook.office365.com
+ (2603:10b6:803:20::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.506.18 via Frontend
+ Transport; Tue, 20 Feb 2018 10:15:16 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.100)
+ smtp.mailfrom=xilinx.com; gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.100 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.100; helo=xsj-pvapsmtpgw02;
+Received: from xsj-pvapsmtpgw02 (149.199.60.100) by
+ CY1NAM02FT043.mail.protection.outlook.com (10.152.74.182) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.506.19
+ via Frontend Transport; Tue, 20 Feb 2018 10:15:13 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66]:37250 helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw02 with esmtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1eo4x6-0006yS-GH; Tue, 20 Feb 2018 02:15:12 -0800
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1eo4x6-0000Dc-DY; Tue, 20 Feb 2018 02:15:12 -0800
+Received: from xsj-pvapsmtp01 (xsj-mail.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id w1KAF0Ax020530;
+        Tue, 20 Feb 2018 02:15:01 -0800
+Received: from [172.30.17.111]
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <michals@xilinx.com>)
+        id 1eo4wu-0008Ne-FV; Tue, 20 Feb 2018 02:15:00 -0800
+Subject: Re: [PATCH] watchdog: add SPDX identifiers for watchdog subsystem
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
         Guenter Roeck <linux@roeck-us.net>,
         Joel Stanley <joel@jms.id.au>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -47,7 +54,7 @@ Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
+        <bcm-kernel-feedback-list@broadcom.com>,
         Eric Anholt <eric@anholt.net>,
         Stefan Wahren <stefan.wahren@i2se.com>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -85,33 +92,97 @@ Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Jun Nie <jun.nie@linaro.org>,
         Baoyou Xie <baoyou.xie@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>, linux-mips@linux-mips.org,
-        linux-samsung-soc@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] watchdog: add SPDX identifiers for watchdog subsystem
-Message-ID: <20180220095811.GA24311@gmail.com>
+        Shawn Guo <shawnguo@kernel.org>
+CC:     <linux-watchdog@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-mips@linux-mips.org>, <linux-amlogic@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <patches@opensource.cirrus.com>
 References: <20180220093119.23720-1-marcus.folkesson@gmail.com>
- <d734dd84-ad3b-141b-779d-13d340217a18@baylibre.com>
+From:   Michal Simek <michal.simek@xilinx.com>
+Message-ID: <c7eae315-c8b8-3a4c-af1d-f7d713beb7c8@xilinx.com>
+Date:   Tue, 20 Feb 2018 11:14:46 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6zdv2QT/q3FMhpsV"
-Content-Disposition: inline
-In-Reply-To: <d734dd84-ad3b-141b-779d-13d340217a18@baylibre.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <marcus.folkesson@gmail.com>
+In-Reply-To: <20180220093119.23720-1-marcus.folkesson@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.100;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(1496009)(39380400002)(396003)(376002)(39860400002)(346002)(2980300002)(438002)(189003)(199004)(53546011)(76176011)(356003)(36386004)(4000630100001)(305945005)(26005)(9786002)(2950100002)(336011)(186003)(6666003)(64126003)(50466002)(39060400002)(106466001)(229853002)(83506002)(6246003)(77096007)(4326008)(65826007)(5660300001)(8676002)(58126008)(47776003)(65806001)(65956001)(31686004)(63266004)(110136005)(316002)(2906002)(36756003)(230700001)(106002)(54906003)(31696002)(81166006)(478600001)(7406005)(7366002)(8936002)(86362001)(2486003)(81156014)(23676004)(7416002)(171213001)(921003)(107986001)(5001870100001)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:BY2PR02MB1332;H:xsj-pvapsmtpgw02;FPR:;SPF:Pass;PTR:xapps1.xilinx.com,unknown-60-100.xilinx.com;MX:1;A:1;LANG:en;
+X-Microsoft-Exchange-Diagnostics: 1;CY1NAM02FT043;1:EjgY6YMwG1AoOQtkKw9RyKtrs/P/p7Q068Mj8o/ZS7dp53nWTOb3cUz92g0IjFSqrm4/A6j+PbhHSp0NpBA6wY3oHOYXZ6N1xDH9rcz36sSIKpYoVd95ZEOAk9zlIYho
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 71d7877b-fdd3-460d-a230-08d5784ad67c
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(4534165)(4627221)(201703031133081)(201702281549075)(5600026)(4604075)(4608076)(2017052603307)(7153060);SRVR:BY2PR02MB1332;
+X-Microsoft-Exchange-Diagnostics: 1;BY2PR02MB1332;3:5vAB1XTQ81RltH1iuHk78DkfyZ0A2gHeOgmNP4aAh9YHyE44H/YvRLxxPq1NvVWE2P0xlW0UvMCudb1ZZVDiV/SDBEZ1W/OJa54Zs1tiYFFIJ0lKY6ZUktXCopEpgruRA4MAFGzDl1i78hXBoj2ktCOY/eHtVPE7H1m1MOk3PrS14iI7wqh96PWO9jI1GJuAggQQFU3LYhOIF/hezjbrNNjFdyLNhIgsJfATalyxlf7laNnSLPwu9amI2wBZ5eTOnr8SZI/rCL4R17ZtVWmF9hMir3ux9+hw+jfcCEc+0yL+D5Z3yS3hgMRukGoAAjX4jAK6lbW1vwvZzRpvZtvz4Z+SfI8kiJy7V/GnrOvHBuU=;25:OG0ab6MckfdiUEgT8oTlitNMRvs7yTQBoKTewGOHe8XRxti1pNq3kEj/R4f695gTu7J4Xa0R69sogLt46oPTo4IVjRUR18niw/eW+wle33lujizhe0rr1cR/rqif8qzWW7idAF8IKfr/37YqgXYzDckkXXB8tqPZ5siNEZwHYZl/A4x1YplgJIj+sTfFHpwyOGKJIzILrQ3zUSamCB0NUkWZzGvJcLegxqQ1zBvLR1Yd88mbVUenP21qbup6/R5FlOHL//1HiBH898heOrrRTFrnXw4lptTkQHiXzcmaURZzapdjtyBbZqNB55ll1jyNP9ATh3Nzi1UPflUVHCNR4p8aSZAkoSeDgCaV9hUaUAo=
+X-MS-TrafficTypeDiagnostic: BY2PR02MB1332:
+X-Microsoft-Exchange-Diagnostics: 1;BY2PR02MB1332;31:8hi05CkSay3NVJ0ZH4iZDgKKtTFpccecA3AB+mGCJwjSmsgpWKghGWqZsJYNp3YQs1w07knOaWsfz5jS9/o626sWUvMXumXmPfEUpQDGvbcQWRIpoYcW+fJb2EK5FTgUbODBvfMJTsVGu93OnyERK5eEZ4uq8b3MFsEo3j+pXHVSOitzf83jvNInLcGumZgUXSi8xuhOWA4IQ/VrUa2iugEXgLdB0lNBkCE9dSIloUM=;20:xS6BbVQzs9JuFoh33rQJY2yGCYmQ/XCWdMY1IWb/BVTf2/zwTx1i8Vr+B2Ct0ZphIDaaPbGbXcjj1GSwr5CRFW+0ArB/yCyA9dvidhlIY41Iktg3HSH4lVN9PtA2j9YKyvCUJXTBjQGKK2D0iyJLYeyT4sEo77vbeikWWdWkYLcBolWIVAc1leIfEmMqcWSAMWLaQQ4aeiSDRI4NTiZcN3FBu1MemtyTo/Y/4bOtI8SK/5cBR+rMHcYOHccJ/Oth4PdCnLu6uchEwRFhPct8Qq6KAd38rzcHFRAKBENrGENdcGZjYkAGKni9dn5UM6OhvcNOqXvwgKoLyqdquv+vR9p2ixs4uFO9TDdvlQiRSugnZ935txm+eloITSzONlEjy3W26xCQS74+jrhm85CWu25+Oe9K0kupVG4CiFgmAv2mSgRIFpwKXPDG7ti5yM+HEsPRc8rvRQ61bvBmK8DZ8c2nWZs01KD5KcJ6em/tqbKBJu8KY9fUYenagyrduZA6
+X-Microsoft-Antispam-PRVS: <BY2PR02MB133298A10C7B60584B9B2405E2CF0@BY2PR02MB1332.namprd02.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(85827821059158)(192813158149592);
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001056)(6040501)(2401047)(8121501046)(5005006)(3002001)(93006095)(93004095)(3231101)(944501161)(10201501046)(6055026)(6041288)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:BY2PR02MB1332;BCL:0;PCL:0;RULEID:;SRVR:BY2PR02MB1332;
+X-Microsoft-Exchange-Diagnostics: 1;BY2PR02MB1332;4:daso7F7Dt/AfbmU14ZeJG0Wfs3lkKK7DJtIKyoBGq+HzEJQDtBda9r2fTaR+OoXERRyFg29KEVvJHM0GXvgryRVi/X5ODVTdp1etk7omzzjAhOkWeHiRHl7rKs5t+EM49DN3wDee+9MtYBbK+ON+RoofRKPlFx+VaQKFRPUYSbtAwAWc7RH2ymXHFKd/N0wd94p3Sgu14BFeHGXLqqBUtq8XMp5i67k+SOBTb3P7ENU8CN1FLnlb5QyvdZEnKLvFyWoxDJuMZ86c1yQCa0Wl0mCdMc14ExNJjFo8zS3jYYYmc0hIbUPSfdnZdBVGWAWFozoN+DHP7iPljWxc/IqEk1V3w1NrAqnZ9yv6Nvw2h34=
+X-Forefront-PRVS: 05891FB07F
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTJQUjAyTUIxMzMyOzIzOjhXSU05TkdaR0NvT0Myam9VNDZ4RG0yTFQ5?=
+ =?utf-8?B?Y2hkV0ZGWlFtUzBiVlI4Rko4UDlSK0t0N25uTEt0eVViUkRPcWtOdWRJZFNN?=
+ =?utf-8?B?STBxeWp0bW5KcGFqY0VrR0IzTG9yTVhYd3JmVmowY1dKTENwcVBMc1NrK1By?=
+ =?utf-8?B?RXhUQ2JNNk1JSm9hNWtnUDNGUWEzUW9mUWxwamVrNkU5Vkt1dDdlWmZnWUxa?=
+ =?utf-8?B?KzNUcEIzbTZHemhtcFpEWm42bWNVMWFsQ1o4d3g4SHBZR05rUjB4OWptNEli?=
+ =?utf-8?B?Y2J1VGI2elRiYXZocWNSc0ZaekJ5Sk1STmhQN3FRQ3U3MWlmQnF4elBFQSta?=
+ =?utf-8?B?ZTFNejltM0I1b242dU1IMjJZcDc4bm5CdVJQZ2E5aFVzS3A0MC9vNnI5dC9D?=
+ =?utf-8?B?VTQ3dzA1NDM4NnlmSFVDTitZMEpQKzkyeWd1VXFHWWtDS0FTSUZrUHdGVDZV?=
+ =?utf-8?B?aGpvY0JpSVlGNFlTd0JPV09iUnhsY1FjWFVRM1dBbW14amZ1d0tzb3pQMkdr?=
+ =?utf-8?B?bGhDV0hSY2xHa2JWR2dmSXRSK04rc25Vdiswei9PNmR3TFFBaUJYRy9Iby90?=
+ =?utf-8?B?OXlMUHh5QWNMOFBtaG5iamVoaDA0czB4cFMyR3RTaEFja3lIaWhhQXVicWdE?=
+ =?utf-8?B?WjREYVBzTFN3a2ZsZnVFa2hZSUswUlg3d1hDZFJxWUM5aUEwWFZHZGpvVXZU?=
+ =?utf-8?B?blAvTGx1VDBSYUtaYUNhN3NvVUNEUGYvalluS2pGVDFweUdzQS9Sblg3QnYx?=
+ =?utf-8?B?bFBJMlVreUR0R1oycGZBTTZaMTBoYVZqWDZBMFVSYlBGNHhiaCttUzRKOENS?=
+ =?utf-8?B?cE9MRjl1ekNOWTl3UnF0dmRCdGZQbW1teDhaMFVrR0xKV1g4UVJNWTh1SXAw?=
+ =?utf-8?B?aGlJU0pMT3pvWTUxby9kNnhuY3MreUJCM1JGR3MyZXVtL3YvNkJHeHA5OERp?=
+ =?utf-8?B?aFJJTTBYRGJkZC80VmIxQzBoakNDZlBSN29pUHdpWnphazlwWXYzT3c0bEJV?=
+ =?utf-8?B?djlXMU01QXRvbXREODZUTDFOV0lFZkM3aHBiTXFWTUJ1dXRuSzhlaWZ6b0hl?=
+ =?utf-8?B?MWVYVkFWdG0yVWlmYlRnVlNMMVYyOElrUjlSTXNlYXdvbk1BTmREZzJRdW5Q?=
+ =?utf-8?B?c0h0UXBwdFdpajlzQUpSSXVCVHlMVzllUk4yQ1VKVEpBcEh3MWlaYkwzOTBt?=
+ =?utf-8?B?VFY0RDg4bVFhN3MxVGVCbmFpSlBxSFFVVTBnWkIvQ09Oek1SOUc0Tm1KN3Jx?=
+ =?utf-8?B?NTA1TWlNa3VneFhXeGdJMGZ1YkFUMlNjSzk0eVhieTFCbWp3cVQ0MlZFVkxE?=
+ =?utf-8?B?Yjk4bGJDaDJwSldpTml4YzdRZzhRUnpBeWd1eWRZOFFYVFdkR1ZvcjdmT3k0?=
+ =?utf-8?B?ZTBwWU9ucFBUNHp1aWpWM3dqTXBUYVlnYWIwc0M4bkdaaldQWWtmTE9ka1F4?=
+ =?utf-8?B?QXRLb0I2OFlDNkE4Q1lqYkg3aVpYWEM4QWNBSmlkekFVRkJOTWtJc0Fremda?=
+ =?utf-8?B?SUJ1bW91YUdNb29haTc2blg4K3VEWlAvM2dSVGdpMis3SWwxUkNYQ1ZBNmRh?=
+ =?utf-8?B?S3BtVDV2U2puY1VBVk5lY0hQdjg5VFhUSVJ1ZDVnZ0cxL3AvMXlsU2REK2U3?=
+ =?utf-8?B?TDBpalRYVFRmR1ZFbVNmTjNFVXVpVVJrVWtTNSs3N3RuOU1YbXZrQ0VvTzNa?=
+ =?utf-8?B?eXRZYjJDeWo5aU9vckkzSVhYZ082MzBBN09SZ3R6VWxNcTduS2lUWHllRFcy?=
+ =?utf-8?B?dm5vaFBsT3liaG8xK2JJRDJLdTh3eVcyWno1SGN0M1kwbTVSS3VKTkdhWk8y?=
+ =?utf-8?B?NDdjUW93b2FUZitjZGUrUWVJQ2x6RFRocVVDMkNuL0ZKQys3SFlhK2Z2dFNh?=
+ =?utf-8?B?cysrVFBoQVR2UXlOd25PZ2lpb01EcDBtSmpxdFJmZzBURUNGVnltS0pTSlpJ?=
+ =?utf-8?Q?PR5UaW0dfj6jtYbsforf50Jizwf6TI=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;BY2PR02MB1332;6:74Q5cNCH48cvbymJC4fsNU+Ertn3Gtdq6AluD5hGLq9alHlrQWlc6yRpNxzQXp9EXAkOQLhBTBRSoqQrrHeU8cTgcvRv2jY/Iehe6oHFjx3xM15zF00usAA9Ssot1kIYcwhRreRGo6VLMbfBHPnMk/6B8d3CLKIkoF9E+HI3YN6ZKL4wE5HCFa2xg+KQhfB3uEZbY4Xhy50f6EFaNidXGvnHqf0Ml+d9XsDvzV0rpz0aWdS6imhA8VNMPcQ06DRoPmlg085jbEJsogi13RqzrBDspxqjYXAIpbVVThLs8vurSzrtZ1Txkrg8msVOYcQ1VY+yQxlN690qhh5ZJO/xAIxxCR0JXsOUEFjoPIPENNQ=;5:nUDplGBwH5oKzPembzMI1HQzRaqKeYohPaNI6c+18wTv0aiyHDJPsRcmgjveNwb1wk5WmMKprFxk38+2xKihkChmZ/ReoT13T3ogoxNtEMINXndTmljQuCYfF2cVSq423GLLdESNhTcHMwKS+9u1aBSxF63s8tB6sp78fkqdIdM=;24:tgkQu0iLqqeSyyy7AXrw/8ezQl4j1csp0FtzZc9mkFVbjde4TOy5frWGERAGQcrB22MRv4Y+fyLmdd3XZdxtziquE2/ZGsktaN09G05NV84=;7:St0QFm9AGje+KwMMug+T3vVrbpz8ikG72f8qnEAVD3Pel30/FrHPI/BY8935HFBNFxSH5JWVoRDbfo7qYdftjP6KO8M0ubBan8KSqyfHfEa23TpZdbQastfuKFs6YqkR1hjUvty+lFF6norEZTUPnIZODirQ+iicN3bQ0LNM4sjJamrtk4s0dMaYG+hPQSCKzhu85pHwfQJg7Gh+K84/WiPqhVxiADbe5HlArhF05vvd6A2daTd3/LxbT4ioaoea
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2018 10:15:13.1541
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71d7877b-fdd3-460d-a230-08d5784ad67c
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.100];Helo=[xsj-pvapsmtpgw02]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY2PR02MB1332
+Return-Path: <michal.simek@xilinx.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62634
+X-archive-position: 62635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcus.folkesson@gmail.com
+X-original-sender: michal.simek@xilinx.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -124,304 +195,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 20.2.2018 10:31, Marcus Folkesson wrote:
+> - Add SPDX identifier
+> - Remove boiler plate license text
+> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
+>   license
+> 
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+> 
+> Notes:
+>     v1: Please have an extra look at meson_gxbb_wdt.c
+> 
+>  drivers/watchdog/cadence_wdt.c         |  5 +---
+>  drivers/watchdog/of_xilinx_wdt.c       |  8 ++---
 
---6zdv2QT/q3FMhpsV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2018 at 10:47:03AM +0100, Neil Armstrong wrote:
-> Hi Marcus,
->=20
-> On 20/02/2018 10:31, Marcus Folkesson wrote:
-> > - Add SPDX identifier
-> > - Remove boiler plate license text
-> > - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
-> >   license
-> >=20
-> > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> > ---
-> >=20
-> > Notes:
-> >     v1: Please have an extra look at meson_gxbb_wdt.c
-> >=20
-> >  drivers/watchdog/acquirewdt.c          |  6 +---
-> >  drivers/watchdog/advantechwdt.c        |  6 +---
-> >  drivers/watchdog/alim1535_wdt.c        |  6 +---
-> >  drivers/watchdog/alim7101_wdt.c        |  1 +
-> >  drivers/watchdog/ar7_wdt.c             | 14 +--------
-> >  drivers/watchdog/asm9260_wdt.c         |  2 +-
-> >  drivers/watchdog/aspeed_wdt.c          |  5 +---
-> >  drivers/watchdog/at91rm9200_wdt.c      |  5 +---
-> >  drivers/watchdog/at91sam9_wdt.c        |  5 +---
-> >  drivers/watchdog/at91sam9_wdt.h        |  5 +---
-> >  drivers/watchdog/ath79_wdt.c           |  4 +--
-> >  drivers/watchdog/atlas7_wdt.c          |  2 +-
-> >  drivers/watchdog/bcm2835_wdt.c         |  5 +---
-> >  drivers/watchdog/bcm47xx_wdt.c         |  5 +---
-> >  drivers/watchdog/bcm63xx_wdt.c         |  5 +---
-> >  drivers/watchdog/bcm7038_wdt.c         | 12 ++------
-> >  drivers/watchdog/bcm_kona_wdt.c        |  9 +-----
-> >  drivers/watchdog/bfin_wdt.c            |  2 +-
-> >  drivers/watchdog/booke_wdt.c           |  5 +---
-> >  drivers/watchdog/cadence_wdt.c         |  5 +---
-> >  drivers/watchdog/coh901327_wdt.c       |  7 ++---
-> >  drivers/watchdog/cpu5wdt.c             | 15 +---------
-> >  drivers/watchdog/cpwd.c                |  1 +
-> >  drivers/watchdog/da9052_wdt.c          |  6 +---
-> >  drivers/watchdog/da9055_wdt.c          |  6 +---
-> >  drivers/watchdog/da9062_wdt.c          | 10 +------
-> >  drivers/watchdog/da9063_wdt.c          |  5 +---
-> >  drivers/watchdog/davinci_wdt.c         |  7 ++---
-> >  drivers/watchdog/diag288_wdt.c         |  1 +
-> >  drivers/watchdog/digicolor_wdt.c       |  5 +---
-> >  drivers/watchdog/dw_wdt.c              |  6 +---
-> >  drivers/watchdog/ebc-c384_wdt.c        |  9 +-----
-> >  drivers/watchdog/ep93xx_wdt.c          |  7 ++---
-> >  drivers/watchdog/eurotechwdt.c         |  6 +---
-> >  drivers/watchdog/f71808e_wdt.c         | 16 +---------
-> >  drivers/watchdog/ftwdt010_wdt.c        |  6 ++--
-> >  drivers/watchdog/gef_wdt.c             |  6 +---
-> >  drivers/watchdog/geodewdt.c            |  5 +---
-> >  drivers/watchdog/gpio_wdt.c            |  5 +---
-> >  drivers/watchdog/hpwdt.c               |  7 ++---
-> >  drivers/watchdog/i6300esb.c            |  6 +---
-> >  drivers/watchdog/iTCO_vendor_support.c |  9 +-----
-> >  drivers/watchdog/iTCO_wdt.c            | 10 +------
-> >  drivers/watchdog/ib700wdt.c            |  6 +---
-> >  drivers/watchdog/ibmasr.c              |  3 +-
-> >  drivers/watchdog/ie6xx_wdt.c           | 18 ++---------
-> >  drivers/watchdog/imgpdc_wdt.c          |  5 +---
-> >  drivers/watchdog/imx2_wdt.c            |  5 +---
-> >  drivers/watchdog/indydog.c             |  6 +---
-> >  drivers/watchdog/intel-mid_wdt.c       |  6 ++--
-> >  drivers/watchdog/intel_scu_watchdog.c  | 18 ++---------
-> >  drivers/watchdog/intel_scu_watchdog.h  | 16 +---------
-> >  drivers/watchdog/iop_wdt.c             | 16 ++--------
-> >  drivers/watchdog/it8712f_wdt.c         | 10 +------
-> >  drivers/watchdog/it87_wdt.c            | 10 +------
-> >  drivers/watchdog/ixp4xx_wdt.c          |  6 ++--
-> >  drivers/watchdog/jz4740_wdt.c          | 10 +------
-> >  drivers/watchdog/kempld_wdt.c          | 12 ++------
-> >  drivers/watchdog/ks8695_wdt.c          |  6 ++--
-> >  drivers/watchdog/lantiq_wdt.c          |  7 ++---
-> >  drivers/watchdog/loongson1_wdt.c       |  5 +---
-> >  drivers/watchdog/lpc18xx_wdt.c         |  5 +---
-> >  drivers/watchdog/m54xx_wdt.c           |  6 ++--
-> >  drivers/watchdog/machzwd.c             | 11 +------
-> >  drivers/watchdog/max63xx_wdt.c         |  5 +---
-> >  drivers/watchdog/max77620_wdt.c        |  5 +---
-> >  drivers/watchdog/mei_wdt.c             | 12 ++------
-> >  drivers/watchdog/mena21_wdt.c          |  4 +--
-> >  drivers/watchdog/menf21bmc_wdt.c       |  8 ++---
-> >  drivers/watchdog/meson_gxbb_wdt.c      | 55 +-------------------------=
---------
-> >  drivers/watchdog/meson_wdt.c           |  6 +---
-> >  drivers/watchdog/mixcomwd.c            |  6 +---
-> >  drivers/watchdog/moxart_wdt.c          |  7 ++---
-> >  drivers/watchdog/mpc8xxx_wdt.c         |  6 +---
-> >  drivers/watchdog/mt7621_wdt.c          |  5 +---
-> >  drivers/watchdog/mtk_wdt.c             | 11 +------
-> >  drivers/watchdog/mtx-1_wdt.c           | 11 +------
-> >  drivers/watchdog/mv64x60_wdt.c         |  6 ++--
-> >  drivers/watchdog/ni903x_wdt.c          | 11 +------
-> >  drivers/watchdog/nic7018_wdt.c         | 11 +------
-> >  drivers/watchdog/nuc900_wdt.c          |  7 ++---
-> >  drivers/watchdog/nv_tco.c              |  6 +---
-> >  drivers/watchdog/nv_tco.h              | 10 +------
-> >  drivers/watchdog/octeon-wdt-main.c     | 11 +------
-> >  drivers/watchdog/octeon-wdt-nmi.S      |  5 +---
-> >  drivers/watchdog/of_xilinx_wdt.c       |  8 ++---
-> >  drivers/watchdog/omap_wdt.c            |  1 +
-> >  drivers/watchdog/omap_wdt.h            | 21 +------------
-> >  drivers/watchdog/orion_wdt.c           |  5 +---
-> >  drivers/watchdog/pc87413_wdt.c         | 10 +------
-> >  drivers/watchdog/pcwd.c                |  1 +
-> >  drivers/watchdog/pcwd_pci.c            | 10 +------
-> >  drivers/watchdog/pcwd_usb.c            | 10 +------
-> >  drivers/watchdog/pic32-dmt.c           |  5 +---
-> >  drivers/watchdog/pic32-wdt.c           |  6 +---
-> >  drivers/watchdog/pika_wdt.c            |  1 +
-> >  drivers/watchdog/pnx4008_wdt.c         |  7 ++---
-> >  drivers/watchdog/pnx833x_wdt.c         |  6 +---
-> >  drivers/watchdog/pretimeout_noop.c     |  7 +----
-> >  drivers/watchdog/pretimeout_panic.c    |  7 +----
-> >  drivers/watchdog/qcom-wdt.c            | 14 ++-------
-> >  drivers/watchdog/renesas_wdt.c         |  4 +--
-> >  drivers/watchdog/retu_wdt.c            | 10 +------
-> >  drivers/watchdog/riowd.c               |  1 +
-> >  drivers/watchdog/rn5t618_wdt.c         |  8 +----
-> >  drivers/watchdog/rt2880_wdt.c          |  5 +---
-> >  drivers/watchdog/rtd119x_wdt.c         |  2 +-
-> >  drivers/watchdog/rza_wdt.c             |  5 +---
-> >  drivers/watchdog/s3c2410_wdt.c         | 11 +------
-> >  drivers/watchdog/sa1100_wdt.c          | 11 +------
-> >  drivers/watchdog/sama5d4_wdt.c         |  3 +-
-> >  drivers/watchdog/sb_wdog.c             |  5 +---
-> >  drivers/watchdog/sbc60xxwdt.c          | 10 +------
-> >  drivers/watchdog/sbc7240_wdt.c         | 12 ++------
-> >  drivers/watchdog/sbc8360.c             | 10 +------
-> >  drivers/watchdog/sbc_epx_c3.c          |  6 +---
-> >  drivers/watchdog/sbc_fitpc2_wdt.c      |  7 ++---
-> >  drivers/watchdog/sbsa_gwdt.c           | 10 +------
-> >  drivers/watchdog/sc1200wdt.c           | 10 +------
-> >  drivers/watchdog/sc520_wdt.c           | 10 +------
-> >  drivers/watchdog/sch311x_wdt.c         | 10 +------
-> >  drivers/watchdog/scx200_wdt.c          | 10 ++-----
-> >  drivers/watchdog/shwdt.c               |  6 +---
-> >  drivers/watchdog/sirfsoc_wdt.c         |  5 ++--
-> >  drivers/watchdog/smsc37b787_wdt.c      | 10 +------
-> >  drivers/watchdog/softdog.c             | 10 +------
-> >  drivers/watchdog/sp5100_tco.c          |  6 +---
-> >  drivers/watchdog/sp805_wdt.c           |  5 +---
-> >  drivers/watchdog/sprd_wdt.c            | 10 +------
-> >  drivers/watchdog/st_lpc_wdt.c          |  6 +---
-> >  drivers/watchdog/stmp3xxx_rtc_wdt.c    |  5 +---
-> >  drivers/watchdog/sun4v_wdt.c           |  6 +---
-> >  drivers/watchdog/sunxi_wdt.c           |  6 +---
-> >  drivers/watchdog/tangox_wdt.c          |  6 +---
-> >  drivers/watchdog/tegra_wdt.c           | 10 +------
-> >  drivers/watchdog/ts4800_wdt.c          |  5 +---
-> >  drivers/watchdog/ts72xx_wdt.c          |  7 ++---
-> >  drivers/watchdog/twl4030_wdt.c         | 15 +---------
-> >  drivers/watchdog/txx9wdt.c             |  9 ++----
-> >  drivers/watchdog/uniphier_wdt.c        | 10 +------
-> >  drivers/watchdog/ux500_wdt.c           |  5 ++--
-> >  drivers/watchdog/via_wdt.c             |  4 +--
-> >  drivers/watchdog/w83627hf_wdt.c        | 10 +------
-> >  drivers/watchdog/w83877f_wdt.c         | 10 +------
-> >  drivers/watchdog/w83977f_wdt.c         |  9 +-----
-> >  drivers/watchdog/wafer5823wdt.c        | 11 +------
-> >  drivers/watchdog/watchdog_core.c       | 10 +------
-> >  drivers/watchdog/watchdog_core.h       | 10 +------
-> >  drivers/watchdog/watchdog_dev.c        | 10 +------
-> >  drivers/watchdog/watchdog_pretimeout.c |  6 +---
-> >  drivers/watchdog/wd501p.h              |  1 +
-> >  drivers/watchdog/wdat_wdt.c            |  5 +---
-> >  drivers/watchdog/wdrtas.c              | 15 +---------
-> >  drivers/watchdog/wdt.c                 | 11 +------
-> >  drivers/watchdog/wdt285.c              |  7 +----
-> >  drivers/watchdog/wdt977.c              |  8 +----
-> >  drivers/watchdog/wdt_pci.c             | 11 +------
-> >  drivers/watchdog/wm831x_wdt.c          |  5 +---
-> >  drivers/watchdog/wm8350_wdt.c          |  5 +---
-> >  drivers/watchdog/xen_wdt.c             |  6 +---
-> >  drivers/watchdog/ziirave_wdt.c         | 11 +------
-> >  drivers/watchdog/zx2967_wdt.c          |  3 +-
-> >  162 files changed, 195 insertions(+), 1059 deletions(-)
-> >=20
->=20
-> [..]
->=20
-> > diff --git a/drivers/watchdog/meson_gxbb_wdt.c b/drivers/watchdog/meson=
-_gxbb_wdt.c
-> > index 69a5a57f1446..500463c3e040 100644
-> > --- a/drivers/watchdog/meson_gxbb_wdt.c
-> > +++ b/drivers/watchdog/meson_gxbb_wdt.c
-> > @@ -1,57 +1,4 @@
-> > -/*
-> > - * This file is provided under a dual BSD/GPLv2 license.  When using or
-> > - * redistributing this file, you may do so under either license.
-> > - *
-> > - * GPL LICENSE SUMMARY
-> > - *
-> > - * Copyright (c) 2016 BayLibre, SAS.
-> > - * Author: Neil Armstrong <narmstrong@baylibre.com>
->=20
-> Please keep the copyright !
+Acked-by: Michal Simek <michal.simek@xilinx.com> (For cadence_wdt and
+of_xilinx_wdt)
 
-Sorry Neil!
-
-I will fix that for v2.
-
-I saw that the copyright text has magically disappered for
-coh901327_wdt.c as well.
-
-What do you think about the BSD license? Is BSD-2-Clause right?
-
->=20
-> > - *
-> > - * This program is free software; you can redistribute it and/or modify
-> > - * it under the terms of version 2 of the GNU General Public License as
-> > - * published by the Free Software Foundation.
-> > - *
-> > - * This program is distributed in the hope that it will be useful, but
-> > - * WITHOUT ANY WARRANTY; without even the implied warranty of
-> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> > - * General Public License for more details.
-> > - *
-> > - * You should have received a copy of the GNU General Public License
-> > - * along with this program; if not, see <http://www.gnu.org/licenses/>.
-> > - * The full GNU General Public License is included in this distribution
-> > - * in the file called COPYING.
-> > - *
-> > - * BSD LICENSE
-> > - *
-> > - * Copyright (c) 2016 BayLibre, SAS.
-> > - * Author: Neil Armstrong <narmstrong@baylibre.com>
-> > - *
-> > - * Redistribution and use in source and binary forms, with or without
-> > - * modification, are permitted provided that the following conditions
-> > - * are met:
-> > - *
-> > - *   * Redistributions of source code must retain the above copyright
-> > - *     notice, this list of conditions and the following disclaimer.
-> > - *   * Redistributions in binary form must reproduce the above copyrig=
-ht
-> > - *     notice, this list of conditions and the following disclaimer in
-> > - *     the documentation and/or other materials provided with the
-> > - *     distribution.
-> > - *   * Neither the name of Intel Corporation nor the names of its
-> > - *     contributors may be used to endorse or promote products derived
-> > - *     from this software without specific prior written permission.
-> > - *
-> > - * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-> > - * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-> > - * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS F=
-OR
-> > - * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-> > - * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTA=
-L,
-> > - * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-> > - * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF US=
-E,
-> > - * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON A=
-NY
-> > - * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-> > - * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE U=
-SE
-> > - * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-> > - */
-> > +// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> >  #include <linux/clk.h>
-> >  #include <linux/err.h>
-> >  #include <linux/io.h>
-> [..]
->=20
-> Thanks,
-> Neil
-
-Best regards
-Marcus Folkesson
-
---6zdv2QT/q3FMhpsV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAlqL8XkACgkQiIBOb1ld
-UjIQhw//bWaGBX/4lpSsbHHQaERbrVadxtGSk2NsvxXfXvsEqySH3+QabBHSqVan
-oShyuLqYOMZ/AEHVc9tN4kHL19VQuzuvW0tHUdpQE1bcv2ZERgHwAvKOBhJIlBj7
-qCzNgZYIMi0aVcMLM1qcP3HPROwrSJwGbBs4zZjNrlpWkn+Cc7bp5b6y6h6RIgg5
-j/v2ljxYXYYo9BEyRBNfMBQXuxE7lCfpc5AOtn4/BxHW+PPBLRQGG7LYWDucfo2t
-NtNLP6mF4FVY1O+kwgQtGBjIhsz9evYkRFLwaf+t1/ojFpLR80M+SRfmTHNUW8p2
-9O41/l0LP1GMoQhek6P7NLhT3rJvRooNrO8cGHftPgS0i5fBmrnCbIN91xA8x4i9
-hgn7AOqaccnx1pOcBJemZKnZlCIqCUItV18o6PAF7KDE6QZxz3VzUxXzOu2e+JN0
-KAzTn1L+Wwca8zrFJK1/Tym5K59SpJPJDf3I+XCfx4jGiccCf/eD5hZgZsRgnHsC
-0ydkLv3Mbkn4SYIf1ygPLEyYpBV3Hgvh15gHXZDVg7C+gNAID9v1Zag3RJ0Dy3kU
-ee/IFSCE9gckLMZY9crWQCn6/gx//tsQki2AWxLg8BX0Oa3h+taJNviVGNCxZu4W
-QbgiN0RU1c3bZqVb7TAZ8lKi/PvwA1Aip5/VDqP/UcHWGNx4WBA=
-=Ooxf
------END PGP SIGNATURE-----
-
---6zdv2QT/q3FMhpsV--
+Thanks,
+Michal

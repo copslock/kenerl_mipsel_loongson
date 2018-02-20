@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 22:43:09 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:47764 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2018 22:49:50 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:50546 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994696AbeBTVnB6TniS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Feb 2018 22:43:01 +0100
+        id S23994696AbeBTVtjrwSyS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Feb 2018 22:49:39 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2E7021795;
-        Tue, 20 Feb 2018 21:42:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C2E7021795
+        by mail.kernel.org (Postfix) with ESMTPSA id DBF4D21104;
+        Tue, 20 Feb 2018 21:49:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DBF4D21104
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 20 Feb 2018 21:42:49 +0000
+Date:   Tue, 20 Feb 2018 21:49:26 +0000
 From:   James Hogan <jhogan@kernel.org>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 10/12] MIPS: Loongson: Make CPUFreq usable for
- Loongson-3
-Message-ID: <20180220214248.GE6245@saruman>
+        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V2 11/12] MIPS: Loongson-3: Fix CPU UART irq delivery
+ problem
+Message-ID: <20180220214925.GF6245@saruman>
 References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
  <1517023381-17624-1-git-send-email-chenhc@lemote.com>
+ <1517023381-17624-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="so9zsI5B81VjUb/o"
+        protocol="application/pgp-signature"; boundary="vA66WO2vHvL/CRSR"
 Content-Disposition: inline
-In-Reply-To: <1517023381-17624-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1517023381-17624-2-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62657
+X-archive-position: 62658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,66 +52,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---so9zsI5B81VjUb/o
+--vA66WO2vHvL/CRSR
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 27, 2018 at 11:22:59AM +0800, Huacai Chen wrote:
-> Loongson-3A/3B support frequency scaling. But due to hardware
-> limitation, Loongson-3A's frequency scaling is not independent for
-> each core, we suggest enable Loongson-3A's CPUFreq only when there is
-> one core online.
+On Sat, Jan 27, 2018 at 11:23:00AM +0800, Huacai Chen wrote:
+> Masking/unmasking the CPU UART irq in CP0_Status (and redirecting it to
+> other CPUs) may cause interrupts be lost, especially in multi-package
+> machines (Package-0's UART irq cannot be delivered to others). So make
+> mask_loongson_irq() and unmask_loongson_irq() be no-ops.
+>=20
+> Cc: stable@vger.kernel.org
 
-Does the code do anything to enforce that?
+=2E..
 
-If not, should it?
+> -static inline void mask_loongson_irq(struct irq_data *d)
+> -{
+> -	clear_c0_status(0x100 << (d->irq - MIPS_CPU_IRQ_BASE));
+> -	irq_disable_hazard();
+> -
+> -	/* Workaround: UART IRQ may deliver to any core */
 
-Will it just work suboptimally if you tried?
+Wouldn't removing this self-described "workaround" bring back the
+original problem?
 
->  arch/mips/include/asm/mach-loongson64/loongson.h |   1 +
->  arch/mips/kernel/smp.c                           |   3 +-
->  arch/mips/loongson64/Kconfig                     |   1 +
->  arch/mips/loongson64/common/platform.c           |  13 +-
->  arch/mips/loongson64/loongson-3/Makefile         |   2 +-
->  arch/mips/loongson64/loongson-3/clock.c          | 191 ++++++++++++++++++
->  drivers/cpufreq/Kconfig                          |  13 ++
->  drivers/cpufreq/Makefile                         |   1 +
->  drivers/cpufreq/loongson3_cpufreq.c              | 236 +++++++++++++++++++++++
-
-This could presumably be fairly neatly divided into 3 separate changes:
-- New clocks driver
-- New cpufreq driver
-- Minimal platform changes in arch/mips to instantiate the drivers
-
-Please can you use the common clock framework i.e. a driver in
-drivers/clk/, rather than adding yet another implementation of the clk
-api in arch/mips/.
-
-Each change needs the appropriate maintainers on Cc or you'll never get
-the required review.
+At the very least you need a much better explanation of why these
+workarounds are no longer applicable and can be safely removed.
 
 Cheers
 James
 
---so9zsI5B81VjUb/o
+--vA66WO2vHvL/CRSR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMllIACgkQbAtpk944
-dno6Ug//UmGffPuyqd5e9UPPfrbcnvHp2dtKJjgYxg/ch6OKUOIpm/jY3jzk6Ao+
-u0AvpX212ScwDKtBIYhxf9zl9GZA5ZC797yXAhKkLVmNXYVhWecBf3cgtEwMlAFS
-TYA3x7kJqQfUgEQ6XFDt+1kCtNv/DWK8Ab76iNv0Su4ttaysv6IQsFcuHiv298C0
-J0kAS9PJ7+Oau2mdKZGJuFTCVm3TE5EgQxkYFwWE1IUvH+9yi47GEckELQQx+b+N
-wFMEbaphuv6qCnzRMhXBC80pHjzb9/MAbPk0LuwhC9H4vX/pPFGFtCvyVAizCI8Y
-X8cO7myWxx4ZT7LMFvV1m7eZ1jbiD0oNZwJq4bkL7iFy74wwW8g4WVBb/h29+zp4
-mqjOcyYo2RQgNWnlnK7o0/qsAB7c+YKIR/0u3szR06FUsI6u5HSbL3QKsdmomZnd
-y5Tgwo2bQ0HUnlebQBaSapGReBn6gtgoGQkS1cIDWRSlyTU7gfrt8NPvvuchlK8y
-rBIlDMeUiKz+b4Cj9+XzW4jKiRCN4D4qnfzdUPOKUJ0kcclXJVA5XMe7rShlmqS3
-zARVqCeJuv7uSmh5dL5Dn3EyGq+jwOZ11CmUwkrMlTzbJV0umeQAXP5jY6vaZQOc
-f9VrSvaZ9TAafv7Y5bkQQuPxhLDUUhALn1cTqTRO7jq2evrLgfw=
-=G1Yu
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqMl+UACgkQbAtpk944
+dnqUFBAAvg7WSKz2ApPsBOLQnIwbygmQ7fyZJ2lw62i8gIa6QgY6ODhicsWkSWa0
+jD5rO4T4W19CGhDMsA1mDsHusOE81F5T4uajYzfu7oK2dh2GTpD0ASUYs20ktkST
+6K5mvpM+DNJk5OIK+k+X/sayIW5fcYF1mpxvkoNZr132E+WUgWlEzvu/D4U92SPv
+5pJEsqR2ruxQwvTJAFjXpVZdq4F/Gt1PwBFtiwyriyvJ6dtOXnN8cc1Rsg1GPgOf
+jlMQlx72yCs1e/U1eRIRuOqrc7TnX1WHv+zfIC4z9I6Yx1oBx0/etNA8N4re52EY
+KVeO+Ra8okUCbjZRHluOXDRHqsUgI2XbymJl0OArxm5M9FYp6CmD9Ky2o2msYywU
+ENWgimiGp72peNSdodbHsrFthraxxfSMwdxiufJ8fhPGQuwfJ3JzKFdBjZuPaNoO
+KuMBtwfEbW3I+RUN/5pSegIsp9Gi+1xifj27zHJ6iQG19g/30oJNMXRb2G86+eXj
+nyB5u5B0RwsEc9FtuHoyCijbzT36HkwRLqKzSIG7f37jSqkeO5A1wICH7Ojc2Qp0
+APsDvprDAH2FwzrWOrRlKGJDY5/jeCot4Gqs2p+gYHJ6Y1dUDC28zC/qhv+aG3uS
+ybdRbMmRv5Y1S7fPf4ZcBs/0Q5GBrCvsvOQFt5sU1gQiSH3muTk=
+=oZtf
 -----END PGP SIGNATURE-----
 
---so9zsI5B81VjUb/o--
+--vA66WO2vHvL/CRSR--

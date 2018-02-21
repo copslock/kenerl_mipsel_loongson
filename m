@@ -1,38 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:13:00 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60526 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994760AbeBUNMkX0ypT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 14:12:40 +0100
-Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C05A01078;
-        Wed, 21 Feb 2018 13:12:33 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, linux-usb@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH 4.15 152/163] usb: Move USB_UHCI_BIG_ENDIAN_* out of USB_SUPPORT
-Date:   Wed, 21 Feb 2018 13:49:41 +0100
-Message-Id: <20180221124538.399406513@linuxfoundation.org>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180221124529.931834518@linuxfoundation.org>
-References: <20180221124529.931834518@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:32:02 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:59007 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991416AbeBUNbznjNjT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Feb 2018 14:31:55 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id C119BAC87;
+        Wed, 21 Feb 2018 13:31:52 +0000 (UTC)
+Date:   Wed, 21 Feb 2018 14:31:47 +0100
+From:   Johannes Thumshirn <morbidrsa@gmail.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Joel Stanley <joel@jms.id.au>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jimmy Vance <jimmy.vance@hpe.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Andreas Werner <andreas.werner@men.de>,
+        Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Zwane Mwaikambo <zwanem@gmail.com>,
+        Jim Cromie <jim.cromie@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        Mans Rullgard <mans@mansr.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Jun Nie <jun.nie@linaro.org>,
+        Baoyou Xie <baoyou.xie@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-mips@linux-mips.org, linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH v3] watchdog: add SPDX identifiers for watchdog subsystem
+Message-ID: <20180221133147.hv2roffsgo6qmsa3@linux-x5ow.site>
+References: <20180221122744.28300-1-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20180221122744.28300-1-marcus.folkesson@gmail.com>
+User-Agent: NeoMutt/20170421 (1.8.2)
+Return-Path: <jthumshirn@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62684
+X-archive-position: 62685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: morbidrsa@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,73 +94,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.15-stable review patch.  If anyone has any objections, please let me know.
+On Wed, Feb 21, 2018 at 01:27:34PM +0100, Marcus Folkesson wrote:
+> - Add SPDX identifier
+> - Remove boiler plate license text
+> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
+>   license
 
-------------------
+[...]
 
-From: James Hogan <jhogan@kernel.org>
+>  drivers/watchdog/mena21_wdt.c          |  4 +--
 
-commit ec897569ad7dbc6d595873a487c3fac23f463f76 upstream.
+Acked-by: Johannes Thumshirn <jth@kernel.org>
 
-Move the Kconfig symbols USB_UHCI_BIG_ENDIAN_MMIO and
-USB_UHCI_BIG_ENDIAN_DESC out of drivers/usb/host/Kconfig, which is
-conditional upon USB && USB_SUPPORT, so that it can be freely selected
-by platform Kconfig symbols in architecture code.
-
-For example once the MIPS_GENERIC platform selects are fixed in commit
-2e6522c56552 ("MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN"), the MIPS
-32r6_defconfig warns like so:
-
-warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB)
-warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_DESC which has unmet direct dependencies (USB_SUPPORT && USB)
-
-Fixes: 2e6522c56552 ("MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-usb@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Patchwork: https://patchwork.linux-mips.org/patch/18559/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/usb/Kconfig      |    8 ++++++++
- drivers/usb/host/Kconfig |    8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
-
---- a/drivers/usb/Kconfig
-+++ b/drivers/usb/Kconfig
-@@ -19,6 +19,14 @@ config USB_EHCI_BIG_ENDIAN_MMIO
- config USB_EHCI_BIG_ENDIAN_DESC
- 	bool
- 
-+config USB_UHCI_BIG_ENDIAN_MMIO
-+	bool
-+	default y if SPARC_LEON
-+
-+config USB_UHCI_BIG_ENDIAN_DESC
-+	bool
-+	default y if SPARC_LEON
-+
- menuconfig USB_SUPPORT
- 	bool "USB support"
- 	depends on HAS_IOMEM
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -625,14 +625,6 @@ config USB_UHCI_ASPEED
-        bool
-        default y if ARCH_ASPEED
- 
--config USB_UHCI_BIG_ENDIAN_MMIO
--	bool
--	default y if SPARC_LEON
--
--config USB_UHCI_BIG_ENDIAN_DESC
--	bool
--	default y if SPARC_LEON
--
- config USB_FHCI_HCD
- 	tristate "Freescale QE USB Host Controller support"
- 	depends on OF_GPIO && QE_GPIO && QUICC_ENGINE
+-- 
+Johannes Thumshirn                                          Storage
+jthumshirn@suse.de                                +49 911 74053 689
+SUSE LINUX GmbH, Maxfeldstr. 5, 90409 Nürnberg
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)
+Key fingerprint = EC38 9CAB C2C4 F25D 8600 D0D0 0393 969D 2D76 0850

@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:11:27 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:59314 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:11:54 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59320 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994715AbeBUNLQJpaXT (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23994730AbeBUNLQSDeDT (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 14:11:16 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 64C211204;
-        Wed, 21 Feb 2018 13:10:42 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 32B7B121D;
+        Wed, 21 Feb 2018 13:10:45 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Corentin Labbe <clabbe.montjoie@gmail.com>,
+        stable@vger.kernel.org, Greg Ungerer <gerg@linux-m68k.org>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.15 112/163] MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN
-Date:   Wed, 21 Feb 2018 13:49:01 +0100
-Message-Id: <20180221124536.358919398@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org
+Subject: [PATCH 4.15 113/163] MIPS: CPS: Fix MIPS_ISA_LEVEL_RAW fallout
+Date:   Wed, 21 Feb 2018 13:49:02 +0100
+Message-Id: <20180221124536.407722932@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180221124529.931834518@linuxfoundation.org>
 References: <20180221124529.931834518@linuxfoundation.org>
@@ -26,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62681
+X-archive-position: 62682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,50 +48,84 @@ X-list: linux-mips
 
 ------------------
 
-From: Corentin Labbe <clabbe.montjoie@gmail.com>
+From: James Hogan <jhogan@kernel.org>
 
-commit 2e6522c565522a2e18409c315c49d78c8b74807b upstream.
+commit 8dbc1864b74f5dea5a3f7c30ca8fd358a675132f upstream.
 
-MIPS_GENERIC selects some options conditional on BIG_ENDIAN which does
-not exist.
+Commit 17278a91e04f ("MIPS: CPS: Fix r1 .set mt assembler warning")
+added .set MIPS_ISA_LEVEL_RAW to silence warnings about .set mt on r1,
+however this can result in a MOVE being encoded as a 64-bit DADDU
+instruction on certain version of binutils (e.g. 2.22), and reserved
+instruction exceptions at runtime on 32-bit hardware.
 
-Replace BIG_ENDIAN with CPU_BIG_ENDIAN which is the correct kconfig
-name. Note that BMIPS_GENERIC does the same which confirms that this
-patch is needed.
+Reduce the sizes of the push/pop sections to include only instructions
+that are part of the MT ASE or which won't convert to 64-bit
+instructions after .set mips64r2/mips64r6.
 
-Fixes: eed0eabd12ef0 ("MIPS: generic: Introduce generic DT-based board support")
-Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
-Reviewed-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.9+
-Patchwork: https://patchwork.linux-mips.org/patch/18495/
-[jhogan@kernel.org: Clean up commit message]
+Reported-by: Greg Ungerer <gerg@linux-m68k.org>
+Fixes: 17278a91e04f ("MIPS: CPS: Fix r1 .set mt assembler warning")
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 4.15
+Tested-by: Greg Ungerer <gerg@linux-m68k.org>
+Patchwork: https://patchwork.linux-mips.org/patch/18578/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/kernel/cps-vec.S |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -119,12 +119,12 @@ config MIPS_GENERIC
- 	select SYS_SUPPORTS_MULTITHREADING
- 	select SYS_SUPPORTS_RELOCATABLE
- 	select SYS_SUPPORTS_SMARTMIPS
--	select USB_EHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
--	select USB_EHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
--	select USB_OHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
--	select USB_OHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
--	select USB_UHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
--	select USB_UHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
-+	select USB_EHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-+	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-+	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-+	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-+	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-+	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USE_OF
- 	help
- 	  Select this to build a kernel which aims to support multiple boards,
+--- a/arch/mips/kernel/cps-vec.S
++++ b/arch/mips/kernel/cps-vec.S
+@@ -388,15 +388,16 @@ LEAF(mips_cps_boot_vpes)
+ 
+ #elif defined(CONFIG_MIPS_MT)
+ 
+-	.set	push
+-	.set	MIPS_ISA_LEVEL_RAW
+-	.set	mt
+-
+ 	/* If the core doesn't support MT then return */
+ 	has_mt	t0, 5f
+ 
+ 	/* Enter VPE configuration state */
++	.set	push
++	.set	MIPS_ISA_LEVEL_RAW
++	.set	mt
+ 	dvpe
++	.set	pop
++
+ 	PTR_LA	t1, 1f
+ 	jr.hb	t1
+ 	 nop
+@@ -422,6 +423,10 @@ LEAF(mips_cps_boot_vpes)
+ 	mtc0	t0, CP0_VPECONTROL
+ 	ehb
+ 
++	.set	push
++	.set	MIPS_ISA_LEVEL_RAW
++	.set	mt
++
+ 	/* Skip the VPE if its TC is not halted */
+ 	mftc0	t0, CP0_TCHALT
+ 	beqz	t0, 2f
+@@ -495,6 +500,8 @@ LEAF(mips_cps_boot_vpes)
+ 	ehb
+ 	evpe
+ 
++	.set	pop
++
+ 	/* Check whether this VPE is meant to be running */
+ 	li	t0, 1
+ 	sll	t0, t0, a1
+@@ -509,7 +516,7 @@ LEAF(mips_cps_boot_vpes)
+ 1:	jr.hb	t0
+ 	 nop
+ 
+-2:	.set	pop
++2:
+ 
+ #endif /* CONFIG_MIPS_MT_SMP */
+ 

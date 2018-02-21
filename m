@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:05:02 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54748 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:05:55 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55192 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994715AbeBUNEfPXzqT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 14:04:35 +0100
+        by eddie.linux-mips.org with ESMTP id S23994737AbeBUNFswFqWT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 14:05:48 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AAE20115B;
-        Wed, 21 Feb 2018 13:04:28 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1144011BE;
+        Wed, 21 Feb 2018 13:05:41 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Mathieu Malaterre <mathieu.malaterre@gmail.com>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Mathieu Malaterre <malat@debian.org>,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 112/167] MIPS: Fix incorrect mem=X@Y handling
-Date:   Wed, 21 Feb 2018 13:48:43 +0100
-Message-Id: <20180221124530.493920482@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-usb@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH 4.14 151/167] usb: Move USB_UHCI_BIG_ENDIAN_* out of USB_SUPPORT
+Date:   Wed, 21 Feb 2018 13:49:22 +0100
+Message-Id: <20180221124533.069049354@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180221124524.639039577@linuxfoundation.org>
 References: <20180221124524.639039577@linuxfoundation.org>
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62679
+X-archive-position: 62680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,92 +49,69 @@ X-list: linux-mips
 
 ------------------
 
-From: Marcin Nowakowski <marcin.nowakowski@mips.com>
+From: James Hogan <jhogan@kernel.org>
 
-commit 67a3ba25aa955198196f40b76b329b3ab9ad415a upstream.
+commit ec897569ad7dbc6d595873a487c3fac23f463f76 upstream.
 
-Commit 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing") added a
-fix to ensure that the memory range between PHYS_OFFSET and low memory
-address specified by mem= cmdline argument is not later processed by
-free_all_bootmem.  This change was incorrect for systems where the
-commandline specifies more than 1 mem argument, as it will cause all
-memory between PHYS_OFFSET and each of the memory offsets to be marked
-as reserved, which results in parts of the RAM marked as reserved
-(Creator CI20's u-boot has a default commandline argument 'mem=256M@0x0
-mem=768M@0x30000000').
+Move the Kconfig symbols USB_UHCI_BIG_ENDIAN_MMIO and
+USB_UHCI_BIG_ENDIAN_DESC out of drivers/usb/host/Kconfig, which is
+conditional upon USB && USB_SUPPORT, so that it can be freely selected
+by platform Kconfig symbols in architecture code.
 
-Change the behaviour to ensure that only the range between PHYS_OFFSET
-and the lowest start address of the memories is marked as protected.
+For example once the MIPS_GENERIC platform selects are fixed in commit
+2e6522c56552 ("MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN"), the MIPS
+32r6_defconfig warns like so:
 
-This change also ensures that the range is marked protected even if it's
-only defined through the devicetree and not only via commandline
-arguments.
+warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB)
+warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_DESC which has unmet direct dependencies (USB_SUPPORT && USB)
 
-Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
-Fixes: 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing")
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # v4.11+
-Tested-by: Mathieu Malaterre <malat@debian.org>
-Patchwork: https://patchwork.linux-mips.org/patch/18562/
+Fixes: 2e6522c56552 ("MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN")
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: linux-usb@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Patchwork: https://patchwork.linux-mips.org/patch/18559/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/setup.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/usb/Kconfig      |    8 ++++++++
+ drivers/usb/host/Kconfig |    8 --------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -374,6 +374,7 @@ static void __init bootmem_init(void)
- 	unsigned long reserved_end;
- 	unsigned long mapstart = ~0UL;
- 	unsigned long bootmap_size;
-+	phys_addr_t ramstart = (phys_addr_t)ULLONG_MAX;
- 	bool bootmap_valid = false;
- 	int i;
+--- a/drivers/usb/Kconfig
++++ b/drivers/usb/Kconfig
+@@ -19,6 +19,14 @@ config USB_EHCI_BIG_ENDIAN_MMIO
+ config USB_EHCI_BIG_ENDIAN_DESC
+ 	bool
  
-@@ -394,7 +395,8 @@ static void __init bootmem_init(void)
- 	max_low_pfn = 0;
- 
- 	/*
--	 * Find the highest page frame number we have available.
-+	 * Find the highest page frame number we have available
-+	 * and the lowest used RAM address
- 	 */
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		unsigned long start, end;
-@@ -406,6 +408,8 @@ static void __init bootmem_init(void)
- 		end = PFN_DOWN(boot_mem_map.map[i].addr
- 				+ boot_mem_map.map[i].size);
- 
-+		ramstart = min(ramstart, boot_mem_map.map[i].addr);
++config USB_UHCI_BIG_ENDIAN_MMIO
++	bool
++	default y if SPARC_LEON
 +
- #ifndef CONFIG_HIGHMEM
- 		/*
- 		 * Skip highmem here so we get an accurate max_low_pfn if low
-@@ -435,6 +439,13 @@ static void __init bootmem_init(void)
- 		mapstart = max(reserved_end, start);
- 	}
- 
-+	/*
-+	 * Reserve any memory between the start of RAM and PHYS_OFFSET
-+	 */
-+	if (ramstart > PHYS_OFFSET)
-+		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
-+				  BOOT_MEM_RESERVED);
++config USB_UHCI_BIG_ENDIAN_DESC
++	bool
++	default y if SPARC_LEON
 +
- 	if (min_low_pfn >= max_low_pfn)
- 		panic("Incorrect memory mapping !!!");
- 	if (min_low_pfn > ARCH_PFN_OFFSET) {
-@@ -663,9 +674,6 @@ static int __init early_parse_mem(char *
+ menuconfig USB_SUPPORT
+ 	bool "USB support"
+ 	depends on HAS_IOMEM
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -637,14 +637,6 @@ config USB_UHCI_ASPEED
+        bool
+        default y if ARCH_ASPEED
  
- 	add_memory_region(start, size, BOOT_MEM_RAM);
- 
--	if (start && start > PHYS_OFFSET)
--		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
--				BOOT_MEM_RESERVED);
- 	return 0;
- }
- early_param("mem", early_parse_mem);
+-config USB_UHCI_BIG_ENDIAN_MMIO
+-	bool
+-	default y if SPARC_LEON
+-
+-config USB_UHCI_BIG_ENDIAN_DESC
+-	bool
+-	default y if SPARC_LEON
+-
+ config USB_FHCI_HCD
+ 	tristate "Freescale QE USB Host Controller support"
+ 	depends on OF_GPIO && QE_GPIO && QUICC_ENGINE

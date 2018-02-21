@@ -1,20 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:04:40 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54730 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 14:05:02 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54748 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994714AbeBUNEccD-GT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 14:04:32 +0100
+        by eddie.linux-mips.org with ESMTP id S23994715AbeBUNEfPXzqT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 14:04:35 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F1F661125;
-        Wed, 21 Feb 2018 13:04:25 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AAE20115B;
+        Wed, 21 Feb 2018 13:04:28 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Corentin Labbe <clabbe.montjoie@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.14 111/167] MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN
-Date:   Wed, 21 Feb 2018 13:48:42 +0100
-Message-Id: <20180221124530.441016161@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Mathieu Malaterre <mathieu.malaterre@gmail.com>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Mathieu Malaterre <malat@debian.org>,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.14 112/167] MIPS: Fix incorrect mem=X@Y handling
+Date:   Wed, 21 Feb 2018 13:48:43 +0100
+Message-Id: <20180221124530.493920482@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180221124524.639039577@linuxfoundation.org>
 References: <20180221124524.639039577@linuxfoundation.org>
@@ -26,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62678
+X-archive-position: 62679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,50 +50,92 @@ X-list: linux-mips
 
 ------------------
 
-From: Corentin Labbe <clabbe.montjoie@gmail.com>
+From: Marcin Nowakowski <marcin.nowakowski@mips.com>
 
-commit 2e6522c565522a2e18409c315c49d78c8b74807b upstream.
+commit 67a3ba25aa955198196f40b76b329b3ab9ad415a upstream.
 
-MIPS_GENERIC selects some options conditional on BIG_ENDIAN which does
-not exist.
+Commit 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing") added a
+fix to ensure that the memory range between PHYS_OFFSET and low memory
+address specified by mem= cmdline argument is not later processed by
+free_all_bootmem.  This change was incorrect for systems where the
+commandline specifies more than 1 mem argument, as it will cause all
+memory between PHYS_OFFSET and each of the memory offsets to be marked
+as reserved, which results in parts of the RAM marked as reserved
+(Creator CI20's u-boot has a default commandline argument 'mem=256M@0x0
+mem=768M@0x30000000').
 
-Replace BIG_ENDIAN with CPU_BIG_ENDIAN which is the correct kconfig
-name. Note that BMIPS_GENERIC does the same which confirms that this
-patch is needed.
+Change the behaviour to ensure that only the range between PHYS_OFFSET
+and the lowest start address of the memories is marked as protected.
 
-Fixes: eed0eabd12ef0 ("MIPS: generic: Introduce generic DT-based board support")
-Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
-Reviewed-by: James Hogan <jhogan@kernel.org>
+This change also ensures that the range is marked protected even if it's
+only defined through the devicetree and not only via commandline
+arguments.
+
+Reported-by: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@mips.com>
+Fixes: 73fbc1eba7ff ("MIPS: fix mem=X@Y commandline processing")
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.9+
-Patchwork: https://patchwork.linux-mips.org/patch/18495/
-[jhogan@kernel.org: Clean up commit message]
+Cc: <stable@vger.kernel.org> # v4.11+
+Tested-by: Mathieu Malaterre <malat@debian.org>
+Patchwork: https://patchwork.linux-mips.org/patch/18562/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/kernel/setup.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -119,12 +119,12 @@ config MIPS_GENERIC
- 	select SYS_SUPPORTS_MULTITHREADING
- 	select SYS_SUPPORTS_RELOCATABLE
- 	select SYS_SUPPORTS_SMARTMIPS
--	select USB_EHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
--	select USB_EHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
--	select USB_OHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
--	select USB_OHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
--	select USB_UHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
--	select USB_UHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
-+	select USB_EHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-+	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-+	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-+	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-+	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
-+	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USE_OF
- 	help
- 	  Select this to build a kernel which aims to support multiple boards,
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -374,6 +374,7 @@ static void __init bootmem_init(void)
+ 	unsigned long reserved_end;
+ 	unsigned long mapstart = ~0UL;
+ 	unsigned long bootmap_size;
++	phys_addr_t ramstart = (phys_addr_t)ULLONG_MAX;
+ 	bool bootmap_valid = false;
+ 	int i;
+ 
+@@ -394,7 +395,8 @@ static void __init bootmem_init(void)
+ 	max_low_pfn = 0;
+ 
+ 	/*
+-	 * Find the highest page frame number we have available.
++	 * Find the highest page frame number we have available
++	 * and the lowest used RAM address
+ 	 */
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+ 		unsigned long start, end;
+@@ -406,6 +408,8 @@ static void __init bootmem_init(void)
+ 		end = PFN_DOWN(boot_mem_map.map[i].addr
+ 				+ boot_mem_map.map[i].size);
+ 
++		ramstart = min(ramstart, boot_mem_map.map[i].addr);
++
+ #ifndef CONFIG_HIGHMEM
+ 		/*
+ 		 * Skip highmem here so we get an accurate max_low_pfn if low
+@@ -435,6 +439,13 @@ static void __init bootmem_init(void)
+ 		mapstart = max(reserved_end, start);
+ 	}
+ 
++	/*
++	 * Reserve any memory between the start of RAM and PHYS_OFFSET
++	 */
++	if (ramstart > PHYS_OFFSET)
++		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
++				  BOOT_MEM_RESERVED);
++
+ 	if (min_low_pfn >= max_low_pfn)
+ 		panic("Incorrect memory mapping !!!");
+ 	if (min_low_pfn > ARCH_PFN_OFFSET) {
+@@ -663,9 +674,6 @@ static int __init early_parse_mem(char *
+ 
+ 	add_memory_region(start, size, BOOT_MEM_RAM);
+ 
+-	if (start && start > PHYS_OFFSET)
+-		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
+-				BOOT_MEM_RESERVED);
+ 	return 0;
+ }
+ early_param("mem", early_parse_mem);

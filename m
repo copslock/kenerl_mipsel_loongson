@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 13:55:37 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49216 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 13:56:21 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49464 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994680AbeBUMzao79aT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 13:55:30 +0100
+        by eddie.linux-mips.org with ESMTP id S23994039AbeBUM4Oa2-TT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 13:56:14 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BC3E8109F;
-        Wed, 21 Feb 2018 12:55:23 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 24DB61108;
+        Wed, 21 Feb 2018 12:56:07 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, linux-usb@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH 4.9 32/77] usb: Move USB_UHCI_BIG_ENDIAN_* out of USB_SUPPORT
-Date:   Wed, 21 Feb 2018 13:48:41 +0100
-Message-Id: <20180221124433.539558108@linuxfoundation.org>
+        stable@vger.kernel.org, Corentin Labbe <clabbe.montjoie@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.9 12/77] MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN
+Date:   Wed, 21 Feb 2018 13:48:21 +0100
+Message-Id: <20180221124432.667118278@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180221124432.172390020@linuxfoundation.org>
 References: <20180221124432.172390020@linuxfoundation.org>
@@ -28,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62676
+X-archive-position: 62677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,69 +47,50 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <jhogan@kernel.org>
+From: Corentin Labbe <clabbe.montjoie@gmail.com>
 
-commit ec897569ad7dbc6d595873a487c3fac23f463f76 upstream.
+commit 2e6522c565522a2e18409c315c49d78c8b74807b upstream.
 
-Move the Kconfig symbols USB_UHCI_BIG_ENDIAN_MMIO and
-USB_UHCI_BIG_ENDIAN_DESC out of drivers/usb/host/Kconfig, which is
-conditional upon USB && USB_SUPPORT, so that it can be freely selected
-by platform Kconfig symbols in architecture code.
+MIPS_GENERIC selects some options conditional on BIG_ENDIAN which does
+not exist.
 
-For example once the MIPS_GENERIC platform selects are fixed in commit
-2e6522c56552 ("MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN"), the MIPS
-32r6_defconfig warns like so:
+Replace BIG_ENDIAN with CPU_BIG_ENDIAN which is the correct kconfig
+name. Note that BMIPS_GENERIC does the same which confirms that this
+patch is needed.
 
-warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB)
-warning: (MIPS_GENERIC) selects USB_UHCI_BIG_ENDIAN_DESC which has unmet direct dependencies (USB_SUPPORT && USB)
-
-Fixes: 2e6522c56552 ("MIPS: Fix typo BIG_ENDIAN to CPU_BIG_ENDIAN")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Fixes: eed0eabd12ef0 ("MIPS: generic: Introduce generic DT-based board support")
+Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+Reviewed-by: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-usb@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Patchwork: https://patchwork.linux-mips.org/patch/18559/
+Cc: <stable@vger.kernel.org> # 4.9+
+Patchwork: https://patchwork.linux-mips.org/patch/18495/
+[jhogan@kernel.org: Clean up commit message]
+Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/usb/Kconfig      |    8 ++++++++
- drivers/usb/host/Kconfig |    8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/mips/Kconfig |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/Kconfig
-+++ b/drivers/usb/Kconfig
-@@ -19,6 +19,14 @@ config USB_EHCI_BIG_ENDIAN_MMIO
- config USB_EHCI_BIG_ENDIAN_DESC
- 	bool
- 
-+config USB_UHCI_BIG_ENDIAN_MMIO
-+	bool
-+	default y if SPARC_LEON
-+
-+config USB_UHCI_BIG_ENDIAN_DESC
-+	bool
-+	default y if SPARC_LEON
-+
- menuconfig USB_SUPPORT
- 	bool "USB support"
- 	depends on HAS_IOMEM
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -628,14 +628,6 @@ config USB_UHCI_PLATFORM
- 	bool
- 	default y if ARCH_VT8500
- 
--config USB_UHCI_BIG_ENDIAN_MMIO
--	bool
--	default y if SPARC_LEON
--
--config USB_UHCI_BIG_ENDIAN_DESC
--	bool
--	default y if SPARC_LEON
--
- config USB_FHCI_HCD
- 	tristate "Freescale QE USB Host Controller support"
- 	depends on OF_GPIO && QE_GPIO && QUICC_ENGINE
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -112,12 +112,12 @@ config MIPS_GENERIC
+ 	select SYS_SUPPORTS_MULTITHREADING
+ 	select SYS_SUPPORTS_RELOCATABLE
+ 	select SYS_SUPPORTS_SMARTMIPS
+-	select USB_EHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
+-	select USB_EHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
+-	select USB_OHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
+-	select USB_OHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
+-	select USB_UHCI_BIG_ENDIAN_DESC if BIG_ENDIAN
+-	select USB_UHCI_BIG_ENDIAN_MMIO if BIG_ENDIAN
++	select USB_EHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
++	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
++	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
++	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
+ 	select USE_OF
+ 	help
+ 	  Select this to build a kernel which aims to support multiple boards,

@@ -1,43 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 13:40:48 +0100 (CET)
-Received: from mail-yw0-x243.google.com ([IPv6:2607:f8b0:4002:c05::243]:39651
-        "EHLO mail-yw0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991416AbeBUMkj6OkxT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 13:40:39 +0100
-Received: by mail-yw0-x243.google.com with SMTP id b20so439189ywe.6
-        for <linux-mips@linux-mips.org>; Wed, 21 Feb 2018 04:40:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=MZj/5QeDKoWSLw5ma3F5fJnudei3GDct6k+11Ln2/es=;
-        b=Y7zNVVBjN/V8PRaScCzuCr7ioYRPs3YIavqqjj1EbRStT9oArxXOQ12Sm8z+AvrQ1y
-         CV7H3Arl4ed3JWpxmf++k5Nn6SFVjw2Os6YbkEZzXDCJxFPfr603kaDFTz05t0iSY/KN
-         ARiGExb0Red44SdG0q0E7ATbIx5HE87peGxlscv21xutVkL7LvAKVtFdwY6XsRqmgPAM
-         SnhtdJUqTVP2KBHGOaWnHVPlK+h/8Oc7wd1haEI/hjwQAmlwKBhKtCYfxdRvip1LUiBW
-         eV8CxDMiDPzSzKEYD2DjFJPTBorBLofamU5LonC/GAk1qmBiL69FxHBeF1GQrHr20Azs
-         vNFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=MZj/5QeDKoWSLw5ma3F5fJnudei3GDct6k+11Ln2/es=;
-        b=pZ4W7lNaP+WDq/1snL1x7eKf3EYTBwggLH548Wgc5Cr3I7fq93WFH7j/DupszEpBDB
-         nI5wYoqSaJ3Jz05nA4C9fLzr40+ZC+1YendJLy6yGlb1rrgBpqABrzh5FXE/RDPeKmGd
-         7q8J21hmah1YicqLbtmKRM59XAMN/ijVZc22E9v0M9fbOxiwmGEd4DEtPY9nb6M+uLoj
-         6yA6R/UUpiK2Yzx5O3KYUnyutNaoTHpu1F0T3rEe8cj+PS8snewq471EZxqn7QyhFvzo
-         LTtRXerzHFsIl0GmYMBZtodtaZKG14VKm4snqcSdI6Lvr1ligSsrLVNysor7U8XlSPOB
-         3/Lg==
-X-Gm-Message-State: APf1xPDZe6PSznq3y9oIIo62ov2Th/uosqAs6f2KfjfDOYnPPDXRQxa2
-        ldVXE+Jw/5gma6dKxUHtqWc=
-X-Google-Smtp-Source: AH8x227C/tP1oQTSOvXAZte9KjDwIGvHQo8y28pnreh3FC9OIhM1SCSx0Le1HYd5RSr27qmVvNf2cw==
-X-Received: by 10.13.202.150 with SMTP id m144mr2108294ywd.70.1519216833803;
-        Wed, 21 Feb 2018 04:40:33 -0800 (PST)
-Received: from sophia ([72.188.97.40])
-        by smtp.gmail.com with ESMTPSA id l23sm11043755ywh.23.2018.02.21.04.40.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Feb 2018 04:40:33 -0800 (PST)
-Date:   Wed, 21 Feb 2018 07:40:25 -0500
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2018 13:44:27 +0100 (CET)
+Received: from guitar.tcltek.co.il ([192.115.133.116]:55696 "EHLO
+        mx.tkos.co.il" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993994AbeBUMoTthc2T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2018 13:44:19 +0100
+Received: from sapphire.tkos.co.il (unknown [10.0.4.3])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx.tkos.co.il (Postfix) with ESMTPS id 64CB444025D;
+        Wed, 21 Feb 2018 14:44:16 +0200 (IST)
+Date:   Wed, 21 Feb 2018 14:44:15 +0200
+From:   Baruch Siach <baruch@tkos.co.il>
 To:     Marcus Folkesson <marcus.folkesson@gmail.com>
 Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -52,7 +24,7 @@ Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         bcm-kernel-feedback-list@broadcom.com,
         Linus Walleij <linus.walleij@linaro.org>,
         Support Opensource <support.opensource@diasemi.com>,
-        Baruch Siach <baruch@tkos.co.il>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
         Jimmy Vance <jimmy.vance@hpe.com>,
         Keguang Zhang <keguang.zhang@gmail.com>,
         Joachim Eastwood <manabian@gmail.com>,
@@ -94,22 +66,22 @@ Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
 Subject: Re: [PATCH v3] watchdog: add SPDX identifiers for watchdog subsystem
-Message-ID: <20180221124024.GA3773@sophia>
+Message-ID: <20180221124415.pnvpxa5lavn4vu6p@sapphire.tkos.co.il>
 References: <20180221122744.28300-1-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20180221122744.28300-1-marcus.folkesson@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
-Return-Path: <vilhelm.gray@gmail.com>
+User-Agent: NeoMutt/20171215
+Return-Path: <baruch@tkos.co.il>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62674
+X-archive-position: 62675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vilhelm.gray@gmail.com
+X-original-sender: baruch@tkos.co.il
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -122,46 +94,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Marcus,
+
 On Wed, Feb 21, 2018 at 01:27:34PM +0100, Marcus Folkesson wrote:
->- Add SPDX identifier
->- Remove boiler plate license text
->- If MODULE_LICENSE and boiler plate does not match, go for boiler plate
->  license
->
->Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
->Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
->Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
->Acked-by: Mans Rullgard <mans@mansr.com>
->Acked-by: Matthias Brugger <matthias.bgg@gmail.com>
->Acked-by: Michal Simek <michal.simek@xilinx.com>
->Acked-by: Neil Armstrong <narmstrong@baylibre.com>
->Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
->Acked-by: Thierry Reding <treding@nvidia.com>
->Reviewed-by: Eric Anholt <eric@anholt.net>
->---
->
->Notes:
->    v3:
->    	- Keep license text for ebc-c384_wdt
->    v2:
->    	- Put back removed copyright texts for meson_gxbb_wdt and coh901327_wdt
->    	- Change to BSD-3-Clause for meson_gxbb_wdt
->    v1: Please have an extra look at meson_gxbb_wdt.c
+> - Add SPDX identifier
+> - Remove boiler plate license text
+> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
+>   license
+> 
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+> Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Acked-by: Mans Rullgard <mans@mansr.com>
+> Acked-by: Matthias Brugger <matthias.bgg@gmail.com>
+> Acked-by: Michal Simek <michal.simek@xilinx.com>
+> Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Acked-by: Thierry Reding <treding@nvidia.com>
+> Reviewed-by: Eric Anholt <eric@anholt.net>
 
 [...]
 
->diff --git a/drivers/watchdog/ebc-c384_wdt.c b/drivers/watchdog/ebc-c384_wdt.c
->index 2170b275ea01..4c4c8ce78021 100644
->--- a/drivers/watchdog/ebc-c384_wdt.c
->+++ b/drivers/watchdog/ebc-c384_wdt.c
->@@ -1,3 +1,4 @@
->+// SPDX-License-Identifier: GPL-2.0
-> /*
->  * Watchdog timer driver for the WinSystems EBC-C384
->  * Copyright (C) 2016 William Breathitt Gray
+> diff --git a/drivers/watchdog/digicolor_wdt.c b/drivers/watchdog/digicolor_wdt.c
+> index 5e4ef93caa02..a9e11df155b8 100644
+> --- a/drivers/watchdog/digicolor_wdt.c
+> +++ b/drivers/watchdog/digicolor_wdt.c
+> @@ -1,12 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+>  /*
+>   * Watchdog driver for Conexant Digicolor
+>   *
+>   * Copyright (C) 2015 Paradox Innovation Ltd.
+>   *
+> - * This program is free software; you can redistribute it and/or modify it
+> - * under the terms of the GNU General Public License as published by the
+> - * Free Software Foundation; either version 2 of the License, or (at your
+> - * option) any later version.
+>   */
 
-For ebc-c384_wdt.c,
+For digicolor_wdt.c:
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Acked-by: Baruch Siach <baruch@tkos.co.il>
 
-William Breathitt Gray
+baruch
+
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -

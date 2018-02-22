@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Feb 2018 00:08:35 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Feb 2018 00:09:09 +0100 (CET)
 Received: from mail-bn3nam01on0080.outbound.protection.outlook.com ([104.47.33.80]:53600
         "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994626AbeBVXIAGfmpe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Feb 2018 00:08:00 +0100
+        id S23994634AbeBVXIBHoJYe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Feb 2018 00:08:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=BGELAx8V68W3GT73Fbn48PWc+1/20td+JcTXJ562r7g=;
- b=CCOWVOk9q95U2vGwM+Q9pM3bkGvNz/h9BaKHgseBONcUjjbfxWUgCxTfmINCWNQRnaS1sQ5JAsNjFSElzjIzSXOtwikX/8FaF4wyC9U3uPZxCasJuQ8S51R6MLba3F1ivaCV+G/TPkTwsdG5Xe3BnQ8ywpZ9Fkv1WXDJtYOq9f4=
+ bh=mhPdFT/e/+BewIIt5FnXrfRSvCdZnrxMLYCnZ+vri/4=;
+ b=QgVZFHQP1/USXWrLJcfh/NkEvAQfoGtFPzubsv1jR2lmX5/K5tvcX1+KBXy8cJcpN2leEmlQ2X/RxHaKTztX4jNqLcvolr9wWeND95vnCz6AFnwNbzhdLAeIoOvpVKxkDd1m1Y5rod0MoBWMublvZQlst75Bzpfsi9o/hQcRUaI=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from ddl.caveonetworks.com (50.233.148.156) by
  DM5PR07MB3180.namprd07.prod.outlook.com (2603:10b6:3:df::14) with Microsoft
  SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.20.527.15; Thu, 22
- Feb 2018 23:07:32 +0000
+ Feb 2018 23:07:33 +0000
 From:   David Daney <david.daney@cavium.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@mips.com>
 Cc:     linux-kernel@vger.kernel.org,
         "Steven J. Hill" <steven.hill@cavium.com>, netdev@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        David Daney <david.daney@cavium.com>,
-        Carlos Munoz <cmunoz@caviumnetworks.com>
-Subject: [PATCH v8 2/4] MIPS: Octeon: Automatically provision CVMSEG space.
-Date:   Thu, 22 Feb 2018 15:07:14 -0800
-Message-Id: <20180222230716.21442-3-david.daney@cavium.com>
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH v8 3/4] staging: octeon: Remove USE_ASYNC_IOBDMA macro.
+Date:   Thu, 22 Feb 2018 15:07:15 -0800
+Message-Id: <20180222230716.21442-4-david.daney@cavium.com>
 X-Mailer: git-send-email 2.14.3
 In-Reply-To: <20180222230716.21442-1-david.daney@cavium.com>
 References: <20180222230716.21442-1-david.daney@cavium.com>
@@ -36,46 +35,46 @@ X-Originating-IP: [50.233.148.156]
 X-ClientProxiedBy: CO2PR07CA0064.namprd07.prod.outlook.com (2603:10b6:100::32)
  To DM5PR07MB3180.namprd07.prod.outlook.com (2603:10b6:3:df::14)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 257081d9-f04c-4d64-4dff-08d57a490e00
+X-MS-Office365-Filtering-Correlation-Id: 0addedfd-2032-4f9a-3449-08d57a490e88
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(4534165)(4627221)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603307)(7153060)(7193020);SRVR:DM5PR07MB3180;
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3180;3:0AvP4VMbGk5ETFbBEzbXn29OUkFqFkPwZuNJyIe5pTy7sGyjVVkxKhEOFRKgB7SSHsrnZFF9v2mUNpZfZL1aUqzuVJ8kHQuL1uH8QJqzYtYcEXYkbFBaHLgsT+he8huWxwcUpJxpsYwOYS2ZtdT64QvkCIiWctoOYadzRILcsgrNGQXXUUiubH9NjfYyD5Kqj44da9/GNz7dcz7/Xd3wAMn08ZMm6ut6+9/RC8elPNokd+4sCVBlpEjjkWBn+jYc;25:BNdS+bL9AfMFshBzJFIvJr+6ZGYSQSxX6ey5rvowuce4LNPI6ekMUeFAmf0q35MwlS04N2GKj+wHKOKDZyakNjv9ZMzvmtB8LZQ+xOoa5LMzFA92w1LGTsy7/mh9a/XFoMT9g/7sYQgBHoPB2VXech0YJ8pcE14W4iP4sIRZP2rwUQnGqz49TcQ9SufwoEbMeyZUrgqSmhHEg7QS1cvI2vpx9S7q3nL5YQTIAf6/DeJgEaZ4HpLlal+TdvNarXFnS6kiDs4oYrMqYLc55EoEQLTShqPpsiqpB/hXa5hT/db7vm3ngktja5srgeq2sOU8z4KXauydLzGzDVsPowGEdA==;31:J7bMlRVfrZmyz8IpN2UTC2//7onlGuUkCain/4IZVzuLv68vEJb1ZFhuvOcywUgYMr9wC1dU62S+d3iFpMXeiup/DzA4LaIhjO6ZumavQRHcfBDTSH3kGxsJYSw43/EMWaLn19XbS+IdfWIJ9lBoa01p2spKs6gPCyVMrURAdksPjREC0EFBFmFqdw57b3fPe7mO9kYdJGjPB/NHmyOIblv5fKaNnZWdKP/KDX0+7J8=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3180;3:OtWlBBF1w0XvQ0g3c3AXQ5zmJQOXPS/d3hY+H+MzPvkvLBfVmC2qmjX1fFZYtn9LtH6efNDMI3b4oJ0vRnDuqGx/ZxbE7gC39qvHtzXrPa1lcyIueGYZzenJFSKO64jg+Hm5SAg946rnUwIAxILuLYkKEdVMgGHJ/WNWOtkoKDbYyuLkgo0wrn4jkAhOjf5gaKYpw2vYEQkBZlAgnWOjmp2dA1WeWKgz/k0r3uWEhZLogRd43h8qddqolRrVsl2M;25:JRG/dLL5PQIfbc30YuzLoINAOLcEmku/QY/r/rfFAfF3EiE/fsuWtCVraNNCBxP/P4yO2b/R1Nb3ilgnk7KoZh42AcXF3kpF+oyzsd/vGWxLbT2I4Ho+jaV8CmfYxY/X5b1PcSC+hBrlQLUjsSYtVyKnCUBaguNDfR/IHyfE7jbOXu4A0hnKZe6IjG4n/O96OSSgh6obPe8ln27NjdQ7tTWmX3WKA8KyR/I4R3cEoFi88zsvzqf41ASfTdj5sAzZ1qpE/Hmotgh8E9bG27j+HmEw6AJrqPp3Zee+CAc0wnk+EKyDEWLX6/yVJtjeUq6mQxQYtOtlqTjBplAo0MsZ1Q==;31:gvnaGnhHOjF2OInoe2X/nG9wPNiRPyyo44olyFqJTl17VZj8qPEfu11gA/UtZn+ORlVJtWNYEXkJI9BordPcgRJRbOZiO4u+6CAZW84ZBo2PjHZQtaUvO3R80wUQWr177q/+dn8ZVFm4SwIh6gTPc8NdhiCWrLFJitqqO4J6sXHnweEgYtEw234PpA0pXiG40l0qKWyDxSQPPLlPZXc9+wl89bdboKXVaglpgKhVUxI=
 X-MS-TrafficTypeDiagnostic: DM5PR07MB3180:
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3180;20:qMte6KGC3FsSzqWHvMUKdaylNG3BtQSC+y4FRNA6XJr3H9J1IUiouWT49q/+N4vgwkJ9ADxLCagqm/gqCsvEMkuBSakozbhSpzw7DzKwISnur0rmznJhF1XHxJ4qwbF8zQCpxFWNsCdOpDKAaMIlUmpG+v70FPaEe1tcmVEC15JZiqhaBQFaUJZzSo0dGHsIDr7tABxC72fCJCXKq5qmAmiQWENcv3fE8o+3s9nJ/DA4BIoIDEgH/xHWEDUGld25LwQq7JIcVtJrpWbopdETMukUB2y0BLq2/Nv54iXkBZGqxsx3JvNMF+jOrBnKV2qsdPlXfFiRRqJGcXhEFGhv7imSR53tKItV4kQj3Rm3oUBUo0TId+fVMphCj2ZLfZo/wvyKd3JtmjaQxLbg9E88xzwWC3KVcQ0KDeb3zNjmSkWjyjSUqsEDOkHY9c3Dyn8hp10kSaKjoyiFi3xP6v9M3fdbGpXP4ZVvr2wPgwtYY2oWn4hf7zSEwm9XzQfeZyFi;4:Nqzd++dDGXUFcTEpumJ/Fna7oUg+lt57hyWNIP64AXuTCpIfTarGnUgZ6x2d2PTTZc/RZtYVu45f7OqrCGu/tcS1EDNGmodgjRifElPLheh95cDdENdncS2jKngN4zHZfnYAjRS0DeCfyL6kFpoD3ci4rH9tY9gpxf463NkmFgE8a5oV08JoJ3Y0Urob73Kb6vjDlkOQejR9HRIRfK3d13BRyZXlRfrWO9oz7sKf7fF13IDAOFwvPwLWPqQkhS47xzVxo0fQPD5bB0a2TEhspA==
-X-Microsoft-Antispam-PRVS: <DM5PR07MB318079B05E8053E17C87669C97CD0@DM5PR07MB3180.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3180;20:uUPS8MJmM4FxfBCFn3BcsLaJsuy5S6TlFoY31FB9+GmsEKtrb82T4tqJLBOL5MUerS7/ZmdggS9DQFtdjFLd5zMt7vsXVqJRfDdOrVSVZTlV9+iaUWcnMvZOsDiVOXFUJHxFs6ivOESUPVPv/R5mndUgwvZvjZ8qIoaoeh9orfRIl6DB3FZvNhiq1c49myXyLmUHkbyCAyviBzI9VzytCski7BgnQQUjt+jjwNGOIJABK8x1JUTGwP3HiyosonJoFHyWAK1eQ40zY3KbwUz9+eCw/mWHHrtz6EK1XYVz3agu52ghtr2wkZ9AXGMdun1uD+cwjKh7qBLTpZ2w04rvIDME6KvTnusOOhfjucS9ctk4+14YUMJ4uzaO2awXTfu3sFQA0kUc0CzGt6X45maWzBBsZ3leutoTBWfyFF7Zcz4+c+lFYqoe6BvNSBIIDVkwKDKHwB16vO0jD2OXQtAg7qa0jq+ZabMBB3Vaxl4IpTimuhKJG26ISGzfrRJoUJ+y;4:pVt3ankVIqtFI0b+RATWZk7k1HmKkS+mhJAD/lg/YmD7R7pROpsamRU3xTxUOpKhSpsey/H4SOxUMVGPeMakcCbke72nrtNmAxbXGHJD5/SX6egRh9OecokKu9GaFn8FKLo7DQNUTVPu0N+4r7NuNHP4x0ZGN3wBRb/ixepvJDp5ZsXu4yKPS9ok4qaO2HJC66FozaxWaH0YYE5zh2SaNegvEtpZ0N5ANpwgxpQ8tGcJO6mycSStd8uKHg4ov/Y9W/wwR73KhyIy57nudieh/Q==
+X-Microsoft-Antispam-PRVS: <DM5PR07MB31803382BA10247E265BAE0E97CD0@DM5PR07MB3180.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001082)(6040501)(2401047)(5005006)(8121501046)(93006095)(93001095)(10201501046)(3231101)(944501161)(3002001)(6041288)(20161123562045)(20161123560045)(20161123558120)(20161123564045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:DM5PR07MB3180;BCL:0;PCL:0;RULEID:;SRVR:DM5PR07MB3180;
 X-Forefront-PRVS: 059185FE08
 X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(396003)(376002)(39860400002)(39380400002)(346002)(366004)(189003)(199004)(53936002)(305945005)(53416004)(66066001)(107886003)(6486002)(69596002)(47776003)(6512007)(386003)(59450400001)(6506007)(26005)(5660300001)(50466002)(8676002)(81166006)(16526019)(81156014)(478600001)(316002)(16586007)(54906003)(8936002)(72206003)(48376002)(25786009)(4326008)(105586002)(50226002)(186003)(68736007)(3846002)(6116002)(2950100002)(1076002)(6916009)(6666003)(36756003)(2906002)(7736002)(52116002)(86362001)(76176011)(106356001)(97736004)(51416003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3180;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3180;23:1sS2AGUnHup4J2UDuZ3z4Bve3Akz+27hLXZ6f83AQ?=
- =?us-ascii?Q?Xamih/Nk7as9PqjocRmAhLkqZ9bbHWQngB9X7lgzGkm1Joq5SsEEDW6BhcrN?=
- =?us-ascii?Q?IWf4n1GBgDqwCm/75SUqU2rov7LHtBKQbKJyTi2rkQRoL8vavU/u7+P2djqX?=
- =?us-ascii?Q?aEiF35TV4QjUTsfohA7Of1n6f/r+as/Oc+CZsmV+9Go9cmFyCZGrnAC7OH0i?=
- =?us-ascii?Q?kAh3z2sAwK83AVCFRB9xJyoHl26VN27T5H/32WT5hujKBIkyqLKqMbojfazF?=
- =?us-ascii?Q?hHzAJPO+t+xcO7Mf+tKEcP0p6DXM0tOa3qxXsmIyE4S95nfCYhfami5E4mNE?=
- =?us-ascii?Q?v5ZuQGmwKrgCInv5vU2kyKzjDmBRGFInig+26xv08yT1P2jPSZgc+TitYHSj?=
- =?us-ascii?Q?/vLt1/XWRaeX4evTeACTsEQJt8qPKRqfdgtpQ9AktJoRO27ZLJ4KENudaE73?=
- =?us-ascii?Q?cPrdm49GwDRXQNzqcVTczCBOIT1P7sRzaMsttsomFj39VZvnV2nA8lx99tI5?=
- =?us-ascii?Q?OLb7wii1CJ5IcUviFhBXx68kDULZAn9MM9oHqrLqgSE6U9+9c/UR0hLttZl2?=
- =?us-ascii?Q?xrqfQoe725D43Ptwed3mbydmo7X4fvMiegsm8yTSx+QSjFtjvwDev2v9jaEt?=
- =?us-ascii?Q?BGqKSg7+x+Jpl3Wapisqhm7t4J6xpUX6adcKCnGsZ0DP0JOJdJVv4BeB7awF?=
- =?us-ascii?Q?h1iB3gSCCalKv6lA+WxHYcKU4Y7ZRpqJe1vzm9pXSqQVkxUa8Iv2xCZNC6Nv?=
- =?us-ascii?Q?7YUT0nkm5QZwcWSwD6DL5xE1X1Ufxk0sn/jPbBbIGX1pu/fo/sSzlO+/mA5q?=
- =?us-ascii?Q?MEZToV24RspTGdHRrfBrwdt8GXU2TvSZwpX3fcKZigESHr8UotulkcXzGVeD?=
- =?us-ascii?Q?eFz2kQ8udACyWi4woUXi0zP+0jHYFH9fI4JJpJjclmZqVKwa+sGPzMcFOSu+?=
- =?us-ascii?Q?5Swkv7J3J+W5B+NUYEFQHyYzZzGe8UzGQE0w4/LwT0fMTTX7NvAPjtWTbqAe?=
- =?us-ascii?Q?N4EOyV5zb3ApBU49nsTMzc9PlIf1vAqemaBCmJKeGDogCtM84Kn0HuhPcOOu?=
- =?us-ascii?Q?JJi1rAkvNcWemreQrH7n6e6HdaR7xe+KLqXgkXo4XUv/HwAhjQ3WSEWVxTrh?=
- =?us-ascii?Q?ENw5GPW7FLHlNnVT4LBOkhmfy0nW6Bv7SnyfnoqRD2PzqTYrVKY2cbZtys1i?=
- =?us-ascii?Q?NS/ltd4ApFODDy9NY0MUVjBYPQpN9o0LepOAgSgWqVzHpyjeqfBq2asPTvup?=
- =?us-ascii?Q?B5vdD59aWAzs53E0+g=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3180;6:Y+9ymqhwlAocxNIPjoT+txbGSdkLuNbttF3knlEdCb3R0LKouBC0DhS6N2YhklUcSA4hRr1BRvIuLSrRo+v5XxIZSOmxPfitwYyhX5bVcr3YpGrCZkQhDclyojOAfs5J+ACAtlc0nxgUrXxDYdD0B59b0KUZmaL3t28SMieIuZBrm3PVESy0vgkqW8S5T6t9Ctn8D8qrZfqOoaYDE2XHSPg3wCxCuksits/58+ywOjSuEJzFkyMYP67Ojc972B4bkJ3dZ3h77OahD2iDP+fcfHJjib393uJgx/d0B0tcfkH9cydfs/YZZDzySjpeCA/oP/GsuL270lbsi2vuksQbYGtW1UAC1PURqxf8p5qOLqc=;5:xC4LH4JYouAfrh6QEKScVaDlaayjpkVipw2qE05VzvhA6ggfT5EoFSR3fdW8s4SQsY81UIB6sXI3AOw01azDFKdaDaYEWCd+5bTiqmaWFw7R2ufLB+158k5n0nqvYoLRYndS4JnEwDPCemnKPnU7fBDs0s+lF1v08gFwM12ogzs=;24:YW1PyPpx3y0iiIHf4OQGKYHt98kkkX8GomDrSSYD1lrW+da7yFcXHDreLgASywHJKJm741mT2F0ZOZ01Ctkv/rcnra6Q2TMl3I6GFAGTXk4=;7:3wJSPtnbZa6Zbd8OkehAU5+970UxczeI82xMTLulwvv8C/a6Lf8xjRFo83Vx13eOn1hKeSY45ekOcisXj8rrv1goyqF/EfuNIYU99xLMu6N5Zgho+NE/qCZFw2G9LwyM+DwFTIa1g3MZouZ2rh/IgYdXVQvKwRcs2kjSGAtWZ1k+zBhkD/fjZdCWJNmummMiurg83fJuMPfiSv9G1kPuqext+ofxUNww/3J9pgZIamprJxte9CntWi+ICmwlH9Sf
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3180;23:02vTn/DnTObEeXoAIVufDPKrJKGMi5+Av4ckrv5rS?=
+ =?us-ascii?Q?Gpc4IUcevajkeAdCK3fvCohMu3Ok/UJZkiasyRjuYlOBXxDlv+WX8tjhchBn?=
+ =?us-ascii?Q?Mt8YPSUkZRNbrQXsQORNtZbBzWv+bywCGcy9q5rP66zObYF0xMA2qD+8pf1O?=
+ =?us-ascii?Q?LRKOIP2mIPIab5I9aUI4UKnDL50g3w/XxBF0B80meOguOOTBP0eqtC0jJZmt?=
+ =?us-ascii?Q?SFn8uD/g2dqY3RHTwuXBYYFgK8IfnkgoIroraFyRGVjj6xvhEiRsViFD9J0K?=
+ =?us-ascii?Q?lOhYgwg03cTC6vSZ6Ma8YKEu7xJGq+ygMdnS4UafztMn7ZS6QopH+xsNSA9/?=
+ =?us-ascii?Q?yoLAwRaaPcNda5P2/W/u5DI8dPy8JvpwXDlyzRPQr2U0yzkCoejbW0sv9CwN?=
+ =?us-ascii?Q?M7UL0OCsFyKpLaseyvKe5RiDTK3Nmf4dUIu+q9IAgwYrbqj8eSZX5JyzP6Ki?=
+ =?us-ascii?Q?hiw2d8dV0dc9o78PWxvUmGW1zHXnUwRAXRhoWk3uUXUDZirn67zEh6WgAHmm?=
+ =?us-ascii?Q?Ulhzs9DBOuHz7Tay6HiAONmv16YJwithsJs+m8YgBsNQ9Vz5E+HjrdLoSJjp?=
+ =?us-ascii?Q?qzsUpvfNKiIPc4gNxz4LN4iqd+kNmwII0/TncKf8q8GxJ0mPsCa8MFWGiOy/?=
+ =?us-ascii?Q?8XrZ75845WDupTV8AhppwR/8kLnnBh2+vKqqNSHY8ML1QqrzZn/0V4xXhny/?=
+ =?us-ascii?Q?NdSVMOmBr16gpSGHTQkvnS+6jzbjiCK9gC3nub55ipoce/TWYPaGuIqNPMXZ?=
+ =?us-ascii?Q?LpLaZxbu4U/yLY5qK3g1CAUbnGW2UiSPZaLmhc+y/9ZnZZ3D05GXlNDqnm/i?=
+ =?us-ascii?Q?h02oC3NW6heEueiz0utMSzlEKjoiWvx6sOHLXQ0stuiPY58vHRxe5lA19+rx?=
+ =?us-ascii?Q?tAGmBuVO+o004rcmcrjo9dozlnCxP8unGaOraGtmEDGfNymoyaM+ibRXw3ZZ?=
+ =?us-ascii?Q?CqRhwHy1KdRfxxvKbLR1SWgp2KErLuKdYgKYk6B0aKdv2nGsj8xUDsfsQYVJ?=
+ =?us-ascii?Q?C5JMvvYTO30aRRL8RfoBm3dpAk0hsAnS9swafM6ZxRVEjGosrrC+C8WfB9/l?=
+ =?us-ascii?Q?IiGtVqOZgly2ZxFmiwTboMwHaUCHqbAPjlVbBc5WRZtXYadBYwugRvLnRkzA?=
+ =?us-ascii?Q?KxxkyLN0qjAFwdnqofCzKMorGJ8wZu0uu7ITqTWqYOAWs+T7Y/5uygx5+sIo?=
+ =?us-ascii?Q?S+M/xECnhrhngTNGzbNzTigAYE649RhrY71fepIueyii9E28bnl6P6tNZT7W?=
+ =?us-ascii?Q?eW+oOX6AKU0hogGBTQ=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3180;6:zrLTMcq8Kgtj7F+ENHDRfRDZMZH90IM5Jm/MHrVOlCfhO1L0yE7qIc3pQzu0J27oZgZn3v59b2tbJewE/ev2i/kpvVZaY2/VOoGY5xok66A8NA2D7zhL2kO0gY6kDhqj2MvK7Pa7ffZ+E1uzuj7CqtIS1kqy1b7LS4ntXZYsNXmFd3enQneaOWFrOQlhHH9NDAB3kbp22cTuUOve968kf3tWF3T3XHCwr33czZFgGsLgogQVjv0qjo6G7JrY21rVESJK7k2V8feRE0ENfxq3Q9j4UjCQ6kwu0IEJ0+Q4wGtjs4MQ0QcTiIZyyXHK3lKTtKklb7ejDtV6i8KKxqdsRBusN46ceCxlYl8GAShFGhQ=;5:LOfURH1ttJnpB2lSbNMZJPq5L29sWoQSp4AzPCvzzvxGxEoyNbU3KoAyl9u9xy3jEGoFc+RspoADiHc2bjf9NcM0HJcNw0Jl7b35NDFGrzyLUm2XaDZJ1xxnCrW5BdnrlM/ZfvvwemtKTFjPTSNMcPxI+7dwbfRL15/4Y/cXsNQ=;24:tBEJ0gVeW3c5eVJvOI4rMulZI3mE8Pnj3tejJ22RkSjF9b1knrVK25Mltp+3E8mzVllJOejscPlMqklhJSPg+qU/Yw4D0as0FLSJ2EzHjUI=;7:dCQpa2jcU/rVWHzZx7qHpr2nyvZXGg0ZPAMbsNtwIRaXM7ufBVj9DZVamdLTkB4gTQLztUolEWTeXbr8y0mhQrE5Iygx5tfwsO+BLNxI9DaW/3edLkh4H3xvgoPz8r1MKCQysHClfbQoPsjgL0XPUVqO+UpKH7HTLjDJVHUkBN3wgb49WTGWZzpSYp03WVtYZtdqvry4PgVZ3uaESB7HrjIvbqTx2U/X1lDNoZc6jzCZLNmFF0Ue0SStYMsuZv5Q
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2018 23:07:32.2020 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 257081d9-f04c-4d64-4dff-08d57a490e00
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2018 23:07:33.1551 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0addedfd-2032-4f9a-3449-08d57a490e88
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR07MB3180
@@ -83,7 +82,7 @@ Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62695
+X-archive-position: 62696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -100,294 +99,229 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE and automatically calculate
-the amount of CVMSEG space needed.
+Previous patch sets USE_ASYNC_IOBDMA to 1 unconditionally.  Remove
+USE_ASYNC_IOBDMA from all if statements.  Remove dead code caused by
+the change.
 
-1st 128-bytes: Use by IOBDMA
-2nd 128-bytes: Reserved by kernel for scratch/TLS emulation.
-3rd 128-bytes: OCTEON-III LMTLINE
-
-New config variable CONFIG_CAVIUM_OCTEON_EXTRA_CVMSEG provisions
-additional lines, defaults to zero.
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Carlos Munoz <cmunoz@caviumnetworks.com>
 ---
- arch/mips/cavium-octeon/Kconfig                    | 27 ++++++++++++--------
- arch/mips/cavium-octeon/setup.c                    | 16 ++++++------
- .../asm/mach-cavium-octeon/kernel-entry-init.h     | 20 +++++++++------
- arch/mips/include/asm/mipsregs.h                   |  2 ++
- arch/mips/include/asm/octeon/octeon.h              |  2 ++
- arch/mips/include/asm/processor.h                  |  2 +-
- arch/mips/kernel/octeon_switch.S                   |  2 --
- arch/mips/mm/tlbex.c                               | 29 ++++++----------------
- drivers/staging/octeon/ethernet-defines.h          |  2 +-
- 9 files changed, 50 insertions(+), 52 deletions(-)
+ drivers/staging/octeon/ethernet-defines.h |  6 ---
+ drivers/staging/octeon/ethernet-rx.c      | 25 ++++-----
+ drivers/staging/octeon/ethernet-tx.c      | 85 ++++++++++---------------------
+ 3 files changed, 37 insertions(+), 79 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
-index b5eee1a57d6c..a283b73b7fc6 100644
---- a/arch/mips/cavium-octeon/Kconfig
-+++ b/arch/mips/cavium-octeon/Kconfig
-@@ -11,21 +11,26 @@ config CAVIUM_CN63XXP1
- 	  non-CN63XXP1 hardware, so it is recommended to select "n"
- 	  unless it is known the workarounds are needed.
- 
--config CAVIUM_OCTEON_CVMSEG_SIZE
--	int "Number of L1 cache lines reserved for CVMSEG memory"
--	range 0 54
--	default 1
--	help
--	  CVMSEG LM is a segment that accesses portions of the dcache as a
--	  local memory; the larger CVMSEG is, the smaller the cache is.
--	  This selects the size of CVMSEG LM, which is in cache blocks. The
--	  legally range is from zero to 54 cache blocks (i.e. CVMSEG LM is
--	  between zero and 6192 bytes).
--
- endif # CPU_CAVIUM_OCTEON
- 
- if CAVIUM_OCTEON_SOC
- 
-+config CAVIUM_OCTEON_EXTRA_CVMSEG
-+	int "Number of extra L1 cache lines reserved for CVMSEG memory"
-+	range 0 50
-+	default 0
-+	help
-+	  CVMSEG LM is a segment that accesses portions of the dcache
-+	  as a local memory; the larger CVMSEG is, the smaller the
-+	  cache is.  The kernel uses two or three blocks (one for TLB
-+	  exception handlers, one for driver IOBDMA operations, and on
-+	  models that need it, one for LMTDMA operations). This
-+	  selects an optional extra number of CVMSEG lines for use by
-+	  other software.
-+
-+	  Normally no extra lines are required, and this parameter
-+	  should be set to zero.
-+
- config CAVIUM_OCTEON_LOCK_L2
- 	bool "Lock often used kernel code in the L2"
- 	default "y"
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index 99e6a68bc652..51c4d3c3cada 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -68,6 +68,12 @@ extern void pci_console_init(const char *arg);
- static unsigned long long max_memory = ULLONG_MAX;
- static unsigned long long reserve_low_mem;
- 
-+/*
-+ * modified in hernel-entry-init.h, must have an initial value to keep
-+ * it from being clobbered when bss is zeroed.
-+ */
-+u32 octeon_cvmseg_lines = 2;
-+
- DEFINE_SEMAPHORE(octeon_bootbus_sem);
- EXPORT_SYMBOL(octeon_bootbus_sem);
- 
-@@ -604,11 +610,7 @@ void octeon_user_io_init(void)
- 
- 	/* R/W If set, CVMSEG is available for loads/stores in
- 	 * kernel/debug mode. */
--#if CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE > 0
- 	cvmmemctl.s.cvmsegenak = 1;
--#else
--	cvmmemctl.s.cvmsegenak = 0;
--#endif
- 	if (OCTEON_IS_OCTEON3()) {
- 		/* Enable LMTDMA */
- 		cvmmemctl.s.lmtena = 1;
-@@ -626,9 +628,9 @@ void octeon_user_io_init(void)
- 
- 	/* Setup of CVMSEG is done in kernel-entry-init.h */
- 	if (smp_processor_id() == 0)
--		pr_notice("CVMSEG size: %d cache lines (%d bytes)\n",
--			  CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE,
--			  CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE * 128);
-+		pr_notice("CVMSEG size: %u cache lines (%u bytes)\n",
-+			  octeon_cvmseg_lines,
-+			  octeon_cvmseg_lines * 128);
- 
- 	if (octeon_has_feature(OCTEON_FEATURE_FAU)) {
- 		union cvmx_iob_fau_timeout fau_timeout;
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-index c38b38ce5a3d..cdcca60978a2 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-@@ -26,11 +26,18 @@
- 	# a3 = address of boot descriptor block
- 	.set push
- 	.set arch=octeon
-+	mfc0	v1, CP0_PRID_REG
-+	andi	v1, 0xff00
-+	li	v0, 0x9500		# cn78XX or later
-+	subu	v1, v1, v0
-+	li	t2, 2 + CONFIG_CAVIUM_OCTEON_EXTRA_CVMSEG
-+	bltz	v1, 1f
-+	addiu	t2, 1			# t2 has cvmseg_size
-+1:
- 	# Read the cavium mem control register
- 	dmfc0	v0, CP0_CVMMEMCTL_REG
- 	# Clear the lower 6 bits, the CVMSEG size
--	dins	v0, $0, 0, 6
--	ori	v0, CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE
-+	dins	v0, t2, 0, 6
- 	dmtc0	v0, CP0_CVMMEMCTL_REG	# Write the cavium mem control register
- 	dmfc0	v0, CP0_CVMCTL_REG	# Read the cavium control register
- 	# Disable unaligned load/store support but leave HW fixup enabled
-@@ -70,7 +77,7 @@
- 	# Flush dcache after config change
- 	cache	9, 0($0)
- 	# Zero all of CVMSEG to make sure parity is correct
--	dli	v0, CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE
-+	move	v0, t2
- 	dsll	v0, 7
- 	beqz	v0, 2f
- 1:	dsubu	v0, 8
-@@ -126,12 +133,7 @@
- 	LONG_L	sp, (t0)
- 	# Set the SP global variable to zero so the master knows we've started
- 	LONG_S	zero, (t0)
--#ifdef __OCTEON__
--	syncw
--	syncw
--#else
- 	sync
--#endif
- 	# Jump to the normal Linux SMP entry point
- 	j   smp_bootstrap
- 	nop
-@@ -148,6 +150,8 @@
- 
- #endif /* CONFIG_SMP */
- octeon_main_processor:
-+	dla	v0, octeon_cvmseg_lines
-+	sw	t2, 0(v0)
- 	.set pop
- .endm
- 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 858752dac337..4e87e4f5247a 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1126,6 +1126,8 @@
- #define FPU_CSR_RD	0x3	/* towards -Infinity */
- 
- 
-+#define CAVIUM_OCTEON_SCRATCH_OFFSET (2 * 128 - 16 - 32768)
-+
- #ifndef __ASSEMBLY__
- 
- /*
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index 92a17d67c1fa..f01af2469874 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -359,6 +359,8 @@ static inline uint32_t octeon_npi_read32(uint64_t address)
- 
- extern struct cvmx_bootinfo *octeon_bootinfo;
- 
-+extern u32 octeon_cvmseg_lines;
-+
- extern uint64_t octeon_bootloader_entry_addr;
- 
- extern void (*octeon_irq_setup_secondary)(void);
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index af34afbc32d9..1a20f9c5509f 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -216,7 +216,7 @@ struct octeon_cop2_state {
- 	.cp2			= {0,},
- 
- struct octeon_cvmseg_state {
--	unsigned long cvmseg[CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE]
-+	unsigned long cvmseg[CONFIG_CAVIUM_OCTEON_EXTRA_CVMSEG + 3]
- 			    [cpu_dcache_line_size() / sizeof(unsigned long)];
- };
- 
-diff --git a/arch/mips/kernel/octeon_switch.S b/arch/mips/kernel/octeon_switch.S
-index e42113fe2762..4f56902d5ee7 100644
---- a/arch/mips/kernel/octeon_switch.S
-+++ b/arch/mips/kernel/octeon_switch.S
-@@ -29,7 +29,6 @@
- 	cpu_save_nonscratch a0
- 	LONG_S	ra, THREAD_REG31(a0)
- 
--#if CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE > 0
- 	/* Check if we need to store CVMSEG state */
- 	dmfc0	t0, $11,7	/* CvmMemCtl */
- 	bbit0	t0, 6, 3f	/* Is user access enabled? */
-@@ -58,7 +57,6 @@
- 	dmfc0	t0, $11,7	/* CvmMemCtl */
- 	xori	t0, t0, 0x40	/* Bit 6 is CVMSEG user enable */
- 	dmtc0	t0, $11,7	/* CvmMemCtl */
--#endif
- 3:
- 
- #if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 79b9f2ad3ff5..3d3dfba465ae 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -115,33 +115,17 @@ static int use_lwx_insns(void)
- 		return 0;
- 	}
- }
--#if defined(CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE) && \
--    CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE > 0
--static bool scratchpad_available(void)
--{
--	return true;
--}
--static int scratchpad_offset(int i)
--{
--	/*
--	 * CVMSEG starts at address -32768 and extends for
--	 * CAVIUM_OCTEON_CVMSEG_SIZE 128 byte cache lines.
--	 */
--	i += 1; /* Kernel use starts at the top and works down. */
--	return CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE * 128 - (8 * i) - 32768;
--}
--#else
--static bool scratchpad_available(void)
--{
--	return false;
--}
-+
- static int scratchpad_offset(int i)
- {
-+	if (IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON))
-+		return (CAVIUM_OCTEON_SCRATCH_OFFSET - (8 * i));
-+
- 	BUG();
- 	/* Really unreachable, but evidently some GCC want this. */
- 	return 0;
- }
--#endif
-+
- /*
-  * Found by experiment: At least some revisions of the 4kc throw under
-  * some circumstances a machine check exception, triggered by invalid
-@@ -1302,7 +1286,8 @@ static void build_r4000_tlb_refill_handler(void)
- 	memset(relocs, 0, sizeof(relocs));
- 	memset(final_handler, 0, sizeof(final_handler));
- 
--	if (IS_ENABLED(CONFIG_64BIT) && (scratch_reg >= 0 || scratchpad_available()) && use_bbit_insns()) {
-+	if (IS_ENABLED(CONFIG_64BIT) && use_bbit_insns() &&
-+	   (scratch_reg >= 0 || IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON))) {
- 		htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
- 							  scratch_reg);
- 		vmalloc_mode = refill_scratch;
 diff --git a/drivers/staging/octeon/ethernet-defines.h b/drivers/staging/octeon/ethernet-defines.h
-index 1e114422993a..33c71f86890b 100644
+index 33c71f86890b..15db928c4712 100644
 --- a/drivers/staging/octeon/ethernet-defines.h
 +++ b/drivers/staging/octeon/ethernet-defines.h
-@@ -29,7 +29,7 @@
+@@ -7,10 +7,6 @@
+ 
+ /*
+  * A few defines are used to control the operation of this driver:
+- *  USE_ASYNC_IOBDMA
+- *      Use asynchronous IO access to hardware. This uses Octeon's asynchronous
+- *      IOBDMAs to issue IO accesses without stalling. Set this to zero
+- *      to disable this. Note that IOBDMAs require CVMSEG.
+  *  REUSE_SKBUFFS_WITHOUT_FREE
+  *      Allows the TX path to free an skbuff into the FPA hardware pool. This
+  *      can significantly improve performance for forwarding and bridging, but
+@@ -29,8 +25,6 @@
  #define REUSE_SKBUFFS_WITHOUT_FREE  1
  #endif
  
--#define USE_ASYNC_IOBDMA            (CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE > 0)
-+#define USE_ASYNC_IOBDMA	1
- 
+-#define USE_ASYNC_IOBDMA	1
+-
  /* Maximum number of SKBs to try to free per xmit packet. */
  #define MAX_OUT_QUEUE_DEPTH 1000
+ 
+diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+index 5e271245273c..c1ae60ce11f5 100644
+--- a/drivers/staging/octeon/ethernet-rx.c
++++ b/drivers/staging/octeon/ethernet-rx.c
+@@ -198,11 +198,9 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
+ 	/* Prefetch cvm_oct_device since we know we need it soon */
+ 	prefetch(cvm_oct_device);
+ 
+-	if (USE_ASYNC_IOBDMA) {
+-		/* Save scratch in case userspace is using it */
+-		CVMX_SYNCIOBDMA;
+-		old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+-	}
++	/* Save scratch in case userspace is using it */
++	CVMX_SYNCIOBDMA;
++	old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+ 
+ 	/* Only allow work for our group (and preserve priorities) */
+ 	if (OCTEON_IS_MODEL(OCTEON_CN68XX)) {
+@@ -217,10 +215,8 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
+ 			       BIT(rx_group->group));
+ 	}
+ 
+-	if (USE_ASYNC_IOBDMA) {
+-		cvmx_pow_work_request_async(CVMX_SCR_SCRATCH, CVMX_POW_NO_WAIT);
+-		did_work_request = 1;
+-	}
++	cvmx_pow_work_request_async(CVMX_SCR_SCRATCH, CVMX_POW_NO_WAIT);
++	did_work_request = 1;
+ 
+ 	while (rx_count < budget) {
+ 		struct sk_buff *skb = NULL;
+@@ -229,7 +225,7 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
+ 		cvmx_wqe_t *work;
+ 		int port;
+ 
+-		if (USE_ASYNC_IOBDMA && did_work_request)
++		if (did_work_request)
+ 			work = cvmx_pow_work_response_async(CVMX_SCR_SCRATCH);
+ 		else
+ 			work = cvmx_pow_work_request_sync(CVMX_POW_NO_WAIT);
+@@ -257,7 +253,7 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
+ 			sizeof(void *));
+ 		prefetch(pskb);
+ 
+-		if (USE_ASYNC_IOBDMA && rx_count < (budget - 1)) {
++		if (rx_count < (budget - 1)) {
+ 			cvmx_pow_work_request_async_nocheck(CVMX_SCR_SCRATCH,
+ 							    CVMX_POW_NO_WAIT);
+ 			did_work_request = 1;
+@@ -400,10 +396,9 @@ static int cvm_oct_poll(struct oct_rx_group *rx_group, int budget)
+ 		cvmx_write_csr(CVMX_POW_PP_GRP_MSKX(coreid), old_group_mask);
+ 	}
+ 
+-	if (USE_ASYNC_IOBDMA) {
+-		/* Restore the scratch area */
+-		cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
+-	}
++	/* Restore the scratch area */
++	cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
++
+ 	cvm_oct_rx_refill_pool(0);
+ 
+ 	return rx_count;
+diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
+index df3441b815bb..2aa5fcb7ee32 100644
+--- a/drivers/staging/octeon/ethernet-tx.c
++++ b/drivers/staging/octeon/ethernet-tx.c
+@@ -176,23 +176,18 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		qos = 0;
+ 	}
+ 
+-	if (USE_ASYNC_IOBDMA) {
+-		/* Save scratch in case userspace is using it */
+-		CVMX_SYNCIOBDMA;
+-		old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+-		old_scratch2 = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
+-
+-		/*
+-		 * Fetch and increment the number of packets to be
+-		 * freed.
+-		 */
+-		cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH + 8,
+-					       FAU_NUM_PACKET_BUFFERS_TO_FREE,
+-					       0);
+-		cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH,
+-					       priv->fau + qos * 4,
+-					       MAX_SKB_TO_FREE);
+-	}
++	/* Save scratch in case userspace is using it */
++	CVMX_SYNCIOBDMA;
++	old_scratch = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
++	old_scratch2 = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
++
++	/* Fetch and increment the number of packets to be freed. */
++	cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH + 8,
++				       FAU_NUM_PACKET_BUFFERS_TO_FREE,
++				       0);
++	cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH,
++				       priv->fau + qos * 4,
++				       MAX_SKB_TO_FREE);
+ 
+ 	/*
+ 	 * We have space for 6 segment pointers, If there will be more
+@@ -201,22 +196,11 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (unlikely(skb_shinfo(skb)->nr_frags > 5)) {
+ 		if (unlikely(__skb_linearize(skb))) {
+ 			queue_type = QUEUE_DROP;
+-			if (USE_ASYNC_IOBDMA) {
+-				/*
+-				 * Get the number of skbuffs in use
+-				 * by the hardware
+-				 */
+-				CVMX_SYNCIOBDMA;
+-				skb_to_free =
+-					cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+-			} else {
+-				/*
+-				 * Get the number of skbuffs in use
+-				 * by the hardware
+-				 */
+-				skb_to_free = cvmx_fau_fetch_and_add32(
+-					priv->fau + qos * 4, MAX_SKB_TO_FREE);
+-			}
++			/* Get the number of skbuffs in use by the
++			 * hardware
++			 */
++			CVMX_SYNCIOBDMA;
++			skb_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+ 			skb_to_free = cvm_oct_adjust_skb_to_free(skb_to_free,
+ 								 priv->fau +
+ 								 qos * 4);
+@@ -384,18 +368,10 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		pko_command.s.ipoffp1 = skb_network_offset(skb) + 1;
+ 	}
+ 
+-	if (USE_ASYNC_IOBDMA) {
+-		/* Get the number of skbuffs in use by the hardware */
+-		CVMX_SYNCIOBDMA;
+-		skb_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+-		buffers_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
+-	} else {
+-		/* Get the number of skbuffs in use by the hardware */
+-		skb_to_free = cvmx_fau_fetch_and_add32(priv->fau + qos * 4,
+-						       MAX_SKB_TO_FREE);
+-		buffers_to_free =
+-		    cvmx_fau_fetch_and_add32(FAU_NUM_PACKET_BUFFERS_TO_FREE, 0);
+-	}
++	/* Get the number of skbuffs in use by the hardware */
++	CVMX_SYNCIOBDMA;
++	skb_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
++	buffers_to_free = cvmx_scratch_read64(CVMX_SCR_SCRATCH + 8);
+ 
+ 	skb_to_free = cvm_oct_adjust_skb_to_free(skb_to_free,
+ 						 priv->fau + qos * 4);
+@@ -413,9 +389,7 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	} else {
+ 		queue_type = QUEUE_HW;
+ 	}
+-	if (USE_ASYNC_IOBDMA)
+-		cvmx_fau_async_fetch_and_add32(
+-				CVMX_SCR_SCRATCH, FAU_TOTAL_TX_TO_CLEAN, 1);
++	cvmx_fau_async_fetch_and_add32(CVMX_SCR_SCRATCH, FAU_TOTAL_TX_TO_CLEAN, 1);
+ 
+ 	spin_lock_irqsave(&priv->tx_free_list[qos].lock, flags);
+ 
+@@ -485,16 +459,11 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		dev_kfree_skb_any(t);
+ 	}
+ 
+-	if (USE_ASYNC_IOBDMA) {
+-		CVMX_SYNCIOBDMA;
+-		total_to_clean = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
+-		/* Restore the scratch area */
+-		cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
+-		cvmx_scratch_write64(CVMX_SCR_SCRATCH + 8, old_scratch2);
+-	} else {
+-		total_to_clean = cvmx_fau_fetch_and_add32(
+-						FAU_TOTAL_TX_TO_CLEAN, 1);
+-	}
++	CVMX_SYNCIOBDMA;
++	total_to_clean = cvmx_scratch_read64(CVMX_SCR_SCRATCH);
++	/* Restore the scratch area */
++	cvmx_scratch_write64(CVMX_SCR_SCRATCH, old_scratch);
++	cvmx_scratch_write64(CVMX_SCR_SCRATCH + 8, old_scratch2);
+ 
+ 	if (total_to_clean & 0x3ff) {
+ 		/*
 -- 
 2.14.3

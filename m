@@ -1,105 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Feb 2018 19:10:51 +0100 (CET)
-Received: from mail-dm3nam03on0089.outbound.protection.outlook.com ([104.47.41.89]:61120
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994591AbeBVSKnXDM1Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Feb 2018 19:10:43 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=aUY/+vYETFu794dZX4nl7BtJnFqStoAR1CvTTOVchPQ=;
- b=RfITQefkqmO/wWozCJJrXM0AHHMN00kn2xotiy7ldVO0ygvRCb6xnSWs+ACtlocVs2C+wWWiaVBbDLXsaOAr8L6+dWuMXfNLo7Su1lHFgKhfqVR1s+CijBStFDnI8Ka0wMAd5qahK6aAl9ONmNy5icZIOf1r/SKlh/2k/oP5wzQ=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@cavium.com; 
-Received: from ddl.caveonetworks.com (50.233.148.156) by
- BN6PR07MB3169.namprd07.prod.outlook.com (10.172.105.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.527.15; Thu, 22 Feb 2018 18:10:32 +0000
-Subject: Re: [PATCH] MIPS: OCTEON: irq: check for null return on kzalloc
- allocation
-To:     Colin King <colin.king@canonical.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20180222180853.11505-1-colin.king@canonical.com>
-From:   David Daney <ddaney@caviumnetworks.com>
-Message-ID: <dba1d5b6-d568-c1a1-5e6c-7a00da3d1e01@caviumnetworks.com>
-Date:   Thu, 22 Feb 2018 10:10:30 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Feb 2018 23:38:43 +0100 (CET)
+Received: from ozlabs.org ([IPv6:2401:3900:2:1::2]:36073 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994591AbeBVWifa4EFe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Feb 2018 23:38:35 +0100
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 3znTld73BKz9sW7;
+        Fri, 23 Feb 2018 09:38:21 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Joel Stanley <joel@jms.id.au>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jimmy Vance <jimmy.vance@hpe.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Andreas Werner <andreas.werner@men.de>,
+        Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Zwane Mwaikambo <zwanem@gmail.com>,
+        Jim Cromie <jim.cromie@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        Mans Rullgard <mans@mansr.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Jun Nie <jun.nie@linaro.org>,
+        Baoyou Xie <baoyou.xie@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>
+Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-mips@linux-mips.org, linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com,
+        Utz Bacher <utz.bacher@de.ibm.com>
+Subject: Re: [PATCH v3] watchdog: add SPDX identifiers for watchdog subsystem
+In-Reply-To: <20180221122744.28300-1-marcus.folkesson@gmail.com>
+References: <20180221122744.28300-1-marcus.folkesson@gmail.com>
+Date:   Fri, 23 Feb 2018 09:38:21 +1100
+Message-ID: <87po4wps4i.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20180222180853.11505-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: BYAPR07CA0018.namprd07.prod.outlook.com (52.135.222.31) To
- BN6PR07MB3169.namprd07.prod.outlook.com (10.172.105.139)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4cb65caf-91d8-49a8-0984-08d57a1f90f1
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(4534165)(4627221)(201703031133081)(201702281549075)(5600026)(4604075)(2017052603307)(7153060)(7193020);SRVR:BN6PR07MB3169;
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3169;3:oZoA+VlX6MvGPmq2H4ElBxyGBMRMWuFC1B++aJFLiD75rtS5uOO7pneAiopbTPXYzgIGtwpNM2JVAu57oSp2ddghQjOTS8uurgqEst+b7sDTgWPS1STBne+AkbdgBr+onr2LdeuLCJJ9QllqKWwqR6BSMBpMSU/uykSrD9NIGgLdAxAaGwHEe8P3VphYQ6gwPwXhlOsAni+eYIQf4zxwCxTIA1WrOCL/uS57HReBokbu5TSo3tSNwOe5TKax5DZF;25:8cVl1RVsv4SwGCepGL1bpiLixwOocdMltJNPxbhqbOWdLee4kbYFbwG24rgWJvVqIKx7q2GKarsF4orcLsj9FG07yveqGbmOaBeO3Mi5QJrOMaCLyfNzWgPTnnGTinZvUEe4ZxGrnprRaatVgzvcVhVAk96/p7zSLORAE4EYWxrOgPsfXe26lln7IxKM8WJ+GBNXfTBsoHmcYAGvDKG2ccub+aFG7MaTnK68c4IYCaxzGF6ZAyPBi5cbzpfLaZBTGLp5WlEz4haZGlM0UjI4u2WXN+hwlGYnYrS5XtDOqohCHdbdnZDJAW2f1AKHupS+vu9FvoLroriNIt/5Qzi7eQ==;31:v9ZoxUw+IK1HWvuKP+2esfzcLfp77FY4z/dMbs4eS/vQ7Id31wCunHDt/i1u9xCFyGjF+2SbDzeGPoXn8XDPhL3+o7POWxWlnl/tYWn9pNQ5grwv9Ptng9xmYAwK5THLh5t4coSYWhXY0iXMRA0sxN3l0dvKsugvV1uLd43m7xV/UBoqOLiKVoRGp0/2JdrXUhqw+pvjHMOy+UPPV/Idahv8tQrW10qOaB0hRCu1htc=
-X-MS-TrafficTypeDiagnostic: BN6PR07MB3169:
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3169;20:/FBLbMaKS5N9NrAROtfaPeDZnA7ufzLeJqnqxFQeFpHJiXBFQmzMXXCLXcHnfmUE66jT5/rRG7DEiKA8OBsGxzCfJau+AKd4U31p1njykpnQMW/yPq9clfoFnuh0tcXB9mTzHnbM15Wu5HBh8HvtBOgc2C7QnavZjQSgynqCEW2sAhL0ThHsYy9lhF0Lp6JHApswQd40cRDt3BN8X59U93Kh6ThchBUyZ2xbb23GQjJoxL2wsN+wrnyKrs8M6rcl2r8jKKJsIwfoyjS6C/SalK9U2mbzHbtFPsGQBi4uKJ5AKOolro27CQ08FHrft8b1JjJ5O+rYoYtAtGazpur842eVoZ6DodcpRexC9aTjbEyTfAUmCR9YvlhTMi3c7hmqkSL9LwcuFYQtD6DOV1sxV/Wd1eNROXjBAzzuWZW4QuiybWyAI/dy/iG6a4cQePbav+jbujdGq30mAjJD3yLGv0MuKP6o2gF8KFYCkBWCMJj46ZanC4IXpSaChST5QLHEsLKjRZ8DV6H37wBZEi1ZO0tofToQZ86WMkl+qWR2G423wY4R9aozkxT2iIaBNpTQhXPRTVmjxAuGdRYxbGqCuyrzMxI+DH7aU0LMUGpCQls=;4:c0sSNiWNVUNAxp7W6j6aFIwbpd1jzcECSS4ReEy9qST94Q4XKEwqtWETtGpuL8ihNr+tfm1HSdq7Dob4R8eJCEQHSFSTJRIDT2b+pcJ9+0pULbyyl1hec/3XMCTwTRiR5SATy0Yj+bii2IfNhONwzC5Vr1Djcg6l5BY73gNji6/tA9Yi59JV72egqARQocKk5ZvNRQ5Se4xsCTYxXKKKojlywnjbBy5blb76rZgcmRw8RjWRwiUtemJ8K5PrvsiMi7sOyapccH3P9Ts6Uanmy2oUak5tzcQPAViU5qtEckVgCABSTyqzXC8C+6QbyrsY
-X-Microsoft-Antispam-PRVS: <BN6PR07MB31693BC8BA2CA9211B52555997CD0@BN6PR07MB3169.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(198206253151910);
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001082)(6040501)(2401047)(8121501046)(5005006)(3231101)(944501161)(10201501046)(93006095)(3002001)(6041288)(20161123558120)(20161123560045)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(6072148)(201708071742011);SRVR:BN6PR07MB3169;BCL:0;PCL:0;RULEID:;SRVR:BN6PR07MB3169;
-X-Forefront-PRVS: 059185FE08
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(39380400002)(376002)(346002)(366004)(396003)(39860400002)(199004)(189003)(16526019)(186003)(26005)(8676002)(81166006)(81156014)(47776003)(8936002)(2950100002)(42882006)(65826007)(76176011)(5660300001)(229853002)(53546011)(72206003)(230700001)(3846002)(6116002)(6506007)(67846002)(386003)(2906002)(52116002)(69596002)(2486003)(36756003)(52146003)(6246003)(53416004)(31686004)(106356001)(4326008)(478600001)(25786009)(6486002)(23676004)(31696002)(68736007)(7736002)(53936002)(64126003)(58126008)(66066001)(316002)(6512007)(110136005)(97736004)(105586002)(305945005)(65806001)(65956001)(59450400001)(50466002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR07MB3169;H:ddl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (protection.outlook.com: cavium.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCTjZQUjA3TUIzMTY5OzIzOk1RVFhDZlQ0eklFQ2xhNmd5eit2Mis3a3Jk?=
- =?utf-8?B?RHFUelpkUEZuRUpZTG9iQW1TWEVhRWppc3IvTE82em12M0RqY2xjcnlRUnFv?=
- =?utf-8?B?U0t3akExN0xEbGhWeWxtcGVwK0FqUWRENGtaMGZoMTI2M2ZMdHEwdXc0Z0tM?=
- =?utf-8?B?RDdVSGczSHI3ZmRoTXRaMFFEMU1ER0pvWHBid3dKT0ZWZ2lLUDNmOUJSK2FW?=
- =?utf-8?B?VkozalUvMEhGWVg0NzRVbmdMOUdSWnM2RnRuNWV3VSs3ZWdSa21vOW1yTjBV?=
- =?utf-8?B?M2xIb0VVelViaW1UY3hZV1RUa2FCVFV4Z1dKMjh5MmljTUJvc0FtdlY2R2l4?=
- =?utf-8?B?NUpyMmYvcUNrWTJ4c2F0WStCSU5xVXpFRU9pcVVHN2xGYUU0UzNRZDJjenNW?=
- =?utf-8?B?dkNySitPZ25EVTB3bUd4cjM3VCtnUUFXQTc3aEllRU44WjVFNURYN1R3WC9w?=
- =?utf-8?B?NkpkOGlpMmtTTkM1VnU3YnllekwrNENUQU10RXdYdkdNS1A5SjlqUS8wOWhG?=
- =?utf-8?B?WlRHYzR5STIxd2krb25kWEFoenRrcHZJcVloSzR6dG9qVFBDeGFsQnFDUkw5?=
- =?utf-8?B?VXNmY1BtRVRnUEhkS0NNOUplcVFMWUtpbU03d1FiM3lQQzEwYkllalcwbkdO?=
- =?utf-8?B?MlNmQU56YkhnclF2MmM1aS91cWYwVjhVa3dhTDZtZERkNXdsUkR0SWhsZkl4?=
- =?utf-8?B?RlpDL3NIVDlXN2tVOEluMmN3cWZCZ3IwakdYYjE3UWRtSHNTWHA5T3Z3aGRy?=
- =?utf-8?B?dUlYZkZpb0dMd1c5d2c2Wm8vT1Y0T0V4WitjSWpSSGE2amNad0xkUmx5U2k3?=
- =?utf-8?B?SkwvM21sUEFyZDYyTnJ0WDM5N2dFQnZzRk9BMkdGYXArR3AxWmF1TklJK0tQ?=
- =?utf-8?B?azJQazNmbWpCNHJpdnR5clJtMHFkdEJNN1k3bDJBQVpRUndmbFpzSmo1RzFX?=
- =?utf-8?B?Zmk3TXlnVFpqVkFUN3dlVkFIS205RzhVY1o1bER6d3d6bTcyclBjWFdOZk9o?=
- =?utf-8?B?K1UzamQ3OXBWY2tyQU1ndWFLUS9DV3JLRE5VdTk0dVhYRXdBNTJIYUVhZmhj?=
- =?utf-8?B?L3NWbzNpR0grUjZYTXBvNHFVblRKMkJteDQ1dEd0OGJieUxlamJXcHpwUnR5?=
- =?utf-8?B?OHRVeTVZUitKZXBPamUxbll5YU9NUjRIUXd2WmpVN1JsZ2NuWWR1K21Tclpa?=
- =?utf-8?B?TUhrRFBuUXRnNi9xL0w1RWhFUXJKN0daR25KdUk2WVltS05IN25XOFhKWEd3?=
- =?utf-8?B?SDV1MTdRd0hNSmNMQzNlNjJLaGI5WWFvVnN6RkU4K0w4NEJPVE82dzJVRmE0?=
- =?utf-8?B?MmozN3g0c3Q5Sm5rY0YvMS9jYlRkRHlRVzdmNDUyb0YzNlBhc1M5OGtzUW5F?=
- =?utf-8?B?L1d1YTM2SzNmekdRNEFBYm5GbDdhODRBMFZKM2V4dTZJdUF5VjVoWGMvT0RP?=
- =?utf-8?B?NGMxWDcrdVg1RmtXYTBtelY0NmpqMzNjNnR1S05PSHFON2U0OXF1YUJNSEgr?=
- =?utf-8?B?UHhiNTZFQzd5M292d1pNVFBHOWozTnhXeXdCU002bldzRS8vODkwdERsbjYy?=
- =?utf-8?B?RHNGMS9QaEdGbDE3ZjNzVjJSc3luVjY3emxOSG9VL2FtTzU4d25Gd3hjT2ti?=
- =?utf-8?B?Uk9DOGdPdmxTdmR5dU5zTkpLTG1DMW9xTUhNc0xyQlg2MkRqTjRZdkVnTjla?=
- =?utf-8?B?bWR6NU5JTXV2V3BKVE8waThEemtmRkhmKzYvNjFla0k5SjBYU0tSSlR4VHFV?=
- =?utf-8?B?ZjZKbXhpenVBVHRZdS9TWjNsWXQ3a1dxRkFGN1dnM0NLS1pQekpiM3lKMldu?=
- =?utf-8?B?eWNsVUJkUVlvWTMzcUN0ZjhLMVNjeHNyYmNISTZuQ0R0UWt4ME5OWlZKUDF2?=
- =?utf-8?Q?k6ajIxWR91ZuQUV92Z8Eb3szKlMfIITI?=
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3169;6:9fH24d0vBhA1eaB8yso7OKKQBCPwfmdIitNu6anCVY5sH4HAk+eAsNFMcR/ohB0fHLCk6B2g1O/CrAGuoheVCACOIrJxh6gvAlZ6eb6UP1p2Upjk0g5qt/7kIlOuRYEka3jXJ8ZQr8KRbRJxuSNorqMEgxl8PlXQkY2WmxoR5C/qexu0ors/9pOMkBUt2+qcuBwRwMLCdATpdfw1JybORHmkMadhXpbXSxYV2D7gLSW/ESHqPWnjoi+hVz6YwgK7veZrPM1GJQ6KAB71AoVCaHnHcVmecyH2u95LVoX+B9ArDkBpw62gJAsHr4WS0TeJD+pNVt4JFrIGX2dw4zFJ6DYxVRuVuEnz0DqRzVH9BRw=;5:AtWRXd4q9CrGr04978+a8GtYp9orlqZTet7K0MlCwkw+cnOGiNDacxTmYl84Nrv60kfS78TzKR/c9Ss2ENXpXrmtvpMQl90RBz3Gk6tovsyXaEbpzmAZsN1LeiRcsVVyasJ+3mGOTy7mouV6GrN28wn3hSljGeFu4hCNmORwO/Y=;24:yT0rBZYqEm6n9lwS3tLk0mhku36zSHYExn1JiKaifj/bCoMlo0lBtbCmitd4ubxgGZ/pzLiH6+JAgz5yQmaRxC5As9nP5vyaIZsJJxUcO1s=;7:C96xJ1Wm85ctheBijXO6QqeAi4NrGtK0AP/vF+BVMxTK1JCl+3dJNP2xf50677L1VO64g3jxmxxWv7y6epoZownPM0DKTibICh3POu8vA/MWwilKXcljBUnXdC1J8EeEElZoQz/2cTBrCaYZZC6DjEg499ZXCf7JIrvWerdtihlnqlfBHKThWrrRy9nfPUN0LxxTDoUr+yYK9Og/hv9W86if0Nch9H5HNGLZqDZ48rGvJO6U7hkZlsJ2jFGQnIHc
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2018 18:10:32.9896 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4cb65caf-91d8-49a8-0984-08d57a1f90f1
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR07MB3169
-Return-Path: <David.Daney@cavium.com>
+Content-Type: text/plain
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62692
+X-archive-position: 62693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -112,34 +94,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/22/2018 10:08 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The allocation of host_data is not null checked, leading to a
-> null pointer dereference if the allocation fails. Fix this by
-> adding a null check and return with -ENOMEM.
-> 
-> Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Marcus Folkesson <marcus.folkesson@gmail.com> writes:
+> - Add SPDX identifier
+> - Remove boiler plate license text
+> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
+>   license
+>
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-Acked-by: David Daney <david.daney@cavium.com>
+<snip>
 
+> diff --git a/drivers/watchdog/wdrtas.c b/drivers/watchdog/wdrtas.c
+> index 0240c60d14e3..af07f746b7cc 100644
+> --- a/drivers/watchdog/wdrtas.c
+> +++ b/drivers/watchdog/wdrtas.c
+> @@ -1,3 +1,4 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+>  /*
+>   * FIXME: add wdrtas_get_status and wdrtas_get_boot_status as soon as
+>   * RTAS calls are available
+> @@ -10,20 +11,6 @@
+>   * device driver to exploit watchdog RTAS functions
+>   *
+>   * Authors : Utz Bacher <utz.bacher@de.ibm.com>
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License as published by
+> - * the Free Software Foundation; either version 2, or (at your option)
+> - * any later version.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - * You should have received a copy of the GNU General Public License
+> - * along with this program; if not, write to the Free Software
+> - * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+>   */
 
-> ---
->   arch/mips/cavium-octeon/octeon-irq.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-> index b993d9f2c9b9..203e1d2a56d5 100644
-> --- a/arch/mips/cavium-octeon/octeon-irq.c
-> +++ b/arch/mips/cavium-octeon/octeon-irq.c
-> @@ -2277,6 +2277,8 @@ static int __init octeon_irq_init_cib(struct device_node *ciu_node,
->   	}
->   
->   	host_data = kzalloc(sizeof(*host_data), GFP_KERNEL);
-> +	if (!host_data)
-> +		return -ENOMEM;
->   	raw_spin_lock_init(&host_data->lock);
->   
->   	addr = of_get_address(ciu_node, 0, NULL, NULL);
-> 
+LGTM.
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+cheers

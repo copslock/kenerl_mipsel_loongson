@@ -1,41 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Feb 2018 10:53:24 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:46116 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Feb 2018 11:16:36 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:50910 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991128AbeBWJxQfyysl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Feb 2018 10:53:16 +0100
+        id S23991128AbeBWKQ2iP2Yl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Feb 2018 11:16:28 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C35DE217A3;
-        Fri, 23 Feb 2018 09:53:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C35DE217A3
+        by mail.kernel.org (Postfix) with ESMTPSA id 890AC217A0;
+        Fri, 23 Feb 2018 10:16:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 890AC217A0
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 23 Feb 2018 09:53:02 +0000
+Date:   Fri, 23 Feb 2018 10:16:17 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: OCTEON: irq: check for null return on kzalloc
- allocation
-Message-ID: <20180223095301.GL6245@saruman>
-References: <20180222180853.11505-1-colin.king@canonical.com>
- <dba1d5b6-d568-c1a1-5e6c-7a00da3d1e01@caviumnetworks.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [GIT PULL] MIPS fixes for 4.16-rc3
+Message-ID: <20180223101616.GM6245@saruman>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yQDbd2FCF2Yhw41T"
+        protocol="application/pgp-signature"; boundary="B9BE8dkJ1pIKavwa"
 Content-Disposition: inline
-In-Reply-To: <dba1d5b6-d568-c1a1-5e6c-7a00da3d1e01@caviumnetworks.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62705
+X-archive-position: 62706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,48 +44,61 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---yQDbd2FCF2Yhw41T
+--B9BE8dkJ1pIKavwa
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 22, 2018 at 10:10:30AM -0800, David Daney wrote:
-> On 02/22/2018 10:08 AM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >=20
-> > The allocation of host_data is not null checked, leading to a
-> > null pointer dereference if the allocation fails. Fix this by
-> > adding a null check and return with -ENOMEM.
-> >=20
-> > Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
->=20
-> Acked-by: David Daney <david.daney@cavium.com>
+Hi Linus,
 
-Applied to my fixes branch with 4.0+ stable tag.
+Please pull this MIPS fix.
 
 Thanks
 James
 
---yQDbd2FCF2Yhw41T
+The following changes since commit 91ab883eb21325ad80f3473633f794c78ac87f51:
+
+  Linux 4.16-rc2 (2018-02-18 17:29:42 -0800)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_fixes_4.16_3
+
+for you to fetch changes up to 6ae1756faddefd7494353380ee546dd38c2f97eb:
+
+  MIPS: Drop spurious __unused in struct compat_flock (2018-02-20 15:46:44 +0000)
+
+----------------------------------------------------------------
+MIPS fixes for 4.16-rc3
+
+A single MIPS fix for mismatching struct compat_flock, resulting in bus
+errors starting Firefox on Debian 8 since 4.13.
+
+----------------------------------------------------------------
+James Hogan (1):
+      MIPS: Drop spurious __unused in struct compat_flock
+
+ arch/mips/include/asm/compat.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+--B9BE8dkJ1pIKavwa
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqP5H0ACgkQbAtpk944
-dnquzw//VizcEzcb175yh9w/aAkX32RslfjWvO87s8+78qDYNkW5MECM1iJ1RqKX
-MMnyBu1tUC+rwnmCA4Rug8JgufRQZ2WHcfCYDZW6Bh+TBHFzR0ZmY61Qrmpnyrni
-lia4pM1uOz7DFOKby7l9jYyi//9TeAK+gjDGWgu2dVYbmVKnppZkcEGnN5MJNSzl
-u5zFi3DHCJJnBmgyXxOr/p6LGRCU+Asgn70ry2EV6Swjn56fmGKCdlKRl9O4KTbF
-WnHRaQ/gobmLbS6tRrzvQtYzxTof73Yqu2pG8k8AImWFZKIYNbx1yNnoEOIQ72GT
-jE/lUdbhmT4okPMBKTvN6lTJ2GJZ63XKu/EyhM7GeUtbeuIrl+2toTgBf7E5hf1U
-YdwXjHgTmUlm6ctqPKffNAlpYGzT5SVxgzZOlvqOcsmc8TSuOzw8s1IRMDvfuFeZ
-O8qP+UG0reVvJ/jpo9CsxpwIbCQX18yE8smcRJKz3urx62IAzyW+IsBUPtXpHRkT
-NQl2wP4NUPF7ZIhpG/SGpWxrbPOLiJn95Ug8QNZkcjrM8t36U3zRjCtxskfgI9Wd
-nVVy/L26d7Q7oxJd0wZNzz4XMvDVo3ynlVW91AYdkklXrrT5p759G1S2h94SjrTP
-AH89bDl4FDBfNYp6tgKxsnjq9ESRJYTDl6WfWlJbBa9SF0xA3aI=
-=j8OB
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqP6fAACgkQbAtpk944
+dnrzxg/+P8gk5BI6f5cyDCBHGcaRRgxb+2Za4WWUgpT46+K+AM8aRFtX4ipd2j/n
+8KoR1cZP39TUZOY+/Gz3g6eC585tE8BGBPzqO8py//cJjOOinlVZ3MDAzq5MUO9f
+fQX9xbXALKtAqaMvJAh1i0FsVZO6S74NWxvHnwqmJzSSqX6o2fH+V+zVbfMvMc88
+9/A/2LGOG3QNoKyTXbPAMAKloGeBIdgkcq8x8BVtKgbsG/SRbwPYcsJKYp6hEm7m
+vW52iUelBuKnKtq+xiFpXZ1PVNAxrXBooAS5sSFoktv5LGNixiKCH+hac6ez9bsK
+msiomv3mgR2mTGFRa69csBRsOWAgbWBLwxIhrw0/6NgE2LmiHNV1OPyvVS+mx7id
+knoseDximogShHR/Ez6+DyZPwwZIEzxTS3Y63JWCdqJUisT78w93MAIoWLinAu12
+DevANkvg6ek9W+5FEnWRYMkxnwN6LD3eZYUKCobr5SOcF6HADUupT4ahHjCET6gg
+8MXhSM75qS41nE6U/WZHEDDqrXn5JkfIYGnFX0+50NPlylCExdyoxYj1rNIkFo8L
+CfRR0rQPwzkaKi4CNZi2UOoFvpMAxcJPekOSmFmWePJ0C6P3LInCHytqQLFM1cdA
+rKvKas7dSCVQPpj1DH7h4/y8ELvmongCNmBLIr3T4fC8/1oG6kc=
+=E48s
 -----END PGP SIGNATURE-----
 
---yQDbd2FCF2Yhw41T--
+--B9BE8dkJ1pIKavwa--

@@ -1,46 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Feb 2018 21:08:52 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:59144 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990723AbeBZUInt90Ys (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Feb 2018 21:08:43 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 26 Feb 2018 20:08:35 +0000
-Received: from [10.20.78.94] (10.20.78.94) by mips01.mipstec.com (10.20.43.31)
- with Microsoft SMTP Server id 14.3.361.1; Mon, 26 Feb 2018 12:05:31 -0800
-Date:   Mon, 26 Feb 2018 20:05:20 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-CC:     James Hogan <jhogan@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Feb 2018 21:25:02 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50046 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991025AbeBZUYwunX0Z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Feb 2018 21:24:52 +0100
+Received: from localhost (clnet-b04-243.ikbnet.co.at [83.175.124.243])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AAC79F4A;
+        Mon, 26 Feb 2018 20:24:45 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Peter Mamonov <pmamonov@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/4] MIPS: Introduce isa-rev.h to define MIPS_ISA_REV
-In-Reply-To: <1519664565-10955-2-git-send-email-matt.redfearn@mips.com>
-Message-ID: <alpine.DEB.2.00.1802261957350.3553@tp.orcam.me.uk>
-References: <1519664565-10955-1-git-send-email-matt.redfearn@mips.com> <1519664565-10955-2-git-send-email-matt.redfearn@mips.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        Al Viro <viro@zeniv.linux.org.uk>, linux-mips@linux-mips.org
+Subject: [PATCH 4.14 07/54] MIPS: Drop spurious __unused in struct compat_flock
+Date:   Mon, 26 Feb 2018 21:21:44 +0100
+Message-Id: <20180226202144.720516819@linuxfoundation.org>
+X-Mailer: git-send-email 2.16.2
+In-Reply-To: <20180226202144.375869933@linuxfoundation.org>
+References: <20180226202144.375869933@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1519675714-321458-3393-5778-9
-X-BESS-VER: 2018.2-r1802232356
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190449
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62720
+X-archive-position: 62721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,38 +44,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 26 Feb 2018, Matt Redfearn wrote:
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
-> +/* If the compiler has defined __mips_isa_rev, believe it. */
-> +#ifdef __mips_isa_rev
-> +#define MIPS_ISA_REV __mips_isa_rev
-> +#else
-> +/* The compiler hasn't defined the isa rev so assume it's MIPS I - V (0) */
-> +#define MIPS_ISA_REV 0
-> +#endif
+------------------
 
- FYI, GCC has this:
+From: James Hogan <jhogan@kernel.org>
 
-/* The ISA revision level.  This is 0 for MIPS I to V and N for
-   MIPS{32,64}rN.  */
-int mips_isa_rev;
+commit 6ae1756faddefd7494353380ee546dd38c2f97eb upstream.
 
-and this:
+MIPS' struct compat_flock doesn't match the 32-bit struct flock, as it
+has an extra short __unused before pad[4], which combined with alignment
+increases the size to 40 bytes compared with struct flock's 36 bytes.
 
-      if (mips_isa < 32)
-	mips_isa_rev = 0;
-      else
-	mips_isa_rev = (mips_isa & 31) + 1;
+Since commit 8c6657cb50cb ("Switch flock copyin/copyout primitives to
+copy_{from,to}_user()"), put_compat_flock() writes the full compat_flock
+struct to userland, which results in corruption of the userland word
+after the struct flock when running 32-bit userlands on 64-bit kernels.
 
-and then:
+This was observed to cause a bus error exception when starting Firefox
+on Debian 8 (Jessie).
 
-      if (mips_isa_rev > 0)						\
-	builtin_define_with_int_value ("__mips_isa_rev",		\
-				       mips_isa_rev);			\
+Reported-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Tested-by: Peter Mamonov <pmamonov@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 4.13+
+Patchwork: https://patchwork.linux-mips.org/patch/18646/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-so your proposal looks like the right approach to me.  I think we should 
-have the various target macros documented in the GCC manual.
+---
+ arch/mips/include/asm/compat.h |    1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Maciej W. Rozycki <macro@mips.com>
-
-  Maciej
+--- a/arch/mips/include/asm/compat.h
++++ b/arch/mips/include/asm/compat.h
+@@ -86,7 +86,6 @@ struct compat_flock {
+ 	compat_off_t	l_len;
+ 	s32		l_sysid;
+ 	compat_pid_t	l_pid;
+-	short		__unused;
+ 	s32		pad[4];
+ };
+ 

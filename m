@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Feb 2018 18:06:28 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:41190 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Feb 2018 18:06:54 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:40873 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991025AbeBZRGUms4qO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Feb 2018 18:06:20 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 26 Feb 2018 17:06:12 +0000
+        by eddie.linux-mips.org with ESMTP id S23991068AbeBZRG0yNTqO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Feb 2018 18:06:26 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 26 Feb 2018 17:06:21 +0000
 Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Mon, 26 Feb 2018 09:03:00 -0800
+ 14.3.361.1; Mon, 26 Feb 2018 09:03:03 -0800
 From:   Matt Redfearn <matt.redfearn@mips.com>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
         "Matt Redfearn" <matt.redfearn@mips.com>,
         <linux-kernel@vger.kernel.org>,
-        "Maciej W. Rozycki" <macro@mips.com>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 0/4] MIPS: Introduce isa-rev.h to define MIPS_ISA_REV
-Date:   Mon, 26 Feb 2018 17:02:41 +0000
-Message-ID: <1519664565-10955-1-git-send-email-matt.redfearn@mips.com>
+        "Maciej W. Rozycki" <macro@mips.com>
+Subject: [PATCH 2/4] MIPS: cpu-features.h: Replace __mips_isa_rev with MIPS_ISA_REV
+Date:   Mon, 26 Feb 2018 17:02:43 +0000
+Message-ID: <1519664565-10955-3-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1519664565-10955-1-git-send-email-matt.redfearn@mips.com>
+References: <1519664565-10955-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1519664770-637139-10619-123029-6
+X-BESS-ID: 1519664770-637139-10619-123029-9
 X-BESS-VER: 2018.2-r1802232356
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -36,7 +37,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62715
+X-archive-position: 62716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,32 +54,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There are multiple instances in the kernel where we need to include or
-exclude particular instructions based on the ISA revision of the target
-processor. For MIPS32 / MIPS64, the compiler exports a __mips_isa_rev
-define. However, when targeting MIPS I - V, this define is absent. This
-leads to each use of __mips_isa_rev having to check that it is defined
-first. To simplify this, this series introduces the isa-rev.h header
-which always exports MIPS_ISA_REV (the name is changed so as to avoid
-confusion with the compiler builtin and to avoid accidentally using the
-builtin). All uses of __mips_isa_rev are then replaced with the new
-define, removing the check that it is defined.
+Remove the need to check that __mips_isa_rev is defined by using the
+newly added MIPS_ISA_REV.
 
-Applies on v4.16-rc1
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+---
 
+ arch/mips/include/asm/cpu-features.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Matt Redfearn (4):
-  MIPS: Introduce isa-rev.h to define MIPS_ISA_REV
-  MIPS: cpu-features.h: Replace __mips_isa_rev with MIPS_ISA_REV
-  MIPS: BPF: Replace __mips_isa_rev with MIPS_ISA_REV
-  MIPS: VDSO: Replace __mips_isa_rev with MIPS_ISA_REV
-
- arch/mips/include/asm/cpu-features.h |  5 +++--
- arch/mips/include/asm/isa-rev.h      | 24 ++++++++++++++++++++++++
- arch/mips/net/bpf_jit_asm.S          |  9 +++++----
- arch/mips/vdso/elf.S                 | 10 ++++------
- 4 files changed, 36 insertions(+), 12 deletions(-)
- create mode 100644 arch/mips/include/asm/isa-rev.h
-
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 721b698bfe3c..5f74590e0bea 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -11,6 +11,7 @@
+ 
+ #include <asm/cpu.h>
+ #include <asm/cpu-info.h>
++#include <asm/isa-rev.h>
+ #include <cpu-feature-overrides.h>
+ 
+ /*
+@@ -493,7 +494,7 @@
+ # define cpu_has_perf		(cpu_data[0].options & MIPS_CPU_PERF)
+ #endif
+ 
+-#if defined(CONFIG_SMP) && defined(__mips_isa_rev) && (__mips_isa_rev >= 6)
++#if defined(CONFIG_SMP) && (MIPS_ISA_REV >= 6)
+ /*
+  * Some systems share FTLB RAMs between threads within a core (siblings in
+  * kernel parlance). This means that FTLB entries may become invalid at almost
+@@ -525,7 +526,7 @@
+ #  define cpu_has_shared_ftlb_entries \
+ 	(current_cpu_data.options & MIPS_CPU_SHARED_FTLB_ENTRIES)
+ # endif
+-#endif /* SMP && __mips_isa_rev >= 6 */
++#endif /* SMP && MIPS_ISA_REV >= 6 */
+ 
+ #ifndef cpu_has_shared_ftlb_ram
+ # define cpu_has_shared_ftlb_ram 0
 -- 
 2.7.4

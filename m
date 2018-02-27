@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Feb 2018 21:27:38 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51280 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990723AbeBZU1a6nK4x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Feb 2018 21:27:30 +0100
-Received: from localhost (clnet-b04-243.ikbnet.co.at [83.175.124.243])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 54F62E4B;
-        Mon, 26 Feb 2018 20:27:24 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Peter Mamonov <pmamonov@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, linux-mips@linux-mips.org
-Subject: [PATCH 4.15 07/64] MIPS: Drop spurious __unused in struct compat_flock
-Date:   Mon, 26 Feb 2018 21:21:44 +0100
-Message-Id: <20180226202153.748429368@linuxfoundation.org>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180226202153.453363333@linuxfoundation.org>
-References: <20180226202153.453363333@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2018 16:48:20 +0100 (CET)
+Received: from mail.bootlin.com ([62.4.15.54]:43516 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990864AbeB0PsNUj-ZC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 27 Feb 2018 16:48:13 +0100
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 605502087E; Tue, 27 Feb 2018 16:48:03 +0100 (CET)
+Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 0EA5E20722;
+        Tue, 27 Feb 2018 16:47:53 +0100 (CET)
+Date:   Tue, 27 Feb 2018 16:47:54 +0100
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 5/8] MIPS: mscc: add ocelot dtsi
+Message-ID: <20180227154754.GA15333@piout.net>
+References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
+ <20180116101240.5393-6-alexandre.belloni@free-electrons.com>
+ <20180214165743.GD3986@saruman>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180214165743.GD3986@saruman>
+User-Agent: Mutt/1.9.3 (2018-01-21)
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62722
+X-archive-position: 62723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,47 +44,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.15-stable review patch.  If anyone has any objections, please let me know.
+On 14/02/2018 at 16:57:43 +0000, James Hogan wrote:
+> On Tue, Jan 16, 2018 at 11:12:37AM +0100, Alexandre Belloni wrote:
+> > Add a device tree include file for the Microsemi Ocelot SoC.
+> > 
+> > Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> 
+> May I suggest Cc'ing the DT folk on this patch.
+> 
 
-------------------
+I can do that but I think that while they care about the bindings
+themselves, they usually don't review the device trees.
 
-From: James Hogan <jhogan@kernel.org>
+So I wouldn't expect any review from Rob on such a patch, especially
+since he reviewed the bndings.
 
-commit 6ae1756faddefd7494353380ee546dd38c2f97eb upstream.
+> > diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/Makefile
+> > new file mode 100644
+> > index 000000000000..f0a155a74e02
+> > --- /dev/null
+> > +++ b/arch/mips/boot/dts/mscc/Makefile
+> > @@ -0,0 +1,4 @@
+> > +obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+> > +
+> > +# Force kbuild to make empty built-in.o if necessary
+> > +obj-				+= dummy.o
+> 
+> I don't think you need this since f7adc3124da0 ("kbuild: create
+> built-in.o automatically if parent directory wants it"). It was removed
+> from other places in bf070bb0e6c6 ("kbuild: remove all dummy assignments
+> to obj-").
+> 
+> Cheers
+> James
 
-MIPS' struct compat_flock doesn't match the 32-bit struct flock, as it
-has an extra short __unused before pad[4], which combined with alignment
-increases the size to 40 bytes compared with struct flock's 36 bytes.
 
-Since commit 8c6657cb50cb ("Switch flock copyin/copyout primitives to
-copy_{from,to}_user()"), put_compat_flock() writes the full compat_flock
-struct to userland, which results in corruption of the userland word
-after the struct flock when running 32-bit userlands on 64-bit kernels.
 
-This was observed to cause a bus error exception when starting Firefox
-on Debian 8 (Jessie).
-
-Reported-by: Peter Mamonov <pmamonov@gmail.com>
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Tested-by: Peter Mamonov <pmamonov@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.13+
-Patchwork: https://patchwork.linux-mips.org/patch/18646/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/include/asm/compat.h |    1 -
- 1 file changed, 1 deletion(-)
-
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -86,7 +86,6 @@ struct compat_flock {
- 	compat_off_t	l_len;
- 	s32		l_sysid;
- 	compat_pid_t	l_pid;
--	short		__unused;
- 	s32		pad[4];
- };
- 
+-- 
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2018 17:24:45 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:33798 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991096AbeB0QYbxwrsf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 27 Feb 2018 17:24:31 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E4F5B21748;
-        Tue, 27 Feb 2018 16:24:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E4F5B21748
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 27 Feb 2018 16:23:57 +0000
-From:   James Hogan <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2018 17:37:32 +0100 (CET)
+Received: from [64.235.154.210] ([64.235.154.210]:48100 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990845AbeB0QhMxGFkN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Feb 2018 17:37:12 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 27 Feb 2018 16:34:28 +0000
+Received: from localhost (192.168.154.110) by MIPSMAIL01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 27 Feb
+ 2018 07:57:50 -0800
+Date:   Tue, 27 Feb 2018 15:57:48 +0000
+From:   James Hogan <james.hogan@mips.com>
 To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/8] MIPS: defconfigs: add a defconfig for Microsemi
- SoCs
-Message-ID: <20180227162357.GO6245@saruman>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 6/8] MIPS: mscc: add ocelot PCB123 device tree
+Message-ID: <20180227155747.GQ29460@jhogan-linux.mipstec.com>
 References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
- <20180116101240.5393-8-alexandre.belloni@free-electrons.com>
- <20180214170342.GF3986@saruman>
- <20180227161550.GC15333@piout.net>
+ <20180116101240.5393-7-alexandre.belloni@free-electrons.com>
+ <20180214170042.GE3986@saruman>
+ <20180227155444.GB15333@piout.net>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hOh8F6DNH/RZBSFD"
+        protocol="application/pgp-signature"; boundary="w2Q1kmhlT73y7Um/"
 Content-Disposition: inline
-In-Reply-To: <20180227161550.GC15333@piout.net>
+In-Reply-To: <20180227155444.GB15333@piout.net>
 User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+X-Originating-IP: [192.168.154.110]
+X-BESS-ID: 1519749255-321458-5405-2315-5
+X-BESS-VER: 2018.2-r1802232356
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190478
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <James.Hogan@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62726
+X-archive-position: 62727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: james.hogan@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,50 +57,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---hOh8F6DNH/RZBSFD
+--w2Q1kmhlT73y7Um/
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 27, 2018 at 05:15:50PM +0100, Alexandre Belloni wrote:
-> On 14/02/2018 at 17:03:43 +0000, James Hogan wrote:
-> > On Tue, Jan 16, 2018 at 11:12:39AM +0100, Alexandre Belloni wrote:
-> > > +# CONFIG_EARLY_PRINTK is not set
+On Tue, Feb 27, 2018 at 04:54:44PM +0100, Alexandre Belloni wrote:
+> On 14/02/2018 at 17:00:42 +0000, James Hogan wrote:
+> > On Tue, Jan 16, 2018 at 11:12:38AM +0100, Alexandre Belloni wrote:
+> > > Add a device tree for the Microsemi Ocelot PCB123 evaluation board.
+> > >=20
+> > > Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.co=
+m>
 > >=20
-> > Only Loongson1b/1c explicitly disable early printk. Do you disable it
-> > for a particular reason?
+> > Please Cc DT folk.
 > >=20
 >=20
-> Well, it is so late that it is not really useful and I don't find that
-> particularly interesting to have it on by default.
+> I can do but again, I don't think they care.
 >=20
-> But I don't have a strong opinion, I certainly can let it enabled.
+> > > diff --git a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts b/arch/mips/bo=
+ot/dts/mscc/ocelot_pcb123.dts
+> > > new file mode 100644
+> > > index 000000000000..42bd404471f6
+> > > --- /dev/null
+> > > +++ b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+> > > @@ -0,0 +1,27 @@
+> > > +/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
+> > > +/* Copyright (c) 2017 Microsemi Corporation */
+> > > +
+> > > +/dts-v1/;
+> > > +
+> > > +#include "ocelot.dtsi"
+> > > +
+> > > +/ {
+> > > +	compatible =3D "mscc,ocelot-pcb123", "mscc,ocelot";
+> >=20
+> > Should mscc,ocelot-pcb123 be added to the mscc DT binding documentation
+> > in the other patch?
+> >=20
+>=20
+> On ARM at least, we don't document the board compatibles because this
+> will be a huge list without much benefit as they are mostly unused.
+> Still, it is nice to have in case something specific needs to be done
+> for a particular board (and hopefully this never happens).
+>=20
+> also, I don't think any other MIPS boards are documented bu if you
+> insist, I can either add it in
+> Documentation/devicetree/bindings/mips/mscc.txt or create a new file to
+> list all the mips board compatibles.
 
-No problem. I leave it up to you.
+I don't insist. It was a genuine question :-)
 
-Cheers
+Thanks
 James
 
---hOh8F6DNH/RZBSFD
+--w2Q1kmhlT73y7Um/
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqVhhcACgkQbAtpk944
-dnotlxAAnBfvV8heomFoH/M+7buskOB+k3rUeZxCzMnF5UX5iPcsLtJnI6fl/NGT
-FHfs0SevT8qXG6LGu4Tsv/poUI7/9b+Hma/LYUm2DBF9GW5DfRty1HIgFs8LFqmA
-XkLg+ZsbQta/FthCY5/8/+fJYAYgF5t16O/tNciQ0eYA30f3LU4W86C5q7pgixaE
-9uQzb+U75B3u6l9qcPBqE+XzSDiZfh30RQC5fMlf9ANN5oAHr/2wtlUtZWJYCvVV
-A9S32SnpkOEhkIOk1RHKcpvcJiJb0ZuyWeVJx0ecRs4cZNOywu0DeKveweLh6kKJ
-GRwIhgRjeqXIYfiLSTpt2nhQJwqYOh7twhQuJY/SC85dgRcJ7+14+20L5DDxcAPb
-kNRRjPtQCorkR4GZ7Ax06TlSE4hlEoPoQeKXV+z9yLWVvOPW0io4hv3H7OTHOi56
-mYTX3pzTrMp8x6kArSGxRqWCFDGJ2wcAJeWLuC8Ki0p/5HUft0ntpKytB9ghzL05
-OsmtLv4/dAXwYnobTsWBaoVBtgl195oyJVHKDfPSUP5L+YcbVY2tZJ/XwtFowchX
-4tHBqcuvyJ2rICpSLJEwqfWNRe1UO3vLHPsNpHIV6flv5IAIhfOHfjoFX5KYolRs
-A0LyuFdTaps+pScL7MIcWzfTxYmdNZX9t+bbWkHQPNs9mxcavBw=
-=rYpJ
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqVf/sACgkQbAtpk944
+dnodeQ//Qtfu98Urha66CiGpP9aq1udAStF8Uzts59ARWqOn3NX1gIclwYkd5TCa
+cTlkJMZWDO59Wix488va2l+B5WgBrcPtVn65K58a+z8xu71G8OZE2a08v0ATp+Ac
+KQg4lvNs4Xn43dh6Wzggv7/VAwHPxobWm7AOpL96AAyO/A384y4SD6bSzZgxO+35
+wtSius6KzMCmw8WiWvaQ4bRBw2vuKpVsuTcy+6NuTKG8ekaoA35zappQfbkLFQf7
+FE0YRQmKHdajo/a5R4LSbJ28wE8EW9J+drO0iuP8o5biqLxlwy/kpMxkpJJGc6PF
+G8Gy29AxwjdjekIhSpINtYk2vi6S4xwhL47HMn8OzOy20Y8MiNDDN50hgsCEB4NN
+ufZcFAoPJ4qWJmW1J7Y7LnerU9Ksw5SKa+8zy9CnF03ZK4ve2zqh/SslsHkhurfK
+Py37vRaFJHC6MCm7hun0JqVweQIDRud5DtQEe/+FOkLSWvm8JKORChWD8h8Xy9FT
+p1L1J2f93HVT79Td8teoBL+MnwExp5lK3QjZnRoUMOlmFLqVBE73lZJ5p/yFbK5F
+6M+1GlHG0B2h2rL1JdiEp2MNo01+Q6aFkmNR25wpnD/DiQ1nuUuUbl2+q7APflE+
+3OnD0ip7hf5LzxCdc83zg2qGSk/loz8n6DJ3WAz6dYg3USeygk8=
+=kaZY
 -----END PGP SIGNATURE-----
 
---hOh8F6DNH/RZBSFD--
+--w2Q1kmhlT73y7Um/--

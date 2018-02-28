@@ -1,66 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 07:53:48 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:53461
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990498AbeB1GxkMfbJi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 07:53:40 +0100
-Received: by mail-wm0-x244.google.com with SMTP id t74so2858208wme.3
-        for <linux-mips@linux-mips.org>; Tue, 27 Feb 2018 22:53:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Zxq8biUl0aGGaa+HCTGp8R/4kMwR+TQh7rz7QfjAdSw=;
-        b=SeCZLH1Ys5BENHbp56oScrG9b0NYYRDGKav43le0duW2vhzBspcaevNuXydUBLdHHR
-         2LCq57Bj61/L/HVyXZue7PBixr2sObAXPbPkup8PU2Euw9G6BrvsSSl4G1nYNecMkxnv
-         TUao0iqS5fFInhU341HG/Bl8PmEK2E7wI5zQI5Nrbx/zbfVaIo8l8QlSD7+fvQ2QbATt
-         Jz8AIAP4N1BlP01MaRjYylfvCjI0uiBO7UeJt9kS194qTbPZbX8cLHyDLoV+by/dN+6c
-         f4TS9guT7wuCqEaj/i8eL3Kgon8pG3w7fH3LT/1Hd6qbAMiwWjSCVCXOLvpnrgT7zBoL
-         mksg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Zxq8biUl0aGGaa+HCTGp8R/4kMwR+TQh7rz7QfjAdSw=;
-        b=KEXLBjUJh/iafE7/GIBx2yQ2HYFacC8X5kJvvpBua7Q6wsXtYNmOMp10Jp7EuuAtv1
-         o4zXGn3DpmVGsXK+1lk2UPTwLWu96dCCuh7XUJhSZp0NYoxACcAGEJliRL20TtkZnS9P
-         Dz+gGlHXRfmwkoPgkDEwYR15AnMY50w5eUhQ6iRRkE5U0GLfqXKenxR86OoFX9yspMxH
-         /4V4vAbjRtPxdn7Krp0WTsQ0r4FVMcjP/MQ61PVMp7+T6INFfnOZhItFt+5MMvfy1mIk
-         ahpgFjayTU1PUD8ACH81K2s6akLWvEDVbuFDlhkFVlzLrCiLnMUOcqEhti+4FZYuXSgu
-         UtbA==
-X-Gm-Message-State: APf1xPA3TW3eIWlHrQtkrLa0HgLnsTG6wBNG4u53X8dlJO0XqN3LIwoL
-        N+nq14JcnzYshbTHh70aN/dDsc7/
-X-Google-Smtp-Source: AH8x225MCTidDzxyqsZ9zMlkyatQ9wFJ+FHjqQEpLtrwFrhLNjjFTbwz07kYilJnJUiroQwDIH/qNw==
-X-Received: by 10.80.214.75 with SMTP id c11mr22418364edj.80.1519800814357;
-        Tue, 27 Feb 2018 22:53:34 -0800 (PST)
-Received: from [192.168.10.150] (94-36-191-219.adsl-ull.clienti.tiscali.it. [94.36.191.219])
-        by smtp.googlemail.com with ESMTPSA id f53sm1262114ede.49.2018.02.27.22.53.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Feb 2018 22:53:33 -0800 (PST)
-Subject: Re: [PATCH] KVM: surround kvm_arch_vcpu_async_ioctl() with #ifdef
-To:     wei.guo.simon@gmail.com, kvm@vger.kernel.org
-Cc:     linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org
-References: <1519785099-13808-1-git-send-email-wei.guo.simon@gmail.com>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <19e68ff8-552e-2e64-c2e4-3c718343bf57@redhat.com>
-Date:   Wed, 28 Feb 2018 07:53:33 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 11:04:34 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:33920 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990498AbeB1KE2QvNRr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Feb 2018 11:04:28 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D4D3B21782;
+        Wed, 28 Feb 2018 10:04:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D4D3B21782
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 28 Feb 2018 10:03:54 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 00/12] MIPS: Loongson: new features and improvements
+Message-ID: <20180228100353.GP6245@saruman>
+References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
+ <20180215110506.GH3986@saruman>
+ <CAAhV-H7RMmtcc6BW7dCnZ617dx5ZZrzvbFTUekGSgLYCkZfZEw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1519785099-13808-1-git-send-email-wei.guo.simon@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <paolo.bonzini@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ga5bsqHr1s/xcZEm"
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H7RMmtcc6BW7dCnZ617dx5ZZrzvbFTUekGSgLYCkZfZEw@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62733
+X-archive-position: 62734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,84 +51,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 28/02/2018 03:31, wei.guo.simon@gmail.com wrote:
-> From: Simon Guo <wei.guo.simon@gmail.com>
-> 
-> Although CONFIG_HAVE_KVM_VCPU_ASYNC_IOCTL is usually on, logically
-> kvm_arch_vcpu_async_ioctl() definition should be wrapped with
-> CONFIG_HAVE_KVM_VCPU_ASYNC_IOCTL #ifdef.
 
-No, the symbol is defined by Kconfig.  It is a bug if it is not #defined.
+--ga5bsqHr1s/xcZEm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Paolo
+On Wed, Feb 28, 2018 at 10:23:09AM +0800, Huacai Chen wrote:
+> Hi, James,
+>=20
+> I really don't want send many patches in a seris. But in practise, my
+> single patch in linux-mips usually be ignored (even they are very
+> simple and well described)....
 
-> This patch adds the #ifdef surround.
-> 
-> Signed-off-by: Simon Guo <wei.guo.simon@gmail.com>
-> ---
->  arch/mips/kvm/mips.c       | 2 ++
->  arch/powerpc/kvm/powerpc.c | 2 ++
->  arch/s390/kvm/kvm-s390.c   | 2 ++
->  3 files changed, 6 insertions(+)
-> 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index 2549fdd..4d593e5 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -903,6 +903,7 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
->  	return r;
->  }
->  
-> +#ifdef CONFIG_HAVE_KVM_VCPU_ASYNC_IOCTL
->  long kvm_arch_vcpu_async_ioctl(struct file *filp, unsigned int ioctl,
->  			       unsigned long arg)
->  {
-> @@ -922,6 +923,7 @@ long kvm_arch_vcpu_async_ioctl(struct file *filp, unsigned int ioctl,
->  
->  	return -ENOIOCTLCMD;
->  }
-> +#endif
->  
->  long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
->  			 unsigned long arg)
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 403e642..2adca3c 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -1757,6 +1757,7 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
->  	return -EINVAL;
->  }
->  
-> +#ifdef CONFIG_HAVE_KVM_VCPU_ASYNC_IOCTL
->  long kvm_arch_vcpu_async_ioctl(struct file *filp,
->  			       unsigned int ioctl, unsigned long arg)
->  {
-> @@ -1771,6 +1772,7 @@ long kvm_arch_vcpu_async_ioctl(struct file *filp,
->  	}
->  	return -ENOIOCTLCMD;
->  }
-> +#endif
->  
->  long kvm_arch_vcpu_ioctl(struct file *filp,
->                           unsigned int ioctl, unsigned long arg)
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 77d7818..c499396 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3784,6 +3784,7 @@ static long kvm_s390_guest_mem_op(struct kvm_vcpu *vcpu,
->  	return r;
->  }
->  
-> +#ifdef CONFIG_HAVE_KVM_VCPU_ASYNC_IOCTL
->  long kvm_arch_vcpu_async_ioctl(struct file *filp,
->  			       unsigned int ioctl, unsigned long arg)
->  {
-> @@ -3811,6 +3812,7 @@ long kvm_arch_vcpu_async_ioctl(struct file *filp,
->  	}
->  	return -ENOIOCTLCMD;
->  }
-> +#endif
->  
->  long kvm_arch_vcpu_ioctl(struct file *filp,
->  			 unsigned int ioctl, unsigned long arg)
-> 
+Then please feel free to reply to the patch and ask if anybody has
+feedback, stating how important the patch is for you, so it can be
+prioritised. Resends as part of other series just adds to the noise.
+
+>=20
+> For example:
+> https://patchwork.linux-mips.org/patch/17723/
+
+Yes, that one needs a proper look.
+
+> https://patchwork.linux-mips.org/patch/18587/
+
+This one apparently knowingly breaks the feature on other platforms, so
+can't really be applied as is. I think Matt Redfearn & I were thinking
+his single IPI stuff could potentially be helpful there too.
+
+> https://patchwork.linux-mips.org/patch/18682/
+
+You sent that this morning so its hardly had time to be ignored, and I
+had already spotted it on my phone and intended to apply it today. Also
+I disagree that "Commit x breaks Loongson64 platforms, so fix it" counts
+as well described, even if it is simple, and obvious (to me at least)
+what you're talking about.
+
+E.g. a better description would along the lines of:
+
+Commit 7a407aa5e0d3 ("MIPS: Push ARCH_MIGHT_HAVE_PC_SERIO down to
+platform level") moves the global MIPS ARCH_MIGHT_HAVE_PC_SERIO select
+down to various platforms, but doesn't add it to Loongson64 platforms
+which need it, so add the selects to these platforms too.
+
+>=20
+> Anyway, thank you for your susggestions, I will rework other patches.
+
+Thank you.
+
+Cheers
+James
+
+--ga5bsqHr1s/xcZEm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqWfoMACgkQbAtpk944
+dnqVWhAAhEIZw6k4regI0CfdpEN6Voo2JM9yBjoAXL7tJAPNoW+flKGmGVxSjMFo
+6xExXGk1m+B5K78vIKWC8DVN3sPGHIBy0Wgq9xkBKdomyVmFWdw6jznvHFNtZhot
+advdTYCp0jcWoeSM6jYUJuC8fZeMHTPvUrHFhE0hZCfm4tyOnTaBoiGgG609IvAy
+UY1F085hiWF9jHMy58tTLxQYDVHXPx95RVQn95riDn6lscR4hCs0K6YHxv+LpV98
+AAVFhBeRU1WCm/OnjmqgL9ALx7Tr2RqgorYBgj6yjahlQcmOyes/H+62TRs3dBqb
+b2R3iTdgeoSeW9qH5TjbaqCq4vkit+EFi6oJd2WqJaDjAtTlwJkt8qRettCVfd4W
+3iK1+aJZ3NU5NJw4SCbvLvW5pKPap6eux1KiULYavsWm9QAxxW3/ljl+vPTfpJ0j
+oz4/bExKWZ23sziNxchZHYGQoV6YZOQCOZzyzsQzXC/5hvYa4RtCcT0ZFvPTH6GE
+5jRgu6FeJJgmqDapWjX0sog6FojgVJoYdS9dzdD3Mzlt1e0fEsWBJcFhm1KOC08v
++KSgvwySxs8AT4pP57RdqJ2SHG7iHeK0tmMg3dVHTU7i3dujRYd+IqgTWrFRkKxj
+NZImom/Q29w9T+YVH88wW3bx9SsVMmAPTprORTJZ25rkz1dQuFk=
+=CGAu
+-----END PGP SIGNATURE-----
+
+--ga5bsqHr1s/xcZEm--

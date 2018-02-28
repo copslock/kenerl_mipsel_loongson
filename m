@@ -1,33 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 16:55:59 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53023 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 16:58:32 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53086 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992243AbeB1PzvW5yFz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 16:55:51 +0100
+        by eddie.linux-mips.org with ESMTP id S23992604AbeB1P6Wo530z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 16:58:22 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Ys-0006XQ-HQ; Wed, 28 Feb 2018 15:22:30 +0000
+        id 1er3Yt-0006Xk-H0; Wed, 28 Feb 2018 15:22:31 +0000
 Received: from ben by deadeye with local (Exim 4.90_1)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Yg-00005c-IU; Wed, 28 Feb 2018 15:22:18 +0000
+        id 1er3Yg-0008WK-8a; Wed, 28 Feb 2018 15:22:18 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "James Hogan" <james.hogan@mips.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@mips.com>,
-        "Alex Smith" <alex@alex-smith.me.uk>,
-        "Paul Burton" <Paul.Burton@mips.com>,
-        "Dave Martin" <Dave.Martin@arm.com>, linux-mips@linux-mips.org
+CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org
 Date:   Wed, 28 Feb 2018 15:20:18 +0000
-Message-ID: <lsq.1519831218.584476819@decadent.org.uk>
+Message-ID: <lsq.1519831218.898552173@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 109/254] MIPS: Fix an FCSR access API regression with
- NT_PRFPREG and MSA
+Subject: [PATCH 3.16 098/254] MIPS: Set `si_code' for SIGFPE signals sent
+ from emulation too
 In-Reply-To: <lsq.1519831217.271785318@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -36,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62738
+X-archive-position: 62739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,195 +54,258 @@ X-list: linux-mips
 
 ------------------
 
-From: "Maciej W. Rozycki" <macro@mips.com>
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
 
-commit be07a6a1188372b6d19a3307ec33211fc9c9439d upstream.
+commit 304acb717e5b67cf56f05bc5b21123758e1f7ea0 upstream.
 
-Fix a commit 72b22bbad1e7 ("MIPS: Don't assume 64-bit FP registers for
-FP regset") public API regression, then activated by commit 1db1af84d6df
-("MIPS: Basic MSA context switching support"), that caused the FCSR
-register not to be read or written for CONFIG_CPU_HAS_MSA kernel
-configurations (regardless of actual presence or absence of the MSA
-feature in a given processor) with ptrace(2) PTRACE_GETREGSET and
-PTRACE_SETREGSET requests nor recorded in core dumps.
+Rework `process_fpemu_return' and move IEEE 754 exception interpretation
+there, from `do_fpe'.  Record the cause bits set in FCSR before they are
+cleared and pass them through to `process_fpemu_return' so as to set
+`si_code' correctly too for SIGFPE signals sent from emulation rather
+than those issued by hardware with the FPE processor exception only.
 
-This is because with !CONFIG_CPU_HAS_MSA configurations the whole of
-`elf_fpregset_t' array is bulk-copied as it is, which includes the FCSR
-in one half of the last, 33rd slot, whereas with CONFIG_CPU_HAS_MSA
-configurations array elements are copied individually, and then only the
-leading 32 FGR slots while the remaining slot is ignored.
+For simplicity `mipsr2_decoder' assumes `*fcr31' has been preinitialised
+and only sets it to anything if an FPU instruction has been emulated,
+which in turn is the only case SIGFPE can be issued for here.
 
-Correct the code then such that only FGR slots are copied in the
-respective !MSA and MSA helpers an then the FCSR slot is handled
-separately in common code.  Use `ptrace_setfcr31' to update the FCSR
-too, so that the read-only mask is respected.
-
-Retrieving a correct value of FCSR is important in debugging not only
-for the human to be able to get the right interpretation of the
-situation, but for correct operation of GDB as well.  This is because
-the condition code bits in FSCR are used by GDB to determine the
-location to place a breakpoint at when single-stepping through an FPU
-branch instruction.  If such a breakpoint is placed incorrectly (i.e.
-with the condition reversed), then it will be missed, likely causing the
-debuggee to run away from the control of GDB and consequently breaking
-the process of investigation.
-
-Fortunately GDB continues using the older PTRACE_GETFPREGS ptrace(2)
-request which is unaffected, so the regression only really hits with
-post-mortem debug sessions using a core dump file, in which case
-execution, and consequently single-stepping through branches is not
-possible.  Of course core files created by buggy kernels out there will
-have the value of FCSR recorded clobbered, but such core files cannot be
-corrected and the person using them simply will have to be aware that
-the value of FCSR retrieved is not reliable.
-
-Which also means we can likely get away without defining a replacement
-API which would ensure a correct value of FSCR to be retrieved, or none
-at all.
-
-This is based on previous work by Alex Smith, extensively rewritten.
-
-Signed-off-by: Alex Smith <alex@alex-smith.me.uk>
-Signed-off-by: James Hogan <james.hogan@mips.com>
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Fixes: 72b22bbad1e7 ("MIPS: Don't assume 64-bit FP registers for FP regset")
-Cc: Paul Burton <Paul.Burton@mips.com>
-Cc: Dave Martin <Dave.Martin@arm.com>
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17928/
+Patchwork: https://patchwork.linux-mips.org/patch/9705/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.16:
+ - Drop changes in mips-r2-to-r6-emul and simulate_fp()
+ - Adjust context]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/ptrace.c | 47 ++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 11 deletions(-)
-
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -441,7 +441,7 @@ static int gpr64_set(struct task_struct
- /*
-  * Copy the floating-point context to the supplied NT_PRFPREG buffer,
-  * !CONFIG_CPU_HAS_MSA variant.  FP context's general register slots
-- * correspond 1:1 to buffer slots.
-+ * correspond 1:1 to buffer slots.  Only general registers are copied.
-  */
- static int fpr_get_fpa(struct task_struct *target,
- 		       unsigned int *pos, unsigned int *count,
-@@ -449,13 +449,14 @@ static int fpr_get_fpa(struct task_struc
- {
- 	return user_regset_copyout(pos, count, kbuf, ubuf,
- 				   &target->thread.fpu,
--				   0, sizeof(elf_fpregset_t));
-+				   0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
+--- a/arch/mips/include/asm/fpu_emulator.h
++++ b/arch/mips/include/asm/fpu_emulator.h
+@@ -65,7 +65,8 @@ extern int do_dsemulret(struct pt_regs *
+ extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
+ 				    struct mips_fpu_struct *ctx, int has_fpu,
+ 				    void *__user *fault_addr);
+-int process_fpemu_return(int sig, void __user *fault_addr);
++int process_fpemu_return(int sig, void __user *fault_addr,
++			 unsigned long fcr31);
+ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+ 		     unsigned long *contpc);
+ 
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -707,29 +707,60 @@ asmlinkage void do_ov(struct pt_regs *re
+ 	exception_exit(prev_state);
  }
  
- /*
-  * Copy the floating-point context to the supplied NT_PRFPREG buffer,
-  * CONFIG_CPU_HAS_MSA variant.  Only lower 64 bits of FP context's
-- * general register slots are copied to buffer slots.
-+ * general register slots are copied to buffer slots.  Only general
-+ * registers are copied.
-  */
- static int fpr_get_msa(struct task_struct *target,
- 		       unsigned int *pos, unsigned int *count,
-@@ -477,20 +478,29 @@ static int fpr_get_msa(struct task_struc
- 	return 0;
+-int process_fpemu_return(int sig, void __user *fault_addr)
++int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
+ {
+-	if (sig == SIGSEGV || sig == SIGBUS) {
+-		struct siginfo si = {0};
++	struct siginfo si = { 0 };
++
++	switch (sig) {
++	case 0:
++		return 0;
++
++	case SIGFPE:
+ 		si.si_addr = fault_addr;
+ 		si.si_signo = sig;
+-		if (sig == SIGSEGV) {
+-			down_read(&current->mm->mmap_sem);
+-			if (find_vma(current->mm, (unsigned long)fault_addr))
+-				si.si_code = SEGV_ACCERR;
+-			else
+-				si.si_code = SEGV_MAPERR;
+-			up_read(&current->mm->mmap_sem);
+-		} else {
+-			si.si_code = BUS_ADRERR;
+-		}
++		/*
++		 * Inexact can happen together with Overflow or Underflow.
++		 * Respect the mask to deliver the correct exception.
++		 */
++		fcr31 &= (fcr31 & FPU_CSR_ALL_E) <<
++			 (ffs(FPU_CSR_ALL_X) - ffs(FPU_CSR_ALL_E));
++		if (fcr31 & FPU_CSR_INV_X)
++			si.si_code = FPE_FLTINV;
++		else if (fcr31 & FPU_CSR_DIV_X)
++			si.si_code = FPE_FLTDIV;
++		else if (fcr31 & FPU_CSR_OVF_X)
++			si.si_code = FPE_FLTOVF;
++		else if (fcr31 & FPU_CSR_UDF_X)
++			si.si_code = FPE_FLTUND;
++		else if (fcr31 & FPU_CSR_INE_X)
++			si.si_code = FPE_FLTRES;
++		else
++			si.si_code = __SI_FAULT;
++		force_sig_info(sig, &si, current);
++		return 1;
++
++	case SIGBUS:
++		si.si_addr = fault_addr;
++		si.si_signo = sig;
++		si.si_code = BUS_ADRERR;
++		force_sig_info(sig, &si, current);
++		return 1;
++
++	case SIGSEGV:
++		si.si_addr = fault_addr;
++		si.si_signo = sig;
++		down_read(&current->mm->mmap_sem);
++		if (find_vma(current->mm, (unsigned long)fault_addr))
++			si.si_code = SEGV_ACCERR;
++		else
++			si.si_code = SEGV_MAPERR;
++		up_read(&current->mm->mmap_sem);
+ 		force_sig_info(sig, &si, current);
+ 		return 1;
+-	} else if (sig) {
++
++	default:
+ 		force_sig(sig, current);
+ 		return 1;
+-	} else {
+-		return 0;
+ 	}
  }
  
--/* Copy the floating-point context to the supplied NT_PRFPREG buffer.  */
-+/*
-+ * Copy the floating-point context to the supplied NT_PRFPREG buffer.
-+ * Choose the appropriate helper for general registers, and then copy
-+ * the FCSR register separately.
-+ */
- static int fpr_get(struct task_struct *target,
- 		   const struct user_regset *regset,
- 		   unsigned int pos, unsigned int count,
- 		   void *kbuf, void __user *ubuf)
+@@ -739,7 +770,8 @@ int process_fpemu_return(int sig, void _
+ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
  {
-+	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
- 	int err;
+ 	enum ctx_state prev_state;
+-	siginfo_t info = {0};
++	void __user *fault_addr;
++	int sig;
  
--	/* XXX fcr31  */
+ 	prev_state = exception_enter();
+ 	if (notify_die(DIE_FP, "FP exception", regs, 0, regs_to_trapnr(regs),
+@@ -753,9 +785,6 @@ asmlinkage void do_fpe(struct pt_regs *r
+ 	die_if_kernel("FP exception in kernel code", regs);
+ 
+ 	if (fcr31 & FPU_CSR_UNI_X) {
+-		int sig;
+-		void __user *fault_addr = NULL;
 -
- 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
- 		err = fpr_get_fpa(target, &pos, &count, &kbuf, &ubuf);
- 	else
- 		err = fpr_get_msa(target, &pos, &count, &kbuf, &ubuf);
-+	if (err)
-+		return err;
-+
-+	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+				  &target->thread.fpu.fcr31,
-+				  fcr31_pos, fcr31_pos + sizeof(u32));
+ 		/*
+ 		 * Unimplemented operation exception.  If we've got the full
+ 		 * software emulator on-board, let's use it...
+@@ -772,6 +801,7 @@ asmlinkage void do_fpe(struct pt_regs *r
+ 		/* Run the emulator */
+ 		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
+ 					       &fault_addr);
++		fcr31 = current->thread.fpu.fcr31;
  
- 	return err;
- }
-@@ -498,7 +508,7 @@ static int fpr_get(struct task_struct *t
- /*
-  * Copy the supplied NT_PRFPREG buffer to the floating-point context,
-  * !CONFIG_CPU_HAS_MSA variant.   Buffer slots correspond 1:1 to FP
-- * context's general register slots.
-+ * context's general register slots.  Only general registers are copied.
-  */
- static int fpr_set_fpa(struct task_struct *target,
- 		       unsigned int *pos, unsigned int *count,
-@@ -506,13 +516,14 @@ static int fpr_set_fpa(struct task_struc
- {
- 	return user_regset_copyin(pos, count, kbuf, ubuf,
- 				  &target->thread.fpu,
--				  0, sizeof(elf_fpregset_t));
-+				  0, NUM_FPU_REGS * sizeof(elf_fpreg_t));
- }
+ 		/*
+ 		 * We can't allow the emulated instruction to leave any of
+@@ -781,35 +811,13 @@ asmlinkage void do_fpe(struct pt_regs *r
  
- /*
-  * Copy the supplied NT_PRFPREG buffer to the floating-point context,
-  * CONFIG_CPU_HAS_MSA variant.  Buffer slots are copied to lower 64
-- * bits only of FP context's general register slots.
-+ * bits only of FP context's general register slots.  Only general
-+ * registers are copied.
-  */
- static int fpr_set_msa(struct task_struct *target,
- 		       unsigned int *pos, unsigned int *count,
-@@ -537,6 +548,8 @@ static int fpr_set_msa(struct task_struc
- 
- /*
-  * Copy the supplied NT_PRFPREG buffer to the floating-point context.
-+ * Choose the appropriate helper for general registers, and then copy
-+ * the FCSR register separately.
-  *
-  * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
-  * which is supposed to have been guaranteed by the kernel before
-@@ -549,18 +562,30 @@ static int fpr_set(struct task_struct *t
- 		   unsigned int pos, unsigned int count,
- 		   const void *kbuf, const void __user *ubuf)
- {
-+	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
-+	u32 fcr31;
- 	int err;
- 
- 	BUG_ON(count % sizeof(elf_fpreg_t));
- 
--	/* XXX fcr31  */
+ 		/* Restore the hardware register state */
+ 		own_fpu(1);	/* Using the FPU again.	 */
 -
- 	init_fp_ctx(target);
+-		/* If something went wrong, signal */
+-		process_fpemu_return(sig, fault_addr);
+-
+-		goto out;
++	} else {
++		sig = SIGFPE;
++		fault_addr = (void __user *) regs->cp0_epc;
+ 	}
  
- 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
- 		err = fpr_set_fpa(target, &pos, &count, &kbuf, &ubuf);
- 	else
- 		err = fpr_set_msa(target, &pos, &count, &kbuf, &ubuf);
-+	if (err)
-+		return err;
-+
-+	if (count > 0) {
-+		err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-+					 &fcr31,
-+					 fcr31_pos, fcr31_pos + sizeof(u32));
-+		if (err)
-+			return err;
-+
-+		ptrace_setfcr31(target, fcr31);
-+	}
+-	/*
+-	 * Inexact can happen together with Overflow or Underflow.
+-	 * Respect the mask to deliver the correct exception.
+-	 */
+-	fcr31 &= (fcr31 & FPU_CSR_ALL_E) <<
+-		 (ffs(FPU_CSR_ALL_X) - ffs(FPU_CSR_ALL_E));
+-	if (fcr31 & FPU_CSR_INV_X)
+-		info.si_code = FPE_FLTINV;
+-	else if (fcr31 & FPU_CSR_DIV_X)
+-		info.si_code = FPE_FLTDIV;
+-	else if (fcr31 & FPU_CSR_OVF_X)
+-		info.si_code = FPE_FLTOVF;
+-	else if (fcr31 & FPU_CSR_UDF_X)
+-		info.si_code = FPE_FLTUND;
+-	else if (fcr31 & FPU_CSR_INE_X)
+-		info.si_code = FPE_FLTRES;
+-	else
+-		info.si_code = __SI_FAULT;
+-	info.si_signo = SIGFPE;
+-	info.si_errno = 0;
+-	info.si_addr = (void __user *) regs->cp0_epc;
+-	force_sig_info(SIGFPE, &info, current);
++	/* Send a signal if required.  */
++	process_fpemu_return(sig, fault_addr, fcr31);
  
- 	return err;
- }
+ out:
+ 	exception_exit(prev_state);
+@@ -1210,10 +1218,13 @@ asmlinkage void do_cpu(struct pt_regs *r
+ 	enum ctx_state prev_state;
+ 	unsigned int __user *epc;
+ 	unsigned long old_epc, old31;
++	void __user *fault_addr;
+ 	unsigned int opcode;
++	unsigned long fcr31;
+ 	unsigned int cpid;
+ 	int status, err;
+ 	unsigned long __maybe_unused flags;
++	int sig;
+ 
+ 	prev_state = exception_enter();
+ 	cpid = (regs->cp0_cause >> CAUSEB_CE) & 3;
+@@ -1286,22 +1297,22 @@ asmlinkage void do_cpu(struct pt_regs *r
+ 	case 1:
+ 		err = enable_restore_fp_context(0);
+ 
+-		if (!raw_cpu_has_fpu || err) {
+-			int sig;
+-			void __user *fault_addr = NULL;
+-			sig = fpu_emulator_cop1Handler(regs,
+-						       &current->thread.fpu,
+-						       0, &fault_addr);
+-
+-			/*
+-			 * We can't allow the emulated instruction to leave
+-			 * any of the cause bits set in $fcr31.
+-			 */
+-			current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
++		if (raw_cpu_has_fpu && !err)
++			break;
+ 
+-			if (!process_fpemu_return(sig, fault_addr) && !err)
+-				mt_ase_fp_affinity();
+-		}
++		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 0,
++					       &fault_addr);
++		fcr31 = current->thread.fpu.fcr31;
++
++		/*
++		 * We can't allow the emulated instruction to leave
++		 * any of the cause bits set in $fcr31.
++		 */
++		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
++
++		/* Send a signal if required.  */
++		if (!process_fpemu_return(sig, fault_addr, fcr31) && !err)
++			mt_ase_fp_affinity();
+ 
+ 		goto out;
+ 
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -697,7 +697,7 @@ static void emulate_load_store_insn(stru
+ 		own_fpu(1);	/* Restore FPU state. */
+ 
+ 		/* Signal if something went wrong. */
+-		process_fpemu_return(res, fault_addr);
++		process_fpemu_return(res, fault_addr, 0);
+ 
+ 		if (res == 0)
+ 			break;
+@@ -1129,7 +1129,7 @@ fpu_emul:
+ 		own_fpu(1);	/* restore FPU state */
+ 
+ 		/* If something went wrong, signal */
+-		process_fpemu_return(res, fault_addr);
++		process_fpemu_return(res, fault_addr, 0);
+ 
+ 		if (res == 0)
+ 			goto success;

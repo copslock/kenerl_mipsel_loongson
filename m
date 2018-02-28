@@ -1,44 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 11:04:34 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:33920 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 14:14:21 +0100 (CET)
+Received: from mail.bootlin.com ([62.4.15.54]:45338 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990498AbeB1KE2QvNRr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Feb 2018 11:04:28 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D4D3B21782;
-        Wed, 28 Feb 2018 10:04:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D4D3B21782
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 28 Feb 2018 10:03:54 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 00/12] MIPS: Loongson: new features and improvements
-Message-ID: <20180228100353.GP6245@saruman>
-References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <20180215110506.GH3986@saruman>
- <CAAhV-H7RMmtcc6BW7dCnZ617dx5ZZrzvbFTUekGSgLYCkZfZEw@mail.gmail.com>
+        id S23991855AbeB1NOM5xuJf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Feb 2018 14:14:12 +0100
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 94BDD207C1; Wed, 28 Feb 2018 14:14:01 +0100 (CET)
+Received: from localhost (unknown [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 47CBF2036E;
+        Wed, 28 Feb 2018 14:14:01 +0100 (CET)
+Date:   Wed, 28 Feb 2018 14:14:02 +0100
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 5/8] MIPS: mscc: add ocelot dtsi
+Message-ID: <20180228131402.GL1479@piout.net>
+References: <20180116101240.5393-1-alexandre.belloni@free-electrons.com>
+ <20180116101240.5393-6-alexandre.belloni@free-electrons.com>
+ <CAOiHx=n5bekhgaA_-teYZzJQCErfb2Vg1X9fTaq073B=kpWnTA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ga5bsqHr1s/xcZEm"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAAhV-H7RMmtcc6BW7dCnZ617dx5ZZrzvbFTUekGSgLYCkZfZEw@mail.gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <CAOiHx=n5bekhgaA_-teYZzJQCErfb2Vg1X9fTaq073B=kpWnTA@mail.gmail.com>
+User-Agent: Mutt/1.9.3 (2018-01-21)
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62734
+X-archive-position: 62735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,77 +46,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 27/02/2018 at 22:01:37 +0100, Jonas Gorski wrote:
+> On 16 January 2018 at 11:12, Alexandre Belloni
+> <alexandre.belloni@free-electrons.com> wrote:
+> > Add a device tree include file for the Microsemi Ocelot SoC.
+> >
+> > Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+> > ---
+> >  arch/mips/boot/dts/Makefile         |   1 +
+> >  arch/mips/boot/dts/mscc/Makefile    |   4 ++
+> >  arch/mips/boot/dts/mscc/ocelot.dtsi | 110 ++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 115 insertions(+)
+> >  create mode 100644 arch/mips/boot/dts/mscc/Makefile
+> >  create mode 100644 arch/mips/boot/dts/mscc/ocelot.dtsi
+> >
+> > diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+> > index e2c6f131c8eb..1e79cab8e269 100644
+> > --- a/arch/mips/boot/dts/Makefile
+> > +++ b/arch/mips/boot/dts/Makefile
+> > @@ -4,6 +4,7 @@ subdir-y        += cavium-octeon
+> >  subdir-y       += img
+> >  subdir-y       += ingenic
+> >  subdir-y       += lantiq
+> > +subdir-y       += mscc
+> >  subdir-y       += mti
+> >  subdir-y       += netlogic
+> >  subdir-y       += ni
+> > diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/Makefile
+> > new file mode 100644
+> > index 000000000000..f0a155a74e02
+> > --- /dev/null
+> > +++ b/arch/mips/boot/dts/mscc/Makefile
+> > @@ -0,0 +1,4 @@
+> > +obj-y                          += $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+> > +
+> > +# Force kbuild to make empty built-in.o if necessary
+> > +obj-                           += dummy.o
+> > diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
+> > new file mode 100644
+> > index 000000000000..b2f936e1fbb9
+> > --- /dev/null
+> > +++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
+> > @@ -0,0 +1,110 @@
+> > +/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
+> > +/* Copyright (c) 2017 Microsemi Corporation */
+> > +
+> > +/ {
+> > +       #address-cells = <1>;
+> > +       #size-cells = <1>;
+> > +       compatible = "mscc,ocelot";
+> > +
+> > +       cpus {
+> > +               #address-cells = <1>;
+> > +               #size-cells = <0>;
+> > +
+> > +               mips-hpt-frequency = <250000000>;
+> > +
+> > +               cpu@0 {
+> > +                       compatible = "mscc,ocelot";
+> 
+> You are using the same compatible string for the whole chip as well as
+> the cpu core of it, this doesn't seem right.
+> 
+> Also is this really a custom cpu core? Your product brief suggests
+> this is a "normal" 24KEc MIPS CPU, at least for ocelot-10 (VSC7514).
+> So something like "mips,mips24KEc" might be more appropriate here.
+> 
 
---ga5bsqHr1s/xcZEm
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Indeed, that is something I forgot to change before sending.
 
-On Wed, Feb 28, 2018 at 10:23:09AM +0800, Huacai Chen wrote:
-> Hi, James,
->=20
-> I really don't want send many patches in a seris. But in practise, my
-> single patch in linux-mips usually be ignored (even they are very
-> simple and well described)....
+> 
+> Regards
+> Jonas
 
-Then please feel free to reply to the patch and ask if anybody has
-feedback, stating how important the patch is for you, so it can be
-prioritised. Resends as part of other series just adds to the noise.
-
->=20
-> For example:
-> https://patchwork.linux-mips.org/patch/17723/
-
-Yes, that one needs a proper look.
-
-> https://patchwork.linux-mips.org/patch/18587/
-
-This one apparently knowingly breaks the feature on other platforms, so
-can't really be applied as is. I think Matt Redfearn & I were thinking
-his single IPI stuff could potentially be helpful there too.
-
-> https://patchwork.linux-mips.org/patch/18682/
-
-You sent that this morning so its hardly had time to be ignored, and I
-had already spotted it on my phone and intended to apply it today. Also
-I disagree that "Commit x breaks Loongson64 platforms, so fix it" counts
-as well described, even if it is simple, and obvious (to me at least)
-what you're talking about.
-
-E.g. a better description would along the lines of:
-
-Commit 7a407aa5e0d3 ("MIPS: Push ARCH_MIGHT_HAVE_PC_SERIO down to
-platform level") moves the global MIPS ARCH_MIGHT_HAVE_PC_SERIO select
-down to various platforms, but doesn't add it to Loongson64 platforms
-which need it, so add the selects to these platforms too.
-
->=20
-> Anyway, thank you for your susggestions, I will rework other patches.
-
-Thank you.
-
-Cheers
-James
-
---ga5bsqHr1s/xcZEm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqWfoMACgkQbAtpk944
-dnqVWhAAhEIZw6k4regI0CfdpEN6Voo2JM9yBjoAXL7tJAPNoW+flKGmGVxSjMFo
-6xExXGk1m+B5K78vIKWC8DVN3sPGHIBy0Wgq9xkBKdomyVmFWdw6jznvHFNtZhot
-advdTYCp0jcWoeSM6jYUJuC8fZeMHTPvUrHFhE0hZCfm4tyOnTaBoiGgG609IvAy
-UY1F085hiWF9jHMy58tTLxQYDVHXPx95RVQn95riDn6lscR4hCs0K6YHxv+LpV98
-AAVFhBeRU1WCm/OnjmqgL9ALx7Tr2RqgorYBgj6yjahlQcmOyes/H+62TRs3dBqb
-b2R3iTdgeoSeW9qH5TjbaqCq4vkit+EFi6oJd2WqJaDjAtTlwJkt8qRettCVfd4W
-3iK1+aJZ3NU5NJw4SCbvLvW5pKPap6eux1KiULYavsWm9QAxxW3/ljl+vPTfpJ0j
-oz4/bExKWZ23sziNxchZHYGQoV6YZOQCOZzyzsQzXC/5hvYa4RtCcT0ZFvPTH6GE
-5jRgu6FeJJgmqDapWjX0sog6FojgVJoYdS9dzdD3Mzlt1e0fEsWBJcFhm1KOC08v
-+KSgvwySxs8AT4pP57RdqJ2SHG7iHeK0tmMg3dVHTU7i3dujRYd+IqgTWrFRkKxj
-NZImom/Q29w9T+YVH88wW3bx9SsVMmAPTprORTJZ25rkz1dQuFk=
-=CGAu
------END PGP SIGNATURE-----
-
---ga5bsqHr1s/xcZEm--
+-- 
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

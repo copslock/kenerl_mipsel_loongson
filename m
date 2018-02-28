@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 17:08:37 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53474 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 17:09:31 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53527 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992827AbeB1QIYelVuz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 17:08:24 +0100
+        by eddie.linux-mips.org with ESMTP id S23993928AbeB1QJNX6oaz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 17:09:13 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Yt-0006XR-56; Wed, 28 Feb 2018 15:22:31 +0000
+        id 1er3Ys-0006Xh-HK; Wed, 28 Feb 2018 15:22:30 +0000
 Received: from ben by deadeye with local (Exim 4.90_1)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Yg-0008WP-9P; Wed, 28 Feb 2018 15:22:18 +0000
+        id 1er3Yg-00005h-Jg; Wed, 28 Feb 2018 15:22:18 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>
+CC:     akpm@linux-foundation.org, "Paul Burton" <Paul.Burton@mips.com>,
+        "Dave Martin" <Dave.Martin@arm.com>,
+        "James Hogan" <james.hogan@mips.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        "Alex Smith" <alex@alex-smith.me.uk>, linux-mips@linux-mips.org
 Date:   Wed, 28 Feb 2018 15:20:18 +0000
-Message-ID: <lsq.1519831218.942966468@decadent.org.uk>
+Message-ID: <lsq.1519831218.14230707@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 099/254] MIPS: math-emu: Define IEEE 754-2008 feature
- control bits
+Subject: [PATCH 3.16 110/254] MIPS: Disallow outsized PTRACE_SETREGSET
+ NT_PRFPREG regset accesses
 In-Reply-To: <lsq.1519831217.271785318@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -33,7 +36,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62745
+X-archive-position: 62746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,88 +57,39 @@ X-list: linux-mips
 
 ------------------
 
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
+From: "Maciej W. Rozycki" <macro@mips.com>
 
-commit f1f3b7ebac08161761c352fd070cfa07b7b94c54 upstream.
+commit c8c5a3a24d395b14447a9a89d61586a913840a3b upstream.
 
-Define IEEE 754-2008 feature control bits: FIR.HAS2008, FCSR.ABS2008 and
-FCSR.NAN2008, and update the `_ieee754_csr' structure accordingly.
+Complement commit c23b3d1a5311 ("MIPS: ptrace: Change GP regset to use
+correct core dump register layout") and also reject outsized
+PTRACE_SETREGSET requests to the NT_PRFPREG regset, like with the
+NT_PRSTATUS regset.
 
-For completeness define FIR.UFRP too.
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Fixes: c23b3d1a5311 ("MIPS: ptrace: Change GP regset to use correct core dump register layout")
+Cc: James Hogan <james.hogan@mips.com>
+Cc: Paul Burton <Paul.Burton@mips.com>
+Cc: Alex Smith <alex@alex-smith.me.uk>
+Cc: Dave Martin <Dave.Martin@arm.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9709/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/17930/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[bwh: Backported to 3.16: In cop1Emulate(), keep converting the rounding mode]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -136,10 +136,13 @@
- #define FPU_CSR_COND7	0x80000000	/* $fcc7 */
+ arch/mips/kernel/ptrace.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -568,6 +568,9 @@ static int fpr_set(struct task_struct *t
  
- /*
-- * Bits 18 - 20 of the FPU Status Register will be read as 0,
-+ * Bits 22:20 of the FPU Status Register will be read as 0,
-  * and should be written as zero.
-  */
--#define FPU_CSR_RSVD	0x001c0000
-+#define FPU_CSR_RSVD	(_ULCAST_(7) << 20)
+ 	BUG_ON(count % sizeof(elf_fpreg_t));
+ 
++	if (pos + count > sizeof(elf_fpregset_t))
++		return -EIO;
 +
-+#define FPU_CSR_ABS2008	(_ULCAST_(1) << 19)
-+#define FPU_CSR_NAN2008	(_ULCAST_(1) << 18)
+ 	init_fp_ctx(target);
  
- /*
-  * X the exception cause indicator
-@@ -687,6 +690,8 @@
- #define MIPS_FPIR_W		(_ULCAST_(1) << 20)
- #define MIPS_FPIR_L		(_ULCAST_(1) << 21)
- #define MIPS_FPIR_F64		(_ULCAST_(1) << 22)
-+#define MIPS_FPIR_HAS2008	(_ULCAST_(1) << 23)
-+#define MIPS_FPIR_UFRP		(_ULCAST_(1) << 28)
- 
- /*
-  * Bits in the MIPS32 Memory Segmentation registers.
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -929,10 +929,12 @@ emul:
- 					 MIPSInst_RT(ir), value);
- 
- 				/*
--				 * Don't write reserved bits,
-+				 * Don't write unsupported bits,
- 				 * and convert to ieee library modes
- 				 */
--				ctx->fcr31 = (value & ~(FPU_CSR_RSVD | FPU_CSR_RM)) |
-+				ctx->fcr31 = (value &
-+					      ~(FPU_CSR_RSVD | FPU_CSR_ABS2008 |
-+						FPU_CSR_NAN2008 | FPU_CSR_RM)) |
- 					     modeindex(value);
- 			}
- 			if ((ctx->fcr31 >> 5) & ctx->fcr31 & FPU_CSR_ALL_E) {
---- a/arch/mips/math-emu/ieee754.h
-+++ b/arch/mips/math-emu/ieee754.h
-@@ -195,15 +195,17 @@ static inline int ieee754dp_ge(union iee
-  * The control status register
-  */
- struct _ieee754_csr {
--	__BITFIELD_FIELD(unsigned pad0:7,
--	__BITFIELD_FIELD(unsigned nod:1,	/* set 1 for no denormalised numbers */
--	__BITFIELD_FIELD(unsigned c:1,		/* condition */
--	__BITFIELD_FIELD(unsigned pad1:5,
-+	__BITFIELD_FIELD(unsigned fcc:7,	/* condition[7:1] */
-+	__BITFIELD_FIELD(unsigned nod:1,	/* set 1 for no denormals */
-+	__BITFIELD_FIELD(unsigned c:1,		/* condition[0] */
-+	__BITFIELD_FIELD(unsigned pad0:3,
-+	__BITFIELD_FIELD(unsigned abs2008:1,	/* IEEE 754-2008 ABS/NEG.fmt */
-+	__BITFIELD_FIELD(unsigned nan2008:1,	/* IEEE 754-2008 NaN mode */
- 	__BITFIELD_FIELD(unsigned cx:6,		/* exceptions this operation */
- 	__BITFIELD_FIELD(unsigned mx:5,		/* exception enable  mask */
- 	__BITFIELD_FIELD(unsigned sx:5,		/* exceptions total */
- 	__BITFIELD_FIELD(unsigned rm:2,		/* current rounding mode */
--	;))))))))
-+	;))))))))))
- };
- #define ieee754_csr (*(struct _ieee754_csr *)(&current->thread.fpu.fcr31))
- 
+ 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))

@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 17:05:07 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53378 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 17:08:37 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53474 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992827AbeB1QEyDO-nz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 17:04:54 +0100
+        by eddie.linux-mips.org with ESMTP id S23992827AbeB1QIYelVuz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 17:08:24 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Yt-0006Xh-HI; Wed, 28 Feb 2018 15:22:31 +0000
+        id 1er3Yt-0006XR-56; Wed, 28 Feb 2018 15:22:31 +0000
 Received: from ben by deadeye with local (Exim 4.90_1)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Yg-0008W5-4U; Wed, 28 Feb 2018 15:22:18 +0000
+        id 1er3Yg-0008WP-9P; Wed, 28 Feb 2018 15:22:18 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
-        "Paul Burton" <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        "James Hogan" <james.hogan@imgtec.com>
+CC:     akpm@linux-foundation.org,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>
 Date:   Wed, 28 Feb 2018 15:20:18 +0000
-Message-ID: <lsq.1519831218.593229193@decadent.org.uk>
+Message-ID: <lsq.1519831218.942966468@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 095/254] MIPS: lose_fpu(): Disable FPU when MSA enabled
+Subject: [PATCH 3.16 099/254] MIPS: math-emu: Define IEEE 754-2008 feature
+ control bits
 In-Reply-To: <lsq.1519831217.271785318@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -32,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62744
+X-archive-position: 62745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,42 +54,88 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
 
-commit acaf6a97d623af123314c2f8ce4cf7254f6b2fc1 upstream.
+commit f1f3b7ebac08161761c352fd070cfa07b7b94c54 upstream.
 
-The lose_fpu() function only disables the FPU in CP0_Status.CU1 if the
-FPU is in use and MSA isn't enabled.
+Define IEEE 754-2008 feature control bits: FIR.HAS2008, FCSR.ABS2008 and
+FCSR.NAN2008, and update the `_ieee754_csr' structure accordingly.
 
-This isn't necessarily a problem because KSTK_STATUS(current), the
-version of CP0_Status stored on the kernel stack on entry from user
-mode, does always get updated and gets restored when returning to user
-mode, but I don't think it was intended, and it is inconsistent with the
-case of only the FPU being in use. Sometimes leaving the FPU enabled may
-also mask kernel bugs where FPU operations are executed when the FPU
-might not be enabled.
+For completeness define FIR.UFRP too.
 
-So lets disable the FPU in the MSA case too.
-
-Fixes: 33c771ba5c5d ("MIPS: save/disable MSA in lose_fpu")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9323/
+Patchwork: https://patchwork.linux-mips.org/patch/9709/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.16: In cop1Emulate(), keep converting the rounding mode]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/include/asm/fpu.h | 1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -150,6 +150,7 @@ static inline void lose_fpu(int save)
- 		}
- 		disable_msa();
- 		clear_thread_flag(TIF_USEDMSA);
-+		__disable_fpu();
- 	} else if (is_fpu_owner()) {
- 		if (save)
- 			_save_fp(current);
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -136,10 +136,13 @@
+ #define FPU_CSR_COND7	0x80000000	/* $fcc7 */
+ 
+ /*
+- * Bits 18 - 20 of the FPU Status Register will be read as 0,
++ * Bits 22:20 of the FPU Status Register will be read as 0,
+  * and should be written as zero.
+  */
+-#define FPU_CSR_RSVD	0x001c0000
++#define FPU_CSR_RSVD	(_ULCAST_(7) << 20)
++
++#define FPU_CSR_ABS2008	(_ULCAST_(1) << 19)
++#define FPU_CSR_NAN2008	(_ULCAST_(1) << 18)
+ 
+ /*
+  * X the exception cause indicator
+@@ -687,6 +690,8 @@
+ #define MIPS_FPIR_W		(_ULCAST_(1) << 20)
+ #define MIPS_FPIR_L		(_ULCAST_(1) << 21)
+ #define MIPS_FPIR_F64		(_ULCAST_(1) << 22)
++#define MIPS_FPIR_HAS2008	(_ULCAST_(1) << 23)
++#define MIPS_FPIR_UFRP		(_ULCAST_(1) << 28)
+ 
+ /*
+  * Bits in the MIPS32 Memory Segmentation registers.
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -929,10 +929,12 @@ emul:
+ 					 MIPSInst_RT(ir), value);
+ 
+ 				/*
+-				 * Don't write reserved bits,
++				 * Don't write unsupported bits,
+ 				 * and convert to ieee library modes
+ 				 */
+-				ctx->fcr31 = (value & ~(FPU_CSR_RSVD | FPU_CSR_RM)) |
++				ctx->fcr31 = (value &
++					      ~(FPU_CSR_RSVD | FPU_CSR_ABS2008 |
++						FPU_CSR_NAN2008 | FPU_CSR_RM)) |
+ 					     modeindex(value);
+ 			}
+ 			if ((ctx->fcr31 >> 5) & ctx->fcr31 & FPU_CSR_ALL_E) {
+--- a/arch/mips/math-emu/ieee754.h
++++ b/arch/mips/math-emu/ieee754.h
+@@ -195,15 +195,17 @@ static inline int ieee754dp_ge(union iee
+  * The control status register
+  */
+ struct _ieee754_csr {
+-	__BITFIELD_FIELD(unsigned pad0:7,
+-	__BITFIELD_FIELD(unsigned nod:1,	/* set 1 for no denormalised numbers */
+-	__BITFIELD_FIELD(unsigned c:1,		/* condition */
+-	__BITFIELD_FIELD(unsigned pad1:5,
++	__BITFIELD_FIELD(unsigned fcc:7,	/* condition[7:1] */
++	__BITFIELD_FIELD(unsigned nod:1,	/* set 1 for no denormals */
++	__BITFIELD_FIELD(unsigned c:1,		/* condition[0] */
++	__BITFIELD_FIELD(unsigned pad0:3,
++	__BITFIELD_FIELD(unsigned abs2008:1,	/* IEEE 754-2008 ABS/NEG.fmt */
++	__BITFIELD_FIELD(unsigned nan2008:1,	/* IEEE 754-2008 NaN mode */
+ 	__BITFIELD_FIELD(unsigned cx:6,		/* exceptions this operation */
+ 	__BITFIELD_FIELD(unsigned mx:5,		/* exception enable  mask */
+ 	__BITFIELD_FIELD(unsigned sx:5,		/* exceptions total */
+ 	__BITFIELD_FIELD(unsigned rm:2,		/* current rounding mode */
+-	;))))))))
++	;))))))))))
+ };
+ #define ieee754_csr (*(struct _ieee754_csr *)(&current->thread.fpu.fcr31))
+ 

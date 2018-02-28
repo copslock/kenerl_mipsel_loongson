@@ -1,33 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 17:17:55 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53801 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2018 17:20:59 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:53918 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992678AbeB1QRpAX47z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 17:17:45 +0100
+        by eddie.linux-mips.org with ESMTP id S23992781AbeB1QUrUk4rz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2018 17:20:47 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Ys-0006XT-HP; Wed, 28 Feb 2018 15:22:30 +0000
+        id 1er3Ys-0006XU-UB; Wed, 28 Feb 2018 15:22:31 +0000
 Received: from ben by deadeye with local (Exim 4.90_1)
         (envelope-from <ben@decadent.org.uk>)
-        id 1er3Yg-00005S-Gj; Wed, 28 Feb 2018 15:22:18 +0000
+        id 1er3Yg-000058-D0; Wed, 28 Feb 2018 15:22:18 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Dave Martin" <Dave.Martin@arm.com>,
-        "Paul Burton" <Paul.Burton@mips.com>,
-        "Alex Smith" <alex@alex-smith.me.uk>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@mips.com>,
-        "James Hogan" <james.hogan@mips.com>, linux-mips@linux-mips.org
+CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
 Date:   Wed, 28 Feb 2018 15:20:18 +0000
-Message-ID: <lsq.1519831218.658464417@decadent.org.uk>
+Message-ID: <lsq.1519831218.170473068@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 107/254] MIPS: Factor out NT_PRFPREG regset access
- helpers
+Subject: [PATCH 3.16 103/254] MIPS: ptrace: Prevent writes to read-only
+ FCSR bits
 In-Reply-To: <lsq.1519831217.271785318@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -36,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62753
+X-archive-position: 62754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,180 +54,100 @@ X-list: linux-mips
 
 ------------------
 
-From: "Maciej W. Rozycki" <macro@mips.com>
+From: "Maciej W. Rozycki" <macro@imgtec.com>
 
-commit a03fe72572c12e98f4173f8a535f32468e48b6ec upstream.
+commit abf378be49f38c4d3e23581d3df3fa9f1b1b11d2 upstream.
 
-In preparation to fix a commit 72b22bbad1e7 ("MIPS: Don't assume 64-bit
-FP registers for FP regset") FCSR access regression factor out
-NT_PRFPREG regset access helpers for the non-MSA and the MSA variants
-respectively, to avoid having to deal with excessive indentation in the
-actual fix.
+Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the
+ISA level in FCSR handling") and prevent writes to read-only FCSR bits
+there.
 
-No functional change, however use `target->thread.fpu.fpr[0]' rather
-than `target->thread.fpu.fpr[i]' for FGR holding type size determination
-as there's no `i' variable to refer to anymore, and for the factored out
-`i' variable declaration use `unsigned int' rather than `unsigned' as
-its type, following the common style.
+This in particular applies to FP context initialisation where any IEEE
+754-2008 bits preset by `mips_set_personality_nan' are cleared before
+the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
+addressing FPC_CSR where no masking of read-only FCSR bits is done.
 
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Fixes: 72b22bbad1e7 ("MIPS: Don't assume 64-bit FP registers for FP regset")
-Cc: James Hogan <james.hogan@mips.com>
-Cc: Paul Burton <Paul.Burton@mips.com>
-Cc: Alex Smith <alex@alex-smith.me.uk>
-Cc: Dave Martin <Dave.Martin@arm.com>
+Remove the FCSR clearing from FP context initialisation then and unify
+PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
+code from `ptrace_setfpregs' and calling it from both places.
+
+This mostly matters to soft float configurations where the emulator can
+be switched this way to a mode which should not be accessible and cannot
+be set with the CTC1 instruction.  With hard float configurations any
+effect is transient anyway as read-only bits will retain their values at
+the time the FP context is restored.
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17925/
+Patchwork: https://patchwork.linux-mips.org/patch/13239/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.16: There is no mips_set_personality_nan(), so make
+ init_fp_ctx() copy the initial value of FCSR31]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/ptrace.c | 108 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 83 insertions(+), 25 deletions(-)
-
 --- a/arch/mips/kernel/ptrace.c
 +++ b/arch/mips/kernel/ptrace.c
-@@ -438,25 +438,36 @@ static int gpr64_set(struct task_struct
+@@ -57,8 +57,7 @@ static void init_fp_ctx(struct task_stru
+ 	/* Begin with data registers set to all 1s... */
+ 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
  
- #endif /* CONFIG_64BIT */
+-	/* ...and FCSR zeroed */
+-	target->thread.fpu.fcr31 = 0;
++	target->thread.fpu.fcr31 = boot_cpu_data.fpu_csr31;
  
--static int fpr_get(struct task_struct *target,
--		   const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   void *kbuf, void __user *ubuf)
-+/*
-+ * Copy the floating-point context to the supplied NT_PRFPREG buffer,
-+ * !CONFIG_CPU_HAS_MSA variant.  FP context's general register slots
-+ * correspond 1:1 to buffer slots.
-+ */
-+static int fpr_get_fpa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       void **kbuf, void __user **ubuf)
- {
--	unsigned i;
--	int err;
--	u64 fpr_val;
--
--	/* XXX fcr31  */
-+	return user_regset_copyout(pos, count, kbuf, ubuf,
-+				   &target->thread.fpu,
-+				   0, sizeof(elf_fpregset_t));
-+}
- 
--	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
--		return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
--					   &target->thread.fpu,
--					   0, sizeof(elf_fpregset_t));
-+/*
-+ * Copy the floating-point context to the supplied NT_PRFPREG buffer,
-+ * CONFIG_CPU_HAS_MSA variant.  Only lower 64 bits of FP context's
-+ * general register slots are copied to buffer slots.
-+ */
-+static int fpr_get_msa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       void **kbuf, void __user **ubuf)
-+{
-+	unsigned int i;
-+	u64 fpr_val;
-+	int err;
- 
- 	for (i = 0; i < NUM_FPU_REGS; i++) {
- 		fpr_val = get_fpr64(&target->thread.fpu.fpr[i], 0);
--		err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+		err = user_regset_copyout(pos, count, kbuf, ubuf,
- 					  &fpr_val, i * sizeof(elf_fpreg_t),
- 					  (i + 1) * sizeof(elf_fpreg_t));
- 		if (err)
-@@ -466,27 +477,54 @@ static int fpr_get(struct task_struct *t
- 	return 0;
+ 	/*
+ 	 * Record that the target has "used" math, such that the context
+@@ -80,6 +79,22 @@ void ptrace_disable(struct task_struct *
  }
  
--static int fpr_set(struct task_struct *target,
-+/* Copy the floating-point context to the supplied NT_PRFPREG buffer.  */
-+static int fpr_get(struct task_struct *target,
- 		   const struct user_regset *regset,
- 		   unsigned int pos, unsigned int count,
--		   const void *kbuf, const void __user *ubuf)
-+		   void *kbuf, void __user *ubuf)
+ /*
++ * Poke at FCSR according to its mask.  Don't set the cause bits as
++ * this is currently not handled correctly in FP context restoration
++ * and will cause an oops if a corresponding enable bit is set.
++ */
++static void ptrace_setfcr31(struct task_struct *child, u32 value)
++{
++	u32 fcr31;
++	u32 mask;
++
++	value &= ~FPU_CSR_ALL_X;
++	fcr31 = child->thread.fpu.fcr31;
++	mask = boot_cpu_data.fpu_msk31;
++	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++}
++
++/*
+  * Read a general register set.	 We always use the 64-bit format, even
+  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
+  * Registers are sign extended to fill the available space.
+@@ -159,9 +174,7 @@ int ptrace_setfpregs(struct task_struct
  {
--	unsigned i;
- 	int err;
--	u64 fpr_val;
+ 	union fpureg *fregs;
+ 	u64 fpr_val;
+-	u32 fcr31;
+ 	u32 value;
+-	u32 mask;
+ 	int i;
  
- 	/* XXX fcr31  */
+ 	if (!access_ok(VERIFY_READ, data, 33 * 8))
+@@ -176,10 +189,7 @@ int ptrace_setfpregs(struct task_struct
+ 	}
  
--	init_fp_ctx(target);
-+	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
-+		err = fpr_get_fpa(target, &pos, &count, &kbuf, &ubuf);
-+	else
-+		err = fpr_get_msa(target, &pos, &count, &kbuf, &ubuf);
-+
-+	return err;
-+}
+ 	__get_user(value, data + 64);
+-	value &= ~FPU_CSR_ALL_X;
+-	fcr31 = child->thread.fpu.fcr31;
+-	mask = boot_cpu_data.fpu_msk31;
+-	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++	ptrace_setfcr31(child, value);
  
--	if (sizeof(target->thread.fpu.fpr[i]) == sizeof(elf_fpreg_t))
--		return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
--					  &target->thread.fpu,
--					  0, sizeof(elf_fpregset_t));
-+/*
-+ * Copy the supplied NT_PRFPREG buffer to the floating-point context,
-+ * !CONFIG_CPU_HAS_MSA variant.   Buffer slots correspond 1:1 to FP
-+ * context's general register slots.
-+ */
-+static int fpr_set_fpa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       const void **kbuf, const void __user **ubuf)
-+{
-+	return user_regset_copyin(pos, count, kbuf, ubuf,
-+				  &target->thread.fpu,
-+				  0, sizeof(elf_fpregset_t));
-+}
-+
-+/*
-+ * Copy the supplied NT_PRFPREG buffer to the floating-point context,
-+ * CONFIG_CPU_HAS_MSA variant.  Buffer slots are copied to lower 64
-+ * bits only of FP context's general register slots.
-+ */
-+static int fpr_set_msa(struct task_struct *target,
-+		       unsigned int *pos, unsigned int *count,
-+		       const void **kbuf, const void __user **ubuf)
-+{
-+	unsigned int i;
-+	u64 fpr_val;
-+	int err;
+ 	/* FIR may not be written.  */
  
- 	BUILD_BUG_ON(sizeof(fpr_val) != sizeof(elf_fpreg_t));
--	for (i = 0; i < NUM_FPU_REGS && count >= sizeof(elf_fpreg_t); i++) {
--		err = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-+	for (i = 0; i < NUM_FPU_REGS && *count >= sizeof(elf_fpreg_t); i++) {
-+		err = user_regset_copyin(pos, count, kbuf, ubuf,
- 					 &fpr_val, i * sizeof(elf_fpreg_t),
- 					 (i + 1) * sizeof(elf_fpreg_t));
- 		if (err)
-@@ -497,6 +535,26 @@ static int fpr_set(struct task_struct *t
- 	return 0;
- }
- 
-+/* Copy the supplied NT_PRFPREG buffer to the floating-point context.  */
-+static int fpr_set(struct task_struct *target,
-+		   const struct user_regset *regset,
-+		   unsigned int pos, unsigned int count,
-+		   const void *kbuf, const void __user *ubuf)
-+{
-+	int err;
-+
-+	/* XXX fcr31  */
-+
-+	init_fp_ctx(target);
-+
-+	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
-+		err = fpr_set_fpa(target, &pos, &count, &kbuf, &ubuf);
-+	else
-+		err = fpr_set_msa(target, &pos, &count, &kbuf, &ubuf);
-+
-+	return err;
-+}
-+
- enum mips_regset {
- 	REGSET_GPR,
- 	REGSET_FPR,
+@@ -739,7 +749,7 @@ long arch_ptrace(struct task_struct *chi
+ 			break;
+ #endif
+ 		case FPC_CSR:
+-			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
++			ptrace_setfcr31(child, data);
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;

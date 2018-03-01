@@ -1,118 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 00:46:20 +0100 (CET)
-Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:41320
-        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992273AbeB1XqLw62uM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 00:46:11 +0100
-Received: by mail-qt0-x244.google.com with SMTP id j4so5337547qth.8
-        for <linux-mips@linux-mips.org>; Wed, 28 Feb 2018 15:46:11 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 03:35:24 +0100 (CET)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:36820
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992404AbeCACfOVaPr8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 03:35:14 +0100
+Received: by mail-io0-x241.google.com with SMTP id e30so5510665ioc.3;
+        Wed, 28 Feb 2018 18:35:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=CUpKolArgiCp4zuV+DcgnvwnYPfs55txz5kzAOu+85I=;
-        b=JtqjPb4uRuO0WyOjolCGX4//sLnC3S+bWrBgye76ZcA2f7qmuwpBRQxA+g+iHG2LAZ
-         aUgBbmo4/HGPuMYVXGNgawy58UlZNkCRFMZQLH6C5gelzq9f9A5TWOmxdAP04EBnEhPM
-         l3DZBeg+4SCI+KTQK3yXjjwsHEGWeN/A8u/+iR3xfuAVIOWWD8kzJFw2zrVVZ+Zm6eJN
-         B2X7NZpcVlXNpL6Iw/Sw1fnKn/fZ8vW4J4Ru7oRYf9DI0WPU7udFgCgwdxRym5gaqpHs
-         WKPP8M+TUWwbajOMIFkjIObVkCNTOA5yjcAL9cxRqfLDtN4Bt8FkGT+bm7epNzWcDi1D
-         avWg==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=oNjFnKQuJqWqDBM9q+ZJVgHCCDYVT0nYMZJw+pNGmP0=;
+        b=QcxozZFACxBoa3JA9lczEVj/iJ0up+2m/Can9KRX1hTkb3J+br4m9qkvjMDAo7gTUw
+         3TExpZclhW4EP0C8/08qGRlDvKltGAqZ6hjpI+wqn3f9udNTBdrHqu23bsPRirf7oHQE
+         iUvcp7kfyd/3RL4+CoV0p53ruG/j46q8ES+rvJ/1mFzg3vujipKUWJMA7h8M85Pw18It
+         cgXJCvF9VlOlEVOdBSGMJ0sOi2r0Oo0Fb5ERpMNl9A/ueXW6a55P38K+SwDSsLJMVVFv
+         1v2Th+JJyHI97omo8U+AisHqEo91FV9lDncCjV5N5JpaFoI573AY55MRz/5/r96rnFqp
+         6NJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=CUpKolArgiCp4zuV+DcgnvwnYPfs55txz5kzAOu+85I=;
-        b=b74UyASejtVgm7mOWDlD/VtDC/13A9TaRpob2dRTr7L+SsTGP2L6Wva07PcK21VlcD
-         6NLt+T9oBTRi6LQTDf7E13Or7BuQ60eg3BmJPtsbVmCJ8r5iCPO7CE7I93hwq1BWgclI
-         VsxQCmnvuUdzlNKS1i7dNUqFa163bYukoIv/kEUN33aaVQyprc4eRwABP9gsWUsm3Chp
-         ltg1VAdgxYR/5YU3t1VhOuhTQKkwbaChd0Pa0XL33sPqbI9lLiD+2z5VTtpBBE80AACb
-         EKyPOdwktcYlPTBm9NmWRt9Q48DbNsz34GbP2/G6YgXZQoChgcr3ddXTOVaIw0oBy25/
-         W+eA==
-X-Gm-Message-State: AElRT7FIRNStWvqWMN5A3VsBaT6s8NIjvvWrZzA7XWGBhvcY7OCuVFa9
-        qcZECHSIiX04/5F7rtEBdRY=
-X-Google-Smtp-Source: AG47ELsfbdOfjR40IUXECvMoGWQoyQcYnhAsdViZ6LGLMzoBZrjefQ3FtmGup2HFgs3p1fmt0tBbYQ==
-X-Received: by 10.237.52.228 with SMTP id x91mr329620qtd.152.1519861565393;
-        Wed, 28 Feb 2018 15:46:05 -0800 (PST)
-Received: from [10.69.41.93] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id i37sm2104479qte.48.2018.02.28.15.45.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Feb 2018 15:46:04 -0800 (PST)
-Subject: Re: [PATCH v4] watchdog: add SPDX identifiers for watchdog subsystem
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Joel Stanley <joel@jms.id.au>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Jimmy Vance <jimmy.vance@hpe.com>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Andreas Werner <andreas.werner@men.de>,
-        Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Zwane Mwaikambo <zwanem@gmail.com>,
-        Jim Cromie <jim.cromie@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Mans Rullgard <mans@mansr.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Jun Nie <jun.nie@linaro.org>,
-        Baoyou Xie <baoyou.xie@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>
-Cc:     linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-mips@linux-mips.org, linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
-References: <20180228150209.2525-1-marcus.folkesson@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <786d740d-f29c-8f09-4648-95244c06e59b@gmail.com>
-Date:   Wed, 28 Feb 2018 15:45:43 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=oNjFnKQuJqWqDBM9q+ZJVgHCCDYVT0nYMZJw+pNGmP0=;
+        b=NO8f36UXVDU7nNt45NCqTmK/4aOCKXldRUQKSW4cMbEqdzFYt+D/nd7WfHLLJW4MMz
+         we34BNNgUQfutJ2WSYNyHsYq6L8U00qnVk0T2EREccVy6f97TXOVDUwj9BC/UEEcLIJB
+         PrfdAv41HKl7pzjcO9Lvxqa0V0rxCae5CW7yGDv/G1OV5LyC6I8g1f3z36h5uXdQCuBq
+         kxpJXsyTLQlpzulo9NM2Rv2dqS+bXcvvMiePBqaiBP9fpMneKlwySPhO7md5OrZ8SXv2
+         MgBf5xbjgpELZZ1ynlqQDpyX/lHYgKCaLHHvq/kZrpUESxW1xxNLlek38L83cFswm/0d
+         EATQ==
+X-Gm-Message-State: APf1xPD0FmU77tZoPihXJ9x0TbkkjOYf+9361EpCEygrq3a3Cyx9Mpkz
+        ZZF0rY7T/LzE6vC9eAA1CxL/Joiqi1wL3tsW58A=
+X-Google-Smtp-Source: AG47ELskoScgH3DPQR/yKPsdh8ym3tyh7ETIDeIIW2eNiwpIVS7NUllen1FDXP7f/RcaCU5rvEDwX3j11OQDvuG3MTQ=
+X-Received: by 10.107.143.151 with SMTP id r145mr259320iod.297.1519871706907;
+ Wed, 28 Feb 2018 18:35:06 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20180228150209.2525-1-marcus.folkesson@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Received: by 10.107.187.1 with HTTP; Wed, 28 Feb 2018 18:35:06 -0800 (PST)
+In-Reply-To: <20180228100353.GP6245@saruman>
+References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
+ <20180215110506.GH3986@saruman> <CAAhV-H7RMmtcc6BW7dCnZ617dx5ZZrzvbFTUekGSgLYCkZfZEw@mail.gmail.com>
+ <20180228100353.GP6245@saruman>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Thu, 1 Mar 2018 10:35:06 +0800
+X-Google-Sender-Auth: t6HU1ObfuEtEqZ1lzZHBkwCF4OI
+Message-ID: <CAAhV-H7t956QctPMn5mbdU+YYeB9Ckv=ZHR310KCzpouYaPkYg@mail.gmail.com>
+Subject: Re: [PATCH V2 00/12] MIPS: Loongson: new features and improvements
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62755
+X-archive-position: 62756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -125,55 +71,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/28/2018 07:01 AM, Marcus Folkesson wrote:
-> - Add SPDX identifier
-> - Remove boiler plate license text
-> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
->   license
-> 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
-> Acked-by: Baruch Siach <baruch@tkos.co.il>
-> Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> Acked-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-> Acked-by: Johannes Thumshirn <jth@kernel.org>
-> Acked-by: Mans Rullgard <mans@mansr.com>
-> Acked-by: Matthias Brugger <matthias.bgg@gmail.com>
-> Acked-by: Michal Simek <michal.simek@xilinx.com>
-> Acked-by: Neil Armstrong <narmstrong@baylibre.com>
-> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-> Acked-by: Thierry Reding <treding@nvidia.com>
-> Acked-by: Tomas Winkler <tomas.winkler@intel.com>
-> Acked-by: Patrice Chotard <patrice.chotard@st.com>
-> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> Reviewed-by: Eric Anholt <eric@anholt.net>
-> ---
-> 
-> Notes:
->     v4:
->     	- Drop coh901327_wdt since it allready is a pending patch
->     v3:
->     	- Keep license text for ebc-c384_wdt
->     v2:
->     	- Put back removed copyright texts for meson_gxbb_wdt and coh901327_wdt
->     	- Change to BSD-3-Clause for meson_gxbb_wdt
->     v1: Please have an extra look at meson_gxbb_wdt.c
-> 
+On Wed, Feb 28, 2018 at 6:03 PM, James Hogan <jhogan@kernel.org> wrote:
+> On Wed, Feb 28, 2018 at 10:23:09AM +0800, Huacai Chen wrote:
+>> Hi, James,
+>>
+>> I really don't want send many patches in a seris. But in practise, my
+>> single patch in linux-mips usually be ignored (even they are very
+>> simple and well described)....
+>
+> Then please feel free to reply to the patch and ask if anybody has
+> feedback, stating how important the patch is for you, so it can be
+> prioritised. Resends as part of other series just adds to the noise.
+>
+>>
+>> For example:
+>> https://patchwork.linux-mips.org/patch/17723/
+>
+> Yes, that one needs a proper look.
+>
+>> https://patchwork.linux-mips.org/patch/18587/
+>
+> This one apparently knowingly breaks the feature on other platforms, so
+> can't really be applied as is. I think Matt Redfearn & I were thinking
+> his single IPI stuff could potentially be helpful there too.
+I think this does't break other platforms, because:
+1, arch_trigger_cpumask_backtrace() will not be called in normal cases;
+2, If arch_trigger_cpumask_backtrace() really be called, the old code
+also doesn't work (deadlock).
 
->  drivers/watchdog/ar7_wdt.c             | 14 +---------
+>
+>> https://patchwork.linux-mips.org/patch/18682/
+>
+> You sent that this morning so its hardly had time to be ignored, and I
+> had already spotted it on my phone and intended to apply it today. Also
+> I disagree that "Commit x breaks Loongson64 platforms, so fix it" counts
+> as well described, even if it is simple, and obvious (to me at least)
+> what you're talking about.
+>
+> E.g. a better description would along the lines of:
+>
+> Commit 7a407aa5e0d3 ("MIPS: Push ARCH_MIGHT_HAVE_PC_SERIO down to
+> platform level") moves the global MIPS ARCH_MIGHT_HAVE_PC_SERIO select
+> down to various platforms, but doesn't add it to Loongson64 platforms
+> which need it, so add the selects to these platforms too.
+I'll update my commit messages.
 
->  drivers/watchdog/bcm2835_wdt.c         |  5 +---
->  drivers/watchdog/bcm47xx_wdt.c         |  5 +---
->  drivers/watchdog/bcm63xx_wdt.c         |  5 +---
->  drivers/watchdog/bcm7038_wdt.c         | 12 ++------
->  drivers/watchdog/bcm_kona_wdt.c        |  9 +-----
-
->  drivers/watchdog/mtx-1_wdt.c           | 11 +-------
-
-For these drivers above:
-
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-
-and it looks like you missed rdc321x_wdt.c, is there a specific reason?
--- 
-Florian
+>
+>>
+>> Anyway, thank you for your susggestions, I will rework other patches.
+>
+> Thank you.
+>
+> Cheers
+> James

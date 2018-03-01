@@ -1,60 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 03:35:24 +0100 (CET)
-Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:36820
-        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992404AbeCACfOVaPr8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 03:35:14 +0100
-Received: by mail-io0-x241.google.com with SMTP id e30so5510665ioc.3;
-        Wed, 28 Feb 2018 18:35:14 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 03:36:35 +0100 (CET)
+Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:34389
+        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992404AbeCACg2B2cb8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 03:36:28 +0100
+Received: by mail-pg0-x242.google.com with SMTP id m19so1752305pgn.1;
+        Wed, 28 Feb 2018 18:36:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=oNjFnKQuJqWqDBM9q+ZJVgHCCDYVT0nYMZJw+pNGmP0=;
-        b=QcxozZFACxBoa3JA9lczEVj/iJ0up+2m/Can9KRX1hTkb3J+br4m9qkvjMDAo7gTUw
-         3TExpZclhW4EP0C8/08qGRlDvKltGAqZ6hjpI+wqn3f9udNTBdrHqu23bsPRirf7oHQE
-         iUvcp7kfyd/3RL4+CoV0p53ruG/j46q8ES+rvJ/1mFzg3vujipKUWJMA7h8M85Pw18It
-         cgXJCvF9VlOlEVOdBSGMJ0sOi2r0Oo0Fb5ERpMNl9A/ueXW6a55P38K+SwDSsLJMVVFv
-         1v2Th+JJyHI97omo8U+AisHqEo91FV9lDncCjV5N5JpaFoI573AY55MRz/5/r96rnFqp
-         6NJQ==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=GK7mr2MxFGvUjY2IXdfBQmqqTQdMKQ8BUS2U7hPiY6I=;
+        b=GpArE7OBW8J7zE2r+vF6iJleTPio63979NHmcjAz2kDcpZayH9+zxFU6MnmcANVntr
+         tO3QvSh3f9Hur8RRCC31LepxIvR1atScxVEE6yItnuE1/c+gCM84sybGB49EJx4r2o1M
+         fBAjl7loLUTHujsabyWIz0U3jlkVREbAE0vIZynnK6NVSWAznQxMTc7RLmcyHjWTKbOi
+         SMk1s3LVTo/dqc13/R2jTliL6JaG9qObOdpy1XGQ9BMC4Dis4J2AoQHjBS6NJJgzuezz
+         IuOW061Ev9mh9oBEAscczB+JBAbrUX6jeNBauvzRtI5R9h9ZJScrSNZowKZ34uuK5lMZ
+         sLSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=oNjFnKQuJqWqDBM9q+ZJVgHCCDYVT0nYMZJw+pNGmP0=;
-        b=NO8f36UXVDU7nNt45NCqTmK/4aOCKXldRUQKSW4cMbEqdzFYt+D/nd7WfHLLJW4MMz
-         we34BNNgUQfutJ2WSYNyHsYq6L8U00qnVk0T2EREccVy6f97TXOVDUwj9BC/UEEcLIJB
-         PrfdAv41HKl7pzjcO9Lvxqa0V0rxCae5CW7yGDv/G1OV5LyC6I8g1f3z36h5uXdQCuBq
-         kxpJXsyTLQlpzulo9NM2Rv2dqS+bXcvvMiePBqaiBP9fpMneKlwySPhO7md5OrZ8SXv2
-         MgBf5xbjgpELZZ1ynlqQDpyX/lHYgKCaLHHvq/kZrpUESxW1xxNLlek38L83cFswm/0d
-         EATQ==
-X-Gm-Message-State: APf1xPD0FmU77tZoPihXJ9x0TbkkjOYf+9361EpCEygrq3a3Cyx9Mpkz
-        ZZF0rY7T/LzE6vC9eAA1CxL/Joiqi1wL3tsW58A=
-X-Google-Smtp-Source: AG47ELskoScgH3DPQR/yKPsdh8ym3tyh7ETIDeIIW2eNiwpIVS7NUllen1FDXP7f/RcaCU5rvEDwX3j11OQDvuG3MTQ=
-X-Received: by 10.107.143.151 with SMTP id r145mr259320iod.297.1519871706907;
- Wed, 28 Feb 2018 18:35:06 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.107.187.1 with HTTP; Wed, 28 Feb 2018 18:35:06 -0800 (PST)
-In-Reply-To: <20180228100353.GP6245@saruman>
-References: <1517022752-3053-1-git-send-email-chenhc@lemote.com>
- <20180215110506.GH3986@saruman> <CAAhV-H7RMmtcc6BW7dCnZ617dx5ZZrzvbFTUekGSgLYCkZfZEw@mail.gmail.com>
- <20180228100353.GP6245@saruman>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=GK7mr2MxFGvUjY2IXdfBQmqqTQdMKQ8BUS2U7hPiY6I=;
+        b=V+3laCKqmJrEq8X+u/5u3eOMx1oC96Ix474s4wtB0WayFe32/3Y3bO3/BozLYTHk4S
+         X1FSlMJTpmyxm7XgxKYvoPNTNv12yu05az4qfI9ozhZSjyJLTWLoTwywH2r2EkO9H5FZ
+         Cdj5VhUIyJstPhqgkC9ni6xcOtlGWR84IKV7Hydt4PzSeGEZPhLG76oLWRUKL9UTbgzf
+         5gkWu6fcAfUZ5UMIKex2pq9fBikMGiIXPQbPx4H8OdLSMSf6hugjCOfjpxo0TFbDVwg7
+         Ibj0aiJiF4HhLCjFW4wo+FU8cMPBL0Ge9jrlv2XgINmblEj6LUp04jpMj8R1/UKURsFJ
+         tntg==
+X-Gm-Message-State: APf1xPAPwN6CaZTu4bRMXo4qN3i1cZgymUhfM36NKGH4rnXHMsBxGSEL
+        O4OKYRdciq/mpbZvn11eq2g8MA==
+X-Google-Smtp-Source: AG47ELvTd0cULHuY5UROjgrQLuiz9RpyRRFfHtmMdlBT/U1O/atVnhbcwxPhYjrpttkRbVdyGb8K2g==
+X-Received: by 10.99.4.197 with SMTP id 188mr223734pge.359.1519871780533;
+        Wed, 28 Feb 2018 18:36:20 -0800 (PST)
+Received: from software.domain.org ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id e83sm5987745pfk.148.2018.02.28.18.36.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 28 Feb 2018 18:36:19 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
-Date:   Thu, 1 Mar 2018 10:35:06 +0800
-X-Google-Sender-Auth: t6HU1ObfuEtEqZ1lzZHBkwCF4OI
-Message-ID: <CAAhV-H7t956QctPMn5mbdU+YYeB9Ckv=ZHR310KCzpouYaPkYg@mail.gmail.com>
-Subject: Re: [PATCH V2 00/12] MIPS: Loongson: new features and improvements
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     James Hogan <james.hogan@mips.com>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V2 1/2] MIPS: Loongson64: Select ARCH_MIGHT_HAVE_PC_PARPORT
+Date:   Thu,  1 Mar 2018 10:37:41 +0800
+Message-Id: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62756
+X-archive-position: 62757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,56 +66,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Feb 28, 2018 at 6:03 PM, James Hogan <jhogan@kernel.org> wrote:
-> On Wed, Feb 28, 2018 at 10:23:09AM +0800, Huacai Chen wrote:
->> Hi, James,
->>
->> I really don't want send many patches in a seris. But in practise, my
->> single patch in linux-mips usually be ignored (even they are very
->> simple and well described)....
->
-> Then please feel free to reply to the patch and ask if anybody has
-> feedback, stating how important the patch is for you, so it can be
-> prioritised. Resends as part of other series just adds to the noise.
->
->>
->> For example:
->> https://patchwork.linux-mips.org/patch/17723/
->
-> Yes, that one needs a proper look.
->
->> https://patchwork.linux-mips.org/patch/18587/
->
-> This one apparently knowingly breaks the feature on other platforms, so
-> can't really be applied as is. I think Matt Redfearn & I were thinking
-> his single IPI stuff could potentially be helpful there too.
-I think this does't break other platforms, because:
-1, arch_trigger_cpumask_backtrace() will not be called in normal cases;
-2, If arch_trigger_cpumask_backtrace() really be called, the old code
-also doesn't work (deadlock).
+Commit a211a0820d3c8e7a ("MIPS: Push ARCH_MIGHT_HAVE_PC_PARPORT down to
+platform level") moves the global MIPS ARCH_MIGHT_HAVE_PC_PARPORT
+select down to various platforms, but doesn't add it to Loongson64
+platforms which need it, so add the selects to these platforms too.
 
->
->> https://patchwork.linux-mips.org/patch/18682/
->
-> You sent that this morning so its hardly had time to be ignored, and I
-> had already spotted it on my phone and intended to apply it today. Also
-> I disagree that "Commit x breaks Loongson64 platforms, so fix it" counts
-> as well described, even if it is simple, and obvious (to me at least)
-> what you're talking about.
->
-> E.g. a better description would along the lines of:
->
-> Commit 7a407aa5e0d3 ("MIPS: Push ARCH_MIGHT_HAVE_PC_SERIO down to
-> platform level") moves the global MIPS ARCH_MIGHT_HAVE_PC_SERIO select
-> down to various platforms, but doesn't add it to Loongson64 platforms
-> which need it, so add the selects to these platforms too.
-I'll update my commit messages.
+Fixes: a211a0820d3c8e7a ("MIPS: Push ARCH_MIGHT_HAVE_PC_PARPORT down to platform level")
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/loongson64/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
->
->>
->> Anyway, thank you for your susggestions, I will rework other patches.
->
-> Thank you.
->
-> Cheers
-> James
+diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+index bc2fdbf..12812a8b 100644
+--- a/arch/mips/loongson64/Kconfig
++++ b/arch/mips/loongson64/Kconfig
+@@ -7,6 +7,7 @@ choice
+ config LEMOTE_FULOONG2E
+ 	bool "Lemote Fuloong(2e) mini-PC"
+ 	select ARCH_SPARSEMEM_ENABLE
++	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select SYS_HAS_CPU_LOONGSON2E
+@@ -33,6 +34,7 @@ config LEMOTE_FULOONG2E
+ config LEMOTE_MACH2F
+ 	bool "Lemote Loongson 2F family machines"
+ 	select ARCH_SPARSEMEM_ENABLE
++	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select BOARD_SCACHE
+ 	select BOOT_ELF32
+ 	select CEVT_R4K if ! MIPS_EXTERNAL_TIMER
+@@ -62,6 +64,7 @@ config LEMOTE_MACH2F
+ config LOONGSON_MACH3X
+ 	bool "Generic Loongson 3 family machines"
+ 	select ARCH_SPARSEMEM_ENABLE
++	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
+ 	select BOOT_ELF32
+ 	select BOARD_SCACHE
+-- 
+2.7.0

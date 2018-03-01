@@ -1,58 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 03:37:00 +0100 (CET)
-Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:34267
-        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992781AbeCACga3KV48 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 03:36:30 +0100
-Received: by mail-pf0-x243.google.com with SMTP id j20so1859916pfi.1;
-        Wed, 28 Feb 2018 18:36:30 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 03:51:53 +0100 (CET)
+Received: from mail-pl0-x242.google.com ([IPv6:2607:f8b0:400e:c01::242]:36780
+        "EHLO mail-pl0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992781AbeCACvqDhxf8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 03:51:46 +0100
+Received: by mail-pl0-x242.google.com with SMTP id 61-v6so2816735plf.3;
+        Wed, 28 Feb 2018 18:51:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=olT+xjNhKYaC2uJjOCMT9k0Q+/kv0Qzl5NAjKncz3LU=;
-        b=FBer8WtMBLnd9V1cg3rZSed95F6dn+BiUORBzWV5428Xor34aKGhDqxK4ny8ljyD8x
-         2NuDbxyWholcSFRHu35XLU0pa4zz+8C1L3lp709t4t2Cb0QVGu06D8eLW0wdIsYUz93C
-         2g93dvWoHKFLMqN0griXfDg2xgmLVdYDW0YekN3bswmH8zD8pXgJhNEqTHuvejvW2luB
-         YMUgBnkprY6Rhmrmamb/otYISL9ZMp/7bPGERwYS0qBSO0Jy2ieCg7Z6RO3qFHk714ei
-         /KrUgT+rZDsvxv5tyLFpJ3Ud2/Xp1YuAt7oIqPTxk4xsXYT6HZoRLft2QvIp7xNiH2fo
-         qXfw==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=vYRX+SWMym+IbZ6qx4en40mwXw7Da2mzxWfQ6a8kjs4=;
+        b=s1sSJ77CVWvyr3aGEK1xXtvxEK6aD27C3I6uWlCoWaqcF+9j4pkyzbo6R7DiRbTVcL
+         83j0dKuxBEuNMj2BjUsCVSLJmwSLvzNUfsYenRP+f8fshr8s+BZ5qL9TJW6h18uNVCiq
+         0QMGb0k6gv/meiZjuGQkAu7eBEPv+lf6lSeBwPxERHS8kp5c3/KzKpJ8aCWrtvDlvNKY
+         l0EvOn+RlLUzTesh5VoOlWqIVC6USliODPxKtOKI92m796Yt/Q6TMx1qaFqpDraoY9oY
+         fU+eK33C7qHGXd55rDEq0fMYmyvTuVafPRMdn43+06TJhKBdc625G8mzA6/e+tp7fmcA
+         gwtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references;
-        bh=olT+xjNhKYaC2uJjOCMT9k0Q+/kv0Qzl5NAjKncz3LU=;
-        b=c3dP8GFzoqmJ/sXLzk/y+8hJ8okJEogsq2G1WJfjv8abvUKGHKwEcdix7vWWvtAJr6
-         KzRpAN1+Tsgl5tN2JZUAfOgCBNI9dpF8pbxEzF9j/MRlkKcIb6alKutjE9v6bk2WXxrF
-         lvNaR92yDGIaRDtjGWq7dTH8D/FRJR2f7StrLYSiXXC7f2kmKHNRt8PimBGpzG2maZWZ
-         SRmz2VpAuVweBmomqle29s/T2CqTri4QkFqSG0AZRcoLVTeXRJYV8V9eCGDx+O1y9ldU
-         UvibrpdnqZEtC2uNemwKQ8p4MobtF0jr7xTqNqzkz02Bi7iotyqgWdQAKCAXEvze3Re7
-         AGWw==
-X-Gm-Message-State: APf1xPDipdHXRiGhorSTc+MHsXCcAv7jEGxFGYkC8aC7P30YS4gpSNLd
-        caLp4ItjuLaz3a1u5kMXeYeGLg==
-X-Google-Smtp-Source: AG47ELuueYnX+7ySse+WI9EIzqEU8/I6q+W8Jiee9K8CPBmnDwYuIEQe9S/tlzt4Y3Z0EKdaPYqXhg==
-X-Received: by 10.99.127.65 with SMTP id p1mr260231pgn.50.1519871783838;
-        Wed, 28 Feb 2018 18:36:23 -0800 (PST)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=vYRX+SWMym+IbZ6qx4en40mwXw7Da2mzxWfQ6a8kjs4=;
+        b=p/Dmg6q8HB5H/VuLZ6LQzgEucLKxSpLN4mTEKqYSQnpw3kMrDtBwtmKGUNv1BklNLY
+         9porSDwiJp2oSk/HQug7bYw3h9DKcD5R2cTaVnAkTEmECODhXk0gw4voO6+dDUJPf00h
+         7uzgjV+oG1OA2ZS06O2dkEfWZnJ4lL4Q+TtaV4yPPsUyAfoHks90sArAQWzDsszLhdNL
+         8+BUv0/7X9P7xeLtkt1MnGBWRqF3abEbRNnHMihCIxkDUzPJu2DmurkT9Jca+8oCu6KM
+         bYkk2YNYxUaN/apzPFxo9mfnGD13TKenGwSo09BIqbH0m0HkarqztV++WqYZxDZqLS9z
+         9Vzw==
+X-Gm-Message-State: APf1xPDet92IvM9kcdc/B3Q46G/xwrbiOVVXVmuKdjpNA5fXoNNOEt/o
+        ct43538eYRfZ8mm5CcXlydbyDA==
+X-Google-Smtp-Source: AG47ELtoD+GRBf9a4HeyGWRKpRssCHAxzvAszb8cFcGR2MyvtwZNv+SU0u5me6mHjZUoKts3VYOwlA==
+X-Received: by 2002:a17:902:70cb:: with SMTP id l11-v6mr367207plt.192.1519872699285;
+        Wed, 28 Feb 2018 18:51:39 -0800 (PST)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id e83sm5987745pfk.148.2018.02.28.18.36.20
+        by smtp.gmail.com with ESMTPSA id q67sm6170147pfg.180.2018.02.28.18.51.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 28 Feb 2018 18:36:22 -0800 (PST)
+        Wed, 28 Feb 2018 18:51:38 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     James Hogan <james.hogan@mips.com>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 2/2] MIPS: Loongson64: Select ARCH_MIGHT_HAVE_PC_SERIO
-Date:   Thu,  1 Mar 2018 10:37:42 +0800
-Message-Id: <1519871862-14624-2-git-send-email-chenhc@lemote.com>
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH 01/99] ZBOOT: fix stack protector in compressed boot phase
+Date:   Thu,  1 Mar 2018 10:53:11 +0800
+Message-Id: <1519872791-19076-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
-References: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62758
+X-archive-position: 62759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,44 +70,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 7a407aa5e0d3e587 ("MIPS: Push ARCH_MIGHT_HAVE_PC_SERIO down to
-platform level") moves the global MIPS ARCH_MIGHT_HAVE_PC_SERIO select
-down to various platforms, but doesn't add it to Loongson64 platforms
-which need it, so add the selects to these platforms too.
+Call __stack_chk_guard_setup() in decompress_kernel() is too late that
+stack checking always fails for decompress_kernel() itself. So remove
+__stack_chk_guard_setup() and initialize __stack_chk_guard at where we
+define it.
 
-Fixes: 7a407aa5e0d3e587 ("MIPS: Push ARCH_MIGHT_HAVE_PC_SERIO down to platform level")
+Original code comes from ARM but also used for MIPS and SH, so fix them
+together.
+
+Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson64/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/compressed/misc.c        | 9 +--------
+ arch/mips/boot/compressed/decompress.c | 9 +--------
+ arch/sh/boot/compressed/misc.c         | 9 +--------
+ 3 files changed, 3 insertions(+), 24 deletions(-)
 
-diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
-index 12812a8b..72af0c1 100644
---- a/arch/mips/loongson64/Kconfig
-+++ b/arch/mips/loongson64/Kconfig
-@@ -8,6 +8,7 @@ config LEMOTE_FULOONG2E
- 	bool "Lemote Fuloong(2e) mini-PC"
- 	select ARCH_SPARSEMEM_ENABLE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-+	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select SYS_HAS_CPU_LOONGSON2E
-@@ -35,6 +36,7 @@ config LEMOTE_MACH2F
- 	bool "Lemote Loongson 2F family machines"
- 	select ARCH_SPARSEMEM_ENABLE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-+	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select BOARD_SCACHE
- 	select BOOT_ELF32
- 	select CEVT_R4K if ! MIPS_EXTERNAL_TIMER
-@@ -65,6 +67,7 @@ config LOONGSON_MACH3X
- 	bool "Generic Loongson 3 family machines"
- 	select ARCH_SPARSEMEM_ENABLE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-+	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
- 	select BOOT_ELF32
- 	select BOARD_SCACHE
+diff --git a/arch/arm/boot/compressed/misc.c b/arch/arm/boot/compressed/misc.c
+index 16a8a80..43aca75 100644
+--- a/arch/arm/boot/compressed/misc.c
++++ b/arch/arm/boot/compressed/misc.c
+@@ -128,12 +128,7 @@ asmlinkage void __div0(void)
+ 	error("Attempting division by 0!");
+ }
+ 
+-unsigned long __stack_chk_guard;
+-
+-void __stack_chk_guard_setup(void)
+-{
+-	__stack_chk_guard = 0x000a0dff;
+-}
++unsigned long __stack_chk_guard = 0x000a0dff;
+ 
+ void __stack_chk_fail(void)
+ {
+@@ -150,8 +145,6 @@ decompress_kernel(unsigned long output_start, unsigned long free_mem_ptr_p,
+ {
+ 	int ret;
+ 
+-	__stack_chk_guard_setup();
+-
+ 	output_data		= (unsigned char *)output_start;
+ 	free_mem_ptr		= free_mem_ptr_p;
+ 	free_mem_end_ptr	= free_mem_ptr_end_p;
+diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+index fdf99e9..0694b3f 100644
+--- a/arch/mips/boot/compressed/decompress.c
++++ b/arch/mips/boot/compressed/decompress.c
+@@ -76,12 +76,7 @@ void error(char *x)
+ #include "../../../../lib/decompress_unxz.c"
+ #endif
+ 
+-unsigned long __stack_chk_guard;
+-
+-void __stack_chk_guard_setup(void)
+-{
+-	__stack_chk_guard = 0x000a0dff;
+-}
++unsigned long __stack_chk_guard = 0x000a0dff;
+ 
+ void __stack_chk_fail(void)
+ {
+@@ -92,8 +87,6 @@ void decompress_kernel(unsigned long boot_heap_start)
+ {
+ 	unsigned long zimage_start, zimage_size;
+ 
+-	__stack_chk_guard_setup();
+-
+ 	zimage_start = (unsigned long)(&__image_begin);
+ 	zimage_size = (unsigned long)(&__image_end) -
+ 	    (unsigned long)(&__image_begin);
+diff --git a/arch/sh/boot/compressed/misc.c b/arch/sh/boot/compressed/misc.c
+index 627ce8e..2c564c2 100644
+--- a/arch/sh/boot/compressed/misc.c
++++ b/arch/sh/boot/compressed/misc.c
+@@ -104,12 +104,7 @@ static void error(char *x)
+ 	while(1);	/* Halt */
+ }
+ 
+-unsigned long __stack_chk_guard;
+-
+-void __stack_chk_guard_setup(void)
+-{
+-	__stack_chk_guard = 0x000a0dff;
+-}
++unsigned long __stack_chk_guard = 0x000a0dff;
+ 
+ void __stack_chk_fail(void)
+ {
+@@ -130,8 +125,6 @@ void decompress_kernel(void)
+ {
+ 	unsigned long output_addr;
+ 
+-	__stack_chk_guard_setup();
+-
+ #ifdef CONFIG_SUPERH64
+ 	output_addr = (CONFIG_MEMORY_START + 0x2000);
+ #else
 -- 
 2.7.0

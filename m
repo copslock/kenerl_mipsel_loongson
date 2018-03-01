@@ -1,55 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 11:46:24 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:53978 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992404AbeCAKqLpMYLD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2018 11:46:11 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E3D7E60390; Thu,  1 Mar 2018 10:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1519901161;
-        bh=NyaP+CB1BNHml+MR00XVatwm9gxtkBNpn4AUCYGhX3k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=epiTZmVFMyNUv6l6/r46WBHoRm/DxLKrs/AUkK2WwCv5m6Wv0sFDKui0RM1GNBFR4
-         nEu9yra8fr1UDRDd9hBqZk9ht3OSCMK60Q02somSfQk7R9yVAdZkCgHqUxombqyX43
-         EYOlTxdMPe6SyayCDD8uIfVnwCAnB6yi0s6KfIFM=
-Received: from potku.adurom.net (88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2018 14:44:42 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:41996 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992828AbeCANoeUBq4y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Mar 2018 14:44:34 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2FCC2600E6;
-        Thu,  1 Mar 2018 10:45:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1519901161;
-        bh=NyaP+CB1BNHml+MR00XVatwm9gxtkBNpn4AUCYGhX3k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=epiTZmVFMyNUv6l6/r46WBHoRm/DxLKrs/AUkK2WwCv5m6Wv0sFDKui0RM1GNBFR4
-         nEu9yra8fr1UDRDd9hBqZk9ht3OSCMK60Q02somSfQk7R9yVAdZkCgHqUxombqyX43
-         EYOlTxdMPe6SyayCDD8uIfVnwCAnB6yi0s6KfIFM=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2FCC2600E6
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     <zajec5@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <jhogan@kernel.org>
-Subject: Re: [PATCH v2] bcma: Prevent build of PCI host features in module
-References: <1519898292-12155-1-git-send-email-matt.redfearn@mips.com>
-Date:   Thu, 01 Mar 2018 12:45:57 +0200
-In-Reply-To: <1519898292-12155-1-git-send-email-matt.redfearn@mips.com> (Matt
-        Redfearn's message of "Thu, 1 Mar 2018 09:58:12 +0000")
-Message-ID: <87lgfcnkey.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id 867E42177C;
+        Thu,  1 Mar 2018 13:44:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 867E42177C
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Thu, 1 Mar 2018 13:44:02 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        akpm@linux-foundation.org, Paul Burton <paul.burton@mips.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 3.16 091/254] MIPS: CPS: Fix r1 .set mt assembler warning
+Message-ID: <20180301134401.GQ6245@saruman>
+References: <lsq.1519831217.271785318@decadent.org.uk>
+ <lsq.1519831218.652977295@decadent.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <kvalo@codeaurora.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7kD9y3RnPUgTZee0"
+Content-Disposition: inline
+In-Reply-To: <lsq.1519831218.652977295@decadent.org.uk>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62763
+X-archive-position: 62764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,41 +48,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Matt Redfearn <matt.redfearn@mips.com> writes:
 
-> Attempting to build bcma.ko with BCMA_DRIVER_PCI_HOSTMODE=y results in
-> a build error due to use of symbols not exported from vmlinux:
->
-> ERROR: "pcibios_enable_device" [drivers/bcma/bcma.ko] undefined!
-> ERROR: "register_pci_controller" [drivers/bcma/bcma.ko] undefined!
-> make[1]: *** [scripts/Makefile.modpost:92: __modpost] Error 1
->
-> To prevent this, don't allow the host mode feature to be built if
-> CONFIG_BCMA=m
->
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->
-> ---
->
-> Changes in v2:
-> Rebase on v4.16-rc1
->
->  drivers/bcma/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
-> index ba8acca036df..cb0f1aad20b7 100644
-> --- a/drivers/bcma/Kconfig
-> +++ b/drivers/bcma/Kconfig
-> @@ -55,7 +55,7 @@ config BCMA_DRIVER_PCI
->  
->  config BCMA_DRIVER_PCI_HOSTMODE
->  	bool "Driver for PCI core working in hostmode"
-> -	depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY
-> +	depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY && BCMA = y
+--7kD9y3RnPUgTZee0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Due to the recent regression in bcma I would prefer extra careful review
-before I apply this. So does this look ok to everyone?
+On Wed, Feb 28, 2018 at 03:20:18PM +0000, Ben Hutchings wrote:
+> 3.16.55-rc1 review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: James Hogan <jhogan@kernel.org>
+>=20
+> commit 17278a91e04f858155d54bee5528ba4fbcec6f87 upstream.
 
--- 
-Kalle Valo
+You'll want this too:
+
+8dbc1864b74f5dea5a3f7c30ca8fd358a675132f
+MIPS: CPS: Fix MIPS_ISA_LEVEL_RAW fallout
+
+Its only tagged for stable 4.15 since the one it fixes wasn't tagged for
+stable.
+
+If you're going to select patches for backporting based on Fixes tags,
+maybe its worth looking for patches which are marked as fixing ones
+you've backported too.
+
+Cheers
+James
+
+--7kD9y3RnPUgTZee0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqYA5oACgkQbAtpk944
+dnoCAg/+KTDFkcVwtPk3I4VT7ZMasy/wlIdy+6qCZwo6ErA7Ao32wQoEUm5Mh5jw
+0CH7F2+iSftl6SCZ0cASnq9EVkK5qSdqDmjh6rdeJQAGxaOaK9ybMPQBpK1URwoc
+TlfJSAurtgwqL/QPsAwKJSrUjX0HInBlt0sl6+cpYW8ToocBQZhL4iKywyfyFKeB
+ZB+0pNHDnDcpy8a10ju8iqfXNDebZRcEunD2SumDw3Ccn5t+mQ87ABpUwhX61G1J
+KPPvLJcnQ77pa9/P7Gi4hE8m7VbhZcaRCcPBzaV7UaMHKWxnK07A4Qbp6uSMGS2G
+z6YAtIMzbBdGdB9Yeu6iyVLrDUZMSU3ctRu7Vbyj1RwPmM2KJ0cUaoiaWFSbPGtX
+3PdwI1RoWiFF23rBlxQLclY1KI0U8tvB7diWX89COoAbHksk7cCNJCkBz0W1q5YY
+M1XTl3RLmboGQRmIms0mTSsv6N+KWL567I+02OsnzXyopQoM6fG3qf//InwmLHfQ
+SoGgJWXAsnn+l4PDZQlNrH+N3VSibUavdIomWpLouBSX3mSY5loe5aK0LD7IP9T7
+ZV53I3nwJb8Ev7oaKs/kGVZ/DSPsRS937NB+ps6UWgcafPZDH6cvd+MIVFCc8euJ
+2IOooTEES12UEM65n0X+gzYbBjYJ5uVRPTFKwpxzh8Bt9BimLoE=
+=zDIT
+-----END PGP SIGNATURE-----
+
+--7kD9y3RnPUgTZee0--

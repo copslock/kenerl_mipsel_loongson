@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 11:57:05 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50956 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992618AbeCBK4ywV06L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 11:56:54 +0100
-Received: from localhost (clnet-b04-243.ikbnet.co.at [83.175.124.243])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 84EC912CA;
-        Fri,  2 Mar 2018 09:01:37 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
-        linux-crypto@vger.kernel.org,
-        Sasha Levin <alexander.levin@verizon.com>
-Subject: [PATCH 4.14 050/115] lib/mpi: Fix umul_ppmm() for MIPS64r6
-Date:   Fri,  2 Mar 2018 09:50:53 +0100
-Message-Id: <20180302084505.903142217@linuxfoundation.org>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180302084503.856536800@linuxfoundation.org>
-References: <20180302084503.856536800@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 13:42:32 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:39734 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992618AbeCBMmZUEula (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 13:42:25 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 02 Mar 2018 12:42:08 +0000
+Received: from [10.20.78.177] (10.20.78.177) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Fri, 2 Mar 2018
+ 04:07:58 -0800
+Date:   Fri, 2 Mar 2018 12:07:46 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 1/2] MIPS: Loongson64: Select
+ ARCH_MIGHT_HAVE_PC_PARPORT
+In-Reply-To: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
+Message-ID: <alpine.DEB.2.00.1803021204250.10166@tp.orcam.me.uk>
+References: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1519994526-298555-16341-23882-10
+X-BESS-VER: 2018.2-r1802152108
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190597
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62771
+X-archive-position: 62772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,80 +55,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+On Wed, 28 Feb 2018, Huacai Chen wrote:
 
-------------------
+> diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+> index bc2fdbf..12812a8b 100644
+> --- a/arch/mips/loongson64/Kconfig
+> +++ b/arch/mips/loongson64/Kconfig
+> @@ -7,6 +7,7 @@ choice
+>  config LEMOTE_FULOONG2E
+>  	bool "Lemote Fuloong(2e) mini-PC"
+>  	select ARCH_SPARSEMEM_ENABLE
+> +	select ARCH_MIGHT_HAVE_PC_PARPORT
+>  	select CEVT_R4K
+>  	select CSRC_R4K
+>  	select SYS_HAS_CPU_LOONGSON2E
 
-From: James Hogan <jhogan@kernel.org>
+ Hmm, I don't think the Fuloong(2e) machine has a parallel port connector.  
+The chipset may support the port, but with no external connection I think 
+there's no point in enabling it.  Or am I missing something?
 
-
-[ Upstream commit bbc25bee37d2b32cf3a1fab9195b6da3a185614a ]
-
-Current MIPS64r6 toolchains aren't able to generate efficient
-DMULU/DMUHU based code for the C implementation of umul_ppmm(), which
-performs an unsigned 64 x 64 bit multiply and returns the upper and
-lower 64-bit halves of the 128-bit result. Instead it widens the 64-bit
-inputs to 128-bits and emits a __multi3 intrinsic call to perform a 128
-x 128 multiply. This is both inefficient, and it results in a link error
-since we don't include __multi3 in MIPS linux.
-
-For example commit 90a53e4432b1 ("cfg80211: implement regdb signature
-checking") merged in v4.15-rc1 recently broke the 64r6_defconfig and
-64r6el_defconfig builds by indirectly selecting MPILIB. The same build
-errors can be reproduced on older kernels by enabling e.g. CRYPTO_RSA:
-
-lib/mpi/generic_mpih-mul1.o: In function `mpihelp_mul_1':
-lib/mpi/generic_mpih-mul1.c:50: undefined reference to `__multi3'
-lib/mpi/generic_mpih-mul2.o: In function `mpihelp_addmul_1':
-lib/mpi/generic_mpih-mul2.c:49: undefined reference to `__multi3'
-lib/mpi/generic_mpih-mul3.o: In function `mpihelp_submul_1':
-lib/mpi/generic_mpih-mul3.c:49: undefined reference to `__multi3'
-lib/mpi/mpih-div.o In function `mpihelp_divrem':
-lib/mpi/mpih-div.c:205: undefined reference to `__multi3'
-lib/mpi/mpih-div.c:142: undefined reference to `__multi3'
-
-Therefore add an efficient MIPS64r6 implementation of umul_ppmm() using
-inline assembly and the DMULU/DMUHU instructions, to prevent __multi3
-calls being emitted.
-
-Fixes: 7fd08ca58ae6 ("MIPS: Add build support for the MIPS R6 ISA")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-mips@linux-mips.org
-Cc: linux-crypto@vger.kernel.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <alexander.levin@verizon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- lib/mpi/longlong.h |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
---- a/lib/mpi/longlong.h
-+++ b/lib/mpi/longlong.h
-@@ -671,7 +671,23 @@ do {						\
- 	**************  MIPS/64  **************
- 	***************************************/
- #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
--#if (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
-+#if defined(__mips_isa_rev) && __mips_isa_rev >= 6
-+/*
-+ * GCC ends up emitting a __multi3 intrinsic call for MIPS64r6 with the plain C
-+ * code below, so we special case MIPS64r6 until the compiler can do better.
-+ */
-+#define umul_ppmm(w1, w0, u, v)						\
-+do {									\
-+	__asm__ ("dmulu %0,%1,%2"					\
-+		 : "=d" ((UDItype)(w0))					\
-+		 : "d" ((UDItype)(u)),					\
-+		   "d" ((UDItype)(v)));					\
-+	__asm__ ("dmuhu %0,%1,%2"					\
-+		 : "=d" ((UDItype)(w1))					\
-+		 : "d" ((UDItype)(u)),					\
-+		   "d" ((UDItype)(v)));					\
-+} while (0)
-+#elif (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
- #define umul_ppmm(w1, w0, u, v) \
- do {									\
- 	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\
+  Maciej

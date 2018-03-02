@@ -1,41 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 22:40:29 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:39264 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993004AbeCBVkRizQDP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Mar 2018 22:40:17 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 22:57:38 +0100 (CET)
+Received: from [198.145.29.99] ([198.145.29.99]:41662 "EHLO mail.kernel.org"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993004AbeCBV53wNrfP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Mar 2018 22:57:29 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C77262178D;
-        Fri,  2 Mar 2018 21:40:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C77262178D
+        by mail.kernel.org (Postfix) with ESMTPSA id 2558B21725;
+        Fri,  2 Mar 2018 21:57:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2558B21725
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 2 Mar 2018 21:40:06 +0000
+Date:   Fri, 2 Mar 2018 21:57:02 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Matt Redfearn <matt.redfearn@mips.com>,
-        "Dmitry V . Levin" <ldv@altlinux.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Kernel Hardening <kernel-hardening@lists.openwall.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] signals: Move put_compat_sigset to compat.h to silence
- hardened usercopy
-Message-ID: <20180302214005.GC4197@saruman>
-References: <1515636190-24061-1-git-send-email-keescook@chromium.org>
- <1519059306-30135-1-git-send-email-matt.redfearn@mips.com>
- <CAGXu5jKtrJ6Nmses_pM-qkXAkOPXAxwT+V3B+omqu0tx4xEh8w@mail.gmail.com>
+To:     Deepa Dinamani <deepa.kernel@gmail.com>
+Cc:     tglx@linutronix.de, john.stultz@linaro.org,
+        linux-kernel@vger.kernel.org, arnd@arndb.de,
+        y2038@lists.linaro.org, acme@kernel.org, benh@kernel.crashing.org,
+        borntraeger@de.ibm.com, catalin.marinas@arm.com,
+        cmetcalf@mellanox.com, cohuck@redhat.com, davem@davemloft.net,
+        deller@gmx.de, devel@driverdev.osuosl.org,
+        gerald.schaefer@de.ibm.com, gregkh@linuxfoundation.org,
+        heiko.carstens@de.ibm.com, hoeppner@linux.vnet.ibm.com,
+        hpa@zytor.com, jejb@parisc-linux.org, jwi@linux.vnet.ibm.com,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        mark.rutland@arm.com, mingo@redhat.com, mpe@ellerman.id.au,
+        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
+        paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
+        rostedt@goodmis.org, rric@kernel.org, schwidefsky@de.ibm.com,
+        sebott@linux.vnet.ibm.com, sparclinux@vger.kernel.org,
+        sth@linux.vnet.ibm.com, ubraun@linux.vnet.ibm.com,
+        will.deacon@arm.com, x86@kernel.org
+Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to
+ compat_time.h
+Message-ID: <20180302215702.GD4197@saruman>
+References: <20180116021818.24791-1-deepa.kernel@gmail.com>
+ <20180116021818.24791-3-deepa.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DIOMP1UsTsWJauNi"
+        protocol="application/pgp-signature"; boundary="jL2BoiuKMElzg3CS"
 Content-Disposition: inline
-In-Reply-To: <CAGXu5jKtrJ6Nmses_pM-qkXAkOPXAxwT+V3B+omqu0tx4xEh8w@mail.gmail.com>
+In-Reply-To: <20180116021818.24791-3-deepa.kernel@gmail.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62777
+X-archive-position: 62778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,50 +65,54 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---DIOMP1UsTsWJauNi
+--jL2BoiuKMElzg3CS
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 19, 2018 at 03:55:27PM -0800, Kees Cook wrote:
-> On Mon, Feb 19, 2018 at 8:55 AM, Matt Redfearn <matt.redfearn@mips.com> w=
-rote:
-> > Move put_compat_sigset to compat.h, and mark it static inline. This
-> > fixes the WARN on MIPS.
-> >
-> > Fixes: afcc90f8621e ("usercopy: WARN() on slab cache usercopy region vi=
-olations")
-> > Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+On Mon, Jan 15, 2018 at 06:18:10PM -0800, Deepa Dinamani wrote:
+> All the current architecture specific defines for these
+> are the same. Refactor these common defines to a common
+> header file.
 >=20
-> Thanks for the catch and fix!
->=20
-> Acked-by: Kees Cook <keescook@chromium.org>
+> The new common linux/compat_time.h is also useful as it
+> will eventually be used to hold all the defines that
+> are needed for compat time types that support non y2038
+> safe types. New architectures need not have to define these
+> new types as they will only use new y2038 safe syscalls.
+> This file can be deleted after y2038 when we stop supporting
+> non y2038 safe syscalls.
 
-Thanks Kees. I've applied this on the assumption nobody objects to it
-going via the MIPS tree.
+=2E..
+
+>  arch/mips/include/asm/compat.h    | 11 -----------
+>  arch/mips/kernel/signal32.c       |  2 +-
+
+For MIPS:
+Acked-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
---DIOMP1UsTsWJauNi
+--jL2BoiuKMElzg3CS
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqZxLUACgkQbAtpk944
-dnpRvw//YigCAwd1TNaLZzn3MXVqAOXsY6IAtAe7QASbMi+ovlu53XBYP74R+Kxp
-8wgjmdA9SO8KjqUMWoi/M1fLnhVy/CFVE0rh4mU/4S/c3rN1gOcAAqI9C8AKApF/
-yZqF40/3/1z9VzoRA3BXOcBI11iBkRbUWf3T70q0/OPlCS8eIM4dsGyRxbWPYVqs
-2yYjagOQfccH68ZUPoHcWjgla5LgsreC5YPoVPtgjJO9ECxG0zFq4hcCRCUWInnu
-iklEJ+E5Y/6YrwmiwiqLK3QqByKRNveXVJHnfgM07Y0C5dYPpKW1dTUxzb46A5GN
-YK5IcIvaV/fzD5Q8o/ri5lu/ZmCIla5sy7CJ8hICDWWONuSBNFdqqhqCssNCAkT8
-OxAHhaI4gLH4oBWRUok2ycyf/5i2BRP/zgPKVJyuTVQ/c8lurYZd51CzcPZaY558
-p7FSo1YyZRp2+W6pMyqCp5Gq/BB5zu2pLKh3aB7xK8PpQxI0MDp90vG2edBZ4Qhb
-LlIvcbUABn37OqvsaVvmh4XFtk3a5pFZIeBZvj6+n7+CmNHs5GVypOpqDfb92TA7
-jHE4yjrvx6cDB5mZUezdinB3HRJKDr2ojvAkf7DPYrN2bina9jt6HnTcjc+DzhYj
-WLT3w3H4tQGrg+AQegMo/KCUWzY3u3pqT7OR96JKp5jT/AuGfAk=
-=4IQq
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqZyK0ACgkQbAtpk944
+dnriXA//fiy/M44auOl6H3L/Sttb1xadP44YPlJKIkOi6RRm+XDNJWeIyb2dB28g
+vkHkEqeW5OX0Yz+YmbMULh8EAl6TV42LSMUcRcDNmI3GjkArQIEQ7T1E7BiwukFd
+lclSwy3Fe9HwtZdLeKQuO+C8W4pZ0rUXZeQW+8A0TvNM1zAKInEKaAGXgxS7PcMs
+7pZBbOcIGBg9sTWFPhU4N63bfMn095wDXupegwflrlB1JSTvFktFxc2E6c0JmIwm
+ij9jNw3J/lUtGaMq2ynmbJQWr+/I1EFVe740bkdKYP2Q1ZdTybWR2FnnoP+cC6kF
+hS49c68Enp1mSirYIqRidTc8YLALwUFpdheUUky1VUPSjBWee2BqZ83VrshoMvkx
+DQTuUfxvlFdnCLF6xHl0Ock5g7QTzrne9rpvqGBge3sGp25RZ1RcJYAruNJ36u+C
+9VP1Y284Sz40x76q77yLxC5rT3inAHQYO2c+ob/BnrKoSrMxfDrWYea1X1yh+x80
+6qyZomlmDEu7OREVX2dnpkIG/0j2GvhQBtjYHAHjvTkmHho80Fe/GBZhObkQjnoW
+xgm1BLteveq/IEGK1tY2MEqjNFgUjQn1/r72KrP1b7PMtmwHjkyaXljB/dEv5TI3
+tEttVw3wzqGUWmbvyj7KZcpv/BQUx/Otrqh/zGMnC30U53Lzrzw=
+=PkCk
 -----END PGP SIGNATURE-----
 
---DIOMP1UsTsWJauNi--
+--jL2BoiuKMElzg3CS--

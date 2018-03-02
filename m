@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 13:42:32 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:39734 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992618AbeCBMmZUEula (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 13:42:25 +0100
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx4.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 02 Mar 2018 12:42:08 +0000
-Received: from [10.20.78.177] (10.20.78.177) by mips01.mipstec.com
- (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Fri, 2 Mar 2018
- 04:07:58 -0800
-Date:   Fri, 2 Mar 2018 12:07:46 +0000
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 1/2] MIPS: Loongson64: Select
- ARCH_MIGHT_HAVE_PC_PARPORT
-In-Reply-To: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
-Message-ID: <alpine.DEB.2.00.1803021204250.10166@tp.orcam.me.uk>
-References: <1519871862-14624-1-git-send-email-chenhc@lemote.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 15:11:03 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:46778 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992916AbeCBOKz4VVgA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Mar 2018 15:10:55 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id ECAB6214EE;
+        Fri,  2 Mar 2018 14:10:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org ECAB6214EE
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Fri, 2 Mar 2018 14:10:38 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     David Daney <david.daney@cavium.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        "Steven J. Hill" <steven.hill@cavium.com>, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Carlos Munoz <cmunoz@caviumnetworks.com>
+Subject: Re: [PATCH v8 2/4] MIPS: Octeon: Automatically provision CVMSEG
+ space.
+Message-ID: <20180302141037.GA4197@saruman>
+References: <20180222230716.21442-1-david.daney@cavium.com>
+ <20180222230716.21442-3-david.daney@cavium.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-BESS-ID: 1519994526-298555-16341-23882-10
-X-BESS-VER: 2018.2-r1802152108
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.190597
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2oS5YaxWCcQjTEyO"
+Content-Disposition: inline
+In-Reply-To: <20180222230716.21442-3-david.daney@cavium.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62772
+X-archive-position: 62773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,23 +51,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 28 Feb 2018, Huacai Chen wrote:
 
-> diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
-> index bc2fdbf..12812a8b 100644
-> --- a/arch/mips/loongson64/Kconfig
-> +++ b/arch/mips/loongson64/Kconfig
-> @@ -7,6 +7,7 @@ choice
->  config LEMOTE_FULOONG2E
->  	bool "Lemote Fuloong(2e) mini-PC"
->  	select ARCH_SPARSEMEM_ENABLE
-> +	select ARCH_MIGHT_HAVE_PC_PARPORT
->  	select CEVT_R4K
->  	select CSRC_R4K
->  	select SYS_HAS_CPU_LOONGSON2E
+--2oS5YaxWCcQjTEyO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- Hmm, I don't think the Fuloong(2e) machine has a parallel port connector.  
-The chipset may support the port, but with no external connection I think 
-there's no point in enabling it.  Or am I missing something?
+On Thu, Feb 22, 2018 at 03:07:14PM -0800, David Daney wrote:
+> diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kc=
+onfig
+> index b5eee1a57d6c..a283b73b7fc6 100644
+> --- a/arch/mips/cavium-octeon/Kconfig
+> +++ b/arch/mips/cavium-octeon/Kconfig
+> @@ -11,21 +11,26 @@ config CAVIUM_CN63XXP1
+>  	  non-CN63XXP1 hardware, so it is recommended to select "n"
+>  	  unless it is known the workarounds are needed.
+> =20
+> -config CAVIUM_OCTEON_CVMSEG_SIZE
+> -	int "Number of L1 cache lines reserved for CVMSEG memory"
 
-  Maciej
+This is set to 2 in cavium_octeon_defconfig, which can now be removed (I
+presume the default of 0 for CAVIUM_OCTEON_EXTRA_CVMSEG is sufficient).
+
+> diff --git a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h=
+ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+> index c38b38ce5a3d..cdcca60978a2 100644
+> --- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+> +++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+> @@ -26,11 +26,18 @@
+>  	# a3 =3D address of boot descriptor block
+>  	.set push
+>  	.set arch=3Docteon
+> +	mfc0	v1, CP0_PRID_REG
+> +	andi	v1, 0xff00
+> +	li	v0, 0x9500		# cn78XX or later
+> +	subu	v1, v1, v0
+> +	li	t2, 2 + CONFIG_CAVIUM_OCTEON_EXTRA_CVMSEG
+> +	bltz	v1, 1f
+> +	addiu	t2, 1			# t2 has cvmseg_size
+
+It'd be nice to clean up this PRID code one day to use the defines in
+<asm/mipsregs.h> and <asm/cpu.h>. This is consistent with whats already
+here though so it can be done later.
+
+> +1:
+>  	# Read the cavium mem control register
+>  	dmfc0	v0, CP0_CVMMEMCTL_REG
+>  	# Clear the lower 6 bits, the CVMSEG size
+> -	dins	v0, $0, 0, 6
+> -	ori	v0, CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE
+> +	dins	v0, t2, 0, 6
+>  	dmtc0	v0, CP0_CVMMEMCTL_REG	# Write the cavium mem control register
+>  	dmfc0	v0, CP0_CVMCTL_REG	# Read the cavium control register
+>  	# Disable unaligned load/store support but leave HW fixup enabled
+> @@ -70,7 +77,7 @@
+>  	# Flush dcache after config change
+>  	cache	9, 0($0)
+>  	# Zero all of CVMSEG to make sure parity is correct
+> -	dli	v0, CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE
+> +	move	v0, t2
+>  	dsll	v0, 7
+>  	beqz	v0, 2f
+>  1:	dsubu	v0, 8
+> @@ -126,12 +133,7 @@
+>  	LONG_L	sp, (t0)
+>  	# Set the SP global variable to zero so the master knows we've started
+>  	LONG_S	zero, (t0)
+> -#ifdef __OCTEON__
+> -	syncw
+> -	syncw
+> -#else
+
+Is this directly related? I don't think I saw it mentioned anywhere.
+
+>  	sync
+> -#endif
+>  	# Jump to the normal Linux SMP entry point
+>  	j   smp_bootstrap
+>  	nop
+> @@ -148,6 +150,8 @@
+> =20
+>  #endif /* CONFIG_SMP */
+>  octeon_main_processor:
+> +	dla	v0, octeon_cvmseg_lines
+> +	sw	t2, 0(v0)
+
+You would get something equivalent (and slightly more efficient but
+using $at) with this?
+	sw	t2, octeon_cvmseg_lines
+
+I.e.
+lui     v0,0x8190	->	lui     at,0x8190
+daddiu  v0,v0,-19688	->
+sw      t2,0(v0)	->	sw      t2,-19688(at)
+
+> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mip=
+sregs.h
+> index 858752dac337..4e87e4f5247a 100644
+> --- a/arch/mips/include/asm/mipsregs.h
+> +++ b/arch/mips/include/asm/mipsregs.h
+> @@ -1126,6 +1126,8 @@
+>  #define FPU_CSR_RD	0x3	/* towards -Infinity */
+> =20
+> =20
+> +#define CAVIUM_OCTEON_SCRATCH_OFFSET (2 * 128 - 16 - 32768)
+
+This feels a bit out of place, since its effectively cavium specific
+memory mapped scratch register addresses. Would tlbex.h or octeon.h be
+more appropriate, or even tlbex.c if it isn't used elsewhere?
+
+Otherwise this patch looks reasonable I think.
+
+Cheers
+James
+
+--2oS5YaxWCcQjTEyO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqZW1gACgkQbAtpk944
+dnpvTg//WBhphxnkeqOQpZyQlOvLfalZZn8QdWxoUFb1UqebUIDk0iSlnoHjBiPC
+qHSCMj4UqRvwBeGkDwGUP5wmxMFnnhmNBPTxWKF4PIzBJ6tkj/6M434FjSLOVtKR
+CMfiw7Gvd0ajXEHzGjvBRSYm45Q6wR5bkXeRMvEERHF72ion3i7Ki8GWwmkSJHuP
+FoNqOk1znc/2BcfrKnAKTvQUWKVxLGRATLuTXYul3SMc2ZQ0IUn5+ttdaJw/06zj
+16lLEjOS9r6WHHNM3gmA0ipJvR3LMsMVrgwEvMWHipHS/zeMpdj1T6dMx9PCfM0S
+3T7Y5C2wKNSLP/xDGYxI73yI2E0vNla4yKTAx76tfwRjfzaq4j1oeNsrUeqmOgZQ
+t7+9Y8C7sCUQzOTGZSiQowJeVrPkYQtQSXj+l83+7W3BgpE6RT0wWyZ38Fss/gk4
+GJg2LeaIZeorFZFyh05CVM6dxT58H0STF7oZGER4NHiyHKpjGX9da5I2zDEWUXEM
+qS7Sv5b7NeQS3o3OzoaRccmJoOdy47MaNtW0Vo33YDTOF3GDKQviaEELq7nmsw9K
+75HALidbvqMVJW7l9QKimYqNcJb3PjHcnmYVmvl68P6t+gCKY9bCjkxZn9dyltye
+uLkeOjpPAlF96gIYAfKCLXDrTpv+chv4gHEDIaWClDd8HYF1ljY=
+=RGsd
+-----END PGP SIGNATURE-----
+
+--2oS5YaxWCcQjTEyO--

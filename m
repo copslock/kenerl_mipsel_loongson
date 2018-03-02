@@ -1,57 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 22:57:38 +0100 (CET)
-Received: from [198.145.29.99] ([198.145.29.99]:41662 "EHLO mail.kernel.org"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993004AbeCBV53wNrfP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Mar 2018 22:57:29 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2558B21725;
-        Fri,  2 Mar 2018 21:57:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2558B21725
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 2 Mar 2018 21:57:02 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Deepa Dinamani <deepa.kernel@gmail.com>
-Cc:     tglx@linutronix.de, john.stultz@linaro.org,
-        linux-kernel@vger.kernel.org, arnd@arndb.de,
-        y2038@lists.linaro.org, acme@kernel.org, benh@kernel.crashing.org,
-        borntraeger@de.ibm.com, catalin.marinas@arm.com,
-        cmetcalf@mellanox.com, cohuck@redhat.com, davem@davemloft.net,
-        deller@gmx.de, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh@linuxfoundation.org,
-        heiko.carstens@de.ibm.com, hoeppner@linux.vnet.ibm.com,
-        hpa@zytor.com, jejb@parisc-linux.org, jwi@linux.vnet.ibm.com,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        mark.rutland@arm.com, mingo@redhat.com, mpe@ellerman.id.au,
-        oberpar@linux.vnet.ibm.com, oprofile-list@lists.sf.net,
-        paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
-        rostedt@goodmis.org, rric@kernel.org, schwidefsky@de.ibm.com,
-        sebott@linux.vnet.ibm.com, sparclinux@vger.kernel.org,
-        sth@linux.vnet.ibm.com, ubraun@linux.vnet.ibm.com,
-        will.deacon@arm.com, x86@kernel.org
-Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to
- compat_time.h
-Message-ID: <20180302215702.GD4197@saruman>
-References: <20180116021818.24791-1-deepa.kernel@gmail.com>
- <20180116021818.24791-3-deepa.kernel@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jL2BoiuKMElzg3CS"
-Content-Disposition: inline
-In-Reply-To: <20180116021818.24791-3-deepa.kernel@gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 23:49:27 +0100 (CET)
+Received: from mail.bootlin.com ([62.4.15.54]:36956 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993945AbeCBWtT6HJid (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Mar 2018 23:49:19 +0100
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id D752D207CA; Fri,  2 Mar 2018 23:49:11 +0100 (CET)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 94F14207EF;
+        Fri,  2 Mar 2018 23:49:01 +0100 (CET)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v4 2/6] dt-bindings: mips: Add bindings for Microsemi SoCs
+Date:   Fri,  2 Mar 2018 23:48:07 +0100
+Message-Id: <20180302224811.26840-3-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.16.2
+In-Reply-To: <20180302224811.26840-1-alexandre.belloni@bootlin.com>
+References: <20180302224811.26840-1-alexandre.belloni@bootlin.com>
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62778
+X-archive-position: 62779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,55 +40,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Add bindings for Microsemi SoCs. Currently only Ocelot is supported.
 
---jL2BoiuKMElzg3CS
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Rob Herring <robh+dt@kernel.org>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ Documentation/devicetree/bindings/mips/mscc.txt | 44 +++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/mscc.txt
 
-On Mon, Jan 15, 2018 at 06:18:10PM -0800, Deepa Dinamani wrote:
-> All the current architecture specific defines for these
-> are the same. Refactor these common defines to a common
-> header file.
->=20
-> The new common linux/compat_time.h is also useful as it
-> will eventually be used to hold all the defines that
-> are needed for compat time types that support non y2038
-> safe types. New architectures need not have to define these
-> new types as they will only use new y2038 safe syscalls.
-> This file can be deleted after y2038 when we stop supporting
-> non y2038 safe syscalls.
-
-=2E..
-
->  arch/mips/include/asm/compat.h    | 11 -----------
->  arch/mips/kernel/signal32.c       |  2 +-
-
-For MIPS:
-Acked-by: James Hogan <jhogan@kernel.org>
-
-Cheers
-James
-
---jL2BoiuKMElzg3CS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqZyK0ACgkQbAtpk944
-dnriXA//fiy/M44auOl6H3L/Sttb1xadP44YPlJKIkOi6RRm+XDNJWeIyb2dB28g
-vkHkEqeW5OX0Yz+YmbMULh8EAl6TV42LSMUcRcDNmI3GjkArQIEQ7T1E7BiwukFd
-lclSwy3Fe9HwtZdLeKQuO+C8W4pZ0rUXZeQW+8A0TvNM1zAKInEKaAGXgxS7PcMs
-7pZBbOcIGBg9sTWFPhU4N63bfMn095wDXupegwflrlB1JSTvFktFxc2E6c0JmIwm
-ij9jNw3J/lUtGaMq2ynmbJQWr+/I1EFVe740bkdKYP2Q1ZdTybWR2FnnoP+cC6kF
-hS49c68Enp1mSirYIqRidTc8YLALwUFpdheUUky1VUPSjBWee2BqZ83VrshoMvkx
-DQTuUfxvlFdnCLF6xHl0Ock5g7QTzrne9rpvqGBge3sGp25RZ1RcJYAruNJ36u+C
-9VP1Y284Sz40x76q77yLxC5rT3inAHQYO2c+ob/BnrKoSrMxfDrWYea1X1yh+x80
-6qyZomlmDEu7OREVX2dnpkIG/0j2GvhQBtjYHAHjvTkmHho80Fe/GBZhObkQjnoW
-xgm1BLteveq/IEGK1tY2MEqjNFgUjQn1/r72KrP1b7PMtmwHjkyaXljB/dEv5TI3
-tEttVw3wzqGUWmbvyj7KZcpv/BQUx/Otrqh/zGMnC30U53Lzrzw=
-=PkCk
------END PGP SIGNATURE-----
-
---jL2BoiuKMElzg3CS--
+diff --git a/Documentation/devicetree/bindings/mips/mscc.txt b/Documentation/devicetree/bindings/mips/mscc.txt
+new file mode 100644
+index 000000000000..f4514c274510
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/mscc.txt
+@@ -0,0 +1,44 @@
++* Microsemi MIPS CPUs
++
++Boards with a SoC of the Microsemi MIPS family shall have the following
++properties:
++
++Required properties:
++- compatible: "mscc,ocelot"
++- mips-hpt-frequency: CPU counter frequency.
++
++
++* Other peripherals:
++
++o CPU chip regs:
++
++The SoC has a few registers (DEVCPU_GCB:CHIP_REGS) handling miscellaneous
++functionalities: chip ID, general purpose register for software use, reset
++controller, hardware status and configuration, efuses.
++
++Required properties:
++- compatible: Should be "mscc,ocelot-chip-regs", "simple-mfd", "syscon"
++- reg : Should contain registers location and length
++
++Example:
++	syscon@71070000 {
++		compatible = "mscc,ocelot-chip-regs", "simple-mfd", "syscon";
++		reg = <0x71070000 0x1c>;
++	};
++
++
++o CPU system control:
++
++The SoC has a few registers (ICPU_CFG:CPU_SYSTEM_CTRL) handling configuration of
++the CPU: 8 general purpose registers, reset control, CPU en/disabling, CPU
++endianness, CPU bus control, CPU status.
++
++Required properties:
++- compatible: Should be "mscc,ocelot-cpu-syscon", "syscon"
++- reg : Should contain registers location and length
++
++Example:
++	syscon@70000000 {
++		compatible = "mscc,ocelot-cpu-syscon", "syscon";
++		reg = <0x70000000 0x2c>;
++	};
+-- 
+2.16.2

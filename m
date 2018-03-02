@@ -1,119 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 04:40:08 +0100 (CET)
-Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:40037
-        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990391AbeCBDkAFGPPp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 04:40:00 +0100
-Received: by mail-qk0-x243.google.com with SMTP id o25so10422844qkl.7
-        for <linux-mips@linux-mips.org>; Thu, 01 Mar 2018 19:39:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=8uiO0IrDbipueEzucl1qpmq6ZtMM0qLCCDoyaSD4pX0=;
-        b=kySagCvpDHhbOBD16PsIbPZ7NbioIAtvroNfyeyFbnLCIl4RYfRuw1z6y0YgnxUEXG
-         5tWd+pTSX26yzyknI9kpfAmXZQsq9IfKBywxagEJWI1l6R2ajIJRUCSKvvOjUqVBkBAt
-         8/4YVwlsFgzNwSt5S/v++rdy2RnIChzbOgv3F6srn/a2i6au1QJAL/o24RhfMmj56Kjx
-         mHtRmBthGuZ7y1KDbhv8LAuWIghvCrP84m/gfjzGMeNXjEhBxNdP3Hq+NJ3hXkaKdRIX
-         BOuSNLF0AlOZ/x+yiLcrYk+rZpxB8pRMwAjrFr/3tSwq+TCXMBSoG0Yvebl0V/NHgbNl
-         QpFQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=8uiO0IrDbipueEzucl1qpmq6ZtMM0qLCCDoyaSD4pX0=;
-        b=g5JS93z3AIz6yulGc520dHlHo8PR/vOHgx5uBJPnPmG+CwrdOlX82pxLJ9blSdeGHW
-         hzVlRulBd0HTdpIa9lhiaK+ZACtONQvibMXNkGB6hHZEypJn2uK1Mr+3LNHl7onS7rHk
-         puTGu5i6b9vKM1Q7b9NjJXaN6RypEFPasdgCc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=8uiO0IrDbipueEzucl1qpmq6ZtMM0qLCCDoyaSD4pX0=;
-        b=TevKWJaaq1lWYTPg9HxijwNyBtV8chP23RN0Ot7PFJaclqn6bLhthkkYc1x446HZFa
-         gMx1VyhFn+O0XcLclqbQMibK+UwgdTdAJr4oDtIQgJ3b6PnJfCpmvrT9QyMwwXUTwTfV
-         7I87b+zhei4OUpJPwVNtZiO6ZP1/ZGdJzMz1q9gCdLsajJphD5Ztrxmq7/MYcHhkzdKF
-         XAg5FdPJPd+Dmvpq4tC5exo0uWUSs51yaf28cP+nuToBh+Oea3EFluVijSUE4sqX/CYR
-         qHxAySHfFBxk6exrGIW0oF56/P1UUlF9a7e+B59fp2usYm6lU6AoJlKyTU8/YpTzXQYp
-         UDIA==
-X-Gm-Message-State: AElRT7H46F8x3IOt7V18JjLwWwf3Xtmwj1DzUUr7O7lXmCwyqyIJsO09
-        SM5OFrxHhPSoWrKpCC5RvNHfYeidpavZqrGbXEk=
-X-Google-Smtp-Source: AG47ELuKarD1dmix7SLHU9Po2SnfxCz2zVvjrV5rmLJcQleJFRDjfFUB/91QWOTzrGNKDKFY4S4OghdMcVQWozs3ODI=
-X-Received: by 10.55.111.66 with SMTP id k63mr6371818qkc.25.1519961991475;
- Thu, 01 Mar 2018 19:39:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 09:54:29 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36944 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992916AbeCBIyV22LbB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 09:54:21 +0100
+Received: from localhost (clnet-b04-243.ikbnet.co.at [83.175.124.243])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D1461110C;
+        Fri,  2 Mar 2018 08:54:13 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
+        linux-crypto@vger.kernel.org,
+        Sasha Levin <alexander.levin@microsoft.com>
+Subject: [PATCH 4.4 12/34] lib/mpi: Fix umul_ppmm() for MIPS64r6
+Date:   Fri,  2 Mar 2018 09:51:08 +0100
+Message-Id: <20180302084436.750827407@linuxfoundation.org>
+X-Mailer: git-send-email 2.16.2
+In-Reply-To: <20180302084435.842679610@linuxfoundation.org>
+References: <20180302084435.842679610@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-Received: by 10.200.50.69 with HTTP; Thu, 1 Mar 2018 19:39:31 -0800 (PST)
-In-Reply-To: <20180228150209.2525-1-marcus.folkesson@gmail.com>
-References: <20180228150209.2525-1-marcus.folkesson@gmail.com>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Fri, 2 Mar 2018 14:09:31 +1030
-X-Google-Sender-Auth: 3aAiYr3xqTARXdQLDRGv_AFd4lE
-Message-ID: <CACPK8Xd2W1559soSAfviY6AS0uMRCxYEmOrhHAof5gX6y_63Cg@mail.gmail.com>
-Subject: Re: [PATCH v4] watchdog: add SPDX identifiers for watchdog subsystem
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Jimmy Vance <jimmy.vance@hpe.com>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Andreas Werner <andreas.werner@men.de>,
-        Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Zwane Mwaikambo <zwanem@gmail.com>,
-        Jim Cromie <jim.cromie@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Mans Rullgard <mans@mansr.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Jun Nie <jun.nie@linaro.org>,
-        Baoyou Xie <baoyou.xie@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-rpi-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-mips@linux-mips.org, linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <joel.stan@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62765
+X-archive-position: 62766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joel@jms.id.au
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -126,20 +46,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 1, 2018 at 1:31 AM, Marcus Folkesson
-<marcus.folkesson@gmail.com> wrote:
-> - Add SPDX identifier
-> - Remove boiler plate license text
-> - If MODULE_LICENSE and boiler plate does not match, go for boiler plate
->   license
->
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-For this one:
+------------------
 
->  drivers/watchdog/aspeed_wdt.c          |  5 +---
+From: James Hogan <jhogan@kernel.org>
 
-Acked-by: Joel Stanley <joel@jms.id.au>
 
-Cheers,
+[ Upstream commit bbc25bee37d2b32cf3a1fab9195b6da3a185614a ]
 
-Joel
+Current MIPS64r6 toolchains aren't able to generate efficient
+DMULU/DMUHU based code for the C implementation of umul_ppmm(), which
+performs an unsigned 64 x 64 bit multiply and returns the upper and
+lower 64-bit halves of the 128-bit result. Instead it widens the 64-bit
+inputs to 128-bits and emits a __multi3 intrinsic call to perform a 128
+x 128 multiply. This is both inefficient, and it results in a link error
+since we don't include __multi3 in MIPS linux.
+
+For example commit 90a53e4432b1 ("cfg80211: implement regdb signature
+checking") merged in v4.15-rc1 recently broke the 64r6_defconfig and
+64r6el_defconfig builds by indirectly selecting MPILIB. The same build
+errors can be reproduced on older kernels by enabling e.g. CRYPTO_RSA:
+
+lib/mpi/generic_mpih-mul1.o: In function `mpihelp_mul_1':
+lib/mpi/generic_mpih-mul1.c:50: undefined reference to `__multi3'
+lib/mpi/generic_mpih-mul2.o: In function `mpihelp_addmul_1':
+lib/mpi/generic_mpih-mul2.c:49: undefined reference to `__multi3'
+lib/mpi/generic_mpih-mul3.o: In function `mpihelp_submul_1':
+lib/mpi/generic_mpih-mul3.c:49: undefined reference to `__multi3'
+lib/mpi/mpih-div.o In function `mpihelp_divrem':
+lib/mpi/mpih-div.c:205: undefined reference to `__multi3'
+lib/mpi/mpih-div.c:142: undefined reference to `__multi3'
+
+Therefore add an efficient MIPS64r6 implementation of umul_ppmm() using
+inline assembly and the DMULU/DMUHU instructions, to prevent __multi3
+calls being emitted.
+
+Fixes: 7fd08ca58ae6 ("MIPS: Add build support for the MIPS R6 ISA")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-mips@linux-mips.org
+Cc: linux-crypto@vger.kernel.org
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ lib/mpi/longlong.h |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+--- a/lib/mpi/longlong.h
++++ b/lib/mpi/longlong.h
+@@ -671,7 +671,23 @@ do {						\
+ 	**************  MIPS/64  **************
+ 	***************************************/
+ #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
+-#if (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
++#if defined(__mips_isa_rev) && __mips_isa_rev >= 6
++/*
++ * GCC ends up emitting a __multi3 intrinsic call for MIPS64r6 with the plain C
++ * code below, so we special case MIPS64r6 until the compiler can do better.
++ */
++#define umul_ppmm(w1, w0, u, v)						\
++do {									\
++	__asm__ ("dmulu %0,%1,%2"					\
++		 : "=d" ((UDItype)(w0))					\
++		 : "d" ((UDItype)(u)),					\
++		   "d" ((UDItype)(v)));					\
++	__asm__ ("dmuhu %0,%1,%2"					\
++		 : "=d" ((UDItype)(w1))					\
++		 : "d" ((UDItype)(u)),					\
++		   "d" ((UDItype)(v)));					\
++} while (0)
++#elif (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
+ #define umul_ppmm(w1, w0, u, v) \
+ do {									\
+ 	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\

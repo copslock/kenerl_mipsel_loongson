@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 09:54:29 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36944 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2018 09:56:10 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37500 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992916AbeCBIyV22LbB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 09:54:21 +0100
+        by eddie.linux-mips.org with ESMTP id S23993973AbeCBI4BzM0kB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2018 09:56:01 +0100
 Received: from localhost (clnet-b04-243.ikbnet.co.at [83.175.124.243])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D1461110C;
-        Fri,  2 Mar 2018 08:54:13 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E17991249;
+        Fri,  2 Mar 2018 08:55:54 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        stable@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        James Hogan <jhogan@kernel.org>,
+        Waldemar Brodkorb <wbx@openadk.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
-        linux-crypto@vger.kernel.org,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.4 12/34] lib/mpi: Fix umul_ppmm() for MIPS64r6
-Date:   Fri,  2 Mar 2018 09:51:08 +0100
-Message-Id: <20180302084436.750827407@linuxfoundation.org>
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Matthew Fortune <matthew.fortune@mips.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        linux-mips@linux-mips.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 4.4 34/34] MIPS: Implement __multi3 for GCC7 MIPS64r6 builds
+Date:   Fri,  2 Mar 2018 09:51:30 +0100
+Message-Id: <20180302084438.206438236@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180302084435.842679610@linuxfoundation.org>
 References: <20180302084435.842679610@linuxfoundation.org>
@@ -29,7 +32,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62766
+X-archive-position: 62767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,74 +55,141 @@ X-list: linux-mips
 
 From: James Hogan <jhogan@kernel.org>
 
+commit ebabcf17bcd7ce968b1631ebe08236275698f39b upstream.
 
-[ Upstream commit bbc25bee37d2b32cf3a1fab9195b6da3a185614a ]
+GCC7 is a bit too eager to generate suboptimal __multi3 calls (128bit
+multiply with 128bit result) for MIPS64r6 builds, even in code which
+doesn't explicitly use 128bit types, such as the following:
 
-Current MIPS64r6 toolchains aren't able to generate efficient
-DMULU/DMUHU based code for the C implementation of umul_ppmm(), which
-performs an unsigned 64 x 64 bit multiply and returns the upper and
-lower 64-bit halves of the 128-bit result. Instead it widens the 64-bit
-inputs to 128-bits and emits a __multi3 intrinsic call to perform a 128
-x 128 multiply. This is both inefficient, and it results in a link error
-since we don't include __multi3 in MIPS linux.
+unsigned long func(unsigned long a, unsigned long b)
+{
+	return a > (~0UL) / b;
+}
 
-For example commit 90a53e4432b1 ("cfg80211: implement regdb signature
-checking") merged in v4.15-rc1 recently broke the 64r6_defconfig and
-64r6el_defconfig builds by indirectly selecting MPILIB. The same build
-errors can be reproduced on older kernels by enabling e.g. CRYPTO_RSA:
+Which GCC rearanges to:
 
-lib/mpi/generic_mpih-mul1.o: In function `mpihelp_mul_1':
-lib/mpi/generic_mpih-mul1.c:50: undefined reference to `__multi3'
-lib/mpi/generic_mpih-mul2.o: In function `mpihelp_addmul_1':
-lib/mpi/generic_mpih-mul2.c:49: undefined reference to `__multi3'
-lib/mpi/generic_mpih-mul3.o: In function `mpihelp_submul_1':
-lib/mpi/generic_mpih-mul3.c:49: undefined reference to `__multi3'
-lib/mpi/mpih-div.o In function `mpihelp_divrem':
-lib/mpi/mpih-div.c:205: undefined reference to `__multi3'
-lib/mpi/mpih-div.c:142: undefined reference to `__multi3'
+return (unsigned __int128)a * (unsigned __int128)b > 0xffffffffffffffff;
 
-Therefore add an efficient MIPS64r6 implementation of umul_ppmm() using
-inline assembly and the DMULU/DMUHU instructions, to prevent __multi3
-calls being emitted.
+Therefore implement __multi3, but only for MIPS64r6 with GCC7 as under
+normal circumstances we wouldn't expect any calls to __multi3 to be
+generated from kernel code.
 
-Fixes: 7fd08ca58ae6 ("MIPS: Add build support for the MIPS R6 ISA")
+Reported-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Tested-by: Waldemar Brodkorb <wbx@openadk.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Maciej W. Rozycki <macro@mips.com>
+Cc: Matthew Fortune <matthew.fortune@mips.com>
+Cc: Florian Fainelli <florian@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-crypto@vger.kernel.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Patchwork: https://patchwork.linux-mips.org/patch/17890/
+Cc: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- lib/mpi/longlong.h |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/lib/mpi/longlong.h
-+++ b/lib/mpi/longlong.h
-@@ -671,7 +671,23 @@ do {						\
- 	**************  MIPS/64  **************
- 	***************************************/
- #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
--#if (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
-+#if defined(__mips_isa_rev) && __mips_isa_rev >= 6
+---
+ arch/mips/lib/Makefile |    3 +-
+ arch/mips/lib/libgcc.h |   17 +++++++++++++++
+ arch/mips/lib/multi3.c |   54 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+), 1 deletion(-)
+
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -15,4 +15,5 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb
+ obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
+ 
+ # libgcc-style stuff needed in the kernel
+-obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o ucmpdi2.o
++obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o multi3.o \
++	 ucmpdi2.o
+--- a/arch/mips/lib/libgcc.h
++++ b/arch/mips/lib/libgcc.h
+@@ -9,10 +9,18 @@ typedef int word_type __attribute__ ((mo
+ struct DWstruct {
+ 	int high, low;
+ };
++
++struct TWstruct {
++	long long high, low;
++};
+ #elif defined(__LITTLE_ENDIAN)
+ struct DWstruct {
+ 	int low, high;
+ };
++
++struct TWstruct {
++	long long low, high;
++};
+ #else
+ #error I feel sick.
+ #endif
+@@ -22,4 +30,13 @@ typedef union {
+ 	long long ll;
+ } DWunion;
+ 
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6)
++typedef int ti_type __attribute__((mode(TI)));
++
++typedef union {
++	struct TWstruct s;
++	ti_type ti;
++} TWunion;
++#endif
++
+ #endif /* __ASM_LIBGCC_H */
+--- /dev/null
++++ b/arch/mips/lib/multi3.c
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/export.h>
++
++#include "libgcc.h"
++
 +/*
-+ * GCC ends up emitting a __multi3 intrinsic call for MIPS64r6 with the plain C
-+ * code below, so we special case MIPS64r6 until the compiler can do better.
++ * GCC 7 suboptimally generates __multi3 calls for mips64r6, so for that
++ * specific case only we'll implement it here.
++ *
++ * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
 + */
-+#define umul_ppmm(w1, w0, u, v)						\
-+do {									\
-+	__asm__ ("dmulu %0,%1,%2"					\
-+		 : "=d" ((UDItype)(w0))					\
-+		 : "d" ((UDItype)(u)),					\
-+		   "d" ((UDItype)(v)));					\
-+	__asm__ ("dmuhu %0,%1,%2"					\
-+		 : "=d" ((UDItype)(w1))					\
-+		 : "d" ((UDItype)(u)),					\
-+		   "d" ((UDItype)(v)));					\
-+} while (0)
-+#elif (__GNUC__ >= 5) || (__GNUC__ >= 4 && __GNUC_MINOR__ >= 4)
- #define umul_ppmm(w1, w0, u, v) \
- do {									\
- 	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ == 7)
++
++/* multiply 64-bit values, low 64-bits returned */
++static inline long long notrace dmulu(long long a, long long b)
++{
++	long long res;
++
++	asm ("dmulu %0,%1,%2" : "=r" (res) : "r" (a), "r" (b));
++	return res;
++}
++
++/* multiply 64-bit unsigned values, high 64-bits of 128-bit result returned */
++static inline long long notrace dmuhu(long long a, long long b)
++{
++	long long res;
++
++	asm ("dmuhu %0,%1,%2" : "=r" (res) : "r" (a), "r" (b));
++	return res;
++}
++
++/* multiply 128-bit values, low 128-bits returned */
++ti_type notrace __multi3(ti_type a, ti_type b)
++{
++	TWunion res, aa, bb;
++
++	aa.ti = a;
++	bb.ti = b;
++
++	/*
++	 * a * b =           (a.lo * b.lo)
++	 *         + 2^64  * (a.hi * b.lo + a.lo * b.hi)
++	 *        [+ 2^128 * (a.hi * b.hi)]
++	 */
++	res.s.low = dmulu(aa.s.low, bb.s.low);
++	res.s.high = dmuhu(aa.s.low, bb.s.low);
++	res.s.high += dmulu(aa.s.high, bb.s.low);
++	res.s.high += dmulu(aa.s.low, bb.s.high);
++
++	return res.ti;
++}
++EXPORT_SYMBOL(__multi3);
++
++#endif /* 64BIT && CPU_MIPSR6 && GCC7 */

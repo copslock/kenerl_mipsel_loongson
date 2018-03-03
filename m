@@ -1,43 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Mar 2018 16:49:25 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:48612 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992821AbeCCPtQkW3tJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Mar 2018 16:49:16 +0100
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1es9PL-0002Fs-D6; Sat, 03 Mar 2018 15:49:11 +0000
-Received: from ben by deadeye with local (Exim 4.90_1)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1es9PG-0000Ja-7K; Sat, 03 Mar 2018 15:49:06 +0000
-Message-ID: <1520092138.2617.375.camel@decadent.org.uk>
-Subject: Re: [PATCH 3.16 091/254] MIPS: CPS: Fix r1 .set mt assembler warning
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        akpm@linux-foundation.org, Paul Burton <paul.burton@mips.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Date:   Sat, 03 Mar 2018 15:48:58 +0000
-In-Reply-To: <20180301134401.GQ6245@saruman>
-References: <lsq.1519831217.271785318@decadent.org.uk>
-         <lsq.1519831218.652977295@decadent.org.uk> <20180301134401.GQ6245@saruman>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-oN37aj97kEWbdmr8wKYC"
-X-Mailer: Evolution 3.26.3-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Mar 2018 23:35:19 +0100 (CET)
+Received: from mail-sn1nam02on0117.outbound.protection.outlook.com ([104.47.36.117]:64257
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994611AbeCCWfKiw2nR convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Mar 2018 23:35:10 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=lZvIOpxAKAUQjfTEqhcTsWAfUoi/BGMG0+3P8aO2G5U=;
+ b=R1IIZNWAMSf5rYIoJ/52jjtRd0+E8W2HhBPq0CRj539uHaMh/ZUZJrPSjdT7NdZq7YTMC1QtZBZXTm+P/fh3+WPWqmg1IpQNp9yd/y4F9G4EyZtXpxgpUlOH0ZipnA9xXnzP5a9jwIfnCDrpp4609iimfvynYh/nt6tADf/sE6w=
+Received: from MW2PR2101MB1034.namprd21.prod.outlook.com (52.132.149.10) by
+ MW2PR2101MB0924.namprd21.prod.outlook.com (52.132.152.32) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.588.3; Sat, 3 Mar 2018 22:34:53 +0000
+Received: from MW2PR2101MB1034.namprd21.prod.outlook.com
+ ([fe80::1d56:338f:e2b:cec0]) by MW2PR2101MB1034.namprd21.prod.outlook.com
+ ([fe80::1d56:338f:e2b:cec0%3]) with mapi id 15.20.0567.006; Sat, 3 Mar 2018
+ 22:34:53 +0000
+From:   Sasha Levin <Alexander.Levin@microsoft.com>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     David Daney <david.daney@cavium.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "Steven J . Hill" <steven.hill@cavium.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sasha Levin <Alexander.Levin@microsoft.com>
+Subject: [PATCH AUTOSEL for 4.9 136/219] MIPS: BPF: Quit clobbering callee
+ saved registers in JIT code.
+Thread-Topic: [PATCH AUTOSEL for 4.9 136/219] MIPS: BPF: Quit clobbering
+ callee saved registers in JIT code.
+Thread-Index: AQHTsz8PK5JntFS4qUW775AL7VNf+g==
+Date:   Sat, 3 Mar 2018 22:29:15 +0000
+Message-ID: <20180303222716.26640-136-alexander.levin@microsoft.com>
+References: <20180303222716.26640-1-alexander.levin@microsoft.com>
+In-Reply-To: <20180303222716.26640-1-alexander.levin@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [52.168.54.252]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MW2PR2101MB0924;6:U16MWaDrpJX6Z2hfjObAF4sLAv5wZ9DisZPa/CSY5sK0iCaJ8gOYY9DLvOEooGd7nNgCMAMfttVR2huLteVs1t0r/D0u1Wjz7U8X8eD5iFU4eAP8nXBcx+Y7xDWPDlQ8OLAZhToVeAfDFXO5mgGV0l/mRiqL5YqdjD5GNS8Q8x6jvFBaNMEoXoBQWhe1fp17n7fhctIMjc0dFpDrisnPgpAiVuNiB3MiVnvhMYPOr4OKWU9PpWjHj4B+w45g5fqOOQKjbPRyB3sWANk8oTNyQRcyabclsYngazcvDHxihEGAazXoEkmDk3xY3ODbCSb3pAln6uW2hC/3q4eI3pj6vidZsaIG8A5RHodzVd4nJPQ=;5:a3uSITIBJg2kyE/ExC83qr8h+WBHRjmSftEZAno/+7sFNrEFh5sfdaNVy2aBQydaWOU+3jh9sDr83cwWLkHD3wo2Jdmum3Uw9Oycw0errj85kyxVxVDm9K/sx3suqC8co7WxDJJebnOM6pgL19EOsEExGvVgtCYCaccgtheLOjM=;24:fqpNH8MFcoiupjdvNTtkxRsXnfVhlY2o+nnuO8Sus3Wbbk8e2LHp0EFd4O2ud8dZxkYsLla/KVktxOC4a5sw0Tid8ZYLnnHX2NjactqZsx4=;7:190pspeuHsVITWH598IT+yiq7i6LYH+LnjiHOw2LXxIBiF+tx9Xh6kuJD5RQpfok69GSiEiEtqjhmMp91RtqDDI9CkJrnhcmnknSA5XxLqzxT5DHzk71lOYvqvLe8UCbMFxU2sTr8zAWPviVhft74+Ujzg7x9vE9BXciFHO8/FiqP4zOOw1SePwyrarj7qbuWPEHiaz/I/k+BirAvRufeDPH/vtla7zvHM/QJ+XKaSfYL/+ANUEiJPGdmZ7XCHCA
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 7e9c1ab5-4a81-4d7b-69b7-08d58156fc09
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(5600026)(4604075)(3008032)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603307)(7193020);SRVR:MW2PR2101MB0924;
+x-ms-traffictypediagnostic: MW2PR2101MB0924:
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Alexander.Levin@microsoft.com; 
+x-microsoft-antispam-prvs: <MW2PR2101MB0924D97669081811473B848BFBC40@MW2PR2101MB0924.namprd21.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(9452136761055);
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040501)(2401047)(8121501046)(5005006)(93006095)(93001095)(10201501046)(3231220)(944501244)(52105095)(3002001)(6055026)(61426038)(61427038)(6041288)(20161123562045)(20161123558120)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:MW2PR2101MB0924;BCL:0;PCL:0;RULEID:;SRVR:MW2PR2101MB0924;
+x-forefront-prvs: 0600F93FE1
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(39860400002)(396003)(366004)(39380400002)(189003)(199004)(102836004)(2950100002)(10090500001)(6666003)(316002)(26005)(186003)(25786009)(2900100001)(2906002)(54906003)(22452003)(110136005)(97736004)(6506007)(59450400001)(7736002)(4326008)(305945005)(5250100002)(86362001)(575784001)(2501003)(99286004)(68736007)(72206003)(53936002)(6436002)(6116002)(3846002)(5660300001)(66066001)(1076002)(76176011)(14454004)(966005)(36756003)(3660700001)(6486002)(86612001)(81156014)(8676002)(81166006)(10290500003)(6512007)(8936002)(3280700002)(478600001)(107886003)(106356001)(6306002)(105586002)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:MW2PR2101MB0924;H:MW2PR2101MB1034.namprd21.prod.outlook.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e9c1ab5-4a81-4d7b-69b7-08d58156fc09
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Mar 2018 22:29:15.3382
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR2101MB0924
+Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62793
+X-archive-position: 62794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: Alexander.Levin@microsoft.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,115 +87,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: David Daney <david.daney@cavium.com>
 
---=-oN37aj97kEWbdmr8wKYC
-Content-Type: multipart/mixed; boundary="=-E2d7vQlxz5xyPEOqJ8T1"
+[ Upstream commit 1ef0910cfd681f0bd0b81f8809935b2006e9cfb9 ]
 
+If bpf_needs_clear_a() returns true, only actually clear it if it is
+ever used.  If it is not used, we don't save and restore it, so the
+clearing has the nasty side effect of clobbering caller state.
 
---=-E2d7vQlxz5xyPEOqJ8T1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Also, don't emit stack pointer adjustment instructions if the
+adjustment amount is zero.
 
-On Thu, 2018-03-01 at 13:44 +0000, James Hogan wrote:
-> On Wed, Feb 28, 2018 at 03:20:18PM +0000, Ben Hutchings wrote:
-> > 3.16.55-rc1 review patch.  If anyone has any objections, please let me =
-know.
-> >=20
-> > ------------------
-> >=20
-> > From: James Hogan <jhogan@kernel.org>
-> >=20
-> > commit 17278a91e04f858155d54bee5528ba4fbcec6f87 upstream.
->=20
-> You'll want this too:
->=20
-> 8dbc1864b74f5dea5a3f7c30ca8fd358a675132f
-> MIPS: CPS: Fix MIPS_ISA_LEVEL_RAW fallout
->=20
-> Its only tagged for stable 4.15 since the one it fixes wasn't tagged for
-> stable.
->=20
-> If you're going to select patches for backporting based on Fixes tags,
-> maybe its worth looking for patches which are marked as fixing ones
-> you've backported too.
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Steven J. Hill <steven.hill@cavium.com>
+Cc: linux-mips@linux-mips.org
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15745/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+---
+ arch/mips/net/bpf_jit.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-I do that, but didn't look beyond v4.15 yet.  Here's the version of
-that fix I've ended up with for 3.16.
-
-Ben.
-
---=20
-Ben Hutchings
-[W]e found...that it wasn't as easy to get programs right as we had
-thought. ... I realized that a large part of my life from then on was
-going to be spent in finding mistakes in my own programs. - Maurice
-Wilkes, 1949
-
-
---=-E2d7vQlxz5xyPEOqJ8T1
-Content-Disposition: attachment; filename="mips-cps-fix-mips_isa_level_raw-fallout.patch"
-Content-Type: text/x-patch; name="mips-cps-fix-mips_isa_level_raw-fallout.patch";
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-RnJvbTogSmFtZXMgSG9nYW4gPGpob2dhbkBrZXJuZWwub3JnPgpEYXRlOiBGcmksIDIgRmViIDIw
-MTggMTQ6MzY6NDAgKzAwMDAKU3ViamVjdDogTUlQUzogQ1BTOiBGaXggTUlQU19JU0FfTEVWRUxf
-UkFXIGZhbGxvdXQKCmNvbW1pdCA4ZGJjMTg2NGI3NGY1ZGVhNWEzZjdjMzBjYThmZDM1OGE2NzUx
-MzJmIHVwc3RyZWFtLgoKQ29tbWl0IDE3Mjc4YTkxZTA0ZiAoIk1JUFM6IENQUzogRml4IHIxIC5z
-ZXQgbXQgYXNzZW1ibGVyIHdhcm5pbmciKQphZGRlZCAuc2V0IE1JUFNfSVNBX0xFVkVMX1JBVyB0
-byBzaWxlbmNlIHdhcm5pbmdzIGFib3V0IC5zZXQgbXQgb24gcjEsCmhvd2V2ZXIgdGhpcyBjYW4g
-cmVzdWx0IGluIGEgTU9WRSBiZWluZyBlbmNvZGVkIGFzIGEgNjQtYml0IERBRERVCmluc3RydWN0
-aW9uIG9uIGNlcnRhaW4gdmVyc2lvbiBvZiBiaW51dGlscyAoZS5nLiAyLjIyKSwgYW5kIHJlc2Vy
-dmVkCmluc3RydWN0aW9uIGV4Y2VwdGlvbnMgYXQgcnVudGltZSBvbiAzMi1iaXQgaGFyZHdhcmUu
-CgpSZWR1Y2UgdGhlIHNpemVzIG9mIHRoZSBwdXNoL3BvcCBzZWN0aW9ucyB0byBpbmNsdWRlIG9u
-bHkgaW5zdHJ1Y3Rpb25zCnRoYXQgYXJlIHBhcnQgb2YgdGhlIE1UIEFTRSBvciB3aGljaCB3b24n
-dCBjb252ZXJ0IHRvIDY0LWJpdAppbnN0cnVjdGlvbnMgYWZ0ZXIgLnNldCBtaXBzNjRyMi9taXBz
-NjRyNi4KClJlcG9ydGVkLWJ5OiBHcmVnIFVuZ2VyZXIgPGdlcmdAbGludXgtbTY4ay5vcmc+CkZp
-eGVzOiAxNzI3OGE5MWUwNGYgKCJNSVBTOiBDUFM6IEZpeCByMSAuc2V0IG10IGFzc2VtYmxlciB3
-YXJuaW5nIikKU2lnbmVkLW9mZi1ieTogSmFtZXMgSG9nYW4gPGpob2dhbkBrZXJuZWwub3JnPgpD
-YzogUmFsZiBCYWVjaGxlIDxyYWxmQGxpbnV4LW1pcHMub3JnPgpDYzogUGF1bCBCdXJ0b24gPHBh
-dWwuYnVydG9uQG1pcHMuY29tPgpDYzogbGludXgtbWlwc0BsaW51eC1taXBzLm9yZwpUZXN0ZWQt
-Ynk6IEdyZWcgVW5nZXJlciA8Z2VyZ0BsaW51eC1tNjhrLm9yZz4KUGF0Y2h3b3JrOiBodHRwczov
-L3BhdGNod29yay5saW51eC1taXBzLm9yZy9wYXRjaC8xODU3OC8KW2J3aDogQmFja3BvcnRlZCB0
-byAzLjE2OiBhZGp1c3QgY29udGV4dF0KU2lnbmVkLW9mZi1ieTogQmVuIEh1dGNoaW5ncyA8YmVu
-QGRlY2FkZW50Lm9yZy51az4KLS0tCi0tLSBhL2FyY2gvbWlwcy9rZXJuZWwvY3BzLXZlYy5TCisr
-KyBiL2FyY2gvbWlwcy9rZXJuZWwvY3BzLXZlYy5TCkBAIC0zNDcsMTIgKzM0NywxMyBAQCBMRUFG
-KG1pcHNfY3BzX2Jvb3RfdnBlcykKIAlqcglyYQogCSBub3AKIAorMToJLyogRW50ZXIgVlBFIGNv
-bmZpZ3VyYXRpb24gc3RhdGUgKi8KIAkuc2V0CXB1c2gKIAkuc2V0CU1JUFNfSVNBX0xFVkVMX1JB
-VwogCS5zZXQJbXQKLQotMToJLyogRW50ZXIgVlBFIGNvbmZpZ3VyYXRpb24gc3RhdGUgKi8KIAlk
-dnBlCisJLnNldAlwb3AKKwogCWxhCXQxLCAxZgogCWpyLmhiCXQxCiAJIG5vcApAQCAtMzc5LDYg
-KzM4MCwxMCBAQCBMRUFGKG1pcHNfY3BzX2Jvb3RfdnBlcykKIAltdGMwCXQwLCBDUDBfVlBFQ09O
-VFJPTAogCWVoYgogCisJLnNldAlwdXNoCisJLnNldAlNSVBTX0lTQV9MRVZFTF9SQVcKKwkuc2V0
-CW10CisKIAkvKiBTa2lwIHRoZSBWUEUgaWYgaXRzIFRDIGlzIG5vdCBoYWx0ZWQgKi8KIAltZnRj
-MAl0MCwgQ1AwX1RDSEFMVAogCWJlcXoJdDAsIDJmCkBAIC00MzcsNiArNDQyLDggQEAgTEVBRiht
-aXBzX2Nwc19ib290X3ZwZXMpCiAJZWhiCiAJZXZwZQogCisJLnNldAlwb3AKKwogCS8qIENoZWNr
-IHdoZXRoZXIgdGhpcyBWUEUgaXMgbWVhbnQgdG8gYmUgcnVubmluZyAqLwogCWxpCXQwLCAxCiAJ
-c2xsCXQwLCB0MCwgdDkKQEAgLTQ1MSw3ICs0NTgsNyBAQCBMRUFGKG1pcHNfY3BzX2Jvb3RfdnBl
-cykKIDE6CWpyLmhiCXQwCiAJIG5vcAogCi0yOgkuc2V0CXBvcAorMjoKIAogI2VuZGlmIC8qIENP
-TkZJR19NSVBTX01UX1NNUCAqLwogCg==
-
-
---=-E2d7vQlxz5xyPEOqJ8T1--
-
---=-oN37aj97kEWbdmr8wKYC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAlqaw+oACgkQ57/I7JWG
-EQnTTw//at5KPOxQTDdqwPUhet/lMJShK7iWh+879PcE+FREUIkQZ6/fMHpFoCko
-PFuGJcEGEnm84adLjtKRyjiRmAzQ1NhBLs21ax/OgsSDdmpkTrGb/Ve+AAIGOF5g
-n4YL+Kh3GQQ2nJ3G+x7c0oLtXtuMET5pKsMoGvlTtZz21tqxC4E8nYZp7JU6z89Y
-Ii7m6D73sGk/bb4PEYAmgDB67pPD8+l35a9GZiIVqZUsGdRvLqMExBx1ftfmRDaA
-nWJSZHvQpjO9R1CMDIfIAik5pXVu9vSOQmbTj97/BPr8zsra//F95xWo1X66ZJ1k
-cu/99kYXiclW6K01zM8dgwqxw2CWU4qjj33p8W+YLT9vcDtZMSKdhmK6OC3gQEgm
-AcOsbVWcchJOYI0pTAZkTEI5skXjD/SgyCYPhxYodG1ZewLkPQ6zPr59yTL3bgls
-m16hyWM2soxWFj8XRwjtDo5NV4xG8ZFeXuyclAXaMLZok61xErnpdX/lQDsAHr/f
-BK3rGmRjnrUh6XOV9ph4caYcYA/6OSPpw+hmE7FD7AdsbeTPdRt7pOYLAtbQTABm
-gyIt+ZqYjuULCt3LOr6f9MNhqcC+2pQiKXPD0vYTpfiM0o/eo2Am8b4x8K4Y9r/T
-Tf4Y8df9nu6P1XwVECGrrMCLWJpyqrFjwRI0uiPURma2t8KocvE=
-=nBmL
------END PGP SIGNATURE-----
-
---=-oN37aj97kEWbdmr8wKYC--
+diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+index 49a2e2226fee..248603739198 100644
+--- a/arch/mips/net/bpf_jit.c
++++ b/arch/mips/net/bpf_jit.c
+@@ -526,7 +526,8 @@ static void save_bpf_jit_regs(struct jit_ctx *ctx, unsigned offset)
+ 	u32 sflags, tmp_flags;
+ 
+ 	/* Adjust the stack pointer */
+-	emit_stack_offset(-align_sp(offset), ctx);
++	if (offset)
++		emit_stack_offset(-align_sp(offset), ctx);
+ 
+ 	tmp_flags = sflags = ctx->flags >> SEEN_SREG_SFT;
+ 	/* sflags is essentially a bitmap */
+@@ -578,7 +579,8 @@ static void restore_bpf_jit_regs(struct jit_ctx *ctx,
+ 		emit_load_stack_reg(r_ra, r_sp, real_off, ctx);
+ 
+ 	/* Restore the sp and discard the scrach memory */
+-	emit_stack_offset(align_sp(offset), ctx);
++	if (offset)
++		emit_stack_offset(align_sp(offset), ctx);
+ }
+ 
+ static unsigned int get_stack_depth(struct jit_ctx *ctx)
+@@ -625,8 +627,14 @@ static void build_prologue(struct jit_ctx *ctx)
+ 	if (ctx->flags & SEEN_X)
+ 		emit_jit_reg_move(r_X, r_zero, ctx);
+ 
+-	/* Do not leak kernel data to userspace */
+-	if (bpf_needs_clear_a(&ctx->skf->insns[0]))
++	/*
++	 * Do not leak kernel data to userspace, we only need to clear
++	 * r_A if it is ever used.  In fact if it is never used, we
++	 * will not save/restore it, so clearing it in this case would
++	 * corrupt the state of the caller.
++	 */
++	if (bpf_needs_clear_a(&ctx->skf->insns[0]) &&
++	    (ctx->flags & SEEN_A))
+ 		emit_jit_reg_move(r_A, r_zero, ctx);
+ }
+ 
+-- 
+2.14.1

@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Mar 2018 23:37:57 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:58666 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 00:43:53 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:34942 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994678AbeCEWhtU5yrv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 5 Mar 2018 23:37:49 +0100
+        id S23994684AbeCEXnmhICt6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 Mar 2018 00:43:42 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DD0E920685;
-        Mon,  5 Mar 2018 22:37:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DD0E920685
+        by mail.kernel.org (Postfix) with ESMTPSA id C9276206B2;
+        Mon,  5 Mar 2018 23:43:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C9276206B2
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 5 Mar 2018 22:37:36 +0000
+Date:   Mon, 5 Mar 2018 23:43:30 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Vasyl Gomonovych <gomonovych@gmail.com>
-Cc:     ralf@linux-mips.org, paul.gortmaker@windriver.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: TXx9: Add missing iounmap
-Message-ID: <20180305221833.GJ4197@saruman>
-References: <1511473795-20137-1-git-send-email-gomonovych@gmail.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     justinpopo6@gmail.com, linux-mips@linux-mips.org,
+        bcm-kernel-feedback-list@broadcom.com
+Subject: Re: [PATCH] MIPS: BMIPS: Do not mask IPIs during suspend
+Message-ID: <20180305234329.GK4197@saruman>
+References: <20170928001515.22917-1-justinpopo6@gmail.com>
+ <9b61aae3-53a3-8e96-e00e-76117b19f079@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="M9kwpIYUMbI/2cCx"
+        protocol="application/pgp-signature"; boundary="Y+Z5jE7Arku/2GrR"
 Content-Disposition: inline
-In-Reply-To: <1511473795-20137-1-git-send-email-gomonovych@gmail.com>
+In-Reply-To: <9b61aae3-53a3-8e96-e00e-76117b19f079@gmail.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62810
+X-archive-position: 62811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,72 +48,76 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---M9kwpIYUMbI/2cCx
+--Y+Z5jE7Arku/2GrR
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 23, 2017 at 10:49:55PM +0100, Vasyl Gomonovych wrote:
-> Add the missing iounmap() before put_device and
-> return from txx9_sramc_init().
+On Thu, Sep 28, 2017 at 11:22:38AM -0700, Florian Fainelli wrote:
+> On 09/27/2017 05:15 PM, justinpopo6@gmail.com wrote:
+> > From: Justin Chen <justinpopo6@gmail.com>
+> >=20
+> > Commit a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs") fixes
+> > an issue where disable_irq did not actually disable the irq. The
+> > bug caused our IPIs to not be disabled, which actually is the correct
+> > behavior.
+> >=20
+> > With the addition of Commit a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq
+> > on CPU IRQs"), the IPIs were getting disabled going into suspend,
+> > thus schedule_ipi() was not being called. This caused deadlocks where
+> > schedulable task were not being scheduled and other cpus were waiting
+> > for them to do something.
+> >=20
+> > Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called
+> > on the IPIs during suspend.
+> >=20
+> > Signed-off-by: Justin Chen <justinpopo6@gmail.com>
+> > Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
 >=20
-> Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
-> ---
->  arch/mips/txx9/generic/setup.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setu=
-p.c
-> index 1791a44ee570..6ef5edb85d68 100644
-> --- a/arch/mips/txx9/generic/setup.c
-> +++ b/arch/mips/txx9/generic/setup.c
-> @@ -965,6 +965,8 @@ void __init txx9_sramc_init(struct resource *r)
->  	}
->  	return;
->  exit_put:
-> +	if (dev->base)
-> +		iounmap(dev->base);
+> This looks good to me, not sure if this is the recommended way to solve
+> this bug, but this definitively works.
 
-I think if dev->base was NULL then a different error path would have
-been taken already.
+Yeh it looks appropriate to me.
 
-More concerning to be honest though is the sysfs_create_bin_file() error
-handling just above here, which seems to iounmap() and kfree() *after*
-device_unregister(). txx9_device_release() already kfrees it.
+Documentation/power/suspend-and-interrupts.txt says:
+> The IRQF_NO_SUSPEND flag is used to indicate that to the IRQ subsystem wh=
+en
+> requesting a special-purpose interrupt.  It causes suspend_device_irqs() =
+to
+> leave the corresponding IRQ enabled so as to allow the interrupt to work =
+as
+> expected during the suspend-resume cycle, but does not guarantee that the
+> interrupt will wake the system from a suspended state -- for such cases i=
+t is
+> necessary to use enable_irq_wake().
 
-The iounmap() call should prresumably move before the kfree() in
-txx9_device_release(), and the kfree() after device_unregister() should
-be removed?
+I presume there's no need for enable_irq_wake() be used on resume, since
+c0_status will get preserved by drivers/soc/bcm/brcmstb/pm/s3-mips.S.
 
-Cheers
+I've fixed checkpatch niggles, added a stable tag and applied for 4.16.
+
+Thanks
 James
 
->  	put_device(&dev->dev);
->  	return;
->  }
-> --=20
-> 1.9.1
->=20
-
---M9kwpIYUMbI/2cCx
+--Y+Z5jE7Arku/2GrR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqdxq4ACgkQbAtpk944
-dnqrgA//c5yKC1sXPNhPfR2Am6vC3Lh/V2KaV8LEgTZlYNMCVUOeTJYtbV7yVlVY
-oY4PsX3lXgzWDHUg+zOr6YNHb4bOOhQ/Fo5Tbep0aybviosbEyx4kgBGIAWnPxuj
-1UDNWNcMFYLtCWsIrbziXCKXeOgjJ4zCxb3d3c7a7YXs1HIfRkH2TZV8E6AjnVkI
-x0bV/3pF6G+jjtGMn1b5UOgXQLn6/rzYSWDBnXan4xZUpLEXHN9PF/C6zU6ibOFz
-egdEigrt1seXx6meLlDpeph0vLhVhNsBekON7FskLq6+8vPxfZlCIkl5y2aSBWnS
-zI8Y5Lx0Z0Mx7yg8o4HRWQZVYKjfzjw11Ax0OjGqPGaHsDckDUUVFcycj5naUipu
-j2laZjTljAULGZ2pFOEKG4dyGfCIpPZV6wUNZSnZ7rC1J2/eTEMu8dRshGHYtXY6
-Gj7JuWu61LrQjeDTqjuCVU3ckqqpFUL66qd1I3usqlZJ5m6EjA0r99Wx34rLt+OX
-Kskf4FNhMtDqneb39s6g/pBA8WCTXb/pAg1/C0uEKjzyBfXfxgt2JrAPgFtqehuc
-OnlhSkw3PKqauN4FpmOBfHlRBn43ysqiceupNcCAIx0/7e8lAFr0z7eFDSc8PWxz
-qixmiwfsXsMuG8xL+AUwqPahT+zxm2V9p8v+1LJ95W+3yeIaoek=
-=Z91+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqd1iEACgkQbAtpk944
+dnqI0BAAuHFrte9Me/BfQs5gpx105M/nPAFSuGvfKCc+ptvXGabjYVY5iUT/1kzD
+WxVzVQimHC4HbA0MmM41H46vzcUAFFt3XkVIrHYK9rIHKAH58OU8BDs+pcHXtOsS
+LGkX3sEAOQ3ghJ8u9QTqktn1xrwHK+h9tLb0CGCvJIkKx20RgXf221qUjSIjvsmU
+qFVyo+FSWBPHITTITBKYmLK/1fKaCbdl6OqCGVls3DuNumn8E62DpbrlZPbHK/yE
+BAp+tfR7ZmO1PlQShIXEn4IwlHi6v50qEvRMzbS+/GkFwGpQTGpa62vtDDnGs9H5
+mzeZOQVTNVX/cst04bJ2HZqSO2jyV9Oe6wfro+ZMw5p+QB7k4remNK7y/AT5sJWF
+6joJjP6PQGr8qTG3LixsYHA3/sM7g4HA/BpOEIRdQdT/e79bVmGQtclgknIos1PU
+FEBhb4FOoyDWm1TSE+RN+Y0ytKcWEA0zhZwqTcIH/IWNaee1e37+0b1F9ITDmu5+
+JnW0Atbx3UyDRZAXbnGFzLqD5lN08Mm/tHeaQLmoQ+7yj+O4XGrkRTHj2zNAUSu5
+YBmFTFLz9T/NBfrBFbqxp55ta060S3Rif8Ar9sgIUNCzVfkqklUmmRaoowVVSc9E
+xPv+VATZyf+zR07DBJzDGg7dV+dIdJaAmGLdlW2v7RrHjutWjBE=
+=pDVq
 -----END PGP SIGNATURE-----
 
---M9kwpIYUMbI/2cCx--
+--Y+Z5jE7Arku/2GrR--

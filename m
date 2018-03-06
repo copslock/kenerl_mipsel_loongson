@@ -1,48 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 13:46:44 +0100 (CET)
-Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:34948
-        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994684AbeCFMqgxEeG- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2018 13:46:36 +0100
-Received: by mail-qt0-x243.google.com with SMTP id z14so24359514qti.2;
-        Tue, 06 Mar 2018 04:46:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=/Ielnr86jGrUQlnBR/122CDpc3athB20kKhhVr6fYKo=;
-        b=eFOHlHttRAGLuYv45Vsck5VAp9Xbtzcm+I6w73l9ParfoTL2DK+D0WVdtgzwAIlyOz
-         1p/4D9NyjC/DHGOMBS+zEHdi2zulz4Ealx0X4lOfAWbSdF0TzI2y9VZ7uSE/QXbjspI3
-         zB1/wkW9MjXy/Yk8Hm6BeHJbiUby8Rq69DEdxyMBAbcjjTHWRtVDyWxkcNLVWzezCl0b
-         Yv4J3ulk6hcOLXCOFk7RzLZgrzR7kTNKvyRI6DsGuFIaDtp6ZDrfqQ5XaPypov+JGNxK
-         KkLK4RrBKq/Kr14Suk1jIRRqcePQoSE0yHT7pdg+3JrVdtWQ6nqBExJja6EOuvXSB1Ws
-         Mfvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=/Ielnr86jGrUQlnBR/122CDpc3athB20kKhhVr6fYKo=;
-        b=GFiBLIasKMhemgafBeknve0JCBJinal3Z73ljfbXP7EDXXiWa/kzugp0aQRV9BdpQ+
-         rhJyuoGyG0xn6yJdG26XCHz6eH9aXCrQYwgp5i7bZPT60fQz6lXWWHwm+173OZ17gflX
-         q7/Wq+0f3ZV7UwfHFHJXBGM1KA/Cf0d7NYhwcbzUiK2j64SK8VWwzx7e816y7GFKCX+Z
-         z+ZN9uczZ/36uv6pI9br48UfKchdMYdqIM1iumxKKhiMxDsJKuYW2d0rsfKcJvqWLDkE
-         GgLWGPY3raRB903MbmrtcdCl+hvw4g9L9L7p2BPv/Z9iDlCkZQkNuxzuhIA2Szh1QR/y
-         XKQA==
-X-Gm-Message-State: AElRT7HIEEtaKyV9zOASaK7a2YW5FEfDhHv7ftvJ+WCKHR3Lwdi91kGw
-        F67vbo+ImIhc9V2mthDSeddCEIqFaLKtAlw4+uo=
-X-Google-Smtp-Source: AG47ELubcUMV/+p/AxAmTMPOWF9PblRAuLVhHE+k8ZdW1lB3Qhh5h6OFTi2hSjDKV9ynu+IUnH/10AD6Di9PnFGMwqU=
-X-Received: by 10.200.36.233 with SMTP id t38mr28285144qtt.141.1520340390600;
- Tue, 06 Mar 2018 04:46:30 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.12.185.46 with HTTP; Tue, 6 Mar 2018 04:46:30 -0800 (PST)
-In-Reply-To: <c6fb6676-a8d3-8893-660c-2b9899c5d5ab@de.ibm.com>
-References: <20180116021818.24791-1-deepa.kernel@gmail.com>
- <20180116021818.24791-3-deepa.kernel@gmail.com> <c6fb6676-a8d3-8893-660c-2b9899c5d5ab@de.ibm.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 6 Mar 2018 13:46:30 +0100
-X-Google-Sender-Auth: Di7AbiJq9u7xkF2XLlEyCPy3GA0
-Message-ID: <CAK8P3a0Gm1L70EaFzJBk0drRNKtX0FE22BHOSrXBgH1wNfKZ5A@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to compat_time.h
-To:     Christian Borntraeger <borntraeger@de.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 13:48:46 +0100 (CET)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:59316 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994684AbeCFMsgd4Mw- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2018 13:48:36 +0100
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w26Cd9rN045151
+        for <linux-mips@linux-mips.org>; Tue, 6 Mar 2018 07:48:34 -0500
+Received: from e06smtp12.uk.ibm.com (e06smtp12.uk.ibm.com [195.75.94.108])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2ghs09xrcj-1
+        (version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Tue, 06 Mar 2018 07:48:34 -0500
+Received: from localhost
+        by e06smtp12.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Tue, 6 Mar 2018 12:48:32 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp12.uk.ibm.com (192.168.101.142) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 6 Mar 2018 12:48:24 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w26CmNal58916914;
+        Tue, 6 Mar 2018 12:48:23 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 312714C04E;
+        Tue,  6 Mar 2018 12:41:47 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C0F1F4C044;
+        Tue,  6 Mar 2018 12:41:45 +0000 (GMT)
+Received: from oc7330422307.ibm.com (unknown [9.152.98.109])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue,  6 Mar 2018 12:41:45 +0000 (GMT)
+Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to
+ compat_time.h
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         John Stultz <john.stultz@linaro.org>,
@@ -57,7 +46,7 @@ Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
         linux-s390 <linux-s390@vger.kernel.org>,
         y2038 Mailman List <y2038@lists.linaro.org>,
         Helge Deller <deller@gmx.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
         sebott@linux.vnet.ibm.com,
         "James E.J. Bottomley" <jejb@parisc-linux.org>,
         Will Deacon <will.deacon@arm.com>,
@@ -80,16 +69,40 @@ Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         David Miller <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+References: <20180116021818.24791-1-deepa.kernel@gmail.com>
+ <20180116021818.24791-3-deepa.kernel@gmail.com>
+ <c6fb6676-a8d3-8893-660c-2b9899c5d5ab@de.ibm.com>
+ <CAK8P3a0Gm1L70EaFzJBk0drRNKtX0FE22BHOSrXBgH1wNfKZ5A@mail.gmail.com>
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+Date:   Tue, 6 Mar 2018 13:48:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <CAK8P3a0Gm1L70EaFzJBk0drRNKtX0FE22BHOSrXBgH1wNfKZ5A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18030612-0008-0000-0000-000004D86BB6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18030612-0009-0000-0000-00001E6B8210
+Message-Id: <d8480da9-afe9-8a43-9c47-50919215a2de@de.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2018-03-06_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1709140000
+ definitions=main-1803060145
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62822
+X-archive-position: 62823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,51 +115,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 5, 2018 at 10:30 AM, Christian Borntraeger
-<borntraeger@de.ibm.com> wrote:
-> On 01/16/2018 03:18 AM, Deepa Dinamani wrote:
->> All the current architecture specific defines for these
->> are the same. Refactor these common defines to a common
->> header file.
+
+
+On 03/06/2018 01:46 PM, Arnd Bergmann wrote:
+> On Mon, Mar 5, 2018 at 10:30 AM, Christian Borntraeger
+> <borntraeger@de.ibm.com> wrote:
+>> On 01/16/2018 03:18 AM, Deepa Dinamani wrote:
+>>> All the current architecture specific defines for these
+>>> are the same. Refactor these common defines to a common
+>>> header file.
+>>>
+>>> The new common linux/compat_time.h is also useful as it
+>>> will eventually be used to hold all the defines that
+>>> are needed for compat time types that support non y2038
+>>> safe types. New architectures need not have to define these
+>>> new types as they will only use new y2038 safe syscalls.
+>>> This file can be deleted after y2038 when we stop supporting
+>>> non y2038 safe syscalls.
 >>
->> The new common linux/compat_time.h is also useful as it
->> will eventually be used to hold all the defines that
->> are needed for compat time types that support non y2038
->> safe types. New architectures need not have to define these
->> new types as they will only use new y2038 safe syscalls.
->> This file can be deleted after y2038 when we stop supporting
->> non y2038 safe syscalls.
->
-> You are now include a <linux/*.h> from several asm files
-> (
->  arch/arm64/include/asm/stat.h
->  arch/s390/include/asm/elf.h
->  arch/x86/include/asm/ftrace.h
->  arch/x86/include/asm/sys_ia32.h
-> )
-> It works, and it is done in many places, but it looks somewhat weird.
-> Would it make sense to have an asm-generic/compate-time.h instead? Asking for
-> opinions here.
+>> You are now include a <linux/*.h> from several asm files
+>> (
+>>  arch/arm64/include/asm/stat.h
+>>  arch/s390/include/asm/elf.h
+>>  arch/x86/include/asm/ftrace.h
+>>  arch/x86/include/asm/sys_ia32.h
+>> )
+>> It works, and it is done in many places, but it looks somewhat weird.
+>> Would it make sense to have an asm-generic/compate-time.h instead? Asking for
+>> opinions here.
+> 
+> I don't think we have such a rule. If a header file is common to all
+> architectures (i.e. no architecture uses a different implementation),
+> it should be in include/linux rather than include/asm-generic, regardless
+> of whether it can be used by assembler files or not.
+> 
+>>> --- a/drivers/s390/net/qeth_core_main.c
+>>> +++ b/drivers/s390/net/qeth_core_main.c
+>>> @@ -32,7 +32,7 @@
+>>>  #include <asm/chpid.h>
+>>>  #include <asm/io.h>
+>>>  #include <asm/sysinfo.h>
+>>> -#include <asm/compat.h>
+>>> +#include <linux/compat.h>
+>>>  #include <asm/diag.h>
+>>>  #include <asm/cio.h>
+>>>  #include <asm/ccwdev.h>
+>>
+>> Can you move that into the other includes (where all the other <linux/*> includes are.
+> 
+> Good catch, this is definitely a rule we have ;-)
 
-I don't think we have such a rule. If a header file is common to all
-architectures (i.e. no architecture uses a different implementation),
-it should be in include/linux rather than include/asm-generic, regardless
-of whether it can be used by assembler files or not.
-
->> --- a/drivers/s390/net/qeth_core_main.c
->> +++ b/drivers/s390/net/qeth_core_main.c
->> @@ -32,7 +32,7 @@
->>  #include <asm/chpid.h>
->>  #include <asm/io.h>
->>  #include <asm/sysinfo.h>
->> -#include <asm/compat.h>
->> +#include <linux/compat.h>
->>  #include <asm/diag.h>
->>  #include <asm/cio.h>
->>  #include <asm/ccwdev.h>
->
-> Can you move that into the other includes (where all the other <linux/*> includes are.
-
-Good catch, this is definitely a rule we have ;-)
-
-       Arnd
+FWIW, this was also broken for 
+arch/x86/include/asm/sys_ia32.h

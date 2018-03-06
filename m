@@ -1,40 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 00:43:53 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:34942 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994684AbeCEXnmhICt6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Mar 2018 00:43:42 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C9276206B2;
-        Mon,  5 Mar 2018 23:43:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C9276206B2
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 5 Mar 2018 23:43:30 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     justinpopo6@gmail.com, linux-mips@linux-mips.org,
-        bcm-kernel-feedback-list@broadcom.com
-Subject: Re: [PATCH] MIPS: BMIPS: Do not mask IPIs during suspend
-Message-ID: <20180305234329.GK4197@saruman>
-References: <20170928001515.22917-1-justinpopo6@gmail.com>
- <9b61aae3-53a3-8e96-e00e-76117b19f079@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 01:06:48 +0100 (CET)
+Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:36177
+        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994675AbeCFAGlaoDh6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2018 01:06:41 +0100
+Received: by mail-qt0-x242.google.com with SMTP id c7so22589276qtn.3;
+        Mon, 05 Mar 2018 16:06:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=HU0DKao2J5r+51T/QABlOq9Nu9tnI4bwI5QTFnQKbXg=;
+        b=clheTvcGeBjo4aoZspSALczX8MyeTIJHRyNscOjGHh0owoRjE6KvGI32EgVdx0AIZ4
+         sDnIMWZFjBM5Ma3YeS3+6cqhS4bAYFKTIVfj1FEXClVWtXcyaMVEhrQwp8MevkDrBAIy
+         NQqz3Ot3YchUCWX8uG6HreOUTFxlF1do+FpCFW1HyryMW29HCJxOJ+8ovoPKQWynQ9Lc
+         3EJ3vWKMmDdnaQLFMLtJL+1BXv18hePbb81RKpeOe7kW/FMhLtVs6LGKcr3mmuaKS87Q
+         kA+A+dSUvy37M/4H4aNi7ugxFJUsZ5kzxcyRvclOpQp97rYPMPPo+DhA3ScIwo0JLx7N
+         KIIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=HU0DKao2J5r+51T/QABlOq9Nu9tnI4bwI5QTFnQKbXg=;
+        b=MeO4LgYKAR6Plnwkh0GriLqZpx4D4ZhFloKB8b8Y8lJ/Pw3FhGNk7JY2nAIY7ivHss
+         E/9251gtirraS6YdiR5tTxV5Tj1F8fvOYowRwmJ3AF1yk+ka2p7OMt1aNAJyXO7rqGpw
+         6bian8LZP/YqRCn2UrOO9AoCqWUd2CLyOJkf22KQm9pdGdHEyr2GFU0Uv06cSgFnrjQk
+         sN3S6WrAEVMUh7c3QyXpKTPdt05tZCy/MNb6jghJ4Xx3jC3mvX4WkykvOKeG+DGME4EN
+         8BFflmaAS2y9aCfmoEihThX8YrWt/NtJimCrqGGZGrl3+zx9y95KUc3OAjixq/9ntLCW
+         aaUw==
+X-Gm-Message-State: AElRT7Gwod4nW62fq7EBnyqMqZZTOlZRbE48chxoGRaJV5c2WA76+5d5
+        3kakAPvRJL8wv6UoXkgAu8Q=
+X-Google-Smtp-Source: AG47ELuhImnBLvGsVh/O4sP1N0w9lyms5efiywTp9yvG/yvZtjfqOIeWuc3pB8Ci8CInZMnb3rqRjA==
+X-Received: by 10.200.63.60 with SMTP id c57mr26524703qtk.286.1520294795096;
+        Mon, 05 Mar 2018 16:06:35 -0800 (PST)
+Received: from [10.69.41.93] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id x8sm9969498qta.64.2018.03.05.16.06.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Mar 2018 16:06:34 -0800 (PST)
+Subject: Re: [PATCH 0/3] MIPS: BMIPS: Add Broadcom STB device nodes
+To:     Jaedon Shin <jaedon.shin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org
+References: <20171117021944.894-1-jaedon.shin@gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <56e80e5d-8cdd-3b32-c0f5-ac33c45346b8@gmail.com>
+Date:   Mon, 5 Mar 2018 16:06:30 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Y+Z5jE7Arku/2GrR"
-Content-Disposition: inline
-In-Reply-To: <9b61aae3-53a3-8e96-e00e-76117b19f079@gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20171117021944.894-1-jaedon.shin@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62811
+X-archive-position: 62812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,77 +77,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 11/16/2017 06:19 PM, Jaedon Shin wrote:
+> This series adds power and memory management related devie tree nodes for
+> Broadcom STB platforms.
+> 
+> Jaedon Shin (3):
+>   MIPS: BMIPS: Add Broadcom STB power management nodes
+>   MIPS: BMIPS: Add Broadcom STB wake-up timer nodes
+>   MIPS: BMIPS: Add Broadcom STB watchdog nodes
 
---Y+Z5jE7Arku/2GrR
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 
-On Thu, Sep 28, 2017 at 11:22:38AM -0700, Florian Fainelli wrote:
-> On 09/27/2017 05:15 PM, justinpopo6@gmail.com wrote:
-> > From: Justin Chen <justinpopo6@gmail.com>
-> >=20
-> > Commit a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs") fixes
-> > an issue where disable_irq did not actually disable the irq. The
-> > bug caused our IPIs to not be disabled, which actually is the correct
-> > behavior.
-> >=20
-> > With the addition of Commit a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq
-> > on CPU IRQs"), the IPIs were getting disabled going into suspend,
-> > thus schedule_ipi() was not being called. This caused deadlocks where
-> > schedulable task were not being scheduled and other cpus were waiting
-> > for them to do something.
-> >=20
-> > Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called
-> > on the IPIs during suspend.
-> >=20
-> > Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-> > Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
->=20
-> This looks good to me, not sure if this is the recommended way to solve
-> this bug, but this definitively works.
+Thanks!
 
-Yeh it looks appropriate to me.
+> 
+>  arch/mips/boot/dts/brcm/bcm7125.dtsi      |  7 +++
+>  arch/mips/boot/dts/brcm/bcm7346.dtsi      | 62 +++++++++++++++++++++
+>  arch/mips/boot/dts/brcm/bcm7358.dtsi      | 17 ++++++
+>  arch/mips/boot/dts/brcm/bcm7360.dtsi      | 62 +++++++++++++++++++++
+>  arch/mips/boot/dts/brcm/bcm7362.dtsi      | 62 +++++++++++++++++++++
+>  arch/mips/boot/dts/brcm/bcm7420.dtsi      |  7 +++
+>  arch/mips/boot/dts/brcm/bcm7425.dtsi      | 89 +++++++++++++++++++++++++++++++
+>  arch/mips/boot/dts/brcm/bcm7435.dtsi      | 89 +++++++++++++++++++++++++++++++
+>  arch/mips/boot/dts/brcm/bcm97125cbmb.dts  |  4 ++
+>  arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  8 +++
+>  arch/mips/boot/dts/brcm/bcm97358svmb.dts  |  8 +++
+>  arch/mips/boot/dts/brcm/bcm97360svmb.dts  |  8 +++
+>  arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  8 +++
+>  arch/mips/boot/dts/brcm/bcm97420c.dts     |  4 ++
+>  arch/mips/boot/dts/brcm/bcm97425svmb.dts  |  8 +++
+>  arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  8 +++
+>  16 files changed, 451 insertions(+)
+> 
 
-Documentation/power/suspend-and-interrupts.txt says:
-> The IRQF_NO_SUSPEND flag is used to indicate that to the IRQ subsystem wh=
-en
-> requesting a special-purpose interrupt.  It causes suspend_device_irqs() =
-to
-> leave the corresponding IRQ enabled so as to allow the interrupt to work =
-as
-> expected during the suspend-resume cycle, but does not guarantee that the
-> interrupt will wake the system from a suspended state -- for such cases i=
-t is
-> necessary to use enable_irq_wake().
 
-I presume there's no need for enable_irq_wake() be used on resume, since
-c0_status will get preserved by drivers/soc/bcm/brcmstb/pm/s3-mips.S.
-
-I've fixed checkpatch niggles, added a stable tag and applied for 4.16.
-
-Thanks
-James
-
---Y+Z5jE7Arku/2GrR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqd1iEACgkQbAtpk944
-dnqI0BAAuHFrte9Me/BfQs5gpx105M/nPAFSuGvfKCc+ptvXGabjYVY5iUT/1kzD
-WxVzVQimHC4HbA0MmM41H46vzcUAFFt3XkVIrHYK9rIHKAH58OU8BDs+pcHXtOsS
-LGkX3sEAOQ3ghJ8u9QTqktn1xrwHK+h9tLb0CGCvJIkKx20RgXf221qUjSIjvsmU
-qFVyo+FSWBPHITTITBKYmLK/1fKaCbdl6OqCGVls3DuNumn8E62DpbrlZPbHK/yE
-BAp+tfR7ZmO1PlQShIXEn4IwlHi6v50qEvRMzbS+/GkFwGpQTGpa62vtDDnGs9H5
-mzeZOQVTNVX/cst04bJ2HZqSO2jyV9Oe6wfro+ZMw5p+QB7k4remNK7y/AT5sJWF
-6joJjP6PQGr8qTG3LixsYHA3/sM7g4HA/BpOEIRdQdT/e79bVmGQtclgknIos1PU
-FEBhb4FOoyDWm1TSE+RN+Y0ytKcWEA0zhZwqTcIH/IWNaee1e37+0b1F9ITDmu5+
-JnW0Atbx3UyDRZAXbnGFzLqD5lN08Mm/tHeaQLmoQ+7yj+O4XGrkRTHj2zNAUSu5
-YBmFTFLz9T/NBfrBFbqxp55ta060S3Rif8Ar9sgIUNCzVfkqklUmmRaoowVVSc9E
-xPv+VATZyf+zR07DBJzDGg7dV+dIdJaAmGLdlW2v7RrHjutWjBE=
-=pDVq
------END PGP SIGNATURE-----
-
---Y+Z5jE7Arku/2GrR--
+-- 
+Florian

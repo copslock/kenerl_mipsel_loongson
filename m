@@ -1,35 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 13:00:57 +0100 (CET)
-Received: from mail.bootlin.com ([62.4.15.54]:44439 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994683AbeCFMAtnfrLr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Mar 2018 13:00:49 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2018 13:17:14 +0100 (CET)
+Received: from [62.4.15.54] ([62.4.15.54]:44884 "EHLO mail.bootlin.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994684AbeCFMRHoJ4hr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 Mar 2018 13:17:07 +0100
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id A3BE6207A3; Tue,  6 Mar 2018 13:00:32 +0100 (CET)
+        id 8D73720A0D; Tue,  6 Mar 2018 13:16:50 +0100 (CET)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 4CA33203A0;
-        Tue,  6 Mar 2018 13:00:22 +0100 (CET)
-Date:   Tue, 6 Mar 2018 13:00:23 +0100
+        by mail.bootlin.com (Postfix) with ESMTPSA id CA686209E0;
+        Tue,  6 Mar 2018 13:16:19 +0100 (CET)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Paul Burton <paul.burton@mips.com>
-Subject: Re: [PATCH v4 5/6] MIPS: generic: Add support for Microsemi Ocelot
-Message-ID: <20180306120023.GS3035@piout.net>
-References: <20180302224811.26840-1-alexandre.belloni@bootlin.com>
- <20180302224811.26840-6-alexandre.belloni@bootlin.com>
- <20180303002528.GE4197@saruman>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180303002528.GE4197@saruman>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v5 1/5] dt-bindings: mips: Add bindings for Microsemi SoCs
+Date:   Tue,  6 Mar 2018 13:16:03 +0100
+Message-Id: <20180306121607.1567-2-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.16.2
+In-Reply-To: <20180306121607.1567-1-alexandre.belloni@bootlin.com>
+References: <20180306121607.1567-1-alexandre.belloni@bootlin.com>
 Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62815
+X-archive-position: 62816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,65 +40,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/03/2018 at 00:25:29 +0000, James Hogan wrote:
-> Similarly if the platform is little endian only, you could also add:
-> # require CONFIG_CPU_LITTLE_ENDIAN=y
-> 
+Add bindings for Microsemi SoCs. Currently only Ocelot is supported.
 
-It supports big endian.
+Reviewed-by: Rob Herring <robh+dt@kernel.org>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ Documentation/devicetree/bindings/mips/mscc.txt | 43 +++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/mscc.txt
 
-> > +
-> > +CONFIG_LEGACY_BOARD_OCELOT=y
-> > +
-> > +CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
-> 
-> Hmm, can this break any other generic platforms that already make the
-> DTB command line override the arcs_cmdline? Paul?
-> 
-> I.e. In arch_mem_init() the condition of copying arcs_cmdline to
-> boot_command_line would switch from !boot_command_line[0] to
-> arcs_cmdline[0]. I suppose arcs_cmdline[] may not have been written in
-> those cases. If its safe then it should probably be a standard thing
-> selected by MIPS_GENERIC instead of a board specific thing.
-> 
-
-Actually, this is not needed so I'm removing it.
-
-> > +CONFIG_MAGIC_SYSRQ=y
-> 
-> Perhaps its worth adding this to the base generic_defconfig if its
-> useful to have.
-> 
-
-Our test automation tool is using it to reboot the platform but I don't
-know if this is useful for anybody else.
-
-> > +static __init bool ocelot_detect(void)
-> > +{
-> > +	u32 rev;
-> > +
-> > +	rev = __raw_readl((void *)DEVCPU_GCB_CHIP_REGS_CHIP_ID);
-> 
-> Isn't that an address in the user segment, i.e. TLB mapped virtual
-> memory? Does the bootloader set up a wired mapping for it or something?
-> 
-> The address looks similar to UART_UART which is given to ioremap so must
-> be a physical address. Perhaps the mapping you're using is 1:1
-> virtual:physical address?
-> 
-> If its using a TLB mapping, then:
-> 1) That isn't safe this early to run on other platforms, as it'll give a
->    TLB refill exception. It should be quite possible to detect such a
->    mapping to make it safer though.
-> 2) If yamon initialises the TLB to a known state, then that may well be
->    a hacky but workable way to distinguish yamon (sead3) from redboot
->    (mscc) in future.
-> 
-
-Yes, this is an identity mapping that is installed by redboot because
-all the peripherals are in the user segment.
-
+diff --git a/Documentation/devicetree/bindings/mips/mscc.txt b/Documentation/devicetree/bindings/mips/mscc.txt
+new file mode 100644
+index 000000000000..ae15ec333542
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/mscc.txt
+@@ -0,0 +1,43 @@
++* Microsemi MIPS CPUs
++
++Boards with a SoC of the Microsemi MIPS family shall have the following
++properties:
++
++Required properties:
++- compatible: "mscc,ocelot"
++
++
++* Other peripherals:
++
++o CPU chip regs:
++
++The SoC has a few registers (DEVCPU_GCB:CHIP_REGS) handling miscellaneous
++functionalities: chip ID, general purpose register for software use, reset
++controller, hardware status and configuration, efuses.
++
++Required properties:
++- compatible: Should be "mscc,ocelot-chip-regs", "simple-mfd", "syscon"
++- reg : Should contain registers location and length
++
++Example:
++	syscon@71070000 {
++		compatible = "mscc,ocelot-chip-regs", "simple-mfd", "syscon";
++		reg = <0x71070000 0x1c>;
++	};
++
++
++o CPU system control:
++
++The SoC has a few registers (ICPU_CFG:CPU_SYSTEM_CTRL) handling configuration of
++the CPU: 8 general purpose registers, reset control, CPU en/disabling, CPU
++endianness, CPU bus control, CPU status.
++
++Required properties:
++- compatible: Should be "mscc,ocelot-cpu-syscon", "syscon"
++- reg : Should contain registers location and length
++
++Example:
++	syscon@70000000 {
++		compatible = "mscc,ocelot-cpu-syscon", "syscon";
++		reg = <0x70000000 0x2c>;
++	};
 -- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.16.2

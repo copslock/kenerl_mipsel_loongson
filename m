@@ -1,49 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 17:09:17 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:44384 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994737AbeCGQJJaEavy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Mar 2018 17:09:09 +0100
-Received: from mail-qk0-f177.google.com (mail-qk0-f177.google.com [209.85.220.177])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9ED742177B;
-        Wed,  7 Mar 2018 16:09:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9ED742177B
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=robh+dt@kernel.org
-Received: by mail-qk0-f177.google.com with SMTP id y137so3253168qka.4;
-        Wed, 07 Mar 2018 08:09:02 -0800 (PST)
-X-Gm-Message-State: AElRT7FbtKoOPCigdByd/+VtSOBuSG1Seugn2+5HNoBeoAtRUK+3F3DT
-        HRUVqpUAJ0rixmDEvbyZKOkM1jb6Up5Kl2IVXQ==
-X-Google-Smtp-Source: AG47ELvFGL1XfTmn38YKKZTaTda+OBha7Liq1O54uXyHH+OSZUDQgb7vqaFSK6a9+tr+v1vr2mpYfU0+wW/NLTrnsZA=
-X-Received: by 10.55.31.163 with SMTP id n35mr34496065qkh.147.1520438941811;
- Wed, 07 Mar 2018 08:09:01 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.12.178.131 with HTTP; Wed, 7 Mar 2018 08:08:28 -0800 (PST)
-In-Reply-To: <20180306121607.1567-3-alexandre.belloni@bootlin.com>
-References: <20180306121607.1567-1-alexandre.belloni@bootlin.com> <20180306121607.1567-3-alexandre.belloni@bootlin.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Wed, 7 Mar 2018 10:08:28 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKzEUO1DiaVtw8vBtiO9Xw7_5EprrC8z3C9JA6bFq1KmQ@mail.gmail.com>
-Message-ID: <CAL_JsqKzEUO1DiaVtw8vBtiO9Xw7_5EprrC8z3C9JA6bFq1KmQ@mail.gmail.com>
-Subject: Re: [PATCH v5 2/5] MIPS: mscc: add ocelot dtsi
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 21:11:57 +0100 (CET)
+Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:42295
+        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994039AbeCGULuOhF0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2018 21:11:50 +0100
+Received: by mail-pl0-x244.google.com with SMTP id 93-v6so1972020plc.9;
+        Wed, 07 Mar 2018 12:11:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=PBN2DEFDcAVdNoB+CJrX7S+pGwbqjmH/++UTk7ZoMLo=;
+        b=MA2BHisuKMbq2DWRog1yAbjuxeCIRGDQ3u2p5ID7G0NkC/MJiuar6iKcjBuhTIWrbZ
+         1Ffr80dFk8X2dCJZiHSazke7J7HaE8pMaimqiiQd+FgTjJQ0m9y6hAWTgp48o1cbp4r1
+         xCeh5X99DqFwUpQmIfrV8LOrRbs/HF0nhYKPW9aIiqMo8IqgpGU5Isl5XJnPlBpeGwDD
+         56cTLeYTxoeZcNV+749IEGyxIZqBTo7r0IZ3CtzvQLRpqOfkfD6dpO9NgEy8stXDAMC9
+         LOcsWRfxw4i6xO2IbSZOg0eM5A2gEo7RVouzkqJ5ZpdYa07pElWpKXgk+3nsU49pL9Bl
+         um9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PBN2DEFDcAVdNoB+CJrX7S+pGwbqjmH/++UTk7ZoMLo=;
+        b=S92GiVGyMsxDdnONd89e91vVJUC4N2oEJ0HqjONAqTWkZV+OBrlOJYC0QghDiwOHbH
+         9ANnUehPCpw9Ao+cI8O07nTKZP5ltLjmV+HVK/h6LFETCW8hXOkiw/LjFcKA7BLRKD9m
+         eJzfw7gRlulSH8Hopv3EY81D61zI6ZldqUcQUim1f5srwoGw5PmSGUfwu1EGVPYEdJVO
+         iRxvH9mE3LFamceZtvWQzu/vysSU/JUoC0WAeKsbkTJ99tDkMBxDuoZJY3XJzeSYM3TG
+         M357+CtNyYvqf4X5Jb6WlZRdWBSdcGcKDbe6gYsEzwFpf0PneaJ/JK3z+4y+FlK+imWt
+         fv0A==
+X-Gm-Message-State: APf1xPCYquiDAJyAaRSg59op0sBpsh6gtqOGUPqAuwmgmmECQfFTAL5K
+        f+tO/pkfwgTMemDCfzNtDQc=
+X-Google-Smtp-Source: AG47ELuPMaeFMH+mkGYyE3/OdJZE1gI58plDj1xrQIblR6RBm8v4HptfOwr5s+iiYd11+tW6EvqFGQ==
+X-Received: by 2002:a17:902:51ee:: with SMTP id y101-v6mr21898884plh.157.1520453503599;
+        Wed, 07 Mar 2018 12:11:43 -0800 (PST)
+Received: from [192.168.1.70] (c-73-93-215-6.hsd1.ca.comcast.net. [73.93.215.6])
+        by smtp.gmail.com with ESMTPSA id f82sm43096798pfd.175.2018.03.07.12.11.42
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 07 Mar 2018 12:11:43 -0800 (PST)
+Subject: Re: [PATCH] kbuild: Handle builtin dtb files containing hyphens
+To:     James Hogan <jhogan@kernel.org>, linux-kbuild@vger.kernel.org,
         devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh+dt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org
+References: <20180307140633.26182-1-jhogan@kernel.org>
+From:   Frank Rowand <frowand.list@gmail.com>
+Message-ID: <7ecea7ca-2931-16bc-a110-1ecdaf17f0f2@gmail.com>
+Date:   Wed, 7 Mar 2018 12:11:41 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <20180307140633.26182-1-jhogan@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <frowand.list@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62844
+X-archive-position: 62845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh+dt@kernel.org
+X-original-sender: frowand.list@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,76 +79,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 6, 2018 at 6:16 AM, Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
-> Add a device tree include file for the Microsemi Ocelot SoC.
->
+I initially misread the patch description (and imagined an entirely
+different problem).
+
+
+On 03/07/18 06:06, James Hogan wrote:
+> On dtb files which contain hyphens, the dt_S_dtb command to build the> dtb.S files (which allow DTB files to be built into the kernel) results> in errors like the following:> > bcm3368-netgear-cvg834g.dtb.S: Assembler messages:> bcm3368-netgear-cvg834g.dtb.S:5: Error: : no such section> bcm3368-netgear-cvg834g.dtb.S:5: Error: junk at end of line, first unrecognized character is `-'> bcm3368-netgear-cvg834g.dtb.S:6: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_begin:'> bcm3368-netgear-cvg834g.dtb.S:8: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_end:'> bcm3368-netgear-cvg834g.dtb.S:9: Error: : no such section> bcm3368-netgear-cvg834g.dtb.S:9: Error: junk at end of line, first unrecognized character is `-'
+Please replace the following section:
+
+> This is due to the hyphen being used in symbol names. Replace all
+> hyphens 
+> with underscores in the dt_S_dtb command to avoid this problem.
+> 
+> Quite a lot of dts files have hyphens, but its only a problem on MIPS
+> where such files can be built into the kernel. For example when
+> CONFIG_DT_NETGEAR_CVG834G=y, or on BMIPS kernels when the dtbs target is
+> used (in the latter case it admitedly shouldn't really build all the
+> dtb.o files, but thats a separate issue).
+
+with:
+
+   cmd_dt_S_dtb constructs the assembly source to incorporate a devicetree
+   FDT (that is, the .dtb file) as binary data in the kernel image.
+   This assembly source contains labels before and after the binary data.
+   The label names incorporate the file name of the corresponding .dtb
+   file.  Hyphens are not legal characters in labels, so transform all
+   hyphens from the file name to underscores when constructing the labels.
+
+> 
+> Fixes: 695835511f96 ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
 > Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Kevin Cernekee <cernekee@gmail.com>
 > Cc: devicetree@vger.kernel.org
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: <stable@vger.kernel.org> # 4.9+
 > ---
->  arch/mips/boot/dts/Makefile         |   1 +
->  arch/mips/boot/dts/mscc/Makefile    |   1 +
->  arch/mips/boot/dts/mscc/ocelot.dtsi | 117 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 119 insertions(+)
->  create mode 100644 arch/mips/boot/dts/mscc/Makefile
->  create mode 100644 arch/mips/boot/dts/mscc/ocelot.dtsi
->
-> diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
-> index e2c6f131c8eb..1e79cab8e269 100644
-> --- a/arch/mips/boot/dts/Makefile
-> +++ b/arch/mips/boot/dts/Makefile
-> @@ -4,6 +4,7 @@ subdir-y        += cavium-octeon
->  subdir-y       += img
->  subdir-y       += ingenic
->  subdir-y       += lantiq
-> +subdir-y       += mscc
->  subdir-y       += mti
->  subdir-y       += netlogic
->  subdir-y       += ni
-> diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/Makefile
-> new file mode 100644
-> index 000000000000..dd08e63a10ba
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/mscc/Makefile
-> @@ -0,0 +1 @@
-> +obj-y                          += $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-> diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
-> new file mode 100644
-> index 000000000000..8c3210577410
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
-> @@ -0,0 +1,117 @@
-> +//SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +/* Copyright (c) 2017 Microsemi Corporation */
-> +
-> +/ {
-> +       #address-cells = <1>;
-> +       #size-cells = <1>;
-> +       compatible = "mscc,ocelot";
-> +
-> +       cpus {
-> +               #address-cells = <1>;
-> +               #size-cells = <0>;
-> +
-> +               cpu@0 {
-> +                       compatible = "mips,mips24KEc";
-> +                       device_type = "cpu";
-> +                       clocks = <&cpu_clk>;
-> +                       reg = <0>;
-> +               };
-> +       };
-> +
-> +       aliases {
-> +               serial0 = &uart0;
-> +       };
-> +
-> +       cpuintc: interrupt-controller@0 {
+>  scripts/Makefile.lib | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 5589bae34af6..a6f538b31ad6 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -297,11 +297,11 @@ cmd_dt_S_dtb=						\
+>  	echo '\#include <asm-generic/vmlinux.lds.h>'; 	\
+>  	echo '.section .dtb.init.rodata,"a"';		\
+>  	echo '.balign STRUCT_ALIGNMENT';		\
+> -	echo '.global __dtb_$(*F)_begin';		\
+> -	echo '__dtb_$(*F)_begin:';			\
+> +	echo '.global __dtb_$(subst -,_,$(*F))_begin';	\
+> +	echo '__dtb_$(subst -,_,$(*F))_begin:';		\
+>  	echo '.incbin "$<" ';				\
+> -	echo '__dtb_$(*F)_end:';			\
+> -	echo '.global __dtb_$(*F)_end';			\
+> +	echo '__dtb_$(subst -,_,$(*F))_end:';		\
+> +	echo '.global __dtb_$(subst -,_,$(*F))_end';	\
+>  	echo '.balign STRUCT_ALIGNMENT'; 		\
+>  ) > $@
+>  
+> 
 
-Please compile with W=1 and fix any issues like this one which is a
-unit-address without a reg property. Drop the unit-address.
-
-> +               #address-cells = <0>;
-> +               #interrupt-cells = <1>;
-> +               interrupt-controller;
-> +               compatible = "mti,cpu-interrupt-controller";
+Reviewed-by: Frank Rowand <frowand.list@gmail.com>

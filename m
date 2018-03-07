@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 21:23:18 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:33830 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994728AbeCGUXKCe1Sq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2018 21:23:10 +0100
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Subject: Re: [PATCH v3 3/4] crypto: jz4780-rng: Add RNG node to jz4780.dtsi
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 07 Mar 2018 21:23:08 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 21:25:40 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:52252 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994728AbeCGUZat07k- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Mar 2018 21:25:30 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C51AA2172D;
+        Wed,  7 Mar 2018 20:25:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C51AA2172D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 7 Mar 2018 20:25:14 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Frank Rowand <frowand.list@gmail.com>
+Cc:     linux-kbuild@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Mathieu Malaterre <malat@debian.org>, noloader@gmail.com
-Subject: 
-In-Reply-To: <CANc+2y7m0Z0Nnwv31gGd_PFAyKpSxfi2YY7Ngk_K86Qnr_tvyQ@mail.gmail.com>
-References: <20170918140241.24003-1-prasannatsmkumar@gmail.com>
- <20170918140241.24003-4-prasannatsmkumar@gmail.com>
- <20180306091932.GM4197@saruman>
- <788bf0bf0d0aaa97f59bc908ebf34ebf@crapouillou.net>
- <CANc+2y7m0Z0Nnwv31gGd_PFAyKpSxfi2YY7Ngk_K86Qnr_tvyQ@mail.gmail.com>
-Message-ID: <7a99f4da84eba2f980be2ee0889810f4@crapouillou.net>
-X-Sender: paul@crapouillou.net
-Return-Path: <paul@crapouillou.net>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: Handle builtin dtb files containing hyphens
+Message-ID: <20180307202511.GT4197@saruman>
+References: <20180307140633.26182-1-jhogan@kernel.org>
+ <7ecea7ca-2931-16bc-a110-1ecdaf17f0f2@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ck3np9Ek/EMsFxRu"
+Content-Disposition: inline
+In-Reply-To: <7ecea7ca-2931-16bc-a110-1ecdaf17f0f2@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62846
+X-archive-position: 62847
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,84 +53,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi PrasannaKumar,
 
-Le 2018-03-07 15:51, PrasannaKumar Muralidharan a écrit :
-> Hi Paul,
-> 
-> On 7 March 2018 at 04:31, Paul Cercueil <paul@crapouillou.net> wrote:
->> Le 2018-03-06 10:32, James Hogan a écrit :
->>> 
->>> On Mon, Sep 18, 2017 at 07:32:40PM +0530, PrasannaKumar Muralidharan
->>> wrote:
->>>> 
->>>> Add RNG node to jz4780 dtsi. This driver uses registers that are 
->>>> part of
->>>> the register set used by Ingenic CGU driver. Use regmap in RNG 
->>>> driver to
->>>> access its register. Create 'simple-bus' node, make CGU and RNG node 
->>>> as
->>>> child of it so that both the nodes are visible without changing CGU
->>>> driver code.
->>>> 
->>>> Signed-off-by: PrasannaKumar Muralidharan 
->>>> <prasannatsmkumar@gmail.com>
->>> 
->>> 
->>> Better late than never:
->>> Acked-by: James Hogan <jhogan@kernel.org>
->>> 
->>> (I presume its okay for the reg ranges to overlap, ISTR that being an
->>> issue a few years ago, but maybe thats fixed now).
->>> 
->>> Cheers
->>> James
->> 
->> 
->> What bothers me is that the CGU code has not been modified to use 
->> regmap, so
->> the
->> registers area is actually mapped twice (once in the CGU driver, once 
->> with
->> regmap).
-> 
-> One of my previous versions changed CGU code to use regmap. I got a
-> review comment saying that is not required
-> (https://patchwork.kernel.org/patch/9906889/). The points in the
-> comment were valid so I reverted the change. Please have a look at the
-> discussion.
+--ck3np9Ek/EMsFxRu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I don't know, the point of regmap is for when a register area is shared. 
-It
-does not make sense to me to have one driver use regmap and not the 
-other one.
+On Wed, Mar 07, 2018 at 12:11:41PM -0800, Frank Rowand wrote:
+> I initially misread the patch description (and imagined an entirely
+> different problem).
+>=20
+>=20
+> On 03/07/18 06:06, James Hogan wrote:
+> > On dtb files which contain hyphens, the dt_S_dtb command to build the> =
+dtb.S files (which allow DTB files to be built into the kernel) results> in=
+ errors like the following:> > bcm3368-netgear-cvg834g.dtb.S: Assembler mes=
+sages:> bcm3368-netgear-cvg834g.dtb.S:5: Error: : no such section> bcm3368-=
+netgear-cvg834g.dtb.S:5: Error: junk at end of line, first unrecognized cha=
+racter is `-'> bcm3368-netgear-cvg834g.dtb.S:6: Error: unrecognized opcode =
+`__dtb_bcm3368-netgear-cvg834g_begin:'> bcm3368-netgear-cvg834g.dtb.S:8: Er=
+ror: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_end:'> bcm3368-netg=
+ear-cvg834g.dtb.S:9: Error: : no such section> bcm3368-netgear-cvg834g.dtb.=
+S:9: Error: junk at end of line, first unrecognized character is `-'
+> Please replace the following section:
+>=20
+> > This is due to the hyphen being used in symbol names. Replace all
+> > hyphens=20
+> > with underscores in the dt_S_dtb command to avoid this problem.
+> >=20
+> > Quite a lot of dts files have hyphens, but its only a problem on MIPS
+> > where such files can be built into the kernel. For example when
+> > CONFIG_DT_NETGEAR_CVG834G=3Dy, or on BMIPS kernels when the dtbs target=
+ is
+> > used (in the latter case it admitedly shouldn't really build all the
+> > dtb.o files, but thats a separate issue).
+>=20
+> with:
+>=20
+>    cmd_dt_S_dtb constructs the assembly source to incorporate a devicetree
+>    FDT (that is, the .dtb file) as binary data in the kernel image.
+>    This assembly source contains labels before and after the binary data.
+>    The label names incorporate the file name of the corresponding .dtb
+>    file.  Hyphens are not legal characters in labels, so transform all
+>    hyphens from the file name to underscores when constructing the labels.
 
->> Besides, regmap would be useful if the RNG registers were actually 
->> located
->> in the
->> middle of the register area used by the CGU driver, which is not the 
->> case
->> here.
->> The CGU block does have some registers after the RNG ones on the X1000 
->> SoC,
->> but
->> I don't think they will ever be used (and if they are it won't be by 
->> the CGU
->> driver).
->> 
->> Regards,
->> -Paul
-> 
-> Ingenic M200 SoC's CGU has clock and power related registers after the
-> RNG registers. Paul Burton suggested using regmap to expose registers
-> to CGU and RNG drivers
-> (https://patchwork.linux-mips.org/patch/14094/).
+Thanks, that is clearer.
 
-Where can I find the M200 programming manual? The M200's CGU might have 
-some
-registers located after the RNG ones, but that does not mean that they 
-will
-be used by the clocks driver.
+I'll keep the paragraph about MIPS and the example configuration though,
+as I think its important information to reproduce the problem, and to
+justify why it wouldn't be appropriate to just rename the files (which
+was my first reaction).
 
-Thanks,
--Paul
+> Reviewed-by: Frank Rowand <frowand.list@gmail.com>
+
+Thanks
+James
+
+--ck3np9Ek/EMsFxRu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqgSqEACgkQbAtpk944
+dno+qg/+OVG/O0znyZup1R3l0Cs07bQYye+qoIv2byyBKi2HJtRKIRA/9oUww8L6
+b0/aBIY0NpayhhsC0/EziivmKMwTF1aQROnbN5AS1Z1B+vVnFX38jw2yc7C0RMd3
+bezjC4/qxZ3Tt5Q24ITliAc8IS36fo7448F1nCRhjqHkF4wOEmZ8GzGYY7SoOIaf
+u1NS/Cjl/gwEGN6XlLVVY7S6pdtNYYjOSS04UWTPBYsjqESLznkHYDeHvoS2kpsf
+HOnVTAqYv5Vv03iA3g+Rfse6sOuzIA9cL79Y7y7RQgbh/eqtXQzXbYdOrboFr7ZI
+cUn0p2YLSQvpbJe4wuXndmkJGotJIomhsgFZGs1B3FEyE1Hg7f/PIRzp3MTXnbDd
+pvDKQ7Y3n9K0dm4XIKcp0b3BH7sLNuxOnb2l/DVbf9uSLtcnfSbRyNDwGlqqHyEH
+JHvyo5odx80kL5+0w74ABX5hDOuK7bPqhF8slID+xv8zsnAt2vMIkVqx2TmIYqBo
+GL6RJI3xZPZk/oDA+rN3zw4TssFdQ5JBOs9B3q3iAtkGqd0/CIKMj4P5IItxqw2E
+tnucDBhc0cvbNCYpWw5X6wCiMzhhM8MdVTxnGvzKn/DAk+EWnGh6dfgvoY/Sl3r5
+O3g7tS2zfrFqvdm6Wecbro58Mzs+WcctRqK2h2LTXorEjBIRjig=
+=+//s
+-----END PGP SIGNATURE-----
+
+--ck3np9Ek/EMsFxRu--

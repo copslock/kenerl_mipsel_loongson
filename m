@@ -1,36 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 15:20:26 +0100 (CET)
-Received: from forward103p.mail.yandex.net ([IPv6:2a02:6b8:0:1472:2741:0:8b7:106]:60022
-        "EHLO forward103p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994718AbeCGOUTT3B7g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2018 15:20:19 +0100
-Received: from mxback15g.mail.yandex.net (mxback15g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:94])
-        by forward103p.mail.yandex.net (Yandex) with ESMTP id 89B3221830EE;
-        Wed,  7 Mar 2018 17:20:13 +0300 (MSK)
-Received: from smtp3o.mail.yandex.net (smtp3o.mail.yandex.net [2a02:6b8:0:1a2d::27])
-        by mxback15g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id p7sat8WTOO-KCluRPog;
-        Wed, 07 Mar 2018 17:20:13 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1520432413;
-        bh=hlG+E4Om6pSy4bthp67Gy4R0ylvN6YaPIUm5gjN3+bs=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=ob38HZY7Gv9XLJ+x2R3SIbZNXcEkApT8mspbgifT0+EdAL2wJjqOpHKO144KSww9B
-         IoTpOzy8Vso73r0OFmwAJK9MAmdImDfof9eK8e+Cfx63cfIUywRznFuyGRCXs/E9L1
-         hoadIJiI4UPIl6lTLEAJFjRaosBV71Q4BOcz0el4=
-Received: by smtp3o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id Q8TVNhMo6r-Jvgqj0f9;
-        Wed, 07 Mar 2018 17:20:09 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1520432412;
-        bh=hlG+E4Om6pSy4bthp67Gy4R0ylvN6YaPIUm5gjN3+bs=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=OF7x02S7TZBnpjzm79b6OUcrtl6JQ+09vjvXJCqjxRK+EUUP7EuqSgLaQ9pcJP0Mj
-         SXmhh6zdj+gf58bdlT3R+JmxthJY22BhmxuKUH2b7U9GLZYMQ3XtYXnAbkjyo12gwd
-         LUY8owQ1Brua0yYkWld7L1+P7iAkfomv+UhgqzOI=
-Authentication-Results: smtp3o.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Message-ID: <1520432391.3731.8.camel@flygoat.com>
-Subject: Re: [RFC 3/4] MIPS: Ingenic: Initial X1000 SoC support
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        James Hogan <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 15:36:01 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:34058 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994722AbeCGOfyQtDmt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Mar 2018 15:35:54 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 615652172D;
+        Wed,  7 Mar 2018 14:35:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 615652172D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 7 Mar 2018 14:35:41 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -44,25 +27,27 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Paul Cercueil <paul@crapouillou.net>,
         Mathieu Malaterre <malat@debian.org>,
         Dominik Peklo <dom.peklo@gmail.com>
-Date:   Wed, 07 Mar 2018 22:19:51 +0800
-In-Reply-To: <CANc+2y5_R5xYQuLbW7NAjO4mcW5RNn3Da77tAhYU5zj=0rkBDQ@mail.gmail.com>
+Subject: Re: [RFC 3/4] MIPS: Ingenic: Initial X1000 SoC support
+Message-ID: <20180307143541.GN4197@saruman>
 References: <20170927151527.25570-1-prasannatsmkumar@gmail.com>
-         <20170927151527.25570-4-prasannatsmkumar@gmail.com>
-         <20180306000832.GL4197@saruman>
-         <CANc+2y5_R5xYQuLbW7NAjO4mcW5RNn3Da77tAhYU5zj=0rkBDQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.5 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <jiaxun.yang@flygoat.com>
+ <20170927151527.25570-4-prasannatsmkumar@gmail.com>
+ <20180306000832.GL4197@saruman>
+ <CANc+2y5_R5xYQuLbW7NAjO4mcW5RNn3Da77tAhYU5zj=0rkBDQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="GIP5y49pbaVPin6k"
+Content-Disposition: inline
+In-Reply-To: <CANc+2y5_R5xYQuLbW7NAjO4mcW5RNn3Da77tAhYU5zj=0rkBDQ@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62829
+X-archive-position: 62830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,23 +60,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-在 2018-03-07三的 19:14 +0530，PrasannaKumar Muralidharan写道：
-> 
-> I used to get my code tested from Domink but I could not reach him
-> for
+
+--GIP5y49pbaVPin6k
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Mar 07, 2018 at 07:14:49PM +0530, PrasannaKumar Muralidharan wrote:
+> > Does X1000 use a different PRID, or is it basically just a JZ4780 core
+> > with different SoC peripherals?
+>=20
+> Yes X1000 does have a different PRID (PRID =3D 0x2ed1024f). X1000 has
+
+Right, so thats 0x2e000000 | PRID_COMP_INGENIC_D1 | PRID_IMP_JZRISC |
+0x4f, which cpu-probe.c already handles (apparently the D1 company code
+is used for JZ4770 & JZ4775 too).
+
+> I used to get my code tested from Domink but I could not reach him for
 > quite some time. Before buying the development board myself I would
 > like to see if anyone can help me in testing. Do you have any contact
 > with Ingenic who can help in testing this?
-> 
 
-Hi PrasannaKumar
+Not personally, but I'll ask around. Of course if nobody much cares
+about it in practice and nobody has the hardware, there may be little
+value in supporting it upstream.
 
-I'm resently working on Ingenic chips too. Ingentic guys have sent me a
-X1000 development broad and it will arrive in about two weeks. I have a
-ejtag debugger also (but not very suit with X1000 because X1000 have
-different ejtag interface with standard MIPS cores, maybe we need some
-modification on openocd). So maybe I can help in testing this after I
-get my broad. Just ask if you need any help.
-Thanks
--- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cheers
+James
+
+--GIP5y49pbaVPin6k
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqf+L0ACgkQbAtpk944
+dnpxJg//YwmBGpZiKtWrr50Yl9djqsbIg8DK8NbUWmpkL00AEb33Km0FXtjJZJA2
+ui3yc67jcMiE6BdJ8+jJoEnYlkOq8/6Uk1U6dyOUfKitnQVVKq92TMdzQe5vmNSr
+kJY/F2YsknT/3Z6YGn+RlRM6NBhRiT/VnIrj1CIzK7hc/NB1/eKgP7jBwQDs77Gx
+0PmX+bXifRmYYPPaSf3Ki2vx07jKqBPdcnpluvZB57XwpGSwUScTqQcBTOcFZAAL
+92b2AGRvEAjoWBc3IXo5OgMPGEtkodwHgDjZVYQH0XLM4UaLuj2bI/fEQQ9z/fbV
+ONAi/Cqit7RcHBspNnpJuoYbcEqn0/Xy3k2xbTJja/4VybZgK/wFb3IPEIHEqOVQ
+PJTfj2UoADNnccEXSMJRyFVXjK9Na5sN5zjnnelRfObNZ4ssSO6bMry6RX/OcT8z
+LnbsM1DLcpk16ZGUDSx/d2S7mQK1oc2YBfw7KY2uuAJ6ARyaw4uftk2l9RDSqI9g
+/yqwKMCtmR6iYF4Wd7CVbF+QeGOykvg4KHV50E3r19AEDvHFbOS7poVW1yfWiV56
+QHyx3rMoM3YcX6OoZBkm+qFA+Yyfkzn2Ut7bHUG5JutuJ+ZuUIAkyj3pq4cEeoaw
+9LkVmgGulWlXSJDFaxHXSIyj61d626Hs7lfiwVzZLaz+T6+J5+o=
+=zbax
+-----END PGP SIGNATURE-----
+
+--GIP5y49pbaVPin6k--

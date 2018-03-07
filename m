@@ -1,70 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 14:45:03 +0100 (CET)
-Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:44101
-        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994720AbeCGNo4k1v1g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2018 14:44:56 +0100
-Received: by mail-io0-x242.google.com with SMTP id h23so3053518iob.11;
-        Wed, 07 Mar 2018 05:44:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=9ZxNlKhAxHIkVsIi8BDFjolqv6lDHm5y/dg9vYi0dUU=;
-        b=c+XSVp2iBd1ploamULaONJzUDjRxqC7GCtKK+FAT2ssoB8AeR4itQUK4XGqCzP0yKC
-         b1MRnmP93fUI69B8soqSfC0eq0vCDSLQfedj/vw+D5zfsMVFAoInKVWbmEXs6OstTS8C
-         wAmkXyj1QUHMWX3JiWOAGvqIIA2oy8wQsS94Y+xt/9KqDTx9fb4YxeFHW5HQ6A6XgQm/
-         fbQdgp1G7OyNgTEKNUwF4odTW3rRVe0NPbkGqlw2ZxGU+AEoRuCRamCe1pOc/e7eopik
-         PxgcjtBXuOAg1FDsx4N8VN7R1Q3v3G9yC2Ys3srJmlfyjqSL6icU9MQ37WHNAhC9lzc6
-         ZWJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=9ZxNlKhAxHIkVsIi8BDFjolqv6lDHm5y/dg9vYi0dUU=;
-        b=ryLX+zLSOQBs0GI7qkVduhdTK/IzVBocbh67U/rZ9kEkrZZ3RUFTUrtiD/ir3uhQxK
-         QXhmN4UFrdNd5OKkwDqWi/R25gjM3yQC/jrejJgd7CdNYzTWAmW4dN1/omj2sfo2W/VU
-         kfkcZm4997xc5MiHTjG26Y0c06tYm5XMX+JUqzO/tk5aAIv/LEVuBk8XI7D1ONDhzKi1
-         JWp9DL8xR/yDJNC0H48yWfyooR6M8pvapcCMW8E+r9MEfIXrt8Za1/JScLqz1OfhpV/v
-         WeWdS9swwVV6K3fD6CPihJA8lDjTts3Qr5Wzf74UiatRipD30VpoAvqYFGxcjWciL9lH
-         pYLw==
-X-Gm-Message-State: AElRT7Ex3MU6GWCXyAaFbzD2Pg2+mPE4N54b/nrHJbbSMvohBGIEljMa
-        F8syy+Xzo985/bjSdbJA/cYuWUEwvA913AJbxmw=
-X-Google-Smtp-Source: AG47ELvKeokPpWFhnHpbFTXl+YjJKuwbhFOTrPaq6rr2+rKf2g4TBk3nXFg0CAY2LMZ6hgNQeJX6gs9CTg8rznCSPwM=
-X-Received: by 10.107.198.151 with SMTP id w145mr25431464iof.255.1520430290089;
- Wed, 07 Mar 2018 05:44:50 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.2.89.194 with HTTP; Wed, 7 Mar 2018 05:44:49 -0800 (PST)
-In-Reply-To: <20180306000832.GL4197@saruman>
-References: <20170927151527.25570-1-prasannatsmkumar@gmail.com>
- <20170927151527.25570-4-prasannatsmkumar@gmail.com> <20180306000832.GL4197@saruman>
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Wed, 7 Mar 2018 19:14:49 +0530
-Message-ID: <CANc+2y5_R5xYQuLbW7NAjO4mcW5RNn3Da77tAhYU5zj=0rkBDQ@mail.gmail.com>
-Subject: Re: [RFC 3/4] MIPS: Ingenic: Initial X1000 SoC support
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 15:07:23 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:58580 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994715AbeCGOHQq7isg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Mar 2018 15:07:16 +0100
+Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B07E52172D;
+        Wed,  7 Mar 2018 14:07:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B07E52172D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+From:   James Hogan <jhogan@kernel.org>
+To:     linux-kbuild@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        sboyd@codeaurora.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-clk@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Mathieu Malaterre <malat@debian.org>,
-        Dominik Peklo <dom.peklo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <prasannatsmkumar@gmail.com>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org
+Subject: [PATCH] kbuild: Handle builtin dtb files containing hyphens
+Date:   Wed,  7 Mar 2018 14:06:33 +0000
+Message-Id: <20180307140633.26182-1-jhogan@kernel.org>
+X-Mailer: git-send-email 2.13.6
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62827
+X-archive-position: 62828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,73 +47,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+On dtb files which contain hyphens, the dt_S_dtb command to build the
+dtb.S files (which allow DTB files to be built into the kernel) results
+in errors like the following:
 
-Thanks for reviewing this.
+bcm3368-netgear-cvg834g.dtb.S: Assembler messages:
+bcm3368-netgear-cvg834g.dtb.S:5: Error: : no such section
+bcm3368-netgear-cvg834g.dtb.S:5: Error: junk at end of line, first unrecognized character is `-'
+bcm3368-netgear-cvg834g.dtb.S:6: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_begin:'
+bcm3368-netgear-cvg834g.dtb.S:8: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_end:'
+bcm3368-netgear-cvg834g.dtb.S:9: Error: : no such section
+bcm3368-netgear-cvg834g.dtb.S:9: Error: junk at end of line, first unrecognized character is `-'
 
-On 6 March 2018 at 05:38, James Hogan <jhogan@kernel.org> wrote:
-> On Wed, Sep 27, 2017 at 08:45:26PM +0530, PrasannaKumar Muralidharan wrote:
->> Add initial Ingenic X1000 SoC support. Provide minimum necessary
->> information to boot kernel to an initramfs userspace.
->>
->> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->> ---
->>  arch/mips/boot/dts/ingenic/x1000.dtsi | 93 +++++++++++++++++++++++++++++++++++
->>  arch/mips/jz4740/Kconfig              |  6 +++
->>  arch/mips/jz4740/time.c               |  2 +-
->>  3 files changed, 100 insertions(+), 1 deletion(-)
->>  create mode 100644 arch/mips/boot/dts/ingenic/x1000.dtsi
->
-> arch/mips/jz4780/setup.c, specifically get_board_mach_type() and
-> get_system_type() will need updating too.
+This is due to the hyphen being used in symbol names. Replace all
+hyphens with underscores in the dt_S_dtb command to avoid this problem.
 
-Missed it. Will make necessary changes.
+Quite a lot of dts files have hyphens, but its only a problem on MIPS
+where such files can be built into the kernel. For example when
+CONFIG_DT_NETGEAR_CVG834G=y, or on BMIPS kernels when the dtbs target is
+used (in the latter case it admitedly shouldn't really build all the
+dtb.o files, but thats a separate issue).
 
-> Does X1000 use a different PRID, or is it basically just a JZ4780 core
-> with different SoC peripherals?
+Fixes: 695835511f96 ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Kevin Cernekee <cernekee@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: linux-kbuild@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 4.9+
+---
+ scripts/Makefile.lib | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Yes X1000 does have a different PRID (PRID = 0x2ed1024f). X1000 has
-single CPU core so it is definitely not JZ4780.
-
->> diff --git a/arch/mips/boot/dts/ingenic/x1000.dtsi b/arch/mips/boot/dts/ingenic/x1000.dtsi
->> new file mode 100644
->> index 0000000..abbb9ec
->> --- /dev/null
->> +++ b/arch/mips/boot/dts/ingenic/x1000.dtsi
->> @@ -0,0 +1,93 @@
->> +/*
->> + * Copyright (C) 2016 PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
->> + *
->> + * This file is licensed under the terms of the GNU General Public
->> + * License version 2. This program is licensed "as is" without any
->> + * warranty of any kind, whether express or implied.
->
-> (these will need updating to use SPDX identifiers if you respin)
-
-Sure. Will take care while submitting next version.
-
->> +     cgu: jz4780-cgu@10000000 {
->
-> not sure jz4780 is appropriate here.
-
-No, it is not. Copy pasted from jz4780.dtsi but missed updating this.
-
->> +             compatible = "ingenic,x1000-cgu";
->> +             reg = <0x10000000 0x100>;
->> +
->> +             clocks = <&ext>, <&rtc>;
->> +             clock-names = "ext", "rtc";
->> +
->> +             #clock-cells = <1>;
->> +     };
->
-> Cheers
-> James
-
-I used to get my code tested from Domink but I could not reach him for
-quite some time. Before buying the development board myself I would
-like to see if anyone can help me in testing. Do you have any contact
-with Ingenic who can help in testing this?
-
-Thanks,
-PrasannaKumar
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 5589bae34af6..a6f538b31ad6 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -297,11 +297,11 @@ cmd_dt_S_dtb=						\
+ 	echo '\#include <asm-generic/vmlinux.lds.h>'; 	\
+ 	echo '.section .dtb.init.rodata,"a"';		\
+ 	echo '.balign STRUCT_ALIGNMENT';		\
+-	echo '.global __dtb_$(*F)_begin';		\
+-	echo '__dtb_$(*F)_begin:';			\
++	echo '.global __dtb_$(subst -,_,$(*F))_begin';	\
++	echo '__dtb_$(subst -,_,$(*F))_begin:';		\
+ 	echo '.incbin "$<" ';				\
+-	echo '__dtb_$(*F)_end:';			\
+-	echo '.global __dtb_$(*F)_end';			\
++	echo '__dtb_$(subst -,_,$(*F))_end:';		\
++	echo '.global __dtb_$(subst -,_,$(*F))_end';	\
+ 	echo '.balign STRUCT_ALIGNMENT'; 		\
+ ) > $@
+ 
+-- 
+2.13.6

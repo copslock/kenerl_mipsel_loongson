@@ -1,41 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 16:47:57 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:41550 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994719AbeCGPru5XjNy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Mar 2018 16:47:50 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3296F2172D;
-        Wed,  7 Mar 2018 15:47:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 3296F2172D
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 7 Mar 2018 15:47:39 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] MIPS: generic: Add support for Microsemi Ocelot
-Message-ID: <20180307154739.GR4197@saruman>
-References: <20180306121607.1567-1-alexandre.belloni@bootlin.com>
- <20180306121607.1567-5-alexandre.belloni@bootlin.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Ayym4vmyMU9P4uDb"
-Content-Disposition: inline
-In-Reply-To: <20180306121607.1567-5-alexandre.belloni@bootlin.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2018 16:53:27 +0100 (CET)
+Received: from forward101j.mail.yandex.net ([5.45.198.241]:57911 "EHLO
+        forward101j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994724AbeCGPxU511Wy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2018 16:53:20 +0100
+Received: from mxback10j.mail.yandex.net (mxback10j.mail.yandex.net [IPv6:2a02:6b8:0:1619::113])
+        by forward101j.mail.yandex.net (Yandex) with ESMTP id 1B8561242FE2;
+        Wed,  7 Mar 2018 18:53:15 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback10j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id MMlBj7Jo1w-rC4uxfGO;
+        Wed, 07 Mar 2018 18:53:15 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1520437995;
+        bh=LhaSkkH6bNOjGva+/I033TKzuz7JhdjKQHdX2SXoMjs=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=NInvy2KpTQKLud3ODoQ4rVz9d4sunJCSmzINld0WPzRjMoXsHBzxQUAk7uZhY50Zw
+         5w+zuBTi6PxZLaHv3Oe7D9OYSvsMqiZmRrg9MuA5GhY41j3pNRKG+TKdICOQAoTw+6
+         kWQqYfJa2GJiQTn4YBojvlkvCSqeu7m3Y3lZCJFk=
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id ocAtXY9o3I-qvZCVTwG;
+        Wed, 07 Mar 2018 18:53:09 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1520437990;
+        bh=LhaSkkH6bNOjGva+/I033TKzuz7JhdjKQHdX2SXoMjs=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=hyU6P2kVD2wU33FDOVxTSNUboVxsstie4DodvfzYfMNoHmTCI2hEJS01mjVfy+kXb
+         1b1sjWXR/ilfy6ldhMKUCvbBGTy2DWMgHbmaTRbKunqQVCTb1rvF0ogI5QgK8DfJ9p
+         z5nKm1S1t6rrkOSHrnRHL6nTKU1xW21EM4Lppl8I=
+Authentication-Results: smtp4o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1520437971.3731.22.camel@flygoat.com>
+Subject: Re: [RFC 3/4] MIPS: Ingenic: Initial X1000 SoC support
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        James Hogan <jhogan@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        sboyd@codeaurora.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-clk@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        Dominik Peklo <dom.peklo@gmail.com>
+Date:   Wed, 07 Mar 2018 23:52:51 +0800
+In-Reply-To: <CANc+2y5wsvGWszu3pePYhs2wb1_AgPdjG+ugfOCzbZVfVHDMvw@mail.gmail.com>
+References: <20170927151527.25570-1-prasannatsmkumar@gmail.com>
+         <20170927151527.25570-4-prasannatsmkumar@gmail.com>
+         <20180306000832.GL4197@saruman>
+         <CANc+2y5_R5xYQuLbW7NAjO4mcW5RNn3Da77tAhYU5zj=0rkBDQ@mail.gmail.com>
+         <20180307143541.GN4197@saruman>
+         <CANc+2y5wsvGWszu3pePYhs2wb1_AgPdjG+ugfOCzbZVfVHDMvw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.5 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62840
+X-archive-position: 62841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,115 +77,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+在 2018-03-07三的 20:35 +0530，PrasannaKumar Muralidharan写道：
+> Hi James,
+> 
+> Seems Jiaxun is interested in the board and is willing to help.
+> 
+> I have been told that Ingenic is focusing on IoT market and X1000 is
+> intended for IoT segment. I think that they would be selling several
+> 100Ks of chip over the coming years. But I feel Ingenic spends time
+> only on maintaining their Linux port which is usually based on very
+> old kernel version.
 
---Ayym4vmyMU9P4uDb
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Ingenic is going to release their XBrust2 core with it's products such
+as X2000 a few days later. Witch is a pure MIPS64r5 with MXU2(A
+superset of MIPS's MSA SIMD instruction set). The newest kernel port of
+X1000 maintain by Ingenic is based on Linux-4.4 [1]. After communicated
+with Ingenic, they said they are forcusing on China domestic market.
+But they're looking for partners to enter foriegn market. 
 
-On Tue, Mar 06, 2018 at 01:16:06PM +0100, Alexandre Belloni wrote:
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index d1ca839c3981..d2882244cf1f 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -543,6 +543,10 @@ generic_defconfig:
->  # now that the boards have been converted to use the generic kernel they are
->  # wrappers around the generic rules above.
->  #
-> +.PHONY: ocelot_defconfig
-> +ocelot_defconfig:
-> +	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=ocelot
-
-FYI this conflicts with https://patchwork.linux-mips.org/patch/18596/,
-but can be trivially fixed up when applied to the following, so no need
-for you to rebase:
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 2ed4c8927701..646a2d98012d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -565,6 +565,9 @@ generic_defconfig:
- # now that the boards have been converted to use the generic kernel they are
- # wrappers around the generic rules above.
- #
-+legacy_defconfigs		+= ocelot_defconfig
-+ocelot_defconfig-y		:= 32r2el_defconfig BOARDS=ocelot
-+
- legacy_defconfigs		+= sead3_defconfig
- sead3_defconfig-y		:= 32r2el_defconfig BOARDS=sead-3
-
-> +
->  .PHONY: sead3_defconfig
->  sead3_defconfig:
->  	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=sead-3
-> diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/configs/generic/board-ocelot.config
-> new file mode 100644
-> index 000000000000..fa4e8988ebc8
-> --- /dev/null
-> +++ b/arch/mips/configs/generic/board-ocelot.config
-> @@ -0,0 +1,36 @@
-> +# require CONFIG_32BIT=y
-
-That should be implied now by CPU_SUPPORTS_64BIT_KERNEL=n since
-CONFIG_CPU_MIPS32_R2=y.
-
-> +# require CONFIG_CPU_MIPS32_R2=y
-
-> +static __init bool ocelot_detect(void)
-> +{
-> +	u32 rev;
-> +
-> +	rev = __raw_readl((void *)DEVCPU_GCB_CHIP_REGS_CHIP_ID);
-
-How about a TLB check first, a bit like _kvm_mips_host_tlb_inv() in
-arch/mips/kvm/tlb.c, i.e.:
-
-	int idx;
-
-	/* Look for the TLB entry set up by redboot before trying to use it */
-	write_c0_entryhi(DEVCPU_GCB_CHIP_REGS_CHIP_ID);
-	mtc0_tlbw_hazard();
-	tlb_probe();
-	tlb_probe_hazard();
-	idx = read_c0_index();
-	if (idx < 0)
-		return 0;
-
-	/* A TLB entry exists, lets assume its usable and check the CHIP ID */
-	rev = __raw_readl((void __iomem *)DEVCPU_GCB_CHIP_REGS_CHIP_ID);
-
-(That assumes that if a TLB entry exists that it will be usable, which
-isn't technically complete since the entry may not be marked valid, but
-its probably sufficient in practice).
-
-Incidentally you need to use __iomem there to avoid the following sparse
-error:
-
-arch/mips/generic/board-ocelot.c:21:28: warning: incorrect type in argument 1 (different address spaces)
-arch/mips/generic/board-ocelot.c:21:28:    expected void const volatile [noderef] <asn:2>*mem
-arch/mips/generic/board-ocelot.c:21:28:    got void *<noident>
-
-Cheers
-James
-
---Ayym4vmyMU9P4uDb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqgCZsACgkQbAtpk944
-dnrKjg//cqAgqz2QxebXprkbAg4FBbkE+q3fhBURg0O4tIS93jrslAybY8Ej7558
-gMr6RTNhE2sZVjZpE4zHOoDYd4ruow8+1UVSezqwPErZMD0IZJSF1xl3XX4eDoSq
-i3zz1Vb8iQBYNRDoQEpJhpZ/B7bqUgI0cmY/obbxJTnVIg9e6PowzXuIVJj/5txm
-tE8yRlPdT+uhOuAP2fl39/sM8R6Eq0t/ZoJ/bdaJg9Q6/lDBoTbqxEdPaj+06YLn
-vJb2IcqCVSclLBJQ10Psxxl31+28Qk6Z00rpTaHof0Koc2GmXRVqi0oXILdeZEUG
-UxoB6wKJibtSgbqFHhn3grzbDKQ/UPkltdE6+vy8XlRDrDuZbhBWf68mbk3ThB6y
-ftMvcNIL0vGwxAilBx1Xf6pBPLf6AG6IujoLiXMrYB1BlojBUYm5sNUZe3L1JAih
-poVchrZDX5QLOrpqarYgfEeM3XOm/2MvNzBVlFnonp6Rbu7MOd6Srbj0vbfvdehq
-ypWi18MrisCktP7k9pAtGxPL7DNfNNhpYjwRpD6BNQzruZn4DVLN04e8pxbdrxk5
-rtekEC2nnxxslfuCUsYs6loxWUD+FWOb8cmHRQVY+nlqVS9TNC6K+8cpFiFrDRzo
-XgeebXOH27wBTSz8FI+AB5Pu1vO76hXbtBaVfPZ3eICuI8v+Hvs=
-=sWNK
------END PGP SIGNATURE-----
-
---Ayym4vmyMU9P4uDb--
+[1] https://pan.baidu.com/s/1o8MeYts (Well you can download from this
+Chinese website, ingenic have a gerrit but I don't have access to it.
+As my experience, it's hard to develop on Chinese-made chips wihout
+reading Chinese documents.)  
+> 
+> > 

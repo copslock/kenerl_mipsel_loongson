@@ -1,72 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2018 07:57:37 +0100 (CET)
-Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:52712
-        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994747AbeCHG4tGFpvY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Mar 2018 07:56:49 +0100
-Received: by mail-it0-x242.google.com with SMTP id k135so6397131ite.2;
-        Wed, 07 Mar 2018 22:56:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=+Nh3hDF0kqlJhbCWaZgS6jePrPygoFtXv9+CoD2kJAk=;
-        b=frO0iae59g+yFHJeTHAuE8BeLvUhKJsyCZm//fbyP2XnTdkzN72dJeZ2nrZjxAbrPp
-         SFyzW2vCj28NjzUdKk6TPN8gJB3t+H11ybS4KMEzYp+V7Zgh8p3q/Mj3j10C4lZMOgs5
-         Q/bJYKryJt/WBLVRjAyjyyeICXhEZ6gDipIaJfHFpog+tB/JaEkzYhC+AEsCkDzVdWOy
-         vrDCYFmAhUwv2EOIEtdGx5OwMam0RBFyYw0oqaxpF8z1vT2vT6h+22BNn1IYRWG/cKHb
-         J4Uf66c4C+VmxXT0phJoMj4JVbfooyLWB79C0OpV94a6Pb1BWG8bA8Ry4ybK0C2Qg96p
-         S6RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=+Nh3hDF0kqlJhbCWaZgS6jePrPygoFtXv9+CoD2kJAk=;
-        b=YxtIcQBqk+Dt4RLTS+HMdaDnNG6dL5KB/I+uy7gPklTd2F094z6RYPiDx0zGCCC7hj
-         9yGm7LDxwnhQenKcYYAf8WcovS6gC5O+W25jChxHpvwQWmMx2GxoE0y8YPKeqymWA8LA
-         hwcmIjgW1lSgmy/bZoo/ZBlZ2XMI0oFyAtZvOwAVejfhUJzY9y4h6XN4S+KUNBbhVXRy
-         s9AyK4czVpiRg1DTdOyT3mF0q9bhUYTHpf9b9mcMwqgR0pLDogplRVIM0343WRXYwnGT
-         VY9Y982tcG3HodAkTYgPrkrcpT5MJzX+J1P3ShAHGad1Gq/unSVNh8so49jRi/MR/yVy
-         pHUg==
-X-Gm-Message-State: AElRT7FpQBT+b9oypvG2SrpUbh2RhOqCSqj+OI0YP1OJcgYtoG2nhvXw
-        Qsa+q6Rn6kNmQgYusrfAv38=
-X-Google-Smtp-Source: AG47ELs6yXy9pN2QX2Nh4Q6ZUzxuUZ3q+pKIA4pVcqnCjiuTdBGU3j2qULV7TPdYe82YArB2sUQVbg==
-X-Received: by 10.36.78.14 with SMTP id r14mr26821500ita.146.1520492187693;
-        Wed, 07 Mar 2018 22:56:27 -0800 (PST)
-Received: from [192.168.1.70] (c-73-93-215-6.hsd1.ca.comcast.net. [73.93.215.6])
-        by smtp.gmail.com with ESMTPSA id v125sm10286695ith.38.2018.03.07.22.56.26
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Mar 2018 22:56:27 -0800 (PST)
-Subject: Re: [PATCH] kbuild: Handle builtin dtb files containing hyphens
-To:     James Hogan <jhogan@kernel.org>, linux-kbuild@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2018 08:10:08 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:35190 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991172AbeCHHKBq2RAY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Mar 2018 08:10:01 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6685206B2;
+        Thu,  8 Mar 2018 07:09:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A6685206B2
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Thu, 8 Mar 2018 07:09:48 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Frank Rowand <frowand.list@gmail.com>
+Cc:     linux-kbuild@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
         stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: Handle builtin dtb files containing hyphens
+Message-ID: <20180308070948.GA5187@saruman>
 References: <20180307140633.26182-1-jhogan@kernel.org>
-From:   Frank Rowand <frowand.list@gmail.com>
-Message-ID: <2bb96235-6b1f-07bb-3dfe-d5dbb8eddb7f@gmail.com>
-Date:   Wed, 7 Mar 2018 22:56:25 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+ <7ecea7ca-2931-16bc-a110-1ecdaf17f0f2@gmail.com>
+ <20180307202511.GT4197@saruman>
+ <a6c448df-c026-dafe-6d34-801f69ca64fe@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20180307140633.26182-1-jhogan@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <frowand.list@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
+Content-Disposition: inline
+In-Reply-To: <a6c448df-c026-dafe-6d34-801f69ca64fe@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62852
+X-archive-position: 62853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frowand.list@gmail.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,20 +55,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/07/18 06:06, James Hogan wrote:
-> On dtb files which contain hyphens, the dt_S_dtb command to build the
-> dtb.S files (which allow DTB files to be built into the kernel) results
-> in errors like the following:
 
-< snip >
+--EVF5PPMfhYS0aIcm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hi James,
+On Wed, Mar 07, 2018 at 03:19:11PM -0800, Frank Rowand wrote:
+> On 03/07/18 12:25, James Hogan wrote:
+> > On Wed, Mar 07, 2018 at 12:11:41PM -0800, Frank Rowand wrote:
+> >> On 03/07/18 06:06, James Hogan wrote:
+> >>> Quite a lot of dts files have hyphens, but its only a problem on MIPS
+> >>> where such files can be built into the kernel. For example when
+> >>> CONFIG_DT_NETGEAR_CVG834G=3Dy, or on BMIPS kernels when the dtbs targ=
+et is
+> >>> used (in the latter case it admitedly shouldn't really build all the
+> >>> dtb.o files, but thats a separate issue).
 
-Sorry for dribbling my comments out in so many emails.  :-)
+> > I'll keep the paragraph about MIPS and the example configuration though,
+> > as I think its important information to reproduce the problem, and to
+> > justify why it wouldn't be appropriate to just rename the files (which
+> > was my first reaction).
+>=20
+> Other than the part that says "its only a problem on MIPS".  That is
+> pedantically correct because no other architecture (that I am aware
+> of, not that I searched) currently has a devicetree source file name
+> with a hyphen in it, where that file is compiled into the kernel as
+> an asm file.  But it is potentially a problem on any architecture
+> to it is misleading to label it as MIPS only.
 
-Please change the subject line to say "dtb filenames" instead
-of "dtb files".
+Okay I'll reword to make it clearer and do a v2.
 
-Thanks,
+Thanks
+James
 
-Frank
+--EVF5PPMfhYS0aIcm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIyBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqg4bYACgkQbAtpk944
+dnovAA/4nglpchL1DVTyXHlb/6+dRAHxxUOorst2GnEnlVqVTErOQrKX5SYL6LH9
+w2+Xoa+D/+Yp11Hl1pqigmu3LYJ4uImBaV3Es0hF7gstyyloWyBiL1EcbyMRfxbR
+4e89LgGvVroW2gbkUU0ENy59QRaBQ7+yJtvcpmAfJrzd6jVDnmsmEIr/9ohaxHbQ
+V9JdhtqMYeJ/PWVrGJijj+q4cvQAh5FiGhelYzrvIpa1oh/PNOPRMM7oYLVLyh2k
+Mol4Bsc2mptdGiGB06y+qZ4UbUbRBS5BTMDSiXTHIkG0vCbs5RtkghnBE1asZmJP
+cXVYHA6c1uDkx0zPApccbFUpH/5ySLcEiSHftJV38XL52E+L1BOTqX8QXkl36MNZ
+p9E+55c6cNwgRcbsA9xhAOf5XQLf+3n6EDSZiy1WQj6GF/A1OeQV3S6nJIV9KQ9g
+S0SgJ5SV9CzYay9dL4cU0obY7bK5HJHHaF74jk93tgqrPqcik3gh8/CWjplng5UJ
+vPSH6L0pYltTuc02MEmwbOY9gguYKPZ9t+L4pGjHREqRUYW9XMY9J98K0ZDufFvB
+sXPG9GZPtXtE+YjaKP5cWZVM0vyrQNObGqleQgUXIx/gYhLFcjtHz3t47fMiKOmj
+OJT4JVHONTlaYnAmh/1zB3/HUnJqM/hn6S+VS37UC03kKVKjgA==
+=tjHY
+-----END PGP SIGNATURE-----
+
+--EVF5PPMfhYS0aIcm--

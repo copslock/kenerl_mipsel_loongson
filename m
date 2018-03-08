@@ -1,36 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2018 14:46:43 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:46542 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994745AbeCHNqflSZph (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Mar 2018 14:46:35 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 353E0205F4;
-        Thu,  8 Mar 2018 13:46:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 353E0205F4
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 8 Mar 2018 13:46:24 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [GIT PULL] MIPS fixes for 4.16-rc5
-Message-ID: <20180308134624.GB5187@saruman>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2018 17:26:51 +0100 (CET)
+Received: from conssluserg-01.nifty.com ([210.131.2.80]:57416 "EHLO
+        conssluserg-01.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994754AbeCHQ0lui87A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Mar 2018 17:26:41 +0100
+Received: from mail-vk0-f52.google.com (mail-vk0-f52.google.com [209.85.213.52]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id w28GPx60020836;
+        Fri, 9 Mar 2018 01:26:00 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com w28GPx60020836
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1520526360;
+        bh=sYN8yyZMd+s4oQ3KWeLjJtovCobZzWv7+i7S6s7bkyI=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=cS2yT2LJoGUZFitXeTaQRUc68qsHABaszi7S3ed/P/XMbAW+R8d+pvzMx5i9iR6lc
+         CKSkaHnPdaw3Djty8cCxgnUtmhWWpPdPHWNmzu+/644gfImPxfhVHb0IXGYuk7e/wI
+         +fWkZMjqGybN0nqvbRgke6W6QW+uPFoHZFpNCVGoP/ntQ8lapo9FKccOTZedg67Erk
+         AtAuvSr9q/MZAzsb9rQWtcm34bPQtkL9vU37aRC3Wg6BBo4mYNG5vTECeDLGS7V7rb
+         dHZru59P9wq7DBEXFDIfYk1GKR6r/9r8PISe/vBXC505BCjIG5VUXEHhyBc4fY0ECF
+         sm296dp5gMzKw==
+X-Nifty-SrcIP: [209.85.213.52]
+Received: by mail-vk0-f52.google.com with SMTP id z190so185452vkg.1;
+        Thu, 08 Mar 2018 08:26:00 -0800 (PST)
+X-Gm-Message-State: APf1xPCY5YeF8cbzLVWk0ReVtqaMk3T04sUKT9jwwM/fmO4rgBjIOYbC
+        JxTlbKxHyYbct8m9qgXgUclxGCcTdNOvlQxTOeg=
+X-Google-Smtp-Source: AG47ELtACDFC8CbKLB5qCtxxfMmYIBBYi+aVRDSVfHRmOmgdYDP3y6iLD1uMxktuAsvUWrQIl7ZA8jIBHLNoIaq9b9k=
+X-Received: by 10.31.201.70 with SMTP id z67mr18982925vkf.154.1520526358913;
+ Thu, 08 Mar 2018 08:25:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="61jdw2sOBCFtR2d/"
-Content-Disposition: inline
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.176.32.138 with HTTP; Thu, 8 Mar 2018 08:25:18 -0800 (PST)
+In-Reply-To: <20180308110246.16639-1-jhogan@kernel.org>
+References: <CAK7LNARfTxxb0_RNEPvBzuEqP_g-cajZGpaGSuMJBUwDW66yww@mail.gmail.com>
+ <20180308110246.16639-1-jhogan@kernel.org>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Fri, 9 Mar 2018 01:25:18 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASk1wzziCHtNY4jo8GO_aXTwrAh1bY-CyLiOSmBKm=BMg@mail.gmail.com>
+Message-ID: <CAK7LNASk1wzziCHtNY4jo8GO_aXTwrAh1bY-CyLiOSmBKm=BMg@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: Handle builtin dtb file names containing hyphens
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        devicetree@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62857
+X-archive-position: 62858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,81 +68,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+2018-03-08 20:02 GMT+09:00 James Hogan <jhogan@kernel.org>:
+> cmd_dt_S_dtb constructs the assembly source to incorporate a devicetree
+> FDT (that is, the .dtb file) as binary data in the kernel image. This
+> assembly source contains labels before and after the binary data. The
+> label names incorporate the file name of the corresponding .dtb file.
+> Hyphens are not legal characters in labels, so .dtb files built into the
+> kernel with hyphens in the file name result in errors like the
+> following:
+>
+> bcm3368-netgear-cvg834g.dtb.S: Assembler messages:
+> bcm3368-netgear-cvg834g.dtb.S:5: Error: : no such section
+> bcm3368-netgear-cvg834g.dtb.S:5: Error: junk at end of line, first unrecognized character is `-'
+> bcm3368-netgear-cvg834g.dtb.S:6: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_begin:'
+> bcm3368-netgear-cvg834g.dtb.S:8: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_end:'
+> bcm3368-netgear-cvg834g.dtb.S:9: Error: : no such section
+> bcm3368-netgear-cvg834g.dtb.S:9: Error: junk at end of line, first unrecognized character is `-'
+>
+> Fix this by updating cmd_dt_S_dtb to transform all hyphens from the file
+> name to underscores when constructing the labels.
+>
+> As of v4.16-rc2, 1139 .dts files across ARM64, ARM, MIPS and PowerPC
+> contain hyphens in their names, but the issue only currently manifests
+> on Broadcom MIPS platforms, as that is the only place where such files
+> are built into the kernel. For example when CONFIG_DT_NETGEAR_CVG834G=y,
+> or on BMIPS kernels when the dtbs target is used (in the latter case it
+> admittedly shouldn't really build all the dtb.o files, but thats a
+> separate issue).
+>
+> Fixes: 695835511f96 ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Reviewed-by: Frank Rowand <frowand.list@gmail.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Kevin Cernekee <cernekee@gmail.com>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: <stable@vger.kernel.org> # 4.9+
+> ---
+> Changes in v2:
+>  - Rewrite commit message (thanks Frank for some improved wording).
+>  - Add Franks' reviewed-by.
 
---61jdw2sOBCFtR2d/
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Applied to linux-kbuild/fixes.  Thanks!
 
-Hi Linus,
-
-Please pull these MIPS fixes for 4.16-rc5.
-
-Thanks
-James
-
-The following changes since commit 6ae1756faddefd7494353380ee546dd38c2f97eb:
-
-  MIPS: Drop spurious __unused in struct compat_flock (2018-02-20 15:46:44 +0000)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_fixes_4.16_4
-
-for you to fetch changes up to 06a3f0c9f2725f5d7c63c4203839373c9bd00c28:
-
-  MIPS: BMIPS: Do not mask IPIs during suspend (2018-03-05 23:35:04 +0000)
-
-----------------------------------------------------------------
-MIPS fixes for 4.16-rc5
-
-A miscellaneous pile of MIPS fixes for 4.16:
- - Move put_compat_sigset() to evade hardened usercopy warnings (4.16)
- - Select ARCH_HAVE_PC_{SERIO,PARPORT} for Loongson64 platforms (4.16)
- - Fix kzalloc() failure handling in ath25 (3.19) and Octeon (4.0)
- - Fix disabling of IPIs during BMIPS suspend (3.19)
-
-----------------------------------------------------------------
-Colin Ian King (2):
-      MIPS: ath25: Check for kzalloc allocation failure
-      MIPS: OCTEON: irq: Check for null return on kzalloc allocation
-
-Huacai Chen (2):
-      MIPS: Loongson64: Select ARCH_MIGHT_HAVE_PC_PARPORT
-      MIPS: Loongson64: Select ARCH_MIGHT_HAVE_PC_SERIO
-
-Justin Chen (1):
-      MIPS: BMIPS: Do not mask IPIs during suspend
-
-Matt Redfearn (1):
-      signals: Move put_compat_sigset to compat.h to silence hardened usercopy
-
- arch/mips/ath25/board.c              |  2 ++
- arch/mips/cavium-octeon/octeon-irq.c |  2 ++
- arch/mips/kernel/smp-bmips.c         |  8 ++++----
- arch/mips/loongson64/Kconfig         |  6 ++++++
- include/linux/compat.h               | 26 ++++++++++++++++++++++++--
- kernel/compat.c                      | 19 -------------------
- 6 files changed, 38 insertions(+), 25 deletions(-)
-
---61jdw2sOBCFtR2d/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqhPrAACgkQbAtpk944
-dno59Q//bucsE/sIKgKSUpIVJILOA7v//feM96WIpPioSbxYVZ//J8Vn0jYwkjpx
-dcNCsb31Oc9zdKAQ3tWcxmJWf/JiQL5khEJK/9pT6pjn4O0uI+EFcaZ/t/N46WXO
-pLrGQUFkNTiMUQzmxvCy+zyd1cFb9M1K+mMZiQWgv+eOLxjB1yQSkZFdA6DpWAgV
-RVc0DK2sj6zyprO4sDrlJVrQ19Bi96ZVEIQmyR+u894B3dCa7ycAbOn9/D8yvf2U
-gPsheBmCJMgqVuUW5CPQJ0yST7iEtQDxe/WtrGTv49eFymAOMWRlILU8yIk42foj
-d2i8hd2fBhqB1EwJ9Y8/kP6sW+xYoneOaEmnZIERkJK5+ixqyWmASiLX5bWbpxaV
-t0dvty080VmdpkPRA2mTpGuzmfuMJBVFfISfNkqItch6LHf9X9A0lQ7pCQOh0Oco
-nl5R3AraNPVt371l0SopUCQnZWyFuDoHxClW9blVhArXlahKOYT2wKvPzpWPKhh2
-ofkpzbq6u48+0L+gU84PJNjlWCtNfhKMglBp+I0qPOn6ZVXbh+DIKy4Y/1Rc9IXW
-8aVZ1li1vTDioncJ/7wxgHTs1IchyBOhywQj05oPH8z0jIpm9W7km7VKE4279+8+
-h9t4l0WzBBVCEpX+CUTlERPOj7vyArgLrSpR8J10XIvAx/LK0Lc=
-=zfEe
------END PGP SIGNATURE-----
-
---61jdw2sOBCFtR2d/--
+-- 
+Best Regards
+Masahiro Yamada

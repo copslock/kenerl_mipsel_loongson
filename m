@@ -1,63 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2018 09:42:43 +0100 (CET)
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:59528 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991172AbeCHImfGWLg8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Mar 2018 09:42:35 +0100
-Received: from mail-vk0-f41.google.com (mail-vk0-f41.google.com [209.85.213.41]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id w288g29E024606;
-        Thu, 8 Mar 2018 17:42:03 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com w288g29E024606
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1520498523;
-        bh=8XC/oa4ahu/SxhlGmCIQpAgN80k28zywuO13LW7HfRY=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=eRsif4Q52+bIxJy6ExP7ffSfeflmxNscLKtuLohj1LUAqBn5cVvTxE9Pc1qsO7hoP
-         yCTDgao5shOL2LBPF10oyNQYKB9zPhEWRJUF+fS44uH838dczzHqTS6mgcNvzv6ljW
-         qF8fp52mB/zKo29BmZiezbL8hNM9VeayUyOW8O9JA6tDOdCR6dGijyck1cyHM1V1g8
-         rfEX1rQdIAgSlRVZNk018PZ1/L4WMBquJAS4og1+ipPaCqoK98EUX752wggEf1jVTe
-         zjSkhg4GkuO12A3N6ySgIvbyWy6PRJ4ttFicQ9z9jyeWRBNSxVwxp5v+qe+/EiwnAz
-         rspJpCNm7s1Fw==
-X-Nifty-SrcIP: [209.85.213.41]
-Received: by mail-vk0-f41.google.com with SMTP id b65so3134367vka.2;
-        Thu, 08 Mar 2018 00:42:03 -0800 (PST)
-X-Gm-Message-State: APf1xPDbPsCZGorQ1c0sAX3ABl32bRm7IoZmBSIGcXBdz1zYRiepg8d8
-        O0XJI6+aH4zGL8/a3PiGpNE4f3stbTqnO+1q+9I=
-X-Google-Smtp-Source: AG47ELtr9BOsSz7eb14vj3ida0YEcxAyiyjo8dq3AbXvYuU07PFMQ0576eyDGtAQtfQjnrvoCt+CSPeWIf16bl7IRog=
-X-Received: by 10.31.237.68 with SMTP id l65mr17853571vkh.11.1520498522197;
- Thu, 08 Mar 2018 00:42:02 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.176.32.138 with HTTP; Thu, 8 Mar 2018 00:41:21 -0800 (PST)
-In-Reply-To: <20180308070948.GA5187@saruman>
-References: <20180307140633.26182-1-jhogan@kernel.org> <7ecea7ca-2931-16bc-a110-1ecdaf17f0f2@gmail.com>
- <20180307202511.GT4197@saruman> <a6c448df-c026-dafe-6d34-801f69ca64fe@gmail.com>
- <20180308070948.GA5187@saruman>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Thu, 8 Mar 2018 17:41:21 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARfTxxb0_RNEPvBzuEqP_g-cajZGpaGSuMJBUwDW66yww@mail.gmail.com>
-Message-ID: <CAK7LNARfTxxb0_RNEPvBzuEqP_g-cajZGpaGSuMJBUwDW66yww@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: Handle builtin dtb files containing hyphens
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Frank Rowand <frowand.list@gmail.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2018 12:03:16 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:58768 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994739AbeCHLDIP38Eo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Mar 2018 12:03:08 +0100
+Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2345C2133D;
+        Thu,  8 Mar 2018 11:02:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2345C2133D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+From:   James Hogan <jhogan@kernel.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-kernel@vger.kernel.org, James Hogan <jhogan@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Kevin Cernekee <cernekee@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <yamada.masahiro@socionext.com>
+        devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-mips@linux-mips.org, stable@vger.kernel.org
+Subject: [PATCH v2] kbuild: Handle builtin dtb file names containing hyphens
+Date:   Thu,  8 Mar 2018 11:02:46 +0000
+Message-Id: <20180308110246.16639-1-jhogan@kernel.org>
+X-Mailer: git-send-email 2.13.6
+In-Reply-To: <CAK7LNARfTxxb0_RNEPvBzuEqP_g-cajZGpaGSuMJBUwDW66yww@mail.gmail.com>
+References: <CAK7LNARfTxxb0_RNEPvBzuEqP_g-cajZGpaGSuMJBUwDW66yww@mail.gmail.com>
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62854
+X-archive-position: 62855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,42 +48,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2018-03-08 16:09 GMT+09:00 James Hogan <jhogan@kernel.org>:
-> On Wed, Mar 07, 2018 at 03:19:11PM -0800, Frank Rowand wrote:
->> On 03/07/18 12:25, James Hogan wrote:
->> > On Wed, Mar 07, 2018 at 12:11:41PM -0800, Frank Rowand wrote:
->> >> On 03/07/18 06:06, James Hogan wrote:
->> >>> Quite a lot of dts files have hyphens, but its only a problem on MIPS
->> >>> where such files can be built into the kernel. For example when
->> >>> CONFIG_DT_NETGEAR_CVG834G=y, or on BMIPS kernels when the dtbs target is
->> >>> used (in the latter case it admitedly shouldn't really build all the
->> >>> dtb.o files, but thats a separate issue).
->
->> > I'll keep the paragraph about MIPS and the example configuration though,
->> > as I think its important information to reproduce the problem, and to
->> > justify why it wouldn't be appropriate to just rename the files (which
->> > was my first reaction).
->>
->> Other than the part that says "its only a problem on MIPS".  That is
->> pedantically correct because no other architecture (that I am aware
->> of, not that I searched) currently has a devicetree source file name
->> with a hyphen in it, where that file is compiled into the kernel as
->> an asm file.  But it is potentially a problem on any architecture
->> to it is misleading to label it as MIPS only.
->
-> Okay I'll reword to make it clearer and do a v2.
->
-> Thanks
-> James
+cmd_dt_S_dtb constructs the assembly source to incorporate a devicetree
+FDT (that is, the .dtb file) as binary data in the kernel image. This
+assembly source contains labels before and after the binary data. The
+label names incorporate the file name of the corresponding .dtb file.
+Hyphens are not legal characters in labels, so .dtb files built into the
+kernel with hyphens in the file name result in errors like the
+following:
 
+bcm3368-netgear-cvg834g.dtb.S: Assembler messages:
+bcm3368-netgear-cvg834g.dtb.S:5: Error: : no such section
+bcm3368-netgear-cvg834g.dtb.S:5: Error: junk at end of line, first unrecognized character is `-'
+bcm3368-netgear-cvg834g.dtb.S:6: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_begin:'
+bcm3368-netgear-cvg834g.dtb.S:8: Error: unrecognized opcode `__dtb_bcm3368-netgear-cvg834g_end:'
+bcm3368-netgear-cvg834g.dtb.S:9: Error: : no such section
+bcm3368-netgear-cvg834g.dtb.S:9: Error: junk at end of line, first unrecognized character is `-'
 
-The code looks good.
-If you send v2, I can shortly apply it to the fixes branch.
+Fix this by updating cmd_dt_S_dtb to transform all hyphens from the file
+name to underscores when constructing the labels.
 
-If possible, I want to send a PR this weekend.
+As of v4.16-rc2, 1139 .dts files across ARM64, ARM, MIPS and PowerPC
+contain hyphens in their names, but the issue only currently manifests
+on Broadcom MIPS platforms, as that is the only place where such files
+are built into the kernel. For example when CONFIG_DT_NETGEAR_CVG834G=y,
+or on BMIPS kernels when the dtbs target is used (in the latter case it
+admittedly shouldn't really build all the dtb.o files, but thats a
+separate issue).
 
+Fixes: 695835511f96 ("MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Reviewed-by: Frank Rowand <frowand.list@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Kevin Cernekee <cernekee@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: linux-kbuild@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 4.9+
+---
+Changes in v2:
+ - Rewrite commit message (thanks Frank for some improved wording).
+ - Add Franks' reviewed-by.
+---
+ scripts/Makefile.lib | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 5589bae34af6..a6f538b31ad6 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -297,11 +297,11 @@ cmd_dt_S_dtb=						\
+ 	echo '\#include <asm-generic/vmlinux.lds.h>'; 	\
+ 	echo '.section .dtb.init.rodata,"a"';		\
+ 	echo '.balign STRUCT_ALIGNMENT';		\
+-	echo '.global __dtb_$(*F)_begin';		\
+-	echo '__dtb_$(*F)_begin:';			\
++	echo '.global __dtb_$(subst -,_,$(*F))_begin';	\
++	echo '__dtb_$(subst -,_,$(*F))_begin:';		\
+ 	echo '.incbin "$<" ';				\
+-	echo '__dtb_$(*F)_end:';			\
+-	echo '.global __dtb_$(*F)_end';			\
++	echo '__dtb_$(subst -,_,$(*F))_end:';		\
++	echo '.global __dtb_$(subst -,_,$(*F))_end';	\
+ 	echo '.balign STRUCT_ALIGNMENT'; 		\
+ ) > $@
+ 
 -- 
-Best Regards
-Masahiro Yamada
+2.13.6

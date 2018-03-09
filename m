@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:02:25 +0100 (CET)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:46741
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994810AbeCIOCR0lA6M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 15:02:17 +0100
-Received: by mail-wr0-x244.google.com with SMTP id m12so9105002wrm.13
-        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 06:02:17 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:02:42 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:38713
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994814AbeCIOCT3f7vM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 15:02:19 +0100
+Received: by mail-wm0-x243.google.com with SMTP id z9so4068867wmb.3
+        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 06:02:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=gZz08brrhFST5FaV0viJBc0/5aRp7ApbKS2EC+x028M=;
-        b=rh2dOZ4zbGgDWIutyeki9JDl1h+wR7vZ6T8743mPmqD8wpHz9o32O7FwAdzQ4KBi5s
-         GSNp6cydWjBhLGiTJKIRRX2r12oR4BgZENiMoDeDeVC6+PE1wha+DYhKL4qrubUzwdu3
-         GWryAt89MuzCLd7mCpMBiZsgyF3PQzbZkHOPcka+RFncwI4LWAYywS/0TQRXwrBVcnnj
-         GomRlAy5zJzkbBN8+RM+JDPy9e4mQScRVL9nRbkpeiUS6Y2dUak4CyV0+8gKgyakn2pm
-         w7nIf8mpldg7dLSQgHj2Qd3Ygb4U7C4ROf7viioPhPjGWmQ//qAJFhdZBKsvZ4SlXa1P
-         BzYA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :in-reply-to:references;
+        bh=nusSvdwVKoXv56ix0mPiQYHDeW7j7+Jt/1J6kOG9y34=;
+        b=EWHcBl6cwmt/CuQZC/5vi4Nlv+EgEJHlwNpfKfKiUAu9mhKOJ/TTHUBfkyafVk9jIy
+         +0HAN0bKLCpk4XQ7a2uY8HDFZW3yvRqnWMUL7nP/RH3Pr56WRPXbSI14/ATIVDz/9M/6
+         1KyFZi2M0A/d73HaOS2pdzlfrMGdh3WwANLOEFJdJzKsDFmFLY505oTMM66BfSVCY8SB
+         RPo65OQ690ulVVvKjLwKCrkk603rYSm6d3m5Uxf1aJt0ChumVkYyPjLA0uRArPrd4MNw
+         s5xpsoFr7q44VkaGjpip2xQH5wcc7ZJ/kzujizu0YoBWFQSdIjUWaQSjMqeW1fAZ6Jav
+         b1wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=gZz08brrhFST5FaV0viJBc0/5aRp7ApbKS2EC+x028M=;
-        b=JnzTYjH1JciIIGGVQhcnocfLFN/jhL9EjzXBu3cBdTlrMybnjBnPt+3V93urQzgcnN
-         /+O/pzbLMGVxFxaOM6DBXYBFwGdpFUQfc+No2fxl4Qmt0ZfE4aYv0TGUNpB431oSZxO6
-         yOmtA0ytVn0L9B4xI8HLMH6gz3AugUoLrwO9i5x2t3hE/M255PHNeVdaFVLUmfLBmDFo
-         iKf2/b98tBuqEuY/0wjAbLWF6FgSfASLOajL0tR8RS5Qid1r43+baau6iiD6sDFFnwAJ
-         DHJ+hqhPPuGEAyDl2f7rL0fmoCPuKnU8984uvT9F9/KjmwYf77HQhsG3xelLzkWCjDQL
-         8NSQ==
-X-Gm-Message-State: AElRT7GfyGH1RmBNfx0ONo4Amg4oB+yvISZilwd3lOI4Og6CrtMMQSiC
-        bnvCVQ6sm2gEY1aqcB8eh6JLOA==
-X-Google-Smtp-Source: AG47ELvYWNQoilyaclxWNdMvib+6V1UMTra7MHnmrEmL8NxvYg2eyj8JCEjSAb7r57tENLlLIGjJgQ==
-X-Received: by 10.223.195.118 with SMTP id e51mr1066404wrg.173.1520604129976;
-        Fri, 09 Mar 2018 06:02:09 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:in-reply-to:references;
+        bh=nusSvdwVKoXv56ix0mPiQYHDeW7j7+Jt/1J6kOG9y34=;
+        b=m489xX7i+bfjJkB5p1CrARA1TWkpOTZPg6NYv9Z26hxV6FeSSdJVtVLMgX3E30jGy6
+         7l+6SlISixi0wDtJWKb8GdHuLILrMrIdO0UvZ691HM0tdhALVz3IZxQbaHF2zNDGz5Om
+         gmM/nID9oJ0IEAaO+iaHJ7MfJ/G60wurx+h7v1LdtaJgHs6yPzMGRqIsDeHOxTr+hgQW
+         YRVDg0qUdaQQyN6+wLIutpmwjrleRZEZCBBjiPxmI+1O3DiokJG1EBDGcmcvAhuo3gge
+         RHi2DlmCWqX+eB/wPXsnhcMhRrsmQYoLL38HuZRy726rp5jIQGjdBSMqs3auYuBTi2gL
+         2U+g==
+X-Gm-Message-State: AElRT7HEJXlYUqBrM3ca6U4N+aaP/eVtd2/0KR/oSzjUGW07KWxy2W1I
+        D6mXCLhn3L/yrvGHGZgu0X6ErA==
+X-Google-Smtp-Source: AG47ELuu/EP0wB2lJhFOhGVfTI1ExYcklSrgDTg5VHq0f2rhTPyhLPefeZ8IWvM721o76C8k9GTV8g==
+X-Received: by 10.28.139.19 with SMTP id n19mr2285284wmd.40.1520604133337;
+        Fri, 09 Mar 2018 06:02:13 -0800 (PST)
 Received: from andreyknvl0.muc.corp.google.com ([2a00:79e0:15:10:84be:a42a:826d:c530])
-        by smtp.gmail.com with ESMTPSA id f3sm994484wre.72.2018.03.09.06.02.07
+        by smtp.gmail.com with ESMTPSA id f3sm994484wre.72.2018.03.09.06.02.11
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Mar 2018 06:02:08 -0800 (PST)
+        Fri, 09 Mar 2018 06:02:12 -0800 (PST)
 From:   Andrey Konovalov <andreyknvl@google.com>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -117,15 +119,19 @@ Cc:     Dmitry Vyukov <dvyukov@google.com>,
         Jacob Bramley <Jacob.Bramley@arm.com>,
         Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>,
         Andrey Konovalov <andreyknvl@google.com>
-Subject: [RFC PATCH 0/6] arm64: untag user pointers passed to the kernel
-Date:   Fri,  9 Mar 2018 15:01:58 +0100
-Message-Id: <cover.1520600533.git.andreyknvl@google.com>
+Subject: [RFC PATCH 1/6] arm64: add type casts to untagged_addr macro
+Date:   Fri,  9 Mar 2018 15:01:59 +0100
+Message-Id: <d551b78b854d391f26cb33db12c82ca650a8cebf.1520600533.git.andreyknvl@google.com>
 X-Mailer: git-send-email 2.16.2.395.g2e18187dfd-goog
+In-Reply-To: <cover.1520600533.git.andreyknvl@google.com>
+References: <cover.1520600533.git.andreyknvl@google.com>
+In-Reply-To: <cover.1520600533.git.andreyknvl@google.com>
+References: <cover.1520600533.git.andreyknvl@google.com>
 Return-Path: <andreyknvl@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62865
+X-archive-position: 62866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -142,73 +148,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-arm64 has a feature called Top Byte Ignore, which allows to embed pointer
-tags into the top byte of each pointer. Userspace programs (such as
-HWASan, a memory debugging tool [1]) might use this feature and pass
-tagged user pointers to the kernel through syscalls or other interfaces.
+This patch makes the untagged_addr macro accept all kinds of address types
+(void *, unsigned long, etc.) and allows not to specify type casts in each
+place where it is used. This is done by using __typeof__.
 
-This patch makes a few of the kernel interfaces accept tagged user
-pointers. The kernel is already able to handle user faults with tagged
-pointers and has the untagged_addr macro, which this patchset reuses.
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+---
+ arch/arm64/include/asm/uaccess.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-We're not trying to cover all possible ways the kernel accepts user
-pointers in one patchset, so this one should be considered as a start.
-It would be nice to learn about the interfaces that I missed though.
-
-Sending this as an RFC, as I'm not sure if this should be committed as is,
-and would like to receive some feedback.
-
-Thanks!
-
-[1] http://clang.llvm.org/docs/HardwareAssistedAddressSanitizerDesign.html
-
-Andrey Konovalov (6):
-  arm64: add type casts to untagged_addr macro
-  arm64: untag user addresses in copy_from_user and others
-  mm, arm64: untag user addresses in memory syscalls
-  mm, arm64: untag user addresses in mm/gup.c
-  lib, arm64: untag addrs passed to strncpy_from_user and strnlen_user
-  arch: add untagged_addr definition for other arches
-
- arch/alpha/include/asm/uaccess.h      |  2 ++
- arch/arc/include/asm/uaccess.h        |  1 +
- arch/arm/include/asm/uaccess.h        |  2 ++
- arch/arm64/include/asm/uaccess.h      |  9 +++++++--
- arch/blackfin/include/asm/uaccess.h   |  2 ++
- arch/c6x/include/asm/uaccess.h        |  2 ++
- arch/cris/include/asm/uaccess.h       |  2 ++
- arch/frv/include/asm/uaccess.h        |  2 ++
- arch/ia64/include/asm/uaccess.h       |  2 ++
- arch/m32r/include/asm/uaccess.h       |  2 ++
- arch/m68k/include/asm/uaccess.h       |  2 ++
- arch/metag/include/asm/uaccess.h      |  2 ++
- arch/microblaze/include/asm/uaccess.h |  2 ++
- arch/mips/include/asm/uaccess.h       |  2 ++
- arch/mn10300/include/asm/uaccess.h    |  2 ++
- arch/nios2/include/asm/uaccess.h      |  2 ++
- arch/openrisc/include/asm/uaccess.h   |  2 ++
- arch/parisc/include/asm/uaccess.h     |  2 ++
- arch/powerpc/include/asm/uaccess.h    |  2 ++
- arch/riscv/include/asm/uaccess.h      |  2 ++
- arch/score/include/asm/uaccess.h      |  2 ++
- arch/sh/include/asm/uaccess.h         |  2 ++
- arch/sparc/include/asm/uaccess.h      |  2 ++
- arch/tile/include/asm/uaccess.h       |  2 ++
- arch/x86/include/asm/uaccess.h        |  2 ++
- arch/xtensa/include/asm/uaccess.h     |  2 ++
- include/asm-generic/uaccess.h         |  2 ++
- lib/strncpy_from_user.c               |  2 ++
- lib/strnlen_user.c                    |  2 ++
- mm/gup.c                              | 12 ++++++++++++
- mm/madvise.c                          |  2 ++
- mm/mempolicy.c                        |  6 ++++++
- mm/mincore.c                          |  2 ++
- mm/mlock.c                            |  5 +++++
- mm/mmap.c                             |  9 +++++++++
- mm/mprotect.c                         |  2 ++
- mm/mremap.c                           |  2 ++
- mm/msync.c                            |  3 +++
- 38 files changed, 105 insertions(+), 2 deletions(-)
-
+diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+index e66b0fca99c2..2d6451cbaa86 100644
+--- a/arch/arm64/include/asm/uaccess.h
++++ b/arch/arm64/include/asm/uaccess.h
+@@ -102,7 +102,8 @@ static inline unsigned long __range_ok(const void __user *addr, unsigned long si
+  * up with a tagged userland pointer. Clear the tag to get a sane pointer to
+  * pass on to access_ok(), for instance.
+  */
+-#define untagged_addr(addr)		sign_extend64(addr, 55)
++#define untagged_addr(addr)		\
++	((__typeof__(addr))sign_extend64((__u64)(addr), 55))
+ 
+ #define access_ok(type, addr, size)	__range_ok(addr, size)
+ #define user_addr_max			get_fs
 -- 
 2.16.2.395.g2e18187dfd-goog

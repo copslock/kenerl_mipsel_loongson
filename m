@@ -1,118 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:17:10 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:56950 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:44:45 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:37476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994808AbeCIORCv62eM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Mar 2018 15:17:02 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 622DC1529;
-        Fri,  9 Mar 2018 06:16:56 -0800 (PST)
-Received: from [10.1.210.88] (e110467-lin.cambridge.arm.com [10.1.210.88])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 320EF3F25C;
-        Fri,  9 Mar 2018 06:16:42 -0800 (PST)
-Subject: Re: [RFC PATCH 6/6] arch: add untagged_addr definition for other
- arches
-To:     Andrey Konovalov <andreyknvl@google.com>,
+        id S23994806AbeCIOogXiy0w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Mar 2018 15:44:36 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A858B206B2;
+        Fri,  9 Mar 2018 14:44:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A858B206B2
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Fri, 9 Mar 2018 14:44:21 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linux-pci@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Shaohua Li <shli@fb.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Anshuman Khandual <khandual@linux.vnet.ibm.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Hugh Dickins <hughd@google.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Zi Yan <zi.yan@cs.rutgers.edu>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        James Hogan <jhogan@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E . J . Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Albert Ou <albert@sifive.com>,
-        Chen Liqin <liqin.linux@gmail.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-am33-list@redhat.com, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org
-Cc:     Dmitry Vyukov <dvyukov@google.com>,
-        Kostya Serebryany <kcc@google.com>,
-        Evgeniy Stepanov <eugenis@google.com>,
-        Lee Smith <Lee.Smith@arm.com>,
-        Ramana Radhakrishnan <Ramana.Radhakrishnan@arm.com>,
-        Jacob Bramley <Jacob.Bramley@arm.com>,
-        Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>
-References: <cover.1520600533.git.andreyknvl@google.com>
- <89b4bb181a0622d2c581699bb3814fc041078d04.1520600533.git.andreyknvl@google.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <b320ff92-43ae-a479-35aa-4257b9c5430e@arm.com>
-Date:   Fri, 9 Mar 2018 14:16:40 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v4 7/8] MIPS: BMIPS: Add PCI bindings for 7425, 7435
+Message-ID: <20180309144420.GG24558@saruman>
+References: <1516058925-46522-1-git-send-email-jim2101024@gmail.com>
+ <1516058925-46522-8-git-send-email-jim2101024@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <89b4bb181a0622d2c581699bb3814fc041078d04.1520600533.git.andreyknvl@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <robin.murphy@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="t4apE7yKrX2dGgJC"
+Content-Disposition: inline
+In-Reply-To: <1516058925-46522-8-git-send-email-jim2101024@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62874
+X-archive-position: 62875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robin.murphy@arm.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -125,381 +62,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/03/18 14:02, Andrey Konovalov wrote:
-> To allow arm64 syscalls accept tagged pointers from userspace, we must
-> untag them when they are passed to the kernel. Since untagging is done in
-> generic parts of the kernel (like the mm subsystem), the untagged_addr
-> macro should be defined for all architectures.
 
-Would it not suffice to have an "#ifndef untagged_addr..." fallback in 
-linux/uaccess.h?
+--t4apE7yKrX2dGgJC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Robin.
+On Mon, Jan 15, 2018 at 06:28:44PM -0500, Jim Quinlan wrote:
+> diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
+> index e4fb9b6..02168d0 100644
+> --- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
+> +++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
+> @@ -495,4 +495,30 @@
+>  			status = "disabled";
+>  		};
+>  	};
+> +
+> +	pcie: pcie@10410000 {
+> +		reg = <0x10410000 0x830c>;
+> +		compatible = "brcm,bcm7425-pcie";
+> +		interrupts = <37>, <37>;
+> +		interrupt-names = "pcie", "msi";
+> +		interrupt-parent = <&periph_intc>;
+> +		#address-cells = <3>;
+> +		#size-cells = <2>;
+> +		linux,pci-domain = <0>;
+> +		brcm,enable-ssc;
+> +		bus-range = <0x00 0xff>;
+> +		msi-controller;
+> +		#interrupt-cells = <1>;
+> +		/* 4x128mb windows */
+> +		ranges = <0x2000000 0x0 0xd0000000 0xd0000000 0 0x08000000>,
+> +			 <0x2000000 0x0 0xd8000000 0xd8000000 0 0x08000000>,
+> +			 <0x2000000 0x0 0xe0000000 0xe0000000 0 0x08000000>,
+> +			 <0x2000000 0x0 0xe8000000 0xe8000000 0 0x08000000>;
+> +		interrupt-map-mask = <0 0 0 7>;
+> +		interrupt-map = <0 0 0 1 &periph_intc 33
+> +				 0 0 0 2 &periph_intc 34
+> +				 0 0 0 3 &periph_intc 35
+> +				 0 0 0 4 &periph_intc 36>;
 
-> Define it as a noop for all other architectures besides arm64.
-> 
-> Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
-> ---
->   arch/alpha/include/asm/uaccess.h      | 2 ++
->   arch/arc/include/asm/uaccess.h        | 1 +
->   arch/arm/include/asm/uaccess.h        | 2 ++
->   arch/blackfin/include/asm/uaccess.h   | 2 ++
->   arch/c6x/include/asm/uaccess.h        | 2 ++
->   arch/cris/include/asm/uaccess.h       | 2 ++
->   arch/frv/include/asm/uaccess.h        | 2 ++
->   arch/ia64/include/asm/uaccess.h       | 2 ++
->   arch/m32r/include/asm/uaccess.h       | 2 ++
->   arch/m68k/include/asm/uaccess.h       | 2 ++
->   arch/metag/include/asm/uaccess.h      | 2 ++
->   arch/microblaze/include/asm/uaccess.h | 2 ++
->   arch/mips/include/asm/uaccess.h       | 2 ++
->   arch/mn10300/include/asm/uaccess.h    | 2 ++
->   arch/nios2/include/asm/uaccess.h      | 2 ++
->   arch/openrisc/include/asm/uaccess.h   | 2 ++
->   arch/parisc/include/asm/uaccess.h     | 2 ++
->   arch/powerpc/include/asm/uaccess.h    | 2 ++
->   arch/riscv/include/asm/uaccess.h      | 2 ++
->   arch/score/include/asm/uaccess.h      | 2 ++
->   arch/sh/include/asm/uaccess.h         | 2 ++
->   arch/sparc/include/asm/uaccess.h      | 2 ++
->   arch/tile/include/asm/uaccess.h       | 2 ++
->   arch/x86/include/asm/uaccess.h        | 2 ++
->   arch/xtensa/include/asm/uaccess.h     | 2 ++
->   include/asm-generic/uaccess.h         | 2 ++
->   26 files changed, 51 insertions(+)
-> 
-> diff --git a/arch/alpha/include/asm/uaccess.h b/arch/alpha/include/asm/uaccess.h
-> index 87d8c4f0307d..09d136bb4ff5 100644
-> --- a/arch/alpha/include/asm/uaccess.h
-> +++ b/arch/alpha/include/asm/uaccess.h
-> @@ -2,6 +2,8 @@
->   #ifndef __ALPHA_UACCESS_H
->   #define __ALPHA_UACCESS_H
->   
-> +#define untagged_addr(addr)	addr
+no status = "disabled" like the other dtsi?
+
+> +	};
 > +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/arc/include/asm/uaccess.h b/arch/arc/include/asm/uaccess.h
-> index c9173c02081c..2a04b7a4aada 100644
-> --- a/arch/arc/include/asm/uaccess.h
-> +++ b/arch/arc/include/asm/uaccess.h
-> @@ -26,6 +26,7 @@
->   
->   #include <linux/string.h>	/* for generic string functions */
->   
-> +#define untagged_addr(addr)	addr
->   
->   #define __kernel_ok		(uaccess_kernel())
->   
-> diff --git a/arch/arm/include/asm/uaccess.h b/arch/arm/include/asm/uaccess.h
-> index 0bf2347495f1..7d4f4e4021f2 100644
-> --- a/arch/arm/include/asm/uaccess.h
-> +++ b/arch/arm/include/asm/uaccess.h
-> @@ -19,6 +19,8 @@
->   
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
+>  };
+> diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+> index 1484e89..84881224 100644
+> --- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
+> +++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+> @@ -510,4 +510,31 @@
+>  			status = "disabled";
+>  		};
+>  	};
 > +
->   /*
->    * These two functions allow hooking accesses to userspace to increase
->    * system integrity by ensuring that the kernel can not inadvertantly
-> diff --git a/arch/blackfin/include/asm/uaccess.h b/arch/blackfin/include/asm/uaccess.h
-> index 45da4bcb050e..fb6bdc54e7bd 100644
-> --- a/arch/blackfin/include/asm/uaccess.h
-> +++ b/arch/blackfin/include/asm/uaccess.h
-> @@ -18,6 +18,8 @@
->   #include <asm/segment.h>
->   #include <asm/sections.h>
->   
-> +#define untagged_addr(addr)	addr
+> +	pcie: pcie@10410000 {
+> +		reg = <0x10410000 0x930c>;
+> +		interrupts = <0x27>, <0x27>;
+> +		interrupt-names = "pcie", "msi";
+> +		interrupt-parent = <&periph_intc>;
+> +		compatible = "brcm,bcm7435-pcie";
+
+Might be nice to be consistent in your property ordering between these
+two dtsi files. I for one would prefer compatible to be near the top
+too, if only for consistency with most other nodes in these files.
+
+> +		#address-cells = <3>;
+> +		#size-cells = <2>;
+> +		linux,pci-domain = <0>;
+> +		brcm,enable-ssc;
+> +		bus-range = <0x00 0xff>;
+> +		msi-controller;
+> +		#interrupt-cells = <1>;
+> +		/* 4x128mb windows */
+> +		ranges = <0x2000000 0x0 0xd0000000 0xd0000000 0 0x08000000>,
+> +			 <0x2000000 0x0 0xd8000000 0xd8000000 0 0x08000000>,
+> +			 <0x2000000 0x0 0xe0000000 0xe0000000 0 0x08000000>,
+> +			 <0x2000000 0x0 0xe8000000 0xe8000000 0 0x08000000>;
+> +		interrupt-map-mask = <0 0 0 7>;
+> +		interrupt-map = <0 0 0 1 &periph_intc 35
+> +				 0 0 0 2 &periph_intc 36
+> +				 0 0 0 3 &periph_intc 37
+> +				 0 0 0 4 &periph_intc 38>;
+> +		status = "disabled";
+> +	};
 > +
->   #define get_ds()        (KERNEL_DS)
->   #define get_fs()        (current_thread_info()->addr_limit)
->   
-> diff --git a/arch/c6x/include/asm/uaccess.h b/arch/c6x/include/asm/uaccess.h
-> index ba6756879f00..f187696cf440 100644
-> --- a/arch/c6x/include/asm/uaccess.h
-> +++ b/arch/c6x/include/asm/uaccess.h
-> @@ -9,6 +9,8 @@
->   #ifndef _ASM_C6X_UACCESS_H
->   #define _ASM_C6X_UACCESS_H
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #include <linux/types.h>
->   #include <linux/compiler.h>
->   #include <linux/string.h>
-> diff --git a/arch/cris/include/asm/uaccess.h b/arch/cris/include/asm/uaccess.h
-> index 3b42ab0cae93..86d8fbd200c4 100644
-> --- a/arch/cris/include/asm/uaccess.h
-> +++ b/arch/cris/include/asm/uaccess.h
-> @@ -19,6 +19,8 @@
->   #include <asm/processor.h>
->   #include <asm/page.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/frv/include/asm/uaccess.h b/arch/frv/include/asm/uaccess.h
-> index ff9562dc6825..be21b42bde09 100644
-> --- a/arch/frv/include/asm/uaccess.h
-> +++ b/arch/frv/include/asm/uaccess.h
-> @@ -12,6 +12,8 @@
->   #ifndef _ASM_UACCESS_H
->   #define _ASM_UACCESS_H
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * User space memory access functions
->    */
-> diff --git a/arch/ia64/include/asm/uaccess.h b/arch/ia64/include/asm/uaccess.h
-> index a74524f2d625..1c46bf1c4f73 100644
-> --- a/arch/ia64/include/asm/uaccess.h
-> +++ b/arch/ia64/include/asm/uaccess.h
-> @@ -42,6 +42,8 @@
->   #include <asm/io.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * For historical reasons, the following macros are grossly misnamed:
->    */
-> diff --git a/arch/m32r/include/asm/uaccess.h b/arch/m32r/include/asm/uaccess.h
-> index 9d89bc3d8181..6e0fe6b215be 100644
-> --- a/arch/m32r/include/asm/uaccess.h
-> +++ b/arch/m32r/include/asm/uaccess.h
-> @@ -16,6 +16,8 @@
->   #include <asm/setup.h>
->   #include <linux/prefetch.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/m68k/include/asm/uaccess.h b/arch/m68k/include/asm/uaccess.h
-> index e896466a41a4..02e0c5878ad5 100644
-> --- a/arch/m68k/include/asm/uaccess.h
-> +++ b/arch/m68k/include/asm/uaccess.h
-> @@ -5,3 +5,5 @@
->   #include <asm/uaccess_mm.h>
->   #endif
->   #include <asm/extable.h>
-> +
-> +#define untagged_addr(addr)	addr
-> diff --git a/arch/metag/include/asm/uaccess.h b/arch/metag/include/asm/uaccess.h
-> index a5311eb36e32..1b2f0478868a 100644
-> --- a/arch/metag/include/asm/uaccess.h
-> +++ b/arch/metag/include/asm/uaccess.h
-> @@ -14,6 +14,8 @@
->    * For historical reasons, these macros are grossly misnamed.
->    */
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #define MAKE_MM_SEG(s)  ((mm_segment_t) { (s) })
->   
->   #define KERNEL_DS       MAKE_MM_SEG(0xFFFFFFFF)
-> diff --git a/arch/microblaze/include/asm/uaccess.h b/arch/microblaze/include/asm/uaccess.h
-> index 81f16aadbf9e..a66bc26660c3 100644
-> --- a/arch/microblaze/include/asm/uaccess.h
-> +++ b/arch/microblaze/include/asm/uaccess.h
-> @@ -20,6 +20,8 @@
->   #include <asm/extable.h>
->   #include <linux/string.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * On Microblaze the fs value is actually the top of the corresponding
->    * address space.
-> diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-> index b71306947290..2db7606c388b 100644
-> --- a/arch/mips/include/asm/uaccess.h
-> +++ b/arch/mips/include/asm/uaccess.h
-> @@ -16,6 +16,8 @@
->   #include <asm/asm-eva.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/mn10300/include/asm/uaccess.h b/arch/mn10300/include/asm/uaccess.h
-> index 5af468fd1359..6604699b34b6 100644
-> --- a/arch/mn10300/include/asm/uaccess.h
-> +++ b/arch/mn10300/include/asm/uaccess.h
-> @@ -17,6 +17,8 @@
->   #include <linux/kernel.h>
->   #include <asm/page.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/nios2/include/asm/uaccess.h b/arch/nios2/include/asm/uaccess.h
-> index dfa3c7cb30b4..36152a7302a8 100644
-> --- a/arch/nios2/include/asm/uaccess.h
-> +++ b/arch/nios2/include/asm/uaccess.h
-> @@ -19,6 +19,8 @@
->   
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * Segment stuff
->    */
-> diff --git a/arch/openrisc/include/asm/uaccess.h b/arch/openrisc/include/asm/uaccess.h
-> index bbf5c79cce7a..5b43d13ab363 100644
-> --- a/arch/openrisc/include/asm/uaccess.h
-> +++ b/arch/openrisc/include/asm/uaccess.h
-> @@ -27,6 +27,8 @@
->   #include <asm/page.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/uaccess.h
-> index ea70e36ce6af..b0f3cd529c8d 100644
-> --- a/arch/parisc/include/asm/uaccess.h
-> +++ b/arch/parisc/include/asm/uaccess.h
-> @@ -11,6 +11,8 @@
->   #include <linux/bug.h>
->   #include <linux/string.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #define KERNEL_DS	((mm_segment_t){0})
->   #define USER_DS 	((mm_segment_t){1})
->   
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 51bfeb8777f0..07ae1c318166 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -8,6 +8,8 @@
->   #include <asm/page.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
-> index 14b0b22fb578..e774239aac24 100644
-> --- a/arch/riscv/include/asm/uaccess.h
-> +++ b/arch/riscv/include/asm/uaccess.h
-> @@ -25,6 +25,8 @@
->   #include <asm/byteorder.h>
->   #include <asm/asm.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #define __enable_user_access()							\
->   	__asm__ __volatile__ ("csrs sstatus, %0" : : "r" (SR_SUM) : "memory")
->   #define __disable_user_access()							\
-> diff --git a/arch/score/include/asm/uaccess.h b/arch/score/include/asm/uaccess.h
-> index a233f3236846..fd16c2a71091 100644
-> --- a/arch/score/include/asm/uaccess.h
-> +++ b/arch/score/include/asm/uaccess.h
-> @@ -5,6 +5,8 @@
->   #include <linux/kernel.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #define get_ds()		(KERNEL_DS)
->   #define get_fs()		(current_thread_info()->addr_limit)
->   #define segment_eq(a, b)	((a).seg == (b).seg)
-> diff --git a/arch/sh/include/asm/uaccess.h b/arch/sh/include/asm/uaccess.h
-> index 32eb56e00c11..31f3ea075190 100644
-> --- a/arch/sh/include/asm/uaccess.h
-> +++ b/arch/sh/include/asm/uaccess.h
-> @@ -5,6 +5,8 @@
->   #include <asm/segment.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #define __addr_ok(addr) \
->   	((unsigned long __force)(addr) < current_thread_info()->addr_limit.seg)
->   
-> diff --git a/arch/sparc/include/asm/uaccess.h b/arch/sparc/include/asm/uaccess.h
-> index dd85bc2c2cad..70c2f5ea09ce 100644
-> --- a/arch/sparc/include/asm/uaccess.h
-> +++ b/arch/sparc/include/asm/uaccess.h
-> @@ -7,6 +7,8 @@
->   #include <asm/uaccess_32.h>
->   #endif
->   
-> +#define untagged_addr(addr)	addr
-> +
->   #define user_addr_max() \
->   	(uaccess_kernel() ? ~0UL : TASK_SIZE)
->   
-> diff --git a/arch/tile/include/asm/uaccess.h b/arch/tile/include/asm/uaccess.h
-> index cb4fbe7e4f88..7d365b087dcb 100644
-> --- a/arch/tile/include/asm/uaccess.h
-> +++ b/arch/tile/include/asm/uaccess.h
-> @@ -22,6 +22,8 @@
->   #include <asm/processor.h>
->   #include <asm/page.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-> index aae77eb8491c..3c233fbdd32b 100644
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -12,6 +12,8 @@
->   #include <asm/smap.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should be
->    * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> diff --git a/arch/xtensa/include/asm/uaccess.h b/arch/xtensa/include/asm/uaccess.h
-> index f1158b4c629c..130e419c4d6e 100644
-> --- a/arch/xtensa/include/asm/uaccess.h
-> +++ b/arch/xtensa/include/asm/uaccess.h
-> @@ -20,6 +20,8 @@
->   #include <asm/types.h>
->   #include <asm/extable.h>
->   
-> +#define untagged_addr(addr)	addr
-> +
->   /*
->    * The fs value determines whether argument validity checking should
->    * be performed or not.  If get_fs() == USER_DS, checking is
-> diff --git a/include/asm-generic/uaccess.h b/include/asm-generic/uaccess.h
-> index 6b2e63df2739..2c46d2253dba 100644
-> --- a/include/asm-generic/uaccess.h
-> +++ b/include/asm-generic/uaccess.h
-> @@ -35,6 +35,8 @@ static inline void set_fs(mm_segment_t fs)
->   #define segment_eq(a, b) ((a).seg == (b).seg)
->   #endif
->   
-> +#define untagged_addr(addr) addr
-> +
->   #define access_ok(type, addr, size) __access_ok((unsigned long)(addr),(size))
->   
->   /*
-> 
+>  };
+
+Cheers
+James
+
+--t4apE7yKrX2dGgJC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqincQACgkQbAtpk944
+dnr2hA/+P6w7+sOSZ5SEM19861JqBmRkXLy5Hd/18PMHGTennR09vEOJv9skH3oS
+CojTysqBeNHvupX9gQ48lCeccH2GNv4fExM8QZyKreEwli/gmCxJRTXeZmmO3aqO
+RUFpkIauu/whA/e8fxoEhUuX79wyNw+wqT0DHxpafPc66Aq+SBXXz8LINE+DaM+/
+i4JGd0fY/1N48CieB1mFgOCkaTJ1F1ei7Jh+f6qeHKv6tNTx+LRnU0oKbGpybEJN
+kpY6BvodOgC/YL+tOiyyAASN90a7wS4vj0vxSkxbeKZp1fMF/3F5uA3J1FdJDd5X
+Ydqy3jFG3gggm7GhFUOeZPv1KogWt7PddWpoZnpu5GlIaE9Eb7ba0FMhb6+LPrx8
+bj/rms88LosucmT5u/QvuGrIArBNyhAQPTFVner+gTfjHDvpB5iAG/RcZCCrRX9d
+sOMSmDorbfGs8t0m/k3HScl9d2ZQJPzRjL/YOJSuBpJQPGG+Cz4p0+5lr+zar0qQ
+BeZcwGCvv3VjFUg60flzbOBuiQ3KTvKFo52ssk7l/Tuq2cIW/vgVBvcbgFPu+GfT
+zeE1no/C1jT8EtJDipihJa1GmsfMs7Czi17nb03dljylkh7eXmKcsuwn4h95wskZ
+WzW46Mgkb98ZDrN9b1iH4TUe7IuNhhMFxjnVtfeudkt05TKyplo=
+=Z5Mn
+-----END PGP SIGNATURE-----
+
+--t4apE7yKrX2dGgJC--

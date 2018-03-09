@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 16:13:50 +0100 (CET)
-Received: from mail-qk0-x241.google.com ([IPv6:2607:f8b0:400d:c09::241]:34743
-        "EHLO mail-qk0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994810AbeCIPNS00JBw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 16:13:18 +0100
-Received: by mail-qk0-x241.google.com with SMTP id z184so2447063qkc.1
-        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 07:13:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 16:14:13 +0100 (CET)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:36768
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994812AbeCIPNUmF0Aw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 16:13:20 +0100
+Received: by mail-qk0-x244.google.com with SMTP id d206so3989203qkb.3
+        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 07:13:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=jeY07KjBSfT25uez4N1r+KcpnElhUV0zrUoBslyVkDg=;
-        b=x6XpTnf/ENfvs9CiQCrzGrN5UPzRzQfK0v3mRbyMJ286D9kerFiA4/g6nV6XRhsiL2
-         qDrAMXGepWC/YOckNBEvBBUR21U75jWXPjCvJbtmBoiY2QiP0jcHNXwgzEOZzKH/wn8h
-         /mxCAwu6fRywKXGyqB35tMocglvxYD/VymMxmcWjkuZBb01DrCNwtr6NmTYIfbDi6kcb
-         uwpsVFMZ3efT9YQ9LF0ZNxMBK5krppbWdxupiIheMlL7OWpDhTjkItGcHgvPlkdYWgVa
-         0B3OCeTfWNkaEcv/dE8LX1A8XhCYbScS72Vm0qP9RbW8PLm82PLhc6KivJbvvnKlO4rU
-         xGvQ==
+        bh=WOZhOqT7hWMIxR5bjG1pr/CL2J1ANP0Vt3Rv1rfKaas=;
+        b=gtLa6WINEQP3G69TdoV/f6z6FQuU5oxilFIv8hmQSUpzCSLEnwqae9XF/rgv0RV8gi
+         BNexcp5i8FsAPDtcnXIGjIbSDr/WbQZXiJ13ZrD6hKzuyLTNaAf5tqPqDEg4E5wVOS5I
+         m/Hzq7ANQgysfFyKbOgUV4lpPQu+hVnwgWgt+4whE0amSrf0BW/x3oZmp9BgFburcTUM
+         m8nY17uGc2SPb5dyZ8sI3idW2xDrkPGk+sIg/F+OZjne/sfXKcDQZdc3Ps1gFCsfonLN
+         5WJ88pCwxbvJe3E/7qGX8TMVnD5KEqrGt+vPPLyHko26OyXnDfi68SInUJK4xC3LnSWL
+         fyYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=jeY07KjBSfT25uez4N1r+KcpnElhUV0zrUoBslyVkDg=;
-        b=p9UYeXZz9+aEWvAsncvN2Y5lKgQLr4KN49eRb+H0YAnqmhPqnubfg5BKV+NiPkpWIW
-         waCHlW/WGVBfsa9kK9Im4EeoKR/2nKbkEtPOd96XlBic1I0NgX4zl5Pppspf+kYz9Pxq
-         S6KtVbFIi7YihaDeSXlFsgVGXmq78WvqY/ioALOzMn3G0Q98bNBCAwD+8RY2ZmjLGHEJ
-         s1T0DgGQr0Tyb0XbfLUMBMFFXMZLppBz+d9HNpDlG8FKW+VTQpRfAhBwmMbqV7emNi+f
-         uO+4XAS8bGcg0jhOwG71zpvQt8uZ+4RDUGczNwIl5x1wm6+4SpDcINroxTubijZgx5MW
-         Capw==
-X-Gm-Message-State: AElRT7EuxY/Qclh09TYMIdB/g5kOGdQOjvLFSNwKmi84B7a0if0fxohX
-        9LquUpdGDRfqvc3wyAgaKVG4Hg==
-X-Google-Smtp-Source: AG47ELuVkfhviNTXmLW8b4wgHq9vI84mAYarHgxppSMyls4fbE3GRuciFhWIwIxHbo1EZPnoKvjnqA==
-X-Received: by 10.55.192.208 with SMTP id v77mr41227978qkv.173.1520608392559;
-        Fri, 09 Mar 2018 07:13:12 -0800 (PST)
+        bh=WOZhOqT7hWMIxR5bjG1pr/CL2J1ANP0Vt3Rv1rfKaas=;
+        b=tgojiZfQ2+MRIm9qlIwyRyRPWAOivjyCALHP5okibU0nj2zsMnkHCZMOjePp2VF/5B
+         MowW4YTilPExVnk+9E1imTu5KGVQbafB0Hds1eiYlrcDSmAoDqv05CBafnD2YMvthPy3
+         j8U8zIExPHH23rBFRi1pbQSk/5F6rjn5ZT2VJze3D8wtFS9El1sXmtbvN33siat9C4v6
+         Gp9pNlLReC8hLs6fuAFDGYFdZkvpBCFzWthEBMmOLJ+ulGBKqQgZD63OC2siSLfTGmvD
+         p85eGobi1GxuDypoQhpopRj2nFnWQVM7Ue4b/mv8DnQl+Pul81Lkk3wPMB281I+eIV3c
+         8Trg==
+X-Gm-Message-State: AElRT7GbI3SgvqQ+eYJkVgq29eOgHiNsxnPkmhkp5le5833Rh4XDOi7K
+        6/NcZTGpaOH2iqgnO/zLDrmO/g==
+X-Google-Smtp-Source: AG47ELsxEvwgKBIG95lbqkNXEyv2wc5pxEJ2XmOdmW9s1BPgjW1TRA9jO69tJk2LlRZgwGVmi5MFsg==
+X-Received: by 10.55.161.134 with SMTP id k128mr42846417qke.295.1520608394883;
+        Fri, 09 Mar 2018 07:13:14 -0800 (PST)
 Received: from localhost.localdomain ([190.210.56.45])
-        by smtp.gmail.com with ESMTPSA id d186sm682187qkf.37.2018.03.09.07.13.10
+        by smtp.gmail.com with ESMTPSA id d186sm682187qkf.37.2018.03.09.07.13.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Mar 2018 07:13:11 -0800 (PST)
+        Fri, 09 Mar 2018 07:13:14 -0800 (PST)
 From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>
 Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>,
         Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Subject: [PATCH 02/14] mmc: jz4740: Use dev_get_platdata
-Date:   Fri,  9 Mar 2018 12:12:07 -0300
-Message-Id: <20180309151219.18723-3-ezequiel@vanguardiasur.com.ar>
+Subject: [PATCH 03/14] mmc: jz4740: Fix error exit path in driver's probe
+Date:   Fri,  9 Mar 2018 12:12:08 -0300
+Message-Id: <20180309151219.18723-4-ezequiel@vanguardiasur.com.ar>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
 References: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
@@ -51,7 +51,7 @@ Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62879
+X-archive-position: 62880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,44 +68,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Instead of accessing the platform data pointer directly,
-use the dev_get_platdata() helper.
+From: Paul Cercueil <paul@crapouillou.net>
 
+Currently, if jz4740_mmc_request_gpios() fails, the driver
+tries to release DMA resources. This is wrong because DMA
+is requested at a later stage.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+[Ezequiel: cleanup commit message]
 Signed-off-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 ---
- drivers/mmc/host/jz4740_mmc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mmc/host/jz4740_mmc.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 8da2bfe82781..5a85a3017711 100644
+index 5a85a3017711..636741ac9031 100644
 --- a/drivers/mmc/host/jz4740_mmc.c
 +++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -926,7 +926,7 @@ static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
- static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
- 	struct platform_device *pdev)
- {
--	struct jz4740_mmc_platform_data *pdata = pdev->dev.platform_data;
-+	struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 	int ret = 0;
+@@ -1006,7 +1006,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
  
- 	if (!pdata)
-@@ -955,7 +955,7 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
+ 	ret = jz4740_mmc_request_gpios(mmc, pdev);
+ 	if (ret)
+-		goto err_release_dma;
++		goto err_free_host;
  
- static void jz4740_mmc_free_gpios(struct platform_device *pdev)
- {
--	struct jz4740_mmc_platform_data *pdata = pdev->dev.platform_data;
-+	struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
+ 	mmc->ops = &jz4740_mmc_ops;
+ 	mmc->f_min = JZ_MMC_CLK_RATE / 128;
+@@ -1038,16 +1038,17 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+ 	jz4740_mmc_clock_disable(host);
+ 	timer_setup(&host->timeout_timer, jz4740_mmc_timeout, 0);
  
- 	if (!pdata)
- 		return;
-@@ -971,7 +971,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	struct jz4740_mmc_host *host;
- 	struct jz4740_mmc_platform_data *pdata;
+-	host->use_dma = true;
+-	if (host->use_dma && jz4740_mmc_acquire_dma_channels(host) != 0)
+-		host->use_dma = false;
++	ret = jz4740_mmc_acquire_dma_channels(host);
++	if (ret == -EPROBE_DEFER)
++		goto err_free_irq;
++	host->use_dma = !ret;
  
--	pdata = pdev->dev.platform_data;
-+	pdata = dev_get_platdata(&pdev->dev);
+ 	platform_set_drvdata(pdev, host);
+ 	ret = mmc_add_host(mmc);
  
- 	mmc = mmc_alloc_host(sizeof(struct jz4740_mmc_host), &pdev->dev);
- 	if (!mmc) {
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to add mmc host: %d\n", ret);
+-		goto err_free_irq;
++		goto err_release_dma;
+ 	}
+ 	dev_info(&pdev->dev, "JZ SD/MMC card driver registered\n");
+ 
+@@ -1057,13 +1058,13 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+ 
+ 	return 0;
+ 
++err_release_dma:
++	if (host->use_dma)
++		jz4740_mmc_release_dma_channels(host);
+ err_free_irq:
+ 	free_irq(host->irq, host);
+ err_free_gpios:
+ 	jz4740_mmc_free_gpios(pdev);
+-err_release_dma:
+-	if (host->use_dma)
+-		jz4740_mmc_release_dma_channels(host);
+ err_free_host:
+ 	mmc_free_host(mmc);
+ 
 -- 
 2.16.2

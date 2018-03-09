@@ -1,49 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 16:14:13 +0100 (CET)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:36768
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994812AbeCIPNUmF0Aw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 16:13:20 +0100
-Received: by mail-qk0-x244.google.com with SMTP id d206so3989203qkb.3
-        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 07:13:20 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 16:14:26 +0100 (CET)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:44780
+        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994813AbeCIPNYv0lWw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 16:13:24 +0100
+Received: by mail-qt0-x241.google.com with SMTP id g60so10992105qtd.11
+        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 07:13:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=WOZhOqT7hWMIxR5bjG1pr/CL2J1ANP0Vt3Rv1rfKaas=;
-        b=gtLa6WINEQP3G69TdoV/f6z6FQuU5oxilFIv8hmQSUpzCSLEnwqae9XF/rgv0RV8gi
-         BNexcp5i8FsAPDtcnXIGjIbSDr/WbQZXiJ13ZrD6hKzuyLTNaAf5tqPqDEg4E5wVOS5I
-         m/Hzq7ANQgysfFyKbOgUV4lpPQu+hVnwgWgt+4whE0amSrf0BW/x3oZmp9BgFburcTUM
-         m8nY17uGc2SPb5dyZ8sI3idW2xDrkPGk+sIg/F+OZjne/sfXKcDQZdc3Ps1gFCsfonLN
-         5WJ88pCwxbvJe3E/7qGX8TMVnD5KEqrGt+vPPLyHko26OyXnDfi68SInUJK4xC3LnSWL
-         fyYA==
+        bh=pi7vsQJafTBHjHSj559Un0l1rUuB5wXd4oHqRUxKmHU=;
+        b=c57w2F+rXlLxz5tJCObZPS6pAM3m6wwDGuRN69IsH4P42gJ+mMRTQ6mJta9iytIMTx
+         6+Uv2GOIFlT1T+FXlN+KOWAr7FSXvtELn/cNYSD69CfaT8R5jZIpvuI2YYodtj9jQZyx
+         NHLNMzy+6a/07b2vjz58eGmIbOcGp3afaQFDdbDDM08QUL3350b/yle9RPwy3bBS4zmG
+         LmR7IwJrH2xfDU7VNpaNcUwqg6lg1K+uQERDRU0XiaTAMG9IsGVFLO73tZlif08oQxLi
+         FxISkq7LyNxQfuxq3T0C7bBGyxOvITL2EpJSuVEv6HrvTcjcTitwY42bRs6jbR6fVATj
+         nslw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=WOZhOqT7hWMIxR5bjG1pr/CL2J1ANP0Vt3Rv1rfKaas=;
-        b=tgojiZfQ2+MRIm9qlIwyRyRPWAOivjyCALHP5okibU0nj2zsMnkHCZMOjePp2VF/5B
-         MowW4YTilPExVnk+9E1imTu5KGVQbafB0Hds1eiYlrcDSmAoDqv05CBafnD2YMvthPy3
-         j8U8zIExPHH23rBFRi1pbQSk/5F6rjn5ZT2VJze3D8wtFS9El1sXmtbvN33siat9C4v6
-         Gp9pNlLReC8hLs6fuAFDGYFdZkvpBCFzWthEBMmOLJ+ulGBKqQgZD63OC2siSLfTGmvD
-         p85eGobi1GxuDypoQhpopRj2nFnWQVM7Ue4b/mv8DnQl+Pul81Lkk3wPMB281I+eIV3c
-         8Trg==
-X-Gm-Message-State: AElRT7GbI3SgvqQ+eYJkVgq29eOgHiNsxnPkmhkp5le5833Rh4XDOi7K
-        6/NcZTGpaOH2iqgnO/zLDrmO/g==
-X-Google-Smtp-Source: AG47ELsxEvwgKBIG95lbqkNXEyv2wc5pxEJ2XmOdmW9s1BPgjW1TRA9jO69tJk2LlRZgwGVmi5MFsg==
-X-Received: by 10.55.161.134 with SMTP id k128mr42846417qke.295.1520608394883;
-        Fri, 09 Mar 2018 07:13:14 -0800 (PST)
+        bh=pi7vsQJafTBHjHSj559Un0l1rUuB5wXd4oHqRUxKmHU=;
+        b=fnW0Ow7lg9yMZOQruc+6hKM8iy4Sdkhm/3Q53N6jVcPh+qvG6OGsinGplPsAMYxwIG
+         F+W5tgTEUKY2K2YfVclxICLWHwyXNdnnr1R+rwa7hzwtAiJsO2X+h/+cFpoueJ9nB6Y+
+         503WoslV2s1An/rOodIz+PlofD7PdPggdsWe3bcWlq8x/JoQ0rEkRYq7n/D9F/qpQCxP
+         5qpcuhsUiUbxxYbU946RVM8SNRhv7N1aPskgv7mLiN7S/vh08QW8JsxK8iBuySR49kkH
+         X41xb/YmNOPRbvmPEMpueVVUEKkTKEuydS8tQIjf6BIzxajf3XD9BHPmu9aHjOgvULA8
+         1Lzw==
+X-Gm-Message-State: AElRT7EXuYh71WCLRb9a4c/qtUOIwpRpGaBJH7+kNqxJT+RQlYl9mKxy
+        UDQpHqELFB7d2tjXv564V093LA==
+X-Google-Smtp-Source: AG47ELtICdy3/reQfFLWPmR/4H2wja/tetuDU6E3HKTiqNrRbg6odVqCNmvgsjxMPQYirdKOj3tB2Q==
+X-Received: by 10.237.40.67 with SMTP id r61mr47212269qtd.233.1520608397415;
+        Fri, 09 Mar 2018 07:13:17 -0800 (PST)
 Received: from localhost.localdomain ([190.210.56.45])
-        by smtp.gmail.com with ESMTPSA id d186sm682187qkf.37.2018.03.09.07.13.12
+        by smtp.gmail.com with ESMTPSA id d186sm682187qkf.37.2018.03.09.07.13.15
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Mar 2018 07:13:14 -0800 (PST)
+        Fri, 09 Mar 2018 07:13:16 -0800 (PST)
 From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>
 Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
         Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Subject: [PATCH 03/14] mmc: jz4740: Fix error exit path in driver's probe
-Date:   Fri,  9 Mar 2018 12:12:08 -0300
-Message-Id: <20180309151219.18723-4-ezequiel@vanguardiasur.com.ar>
+Subject: [PATCH 04/14] mmc: jz4740: Reset the device requesting the interrupt
+Date:   Fri,  9 Mar 2018 12:12:09 -0300
+Message-Id: <20180309151219.18723-5-ezequiel@vanguardiasur.com.ar>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
 References: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
@@ -51,7 +52,7 @@ Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62880
+X-archive-position: 62881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,70 +69,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 
-Currently, if jz4740_mmc_request_gpios() fails, the driver
-tries to release DMA resources. This is wrong because DMA
-is requested at a later stage.
+In case a bootloader leaves the device in a bad state,
+requesting the interrupt before resetting results in a bad
+interrupt loop.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-[Ezequiel: cleanup commit message]
+Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+[Ezequiel: cleanup commit description]
 Signed-off-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 ---
- drivers/mmc/host/jz4740_mmc.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/mmc/host/jz4740_mmc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 5a85a3017711..636741ac9031 100644
+index 636741ac9031..0a8edd5b4052 100644
 --- a/drivers/mmc/host/jz4740_mmc.c
 +++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -1006,7 +1006,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+@@ -1027,6 +1027,8 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+ 	spin_lock_init(&host->lock);
+ 	host->irq_mask = 0xffff;
  
- 	ret = jz4740_mmc_request_gpios(mmc, pdev);
- 	if (ret)
--		goto err_release_dma;
-+		goto err_free_host;
++	jz4740_mmc_reset(host);
++
+ 	ret = request_threaded_irq(host->irq, jz_mmc_irq, jz_mmc_irq_worker, 0,
+ 			dev_name(&pdev->dev), host);
+ 	if (ret) {
+@@ -1034,7 +1036,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+ 		goto err_free_gpios;
+ 	}
  
- 	mmc->ops = &jz4740_mmc_ops;
- 	mmc->f_min = JZ_MMC_CLK_RATE / 128;
-@@ -1038,16 +1038,17 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+-	jz4740_mmc_reset(host);
  	jz4740_mmc_clock_disable(host);
  	timer_setup(&host->timeout_timer, jz4740_mmc_timeout, 0);
- 
--	host->use_dma = true;
--	if (host->use_dma && jz4740_mmc_acquire_dma_channels(host) != 0)
--		host->use_dma = false;
-+	ret = jz4740_mmc_acquire_dma_channels(host);
-+	if (ret == -EPROBE_DEFER)
-+		goto err_free_irq;
-+	host->use_dma = !ret;
- 
- 	platform_set_drvdata(pdev, host);
- 	ret = mmc_add_host(mmc);
- 
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to add mmc host: %d\n", ret);
--		goto err_free_irq;
-+		goto err_release_dma;
- 	}
- 	dev_info(&pdev->dev, "JZ SD/MMC card driver registered\n");
- 
-@@ -1057,13 +1058,13 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 
- 	return 0;
- 
-+err_release_dma:
-+	if (host->use_dma)
-+		jz4740_mmc_release_dma_channels(host);
- err_free_irq:
- 	free_irq(host->irq, host);
- err_free_gpios:
- 	jz4740_mmc_free_gpios(pdev);
--err_release_dma:
--	if (host->use_dma)
--		jz4740_mmc_release_dma_channels(host);
- err_free_host:
- 	mmc_free_host(mmc);
  
 -- 
 2.16.2

@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:03:38 +0100 (CET)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:33435
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994823AbeCIOC1p5KVM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 15:02:27 +0100
-Received: by mail-wm0-x242.google.com with SMTP id s206so3610766wme.0
-        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 06:02:27 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:03:51 +0100 (CET)
+Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:36925
+        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994825AbeCIOC3rcKIM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 15:02:29 +0100
+Received: by mail-wr0-x242.google.com with SMTP id z12so9117058wrg.4
+        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 06:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=bFC+dOL1kofLW/Fz0q3F9Mambpm3ECJQAGpTBpsRBqY=;
-        b=KlhatkzHSpgVRHDvB7Xo8ArpzJdEHpIrp8YwbhdYo36/+atn/MwbTUVLka2ecwucpk
-         zBkNsc/ZMMJC76qRsNG3L0OoPeCXCuFE7Kwg/k6sQTOci9s0Te+5aqQGcaddiMIp8+48
-         cotuP8JIMQkN1iOw5U/gZASe/hLxJgyCR6kF8N6NJqAioxDCKZAMC5XrY+pSXPTrP1hG
-         ymOU5dlpgdVaUvbvPpc5rS+PJ/C75VxYJYfyyyQFf8mKnfu4cQY9WZaCPo5Cs73J1Qcw
-         jX3tqNstWDM+vhRI5hDVJ//BT12ne/5yFiHKvWzTjTCQMbeyPVZJVe1wN4cmr/5fq4d4
-         o+nQ==
+        bh=2cZZ6id+x0/wo2ATzm8/IeoYF4xqs5KCdHuahlIxLDo=;
+        b=n28I0cW2tGIoBIYvHm1SI0XfLgASTd/j+fKufWMhstDQ4Pj7hb6Lp0fKgCIbDNz3br
+         he5XQCd6p9rwPaNTHo4o0Uz+ZcfYVfLFeFwBCFXdC5L/tRjmIC5P7Q/4Cv/qXdIwUc3c
+         KqhKMf/N2RQst7CjSS1svXucH30lNXhNRKyN7+lVhhj3MBjAAWTwfnwTx15mYXnezjsm
+         WZaNzGRqzMTvuewgTuegpJiv5D3QqmaX4WuhSuanxMSU0ZCbsfuf/GgyOPG2o+waXiW7
+         vKQX1NqjKZfrh1VJD8E5dt0c18OFe3Po9kTmTYxPm1uq5u22ld+8CzuBdiRVepaWhudU
+         FNiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=bFC+dOL1kofLW/Fz0q3F9Mambpm3ECJQAGpTBpsRBqY=;
-        b=Y5qCFkPGi2ewhTkngZy6qjAdswLgTvtwwRUFmmeFzzC0UXCOa87hmcYfv+8fnSpotu
-         b5yNTCv3Z3tkuPhuGUhVywpWet1/PXTMESlJxXhlCHynu1UaXTTfQ8PCyMm68nX6HLvA
-         Pp7K6TM84VWGq1HLHzEmU1vTHdXsA4q3XnVI3Y1lKCBKfXx1SAO5HbZqbGPm0FSP96vk
-         k5HTW6UAbZNqO33py1Q/qEskh7BR4D8H10uH0zeFZd+awC/SirxqWDWsCJ5mjo+Z8Gaq
-         6mF2txazP7eaBvQw+xmijEaFaMDwtE6jN5fxbm/JU0jGWJw6c7cQw8f32FepyEPhkxXa
-         2aiA==
-X-Gm-Message-State: AElRT7HP27MO3+gBWp6XMb4g+giB/pyCygGuBaaXo7LKEIkFvEGtesBJ
-        HlrT02o3K6p+cPbqanKtueL3Dw==
-X-Google-Smtp-Source: AG47ELur63iUzTcj/SxULK7/n9/IiOYomFoFueFSfoU9XvqGgqC5/NqRiMXXZBMSOAU5srV8yEvX2w==
-X-Received: by 10.28.230.68 with SMTP id d65mr2300974wmh.13.1520604141250;
-        Fri, 09 Mar 2018 06:02:21 -0800 (PST)
+        bh=2cZZ6id+x0/wo2ATzm8/IeoYF4xqs5KCdHuahlIxLDo=;
+        b=WB0ZzzrA3xnV77OpDliXGDd6pfmXgiW0hYguW+rmUTG89AezO2FJ8jYe0UYYI2DTG/
+         /7XnM7N24SwHOqVcPmEcDvgIXD24xuRl44ss1D71MgSgivWb7fP0cUqp0pmYW1aFF+/8
+         5HKZ+CMJsef3FlmuP3WUIHloS15f8OEMkM+aRoe+GUwOpadImOep0aAFtyOah/eglVhK
+         qTkvUPWfhKKQ/HnVxyeh0AF5lOPt3UBCXODNDrLxRw5/t16h36aFn64WFhbp3Hw6U2w9
+         kqKO8lHgWNifYHgED2xMSskcaY59iiv9WOUSYXzzbfp1/oMxVDMTiu37+nS1uuWXGlif
+         Ii+g==
+X-Gm-Message-State: APf1xPA2ZnLJLrfYAokNvvF1kZXI+oI1SK3QSBnRBzynKw34ix6QFKTP
+        4SOFCX/Wqfjrx2Zh41TNvNQRjg==
+X-Google-Smtp-Source: AG47ELvbn6srqv+rO92C9ogiihmsYkHDHVrSlz9idaCoHMrpLnomGUssQTnZ+zDlRwUeFPhJ0hlfTQ==
+X-Received: by 10.223.191.10 with SMTP id p10mr27628264wrh.160.1520604143784;
+        Fri, 09 Mar 2018 06:02:23 -0800 (PST)
 Received: from andreyknvl0.muc.corp.google.com ([2a00:79e0:15:10:84be:a42a:826d:c530])
-        by smtp.gmail.com with ESMTPSA id f3sm994484wre.72.2018.03.09.06.02.18
+        by smtp.gmail.com with ESMTPSA id f3sm994484wre.72.2018.03.09.06.02.21
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Mar 2018 06:02:20 -0800 (PST)
+        Fri, 09 Mar 2018 06:02:23 -0800 (PST)
 From:   Andrey Konovalov <andreyknvl@google.com>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -119,9 +119,9 @@ Cc:     Dmitry Vyukov <dvyukov@google.com>,
         Jacob Bramley <Jacob.Bramley@arm.com>,
         Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>,
         Andrey Konovalov <andreyknvl@google.com>
-Subject: [RFC PATCH 4/6] mm, arm64: untag user addresses in mm/gup.c
-Date:   Fri,  9 Mar 2018 15:02:02 +0100
-Message-Id: <becebff594deda3a5881e64a21bf405f030991ad.1520600533.git.andreyknvl@google.com>
+Subject: [RFC PATCH 5/6] lib, arm64: untag addrs passed to strncpy_from_user and strnlen_user
+Date:   Fri,  9 Mar 2018 15:02:03 +0100
+Message-Id: <c515f67a6d94b2cfcac156bca0b9471203389d79.1520600533.git.andreyknvl@google.com>
 X-Mailer: git-send-email 2.16.2.395.g2e18187dfd-goog
 In-Reply-To: <cover.1520600533.git.andreyknvl@google.com>
 References: <cover.1520600533.git.andreyknvl@google.com>
@@ -131,7 +131,7 @@ Return-Path: <andreyknvl@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62869
+X-archive-position: 62870
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -148,75 +148,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-mm/gup.c provides a kernel interface that accepts user addresses and
-manipulates user pages directly (for example get_user_pages, that is used
-by the futex syscall). Here we also need to handle the case of tagged user
-pointers.
+strncpy_from_user and strnlen_user accept user addresses as arguments, and
+do not go through the same path as copy_from_user and others, so here we
+need to separately handle the case of tagged user addresses as well.
 
-Untag addresses passed to this interface.
+Untag user pointers passed to these functions.
 
 Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
 ---
- mm/gup.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ lib/strncpy_from_user.c | 2 ++
+ lib/strnlen_user.c      | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 1b46e6e74881..4d820c4792d7 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -386,6 +386,8 @@ struct page *follow_page_mask(struct vm_area_struct *vma,
- 	struct page *page;
- 	struct mm_struct *mm = vma->vm_mm;
- 
-+	address = untagged_addr(address);
-+
- 	*page_mask = 0;
- 
- 	/* make this handle hugepd */
-@@ -647,6 +649,8 @@ static long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
- 	if (!nr_pages)
+diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
+index b53e1b5d80f4..97467cd2bc59 100644
+--- a/lib/strncpy_from_user.c
++++ b/lib/strncpy_from_user.c
+@@ -106,6 +106,8 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
+ 	if (unlikely(count <= 0))
  		return 0;
  
-+	start = untagged_addr(start);
++	src = untagged_addr(src);
 +
- 	VM_BUG_ON(!!pages != !!(gup_flags & FOLL_GET));
+ 	max_addr = user_addr_max();
+ 	src_addr = (unsigned long)src;
+ 	if (likely(src_addr < max_addr)) {
+diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
+index 60d0bbda8f5e..8b5f56466e00 100644
+--- a/lib/strnlen_user.c
++++ b/lib/strnlen_user.c
+@@ -108,6 +108,8 @@ long strnlen_user(const char __user *str, long count)
+ 	if (unlikely(count <= 0))
+ 		return 0;
  
- 	/*
-@@ -801,6 +805,8 @@ int fixup_user_fault(struct task_struct *tsk, struct mm_struct *mm,
- 	struct vm_area_struct *vma;
- 	int ret, major = 0;
- 
-+	address = untagged_addr(address);
++	str = untagged_addr(str);
 +
- 	if (unlocked)
- 		fault_flags |= FAULT_FLAG_ALLOW_RETRY;
- 
-@@ -854,6 +860,8 @@ static __always_inline long __get_user_pages_locked(struct task_struct *tsk,
- 	long ret, pages_done;
- 	bool lock_dropped;
- 
-+	start = untagged_addr(start);
-+
- 	if (locked) {
- 		/* if VM_FAULT_RETRY can be returned, vmas become invalid */
- 		BUG_ON(vmas);
-@@ -1746,6 +1754,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	unsigned long flags;
- 	int nr = 0;
- 
-+	start = untagged_addr(start);
-+
- 	start &= PAGE_MASK;
- 	addr = start;
- 	len = (unsigned long) nr_pages << PAGE_SHIFT;
-@@ -1798,6 +1808,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	unsigned long addr, len, end;
- 	int nr = 0, ret = 0;
- 
-+	start = untagged_addr(start);
-+
- 	start &= PAGE_MASK;
- 	addr = start;
- 	len = (unsigned long) nr_pages << PAGE_SHIFT;
+ 	max_addr = user_addr_max();
+ 	src_addr = (unsigned long)str;
+ 	if (likely(src_addr < max_addr)) {
 -- 
 2.16.2.395.g2e18187dfd-goog

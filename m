@@ -1,61 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 16:17:11 +0100 (CET)
-Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:44786
-        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994822AbeCIPNrNaWcw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 16:13:47 +0100
-Received: by mail-qt0-x243.google.com with SMTP id g60so10993853qtd.11
-        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 07:13:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 16:47:38 +0100 (CET)
+Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:55140
+        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994811AbeCIPrboWf0l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 16:47:31 +0100
+Received: by mail-it0-x243.google.com with SMTP id c11so3223838ith.4
+        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 07:47:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8xu1GlkSCQRrCyIfDq7yQLIl02ea1I5KtORb1apVr/I=;
-        b=wLC9waB8YXZ9e82ZvwL5uSk1fMqPCh06dzf9AimeZC5qtdh0+8YTLdK6d0/r6szkhg
-         2mzfSoB6r7vB8NpgdCC0TgNFdYKKy3szO4rMVvufEr9l1gogq5z4w8RNwLElc8Sr2nic
-         jOsWlxL5herqzXAafD/xDEYYTnWP3mfDovLmM55Ztt2BrBvfWywKY1xNYo+Src9J+ab/
-         +qLncg2z0ZV3izR3H9Y177U9Zq3mOeKhjVnzVPa4USbrMhgUfMuT3mO2YUFhH/1+ln08
-         wYSXhpygtAl6x0ej5vQ/NX9qCamsy1Pl4vLaB2v2AD3hyRSNkO4m/zaOc5fMGk6ZWFbi
-         WMNg==
+        d=google.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=jAAksnYYkMODsnsZbowE4/VFrct/KsJsppH3N6IgE5E=;
+        b=UtibAzSDPg3Hg5hBk8M0mhG7Kp0G649HLc8j+63ikcwLMj5EOHI7aNDybftq6HDMym
+         gPQudQDqqs41i1jkCgFzTYKkSFoWaA2CBCjEmjYX5r8nrtc4JO/EBXHAFvnecUELL26C
+         /pt8P4whDL2PTLjzSinEq6AdlsXD43HpG74a/9/2O6rw3TEQqUH4Xem3NgrBPPBI0Jv7
+         cRaaoLmGD1GhQMByIRcJLC4vCoqiByih0Xb9YxSNbn3LHn1Z32Gpr76mDgc2dCk3ARR5
+         Jq3vRL2C5VHUX4c2xtptsue0bMshqLG3PSz+IhNCcBE/cjUhM1h3eRyWU3lSPm/YbwOm
+         fMxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=8xu1GlkSCQRrCyIfDq7yQLIl02ea1I5KtORb1apVr/I=;
-        b=g8FQvU6HKbgcRpsaMFX1ff6C+S2/ZJKdVLJ6il+W/sz09NNlATrG3+NNv8b7GltvUr
-         WBIay3sHsZtu9I5wWkuB0/UXbrD3P9dPttsDcpFOx4R7WddoCXF/kMNebRaA92SbzEBa
-         0YkUk1XtYowpLolccktDwq681+u4wyRyYog+GlCFr3nVQjJ8NVQ7tEJMZj6HMOKg4fgr
-         e4FiiK3OdFZcua5ZuX4UwgiyyBNRkfNOaEdXYeKk2RGoVsgyuYM49g2AAFf8+Zhr6vDz
-         daBIjm7+idoKF6taj/8ZuOszol6yEmHCJEZTU/sdu3lOJ50yv44Cms4W/7mTMwluymIg
-         VDvw==
-X-Gm-Message-State: AElRT7FWsAquNzcK4eykRk5ScDtVbk5L9v1RVEhxv2vcWv9PkFRwy/2Z
-        Yt9kvudpgsKYl4iRqFoFUCxWXg==
-X-Google-Smtp-Source: AG47ELumJwSqdvga9IcR6YBOS1SPB3Z0Us0C9I8XkEZnhKOFVRwKqT7PsXzALfW8/jpQa9A6hez2ug==
-X-Received: by 10.200.7.11 with SMTP id g11mr14022457qth.264.1520608421457;
-        Fri, 09 Mar 2018 07:13:41 -0800 (PST)
-Received: from localhost.localdomain ([190.210.56.45])
-        by smtp.gmail.com with ESMTPSA id d186sm682187qkf.37.2018.03.09.07.13.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Mar 2018 07:13:40 -0800 (PST)
-From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=jAAksnYYkMODsnsZbowE4/VFrct/KsJsppH3N6IgE5E=;
+        b=ny2FtbDOrfLNiYd7yvp00cXeukNr92ooI1pjsxbcVnm85EosloApQBK1Np0NPi1FeA
+         J8hj6f9VXml2UGy0/tBjutP917PyE3pYMOU8mDLwFYU/3/6MlZsMxcCkimqW/wOyvm5R
+         TRxYPX9m6saSm3BpdSaGX75FYb41ETDqXBK+JMmlsOaP/R4jUG9Bri8WhJjOgJRotF7y
+         aRZf40uDbSMQFlnfNcZQlJYe9MvqjFRnsMVVz0p01Dfe2GMeGU0bU/kqS937AlLwxghu
+         BMyP/y/U0MGx4IvrPdrdZS11YVIu6vqbfWIFIagJelwdL+rpmZTmF02v3lg6152iMIkd
+         yK1A==
+X-Gm-Message-State: AElRT7Hk0yBAKO/x0fwT8VhbLPp+pY2XCuW/F54IFlzW605+MN21Iv3u
+        Dm3WtPofwHf+qjYaXMRNv50ks1bbfdS8osnRga5NUQ==
+X-Google-Smtp-Source: AG47ELsF7lorhRvuFkmJ5gTFIQ+mijzHzzmqoCjPv2uK8Rd/dB8Y4qjhePOvFPSh69W8VA48c0fknemZtvTJgO2GVa4=
+X-Received: by 2002:a24:6c3:: with SMTP id 186-v6mr4327971itv.44.1520610443976;
+ Fri, 09 Mar 2018 07:47:23 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.2.102.68 with HTTP; Fri, 9 Mar 2018 07:47:23 -0800 (PST)
+In-Reply-To: <b320ff92-43ae-a479-35aa-4257b9c5430e@arm.com>
+References: <cover.1520600533.git.andreyknvl@google.com> <89b4bb181a0622d2c581699bb3814fc041078d04.1520600533.git.andreyknvl@google.com>
+ <b320ff92-43ae-a479-35aa-4257b9c5430e@arm.com>
+From:   Andrey Konovalov <andreyknvl@google.com>
+Date:   Fri, 9 Mar 2018 16:47:23 +0100
+Message-ID: <CAAeHK+y=_imh4uNSAg_vj3DLAeDLcVP3a4f79dNMW=Ot5oLiZQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 6/6] arch: add untagged_addr definition for other arches
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Michal Hocko <mhocko@suse.com>, Shaohua Li <shli@fb.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Anshuman Khandual <khandual@linux.vnet.ibm.com>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Hugh Dickins <hughd@google.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Zi Yan <zi.yan@cs.rutgers.edu>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         James Hogan <jhogan@kernel.org>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Subject: [PATCH 14/14] MIPS: configs: ci20: Enable DMA and MMC support
-Date:   Fri,  9 Mar 2018 12:12:19 -0300
-Message-Id: <20180309151219.18723-15-ezequiel@vanguardiasur.com.ar>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
-References: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
-Return-Path: <ezequiel@vanguardiasur.com.ar>
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E . J . Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <albert@sifive.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ingo Molnar <mingo@redhat.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-am33-list@redhat.com, nios2-dev@lists.rocketboards.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Kostya Serebryany <kcc@google.com>,
+        Evgeniy Stepanov <eugenis@google.com>,
+        Lee Smith <Lee.Smith@arm.com>,
+        Ramana Radhakrishnan <Ramana.Radhakrishnan@arm.com>,
+        Jacob Bramley <Jacob.Bramley@arm.com>,
+        Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <andreyknvl@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62891
+X-archive-position: 62892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel@vanguardiasur.com.ar
+X-original-sender: andreyknvl@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,29 +147,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This commit enables the SD/MMC support, along with DMA
-engine support in the CI20 defconfig.
+On Fri, Mar 9, 2018 at 3:16 PM, Robin Murphy <robin.murphy@arm.com> wrote:
+> On 09/03/18 14:02, Andrey Konovalov wrote:
+>>
+>> To allow arm64 syscalls accept tagged pointers from userspace, we must
+>> untag them when they are passed to the kernel. Since untagging is done in
+>> generic parts of the kernel (like the mm subsystem), the untagged_addr
+>> macro should be defined for all architectures.
+>
+>
+> Would it not suffice to have an "#ifndef untagged_addr..." fallback in
+> linux/uaccess.h?
+>
 
-Signed-off-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
----
- arch/mips/configs/ci20_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+Hi Robin!
 
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-index b5f4ad8f2c45..f88b05fd3077 100644
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -104,8 +104,11 @@ CONFIG_REGULATOR_FIXED_VOLTAGE=y
- # CONFIG_HID is not set
- # CONFIG_USB_SUPPORT is not set
- CONFIG_MMC=y
-+CONFIG_MMC_JZ4740=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_JZ4740=y
-+CONFIG_DMADEVICES=y
-+CONFIG_DMA_JZ4780=y
- # CONFIG_IOMMU_SUPPORT is not set
- CONFIG_MEMORY=y
- # CONFIG_DNOTIFY is not set
--- 
-2.16.2
+This approach is much better, I'll try it. This will also solve the
+merge issues that Arnd mentioned.
+
+Thanks!

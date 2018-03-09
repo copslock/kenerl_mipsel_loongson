@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:03:23 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:53114
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994819AbeCIOCZCjoPM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 15:02:25 +0100
-Received: by mail-wm0-x241.google.com with SMTP id t3so4096450wmc.2
-        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 06:02:24 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2018 15:03:38 +0100 (CET)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:33435
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994823AbeCIOC1p5KVM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2018 15:02:27 +0100
+Received: by mail-wm0-x242.google.com with SMTP id s206so3610766wme.0
+        for <linux-mips@linux-mips.org>; Fri, 09 Mar 2018 06:02:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=DpcZU3q2JkfB8kv1mdnR74RNzNyT/bkV2tCxTLB6/CU=;
-        b=pFAdjRvPTdDBaMK+oKfvueELn1JR71cUCRIfQw/F2hoOKsy/q+Om6vz83nHbTqOMNo
-         25osMnr0Yst2HYixmN/ITDz0DRcYS5XTRq8qulFav8sM6i1JaNJ1ZXUbWV+dqupJlz4f
-         nNAgB7P2EkoA4uI2ywl0qCpI1p1qUyGu2Pbs7XQNTykMV3D9yMjoBbTP48bwbtoZ8tQy
-         eq3Av3NvURqw/XHWnfJT/mc+HFGvZcbeBPJVX370+ge5QaJCAxEwt3/pINcieeEKBfre
-         RSMKbQ7HGI1RY2O9HMDFLLBZe8Ak6KRNBJnu3eZGAhpJBTYkT94+Tacj0uLjQNALyv0B
-         ledA==
+        bh=bFC+dOL1kofLW/Fz0q3F9Mambpm3ECJQAGpTBpsRBqY=;
+        b=KlhatkzHSpgVRHDvB7Xo8ArpzJdEHpIrp8YwbhdYo36/+atn/MwbTUVLka2ecwucpk
+         zBkNsc/ZMMJC76qRsNG3L0OoPeCXCuFE7Kwg/k6sQTOci9s0Te+5aqQGcaddiMIp8+48
+         cotuP8JIMQkN1iOw5U/gZASe/hLxJgyCR6kF8N6NJqAioxDCKZAMC5XrY+pSXPTrP1hG
+         ymOU5dlpgdVaUvbvPpc5rS+PJ/C75VxYJYfyyyQFf8mKnfu4cQY9WZaCPo5Cs73J1Qcw
+         jX3tqNstWDM+vhRI5hDVJ//BT12ne/5yFiHKvWzTjTCQMbeyPVZJVe1wN4cmr/5fq4d4
+         o+nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=DpcZU3q2JkfB8kv1mdnR74RNzNyT/bkV2tCxTLB6/CU=;
-        b=iHA8bfdhlp7zNSY9j989nE6WRz3WWcNo4q2lFy0w998b+1x+h66D8NawfLpYmxtl5y
-         AczWa2WdvCGIWH+NfNQWxKSuS+RdpXr4+B5enL1Q6JrBJwpmnOFsT2CzAUAY9HgZiysS
-         ucKrv4YW67fGhSP5t1v/ut7uHeLRtJLVIFKyR2/ccpmX8gj8t6Mz/b8XAomlD/7L8Ier
-         2rvUwM1bW+kcAw7h6UQWk4ZbAv/897S6jPFoJwtH4EcMs7eofGC2qqg8fxwf0qu3Bryy
-         5mps/G10iaE1xH+qv93NSaXJ/hgeP/byyJzSIJmX10JaP1AR3k8ZsgWArRJVOSkMh3Uk
-         NGZA==
-X-Gm-Message-State: AElRT7F1YPlfd/0d9jtEH/INk+bK2sKGV/eVlBhSSkOs3UUoV8qVIrtQ
-        OnRyKvj9qGgKNZ8g4RzH5iC7IA==
-X-Google-Smtp-Source: AG47ELvJ2FcNzTKSCjm9NC56BYzVrFyEdkyNrQUb5AlMVrQjfQKHWOwJOjS19Kc8SLi/cJMcXLWazQ==
-X-Received: by 10.28.87.211 with SMTP id l202mr2009696wmb.32.1520604138739;
-        Fri, 09 Mar 2018 06:02:18 -0800 (PST)
+        bh=bFC+dOL1kofLW/Fz0q3F9Mambpm3ECJQAGpTBpsRBqY=;
+        b=Y5qCFkPGi2ewhTkngZy6qjAdswLgTvtwwRUFmmeFzzC0UXCOa87hmcYfv+8fnSpotu
+         b5yNTCv3Z3tkuPhuGUhVywpWet1/PXTMESlJxXhlCHynu1UaXTTfQ8PCyMm68nX6HLvA
+         Pp7K6TM84VWGq1HLHzEmU1vTHdXsA4q3XnVI3Y1lKCBKfXx1SAO5HbZqbGPm0FSP96vk
+         k5HTW6UAbZNqO33py1Q/qEskh7BR4D8H10uH0zeFZd+awC/SirxqWDWsCJ5mjo+Z8Gaq
+         6mF2txazP7eaBvQw+xmijEaFaMDwtE6jN5fxbm/JU0jGWJw6c7cQw8f32FepyEPhkxXa
+         2aiA==
+X-Gm-Message-State: AElRT7HP27MO3+gBWp6XMb4g+giB/pyCygGuBaaXo7LKEIkFvEGtesBJ
+        HlrT02o3K6p+cPbqanKtueL3Dw==
+X-Google-Smtp-Source: AG47ELur63iUzTcj/SxULK7/n9/IiOYomFoFueFSfoU9XvqGgqC5/NqRiMXXZBMSOAU5srV8yEvX2w==
+X-Received: by 10.28.230.68 with SMTP id d65mr2300974wmh.13.1520604141250;
+        Fri, 09 Mar 2018 06:02:21 -0800 (PST)
 Received: from andreyknvl0.muc.corp.google.com ([2a00:79e0:15:10:84be:a42a:826d:c530])
-        by smtp.gmail.com with ESMTPSA id f3sm994484wre.72.2018.03.09.06.02.15
+        by smtp.gmail.com with ESMTPSA id f3sm994484wre.72.2018.03.09.06.02.18
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Mar 2018 06:02:17 -0800 (PST)
+        Fri, 09 Mar 2018 06:02:20 -0800 (PST)
 From:   Andrey Konovalov <andreyknvl@google.com>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -119,9 +119,9 @@ Cc:     Dmitry Vyukov <dvyukov@google.com>,
         Jacob Bramley <Jacob.Bramley@arm.com>,
         Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>,
         Andrey Konovalov <andreyknvl@google.com>
-Subject: [RFC PATCH 3/6] mm, arm64: untag user addresses in memory syscalls
-Date:   Fri,  9 Mar 2018 15:02:01 +0100
-Message-Id: <beea8ac394bfae3c7c949645fb887ceacc3f3bb3.1520600533.git.andreyknvl@google.com>
+Subject: [RFC PATCH 4/6] mm, arm64: untag user addresses in mm/gup.c
+Date:   Fri,  9 Mar 2018 15:02:02 +0100
+Message-Id: <becebff594deda3a5881e64a21bf405f030991ad.1520600533.git.andreyknvl@google.com>
 X-Mailer: git-send-email 2.16.2.395.g2e18187dfd-goog
 In-Reply-To: <cover.1520600533.git.andreyknvl@google.com>
 References: <cover.1520600533.git.andreyknvl@google.com>
@@ -131,7 +131,7 @@ Return-Path: <andreyknvl@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62868
+X-archive-position: 62869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -148,213 +148,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Memory subsystem syscalls accept user addresses as arguments, but don't use
-copy_from_user and other similar functions, so we need to handle this case
-separately.
+mm/gup.c provides a kernel interface that accepts user addresses and
+manipulates user pages directly (for example get_user_pages, that is used
+by the futex syscall). Here we also need to handle the case of tagged user
+pointers.
 
-Untag user pointers passed to madvise, mbind, get_mempolicy, mincore,
-mlock, mlock2, brk, mmap_pgoff, old_mmap, munmap, remap_file_pages,
-mprotect, pkey_mprotect, mremap and msync.
+Untag addresses passed to this interface.
 
 Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
 ---
- mm/madvise.c   | 2 ++
- mm/mempolicy.c | 6 ++++++
- mm/mincore.c   | 2 ++
- mm/mlock.c     | 5 +++++
- mm/mmap.c      | 9 +++++++++
- mm/mprotect.c  | 2 ++
- mm/mremap.c    | 2 ++
- mm/msync.c     | 3 +++
- 8 files changed, 31 insertions(+)
+ mm/gup.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 4d3c922ea1a1..909d6ba09031 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -798,6 +798,8 @@ SYSCALL_DEFINE3(madvise, unsigned long, start, size_t, len_in, int, behavior)
- 	size_t len;
- 	struct blk_plug plug;
+diff --git a/mm/gup.c b/mm/gup.c
+index 1b46e6e74881..4d820c4792d7 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -386,6 +386,8 @@ struct page *follow_page_mask(struct vm_area_struct *vma,
+ 	struct page *page;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 
++	address = untagged_addr(address);
++
+ 	*page_mask = 0;
+ 
+ 	/* make this handle hugepd */
+@@ -647,6 +649,8 @@ static long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
+ 	if (!nr_pages)
+ 		return 0;
  
 +	start = untagged_addr(start);
 +
- 	if (!madvise_behavior_valid(behavior))
- 		return error;
+ 	VM_BUG_ON(!!pages != !!(gup_flags & FOLL_GET));
  
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index d879f1d8a44a..79d33a570c60 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1344,6 +1344,8 @@ SYSCALL_DEFINE6(mbind, unsigned long, start, unsigned long, len,
- 	int err;
- 	unsigned short mode_flags;
+ 	/*
+@@ -801,6 +805,8 @@ int fixup_user_fault(struct task_struct *tsk, struct mm_struct *mm,
+ 	struct vm_area_struct *vma;
+ 	int ret, major = 0;
+ 
++	address = untagged_addr(address);
++
+ 	if (unlocked)
+ 		fault_flags |= FAULT_FLAG_ALLOW_RETRY;
+ 
+@@ -854,6 +860,8 @@ static __always_inline long __get_user_pages_locked(struct task_struct *tsk,
+ 	long ret, pages_done;
+ 	bool lock_dropped;
  
 +	start = untagged_addr(start);
 +
- 	mode_flags = mode & MPOL_MODE_FLAGS;
- 	mode &= ~MPOL_MODE_FLAGS;
- 	if (mode >= MPOL_MAX)
-@@ -1479,6 +1481,8 @@ SYSCALL_DEFINE5(get_mempolicy, int __user *, policy,
- 	int uninitialized_var(pval);
- 	nodemask_t nodes;
- 
-+	addr = untagged_addr(addr);
-+
- 	if (nmask != NULL && maxnode < MAX_NUMNODES)
- 		return -EINVAL;
- 
-@@ -1557,6 +1561,8 @@ COMPAT_SYSCALL_DEFINE6(mbind, compat_ulong_t, start, compat_ulong_t, len,
- 	unsigned long nr_bits, alloc_size;
- 	nodemask_t bm;
+ 	if (locked) {
+ 		/* if VM_FAULT_RETRY can be returned, vmas become invalid */
+ 		BUG_ON(vmas);
+@@ -1746,6 +1754,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+ 	unsigned long flags;
+ 	int nr = 0;
  
 +	start = untagged_addr(start);
 +
- 	nr_bits = min_t(unsigned long, maxnode-1, MAX_NUMNODES);
- 	alloc_size = ALIGN(nr_bits, BITS_PER_LONG) / 8;
- 
-diff --git a/mm/mincore.c b/mm/mincore.c
-index fc37afe226e6..b59cf8fa3050 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -228,6 +228,8 @@ SYSCALL_DEFINE3(mincore, unsigned long, start, size_t, len,
- 	unsigned long pages;
- 	unsigned char *tmp;
- 
-+	start = untagged_addr(start);
-+
- 	/* Check the start address: needs to be page-aligned.. */
- 	if (start & ~PAGE_MASK)
- 		return -EINVAL;
-diff --git a/mm/mlock.c b/mm/mlock.c
-index 74e5a6547c3d..2f456a458cac 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -714,6 +714,7 @@ static __must_check int do_mlock(unsigned long start, size_t len, vm_flags_t fla
- 
- SYSCALL_DEFINE2(mlock, unsigned long, start, size_t, len)
- {
-+	start = untagged_addr(start);
- 	return do_mlock(start, len, VM_LOCKED);
- }
- 
-@@ -721,6 +722,8 @@ SYSCALL_DEFINE3(mlock2, unsigned long, start, size_t, len, int, flags)
- {
- 	vm_flags_t vm_flags = VM_LOCKED;
- 
-+	start = untagged_addr(start);
-+
- 	if (flags & ~MLOCK_ONFAULT)
- 		return -EINVAL;
- 
-@@ -734,6 +737,8 @@ SYSCALL_DEFINE2(munlock, unsigned long, start, size_t, len)
- {
- 	int ret;
- 
-+	start = untagged_addr(start);
-+
- 	len = PAGE_ALIGN(len + (offset_in_page(start)));
  	start &= PAGE_MASK;
- 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 9efdc021ad22..b63362c45cde 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -189,6 +189,8 @@ SYSCALL_DEFINE1(brk, unsigned long, brk)
- 	bool populate;
- 	LIST_HEAD(uf);
- 
-+	brk = untagged_addr(brk);
-+
- 	if (down_write_killable(&mm->mmap_sem))
- 		return -EINTR;
- 
-@@ -1495,6 +1497,8 @@ SYSCALL_DEFINE6(mmap_pgoff, unsigned long, addr, unsigned long, len,
- 	struct file *file = NULL;
- 	unsigned long retval;
- 
-+	addr = untagged_addr(addr);
-+
- 	if (!(flags & MAP_ANONYMOUS)) {
- 		audit_mmap_fd(fd, flags);
- 		file = fget(fd);
-@@ -1556,6 +1560,8 @@ SYSCALL_DEFINE1(old_mmap, struct mmap_arg_struct __user *, arg)
- 	if (offset_in_page(a.offset))
- 		return -EINVAL;
- 
-+	a.addr = untagged_addr(a.addr);
-+
- 	return sys_mmap_pgoff(a.addr, a.len, a.prot, a.flags, a.fd,
- 			      a.offset >> PAGE_SHIFT);
- }
-@@ -2751,6 +2757,7 @@ EXPORT_SYMBOL(vm_munmap);
- 
- SYSCALL_DEFINE2(munmap, unsigned long, addr, size_t, len)
- {
-+	addr = untagged_addr(addr);
- 	profile_munmap(addr);
- 	return vm_munmap(addr, len);
- }
-@@ -2769,6 +2776,8 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	unsigned long ret = -EINVAL;
- 	struct file *file;
+ 	addr = start;
+ 	len = (unsigned long) nr_pages << PAGE_SHIFT;
+@@ -1798,6 +1808,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
+ 	unsigned long addr, len, end;
+ 	int nr = 0, ret = 0;
  
 +	start = untagged_addr(start);
 +
- 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/vm/remap_file_pages.txt.\n",
- 		     current->comm, current->pid);
- 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index e3309fcf586b..73d2a6befcf9 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -519,6 +519,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
- 		unsigned long, prot)
- {
-+	start = untagged_addr(start);
- 	return do_mprotect_pkey(start, len, prot, -1);
- }
- 
-@@ -527,6 +528,7 @@ SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
- SYSCALL_DEFINE4(pkey_mprotect, unsigned long, start, size_t, len,
- 		unsigned long, prot, int, pkey)
- {
-+	start = untagged_addr(start);
- 	return do_mprotect_pkey(start, len, prot, pkey);
- }
- 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 049470aa1e3e..e42863a135de 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -533,6 +533,8 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
- 	LIST_HEAD(uf_unmap_early);
- 	LIST_HEAD(uf_unmap);
- 
-+	addr = untagged_addr(addr);
-+
- 	if (flags & ~(MREMAP_FIXED | MREMAP_MAYMOVE))
- 		return ret;
- 
-diff --git a/mm/msync.c b/mm/msync.c
-index ef30a429623a..03a977558f9f 100644
---- a/mm/msync.c
-+++ b/mm/msync.c
-@@ -37,12 +37,15 @@ SYSCALL_DEFINE3(msync, unsigned long, start, size_t, len, int, flags)
- 	int unmapped_error = 0;
- 	int error = -EINVAL;
- 
-+	start = untagged_addr(start);
-+
- 	if (flags & ~(MS_ASYNC | MS_INVALIDATE | MS_SYNC))
- 		goto out;
- 	if (offset_in_page(start))
- 		goto out;
- 	if ((flags & MS_ASYNC) && (flags & MS_SYNC))
- 		goto out;
-+
- 	error = -ENOMEM;
- 	len = (len + ~PAGE_MASK) & PAGE_MASK;
- 	end = start + len;
+ 	start &= PAGE_MASK;
+ 	addr = start;
+ 	len = (unsigned long) nr_pages << PAGE_SHIFT;
 -- 
 2.16.2.395.g2e18187dfd-goog

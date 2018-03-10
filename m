@@ -1,64 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Mar 2018 12:36:12 +0100 (CET)
-Received: from mail-ua0-x241.google.com ([IPv6:2607:f8b0:400c:c08::241]:34841
-        "EHLO mail-ua0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990405AbeCJLgFGTAn- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Mar 2018 12:36:05 +0100
-Received: by mail-ua0-x241.google.com with SMTP id c40so3948099uae.2
-        for <linux-mips@linux-mips.org>; Sat, 10 Mar 2018 03:36:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Mar 2018 18:02:43 +0100 (CET)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:36645
+        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992336AbeCJRChLtW3A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Mar 2018 18:02:37 +0100
+Received: by mail-oi0-x241.google.com with SMTP id u73so9285105oie.3
+        for <linux-mips@linux-mips.org>; Sat, 10 Mar 2018 09:02:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=P8ooc8j4348DmAaTuaK4NckA2ZnupFj/v+I1UsUwpmU=;
-        b=p1cTHIdTQ4T0TfbwJQNFADCAA4enLXD/qIi6XVBtdbcwQck1cluTF3GOCVPFc9xN/1
-         eaPOz5IdMUbIJd1HWMXZrBxuEkEVMp9PIMtyANpCp86IoxrHa5WSzb7zG6Reep04XAGE
-         TmkudILr9cGsxaOaiRksEdOv1kkJ0mXF+q8T02CPnR4leyGdiICnibBHb0TnTUpHAJTs
-         NYxDi5QIQjEzgxSaDlrkW2NUm8WzbKHSD+36LJh++iILFEZmgi3dOVxqeteJSSazOTLL
-         b3NqQUNxuZZyE015mI6sT7zQaCgGvN6MdNkyuoXHyEWqneG1/M3htbM6TR3BLwJM7Uxw
-         J87w==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=Kw6MTIoQrLC/GFjxdXLbZyLB5ZjlcyH0mcrMjry7K3o=;
+        b=GhGnR92pH3hj+8ucb6d10Yfb53nFKkqrnE6SzXDkECalmMm+Q+xo1XxzuaFRntIoyH
+         Wn/TtHKCl68nREYJgENRx9FwUXS3P6RDsSLP9yj2XREhh8VlYrMdm1ZRYxrgHFwTp9sj
+         en+pKYpCTprcu1gAlCyDYP8ZrfcoQ0vzcvMMzNVEk3yeoygQe7cUjSzKIxP1p8y6zEh7
+         G7n2anKwueC2B6t3KJUHX1jGh1DGmtshBUI0MeBBWQB0kIQqAKb1zfZqhONJuShd26/x
+         VNt6jzg11Jh7KuRWkhSJZpeAlSBNtMMmi/M/avi1pdaLMzMge9mMyCZW2HjU7ygtEshS
+         njxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=P8ooc8j4348DmAaTuaK4NckA2ZnupFj/v+I1UsUwpmU=;
-        b=EilD4G8kcoCV2fUQT1BLHQBBu3C6X2Jsh3++EPqS0HYNjvy1fuiAutoRUYvancSfj9
-         kfv4BEGsbdi90NP4VFbcRPUMLNyp0FJwwBdY/hifUdTjvtAOmZg9/Yn5jvhnDdSmh7x5
-         CvtOjiiO/s5qw2wYOF3AYt60HyQ20W9Rznt9KPj5LFan2TAjMhGxGXDSPnaTmI5shMbR
-         TnXbBG15+PzWX1scG+mRk2O8jpLTSMjFcz4dCADTuOq9UNYpq27yU/NIcNERsait/hLn
-         LgD+bUaZrkokjSULl8Onw8MJYN6lx+3IbDIYvdCmzXijepchvowTjy8FOxsuxT4VarB/
-         WIZg==
-X-Gm-Message-State: AElRT7GW/5b6H0JTGQB2mYHda6yW6KAg7VZYqX1BZNMn4Xa4jEnCTVUv
-        n49KcIbpmimfyLcrYEHZadDUzIBz4uXEXX89rE0=
-X-Google-Smtp-Source: AG47ELsltc7GWC8yFRf/uJZF26bs3GkdY7VTMlW+piCTv0cqZmL72b+oBjC2YFNcYORRu3o9Z7hirXiqmdCYlnvf97U=
-X-Received: by 10.159.54.38 with SMTP id r35mr1074526uad.133.1520681758923;
- Sat, 10 Mar 2018 03:35:58 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=Kw6MTIoQrLC/GFjxdXLbZyLB5ZjlcyH0mcrMjry7K3o=;
+        b=CK8DLxQxTLA/oJhOywE7qVVCpgPk2bAGfV7vBe2n+Dz0vSwiwbAQOPKTrDKklLZhjX
+         ecGGOFrUOFZ4OX5hAA/OKp5mzDEEit+nW4rhxwcUPa8P/7AK3T2yRlTN0TXIDcnXqfPD
+         43RcYuBi93bdJv4aenVCOWUGmXzre7ZJmb/5QyeQdlDu4zT8whBejeBODVECY6N+KWcY
+         1jvNMmn8LSJEFF+2YefCcrEVUd4V6T9a3HUL47oUffJLMwOrphfsKAxz50t3XYFpidjV
+         iTzcX8gUWvYGX5JbzjB1B4KeEnBaNHQEa0fwB2kkyDa6c7ZUxkA1oR72qP5BxEKeE87F
+         Obyg==
+X-Gm-Message-State: AElRT7FRjVJhW459PNv4sNwgpzJXud/bFkjWhmhmDXUpLXFuwdjtO+Gj
+        bLpJT+v5evkrHS8Q4g7puIq4WWiCdxHzeWJST4Q=
+X-Google-Smtp-Source: AG47ELtlZWXcvuV69+mg0iNba24UEen+juU4o/uxC+zwPQ9YCjDsnCA/HWffqPsvl5lIlq4Lqo1KaxwX+oywzNgFsF4=
+X-Received: by 10.202.51.138 with SMTP id z132mr1538351oiz.67.1520701350695;
+ Sat, 10 Mar 2018 09:02:30 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.176.81.166 with HTTP; Sat, 10 Mar 2018 03:35:37 -0800 (PST)
-In-Reply-To: <7a1695c0-45cf-e3d6-8524-8d2aeccc6490@mips.com>
-References: <1519898292-12155-1-git-send-email-matt.redfearn@mips.com>
- <87lgfcnkey.fsf@kamboji.qca.qualcomm.com> <c5929bb5-c50f-e73e-3117-fb0a862bb0fc@lwfinger.net>
- <7a1695c0-45cf-e3d6-8524-8d2aeccc6490@mips.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Sat, 10 Mar 2018 12:35:37 +0100
-Message-ID: <CAOiHx=n7R35yfPZgGt9pq39y-jMYpH44eAGGSvNJ=sM5Rf5H3A@mail.gmail.com>
-Subject: Re: [PATCH v2] bcma: Prevent build of PCI host features in module
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
+Received: by 10.201.20.79 with HTTP; Sat, 10 Mar 2018 09:02:10 -0800 (PST)
+In-Reply-To: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
+References: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Sat, 10 Mar 2018 18:02:10 +0100
+X-Google-Sender-Auth: 5gSJ-m9iZfNwucvvoTY5xa8DWsU
+Message-ID: <CA+7wUsxuavjaVOpoOEVJp4gSd+J_FQ37JuRE_N2BhEqOx7G1yA@mail.gmail.com>
+Subject: Re: [PATCH 00/14] Enable SD/MMC on JZ4780 SoCs
+To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mmc@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
         James Hogan <jhogan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <jonas.gorski@gmail.com>
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62901
+X-archive-position: 62902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,88 +68,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Fri, Mar 9, 2018 at 4:12 PM, Ezequiel Garcia
+<ezequiel@vanguardiasur.com.ar> wrote:
+> This patchset adds support for SD/MMC on JZ4780 based
+> platforms, such as the MIPS Creator CI20 board.
+>
+> Most of the work has been done by Alex, Paul and Zubair,
+> while I've only prepared the upstream submission, cleaned
+> some patches, and written some commit logs where needed.
+>
+> All praises should go to them, all rants to me.
+>
+> The series is based on v4.16-rc4.
+>
+> Alex Smith (3):
+>   mmc: jz4740: Set clock rate to mmc->f_max rather than JZ_MMC_CLK_RATE
+>   mmc: jz4740: Add support for the JZ4780
+>   mmc: jz4740: Fix race condition in IRQ mask update
+>
+> Ezequiel Garcia (9):
+>   mmc: jz4780: Order headers alphabetically
+>   mmc: jz4740: Use dev_get_platdata
+>   mmc: jz4740: Introduce devicetree probe
+>   mmc: dt-bindings: add MMC support to JZ4740 SoC
+>   mmc: jz4740: Use dma_request_chan()
+>   MIPS: dts: jz4780: Add DMA controller node to the devicetree
+>   MIPS: dts: jz4780: Add MMC controller node to the devicetree
+>   MIPS: dts: ci20: Enable DMA and MMC in the devicetree
+>   MIPS: configs: ci20: Enable DMA and MMC support
+>
+> Paul Cercueil (1):
+>   mmc: jz4740: Fix error exit path in driver's probe
+>
+> Zubair Lutfullah Kakakhel (1):
+>   mmc: jz4740: Reset the device requesting the interrupt
 
-On 8 March 2018 at 13:00, Matt Redfearn <matt.redfearn@mips.com> wrote:
-> Hi,
->
->
-> On 02/03/18 17:56, Larry Finger wrote:
->>
->> On 03/01/2018 04:45 AM, Kalle Valo wrote:
->>>
->>> Matt Redfearn <matt.redfearn@mips.com> writes:
->>>
->>>> Attempting to build bcma.ko with BCMA_DRIVER_PCI_HOSTMODE=y results in
->>>> a build error due to use of symbols not exported from vmlinux:
->>>>
->>>> ERROR: "pcibios_enable_device" [drivers/bcma/bcma.ko] undefined!
->>>> ERROR: "register_pci_controller" [drivers/bcma/bcma.ko] undefined!
->>>> make[1]: *** [scripts/Makefile.modpost:92: __modpost] Error 1
->>>>
->>>> To prevent this, don't allow the host mode feature to be built if
->>>> CONFIG_BCMA=m
->>>>
->>>> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->>>>
->>>> ---
->>>>
->>>> Changes in v2:
->>>> Rebase on v4.16-rc1
->>>>
->>>>   drivers/bcma/Kconfig | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
->>>> index ba8acca036df..cb0f1aad20b7 100644
->>>> --- a/drivers/bcma/Kconfig
->>>> +++ b/drivers/bcma/Kconfig
->>>> @@ -55,7 +55,7 @@ config BCMA_DRIVER_PCI
->>>>   config BCMA_DRIVER_PCI_HOSTMODE
->>>>       bool "Driver for PCI core working in hostmode"
->>>> -    depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY
->>>> +    depends on MIPS && BCMA_DRIVER_PCI && PCI_DRIVERS_LEGACY && BCMA =
->>>> y
->>>
->>>
->>> Due to the recent regression in bcma I would prefer extra careful review
->>> before I apply this. So does this look ok to everyone?
->>
->>
->> I have a preference for wireless device drivers to be modules. For that
->> reason, I would have submitted a patch exporting those two missing globals
->> rather than forcing bcma to be built in. That said, it seems that the patch
->> will do no further harm.
->
->
->
-> This patch was purely intended to fix the build breakage caused by
-> attempting to build host-mode PCI into a module, which fails due to
-> necessary symbols not being exported by the kernel for use by modules.
->
-> Making it possible to build the driver including host mode may not be as
-> trivial as "lets just export the symbols", and testing that it works
-> correctly once it can be built as a module will require hardware with this
-> device present (which I don't have).
->
-> So I would propose that this patch be merged as is, since as you say, it
-> does no further harm - it should just fix build breakage - and if the
-> driver, including this host mode feature, is really required as a module,
-> perhaps someone with access to the hardware could spin a patch to implement
-> that.
+Nice work. Entire series works just fine on my MIPS Creator CI20 (v1).
 
+Nitpick: could you update the email addresses:
 
-These aren't the actual wireless drivers, just the bus drivers. The
-actual wireless drivers (b43 / brcmsmac) can still be built as a
-module.
+s/imgtec/mips/
 
-Also those systems that use/need the pci host driver of ssb/bcma
-actually need ssb/bcma built-in anyway, as it also provides serial
-console, interrupt routing, flash access, and other early init stuff.
-At best one could rewrite the pci host core driver as a standalone
-bcma driver, and then one could allow it to be built as a module. But
-I'm not sure if it's worth it.
+thanks
 
-
-Regards
-Jonas
+>  Documentation/devicetree/bindings/mmc/jz4740.txt |  38 ++++
+>  arch/mips/boot/dts/ingenic/ci20.dts              |  38 ++++
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi           |  54 ++++++
+>  arch/mips/configs/ci20_defconfig                 |   3 +
+>  drivers/mmc/host/Kconfig                         |   2 +-
+>  drivers/mmc/host/jz4740_mmc.c                    | 232 ++++++++++++++++-------
+>  include/dt-bindings/dma/jz4780-dma.h             |  49 +++++
+>  7 files changed, 349 insertions(+), 67 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/jz4740.txt
+>  create mode 100644 include/dt-bindings/dma/jz4780-dma.h
+>
+> --
+> 2.16.2
+>
+>

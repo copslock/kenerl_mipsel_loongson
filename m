@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Mar 2018 18:05:32 +0100 (CET)
-Received: from mail-ot0-x242.google.com ([IPv6:2607:f8b0:4003:c0f::242]:46139
-        "EHLO mail-ot0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992336AbeCJRFYv4lGA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Mar 2018 18:05:24 +0100
-Received: by mail-ot0-x242.google.com with SMTP id g97so11535848otg.13
-        for <linux-mips@linux-mips.org>; Sat, 10 Mar 2018 09:05:24 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Mar 2018 18:11:40 +0100 (CET)
+Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:42247
+        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992336AbeCJRLbsbNFA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Mar 2018 18:11:31 +0100
+Received: by mail-oi0-x243.google.com with SMTP id c18so9283915oiy.9
+        for <linux-mips@linux-mips.org>; Sat, 10 Mar 2018 09:11:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=hC3D9I/64o0oqMAZZ8c0xUqxO8ksZ4MKSWT1nA1JmNo=;
-        b=pPtr7+c+5OFMz2v8a6xqd5Ppciz/9TMqRmDOwwXccN08xy6hyh9RKWvXsMEYkmbU2Q
-         nX31Wp7+CVhHjbP3yrDTma+IqcFGIZcK/dt9huRgKa/3EYF74Z0X8DxIt6D0drNbcZh2
-         wQvpPiCOPWaBd476pGTMSkzvTajC70QlMUTZFJBcJUnkX9SWEfeZRJjNc0cA53oEVYGa
-         XUMEh84LqOWFw2GBdRqPBFbuUWZFUjo/4WqTFTnq1JhnrVoDHBMEU2D9L8tjquzfPpmO
-         cKHB2xfPdKbjupfiJKayCRjWkI54v3KoHQIuiD9zIZ18fE71IPYZleafiVok1hyvsXMD
-         oLwg==
+        bh=GHOFGhH+9FjzZWethLNWdz4z0mlQkpUq4xUtBsWDTUA=;
+        b=Hoc8T/4nFu5Q26vDNWh3g3qTlSdRtT9He3o/i+km5eTECackoVX60uW4L05RI2eBgs
+         VFhx0SVLxxSHoDc06/rT8lTfizSKNZknO9kf4k//67ofXFG1u3P8HKqC0Wc/xYDC/wol
+         /oabtZbNKKD4J3DW8dZGohFulpy4jjG6VEgikAsODxe6AFdpBGei57LGG7glzWP7nkoq
+         oATOyAys4QP+9NF4ey/cO15Ig8raVTPOukkd0ZLgcZUsq/vyJL/tyBueRGXbIwujlATc
+         efDlQdFDGAI3Nypwmdf/NZJNfL9YRy1HYAdVvH84u+Qznx9CvFlVOXOu3iUPKqgZhKSG
+         EC7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=hC3D9I/64o0oqMAZZ8c0xUqxO8ksZ4MKSWT1nA1JmNo=;
-        b=s2o5spF3xsrsfdK+ggRA8zg0Uq7ONZNtowyKdDXzqWMIGRUUUahwb5D4fND+DyPCQY
-         Ve+GI6KEr17swbgC2ELBUrusPd5nWwWx/QThCt4YORMauqJutiSxUn7mKdRrYk3IxFzw
-         nCOkT+K1nZbcWxAS58W+R6l/sloqlga8mOL35ephTujRmURZUJ4Bq7vx5porKMk2GfJQ
-         Y5wVcqBhoN9f3YNcEnx7zRWafKfIepCXeM1aqD0akB8x3Zo3AU+8AfXPxoY1zgkZnh4p
-         0lRHIbh6U1CFVuo/Ir4bo8asnEVA4zb1vzjgZ4ObC6fD7HxQXCXEtrXkLgsXhbambGJg
-         4BnA==
-X-Gm-Message-State: AElRT7FBGyIfyntfDOfp/ncrxl+d1xJeDF6lLi1VeuvxNoSS5PRWVZEj
-        OZEUnpY+2XXCvaGukv6hBqUAY5vdL93o83j4cgIlHg==
-X-Google-Smtp-Source: AG47ELtrzn86xEwZA56y/Rd6KvilAj2nptOjJo9gdy6apMSVLDRuKxAuvI1dtYLF03LcFoiGHgzMP+BXoU/FerQCveo=
-X-Received: by 10.157.36.162 with SMTP id z31mr1517384ota.334.1520701518355;
- Sat, 10 Mar 2018 09:05:18 -0800 (PST)
+        bh=GHOFGhH+9FjzZWethLNWdz4z0mlQkpUq4xUtBsWDTUA=;
+        b=OPWJcUl5qGGv74gIN3FT/XUfb9+lwXXyo/kXrg9xV6Wqiz5WPC9ELQ4oI3dD+LAxzB
+         SicxsFD+kIwZT2pJeOWtHWIsfFCriS/2oIPcFESlpG8CE3zRsLL4Qdtwn3y+vw5fhMj3
+         Kag/OXuh9cpUBX1QcWAtDOFcNq+duEOXiGvJAXK2zHrfyxbwf/6XsrbBPpmvF3gi9qE/
+         s7maAuSKOZs1AoL9ulirafqfnkRHDQ5Dg68gWEHjuI7cZRfqMnLP5ECTmO7HAqdR6Wfb
+         nfYwOSB+C/vfB4VKTFyZ72nuVhBkg7l84Uv1+K4znWxc2PGAlCwV793mnghSFi93wbXp
+         w5qQ==
+X-Gm-Message-State: AElRT7E/ya8TP8haz5rUsrkI5QjZhhDqAxVdZUp5Uwf+7plp8wSpGOhK
+        jXIV9gA6+fkcJDYZuQ5xD6F2b5dY5lmfCIDpcEg=
+X-Google-Smtp-Source: AG47ELtSrFmW0DgP6s75ZsFRuW7+n/nuOiTIfPOGYZEMbq677fu816XDkV1/CWcMrXRVgj1yFNDSp/03diA02tV6P7s=
+X-Received: by 10.202.51.138 with SMTP id z132mr1554014oiz.67.1520701885685;
+ Sat, 10 Mar 2018 09:11:25 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.201.20.79 with HTTP; Sat, 10 Mar 2018 09:04:58 -0800 (PST)
+Received: by 10.201.20.79 with HTTP; Sat, 10 Mar 2018 09:11:05 -0800 (PST)
 In-Reply-To: <20180309151219.18723-9-ezequiel@vanguardiasur.com.ar>
 References: <20180309151219.18723-1-ezequiel@vanguardiasur.com.ar> <20180309151219.18723-9-ezequiel@vanguardiasur.com.ar>
 From:   Mathieu Malaterre <malat@debian.org>
-Date:   Sat, 10 Mar 2018 18:04:58 +0100
-X-Google-Sender-Auth: z9-7-oD3ua42M07mJbELLEac-90
-Message-ID: <CA+7wUsyYjknK0rNun-MMWEeFBCangLTPMuMnkApQ6Uy61GN2vQ@mail.gmail.com>
+Date:   Sat, 10 Mar 2018 18:11:05 +0100
+X-Google-Sender-Auth: LkiwLC8W5pRU5Yse4Vfuspu6Iss
+Message-ID: <CA+7wUsxLq-BfF-aLf6+X57FCS8DBS-pmEKudhtucyCDnhARhNQ@mail.gmail.com>
 Subject: Re: [PATCH 08/14] mmc: jz4740: Add support for the JZ4780
 To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
@@ -52,7 +52,7 @@ Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62903
+X-archive-position: 62904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -103,6 +103,9 @@ On Fri, Mar 9, 2018 at 4:12 PM, Ezequiel Garcia
 >         help
 >           This selects support for the SD/MMC controller on Ingenic JZ4740
 >           SoCs.
+
+Nitpick:  on Ingenic JZ4740 & JZ4780 (tristate & help)
+
 > diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
 > index 7d4dcce76cd8..bb1b9114ef53 100644
 > --- a/drivers/mmc/host/jz4740_mmc.c
@@ -137,10 +140,7 @@ On Fri, Mar 9, 2018 at 4:12 PM, Ezequiel Garcia
 > +       JZ_MMC_JZ4750,
 > +       JZ_MMC_JZ4780,
 >  };
-
-Great to see support for JZ4750, but I did not see it documented in
-the commit message.
-
+>
 >  enum jz4740_mmc_state {
 > @@ -144,7 +151,7 @@ struct jz4740_mmc_host {
 >

@@ -1,48 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 00:12:51 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:46994 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 00:17:32 +0100 (CET)
+Received: from mga07.intel.com ([134.134.136.100]:20944 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990406AbeCLXMnIFQ-J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Mar 2018 00:12:43 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C9A7B2173F;
-        Mon, 12 Mar 2018 23:12:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C9A7B2173F
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 12 Mar 2018 23:12:11 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     "Keller, Jacob E" <jacob.e.keller@intel.com>
-Cc:     "Michael, Alice" <alice.michael@intel.com>,
+        id S23990404AbeCLXRUsIrbJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Mar 2018 00:17:20 +0100
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2018 16:17:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.47,463,1515484800"; 
+   d="scan'208";a="33275822"
+Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
+  by FMSMGA003.fm.intel.com with ESMTP; 12 Mar 2018 16:17:17 -0700
+Received: from orsmsx111.amr.corp.intel.com (10.22.240.12) by
+ ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
+ id 14.3.319.2; Mon, 12 Mar 2018 16:17:16 -0700
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.84]) by
+ ORSMSX111.amr.corp.intel.com ([169.254.12.253]) with mapi id 14.03.0319.002;
+ Mon, 12 Mar 2018 16:17:16 -0700
+From:   "Keller, Jacob E" <jacob.e.keller@intel.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     "Michael, Alice" <alice.michael@intel.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
         Shannon Nelson <shannon.nelson@oracle.com>
-Subject: Re: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-Message-ID: <20180312231211.GF21642@saruman>
+Subject: RE: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
+Thread-Topic: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
+Thread-Index: AQHTpFslw+crNM24eUSynxqRPTqrYKOh97eAgAJsOTCAAArEUIApbQeA//+LAfA=
+Date:   Mon, 12 Mar 2018 23:17:16 +0000
+Message-ID: <02874ECE860811409154E81DA85FBB5882CF60E8@ORSMSX115.amr.corp.intel.com>
 References: <1518475021-3337-1-git-send-email-linux@roeck-us.net>
- <20180212234201.GB4290@saruman>
- <20180212235655.GC5199@roeck-us.net>
+ <20180212234201.GB4290@saruman> <20180212235655.GC5199@roeck-us.net>
  <CD14C679C9B9B1409B02829D9B523C297C4D61@ORSMSX101.amr.corp.intel.com>
  <02874ECE860811409154E81DA85FBB5882CDAA1C@ORSMSX115.amr.corp.intel.com>
+ <20180312231211.GF21642@saruman>
+In-Reply-To: <20180312231211.GF21642@saruman>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiY2QwNTcyNmYtMGViNC00NmIwLTkxMGMtNzAwMWYyZjljZDY5IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE2LjUuOS4zIiwiVHJ1c3RlZExhYmVsSGFzaCI6ImdodlRVWThORk4rcXBYaUhEMHIrYzYzaUJvTWdsV0ZyT2ZNMmxiU0FYSkE9In0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.0.116
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="l+goss899txtYvYf"
-Content-Disposition: inline
-In-Reply-To: <02874ECE860811409154E81DA85FBB5882CDAA1C@ORSMSX115.amr.corp.intel.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Return-Path: <jacob.e.keller@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62947
+X-archive-position: 62948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: jacob.e.keller@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,154 +72,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---l+goss899txtYvYf
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Feb 14, 2018 at 09:36:33PM +0000, Keller, Jacob E wrote:
-> > -----Original Message-----
-> > From: Michael, Alice
-> > Sent: Wednesday, February 14, 2018 1:03 PM
-> > To: Guenter Roeck <linux@roeck-us.net>; James Hogan <jhogan@kernel.org>;
-> > Keller, Jacob E <jacob.e.keller@intel.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>; linux-mips@linux-mips.org; linu=
-x-
-> > kernel@vger.kernel.org; Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com=
->; Shannon
-> > Nelson <shannon.nelson@oracle.com>
-> > Subject: RE: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-> >=20
-> > As has previously been said, we're going to be removing the need for cm=
-pxchg64.
-> > But it takes a little bit of time and work to do so.  I'm adding the de=
-v that is taking
-> > care of the work back onto this email thread as well so he can see any =
-concerns with
-> > it.
-> >=20
-> > Alice
-> >=20
-> > -----Original Message-----
-> > From: Guenter Roeck [mailto:groeck7@gmail.com] On Behalf Of Guenter Roe=
-ck
-> > Sent: Monday, February 12, 2018 3:57 PM
-> > To: James Hogan <jhogan@kernel.org>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>; linux-mips@linux-mips.org; linu=
-x-
-> > kernel@vger.kernel.org; Michael, Alice <alice.michael@intel.com>; Kirsh=
-er, Jeffrey T
-> > <jeffrey.t.kirsher@intel.com>; Shannon Nelson <shannon.nelson@oracle.co=
-m>
-> > Subject: Re: [RFC PATCH] MIPS: Provide cmpxchg64 for 32-bit builds
-> >=20
-> > On Mon, Feb 12, 2018 at 11:42:02PM +0000, James Hogan wrote:
-> > > Hi Guenter,
-> > >
-> > > On Mon, Feb 12, 2018 at 02:37:01PM -0800, Guenter Roeck wrote:
-> > > > Since commit 60f481b970386 ("i40e: change flags to use 64 bits"),
-> > > > the i40e driver uses cmpxchg64(). This causes mips:allmodconfig
-> > > > builds to fail with
-> > > >
-> > > > drivers/net/ethernet/intel/i40e/i40e_ethtool.c:
-> > > > 	In function 'i40e_set_priv_flags':
-> > > > drivers/net/ethernet/intel/i40e/i40e_ethtool.c:4443:2: error:
-> > > > 	implicit declaration of function 'cmpxchg64'
-> > > >
-> > > > Implement a poor-mans-version of cmpxchg64() to fix the problem for
-> > > > 32-bit mips builds. The code is derived from sparc32, but only uses
-> > > > a single spinlock.
-> > >
-> > > Will this be implemened for all 32-bit architectures which are
-> > > currently missing cmpxchg64()?
-> > >
-> > No idea.
-> >=20
-> > > If so, any particular reason not to do it in generic code?
-> > >
-> > Again, no idea. When the problem was previously seen on sparc32, it was
-> > implemented there.
-> >=20
-> > > If not then I think that driver should be fixed to either depend on
-> > > some appropriate Kconfig symbol or to not use this API since it
-> > > clearly isn't portable at the moment.
-> > >
-> > Good point.
-> >=20
-> > > See also Shannon's comment about that specific driver:
-> > > https://lkml.kernel.org/r/e7c934d7-e5f4-ee1b-0647-c31a98d9e944@oracle.
-> > > com
-> > >
-> >=20
-> > Well, this was an RFC only. Feel free to ignore it.
-> >=20
-> > FWIW, this is the second time that the call was introduced in the i40 d=
-river.
-> > After the first time the code was rewritten to avoid the problem, but n=
-ow it came
-> > back. Someone must really like it ;-). For my part, I may just blacklis=
-t the offending
-> > driver in my builds; that is less than perfect, but much easier than ha=
-ving to deal with
-> > the same problem over and over again. Guess I'll wait for a while and d=
-o just that if
-> > the problem isn't fixed in a later RC.
-> >=20
-> > Guenter
->=20
-> Hi,
->=20
-> I've been working on re-writing some of the code so that the need for a c=
-ompare-and-exchange in the i40e_set_priv_flags() is not necessary. This mos=
-tly involved moving many flags out into an atomic bitops field instead, it =
-should be posted to IWL soon.
-
-Any update on this? Will a fix to the driver make it into 4.16 or is it
-going to be too big a change?
-
-As far as I can tell from grepping around, of the architectures which
-support 32-bit SMP with PCI, these ones implement cmpxchg64 on 32-bit:
-
-arch/arm
-arch/ia64
-arch/x86
-arch/riscv (blindly implements using 64-bit instructions, broken?)
-arch/parisc (with spinlock)
-arch/sparc (with spinlock)
-
-And these don't:
-
-arch/arc
-arch/mips
-arch/powerpc
-arch/sh
-arch/xtensa
-
-(I've excluded arches which are already being removed)
-
-Cheers
-James
-
---l+goss899txtYvYf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqnCUoACgkQbAtpk944
-dnpCww/8CMyW684xDLU8KR1rinwnLH8gC5pisFMuCsYszz09+p0dfhcZq6blGj0/
-yWzY6otfKnEArp224WULyD8MGDymtWYjvLgLeysyNOiKwwhFfUI3HymLUyr0A5BG
-VKnZiXrm9RyK1F3wgpDnGIcPEn1FuZOJShvBaqNoKkRpnrJ6rmClCQe2co01kOHr
-wuf89irWRy6A5T1wDMUOesQKz3Zc7FZbb8PbQDU1rPHKvCIpSIPqvlCO5qdBHh6X
-Oc5tlpc+j2GCGW2GpfyYzRLT3tjKyvYVTVg4uNvH2cSaRdX43S8EFtObkpFKOzwX
-2FIqPPdocoT+7KnPmHI8Is3YjUgRfhodCvNUrgi9/EF+My2ut/6EODsUTKrkB6Sg
-zYg2esqZ2JUGHmobHnk4UbX1EFNC9M/S2gx3bbuIL7JXYgp+8EqbHvZiMRZucHZ6
-0HWLWCOMn/ZuRfhesswvSX1qW8btTUZhSF7xF0I1yKjnD19+mN8B8L70HU/RxFmo
-3k9a4s6iIQgr2lycj3II9FhW3HR6eIjU8dbYXZGwVD7ijqu29GBNSiRRslNz/6pF
-mw5XAtzPrJrAB9Ar/I/tdcV8Rt0CPE1qyWToEAqzo70aEZHby6/xon6OD/LQ50kc
-KCxRyL038IaX65gJlidCyVGle0grv5QvhTV0Ql/7mIcoWpyqD3k=
-=+h2q
------END PGP SIGNATURE-----
-
---l+goss899txtYvYf--
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmFtZXMgSG9nYW4gW21h
+aWx0bzpqaG9nYW5Aa2VybmVsLm9yZ10NCj4gU2VudDogTW9uZGF5LCBNYXJjaCAxMiwgMjAxOCA0
+OjEyIFBNDQo+IFRvOiBLZWxsZXIsIEphY29iIEUgPGphY29iLmUua2VsbGVyQGludGVsLmNvbT4N
+Cj4gQ2M6IE1pY2hhZWwsIEFsaWNlIDxhbGljZS5taWNoYWVsQGludGVsLmNvbT47IEd1ZW50ZXIg
+Um9lY2sgPGxpbnV4QHJvZWNrLQ0KPiB1cy5uZXQ+OyBSYWxmIEJhZWNobGUgPHJhbGZAbGludXgt
+bWlwcy5vcmc+OyBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnOyBsaW51eC0NCj4ga2VybmVsQHZn
+ZXIua2VybmVsLm9yZzsgS2lyc2hlciwgSmVmZnJleSBUIDxqZWZmcmV5LnQua2lyc2hlckBpbnRl
+bC5jb20+Ow0KPiBTaGFubm9uIE5lbHNvbiA8c2hhbm5vbi5uZWxzb25Ab3JhY2xlLmNvbT4NCj4g
+U3ViamVjdDogUmU6IFtSRkMgUEFUQ0hdIE1JUFM6IFByb3ZpZGUgY21weGNoZzY0IGZvciAzMi1i
+aXQgYnVpbGRzDQo+IA0KPiBPbiBXZWQsIEZlYiAxNCwgMjAxOCBhdCAwOTozNjozM1BNICswMDAw
+LCBLZWxsZXIsIEphY29iIEUgd3JvdGU6DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
+LQ0KPiA+ID4gRnJvbTogTWljaGFlbCwgQWxpY2UNCj4gPiA+IFNlbnQ6IFdlZG5lc2RheSwgRmVi
+cnVhcnkgMTQsIDIwMTggMTowMyBQTQ0KPiA+ID4gVG86IEd1ZW50ZXIgUm9lY2sgPGxpbnV4QHJv
+ZWNrLXVzLm5ldD47IEphbWVzIEhvZ2FuDQo+IDxqaG9nYW5Aa2VybmVsLm9yZz47DQo+ID4gPiBL
+ZWxsZXIsIEphY29iIEUgPGphY29iLmUua2VsbGVyQGludGVsLmNvbT4NCj4gPiA+IENjOiBSYWxm
+IEJhZWNobGUgPHJhbGZAbGludXgtbWlwcy5vcmc+OyBsaW51eC1taXBzQGxpbnV4LW1pcHMub3Jn
+OyBsaW51eC0NCj4gPiA+IGtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IEtpcnNoZXIsIEplZmZyZXkg
+VCA8amVmZnJleS50LmtpcnNoZXJAaW50ZWwuY29tPjsNCj4gU2hhbm5vbg0KPiA+ID4gTmVsc29u
+IDxzaGFubm9uLm5lbHNvbkBvcmFjbGUuY29tPg0KPiA+ID4gU3ViamVjdDogUkU6IFtSRkMgUEFU
+Q0hdIE1JUFM6IFByb3ZpZGUgY21weGNoZzY0IGZvciAzMi1iaXQgYnVpbGRzDQo+ID4gPg0KPiA+
+ID4gQXMgaGFzIHByZXZpb3VzbHkgYmVlbiBzYWlkLCB3ZSdyZSBnb2luZyB0byBiZSByZW1vdmlu
+ZyB0aGUgbmVlZCBmb3INCj4gY21weGNoZzY0Lg0KPiA+ID4gQnV0IGl0IHRha2VzIGEgbGl0dGxl
+IGJpdCBvZiB0aW1lIGFuZCB3b3JrIHRvIGRvIHNvLiAgSSdtIGFkZGluZyB0aGUgZGV2IHRoYXQg
+aXMNCj4gdGFraW5nDQo+ID4gPiBjYXJlIG9mIHRoZSB3b3JrIGJhY2sgb250byB0aGlzIGVtYWls
+IHRocmVhZCBhcyB3ZWxsIHNvIGhlIGNhbiBzZWUgYW55DQo+IGNvbmNlcm5zIHdpdGgNCj4gPiA+
+IGl0Lg0KPiA+ID4NCj4gPiA+IEFsaWNlDQo+ID4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNz
+YWdlLS0tLS0NCj4gPiA+IEZyb206IEd1ZW50ZXIgUm9lY2sgW21haWx0bzpncm9lY2s3QGdtYWls
+LmNvbV0gT24gQmVoYWxmIE9mIEd1ZW50ZXINCj4gUm9lY2sNCj4gPiA+IFNlbnQ6IE1vbmRheSwg
+RmVicnVhcnkgMTIsIDIwMTggMzo1NyBQTQ0KPiA+ID4gVG86IEphbWVzIEhvZ2FuIDxqaG9nYW5A
+a2VybmVsLm9yZz4NCj4gPiA+IENjOiBSYWxmIEJhZWNobGUgPHJhbGZAbGludXgtbWlwcy5vcmc+
+OyBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnOyBsaW51eC0NCj4gPiA+IGtlcm5lbEB2Z2VyLmtl
+cm5lbC5vcmc7IE1pY2hhZWwsIEFsaWNlIDxhbGljZS5taWNoYWVsQGludGVsLmNvbT47IEtpcnNo
+ZXIsDQo+IEplZmZyZXkgVA0KPiA+ID4gPGplZmZyZXkudC5raXJzaGVyQGludGVsLmNvbT47IFNo
+YW5ub24gTmVsc29uDQo+IDxzaGFubm9uLm5lbHNvbkBvcmFjbGUuY29tPg0KPiA+ID4gU3ViamVj
+dDogUmU6IFtSRkMgUEFUQ0hdIE1JUFM6IFByb3ZpZGUgY21weGNoZzY0IGZvciAzMi1iaXQgYnVp
+bGRzDQo+ID4gPg0KPiA+ID4gT24gTW9uLCBGZWIgMTIsIDIwMTggYXQgMTE6NDI6MDJQTSArMDAw
+MCwgSmFtZXMgSG9nYW4gd3JvdGU6DQo+ID4gPiA+IEhpIEd1ZW50ZXIsDQo+ID4gPiA+DQo+ID4g
+PiA+IE9uIE1vbiwgRmViIDEyLCAyMDE4IGF0IDAyOjM3OjAxUE0gLTA4MDAsIEd1ZW50ZXIgUm9l
+Y2sgd3JvdGU6DQo+ID4gPiA+ID4gU2luY2UgY29tbWl0IDYwZjQ4MWI5NzAzODYgKCJpNDBlOiBj
+aGFuZ2UgZmxhZ3MgdG8gdXNlIDY0IGJpdHMiKSwNCj4gPiA+ID4gPiB0aGUgaTQwZSBkcml2ZXIg
+dXNlcyBjbXB4Y2hnNjQoKS4gVGhpcyBjYXVzZXMgbWlwczphbGxtb2Rjb25maWcNCj4gPiA+ID4g
+PiBidWlsZHMgdG8gZmFpbCB3aXRoDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBkcml2ZXJzL25ldC9l
+dGhlcm5ldC9pbnRlbC9pNDBlL2k0MGVfZXRodG9vbC5jOg0KPiA+ID4gPiA+IAlJbiBmdW5jdGlv
+biAnaTQwZV9zZXRfcHJpdl9mbGFncyc6DQo+ID4gPiA+ID4gZHJpdmVycy9uZXQvZXRoZXJuZXQv
+aW50ZWwvaTQwZS9pNDBlX2V0aHRvb2wuYzo0NDQzOjI6IGVycm9yOg0KPiA+ID4gPiA+IAlpbXBs
+aWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiAnY21weGNoZzY0Jw0KPiA+ID4gPiA+DQo+ID4g
+PiA+ID4gSW1wbGVtZW50IGEgcG9vci1tYW5zLXZlcnNpb24gb2YgY21weGNoZzY0KCkgdG8gZml4
+IHRoZSBwcm9ibGVtIGZvcg0KPiA+ID4gPiA+IDMyLWJpdCBtaXBzIGJ1aWxkcy4gVGhlIGNvZGUg
+aXMgZGVyaXZlZCBmcm9tIHNwYXJjMzIsIGJ1dCBvbmx5IHVzZXMNCj4gPiA+ID4gPiBhIHNpbmds
+ZSBzcGlubG9jay4NCj4gPiA+ID4NCj4gPiA+ID4gV2lsbCB0aGlzIGJlIGltcGxlbWVuZWQgZm9y
+IGFsbCAzMi1iaXQgYXJjaGl0ZWN0dXJlcyB3aGljaCBhcmUNCj4gPiA+ID4gY3VycmVudGx5IG1p
+c3NpbmcgY21weGNoZzY0KCk/DQo+ID4gPiA+DQo+ID4gPiBObyBpZGVhLg0KPiA+ID4NCj4gPiA+
+ID4gSWYgc28sIGFueSBwYXJ0aWN1bGFyIHJlYXNvbiBub3QgdG8gZG8gaXQgaW4gZ2VuZXJpYyBj
+b2RlPw0KPiA+ID4gPg0KPiA+ID4gQWdhaW4sIG5vIGlkZWEuIFdoZW4gdGhlIHByb2JsZW0gd2Fz
+IHByZXZpb3VzbHkgc2VlbiBvbiBzcGFyYzMyLCBpdCB3YXMNCj4gPiA+IGltcGxlbWVudGVkIHRo
+ZXJlLg0KPiA+ID4NCj4gPiA+ID4gSWYgbm90IHRoZW4gSSB0aGluayB0aGF0IGRyaXZlciBzaG91
+bGQgYmUgZml4ZWQgdG8gZWl0aGVyIGRlcGVuZCBvbg0KPiA+ID4gPiBzb21lIGFwcHJvcHJpYXRl
+IEtjb25maWcgc3ltYm9sIG9yIHRvIG5vdCB1c2UgdGhpcyBBUEkgc2luY2UgaXQNCj4gPiA+ID4g
+Y2xlYXJseSBpc24ndCBwb3J0YWJsZSBhdCB0aGUgbW9tZW50Lg0KPiA+ID4gPg0KPiA+ID4gR29v
+ZCBwb2ludC4NCj4gPiA+DQo+ID4gPiA+IFNlZSBhbHNvIFNoYW5ub24ncyBjb21tZW50IGFib3V0
+IHRoYXQgc3BlY2lmaWMgZHJpdmVyOg0KPiA+ID4gPiBodHRwczovL2xrbWwua2VybmVsLm9yZy9y
+L2U3YzkzNGQ3LWU1ZjQtZWUxYi0wNjQ3LWMzMWE5OGQ5ZTk0NEBvcmFjbGUuDQo+ID4gPiA+IGNv
+bQ0KPiA+ID4gPg0KPiA+ID4NCj4gPiA+IFdlbGwsIHRoaXMgd2FzIGFuIFJGQyBvbmx5LiBGZWVs
+IGZyZWUgdG8gaWdub3JlIGl0Lg0KPiA+ID4NCj4gPiA+IEZXSVcsIHRoaXMgaXMgdGhlIHNlY29u
+ZCB0aW1lIHRoYXQgdGhlIGNhbGwgd2FzIGludHJvZHVjZWQgaW4gdGhlIGk0MCBkcml2ZXIuDQo+
+ID4gPiBBZnRlciB0aGUgZmlyc3QgdGltZSB0aGUgY29kZSB3YXMgcmV3cml0dGVuIHRvIGF2b2lk
+IHRoZSBwcm9ibGVtLCBidXQgbm93IGl0DQo+IGNhbWUNCj4gPiA+IGJhY2suIFNvbWVvbmUgbXVz
+dCByZWFsbHkgbGlrZSBpdCA7LSkuIEZvciBteSBwYXJ0LCBJIG1heSBqdXN0IGJsYWNrbGlzdCB0
+aGUNCj4gb2ZmZW5kaW5nDQo+ID4gPiBkcml2ZXIgaW4gbXkgYnVpbGRzOyB0aGF0IGlzIGxlc3Mg
+dGhhbiBwZXJmZWN0LCBidXQgbXVjaCBlYXNpZXIgdGhhbiBoYXZpbmcgdG8NCj4gZGVhbCB3aXRo
+DQo+ID4gPiB0aGUgc2FtZSBwcm9ibGVtIG92ZXIgYW5kIG92ZXIgYWdhaW4uIEd1ZXNzIEknbGwg
+d2FpdCBmb3IgYSB3aGlsZSBhbmQgZG8ganVzdA0KPiB0aGF0IGlmDQo+ID4gPiB0aGUgcHJvYmxl
+bSBpc24ndCBmaXhlZCBpbiBhIGxhdGVyIFJDLg0KPiA+ID4NCj4gPiA+IEd1ZW50ZXINCj4gPg0K
+PiA+IEhpLA0KPiA+DQo+ID4gSSd2ZSBiZWVuIHdvcmtpbmcgb24gcmUtd3JpdGluZyBzb21lIG9m
+IHRoZSBjb2RlIHNvIHRoYXQgdGhlIG5lZWQgZm9yIGENCj4gY29tcGFyZS1hbmQtZXhjaGFuZ2Ug
+aW4gdGhlIGk0MGVfc2V0X3ByaXZfZmxhZ3MoKSBpcyBub3QgbmVjZXNzYXJ5LiBUaGlzIG1vc3Rs
+eQ0KPiBpbnZvbHZlZCBtb3ZpbmcgbWFueSBmbGFncyBvdXQgaW50byBhbiBhdG9taWMgYml0b3Bz
+IGZpZWxkIGluc3RlYWQsIGl0IHNob3VsZCBiZQ0KPiBwb3N0ZWQgdG8gSVdMIHNvb24uDQo+IA0K
+PiBBbnkgdXBkYXRlIG9uIHRoaXM/IFdpbGwgYSBmaXggdG8gdGhlIGRyaXZlciBtYWtlIGl0IGlu
+dG8gNC4xNiBvciBpcyBpdA0KPiBnb2luZyB0byBiZSB0b28gYmlnIGEgY2hhbmdlPyANCg0KSSBh
+bSBub3Qgc3VyZSBpZiBpdCBjYW4gbWFrZSBpdCBpbnRvIDQuMTYsIGl0J3MgYmFzaWNhbGx5IGEg
+YnVuY2ggb2YgcGF0Y2hlcyB0byBtaWdyYXRlIHRoaW5ncyBpbiB0aGUgcGYtPmZsYWdzIHZhcmlh
+YmxlIHNvIHRoYXQgdGhlIGZsYWdzIGlzIG9ubHkgbW9kaWZpZWQgd2hpbGUgdW5kZXIgcnRubF9s
+b2NrLiBUaHVzLCBhbnkgcnVudGltZSBmbGFncyB3aGljaCBjaGFuZ2UgYXQgYW55IHRpbWUgd2l0
+aG91dCB0aGUgbG9jayB3aWxsIGJlIG1vdmVkIHRvIHN0YXRlIGJpdHMuDQoNClRoZSB0cmlja3kg
+cGFydCBpcyB0aGF0IGJhY2twb3J0aW5nIGNhbiBiZSB0cm91Ymxlc29tZSBzaW5jZSBmbGFncyBh
+cmUgYWNjZXNzZWQgaW4gYSBsb3Qgb2YgcGxhY2VzLiANCg0KVGhlIHBhdGNoIHNlcmllcyBzaG91
+bGQgYmUgcHVibGlzaGVkIHRvIGl3bCB3aXRoaW4gdGhpcyB3ZWVrIChUaGFua3MgQWxpY2UhKQ0K
+DQpJZiB3ZSBqdXN0IHJlbW92ZSB0aGUgY21weGNoZyB3aXRob3V0IGRvaW5nIHRoZSBmbGFnIGNo
+YW5nZXMgd2Ugb3BlbiBvdXJzZWx2ZXMgYmFjayB1cCB0byB0aGUgcmlzayBvZiB0aGUgZmxhZ3Mg
+YmVpbmcgbW9kaWZpZWQgc2ltdWx0YW5lb3VzbHkgYW5kIGNhdXNpbmcgZGlmZmljdWx0IHRvIGRl
+YnVnICJmbGFnIHNpbGVudGx5IGRpc2FibGVkL2VuYWJsZWQiIGlzc3Vlcy4gSW4gcHJhY3RpY2Ug
+dGhpcyByYWNlIHdpbmRvdyBpcyBwcmV0dHkgdGlueSB0aG91Z2guDQoNClRoYW5rcywNCkpha2UN
+Cg0KPiANCj4gQXMgZmFyIGFzIEkgY2FuIHRlbGwgZnJvbSBncmVwcGluZyBhcm91bmQsIG9mIHRo
+ZSBhcmNoaXRlY3R1cmVzIHdoaWNoDQo+IHN1cHBvcnQgMzItYml0IFNNUCB3aXRoIFBDSSwgdGhl
+c2Ugb25lcyBpbXBsZW1lbnQgY21weGNoZzY0IG9uIDMyLWJpdDoNCj4gDQo+IGFyY2gvYXJtDQo+
+IGFyY2gvaWE2NA0KPiBhcmNoL3g4Ng0KPiBhcmNoL3Jpc2N2IChibGluZGx5IGltcGxlbWVudHMg
+dXNpbmcgNjQtYml0IGluc3RydWN0aW9ucywgYnJva2VuPykNCj4gYXJjaC9wYXJpc2MgKHdpdGgg
+c3BpbmxvY2spDQo+IGFyY2gvc3BhcmMgKHdpdGggc3BpbmxvY2spDQo+IA0KPiBBbmQgdGhlc2Ug
+ZG9uJ3Q6DQo+IA0KPiBhcmNoL2FyYw0KPiBhcmNoL21pcHMNCj4gYXJjaC9wb3dlcnBjDQo+IGFy
+Y2gvc2gNCj4gYXJjaC94dGVuc2ENCj4gDQo+IChJJ3ZlIGV4Y2x1ZGVkIGFyY2hlcyB3aGljaCBh
+cmUgYWxyZWFkeSBiZWluZyByZW1vdmVkKQ0KPiANCj4gQ2hlZXJzDQo+IEphbWVzDQo=

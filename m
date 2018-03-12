@@ -1,96 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2018 19:00:08 +0100 (CET)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:53066
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994583AbeCLSAAjMH-H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Mar 2018 19:00:00 +0100
-Received: by mail-it0-x244.google.com with SMTP id k135so12310504ite.2;
-        Mon, 12 Mar 2018 11:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=ElH4sAgG6jjT48s9ldSGD+nZ3K41SP2AmoM037n1vOw=;
-        b=QWcECNJdF5bwRxTA8TRk2LyD/NzYY/z54YFfpTHmSd6YoJGczEIKH9AUmv9AypyKx2
-         uWLAURe1K0RPH3WbvDcobqlT3wXxzgJqc9dXQ6B+UJ3oScU0QQ0assKUO4FB5/uXqnNd
-         4hhCQmlr+AyB9fFx1zE7RYiuAePj+MnVdyxapqTjMbWjJA69SixK2s3MeXUEHJa81o/7
-         Dfrq8p2aPFXagNp+IgTVIcGx9GIrnVx0QIKM3MMPCYsFdGRzdl7WLW+1zyVij9DkAE4/
-         Gtrml5dkz7gKexqKy6RLhza8UchYMpL97dHwu+n/6pH3vO1c+oweRDYe4dRD9VFXOkNT
-         lTuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=ElH4sAgG6jjT48s9ldSGD+nZ3K41SP2AmoM037n1vOw=;
-        b=Z3H/IBdgjR7Q9JQBLBuii5ju/mHeFfrY3MwzxMZkGo8xvkUcu91TWAtYdwAhok+BVw
-         SyQ0FKioM20b3b3Nu7sXUHukMJNAPPsHK/oVG6ifCgP4g9LOZL7Ni5qRUH87SS3mcUS6
-         gQcFK+19n5QbJ1tLW5kJsTDGTxxcE+oN1K+QUidm2WtXBMxjG/Z6Cga+xDOb/1jgMsGT
-         qW3LN0Cn2aU6RStTK60V6AU1vOknODzuzoUAuLZ2SBqkbo/LG4eUNeiix//Ii3SOR/tz
-         7OvxiEIKPkBiTYjTtk/tVNSU0HJ0gXwcTMc+RVkn/Eg9b6u5ifMPk/DYGmIueFInCs6A
-         Bn+Q==
-X-Gm-Message-State: AElRT7G2bAqczpw51mPntBUpGpOYvGY41+sLPQtdYz7u/BRrV0zZsX/E
-        j7qwTKjaRyg9zqMHashTjh9sr6CMuAI2FvWDbJc=
-X-Google-Smtp-Source: AG47ELvmYN1hT/qOba3lBdwigY6vg+LKomiWu6QbCBMhypSff9Bx4nlBmH66GQ1f55tgf+gdhqbkq3EB3knhZ5dtY48=
-X-Received: by 10.36.55.70 with SMTP id r67mr10036545itr.40.1520877594371;
- Mon, 12 Mar 2018 10:59:54 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.232.26 with HTTP; Mon, 12 Mar 2018 10:59:53 -0700 (PDT)
-In-Reply-To: <CABeXuvrdPV0q4ufuxEnqT6T3b8pCT5RLUfuAZ_cwXr0it8gj0Q@mail.gmail.com>
-References: <20180116021818.24791-1-deepa.kernel@gmail.com>
- <20180116021818.24791-3-deepa.kernel@gmail.com> <c6fb6676-a8d3-8893-660c-2b9899c5d5ab@de.ibm.com>
- <CAK8P3a0Gm1L70EaFzJBk0drRNKtX0FE22BHOSrXBgH1wNfKZ5A@mail.gmail.com>
- <d8480da9-afe9-8a43-9c47-50919215a2de@de.ibm.com> <CABeXuvrdPV0q4ufuxEnqT6T3b8pCT5RLUfuAZ_cwXr0it8gj0Q@mail.gmail.com>
-From:   Deepa Dinamani <deepa.kernel@gmail.com>
-Date:   Mon, 12 Mar 2018 10:59:53 -0700
-Message-ID: <CABeXuvo-D-NFhhx9KXDFy6bYjp0-XZvoky6ugQGdBZr8DjUzxw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] include: Move compat_timespec/ timeval to compat_time.h
-To:     Christian Borntraeger <borntraeger@de.ibm.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        devel@driverdev.osuosl.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Helge Deller <deller@gmx.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        sebott@linux.vnet.ibm.com,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Robert Richter <rric@kernel.org>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Peter Oberparleiter <oberpar@linux.vnet.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ursula Braun <ubraun@linux.vnet.ibm.com>,
-        gerald.schaefer@de.ibm.com,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        gregkh <gregkh@linuxfoundation.org>, cohuck@redhat.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2018 19:02:48 +0100 (CET)
+Received: from smtp1-g21.free.fr ([212.27.42.1]:42063 "EHLO smtp1-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994627AbeCLSCkN6oXH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 12 Mar 2018 19:02:40 +0100
+Received: from avionic-0020 (unknown [80.151.56.191])
+        (Authenticated sender: albeu@free.fr)
+        by smtp1-g21.free.fr (Postfix) with ESMTPSA id 0BC3AB005BB;
+        Mon, 12 Mar 2018 19:02:26 +0100 (CET)
+Date:   Mon, 12 Mar 2018 19:02:23 +0100
+From:   Alban <albeu@free.fr>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Alban <albeu@free.fr>, <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
-        Stefan Haberland <sth@linux.vnet.ibm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        David Miller <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <deepa.kernel@gmail.com>
+        Jonas Gorski <jogo@openwrt.org>,
+        <linux-kernel@vger.kernel.org>,
+        Matt Redfearn <Matt.Redfearn@imgtec.com>
+Subject: Re: [PATCH v2] MIPS: Allow compressed images to be loaded at any
+ address
+Message-ID: <20180312190223.1cf292dd@avionic-0020>
+In-Reply-To: <20170213221945.GM24226@jhogan-linux.le.imgtec.org>
+References: <1487018290-10451-1-git-send-email-albeu@free.fr>
+        <20170213221945.GM24226@jhogan-linux.le.imgtec.org>
+X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/rRur1r7a.OjfrDLM_HnxiJ4"; protocol="application/pgp-signature"
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62918
+X-archive-position: 62919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deepa.kernel@gmail.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -103,81 +46,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I posted the updated series. I fixed up the order of include files
-where I could find some order.
-There have been other commits that used scripts to do such
-replacements and have already stomped on the order.
-For example:
+--Sig_/rRur1r7a.OjfrDLM_HnxiJ4
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-commit 7c0f6ba682b9c7632072ffbedf8d328c8f3c42ba
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Replace <asm/uaccess.h> with <linux/uaccess.h> globally
+On Mon, 13 Feb 2017 22:19:45 +0000
+James Hogan <james.hogan@imgtec.com> wrote:
 
--Deepa
-
-
-On Tue, Mar 6, 2018 at 2:58 PM, Deepa Dinamani <deepa.kernel@gmail.com> wrote:
-> On Tue, Mar 6, 2018 at 4:48 AM, Christian Borntraeger
-> <borntraeger@de.ibm.com> wrote:
->>
->>
->> On 03/06/2018 01:46 PM, Arnd Bergmann wrote:
->>> On Mon, Mar 5, 2018 at 10:30 AM, Christian Borntraeger
->>> <borntraeger@de.ibm.com> wrote:
->>>> On 01/16/2018 03:18 AM, Deepa Dinamani wrote:
->>>>> All the current architecture specific defines for these
->>>>> are the same. Refactor these common defines to a common
->>>>> header file.
->>>>>
->>>>> The new common linux/compat_time.h is also useful as it
->>>>> will eventually be used to hold all the defines that
->>>>> are needed for compat time types that support non y2038
->>>>> safe types. New architectures need not have to define these
->>>>> new types as they will only use new y2038 safe syscalls.
->>>>> This file can be deleted after y2038 when we stop supporting
->>>>> non y2038 safe syscalls.
->>>>
->>>> You are now include a <linux/*.h> from several asm files
->>>> (
->>>>  arch/arm64/include/asm/stat.h
->>>>  arch/s390/include/asm/elf.h
->>>>  arch/x86/include/asm/ftrace.h
->>>>  arch/x86/include/asm/sys_ia32.h
->>>> )
->>>> It works, and it is done in many places, but it looks somewhat weird.
->>>> Would it make sense to have an asm-generic/compate-time.h instead? Asking for
->>>> opinions here.
->>>
->>> I don't think we have such a rule. If a header file is common to all
->>> architectures (i.e. no architecture uses a different implementation),
->>> it should be in include/linux rather than include/asm-generic, regardless
->>> of whether it can be used by assembler files or not.
->>>
->>>>> --- a/drivers/s390/net/qeth_core_main.c
->>>>> +++ b/drivers/s390/net/qeth_core_main.c
->>>>> @@ -32,7 +32,7 @@
->>>>>  #include <asm/chpid.h>
->>>>>  #include <asm/io.h>
->>>>>  #include <asm/sysinfo.h>
->>>>> -#include <asm/compat.h>
->>>>> +#include <linux/compat.h>
->>>>>  #include <asm/diag.h>
->>>>>  #include <asm/cio.h>
->>>>>  #include <asm/ccwdev.h>
->>>>
->>>> Can you move that into the other includes (where all the other <linux/*> includes are.
->>>
->>> Good catch, this is definitely a rule we have ;-)
->>
->> FWIW, this was also broken for
->> arch/x86/include/asm/sys_ia32.h
+> Hi Alban,
+>=20
+> On Mon, Feb 13, 2017 at 09:38:08PM +0100, Alban wrote:
+> > From: Alban Bedel <albeu@free.fr>
+> >=20
+> > Compressed images (vmlinuz.bin) have to be loaded at a specific
+> > address that differ from the address normaly used for vmlinux.bin.
+> > This is because the decompressor just write its output at the address
+> > vmlinux.bin should be loaded at, and it shouldn't overwrite itself.
+> > This limitation mean that the bootloader must be configured differently
+> > when loading a vmlinux.bin or a vmlinuz.bin image, this is annoying
+> > and a source of error.
+> >=20
+> > To workaround this we extend the compressed loader to cope with being
+> > loaded at (nearly) any address. During the early init a jump is used
+> > to compute the offset between the current address and the linked
+> > address, if they differ the whole image is first copied to the linked
+> > address before proceeding.
+> >=20
+> > Some load address won't work, for example if there is an overlap with
+> > the range where vmlinuz.bin should be loaded. However for the typical
+> > case of using the vmlinux.bin address that won't be the case.
+> >=20
+> > Signed-off-by: Alban Bedel <albeu@free.fr>
+> > Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+> > ---
+> > Changelog:
+> > v2: * Rework the code as suggested by Jonas Gorski to autodetect the
+> >       load address and remove the need for a Kconfig option.
+> > ---
+> >  arch/mips/boot/compressed/head.S | 23 +++++++++++++++++++++++
+> >  1 file changed, 23 insertions(+)
+> >=20
+> > diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compress=
+ed/head.S
+> > index 409cb48..3c25a96 100644
+> > --- a/arch/mips/boot/compressed/head.S
+> > +++ b/arch/mips/boot/compressed/head.S
+> > @@ -25,6 +25,29 @@ start:
+> >  	move	s2, a2
+> >  	move	s3, a3
+> > =20
+> > +	/* Get the offset between the current address and linked address */
+> > +	PTR_LA	t0, reloc_label
+> > +	bal	reloc_label
+> > +	 nop
+> > +reloc_label:
+> > +	subu	t0, ra, t0
+> > +
+> > +	/* If there is no offset no reloc is needed */
+> > +	beqz	t0, clear_bss
+> > +	 nop
+> > +
+> > +	/* Move the text, data section and DTB to the correct address */
+> > +	PTR_LA	a0, .text
+> > +	addu	a1, t0, a0
+> > +	PTR_LA	a2, _edata
+> > +copy_vmlinuz:
+> > +	lw	a3, 0(a1)
+> > +	sw	a3, 0(a0)
+> > +	addiu	a0, a0, 4
+> > +	bne	a2, a0, copy_vmlinuz
+> > +	 addiu	a1, a1, 4 =20
+>=20
+> Does this need to sync the icache and resolve the instruction hazard
+> before jumping into the newly written code?
 >
-> The reason that this was done this way is because of the sed script
-> mentioned in the commit text.
-> I was trying to make minimal change apart from the script so that we
-> don't have other changes like moving the lines to keep the patch
-> simpler.
-> I will fix this by hand since this is preferred.
-> I will post an update.
->
-> -Deepa
+> E.g. on mips32/64 r2 and later you could I think "synci" at SYNCI_Step
+> intervals (as determined by RDHWR instruction), followed by a "sync" and
+> then using "jr.hb" instead of "jr" to clear the instruction hazard while
+> jumping to the newly written code.
+>=20
+> That is roughly what arch/mips/kernel/relocate.c and
+> arch/mips/kernel/head.S do, but as mentioned that assumes MIPS32/64 r2+,
+> and at least 2 platforms selecting SYS_SUPPORTS_ZBOOT* also select
+> CPU_HAS_CPU_MIPS32_R1.
+
+This was a long time ago but I still like to finish this. However I'm
+not very really versed into this kind of very low level subjects, so
+I would appreciate if somebody could tell me if the cache sync is needed
+here or not. All I can says is that it currently work on ATH79 which is
+a mips32 r2, but that doesn't mean it is correct.
+
+Also note that no such cache sync is done on the decompressed kernel,
+wouldn't that also be needed?
+
+Alban
+
+--Sig_/rRur1r7a.OjfrDLM_HnxiJ4
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJapsCwAAoJEHSUmkuduC28+SkP/itrqe29bBYrz3LlWTvwKXwv
+awy/uskMz9tEY4YyOUxYWVmN2dfXLNaCLy4zKLHNscn5Sptp6KXm42kcz0yjJ0Qf
+EVh7K/HpIWZwKq5d/aX/xGgfmXpmgLbqFMIv52T4SokFdiVx7oy1QJe5Y0hR21nv
+TTZi2vpkVZRuGi/wM+88wTIZB9caxfQMJ7a2nRMpuxBS1nAbtqWeRDv9kFnSJryu
+htdwQFptL+079Q3FVzEMNTDCGD/sWXa8vEt+lZmje9H3c/lnALISZi71RJ2+irlL
+OM/ppM3o7aLAsbY1+8XpqUnQ+vYbJ5zY8GMyOZHEpRP/t+T5WzhZ/hP2tkPaR99U
+YUL0Vx5Jl8n6C5nQH/Nua/jP2yf4qy1HmG0KEVoSNhjYMmMgzbKnZOYGNXcAA9P6
+Hy3bYbVaRd6U7Cc2haO6m+9MuufLwIr9O/48AMS6vTGMiz6ABSVA0MuN6f9A3EgV
+0VDRKcZE2mAykBBbeHNOWcc7weufjoQenyr0FLwiVn2VOffii/LUQknQOx+9l3BT
+ZAYRuX90JmNAxN/zc/H8MxcsE0BiDTU5LaFPY2ryEQEDfpbEIhJ0S7yuQ5H5Y69v
+fpks1SW2ZNKZcRnddbgiIfMoYeeljd/WL58T1/OxKAaDNAX5n2Nrqxcc5kWq49Z3
+mnD00q9K+VgNh7Of1St5
+=nQly
+-----END PGP SIGNATURE-----
+
+--Sig_/rRur1r7a.OjfrDLM_HnxiJ4--

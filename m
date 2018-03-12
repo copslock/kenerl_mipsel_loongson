@@ -1,39 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2018 19:02:48 +0100 (CET)
-Received: from smtp1-g21.free.fr ([212.27.42.1]:42063 "EHLO smtp1-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994627AbeCLSCkN6oXH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 Mar 2018 19:02:40 +0100
-Received: from avionic-0020 (unknown [80.151.56.191])
-        (Authenticated sender: albeu@free.fr)
-        by smtp1-g21.free.fr (Postfix) with ESMTPSA id 0BC3AB005BB;
-        Mon, 12 Mar 2018 19:02:26 +0100 (CET)
-Date:   Mon, 12 Mar 2018 19:02:23 +0100
-From:   Alban <albeu@free.fr>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Alban <albeu@free.fr>, <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Gorski <jogo@openwrt.org>,
-        <linux-kernel@vger.kernel.org>,
-        Matt Redfearn <Matt.Redfearn@imgtec.com>
-Subject: Re: [PATCH v2] MIPS: Allow compressed images to be loaded at any
- address
-Message-ID: <20180312190223.1cf292dd@avionic-0020>
-In-Reply-To: <20170213221945.GM24226@jhogan-linux.le.imgtec.org>
-References: <1487018290-10451-1-git-send-email-albeu@free.fr>
-        <20170213221945.GM24226@jhogan-linux.le.imgtec.org>
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2018 21:39:49 +0100 (CET)
+Received: from mail-oi0-x244.google.com ([IPv6:2607:f8b0:4003:c06::244]:46436
+        "EHLO mail-oi0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990421AbeCLUjdpDKI9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Mar 2018 21:39:33 +0100
+Received: by mail-oi0-x244.google.com with SMTP id x12so13475318oie.13;
+        Mon, 12 Mar 2018 13:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=9NcMJ+iPjqvPG0iVZpFkh4zuuGyNzYpstWUFvR24Src=;
+        b=Gbb+MhjUxDC1EssmZ3mNkQqoJJ7OiSZPQaTLwrR2PgFmTJb+LB8S/rq4XGoJMIXDEj
+         79lFS+ed6fzEmWlCcDrgFlmcFgkWaFhKP24Js8OEWvOxBZBv0SRG4/PK1onFCLcgx8lM
+         N2eYbIJlxupvD/ma0W7m90cfO3MMASE7WfVG+msJeTdA67VyWq2tHGmcRyT5qBC/k9lz
+         tQ5Dco2tPDTK5+VovlmE9E6o4ntiOkcGSH/qp1dNWpJjz9sr6Zhu8utBnpcc9oCNJjQ8
+         /657xOS1g7W+uQaIdbo+pIIR68WeOmjSzMJoK86DRpTgXLOx3inEVRtOjOampqfr1k+f
+         +2ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=9NcMJ+iPjqvPG0iVZpFkh4zuuGyNzYpstWUFvR24Src=;
+        b=aWgX0sqpymInYBJTdR1zDmUlGVZrVfs62xAj9BLbPnFl6+G5s/19TWNVmi83m14nY8
+         udgIb4C7L1HoiJtHgYe562kbz7G2Utuv2gfjnqvAy6udTyLW7URmZspRE1FDw+Ye0sRf
+         A3e1zDSynudIK/up098W7spT9Y0jDFNOt8BoSZawgL3ZOASRk2UusIl8Q057h6ApMDtx
+         2IjKbNcbNLNijxrCwxJCA9/c1eJvWqXUUucadPwMoi83xRzFcJUeYkv8z+CpOofmcQG0
+         9zWKFpnu3/SXOYufDmq/wen69Do0TwNzOLgUKBIpKBcpeiwhfNsLmMxepe0jJzMp0fog
+         kNFA==
+X-Gm-Message-State: AElRT7FJJSPgODRgA9/qXmD65/rj1R3N7ftUniefrZrIZne9D5FBqcrk
+        Zrt5/zhp9Cglv0vQzMaLW3SdSrcBKlQRh/6YBkU=
+X-Google-Smtp-Source: AG47ELsqDZvk+FvifutR9qtcV5L+Pq39RwrVIH5grpNGaDtxyHQBtCvDwr8QPHiUsx8IzWQUMIZferLgaNwbogb1SqU=
+X-Received: by 10.202.227.137 with SMTP id a131mr5468922oih.19.1520887167229;
+ Mon, 12 Mar 2018 13:39:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/rRur1r7a.OjfrDLM_HnxiJ4"; protocol="application/pgp-signature"
-Return-Path: <albeu@free.fr>
+Received: by 10.201.64.3 with HTTP; Mon, 12 Mar 2018 13:39:06 -0700 (PDT)
+In-Reply-To: <20180311174123.2578-1-hauke@hauke-m.de>
+References: <20180311174123.2578-1-hauke@hauke-m.de>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Mon, 12 Mar 2018 21:39:06 +0100
+Message-ID: <CAFBinCB083WnWmOJ=JhwrmgbP3TRO_1bXToKUU__fvERhJDW+w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] MIPS: lantiq: fix danube usb clock
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, jhogan@kernel.org, john@phrozen.org,
+        dev@kresin.me, linux-mips@linux-mips.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <martin.blumenstingl@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62919
+X-archive-position: 62920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: martin.blumenstingl@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,121 +65,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/rRur1r7a.OjfrDLM_HnxiJ4
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 13 Feb 2017 22:19:45 +0000
-James Hogan <james.hogan@imgtec.com> wrote:
-
-> Hi Alban,
->=20
-> On Mon, Feb 13, 2017 at 09:38:08PM +0100, Alban wrote:
-> > From: Alban Bedel <albeu@free.fr>
-> >=20
-> > Compressed images (vmlinuz.bin) have to be loaded at a specific
-> > address that differ from the address normaly used for vmlinux.bin.
-> > This is because the decompressor just write its output at the address
-> > vmlinux.bin should be loaded at, and it shouldn't overwrite itself.
-> > This limitation mean that the bootloader must be configured differently
-> > when loading a vmlinux.bin or a vmlinuz.bin image, this is annoying
-> > and a source of error.
-> >=20
-> > To workaround this we extend the compressed loader to cope with being
-> > loaded at (nearly) any address. During the early init a jump is used
-> > to compute the offset between the current address and the linked
-> > address, if they differ the whole image is first copied to the linked
-> > address before proceeding.
-> >=20
-> > Some load address won't work, for example if there is an overlap with
-> > the range where vmlinuz.bin should be loaded. However for the typical
-> > case of using the vmlinux.bin address that won't be the case.
-> >=20
-> > Signed-off-by: Alban Bedel <albeu@free.fr>
-> > Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-> > ---
-> > Changelog:
-> > v2: * Rework the code as suggested by Jonas Gorski to autodetect the
-> >       load address and remove the need for a Kconfig option.
-> > ---
-> >  arch/mips/boot/compressed/head.S | 23 +++++++++++++++++++++++
-> >  1 file changed, 23 insertions(+)
-> >=20
-> > diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compress=
-ed/head.S
-> > index 409cb48..3c25a96 100644
-> > --- a/arch/mips/boot/compressed/head.S
-> > +++ b/arch/mips/boot/compressed/head.S
-> > @@ -25,6 +25,29 @@ start:
-> >  	move	s2, a2
-> >  	move	s3, a3
-> > =20
-> > +	/* Get the offset between the current address and linked address */
-> > +	PTR_LA	t0, reloc_label
-> > +	bal	reloc_label
-> > +	 nop
-> > +reloc_label:
-> > +	subu	t0, ra, t0
-> > +
-> > +	/* If there is no offset no reloc is needed */
-> > +	beqz	t0, clear_bss
-> > +	 nop
-> > +
-> > +	/* Move the text, data section and DTB to the correct address */
-> > +	PTR_LA	a0, .text
-> > +	addu	a1, t0, a0
-> > +	PTR_LA	a2, _edata
-> > +copy_vmlinuz:
-> > +	lw	a3, 0(a1)
-> > +	sw	a3, 0(a0)
-> > +	addiu	a0, a0, 4
-> > +	bne	a2, a0, copy_vmlinuz
-> > +	 addiu	a1, a1, 4 =20
->=20
-> Does this need to sync the icache and resolve the instruction hazard
-> before jumping into the newly written code?
+On Sun, Mar 11, 2018 at 6:41 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> From: Mathias Kresin <dev@kresin.me>
 >
-> E.g. on mips32/64 r2 and later you could I think "synci" at SYNCI_Step
-> intervals (as determined by RDHWR instruction), followed by a "sync" and
-> then using "jr.hb" instead of "jr" to clear the instruction hazard while
-> jumping to the newly written code.
->=20
-> That is roughly what arch/mips/kernel/relocate.c and
-> arch/mips/kernel/head.S do, but as mentioned that assumes MIPS32/64 r2+,
-> and at least 2 platforms selecting SYS_SUPPORTS_ZBOOT* also select
-> CPU_HAS_CPU_MIPS32_R1.
+> On danube the USB0 registers are at 1e101000 similar to all other lantiq
+> SoCs.
+>
+> Fixes: dea54fbad332 ("phy: Add an USB PHY driver for the Lantiq SoCs using the RCU module")
+> Signed-off-by: Mathias Kresin <dev@kresin.me>
+Acked-by: Martin Blumenstingl<martin.blumenstingl@googlemail.com>
 
-This was a long time ago but I still like to finish this. However I'm
-not very really versed into this kind of very low level subjects, so
-I would appreciate if somebody could tell me if the cache sync is needed
-here or not. All I can says is that it currently work on ATH79 which is
-a mips32 r2, but that doesn't mean it is correct.
 
-Also note that no such cache sync is done on the decompressed kernel,
-wouldn't that also be needed?
-
-Alban
-
---Sig_/rRur1r7a.OjfrDLM_HnxiJ4
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJapsCwAAoJEHSUmkuduC28+SkP/itrqe29bBYrz3LlWTvwKXwv
-awy/uskMz9tEY4YyOUxYWVmN2dfXLNaCLy4zKLHNscn5Sptp6KXm42kcz0yjJ0Qf
-EVh7K/HpIWZwKq5d/aX/xGgfmXpmgLbqFMIv52T4SokFdiVx7oy1QJe5Y0hR21nv
-TTZi2vpkVZRuGi/wM+88wTIZB9caxfQMJ7a2nRMpuxBS1nAbtqWeRDv9kFnSJryu
-htdwQFptL+079Q3FVzEMNTDCGD/sWXa8vEt+lZmje9H3c/lnALISZi71RJ2+irlL
-OM/ppM3o7aLAsbY1+8XpqUnQ+vYbJ5zY8GMyOZHEpRP/t+T5WzhZ/hP2tkPaR99U
-YUL0Vx5Jl8n6C5nQH/Nua/jP2yf4qy1HmG0KEVoSNhjYMmMgzbKnZOYGNXcAA9P6
-Hy3bYbVaRd6U7Cc2haO6m+9MuufLwIr9O/48AMS6vTGMiz6ABSVA0MuN6f9A3EgV
-0VDRKcZE2mAykBBbeHNOWcc7weufjoQenyr0FLwiVn2VOffii/LUQknQOx+9l3BT
-ZAYRuX90JmNAxN/zc/H8MxcsE0BiDTU5LaFPY2ryEQEDfpbEIhJ0S7yuQ5H5Y69v
-fpks1SW2ZNKZcRnddbgiIfMoYeeljd/WL58T1/OxKAaDNAX5n2Nrqxcc5kWq49Z3
-mnD00q9K+VgNh7Of1St5
-=nQly
------END PGP SIGNATURE-----
-
---Sig_/rRur1r7a.OjfrDLM_HnxiJ4--
+> ---
+>  arch/mips/lantiq/xway/sysctrl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+> index 52500d3b7004..f11f1dd10493 100644
+> --- a/arch/mips/lantiq/xway/sysctrl.c
+> +++ b/arch/mips/lantiq/xway/sysctrl.c
+> @@ -560,7 +560,7 @@ void __init ltq_soc_init(void)
+>         } else {
+>                 clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
+>                                 ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
+> -               clkdev_add_pmu("1f203018.usb2-phy", "ctrl", 1, 0, PMU_USB0);
+> +               clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+>                 clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+>                 clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+>                 clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+> --
+> 2.11.0
+>

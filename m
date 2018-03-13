@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:31:22 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:45646 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:31:47 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:45672 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991534AbeCMPbJEhJkr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:31:09 +0100
+        by eddie.linux-mips.org with ESMTP id S23992121AbeCMPbOhxsGr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:31:14 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7630411DA;
-        Tue, 13 Mar 2018 15:31:02 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2547311A7;
+        Tue, 13 Mar 2018 15:31:07 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
-        David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J. Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.15 042/146] MIPS: OCTEON: irq: Check for null return on kzalloc allocation
-Date:   Tue, 13 Mar 2018 16:23:29 +0100
-Message-Id: <20180313152323.843219417@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Rob Herring <robh@kernel.org>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.15 078/146] dt-bindings: Document mti,mips-cpc binding
+Date:   Tue, 13 Mar 2018 16:24:05 +0100
+Message-Id: <20180313152326.796228506@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180313152320.439085687@linuxfoundation.org>
 References: <20180313152320.439085687@linuxfoundation.org>
@@ -28,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62954
+X-archive-position: 62955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,37 +48,45 @@ X-list: linux-mips
 
 ------------------
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Paul Burton <paul.burton@mips.com>
 
-commit 902f4d067a50ccf645a58dd5fb1d113b6e0f9b5b upstream.
+commit aece34cd576c7625181b0488a8129c1e165355f7 upstream.
 
-The allocation of host_data is not null checked, leading to a null
-pointer dereference if the allocation fails. Fix this by adding a null
-check and return with -ENOMEM.
+Document a binding for the MIPS Cluster Power Controller (CPC) that
+allows the device tree to specify where the CPC registers are located.
 
-Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: David Daney <david.daney@cavium.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: "Steven J. Hill" <Steven.Hill@cavium.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.0+
-Patchwork: https://patchwork.linux-mips.org/patch/18658/
+Cc: devicetree@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/18512/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/cavium-octeon/octeon-irq.c |    2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/power/mti,mips-cpc.txt |    8 ++++++++
+ MAINTAINERS                                              |    1 +
+ 2 files changed, 9 insertions(+)
 
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -2277,6 +2277,8 @@ static int __init octeon_irq_init_cib(st
- 	}
+--- /dev/null
++++ b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+@@ -0,0 +1,8 @@
++Binding for MIPS Cluster Power Controller (CPC).
++
++This binding allows a system to specify where the CPC registers are
++located.
++
++Required properties:
++compatible : Should be "mti,mips-cpc".
++regs: Should describe the address & size of the CPC register region.
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9107,6 +9107,7 @@ MIPS GENERIC PLATFORM
+ M:	Paul Burton <paul.burton@mips.com>
+ L:	linux-mips@linux-mips.org
+ S:	Supported
++F:	Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+ F:	arch/mips/generic/
+ F:	arch/mips/tools/generic-board-config.sh
  
- 	host_data = kzalloc(sizeof(*host_data), GFP_KERNEL);
-+	if (!host_data)
-+		return -ENOMEM;
- 	raw_spin_lock_init(&host_data->lock);
- 
- 	addr = of_get_address(ciu_node, 0, NULL, NULL);

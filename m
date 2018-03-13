@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:39:34 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49886 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:40:46 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50468 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994630AbeCMPi6hazQr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:38:58 +0100
+        by eddie.linux-mips.org with ESMTP id S23994654AbeCMPk2b-6Ur (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:40:28 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 285CFF73;
-        Tue, 13 Mar 2018 15:38:52 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EE0B21097;
+        Tue, 13 Mar 2018 15:40:21 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Justin Chen <justinpopo6@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 078/140] MIPS: BMIPS: Do not mask IPIs during suspend
-Date:   Tue, 13 Mar 2018 16:24:41 +0100
-Message-Id: <20180313152503.380862971@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Aleksandar Markovic <aleksandar.markovic@mips.com>,
+        Rob Herring <robh@kernel.org>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.14 113/140] dt-bindings: Document mti,mips-cpc binding
+Date:   Tue, 13 Mar 2018 16:25:16 +0100
+Message-Id: <20180313152505.770942823@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180313152458.201155692@linuxfoundation.org>
 References: <20180313152458.201155692@linuxfoundation.org>
@@ -26,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62960
+X-archive-position: 62961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,52 +48,45 @@ X-list: linux-mips
 
 ------------------
 
-From: Justin Chen <justinpopo6@gmail.com>
+From: Paul Burton <paul.burton@mips.com>
 
-commit 06a3f0c9f2725f5d7c63c4203839373c9bd00c28 upstream.
+commit aece34cd576c7625181b0488a8129c1e165355f7 upstream.
 
-Commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on CPU IRQs") fixes an
-issue where disable_irq did not actually disable the irq. The bug caused
-our IPIs to not be disabled, which actually is the correct behavior.
+Document a binding for the MIPS Cluster Power Controller (CPC) that
+allows the device tree to specify where the CPC registers are located.
 
-With the addition of commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on
-CPU IRQs"), the IPIs were getting disabled going into suspend, thus
-schedule_ipi() was not being called. This caused deadlocks where
-schedulable task were not being scheduled and other cpus were waiting
-for them to do something.
-
-Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called on the
-IPIs during suspend.
-
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
-Cc: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17385/
-[jhogan@kernel.org: checkpatch: wrap long lines and fix commit refs]
+Cc: devicetree@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/18512/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/smp-bmips.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/power/mti,mips-cpc.txt |    8 ++++++++
+ MAINTAINERS                                              |    1 +
+ 2 files changed, 9 insertions(+)
 
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -168,11 +168,11 @@ static void bmips_prepare_cpus(unsigned
- 		return;
- 	}
- 
--	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
--			"smp_ipi0", NULL))
-+	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt,
-+			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi0", NULL))
- 		panic("Can't request IPI0 interrupt");
--	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
--			"smp_ipi1", NULL))
-+	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt,
-+			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi1", NULL))
- 		panic("Can't request IPI1 interrupt");
- }
+--- /dev/null
++++ b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+@@ -0,0 +1,8 @@
++Binding for MIPS Cluster Power Controller (CPC).
++
++This binding allows a system to specify where the CPC registers are
++located.
++
++Required properties:
++compatible : Should be "mti,mips-cpc".
++regs: Should describe the address & size of the CPC register region.
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9001,6 +9001,7 @@ MIPS GENERIC PLATFORM
+ M:	Paul Burton <paul.burton@mips.com>
+ L:	linux-mips@linux-mips.org
+ S:	Supported
++F:	Documentation/devicetree/bindings/power/mti,mips-cpc.txt
+ F:	arch/mips/generic/
+ F:	arch/mips/tools/generic-board-config.sh
  

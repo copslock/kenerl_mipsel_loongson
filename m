@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:31:47 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:45672 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:32:01 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:45692 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992121AbeCMPbOhxsGr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:31:14 +0100
+        by eddie.linux-mips.org with ESMTP id S23992212AbeCMPbRVgVpr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:31:17 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2547311A7;
-        Tue, 13 Mar 2018 15:31:07 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F2DB611DA;
+        Tue, 13 Mar 2018 15:31:10 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Miodrag Dinic <miodrag.dinic@mips.com>,
         Aleksandar Markovic <aleksandar.markovic@mips.com>,
-        Rob Herring <robh@kernel.org>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.15 078/146] dt-bindings: Document mti,mips-cpc binding
-Date:   Tue, 13 Mar 2018 16:24:05 +0100
-Message-Id: <20180313152326.796228506@linuxfoundation.org>
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.15 079/146] MIPS: CPC: Map registers using DT in mips_cpc_default_phys_base()
+Date:   Tue, 13 Mar 2018 16:24:06 +0100
+Message-Id: <20180313152326.901035436@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180313152320.439085687@linuxfoundation.org>
 References: <20180313152320.439085687@linuxfoundation.org>
@@ -27,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62955
+X-archive-position: 62956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,43 +51,55 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@mips.com>
 
-commit aece34cd576c7625181b0488a8129c1e165355f7 upstream.
+commit 791412dafbbfd860e78983d45cf71db603a82f67 upstream.
 
-Document a binding for the MIPS Cluster Power Controller (CPC) that
-allows the device tree to specify where the CPC registers are located.
+Reading mips_cpc_base value from the DT allows each platform to
+define it according to its needs. This is especially convenient
+for MIPS_GENERIC kernel where this kind of information should be
+determined in runtime.
+
+Use mti,mips-cpc compatible string with just a reg property to
+specify the register location for your platform.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Miodrag Dinic <miodrag.dinic@mips.com>
 Signed-off-by: Aleksandar Markovic <aleksandar.markovic@mips.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/18512/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/18513/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- Documentation/devicetree/bindings/power/mti,mips-cpc.txt |    8 ++++++++
- MAINTAINERS                                              |    1 +
- 2 files changed, 9 insertions(+)
+ arch/mips/kernel/mips-cpc.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- /dev/null
-+++ b/Documentation/devicetree/bindings/power/mti,mips-cpc.txt
-@@ -0,0 +1,8 @@
-+Binding for MIPS Cluster Power Controller (CPC).
+--- a/arch/mips/kernel/mips-cpc.c
++++ b/arch/mips/kernel/mips-cpc.c
+@@ -10,6 +10,8 @@
+ 
+ #include <linux/errno.h>
+ #include <linux/percpu.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/spinlock.h>
+ 
+ #include <asm/mips-cps.h>
+@@ -22,6 +24,17 @@ static DEFINE_PER_CPU_ALIGNED(unsigned l
+ 
+ phys_addr_t __weak mips_cpc_default_phys_base(void)
+ {
++	struct device_node *cpc_node;
++	struct resource res;
++	int err;
 +
-+This binding allows a system to specify where the CPC registers are
-+located.
++	cpc_node = of_find_compatible_node(of_root, NULL, "mti,mips-cpc");
++	if (cpc_node) {
++		err = of_address_to_resource(cpc_node, 0, &res);
++		if (!err)
++			return res.start;
++	}
 +
-+Required properties:
-+compatible : Should be "mti,mips-cpc".
-+regs: Should describe the address & size of the CPC register region.
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9107,6 +9107,7 @@ MIPS GENERIC PLATFORM
- M:	Paul Burton <paul.burton@mips.com>
- L:	linux-mips@linux-mips.org
- S:	Supported
-+F:	Documentation/devicetree/bindings/power/mti,mips-cpc.txt
- F:	arch/mips/generic/
- F:	arch/mips/tools/generic-board-config.sh
+ 	return 0;
+ }
  

@@ -1,41 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 09:37:46 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:54924 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990394AbeCMIhi4tqwc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Mar 2018 09:37:38 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EFCB1208FE;
-        Tue, 13 Mar 2018 08:37:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org EFCB1208FE
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 13 Mar 2018 08:37:07 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Dan Haab <riproute@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Dan Haab <dan.haab@luxul.com>
-Subject: Re: [PATCH] MIPS: BCM47XX: Add Luxul XAP1500/XWR1750 WiFi LEDs
-Message-ID: <20180313083707.GG21642@saruman>
-References: <1519767173-8918-1-git-send-email-riproute@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 09:56:08 +0100 (CET)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:36286
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990409AbeCMI4BaUAYc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 09:56:01 +0100
+Received: by mail-io0-x241.google.com with SMTP id e30so14835791ioc.3;
+        Tue, 13 Mar 2018 01:56:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=O77kUL2a+AMdQ7TlSitH2uSivsuI8670QlwCwdaFWts=;
+        b=ZbxYNDyxi60X8phLTL0K51wyg5NxLmpen8qnwmnStbf69AcSgg1dP27uQjUmNRGQ2n
+         H7UMgjSuwFw2lHxZDT8aPUOyi7Y2p8NdNxznd8ltNKADWaW0LlTqeoXuyFz/JfDmTA0l
+         pk6mXt73QpqQbm2rarrn/rr+Q9pu72um4qbkc9Tds/aoIdnslGmXLeTIwI7XgmOhctDY
+         CuWYOXVnRCLB4ujSWmHbHnjG2zJWcOiTzufWqBYfo8mHeSePyKMtXMb/371PdZXO5f93
+         ASNrhemrhJbOfL7pTR8Ja0q35sv7hp1m3og/u8OadXwWfIge+p1ApS+EwgHIlQZ5PlDi
+         /hMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=O77kUL2a+AMdQ7TlSitH2uSivsuI8670QlwCwdaFWts=;
+        b=dTCjR+k2ekoGcLzFKUpIUnqCI8GwM6mem7owb67rzJWbXZJPJh+Nl9GjU6Lp/E3vW+
+         E3lqcRn1ICmBiUVe3ft90R38ZSoUXHWrVgQ/g6/3g9pt8Kh7N3d+Lyw+xUDof7sPFuEr
+         qXxBm9sicJsksl5IEK/iPE3HdtYID0kiE1iD+0tb0+icwtPu+8j+clRlBLcWJEu/N2iB
+         4OzYf0CHbPeUmKt6+L8I8ah7eVduJR10t/iApsxHGDuqohyjFzqzQvk+6dlN4KwfJkHe
+         mJA851rECPl0wlXa2bbSqQ+a+5gfe/gRgbstal8q+Fl44BGFtoQmetEkn8azaAsTghYh
+         WwMA==
+X-Gm-Message-State: AElRT7HMBxoaNUFYNgpL11Ax5Hnro5M2334YWYhTtSdBvwAOTDLafwa2
+        bgXIt6BkuQOEyL6tyYEXznTJ1LqpsELBLGmOoi0=
+X-Google-Smtp-Source: AG47ELstT6TZ9+89Yl0XcGz8yZQzqzoRynkVzgusdjycDhKbPQ//C1a6iSyvrJNDzsbjkoJKiJX8lQPWLzgu/AylxIs=
+X-Received: by 10.107.161.200 with SMTP id k191mr11368539ioe.270.1520931355013;
+ Tue, 13 Mar 2018 01:55:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lHGcFxmlz1yfXmOs"
-Content-Disposition: inline
-In-Reply-To: <1519767173-8918-1-git-send-email-riproute@gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.107.187.195 with HTTP; Tue, 13 Mar 2018 01:55:53 -0700 (PDT)
+In-Reply-To: <1520820258-19225-1-git-send-email-chenhc@lemote.com>
+References: <1520820258-19225-1-git-send-email-chenhc@lemote.com>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Tue, 13 Mar 2018 16:55:53 +0800
+X-Google-Sender-Auth: CwX3XcGfYV0mAA9-6WR75NC1Lq4
+Message-ID: <CAAhV-H4zFAMjg9W2f1VfYrgLnDfNDPaUHUechGDT+v3o_8WNTg@mail.gmail.com>
+Subject: Re: [PATCH V2] ZBOOT: fix stack protector in compressed boot phase
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Huacai Chen <chenhc@lemote.com>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62949
+X-archive-position: 62950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,43 +74,172 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi, Yoshinori, Rich and SuperH developers,
 
---lHGcFxmlz1yfXmOs
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm not familiar with SuperH assembly, but SuperH has the same bug
+obviously. Could you please fix that?
 
-On Tue, Feb 27, 2018 at 02:32:53PM -0700, Dan Haab wrote:
-> @@ -528,6 +539,12 @@
->  	bcm47xx_leds_pdata.num_leds =3D ARRAY_SIZE(dev_leds);		\
->  } while (0)
-> =20
-> +static struct gpio_led_platform_data bcm47xx_leds_pdata_extra =3D {};
+Huacai
 
-Any reason that couldn't be __initdata?
-
-Thanks
-James
-
---lHGcFxmlz1yfXmOs
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqnja0ACgkQbAtpk944
-dnoNtA/8ClGMojCKX/q+7U3vTAAhFgS5ZVazbh2ErNqRypqeZ0GXeiy20pGK9PqF
-JUvXi6GBZHPsjmPfzjskYMuaXKSXkSf55o5oPpqSrwPenZJelgPdTS+jVDBSqLY1
-8DQQXhyTtwhiTa6IeJP+kv2RMaPTaFZ7T1jAEseeRK7ofIlJ8UjiQLZ/RU/5bcLc
-y656vzNeJc5qI6wGenYcA0IoGt+uUa6wLy4VeRdlEFPcYgH4ZCe1oAffSjsj9S+N
-EqIaKNjFLIKHy3/BckYKHhG8Ndai2JEj/KxDqazYPW/C05rQd6aEwJzyx7+yrp2z
-kSaroWHBbeikFqV+i5Np5DNgKZZp7wQ7Ah3JZgr4+0mPJCQewKhXFk4A5Qk1dnGp
-HPAIIbqt6Z6/ycG5OXowjXC6G+DctqygXN1iG6Av/QgFmE/n2ATGenPFQuz9aAuH
-V0wDHwCiWRjKdMwaBG/CKBEdekMmUMFphJXtSdQQ9uj6kS92xk9OMg5CRwIoLG8w
-sjrZDXqLrgbYrhVXcfrZgzvzNgoADQBIpZnX3aiMsC9zTZflMaa3Z8ce8ruYcJKO
-EAFyBIk9VFQU+ExCz43MP8DqmCihx9aQd1yKjLdbUSdZtVhylPSc9KtchyeUeRqL
-vXzerNoJU9xDOI2vb9cy21oRCmhMkq10EL+Aao9n91O23491es8=
-=Aplx
------END PGP SIGNATURE-----
-
---lHGcFxmlz1yfXmOs--
+On Mon, Mar 12, 2018 at 10:04 AM, Huacai Chen <chenhc@lemote.com> wrote:
+> Call __stack_chk_guard_setup() in decompress_kernel() is too late that
+> stack checking always fails for decompress_kernel() itself. So remove
+> __stack_chk_guard_setup() and initialize __stack_chk_guard before we
+> call decompress_kernel().
+>
+> Original code comes from ARM but also used for MIPS and SH, so fix them
+> together. If without this fix, compressed booting of these archs will
+> fail because stack checking is enabled by default (>=4.16).
+>
+> V2: Fix build on ARM.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/arm/boot/compressed/head.S        | 4 ++++
+>  arch/arm/boot/compressed/misc.c        | 7 -------
+>  arch/mips/boot/compressed/decompress.c | 7 -------
+>  arch/mips/boot/compressed/head.S       | 4 ++++
+>  arch/sh/boot/compressed/head_32.S      | 4 ++++
+>  arch/sh/boot/compressed/head_64.S      | 4 ++++
+>  arch/sh/boot/compressed/misc.c         | 7 -------
+>  7 files changed, 16 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
+> index 45c8823..bae1fc6 100644
+> --- a/arch/arm/boot/compressed/head.S
+> +++ b/arch/arm/boot/compressed/head.S
+> @@ -547,6 +547,10 @@ not_relocated:     mov     r0, #0
+>                 bic     r4, r4, #1
+>                 blne    cache_on
+>
+> +               ldr     r0, =__stack_chk_guard
+> +               ldr     r1, =0x000a0dff
+> +               str     r1, [r0]
+> +
+>  /*
+>   * The C runtime environment should now be setup sufficiently.
+>   * Set up some pointers, and start decompressing.
+> diff --git a/arch/arm/boot/compressed/misc.c b/arch/arm/boot/compressed/misc.c
+> index 16a8a80..e518ef5 100644
+> --- a/arch/arm/boot/compressed/misc.c
+> +++ b/arch/arm/boot/compressed/misc.c
+> @@ -130,11 +130,6 @@ asmlinkage void __div0(void)
+>
+>  unsigned long __stack_chk_guard;
+>
+> -void __stack_chk_guard_setup(void)
+> -{
+> -       __stack_chk_guard = 0x000a0dff;
+> -}
+> -
+>  void __stack_chk_fail(void)
+>  {
+>         error("stack-protector: Kernel stack is corrupted\n");
+> @@ -150,8 +145,6 @@ decompress_kernel(unsigned long output_start, unsigned long free_mem_ptr_p,
+>  {
+>         int ret;
+>
+> -       __stack_chk_guard_setup();
+> -
+>         output_data             = (unsigned char *)output_start;
+>         free_mem_ptr            = free_mem_ptr_p;
+>         free_mem_end_ptr        = free_mem_ptr_end_p;
+> diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+> index fdf99e9..5ba431c 100644
+> --- a/arch/mips/boot/compressed/decompress.c
+> +++ b/arch/mips/boot/compressed/decompress.c
+> @@ -78,11 +78,6 @@ void error(char *x)
+>
+>  unsigned long __stack_chk_guard;
+>
+> -void __stack_chk_guard_setup(void)
+> -{
+> -       __stack_chk_guard = 0x000a0dff;
+> -}
+> -
+>  void __stack_chk_fail(void)
+>  {
+>         error("stack-protector: Kernel stack is corrupted\n");
+> @@ -92,8 +87,6 @@ void decompress_kernel(unsigned long boot_heap_start)
+>  {
+>         unsigned long zimage_start, zimage_size;
+>
+> -       __stack_chk_guard_setup();
+> -
+>         zimage_start = (unsigned long)(&__image_begin);
+>         zimage_size = (unsigned long)(&__image_end) -
+>             (unsigned long)(&__image_begin);
+> diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
+> index 409cb48..00d0ee0 100644
+> --- a/arch/mips/boot/compressed/head.S
+> +++ b/arch/mips/boot/compressed/head.S
+> @@ -32,6 +32,10 @@ start:
+>         bne     a2, a0, 1b
+>          addiu  a0, a0, 4
+>
+> +       PTR_LA  a0, __stack_chk_guard
+> +       PTR_LI  a1, 0x000a0dff
+> +       sw      a1, 0(a0)
+> +
+>         PTR_LA  a0, (.heap)          /* heap address */
+>         PTR_LA  sp, (.stack + 8192)  /* stack address */
+>
+> diff --git a/arch/sh/boot/compressed/head_32.S b/arch/sh/boot/compressed/head_32.S
+> index 7bb1681..a3fdb05 100644
+> --- a/arch/sh/boot/compressed/head_32.S
+> +++ b/arch/sh/boot/compressed/head_32.S
+> @@ -76,6 +76,10 @@ l1:
+>         mov.l   init_stack_addr, r0
+>         mov.l   @r0, r15
+>
+> +       mov.l   __stack_chk_guard, r0
+> +       mov     #0x000a0dff, r1
+> +       mov.l   r1, @r0
+> +
+>         /* Decompress the kernel */
+>         mov.l   decompress_kernel_addr, r0
+>         jsr     @r0
+> diff --git a/arch/sh/boot/compressed/head_64.S b/arch/sh/boot/compressed/head_64.S
+> index 9993113..8b4d540 100644
+> --- a/arch/sh/boot/compressed/head_64.S
+> +++ b/arch/sh/boot/compressed/head_64.S
+> @@ -132,6 +132,10 @@ startup:
+>         addi    r22, 4, r22
+>         bne     r22, r23, tr1
+>
+> +       movi    datalabel __stack_chk_guard, r0
+> +       movi    0x000a0dff, r1
+> +       st.l    r0, 0, r1
+> +
+>         /*
+>          * Decompress the kernel.
+>          */
+> diff --git a/arch/sh/boot/compressed/misc.c b/arch/sh/boot/compressed/misc.c
+> index 627ce8e..fe4c079 100644
+> --- a/arch/sh/boot/compressed/misc.c
+> +++ b/arch/sh/boot/compressed/misc.c
+> @@ -106,11 +106,6 @@ static void error(char *x)
+>
+>  unsigned long __stack_chk_guard;
+>
+> -void __stack_chk_guard_setup(void)
+> -{
+> -       __stack_chk_guard = 0x000a0dff;
+> -}
+> -
+>  void __stack_chk_fail(void)
+>  {
+>         error("stack-protector: Kernel stack is corrupted\n");
+> @@ -130,8 +125,6 @@ void decompress_kernel(void)
+>  {
+>         unsigned long output_addr;
+>
+> -       __stack_chk_guard_setup();
+> -
+>  #ifdef CONFIG_SUPERH64
+>         output_addr = (CONFIG_MEMORY_START + 0x2000);
+>  #else
+> --
+> 2.7.0
+>

@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:38:57 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49774 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:39:20 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49802 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994626AbeCMPiuRgsSr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:38:50 +0100
+        by eddie.linux-mips.org with ESMTP id S23994627AbeCMPiwu0ltr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:38:52 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 84A63F2D;
-        Tue, 13 Mar 2018 15:38:43 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6ABE1F32;
+        Tue, 13 Mar 2018 15:38:46 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 079/140] MIPS: ath25: Check for kzalloc allocation failure
-Date:   Tue, 13 Mar 2018 16:24:42 +0100
-Message-Id: <20180313152503.444009904@linuxfoundation.org>
+        David Daney <david.daney@cavium.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.14 080/140] MIPS: OCTEON: irq: Check for null return on kzalloc allocation
+Date:   Tue, 13 Mar 2018 16:24:43 +0100
+Message-Id: <20180313152503.512478971@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180313152458.201155692@linuxfoundation.org>
 References: <20180313152458.201155692@linuxfoundation.org>
@@ -26,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62958
+X-archive-position: 62959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,33 +51,35 @@ X-list: linux-mips
 
 From: Colin Ian King <colin.king@canonical.com>
 
-commit 1b22b4b28fd5fbc51855219e3238b3ab81da8466 upstream.
+commit 902f4d067a50ccf645a58dd5fb1d113b6e0f9b5b upstream.
 
-Currently there is no null check on a failed allocation of board_data,
-and hence a null pointer dereference will occurr. Fix this by checking
-for the out of memory null pointer.
+The allocation of host_data is not null checked, leading to a null
+pointer dereference if the allocation fails. Fix this by adding a null
+check and return with -ENOMEM.
 
-Fixes: a7473717483e ("MIPS: ath25: add board configuration detection")
+Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: David Daney <david.daney@cavium.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: "Steven J. Hill" <Steven.Hill@cavium.com>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.19+
-Patchwork: https://patchwork.linux-mips.org/patch/18657/
+Cc: <stable@vger.kernel.org> # 4.0+
+Patchwork: https://patchwork.linux-mips.org/patch/18658/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ath25/board.c |    2 ++
+ arch/mips/cavium-octeon/octeon-irq.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/arch/mips/ath25/board.c
-+++ b/arch/mips/ath25/board.c
-@@ -135,6 +135,8 @@ int __init ath25_find_config(phys_addr_t
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -2277,6 +2277,8 @@ static int __init octeon_irq_init_cib(st
  	}
  
- 	board_data = kzalloc(BOARD_CONFIG_BUFSZ, GFP_KERNEL);
-+	if (!board_data)
-+		goto error;
- 	ath25_board.config = (struct ath25_boarddata *)board_data;
- 	memcpy_fromio(board_data, bcfg, 0x100);
- 	if (broken_boarddata) {
+ 	host_data = kzalloc(sizeof(*host_data), GFP_KERNEL);
++	if (!host_data)
++		return -ENOMEM;
+ 	raw_spin_lock_init(&host_data->lock);
+ 
+ 	addr = of_get_address(ciu_node, 0, NULL, NULL);

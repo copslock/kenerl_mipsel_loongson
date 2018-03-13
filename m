@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:29:32 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44904 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 16:29:56 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44916 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990498AbeCMP3ZblBar (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:29:25 +0100
+        by eddie.linux-mips.org with ESMTP id S23990435AbeCMP31kC5Tr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 16:29:27 +0100
 Received: from localhost (LFbn-1-12258-90.w90-92.abo.wanadoo.fr [90.92.71.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 699E9F7B;
-        Tue, 13 Mar 2018 15:29:18 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4B15BF80;
+        Tue, 13 Mar 2018 15:29:21 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Justin Chen <justinpopo6@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.15 040/146] MIPS: BMIPS: Do not mask IPIs during suspend
-Date:   Tue, 13 Mar 2018 16:23:27 +0100
-Message-Id: <20180313152323.668121514@linuxfoundation.org>
+        stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.15 041/146] MIPS: ath25: Check for kzalloc allocation failure
+Date:   Tue, 13 Mar 2018 16:23:28 +0100
+Message-Id: <20180313152323.760025151@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180313152320.439085687@linuxfoundation.org>
 References: <20180313152320.439085687@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62952
+X-archive-position: 62953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,52 +47,35 @@ X-list: linux-mips
 
 ------------------
 
-From: Justin Chen <justinpopo6@gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-commit 06a3f0c9f2725f5d7c63c4203839373c9bd00c28 upstream.
+commit 1b22b4b28fd5fbc51855219e3238b3ab81da8466 upstream.
 
-Commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on CPU IRQs") fixes an
-issue where disable_irq did not actually disable the irq. The bug caused
-our IPIs to not be disabled, which actually is the correct behavior.
+Currently there is no null check on a failed allocation of board_data,
+and hence a null pointer dereference will occurr. Fix this by checking
+for the out of memory null pointer.
 
-With the addition of commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on
-CPU IRQs"), the IPIs were getting disabled going into suspend, thus
-schedule_ipi() was not being called. This caused deadlocks where
-schedulable task were not being scheduled and other cpus were waiting
-for them to do something.
-
-Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called on the
-IPIs during suspend.
-
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
-Cc: Florian Fainelli <f.fainelli@gmail.com>
+Fixes: a7473717483e ("MIPS: ath25: add board configuration detection")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/17385/
-[jhogan@kernel.org: checkpatch: wrap long lines and fix commit refs]
+Cc: <stable@vger.kernel.org> # 3.19+
+Patchwork: https://patchwork.linux-mips.org/patch/18657/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/smp-bmips.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/ath25/board.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -168,11 +168,11 @@ static void bmips_prepare_cpus(unsigned
- 		return;
+--- a/arch/mips/ath25/board.c
++++ b/arch/mips/ath25/board.c
+@@ -135,6 +135,8 @@ int __init ath25_find_config(phys_addr_t
  	}
  
--	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
--			"smp_ipi0", NULL))
-+	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt,
-+			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi0", NULL))
- 		panic("Can't request IPI0 interrupt");
--	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
--			"smp_ipi1", NULL))
-+	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt,
-+			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi1", NULL))
- 		panic("Can't request IPI1 interrupt");
- }
- 
+ 	board_data = kzalloc(BOARD_CONFIG_BUFSZ, GFP_KERNEL);
++	if (!board_data)
++		goto error;
+ 	ath25_board.config = (struct ath25_boarddata *)board_data;
+ 	memcpy_fromio(board_data, bcfg, 0x100);
+ 	if (broken_boarddata) {

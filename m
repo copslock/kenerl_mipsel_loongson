@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 17:48:26 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:44446 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990405AbeCMQsOB1tDg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2018 17:48:14 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 428F860390; Tue, 13 Mar 2018 16:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1520959687;
-        bh=8XnE+MmbXXlOodQehkDr77mZKUQ6zMEADY9VAO819Ec=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=h1WPi62ps2Fu4orNKdZHv5XGHiqrS5nDBKAsMOPyHCR3KxUQ74HgJSA/lum6lQrtu
-         +AlhgWXuE5NTAoTqiXx3XN/fylTjndQwyX01x8+Zar6C+JVIVkN1FK+JRolXgf997C
-         DyeV2r8TerqkEYMPdd2PonDRM1uJeQ5KPok6vahA=
-Received: from potku.adurom.net (88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2018 18:20:15 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:46000 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990434AbeCMRUAj4Psg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Mar 2018 18:20:00 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7A43B600C1;
-        Tue, 13 Mar 2018 16:48:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1520959686;
-        bh=8XnE+MmbXXlOodQehkDr77mZKUQ6zMEADY9VAO819Ec=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=DVcdQrBTlYcwPUKQV1ogBXr6QKsIF+OHF9ocrVcf4qkwkqv8qSn4SwxSJ2rb5UBd9
-         QmFLY0laEP8gKiPb0uR8IF1RTfkZiQGkuNAslZdCFgfkoLeduL9dId3F3siNExjcvg
-         iiZz8UTS17TkGJJE6cKOu774XMgbVuF/3Yy4wp7s=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7A43B600C1
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id B71D1205F4;
+        Tue, 13 Mar 2018 17:19:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B71D1205F4
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 13 Mar 2018 17:19:28 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mips@linux-mips.org, david.daney@cavium.com,
+        paul.burton@mips.com, Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Bart Van Assche <bart.vanassche@sandisk.com>,
+        Doug Ledford <dledford@redhat.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] MIPS: Update dma-coherence.h files
+Message-ID: <20180313171927.GH21642@saruman>
+References: <1516758010-7641-1-git-send-email-f.fainelli@gmail.com>
+ <1516758010-7641-3-git-send-email-f.fainelli@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [v2] bcma: Prevent build of PCI host features in module
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1519898292-12155-1-git-send-email-matt.redfearn@mips.com>
-References: <1519898292-12155-1-git-send-email-matt.redfearn@mips.com>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     <zajec5@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <jhogan@kernel.org>,
-        Matt Redfearn <matt.redfearn@mips.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20180313164807.428F860390@smtp.codeaurora.org>
-Date:   Tue, 13 Mar 2018 16:48:07 +0000 (UTC)
-Return-Path: <kvalo@codeaurora.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="nFBW6CQlri5Qm8JQ"
+Content-Disposition: inline
+In-Reply-To: <1516758010-7641-3-git-send-email-f.fainelli@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62963
+X-archive-position: 62964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,25 +53,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Matt Redfearn <matt.redfearn@mips.com> wrote:
 
-> Attempting to build bcma.ko with BCMA_DRIVER_PCI_HOSTMODE=y results in
-> a build error due to use of symbols not exported from vmlinux:
-> 
-> ERROR: "pcibios_enable_device" [drivers/bcma/bcma.ko] undefined!
-> ERROR: "register_pci_controller" [drivers/bcma/bcma.ko] undefined!
-> make[1]: *** [scripts/Makefile.modpost:92: __modpost] Error 1
-> 
-> To prevent this, don't allow the host mode feature to be built if
-> CONFIG_BCMA=m
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+--nFBW6CQlri5Qm8JQ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Patch applied to wireless-drivers-next.git, thanks.
+On Tue, Jan 23, 2018 at 05:40:10PM -0800, Florian Fainelli wrote:
+> diff --git a/arch/mips/include/asm/mach-ath25/dma-coherence.h b/arch/mips/include/asm/mach-ath25/dma-coherence.h
+> index d5defdde32db..63bce15fa54d 100644
+> --- a/arch/mips/include/asm/mach-ath25/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-ath25/dma-coherence.h
 
-79ca239a68f8 bcma: Prevent build of PCI host features in module
+> +#define plat_unmap_dma_mem	plat_unmap_dma_mem
+>  static inline void
+>  plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr, size_t size,
+>  		   enum dma_data_direction direction)
+>  {
+>  }
 
--- 
-https://patchwork.kernel.org/patch/10250739/
+This could presumably be removed too.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> diff --git a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+> index 9110988b92a1..165e13aba3ff 100644
+> --- a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+
+> +#define phys_to_dma	phys_to_dma
+>  dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
+> +#define dma_to_phys	dma_to_phys
+>  phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
+
+I suppose these #defines can be dropped since commit ea8c64ace866
+("dma-mapping: move swiotlb arch helpers to a new header").
+
+> diff --git a/arch/mips/include/asm/mach-loongson64/dma-coherence.h b/arch/mips/include/asm/mach-loongson64/dma-coherence.h
+> index 1602a9e9e8c2..0a9bbc4c1449 100644
+> --- a/arch/mips/include/asm/mach-loongson64/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-loongson64/dma-coherence.h
+
+> +#define phys_to_dma	phys_to_dma
+>  extern dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
+> +#define dma_to_phys	dma_to_phys
+>  extern phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
+
+same here
+
+> +#define plat_dma_supported	plat_dma_supported
+>  static inline int plat_dma_supported(struct device *dev, u64 mask)
+>  {
+>  	/*
+> @@ -69,6 +70,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+>  	return 1;
+>  }
+
+That can be removed too, no?
+
+Cheers
+James
+
+--nFBW6CQlri5Qm8JQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqoCBoACgkQbAtpk944
+dnquCRAAlu6XQSUMxkcAhSlf2aUyMkX+OGAvymFtCDCLFPlgx1+Rf4wCGmg/jzPB
+SwWOAOG5BGohSwQE8ydW0uA6X4yegRIuqag4byGOwdOs6mqqnLYUu3eAzZN/5aVc
+YFinonmpK0dZ4jlSPaOwfrngvVOlv5On9UMd4h8q5TFViWCcDjl4wfffxudY07tO
+fHYVr05gFUthZ80Rpu466z/BO8Lk/Sbs+E0LMZJY7JihpoTqfnbYVwMuHVp1qJ3a
+k2UsWIug3EyYwlTFMjap3Khq7m8MzYoSzj6B/0Y+1E2ZQTe5VNrxneQ+TJSPYVn0
+H84YeXL7C3d3g/K31jQ984WMiZnQDaiOy91nvVVw+dVAvpJjMRhZfPWanaEEMWrY
+0Fw64u/UOSg/lch/1FEy/hnB2Ig9ZTrOx7O48U47QJNAUiPGuqdzj1OCUpewOeXB
+/nzl5mOzSaLuPyNQr9rCSkj9xVIjJURkaWFeowYIjfOzKcA7pGM7jqk/OU0+ybur
+SaHB8TW3kM7www/WWvO78Hkel/LHOKPZcogC9XLddi7jhxjYZkdIoYSmw6nk6W8l
+Vj06Td6PHJtukzpxyng9hBJyNAnqlcMhxmUj/ro/xwznVCY9CuHmr4zwLOLtYwc5
+cnW1P44A5vjJiZtH536cWfUG1oNeInG5GH3UAwZdNVNabjWzh/A=
+=Xkh4
+-----END PGP SIGNATURE-----
+
+--nFBW6CQlri5Qm8JQ--

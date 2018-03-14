@@ -1,53 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2018 12:46:02 +0100 (CET)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:39130 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990505AbeCNLpym8hnU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Mar 2018 12:45:54 +0100
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 14 Mar 2018 11:45:32 +0000
-Received: from localhost (192.168.154.110) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 14
- Mar 2018 04:45:34 -0700
-Date:   Wed, 14 Mar 2018 11:45:26 +0000
-From:   James Hogan <james.hogan@mips.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-CC:     <ralf@linux-mips.org>, <john@phrozen.org>, <dev@kresin.me>,
-        <linux-mips@linux-mips.org>, <martin.blumenstingl@googlemail.com>
-Subject: Re: [PATCH 3/3] MIPS: lantiq: ase: Enable MFD_SYSCON
-Message-ID: <20180314114524.GB19665@jhogan-linux.mipstec.com>
-References: <20180311174123.2578-1-hauke@hauke-m.de>
- <20180311174123.2578-3-hauke@hauke-m.de>
- <20180312213938.GC21642@saruman>
- <70673d93-03c5-6bf6-54a4-bee9f9271304@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2018 16:47:02 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:60584 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991248AbeCNPqzIH3hD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Mar 2018 16:46:55 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A407D20779;
+        Wed, 14 Mar 2018 15:46:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A407D20779
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 14 Mar 2018 15:46:42 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Marc Zyngier <marc.zyngier@arm.com>
+Cc:     Matt Redfearn <matt.redfearn@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
+        Dengcheng Zhu <dengcheng.zhu@mips.com>,
+        linux-kernel@vger.kernel.org,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 0/6] irqchip/mips-gic: Enable & use VEIC mode if available
+Message-ID: <20180314154641.GA8976@saruman>
+References: <1515148270-9391-1-git-send-email-matt.redfearn@mips.com>
+ <c9b5d20c-7adf-5308-1a45-21471d206d10@arm.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qtZFehHsKgwS5rPz"
+        protocol="application/pgp-signature"; boundary="ZGiS0Q5IWpPtfppv"
 Content-Disposition: inline
-In-Reply-To: <70673d93-03c5-6bf6-54a4-bee9f9271304@hauke-m.de>
+In-Reply-To: <c9b5d20c-7adf-5308-1a45-21471d206d10@arm.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
-X-Originating-IP: [192.168.154.110]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1521027931-321457-9309-58584-1
-X-BESS-VER: 2018.2-r1803082101
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191050
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <James.Hogan@mips.com>
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62974
+X-archive-position: 62975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,44 +55,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---qtZFehHsKgwS5rPz
+
+--ZGiS0Q5IWpPtfppv
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 13, 2018 at 11:40:59PM +0100, Hauke Mehrtens wrote:
-> We changed the RCU controller drivers for kernel 4.14 and this was
-> missing for the Amazon SE SoC. The xrx200/VR9 SoC is the successor of
-> the Amazon SE and Danube SoC, but the older SoCs still share the
-> architecture and many IP cores with the more recent ones.
+On Wed, Mar 14, 2018 at 11:15:47AM +0000, Marc Zyngier wrote:
+> Hi Matt,
 >=20
-> This is also relevant for upstream kernel, should I extend the
-> descriptions of the commit messages and send a V2 of the 3 patches?
+> On 05/01/18 10:31, Matt Redfearn wrote:
+> >=20
+> > This series enables the MIPS GIC driver to make use of the EIC mode
+> > supported in some MIPS cores. In this mode, the cores 6 interrupt lines
+> > are switched to represent a vector number, 0..63. Currently all GIC
+> > interrupts are routed to a single CPU interrupt pin, but this is
+> > inefficient since we end up checking both local and shared interrupt
+> > flag registers for both local and shared interrupts. This introduces
+> > additional latency into the interrupt paths. With EIC mode this can be
+> > improved by using separate vectors for local and shared interrupts.
+> >=20
+> > This series is based on 4.15-rc6 and has been tested on Boston, Malta &
+> > SEAD3 MIPS platforms implementing a GIC with and without EIC mode
+> > supported in hardware.
+>=20
+> What the status of this series?
 
-Yes, if you wouldn't mind, that'd be great.
+FYI I've been meaning to test it with KVM, since host EIC I think will
+affect KVM & guest stuff.
 
-Thanks
+Cheers
 James
 
---qtZFehHsKgwS5rPz
+--ZGiS0Q5IWpPtfppv
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqpC04ACgkQbAtpk944
-dnoR5w//W5FOq9Qqs9nrG+TZuwE6Thdpg1m2qDgaTvhWy6vMNEYzzd6Vje4Kzidp
-WXDAxwxPp84z35TovwqJZiAei+q71EnwxbyjFpsBgqEf6FxIsORb+sfkjVXXydKT
-4WaidiynVmYtt0DMODlpuQFEipL9CY3zj4hNR/mQARlDZ2wRqTaCIGoLIJk8XX3A
-44UbgAlqZ0YhuWGbSr/V4Hdtx3gBC8dAbIGNTQz2hAe4TB22K1ci6pq24HIIhacm
-R76i1vODkodXk3NzZggcoiKK7QLHmF6EGu97j2SghPB2NTK/+nGgiNtZUGLsck3I
-dPpGPBpGUqy/Wyvpp2DxqSkZXoMp+KW4fkv5AKvMH3K8tScpiIX9CtsR9YzXjmlF
-U6FjzBjhkE1trXhF+7iTQH9jnrYdHTlhusol2uJgMZ4w+HEKKL8vFf2Z3KBm1PnQ
-eJS5JvsC88P16OYnnOKi8/3NlHH5XT9AILvs9qsDjiFGVdWxpchLfBnA567+3Co5
-ZHPIp2qYsRu0HZaXG/6WRwJMCDFSVS+N+l0RWafURTZr6EMykAwPxmj5BOTPXs3c
-gO3XIQrzHHhIpMxRUm307y8dz3s+L2ieqsyJ1nekrPibRyMu+S5NW+65lULpwT4m
-DF93I2f6NIs329KQp7QjzVuKBYxk7qq5RTES/zMUqzGnTApXn7Q=
-=2LEc
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqpQ+EACgkQbAtpk944
+dnpXVw/9Hg45TxhejxWGfq/M8fj+8mY6Idn8dYyvd8aa5kJON8ojchFU0PaCX5AG
+pSnulJNecORbKX4ThakiqQsOPz9qjwSwrI1V2IQE8zlzmjLgu5FjrFM6rY4lt1/h
+5466PwTZ7GefAPX0THkbG0hdqDJWGAvjIw54ga3aKE5zaNyiR+0aTYjKUdTnHUL2
+XWPxBesE74w2y77q6odsJW6CsEkigIyGq5EFBSw3KJCKxW4BGo5rRY3T8Nypobgq
+PB54p/wNKpaUEa4usfBbwnit+oZ/x2dImTboccG3PVxKLGPN6NTtBCa4rM/kX51Q
+O3WxnYKrhWBum/q6y9r60u2+PzTZlAD80353eVD03ksUYUmTNI0hV6WL5oZNOKTS
+VlHqsHKWdTOvu0tQPR+UKLnsQyoNKfsvbavkZDu1lhuRBYDh4I/ChfFmSIVj2DtM
+D184cEkNJXom4LGI/w+WBokKOpMvse6yL8KOgu439XKXy8dX1/MyyQ1tA2TqkBli
+ylyYV6My6EYYdxtF9IFRpX2AuzLvuAcJe2GVGOh571WYyWwm8p1HdWT5COjSAG7u
+vVYXZlZGM5SPPiMsOeFK+PyIS7k4jV5TC3A0tVGOt7jQ6GkNj6Q1X1rAu7nxFaWC
+v58mKXi5FdyM0cP2rDggIo0smoZtlWm/+9+FxRfEtuXCg6JuMJs=
+=09L9
 -----END PGP SIGNATURE-----
 
---qtZFehHsKgwS5rPz--
+--ZGiS0Q5IWpPtfppv--

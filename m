@@ -1,91 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2018 17:12:57 +0100 (CET)
-Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:32931
-        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991128AbeCNQMvapO4D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Mar 2018 17:12:51 +0100
-Received: by mail-it0-x241.google.com with SMTP id z143-v6so3479403itc.0;
-        Wed, 14 Mar 2018 09:12:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2018 21:52:34 +0100 (CET)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:41520
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991416AbeCNUw14vpM0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Mar 2018 21:52:27 +0100
+Received: by mail-qk0-x244.google.com with SMTP id s78so5023158qkl.8;
+        Wed, 14 Mar 2018 13:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=PXhAUM1ujti2ggMq33kfwOh80dumHST2nTNA53edVjI=;
-        b=ppKoJqpsqRLnDYIaacNz+bKT8dIg/GhFKesaSHpKbql1NaxXjhOXprJi9rhoqT8AZp
-         m8+a/W9k2hUMVfSmoA6HCSyKqMbrttUKEn5W7B2ykjiprS2bqfBW4aTllQCyD2kgIvQA
-         H2VjVY80UO/bJ/CfaTvgfidozPqZtFGgGoOjAXxIawP2ELgE9aR6QVvLaOnlh3HeGfcj
-         1kp95TNHAZdsdQ/sAnJEhy4TP4YCg/f67iMERJFfKbCGj2oYANLdTtpH390X79BPQDYX
-         qLD5bqi0w75mz0HVGO3BUj9J6xF+V/k0KpMEQDQ6YZlRHChsdtvHSWu0ZyB95QZLIf3d
-         YPtg==
+        bh=TuIcBMbKJVC7d7hFcyT5+6GqO7a+cU58/fsIl4kmons=;
+        b=KkexHSMH9xcBD9TP9uLnSQTvtAtzKgS0BLXVnOlDeI1kF3ldBVjBs0PWUxJdZhpcA9
+         3qjBO6fDMKirGPIb4gUNGHrX1FsVCq7RI548v1jilreCm6jdHMcW0NZsCgn5aW6NZB9B
+         SuF7WsyPOC9mtFELWSWpw6VH67HqMz+hsHbdpagiGqaw8FuoIKYmvF1IjdGyPsTWCTb1
+         a0j0NmQxhrR5UmtyAf8C/1UfUdqmawo9HZyxcVGwu5FPzZFOO/RXnhV9q6QbFF6y+u4d
+         wInlWaOC/FdBuDgo2ZK7UOFiRLPYSkk9uUhJXqt/9REaHl1TlKNipuAaaG4bsHp8fgax
+         PwRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=PXhAUM1ujti2ggMq33kfwOh80dumHST2nTNA53edVjI=;
-        b=em90I0QI7b0NT6NmX8+9bsnwCCozIv4RrL61gcHed+YKUEuUYQ+hOIPpZBxkyeIadQ
-         VF1bTC5vj/hQZfzTwMrE/DsSdjgdiMSp0V/DWd8VvlLGMQa6jPf5QdwNmj/gIBuKyTUR
-         LChuhxJ9b/5u0k0BwPWQEgiGsnA6YrfsWNkTUmt4nSYBTnO7kBe8q+qVGmvNVNd1y1V7
-         Hw30LX8klDbSic6uw2pKcDpj99agYSc8uRQqDqGhCtZLEPPaH6pXLkT8KFo74hw/gAQ1
-         QPOBvx5P6oobmq4FXN3wHhXTloeypVU/iMum8iLgVGFY/Yq9GOb46FgrfDjajKpt7cxJ
-         TxVA==
-X-Gm-Message-State: AElRT7GpilhnPxKu2s6PCANaPqg27NigFl46ovtVbFO/b+H4ObwuavWV
-        BeilbsJ9wWSyvQBysSWxQG6Jy5U0t3+wNpNmFIo=
-X-Google-Smtp-Source: AG47ELttrolLvbH6pRWypHIk4oaUmp3fA0Mub2DNQZPCyhlM9dLz1gia3Qw2E7NjjxwliykkMaJzQUrnVxn1Ptp6LQk=
-X-Received: by 2002:a24:be09:: with SMTP id i9-v6mr2488932itf.27.1521043965060;
- Wed, 14 Mar 2018 09:12:45 -0700 (PDT)
+        bh=TuIcBMbKJVC7d7hFcyT5+6GqO7a+cU58/fsIl4kmons=;
+        b=mQLICFbGxxfcdf/OJkEgjKwVHlG2++m0rlLKOvvnMIx4nkKDK12cM9ftFQ1ph4I80F
+         uyYKr2bIjkQCd90tBtbGfM8NofrEmgZMZIbSR7htqny4aGejKwzZ1+BVsQE7+bNmBbkj
+         rLjs9tgCFhIYF1f/KCDRexCMn+IhJo0J8uVUMkXjF20SXgLzyC3bZhdxW905oYRktOM9
+         eeJcH7EhXOG8BAfwgnk089yh9JZS7J3olr0DglKUy+wXbafLnphaXe+JvniheZDWtYTk
+         TBhwadvCDp4LlV7D3gqf3ZmaQgQrVLzNU8jPNgZBzBn3m2eje52zGLCCy3Lcc65eBeMK
+         huCA==
+X-Gm-Message-State: AElRT7EEzZXaDs0k/copNwiKy3RRGWddoT4T65mZFHvpKw4SHpkc9amt
+        foZh1yVBsn8XlXGyb2JxmuNEbx/x5hAKF8Q8KRM=
+X-Google-Smtp-Source: AG47ELvxs8tI4ovw4LYYl9WnjOgPeVdJtaAfQjx47VJzx8+UktWw9SmhCiypE7XQ2V4v84urAT3Y9dTr7i/ZSrAncvY=
+X-Received: by 10.55.157.66 with SMTP id g63mr9063341qke.107.1521060741652;
+ Wed, 14 Mar 2018 13:52:21 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.79.34.71 with HTTP; Wed, 14 Mar 2018 09:12:44 -0700 (PDT)
-In-Reply-To: <20180314040333.3291-1-deepa.kernel@gmail.com>
-References: <20180314040333.3291-1-deepa.kernel@gmail.com>
+Received: by 10.12.185.46 with HTTP; Wed, 14 Mar 2018 13:52:21 -0700 (PDT)
+In-Reply-To: <CABeXuvqNKfuvffU24Xydixv6Ro8R=2nAH4bruzx0AW=ax-6yOQ@mail.gmail.com>
+References: <20180312175307.11032-3-deepa.kernel@gmail.com>
+ <201803132313.a4R8Y434%fengguang.wu@intel.com> <CABeXuvqNKfuvffU24Xydixv6Ro8R=2nAH4bruzx0AW=ax-6yOQ@mail.gmail.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 14 Mar 2018 17:12:44 +0100
-X-Google-Sender-Auth: luhBzRJ6eLFWYRsu7hdv5zZRR4g
-Message-ID: <CAK8P3a3hbD=-P1wBwXEOnMdewGsUpZPERBHv6wo+3qqDkZD1qg@mail.gmail.com>
-Subject: Re: [PATCH v5 00/10] posix_clocks: Prepare syscalls for 64 bit time_t conversion
+Date:   Wed, 14 Mar 2018 21:52:21 +0100
+X-Google-Sender-Auth: QhLFsyx3N4JlhiSHq39H04slYE8
+Message-ID: <CAK8P3a1fxWAK94GH0cpzh6CHXgL4uJuDNCGpdJen5ib1HH1xoA@mail.gmail.com>
+Subject: Re: [Y2038] [PATCH v4 02/10] include: Move compat_timespec/ timeval
+ to compat_time.h
 To:     Deepa Dinamani <deepa.kernel@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>, cohuck@redhat.com,
-        David Miller <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>, devel@driverdev.osuosl.org,
-        gerald.schaefer@de.ibm.com, gregkh <gregkh@linuxfoundation.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
+Cc:     kbuild test robot <lkp@intel.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Peter Oberparleiter <oberpar@linux.vnet.ibm.com>,
-        oprofile-list@lists.sf.net, Paul Mackerras <paulus@samba.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        devel@driverdev.osuosl.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Helge Deller <deller@gmx.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        sebott@linux.vnet.ibm.com,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Peter Oberparleiter <oberpar@linux.vnet.ibm.com>,
         Robert Richter <rric@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        sebott@linux.vnet.ibm.com, sparclinux <sparclinux@vger.kernel.org>,
-        Stefan Haberland <sth@linux.vnet.ibm.com>,
-        Ursula Braun <ubraun@linux.vnet.ibm.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
         Will Deacon <will.deacon@arm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Julian Wiedmann <jwi@linux.vnet.ibm.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        gerald.schaefer@de.ibm.com,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>, cohuck@redhat.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jan Hoeppner <hoeppner@linux.vnet.ibm.com>, kbuild-all@01.org,
+        Stefan Haberland <sth@linux.vnet.ibm.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Ursula Braun <ubraun@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62977
+X-archive-position: 62978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -102,52 +106,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 14, 2018 at 5:03 AM, Deepa Dinamani <deepa.kernel@gmail.com> wrote:
-> The series is a preparation series for individual architectures
-> to use 64 bit time_t syscalls in compat and 32 bit emulation modes.
+On Wed, Mar 14, 2018 at 4:50 AM, Deepa Dinamani <deepa.kernel@gmail.com> wrote:
+> The file arch/arm64/kernel/process.c needs asm/compat.h also to be
+> included directly since this is included conditionally from
+> include/compat.h. This does seem to be typical of arm64 as I was not
+> completely able to get rid of asm/compat.h includes for arm64 in this
+> series. My plan is to have separate patches to get rid of asm/compat.h
+> includes for the architectures that are not straight forward to keep
+> this series simple.
+> I will fix this and update the series.
 >
-> This is a follow up to the series Arnd Bergmann posted:
-> https://sourceware.org/ml/libc-alpha/2015-05/msg00070.html [1]
->
-> Thomas, Arnd, this seems ready to be merged now.
-> Can you help get this merged?
->
-> Big picture is as per the lwn article:
-> https://lwn.net/Articles/643234/ [2]
->
-> The series is directed at converting posix clock syscalls:
-> clock_gettime, clock_settime, clock_getres and clock_nanosleep
-> to use a new data structure __kernel_timespec at syscall boundaries.
-> __kernel_timespec maintains 64 bit time_t across all execution modes.
->
-> vdso will be handled as part of each architecture when they enable
-> support for 64 bit time_t.
->
-> The compat syscalls are repurposed to provide backward compatibility
-> by using them as native syscalls as well for 32 bit architectures.
-> They will continue to use timespec at syscall boundaries.
->
-> CONFIG_64_BIT_TIME controls whether the syscalls use __kernel_timespec
-> or timespec at syscall boundaries.
->
-> The series does the following:
-> 1. Enable compat syscalls on 32 bit architectures.
-> 2. Add a new __kernel_timespec type to be used as the data structure
->    for all the new syscalls.
-> 3. Add new config CONFIG_64BIT_TIME(intead of the CONFIG_COMPAT_TIME in
->    [1] and [2] to switch to new definition of __kernel_timespec. It is
->    the same as struct timespec otherwise.
-> 4. Add new CONFIG_32BIT_TIME to conditionally compile compat syscalls.
 
-I've applied all 10 patches to my y2038 git branch [1], which is part
-of linux-next,
-to give it a little wider testing. If everything goes well, I'd send a
-pull request to
-Thomas next week so he can integrate it into tip from there, or (if he prefers)
-send it directly to Linus in the merge window.
+I ran across the same thing in two more files during randconfig testing on
+arm64 now, adding this fixup on top for the moment, but maybe there
+is a better way:
 
-Thanks a lot for your persistence and your work on this!
+commit 4f3e9e1211799a79b201a1af309a1ec3864147ec
+Author: Arnd Bergmann <arnd@arndb.de>
+Date:   Wed Mar 14 18:23:16 2018 +0100
 
-      Arnd
+    arm64: fix perf_regs.c
 
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git#y2038
+    arch/arm64/kernel/perf_regs.c: In function 'perf_reg_abi':
+    arch/arm64/kernel/perf_regs.c:50:6: error: implicit declaration of
+function 'is_compat_thread'; did you mean 'is_compat_task'?
+[-Werror=implicit-function-declaration]
+    arch/arm64/kernel/hw_breakpoint.c: In function 'is_compat_bp':
+    arch/arm64/kernel/hw_breakpoint.c:182:16: error: implicit
+declaration of function 'is_compat_thread'; did you mean
+'is_compat_task'? [-Werror=implicit-function-declaration]
+
+    Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+diff --git a/arch/arm64/kernel/hw_breakpoint.c
+b/arch/arm64/kernel/hw_breakpoint.c
+index 413dbe530da8..74bb56f656ef 100644
+--- a/arch/arm64/kernel/hw_breakpoint.c
++++ b/arch/arm64/kernel/hw_breakpoint.c
+@@ -30,6 +30,7 @@
+ #include <linux/smp.h>
+ #include <linux/uaccess.h>
+
++#include <asm/compat.h>
+ #include <asm/current.h>
+ #include <asm/debug-monitors.h>
+ #include <asm/hw_breakpoint.h>
+diff --git a/arch/arm64/kernel/perf_regs.c b/arch/arm64/kernel/perf_regs.c
+index 0bbac612146e..1b463a4efe49 100644
+--- a/arch/arm64/kernel/perf_regs.c
++++ b/arch/arm64/kernel/perf_regs.c
+@@ -6,6 +6,7 @@
+ #include <linux/bug.h>
+ #include <linux/sched/task_stack.h>
+
++#include <asm/compat.h>
+ #include <asm/perf_regs.h>
+ #include <asm/ptrace.h>

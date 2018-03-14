@@ -1,13 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2018 08:34:53 +0100 (CET)
-Received: from h61-195-96-97.vps.ablenet.jp ([61.195.96.97]:51250 "EHLO
-        h61-195-96-97.vps.ablenet.jp" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990408AbeCNHeq03DA6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Mar 2018 08:34:46 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2018 09:11:03 +0100 (CET)
+Received: from mail01.asahi-net.or.jp ([202.224.55.13]:57172 "EHLO
+        mail01.asahi-net.or.jp" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990505AbeCNIKyMFpH6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Mar 2018 09:10:54 +0100
+Received: from h61-195-96-97.vps.ablenet.jp (h61-195-96-97.vps.ablenet.jp [61.195.96.97])
+        (Authenticated sender: PQ4Y-STU)
+        by mail01.asahi-net.or.jp (Postfix) with ESMTPA id 9304D550EE;
+        Wed, 14 Mar 2018 17:10:41 +0900 (JST)
 Received: from yo-satoh-debian.labs.sios.com (y243143.dynamic.ppp.asahi-net.or.jp [118.243.243.143])
-        by h61-195-96-97.vps.ablenet.jp (Postfix) with ESMTPSA id 6C45724006D;
-        Wed, 14 Mar 2018 16:34:42 +0900 (JST)
-Date:   Wed, 14 Mar 2018 16:34:38 +0900
-Message-ID: <87sh93az5d.wl-ysato@users.sourceforge.jp>
+        by h61-195-96-97.vps.ablenet.jp (Postfix) with ESMTPSA id D8B9724006D;
+        Wed, 14 Mar 2018 17:10:40 +0900 (JST)
+Date:   Wed, 14 Mar 2018 17:10:40 +0900
+Message-ID: <87po47axhb.wl-ysato@users.sourceforge.jp>
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     Huacai Chen <chenhc@lemote.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
@@ -32,7 +36,7 @@ Return-Path: <ysato@users.sourceforge.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62971
+X-archive-position: 62972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,6 +63,8 @@ Huacai Chen wrote:
 > 
 > Huacai
 >
+
+Sorry. Previous mail bounced. It resend.
 
 OK. Apply this fix.
 SuperH can not handle long int directly.

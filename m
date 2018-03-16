@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2018 16:23:40 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:47924 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2018 16:28:34 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49810 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994627AbeCPPXcRg0L5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2018 16:23:32 +0100
+        by eddie.linux-mips.org with ESMTP id S23994630AbeCPP20tDBWp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2018 16:28:26 +0100
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DD6C1D0B;
-        Fri, 16 Mar 2018 15:23:24 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 36B911252;
+        Fri, 16 Mar 2018 15:28:20 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Justin Chen <justinpopo6@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 3.18 02/25] MIPS: BMIPS: Do not mask IPIs during suspend
-Date:   Fri, 16 Mar 2018 16:22:49 +0100
-Message-Id: <20180316152232.852761751@linuxfoundation.org>
+Subject: [PATCH 4.4 13/63] MIPS: BMIPS: Do not mask IPIs during suspend
+Date:   Fri, 16 Mar 2018 16:22:45 +0100
+Message-Id: <20180316152301.507392406@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180316152232.750180431@linuxfoundation.org>
-References: <20180316152232.750180431@linuxfoundation.org>
+In-Reply-To: <20180316152259.964532775@linuxfoundation.org>
+References: <20180316152259.964532775@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62998
+X-archive-position: 62999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -80,7 +80,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/kernel/smp-bmips.c
 +++ b/arch/mips/kernel/smp-bmips.c
-@@ -159,11 +159,11 @@ static void bmips_prepare_cpus(unsigned
+@@ -166,11 +166,11 @@ static void bmips_prepare_cpus(unsigned
  		return;
  	}
  

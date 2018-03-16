@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2018 21:28:37 +0100 (CET)
-Received: from mx2.mailbox.org ([80.241.60.215]:46014 "EHLO mx2.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994647AbeCPU1ysk9T1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 16 Mar 2018 21:27:54 +0100
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id 6D76D40EBB;
-        Fri, 16 Mar 2018 21:27:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id rbGJeALXRjTS; Fri, 16 Mar 2018 21:27:38 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, jhogan@kernel.org
-Cc:     john@phrozen.org, dev@kresin.me, linux-mips@linux-mips.org,
-        martin.blumenstingl@googlemail.com,
-        "# 4 . 14+" <stable@vger.kernel.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2 3/3] MIPS: lantiq: ase: Enable MFD_SYSCON
-Date:   Fri, 16 Mar 2018 21:27:30 +0100
-Message-Id: <20180316202730.598-4-hauke@hauke-m.de>
-In-Reply-To: <20180316202730.598-1-hauke@hauke-m.de>
-References: <20180316202730.598-1-hauke@hauke-m.de>
-Return-Path: <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2018 23:14:01 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:45428 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994644AbeCPWNqIUC1u (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2018 23:13:46 +0100
+Received: from akpm3.svl.corp.google.com (unknown [104.133.9.71])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E06F3D06;
+        Fri, 16 Mar 2018 22:13:38 +0000 (UTC)
+Date:   Fri, 16 Mar 2018 15:13:37 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH V3] ZBOOT: fix stack protector in compressed boot phase
+Message-Id: <20180316151337.f277e3a734326672d41cec61@linux-foundation.org>
+In-Reply-To: <1521186916-13745-1-git-send-email-chenhc@lemote.com>
+References: <1521186916-13745-1-git-send-email-chenhc@lemote.com>
+X-Mailer: Sylpheed 3.6.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63009
+X-archive-position: 63010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,35 +46,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Mathias Kresin <dev@kresin.me>
+On Fri, 16 Mar 2018 15:55:16 +0800 Huacai Chen <chenhc@lemote.com> wrote:
 
-Enable syscon to use it for the RCU MFD on Amazon SE as well.
+> Call __stack_chk_guard_setup() in decompress_kernel() is too late that
+> stack checking always fails for decompress_kernel() itself. So remove
+> __stack_chk_guard_setup() and initialize __stack_chk_guard before we
+> call decompress_kernel().
+> 
+> Original code comes from ARM but also used for MIPS and SH, so fix them
+> together. If without this fix, compressed booting of these archs will
+> fail because stack checking is enabled by default (>=4.16).
+> 
+> ...
+>
+>  arch/arm/boot/compressed/head.S        | 4 ++++
+>  arch/arm/boot/compressed/misc.c        | 7 -------
+>  arch/mips/boot/compressed/decompress.c | 7 -------
+>  arch/mips/boot/compressed/head.S       | 4 ++++
+>  arch/sh/boot/compressed/head_32.S      | 8 ++++++++
+>  arch/sh/boot/compressed/head_64.S      | 4 ++++
+>  arch/sh/boot/compressed/misc.c         | 7 -------
+>  7 files changed, 20 insertions(+), 21 deletions(-)
 
-The Amazon SE also has similar reset controller system as Danube and
-XWAY and use their drivers mostly. As these drivers now need syscon also
-activate the syscon subsystem for for Amazon SE.
+Perhaps this should be split into three patches and each one routed via
+the appropriate arch tree maintainer (for sh, that might be me).
 
-Fixes: 2b6639d4c794 ("MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD")
-Cc: <stable@vger.kernel.org> # 4.14+
-Signed-off-by: Mathias Kresin <dev@kresin.me>
-Acked-by: Martin Blumenstingl<martin.blumenstingl@googlemail.com>
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/lantiq/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
-index 692ae85a3e3d..8e3a1fc2bc39 100644
---- a/arch/mips/lantiq/Kconfig
-+++ b/arch/mips/lantiq/Kconfig
-@@ -13,6 +13,8 @@ choice
- config SOC_AMAZON_SE
- 	bool "Amazon SE"
- 	select SOC_TYPE_XWAY
-+	select MFD_SYSCON
-+	select MFD_CORE
- 
- config SOC_XWAY
- 	bool "XWAY"
--- 
-2.11.0
+But we can do it this way if the arm and mips teams can send an ack,
+please?

@@ -1,35 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2018 23:34:05 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:51450 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994554AbeCOWd6zNUY0 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2018 23:33:58 +0100
-Date:   Thu, 15 Mar 2018 19:33:40 -0300
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v2 10/14] mmc: jz4740: Use dma_request_chan()
-To:     Ezequiel Garcia <ezequiel@collabora.co.uk>
-Cc:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
-Message-Id: <1521153221.9698.0@smtp.crapouillou.net>
-In-Reply-To: <1521148366.26589.14.camel@collabora.co.uk>
-References: <20180312215554.20770-1-ezequiel@vanguardiasur.com.ar>
-        <20180312215554.20770-11-ezequiel@vanguardiasur.com.ar>
-        <1521147579.1697.0@smtp.crapouillou.net>
-        <1521148366.26589.14.camel@collabora.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1521153237; bh=8B0sefcXo5yHAqgd688CZEMBhH/z9ID01UmysRY2kJg=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=UHnsGKOPPshvo7ZTX2vXOlxvuyp6t+4V7vi7tbkNayOqlpqgFAsmPLGWPZ+Q6us3r/413VGf/jXtTmG70EpujJqZVBRgq/1oqKBpEhNhlBjdwb1hc7Z3aQbloRrJ4l8ICCix/0xBF7KVFQMgiQLTnExP4Na1/V7xBBfxbJdGpQw=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2018 04:00:09 +0100 (CET)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:45338
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994554AbeCPDACX6me8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2018 04:00:02 +0100
+Received: by mail-pf0-x241.google.com with SMTP id h19so3633026pfd.12;
+        Thu, 15 Mar 2018 20:00:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=5xgQ3AZfC+567uVL3cPPtOw7CZt7vJNjaYz8uUOk9Gk=;
+        b=Iqe8c7tmdFNAvDS4tLi7m4Is9PlhDiDxxUhR5drpN0fcSyQuNstGwmo03Gw50VQ8ki
+         PG90IGudgA6aAAexwWErlPwat6FvOzy2buFT/OGjzTo2a9+SkRYcpyzJilyO6KAxNmRL
+         KwWGV3G3LMiUEX8GmkV3/I/qm2AhIDn4EX66Mohc90vUk38Cex3DwCluHGZmGK34Dzhy
+         6sDrohGM57hgwoP9Lxug+MxGtcYKia9u1K80guI4GiCAyoqov+QkTLv9eXH4gNYA8Lok
+         BcwwZPtyJ9JFYPmEFIll65rjUFkIwLIVuH/CvYZ5yL63nKbW5VlXFLnihSR89oAUJG1K
+         fPMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=5xgQ3AZfC+567uVL3cPPtOw7CZt7vJNjaYz8uUOk9Gk=;
+        b=ee9jSxzGIzBF2N/HebKuCoKigeAZx7Us/cgaT+C1xLfLh6yBbWYn45IZMWuO0PJ90e
+         Um/xE0YURLr5pHZeA8AgeV8R/Fcuz/rwrtIcCs2Spzy/zNgaPwTQZ1XcPdEHImKdg36v
+         ZYgd4kPEFnH1Ls6b102kWei5Ye5UCmau3ZMmmYaSOCLUDunTP6T6fvqUw5sD2O0Q5LAR
+         RY1Z6CdHkvAmozL8I0uQ0SFVBkkgfXz16QK5V6z9bTMzDNYUa7OTvIAa9o7DyNk36IjU
+         nIKGGemyI03yFYstxYNbb0/9XULFzQ8ocnPbhiMo+9penyk7opEXUfHfw0Yr2uv3lRwT
+         dhhg==
+X-Gm-Message-State: AElRT7E4UDBd5rT7fnOdEBkziZAeCiCcMX6fYGtHedxwip5g6H6ySLBC
+        WJDoQ2HNplavuroJeOSfP1LseJb2
+X-Google-Smtp-Source: AG47ELt/5Qv5/pZUTcfqk1MvT0KdAPiJA/QlSkrdlisCEUVQGTBDw9KhSRGAnKKcSGrKTfzxtEW/VA==
+X-Received: by 10.101.92.6 with SMTP id u6mr165976pgr.440.1521169194908;
+        Thu, 15 Mar 2018 19:59:54 -0700 (PDT)
+Received: from localhost.localdomain ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id y21sm12119751pfm.31.2018.03.15.19.59.52
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 15 Mar 2018 19:59:54 -0700 (PDT)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>
+Cc:     Mathieu Malaterre <malat@debian.org>, linux-mips@linux-mips.org,
+        Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH] MIPS: Fix missing arcs_cmdline
+Date:   Fri, 16 Mar 2018 11:59:39 +0900
+Message-Id: <20180316025939.5416-1-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.16.2
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 62993
+X-archive-position: 62994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,122 +65,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Due to commit 8ce355cf2e38 ("MIPS: Setup boot_command_line before
+plat_mem_setup"), the value of arcs_command by prom_init is removed.
+boot_command_line is initialized with __dt_setup_arch from
+plat_mem_setup, but arcs_command is copied to boot_command_line before
+plat_mem_setup by previous commit. This commit recover missing
+arcs_command by prom_init.
 
+Fixes: 8ce355cf2e38 ("MIPS: Setup boot_command_line before plat_mem_setup")
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+---
+ arch/mips/kernel/setup.c | 36 +++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 19 deletions(-)
 
-Le jeu. 15 mars 2018 à 18:12, Ezequiel Garcia 
-<ezequiel@collabora.co.uk> a écrit :
-> On Thu, 2018-03-15 at 17:59 -0300, Paul Cercueil wrote:
->>  Hi,
->> 
->>  Le lun. 12 mars 2018 à 18:55, Ezequiel Garcia
->>  <ezequiel@vanguardiasur.com.ar> a écrit :
->>  > From: Ezequiel Garcia <ezequiel@collabora.co.uk>
->>  >
->>  > Replace dma_request_channel() with dma_request_chan(),
->>  > which also supports probing from the devicetree.
->>  >
->>  > Tested-by: Mathieu Malaterre <malat@debian.org>
->>  > Signed-off-by: Ezequiel Garcia <ezequiel@collabora.co.uk>
->>  > ---
->>  >  drivers/mmc/host/jz4740_mmc.c | 22 +++++++---------------
->>  >  1 file changed, 7 insertions(+), 15 deletions(-)
->>  >
->>  > diff --git a/drivers/mmc/host/jz4740_mmc.c
->>  > b/drivers/mmc/host/jz4740_mmc.c
->>  > index c3ec8e662706..37183fe32ef8 100644
->>  > --- a/drivers/mmc/host/jz4740_mmc.c
->>  > +++ b/drivers/mmc/host/jz4740_mmc.c
->>  > @@ -225,31 +225,23 @@ static void
->>  > jz4740_mmc_release_dma_channels(struct jz4740_mmc_host *host)
->>  >
->>  >  static int jz4740_mmc_acquire_dma_channels(struct jz4740_mmc_host
->>  > *host)
->>  >  {
->>  > -	dma_cap_mask_t mask;
->>  > -
->>  > -	dma_cap_zero(mask);
->>  > -	dma_cap_set(DMA_SLAVE, mask);
->>  > -
->>  > -	host->dma_tx = dma_request_channel(mask, NULL, host);
->>  > -	if (!host->dma_tx) {
->>  > +	host->dma_tx = dma_request_chan(mmc_dev(host->mmc), "tx");
->>  > +	if (IS_ERR(host->dma_tx)) {
->>  >  		dev_err(mmc_dev(host->mmc), "Failed to get dma_tx
->>  > channel\n");
->>  > -		return -ENODEV;
->>  > +		return PTR_ERR(host->dma_tx);
->>  >  	}
->>  >
->>  > -	host->dma_rx = dma_request_channel(mask, NULL, host);
->>  > -	if (!host->dma_rx) {
->>  > +	host->dma_rx = dma_request_chan(mmc_dev(host->mmc), "rx");
->> 
->>  I suspect this breaks on jz4740... Did you test?
->> 
-> 
-> No, but code inspecting I was expecting it wouldn't break anything.
-> dma_request_channel() searches for a slave channel, via the DMA_SLAVE
-> mask that the driver sets.
-> 
-> dma_request_chan() seems to fallback to do the same.
-
-Alright, I overlooked that. I guess it's fine then.
-
-> struct dma_chan *dma_request_chan(struct device *dev, const char 
-> *name)
-> {
->         struct dma_device *d, *_d;
->         struct dma_chan *chan = NULL;
-> 
->         /* If device-tree is present get slave info from here */
->         if (dev->of_node)
->                 chan = of_dma_request_slave_channel(dev->of_node,
-> name);
-> 
->         /* ... */
-> 
->         if (chan) {
->                 /* Valid channel found or requester need to be 
-> deferred
-> */
->                 if (!IS_ERR(chan) || PTR_ERR(chan) == -EPROBE_DEFER)
->                         return chan;
->         }
-> 
->         /* Try to find the channel via the DMA filter map(s) */
->         mutex_lock(&dma_list_mutex);
->         list_for_each_entry_safe(d, _d, &dma_device_list, global_node)
-> {
->                 dma_cap_mask_t mask;
->                 const struct dma_slave_map *map = dma_filter_match(d,
-> name, dev);
-> 
->                 if (!map)
->                         continue;
-> 
->                 dma_cap_zero(mask);
->                 dma_cap_set(DMA_SLAVE, mask);
-> 
->                 chan = find_candidate(d, &mask, d->filter.fn, map-
->> param);
->                 if (!IS_ERR(chan))
->                         break;
->         }
->         mutex_unlock(&dma_list_mutex);
-> 
->         return chan ? chan : ERR_PTR(-EPROBE_DEFER);
-> }
-> 
-> Unfortunately, I don't have anything but a jz4780 Ci20, so can't 
-> really
-> test this.
-
-Apart from this patch, your patchset looks sufficiently similar to what 
-I
-successfully tested on jz4740, so it's safe to assume it doesn't break 
-anything.
-Unfortunately I won't be able to test it on jz4740 before the end of 
-this year.
-
-> Thanks,
-> Eze
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 5f8b0a9e30b3..e87f468f76dc 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -836,30 +836,12 @@ static void __init arch_mem_init(char **cmdline_p)
+ 
+ #if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
+ 	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-#else
+-	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
+-	    (USE_DTB_CMDLINE && !boot_command_line[0]))
+-		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+-
+-	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
+-		if (boot_command_line[0])
+-			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+-		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+-	}
+-
+-#if defined(CONFIG_CMDLINE_BOOL)
++#elif defined(CONFIG_CMDLINE_BOOL)
+ 	if (builtin_cmdline[0]) {
+ 		if (boot_command_line[0])
+ 			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+ 		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+ 	}
+-
+-	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
+-		if (boot_command_line[0])
+-			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+-		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+-	}
+-#endif
+ #endif
+ 
+ 	/* call board setup routine */
+@@ -881,6 +863,22 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	pr_info("Determined physical RAM map:\n");
+ 	print_memory_map();
+ 
++	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
++	    (USE_DTB_CMDLINE && !boot_command_line[0]))
++		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++
++	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
++		if (boot_command_line[0])
++			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
++		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++	}
++
++	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
++		if (boot_command_line[0])
++			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
++		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++	}
++
+ 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 
+ 	*cmdline_p = command_line;
+-- 
+2.16.2

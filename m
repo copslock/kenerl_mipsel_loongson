@@ -1,21 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2018 21:11:30 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:55196 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 00:29:24 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:58246 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994661AbeCQULXhC00C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Mar 2018 21:11:23 +0100
+        with ESMTP id S23994661AbeCQX3S2yZth (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 00:29:18 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH] MIPS: Fix build with DEBUG_ZBOOT and MACH_JZ4770
-Date:   Sat, 17 Mar 2018 21:11:09 +0100
-Message-Id: <20180317201109.2000-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1521317482; bh=VQhEWSIORGaP0/GB8rmvZ9Yt5M9/bLET3ZKKZx8vrCg=; h=From:To:Cc:Subject:Date:Message-Id; b=NQu2/91p9qJXQ4Wsesnfvyc6tD1TEpa92OEIUU07K8K005eN2JxnwKDpQc0huHFvdKQMS/i3iekKNMmd7PwyM6QsTm9kKTJuiFq+adLg3yPPjCCiE8wygqOtToGUwwM4HWC42tezUcERTxpAqqxuxmNPVBQv9dnEGRjy2At/1wM=
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+Subject: [PATCH v4 0/8] Ingenic JZ47xx Timer/Counter Unit drivers
+Date:   Sun, 18 Mar 2018 00:28:53 +0100
+Message-Id: <20180317232901.14129-1-paul@crapouillou.net>
+In-Reply-To: <20180110224838.16711-2-paul@crapouillou.net>
+References: <20180110224838.16711-2-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1521329357; bh=SBKmvf9sw6wE61z1vU1rY2tzAn60kkuZjUK19pQhAD8=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=KfpY6QXNrBv/ipJJdOuDr5X5erWsaqmOiXmrn7f6HmxprfT7ptSOioifY29U109OkoX7KFdBluPkpMWcBbNCg1um0zWabpQGyt6jV9xM9bK+u4R4aA7YinUQb5b0ycQ3ML1qIn95abKd0dCiWF+/4IBOVMpNOS65m/NLY5p63LE=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63014
+X-archive-position: 63015
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,39 +45,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The debug definitions were missing for MACH_JZ4770, resulting in a build
-failure when DEBUG_ZBOOT was set.
+Hi,
 
-Since the UART addresses are the same across all Ingenic SoCs, we just
-use a #ifdef CONFIG_MACH_INGENIC instead of checking for indifidual
-Ingenic SoCs.
+This is the 4th version of my TCU patchset.
 
-Additionally, I added a #define for the UART0 address in-code and dropped
-the <asm/mach-jz4740/base.h> include, for the reason that this include
-file is slowly being phased out as the whole platform is being moved to
-devicetree.
+The major change is a greatly improved documentation, both in-code
+and as separate text files, to describe how the hardware works and
+how the devicetree bindings should be used.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- arch/mips/boot/compressed/uart-16550.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+There are also cosmetic changes in the irqchip driver, and the
+clocksource driver will now use as timers all TCU channels not
+requested by the TCU PWM driver.
 
-diff --git a/arch/mips/boot/compressed/uart-16550.c b/arch/mips/boot/compressed/uart-16550.c
-index b3043c08f769..dd4e6d622184 100644
---- a/arch/mips/boot/compressed/uart-16550.c
-+++ b/arch/mips/boot/compressed/uart-16550.c
-@@ -18,9 +18,9 @@
- #define PORT(offset) (CKSEG1ADDR(AR7_REGS_UART0) + (4 * offset))
- #endif
- 
--#if defined(CONFIG_MACH_JZ4740) || defined(CONFIG_MACH_JZ4780)
--#include <asm/mach-jz4740/base.h>
--#define PORT(offset) (CKSEG1ADDR(JZ4740_UART0_BASE_ADDR) + (4 * offset))
-+#if CONFIG_MACH_INGENIC
-+#define INGENIC_UART0_BASE_ADDR	0x10030000
-+#define PORT(offset) (CKSEG1ADDR(INGENIC_UART0_BASE_ADDR) + (4 * offset))
- #endif
- 
- #ifdef CONFIG_CPU_XLR
--- 
-2.11.0
+Cheers,
+-Paul

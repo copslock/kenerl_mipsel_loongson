@@ -1,61 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 00:52:52 +0100 (CET)
-Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:60522 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994661AbeCQXwpCzM3h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 00:52:45 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3mLWtQcd5y/L2A2BbCpWy5Gi3V0YT31DAUQiAPHSdi8=; b=TbaNy1rBhelahb6uqB5G0MiPa5
-        5D0gJPiNJsTPvEwlOraIwKsY60u8MNVKRh3EtoVxNZNGnZrBgY0DPrJbOoGtnjNT+wGRdKqJCGJOu
-        v8xupFLsp2+38knm9rCwWxjtGfZ+Sla04U2PyzVSd2UUa1JXmvvfpZt80wxJLlsMBx9lE8HtzVklB
-        PU4dwKikVfUs8iJA2L3IbVA9+4kDq4HdiPsecCjSLXlBBw8+11G0wBY1ENLzXCBqIQ9M98lzq4yOx
-        x9eCls3yX44hYrn/3xHb/z3q7UYBNhiKeESv9mUHfdt05GRDKh+wpVys6xmcorWZE6/9O0vlbUHaJ
-        Pg4AWIKA==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1exLcp-00058B-5k; Sat, 17 Mar 2018 23:52:35 +0000
-Subject: Re: [PATCH v4 3/8] doc: Add doc for the Ingenic TCU hardware
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org
-References: <20180110224838.16711-2-paul@crapouillou.net>
- <20180317232901.14129-1-paul@crapouillou.net>
- <20180317232901.14129-4-paul@crapouillou.net>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <1e5b82ca-5ac3-6e98-d40b-67916008b485@infradead.org>
-Date:   Sat, 17 Mar 2018 16:52:32 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 11:45:51 +0100 (CET)
+Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57520 "EHLO
+        pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994666AbeCRKpnl7Nv9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 11:45:43 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 4E2573F635;
+        Sun, 18 Mar 2018 11:45:35 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id vUON0PnYKP27; Sun, 18 Mar 2018 11:45:31 +0100 (CET)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 142A33F4D9;
+        Sun, 18 Mar 2018 11:45:24 +0100 (CET)
+Date:   Sun, 18 Mar 2018 11:45:22 +0100
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-mips@linux-mips.org,
+        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
+Subject: Re: [RFC] MIPS: PS2: Interrupt request (IRQ) support
+Message-ID: <20180318104521.GB2364@localhost.localdomain>
+References: <20170927172107.GB2631@localhost.localdomain>
+ <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
+ <20170930065654.GA7714@localhost.localdomain>
+ <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
+ <20171029172016.GA2600@localhost.localdomain>
+ <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
+ <20171111160422.GA2332@localhost.localdomain>
+ <20180129202715.GA4817@localhost.localdomain>
+ <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
+ <20180303122657.GC24991@localhost.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20180317232901.14129-4-paul@crapouillou.net>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <rdunlap@infradead.org>
+Content-Disposition: inline
+In-Reply-To: <20180303122657.GC24991@localhost.localdomain>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63024
+X-archive-position: 63025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdunlap@infradead.org
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,69 +58,171 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/17/2018 04:28 PM, Paul Cercueil wrote:
-> Add a documentation file about the Timer/Counter Unit (TCU)
-> present in the Ingenic JZ47xx SoCs.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  Documentation/mips/00-INDEX        |  3 +++
->  Documentation/mips/ingenic-tcu.txt | 50 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 53 insertions(+)
->  create mode 100644 Documentation/mips/ingenic-tcu.txt
-> 
->  v4: New patch in this series
+Hi Maciej and Thomas,
 
-> diff --git a/Documentation/mips/ingenic-tcu.txt b/Documentation/mips/ingenic-tcu.txt
-> new file mode 100644
-> index 000000000000..2508e5793da8
-> --- /dev/null
-> +++ b/Documentation/mips/ingenic-tcu.txt
-> @@ -0,0 +1,50 @@
-> +Ingenic JZ47xx SoCs Timer/Counter Unit hardware
-> +-----------------------------------------------
+Thomas: Please have a look at the first questions below, regarding
+irq_data->mask and irq_chip->irq_calc_mask. Are they supposed to be usable?
+
+> +static volatile unsigned long intc_mask = 0;	/* FIXME: Why volatile? */
 > +
-> +The Timer/Counter Unit (TCU) in Ingenic JZ47xx SoCs is a multi-function
-> +hardware block. It features eight channels, that can be used as counters,
+> +static inline void intc_enable_irq(struct irq_data *data)
+> +{
+> +	if (!(intc_mask & (1 << data->irq))) {
+> +		intc_mask |= (1 << data->irq);
+> +		outl(1 << data->irq, INTC_MASK);
+> +	}
+> +}
 
-                    drop comma ............. ^
+The intc_mask variable can be removed, since INTC_MASK is readable, although
+perhaps there are performance reasons to not read the register directly?
 
-> +timers, or PWM.
+I also noticed that struct irq_data contains a mask field, which allows
+simplifications to
+
+static inline void intc_enable_irq(struct irq_data *data)
+{
+	if (!(inl(INTC_MASK) & data->mask))
+		outl(data->mask, INTC_MASK);
+}
+
+provided the following patch is applied to kernel/irq/irqdesc.c:
+
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -109,6 +109,7 @@ static void desc_set_defaults(unsigned int irq, struct irq_desc *desc, int node,
+ 	desc->irq_common_data.msi_desc = NULL;
+ 
+ 	desc->irq_data.common = &desc->irq_common_data;
++	desc->irq_data.mask = 1 << irq; /* FIXME: What about irq_calc_mask? */
+ 	desc->irq_data.irq = irq;
+ 	desc->irq_data.chip = &no_irq_chip;
+ 	desc->irq_data.chip_data = NULL;
+
+Perhaps the mask field ought to be assigned "1 << irq_data->hwirq" instead,
+unless irq_calc_mask is provided. The mask documentation is not entirely
+clear on the use and any restrictions, and it does not seem to be used all
+that much.
+
+The mask field and irq_calc_mask were introduced by Thomas Gleixner in
+commits 966dc736b819 "genirq: Generic chip: Cache per irq bit mask" and
+d0051816e619 "genirq: irqchip: Add a mask calculation function" in 2013.
+
+> +static inline void dmac_enable_irq(struct irq_data *data)
+> +{
+> +	const unsigned int dmac_irq_nr = data->irq - IRQ_DMAC;
+
+This is perhaps a case where the difference between data->irq and
+data->hwirq would be relevant to compute data->mask?
+
+> +/* Graphics Synthesizer */
 > +
-> +- JZ4770 introduced a separate channel, called Operating System Timer (OST).
-> +  It is a 64-bit programmable timer.
+> +static volatile unsigned long gs_mask = 0;	/* FIXME: Why volatile? */
+
+The interrupt mask for the Graphics Synthesizer is only writable, and does
+not toggle bits, so it appears a register copy somehow must be maintained by
+the kernel.
+
+> +void ps2_setup_gs_imr(void)
+> +{
+> +	outl(0xff00, GS_IMR);
+> +	outl((~gs_mask & 0x7f) << 8, GS_IMR);
+> +}
+
+It is not entirely clear why GS_IMR needs to be fully masked (interrupts
+disabled) before set to its proper value.
+
+The GS User's Manual (p. 95) mentions that SIGMSK must be toggled when data
+is written to the SIGNAL register, but does that apply here? And why not
+only the SIGNAL bit zero then?
+
+> +static inline unsigned long sbus_enter_irq(void)
+> +{
+> +	unsigned long istat = 0;
 > +
-> +- Each one of the eight channels has its own clock, which can be reparented
-> +  to three different clocks (pclk, ext, rtc), gated, and reclocked, through
-> +  their TCSR register.
-> +  * The watchdog and OST hardware blocks also feature a TCSR register with
-> +	the same format in their register space.
-> +  * The TCU registers used to gate/ungate can also gate/ungate the watchdog
-> +	and OST clocks.
+> +	if (inl(SBUS_SMFLG) & (1 << 8)) {
+> +		outl(1 << 8, SBUS_SMFLG);
+> +		switch (ps2_pcic_type) {
+> +		case 1:
+> +			if (inw(SBUS_PCIC_CSC1) & 0x0080) {
+> +				outw(0xffff, SBUS_PCIC_CSC1);
+> +				istat |= 1 << (IRQ_SBUS_PCIC - IRQ_SBUS);
+> +			}
+> +			break;
+> +		case 2:
+> +			if (inw(SBUS_PCIC_CSC1) & 0x0080) {
+> +				outw(0xffff, SBUS_PCIC_CSC1);
+> +				istat |= 1 << (IRQ_SBUS_PCIC - IRQ_SBUS);
+> +			}
+> +			break;
+> +		case 3:
+> +			istat |= 1 << (IRQ_SBUS_PCIC - IRQ_SBUS);
+> +			break;
+> +		}
+> +	}
+
+It's unclear what these registers actually do.
+
+> +	if (inl(SBUS_SMFLG) & (1 << 10)) {
+> +		outl(1 << 10, SBUS_SMFLG);
+> +		istat |= 1 << (IRQ_SBUS_USB - IRQ_SBUS);
+> +	}
+
+This is needed to support USB in the initial patch submission.
+
+> +static inline void sbus_enable_irq(struct irq_data *data)
+> +{
+> +	unsigned int sbus_irq_nr = data->irq - IRQ_SBUS;
 > +
-> +- On SoCs >= JZ4770, there are two different modes:
-> +  * Channels 0, 3-7 operate in TCU1 mode: they cannot work in sleep mode,
-> +	but are easier to operate.
-> +  * Channels 1-2 operate in TCU2 mode: they can work in sleep mode, but
-> +	the operation is a bit more complicated than with TCU1 channels.
+> +	sbus_mask |= (1 << sbus_irq_nr);
 > +
-> +- Each channel can generate an interrupt. Some channels share an interrupt	
-> +  line, some don't, and this changes between SoC versions:
-> +  * on JZ4740, timer 0 and timer 1 have their own interrupt line; others share
-> +	one interrupt line.
-> +  * on JZ4770 and JZ4780, timer 5 has its own interrupt; timers 0-4 and 6-7 all
-> +	use one interrupt line; the OST uses the last interrupt.
+> +	switch (data->irq) {
+> +	case IRQ_SBUS_PCIC:
+> +		switch (ps2_pcic_type) {
+> +		case 1:
+> +			outw(0xff7f, SBUS_PCIC_IMR1);
+> +			break;
+> +		case 2:
+> +			outw(0, SBUS_PCIC_TIMR);
+> +			break;
+> +		case 3:
+> +			outw(0, SBUS_PCIC3_TIMR);
+> +			break;
+> +		}
+> +		break;
+> +	case IRQ_SBUS_USB:
+> +		break;
 
-"The OST uses the last interrupt." is not clear to someone who doesn't know
-about this hardware. (I can read it several ways.)
+Something needs to be done to mask and unmask USB interrupts, but it's not
+entirely clear in what way. As Alan Stern notes in
 
-Does it mean that the 4770 and 4780 have 3 interrupt lines used like so?
+https://marc.info/?l=linux-usb&m=152106073613807&w=2
 
-- timer 5 uses one interrupt line
-- timers 0-4 and 6-7 use a second interrupt line
-- the OST uses a third interrupt line
+disabling interrupts by setting OHCI_INTR_MIE in the OHCI registers isn't
+the recommended method.
 
+> +static struct irq_chip sbus_irq_type = {
+> +	.name		= "I/O processor",
 
-thanks,
--- 
-~Randy
+Are solidus and space allowed in names?
+
+> +static struct irqaction cascade_intc_irqaction = {
+> +	.handler = intc_cascade,
+> +	.name = "INTC cascade",
+> +};
+
+I'm not sure how a cascade is supposed to work here.
+
+> +	for (i = 0; i < MIPS_CPU_IRQ_BASE; i++) {
+> +		struct irq_chip *handler =
+> +			i < IRQ_DMAC ? &intc_irq_type :
+> +			i < IRQ_GS   ? &dmac_irq_type :
+> +			i < IRQ_SBUS ?   &gs_irq_type :
+> +				       &sbus_irq_type ;
+> +
+> +		irq_set_chip_and_handler(i, handler, handle_level_irq);
+> +	}
+
+I'm considering unrolling this loop into four separate loops.
+
+Fredrik

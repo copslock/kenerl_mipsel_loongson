@@ -1,16 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 19:19:03 +0100 (CET)
-Received: from zeniv.linux.org.uk ([195.92.253.2]:60510 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994680AbeCRSSyOu1Ph (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 19:18:54 +0100
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1exctM-000830-BM; Sun, 18 Mar 2018 18:18:48 +0000
-Date:   Sun, 18 Mar 2018 18:18:48 +0000
-From:   Al Viro <viro@ZenIV.linux.org.uk>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 19:21:39 +0100 (CET)
+Received: from mail-it0-x236.google.com ([IPv6:2607:f8b0:4001:c0b::236]:35462
+        "EHLO mail-it0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994685AbeCRSVdKFEIh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 19:21:33 +0100
+Received: by mail-it0-x236.google.com with SMTP id v194-v6so7652091itb.0;
+        Sun, 18 Mar 2018 11:21:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=av9ATbX5S3ocfyFPt9BAvkcZZFTXguC/FZR6vo5WPY8=;
+        b=R+bObYMyOWgbJO7BFDSC68fEeZWAKMF6kHQ9riBMtHJJ9DGKEavLasny4aqWvnJKAJ
+         sQFQ9zG6sHe35q4jsTc6zQwOagTjC5tFO/rY2WQR/HyCvozX8NcQndyyTx/0R/bHGV7X
+         uUi2f0xiBbxqKSp3pZU2ZnG+/6ayljFE+j6jzz5J0+vVc8glCHqd4bdVkuNvCUSKhDDT
+         7wMc1A2+rxVNOJuDgsOZc7JVxcWVtalcEDBlph2bUFfdfsniT1wcjCON/JCpDgPs3wnc
+         tj8Uu3l/MslpHhHhv+/5rP9Y8+PYo2koppxomeyon/5EUeuL8IcRoDXYLs8YT5lMgDoM
+         x4Ug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=av9ATbX5S3ocfyFPt9BAvkcZZFTXguC/FZR6vo5WPY8=;
+        b=JK9oOKtnqlNkjX/QVj4gnKDzkHe1fEtvw9Xkodex7694OEFOaU5Q6eB+8qpE2IB+Hb
+         a5okR1eehXEnqfRttqGir64K9p4qrhOfPbFpNZt96QOc9ykUWUNSYMEAdkzFbmGGUV+v
+         y0eqnf08aQhh9zrjl+52TI24Qhcbv15Ybtd/c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=av9ATbX5S3ocfyFPt9BAvkcZZFTXguC/FZR6vo5WPY8=;
+        b=rtC3MyoxmLadaVOrO8uuA3mIyub9ppBoKITkYXUuqoo1PTvEfWr2F9PVM64VYQZGNY
+         xbKkHea342HsoJ1TlrQLJISr+ACcznu+MFVWoquMlUESGFjC9kg3Vdb6ACOOWvpyGmgw
+         hIlNC9tzClA3V/YqfoXw8g9NZ90SPNkhrwWStAh7axtFIo5Xff1IXtDNe7ZGnfXaFPFR
+         jBGWAdIuxWhBuQlp+dfti2dgI978VKcaFaM9iOoMPALkVHUMcwYHg6NRv0xCEhpAcW6L
+         eDhNwcrAoZ4yDNZ68tZH1L8ASPY3qShRPS/lnMvlZDY5jQBOdejRGrOT7jVqjgDnRdbe
+         RAQg==
+X-Gm-Message-State: AElRT7Fdphz6gYf2Kn3Bksv0WUvR+pryJn5oeYANsU1Fqt8BR4MYRWya
+        z26LiNxMZn71r1/yzPKtTFlwbBAsckxmfZE9dXk=
+X-Google-Smtp-Source: AG47ELtoXk0KkEXxkGDw8FdlmJIVlOK0jvwfyXRan5W5W+Gei0PL4fmvVJLPvcl7WgCTLVpq80RO8vxMx3ya5JZCMOA=
+X-Received: by 2002:a24:9985:: with SMTP id a127-v6mr3809395ite.108.1521397286690;
+ Sun, 18 Mar 2018 11:21:26 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.107.95.15 with HTTP; Sun, 18 Mar 2018 11:21:26 -0700 (PDT)
+In-Reply-To: <20180318161056.5377-3-linux@dominikbrodowski.net>
+References: <20180318161056.5377-1-linux@dominikbrodowski.net> <20180318161056.5377-3-linux@dominikbrodowski.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 18 Mar 2018 11:21:26 -0700
+X-Google-Sender-Auth: Z-ypqIZ2YXmTq0IEfnREj8CbBnc
+Message-ID: <CA+55aFz+WARfpwuWmr+-F1tDVzoyWpN9naZJfTq25Q2WT=9CyQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/6] fs: provide a generic compat_sys_truncate64() implementation
+To:     Dominik Brodowski <linux@dominikbrodowski.net>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
+        Al Viro <viro@zeniv.linux.org.uk>,
         linux-arch <linux-arch@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
@@ -25,28 +67,17 @@ Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
         "David S . Miller" <davem@davemloft.net>,
         sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
         Jiri Slaby <jslaby@suse.com>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [RFC PATCH 4/6] mm: provide generic compat_sys_readahead()
- implementation
-Message-ID: <20180318181848.GU30522@ZenIV.linux.org.uk>
-References: <20180318161056.5377-1-linux@dominikbrodowski.net>
- <20180318161056.5377-5-linux@dominikbrodowski.net>
- <20180318174014.GR30522@ZenIV.linux.org.uk>
- <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <viro@ftp.linux.org.uk>
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63037
+X-archive-position: 63038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viro@ZenIV.linux.org.uk
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,60 +90,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Mar 18, 2018 at 11:06:42AM -0700, Linus Torvalds wrote:
+On Sun, Mar 18, 2018 at 9:10 AM, Dominik Brodowski
+<linux@dominikbrodowski.net> wrote:
+> +#ifdef __ARCH_WANT_COMPAT_SYS_TRUNCATE64
+> +#if defined(__ARCH_WANT_COMPAT_SYS_WITH_PADDING) && \
+> +       defined(__ARCH_WANT_LE_COMPAT_SYS)
+> +COMPAT_SYSCALL_DEFINE4(truncate64, const char __user *, filename, u32 padding,
+> +                      unsigned int, offset_low, unsigned int, offset_high)
+> +#elif defined(__ARCH_WANT_COMPAT_SYS_WITH_PADDING) && \
+> +       !defined(__ARCH_WANT_LE_COMPAT_SYS)
+> +COMPAT_SYSCALL_DEFINE4(truncate64, const char __user *, filename, u32 padding,
+> +                      unsigned int, offset_high, unsigned int, offset_low)
+> +#elif !defined(__ARCH_WANT_COMPAT_SYS_WITH_PADDING) && \
+> +       defined(__ARCH_WANT_LE_COMPAT_SYS)
+> +COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, filename,
+> +                      unsigned int, offset_low, unsigned int, offset_high)
+> +#else /* no padding, big endian */
+> +COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, filename,
+> +                      unsigned int, offset_high, unsigned int, offset_low)
+> +#endif
+> +{
+> +#ifdef CONFIG_SPARC
+> +       if ((int) offset_high < 0)
+> +               return -EINVAL;
+> +#endif
+> +       return do_sys_truncate(filename,
+> +                              ((loff_t) offset_high << 32) | offset_low);
+> +}
+> +#endif /* __ARCH_WANT_COMPAT_SYS_TRUNCATE64 */
 
-> and then we can do
-> 
->   COMPAT_SYSCALL_DEFINE5(readahead, int, fd,
-> COMPAT_ARG_64BIT_ODD(off), compat_size_t, count)
->   {
->       return do_readahead(fd, off_lo + ((u64)off_hi << 64), count);
->   }
-> 
-> which at least looks reasonably legible, and has *zero* ifdef's anywhere.
+This really screams out for a sparc-specific wrapper, or maybe that
+#ifdef CONFIG_SPARC should just happen for everybody.
 
-It's a bit more complicated, but...
+But regardless, code like the above is completely unacceptable.
 
-> I do *not* want to see those disgusting __ARCH_WANT_LE_COMPAT_SYS
-> things and crazy #ifdef's in code.
+And yes, it also shows that my suggested alternative doesn't really
+work, because of the way the padding changes the number of arguments,
+giving that whole COMPAT_SYSCALL_DEFINE 3-vs-4 argument version.
 
-Absolutely.  Those piles of ifdefs are unreadable garbage.
+So I think just making it be arch-specific is the right thing.
 
-> So either let the architectures do their own trivial wrappers
-> entirely, or do something clean like the above. Do *not* do
-> #ifdef'fery at the system call declaration time.
-> 
-> Also note that the "ODD" arguments may not be the ones that need
-> padding. I could easily see a system call argument numbering scheme
-> like
-> 
->    r0 - system call number
->    r1 - first argument
->    r2 - second argument
->    ...
-> 
-> and then it's the *EVEN* 64-bit arguments that would need the padding
-> (because they are actually odd in the register numbers). The above
-> COMPAT_ARG_64BIT[_ODD]() model allows for that too.
-> 
-> Of course, if some architecture then has some other arbitrary rules (I
-> could see register pairing rules that aren't the usual "even register"
-> ones), then such an architecture would really have to have its own
-> wrapper, but the above at least would handle the simple cases, and
-> doesn't look disgusting to use.
+Alternatively, the COMPAT_SYSCALL_DEFINE() macro could be made smarter
+and do self-counting. There are generally tricks to count macro
+arguments, particularly when you know that they are limited. Things
+like
 
-I'd done some digging in that area, will find the notes and post.
-Basically, we can even avoid the odd/even annotations and have
-COMPAT_SYSCALL_DEFINE... sort it out.  It's a bit more hairy than
-I would like at this stage in the cycle, though.  I'll see if it can
-be done without too much PITA.
+    #define NARG(...) __NARG(__VA_ARGS__##, 6,5,4,3,2,1)
+    #define _NARG(a,b,c,d,e,f,...) f
 
-However, there still are genuinely speci^Wfucked in head cases - see
-e.g. this sad story:
-commit ab8a261ba5e2dd9206da640de5870cc31d568a7c
-Author: Helge Deller <deller@gmx.de>
-Date:   Thu Jul 10 18:07:17 2014 +0200
+or something (I may have screwed that up, you get the idea).
 
-    parisc: fix fanotify_mark() syscall on 32bit compat kernel
-
-Those certainly ought to stay in arch/*
+                Linus

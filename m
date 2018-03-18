@@ -1,57 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 13:49:36 +0100 (CET)
-Received: from mail-pl0-f67.google.com ([209.85.160.67]:36054 "EHLO
-        mail-pl0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990423AbeCRMtZOc9Wn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 13:49:25 +0100
-Received: by mail-pl0-f67.google.com with SMTP id 61-v6so8626939plf.3
-        for <linux-mips@linux-mips.org>; Sun, 18 Mar 2018 05:49:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GSaO4nYWmci8jnr2+5ldi+pv++NeCdWznoOHrOCXt3Q=;
-        b=s0JH//pFxyQ8LWLpihHFU8SzqdBBNjbceMfLraxSLZY93QXvYiwzfrMj588xMEETWx
-         gMMmCyetAWbGmMwcBeeJ9tGywyRb2qDpEdGAqu1gAGN/7pXP2sL13ZzNQ9kES8v6WWmF
-         Eiiqq3CSJDHfwwZt0ITgnVEe2ClSmqPj49AmivYM/nayCWd6he07W80sOX76WmAcDNBW
-         y8SeH2PARG3kk+8BZUPo3rFGRlySOjWBZzK6AnuGMgDBNPe6Rsr8rREMIrOyGYHviDbC
-         OcJgDjAGUDzO7rmeLUD2Pv5yGipCxd0tB9Yu/Mgm62aubbIE/Z8rygZYCQqEDyxEpF6m
-         iMuQ==
-X-Gm-Message-State: AElRT7GYRst07RofBhS/tuyM73v+QWs4dDrgTU/j1rmcNVTgwikdnyIi
-        xRaBkpyVXLA2tBqeuJHXMw==
-X-Google-Smtp-Source: AG47ELsvOKcDsVuxvY3ADT2Uu7RSzTBWWESxjnkBrYIycAHc9nMCtNPCx45LC6zHAlKimoNMa7ZCWg==
-X-Received: by 2002:a17:902:9009:: with SMTP id a9-v6mr8675930plp.272.1521377359061;
-        Sun, 18 Mar 2018 05:49:19 -0700 (PDT)
-Received: from localhost (165084180235.ctinets.com. [165.84.180.235])
-        by smtp.gmail.com with ESMTPSA id 14sm25049538pfi.164.2018.03.18.05.49.18
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 18 Mar 2018 05:49:18 -0700 (PDT)
-Date:   Sun, 18 Mar 2018 07:49:17 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 07/14] mmc: dt-bindings: add MMC support to JZ4740 SoC
-Message-ID: <20180318124917.sfptnnnqsmsxewdj@rob-hp-laptop>
-References: <20180312215554.20770-1-ezequiel@vanguardiasur.com.ar>
- <20180312215554.20770-8-ezequiel@vanguardiasur.com.ar>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 15:06:43 +0100 (CET)
+Received: from linux-libre.fsfla.org ([208.118.235.54]:49724 "EHLO
+        linux-libre.fsfla.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994676AbeCROGhJZYaj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 15:06:37 +0100
+Received: from freie.home (home.lxoliva.fsfla.org [172.31.160.164])
+        by linux-libre.fsfla.org (8.14.4/8.14.4/Debian-4.1ubuntu1) with ESMTP id w2IE6QTT006802;
+        Sun, 18 Mar 2018 14:06:27 GMT
+Received: from livre (livre.home [172.31.160.2])
+        by freie.home (8.15.2/8.15.2) with ESMTP id w2IE68wO216233;
+        Sun, 18 Mar 2018 11:06:08 -0300
+From:   Alexandre Oliva <lxoliva@fsfla.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: 3.16.55-stable breaks yeeloong
+Organization: Free thinker, not speaking for FSF Latin America
+Date:   Sun, 18 Mar 2018 11:06:04 -0300
+Message-ID: <ortvtd4gxf.fsf@lxoliva.fsfla.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180312215554.20770-8-ezequiel@vanguardiasur.com.ar>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <robherring2@gmail.com>
+Content-Type: text/plain
+Return-Path: <lxoliva@fsfla.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63026
+X-archive-position: 63027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: lxoliva@fsfla.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,23 +41,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 12, 2018 at 06:55:47PM -0300, Ezequiel Garcia wrote:
-> From: Ezequiel Garcia <ezequiel@collabora.co.uk>
-> 
-> Add the devicetree binding for JZ4740/JZ4780 SoC.
+Commit 304acb717e5b67cf56f05bc5b21123758e1f7ea0 AKA
+https://patchwork.linux-mips.org/patch/9705/ was backported to 3.16.55
+stable as 8605aa2fea28c0485aeb60c114a9d52df1455915 and I'm afraid it
+causes yeeloongs to fail to boot up.  3.16.54 was fine; bisection took
+me to this patch.
 
-... SoC MMC/SD controller.
+The symptom is a kernel panic -- attempt to kill init.  No further info
+is provided.
 
-> 
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Ezequiel Garcia <ezequiel@collabora.co.uk>
-> ---
->  Documentation/devicetree/bindings/mmc/jz4740.txt | 38 ++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mmc/jz4740.txt
+Is this problem already known?  Is there by any chance a known fix for
+me to try, or should I investigate further?
 
-Otherwise,
+Thanks in advance,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+-- 
+Alexandre Oliva, freedom fighter    http://FSFLA.org/~lxoliva/
+You must be the change you wish to see in the world. -- Gandhi
+Be Free! -- http://FSFLA.org/   FSF Latin America board member
+Free Software Evangelist|Red Hat Brasil GNU Toolchain Engineer

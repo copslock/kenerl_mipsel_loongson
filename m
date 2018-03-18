@@ -1,75 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2018 23:13:31 +0100 (CET)
-Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:36377
-        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994697AbeCRWNZZ50MF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Mar 2018 23:13:25 +0100
-Received: by mail-pl0-x244.google.com with SMTP id 61-v6so9083857plf.3
-        for <linux-mips@linux-mips.org>; Sun, 18 Mar 2018 15:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=UPZsdqQ90By7rkmGcBHJhYiR6yf9SXC5gqS8gJnkmXg=;
-        b=TyOxmMsPAEfKi6/h9HlcNoSe/eNtzMeZ+TkxSpiwTJ1aqFBIDQJ6vFZyzqRLyqPyh+
-         if4JGm31HGBeEHxKmaAqgM9n2GvhiAnam2bQTdXLOxJYGWKqBd7c+Uoa+jo0rLRn67TN
-         6moIULRspbQFz8pru4C4/9cxs2jtXGtLZPIs8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UPZsdqQ90By7rkmGcBHJhYiR6yf9SXC5gqS8gJnkmXg=;
-        b=Muiq3vpL4xLHJ6XzNsZuN2tNVdiRFt6AhwesQktf93sjKUJFQnrAiq8P1CQoBlOvsc
-         irurdMzgv6Hw35ZS/3EvW15nknO7Hi0DZY/t060fKGIIRJ492v+DizntdEkpEqNaV0qv
-         hjOLXUz7YWuLK+E7Q2sUR3dsvoJ7ftPb4v275an7nLMPEVOOjKhWki3yQJHfze/zz5uk
-         OltZOFMElFhyU4v50NkRbQE8BVhQbjXjYOL9lRcg0RETzvjgTtzGdzXxu+GxxGHJi3LN
-         HkwOyHoll3wptaPWvWKyl/T0m0H4oN6vteyH+iX641Y/0zXsQgToUKe1bLKbtU8U9Z8M
-         /8hw==
-X-Gm-Message-State: AElRT7FqOYyGZQHsqxw+Yc6X9yOJChrGFKkT0xRqa+UuPdD1+mqecKT2
-        +gXldhVfC856cBNDal8SDzfl5Q==
-X-Google-Smtp-Source: AG47ELtRQUtlD6j/ltIY+IqoWcWfVTDLvAnjRU1gdQkFHzMsTZhgunhE/izCerQNWpJ+Y/kLoEM9EA==
-X-Received: by 2002:a17:902:8f96:: with SMTP id z22-v6mr10011123plo.169.1521411198616;
-        Sun, 18 Mar 2018 15:13:18 -0700 (PDT)
-Received: from [172.16.47.110] (165084180235.ctinets.com. [165.84.180.235])
-        by smtp.googlemail.com with ESMTPSA id q13sm22662162pgr.52.2018.03.18.15.13.14
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 18 Mar 2018 15:13:17 -0700 (PDT)
-Subject: Re: [PATCH v4 0/8] Ingenic JZ47xx Timer/Counter Unit drivers
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org
-References: <20180110224838.16711-2-paul@crapouillou.net>
- <20180317232901.14129-1-paul@crapouillou.net>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <aeb57b92-6932-9774-dc50-7563d30846bf@linaro.org>
-Date:   Sun, 18 Mar 2018 23:13:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
-MIME-Version: 1.0
-In-Reply-To: <20180317232901.14129-1-paul@crapouillou.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 00:49:52 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:33478 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994697AbeCRXtp6fugC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 00:49:45 +0100
+Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1exi3c-0004rD-O9; Sun, 18 Mar 2018 23:49:44 +0000
+Received: from ben by deadeye with local (Exim 4.90_1)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1exi3X-0002GU-HL; Sun, 18 Mar 2018 23:49:39 +0000
+Message-ID: <1521416975.2495.186.camel@decadent.org.uk>
+Subject: Re: 3.16.55-stable breaks yeeloong
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Alexandre Oliva <lxoliva@fsfla.org>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Date:   Sun, 18 Mar 2018 23:49:35 +0000
+In-Reply-To: <ortvtd4gxf.fsf@lxoliva.fsfla.org>
+References: <ortvtd4gxf.fsf@lxoliva.fsfla.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-lxC3UALExLCrJBVljXXa"
+X-Mailer: Evolution 3.26.5-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63039
+X-archive-position: 63040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,35 +48,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 18/03/2018 00:28, Paul Cercueil wrote:
-> Hi,
-> 
-> This is the 4th version of my TCU patchset.
-> 
-> The major change is a greatly improved documentation, both in-code
-> and as separate text files, to describe how the hardware works and
-> how the devicetree bindings should be used.
-> 
-> There are also cosmetic changes in the irqchip driver, and the
-> clocksource driver will now use as timers all TCU channels not
-> requested by the TCU PWM driver.
 
-Hi Paul,
+--=-lxC3UALExLCrJBVljXXa
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I don't know why but you series appears in reply to [PATCH v3 2/9]. Not
-sure if it is my mailer or how you are sending the patches but if it is
-the latter can you in the future, when resending a new version, not use
-the in-reply-to option. It will be easier to follow the versions.
+On Sun, 2018-03-18 at 11:06 -0300, Alexandre Oliva wrote:
+> Commit 304acb717e5b67cf56f05bc5b21123758e1f7ea0 AKA
+> https://patchwork.linux-mips.org/patch/9705/ was backported to 3.16.55
+> stable as 8605aa2fea28c0485aeb60c114a9d52df1455915 and I'm afraid it
+> causes yeeloongs to fail to boot up.  3.16.54 was fine; bisection took
+> me to this patch.
+>=20
+> The symptom is a kernel panic -- attempt to kill init.  No further info
+> is provided.
+>=20
+> Is this problem already known?  Is there by any chance a known fix for
+> me to try, or should I investigate further?
 
-Thanks.
+Guenter Roeck reported the same problem on QEMU Malta emulation.
+I haven't yet ivnestigated why this causes breakage.  I will aim to fix
+this in the next update (will be 3.16.57 now), if necessary by
+reverting that and whatever depends on it.
 
- -- Daniel
+Ben.
+
+--=20
+Ben Hutchings
+Logic doesn't apply to the real world. - Marvin Minsky
 
 
+--=-lxC3UALExLCrJBVljXXa
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
--- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+-----BEGIN PGP SIGNATURE-----
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAlqu+w8ACgkQ57/I7JWG
+EQmHxxAAmAN84Moc0nGUUamQrKHmTxPra8XJym1YNr0K7KJPuX1RW9s0vP9DySG+
+kOjzNL7T5FKcuI+AKhdRsqygSM8eWwo26XPKb4T8DuRFMzyL3OR4KZ15vAeZnlGY
+wHvtq3jJ8MViAgfy2IOpNb4dQ6FKrMeXRnUa7PIHAxhlh9C69sIGDb/6rEj7gXoF
+xRylyxr1Zkk4AMwyAcygMGnSs0U/nkjVWm1DN7zLWxu9vNxUhiy1dWCRoQSu3rev
+ufCnLrlTJN2odLWzZSL9BJtFc97YwKIr+9llT+S0WG951XiCYAajgaKIOszPzsC0
+vCmxOabJS8PhVAKDqqtjqLyy+ccGtGX2I8+Z+V0oDS1bBmrAZH+Qt2uSx9t3Ri8B
+KXP8aLRYUi/Ug/KvQZ5DxqmFztmVWNv4WJjvaeWPOAriwAC5r/rah7s9aptmTK+g
+He8bEEaXMNCW2Rwf7l01M83GL89erEbyFVmUCXqEEAJFcttZQLOlcpbBRNvWLJxP
+iOwirBlXkI53z8DRfoy4iAAMDIudvg2ITuEedV9c2ufV2TkQZGa3yNjWvnJHlJZA
+ciBAt8+GokEEmSOjfBewhf3AZ0ePJ3f42sAUh8RNVv4YHz9sHQ6J/dJQPEF8TueD
+2BgMrLLARdP/F8kR1QOGDhCbDB+IQNGALjuWhjbgL86r4JjwoFE=
+=Mx5w
+-----END PGP SIGNATURE-----
+
+--=-lxC3UALExLCrJBVljXXa--

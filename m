@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 19:10:31 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56598 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 19:14:45 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58972 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992479AbeCSSKVtNkMx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 19:10:21 +0100
+        by eddie.linux-mips.org with ESMTP id S23992312AbeCSSOh5u82x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 19:14:37 +0100
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1B46A10F6;
-        Mon, 19 Mar 2018 18:10:12 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 371E8F02;
+        Mon, 19 Mar 2018 18:14:31 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -16,12 +16,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-mips@linux-mips.org, netdev@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 34/68] MIPS: BPF: Quit clobbering callee saved registers in JIT code.
-Date:   Mon, 19 Mar 2018 19:06:12 +0100
-Message-Id: <20180319171832.588011158@linuxfoundation.org>
+Subject: [PATCH 4.4 062/134] MIPS: BPF: Quit clobbering callee saved registers in JIT code.
+Date:   Mon, 19 Mar 2018 19:05:45 +0100
+Message-Id: <20180319171858.257403615@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180319171827.899658615@linuxfoundation.org>
-References: <20180319171827.899658615@linuxfoundation.org>
+In-Reply-To: <20180319171849.024066323@linuxfoundation.org>
+References: <20180319171849.024066323@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -30,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63055
+X-archive-position: 63056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,7 +47,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -80,7 +80,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/net/bpf_jit.c
 +++ b/arch/mips/net/bpf_jit.c
-@@ -562,7 +562,8 @@ static void save_bpf_jit_regs(struct jit
+@@ -527,7 +527,8 @@ static void save_bpf_jit_regs(struct jit
  	u32 sflags, tmp_flags;
  
  	/* Adjust the stack pointer */
@@ -88,9 +88,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	if (offset)
 +		emit_stack_offset(-align_sp(offset), ctx);
  
- 	if (ctx->flags & SEEN_CALL) {
- 		/* Argument save area */
-@@ -641,7 +642,8 @@ static void restore_bpf_jit_regs(struct
+ 	tmp_flags = sflags = ctx->flags >> SEEN_SREG_SFT;
+ 	/* sflags is essentially a bitmap */
+@@ -579,7 +580,8 @@ static void restore_bpf_jit_regs(struct
  		emit_load_stack_reg(r_ra, r_sp, real_off, ctx);
  
  	/* Restore the sp and discard the scrach memory */
@@ -100,7 +100,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
  
  static unsigned int get_stack_depth(struct jit_ctx *ctx)
-@@ -689,8 +691,14 @@ static void build_prologue(struct jit_ct
+@@ -626,8 +628,14 @@ static void build_prologue(struct jit_ct
  	if (ctx->flags & SEEN_X)
  		emit_jit_reg_move(r_X, r_zero, ctx);
  

@@ -1,86 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 10:29:37 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:39702
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992121AbeCSJ33KVdhq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 10:29:29 +0100
-Received: by mail-wm0-x244.google.com with SMTP id f125so5809902wme.4;
-        Mon, 19 Mar 2018 02:29:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=t+i6XdxnL1ryXWhtFYfzLguqGb2RKlGvWE2All7i87o=;
-        b=hY5UwClop+pSPP8e9H+nDGzJiqCKtYSt8VlSn0P2eIFMNpyz2nPvBOGgHRKPAVLDMA
-         iS3mFwAr4uuVYX0wOe48SggEUzdcbB9P+Xem3hcpS1/tbOMVnoH94mQ8bHdnpOx+j37f
-         YXE7LwzT8Hqoc+SdBuKoM5yPpu/Mnqy453XTaXNlI05tV4VpOVfTtLnKbQSYprswzbrU
-         sRuCUYWjoOEpL0m3pd3Q8TWHs9vtHAbSSOz+Au7aLngm7Twc7kZgPJcghtqqF4YX4+AG
-         7r7NpH7kLtoxRp8c5nz7XyoxOUjq4eJBnxmUIlYOC1wbokxuz5yht1Ps/8fvx2mog2rB
-         nKjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=t+i6XdxnL1ryXWhtFYfzLguqGb2RKlGvWE2All7i87o=;
-        b=PMS2jpcdeJkOt1krj/MUZ8lFMa42zcHKgDiFAtPUNOaeeN9C6JrzVB5jUZjiUKPub/
-         woVkllUiasIELYV5q5ZLjvKNMCNEQOJ/vLizIaZ2SKGKe1H3XczV8KbxDIEZIPbGE4Lz
-         5hb00+NSp+1PFyNMH0Fjg0cGqG1HFH6nEtixtMML6hejAz/ZjJbsABKWEnSXcsJJNPlN
-         59GT9uPFAFN/LYo78H1T433ws49vkxFGNkLAAInPMY0OxQDMkBiI5+vMVyZsvei5vpBt
-         Sez9KG4E4BNGREHgrzM2l06NOvRVQCLKLbkZr2PlBxEOmZY+x+ff2TPBmIiv0Gmh9i77
-         h/bQ==
-X-Gm-Message-State: AElRT7F5UqfbuCmZG2vrI2dZR0v1i2i4pE0m9+nUGcxhT2mh4jnmqQHB
-        f0ghlvcPvv300Qg+L+3UZms=
-X-Google-Smtp-Source: AG47ELtNk7cWNKhLC6LpnjxknEnpnzqLvnxuWSQVKugJCiclQydizWG1y99x6mindANRbzn7Z71UOQ==
-X-Received: by 10.28.64.193 with SMTP id n184mr7300484wma.4.1521451763649;
-        Mon, 19 Mar 2018 02:29:23 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id m200sm183418wmb.34.2018.03.19.02.29.21
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 19 Mar 2018 02:29:22 -0700 (PDT)
-Date:   Mon, 19 Mar 2018 10:29:20 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Al Viro <viro@ZenIV.linux.org.uk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 17:05:01 +0100 (CET)
+Received: from mail-dm3nam03on0117.outbound.protection.outlook.com ([104.47.41.117]:28787
+        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992521AbeCSQEy50GXD convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 17:04:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=xQQaZFjLCc88D4oRJO7pP1safPqkWIwyxWZ1GmGADT0=;
+ b=jNQKfq3Whwt9fJHuSxBq7Yh3KMyUeYAZ1nmcjbUXDaoggtjoTUmCqW48jHpC+PhqFLjI1L0MCC5eh50bMm0wepuVaxXqUwfm5TZbtHg3AtruY1arWeDK0E6nXet7Nfqf9parXSCfOk9angGsj/WbYdOFNG8ZhV/FPSShBqZNTsY=
+Received: from DM5PR2101MB1032.namprd21.prod.outlook.com (52.132.128.13) by
+ DM5PR2101MB0805.namprd21.prod.outlook.com (10.167.105.149) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.631.2; Mon, 19 Mar 2018 16:04:45 +0000
+Received: from DM5PR2101MB1032.namprd21.prod.outlook.com
+ ([fe80::3d9b:79e7:94eb:5d62]) by DM5PR2101MB1032.namprd21.prod.outlook.com
+ ([fe80::3d9b:79e7:94eb:5d62%5]) with mapi id 15.20.0631.004; Mon, 19 Mar 2018
+ 16:04:45 +0000
+From:   Sasha Levin <Alexander.Levin@microsoft.com>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [RFC PATCH 4/6] mm: provide generic compat_sys_readahead()
- implementation
-Message-ID: <20180319092920.tbh2xwkruegshzqe@gmail.com>
-References: <20180318161056.5377-1-linux@dominikbrodowski.net>
- <20180318161056.5377-5-linux@dominikbrodowski.net>
- <20180318174014.GR30522@ZenIV.linux.org.uk>
- <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
- <20180318181848.GU30522@ZenIV.linux.org.uk>
- <20180319042300.GW30522@ZenIV.linux.org.uk>
+        Sasha Levin <Alexander.Levin@microsoft.com>
+Subject: [PATCH AUTOSEL for 4.9 223/281] MIPS: mm: fixed mappings: correct
+ initialisation
+Thread-Topic: [PATCH AUTOSEL for 4.9 223/281] MIPS: mm: fixed mappings:
+ correct initialisation
+Thread-Index: AQHTv5unxFEiZFzzPkWcOLPXjKkNaw==
+Date:   Mon, 19 Mar 2018 16:02:18 +0000
+Message-ID: <20180319155742.13731-223-alexander.levin@microsoft.com>
+References: <20180319155742.13731-1-alexander.levin@microsoft.com>
+In-Reply-To: <20180319155742.13731-1-alexander.levin@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [52.168.54.252]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;DM5PR2101MB0805;7:or4W+do4ZNSjbj+puYEF3XFmcbD9XM7h9UdAEXOfVLYvLgiKo5wAvqVhtJdxjretrfEQ2SaC0dYmN1GAHmIc3Swb6eqQ01b24MnrHQL7Gghb/2LTL51eqcdhtKf3JqrH3vmQkgr2zvwFf1YyFGkll8EjmO/BK+uDBpOauIJNjPEsDmF/IIVAfD5fvz+i3lMHNG7lX0uQUlkPfNrrrGt3bY0Grh3t0PMGeo9+gaBkYylJs3zbe7OJicOMEAETtcu5;20:ZhT3znXsrztJniBW9BTEKLkQqxlzwXPealuhgUiUkoxCJKdmOkrR7Qst1aa5vYy4K623ZRMAzUTlStDVT+x+m/48fypuDv8p3rD0+jDwaEC4VA0V5zRoNi3eagrl6VqeHBr/rvqgWf77GH3/ycAn6zCDeIwdOTA4U9VOTzb8Iy8=
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: f1ed4f48-fab1-43a4-f873-08d58db3220e
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(5600026)(4604075)(3008032)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7193020);SRVR:DM5PR2101MB0805;
+x-ms-traffictypediagnostic: DM5PR2101MB0805:
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Alexander.Levin@microsoft.com; 
+x-microsoft-antispam-prvs: <DM5PR2101MB0805FC1F58AE613C161ED2F3FBD40@DM5PR2101MB0805.namprd21.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171);
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040522)(2401047)(8121501046)(5005006)(93006095)(93001095)(10201501046)(3231221)(944501300)(52105095)(3002001)(6055026)(61426038)(61427038)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(20161123558120)(20161123560045)(6072148)(201708071742011);SRVR:DM5PR2101MB0805;BCL:0;PCL:0;RULEID:;SRVR:DM5PR2101MB0805;
+x-forefront-prvs: 06167FAD59
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(396003)(39860400002)(346002)(376002)(39380400002)(199004)(189003)(54906003)(3280700002)(316002)(966005)(66066001)(22452003)(10290500003)(4326008)(6306002)(6512007)(72206003)(478600001)(25786009)(107886003)(53936002)(2501003)(5250100002)(36756003)(76176011)(106356001)(110136005)(97736004)(99286004)(26005)(1076002)(8936002)(3846002)(2950100002)(86362001)(186003)(305945005)(3660700001)(5660300001)(6116002)(6666003)(6506007)(102836004)(81156014)(81166006)(10090500001)(105586002)(8676002)(14454004)(6436002)(2900100001)(6486002)(7736002)(68736007)(86612001)(2906002)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR2101MB0805;H:DM5PR2101MB1032.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: ibVNOWTGQN0LjhJws9zTxECHHRi2MHx2kt5DpNWBOWa4f9Sv8zw0kJ4pH7xISImqYAjqy+b/4+jshwmUSjdM8QwcdtO4uGc0zgE9Ng8rsY+TU0mpf26XO9HrJQRNnP4GKuiW/rd2B8f5XjOfSH9CTyNQI0gCWL0TL9uweW4nVfj9uuqLAigpLf4sUkWw4Yv/S9mir4GSKdjqU4+axgYg202fE95jlEF6N3m+BTBt4ANh2+UhwcQg6Jj1F7ZL5XEmgVRdFxs4hI9PMIkU+GBk15KhI4RKDyUGSoFKgHWqAzX4t6AbEnGWG9rCNM5aoKtw+yjgYJuRs6UarfGQVoz3zA==
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180319042300.GW30522@ZenIV.linux.org.uk>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <mingo.kernel.org@gmail.com>
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1ed4f48-fab1-43a4-f873-08d58db3220e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2018 16:02:18.0968
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR2101MB0805
+Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63045
+X-archive-position: 63046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: Alexander.Levin@microsoft.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -93,145 +86,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-* Al Viro <viro@ZenIV.linux.org.uk> wrote:
+[ Upstream commit 71eb989ab5a110df8bcbb9609bacde73feacbedd ]
 
-> On Sun, Mar 18, 2018 at 06:18:48PM +0000, Al Viro wrote:
-> 
-> > I'd done some digging in that area, will find the notes and post.
-> 
-> OK, found:
+fixrange_init operates at PMD-granularity and expects the addresses to
+be PMD-size aligned, but currently that might not be the case for
+PKMAP_BASE unless it is defined properly, so ensure a correct alignment
+is used before passing the address to fixrange_init.
 
-Very nice writeup - IMHO this should go into Documentation/!
+fixed mappings: only align the start address that is passed to
+fixrange_init rather than the value before adding the size, as we may
+end up with uninitialised upper part of the range.
 
-> OTOH, consider arm.  There we have
-> 	* r0, r1, r2, r3, [sp,#8], [sp,#12], [sp,#16]... is the sequence
-> of objects used to pass arguments
-> 	* 32bit and less - pick the next available slot
-> 	* 64bit - skip a slot if we'd already taken an odd number, then use
-> the next two slots for lower and upper 32 bits of the argument.
-> 
-> So our classes take
-> simple n-argument:	0 to 6 slots
-> WD			4 slots
-> DWW			4 slots
-> WDW			5 slots
-> WWDD			6 slots
-> WDWW			5 slots
-> WWWD			6 slots
-> WWDWW			6 slots
-> WDDW			7 slots (!)  Also ****, !!!!, !@#!@#!@#!# and other nice
-> and well-deserved comments from arch maintainers, some of them even printable:
-> /* It would be nice if people remember that not all the world's an i386
->    when they introduce new system calls */
-> SYSCALL_DEFINE4(sync_file_range2, int, fd, unsigned int, flags,
->                                  loff_t, offset, loff_t, nbytes)
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/15948/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+---
+ arch/mips/mm/pgtable-32.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Such idiosyncratic platform quirks that have an impact on generic code should be 
-as self-maintaining as possible: i.e. there should be a build time warning even on 
-x86 if someone introduces a new, suboptimally packed system call.
-
-Otherwise we'll have such incidents again and again as new system calls get added.
-
-> [snip the preprocessor horrors - the sketches I've got there are downright obscene]
-
-I still think we should consider creating a generic facility and a tool: which 
-would immediately and automatically add new system calls to *every* architecture - 
-or which would initially at least check these syscall ABI constraints.
-
-I.e. this would start with a new generic kernel facility that warns about 
-suboptimal new system call argument layouts on every architecture, not just on the 
-affected ones.
-
-That's a significant undertaking but should be possible to do.
-
-Once such a facility is in place all the existing old mess is still a PITA, but 
-should be manageable eventually - as no new mess is added to it.
-
-IMHO that's the only thing that could break the somewhat deadly current dynamic of 
-system call mappings mess. Complaining about people not knowing about quirks won't 
-help.
-
-One way to implement this would be to put the argument chain types (string) and 
-sizes (int) into a special debug section which isn't included in the final kernel 
-image but which can be checked at link time.
-
-For example this attempt at creating a new system call:
-
-  SYSCALL_DEFINE3(moron, int, fd, loff_t, offset, size_t, count)
-
-... would translate into something like:
-
-	.name = "moron", .pattern = "WWW", .type = "int",    .size = 4,
-	.name = NULL,                      .type = "loff_t", .size = 8,
-	.name = NULL,                      .type = "size_t", .size = 4,
-	.name = NULL,                      .type = NULL,     .size = 0,     /* end of parameter list */
-
-i.e. "WDW". The build-time constraint checker could then warn about:
-
-  # error: System call "moron" uses invalid 'WWW' argument mapping for a 'WDW' sequence
-  #        please avoid long-long arguments or use 'SYSCALL_DEFINE3_WDW()' instead
-
-Each architecture can provide its own syscall parameter checking logic. Both 
-'stack boundary' and parameter packing rules would be straightforward to express 
-if we had such a data structure.
-
-Also note that this tool could also check for optimum packing, i.e. if the new 
-system call is defined as:
-
-  SYSCALL_DEFINE3_WDW(moron, int, fd, loff_t, offset, size_t, count)
-
-... would translate to something like:
-
-	.name = "moron", .pattern = "WDW", .type = "int",    .size = 4,
-	.name = NULL,                      .type = "loff_t", .size = 8,
-	.name = NULL,                      .type = "size_t", .size = 4,
-	.name = NULL,                      .type = NULL,     .size = 0,     /* end of parameter list */
-
-where the tool would print out this error:
-
-  # error: System call "moron" uses suboptimal 'WDW' argument mapping instead of 'WWD'
-
-there would be a whitelist of existing system calls that are already using an 
-suboptimal argument order - but the warnings/errors would trigger for all new 
-system calls.
-
-But adding non-straight-mapped system calls would be the exception in any case.
-
-Such tooling could also do other things, such as limit the C types used for system 
-call defines to a well-chosen set of ABI-safe types, such as:
-
-      3  key_t
-      3  uint32_t
-      4  aio_context_t
-      4  mqd_t
-      4  timer_t
-     10  clockid_t
-     10  gid_t
-     10  loff_t
-     10  long
-     10  old_gid_t
-     10  old_uid_t
-     10  umode_t
-     11  uid_t
-     31  pid_t
-     34  size_t
-     69  unsigned int
-    130  unsigned long
-    226  int
-
-This would also allow us some cleanups as well, such as dropping the pointless 
-'const' from arithmetic types in syscall definitions for example.
-
-etc.
-
-Basically this tool would be a secondary parser of the syscall arguments, with 
-most of the parsing and type sizing difficulties solved by the C parser already.
-
-I think this problem could be much more sanely solved via annotations and a bit of 
-tooling, than trying to trick CPP into doing this for us (which won't really work 
-in any case).
-
-Thanks,
-
-	Ingo
+diff --git a/arch/mips/mm/pgtable-32.c b/arch/mips/mm/pgtable-32.c
+index adc6911ba748..b19a3c506b1e 100644
+--- a/arch/mips/mm/pgtable-32.c
++++ b/arch/mips/mm/pgtable-32.c
+@@ -51,15 +51,15 @@ void __init pagetable_init(void)
+ 	/*
+ 	 * Fixed mappings:
+ 	 */
+-	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
+-	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
++	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1);
++	fixrange_init(vaddr & PMD_MASK, vaddr + FIXADDR_SIZE, pgd_base);
+ 
+ #ifdef CONFIG_HIGHMEM
+ 	/*
+ 	 * Permanent kmaps:
+ 	 */
+ 	vaddr = PKMAP_BASE;
+-	fixrange_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
++	fixrange_init(vaddr & PMD_MASK, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
+ 
+ 	pgd = swapper_pg_dir + __pgd_offset(vaddr);
+ 	pud = pud_offset(pgd, vaddr);
+-- 
+2.14.1

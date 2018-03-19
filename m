@@ -1,53 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 05:23:20 +0100 (CET)
-Received: from zeniv.linux.org.uk ([195.92.253.2]:41348 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990403AbeCSEXMisoWP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 05:23:12 +0100
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1exmK4-0005JA-BV; Mon, 19 Mar 2018 04:23:00 +0000
-Date:   Mon, 19 Mar 2018 04:23:00 +0000
-From:   Al Viro <viro@ZenIV.linux.org.uk>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 06:54:10 +0100 (CET)
+Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:41783
+        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990403AbeCSFyD0Q3Q9 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Mar 2018 06:54:03 +0100
+Received: by mail-pl0-x244.google.com with SMTP id b7-v6so5546860plr.8;
+        Sun, 18 Mar 2018 22:54:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=DHNVlZUnAmGk0+D9gkYEJsGwKCn2eZ/QpfuyMGIZYHI=;
+        b=GCg1ccy7/kbvTWKJLAEc7rgmsrRatj80vYhMbgA31KXcNXH1tlRXFqjEdVYrwiI0HN
+         M6RZVZkgio8cloBKVuyEVryL5JbcGZ1TT0jRmuaVxUwv26C0BrjaQCdKReOd4tFnRN66
+         e9hLJOzUiTfq3v8D3fvKdoRsIhOT1yIEGeqxO+aK7Igro7z/SJcixhlmL5Nyg9gdu++j
+         RlanqPIRX+qKmnI53ZVTiBgQZhSsBPU5+upVdEiakIzHQzhH2SiTmKGvfbKMG4gcx4bl
+         bA9ykHdhonqDXdFHpKtGXxO/xgl7PhG3UVIDaufFkZzYrFlz1fEqjUms2IaNnfJ9K4iP
+         yi/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=DHNVlZUnAmGk0+D9gkYEJsGwKCn2eZ/QpfuyMGIZYHI=;
+        b=BabXiUPw1+R7yPDNq4EcR0Fjgk4l1XQhfcx41fNU+7edVW6vJkmU3BsE4+L9qcD0pL
+         3iOniySeKpCeOgBDfsTP4U2DjAUiCm0/nGUjtrjaujZW4aJi//vTnF252tFCvJno1W1Y
+         TGQtStZXmIHXWj4XNPYVJBAevgE0435xMCyGEfL5TiblENAFbmUV1h9UXe4ai5gTuiNV
+         kPuiE0AThI7bexWO/DzhghdrF91Sg0tipd23ACzi+z1L7whIbz/4YAC1CV/utIN9oRUR
+         FyP0AQ/+aURUxWuqXVERAwqLrC2+ZhxXJK8pIRaVLvqw1gEk29a44oQnKRcUeY9ADk2g
+         3SEg==
+X-Gm-Message-State: AElRT7GluTI/EsLVH1bO3v15QIwpNBThUBPHyuetgmRxXfGOQL1Saj2n
+        GjFm83rXO4Hpus8UECHJVTFiTlCh
+X-Google-Smtp-Source: AG47ELueLrsk7oWtWe1SBSBY0Oa+wKl6oSiNKE6/1ufJkor9Uwj5/T7mdgWCr8gTl0Suka9X5Es8cg==
+X-Received: by 2002:a17:902:8212:: with SMTP id x18-v6mr1192039pln.372.1521438836922;
+        Sun, 18 Mar 2018 22:53:56 -0700 (PDT)
+Received: from [172.16.1.120] ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id y6sm30689421pfg.71.2018.03.18.22.53.54
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 18 Mar 2018 22:53:56 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 11.2 \(3445.5.20\))
+Subject: Re: [PATCH] MIPS: Fix missing arcs_cmdline
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+In-Reply-To: <CA+7wUsyNO+JK7xGky98SwKiy-DZ=zx3YBHsBPdG3+aimaE=J2A@mail.gmail.com>
+Date:   Mon, 19 Mar 2018 14:53:52 +0900
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [RFC PATCH 4/6] mm: provide generic compat_sys_readahead()
- implementation
-Message-ID: <20180319042300.GW30522@ZenIV.linux.org.uk>
-References: <20180318161056.5377-1-linux@dominikbrodowski.net>
- <20180318161056.5377-5-linux@dominikbrodowski.net>
- <20180318174014.GR30522@ZenIV.linux.org.uk>
- <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
- <20180318181848.GU30522@ZenIV.linux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180318181848.GU30522@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <viro@ftp.linux.org.uk>
+        Paul Burton <paul.burton@mips.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <838D4280-D9DE-46B8-B87A-FDC208DCD2AC@gmail.com>
+References: <20180316025939.5416-1-jaedon.shin@gmail.com>
+ <CA+7wUsyNO+JK7xGky98SwKiy-DZ=zx3YBHsBPdG3+aimaE=J2A@mail.gmail.com>
+To:     Mathieu Malaterre <malat@debian.org>
+X-Mailer: Apple Mail (2.3445.5.20)
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63041
+X-archive-position: 63042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viro@ZenIV.linux.org.uk
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,248 +75,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Mar 18, 2018 at 06:18:48PM +0000, Al Viro wrote:
+Mathieu,
 
-> I'd done some digging in that area, will find the notes and post.
+> On 16 Mar 2018, at 9:43 PM, Mathieu Malaterre <malat@debian.org> wrote:
+> 
+> Jaedon,
+> 
+> On Fri, Mar 16, 2018 at 3:59 AM, Jaedon Shin <jaedon.shin@gmail.com> wrote:
+>> Due to commit 8ce355cf2e38 ("MIPS: Setup boot_command_line before
+>> plat_mem_setup"), the value of arcs_command by prom_init is removed.
+>> boot_command_line is initialized with __dt_setup_arch from
+>> plat_mem_setup, but arcs_command is copied to boot_command_line before
+>> plat_mem_setup by previous commit. This commit recover missing
+>> arcs_command by prom_init.
+> 
+> If I cherry-pick your commit into my local branch I can no longer boot
+> my MIPS Creator CI20. The sad part is that nothing shows up in the log
+> (screen + tty) to indicate what the issue might be.
 
-OK, found:
+Did it work before this patch was cherry-picked?
+But I find this patch has problem that didn't work CONFIG_CMDLINE with
+__dt_setup_arch.
 
-We have two ABIs in the game - syscall and normal C.  The latter
-(for all targets we support) can be described in the following
-terms:
-	* there is a series of word-sized objects used to pass
-arguments, some in registers, some on stack.  Arguments are
-mapped on that sequence.  Anything up to word size simply takes
-the next available word, so on 64bit it's all there is - nth
-argument goes into the nth object, types simply do not matter.
-On 32bit it's not that simple - there 64bit arguments occupy
-two objects.  They are still picked from the same sequence;
-on little-endian the lower half goes first, on big-endian -
-the higher one.  For some architectures that's all there is to it.
-However, on quite a few there's an extra complication - not every
-pair can be used for 64bit value.  Rules for those are arch-dependent.
-One variety is "pairs should be aligned", i.e. "if we'd consumed
-an odd number of slots, add a dummy one before eating a pair".
-Another is "don't let a pair span the registers/stack boundary";
-surprisingly enough, that's not universal.
+I have problem that bootloader argument (applied in prom_init) are removed.
+Other MIPS_CMDLINE_* options may have also.
 
-The syscall ABI can considerably differ from C one.  First of all,
-we really do *not* want to pass anything on stack - it's a major
-headache at syscall entry.  See mips/o32 for the scale of that headache.
-Not fun.  OTOH, the registers that can be used are a limited resource.
-i386 can't pass more than 6 words and that has served as an upper
-limit.  If we encode the argument sizes (W - word, D - 64bit) we
-have the following variants among the syscalls:
-	* no arguments at all (SYSCALL_DEFINE0)
-	* W (SYSCALL_DEFINE1)
-	* WW (SYSCALL_DEFINE2)
-	* WWW (SYSCALL_DEFINE3)
-	* WWWW (SYSCALL_DEFINE4)
-	* WWWWW (SYSCALL_DEFINE5)
-	* WWWWWW (SYSCALL_DEFINE6)
-	* WD (SYSCALL_DEFINE2, truncate64, ftruncate64)
-	* DWW (SYSCALL_DEFINE3, lookup_dcookie)
-	* WDW (SYSCALL_DEFINE3, readahead)
-	* WWWD (SYSCALL_DEFINE4, pread64, pwrite64)
-	* WWDD (SYSCALL_DEFINE4, fallocate, sync_file_range2)
-	* WDDW (SYSCALL_DEFINE4, sync_file_range, fadvise64_64)
-	* WDWW (SYSCALL_DEFINE4, fadvise64)
-	* WWDWW (SYSCALL_DEFINE5, fanotify_mark)
+The previous patch 8ce355cf2e38 ("MIPS: Setup boot_command_line before plat_mem_setup")
+fixes only duplicating in NO bootargs and CONFIG_CMDLINE. It cause problems
+MIPS_CMDLINE_* options and CONFIG_CMDLINE_{BOOL,OVERRIDE}+__dt_setup_arch.
+So we'll have to revert it and change the CONFIG_CMDLINE_{BOOL,OVERRIDE}
+or append the CONFIG_CMDLINE_{BOOL,OVERRIDE} to fdt.c.
 
-The list for each long long-passing variant might be incomplete, but
-they really are rare.  And a source of headache; not just for biarch
-architectures - e.g. c6x and metag are not biarch and these syscalls
-are exactly what stinks them up.
+Thanks,
+Jaedon
 
-One thing we *really* don't want is syscall-dependent mapping from
-syscall ABI registers to C ABI sequence.  Inside a syscall (or in
-per-syscall glue) - sure, we can do it (if not happily).  In the
-syscall dispatcher - fuck no, too much PITA.  mips/o32 used to be
-a horrible example of why not, then they went for "copy from userland
-stack whether we need it or not"...
-
-For simple syscalls (first 7 classes in the above, each argument fits
-into word) we simply map registers to the first 6 slots of the sequence
-and we are done.  It's bloody tempting to use the same mapping for
-the rest - use the same code that calls simple syscalls and have it
-call sys_readahead() instead of sys_mkdir(), etc.  For something like
-x86 or sparc that works perfectly - these guys have no padding for 64bit
-arguments, so we are good (provided that userland sets those registers
-sanely, that is).
-
-OTOH, consider arm.  There we have
-	* r0, r1, r2, r3, [sp,#8], [sp,#12], [sp,#16]... is the sequence
-of objects used to pass arguments
-	* 32bit and less - pick the next available slot
-	* 64bit - skip a slot if we'd already taken an odd number, then use
-the next two slots for lower and upper 32 bits of the argument.
-
-So our classes take
-simple n-argument:	0 to 6 slots
-WD			4 slots
-DWW			4 slots
-WDW			5 slots
-WWDD			6 slots
-WDWW			5 slots
-WWWD			6 slots
-WWDWW			6 slots
-WDDW			7 slots (!)  Also ****, !!!!, !@#!@#!@#!# and other nice
-and well-deserved comments from arch maintainers, some of them even printable:
-/* It would be nice if people remember that not all the world's an i386
-   when they introduce new system calls */
-SYSCALL_DEFINE4(sync_file_range2, int, fd, unsigned int, flags,
-                                 loff_t, offset, loff_t, nbytes)
-
-No idea why that hadn't been done to fadvise64_64() - that got
-/*
- * Since loff_t is a 64 bit type we avoid a lot of ABI hassle
- * with a different argument ordering.
- */
-asmlinkage long sys_arm_fadvise64_64(int fd, int advice,
-                                     loff_t offset, loff_t len)
-{
-        return sys_fadvise64_64(fd, offset, len, advice);
-}
-long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
-                      u32 len_high, u32 len_low)
-{
-        return sys_fadvise64(fd, (u64)offset_high << 32 | offset_low,
-                             (u64)len_high << 32 | len_low, advice);
-}
-and
-asmlinkage long parisc_fadvise64_64(int fd,
-                        unsigned int high_off, unsigned int low_off,
-                        unsigned int high_len, unsigned int low_len, int advice)
-{
-        return sys_fadvise64_64(fd, (loff_t)high_off << 32 | low_off,
-                        (loff_t)high_len << 32 | low_len, advice);
-}
-consistency, shmonsistency...  And yes, glibc has
-#ifdef __ASSUME_FADVISE64_64_6ARG
-  int ret = INTERNAL_SYSCALL_CALL (fadvise64_64, err, fd, advise,
-                                   SYSCALL_LL64 (offset), SYSCALL_LL64 (len));
-#else
-  int ret = INTERNAL_SYSCALL_CALL (fadvise64_64, err, fd,
-                                   __ALIGNMENT_ARG SYSCALL_LL64 (offset),
-                                   SYSCALL_LL64 (len), advise);
-#endif
-with __ASSUME_FADVISE64_64_6ARG defined for arm and ppc...
-xtensa, BTW, has
-asmlinkage long xtensa_fadvise64_64(int fd, int advice,
-                unsigned long long offset, unsigned long long len)
-{
-        return sys_fadvise64_64(fd, offset, len, advice);
-}
-In other words, same solution as arm and ppc.  No xtensa support in
-glibc, AFAICS...
-
-Anyway, padding rules for 32bit ones, with not too many arguments:
-
-* arc cris frv h8300 i386 m32r m68k microblaze mn10300 nios2 openrisc
-riscv sparc - no padding.
-Note that e.g. frv *does* have a "don't let it cross regs/stack
-boundary" rule, but it has 6 register slots, so for syscalls it
-doesn't matter.  OTOH, sparc (and m32r, and...) really won't
-care about regs/stack boundary.
-
-* arm mips parisc ppc xtensa - pad to even number of words consumed;
-since the number of registers in the sequence is even for all those,
-there is nothing special going on at the edge.  WDDW is a bitch for
-that group; mips goes for "fuck it, we copy userland stack anyway",
-the rest try to cope in various ways.
-
-* s390 - 5 register slots, padding on the crossing the regs/stack
-boundary and nowhere else (i.e. pad if exactly 4 words had been
-consumed).  WWDD runs afoul of that one.
-
-* bfin - similar, except that we pad on exactly 2 words.  Same
-story as with s390, only we have 3 register slots.  Headache
-on: WWDWW and WWDD.
-
-* c6x - strange beast, that; registers are 32bit, but for the
-argument passing purposes it's using 64bit register pairs, filling
-only the lower half when passing a 32bit argument.
-
-* sh - really weird.  If 64bit would span the registers/stack
-boundary (4 register slots there), it's done on stack... and
-the first 32bit argument after that will eat the remaining
-register.  Out of our classes it affects WWWD (as if there
-had been a padding) and WDDW (as if the last two arguments had
-switched places).
-
-FWIW, it looks like we have several different issues mixed here
-
-1) teaching COMPAT_SYSCALL_DEFINE to do the right thing in case
-when 64bit arguments are present.  It's not terribly hard (sh
-is not biarch, thankfully), but we'd better watch out carefully
-when unifying - "fucker eats 7 slots" cases are irregular by
-definition and solutions used for those differ between the
-architectures.  It won't be pretty, though - we can get something
-like
-asmlinkage long compat_sys_truncate64(long a0, long a1, long a2, long a3, long a4, long a5)
-{
-	CS_truncate64((const char __user *)a0, ((u64)a2<<32)|(u64)a3);
-}
-static inline long CS_truncate64(const char __user *path, loff_t length)
-{
-	return sys_truncate64(path, length);
-}
-out of
-COMPAT_SYSCALL_DEFINE2(trucate64, const char __user *, path, loff_t, length)
-{
-	return sys_truncate(path, length);
-}
-but the damn thing will be 6-argument and expressions for arguments will
-expand to something equal to the forms above, but they'll be choke-full
-of conditional expressions with constant 0 or 1 for selectors.  What we can't
-do is evaluation of "is it long long" at macro expansion time - we can't tell
-int, loff_t from int, pid_t until typedefs had been handled, at which point
-the parse tree is cast in stone.  It will have to be 6-argument.
-Alternatively, we could do COMPAT_SYSCALL_DEFINE_WD et.al. so that preprocessor
-would get that information directly from us.
-
-[snip the preprocessor horrors - the sketches I've got there are downright obscene]
-
-2) s390 compat wrappers ;-/  I still wonder if we would be better
-off with SYSCALL_DEFINE on s390 defining a wrapper with COMPAT_SYSCALL_DEFINE
-(if present) redefining it, throwing the original away.  That could be done
-with some amount of linker trickery.
-
-3) sparc wrappers in sys32.S.  Most of those got killed off back in 2012,
-what remained was
-SIGN1(sys32_getrusage, compat_sys_getrusage, %o0)
-SIGN1(sys32_readahead, compat_sys_readahead, %o0)
-SIGN2(sys32_fadvise64, compat_sys_fadvise64, %o0, %o4)
-SIGN2(sys32_fadvise64_64, compat_sys_fadvise64_64, %o0, %o5)
-SIGN1(sys32_clock_nanosleep, compat_sys_clock_nanosleep, %o1)
-SIGN1(sys32_timer_settime, compat_sys_timer_settime, %o1)
-SIGN1(sys32_io_submit, compat_sys_io_submit, %o1)
-SIGN1(sys32_mq_open, compat_sys_mq_open, %o1)
-SIGN1(sys32_select, compat_sys_select, %o0)
-SIGN3(sys32_futex, compat_sys_futex, %o1, %o2, %o5)
-SIGN2(sys32_sendfile, compat_sys_sendfile, %o0, %o1)
-SIGN1(sys32_recvfrom, compat_sys_recvfrom, %o0)
-SIGN1(sys32_recvmsg, compat_sys_recvmsg, %o0)
-SIGN1(sys32_sendmsg, compat_sys_sendmsg, %o0)
-SIGN2(sys32_sync_file_range, compat_sync_file_range, %o0, %o5)
-SIGN1(sys32_vmsplice, compat_sys_vmsplice, %o0)
-with some of those killed off later and (completely pointless)
-SIGN2(sys32_renameat2, sys_renameat2, %o0, %o2)
-added.
-
-Since then clock_nanosleep(), timer_settime(), io_submit(), mq_open(),
-select(), recvfrom(), recvmsg(), sendmsg(), getrusage(), sync_file_range(),
-futex() and vmsplice() got switched to COMPAT_SYSCALL_DEFINE, making those
-SIGN... wrappers pointless.  That leaves
-SIGN1(sys32_readahead, compat_sys_readahead, %o0)
-SIGN2(sys32_fadvise64, compat_sys_fadvise64, %o0, %o4)
-SIGN2(sys32_fadvise64_64, compat_sys_fadvise64_64, %o0, %o5)
-all of which are right there in arch/sparc/kernel/sys_sparc32.c and
-trivially converted to COMPAT_SYSCALL_DEFINE.  Which would kill all the
-SIGN... bunch off, leaving there sys_mmap() and sys_socketcall()
-
-4) stuff in arch really needs a good look.  And not just biarch -
-I could've easily missed some "takes a 64bit argument" cases in
-that area.  Moreover, it might be a good idea to have all syscall
-tables generated a-la x86 and s390 ones are, ideally with the same
-format of input data for all of them...
+> 
+>> Fixes: 8ce355cf2e38 ("MIPS: Setup boot_command_line before plat_mem_setup")
+>> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+>> ---
+>> arch/mips/kernel/setup.c | 36 +++++++++++++++++-------------------
+>> 1 file changed, 17 insertions(+), 19 deletions(-)
+>> 
+>> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+>> index 5f8b0a9e30b3..e87f468f76dc 100644
+>> --- a/arch/mips/kernel/setup.c
+>> +++ b/arch/mips/kernel/setup.c
+>> @@ -836,30 +836,12 @@ static void __init arch_mem_init(char **cmdline_p)
+>> 
+>> #if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
+>>        strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+>> -#else
+>> -       if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
+>> -           (USE_DTB_CMDLINE && !boot_command_line[0]))
+>> -               strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+>> -
+>> -       if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
+>> -               if (boot_command_line[0])
+>> -                       strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+>> -               strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+>> -       }
+>> -
+>> -#if defined(CONFIG_CMDLINE_BOOL)
+>> +#elif defined(CONFIG_CMDLINE_BOOL)
+>>        if (builtin_cmdline[0]) {
+>>                if (boot_command_line[0])
+>>                        strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+>>                strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+>>        }
+>> -
+>> -       if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
+>> -               if (boot_command_line[0])
+>> -                       strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+>> -               strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+>> -       }
+>> -#endif
+>> #endif
+>> 
+>>        /* call board setup routine */
+>> @@ -881,6 +863,22 @@ static void __init arch_mem_init(char **cmdline_p)
+>>        pr_info("Determined physical RAM map:\n");
+>>        print_memory_map();
+>> 
+>> +       if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
+>> +           (USE_DTB_CMDLINE && !boot_command_line[0]))
+>> +               strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+>> +
+>> +       if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
+>> +               if (boot_command_line[0])
+>> +                       strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+>> +               strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+>> +       }
+>> +
+>> +       if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
+>> +               if (boot_command_line[0])
+>> +                       strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+>> +               strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+>> +       }
+>> +
+>>        strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+>> 
+>>        *cmdline_p = command_line;
+>> --
+>> 2.16.2
+>> 

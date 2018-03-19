@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 07:30:51 +0100 (CET)
-Received: from la.guarana.org ([173.254.219.205]:60872 "EHLO la.guarana.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990403AbeCSGalTxUEr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Mar 2018 07:30:41 +0100
-Received: by la.guarana.org (Postfix, from userid 1006)
-        id C0C94346001A; Mon, 19 Mar 2018 02:29:30 -0400 (EDT)
-Date:   Mon, 19 Mar 2018 02:29:29 -0400
-From:   Kevin Easton <kevin@guarana.org>
-To:     Dominik Brodowski <linux@dominikbrodowski.net>
-Cc:     linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        arnd@arndb.de, viro@ZenIV.linux.org.uk, linux-arch@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-s390@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jslaby@suse.com>, x86@kernel.org
-Subject: Re: [RFC PATCH 2/6] fs: provide a generic compat_sys_truncate64()
- implementation
-Message-ID: <20180319062928.GA11309@la.guarana.org>
-References: <20180318161056.5377-1-linux@dominikbrodowski.net>
- <20180318161056.5377-3-linux@dominikbrodowski.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 08:17:35 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:39001 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992121AbeCSHRZU13ar (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 08:17:25 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 19 Mar 2018 07:17:08 +0000
+Received: from [10.20.78.85] (10.20.78.85) by mips01.mipstec.com (10.20.43.31)
+ with Microsoft SMTP Server id 14.3.361.1; Mon, 19 Mar 2018 00:17:13 -0700
+Date:   Mon, 19 Mar 2018 07:16:54 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Ben Hutchings <ben@decadent.org.uk>
+CC:     Alexandre Oliva <lxoliva@fsfla.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: 3.16.55-stable breaks yeeloong
+In-Reply-To: <1521416975.2495.186.camel@decadent.org.uk>
+Message-ID: <alpine.DEB.2.00.1803190706520.2163@tp.orcam.me.uk>
+References: <ortvtd4gxf.fsf@lxoliva.fsfla.org> <1521416975.2495.186.camel@decadent.org.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180318161056.5377-3-linux@dominikbrodowski.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <caf@la.guarana.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1521443828-452060-14498-266195-1
+X-BESS-VER: 2018.3.1-r1803090017
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191197
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63043
+X-archive-position: 63044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevin@guarana.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,25 +51,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Mar 18, 2018 at 05:10:52PM +0100, Dominik Brodowski wrote:
-> The compat_sys_truncate64() implementations in mips, powerpc, s390, sparc
-> and x86 only differed based on whether the u64 parameter needed padding
-> and on its endianness.
+On Sun, 18 Mar 2018, Ben Hutchings wrote:
+
+> > Commit 304acb717e5b67cf56f05bc5b21123758e1f7ea0 AKA
+> > https://patchwork.linux-mips.org/patch/9705/ was backported to 3.16.55
+> > stable as 8605aa2fea28c0485aeb60c114a9d52df1455915 and I'm afraid it
+> > causes yeeloongs to fail to boot up.  3.16.54 was fine; bisection took
+> > me to this patch.
+> > 
+> > The symptom is a kernel panic -- attempt to kill init.  No further info
+> > is provided.
+> > 
+> > Is this problem already known?  Is there by any chance a known fix for
+> > me to try, or should I investigate further?
 > 
+> Guenter Roeck reported the same problem on QEMU Malta emulation.
+> I haven't yet ivnestigated why this causes breakage.  I will aim to fix
+> this in the next update (will be 3.16.57 now), if necessary by
+> reverting that and whatever depends on it.
 
-...
-  
-> +#ifdef __ARCH_WANT_COMPAT_SYS_TRUNCATE64
-> +#if defined(__ARCH_WANT_COMPAT_SYS_WITH_PADDING) && \
-> +	defined(__ARCH_WANT_LE_COMPAT_SYS)
-> +COMPAT_SYSCALL_DEFINE4(truncate64, const char __user *, filename, u32 padding,
-> +		       unsigned int, offset_low, unsigned int, offset_high)
-> +#elif defined(__ARCH_WANT_COMPAT_SYS_WITH_PADDING) && \
-> +	!defined(__ARCH_WANT_LE_COMPAT_SYS)
-> +COMPAT_SYSCALL_DEFINE4(truncate64, const char __user *, filename, u32 padding,
-> +		       unsigned int, offset_high, unsigned int, offset_low)
+ I'll see if I can trigger it with my development setup and investigate.
 
-Notwithstanding the other comments, shouldn't there be a comma between
-'u32' and 'padding' in those?
-
-    - Kevin
+  Maciej

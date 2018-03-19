@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 19:24:50 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36224 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994644AbeCSSX6BDQH3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 19:23:58 +0100
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7A394D09;
-        Mon, 19 Mar 2018 18:23:51 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Aleksandar Markovic <aleksandar.markovic@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>, james.hogan@imgtec.com,
-        leonid.yegoshin@imgtec.com, douglas.leung@imgtec.com,
-        petar.jovanovic@imgtec.com, miodrag.dinic@imgtec.com,
-        goran.ferenc@imgtec.com, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.9 132/241] MIPS: r2-on-r6-emu: Clear BLTZALL and BGEZALL debugfs counters
-Date:   Mon, 19 Mar 2018 19:06:37 +0100
-Message-Id: <20180319180756.657075473@linuxfoundation.org>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180319180751.172155436@linuxfoundation.org>
-References: <20180319180751.172155436@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2018 20:15:50 +0100 (CET)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:54074 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992121AbeCSTPnEsFLb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2018 20:15:43 +0100
+Received: from p4fea5f09.dip0.t-ipconnect.de ([79.234.95.9] helo=nanos.glx-home)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1ey0Fy-00086G-1K; Mon, 19 Mar 2018 20:15:42 +0100
+Date:   Mon, 19 Mar 2018 20:15:41 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Fredrik Noring <noring@nocrew.org>
+cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org,
+        =?ISO-8859-15?Q?J=FCrgen_Urban?= <JuergenUrban@gmx.de>
+Subject: Re: [RFC] MIPS: PS2: Interrupt request (IRQ) support
+In-Reply-To: <20180318104521.GB2364@localhost.localdomain>
+Message-ID: <alpine.DEB.2.21.1803192009500.1520@nanos.tec.linutronix.de>
+References: <20170927172107.GB2631@localhost.localdomain> <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk> <20170930065654.GA7714@localhost.localdomain> <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk> <20171029172016.GA2600@localhost.localdomain>
+ <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk> <20171111160422.GA2332@localhost.localdomain> <20180129202715.GA4817@localhost.localdomain> <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk> <20180303122657.GC24991@localhost.localdomain>
+ <20180318104521.GB2364@localhost.localdomain>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63063
+X-archive-position: 63064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,51 +47,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+On Sun, 18 Mar 2018, Fredrik Noring wrote:
 
-------------------
+> Hi Maciej and Thomas,
+> 
+> Thomas: Please have a look at the first questions below, regarding
+> irq_data->mask and irq_chip->irq_calc_mask. Are they supposed to be usable?
+> 
+> > +static volatile unsigned long intc_mask = 0;	/* FIXME: Why volatile? */
+> > +
+> > +static inline void intc_enable_irq(struct irq_data *data)
+> > +{
+> > +	if (!(intc_mask & (1 << data->irq))) {
+> > +		intc_mask |= (1 << data->irq);
+> > +		outl(1 << data->irq, INTC_MASK);
+> > +	}
+> > +}
+> 
+> The intc_mask variable can be removed, since INTC_MASK is readable, although
+> perhaps there are performance reasons to not read the register directly?
+> 
+> I also noticed that struct irq_data contains a mask field, which allows
+> simplifications to
+> 
+> static inline void intc_enable_irq(struct irq_data *data)
+> {
+> 	if (!(inl(INTC_MASK) & data->mask))
+> 		outl(data->mask, INTC_MASK);
 
-From: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
+That's a pointless exercise. The core code already knows whether an
+interrupt is masked or not and makes the calls conditionally.
 
+> }
+> 
+> provided the following patch is applied to kernel/irq/irqdesc.c:
+> 
+> diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+> --- a/kernel/irq/irqdesc.c
+> +++ b/kernel/irq/irqdesc.c
+> @@ -109,6 +109,7 @@ static void desc_set_defaults(unsigned int irq, struct irq_desc *desc, int node,
+>  	desc->irq_common_data.msi_desc = NULL;
+>  
+>  	desc->irq_data.common = &desc->irq_common_data;
+> +	desc->irq_data.mask = 1 << irq; /* FIXME: What about irq_calc_mask? */
+> 
+> Perhaps the mask field ought to be assigned "1 << irq_data->hwirq" instead,
+> unless irq_calc_mask is provided. The mask documentation is not entirely
+> clear on the use and any restrictions, and it does not seem to be used all
+> that much.
 
-[ Upstream commit 411dac79cc2ed80f7e348ccc23eb4d8b0ba9f6d5 ]
+Neither works. @irq is the virtual Linux interrupt number and there is no
+guarantee that it maps 1:1 to a hardware irq number. Also this falls apart
+when @irq >= 32 because the mask field is 32bit....
 
-Add missing clearing of BLTZALL and BGEZALL emulation counters in
-function mipsr2_stats_clear_show().
+> The mask field and irq_calc_mask were introduced by Thomas Gleixner in
+> commits 966dc736b819 "genirq: Generic chip: Cache per irq bit mask" and
+> d0051816e619 "genirq: irqchip: Add a mask calculation function" in 2013.
 
-Previously, it was not possible to reset BLTZALL and BGEZALL
-emulation counters - their value remained the same even after
-explicit request via debugfs. As far as other related counters
-are concerned, they all seem to be properly cleared.
+Yes, The generic irq chip uses this. I havent seen the full irqchip patch
+so I can't tell whether this driver could/should use the generic chip.
 
-This change affects debugfs operation only, core R2 emulation
-functionality is not affected.
+Thanks,
 
-Signed-off-by: Aleksandar Markovic <aleksandar.markovic@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Cc: james.hogan@imgtec.com
-Cc: leonid.yegoshin@imgtec.com
-Cc: douglas.leung@imgtec.com
-Cc: petar.jovanovic@imgtec.com
-Cc: miodrag.dinic@imgtec.com
-Cc: goran.ferenc@imgtec.com
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15517/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/kernel/mips-r2-to-r6-emul.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -2339,6 +2339,8 @@ static int mipsr2_stats_clear_show(struc
- 	__this_cpu_write((mipsr2bremustats).bgezl, 0);
- 	__this_cpu_write((mipsr2bremustats).bltzll, 0);
- 	__this_cpu_write((mipsr2bremustats).bgezll, 0);
-+	__this_cpu_write((mipsr2bremustats).bltzall, 0);
-+	__this_cpu_write((mipsr2bremustats).bgezall, 0);
- 	__this_cpu_write((mipsr2bremustats).bltzal, 0);
- 	__this_cpu_write((mipsr2bremustats).bgezal, 0);
- 	__this_cpu_write((mipsr2bremustats).beql, 0);
+	tglx

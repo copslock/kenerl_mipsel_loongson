@@ -1,52 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:52:24 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:41490 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990391AbeCTIwQKz2Ls (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Mar 2018 09:52:16 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C1F151596;
-        Tue, 20 Mar 2018 01:52:08 -0700 (PDT)
-Received: from [10.1.206.75] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27F753F487;
-        Tue, 20 Mar 2018 01:52:06 -0700 (PDT)
-Subject: Re: [PATCH v4 4/8] dt-bindings: Add doc for the Ingenic TCU drivers
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:57:09 +0100 (CET)
+Received: from isilmar-4.linta.de ([136.243.71.142]:54996 "EHLO
+        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992615AbeCTI5CTVIJs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2018 09:57:02 +0100
+Received: from light.dominikbrodowski.net (isilmar.linta [10.0.0.1])
+        by isilmar-4.linta.de (Postfix) with ESMTPS id AA3962008FF;
+        Tue, 20 Mar 2018 08:56:59 +0000 (UTC)
+Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
+        id 85DF620B3D; Tue, 20 Mar 2018 09:56:32 +0100 (CET)
+Date:   Tue, 20 Mar 2018 09:56:32 +0100
+From:   Dominik Brodowski <linux@dominikbrodowski.net>
+To:     Al Viro <viro@ZenIV.linux.org.uk>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arch <linux-arch@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org
-References: <20180110224838.16711-2-paul@crapouillou.net>
- <20180317232901.14129-1-paul@crapouillou.net>
- <20180317232901.14129-5-paul@crapouillou.net>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <b853fabf-4812-cefc-dd8b-f9ab596e1a36@arm.com>
-Date:   Tue, 20 Mar 2018 08:52:04 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        James Hogan <jhogan@kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Jiri Slaby <jslaby@suse.com>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [RFC PATCH 4/6] mm: provide generic compat_sys_readahead()
+ implementation
+Message-ID: <20180320085632.GB30383@light.dominikbrodowski.net>
+References: <20180318161056.5377-1-linux@dominikbrodowski.net>
+ <20180318161056.5377-5-linux@dominikbrodowski.net>
+ <20180318174014.GR30522@ZenIV.linux.org.uk>
+ <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
+ <20180318181848.GU30522@ZenIV.linux.org.uk>
+ <20180319042300.GW30522@ZenIV.linux.org.uk>
+ <20180319092920.tbh2xwkruegshzqe@gmail.com>
+ <20180319232342.GX30522@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <20180317232901.14129-5-paul@crapouillou.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180319232342.GX30522@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <linux@dominikbrodowski.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63073
+X-archive-position: 63074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: linux@dominikbrodowski.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,243 +67,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17/03/18 23:28, Paul Cercueil wrote:
-> Add documentation about how to properly use the Ingenic TCU
-> (Timer/Counter Unit) drivers from devicetree.
+On Mon, Mar 19, 2018 at 11:23:42PM +0000, Al Viro wrote:
+> static inline long C_S_moron(int, loff_t, size_t);
+> long compat_SyS_moron(long a0, long a1, long a2, long a3, long a4, long a5, long a6)
+> {
+> 	return C_S_moron((__force int)a0,
+> 		  (__force loff_t)(((u64)a2 << 32)|a1),
+> 		  (__force size_t)a3);
+> }
+> static inline long C_S_moron(int fd, loff_t offset, size_t count)
+> {
+> 	whatever body you had for it
+> }
 > 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  .../bindings/clock/ingenic,tcu-clocks.txt          | 42 ++++++++++++++++
->  .../bindings/interrupt-controller/ingenic,tcu.txt  | 39 +++++++++++++++
->  .../devicetree/bindings/mfd/ingenic,tcu.txt        | 56 ++++++++++++++++++++++
->  .../devicetree/bindings/timer/ingenic,tcu.txt      | 41 ++++++++++++++++
->  4 files changed, 178 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
->  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
->  create mode 100644 Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
->  create mode 100644 Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> That - from
+> COMPAT_SYSCALL_DEFINE3(moron, int, fd, loff_t, offset, size_t, count)
+> {
+> 	whatever body you had for it
+> }
 > 
->  v4: New patch in this series. Corresponds to V2 patches 3-4-5 with
->  added content.
+> We can use similar machinery for SYSCALL_DEFINE itself, so that
+> SyS_moron() would be defined with (long, long, long, long, long, long)
+> as arguments and not (long, long long, long) as we have now.
+
+That would be great, as it would allow to use a struct pt_regs * based
+syscall calling convention on i386 as well, and not only on x86-64, right?
+
+> It's not impossible to do.  It won't be pretty, but that use of local
+> enums allows to avoid unbearably long expansions.
 > 
-> diff --git a/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt b/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
-> new file mode 100644
-> index 000000000000..471d27078599
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
-> @@ -0,0 +1,42 @@
-> +Ingenic SoC TCU binding
-> +
-> +The TCU is the Timer/Counter Unit present in all Ingenic SoCs. It features 8
-> +channels, each one having its own clock, that can be started and stopped,
-> +reparented, and reclocked.
-> +
-> +Required properties:
-> +- compatible : One of:
-> +  * ingenic,jz4740-tcu-clocks,
-> +  * ingenic,jz4770-tcu-clocks,
-> +  * ingenic,jz4780-tcu-clocks.
-> +- clocks : List of phandle & clock specifiers for clocks external to the TCU.
-> +  The "pclk", "rtc" and "ext" clocks should be provided.
-> +- clock-names : List of name strings for the external clocks.
-> +- #clock-cells: Should be 1.
-> +  Clock consumers specify this argument to identify a clock. The valid values
-> +  may be found in <dt-bindings/clock/ingenic,tcu.h>.
-> +
-> +Example:
-> +
-> +/ {
-> +	tcu: mfd@10002000 {
-> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
-> +		reg = <0x10002000 0x1000>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0x0 0x10002000 0x1000>;
-> +
-> +		tcu_clk: clocks@10 {
-> +			compatible = "ingenic,jz4740-tcu-clocks";
-> +			reg = <0x10 0xff0>;
-> +
-> +			clocks = <&ext>, <&rtc>, <&pclk>;
-> +			clock-names = "ext", "rtc", "pclk";
-> +
-> +			#clock-cells = <1>;
-> +		};
-> +	};
-> +};
-> +
-> +For information about the top-level "ingenic,tcu" compatible node and other
-> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
-> new file mode 100644
-> index 000000000000..7f3af2da77cd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
-> @@ -0,0 +1,39 @@
-> +Ingenic SoCs Timer/Counter Unit Interrupt Controller
-> +
-> +Required properties:
-> +
-> +- compatible : should be "ingenic,<socname>-tcu-intc". Valid strings are:
-> +  * ingenic,jz4740-tcu-intc
-> +  * ingenic,jz4770-tcu-intc
-> +  * ingenic,jz4780-tcu-intc
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode an
-> +  interrupt source. The value shall be 1.
-> +- interrupt-parent : phandle of the interrupt controller.
-> +- interrupts : Specifies the interrupt the controller is connected to.
-> +
-> +Example:
-> +
-> +/ {
-> +	tcu: mfd@10002000 {
-> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
-> +		reg = <0x10002000 0x1000>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0x0 0x10002000 0x1000>;
-> +
-> +		tcu_irq: interrupt-controller@20 {
-> +			compatible = "ingenic,jz4740-tcu-intc";
-> +			reg = <0x20 0x20>;
-> +
-> +			interrupt-controller;
-> +			#interrupt-cells = <1>;
-> +
-> +			interrupt-parent = <&intc>;
-> +			interrupts = <15>;
-> +		};
-> +	};
-> +};
-> +
-> +For information about the top-level "ingenic,tcu" compatible node and other
-> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
-> diff --git a/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt b/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
-> new file mode 100644
-> index 000000000000..5742c3f21550
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
-> @@ -0,0 +1,56 @@
-> +Ingenic JZ47xx SoCs Timer/Counter Unit devicetree bindings
-> +----------------------------------------------------------
-> +
-> +For a description of the TCU hardware and drivers, have a look at
-> +Documentation/mips/ingenic-tcu.txt.
-> +
-> +The TCU is implemented as a parent node, whose role is to create the
-> +regmap, and child nodes for the various drivers listed in the aforementioned
-> +document.
-
-You're describing the Linux driver here. Please stick to a description
-of the HW.
-
-> +
-> +Required properties:
-> +
-> +- compatible: must be "ingenic,tcu", "simple-mfd", "syscon";
-
-Without any provision for an SoC version? Seems bold...
-
-> +- reg: Should be the offset/length value corresponding to the TCU registers
-> +- #address-cells: Should be <1>;
-> +- #size-cells: Should be <1>;
-> +- ranges: Should be one range for the full TCU registers area
-> +
-> +Accepted children nodes:
-> +- Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
-> +- Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
-> +- Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-
-It is slightly confusing that you have 3 files named ingenic,tcu.txt.
-How about ingenic,tcu-intc.txt and ingenic,tcu-timer.txt (amending the
-binding for the timer)?
-
-> +
-> +
-> +Example:
-> +
-> +/ {
-> +	tcu: mfd@10002000 {
-> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
-> +		reg = <0x10002000 0x1000>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0x0 0x10002000 0x1000>;
-> +
-> +		tcu_irq: interrupt-controller@20 {
-> +			compatible = "ingenic,jz4740-tcu-intc";
-> +			reg = <0x20 0x20>;
-> +			...
-> +		};
-> +
-> +		tcu_clk: clocks@10 {
-> +			compatible = "ingenic,jz4740-tcu-clocks";
-> +			reg = <0x10 0xff0>;
-> +			...
-> +		};
-> +
-> +		tcu_timer: timer@10 {
-> +			compatible = "ingenic,jz4740-tcu";
-> +			reg = <0x10 0xff0>;
-> +			...
-> +		};
-> +	};
-> +};
-> +
-> +For more information about the children node, refer to the documents listed
-> +above in the "Accepted children nodes" section.
-> diff --git a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-> new file mode 100644
-> index 000000000000..f910b7e96783
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-> @@ -0,0 +1,41 @@
-> +Ingenic JZ47xx SoCs Timer/Counter Unit driver
-> +---------------------------------------------
-> +
-> +Required properties:
-> +
-> +- compatible : should be "ingenic,<socname>-tcu". Valid strings are:
-> +  * ingenic,jz4740-tcu
-> +  * ingenic,jz4770-tcu
-> +  * ingenic,jz4780-tcu
-> +- interrupt-parent : phandle of the TCU interrupt controller.
-> +- interrupts : Specifies the interrupts the controller is connected to.
-> +- clocks : List of phandle & clock specifiers for the TCU clocks.
-> +- clock-names : List of name strings for the TCU clocks.
-> +
-> +Example:
-> +
-> +/ {
-> +	tcu: mfd@10002000 {
-> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
-> +		reg = <0x10002000 0x1000>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0x0 0x10002000 0x1000>;
-> +
-> +		tcu_timer: timer@10 {
-> +			compatible = "ingenic,jz4740-tcu";
-> +			reg = <0x10 0xff0>;
-> +
-> +			clocks = <&tcu_clk 0>, <&tcu_clk 1>, <&tcu_clk 2>, <&tcu_clk 3>,
-> +					 <&tcu_clk 4>, <&tcu_clk 5>, <&tcu_clk 6>, <&tcu_clk 7>;
-> +			clock-names = "timer0", "timer1", "timer2", "timer3",
-> +						  "timer4", "timer5", "timer6", "timer7";
-> +
-> +			interrupt-parent = <&tcu_irq>;
-> +			interrupts = <0 1 2 3 4 5 6 7>;
-> +		};
-> +	};
-> +};
-> +
-> +For information about the top-level "ingenic,tcu" compatible node and other
-> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> Benefits:
+> 	* all SyS... wrappers (i.e. the thing that really ought to
+> go into syscall tables) have the same type.
+> 	* we could have SYSCALL_DEFINE produce a trivial compat
+> wrapper, have explicit COMPAT_SYSCALL_DEFINE discard that thing
+> and populate the compat syscall table *entirely* with compat_SyS_...,
+> letting the linker sort it out.  That way we don't need to keep
+> track of what can use native and what needs compat in each compat
+> table on biarch.
+> 	* s390 compat wrappers would disappear with that approach.
+> 	* we could even stop generating sys_... aliases - if
+> syscall table is generated by slapping SyS_... or compat_SyS_...
+> on the name given there, we don't need to _have_ those sys_...
+> things at all.  All SyS_... would have the same type, so the pile
+> in syscalls.h would not be needed - we could generate the externs
+> at the same time we generate the syscall table.
 > 
+> And yes, it's a high-squick approach.  I know and I'm not saying
+> it's a good idea.  OTOH, to quote the motto of philosophers and
+> shell game operators, "there's something in it"...
+
+... and getting rid of all in-kernel calls to sys_*() is needed as
+groundwork for that. So I'll continue to do that "mindless" conversion
+first. On top of that, three things (which are mostly orthogonal to each
+other) can be done:
+
+1) ptregs system call conversion for x86-64
+
+   Original implementation by Linus exists; needs a bit of tweaking
+   but should be doable soon. Need to double-check it does the right
+   thing for IA32_EMULATION, though.
+
+2) re-work initramfs etc. code to not use in-kernel equivalents of
+   syscalls, but operate on the VFS level instead.
+
+3) re-work SYSCALL_DEFINEx() / COMPAT_SYSCALL_DEFINEx() based on
+   your suggestions.
+
+Does that sound sensible?
 
 Thanks,
-
-	M.
--- 
-Jazz is not dead. It just smells funny...
+	Dominik

@@ -1,73 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 08:15:52 +0100 (CET)
-Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:43661
-        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992896AbeCTHPo6E-ge (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2018 08:15:44 +0100
-Received: by mail-oi0-x242.google.com with SMTP id y27-v6so487923oix.10;
-        Tue, 20 Mar 2018 00:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=gvXIYGbepR3UMEDym87DsfXAoi+gL0ziNhV9MBtGSu4=;
-        b=fsyjGKMY377SYSk6WLIyRKByLJaozVfnm9Zxe257Dbuq8JUkWMJFy1c+DzBr2t4/Df
-         GTrIkyp32fBba2O1gzsx1vj15EspYGFuKrv0JamO35QKPvJHOqA7mMLuwD3M5ZIq1Ib5
-         bPp2qlajJ5GUfq4qezG7va0zNobgUbAMW6bx48HqfVUIH3J/iQ/SI/m1xDaU0iRjghH4
-         XTbCJq7YMajB7l+V7WWVrSYI0KC65NeAR/u8MjyPMQl5q9FATOG03lgRoY+qF0k7ZcoY
-         DqLj3yWvaiHx9lAxOC1gLqtMk303V/HK8wjgj6xPzF41cq99K0q4CuWU74mlw3w3jnYA
-         wlRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=gvXIYGbepR3UMEDym87DsfXAoi+gL0ziNhV9MBtGSu4=;
-        b=MMaTyFi8OLpUKdOZ0hyy64YFEpYfoXSKGm62dYwP8zKGY4TgYhX1JCBojqERCmhUeb
-         zd2DD1T+DPfYslWyy1rnnCmGd9gnDB+oo4n+uu3VpG17b7GrXlg4WoEqJ+7w3h15XrLB
-         uEtwhy+aPZHKciPupOEo70wh6Q9RCAsCe4Ku4CmY66EkV7jcBcFnsmqjBQydIgqqoQ3j
-         0byuoD/LKs0xMTXe1why53JfU4F+Em2D55B26rPcmFYDtugol3eJfTFBKgjRNc7FC1vg
-         8LzrZbi/Mw0q0nB+SNxvH+mzfXKtw6hFEnO56h1bx3CCCKhhWbwZ6FXFTWZefaxAkkzc
-         /2DA==
-X-Gm-Message-State: AElRT7EMYtQeP7z0zBgA9SYbQBk5c9fALxsZo4TPFTBPGpDximZoh4gK
-        niyXGC5g5K30FxmpQakB6DIE9fNfofc0i0JmE1Q=
-X-Google-Smtp-Source: AG47ELtrhkxaxSGQvQO/dtxHVlUG58DmbeTfw4OxBVOw9XmDY+ZgYJgmQEIVUY9ySUfDu42frChQGUzrILnBV99Q3YM=
-X-Received: by 10.84.78.10 with SMTP id a10mr264663oiy.173.1521530138326; Tue,
- 20 Mar 2018 00:15:38 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.138.3.76 with HTTP; Tue, 20 Mar 2018 00:15:17 -0700 (PDT)
-In-Reply-To: <20180317232901.14129-3-paul@crapouillou.net>
-References: <20180110224838.16711-2-paul@crapouillou.net> <20180317232901.14129-1-paul@crapouillou.net>
- <20180317232901.14129-3-paul@crapouillou.net>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Tue, 20 Mar 2018 08:15:17 +0100
-X-Google-Sender-Auth: UFPmw-6P91LGHTGy6O_ZOTdyfJo
-Message-ID: <CA+7wUsyAkW+Bgmp6MuWTce1jMG-ug1b-UqFVen_vVeKFiW5Fww@mail.gmail.com>
-Subject: Re: [PATCH v4 2/8] dt-bindings: ingenic: Add DT bindings for TCU clocks
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:23:03 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:45790 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992678AbeCTIWzvS5Mi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Mar 2018 09:22:55 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 911C1ABE9;
+        Tue, 20 Mar 2018 08:22:48 +0000 (UTC)
+From:   NeilBrown <neil@brown.name>
+To:     John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <mathieu.malaterre@gmail.com>
+        James Hogan <jhogan@kernel.org>
+Date:   Tue, 20 Mar 2018 19:22:40 +1100
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] MIPS: ralink: fix booting on mt7621
+In-Reply-To: <87efkf9z0o.fsf@notabene.neil.brown.name>
+References: <87efkf9z0o.fsf@notabene.neil.brown.name>
+Message-ID: <87605r9mwf.fsf@notabene.neil.brown.name>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+Return-Path: <neil@brown.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63070
+X-archive-position: 63071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: neil@brown.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,77 +41,132 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Two things:
 
-On Sun, Mar 18, 2018 at 12:28 AM, Paul Cercueil <paul@crapouillou.net> wrote:
-> This header provides clock numbers for the ingenic,tcu
-> DT binding.
+Further testing showed that the original version of this
+patch wasn't 100% reliable.  Very occasionally the read
+of SYSC_REG_CHIP_NAME0 returns garbage.  Repeating the
+read seems to be reliable, but it hasn't happened enough
+for me to be completely confident.
+So this version repeats that first read.
 
-I have tested the whole series on my Creator CI20 with success, using:
+Thanks,
+NeilBrown
 
-+ tcu@10002000 {
-+ compatible = "ingenic,jz4780-tcu";
-+ reg = <0x10002000 0x140>;
+
+=2D---------------8<--------------------
+Since commit 3af5a67c86a3 ("MIPS: Fix early CM probing") the MT7621
+has not been able to boot.
+
+This patched caused mips_cm_probe() to be called before
+mt7621.c::proc_soc_init().
+
+prom_soc_init() has a comment explaining that mips_cm_probe()
+"wipes out the bootloader config" and means that configuration
+registers are no longer available.  It has some code to re-enable
+this config.
+
+Before this re-enable code is run, the sysc register cannot be
+read, so when SYSC_REG_CHIP_NAME0 is read, a garbage value
+is returned and panic() is called.
+
+If we move the config-repair code to the top of prom_soc_init(),
+the registers can be read and boot can proceed.
+
+Very occasionally, the first register read after the reconfiguration
+returns garbage.  So repeat that read to be on the safe side.
+
+Fixes: 3af5a67c86a3 ("MIPS: Fix early CM probing")
+Signed-off-by: NeilBrown <neil@brown.name>
+=2D--
+ arch/mips/ralink/mt7621.c | 43 +++++++++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 20 deletions(-)
+
+diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
+index 1b274742077d..c37716407fbe 100644
+=2D-- a/arch/mips/ralink/mt7621.c
++++ b/arch/mips/ralink/mt7621.c
+@@ -170,6 +170,29 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ 	u32 n1;
+ 	u32 rev;
+=20
++	/* Early detection of CMP support */
++	mips_cm_probe();
++	mips_cpc_probe();
 +
-+ interrupt-parent = <&intc>;
-+ interrupts = <27 26 25>;
-+ };
++	if (mips_cps_numiocu(0)) {
++		/*
++		 * mips_cm_probe() wipes out bootloader
++		 * config for CM regions and we have to configure them
++		 * again. This SoC cannot talk to pamlbus devices
++		 * witout proper iocu region set up.
++		 *
++		 * FIXME: it would be better to do this with values
++		 * from DT, but we need this very early because
++		 * without this we cannot talk to pretty much anything
++		 * including serial.
++		 */
++		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
++		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
++				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
++	}
++
++	n0 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
++	/* Sometimes first read returns garbage, so try again to be safe */
+ 	n0 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
+ 	n1 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
+=20
+@@ -194,26 +217,6 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+=20
+ 	rt2880_pinmux_data =3D mt7621_pinmux_data;
+=20
+=2D	/* Early detection of CMP support */
+=2D	mips_cm_probe();
+=2D	mips_cpc_probe();
+=2D
+=2D	if (mips_cps_numiocu(0)) {
+=2D		/*
+=2D		 * mips_cm_probe() wipes out bootloader
+=2D		 * config for CM regions and we have to configure them
+=2D		 * again. This SoC cannot talk to pamlbus devices
+=2D		 * witout proper iocu region set up.
+=2D		 *
+=2D		 * FIXME: it would be better to do this with values
+=2D		 * from DT, but we need this very early because
+=2D		 * without this we cannot talk to pretty much anything
+=2D		 * including serial.
+=2D		 */
+=2D		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
+=2D		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
+=2D				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
+=2D	}
+=20
+ 	if (!register_cps_smp_ops())
+ 		return;
+=2D-=20
+2.14.0.rc0.dirty
 
 
-So:
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Tested-by: Mathieu Malaterre <malat@debian.org>
+-----BEGIN PGP SIGNATURE-----
 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
->  include/dt-bindings/clock/ingenic,tcu.h | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
->  create mode 100644 include/dt-bindings/clock/ingenic,tcu.h
->
->  v2: Use SPDX identifier for the license
->  v3: No change
->  v4: No change
->
-> diff --git a/include/dt-bindings/clock/ingenic,tcu.h b/include/dt-bindings/clock/ingenic,tcu.h
-> new file mode 100644
-> index 000000000000..179815d7b3bb
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/ingenic,tcu.h
-> @@ -0,0 +1,23 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * This header provides clock numbers for the ingenic,tcu DT binding.
-> + */
-> +
-> +#ifndef __DT_BINDINGS_CLOCK_INGENIC_TCU_H__
-> +#define __DT_BINDINGS_CLOCK_INGENIC_TCU_H__
-> +
-> +#define JZ4740_CLK_TIMER0      0
-> +#define JZ4740_CLK_TIMER1      1
-> +#define JZ4740_CLK_TIMER2      2
-> +#define JZ4740_CLK_TIMER3      3
-> +#define JZ4740_CLK_TIMER4      4
-> +#define JZ4740_CLK_TIMER5      5
-> +#define JZ4740_CLK_TIMER6      6
-> +#define JZ4740_CLK_TIMER7      7
-> +#define JZ4740_CLK_WDT         8
-> +#define JZ4740_CLK_LAST                JZ4740_CLK_WDT
-> +
-> +#define JZ4770_CLK_OST         9
-> +#define JZ4770_CLK_LAST                JZ4770_CLK_OST
-> +
-
-When working on JZ4780 support, I always struggle to read those kind
-of #define. Since this is a new patch would you mind changing
-s/JZ4740/JZ47XX/ in your header ?
-
-Thanks for your work on JZ !
-
-> +#endif /* __DT_BINDINGS_CLOCK_INGENIC_TCU_H__ */
-> --
-> 2.11.0
->
->
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlqwxNAACgkQOeye3VZi
+gbkmVBAAi3Nd636K1+EkS6U9RpLeTJvWp58517DnxsEVAIRYKxAOX7zZ+OBUtOck
+biplfu56/9sWcxvLol5MUlGeU/fATAgEM9A8CT+tAbgMCS3mKQ8Age2TCvE2QdkA
+hYd+KGyNxJYFl7PHU7zeo0VC45HgSYLKXyOctxqNN9/Va6c43ZnHC6WQyVJGtbsZ
+6hOxXJfH0oVzkSUBqSyvCyY5J8M4RWfXceTcBZW2Df7pBEjTYmdvpWuN8Nnnu/F2
+IYqABbYIFVSfX4ud7uN60cNSLwu55asBpS5htfMHlLiRVmrB6WVXqAn5zyCBQmcd
+ahqj3iPwZueylQNEzy4EWKDcUe9QQdX9cjdYC5t30cEB9ZXl48ZGI5nNthcpruRA
+vFWdcFYo8Znb+yKElmF7Gn3H/7/HJfvlOEyEKUftIfCP/HKQ1c6nx/lOaGr5Cpgh
+gLn3sk7RlI1EC8TdAQU7qDN1zyIKEijPSUjItHY7lfSghRtTXb0832QFHh5cw1b/
+YPI2Q+D7UJV2C83MQkrsgtpGbDDjQsSg9hKXySqlaVS63dy4/bqDFZi4wkerJemv
+/iFN4ZINW08d9On5fCxESevjy+WCLvsTDedNu0WhCvUD1r5HCPzu1snKGC8EsmO4
+msHf8jpkS/so1YmIBcXe5NXXWC/na7BDsTSY6ZAHoEHcLC6Pov0=
+=FILq
+-----END PGP SIGNATURE-----
+--=-=-=--

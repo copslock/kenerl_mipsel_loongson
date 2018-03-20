@@ -1,88 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:59:47 +0100 (CET)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:55214
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992615AbeCTI7ka5L1s (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2018 09:59:40 +0100
-Received: by mail-wm0-x242.google.com with SMTP id h76so1799105wme.4;
-        Tue, 20 Mar 2018 01:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=dfawECWtk1hdp40aEX5Sp7Cd/Au50B++H/6qwEyRzrM=;
-        b=T58ebr48J/FRV004s6+aro78J4goGbk87R85ZgRm0EdGzjk8pGkH0j8THcLW0mIpHz
-         Ue4u1my/kf5AiMMx62m1YCEl6DVfxdHBilOyZsr/gju6DarTdXELnPTZKofN0XCcJwvD
-         2KIzfFiFNUEBsaHZkBol5tdBTwHAC1vzV9mh9DIAiBn8osEcwSaykf+ANvJN/uw0XJm9
-         1QDEZITUDiJFXtPnhw4cHiH23deqgCkgcuYTnJySbifovpOZgDUosbFnuPl7GQnLDHgS
-         JUGoqii+e2IGWR9mhq8bdNcKN20cq/enHHNlULUlKZxwRC3XEoj8agDicze/DWUzIXIB
-         FulQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=dfawECWtk1hdp40aEX5Sp7Cd/Au50B++H/6qwEyRzrM=;
-        b=h5J0T3txC63Vj3AvH5PANaDvFXoVE3Rl+F7zfRBbNANGm47GbXzlWSy//Bn9/szBrA
-         vlPsYmPsePH6is4/7QtXptZCMs5+4WYSWrXDziUSxy7UINkZqxhrp9y5Fq6M7UJCRFdX
-         aX1h0/SY8pkOhHbPvGEI1UzE1KNuyA8CI63r0QdouFcIrB+NO6LtMmDHunpFLdtk1zbF
-         i5FYOefowC7su+KofDqfP4Mu3flGVoHOZu+5ACu3lu99FfU8DC52ODvHVhL4HRPHINA+
-         87cX3Khz5+eDjFH83lMt/EdeWWK59LoMl1FJWnFQH+pqsLp3lRqLwdkYZO/r/p/iXrnx
-         vVTw==
-X-Gm-Message-State: AElRT7FpGwZswGOAjpqFfo78nPCuaHMFP2iOHuWv1Ehn00crHgBcFfjJ
-        D+j+HlrORWYu7TN9RFrtQcCvWw==
-X-Google-Smtp-Source: AG47ELsE6E5rjoC1NJNFoLWiDfJtmAEHsCTtcc8Prg17gHalCTQ1Ozu5qaAZ9JRcIVePxVBXsUohPA==
-X-Received: by 10.28.172.196 with SMTP id v187mr1475511wme.69.1521536375149;
-        Tue, 20 Mar 2018 01:59:35 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id b8sm922278wrf.29.2018.03.20.01.59.33
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 20 Mar 2018 01:59:34 -0700 (PDT)
-Date:   Tue, 20 Mar 2018 09:59:32 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Al Viro <viro@ZenIV.linux.org.uk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 12:02:04 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:52557 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992615AbeCTLB4Uh3q1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2018 12:01:56 +0100
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 20 Mar 2018 11:01:45 +0000
+Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 20
+ Mar 2018 04:01:50 -0700
+Subject: Re: [PATCH v2] MIPS: ralink: fix booting on mt7621
+To:     NeilBrown <neil@brown.name>, John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [RFC PATCH 4/6] mm: provide generic compat_sys_readahead()
- implementation
-Message-ID: <20180320085932.xnwkpiz5gpegnw5d@gmail.com>
-References: <20180318161056.5377-1-linux@dominikbrodowski.net>
- <20180318161056.5377-5-linux@dominikbrodowski.net>
- <20180318174014.GR30522@ZenIV.linux.org.uk>
- <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
- <20180318181848.GU30522@ZenIV.linux.org.uk>
- <20180319042300.GW30522@ZenIV.linux.org.uk>
- <20180319092920.tbh2xwkruegshzqe@gmail.com>
- <20180319232342.GX30522@ZenIV.linux.org.uk>
+        James Hogan <jhogan@kernel.org>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+References: <87efkf9z0o.fsf@notabene.neil.brown.name>
+ <87605r9mwf.fsf@notabene.neil.brown.name>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <cc33f000-16ed-b331-53b7-d767e20a4a9c@mips.com>
+Date:   Tue, 20 Mar 2018 11:01:49 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180319232342.GX30522@ZenIV.linux.org.uk>
-User-Agent: NeoMutt/20170609 (1.8.3)
-Return-Path: <mingo.kernel.org@gmail.com>
+In-Reply-To: <87605r9mwf.fsf@notabene.neil.brown.name>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.155.41]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1521543705-452060-25377-39749-1
+X-BESS-VER: 2018.3.1-r1803192000
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191229
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63075
+X-archive-position: 63076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,54 +60,123 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Neil,
 
-* Al Viro <viro@ZenIV.linux.org.uk> wrote:
 
-> > For example this attempt at creating a new system call:
-> > 
-> >   SYSCALL_DEFINE3(moron, int, fd, loff_t, offset, size_t, count)
-> > 
-> > ... would translate into something like:
-> > 
-> > 	.name = "moron", .pattern = "WWW", .type = "int",    .size = 4,
-> > 	.name = NULL,                      .type = "loff_t", .size = 8,
-> > 	.name = NULL,                      .type = "size_t", .size = 4,
-> > 	.name = NULL,                      .type = NULL,     .size = 0,     /* end of parameter list */
-> > 
-> > i.e. "WDW". The build-time constraint checker could then warn about:
-> > 
-> >   # error: System call "moron" uses invalid 'WWW' argument mapping for a 'WDW' sequence
-> >   #        please avoid long-long arguments or use 'SYSCALL_DEFINE3_WDW()' instead
+On 20/03/18 08:22, NeilBrown wrote:
 > 
-> ... if you do 32bit build.
+> Further testing showed that the original version of this
+> patch wasn't 100% reliable.  Very occasionally the read
+> of SYSC_REG_CHIP_NAME0 returns garbage.  Repeating the
+> read seems to be reliable, but it hasn't happened enough
+> for me to be completely confident.
+> So this version repeats that first read.
 
-Yeah - but the checking tool could do a 32-bit sizing of the types and thus the 
-checks would work on all arches and on all bitness settings.
+You almost certainly need a sync() to ensure that the write to gcr_reg0 
+has completed before attempting to read sysc + SYSC_REG_CHIP_NAME0.
 
-I don't think doing part of this in CPP is a good idea:
+> 
+> Thanks,
+> NeilBrown
+> 
+> 
+> ----------------8<--------------------
+> Since commit 3af5a67c86a3 ("MIPS: Fix early CM probing") the MT7621
+> has not been able to boot.
+> 
+> This patched caused mips_cm_probe() to be called before
+> mt7621.c::proc_soc_init().
+> 
+> prom_soc_init() has a comment explaining that mips_cm_probe()
+> "wipes out the bootloader config" and means that configuration
+> registers are no longer available.  It has some code to re-enable
+> this config.
+> 
+> Before this re-enable code is run, the sysc register cannot be
+> read, so when SYSC_REG_CHIP_NAME0 is read, a garbage value
+> is returned and panic() is called.
+> 
+> If we move the config-repair code to the top of prom_soc_init(),
+> the registers can be read and boot can proceed.
+> 
+> Very occasionally, the first register read after the reconfiguration
+> returns garbage.  So repeat that read to be on the safe side.
+> 
+> Fixes: 3af5a67c86a3 ("MIPS: Fix early CM probing")
+> Signed-off-by: NeilBrown <neil@brown.name>
+> ---
+>   arch/mips/ralink/mt7621.c | 43 +++++++++++++++++++++++--------------------
+>   1 file changed, 23 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
+> index 1b274742077d..c37716407fbe 100644
+> --- a/arch/mips/ralink/mt7621.c
+> +++ b/arch/mips/ralink/mt7621.c
+> @@ -170,6 +170,29 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+>   	u32 n1;
+>   	u32 rev;
+>   
+> +	/* Early detection of CMP support */
+> +	mips_cm_probe();
+> +	mips_cpc_probe();
+> +
+> +	if (mips_cps_numiocu(0)) {
+> +		/*
+> +		 * mips_cm_probe() wipes out bootloader
+> +		 * config for CM regions and we have to configure them
+> +		 * again. This SoC cannot talk to pamlbus devices
+> +		 * witout proper iocu region set up.
+> +		 *
+> +		 * FIXME: it would be better to do this with values
+> +		 * from DT, but we need this very early because
+> +		 * without this we cannot talk to pretty much anything
+> +		 * including serial.
+> +		 */
+> +		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
+> +		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
+> +				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
 
- - It won't be able to do the full range of checks
+i.e. Try putting a sync() here.
 
- - Wrappers should IMHO be trivial and open coded as much as possible - not hidden
-   inside several layers of macros.
+> +	}
+> +
+> +	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
+> +	/* Sometimes first read returns garbage, so try again to be safe */
 
- - There should be a penalty for newly introduced, badly designed system call
-   ABIs, while most CPP variants I can think of will just make bad but solvable 
-   decisions palatable, AFAICS.
-
-I.e. I think the way out of this would be two steps:
-
- 1) for new system calls: hard-enforce the highest quality at the development
-    stage and hard-reject crap. No new 6-parameter system calls or badly ordered
-    arguments. The tool would also check new extensions to existing system calls, 
-    i.e. no more "add a crappy 4th argument to an existing system call that works 
-    on x86 but hurts MIPS".
-
- 2) for old legacies: cleanly open code all our existing legacies and weird
-    wrappers. No new muck will be added to it so the line count does not matter.
-
-... is there anything I'm missing?
+Rather than doing this, which is a bit of a hack and there's no 
+guarantee the second read won't also read garbage without the barrier.
 
 Thanks,
+Matt
 
-	Ingo
+>   	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
+>   	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
+>   
+> @@ -194,26 +217,6 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+>   
+>   	rt2880_pinmux_data = mt7621_pinmux_data;
+>   
+> -	/* Early detection of CMP support */
+> -	mips_cm_probe();
+> -	mips_cpc_probe();
+> -
+> -	if (mips_cps_numiocu(0)) {
+> -		/*
+> -		 * mips_cm_probe() wipes out bootloader
+> -		 * config for CM regions and we have to configure them
+> -		 * again. This SoC cannot talk to pamlbus devices
+> -		 * witout proper iocu region set up.
+> -		 *
+> -		 * FIXME: it would be better to do this with values
+> -		 * from DT, but we need this very early because
+> -		 * without this we cannot talk to pretty much anything
+> -		 * including serial.
+> -		 */
+> -		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
+> -		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
+> -				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
+> -	}
+>   
+>   	if (!register_cps_smp_ops())
+>   		return;
+> 

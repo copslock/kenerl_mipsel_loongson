@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:23:03 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:45790 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:30:17 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:47785 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992678AbeCTIWzvS5Mi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Mar 2018 09:22:55 +0100
+        id S23992678AbeCTIaEJYEms (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Mar 2018 09:30:04 +0100
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 911C1ABE9;
-        Tue, 20 Mar 2018 08:22:48 +0000 (UTC)
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 4B31EAC57;
+        Tue, 20 Mar 2018 08:29:58 +0000 (UTC)
 From:   NeilBrown <neil@brown.name>
 To:     John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>
-Date:   Tue, 20 Mar 2018 19:22:40 +1100
+Date:   Tue, 20 Mar 2018 19:29:51 +1100
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] MIPS: ralink: fix booting on mt7621
-In-Reply-To: <87efkf9z0o.fsf@notabene.neil.brown.name>
-References: <87efkf9z0o.fsf@notabene.neil.brown.name>
-Message-ID: <87605r9mwf.fsf@notabene.neil.brown.name>
+Subject: [PATCH] MIPS: ralink: remove ralink_halt()
+Message-ID: <87370v9mkg.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
 Content-Type: multipart/signed; boundary="=-=-=";
         micalg=pgp-sha256; protocol="application/pgp-signature"
@@ -24,7 +22,7 @@ Return-Path: <neil@brown.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63071
+X-archive-position: 63072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,106 +44,46 @@ Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
 
-Further testing showed that the original version of this
-patch wasn't 100% reliable.  Very occasionally the read
-of SYSC_REG_CHIP_NAME0 returns garbage.  Repeating the
-read seems to be reliable, but it hasn't happened enough
-for me to be completely confident.
-So this version repeats that first read.
+ralink_halt() does nothing that machine_halt()
+doesn't already do, so it adds no value.
 
-Thanks,
-NeilBrown
+It actually causes incorrect behaviour due to the
+"unreachable()" at the end.  This tell the compiler that the
+end of the function will never be reached, which isn't true.
+The compiler responds by not adding a 'return' instruction,
+so control simply moves on to whatever bytes come afterwards
+in memory.  In my tested, that was the ralink_restart()
+function.  This means that an attempt to 'halt' the machine
+would actually cause a reboot.
 
+So remove ralink_halt() so that a 'halt' really does halt.
 
-=2D---------------8<--------------------
-Since commit 3af5a67c86a3 ("MIPS: Fix early CM probing") the MT7621
-has not been able to boot.
-
-This patched caused mips_cm_probe() to be called before
-mt7621.c::proc_soc_init().
-
-prom_soc_init() has a comment explaining that mips_cm_probe()
-"wipes out the bootloader config" and means that configuration
-registers are no longer available.  It has some code to re-enable
-this config.
-
-Before this re-enable code is run, the sysc register cannot be
-read, so when SYSC_REG_CHIP_NAME0 is read, a garbage value
-is returned and panic() is called.
-
-If we move the config-repair code to the top of prom_soc_init(),
-the registers can be read and boot can proceed.
-
-Very occasionally, the first register read after the reconfiguration
-returns garbage.  So repeat that read to be on the safe side.
-
-Fixes: 3af5a67c86a3 ("MIPS: Fix early CM probing")
 Signed-off-by: NeilBrown <neil@brown.name>
 =2D--
- arch/mips/ralink/mt7621.c | 43 +++++++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 20 deletions(-)
+ arch/mips/ralink/reset.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
-index 1b274742077d..c37716407fbe 100644
-=2D-- a/arch/mips/ralink/mt7621.c
-+++ b/arch/mips/ralink/mt7621.c
-@@ -170,6 +170,29 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
- 	u32 n1;
- 	u32 rev;
+diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
+index 64543d66e76b..e9531fea23a2 100644
+=2D-- a/arch/mips/ralink/reset.c
++++ b/arch/mips/ralink/reset.c
+@@ -96,16 +96,9 @@ static void ralink_restart(char *command)
+ 	unreachable();
+ }
 =20
-+	/* Early detection of CMP support */
-+	mips_cm_probe();
-+	mips_cpc_probe();
-+
-+	if (mips_cps_numiocu(0)) {
-+		/*
-+		 * mips_cm_probe() wipes out bootloader
-+		 * config for CM regions and we have to configure them
-+		 * again. This SoC cannot talk to pamlbus devices
-+		 * witout proper iocu region set up.
-+		 *
-+		 * FIXME: it would be better to do this with values
-+		 * from DT, but we need this very early because
-+		 * without this we cannot talk to pretty much anything
-+		 * including serial.
-+		 */
-+		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
-+		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
-+				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
-+	}
-+
-+	n0 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
-+	/* Sometimes first read returns garbage, so try again to be safe */
- 	n0 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
- 	n1 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
-=20
-@@ -194,26 +217,6 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
-=20
- 	rt2880_pinmux_data =3D mt7621_pinmux_data;
-=20
-=2D	/* Early detection of CMP support */
-=2D	mips_cm_probe();
-=2D	mips_cpc_probe();
+=2Dstatic void ralink_halt(void)
+=2D{
+=2D	local_irq_disable();
+=2D	unreachable();
+=2D}
 =2D
-=2D	if (mips_cps_numiocu(0)) {
-=2D		/*
-=2D		 * mips_cm_probe() wipes out bootloader
-=2D		 * config for CM regions and we have to configure them
-=2D		 * again. This SoC cannot talk to pamlbus devices
-=2D		 * witout proper iocu region set up.
-=2D		 *
-=2D		 * FIXME: it would be better to do this with values
-=2D		 * from DT, but we need this very early because
-=2D		 * without this we cannot talk to pretty much anything
-=2D		 * including serial.
-=2D		 */
-=2D		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
-=2D		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
-=2D				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
-=2D	}
+ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart =3D ralink_restart;
+=2D	_machine_halt =3D ralink_halt;
 =20
- 	if (!register_cps_smp_ops())
- 		return;
+ 	return 0;
+ }
 =2D-=20
 2.14.0.rc0.dirty
 
@@ -155,18 +93,18 @@ Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlqwxNAACgkQOeye3VZi
-gbkmVBAAi3Nd636K1+EkS6U9RpLeTJvWp58517DnxsEVAIRYKxAOX7zZ+OBUtOck
-biplfu56/9sWcxvLol5MUlGeU/fATAgEM9A8CT+tAbgMCS3mKQ8Age2TCvE2QdkA
-hYd+KGyNxJYFl7PHU7zeo0VC45HgSYLKXyOctxqNN9/Va6c43ZnHC6WQyVJGtbsZ
-6hOxXJfH0oVzkSUBqSyvCyY5J8M4RWfXceTcBZW2Df7pBEjTYmdvpWuN8Nnnu/F2
-IYqABbYIFVSfX4ud7uN60cNSLwu55asBpS5htfMHlLiRVmrB6WVXqAn5zyCBQmcd
-ahqj3iPwZueylQNEzy4EWKDcUe9QQdX9cjdYC5t30cEB9ZXl48ZGI5nNthcpruRA
-vFWdcFYo8Znb+yKElmF7Gn3H/7/HJfvlOEyEKUftIfCP/HKQ1c6nx/lOaGr5Cpgh
-gLn3sk7RlI1EC8TdAQU7qDN1zyIKEijPSUjItHY7lfSghRtTXb0832QFHh5cw1b/
-YPI2Q+D7UJV2C83MQkrsgtpGbDDjQsSg9hKXySqlaVS63dy4/bqDFZi4wkerJemv
-/iFN4ZINW08d9On5fCxESevjy+WCLvsTDedNu0WhCvUD1r5HCPzu1snKGC8EsmO4
-msHf8jpkS/so1YmIBcXe5NXXWC/na7BDsTSY6ZAHoEHcLC6Pov0=
-=FILq
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlqwxn8ACgkQOeye3VZi
+gblkLRAAvwG8WkRAE1caLZ1sbk1UVbj6WvbgJ0g0F6mxky+8sWif0kKsTyOqBSzM
+HeR1bw2n4N+IAqgX8EilcO6L2h0tFT60kgZeMFabR9z2S9i1rX7cv7xvF/cmQOiz
+84LejiQHNxpFZ8QRrOaRSI+H5D4qxac2hiwrzO60XinEjPKCGoavmXtiWld9Tn7O
+3C8OI+t1pEwH3PHSZcD57l5z7HURGnGP9evrl0xvzm523YJiK+HGOnhE/TdHTKLN
+mggnBSNKV0hgmIIuMXkv4zu+TbLq8WR/hs8nNLsOSATLayjXDTrwzn63E0tVjjUE
+HZy3t6ZjU+Dud9fFoRkhqMm0kfC9/tCW+oW0EwXM6rJLWRD3wZqNRhfxdlN6Xh8X
+bXBsAP0LcbrSNj3jlXxhWbMeYTaVtu2R/ZkDkSq4e6JASp1Ly+5AfEpemMJzCyiR
+6i4EAh2PdRdYNteKfMMXb3/s6IBmbYQjE9D2ZVptiDi8o0blW+EejKcXsbLqMsmc
+gVV3Pa4m0dEF96+TV6lWv8ypr/wGf92kDMum7/A6odcBnKtPRv+gsVIOggf3F9RU
+sqvL2GBUEth+G/IYyVh0/o1P33kcJjjbRLXjOAi0c6BKGARkNwP1EpTmbUiwAnY7
+jK4jJbsVbPMvG6d2cCxOe1uMGSh/ngO+Kd+lKvP1JPXloxuU11o=
+=Rhh6
 -----END PGP SIGNATURE-----
 --=-=-=--

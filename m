@@ -1,32 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:30:17 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:47785 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 09:52:24 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:41490 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992678AbeCTIaEJYEms (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Mar 2018 09:30:04 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 4B31EAC57;
-        Tue, 20 Mar 2018 08:29:58 +0000 (UTC)
-From:   NeilBrown <neil@brown.name>
-To:     John Crispin <john@phrozen.org>,
+        id S23990391AbeCTIwQKz2Ls (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Mar 2018 09:52:16 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C1F151596;
+        Tue, 20 Mar 2018 01:52:08 -0700 (PDT)
+Received: from [10.1.206.75] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27F753F487;
+        Tue, 20 Mar 2018 01:52:06 -0700 (PDT)
+Subject: Re: [PATCH v4 4/8] dt-bindings: Add doc for the Ingenic TCU drivers
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>
-Date:   Tue, 20 Mar 2018 19:29:51 +1100
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: ralink: remove ralink_halt()
-Message-ID: <87370v9mkg.fsf@notabene.neil.brown.name>
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-5-paul@crapouillou.net>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <b853fabf-4812-cefc-dd8b-f9ab596e1a36@arm.com>
+Date:   Tue, 20 Mar 2018 08:52:04 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-Return-Path: <neil@brown.name>
+In-Reply-To: <20180317232901.14129-5-paul@crapouillou.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63072
+X-archive-position: 63073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: neil@brown.name
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,72 +59,243 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On 17/03/18 23:28, Paul Cercueil wrote:
+> Add documentation about how to properly use the Ingenic TCU
+> (Timer/Counter Unit) drivers from devicetree.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  .../bindings/clock/ingenic,tcu-clocks.txt          | 42 ++++++++++++++++
+>  .../bindings/interrupt-controller/ingenic,tcu.txt  | 39 +++++++++++++++
+>  .../devicetree/bindings/mfd/ingenic,tcu.txt        | 56 ++++++++++++++++++++++
+>  .../devicetree/bindings/timer/ingenic,tcu.txt      | 41 ++++++++++++++++
+>  4 files changed, 178 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
+>  create mode 100644 Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> 
+>  v4: New patch in this series. Corresponds to V2 patches 3-4-5 with
+>  added content.
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt b/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+> new file mode 100644
+> index 000000000000..471d27078599
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+> @@ -0,0 +1,42 @@
+> +Ingenic SoC TCU binding
+> +
+> +The TCU is the Timer/Counter Unit present in all Ingenic SoCs. It features 8
+> +channels, each one having its own clock, that can be started and stopped,
+> +reparented, and reclocked.
+> +
+> +Required properties:
+> +- compatible : One of:
+> +  * ingenic,jz4740-tcu-clocks,
+> +  * ingenic,jz4770-tcu-clocks,
+> +  * ingenic,jz4780-tcu-clocks.
+> +- clocks : List of phandle & clock specifiers for clocks external to the TCU.
+> +  The "pclk", "rtc" and "ext" clocks should be provided.
+> +- clock-names : List of name strings for the external clocks.
+> +- #clock-cells: Should be 1.
+> +  Clock consumers specify this argument to identify a clock. The valid values
+> +  may be found in <dt-bindings/clock/ingenic,tcu.h>.
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_clk: clocks@10 {
+> +			compatible = "ingenic,jz4740-tcu-clocks";
+> +			reg = <0x10 0xff0>;
+> +
+> +			clocks = <&ext>, <&rtc>, <&pclk>;
+> +			clock-names = "ext", "rtc", "pclk";
+> +
+> +			#clock-cells = <1>;
+> +		};
+> +	};
+> +};
+> +
+> +For information about the top-level "ingenic,tcu" compatible node and other
+> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+> new file mode 100644
+> index 000000000000..7f3af2da77cd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+> @@ -0,0 +1,39 @@
+> +Ingenic SoCs Timer/Counter Unit Interrupt Controller
+> +
+> +Required properties:
+> +
+> +- compatible : should be "ingenic,<socname>-tcu-intc". Valid strings are:
+> +  * ingenic,jz4740-tcu-intc
+> +  * ingenic,jz4770-tcu-intc
+> +  * ingenic,jz4780-tcu-intc
+> +- interrupt-controller : Identifies the node as an interrupt controller
+> +- #interrupt-cells : Specifies the number of cells needed to encode an
+> +  interrupt source. The value shall be 1.
+> +- interrupt-parent : phandle of the interrupt controller.
+> +- interrupts : Specifies the interrupt the controller is connected to.
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_irq: interrupt-controller@20 {
+> +			compatible = "ingenic,jz4740-tcu-intc";
+> +			reg = <0x20 0x20>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +
+> +			interrupt-parent = <&intc>;
+> +			interrupts = <15>;
+> +		};
+> +	};
+> +};
+> +
+> +For information about the top-level "ingenic,tcu" compatible node and other
+> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> diff --git a/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt b/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
+> new file mode 100644
+> index 000000000000..5742c3f21550
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
+> @@ -0,0 +1,56 @@
+> +Ingenic JZ47xx SoCs Timer/Counter Unit devicetree bindings
+> +----------------------------------------------------------
+> +
+> +For a description of the TCU hardware and drivers, have a look at
+> +Documentation/mips/ingenic-tcu.txt.
+> +
+> +The TCU is implemented as a parent node, whose role is to create the
+> +regmap, and child nodes for the various drivers listed in the aforementioned
+> +document.
 
+You're describing the Linux driver here. Please stick to a description
+of the HW.
 
-ralink_halt() does nothing that machine_halt()
-doesn't already do, so it adds no value.
+> +
+> +Required properties:
+> +
+> +- compatible: must be "ingenic,tcu", "simple-mfd", "syscon";
 
-It actually causes incorrect behaviour due to the
-"unreachable()" at the end.  This tell the compiler that the
-end of the function will never be reached, which isn't true.
-The compiler responds by not adding a 'return' instruction,
-so control simply moves on to whatever bytes come afterwards
-in memory.  In my tested, that was the ralink_restart()
-function.  This means that an attempt to 'halt' the machine
-would actually cause a reboot.
+Without any provision for an SoC version? Seems bold...
 
-So remove ralink_halt() so that a 'halt' really does halt.
+> +- reg: Should be the offset/length value corresponding to the TCU registers
+> +- #address-cells: Should be <1>;
+> +- #size-cells: Should be <1>;
+> +- ranges: Should be one range for the full TCU registers area
+> +
+> +Accepted children nodes:
+> +- Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+> +- Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+> +- Documentation/devicetree/bindings/timer/ingenic,tcu.txt
 
-Signed-off-by: NeilBrown <neil@brown.name>
-=2D--
- arch/mips/ralink/reset.c | 7 -------
- 1 file changed, 7 deletions(-)
+It is slightly confusing that you have 3 files named ingenic,tcu.txt.
+How about ingenic,tcu-intc.txt and ingenic,tcu-timer.txt (amending the
+binding for the timer)?
 
-diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
-index 64543d66e76b..e9531fea23a2 100644
-=2D-- a/arch/mips/ralink/reset.c
-+++ b/arch/mips/ralink/reset.c
-@@ -96,16 +96,9 @@ static void ralink_restart(char *command)
- 	unreachable();
- }
-=20
-=2Dstatic void ralink_halt(void)
-=2D{
-=2D	local_irq_disable();
-=2D	unreachable();
-=2D}
-=2D
- static int __init mips_reboot_setup(void)
- {
- 	_machine_restart =3D ralink_restart;
-=2D	_machine_halt =3D ralink_halt;
-=20
- 	return 0;
- }
-=2D-=20
-2.14.0.rc0.dirty
+> +
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_irq: interrupt-controller@20 {
+> +			compatible = "ingenic,jz4740-tcu-intc";
+> +			reg = <0x20 0x20>;
+> +			...
+> +		};
+> +
+> +		tcu_clk: clocks@10 {
+> +			compatible = "ingenic,jz4740-tcu-clocks";
+> +			reg = <0x10 0xff0>;
+> +			...
+> +		};
+> +
+> +		tcu_timer: timer@10 {
+> +			compatible = "ingenic,jz4740-tcu";
+> +			reg = <0x10 0xff0>;
+> +			...
+> +		};
+> +	};
+> +};
+> +
+> +For more information about the children node, refer to the documents listed
+> +above in the "Accepted children nodes" section.
+> diff --git a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> new file mode 100644
+> index 000000000000..f910b7e96783
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> @@ -0,0 +1,41 @@
+> +Ingenic JZ47xx SoCs Timer/Counter Unit driver
+> +---------------------------------------------
+> +
+> +Required properties:
+> +
+> +- compatible : should be "ingenic,<socname>-tcu". Valid strings are:
+> +  * ingenic,jz4740-tcu
+> +  * ingenic,jz4770-tcu
+> +  * ingenic,jz4780-tcu
+> +- interrupt-parent : phandle of the TCU interrupt controller.
+> +- interrupts : Specifies the interrupts the controller is connected to.
+> +- clocks : List of phandle & clock specifiers for the TCU clocks.
+> +- clock-names : List of name strings for the TCU clocks.
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_timer: timer@10 {
+> +			compatible = "ingenic,jz4740-tcu";
+> +			reg = <0x10 0xff0>;
+> +
+> +			clocks = <&tcu_clk 0>, <&tcu_clk 1>, <&tcu_clk 2>, <&tcu_clk 3>,
+> +					 <&tcu_clk 4>, <&tcu_clk 5>, <&tcu_clk 6>, <&tcu_clk 7>;
+> +			clock-names = "timer0", "timer1", "timer2", "timer3",
+> +						  "timer4", "timer5", "timer6", "timer7";
+> +
+> +			interrupt-parent = <&tcu_irq>;
+> +			interrupts = <0 1 2 3 4 5 6 7>;
+> +		};
+> +	};
+> +};
+> +
+> +For information about the top-level "ingenic,tcu" compatible node and other
+> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> 
 
+Thanks,
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlqwxn8ACgkQOeye3VZi
-gblkLRAAvwG8WkRAE1caLZ1sbk1UVbj6WvbgJ0g0F6mxky+8sWif0kKsTyOqBSzM
-HeR1bw2n4N+IAqgX8EilcO6L2h0tFT60kgZeMFabR9z2S9i1rX7cv7xvF/cmQOiz
-84LejiQHNxpFZ8QRrOaRSI+H5D4qxac2hiwrzO60XinEjPKCGoavmXtiWld9Tn7O
-3C8OI+t1pEwH3PHSZcD57l5z7HURGnGP9evrl0xvzm523YJiK+HGOnhE/TdHTKLN
-mggnBSNKV0hgmIIuMXkv4zu+TbLq8WR/hs8nNLsOSATLayjXDTrwzn63E0tVjjUE
-HZy3t6ZjU+Dud9fFoRkhqMm0kfC9/tCW+oW0EwXM6rJLWRD3wZqNRhfxdlN6Xh8X
-bXBsAP0LcbrSNj3jlXxhWbMeYTaVtu2R/ZkDkSq4e6JASp1Ly+5AfEpemMJzCyiR
-6i4EAh2PdRdYNteKfMMXb3/s6IBmbYQjE9D2ZVptiDi8o0blW+EejKcXsbLqMsmc
-gVV3Pa4m0dEF96+TV6lWv8ypr/wGf92kDMum7/A6odcBnKtPRv+gsVIOggf3F9RU
-sqvL2GBUEth+G/IYyVh0/o1P33kcJjjbRLXjOAi0c6BKGARkNwP1EpTmbUiwAnY7
-jK4jJbsVbPMvG6d2cCxOe1uMGSh/ngO+Kd+lKvP1JPXloxuU11o=
-=Rhh6
------END PGP SIGNATURE-----
---=-=-=--
+	M.
+-- 
+Jazz is not dead. It just smells funny...

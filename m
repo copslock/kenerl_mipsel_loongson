@@ -1,33 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 14:10:04 +0100 (CET)
-Received: from mail.bootlin.com ([62.4.15.54]:59873 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994577AbeCTNI0QleO7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Mar 2018 14:08:26 +0100
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id E264220710; Tue, 20 Mar 2018 14:08:19 +0100 (CET)
-Received: from localhost (unknown [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id DDB8A20875;
-        Tue, 20 Mar 2018 14:08:03 +0100 (CET)
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v6 5/6] MIPS: generic: Add support for Microsemi Ocelot
-Date:   Tue, 20 Mar 2018 14:08:00 +0100
-Message-Id: <20180320130801.9247-6-alexandre.belloni@bootlin.com>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180320130801.9247-1-alexandre.belloni@bootlin.com>
-References: <20180320130801.9247-1-alexandre.belloni@bootlin.com>
-Return-Path: <alexandre.belloni@bootlin.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2018 22:43:22 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:45977 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990520AbeCTVnN5T1Kr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2018 22:43:13 +0100
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 20 Mar 2018 21:43:08 +0000
+Received: from [10.20.78.116] (10.20.78.116) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Tue, 20 Mar 2018
+ 14:43:13 -0700
+Date:   Tue, 20 Mar 2018 21:41:47 +0000
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Set ISA bit in entry-y for microMIPS kernels
+In-Reply-To: <20180308222206.GB24558@saruman>
+Message-ID: <alpine.DEB.2.00.1803202136390.2163@tp.orcam.me.uk>
+References: <alpine.DEB.2.00.1708212102200.17596@tp.orcam.me.uk> <20180308222206.GB24558@saruman>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1521582188-298554-15302-8448-1
+X-BESS-VER: 2018.3-r1803192001
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191243
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63083
+X-archive-position: 63084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,196 +51,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Introduce support for the MIPS based Microsemi Ocelot SoCs.
+Hi James,
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
----
- arch/mips/Makefile                            |  4 ++
- arch/mips/configs/generic/board-ocelot.config | 35 ++++++++++++
- arch/mips/generic/Kconfig                     | 16 ++++++
- arch/mips/generic/Makefile                    |  1 +
- arch/mips/generic/board-ocelot.c              | 78 +++++++++++++++++++++++++++
- 5 files changed, 134 insertions(+)
- create mode 100644 arch/mips/configs/generic/board-ocelot.config
- create mode 100644 arch/mips/generic/board-ocelot.c
+> > +# Sign-extend the entry point to 64 bits if retrieved as a 32-bit number.
+> > +entry-y		= $(shell $(OBJDUMP) -f vmlinux 2>/dev/null \
+> > +			| sed -n '/^start address / { \
+> > +				s/^.*0x\([0-7].......\)$$/0x00000000\1/; \
+> > +				s/^.*0x\(........\)$$/0xffffffff\1/; p }')
+> 
+> This leaves the "start address " on the beginning if the address is
+> already 64 bits wide, e.g.:
+> 
+> VMLINUX_LOAD_ADDRESS=0xffffffff80100000 VMLINUX_ENTRY_ADDRESS=start address 0xffffffff80832720 ...
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index d1ca839c3981..d2882244cf1f 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -543,6 +543,10 @@ generic_defconfig:
- # now that the boards have been converted to use the generic kernel they are
- # wrappers around the generic rules above.
- #
-+.PHONY: ocelot_defconfig
-+ocelot_defconfig:
-+	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=ocelot
-+
- .PHONY: sead3_defconfig
- sead3_defconfig:
- 	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=sead-3
-diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/configs/generic/board-ocelot.config
-new file mode 100644
-index 000000000000..aa815761d85e
---- /dev/null
-+++ b/arch/mips/configs/generic/board-ocelot.config
-@@ -0,0 +1,35 @@
-+# require CONFIG_CPU_MIPS32_R2=y
-+
-+CONFIG_LEGACY_BOARD_OCELOT=y
-+
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_NAND_PLATFORM=y
-+CONFIG_MTD_SPI_NOR=y
-+CONFIG_MTD_UBI=y
-+
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+
-+CONFIG_GPIO_SYSFS=y
-+
-+CONFIG_I2C=y
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_MUX=y
-+
-+CONFIG_SPI=y
-+CONFIG_SPI_BITBANG=y
-+CONFIG_SPI_DESIGNWARE=y
-+CONFIG_SPI_SPIDEV=y
-+
-+CONFIG_POWER_RESET=y
-+CONFIG_POWER_RESET_OCELOT_RESET=y
-+
-+CONFIG_MAGIC_SYSRQ=y
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index 2ff3b17bfab1..ba9b2c8cce68 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -27,6 +27,22 @@ config LEGACY_BOARD_SEAD3
- 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
- 	  development boards, which boot using a legacy boot protocol.
- 
-+comment "MSCC Ocelot doesn't work with SEAD3 enabled"
-+	depends on LEGACY_BOARD_SEAD3
-+
-+config LEGACY_BOARD_OCELOT
-+	bool "Support MSCC Ocelot boards"
-+	depends on LEGACY_BOARD_SEAD3=n
-+	select LEGACY_BOARDS
-+	select MSCC_OCELOT
-+
-+config MSCC_OCELOT
-+	bool
-+	select GPIOLIB
-+	select MSCC_OCELOT_IRQ
-+	select SYS_HAS_EARLY_PRINTK
-+	select USE_GENERIC_EARLY_PRINTK_8250
-+
- comment "FIT/UHI Boards"
- 
- config FIT_IMAGE_FDT_BOSTON
-diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
-index 5c31e0c4697d..d03a36f869a4 100644
---- a/arch/mips/generic/Makefile
-+++ b/arch/mips/generic/Makefile
-@@ -14,5 +14,6 @@ obj-y += proc.o
- 
- obj-$(CONFIG_YAMON_DT_SHIM)		+= yamon-dt.o
- obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
-+obj-$(CONFIG_LEGACY_BOARD_OCELOT)	+= board-ocelot.o
- obj-$(CONFIG_KEXEC)			+= kexec.o
- obj-$(CONFIG_VIRT_BOARD_RANCHU)		+= board-ranchu.o
-diff --git a/arch/mips/generic/board-ocelot.c b/arch/mips/generic/board-ocelot.c
-new file mode 100644
-index 000000000000..06d92fb37769
---- /dev/null
-+++ b/arch/mips/generic/board-ocelot.c
-@@ -0,0 +1,78 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Microsemi MIPS SoC support
-+ *
-+ * Copyright (c) 2017 Microsemi Corporation
-+ */
-+#include <asm/machine.h>
-+#include <asm/prom.h>
-+
-+#define DEVCPU_GCB_CHIP_REGS_CHIP_ID	0x71070000
-+#define CHIP_ID_PART_ID			GENMASK(27, 12)
-+
-+#define OCELOT_PART_ID			(0x7514 << 12)
-+
-+#define UART_UART			0x70100000
-+
-+static __init bool ocelot_detect(void)
-+{
-+	u32 rev;
-+	int idx;
-+
-+	/* Look for the TLB entry set up by redboot before trying to use it */
-+	write_c0_entryhi(DEVCPU_GCB_CHIP_REGS_CHIP_ID);
-+	mtc0_tlbw_hazard();
-+	tlb_probe();
-+	tlb_probe_hazard();
-+	idx = read_c0_index();
-+	if (idx < 0)
-+		return 0;
-+
-+	/* A TLB entry exists, lets assume its usable and check the CHIP ID */
-+	rev = __raw_readl((void __iomem *)DEVCPU_GCB_CHIP_REGS_CHIP_ID);
-+
-+	if ((rev & CHIP_ID_PART_ID) != OCELOT_PART_ID)
-+		return 0;
-+
-+	/* Copy command line from bootloader early for Initrd detection */
-+	if (fw_arg0 < 10 && (fw_arg1 & 0xFFF00000) == 0x80000000) {
-+		unsigned int prom_argc = fw_arg0;
-+		const char **prom_argv = (const char **)fw_arg1;
-+
-+		if (prom_argc > 1 && strlen(prom_argv[1]) > 0)
-+			/* ignore all built-in args if any f/w args given */
-+			strcpy(arcs_cmdline, prom_argv[1]);
-+	}
-+
-+	return 1;
-+}
-+
-+static void __init ocelot_earlyprintk_init(void)
-+{
-+	void __iomem *uart_base;
-+
-+	uart_base = ioremap_nocache(UART_UART, 0x20);
-+	setup_8250_early_printk_port((unsigned long)uart_base, 2, 50000);
-+}
-+
-+static void __init ocelot_late_init(void)
-+{
-+	ocelot_earlyprintk_init();
-+}
-+
-+static __init const void *ocelot_fixup_fdt(const void *fdt,
-+					   const void *match_data)
-+{
-+	/* This has to be done so late because ioremap needs to work */
-+	late_time_init = ocelot_late_init;
-+
-+	return fdt;
-+}
-+
-+extern char __dtb_ocelot_pcb123_begin[];
-+
-+MIPS_MACHINE(ocelot) = {
-+	.fdt = __dtb_ocelot_pcb123_begin,
-+	.fixup_fdt = ocelot_fixup_fdt,
-+	.detect = ocelot_detect,
-+};
--- 
-2.16.2
+ Right, sorry about it.
+
+> The following seems to work, to drop the "start address " first then
+> work purely on the hex value (i.e. no need for .* at the front of the
+> sign extension regexes any more):
+> 
+> +entry-y		= $(shell $(OBJDUMP) -f vmlinux 2>/dev/null \
+> +			| sed -n '/^start address / { \
+> +				s/^.* //; \
+> +				s/^0x\([0-7].......\)$$/0x00000000\1/; \
+> +				s/^0x\(........\)$$/0xffffffff\1/; p }')
+> 
+> Look reasonable? Is there a cleaner way?
+
+ Then there's no need to match the beginning again with `^' either.  
+Otherwise I think it's reasonable enough.  I'll post v3.
+
+ Thanks for your input!
+
+  Maciej

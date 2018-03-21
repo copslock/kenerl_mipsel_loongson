@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:35:06 +0100 (CET)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:38114
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994764AbeCUT3IIZVwZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:29:08 +0100
-Received: by mail-qk0-x244.google.com with SMTP id 132so6704790qkd.5
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 12:29:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:35:22 +0100 (CET)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:33968
+        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993973AbeCUT3K1tHdZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:29:10 +0100
+Received: by mail-qt0-x241.google.com with SMTP id l25so6504434qtj.1
+        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 12:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=W43CgS9uC4z2J80mJZf8uddvCw7loIlRWJlpzdQEKqo=;
-        b=o/4xfwR0q53xEI/Q5RJZegVuan86x3BATURzq4ulgcr6JjurKgtOc1OwF5QJYHTGHD
-         ezwwv+sH50WBIlQGCRZjE9L2aiQI/rPINILqsUUsuqja9cb6FuiSDN/8Nn15UCG4tc7+
-         +7sp1Ne4zDff9D+MBG9fgo0bSiKuGAAVuM4E3fsXaYG9yDXJqaAs/Maas+lxPlbG6UXs
-         ZCg3HY1XMtFdbBCbqtOomSZmHc4JNHqgQk5DvNVsemTaw92jCkVMLK1nzJaxFJq/Mhr4
-         Kq0cy/6AdxXZTQUVTca9yid4EElJ/yT0/fGkWO17pzooVy7tMedKEccNh41MhoLowEmN
-         hiTg==
+        bh=a1nTvLl2ek3rZB1tufeF+M4HtL3gpc9/+MWxFzobtyQ=;
+        b=sNTTKnC7SQ4/yXI8rDXqgxWtb2rilyAkJv5VLzyK9iKxERtQ5R78DnZWj5JyrwN0I+
+         u8XDO4hsc99meUW2FGt/fUCMCHv5vLqm23mhOH9mFOUsdoQUZV+azL3QWv3zzcpqo6aH
+         nC0kzga7J0cVQJzWQvo+eQg71OUHYI9h7ZJrrJWx/n18x92TSEYUeKdf3N2vTBY6iY9r
+         gsFf9+75D7xvBlCZDDERFg35YXaIM4I7fWP/RKPVWFtr9zj3wiD2SGVD9XPMiR/mUBsA
+         5xTbY2fmm3BGy5HqfAu8lJWAYFCyYhJyyI4ukUdtCA1k7nrzO5ieQFE6ewevI/dvMq9W
+         U2yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=W43CgS9uC4z2J80mJZf8uddvCw7loIlRWJlpzdQEKqo=;
-        b=G9rq9g8s28VZ0l1bKaNdTIauIwL+i4+dpYo0hTvlW294u82RumPfrzM4yaJzbPeKuq
-         t6ETKE336svqP52tdQqSgl7hsL8j8Kk8nd93UcF4cVBlbqg0Ud7PaG7yxguO6VTY0YC5
-         G9MIF8bj+CKrqgBmfdkm6gYZLvpf0On5MipopShm08Mvs8Vm51Vh5wacWIG+KvRiSGQR
-         6fotk2r2C2+JzafzrijDe0xI65iDm1JMid3g8BdNCFuUkw0S2uTaMbsNUEszkh0vSLZV
-         z3dBt6bpgB+77WBmwkYrOg3WCvbYKRbPv6NSyYP8cKdQcrdVAEixB0P0FzCjXVCLGHOZ
-         oA0A==
-X-Gm-Message-State: AElRT7FK+BTAEXKGdBdpsuqB26o7TLc5nOpSUfqAAYnaNIJguJyuFU1x
-        zCNqZRMn0TrfGRh1Tv1dwvxWPHIY
-X-Google-Smtp-Source: AG47ELuY172q9zpiaxmZcRIY7D2/NovMQvIieBSh5ZFeVE8OW+bzma49D5iqenPmqoCsCo+iPrY/Ew==
-X-Received: by 10.55.110.4 with SMTP id j4mr31535899qkc.272.1521660542112;
-        Wed, 21 Mar 2018 12:29:02 -0700 (PDT)
+        bh=a1nTvLl2ek3rZB1tufeF+M4HtL3gpc9/+MWxFzobtyQ=;
+        b=HfH3oqahH4T6PsIPrwcfTka0tI9Xn7lQEhnUEM+rXpD4pEBLvMtBc8Omyv7yM47NEJ
+         Z3Nz5rRtD8Li2jNVAYInSzP3KASJfrjrEcuBUJiCmvxMxBlskufxFV5+7RZLDSyM+kiM
+         T26jlVX9N9H3pvZggADLUvJ6VaB9J0dKcUFUJMKm4w/cpYG24vEePWM5/7i5ps00xl5f
+         5W/ItGDHfRD+aDMoE+e2nVpt98ooc6g0TNe+t64AnJefcLo6Clnh+3oe6BnzBEpDyICZ
+         cuQIYM7wGT6NJ2wE3hxR50cOqvv/SY+UehrhkJ+jIH9OJSEgXw4D2IAw2XpuXmstEaad
+         2UEQ==
+X-Gm-Message-State: AElRT7H7Lj2uHeOS3BCAGgSE9HjsToeeIXo4UrJgnj7fC8GBtQqUYUgc
+        r9jOv4PH962xIVgjpNiBfRDgig==
+X-Google-Smtp-Source: AIpwx490bfBpQTWUI6+hmhzZMK8Qn7yIyySkLsOqRZR3UewqWHQsEsyjAI5lmYZswNnPFkBbZHsDdg==
+X-Received: by 10.200.7.4 with SMTP id g4mr2916605qth.218.1521660544745;
+        Wed, 21 Mar 2018 12:29:04 -0700 (PDT)
 Received: from localhost.localdomain ([190.210.56.45])
-        by smtp.gmail.com with ESMTPSA id h184sm3859601qkc.78.2018.03.21.12.28.59
+        by smtp.gmail.com with ESMTPSA id h184sm3859601qkc.78.2018.03.21.12.29.02
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Mar 2018 12:29:01 -0700 (PDT)
+        Wed, 21 Mar 2018 12:29:04 -0700 (PDT)
 From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 To:     Mathieu Malaterre <malat@debian.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>
 Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>, kernel@collabora.com,
-        Alex Smith <alex.smith@imgtec.com>,
         Ezequiel Garcia <ezequiel@collabora.co.uk>
-Subject: [PATCH 09/14] mmc: jz4740: Add support for the JZ4780
-Date:   Wed, 21 Mar 2018 16:27:36 -0300
-Message-Id: <20180321192741.25872-10-ezequiel@vanguardiasur.com.ar>
+Subject: [PATCH 10/14] mmc: jz4740: Use dma_request_chan()
+Date:   Wed, 21 Mar 2018 16:27:37 -0300
+Message-Id: <20180321192741.25872-11-ezequiel@vanguardiasur.com.ar>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
 References: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
@@ -53,7 +52,7 @@ Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63132
+X-archive-position: 63133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,298 +69,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Alex Smith <alex.smith@imgtec.com>
+From: Ezequiel Garcia <ezequiel@collabora.co.uk>
 
-Add support for the JZ4780 MMC controller to the jz47xx_mmc driver. There
-are a few minor differences from the 4740 to the 4780 that need to be
-handled, but otherwise the controllers behave the same. The IREG and IMASK
-registers are expanded to 32 bits. Additionally, some error conditions are
-now reported in both STATUS and IREG. Writing IREG before reading STATUS
-causes the bits in STATUS to be cleared, so STATUS must be read first to
-ensure we see and report error conditions correctly.
+Replace dma_request_channel() with dma_request_chan(),
+which also supports probing from the devicetree.
 
-Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-[Ezequiel: rebase and introduce register accessors]
 Tested-by: Mathieu Malaterre <malat@debian.org>
 Signed-off-by: Ezequiel Garcia <ezequiel@collabora.co.uk>
 ---
- drivers/mmc/host/Kconfig      |   9 ++--
- drivers/mmc/host/jz4740_mmc.c | 111 ++++++++++++++++++++++++++++++++++--------
- 2 files changed, 97 insertions(+), 23 deletions(-)
+ drivers/mmc/host/jz4740_mmc.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 620c2d90a646..35a5a5ad65b9 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -766,11 +766,12 @@ config MMC_SH_MMCIF
- 
- 
- config MMC_JZ4740
--	tristate "JZ4740 SD/Multimedia Card Interface support"
--	depends on MACH_JZ4740
-+	tristate "Ingenic JZ47xx SD/Multimedia Card Interface support"
-+	depends on MACH_JZ4740 || MACH_JZ4780
- 	help
--	  This selects support for the SD/MMC controller on Ingenic JZ4740
--	  SoCs.
-+	  This selects support for the SD/MMC controller on Ingenic
-+	  JZ4740, JZ4750, JZ4770 and JZ4780 SoCs.
-+
- 	  If you have a board based on such a SoC and with a SD/MMC slot,
- 	  say Y or M here.
- 
 diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index aa635b458d2c..c3ec8e662706 100644
+index c3ec8e662706..37183fe32ef8 100644
 --- a/drivers/mmc/host/jz4740_mmc.c
 +++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -1,5 +1,7 @@
- /*
-  *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *  Copyright (C) 2013, Imagination Technologies
-+ *
-  *  JZ4740 SD/MMC controller driver
-  *
-  *  This program is free software; you can redistribute  it and/or modify it
-@@ -52,6 +54,7 @@
- #define JZ_REG_MMC_RESP_FIFO	0x34
- #define JZ_REG_MMC_RXFIFO	0x38
- #define JZ_REG_MMC_TXFIFO	0x3C
-+#define JZ_REG_MMC_DMAC		0x44
+@@ -225,31 +225,23 @@ static void jz4740_mmc_release_dma_channels(struct jz4740_mmc_host *host)
  
- #define JZ_MMC_STRPCL_EXIT_MULTIPLE BIT(7)
- #define JZ_MMC_STRPCL_EXIT_TRANSFER BIT(6)
-@@ -105,11 +108,15 @@
- #define JZ_MMC_IRQ_PRG_DONE BIT(1)
- #define JZ_MMC_IRQ_DATA_TRAN_DONE BIT(0)
+ static int jz4740_mmc_acquire_dma_channels(struct jz4740_mmc_host *host)
+ {
+-	dma_cap_mask_t mask;
+-
+-	dma_cap_zero(mask);
+-	dma_cap_set(DMA_SLAVE, mask);
+-
+-	host->dma_tx = dma_request_channel(mask, NULL, host);
+-	if (!host->dma_tx) {
++	host->dma_tx = dma_request_chan(mmc_dev(host->mmc), "tx");
++	if (IS_ERR(host->dma_tx)) {
+ 		dev_err(mmc_dev(host->mmc), "Failed to get dma_tx channel\n");
+-		return -ENODEV;
++		return PTR_ERR(host->dma_tx);
+ 	}
  
-+#define JZ_MMC_DMAC_DMA_SEL BIT(1)
-+#define JZ_MMC_DMAC_DMA_EN BIT(0)
+-	host->dma_rx = dma_request_channel(mask, NULL, host);
+-	if (!host->dma_rx) {
++	host->dma_rx = dma_request_chan(mmc_dev(host->mmc), "rx");
++	if (IS_ERR(host->dma_rx)) {
+ 		dev_err(mmc_dev(host->mmc), "Failed to get dma_rx channel\n");
+-		goto free_master_write;
++		dma_release_channel(host->dma_tx);
++		return PTR_ERR(host->dma_rx);
+ 	}
  
- #define JZ_MMC_CLK_RATE 24000000
+ 	/* Initialize DMA pre request cookie */
+ 	host->next_data.cookie = 1;
  
- enum jz4740_mmc_version {
- 	JZ_MMC_JZ4740,
-+	JZ_MMC_JZ4750,
-+	JZ_MMC_JZ4780,
- };
- 
- enum jz4740_mmc_state {
-@@ -144,7 +151,7 @@ struct jz4740_mmc_host {
- 
- 	uint32_t cmdat;
- 
--	uint16_t irq_mask;
-+	uint32_t irq_mask;
- 
- 	spinlock_t lock;
- 
-@@ -164,8 +171,46 @@ struct jz4740_mmc_host {
-  * trigger is when data words in MSC_TXFIFO is < 8.
-  */
- #define JZ4740_MMC_FIFO_HALF_SIZE 8
-+
-+	void (*write_irq_mask)(struct jz4740_mmc_host *host, uint32_t val);
-+	void (*write_irq_reg)(struct jz4740_mmc_host *host, uint32_t val);
-+	uint32_t (*read_irq_reg)(struct jz4740_mmc_host *host);
- };
- 
-+static void jz4750_mmc_write_irq_mask(struct jz4740_mmc_host *host,
-+				      uint32_t val)
-+{
-+	return writel(val, host->base + JZ_REG_MMC_IMASK);
-+}
-+
-+static void jz4740_mmc_write_irq_mask(struct jz4740_mmc_host *host,
-+				      uint32_t val)
-+{
-+	return writew(val, host->base + JZ_REG_MMC_IMASK);
-+}
-+
-+static void jz4740_mmc_write_irq_reg(struct jz4740_mmc_host *host,
-+				     uint32_t val)
-+{
-+	return writew(val, host->base + JZ_REG_MMC_IREG);
-+}
-+
-+static uint32_t jz4740_mmc_read_irq_reg(struct jz4740_mmc_host *host)
-+{
-+	return readw(host->base + JZ_REG_MMC_IREG);
-+}
-+
-+static void jz4780_mmc_write_irq_reg(struct jz4740_mmc_host *host, uint32_t val)
-+{
-+	return writel(val, host->base + JZ_REG_MMC_IREG);
-+}
-+
-+/* In the 4780 onwards, IREG is expanded to 32 bits. */
-+static uint32_t jz4780_mmc_read_irq_reg(struct jz4740_mmc_host *host)
-+{
-+	return readl(host->base + JZ_REG_MMC_IREG);
-+}
-+
- /*----------------------------------------------------------------------------*/
- /* DMA infrastructure */
- 
-@@ -370,7 +415,7 @@ static void jz4740_mmc_set_irq_enabled(struct jz4740_mmc_host *host,
- 	else
- 		host->irq_mask |= irq;
- 
--	writew(host->irq_mask, host->base + JZ_REG_MMC_IMASK);
-+	host->write_irq_mask(host, host->irq_mask);
- 	spin_unlock_irqrestore(&host->lock, flags);
+ 	return 0;
+-
+-free_master_write:
+-	dma_release_channel(host->dma_tx);
+-	return -ENODEV;
  }
  
-@@ -422,10 +467,10 @@ static unsigned int jz4740_mmc_poll_irq(struct jz4740_mmc_host *host,
- 	unsigned int irq)
- {
- 	unsigned int timeout = 0x800;
--	uint16_t status;
-+	uint32_t status;
- 
- 	do {
--		status = readw(host->base + JZ_REG_MMC_IREG);
-+		status = host->read_irq_reg(host);
- 	} while (!(status & irq) && --timeout);
- 
- 	if (timeout == 0) {
-@@ -525,7 +570,7 @@ static bool jz4740_mmc_read_data(struct jz4740_mmc_host *host,
- 	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RXFIFO;
- 	uint32_t *buf;
- 	uint32_t d;
--	uint16_t status;
-+	uint32_t status;
- 	size_t i, j;
- 	unsigned int timeout;
- 
-@@ -661,8 +706,25 @@ static void jz4740_mmc_send_command(struct jz4740_mmc_host *host,
- 		cmdat |= JZ_MMC_CMDAT_DATA_EN;
- 		if (cmd->data->flags & MMC_DATA_WRITE)
- 			cmdat |= JZ_MMC_CMDAT_WRITE;
--		if (host->use_dma)
--			cmdat |= JZ_MMC_CMDAT_DMA_EN;
-+		if (host->use_dma) {
-+			/*
-+			 * The 4780's MMC controller has integrated DMA ability
-+			 * in addition to being able to use the external DMA
-+			 * controller. It moves DMA control bits to a separate
-+			 * register. The DMA_SEL bit chooses the external
-+			 * controller over the integrated one. Earlier SoCs
-+			 * can only use the external controller, and have a
-+			 * single DMA enable bit in CMDAT.
-+			 */
-+			if (host->version >= JZ_MMC_JZ4780) {
-+				writel(JZ_MMC_DMAC_DMA_EN | JZ_MMC_DMAC_DMA_SEL,
-+				       host->base + JZ_REG_MMC_DMAC);
-+			} else {
-+				cmdat |= JZ_MMC_CMDAT_DMA_EN;
-+			}
-+		} else if (host->version >= JZ_MMC_JZ4780) {
-+			writel(0, host->base + JZ_REG_MMC_DMAC);
-+		}
- 
- 		writew(cmd->data->blksz, host->base + JZ_REG_MMC_BLKLEN);
- 		writew(cmd->data->blocks, host->base + JZ_REG_MMC_NOB);
-@@ -743,7 +805,7 @@ static irqreturn_t jz_mmc_irq_worker(int irq, void *devid)
- 			host->state = JZ4740_MMC_STATE_SEND_STOP;
- 			break;
- 		}
--		writew(JZ_MMC_IRQ_DATA_TRAN_DONE, host->base + JZ_REG_MMC_IREG);
-+		host->write_irq_reg(host, JZ_MMC_IRQ_DATA_TRAN_DONE);
- 
- 	case JZ4740_MMC_STATE_SEND_STOP:
- 		if (!req->stop)
-@@ -773,9 +835,10 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
- {
- 	struct jz4740_mmc_host *host = devid;
- 	struct mmc_command *cmd = host->cmd;
--	uint16_t irq_reg, status, tmp;
-+	uint32_t irq_reg, status, tmp;
- 
--	irq_reg = readw(host->base + JZ_REG_MMC_IREG);
-+	status = readl(host->base + JZ_REG_MMC_STATUS);
-+	irq_reg = host->read_irq_reg(host);
- 
- 	tmp = irq_reg;
- 	irq_reg &= ~host->irq_mask;
-@@ -784,10 +847,10 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
- 		JZ_MMC_IRQ_PRG_DONE | JZ_MMC_IRQ_DATA_TRAN_DONE);
- 
- 	if (tmp != irq_reg)
--		writew(tmp & ~irq_reg, host->base + JZ_REG_MMC_IREG);
-+		host->write_irq_reg(host, tmp & ~irq_reg);
- 
- 	if (irq_reg & JZ_MMC_IRQ_SDIO) {
--		writew(JZ_MMC_IRQ_SDIO, host->base + JZ_REG_MMC_IREG);
-+		host->write_irq_reg(host, JZ_MMC_IRQ_SDIO);
- 		mmc_signal_sdio_irq(host->mmc);
- 		irq_reg &= ~JZ_MMC_IRQ_SDIO;
- 	}
-@@ -796,8 +859,6 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
- 		if (test_and_clear_bit(0, &host->waiting)) {
- 			del_timer(&host->timeout_timer);
- 
--			status = readl(host->base + JZ_REG_MMC_STATUS);
--
- 			if (status & JZ_MMC_STATUS_TIMEOUT_RES) {
- 					cmd->error = -ETIMEDOUT;
- 			} else if (status & JZ_MMC_STATUS_CRC_RES_ERR) {
-@@ -810,7 +871,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
- 			}
- 
- 			jz4740_mmc_set_irq_enabled(host, irq_reg, false);
--			writew(irq_reg, host->base + JZ_REG_MMC_IREG);
-+			host->write_irq_reg(host, irq_reg);
- 
- 			return IRQ_WAKE_THREAD;
- 		}
-@@ -844,9 +905,7 @@ static void jz4740_mmc_request(struct mmc_host *mmc, struct mmc_request *req)
- 
- 	host->req = req;
- 
--	writew(0xffff, host->base + JZ_REG_MMC_IREG);
--
--	writew(JZ_MMC_IRQ_END_CMD_RES, host->base + JZ_REG_MMC_IREG);
-+	host->write_irq_reg(host, ~0);
- 	jz4740_mmc_set_irq_enabled(host, JZ_MMC_IRQ_END_CMD_RES, true);
- 
- 	host->state = JZ4740_MMC_STATE_READ_RESPONSE;
-@@ -973,6 +1032,7 @@ static void jz4740_mmc_free_gpios(struct platform_device *pdev)
- 
- static const struct of_device_id jz4740_mmc_of_match[] = {
- 	{ .compatible = "ingenic,jz4740-mmc", .data = (void *) JZ_MMC_JZ4740 },
-+	{ .compatible = "ingenic,jz4780-mmc", .data = (void *) JZ_MMC_JZ4780 },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, jz4740_mmc_of_match);
-@@ -1017,6 +1077,19 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 			goto err_free_host;
- 	}
- 
-+	if (host->version >= JZ_MMC_JZ4780) {
-+		host->write_irq_reg = jz4780_mmc_write_irq_reg;
-+		host->read_irq_reg = jz4780_mmc_read_irq_reg;
-+	} else {
-+		host->write_irq_reg = jz4740_mmc_write_irq_reg;
-+		host->read_irq_reg = jz4740_mmc_read_irq_reg;
-+	}
-+
-+	if (host->version >= JZ_MMC_JZ4750)
-+		host->write_irq_mask = jz4750_mmc_write_irq_mask;
-+	else
-+		host->write_irq_mask = jz4740_mmc_write_irq_mask;
-+
- 	host->irq = platform_get_irq(pdev, 0);
- 	if (host->irq < 0) {
- 		ret = host->irq;
-@@ -1055,7 +1128,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	host->mmc = mmc;
- 	host->pdev = pdev;
- 	spin_lock_init(&host->lock);
--	host->irq_mask = 0xffff;
-+	host->irq_mask = ~0;
- 
- 	jz4740_mmc_reset(host);
- 
+ static inline struct dma_chan *jz4740_mmc_get_dma_chan(struct jz4740_mmc_host *host,
 -- 
 2.16.2

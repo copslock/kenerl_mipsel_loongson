@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:32:45 +0100 (CET)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:33964
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:33:01 +0100 (CET)
+Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:41286
         "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994032AbeCUT2mrbuEZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:28:42 +0100
-Received: by mail-qt0-x242.google.com with SMTP id l25so6502972qtj.1
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 12:28:42 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23994680AbeCUT2pZF3MZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:28:45 +0100
+Received: by mail-qt0-x242.google.com with SMTP id j4so6502291qth.8
+        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 12:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=Pg17qXyloENPmgjD7pnIvtfo1P7Zu48l7jG1AOteFh4=;
-        b=ihvxDwFmAACW9xUv4pgfec+pFD1oFgi/uJw4OdTapqAyFJwz6VX1zDmaDMz4QKjHux
-         3JBP33uIXn7qQDLF+KvZZFvJ6cbagq1GS9nsAm360QSrKXC6zm4r9LZn6UAyjSm+isDH
-         Xi3KFoZ5AW2f8LVSo89huJLvum5c87enA7Kc7TdlpeabiArnEcOrdU1PeaeObAtSm+ES
-         26ieW8+KSpYuLzStjDDqbJzqClOm8kiBsEHtoPdj/Ot1S8F+p3Qar3oFvJ7+E7oUzKVg
-         DQq9m5Op3fIiOuDbYnQBTeW6ALKqlPeKktcl2N4Tc2ZgpGvFYUmkJHwbnV0NNwjkGjH8
-         IlVQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=qPSnQo8Fvk3KQ1TpaLjazN5Q//B2aJlpJq/5Gx/pvSg=;
+        b=pRv7XScY5yBV3Gwtq2NhztFtYIJQTHBCzGb3M0DOuOfytnFis5FsHqcZpbdvfa/16i
+         TH/NKQ2AZBftYSYFt+wjYv6Mfya5NjQjBl5lGapC7XEk+fQTJn5vdR9sD5xeODfJtuWM
+         ILxTLUqoHh6EVamcuXBdBmiUvnXnceBoLltYEc6rGAIwFoU8dve68sYm0O/aJbdOVggX
+         YXNjisj7a7bkaziTIz5ifMVYgcS++rglvoIMd+wahBI7ofi1JUxaKwSf0EPv9uozocEi
+         3RH1cmBtecehTOA7gKwU7hdbpaW+3b8eIfwt0xUVjVfKo6YfOspM3vAhpntx3iTPCl3j
+         UdLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Pg17qXyloENPmgjD7pnIvtfo1P7Zu48l7jG1AOteFh4=;
-        b=rD3vVF8UDjEVri22Bep0b3WkGg6+x4GlDlRAUlypOSu2qxsfP5773vEt6BFA5eaM9y
-         copAxD+tQR7qxVHRFIaPIAxM4tdzT0pF5svRR7UeZWqS/Rymn9t5A/rqMToqYRD1JwJh
-         5tUrcgoq9vqYpcnnBLXcFm/VhLAHt9sxcWBsmZ+NOnMHItjeDU4Jmy6MnaJPsyOXY+pM
-         PAlhOAbitrprA2+PiEa9ilArMsQA4cqGv8vfavaFZtiWATe0GEaWrHJ5F/6x/wLc8vG7
-         BvDfIvmHbxPZd45x8oIXXW2TcX5JWke6vKwxm6BOdwW8ZziWuGXi4Bm7GN66uMcsgO+r
-         ZFbw==
-X-Gm-Message-State: AElRT7FDcj0od8v8m/7ZViabakB2U3K+Xfl8zLvgIY9h2SGWPDulx/6U
-        JgWanXw84HqKMVshQ/TppalWIg==
-X-Google-Smtp-Source: AIpwx48hfGqP18/uL/ae3WSka8DAu2OFibTUJfNnvLdfwiFebWUJTG/TQDQrLjxh1Yb8r9nUBKkMfQ==
-X-Received: by 10.237.50.100 with SMTP id y91mr3631207qtd.146.1521660516559;
-        Wed, 21 Mar 2018 12:28:36 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=qPSnQo8Fvk3KQ1TpaLjazN5Q//B2aJlpJq/5Gx/pvSg=;
+        b=WTCSjtKaMpSzd/HpoaqKMlgGIGrEU99SmGuVvVENdxpdEuBIYO2p9dT8sY6TeKE4T0
+         dJVRx+rM6u7ESDIaeDzBSF7DuaJA6gruZGTiarxV+UKI+MI9n9TQVawEH0nWCmazOyc7
+         M6Uj4XJQ7TmAoN77YAt1pH4/kGoniIF277fUiJWLq5UMZB0i5fAA65vivGuQd9wXATU1
+         +rYgaw/WDZaHVZ/oLZeyKH7US9859CNZ3nGMQxy2a6sRgaxlpLHlmfZyxTnjKtv2AVif
+         4rNhlRvo5PTKfffsGjxtEgVrRvO5V61tGEe/Y6sM74zDJxcPvWMfrTuD7tf8TWQMFIXi
+         ygag==
+X-Gm-Message-State: AElRT7EuJR3oTWtW/KuIqBuy77cH84yL0YEK7+WVtrlHg/rI3Yhe5Iam
+        EIpQe4c9BfMvSu6pNZfT6QCKqQ==
+X-Google-Smtp-Source: AG47ELux32y7hcRDntIkJxqDPbWSYBV6KBfzrn7KSdb9xUffRU9c8xBrR+GiQ3NBCz9FuH5XYGtIIQ==
+X-Received: by 10.200.62.10 with SMTP id z10mr31810684qtf.15.1521660519572;
+        Wed, 21 Mar 2018 12:28:39 -0700 (PDT)
 Received: from localhost.localdomain ([190.210.56.45])
-        by smtp.gmail.com with ESMTPSA id h184sm3859601qkc.78.2018.03.21.12.28.34
+        by smtp.gmail.com with ESMTPSA id h184sm3859601qkc.78.2018.03.21.12.28.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Mar 2018 12:28:35 -0700 (PDT)
+        Wed, 21 Mar 2018 12:28:38 -0700 (PDT)
 From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 To:     Mathieu Malaterre <malat@debian.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>
 Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>, kernel@collabora.com,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>
-Subject: [PATCH v3 00/14] Enable SD/MMC on JZ4780 SoCs
-Date:   Wed, 21 Mar 2018 16:27:27 -0300
-Message-Id: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
+        Alex Smith <alex.smith@imgtec.com>, stable@vger.kernel.org
+Subject: [PATCH 01/14] mmc: jz4740: Fix race condition in IRQ mask update
+Date:   Wed, 21 Mar 2018 16:27:28 -0300
+Message-Id: <20180321192741.25872-2-ezequiel@vanguardiasur.com.ar>
 X-Mailer: git-send-email 2.16.2
+In-Reply-To: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
+References: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
 Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63123
+X-archive-position: 63124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,65 +69,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Ezequiel Garcia <ezequiel@collabora.co.uk>
+From: Alex Smith <alex.smith@imgtec.com>
 
-This patchset adds support for SD/MMC on JZ4780 based
-platforms, such as the MIPS Creator CI20 board.
+A spinlock is held while updating the internal copy of the IRQ mask,
+but not while writing it to the actual IMASK register. After the lock
+is released, an IRQ can occur before the IMASK register is written.
+If handling this IRQ causes the mask to be changed, when the handler
+returns back to the middle of the first mask update, a stale value
+will be written to the mask register.
 
-Most of the work has been done by Alex, Paul and Zubair,
-while I've only prepared the upstream submission, cleaned
-some patches, and written some commit logs where needed.
+If this causes an IRQ to become unmasked that cannot have its status
+cleared by writing a 1 to it in the IREG register, e.g. the SDIO IRQ,
+then we can end up stuck with the same IRQ repeatedly being fired but
+not handled. Normally the MMC IRQ handler attempts to clear any
+unexpected IRQs by writing IREG, but for those that cannot be cleared
+in this way then the IRQ will just repeatedly fire.
 
-All praises should go to them, all rants to me.
+This was resulting in lockups after a while of using Wi-Fi on the
+CI20 (GitHub issue #19).
 
-The series is based on v4.16-rc4.
+Resolve by holding the spinlock until after the IMASK register has
+been updated.
 
-Changes from v2:
-  * Fix commit log in "mmc: dt-bindings: add MMC support to JZ4740 SoC"
+Cc: stable@vger.kernel.org
+Link: https://github.com/MIPS/CI20_linux/issues/19
+Fixes: 61bfbdb85687 ("MMC: Add support for the controller on JZ4740 SoCs.")
+Tested-by: Mathieu Malaterre <malat@debian.org>
+Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+---
+ drivers/mmc/host/jz4740_mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes from v1:
-  * Reordered patches, fixes first, for easier backporting.
-  * Added Link and Fixes tags to patch "Fix race condition",
-    for easier backporting.
-  * Enabled the DMA in the dtsi for jz4780, dropped it from the ci20 dts.
-  * Reworded config and help user visible text.
-  * Reworded commit logs, using imperative.
-  * Re-authored my patches, as Collabora is partially
-    sponsoring them.
-
-
-Alex Smith (3):
-  mmc: jz4740: Fix race condition in IRQ mask update
-  mmc: jz4740: Set clock rate to mmc->f_max rather than JZ_MMC_CLK_RATE
-  mmc: jz4740: Add support for the JZ4780
-
-Ezequiel Garcia (9):
-  mmc: jz4780: Order headers alphabetically
-  mmc: jz4740: Use dev_get_platdata
-  mmc: jz4740: Introduce devicetree probe
-  mmc: dt-bindings: add MMC support to JZ4740 SoC
-  mmc: jz4740: Use dma_request_chan()
-  MIPS: dts: jz4780: Add DMA controller node to the devicetree
-  MIPS: dts: jz4780: Add MMC controller node to the devicetree
-  MIPS: dts: ci20: Enable MMC in the devicetree
-  MIPS: configs: ci20: Enable DMA and MMC support
-
-Paul Cercueil (1):
-  mmc: jz4740: Fix error exit path in driver's probe
-
-Zubair Lutfullah Kakakhel (1):
-  mmc: jz4740: Reset the device requesting the interrupt
-
- Documentation/devicetree/bindings/mmc/jz4740.txt |  38 ++++
- arch/mips/boot/dts/ingenic/ci20.dts              |  34 ++++
- arch/mips/boot/dts/ingenic/jz4780.dtsi           |  52 +++++
- arch/mips/configs/ci20_defconfig                 |   3 +
- drivers/mmc/host/Kconfig                         |   9 +-
- drivers/mmc/host/jz4740_mmc.c                    | 230 ++++++++++++++++-------
- include/dt-bindings/dma/jz4780-dma.h             |  49 +++++
- 7 files changed, 345 insertions(+), 70 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mmc/jz4740.txt
- create mode 100644 include/dt-bindings/dma/jz4780-dma.h
-
+diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+index 712e08d9a45e..a0168e9e4fce 100644
+--- a/drivers/mmc/host/jz4740_mmc.c
++++ b/drivers/mmc/host/jz4740_mmc.c
+@@ -362,9 +362,9 @@ static void jz4740_mmc_set_irq_enabled(struct jz4740_mmc_host *host,
+ 		host->irq_mask &= ~irq;
+ 	else
+ 		host->irq_mask |= irq;
+-	spin_unlock_irqrestore(&host->lock, flags);
+ 
+ 	writew(host->irq_mask, host->base + JZ_REG_MMC_IMASK);
++	spin_unlock_irqrestore(&host->lock, flags);
+ }
+ 
+ static void jz4740_mmc_clock_enable(struct jz4740_mmc_host *host,
 -- 
 2.16.2

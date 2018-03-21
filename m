@@ -1,34 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 04:02:30 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:38289 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992420AbeCUDCWZliIJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Mar 2018 04:02:22 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 9110CAF04;
-        Wed, 21 Mar 2018 03:02:16 +0000 (UTC)
-From:   NeilBrown <neil@brown.name>
-To:     John Crispin <john@phrozen.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 09:52:22 +0100 (CET)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:33881 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbeCUIwO2GiTX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 09:52:14 +0100
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 21 Mar 2018 08:52:05 +0000
+Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 21
+ Mar 2018 01:52:11 -0700
+Subject: Re: [PATCH v2] MIPS: ralink: fix booting on mt7621
+To:     NeilBrown <neil@brown.name>, John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>
-Date:   Wed, 21 Mar 2018 14:02:10 +1100
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] MIPS: ralink: fix booting on mt7621
-In-Reply-To: <87605r9mwf.fsf@notabene.neil.brown.name>
-References: <87efkf9z0o.fsf@notabene.neil.brown.name> <87605r9mwf.fsf@notabene.neil.brown.name>
-Message-ID: <871sge872l.fsf@notabene.neil.brown.name>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+References: <87efkf9z0o.fsf@notabene.neil.brown.name>
+ <87605r9mwf.fsf@notabene.neil.brown.name>
+ <cc33f000-16ed-b331-53b7-d767e20a4a9c@mips.com>
+ <874lla874z.fsf@notabene.neil.brown.name>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <a27180db-4fcf-7b6d-2cac-03aab25a71a6@mips.com>
+Date:   Wed, 21 Mar 2018 08:51:58 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-Return-Path: <neil@brown.name>
+In-Reply-To: <874lla874z.fsf@notabene.neil.brown.name>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.155.41]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1521622325-321459-16024-41654-1
+X-BESS-VER: 2018.3-r1803192001
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191261
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63086
+X-archive-position: 63087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: neil@brown.name
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,119 +62,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Hi Neil,
 
+On 21/03/18 03:00, NeilBrown wrote:
+> On Tue, Mar 20 2018, Matt Redfearn wrote:
+> 
+>> Hi Neil,
+>>
+>>
+>> On 20/03/18 08:22, NeilBrown wrote:
+>>>
+>>> Further testing showed that the original version of this
+>>> patch wasn't 100% reliable.  Very occasionally the read
+>>> of SYSC_REG_CHIP_NAME0 returns garbage.  Repeating the
+>>> read seems to be reliable, but it hasn't happened enough
+>>> for me to be completely confident.
+>>> So this version repeats that first read.
+>>
+>> You almost certainly need a sync() to ensure that the write to gcr_reg0
+>> has completed before attempting to read sysc + SYSC_REG_CHIP_NAME0.
+> 
+> That sound like exactly the right sort of thing to do, though
+> I assume you mean __sync().
 
-Since commit 3af5a67c86a3 ("MIPS: Fix early CM probing") the MT7621
-has not been able to boot.
+Indeed I did :-)
 
-This patched caused mips_cm_probe() to be called before
-mt7621.c::proc_soc_init().
+> 
+> I tried to reproduce the problem so I could test the fix, and of course
+> I failed. Over 700 reboot cycles and never read any garbage from
+> SYSC_REG_CHIP_NAME0.
 
-prom_soc_init() has a comment explaining that mips_cm_probe()
-"wipes out the bootloader config" and means that configuration
-registers are no longer available.  It has some code to re-enable
-this config.
+Funny how things conspire like that :-) __sync() is definitely the 
+correct barrier required to ensure the write completes before the read 
+begins and will guarantee that the memory operations are ordered.
 
-Before this re-enable code is run, the sysc register cannot be
-read, so when SYSC_REG_CHIP_NAME0 is read, a garbage value
-is returned and panic() is called.
+Thanks,
+Matt
 
-If we move the config-repair code to the top of prom_soc_init(),
-the registers can be read and boot can proceed.
-
-Very occasionally, the first register read after the reconfiguration
-returns garbage.  So I added a call to __sync().
-
-Fixes: 3af5a67c86a3 ("MIPS: Fix early CM probing")
-Signed-off-by: NeilBrown <neil@brown.name>
-=2D--
- arch/mips/ralink/mt7621.c | 42 ++++++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 20 deletions(-)
-
-diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
-index 1b274742077d..d2718de60b9b 100644
-=2D-- a/arch/mips/ralink/mt7621.c
-+++ b/arch/mips/ralink/mt7621.c
-@@ -170,6 +170,28 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
- 	u32 n1;
- 	u32 rev;
-=20
-+	/* Early detection of CMP support */
-+	mips_cm_probe();
-+	mips_cpc_probe();
-+
-+	if (mips_cps_numiocu(0)) {
-+		/*
-+		 * mips_cm_probe() wipes out bootloader
-+		 * config for CM regions and we have to configure them
-+		 * again. This SoC cannot talk to pamlbus devices
-+		 * witout proper iocu region set up.
-+		 *
-+		 * FIXME: it would be better to do this with values
-+		 * from DT, but we need this very early because
-+		 * without this we cannot talk to pretty much anything
-+		 * including serial.
-+		 */
-+		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
-+		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
-+				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
-+		__sync();
-+	}
-+
- 	n0 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
- 	n1 =3D __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
-=20
-@@ -194,26 +216,6 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
-=20
- 	rt2880_pinmux_data =3D mt7621_pinmux_data;
-=20
-=2D	/* Early detection of CMP support */
-=2D	mips_cm_probe();
-=2D	mips_cpc_probe();
-=2D
-=2D	if (mips_cps_numiocu(0)) {
-=2D		/*
-=2D		 * mips_cm_probe() wipes out bootloader
-=2D		 * config for CM regions and we have to configure them
-=2D		 * again. This SoC cannot talk to pamlbus devices
-=2D		 * witout proper iocu region set up.
-=2D		 *
-=2D		 * FIXME: it would be better to do this with values
-=2D		 * from DT, but we need this very early because
-=2D		 * without this we cannot talk to pretty much anything
-=2D		 * including serial.
-=2D		 */
-=2D		write_gcr_reg0_base(MT7621_PALMBUS_BASE);
-=2D		write_gcr_reg0_mask(~MT7621_PALMBUS_SIZE |
-=2D				    CM_GCR_REGn_MASK_CMTGT_IOCU0);
-=2D	}
-=20
- 	if (!register_cps_smp_ops())
- 		return;
-=2D-=20
-2.14.0.rc0.dirty
-
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlqxyzIACgkQOeye3VZi
-gbkyiA//WcDe/Lw0u1r6cPEEBwG2nmNfaSUtB2Gx7nKRr2GqZrUmhrik60RZCA78
-q7h17ofR2+g2hhloHh+HQ4n7k+/BlVcwGx5gPX34WemNijbwNKTnqKQSLQABfDou
-8V9QB+fsoQ2ykKlOF6eoRKrO0LDa+/DuypcJCIYIg+cRmZ9XfynKKs5DNptOWpWt
-RlXQZSGnAh2TuU4Jp9zZPZN5o5hxLY44RZKZvHCbkmwUkc5G1g+dkZndyxadAQkp
-TKu5Ibe4ra3gNW0QVkJPE21sCmiUNFwcj6dpgyglemyAPYm9rDvb53hNMAoESj67
-l8owbnzsLty94AX9QZCbCuKhfyv84aSo6R6Tyo8O7C48LvlR+tnQxpMdMT6JPKE5
-OMQXaRwgbC0yJebFsQ4tLRwq7iYK44Ef/alyZHOAqxSQry8OcRTh7+mqtf6jK5lx
-CbFKmK3FK4v7nEqPQrgfgpsC9Un9NjbZW8MWjyGWeTnbIr8nvd056XFSiDgPsSeb
-zZE8rcuGTs6UCxRjuycSOB553y7O75dB3uOtoEufWi0eTLi2cY+uutdiWCEWDWwQ
-tJfEhgfE2xcNK/XDvec1fmrK21PM1EWtu0Zp6+JgfDlpSQsIfBOLRaGW4W5xzAAT
-NlsffJ02qNVJN+9t1KrHPDedgcFYKdjf8YB+rAb0qYGzFqm48v4=
-=L1Wt
------END PGP SIGNATURE-----
---=-=-=--
+> 
+> So I cannot test that this works, but I have tested that it doesn't
+> cause any obvious regression.
+> I'll send the v3 patch separately.
+> 
+> Thanks a lot,
+> NeilBrown
+> 

@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 23:56:09 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:52210 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 00:53:09 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:60704 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993945AbeCUWz75YBK6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Mar 2018 23:55:59 +0100
+        id S23993612AbeCUXxBhxEuP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Mar 2018 00:53:01 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37C1A2172C;
-        Wed, 21 Mar 2018 22:55:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 37C1A2172C
+        by mail.kernel.org (Postfix) with ESMTPSA id CF27620685;
+        Wed, 21 Mar 2018 23:52:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org CF27620685
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 21 Mar 2018 22:55:48 +0000
+Date:   Wed, 21 Mar 2018 23:52:50 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/6] MIPS: add support for Microsemi MIPS SoCs
-Message-ID: <20180321225547.GB13126@saruman>
-References: <20180320130801.9247-1-alexandre.belloni@bootlin.com>
+To:     NeilBrown <neil@brown.name>
+Cc:     John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: ralink: remove ralink_halt()
+Message-ID: <20180321235249.GC13126@saruman>
+References: <87370v9mkg.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3lcZGd9BuhuYXNfi"
+        protocol="application/pgp-signature"; boundary="vEao7xgI/oilGqZ+"
 Content-Disposition: inline
-In-Reply-To: <20180320130801.9247-1-alexandre.belloni@bootlin.com>
+In-Reply-To: <87370v9mkg.fsf@notabene.neil.brown.name>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63140
+X-archive-position: 63141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,58 +48,64 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---3lcZGd9BuhuYXNfi
+--vEao7xgI/oilGqZ+
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 20, 2018 at 02:07:55PM +0100, Alexandre Belloni wrote:
-> Hi,
+On Tue, Mar 20, 2018 at 07:29:51PM +1100, NeilBrown wrote:
 >=20
-> This patch series adds initial support for the Microsemi MIPS SoCs. It
-> is currently focusing on the Microsemi Ocelot (VSC7513, VSC7514).
+> ralink_halt() does nothing that machine_halt()
+> doesn't already do, so it adds no value.
 >=20
-> Changes in v6:
->  - Fixup SPDX identifiers
->  - remove unit-address for cpuintc
->  - add unit-address for ahb
->  - remove CONFIG_32BIT requirement (implied by CONFIG_CPU_MIPS32_R2)
->  - Add TLB entry lookup provided by James
->  - Readd vendor prefix addition
+> It actually causes incorrect behaviour due to the
+> "unreachable()" at the end.  This tell the compiler that the
+> end of the function will never be reached, which isn't true.
+> The compiler responds by not adding a 'return' instruction,
+> so control simply moves on to whatever bytes come afterwards
+> in memory.  In my tested, that was the ralink_restart()
+> function.  This means that an attempt to 'halt' the machine
+> would actually cause a reboot.
 >=20
+> So remove ralink_halt() so that a 'halt' really does halt.
 >=20
-> Alexandre Belloni (6):
->   dt-bindings: Add vendor prefix for Microsemi Corporation
->   dt-bindings: mips: Add bindings for Microsemi SoCs
->   MIPS: mscc: add ocelot dtsi
->   MIPS: mscc: add ocelot PCB123 device tree
->   MIPS: generic: Add support for Microsemi Ocelot
->   MAINTAINERS: Add entry for Microsemi MIPS SoCs
+> Signed-off-by: NeilBrown <neil@brown.name>
 
-Thanks Alexandre, I've now applied these 6 patches for 4.17.
+Thanks, I've cosmetically tweaked the commit message (mainly reflow to
+72 characters) and added:
+
+Fixes: c06e836ada59 ("MIPS: ralink: adds reset code")
+Cc: <stable@vger.kernel.org> # 3.9+
+
+and applied for 4.16.
+
+BTW, I'm intrigued to know if there's a particular reason you don't
+author / sign-off as "Neil Brown"? Its supposed to be real names, though
+"NeilBrown" is hardly difficult to figure out so I don't actually
+object.
 
 Cheers
 James
 
---3lcZGd9BuhuYXNfi
+--vEao7xgI/oilGqZ+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqy4vMACgkQbAtpk944
-dnrWSQ/9G3R2jl494WIl6nbqk/95tvveya0g9OL86xQhjs0lyUPxbPJxvFpA4Gra
-227J8v4LzBzXhec5MbpfXV4cLP6HSvOqeXk8GRmUMMzw+ZBgiGYN3caig421x4sR
-1+RXOO9UPxELhqUVJPHx6u3hUV5OpitT1YLZRdCNutzE+Mqi4xYM8ZUKCO/fOSZh
-yOMpJjPB6FZX7zb8UJNNn6+QpF1RvFgETJlLtnbk0SkQRjhYUHzdGwnPDkLkIDvE
-wui5P4LpWCu1VqaB0c7HY7a9hiTVbT0+tGK8+nq4DBZQawF+AoI90uStcEUxYkQG
-8YicB5AiO6XbSuB8GRTednAgMyvnnTmVFsgtaMNPxlsE2u2PxOv6N2feE7ybGhuC
-qreHj6n9Z3XALROAZR2nMCZgG9QwVN/hp1PIH4WtlLqsQ/EEg9IdqaMYM2lK2LCY
-cNOPFZHQy8ufXFIwnTQ2Y1U4haF2PgWEk48K3qewkp5bqCfb5QyKMYL9fbvMIh/G
-uuY7ST8c7EcDea5QdW0vZFv1qeLDPAMvVLJtkUP03B/50cqwqciV48NVBhq3EuAm
-3daFhAAY4OcvCWxTaZZbv5/UtJHm/Ly4yBC1NGjwtvaivNM7Xm+lxQqgK9NvEDvs
-T8DE/rFcJcS0L/p01SFmee9hsysOF8vD9Qo2b2S6FpRIsHdSViY=
-=ddab
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqy8FEACgkQbAtpk944
+dnocMBAAwMcM/Wl7R8i+9/r0Vbda5XdgMxOVOjqEG2FRcxCy0XRSbQiwjvOBn1es
+L4AnIIhYJxkb0UEPXo3E82yf6ZHwWVnTO1W+IpgiRzzDjySIE7K6Nksl2mCRH34O
+isELVoDxMpiqkVVWsp37B5mILf5vmizFvhr/q1pJla6b+fSEb8TWmlN6rsA4vb6j
+pJ6PBPLYLJUDlq0oORFsq12LikI3+kpn2ToHMV37IOSdTlB8n4w9T/jtOueQwYbu
+NDP5BZUL8pABu/pcDq9XkqWgNcR9Wpee3SWFYSLYwoowFPeDYcUmAi7B3MqRCfbv
+S8VJU/zxa5CoPWtDkVgfRrb6e+jhn2tNEpYWUTwo+mG8U+7vp99Tejtje/HWuBCN
+QYOvZ9kjdJwjgmhngiP4SKrsJMuPVLCpmDf8Dv5KyZT226xROAiv5XFD2XmrR3jY
+B+UV8kD5y6RhmMTQfl9cIMplYWqSIgdN2ugya8jsUGvn+7qauXnQP/hxqdga6lKW
+cxQG4Hu8NpXjXSVMpYgcLaFEpPgK7ioL7oRoMC6hbE+Pq+MiOwAQUv2Sii3zr4lW
+0KrGwb1yYpBfufKBRCoELIQPuFcKy5tJ/9C1UJbjqhZnDNXr1OF7NhetY9fZPwFK
+esh4DLxQJMUO3Koij1swK+bRba/gpIOtDd93KgubH9+wqKNCnuc=
+=1kWr
 -----END PGP SIGNATURE-----
 
---3lcZGd9BuhuYXNfi--
+--vEao7xgI/oilGqZ+--

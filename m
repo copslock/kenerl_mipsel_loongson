@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:34:19 +0100 (CET)
-Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:46271
-        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994762AbeCUT3AZJRVZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:29:00 +0100
-Received: by mail-qk0-x242.google.com with SMTP id o184so6683777qkd.13
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 12:29:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:34:38 +0100 (CET)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:34633
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994763AbeCUT3CGMMjZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:29:02 +0100
+Received: by mail-qk0-x244.google.com with SMTP id z184so6722048qkc.1
+        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 12:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=vanguardiasur-com-ar.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=iwHKDDFJ/QYfLeSBVgZ0kWOqtItUVEogr8yyjukUykQ=;
-        b=atlGhdED0bzv+F+DqDwD/PvMAZECoI6iftJ20+c8RZdJzolxdTAgW3Gcg/MEe5mk6q
-         kvyCbIU3K6ZuZ2EvFK3OXCKCo+rF8hez+2UkhJ+yMERq/0lEOaaB1mgenSpHREQAR7q0
-         T0W66ktPvKXUXuuy9DQJmGYwRQHjwA23mcV4aYOIaxF7GRWL/Z3jOCT5DIB7VSyecSKM
-         4hyJGtbV8nvkFAwIJVQP9mKL2bqUlb4AGuEObBO3TSeu0A2E1ZBZP7LX/q1AQzmjgKPy
-         A9IBDOhGGtEGDcyVSzFJ4QvDaJzPNbu1MuxqkLygxUA6LV8INEPwOsQbVAamKAgkyMTy
-         jzfg==
+        bh=c33eXkoTAqjBPjksdgnedmVe3xN0ZA6ftlENmZCV71k=;
+        b=eZP8y1rFEc+RNxZzEBiURCoY9kqTlkrNQc4WIey/nP2towwESV3Dmf/k3tA7AroW+/
+         wg7NebTkFvduleBs24cypeGnAQnhwQy1xrNS0rZlAMTFN+qgrfy47YFWqlI5C9zE4Of8
+         AeoybHC7P1twIomtKwkZqKtcae5St+I5ZTH439Gaek8p9DVew4KS8ynp7W8oGAD/fwlq
+         xOW1UEB9E4RTyxtVLlU67rbtvtDux6WP5UiGAlQZ6BjdF/NvpuQw3VEhd+HaThrGALux
+         e2VuoEO1y4fI0sq64vuE/rCxPuTF7EjMgbZjGW0/BRt8LAVRdYpUlqlWgCB+cb0h+POC
+         kEuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=iwHKDDFJ/QYfLeSBVgZ0kWOqtItUVEogr8yyjukUykQ=;
-        b=G4k3TAMzxQ29HRHGkJtVTyaKCAEwILDo02CHyH50MwGg78LiPf3zo3wPHcNgjeUc39
-         FpOL6e8zz0YyXZqYoAhcDexRN4JuZHw9IZtaXfOct3LEb1J5pn4hRU0/KGKQ5TLgooZ7
-         eQZs3wv00adb6SLr6EHyg1B5fSvAs/s48OCQi7u13WW2P28/PamyYHeOmIKtPW52WdNn
-         e2YA+uwYe4G+Ueh72Cu2ixeigp8sGtvzDlr/NVa+5kb19npCtrAobFrGYCVvWNH/9sfa
-         JiDB1Wy9E7ks0NaUcBqO/RX5uto2BA25TuvQIUH/4Jf8XT2206vwY0lVSRbosgfrlsJH
-         Eqaw==
-X-Gm-Message-State: AElRT7Eknp+1xjUaB4Fs1+4Wo229jFkVUNZ6mpKq68zWVXHcv1xIDBpN
-        w+I2uV16jPPtUXne31j1G6/7GQ==
-X-Google-Smtp-Source: AIpwx4/2qonoBZbBbK4TZHBQETwWR9TFWVhL0L29K7hh9OlGpIvEDmWMWGbn7EVvQgq5gyCRQJwmyg==
-X-Received: by 10.55.192.151 with SMTP id v23mr1110356qkv.83.1521660533274;
-        Wed, 21 Mar 2018 12:28:53 -0700 (PDT)
+        bh=c33eXkoTAqjBPjksdgnedmVe3xN0ZA6ftlENmZCV71k=;
+        b=PSBJa796NqS2R8FHeUn4cJ1UvCFQZu56TlPdOKcSF+MJ+lNuxAN+B5ubLAjvr6h3JZ
+         pLK6AViGBgLqm0hpC3Cgjb9sXOAyMVc/vBXC78XAdc0oJClwiCplSFhAeHPF9tD4yBsO
+         xI08jBoH5EwPnt6oVXikG/Xr8nayRTwSL+X2lI2BFtKZp/VuJ8IlhqJcT8NP0ruVom8W
+         HpIjDivKUYoz5Z7kPwLZ4QlgbLC3TsadK/D6i5w8xSU6MdXMEDktq1dCpp4E3tvOoxAZ
+         UyHbqH1zJnyoGGV+gZgtesmlSdxnbktdUrU3r29XV7OEqF++DoIXzOVF++O+Dhh+zUw4
+         q/Iw==
+X-Gm-Message-State: AElRT7FlUGdrBgOGAVdTuyva+86oq7clKegxzSbAeRwd7Tt+zKfHc+Z0
+        4VBYW8DqSDFeMKZ67typZJqZOg==
+X-Google-Smtp-Source: AG47ELtIPk+5mFpfnt/pQ1umRZTGW6rbrkyIxTIsUrXZ1DWOIc/Hp4tJUjS475PC+3cDT+r7r9Gd2g==
+X-Received: by 10.55.159.204 with SMTP id i195mr7212781qke.188.1521660536291;
+        Wed, 21 Mar 2018 12:28:56 -0700 (PDT)
 Received: from localhost.localdomain ([190.210.56.45])
-        by smtp.gmail.com with ESMTPSA id h184sm3859601qkc.78.2018.03.21.12.28.50
+        by smtp.gmail.com with ESMTPSA id h184sm3859601qkc.78.2018.03.21.12.28.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Mar 2018 12:28:52 -0700 (PDT)
+        Wed, 21 Mar 2018 12:28:55 -0700 (PDT)
 From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 To:     Mathieu Malaterre <malat@debian.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>
 Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>, kernel@collabora.com,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>
-Subject: [PATCH 06/14] mmc: jz4740: Introduce devicetree probe
-Date:   Wed, 21 Mar 2018 16:27:33 -0300
-Message-Id: <20180321192741.25872-7-ezequiel@vanguardiasur.com.ar>
+        Ezequiel Garcia <ezequiel@collabora.co.uk>,
+        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
+Subject: [PATCH 07/14] mmc: dt-bindings: add MMC support to JZ4740 SoC
+Date:   Wed, 21 Mar 2018 16:27:34 -0300
+Message-Id: <20180321192741.25872-8-ezequiel@vanguardiasur.com.ar>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
 References: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
@@ -52,7 +53,7 @@ Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63129
+X-archive-position: 63130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,143 +72,60 @@ X-list: linux-mips
 
 From: Ezequiel Garcia <ezequiel@collabora.co.uk>
 
-Add support to probe the device via devicetree, which
-will be used to support other SoCs such as the JZ4780.
+Add the devicetree binding for JZ4740/JZ4780 SoC MMC/SD controller.
 
-Based on commits from the CI20 repo, by Paul Cercueil
-and Alex Smith. Binding document based on work by
-Zubair Lutfullah Kakakhel.
-
-Tested-by: Mathieu Malaterre <malat@debian.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: devicetree@vger.kernel.org
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Ezequiel Garcia <ezequiel@collabora.co.uk>
 ---
- drivers/mmc/host/jz4740_mmc.c | 51 ++++++++++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 10 deletions(-)
+ Documentation/devicetree/bindings/mmc/jz4740.txt | 38 ++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/jz4740.txt
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 9f316d953b30..03757cc55f52 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -26,6 +26,7 @@
- #include <linux/mmc/host.h>
- #include <linux/mmc/slot-gpio.h>
- #include <linux/module.h>
-+#include <linux/of_device.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/scatterlist.h>
-@@ -107,6 +108,10 @@
- 
- #define JZ_MMC_CLK_RATE 24000000
- 
-+enum jz4740_mmc_version {
-+	JZ_MMC_JZ4740,
+diff --git a/Documentation/devicetree/bindings/mmc/jz4740.txt b/Documentation/devicetree/bindings/mmc/jz4740.txt
+new file mode 100644
+index 000000000000..7cd8c432d7c8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mmc/jz4740.txt
+@@ -0,0 +1,38 @@
++* Ingenic JZ47xx MMC controllers
++
++This file documents the device tree properties used for the MMC controller in
++Ingenic JZ4740/JZ4780 SoCs. These are in addition to the core MMC properties
++described in mmc.txt.
++
++Required properties:
++- compatible: Should be one of the following:
++  - "ingenic,jz4740-mmc" for the JZ4740
++  - "ingenic,jz4780-mmc" for the JZ4780
++- reg: Should contain the MMC controller registers location and length.
++- interrupts: Should contain the interrupt specifier of the MMC controller.
++- clocks: Clock for the MMC controller.
++
++Optional properties:
++- dmas: List of DMA specifiers with the controller specific format
++        as described in the generic DMA client binding. A tx and rx
++        specifier is required.
++- dma-names: RX and TX  DMA request names.
++        Should be "rx" and "tx", in that order.
++
++For additional details on DMA client bindings see ../dma/dma.txt.
++
++Example:
++
++mmc0: mmc@13450000 {
++	compatible = "ingenic,jz4780-mmc";
++	reg = <0x13450000 0x1000>;
++
++	interrupt-parent = <&intc>;
++	interrupts = <37>;
++
++	clocks = <&cgu JZ4780_CLK_MSC0>;
++	clock-names = "mmc";
++
++	dmas = <&dma JZ4780_DMA_MSC0_RX 0xffffffff>, <&dma JZ4780_DMA_MSC0_TX 0xffffffff>;
++	dma-names = "rx", "tx";
 +};
-+
- enum jz4740_mmc_state {
- 	JZ4740_MMC_STATE_READ_RESPONSE,
- 	JZ4740_MMC_STATE_TRANSFER_DATA,
-@@ -125,6 +130,8 @@ struct jz4740_mmc_host {
- 	struct jz4740_mmc_platform_data *pdata;
- 	struct clk *clk;
- 
-+	enum jz4740_mmc_version version;
-+
- 	int irq;
- 	int card_detect_irq;
- 
-@@ -857,7 +864,7 @@ static void jz4740_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 	switch (ios->power_mode) {
- 	case MMC_POWER_UP:
- 		jz4740_mmc_reset(host);
--		if (gpio_is_valid(host->pdata->gpio_power))
-+		if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
- 			gpio_set_value(host->pdata->gpio_power,
- 					!host->pdata->power_active_low);
- 		host->cmdat |= JZ_MMC_CMDAT_INIT;
-@@ -866,7 +873,7 @@ static void jz4740_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 	case MMC_POWER_ON:
- 		break;
- 	default:
--		if (gpio_is_valid(host->pdata->gpio_power))
-+		if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
- 			gpio_set_value(host->pdata->gpio_power,
- 					host->pdata->power_active_low);
- 		clk_disable_unprepare(host->clk);
-@@ -964,11 +971,18 @@ static void jz4740_mmc_free_gpios(struct platform_device *pdev)
- 		gpio_free(pdata->gpio_power);
- }
- 
-+static const struct of_device_id jz4740_mmc_of_match[] = {
-+	{ .compatible = "ingenic,jz4740-mmc", .data = (void *) JZ_MMC_JZ4740 },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, jz4740_mmc_of_match);
-+
- static int jz4740_mmc_probe(struct platform_device* pdev)
- {
- 	int ret;
- 	struct mmc_host *mmc;
- 	struct jz4740_mmc_host *host;
-+	const struct of_device_id *match;
- 	struct jz4740_mmc_platform_data *pdata;
- 
- 	pdata = dev_get_platdata(&pdev->dev);
-@@ -982,6 +996,27 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	host = mmc_priv(mmc);
- 	host->pdata = pdata;
- 
-+	match = of_match_device(jz4740_mmc_of_match, &pdev->dev);
-+	if (match) {
-+		host->version = (enum jz4740_mmc_version)match->data;
-+		ret = mmc_of_parse(mmc);
-+		if (ret) {
-+			if (ret != -EPROBE_DEFER)
-+				dev_err(&pdev->dev,
-+					"could not parse of data: %d\n", ret);
-+			goto err_free_host;
-+		}
-+	} else {
-+		/* JZ4740 should be the only one using legacy probe */
-+		host->version = JZ_MMC_JZ4740;
-+		mmc->caps |= MMC_CAP_SDIO_IRQ;
-+		if (!(pdata && pdata->data_1bit))
-+			mmc->caps |= MMC_CAP_4_BIT_DATA;
-+		ret = jz4740_mmc_request_gpios(mmc, pdev);
-+		if (ret)
-+			goto err_free_host;
-+	}
-+
- 	host->irq = platform_get_irq(pdev, 0);
- 	if (host->irq < 0) {
- 		ret = host->irq;
-@@ -1004,16 +1039,11 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 		goto err_free_host;
- 	}
- 
--	ret = jz4740_mmc_request_gpios(mmc, pdev);
--	if (ret)
--		goto err_free_host;
--
- 	mmc->ops = &jz4740_mmc_ops;
--	mmc->f_min = JZ_MMC_CLK_RATE / 128;
--	mmc->f_max = JZ_MMC_CLK_RATE;
-+	if (!mmc->f_max)
-+		mmc->f_max = JZ_MMC_CLK_RATE;
-+	mmc->f_min = mmc->f_max / 128;
- 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
--	mmc->caps = (pdata && pdata->data_1bit) ? 0 : MMC_CAP_4_BIT_DATA;
--	mmc->caps |= MMC_CAP_SDIO_IRQ;
- 
- 	mmc->max_blk_size = (1 << 10) - 1;
- 	mmc->max_blk_count = (1 << 15) - 1;
-@@ -1118,6 +1148,7 @@ static struct platform_driver jz4740_mmc_driver = {
- 	.remove = jz4740_mmc_remove,
- 	.driver = {
- 		.name = "jz4740-mmc",
-+		.of_match_table = of_match_ptr(jz4740_mmc_of_match),
- 		.pm = JZ4740_MMC_PM_OPS,
- 	},
- };
 -- 
 2.16.2

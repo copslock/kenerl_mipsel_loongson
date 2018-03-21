@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:30:18 +0100 (CET)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:50904 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994728AbeCUTYyTZJRW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:24:54 +0100
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w2LJIaNU064383
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 15:24:53 -0400
-Received: from e06smtp12.uk.ibm.com (e06smtp12.uk.ibm.com [195.75.94.108])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2gurspnwc1-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2018 20:30:39 +0100 (CET)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:34172 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994723AbeCUTYtfgUjT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2018 20:24:49 +0100
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w2LJIZk1008949
+        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 15:24:47 -0400
+Received: from e06smtp10.uk.ibm.com (e06smtp10.uk.ibm.com [195.75.94.106])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2gut8119e4-1
         (version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 15:24:52 -0400
+        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2018 15:24:46 -0400
 Received: from localhost
-        by e06smtp12.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp10.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Wed, 21 Mar 2018 19:24:49 -0000
+        Wed, 21 Mar 2018 19:24:44 -0000
 Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp12.uk.ibm.com (192.168.101.142) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Wed, 21 Mar 2018 19:24:43 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w2LJOhIt47906974;
-        Wed, 21 Mar 2018 19:24:43 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AE71911C04C;
-        Wed, 21 Mar 2018 19:17:13 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3C0D611C04A;
-        Wed, 21 Mar 2018 19:17:10 +0000 (GMT)
+        by e06smtp10.uk.ibm.com (192.168.101.140) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 21 Mar 2018 19:24:39 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w2LJOcPG66846772;
+        Wed, 21 Mar 2018 19:24:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BBBAA42042;
+        Wed, 21 Mar 2018 19:16:45 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 408EB4203F;
+        Wed, 21 Mar 2018 19:16:42 +0000 (GMT)
 Received: from rapoport-lnx (unknown [9.148.206.27])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed, 21 Mar 2018 19:17:10 +0000 (GMT)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 21 Mar 2018 21:24:38 +0200
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed, 21 Mar 2018 19:16:42 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 21 Mar 2018 21:24:34 +0200
 From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
 To:     Jonathan Corbet <corbet@lwn.net>
 Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
@@ -47,16 +47,16 @@ Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
         linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
         linux-mm@kvack.org, Mike Rapoport <rppt@linux.vnet.ibm.com>
-Subject: [PATCH 24/32] docs/vm: swap_numa.txt: convert to ReST format
-Date:   Wed, 21 Mar 2018 21:22:40 +0200
+Subject: [PATCH 23/32] docs/vm: split_page_table_lock: convert to ReST format
+Date:   Wed, 21 Mar 2018 21:22:39 +0200
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
 References: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 18032119-0008-0000-0000-000004E0DF7A
+x-cbid: 18032119-0040-0000-0000-00000425821B
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18032119-0009-0000-0000-00001E7403F0
-Message-Id: <1521660168-14372-25-git-send-email-rppt@linux.vnet.ibm.com>
+x-cbparentid: 18032119-0041-0000-0000-00002628877D
+Message-Id: <1521660168-14372-24-git-send-email-rppt@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2018-03-21_09:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -68,7 +68,7 @@ Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63115
+X-archive-position: 63116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,100 +87,68 @@ X-list: linux-mips
 
 Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 ---
- Documentation/vm/swap_numa.txt | 55 +++++++++++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 22 deletions(-)
+ Documentation/vm/split_page_table_lock | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/vm/swap_numa.txt b/Documentation/vm/swap_numa.txt
-index d5960c9..e0466f2 100644
---- a/Documentation/vm/swap_numa.txt
-+++ b/Documentation/vm/swap_numa.txt
-@@ -1,5 +1,8 @@
-+.. _swap_numa:
+diff --git a/Documentation/vm/split_page_table_lock b/Documentation/vm/split_page_table_lock
+index 62842a8..889b00b 100644
+--- a/Documentation/vm/split_page_table_lock
++++ b/Documentation/vm/split_page_table_lock
+@@ -1,3 +1,6 @@
++.. _split_page_table_lock:
 +
-+===========================================
- Automatically bind swap device to numa node
---------------------------------------------
-+===========================================
++=====================
+ Split page table lock
+ =====================
  
- If the system has more than one swap device and swap device has the node
- information, we can make use of this information to decide which swap
-@@ -7,15 +10,16 @@ device to use in get_swap_pages() to get better performance.
+@@ -11,6 +14,7 @@ access to the table. At the moment we use split lock for PTE and PMD
+ tables. Access to higher level tables protected by mm->page_table_lock.
  
- 
- How to use this feature
-------------------------
-+=======================
- 
- Swap device has priority and that decides the order of it to be used. To make
- use of automatically binding, there is no need to manipulate priority settings
- for swap devices. e.g. on a 2 node machine, assume 2 swap devices swapA and
- swapB, with swapA attached to node 0 and swapB attached to node 1, are going
--to be swapped on. Simply swapping them on by doing:
--# swapon /dev/swapA
--# swapon /dev/swapB
-+to be swapped on. Simply swapping them on by doing::
+ There are helpers to lock/unlock a table and other accessor functions:
 +
-+	# swapon /dev/swapA
-+	# swapon /dev/swapB
+  - pte_offset_map_lock()
+ 	maps pte and takes PTE table lock, returns pointer to the taken
+ 	lock;
+@@ -34,12 +38,13 @@ Split page table lock for PMD tables is enabled, if it's enabled for PTE
+ tables and the architecture supports it (see below).
  
- Then node 0 will use the two swap devices in the order of swapA then swapB and
- node 1 will use the two swap devices in the order of swapB then swapA. Note
-@@ -24,32 +28,39 @@ that the order of them being swapped on doesn't matter.
- A more complex example on a 4 node machine. Assume 6 swap devices are going to
- be swapped on: swapA and swapB are attached to node 0, swapC is attached to
- node 1, swapD and swapE are attached to node 2 and swapF is attached to node3.
--The way to swap them on is the same as above:
--# swapon /dev/swapA
--# swapon /dev/swapB
--# swapon /dev/swapC
--# swapon /dev/swapD
--# swapon /dev/swapE
--# swapon /dev/swapF
--
--Then node 0 will use them in the order of:
--swapA/swapB -> swapC -> swapD -> swapE -> swapF
-+The way to swap them on is the same as above::
-+
-+	# swapon /dev/swapA
-+	# swapon /dev/swapB
-+	# swapon /dev/swapC
-+	# swapon /dev/swapD
-+	# swapon /dev/swapE
-+	# swapon /dev/swapF
-+
-+Then node 0 will use them in the order of::
-+
-+	swapA/swapB -> swapC -> swapD -> swapE -> swapF
-+
- swapA and swapB will be used in a round robin mode before any other swap device.
+ Hugetlb and split page table lock
+----------------------------------
++=================================
  
--node 1 will use them in the order of:
--swapC -> swapA -> swapB -> swapD -> swapE -> swapF
-+node 1 will use them in the order of::
+ Hugetlb can support several page sizes. We use split lock only for PMD
+ level, but not for PUD.
+ 
+ Hugetlb-specific helpers:
 +
-+	swapC -> swapA -> swapB -> swapD -> swapE -> swapF
+  - huge_pte_lock()
+ 	takes pmd split lock for PMD_SIZE page, mm->page_table_lock
+ 	otherwise;
+@@ -47,7 +52,7 @@ Hugetlb-specific helpers:
+ 	returns pointer to table lock;
+ 
+ Support of split page table lock by an architecture
+----------------------------------------------------
++===================================================
+ 
+ There's no need in special enabling of PTE split page table lock:
+ everything required is done by pgtable_page_ctor() and pgtable_page_dtor(),
+@@ -73,7 +78,7 @@ NOTE: pgtable_page_ctor() and pgtable_pmd_page_ctor() can fail -- it must
+ be handled properly.
+ 
+ page->ptl
+----------
++=========
+ 
+ page->ptl is used to access split page table lock, where 'page' is struct
+ page of page containing the table. It shares storage with page->private
+@@ -81,6 +86,7 @@ page of page containing the table. It shares storage with page->private
+ 
+ To avoid increasing size of struct page and have best performance, we use a
+ trick:
 +
-+node 2 will use them in the order of::
-+
-+	swapD/swapE -> swapA -> swapB -> swapC -> swapF
- 
--node 2 will use them in the order of:
--swapD/swapE -> swapA -> swapB -> swapC -> swapF
- Similaly, swapD and swapE will be used in a round robin mode before any
- other swap devices.
- 
--node 3 will use them in the order of:
--swapF -> swapA -> swapB -> swapC -> swapD -> swapE
-+node 3 will use them in the order of::
-+
-+	swapF -> swapA -> swapB -> swapC -> swapD -> swapE
- 
- 
- Implementation details
------------------------
-+======================
- 
- The current code uses a priority based list, swap_avail_list, to decide
- which swap device to use and if multiple swap devices share the same
+  - if spinlock_t fits into long, we use page->ptr as spinlock, so we
+    can avoid indirect access and save a cache line.
+  - if size of spinlock_t is bigger then size of long, we use page->ptl as
 -- 
 2.7.4

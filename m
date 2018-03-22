@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 21:55:04 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:43170 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 21:57:49 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44208 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990406AbeCVUy5ajO2x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Mar 2018 21:54:57 +0100
+        by eddie.linux-mips.org with ESMTP id S23990422AbeCVU5iVqxbx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Mar 2018 21:57:38 +0100
 Received: from akpm3.svl.corp.google.com (unknown [104.133.9.71])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 518B110F9;
-        Thu, 22 Mar 2018 20:54:49 +0000 (UTC)
-Date:   Thu, 22 Mar 2018 13:54:48 -0700
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4ACD4E8F;
+        Thu, 22 Mar 2018 20:57:30 +0000 (UTC)
+Date:   Thu, 22 Mar 2018 13:57:29 -0700
 From:   Andrew Morton <akpm@linux-foundation.org>
 To:     Ilya Smith <blackzert@gmail.com>
 Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
@@ -34,12 +34,10 @@ Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/2] Architecture defined limit on memory region
- random shift.
-Message-Id: <20180322135448.046ada120ecd1ab3dd8f94aa@linux-foundation.org>
-In-Reply-To: <1521736598-12812-3-git-send-email-blackzert@gmail.com>
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-Id: <20180322135729.dbfd3575819c92c0f88c5c21@linux-foundation.org>
+In-Reply-To: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
 References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
-        <1521736598-12812-3-git-send-email-blackzert@gmail.com>
 X-Mailer: Sylpheed 3.6.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,7 +46,7 @@ Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63158
+X-archive-position: 63159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,8 +63,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, 22 Mar 2018 19:36:36 +0300 Ilya Smith <blackzert@gmail.com> wrote:
 
-Please add changelogs.  An explanation of what a "limit on memory
-region random shift" is would be nice ;) Why does it exist, why are we
-doing this, etc.  Surely there's something to be said - at present this
-is just a lump of random code?
+> Current implementation doesn't randomize address returned by mmap.
+> All the entropy ends with choosing mmap_base_addr at the process
+> creation. After that mmap build very predictable layout of address
+> space. It allows to bypass ASLR in many cases.
+
+Perhaps some more effort on the problem description would help.  *Are*
+people predicting layouts at present?  What problems does this cause? 
+How are they doing this and are there other approaches to solving the
+problem?
+
+Mainly: what value does this patchset have to our users?  This reader
+is unable to determine that from the information which you have
+provided.  Full details, please.

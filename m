@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 11:26:29 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:40434 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 14:31:43 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:44620 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990406AbeCVK0SMr049 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Mar 2018 11:26:18 +0100
+        id S23990406AbeCVNbdAccVm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Mar 2018 14:31:33 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 873DC217D8;
-        Thu, 22 Mar 2018 10:26:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 873DC217D8
+        by mail.kernel.org (Postfix) with ESMTPSA id 991C9217D8;
+        Thu, 22 Mar 2018 13:31:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 991C9217D8
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 22 Mar 2018 10:26:07 +0000
+Date:   Thu, 22 Mar 2018 13:31:21 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Fix build with DEBUG_ZBOOT and MACH_JZ4770
-Message-ID: <20180322102606.GE13126@saruman>
-References: <20180317201109.2000-1-paul@crapouillou.net>
+To:     "Steven J. Hill" <steven.hill@cavium.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v5 0/7] Add Octeon Hotplug CPU Support.
+Message-ID: <20180322133121.GF13126@saruman>
+References: <1521066258-11376-1-git-send-email-steven.hill@cavium.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+SfteS7bOf3dGlBC"
+        protocol="application/pgp-signature"; boundary="Bqc0IY4JZZt50bUr"
 Content-Disposition: inline
-In-Reply-To: <20180317201109.2000-1-paul@crapouillou.net>
+In-Reply-To: <1521066258-11376-1-git-send-email-steven.hill@cavium.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63145
+X-archive-position: 63146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,53 +46,51 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---+SfteS7bOf3dGlBC
+--Bqc0IY4JZZt50bUr
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 17, 2018 at 09:11:09PM +0100, Paul Cercueil wrote:
-> Since the UART addresses are the same across all Ingenic SoCs, we just
-> use a #ifdef CONFIG_MACH_INGENIC instead of checking for indifidual
-> Ingenic SoCs.
+On Wed, Mar 14, 2018 at 05:24:11PM -0500, Steven J. Hill wrote:
+> This patchset adds working Octeon Hotplug CPU. It has been tested
+> on our 70xx and 78xx develpoment boards. The 70xx has 4 cores and
+> the 78xx has 48 cores. This was also tested on an EdgerouterPRO,
+> which has 2 cores.
+>=20
+> Changes in v4:
+> - Rebased against v4.16-rc5 kernel.
+> - Smaller patchset due to some previous patches going upstream.
 
-s/indifidual/individual/
+NAK. Please address v4 feedback:
 
-> --- a/arch/mips/boot/compressed/uart-16550.c
-> +++ b/arch/mips/boot/compressed/uart-16550.c
-> @@ -18,9 +18,9 @@
->  #define PORT(offset) (CKSEG1ADDR(AR7_REGS_UART0) + (4 * offset))
->  #endif
-> =20
-> -#if defined(CONFIG_MACH_JZ4740) || defined(CONFIG_MACH_JZ4780)
-> -#include <asm/mach-jz4740/base.h>
-> -#define PORT(offset) (CKSEG1ADDR(JZ4740_UART0_BASE_ADDR) + (4 * offset))
-> +#if CONFIG_MACH_INGENIC
+On Thu, Feb 08, 2018 at 10:22:47PM +0000, James Hogan wrote:
+> This series doesn't appear to build even cavium_octeon_defconfig since
+> patch 1, and is full of checkpatch errors and warnings.
 
-I think you meant #ifdef there.
+https://patchwork.linux-mips.org/cover/17873/#29723
 
-Cheers
+Thanks
 James
 
---+SfteS7bOf3dGlBC
+--Bqc0IY4JZZt50bUr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqzhLcACgkQbAtpk944
-dnqphQ/+PoQSqqufgM0xaKRA59pBYup1OInKYfA036bzuE4HSp9dfiQCjRDAZdxG
-8w8w5bD1OWkQhA6wNmB/uRXR43Qx2leZGbsT782iohUBZ6WkklkC4WrHsPbmmG0E
-9QxheQOPVuLJTqjRfDzKpANwZxQDJk6Z0a7+78Za49pcfXjAwFphwjxMme2ryp4W
-5naK+q5+MVJOF0MSgjS4QYgZIbAz9OVldTTd5sA9MdFavK8aIXBDWZUj6tpwv3XG
-zlWAJ4sXjI0XNvQv7TUM3ig3TmOEH+P1hDvCskQ0Rl5QelPRD0BBDrQvjx9ps6kc
-Vja7eQXIPIlZXOV4NtKsofWvto3ehmCUm5a8S/zIvYZHXrOXmYEl9CGX0rxWi/VJ
-y+JwdTp2g9qAIYFLHzQ5E50hyK3J+RqfHlFaQ9Eb32GyNDPfb0hPaDGGeCcjMldY
-MZvVqyPRltxAkiNJhEh4KYNB2OjFeJ/96MlsxShi/B7tBKBJkXf95HzcT3Lj6tkj
-H5KExPvz3Yf3/nZLN7TL836P7MB4IZh+rbyQVObHPMNiPVhbVJB/fjjl40V43mRt
-Sy1x4mLARE2Rtnm7zZDD5oBGQWxCm51f3Uqb5PQgoj2XhgQ1qizPcnmYx0mYgzSP
-wk3sK8NSEH2YLmsigESg2u+hFsvJV1agOFb+hUkzUNkxdMRErpU=
-=SpUz
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlqzsCkACgkQbAtpk944
+dnpZ8xAAuCMwGNbg4o8/oKkRvJzIl17OYkqT1EuajrUDSInB9l22aTG5M9oYilLO
+EVazb59LxOK3PXCwpUAHmEY0Nb1VEC2lW0BBHfH2DWxHRJf9w37g54At4R7RWrzc
+Oc40jCKMULc8iaF+rJ1qOx3SwjK/QkKWX3LuaxeDWPFhdMVvzzicytwwmHMQMf7I
+/gWwqYa+nbGgXnwPAm1QxmYEfb0CO7WPnZWGnSDztXLcORtZy4fqQyYbM20nwrGF
+kjNmcCaP3D/qxyLm11UVjAtzmnz3v57S+YAc5TvVkGk+kYnCRGrQlhN3SeTUAbnE
+6Cq8v0VsAuV/PYu2Qj5cTtfjC4y1Pob/ycEhkCdNiOYIj05Vf0jUiRZSTkKHxd4f
+5YOtTrhRHbyU9iwszXMntPPCLheSYn+mb5FgZYD3LgkndbTqBG/9qH+g6G/hG2g/
+aMe4u4LJi6v0BmvSow7j7OcopRRmbA81xNOrvUdjq6iKHvGIIOpNRoOCh4FraSHw
+5Wkfv6KijLnOcUdv5giJ5MVUvCVKZ5IapgyNJWn12SnGioA61nOOj4mPGEZZDtob
+e27hynzhRsMcvtefGOYHwfw9ZRgggqO878dW9vUV/C9A9p7us0xuJ8DBP0bKtUlz
+cZsRBCCETvmJeNJNHEts/VGZGLBTnk2L666Cm7Q3CA1qXfxriGo=
+=vMtG
 -----END PGP SIGNATURE-----
 
---+SfteS7bOf3dGlBC--
+--Bqc0IY4JZZt50bUr--

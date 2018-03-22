@@ -1,57 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 01:15:53 +0100 (CET)
-Received: from zeniv.linux.org.uk ([195.92.253.2]:35076 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993612AbeCVAPogoiHP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Mar 2018 01:15:44 +0100
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1eyntE-0005mp-Vb; Thu, 22 Mar 2018 00:15:33 +0000
-Date:   Thu, 22 Mar 2018 00:15:32 +0000
-From:   Al Viro <viro@ZenIV.linux.org.uk>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [RFC PATCH 4/6] mm: provide generic compat_sys_readahead()
- implementation
-Message-ID: <20180322001532.GA18399@ZenIV.linux.org.uk>
-References: <20180318161056.5377-1-linux@dominikbrodowski.net>
- <20180318161056.5377-5-linux@dominikbrodowski.net>
- <20180318174014.GR30522@ZenIV.linux.org.uk>
- <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
- <20180318181848.GU30522@ZenIV.linux.org.uk>
- <20180319042300.GW30522@ZenIV.linux.org.uk>
- <20180319092920.tbh2xwkruegshzqe@gmail.com>
- <20180319232342.GX30522@ZenIV.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 02:34:28 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:55777 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993890AbeCVBeUwwUKk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Mar 2018 02:34:20 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 4EA38AD25;
+        Thu, 22 Mar 2018 01:34:15 +0000 (UTC)
+From:   NeilBrown <neil@brown.name>
+To:     James Hogan <jhogan@kernel.org>
+Date:   Thu, 22 Mar 2018 12:34:06 +1100
+Cc:     John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: ralink: remove ralink_halt()
+In-Reply-To: <20180321235249.GC13126@saruman>
+References: <87370v9mkg.fsf@notabene.neil.brown.name> <20180321235249.GC13126@saruman>
+Message-ID: <87po3w7v1t.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180319232342.GX30522@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <viro@ftp.linux.org.uk>
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+Return-Path: <neil@brown.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63143
+X-archive-position: 63144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viro@ZenIV.linux.org.uk
+X-original-sender: neil@brown.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,61 +41,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 19, 2018 at 11:23:42PM +0000, Al Viro wrote:
-> Benefits:
-> 	* all SyS... wrappers (i.e. the thing that really ought to
-> go into syscall tables) have the same type.
-> 	* we could have SYSCALL_DEFINE produce a trivial compat
-> wrapper, have explicit COMPAT_SYSCALL_DEFINE discard that thing
-> and populate the compat syscall table *entirely* with compat_SyS_...,
-> letting the linker sort it out.  That way we don't need to keep
-> track of what can use native and what needs compat in each compat
-> table on biarch.
-> 	* s390 compat wrappers would disappear with that approach.
-> 	* we could even stop generating sys_... aliases - if
-> syscall table is generated by slapping SyS_... or compat_SyS_...
-> on the name given there, we don't need to _have_ those sys_...
-> things at all.  All SyS_... would have the same type, so the pile
-> in syscalls.h would not be needed - we could generate the externs
-> at the same time we generate the syscall table.
-> 
-> And yes, it's a high-squick approach.  I know and I'm not saying
-> it's a good idea.  OTOH, to quote the motto of philosophers and
-> shell game operators, "there's something in it"...
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-FWIW, I have something that is almost reasonable on preprocessor side;
-however, that has uncovered the following fun:
-void f(unsigned long long);
-void g(unsigned a, unsigned b)
-{
-        f((((unsigned long long)b)<<32)|a);
-}
+On Wed, Mar 21 2018, James Hogan wrote:
 
-which does compile to "jump to f" on i386, ends up with the following
-joy on arm:
-        mov     r3, r1
-        mov     r2, #0
-        push    {r4, lr}
-        orr     r2, r2, r0
-        mov     r0, r2
-        mov     r1, r3
-        bl      f
-        pop     {r4, lr}
-        bx      lr
-with gcc6; gcc7 is saner - there we have just
-        mov     r2, #0
-        orr     r0, r2, r0
-        b       f
+> On Tue, Mar 20, 2018 at 07:29:51PM +1100, NeilBrown wrote:
+>>=20
+>> ralink_halt() does nothing that machine_halt()
+>> doesn't already do, so it adds no value.
+>>=20
+>> It actually causes incorrect behaviour due to the
+>> "unreachable()" at the end.  This tell the compiler that the
+>> end of the function will never be reached, which isn't true.
+>> The compiler responds by not adding a 'return' instruction,
+>> so control simply moves on to whatever bytes come afterwards
+>> in memory.  In my tested, that was the ralink_restart()
+>> function.  This means that an attempt to 'halt' the machine
+>> would actually cause a reboot.
+>>=20
+>> So remove ralink_halt() so that a 'halt' really does halt.
+>>=20
+>> Signed-off-by: NeilBrown <neil@brown.name>
+>
+> Thanks, I've cosmetically tweaked the commit message (mainly reflow to
+> 72 characters) and added:
+>
+> Fixes: c06e836ada59 ("MIPS: ralink: adds reset code")
+> Cc: <stable@vger.kernel.org> # 3.9+
+>
+> and applied for 4.16.
+>
+> BTW, I'm intrigued to know if there's a particular reason you don't
+> author / sign-off as "Neil Brown"? Its supposed to be real names, though
+> "NeilBrown" is hardly difficult to figure out so I don't actually
+> object.
 
-The former is
-	r3 = r1
-	r2 = 0
-	r2 |= r0
-	r0 = r2
-	r1 = r3
-The latter -
-	r2 = 0
-	r0 |= r2
-which is better, but still bloody odd
+I started using NeilBrown way back when I was an undergrad student and
+it stuck.  When you grow up as a Brown, you know your name isn't going
+to make you unique. e.g. I'm not an author of "Red Hat Linux System
+Administration Unleashed" (he has a space in his name!!).  So I chose a
+different way to make my name distinctive.
+Yes, it isn't technically compliant - you are the second person to
+comment in the nearly twenty years I've been working on Linux :-)
 
-And I'm afraid to check what e.g. 4.4 will do with that testcase...
+Thanks,
+NeilBrown
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlqzCA8ACgkQOeye3VZi
+gbl4NA/+M5iS2J3edM0UUHOPt+1VoIpL6IYc9fyMFN8IrT1XBwui3rRFCjsJUUpM
+Uv356aQByjNgcCSkvqzb/yXbsvEPS67byGjbiFY+C1xuotcNGLmcBupbUw74N3JY
+DgM1nsnj0oPYls0n1qmy/S9QSlPD0yU1YoTVzy5uZzg0a+qN8iBU1yBqL1yJnkaM
+le1lizpXEqHm7uYjyasAsLBzSPVGcdW/tBWJnpiKEGNKovI8qt1tNhne6Ai5ZfH8
+kHn/W0mRz+xCXKxQ4bY1J050O4ivoFQoxmQVgEKZ73PMlZuc45PQiu/Psj1B8jSR
+/O9AxD2A5lMJGktyFSjbFhq92rAifPM6ym8G1ggpwmBiHUjqIcvBHov78S76JDiD
+TV7OwKpW3oo54I5UOcXVxf4uORBFIkg4X30ZjKb/hl0rhrTXib6SIm8KMkvm8xlr
+LiI8e8uGlTXee5oxj5AVa9kj6MCs0Mld0XtG83vi0ZWGowELgZMbaX81OChSPFzo
+VlK+0+vQzLEFc3Jt8rB6UIwYkwro+Ysf2OTkD2/fs5M7N316upGvTLPYaTqmnIDr
+iCr6nZQTaZVivtBfJ7aiudT+1JlpjSAYOaf1GnyDFYHIgy1tyKh/1X+5J/6DWFW3
+4YhFBb2qdKvt0LebMXl6cmO3VY6mJC9VrohGaW9zaOH3E9b/Otc=
+=Zx1e
+-----END PGP SIGNATURE-----
+--=-=-=--

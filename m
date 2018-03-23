@@ -1,25 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 20:06:49 +0100 (CET)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:56942 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990498AbeCWTGlZKlm2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 20:06:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=AFxcHieAc63yNfeQtW686kN7BToGXJsCLV/8x6Z1168=; b=RhzzrjMIjZqJjapYC5y62lfX+
-        kSMZVeG0wGcptMTL82smxMmkhJMH/FDeckgOFL1tSXiB/1LQIlxP8o2EFQ2Osy5Y5U7rlg3uo45Md
-        DLhc1QFE4+GMid8DeMHErgFHWqCYdvOq3CEvPbC0dGCxQpBNZZuiue7cNNiK4B/l11lkfV6G/EjhB
-        UZvf5QZ2ZmbXMd4FLFG8p+mYawep254u0dSDO5EInBzy/lLSwwyPtTdh5Rz++B5Wovs6POgKXagM2
-        +ctVAfob4MI3bfOBkqsHw2oZqr/mKjnU5ksje0SGXQBcjiItmjzkajU2wfxiavzAIL1qVEXbY2Rd6
-        Fm4v3BZew==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1ezS14-0006Kg-Rr; Fri, 23 Mar 2018 19:06:18 +0000
-Date:   Fri, 23 Mar 2018 12:06:18 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Rich Felker <dalias@libc.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 20:17:12 +0100 (CET)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:48996 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990498AbeCWTRFFYK02 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 20:17:05 +0100
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1ezSAn-0001FH-00; Fri, 23 Mar 2018 19:16:21 +0000
+Date:   Fri, 23 Mar 2018 15:16:21 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Matthew Wilcox <willy@infradead.org>
 Cc:     Ilya Smith <blackzert@gmail.com>, rth@twiddle.net,
         ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
         linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
@@ -47,24 +35,25 @@ Cc:     Ilya Smith <blackzert@gmail.com>, rth@twiddle.net,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-Message-ID: <20180323190618.GA23763@bombadil.infradead.org>
+Message-ID: <20180323191621.GC1436@brightrain.aerifal.cx>
 References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
  <20180323124806.GA5624@bombadil.infradead.org>
  <20180323180024.GB1436@brightrain.aerifal.cx>
+ <20180323190618.GA23763@bombadil.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180323180024.GB1436@brightrain.aerifal.cx>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <willy@infradead.org>
+In-Reply-To: <20180323190618.GA23763@bombadil.infradead.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63176
+X-archive-position: 63177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: willy@infradead.org
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,42 +66,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 23, 2018 at 02:00:24PM -0400, Rich Felker wrote:
-> On Fri, Mar 23, 2018 at 05:48:06AM -0700, Matthew Wilcox wrote:
-> > On Thu, Mar 22, 2018 at 07:36:36PM +0300, Ilya Smith wrote:
-> > > Current implementation doesn't randomize address returned by mmap.
-> > > All the entropy ends with choosing mmap_base_addr at the process
-> > > creation. After that mmap build very predictable layout of address
-> > > space. It allows to bypass ASLR in many cases. This patch make
-> > > randomization of address on any mmap call.
+On Fri, Mar 23, 2018 at 12:06:18PM -0700, Matthew Wilcox wrote:
+> On Fri, Mar 23, 2018 at 02:00:24PM -0400, Rich Felker wrote:
+> > On Fri, Mar 23, 2018 at 05:48:06AM -0700, Matthew Wilcox wrote:
+> > > On Thu, Mar 22, 2018 at 07:36:36PM +0300, Ilya Smith wrote:
+> > > > Current implementation doesn't randomize address returned by mmap.
+> > > > All the entropy ends with choosing mmap_base_addr at the process
+> > > > creation. After that mmap build very predictable layout of address
+> > > > space. It allows to bypass ASLR in many cases. This patch make
+> > > > randomization of address on any mmap call.
+> > > 
+> > > Why should this be done in the kernel rather than libc?  libc is perfectly
+> > > capable of specifying random numbers in the first argument of mmap.
 > > 
-> > Why should this be done in the kernel rather than libc?  libc is perfectly
-> > capable of specifying random numbers in the first argument of mmap.
+> > Generally libc does not have a view of the current vm maps, and thus
+> > in passing "random numbers", they would have to be uniform across the
+> > whole vm space and thus non-uniform once the kernel rounds up to avoid
+> > existing mappings.
 > 
-> Generally libc does not have a view of the current vm maps, and thus
-> in passing "random numbers", they would have to be uniform across the
-> whole vm space and thus non-uniform once the kernel rounds up to avoid
-> existing mappings.
+> I'm aware that you're the musl author, but glibc somehow manages to
+> provide etext, edata and end, demonstrating that it does know where at
+> least some of the memory map lies.
 
-I'm aware that you're the musl author, but glibc somehow manages to
-provide etext, edata and end, demonstrating that it does know where at
-least some of the memory map lies.  Virtually everything after that is
-brought into the address space via mmap, which at least glibc intercepts,
-so it's entirely possible for a security-conscious libc to know where
-other things are in the memory map.  Not to mention that what we're
-primarily talking about here are libraries which are dynamically linked
-and are loaded by ld.so before calling main(); not dlopen() or even
-regular user mmaps.
+Yes, but that's pretty minimal info.
 
-> Also this would impose requirements that libc be
-> aware of the kernel's use of the virtual address space and what's
-> available to userspace -- for example, on 32-bit archs whether 2GB,
-> 3GB, or full 4GB (for 32-bit-user-on-64-bit-kernel) is available, and
-> on 64-bit archs where fewer than the full 64 bits are actually valid
-> in addresses, what the actual usable pointer size is. There is
-> currently no clean way of conveying this information to userspace.
+> Virtually everything after that is
+> brought into the address space via mmap, which at least glibc intercepts,
 
-Huh, I thought libc was aware of this.  Also, I'd expect a libc-based
-implementation to restrict itself to, eg, only loading libraries in
-the bottom 1GB to avoid applications who want to map huge things from
-running out of unfragmented address space.
+There's also vdso, the program interpreter (ldso), and theoretically
+other things the kernel might add. I agree you _could_ track most of
+this (and all if you want to open /proc/self/maps), but it seems
+hackish and wrong (violating clean boundaries between userspace and
+kernel responsibility).
+
+> > Also this would impose requirements that libc be
+> > aware of the kernel's use of the virtual address space and what's
+> > available to userspace -- for example, on 32-bit archs whether 2GB,
+> > 3GB, or full 4GB (for 32-bit-user-on-64-bit-kernel) is available, and
+> > on 64-bit archs where fewer than the full 64 bits are actually valid
+> > in addresses, what the actual usable pointer size is. There is
+> > currently no clean way of conveying this information to userspace.
+> 
+> Huh, I thought libc was aware of this.  Also, I'd expect a libc-based
+> implementation to restrict itself to, eg, only loading libraries in
+> the bottom 1GB to avoid applications who want to map huge things from
+> running out of unfragmented address space.
+
+That seems like a rather arbitrary expectation and I'm not sure why
+you'd expect it to result in less fragmentation rather than more. For
+example if it started from 1GB and worked down, you'd immediately
+reduce the contiguous free space from ~3GB to ~2GB, and if it started
+from the bottom and worked up, brk would immediately become
+unavailable, increasing mmap pressure elsewhere.
+
+Rich

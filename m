@@ -1,40 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 11:05:44 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54540 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991025AbeCWKFgjcUlo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 11:05:36 +0100
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 67DFF140A;
-        Fri, 23 Mar 2018 10:05:28 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.9 037/177] irqchip/mips-gic: Separate IPI reservation & usage tracking
-Date:   Fri, 23 Mar 2018 10:52:45 +0100
-Message-Id: <20180323094206.787496927@linuxfoundation.org>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180323094205.090519271@linuxfoundation.org>
-References: <20180323094205.090519271@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 11:26:25 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:54436 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994667AbeCWK0NOWid6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Mar 2018 11:26:13 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A56502177B;
+        Fri, 23 Mar 2018 10:26:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A56502177B
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Fri, 23 Mar 2018 10:26:02 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [GIT PULL] MIPS fixes for 4.16-rc7
+Message-ID: <20180323102601.GA11796@saruman>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
+Content-Disposition: inline
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63165
+X-archive-position: 63167
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,104 +43,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+--fdj2RfSjLxBAspz7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-From: Paul Burton <paul.burton@imgtec.com>
+Hi Linus,
 
+Please pull the following MIPS fixes for 4.16-rc7.
 
-[ Upstream commit f8dcd9e81797ae24acc44c84f0eb3b9e6cee9791 ]
+Thanks
+James
 
-Since commit 2af70a962070 ("irqchip/mips-gic: Add a IPI hierarchy
-domain") introduced the GIC IPI IRQ domain we have tracked both
-reservation of interrupts & their use with a single bitmap - ipi_resrv.
-If an interrupt is reserved for use as an IPI but not actually in use
-then the appropriate bit is set in ipi_resrv. If an interrupt is either
-not reserved for use as an IPI or has been allocated as one then the
-appropriate bit is clear in ipi_resrv.
+The following changes since commit 0c8efd610b58cb23cefdfa12015799079aef94ae:
 
-Unfortunately this means that checking whether a bit is set in ipi_resrv
-to prevent IPI interrupts being allocated for use with a device is
-broken, because if the interrupt has been allocated as an IPI first then
-its bit will be clear.
+  Linux 4.16-rc5 (2018-03-11 17:25:09 -0700)
 
-Fix this by separating the tracking of IPI reservation & usage,
-introducing a separate ipi_available bitmap for the latter. This means
-that ipi_resrv will now always have bits set corresponding to all
-interrupts reserved for use as IPIs, whether or not they have been
-allocated yet, and therefore that checking it when allocating device
-interrupts works as expected.
+are available in the git repository at:
 
-Fixes: 2af70a962070 ("irqchip/mips-gic: Add a IPI hierarchy domain")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Link: http://lkml.kernel.org/r/1492679256-14513-2-git-send-email-matt.redfearn@imgtec.com
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/irqchip/irq-mips-gic.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_fixes_4.16_5
 
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -55,6 +55,7 @@ static unsigned int gic_cpu_pin;
- static unsigned int timer_cpu_pin;
- static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
- DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
-+DECLARE_BITMAP(ipi_available, GIC_MAX_INTRS);
- 
- static void __gic_irq_dispatch(void);
- 
-@@ -746,17 +747,17 @@ static int gic_irq_domain_alloc(struct i
- 
- 		return gic_setup_dev_chip(d, virq, spec->hwirq);
- 	} else {
--		base_hwirq = find_first_bit(ipi_resrv, gic_shared_intrs);
-+		base_hwirq = find_first_bit(ipi_available, gic_shared_intrs);
- 		if (base_hwirq == gic_shared_intrs) {
- 			return -ENOMEM;
- 		}
- 
- 		/* check that we have enough space */
- 		for (i = base_hwirq; i < nr_irqs; i++) {
--			if (!test_bit(i, ipi_resrv))
-+			if (!test_bit(i, ipi_available))
- 				return -EBUSY;
- 		}
--		bitmap_clear(ipi_resrv, base_hwirq, nr_irqs);
-+		bitmap_clear(ipi_available, base_hwirq, nr_irqs);
- 
- 		/* map the hwirq for each cpu consecutively */
- 		i = 0;
-@@ -787,7 +788,7 @@ static int gic_irq_domain_alloc(struct i
- 
- 	return 0;
- error:
--	bitmap_set(ipi_resrv, base_hwirq, nr_irqs);
-+	bitmap_set(ipi_available, base_hwirq, nr_irqs);
- 	return ret;
- }
- 
-@@ -802,7 +803,7 @@ void gic_irq_domain_free(struct irq_doma
- 		return;
- 
- 	base_hwirq = GIC_HWIRQ_TO_SHARED(irqd_to_hwirq(data));
--	bitmap_set(ipi_resrv, base_hwirq, nr_irqs);
-+	bitmap_set(ipi_available, base_hwirq, nr_irqs);
- }
- 
- int gic_irq_domain_match(struct irq_domain *d, struct device_node *node,
-@@ -1066,6 +1067,7 @@ static void __init __gic_init(unsigned l
- 			   2 * gic_vpes);
- 	}
- 
-+	bitmap_copy(ipi_available, ipi_resrv, GIC_MAX_INTRS);
- 	gic_basic_init();
- }
- 
+for you to fetch changes up to a63d706ea719190a79a6c769e898f70680044d3e:
+
+  MIPS: ralink: Fix booting on MT7621 (2018-03-22 00:06:30 +0000)
+
+----------------------------------------------------------------
+MIPS fixes for 4.16-rc7
+
+Another miscellaneous pile of MIPS fixes for 4.16:
+
+ - lantiq: fixes for clocks and Amazon SE (4.14)
+
+ - ralink: fix booting on MT7621 (4.5)
+
+ - ralink: fix halt (3.9)
+
+----------------------------------------------------------------
+Mathias Kresin (3):
+      MIPS: lantiq: Fix Danube USB clock
+      MIPS: lantiq: Enable AHB Bus for USB
+      MIPS: lantiq: ase: Enable MFD_SYSCON
+
+NeilBrown (2):
+      MIPS: ralink: Remove ralink_halt()
+      MIPS: ralink: Fix booting on MT7621
+
+ arch/mips/lantiq/Kconfig        |  2 ++
+ arch/mips/lantiq/xway/sysctrl.c |  6 ++---
+ arch/mips/ralink/mt7621.c       | 50 +++++++++++++++++++++--------------------
+ arch/mips/ralink/reset.c        |  7 ------
+ 4 files changed, 31 insertions(+), 34 deletions(-)
+
+--fdj2RfSjLxBAspz7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq01jkACgkQbAtpk944
+dnplbQ//XUSg+C8C58hBOkwVcsODlMix6+pB6t3fpe0ut/Le/o90+koJLSvgAmjX
+HDstUHZMjtXa/J51vd2TtksAbmZWGNSk92xXBJNLvIqCNf0nw+ZM25wP54itIDq9
+w1e6jzh6ftwVARcaw+K8E/Vce2+ID3U/5kv1XBKvuCCaLZRfI4iZPBksd7Ro1Eio
+rksbOOquzu1Hf/dcK1I2d6cUjgTuI7icwMXXewQya3m46od8WgDIN14tpMmrmJ66
+48j9OWoIuaAWMPzCPsyGEYLqkWqoL6JrtZKW5AAZbR72sa009EqMnVKUuG2593fh
+QCv9y+yMsAsOVZeEEcQm7gSNT0N8//X9OYZ7trvyyM7QM6XBgt7exw9HxoiC36IU
+rZQl1/IcWBgndAjMvlAcF37X9af4yZeTqs99KhKHRO6TFtItcevzBmViLcRUxHEw
+72R30LqxMju3Eu2B2kOjk0QJ8hgb1JfDGgCtoUHHWwRE4zA07c4AHuPjjEnwGojM
+wv25WNB1amQV1nx+P0P14EgV3+dD7zcrHdG3nDgza8pwbqPUE4yijf0IJ//8vpxf
+B/6OZlnWTnTksY2asC2/KXJqGyUro9tAGL67lSX6ZFx564bAW/LRcNhC8jH+HCbW
+7kcg6ZUfv5s8KlykhxtQItZHZBflDqEhJm6IQuVIFtyqKm+MCD0=
+=dxp2
+-----END PGP SIGNATURE-----
+
+--fdj2RfSjLxBAspz7--

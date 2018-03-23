@@ -1,67 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 19:36:43 +0100 (CET)
-Received: from mail-it0-x229.google.com ([IPv6:2607:f8b0:4001:c0b::229]:35343
-        "EHLO mail-it0-x229.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990423AbeCWSggr7zY2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 19:36:36 +0100
-Received: by mail-it0-x229.google.com with SMTP id v194-v6so3760820itb.0;
-        Fri, 23 Mar 2018 11:36:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=TNNhblvLssJsX5pGNIUKtzxVMLbCrnWTp248qdBPfdc=;
-        b=rdamqlNypWBF3QGTqZOpt8P+JmbP7r1HVCB1DFqlb/9O7xAdymLZPtZ0au4W8ZBMBM
-         Cv4vtGqa5cNPRIBmSEXHoHLFdzneYlfarh98B1KQYVv8mDhTKe0r/dJYP2HAuggNZeUh
-         u4TeDLxCD+jqjb84FZd+WkGCKV/3aMiPqsHmjJOOOBE3nFceNY7Lar9ShQCPg9rXd185
-         jLXQb3LfMlyFm9Bz/3bz/TKFKknldIv6FlMGeKKvLYmQ0afQkc5ltqlj42sdqNGmQuAn
-         17MUXfoqiQN1IpnkZMX9Kcc3HsrtmlfUWTOGDJbqUOPprHF6c7gMnxoSgj3LC1H92rpK
-         +55g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=TNNhblvLssJsX5pGNIUKtzxVMLbCrnWTp248qdBPfdc=;
-        b=Dzq7ZTGhHUwE1nJOEVdpEGnpSeftjvdiMkIfxHbSGZJ1zwb3Dewdwcb3w3y5Tg9A6y
-         RaxK0b2M4Zf7oM/3Zb47Q41YGsO934WtFyfcgbHefNfnOTF2zPIv9uOiV1bwMa2VRD45
-         SD7DcFNt5zXXQKJg/67rFTCfrXB2SugrKKbnQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=TNNhblvLssJsX5pGNIUKtzxVMLbCrnWTp248qdBPfdc=;
-        b=s9DKP71cZdaJSrUOgrgJYiHOzIF5MwIQJlIzuSxidlm5V1+Gkm9qf2cXq0xc7nOvxc
-         mwO1fTJv1vWktpv8K4D28eF3kq/VE16bCzARjp9nYjaC5Tv2aaGxMOY7Jevqn9Ufuqjw
-         BFaFTCHSzD2z7OJgATju5wIpONdAtNwpy1zeahmSRFxhnR8lvjSO3NwuoQgC0MbKu1Ow
-         Rzvsfdby9wRNex14cKxQwTO5VmXFuUaF4b2ARrjCrwWYsYffSt6ip5OPQzy6cjcELP+O
-         juyuiFgtB95Lbxrp7nNfYwQNi0mId2e/4K+wx4s/HsfcigW4S9SouKby49Jrh5ROLaOW
-         4alA==
-X-Gm-Message-State: AElRT7GBDWX1MJ4c1aSsTcugdZCYM7v0wrUQ8pCKdtYjE9ATwh1n48/2
-        9v16v7R7wp6Sa6IZU7zm21+Tb+guMN9AUCogit+udA==
-X-Google-Smtp-Source: AG47ELtrLCUbuUNlSi98rM4oenFUUK5+osgMCdhUHw0sSLz+f3ce/HFSLvrdCxkg30UyGDc8Hik5lpNDuCJ+K12UQ84=
-X-Received: by 2002:a24:c581:: with SMTP id f123-v6mr6912679itg.113.1521830190408;
- Fri, 23 Mar 2018 11:36:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 20:06:49 +0100 (CET)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:56942 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990498AbeCWTGlZKlm2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 20:06:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=AFxcHieAc63yNfeQtW686kN7BToGXJsCLV/8x6Z1168=; b=RhzzrjMIjZqJjapYC5y62lfX+
+        kSMZVeG0wGcptMTL82smxMmkhJMH/FDeckgOFL1tSXiB/1LQIlxP8o2EFQ2Osy5Y5U7rlg3uo45Md
+        DLhc1QFE4+GMid8DeMHErgFHWqCYdvOq3CEvPbC0dGCxQpBNZZuiue7cNNiK4B/l11lkfV6G/EjhB
+        UZvf5QZ2ZmbXMd4FLFG8p+mYawep254u0dSDO5EInBzy/lLSwwyPtTdh5Rz++B5Wovs6POgKXagM2
+        +ctVAfob4MI3bfOBkqsHw2oZqr/mKjnU5ksje0SGXQBcjiItmjzkajU2wfxiavzAIL1qVEXbY2Rd6
+        Fm4v3BZew==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1ezS14-0006Kg-Rr; Fri, 23 Mar 2018 19:06:18 +0000
+Date:   Fri, 23 Mar 2018 12:06:18 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Rich Felker <dalias@libc.org>
+Cc:     Ilya Smith <blackzert@gmail.com>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
+        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
+        jhogan@kernel.org, ralf@linux-mips.org, jejb@parisc-linux.org,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
+        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, x86@kernel.org, nyc@holomorphy.com,
+        viro@zeniv.linux.org.uk, arnd@arndb.de, gregkh@linuxfoundation.org,
+        deepa.kernel@gmail.com, mhocko@suse.com, hughd@google.com,
+        kstewart@linuxfoundation.org, pombredanne@nexb.com,
+        akpm@linux-foundation.org, steve.capper@arm.com,
+        punit.agrawal@arm.com, paul.burton@mips.com,
+        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
+        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
+        dan.j.williams@intel.com, jack@suse.cz,
+        ross.zwisler@linux.intel.com, jglisse@redhat.com,
+        aarcange@redhat.com, oleg@redhat.com, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-ID: <20180323190618.GA23763@bombadil.infradead.org>
+References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
+ <20180323124806.GA5624@bombadil.infradead.org>
+ <20180323180024.GB1436@brightrain.aerifal.cx>
 MIME-Version: 1.0
-Received: by 10.107.95.15 with HTTP; Fri, 23 Mar 2018 11:36:29 -0700 (PDT)
-In-Reply-To: <20180323102601.GA11796@saruman>
-References: <20180323102601.GA11796@saruman>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 23 Mar 2018 11:36:29 -0700
-X-Google-Sender-Auth: BtLk_pSXOoV5p6WiGB2ILBL7rK0
-Message-ID: <CA+55aFwERU7m_DYffR=xcUmb1_mzzqwU2gK7xOck8X4N9CtLCw@mail.gmail.com>
-Subject: Re: [GIT PULL] MIPS fixes for 4.16-rc7
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <linus971@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180323180024.GB1436@brightrain.aerifal.cx>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63175
+X-archive-position: 63176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: willy@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,23 +77,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 23, 2018 at 3:26 AM, James Hogan <jhogan@kernel.org> wrote:
->
->  arch/mips/lantiq/Kconfig        |  2 ++
->  arch/mips/lantiq/xway/sysctrl.c |  6 ++---
->  arch/mips/ralink/mt7621.c       | 50 +++++++++++++++++++++--------------------
->  arch/mips/ralink/reset.c        |  7 ------
->  4 files changed, 31 insertions(+), 34 deletions(-)
+On Fri, Mar 23, 2018 at 02:00:24PM -0400, Rich Felker wrote:
+> On Fri, Mar 23, 2018 at 05:48:06AM -0700, Matthew Wilcox wrote:
+> > On Thu, Mar 22, 2018 at 07:36:36PM +0300, Ilya Smith wrote:
+> > > Current implementation doesn't randomize address returned by mmap.
+> > > All the entropy ends with choosing mmap_base_addr at the process
+> > > creation. After that mmap build very predictable layout of address
+> > > space. It allows to bypass ASLR in many cases. This patch make
+> > > randomization of address on any mmap call.
+> > 
+> > Why should this be done in the kernel rather than libc?  libc is perfectly
+> > capable of specifying random numbers in the first argument of mmap.
+> 
+> Generally libc does not have a view of the current vm maps, and thus
+> in passing "random numbers", they would have to be uniform across the
+> whole vm space and thus non-uniform once the kernel rounds up to avoid
+> existing mappings.
 
-Odd. This didn't match for me. It turns out that's because you have
-the patience diff enabled.
+I'm aware that you're the musl author, but glibc somehow manages to
+provide etext, edata and end, demonstrating that it does know where at
+least some of the memory map lies.  Virtually everything after that is
+brought into the address space via mmap, which at least glibc intercepts,
+so it's entirely possible for a security-conscious libc to know where
+other things are in the memory map.  Not to mention that what we're
+primarily talking about here are libraries which are dynamically linked
+and are loaded by ld.so before calling main(); not dlopen() or even
+regular user mmaps.
 
-Normally the patience diff generates moire legible diffs, but in this
-case the default diff actually seems better.
+> Also this would impose requirements that libc be
+> aware of the kernel's use of the virtual address space and what's
+> available to userspace -- for example, on 32-bit archs whether 2GB,
+> 3GB, or full 4GB (for 32-bit-user-on-64-bit-kernel) is available, and
+> on 64-bit archs where fewer than the full 64 bits are actually valid
+> in addresses, what the actual usable pointer size is. There is
+> currently no clean way of conveying this information to userspace.
 
-You don't have to do anything about your config, I realize that some
-people and projects prefer patience-dff. I just found it interesting
-how *completely* different the diffs look. Normally the differences
-are subtler.
-
-                Linus
+Huh, I thought libc was aware of this.  Also, I'd expect a libc-based
+implementation to restrict itself to, eg, only loading libraries in
+the bottom 1GB to avoid applications who want to map huge things from
+running out of unfragmented address space.

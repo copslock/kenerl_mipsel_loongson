@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 21:12:39 +0100 (CET)
-Received: from mail.bootlin.com ([62.4.15.54]:52037 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 21:13:02 +0100 (CET)
+Received: from mail.bootlin.com ([62.4.15.54]:52007 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990864AbeCWULmWVc04 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23990498AbeCWULmVUmB4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 23 Mar 2018 21:11:42 +0100
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 5C9D820858; Fri, 23 Mar 2018 21:11:35 +0100 (CET)
+        id A27B32071B; Fri, 23 Mar 2018 21:11:34 +0100 (CET)
 Received: from localhost (unknown [88.191.26.124])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 21DEB2072D;
-        Fri, 23 Mar 2018 21:11:35 +0100 (CET)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 586022071B;
+        Fri, 23 Mar 2018 21:11:34 +0100 (CET)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     "David S . Miller" <davem@davemloft.net>
 Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
@@ -18,10 +18,10 @@ Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
         netdev@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH net-next 4/8] dt-bindings: net: add DT bindings for Microsemi Ocelot Switch
-Date:   Fri, 23 Mar 2018 21:11:13 +0100
-Message-Id: <20180323201117.8416-5-alexandre.belloni@bootlin.com>
+        Raju Lakkaraju <Raju.Lakkaraju@microsemi.com>
+Subject: [PATCH net-next 1/8] net: phy: Add initial support for Microsemi Ocelot internal PHYs.
+Date:   Fri, 23 Mar 2018 21:11:10 +0100
+Message-Id: <20180323201117.8416-2-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.16.2
 In-Reply-To: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
 References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63183
+X-archive-position: 63184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,82 +46,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DT bindings for the Ethernet switch found on Microsemi Ocelot platforms.
+Add Microsemi Ocelot internal PHY ids. For now, simply use the genphy
+functions but more features are available.
 
-Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Raju Lakkaraju <Raju.Lakkaraju@microsemi.com>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- .../devicetree/bindings/net/mscc-ocelot.txt        | 62 ++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/mscc-ocelot.txt
+ drivers/net/phy/mscc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/mscc-ocelot.txt b/Documentation/devicetree/bindings/net/mscc-ocelot.txt
-new file mode 100644
-index 000000000000..ee092a85b5a0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/mscc-ocelot.txt
-@@ -0,0 +1,62 @@
-+Microsemi Ocelot network Switch
-+===============================
-+
-+The Microsemi Ocelot network switch can be found on Microsemi SoCs (VSC7513,
-+VSC7514)
-+
-+Required properties:
-+- compatible: Should be "mscc,ocelot-switch"
-+- reg: Must contain an (offset, length) pair of the register set for each
-+  entry in reg-names.
-+- reg-names: Must include the following entries:
-+  - "sys"
-+  - "rew"
-+  - "qs"
-+  - "hsio"
-+  - "qsys"
-+  - "ana"
-+  - "portX" with X from 0 to the number of last port index available on that
-+    switch
-+- interrupts: Should contain the switch interrupts for frame extraction and
-+  frame injection
-+- interrupt-names: should contain the interrupt names: "xtr", "inj"
-+
-+Example:
-+
-+	switch@1010000 {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "mscc,ocelot-switch";
-+		reg = <0x1010000 0x10000>,
-+		      <0x1030000 0x10000>,
-+		      <0x1080000 0x100>,
-+		      <0x10d0000 0x10000>,
-+		      <0x11e0000 0x100>,
-+		      <0x11f0000 0x100>,
-+		      <0x1200000 0x100>,
-+		      <0x1210000 0x100>,
-+		      <0x1220000 0x100>,
-+		      <0x1230000 0x100>,
-+		      <0x1240000 0x100>,
-+		      <0x1250000 0x100>,
-+		      <0x1260000 0x100>,
-+		      <0x1270000 0x100>,
-+		      <0x1280000 0x100>,
-+		      <0x1800000 0x80000>,
-+		      <0x1880000 0x10000>;
-+		reg-names = "sys", "rew", "qs", "hsio", "port0",
-+			    "port1", "port2", "port3", "port4", "port5",
-+			    "port6", "port7", "port8", "port9", "port10",
-+			    "qsys", "ana";
-+		interrupts = <21 22>;
-+		interrupt-names = "xtr", "inj";
-+
-+		port0: port@0 {
-+			reg = <0>;
-+			phy-handle = <&phy0>;
-+		};
-+		port1: port@1 {
-+			reg = <1>;
-+			phy-handle = <&phy1>;
-+		};
-+	};
+diff --git a/drivers/net/phy/mscc.c b/drivers/net/phy/mscc.c
+index 650c2667d523..e1ab3acd1cdb 100644
+--- a/drivers/net/phy/mscc.c
++++ b/drivers/net/phy/mscc.c
+@@ -91,6 +91,7 @@ enum rgmii_rx_clock_delay {
+ #define SECURE_ON_PASSWD_LEN_4		  0x4000
+ 
+ /* Microsemi PHY ID's */
++#define PHY_ID_OCELOT			  0x00070540
+ #define PHY_ID_VSC8530			  0x00070560
+ #define PHY_ID_VSC8531			  0x00070570
+ #define PHY_ID_VSC8540			  0x00070760
+@@ -658,6 +659,19 @@ static int vsc85xx_probe(struct phy_device *phydev)
+ 
+ /* Microsemi VSC85xx PHYs */
+ static struct phy_driver vsc85xx_driver[] = {
++{
++	.phy_id		= PHY_ID_OCELOT,
++	.name		= "Microsemi OCELOT",
++	.phy_id_mask    = 0xfffffff0,
++	.features	= PHY_GBIT_FEATURES,
++	.soft_reset	= &genphy_soft_reset,
++	.config_init	= &genphy_config_init,
++	.config_aneg	= &genphy_config_aneg,
++	.aneg_done	= &genphy_aneg_done,
++	.read_status	= &genphy_read_status,
++	.suspend	= &genphy_suspend,
++	.resume		= &genphy_resume,
++},
+ {
+ 	.phy_id		= PHY_ID_VSC8530,
+ 	.name		= "Microsemi FE VSC8530",
+@@ -748,6 +762,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ module_phy_driver(vsc85xx_driver);
+ 
+ static struct mdio_device_id __maybe_unused vsc85xx_tbl[] = {
++	{ PHY_ID_OCELOT, 0xfffffff0, },
+ 	{ PHY_ID_VSC8530, 0xfffffff0, },
+ 	{ PHY_ID_VSC8531, 0xfffffff0, },
+ 	{ PHY_ID_VSC8540, 0xfffffff0, },
 -- 
 2.16.2

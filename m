@@ -1,19 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2018 23:21:32 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:56662 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990432AbeCVWVUwJbZ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Mar 2018 23:21:20 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2E3F21837;
-        Thu, 22 Mar 2018 22:21:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C2E3F21837
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 22 Mar 2018 22:21:08 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     Huacai Chen <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 04:51:23 +0100 (CET)
+Received: from forward106p.mail.yandex.net ([IPv6:2a02:6b8:0:1472:2741:0:8b7:109]:49592
+        "EHLO forward106p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990411AbeCWDvPneWzK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 04:51:15 +0100
+Received: from mxback14g.mail.yandex.net (mxback14g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:93])
+        by forward106p.mail.yandex.net (Yandex) with ESMTP id DCCB72D83563;
+        Fri, 23 Mar 2018 06:51:09 +0300 (MSK)
+Received: from smtp3o.mail.yandex.net (smtp3o.mail.yandex.net [2a02:6b8:0:1a2d::27])
+        by mxback14g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 4lPL1HOGOQ-p6oCJx1v;
+        Fri, 23 Mar 2018 06:51:09 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1521777069;
+        bh=5SvjjoAUaysI2wrTTFD9UUpWnSloq+ThLng+isqMh9o=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=lHkXx2N2g3r+ukjyvevXiufSaniAYxmCxusabFowL961JCH+vsbjNq6COsKmXQwcP
+         +vw0dfVnf5HZapO3qwht6uPC8o4iEslzgh0y1RcNdrA+TIKYdvYZPNy2tE7+/SWkUi
+         GaIS/vVJrT2ipM7ygvnvYS3AiyqhoMpwOZk2nSVI=
+Received: by smtp3o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id D7pNAh9uwJ-owcCxaRF;
+        Fri, 23 Mar 2018 06:51:03 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1521777064;
+        bh=5SvjjoAUaysI2wrTTFD9UUpWnSloq+ThLng+isqMh9o=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=bOqWGPya+FtO031ZYUsV8ILP2vNq1uPJ1u9rl4js2Dz4Ugp9WUj2+uXucsXlvXWSc
+         14Jb8zkvYPnKvdw5eN78/m8foQMWrGI3MxyBFOnU4YMQ2whRX5GjRgWKk3r3G/9+p6
+         vcKPa9jha79SDG/LYqf7hwZv7m4HbBlw0J0LYQjQ=
+Authentication-Results: smtp3o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Message-ID: <1521777055.1510.9.camel@flygoat.com>
+Subject: Re: [PATCH V3] ZBOOT: fix stack protector in compressed boot phase
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     James Hogan <jhogan@kernel.org>, Huacai Chen <chenhc@lemote.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
@@ -21,24 +37,23 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
         stable@vger.kernel.org
-Subject: Re: [PATCH V3] ZBOOT: fix stack protector in compressed boot phase
-Message-ID: <20180322222107.GJ13126@saruman>
+Date:   Fri, 23 Mar 2018 11:50:55 +0800
+In-Reply-To: <20180322222107.GJ13126@saruman>
 References: <1521186916-13745-1-git-send-email-chenhc@lemote.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="I/5syFLg1Ed7r+1G"
-Content-Disposition: inline
-In-Reply-To: <1521186916-13745-1-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+         <20180322222107.GJ13126@saruman>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.5 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63160
+X-archive-position: 63161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,69 +66,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+在 2018-03-22四的 22:21 +0000，James Hogan写道：
+> On Fri, Mar 16, 2018 at 03:55:16PM +0800, Huacai Chen wrote:
+> > diff --git a/arch/mips/boot/compressed/decompress.c
+> > b/arch/mips/boot/compressed/decompress.c
+> > index fdf99e9..5ba431c 100644
+> > --- a/arch/mips/boot/compressed/decompress.c
+> > +++ b/arch/mips/boot/compressed/decompress.c
+> > @@ -78,11 +78,6 @@ void error(char *x)
+> >  
+> >  unsigned long __stack_chk_guard;
+> 
+> ...
+> 
+> > diff --git a/arch/mips/boot/compressed/head.S
+> > b/arch/mips/boot/compressed/head.S
+> > index 409cb48..00d0ee0 100644
+> > --- a/arch/mips/boot/compressed/head.S
+> > +++ b/arch/mips/boot/compressed/head.S
+> > @@ -32,6 +32,10 @@ start:
+> >  	bne	a2, a0, 1b
+> >  	 addiu	a0, a0, 4
+> >  
+> > +	PTR_LA	a0, __stack_chk_guard
+> > +	PTR_LI	a1, 0x000a0dff
+> > +	sw	a1, 0(a0)
+> 
 
---I/5syFLg1Ed7r+1G
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi James
 
-On Fri, Mar 16, 2018 at 03:55:16PM +0800, Huacai Chen wrote:
-> diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/comp=
-ressed/decompress.c
-> index fdf99e9..5ba431c 100644
-> --- a/arch/mips/boot/compressed/decompress.c
-> +++ b/arch/mips/boot/compressed/decompress.c
-> @@ -78,11 +78,6 @@ void error(char *x)
-> =20
->  unsigned long __stack_chk_guard;
+Huacai Can't reply this mail. His chenhc@lemote.com is blcoked by
+Linux-MIPS mailing list while his Gmail didn't receive this email, so
+I'm replying for him.
 
-=2E..
+> Should that not be LONG_S? Otherwise big endian MIPS64 would get a
+> word-swapped canary (which is probably mostly harmless, but still).
 
-> diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed=
-/head.S
-> index 409cb48..00d0ee0 100644
-> --- a/arch/mips/boot/compressed/head.S
-> +++ b/arch/mips/boot/compressed/head.S
-> @@ -32,6 +32,10 @@ start:
->  	bne	a2, a0, 1b
->  	 addiu	a0, a0, 4
-> =20
-> +	PTR_LA	a0, __stack_chk_guard
-> +	PTR_LI	a1, 0x000a0dff
-> +	sw	a1, 0(a0)
+Yes, he said it's considerable.
 
-Should that not be LONG_S? Otherwise big endian MIPS64 would get a
-word-swapped canary (which is probably mostly harmless, but still).
+> 
+> Also I think it worth mentioning in the commit message the MIPS
+> configuration you hit this with, presumably a Loongson one? For me
+> decompress_kernel() gets a stack guard on loongson3_defconfig, but
+> not
+> malta_defconfig or malta_defconfig + 64-bit. I presume its sensitive
+> to
+> the compiler inlining stuff into decompress_kernel() or something
+> such
+> that it suddenly qualifies for a stack guard.
 
-Also I think it worth mentioning in the commit message the MIPS
-configuration you hit this with, presumably a Loongson one? For me
-decompress_kernel() gets a stack guard on loongson3_defconfig, but not
-malta_defconfig or malta_defconfig + 64-bit. I presume its sensitive to
-the compiler inlining stuff into decompress_kernel() or something such
-that it suddenly qualifies for a stack guard.
+Have you tested with CONFIG_CC_STACKPROTECTOR_STRONG=y ?
+Huacai reproduced the issue by this[1] config with GCC 4.9.
 
-Cheers
-James
+[1] https://github.com/loongson-community/linux-stable/blob/rebase-4.14
+/arch/mips/configs/loongson3_defconfig
 
---I/5syFLg1Ed7r+1G
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq0LFMACgkQbAtpk944
-dnrmTQ/+JqSPbejJsFyxpccmWIyLBtYPujNEeohQv5ZthOfaooKRy7NvUQqirXxG
-HKpHT1EqQtZsXxir/BZxdpo0rN+M/7kMWU9XKLtFqkiz88k1i+k4o7dlrdQcZOqy
-HFBPtJnkchJrgBxxzPNxmHnWCxOFoYbK2HBxsn0cBGDm9sgLgXPkMwkAk29fG3uT
-ViYFSUhnlmNAo4GBgUkxSFK3rDZZQWq7DFHaMrTEKeJo0SdLtmCt7YD25grSOp0K
-klBR1sdHe+oIXQAcowD3xdsLNSNeRoRgtan2Y6ByBLs00+dE7A6D8buruvohh/m4
-B37/oeHOEg65kmOVVSnhseaW92YfUyBEkGosJHgV0a9/BoNeN8r1deLgKGb/VYCC
-bzOiN0pTzDzPZXvIsWEKibOMrrcm/2Et6Gkh4VawwFEKXZ2ZQAkvwUXFvBjXFwuq
-3/V3+bLsrS6mdkvDGe3HcqNEdRhGcjt9uISxGhQtPe30aK9EgtTYH/Ol9GNe/R2l
-b/1eEo5RGf0FAko1+xeE81q+xAUPoR4IECl5wj9LQy/KEP7rBSSJj2Ixxl2YMZGg
-osFHqfdRh1ihHViu8OMMsT0/qTCH/H953rgGZySpK4twyChK92FMfF2uO7z18NHC
-uAylLlojOuGKA0t6HsAEuB64oWg3HV2bYGu1p1yQK5XolLuLrWk=
-=1hrp
------END PGP SIGNATURE-----
-
---I/5syFLg1Ed7r+1G--
+> 
+> Cheers
+> James

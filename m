@@ -1,63 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 22:45:23 +0100 (CET)
-Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:40680
-        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990498AbeCWVpLQLBvS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 22:45:11 +0100
-Received: by mail-pg0-x244.google.com with SMTP id g8so5072017pgv.7
-        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2018 14:45:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 22:46:53 +0100 (CET)
+Received: from mail-pl0-x243.google.com ([IPv6:2607:f8b0:400e:c01::243]:46344
+        "EHLO mail-pl0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990498AbeCWVqqd-jyS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 22:46:46 +0100
+Received: by mail-pl0-x243.google.com with SMTP id f5-v6so8210300plj.13
+        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2018 14:46:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ysm1iQAK5/a3Ub6Di9aFk/yDRb2QyOnxd7YadyH62g0=;
-        b=kVPQVE7p25yBdvm+pnLzqvPQMyHCVUbxZw+3KFy7s/tDHrBxCkeWA34hNes1ipl7G6
-         ipkQA7V6xp9ej+MgBYTHejPAk9TgXlUEnczS+IDRhax9o923bK2fA1A4c0l/HlMWqbNR
-         iduLdQ3eEeW0V48sNScpJbcSpTlXbuqwod7/VaxANRx+BDtXUwDyWnkvgUTe7eVO5gFI
-         dylvwxClGes3dpKkHxApRBoQE8X2MW1dr5BBf1EST0HXsvSVBEQwHNq2+A+VlCNH1+Ts
-         gTiFj17VVYvyJQ6SKtp1qbb9O4zq+DRiJ8cxzWf6iL8V1DSrdIxiyCKx2RFmc/J1suMm
-         OwXQ==
+        bh=8bM0GYxgq8TSBnSPVw63tG3ART5l5Iai3nIHM31YLNA=;
+        b=qpt+SQvGyUYUH/9RYvE2zPBdQjiySAmQFunl1tq3WWeBG7HGVlUuEDgsvNiIlNATYw
+         zAXliFE0voBx0VVu/EQLrIpAwBNXnGiWfuTBsv3Ph5hCwcrFrReilN8oCM3nntHEXtFI
+         lEfhZuZIouTgwoclS2yp7gn8KQ56XHogn8O0kabGckFppkFOAP9Y5VgsF7wpHfNjv5ey
+         YweGIHruBb00b5MOr/oCF1i92W+2BU+Zg+mexPpsScz0pakdYDCRG6yDbotdn1jiWNWT
+         /w2Lcr0wo/7Qk7qSmxvEBz97J/WWUrOLQPf01Qzw1PLI0cBDqbGpEsgt68sjgm8Xu8zZ
+         ODdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=ysm1iQAK5/a3Ub6Di9aFk/yDRb2QyOnxd7YadyH62g0=;
-        b=UGaDQBvjsmcERoTMKibrXfhZtbZHSS8Cz0L6ax03uPLCKq3GzxqbG0lCbiKsWADvkH
-         f/TgEdi3u5ZtMMp6kdTvqIHZ0Ac8L9rpK++4q0oIwkwjW7zxlDgi3q3KnehU5lMTNx7c
-         foKeE2kQItVF6bhH/HVSSQs+wVLwwByL5hoC93L3hLLn6YoCpkjcyUWmPBxibTG41eth
-         KBrF/3sSjIO6DqEIudvsKNmFKInJb0AzY6cZlS9nEJUCdkMNpdM9JH/uXGviotr5RDfi
-         6GuHjVsW1MfnWC6QjvyeJsfDRcXWPkMe7SoedA9FeEYI80/Jk4spEXfbHEgwnXjZrDRn
-         M2MQ==
-X-Gm-Message-State: AElRT7FeHK6bMO0StGVt3VJLOoRtIcrFJKGfCEP7sOQ91g+kLmKY7PU+
-        AVlH7/sG50BNNmxXRLQoLE0=
-X-Google-Smtp-Source: AG47ELsDyVlP3Z7/Ux415Bmwa4MBiKM+MAfXll068ZEPvWunLix2pBvMb3VnAzia8oj4nPM1RzzEjg==
-X-Received: by 10.99.110.5 with SMTP id j5mr13508116pgc.246.1521841504481;
-        Fri, 23 Mar 2018 14:45:04 -0700 (PDT)
+        bh=8bM0GYxgq8TSBnSPVw63tG3ART5l5Iai3nIHM31YLNA=;
+        b=KgphC3Lxm96QXjr8qZ49ScJ/SByFNXeIM9zCvrgujCy512QgrIj42Y0tgZkidy8QCi
+         8v2KPK3kAGbuHVB66SP9K1Ow0h1iX/xTZXDeiHlPVsRFmD7MiHFji1nPL+x7d+qHHA/s
+         dOdLbBBE4ueC1dENGrB9IRTeySQoX0kDjeb9VdZfoHbfpQcg0yA3o0SRSJ6vya4Yz1Ew
+         MJG4ZT8m/ZwFzQx0PHRhTd+J6kKw8ACLEa92BJzqhCjaMb+bl6JM3rvUYwscRkSqV89c
+         DxNdahENXNvBzUqgZN3SJr8nnsW6jPEkA185ZYjHBSSuAHM+4PjvqySXKZMTKUsevAZa
+         Kzpg==
+X-Gm-Message-State: AElRT7GrKmIjN0PWZHHJaZExpsuol/kMJTSuKV1P51JeeIsVTcHAZneH
+        dG7kB4QQS6vhxQqbBa6BMxw=
+X-Google-Smtp-Source: AG47ELsAUJmrXGDsZvVTAwdTfqgCZY0bgPi8togDAx8ggqBdkKTaezOLQpic5xxbsOPxUQvcT1gkJw==
+X-Received: by 2002:a17:902:7e09:: with SMTP id b9-v6mr30801053plm.223.1521841600387;
+        Fri, 23 Mar 2018 14:46:40 -0700 (PDT)
 Received: from [10.69.41.93] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id p12sm17465968pgn.91.2018.03.23.14.44.54
+        by smtp.googlemail.com with ESMTPSA id 2sm20771552pfo.70.2018.03.23.14.46.38
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 23 Mar 2018 14:45:03 -0700 (PDT)
-Subject: Re: [PATCH net-next 6/8] MIPS: mscc: Add switch to ocelot
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        Fri, 23 Mar 2018 14:46:39 -0700 (PDT)
+Subject: Re: [PATCH net-next 2/8] dt-bindings: net: add DT bindings for
+ Microsemi MIIM
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
         razvan.stefanescu@nxp.com, po.liu@nxp.com,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
+        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, Rob Herring <robh+dt@kernel.org>
 References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
- <20180323201117.8416-7-alexandre.belloni@bootlin.com>
- <e488fd29-0094-d005-a078-873f6f5add13@gmail.com>
- <20180323212230.GA12808@piout.net> <20180323213344.GV24361@lunn.ch>
+ <20180323201117.8416-3-alexandre.belloni@bootlin.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <dcac43b7-2eb7-d409-a77c-4f671a8cfc3d@gmail.com>
-Date:   Fri, 23 Mar 2018 14:44:54 -0700
+Message-ID: <6cb618e9-0aa0-ba54-b556-d7a6823913d7@gmail.com>
+Date:   Fri, 23 Mar 2018 14:46:38 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.6.0
 MIME-Version: 1.0
-In-Reply-To: <20180323213344.GV24361@lunn.ch>
+In-Reply-To: <20180323201117.8416-3-alexandre.belloni@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -65,7 +63,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63202
+X-archive-position: 63203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,35 +80,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/23/2018 02:33 PM, Andrew Lunn wrote:
-> On Fri, Mar 23, 2018 at 10:22:30PM +0100, Alexandre Belloni wrote:
->> On 23/03/2018 at 14:17:48 -0700, Florian Fainelli wrote:
->>> On 03/23/2018 01:11 PM, Alexandre Belloni wrote:
->>>> +
->>>> +			phy0: ethernet-phy@0 {
->>>> +				reg = <0>;
->>>> +			};
->>>> +			phy1: ethernet-phy@1 {
->>>> +				reg = <1>;
->>>> +			};
->>>> +			phy2: ethernet-phy@2 {
->>>> +				reg = <2>;
->>>> +			};
->>>> +			phy3: ethernet-phy@3 {
->>>> +				reg = <3>;
->>>> +			};
->>>
->>> These PHYs should be defined at the board DTS level.
->>
->> Those are internal PHYs, present on the SoC, I doubt anyone will have
->> anything different while using the same SoC.
+On 03/23/2018 01:11 PM, Alexandre Belloni wrote:
+> DT bindings for the Microsemi MII Management Controller found on Microsemi
+> SoCs
 > 
-> With DSA, there is no need to list internal PHYs.
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ---
+>  .../devicetree/bindings/net/mscc-miim.txt          | 25 ++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/mscc-miim.txt
 > 
-> That is the trade off of having a standalone MDIO bus driver.  Maybe
-> add a phandle to the internal MDIO bus? The switch driver could then
-> follow the phandle, and direct connect the internal PHYs?
+> diff --git a/Documentation/devicetree/bindings/net/mscc-miim.txt b/Documentation/devicetree/bindings/net/mscc-miim.txt
+> new file mode 100644
+> index 000000000000..711ac9ab853c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/mscc-miim.txt
+> @@ -0,0 +1,25 @@
+> +Microsemi MII Management Controller (MIIM) / MDIO
+> +=================================================
+> +
+> +Properties:
+> +- compatible: must be "mscc,ocelot-miim"
+> +- reg: The base address of the MDIO bus controller register bank. Optionally, a
+> +  second register bank can be defined if there is an associated reset register
+> +  for internal PHYs
+> +- #address-cells: Must be <1>.
+> +- #size-cells: Must be <0>.  MDIO addresses have no size component.
 
-This is more or less what patch 7 does, right?
+Missing interrupt property documentation (sorry), other than that:
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
 Florian

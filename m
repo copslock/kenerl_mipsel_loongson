@@ -1,38 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 22:19:13 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:48170 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 22:22:43 +0100 (CET)
+Received: from mail.bootlin.com ([62.4.15.54]:53384 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990723AbeCWVTGCJQh1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Mar 2018 22:19:06 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC0D12172C;
-        Fri, 23 Mar 2018 21:18:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org BC0D12172C
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 23 Mar 2018 21:18:55 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     "Steven J. Hill" <steven.hill@cavium.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon: Disable PCI support.
-Message-ID: <20180323211854.GE11796@saruman>
-References: <1521789166-6096-1-git-send-email-steven.hill@cavium.com>
+        id S23990723AbeCWVWg68mi1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Mar 2018 22:22:36 +0100
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 60E912082C; Fri, 23 Mar 2018 22:22:29 +0100 (CET)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 189FA20384;
+        Fri, 23 Mar 2018 22:22:29 +0100 (CET)
+Date:   Fri, 23 Mar 2018 22:22:30 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        razvan.stefanescu@nxp.com, po.liu@nxp.com,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
+Subject: Re: [PATCH net-next 6/8] MIPS: mscc: Add switch to ocelot
+Message-ID: <20180323212230.GA12808@piout.net>
+References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
+ <20180323201117.8416-7-alexandre.belloni@bootlin.com>
+ <e488fd29-0094-d005-a078-873f6f5add13@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7LkOrbQMr4cezO2T"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1521789166-6096-1-git-send-email-steven.hill@cavium.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <e488fd29-0094-d005-a078-873f6f5add13@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63197
+X-archive-position: 63198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,43 +49,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 23/03/2018 at 14:17:48 -0700, Florian Fainelli wrote:
+> On 03/23/2018 01:11 PM, Alexandre Belloni wrote:
+> > +
+> > +			phy0: ethernet-phy@0 {
+> > +				reg = <0>;
+> > +			};
+> > +			phy1: ethernet-phy@1 {
+> > +				reg = <1>;
+> > +			};
+> > +			phy2: ethernet-phy@2 {
+> > +				reg = <2>;
+> > +			};
+> > +			phy3: ethernet-phy@3 {
+> > +				reg = <3>;
+> > +			};
+> 
+> These PHYs should be defined at the board DTS level.
 
---7LkOrbQMr4cezO2T
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Those are internal PHYs, present on the SoC, I doubt anyone will have
+anything different while using the same SoC.
 
-On Fri, Mar 23, 2018 at 02:12:46AM -0500, Steven J. Hill wrote:
-> Until the new Octeon PCI code is upstreamed, disable it
-> so the default config file builds again. Other updates
 
-Could you clarify what build failures you're seeing please.
-
-> from running 'make defconfig' also.
-
-Do you mean 'make savedefconfig'?
-
-Cheers
-James
-
---7LkOrbQMr4cezO2T
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq1bz4ACgkQbAtpk944
-dnrCEQ//X6v/Vf3Gltc4snAZduKmNVo2YAtffma/GSM4GGsfERsjEocEdPjhQm2E
-aPf7ZAzt+6FbNoOhJ2YB77QYkEcmiggj8SV8ZA6zPp5ZZgidYTK7XCDw1nKwkkLs
-uuhkITPvjF1g2S7ghc7kSVaVIW5cERudZ0Yvz1hJdBVePdrOOX0Y+22mP2YkWklr
-7U7G6pHhgT6+zPS6zWG7mJ6BcG28AqUdKft+MsP7NV6Y0SB/r1RXylRHkzjs2Fk5
-zYNUNCoFIYYtERfxZ74MTFMx+4ccetTHuyg0xUPaus76a6IayZ7qHstgaXJlsLop
-RIjie+esXQY4tOcHGpzawGjr7bOfFjKQloPcjdGLKNrmptLhmVZzLuLz2Z740Ali
-9SBh5ds1GXWGAC+MV/fZdddp7xjm2gIIVPqSf56KLnfUpciHuG5GAMqJUnNgslyf
-vUv2RynC6AxgG0pP6tSSvbZd7nJIVVVtp7Ma4zptiuzrMm3PsCa/p9pNklRRGTaF
-f7/E08z8CoCJvu/uc/QXjLTIGvqb+26Fb6ltGFLE/SZCpUIC43SySrPUlftaTlJT
-6xI//arZKW6KomDw/X/Md0VX6qiukeYMatrf1Zn+3nZUL9N2Hrlv1lL3LjwmgUgG
-DNzqFNbVtc6851uEZYcmaBlfSuRfO/hKYDhfEJXG7ddxcN7VX/8=
-=T4Ag
------END PGP SIGNATURE-----
-
---7LkOrbQMr4cezO2T--
+-- 
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

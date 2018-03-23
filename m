@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 21:49:58 +0100 (CET)
-Received: from vps0.lunn.ch ([185.16.172.187]:46436 "EHLO vps0.lunn.ch"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 21:57:07 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:44516 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990498AbeCWUtvJ5Kz1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Mar 2018 21:49:51 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=RPsIrAEotpf9xjF3aS2UuAY3gdkwYBdfQkCDHKyCPQY=;
-        b=Du9Vj9edP9et1KjKUKMvKQ/XN8yeZaXueRY27l0kyYJb36bzVgkc21aELbAmAyI04ghNsoFoMpMa7dMlyvZ0uiYmgLN6IJqgDsbGSRQHn5fhM5FLGgLw6rWf2ypmAYL4A0FJdaCFY45qvK7ATSOon5gNP3AfGGHy/+obDcfU2e0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1ezTd5-0005V2-K8; Fri, 23 Mar 2018 21:49:39 +0100
-Date:   Fri, 23 Mar 2018 21:49:39 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        razvan.stefanescu@nxp.com, po.liu@nxp.com,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH net-next 3/8] net: mscc: Add MDIO driver
-Message-ID: <20180323204939.GS24361@lunn.ch>
-References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
- <20180323201117.8416-4-alexandre.belloni@bootlin.com>
+        id S23990656AbeCWU47k4v-1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Mar 2018 21:56:59 +0100
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1B7AD20838;
+        Fri, 23 Mar 2018 20:56:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1B7AD20838
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Fri, 23 Mar 2018 20:56:48 +0000
+From:   James Hogan <jhogan@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [GIT PULL] MIPS fixes for 4.16-rc7
+Message-ID: <20180323205647.GC11796@saruman>
+References: <20180323102601.GA11796@saruman>
+ <CA+55aFwERU7m_DYffR=xcUmb1_mzzqwU2gK7xOck8X4N9CtLCw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="s9fJI615cBHmzTOP"
 Content-Disposition: inline
-In-Reply-To: <20180323201117.8416-4-alexandre.belloni@bootlin.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <andrew@lunn.ch>
+In-Reply-To: <CA+55aFwERU7m_DYffR=xcUmb1_mzzqwU2gK7xOck8X4N9CtLCw@mail.gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63190
+X-archive-position: 63191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,51 +47,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 23, 2018 at 09:11:12PM +0100, Alexandre Belloni wrote:
-> Add a driver for the Microsemi MII Management controller (MIIM) found on
-> Microsemi SoCs.
-> On Ocelot, there are two controllers, one is connected to the internal
-> PHYs, the other one can communicate with external PHYs.
 
-Hi Alexandre
+--s9fJI615cBHmzTOP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This looks to be standalone. Such drivers we try to put in
-drivers/net/phy.
+On Fri, Mar 23, 2018 at 11:36:29AM -0700, Linus Torvalds wrote:
+> On Fri, Mar 23, 2018 at 3:26 AM, James Hogan <jhogan@kernel.org> wrote:
+> >
+> >  arch/mips/lantiq/Kconfig        |  2 ++
+> >  arch/mips/lantiq/xway/sysctrl.c |  6 ++---
+> >  arch/mips/ralink/mt7621.c       | 50 +++++++++++++++++++++------------=
+--------
+> >  arch/mips/ralink/reset.c        |  7 ------
+> >  4 files changed, 31 insertions(+), 34 deletions(-)
+>=20
+> Odd. This didn't match for me. It turns out that's because you have
+> the patience diff enabled.
+>=20
+> Normally the patience diff generates moire legible diffs, but in this
+> case the default diff actually seems better.
+>=20
+> You don't have to do anything about your config, I realize that some
+> people and projects prefer patience-dff. I just found it interesting
+> how *completely* different the diffs look. Normally the differences
+> are subtler.
 
-> +static int mscc_miim_read(struct mii_bus *bus, int mii_id, int regnum)
-> +{
-> +	struct mscc_miim_dev *miim = bus->priv;
-> +	u32 val;
-> +	int ret;
-> +
-> +	mutex_lock(&miim->lock);
+Indeed I do have patience enabled from long ago when the default diff
+was probably showing some change unintuitively.
 
-What are you locking against here?
+The only nice thing I suppose is that it emphasises the added __sync()
+and its choice of code to show as moved is essentially unchanged, but
+then again it doesn't match so closely how the author has described the
+change...
 
-And you don't appear to initialize the mutex anywhere.
+Cheers
+James
 
-> +static int mscc_miim_reset(struct mii_bus *bus)
-> +{
-> +	struct mscc_miim_dev *miim = bus->priv;
-> +	int i;
-> +
-> +	if (miim->phy_regs) {
-> +		writel(0, miim->phy_regs + MSCC_PHY_REG_PHY_CFG);
-> +		writel(0x1ff, miim->phy_regs + MSCC_PHY_REG_PHY_CFG);
-> +		mdelay(500);
-> +	}
-> +
-> +	for (i = 0; i < PHY_MAX_ADDR; i++) {
-> +		if (mscc_miim_read(bus, i, MII_PHYSID1) < 0)
-> +			bus->phy_mask |= BIT(i);
-> +	}
+--s9fJI615cBHmzTOP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Why do this? Especially so for the external bus, where the PHYs might
-have a GPIO reset line, and won't respond until the gpio is
-released. The core code does that just before it scans the bus, or
-just before it scans the particular address on the bus, depending on
-the scope of the GPIO.
+-----BEGIN PGP SIGNATURE-----
 
-Otherwise, pretty good :-)
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq1agoACgkQbAtpk944
+dnrvyBAAo5sJbUWsIgZl4kPmrmznVtayj+2GlDJMwRSQIaYDk/fOs/nSdv0nPvWu
+cvAGj+0JIHm1jKw1o3BqHvKDPtfykkMczSngjaVZwrFoVnCTbAol1lMvTqQ8b2bc
+1QN+iEMmEw6Fo0nLlJ1Cojg5BzkxAl26czNMPeKYbgisab6f02yWvvjwh0u+p53t
+35vYJIR0BYmB6RPV9OTveP1KkymQTBuxBRYg4VYWrgWBOQEXnFxoUxMb/ntOULvc
+wxzc/RBIyvTax0KM22Px1bYYMbjNG6nr9jiWGXG0wqOCRRmZ/Umt0N7G2WtFZayj
+cl5UAvDGLpOm9pj+xRmvtEGnaCDtYES1MBcWaZNWSsGQp3Wm1WFPm2HgbKCG8FTu
+tvEH6hnoRWO8xLGXnGlKBj9RrKNKQzM1KAvfP5J2MPsXb6cSHI7q199E7QpK4m2F
+QTB1aRFjeWQhjxK23srwtaABKAPoOICBRdQJQjzDrtco0kWhEtFS7ORbhEddR8bx
+CzVsf58DCHSof9jaLv6/wDIl4YnkTVS1CYD8+IT3g8oaKLZxnxeeGU/9B78+8Joi
+YkD7rO88LIRBvLGSlNawUBvYgAQ7zy39EG/lz912vxcXUstFbySkOcYkrnwaNWYV
+XCkQ3+uYn3dpH42FLuy47udQE+tM2R05+8SYSLytD+o8wn1iXvc=
+=DpRp
+-----END PGP SIGNATURE-----
 
-	   Andrew
+--s9fJI615cBHmzTOP--

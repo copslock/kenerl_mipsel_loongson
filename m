@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 11:26:25 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:54436 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 11:31:11 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:55342 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994667AbeCWK0NOWid6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Mar 2018 11:26:13 +0100
+        id S23994553AbeCWKa7yhd26 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Mar 2018 11:30:59 +0100
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A56502177B;
-        Fri, 23 Mar 2018 10:26:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A56502177B
+        by mail.kernel.org (Postfix) with ESMTPSA id AA43C2177B;
+        Fri, 23 Mar 2018 10:30:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org AA43C2177B
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 23 Mar 2018 10:26:02 +0000
+Date:   Fri, 23 Mar 2018 10:30:49 +0000
 From:   James Hogan <jhogan@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [GIT PULL] MIPS fixes for 4.16-rc7
-Message-ID: <20180323102601.GA11796@saruman>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v3] MIPS: Use the entry point from the ELF file header
+Message-ID: <20180323103048.GB11796@saruman>
+References: <alpine.DEB.2.00.1803221611430.2163@tp.orcam.me.uk>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
+        protocol="application/pgp-signature"; boundary="0eh6TmSyL6TZE2Uz"
 Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1803221611430.2163@tp.orcam.me.uk>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63167
+X-archive-position: 63168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,75 +47,59 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---fdj2RfSjLxBAspz7
+--0eh6TmSyL6TZE2Uz
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+On Thu, Mar 22, 2018 at 04:30:41PM +0000, Maciej W. Rozycki wrote:
+> In order to fetch the correct entry point with the ISA bit included, for=
+=20
+> use by non-ELF boot loaders, parse the output of `objdump -f' for the=20
+> start address recorded in the kernel executable itself, rather than=20
+> using `nm' to get the value of the `kernel_entry' symbol.
+>=20
+> Sign-extend the address retrieved if 32-bit, so that execution is=20
+> correctly started on 64-bit processors as well.  The tool always prints=
+=20
+> the entry point using either 8 or 16 hexadecimal digits, matching the=20
+> address width (aka class) of the ELF file, even in the presence of=20
+> leading zeros.
+>=20
+> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+> ---
+> Changes in v3:
+>=20
+> - renamed from "MIPS: Set ISA bit in entry-y for microMIPS kernels", to=
+=20
+>   avoid confusion with commit 5fc9484f5e41,
+>=20
+> - fixed the `sed' program to correctly pass through 64-bit values.
 
-Please pull the following MIPS fixes for 4.16-rc7.
+Thanks, applied for 4.17.
 
-Thanks
+Cheers
 James
 
-The following changes since commit 0c8efd610b58cb23cefdfa12015799079aef94ae:
-
-  Linux 4.16-rc5 (2018-03-11 17:25:09 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_fixes_4.16_5
-
-for you to fetch changes up to a63d706ea719190a79a6c769e898f70680044d3e:
-
-  MIPS: ralink: Fix booting on MT7621 (2018-03-22 00:06:30 +0000)
-
-----------------------------------------------------------------
-MIPS fixes for 4.16-rc7
-
-Another miscellaneous pile of MIPS fixes for 4.16:
-
- - lantiq: fixes for clocks and Amazon SE (4.14)
-
- - ralink: fix booting on MT7621 (4.5)
-
- - ralink: fix halt (3.9)
-
-----------------------------------------------------------------
-Mathias Kresin (3):
-      MIPS: lantiq: Fix Danube USB clock
-      MIPS: lantiq: Enable AHB Bus for USB
-      MIPS: lantiq: ase: Enable MFD_SYSCON
-
-NeilBrown (2):
-      MIPS: ralink: Remove ralink_halt()
-      MIPS: ralink: Fix booting on MT7621
-
- arch/mips/lantiq/Kconfig        |  2 ++
- arch/mips/lantiq/xway/sysctrl.c |  6 ++---
- arch/mips/ralink/mt7621.c       | 50 +++++++++++++++++++++--------------------
- arch/mips/ralink/reset.c        |  7 ------
- 4 files changed, 31 insertions(+), 34 deletions(-)
-
---fdj2RfSjLxBAspz7
+--0eh6TmSyL6TZE2Uz
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq01jkACgkQbAtpk944
-dnplbQ//XUSg+C8C58hBOkwVcsODlMix6+pB6t3fpe0ut/Le/o90+koJLSvgAmjX
-HDstUHZMjtXa/J51vd2TtksAbmZWGNSk92xXBJNLvIqCNf0nw+ZM25wP54itIDq9
-w1e6jzh6ftwVARcaw+K8E/Vce2+ID3U/5kv1XBKvuCCaLZRfI4iZPBksd7Ro1Eio
-rksbOOquzu1Hf/dcK1I2d6cUjgTuI7icwMXXewQya3m46od8WgDIN14tpMmrmJ66
-48j9OWoIuaAWMPzCPsyGEYLqkWqoL6JrtZKW5AAZbR72sa009EqMnVKUuG2593fh
-QCv9y+yMsAsOVZeEEcQm7gSNT0N8//X9OYZ7trvyyM7QM6XBgt7exw9HxoiC36IU
-rZQl1/IcWBgndAjMvlAcF37X9af4yZeTqs99KhKHRO6TFtItcevzBmViLcRUxHEw
-72R30LqxMju3Eu2B2kOjk0QJ8hgb1JfDGgCtoUHHWwRE4zA07c4AHuPjjEnwGojM
-wv25WNB1amQV1nx+P0P14EgV3+dD7zcrHdG3nDgza8pwbqPUE4yijf0IJ//8vpxf
-B/6OZlnWTnTksY2asC2/KXJqGyUro9tAGL67lSX6ZFx564bAW/LRcNhC8jH+HCbW
-7kcg6ZUfv5s8KlykhxtQItZHZBflDqEhJm6IQuVIFtyqKm+MCD0=
-=dxp2
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq011gACgkQbAtpk944
+dnomHxAAvwpAj6JzkczBbf76vOwBVWgTG271ADnxpe6RV/Pnn1wp+Zi5V7Gmviea
+feNq69J79sEPq2rk14/nlal9SCuX+yQRrwAlDLNgtniyaas9Z5mfQpfg6O226dj3
+V0k8j8G2NdNn362HMb/FAEryQGO6j2RLncVuhdIwq0w9JtWBeFYEjsMcRcaMGZG4
+63aYBs2YBU99OzJmT/HpYBMo9kTuLEbcBdZSU+Xpx95NPPDbyTi/BZD5/8q/nGgm
+TGLkSxfAqMch/uNhR7doYWfddPeMo0Z7XAFPAColxRSJaFI26qEHdXXCNUztGAag
+02mNgkG8GJuKYY4sYw+hYhAHtgrrHDmgbIs1/ODFMHfljTV9PEBJCmQENXrlt0cb
+TAjKbCP43V6QPyDCoufotHM+pPZdqa7LpLCA37Db3E5Z9rX5xVdWrKCbgkfqM1UY
+TpM8MHnaDSqUUw/pJaM0XApDllEo8hfvpDqV0U2KOU+MZuAr44CinQ3Y1AnAmE6X
+rE8YI/zhkg2AZuUMGhqqaYm6HugDUtxEJdvquhdpL/M4+QAkiwv7WgLaBZQQ5LRI
+bszMc7hCnQUwEPAt/vhGr+WkCJRhK7D2UTyL87E122YoW/3521DOIh4mfExJ4Njb
+dw3nlTGMwY1GONes4J8W33T6AA7Ey5/7ExCHgsvudOatGTPiQ/o=
+=bAPH
 -----END PGP SIGNATURE-----
 
---fdj2RfSjLxBAspz7--
+--0eh6TmSyL6TZE2Uz--

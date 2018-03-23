@@ -1,39 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 11:31:11 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:55342 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994553AbeCWKa7yhd26 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Mar 2018 11:30:59 +0100
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AA43C2177B;
-        Fri, 23 Mar 2018 10:30:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org AA43C2177B
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 23 Mar 2018 10:30:49 +0000
-From:   James Hogan <jhogan@kernel.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH v3] MIPS: Use the entry point from the ELF file header
-Message-ID: <20180323103048.GB11796@saruman>
-References: <alpine.DEB.2.00.1803221611430.2163@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2018 13:48:35 +0100 (CET)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:48034 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990477AbeCWMs2ihMIX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2018 13:48:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=7orINHI4+601Ya7KgoqsfTTqu+zqpdOM8kMSG4cJqJ4=; b=XGcfqtIqYEF0mTGJXW/En1OK2
+        pvAiQiWtkUR7ZEzjkVdqB+GEcsHT5OxCOaCJNSuX922S0kqVD15UiPtIJhofIN2zNJEia+8VwF0IM
+        YH4ihePwzXe+l2bNkQusG4ABKIUYg/kgvTA4fmI3EgjWGbKhT9qeytZ83dR/g5jR3k0sY4r/oWZAw
+        CuIGD+YBm9gUyquiyK4yWZrJy8UnTCBKkoO8PIptU/KXmGiVb338A1DXauJxcfvcG4NaKpFVMe8HQ
+        qQZr+TyFVbacqzYBHDdqCEhtx+lLSgMaEA7m1LbVJh1eeL3Cx2JbXNl0orzIa7BHQM35C2hOf/uID
+        vDSEv0Yvw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1ezM74-0002Ab-VV; Fri, 23 Mar 2018 12:48:06 +0000
+Date:   Fri, 23 Mar 2018 05:48:06 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Ilya Smith <blackzert@gmail.com>
+Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        vgupta@synopsys.com, linux@armlinux.org.uk, tony.luck@intel.com,
+        fenghua.yu@intel.com, jhogan@kernel.org, ralf@linux-mips.org,
+        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
+        nyc@holomorphy.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
+        gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
+        mhocko@suse.com, hughd@google.com, kstewart@linuxfoundation.org,
+        pombredanne@nexb.com, akpm@linux-foundation.org,
+        steve.capper@arm.com, punit.agrawal@arm.com, paul.burton@mips.com,
+        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
+        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
+        dan.j.williams@intel.com, jack@suse.cz,
+        ross.zwisler@linux.intel.com, jglisse@redhat.com,
+        aarcange@redhat.com, oleg@redhat.com, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-ID: <20180323124806.GA5624@bombadil.infradead.org>
+References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0eh6TmSyL6TZE2Uz"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1803221611430.2163@tp.orcam.me.uk>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63168
+X-archive-position: 63169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: willy@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,60 +74,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Mar 22, 2018 at 07:36:36PM +0300, Ilya Smith wrote:
+> Current implementation doesn't randomize address returned by mmap.
+> All the entropy ends with choosing mmap_base_addr at the process
+> creation. After that mmap build very predictable layout of address
+> space. It allows to bypass ASLR in many cases. This patch make
+> randomization of address on any mmap call.
 
---0eh6TmSyL6TZE2Uz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Mar 22, 2018 at 04:30:41PM +0000, Maciej W. Rozycki wrote:
-> In order to fetch the correct entry point with the ISA bit included, for=
-=20
-> use by non-ELF boot loaders, parse the output of `objdump -f' for the=20
-> start address recorded in the kernel executable itself, rather than=20
-> using `nm' to get the value of the `kernel_entry' symbol.
->=20
-> Sign-extend the address retrieved if 32-bit, so that execution is=20
-> correctly started on 64-bit processors as well.  The tool always prints=
-=20
-> the entry point using either 8 or 16 hexadecimal digits, matching the=20
-> address width (aka class) of the ELF file, even in the presence of=20
-> leading zeros.
->=20
-> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-> ---
-> Changes in v3:
->=20
-> - renamed from "MIPS: Set ISA bit in entry-y for microMIPS kernels", to=
-=20
->   avoid confusion with commit 5fc9484f5e41,
->=20
-> - fixed the `sed' program to correctly pass through 64-bit values.
-
-Thanks, applied for 4.17.
-
-Cheers
-James
-
---0eh6TmSyL6TZE2Uz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq011gACgkQbAtpk944
-dnomHxAAvwpAj6JzkczBbf76vOwBVWgTG271ADnxpe6RV/Pnn1wp+Zi5V7Gmviea
-feNq69J79sEPq2rk14/nlal9SCuX+yQRrwAlDLNgtniyaas9Z5mfQpfg6O226dj3
-V0k8j8G2NdNn362HMb/FAEryQGO6j2RLncVuhdIwq0w9JtWBeFYEjsMcRcaMGZG4
-63aYBs2YBU99OzJmT/HpYBMo9kTuLEbcBdZSU+Xpx95NPPDbyTi/BZD5/8q/nGgm
-TGLkSxfAqMch/uNhR7doYWfddPeMo0Z7XAFPAColxRSJaFI26qEHdXXCNUztGAag
-02mNgkG8GJuKYY4sYw+hYhAHtgrrHDmgbIs1/ODFMHfljTV9PEBJCmQENXrlt0cb
-TAjKbCP43V6QPyDCoufotHM+pPZdqa7LpLCA37Db3E5Z9rX5xVdWrKCbgkfqM1UY
-TpM8MHnaDSqUUw/pJaM0XApDllEo8hfvpDqV0U2KOU+MZuAr44CinQ3Y1AnAmE6X
-rE8YI/zhkg2AZuUMGhqqaYm6HugDUtxEJdvquhdpL/M4+QAkiwv7WgLaBZQQ5LRI
-bszMc7hCnQUwEPAt/vhGr+WkCJRhK7D2UTyL87E122YoW/3521DOIh4mfExJ4Njb
-dw3nlTGMwY1GONes4J8W33T6AA7Ey5/7ExCHgsvudOatGTPiQ/o=
-=bAPH
------END PGP SIGNATURE-----
-
---0eh6TmSyL6TZE2Uz--
+Why should this be done in the kernel rather than libc?  libc is perfectly
+capable of specifying random numbers in the first argument of mmap.

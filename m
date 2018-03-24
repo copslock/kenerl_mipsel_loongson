@@ -1,104 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2018 07:16:33 +0100 (CET)
-Received: from mail-sn1nam02on0047.outbound.protection.outlook.com ([104.47.36.47]:3428
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990418AbeCXGQZ5R2NG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 24 Mar 2018 07:16:25 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2018 07:26:45 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:33822
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbeCXG0d65T8E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Mar 2018 07:26:33 +0100
+Received: by mail-wm0-x243.google.com with SMTP id a20so9576604wmd.1
+        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2018 23:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=LiWC4VNDjoOSDnnATJO12wVxPXX3gl7aYJjAhK8LtB4=;
- b=mDz8zvR2yZ6PeBuTCTyLSFPvyxdIZyrt0QD2JfR5EV3vyNNLkD6lMnq0yvM0HKKjMMBdQP/esHw7U+t58TH7vlUPdqGq+eZHROj8Z3uLeHkcZNsy3PlL/HSM7GU9svkG6+HeH9gKVajMSjQ2VWs0dIbmrzB47ymVAF/a8B5s9YU=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Steven.Hill@cavium.com; 
-Received: from [10.0.0.40] (50.83.62.27) by
- BN6PR07MB3603.namprd07.prod.outlook.com (10.161.153.158) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
- 15.20.609.10; Sat, 24 Mar 2018 06:16:15 +0000
-Subject: Re: [PATCH] MIPS: Octeon: Disable PCI support.
-To:     James Hogan <jhogan@kernel.org>
-Cc:     linux-mips@linux-mips.org
-References: <1521789166-6096-1-git-send-email-steven.hill@cavium.com>
- <20180323211854.GE11796@saruman>
-From:   "Steven J. Hill" <Steven.Hill@cavium.com>
-Message-ID: <4e466cdf-c60a-7e2b-dbb2-2e94d8dd2385@cavium.com>
-Date:   Sat, 24 Mar 2018 01:16:11 -0500
+        d=linaro.org; s=google;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=EHNZmwRGnRbgz7vB+GgMkna+qWDmDJBAggMpg6UKKCk=;
+        b=MDFcVk9vr5i5co1VefY45Rdzak0bjSyBztGEptI3LzBF55M5X13+kbgbJjwWL8Fg1o
+         5H9S5xIH+SJHuqQa0PIx6FhGDh2y7n/22Rc1j7vNWtllw6xfgGP1lB0II3V2wAU2DK3z
+         7B/YFlMfh3LjPM2PEYQ0VODPusU54yfVHG3VI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=EHNZmwRGnRbgz7vB+GgMkna+qWDmDJBAggMpg6UKKCk=;
+        b=ZuXuGt7gASKwIgNc4HMpzSB30Zgdp134Ki9kfYZLm1XrfJ62ilgr0c5lguXPtg8rHo
+         76dLRR3ixlcvuNEkDRB4cZVQGHAekvZNF2fE12p9zIYhy9oI1W/XCB5nTZqz/sBMoy9C
+         1V/wyWQoPInJTajKsI8cofyeHVyXiFboXGkexH+migbNs/HcMmrD7aAdbBlbVkzbAR6i
+         25DV2UR6i6117kGk7frK8IlwDCKXkAFnhnpqdQF0UDC/rI8HCWWlCDDOtKu7lg86FamN
+         OrWgr+UiZKje3xf1txhuYGFdiTpqMxQfD1xiXevebeuR6I/o0Ppe1mvVH6WWK8KgvETN
+         wRkQ==
+X-Gm-Message-State: AElRT7EKLiy4tQkxzgOVQhvTrgGqh5txZ5tiMS+oDfsbCMhAER5yZaPC
+        yHnbvErOKv1fmpYbJBpOAwthQA==
+X-Google-Smtp-Source: AG47ELtQQJf3Fy9PfcvSkihOsLrkskzpjnYgwX1jGWOIA6jxIG0rYQjFsJWHVpyKR9rcNkE2DFmTqA==
+X-Received: by 10.80.191.4 with SMTP id f4mr32232185edk.224.1521872788319;
+        Fri, 23 Mar 2018 23:26:28 -0700 (PDT)
+Received: from [10.54.151.96] ([88.128.80.160])
+        by smtp.googlemail.com with ESMTPSA id y14sm7482635ede.18.2018.03.23.23.26.27
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 23 Mar 2018 23:26:27 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-8-paul@crapouillou.net>
+Message-ID: <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
+Date:   Sat, 24 Mar 2018 07:26:26 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.6.0
 MIME-Version: 1.0
-In-Reply-To: <20180323211854.GE11796@saruman>
+In-Reply-To: <20180317232901.14129-8-paul@crapouillou.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [50.83.62.27]
-X-ClientProxiedBy: DM5PR15CA0064.namprd15.prod.outlook.com (10.173.207.26) To
- BN6PR07MB3603.namprd07.prod.outlook.com (10.161.153.158)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c19880c2-6fc2-4518-27be-08d5914ebfdf
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(5600026)(4604075)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7153060)(7193020);SRVR:BN6PR07MB3603;
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3603;3:bllVaSkxtiG1cDTTbEIvcJGq3idGqEiLBzxRozrEVDpkSlA8mZJWw74rks+16Yfb95/cUXHfRqsi0jeC5Ga/G7FGPIPAePx+DjSItmQgI+cXe8EfE2Ww/vivEqcyAG6WR/Vf0tw1wIIBc607cGDvWkzP0smsRJbjPbcQSdPLRIj/5rYBs8P0UHanlcPP5G2CohApklyuq6LrejKTW2dNwOVy5YYzAXEcZhMuFBW++/IBCRnARtyzhrRQIvc3MYHX;25:lzg2w4pBXBZ+cDn4oQMwrZq5FPLCqnhugp+PJwSwhHHzs6/L/bsWFC/SngRxqbLrbJPxlczJg6B2uTnWkROIUO/OdsUyVzusfsV86SXva4jw1bBWciaU59bh3miVP9Y3ykcrMhPVvMDcr5OL0cOuwcnHmb11XjIoObzvTzQbjIZG/F1HBVgdhPTtByVL4rfwmhc2S0DL+bz7bNaXEcc0vXGuQukfTR6UbHxa4YbqVJYdKTqfwf4/URwkRL4YeAosqB5LILeURg7f7/v/GVuyq8WG5MG74X5tGCALJoLGGHmZx7mkY7/YpEC4mX4AryJ/fn3AAoRYVD9neOFVBU5tIw==;31:zFfY8AdCjrT5rP/xa0eIYwHQQ44fhwHHfs+08KZxjW/z5ESJRIYisi17xwIrGV/ElkOSs04ykyfZUXlcrnBiL9DSF78lkvNzPHNXd0yefWU0fMCVbNiZcEt4GtqYGEbnHoruUmxWnkK7GrA+r0JqW8HWFCavVz2E445fsh72DDG7pvFLkUDojcAymCLE8b1mkGjN86pVwrl/UodvPgz6ZDn08xT1Y1JLnplCZmL4v1w=
-X-MS-TrafficTypeDiagnostic: BN6PR07MB3603:
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3603;20:MAirW4rqhCq2th+a9vAgAV8NOunhUSlrQ3A3AN62zJC4uTMyiGZ/vQxWYPC6dHtMnWpfU0RlRlDq0GgqHT5sN9G/t04OtwM5Nw38QktjKZHRg9XE1ZuqzWd5Y8aKeZtP3rI/h5VndRQDQCmoXAoeSCIq1WjVZwNwhtS2WxJot4Q5bi9dvYE7IqaAYwjO1pQxiSSHYPW/iggEE/nwab8ytyGuojmC0EZeblzVKT7jtv41x1uPJK++m6DosCRbqHEdjb7ice9DpxzAQQ0Hh5ZBjhGr1OwWnAaACrTKtsTREjpGGBcNiwKDeykOKmrrUBAH9WtiQ8VQIk7zjmw6VmglPv9rlVMHUKz4Fj7y4QblfgzhZMECmJD1NGWAcsOU6zVPytLJDXwk7N9iIVz2IgqUjr5r1HK/ix2N2Qx7CMJmwLymZpUaL7uyZO51BOvMM5U7TSN+Bjv7dYkwXUZQd8BXjyvnt0Cdg8eZADpRimr9aO6NsSqZ2ziVmf19jjM4IYzX;4:VPDQL56pRq3BbOERiS8WBOApEvD9ZBTU95D87E8lkE/zakvLL1wGf3EdBYVTxuQY9+kXAReoeeW8Aly90IXUAhhB3f9Fl2w21PsKoeXpJDf9zMYDo4xn93razSRydpE+WpqfHebIBFo39/GM4AccJPNz22IX2AABAPIHj91G6MnUXUMlQgfygr0rIgSF0WXJqjcpVQ0eqo6UV4Vyp+5T6ALsEikQYbqqTIvNQEHV4MX+qro6rNhoDzPwPcsh/gkDu3hkSEeiQFflm7F2R1iPqQ==
-X-Microsoft-Antispam-PRVS: <BN6PR07MB360344DEF0997E49FB21601C80AF0@BN6PR07MB3603.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(5005006)(8121501046)(3231221)(944501327)(52105095)(93006095)(93001095)(10201501046)(3002001)(6041310)(20161123558120)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(6072148)(201708071742011);SRVR:BN6PR07MB3603;BCL:0;PCL:0;RULEID:;SRVR:BN6PR07MB3603;
-X-Forefront-PRVS: 0621E7E436
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6049001)(39860400002)(39380400002)(366004)(346002)(376002)(396003)(189003)(199004)(58126008)(47776003)(64126003)(36756003)(31696002)(23676004)(50466002)(65956001)(66066001)(229853002)(65806001)(11346002)(5660300001)(52146003)(52116002)(31686004)(65826007)(2486003)(97736004)(6246003)(305945005)(7736002)(6916009)(6666003)(76176011)(230700001)(6486002)(16526019)(72206003)(90366009)(386003)(4326008)(53936002)(81166006)(81156014)(26005)(53546011)(8676002)(77096007)(25786009)(558084003)(446003)(478600001)(316002)(86362001)(16576012)(3846002)(8936002)(105586002)(6116002)(186003)(68736007)(2906002)(106356001)(2616005)(956004);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR07MB3603;H:[10.0.0.40];FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: cavium.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCTjZQUjA3TUIzNjAzOzIzOlZ0aU9Vd2F6WVhpUS9TOW9QUXpRamZqVEpO?=
- =?utf-8?B?SldiblhhNW51eXJPYjgrWVlsSC9RS21mUEZpMFJ3dTNQeXc0Zk00Sm1OK2Ra?=
- =?utf-8?B?RzQ5UE1yTzErSFRGMDAvRy9qbVo3RHpnSmlYd0tQSHZUT2RhZ3EzN1NzRUxM?=
- =?utf-8?B?MzBxdWJOUmllRUk1dGk5UlE3Q3l6ZkErYmpIdkFKZTJQdHovUWVpdWRMUDRt?=
- =?utf-8?B?QkNLV21VdGppZFhrU25qdVZ3MkRvemowNXdxV3dwWDZZOUhqeGRvWFFGU21U?=
- =?utf-8?B?cXY4UFgxZE5EOE4yWGdoaFNrcFltS2hkWnV5QWxObkt0aG95Z2FOQk01TDZ6?=
- =?utf-8?B?NWRZVThjR01HcHNBZm5zNGp6SHE4TXZDb0Uzc0FkNWkxeU0wNXFKMG9PV0dw?=
- =?utf-8?B?SVZXTGlBaGdON3IxQjRCaC8yeXB2Tk5HMDdBVzhBalVpZCtSbkFRTFZFelRs?=
- =?utf-8?B?ZzQvNVNPTGoxNERjWm5MWTFORzNWWkdqTnRneW1FTWdBS0FsZ09nK2s1VXJo?=
- =?utf-8?B?cmlPczNPNFdnTTVwblZTenp3WHZqRklFRk0yaFNkek1tdHVzZ0JEbWR6SlV5?=
- =?utf-8?B?VTdqeFZSTUVQTzVhVWV5aGlyelBvU09XY0ZsK1k0Q1ZmQzV6OVhPVStzdmxk?=
- =?utf-8?B?aFBQOEZwZ2w4QSsxK2FodlRrYlFKMDdZTGpMQ1dSWk96R0tKS1N4aFdmd2FP?=
- =?utf-8?B?UExJelRDQXVvVE1EbnVGM2RqbEtwMi9iWStZS3Z3U2JpVllDdmtzU1UrczlS?=
- =?utf-8?B?QmdIK3BWbHErTldmZ3hSUFNQK25FUGY1K0NKMlhEd0FXN1dJd1p3MnFjblYy?=
- =?utf-8?B?cTJhZXRueEw3dXdVbnI4QUQ3VHdIZEhzRFU1NXRENWUrSjFNTmlqYlN1c3NT?=
- =?utf-8?B?enl4S29qUy9teTMxbHlRK2d1Ukx2K2srNVJpRCt4Wm1SMWszQS81NDBtbTRU?=
- =?utf-8?B?ZmN6eHhpNy9INWJsZ2hNS1RXOURCaEJ6YnRVRGoxMHVQOGF0cElrejd6SWY4?=
- =?utf-8?B?bW5ib2J2ekprTXgzRzl2allzV0hJdm53azJiVGN3MkdrVHEwaldaaU5FYnpo?=
- =?utf-8?B?RURDNldoaUNBMEV0RkJoUjN0ZTZsM1oydlhVR0p6d2Exck96MVpUY1dIaHRR?=
- =?utf-8?B?QjZ3YzFoNW5ERlJEd3hTRTdlNzNxYVppSzZWT2tINnkra0prY3JEODJLQndB?=
- =?utf-8?B?RUtYOEZlZWxBeEdBY1V4dDZOLzNKcHV0RWJBOVpiTDl5QnIyN3VZMG1vUW1D?=
- =?utf-8?B?WHZRZzhaVXdYVnJkR2VORENLdkYrSlJkaXIxeFlGYitpeUdvTnNIWVZkN3dm?=
- =?utf-8?B?dHF6b2VsY1owWVNlakY4Z3ZXRS9HYjVLdlJuVDJGUmJDU2xhbXE0WHdJODJG?=
- =?utf-8?B?aWFNSzRxT3FaUDJlT3o0NTMzQ0RuNXJEV2lpY1F4RDFGbm43VE9iMEt2R3Jo?=
- =?utf-8?B?Qzl4TWNiR1lqWHE4ek9yRWVGbzFIMzVzRWRwNDMzWXRGQSsybUhmUUxrRkVQ?=
- =?utf-8?B?bkZnN3lxRnU5QzE3cG4yU0pQY1NiL1dxaHg3QUR3d1RmOExpMUhVZVpleUVv?=
- =?utf-8?B?ZzF0MlZaYWUybmtsNHRUbllBMlNrb0hhTDFGenpPN2ZtMzZKNnpTZkpHSGxZ?=
- =?utf-8?B?aEJKS1pKR1ovZW5LQWt0bFp5NThvdEMzWnZRa0hZbXdTbDF6SkNGVUNjS216?=
- =?utf-8?B?Sks3anZmcnl0V2RISndkVnhKWDl4TU5kVXBXQm1sTnRFMzBiUTdwK3RvdGxq?=
- =?utf-8?B?VGdLSzZoNUtLVk4xMVlDaG1YL2FTUE5mb0xUbENvWHhURFpEMWE0aDdmK21t?=
- =?utf-8?B?SFRuTGp6RkpMeXY0dE96QWkxMUhubVczZnpabktac2JHdjFJRjZaR1BicW83?=
- =?utf-8?B?aE9MNjE5elF6ZmZWQXNaQllJRFNVbVFteE0xdnZKK2sxbFF0Mm1ybGlub1dl?=
- =?utf-8?Q?a3Qy8IuKm2HGizPFgb+tT61bo+vm1U=3D?=
-X-Microsoft-Antispam-Message-Info: cFVDbagdS/fjPCZypJ80MDS31ZL/sPZAHR7NszDLq0b4Elda/B7a52+EDSkuAsV2dTdgOz9Tc27DihAAI/r6MpVA+jZXyYZ2ojs3soiDIX1gl3/V8Ox5ZK2e7sZskMieWLyHdei0QykhyWkM+LDunC8H/WZoQFp8xfyyiTnClUEjmRb97t218zOOaIz/IHH1
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3603;6:xRvd2VSvjWnypILZKgAREwMdcQuDEIft8Atwb+nntYBHMURv5CjIsjIzdssJbWAzsUMWlpMy3ajl73XZt9xI6x1OBV/Zt8i2gCiPzM9JuuMzITOrT/dU1exS+H7VR6453LQ6HO0hkjCaXWl7zo3uYwU0tn+XBzZW4UmLJkyLCrH0eK6rCb4GAWj3BOsgvbrhBp2PiMeyKX/F0TUFlQXJ/C26fFBG6JrLoHTecbiOyRxI9S3auVvM/YMpx/2KphcRI86ediDgEZQusBWZA0ZFTffll8eGVRz6UTholtvbnHExSLTv8N8VEkph7OE0wbYJgSa5Twu224yYdETQfAOnWHmwf72maTi9vFmrsASOfjCo9WDQlTSf99suGvtN+XjDr2nfdnNSGQGuSIu8gNgOhXrmmMynFDU3G0sKOSAkQTnmhJFpYJBk0fWYtSSczIbn6G+byrkmTQVyUlMxpd6b4A==;5:5rTt8gmL7amuLViq7/u36ifRSGXLJaVjcq+YUyEudqydvQXygiHFB97NpyI2RchaKwtQv8YPPvMIttr27xO4LUmZpFh2BrAyreYrI8lhG8P7to9JkTH7N41fZVQ5XPeNU0Jm8Bu+noD6ebufP8E4RdKTt0nNqIOGBJ2VUYptRDs=;24:1QzpLhjdtgpglQmr8j8I1jL2OTx1IzIQ4pn2TH7iq4dWIlYiKvkgTqF/g7GQUl5ZPEbemZ/j+NHtdvUcI2n9jTmDB0OIlur/Gd7fKK9Rsto=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3603;7:W8Z6rxXTSR+U4IQ03eSeFw+3coH2h3dkRvNlrQt+ol0oudWt5vya0xpFJJO+COOBO2eRmbHQOKAKbs0277TVOZLUZ1LqFk5E0ShK4kvS3JcMFaS20uBGLkPeg8XLCrBL96TY2EwiX0X+NcAIGkBewOl0phNJxBPl7OxCyw+3a/0ACtvzir8e8OzvFSy7MGZ/+mr0K8y2UFZFntOPAIaqTtFelgD2rCfKF0knMrHywhvqkLrCmQLMmBnL1aVj+EsQ
-X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2018 06:16:15.0499 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c19880c2-6fc2-4518-27be-08d5914ebfdf
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR07MB3603
-Return-Path: <Steven.Hill@cavium.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63211
+X-archive-position: 63212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@cavium.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -111,8 +83,368 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/23/2018 04:18 PM, James Hogan wrote:
+On 18/03/2018 00:29, Paul Cercueil wrote:
+> This driver will use the TCU (Timer Counter Unit) present on the Ingenic
+> JZ47xx SoCs to provide the kernel with a clocksource and timers.
+
+Please provide a more detailed description about the timer.
+
+Where is the clocksource ?
+
+I don't see the point of using channel idx and pwm checking here.
+
+There is one clockevent, why create multiple channels ? Can't you stick
+to the usual init routine for a timer.
+
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  drivers/clocksource/Kconfig         |   8 ++
+>  drivers/clocksource/Makefile        |   1 +
+>  drivers/clocksource/timer-ingenic.c | 278 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 287 insertions(+)
+>  create mode 100644 drivers/clocksource/timer-ingenic.c
 > 
-> Could you clarify what build failures you're seeing please.
+>  v2: Use SPDX identifier for the license
+>  v3: - Move documentation to its own patch
+>      - Search the devicetree for PWM clients, and use all the TCU
+> 	   channels that won't be used for PWM
+>  v4: - Add documentation about why we search for PWM clients
+>      - Verify that the PWM clients are for the TCU PWM driver
 > 
-None. False alarm, toolchain issues on my end.
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index d2e5382821a4..481422145fb4 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -592,4 +592,12 @@ config CLKSRC_ST_LPC
+>  	  Enable this option to use the Low Power controller timer
+>  	  as clocksource.
+>  
+> +config INGENIC_TIMER
+> +	bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
+> +	depends on MACH_INGENIC || COMPILE_TEST
+
+bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if COMPILE_TEST
+
+Remove the depends MACH_INGENIC.
+
+> +	select CLKSRC_OF
+> +	default y
+
+No default, Kconfig platform selects the timer.
+
+> +	help
+> +	  Support for the timer/counter unit of the Ingenic JZ SoCs.
+> +
+>  endmenu
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> index d6dec4489d66..98691e8999fe 100644
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -74,5 +74,6 @@ obj-$(CONFIG_ASM9260_TIMER)		+= asm9260_timer.o
+>  obj-$(CONFIG_H8300_TMR8)		+= h8300_timer8.o
+>  obj-$(CONFIG_H8300_TMR16)		+= h8300_timer16.o
+>  obj-$(CONFIG_H8300_TPU)			+= h8300_tpu.o
+> +obj-$(CONFIG_INGENIC_TIMER)		+= timer-ingenic.o
+>  obj-$(CONFIG_CLKSRC_ST_LPC)		+= clksrc_st_lpc.o
+>  obj-$(CONFIG_X86_NUMACHIP)		+= numachip.o
+> diff --git a/drivers/clocksource/timer-ingenic.c b/drivers/clocksource/timer-ingenic.c
+> new file mode 100644
+> index 000000000000..8c777c0c0023
+> --- /dev/null
+> +++ b/drivers/clocksource/timer-ingenic.c
+> @@ -0,0 +1,278 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Ingenic JZ47xx SoC TCU clocksource driver
+> + * Copyright (C) 2018 Paul Cercueil <paul@crapouillou.net>
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/clk.h>
+> +#include <linux/clockchips.h>
+> +#include <linux/err.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/mfd/syscon/ingenic-tcu.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_irq.h>
+> +#include <linux/regmap.h>
+> +#include <linux/slab.h>
+> +
+> +#define NUM_CHANNELS	8
+> +
+> +struct ingenic_tcu;
+> +
+> +struct ingenic_tcu_channel {
+> +	unsigned int idx;
+> +	struct clk *clk;
+> +};
+> +
+> +struct ingenic_tcu {
+> +	struct ingenic_tcu_channel channels[NUM_CHANNELS];
+> +	unsigned long requested;
+> +	struct regmap *map;
+> +};
+> +
+> +struct ingenic_clock_event_device {
+> +	struct clock_event_device cevt;
+> +	struct ingenic_tcu_channel *channel;
+> +	char name[32];
+> +};
+> +
+> +#define ingenic_cevt(_evt) \
+> +	container_of(_evt, struct ingenic_clock_event_device, cevt)
+> +
+> +static inline struct ingenic_tcu *to_ingenic_tcu(struct ingenic_tcu_channel *ch)
+> +{
+> +	return container_of(ch, struct ingenic_tcu, channels[ch->idx]);
+> +}
+> +
+> +static int ingenic_tcu_cevt_set_state_shutdown(struct clock_event_device *evt)
+> +{
+> +	struct ingenic_clock_event_device *jzcevt = ingenic_cevt(evt);
+> +	struct ingenic_tcu_channel *channel = jzcevt->channel;
+> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
+> +	unsigned int idx = channel->idx;
+> +
+> +	regmap_write(tcu->map, TCU_REG_TECR, BIT(idx));
+> +	return 0;
+> +}
+> +
+> +static int ingenic_tcu_cevt_set_next(unsigned long next,
+> +		struct clock_event_device *evt)
+> +{
+> +	struct ingenic_clock_event_device *jzcevt = ingenic_cevt(evt);
+> +	struct ingenic_tcu_channel *channel = jzcevt->channel;
+> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
+> +	unsigned int idx = channel->idx;
+> +
+> +	if (next > 0xffff)
+> +		return -EINVAL;
+> +
+> +	regmap_write(tcu->map, TCU_REG_TDFRc(idx), (unsigned int) next);
+> +	regmap_write(tcu->map, TCU_REG_TCNTc(idx), 0);
+> +	regmap_write(tcu->map, TCU_REG_TESR, BIT(idx));
+> +
+> +	return 0;
+> +}
+> +
+> +static irqreturn_t ingenic_tcu_cevt_cb(int irq, void *dev_id)
+> +{
+> +	struct clock_event_device *cevt = dev_id;
+> +	struct ingenic_clock_event_device *jzcevt = ingenic_cevt(cevt);
+> +	struct ingenic_tcu_channel *channel = jzcevt->channel;
+> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
+> +	unsigned int idx = channel->idx;
+> +
+> +	regmap_write(tcu->map, TCU_REG_TECR, BIT(idx));
+> +
+> +	if (cevt->event_handler)
+> +		cevt->event_handler(cevt);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int __init ingenic_tcu_req_channel(struct ingenic_tcu_channel *channel)
+> +{
+> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
+> +	char buf[16];
+> +	int err;
+> +
+> +	if (test_and_set_bit(channel->idx, &tcu->requested))
+> +		return -EBUSY;
+> +
+> +	snprintf(buf, sizeof(buf), "timer%u", channel->idx);
+> +	channel->clk = clk_get(NULL, buf);
+> +	if (IS_ERR(channel->clk)) {
+> +		err = PTR_ERR(channel->clk);
+> +		goto out_release;
+> +	}
+> +
+> +	err = clk_prepare_enable(channel->clk);
+> +	if (err)
+> +		goto out_clk_put;
+> +
+> +	return 0;
+> +
+> +out_clk_put:
+> +	clk_put(channel->clk);
+> +out_release:
+> +	clear_bit(channel->idx, &tcu->requested);
+> +	return err;
+> +}
+> +
+> +static int __init ingenic_tcu_reset_channel(struct device_node *np,
+> +		struct ingenic_tcu_channel *channel)
+> +{
+> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
+> +
+> +	return regmap_update_bits(tcu->map, TCU_REG_TCSRc(channel->idx),
+> +				0xffff & ~TCU_TCSR_RESERVED_BITS, 0);
+> +}
+> +
+> +static void __init ingenic_tcu_free_channel(struct ingenic_tcu_channel *channel)
+> +{
+> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
+> +
+> +	clk_disable_unprepare(channel->clk);
+> +	clk_put(channel->clk);
+> +	clear_bit(channel->idx, &tcu->requested);
+> +}
+> +
+> +static const char * const ingenic_tcu_timer_names[] = {
+> +	"TCU0", "TCU1", "TCU2", "TCU3", "TCU4", "TCU5", "TCU6", "TCU7",
+> +};
+> +
+> +static int __init ingenic_tcu_setup_cevt(struct device_node *np,
+> +		struct ingenic_tcu *tcu, unsigned int idx)
+> +{
+> +	struct ingenic_tcu_channel *channel = &tcu->channels[idx];
+> +	struct ingenic_clock_event_device *jzcevt;
+> +	unsigned long rate;
+> +	int err, virq;
+> +
+> +	err = ingenic_tcu_req_channel(channel);
+> +	if (err)
+> +		return err;
+> +
+> +	err = ingenic_tcu_reset_channel(np, channel);
+> +	if (err)
+> +		goto err_out_free_channel;
+> +
+> +	rate = clk_get_rate(channel->clk);
+> +	if (!rate) {
+> +		err = -EINVAL;
+> +		goto err_out_free_channel;
+> +	}
+> +
+> +	jzcevt = kzalloc(sizeof(*jzcevt), GFP_KERNEL);
+> +	if (!jzcevt) {
+> +		err = -ENOMEM;
+> +		goto err_out_free_channel;
+> +	}
+> +
+> +	virq = irq_of_parse_and_map(np, idx);
+> +	if (!virq) {
+> +		err = -EINVAL;
+> +		goto err_out_kfree_jzcevt;
+> +	}
+> +
+> +	err = request_irq(virq, ingenic_tcu_cevt_cb, IRQF_TIMER,
+> +			ingenic_tcu_timer_names[idx], &jzcevt->cevt);
+> +	if (err)
+> +		goto err_out_irq_dispose_mapping;
+> +
+> +	jzcevt->channel = channel;
+> +	snprintf(jzcevt->name, sizeof(jzcevt->name), "ingenic-tcu-chan%u",
+> +		 channel->idx);
+> +
+> +	jzcevt->cevt.cpumask = cpumask_of(smp_processor_id());
+> +	jzcevt->cevt.features = CLOCK_EVT_FEAT_ONESHOT;
+> +	jzcevt->cevt.name = jzcevt->name;
+> +	jzcevt->cevt.rating = 200;
+> +	jzcevt->cevt.set_state_shutdown = ingenic_tcu_cevt_set_state_shutdown;
+> +	jzcevt->cevt.set_next_event = ingenic_tcu_cevt_set_next;
+> +
+> +	clockevents_config_and_register(&jzcevt->cevt, rate, 10, (1 << 16) - 1);
+> +
+> +	return 0;
+> +
+> +err_out_irq_dispose_mapping:
+> +	irq_dispose_mapping(virq);
+> +err_out_kfree_jzcevt:
+> +	kfree(jzcevt);
+> +err_out_free_channel:
+> +	ingenic_tcu_free_channel(channel);
+> +	return err;
+> +}
+> +
+> +static int __init ingenic_tcu_init(struct device_node *np)
+> +{
+> +	unsigned long available_channels = GENMASK(NUM_CHANNELS - 1, 0);
+> +	struct device_node *node, *pwm_driver_node;
+> +	struct ingenic_tcu *tcu;
+> +	unsigned int i, channel;
+> +	int err;
+> +	u32 val;
+> +
+> +	/* Parse the devicetree for clients of the TCU PWM driver;
+> +	 * every TCU channel not requested for PWM will be used as
+> +	 * a timer.
+> +	 */
+
+
+
+> +	for_each_node_with_property(node, "pwms") {
+> +		/* Get the PWM channel ID (field 1 of the "pwms" node) */
+> +		err = of_property_read_u32_index(node, "pwms", 1, &val);
+> +		if (!err && val >= NUM_CHANNELS)
+> +			err = -EINVAL;
+> +		if (err) {
+> +			pr_err("timer-ingenic: Unable to parse PWM nodes!");
+> +			break;
+> +		}
+> +
+> +		/* Get the PWM driver node (field 0 of the "pwms" node) */
+> +		pwm_driver_node = of_parse_phandle(node, "pwms", 0);
+> +		if (!pwm_driver_node) {
+> +			pr_err("timer-ingenic: Unable to find PWM driver node");
+> +			break;
+> +		}
+> +
+> +		/* Verify that the node we found is for the TCU PWM driver,
+> +		 * by checking that this driver and the PWM driver passed
+> +		 * as phandle share the same parent (the "ingenic,tcu"
+> +		 * compatible MFD/syscon node).
+> +		 */
+> +		if (pwm_driver_node->parent != np->parent)
+> +			continue;
+> +
+> +		pr_info("timer-ingenic: Reserving channel %u for PWM", val);
+> +		available_channels &= ~BIT(val);
+> +	}
+> +
+> +	tcu = kzalloc(sizeof(*tcu), GFP_KERNEL);
+> +	if (!tcu)
+> +		return -ENOMEM;
+> +
+> +	tcu->map = syscon_node_to_regmap(np->parent);
+> +	if (IS_ERR(tcu->map)) {
+> +		err = PTR_ERR(tcu->map);
+> +		kfree(tcu);
+> +		return err;
+> +	}
+> +
+> +	for (i = 0; i < NUM_CHANNELS; i++)
+> +		tcu->channels[i].idx = i;
+
+I'm pretty sure you can do better thaningenic_tcu_setup that :)
+
+> +	for_each_set_bit(channel, &available_channels, NUM_CHANNELS) {
+> +		err = _cevt(np, tcu, channel);
+> +		if (err) {
+> +			pr_warn("timer-ingenic: Unable to init TCU channel %u: %i",
+> +					channel, err);
+> +			continue;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* We only probe via devicetree, no need for a platform driver */
+> +CLOCKSOURCE_OF_DECLARE(jz4740_tcu, "ingenic,jz4740-tcu", ingenic_tcu_init);
+> +CLOCKSOURCE_OF_DECLARE(jz4770_tcu, "ingenic,jz4770-tcu", ingenic_tcu_init);
+> +CLOCKSOURCE_OF_DECLARE(jz4780_tcu, "ingenic,jz4780-tcu", ingenic_tcu_init);
+
+s/CLOCKSOURCE_OF_DECLARE/TIMER_OF_DECLARE/
+
+> 
+
+
+-- 
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

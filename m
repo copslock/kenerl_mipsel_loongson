@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2018 01:52:54 +0100 (CET)
-Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:58716 "EHLO
-        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990723AbeCXAwrFZDcr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Mar 2018 01:52:47 +0100
-Received: from darkstar.musicnaut.iki.fi (85-76-86-228-nat.elisa-mobile.fi [85.76.86.228])
-        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 1CB1930039;
-        Sat, 24 Mar 2018 02:52:46 +0200 (EET)
-Date:   Sat, 24 Mar 2018 02:52:46 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        James Hogan <jhogan@kernel.org>, Dan Haab <riproute@gmail.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-Subject: Re: [PATCH] MIPS: BCM47XX: Use __initdata for the bcm47xx_leds_pdata
-Message-ID: <20180324005245.23f252jlcdg2oknc@darkstar.musicnaut.iki.fi>
-References: <20180323225807.13386-1-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2018 02:15:22 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:53676 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990434AbeCXBPOLaJyr convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Mar 2018 02:15:14 +0100
+Received: from vmware.local.home (cpe-172-100-180-131.stny.res.rr.com [172.100.180.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AB9062183F;
+        Sat, 24 Mar 2018 01:15:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org AB9062183F
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=rostedt@goodmis.org
+Date:   Fri, 23 Mar 2018 21:15:04 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Matthias Schiffer <mschiffer@universe-factory.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: ftrace on MIPS/ath79
+Message-ID: <20180323211504.18866e83@vmware.local.home>
+In-Reply-To: <d0f29d7e-2c4f-c8e4-4179-406c55eaca1c@universe-factory.net>
+References: <d0f29d7e-2c4f-c8e4-4179-406c55eaca1c@universe-factory.net>
+X-Mailer: Claws Mail 3.15.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20180323225807.13386-1-zajec5@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
+Return-Path: <SRS0=0hgc=GO=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63209
+X-archive-position: 63210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,39 +45,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Fri, 23 Mar 2018 23:20:10 +0100
+Matthias Schiffer <mschiffer@universe-factory.net> wrote:
 
-On Fri, Mar 23, 2018 at 11:58:07PM +0100, Rafał Miłecki wrote:
-> From: Rafał Miłecki <rafal@milecki.pl>
-> 
-> This struct variable is used during init only. It gets passed to the
-> gpio_led_register_device() which creates its own data copy. That allows
-> using __initdata and saving some minimal amount of memory.
-> 
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+> Hi,
+> I'm currently trying to debug a performance bottleneck on low-end ath79
+> hardware running OpenWrt/LEDE, but it seems that ftrace is not working
+> correctly on these systems. I have tried this with recent 4.4.y and 4.9.y
+> with similar results; unfortunately, switching to a newer kernel is not
+> easily possible on this hardware at the moment. Please let me know if there
+> are any known issues or patches that I should backport.
 
-Reviewed-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+I don't know of any for mips (nothing in the git logs). The last
+updates to the mips code looks to be from 3.17. Also, I have no idea
+why try_to_get_module() would be crashing.
 
-A.
+> 
+> There seem to be two separate issues:
+> 
+> 1) Building with CONFIG_DYNAMIC_FTRACE leads to a kernel panic as soon as
+> kernel modules are loaded (logs attached).
+> 
+> 2) function_graph tracer does not show anything useful: the trace output
+> looks like what was reported in [1]. Building with
+> CONFIG_FUNCTION_GRAPH_TRACER leads to a completely empty
+> trace_stat/function0 (except for the header); profiling is working as
+> expected when CONFIG_FUNCTION_GRAPH_TRACER is disabled.
+> 
+> I would be thankful for any pointers that might help me to make this work.
+> 
+> Kind regards,
+> Matthias
+> 
+> 
+> [1] https://www.linux-mips.org/archives/linux-mips/2014-11/msg00295.html
+> 
 
-> ---
->  arch/mips/bcm47xx/leds.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-> index 8307a8a02667..fb87a6c54bc9 100644
-> --- a/arch/mips/bcm47xx/leds.c
-> +++ b/arch/mips/bcm47xx/leds.c
-> @@ -521,7 +521,7 @@ bcm47xx_leds_simpletech_simpleshare[] __initconst = {
->   * Init
->   **************************************************/
->  
-> -static struct gpio_led_platform_data bcm47xx_leds_pdata;
-> +static struct gpio_led_platform_data bcm47xx_leds_pdata __initdata;
->  
->  #define bcm47xx_set_pdata(dev_leds) do {				\
->  	bcm47xx_leds_pdata.leds = dev_leds;				\
-> -- 
-> 2.11.0
-> 
-> 
+From the last email in that thread:
+
+"But yeah, don't go too much by that document. It is out of date, and
+when I get time, I'll have to update it. I'll probably do that when I
+bring powerpc up to speed with x86 (except for the fentry part).
+
+I want dynamic trampolines for powerpc and such, and when I do that, it
+will make all the changes fresh in my mind to go back and tackle the
+design documentation."
+
+The sad part is, I've said the same thing recently about updating that
+document. But in the mean time, my powerpc box died and I never got to
+do what I wanted with that box. My mips board is pretty useless today,
+so I don't touch other archs much anymore (don't have the time
+either, maybe I will when I retire. That's why I still keep all my
+boards around).
+
+I wish I could be of help, but MIPS has been cached out of my brain for
+some time. If you want to investigate, I would be willing to give you
+help in generic ftrace support, but anything MIPS specific would
+require someone from the MIPS team.
+
+-- Steve

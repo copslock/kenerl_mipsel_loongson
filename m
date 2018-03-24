@@ -1,49 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2018 15:49:09 +0100 (CET)
-Received: from vps0.lunn.ch ([185.16.172.187]:46875 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990723AbeCXOtCQs2LU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 24 Mar 2018 15:49:02 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=ASoT6wZsk6Ivdnog0/gDRYxCe4A3zxbiGBnBEmXEWq8=;
-        b=qYe/AQ4Y9htXyJOc8e5SENx3q/tP9BSEPzOP2N9Uj+gUSR6HQvbTUl4UxeJ+4qHedfqFHEhKsTcQ945E2RluL2DlgUvqMktns+xs4EO59JT4xhsF+zr42XTXJCIXnMhils7AzgZA9vqrS7c3ba2LnkEirlrsW9UclEEhy+0v5Ow=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1ezkTS-0008Sh-C4; Sat, 24 Mar 2018 15:48:50 +0100
-Date:   Sat, 24 Mar 2018 15:48:50 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        razvan.stefanescu@nxp.com, po.liu@nxp.com,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
-Subject: Re: [PATCH net-next 6/8] MIPS: mscc: Add switch to ocelot
-Message-ID: <20180324144850.GB31941@lunn.ch>
-References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
- <20180323201117.8416-7-alexandre.belloni@bootlin.com>
- <e488fd29-0094-d005-a078-873f6f5add13@gmail.com>
- <20180323212230.GA12808@piout.net>
- <20180323213344.GV24361@lunn.ch>
- <dcac43b7-2eb7-d409-a77c-4f671a8cfc3d@gmail.com>
- <20180323220657.GY24361@lunn.ch>
- <171fb3db-70f4-4818-9390-8164fab5adca@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <171fb3db-70f4-4818-9390-8164fab5adca@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <andrew@lunn.ch>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2018 17:58:02 +0100 (CET)
+Received: from orthanc.universe-factory.net ([104.238.176.138]:57180 "EHLO
+        orthanc.universe-factory.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbeCXQ5z1Z9pE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Mar 2018 17:57:55 +0100
+Received: from localhost.localdomain (unknown [IPv6:2001:19f0:6c01:100::2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by orthanc.universe-factory.net (Postfix) with ESMTPSA id E324D1F516;
+        Sat, 24 Mar 2018 17:57:54 +0100 (CET)
+From:   Matthias Schiffer <mschiffer@universe-factory.net>
+To:     ralf@linux-mips.org, rostedt@goodmis.org, mingo@redhat.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        mschiffer@universe-factory.net
+Subject: [PATCH] mips: ftrace: fix static function graph tracing
+Date:   Sat, 24 Mar 2018 17:57:49 +0100
+Message-Id: <7dc2bb7f712c1e3cfeaafaefe3a3f97668dee549.1521909650.git.mschiffer@universe-factory.net>
+X-Mailer: git-send-email 2.16.2
+Return-Path: <mschiffer@universe-factory.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63213
+X-archive-position: 63214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: mschiffer@universe-factory.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,34 +37,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 23, 2018 at 03:11:23PM -0700, Florian Fainelli wrote:
-> On 03/23/2018 03:06 PM, Andrew Lunn wrote:
-> >>> That is the trade off of having a standalone MDIO bus driver.  Maybe
-> >>> add a phandle to the internal MDIO bus? The switch driver could then
-> >>> follow the phandle, and direct connect the internal PHYs?
-> >>
-> >> This is more or less what patch 7 does, right?
-> > 
-> > Patch 7 does it in DT. I'm suggesting it could be done in C. It is
-> > hard wired, so there is no need to describe it in DT. Use the phandle
-> > to get the mdio bus, mdiobus_get_phy(, port) to get the phydev and
-> > then use phy_connect().
-> 
-> That does not sound like a great idea. And to go back to your example
-> about DSA, it is partially true, you will see some switch bindings
-> defining the internal PHYs (e.g: qca8k), and most not doing it (b53,
-> mv88e6xxx, etc.). In either case, this resolves to the same thing
-> though. Being able to parse a phy-handle property is a lot more
-> flexible, and if it does matter that the PHY truly is internal, then the
-> 'phy-mode' property can help reflect that.
+ftrace_graph_caller was never run after calling ftrace_trace_function,
+breaking the function graph tracer. Fix this, bringing it in line with the
+x86 implementation.
 
-Hi Florian
+While we're at it, also streamline the control flow of _mcount a bit to
+reduce the number of branches.
 
-With DSA, you can always provide a phy-handle. It is only when there
-is nothing specified that the fallback case is used to map internal
-PHYs to ports.
+This issue was reported before:
+https://www.linux-mips.org/archives/linux-mips/2014-11/msg00295.html
 
-Putting internal PHYs in DT is fine, but it is a nice simplification
-if it is not needed.
+Signed-off-by: Matthias Schiffer <mschiffer@universe-factory.net>
+---
 
-   Andrew
+Caveats: I've only tested this on 32bit; it would be great if someone with
+MIPS64 hardware or a working emulator setup could give it a spin. My test
+device runs on kernel 4.9.y, but I don't expect any problems applying the
+fix to newer kernels, given that this code is basically unchanged since
+2014.
+
+I'm not sure what the correct Fixes: line would be. I did not bother to
+bisect the issue and could not find the commit introducing it by inspecting
+the log (assuming the tracer worked at some point).
+
+
+ arch/mips/kernel/mcount.S | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+index f2ee7e1e3342..cff52b283e03 100644
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -119,10 +119,20 @@ NESTED(_mcount, PT_SIZE, ra)
+ EXPORT_SYMBOL(_mcount)
+ 	PTR_LA	t1, ftrace_stub
+ 	PTR_L	t2, ftrace_trace_function /* Prepare t2 for (1) */
+-	bne	t1, t2, static_trace
++	beq	t1, t2, fgraph_trace
+ 	 nop
+ 
++	MCOUNT_SAVE_REGS
++
++	move	a0, ra		/* arg1: self return address */
++	jalr	t2		/* (1) call *ftrace_trace_function */
++	 move	a1, AT		/* arg2: parent's return address */
++
++	MCOUNT_RESTORE_REGS
++
++fgraph_trace:
+ #ifdef	CONFIG_FUNCTION_GRAPH_TRACER
++	PTR_LA	t1, ftrace_stub
+ 	PTR_L	t3, ftrace_graph_return
+ 	bne	t1, t3, ftrace_graph_caller
+ 	 nop
+@@ -131,24 +141,11 @@ EXPORT_SYMBOL(_mcount)
+ 	bne	t1, t3, ftrace_graph_caller
+ 	 nop
+ #endif
+-	b	ftrace_stub
+-#ifdef CONFIG_32BIT
+-	 addiu sp, sp, 8
+-#else
+-	 nop
+-#endif
+ 
+-static_trace:
+-	MCOUNT_SAVE_REGS
+-
+-	move	a0, ra		/* arg1: self return address */
+-	jalr	t2		/* (1) call *ftrace_trace_function */
+-	 move	a1, AT		/* arg2: parent's return address */
+-
+-	MCOUNT_RESTORE_REGS
+ #ifdef CONFIG_32BIT
+ 	addiu sp, sp, 8
+ #endif
++
+ 	.globl ftrace_stub
+ ftrace_stub:
+ 	RETURN_BACK
+-- 
+2.16.2

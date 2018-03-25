@@ -1,31 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Mar 2018 08:48:57 +0200 (CEST)
-Received: from mail-by2nam01on0057.outbound.protection.outlook.com ([104.47.34.57]:59066
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Mar 2018 08:49:22 +0200 (CEST)
+Received: from mail-by2nam01on0040.outbound.protection.outlook.com ([104.47.34.40]:7200
         "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991248AbeCYGrMQiTeM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23991307AbeCYGrMoUI7M (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sun, 25 Mar 2018 08:47:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=BbL3yL+7UPI0zYZpdgQqOpV4nyvPia4zw6K5fU3/oyw=;
- b=anjiEICWI1AK5H9SQNhxomUDQdO+6978zLP4F2m1r+IILQ5VrHp0IhWECfEsksCdLxVLZlZCS18QeSdO9/CymwOl4km60oRyA8F1HFBuYmbTmQ1irW/B0noGAeq/lvJ4lB1ZkDyCaD1JAzao137wUmLl/JEw2Ksr/fcuV18kUO4=
+ bh=4cz0Zwtk8o+2n9DtRZbrKr/lpxvV7fhi+0OEdUBV29g=;
+ b=SYZTx2iYWtohqORV+gzfdP5BeqgzCItkAkvlAF2hSOh7v4BQWX5Sp4xLqo/dr5H/4NB5Id3TueGSwFlwf7dRQM274tJI9b9TkXAZllfli24nhDVR7G+nb18A3jVWsqHjcQJgTtc0DvBEnJL65FqhW+rjL11gpVLDdxO9kyPLG48=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (50.83.62.27) by
  DM5PR07MB3610.namprd07.prod.outlook.com (2603:10b6:4:68::32) with Microsoft
  SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.20.609.10; Sun, 25
- Mar 2018 06:46:59 +0000
+ Mar 2018 06:46:55 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Carlos Munoz <cmunoz@caviumnetworks.com>,
-        Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v6 7/7] MIPS: Octeon: Add working hotplug CPU support.
-Date:   Sun, 25 Mar 2018 01:28:29 -0500
-Message-Id: <1521959309-29335-8-git-send-email-steven.hill@cavium.com>
+Cc:     "Steven J. Hill" <Steven.Hill@cavium.com>
+Subject: [PATCH v6 1/7] MIPS: Octeon: Header and file cleaning.
+Date:   Sun, 25 Mar 2018 01:28:23 -0500
+Message-Id: <1521959309-29335-2-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1521959309-29335-1-git-send-email-steven.hill@cavium.com>
 References: <1521959309-29335-1-git-send-email-steven.hill@cavium.com>
@@ -36,50 +32,49 @@ X-ClientProxiedBy: SN1PR0701CA0055.namprd07.prod.outlook.com
  (2a01:111:e400:52fd::23) To DM5PR07MB3610.namprd07.prod.outlook.com
  (2603:10b6:4:68::32)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e764e841-aa51-41a3-3df1-08d5921c3698
+X-MS-Office365-Filtering-Correlation-Id: 65d205af-9659-4723-d1b8-08d5921c3330
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(5600026)(4604075)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7153060)(7193020);SRVR:DM5PR07MB3610;
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;3:WtZug+UEAWwGuYY4zrfIPgjmIctcHfyh+BLve74AgWxQm4FiH201CNWiOm3FIGQndrnzsKv+nxZyozGDYzN8FdICIrKbS61x+gabq0g1g1966CZgJCi13zv9JV0QCW0eek+XqsjR0Gjoba1g5PPe1mmytgcAEC/LF5P0htfmbHAeastCQclbfUjQ5p2df5rsxcQmC/apSq3VFH14AOJzp0jYOl5ztU4Og3dmcBYae0I5ukgQxsgVJBkmI3TZX/QX;25:UeB/4mbPW07Xsla8HG7AALSiRpiS9QysEPtmM5IpTkxaCM/DBRAA+DY0vSWguYVK0cYrD/xUzLRETwtsYYQFsu26nTTpd6KMQUt35KWyHFa00KaXNZ8TOYTKlTIgXg9pAgvpKBfBvLq9Rfy1ipZ8TZ2H/Ytodb+P1O6Kvnk+yc/MSfqG+4p7I9pYMFSlLUPFVxMGgqvuCMYErktinXW2KovNYBqHyRYFFRe9fyGnMQ5hG0bZb8EuDH8w/3rtRpg+gcVxaVkrHVXGNSuXCcleBmMqFwxhPEdfCniuK655SgwEsbvRZZrOUcNGGmeOPeDt/dh0jfpYgB10DfC8jksWUg==;31:jIIZGWg8An8oEQR8+XXpXbT+m7LBi029BsAYU59Xqz3meKQkP/rksbjZgNZfacF6bEYanG0sUMjPFJoF+vDKZoGl6PRpMB+U/cra8iZoSOUsrbq5wzVaw713G4qbYVrCu4dz2D3sEd5Qxk3hVdoId/TClh7aCS2C/xGL7PPtbFqQZY+jJ0/pXbqBoNa2jCmNcISwfEoYmNBo8jQrxQyIxm9XdcoY3RrHHJlo4E07XiI=
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;3:UaCsTDgQwkCYOGKSgF5U3BnFXdXBQioOfyf5ABCvwaDHiJ95E+QVH4wTEc91JXq9pw4jjxceEG1kNywIJQL8vuztiJ4bDX5jwhkRJhge6Nbin3pc8JHdQPJ29GhWVoiQ96mQX72TSkSZvQsG41RCp/7JdB5Nh2499E0jNw6wMHIZpepjif9J/FJWsBD5dBKhfp5zHmiH17hf1iDgMZm5zKtstjH9mvAW0w3zjZyiq/tbbo6ZIy65uQqUw+yYlXAo;25:2mB12/YPmjAxN86oRKX22AkQf0XzLCa2IGySw8ZipCjU/fgIR0cXYdJ55QX3jly8osMs6tip3bKaNJfjEb4PnMrhNofPRViwMS9i5fV7V2BQPX0CjtGVTJLTjQ7u/ERQJFwzH0UDKLdP7r0cN1nxEoSzmBehAEW5YM+2W0pvJ0jbEhqhzalxZMY2YdxgQHxd66CYjo7sqalDejhWhAwJulaw0m/FQASN13pnFAbMUiJZ/ZFsXNAmKKROHYgrK191aNixX+X1yPuTgElAcx5SmAiFO8EsqWjNRWZA2StpeedsWit8sbC02ZKDFgaedbJU3kygUi164a2inG7otyXaOA==;31:Nt6o0pKv8HXi6jQ3gW4UkPhLnGVOBkMETIvAyKlcp2Ej3G3NRUJWocCreSjcZC+xU+BV1Et8D2TFErV0dg2Z7p0fwXqFKukhPczttaXIfCGhJNe+07XiYVS6UHs/XwvEb2+yYfOU6W9mRd/I5Ma/KlrJXyv85jo8xLNEKK7GA5+nHao5NDwvN4d0xWlFvsXCoZZ1zMacVzb6DXRTYjBEJOBDJ6tqoR9He48LBToK2TY=
 X-MS-TrafficTypeDiagnostic: DM5PR07MB3610:
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;20:X5NFPEiVLKRGbBy6zRQeEMS7Yxf+9Tg2TGMIgRPHX0uevoI8/IDo29W/nuKFvQhmSKiowjoCrwlYdcXLF6paxhKCzXANJOlwjgfwhZWjnHSqekCgindg1lWQ7wZT0NITlaNd4c2RKoXr3GmLpMOnVIl5VCSHNPfaq9z6OfMo16SpnZTh6bN0HmbmaPXdCDNigLVWS3L7ynydt5+p+cJy5qDTzCmDxlker2gFdlDEsRIW+SCQuXhWh2fnlmmt/jBQ28Gd+AMSGNHA3P91ZkJG9iqokaBBH4+uTdWLxnMvo2Swcb6Pda/MyO2asXGAV9Yvk/uV7QXkBSr71FHVCHNsUTvsA/Jes/lrIzcRrG6JPLSWpS26gLhdLA4P7oeKVU2tgl5xqOB8y01ufUiZmAmMKSP3SymNg02ylLByrpGHvBeCsoiydk8fEFMsmUdY1k+rQJph2KK1D9XE9l5s9oPBg+FVYEYQ93jbjxpAY+SCTQzeSC6R4mQ5SCZ4d2D0Rl/d;4:3xNHSeLkTzkzIN8VhIgYP20j9j7kYYzO/0Hza/Eq4xtKzEtcwLm/PuwfP5ysKyruRutXK0FxjMuHLkK+tXt1aZvTEdH/HLchxC+x9ftmpJcrNMXFFmfp0AkUt7uRnGEZz9TIa+c8KptHYYr3wjw4NkFELEf60gL9oKHONgL6f3K8BUaPP6McX6c1dRNWorfHvW1EHwMBKc4LOPqj8UrEFStyztYuKwshVE5tGZm4UcNVw0ccUBT3rf8TMFvTaFe4MI27x9zVk0efllVhfo4lcg==
-X-Microsoft-Antispam-PRVS: <DM5PR07MB361008FE345077B410ADFBFF80AE0@DM5PR07MB3610.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;20:Pc0GwMXSkFseXywWdvLJpx/lwtHWI1XhAW09JI1UFIoMcJf6GkTQFDbM3aVKnFyk7nrm1JhER3Fh4HoSRRNidv9eQuBi4M5IdV6gn1IHV0izxf8Z4Gcd0BZJARN9vji/l5F1q52ez9GGD0653ouhroSHsOErtE7y0D+hAGjOPs2XyebDMZeeexgh/Hvdngbb32QKyNLPc52YPaFb7JoIyk7YA72uPH3f0mmVKGeFXEPOV43PSdkSn+omZk2AR9GBJF0uouXBa3S42WfNhxKU+l8Q22xgTOe2JZVGMjoNvEdzgXZmcUELxqiVEmen77QBzWCeq7YaCWz2enVNz+MyC/KxMnh1bH6WenQ+kRQtORXZAbM3Ik9ae9pnrIMTWMZ05qBE6C9OoHiQVONP1eY+mncr6Exw57eO2wt41B7HCMdu78Oi+U8D61crEExng/P45/VIS+r7vMegy2YM7NLmzSJOaVt6EkSDnmNaVMt5CrH27A3Wd5A3LcwUCNlnndht;4:YeC0zQNTO9zIlcmwtAY7oi4FZZdSXWVHV7XR7hizMWKxsAPUcJb7aAb9v6sOAAvDWqCg5/D6V/eIljXjBAS9Jjt4pORP650cRQ3CCvBa7FiyivvvhApW8xAnr89vMsXnGhl/L3K1ZqrHxrdvE0BBYaaEWEezvmm5lGKgBRrmM3NXK3wpNzyQwgwYFs7v2VQuOdjddqxSkG9172QzhY/10R2bPlb213fm4eyxMpneiGk8LwXT3TjuuwD6lPqO8GohqnR0iIgfE9G2KLjOIPZvQw==
+X-Microsoft-Antispam-PRVS: <DM5PR07MB36101A07583CEA48E6954B9580AE0@DM5PR07MB3610.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(93001095)(3231221)(944501327)(52105095)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123564045)(20161123558120)(20161123562045)(6072148)(201708071742011);SRVR:DM5PR07MB3610;BCL:0;PCL:0;RULEID:;SRVR:DM5PR07MB3610;
 X-Forefront-PRVS: 0622A98CD5
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(346002)(376002)(366004)(396003)(39850400004)(39380400002)(199004)(189003)(97736004)(51416003)(4326008)(8936002)(52116002)(48376002)(478600001)(5660300001)(6512007)(105586002)(76176011)(8676002)(81156014)(81166006)(25786009)(11346002)(53416004)(6486002)(6666003)(2351001)(6916009)(6506007)(2616005)(68736007)(575784001)(386003)(86362001)(59450400001)(2361001)(956004)(47776003)(446003)(69596002)(6116002)(106356001)(50466002)(305945005)(7736002)(3846002)(72206003)(36756003)(26005)(50226002)(66066001)(5890100001)(316002)(54906003)(16586007)(2906002)(53936002)(16526019)(186003)(2004002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3610;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(346002)(376002)(366004)(396003)(39850400004)(39380400002)(199004)(189003)(97736004)(51416003)(4326008)(8936002)(52116002)(48376002)(478600001)(5660300001)(6512007)(105586002)(76176011)(8676002)(81156014)(81166006)(25786009)(11346002)(53416004)(6486002)(6666003)(2351001)(6916009)(6506007)(2616005)(68736007)(575784001)(386003)(86362001)(59450400001)(2361001)(956004)(47776003)(446003)(69596002)(6116002)(106356001)(50466002)(305945005)(7736002)(3846002)(72206003)(36756003)(26005)(107886003)(50226002)(66066001)(316002)(16586007)(2906002)(53936002)(16526019)(186003)(2004002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR07MB3610;H:black.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3610;23:+amEwLON+elwP/wVLX9auPBJhc4FYNtKDpcDvNQGY?=
- =?us-ascii?Q?3czGNNw/55gnkjEwWi5QHvTBKESUjh82WIZAanCFyvayJU8JsnAkDl1d6W62?=
- =?us-ascii?Q?Xbw4//RWVYuzNfNsUaMwx3AN+2l2Cns8wfvrfIL6+RUMOKSO79lRjzp17Z/i?=
- =?us-ascii?Q?nJ5X/JnDqtK6S9Cm4nCQAmNMByXNxP/07xJiKKG/rDo5KyaP0ZuL6DxVIjE5?=
- =?us-ascii?Q?8BQIhN0fjOYibs+TES1G5TYrktgiVtCE15inwofhXmjij86YibyVRRX2ANiL?=
- =?us-ascii?Q?WVGWcd9LsxMrk5F/qSSMZGPzV/ejuTp6fauqtg1p9YH+Lw382jTx/5UxsxXz?=
- =?us-ascii?Q?kI0XgqJgzHV+cFirXaT6jIMcGylLagH0bxpRNOTPxya5T54EtlvIYq2Jr7LN?=
- =?us-ascii?Q?yB1GEqzDj++a2XcOFZgNxwzuIGexXcXmdHziF3mVAqd1tYBHJg3W0e4vaHTy?=
- =?us-ascii?Q?nQ+u3pdLJRQAF00nkxunnlltTaYoiPWKgm4U/FXtMT/fD/dyD/wruzjNF4oY?=
- =?us-ascii?Q?iI2teciWkFGoQAXgqGX0S1kKPgqEitKLq7U387pXVOIudvKvGfevVcuXGjlo?=
- =?us-ascii?Q?qfXkKW3OsiPfwAyH1XSowIp1SQ8u5pupKsEploClQNfV31VE0LCcPBuqJOG0?=
- =?us-ascii?Q?HQFcAXZsG7w/a9bPvrIigByGmbYiiS8lI0D7l/g4f7pQ0IGxk1mzO+HXrBd3?=
- =?us-ascii?Q?u2qqPgsipZr+4UAQZ0wz2Ogz50a2a85OdTR2XVcoIZn1xckD8HaCKZTBsvsH?=
- =?us-ascii?Q?nHKApsdeOfLa7HIBWZFrV9/e/gP/gU8bE0TJ2ymxMzbDYZSqUOiw0WLnvmtR?=
- =?us-ascii?Q?gVICMrwh1NoVvWKDfaFbrjcRDDbJDTEvT7uGTrmCE/UlLGimpqPF+g4aVI5b?=
- =?us-ascii?Q?LW1/g+WJgGdWaNRNH5vVmGou8tyr0vKUwNyp3MtkKRwGFyxD7evcZZgIa/G3?=
- =?us-ascii?Q?q0G28F2Q+MNaFJrTGrdfRGDyPiWZEsoJp1AvSGL03z/Xpjf9xsucTa054Zo/?=
- =?us-ascii?Q?rwidiesdwaL57FMPUQf/eJtdH6iF9/K6+NVm0j2oeRQfTVukfqgy4Mvztuld?=
- =?us-ascii?Q?5AZ7mSJTWUmFq0VHSwLP/tspsU4U72/WoOhE1Msmp/MFlMSa0vz06NVB9hTl?=
- =?us-ascii?Q?iBah70pl0YGamXvAv2MCtNgfJwEG55semBgLcc2RRVtC4Z5llJ6vnNuAdKln?=
- =?us-ascii?Q?ufriVjxeoPQw0n+/AKCFvBRlH95LCSS0Lclws2TYpsD3jBYt6Rhlp1koNGUU?=
- =?us-ascii?Q?x1Eu3hPV+DPlS2fQfpCdapN2s1A+T+TaaV9SbbH53epf0dRTeyhhLu7lqDJt?=
- =?us-ascii?Q?q0Ofrw/Is1bamgsBJtIiljpfpSmtfyRY/KR4BM0xJvtp4nSGVDaRqRwGeyI3?=
- =?us-ascii?Q?+fEiw=3D=3D?=
-X-Microsoft-Antispam-Message-Info: McHMoKMrrcSzY3VFFMvD40lo0vTHhsdWravdMlD5FQXbJHbglnDdf+DJ/juofq/dijq8TCZqE6C+FMZMcNZQ0vfK0bdTkQvI/RQtDO7DumMMHcUgQI5A4+pHEE1JMM4pl4yBW6FyZpylswrePKb6S1bKEqabk2G/5dB7hCWwYnUAPu255ZCWLJBA4S5eKzU9
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;6:TlCtZjZABEyiR12F4QPZKh/XO2EhMiP1CwAKwB94fnsOPIj9JVQsvMZFA0eIBmkXlkRx6PO9DrNHpNuqfj0W4KmB9+Tl3gsgsSygCG6B0V2N5AUhlnZ05YGWdCIDR4DFa+m30RDwsoL0Hat/wb4XFXZg1YHoKPUOGwAU541LivJF4sAa1mOgn6yddzuucuH+9WOsrb6xhGJdpu1UUUz8VTCrVjJgF0Ke5QWo8LrXEWtugfyIQpPH9FlRvui3xUHN6DEg12Mu8uHk9+tB3zBWgObwnwTbZoBtv3URCyRq/zFx0V4ORFLU07HOR+zX65ewq6fAoE9cKG+pzEoV+8tOuoP2e6KTw37cbIvNG39EoPx4r1v2doWQM3ElJrseJ9KEEoPPvC+VgeJPsf5iRpzTAQ3yRBf+uf+9+WkYOP618X1gxZuWP3sMbwiK2ITRrQEa6gwuvMt33vdlQ5qHUaPWvw==;5:mFnNVMefezZXk9PHVXvBeAiT7wWz6M1K17mAkz5sgSyxDViwWKEMuMXjNRW+rbj0AYylqdYzKAqGSjQm048KlGdgmrb0bUaLEEQcqBDjJa3W8Db1DBnIeMDAGK/F77XQ/8EmfRQJIzD1s6Nl/dWa//RaL1QLvbgGjWjemanPbmU=;24:uEF7gti5B0cAqpw9eH0B6Q/zq/4TZEXEwr8N5S5yJMgutwhcwjX2o7QtcxaxpVmaLNopV2bHz3jxXJ5FBqHZviLxdjyIwVDzQuZu6yPIq/I=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM5PR07MB3610;23:iaDAEKqXvNAs7MiCuyKKaFd9AXrkQaRviokPY37UG?=
+ =?us-ascii?Q?vVCN8Q9HQcVKhtYnu8f772QNscBH0pI3a12/BrNFpxv28MvHKp5TbzgzOstT?=
+ =?us-ascii?Q?Vk/qzPMyeQAYO0hS8DWZiMTShXYipdZ516U5sKg0drcoJajmkX4jho7dJs+l?=
+ =?us-ascii?Q?EA2xFlD8CzJqGJ6bXOf/zApnxxW01PT6EtN7eXpYeV89SOqWv6WMBRebdZW8?=
+ =?us-ascii?Q?F7jI8ZLZHBckofHr8r4HKYaLEQQdhOPMUn61ZCpgAxnZ8gU3HqF15EZD8Acu?=
+ =?us-ascii?Q?OpYbuBqS9/EvdW73d5rsCsM9duwotI8aw0xanbbmc7pGNy+DDjWuE71tbrZ2?=
+ =?us-ascii?Q?T6ID7IqNz5wTTyX1XxlwYflIBjk+bKri+GyFeWzOSNhLR5nAReHn52Tb0I+j?=
+ =?us-ascii?Q?MhQf+N6DF3I353mJIihTcn+NfHcG4JMT7zkPZ6Sx0BEl9SzywRWoEfgUmBom?=
+ =?us-ascii?Q?bLb0tJme8XCHCwAa44n4MIYo8oyIrGh2A5VNFcHbTYDSQyyMOjeRHmWoMEE4?=
+ =?us-ascii?Q?ODkHfbqzgsPqndWWul2bWHBr23cjnlLg4Iu4UlwZQtAID3UwWfShPqDulw9z?=
+ =?us-ascii?Q?zwrbUHpql+laV8sV+qVUgZ5aifWuc+Y0HCILwI7mwbh4cbTqIPc+R5EYT+CI?=
+ =?us-ascii?Q?jBYfzm/qr7p88a53q5VOtBsd7YSL/RSJieKPL3xsUtW9YezVraP9jYcKIr65?=
+ =?us-ascii?Q?JawlL4lET8mmMJn5x1FNr8uLOtYL4mYwHLxTVCBgaBomOczea4A5/uY1k/pZ?=
+ =?us-ascii?Q?z5rFCmpL0nKAoETjf6sWJSzoTb9BQDnpFs2EdQ5SgIfP11NuXQYfFYoZmgLT?=
+ =?us-ascii?Q?xuRlnTms91PN2YZSGPhduvjunql/RAJA8zdrT6D7YvsIHHF69jq78CcZRtIo?=
+ =?us-ascii?Q?AzwsIBVxJP2e3xOkmhFxnRsveDyRzuaLlUaoh+xvEpdOFn9vcr5ot47V63Pg?=
+ =?us-ascii?Q?42+Tva8z2cPcgwjWzPV74GoFz10gWez99GZUR8KOUq47gS0W2tafea1wM1+W?=
+ =?us-ascii?Q?S8YTtGZ3uza1UkPZ4htUEVVyJjR54K1eIA5q36ZDt4JJ1bBmMjxjJjsVnNqK?=
+ =?us-ascii?Q?96aCv1HPDdAk0TNC1MyC3iYH/+NbJTo0ZbXLVgTHQ57e+T0dC1O1X/wQgve6?=
+ =?us-ascii?Q?Dox5xtN5ME9HNWz4KnRTi8P3E5h9PXtktZ4/M8uhqX3nztDw1HlKPMwuIYY+?=
+ =?us-ascii?Q?PwAGF/UDUkfraNIJwDjcQk9hS4Dwl5m3eHFVpq1kPVwy9iemI62ZZr0+YF3g?=
+ =?us-ascii?Q?3j32HQUb9fqXjBPG5HIedR/tV6gg62scZWQzlIz+ftr62dSR1O8qJM9KbBLb?=
+ =?us-ascii?Q?JeB7JyO4/B06ZjEoNhw/dGqIwkLMtG16uF56wtAtzJj?=
+X-Microsoft-Antispam-Message-Info: Z2YcCezQoDoePSIZege+Yaj9BvRjX7Be8FqSouFypfQEcDHrXmaUirZJrW5+lg86Bi5ayhkZd4tJAbjGktGBQT0NJSRQwlRXfJ/IIhe27eRA0XR8ITkJIleFwcrNBfZE9dFoFC6T0MqP3x9bbCAM6t3a+3QwIu/bUJiM59nYjuMIH/VFy/bk+D7a3rZ9tjQS
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;6:4ILCX/W77fszC86KzhJx6EieqKeBPY/zsTJ/SwoFUdC4EM6au8w/C2F8BN95nvhB1fb1JFV3cTI0zZwz5RQ0rUqiPF4JIUKmwnLMcTS1MhxQZDqbO7fKAaFgq1skdobZgfhH+digHmD+CgCsNtSYBvu+nBXrawDOezbcRy1OTWP2A3ZaRStDdzkcwHQqX4JB05C07jjWQb/7WGsvJJzweccO47OKkytS/GuQrZKZGt0MoKslSv1MtZXC6Q9XxmriZul0Rli6bt1cCgiIqTHo5QmmqDkktMJAK3HH1bitNS2h3BZwxzXamXYWAHqi5H2i3mIQfESWX1gIXZfJGNt/rzBhLDN4AncktPr83xjq2CaikbMicYHjs6psVrMHGgxIzuo1qKHVXcklFJVurkdJyCgjdq29C/tjNe48o/Wkx1LkS0tduAhUnsKRpenadkxoogupwNKaqbm+S2D3zQvPLQ==;5:QM2LTvZ4GM+jh8YKFN+0Y9LuEIIS/+a8Tf8A8D6SfJehHC4/c1ad4VggAsMtWKmDVVjXLndZOB8ejRyou+ECWX3HqncEw7uoicOI2aPNoZt9hs80aowJ2qoEi0QdtKSXVxz2Z2TBXbuBMX6SUbOteUSaBNsoen5w91xToOP1gHA=;24:Fg92rIxPtWzQ3nk9xCcgL4WnK80PdXNGWg6G0oZIsgCjmQgGKpm910fOPEgfZTBlpwasFI8sRk9OeGQ3u0M59BZXZkMr4SkbQwapJZ8xoq0=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;7:RF+NwDK2w43i7bnoYwvDcQEM2Vxygr1VRbh8Djt8sCDEmOTWUSbbghIkOw4aKGj3Zn2oui160RTlDbY88wXfR+cE8hqV3uXBw7qrSCtnWrXtmP1P8kDfsqf3JgdrS9LI1Bjh7SY5SkbfEGJHVRKBDTrShs8Q6+CatUKYjDQZHwzytj27M3GsbdLNr5/gafRZwbQch2FCeNKCZXvwqzZhWrlYjZUF2b/O44kkkGTCWtUUJxfVy74aSI/ektR/dO6m
+X-Microsoft-Exchange-Diagnostics: 1;DM5PR07MB3610;7:qTL4q4ioc+q3DPbJJaJAJBZKJt2Ri60pUDj/k6N9T7f9seFNbgHiezaOGKULZG3Ak46DpRYbISlfyGDaGg7/N3o9ax8MG6Mx4EhqS8iSA9xZ15+vrS2B97zLpQTgXHZ6+qKHH+V0t9Rf9LjXhHMsJz/dbPHZbKBSLyfosCJHRS9HYl03wIpi1fceEL3q2t8A8oowTxHmWaC3SpSvPxgnVmz2APZAyVkgDHoSNZBxbkCoiXT4aBqaV18cJJchfJ/Z
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2018 06:46:59.8367 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e764e841-aa51-41a3-3df1-08d5921c3698
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2018 06:46:55.2846 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65d205af-9659-4723-d1b8-08d5921c3330
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR07MB3610
@@ -87,7 +82,7 @@ Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63222
+X-archive-position: 63223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,752 +99,551 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+From: "Steven J. Hill" <Steven.Hill@cavium.com>
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
-Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
-Signed-off-by: Carlos Munoz <cmunoz@caviumnetworks.com>
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
+In preparation for new hotplug CPU, some housekeeping:
+
+* Clean-up header file dependencies, specifically move inclusion
+  of some headers to only the files that need them.
+* Clean-ups from checkpatch in arch/mips/cavium-octeon/setup.c
+* Add defining of NR_IRQS_LEGACY for completeness.
+* Move CVMX_TMP_STR macros from top level to cvmx-asm.h
+* Update some copyright dates.
+* Add some missing register include files to top level.
+
 Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
 ---
- arch/mips/Kconfig                                  |   2 +-
- arch/mips/cavium-octeon/octeon_boot.h              |  95 ---------
- arch/mips/cavium-octeon/setup.c                    |   2 +-
- arch/mips/cavium-octeon/smp.c                      | 235 +++++++--------------
- .../asm/mach-cavium-octeon/kernel-entry-init.h     |  58 ++++-
- arch/mips/include/asm/mipsregs.h                   |   1 +
- arch/mips/include/asm/octeon/cvmx-coremask.h       |  26 ++-
- arch/mips/include/asm/octeon/cvmx.h                |  22 +-
- arch/mips/include/asm/octeon/octeon.h              |   2 +
- 9 files changed, 174 insertions(+), 269 deletions(-)
- delete mode 100644 arch/mips/cavium-octeon/octeon_boot.h
+ .../cavium-octeon/executive/cvmx-helper-board.c    |   2 +-
+ .../cavium-octeon/executive/cvmx-helper-jtag.c     |   1 +
+ .../cavium-octeon/executive/cvmx-helper-rgmii.c    |   1 +
+ .../cavium-octeon/executive/cvmx-helper-sgmii.c    |   1 +
+ .../mips/cavium-octeon/executive/cvmx-helper-spi.c |   1 +
+ .../cavium-octeon/executive/cvmx-helper-xaui.c     |   1 +
+ arch/mips/cavium-octeon/executive/cvmx-helper.c    |   1 +
+ arch/mips/cavium-octeon/executive/cvmx-pko.c       |   1 +
+ arch/mips/cavium-octeon/executive/cvmx-spi.c       |   1 +
+ arch/mips/cavium-octeon/octeon-platform.c          |   1 +
+ arch/mips/cavium-octeon/setup.c                    |  10 +-
+ arch/mips/cavium-octeon/smp.c                      |   1 +
+ arch/mips/include/asm/mach-cavium-octeon/irq.h     |   8 ++
+ arch/mips/include/asm/octeon/cvmx-asm.h            |   6 +-
+ arch/mips/include/asm/octeon/cvmx-ciu-defs.h       | 141 +++++++--------------
+ arch/mips/include/asm/octeon/cvmx-sysinfo.h        |   4 +-
+ arch/mips/include/asm/octeon/cvmx.h                |  10 +-
+ arch/mips/pci/pci-octeon.c                         |   1 +
+ arch/mips/pci/pcie-octeon.c                        |   1 +
+ 19 files changed, 83 insertions(+), 110 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8128c3b..73b0a1f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -896,7 +896,7 @@ config CAVIUM_OCTEON_SOC
- 	select EDAC_SUPPORT
- 	select EDAC_ATOMIC_SCRUB
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select SYS_SUPPORTS_HOTPLUG_CPU if CPU_BIG_ENDIAN
-+	select SYS_SUPPORTS_HOTPLUG_CPU
- 	select SYS_HAS_EARLY_PRINTK
- 	select SYS_HAS_CPU_CAVIUM_OCTEON
- 	select HW_HAS_PCI
-diff --git a/arch/mips/cavium-octeon/octeon_boot.h b/arch/mips/cavium-octeon/octeon_boot.h
-deleted file mode 100644
-index a6ce7c4..0000000
---- a/arch/mips/cavium-octeon/octeon_boot.h
-+++ /dev/null
-@@ -1,95 +0,0 @@
--/*
-- * (C) Copyright 2004, 2005 Cavium Networks
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- */
--
--#ifndef __OCTEON_BOOT_H__
--#define __OCTEON_BOOT_H__
--
--#include <linux/types.h>
--
--struct boot_init_vector {
--	/* First stage address - in ram instead of flash */
--	uint64_t code_addr;
--	/* Setup code for application, NOT application entry point */
--	uint32_t app_start_func_addr;
--	/* k0 is used for global data - needs to be passed to other cores */
--	uint32_t k0_val;
--	/* Address of boot info block structure */
--	uint64_t boot_info_addr;
--	uint32_t flags;		/* flags */
--	uint32_t pad;
--};
--
--/* similar to bootloader's linux_app_boot_info but without global data */
--struct linux_app_boot_info {
--#ifdef __BIG_ENDIAN_BITFIELD
--	uint32_t labi_signature;
--	uint32_t start_core0_addr;
--	uint32_t avail_coremask;
--	uint32_t pci_console_active;
--	uint32_t icache_prefetch_disable;
--	uint32_t padding;
--	uint64_t InitTLBStart_addr;
--	uint32_t start_app_addr;
--	uint32_t cur_exception_base;
--	uint32_t no_mark_private_data;
--	uint32_t compact_flash_common_base_addr;
--	uint32_t compact_flash_attribute_base_addr;
--	uint32_t led_display_base_addr;
--#else
--	uint32_t start_core0_addr;
--	uint32_t labi_signature;
--
--	uint32_t pci_console_active;
--	uint32_t avail_coremask;
--
--	uint32_t padding;
--	uint32_t icache_prefetch_disable;
--
--	uint64_t InitTLBStart_addr;
--
--	uint32_t cur_exception_base;
--	uint32_t start_app_addr;
--
--	uint32_t compact_flash_common_base_addr;
--	uint32_t no_mark_private_data;
--
--	uint32_t led_display_base_addr;
--	uint32_t compact_flash_attribute_base_addr;
--#endif
--};
--
--/* If not to copy a lot of bootloader's structures
--   here is only offset of requested member */
--#define AVAIL_COREMASK_OFFSET_IN_LINUX_APP_BOOT_BLOCK	 0x765c
--
--/* hardcoded in bootloader */
--#define	 LABI_ADDR_IN_BOOTLOADER			 0x700
--
--#define LINUX_APP_BOOT_BLOCK_NAME "linux-app-boot"
--
--#define LABI_SIGNATURE 0xAABBCC01
--
--/*  from uboot-headers/octeon_mem_map.h */
--#define EXCEPTION_BASE_INCR	(4 * 1024)
--			       /* Increment size for exception base addresses (4k minimum) */
--#define EXCEPTION_BASE_BASE	0
--#define BOOTLOADER_PRIV_DATA_BASE	(EXCEPTION_BASE_BASE + 0x800)
--#define BOOTLOADER_BOOT_VECTOR		(BOOTLOADER_PRIV_DATA_BASE)
--
--#endif /* __OCTEON_BOOT_H__ */
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index 2855d8d..068787d 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -756,7 +756,7 @@ void __init prom_init(void)
- 	if (OCTEON_IS_MODEL(OCTEON_CN38XX_PASS2) ||
- 	    OCTEON_IS_MODEL(OCTEON_CN31XX))
- 		cvmx_write_csr(CVMX_CIU_SOFT_BIST, 0);
--	else
-+	else if (!OCTEON_IS_MODEL(OCTEON_CN78XX))
- 		cvmx_write_csr(CVMX_CIU_SOFT_BIST, 1);
- 
- 	/* Default to 64MB in the simulator to speed things up */
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index f08f175..ca01dd8 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -3,41 +3,39 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 2004-2008, 2009, 2010 Cavium Networks
-+ * Copyright (C) 2004-2018 Cavium, Inc.
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index ab8362e..22d46fe 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -32,7 +32,7 @@
   */
- #include <linux/cpu.h>
- #include <linux/delay.h>
- #include <linux/smp.h>
- #include <linux/interrupt.h>
--#include <linux/kernel_stat.h>
- #include <linux/sched.h>
- #include <linux/sched/hotplug.h>
- #include <linux/sched/task_stack.h>
- #include <linux/init.h>
- #include <linux/export.h>
- 
--#include <asm/mmu_context.h>
- #include <asm/time.h>
- #include <asm/setup.h>
-+#include <asm/cacheflush.h>
-+#include <asm/tlbflush.h>
  
  #include <asm/octeon/octeon.h>
- #include <asm/octeon/cvmx-sysinfo.h>
-+#include <asm/octeon/cvmx-boot-vector.h>
+-#include <asm/octeon/cvmx-bootinfo.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
--#include "octeon_boot.h"
--
--volatile unsigned long octeon_processor_boot = 0xff;
--volatile unsigned long octeon_processor_sp;
--volatile unsigned long octeon_processor_gp;
-+unsigned long octeon_processor_boot = ~0ul;
-+unsigned long octeon_processor_sp;
-+unsigned long octeon_processor_gp;
- #ifdef CONFIG_RELOCATABLE
--volatile unsigned long octeon_processor_relocated_kernel_entry;
-+unsigned long octeon_processor_relocated_kernel_entry;
- #endif /* CONFIG_RELOCATABLE */
+ #include <asm/octeon/cvmx-config.h>
  
--#ifdef CONFIG_HOTPLUG_CPU
--uint64_t octeon_bootloader_entry_addr;
--EXPORT_SYMBOL(octeon_bootloader_entry_addr);
--#endif
-+static struct cvmx_boot_vector_element *octeon_bootvector;
-+static void *octeon_hotplug_entry_raw;
- 
--extern void kernel_entry(unsigned long arg1, ...);
-+/* State of each CPU. */
-+DEFINE_PER_CPU(int, cpu_state);
- 
- static void octeon_icache_flush(void)
- {
-@@ -99,57 +97,32 @@ static irqreturn_t mailbox_interrupt(int irq, void *dev_id)
- void octeon_send_ipi_single(int cpu, unsigned int action)
- {
- 	int coreid = cpu_logical_map(cpu);
--	/*
--	pr_info("SMP: Mailbox send cpu=%d, coreid=%d, action=%u\n", cpu,
--	       coreid, action);
--	*/
-+
- 	cvmx_write_csr(CVMX_CIU_MBOX_SETX(coreid), action);
- }
- 
- static inline void octeon_send_ipi_mask(const struct cpumask *mask,
- 					unsigned int action)
- {
--	unsigned int i;
--
--	for_each_cpu(i, mask)
--		octeon_send_ipi_single(i, action);
--}
--
--/**
-- * Detect available CPUs, populate cpu_possible_mask
-- */
--static void octeon_smp_hotplug_setup(void)
--{
--#ifdef CONFIG_HOTPLUG_CPU
--	struct linux_app_boot_info *labi;
-+	int cpu;
- 
--	if (!setup_max_cpus)
--		return;
--
--	labi = (struct linux_app_boot_info *)PHYS_TO_XKSEG_CACHED(LABI_ADDR_IN_BOOTLOADER);
--	if (labi->labi_signature != LABI_SIGNATURE) {
--		pr_info("The bootloader on this board does not support HOTPLUG_CPU.");
--		return;
--	}
--
--	octeon_bootloader_entry_addr = labi->InitTLBStart_addr;
--#endif
-+	for_each_cpu(cpu, mask)
-+		octeon_send_ipi_single(cpu, action);
- }
- 
--static void __init octeon_smp_setup(void)
-+static void octeon_smp_setup(void)
- {
- 	const int coreid = cvmx_get_core_num();
- 	int cpus;
- 	int id;
--	struct cvmx_sysinfo *sysinfo = cvmx_sysinfo_get();
--
-+	unsigned long t;
- #ifdef CONFIG_HOTPLUG_CPU
--	int core_mask = octeon_get_boot_coremask();
- 	unsigned int num_cores = cvmx_octeon_num_cores();
- #endif
-+	struct cvmx_sysinfo *sysinfo = cvmx_sysinfo_get();
- 
- 	/* The present CPUs are initially just the boot cpu (CPU 0). */
--	for (id = 0; id < NR_CPUS; id++) {
-+	for (id = 0; id < num_possible_cpus(); id++) {
- 		set_cpu_possible(id, id == 0);
- 		set_cpu_present(id, id == 0);
- 	}
-@@ -159,7 +132,7 @@ static void __init octeon_smp_setup(void)
- 
- 	/* The present CPUs get the lowest CPU numbers. */
- 	cpus = 1;
--	for (id = 0; id < NR_CPUS; id++) {
-+	for (id = 0; id < CONFIG_MIPS_NR_CPU_NR_MAP; id++) {
- 		if ((id != coreid) && cvmx_coremask_is_core_set(&sysinfo->core_mask, id)) {
- 			set_cpu_possible(cpus, true);
- 			set_cpu_present(cpus, true);
-@@ -169,15 +142,22 @@ static void __init octeon_smp_setup(void)
- 		}
- 	}
- 
-+	octeon_bootvector = cvmx_boot_vector_get();
-+	if (!octeon_bootvector) {
-+		pr_err("Error: Cannot allocate boot vector.\n");
-+		return;
-+	}
-+	t = __pa_symbol(octeon_hotplug_entry);
-+	octeon_hotplug_entry_raw = phys_to_virt(t);
-+
- #ifdef CONFIG_HOTPLUG_CPU
- 	/*
- 	 * The possible CPUs are all those present on the chip.	 We
- 	 * will assign CPU numbers for possible cores as well.	Cores
- 	 * are always consecutively numberd from 0.
- 	 */
--	for (id = 0; setup_max_cpus && octeon_bootloader_entry_addr &&
--		     id < num_cores && id < NR_CPUS; id++) {
--		if (!(core_mask & (1 << id))) {
-+	for (id = 0; id < num_cores && id < num_possible_cpus(); id++) {
-+		if (!(cvmx_coremask_is_core_set(&sysinfo->core_mask, id))) {
- 			set_cpu_possible(cpus, true);
- 			__cpu_number_map[id] = cpus;
- 			__cpu_logical_map[cpus] = id;
-@@ -185,8 +165,6 @@ static void __init octeon_smp_setup(void)
- 		}
- 	}
- #endif
--
--	octeon_smp_hotplug_setup();
- }
- 
- 
-@@ -208,27 +186,34 @@ int plat_post_relocation(long offset)
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
+index 607b4e6..e417037 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
+@@ -33,6 +33,7 @@
   */
- static int octeon_boot_secondary(int cpu, struct task_struct *idle)
- {
--	int count;
-+	int node;
-+	int coreid = cpu_logical_map(cpu);
-+
-+	pr_info("SMP: Booting CPU%02d (CoreId %2d)...\n", cpu, coreid);
  
--	pr_info("SMP: Booting CPU%02d (CoreId %2d)...\n", cpu,
--		cpu_logical_map(cpu));
-+	octeon_bootvector[coreid].target_ptr = (uint64_t)octeon_hotplug_entry_raw;
-+	mb();
-+	/* Convert coreid to node,core spair and send NMI to target core */
-+	node = cvmx_coremask_core_to_node(coreid);
-+	coreid = cvmx_coremask_core_on_node(coreid);
-+	if (octeon_has_feature(OCTEON_FEATURE_CIU3))
-+		cvmx_write_csr_node(node, CVMX_CIU3_NMI, (1ull << coreid));
-+	else
-+		cvmx_write_csr(CVMX_CIU_NMI, (1 << coreid));
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ #include <asm/octeon/cvmx-helper-jtag.h>
  
- 	octeon_processor_sp = __KSTK_TOS(idle);
- 	octeon_processor_gp = (unsigned long)(task_thread_info(idle));
--	octeon_processor_boot = cpu_logical_map(cpu);
-+	/* This barrier is needed to guarantee the following is done last */
- 	mb();
  
--	count = 10000;
--	while (octeon_processor_sp && count) {
--		/* Waiting for processor to get the SP and GP */
-+	/* Indicate which core is being brought up out of pan */
-+	octeon_processor_boot = coreid;
-+
-+	/* Waiting for processor to get the SP and GP */
-+	while (octeon_processor_sp)
- 		udelay(1);
--		count--;
--	}
--	if (count == 0) {
--		pr_err("Secondary boot timeout\n");
--		return -ETIMEDOUT;
--	}
- 
-+	octeon_processor_boot = ~0ul;
- 	return 0;
- }
- 
-@@ -256,11 +241,24 @@ static void octeon_init_secondary(void)
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
+index d18ed5a..2d84490 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
+@@ -30,6 +30,7 @@
+  * and monitoring.
   */
- static void __init octeon_prepare_cpus(unsigned int max_cpus)
- {
-+	u64 mask;
-+	u64 coreid;
-+
- 	/*
- 	 * Only the low order mailbox bits are used for IPIs, leave
- 	 * the other bits alone.
- 	 */
--	cvmx_write_csr(CVMX_CIU_MBOX_CLRX(cvmx_get_core_num()), 0xffff);
-+	if (OCTEON_IS_MODEL(OCTEON_CN68XX))
-+		mask = 0xff;
-+	else
-+		mask = 0xffff;
-+
-+	coreid = cvmx_get_core_num();
-+
-+	/* Clear pending mailbox interrupts */
-+	cvmx_write_csr(CVMX_CIU_MBOX_CLRX(coreid), mask);
-+
-+	/* Attach mailbox interrupt handler */
- 	if (request_irq(OCTEON_IRQ_MBOX0, mailbox_interrupt,
- 			IRQF_PERCPU | IRQF_NO_THREAD, "SMP-IPI",
- 			mailbox_interrupt)) {
-@@ -275,6 +273,8 @@ static void __init octeon_prepare_cpus(unsigned int max_cpus)
- static void octeon_smp_finish(void)
- {
- 	octeon_user_io_init();
-+	per_cpu(cpu_state, smp_processor_id()) = CPU_ONLINE;
-+	mb();
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
- 	/* to generate the first CPU timer interrupt */
- 	write_c0_compare(read_c0_count() + mips_hpt_frequency / HZ);
-@@ -283,9 +283,6 @@ static void octeon_smp_finish(void)
+ #include <asm/octeon/cvmx-config.h>
  
- #ifdef CONFIG_HOTPLUG_CPU
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
+index 5782833..a25275d 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
+@@ -31,6 +31,7 @@
+  */
  
--/* State of each CPU. */
--DEFINE_PER_CPU(int, cpu_state);
--
- static int octeon_cpu_disable(void)
- {
- 	unsigned int cpu = smp_processor_id();
-@@ -293,9 +290,6 @@ static int octeon_cpu_disable(void)
- 	if (cpu == 0)
- 		return -EBUSY;
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
--	if (!octeon_bootloader_entry_addr)
--		return -ENOTSUPP;
--
- 	set_cpu_online(cpu, false);
- 	calculate_cpu_foreign_map();
- 	octeon_fixup_irqs();
-@@ -308,108 +302,21 @@ static int octeon_cpu_disable(void)
+ #include <asm/octeon/cvmx-config.h>
  
- static void octeon_cpu_die(unsigned int cpu)
- {
--	int coreid = cpu_logical_map(cpu);
--	uint32_t mask, new_mask;
--	const struct cvmx_bootmem_named_block_desc *block_desc;
--
- 	while (per_cpu(cpu_state, cpu) != CPU_DEAD)
- 		cpu_relax();
--
--	/*
--	 * This is a bit complicated strategics of getting/settig available
--	 * cores mask, copied from bootloader
--	 */
--
--	mask = 1 << coreid;
--	/* LINUX_APP_BOOT_BLOCK is initialized in bootoct binary */
--	block_desc = cvmx_bootmem_find_named_block(LINUX_APP_BOOT_BLOCK_NAME);
--
--	if (!block_desc) {
--		struct linux_app_boot_info *labi;
--
--		labi = (struct linux_app_boot_info *)PHYS_TO_XKSEG_CACHED(LABI_ADDR_IN_BOOTLOADER);
--
--		labi->avail_coremask |= mask;
--		new_mask = labi->avail_coremask;
--	} else {		       /* alternative, already initialized */
--		uint32_t *p = (uint32_t *)PHYS_TO_XKSEG_CACHED(block_desc->base_addr +
--							       AVAIL_COREMASK_OFFSET_IN_LINUX_APP_BOOT_BLOCK);
--		*p |= mask;
--		new_mask = *p;
--	}
--
--	pr_info("Reset core %d. Available Coremask = 0x%x \n", coreid, new_mask);
--	mb();
--	cvmx_write_csr(CVMX_CIU_PP_RST, 1 << coreid);
--	cvmx_write_csr(CVMX_CIU_PP_RST, 0);
- }
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
+index ef16aa0..d9dac21 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
+@@ -34,6 +34,7 @@ void __cvmx_interrupt_stxx_int_msk_enable(int index);
+  * and monitoring.
+  */
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
- void play_dead(void)
- {
--	int cpu = cpu_number_map(cvmx_get_core_num());
-+	int cpu = smp_processor_id();
+ #include <asm/octeon/cvmx-config.h>
+ #include <asm/octeon/cvmx-spi.h>
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
+index 19d54e0..d692638 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
+@@ -32,6 +32,7 @@
+  */
  
- 	idle_task_exit();
--	octeon_processor_boot = 0xff;
- 	per_cpu(cpu_state, cpu) = CPU_DEAD;
--
--	mb();
--
--	while (1)	/* core will be reset here */
--		;
--}
--
--static void start_after_reset(void)
--{
--	kernel_entry(0, 0, 0);	/* set a2 = 0 for secondary core */
--}
--
--static int octeon_update_boot_vector(unsigned int cpu)
--{
--
--	int coreid = cpu_logical_map(cpu);
--	uint32_t avail_coremask;
--	const struct cvmx_bootmem_named_block_desc *block_desc;
--	struct boot_init_vector *boot_vect =
--		(struct boot_init_vector *)PHYS_TO_XKSEG_CACHED(BOOTLOADER_BOOT_VECTOR);
--
--	block_desc = cvmx_bootmem_find_named_block(LINUX_APP_BOOT_BLOCK_NAME);
--
--	if (!block_desc) {
--		struct linux_app_boot_info *labi;
--
--		labi = (struct linux_app_boot_info *)PHYS_TO_XKSEG_CACHED(LABI_ADDR_IN_BOOTLOADER);
--
--		avail_coremask = labi->avail_coremask;
--		labi->avail_coremask &= ~(1 << coreid);
--	} else {		       /* alternative, already initialized */
--		avail_coremask = *(uint32_t *)PHYS_TO_XKSEG_CACHED(
--			block_desc->base_addr + AVAIL_COREMASK_OFFSET_IN_LINUX_APP_BOOT_BLOCK);
--	}
--
--	if (!(avail_coremask & (1 << coreid))) {
--		/* core not available, assume, that caught by simple-executive */
--		cvmx_write_csr(CVMX_CIU_PP_RST, 1 << coreid);
--		cvmx_write_csr(CVMX_CIU_PP_RST, 0);
--	}
--
--	boot_vect[coreid].app_start_func_addr =
--		(uint32_t) (unsigned long) start_after_reset;
--	boot_vect[coreid].code_addr = octeon_bootloader_entry_addr;
--
- 	mb();
--
--	cvmx_write_csr(CVMX_CIU_NMI, (1 << coreid) & avail_coremask);
--
--	return 0;
--}
--
--static int register_cavium_notifier(void)
--{
--	return cpuhp_setup_state_nocalls(CPUHP_MIPS_SOC_PREPARE,
--					 "mips/cavium:prepare",
--					 octeon_update_boot_vector, NULL);
-+	local_irq_disable();
-+	while (1)
-+		__asm__ __volatile__("wait\n");
- }
--late_initcall(register_cavium_notifier);
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
- #endif	/* CONFIG_HOTPLUG_CPU */
+ #include <asm/octeon/cvmx-config.h>
  
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-index c38b38c..907c8e3 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-@@ -3,11 +3,13 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+index 75108ec..1e807f8 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -31,6 +31,7 @@
   *
-- * Copyright (C) 2005-2008 Cavium Networks, Inc
-+ * Copyright (C) 2005-2018 Cavium, Inc
   */
- #ifndef __ASM_MACH_CAVIUM_OCTEON_KERNEL_ENTRY_H
- #define __ASM_MACH_CAVIUM_OCTEON_KERNEL_ENTRY_H
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
-+#include <asm/octeon/cvmx-asm.h>
-+
- #define CP0_CVMCTL_REG $9, 7
- #define CP0_CVMMEMCTL_REG $11,7
- #define CP0_PRID_REG $15, 0
-@@ -26,6 +28,60 @@
- 	# a3 = address of boot descriptor block
- 	.set push
- 	.set arch=octeon
-+	b	7f
-+FEXPORT(octeon_hotplug_entry)
-+	move	a0, zero
-+	move	a1, zero
-+	move	a2, zero
-+	move	a3, zero
-+7:
-+	mfc0	v0, CP0_STATUS
-+	/* Force 64-bit addressing enabled */
-+	ori	v0, v0, (ST0_UX | ST0_SX | ST0_KX)
-+	/* Clear NMI and SR as they are sometimes restored and 0 -> 1
-+	 * transitions are not allowed
-+	 */
-+	li	v1, ~(ST0_NMI | ST0_SR)
-+	and	v0, v1
-+	mtc0	v0, CP0_STATUS
-+
-+	# Clear the TLB.
-+	mfc0	v0, CP0_CONFIG, 1
-+	ext	v0, v0, MIPS_CONF1_TLBS_SHIFT, MIPS_CONF1_TLBS_SIZE
-+	mfc0	v1, CP0_CONFIG, 3
-+	bgez	v1, 1f
-+	mfc0	v1, CP0_CONFIG, 4
-+	andi	v1, v1, MIPS_CONF4_MMUSIZEEXT_SIZE
-+	ins	v0, v1, MIPS_CONF1_TLBS_SIZE, MIPS_CONF4_MMUSIZEEXT_SIZE
-+1:				# Number of TLBs in v0
-+
-+	dmtc0	zero, $2, 0	# EntryLo0
-+	dmtc0	zero, $3, 0	# EntryLo1
-+	dmtc0	zero, $5, 0	# PageMask
-+	dla	t0, 0xffffffff90000000
-+10:
-+	dmtc0	t0, $10, 0	# EntryHi
-+	tlbp
-+	mfc0	t1, $0, 0	# Index
-+	bltz	t1, 1f
-+	tlbr
-+	dmtc0	zero, $2, 0	# EntryLo0
-+	dmtc0	zero, $3, 0	# EntryLo1
-+	dmtc0	zero, $5, 0	# PageMask
-+	tlbwi			# Make it a 'normal' sized page
-+	daddiu	t0, t0, 8192
-+	b	10b
-+1:
-+	mtc0	v0, $0, 0	# Index
-+	tlbwi
-+	.set	noreorder
-+	bne	v0, zero, 10b
-+	 addiu	v0, v0, -1
-+	.set	reorder
-+
-+	mtc0	zero, $0, 0	# Index
-+	dmtc0	zero, $10, 0	# EntryHi
-+
- 	# Read the cavium mem control register
- 	dmfc0	v0, CP0_CVMMEMCTL_REG
- 	# Clear the lower 6 bits, the CVMSEG size
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 858752d..cf8c13d 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -633,6 +633,7 @@
+ #include <asm/octeon/cvmx-config.h>
  
- #define MIPS_CONF4_MMUSIZEEXT_SHIFT	(0)
- #define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
-+#define MIPS_CONF4_MMUSIZEEXT_SIZE	(8)
- #define MIPS_CONF4_FTLBSETS_SHIFT	(0)
- #define MIPS_CONF4_FTLBSETS	(_ULCAST_(15) << MIPS_CONF4_FTLBSETS_SHIFT)
- #define MIPS_CONF4_FTLBWAYS_SHIFT	(4)
-diff --git a/arch/mips/include/asm/octeon/cvmx-coremask.h b/arch/mips/include/asm/octeon/cvmx-coremask.h
-index 097dc09..625cf94 100644
---- a/arch/mips/include/asm/octeon/cvmx-coremask.h
-+++ b/arch/mips/include/asm/octeon/cvmx-coremask.h
-@@ -29,7 +29,6 @@
- #ifndef __CVMX_COREMASK_H__
- #define __CVMX_COREMASK_H__
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-pko.c b/arch/mips/cavium-octeon/executive/cvmx-pko.c
+index 676fab5..ec5b013 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-pko.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-pko.c
+@@ -30,6 +30,7 @@
+  */
  
--#define CVMX_MIPS_MAX_CORES 1024
- /* bits per holder */
- #define CVMX_COREMASK_ELTSZ 64
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
  
-@@ -86,4 +85,29 @@ static inline void cvmx_coremask_clear_core(struct cvmx_coremask *pcm, int core)
- 	pcm->coremask_bitmap[i] &= ~(1ull << n);
+ #include <asm/octeon/cvmx-config.h>
+ #include <asm/octeon/cvmx-pko.h>
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-spi.c b/arch/mips/cavium-octeon/executive/cvmx-spi.c
+index f51957a..d346ea7 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-spi.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-spi.c
+@@ -30,6 +30,7 @@
+  * Support library for the SPI
+  */
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-config.h>
+ 
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 8505db4..a605191 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -13,6 +13,7 @@
+ #include <linux/libfdt.h>
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-bootinfo.h>
+ #include <asm/octeon/cvmx-helper-board.h>
+ 
+ #ifdef CONFIG_USB
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index a8034d0..2085138 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -39,6 +39,7 @@
+ #include <asm/time.h>
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ #include <asm/octeon/pci-octeon.h>
+ #include <asm/octeon/cvmx-rst-defs.h>
+ 
+@@ -165,6 +166,7 @@ static int octeon_kexec_prepare(struct kimage *image)
+ 			int argc = 0, offt;
+ 			char *str = (char *)image->segment[i].buf;
+ 			char *ptr = strchr(str, ' ');
++
+ 			while (ptr && (OCTEON_ARGV_MAX_ARGS > argc)) {
+ 				*ptr = '\0';
+ 				if (ptr[1] != ' ') {
+@@ -357,6 +359,7 @@ void octeon_write_lcd(const char *s)
+ 			ioremap_nocache(octeon_bootinfo->led_display_base_addr,
+ 					8);
+ 		int i;
++
+ 		for (i = 0; i < 8; i++, s++) {
+ 			if (*s)
+ 				iowrite8(*s, lcd_address + i);
+@@ -429,6 +432,7 @@ static void octeon_restart(char *command)
+ 	/* Disable all watchdogs before soft reset. They don't get cleared */
+ #ifdef CONFIG_SMP
+ 	int cpu;
++
+ 	for_each_online_cpu(cpu)
+ 		cvmx_write_csr(CVMX_CIU_WDOGX(cpu_logical_map(cpu)), 0);
+ #else
+@@ -715,11 +719,13 @@ void __init prom_init(void)
+ 	if (OCTEON_IS_OCTEON2()) {
+ 		/* I/O clock runs at a different rate than the CPU. */
+ 		union cvmx_mio_rst_boot rst_boot;
++
+ 		rst_boot.u64 = cvmx_read_csr(CVMX_MIO_RST_BOOT);
+ 		octeon_io_clock_rate = 50000000 * rst_boot.s.pnr_mul;
+ 	} else if (OCTEON_IS_OCTEON3()) {
+ 		/* I/O clock runs at a different rate than the CPU. */
+ 		union cvmx_rst_boot rst_boot;
++
+ 		rst_boot.u64 = cvmx_read_csr(CVMX_RST_BOOT);
+ 		octeon_io_clock_rate = 50000000 * rst_boot.s.pnr_mul;
+ 	} else {
+@@ -927,6 +933,7 @@ static __init void memory_exclude_page(u64 addr, u64 *mem, u64 *size)
+ {
+ 	if (addr > *mem && addr < *mem + *size) {
+ 		u64 inc = addr - *mem;
++
+ 		add_memory_region(*mem, inc, BOOT_MEM_RAM);
+ 		*mem += inc;
+ 		*size -= inc;
+@@ -947,6 +954,7 @@ void __init fw_init_cmdline(void)
+ 	for (i = 0; i < octeon_boot_desc_ptr->argc; i++) {
+ 		const char *arg =
+ 			cvmx_phys_to_ptr(octeon_boot_desc_ptr->argv[i]);
++
+ 		if (strlen(arcs_cmdline) + strlen(arg) + 1 <
+ 			   sizeof(arcs_cmdline) - 1) {
+ 			strcat(arcs_cmdline, " ");
+@@ -1202,7 +1210,7 @@ void __init device_tree_init(void)
+ 	init_octeon_system_type();
  }
  
-+/**
-+ * For multi-node systems, return the node a core belongs to.
+-static int __initdata disable_octeon_edac_p;
++static int disable_octeon_edac_p __initdata;
+ 
+ static int __init disable_octeon_edac(char *str)
+ {
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 75e7c86..f08f175 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -21,6 +21,7 @@
+ #include <asm/setup.h>
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include "octeon_boot.h"
+ 
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/irq.h b/arch/mips/include/asm/mach-cavium-octeon/irq.h
+index 64b86b9..7c2bf76 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/irq.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/irq.h
+@@ -11,6 +11,14 @@
+ #define NR_IRQS OCTEON_IRQ_LAST
+ #define MIPS_CPU_IRQ_BASE OCTEON_IRQ_SW0
+ 
++/*
++ * 0    - unused.
++ * 1..8 - MIPS
 + *
-+ * @param core - core number (0-1023)
-+ *
-+ * @return node number core belongs to
++ * For a total of 9
 + */
-+static inline int cvmx_coremask_core_to_node(int core)
-+{
-+	return (core >> CVMX_NODE_NO_SHIFT) & CVMX_NODE_MASK;
-+}
++#define NR_IRQS_LEGACY 9
 +
-+/**
-+ * Given a core number on a multi-node system, return the core number for a
-+ * particular node.
-+ *
-+ * @param core - global core number
-+ *
-+ * @returns core number local to the node.
-+ */
-+static inline int cvmx_coremask_core_on_node(int core)
-+{
-+	return (core & GENMASK((CVMX_NODE_NO_SHIFT - 1), 0));
-+}
-+
- #endif /* __CVMX_COREMASK_H__ */
+ enum octeon_irq {
+ /* 1 - 8 represent the 8 MIPS standard interrupt sources */
+ 	OCTEON_IRQ_SW0 = 1,
+diff --git a/arch/mips/include/asm/octeon/cvmx-asm.h b/arch/mips/include/asm/octeon/cvmx-asm.h
+index 31eacc2..0e0d1e1 100644
+--- a/arch/mips/include/asm/octeon/cvmx-asm.h
++++ b/arch/mips/include/asm/octeon/cvmx-asm.h
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (c) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -32,7 +32,9 @@
+ #ifndef __CVMX_ASM_H__
+ #define __CVMX_ASM_H__
+ 
+-#include <asm/octeon/octeon-model.h>
++/* turn the variable name into a string */
++#define CVMX_TMP_STR(x) CVMX_TMP_STR2(x)
++#define CVMX_TMP_STR2(x) #x
+ 
+ /* other useful stuff */
+ #define CVMX_SYNC asm volatile ("sync" : : : "memory")
+diff --git a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
+index 6e61792..af9164b 100644
+--- a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
++++ b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
+@@ -64,94 +64,47 @@
+ #define CVMX_CIU_INT_SUM1 (CVMX_ADD_IO_SEG(0x0001070000000108ull))
+ static inline uint64_t CVMX_CIU_MBOX_CLRX(unsigned long offset)
+ {
+-	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
++	if ((cvmx_get_octeon_family() & OCTEON_FAMILY_MASK) == OCTEON_CN68XX)
+ 		return CVMX_ADD_IO_SEG(0x0001070100100600ull) + (offset) * 8;
+-	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
++	else
++		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+ }
+-
+ static inline uint64_t CVMX_CIU_MBOX_SETX(unsigned long offset)
+ {
+-	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
++	if ((cvmx_get_octeon_family() & OCTEON_FAMILY_MASK) == OCTEON_CN68XX)
+ 		return CVMX_ADD_IO_SEG(0x0001070100100400ull) + (offset) * 8;
+-	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
++	else
++		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+ }
+-
+ #define CVMX_CIU_NMI (CVMX_ADD_IO_SEG(0x0001070000000718ull))
+ #define CVMX_CIU_PCI_INTA (CVMX_ADD_IO_SEG(0x0001070000000750ull))
+ #define CVMX_CIU_PP_BIST_STAT (CVMX_ADD_IO_SEG(0x00010700000007E0ull))
+ #define CVMX_CIU_PP_DBG (CVMX_ADD_IO_SEG(0x0001070000000708ull))
+ static inline uint64_t CVMX_CIU_PP_POKEX(unsigned long offset)
+ {
+-	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN70XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
++	switch(cvmx_get_octeon_family() & OCTEON_FAMILY_MASK) {
++	case OCTEON_CN30XX:
++	case OCTEON_CN31XX:
++	case OCTEON_CN38XX:
++	case OCTEON_CN50XX:
++	case OCTEON_CN52XX:
++	case OCTEON_CN56XX:
++	case OCTEON_CN58XX:
++	case OCTEON_CN61XX:
++	case OCTEON_CN63XX:
++	case OCTEON_CN66XX:
++	case OCTEON_CN70XX:
++	case OCTEON_CNF71XX:
+ 		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070100100200ull) + (offset) * 8;
+-	case OCTEON_CNF75XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN73XX:
++	case OCTEON_CN78XX:
++	case OCTEON_CNF75XX:
++	default:
+ 		return CVMX_ADD_IO_SEG(0x0001010000030000ull) + (offset) * 8;
++	case OCTEON_CN68XX:
++		return CVMX_ADD_IO_SEG(0x0001070100100200ull) + (offset) * 8;
+ 	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+ }
+-
+ #define CVMX_CIU_PP_RST (CVMX_ADD_IO_SEG(0x0001070000000700ull))
+ #define CVMX_CIU_QLM0 (CVMX_ADD_IO_SEG(0x0001070000000780ull))
+ #define CVMX_CIU_QLM1 (CVMX_ADD_IO_SEG(0x0001070000000788ull))
+@@ -179,34 +132,28 @@ static inline uint64_t CVMX_CIU_PP_POKEX(unsigned long offset)
+ #define CVMX_CIU_TIM_MULTI_CAST (CVMX_ADD_IO_SEG(0x000107000000C200ull))
+ static inline uint64_t CVMX_CIU_WDOGX(unsigned long offset)
+ {
+-	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN70XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
++	switch(cvmx_get_octeon_family() & OCTEON_FAMILY_MASK) {
++	case OCTEON_CN30XX:
++	case OCTEON_CN31XX:
++	case OCTEON_CN38XX:
++	case OCTEON_CN50XX:
++	case OCTEON_CN52XX:
++	case OCTEON_CN56XX:
++	case OCTEON_CN58XX:
++	case OCTEON_CN61XX:
++	case OCTEON_CN63XX:
++	case OCTEON_CN66XX:
++	case OCTEON_CN70XX:
++	case OCTEON_CNF71XX:
+ 		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070100100000ull) + (offset) * 8;
+-	case OCTEON_CNF75XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN73XX:
++	case OCTEON_CN78XX:
++	case OCTEON_CNF75XX:
++	default:
+ 		return CVMX_ADD_IO_SEG(0x0001010000020000ull) + (offset) * 8;
++	case OCTEON_CN68XX:
++		return CVMX_ADD_IO_SEG(0x0001070100100000ull) + (offset) * 8;
+ 	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+ }
+ 
+ union cvmx_ciu_bist {
+diff --git a/arch/mips/include/asm/octeon/cvmx-sysinfo.h b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
+index c6c3ee3..d6feff6 100644
+--- a/arch/mips/include/asm/octeon/cvmx-sysinfo.h
++++ b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2016 Cavium, Inc.
++ * Copyright (c) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -32,7 +32,7 @@
+ #ifndef __CVMX_SYSINFO_H__
+ #define __CVMX_SYSINFO_H__
+ 
+-#include "cvmx-coremask.h"
++#include <asm/octeon/cvmx-bootinfo.h>
+ 
+ #define OCTEON_SERIAL_LEN 20
+ /**
 diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
-index 392556a..06f9258 100644
+index 25854ab..392556a 100644
 --- a/arch/mips/include/asm/octeon/cvmx.h
 +++ b/arch/mips/include/asm/octeon/cvmx.h
-@@ -53,6 +53,17 @@ enum cvmx_mips_space {
- #define CVMX_ADD_IO_SEG(add) CVMX_ADD_SEG(CVMX_IO_SEG, (add))
+@@ -54,8 +54,7 @@ enum cvmx_mips_space {
  #endif
  
-+#define CVMX_MAX_CORES		(48)
-+#define CVMX_MIPS_MAX_CORE_BITS	(10)    /** Maximum # of bits to define cores */
-+#define CVMX_MIPS_MAX_CORES	(1 << CVMX_MIPS_MAX_CORE_BITS)
-+#define CVMX_NODE_NO_SHIFT	(7)     /* Maximum # of bits to define core in node */
-+#define CVMX_NODE_BITS		(2)     /* Number of bits to define a node */
-+#define CVMX_NODE_MASK		(CVMX_MAX_NODES - 1)
-+#define CVMX_MAX_NODES		(1 << CVMX_NODE_BITS)
-+#define CVMX_NODE_IO_SHIFT	(36)
-+#define CVMX_NODE_MEM_SHIFT	(40)
-+#define CVMX_NODE_IO_MASK	((uint64_t)CVMX_NODE_MASK << CVMX_NODE_IO_SHIFT)
-+
  #include <asm/octeon/cvmx-asm.h>
- #include <asm/octeon/octeon-model.h>
+-#include <asm/octeon/cvmx-packet.h>
+-#include <asm/octeon/cvmx-sysinfo.h>
++#include <asm/octeon/octeon-model.h>
  
-@@ -83,7 +94,6 @@ enum cvmx_mips_space {
- #define cvmx_dprintf(...)   {}
- #endif
+ #include <asm/octeon/cvmx-ciu-defs.h>
+ #include <asm/octeon/cvmx-ciu3-defs.h>
+@@ -68,8 +67,9 @@ enum cvmx_mips_space {
+ #include <asm/octeon/cvmx-led-defs.h>
+ #include <asm/octeon/cvmx-mio-defs.h>
+ #include <asm/octeon/cvmx-pow-defs.h>
++#include <asm/octeon/cvmx-rst-defs.h>
++#include <asm/octeon/cvmx-rnm-defs.h>
  
--#define CVMX_MAX_CORES		(16)
- #define CVMX_CACHE_LINE_SIZE	(128)	/* In bytes */
- #define CVMX_CACHE_LINE_MASK	(CVMX_CACHE_LINE_SIZE - 1)	/* In bytes */
- #define CVMX_CACHE_LINE_ALIGNED __attribute__ ((aligned(CVMX_CACHE_LINE_SIZE)))
-@@ -339,9 +349,6 @@ static inline unsigned int cvmx_get_core_num(void)
- 	return core_num;
+-#include <asm/octeon/cvmx-bootinfo.h>
+ #include <asm/octeon/cvmx-bootmem.h>
+ #include <asm/octeon/cvmx-l2c.h>
+ 
+@@ -102,10 +102,6 @@ static inline uint32_t cvmx_get_proc_id(void)
+ 	return id;
  }
  
--/* Maximum # of bits to define core in node */
--#define CVMX_NODE_NO_SHIFT	7
--#define CVMX_NODE_MASK		0x3
- static inline unsigned int cvmx_get_node_num(void)
- {
- 	unsigned int core_num = cvmx_get_core_num();
-@@ -449,7 +456,7 @@ static inline uint64_t cvmx_get_cycle_global(void)
-  * 2) Check if ("type".s."field" "op" "value")
-  * 3) If #2 isn't true loop to #1 unless too much time has passed.
-  */
--#define CVMX_WAIT_FOR_FIELD64(address, type, field, op, value, timeout_usec)\
-+#define CVMX_WAIT_FOR_FIELD64_NODE(node, address, type, field, op, value, timeout_usec) \
-     (									\
- {									\
- 	int result;							\
-@@ -458,7 +465,7 @@ static inline uint64_t cvmx_get_cycle_global(void)
- 			cvmx_sysinfo_get()->cpu_clock_hz / 1000000;	\
- 		type c;							\
- 		while (1) {						\
--			c.u64 = cvmx_read_csr(address);			\
-+			c.u64 = cvmx_read_csr_node(node, address);	\
- 			if ((c.s.field) op(value)) {			\
- 				result = 0;				\
- 				break;					\
-@@ -474,6 +481,9 @@ static inline uint64_t cvmx_get_cycle_global(void)
+-/* turn the variable name into a string */
+-#define CVMX_TMP_STR(x) CVMX_TMP_STR2(x)
+-#define CVMX_TMP_STR2(x) #x
+-
+ /**
+  * Builds a bit mask given the required size in bits.
+  *
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index 3e92a06..7cda3b6 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -17,6 +17,7 @@
+ #include <asm/time.h>
  
- /***************************************************************************/
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-bootinfo.h>
+ #include <asm/octeon/cvmx-npi-defs.h>
+ #include <asm/octeon/cvmx-pci-defs.h>
+ #include <asm/octeon/pci-octeon.h>
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+index 87ba86b..899cbf2 100644
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -14,6 +14,7 @@
+ #include <linux/moduleparam.h>
  
-+#define CVMX_WAIT_FOR_FIELD64(address, type, field, op, value, timeout_usec) \
-+	CVMX_WAIT_FOR_FIELD64_NODE(0, address, type, field, op, value, timeout_usec)
-+
- /* Return the number of cores available in the chip */
- static inline uint32_t cvmx_octeon_num_cores(void)
- {
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index c99c4b6..0980628 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -355,6 +355,8 @@ extern uint64_t octeon_bootloader_entry_addr;
- 
- extern void (*octeon_irq_setup_secondary)(void);
- 
-+extern asmlinkage void octeon_hotplug_entry(void);
-+
- typedef void (*octeon_irq_ip4_handler_t)(void);
- void octeon_irq_set_ip4_handler(octeon_irq_ip4_handler_t);
- 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ #include <asm/octeon/cvmx-npei-defs.h>
+ #include <asm/octeon/cvmx-pciercx-defs.h>
+ #include <asm/octeon/cvmx-pescx-defs.h>
 -- 
 2.1.4

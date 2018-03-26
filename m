@@ -1,59 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2018 08:15:46 +0200 (CEST)
-Received: from mail-it0-x242.google.com ([IPv6:2607:f8b0:4001:c0b::242]:40344
-        "EHLO mail-it0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991307AbeCZGPjvbDR8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2018 08:15:39 +0200
-Received: by mail-it0-x242.google.com with SMTP id y20-v6so9240133itc.5;
-        Sun, 25 Mar 2018 23:15:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2018 08:21:06 +0200 (CEST)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:41169
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991346AbeCZGU7sFjQ8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2018 08:20:59 +0200
+Received: by mail-io0-x241.google.com with SMTP id m83so21799966ioi.8;
+        Sun, 25 Mar 2018 23:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=Z3wg8zcx4CB0JiaDeY6zfNSgXHxGmKSAL04PMGIJ0Nw=;
-        b=tUzNuDicxDwc6u25MF4HkorBDetaQGenvDIrXZ/3Geq0MlcNcm5rxWnRzfs15H2fTe
-         QbNMAOact2YsfgoKi8WNCSDrJXa7qkaS/H/Wa3MDod4kwik007qzSFh/OFA+fMhwdOfl
-         gLmp1qAu7QEHmCZiendntsIqgXD/6S9MffDM03xxwRoOj/wMF6C/L13r3wc3MqAI0Upi
-         lC42HVoyYPkYL49r5Cappbh0kQWvL7uZ5czG0eKXozmFi5yq0zX//lWtytAo2YZS432O
-         6rRdFFrbHyZFTJIS2QIbA0+Rp/F1iQI0AAm5Sij4Ds7d13Z4U67YnSD4ZMBxjnaTUaK/
-         fcCA==
+        bh=F8N/x3Cph88GTKgYjXBduNDwcFw0SMkkCtlac24yPCw=;
+        b=rpDX7LFWYHBp/eeKyZ4XzQ0x/0uvRZ7pZCvV+eqnfftTbfhTm4RTe0MUwU/9zEtL99
+         rfitscaQhn600sUnvxDRlWW4bTfKJ0pFaKcIQ9SiJru9o1BzQwPF5TrlHVVGjn+CeIOL
+         XuJFtbkondbU6x+jKObIh5fUg2evSPBOHhkra+mdpSRVGBKWk6rQujjNSWH2xDlOhzOY
+         OBy/5MtVx5Xp6DJXuRJNVbZOXmprkkIjYkx9+3I4XDZzwxf9WewJP34KraGWNx6cUwGO
+         YCNFa2Pk7rr5zLviB+ON7zx71T/VSVwibT06raeQPk7UCOuVkGmLz8Altu8DZ2st7mNK
+         Entw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=Z3wg8zcx4CB0JiaDeY6zfNSgXHxGmKSAL04PMGIJ0Nw=;
-        b=QIhnUag688v2dOuDKOQgDGtiiujHQwUNusX5Zq88vmaYdzH37JwybpGM3lU6OHpx3U
-         tWl+7ZKTafBL+T0QhovU3z24xavY3YjFHeJdKXdmhl4gD8NbA0dBtWGkLqq3FQUhG24C
-         Xrnt1s/ubKMSByQOeFM4dRGCwtG2Tut77oLkg=
+        bh=F8N/x3Cph88GTKgYjXBduNDwcFw0SMkkCtlac24yPCw=;
+        b=PPylsUo3HORVV7PuyaXmAPYU9cWQgmfkdnmdm9ZfVefrEug3+lu4fqpsnb7KChRkkv
+         CGrBwy1US0p2GhIxX9KSf+uedzbTa0RhxIDsS4ypyniB7eMTq/hTXuhwUKsa4T1BczVH
+         20POslOq70gqz5E7XZaF/+RrMySPIrVyWqKgk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=Z3wg8zcx4CB0JiaDeY6zfNSgXHxGmKSAL04PMGIJ0Nw=;
-        b=X0ud76n63lUPr4RWCs2oy8cWHK8AtGYor7MW/uFQxBbwqkfKfXrfdMW6ZaW8am3KQX
-         63TCKg5QkpMYjp7Wyu3rJZZz9rlqd+93FtsA5SKmiDLSEB8fBWbvjq82i+Y6QtChBG8O
-         eJAG8kaMseFb0Pracuxoet25ZeZKkgL39t3k2BYBvAxOKpDNTcmJUHRuutZtcG/2Ko6e
-         tbh3i6IjsSxYPpGNGSwWrixu9aylDheahOSZIPrYbbT9X0+h7guDDpRHGAuEUedM1k/R
-         ILtnt/Fh+/9c45GQQxHPvnyVwKXzZo9EME5U2XY9TGMT409fHEeERXrOi7ZhYwj40GFY
-         q8tw==
-X-Gm-Message-State: AElRT7HpSQ6efFTdlFuR+BczgF6DNp2/W+NUsRzMWiuQFoP0irHTCrr3
-        9CwD5YJZ7lE1xKjv5Lc+ZiDfA5J6XmEnIXYOGFY=
-X-Google-Smtp-Source: AG47ELsYuh5vZPJVBYTKpLXNXcPAwzM2eXJHqf7f8ohFafGgIhKjn+9BSf7Kl/kTNywqaSwG/OIl7qr4xYwrnc3Jnac=
-X-Received: by 2002:a24:c581:: with SMTP id f123-v6mr14028656itg.113.1522044933369;
- Sun, 25 Mar 2018 23:15:33 -0700 (PDT)
+        bh=F8N/x3Cph88GTKgYjXBduNDwcFw0SMkkCtlac24yPCw=;
+        b=j42XrErek+H5jCX5x6L0khMqrDFiJounCQYMA1BjVQrZz89lejuGQRN9BCUl3nrEOW
+         xPEEzbJpJboOEqdXpXCgwhb0DNOpqhEWdfj9X6HdiCqp0KSJ8+sJ2/Y6KX6vHQUBgCLb
+         dLZB8KMz1AiKJCUvGztg43WAui8643Oe6tkB4d+capbauUm4ZkuXJGlcVvP6bihs0fkU
+         D3wLnr7pfjniOLeDbjmzsjF+T7yQdn3jsEq4ipp3tXBCHiXy3EBGG3tN9Stj9+l4MqUb
+         hWm5ZuJDmDct9xXMmhkLk5d5JnEiwkw2VDNGdbQWwnWMsyxPCB+9h//Z6+n9ogWHmnwY
+         PG3Q==
+X-Gm-Message-State: AElRT7H90EhASE5X1Ufhgxfb+a6SNPVUfT2jY91zctwVELrDIITDV4/P
+        0esN7QZ84Gldk+rujHQ2W5hgKbOC+tomWo31fLM=
+X-Google-Smtp-Source: AIpwx4+0qab3BcQ1qIDsoAk7THvPfVhHJr73dPKJEHSjFBM9+9XLZbEY7/7y6oq0WRJYWWdm268JFGNgkB+tmWUS/ac=
+X-Received: by 10.107.182.214 with SMTP id g205mr7230756iof.203.1522045253148;
+ Sun, 25 Mar 2018 23:20:53 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.95.15 with HTTP; Sun, 25 Mar 2018 23:15:32 -0700 (PDT)
-In-Reply-To: <20180326034750.GN30522@ZenIV.linux.org.uk>
+Received: by 10.107.95.15 with HTTP; Sun, 25 Mar 2018 23:20:52 -0700 (PDT)
+In-Reply-To: <CA+55aFw8VGnVgaWHVFP-LChMNaoANOwT18jJEWzSCRLFeRGcmA@mail.gmail.com>
 References: <20180318161056.5377-1-linux@dominikbrodowski.net>
  <20180318161056.5377-5-linux@dominikbrodowski.net> <20180318174014.GR30522@ZenIV.linux.org.uk>
  <CA+55aFwuZCpAZRpsTGiUmG065ZHHpj+03_NeWiy-OGkMGw7e3g@mail.gmail.com>
  <20180318181848.GU30522@ZenIV.linux.org.uk> <20180319042300.GW30522@ZenIV.linux.org.uk>
  <20180319092920.tbh2xwkruegshzqe@gmail.com> <20180319232342.GX30522@ZenIV.linux.org.uk>
  <20180322001532.GA18399@ZenIV.linux.org.uk> <20180326004017.GA2211@ZenIV.linux.org.uk>
- <20180326034750.GN30522@ZenIV.linux.org.uk>
+ <20180326034750.GN30522@ZenIV.linux.org.uk> <CA+55aFw8VGnVgaWHVFP-LChMNaoANOwT18jJEWzSCRLFeRGcmA@mail.gmail.com>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 25 Mar 2018 20:15:32 -1000
-X-Google-Sender-Auth: YDx_DvZd3_qAcavXpUX35UTCypQ
-Message-ID: <CA+55aFw8VGnVgaWHVFP-LChMNaoANOwT18jJEWzSCRLFeRGcmA@mail.gmail.com>
+Date:   Sun, 25 Mar 2018 20:20:52 -1000
+X-Google-Sender-Auth: 4yfXnPHQr6Ry271lHaPL-CL-TJ4
+Message-ID: <CA+55aFy974z4PQMzSKbvcz02BeyRQTbXxyjw_GgjrXSeAf3wwQ@mail.gmail.com>
 Subject: Re: [RFC] new SYSCALL_DEFINE/COMPAT_SYSCALL_DEFINE wrappers
 To:     Al Viro <viro@zeniv.linux.org.uk>
 Cc:     Ingo Molnar <mingo@kernel.org>,
@@ -80,7 +80,7 @@ Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63227
+X-archive-position: 63228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -97,40 +97,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Mar 25, 2018 at 5:47 PM, Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Sun, Mar 25, 2018 at 8:15 PM, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> Linus, Dominik - how do you plan dealing with that fun?
+> HOWEVER.
+>
+> I didn't actually test any of the compat or x32 ones, and the way I
+> did it there also was no type-checking or other automated catching of
+> getting it wrong. So it's almost certainly completely buggy, but the
+> _intent_ is there and there is a remote possibility that it might even
+> work.
 
-Secretly, I was hoping to kill x32, because it's not being used afaik.
+Note: the commit message is "broken, but working, ptregs system call
+conversion for x86-64".
 
-More realistically, I was thinking we'd just use a separate table or
-system calls, and generate different versions.
+The "but working" is not because it would be right, but because it
+booted a real 64-bit distribution successfully, and I actually used
+that kernel.
 
-In fact, you can see exactly that in my WIP branch, except it uses the
-wrong name.
+But that only tests the native 64-bit case, it in no way tests the
+compat or x32 cases what-so-ever. That part was literally a "it
+compiles - it must be perfect" with absolutely zero testing of even
+the most trivial kind.
 
-So see the "WIP-syscall" branch in my normal git kernel repo, and in
-particular the patch to <linux/syscalls.h>, which generates
-"sys_x64##name" and "sys_i86##name()" inline functions that do that
-mapping correcty for native x86-64, and for the (misnamed) x32 cases.
+And it really would have been most trivial to just do a "Hello world"
+and build it with "-m32". I didn't do even that, and if I had, I would
+have been honestly surprised had it worked.
 
-So there are three different cases:
+But there was a _theoretical_ chance that it could have worked. Maybe.
 
- - native: sys_x64_name() generated by SYSCALL_DEFINEx()
-
- - compat -bit: compat_sys_i86_name() generated by COMPAT_SYSCALL_DEFINEx()
-
- - x32: sys_i86_name() generated by SYSCALL_DEFINEx().
-
-and then I actually changed the names in the tables (ie in
-arch/x86/entry/syscalls/syscall_64.tbl etc).
-
-HOWEVER.
-
-I didn't actually test any of the compat or x32 ones, and the way I
-did it there also was no type-checking or other automated catching of
-getting it wrong. So it's almost certainly completely buggy, but the
-_intent_ is there and there is a remote possibility that it might even
-work.
-
-              Linus
+      Linus

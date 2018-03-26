@@ -1,37 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2018 19:17:58 +0200 (CEST)
-Received: from bhuna.collabora.co.uk ([IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3]:59622
-        "EHLO bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992096AbeCZRRsXRL9w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2018 19:17:48 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: ezequiel)
-        with ESMTPSA id F1A5C26017A
-Message-ID: <1522084610.31319.2.camel@collabora.com>
-Subject: Re: [PATCH v3 00/14] Enable SD/MMC on JZ4780 SoCs
-From:   Ezequiel Garcia <ezequiel@collabora.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>, kernel@collabora.com,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        Mathieu Malaterre <malat@debian.org>,
-        Paul Cercueil <paul@crapouillou.net>
-Date:   Mon, 26 Mar 2018 14:16:50 -0300
-In-Reply-To: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
-References: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
-Organization: Collabora
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.5 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <ezequiel@collabora.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2018 20:12:23 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:54429 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992096AbeCZSMPXojRr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2018 20:12:15 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Mon, 26 Mar 2018 18:12:08 +0000
+Received: from [10.20.78.202] (10.20.78.202) by mips01.mipstec.com
+ (10.20.43.31) with Microsoft SMTP Server id 14.3.361.1; Mon, 26 Mar 2018
+ 11:12:14 -0700
+Date:   Mon, 26 Mar 2018 19:11:51 +0100
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <james.hogan@mips.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Maxim Uvarov <muvarov@gmail.com>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: Make the default for PHYSICAL_START always 64-bit
+Message-ID: <alpine.DEB.2.00.1803240129140.2163@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-BESS-ID: 1522087927-637139-14754-277777-1
+X-BESS-VER: 2018.3-r1803192001
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191425
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63232
+X-archive-position: 63233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel@collabora.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,75 +51,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ulf,
+Make the default for PHYSICAL_START always 64-bit, ensuring that a 
+correct sign-extended value is used if a 32-bit image is loaded by a 
+64-bit system, and matching how the load address is set in platform 
+Makefile fragments (arch/mips/*/Platform) in the absence of the 
+PHYSICAL_START configuration option.
 
-On Wed, 2018-03-21 at 16:27 -0300, Ezequiel Garcia wrote:
-> From: Ezequiel Garcia <ezequiel@collabora.co.uk>
-> 
-> This patchset adds support for SD/MMC on JZ4780 based
-> platforms, such as the MIPS Creator CI20 board.
-> 
-> Most of the work has been done by Alex, Paul and Zubair,
-> while I've only prepared the upstream submission, cleaned
-> some patches, and written some commit logs where needed.
-> 
-> All praises should go to them, all rants to me.
-> 
-> The series is based on v4.16-rc4.
-> 
-> Changes from v2:
->   * Fix commit log in "mmc: dt-bindings: add MMC support to JZ4740
-> SoC"
-> 
-> Changes from v1:
->   * Reordered patches, fixes first, for easier backporting.
->   * Added Link and Fixes tags to patch "Fix race condition",
->     for easier backporting.
->   * Enabled the DMA in the dtsi for jz4780, dropped it from the ci20
-> dts.
->   * Reworded config and help user visible text.
->   * Reworded commit logs, using imperative.
->   * Re-authored my patches, as Collabora is partially
->     sponsoring them.
-> 
-> 
-> Alex Smith (3):
->   mmc: jz4740: Fix race condition in IRQ mask update
->   mmc: jz4740: Set clock rate to mmc->f_max rather than
-> JZ_MMC_CLK_RATE
->   mmc: jz4740: Add support for the JZ4780
-> 
-> Ezequiel Garcia (9):
->   mmc: jz4780: Order headers alphabetically
->   mmc: jz4740: Use dev_get_platdata
->   mmc: jz4740: Introduce devicetree probe
->   mmc: dt-bindings: add MMC support to JZ4740 SoC
->   mmc: jz4740: Use dma_request_chan()
->   MIPS: dts: jz4780: Add DMA controller node to the devicetree
->   MIPS: dts: jz4780: Add MMC controller node to the devicetree
->   MIPS: dts: ci20: Enable MMC in the devicetree
->   MIPS: configs: ci20: Enable DMA and MMC support
-> 
-> Paul Cercueil (1):
->   mmc: jz4740: Fix error exit path in driver's probe
-> 
-> Zubair Lutfullah Kakakhel (1):
->   mmc: jz4740: Reset the device requesting the interrupt
-> 
->  Documentation/devicetree/bindings/mmc/jz4740.txt |  38 ++++
->  arch/mips/boot/dts/ingenic/ci20.dts              |  34 ++++
->  arch/mips/boot/dts/ingenic/jz4780.dtsi           |  52 +++++
->  arch/mips/configs/ci20_defconfig                 |   3 +
->  drivers/mmc/host/Kconfig                         |   9 +-
->  drivers/mmc/host/jz4740_mmc.c                    | 230
-> ++++++++++++++++-------
->  include/dt-bindings/dma/jz4780-dma.h             |  49 +++++
->  7 files changed, 345 insertions(+), 70 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mmc/jz4740.txt
->  create mode 100644 include/dt-bindings/dma/jz4780-dma.h
-> 
+Of course PHYSICAL_START itself is a misnomer as the load address is 
+virtual rather than physical (or otherwise sign-extension would not 
+apply).
 
-Any chance this gets queued for 4.17 ?
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Fixes: 7aa1c8f47e7e ("MIPS: kdump: Add support")
+Cc: stable@vger.kernel.org # 3.8+
+---
+Hi James,
 
-Thanks,
-Eze
+ As discussed in the context of commit 27c524d17430 ("MIPS: Use the entry 
+point from the ELF file header").  This may require verifying by someone 
+who actually uses this feature.  I have cc-ed Maxim, the original author, 
+in case he has anything to add.
+
+ I'm not sure if we want to do anything about the physical vs virtual load
+address confusion.
+
+ Please consider.
+
+  Maciej
+---
+ arch/mips/Kconfig |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+linux-mips-physical-start.diff
+Index: linux-jhogan-test/arch/mips/Kconfig
+===================================================================
+--- linux-jhogan-test.orig/arch/mips/Kconfig	2018-03-21 17:22:12.000000000 +0000
++++ linux-jhogan-test/arch/mips/Kconfig	2018-03-23 09:19:25.049100000 +0000
+@@ -2849,8 +2849,7 @@ config CRASH_DUMP
+ 
+ config PHYSICAL_START
+ 	hex "Physical address where the kernel is loaded"
+-	default "0xffffffff84000000" if 64BIT
+-	default "0x84000000" if 32BIT
++	default "0xffffffff84000000"
+ 	depends on CRASH_DUMP
+ 	help
+ 	  This gives the CKSEG0 or KSEG0 address where the kernel is loaded.

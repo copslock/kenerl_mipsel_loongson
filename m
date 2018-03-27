@@ -1,35 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:35:37 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:59176 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:39:00 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33446 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994685AbeC0QecDM1Pe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:34:32 +0200
+        by eddie.linux-mips.org with ESMTP id S23993890AbeC0QitVBBSe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:38:49 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C2AA610CE;
-        Tue, 27 Mar 2018 16:34:24 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 693E91036;
+        Tue, 27 Mar 2018 16:38:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, NeilBrown <neil@brown.name>,
+        John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 004/101] MIPS: lantiq: Enable AHB Bus for USB
-Date:   Tue, 27 Mar 2018 18:26:36 +0200
-Message-Id: <20180327162750.269452837@linuxfoundation.org>
+Subject: [PATCH 4.15 001/105] MIPS: ralink: Remove ralink_halt()
+Date:   Tue, 27 Mar 2018 18:26:41 +0200
+Message-Id: <20180327162757.869381918@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.3
-In-Reply-To: <20180327162749.993880276@linuxfoundation.org>
-References: <20180327162749.993880276@linuxfoundation.org>
+In-Reply-To: <20180327162757.813009222@linuxfoundation.org>
+References: <20180327162757.813009222@linuxfoundation.org>
 User-Agent: quilt/0.65
-X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63258
+X-archive-position: 63259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,54 +43,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Kresin <dev@kresin.me>
+From: NeilBrown <neil@brown.name>
 
-commit 3223a5a7d3a606dcb7d9190a788b9544a45441ee upstream.
+commit 891731f6a5dbe508d12443175a7e166a2fba616a upstream.
 
-On Danube and AR9 the USB core is connected though a AHB bus to the main
-system cross bar, hence we need to enable the gating clock of the AHB
-Bus as well to make the USB controller work.
+ralink_halt() does nothing that machine_halt() doesn't already do, so it
+adds no value.
 
-Fixes: dea54fbad332 ("phy: Add an USB PHY driver for the Lantiq SoCs using the RCU module")
-Signed-off-by: Mathias Kresin <dev@kresin.me>
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+It actually causes incorrect behaviour due to the "unreachable()" at the
+end. This tells the compiler that the end of the function will never be
+reached, which isn't true. The compiler responds by not adding a
+'return' instruction, so control simply moves on to whatever bytes come
+afterwards in memory. In my tested, that was the ralink_restart()
+function. This means that an attempt to 'halt' the machine would
+actually cause a reboot.
+
+So remove ralink_halt() so that a 'halt' really does halt.
+
+Fixes: c06e836ada59 ("MIPS: ralink: adds reset code")
+Signed-off-by: NeilBrown <neil@brown.name>
 Cc: John Crispin <john@phrozen.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.14+
-Patchwork: https://patchwork.linux-mips.org/patch/18814/
+Cc: <stable@vger.kernel.org> # 3.9+
+Patchwork: https://patchwork.linux-mips.org/patch/18851/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lantiq/xway/sysctrl.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/ralink/reset.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -551,9 +551,9 @@ void __init ltq_soc_init(void)
- 		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
- 				ltq_ar9_fpi_hz(), CLOCK_250M);
- 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
--		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
-+		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
- 		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
--		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1);
-+		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1 | PMU_AHBM);
- 		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
- 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
- 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
-@@ -562,7 +562,7 @@ void __init ltq_soc_init(void)
- 	} else {
- 		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
- 				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
--		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
-+		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
- 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
- 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
- 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+--- a/arch/mips/ralink/reset.c
++++ b/arch/mips/ralink/reset.c
+@@ -96,16 +96,9 @@ static void ralink_restart(char *command
+ 	unreachable();
+ }
+ 
+-static void ralink_halt(void)
+-{
+-	local_irq_disable();
+-	unreachable();
+-}
+-
+ static int __init mips_reboot_setup(void)
+ {
+ 	_machine_restart = ralink_restart;
+-	_machine_halt = ralink_halt;
+ 
+ 	return 0;
+ }

@@ -1,68 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 16:38:43 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:38218 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992973AbeC0OiflDG4V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 27 Mar 2018 16:38:35 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 2550CAF1C;
-        Tue, 27 Mar 2018 14:38:28 +0000 (UTC)
-Date:   Tue, 27 Mar 2018 16:38:20 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Ilya Smith <blackzert@gmail.com>
-Cc:     Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
-        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, jejb@parisc-linux.org,
-        Helge Deller <deller@gmx.de>, benh@kernel.crashing.org,
-        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
-        nyc@holomorphy.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
-        gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
-        Hugh Dickins <hughd@google.com>, kstewart@linuxfoundation.org,
-        pombredanne@nexb.com, Andrew Morton <akpm@linux-foundation.org>,
-        steve.capper@arm.com, punit.agrawal@arm.com,
-        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
-        Kees Cook <keescook@chromium.org>, bhsharma@redhat.com,
-        riel@redhat.com, nitin.m.gupta@oracle.com,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jan Kara <jack@suse.cz>, ross.zwisler@linux.intel.com,
-        Jerome Glisse <jglisse@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-Message-ID: <20180327143820.GH5652@dhcp22.suse.cz>
-References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
- <20180323124806.GA5624@bombadil.infradead.org>
- <651E0DB6-4507-4DA1-AD46-9C26ED9792A8@gmail.com>
- <20180326084650.GC5652@dhcp22.suse.cz>
- <01A133F4-27DF-4AE2-80D6-B0368BF758CD@gmail.com>
- <20180327072432.GY5652@dhcp22.suse.cz>
- <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 16:46:46 +0200 (CEST)
+Received: from mail-ot0-f193.google.com ([74.125.82.193]:44471 "EHLO
+        mail-ot0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992973AbeC0Oqie1nRV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 16:46:38 +0200
+Received: by mail-ot0-f193.google.com with SMTP id x6-v6so23314244otg.11;
+        Tue, 27 Mar 2018 07:46:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ybsG33Ht67arO3QD4iok6GnT5/CwVNZsH+u6Q2gjJFM=;
+        b=IxrRIqo60Yc0x0dVxuYbupZtcAspsSRcYDxnNOcWOLDZ1IBUX9f75DHsr1vGUkjm1l
+         M/Xnpm3OvDcMI+UpxTdcdKy4jhG1eBqkT4r5T8WqlHAYKagxWujoH0x/FiaDJZNieuNb
+         JpTrHHaTU8ryr/pFEgHj9LOPgYlmFkaKmTT8aO/v+trnR9qT5HtLfmi2NwTWruBDdKT7
+         BJw9VqK7xeLzJPoKDH/zSLWBLANHI/I1DGGrBqcUzqwq8SW5cQib/fhsi3K89/dgSb1S
+         9l3+q5F2mRxnfU928zGAJd5GEKGZCosebXbjisKFJCHFp5lpFLtHmMljRIWVtz3Cf7Wc
+         cYUg==
+X-Gm-Message-State: AElRT7E/rlh7JQ/1T2zubPyxYcHNwDwLZ2hrszyUe2jqVpS7hU1m0DPd
+        R7bb2M8YX1kR+/x38Xp3LA==
+X-Google-Smtp-Source: AG47ELtCUMCSlTN0DfPKYFhJNBMJ73FaXLJ0LWuwyi71jQmWe0yY74wnodb9kEV8ZVWjlYwzqraxHQ==
+X-Received: by 2002:a9d:4d06:: with SMTP id n6-v6mr16620145otf.236.1522161992232;
+        Tue, 27 Mar 2018 07:46:32 -0700 (PDT)
+Received: from localhost (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
+        by smtp.gmail.com with ESMTPSA id d126-v6sm711853oia.34.2018.03.27.07.46.31
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 27 Mar 2018 07:46:31 -0700 (PDT)
+Date:   Tue, 27 Mar 2018 09:46:31 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        James Hogan <jhogan@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 4/8] dt-bindings: Add doc for the Ingenic TCU drivers
+Message-ID: <20180327144631.j2bugsjxulkv57ws@rob-hp-laptop>
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-5-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <mhocko@kernel.org>
+In-Reply-To: <20180317232901.14129-5-paul@crapouillou.net>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63250
+X-archive-position: 63251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,64 +72,254 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue 27-03-18 16:51:08, Ilya Smith wrote:
+On Sun, Mar 18, 2018 at 12:28:57AM +0100, Paul Cercueil wrote:
+> Add documentation about how to properly use the Ingenic TCU
+> (Timer/Counter Unit) drivers from devicetree.
 > 
-> > On 27 Mar 2018, at 10:24, Michal Hocko <mhocko@kernel.org> wrote:
-> > 
-> > On Mon 26-03-18 22:45:31, Ilya Smith wrote:
-> >> 
-> >>> On 26 Mar 2018, at 11:46, Michal Hocko <mhocko@kernel.org> wrote:
-> >>> 
-> >>> On Fri 23-03-18 20:55:49, Ilya Smith wrote:
-> >>>> 
-> >>>>> On 23 Mar 2018, at 15:48, Matthew Wilcox <willy@infradead.org> wrote:
-> >>>>> 
-> >>>>> On Thu, Mar 22, 2018 at 07:36:36PM +0300, Ilya Smith wrote:
-> >>>>>> Current implementation doesn't randomize address returned by mmap.
-> >>>>>> All the entropy ends with choosing mmap_base_addr at the process
-> >>>>>> creation. After that mmap build very predictable layout of address
-> >>>>>> space. It allows to bypass ASLR in many cases. This patch make
-> >>>>>> randomization of address on any mmap call.
-> >>>>> 
-> >>>>> Why should this be done in the kernel rather than libc?  libc is perfectly
-> >>>>> capable of specifying random numbers in the first argument of mmap.
-> >>>> Well, there is following reasons:
-> >>>> 1. It should be done in any libc implementation, what is not possible IMO;
-> >>> 
-> >>> Is this really so helpful?
-> >> 
-> >> Yes, ASLR is one of very important mitigation techniques which are really used 
-> >> to protect applications. If there is no ASLR, it is very easy to exploit 
-> >> vulnerable application and compromise the system. We can’t just fix all the 
-> >> vulnerabilities right now, thats why we have mitigations - techniques which are 
-> >> makes exploitation more hard or impossible in some cases.
-> >> 
-> >> Thats why it is helpful.
-> > 
-> > I am not questioning ASLR in general. I am asking whether we really need
-> > per mmap ASLR in general. I can imagine that some environments want to
-> > pay the additional price and other side effects, but considering this
-> > can be achieved by libc, why to add more code to the kernel?
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  .../bindings/clock/ingenic,tcu-clocks.txt          | 42 ++++++++++++++++
+>  .../bindings/interrupt-controller/ingenic,tcu.txt  | 39 +++++++++++++++
+>  .../devicetree/bindings/mfd/ingenic,tcu.txt        | 56 ++++++++++++++++++++++
+>  .../devicetree/bindings/timer/ingenic,tcu.txt      | 41 ++++++++++++++++
+>  4 files changed, 178 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
+>  create mode 100644 Documentation/devicetree/bindings/timer/ingenic,tcu.txt
 > 
-> I believe this is the only one right place for it. Adding these 200+ lines of 
-> code we give this feature for any user - on desktop, on server, on IoT device, 
-> on SCADA, etc. But if only glibc will implement ‘user-mode-aslr’ IoT and SCADA 
-> devices will never get it.
+>  v4: New patch in this series. Corresponds to V2 patches 3-4-5 with
+>  added content.
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt b/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+> new file mode 100644
+> index 000000000000..471d27078599
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+> @@ -0,0 +1,42 @@
+> +Ingenic SoC TCU binding
+> +
+> +The TCU is the Timer/Counter Unit present in all Ingenic SoCs. It features 8
+> +channels, each one having its own clock, that can be started and stopped,
+> +reparented, and reclocked.
+> +
+> +Required properties:
+> +- compatible : One of:
+> +  * ingenic,jz4740-tcu-clocks,
+> +  * ingenic,jz4770-tcu-clocks,
+> +  * ingenic,jz4780-tcu-clocks.
+> +- clocks : List of phandle & clock specifiers for clocks external to the TCU.
+> +  The "pclk", "rtc" and "ext" clocks should be provided.
+> +- clock-names : List of name strings for the external clocks.
+> +- #clock-cells: Should be 1.
+> +  Clock consumers specify this argument to identify a clock. The valid values
+> +  may be found in <dt-bindings/clock/ingenic,tcu.h>.
+> +
+> +Example:
 
-I guess it would really help if you could be more specific about the
-class of security issues this would help to mitigate. My first
-understanding was that we we need some randomization between program
-executable segments to reduce the attack space when a single address
-leaks and you know the segments layout (ordering). But why do we need
-_all_ mmaps to be randomized. Because that complicates the
-implementation consirably for different reasons you have mentioned
-earlier.
+Let's just put one complete example in instead of all these duplicated 
+and incomplete examples.
 
-Do you have any specific CVE that would be mitigated by this
-randomization approach?
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_clk: clocks@10 {
+> +			compatible = "ingenic,jz4740-tcu-clocks";
+> +			reg = <0x10 0xff0>;
+> +
+> +			clocks = <&ext>, <&rtc>, <&pclk>;
+> +			clock-names = "ext", "rtc", "pclk";
+> +
+> +			#clock-cells = <1>;
+> +		};
+> +	};
+> +};
+> +
+> +For information about the top-level "ingenic,tcu" compatible node and other
+> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+> new file mode 100644
+> index 000000000000..7f3af2da77cd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+> @@ -0,0 +1,39 @@
+> +Ingenic SoCs Timer/Counter Unit Interrupt Controller
+> +
+> +Required properties:
+> +
+> +- compatible : should be "ingenic,<socname>-tcu-intc". Valid strings are:
+> +  * ingenic,jz4740-tcu-intc
+> +  * ingenic,jz4770-tcu-intc
+> +  * ingenic,jz4780-tcu-intc
+> +- interrupt-controller : Identifies the node as an interrupt controller
+> +- #interrupt-cells : Specifies the number of cells needed to encode an
+> +  interrupt source. The value shall be 1.
+> +- interrupt-parent : phandle of the interrupt controller.
+> +- interrupts : Specifies the interrupt the controller is connected to.
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_irq: interrupt-controller@20 {
+> +			compatible = "ingenic,jz4740-tcu-intc";
+> +			reg = <0x20 0x20>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +
+> +			interrupt-parent = <&intc>;
+> +			interrupts = <15>;
 
-I am sorry, I am not a security expert to see all the cosequences but a
-vague - the more randomization the better - sounds rather weak to me.
--- 
-Michal Hocko
-SUSE Labs
+The interrupt controller doesn't require any clocks?
+
+> +		};
+> +	};
+> +};
+> +
+> +For information about the top-level "ingenic,tcu" compatible node and other
+> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> diff --git a/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt b/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
+> new file mode 100644
+> index 000000000000..5742c3f21550
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/ingenic,tcu.txt
+> @@ -0,0 +1,56 @@
+> +Ingenic JZ47xx SoCs Timer/Counter Unit devicetree bindings
+> +----------------------------------------------------------
+> +
+> +For a description of the TCU hardware and drivers, have a look at
+> +Documentation/mips/ingenic-tcu.txt.
+> +
+> +The TCU is implemented as a parent node, whose role is to create the
+> +regmap, and child nodes for the various drivers listed in the aforementioned
+> +document.
+> +
+> +Required properties:
+> +
+> +- compatible: must be "ingenic,tcu", "simple-mfd", "syscon";
+> +- reg: Should be the offset/length value corresponding to the TCU registers
+> +- #address-cells: Should be <1>;
+> +- #size-cells: Should be <1>;
+> +- ranges: Should be one range for the full TCU registers area
+> +
+> +Accepted children nodes:
+> +- Documentation/devicetree/bindings/interrupt-controller/ingenic,tcu.txt
+> +- Documentation/devicetree/bindings/clock/ingenic,tcu-clocks.txt
+> +- Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> +
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_irq: interrupt-controller@20 {
+> +			compatible = "ingenic,jz4740-tcu-intc";
+> +			reg = <0x20 0x20>;
+
+I think you should drop this node and make the parent node the interrupt 
+controller. That is the normal pattern where the parent node handles 
+all the common functions. Otherwise, there is no need to have the parent 
+node. You should then also drop simple-mfd as then you can control 
+initialization order by initializing interrupt controller before 
+its clients.
+
+> +			...
+> +		};
+> +
+> +		tcu_clk: clocks@10 {
+> +			compatible = "ingenic,jz4740-tcu-clocks";
+> +			reg = <0x10 0xff0>;
+> +			...
+> +		};
+> +
+> +		tcu_timer: timer@10 {
+> +			compatible = "ingenic,jz4740-tcu";
+> +			reg = <0x10 0xff0>;
+
+Is this copy-n-paste or you really have 2 nodes at the same address? The 
+latter is not valid.
+
+> +			...
+> +		};
+> +	};
+> +};
+> +
+> +For more information about the children node, refer to the documents listed
+> +above in the "Accepted children nodes" section.
+> diff --git a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> new file mode 100644
+> index 000000000000..f910b7e96783
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> @@ -0,0 +1,41 @@
+> +Ingenic JZ47xx SoCs Timer/Counter Unit driver
+> +---------------------------------------------
+> +
+> +Required properties:
+> +
+> +- compatible : should be "ingenic,<socname>-tcu". Valid strings are:
+> +  * ingenic,jz4740-tcu
+> +  * ingenic,jz4770-tcu
+> +  * ingenic,jz4780-tcu
+> +- interrupt-parent : phandle of the TCU interrupt controller.
+> +- interrupts : Specifies the interrupts the controller is connected to.
+> +- clocks : List of phandle & clock specifiers for the TCU clocks.
+> +- clock-names : List of name strings for the TCU clocks.
+> +
+> +Example:
+> +
+> +/ {
+> +	tcu: mfd@10002000 {
+> +		compatible = "ingenic,tcu", "simple-mfd", "syscon";
+> +		reg = <0x10002000 0x1000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0x0 0x10002000 0x1000>;
+> +
+> +		tcu_timer: timer@10 {
+> +			compatible = "ingenic,jz4740-tcu";
+> +			reg = <0x10 0xff0>;
+> +
+> +			clocks = <&tcu_clk 0>, <&tcu_clk 1>, <&tcu_clk 2>, <&tcu_clk 3>,
+> +					 <&tcu_clk 4>, <&tcu_clk 5>, <&tcu_clk 6>, <&tcu_clk 7>;
+> +			clock-names = "timer0", "timer1", "timer2", "timer3",
+> +						  "timer4", "timer5", "timer6", "timer7";
+> +
+> +			interrupt-parent = <&tcu_irq>;
+> +			interrupts = <0 1 2 3 4 5 6 7>;
+
+Thinking about this some more... You simply have 8 timers (and no other 
+functions?) with some internal clock and irq controls for each timer. I 
+don't think it really makes sense to create separate clock and irq 
+drivers in that case. That would be like creating clock drivers for 
+every clock divider in timers, pwms, uarts, etc. Unless the clocks get 
+exposed to other parts of the system, then there is no point.
+
+> +		};
+> +	};
+> +};
+> +
+> +For information about the top-level "ingenic,tcu" compatible node and other
+> +children nodes, see Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+> -- 
+> 2.11.0
+> 

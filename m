@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:30:54 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56908 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:34:03 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58872 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994591AbeC0QarDXzme (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:30:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23994676AbeC0QdzGHWIe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:33:55 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7CEFB1160;
-        Tue, 27 Mar 2018 16:30:40 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7B5FD11C0;
+        Tue, 27 Mar 2018 16:33:48 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.9 01/67] MIPS: ralink: Remove ralink_halt()
-Date:   Tue, 27 Mar 2018 18:26:53 +0200
-Message-Id: <20180327162726.776788856@linuxfoundation.org>
+Subject: [PATCH 4.14 001/101] MIPS: ralink: Remove ralink_halt()
+Date:   Tue, 27 Mar 2018 18:26:33 +0200
+Message-Id: <20180327162750.092111711@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.3
-In-Reply-To: <20180327162726.702411083@linuxfoundation.org>
-References: <20180327162726.702411083@linuxfoundation.org>
+In-Reply-To: <20180327162749.993880276@linuxfoundation.org>
+References: <20180327162749.993880276@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63253
+X-archive-position: 63254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

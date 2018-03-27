@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:40:04 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33918 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:40:20 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34052 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994734AbeC0QjtkYu-e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:39:49 +0200
+        by eddie.linux-mips.org with ESMTP id S23994737AbeC0QkDVUF-e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:40:03 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 390361057;
-        Tue, 27 Mar 2018 16:39:43 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D00B510C8;
+        Tue, 27 Mar 2018 16:39:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -15,9 +15,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.15 003/105] MIPS: lantiq: Fix Danube USB clock
-Date:   Tue, 27 Mar 2018 18:26:43 +0200
-Message-Id: <20180327162757.965016021@linuxfoundation.org>
+Subject: [PATCH 4.15 004/105] MIPS: lantiq: Enable AHB Bus for USB
+Date:   Tue, 27 Mar 2018 18:26:44 +0200
+Message-Id: <20180327162758.010063910@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.3
 In-Reply-To: <20180327162757.813009222@linuxfoundation.org>
 References: <20180327162757.813009222@linuxfoundation.org>
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63261
+X-archive-position: 63262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,14 +52,11 @@ X-list: linux-mips
 
 From: Mathias Kresin <dev@kresin.me>
 
-commit 214cbc14734958fe533916fdb4194f5983ad4bc4 upstream.
+commit 3223a5a7d3a606dcb7d9190a788b9544a45441ee upstream.
 
-On Danube the USB0 controller registers are at 1e101000 and the USB0 PHY
-register is at 1f203018 similar to all other lantiq SoCs. Activate the
-USB controller gating clock thorough the USB controller driver and not
-the PHY.
-
-This fixes a problem introduced in a previous commit.
+On Danube and AR9 the USB core is connected though a AHB bus to the main
+system cross bar, hence we need to enable the gating clock of the AHB
+Bus as well to make the USB controller work.
 
 Fixes: dea54fbad332 ("phy: Add an USB PHY driver for the Lantiq SoCs using the RCU module")
 Signed-off-by: Mathias Kresin <dev@kresin.me>
@@ -69,22 +66,34 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: John Crispin <john@phrozen.org>
 Cc: linux-mips@linux-mips.org
 Cc: <stable@vger.kernel.org> # 4.14+
-Patchwork: https://patchwork.linux-mips.org/patch/18816/
+Patchwork: https://patchwork.linux-mips.org/patch/18814/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lantiq/xway/sysctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/lantiq/xway/sysctrl.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 --- a/arch/mips/lantiq/xway/sysctrl.c
 +++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -549,9 +549,9 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
+ 				ltq_ar9_fpi_hz(), CLOCK_250M);
+ 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+-		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
++		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
+ 		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
+-		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1);
++		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1 | PMU_AHBM);
+ 		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
 @@ -560,7 +560,7 @@ void __init ltq_soc_init(void)
  	} else {
  		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
  				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
--		clkdev_add_pmu("1f203018.usb2-phy", "ctrl", 1, 0, PMU_USB0);
-+		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+-		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
++		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
  		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
  		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
  		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);

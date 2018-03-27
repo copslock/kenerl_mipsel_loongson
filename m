@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:35:09 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:59206 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 18:35:37 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59176 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994687AbeC0Qedu-wBe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:34:33 +0200
+        by eddie.linux-mips.org with ESMTP id S23994685AbeC0QecDM1Pe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 18:34:32 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 80C101225;
-        Tue, 27 Mar 2018 16:34:27 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C2AA610CE;
+        Tue, 27 Mar 2018 16:34:24 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -15,9 +15,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 005/101] MIPS: lantiq: ase: Enable MFD_SYSCON
-Date:   Tue, 27 Mar 2018 18:26:37 +0200
-Message-Id: <20180327162750.330367967@linuxfoundation.org>
+Subject: [PATCH 4.14 004/101] MIPS: lantiq: Enable AHB Bus for USB
+Date:   Tue, 27 Mar 2018 18:26:36 +0200
+Message-Id: <20180327162750.269452837@linuxfoundation.org>
 X-Mailer: git-send-email 2.16.3
 In-Reply-To: <20180327162749.993880276@linuxfoundation.org>
 References: <20180327162749.993880276@linuxfoundation.org>
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63257
+X-archive-position: 63258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,15 +52,13 @@ X-list: linux-mips
 
 From: Mathias Kresin <dev@kresin.me>
 
-commit a821328c2f3003b908880792d71b2781b44fa53c upstream.
+commit 3223a5a7d3a606dcb7d9190a788b9544a45441ee upstream.
 
-Enable syscon to use it for the RCU MFD on Amazon SE as well.
+On Danube and AR9 the USB core is connected though a AHB bus to the main
+system cross bar, hence we need to enable the gating clock of the AHB
+Bus as well to make the USB controller work.
 
-The Amazon SE also has similar reset controller system as Danube and
-XWAY and use their drivers mostly. As these drivers now need syscon also
-activate the syscon subsystem for for Amazon SE.
-
-Fixes: 2b6639d4c794 ("MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD")
+Fixes: dea54fbad332 ("phy: Add an USB PHY driver for the Lantiq SoCs using the RCU module")
 Signed-off-by: Mathias Kresin <dev@kresin.me>
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
@@ -68,22 +66,34 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: John Crispin <john@phrozen.org>
 Cc: linux-mips@linux-mips.org
 Cc: <stable@vger.kernel.org> # 4.14+
-Patchwork: https://patchwork.linux-mips.org/patch/18817/
+Patchwork: https://patchwork.linux-mips.org/patch/18814/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lantiq/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/lantiq/xway/sysctrl.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/mips/lantiq/Kconfig
-+++ b/arch/mips/lantiq/Kconfig
-@@ -13,6 +13,8 @@ choice
- config SOC_AMAZON_SE
- 	bool "Amazon SE"
- 	select SOC_TYPE_XWAY
-+	select MFD_SYSCON
-+	select MFD_CORE
- 
- config SOC_XWAY
- 	bool "XWAY"
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -551,9 +551,9 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
+ 				ltq_ar9_fpi_hz(), CLOCK_250M);
+ 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+-		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
++		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
+ 		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
+-		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1);
++		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1 | PMU_AHBM);
+ 		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+@@ -562,7 +562,7 @@ void __init ltq_soc_init(void)
+ 	} else {
+ 		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
+ 				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
+-		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
++		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
+ 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);

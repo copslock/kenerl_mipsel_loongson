@@ -1,60 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2018 19:24:22 +0200 (CEST)
-Received: from mail-pl0-x243.google.com ([IPv6:2607:f8b0:400e:c01::243]:40014
-        "EHLO mail-pl0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993890AbeC0RYQMezQy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2018 19:24:16 +0200
-Received: by mail-pl0-x243.google.com with SMTP id x4-v6so14504992pln.7;
-        Tue, 27 Mar 2018 10:24:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=XNZFDPdvREU2dPTcWHhHDmf8mdY6X8hKx7eDh1RVjDM=;
-        b=gujp8rckL49S4k+NXoWWYYPqphhdpcwZdTfu9gqkPAzHgcpc9LSfbzCHNxIvxkWHID
-         YUada6S0im6LOWsCvf/81gAzUzWI4VvWnC/MMVeAYWJhal/Rd1p4MKwcainOGc18ZMEJ
-         1R4N+LzMmQVocYJo5riT7pr/v3KKVbLKHq1yvaYKgtYpYOQm/YaLU3YAiyMo64/hAFLI
-         Lxf6nOgrIfD3+o5AKv3cvlFKfLlGpw1945xtofnfQNSa56m+a4p5SCtCHY8vEF2sAMMH
-         deeB1grgqCPF6F6aY94ON+D3sZs94mGSsZh68LG7+dUwQyYWjj5mAS+H7d+iWum/nezE
-         lMTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=XNZFDPdvREU2dPTcWHhHDmf8mdY6X8hKx7eDh1RVjDM=;
-        b=p3HPF5yVtwdfTVJcmLjXCnbw5wAxj+AMczfjQOckkh5q/oLbwwrrFnV0ZlS270W1Nt
-         agdnEVMdpnapo/dYUhNgiM+UiL3GrlcyyTIR8M/VBYfkSz9lGooipQXND+to7fDlwzb3
-         LfYlm+WHPs9arLgCNQmNd65JQh0WvktD5S6wgK9AM1eVfbdBcquoG1diQONJRzfh+EIl
-         39qmXP/bADaNM7dICvFqyrZNfaFjDpPYcL7V3CGxLW7b5yU9ixfPJqWiHYpN8+ePKcyC
-         nkzJNsqW9sAIe56eKkFwKvYe2QGu1y+l8qR9XS4Airs2C/ISfnLplLgf7ixgDOcCdote
-         a49A==
-X-Gm-Message-State: AElRT7EzTG/hTeix6uLAZVG7LAts8XOUi4KANKsZgosTSnEM1w7hwJLS
-        m5mkc1mLQHmd9+DqOd6L0C3OGJ5+
-X-Google-Smtp-Source: AIpwx4+h6XeDDaUP9PaA3r7KdUJX2yXq25VMnmXDw5Rfn4uWywCQCriXMm9S2FnBaopMl0dVmi3mOg==
-X-Received: by 2002:a17:902:9686:: with SMTP id n6-v6mr163530plp.331.1522171449431;
-        Tue, 27 Mar 2018 10:24:09 -0700 (PDT)
-Received: from localhost.localdomain ([67.139.187.132])
-        by smtp.gmail.com with ESMTPSA id s4sm3464624pgp.29.2018.03.27.10.24.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 27 Mar 2018 10:24:08 -0700 (PDT)
-From:   Dan Haab <riproute@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Dan Haab <dan.haab@luxul.com>
-Subject: [PATCH V2] MIPS: BCM47XX: Add Luxul XAP1500/XWR1750 WiFi LEDs
-Date:   Tue, 27 Mar 2018 11:24:34 -0600
-Message-Id: <1522171474-3651-1-git-send-email-riproute@gmail.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1519767173-8918-1-git-send-email-riproute@gmail.com>
-References: <1519767173-8918-1-git-send-email-riproute@gmail.com>
-Return-Path: <riproute@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 00:17:42 +0200 (CEST)
+Received: from imap.thunk.org ([IPv6:2600:3c02::f03c:91ff:fe96:be03]:56288
+        "EHLO imap.thunk.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993945AbeC0WRd1K0kQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 00:17:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=thunk.org;
+         s=ef5046eb; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Qj2I7BshdUHsbFfEKXQ0bFfkdiDTRJGc48sJd/7D8gQ=; b=btEd/5pMdHT1reg7t3RBaUE+uy
+        /Bdw3z7jY7XeWJoswHfXhWDplC89IpsQG/vDQ6v1dDJtSejjuTff8lZCXoolBOru0ZDECFa4i2Sel
+        +sLj1kXCx8bmRRzTvzjDMJZe+nV+SxziLAYDIYo7YWW9gxNtak2ZhetNJJWJVDEUw5as=;
+Received: from root (helo=callcc.thunk.org)
+        by imap.thunk.org with local-esmtp (Exim 4.89)
+        (envelope-from <tytso@thunk.org>)
+        id 1f0wtU-0006Tk-8V; Tue, 27 Mar 2018 22:16:40 +0000
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 980CD7A0158; Tue, 27 Mar 2018 18:16:35 -0400 (EDT)
+Date:   Tue, 27 Mar 2018 18:16:35 -0400
+From:   "Theodore Y. Ts'o" <tytso@mit.edu>
+To:     Ilya Smith <blackzert@gmail.com>
+Cc:     Michal Hocko <mhocko@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
+        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
+        ralf@linux-mips.org, jejb@parisc-linux.org,
+        Helge Deller <deller@gmx.de>, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
+        nyc@holomorphy.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
+        gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
+        Hugh Dickins <hughd@google.com>, kstewart@linuxfoundation.org,
+        pombredanne@nexb.com, Andrew Morton <akpm@linux-foundation.org>,
+        steve.capper@arm.com, punit.agrawal@arm.com,
+        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+        Kees Cook <keescook@chromium.org>, bhsharma@redhat.com,
+        riel@redhat.com, nitin.m.gupta@oracle.com,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jan Kara <jack@suse.cz>, ross.zwisler@linux.intel.com,
+        Jerome Glisse <jglisse@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-ID: <20180327221635.GA3790@thunk.org>
+Mail-Followup-To: "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Ilya Smith <blackzert@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
+        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
+        ralf@linux-mips.org, jejb@parisc-linux.org,
+        Helge Deller <deller@gmx.de>, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org, nyc@holomorphy.com,
+        viro@zeniv.linux.org.uk, arnd@arndb.de, gregkh@linuxfoundation.org,
+        deepa.kernel@gmail.com, Hugh Dickins <hughd@google.com>,
+        kstewart@linuxfoundation.org, pombredanne@nexb.com,
+        Andrew Morton <akpm@linux-foundation.org>, steve.capper@arm.com,
+        punit.agrawal@arm.com, aneesh.kumar@linux.vnet.ibm.com,
+        npiggin@gmail.com, Kees Cook <keescook@chromium.org>,
+        bhsharma@redhat.com, riel@redhat.com, nitin.m.gupta@oracle.com,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dan Williams <dan.j.williams@intel.com>, Jan Kara <jack@suse.cz>,
+        ross.zwisler@linux.intel.com, Jerome Glisse <jglisse@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
+References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
+ <20180323124806.GA5624@bombadil.infradead.org>
+ <651E0DB6-4507-4DA1-AD46-9C26ED9792A8@gmail.com>
+ <20180326084650.GC5652@dhcp22.suse.cz>
+ <01A133F4-27DF-4AE2-80D6-B0368BF758CD@gmail.com>
+ <20180327072432.GY5652@dhcp22.suse.cz>
+ <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: tytso@thunk.org
+X-SA-Exim-Scanned: No (on imap.thunk.org); SAEximRunCond expanded to false
+Return-Path: <tytso@thunk.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63264
+X-archive-position: 63266
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: riproute@gmail.com
+X-original-sender: tytso@mit.edu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,85 +119,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Dan Haab <dan.haab@luxul.com>
+On Tue, Mar 27, 2018 at 04:51:08PM +0300, Ilya Smith wrote:
+> > /dev/[u]random is not sufficient?
+> 
+> Using /dev/[u]random makes 3 syscalls - open, read, close. This is a performance
+> issue.
 
-Some Luxul devices use PCIe connected GPIO LEDs that are not available
-until the PCI subsytem and its drivers load. Using the same array for
-these LEDs would block registering any LEDs until all GPIOs become
-available. This may be undesired behavior as some LEDs should be
-available as early as possible (e.g. system status LED). This patch will
-allow registering available LEDs while deffering these PCIe GPIO
-connected 'extra' LEDs until they become available.
+You may want to take a look at the getrandom(2) system call, which is
+the recommended way getting secure random numbers from the kernel.
 
-Signed-off-by: Dan Haab <dan.haab@luxul.com>
----
- arch/mips/bcm47xx/leds.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+> > Well, I am pretty sure userspace can implement proper free ranges
+> > tracking…
+> 
+> I think we need to know what libc developers will say on implementing ASLR in 
+> user-mode. I am pretty sure they will say ‘nether’ or ‘some-day’. And problem 
+> of ASLR will stay forever.
 
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index 8307a8a..34a7b3f 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -409,6 +409,12 @@
- };
- 
- static const struct gpio_led
-+bcm47xx_leds_luxul_xap1500_v1_extra[] __initconst = {
-+	BCM47XX_GPIO_LED(44, "green", "5ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(76, "green", "2ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
- bcm47xx_leds_luxul_xbr_4400_v1[] __initconst = {
- 	BCM47XX_GPIO_LED(12, "green", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
- 	BCM47XX_GPIO_LED_TRIGGER(15, "green", "status", 0, "timer"),
-@@ -435,6 +441,11 @@
- 	BCM47XX_GPIO_LED(15, "green", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
- };
- 
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xwr1750_v1_extra[] __initconst = {
-+	BCM47XX_GPIO_LED(76, "green", "2ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
- /* Microsoft */
- 
- static const struct gpio_led
-@@ -528,6 +539,12 @@
- 	bcm47xx_leds_pdata.num_leds = ARRAY_SIZE(dev_leds);		\
- } while (0)
- 
-+static struct gpio_led_platform_data bcm47xx_leds_pdata_extra __initdata = {};
-+#define bcm47xx_set_pdata_extra(dev_leds) do {				\
-+	bcm47xx_leds_pdata_extra.leds = dev_leds;			\
-+	bcm47xx_leds_pdata_extra.num_leds = ARRAY_SIZE(dev_leds);	\
-+} while (0)
-+
- void __init bcm47xx_leds_register(void)
- {
- 	enum bcm47xx_board board = bcm47xx_board_get();
-@@ -705,6 +722,7 @@ void __init bcm47xx_leds_register(void)
- 		break;
- 	case BCM47XX_BOARD_LUXUL_XAP_1500_V1:
- 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_1500_v1);
-+		bcm47xx_set_pdata_extra(bcm47xx_leds_luxul_xap1500_v1_extra);
- 		break;
- 	case BCM47XX_BOARD_LUXUL_XBR_4400_V1:
- 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xbr_4400_v1);
-@@ -717,6 +735,7 @@ void __init bcm47xx_leds_register(void)
- 		break;
- 	case BCM47XX_BOARD_LUXUL_XWR_1750_V1:
- 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xwr_1750_v1);
-+		bcm47xx_set_pdata_extra(bcm47xx_leds_luxul_xwr1750_v1_extra);
- 		break;
- 
- 	case BCM47XX_BOARD_MICROSOFT_MN700:
-@@ -760,4 +779,6 @@ void __init bcm47xx_leds_register(void)
- 	}
- 
- 	gpio_led_register_device(-1, &bcm47xx_leds_pdata);
-+	if (bcm47xx_leds_pdata_extra.num_leds)
-+		gpio_led_register_device(0, &bcm47xx_leds_pdata_extra);
- }
--- 
-1.9.1
+Why can't you send patches to the libc developers?
+
+Regards,
+
+						- Ted

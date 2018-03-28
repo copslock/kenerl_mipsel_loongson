@@ -1,44 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 18:19:48 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:56406 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992336AbeC1QTlW4f7X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Mar 2018 18:19:41 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id D0EBF206F3; Wed, 28 Mar 2018 18:19:04 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 7723620146;
-        Wed, 28 Mar 2018 18:18:54 +0200 (CEST)
-Date:   Wed, 28 Mar 2018 18:18:55 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        razvan.stefanescu@nxp.com, po.liu@nxp.com,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Raju Lakkaraju <Raju.Lakkaraju@microsemi.com>
-Subject: Re: [PATCH net-next 1/8] net: phy: Add initial support for Microsemi
- Ocelot internal PHYs.
-Message-ID: <20180328161855.GJ13942@piout.net>
-References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
- <20180323201117.8416-2-alexandre.belloni@bootlin.com>
- <1caa7359-9ca3-be22-fae0-475daf8b220f@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 18:26:05 +0200 (CEST)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:38186
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992404AbeC1QZzV4oqv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 18:25:55 +0200
+Received: by mail-wm0-x244.google.com with SMTP id l16so6484799wmh.3
+        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2018 09:25:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=BXKDMJG3JeCpej2WnLf9wqzx5IMUXIkH5dpeKYi6VvU=;
+        b=A20CcuINqjOypQe/pFrKhZYvabm2UxnSDgnRiva6XUEAR+ZyZ+mQaVtMD+yO5lG6t9
+         4+3E9VugFKPMnQ8b6u8MwEZl5BJqhersmE6zIS8ALIo6fGZXq1WdRj9teM6Mq8VdWIUd
+         E8ncp85Nntir3428iWSF9UdoN1Cz9VnhcTYpk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=BXKDMJG3JeCpej2WnLf9wqzx5IMUXIkH5dpeKYi6VvU=;
+        b=EyPhjJoiJc1YdPBHzTIsA1YEa/YtuzGt6JU9+nvi/eReoFaK+RxybGRHF/bnaWf8ih
+         m2k01dpU/sT6rYUt144jA5JM/6DZ4E9jftmNCxPv1ugRnx6RLXx7IpnDLmT93Nis5KOy
+         5hx63c3FqYF35mgT4UQ0T5ZsETIwW4PlBrZdxmoQmQ/cBKjEmg/ZiS4Duk3HRdPiup8s
+         0yllETamuHK+bYICPz9+USGHsAz085wIGklXkZJIS0d+LYCGfF7GK8MKCCkJ8pIuqew3
+         rmcAnzYYGrbcpTgaMsNeV/XjE3xusGZBpFx0P8w4lxL/pb1Le+N81w+0Rhr+9H3e1XTN
+         ql6g==
+X-Gm-Message-State: AElRT7H/W1DQTGzxO6V8JPzyRRmEx6AaHs+D8dqy8bUQUmqru92aLCmw
+        JxM/jnTKpkRyefUG3WL4PImDHQ==
+X-Google-Smtp-Source: AIpwx48VNu4+BWNyeezFgHKTTr3sNGMJ2dFhw03oSKkfdoc75R8eqZxgHf6m+FKrnt4WpiHF+Gajuw==
+X-Received: by 10.28.134.203 with SMTP id i194mr3525664wmd.114.1522254349714;
+        Wed, 28 Mar 2018 09:25:49 -0700 (PDT)
+Received: from ?IPv6:2001:41d0:fe90:b800:b0a9:da92:8c72:d9e2? ([2001:41d0:fe90:b800:b0a9:da92:8c72:d9e2])
+        by smtp.googlemail.com with ESMTPSA id e27sm7813448wre.86.2018.03.28.09.25.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 28 Mar 2018 09:25:48 -0700 (PDT)
+Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        James Hogan <jhogan@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-8-paul@crapouillou.net>
+ <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
+ <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <af33e522-7f87-d62a-0a35-d56a403387b7@linaro.org>
+Date:   Wed, 28 Mar 2018 18:25:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1caa7359-9ca3-be22-fae0-475daf8b220f@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <alexandre.belloni@bootlin.com>
+In-Reply-To: <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63291
+X-archive-position: 63292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,55 +85,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23/03/2018 at 14:08:10 -0700, Florian Fainelli wrote:
-> On 03/23/2018 01:11 PM, Alexandre Belloni wrote:
-> > Add Microsemi Ocelot internal PHY ids. For now, simply use the genphy
-> > functions but more features are available.
-> > 
-> > Cc: Raju Lakkaraju <Raju.Lakkaraju@microsemi.com>
-> > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > ---
-> >  drivers/net/phy/mscc.c | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> > 
-> > diff --git a/drivers/net/phy/mscc.c b/drivers/net/phy/mscc.c
-> > index 650c2667d523..e1ab3acd1cdb 100644
-> > --- a/drivers/net/phy/mscc.c
-> > +++ b/drivers/net/phy/mscc.c
-> > @@ -91,6 +91,7 @@ enum rgmii_rx_clock_delay {
-> >  #define SECURE_ON_PASSWD_LEN_4		  0x4000
-> >  
-> >  /* Microsemi PHY ID's */
-> > +#define PHY_ID_OCELOT			  0x00070540
-> >  #define PHY_ID_VSC8530			  0x00070560
-> >  #define PHY_ID_VSC8531			  0x00070570
-> >  #define PHY_ID_VSC8540			  0x00070760
-> > @@ -658,6 +659,19 @@ static int vsc85xx_probe(struct phy_device *phydev)
-> >  
-> >  /* Microsemi VSC85xx PHYs */
-> >  static struct phy_driver vsc85xx_driver[] = {
-> > +{
-> > +	.phy_id		= PHY_ID_OCELOT,
-> > +	.name		= "Microsemi OCELOT",
-> > +	.phy_id_mask    = 0xfffffff0,
-> > +	.features	= PHY_GBIT_FEATURES,
-> > +	.soft_reset	= &genphy_soft_reset,
-> > +	.config_init	= &genphy_config_init,
-> > +	.config_aneg	= &genphy_config_aneg,
-> > +	.aneg_done	= &genphy_aneg_done,
-> > +	.read_status	= &genphy_read_status,
-> > +	.suspend	= &genphy_suspend,
-> > +	.resume		= &genphy_resume,
+On 28/03/2018 17:15, Paul Cercueil wrote:
+> Le 2018-03-24 07:26, Daniel Lezcano a écrit :
+>> On 18/03/2018 00:29, Paul Cercueil wrote:
+>>> This driver will use the TCU (Timer Counter Unit) present on the Ingenic
+>>> JZ47xx SoCs to provide the kernel with a clocksource and timers.
+>>
+>> Please provide a more detailed description about the timer.
 > 
-> With the exception of config_init(), suspend and resume, everything else
-> is already the default when you don't provide a callback. To echo to
-> what Andrew wrote already, if the purpose is just to show a nice name,
-> and do nothing else, consider using the Generic PHY driver (default).
+> There's a doc file for that :)
 
-Ok, I'll drop this patch for now, until we handle more features for that
-PHY.
+Usually, when there is a new driver I ask for a description in the
+changelog for reference.
+
+>> Where is the clocksource ?
+> 
+> Right, there is no clocksource, just timers.
+> 
+>> I don't see the point of using channel idx and pwm checking here.
+>>
+>> There is one clockevent, why create multiple channels ? Can't you stick
+>> to the usual init routine for a timer.
+> 
+> So the idea is that we use all the TCU channels that won't be used for PWM
+> as timers. Hence the PWM checking. Why is this bad?
+
+It is not bad but arguable. By checking the channels used by the pwm in
+the code, you introduce an adherence between two subsystems even if it
+is just related to the DT parsing part.
+
+As it is not needed to have more than one timer in the time framework
+(at least with the same characteristics), the pwm channels check is
+pointless. We can assume the author of the DT file is smart enough to
+prevent conflicts and define a pwm and a timer properly instead of
+adding more code complexity.
+
+In addition, simplifying the code will allow you to use the timer-of
+code and reduce very significantly the init function.
+
+>>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>> ---
+>>>  drivers/clocksource/Kconfig         |   8 ++
+>>>  drivers/clocksource/Makefile        |   1 +
+>>>  drivers/clocksource/timer-ingenic.c | 278
+>>> ++++++++++++++++++++++++++++++++++++
+>>>  3 files changed, 287 insertions(+)
+>>>  create mode 100644 drivers/clocksource/timer-ingenic.c
+>>>
+>>>  v2: Use SPDX identifier for the license
+>>>  v3: - Move documentation to its own patch
+>>>      - Search the devicetree for PWM clients, and use all the TCU
+>>>        channels that won't be used for PWM
+>>>  v4: - Add documentation about why we search for PWM clients
+>>>      - Verify that the PWM clients are for the TCU PWM driver
+>>>
+>>> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+>>> index d2e5382821a4..481422145fb4 100644
+>>> --- a/drivers/clocksource/Kconfig
+>>> +++ b/drivers/clocksource/Kconfig
+>>> @@ -592,4 +592,12 @@ config CLKSRC_ST_LPC
+>>>        Enable this option to use the Low Power controller timer
+>>>        as clocksource.
+>>>
+>>> +config INGENIC_TIMER
+>>> +    bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
+>>> +    depends on MACH_INGENIC || COMPILE_TEST
+>>
+>> bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if COMPILE_TEST
+>>
+>> Remove the depends MACH_INGENIC.
+> 
+> This driver is not useful on anything else than Ingenic SoCs, why should I
+> remove MACH_INGENIC then?
+
+For COMPILE_TEST on x86.
+
+>>> +    select CLKSRC_OF
+>>> +    default y
+>>
+>> No default, Kconfig platform selects the timer.
+> 
+> Alright.
+[ ... ]
 
 -- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

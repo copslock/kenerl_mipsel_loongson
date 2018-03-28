@@ -1,42 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 17:16:05 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:39304 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 17:19:20 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:39988 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993928AbeC1PP5qCKSx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 17:15:57 +0200
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
+        with ESMTP id S23992336AbeC1PTNHW1Bx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 17:19:13 +0200
+To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: Re: [PATCH 09/14] mmc: jz4740: Add support for the JZ4780
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 8bit
-Date:   Wed, 28 Mar 2018 17:15:56 +0200
+Date:   Wed, 28 Mar 2018 17:19:11 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>, kernel@collabora.com,
+        Alex Smith <alex.smith@imgtec.com>,
+        Ezequiel Garcia <ezequiel@collabora.co.uk>
 Subject: 
-In-Reply-To: <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
-References: <20180110224838.16711-2-paul@crapouillou.net>
- <20180317232901.14129-1-paul@crapouillou.net>
- <20180317232901.14129-8-paul@crapouillou.net>
- <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
-Message-ID: <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
+In-Reply-To: <20180321192741.25872-10-ezequiel@vanguardiasur.com.ar>
+References: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
+ <20180321192741.25872-10-ezequiel@vanguardiasur.com.ar>
+Message-ID: <5d7e7b6366a4911e0c37a657ccebb923@crapouillou.net>
 X-Sender: paul@crapouillou.net
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63283
+X-archive-position: 63284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,394 +44,328 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 2018-03-24 07:26, Daniel Lezcano a écrit :
-> On 18/03/2018 00:29, Paul Cercueil wrote:
->> This driver will use the TCU (Timer Counter Unit) present on the 
->> Ingenic
->> JZ47xx SoCs to provide the kernel with a clocksource and timers.
-> 
-> Please provide a more detailed description about the timer.
+Hi,
 
-There's a doc file for that :)
+Would you mind changing the callback functions as me & James requested
+on the previous patch version? The rest of the patchset is all good 
+IMHO.
 
-> Where is the clocksource ?
-
-Right, there is no clocksource, just timers.
-
-> I don't see the point of using channel idx and pwm checking here.
-> 
-> There is one clockevent, why create multiple channels ? Can't you stick
-> to the usual init routine for a timer.
-
-So the idea is that we use all the TCU channels that won't be used for 
-PWM
-as timers. Hence the PWM checking. Why is this bad?
-
->> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->> ---
->>  drivers/clocksource/Kconfig         |   8 ++
->>  drivers/clocksource/Makefile        |   1 +
->>  drivers/clocksource/timer-ingenic.c | 278 
->> ++++++++++++++++++++++++++++++++++++
->>  3 files changed, 287 insertions(+)
->>  create mode 100644 drivers/clocksource/timer-ingenic.c
->> 
->>  v2: Use SPDX identifier for the license
->>  v3: - Move documentation to its own patch
->>      - Search the devicetree for PWM clients, and use all the TCU
->> 	   channels that won't be used for PWM
->>  v4: - Add documentation about why we search for PWM clients
->>      - Verify that the PWM clients are for the TCU PWM driver
->> 
->> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
->> index d2e5382821a4..481422145fb4 100644
->> --- a/drivers/clocksource/Kconfig
->> +++ b/drivers/clocksource/Kconfig
->> @@ -592,4 +592,12 @@ config CLKSRC_ST_LPC
->>  	  Enable this option to use the Low Power controller timer
->>  	  as clocksource.
->> 
->> +config INGENIC_TIMER
->> +	bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
->> +	depends on MACH_INGENIC || COMPILE_TEST
-> 
-> bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if 
-> COMPILE_TEST
-> 
-> Remove the depends MACH_INGENIC.
-
-This driver is not useful on anything else than Ingenic SoCs, why should 
-I
-remove MACH_INGENIC then?
-
->> +	select CLKSRC_OF
->> +	default y
-> 
-> No default, Kconfig platform selects the timer.
-
-Alright.
-
->> +	help
->> +	  Support for the timer/counter unit of the Ingenic JZ SoCs.
->> +
->>  endmenu
->> diff --git a/drivers/clocksource/Makefile 
->> b/drivers/clocksource/Makefile
->> index d6dec4489d66..98691e8999fe 100644
->> --- a/drivers/clocksource/Makefile
->> +++ b/drivers/clocksource/Makefile
->> @@ -74,5 +74,6 @@ obj-$(CONFIG_ASM9260_TIMER)		+= asm9260_timer.o
->>  obj-$(CONFIG_H8300_TMR8)		+= h8300_timer8.o
->>  obj-$(CONFIG_H8300_TMR16)		+= h8300_timer16.o
->>  obj-$(CONFIG_H8300_TPU)			+= h8300_tpu.o
->> +obj-$(CONFIG_INGENIC_TIMER)		+= timer-ingenic.o
->>  obj-$(CONFIG_CLKSRC_ST_LPC)		+= clksrc_st_lpc.o
->>  obj-$(CONFIG_X86_NUMACHIP)		+= numachip.o
->> diff --git a/drivers/clocksource/timer-ingenic.c 
->> b/drivers/clocksource/timer-ingenic.c
->> new file mode 100644
->> index 000000000000..8c777c0c0023
->> --- /dev/null
->> +++ b/drivers/clocksource/timer-ingenic.c
->> @@ -0,0 +1,278 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Ingenic JZ47xx SoC TCU clocksource driver
->> + * Copyright (C) 2018 Paul Cercueil <paul@crapouillou.net>
->> + */
->> +
->> +#include <linux/bitops.h>
->> +#include <linux/clk.h>
->> +#include <linux/clockchips.h>
->> +#include <linux/err.h>
->> +#include <linux/interrupt.h>
->> +#include <linux/mfd/syscon.h>
->> +#include <linux/mfd/syscon/ingenic-tcu.h>
->> +#include <linux/of_address.h>
->> +#include <linux/of_irq.h>
->> +#include <linux/regmap.h>
->> +#include <linux/slab.h>
->> +
->> +#define NUM_CHANNELS	8
->> +
->> +struct ingenic_tcu;
->> +
->> +struct ingenic_tcu_channel {
->> +	unsigned int idx;
->> +	struct clk *clk;
->> +};
->> +
->> +struct ingenic_tcu {
->> +	struct ingenic_tcu_channel channels[NUM_CHANNELS];
->> +	unsigned long requested;
->> +	struct regmap *map;
->> +};
->> +
->> +struct ingenic_clock_event_device {
->> +	struct clock_event_device cevt;
->> +	struct ingenic_tcu_channel *channel;
->> +	char name[32];
->> +};
->> +
->> +#define ingenic_cevt(_evt) \
->> +	container_of(_evt, struct ingenic_clock_event_device, cevt)
->> +
->> +static inline struct ingenic_tcu *to_ingenic_tcu(struct 
->> ingenic_tcu_channel *ch)
->> +{
->> +	return container_of(ch, struct ingenic_tcu, channels[ch->idx]);
->> +}
->> +
->> +static int ingenic_tcu_cevt_set_state_shutdown(struct 
->> clock_event_device *evt)
->> +{
->> +	struct ingenic_clock_event_device *jzcevt = ingenic_cevt(evt);
->> +	struct ingenic_tcu_channel *channel = jzcevt->channel;
->> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
->> +	unsigned int idx = channel->idx;
->> +
->> +	regmap_write(tcu->map, TCU_REG_TECR, BIT(idx));
->> +	return 0;
->> +}
->> +
->> +static int ingenic_tcu_cevt_set_next(unsigned long next,
->> +		struct clock_event_device *evt)
->> +{
->> +	struct ingenic_clock_event_device *jzcevt = ingenic_cevt(evt);
->> +	struct ingenic_tcu_channel *channel = jzcevt->channel;
->> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
->> +	unsigned int idx = channel->idx;
->> +
->> +	if (next > 0xffff)
->> +		return -EINVAL;
->> +
->> +	regmap_write(tcu->map, TCU_REG_TDFRc(idx), (unsigned int) next);
->> +	regmap_write(tcu->map, TCU_REG_TCNTc(idx), 0);
->> +	regmap_write(tcu->map, TCU_REG_TESR, BIT(idx));
->> +
->> +	return 0;
->> +}
->> +
->> +static irqreturn_t ingenic_tcu_cevt_cb(int irq, void *dev_id)
->> +{
->> +	struct clock_event_device *cevt = dev_id;
->> +	struct ingenic_clock_event_device *jzcevt = ingenic_cevt(cevt);
->> +	struct ingenic_tcu_channel *channel = jzcevt->channel;
->> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
->> +	unsigned int idx = channel->idx;
->> +
->> +	regmap_write(tcu->map, TCU_REG_TECR, BIT(idx));
->> +
->> +	if (cevt->event_handler)
->> +		cevt->event_handler(cevt);
->> +
->> +	return IRQ_HANDLED;
->> +}
->> +
->> +static int __init ingenic_tcu_req_channel(struct ingenic_tcu_channel 
->> *channel)
->> +{
->> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
->> +	char buf[16];
->> +	int err;
->> +
->> +	if (test_and_set_bit(channel->idx, &tcu->requested))
->> +		return -EBUSY;
->> +
->> +	snprintf(buf, sizeof(buf), "timer%u", channel->idx);
->> +	channel->clk = clk_get(NULL, buf);
->> +	if (IS_ERR(channel->clk)) {
->> +		err = PTR_ERR(channel->clk);
->> +		goto out_release;
->> +	}
->> +
->> +	err = clk_prepare_enable(channel->clk);
->> +	if (err)
->> +		goto out_clk_put;
->> +
->> +	return 0;
->> +
->> +out_clk_put:
->> +	clk_put(channel->clk);
->> +out_release:
->> +	clear_bit(channel->idx, &tcu->requested);
->> +	return err;
->> +}
->> +
->> +static int __init ingenic_tcu_reset_channel(struct device_node *np,
->> +		struct ingenic_tcu_channel *channel)
->> +{
->> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
->> +
->> +	return regmap_update_bits(tcu->map, TCU_REG_TCSRc(channel->idx),
->> +				0xffff & ~TCU_TCSR_RESERVED_BITS, 0);
->> +}
->> +
->> +static void __init ingenic_tcu_free_channel(struct 
->> ingenic_tcu_channel *channel)
->> +{
->> +	struct ingenic_tcu *tcu = to_ingenic_tcu(channel);
->> +
->> +	clk_disable_unprepare(channel->clk);
->> +	clk_put(channel->clk);
->> +	clear_bit(channel->idx, &tcu->requested);
->> +}
->> +
->> +static const char * const ingenic_tcu_timer_names[] = {
->> +	"TCU0", "TCU1", "TCU2", "TCU3", "TCU4", "TCU5", "TCU6", "TCU7",
->> +};
->> +
->> +static int __init ingenic_tcu_setup_cevt(struct device_node *np,
->> +		struct ingenic_tcu *tcu, unsigned int idx)
->> +{
->> +	struct ingenic_tcu_channel *channel = &tcu->channels[idx];
->> +	struct ingenic_clock_event_device *jzcevt;
->> +	unsigned long rate;
->> +	int err, virq;
->> +
->> +	err = ingenic_tcu_req_channel(channel);
->> +	if (err)
->> +		return err;
->> +
->> +	err = ingenic_tcu_reset_channel(np, channel);
->> +	if (err)
->> +		goto err_out_free_channel;
->> +
->> +	rate = clk_get_rate(channel->clk);
->> +	if (!rate) {
->> +		err = -EINVAL;
->> +		goto err_out_free_channel;
->> +	}
->> +
->> +	jzcevt = kzalloc(sizeof(*jzcevt), GFP_KERNEL);
->> +	if (!jzcevt) {
->> +		err = -ENOMEM;
->> +		goto err_out_free_channel;
->> +	}
->> +
->> +	virq = irq_of_parse_and_map(np, idx);
->> +	if (!virq) {
->> +		err = -EINVAL;
->> +		goto err_out_kfree_jzcevt;
->> +	}
->> +
->> +	err = request_irq(virq, ingenic_tcu_cevt_cb, IRQF_TIMER,
->> +			ingenic_tcu_timer_names[idx], &jzcevt->cevt);
->> +	if (err)
->> +		goto err_out_irq_dispose_mapping;
->> +
->> +	jzcevt->channel = channel;
->> +	snprintf(jzcevt->name, sizeof(jzcevt->name), "ingenic-tcu-chan%u",
->> +		 channel->idx);
->> +
->> +	jzcevt->cevt.cpumask = cpumask_of(smp_processor_id());
->> +	jzcevt->cevt.features = CLOCK_EVT_FEAT_ONESHOT;
->> +	jzcevt->cevt.name = jzcevt->name;
->> +	jzcevt->cevt.rating = 200;
->> +	jzcevt->cevt.set_state_shutdown = 
->> ingenic_tcu_cevt_set_state_shutdown;
->> +	jzcevt->cevt.set_next_event = ingenic_tcu_cevt_set_next;
->> +
->> +	clockevents_config_and_register(&jzcevt->cevt, rate, 10, (1 << 16) - 
->> 1);
->> +
->> +	return 0;
->> +
->> +err_out_irq_dispose_mapping:
->> +	irq_dispose_mapping(virq);
->> +err_out_kfree_jzcevt:
->> +	kfree(jzcevt);
->> +err_out_free_channel:
->> +	ingenic_tcu_free_channel(channel);
->> +	return err;
->> +}
->> +
->> +static int __init ingenic_tcu_init(struct device_node *np)
->> +{
->> +	unsigned long available_channels = GENMASK(NUM_CHANNELS - 1, 0);
->> +	struct device_node *node, *pwm_driver_node;
->> +	struct ingenic_tcu *tcu;
->> +	unsigned int i, channel;
->> +	int err;
->> +	u32 val;
->> +
->> +	/* Parse the devicetree for clients of the TCU PWM driver;
->> +	 * every TCU channel not requested for PWM will be used as
->> +	 * a timer.
->> +	 */
-> 
-> 
-> 
->> +	for_each_node_with_property(node, "pwms") {
->> +		/* Get the PWM channel ID (field 1 of the "pwms" node) */
->> +		err = of_property_read_u32_index(node, "pwms", 1, &val);
->> +		if (!err && val >= NUM_CHANNELS)
->> +			err = -EINVAL;
->> +		if (err) {
->> +			pr_err("timer-ingenic: Unable to parse PWM nodes!");
->> +			break;
->> +		}
->> +
->> +		/* Get the PWM driver node (field 0 of the "pwms" node) */
->> +		pwm_driver_node = of_parse_phandle(node, "pwms", 0);
->> +		if (!pwm_driver_node) {
->> +			pr_err("timer-ingenic: Unable to find PWM driver node");
->> +			break;
->> +		}
->> +
->> +		/* Verify that the node we found is for the TCU PWM driver,
->> +		 * by checking that this driver and the PWM driver passed
->> +		 * as phandle share the same parent (the "ingenic,tcu"
->> +		 * compatible MFD/syscon node).
->> +		 */
->> +		if (pwm_driver_node->parent != np->parent)
->> +			continue;
->> +
->> +		pr_info("timer-ingenic: Reserving channel %u for PWM", val);
->> +		available_channels &= ~BIT(val);
->> +	}
->> +
->> +	tcu = kzalloc(sizeof(*tcu), GFP_KERNEL);
->> +	if (!tcu)
->> +		return -ENOMEM;
->> +
->> +	tcu->map = syscon_node_to_regmap(np->parent);
->> +	if (IS_ERR(tcu->map)) {
->> +		err = PTR_ERR(tcu->map);
->> +		kfree(tcu);
->> +		return err;
->> +	}
->> +
->> +	for (i = 0; i < NUM_CHANNELS; i++)
->> +		tcu->channels[i].idx = i;
-> 
-> I'm pretty sure you can do better thaningenic_tcu_setup that :)
-
-I didn't think this would be a problem. I guess I can try.
-
->> +	for_each_set_bit(channel, &available_channels, NUM_CHANNELS) {
->> +		err = _cevt(np, tcu, channel);
->> +		if (err) {
->> +			pr_warn("timer-ingenic: Unable to init TCU channel %u: %i",
->> +					channel, err);
->> +			continue;
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +/* We only probe via devicetree, no need for a platform driver */
->> +CLOCKSOURCE_OF_DECLARE(jz4740_tcu, "ingenic,jz4740-tcu", 
->> ingenic_tcu_init);
->> +CLOCKSOURCE_OF_DECLARE(jz4770_tcu, "ingenic,jz4770-tcu", 
->> ingenic_tcu_init);
->> +CLOCKSOURCE_OF_DECLARE(jz4780_tcu, "ingenic,jz4780-tcu", 
->> ingenic_tcu_init);
-> 
-> s/CLOCKSOURCE_OF_DECLARE/TIMER_OF_DECLARE/
-
-Sure, OK.
-
-Thanks!
+Thanks,
 -Paul
+
+Le 2018-03-21 20:27, Ezequiel Garcia a écrit :
+> From: Alex Smith <alex.smith@imgtec.com>
+> 
+> Add support for the JZ4780 MMC controller to the jz47xx_mmc driver. 
+> There
+> are a few minor differences from the 4740 to the 4780 that need to be
+> handled, but otherwise the controllers behave the same. The IREG and 
+> IMASK
+> registers are expanded to 32 bits. Additionally, some error conditions 
+> are
+> now reported in both STATUS and IREG. Writing IREG before reading 
+> STATUS
+> causes the bits in STATUS to be cleared, so STATUS must be read first 
+> to
+> ensure we see and report error conditions correctly.
+> 
+> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> [Ezequiel: rebase and introduce register accessors]
+> Tested-by: Mathieu Malaterre <malat@debian.org>
+> Signed-off-by: Ezequiel Garcia <ezequiel@collabora.co.uk>
+> ---
+>  drivers/mmc/host/Kconfig      |   9 ++--
+>  drivers/mmc/host/jz4740_mmc.c | 111 
+> ++++++++++++++++++++++++++++++++++--------
+>  2 files changed, 97 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index 620c2d90a646..35a5a5ad65b9 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -766,11 +766,12 @@ config MMC_SH_MMCIF
+> 
+> 
+>  config MMC_JZ4740
+> -	tristate "JZ4740 SD/Multimedia Card Interface support"
+> -	depends on MACH_JZ4740
+> +	tristate "Ingenic JZ47xx SD/Multimedia Card Interface support"
+> +	depends on MACH_JZ4740 || MACH_JZ4780
+>  	help
+> -	  This selects support for the SD/MMC controller on Ingenic JZ4740
+> -	  SoCs.
+> +	  This selects support for the SD/MMC controller on Ingenic
+> +	  JZ4740, JZ4750, JZ4770 and JZ4780 SoCs.
+> +
+>  	  If you have a board based on such a SoC and with a SD/MMC slot,
+>  	  say Y or M here.
+> 
+> diff --git a/drivers/mmc/host/jz4740_mmc.c 
+> b/drivers/mmc/host/jz4740_mmc.c
+> index aa635b458d2c..c3ec8e662706 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -1,5 +1,7 @@
+>  /*
+>   *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
+> + *  Copyright (C) 2013, Imagination Technologies
+> + *
+>   *  JZ4740 SD/MMC controller driver
+>   *
+>   *  This program is free software; you can redistribute  it and/or 
+> modify it
+> @@ -52,6 +54,7 @@
+>  #define JZ_REG_MMC_RESP_FIFO	0x34
+>  #define JZ_REG_MMC_RXFIFO	0x38
+>  #define JZ_REG_MMC_TXFIFO	0x3C
+> +#define JZ_REG_MMC_DMAC		0x44
+> 
+>  #define JZ_MMC_STRPCL_EXIT_MULTIPLE BIT(7)
+>  #define JZ_MMC_STRPCL_EXIT_TRANSFER BIT(6)
+> @@ -105,11 +108,15 @@
+>  #define JZ_MMC_IRQ_PRG_DONE BIT(1)
+>  #define JZ_MMC_IRQ_DATA_TRAN_DONE BIT(0)
+> 
+> +#define JZ_MMC_DMAC_DMA_SEL BIT(1)
+> +#define JZ_MMC_DMAC_DMA_EN BIT(0)
+> 
+>  #define JZ_MMC_CLK_RATE 24000000
+> 
+>  enum jz4740_mmc_version {
+>  	JZ_MMC_JZ4740,
+> +	JZ_MMC_JZ4750,
+> +	JZ_MMC_JZ4780,
+>  };
+> 
+>  enum jz4740_mmc_state {
+> @@ -144,7 +151,7 @@ struct jz4740_mmc_host {
+> 
+>  	uint32_t cmdat;
+> 
+> -	uint16_t irq_mask;
+> +	uint32_t irq_mask;
+> 
+>  	spinlock_t lock;
+> 
+> @@ -164,8 +171,46 @@ struct jz4740_mmc_host {
+>   * trigger is when data words in MSC_TXFIFO is < 8.
+>   */
+>  #define JZ4740_MMC_FIFO_HALF_SIZE 8
+> +
+> +	void (*write_irq_mask)(struct jz4740_mmc_host *host, uint32_t val);
+> +	void (*write_irq_reg)(struct jz4740_mmc_host *host, uint32_t val);
+> +	uint32_t (*read_irq_reg)(struct jz4740_mmc_host *host);
+>  };
+> 
+> +static void jz4750_mmc_write_irq_mask(struct jz4740_mmc_host *host,
+> +				      uint32_t val)
+> +{
+> +	return writel(val, host->base + JZ_REG_MMC_IMASK);
+> +}
+> +
+> +static void jz4740_mmc_write_irq_mask(struct jz4740_mmc_host *host,
+> +				      uint32_t val)
+> +{
+> +	return writew(val, host->base + JZ_REG_MMC_IMASK);
+> +}
+> +
+> +static void jz4740_mmc_write_irq_reg(struct jz4740_mmc_host *host,
+> +				     uint32_t val)
+> +{
+> +	return writew(val, host->base + JZ_REG_MMC_IREG);
+> +}
+> +
+> +static uint32_t jz4740_mmc_read_irq_reg(struct jz4740_mmc_host *host)
+> +{
+> +	return readw(host->base + JZ_REG_MMC_IREG);
+> +}
+> +
+> +static void jz4780_mmc_write_irq_reg(struct jz4740_mmc_host *host,
+> uint32_t val)
+> +{
+> +	return writel(val, host->base + JZ_REG_MMC_IREG);
+> +}
+> +
+> +/* In the 4780 onwards, IREG is expanded to 32 bits. */
+> +static uint32_t jz4780_mmc_read_irq_reg(struct jz4740_mmc_host *host)
+> +{
+> +	return readl(host->base + JZ_REG_MMC_IREG);
+> +}
+> +
+> 
+> /*----------------------------------------------------------------------------*/
+>  /* DMA infrastructure */
+> 
+> @@ -370,7 +415,7 @@ static void jz4740_mmc_set_irq_enabled(struct
+> jz4740_mmc_host *host,
+>  	else
+>  		host->irq_mask |= irq;
+> 
+> -	writew(host->irq_mask, host->base + JZ_REG_MMC_IMASK);
+> +	host->write_irq_mask(host, host->irq_mask);
+>  	spin_unlock_irqrestore(&host->lock, flags);
+>  }
+> 
+> @@ -422,10 +467,10 @@ static unsigned int jz4740_mmc_poll_irq(struct
+> jz4740_mmc_host *host,
+>  	unsigned int irq)
+>  {
+>  	unsigned int timeout = 0x800;
+> -	uint16_t status;
+> +	uint32_t status;
+> 
+>  	do {
+> -		status = readw(host->base + JZ_REG_MMC_IREG);
+> +		status = host->read_irq_reg(host);
+>  	} while (!(status & irq) && --timeout);
+> 
+>  	if (timeout == 0) {
+> @@ -525,7 +570,7 @@ static bool jz4740_mmc_read_data(struct
+> jz4740_mmc_host *host,
+>  	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RXFIFO;
+>  	uint32_t *buf;
+>  	uint32_t d;
+> -	uint16_t status;
+> +	uint32_t status;
+>  	size_t i, j;
+>  	unsigned int timeout;
+> 
+> @@ -661,8 +706,25 @@ static void jz4740_mmc_send_command(struct
+> jz4740_mmc_host *host,
+>  		cmdat |= JZ_MMC_CMDAT_DATA_EN;
+>  		if (cmd->data->flags & MMC_DATA_WRITE)
+>  			cmdat |= JZ_MMC_CMDAT_WRITE;
+> -		if (host->use_dma)
+> -			cmdat |= JZ_MMC_CMDAT_DMA_EN;
+> +		if (host->use_dma) {
+> +			/*
+> +			 * The 4780's MMC controller has integrated DMA ability
+> +			 * in addition to being able to use the external DMA
+> +			 * controller. It moves DMA control bits to a separate
+> +			 * register. The DMA_SEL bit chooses the external
+> +			 * controller over the integrated one. Earlier SoCs
+> +			 * can only use the external controller, and have a
+> +			 * single DMA enable bit in CMDAT.
+> +			 */
+> +			if (host->version >= JZ_MMC_JZ4780) {
+> +				writel(JZ_MMC_DMAC_DMA_EN | JZ_MMC_DMAC_DMA_SEL,
+> +				       host->base + JZ_REG_MMC_DMAC);
+> +			} else {
+> +				cmdat |= JZ_MMC_CMDAT_DMA_EN;
+> +			}
+> +		} else if (host->version >= JZ_MMC_JZ4780) {
+> +			writel(0, host->base + JZ_REG_MMC_DMAC);
+> +		}
+> 
+>  		writew(cmd->data->blksz, host->base + JZ_REG_MMC_BLKLEN);
+>  		writew(cmd->data->blocks, host->base + JZ_REG_MMC_NOB);
+> @@ -743,7 +805,7 @@ static irqreturn_t jz_mmc_irq_worker(int irq, void 
+> *devid)
+>  			host->state = JZ4740_MMC_STATE_SEND_STOP;
+>  			break;
+>  		}
+> -		writew(JZ_MMC_IRQ_DATA_TRAN_DONE, host->base + JZ_REG_MMC_IREG);
+> +		host->write_irq_reg(host, JZ_MMC_IRQ_DATA_TRAN_DONE);
+> 
+>  	case JZ4740_MMC_STATE_SEND_STOP:
+>  		if (!req->stop)
+> @@ -773,9 +835,10 @@ static irqreturn_t jz_mmc_irq(int irq, void 
+> *devid)
+>  {
+>  	struct jz4740_mmc_host *host = devid;
+>  	struct mmc_command *cmd = host->cmd;
+> -	uint16_t irq_reg, status, tmp;
+> +	uint32_t irq_reg, status, tmp;
+> 
+> -	irq_reg = readw(host->base + JZ_REG_MMC_IREG);
+> +	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	irq_reg = host->read_irq_reg(host);
+> 
+>  	tmp = irq_reg;
+>  	irq_reg &= ~host->irq_mask;
+> @@ -784,10 +847,10 @@ static irqreturn_t jz_mmc_irq(int irq, void 
+> *devid)
+>  		JZ_MMC_IRQ_PRG_DONE | JZ_MMC_IRQ_DATA_TRAN_DONE);
+> 
+>  	if (tmp != irq_reg)
+> -		writew(tmp & ~irq_reg, host->base + JZ_REG_MMC_IREG);
+> +		host->write_irq_reg(host, tmp & ~irq_reg);
+> 
+>  	if (irq_reg & JZ_MMC_IRQ_SDIO) {
+> -		writew(JZ_MMC_IRQ_SDIO, host->base + JZ_REG_MMC_IREG);
+> +		host->write_irq_reg(host, JZ_MMC_IRQ_SDIO);
+>  		mmc_signal_sdio_irq(host->mmc);
+>  		irq_reg &= ~JZ_MMC_IRQ_SDIO;
+>  	}
+> @@ -796,8 +859,6 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
+>  		if (test_and_clear_bit(0, &host->waiting)) {
+>  			del_timer(&host->timeout_timer);
+> 
+> -			status = readl(host->base + JZ_REG_MMC_STATUS);
+> -
+>  			if (status & JZ_MMC_STATUS_TIMEOUT_RES) {
+>  					cmd->error = -ETIMEDOUT;
+>  			} else if (status & JZ_MMC_STATUS_CRC_RES_ERR) {
+> @@ -810,7 +871,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
+>  			}
+> 
+>  			jz4740_mmc_set_irq_enabled(host, irq_reg, false);
+> -			writew(irq_reg, host->base + JZ_REG_MMC_IREG);
+> +			host->write_irq_reg(host, irq_reg);
+> 
+>  			return IRQ_WAKE_THREAD;
+>  		}
+> @@ -844,9 +905,7 @@ static void jz4740_mmc_request(struct mmc_host
+> *mmc, struct mmc_request *req)
+> 
+>  	host->req = req;
+> 
+> -	writew(0xffff, host->base + JZ_REG_MMC_IREG);
+> -
+> -	writew(JZ_MMC_IRQ_END_CMD_RES, host->base + JZ_REG_MMC_IREG);
+> +	host->write_irq_reg(host, ~0);
+>  	jz4740_mmc_set_irq_enabled(host, JZ_MMC_IRQ_END_CMD_RES, true);
+> 
+>  	host->state = JZ4740_MMC_STATE_READ_RESPONSE;
+> @@ -973,6 +1032,7 @@ static void jz4740_mmc_free_gpios(struct
+> platform_device *pdev)
+> 
+>  static const struct of_device_id jz4740_mmc_of_match[] = {
+>  	{ .compatible = "ingenic,jz4740-mmc", .data = (void *) JZ_MMC_JZ4740 
+> },
+> +	{ .compatible = "ingenic,jz4780-mmc", .data = (void *) JZ_MMC_JZ4780 
+> },
+>  	{},
+>  };
+>  MODULE_DEVICE_TABLE(of, jz4740_mmc_of_match);
+> @@ -1017,6 +1077,19 @@ static int jz4740_mmc_probe(struct 
+> platform_device* pdev)
+>  			goto err_free_host;
+>  	}
+> 
+> +	if (host->version >= JZ_MMC_JZ4780) {
+> +		host->write_irq_reg = jz4780_mmc_write_irq_reg;
+> +		host->read_irq_reg = jz4780_mmc_read_irq_reg;
+> +	} else {
+> +		host->write_irq_reg = jz4740_mmc_write_irq_reg;
+> +		host->read_irq_reg = jz4740_mmc_read_irq_reg;
+> +	}
+> +
+> +	if (host->version >= JZ_MMC_JZ4750)
+> +		host->write_irq_mask = jz4750_mmc_write_irq_mask;
+> +	else
+> +		host->write_irq_mask = jz4740_mmc_write_irq_mask;
+> +
+>  	host->irq = platform_get_irq(pdev, 0);
+>  	if (host->irq < 0) {
+>  		ret = host->irq;
+> @@ -1055,7 +1128,7 @@ static int jz4740_mmc_probe(struct 
+> platform_device* pdev)
+>  	host->mmc = mmc;
+>  	host->pdev = pdev;
+>  	spin_lock_init(&host->lock);
+> -	host->irq_mask = 0xffff;
+> +	host->irq_mask = ~0;
+> 
+>  	jz4740_mmc_reset(host);

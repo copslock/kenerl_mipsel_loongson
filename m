@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 20:47:31 +0200 (CEST)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:38962
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993928AbeC1SrYwnVsz convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 20:48:37 +0200 (CEST)
+Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:35377
+        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993973AbeC1SsaVvU6z convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Mar 2018 20:47:24 +0200
-Received: by mail-lf0-x242.google.com with SMTP id p142-v6so4929973lfd.6;
-        Wed, 28 Mar 2018 11:47:24 -0700 (PDT)
+        Wed, 28 Mar 2018 20:48:30 +0200
+Received: by mail-lf0-x244.google.com with SMTP id t132-v6so4954879lfe.2;
+        Wed, 28 Mar 2018 11:48:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:subject:from:in-reply-to:date:cc
          :content-transfer-encoding:message-id:references:to;
-        bh=egK4Hy+FSMVRapLItJLtWI4tYDufyZsulm/WqkNWwpk=;
-        b=rho/w/GdqJxAuE5Zb9qX5hYgtEFMkl+4bKPLAesLv2h23Ls1RLt2o7h9vigxREBmwW
-         oJc7zB8l7tTWE6vnFnZ8UOaCDrPTjbNu0wNyvPwnIr/izGzSQFKnQ/ckivvAckB3neM/
-         wIaE4MNMjW8NN7Nn78+B6nial1Me7lo+tjQ/cRNntsYuZCe96d14RdObNEQYOkNV9ico
-         cLJNsqGKNH/fgq6/ECk8h6q5oxnM3KJKWpIpLI27yQ978Q6hcrQdC1pnmBQprMfZfIWL
-         Tsq/fhuvpSPik66hB7ybw8drTgKHhl3sfCUmh3OESwX8ZD15e6cKCwWXZL0q1JsfS9/k
-         Kp6w==
+        bh=f+re0HW/85NsVu/LcchDagF2oAbLnTK285vXqWgR0wo=;
+        b=CD1wumWZSUY5qmKZuBBdEik1FbB1ON9wPMkNWAGm+C+H0J4OsDvYI3Xa15REqf8gXq
+         0D4UvADPl6+TJ7K9OhzbxbY5jKPHXyzK9HBSCvwE2a5x3rsO2+1txf/+Eg1vvgalG++r
+         3kHiFLki6AevUnXf34z3UHgayXT4D/iV8PLy/Iqk/OpCu+sQaV7ZYj7RquWO4Yrd677i
+         nJbq9TzpDi8f+foLTeoZPBJkXyJ3UIb32SyLiuDNuT4HjxMJ2almwXn2YGXcNrJ60xke
+         F5Yu4qj162FQhuKICDEsgcbRqknXIvTAE9S+Boq9jnTFE8o+o3XKRQzLBktJF3d3LRa+
+         KoQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
          :content-transfer-encoding:message-id:references:to;
-        bh=egK4Hy+FSMVRapLItJLtWI4tYDufyZsulm/WqkNWwpk=;
-        b=DnlH2yDnF9+M8QdSNlwq3vcifm345gKOfSvtZ7aAPG3OyrtBbMSSVfdvriSlCfO5m7
-         JNZGyZ3gl3LW6VHVZUWvhjON4bQCEaRnJnxxqZbSOpu/l0xQ80BvfqX2Rr/jcN+1F8S6
-         UmVa8Rv/PysEvl+MY7W8zLIqu2N2vNmp8Xz/9PXwm5GOtPhhYJTqcyAY3GWRSzQ4auxJ
-         jQZQzpd9MAnEzy8CFlAQ2iTk9peJVAFHtgraeZLEpoXyaOiIODKpk7xeicSivNhmgjbi
-         o/iKbauZFSBBsYk3TFaj/6ynvqv8lKu984zR9/d0uOf79EnAWhT1YQOveL1/XvrbfEkW
-         /ijg==
-X-Gm-Message-State: AElRT7F0n+aEYajj9sFlwGZlMRoyLMu1iiY0LGaWjiOCAFob3SxqQVx0
-        pktsA79X1sml6nMH1s2lWi0=
-X-Google-Smtp-Source: AIpwx4+lsHvtjhLjCcXjBXBn1z49okua4IaPsbe3rtqidSroBGFiCxGLbyqUhhZnyXsQU/PgVs+kPg==
-X-Received: by 10.46.151.213 with SMTP id m21mr3169611ljj.31.1522262839209;
-        Wed, 28 Mar 2018 11:47:19 -0700 (PDT)
+        bh=f+re0HW/85NsVu/LcchDagF2oAbLnTK285vXqWgR0wo=;
+        b=RTq+kI6Yq00bXdaQ4FmrDRhxk6oQkH4zrjl3v5GZOIz73xRGKgDfKMLE5IgUHGkns9
+         UqSooD3Y7hQGOyr8VgPvn0nLmHgwUe4LJuK6XsZJhvly0fMDkP3LlZCLrq3EnvjLDw8s
+         wmWMqAXLpiR/h2DlgkKxXL4S3x3TQLi5eLc+jIlqTxT3rGoFAWom3njT+/ee62I8/oog
+         6MjrGZk6luCav9VrIlneblY9yUmtjSAIJwlIEY/5mMkDzUY3XDbCoHr2dNu4vzw6XDGA
+         0uiVsEtaHtvL/y7k950YwI52oldw0Ikb56kqjjDyxWeeFJpmQZxOyZV/O2Rc9IBu9Vh5
+         7t0w==
+X-Gm-Message-State: AElRT7GuSoNx62NNv44SxG2pAZ1jLd+e2mA5uGIriedAEZHDRFucsGjw
+        2UbKdho+Q+XlwL5xynAe4cM=
+X-Google-Smtp-Source: AIpwx4+dwqVh1nEI930koA5Dbyw10gOxThstZ0P3Ms8fC+CWW2blWEE7IBEbV7AOxZv1966jnFaIUg==
+X-Received: by 10.46.129.7 with SMTP id d7mr3425773ljg.148.1522262904968;
+        Wed, 28 Mar 2018 11:48:24 -0700 (PDT)
 Received: from [192.168.1.3] (broadband-188-255-70-164.moscow.rt.ru. [188.255.70.164])
-        by smtp.gmail.com with ESMTPSA id x22sm715106ljj.74.2018.03.28.11.47.16
+        by smtp.gmail.com with ESMTPSA id q28-v6sm804487lfq.63.2018.03.28.11.48.22
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Mar 2018 11:47:17 -0700 (PDT)
+        Wed, 28 Mar 2018 11:48:24 -0700 (PDT)
 Content-Type: text/plain;
         charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 11.2 \(3445.5.20\))
 Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
 From:   Ilya Smith <blackzert@gmail.com>
-In-Reply-To: <20180327143820.GH5652@dhcp22.suse.cz>
-Date:   Wed, 28 Mar 2018 21:47:15 +0300
-Cc:     Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
+In-Reply-To: <20180327221635.GA3790@thunk.org>
+Date:   Wed, 28 Mar 2018 21:48:22 +0300
+Cc:     Michal Hocko <mhocko@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
         ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
         linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
         ralf@linux-mips.org, jejb@parisc-linux.org,
@@ -74,7 +75,7 @@ Cc:     Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
 Content-Transfer-Encoding: 8BIT
-Message-Id: <F9D157F8-F70F-45BC-B9E4-B5CB7CC419F4@gmail.com>
+Message-Id: <B217D90A-6200-4257-804A-50D6C0308470@gmail.com>
 References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
  <20180323124806.GA5624@bombadil.infradead.org>
  <651E0DB6-4507-4DA1-AD46-9C26ED9792A8@gmail.com>
@@ -82,14 +83,14 @@ References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
  <01A133F4-27DF-4AE2-80D6-B0368BF758CD@gmail.com>
  <20180327072432.GY5652@dhcp22.suse.cz>
  <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
- <20180327143820.GH5652@dhcp22.suse.cz>
-To:     Michal Hocko <mhocko@kernel.org>
+ <20180327221635.GA3790@thunk.org>
+To:     "Theodore Y. Ts'o" <tytso@mit.edu>
 X-Mailer: Apple Mail (2.3445.5.20)
 Return-Path: <blackzert@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63299
+X-archive-position: 63300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -106,82 +107,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-> On 27 Mar 2018, at 17:38, Michal Hocko <mhocko@kernel.org> wrote:
+> On 28 Mar 2018, at 01:16, Theodore Y. Ts'o <tytso@mit.edu> wrote:
 > 
-> On Tue 27-03-18 16:51:08, Ilya Smith wrote:
+> On Tue, Mar 27, 2018 at 04:51:08PM +0300, Ilya Smith wrote:
+>>> /dev/[u]random is not sufficient?
 >> 
->>> On 27 Mar 2018, at 10:24, Michal Hocko <mhocko@kernel.org> wrote:
->>> 
->>> On Mon 26-03-18 22:45:31, Ilya Smith wrote:
->>>> 
->>>>> On 26 Mar 2018, at 11:46, Michal Hocko <mhocko@kernel.org> wrote:
->>>>> 
->>>>> On Fri 23-03-18 20:55:49, Ilya Smith wrote:
->>>>>> 
->>>>>>> On 23 Mar 2018, at 15:48, Matthew Wilcox <willy@infradead.org> wrote:
->>>>>>> 
->>>>>>> On Thu, Mar 22, 2018 at 07:36:36PM +0300, Ilya Smith wrote:
->>>>>>>> Current implementation doesn't randomize address returned by mmap.
->>>>>>>> All the entropy ends with choosing mmap_base_addr at the process
->>>>>>>> creation. After that mmap build very predictable layout of address
->>>>>>>> space. It allows to bypass ASLR in many cases. This patch make
->>>>>>>> randomization of address on any mmap call.
->>>>>>> 
->>>>>>> Why should this be done in the kernel rather than libc?  libc is perfectly
->>>>>>> capable of specifying random numbers in the first argument of mmap.
->>>>>> Well, there is following reasons:
->>>>>> 1. It should be done in any libc implementation, what is not possible IMO;
->>>>> 
->>>>> Is this really so helpful?
->>>> 
->>>> Yes, ASLR is one of very important mitigation techniques which are really used 
->>>> to protect applications. If there is no ASLR, it is very easy to exploit 
->>>> vulnerable application and compromise the system. We can’t just fix all the 
->>>> vulnerabilities right now, thats why we have mitigations - techniques which are 
->>>> makes exploitation more hard or impossible in some cases.
->>>> 
->>>> Thats why it is helpful.
->>> 
->>> I am not questioning ASLR in general. I am asking whether we really need
->>> per mmap ASLR in general. I can imagine that some environments want to
->>> pay the additional price and other side effects, but considering this
->>> can be achieved by libc, why to add more code to the kernel?
+>> Using /dev/[u]random makes 3 syscalls - open, read, close. This is a performance
+>> issue.
+> 
+> You may want to take a look at the getrandom(2) system call, which is
+> the recommended way getting secure random numbers from the kernel.
+> 
+>>> Well, I am pretty sure userspace can implement proper free ranges
+>>> tracking…
 >> 
->> I believe this is the only one right place for it. Adding these 200+ lines of 
->> code we give this feature for any user - on desktop, on server, on IoT device, 
->> on SCADA, etc. But if only glibc will implement ‘user-mode-aslr’ IoT and SCADA 
->> devices will never get it.
+>> I think we need to know what libc developers will say on implementing ASLR in 
+>> user-mode. I am pretty sure they will say ‘nether’ or ‘some-day’. And problem 
+>> of ASLR will stay forever.
 > 
-> I guess it would really help if you could be more specific about the
-> class of security issues this would help to mitigate. My first
-> understanding was that we we need some randomization between program
-> executable segments to reduce the attack space when a single address
-> leaks and you know the segments layout (ordering). But why do we need
-> _all_ mmaps to be randomized. Because that complicates the
-> implementation consirably for different reasons you have mentioned
-> earlier.
+> Why can't you send patches to the libc developers?
 > 
+> Regards,
+> 
+> 						- Ted
 
-There are following reasons:
-1) To protect layout if one region was leaked (as you said). 
-2) To protect against exploitation of Out-of-bounds vulnerabilities in some 
-cases (CWE-125 , CWE-787)
-3) To protect against exploitation of Buffer Overflows in some cases (CWE-120)
-4) To protect application in cases when attacker need to guess the address 
-(paper ASLR-NG by  Hector Marco-Gisbert and  Ismael Ripoll-Ripoll)
-And may be more cases.
+I still believe the issue is on kernel side, not in library.
 
-> Do you have any specific CVE that would be mitigated by this
-> randomization approach?
-> I am sorry, I am not a security expert to see all the cosequences but a
-> vague - the more randomization the better - sounds rather weak to me.
-
-It is hard to name concrete CVE number, sorry. Mitigations are made to prevent 
-exploitation but not to fix vulnerabilities. It means good mitigation will make 
-vulnerable application crash but not been compromised in most cases. This means 
-the better randomization, the less successful exploitation rate.
-
-
-Thanks,
+Best regards,
 Ilya

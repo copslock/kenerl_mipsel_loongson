@@ -1,90 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 02:01:01 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49384 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993946AbeC1AAweSik2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 02:00:52 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1f0yVt-0002bx-00; Wed, 28 Mar 2018 00:00:25 +0000
-Date:   Tue, 27 Mar 2018 20:00:25 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Ilya Smith <blackzert@gmail.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Richard Henderson <rth@twiddle.net>, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
-        nyc@holomorphy.com, Al Viro <viro@zeniv.linux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Hugh Dickins <hughd@google.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steve Capper <steve.capper@arm.com>,
-        Punit Agrawal <punit.agrawal@arm.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Nick Piggin <npiggin@gmail.com>,
-        Bhupesh Sharma <bhsharma@redhat.com>,
-        Rik van Riel <riel@redhat.com>, nitin.m.gupta@oracle.com,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jan Kara <jack@suse.cz>,
-        Ross Zwisler <ross.zwisler@linux.intel.com>,
-        Jerome Glisse <jglisse@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        PowerPC <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-sh <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-Message-ID: <20180328000025.GM1436@brightrain.aerifal.cx>
-References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
- <20180323124806.GA5624@bombadil.infradead.org>
- <651E0DB6-4507-4DA1-AD46-9C26ED9792A8@gmail.com>
- <20180326084650.GC5652@dhcp22.suse.cz>
- <01A133F4-27DF-4AE2-80D6-B0368BF758CD@gmail.com>
- <20180327072432.GY5652@dhcp22.suse.cz>
- <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
- <CAGXu5j+XXufprMaJ9GbHxD3mZ7iqUuu60-tTMC6wo2x1puYzMQ@mail.gmail.com>
- <20180327234904.GA27734@bombadil.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180327234904.GA27734@bombadil.infradead.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dalias@aerifal.cx>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 03:14:50 +0200 (CEST)
+Received: from mail-ot0-f194.google.com ([74.125.82.194]:38506 "EHLO
+        mail-ot0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993928AbeC1BOnf0lMv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 03:14:43 +0200
+Received: by mail-ot0-f194.google.com with SMTP id o9-v6so893294otj.5;
+        Tue, 27 Mar 2018 18:14:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=SUQLHL66pH6btyCEjbd+nFypxi48HUBoAY1xDeQLBAE=;
+        b=FFZu7DKe3bBeL2+lqwgccej4DOnVRHtmyuunYpYvcUZ5I34lhM20DZZ0JyPkjfK86G
+         CoSZBcevm+yBXW1OM/XDJX/dMicMM3MoeY+O+SEm8LmDnmKob79yay7CSfXcqIKxx2BV
+         z+zfPg0SUcKscj9kCmQ7hlpJMFL4QXRhN+j+EpRmZTf49UJ6PAZ8AqJv8mSntnbpQx8c
+         G3h02UHSlUs67c2loai4zjeOMHBvokEM+R3vjX7gktVf4yRI3wH67zN9KqUgRmcwrmvS
+         16e6sCy37Om7NehK9NOJuYRdXP9LDvaqnJyup7scHUjR2A3e/2ISrY+oAfD3RbSUOgGe
+         jNyQ==
+X-Gm-Message-State: ALQs6tAlDduF1zMuBbQ+cAC1cb7tGy7Agk3C4icOR9osfhK/ChhpIzFX
+        JLHOyE4GBOIu0zVs5SiItw==
+X-Google-Smtp-Source: AIpwx4+JH8vtdiFN3aK0YueADVhrb76JMwXc/Rb8K3cjq7ApQLFAzkXGAlDgI0fSfQAzm42ms8suvw==
+X-Received: by 2002:a9d:4c06:: with SMTP id l6-v6mr930164otf.143.1522199677430;
+        Tue, 27 Mar 2018 18:14:37 -0700 (PDT)
+Received: from xps15.herring.priv (216-188-254-6.dyn.grandenetworks.net. [216.188.254.6])
+        by smtp.googlemail.com with ESMTPSA id o39-v6sm1584509oto.10.2018.03.27.18.14.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Mar 2018 18:14:36 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: ralink: use memblock instead of rescanning the FDT
+Date:   Tue, 27 Mar 2018 20:14:35 -0500
+Message-Id: <20180328011435.29776-1-robh@kernel.org>
+X-Mailer: git-send-email 2.14.1
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63271
+X-archive-position: 63272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@libc.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,24 +53,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 27, 2018 at 04:49:04PM -0700, Matthew Wilcox wrote:
-> On Tue, Mar 27, 2018 at 03:53:53PM -0700, Kees Cook wrote:
-> > I agree: pushing this off to libc leaves a lot of things unprotected.
-> > I think this should live in the kernel. The question I have is about
-> > making it maintainable/readable/etc.
-> > 
-> > The state-of-the-art for ASLR is moving to finer granularity (over
-> > just base-address offset), so I'd really like to see this supported in
-> > the kernel. We'll be getting there for other things in the future, and
-> > I'd like to have a working production example for researchers to
-> > study, etc.
-> 
-> One thing we need is to limit the fragmentation of this approach.
-> Even on 64-bit systems, we can easily get into a situation where there isn't
-> space to map a contiguous terabyte.
+There's no need to scan /memory nodes twice. The DT core code scans
+nodes and adds memblocks already, so we can just use
+memblock_phys_mem_size() to see if we have any memory already setup.
 
-The default limit of only 65536 VMAs will also quickly come into play
-if consecutive anon mmaps don't get merged. Of course this can be
-raised, but it has significant resource and performance (fork) costs.
+Signed-off-by: Rob Herring <robh@kernel.org>
+Cc: John Crispin <john@phrozen.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/ralink/of.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-Rich
+diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
+index 1ada8492733b..cf3b01b5c624 100644
+--- a/arch/mips/ralink/of.c
++++ b/arch/mips/ralink/of.c
+@@ -14,7 +14,7 @@
+ #include <linux/sizes.h>
+ #include <linux/of_fdt.h>
+ #include <linux/kernel.h>
+-#include <linux/bootmem.h>
++#include <linux/memblock.h>
+ #include <linux/of_platform.h>
+ #include <linux/of_address.h>
+ 
+@@ -53,17 +53,6 @@ void __init device_tree_init(void)
+ 	unflatten_and_copy_device_tree();
+ }
+ 
+-static int memory_dtb;
+-
+-static int __init early_init_dt_find_memory(unsigned long node,
+-				const char *uname, int depth, void *data)
+-{
+-	if (depth == 1 && !strcmp(uname, "memory@0"))
+-		memory_dtb = 1;
+-
+-	return 0;
+-}
+-
+ void __init plat_mem_setup(void)
+ {
+ 	void *dtb = NULL;
+@@ -82,10 +71,10 @@ void __init plat_mem_setup(void)
+ 
+ 	__dt_setup_arch(dtb);
+ 
+-	of_scan_flat_dt(early_init_dt_find_memory, NULL);
+-	if (memory_dtb)
+-		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+-	else if (soc_info.mem_size)
++	if (memblock_phys_mem_size())
++		return;
++
++	if (soc_info.mem_size)
+ 		add_memory_region(soc_info.mem_base, soc_info.mem_size * SZ_1M,
+ 				  BOOT_MEM_RAM);
+ 	else
+-- 
+2.14.1

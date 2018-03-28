@@ -1,100 +1,153 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 20:48:37 +0200 (CEST)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:35377
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993973AbeC1SsaVvU6z convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Mar 2018 20:48:30 +0200
-Received: by mail-lf0-x244.google.com with SMTP id t132-v6so4954879lfe.2;
-        Wed, 28 Mar 2018 11:48:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 21:04:55 +0200 (CEST)
+Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:35866
+        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993928AbeC1TEsX0Upz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 21:04:48 +0200
+Received: by mail-it0-x241.google.com with SMTP id c1-v6so4950745itj.1
+        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2018 12:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=f+re0HW/85NsVu/LcchDagF2oAbLnTK285vXqWgR0wo=;
-        b=CD1wumWZSUY5qmKZuBBdEik1FbB1ON9wPMkNWAGm+C+H0J4OsDvYI3Xa15REqf8gXq
-         0D4UvADPl6+TJ7K9OhzbxbY5jKPHXyzK9HBSCvwE2a5x3rsO2+1txf/+Eg1vvgalG++r
-         3kHiFLki6AevUnXf34z3UHgayXT4D/iV8PLy/Iqk/OpCu+sQaV7ZYj7RquWO4Yrd677i
-         nJbq9TzpDi8f+foLTeoZPBJkXyJ3UIb32SyLiuDNuT4HjxMJ2almwXn2YGXcNrJ60xke
-         F5Yu4qj162FQhuKICDEsgcbRqknXIvTAE9S+Boq9jnTFE8o+o3XKRQzLBktJF3d3LRa+
-         KoQw==
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=nsww98XQlMaNSmVYGKNwLCezcXkLKeBGQ9idADJewTA=;
+        b=o5dilxzqzV6KnPrd37oA/t5ikhzAoaQEn38cC6FUKUWDlLF7J26VG3J8vvoQjpE9v4
+         sX+kJ+yMU/+XJniI7IHI+XVvTI3HOpi/FGIe0gNpgHompj53bCp3NmQxXFpuEFwZvKYG
+         MwhP6oyamSta84VY/0bjNlMr9e7cy//1VmLHFbNmQtjZNDcOpOZbOicsuEJ80yjPLVnf
+         y77Ir1JQwh+bQMTiH9rsXpc/BejOdjFOO6dp9ByseZzxZbYzuQXb8gby3Tp6fCn8CZOW
+         hhKkL4EJuKb2LilYNL9O03He8lOdibOCyd7K5otpCUgITdxfP9zVFBpUuxhAqIybYqBQ
+         7pqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=f+re0HW/85NsVu/LcchDagF2oAbLnTK285vXqWgR0wo=;
-        b=RTq+kI6Yq00bXdaQ4FmrDRhxk6oQkH4zrjl3v5GZOIz73xRGKgDfKMLE5IgUHGkns9
-         UqSooD3Y7hQGOyr8VgPvn0nLmHgwUe4LJuK6XsZJhvly0fMDkP3LlZCLrq3EnvjLDw8s
-         wmWMqAXLpiR/h2DlgkKxXL4S3x3TQLi5eLc+jIlqTxT3rGoFAWom3njT+/ee62I8/oog
-         6MjrGZk6luCav9VrIlneblY9yUmtjSAIJwlIEY/5mMkDzUY3XDbCoHr2dNu4vzw6XDGA
-         0uiVsEtaHtvL/y7k950YwI52oldw0Ikb56kqjjDyxWeeFJpmQZxOyZV/O2Rc9IBu9Vh5
-         7t0w==
-X-Gm-Message-State: AElRT7GuSoNx62NNv44SxG2pAZ1jLd+e2mA5uGIriedAEZHDRFucsGjw
-        2UbKdho+Q+XlwL5xynAe4cM=
-X-Google-Smtp-Source: AIpwx4+dwqVh1nEI930koA5Dbyw10gOxThstZ0P3Ms8fC+CWW2blWEE7IBEbV7AOxZv1966jnFaIUg==
-X-Received: by 10.46.129.7 with SMTP id d7mr3425773ljg.148.1522262904968;
-        Wed, 28 Mar 2018 11:48:24 -0700 (PDT)
-Received: from [192.168.1.3] (broadband-188-255-70-164.moscow.rt.ru. [188.255.70.164])
-        by smtp.gmail.com with ESMTPSA id q28-v6sm804487lfq.63.2018.03.28.11.48.22
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nsww98XQlMaNSmVYGKNwLCezcXkLKeBGQ9idADJewTA=;
+        b=Mdx6s1nxgKhdv48T0bpOzEQWou4vCT8mCE9OAgNYsf82f3IPxtPlDpDOk5a1lnU2ZE
+         kSnnJEU6uxutTVo7EZ8D/WbgS0TWatiIKFeBHBY0ShTmaK7/5l725DBcdsya9lQ5wxhP
+         J4pO84a+1EyVy8Pbruo89IrYADwkJK2ah44/9ZXYShpAJHPguJt56hluOxO5npahKzSk
+         02XnQOxNdUY87+6ecLwVE5Nq2vrrQXgbQNHmlGLxzAvFn7MIj0NDrg3f/F9dn9M4CXek
+         NxKo0csLhUcYIv0dfKw6mVPNLlW3Xa1mL2UwM7muXuH5sLuD9ie1Ej9+b0YXjAXdtVK8
+         A/3A==
+X-Gm-Message-State: ALQs6tBzbDRNlcbxb+saAUshNeTtCV0J5MykREAx5P33R5TzDrn9O9Y/
+        Xn2EEXvRY8e1bLyJoA2lofTQPw==
+X-Google-Smtp-Source: AIpwx4/c3srh0pDtFCNBi9vz7kcNkO/xIaKar/eM0VFokeFeVAXY+zQsaV9+49SYu9uvE3vMjbAtMA==
+X-Received: by 2002:a24:ad1a:: with SMTP id c26-v6mr4638384itf.152.1522263882059;
+        Wed, 28 Mar 2018 12:04:42 -0700 (PDT)
+Received: from [192.168.42.97] ([172.58.139.228])
+        by smtp.googlemail.com with ESMTPSA id c101sm2993790iod.26.2018.03.28.12.04.23
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Mar 2018 11:48:24 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 11.2 \(3445.5.20\))
-Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-From:   Ilya Smith <blackzert@gmail.com>
-In-Reply-To: <20180327221635.GA3790@thunk.org>
-Date:   Wed, 28 Mar 2018 21:48:22 +0300
-Cc:     Michal Hocko <mhocko@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
-        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, jejb@parisc-linux.org,
-        Helge Deller <deller@gmx.de>, benh@kernel.crashing.org,
-        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
-        nyc@holomorphy.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
-        gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
-        Hugh Dickins <hughd@google.com>, kstewart@linuxfoundation.org,
-        pombredanne@nexb.com, Andrew Morton <akpm@linux-foundation.org>,
-        steve.capper@arm.com, punit.agrawal@arm.com,
-        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
-        Kees Cook <keescook@chromium.org>, bhsharma@redhat.com,
-        riel@redhat.com, nitin.m.gupta@oracle.com,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Wed, 28 Mar 2018 12:04:41 -0700 (PDT)
+Subject: Re: [PATCH] Extract initrd free logic from arch-specific code.
+To:     Russell King - ARM Linux <linux@armlinux.org.uk>
+Cc:     Shea Levy <shea@shealevy.com>, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        James Hogan <jhogan@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <albert@sifive.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>, Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Vladimir Murzin <vladimir.murzin@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Balbir Singh <bsingharora@gmail.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Joe Perches <joe@perches.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
         Dan Williams <dan.j.williams@intel.com>,
-        Jan Kara <jack@suse.cz>, ross.zwisler@linux.intel.com,
-        Jerome Glisse <jglisse@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        Wei Yang <richard.weiyang@gmail.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <B217D90A-6200-4257-804A-50D6C0308470@gmail.com>
-References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
- <20180323124806.GA5624@bombadil.infradead.org>
- <651E0DB6-4507-4DA1-AD46-9C26ED9792A8@gmail.com>
- <20180326084650.GC5652@dhcp22.suse.cz>
- <01A133F4-27DF-4AE2-80D6-B0368BF758CD@gmail.com>
- <20180327072432.GY5652@dhcp22.suse.cz>
- <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
- <20180327221635.GA3790@thunk.org>
-To:     "Theodore Y. Ts'o" <tytso@mit.edu>
-X-Mailer: Apple Mail (2.3445.5.20)
-Return-Path: <blackzert@gmail.com>
+        sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        linux-xtensa@linux-xtensa.org
+References: <20180325221853.10839-1-shea@shealevy.com>
+ <20180328152714.6103-1-shea@shealevy.com>
+ <05620fee-e8b5-0668-77b8-da073dc78c40@landley.net>
+ <20180328164813.GA3888@n2100.armlinux.org.uk>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <de092e7f-0bc9-bb06-9798-12784930a6bd@landley.net>
+Date:   Wed, 28 Mar 2018 14:04:22 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <20180328164813.GA3888@n2100.armlinux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <rob@landley.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63300
+X-archive-position: 63301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blackzert@gmail.com
+X-original-sender: rob@landley.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -107,31 +160,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> On 28 Mar 2018, at 01:16, Theodore Y. Ts'o <tytso@mit.edu> wrote:
-> 
-> On Tue, Mar 27, 2018 at 04:51:08PM +0300, Ilya Smith wrote:
->>> /dev/[u]random is not sufficient?
->> 
->> Using /dev/[u]random makes 3 syscalls - open, read, close. This is a performance
->> issue.
-> 
-> You may want to take a look at the getrandom(2) system call, which is
-> the recommended way getting secure random numbers from the kernel.
-> 
->>> Well, I am pretty sure userspace can implement proper free ranges
->>> tracking…
->> 
->> I think we need to know what libc developers will say on implementing ASLR in 
->> user-mode. I am pretty sure they will say ‘nether’ or ‘some-day’. And problem 
->> of ASLR will stay forever.
-> 
-> Why can't you send patches to the libc developers?
-> 
-> Regards,
-> 
-> 						- Ted
 
-I still believe the issue is on kernel side, not in library.
 
-Best regards,
-Ilya
+On 03/28/2018 11:48 AM, Russell King - ARM Linux wrote:
+> On Wed, Mar 28, 2018 at 10:58:51AM -0500, Rob Landley wrote:
+>> On 03/28/2018 10:26 AM, Shea Levy wrote:
+>>> Now only those architectures that have custom initrd free requirements
+>>> need to define free_initrd_mem.
+>> ...
+>>> --- a/arch/arc/mm/init.c
+>>> +++ b/arch/arc/mm/init.c
+>>> @@ -229,10 +229,3 @@ void __ref free_initmem(void)
+>>>  {
+>>>  	free_initmem_default(-1);
+>>>  }
+>>> -
+>>> -#ifdef CONFIG_BLK_DEV_INITRD
+>>> -void __init free_initrd_mem(unsigned long start, unsigned long end)
+>>> -{
+>>> -	free_reserved_area((void *)start, (void *)end, -1, "initrd");
+>>> -}
+>>> -#endif
+>>> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+>>> index 3f972e83909b..19d1c5594e2d 100644
+>>> --- a/arch/arm/Kconfig
+>>> +++ b/arch/arm/Kconfig
+>>> @@ -47,6 +47,7 @@ config ARM
+>>>  	select HARDIRQS_SW_RESEND
+>>>  	select HAVE_ARCH_AUDITSYSCALL if (AEABI && !OABI_COMPAT)
+>>>  	select HAVE_ARCH_BITREVERSE if (CPU_32v7M || CPU_32v7) && !CPU_32v6
+>>> +	select HAVE_ARCH_FREE_INITRD_MEM
+>>>  	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL && !CPU_ENDIAN_BE32 && MMU
+>>>  	select HAVE_ARCH_KGDB if !CPU_ENDIAN_BE32 && MMU
+>>>  	select HAVE_ARCH_MMAP_RND_BITS if MMU
+>>
+>> Isn't this why weak symbols were invented?
+> 
+> Weak symbols means that we end up with both the weakly-referenced code
+> and the arch code in the kernel image.  That's fine if the weak code
+> is small.
+
+The kernel's been able to build with link time garbage collection since 2016:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b67067f1176d
+
+Wouldn't that remove the unused one?
+
+Rob

@@ -1,44 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 17:59:15 +0200 (CEST)
-Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:40978
-        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992368AbeC1P7IcAN2X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 17:59:08 +0200
-Received: by mail-io0-x243.google.com with SMTP id m83so4116029ioi.8
-        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2018 08:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qSDkcmbz+hhYmqe2ncZumACqLvxx9LwbFbBwrEiskLE=;
-        b=RL0IGzUYK4VjO7BnzVR5zspETrUV5hikhNkV3/TKuuKQyc2NSeMP36w4nxksvwU4vG
-         JvhH12V4osNL1UeOKGC15RdMh84F9BLhlg5KUJA91Moq9/8PdJr3OhjXk3H9HLyySi5P
-         menS/9ctrNhaCPpppZtfo21xN8+L1nHITmDfqpAJAL3rVG73vsXN2Bkh049J+9jwaorz
-         iQ4V2qdJtNZneAQ65nQU3FH1FQwNG+i3yAVVYJCxOzF9MULIf0FBEw6Nt8gwfsgQEOCG
-         ZdagY+hnlhACFDWyppY2FityvSWLvJ6gt/2g4XEFvN/m4kmjlj0FUFMjeSbgJXhoekd0
-         m+cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qSDkcmbz+hhYmqe2ncZumACqLvxx9LwbFbBwrEiskLE=;
-        b=PlZfBmU9FBRzmqLE7HyWeIbyWkOVgtwAto9CRElxmbRUMVq/V/C5+2LmDfwSRJ3TCS
-         c8UaDd1/BTPkeVRAX5AWubyBal7X2M3cod6XixjK7ccv12sQTDrAgS0TMoNX2aXLbKbP
-         w0j84K9mJIWE0TS+Xk9Ip1COUm/dbXwgfpryjW3WbSR7Lwhc5Ufc5qe8KsGwJoljseCR
-         0bc9LzQlMbDmOyM9SLFMUqlaqC1w5e7Wo7wFIqlYuzCnOT9ea39EUghuuuEbQqUij/v1
-         ar/pr/lYDUtM9ZqpY7xVRC+8vaD2fPCNbyZyCqCQU1HXc8JVhHEbVJ3wgED3U1G9dFZW
-         jorA==
-X-Gm-Message-State: AElRT7Eyn9RSaa+7iTUQQLKfhk9AGYFeRUoM0llWCBYmGsDD1qQSukkr
-        8RESuCJu8osFnwdcLx9s5VFeDw==
-X-Google-Smtp-Source: AG47ELss7e9gTw/EW5uReqslv5gSdy/QsSqOI9SxFyO+YGUYNMIXTL22ku6bXZmM+LXFQUNNTCNiQQ==
-X-Received: by 10.107.10.219 with SMTP id 88mr51174837iok.259.1522252742117;
-        Wed, 28 Mar 2018 08:59:02 -0700 (PDT)
-Received: from [192.168.42.97] ([172.58.139.228])
-        by smtp.googlemail.com with ESMTPSA id i20sm2805718iod.36.2018.03.28.08.58.52
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Mar 2018 08:59:01 -0700 (PDT)
-Subject: Re: [PATCH] Extract initrd free logic from arch-specific code.
-To:     Shea Levy <shea@shealevy.com>, linux-riscv@lists.infradead.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 18:04:29 +0200 (CEST)
+Received: from smtprelay0174.hostedemail.com ([216.40.44.174]:51981 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992336AbeC1QEWHJavX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 18:04:22 +0200
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 93EAD837F252;
+        Wed, 28 Mar 2018 16:04:18 +0000 (UTC)
+X-Session-Marker: 7368656140736865616C6576792E636F6D
+X-HE-Tag: tin15_7cc987b91425
+X-Filterd-Recvd-Size: 6895
+Received: from localhost (c-71-235-10-46.hsd1.nh.comcast.net [71.235.10.46])
+        (Authenticated sender: shea@shealevy.com)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 28 Mar 2018 16:04:13 +0000 (UTC)
+From:   Shea Levy <shea@shealevy.com>
+To:     Rob Landley <rob@landley.net>, linux-riscv@lists.infradead.org,
         linux-kernel@vger.kernel.org
 Cc:     Christoph Hellwig <hch@infradead.org>,
         Richard Henderson <rth@twiddle.net>,
@@ -105,7 +81,7 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         Oliver O'Halloran <oohall@gmail.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Wei Yang <richard.weiyang@gmail.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Deepa Dinamani <deepa.kernel@gmail.com>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -125,27 +101,23 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         user-mode-linux-devel@lists.sourceforge.net,
         user-mode-linux-user@lists.sourceforge.net,
         linux-xtensa@linux-xtensa.org
-References: <20180325221853.10839-1-shea@shealevy.com>
- <20180328152714.6103-1-shea@shealevy.com>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <05620fee-e8b5-0668-77b8-da073dc78c40@landley.net>
-Date:   Wed, 28 Mar 2018 10:58:51 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+Subject: Re: [PATCH] Extract initrd free logic from arch-specific code.
+In-Reply-To: <05620fee-e8b5-0668-77b8-da073dc78c40@landley.net>
+References: <20180325221853.10839-1-shea@shealevy.com> <20180328152714.6103-1-shea@shealevy.com> <05620fee-e8b5-0668-77b8-da073dc78c40@landley.net>
+Date:   Wed, 28 Mar 2018 12:04:12 -0400
+Message-ID: <877epwtceb.fsf@xps13.shealevy.com>
 MIME-Version: 1.0
-In-Reply-To: <20180328152714.6103-1-shea@shealevy.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <rob@landley.net>
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+Return-Path: <shea@shealevy.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63289
+X-archive-position: 63290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob@landley.net
+X-original-sender: shea@shealevy.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -158,38 +130,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/28/2018 10:26 AM, Shea Levy wrote:
-> Now only those architectures that have custom initrd free requirements
-> need to define free_initrd_mem.
-...
-> --- a/arch/arc/mm/init.c
-> +++ b/arch/arc/mm/init.c
-> @@ -229,10 +229,3 @@ void __ref free_initmem(void)
->  {
->  	free_initmem_default(-1);
->  }
-> -
-> -#ifdef CONFIG_BLK_DEV_INITRD
-> -void __init free_initrd_mem(unsigned long start, unsigned long end)
-> -{
-> -	free_reserved_area((void *)start, (void *)end, -1, "initrd");
-> -}
-> -#endif
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 3f972e83909b..19d1c5594e2d 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -47,6 +47,7 @@ config ARM
->  	select HARDIRQS_SW_RESEND
->  	select HAVE_ARCH_AUDITSYSCALL if (AEABI && !OABI_COMPAT)
->  	select HAVE_ARCH_BITREVERSE if (CPU_32v7M || CPU_32v7) && !CPU_32v6
-> +	select HAVE_ARCH_FREE_INITRD_MEM
->  	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL && !CPU_ENDIAN_BE32 && MMU
->  	select HAVE_ARCH_KGDB if !CPU_ENDIAN_BE32 && MMU
->  	select HAVE_ARCH_MMAP_RND_BITS if MMU
+--=-=-=
+Content-Type: text/plain
 
-Isn't this why weak symbols were invented?
+Hi Rob,
 
-Confused,
+Rob Landley <rob@landley.net> writes:
 
-Rob
+> On 03/28/2018 10:26 AM, Shea Levy wrote:
+>> Now only those architectures that have custom initrd free requirements
+>> need to define free_initrd_mem.
+> ...
+>> --- a/arch/arc/mm/init.c
+>> +++ b/arch/arc/mm/init.c
+>> @@ -229,10 +229,3 @@ void __ref free_initmem(void)
+>>  {
+>>  	free_initmem_default(-1);
+>>  }
+>> -
+>> -#ifdef CONFIG_BLK_DEV_INITRD
+>> -void __init free_initrd_mem(unsigned long start, unsigned long end)
+>> -{
+>> -	free_reserved_area((void *)start, (void *)end, -1, "initrd");
+>> -}
+>> -#endif
+>> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+>> index 3f972e83909b..19d1c5594e2d 100644
+>> --- a/arch/arm/Kconfig
+>> +++ b/arch/arm/Kconfig
+>> @@ -47,6 +47,7 @@ config ARM
+>>  	select HARDIRQS_SW_RESEND
+>>  	select HAVE_ARCH_AUDITSYSCALL if (AEABI && !OABI_COMPAT)
+>>  	select HAVE_ARCH_BITREVERSE if (CPU_32v7M || CPU_32v7) && !CPU_32v6
+>> +	select HAVE_ARCH_FREE_INITRD_MEM
+>>  	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL && !CPU_ENDIAN_BE32 && MMU
+>>  	select HAVE_ARCH_KGDB if !CPU_ENDIAN_BE32 && MMU
+>>  	select HAVE_ARCH_MMAP_RND_BITS if MMU
+>
+> Isn't this why weak symbols were invented?
+>
+
+This approach was suggested by Christoph Hellwig upthread, and seems to
+have some precedent elsewhere (e.g. strncasecmp), but I agree weak
+symbols seem appropriate here. I'm happy to implement either approach!
+
+>
+> Confused,
+>
+> Rob
+
+Thanks,
+Shea
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE6ESKvwKkwnxgMLnaXAvWlX2G/icFAlq7vPwACgkQXAvWlX2G
+/if+nw/+PoGVROmqDrZBJgIrBQ4iqr8JYstaRZvlA9dxV21BXbFQka8L1+cd8ma5
+7PvtjL4EfGGPxzNYBJVXzz7LjbkJp4IGDWTRhm5kuh7bFP9l3MmYd1OQhXAzd94b
+ZbqvNz9A/fM1I0cg0adEqHJi9cJtiAU/wS8cloZtdRHL9QCQPqIe6tCglj/8tFK1
+f0iG7gGakfrJzlxgY+Jd/RYUKaDLQoFlgjcVf7CI+Qro8U0zOTWdl9x1ifEXYMK6
+XBo9bPSVAeFEE8Du+JHUpKdoachX5nWjo9qpFpfLMu9n3fFKx8rVChTvaSxd8U36
+BF5rJNaZwLweNIovJMrjcYEkqIgVTKyoGqt5mbrypDk+3YTFpMmtW5WjHiSLEwDz
+/RPjwiNMEjBwDIGSEDg+5ZHFe3XqnV4x3QBzzvZmHNhs4EosiAqmoKXRr8Y3T1qB
+lyNp1R4KcxNr9ZfHrTQhbw3djEwOVsTLfqw7jTFwiklzTOrCiMSL0ZuwsXEIeZuK
+3APYuKe7kpJ4A4M96puGy+R65sJOY3ivyo9j/RGryDjhybXGbGHqW8hBYFWFzBv0
+ceBFwd71TWrTq8wWhVNgqCgLomfjovL2VfwmRsVXDTGRqcD5jRRc6fnGcR+97Dpa
+86p3i5woQCxRbtzT8Kt4BfFGit8lP5SDC06EnGj/0KaULzdxZI0=
+=UTNs
+-----END PGP SIGNATURE-----
+--=-=-=--

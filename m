@@ -1,36 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 22:27:20 +0200 (CEST)
-Received: from bhuna.collabora.co.uk ([IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3]:43756
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 23:02:09 +0200 (CEST)
+Received: from bhuna.collabora.co.uk ([IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3]:43868
         "EHLO bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993928AbeC1U1NUpnEC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 22:27:13 +0200
+        by eddie.linux-mips.org with ESMTP id S23993973AbeC1VCClz4-C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 23:02:02 +0200
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: ezequiel)
-        with ESMTPSA id B83F6274A20
-Message-ID: <1522268772.9322.1.camel@collabora.com>
-Subject: Re: [PATCH 09/14] mmc: jz4740: Add support for the JZ4780
+        with ESMTPSA id 6D06D260844
 From:   Ezequiel Garcia <ezequiel@collabora.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Mathieu Malaterre <malat@debian.org>,
+To:     Mathieu Malaterre <malat@debian.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
+        Paul Cercueil <paul@crapouillou.net>
+Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>, kernel@collabora.com,
-        Alex Smith <alex.smith@imgtec.com>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>
-Date:   Wed, 28 Mar 2018 17:26:12 -0300
-In-Reply-To: <5d7e7b6366a4911e0c37a657ccebb923@crapouillou.net>
-References: <20180321192741.25872-1-ezequiel@vanguardiasur.com.ar>
-         <20180321192741.25872-10-ezequiel@vanguardiasur.com.ar>
-         <5d7e7b6366a4911e0c37a657ccebb923@crapouillou.net>
-Organization: Collabora
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.5 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Ezequiel Garcia <ezequiel@collabora.com>
+Subject: [PATCH v4 00/14] Enable SD/MMC on JZ4780 SoCs
+Date:   Wed, 28 Mar 2018 18:00:42 -0300
+Message-Id: <20180328210057.31148-1-ezequiel@collabora.com>
+X-Mailer: git-send-email 2.16.2
 Return-Path: <ezequiel@collabora.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63302
+X-archive-position: 63303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,16 +38,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2018-03-28 at 17:19 +0200, Paul Cercueil wrote:
-> Hi,
-> 
-> Would you mind changing the callback functions as me & James
-> requested
-> on the previous patch version? The rest of the patchset is all good 
-> IMHO.
-> 
+This patchset adds support for SD/MMC on JZ4780 based
+platforms, such as the MIPS Creator CI20 board.
 
-OK, I will.
+Most of the work has been done by Alex, Paul and Zubair,
+while I've only prepared the upstream submission, cleaned
+some patches, and written some commit logs where needed.
 
-Regards,
-Eze
+All praises should go to them, all rants to me.
+
+The series is based on v4.16-rc6.
+
+Changes from v3:
+  * Replaced callbacks with if/else magic to handle
+    the different register widths on versions of the SoC.
+
+Changes from v2:
+  * Fix commit log in "mmc: dt-bindings: add MMC support to JZ4740 SoC"
+
+Changes from v1:
+  * Reordered patches, fixes first, for easier backporting.
+  * Added Link and Fixes tags to patch "Fix race condition",
+    for easier backporting.
+  * Enabled the DMA in the dtsi for jz4780, dropped it from the ci20 dts.
+  * Reworded config and help user visible text.
+  * Reworded commit logs, using imperative.
+  * Re-authored my patches, as Collabora is partially
+    sponsoring them.
+
+
+Alex Smith (3):
+  mmc: jz4740: Fix race condition in IRQ mask update
+  mmc: jz4740: Set clock rate to mmc->f_max rather than JZ_MMC_CLK_RATE
+  mmc: jz4740: Add support for the JZ4780
+
+Ezequiel Garcia (10):
+  mmc: jz4780: Order headers alphabetically
+  mmc: jz4740: Use dev_get_platdata
+  mmc: jz4740: Introduce devicetree probe
+  mmc: dt-bindings: add MMC support to JZ4740 SoC
+  mmc: jz4740: Use dma_request_chan()
+  MIPS: dts: jz4780: Add DMA controller node to the devicetree
+  MIPS: dts: jz4780: Add MMC controller node to the devicetree
+  MIPS: dts: ci20: Enable MMC in the devicetree
+  MIPS: configs: ci20: Enable DMA and MMC support
+  MIPS: configs: ci20: Enable ext4
+
+Paul Cercueil (1):
+  mmc: jz4740: Fix error exit path in driver's probe
+
+Zubair Lutfullah Kakakhel (1):
+  mmc: jz4740: Reset the device requesting the interrupt
+
+ Documentation/devicetree/bindings/mmc/jz4740.txt |  38 +++++
+ arch/mips/boot/dts/ingenic/ci20.dts              |  34 ++++
+ arch/mips/boot/dts/ingenic/jz4780.dtsi           |  52 ++++++
+ arch/mips/configs/ci20_defconfig                 |   4 +
+ drivers/mmc/host/Kconfig                         |   9 +-
+ drivers/mmc/host/jz4740_mmc.c                    | 205 +++++++++++++++--------
+ include/dt-bindings/dma/jz4780-dma.h             |  49 ++++++
+ 7 files changed, 321 insertions(+), 70 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mmc/jz4740.txt
+ create mode 100644 include/dt-bindings/dma/jz4780-dma.h
+
+-- 
+2.16.2

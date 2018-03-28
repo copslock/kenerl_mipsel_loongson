@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 17:05:03 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:36606 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992336AbeC1PEyKrzCx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2018 17:04:54 +0200
-To:     Mathieu Malaterre <malat@debian.org>
-Subject: Re: [PATCH v4 2/8] dt-bindings: ingenic: Add DT bindings for TCU  clocks
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2018 17:09:34 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:39292 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992404AbeC1PJ1BJoZx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Mar 2018 17:09:27 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E8CC12172B;
+        Wed, 28 Mar 2018 15:09:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E8CC12172B
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Wed, 28 Mar 2018 16:09:15 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Dan Haab <riproute@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Dan Haab <dan.haab@luxul.com>
+Subject: Re: [PATCH V2] MIPS: BCM47XX: Add Luxul XAP1500/XWR1750 WiFi LEDs
+Message-ID: <20180328150914.GA1991@saruman>
+References: <1519767173-8918-1-git-send-email-riproute@gmail.com>
+ <1522171474-3651-1-git-send-email-riproute@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 28 Mar 2018 17:04:51 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-doc@vger.kernel.org, mathieu.malaterre@gmail.com
-Subject: 
-In-Reply-To: <CA+7wUsyAkW+Bgmp6MuWTce1jMG-ug1b-UqFVen_vVeKFiW5Fww@mail.gmail.com>
-References: <20180110224838.16711-2-paul@crapouillou.net>
- <20180317232901.14129-1-paul@crapouillou.net>
- <20180317232901.14129-3-paul@crapouillou.net>
- <CA+7wUsyAkW+Bgmp6MuWTce1jMG-ug1b-UqFVen_vVeKFiW5Fww@mail.gmail.com>
-Message-ID: <c02d2ae665890e7214bcfa6c42a49c69@crapouillou.net>
-X-Sender: paul@crapouillou.net
-Return-Path: <paul@crapouillou.net>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
+Content-Disposition: inline
+In-Reply-To: <1522171474-3651-1-git-send-email-riproute@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63279
+X-archive-position: 63280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,87 +49,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 2018-03-20 08:15, Mathieu Malaterre a écrit :
-> Hi Paul,
-> 
-> Two things:
-> 
-> On Sun, Mar 18, 2018 at 12:28 AM, Paul Cercueil <paul@crapouillou.net> 
-> wrote:
->> This header provides clock numbers for the ingenic,tcu
->> DT binding.
-> 
-> I have tested the whole series on my Creator CI20 with success, using:
-> 
-> + tcu@10002000 {
-> + compatible = "ingenic,jz4780-tcu";
-> + reg = <0x10002000 0x140>;
-> +
-> + interrupt-parent = <&intc>;
-> + interrupts = <27 26 25>;
-> + };
-> 
-> 
-> So:
-> 
-> Tested-by: Mathieu Malaterre <malat@debian.org>
 
-Great! Is that for the whole patchset or just this one patch?
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->> Reviewed-by: Rob Herring <robh@kernel.org>
->> ---
->>  include/dt-bindings/clock/ingenic,tcu.h | 23 +++++++++++++++++++++++
->>  1 file changed, 23 insertions(+)
->>  create mode 100644 include/dt-bindings/clock/ingenic,tcu.h
->> 
->>  v2: Use SPDX identifier for the license
->>  v3: No change
->>  v4: No change
->> 
->> diff --git a/include/dt-bindings/clock/ingenic,tcu.h 
->> b/include/dt-bindings/clock/ingenic,tcu.h
->> new file mode 100644
->> index 000000000000..179815d7b3bb
->> --- /dev/null
->> +++ b/include/dt-bindings/clock/ingenic,tcu.h
->> @@ -0,0 +1,23 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * This header provides clock numbers for the ingenic,tcu DT binding.
->> + */
->> +
->> +#ifndef __DT_BINDINGS_CLOCK_INGENIC_TCU_H__
->> +#define __DT_BINDINGS_CLOCK_INGENIC_TCU_H__
->> +
->> +#define JZ4740_CLK_TIMER0      0
->> +#define JZ4740_CLK_TIMER1      1
->> +#define JZ4740_CLK_TIMER2      2
->> +#define JZ4740_CLK_TIMER3      3
->> +#define JZ4740_CLK_TIMER4      4
->> +#define JZ4740_CLK_TIMER5      5
->> +#define JZ4740_CLK_TIMER6      6
->> +#define JZ4740_CLK_TIMER7      7
->> +#define JZ4740_CLK_WDT         8
->> +#define JZ4740_CLK_LAST                JZ4740_CLK_WDT
->> +
->> +#define JZ4770_CLK_OST         9
->> +#define JZ4770_CLK_LAST                JZ4770_CLK_OST
->> +
-> 
-> When working on JZ4780 support, I always struggle to read those kind
-> of #define. Since this is a new patch would you mind changing
-> s/JZ4740/JZ47XX/ in your header ?
+On Tue, Mar 27, 2018 at 11:24:34AM -0600, Dan Haab wrote:
+> From: Dan Haab <dan.haab@luxul.com>
+>=20
+> Some Luxul devices use PCIe connected GPIO LEDs that are not available
+> until the PCI subsytem and its drivers load. Using the same array for
+> these LEDs would block registering any LEDs until all GPIOs become
+> available. This may be undesired behavior as some LEDs should be
+> available as early as possible (e.g. system status LED). This patch will
+> allow registering available LEDs while deffering these PCIe GPIO
+> connected 'extra' LEDs until they become available.
+>=20
+> Signed-off-by: Dan Haab <dan.haab@luxul.com>
 
-Well the idea was that these defines are for JZ4740 and newer.
-But that means all Ingenic SoCs, so I guess I can change it.
+Applied for 4.17.
 
-> Thanks for your work on JZ !
+Thanks
+James
 
-Sure, thank you for testing!
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
->> +#endif /* __DT_BINDINGS_CLOCK_INGENIC_TCU_H__ */
->> --
->> 2.11.0
->> 
->> 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlq7sBoACgkQbAtpk944
+dnprhw//QfSDKJjP8Gx2QQLcP37NqwHUXgE8KkQzfsONawTiRJCkFPUSdM5AGI6x
+4oVwOsIUI1U41pwyXIpDA1rN9++dgkwKLpSFm9+frk+wSVUkwvraXKcXigIcS4I5
+lGXSZcEfwRkKahqAgbE+wVL7RA8lJ/GVLyajWyuKO+J+yAaQ38oHHRJfjj9XuLQ5
+GM+JWJvFHCqOOEDXHqcxd6BYhVJcIGBHCJlYQWSuVS++pCw5fR5Xz/MPY5jb29Pk
+4wmJ4S5bfBfI8bTogsz6XAcPLLZdG5df917xzjLcXzMSshMzF8W6IwzecH6dTOyg
+xFZ68Vehyu/uBptE66DDglVvO2vPsIoyAshSPK4MgqdCUnKFuiM3kzu5o6x/7iGm
+L0HHdzfMNWM+Gb8pHzTk5QBo8Wn3UwHX9/zQr9qB6/1qBzJXcQQVlIoW7IAs9cQP
+hTHc8xgLmkQxRbrFH6C7J4rxae1ZbIlDEXMY/PinWTcIFl46Sfdy7ObUSf+qAmbh
+K0jaQPGzTgCyxnyhra0UTLIxwjQLdrjjbCgj1Z0bZDxy8MIDNhlmdYg06bsXl11S
+LOgabbpsLrsQTvdBqMzPdY8Q0apoUeWDLmKxj0124UsYE5/PLQGFL1TxpizaTE6g
+lysqW7PcMNwj79nE/Lqd7jb+isAK1GmihBXFfwCaWX7KJpv7plE=
+=J7z7
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

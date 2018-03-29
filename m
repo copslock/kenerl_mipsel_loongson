@@ -1,28 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 14:24:39 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:55173 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 14:33:20 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:59988 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990409AbeC2MYFQQr5S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2018 14:24:05 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 29 Mar 2018 12:23:55 +0000
+        by eddie.linux-mips.org with ESMTP id S23990405AbeC2MdHxDB03 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2018 14:33:07 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 29 Mar 2018 12:32:56 +0000
 Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Thu, 29 Mar 2018 02:28:41 -0700
+ 14.3.361.1; Thu, 29 Mar 2018 02:49:43 -0700
 From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
-Date:   Thu, 29 Mar 2018 10:28:24 +0100
-Message-ID: <1522315704-31641-3-git-send-email-matt.redfearn@mips.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] clocksource/drivers/mips-gic-timer: Add pr_fmt and reword pr_* messages
+Date:   Thu, 29 Mar 2018 10:49:03 +0100
+Message-ID: <1522316943-2542-1-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1522315704-31641-1-git-send-email-matt.redfearn@mips.com>
-References: <1522315704-31641-1-git-send-email-matt.redfearn@mips.com>
+In-Reply-To: <1513781406-27292-1-git-send-email-matt.redfearn@mips.com>
+References: <1513781406-27292-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1522326235-853316-8124-455597-1
-X-BESS-VER: 2018.3-r1803192001
+X-BESS-ID: 1522326776-452059-22107-55110-3
+X-BESS-VER: 2018.4.1-r1803282120
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
 X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191512
@@ -36,7 +37,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63327
+X-archive-position: 63328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,70 +54,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The __clear_user function is defined to return the number of bytes that
-could not be cleared. From the underlying memset / bzero implementation
-this means setting register a2 to that number on return. Currently if a
-page fault is triggered within the memset_partial block, the value
-loaded into a2 on return is meaningless.
+Several messages from the MIPS GIC driver include the text "GIC", "GIC
+timer", etc, but the format is not standard. Add a pr_fmt of
+"mips-gic-timer: " and reword the messages now that they will be
+prefixed with the driver name.
 
-The label .Lpartial_fixup\@ is jumped to on page fault. Currently it
-masks the remaining count of bytes (a2) with STORMASK, meaning that the
-least significant 2 (32bit) or 3 (64bit) bits of the remaining count are
-always clear.
-Secondly, .Lpartial_fixup\@ expects t1 to contain the end address of the
-copy. This is set up by the initial block:
-	PTR_ADDU	t1, a0			/* end address */
-However, the .Lmemset_partial\@ block then reuses register t1 to
-calculate a jump through a block of word copies. This leaves it no
-longer containing the end address of the copy operation if a page fault
-occurs, and the remaining bytes calculation is incorrect.
-
-Fix these issues by removing the and of a2 with STORMASK, and replace t1
-with register t2 in the .Lmemset_partial\@ block.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
 
- arch/mips/lib/memset.S | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Changes in v2:
+Rebase on v4.16-rc7
 
-diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
-index 90bcdf1224ee..3257dca58cad 100644
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/memset.S
-@@ -161,19 +161,19 @@
+ drivers/clocksource/mips-gic-timer.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index 986b6796b631..54f8a331b53a 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -5,6 +5,9 @@
+  *
+  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
++
++#define pr_fmt(fmt) "mips-gic-timer: " fmt
++
+ #include <linux/clk.h>
+ #include <linux/clockchips.h>
+ #include <linux/cpu.h>
+@@ -136,8 +139,7 @@ static int gic_clockevent_init(void)
  
- .Lmemset_partial\@:
- 	R10KCBARRIER(0(ra))
--	PTR_LA		t1, 2f			/* where to start */
-+	PTR_LA		t2, 2f			/* where to start */
- #ifdef CONFIG_CPU_MICROMIPS
- 	LONG_SRL	t7, t0, 1
- #endif
- #if LONGSIZE == 4
--	PTR_SUBU	t1, FILLPTRG
-+	PTR_SUBU	t2, FILLPTRG
- #else
- 	.set		noat
- 	LONG_SRL	AT, FILLPTRG, 1
--	PTR_SUBU	t1, AT
-+	PTR_SUBU	t2, AT
- 	.set		at
- #endif
--	jr		t1
-+	jr		t2
- 	PTR_ADDU	a0, t0			/* dest ptr */
+ 	ret = setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
+ 	if (ret < 0) {
+-		pr_err("GIC timer IRQ %d setup failed: %d\n",
+-		       gic_timer_irq, ret);
++		pr_err("IRQ %d setup failed (%d)\n", gic_timer_irq, ret);
+ 		return ret;
+ 	}
  
- 	.set		push
-@@ -250,7 +250,6 @@
+@@ -176,7 +178,7 @@ static int __init __gic_clocksource_init(void)
  
- .Lpartial_fixup\@:
- 	PTR_L		t0, TI_TASK($28)
--	andi		a2, STORMASK
- 	LONG_L		t0, THREAD_BUADDR(t0)
- 	LONG_ADDU	a2, t1
- 	jr		ra
+ 	ret = clocksource_register_hz(&gic_clocksource, gic_frequency);
+ 	if (ret < 0)
+-		pr_warn("GIC: Unable to register clocksource\n");
++		pr_warn("Unable to register clocksource\n");
+ 
+ 	return ret;
+ }
+@@ -188,7 +190,7 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 
+ 	if (!mips_gic_present() || !node->parent ||
+ 	    !of_device_is_compatible(node->parent, "mti,gic")) {
+-		pr_warn("No DT definition for the mips gic driver\n");
++		pr_warn("No DT definition\n");
+ 		return -ENXIO;
+ 	}
+ 
+@@ -196,7 +198,7 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 	if (!IS_ERR(clk)) {
+ 		ret = clk_prepare_enable(clk);
+ 		if (ret < 0) {
+-			pr_err("GIC failed to enable clock\n");
++			pr_err("Failed to enable clock\n");
+ 			clk_put(clk);
+ 			return ret;
+ 		}
+@@ -204,12 +206,12 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 		gic_frequency = clk_get_rate(clk);
+ 	} else if (of_property_read_u32(node, "clock-frequency",
+ 					&gic_frequency)) {
+-		pr_err("GIC frequency not specified.\n");
++		pr_err("Frequency not specified\n");
+ 		return -EINVAL;
+ 	}
+ 	gic_timer_irq = irq_of_parse_and_map(node, 0);
+ 	if (!gic_timer_irq) {
+-		pr_err("GIC timer IRQ not specified.\n");
++		pr_err("IRQ not specified\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -220,7 +222,7 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 	ret = gic_clockevent_init();
+ 	if (!ret && !IS_ERR(clk)) {
+ 		if (clk_notifier_register(clk, &gic_clk_nb) < 0)
+-			pr_warn("GIC: Unable to register clock notifier\n");
++			pr_warn("Unable to register clock notifier\n");
+ 	}
+ 
+ 	/* And finally start the counter */
 -- 
 2.7.4

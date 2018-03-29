@@ -1,48 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 23:46:18 +0200 (CEST)
-Received: from ms.lwn.net ([45.79.88.28]:52750 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990422AbeC2VqLokAgz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Mar 2018 23:46:11 +0200
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 107BFAAB;
-        Thu, 29 Mar 2018 21:46:08 +0000 (UTC)
-Date:   Thu, 29 Mar 2018 15:46:07 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH 00/32] docs/vm: convert to ReST format
-Message-ID: <20180329154607.3d8bda75@lwn.net>
-In-Reply-To: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
-References: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
-Organization: LWN.net
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 23:59:34 +0200 (CEST)
+Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:46466
+        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbeC2V71z8vSz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2018 23:59:27 +0200
+Received: by mail-pf0-x243.google.com with SMTP id h69so4154098pfe.13
+        for <linux-mips@linux-mips.org>; Thu, 29 Mar 2018 14:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sizx/vudgFGM9hUkQbbfRLhJPiwKRTaQH/207nQmySc=;
+        b=VtgfdPnI/daIS7ZMSama0x7NeXICVtk1TNg+D7YZ0XttjwH1cA5dFecHE5QyTy+T8/
+         JXX9A8/yQfdy2VZoGiLTPM2NlLEnn7xj8blIlvt8gsfB47IJbt4IlSDa5TMst/x6bT9+
+         efvnZhP/K/gIi8knI1negS+CJJKTSgHbLAHZeF3rfUA7D5bVwUX2Xht1+G5Kbq5SgZ/H
+         rHoEs5RbfDh0sdZWKiKBrJyBBGfaTLzAVyt2ejK7RhwbQUJxoWT1ef+hlBIrIpWi2Zb+
+         L5CBHxLOY30sxyXhmYd/I5GDmMs1220KNt0X8QF/5im5kxQrQ9GN7uPKLGloFvXvG0in
+         leOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=sizx/vudgFGM9hUkQbbfRLhJPiwKRTaQH/207nQmySc=;
+        b=SPDll/BsmFkPUhpXbAtkbcr7T772paeQLYv4+Q6JL4dDIOAZhIpuaPveveyzvfsn5a
+         0h2CCSffFC+R3KHjKTdE6/lsfO2kP7CRChFBOylqetk4BC6BQLTvhauvkYdNx3pBHD6l
+         GbUKvTVdOwOeTpJ7LUm1BCM01xdkwUYOuoOoDvZdK8c+2YM56oBG7nWDW7Xonf3icBB9
+         Ee2pY1dukmunub5lmNL9pDB72h3qW3mYm2hSKQucOgz4tqiNKHbJ+/E44nWyiM4RcmY2
+         kC4J4rJtsrloeSNdLUkH81h6vP2N7BJAFVDrVZpYIuUo+RzfzlXtukdx3zUimJ+vQgll
+         N8Bw==
+X-Gm-Message-State: AElRT7HX0sPM4BGNYMo91eNPldxZElUyMRMZfnc65Z7mgK3rqVdClA71
+        g0p5RePHpGqy6bz5yoXi/rkUCA==
+X-Google-Smtp-Source: AIpwx4+1q+wcZnngGTVUNIoH2TPPWxEBKmzFJWfnVc3Zcagj3akNfaXoQvJUiGThPTqQ8WXnYF4ZCQ==
+X-Received: by 2002:a17:902:6b0c:: with SMTP id o12-v6mr10362196plk.295.1522360761229;
+        Thu, 29 Mar 2018 14:59:21 -0700 (PDT)
+Received: from localhost ([12.206.222.5])
+        by smtp.gmail.com with ESMTPSA id m10sm11629223pgd.32.2018.03.29.14.59.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 29 Mar 2018 14:59:20 -0700 (PDT)
+Date:   Thu, 29 Mar 2018 14:59:20 -0700 (PDT)
+X-Google-Original-Date: Thu, 29 Mar 2018 14:47:34 PDT (-0700)
+Subject:     Re: [PATCH v4 1/3] Add notrace to lib/ucmpdi2.c
+In-Reply-To: <1522320083-27818-1-git-send-email-matt.redfearn@mips.com>
+CC:     antonynpavlov@gmail.com, jhogan@kernel.org, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, matt.redfearn@mips.com,
+        geert@linux-m68k.org, linux-kernel@vger.kernel.org
+From:   Palmer Dabbelt <palmer@sifive.com>
+To:     matt.redfearn@mips.com
+Message-ID: <mhng-e7e3dffe-bc80-4bea-8cf5-4d8afb76565a@palmer-si-x1c4>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Return-Path: <corbet@lwn.net>
+Return-Path: <palmer@sifive.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63348
+X-archive-position: 63349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: corbet@lwn.net
+X-original-sender: palmer@sifive.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,42 +70,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 21 Mar 2018 21:22:16 +0200
-Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
+On Thu, 29 Mar 2018 03:41:21 PDT (-0700), matt.redfearn@mips.com wrote:
+> From: Palmer Dabbelt <palmer@sifive.com>
+>
+> As part of the MIPS conversion to use the generic GCC library routines,
+> Matt Redfearn discovered that I'd missed a notrace on __ucmpdi2().  This
+> patch rectifies the problem.
+>
+> CC: Matt Redfearn <matt.redfearn@mips.com>
+> CC: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+> Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+> ---
+>
+> Changes in v4: None
+> Changes in v3: None
+> Changes in v2:
+>   add notrace to lib/ucmpdi2.c
+>
+>  lib/ucmpdi2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/lib/ucmpdi2.c b/lib/ucmpdi2.c
+> index 25ca2d4c1e19..597998169a96 100644
+> --- a/lib/ucmpdi2.c
+> +++ b/lib/ucmpdi2.c
+> @@ -17,7 +17,7 @@
+>  #include <linux/module.h>
+>  #include <linux/libgcc.h>
+>
+> -word_type __ucmpdi2(unsigned long long a, unsigned long long b)
+> +word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+>  {
+>  	const DWunion au = {.ll = a};
+>  	const DWunion bu = {.ll = b};
 
-> These patches convert files in Documentation/vm to ReST format, add an
-> initial index and link it to the top level documentation.
-> 
-> There are no contents changes in the documentation, except few spelling
-> fixes. The relatively large diffstat stems from the indentation and
-> paragraph wrapping changes.
-> 
-> I've tried to keep the formatting as consistent as possible, but I could
-> miss some places that needed markup and add some markup where it was not
-> necessary.
-
-So I've been pondering on these for a bit.  It looks like a reasonable and
-straightforward RST conversion, no real complaints there.  But I do have a
-couple of concerns...
-
-One is that, as we move documentation into RST, I'm really trying to
-organize it a bit so that it is better tuned to the various audiences we
-have.  For example, ksm.txt is going to be of interest to sysadmin types,
-who might want to tune it.  mmu_notifier.txt is of interest to ...
-somebody, but probably nobody who is thinking in user space.  And so on.
-
-So I would really like to see this material split up and put into the
-appropriate places in the RST hierarchy - admin-guide for administrative
-stuff, core-api for kernel development topics, etc.  That, of course,
-could be done separately from the RST conversion, but I suspect I know
-what will (or will not) happen if we agree to defer that for now :)
-
-The other is the inevitable merge conflicts that changing that many doc
-files will create.  Sending the patches through Andrew could minimize
-that, I guess, or at least make it his problem.  Alternatively, we could
-try to do it as an end-of-merge-window sort of thing.  I can try to manage
-that, but an ack or two from the mm crowd would be nice to have.
-
-Thanks,
-
-jon
+Ah, thanks, I think I must have forgotten about this.  I assume these three are 
+going through your tree?

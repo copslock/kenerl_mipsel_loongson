@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 16:06:06 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:52744 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 16:14:32 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:53051 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990405AbeC2OF7rx4KM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Mar 2018 16:05:59 +0200
+        id S23990405AbeC2OOZNkP2M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Mar 2018 16:14:25 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 45AF620879; Thu, 29 Mar 2018 16:05:54 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 180712037A;
-        Thu, 29 Mar 2018 16:05:44 +0200 (CEST)
-Date:   Thu, 29 Mar 2018 16:05:44 +0200
+        id 3C1AB2083E; Thu, 29 Mar 2018 16:14:19 +0200 (CEST)
+Received: from localhost (unknown [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id DED662037A;
+        Thu, 29 Mar 2018 16:14:08 +0200 (CEST)
+Date:   Thu, 29 Mar 2018 16:14:08 +0200
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Andrew Lunn <andrew@lunn.ch>
+To:     Florian Fainelli <f.fainelli@gmail.com>
 Cc:     "David S . Miller" <davem@davemloft.net>,
         Allan Nielsen <Allan.Nielsen@microsemi.com>,
         razvan.stefanescu@nxp.com, po.liu@nxp.com,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
 Subject: Re: [PATCH net-next 3/8] net: mscc: Add MDIO driver
-Message-ID: <20180329140544.GB12066@piout.net>
+Message-ID: <20180329141408.GC12066@piout.net>
 References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
  <20180323201117.8416-4-alexandre.belloni@bootlin.com>
- <20180323204939.GS24361@lunn.ch>
+ <9547b11d-147d-5029-0abe-8bf0f705c959@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180323204939.GS24361@lunn.ch>
+In-Reply-To: <9547b11d-147d-5029-0abe-8bf0f705c959@gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63332
+X-archive-position: 63333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,62 +49,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23/03/2018 at 21:49:39 +0100, Andrew Lunn wrote:
-> On Fri, Mar 23, 2018 at 09:11:12PM +0100, Alexandre Belloni wrote:
-> > Add a driver for the Microsemi MII Management controller (MIIM) found on
-> > Microsemi SoCs.
-> > On Ocelot, there are two controllers, one is connected to the internal
-> > PHYs, the other one can communicate with external PHYs.
-> 
-> Hi Alexandre
-> 
-> This looks to be standalone. Such drivers we try to put in
-> drivers/net/phy.
-> 
-> > +static int mscc_miim_read(struct mii_bus *bus, int mii_id, int regnum)
-> > +{
-> > +	struct mscc_miim_dev *miim = bus->priv;
-> > +	u32 val;
-> > +	int ret;
+On 23/03/2018 at 14:51:19 -0700, Florian Fainelli wrote:
+> > +	writel(MSCC_MIIM_CMD_VLD | (mii_id << MSCC_MIIM_CMD_PHYAD_SHIFT) |
+> > +	       (regnum << MSCC_MIIM_CMD_REGAD_SHIFT) | MSCC_MIIM_CMD_OPR_READ,
+> > +	       miim->regs + MSCC_MIIM_REG_CMD);
 > > +
-> > +	mutex_lock(&miim->lock);
+> > +	ret = mscc_miim_wait_ready(bus);
+> > +	if (ret)
+> > +		goto out;
 > 
-> What are you locking against here?
+> Your example had an interrupt specified, can't you use that instead of
+> polling?
 > 
-> And you don't appear to initialize the mutex anywhere.
-> 
-> > +static int mscc_miim_reset(struct mii_bus *bus)
-> > +{
-> > +	struct mscc_miim_dev *miim = bus->priv;
-> > +	int i;
-> > +
-> > +	if (miim->phy_regs) {
-> > +		writel(0, miim->phy_regs + MSCC_PHY_REG_PHY_CFG);
-> > +		writel(0x1ff, miim->phy_regs + MSCC_PHY_REG_PHY_CFG);
-> > +		mdelay(500);
-> > +	}
-> > +
-> > +	for (i = 0; i < PHY_MAX_ADDR; i++) {
+
+the interrupt doesn't handle that. It is used to detect when a PHY
+register has changed once the MIIM controller is configured to poll the
+phys. At some point, this could be used to replace the PHY interrupts
+but it doesn't correspond to the linux model so I didn't investigate too
+much.
+
+>  > +	for (i = 0; i < PHY_MAX_ADDR; i++) {
 > > +		if (mscc_miim_read(bus, i, MII_PHYSID1) < 0)
 > > +			bus->phy_mask |= BIT(i);
 > > +	}
 > 
-> Why do this? Especially so for the external bus, where the PHYs might
-> have a GPIO reset line, and won't respond until the gpio is
-> released. The core code does that just before it scans the bus, or
-> just before it scans the particular address on the bus, depending on
-> the scope of the GPIO.
+> What is this used for? You have an OF MDIO bus which would create a
+> phy_device for each node specified, is this a similar workaround to what
+> drivers/net/phy/mdio-bcm-unimac.c has to do? If so, please document it
+> as such.
 > 
 
-IIRC, this was needed when probing the bus without DT, in that case, the
-mdiobus_scan loop of __mdiobus_register() will fail when doing the
-get_phy_id for phys 0 to 31 because get_phy_id() transforms any error in
--EIO and so it is impossible to register the bus. Other drivers have a
-similar code to handle that case.
-
-Anyway, I'll remove that loop for now because I'm only supporting DT.
-I'll get back to that later.
-
+I replied to Andrew who had the same question.
 
 -- 
 Alexandre Belloni, Bootlin (formerly Free Electrons)

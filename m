@@ -1,16 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 16:54:14 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:54482 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 16:57:45 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:52183 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990405AbeC2OyIfFcce (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Mar 2018 16:54:08 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 212AC2037A; Thu, 29 Mar 2018 16:54:03 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id E94D420711;
-        Thu, 29 Mar 2018 16:53:52 +0200 (CEST)
-Date:   Thu, 29 Mar 2018 16:53:52 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Andrew Lunn <andrew@lunn.ch>
+        id S23990413AbeC2O5iuC-ve (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Mar 2018 16:57:38 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=A3/uTG1k6ebcD8ccz85HW4AnnJ3j6oKf0o0i8kV3x98=;
+        b=p1fpRtOXvFseM7MV5jJXk/gHNDma45xERXh0N46SQTzEp/Uv5a5AstlFAI1RjT77w4eJTYYs+LhrQgBt5oRZDND1NN7L1wW7j0vGBsCdcl8Gph4AiWmgjQswFnacBDFBG+F0LcObHW20S2rUBJr5zicTUKB/Rm5o/DveVN/X+EQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1f1YzX-0002Gm-VO; Thu, 29 Mar 2018 16:57:27 +0200
+Date:   Thu, 29 Mar 2018 16:57:27 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
 Cc:     "David S . Miller" <davem@davemloft.net>,
         Allan Nielsen <Allan.Nielsen@microsemi.com>,
         razvan.stefanescu@nxp.com, po.liu@nxp.com,
@@ -19,26 +20,27 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         netdev@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH net-next 3/8] net: mscc: Add MDIO driver
-Message-ID: <20180329145352.GD12066@piout.net>
+Message-ID: <20180329145727.GB25752@lunn.ch>
 References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
  <20180323201117.8416-4-alexandre.belloni@bootlin.com>
  <20180323204939.GS24361@lunn.ch>
  <20180329140544.GB12066@piout.net>
  <20180329144041.GA25752@lunn.ch>
+ <20180329145352.GD12066@piout.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180329144041.GA25752@lunn.ch>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <alexandre.belloni@bootlin.com>
+In-Reply-To: <20180329145352.GD12066@piout.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63336
+X-archive-position: 63337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,46 +53,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29/03/2018 at 16:40:41 +0200, Andrew Lunn wrote:
-> > > > +	for (i = 0; i < PHY_MAX_ADDR; i++) {
-> > > > +		if (mscc_miim_read(bus, i, MII_PHYSID1) < 0)
-> > > > +			bus->phy_mask |= BIT(i);
-> > > > +	}
-> > > 
-> > > Why do this? Especially so for the external bus, where the PHYs might
-> > > have a GPIO reset line, and won't respond until the gpio is
-> > > released. The core code does that just before it scans the bus, or
-> > > just before it scans the particular address on the bus, depending on
-> > > the scope of the GPIO.
-> > > 
+> > It sounds like the correct fix is for get_phy_id() to look at the
+> > error code for mdiobus_read(bus, addr, MII_PHYSID1). If it is EIO and
+> > maybe ENODEV, set *phy_id to 0xffffffff and return. The scan code
+> > should then do the correct thing.
 > > 
-> > IIRC, this was needed when probing the bus without DT, in that case, the
-> > mdiobus_scan loop of __mdiobus_register() will fail when doing the
-> > get_phy_id for phys 0 to 31 because get_phy_id() transforms any error in
-> > -EIO and so it is impossible to register the bus. Other drivers have a
-> > similar code to handle that case.
 > 
-> Hi Alexandre
-> 
-> Do you mean mscc_miim_read() will return -EIO if there is no device on
-> the bus at the address trying to be read? Most devices just return
-> 0xffff because there is a pull up on the data line, nothing is driving
-> it, so all 1's are read.
-> 
+> That could work indeed. Do you want me to test and send a patch?
 
-It will return -EIO but I tried to be clever and return -ENODEV but this
-gets changed to -EIO by get_phy_id.
+Yes please.
 
-> It sounds like the correct fix is for get_phy_id() to look at the
-> error code for mdiobus_read(bus, addr, MII_PHYSID1). If it is EIO and
-> maybe ENODEV, set *phy_id to 0xffffffff and return. The scan code
-> should then do the correct thing.
-> 
-
-That could work indeed. Do you want me to test and send a patch?
-
-
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thanks
+	Andrew

@@ -1,63 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2018 23:59:34 +0200 (CEST)
-Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:46466
-        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbeC2V71z8vSz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2018 23:59:27 +0200
-Received: by mail-pf0-x243.google.com with SMTP id h69so4154098pfe.13
-        for <linux-mips@linux-mips.org>; Thu, 29 Mar 2018 14:59:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 00:21:34 +0200 (CEST)
+Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:46839
+        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990422AbeC2WV1hHWyz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 00:21:27 +0200
+Received: by mail-pg0-x243.google.com with SMTP id t12so3934327pgp.13;
+        Thu, 29 Mar 2018 15:21:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sizx/vudgFGM9hUkQbbfRLhJPiwKRTaQH/207nQmySc=;
-        b=VtgfdPnI/daIS7ZMSama0x7NeXICVtk1TNg+D7YZ0XttjwH1cA5dFecHE5QyTy+T8/
-         JXX9A8/yQfdy2VZoGiLTPM2NlLEnn7xj8blIlvt8gsfB47IJbt4IlSDa5TMst/x6bT9+
-         efvnZhP/K/gIi8knI1negS+CJJKTSgHbLAHZeF3rfUA7D5bVwUX2Xht1+G5Kbq5SgZ/H
-         rHoEs5RbfDh0sdZWKiKBrJyBBGfaTLzAVyt2ejK7RhwbQUJxoWT1ef+hlBIrIpWi2Zb+
-         L5CBHxLOY30sxyXhmYd/I5GDmMs1220KNt0X8QF/5im5kxQrQ9GN7uPKLGloFvXvG0in
-         leOA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=ADFaJMwdlzFvNSbWVLdPM97dVq/rEeW0+raYjFTrVrU=;
+        b=NtO8qs6zBgDdYJBY+JSesp/164xJSYlGY2smytDefJyD36jb04LaF1mTtVIXBoMsAx
+         zxVli6bAiUyJfV4NGafawBxqOlL1mg6Rm6BxvISP1fMigpiWbGSPqOh/3QplBEf9WsA8
+         2iyR+TdvUZxTfHsaCpJ8yfcYKO0VydWalPVttU/gp5gMQwdXmAb+oAZ1LdMqhPteozLJ
+         g4Z+j47soXDFK2ZKZlp+FQQj6IRQJDf/nbAFITuV1TOYOhM5WNleOM7TpO7Dkeh83oMK
+         r4e5rB1HjmZV2SrmswCI8Pkm+Wgl8aaS49hyzqyA5w83db9UDbepZivOjDcWX7XMp97J
+         jSug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=sizx/vudgFGM9hUkQbbfRLhJPiwKRTaQH/207nQmySc=;
-        b=SPDll/BsmFkPUhpXbAtkbcr7T772paeQLYv4+Q6JL4dDIOAZhIpuaPveveyzvfsn5a
-         0h2CCSffFC+R3KHjKTdE6/lsfO2kP7CRChFBOylqetk4BC6BQLTvhauvkYdNx3pBHD6l
-         GbUKvTVdOwOeTpJ7LUm1BCM01xdkwUYOuoOoDvZdK8c+2YM56oBG7nWDW7Xonf3icBB9
-         Ee2pY1dukmunub5lmNL9pDB72h3qW3mYm2hSKQucOgz4tqiNKHbJ+/E44nWyiM4RcmY2
-         kC4J4rJtsrloeSNdLUkH81h6vP2N7BJAFVDrVZpYIuUo+RzfzlXtukdx3zUimJ+vQgll
-         N8Bw==
-X-Gm-Message-State: AElRT7HX0sPM4BGNYMo91eNPldxZElUyMRMZfnc65Z7mgK3rqVdClA71
-        g0p5RePHpGqy6bz5yoXi/rkUCA==
-X-Google-Smtp-Source: AIpwx4+1q+wcZnngGTVUNIoH2TPPWxEBKmzFJWfnVc3Zcagj3akNfaXoQvJUiGThPTqQ8WXnYF4ZCQ==
-X-Received: by 2002:a17:902:6b0c:: with SMTP id o12-v6mr10362196plk.295.1522360761229;
-        Thu, 29 Mar 2018 14:59:21 -0700 (PDT)
-Received: from localhost ([12.206.222.5])
-        by smtp.gmail.com with ESMTPSA id m10sm11629223pgd.32.2018.03.29.14.59.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 29 Mar 2018 14:59:20 -0700 (PDT)
-Date:   Thu, 29 Mar 2018 14:59:20 -0700 (PDT)
-X-Google-Original-Date: Thu, 29 Mar 2018 14:47:34 PDT (-0700)
-Subject:     Re: [PATCH v4 1/3] Add notrace to lib/ucmpdi2.c
-In-Reply-To: <1522320083-27818-1-git-send-email-matt.redfearn@mips.com>
-CC:     antonynpavlov@gmail.com, jhogan@kernel.org, ralf@linux-mips.org,
-        linux-mips@linux-mips.org, matt.redfearn@mips.com,
-        geert@linux-m68k.org, linux-kernel@vger.kernel.org
-From:   Palmer Dabbelt <palmer@sifive.com>
-To:     matt.redfearn@mips.com
-Message-ID: <mhng-e7e3dffe-bc80-4bea-8cf5-4d8afb76565a@palmer-si-x1c4>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <palmer@sifive.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ADFaJMwdlzFvNSbWVLdPM97dVq/rEeW0+raYjFTrVrU=;
+        b=edIKbKUFNUqhdBsZB83kM1wEzEK2eIk5+p1fDYRakyeYAov/Y2k2X8gBhKrQTBJTgi
+         1RDJ3yTT5ujWNVOsCHH7zzZqFu1MBagDx+6OegA1ONRpi7YtmXGsV9PwREqnwlx0h591
+         fJZXtHpCpiEXoGUekHYZVI9/GFM7gT3azJYcu/qJncQT2QHLuALnQOTnxLHtivxKtLFM
+         a21l+pD5UlnLjXt4Jk6Dv6ITE51RyuSaaJO3R8j+U3tCVCtUYuly2eJpiMNFQsYy+VKM
+         pHEtjJtJBpR1btALB0M98QpnN0kkcE9MF5f20rprOToAO3KXQ2PTVtiZTwz8o/xIWcuM
+         +YpA==
+X-Gm-Message-State: AElRT7GeVqXP586XpIiCjBet3dU6iCsu9QMUFZUo+ShFoM02xfbIjuD2
+        ytoRFCIlfR56xgvG3MpWkbOyqNuC
+X-Google-Smtp-Source: AIpwx48HAeyXJzEwepAoN+vGhTwCmd/aEm4exHmpTJiFO83rBdDfH5LIw8Ekm3f71IlXhgelXxXzuw==
+X-Received: by 10.99.96.210 with SMTP id u201mr6870671pgb.124.1522362080789;
+        Thu, 29 Mar 2018 15:21:20 -0700 (PDT)
+Received: from localhost.localdomain ([67.139.187.132])
+        by smtp.gmail.com with ESMTPSA id r21sm11976020pfj.58.2018.03.29.15.21.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 29 Mar 2018 15:21:19 -0700 (PDT)
+From:   Dan Haab <riproute@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Dan Haab <dan.haab@luxul.com>
+Subject: [PATCH] MIPS: BCM47XX: Use standard reset button for Luxul XWR-1750
+Date:   Thu, 29 Mar 2018 16:21:47 -0600
+Message-Id: <1522362107-3363-1-git-send-email-riproute@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <riproute@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63349
+X-archive-position: 63350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: palmer@sifive.com
+X-original-sender: riproute@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,41 +64,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 29 Mar 2018 03:41:21 PDT (-0700), matt.redfearn@mips.com wrote:
-> From: Palmer Dabbelt <palmer@sifive.com>
->
-> As part of the MIPS conversion to use the generic GCC library routines,
-> Matt Redfearn discovered that I'd missed a notrace on __ucmpdi2().  This
-> patch rectifies the problem.
->
-> CC: Matt Redfearn <matt.redfearn@mips.com>
-> CC: Antony Pavlov <antonynpavlov@gmail.com>
-> Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
-> Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> ---
->
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2:
->   add notrace to lib/ucmpdi2.c
->
->  lib/ucmpdi2.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/lib/ucmpdi2.c b/lib/ucmpdi2.c
-> index 25ca2d4c1e19..597998169a96 100644
-> --- a/lib/ucmpdi2.c
-> +++ b/lib/ucmpdi2.c
-> @@ -17,7 +17,7 @@
->  #include <linux/module.h>
->  #include <linux/libgcc.h>
->
-> -word_type __ucmpdi2(unsigned long long a, unsigned long long b)
-> +word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
->  {
->  	const DWunion au = {.ll = a};
->  	const DWunion bu = {.ll = b};
+From: Dan Haab <dan.haab@luxul.com>
 
-Ah, thanks, I think I must have forgotten about this.  I assume these three are 
-going through your tree?
+The original patch submitted for support of the Luxul XWR-1750 used a
+non-standard button handler for the reset button. This patch will allow
+using the standard KEY_RESTART
+
+Signed-off-by: Dan Haab <dan.haab@luxul.com>
+---
+ arch/mips/bcm47xx/buttons.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
+index 88a8fb2..88d400d 100644
+--- a/arch/mips/bcm47xx/buttons.c
++++ b/arch/mips/bcm47xx/buttons.c
+@@ -355,7 +355,7 @@
+ 
+ static const struct gpio_keys_button
+ bcm47xx_buttons_luxul_xwr_1750_v1[] = {
+-	BCM47XX_GPIO_KEY(14, BTN_TASK),
++	BCM47XX_GPIO_KEY(14, KEY_RESTART),
+ };
+ 
+ /* Microsoft */
+-- 
+1.9.1

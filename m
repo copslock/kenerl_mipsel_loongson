@@ -1,60 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 09:29:01 +0200 (CEST)
-Received: from mail-ot0-x22a.google.com ([IPv6:2607:f8b0:4003:c0f::22a]:40334
-        "EHLO mail-ot0-x22a.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbeC3H2z0nm5m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 09:28:55 +0200
-Received: by mail-ot0-x22a.google.com with SMTP id j8-v6so1283649ota.7;
-        Fri, 30 Mar 2018 00:28:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=sKiMPCMhCGXcY+4D/OzDkFa5X4IkiaSLIKWVA8C8Xas=;
-        b=D7OnBw0uPGJSMd31hi3aELQMzUPp92Jad110L8ztHgz3C1EaUPzwV08htCvKL/1Tha
-         vnKCi4eDtue8AOFykLbLBVIz2rHaZt+g+8h/6ovEuulh3/Bg9fY7cAZJvkhZQhTC0tqy
-         gWCw/VV+fiwvoCz7I/et9jC9C0HlXgMp4Z7XalRAC4Fk+lsPrKZtJUwhq+lSQBsaVipj
-         AjxOKN6FUGiUIdczOXA02rBihWYngJFyen01ZwbIRD8GLhncUEWUBBLzcRAw0GvbXIDV
-         WoqIMNfbYo+t/vkCYLbvgr3GFBYiqAFxE2dgVI1wzdNsB4VfmidzO+Krpzn95QSKKKZL
-         4tHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=sKiMPCMhCGXcY+4D/OzDkFa5X4IkiaSLIKWVA8C8Xas=;
-        b=Aef7Vk+H/H3RppYvFUjeNdEJmR5R3Y8YwAPcCtChnubsI///GAwAKhFbObVaF5Q7mg
-         j4QN/A7qE4k8yfS8DdZpjzwRV/8+aVZpmk37kErUP46hjHGIbghvY4hTrSCoNwDRPnoV
-         muWN0wVauk3Rbi0xspgvcn9jI0daFkCLkZyGJ1CDBzlYxyS2KWn6NaK+l8n9OfrjO7yd
-         IGCLd+iJau1kCXljq/oeQyIU2IwL3k5v9R+n116kXa6IX5UdxCs2PcApfKahC/h9hLH6
-         hkKlt/ytBqmZZRbe+r1Nupe5+s47a03XKRKHCYcRFuDncMeCI5XmR124qEEhBbXC6R2N
-         Q+/w==
-X-Gm-Message-State: ALQs6tDxQJbl1x/VCim3kaILU1lMODJuKxXj/EA9XNW8WQoBPxm5umQR
-        lj1tZ7t6LpvK5pKjruXHBSjDb9WiaD/esRC2tps=
-X-Google-Smtp-Source: AIpwx4+bff0eCD5ZLsUNjXejS82aeUYjPHSXeG+BXN55JTaQV5sZTXKEi4pJgQTcV68iX3nFbSS4tB5Lo67GJ4YUygY=
-X-Received: by 2002:a9d:fa1:: with SMTP id d30-v6mr3988954otd.18.1522394929048;
- Fri, 30 Mar 2018 00:28:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 09:55:18 +0200 (CEST)
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:45601 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990425AbeC3HzKDnMjm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 09:55:10 +0200
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id C15738037F; Fri, 30 Mar 2018 09:55:08 +0200 (CEST)
+Date:   Fri, 30 Mar 2018 09:55:08 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Ilya Smith <blackzert@gmail.com>
+Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        vgupta@synopsys.com, linux@armlinux.org.uk, tony.luck@intel.com,
+        fenghua.yu@intel.com, jhogan@kernel.org, ralf@linux-mips.org,
+        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
+        nyc@holomorphy.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
+        gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
+        mhocko@suse.com, hughd@google.com, kstewart@linuxfoundation.org,
+        pombredanne@nexb.com, akpm@linux-foundation.org,
+        steve.capper@arm.com, punit.agrawal@arm.com, paul.burton@mips.com,
+        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
+        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
+        dan.j.williams@intel.com, jack@suse.cz,
+        ross.zwisler@linux.intel.com, jglisse@redhat.com,
+        willy@infradead.org, aarcange@redhat.com, oleg@redhat.com,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-ID: <20180330075508.GA21798@amd>
+References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
 MIME-Version: 1.0
-Received: by 10.202.56.134 with HTTP; Fri, 30 Mar 2018 00:28:48 -0700 (PDT)
-In-Reply-To: <1522362107-3363-1-git-send-email-riproute@gmail.com>
-References: <1522362107-3363-1-git-send-email-riproute@gmail.com>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Fri, 30 Mar 2018 09:28:48 +0200
-Message-ID: <CACna6rwJYVUVwvi9U87V=u5_T29JCi0VT9knsxwauci5xFAE5w@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: BCM47XX: Use standard reset button for Luxul XWR-1750
-To:     Dan Haab <riproute@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Dan Haab <dan.haab@luxul.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <zajec5@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
+Content-Disposition: inline
+In-Reply-To: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63355
+X-archive-position: 63356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,13 +64,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 30 March 2018 at 00:21, Dan Haab <riproute@gmail.com> wrote:
-> From: Dan Haab <dan.haab@luxul.com>
->
-> The original patch submitted for support of the Luxul XWR-1750 used a
-> non-standard button handler for the reset button. This patch will allow
-> using the standard KEY_RESTART
->
-> Signed-off-by: Dan Haab <dan.haab@luxul.com>
 
-Looks correct, thanks.
+--9amGYk9869ThD9tj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> Current implementation doesn't randomize address returned by mmap.
+> All the entropy ends with choosing mmap_base_addr at the process
+> creation. After that mmap build very predictable layout of address
+> space. It allows to bypass ASLR in many cases. This patch make
+> randomization of address on any mmap call.
+
+How will this interact with people debugging their application, and
+getting different behaviours based on memory layout?
+
+strace, strace again, get different results?
+
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--9amGYk9869ThD9tj
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAlq97VwACgkQMOfwapXb+vI6UQCdF4AyQJZJhtFyHLBBqwpvR1q8
+v88AnRJDGP+1mNMTwfSngE35HzilPhGr
+=dXPW
+-----END PGP SIGNATURE-----
+
+--9amGYk9869ThD9tj--

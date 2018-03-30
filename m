@@ -1,58 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 15:34:37 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49530 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991096AbeC3NeaVGp09 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 15:34:30 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1f1uA8-0002L6-00; Fri, 30 Mar 2018 13:33:48 +0000
-Date:   Fri, 30 Mar 2018 09:33:48 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Ilya Smith <blackzert@gmail.com>, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
-        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
-        jhogan@kernel.org, ralf@linux-mips.org, jejb@parisc-linux.org,
-        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
-        mpe@ellerman.id.au, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, nyc@holomorphy.com,
-        viro@zeniv.linux.org.uk, arnd@arndb.de, gregkh@linuxfoundation.org,
-        deepa.kernel@gmail.com, mhocko@suse.com, hughd@google.com,
-        kstewart@linuxfoundation.org, pombredanne@nexb.com,
-        akpm@linux-foundation.org, steve.capper@arm.com,
-        punit.agrawal@arm.com, paul.burton@mips.com,
-        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
-        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
-        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
-        dan.j.williams@intel.com, jack@suse.cz,
-        ross.zwisler@linux.intel.com, jglisse@redhat.com,
-        willy@infradead.org, aarcange@redhat.com, oleg@redhat.com,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-Message-ID: <20180330133348.GR1436@brightrain.aerifal.cx>
-References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
- <20180330075508.GA21798@amd>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 15:54:46 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:53126 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991855AbeC3NyjdJRw9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 30 Mar 2018 15:54:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=C9WlJNag0D/wjLxtNQAKyzZSl+qdKL/owk8s2wktyNw=;
+        b=2Bs0AE+JF/Tq3r4o5Q+f7hUlhGKbHbfu19iIOjFGkF0RKRCuMQE3hISZx2wV0S+X6swlFoPc9HfvKYbX0eiFFJfdLydQArYCJ9rCEVGYu1fvP5YQsn7jWOC6c7ScmfuJFlMGXLPgYe/eyBwwK2BBrxIJJSFgL1+BCTXXjMz+9k0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1f1uU2-0007Pk-EI; Fri, 30 Mar 2018 15:54:22 +0200
+Date:   Fri, 30 Mar 2018 15:54:22 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        razvan.stefanescu@nxp.com, po.liu@nxp.com,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH net-next 5/8] net: mscc: Add initial Ocelot switch support
+Message-ID: <20180330135422.GA28244@lunn.ch>
+References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
+ <20180323201117.8416-6-alexandre.belloni@bootlin.com>
+ <1df0a932-f7c1-f1b5-9a35-3c16d0c551e5@gmail.com>
+ <20180330124537.GC14180@piout.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180330075508.GA21798@amd>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dalias@aerifal.cx>
+In-Reply-To: <20180330124537.GC14180@piout.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63365
+X-archive-position: 63366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@libc.org
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,22 +51,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 30, 2018 at 09:55:08AM +0200, Pavel Machek wrote:
-> Hi!
+> > All of this sounds like it should be moved into the br_join/leave, this
+> > does not appear to be the right place to do that.
+> > 
 > 
-> > Current implementation doesn't randomize address returned by mmap.
-> > All the entropy ends with choosing mmap_base_addr at the process
-> > creation. After that mmap build very predictable layout of address
-> > space. It allows to bypass ASLR in many cases. This patch make
-> > randomization of address on any mmap call.
-> 
-> How will this interact with people debugging their application, and
-> getting different behaviours based on memory layout?
-> 
-> strace, strace again, get different results?
+> No, I've triple checked because this is a comment that both Andrew and
+> you had. Once a port is added to the PGID MASK, it will start forwarding
+> frames so we really want that to happen only when the port is in
+> BR_STATE_FORWARDING state. Else, we may forward frames between the
+> addition of the port to the bridge and setting the port to the
+> BR_STATE_BLOCKING state.
 
-Normally gdb disables ASLR for the process when invoking a program to
-debug. I don't see why that would be terribly useful with strace but
-you can do the same if you want.
+Hi Alexandre
 
-Rich
+Interesting observation. I took a look at some of the other join
+implementations. mv88e6xxx does the join immediately. mt7539 does it
+immediately, if the port is enabled. lan9303 does it immediately.
+qca8k does it immediately. b53 does it immediately.
+
+Either they all get it wrong, or we make the assumption the bridge
+sets the STP state first, then has the port join the bridge.
+
+Looking at the code, br_add_if() it calls
+netdev_master_upper_dev_link() and then later
+
+        if (netif_running(dev) && netif_oper_up(dev) &&
+            (br->dev->flags & IFF_UP))
+                br_stp_enable_port(p);
+
+So it does look like there is a window of time between the port
+joining and the STP state being set.
+
+I know in the past, we have run into the opposite problem. A port
+leaves the bridge, while in blocked state. The port should then
+becomes an individual port, so the STP state needs setting to
+forwarding. I don't remember where we fix this.
+
+I don't like that this new driver is different, but it also looks like
+we have a real problem here. More digging needed.
+
+   Andrew

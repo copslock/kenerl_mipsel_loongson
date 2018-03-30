@@ -1,57 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 09:55:18 +0200 (CEST)
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:45601 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbeC3HzKDnMjm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 09:55:10 +0200
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id C15738037F; Fri, 30 Mar 2018 09:55:08 +0200 (CEST)
-Date:   Fri, 30 Mar 2018 09:55:08 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Ilya Smith <blackzert@gmail.com>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@synopsys.com, linux@armlinux.org.uk, tony.luck@intel.com,
-        fenghua.yu@intel.com, jhogan@kernel.org, ralf@linux-mips.org,
-        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
-        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
-        nyc@holomorphy.com, viro@zeniv.linux.org.uk, arnd@arndb.de,
-        gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
-        mhocko@suse.com, hughd@google.com, kstewart@linuxfoundation.org,
-        pombredanne@nexb.com, akpm@linux-foundation.org,
-        steve.capper@arm.com, punit.agrawal@arm.com, paul.burton@mips.com,
-        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
-        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
-        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
-        dan.j.williams@intel.com, jack@suse.cz,
-        ross.zwisler@linux.intel.com, jglisse@redhat.com,
-        willy@infradead.org, aarcange@redhat.com, oleg@redhat.com,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-Message-ID: <20180330075508.GA21798@amd>
-References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
-Content-Disposition: inline
-In-Reply-To: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <pavel@ucw.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 11:05:50 +0200 (CEST)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:43697
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbeC3JFnjHuzQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 11:05:43 +0200
+Received: by mail-pf0-x241.google.com with SMTP id j2so5085001pff.10
+        for <linux-mips@linux-mips.org>; Fri, 30 Mar 2018 02:05:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=VObpv6uuQfP0kCPesATlK1oHbHc/hZRhaVdDIP/DaJM=;
+        b=dp15STGfB/pyqlGdQdx8nco/UTNUSDbkV5eOzp365HaGTFXTWX4ndVHAUxoAO3SKLh
+         zw0dQOBA2LZvbl5NdOB2Y5Tw4kK+bWMcYXQUIpkoDVnTRpkiG9ZBojxsqPtVgsb4rE0K
+         JIKjDZXPnyyTdRaGDnKj/SeZbAGO2qKdMu1IREx3DayuhKN584H1z+mIJVD7MiAeb5ot
+         3am/v2LrePiKv+DH+i/ocgTM7RLkYFaF80H4IYW+O5/fgxnLxUR8AKJU/1MOSUZZsGvt
+         SzhNwkw8MpQ2tkY8DkXA4jKjdn2gB6hjkBFtNrSx9QUgCah0M3ktVzXa1hOxuoaAKbuC
+         iIyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=VObpv6uuQfP0kCPesATlK1oHbHc/hZRhaVdDIP/DaJM=;
+        b=QVRro7OasZ3HdMSKs4wIWAlIdjtakFC56IdSdqtqc4dbdHTzOIsfBv6KjHGMG0xKuw
+         qrgo+0MWEI+jqgI8zq8KRKKS0KMP+ZlL3RaojMLt5XGtp259swaVfJZTxoMzSEEn5wLk
+         9tSp8LIiIgpjV933bogcNZQLC7Pif/U8WBWwjuZ6/DUBSm6nNdfKkqF8MN1dYaSv0+JA
+         MXx5AodmPXmf9/PRxoBuybrdPvciawpx/EVKL0y0qcYp92avyFkWMEt/gTn6raioflud
+         wyBkAkvYpLkm00AWyGNrFFGed7+F7PqfwRJ3zhq5TD+dPhZS8f5WfAK4+aWtg85n8Z/v
+         l0qQ==
+X-Gm-Message-State: AElRT7E9H0lG0+0Lz1iiHMaNj+uF0zE7HI41ghy8LvtGv/ECMuvNE3B7
+        dPwlt+Eix61/mwDbpklIDI/oaw==
+X-Google-Smtp-Source: AIpwx483xQu3jhkla/t3Arb19Uaqxy2xwSG+MrkMrZylSD/qR80MwGPzR0Az2bnRFHOuIwmaf9nnHQ==
+X-Received: by 10.98.17.210 with SMTP id 79mr9211479pfr.65.1522400736026;
+        Fri, 30 Mar 2018 02:05:36 -0700 (PDT)
+Received: from localhost.localdomain ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id c62sm17560685pfk.179.2018.03.30.02.05.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 30 Mar 2018 02:05:34 -0700 (PDT)
+From:   r@hev.cc
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Cc:     Heiher <r@hev.cc>
+Subject: [PATCH] MIPS: Fix ejtag handler on SMP
+Date:   Fri, 30 Mar 2018 17:05:15 +0800
+Message-Id: <20180330090515.11399-1-r@hev.cc>
+X-Mailer: git-send-email 2.16.3
+Return-Path: <r@hev.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63356
+X-archive-position: 63357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pavel@ucw.cz
+X-original-sender: r@hev.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,41 +62,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: Heiher <r@hev.cc>
 
---9amGYk9869ThD9tj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Heiher <r@hev.cc>
+---
+ arch/mips/kernel/genex.S | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Hi!
-
-> Current implementation doesn't randomize address returned by mmap.
-> All the entropy ends with choosing mmap_base_addr at the process
-> creation. After that mmap build very predictable layout of address
-> space. It allows to bypass ASLR in many cases. This patch make
-> randomization of address on any mmap call.
-
-How will this interact with people debugging their application, and
-getting different behaviours based on memory layout?
-
-strace, strace again, get different results?
-
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---9amGYk9869ThD9tj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAlq97VwACgkQMOfwapXb+vI6UQCdF4AyQJZJhtFyHLBBqwpvR1q8
-v88AnRJDGP+1mNMTwfSngE35HzilPhGr
-=dXPW
------END PGP SIGNATURE-----
-
---9amGYk9869ThD9tj--
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 37b9383eacd3..9e0857fbe281 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -354,6 +354,17 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	sll	k0, k0, 30	# Check for SDBBP.
+ 	bgez	k0, ejtag_return
+ 
++#ifdef CONFIG_SMP
++	PTR_LA	k0, ejtag_debug_buffer
++1:	sync
++	ll	k0, LONGSIZE(k0)
++	bnez	k0, 1b
++	PTR_LA	k0, ejtag_debug_buffer
++	sc	k0, LONGSIZE(k0)
++	beqz	k0, 1b
++	sync
++#endif
++
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_S	k1, 0(k0)
+ 	SAVE_ALL
+@@ -363,6 +374,11 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_L	k1, 0(k0)
+ 
++#ifdef CONFIG_SMP
++	sw	zero, LONGSIZE(k0)
++	sync
++#endif
++
+ ejtag_return:
+ 	MFC0	k0, CP0_DESAVE
+ 	.set	mips32
+@@ -377,6 +393,9 @@ ejtag_return:
+ 	.data
+ EXPORT(ejtag_debug_buffer)
+ 	.fill	LONGSIZE
++#ifdef CONFIG_SMP
++	.fill	LONGSIZE
++#endif
+ 	.previous
+ 
+ 	__INIT
+-- 
+2.16.3

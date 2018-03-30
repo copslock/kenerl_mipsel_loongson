@@ -1,55 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 11:17:52 +0200 (CEST)
-Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:46744
-        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990432AbeC3JRqGG29Q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 11:17:46 +0200
-Received: by mail-pg0-x242.google.com with SMTP id t12so4777921pgp.13
-        for <linux-mips@linux-mips.org>; Fri, 30 Mar 2018 02:17:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=ddE3H16P+ezOl1IjUpaSjRLaSnFSmkyOgSBKTLKhlCg=;
-        b=bjphC+VcJObfs6lj6tGz7y77e78+3eIQ1gwX0/Efu+gDyQOGAB3Yj5pRCCPUq9fij7
-         RKMZn0euKS6hiNwUg7MpeYESE69tINzFFwnMjbrWvwIGJAU7pPI7cGXHr09PCPW4RCIv
-         iZn/a4ZKGHcXD5wXLbBBJEhTx1abSAxiMfC/noMbKXRoHjub0FNvww+8mCAnFqc5+9Rv
-         XsFrCGwLdeq5kOt5I0Sfw00BOrErsraspycJrGRlHH4MR6tz3HNsIRedyK5Y8eIBUASE
-         Q7ZzvsuT3KlUd7Nlkb8548UN984MHXr5c8+o3f84RJG8MT9obIDh3dtxx1IzZO6WIScf
-         0EUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=ddE3H16P+ezOl1IjUpaSjRLaSnFSmkyOgSBKTLKhlCg=;
-        b=MED7t/l/Rnc2RCL9VwgxDn2IK0p5CrjS6Gh9c65tEw/Hc5iSxzbuKWzUYRO5+ht9Nn
-         74DrFO21L0XnxQjSikNghEp/0LhLw4ENJ1ZRlZam1BLGTdqeh1yuJsjwIAoLKXgp+oaD
-         Bu+NZFsUGbBVXyr+UBTFajkP/oTejMFmNqk74U5fFPYEsoRimR6CmS+w7TmgSPgaeP8D
-         dSvGUneNar+C9nrNODG0x41L+0xYykS2c0dh14uh4U2WGsg6h2pEMGb33GWem49ol+Wr
-         4SKe8krjNTjmwqrvjZdFWkI3YwaplEsZ0NJbtfZXrkJA9jAGFZy2hk7DRh4t2ywQBeNk
-         7AJg==
-X-Gm-Message-State: AElRT7ELpLsuUg+1hALlKcq6U2YBl98tCGZOlSs2xDXdB9uAr23fnNXu
-        0juLW/LNlGVPvZU0NbcWi9fDO1Y0Gnw=
-X-Google-Smtp-Source: AIpwx489Oi+gy8p7AmBEZlqCkFhFwqyR3spZRE1LwJTD+aj1WbdpXKkWOrUXSGjb+GyE0S7HvkTfDw==
-X-Received: by 10.99.180.6 with SMTP id s6mr7789791pgf.81.1522401459548;
-        Fri, 30 Mar 2018 02:17:39 -0700 (PDT)
-Received: from localhost.localdomain ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id s89sm18226288pfk.54.2018.03.30.02.17.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Mar 2018 02:17:38 -0700 (PDT)
-From:   r@hev.cc
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Cc:     Heiher <r@hev.cc>
-Subject: [PATCH] MIPS: Avoid to cause watchpoint exception in kernel mode
-Date:   Fri, 30 Mar 2018 17:17:21 +0800
-Message-Id: <20180330091721.11712-1-r@hev.cc>
-X-Mailer: git-send-email 2.16.3
-Return-Path: <r@hev.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 11:57:47 +0200 (CEST)
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:48025 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990432AbeC3J5g0ojIC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 11:57:36 +0200
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id C177C80391; Fri, 30 Mar 2018 11:57:35 +0200 (CEST)
+Date:   Fri, 30 Mar 2018 11:57:35 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Ilya Smith <blackzert@gmail.com>
+Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        vgupta@synopsys.com, linux@armlinux.org.uk, tony.luck@intel.com,
+        fenghua.yu@intel.com, jhogan@kernel.org, ralf@linux-mips.org,
+        jejb@parisc-linux.org, Helge Deller <deller@gmx.de>,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        schwidefsky@de.ibm.com, heiko.carstens@de.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, nyc@holomorphy.com, viro@zeniv.linux.org.uk,
+        arnd@arndb.de, gregkh@linuxfoundation.org, deepa.kernel@gmail.com,
+        Michal Hocko <mhocko@suse.com>, hughd@google.com,
+        kstewart@linuxfoundation.org, pombredanne@nexb.com,
+        akpm@linux-foundation.org, steve.capper@arm.com,
+        punit.agrawal@arm.com, paul.burton@mips.com,
+        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
+        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
+        dan.j.williams@intel.com, jack@suse.cz,
+        ross.zwisler@linux.intel.com, jglisse@redhat.com,
+        willy@infradead.org, aarcange@redhat.com, oleg@redhat.com,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-ID: <20180330095735.GA15641@amd>
+References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
+ <20180330075508.GA21798@amd>
+ <95EECC28-7349-4FB4-88BF-26E4CF087A0B@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="KsGdsel6WgEHnImy"
+Content-Disposition: inline
+In-Reply-To: <95EECC28-7349-4FB4-88BF-26E4CF087A0B@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63359
+X-archive-position: 63360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r@hev.cc
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,101 +67,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Heiher <r@hev.cc>
 
-The following program cause an endless loop in kernel space:
+--KsGdsel6WgEHnImy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-	#include <stdio.h>
-	#include <unistd.h>
-	#include <signal.h>
+On Fri 2018-03-30 12:07:58, Ilya Smith wrote:
+> Hi
+>=20
+> > On 30 Mar 2018, at 10:55, Pavel Machek <pavel@ucw.cz> wrote:
+> >=20
+> > Hi!
+> >=20
+> >> Current implementation doesn't randomize address returned by mmap.
+> >> All the entropy ends with choosing mmap_base_addr at the process
+> >> creation. After that mmap build very predictable layout of address
+> >> space. It allows to bypass ASLR in many cases. This patch make
+> >> randomization of address on any mmap call.
+> >=20
+> > How will this interact with people debugging their application, and
+> > getting different behaviours based on memory layout?
+> >=20
+> > strace, strace again, get different results?
+> >=20
+>=20
+> Honestly I=E2=80=99m confused about your question. If the only one way fo=
+r debugging=20
+> application is to use predictable mmap behaviour, then something went wro=
+ng in=20
+> this live and we should stop using computers at all.
 
-	int
-	main (int argc, char *argv[])
-	{
-		char buf[16];
+I'm not saying "only way". I'm saying one way, and you are breaking
+that. There's advanced stuff like debuggers going "back in time".
 
-		printf ("%p\n", buf);
-		raise (SIGINT);
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
 
-		write (1, buf, 16);
+--KsGdsel6WgEHnImy
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-		return 0;
-	}
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-	# gcc -O0 -o t t.c
-	# gdb ./t
-	(gdb) r
-	(gdb) watch *<printed buf address>
-	(gdb) c
+iEYEARECAAYFAlq+Cg8ACgkQMOfwapXb+vJu0QCdEsEH77ETyX2HVZNSmFfJe/v+
+DCwAnjMGWij1bTYek7//IiDd4px1ZWUT
+=qmNi
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Heiher <r@hev.cc>
----
- arch/mips/kernel/entry.S | 23 +++++++++++++++++++++++
- arch/mips/kernel/traps.c |  2 +-
- 2 files changed, 24 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
-index 38a302919e6b..6094844fc63f 100644
---- a/arch/mips/kernel/entry.S
-+++ b/arch/mips/kernel/entry.S
-@@ -49,6 +49,13 @@ resume_userspace:
- 					# interrupt setting need_resched
- 					# between sampling and return
- 	LONG_L	a2, TI_FLAGS($28)	# current->work
-+	li	t0, _TIF_LOAD_WATCH
-+	and	t0, a2
-+	beqz	t0, 1f
-+	move	a0, $28
-+	jal	mips_install_watch_registers
-+	LONG_L	a2, TI_FLAGS($28)	# current->work
-+1:
- 	andi	t0, a2, _TIF_WORK_MASK	# (ignoring syscall_trace)
- 	bnez	t0, work_pending
- 	j	restore_all
-@@ -82,7 +89,15 @@ FEXPORT(syscall_exit)
- 	local_irq_disable		# make sure need_resched and
- 					# signals dont change between
- 					# sampling and return
-+
-+	LONG_L	a2, TI_FLAGS($28)	# current->work
-+	li	t0, _TIF_LOAD_WATCH
-+	and	t0, a2
-+	beqz	t0, 1f
-+	move	a0, $28
-+	jal	mips_install_watch_registers
- 	LONG_L	a2, TI_FLAGS($28)	# current->work
-+1:
- 	li	t0, _TIF_ALLWORK_MASK
- 	and	t0, a2, t0
- 	bnez	t0, syscall_exit_work
-@@ -143,7 +158,15 @@ work_notifysig:				# deal with pending signals and
- FEXPORT(syscall_exit_partial)
- 	local_irq_disable		# make sure need_resched doesn't
- 					# change between and return
-+
-+	LONG_L	a2, TI_FLAGS($28)	# current->work
-+	li	t0, _TIF_LOAD_WATCH
-+	and	t0, a2
-+	beqz	t0, 1f
-+	move	a0, $28
-+	jal	mips_install_watch_registers
- 	LONG_L	a2, TI_FLAGS($28)	# current->work
-+1:
- 	li	t0, _TIF_ALLWORK_MASK
- 	and	t0, a2
- 	beqz	t0, restore_partial
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 967e9e4e795e..22f671263b27 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1525,7 +1525,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
- 	 * their values and send SIGTRAP.  Otherwise another thread
- 	 * left the registers set, clear them and continue.
- 	 */
--	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
-+	if (user_mode(regs) && test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
- 		mips_read_watch_registers();
- 		local_irq_enable();
- 		force_sig_info(SIGTRAP, &info, current);
--- 
-2.16.3
+--KsGdsel6WgEHnImy--

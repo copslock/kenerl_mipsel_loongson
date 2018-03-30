@@ -1,42 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 14:46:02 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49192 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990505AbeC3MpxvZwCP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 Mar 2018 14:45:53 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 4FAE820829; Fri, 30 Mar 2018 14:45:48 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 1982120715;
-        Fri, 30 Mar 2018 14:45:38 +0200 (CEST)
-Date:   Fri, 30 Mar 2018 14:45:37 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        razvan.stefanescu@nxp.com, po.liu@nxp.com,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH net-next 5/8] net: mscc: Add initial Ocelot switch support
-Message-ID: <20180330124537.GC14180@piout.net>
-References: <20180323201117.8416-1-alexandre.belloni@bootlin.com>
- <20180323201117.8416-6-alexandre.belloni@bootlin.com>
- <1df0a932-f7c1-f1b5-9a35-3c16d0c551e5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 15:34:37 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:49530 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991096AbeC3NeaVGp09 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 15:34:30 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1f1uA8-0002L6-00; Fri, 30 Mar 2018 13:33:48 +0000
+Date:   Fri, 30 Mar 2018 09:33:48 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Ilya Smith <blackzert@gmail.com>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@synopsys.com,
+        linux@armlinux.org.uk, tony.luck@intel.com, fenghua.yu@intel.com,
+        jhogan@kernel.org, ralf@linux-mips.org, jejb@parisc-linux.org,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, ysato@users.sourceforge.jp,
+        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, x86@kernel.org, nyc@holomorphy.com,
+        viro@zeniv.linux.org.uk, arnd@arndb.de, gregkh@linuxfoundation.org,
+        deepa.kernel@gmail.com, mhocko@suse.com, hughd@google.com,
+        kstewart@linuxfoundation.org, pombredanne@nexb.com,
+        akpm@linux-foundation.org, steve.capper@arm.com,
+        punit.agrawal@arm.com, paul.burton@mips.com,
+        aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+        keescook@chromium.org, bhsharma@redhat.com, riel@redhat.com,
+        nitin.m.gupta@oracle.com, kirill.shutemov@linux.intel.com,
+        dan.j.williams@intel.com, jack@suse.cz,
+        ross.zwisler@linux.intel.com, jglisse@redhat.com,
+        willy@infradead.org, aarcange@redhat.com, oleg@redhat.com,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
+Message-ID: <20180330133348.GR1436@brightrain.aerifal.cx>
+References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
+ <20180330075508.GA21798@amd>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1df0a932-f7c1-f1b5-9a35-3c16d0c551e5@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <alexandre.belloni@bootlin.com>
+In-Reply-To: <20180330075508.GA21798@amd>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63364
+X-archive-position: 63365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,124 +65,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23/03/2018 at 14:41:25 -0700, Florian Fainelli wrote:
-> On 03/23/2018 01:11 PM, Alexandre Belloni wrote:
-> > Add a driver for Microsemi Ocelot Ethernet switch support.
-> > 
-> > This makes two modules:
-> > mscc_ocelot_common handles all the common features that doesn't depend on
-> > how the switch is integrated in the SoC. Currently, it handles offloading
-> > bridging to the hardware. ocelot_io.c handles register accesses. This is
-> > unfortunately needed because the register layout is packed and then depends
-> > on the number of ports available on the switch. The register definition
-> > files are automatically generated.
-> > 
-> > ocelot_board handles the switch integration on the SoC and on the board.
-> > 
-> > Frame injection and extraction to/from the CPU port is currently done using
-> > register accesses which is quite slow. DMA is possible but the port is not
-> > able to absorb the whole switch bandwidth.
-> > 
-> > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+On Fri, Mar 30, 2018 at 09:55:08AM +0200, Pavel Machek wrote:
+> Hi!
 > 
-> Random drive by comments because this is quite a number of lines to review!
+> > Current implementation doesn't randomize address returned by mmap.
+> > All the entropy ends with choosing mmap_base_addr at the process
+> > creation. After that mmap build very predictable layout of address
+> > space. It allows to bypass ASLR in many cases. This patch make
+> > randomization of address on any mmap call.
 > 
-> Overall, looks quite good for a first version. Out of curiosity, is
-> there a particular switch test you ran this driver against? LNST?
+> How will this interact with people debugging their application, and
+> getting different behaviours based on memory layout?
 > 
+> strace, strace again, get different results?
 
-We have a really small custom test suite.
+Normally gdb disables ASLR for the process when invoking a program to
+debug. I don't see why that would be terribly useful with strace but
+you can do the same if you want.
 
-> > +	/* Add dummy CRC */
-> > +	ocelot_write_rix(ocelot, 0, QS_INJ_WR, grp);
-> > +	skb_tx_timestamp(skb);
-> > +
-> > +	dev->stats.tx_packets++;
-> > +	dev->stats.tx_bytes += skb->len;
-> > +	dev_kfree_skb_any(skb);
-> 
-> No interrupt to indicate transmit completion?
-> 
-
-No, unfortunately, the TX interrupts only indicates there is room to
-start injecting frames, not that they have been transmitted.
-
-> 
-> > +static int ocelot_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
-> > +			  struct net_device *dev, const unsigned char *addr,
-> > +			  u16 vid, u16 flags)
-> > +{
-> > +	struct ocelot_port *port = netdev_priv(dev);
-> > +	struct ocelot *ocelot = port->ocelot;
-> > +
-> > +	if (!vid) {
-> > +		if (!port->vlan_aware)
-> > +			/* If the bridge is not VLAN aware and no VID was
-> > +			 * provided, set it to 1 as bridges have a default VID
-> > +			 * of 1. Otherwise the MAC entry wouldn't match incoming
-> > +			 * packets as the VID would differ (0 != 1).
-> > +			 */
-> > +			vid = 1;
-> > +		else
-> > +			/* If the bridge is VLAN aware a VID must be provided as
-> > +			 * otherwise the learnt entry wouldn't match any frame.
-> > +			 */
-> > +			return -EINVAL;
-> > +	}
-> 
-> So if we are targeting vid = 0 we end-up with vid = 1 possibly?
-> 
-
-I've removed that part that is not needed for now and will rework when
-sending VLAN support.
-
-> > +	ocelot_write_gix(ocelot, port_cfg, ANA_PORT_PORT_CFG,
-> > +			 ocelot_port->chip_port);
-> > +
-> > +	/* Apply FWD mask. The loop is needed to add/remove the current port as
-> > +	 * a source for the other ports.
-> > +	 */
-> > +	for (port = 0; port < ocelot->num_phys_ports; port++) {
-> > +		if (ocelot->bridge_fwd_mask & BIT(port)) {
-> > +			unsigned long mask = ocelot->bridge_fwd_mask & ~BIT(port);
-> > +
-> > +			for (i = 0; i < ocelot->num_phys_ports; i++) {
-> > +				unsigned long bond_mask = ocelot->lags[i];
-> > +
-> > +				if (!bond_mask)
-> > +					continue;
-> > +
-> > +				if (bond_mask & BIT(port)) {
-> > +					mask &= ~bond_mask;
-> > +					break;
-> > +				}
-> > +			}
-> > +
-> > +			ocelot_write_rix(ocelot,
-> > +					 BIT(ocelot->num_phys_ports) | mask,
-> > +					 ANA_PGID_PGID, PGID_SRC + port);
-> > +		} else {
-> > +			/* Only the CPU port, this is compatible with link
-> > +			 * aggregation.
-> > +			 */
-> > +			ocelot_write_rix(ocelot,
-> > +					 BIT(ocelot->num_phys_ports),
-> > +					 ANA_PGID_PGID, PGID_SRC + port);
-> > +		}
-> 
-> All of this sounds like it should be moved into the br_join/leave, this
-> does not appear to be the right place to do that.
-> 
-
-No, I've triple checked because this is a comment that both Andrew and
-you had. Once a port is added to the PGID MASK, it will start forwarding
-frames so we really want that to happen only when the port is in
-BR_STATE_FORWARDING state. Else, we may forward frames between the
-addition of the port to the bridge and setting the port to the
-BR_STATE_BLOCKING state.
-
-
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Rich

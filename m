@@ -1,66 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2018 17:55:18 +0200 (CEST)
-Received: from [IPv6:2a03:9300:10::8] ([IPv6:2a03:9300:10::8]:34510 "EHLO
-        tartarus.angband.pl" rhost-flags-FAIL-FAIL-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991855AbeC3PzLy3Y7o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2018 17:55:11 +0200
-Received: from kilobyte by tartarus.angband.pl with local (Exim 4.89)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1f1wMd-0001wK-BC; Fri, 30 Mar 2018 17:54:51 +0200
-Date:   Fri, 30 Mar 2018 17:54:51 +0200
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2018 10:10:26 +0200 (CEST)
+Received: from mail-wm0-x230.google.com ([IPv6:2a00:1450:400c:c09::230]:40444
+        "EHLO mail-wm0-x230.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990401AbeCaIKTixTQ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2018 10:10:19 +0200
+Received: by mail-wm0-x230.google.com with SMTP id x4so19564867wmh.5
+        for <linux-mips@linux-mips.org>; Sat, 31 Mar 2018 01:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=fW0SEuK8scGBMA/m7lC76lqBtYQUJ2WAUA9NxgYsXUg=;
+        b=gBTHZK2TATIKpZ0TAzJtmeSuFPSKq4IfeHVufeptcef8gtTjhmWL/SvhxivSWibu0l
+         KjuYSk546jKaGUt61NIad6bIA03Y7tqvfGgNfX/AsbwfjZLYjC2uo5dvZBxetaYFkRJ+
+         FHiH4+j5fJfateHEG0s4ozMWKdwGXuoqwWHM4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=fW0SEuK8scGBMA/m7lC76lqBtYQUJ2WAUA9NxgYsXUg=;
+        b=fDcbEuvLdOTsEnujxWXkVduE7SNtX+zMPlNjyLRCq2B/wud0RDPZ9Fzm0VKxvi12Aw
+         dJrRLCLvkOBs+mu4ASXKjLa7Aff75DWipkiq6mq5tiV4d5hmeGSz58TPQEV2sXBTYkT7
+         V7mGwquYg+3Af2lQNAMOCC98qRt8Aw7eej7nJihQKttTX1+h+k4DOoyGHc0v64u9SLRW
+         M6hYwJCuTwinJJl3wGtJD7tnOQYpVjnJwuVjhuF1UH9VaDwVqOks37IsIHsblqfy1NNn
+         gErI9gHLWhhZuoNiceDiaAjbHsRUQpEJvxGCnzLMInDmjlYSMv/6D2mDsnn5jJvsdc0P
+         QBCQ==
+X-Gm-Message-State: AElRT7ELMWGJSYBFYTFIode8kf0tAhCMp01gq2fM8x7CWjQ7E+du0sMv
+        dn7MrqyLdln3elh3BK9wNB91Lw==
+X-Google-Smtp-Source: AIpwx499jXrK9wXmca/BjWWb5GP8ymzSi1VxWkTBO+D3rHzvtP4iF52z80n3zD7oA/mV5mqIlKUnxQ==
+X-Received: by 10.28.37.134 with SMTP id l128mr4405233wml.10.1522483814065;
+        Sat, 31 Mar 2018 01:10:14 -0700 (PDT)
+Received: from [192.168.0.77] (135-224-190-109.dsl.ovh.fr. [109.190.224.135])
+        by smtp.googlemail.com with ESMTPSA id n29sm7303358wmi.32.2018.03.31.01.10.11
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 31 Mar 2018 01:10:13 -0700 (PDT)
+Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
         James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        the arch/x86 maintainers <x86@kernel.org>
-Subject: Re: [RFC] new SYSCALL_DEFINE/COMPAT_SYSCALL_DEFINE wrappers
-Message-ID: <20180330155451.4rppf7iy2e3wzimh@angband.pl>
-References: <20180322001532.GA18399@ZenIV.linux.org.uk>
- <20180326004017.GA2211@ZenIV.linux.org.uk>
- <20180326034750.GN30522@ZenIV.linux.org.uk>
- <CA+55aFw8VGnVgaWHVFP-LChMNaoANOwT18jJEWzSCRLFeRGcmA@mail.gmail.com>
- <428751c8-6920-096b-8694-a3f1b8990bdf@physik.fu-berlin.de>
- <CA+55aFwp-T-WFN95j7u5nn2BExxviJCx1-RgD3Mnu1AN_GYD3w@mail.gmail.com>
- <8a8ee344-fb19-3ed9-f7dc-db63f703e6d3@physik.fu-berlin.de>
- <CA+55aFzHL1L_SEt_xqmJBfRRngTm4qbQGwxFvqSXw-MD2BiAOQ@mail.gmail.com>
- <7753539f-c72d-9e5a-eb2d-939e5514404b@physik.fu-berlin.de>
- <20180330105802.7df5pacjfqsqwa6l@gmail.com>
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-8-paul@crapouillou.net>
+ <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
+ <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
+ <af33e522-7f87-d62a-0a35-d56a403387b7@linaro.org>
+ <1522335149.1792.0@smtp.crapouillou.net>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <2234006b-30ff-d5a8-b14a-d6e307c06145@linaro.org>
+Date:   Sat, 31 Mar 2018 10:10:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rubjl4urpbxgxvwa"
-Content-Disposition: inline
-In-Reply-To: <20180330105802.7df5pacjfqsqwa6l@gmail.com>
-X-Junkbait: aaron@angband.pl, zzyx@angband.pl
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: kilobyte@angband.pl
-X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
-Return-Path: <kilobyte@angband.pl>
+In-Reply-To: <1522335149.1792.0@smtp.crapouillou.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63369
+X-archive-position: 63371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kilobyte@angband.pl
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,110 +87,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 29/03/2018 16:52, Paul Cercueil wrote:
+> 
+> 
+> Le mer. 28 mars 2018 à 18:25, Daniel Lezcano <daniel.lezcano@linaro.org>
+> a écrit :
+>> On 28/03/2018 17:15, Paul Cercueil wrote:
+>>>  Le 2018-03-24 07:26, Daniel Lezcano a écrit :
+>>>>  On 18/03/2018 00:29, Paul Cercueil wrote:
+>>>>>  This driver will use the TCU (Timer Counter Unit) present on the
+>>>>> Ingenic
+>>>>>  JZ47xx SoCs to provide the kernel with a clocksource and timers.
+>>>>
+>>>>  Please provide a more detailed description about the timer.
+>>>
+>>>  There's a doc file for that :)
+>>
+>> Usually, when there is a new driver I ask for a description in the
+>> changelog for reference.
+>>
+>>>>  Where is the clocksource ?
+>>>
+>>>  Right, there is no clocksource, just timers.
+>>>
+>>>>  I don't see the point of using channel idx and pwm checking here.
+>>>>
+>>>>  There is one clockevent, why create multiple channels ? Can't you
+>>>> stick
+>>>>  to the usual init routine for a timer.
+>>>
+>>>  So the idea is that we use all the TCU channels that won't be used
+>>> for PWM
+>>>  as timers. Hence the PWM checking. Why is this bad?
+>>
+>> It is not bad but arguable. By checking the channels used by the pwm in
+>> the code, you introduce an adherence between two subsystems even if it
+>> is just related to the DT parsing part.
+>>
+>> As it is not needed to have more than one timer in the time framework
+>> (at least with the same characteristics), the pwm channels check is
+>> pointless. We can assume the author of the DT file is smart enough to
+>> prevent conflicts and define a pwm and a timer properly instead of
+>> adding more code complexity.
+>>
+>> In addition, simplifying the code will allow you to use the timer-of
+>> code and reduce very significantly the init function.
+> 
+> That's what I had in my V1 and V2, my DT node for the timer-ingenic driver
+> had a "timers" property (e.g. "timers = <4 5>;") to select the channels
+> that
+> should be used as timers. Then Rob told me I shouldn't do that, and instead
+> detect the channels that will be used for PWM.
+> 
 
---rubjl4urpbxgxvwa
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ ... ]
 
-On Fri, Mar 30, 2018 at 12:58:02PM +0200, Ingo Molnar wrote:
-> * John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
->=20
-> > On 03/27/2018 12:40 PM, Linus Torvalds wrote:
-> > > On Mon, Mar 26, 2018 at 4:37 PM, John Paul Adrian Glaubitz
-> > > <glaubitz@physik.fu-berlin.de> wrote:
-> > >>
-> > >> What about a tarball with a minimal Debian x32 chroot? Then you can
-> > >> install interesting packages you would like to test yourself.
+How do you specify the channels used for PWM ?
 
-> Here's the direct download link:
->   $ wget https://people.debian.org/~glaubitz/chroots/debian-x32-unstable.=
-tar.gz
+>>>>>
+>>>>>  +config INGENIC_TIMER
+>>>>>  +    bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
+>>>>>  +    depends on MACH_INGENIC || COMPILE_TEST
+>>>>
+>>>>  bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if
+>>>> COMPILE_TEST
+>>>>
+>>>>  Remove the depends MACH_INGENIC.
+>>>
+>>>  This driver is not useful on anything else than Ingenic SoCs, why
+>>> should I
+>>>  remove MACH_INGENIC then?
+>>
+>> For COMPILE_TEST on x86.
+> 
+> Well that's a logical OR right here, so it will work...
 
-> Seems to work fine here (on a distro kernel) even if I extract all the fi=
-les as a=20
-> non-root user and do:
->=20
->   ~/s/debian-x32-unstable> fakechroot /usr/sbin/chroot . /usr/bin/dpkg -l=
-  | tail -2
->=20
->   ERROR: ld.so: object 'libfakechroot.so' from LD_PRELOAD cannot be prelo=
-aded (cannot open shared object file): ignored.
->   ii  util-linux:x32         2.31.1-0.5           x32          miscellane=
-ous system utilities
->   ii  zlib1g:x32             1:1.2.8.dfsg-5       x32          compressio=
-n library - runtime
-
-> So that 'dpkg' instance appears to be running inside the chroot environme=
-nt and is=20
-> listing x32 installed packages.
-
-> Although I did get this warning:
->   ERROR: ld.so: object 'libfakechroot.so' from LD_PRELOAD cannot be prelo=
-aded (cannot open shared object file): ignored.
-> Even with that warning, is still still a sufficiently complex test of x32=
- syscall=20
-> code paths?
-
-Instead of mucking with fakechroot which would require installing its :x32
-part inside the guest, or running the test as root, what about using any
-random static binary?  For example, a shell like sash or bash-static would
-have a decentish syscall coverage even by itself.
-
-I've extracted sash from
-http://ftp.ports.debian.org/debian-ports//pool-x32/main/s/sash/sash_3.8-4_x=
-32.deb
-and placed at https://angband.pl/tmp/sash.x32
-
-$ sha256sum sash.x32=20
-de24097c859b313fa422af742b648c9d731de6b33b98cb995658d1da16398456  sash.x32
-
-Obviously, you can compile a static binary that uses whatever syscalls you
-want.  Without a native chroot, you can "gcc -mx32" although you'd need some
-kind of libc unless your program is stand-alone.
+Right, I missed the second part of the condition. For consistency
+reason, we don't add a dependency on the platform. The platform will
+select it. Look the other timer options and you will see there is no
+MACH deps. I'm trying consolidating all these options to have same
+format and hopefully factor them out.
 
 
-It might be worth mentioning my "arch-test:
-https://github.com/kilobyte/arch-test
-Because of many toolchain pieces it needs, you want a prebuilt copy:
-https://github.com/kilobyte/arch-test/releases/download/v0.10/arch-test_pre=
-built_0.10.tar.xz
-https://github.com/kilobyte/arch-test/releases/download/v0.10/arch-test_pre=
-built_0.10.tar.xz.asc
--- while it has _extremely_ small coverage of syscalls (just write() and
-_exit(), enough to check endianness and pointer width), concentrating on
-instruction set inadequacies (broken SWP on arm, POWER7 vs POWER8, powerpc
-vs powerpcspe, etc), it provides minimal test binaries for a wide range of
-architectures.
 
 
-Meow!
---=20
-=E2=A2=80=E2=A3=B4=E2=A0=BE=E2=A0=BB=E2=A2=B6=E2=A3=A6=E2=A0=80
-=E2=A3=BE=E2=A0=81=E2=A2=B0=E2=A0=92=E2=A0=80=E2=A3=BF=E2=A1=81 I was born =
-a dumb, ugly and work-loving kid, then I got swapped on
-=E2=A2=BF=E2=A1=84=E2=A0=98=E2=A0=B7=E2=A0=9A=E2=A0=8B=E2=A0=80 the materni=
-ty ward.
-=E2=A0=88=E2=A0=B3=E2=A3=84=E2=A0=80=E2=A0=80=E2=A0=80=E2=A0=80
 
---rubjl4urpbxgxvwa
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE1EvJgtm22kuq1XITcZ3MgL7QB/kFAlq+XcsACgkQcZ3MgL7Q
-B/mYBRAAi4LT3AZExNjOZ6td+RWmTVjWPKGJeWViLzuBcVteXwZQnkidx395scxR
-jv8kVqCqAxmEMyTdUwBxPQYb1i9e0A9+oPLQCG/U18HN9/4Z5pfAWnv5qgI5xhpM
-wLebeo75Irgpg9V40C+7pJ3e6zYit22ehx8YCDqFbj0JXy1aGgcd5URJYFBmGC7S
-O2Cvjaehfg/V6gTJ+U/7mbtlxeWVxW94dXHVnV+K1Q9Wh+vQcfHVrp7XmQZPZTSh
-H5UqErkBPSX5K8zTYRyfQry87dZblsk4OXdcX8Jld7UBceymu6Cbt7I9CGMRUART
-030Y5YUPVKWHaoXkR9GqQOjzp7nauiUcPsekkh+Sym62BIUiXoY6dqKqJpgOuvCe
-vhOgTyaspRaT1HRQUQTRLEOGEjK/x9ULY9RaHAwBZunzkz5CS41jq9SHJCza8JL6
-ATx6BYhAo0Ulw0YHFxaKugEsiyo6HdEoqsH3IwwGMqvinYguQ76Q19zggjxRei3Z
-aa9bS6/6hGJhXiLHi9C35syrsddB/RcijZ6W8jVzrO8zTHUQPcrGAsB0yl+Jfn5s
-QD5zvQg1uO7756S6vfYapD6LWZ8pEczStkc1WmJN0cd6BJsgyd5sD5nELGqSCEW5
-DYSEmMre+Esljha61BC9FrWAjSxfbUYXa9IipzgB0L3N26s+Qbw=
-=nksn
------END PGP SIGNATURE-----
-
---rubjl4urpbxgxvwa--
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

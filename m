@@ -1,60 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2018 16:08:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51622 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeCaOIpFZCKG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2018 16:08:45 +0200
-Received: from localhost (unknown [62.177.166.178])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E1B7EEE3;
-        Sat, 31 Mar 2018 14:08:36 +0000 (UTC)
-Date:   Sat, 31 Mar 2018 16:08:32 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Wasim Nazir <wasim.nazir@pathpartnertech.com>
-Cc:     jhogan@kernel.org, kys@microsoft.com, linuxdrivers@attotech.com,
-        linux-kernel@vger.kernel.org, devel@linuxdriverproject.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ariel Elior <ariel.elior@cavium.com>,
-        everest-linux-l2@cavium.com,
-        "James E.J. Bottomley" <jejb@linux.vnet.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        David Daney <david.daney@cavium.com>,
-        Mihaela Muraru <mihaela.muraru21@gmail.com>,
-        Kishore KP <kishore.p@techveda.org>,
-        Sidong Yang <realwakka@gmail.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Phil Elwell <phil@raspberrypi.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Tycho Andersen <tycho@tycho.ws>, linux-mips@linux-mips.org,
-        linux-efi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org, devel@driverdev.osuosl.org
-Subject: Re: [PATCH] Patch to replace DEFINE_SEMAPHORE with
- DEFINE_BINARY_SEMAPHORE
-Message-ID: <20180331140832.GA1074@kroah.com>
-References: <CAAYn-eg8L=-2rX4ZcsA6r9J+6ESEvQFrWk1=f+k1ToP2f=6WHQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2018 19:46:15 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:49724 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990401AbeCaRqIb-yp6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2018 19:46:08 +0200
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAYn-eg8L=-2rX4ZcsA6r9J+6ESEvQFrWk1=f+k1ToP2f=6WHQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Sat, 31 Mar 2018 19:46:06 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        James Hogan <jhogan@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+Subject: 
+In-Reply-To: <2234006b-30ff-d5a8-b14a-d6e307c06145@linaro.org>
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-8-paul@crapouillou.net>
+ <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
+ <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
+ <af33e522-7f87-d62a-0a35-d56a403387b7@linaro.org>
+ <1522335149.1792.0@smtp.crapouillou.net>
+ <2234006b-30ff-d5a8-b14a-d6e307c06145@linaro.org>
+Message-ID: <4532f9e86184afab8c46e8debd8abe61@crapouillou.net>
+X-Sender: paul@crapouillou.net
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63372
+X-archive-position: 63373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,20 +57,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Mar 31, 2018 at 07:16:21PM +0530, Wasim Nazir wrote:
-> This message contains confidential information and is intended only for the 
-> individual(s) named. If you are not the intended recipient, you are 
-> notified that disclosing, copying, distributing or taking any action in 
-> reliance on the contents of this mail and attached file/s is strictly 
-> prohibited. Please notify the sender immediately and delete this e-mail 
-> from your system. E-mail transmission cannot be guaranteed to be secured or 
-> error-free as information could be intercepted, corrupted, lost, destroyed, 
-> arrive late or incomplete, or contain viruses. The sender therefore does 
-> not accept liability for any errors or omissions in the contents of this 
-> message, which arise as a result of e-mail transmission.
+Le 2018-03-31 10:10, Daniel Lezcano a écrit :
+> On 29/03/2018 16:52, Paul Cercueil wrote:
+>> 
+>> 
+>> Le mer. 28 mars 2018 à 18:25, Daniel Lezcano 
+>> <daniel.lezcano@linaro.org>
+>> a écrit :
+>>> On 28/03/2018 17:15, Paul Cercueil wrote:
+>>>>  Le 2018-03-24 07:26, Daniel Lezcano a écrit :
+>>>>>  On 18/03/2018 00:29, Paul Cercueil wrote:
+>>>>>>  This driver will use the TCU (Timer Counter Unit) present on the
+>>>>>> Ingenic
+>>>>>>  JZ47xx SoCs to provide the kernel with a clocksource and timers.
+>>>>> 
+>>>>>  Please provide a more detailed description about the timer.
+>>>> 
+>>>>  There's a doc file for that :)
+>>> 
+>>> Usually, when there is a new driver I ask for a description in the
+>>> changelog for reference.
+>>> 
+>>>>>  Where is the clocksource ?
+>>>> 
+>>>>  Right, there is no clocksource, just timers.
+>>>> 
+>>>>>  I don't see the point of using channel idx and pwm checking here.
+>>>>> 
+>>>>>  There is one clockevent, why create multiple channels ? Can't you
+>>>>> stick
+>>>>>  to the usual init routine for a timer.
+>>>> 
+>>>>  So the idea is that we use all the TCU channels that won't be used
+>>>> for PWM
+>>>>  as timers. Hence the PWM checking. Why is this bad?
+>>> 
+>>> It is not bad but arguable. By checking the channels used by the pwm 
+>>> in
+>>> the code, you introduce an adherence between two subsystems even if 
+>>> it
+>>> is just related to the DT parsing part.
+>>> 
+>>> As it is not needed to have more than one timer in the time framework
+>>> (at least with the same characteristics), the pwm channels check is
+>>> pointless. We can assume the author of the DT file is smart enough to
+>>> prevent conflicts and define a pwm and a timer properly instead of
+>>> adding more code complexity.
+>>> 
+>>> In addition, simplifying the code will allow you to use the timer-of
+>>> code and reduce very significantly the init function.
+>> 
+>> That's what I had in my V1 and V2, my DT node for the timer-ingenic 
+>> driver
+>> had a "timers" property (e.g. "timers = <4 5>;") to select the 
+>> channels
+>> that
+>> should be used as timers. Then Rob told me I shouldn't do that, and 
+>> instead
+>> detect the channels that will be used for PWM.
+>> 
+> 
+> [ ... ]
+> 
+> How do you specify the channels used for PWM ?
 
+To detect the channels that will be used as PWM I parse the whole 
+devicetree
+searching for "pwms" properties; check that the PWM handle is for our 
+TCU PWM
+driver; then read the PWM number from there.
 
-This footer is not compatible with patches submitted to the kernel,
-sorry.  email is now deleted.
+Of course it's hackish, and it only works for devicetree. I preferred 
+the
+method with the "timers" property.
 
-greg k-h
+>>>>>> 
+>>>>>>  +config INGENIC_TIMER
+>>>>>>  +    bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
+>>>>>>  +    depends on MACH_INGENIC || COMPILE_TEST
+>>>>> 
+>>>>>  bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if
+>>>>> COMPILE_TEST
+>>>>> 
+>>>>>  Remove the depends MACH_INGENIC.
+>>>> 
+>>>>  This driver is not useful on anything else than Ingenic SoCs, why
+>>>> should I
+>>>>  remove MACH_INGENIC then?
+>>> 
+>>> For COMPILE_TEST on x86.
+>> 
+>> Well that's a logical OR right here, so it will work...
+> 
+> Right, I missed the second part of the condition. For consistency
+> reason, we don't add a dependency on the platform. The platform will
+> select it. Look the other timer options and you will see there is no
+> MACH deps. I'm trying consolidating all these options to have same
+> format and hopefully factor them out.
+
+I'm all for factorisation, but what I dislike with not depending on
+MACH_INGENIC, is that the driver now appears in the menuconfig for
+every arch, even if it only applies to one MIPS SoC.
+
+Regards,
+-Paul

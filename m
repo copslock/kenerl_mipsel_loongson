@@ -1,79 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Apr 2018 08:39:21 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:40678 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbeDAGjN4Cfss (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Apr 2018 08:39:13 +0200
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w316dAvg006374
-        for <linux-mips@linux-mips.org>; Sun, 1 Apr 2018 02:39:11 -0400
-Received: from e06smtp10.uk.ibm.com (e06smtp10.uk.ibm.com [195.75.94.106])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2h2sensk72-1
-        (version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Sun, 01 Apr 2018 02:39:11 -0400
-Received: from localhost
-        by e06smtp10.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Sun, 1 Apr 2018 07:39:08 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp10.uk.ibm.com (192.168.101.140) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Sun, 1 Apr 2018 07:39:01 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w316d17n11075948;
-        Sun, 1 Apr 2018 06:39:01 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 28AEA52041;
-        Sun,  1 Apr 2018 06:30:13 +0100 (BST)
-Received: from rapoport-lnx (unknown [9.148.8.182])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id AB04E5203F;
-        Sun,  1 Apr 2018 06:30:11 +0100 (BST)
-Date:   Sun, 1 Apr 2018 09:38:58 +0300
-From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Apr 2018 17:05:36 +0200 (CEST)
+Received: from smtprelay0159.hostedemail.com ([216.40.44.159]:54180 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990427AbeDAPFaUg4oV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Apr 2018 17:05:30 +0200
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id CB51D1802958B;
+        Sun,  1 Apr 2018 15:05:27 +0000 (UTC)
+X-Session-Marker: 7368656140736865616C6576792E636F6D
+X-HE-Tag: comb88_11e6e5a2a4c21
+X-Filterd-Recvd-Size: 8704
+Received: from localhost (c-71-235-10-46.hsd1.nh.comcast.net [71.235.10.46])
+        (Authenticated sender: shea@shealevy.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Sun,  1 Apr 2018 15:05:22 +0000 (UTC)
+From:   Shea Levy <shea@shealevy.com>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         James Hogan <jhogan@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH 00/32] docs/vm: convert to ReST format
-References: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
- <20180329154607.3d8bda75@lwn.net>
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <albert@sifive.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>, Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Vladimir Murzin <vladimir.murzin@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Balbir Singh <bsingharora@gmail.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Joe Perches <joe@perches.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Rob Landley <rob@landley.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        linux-xtensa@linux-xtensa.org
+Subject: Re: [PATCH] Extract initrd free logic from arch-specific code.
+In-Reply-To: <20180330111517.rrx6gs2skkgk336j@gmail.com>
+References: <20180325221853.10839-1-shea@shealevy.com> <20180328152714.6103-1-shea@shealevy.com> <20180330111517.rrx6gs2skkgk336j@gmail.com>
+Date:   Sun, 01 Apr 2018 11:05:21 -0400
+Message-ID: <87bmf3rmq6.fsf@xps13.shealevy.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180329154607.3d8bda75@lwn.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 18040106-0040-0000-0000-0000042914C9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18040106-0041-0000-0000-0000262C3B5D
-Message-Id: <20180401063857.GA3357@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2018-04-01_02:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1709140000
- definitions=main-1804010070
-Return-Path: <prvs=06293cf383=rppt@linux.vnet.ibm.com>
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+Return-Path: <shea@shealevy.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63375
+X-archive-position: 63376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rppt@linux.vnet.ibm.com
+X-original-sender: shea@shealevy.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,96 +131,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-(added akpm)
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 29, 2018 at 03:46:07PM -0600, Jonathan Corbet wrote:
-> On Wed, 21 Mar 2018 21:22:16 +0200
-> Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
-> 
-> > These patches convert files in Documentation/vm to ReST format, add an
-> > initial index and link it to the top level documentation.
-> > 
-> > There are no contents changes in the documentation, except few spelling
-> > fixes. The relatively large diffstat stems from the indentation and
-> > paragraph wrapping changes.
-> > 
-> > I've tried to keep the formatting as consistent as possible, but I could
-> > miss some places that needed markup and add some markup where it was not
-> > necessary.
-> 
-> So I've been pondering on these for a bit.  It looks like a reasonable and
-> straightforward RST conversion, no real complaints there.  But I do have a
-> couple of concerns...
-> 
-> One is that, as we move documentation into RST, I'm really trying to
-> organize it a bit so that it is better tuned to the various audiences we
-> have.  For example, ksm.txt is going to be of interest to sysadmin types,
-> who might want to tune it.  mmu_notifier.txt is of interest to ...
-> somebody, but probably nobody who is thinking in user space.  And so on.
-> 
-> So I would really like to see this material split up and put into the
-> appropriate places in the RST hierarchy - admin-guide for administrative
-> stuff, core-api for kernel development topics, etc.  That, of course,
-> could be done separately from the RST conversion, but I suspect I know
-> what will (or will not) happen if we agree to defer that for now :)
+Hi Ingo,
 
-Well, I was actually planning on doing that ;-)
+Ingo Molnar <mingo@kernel.org> writes:
 
-My thinking was to start with mechanical RST conversion and then to start
-working on the contents and ordering of the documentation. Some of the
-existing files, e.g. ksm.txt, can be moved as is into the appropriate
-places, others, like transhuge.txt should be at least split into admin/user
-and developer guides.
+> * Shea Levy <shea@shealevy.com> wrote:
+>
+>> Now only those architectures that have custom initrd free requirements
+>> need to define free_initrd_mem.
+>>=20
+>> Signed-off-by: Shea Levy <shea@shealevy.com>
+>
+> Please put the Kconfig symbol name this patch introduces both into the ti=
+tle, so=20
+> that people know what to grep for.
+>
+>> ---
+>>  arch/alpha/mm/init.c      |  8 --------
+>>  arch/arc/mm/init.c        |  7 -------
+>>  arch/arm/Kconfig          |  1 +
+>>  arch/arm64/Kconfig        |  1 +
+>>  arch/blackfin/Kconfig     |  1 +
+>>  arch/c6x/mm/init.c        |  7 -------
+>>  arch/cris/Kconfig         |  1 +
+>>  arch/frv/mm/init.c        | 11 -----------
+>>  arch/h8300/mm/init.c      |  7 -------
+>>  arch/hexagon/Kconfig      |  1 +
+>>  arch/ia64/Kconfig         |  1 +
+>>  arch/m32r/Kconfig         |  1 +
+>>  arch/m32r/mm/init.c       | 11 -----------
+>>  arch/m68k/mm/init.c       |  7 -------
+>>  arch/metag/Kconfig        |  1 +
+>>  arch/microblaze/mm/init.c |  7 -------
+>>  arch/mips/Kconfig         |  1 +
+>>  arch/mn10300/Kconfig      |  1 +
+>>  arch/nios2/mm/init.c      |  7 -------
+>>  arch/openrisc/mm/init.c   |  7 -------
+>>  arch/parisc/mm/init.c     |  7 -------
+>>  arch/powerpc/mm/mem.c     |  7 -------
+>>  arch/riscv/mm/init.c      |  6 ------
+>>  arch/s390/Kconfig         |  1 +
+>>  arch/score/Kconfig        |  1 +
+>>  arch/sh/mm/init.c         |  7 -------
+>>  arch/sparc/Kconfig        |  1 +
+>>  arch/tile/Kconfig         |  1 +
+>>  arch/um/kernel/mem.c      |  7 -------
+>>  arch/unicore32/Kconfig    |  1 +
+>>  arch/x86/Kconfig          |  1 +
+>>  arch/xtensa/Kconfig       |  1 +
+>>  init/initramfs.c          |  7 +++++++
+>>  usr/Kconfig               |  4 ++++
+>>  34 files changed, 28 insertions(+), 113 deletions(-)
+>
+> Please also put it into Documentation/features/.
+>
 
-Another problem with many of the existing mm docs is that they are rather
-developer notes and it wouldn't be really straight forward to assign them
-to a particular topic.
+I switched this patch series (the latest revision v6 was just posted) to
+using weak symbols instead of Kconfig. Does it still warrant documentation?
 
-I believe that keeping the mm docs together will give better visibility of
-what (little) mm documentation we have and will make the updates easier.
-The documents that fit well into a certain topic could be linked there. For
-instance:
-
--------------------------
-diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
-index 5bb9161..8f6c6e6 100644
---- a/Documentation/admin-guide/index.rst
-+++ b/Documentation/admin-guide/index.rst
-@@ -63,6 +63,7 @@ configure specific aspects of kernel behavior to your liking.
-    pm/index
-    thunderbolt
-    LSM/index
-+   vm/index
- 
- .. only::  subproject and html
- 
-diff --git a/Documentation/admin-guide/vm/index.rst b/Documentation/admin-guide/vm/index.rst
-new file mode 100644
-index 0000000..d86f1c8
---- /dev/null
-+++ b/Documentation/admin-guide/vm/index.rst
-@@ -0,0 +1,5 @@
-+==============================================
-+Knobs and Buttons for Memory Management Tuning
-+==============================================
-+
-+* :ref:`ksm <ksm>`
--------------------------
-
-> The other is the inevitable merge conflicts that changing that many doc
-> files will create.  Sending the patches through Andrew could minimize
-> that, I guess, or at least make it his problem.  Alternatively, we could
-> try to do it as an end-of-merge-window sort of thing.  I can try to manage
-> that, but an ack or two from the mm crowd would be nice to have.
-
-I can rebase on top of Andrew's tree if that would help to minimize the
-merge conflicts.
- 
+>
+>> diff --git a/usr/Kconfig b/usr/Kconfig
+>> index 43658b8a975e..7a94f6df39bf 100644
+>> --- a/usr/Kconfig
+>> +++ b/usr/Kconfig
+>> @@ -233,3 +233,7 @@ config INITRAMFS_COMPRESSION
+>>  	default ".lzma" if RD_LZMA
+>>  	default ".bz2"  if RD_BZIP2
+>>  	default ""
+>> +
+>> +config HAVE_ARCH_FREE_INITRD_MEM
+>> +	bool
+>> +	default n
+>
+> Help text would be nice, to tell arch maintainers what the purpose of thi=
+s switch=20
+> is.
+>
+> Also, a nit, I think this should be named "ARCH_HAS_FREE_INITRD_MEM", whi=
+ch is the=20
+> dominant pattern:
+>
+> triton:~/tip> git grep 'select.*ARCH' arch/x86/Kconfig* | cut -f2 | cut -=
+d_ -f1-2 | sort | uniq -c | sort -n
+>     ...
+>       2 select ARCH_USES
+>       2 select ARCH_WANTS
+>       3 select ARCH_MIGHT
+>       3 select ARCH_WANT
+>       4 select ARCH_SUPPORTS
+>       4 select ARCH_USE
+>      16 select HAVE_ARCH
+>      23 select ARCH_HAS
+>
+> It also reads nicely in English:
+>
+>   "arch has free_initrd_mem()"
+>
+> While the other makes little sense:
+>
+>   "have arch free_initrd_mem()"
+>
+> ?
+>
 > Thanks,
-> 
-> jon
-> 
+>
+> 	Ingo
 
--- 
-Sincerely yours,
-Mike.
+Thanks,
+Shea
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE6ESKvwKkwnxgMLnaXAvWlX2G/icFAlrA9TEACgkQXAvWlX2G
+/ieu+w/9EljMoicXq5AAY0iiZCVMRqXrkcnMT+1jcMEtLA8mLL1ibZrYLGALlTF+
++M0+7Nn2Gs9Nfna/5Mj+IW+WiQ93nFKqKWL22tBheoM6at3oZsOtX0oBI4mB9eIT
+kzwUcCpCQDXvyuVbsV6XqJkCAlpYBAFE2wquWM6DVovxW91kN8cQpP3qZGtTKMkr
+DMAe4LUUbM40/dDsHu43aoFb08mCct1TLf4W/CGMxSapt+8SYow7I6w1QuTJ9NYk
+zTDJuV6J2xP5x4h7zPnzKA/wBkYhMrzgiMC0o3EeKWFUSa+3yCWM+dvHFzqqaz5/
+jW0FUCI3mVaJgkDcdDp41mqI69WqYfpqp9LXdEjuQXRl/m9/icJL41/91XUHEfOk
+k3N6HdGi7eEQ93Qo3Yv4ohr9YlK1Ah7vPK3Zq5c69k4T+sVnk5C1k/wtUkceEfGy
+mgXXL9FxfFi7LpMxEpLsr8NpgkV38H1L4wanzwJGgJAeqn+bqUbhactKwl9AO7mR
+u2xDrICYqEDR6bPuPHQQaF0UrsAR0uyfUGUEnuFLlTdrfgY3cpod5D+UKYCohDCC
+iWuHhKxUY0SQrq99eS9oQD5JSyhqGWF61/nDzMLJ/ApFFBURUiIiW2V4NoRNMB/N
++lyDeFwyn4ApvGm5GvQlfnkaWew/0jVqx9iihclpvw3yNRSbm1M=
+=FCRP
+-----END PGP SIGNATURE-----
+--=-=-=--

@@ -1,20 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Apr 2018 17:05:36 +0200 (CEST)
-Received: from smtprelay0159.hostedemail.com ([216.40.44.159]:54180 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990427AbeDAPFaUg4oV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Apr 2018 17:05:30 +0200
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id CB51D1802958B;
-        Sun,  1 Apr 2018 15:05:27 +0000 (UTC)
-X-Session-Marker: 7368656140736865616C6576792E636F6D
-X-HE-Tag: comb88_11e6e5a2a4c21
-X-Filterd-Recvd-Size: 8704
-Received: from localhost (c-71-235-10-46.hsd1.nh.comcast.net [71.235.10.46])
-        (Authenticated sender: shea@shealevy.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Sun,  1 Apr 2018 15:05:22 +0000 (UTC)
-From:   Shea Levy <shea@shealevy.com>
-To:     Ingo Molnar <mingo@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Apr 2018 07:59:51 +0200 (CEST)
+Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:42794
+        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990434AbeDBF7oeYzwg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Apr 2018 07:59:44 +0200
+Received: by mail-wr0-x243.google.com with SMTP id s18so12425625wrg.9;
+        Sun, 01 Apr 2018 22:59:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=8S9j2GGiF6Hq0Ve0gp08kcpf5x+zmb5JGAyHhh8nX3A=;
+        b=mRWIiq1YCiNEshVpIeud/3kWUb5WXPPOKk0dM5K2GdMhqgC1iYgkbzw4KORY0u68/m
+         BetUrvTjPHbCQuuLIKCfBToMGsvegUHk8lkk1NwY/W9ysX8E4Ozl+yErcFmHhMKP7el1
+         81oOjTsTsPFQRGWIWZ9u8g2saiMtCPudnxgUAnDs2q/+OSchqLb3psIdsZslYXQHB2N9
+         bIDZvLjHSQZ35gtr0q0+D0y7TlYmmED6tX/4ktfdh9HeA/0uP2aPJ8m8vuGhGVFmknDl
+         I0/jtIc5Uax54RYLxlnkx2p11PsjIAApq5WbSKUtrHxu8bc5b4HEqwouw1yIv6Ge0Oco
+         T6Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=8S9j2GGiF6Hq0Ve0gp08kcpf5x+zmb5JGAyHhh8nX3A=;
+        b=fkTUcmhnoS3nI4Y3gAgOACkH1QzQ4YNvR+QOY8qKTmk9ESi6t7zgHO3sj4R7Rzt6E+
+         kn/8VnJm6/0Ei76pRJFBqULuqci5rt3BMp4n6uElE5XvmWNuEiFvbFJxPvves/CVQ9wd
+         o//UFvYgn3DCKRT7wchxt1a4b7xjdtHTyDDJ5aHFQHjvMPa53a+P84u2VVmesDmtoUHl
+         KUA5X3Pcq/l7St4/sg143mKqcIK+KtLd5ygbOW7Ehd5DRBtEHjUPh7zDDOsWadO2CpsI
+         kGJCDKzVVjng4IYOQlR85EhsYK53iPS/SMGKimgQj0K5xYLLLvhXJvUPZozLD7ZWrhvV
+         d6XA==
+X-Gm-Message-State: AElRT7Hg6RuU4Zv6HGp4dT3AMQJfww9xMuJdZN4KGce9RXxY5Hvwr+IH
+        5TUkPmIzbTrj0+LOmfge0x4=
+X-Google-Smtp-Source: AIpwx48Z6vSPk6tP46uVV0AzPws5nCZTYDuU3wUxI22YLf9DkxZ6sAFmCSvkzmWvnk7tRmYxhvgrHA==
+X-Received: by 10.223.152.83 with SMTP id v77mr5800519wrb.225.1522648779035;
+        Sun, 01 Apr 2018 22:59:39 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id i52sm25481354wra.82.2018.04.01.22.59.34
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 01 Apr 2018 22:59:38 -0700 (PDT)
+Date:   Mon, 2 Apr 2018 07:59:33 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Shea Levy <shea@shealevy.com>
 Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         Christoph Hellwig <hch@infradead.org>,
         Richard Henderson <rth@twiddle.net>,
@@ -81,7 +105,7 @@ Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         Oliver O'Halloran <oohall@gmail.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Wei Yang <richard.weiyang@gmail.com>,
-        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Deepa Dinamani <deepa.kernel@gmail.com>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -103,22 +127,25 @@ Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         user-mode-linux-user@lists.sourceforge.net,
         linux-xtensa@linux-xtensa.org
 Subject: Re: [PATCH] Extract initrd free logic from arch-specific code.
-In-Reply-To: <20180330111517.rrx6gs2skkgk336j@gmail.com>
-References: <20180325221853.10839-1-shea@shealevy.com> <20180328152714.6103-1-shea@shealevy.com> <20180330111517.rrx6gs2skkgk336j@gmail.com>
-Date:   Sun, 01 Apr 2018 11:05:21 -0400
-Message-ID: <87bmf3rmq6.fsf@xps13.shealevy.com>
+Message-ID: <20180402055933.zbpyorktot2owzzu@gmail.com>
+References: <20180325221853.10839-1-shea@shealevy.com>
+ <20180328152714.6103-1-shea@shealevy.com>
+ <20180330111517.rrx6gs2skkgk336j@gmail.com>
+ <87bmf3rmq6.fsf@xps13.shealevy.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-Return-Path: <shea@shealevy.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87bmf3rmq6.fsf@xps13.shealevy.com>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <mingo.kernel.org@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63376
+X-archive-position: 63377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shea@shealevy.com
+X-original-sender: mingo@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -131,136 +158,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
 
-Hi Ingo,
+* Shea Levy <shea@shealevy.com> wrote:
 
-Ingo Molnar <mingo@kernel.org> writes:
+> > Please also put it into Documentation/features/.
+> 
+> I switched this patch series (the latest revision v6 was just posted) to
+> using weak symbols instead of Kconfig. Does it still warrant documentation?
 
-> * Shea Levy <shea@shealevy.com> wrote:
->
->> Now only those architectures that have custom initrd free requirements
->> need to define free_initrd_mem.
->>=20
->> Signed-off-by: Shea Levy <shea@shealevy.com>
->
-> Please put the Kconfig symbol name this patch introduces both into the ti=
-tle, so=20
-> that people know what to grep for.
->
->> ---
->>  arch/alpha/mm/init.c      |  8 --------
->>  arch/arc/mm/init.c        |  7 -------
->>  arch/arm/Kconfig          |  1 +
->>  arch/arm64/Kconfig        |  1 +
->>  arch/blackfin/Kconfig     |  1 +
->>  arch/c6x/mm/init.c        |  7 -------
->>  arch/cris/Kconfig         |  1 +
->>  arch/frv/mm/init.c        | 11 -----------
->>  arch/h8300/mm/init.c      |  7 -------
->>  arch/hexagon/Kconfig      |  1 +
->>  arch/ia64/Kconfig         |  1 +
->>  arch/m32r/Kconfig         |  1 +
->>  arch/m32r/mm/init.c       | 11 -----------
->>  arch/m68k/mm/init.c       |  7 -------
->>  arch/metag/Kconfig        |  1 +
->>  arch/microblaze/mm/init.c |  7 -------
->>  arch/mips/Kconfig         |  1 +
->>  arch/mn10300/Kconfig      |  1 +
->>  arch/nios2/mm/init.c      |  7 -------
->>  arch/openrisc/mm/init.c   |  7 -------
->>  arch/parisc/mm/init.c     |  7 -------
->>  arch/powerpc/mm/mem.c     |  7 -------
->>  arch/riscv/mm/init.c      |  6 ------
->>  arch/s390/Kconfig         |  1 +
->>  arch/score/Kconfig        |  1 +
->>  arch/sh/mm/init.c         |  7 -------
->>  arch/sparc/Kconfig        |  1 +
->>  arch/tile/Kconfig         |  1 +
->>  arch/um/kernel/mem.c      |  7 -------
->>  arch/unicore32/Kconfig    |  1 +
->>  arch/x86/Kconfig          |  1 +
->>  arch/xtensa/Kconfig       |  1 +
->>  init/initramfs.c          |  7 +++++++
->>  usr/Kconfig               |  4 ++++
->>  34 files changed, 28 insertions(+), 113 deletions(-)
->
-> Please also put it into Documentation/features/.
->
-
-I switched this patch series (the latest revision v6 was just posted) to
-using weak symbols instead of Kconfig. Does it still warrant documentation?
-
->
->> diff --git a/usr/Kconfig b/usr/Kconfig
->> index 43658b8a975e..7a94f6df39bf 100644
->> --- a/usr/Kconfig
->> +++ b/usr/Kconfig
->> @@ -233,3 +233,7 @@ config INITRAMFS_COMPRESSION
->>  	default ".lzma" if RD_LZMA
->>  	default ".bz2"  if RD_BZIP2
->>  	default ""
->> +
->> +config HAVE_ARCH_FREE_INITRD_MEM
->> +	bool
->> +	default n
->
-> Help text would be nice, to tell arch maintainers what the purpose of thi=
-s switch=20
-> is.
->
-> Also, a nit, I think this should be named "ARCH_HAS_FREE_INITRD_MEM", whi=
-ch is the=20
-> dominant pattern:
->
-> triton:~/tip> git grep 'select.*ARCH' arch/x86/Kconfig* | cut -f2 | cut -=
-d_ -f1-2 | sort | uniq -c | sort -n
->     ...
->       2 select ARCH_USES
->       2 select ARCH_WANTS
->       3 select ARCH_MIGHT
->       3 select ARCH_WANT
->       4 select ARCH_SUPPORTS
->       4 select ARCH_USE
->      16 select HAVE_ARCH
->      23 select ARCH_HAS
->
-> It also reads nicely in English:
->
->   "arch has free_initrd_mem()"
->
-> While the other makes little sense:
->
->   "have arch free_initrd_mem()"
->
-> ?
->
-> Thanks,
->
-> 	Ingo
+Probably not.
 
 Thanks,
-Shea
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE6ESKvwKkwnxgMLnaXAvWlX2G/icFAlrA9TEACgkQXAvWlX2G
-/ieu+w/9EljMoicXq5AAY0iiZCVMRqXrkcnMT+1jcMEtLA8mLL1ibZrYLGALlTF+
-+M0+7Nn2Gs9Nfna/5Mj+IW+WiQ93nFKqKWL22tBheoM6at3oZsOtX0oBI4mB9eIT
-kzwUcCpCQDXvyuVbsV6XqJkCAlpYBAFE2wquWM6DVovxW91kN8cQpP3qZGtTKMkr
-DMAe4LUUbM40/dDsHu43aoFb08mCct1TLf4W/CGMxSapt+8SYow7I6w1QuTJ9NYk
-zTDJuV6J2xP5x4h7zPnzKA/wBkYhMrzgiMC0o3EeKWFUSa+3yCWM+dvHFzqqaz5/
-jW0FUCI3mVaJgkDcdDp41mqI69WqYfpqp9LXdEjuQXRl/m9/icJL41/91XUHEfOk
-k3N6HdGi7eEQ93Qo3Yv4ohr9YlK1Ah7vPK3Zq5c69k4T+sVnk5C1k/wtUkceEfGy
-mgXXL9FxfFi7LpMxEpLsr8NpgkV38H1L4wanzwJGgJAeqn+bqUbhactKwl9AO7mR
-u2xDrICYqEDR6bPuPHQQaF0UrsAR0uyfUGUEnuFLlTdrfgY3cpod5D+UKYCohDCC
-iWuHhKxUY0SQrq99eS9oQD5JSyhqGWF61/nDzMLJ/ApFFBURUiIiW2V4NoRNMB/N
-+lyDeFwyn4ApvGm5GvQlfnkaWew/0jVqx9iihclpvw3yNRSbm1M=
-=FCRP
------END PGP SIGNATURE-----
---=-=-=--
+	Ingo

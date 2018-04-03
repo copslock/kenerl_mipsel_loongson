@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 21:49:43 +0200 (CEST)
-Received: from mga17.intel.com ([192.55.52.151]:24005 "EHLO mga17.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 22:34:54 +0200 (CEST)
+Received: from mga05.intel.com ([192.55.52.43]:63958 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993603AbeDCTtg6tlWS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Apr 2018 21:49:36 +0200
+        id S23993603AbeDCUeqmCG60 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Apr 2018 22:34:46 +0200
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Apr 2018 12:49:33 -0700
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Apr 2018 13:34:43 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.48,402,1517904000"; 
-   d="gz'50?scan'50,208,50";a="30436834"
+   d="gz'50?scan'50,208,50";a="217357702"
 Received: from bee.sh.intel.com (HELO bee) ([10.239.97.14])
-  by orsmga007.jf.intel.com with ESMTP; 03 Apr 2018 12:49:30 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 03 Apr 2018 13:34:40 -0700
 Received: from kbuild by bee with local (Exim 4.84_2)
         (envelope-from <fengguang.wu@intel.com>)
-        id 1f3Rvt-000QSW-Kn; Wed, 04 Apr 2018 03:49:29 +0800
-Date:   Wed, 4 Apr 2018 03:49:15 +0800
+        id 1f3Sdb-000O8w-V7; Wed, 04 Apr 2018 04:34:40 +0800
+Date:   Wed, 4 Apr 2018 04:34:38 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Matt Redfearn <matt.redfearn@mips.com>
 Cc:     kbuild-all@01.org, James Hogan <jhogan@kernel.org>,
@@ -28,13 +28,13 @@ Cc:     kbuild-all@01.org, James Hogan <jhogan@kernel.org>,
         Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: Re: [PATCH 3/5] MIPS: perf: Fix perf with MT counting other threads
-Message-ID: <201804040345.aHF5idm0%fengguang.wu@intel.com>
-References: <1522758691-17003-4-git-send-email-matt.redfearn@mips.com>
+Subject: Re: [PATCH 4/5] MIPS: perf: Allocate per-core counters on demand
+Message-ID: <201804040450.9hvGboKw%fengguang.wu@intel.com>
+References: <1522758691-17003-5-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="HlL+5n6rz5pIUxbD"
+Content-Type: multipart/mixed; boundary="xHFwDpU9dbj6ez1V"
 Content-Disposition: inline
-In-Reply-To: <1522758691-17003-4-git-send-email-matt.redfearn@mips.com>
+In-Reply-To: <1522758691-17003-5-git-send-email-matt.redfearn@mips.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-SA-Exim-Connect-IP: <locally generated>
 X-SA-Exim-Mail-From: fengguang.wu@intel.com
@@ -43,7 +43,7 @@ Return-Path: <fengguang.wu@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63405
+X-archive-position: 63406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,7 +61,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---HlL+5n6rz5pIUxbD
+--xHFwDpU9dbj6ez1V
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -82,72 +82,82 @@ reproduce:
         # save the attached .config to linux build tree
         make.cross ARCH=mips 
 
-All errors (new ones prefixed by >>):
+All error/warnings (new ones prefixed by >>):
 
+   In file included from include/linux/kernel.h:14:0,
+                    from include/linux/cpumask.h:10,
+                    from arch/mips/kernel/perf_event_mipsxx.c:18:
+   arch/mips/kernel/perf_event_mipsxx.c: In function 'mipsxx_pmu_free_counter':
+>> arch/mips/kernel/perf_event_mipsxx.c:365:42: error: 'cpu' undeclared (first use in this function)
+     pr_debug("CPU%d released counter %d\n", cpu, hwc->idx);
+                                             ^
+   include/linux/printk.h:136:17: note: in definition of macro 'no_printk'
+      printk(fmt, ##__VA_ARGS__);  \
+                    ^~~~~~~~~~~
+>> arch/mips/kernel/perf_event_mipsxx.c:365:2: note: in expansion of macro 'pr_debug'
+     pr_debug("CPU%d released counter %d\n", cpu, hwc->idx);
+     ^~~~~~~~
+   arch/mips/kernel/perf_event_mipsxx.c:365:42: note: each undeclared identifier is reported only once for each function it appears in
+     pr_debug("CPU%d released counter %d\n", cpu, hwc->idx);
+                                             ^
+   include/linux/printk.h:136:17: note: in definition of macro 'no_printk'
+      printk(fmt, ##__VA_ARGS__);  \
+                    ^~~~~~~~~~~
+>> arch/mips/kernel/perf_event_mipsxx.c:365:2: note: in expansion of macro 'pr_debug'
+     pr_debug("CPU%d released counter %d\n", cpu, hwc->idx);
+     ^~~~~~~~
    arch/mips/kernel/perf_event_mipsxx.c: In function 'mipsxx_pmu_enable_event':
->> arch/mips/kernel/perf_event_mipsxx.c:343:22: error: expected expression before ')' token
+   arch/mips/kernel/perf_event_mipsxx.c:386:22: error: expected expression before ')' token
      } else if (range > V) {
                          ^
    arch/mips/kernel/perf_event_mipsxx.c: In function 'mipspmu_perf_event_encode':
->> arch/mips/kernel/perf_event_mipsxx.c:675:28: error: 'const struct mips_perf_event' has no member named 'range'
+   arch/mips/kernel/perf_event_mipsxx.c:718:28: error: 'const struct mips_perf_event' has no member named 'range'
       return ((unsigned int)pev->range << 24) |
                                ^~
 
-vim +343 arch/mips/kernel/perf_event_mipsxx.c
+vim +/cpu +365 arch/mips/kernel/perf_event_mipsxx.c
 
-   325	
-   326	static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
-   327	{
-   328		struct perf_event *event = container_of(evt, struct perf_event, hw);
-   329		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-   330		unsigned int range = evt->event_base >> 24;
-   331	
-   332		WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
-   333	
-   334		cpuc->saved_ctrl[idx] = M_PERFCTL_EVENT(evt->event_base & 0xff) |
-   335			(evt->config_base & M_PERFCTL_CONFIG_MASK) |
-   336			/* Make sure interrupt enabled. */
-   337			MIPS_PERFCTRL_IE;
-   338	
-   339		if (IS_ENABLED(CONFIG_CPU_BMIPS5000)) {
-   340			/* enable the counter for the calling thread */
-   341			cpuc->saved_ctrl[idx] |=
-   342				(1 << (12 + vpe_id())) | BRCM_PERFCTRL_TC;
- > 343		} else if (range > V) {
-   344			/* The counter is processor wide. Set it up to count all TCs. */
-   345			pr_debug("Enabling perf counter for all TCs\n");
-   346			cpuc->saved_ctrl[idx] |= M_TC_EN_ALL;
-   347		} else {
-   348			unsigned int cpu, ctrl;
-   349	
-   350			/*
-   351			 * Set up the counter for a particular CPU when event->cpu is
-   352			 * a valid CPU number. Otherwise set up the counter for the CPU
-   353			 * scheduling this thread.
-   354			 */
-   355			cpu = (event->cpu >= 0) ? event->cpu : smp_processor_id();
-   356	
-   357			ctrl = M_PERFCTL_VPEID(cpu_vpe_id(&cpu_data[cpu]));
-   358			ctrl |= M_TC_EN_VPE;
-   359			cpuc->saved_ctrl[idx] |= ctrl;
-   360			pr_debug("Enabling perf counter for CPU%d\n", cpu);
-   361		}
-   362		/*
-   363		 * We do not actually let the counter run. Leave it until start().
-   364		 */
-   365	}
-   366	
+   339	
+   340	static void mipsxx_pmu_free_counter(struct cpu_hw_events *cpuc,
+   341					    struct hw_perf_event *hwc)
+   342	{
+   343	#ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
+   344		int sibling_cpu, cpu = smp_processor_id();
+   345	
+   346		/* When counters are per-core, free them in all sibling CPUs */
+   347		if (!cpu_has_mipsmt_pertccounters) {
+   348			struct cpu_hw_events *sibling_cpuc;
+   349			unsigned long flags;
+   350	
+   351			spin_lock_irqsave(&core_counters_lock, flags);
+   352	
+   353			for_each_cpu(sibling_cpu, &cpu_sibling_map[cpu]) {
+   354				sibling_cpuc = per_cpu_ptr(&cpu_hw_events, sibling_cpu);
+   355	
+   356				clear_bit(hwc->idx, sibling_cpuc->used_mask);
+   357				pr_debug("CPU%d released core counter %d\n",
+   358					 sibling_cpu, hwc->idx);
+   359			}
+   360	
+   361			spin_unlock_irqrestore(&core_counters_lock, flags);
+   362			return;
+   363		}
+   364	#endif
+ > 365		pr_debug("CPU%d released counter %d\n", cpu, hwc->idx);
+   366		clear_bit(hwc->idx, cpuc->used_mask);
+   367	}
+   368	
 
 ---
 0-DAY kernel test infrastructure                Open Source Technology Center
 https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
---HlL+5n6rz5pIUxbD
+--xHFwDpU9dbj6ez1V
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICK7Tw1oAAy5jb25maWcAjDzbcuM2su/5CtXkZbcqm9gejzM5p+YBBEEJEUnQACjLfmE5
+H4sICB/hw1oAAy5jb25maWcAjDzbcuM2su/5CtXkZbcqm9gejzM5p+YBBEEJEUnQACjLfmE5
 Hk3iii9zbE2y+fvTDZIiQDYoV21tRt2NRgPoO0B//933C/Zt//x4u7+/u314+Gfx++5p93K7
 331efLl/2P3vIlWLUtmFSKX9EYjz+6dv//3p8f7r6+L8x9OLH0/+83L382K9e3naPSz489OX
 +9+/wfD756fvvv+OqzKTy6aQlfn0z3cA+H5R3N79cf+0W7zuHnZ3Hdn3C4+wWYpSaMkX96+L
@@ -511,4 +521,4 @@ LyfWbvh/afIXOUSKhaKtv/lxJFu+a2syqRzusSMLL01xLQbuh/VxFIvPERW3QWfd/9K8DJTp
 bURO1CsFNuscdUFTkFugnGTkHt4W0ThjDcGK2SujSSP2turivRd8k4bkfBds6v8BuU05Hu9D
 AQA=
 
---HlL+5n6rz5pIUxbD--
+--xHFwDpU9dbj6ez1V--

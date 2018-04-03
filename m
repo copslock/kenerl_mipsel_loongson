@@ -1,82 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 12:00:02 +0200 (CEST)
-Received: from mail-wm0-x22e.google.com ([IPv6:2a00:1450:400c:c09::22e]:39197
-        "EHLO mail-wm0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993256AbeDCJ7ze83jx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 11:59:55 +0200
-Received: by mail-wm0-x22e.google.com with SMTP id f125so33801365wme.4
-        for <linux-mips@linux-mips.org>; Tue, 03 Apr 2018 02:59:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 13:41:14 +0200 (CEST)
+Received: from mail-pl0-x242.google.com ([IPv6:2607:f8b0:400e:c01::242]:39538
+        "EHLO mail-pl0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993588AbeDCLlDYZ8iq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 13:41:03 +0200
+Received: by mail-pl0-x242.google.com with SMTP id s24-v6so8389178plq.6
+        for <linux-mips@linux-mips.org>; Tue, 03 Apr 2018 04:41:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BecnRLaCn0wbhGIQvQbp7BrO/Uis+jhcKzZJCifxjVE=;
-        b=VBhADR0XfKyJFZBYTObXlVO40b2YJ4PINA7c548MUXtDLA20m8bbk61Wp1Pd+idDyu
-         jXH+Gk4wEDaNDtQs4tcXhmgRZWjB5hCKX4eJJq/7GkXE1SdUJoUxfN9zlMGA6gZk1D2V
-         xgQwCAiDfDZXKYctHGZvvXSFpkGicwl1gxCMw=
+        d=hev-cc.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=i77eHd51yuhESTtdLWsVkbKiOJjLo4b0fil/6fcDHxc=;
+        b=IRfP46+Rwg1tb7RkMHj5yG8JVL9lGlJLDZrW8gq0EmfUfdKKPIg9e+5Tb3oBAvZHF6
+         nwo6ztYRMevEt5UM+eOLkQnGJaVm+9KjbG66SDTiHmnqi6yPfSBJMgjszTVt/4u+lDNU
+         wPGk1PomME/eEWwp2WBhQ2wwVCmXTKdZj2CcHE6GA020OF5NREsNrD72sF/tCfv9zwCG
+         9G2AcXJbfTkaVUME2EfJqsKr+6z48i/QdQky6WMssW2XZfJ4Jz14kLvyh9+LsKp8h+Bg
+         57A/iz0Itn8muKlwTnsS1/dyZNsHDE1wun+CvLlJUyrp0ChaSTbw+1+3Xd4F9ZRtZ1aq
+         fWCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BecnRLaCn0wbhGIQvQbp7BrO/Uis+jhcKzZJCifxjVE=;
-        b=P2EMWH+0hQLtVQBpNgivztbtaOmY5Cw1MFQkYpiA1O5/qKQNd/sjlvVQw9NUcvEHqL
-         IiGWXJinte/c4gls2jswjIs/E5UUlv8W6a3vQLFQtC4/R3knBeTWixnut9AY66NhG+/9
-         sXPapfc2oH81cMEQ2SVZJgWXRQAuxjLtZo+J50OwsQx0DCpUvB3RyuBTpm6g6uOC8rMm
-         cl8rDn3eZ6i3OtYCRNebwly/UQp2L+AjLHHg4kgvoci88y0B2VPzmh43wRd/jU8CsaF+
-         a1iB8a0GN6lJY6R3i6jYXYCeNsZYjNyzklA/mKUudwVv11P6/9pb9SGQ/ySqbpp0+2dg
-         41dw==
-X-Gm-Message-State: AElRT7Hv9jKYd3zUqspWjFY8h1PVWNnPiX0gsBKiUnRi2AuK7vxLs4km
-        NueL28Hp7WuiZNNbldoP6tUCLA==
-X-Google-Smtp-Source: AIpwx48cPjCwtY0ySArm0KhhMU6I9kH6QfCi8tzJ2FA7ojLTjO3MqcAejlgTKDG34GK2OsDjc+3WYQ==
-X-Received: by 10.80.190.70 with SMTP id b6mr8087570edi.283.1522749589993;
-        Tue, 03 Apr 2018 02:59:49 -0700 (PDT)
-Received: from [192.168.1.75] (lft31-1-88-121-166-205.fbx.proxad.net. [88.121.166.205])
-        by smtp.googlemail.com with ESMTPSA id s10sm1573680edc.63.2018.04.03.02.59.47
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=i77eHd51yuhESTtdLWsVkbKiOJjLo4b0fil/6fcDHxc=;
+        b=KuL4KHHBCITRwGhaenmBnGjU7zu+vF0+dZaXOseqEpvb9kwr2torHee3gImfy3t2iO
+         wXbmyg4lvOH6+T4Pt+z85umdkJduZrLEfjmVA/Xe9FLYzKAko+eHjXBtMtNa1IBORbJU
+         ZQjbFBnGWljYmHyt8yTvc5C8+UvHJsV+6+WqXp/kQuWCLGksCR/VWUAsiidmdilSu1AH
+         L+9frxul+TCFPI6FFg/s1vE6Tn9Mv+PuhZvF+ZhtYeil5h8qaS6C0D7/1jLx/nH+t8Re
+         Pb6Rwrl5bCrYKHG5+cSeuAA7xc59A4mN4u8zn1mSVpwYwT000NVy8Vr1an3+kOFH5k4V
+         jIhw==
+X-Gm-Message-State: AElRT7EjXmXur7awQh1PRowQfiNxpiT+wJI1NOKW1WWrP6waUStjmB4c
+        4wr0rewafyBFXcQFO4tWp4WCPDfYUQY=
+X-Google-Smtp-Source: AIpwx49tIFIJRtfQ5dLHwsmdxchhAJIKkzRoT62BQD2OroYi86NtR95Y7127Z9irDVrLPl3alxlOMQ==
+X-Received: by 10.101.69.1 with SMTP id n1mr9013115pgq.12.1522755656727;
+        Tue, 03 Apr 2018 04:40:56 -0700 (PDT)
+Received: from localhost.localdomain ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id k7sm4244310pgt.41.2018.04.03.04.40.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Apr 2018 02:59:49 -0700 (PDT)
-Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        James Hogan <jhogan@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org
-References: <20180110224838.16711-2-paul@crapouillou.net>
- <20180317232901.14129-1-paul@crapouillou.net>
- <20180317232901.14129-8-paul@crapouillou.net>
- <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
- <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
- <af33e522-7f87-d62a-0a35-d56a403387b7@linaro.org>
- <1522335149.1792.0@smtp.crapouillou.net>
- <2234006b-30ff-d5a8-b14a-d6e307c06145@linaro.org>
- <4532f9e86184afab8c46e8debd8abe61@crapouillou.net>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <73091b00-205b-3133-6650-21b6e3fda70f@linaro.org>
-Date:   Tue, 3 Apr 2018 11:59:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
-MIME-Version: 1.0
-In-Reply-To: <4532f9e86184afab8c46e8debd8abe61@crapouillou.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+        Tue, 03 Apr 2018 04:40:54 -0700 (PDT)
+From:   r@hev.cc
+To:     linux-mips@linux-mips.org, jhogan@kernel.org, ralf@linux-mips.org
+Cc:     Heiher <r@hev.cc>
+Subject: [PATCH v2] MIPS: Avoid to cause watchpoint exception in kernel mode
+Date:   Tue,  3 Apr 2018 19:40:38 +0800
+Message-Id: <20180403114038.10646-1-r@hev.cc>
+X-Mailer: git-send-email 2.16.3
+Return-Path: <r@hev.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63390
+X-archive-position: 63391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: r@hev.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,122 +62,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 31/03/2018 19:46, Paul Cercueil wrote:
-> Le 2018-03-31 10:10, Daniel Lezcano a écrit :
->> On 29/03/2018 16:52, Paul Cercueil wrote:
->>>
->>>
->>> Le mer. 28 mars 2018 à 18:25, Daniel Lezcano <daniel.lezcano@linaro.org>
->>> a écrit :
->>>> On 28/03/2018 17:15, Paul Cercueil wrote:
->>>>>  Le 2018-03-24 07:26, Daniel Lezcano a écrit :
->>>>>>  On 18/03/2018 00:29, Paul Cercueil wrote:
->>>>>>>  This driver will use the TCU (Timer Counter Unit) present on the
->>>>>>> Ingenic
->>>>>>>  JZ47xx SoCs to provide the kernel with a clocksource and timers.
->>>>>>
->>>>>>  Please provide a more detailed description about the timer.
->>>>>
->>>>>  There's a doc file for that :)
->>>>
->>>> Usually, when there is a new driver I ask for a description in the
->>>> changelog for reference.
->>>>
->>>>>>  Where is the clocksource ?
->>>>>
->>>>>  Right, there is no clocksource, just timers.
->>>>>
->>>>>>  I don't see the point of using channel idx and pwm checking here.
->>>>>>
->>>>>>  There is one clockevent, why create multiple channels ? Can't you
->>>>>> stick
->>>>>>  to the usual init routine for a timer.
->>>>>
->>>>>  So the idea is that we use all the TCU channels that won't be used
->>>>> for PWM
->>>>>  as timers. Hence the PWM checking. Why is this bad?
->>>>
->>>> It is not bad but arguable. By checking the channels used by the pwm in
->>>> the code, you introduce an adherence between two subsystems even if it
->>>> is just related to the DT parsing part.
->>>>
->>>> As it is not needed to have more than one timer in the time framework
->>>> (at least with the same characteristics), the pwm channels check is
->>>> pointless. We can assume the author of the DT file is smart enough to
->>>> prevent conflicts and define a pwm and a timer properly instead of
->>>> adding more code complexity.
->>>>
->>>> In addition, simplifying the code will allow you to use the timer-of
->>>> code and reduce very significantly the init function.
->>>
->>> That's what I had in my V1 and V2, my DT node for the timer-ingenic
->>> driver
->>> had a "timers" property (e.g. "timers = <4 5>;") to select the channels
->>> that
->>> should be used as timers. Then Rob told me I shouldn't do that, and
->>> instead
->>> detect the channels that will be used for PWM.
->>>
->>
->> [ ... ]
->>
->> How do you specify the channels used for PWM ?
-> 
-> To detect the channels that will be used as PWM I parse the whole
-> devicetree
-> searching for "pwms" properties; check that the PWM handle is for our
-> TCU PWM
-> driver; then read the PWM number from there.
-> 
-> Of course it's hackish, and it only works for devicetree. I preferred the
-> method with the "timers" property.
+From: Heiher <r@hev.cc>
 
-Do you have a DT portion describing that? Eg somewhere in the kernel's
-git tree ?
+I found an operation can trigger a kernel hang, when we write an user-space
+address to hardward watchpoints before access this address in kernel mode.
 
-From what I understood, we can specify the channel for a pwm but not for
-a timer, there is certainly something I'm missing.
+Looks the problem is the current thread can't return to user mode because memory
+accesses blocked by hardward watchpoints. so SIGTRAP not handled and the debugger
+can't receive watchpoints event.
 
->>>>>>>
->>>>>>>  +config INGENIC_TIMER
->>>>>>>  +    bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
->>>>>>>  +    depends on MACH_INGENIC || COMPILE_TEST
->>>>>>
->>>>>>  bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if
->>>>>> COMPILE_TEST
->>>>>>
->>>>>>  Remove the depends MACH_INGENIC.
->>>>>
->>>>>  This driver is not useful on anything else than Ingenic SoCs, why
->>>>> should I
->>>>>  remove MACH_INGENIC then?
->>>>
->>>> For COMPILE_TEST on x86.
->>>
->>> Well that's a logical OR right here, so it will work...
->>
->> Right, I missed the second part of the condition. For consistency
->> reason, we don't add a dependency on the platform. The platform will
->> select it. Look the other timer options and you will see there is no
->> MACH deps. I'm trying consolidating all these options to have same
->> format and hopefully factor them out.
-> 
-> I'm all for factorisation, but what I dislike with not depending on
-> MACH_INGENIC, is that the driver now appears in the menuconfig for
-> every arch, even if it only applies to one MIPS SoC.
+Execution flow:
+1. write address to cp0 watchpoints.
+2. access this address in kernel mode, then an exception triggered by watchpoints.
+3. goto do_watch() to handle exception.
+4. Force a SIGTRAP to current thread.
+5. exception return, goto step 2.
 
-Can you do the following change?
+If we clear the watchpoints in do_watch() for exceptions from kernel mode,
+and re-install watchpoints on thread return to user mode, it'll works fine.
 
-bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if COMPILE_TEST
+Test case:
+	#include <stdio.h>
+	#include <unistd.h>
+	#include <signal.h>
 
-so it will appear only when the COMPILE_TEST option is set whatever the
-platform which is the purpose of this option to increase compile test
-coverage.
+	int
+	main (int argc, char *argv[])
+	{
+		char buf[16];
 
+		printf ("%p\n", buf);
+		raise (SIGINT);
 
+		write (1, buf, 16);
+
+		return 0;
+	}
+
+	# gcc -O0 -o t t.c
+	# gdb ./t
+	(gdb) r
+	(gdb) watch *<printed buf address>
+	(gdb) c
+
+Signed-off-by: Heiher <r@hev.cc>
+---
+ arch/mips/kernel/entry.S | 23 +++++++++++++++++++++++
+ arch/mips/kernel/traps.c |  2 +-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
+index 38a302919e6b..6094844fc63f 100644
+--- a/arch/mips/kernel/entry.S
++++ b/arch/mips/kernel/entry.S
+@@ -49,6 +49,13 @@ resume_userspace:
+ 					# interrupt setting need_resched
+ 					# between sampling and return
+ 	LONG_L	a2, TI_FLAGS($28)	# current->work
++	li	t0, _TIF_LOAD_WATCH
++	and	t0, a2
++	beqz	t0, 1f
++	move	a0, $28
++	jal	mips_install_watch_registers
++	LONG_L	a2, TI_FLAGS($28)	# current->work
++1:
+ 	andi	t0, a2, _TIF_WORK_MASK	# (ignoring syscall_trace)
+ 	bnez	t0, work_pending
+ 	j	restore_all
+@@ -82,7 +89,15 @@ FEXPORT(syscall_exit)
+ 	local_irq_disable		# make sure need_resched and
+ 					# signals dont change between
+ 					# sampling and return
++
++	LONG_L	a2, TI_FLAGS($28)	# current->work
++	li	t0, _TIF_LOAD_WATCH
++	and	t0, a2
++	beqz	t0, 1f
++	move	a0, $28
++	jal	mips_install_watch_registers
+ 	LONG_L	a2, TI_FLAGS($28)	# current->work
++1:
+ 	li	t0, _TIF_ALLWORK_MASK
+ 	and	t0, a2, t0
+ 	bnez	t0, syscall_exit_work
+@@ -143,7 +158,15 @@ work_notifysig:				# deal with pending signals and
+ FEXPORT(syscall_exit_partial)
+ 	local_irq_disable		# make sure need_resched doesn't
+ 					# change between and return
++
++	LONG_L	a2, TI_FLAGS($28)	# current->work
++	li	t0, _TIF_LOAD_WATCH
++	and	t0, a2
++	beqz	t0, 1f
++	move	a0, $28
++	jal	mips_install_watch_registers
+ 	LONG_L	a2, TI_FLAGS($28)	# current->work
++1:
+ 	li	t0, _TIF_ALLWORK_MASK
+ 	and	t0, a2
+ 	beqz	t0, restore_partial
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 967e9e4e795e..22f671263b27 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1525,7 +1525,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
+ 	 * their values and send SIGTRAP.  Otherwise another thread
+ 	 * left the registers set, clear them and continue.
+ 	 */
+-	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
++	if (user_mode(regs) && test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
+ 		mips_read_watch_registers();
+ 		local_irq_enable();
+ 		force_sig_info(SIGTRAP, &info, current);
 -- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.16.3

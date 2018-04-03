@@ -1,37 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 16:46:04 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:33446 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 18:07:50 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:42860 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993599AbeDCOp5NBE5M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Apr 2018 16:45:57 +0200
+        id S23993864AbeDCQHk6R3Nk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Apr 2018 18:07:40 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 081D420CAA;
-        Tue,  3 Apr 2018 14:45:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 081D420CAA
+        by mail.kernel.org (Postfix) with ESMTPSA id C972620CAA;
+        Tue,  3 Apr 2018 16:07:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C972620CAA
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 3 Apr 2018 15:45:45 +0100
+Date:   Tue, 3 Apr 2018 17:07:29 +0100
 From:   James Hogan <jhogan@kernel.org>
 To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Palmer Dabbelt <palmer@sifive.com>, antonynpavlov@gmail.com,
-        ralf@linux-mips.org, linux-mips@linux-mips.org,
-        geert@linux-m68k.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] Add notrace to lib/ucmpdi2.c
-Message-ID: <20180403144544.GA3275@saruman>
-References: <mhng-e7e3dffe-bc80-4bea-8cf5-4d8afb76565a@palmer-si-x1c4>
- <4ba976ed-7294-18ec-187f-7105a9782283@mips.com>
+Cc:     Palmer Dabbelt <palmer@sifive.com>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v5 3/3] MIPS: use generic GCC library routines from lib/
+Message-ID: <20180403160728.GB3275@saruman>
+References: <1522747466-22081-1-git-send-email-matt.redfearn@mips.com>
+ <1522747466-22081-3-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="x+6KMIRAuhnl3hBn"
+        protocol="application/pgp-signature"; boundary="neYutvxvOLaeuPCA"
 Content-Disposition: inline
-In-Reply-To: <4ba976ed-7294-18ec-187f-7105a9782283@mips.com>
+In-Reply-To: <1522747466-22081-3-git-send-email-matt.redfearn@mips.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63403
+X-archive-position: 63404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,45 +55,61 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---x+6KMIRAuhnl3hBn
+--neYutvxvOLaeuPCA
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 03, 2018 at 02:51:06PM +0100, Matt Redfearn wrote:
-> On 29/03/18 22:59, Palmer Dabbelt wrote:
-> > Ah, thanks, I think I must have forgotten about this.=C2=A0 I assume th=
-ese=20
-> > three are going through your tree?
+On Tue, Apr 03, 2018 at 10:24:26AM +0100, Matt Redfearn wrote:
+> From: Antony Pavlov <antonynpavlov@gmail.com>
 >=20
-> Yeah I think that's the plan - James will need your ack to patch 2 if=20
-> that's ok.
+> The commit b35cd9884fa5 ("lib: Add shared copies of some GCC library
+> routines") makes it possible to share generic GCC library routines by
+> several architectures.
+>=20
+> This commit removes several generic GCC library routines from
+> arch/mips/lib/ in favour of similar routines from lib/.
+>=20
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> [Matt Redfearn] Use GENERIC_LIB_* named Kconfig entries
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: Palmer Dabbelt <palmer@sifive.com>
+> Cc: Matt Redfearn <matt.redfearn@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-kernel@vger.kernel.org
 
-Yeh, I've applied v5 for 4.17 with Palmer's reviewed-by, but I'll change
-to an ack if thats okay with Palmer.
+ci20_defconfig:
+make[1]: *** No rule to make target 'arch/mips/lib/ashldi3.c', needed by 'a=
+rch/mips/boot/compressed/ashldi3.c'.  Stop.
+make[1]: *** Waiting for unfinished jobs....
+make: *** [arch/mips/Makefile +395 : vmlinuz] Error 2
 
-Cheers
+same for db1xxx_defconfig (and possibly others).
+
+Thanks
 James
 
---x+6KMIRAuhnl3hBn
+--neYutvxvOLaeuPCA
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrDk5gACgkQbAtpk944
-dnqamg//R64Ip5J/m4tBbd+nw0V2HUzzGYqFe+K/+TSNn/pOo0zmqye1xNxuuPak
-PUSH/3PgPeXkg/QadTi1DTxAIA8e9b5fyTX0H5OrOrTU3Ov5eQPrX/8tEoKd9j2H
-49CibKK+A/VWrxnwYhEcJxeVDH0ELacXvYmhpjVpuaJbakJaHWj4x7ioTlPdPb6h
-4juhWk0bIlrbt5DG3dxh5DVE+x45kbINMTMyGgIHt83JEzGfbPDV5k507b/5dGoV
-Wxm/RlnclVKzwJsx62jF/WBu87c1G1dSZ8y8Q3vowRBuFExH3ic+OlMjNdh+VxtU
-4jyrh3+EA2nON6INMKVqJOCvxcyd5v1yy0BnrjBUGebTaR1+UiiLDEbLLOe3uF+W
-TlohkRBjTrnf9ODLmaBaGg1ccyeD/dM0jdpJryBddZF5H6x16XVPiAg2yGQli4rB
-p7jY/k5qXAGVGHCrRZBd5l3c7TPYwPhdJwflRcLB7jjJK8qBP+Bt8itFtOKH4gF3
-PeRv6/ggnRFV1EKPSgolAZOruA5ebsOjqAWIp8n+LDqcws0gkxhw1OsQfikMUb+B
-zyI5yvI+WE6tHVYGYhKhb714ozpJ2wn4npmI/J1stXuy56gQnQ1Tpwfcu8eplio4
-W3U99tJMe4adDlGtgBlGxTbXI/9nA3p0G/VKpgdX99c33i6txsw=
-=Wr6i
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrDpsAACgkQbAtpk944
+dnoiIQ/+KDxYNqNKyAK5CztRIZzY5OevXj6PV8PmNPNNAmpsYagbZsCPSBZDafvb
+6gGENo7ZoCpTkQyj5nOBdmVFnUb6B7vSLG9Y2XwDC3Xj++tBRPb01zHcAPr7gbFh
+A6edFgI3+D0Qp9/hthwg10ZS6K89dEeeLSiBcsAF5dWDnyyfj3mgEyhhwUKGr0g6
+apGCOSWZBb+vwWOLZDyx5Mu5JyDTiiKZ4+176CDXlbOiLbam9DRV+QpwHnoX0NTp
+6UcFSBJrHRBrXuLkWJKCWbjVBBy9RG+FMiaWtqbRoYCkLlYDL4PwQcs1jWPFiTuq
+v9dCCFTHGuNWPNR6UwL/dbTlvxTEHEvyzmQjh12h7miFAh5BxOTGO67/9Ca9N7Yw
+A3GkHR90lXeizplijUhbO92eIbmyRp9IOHNrZB6n6VXLlHKtdY2CD1dEXAB23h7n
+lVzdJ+vsm+2sXk6if0Gx0SgFg/Qtr5jSg6748eG5dlT5I7q42ZhlswhTdvQhbt/o
+Qjj5GMDjy/OES9Zj9/HZFyUf4rtu+9tRffHcRAFLadqyrPw2hg2Ks7ECUrl6pRXP
+sEA/l/PowHSXv90I8GenKwEhpUn6YSSdv7JoPpqQKuhkcKotpgYKuSKrjfV9R7mL
+AlesX/tQn8NlQwNRRtKprFeHn4m3/vg2mEYBSr9sEgTqReuJSpI=
+=J1ZU
 -----END PGP SIGNATURE-----
 
---x+6KMIRAuhnl3hBn--
+--neYutvxvOLaeuPCA--

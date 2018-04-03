@@ -1,65 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jun 2018 13:44:26 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:40768 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993973AbeFQLoBOIs4V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Jun 2018 13:44:01 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B91A5208E2;
-        Sun, 17 Jun 2018 11:43:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1529235835;
-        bh=R0/FkZTGQ0yFP+yIxHJsCDOkTumH5LhWACapdvTRNGw=;
-        h=Subject:To:Cc:From:Date:From;
-        b=d/fj5OU2oovp7IdEt7OzMyzGMmHJkMpRFwtMG7OtS3aJI014IurySP0AvhChw3mcF
-         23AJ7SNQVQtUGQBofyAm6t1G+MLyK5Ls4GLxCEjpJPyMr9Tl+NNge7txiQMbeFDpY/
-         P3EONyJ52b9r3pv24dAvvTUG18euji8YTKDqu6MM=
-Subject: Patch "MIPS: io: Prevent compiler reordering writeX()" has been added to the 4.16-stable tree
-To:     alexander.levin@microsoft.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, okaya@codeaurora.org,
-        paul.burton@mips.com, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 17 Jun 2018 13:23:44 +0200
-Message-ID: <152923462487218@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=nXdS=JD=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64335
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Sinan Kaya <okaya@codeaurora.org>
+Date: Tue, 3 Apr 2018 08:55:03 -0400
+Subject: MIPS: io: Prevent compiler reordering writeX()
+Message-ID: <20180403125503.g2tUaPK3stYlgsroVVVb_r2ScR_LLMKaQbUq1ps1rr8@z>
+
+From: Sinan Kaya <okaya@codeaurora.org>
+
+[ Upstream commit f6b7aeee8f167409195fbf1364d02988fecad1d0 ]
+
+writeX() has strong ordering semantics with respect to memory updates.
+In the absence of a write barrier or a compiler barrier, the compiler
+can reorder register and memory update instructions. This breaks the
+writeX() API.
+
+Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/18997/
+[jhogan@kernel.org: Tidy commit message]
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/include/asm/io.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -307,7 +307,7 @@ static inline void iounmap(const volatil
+ #if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
+ #define war_io_reorder_wmb()		wmb()
+ #else
+-#define war_io_reorder_wmb()		do { } while (0)
++#define war_io_reorder_wmb()		barrier()
+ #endif
+ 
+ #define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from okaya@codeaurora.org are
 
-    MIPS: io: Prevent compiler reordering writeX()
-
-to the 4.16-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-io-prevent-compiler-reordering-writex.patch
-and it can be found in the queue-4.16 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.16/mips-io-add-barrier-after-register-read-in-readx.patch
+queue-4.16/mips-io-prevent-compiler-reordering-writex.patch

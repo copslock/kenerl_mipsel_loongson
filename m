@@ -1,132 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 02:13:02 +0200 (CEST)
-Received: from mail-wm0-x230.google.com ([IPv6:2a00:1450:400c:c09::230]:52191
-        "EHLO mail-wm0-x230.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992827AbeDCAMzugDpF convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Apr 2018 02:12:55 +0200
-Received: by mail-wm0-x230.google.com with SMTP id v21so29357157wmc.1;
-        Mon, 02 Apr 2018 17:12:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 09:21:33 +0200 (CEST)
+Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:33335
+        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992971AbeDCHVZJ08du (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 09:21:25 +0200
+Received: by mail-qt0-x243.google.com with SMTP id d50so10749714qtc.0;
+        Tue, 03 Apr 2018 00:21:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=J1d8GZtrK4hY+JTjitzp/6IX1SAUit8cEPdA71kilVA=;
-        b=EuGazHaJzfISFZPcaALS46j4L2SWOQSJr2G0H6JQggNgAP3jOI/Z1miZU0cLVtfS+D
-         XQHKKNOuaR0G4aP4sVgBxJCb5pGMX9v5HTG2Xo/kSfMUrBs+Z+LqpNIVRFRgKtpEwcyJ
-         Tw8Fwdp0WRulT0LU7BkFCv/X2cVbfO0Kz7bbrnptgTn/8O6unYV6Tt1Epoj8qtwwGSpq
-         dO3Q5AxB4ASt322rkDh94EeraoMfNW10dAwylgtAQnTo9bSGgQOlZGxR4ifxFyhfrWyZ
-         Og5c8OJc0VsU+yZA5lE987aGBBu0mgSoCKczbI5z9eo8v2VK2G+mckRss/zkON29ss6+
-         9UPA==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=MAUpUrOux+E9Kj2s+qA6L+jP3EoLR0gCt+OZGasN/yE=;
+        b=jYJ/V1yd3Dk0kbUv2QwKioyWF/oMBGaIF+hFyHMlF0WXnB9dR7PHt74a0yzqjDXfZx
+         5Hb57zGt5lohITElz62ujFSE+YbH4j9o3xmlQCO53Cor1iB+BYmmp1nEOUqOHQ6KUjfF
+         4+jTDhfbyLmNDHUbMv5FZKqJLia/ssID+Iyi0ImhunRYmJ+ltEY7feUVR1FkDGHx7KIQ
+         OkOU+6pmur8tF6siUtMZZORTWMNjO8L05wt6iIrRfCTYLJOxlNi3FvCusb6u7wa00RtF
+         6DQJT65WGomz1zf2/hROmf8U8fOanW7xkLM3VAEllg1lQWdbWYrZrUl/4QAycUUh5PSG
+         NDTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=J1d8GZtrK4hY+JTjitzp/6IX1SAUit8cEPdA71kilVA=;
-        b=m9sIBFbwX0KpzFPsqbyOB1oGw+nKNgMsbHqDAEanZLiVlVpxjsaCafmIm28pcd25WO
-         DOTW95A/sQJwTBEfs6PDEy3ftPq5MClyyc05aWPqqnISYrcUhWj7DuCJfEu1bwIxay8H
-         lmM68+SADoMNkup0nDORbxhcaOkL17jBHnKJPxhaWnxr9BnD78k2eUfCrGcJHgzEQIQm
-         UmkbwooK+vPXZluJsGuj7LuIuNUSe8kGKTjNiKGj0FfOrnE25/LiecdwaC4TdWDMywT1
-         qL6rgKZCha7Y0gn7vRadgZ3AOCyBxwHk+m3M4OHdv/apaIA9KsIP3yCaQ/PbU3RxMy+u
-         m6vQ==
-X-Gm-Message-State: AElRT7HbrrnjkhdBXH29y53pKnjdlDWpfIfEjA7Lb9H79QAVKR7g2fyn
-        FC6Q/MPSwplxI8Jrjh1RdJg=
-X-Google-Smtp-Source: AIpwx49ClP02AGgxiYwZoPDHz8HxKYxZ15sE72H7Zj1waosYFFtzDGDuzQQRgJhpA6TX5qvHmOQxOA==
-X-Received: by 10.46.16.1 with SMTP id j1mr7300865lje.102.1522714370429;
-        Mon, 02 Apr 2018 17:12:50 -0700 (PDT)
-Received: from [192.168.1.3] (broadband-188-255-70-164.moscow.rt.ru. [188.255.70.164])
-        by smtp.gmail.com with ESMTPSA id 93-v6sm272506lfy.5.2018.04.02.17.12.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Apr 2018 17:12:49 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 11.2 \(3445.5.20\))
-Subject: Re: [RFC PATCH v2 0/2] Randomization of address chosen by mmap.
-From:   Ilya Smith <blackzert@gmail.com>
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7B3B8BC5@ORSMSX110.amr.corp.intel.com>
-Date:   Tue, 3 Apr 2018 03:11:50 +0300
-Cc:     Rich Felker <dalias@libc.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
-        "mattst88@gmail.com" <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=MAUpUrOux+E9Kj2s+qA6L+jP3EoLR0gCt+OZGasN/yE=;
+        b=Hf1K2d4Mp6d0feU/nm/Jn71uaroG+t+P5MYdMaEtbljcc7v8iJDiradOM7nPgSgbIP
+         VhrN9mXGgp5Fbv/IV3YXgnB8e1WOTU2ua3W2LGJLPbMEnwVGPGO2CetvdF3aQqbKA7Jj
+         CzjMjuRZmZvxwTpVshLCwLqcUoy0bOQg/78AK6W3HG21+vjmK/cFwnEwm0U2GMEW1Mm8
+         U1iLG7G6Q5q0H/t4C8c41ZI2ZnLno3xaF5DlAk+f4WOX3akcYZRm2xfFcIzlP2EeYGoN
+         EiN8I6WnsOy1IHOpyOwlkFW/74MSUAVX0A6+2SrO8EMT4x0xgAXr9we5D1l4STMoDUoH
+         1QOg==
+X-Gm-Message-State: ALQs6tBXa8WxEyy45LoxhRGchRHQ3+EYrVzH+pSHr3pbwCrvx3v9BwvB
+        HZsITWL2RpETEuGL5zmLcE9QeKUS0vHOP3TIJ98=
+X-Google-Smtp-Source: AIpwx4+s+QVlV/p5YqTuMvNLST/cE7+8tBcYFSHIJ7eS3uhWY5tpsgDfKrGZU/xT/LZpp38e17xfv6ECRYgZhnSbbXI=
+X-Received: by 10.200.65.200 with SMTP id o8mr18934171qtm.75.1522740078822;
+ Tue, 03 Apr 2018 00:21:18 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.12.185.25 with HTTP; Tue, 3 Apr 2018 00:21:18 -0700 (PDT)
+In-Reply-To: <1522692821-27706-1-git-send-email-okaya@codeaurora.org>
+References: <1522692821-27706-1-git-send-email-okaya@codeaurora.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 3 Apr 2018 09:21:18 +0200
+X-Google-Sender-Auth: 4vuAMkavNvqcJuN-1jtqTL1uUc8
+Message-ID: <CAK8P3a0WwhDoTdQNoxnpBVDZu8a7oKdB2tSjVRTRf3rrecEKMA@mail.gmail.com>
+Subject: Re: [PATCH v2] MIPS: io: add a barrier after register read in readX()
+To:     Sinan Kaya <okaya@codeaurora.org>
+Cc:     "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Timur Tabi <timur@codeaurora.org>, sulrich@codeaurora.org,
+        linux-arm-msm@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
-        "nyc@holomorphy.com" <nyc@holomorphy.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Hugh Dickins <hughd@google.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steve Capper <steve.capper@arm.com>,
-        Punit Agrawal <punit.agrawal@arm.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Nick Piggin <npiggin@gmail.com>,
-        Bhupesh Sharma <bhsharma@redhat.com>,
-        Rik van Riel <riel@redhat.com>,
-        "nitin.m.gupta@oracle.com" <nitin.m.gupta@oracle.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        Jan Kara <jack@suse.cz>,
-        Ross Zwisler <ross.zwisler@linux.intel.com>,
-        Jerome Glisse <jglisse@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        PowerPC <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-sh <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <D9173B50-39D6-4EE5-AF8B-3EB50D0C9A3B@gmail.com>
-References: <1521736598-12812-1-git-send-email-blackzert@gmail.com>
- <20180323124806.GA5624@bombadil.infradead.org>
- <651E0DB6-4507-4DA1-AD46-9C26ED9792A8@gmail.com>
- <20180326084650.GC5652@dhcp22.suse.cz>
- <01A133F4-27DF-4AE2-80D6-B0368BF758CD@gmail.com>
- <20180327072432.GY5652@dhcp22.suse.cz>
- <0549F29C-12FC-4401-9E85-A430BC11DA78@gmail.com>
- <CAGXu5j+XXufprMaJ9GbHxD3mZ7iqUuu60-tTMC6wo2x1puYzMQ@mail.gmail.com>
- <20180327234904.GA27734@bombadil.infradead.org>
- <20180328000025.GM1436@brightrain.aerifal.cx>
- <3908561D78D1C84285E8C5FCA982C28F7B3B8BC5@ORSMSX110.amr.corp.intel.com>
-To:     "Luck, Tony" <tony.luck@intel.com>
-X-Mailer: Apple Mail (2.3445.5.20)
-Return-Path: <blackzert@gmail.com>
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63381
+X-archive-position: 63382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blackzert@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -139,28 +72,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> On 29 Mar 2018, at 00:07, Luck, Tony <tony.luck@intel.com> wrote:
-> 
->> The default limit of only 65536 VMAs will also quickly come into play
->> if consecutive anon mmaps don't get merged. Of course this can be
->> raised, but it has significant resource and performance (fork) costs.
-> 
-> Could the random mmap address chooser look for how many existing
-> VMAs have space before/after and the right attributes to merge with the
-> new one you want to create? If this is above some threshold (100?) then
-> pick one of them randomly and allocate the new address so that it will
-> merge from below/above with an existing one.
-> 
-> That should still give you a very high degree of randomness, but prevent
-> out of control numbers of VMAs from being created.
+On Mon, Apr 2, 2018 at 8:13 PM, Sinan Kaya <okaya@codeaurora.org> wrote:
+> While a barrier is present in writeX() function before the register write,
+> a similar barrier is missing in the readX() function after the register
+> read. This could allow memory accesses following readX() to observe
+> stale data.
+>
+> Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
+> Reported-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/mips/include/asm/io.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+> index 0cbf3af..7f9068d 100644
+> --- a/arch/mips/include/asm/io.h
+> +++ b/arch/mips/include/asm/io.h
+> @@ -377,6 +377,7 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)        \
+>                 BUG();                                                  \
+>         }                                                               \
+>                                                                         \
+> +       war_io_reorder_wmb();                                           \
+>         return pfx##ioswab##bwlq(__mem, __val);                         \
+>  }
 
-I think this wouldn’t work. For example these 100 allocation may happened on 
-process initialization. But when attacker come to the server all his 
-allocations would be made on the predictable offsets from each other. So in 
-result we did nothing just decrease performance of first 100 allocations. I 
-think I can make ioctl to turn off this randomization per process and it could 
-be used if needed. For example if application going to allocate big chunk or 
-make big memory pressure, etc.
+I'm not sure if this is the right barrier: what we want here is a read
+barrier to
+prevent any following memory access from being prefetched ahead of the readl(),
+so I would have expected a kind of rmb() rather than wmb().
 
-Best regards,
-Ilya
+The barrier you used here is defined as
+
+#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
+#define war_io_reorder_wmb()            wmb()
+#else
+#define war_io_reorder_wmb()            do { } while (0)
+#endif
+
+which appears to list the particular CPUs that have a reordering
+write buffer. That may not be the same set of CPUs that have the
+capability to do out-of-order loads.
+
+       Arnd

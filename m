@@ -1,53 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 15:51:15 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:57051 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993588AbeDCNvHhR6nY convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Apr 2018 15:51:07 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 03 Apr 2018 13:50:58 +0000
-Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 3 Apr
- 2018 06:51:09 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 16:46:04 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:33446 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993599AbeDCOp5NBE5M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Apr 2018 16:45:57 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 081D420CAA;
+        Tue,  3 Apr 2018 14:45:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 081D420CAA
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 3 Apr 2018 15:45:45 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     Palmer Dabbelt <palmer@sifive.com>, antonynpavlov@gmail.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        geert@linux-m68k.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v4 1/3] Add notrace to lib/ucmpdi2.c
-To:     Palmer Dabbelt <palmer@sifive.com>
-CC:     <antonynpavlov@gmail.com>, <jhogan@kernel.org>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <geert@linux-m68k.org>, <linux-kernel@vger.kernel.org>
+Message-ID: <20180403144544.GA3275@saruman>
 References: <mhng-e7e3dffe-bc80-4bea-8cf5-4d8afb76565a@palmer-si-x1c4>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <4ba976ed-7294-18ec-187f-7105a9782283@mips.com>
-Date:   Tue, 3 Apr 2018 14:51:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+ <4ba976ed-7294-18ec-187f-7105a9782283@mips.com>
 MIME-Version: 1.0
-In-Reply-To: <mhng-e7e3dffe-bc80-4bea-8cf5-4d8afb76565a@palmer-si-x1c4>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [192.168.155.41]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1522763428-298553-26930-64224-2
-X-BESS-VER: 2018.4-r1803302247
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191654
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="x+6KMIRAuhnl3hBn"
+Content-Disposition: inline
+In-Reply-To: <4ba976ed-7294-18ec-187f-7105a9782283@mips.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63402
+X-archive-position: 63403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,50 +48,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Palmer,
 
-On 29/03/18 22:59, Palmer Dabbelt wrote:
-> On Thu, 29 Mar 2018 03:41:21 PDT (-0700), matt.redfearn@mips.com wrote:
->> From: Palmer Dabbelt <palmer@sifive.com>
->>
->> As part of the MIPS conversion to use the generic GCC library routines,
->> Matt Redfearn discovered that I'd missed a notrace on __ucmpdi2().  This
->> patch rectifies the problem.
->>
->> CC: Matt Redfearn <matt.redfearn@mips.com>
->> CC: Antony Pavlov <antonynpavlov@gmail.com>
->> Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
->> Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
->> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->> ---
->>
->> Changes in v4: None
->> Changes in v3: None
->> Changes in v2:
->>   add notrace to lib/ucmpdi2.c
->>
->>  lib/ucmpdi2.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/lib/ucmpdi2.c b/lib/ucmpdi2.c
->> index 25ca2d4c1e19..597998169a96 100644
->> --- a/lib/ucmpdi2.c
->> +++ b/lib/ucmpdi2.c
->> @@ -17,7 +17,7 @@
->>  #include <linux/module.h>
->>  #include <linux/libgcc.h>
->>
->> -word_type __ucmpdi2(unsigned long long a, unsigned long long b)
->> +word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
->>  {
->>      const DWunion au = {.ll = a};
->>      const DWunion bu = {.ll = b};
-> 
-> Ah, thanks, I think I must have forgotten about this.  I assume these 
-> three are going through your tree?
+--x+6KMIRAuhnl3hBn
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yeah I think that's the plan - James will need your ack to patch 2 if 
-that's ok.
+On Tue, Apr 03, 2018 at 02:51:06PM +0100, Matt Redfearn wrote:
+> On 29/03/18 22:59, Palmer Dabbelt wrote:
+> > Ah, thanks, I think I must have forgotten about this.=C2=A0 I assume th=
+ese=20
+> > three are going through your tree?
+>=20
+> Yeah I think that's the plan - James will need your ack to patch 2 if=20
+> that's ok.
 
-Thanks,
-Matt
+Yeh, I've applied v5 for 4.17 with Palmer's reviewed-by, but I'll change
+to an ack if thats okay with Palmer.
+
+Cheers
+James
+
+--x+6KMIRAuhnl3hBn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrDk5gACgkQbAtpk944
+dnqamg//R64Ip5J/m4tBbd+nw0V2HUzzGYqFe+K/+TSNn/pOo0zmqye1xNxuuPak
+PUSH/3PgPeXkg/QadTi1DTxAIA8e9b5fyTX0H5OrOrTU3Ov5eQPrX/8tEoKd9j2H
+49CibKK+A/VWrxnwYhEcJxeVDH0ELacXvYmhpjVpuaJbakJaHWj4x7ioTlPdPb6h
+4juhWk0bIlrbt5DG3dxh5DVE+x45kbINMTMyGgIHt83JEzGfbPDV5k507b/5dGoV
+Wxm/RlnclVKzwJsx62jF/WBu87c1G1dSZ8y8Q3vowRBuFExH3ic+OlMjNdh+VxtU
+4jyrh3+EA2nON6INMKVqJOCvxcyd5v1yy0BnrjBUGebTaR1+UiiLDEbLLOe3uF+W
+TlohkRBjTrnf9ODLmaBaGg1ccyeD/dM0jdpJryBddZF5H6x16XVPiAg2yGQli4rB
+p7jY/k5qXAGVGHCrRZBd5l3c7TPYwPhdJwflRcLB7jjJK8qBP+Bt8itFtOKH4gF3
+PeRv6/ggnRFV1EKPSgolAZOruA5ebsOjqAWIp8n+LDqcws0gkxhw1OsQfikMUb+B
+zyI5yvI+WE6tHVYGYhKhb714ozpJ2wn4npmI/J1stXuy56gQnQ1Tpwfcu8eplio4
+W3U99tJMe4adDlGtgBlGxTbXI/9nA3p0G/VKpgdX99c33i6txsw=
+=Wr6i
+-----END PGP SIGNATURE-----
+
+--x+6KMIRAuhnl3hBn--

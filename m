@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 10:43:02 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:55468 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 10:52:29 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:58308 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993124AbeDCImyer0FO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Apr 2018 10:42:54 +0200
+        id S23993124AbeDCIwV30uxO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Apr 2018 10:52:21 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0BC2E214EE;
-        Tue,  3 Apr 2018 08:42:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 0BC2E214EE
+        by mail.kernel.org (Postfix) with ESMTPSA id EB3A12178F;
+        Tue,  3 Apr 2018 08:52:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org EB3A12178F
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 3 Apr 2018 09:42:43 +0100
+Date:   Tue, 3 Apr 2018 09:52:10 +0100
 From:   James Hogan <jhogan@kernel.org>
 To:     r@hev.cc
 Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Fix ejtag handler on SMP
-Message-ID: <20180403084242.GA31222@saruman>
-References: <20180330090515.11399-1-r@hev.cc>
+Subject: Re: [PATCH] MIPS: Avoid to cause watchpoint exception in kernel mode
+Message-ID: <20180403085209.GB31222@saruman>
+References: <20180330091721.11712-1-r@hev.cc>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
+        protocol="application/pgp-signature"; boundary="TRYliJ5NKNqkz5bu"
 Content-Disposition: inline
-In-Reply-To: <20180330090515.11399-1-r@hev.cc>
+In-Reply-To: <20180330091721.11712-1-r@hev.cc>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63383
+X-archive-position: 63384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,90 +46,64 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---+QahgC5+KEYLbs62
+--TRYliJ5NKNqkz5bu
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 30, 2018 at 05:05:15PM +0800, r@hev.cc wrote:
+On Fri, Mar 30, 2018 at 05:17:21PM +0800, r@hev.cc wrote:
 > From: Heiher <r@hev.cc>
-
-Please can you add a proper commit description, explaining the problem
-and what your patch does to fix it.
-
 >=20
-> Signed-off-by: Heiher <r@hev.cc>
-> ---
->  arch/mips/kernel/genex.S | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+> The following program cause an endless loop in kernel space:
 >=20
-> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-> index 37b9383eacd3..9e0857fbe281 100644
-> --- a/arch/mips/kernel/genex.S
-> +++ b/arch/mips/kernel/genex.S
-> @@ -354,6 +354,17 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
->  	sll	k0, k0, 30	# Check for SDBBP.
->  	bgez	k0, ejtag_return
-> =20
-> +#ifdef CONFIG_SMP
-> +	PTR_LA	k0, ejtag_debug_buffer
-> +1:	sync
+> 	#include <stdio.h>
+> 	#include <unistd.h>
+> 	#include <signal.h>
+>=20
+> 	int
+> 	main (int argc, char *argv[])
+> 	{
+> 		char buf[16];
+>=20
+> 		printf ("%p\n", buf);
+> 		raise (SIGINT);
+>=20
+> 		write (1, buf, 16);
+>=20
+> 		return 0;
+> 	}
+>=20
+> 	# gcc -O0 -o t t.c
+> 	# gdb ./t
+> 	(gdb) r
+> 	(gdb) watch *<printed buf address>
+> 	(gdb) c
 
-Is the sync necessary? Or is that one of those platform specific
-workarounds?
+Please add more explanation so that a future reader can see what the
+problem was and how you fixed it.
 
-> +	ll	k0, LONGSIZE(k0)
-> +	bnez	k0, 1b
-> +	PTR_LA	k0, ejtag_debug_buffer
-> +	sc	k0, LONGSIZE(k0)
-> +	beqz	k0, 1b
-> +	sync
-> +#endif
-> +
->  	PTR_LA	k0, ejtag_debug_buffer
->  	LONG_S	k1, 0(k0)
->  	SAVE_ALL
-> @@ -363,6 +374,11 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
->  	PTR_LA	k0, ejtag_debug_buffer
->  	LONG_L	k1, 0(k0)
-> =20
-> +#ifdef CONFIG_SMP
-> +	sw	zero, LONGSIZE(k0)
-> +	sync
-
-Same question. Its about to deret anyway which should cover that I
-think?
-
-> +#endif
-> +
->  ejtag_return:
->  	MFC0	k0, CP0_DESAVE
-
-Not specific to your patch, but I wonder whether there should be a
-back_to_back_c0_hazard (ehb on r2+) somewhere before this MFC0.
-
-Cheers
+Thanks
 James
 
---+QahgC5+KEYLbs62
+--TRYliJ5NKNqkz5bu
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrDPnwACgkQbAtpk944
-dnpNqxAArsXbeG5i7vsGe9gTtkq2vqRuSdUwIqDvXywUMMjej7NIvHl9nPOK5aap
-b4expPctf+L1gDr+TwGQYRbGGGu2dkQPaF9fAJJY3RKR1VlJxLKlefnepnOqrPTT
-0oaIzE+xoJ+DHMeWCykGHB5EWQBqdpzq3415Zt8yLNlgjtoIVyxxWt6VQyuVmawc
-pjL/Gf0ciC8P5UmaT+QEzcRmjgWIK/4ICOX0t3z4y1izE4am05Gd2ojRm7YohhGr
-quSPqeMnzfqCt0/snJF4un+p/dr9qu7G222F9MtDy6LxUbv4zCyvA+MC67ro1QxX
-cCBpig8EQzwSrQ3+nlj4TM2bpwxI3GgDqpe8y83wQR6/PyNpD7RCy4G1c8bsnGBG
-JORfL0mh8lvHWrNHp5ds07GHarvoj41YdoaX+6BXCb5ZoHyz6oAHWv0YT3lCdi8c
-xRGOJThNftSXwwOOHnUPVmuCnbXoM4xjp3LNd/nV/PoJw5U+rds3zvWsuRLZ18B9
-rYu7dPgjP2rBUoDSok7kZ33+iZuY0T8T/nAJwgFgYHmtsXFs2+kDCoC/QJ47J3Hr
-Wl8oI5mu+mlK6JR6IJH4GC40yGnYPjDbYk4QOxq2nTbxlXywYYR33cwaouxdbe9j
-ZQvkU1/qH020NmNiMye3jzZ6jqOIyFW4TQAN6xQ7N5vRoiDO/Zk=
-=yGHj
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrDQLkACgkQbAtpk944
+dnoFzQ/6Aj77ROXSmdunuPpFB+MO6f1x08DZneVsceXX+b96KBSj/Bf0FRj+f6ie
+wUVaw8Zp9MZX522oOCjWod8mpGlZyxmd8+5lWTEWPBv1qJDQboTiffYwAktCdOJj
+CtviASmn3YfQJQdxUx2V//w+BUSqQAWbpuTeAS29WO5Tmi4eK3rsGslM2BOkQiL7
++Fnl5Bgb5nmK84dMDAigC+0kohQUJ6ea1W7SuEG7KyrtAaDNS2eWmq9PS3X+fiv+
+uS503pOGJvDVBN3sxGK0V7cwxiAkhWfdii3NQDGUuKLY6GBM/wm+bbeJC6SRyqVK
+VXdKOkWttUO07AwkQfGrVJ4krLu7/V+a2kx53TUoD7+XdlY21NoYclHYfT+wPZI9
+LBvcjzfeNmkGIRG2qWDnx07Bz88WG4VExTTOL1PPA8MqK0aXG6N22fF6iyCXhFfw
+fn1o3bS1LUHME4y+PVJSKzPCyiOQAeT1ME4FlXDoPviSMKhsHOKUiKTjbuIbUSKN
+wzMR7SKXxz1iqnODXOrIwEZJkdODCZysFlbtyqjv+VjCDcSIegMUTT4QDvd3bhq7
+uZZABtWxChS/Ft6inx6yf/k6u0eQUWMCZrlGdMRDjnddOvf0GBu8Z6uRe9n/uA7V
+N9+vDdbs9ZhsCb1qOqyHrvN01/4g8TQn/E+BmKWWT1OtVD50wCA=
+=k/Gn
 -----END PGP SIGNATURE-----
 
---+QahgC5+KEYLbs62--
+--TRYliJ5NKNqkz5bu--

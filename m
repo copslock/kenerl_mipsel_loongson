@@ -1,65 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 09:21:33 +0200 (CEST)
-Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:33335
-        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992971AbeDCHVZJ08du (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 09:21:25 +0200
-Received: by mail-qt0-x243.google.com with SMTP id d50so10749714qtc.0;
-        Tue, 03 Apr 2018 00:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=MAUpUrOux+E9Kj2s+qA6L+jP3EoLR0gCt+OZGasN/yE=;
-        b=jYJ/V1yd3Dk0kbUv2QwKioyWF/oMBGaIF+hFyHMlF0WXnB9dR7PHt74a0yzqjDXfZx
-         5Hb57zGt5lohITElz62ujFSE+YbH4j9o3xmlQCO53Cor1iB+BYmmp1nEOUqOHQ6KUjfF
-         4+jTDhfbyLmNDHUbMv5FZKqJLia/ssID+Iyi0ImhunRYmJ+ltEY7feUVR1FkDGHx7KIQ
-         OkOU+6pmur8tF6siUtMZZORTWMNjO8L05wt6iIrRfCTYLJOxlNi3FvCusb6u7wa00RtF
-         6DQJT65WGomz1zf2/hROmf8U8fOanW7xkLM3VAEllg1lQWdbWYrZrUl/4QAycUUh5PSG
-         NDTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=MAUpUrOux+E9Kj2s+qA6L+jP3EoLR0gCt+OZGasN/yE=;
-        b=Hf1K2d4Mp6d0feU/nm/Jn71uaroG+t+P5MYdMaEtbljcc7v8iJDiradOM7nPgSgbIP
-         VhrN9mXGgp5Fbv/IV3YXgnB8e1WOTU2ua3W2LGJLPbMEnwVGPGO2CetvdF3aQqbKA7Jj
-         CzjMjuRZmZvxwTpVshLCwLqcUoy0bOQg/78AK6W3HG21+vjmK/cFwnEwm0U2GMEW1Mm8
-         U1iLG7G6Q5q0H/t4C8c41ZI2ZnLno3xaF5DlAk+f4WOX3akcYZRm2xfFcIzlP2EeYGoN
-         EiN8I6WnsOy1IHOpyOwlkFW/74MSUAVX0A6+2SrO8EMT4x0xgAXr9we5D1l4STMoDUoH
-         1QOg==
-X-Gm-Message-State: ALQs6tBXa8WxEyy45LoxhRGchRHQ3+EYrVzH+pSHr3pbwCrvx3v9BwvB
-        HZsITWL2RpETEuGL5zmLcE9QeKUS0vHOP3TIJ98=
-X-Google-Smtp-Source: AIpwx4+s+QVlV/p5YqTuMvNLST/cE7+8tBcYFSHIJ7eS3uhWY5tpsgDfKrGZU/xT/LZpp38e17xfv6ECRYgZhnSbbXI=
-X-Received: by 10.200.65.200 with SMTP id o8mr18934171qtm.75.1522740078822;
- Tue, 03 Apr 2018 00:21:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 10:43:02 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:55468 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993124AbeDCImyer0FO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Apr 2018 10:42:54 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0BC2E214EE;
+        Tue,  3 Apr 2018 08:42:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 0BC2E214EE
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 3 Apr 2018 09:42:43 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     r@hev.cc
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Fix ejtag handler on SMP
+Message-ID: <20180403084242.GA31222@saruman>
+References: <20180330090515.11399-1-r@hev.cc>
 MIME-Version: 1.0
-Received: by 10.12.185.25 with HTTP; Tue, 3 Apr 2018 00:21:18 -0700 (PDT)
-In-Reply-To: <1522692821-27706-1-git-send-email-okaya@codeaurora.org>
-References: <1522692821-27706-1-git-send-email-okaya@codeaurora.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 3 Apr 2018 09:21:18 +0200
-X-Google-Sender-Auth: 4vuAMkavNvqcJuN-1jtqTL1uUc8
-Message-ID: <CAK8P3a0WwhDoTdQNoxnpBVDZu8a7oKdB2tSjVRTRf3rrecEKMA@mail.gmail.com>
-Subject: Re: [PATCH v2] MIPS: io: add a barrier after register read in readX()
-To:     Sinan Kaya <okaya@codeaurora.org>
-Cc:     "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Timur Tabi <timur@codeaurora.org>, sulrich@codeaurora.org,
-        linux-arm-msm@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
+Content-Disposition: inline
+In-Reply-To: <20180330090515.11399-1-r@hev.cc>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63382
+X-archive-position: 63383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,45 +45,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Apr 2, 2018 at 8:13 PM, Sinan Kaya <okaya@codeaurora.org> wrote:
-> While a barrier is present in writeX() function before the register write,
-> a similar barrier is missing in the readX() function after the register
-> read. This could allow memory accesses following readX() to observe
-> stale data.
->
-> Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
-> Reported-by: Arnd Bergmann <arnd@arndb.de>
+
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Mar 30, 2018 at 05:05:15PM +0800, r@hev.cc wrote:
+> From: Heiher <r@hev.cc>
+
+Please can you add a proper commit description, explaining the problem
+and what your patch does to fix it.
+
+>=20
+> Signed-off-by: Heiher <r@hev.cc>
 > ---
->  arch/mips/include/asm/io.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> index 0cbf3af..7f9068d 100644
-> --- a/arch/mips/include/asm/io.h
-> +++ b/arch/mips/include/asm/io.h
-> @@ -377,6 +377,7 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)        \
->                 BUG();                                                  \
->         }                                                               \
->                                                                         \
-> +       war_io_reorder_wmb();                                           \
->         return pfx##ioswab##bwlq(__mem, __val);                         \
->  }
+>  arch/mips/kernel/genex.S | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>=20
+> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+> index 37b9383eacd3..9e0857fbe281 100644
+> --- a/arch/mips/kernel/genex.S
+> +++ b/arch/mips/kernel/genex.S
+> @@ -354,6 +354,17 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+>  	sll	k0, k0, 30	# Check for SDBBP.
+>  	bgez	k0, ejtag_return
+> =20
+> +#ifdef CONFIG_SMP
+> +	PTR_LA	k0, ejtag_debug_buffer
+> +1:	sync
 
-I'm not sure if this is the right barrier: what we want here is a read
-barrier to
-prevent any following memory access from being prefetched ahead of the readl(),
-so I would have expected a kind of rmb() rather than wmb().
+Is the sync necessary? Or is that one of those platform specific
+workarounds?
 
-The barrier you used here is defined as
+> +	ll	k0, LONGSIZE(k0)
+> +	bnez	k0, 1b
+> +	PTR_LA	k0, ejtag_debug_buffer
+> +	sc	k0, LONGSIZE(k0)
+> +	beqz	k0, 1b
+> +	sync
+> +#endif
+> +
+>  	PTR_LA	k0, ejtag_debug_buffer
+>  	LONG_S	k1, 0(k0)
+>  	SAVE_ALL
+> @@ -363,6 +374,11 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+>  	PTR_LA	k0, ejtag_debug_buffer
+>  	LONG_L	k1, 0(k0)
+> =20
+> +#ifdef CONFIG_SMP
+> +	sw	zero, LONGSIZE(k0)
+> +	sync
 
-#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
-#define war_io_reorder_wmb()            wmb()
-#else
-#define war_io_reorder_wmb()            do { } while (0)
-#endif
+Same question. Its about to deret anyway which should cover that I
+think?
 
-which appears to list the particular CPUs that have a reordering
-write buffer. That may not be the same set of CPUs that have the
-capability to do out-of-order loads.
+> +#endif
+> +
+>  ejtag_return:
+>  	MFC0	k0, CP0_DESAVE
 
-       Arnd
+Not specific to your patch, but I wonder whether there should be a
+back_to_back_c0_hazard (ehb on r2+) somewhere before this MFC0.
+
+Cheers
+James
+
+--+QahgC5+KEYLbs62
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrDPnwACgkQbAtpk944
+dnpNqxAArsXbeG5i7vsGe9gTtkq2vqRuSdUwIqDvXywUMMjej7NIvHl9nPOK5aap
+b4expPctf+L1gDr+TwGQYRbGGGu2dkQPaF9fAJJY3RKR1VlJxLKlefnepnOqrPTT
+0oaIzE+xoJ+DHMeWCykGHB5EWQBqdpzq3415Zt8yLNlgjtoIVyxxWt6VQyuVmawc
+pjL/Gf0ciC8P5UmaT+QEzcRmjgWIK/4ICOX0t3z4y1izE4am05Gd2ojRm7YohhGr
+quSPqeMnzfqCt0/snJF4un+p/dr9qu7G222F9MtDy6LxUbv4zCyvA+MC67ro1QxX
+cCBpig8EQzwSrQ3+nlj4TM2bpwxI3GgDqpe8y83wQR6/PyNpD7RCy4G1c8bsnGBG
+JORfL0mh8lvHWrNHp5ds07GHarvoj41YdoaX+6BXCb5ZoHyz6oAHWv0YT3lCdi8c
+xRGOJThNftSXwwOOHnUPVmuCnbXoM4xjp3LNd/nV/PoJw5U+rds3zvWsuRLZ18B9
+rYu7dPgjP2rBUoDSok7kZ33+iZuY0T8T/nAJwgFgYHmtsXFs2+kDCoC/QJ47J3Hr
+Wl8oI5mu+mlK6JR6IJH4GC40yGnYPjDbYk4QOxq2nTbxlXywYYR33cwaouxdbe9j
+ZQvkU1/qH020NmNiMye3jzZ6jqOIyFW4TQAN6xQ7N5vRoiDO/Zk=
+=yGHj
+-----END PGP SIGNATURE-----
+
+--+QahgC5+KEYLbs62--

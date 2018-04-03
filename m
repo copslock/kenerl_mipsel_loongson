@@ -1,56 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 11:27:36 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:38850 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993124AbeDCJ11r8ERx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 11:27:27 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1411.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 03 Apr 2018 09:26:57 +0000
-Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Tue, 3 Apr 2018 02:25:45 -0700
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     Palmer Dabbelt <palmer@sifive.com>,
-        Antony Pavlov <antonynpavlov@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 12:00:02 +0200 (CEST)
+Received: from mail-wm0-x22e.google.com ([IPv6:2a00:1450:400c:c09::22e]:39197
+        "EHLO mail-wm0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993256AbeDCJ7ze83jx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 11:59:55 +0200
+Received: by mail-wm0-x22e.google.com with SMTP id f125so33801365wme.4
+        for <linux-mips@linux-mips.org>; Tue, 03 Apr 2018 02:59:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=BecnRLaCn0wbhGIQvQbp7BrO/Uis+jhcKzZJCifxjVE=;
+        b=VBhADR0XfKyJFZBYTObXlVO40b2YJ4PINA7c548MUXtDLA20m8bbk61Wp1Pd+idDyu
+         jXH+Gk4wEDaNDtQs4tcXhmgRZWjB5hCKX4eJJq/7GkXE1SdUJoUxfN9zlMGA6gZk1D2V
+         xgQwCAiDfDZXKYctHGZvvXSFpkGicwl1gxCMw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=BecnRLaCn0wbhGIQvQbp7BrO/Uis+jhcKzZJCifxjVE=;
+        b=P2EMWH+0hQLtVQBpNgivztbtaOmY5Cw1MFQkYpiA1O5/qKQNd/sjlvVQw9NUcvEHqL
+         IiGWXJinte/c4gls2jswjIs/E5UUlv8W6a3vQLFQtC4/R3knBeTWixnut9AY66NhG+/9
+         sXPapfc2oH81cMEQ2SVZJgWXRQAuxjLtZo+J50OwsQx0DCpUvB3RyuBTpm6g6uOC8rMm
+         cl8rDn3eZ6i3OtYCRNebwly/UQp2L+AjLHHg4kgvoci88y0B2VPzmh43wRd/jU8CsaF+
+         a1iB8a0GN6lJY6R3i6jYXYCeNsZYjNyzklA/mKUudwVv11P6/9pb9SGQ/ySqbpp0+2dg
+         41dw==
+X-Gm-Message-State: AElRT7Hv9jKYd3zUqspWjFY8h1PVWNnPiX0gsBKiUnRi2AuK7vxLs4km
+        NueL28Hp7WuiZNNbldoP6tUCLA==
+X-Google-Smtp-Source: AIpwx48cPjCwtY0ySArm0KhhMU6I9kH6QfCi8tzJ2FA7ojLTjO3MqcAejlgTKDG34GK2OsDjc+3WYQ==
+X-Received: by 10.80.190.70 with SMTP id b6mr8087570edi.283.1522749589993;
+        Tue, 03 Apr 2018 02:59:49 -0700 (PDT)
+Received: from [192.168.1.75] (lft31-1-88-121-166-205.fbx.proxad.net. [88.121.166.205])
+        by smtp.googlemail.com with ESMTPSA id s10sm1573680edc.63.2018.04.03.02.59.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Apr 2018 02:59:49 -0700 (PDT)
+Subject: Re: [PATCH v4 7/8] clocksource: Add a new timer-ingenic driver
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH v5 3/3] MIPS: use generic GCC library routines from lib/
-Date:   Tue, 3 Apr 2018 10:24:26 +0100
-Message-ID: <1522747466-22081-3-git-send-email-matt.redfearn@mips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1522747466-22081-1-git-send-email-matt.redfearn@mips.com>
-References: <1522747466-22081-1-git-send-email-matt.redfearn@mips.com>
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+References: <20180110224838.16711-2-paul@crapouillou.net>
+ <20180317232901.14129-1-paul@crapouillou.net>
+ <20180317232901.14129-8-paul@crapouillou.net>
+ <a8d28b2b-4e40-83b9-d65e-beecbd36ad33@linaro.org>
+ <06976e4ae275c4cc0bddacc5e0c0c9a9@crapouillou.net>
+ <af33e522-7f87-d62a-0a35-d56a403387b7@linaro.org>
+ <1522335149.1792.0@smtp.crapouillou.net>
+ <2234006b-30ff-d5a8-b14a-d6e307c06145@linaro.org>
+ <4532f9e86184afab8c46e8debd8abe61@crapouillou.net>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <73091b00-205b-3133-6650-21b6e3fda70f@linaro.org>
+Date:   Tue, 3 Apr 2018 11:59:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1522747462-452059-13822-47957-12
-X-BESS-VER: 2018.4.1-r1803302241
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.60
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191650
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.60 MARKETING_SUBJECT      HEADER: Subject contains popular marketing words 
-X-BESS-Outbound-Spam-Status: SCORE=0.60 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, MARKETING_SUBJECT
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+In-Reply-To: <4532f9e86184afab8c46e8debd8abe61@crapouillou.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63389
+X-archive-position: 63390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,250 +89,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Antony Pavlov <antonynpavlov@gmail.com>
+On 31/03/2018 19:46, Paul Cercueil wrote:
+> Le 2018-03-31 10:10, Daniel Lezcano a écrit :
+>> On 29/03/2018 16:52, Paul Cercueil wrote:
+>>>
+>>>
+>>> Le mer. 28 mars 2018 à 18:25, Daniel Lezcano <daniel.lezcano@linaro.org>
+>>> a écrit :
+>>>> On 28/03/2018 17:15, Paul Cercueil wrote:
+>>>>>  Le 2018-03-24 07:26, Daniel Lezcano a écrit :
+>>>>>>  On 18/03/2018 00:29, Paul Cercueil wrote:
+>>>>>>>  This driver will use the TCU (Timer Counter Unit) present on the
+>>>>>>> Ingenic
+>>>>>>>  JZ47xx SoCs to provide the kernel with a clocksource and timers.
+>>>>>>
+>>>>>>  Please provide a more detailed description about the timer.
+>>>>>
+>>>>>  There's a doc file for that :)
+>>>>
+>>>> Usually, when there is a new driver I ask for a description in the
+>>>> changelog for reference.
+>>>>
+>>>>>>  Where is the clocksource ?
+>>>>>
+>>>>>  Right, there is no clocksource, just timers.
+>>>>>
+>>>>>>  I don't see the point of using channel idx and pwm checking here.
+>>>>>>
+>>>>>>  There is one clockevent, why create multiple channels ? Can't you
+>>>>>> stick
+>>>>>>  to the usual init routine for a timer.
+>>>>>
+>>>>>  So the idea is that we use all the TCU channels that won't be used
+>>>>> for PWM
+>>>>>  as timers. Hence the PWM checking. Why is this bad?
+>>>>
+>>>> It is not bad but arguable. By checking the channels used by the pwm in
+>>>> the code, you introduce an adherence between two subsystems even if it
+>>>> is just related to the DT parsing part.
+>>>>
+>>>> As it is not needed to have more than one timer in the time framework
+>>>> (at least with the same characteristics), the pwm channels check is
+>>>> pointless. We can assume the author of the DT file is smart enough to
+>>>> prevent conflicts and define a pwm and a timer properly instead of
+>>>> adding more code complexity.
+>>>>
+>>>> In addition, simplifying the code will allow you to use the timer-of
+>>>> code and reduce very significantly the init function.
+>>>
+>>> That's what I had in my V1 and V2, my DT node for the timer-ingenic
+>>> driver
+>>> had a "timers" property (e.g. "timers = <4 5>;") to select the channels
+>>> that
+>>> should be used as timers. Then Rob told me I shouldn't do that, and
+>>> instead
+>>> detect the channels that will be used for PWM.
+>>>
+>>
+>> [ ... ]
+>>
+>> How do you specify the channels used for PWM ?
+> 
+> To detect the channels that will be used as PWM I parse the whole
+> devicetree
+> searching for "pwms" properties; check that the PWM handle is for our
+> TCU PWM
+> driver; then read the PWM number from there.
+> 
+> Of course it's hackish, and it only works for devicetree. I preferred the
+> method with the "timers" property.
 
-The commit b35cd9884fa5 ("lib: Add shared copies of some GCC library
-routines") makes it possible to share generic GCC library routines by
-several architectures.
+Do you have a DT portion describing that? Eg somewhere in the kernel's
+git tree ?
 
-This commit removes several generic GCC library routines from
-arch/mips/lib/ in favour of similar routines from lib/.
+From what I understood, we can specify the channel for a pwm but not for
+a timer, there is certainly something I'm missing.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-[Matt Redfearn] Use GENERIC_LIB_* named Kconfig entries
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Palmer Dabbelt <palmer@sifive.com>
-Cc: Matt Redfearn <matt.redfearn@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
+>>>>>>>
+>>>>>>>  +config INGENIC_TIMER
+>>>>>>>  +    bool "Clocksource/timer using the TCU in Ingenic JZ SoCs"
+>>>>>>>  +    depends on MACH_INGENIC || COMPILE_TEST
+>>>>>>
+>>>>>>  bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if
+>>>>>> COMPILE_TEST
+>>>>>>
+>>>>>>  Remove the depends MACH_INGENIC.
+>>>>>
+>>>>>  This driver is not useful on anything else than Ingenic SoCs, why
+>>>>> should I
+>>>>>  remove MACH_INGENIC then?
+>>>>
+>>>> For COMPILE_TEST on x86.
+>>>
+>>> Well that's a logical OR right here, so it will work...
+>>
+>> Right, I missed the second part of the condition. For consistency
+>> reason, we don't add a dependency on the platform. The platform will
+>> select it. Look the other timer options and you will see there is no
+>> MACH deps. I'm trying consolidating all these options to have same
+>> format and hopefully factor them out.
+> 
+> I'm all for factorisation, but what I dislike with not depending on
+> MACH_INGENIC, is that the driver now appears in the menuconfig for
+> every arch, even if it only applies to one MIPS SoC.
 
----
+Can you do the following change?
 
-Changes in v5:
-  Actually delete the MIPS lib routines
+bool "Clocksource/timer using the TCU in Ingenic JZ SoCs" if COMPILE_TEST
 
-Changes in v4:
-  Rework to use the new GENERIC_LIB_ Kconfig entries
+so it will appear only when the COMPILE_TEST option is set whatever the
+platform which is the purpose of this option to increase compile test
+coverage.
 
-Changes in v3:
-  Maintain alphabetical order of MIPS Kconfig
 
-Changes in v2: None
-
- arch/mips/Kconfig       |  5 +++++
- arch/mips/lib/Makefile  |  3 +--
- arch/mips/lib/ashldi3.c | 30 ------------------------------
- arch/mips/lib/ashrdi3.c | 32 --------------------------------
- arch/mips/lib/cmpdi2.c  | 28 ----------------------------
- arch/mips/lib/lshrdi3.c | 30 ------------------------------
- arch/mips/lib/ucmpdi2.c | 22 ----------------------
- 7 files changed, 6 insertions(+), 144 deletions(-)
- delete mode 100644 arch/mips/lib/ashldi3.c
- delete mode 100644 arch/mips/lib/ashrdi3.c
- delete mode 100644 arch/mips/lib/cmpdi2.c
- delete mode 100644 arch/mips/lib/lshrdi3.c
- delete mode 100644 arch/mips/lib/ucmpdi2.c
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8128c3b68d6b..98955a76c656 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -22,6 +22,11 @@ config MIPS
- 	select GENERIC_CPU_AUTOPROBE
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_IRQ_SHOW
-+	select GENERIC_LIB_ASHLDI3
-+	select GENERIC_LIB_ASHRDI3
-+	select GENERIC_LIB_CMPDI2
-+	select GENERIC_LIB_LSHRDI3
-+	select GENERIC_LIB_UCMPDI2
- 	select GENERIC_PCI_IOMAP
- 	select GENERIC_SCHED_CLOCK if !CAVIUM_OCTEON_SOC
- 	select GENERIC_SMP_IDLE_THREAD
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index e84e12655fa8..6537e022ef62 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -16,5 +16,4 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
- obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
- 
- # libgcc-style stuff needed in the kernel
--obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o multi3.o \
--	 ucmpdi2.o
-+obj-y += bswapsi.o bswapdi.o multi3.o
-diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
-deleted file mode 100644
-index 24cd6903e797..000000000000
---- a/arch/mips/lib/ashldi3.c
-+++ /dev/null
-@@ -1,30 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/export.h>
--
--#include "libgcc.h"
--
--long long notrace __ashldi3(long long u, word_type b)
--{
--	DWunion uu, w;
--	word_type bm;
--
--	if (b == 0)
--		return u;
--
--	uu.ll = u;
--	bm = 32 - b;
--
--	if (bm <= 0) {
--		w.s.low = 0;
--		w.s.high = (unsigned int) uu.s.low << -bm;
--	} else {
--		const unsigned int carries = (unsigned int) uu.s.low >> bm;
--
--		w.s.low = (unsigned int) uu.s.low << b;
--		w.s.high = ((unsigned int) uu.s.high << b) | carries;
--	}
--
--	return w.ll;
--}
--
--EXPORT_SYMBOL(__ashldi3);
-diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
-deleted file mode 100644
-index 23f5295af51e..000000000000
---- a/arch/mips/lib/ashrdi3.c
-+++ /dev/null
-@@ -1,32 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/export.h>
--
--#include "libgcc.h"
--
--long long notrace __ashrdi3(long long u, word_type b)
--{
--	DWunion uu, w;
--	word_type bm;
--
--	if (b == 0)
--		return u;
--
--	uu.ll = u;
--	bm = 32 - b;
--
--	if (bm <= 0) {
--		/* w.s.high = 1..1 or 0..0 */
--		w.s.high =
--		    uu.s.high >> 31;
--		w.s.low = uu.s.high >> -bm;
--	} else {
--		const unsigned int carries = (unsigned int) uu.s.high << bm;
--
--		w.s.high = uu.s.high >> b;
--		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
--	}
--
--	return w.ll;
--}
--
--EXPORT_SYMBOL(__ashrdi3);
-diff --git a/arch/mips/lib/cmpdi2.c b/arch/mips/lib/cmpdi2.c
-deleted file mode 100644
-index 93cfc785927d..000000000000
---- a/arch/mips/lib/cmpdi2.c
-+++ /dev/null
-@@ -1,28 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/export.h>
--
--#include "libgcc.h"
--
--word_type notrace __cmpdi2(long long a, long long b)
--{
--	const DWunion au = {
--		.ll = a
--	};
--	const DWunion bu = {
--		.ll = b
--	};
--
--	if (au.s.high < bu.s.high)
--		return 0;
--	else if (au.s.high > bu.s.high)
--		return 2;
--
--	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
--		return 0;
--	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
--		return 2;
--
--	return 1;
--}
--
--EXPORT_SYMBOL(__cmpdi2);
-diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-deleted file mode 100644
-index 914b971aca3b..000000000000
---- a/arch/mips/lib/lshrdi3.c
-+++ /dev/null
-@@ -1,30 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/export.h>
--
--#include "libgcc.h"
--
--long long notrace __lshrdi3(long long u, word_type b)
--{
--	DWunion uu, w;
--	word_type bm;
--
--	if (b == 0)
--		return u;
--
--	uu.ll = u;
--	bm = 32 - b;
--
--	if (bm <= 0) {
--		w.s.high = 0;
--		w.s.low = (unsigned int) uu.s.high >> -bm;
--	} else {
--		const unsigned int carries = (unsigned int) uu.s.high << bm;
--
--		w.s.high = (unsigned int) uu.s.high >> b;
--		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
--	}
--
--	return w.ll;
--}
--
--EXPORT_SYMBOL(__lshrdi3);
-diff --git a/arch/mips/lib/ucmpdi2.c b/arch/mips/lib/ucmpdi2.c
-deleted file mode 100644
-index c31c78ca4175..000000000000
---- a/arch/mips/lib/ucmpdi2.c
-+++ /dev/null
-@@ -1,22 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/export.h>
--
--#include "libgcc.h"
--
--word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
--{
--	const DWunion au = {.ll = a};
--	const DWunion bu = {.ll = b};
--
--	if ((unsigned int) au.s.high < (unsigned int) bu.s.high)
--		return 0;
--	else if ((unsigned int) au.s.high > (unsigned int) bu.s.high)
--		return 2;
--	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
--		return 0;
--	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
--		return 2;
--	return 1;
--}
--
--EXPORT_SYMBOL(__ucmpdi2);
 -- 
-2.7.4
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

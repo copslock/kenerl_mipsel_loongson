@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 13:41:14 +0200 (CEST)
-Received: from mail-pl0-x242.google.com ([IPv6:2607:f8b0:400e:c01::242]:39538
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Apr 2018 13:41:29 +0200 (CEST)
+Received: from mail-pl0-x242.google.com ([IPv6:2607:f8b0:400e:c01::242]:39542
         "EHLO mail-pl0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993588AbeDCLlDYZ8iq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 13:41:03 +0200
-Received: by mail-pl0-x242.google.com with SMTP id s24-v6so8389178plq.6
-        for <linux-mips@linux-mips.org>; Tue, 03 Apr 2018 04:41:03 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23993599AbeDCLlVMIHkq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Apr 2018 13:41:21 +0200
+Received: by mail-pl0-x242.google.com with SMTP id s24-v6so8389996plq.6
+        for <linux-mips@linux-mips.org>; Tue, 03 Apr 2018 04:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=hev-cc.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id;
-        bh=i77eHd51yuhESTtdLWsVkbKiOJjLo4b0fil/6fcDHxc=;
-        b=IRfP46+Rwg1tb7RkMHj5yG8JVL9lGlJLDZrW8gq0EmfUfdKKPIg9e+5Tb3oBAvZHF6
-         nwo6ztYRMevEt5UM+eOLkQnGJaVm+9KjbG66SDTiHmnqi6yPfSBJMgjszTVt/4u+lDNU
-         wPGk1PomME/eEWwp2WBhQ2wwVCmXTKdZj2CcHE6GA020OF5NREsNrD72sF/tCfv9zwCG
-         9G2AcXJbfTkaVUME2EfJqsKr+6z48i/QdQky6WMssW2XZfJ4Jz14kLvyh9+LsKp8h+Bg
-         57A/iz0Itn8muKlwTnsS1/dyZNsHDE1wun+CvLlJUyrp0ChaSTbw+1+3Xd4F9ZRtZ1aq
-         fWCA==
+        bh=3o/QEl6ozECTzmRjQJVStP81SYAM7/HDBSfiRqucTlE=;
+        b=xlaAI7lr0kd1bHE24/THcDhlpr28XsxGbiknymoQ+EQPzlJmYz5laMLOrPOBA7qMoH
+         r01l/VaVp/BTvZyQyWzZxgWRAYTPeewJLCum3xI3gd5lF6780mUAWbWT5FgD5WVeNdWU
+         /pA6h/d2pibwM0yNdptjsgJ/2hj+YtHOSIAbqKzxYK94C0dOAvaAd9cGcpJ8CyFikeZn
+         GAA2yAF3zLdcs36NFwa25nYGuIPYKUMT//6CGu7n4Vz97K1dlaAcAtxro29pSmMeTSAr
+         HRAq0TgA5H6CoTj/v3FJnQgSu0R0rRgme4Ap3EH/vfL0e6VM9I5X89HovOwsYJF9sSC+
+         xKjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=i77eHd51yuhESTtdLWsVkbKiOJjLo4b0fil/6fcDHxc=;
-        b=KuL4KHHBCITRwGhaenmBnGjU7zu+vF0+dZaXOseqEpvb9kwr2torHee3gImfy3t2iO
-         wXbmyg4lvOH6+T4Pt+z85umdkJduZrLEfjmVA/Xe9FLYzKAko+eHjXBtMtNa1IBORbJU
-         ZQjbFBnGWljYmHyt8yTvc5C8+UvHJsV+6+WqXp/kQuWCLGksCR/VWUAsiidmdilSu1AH
-         L+9frxul+TCFPI6FFg/s1vE6Tn9Mv+PuhZvF+ZhtYeil5h8qaS6C0D7/1jLx/nH+t8Re
-         Pb6Rwrl5bCrYKHG5+cSeuAA7xc59A4mN4u8zn1mSVpwYwT000NVy8Vr1an3+kOFH5k4V
-         jIhw==
-X-Gm-Message-State: AElRT7EjXmXur7awQh1PRowQfiNxpiT+wJI1NOKW1WWrP6waUStjmB4c
-        4wr0rewafyBFXcQFO4tWp4WCPDfYUQY=
-X-Google-Smtp-Source: AIpwx49tIFIJRtfQ5dLHwsmdxchhAJIKkzRoT62BQD2OroYi86NtR95Y7127Z9irDVrLPl3alxlOMQ==
-X-Received: by 10.101.69.1 with SMTP id n1mr9013115pgq.12.1522755656727;
-        Tue, 03 Apr 2018 04:40:56 -0700 (PDT)
+        bh=3o/QEl6ozECTzmRjQJVStP81SYAM7/HDBSfiRqucTlE=;
+        b=e4Db99xRqDp33DRxXikMghnc6KzbnrJl/m1Kvm1qYtso14DzSChnYqZGy9MrPbYgz8
+         7Pg4CUkYV+7HxLMKD2AbKSiahjN3Aek3E87pPrYS+0BgwxrQMiqmqYftGs+vjPSkPgcQ
+         coW9h2Seh/KXmOHDWgLcC31lVQX/2P7r4uetmWkfjTzvAfYx3pPVRKr4vqAzQKOPlFQl
+         1SYepFdPxHKnntCa9xwB3nzyuXpn64Z1a/MqYS5jVxGfTcBK4yPmGcpMr0eDOzbhfCoS
+         Fy3+EkEg8IwZ8IglgoUyz3ifHXnTWtTYEr/3mCfxrPtRuP+0irFXdA/mWxyRtGjzeY31
+         vmtA==
+X-Gm-Message-State: AElRT7H+CxEyddd/0GXnNdiymYa5pg2GNiwLGBTz+EgsqdwWRa24uSvb
+        Mwmk1xqqqOWdvCMR1aUb4CactrwDilE=
+X-Google-Smtp-Source: AIpwx4+H55GqAbgKx1QkZN9qo01kIQJDYN5Fj5m55FmIPSkenHouVwncDAR8ARu3hsfjE5xMkHMmFA==
+X-Received: by 10.98.223.16 with SMTP id u16mr10337541pfg.146.1522755674560;
+        Tue, 03 Apr 2018 04:41:14 -0700 (PDT)
 Received: from localhost.localdomain ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id k7sm4244310pgt.41.2018.04.03.04.40.53
+        by smtp.gmail.com with ESMTPSA id f64sm5148947pfa.154.2018.04.03.04.41.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Apr 2018 04:40:54 -0700 (PDT)
+        Tue, 03 Apr 2018 04:41:13 -0700 (PDT)
 From:   r@hev.cc
 To:     linux-mips@linux-mips.org, jhogan@kernel.org, ralf@linux-mips.org
 Cc:     Heiher <r@hev.cc>
-Subject: [PATCH v2] MIPS: Avoid to cause watchpoint exception in kernel mode
-Date:   Tue,  3 Apr 2018 19:40:38 +0800
-Message-Id: <20180403114038.10646-1-r@hev.cc>
+Subject: [PATCH v2] MIPS: Fix ejtag handler on SMP
+Date:   Tue,  3 Apr 2018 19:41:02 +0800
+Message-Id: <20180403114102.10700-1-r@hev.cc>
 X-Mailer: git-send-email 2.16.3
 Return-Path: <r@hev.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63391
+X-archive-position: 63392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,115 +64,61 @@ X-list: linux-mips
 
 From: Heiher <r@hev.cc>
 
-I found an operation can trigger a kernel hang, when we write an user-space
-address to hardward watchpoints before access this address in kernel mode.
+On SMP systems, the shared ejtag debug buffer may be overwritten by
+other cores, because every cores can generate ejtag exception at
+same time.
 
-Looks the problem is the current thread can't return to user mode because memory
-accesses blocked by hardward watchpoints. so SIGTRAP not handled and the debugger
-can't receive watchpoints event.
-
-Execution flow:
-1. write address to cp0 watchpoints.
-2. access this address in kernel mode, then an exception triggered by watchpoints.
-3. goto do_watch() to handle exception.
-4. Force a SIGTRAP to current thread.
-5. exception return, goto step 2.
-
-If we clear the watchpoints in do_watch() for exceptions from kernel mode,
-and re-install watchpoints on thread return to user mode, it'll works fine.
-
-Test case:
-	#include <stdio.h>
-	#include <unistd.h>
-	#include <signal.h>
-
-	int
-	main (int argc, char *argv[])
-	{
-		char buf[16];
-
-		printf ("%p\n", buf);
-		raise (SIGINT);
-
-		write (1, buf, 16);
-
-		return 0;
-	}
-
-	# gcc -O0 -o t t.c
-	# gdb ./t
-	(gdb) r
-	(gdb) watch *<printed buf address>
-	(gdb) c
+Unfortunately, in that context, it's difficult to relax more registers
+to access per cpu buffers. so use ll/sc to serialize the access.
 
 Signed-off-by: Heiher <r@hev.cc>
 ---
- arch/mips/kernel/entry.S | 23 +++++++++++++++++++++++
- arch/mips/kernel/traps.c |  2 +-
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ arch/mips/kernel/genex.S | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
-index 38a302919e6b..6094844fc63f 100644
---- a/arch/mips/kernel/entry.S
-+++ b/arch/mips/kernel/entry.S
-@@ -49,6 +49,13 @@ resume_userspace:
- 					# interrupt setting need_resched
- 					# between sampling and return
- 	LONG_L	a2, TI_FLAGS($28)	# current->work
-+	li	t0, _TIF_LOAD_WATCH
-+	and	t0, a2
-+	beqz	t0, 1f
-+	move	a0, $28
-+	jal	mips_install_watch_registers
-+	LONG_L	a2, TI_FLAGS($28)	# current->work
-+1:
- 	andi	t0, a2, _TIF_WORK_MASK	# (ignoring syscall_trace)
- 	bnez	t0, work_pending
- 	j	restore_all
-@@ -82,7 +89,15 @@ FEXPORT(syscall_exit)
- 	local_irq_disable		# make sure need_resched and
- 					# signals dont change between
- 					# sampling and return
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 37b9383eacd3..1af8c83835ef 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -354,6 +354,16 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	sll	k0, k0, 30	# Check for SDBBP.
+ 	bgez	k0, ejtag_return
+ 
++#ifdef CONFIG_SMP
++	PTR_LA	k0, ejtag_debug_buffer
++1:	ll	k0, LONGSIZE(k0)
++	bnez	k0, 1b
++	PTR_LA	k0, ejtag_debug_buffer
++	sc	k0, LONGSIZE(k0)
++	beqz	k0, 1b
++	sync
++#endif
 +
-+	LONG_L	a2, TI_FLAGS($28)	# current->work
-+	li	t0, _TIF_LOAD_WATCH
-+	and	t0, a2
-+	beqz	t0, 1f
-+	move	a0, $28
-+	jal	mips_install_watch_registers
- 	LONG_L	a2, TI_FLAGS($28)	# current->work
-+1:
- 	li	t0, _TIF_ALLWORK_MASK
- 	and	t0, a2, t0
- 	bnez	t0, syscall_exit_work
-@@ -143,7 +158,15 @@ work_notifysig:				# deal with pending signals and
- FEXPORT(syscall_exit_partial)
- 	local_irq_disable		# make sure need_resched doesn't
- 					# change between and return
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_S	k1, 0(k0)
+ 	SAVE_ALL
+@@ -363,7 +373,12 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_L	k1, 0(k0)
+ 
++#ifdef CONFIG_SMP
++	sw	zero, LONGSIZE(k0)
++#endif
 +
-+	LONG_L	a2, TI_FLAGS($28)	# current->work
-+	li	t0, _TIF_LOAD_WATCH
-+	and	t0, a2
-+	beqz	t0, 1f
-+	move	a0, $28
-+	jal	mips_install_watch_registers
- 	LONG_L	a2, TI_FLAGS($28)	# current->work
-+1:
- 	li	t0, _TIF_ALLWORK_MASK
- 	and	t0, a2
- 	beqz	t0, restore_partial
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 967e9e4e795e..22f671263b27 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1525,7 +1525,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
- 	 * their values and send SIGTRAP.  Otherwise another thread
- 	 * left the registers set, clear them and continue.
- 	 */
--	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
-+	if (user_mode(regs) && test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
- 		mips_read_watch_registers();
- 		local_irq_enable();
- 		force_sig_info(SIGTRAP, &info, current);
+ ejtag_return:
++	back_to_back_c0_hazard
+ 	MFC0	k0, CP0_DESAVE
+ 	.set	mips32
+ 	deret
+@@ -377,6 +392,9 @@ ejtag_return:
+ 	.data
+ EXPORT(ejtag_debug_buffer)
+ 	.fill	LONGSIZE
++#ifdef CONFIG_SMP
++	.fill	LONGSIZE
++#endif
+ 	.previous
+ 
+ 	__INIT
 -- 
 2.16.3

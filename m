@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Apr 2018 15:10:55 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:58264 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2018 00:03:26 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:53266 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991307AbeDDNKsGLMW5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Apr 2018 15:10:48 +0200
+        id S23994611AbeDDWDPnPhyJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Apr 2018 00:03:15 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 01BD821707;
-        Wed,  4 Apr 2018 13:10:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 01BD821707
+        by mail.kernel.org (Postfix) with ESMTPSA id B393A2133F;
+        Wed,  4 Apr 2018 22:03:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B393A2133F
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 4 Apr 2018 14:10:37 +0100
+Date:   Wed, 4 Apr 2018 23:02:58 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     Ezequiel Garcia <ezequiel@collabora.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
-        kernel@collabora.com
-Subject: Re: [PATCH v4 15/15] MIPS: configs: ci20: Enable ext4
-Message-ID: <20180404131036.GB25517@saruman>
-References: <20180328210057.31148-1-ezequiel@collabora.com>
- <20180328210057.31148-16-ezequiel@collabora.com>
+To:     Palmer Dabbelt <palmer@sifive.com>
+Cc:     matt.redfearn@mips.com, antonynpavlov@gmail.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org, mcgrof@kernel.org,
+        robin.murphy@arm.com, geert@linux-m68k.org,
+        linux-riscv@lists.infradead.org, clm@fb.com,
+        ynorov@caviumnetworks.com, jk@ozlabs.org, f.fainelli@gmail.com,
+        Greg KH <gregkh@linuxfoundation.org>,
+        akpm@linux-foundation.org, bart.vanassche@wdc.com, robh@kernel.org,
+        terrelln@fb.com, dan.j.williams@intel.com, albert@sifive.com,
+        viro@zeniv.linux.org.uk, tom@quantonium.net,
+        linux-kernel@vger.kernel.org, richard@nod.at,
+        paulmck@linux.vnet.ibm.com
+Subject: Re: [PATCH v5 2/3] lib: Rename compiler intrinsic selects to
+ GENERIC_LIB_*
+Message-ID: <20180404220258.GA9347@saruman>
+References: <1522747466-22081-2-git-send-email-matt.redfearn@mips.com>
+ <mhng-58affcc9-9eff-4403-861e-e40aea063afc@palmer-si-x1c4>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="FkmkrVfFsRoUs1wW"
+        protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
 Content-Disposition: inline
-In-Reply-To: <20180328210057.31148-16-ezequiel@collabora.com>
+In-Reply-To: <mhng-58affcc9-9eff-4403-861e-e40aea063afc@palmer-si-x1c4>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63413
+X-archive-position: 63414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,45 +58,54 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---FkmkrVfFsRoUs1wW
+--1yeeQ81UyVL57Vl7
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-On Wed, Mar 28, 2018 at 06:00:57PM -0300, Ezequiel Garcia wrote:
-> Now that we have MMC support, enable ext2/3/4 support
-> in the CI20 defconfig.
+On Tue, Apr 03, 2018 at 03:39:34PM -0700, Palmer Dabbelt wrote:
+> Sorry, I'm not sure if this is the right patch -- someone suggested ackin=
+g=20
+> this, but it's already Review-By me and if I understand correctly it's go=
+ing=20
+> through your tree.  I'm a bit new to this, but if it helps then here's a
 >=20
-> Signed-off-by: Ezequiel Garcia <ezequiel@collabora.com>
+> Acked-By: Palmer Dabbelt <palmer@sifive.com>
 
-Looks reasonable,
+Thanks Palmer.
 
-Acked-by: James Hogan <jhogan@kernel.org>
+No worries. FYI Documentation/process/submitting-patches.rst appears to
+now contain lots of gory detail about what Acked-by and Reviewed-by are
+supposed to mean.
 
-Thanks
+In this case an acked-by is needed to show your approval of the parts of
+the patch which touch the subsystem you are responsible for (and/or code
+which you have authored) so that the patch can go via another tree. It
+usually indicates that you've reviewed those parts of the patch too, but
+not necessarily the whole thing.
+
+Cheers
 James
 
---FkmkrVfFsRoUs1wW
+--1yeeQ81UyVL57Vl7
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrEzswACgkQbAtpk944
-dnqAFg/7BcnbmtazPMPtGhc12EcIctGen8VANDN+AtnDu1zUIGT/ePYBZphC3+KR
-pLLLG60BPpyWXWKB/3WIDCizmgLe4UUTQmCf00XCZTlwbDs2oi8/J+4bTMd+k2+0
-3h7Nt6G0y/LKIxIBje10PY9JB8D4ljz0UPlLj+S1naVDcv1P7QfOCvD7qhy1J/qB
-XQUuqU3dfHCA1t07whXLr83PLiCfDgqGYIolo6OAq7zMdWD9YR1U7xm+FkFM7Pv9
-wo4PWogoCpvhM6XKAYI6aieyyhDKVcyHPFRiEeocFCQW4T+cgIpUqfXHZktdVivT
-9pYZzZdMXIwt73drgM/f6PFanRi0fkJxF7UdU/Srbqz6jtGyslYVpraRLF+GbMke
-UrpTkXFhKEC4sFBmNBWrN+l3W3Qi+EcPtfuFmPEV4CNUbpwGtuz5A580TH+etVaT
-uL8u6i/24jlqulNYY+r0K16YTAzIBACnurQFdaRMbKhx84cZy9U0YjoEGi2wQb9j
-PHqs9tDMupz/9fXNcmcqJIsJAQlhTjKjuRraYuWoLRP3kXUyAf6ICOgNafYezzBo
-P5yuCQUgijjcb/cqBZzOGB46tcQe7xGx/1o/1KG4C2LAtdTBUweXhrU1Lq6yqp60
-kBUD7OF13/x46NFg97lQhFyOvxxHC/yr49DAhHdQ85kWZ1cA0X4=
-=z//k
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrFS4sACgkQbAtpk944
+dnpr9g//V8bKit7US+KbeZJcnQjS9mk4j6Jy5u79FCg4cQEUhojq+VmZufEd4tLL
+OxlaWa1DhT9QOhnFsqflnqZ707KOeEtuvrTZnAvfWhyg+pyjfpH0OZ8I945p7Vrv
+KWDQRJZWVWLSJsfCyx/kmFlGqtFvAkYN0tJmPm6VgNP5PxXrl3pSle+EqBaRXTEH
+rVyotC9jHPiGZ7j8v8f+uUi0LgmD5kWCgTOmHHGHtrB7t2yEPOV9bMmcBW+Cxczs
+ylQ4MenNoFKBbbaDSnSBLwHRCUeiuVk87Xw9TTaRVl0uwZjk0HxIZqRqX6DhTZ4q
+zbE0hYWWNH5ZYNOjhJXoyU3eerqkMLpSfhrFvF14Ju5ZiwipXg3bsA24B4ZY6R0l
+MFRQ5EMJPWbzBbnpdxYRq0vmwwZGugH58h81JsRhl1WPKKy5pMUT1OCtd8UoEF10
+Rhv1/YgKsPeaM3WRYlBG6/PDVZzkKJC+ldq6jFvd3QaLnlKJ88r8L4Db8vLguLng
+Pg7QTyLQeQxK4wkTy5/FIJ8All79Cg6ZIjqoiZlNriiiS5SJLPQKCJZrk0nXsSOX
+R7YsbYZ3xcC1eoVAbXQptvLUoJxOz1pfQzX4gCsR2FyWVBiDpPH1jrEdsktvBe6S
+tLOFU206tw47obnBN51tNelX68f83D7zvIrXs/zMI6WVQYQDf6o=
+=+XC4
 -----END PGP SIGNATURE-----
 
---FkmkrVfFsRoUs1wW--
+--1yeeQ81UyVL57Vl7--

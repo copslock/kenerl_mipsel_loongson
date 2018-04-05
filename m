@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2018 23:04:06 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:38066 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994621AbeDEVD6w1ODL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Apr 2018 23:03:58 +0200
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2018 23:42:39 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:43434 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993945AbeDEVmbgTsHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Apr 2018 23:42:31 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 6B5084068024;
-        Thu,  5 Apr 2018 21:03:52 +0000 (UTC)
-Received: from redhat.com (ovpn-122-62.rdu2.redhat.com [10.10.122.62])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 1E4E9AB58A;
-        Thu,  5 Apr 2018 21:03:51 +0000 (UTC)
-Date:   Fri, 6 Apr 2018 00:03:50 +0300
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Huang Ying <ying.huang@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v2 3/3] mm/gup: document return value
-Message-ID: <1522962072-182137-6-git-send-email-mst@redhat.com>
-References: <1522962072-182137-1-git-send-email-mst@redhat.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 33384204EF;
+        Thu,  5 Apr 2018 21:42:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 33384204EF
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Thu, 5 Apr 2018 22:42:19 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Alban Bedel <albeu@free.fr>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: vmlinuz: Fix compiler intrinsics location and
+ build directly
+Message-ID: <20180405214219.GA31336@saruman>
+References: <20180403160728.GB3275@saruman>
+ <1522833502-28007-1-git-send-email-matt.redfearn@mips.com>
+ <b05a0ec9-d052-49c7-3e8f-2ba233d84f03@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7JfCtLOvnd9MIVvH"
 Content-Disposition: inline
-In-Reply-To: <1522962072-182137-1-git-send-email-mst@redhat.com>
-X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Thu, 05 Apr 2018 21:03:52 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Thu, 05 Apr 2018 21:03:52 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'mst@redhat.com' RCPT:''
-Return-Path: <mst@redhat.com>
+In-Reply-To: <b05a0ec9-d052-49c7-3e8f-2ba233d84f03@mips.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63417
+X-archive-position: 63418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,105 +53,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-__get_user_pages_fast handles errors differently from
-get_user_pages_fast: the former always returns the number of pages
-pinned, the later might return a negative error code.
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- arch/mips/mm/gup.c  | 2 ++
- arch/s390/mm/gup.c  | 2 ++
- arch/sh/mm/gup.c    | 2 ++
- arch/sparc/mm/gup.c | 4 ++++
- mm/gup.c            | 4 +++-
- mm/util.c           | 6 ++++--
- 6 files changed, 17 insertions(+), 3 deletions(-)
+--7JfCtLOvnd9MIVvH
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
-index 1e4658e..5a4875ca 100644
---- a/arch/mips/mm/gup.c
-+++ b/arch/mips/mm/gup.c
-@@ -178,6 +178,8 @@ static int gup_pud_range(pgd_t pgd, unsigned long addr, unsigned long end,
- /*
-  * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
-  * back to the regular GUP.
-+ * Note a difference with get_user_pages_fast: this always returns the
-+ * number of pages pinned, 0 if no pages were pinned.
-  */
- int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 			  struct page **pages)
-diff --git a/arch/s390/mm/gup.c b/arch/s390/mm/gup.c
-index 05c8abd..2809d11 100644
---- a/arch/s390/mm/gup.c
-+++ b/arch/s390/mm/gup.c
-@@ -220,6 +220,8 @@ static inline int gup_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
- /*
-  * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
-  * back to the regular GUP.
-+ * Note a difference with get_user_pages_fast: this always returns the
-+ * number of pages pinned, 0 if no pages were pinned.
-  */
- int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 			  struct page **pages)
-diff --git a/arch/sh/mm/gup.c b/arch/sh/mm/gup.c
-index 8045b5b..56c86ca 100644
---- a/arch/sh/mm/gup.c
-+++ b/arch/sh/mm/gup.c
-@@ -160,6 +160,8 @@ static int gup_pud_range(pgd_t pgd, unsigned long addr, unsigned long end,
- /*
-  * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
-  * back to the regular GUP.
-+ * Note a difference with get_user_pages_fast: this always returns the
-+ * number of pages pinned, 0 if no pages were pinned.
-  */
- int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 			  struct page **pages)
-diff --git a/arch/sparc/mm/gup.c b/arch/sparc/mm/gup.c
-index 5335ba3..ca3eb69 100644
---- a/arch/sparc/mm/gup.c
-+++ b/arch/sparc/mm/gup.c
-@@ -192,6 +192,10 @@ static int gup_pud_range(pgd_t pgd, unsigned long addr, unsigned long end,
- 	return 1;
- }
- 
-+/*
-+ * Note a difference with get_user_pages_fast: this always returns the
-+ * number of pages pinned, 0 if no pages were pinned.
-+ */
- int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 			  struct page **pages)
- {
-diff --git a/mm/gup.c b/mm/gup.c
-index 8f3a064..5cb5bb1 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1740,7 +1740,9 @@ bool gup_fast_permitted(unsigned long start, int nr_pages, int write)
- 
- /*
-  * Like get_user_pages_fast() except it's IRQ-safe in that it won't fall back to
-- * the regular GUP. It will only return non-negative values.
-+ * the regular GUP.
-+ * Note a difference with get_user_pages_fast: this always returns the
-+ * number of pages pinned, 0 if no pages were pinned.
-  */
- int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 			  struct page **pages)
-diff --git a/mm/util.c b/mm/util.c
-index c125050..db2f005 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -297,8 +297,10 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- /*
-  * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
-  * back to the regular GUP.
-- * If the architecture not support this function, simply return with no
-- * page pinned
-+ * Note a difference with get_user_pages_fast: this always returns the
-+ * number of pages pinned, 0 if no pages were pinned.
-+ * If the architecture does not support this function, simply return with no
-+ * pages pinned.
-  */
- int __weak __get_user_pages_fast(unsigned long start,
- 				 int nr_pages, int write, struct page **pages)
--- 
-MST
+On Thu, Apr 05, 2018 at 11:13:14AM +0100, Matt Redfearn wrote:
+> Actually, this patch would be better inserted as patch 3 in the series=20
+> since it can pull in the generic ashldi3 before the MIPS one is removed=
+=20
+> in the final patch. Here's an updated commit message:
+
+Thanks Matt, applied.
+
+Cheers
+James
+
+--7JfCtLOvnd9MIVvH
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrGmDoACgkQbAtpk944
+dnpc4xAAoHemdzlAjARKsk/B0Bh7hUe9ZdFAnuN/ecqtHp0WXGJKrYq4sF5JgNqo
+yEGmmIJJ0E7lgvc1x5L6acJTaJmeEw59qiW8Ihit4zho7WNSZt0+N9Z7bN7TE96l
+Gi+VGM+HqAPeMqNoVISRpiqFy8gzsYJqq/7tzXmBLi7+wtJPJ2pxMWmNh5WZp7Sc
+tpgBgLJO78B1tcopDCQzwT6vijhj3SIW5cH2tc7YAXmS9KtZZ8SprjTETWUHcmtK
+6Nw5n7jeda4I/ZABMJh+EfXwlmDA0yETftNvl7VClXEoHiEyorY/ekZK0VeNyIwy
+eJEvPsFvMZlnPAEe2Dtr+Lr6V9RHlx4ZfvVWi6kzQtdChWxP6XE5yYi42LEBnp7o
+cfhwqP1KaW/179xMxI4qK7HlQ49dsLVTUk9/tfuVvQ4A4HmUe8YkuQVW/XBOOClE
+EcQC8dvOLJtVpkVD0gAB/McmP6S2tUxsYNRD0DyMlD/oUA9JuClxCwaLuaESFx7n
+F0jGd2rk4lTaDVYmty+y53EGj1VvJK2ySC6nopP+HEHWdpb+p1VLT68IiatLInPy
+S0sJY0OKjtwozVv6zRWPK0JTNgwwz3qPU5PiOkUTiiwQ+e66w49VdkeYJlsQ+Cfs
+sk3dXuBoNPN4qSFMZLeYgRr+si9cs2YVGJ70ICjn38lGbjfWz9g=
+=uUCf
+-----END PGP SIGNATURE-----
+
+--7JfCtLOvnd9MIVvH--

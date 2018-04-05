@@ -1,42 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2018 23:42:39 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:43434 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2018 23:48:56 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:43772 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993945AbeDEVmbgTsHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Apr 2018 23:42:31 +0200
+        id S23993945AbeDEVss22NfD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Apr 2018 23:48:48 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 33384204EF;
-        Thu,  5 Apr 2018 21:42:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 33384204EF
+        by mail.kernel.org (Postfix) with ESMTPSA id DCEFE2075E;
+        Thu,  5 Apr 2018 21:48:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DCEFE2075E
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Thu, 5 Apr 2018 22:42:19 +0100
+Date:   Thu, 5 Apr 2018 22:48:37 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Alban Bedel <albeu@free.fr>,
-        Antony Pavlov <antonynpavlov@gmail.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: vmlinuz: Fix compiler intrinsics location and
- build directly
-Message-ID: <20180405214219.GA31336@saruman>
-References: <20180403160728.GB3275@saruman>
- <1522833502-28007-1-git-send-email-matt.redfearn@mips.com>
- <b05a0ec9-d052-49c7-3e8f-2ba233d84f03@mips.com>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     Dan Haab <riproute@gmail.com>, Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Dan Haab <dan.haab@luxul.com>
+Subject: Re: [PATCH] MIPS: BCM47XX: Use standard reset button for Luxul
+ XWR-1750
+Message-ID: <20180405214836.GB31336@saruman>
+References: <1522362107-3363-1-git-send-email-riproute@gmail.com>
+ <CACna6rwJYVUVwvi9U87V=u5_T29JCi0VT9knsxwauci5xFAE5w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7JfCtLOvnd9MIVvH"
+        protocol="application/pgp-signature"; boundary="QKdGvSO+nmPlgiQ/"
 Content-Disposition: inline
-In-Reply-To: <b05a0ec9-d052-49c7-3e8f-2ba233d84f03@mips.com>
+In-Reply-To: <CACna6rwJYVUVwvi9U87V=u5_T29JCi0VT9knsxwauci5xFAE5w@mail.gmail.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63418
+X-archive-position: 63419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,41 +51,48 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---7JfCtLOvnd9MIVvH
+--QKdGvSO+nmPlgiQ/
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 05, 2018 at 11:13:14AM +0100, Matt Redfearn wrote:
-> Actually, this patch would be better inserted as patch 3 in the series=20
-> since it can pull in the generic ashldi3 before the MIPS one is removed=
-=20
-> in the final patch. Here's an updated commit message:
+On Fri, Mar 30, 2018 at 09:28:48AM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
+> On 30 March 2018 at 00:21, Dan Haab <riproute@gmail.com> wrote:
+> > From: Dan Haab <dan.haab@luxul.com>
+> >
+> > The original patch submitted for support of the Luxul XWR-1750 used a
+> > non-standard button handler for the reset button. This patch will allow
+> > using the standard KEY_RESTART
+> >
+> > Signed-off-by: Dan Haab <dan.haab@luxul.com>
+>=20
+> Looks correct, thanks.
+>=20
 
-Thanks Matt, applied.
+Thanks, applied for 4.17.
 
 Cheers
 James
 
---7JfCtLOvnd9MIVvH
+--QKdGvSO+nmPlgiQ/
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrGmDoACgkQbAtpk944
-dnpc4xAAoHemdzlAjARKsk/B0Bh7hUe9ZdFAnuN/ecqtHp0WXGJKrYq4sF5JgNqo
-yEGmmIJJ0E7lgvc1x5L6acJTaJmeEw59qiW8Ihit4zho7WNSZt0+N9Z7bN7TE96l
-Gi+VGM+HqAPeMqNoVISRpiqFy8gzsYJqq/7tzXmBLi7+wtJPJ2pxMWmNh5WZp7Sc
-tpgBgLJO78B1tcopDCQzwT6vijhj3SIW5cH2tc7YAXmS9KtZZ8SprjTETWUHcmtK
-6Nw5n7jeda4I/ZABMJh+EfXwlmDA0yETftNvl7VClXEoHiEyorY/ekZK0VeNyIwy
-eJEvPsFvMZlnPAEe2Dtr+Lr6V9RHlx4ZfvVWi6kzQtdChWxP6XE5yYi42LEBnp7o
-cfhwqP1KaW/179xMxI4qK7HlQ49dsLVTUk9/tfuVvQ4A4HmUe8YkuQVW/XBOOClE
-EcQC8dvOLJtVpkVD0gAB/McmP6S2tUxsYNRD0DyMlD/oUA9JuClxCwaLuaESFx7n
-F0jGd2rk4lTaDVYmty+y53EGj1VvJK2ySC6nopP+HEHWdpb+p1VLT68IiatLInPy
-S0sJY0OKjtwozVv6zRWPK0JTNgwwz3qPU5PiOkUTiiwQ+e66w49VdkeYJlsQ+Cfs
-sk3dXuBoNPN4qSFMZLeYgRr+si9cs2YVGJ70ICjn38lGbjfWz9g=
-=uUCf
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrGmbQACgkQbAtpk944
+dnpwqw/+KoFAFLtiuTsl2SN2m+lJJzt6OdvffQWyrBBW2lxjDvtrttZx7AYHxxce
+MqrkuzABnxQbxP5y0xs2xL7p3TwITYWV1rEAvd+n2bT4JD2IavN4iPksPF7mOrMU
+0MdDrN8mqxBoZego7KY12EI4yxASKM9X11IcERWiro90QHar4hy2u2q2JC9WMO2c
+Q87o7INx85ORRebj0zb/uCQNQXVszPK9KsYKqY4P7QHOWwShKKGrvu0cU+a3OgDM
+idA64GEjiQjDlU0dzDZmoCcGCiCb/DlqdQlncuWH8T92XvbCUW+i2PjJeF/JmdWe
+Wrbeb8HE6ojsVS3VMfk3GH84KMt08w4eUwqu2fEcKGIX4X+jRlfkn9X54XimFRbt
+v+OTGPAbAxjqWbm9Jtopz08Q64PFspo5EHOyqMDnubLCQ2MkUavF6AdXdUQVjlf7
+1kdeP8R4r/E91cOCjBnHFF1IpeOHBlZJkXAME9jg1irKfV2uXOvqYQ3EWyyH2Lt7
+aHUMZdPf3mHWwHnI85ASbYsuJf7SgSzrYWbgYMN2gp2kRhgZKHnHthE3QX4NOi1d
+gXk0h//xtN9mauDzi5/YXOLs8hnTQgbG3h+yy36A3yNhjWoqw3tXLRbhml5M45Tp
+HNPIwpL/8d95WUtw5bTXV9Zi6fd7SerHfK/RTmQZ6ohb9uX8m2E=
+=AIKy
 -----END PGP SIGNATURE-----
 
---7JfCtLOvnd9MIVvH--
+--QKdGvSO+nmPlgiQ/--

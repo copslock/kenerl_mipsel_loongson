@@ -1,65 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Apr 2018 20:16:16 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:52832 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994585AbeDFSQIGTxi7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Apr 2018 20:16:08 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E23FE60590; Fri,  6 Apr 2018 18:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523038560;
-        bh=zYlSFgEpG8hXuACQR09RzOkbtiNrHIPRlEwhaGdbSl0=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=DEH12WyfvfYGioKM2szCNY79Ica6P8EfXujLQYfivJM+ASxBt5eBFV7Nbrw0dB6kk
-         yehXUQcz9KM87lW5dU2NtI+S+Faidw5O8LkeNkGpb9wWxzn3jad5Ay71J2y9WR2wGE
-         F9V5Pm6+rRlW1dadK/JrIeWctX9Rwpo2/fARA2oQ=
-Received: from [192.168.0.105] (cpe-174-109-247-98.nc.res.rr.com [174.109.247.98])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Apr 2018 23:26:22 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:59254 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994588AbeDFV0OV66Mo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Apr 2018 23:26:14 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: okaya@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 904B860C64;
-        Fri,  6 Apr 2018 18:15:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523038559;
-        bh=zYlSFgEpG8hXuACQR09RzOkbtiNrHIPRlEwhaGdbSl0=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=m6/EcG6DeSAqE/boRRvb6JgNglXxZOlMO542fX3mALpBJPtCzLVv+KJV+4nVvBWd/
-         P7dh7oBrh7armA2AAB6zvMhx7EMnyhlRdflG4OuLFcJbbE32Z9vODd02Sr738ELAz7
-         Gjr/AXIxX++BFgfTanZ6AX8LtVq/IsnR/xuwnNds=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 904B860C64
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=okaya@codeaurora.org
-Subject: Re: [PATCH v3 2/2] MIPS: io: add a barrier after register read in
- readX()
-To:     linux-mips@linux-mips.org, arnd@arndb.de, timur@codeaurora.org,
-        sulrich@codeaurora.org
-Cc:     linux-arm-msm@vger.kernel.org,
+        by mail.kernel.org (Postfix) with ESMTPSA id B3F4F217D5;
+        Fri,  6 Apr 2018 21:26:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B3F4F217D5
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Fri, 6 Apr 2018 22:26:01 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Sinan Kaya <okaya@codeaurora.org>
+Cc:     linux-mips@linux-mips.org, arnd@arndb.de, timur@codeaurora.org,
+        sulrich@codeaurora.org, linux-arm-msm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] MIPS: io: add a barrier after register read in
+ readX()
+Message-ID: <20180406212601.GA1730@saruman>
 References: <1522760109-16497-1-git-send-email-okaya@codeaurora.org>
  <1522760109-16497-2-git-send-email-okaya@codeaurora.org>
  <41e184ae-689e-93c9-7b15-0c68bd624130@codeaurora.org>
-From:   Sinan Kaya <okaya@codeaurora.org>
-Message-ID: <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
-Date:   Fri, 6 Apr 2018 14:15:57 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
 MIME-Version: 1.0
-In-Reply-To: <41e184ae-689e-93c9-7b15-0c68bd624130@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <okaya@codeaurora.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="OgqxwSJOaUobr8KG"
+Content-Disposition: inline
+In-Reply-To: <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63422
+X-archive-position: 63423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: okaya@codeaurora.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,47 +54,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 4/5/2018 9:34 PM, Sinan Kaya wrote:
-> On 4/3/2018 8:55 AM, Sinan Kaya wrote:
->> While a barrier is present in writeX() function before the register write,
->> a similar barrier is missing in the readX() function after the register
->> read. This could allow memory accesses following readX() to observe
->> stale data.
->>
->> Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
->> Reported-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->>  arch/mips/include/asm/io.h | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
->> index fd00ddaf..6ac502f 100644
->> --- a/arch/mips/include/asm/io.h
->> +++ b/arch/mips/include/asm/io.h
->> @@ -377,6 +377,7 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
->>  		BUG();							\
->>  	}								\
->>  									\
->> +	rmb();								\
->>  	return pfx##ioswab##bwlq(__mem, __val);				\
->>  }
->>  
->>
-> 
-> Can we get these merged to 4.17? 
-> 
-> There was a consensus to fix the architectures having API violation issues.
-> https://www.mail-archive.com/netdev@vger.kernel.org/msg225971.html
-> 
-> 
 
-Any news on the MIPS front? Is this something that Arnd can merge? or does it have
-to go through the MIPS tree.
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It feels like the MIPS is dead since nobody replied to me in the last few weeks on
-a very important topic.
+On Fri, Apr 06, 2018 at 02:15:57PM -0400, Sinan Kaya wrote:
+> On 4/5/2018 9:34 PM, Sinan Kaya wrote:
+> > Can we get these merged to 4.17?=20
+> >=20
+> > There was a consensus to fix the architectures having API violation iss=
+ues.
+> > https://www.mail-archive.com/netdev@vger.kernel.org/msg225971.html
+> >=20
+> >=20
+>=20
+> Any news on the MIPS front? Is this something that Arnd can merge? or doe=
+s it have
+> to go through the MIPS tree.
 
--- 
-Sinan Kaya
-Qualcomm Datacenter Technologies, Inc. as an affiliate of Qualcomm Technologies, Inc.
-Qualcomm Technologies, Inc. is a member of the Code Aurora Forum, a Linux Foundation Collaborative Project.
+It needs some MIPS input really. I'll try and take a look soon. Thanks
+for the nudge.
+
+> It feels like the MIPS is dead since nobody replied to me in the last few=
+ weeks on
+> a very important topic.
+
+Not dead, just both maintainers heavily distracted by real life right
+now (which sadly, for me at least, trumps this very important topic) and
+doing the best they can given the circumstances.
+
+Cheers
+James
+
+--OgqxwSJOaUobr8KG
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrH5eMACgkQbAtpk944
+dnrcJQ/9HbKEDW760nVDpPAM4P/qFnLetVd5/07IiDl+GABtbOJguepbgs+/al9U
+KODYpvd8ZM/BF35t0HVaN/UZA9L5OXbNG/cPAdUviojCZIk8NTUoijll1Wdo2fnV
+9ACAv4tLOERuLVGcvE6x5uD/rP1kO09z3voEYTSsjx2jCOcgtBK0hmNGzOw2eRVh
+cSwKNA5BWp4BpafUQawCYiKUDXfOWfE5vSlQMc1rUI4Q28gPLqHRrlO+07nDUcpW
+CivnyPmlgZ8IIgiuzUVSSTkGNIBx50Ybdcw/MsraU7xU2m87WsOlf5+RcTVKSIvs
+t8XAs2vQFYFKrnShvHZavKa4o33zPFHIGJIlfTZvG6SnNHts2XE2Tr9GzfVV0ZWP
+lcTpVhe0feOevDcW8VEqr0DTrXYa8NFNuMssno6b4cYnR/HAD6TGuSQSwxi1iz9p
+vsWz23C+kuHQIPSl4MYVFJLa/+WDDM5IutMIEFR7C8W3PcNSKpPeoiiZXuhQaqdY
+0ZXQJ1NYK4rot6BNiguhsTCKSGWlMDBYK/di+r+NKuT7rS2/YEb8O8hY0ysf3rq/
+x3iI/JADa+ftoF8T9UFEZEpKf1hvqV4g4BA2QfimSUlJCUfG7T+kW5mH3siQ7MmL
+X+wL4fqU/2TiyGhlHnmMlsSmhVqip/+8WBI8cSCdX8DYMKlIEiw=
+=hKSm
+-----END PGP SIGNATURE-----
+
+--OgqxwSJOaUobr8KG--

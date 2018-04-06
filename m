@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Apr 2018 23:26:22 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:59254 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2018 01:09:45 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:39642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994588AbeDFV0OV66Mo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 6 Apr 2018 23:26:14 +0200
+        id S23994588AbeDFXJhJAwqP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 7 Apr 2018 01:09:37 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B3F4F217D5;
-        Fri,  6 Apr 2018 21:26:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B3F4F217D5
+        by mail.kernel.org (Postfix) with ESMTPSA id B61F120B80;
+        Fri,  6 Apr 2018 23:09:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B61F120B80
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 6 Apr 2018 22:26:01 +0100
+Date:   Sat, 7 Apr 2018 00:09:25 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     Sinan Kaya <okaya@codeaurora.org>
-Cc:     linux-mips@linux-mips.org, arnd@arndb.de, timur@codeaurora.org,
-        sulrich@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Alban Bedel <albeu@free.fr>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] MIPS: io: add a barrier after register read in
- readX()
-Message-ID: <20180406212601.GA1730@saruman>
-References: <1522760109-16497-1-git-send-email-okaya@codeaurora.org>
- <1522760109-16497-2-git-send-email-okaya@codeaurora.org>
- <41e184ae-689e-93c9-7b15-0c68bd624130@codeaurora.org>
- <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
+Subject: Re: [PATCH] MIPS: vmlinuz: Fix compiler intrinsics location and
+ build directly
+Message-ID: <20180406230924.GB1730@saruman>
+References: <20180403160728.GB3275@saruman>
+ <1522833502-28007-1-git-send-email-matt.redfearn@mips.com>
+ <b05a0ec9-d052-49c7-3e8f-2ba233d84f03@mips.com>
+ <20180405214219.GA31336@saruman>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="OgqxwSJOaUobr8KG"
+        protocol="application/pgp-signature"; boundary="jho1yZJdad60DJr+"
 Content-Disposition: inline
-In-Reply-To: <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
+In-Reply-To: <20180405214219.GA31336@saruman>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63423
+X-archive-position: 63424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,58 +55,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---OgqxwSJOaUobr8KG
+--jho1yZJdad60DJr+
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 06, 2018 at 02:15:57PM -0400, Sinan Kaya wrote:
-> On 4/5/2018 9:34 PM, Sinan Kaya wrote:
-> > Can we get these merged to 4.17?=20
-> >=20
-> > There was a consensus to fix the architectures having API violation iss=
-ues.
-> > https://www.mail-archive.com/netdev@vger.kernel.org/msg225971.html
-> >=20
-> >=20
+On Thu, Apr 05, 2018 at 10:42:19PM +0100, James Hogan wrote:
+> On Thu, Apr 05, 2018 at 11:13:14AM +0100, Matt Redfearn wrote:
+> > Actually, this patch would be better inserted as patch 3 in the series=
+=20
+> > since it can pull in the generic ashldi3 before the MIPS one is removed=
+=20
+> > in the final patch. Here's an updated commit message:
 >=20
-> Any news on the MIPS front? Is this something that Arnd can merge? or doe=
-s it have
-> to go through the MIPS tree.
+> Thanks Matt, applied.
 
-It needs some MIPS input really. I'll try and take a look soon. Thanks
-for the nudge.
+Loongson1b/c defconfigs are still broken unfortunately. The .o files
+aren't getting generated, apparently due to a different cmd_cc_o_c
+definition when CONFIG_MODVERSIONS=3Dy.
 
-> It feels like the MIPS is dead since nobody replied to me in the last few=
- weeks on
-> a very important topic.
+I'm gonna drop this patchset from 4.17. Hopefully an updated version can
+be applied for 4.18 after the merge window.
 
-Not dead, just both maintainers heavily distracted by real life right
-now (which sadly, for me at least, trumps this very important topic) and
-doing the best they can given the circumstances.
-
-Cheers
+Thanks
 James
 
---OgqxwSJOaUobr8KG
+--jho1yZJdad60DJr+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrH5eMACgkQbAtpk944
-dnrcJQ/9HbKEDW760nVDpPAM4P/qFnLetVd5/07IiDl+GABtbOJguepbgs+/al9U
-KODYpvd8ZM/BF35t0HVaN/UZA9L5OXbNG/cPAdUviojCZIk8NTUoijll1Wdo2fnV
-9ACAv4tLOERuLVGcvE6x5uD/rP1kO09z3voEYTSsjx2jCOcgtBK0hmNGzOw2eRVh
-cSwKNA5BWp4BpafUQawCYiKUDXfOWfE5vSlQMc1rUI4Q28gPLqHRrlO+07nDUcpW
-CivnyPmlgZ8IIgiuzUVSSTkGNIBx50Ybdcw/MsraU7xU2m87WsOlf5+RcTVKSIvs
-t8XAs2vQFYFKrnShvHZavKa4o33zPFHIGJIlfTZvG6SnNHts2XE2Tr9GzfVV0ZWP
-lcTpVhe0feOevDcW8VEqr0DTrXYa8NFNuMssno6b4cYnR/HAD6TGuSQSwxi1iz9p
-vsWz23C+kuHQIPSl4MYVFJLa/+WDDM5IutMIEFR7C8W3PcNSKpPeoiiZXuhQaqdY
-0ZXQJ1NYK4rot6BNiguhsTCKSGWlMDBYK/di+r+NKuT7rS2/YEb8O8hY0ysf3rq/
-x3iI/JADa+ftoF8T9UFEZEpKf1hvqV4g4BA2QfimSUlJCUfG7T+kW5mH3siQ7MmL
-X+wL4fqU/2TiyGhlHnmMlsSmhVqip/+8WBI8cSCdX8DYMKlIEiw=
-=hKSm
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrH/h4ACgkQbAtpk944
+dnpWAg/9HQbxFOZwOg2DY/r+KJC19kVdrzAkbkneRQhGKBAVNA2QoZjnwPzn8zVF
+/Tm03zXyHDI4m7TLXXWnGjLFI5lMMQ5TFOLpQXpXgp33/zimTHo33PStNQT2v9Dv
+3+AokX7BSPlYnlgmCtXXdreuD2bBKlED3hzcDbQ7ZHcJOXpXpgrkZwYJF4q3kAgg
+HaQx2o415CE6n/Hyc5BBjRir6BeoHHKnADt3pM7/9oTKl6YtrXbBDTiDCsUtg5R2
+fj0ye52jFVhGUgGAWANtclk/1T20riZNb+YQ2/XjuQ2+4tLFlSpoMdJNp0BLFlYu
+JdlpO23wZeDqIixDcHXDAli3oqhqWF84e9vkw02n0pwhKha1316MaEu0RVpzoXeO
+k64crb7AKqMPjOxq7KYuOdMDeXsBsTz1YwqkmdpicGU+qade+jIGS86hqSjHxThM
+AdkjUZM77Gza5N4XgAa31oJc2bhqtpja9T8Pg6K6xx1Z/uWrP7ay3+ReYjiv59UW
+e+vS/Zn3ICBZxM0nhYQYAWe0FSjZJh07DLLPi+fShomVEwkCGXqZ6xXF9IUWv4DZ
+Ht0g7uKm2kST8oqq9+fTUPurEevneqIdHYqM5gCPsxhcSvO1Xy7tVpu4d4W3pmAB
+QWQwovtDVcm8gHkGy/cEvBPLDvyk8clqLVMN/JXAwfrPk0xsukA=
+=qaZb
 -----END PGP SIGNATURE-----
 
---OgqxwSJOaUobr8KG--
+--jho1yZJdad60DJr+--

@@ -1,57 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Apr 2018 10:32:58 +0200 (CEST)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:38894
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990425AbeDHIcvcdqgd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Apr 2018 10:32:51 +0200
-Received: by mail-wm0-x244.google.com with SMTP id i3so9899219wmf.3
-        for <linux-mips@linux-mips.org>; Sun, 08 Apr 2018 01:32:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Apr 2018 22:57:54 +0200 (CEST)
+Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:39849
+        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990477AbeDHU5sD0JOf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Apr 2018 22:57:48 +0200
+Received: by mail-wr0-x242.google.com with SMTP id c24so6746496wrc.6;
+        Sun, 08 Apr 2018 13:57:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kresin-me.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=VG06D/NsZWXo1xNHQMwheLQf5Yuz3NVXtyT8KQuDlGI=;
-        b=KV/or28b1j9zyxQTHhTNjSL/ftkSVA1uVcn+PUW4QA+3wr3V4zkXbxbJqfv9NxtImE
-         MgAV89A4Kl0aH7sgpziiB3pT/r/FlmLocc6gaL13NjzvUHvidIc6oZ1S0RBjbxVJ2xS4
-         pCcYNV6AFzORTAddcFkv6e5UAKVgMxxF3Z7XXTBMA7hbwBg1waM4APYefAnPwIAmcfWP
-         TMkNvx/aeyI0bnOLeer/LnMwOaKno7Bk6hS8F8PTMqpIaw3Ve+HB3tty5DM6Ry/uqIPM
-         orS8u7YdHRfHUsWjQYvwbvd2p7XnsZz/B95uMzbLxf+cv5yT6NfSH4Mjmd8DUSpwogic
-         zKyA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=E6RQ0lsmitRDGAR+onL5dSs9M5RvRAZ3MT5fHWhMlY4=;
+        b=bKYXGlFcQcL4ivZdhQXKZ215ew8IlmZliy2eavWQFFI4P5SmGAXdWM74khfAIf98b4
+         D1h7IOE6znh0LIS7TgLXIBGGacJfSyCwnDwdW1SuU4qikO/qlTvbq58W/keniYujKRCK
+         lxjSlKBdksvVvPyR4CqovgCarXQ3MER8zj5BhCRQo7KufFYaTPTDMMhADuKX2g4ZNGDS
+         zvk10LmWQPXos3hlVs9mIRfErv4rq3E4VQ2W5qa6C10FvbqZI/3lqKxTaSkGqmkHmlry
+         efshuQPYWGHsrXm8O36orgCZHxP3DPB9OEZhAcxNOwkv1DzzRfojluTzozrPqC/QeOrN
+         dqsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=VG06D/NsZWXo1xNHQMwheLQf5Yuz3NVXtyT8KQuDlGI=;
-        b=cmqmwshImZK2jtNHed3xU7gH2FO16SGpKnzx9WnM2LDnEqRPPDxAC2nS5C2rg0Q4Yz
-         Ls7nNX1/sG0tOqaMIuLYuwucu97eL/XGJmQaTyzv/WgTSBq+dLCHYalJZFHCIAIyuXxt
-         3RDuxtUvt7obxkHdwrHID/u04WXbZcySBaOPAu0n0fItUSRtx0dtbScQ3vXZIQNKNovV
-         sf7jyIXgLipyDni41hDT4B9vvQLg9zOJwNzXmmPZ28hvmWh8+v1WwY1x8g0XP4RW+oWb
-         PioJSOyl/k1iQwKVuViuAFV1FUV4ANuAVIt5Ou9UNwvgZWL8RU4MqpbNGrGSmWgAIwwV
-         Z9EA==
-X-Gm-Message-State: AElRT7HNlTioj9htgjWPHs5lpAQIXNKzSAfElOhcWITHPctyF9iblP0s
-        tncQefA4N44mrt7yyV79ER9r9g==
-X-Google-Smtp-Source: AIpwx4+PpHmh33bsHFSHu38EylOQ3J4Fok+cpJnChFWZpNyTZWq2B2anDZYf67mB5imTD+3gnMK+bA==
-X-Received: by 10.28.87.73 with SMTP id l70mr18897862wmb.123.1523176366066;
-        Sun, 08 Apr 2018 01:32:46 -0700 (PDT)
-Received: from desktop.wvd.kresin.me (p2003008C2F64C100E07D0BF39ABE0ACD.dip0.t-ipconnect.de. [2003:8c:2f64:c100:e07d:bf3:9abe:acd])
-        by smtp.gmail.com with ESMTPSA id v74sm9014234wmv.48.2018.04.08.01.32.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 08 Apr 2018 01:32:45 -0700 (PDT)
-From:   Mathias Kresin <dev@kresin.me>
-To:     john@phrozen.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     martin.blumenstingl@googlemail.com, hauke@hauke-m.de,
-        stable@vger.kernel.org
-Subject: [PATCH] MIPS: lantiq: gphy: Drop reboot/remove reset asserts
-Date:   Sun,  8 Apr 2018 10:30:03 +0200
-Message-Id: <1523176203-18926-1-git-send-email-dev@kresin.me>
-X-Mailer: git-send-email 2.7.4
-Return-Path: <dev@kresin.me>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=E6RQ0lsmitRDGAR+onL5dSs9M5RvRAZ3MT5fHWhMlY4=;
+        b=q19FcRvVsTZA47MOQMtG8RlPf3uNJWTrM/Y9WXo1/UU4v8tcN1ct2tPyjYzIQP4vv2
+         9xwFBxFNE1IteaY5FGnIZr+/+LFn0XZeSZWnZHqJdErV73+JOpk+7gqpku3b0S3nak18
+         l7ir2OkRWZ8eZmTLkX2TNrquOWqywOWhhrlSkbT6cOkxjinT4OOgpIsxYlhDPKzBluuq
+         AcmpI5qfid28gQ4IMPIwTLXazQ4g4wgNT3BoC8drkNXK/r5OxiSwn3iz2S6fVQXoOU7z
+         X/VpURbpYto/W/txAHN6oLE91eaGRmXAkT+928YnEPjm23aWlOnx6Z9II1/gy+Kebuqr
+         XSEw==
+X-Gm-Message-State: ALQs6tB6KMIp5u0QrvCy88C4RBByItS45nFGcvjrPdxaApeV2WoVX02G
+        DPIktox/qRs1vpC86p4xY18=
+X-Google-Smtp-Source: AIpwx49KR/iQtG39PFoB1BmEO6F8hpFMoS4j8He6JyVc6NhmBopLLjhHOF9DXhSDInupxgdBe3j7NQ==
+X-Received: by 2002:a19:59d1:: with SMTP id n200-v6mr20235768lfb.84.1523221062521;
+        Sun, 08 Apr 2018 13:57:42 -0700 (PDT)
+Received: from linux-samsung.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id o2sm2558271lja.86.2018.04.08.13.57.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 08 Apr 2018 13:57:41 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH 1/2] MIPS: BCM47XX: Add support for Netgear WNR1000 V3
+Date:   Sun,  8 Apr 2018 22:57:32 +0200
+Message-Id: <20180408205733.9026-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.11.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63427
+X-archive-position: 63429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dev@kresin.me
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,90 +69,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-While doing a global software reset, these bits are not cleared and let
-some bootloader fail to initialise the GPHYs. The bootloader don't
-expect the GPHYs in reset, as they aren't during power on.
+From: Rafał Miłecki <rafal@milecki.pl>
 
-The asserts were a workaround for a wrong syscon-reboot mask. With a
-mask set which includes the GPHY resets, these resets aren't required
-any more.
+This adds support for detecting this model board and registers some LEDs
+and buttons.
 
-Fixes: 126534141b45 ("MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd")
-Cc: stable@vger.kernel.org # 4.14+
-Signed-off-by: Mathias Kresin <dev@kresin.me>
+There are two uncommon things regarding this device:
+1) It can use two different "board_id" ID values.
+   Unit I have uses "U12H139T00_NETGEAR" value. This magic is also used
+   in firmware file header. There are two reports (one from an OpenWrt
+   user) of a different "U12H139T50_NETGEAR" magic though.
+2) Power LEDs share GPIOs with buttons.
+   Amber one seems to share GPIO 2 with WPS button and green one seems
+   to share GPIO 3 with reset button. It remains unknown how to support
+   them and handle buttons at the same time. For that reason they aren't
+   added to the list of supported LEDs.
+
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 ---
- drivers/soc/lantiq/gphy.c | 34 ----------------------------------
- 1 file changed, 34 deletions(-)
+ arch/mips/bcm47xx/board.c                          | 2 ++
+ arch/mips/bcm47xx/buttons.c                        | 9 +++++++++
+ arch/mips/bcm47xx/leds.c                           | 9 +++++++++
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h | 1 +
+ 4 files changed, 21 insertions(+)
 
-diff --git a/drivers/soc/lantiq/gphy.c b/drivers/soc/lantiq/gphy.c
-index 8d86594..8c31ae7 100644
---- a/drivers/soc/lantiq/gphy.c
-+++ b/drivers/soc/lantiq/gphy.c
-@@ -30,7 +30,6 @@ struct xway_gphy_priv {
- 	struct clk *gphy_clk_gate;
- 	struct reset_control *gphy_reset;
- 	struct reset_control *gphy_reset2;
--	struct notifier_block gphy_reboot_nb;
- 	void __iomem *membase;
- 	char *fw_name;
+diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
+index edfaef0d73a4..a80910d2738c 100644
+--- a/arch/mips/bcm47xx/board.c
++++ b/arch/mips/bcm47xx/board.c
+@@ -172,6 +172,8 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_board_id[] __initconst = {
+ 	{{BCM47XX_BOARD_NETGEAR_WNDR4000, "Netgear WNDR4000"}, "U12H181T00_NETGEAR"},
+ 	{{BCM47XX_BOARD_NETGEAR_WNDR4500V1, "Netgear WNDR4500 V1"}, "U12H189T00_NETGEAR"},
+ 	{{BCM47XX_BOARD_NETGEAR_WNDR4500V2, "Netgear WNDR4500 V2"}, "U12H224T00_NETGEAR"},
++	{{BCM47XX_BOARD_NETGEAR_WNR1000_V3, "Netgear WNR1000 V3"}, "U12H139T00_NETGEAR"},
++	{{BCM47XX_BOARD_NETGEAR_WNR1000_V3, "Netgear WNR1000 V3"}, "U12H139T50_NETGEAR"},
+ 	{{BCM47XX_BOARD_NETGEAR_WNR2000, "Netgear WNR2000"}, "U12H114T00_NETGEAR"},
+ 	{{BCM47XX_BOARD_NETGEAR_WNR3500L, "Netgear WNR3500L"}, "U12H136T99_NETGEAR"},
+ 	{{BCM47XX_BOARD_NETGEAR_WNR3500U, "Netgear WNR3500U"}, "U12H136T00_NETGEAR"},
+diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
+index 88d400d256c4..977990a609ba 100644
+--- a/arch/mips/bcm47xx/buttons.c
++++ b/arch/mips/bcm47xx/buttons.c
+@@ -412,6 +412,12 @@ bcm47xx_buttons_netgear_wndr4500v1[] __initconst = {
  };
-@@ -64,24 +63,6 @@ static const struct of_device_id xway_gphy_match[] = {
+ 
+ static const struct gpio_keys_button
++bcm47xx_buttons_netgear_wnr1000_v3[] __initconst = {
++	BCM47XX_GPIO_KEY(2, KEY_WPS_BUTTON),
++	BCM47XX_GPIO_KEY(3, KEY_RESTART),
++};
++
++static const struct gpio_keys_button
+ bcm47xx_buttons_netgear_wnr3500lv1[] __initconst = {
+ 	BCM47XX_GPIO_KEY(4, KEY_RESTART),
+ 	BCM47XX_GPIO_KEY(6, KEY_WPS_BUTTON),
+@@ -670,6 +676,9 @@ int __init bcm47xx_buttons_register(void)
+ 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wndr4500v1);
+ 		break;
++	case BCM47XX_BOARD_NETGEAR_WNR1000_V3:
++		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wnr1000_v3);
++		break;
+ 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
+ 		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wnr3500lv1);
+ 		break;
+diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
+index 34a7b3fbdfd9..3fe015602945 100644
+--- a/arch/mips/bcm47xx/leds.c
++++ b/arch/mips/bcm47xx/leds.c
+@@ -498,6 +498,12 @@ bcm47xx_leds_netgear_wndr4500v1[] __initconst = {
  };
- MODULE_DEVICE_TABLE(of, xway_gphy_match);
  
--static struct xway_gphy_priv *to_xway_gphy_priv(struct notifier_block *nb)
--{
--	return container_of(nb, struct xway_gphy_priv, gphy_reboot_nb);
--}
--
--static int xway_gphy_reboot_notify(struct notifier_block *reboot_nb,
--				   unsigned long code, void *unused)
--{
--	struct xway_gphy_priv *priv = to_xway_gphy_priv(reboot_nb);
--
--	if (priv) {
--		reset_control_assert(priv->gphy_reset);
--		reset_control_assert(priv->gphy_reset2);
--	}
--
--	return NOTIFY_DONE;
--}
--
- static int xway_gphy_load(struct device *dev, struct xway_gphy_priv *priv,
- 			  dma_addr_t *dev_addr)
- {
-@@ -205,14 +186,6 @@ static int xway_gphy_probe(struct platform_device *pdev)
- 	reset_control_deassert(priv->gphy_reset);
- 	reset_control_deassert(priv->gphy_reset2);
- 
--	/* assert the gphy reset because it can hang after a reboot: */
--	priv->gphy_reboot_nb.notifier_call = xway_gphy_reboot_notify;
--	priv->gphy_reboot_nb.priority = -1;
--
--	ret = register_reboot_notifier(&priv->gphy_reboot_nb);
--	if (ret)
--		dev_warn(dev, "Failed to register reboot notifier\n");
--
- 	platform_set_drvdata(pdev, priv);
- 
- 	return ret;
-@@ -224,17 +197,10 @@ static int xway_gphy_remove(struct platform_device *pdev)
- 	struct xway_gphy_priv *priv = platform_get_drvdata(pdev);
- 	int ret;
- 
--	reset_control_assert(priv->gphy_reset);
--	reset_control_assert(priv->gphy_reset2);
--
- 	iowrite32be(0, priv->membase);
- 
- 	clk_disable_unprepare(priv->gphy_clk_gate);
- 
--	ret = unregister_reboot_notifier(&priv->gphy_reboot_nb);
--	if (ret)
--		dev_warn(dev, "Failed to unregister reboot notifier\n");
--
- 	return 0;
- }
- 
+ static const struct gpio_led
++bcm47xx_leds_netgear_wnr1000_v3[] __initconst = {
++	BCM47XX_GPIO_LED(0, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
++	BCM47XX_GPIO_LED(1, "green", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
++};
++
++static const struct gpio_led
+ bcm47xx_leds_netgear_wnr3500lv1[] __initconst = {
+ 	BCM47XX_GPIO_LED(0, "blue", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
+ 	BCM47XX_GPIO_LED(1, "green", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
+@@ -758,6 +764,9 @@ void __init bcm47xx_leds_register(void)
+ 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
+ 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wndr4500v1);
+ 		break;
++	case BCM47XX_BOARD_NETGEAR_WNR1000_V3:
++		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr1000_v3);
++		break;
+ 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
+ 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr3500lv1);
+ 		break;
+diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+index cbf9da7f2f94..0ef8893e07f8 100644
+--- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
++++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+@@ -110,6 +110,7 @@ enum bcm47xx_board {
+ 	BCM47XX_BOARD_NETGEAR_WNDR4000,
+ 	BCM47XX_BOARD_NETGEAR_WNDR4500V1,
+ 	BCM47XX_BOARD_NETGEAR_WNDR4500V2,
++	BCM47XX_BOARD_NETGEAR_WNR1000_V3,
+ 	BCM47XX_BOARD_NETGEAR_WNR2000,
+ 	BCM47XX_BOARD_NETGEAR_WNR3500L,
+ 	BCM47XX_BOARD_NETGEAR_WNR3500U,
 -- 
-2.7.4
+2.11.0

@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 02:27:04 +0200 (CEST)
-Received: from mail-cys01nam02on0136.outbound.protection.outlook.com ([104.47.37.136]:24156
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 02:31:28 +0200 (CEST)
+Received: from mail-by2nam03on0724.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe4a::724]:10945
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994674AbeDIA0pbFCqV convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2018 02:26:45 +0200
+        id S23990588AbeDIAbWMT01V convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2018 02:31:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=fO5hYRPcF3Gc7qg+DmbRLNDSUBftWJoCoPGykGQY4MY=;
- b=O8xlMOaRKvQNuzDBJ1UHsj/yZLvGs3PK3akoN5U3prk6/s1F3v5HlK0gCN3p92K0I8fDuFGaN2IWNuANoFIlWzuDKsnKMaxxqsm+CpMWQcQzwLuvZhy6VCI7WQbqr8fjzvYY+aYCRT/3hrc2yaENJOhsSg4DWdSt2KZ7hhP6WTU=
+ bh=msLDu5jzGByBOCLdLaSiQW60vG+Sn6Re4F4yrgjOh4Q=;
+ b=eIvmGYqzzGj43uzRkbzxqDdWESl8kM5B1Apdy9y2N6aMHV7et/zTwWCTLios3MEtZPm9VEh/p1dckBTlvJ3i6FkTfvtmFxdwlSl0S/NrE8MqgM9UyW6oxJSfdZs1w7oBeGcmqrnbhxVc4vlLnvrk35oI1IO4Yy0iW8Zo4iK2Tvs=
 Received: from DM5PR2101MB1032.namprd21.prod.outlook.com (52.132.128.13) by
- DM5PR2101MB1015.namprd21.prod.outlook.com (52.132.133.37) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.696.0; Mon, 9 Apr 2018 00:26:35 +0000
+ DM5PR2101MB0917.namprd21.prod.outlook.com (52.132.132.162) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.696.0; Mon, 9 Apr 2018 00:31:10 +0000
 Received: from DM5PR2101MB1032.namprd21.prod.outlook.com
  ([fe80::8109:aef0:a777:7059]) by DM5PR2101MB1032.namprd21.prod.outlook.com
  ([fe80::8109:aef0:a777:7059%2]) with mapi id 15.20.0696.003; Mon, 9 Apr 2018
- 00:26:35 +0000
+ 00:31:10 +0000
 From:   Sasha Levin <Alexander.Levin@microsoft.com>
 To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+CC:     Paul Burton <paul.burton@imgtec.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL for 4.9 009/293] MIPS: kprobes: flush_insn_slot should
- flush only if probe initialised
-Thread-Topic: [PATCH AUTOSEL for 4.9 009/293] MIPS: kprobes: flush_insn_slot
- should flush only if probe initialised
-Thread-Index: AQHTz5jnNpNo6d8vfUWSLB18nGrY1A==
-Date:   Mon, 9 Apr 2018 00:22:54 +0000
-Message-ID: <20180409002239.163177-9-alexander.levin@microsoft.com>
+Subject: [PATCH AUTOSEL for 4.9 159/293] MIPS: module: Ensure we always clean
+ up r_mips_hi16_list
+Thread-Topic: [PATCH AUTOSEL for 4.9 159/293] MIPS: module: Ensure we always
+ clean up r_mips_hi16_list
+Thread-Index: AQHTz5kwY8h7ZolO/UyoRSYhafVnFA==
+Date:   Mon, 9 Apr 2018 00:24:57 +0000
+Message-ID: <20180409002239.163177-159-alexander.levin@microsoft.com>
 References: <20180409002239.163177-1-alexander.levin@microsoft.com>
 In-Reply-To: <20180409002239.163177-1-alexander.levin@microsoft.com>
 Accept-Language: en-US
@@ -38,38 +38,38 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator: 
 x-originating-ip: [52.168.54.252]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;DM5PR2101MB1015;7:Afu48+naUoc+ZnViNY+20BGvYAiQiDdwY1vNwZ5SC21xywmY/esUNUziaW80HSLqSvedE5+8VqTonFFIfc6QmMSkLMRCti5q3WUwJBQw1vmmzBH09eneJwXULEEwta7PrEMsgbTpiqAQFPT3wyr3lt+kv2dG4CdWgEB2Fxt1LeKaSBwOXC2/u1l6olDyruGZ/Ye0OVz11SxJjxDxz9WZfCt8UglXNoRU84Ofxevgzwde2Iw7Zhybrlj+S7vhKIG+;20:LZC32FPyFh2qtOfJW08ZGHGYMm6e9EmqUStSyMfZLOUcXlYijNPVEIhLNp7wmqFnsUw2W4XaE5J9rjEY9fjVlDJNZbs7d3BYfZPPWEWdTr6psREW7+BWs5SZwzplEeCVVJSyORDU4iJOELT5WzRv7k1c+ySh7nSnI/O+E0Gdp3c=
+x-microsoft-exchange-diagnostics: 1;DM5PR2101MB0917;7:5xsU/X2zTHPzrKHlTCq+Nx3s6JuQ3A2VS8RmDp4krXNrOTWMdjYTL/y1dZBJDcaY4aYQIgd7CXyBT4Ha0aZS+5F7IVc7ZQzC4azlgHisnHPHqLxXPdF+NkbTjitLbnVzTdGz9WyPXWqDgB8KDzBWigyKux8VCzQXrDkpITToxCvsVm46FX6R1C2gNIN/sMXDeyHj60v997CXVaMgqol0NUac/dUP80oB31wRjdHIT8c6cn28PFOmy/5A+89hZZPx;20:XBjl/SDMzQWNcm+FEdo62TNiVLdfN88XDUx25V80K9RCljwA436rNV24Xrhj5uI/xPPbM5rjB9UsjyVG5cbmMEal8n++uEXb7i1/nE2S/slBeaRpScLaqe4Xb2UK2MSbKfhdCTNpsMs6k/nL0L458ducwyiy5W4ZH+zMjMM2BnQ=
+X-MS-Office365-Filtering-Correlation-Id: 4556d5e2-a6bf-4b2f-33e7-08d59db1315c
 x-ms-office365-filtering-ht: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 55e7b2f3-58ad-47b0-ad7c-08d59db08d3d
-x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(5600026)(4604075)(3008032)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7193020);SRVR:DM5PR2101MB1015;
-x-ms-traffictypediagnostic: DM5PR2101MB1015:
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(4534165)(4627221)(201703031133081)(201702281549075)(5600026)(4604075)(3008032)(48565401081)(2017052603328)(7193020);SRVR:DM5PR2101MB0917;
+x-ms-traffictypediagnostic: DM5PR2101MB0917:
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-prvs: <DM5PR2101MB1015349DEA9E65E0FD48C18EFBBF0@DM5PR2101MB1015.namprd21.prod.outlook.com>
+x-microsoft-antispam-prvs: <DM5PR2101MB091735FA6C508328FD91169DFBBF0@DM5PR2101MB0917.namprd21.prod.outlook.com>
 x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171);
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040522)(2401047)(8121501046)(5005006)(3231221)(944501327)(52105095)(3002001)(93006095)(93001095)(10201501046)(6055026)(61426038)(61427038)(6041310)(20161123560045)(20161123564045)(20161123558120)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011);SRVR:DM5PR2101MB1015;BCL:0;PCL:0;RULEID:;SRVR:DM5PR2101MB1015;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040522)(2401047)(8121501046)(5005006)(93006095)(93001095)(3231221)(944501327)(52105095)(3002001)(10201501046)(6055026)(61426038)(61427038)(6041310)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123564045)(20161123560045)(6072148)(201708071742011);SRVR:DM5PR2101MB0917;BCL:0;PCL:0;RULEID:;SRVR:DM5PR2101MB0917;
 x-forefront-prvs: 0637FCE711
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(39860400002)(39380400002)(376002)(346002)(366004)(189003)(199004)(53936002)(4326008)(478600001)(72206003)(3280700002)(2616005)(14454004)(305945005)(5250100002)(3660700001)(2501003)(2900100001)(54906003)(110136005)(86362001)(1076002)(966005)(107886003)(6506007)(36756003)(446003)(68736007)(6512007)(7736002)(486006)(2906002)(6306002)(5660300001)(6436002)(3846002)(86612001)(6486002)(66066001)(11346002)(476003)(6666003)(59450400001)(26005)(10090500001)(316002)(22452003)(8676002)(81156014)(81166006)(6116002)(105586002)(99286004)(186003)(106356001)(76176011)(25786009)(97736004)(10290500003)(102836004)(8936002)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR2101MB1015;H:DM5PR2101MB1032.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39380400002)(39860400002)(366004)(396003)(346002)(376002)(189003)(199004)(99286004)(22452003)(106356001)(26005)(110136005)(478600001)(54906003)(10290500003)(316002)(1076002)(72206003)(186003)(4326008)(97736004)(66066001)(11346002)(25786009)(86362001)(575784001)(476003)(446003)(2906002)(6666003)(6486002)(105586002)(86612001)(3280700002)(3660700001)(6512007)(3846002)(6306002)(6116002)(6436002)(2616005)(486006)(15760500003)(53936002)(7736002)(8676002)(81166006)(81156014)(8936002)(68736007)(305945005)(10090500001)(76176011)(6506007)(102836004)(36756003)(107886003)(2900100001)(2501003)(14454004)(966005)(5660300001)(5250100002)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR2101MB0917;H:DM5PR2101MB1032.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: microsoft.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: vfFjxEJSNoQlpX3fHMXq15DyCZAX/ymYh9KDczFH04tiPF5/5KyHlVbYNwy2ZdaZ4fOFeseS8nYpI+WxzBb3Mf+Im1tTi0slGA3eztQ4tULGgNZaLxbv9/v4+9ZKMIVtbmCP5atTkK4XXzdzB6oG7V2NNpscjKMrVQucG0ldY05GGjeBHR0H8anY0nzB5+anHPfz61l7riRBZXfncO87avxuE0NtrK1PDH2OkWWMOHlE4Ihbi61XN5pCqam9nSyls4FnzYkbBXZL0aVsLkbB+C3euQnhlV2FoHRX9QTsUIi/nbhRFxEvRPCkL1pCLemqy5CSCX27NIlAyZ1iVQMYL3p67LHTx69/2L8TSlaHe4X32L9NE1vl+bG9ZSjO9yrQQtNNJbnSZTSktW8GQnj4KRe3RF9J2VLnkkjw0ewFHFY=
+x-microsoft-antispam-message-info: LkxMkKII3j3HmnK9EciDqTAf/Shzw5kC9UJ50iZWFSf9m7bwyZTlFhF8Dmf7tmGfv3SDs7ean6bJEY5sEv8BE0vsGhWHlB2M1M0lwClBm2MCYGbKjRGOsHv53UvEEKphj8Qnn2n6eMvfXj+U0Lu5yndiwIqbh5OqbNyPLjYYJWX84iF8W/P8nyATlTk6O4SXmxHeoYpU+qEvHesohF9AuVo2tD0El9Mjlkx5pbFHakY3UMfkKAAgVgBFShILF3vGDEYl1M1c3AcXfChCX6E0IEKIaTouDI7R3XYfsXWg9j/DIQH3oRZL1bSSzYJoZKztU7PjbKNPbHTG+4iFERPIIkhnJC2fztEHO/P7llXQavAYkV/Y0Dgkdf1jrp4Dl2i4Jvu67zSG99N3fvh3ijbX35H0krEJVprK9vOYkqzbCe0=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55e7b2f3-58ad-47b0-ad7c-08d59db08d3d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2018 00:22:54.5654
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4556d5e2-a6bf-4b2f-33e7-08d59db1315c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2018 00:24:57.2063
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR2101MB1015
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR2101MB0917
 Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63445
+X-archive-position: 63446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -86,38 +86,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-[ Upstream commit 698b851073ddf5a894910d63ca04605e0473414e ]
+[ Upstream commit 351b0940d473146923711bc943fc881354a4c1f3 ]
 
-When ftrace is used with kprobes, it is possible for a kprobe to contain
-an invalid location (ie. only initialised to 0 and not to a specific
-location in the code). Trying to perform a cache flush on such location
-leads to a crash r4k_flush_icache_range().
+If we hit an error whilst processing a reloc then we would return early
+from apply_relocate & potentially not free entries in r_mips_hi16_list,
+thereby leaking memory. Fix this by ensuring that we always run the code
+to free r_mipps_hi16_list when errors occur.
 
-Fixes: c1bf207d6ee1 ("MIPS: kprobe: Add support.")
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 861667dc82f5 ("MIPS: Fix race condition in module relocation code.")
+Fixes: 04211a574641 ("MIPS: Bail on unsupported module relocs")
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16296/
+Patchwork: https://patchwork.linux-mips.org/patch/15831/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 ---
- arch/mips/include/asm/kprobes.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/kernel/module.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/include/asm/kprobes.h b/arch/mips/include/asm/kprobes.h
-index daba1f9a4f79..174aedce3167 100644
---- a/arch/mips/include/asm/kprobes.h
-+++ b/arch/mips/include/asm/kprobes.h
-@@ -40,7 +40,8 @@ typedef union mips_instruction kprobe_opcode_t;
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index 94627a3a6a0d..ddcfb59593b6 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -251,7 +251,7 @@ int apply_relocate(Elf_Shdr *sechdrs, const char *strtab,
+ 	u32 *location;
+ 	unsigned int i, type;
+ 	Elf_Addr v;
+-	int res;
++	int err = 0;
  
- #define flush_insn_slot(p)						\
- do {									\
--	flush_icache_range((unsigned long)p->addr,			\
-+	if (p->addr)							\
-+		flush_icache_range((unsigned long)p->addr,		\
- 			   (unsigned long)p->addr +			\
- 			   (MAX_INSN_SIZE * sizeof(kprobe_opcode_t)));	\
- } while (0)
+ 	pr_debug("Applying relocate section %u to %u\n", relsec,
+ 	       sechdrs[relsec].sh_info);
+@@ -270,7 +270,8 @@ int apply_relocate(Elf_Shdr *sechdrs, const char *strtab,
+ 				continue;
+ 			pr_warn("%s: Unknown symbol %s\n",
+ 				me->name, strtab + sym->st_name);
+-			return -ENOENT;
++			err = -ENOENT;
++			goto out;
+ 		}
+ 
+ 		type = ELF_MIPS_R_TYPE(rel[i]);
+@@ -283,29 +284,32 @@ int apply_relocate(Elf_Shdr *sechdrs, const char *strtab,
+ 		if (!handler) {
+ 			pr_err("%s: Unknown relocation type %u\n",
+ 			       me->name, type);
+-			return -EINVAL;
++			err = -EINVAL;
++			goto out;
+ 		}
+ 
+ 		v = sym->st_value;
+-		res = handler(me, location, v);
+-		if (res)
+-			return res;
++		err = handler(me, location, v);
++		if (err)
++			goto out;
+ 	}
+ 
++out:
+ 	/*
+-	 * Normally the hi16 list should be deallocated at this point.	A
++	 * Normally the hi16 list should be deallocated at this point. A
+ 	 * malformed binary however could contain a series of R_MIPS_HI16
+-	 * relocations not followed by a R_MIPS_LO16 relocation.  In that
+-	 * case, free up the list and return an error.
++	 * relocations not followed by a R_MIPS_LO16 relocation, or if we hit
++	 * an error processing a reloc we might have gotten here before
++	 * reaching the R_MIPS_LO16. In either case, free up the list and
++	 * return an error.
+ 	 */
+ 	if (me->arch.r_mips_hi16_list) {
+ 		free_relocation_chain(me->arch.r_mips_hi16_list);
+ 		me->arch.r_mips_hi16_list = NULL;
+-
+-		return -ENOEXEC;
++		err = err ?: -ENOEXEC;
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /* Given an address, look for it in the module exception tables. */
 -- 
 2.15.1

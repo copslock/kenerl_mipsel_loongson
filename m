@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 02:41:52 +0200 (CEST)
-Received: from mail-bl2nam02on0114.outbound.protection.outlook.com ([104.47.38.114]:39280
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 02:42:38 +0200 (CEST)
+Received: from mail-cys01nam02on0103.outbound.protection.outlook.com ([104.47.37.103]:2721
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992615AbeDIAlcMem-V convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2018 02:41:32 +0200
+        id S23990509AbeDIAmbxbXiV convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2018 02:42:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=eYs6vcigFz1CUWlzAi7UOxb2IfBD50RqdL5VbEUAjvU=;
- b=lxB9tulDF+En9jh9wz/wtlGOeGKOukvz4pHXFqtTFoWiuvQe60E4Y7QJ4HlaDHys4EeCfztI4MBDdl/oxpUdGVr88aOBXqonExKRtOA77I1FlGnV2Aj2Uav6nkd5EZa1ZZMZzbZCVv8sQLg3G96qv6xFCqfYMaFDWUJN+v0h4+o=
+ bh=nTU6nQCrCZyC9sciR7TmGfG7IWc0S+TdPPBez64/SYo=;
+ b=fyZ4f4N6N4rStlTu88zaqphdoZBhGcvK/nV8YR4W/U09X3PrPcbTvg6D0pUuic8tN3TlLyWHsrGg9qE0b97l1XiH9sTVWMzKH46HY0GMnXGf8Q5ywEl5V3+gYznyJLpgC08eBPJlRu4n7+qREdmGRMKidNLuY8Oy0JocvxJFhdA=
 Received: from DM5PR2101MB1032.namprd21.prod.outlook.com (52.132.128.13) by
- DM5PR2101MB0901.namprd21.prod.outlook.com (52.132.132.158) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.696.0; Mon, 9 Apr 2018 00:41:21 +0000
+ DM5PR2101MB1062.namprd21.prod.outlook.com (52.132.128.19) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.696.0; Mon, 9 Apr 2018 00:42:24 +0000
 Received: from DM5PR2101MB1032.namprd21.prod.outlook.com
  ([fe80::8109:aef0:a777:7059]) by DM5PR2101MB1032.namprd21.prod.outlook.com
  ([fe80::8109:aef0:a777:7059%2]) with mapi id 15.20.0696.003; Mon, 9 Apr 2018
- 00:41:21 +0000
+ 00:42:24 +0000
 From:   Sasha Levin <Alexander.Levin@microsoft.com>
 To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+CC:     Matt Redfearn <matt.redfearn@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
         Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL for 3.18 056/101] MIPS: Handle tlbex-tlbp race
- condition
-Thread-Topic: [PATCH AUTOSEL for 3.18 056/101] MIPS: Handle tlbex-tlbp race
- condition
-Thread-Index: AQHTz5t6/VF1ZzXlukGzrM7ArnXD0g==
-Date:   Mon, 9 Apr 2018 00:41:20 +0000
-Message-ID: <20180409004042.164920-6-alexander.levin@microsoft.com>
+Subject: [PATCH AUTOSEL for 3.18 092/101] MIPS: TXx9: use IS_BUILTIN() for
+ CONFIG_LEDS_CLASS
+Thread-Topic: [PATCH AUTOSEL for 3.18 092/101] MIPS: TXx9: use IS_BUILTIN()
+ for CONFIG_LEDS_CLASS
+Thread-Index: AQHTz5uLgVtOV4R39UK9TnRTnbSZNw==
+Date:   Mon, 9 Apr 2018 00:41:49 +0000
+Message-ID: <20180409004042.164920-42-alexander.levin@microsoft.com>
 References: <20180409004042.164920-1-alexander.levin@microsoft.com>
 In-Reply-To: <20180409004042.164920-1-alexander.levin@microsoft.com>
 Accept-Language: en-US
@@ -38,38 +39,38 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator: 
 x-originating-ip: [52.168.54.252]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;DM5PR2101MB0901;7:62XCOP6wyO0Z4FTdZXyO4H6Ejli/LvZ2EIcbjzqtxHb1Mbd84tC4zWz8rGFXsIcB3WDE4dQCWLXiqLbpW0iA/9pSrTMBSP6MXX+dnzm7Jte0puk0AEh18KIkiS1nyWWLFf+LeUodjueUWg946aPOSptHGt5atsp1RQ+TEP/CHWQ4PvW/2F+2FULDinngZurwJhTjwyvbhgm1hK1q4DffhdRR36wcCx7QYczsYu3UOwnBbHdADP3PrkfUxqmUI6rl;20:ZPsQkEx3kt67owDJcm3pYD9wbfxWSmmuhwvLMwGMj3shXIYbrvaKzTH3hzoiv3OK7hi6Y1DrPaUiQeGL+0RSCFmaL+8afx3qBsQupyx5QwGGcfYoPiHWmQA4mXp8/JLcAtx8OS9Cx0Y5KKcguLz4u911hGUN0xzsSW290Bb9gkQ=
+x-microsoft-exchange-diagnostics: 1;DM5PR2101MB1062;7:Ce+7/SjKz6gh6W6KSrV9gPPuGFdw2LUCyUyDdJpPPuq1o174YX+mPTBsrEaLwSnWzFwA1CLTHZ5yJlOu+puDu5GpwQxsUuQAWfGlaU2laIB5uW6YzjE6FKNoLlqc1N+j7aOqtiNX7KmvVW+Gy4BoHwKoJy3ywg+l2DlnE5PyjKI7Ro6dwbBJD7nYhfc6CkcEGQKPhk87MDvLlabsNMc2ipYSSgoBjCXe7ETd/FHbUyiJIU7Mb/4QuRPZbCZrKhSJ;20:RgUmIGVgpwR4mLKfopeSV9HH0E/FD1FixK3lvfmQezZP62WehbxJy6EPy3bcMN8/VMj/+D1DfRA7tmifUBch69RiaECRhqVyfVE8I5HIRUpFykWUApkvRo137V75evFYJS47MT2fICMo1FZwta7eK70CWZjETmO+rrxxVeyp9vY=
 x-ms-office365-filtering-ht: Tenant
-X-MS-Office365-Filtering-Correlation-Id: ef23419d-39f8-4cc8-f025-08d59db29dc3
-x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(5600026)(4604075)(3008032)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7193020);SRVR:DM5PR2101MB0901;
-x-ms-traffictypediagnostic: DM5PR2101MB0901:
+X-MS-Office365-Filtering-Correlation-Id: a31a1222-0b9e-45e7-2cd5-08d59db2c2dc
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(5600026)(4604075)(3008032)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7193020);SRVR:DM5PR2101MB1062;
+x-ms-traffictypediagnostic: DM5PR2101MB1062:
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-prvs: <DM5PR2101MB090156C9845C8F9A323B68CFFBBF0@DM5PR2101MB0901.namprd21.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(788757137089);
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040522)(2401047)(8121501046)(5005006)(93006095)(93001095)(3231221)(944501327)(52105095)(3002001)(10201501046)(6055026)(61426038)(61427038)(6041310)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123564045)(20161123560045)(6072148)(201708071742011);SRVR:DM5PR2101MB0901;BCL:0;PCL:0;RULEID:;SRVR:DM5PR2101MB0901;
+x-microsoft-antispam-prvs: <DM5PR2101MB1062635288F96CB00339ACB9FBBF0@DM5PR2101MB1062.namprd21.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171);
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040522)(2401047)(5005006)(8121501046)(10201501046)(3231221)(944501327)(52105095)(93006095)(93001095)(3002001)(6055026)(61426038)(61427038)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(20161123558120)(20161123560045)(6072148)(201708071742011);SRVR:DM5PR2101MB1062;BCL:0;PCL:0;RULEID:;SRVR:DM5PR2101MB1062;
 x-forefront-prvs: 0637FCE711
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(39380400002)(376002)(346002)(396003)(366004)(189003)(199004)(59450400001)(99286004)(68736007)(10290500003)(25786009)(86612001)(6116002)(66066001)(97736004)(3846002)(76176011)(6512007)(6306002)(54906003)(6436002)(4326008)(53936002)(105586002)(110136005)(6486002)(3280700002)(1076002)(107886003)(8676002)(10090500001)(2501003)(966005)(81156014)(81166006)(5660300001)(14454004)(186003)(3660700001)(102836004)(7736002)(2906002)(26005)(5250100002)(36756003)(478600001)(446003)(316002)(6506007)(2616005)(106356001)(8936002)(11346002)(22452003)(2900100001)(86362001)(486006)(476003)(305945005)(72206003)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR2101MB0901;H:DM5PR2101MB1032.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39860400002)(376002)(39380400002)(396003)(346002)(199004)(189003)(68736007)(6512007)(316002)(486006)(6486002)(6666003)(54906003)(5660300001)(110136005)(102836004)(6306002)(14454004)(99286004)(36756003)(86612001)(72206003)(105586002)(97736004)(106356001)(2906002)(22452003)(1076002)(2900100001)(10090500001)(6436002)(3660700001)(6116002)(3846002)(305945005)(59450400001)(86362001)(66066001)(10290500003)(3280700002)(5250100002)(25786009)(8676002)(81166006)(8936002)(7736002)(478600001)(476003)(81156014)(26005)(4326008)(186003)(2501003)(107886003)(966005)(6506007)(2616005)(76176011)(11346002)(446003)(53936002)(22906009)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR2101MB1062;H:DM5PR2101MB1032.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: microsoft.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: pQ0Yc9ZFdEjbJ6qn8yK0DJCui+CBkcdz2etSqyVLRyqIUDtY/FZwFp5VkKPoS1LK8y/MBkk8cscbxQ9myflY/9oiaXZlfnIx4rCbOGzweUbyha/5QxE4lk1xcuwEDCDSmJjgyrSFIBlqeFRI88N52AHKW+SD1FHOgUnuWAv60LUvbD496JMccmFNWJyea/LkAEosKdPKYsYBB86cKpGuLtpFBr1WX7a9xSjzAdiPoJOz/LNsv6egJ3OwDcWiUMy3KjEY/9Q1C2lwxT5aCCkGPmofuqWM2D7D6YyyU3ft0OjOcRLuTnZK/gRbhIkkIfHXrBJfD9HcEd/42OAOvDjaQuzLWu2u+ZYLaV4tabA/B8i4mpESzYivHVF5xC4ATBx/kbunX04O6sNeqVWX10lFgrct8FaFZjnj4t8XA3aMvcM=
+x-microsoft-antispam-message-info: FwN8BmC+fZ78VqGEiT5Hk7xM+KrHcXSP5SKTxHOge4e1yDHi2P9cWmXCU5TioMz1mY1ZmicJbCjOai/KXUTLNfYREBnpOiB3q/hQllFFO/l+E9n/26ITVMSltTTXR2ZvH+1Ol6d7wX0XnTkMRR8b1NX9lnah8l4IGQNqdwnYPAvhZVFNWVxXiPNykdOskYruYPBFmRPp0zck51dvmKRxsdKKsJ8zkJ+KWNs/TzRL77NEBmIxnkoKj8bA61F1VPU2SJIzEnNcNte5LHGO8Zr+KLIO4SI+PezbR3PNTa3HnP327da4N1H8LBJJm9tYuMgr/d9bpdWxY+DsTJ/RZLh/Ey0CDHGZswU+wQc6NbJaq/v68e7r9CGgJoqQM6H/pUyl5Bh0yvTKJW/u2N4duA15PCiC35bVJwKMwNELfv+5AN0=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef23419d-39f8-4cc8-f025-08d59db29dc3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2018 00:41:20.4865
+X-MS-Exchange-CrossTenant-Network-Message-Id: a31a1222-0b9e-45e7-2cd5-08d59db2c2dc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2018 00:41:49.6116
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR2101MB0901
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR2101MB1062
 Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63471
+X-archive-position: 63472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -86,107 +87,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Matt Redfearn <matt.redfearn@mips.com>
 
-[ Upstream commit f39878cc5b09c75d35eaf52131e920b872e3feb4 ]
+[ Upstream commit 0cde5b44a30f1daaef1c34e08191239dc63271c4 ]
 
-In systems where there are multiple actors updating the TLB, the
-potential exists for a race condition wherein a CPU hits a TLB exception
-but by the time it reaches a TLBP instruction the affected TLB entry may
-have been replaced. This can happen if, for example, a CPU shares the
-TLB between hardware threads (VPs) within a core and one of them
-replaces the entry that another has just taken a TLB exception for.
+When commit b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
+added board support for the RBTX4939, it added a call to
+led_classdev_register even if the LED class is built as a module.
+Built-in arch code cannot call module code directly like this. Commit
+b33b44073734 ("MIPS: TXX9: use IS_ENABLED() macro") subsequently
+changed the inclusion of this code to a single check that
+CONFIG_LEDS_CLASS is either builtin or a module, but the same issue
+remains.
 
-We handle this race in the case of the Hardware Table Walker (HTW) being
-the other actor already, but didn't take into account the potential for
-multiple threads racing. Include the code for aborting TLB exception
-handling in affected multi-threaded systems, those being the I6400 &
-I6500 CPUs which share TLB entries between VPs.
+This leads to MIPS allmodconfig builds failing when CONFIG_MACH_TX49XX=y
+is set:
 
-In the case of using RiXi without dedicated exceptions we have never
-handled this race even for HTW. This patch adds WARN()s to these cases
-which ought never to be hit because all CPUs with either HTW or shared
-FTLB RAMs also include dedicated RiXi exceptions, but the WARN()s will
-ensure this is always the case.
+arch/mips/txx9/rbtx4939/setup.o: In function `rbtx4939_led_probe':
+setup.c:(.init.text+0xc0): undefined reference to `of_led_classdev_register'
+make: *** [Makefile:999: vmlinux] Error 1
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fix this by using the IS_BUILTIN() macro instead.
+
+Fixes: b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Reviewed-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16203/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/18544/
+Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 ---
- arch/mips/mm/tlbex.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ arch/mips/txx9/rbtx4939/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index e3328a96e809..4be16c81be9f 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1838,6 +1838,26 @@ static void build_r3000_tlb_modify_handler(void)
- }
- #endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
+diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
+index 2da5f25f98bc..e802259b2a59 100644
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -186,7 +186,7 @@ static void __init rbtx4939_update_ioc_pen(void)
  
-+static bool cpu_has_tlbex_tlbp_race(void)
-+{
-+	/*
-+	 * When a Hardware Table Walker is running it can replace TLB entries
-+	 * at any time, leading to a race between it & the CPU.
-+	 */
-+	if (cpu_has_htw)
-+		return true;
-+
-+	/*
-+	 * If the CPU shares FTLB RAM with its siblings then our entry may be
-+	 * replaced at any time by a sibling performing a write to the FTLB.
-+	 */
-+	if (cpu_has_shared_ftlb_ram)
-+		return true;
-+
-+	/* In all other cases there ought to be no race condition to handle */
-+	return false;
-+}
-+
- /*
-  * R4000 style TLB load/store/modify handlers.
-  */
-@@ -1874,7 +1894,7 @@ build_r4000_tlbchange_handler_head(u32 **p, struct uasm_label **l,
- 	iPTE_LW(p, wr.r1, wr.r2); /* get even pte */
- 	if (!m4kc_tlbp_war()) {
- 		build_tlb_probe_entry(p);
--		if (cpu_has_htw) {
-+		if (cpu_has_tlbex_tlbp_race()) {
- 			/* race condition happens, leaving */
- 			uasm_i_ehb(p);
- 			uasm_i_mfc0(p, wr.r3, C0_INDEX);
-@@ -1948,6 +1968,14 @@ static void build_r4000_tlb_load_handler(void)
- 		}
- 		uasm_i_nop(&p);
+ #define RBTX4939_MAX_7SEGLEDS	8
  
-+		/*
-+		 * Warn if something may race with us & replace the TLB entry
-+		 * before we read it here. Everything with such races should
-+		 * also have dedicated RiXi exception handlers, so this
-+		 * shouldn't be hit.
-+		 */
-+		WARN(cpu_has_tlbex_tlbp_race(), "Unhandled race in RiXi path");
-+
- 		uasm_i_tlbr(&p);
+-#if IS_ENABLED(CONFIG_LEDS_CLASS)
++#if IS_BUILTIN(CONFIG_LEDS_CLASS)
+ static u8 led_val[RBTX4939_MAX_7SEGLEDS];
+ struct rbtx4939_led_data {
+ 	struct led_classdev cdev;
+@@ -262,7 +262,7 @@ static inline void rbtx4939_led_setup(void)
  
- 		switch (current_cpu_type()) {
-@@ -2015,6 +2043,14 @@ static void build_r4000_tlb_load_handler(void)
- 		}
- 		uasm_i_nop(&p);
- 
-+		/*
-+		 * Warn if something may race with us & replace the TLB entry
-+		 * before we read it here. Everything with such races should
-+		 * also have dedicated RiXi exception handlers, so this
-+		 * shouldn't be hit.
-+		 */
-+		WARN(cpu_has_tlbex_tlbp_race(), "Unhandled race in RiXi path");
-+
- 		uasm_i_tlbr(&p);
- 
- 		switch (current_cpu_type()) {
+ static void __rbtx4939_7segled_putc(unsigned int pos, unsigned char val)
+ {
+-#if IS_ENABLED(CONFIG_LEDS_CLASS)
++#if IS_BUILTIN(CONFIG_LEDS_CLASS)
+ 	unsigned long flags;
+ 	local_irq_save(flags);
+ 	/* bit7: reserved for LED class */
 -- 
 2.15.1

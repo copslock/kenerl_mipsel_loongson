@@ -1,50 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 17:51:15 +0200 (CEST)
-Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:33332 "EHLO
-        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991172AbeDIPvIEfqBJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2018 17:51:08 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 6290A40900;
-        Mon,  9 Apr 2018 17:51:07 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id g1Mn6OQ6z_jt; Mon,  9 Apr 2018 17:51:01 +0200 (CEST)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 5101E3F7C9;
-        Mon,  9 Apr 2018 17:51:01 +0200 (CEST)
-Date:   Mon, 9 Apr 2018 17:51:00 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>,
-        linux-mips@linux-mips.org
-Subject: Re: [RFC] MIPS: PS2: Interrupt request (IRQ) support
-Message-ID: <20180409155057.GA2235@localhost.localdomain>
-References: <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
- <20170930065654.GA7714@localhost.localdomain>
- <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
- <20171029172016.GA2600@localhost.localdomain>
- <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
- <20171111160422.GA2332@localhost.localdomain>
- <20180129202715.GA4817@localhost.localdomain>
- <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180303122657.GC24991@localhost.localdomain>
- <alpine.DEB.2.00.1803031306530.10166@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 22:05:50 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:57346 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992009AbeDIUFmUlD6v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Apr 2018 22:05:42 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6B8B021785;
+        Mon,  9 Apr 2018 20:05:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 6B8B021785
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Mon, 9 Apr 2018 21:05:30 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Sasha Levin <Alexander.Levin@microsoft.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH AUTOSEL for 4.14 041/161] MIPS: Fix clean of
+ vmlinuz.{32,ecoff,bin,srec}
+Message-ID: <20180409200529.GA17347@saruman>
+References: <20180409001936.162706-1-alexander.levin@microsoft.com>
+ <20180409001936.162706-41-alexander.levin@microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="YiEDa0DAkWCtVeE4"
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1803031306530.10166@tp.orcam.me.uk>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <noring@nocrew.org>
+In-Reply-To: <20180409001936.162706-41-alexander.levin@microsoft.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63474
+X-archive-position: 63475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,43 +50,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
 
->  I'm on holiday starting today and lasting two weeks.  I'll have a look at 
-> your patch when I am back.
+--YiEDa0DAkWCtVeE4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-How are the reviews going? I think some of the most important and for me
-least understood parts of the initial submission are:
+Hi Sasha,
 
-https://www.linux-mips.org/archives/linux-mips/2018-02/msg00100.html
-https://www.linux-mips.org/archives/linux-mips/2018-02/msg00102.html
-https://www.linux-mips.org/archives/linux-mips/2018-02/msg00103.html
-https://www.linux-mips.org/archives/linux-mips/2018-02/msg00117.html
-https://www.linux-mips.org/archives/linux-mips/2018-02/msg00219.html
-https://www.linux-mips.org/archives/linux-mips/2018-02/msg00221.html
-https://www.linux-mips.org/archives/linux-mips/2018-03/msg00035.html
+On Mon, Apr 09, 2018 at 12:20:18AM +0000, Sasha Levin wrote:
+> From: James Hogan <jhogan@kernel.org>
+>=20
+> [ Upstream commit 5f2483eb2423152445b39f2db59d372f523e664e ]
+>=20
+> Make doesn't expand shell style "vmlinuz.{32,ecoff,bin,srec}" to the 4
+> separate files, so none of these files get cleaned up by make clean.
+> List the files separately instead.
+>=20
+> Fixes: ec3352925b74 ("MIPS: Remove all generated vmlinuz* files on "make =
+clean"")
+> Signed-off-by: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Patchwork: https://patchwork.linux-mips.org/patch/18491/
+> Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 
-I'm currently rewriting the Graphics Synthesizer and frame buffer drivers
-from scratch, with the following changes:
+Perhaps you're already on top of it, but this would appear to be equally
+relevant to the older stable branches too?
 
-- modules;
-- proper handling of video modes;
-- several new video modes including 1920x1080p;
-- compatibility with PS2 HDMI adapters;
-- extended sysfs with register files;
-- hardware support for panning, etc.
-- vertical blank synchronisation;
-- performance improvements;
-- bug fixes.
+Thanks
+James
 
-One critical issue with the OHCI driver was resolved in commit d6c931ea32dc0
-"USB: OHCI: Fix NULL dereference in HCDs using HCD_LOCAL_MEM". Robin Murphy
-and Christoph Hellwig proposed fixes to DMA handling and Robin will submit a
-patch as discussed here:
+--YiEDa0DAkWCtVeE4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-https://marc.info/?t=152010179900001&r=1&w=2
+-----BEGIN PGP SIGNATURE-----
 
-The OHCI driver still has an issue (and workaround) with interrupts, related
-to the IRQ handling.
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrLx4MACgkQbAtpk944
+dnq0FQ/9FSWP4uX0NBOiTuxYiENIbp6bvpM84Na7BB1P4K0lE6NiQZQ4oMYkH5Zw
+bNxuuDK8BDD/zbzPP5sO78DzdLY/CHFr9Wzg/TjEClAfjV0o3kEL533VMX1o7AIY
+TqodazVNp2e7v0APNA5B+SGu34A99TM9pSko2tcqAH7ehpFufbOXOLkD+QEtsE9E
+o13OR3H0F5yzyUWQTwOKKhWeg2QFWHo7WE/cAgr5aJ0MgtFd7IiDmjtzKQKBTRVL
+3WY1fguf27T6//dA+pB/9ORbpEUE1ThBJ8chbUmB9wQqlhTEIFhrblEQ6MSsO2DL
+EYbiTVjZZuXGycspeTNB+srFhI3uNnp2dmATFBt1QqeDD65X9nCI/7vJrEJbWTeS
+bqZAlhjzinvVqTvb4fH6iSh9M282p4F/GIJlHkAEcw3+kOwdbuG/pKcxNx/SSnlr
+IX1iZq1NsyGYLfzV8d4aMTbfhLbtf9OhjxLiN0GZ74Gd9wkOoAJZLXSM7dSojsNT
+D/oe5ymheW/mrjjYNvCWSmC4RVW+khOHtTf2GIrTcdHApZ151mpWsaX0a2cDyKBl
+hpuNn5JnCj8hJe4XZhpvsFif1pT2c/M51PC7riAMn2MZ3ucgYWflAGCByiznsuJE
+b5KLLvDa/559Ss5CVtLLyIooyrckQCO3gD7m/5+D3tgSWDw49bw=
+=ZjxP
+-----END PGP SIGNATURE-----
 
-Fredrik
+--YiEDa0DAkWCtVeE4--

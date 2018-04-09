@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 22:27:03 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:36396 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 22:42:51 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:41190 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992009AbeDIU0zQAA4n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 Apr 2018 22:26:55 +0200
+        id S23992121AbeDIUmlXR0Cn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Apr 2018 22:42:41 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BE9C420838;
-        Mon,  9 Apr 2018 20:26:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org BE9C420838
+        by mail.kernel.org (Postfix) with ESMTPSA id 4FE9721785;
+        Mon,  9 Apr 2018 20:42:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4FE9721785
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 9 Apr 2018 21:26:43 +0100
+Date:   Mon, 9 Apr 2018 21:42:29 +0100
 From:   James Hogan <jhogan@kernel.org>
 To:     Sasha Levin <Alexander.Levin@microsoft.com>
 Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH AUTOSEL for 4.9 160/293] MIPS: Give __secure_computing()
- access to syscall arguments.
-Message-ID: <20180409202642.GD17347@saruman>
+Subject: Re: [PATCH AUTOSEL for 4.9 173/293] MIPS: Handle tlbex-tlbp race
+ condition
+Message-ID: <20180409204229.GE17347@saruman>
 References: <20180409002239.163177-1-alexander.levin@microsoft.com>
- <20180409002239.163177-160-alexander.levin@microsoft.com>
+ <20180409002239.163177-173-alexander.levin@microsoft.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="FFoLq8A0u+X9iRU8"
+        protocol="application/pgp-signature"; boundary="0QFb0wBpEddLcDHQ"
 Content-Disposition: inline
-In-Reply-To: <20180409002239.163177-160-alexander.levin@microsoft.com>
+In-Reply-To: <20180409002239.163177-173-alexander.levin@microsoft.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63478
+X-archive-position: 63479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,48 +52,72 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---FFoLq8A0u+X9iRU8
+--0QFb0wBpEddLcDHQ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 09, 2018 at 12:24:58AM +0000, Sasha Levin wrote:
-> From: David Daney <david.daney@cavium.com>
+On Mon, Apr 09, 2018 at 12:25:09AM +0000, Sasha Levin wrote:
+> From: Paul Burton <paul.burton@imgtec.com>
 >=20
-> [ Upstream commit 669c4092225f0ed5df12ebee654581b558a5e3ed ]
+> [ Upstream commit f39878cc5b09c75d35eaf52131e920b872e3feb4 ]
 >=20
-> KProbes of __seccomp_filter() are not very useful without access to
-> the syscall arguments.
+> In systems where there are multiple actors updating the TLB, the
+> potential exists for a race condition wherein a CPU hits a TLB exception
+> but by the time it reaches a TLBP instruction the affected TLB entry may
+> have been replaced. This can happen if, for example, a CPU shares the
+> TLB between hardware threads (VPs) within a core and one of them
+> replaces the entry that another has just taken a TLB exception for.
 >=20
-> Do what x86 does, and populate a struct seccomp_data to be passed to
-> __secure_computing().  This allows samples/bpf/tracex5 to extract a
-> sensible trace.
+> We handle this race in the case of the Hardware Table Walker (HTW) being
+> the other actor already, but didn't take into account the potential for
+> multiple threads racing. Include the code for aborting TLB exception
+> handling in affected multi-threaded systems, those being the I6400 &
+> I6500 CPUs which share TLB entries between VPs.
+>=20
+> In the case of using RiXi without dedicated exceptions we have never
+> handled this race even for HTW. This patch adds WARN()s to these cases
+> which ought never to be hit because all CPUs with either HTW or shared
+> FTLB RAMs also include dedicated RiXi exceptions, but the WARN()s will
+> ensure this is always the case.
 
-This broke o32 indirect syscalls, and was fixed by commit 3d729deaf287
-("MIPS: seccomp: Fix indirect syscall args").
+=2E..
+
+> +	/*
+> +	 * If the CPU shares FTLB RAM with its siblings then our entry may be
+> +	 * replaced at any time by a sibling performing a write to the FTLB.
+> +	 */
+> +	if (cpu_has_shared_ftlb_ram)
+
+cpu_has_shared_ftlb_ram was only added in v4.13, commit e7bc8557428f
+("MIPS: Add CPU shared FTLB feature detection"). To backport this patch
+you'd need that one too at least (and I6500 support was also new in 4.13
+so you'd also have to drop that case from the backport of that patch).
+
+There may be other dependencies too, I don't know OTOH.
 
 Cheers
 James
 
---FFoLq8A0u+X9iRU8
+--0QFb0wBpEddLcDHQ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrLzIIACgkQbAtpk944
-dnp/EA//SDhwZXbydTT8VuWsDZylcxmerobSmLfJ5EQPDcXUXH423Ae7UsznJ/k5
-2d1ag8rbdB1VOTue43G8KJq6q7fXIp8MhO8KkcNvgBJrojbCoUCAoSKyeptCB2EP
-AELPmibm2j+TPGc3JgnzHzB+GMKTjcpmEv0hSG4u+PEqWQOAMHJhcHGEc9eSaOry
-ELGeogq44tITbjTEKKDenEv8OJ2gfb037e5deBNGcAWDbi0g9jF8O0wi4FK50G3v
-Lj6Gnf/DC2HCJ8KxemOFNWzkgJ+/xu3flP96uR85hq3UnjMGK9qrTml2mg4VsIeH
-lwmHoTRlpsgxYJrXI1KSTytKw725OhLHp+5GIYsyTrjOdUo5UZt0YmIW8y7Nt01q
-gxjx5nYbTvVPzabUAH0l1RL6skEgSB6QvP/JnohMtDJ3ex7KJM/QVi07KuIvIVJ/
-qSFXbhui8r4ALY0IOvLb5+YT88hzVBLxa1/ujdRr3WSjvvShHPcTtXUqwOAXVu2V
-XvWJyaZOGzCo3UqZbxOPAY0nuB5NrO1wlbhuWlBfOi13+bD24f2nPUDgIvMH8bP8
-znv1WRoytoIjBJqqeQWHLxU7BNmnR4f1s7ApVK9PBrDwhRNUnBaSH5D72clPUK/H
-/Fpe2lJ7Z7zs9SgNW7plUu9wmbbY5x76jDHtHlKoD4kzW5RpE2Y=
-=8wTE
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrL0DUACgkQbAtpk944
+dnqzGxAAnk8FHAtfIuBnHAWn4zo52YiO17tEzqjop4yu1MSgmlzilTMq1ebc1ziz
+raCU6EBUPfvHxPsI+hFZs1IzyyGwNCCuvNdXH5L99FK/fku1sLzMm1wTP3cCiVaF
+5G8ysaeZedI+QA5DkyV3O32otpmmTCEauog6it0nNSuazQ4vGHlEMey0HfVPFTal
+ssGDCUGrigjsg2zyHZ50UzWjpcxXLHwR6xtSiipi1s9K2tRp07Ivj4N2cMO/qNqW
+/qEY7lwEwj1o+uKO1lVzwF/r9H6To0C+okmA3D/5E2YH4ZfL/w1RjBcZcxC2iabX
+V5HS5A21j9kx5gnPPn3/ynJ/wigisOFZk8cPJehwsF2NYTLgWxFD+nOislhi5n3m
+N6oCW2+g6E4qJCXWeJazJ2ooN/LZ4r4qEk/0EKzq+Bc8nYbr1mS1eTlVxC5/pAdZ
+qAZWAvWNh3NCFqTWinue5o0903ddIdOZ3Ovy1/eiyO0Ln8pyZhdrpYxZdurAujL+
+3fQxh/BwkSmtx6leX9brwE4QJNEzngmjWcqAVM46OHXGrTgLDr4Njt9kpHFItrKa
+OIoB+Wp6iXFy9I4/XIcZuV+SUaIhv6C2LVxxMC9Vy7JVGoVA9Pvp2q3Zssa6fYob
+TXwYhAIbdCtTjvtxlVT67GPvYMEoZSXxgR2o0AOg9z2+mf1UGHM=
+=UWpd
 -----END PGP SIGNATURE-----
 
---FFoLq8A0u+X9iRU8--
+--0QFb0wBpEddLcDHQ--

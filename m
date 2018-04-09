@@ -1,58 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Apr 2018 23:31:03 +0200 (CEST)
-Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:41555
-        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990477AbeDHVayTP4sY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Apr 2018 23:30:54 +0200
-Received: by mail-oi0-x243.google.com with SMTP id 188-v6so5811673oih.8
-        for <linux-mips@linux-mips.org>; Sun, 08 Apr 2018 14:30:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=LhmPbpCSJYRJGIiIJfvC3MVexdc1m4deLuErqrO/Po0=;
-        b=LEPyaE32fMt61wbH+w6aRlNbYVD3c3o0hHcAaovZXmKel+68QZVKNHqEwJeTmf5NMU
-         x/+8JT7jmD8An/33SfS320Z+GkqBG+aT/ERt8YoMQwUVrT3Kr0ku4732mQSyTGSiBrjk
-         8fAFo7VzQGuIop3qy32X0Hoxbn9LaJeY9Fc+feabypoyfPGuZUmV5vqxKTjBqjqrTHHd
-         9OXFDvXJI44+IhkRBdANuNR2fmkJIgEHHt2yBl4RB157j+XDAc9Z0amIPmRNa2d50Iku
-         1S5kuRmypUqGwqp42nZ88oVHGz/EnOgebBPV6IVQJnB0nvquJB9ilbqxPsusJXd1pWSN
-         5qGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=LhmPbpCSJYRJGIiIJfvC3MVexdc1m4deLuErqrO/Po0=;
-        b=bbBTyMCvsCMzpYO7WiaeFq2qKnkjb+IYxmts5q6ndJ33L2ZZRSjgMsUQIgnBj9Zw/R
-         w2iqmi31mYOV+f/oXVXtfCNX/780eABXBQyle/3XAm7cfBX2iU4PzU43/S2FnW6tSEgm
-         vkF2ds3a8IAICR7dRpcLsDGH6AXy5SDnOD4JrOQz171Aw1viyuAbD5QRYsL+Fle3+1gA
-         Dd9BB1muXC6vGGTgRY1A43kHKeu1UX4+JZ0Mi99xIOUkpPOyneRTsNFFuROfA2WDPuK6
-         3oj8pZIdRN9olWCRhnrQRwJAmWzt7wqJOk6ypTwCqIu10qQd/vUqFmlrkn0HrBk+lOZR
-         5hHQ==
-X-Gm-Message-State: ALQs6tCuOe5AhhUXM+x3W7YHyannHC0WDU8HgnAS7aTyALN+4f/ptagO
-        aJSPwdrQ9wJEj5xe/LsymcPHwQrNAP4iFfKVA4g=
-X-Google-Smtp-Source: AIpwx4+bJNWPWuab/3CjCbqrhVEMA6+76TLi7iCmV4OOFgv+othkoJcP3pu4aTQUYViKdZmK+/zyzgRbpiPIgb7J3ls=
-X-Received: by 2002:aca:e54b:: with SMTP id c72-v6mr19065856oih.65.1523223047880;
- Sun, 08 Apr 2018 14:30:47 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 02:18:07 +0200 (CEST)
+Received: from mail-bl2nam02on0090.outbound.protection.outlook.com ([104.47.38.90]:58093
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990520AbeDIAR7b0ECG convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2018 02:17:59 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=nldlfgQZSUy8/kXhF8R3udGjBiufIjwtdBn3lLE915A=;
+ b=SnYoRcPTXWemyRpjKiWD2kLNgnqmsun1bJs6dZFCSDziQLe5hp3Q22nDZLG80TckszfgxBoY8jCIjJc381t7USnzYzxWXWhV24lsNnhqF38cM2mo8D6XvHa4uamt6q36yE2TH34A+pEbFa6OMgYDyfl+u96nHDG/8AuLwS+2G4w=
+Received: from DM5PR2101MB1032.namprd21.prod.outlook.com (52.132.128.13) by
+ DM5PR2101MB1048.namprd21.prod.outlook.com (52.132.128.17) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.696.0; Mon, 9 Apr 2018 00:17:49 +0000
+Received: from DM5PR2101MB1032.namprd21.prod.outlook.com
+ ([fe80::8109:aef0:a777:7059]) by DM5PR2101MB1032.namprd21.prod.outlook.com
+ ([fe80::8109:aef0:a777:7059%2]) with mapi id 15.20.0696.003; Mon, 9 Apr 2018
+ 00:17:49 +0000
+From:   Sasha Levin <Alexander.Levin@microsoft.com>
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Sasha Levin <Alexander.Levin@microsoft.com>
+Subject: [PATCH AUTOSEL for 4.15 047/189] MIPS: Fix clean of
+ vmlinuz.{32,ecoff,bin,srec}
+Thread-Topic: [PATCH AUTOSEL for 4.15 047/189] MIPS: Fix clean of
+ vmlinuz.{32,ecoff,bin,srec}
+Thread-Index: AQHTz5ghmWD5LLxnXUW9mrZF19L7xA==
+Date:   Mon, 9 Apr 2018 00:17:23 +0000
+Message-ID: <20180409001637.162453-47-alexander.levin@microsoft.com>
+References: <20180409001637.162453-1-alexander.levin@microsoft.com>
+In-Reply-To: <20180409001637.162453-1-alexander.levin@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [52.168.54.252]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;DM5PR2101MB1048;7:TV+dsXOWkCPoFRbjsVvWvpFEKUXGiDWS2DRkCVo5R7/ckK5WFHvYqLzIITzwjOy81QyVkppCN/74hPPah7dK8ja4KQmkyLMwgDsncYn9fDxqWcXAWSmIQaA1ILBF44bgqK+pf/W0gGNmsq8sD2mGsbQPVOiUk/hfcMCNMCuLdSmV5qi66XES4ly3OzG3mLhnqXJDjUSERCxRCksgxiaicCqQ6Pd9k/G88VrG3OvqH1+qrtq2PZ0UJdFM2uXChH2Y;20:GAaX3afhzobBzxDRJYbIsEzu605f+KTV+y6vFdEdo2cjHsXpeBw4P1kXbuuoG91djUCYBbPIR5gUmIgCJ1NsM8rKbh/HvHRJo4aR+xmoitW3V8Gt+p7/FuBaVl01jvQ7UPgp/RH6/xAoAIysqlWWt2Q4MpTuG/J5OgR2vNHlKeE=
+x-ms-office365-filtering-ht: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 1cb763f4-c919-4c1b-9e14-08d59daf5413
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(48565401081)(5600026)(4604075)(3008032)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7193020);SRVR:DM5PR2101MB1048;
+x-ms-traffictypediagnostic: DM5PR2101MB1048:
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Alexander.Levin@microsoft.com; 
+x-microsoft-antispam-prvs: <DM5PR2101MB10480CA7D728CBDD6D7558DBFBBF0@DM5PR2101MB1048.namprd21.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171);
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(61425038)(6040522)(2401047)(5005006)(8121501046)(93006095)(93001095)(3231221)(944501327)(52105095)(3002001)(10201501046)(6055026)(61426038)(61427038)(6041310)(20161123558120)(20161123562045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(6072148)(201708071742011);SRVR:DM5PR2101MB1048;BCL:0;PCL:0;RULEID:;SRVR:DM5PR2101MB1048;
+x-forefront-prvs: 0637FCE711
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39380400002)(376002)(39860400002)(346002)(396003)(189003)(199004)(86362001)(1076002)(99286004)(6116002)(110136005)(3846002)(54906003)(22452003)(3280700002)(105586002)(2906002)(76176011)(4326008)(6512007)(6436002)(6486002)(3660700001)(6666003)(7736002)(59450400001)(86612001)(25786009)(2900100001)(14454004)(97736004)(6306002)(53936002)(107886003)(68736007)(102836004)(966005)(36756003)(6506007)(26005)(186003)(106356001)(305945005)(5250100002)(72206003)(478600001)(2501003)(10290500003)(81166006)(5660300001)(8676002)(66066001)(316002)(81156014)(2616005)(10090500001)(11346002)(446003)(476003)(8936002)(486006)(22906009)(142933001)(217873001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR2101MB1048;H:DM5PR2101MB1032.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: SMjez1tSB6hI9CZdGRl52/UWsZiRkgY92+JV41R3w2QkgI2Mu20juL1KlXSAMW25HQ5s5jwmb5GziY76Jdein9t50q0l/MPT87aiSaGbkEHG+gLK/WPqz/PTx2c6zufugUcAacqLP+XZIzqOuu4q9RnhiEZt2jbVBq0o7Lf/jdWte2/m2dMSMa6ZNtzkw53+JrqA/nXEuCQWocNH5N58MG1v4njK8oz4+5jk5FA3muqj976xZ/OOFGpZ2c7jfPwICiyG9+qng25FztFUomeNytOcZItHMevUBi235HwUA74/dTOj78R1Tqtvbt5zZOrHE6XQKEqX2DgHX49fTP0gFzSFlsddsTAqJoxTY2MF5+YtPcJZoUu7DnoUs/W84RjqcMkZjhpEVF/Bc8MYPAkwMJ0fFzMMVbpXdtOgEyl5MrE=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 10.138.5.70 with HTTP; Sun, 8 Apr 2018 14:30:27 -0700 (PDT)
-In-Reply-To: <1523176203-18926-1-git-send-email-dev@kresin.me>
-References: <1523176203-18926-1-git-send-email-dev@kresin.me>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Sun, 8 Apr 2018 23:30:27 +0200
-Message-ID: <CAFBinCCQO4B3a+ft7H1mMgfaS4=qSnmern3ZqD3QGt0815Oh0w@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: lantiq: gphy: Drop reboot/remove reset asserts
-To:     Mathias Kresin <dev@kresin.me>, Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     john@phrozen.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <martin.blumenstingl@googlemail.com>
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb763f4-c919-4c1b-9e14-08d59daf5413
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2018 00:17:23.0883
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR2101MB1048
+Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63431
+X-archive-position: 63432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: martin.blumenstingl@googlemail.com
+X-original-sender: Alexander.Levin@microsoft.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,97 +86,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Apr 8, 2018 at 10:30 AM, Mathias Kresin <dev@kresin.me> wrote:
-> While doing a global software reset, these bits are not cleared and let
-> some bootloader fail to initialise the GPHYs. The bootloader don't
-> expect the GPHYs in reset, as they aren't during power on.
->
-> The asserts were a workaround for a wrong syscon-reboot mask. With a
-> mask set which includes the GPHY resets, these resets aren't required
-> any more.
->
-> Fixes: 126534141b45 ("MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd")
-> Cc: stable@vger.kernel.org # 4.14+
-> Signed-off-by: Mathias Kresin <dev@kresin.me>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: James Hogan <jhogan@kernel.org>
 
-thank you Mathias!
-@Hauke: maybe you can also review this and give feedback?
+[ Upstream commit 5f2483eb2423152445b39f2db59d372f523e664e ]
 
-> ---
->  drivers/soc/lantiq/gphy.c | 34 ----------------------------------
->  1 file changed, 34 deletions(-)
->
-> diff --git a/drivers/soc/lantiq/gphy.c b/drivers/soc/lantiq/gphy.c
-> index 8d86594..8c31ae7 100644
-> --- a/drivers/soc/lantiq/gphy.c
-> +++ b/drivers/soc/lantiq/gphy.c
-> @@ -30,7 +30,6 @@ struct xway_gphy_priv {
->         struct clk *gphy_clk_gate;
->         struct reset_control *gphy_reset;
->         struct reset_control *gphy_reset2;
-> -       struct notifier_block gphy_reboot_nb;
->         void __iomem *membase;
->         char *fw_name;
->  };
-> @@ -64,24 +63,6 @@ static const struct of_device_id xway_gphy_match[] = {
->  };
->  MODULE_DEVICE_TABLE(of, xway_gphy_match);
->
-> -static struct xway_gphy_priv *to_xway_gphy_priv(struct notifier_block *nb)
-> -{
-> -       return container_of(nb, struct xway_gphy_priv, gphy_reboot_nb);
-> -}
-> -
-> -static int xway_gphy_reboot_notify(struct notifier_block *reboot_nb,
-> -                                  unsigned long code, void *unused)
-> -{
-> -       struct xway_gphy_priv *priv = to_xway_gphy_priv(reboot_nb);
-> -
-> -       if (priv) {
-> -               reset_control_assert(priv->gphy_reset);
-> -               reset_control_assert(priv->gphy_reset2);
-> -       }
-> -
-> -       return NOTIFY_DONE;
-> -}
-> -
->  static int xway_gphy_load(struct device *dev, struct xway_gphy_priv *priv,
->                           dma_addr_t *dev_addr)
->  {
-> @@ -205,14 +186,6 @@ static int xway_gphy_probe(struct platform_device *pdev)
->         reset_control_deassert(priv->gphy_reset);
->         reset_control_deassert(priv->gphy_reset2);
->
-> -       /* assert the gphy reset because it can hang after a reboot: */
-> -       priv->gphy_reboot_nb.notifier_call = xway_gphy_reboot_notify;
-> -       priv->gphy_reboot_nb.priority = -1;
-> -
-> -       ret = register_reboot_notifier(&priv->gphy_reboot_nb);
-> -       if (ret)
-> -               dev_warn(dev, "Failed to register reboot notifier\n");
-> -
->         platform_set_drvdata(pdev, priv);
->
->         return ret;
-> @@ -224,17 +197,10 @@ static int xway_gphy_remove(struct platform_device *pdev)
->         struct xway_gphy_priv *priv = platform_get_drvdata(pdev);
->         int ret;
->
-> -       reset_control_assert(priv->gphy_reset);
-> -       reset_control_assert(priv->gphy_reset2);
-> -
->         iowrite32be(0, priv->membase);
->
->         clk_disable_unprepare(priv->gphy_clk_gate);
->
-> -       ret = unregister_reboot_notifier(&priv->gphy_reboot_nb);
-> -       if (ret)
-> -               dev_warn(dev, "Failed to unregister reboot notifier\n");
-> -
->         return 0;
->  }
->
-> --
-> 2.7.4
->
+Make doesn't expand shell style "vmlinuz.{32,ecoff,bin,srec}" to the 4
+separate files, so none of these files get cleaned up by make clean.
+List the files separately instead.
+
+Fixes: ec3352925b74 ("MIPS: Remove all generated vmlinuz* files on "make clean"")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/18491/
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+---
+ arch/mips/boot/compressed/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index c675eece389a..adce180f3ee4 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -133,4 +133,8 @@ vmlinuz.srec: vmlinuz
+ uzImage.bin: vmlinuz.bin FORCE
+ 	$(call if_changed,uimage,none)
+ 
+-clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec}
++clean-files += $(objtree)/vmlinuz
++clean-files += $(objtree)/vmlinuz.32
++clean-files += $(objtree)/vmlinuz.ecoff
++clean-files += $(objtree)/vmlinuz.bin
++clean-files += $(objtree)/vmlinuz.srec
+-- 
+2.15.1

@@ -1,83 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Apr 2018 12:23:28 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:52012 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992243AbeDJKXVS8N4U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Apr 2018 12:23:21 +0200
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w3AAKI0J056178
-        for <linux-mips@linux-mips.org>; Tue, 10 Apr 2018 06:23:19 -0400
-Received: from e06smtp10.uk.ibm.com (e06smtp10.uk.ibm.com [195.75.94.106])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2h8rac8u80-1
-        (version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Tue, 10 Apr 2018 06:23:19 -0400
-Received: from localhost
-        by e06smtp10.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Tue, 10 Apr 2018 11:23:17 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp10.uk.ibm.com (192.168.101.140) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 10 Apr 2018 11:23:11 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w3AANAVn58458208;
-        Tue, 10 Apr 2018 10:23:10 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9B91F42042;
-        Tue, 10 Apr 2018 11:14:54 +0100 (BST)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F181142041;
-        Tue, 10 Apr 2018 11:14:52 +0100 (BST)
-Received: from rapoport-lnx (unknown [9.148.8.108])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Tue, 10 Apr 2018 11:14:52 +0100 (BST)
-Date:   Tue, 10 Apr 2018 13:23:07 +0300
-From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 00:48:36 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:58946 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994667AbeDJWsW2snp1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Apr 2018 00:48:22 +0200
+Received: from saruman (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 536E921771;
+        Tue, 10 Apr 2018 22:48:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 536E921771
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
+Date:   Tue, 10 Apr 2018 23:48:06 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
+        Paul Burton <paul.burton@mips.com>,
+        Maciej Rozycki <macro@mips.com>
+Cc:     linux-arch@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kbuild@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH 00/32] docs/vm: convert to ReST format
-References: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
- <20180329154607.3d8bda75@lwn.net>
- <20180401063857.GA3357@rapoport-lnx>
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Christopher Li <sparse@chrisli.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
+        linux-sparse@vger.kernel.org
+Subject: Re: [PATCH] bug.h: Work around GCC PR82365 in BUG()
+Message-ID: <20180410224805.GA21429@saruman>
+References: <20171219114112.939391-1-arnd@arndb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="sdtB3X0nJg68CQEu"
 Content-Disposition: inline
-In-Reply-To: <20180401063857.GA3357@rapoport-lnx>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 18041010-0040-0000-0000-0000042C893D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18041010-0041-0000-0000-0000263097C4
-Message-Id: <20180410102306.GB5900@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-04-10_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1709140000
- definitions=main-1804100104
-Return-Path: <rppt@linux.vnet.ibm.com>
+In-Reply-To: <20171219114112.939391-1-arnd@arndb.de>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63481
+X-archive-position: 63482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rppt@linux.vnet.ibm.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,106 +68,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Jon, Andrew,
 
-How do you suggest to continue with this?
+--sdtB3X0nJg68CQEu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 01, 2018 at 09:38:58AM +0300, Mike Rapoport wrote:
-> (added akpm)
-> 
-> On Thu, Mar 29, 2018 at 03:46:07PM -0600, Jonathan Corbet wrote:
-> > On Wed, 21 Mar 2018 21:22:16 +0200
-> > Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
-> > 
-> > > These patches convert files in Documentation/vm to ReST format, add an
-> > > initial index and link it to the top level documentation.
-> > > 
-> > > There are no contents changes in the documentation, except few spelling
-> > > fixes. The relatively large diffstat stems from the indentation and
-> > > paragraph wrapping changes.
-> > > 
-> > > I've tried to keep the formatting as consistent as possible, but I could
-> > > miss some places that needed markup and add some markup where it was not
-> > > necessary.
-> > 
-> > So I've been pondering on these for a bit.  It looks like a reasonable and
-> > straightforward RST conversion, no real complaints there.  But I do have a
-> > couple of concerns...
-> > 
-> > One is that, as we move documentation into RST, I'm really trying to
-> > organize it a bit so that it is better tuned to the various audiences we
-> > have.  For example, ksm.txt is going to be of interest to sysadmin types,
-> > who might want to tune it.  mmu_notifier.txt is of interest to ...
-> > somebody, but probably nobody who is thinking in user space.  And so on.
-> > 
-> > So I would really like to see this material split up and put into the
-> > appropriate places in the RST hierarchy - admin-guide for administrative
-> > stuff, core-api for kernel development topics, etc.  That, of course,
-> > could be done separately from the RST conversion, but I suspect I know
-> > what will (or will not) happen if we agree to defer that for now :)
-> 
-> Well, I was actually planning on doing that ;-)
-> 
-> My thinking was to start with mechanical RST conversion and then to start
-> working on the contents and ordering of the documentation. Some of the
-> existing files, e.g. ksm.txt, can be moved as is into the appropriate
-> places, others, like transhuge.txt should be at least split into admin/user
-> and developer guides.
-> 
-> Another problem with many of the existing mm docs is that they are rather
-> developer notes and it wouldn't be really straight forward to assign them
-> to a particular topic.
-> 
-> I believe that keeping the mm docs together will give better visibility of
-> what (little) mm documentation we have and will make the updates easier.
-> The documents that fit well into a certain topic could be linked there. For
-> instance:
-> 
-> -------------------------
-> diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
-> index 5bb9161..8f6c6e6 100644
-> --- a/Documentation/admin-guide/index.rst
-> +++ b/Documentation/admin-guide/index.rst
-> @@ -63,6 +63,7 @@ configure specific aspects of kernel behavior to your liking.
->     pm/index
->     thunderbolt
->     LSM/index
-> +   vm/index
-> 
->  .. only::  subproject and html
-> 
-> diff --git a/Documentation/admin-guide/vm/index.rst b/Documentation/admin-guide/vm/index.rst
-> new file mode 100644
-> index 0000000..d86f1c8
-> --- /dev/null
-> +++ b/Documentation/admin-guide/vm/index.rst
-> @@ -0,0 +1,5 @@
-> +==============================================
-> +Knobs and Buttons for Memory Management Tuning
-> +==============================================
+Hi Arnd,
+
+On Tue, Dec 19, 2017 at 12:39:33PM +0100, Arnd Bergmann wrote:
+> diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+> index 5d595cfdb2c4..66cfdad68f7e 100644
+> --- a/include/linux/compiler-gcc.h
+> +++ b/include/linux/compiler-gcc.h
+> @@ -205,6 +205,15 @@
+>  #endif
+> =20
+>  /*
+> + * calling noreturn functions, __builtin_unreachable() and __builtin_tra=
+p()
+> + * confuse the stack allocation in gcc, leading to overly large stack
+> + * frames, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D82365
+> + *
+> + * Adding an empty inline assembly before it works around the problem
+> + */
+> +#define barrier_before_unreachable() asm volatile("")
 > +
-> +* :ref:`ksm <ksm>`
-> -------------------------
-> 
-> > The other is the inevitable merge conflicts that changing that many doc
-> > files will create.  Sending the patches through Andrew could minimize
-> > that, I guess, or at least make it his problem.  Alternatively, we could
-> > try to do it as an end-of-merge-window sort of thing.  I can try to manage
-> > that, but an ack or two from the mm crowd would be nice to have.
-> 
-> I can rebase on top of Andrew's tree if that would help to minimize the
-> merge conflicts.
-> 
-> > Thanks,
-> > 
-> > jon
-> > 
-> 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
+> +/*
+>   * Mark a position in code as unreachable.  This can be used to
+>   * suppress control flow warnings after asm blocks that transfer
+>   * control elsewhere.
+> @@ -214,7 +223,11 @@
+>   * unreleased.  Really, we need to have autoconf for the kernel.
+>   */
+>  #define unreachable() \
+> -	do { annotate_unreachable(); __builtin_unreachable(); } while (0)
+> +	do {					\
+> +		annotate_unreachable();		\
+> +		barrier_before_unreachable();	\
+> +		__builtin_unreachable();	\
+> +	} while (0)
 
--- 
-Sincerely yours,
-Mike.
+Unfortunately this breaks microMIPS builds (e.g. MIPS
+micro32r2_defconfig and micro32r2el_defconfig) on gcc 7.2, due to the
+lack of .insn in the asm volatile. Because of the
+__builtin_unreachable() there is no code following it. Without the empty
+asm the compiler will apparently put the .insn there automatically, but
+with the empty asm it doesn't. Therefore the assembler won't treat an
+immediately preceeding label as pointing at 16-bit microMIPS
+instructions which need the ISA bit set, i.e. bit 0 of the address.
+This causes assembler errors since the branch target is treated as a
+different ISA mode:
+
+arch/mips/mm/dma-default.s:3265: Error: branch to a symbol in another ISA m=
+ode
+arch/mips/mm/dma-default.s:5027: Error: branch to a symbol in another ISA m=
+ode
+
+Due to a compiler bug on gcc 4.9.2 -> somewhere before 7.2, Paul
+submitted these patches a while back:
+https://patchwork.linux-mips.org/patch/13360/
+https://patchwork.linux-mips.org/patch/13361/
+
+Your patch (suitably fixed for microMIPS) would I imagine fix that issue
+too (it certainly fixes the resulting link error on microMIPS builds
+with an old toolchain).
+
+Before I forward port those patches to add .insn for MIPS, is that sort
+of approach (an arch specific asm/compiler-gcc.h to allow MIPS to
+override barrier_before_unreachable()) an acceptable fix?
+
+Thanks
+James
+
+--sdtB3X0nJg68CQEu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrNPx8ACgkQbAtpk944
+dnqSJw/+Kb3O5v2XI2GmfHi/0KELq1a0ZD1AXtMeexXWCA/G67vblwP7DhFAB5px
+IV666quqgKR09AdudWDm8+fMbH15AqlMBXRIgLRtyq6a8CuSD9P67MClnniB7+kq
+hWOqGYKwg/jAmw5E/ALHs1Xl9CmNnLnyVVG+utwTO3vA/2BkeA81oSCaeokhKlOX
+5KM9nTqjxW3eCP2syAXmlBli9bdGX7puZ3fXj7dNPbYTnOAT7E1NH4sD0+gr20Xv
+Vjwn+JVKxCdyMrQqIG5E/enYM3Gk+4z9Xjv7GFQB/I/iOuhUBzHbm6Fy7B+08xhl
+utcCYQKHnFia0a5rFHXesqonCB5KvATesX2yWYNpRatj/5Dn37kdY1+1hGqNeNbN
+WNtXKVOegnWJnBLu7TQ8XJxZnYuKvA+2Uj2pb5tTD2M1SYqxAfsJdxqv9GnutJKH
+R9INBc/U7/gqRfez9ycihU1ZcNJHj88I+ePMxUgphcKHdBiCryoO3Xf4+PA+EGhY
+AW176RF4f7VgZP3WgJ3WOTfD4Cq+FfqKGcQDyD8KnZ7o0pdiRY1tcrczeyYLd7Rl
+Rx7JcW9SE7SENMHbdiygBuLTKIbhYl1YXf9VcAm/mYSzgWfVhd9IXIN55FnViPvR
+d3Z7bA8GuxlydlHGdt2OYgSuIuJ3+MqNpIhIOTBNASjd7PdEVAA=
+=oUHg
+-----END PGP SIGNATURE-----
+
+--sdtB3X0nJg68CQEu--

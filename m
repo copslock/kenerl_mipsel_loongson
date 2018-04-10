@@ -1,36 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2018 23:26:12 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:56000 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992096AbeDIV0EEnCvC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 Apr 2018 23:26:04 +0200
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FB2421771;
-        Mon,  9 Apr 2018 21:25:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4FB2421771
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 9 Apr 2018 22:25:52 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [GIT PULL] MIPS changes for 4.17
-Message-ID: <20180409212552.GF17347@saruman>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Apr 2018 12:23:28 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:52012 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992243AbeDJKXVS8N4U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Apr 2018 12:23:21 +0200
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w3AAKI0J056178
+        for <linux-mips@linux-mips.org>; Tue, 10 Apr 2018 06:23:19 -0400
+Received: from e06smtp10.uk.ibm.com (e06smtp10.uk.ibm.com [195.75.94.106])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2h8rac8u80-1
+        (version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Tue, 10 Apr 2018 06:23:19 -0400
+Received: from localhost
+        by e06smtp10.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Tue, 10 Apr 2018 11:23:17 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp10.uk.ibm.com (192.168.101.140) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 10 Apr 2018 11:23:11 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w3AANAVn58458208;
+        Tue, 10 Apr 2018 10:23:10 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9B91F42042;
+        Tue, 10 Apr 2018 11:14:54 +0100 (BST)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F181142041;
+        Tue, 10 Apr 2018 11:14:52 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.8.108])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue, 10 Apr 2018 11:14:52 +0100 (BST)
+Date:   Tue, 10 Apr 2018 13:23:07 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH 00/32] docs/vm: convert to ReST format
+References: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
+ <20180329154607.3d8bda75@lwn.net>
+ <20180401063857.GA3357@rapoport-lnx>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3oCie2+XPXTnK5a5"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180401063857.GA3357@rapoport-lnx>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 18041010-0040-0000-0000-0000042C893D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18041010-0041-0000-0000-0000263097C4
+Message-Id: <20180410102306.GB5900@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-04-10_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1709140000
+ definitions=main-1804100104
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63480
+X-archive-position: 63481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,263 +90,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Jon, Andrew,
 
---3oCie2+XPXTnK5a5
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+How do you suggest to continue with this?
 
-Hi Linus,
+On Sun, Apr 01, 2018 at 09:38:58AM +0300, Mike Rapoport wrote:
+> (added akpm)
+> 
+> On Thu, Mar 29, 2018 at 03:46:07PM -0600, Jonathan Corbet wrote:
+> > On Wed, 21 Mar 2018 21:22:16 +0200
+> > Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
+> > 
+> > > These patches convert files in Documentation/vm to ReST format, add an
+> > > initial index and link it to the top level documentation.
+> > > 
+> > > There are no contents changes in the documentation, except few spelling
+> > > fixes. The relatively large diffstat stems from the indentation and
+> > > paragraph wrapping changes.
+> > > 
+> > > I've tried to keep the formatting as consistent as possible, but I could
+> > > miss some places that needed markup and add some markup where it was not
+> > > necessary.
+> > 
+> > So I've been pondering on these for a bit.  It looks like a reasonable and
+> > straightforward RST conversion, no real complaints there.  But I do have a
+> > couple of concerns...
+> > 
+> > One is that, as we move documentation into RST, I'm really trying to
+> > organize it a bit so that it is better tuned to the various audiences we
+> > have.  For example, ksm.txt is going to be of interest to sysadmin types,
+> > who might want to tune it.  mmu_notifier.txt is of interest to ...
+> > somebody, but probably nobody who is thinking in user space.  And so on.
+> > 
+> > So I would really like to see this material split up and put into the
+> > appropriate places in the RST hierarchy - admin-guide for administrative
+> > stuff, core-api for kernel development topics, etc.  That, of course,
+> > could be done separately from the RST conversion, but I suspect I know
+> > what will (or will not) happen if we agree to defer that for now :)
+> 
+> Well, I was actually planning on doing that ;-)
+> 
+> My thinking was to start with mechanical RST conversion and then to start
+> working on the contents and ordering of the documentation. Some of the
+> existing files, e.g. ksm.txt, can be moved as is into the appropriate
+> places, others, like transhuge.txt should be at least split into admin/user
+> and developer guides.
+> 
+> Another problem with many of the existing mm docs is that they are rather
+> developer notes and it wouldn't be really straight forward to assign them
+> to a particular topic.
+> 
+> I believe that keeping the mm docs together will give better visibility of
+> what (little) mm documentation we have and will make the updates easier.
+> The documents that fit well into a certain topic could be linked there. For
+> instance:
+> 
+> -------------------------
+> diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+> index 5bb9161..8f6c6e6 100644
+> --- a/Documentation/admin-guide/index.rst
+> +++ b/Documentation/admin-guide/index.rst
+> @@ -63,6 +63,7 @@ configure specific aspects of kernel behavior to your liking.
+>     pm/index
+>     thunderbolt
+>     LSM/index
+> +   vm/index
+> 
+>  .. only::  subproject and html
+> 
+> diff --git a/Documentation/admin-guide/vm/index.rst b/Documentation/admin-guide/vm/index.rst
+> new file mode 100644
+> index 0000000..d86f1c8
+> --- /dev/null
+> +++ b/Documentation/admin-guide/vm/index.rst
+> @@ -0,0 +1,5 @@
+> +==============================================
+> +Knobs and Buttons for Memory Management Tuning
+> +==============================================
+> +
+> +* :ref:`ksm <ksm>`
+> -------------------------
+> 
+> > The other is the inevitable merge conflicts that changing that many doc
+> > files will create.  Sending the patches through Andrew could minimize
+> > that, I guess, or at least make it his problem.  Alternatively, we could
+> > try to do it as an end-of-merge-window sort of thing.  I can try to manage
+> > that, but an ack or two from the mm crowd would be nice to have.
+> 
+> I can rebase on top of Andrew's tree if that would help to minimize the
+> merge conflicts.
+> 
+> > Thanks,
+> > 
+> > jon
+> > 
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+> 
 
-I didn't get as many MIPS changes applied as I'd have liked this cycle
-for various reasons, but here's what I do have queued. Please pull.
-
-Thanks
-James
----
-The following changes since commit 91ab883eb21325ad80f3473633f794c78ac87f51:
-
-  Linux 4.16-rc2 (2018-02-18 17:29:42 -0800)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_4.17
-
-for you to fetch changes up to a5075e6226c42a8e64ea1b862eec7747dc46cb32:
-
-  MIPS: BCM47XX: Use standard reset button for Luxul XWR-1750 (2018-04-07 00:10:48 +0100)
-
-----------------------------------------------------------------
-MIPS changes for 4.17
-
-These are the main MIPS changes for 4.17. Rough overview:
-
- (1) generic platform: Add support for Microsemi Ocelot SoCs
-
- (2) crypto: Add CRC32 and CRC32C HW acceleration module
-
- (3) Various cleanups and misc improvements
-
-Miscellaneous:
-
- - Hang more efficiently on halt/powerdown/restart
-
- - pm-cps: Block system suspend when a JTAG probe is present
-
- - Expand make help text for generic defconfigs
-   - Refactor handling of legacy defconfigs
-
- - Determine the entry point from the ELF file header to fix microMIPS
-   for certain toolchains
-
- - Introduce isa-rev.h for MIPS_ISA_REV and use to simplify other code
-
-Minor cleanups:
-
- - DTS: boston/ci20: Unit name cleanups and correction
-
- - kdump: Make the default for PHYSICAL_START always 64-bit
-
- - Constify gpio_led in Alchemy, AR7, and TXX9
-
- - Silence a couple of W=1 warnings
-
- - Remove duplicate includes
-
-Platform support:
-
-ath79:
-
- - Fix AR724X_PLL_REG_PCIE_CONFIG offset
-
-BCM47xx:
-
- - FIRMWARE: Use mac_pton() for MAC address parsing
-
- - Add Luxul XAP1500/XWR1750 WiFi LEDs
-
- - Use standard reset button for Luxul XWR-1750
-
-BMIPS:
-
- - Enable CONFIG_BRCMSTB_PM in bmips_stb_defconfig for build coverage
-
- - Add STB PM, wake-up timer, watchdog DT nodes
-
-Generic platform:
-
- - Add support for Microsemi Ocelot
-   - dt-bindings: Add vendor prefix for Microsemi Corporation
-   - dt-bindings: Add bindings for Microsemi SoCs
-   - Add ocelot SoC & PCB123 board DTS files
-   - MAINTAINERS: Add entry for Microsemi MIPS SoCs
-
- - Enable crc32-mips on r6 configs
-
-Octeon:
-
- - Drop '.' after newlines in printk calls
-
-ralink:
-
- - pci-mt7621: Enable PCIe on MT7688
-
-----------------------------------------------------------------
-Alexandre Belloni (6):
-      dt-bindings: Add vendor prefix for Microsemi Corporation
-      dt-bindings: mips: Add bindings for Microsemi SoCs
-      MIPS: mscc: Add ocelot dtsi
-      MIPS: mscc: Add ocelot PCB123 device tree
-      MIPS: generic: Add support for Microsemi Ocelot
-      MAINTAINERS: Add entry for Microsemi MIPS SoCs
-
-Andy Shevchenko (1):
-      FIRMWARE: bcm47xx_nvram: Replace mac address parsing
-
-Arvind Yadav (3):
-      MIPS: Alchemy: Constify gpio_led
-      MIPS: AR7: Constify gpio_led
-      MIPS: TXX9: Constify gpio_led
-
-Dan Haab (2):
-      MIPS: BCM47XX: Add Luxul XAP1500/XWR1750 WiFi LEDs
-      MIPS: BCM47XX: Use standard reset button for Luxul XWR-1750
-
-Daniel Golle (1):
-      MIPS: pci-mt7620: Enable PCIe on MT7688
-
-Jaedon Shin (4):
-      MIPS: BMIPS: Enable CONFIG_SOC_BRCMSTB
-      MIPS: BMIPS: Add Broadcom STB power management nodes
-      MIPS: BMIPS: Add Broadcom STB wake-up timer nodes
-      MIPS: BMIPS: Add Broadcom STB watchdog nodes
-
-James Hogan (3):
-      MIPS: generic: Enable crc32-mips on r6 configs
-      MIPS: Refactor legacy defconfigs
-      MIPS: Expand help text to list generic defconfigs
-
-Joe Perches (1):
-      MIPS: Octeon: Fix logging messages with spurious periods after newlines
-
-Maciej W. Rozycki (2):
-      MIPS: Use the entry point from the ELF file header
-      MIPS: Make the default for PHYSICAL_START always 64-bit
-
-Marcin Nowakowski (2):
-      MIPS: Add crc instruction support flag to elf_hwcap
-      MIPS: crypto: Add crc32 and crc32c hw accelerated module
-
-Mathias Kresin (1):
-      MIPS: ath79: Fix AR724X_PLL_REG_PCIE_CONFIG offset
-
-Mathieu Malaterre (4):
-      MIPS: dts: Remove leading 0x and 0s from bindings notation
-      MIPS: dts: Fix a typo in the node unit name
-      MIPS: Make declaration for function `memory_region_available` static
-      MIPS: Remove a warning when PHYS_OFFSET is 0x0
-
-Matt Redfearn (5):
-      MIPS: Introduce isa-rev.h to define MIPS_ISA_REV
-      MIPS: cpu-features.h: Replace __mips_isa_rev with MIPS_ISA_REV
-      MIPS: BPF: Replace __mips_isa_rev with MIPS_ISA_REV
-      MIPS: VDSO: Replace __mips_isa_rev with MIPS_ISA_REV
-      MIPS: pm-cps: Block system suspend when a JTAG probe is present
-
-Paul Burton (1):
-      MIPS: Hang more efficiently on halt/powerdown/restart
-
-Pravin Shedge (1):
-      MIPS: Remove duplicate includes
-
- Documentation/devicetree/bindings/mips/mscc.txt    |  43 +++
- .../devicetree/bindings/vendor-prefixes.txt        |   1 +
- MAINTAINERS                                        |   9 +
- arch/mips/Kconfig                                  |   7 +-
- arch/mips/Makefile                                 |  64 ++--
- arch/mips/alchemy/board-gpr.c                      |   2 +-
- arch/mips/alchemy/board-mtx1.c                     |   2 +-
- arch/mips/ar7/platform.c                           |  14 +-
- arch/mips/bcm47xx/buttons.c                        |   2 +-
- arch/mips/bcm47xx/leds.c                           |  21 ++
- arch/mips/boot/dts/Makefile                        |   1 +
- arch/mips/boot/dts/brcm/bcm7125.dtsi               |   7 +
- arch/mips/boot/dts/brcm/bcm7346.dtsi               |  62 ++++
- arch/mips/boot/dts/brcm/bcm7358.dtsi               |  17 +
- arch/mips/boot/dts/brcm/bcm7360.dtsi               |  62 ++++
- arch/mips/boot/dts/brcm/bcm7362.dtsi               |  62 ++++
- arch/mips/boot/dts/brcm/bcm7420.dtsi               |   7 +
- arch/mips/boot/dts/brcm/bcm7425.dtsi               |  89 ++++++
- arch/mips/boot/dts/brcm/bcm7435.dtsi               |  89 ++++++
- arch/mips/boot/dts/brcm/bcm97125cbmb.dts           |   4 +
- arch/mips/boot/dts/brcm/bcm97346dbsmb.dts          |   8 +
- arch/mips/boot/dts/brcm/bcm97358svmb.dts           |   8 +
- arch/mips/boot/dts/brcm/bcm97360svmb.dts           |   8 +
- arch/mips/boot/dts/brcm/bcm97362svmb.dts           |   8 +
- arch/mips/boot/dts/brcm/bcm97420c.dts              |   4 +
- arch/mips/boot/dts/brcm/bcm97425svmb.dts           |   8 +
- arch/mips/boot/dts/brcm/bcm97435svmb.dts           |   8 +
- arch/mips/boot/dts/img/boston.dts                  |   2 +-
- arch/mips/boot/dts/ingenic/ci20.dts                |   8 +-
- arch/mips/boot/dts/mscc/Makefile                   |   3 +
- arch/mips/boot/dts/mscc/ocelot.dtsi                | 117 +++++++
- arch/mips/boot/dts/mscc/ocelot_pcb123.dts          |  27 ++
- arch/mips/cavium-octeon/octeon-irq.c               |  10 +-
- arch/mips/configs/bmips_stb_defconfig              |   1 +
- arch/mips/configs/generic/32r6.config              |   2 +
- arch/mips/configs/generic/64r6.config              |   2 +
- arch/mips/configs/generic/board-ocelot.config      |  35 +++
- arch/mips/crypto/Makefile                          |   6 +
- arch/mips/crypto/crc32-mips.c                      | 348 +++++++++++++++++++++
- arch/mips/generic/Kconfig                          |  16 +
- arch/mips/generic/Makefile                         |   1 +
- arch/mips/generic/board-ocelot.c                   |  78 +++++
- arch/mips/include/asm/cpu-features.h               |   5 +-
- arch/mips/include/asm/isa-rev.h                    |  24 ++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |   2 +-
- arch/mips/include/asm/mipsregs.h                   |   1 +
- arch/mips/include/uapi/asm/hwcap.h                 |   1 +
- arch/mips/kernel/cpu-probe.c                       |   3 +
- arch/mips/kernel/pm-cps.c                          |  31 ++
- arch/mips/kernel/reset.c                           |  68 +++-
- arch/mips/kernel/setup.c                           |   5 +-
- arch/mips/mm/init.c                                |   2 -
- arch/mips/net/bpf_jit_asm.S                        |   9 +-
- arch/mips/pci/pci-mt7620.c                         |   1 +
- arch/mips/txx9/rbtx4927/setup.c                    |   2 +-
- arch/mips/vdso/elf.S                               |  10 +-
- crypto/Kconfig                                     |   9 +
- drivers/firmware/broadcom/Kconfig                  |   1 +
- drivers/firmware/broadcom/bcm47xx_sprom.c          |  18 +-
- 59 files changed, 1381 insertions(+), 84 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mips/mscc.txt
- create mode 100644 arch/mips/boot/dts/mscc/Makefile
- create mode 100644 arch/mips/boot/dts/mscc/ocelot.dtsi
- create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb123.dts
- create mode 100644 arch/mips/configs/generic/board-ocelot.config
- create mode 100644 arch/mips/crypto/Makefile
- create mode 100644 arch/mips/crypto/crc32-mips.c
- create mode 100644 arch/mips/generic/board-ocelot.c
- create mode 100644 arch/mips/include/asm/isa-rev.h
-
---3oCie2+XPXTnK5a5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrL2l8ACgkQbAtpk944
-dnqlcQ//coaa2gFYU/vOQdB4gdEabOK2kllM3wxeJljVRH9yr9LuVMJtGs8PAI/2
-3EQCwv5RCBAO7V7vckVdKw8Aa3SCG66h9fcEXUmmTDfR7KAAz9lxFn9HDCu/583r
-0ZnOHcIMecqufAno0c+WamGqWjZLwMRLSCBAZz+S8qDQogGK+mOGT3g+xbS0eEKX
-WDL7KC101hACCWVLKQlHEI0AviBtmvruY+cRRKexioRZohe9hwDCeREVUI7SHFoW
-sOEwccLHXv9qiEdRuGE+rmK3AK7Fi7b8WxC+g0CZATlazgDAOEH/5jQ5bj1fu2Aq
-NmJTJiyOyEA32WufDjM9wKmWm5O/4505VPXuwilmPTNoXY1Z8J6Y2HFhrpCHMoCP
-1oQs9JVNkly5Fbn1Nx06mF+xkWZYf/fun2DqEoFiiUPAt/ZSIem/erg7qWNxzQua
-CiiJDj1MvZfOvwQk0nYpWFXosV+avAJuy+YylQk3PeEqgark6JJd1EvFqJU6JELk
-vf1L3DP3wSNEUeJpO+qSCrh6lQ5onq3GxQxY9/Rm8fAslIdb6LJ3/xca2Syr12hi
-xtM95h1vnixMvK049irKpAMLAgu6aahs9xc6hnEPSx5SJDUdFqrlW1c6c2qDjZb/
-XTJkI3R+6d4wwOYD34+plFUK8HR9AXvPwBPHaWpO8/PgAX3Mgro=
-=5N02
------END PGP SIGNATURE-----
-
---3oCie2+XPXTnK5a5--
+-- 
+Sincerely yours,
+Mike.

@@ -1,58 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 16:58:51 +0200 (CEST)
-Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:34707
-        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990493AbeDKO6odlzFW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 16:58:44 +0200
-Received: by mail-io0-x244.google.com with SMTP id d6so2709731iog.1
-        for <linux-mips@linux-mips.org>; Wed, 11 Apr 2018 07:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=QzXJSbzNA3VmaUepN+F+/8yVpkwQRZbjAWk98Sh3KjQ=;
-        b=F0dmpdFhBryxpipUaYzw5P08ucO060hnwLBz7gFIAkZFqsnV2roUNZ9jE0lBu7IMhq
-         S/Vp56I24ooc/GX0YFInNcjkic9MA8MRf125wSdBKKlgjnrvmnfvUjf8oCGogT64F8dD
-         UYgL6mJx1D+et7ACO+rzQeQfIEW9h1noFu6sw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=QzXJSbzNA3VmaUepN+F+/8yVpkwQRZbjAWk98Sh3KjQ=;
-        b=k0CBvd3ikS8XWnm/l50QL5bf3GTWeGR578315acPNo04Z4hDymA6Es7YCmgXAzsTBR
-         YVBR6vtyYiah+iGFMxPUASc8cfvJhz+Pgm0eUpNc6ZrF/zaVm8+n3vuQzbOjee9GMUXd
-         Y4XFsipNs1O4TNlwvsqy+a8w3D7KJCDfpWEU7zWjK5yDkb66uvP7byFoqxN+ZbGgPJAT
-         9QipitBTcuMinBfyjjOvWXbWlnBouwuCCkordqTBpVhvV518UtHmsrfdZCw4+pUmv8el
-         EGdguqngEC9jgZoUgbpVm1yJwiFL0LCrl7LCMrBUqsgh7Nv/OgNSzDpk3e08Rq3qyMGW
-         KDXw==
-X-Gm-Message-State: ALQs6tBHl2hJ2bAfdNoHBySoLeCP2xl0H1PPmJgWA2t7bHy6dYLd7Ulm
-        6l7AWtnDFLQTfzk59bMfTTKlcXLHiJu23X/8KmW3bg==
-X-Google-Smtp-Source: AIpwx49Rk0WAeOnJ5hlqhLNQj8NMf+ZKf3S+HN10oqTdpiq9bG6cB6f0cy+MNffVR5iRW8zrSV59Fp5raNu5NeezqZ0=
-X-Received: by 10.107.132.197 with SMTP id o66mr4970830ioi.119.1523458718150;
- Wed, 11 Apr 2018 07:58:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 19:06:27 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:43400 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990723AbeDKRGTTKBfJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 19:06:19 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 11 Apr 2018 17:05:52 +0000
+Received: from [10.20.78.219] (10.20.78.219) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 11
+ Apr 2018 10:06:05 -0700
+Date:   Wed, 11 Apr 2018 18:04:33 +0100
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     Sinan Kaya <okaya@codeaurora.org>, <linux-mips@linux-mips.org>,
+        <arnd@arndb.de>, <timur@codeaurora.org>, <sulrich@codeaurora.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] MIPS: io: add a barrier after register read in
+ readX()
+In-Reply-To: <20180406212601.GA1730@saruman>
+Message-ID: <alpine.DEB.2.00.1804111756420.1545@tp.orcam.me.uk>
+References: <1522760109-16497-1-git-send-email-okaya@codeaurora.org> <1522760109-16497-2-git-send-email-okaya@codeaurora.org> <41e184ae-689e-93c9-7b15-0c68bd624130@codeaurora.org> <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
+ <20180406212601.GA1730@saruman>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.2.101.23 with HTTP; Wed, 11 Apr 2018 07:58:37 -0700 (PDT)
-In-Reply-To: <20180328210057.31148-16-ezequiel@collabora.com>
-References: <20180328210057.31148-1-ezequiel@collabora.com> <20180328210057.31148-16-ezequiel@collabora.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 11 Apr 2018 16:58:37 +0200
-Message-ID: <CAPDyKFrakbziKb-BJ1VR-GJUogBdJ0b8OkvjEVEWNrm+EgkyMA@mail.gmail.com>
-Subject: Re: [PATCH v4 15/15] MIPS: configs: ci20: Enable ext4
-To:     Ezequiel Garcia <ezequiel@collabora.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>,
-        kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.219]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1523466352-637140-19603-132807-1
+X-BESS-VER: 2018.4-r1804052328
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191885
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63491
+X-archive-position: 63492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ulf.hansson@linaro.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,33 +62,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 28 March 2018 at 23:00, Ezequiel Garcia <ezequiel@collabora.com> wrote:
-> Now that we have MMC support, enable ext2/3/4 support
-> in the CI20 defconfig.
->
-> Signed-off-by: Ezequiel Garcia <ezequiel@collabora.com>
+Hi James,
 
-Thanks, queued for 4.18!
+> > Any news on the MIPS front? Is this something that Arnd can merge? or does it have
+> > to go through the MIPS tree.
+> 
+> It needs some MIPS input really. I'll try and take a look soon. Thanks
+> for the nudge.
+> 
+> > It feels like the MIPS is dead since nobody replied to me in the last few weeks on
+> > a very important topic.
+> 
+> Not dead, just both maintainers heavily distracted by real life right
+> now (which sadly, for me at least, trumps this very important topic) and
+> doing the best they can given the circumstances.
 
-Kind regards
-Uffe
+ Can I help move this change forward anyhow?
 
-> ---
->  arch/mips/configs/ci20_defconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-> index f88b05fd3077..be23fd25eeaa 100644
-> --- a/arch/mips/configs/ci20_defconfig
-> +++ b/arch/mips/configs/ci20_defconfig
-> @@ -111,6 +111,7 @@ CONFIG_DMADEVICES=y
->  CONFIG_DMA_JZ4780=y
->  # CONFIG_IOMMU_SUPPORT is not set
->  CONFIG_MEMORY=y
-> +CONFIG_EXT4_FS=y
->  # CONFIG_DNOTIFY is not set
->  CONFIG_PROC_KCORE=y
->  # CONFIG_PROC_PAGE_MONITOR is not set
-> --
-> 2.16.2
->
+  Maciej

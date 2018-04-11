@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 21:04:24 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54328 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 21:04:38 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54572 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994735AbeDKTEQntPcB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 21:04:16 +0200
+        by eddie.linux-mips.org with ESMTP id S23994791AbeDKTETd4AKB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 21:04:19 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3BEDFEB7;
-        Wed, 11 Apr 2018 19:04:10 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E53B2BAC;
+        Wed, 11 Apr 2018 19:04:12 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,9 +13,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.9 218/310] MIPS: mm: fixed mappings: correct initialisation
-Date:   Wed, 11 Apr 2018 20:35:57 +0200
-Message-Id: <20180411183631.932894172@linuxfoundation.org>
+Subject: [PATCH 4.9 219/310] MIPS: mm: adjust PKMAP location
+Date:   Wed, 11 Apr 2018 20:35:58 +0200
+Message-Id: <20180411183631.971996975@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180411183622.305902791@linuxfoundation.org>
 References: <20180411183622.305902791@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63500
+X-archive-position: 63501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,45 +51,49 @@ X-list: linux-mips
 From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
 
-[ Upstream commit 71eb989ab5a110df8bcbb9609bacde73feacbedd ]
+[ Upstream commit c56e7a4c3e77f6fbd9b55c06c14eda65aae58958 ]
 
-fixrange_init operates at PMD-granularity and expects the addresses to
-be PMD-size aligned, but currently that might not be the case for
-PKMAP_BASE unless it is defined properly, so ensure a correct alignment
-is used before passing the address to fixrange_init.
+Space reserved for PKMap should span from PKMAP_BASE to FIXADDR_START.
+For large page sizes this is not the case as eg. for 64k pages the range
+currently defined is from 0xfe000000 to 0x102000000(!!) which obviously
+isn't right.
+Remove the hardcoded location and set the BASE address as an offset from
+FIXADDR_START.
 
-fixed mappings: only align the start address that is passed to
-fixrange_init rather than the value before adding the size, as we may
-end up with uninitialised upper part of the range.
+Since all PKMAP ptes have to be placed in a contiguous memory, ensure
+that this is the case by placing them all in a single page. This is
+achieved by aligning the end address to pkmap pages count pages.
 
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15948/
+Patchwork: https://patchwork.linux-mips.org/patch/15950/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/pgtable-32.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/pgtable-32.h |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/mips/mm/pgtable-32.c
-+++ b/arch/mips/mm/pgtable-32.c
-@@ -51,15 +51,15 @@ void __init pagetable_init(void)
- 	/*
- 	 * Fixed mappings:
- 	 */
--	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
-+	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1);
-+	fixrange_init(vaddr & PMD_MASK, vaddr + FIXADDR_SIZE, pgd_base);
+--- a/arch/mips/include/asm/pgtable-32.h
++++ b/arch/mips/include/asm/pgtable-32.h
+@@ -18,6 +18,10 @@
+ 
+ #include <asm-generic/pgtable-nopmd.h>
+ 
++#ifdef CONFIG_HIGHMEM
++#include <asm/highmem.h>
++#endif
++
+ extern int temp_tlb_entry;
+ 
+ /*
+@@ -61,7 +65,8 @@ extern int add_temporary_entry(unsigned
+ 
+ #define VMALLOC_START	  MAP_BASE
+ 
+-#define PKMAP_BASE		(0xfe000000UL)
++#define PKMAP_END	((FIXADDR_START) & ~((LAST_PKMAP << PAGE_SHIFT)-1))
++#define PKMAP_BASE	(PKMAP_END - PAGE_SIZE * LAST_PKMAP)
  
  #ifdef CONFIG_HIGHMEM
- 	/*
- 	 * Permanent kmaps:
- 	 */
- 	vaddr = PKMAP_BASE;
--	fixrange_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
-+	fixrange_init(vaddr & PMD_MASK, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
- 
- 	pgd = swapper_pg_dir + __pgd_offset(vaddr);
- 	pud = pud_offset(pgd, vaddr);
+ # define VMALLOC_END	(PKMAP_BASE-2*PAGE_SIZE)

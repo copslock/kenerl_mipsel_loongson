@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 20:49:59 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:47000 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 20:50:16 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:47012 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994705AbeDKStf1I8RB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 20:49:35 +0200
+        by eddie.linux-mips.org with ESMTP id S23994706AbeDKStihF-sB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 20:49:38 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 168F1B1E;
-        Wed, 11 Apr 2018 18:49:28 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 487B194F;
+        Wed, 11 Apr 2018 18:49:32 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,9 +13,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.4 132/190] MIPS: mm: adjust PKMAP location
-Date:   Wed, 11 Apr 2018 20:36:18 +0200
-Message-Id: <20180411183600.007946835@linuxfoundation.org>
+Subject: [PATCH 4.4 133/190] MIPS: kprobes: flush_insn_slot should flush only if probe initialised
+Date:   Wed, 11 Apr 2018 20:36:19 +0200
+Message-Id: <20180411183600.156863716@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180411183550.114495991@linuxfoundation.org>
 References: <20180411183550.114495991@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63497
+X-archive-position: 63498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,49 +51,33 @@ X-list: linux-mips
 From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
 
-[ Upstream commit c56e7a4c3e77f6fbd9b55c06c14eda65aae58958 ]
+[ Upstream commit 698b851073ddf5a894910d63ca04605e0473414e ]
 
-Space reserved for PKMap should span from PKMAP_BASE to FIXADDR_START.
-For large page sizes this is not the case as eg. for 64k pages the range
-currently defined is from 0xfe000000 to 0x102000000(!!) which obviously
-isn't right.
-Remove the hardcoded location and set the BASE address as an offset from
-FIXADDR_START.
+When ftrace is used with kprobes, it is possible for a kprobe to contain
+an invalid location (ie. only initialised to 0 and not to a specific
+location in the code). Trying to perform a cache flush on such location
+leads to a crash r4k_flush_icache_range().
 
-Since all PKMAP ptes have to be placed in a contiguous memory, ensure
-that this is the case by placing them all in a single page. This is
-achieved by aligning the end address to pkmap pages count pages.
-
+Fixes: c1bf207d6ee1 ("MIPS: kprobe: Add support.")
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15950/
+Patchwork: https://patchwork.linux-mips.org/patch/16296/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/pgtable-32.h |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/kprobes.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/pgtable-32.h
-+++ b/arch/mips/include/asm/pgtable-32.h
-@@ -18,6 +18,10 @@
+--- a/arch/mips/include/asm/kprobes.h
++++ b/arch/mips/include/asm/kprobes.h
+@@ -40,7 +40,8 @@ typedef union mips_instruction kprobe_op
  
- #include <asm-generic/pgtable-nopmd.h>
- 
-+#ifdef CONFIG_HIGHMEM
-+#include <asm/highmem.h>
-+#endif
-+
- extern int temp_tlb_entry;
- 
- /*
-@@ -61,7 +65,8 @@ extern int add_temporary_entry(unsigned
- 
- #define VMALLOC_START	  MAP_BASE
- 
--#define PKMAP_BASE		(0xfe000000UL)
-+#define PKMAP_END	((FIXADDR_START) & ~((LAST_PKMAP << PAGE_SHIFT)-1))
-+#define PKMAP_BASE	(PKMAP_END - PAGE_SIZE * LAST_PKMAP)
- 
- #ifdef CONFIG_HIGHMEM
- # define VMALLOC_END	(PKMAP_BASE-2*PAGE_SIZE)
+ #define flush_insn_slot(p)						\
+ do {									\
+-	flush_icache_range((unsigned long)p->addr,			\
++	if (p->addr)							\
++		flush_icache_range((unsigned long)p->addr,		\
+ 			   (unsigned long)p->addr +			\
+ 			   (MAX_INSN_SIZE * sizeof(kprobe_opcode_t)));	\
+ } while (0)

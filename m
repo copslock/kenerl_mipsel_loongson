@@ -1,70 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 12:19:55 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:38012 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990656AbeDKKTppbBW3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Apr 2018 12:19:45 +0200
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3BF6421785;
-        Wed, 11 Apr 2018 10:19:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 3BF6421785
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 11 Apr 2018 11:19:27 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Maciej Rozycki <macro@mips.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Christopher Li <sparse@chrisli.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-sparse@vger.kernel.org, linux-alpha@vger.kernel.org
-Subject: Re: [PATCH] bug.h: Work around GCC PR82365 in BUG()
-Message-ID: <20180411101927.GA29949@saruman>
-References: <20171219114112.939391-1-arnd@arndb.de>
- <20180410224805.GA21429@saruman>
- <CAK8P3a0-_u7_FCj-nH0izBv4ub6krm1uA32bwi2jtBzXJePcnQ@mail.gmail.com>
- <20180411095359.GB21429@saruman>
- <CAK8P3a2_ihWCuUvDz_SVA1TMomkO1d7pa6e2bOQkZcEVP+Ff-A@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 16:58:51 +0200 (CEST)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:34707
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990493AbeDKO6odlzFW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 16:58:44 +0200
+Received: by mail-io0-x244.google.com with SMTP id d6so2709731iog.1
+        for <linux-mips@linux-mips.org>; Wed, 11 Apr 2018 07:58:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=QzXJSbzNA3VmaUepN+F+/8yVpkwQRZbjAWk98Sh3KjQ=;
+        b=F0dmpdFhBryxpipUaYzw5P08ucO060hnwLBz7gFIAkZFqsnV2roUNZ9jE0lBu7IMhq
+         S/Vp56I24ooc/GX0YFInNcjkic9MA8MRf125wSdBKKlgjnrvmnfvUjf8oCGogT64F8dD
+         UYgL6mJx1D+et7ACO+rzQeQfIEW9h1noFu6sw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=QzXJSbzNA3VmaUepN+F+/8yVpkwQRZbjAWk98Sh3KjQ=;
+        b=k0CBvd3ikS8XWnm/l50QL5bf3GTWeGR578315acPNo04Z4hDymA6Es7YCmgXAzsTBR
+         YVBR6vtyYiah+iGFMxPUASc8cfvJhz+Pgm0eUpNc6ZrF/zaVm8+n3vuQzbOjee9GMUXd
+         Y4XFsipNs1O4TNlwvsqy+a8w3D7KJCDfpWEU7zWjK5yDkb66uvP7byFoqxN+ZbGgPJAT
+         9QipitBTcuMinBfyjjOvWXbWlnBouwuCCkordqTBpVhvV518UtHmsrfdZCw4+pUmv8el
+         EGdguqngEC9jgZoUgbpVm1yJwiFL0LCrl7LCMrBUqsgh7Nv/OgNSzDpk3e08Rq3qyMGW
+         KDXw==
+X-Gm-Message-State: ALQs6tBHl2hJ2bAfdNoHBySoLeCP2xl0H1PPmJgWA2t7bHy6dYLd7Ulm
+        6l7AWtnDFLQTfzk59bMfTTKlcXLHiJu23X/8KmW3bg==
+X-Google-Smtp-Source: AIpwx49Rk0WAeOnJ5hlqhLNQj8NMf+ZKf3S+HN10oqTdpiq9bG6cB6f0cy+MNffVR5iRW8zrSV59Fp5raNu5NeezqZ0=
+X-Received: by 10.107.132.197 with SMTP id o66mr4970830ioi.119.1523458718150;
+ Wed, 11 Apr 2018 07:58:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="AhhlLboLdkugWU4S"
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2_ihWCuUvDz_SVA1TMomkO1d7pa6e2bOQkZcEVP+Ff-A@mail.gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.2.101.23 with HTTP; Wed, 11 Apr 2018 07:58:37 -0700 (PDT)
+In-Reply-To: <20180328210057.31148-16-ezequiel@collabora.com>
+References: <20180328210057.31148-1-ezequiel@collabora.com> <20180328210057.31148-16-ezequiel@collabora.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 11 Apr 2018 16:58:37 +0200
+Message-ID: <CAPDyKFrakbziKb-BJ1VR-GJUogBdJ0b8OkvjEVEWNrm+EgkyMA@mail.gmail.com>
+Subject: Re: [PATCH v4 15/15] MIPS: configs: ci20: Enable ext4
+To:     Ezequiel Garcia <ezequiel@collabora.com>
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>,
+        kernel@collabora.com
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <ulf.hansson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63490
+X-archive-position: 63491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: ulf.hansson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,77 +65,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 28 March 2018 at 23:00, Ezequiel Garcia <ezequiel@collabora.com> wrote:
+> Now that we have MMC support, enable ext2/3/4 support
+> in the CI20 defconfig.
+>
+> Signed-off-by: Ezequiel Garcia <ezequiel@collabora.com>
 
---AhhlLboLdkugWU4S
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks, queued for 4.18!
 
-On Wed, Apr 11, 2018 at 12:08:51PM +0200, Arnd Bergmann wrote:
-> On Wed, Apr 11, 2018 at 11:54 AM, James Hogan <jhogan@kernel.org> wrote:
-> > On Wed, Apr 11, 2018 at 09:30:56AM +0200, Arnd Bergmann wrote:
-> >> On Wed, Apr 11, 2018 at 12:48 AM, James Hogan <jhogan@kernel.org> wrot=
-e:
-> >> > Before I forward port those patches to add .insn for MIPS, is that s=
-ort
-> >> > of approach (an arch specific asm/compiler-gcc.h to allow MIPS to
-> >> > override barrier_before_unreachable()) an acceptable fix?
-> >>
-> >> That sounds fine to me. However, I would suggest making that
-> >> asm/compiler.h instead of asm/compiler-gcc.h, so we can also
-> >> use the same file to include workarounds for clang if needed.
-> >
-> > Yes, though there are a few asm/compiler.h's already, and the alpha one
-> > includes linux/compiler.h before undefining inline, so seems to have its
-> > own specific purpose...
->=20
-> Interesting. For the other ones, including asm/compiler.h from linux/comp=
-iler.h
-> seems appropriate though, so the question would be what to do with the
-> alpha case. I think we can simply remove that header file and replace
-> it with this patch:
->=20
-> diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-> index b2022885ced8..5502404f54cd 100644
-> --- a/arch/alpha/Kconfig
-> +++ b/arch/alpha/Kconfig
-> @@ -81,6 +81,9 @@ config PGTABLE_LEVELS
->         int
->         default 3
->=20
-> +config OPTIMIZE_INLINING
-> +       def_bool y
-> +
->  source "init/Kconfig"
->  source "kernel/Kconfig.freezer"
->=20
-> which should have the same effect.
+Kind regards
+Uffe
 
-Hmm yes, and I suppose alpha would need ARCH_SUPPORTS_OPTIMIZED_INLINING
-too. I'll give it a try.
-
-Cheers
-James
-
---AhhlLboLdkugWU4S
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrN4S4ACgkQbAtpk944
-dnoXAxAAsHoTKQyZDTU/r/kGekG1pEfs0mc8yWLe9iRHbilM5u/YOGj6o0cqkkv8
-7YEH7lfapOs5Fi3+t+kXezfDtIijHFiwlgWJXnqe8z1ZRoovmIw4BYZvZGRMUjrf
-syPK/fOx2ZkQ+L3Zv02UdXfITV2rvWaK58olIs9Qnl7mwkUViA7cK3tzRtOhyKG1
-mEi58L9dOR8SZIGLJjUvBHpMDKyXsTb1AD4chQ5I3TCs8eCOq5FCOb6b0sa9P2x5
-UOpiJ1IMORXgML+FQ2o8lakjkk7b+jmj+NP4dgtydiMqlwZTcXydXW7POh7HMzko
-G6R2+QQiDl8Wf8fqTokXskTT3v2/vM+TwufVJlxWTqirUmuDN2l8AICSXO0Y3PR4
-aTJPIamIA/izYNBo0ukletJRH89TdHdzG5zSNypm6tYu5Vil69A20NnRHHQOYAk6
-Wt1BZUZp9/hz1bcxMCT9jnB10xDO/cXOIODWiwWQQbgx/upbK6oFOHh8YKxgSnXQ
-HFPAwV5tFNT7jVabbj43IQ2lIg+LlwLxL96VghSWxfmOrbUbZhBq7owHp3wwPYiF
-2TAD34tz6oWpgismxcQMV3dnIILncctozEKBleRA63TxYh8gCSH/QsvTi+3zZI2M
-8jnlOr4EkFefBAHhOAjZQE14qDig9/rW8FgnJTAhLteAF8f5wY0=
-=HfmN
------END PGP SIGNATURE-----
-
---AhhlLboLdkugWU4S--
+> ---
+>  arch/mips/configs/ci20_defconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
+> index f88b05fd3077..be23fd25eeaa 100644
+> --- a/arch/mips/configs/ci20_defconfig
+> +++ b/arch/mips/configs/ci20_defconfig
+> @@ -111,6 +111,7 @@ CONFIG_DMADEVICES=y
+>  CONFIG_DMA_JZ4780=y
+>  # CONFIG_IOMMU_SUPPORT is not set
+>  CONFIG_MEMORY=y
+> +CONFIG_EXT4_FS=y
+>  # CONFIG_DNOTIFY is not set
+>  CONFIG_PROC_KCORE=y
+>  # CONFIG_PROC_PAGE_MONITOR is not set
+> --
+> 2.16.2
+>

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 20:41:37 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:43332 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 20:41:51 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43344 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994651AbeDKSlY33psB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 20:41:24 +0200
+        by eddie.linux-mips.org with ESMTP id S23994659AbeDKSl0bubPB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 20:41:26 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 804ADDEB;
-        Wed, 11 Apr 2018 18:41:17 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3516BDF6;
+        Wed, 11 Apr 2018 18:41:20 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,9 +13,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 077/121] MIPS: mm: fixed mappings: correct initialisation
-Date:   Wed, 11 Apr 2018 20:36:20 +0200
-Message-Id: <20180411183500.857530871@linuxfoundation.org>
+Subject: [PATCH 3.18 078/121] MIPS: kprobes: flush_insn_slot should flush only if probe initialised
+Date:   Wed, 11 Apr 2018 20:36:21 +0200
+Message-Id: <20180411183500.921236032@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180411183456.195010921@linuxfoundation.org>
 References: <20180411183456.195010921@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63494
+X-archive-position: 63495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,45 +51,33 @@ X-list: linux-mips
 From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
 
-[ Upstream commit 71eb989ab5a110df8bcbb9609bacde73feacbedd ]
+[ Upstream commit 698b851073ddf5a894910d63ca04605e0473414e ]
 
-fixrange_init operates at PMD-granularity and expects the addresses to
-be PMD-size aligned, but currently that might not be the case for
-PKMAP_BASE unless it is defined properly, so ensure a correct alignment
-is used before passing the address to fixrange_init.
+When ftrace is used with kprobes, it is possible for a kprobe to contain
+an invalid location (ie. only initialised to 0 and not to a specific
+location in the code). Trying to perform a cache flush on such location
+leads to a crash r4k_flush_icache_range().
 
-fixed mappings: only align the start address that is passed to
-fixrange_init rather than the value before adding the size, as we may
-end up with uninitialised upper part of the range.
-
+Fixes: c1bf207d6ee1 ("MIPS: kprobe: Add support.")
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15948/
+Patchwork: https://patchwork.linux-mips.org/patch/16296/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/pgtable-32.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/kprobes.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/mm/pgtable-32.c
-+++ b/arch/mips/mm/pgtable-32.c
-@@ -51,15 +51,15 @@ void __init pagetable_init(void)
- 	/*
- 	 * Fixed mappings:
- 	 */
--	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
-+	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1);
-+	fixrange_init(vaddr & PMD_MASK, vaddr + FIXADDR_SIZE, pgd_base);
+--- a/arch/mips/include/asm/kprobes.h
++++ b/arch/mips/include/asm/kprobes.h
+@@ -40,7 +40,8 @@ typedef union mips_instruction kprobe_op
  
- #ifdef CONFIG_HIGHMEM
- 	/*
- 	 * Permanent kmaps:
- 	 */
- 	vaddr = PKMAP_BASE;
--	fixrange_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
-+	fixrange_init(vaddr & PMD_MASK, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
- 
- 	pgd = swapper_pg_dir + __pgd_offset(vaddr);
- 	pud = pud_offset(pgd, vaddr);
+ #define flush_insn_slot(p)						\
+ do {									\
+-	flush_icache_range((unsigned long)p->addr,			\
++	if (p->addr)							\
++		flush_icache_range((unsigned long)p->addr,		\
+ 			   (unsigned long)p->addr +			\
+ 			   (MAX_INSN_SIZE * sizeof(kprobe_opcode_t)));	\
+ } while (0)

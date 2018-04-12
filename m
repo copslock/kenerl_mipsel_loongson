@@ -1,69 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2018 22:49:11 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:57634 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990723AbeDKUtDr3nfH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2018 22:49:03 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 200E760F8D; Wed, 11 Apr 2018 20:48:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523479737;
-        bh=lWCNQSDMOqv62cWCoZqOGQ0/bUGYWyzSD1RszUqPeMI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=RsK+rulz0C1+0Jj6xjpVHVfEpmlPm/+gpSNZ/RRrNcBbV9BS+/jcGELFqWrz7NvH9
-         QVFYfX2rtbXmScoPnB54LIOUmEJfwgVeEKj7/Oin8TCfQyUk5MGZmOcJ2xZ/OyLcQ2
-         X5uvFie84a7YTRm9IWTZQAU+qQnMoX2g1F6Xy/58=
-Received: from [10.235.228.150] (global_nat1_iad_fw.qualcomm.com [129.46.232.65])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: okaya@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B36F5600ED;
-        Wed, 11 Apr 2018 20:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523479736;
-        bh=lWCNQSDMOqv62cWCoZqOGQ0/bUGYWyzSD1RszUqPeMI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=WBdH2PdKeqbK7JbonOU1ZpBjdoDxHoUvB4rgAvW1nlOjV7kx9S5L6NW/KoHIKAOL6
-         cxeIBFFqSJ9M3LQqkxWVUXxKJ4wguHQ4IUav6pJAs5g4WJfnms97svjAXzyW93ID2J
-         oUh3988MPI9LZokRBV6leGCUbGJdkpsxN+LZRRPc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B36F5600ED
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=okaya@codeaurora.org
-Subject: Re: [PATCH v3 2/2] MIPS: io: add a barrier after register read in
- readX()
-To:     James Hogan <james.hogan@mips.com>
-Cc:     linux-mips@linux-mips.org, arnd@arndb.de, timur@codeaurora.org,
-        sulrich@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Apr 2018 11:37:00 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:40103 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993256AbeDLJgvvb2kO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Apr 2018 11:36:51 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Thu, 12 Apr 2018 09:36:20 +0000
+Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Thu, 12 Apr 2018 02:36:36 -0700
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-kernel@vger.kernel.org
-References: <1522760109-16497-1-git-send-email-okaya@codeaurora.org>
- <1522760109-16497-2-git-send-email-okaya@codeaurora.org>
- <41e184ae-689e-93c9-7b15-0c68bd624130@codeaurora.org>
- <b748fdcb-e09f-9fe3-dc74-30b6a7d40cbe@codeaurora.org>
- <20180406212601.GA1730@saruman>
- <0f1a4719-9a6f-0df0-7fd9-a25c10e824f5@codeaurora.org>
- <14a663f6-2ea5-230b-2cd0-e42d05d0d7ea@codeaurora.org>
- <20180411202616.GA14760@jhogan-linux.mipstec.com>
-From:   Sinan Kaya <okaya@codeaurora.org>
-Message-ID: <abcad691-2ac8-ffc5-30a2-77ad6781664a@codeaurora.org>
-Date:   Wed, 11 Apr 2018 16:48:54 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+        Florian Fainelli <f.fainelli@gmail.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        <linux-kernel@vger.kernel.org>, Paul Burton <paul.burton@mips.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+Subject: [PATCH v2 0/6] MIPS: perf: MT fixes and improvements
+Date:   Thu, 12 Apr 2018 10:36:20 +0100
+Message-ID: <1523525786-29153-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20180411202616.GA14760@jhogan-linux.mipstec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <okaya@codeaurora.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.155.41]
+X-BESS-ID: 1523525780-298552-14027-32435-1
+X-BESS-VER: 2018.4-r1804052328
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191914
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63503
+X-archive-position: 63504
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: okaya@codeaurora.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,21 +59,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 4/11/2018 4:26 PM, James Hogan wrote:
-> On Wed, Apr 11, 2018 at 01:10:41PM -0400, Sinan Kaya wrote:
->> How is the likelihood of getting this fixed on 4.17 kernel?
-> 
-> High.
-> 
+This series addresses a few issues with how the MIPS performance
+counters code supports the hardware multithreading MT ASE.
 
-Thanks for the confirmation.
+Firstly, implementations of the MT ASE may implement performance counters
+per core or per thread(TC). MIPS Techologies implementations signal this
+via a bit in the implmentation specific CONFIG7 register. Since this
+register is implementation specific, checking it should be guarded by a
+PRID check. This also replaces a bit defined by a magic number.
 
-> Thanks
-> James
-> 
+Secondly, the code currently uses vpe_id(), defined as
+smp_processor_id(), divided by 2, to share core performance counters
+between VPEs. This relies on a couple of assumptions of the hardware
+implementation to function correctly (always 2 VPEs per core, and the
+hardware reading only the least significant bit).
 
+Finally, the method of sharing core performance counters between VPEs is
+suboptimal since it does not allow one process running on a VPE to use
+all of the performance counters available to it, because the kernel will
+reserve half of the coutners for the other VPE even if it may never use
+them. This reservation at counter probe is replaced with an allocation
+on use strategy.
+
+Tested on a MIPS Creator CI40 (2C2T MIPS InterAptiv with per-TC
+counters, though for the purposes of testing the per-TC availability was
+hardcoded to allow testing both paths).
+
+Series applies to v4.16-rc7
+
+
+Changes in v2:
+Fix mipsxx_pmu_enable_event for !#ifdef CONFIG_MIPS_MT_SMP
+- Fix !#ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS build
+- re-use cpuc variable in mipsxx_pmu_alloc_counter,
+  mipsxx_pmu_free_counter rather than having sibling_ version.
+Since BMIPS5000 does not implement per TC counters, we can remove the
+check on cpu_has_mipsmt_pertccounters.
+New patch to fix BMIPS5000 system mode perf.
+
+Matt Redfearn (6):
+  MIPS: perf: More robustly probe for the presence of per-tc counters
+  MIPS: perf: Use correct VPE ID when setting up VPE tracing
+  MIPS: perf: Fix perf with MT counting other threads
+  MIPS: perf: Allocate per-core counters on demand
+  MIPS: perf: Fold vpe_id() macro into it's one last usage
+  MIPS: perf: Fix BMIPS5000 system mode counting
+
+ arch/mips/include/asm/mipsregs.h     |   6 +
+ arch/mips/kernel/perf_event_mipsxx.c | 257 +++++++++++++++++++++--------------
+ 2 files changed, 158 insertions(+), 105 deletions(-)
 
 -- 
-Sinan Kaya
-Qualcomm Datacenter Technologies, Inc. as an affiliate of Qualcomm Technologies, Inc.
-Qualcomm Technologies, Inc. is a member of the Code Aurora Forum, a Linux Foundation Collaborative Project.
+2.7.4

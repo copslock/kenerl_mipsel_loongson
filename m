@@ -1,64 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2018 04:33:59 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:47374 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991359AbeDMCdvWUDTj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2018 04:33:51 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2550B607C7; Fri, 13 Apr 2018 02:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523586825;
-        bh=yMc94yOTyTZaR7HfgQw0jVgWt/BHm0QguJXaIUnZV4A=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=B7KYWMwKq5I+yGLglBXDk1P1YG7BEGcVSQYfXCPHsaQP3den4iLv33RAdZ8bDtjeM
-         a969SCnGy81fIRjl9HDQDa1flri+CJSriGxVgezj5ZcIhe9c1JKiz1f9RW8VTptMtU
-         xlA81QO7wUtowtLJwIAgxrV+5CcfFGdgDBn9VRkw=
-Received: from [192.168.0.105] (cpe-174-109-247-98.nc.res.rr.com [174.109.247.98])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: okaya@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D08960264;
-        Fri, 13 Apr 2018 02:33:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523586824;
-        bh=yMc94yOTyTZaR7HfgQw0jVgWt/BHm0QguJXaIUnZV4A=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=I1xKu5nVAdXNP6rfuHZrMYyYyHalB3xlzJcW7Q2R6sLaDoPk6uY8tUiG6zX4mPMqE
-         CQxlegePcq6oHWsHg1ZwPRKgQkCbv0i8imnfgd69d8YUR9rzK8EDg1FPFi58mntFIV
-         CwsJ/KJLvppFCdnYom3u7Fu4QWgjtb0fiiAMnMRU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D08960264
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=okaya@codeaurora.org
-Subject: Re: [PATCH v4 2/2] MIPS: io: add a barrier after register read in
- readX()
-To:     linux-mips@linux-mips.org, arnd@arndb.de, timur@codeaurora.org,
-        sulrich@codeaurora.org
-Cc:     linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-kernel@vger.kernel.org
-References: <1523586646-19630-1-git-send-email-okaya@codeaurora.org>
- <1523586646-19630-2-git-send-email-okaya@codeaurora.org>
-From:   Sinan Kaya <okaya@codeaurora.org>
-Message-ID: <d1f91bcc-4523-e8fb-2f16-4a5932460d44@codeaurora.org>
-Date:   Thu, 12 Apr 2018 22:33:42 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2018 10:51:08 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:49207 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991534AbeDMIu6VJT5S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2018 10:50:58 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 13 Apr 2018 08:50:46 +0000
+Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
+ MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
+ 14.3.361.1; Fri, 13 Apr 2018 01:51:02 -0700
+From:   Matt Redfearn <matt.redfearn@mips.com>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+        Rob Herring <robh@kernel.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH] MIPS: dts: Boston: Fix PCI bus dtc warnings:
+Date:   Fri, 13 Apr 2018 09:50:44 +0100
+Message-ID: <1523609444-2496-1-git-send-email-matt.redfearn@mips.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <1523586646-19630-2-git-send-email-okaya@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <okaya@codeaurora.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.155.41]
+X-BESS-ID: 1523609446-452060-11790-47385-1
+X-BESS-VER: 2018.4.1-r1804121648
+X-BESS-Apparent-Source-IP: 12.201.5.28
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191950
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63518
+X-archive-position: 63519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: okaya@codeaurora.org
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,13 +54,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 4/12/2018 10:30 PM, Sinan Kaya wrote:
-> +	/* prevent prefetching of coherent DMA dma prematurely */	\
+dtc recently (v1.4.4-8-g756ffc4f52f6) added PCI bus checks. Fix the
+warnings now emitted:
 
-I tried to write DMA data but my keyboard is not cooperating. I'll hold onto
-posting another version until I hear back from you for wmb().
+arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@10000000:
+missing bus-range for PCI bridge
+arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@12000000:
+missing bus-range for PCI bridge
+arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@14000000:
+missing bus-range for PCI bridge
 
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+---
+
+ arch/mips/boot/dts/img/boston.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
+index 2cd49b60e030..f7aad80c69ab 100644
+--- a/arch/mips/boot/dts/img/boston.dts
++++ b/arch/mips/boot/dts/img/boston.dts
+@@ -51,6 +51,8 @@
+ 		ranges = <0x02000000 0 0x40000000
+ 			  0x40000000 0 0x40000000>;
+ 
++		bus-range = <0x00 0xff>;
++
+ 		interrupt-map-mask = <0 0 0 7>;
+ 		interrupt-map = <0 0 0 1 &pci0_intc 1>,
+ 				<0 0 0 2 &pci0_intc 2>,
+@@ -79,6 +81,8 @@
+ 		ranges = <0x02000000 0 0x20000000
+ 			  0x20000000 0 0x20000000>;
+ 
++		bus-range = <0x00 0xff>;
++
+ 		interrupt-map-mask = <0 0 0 7>;
+ 		interrupt-map = <0 0 0 1 &pci1_intc 1>,
+ 				<0 0 0 2 &pci1_intc 2>,
+@@ -107,6 +111,8 @@
+ 		ranges = <0x02000000 0 0x16000000
+ 			  0x16000000 0 0x100000>;
+ 
++		bus-range = <0x00 0xff>;
++
+ 		interrupt-map-mask = <0 0 0 7>;
+ 		interrupt-map = <0 0 0 1 &pci2_intc 1>,
+ 				<0 0 0 2 &pci2_intc 2>,
 -- 
-Sinan Kaya
-Qualcomm Datacenter Technologies, Inc. as an affiliate of Qualcomm Technologies, Inc.
-Qualcomm Technologies, Inc. is a member of the Code Aurora Forum, a Linux Foundation Collaborative Project.
+2.7.4

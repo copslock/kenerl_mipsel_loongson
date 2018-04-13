@@ -1,47 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2018 10:51:08 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:49207 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991534AbeDMIu6VJT5S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2018 10:50:58 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1412.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 13 Apr 2018 08:50:46 +0000
-Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Fri, 13 Apr 2018 01:51:02 -0700
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh@kernel.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH] MIPS: dts: Boston: Fix PCI bus dtc warnings:
-Date:   Fri, 13 Apr 2018 09:50:44 +0100
-Message-ID: <1523609444-2496-1-git-send-email-matt.redfearn@mips.com>
-X-Mailer: git-send-email 2.7.4
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1523609446-452060-11790-47385-1
-X-BESS-VER: 2018.4.1-r1804121648
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.191950
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2018 12:24:38 +0200 (CEST)
+Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:41818
+        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991702AbeDMKYbrWNQl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2018 12:24:31 +0200
+Received: by mail-lf0-x241.google.com with SMTP id o102-v6so11845674lfg.8
+        for <linux-mips@linux-mips.org>; Fri, 13 Apr 2018 03:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=sI4KHeJmJJitIJprqm3skr6oFmAjI0sQMaj0NB/vNz4=;
+        b=XL0JSUsL5p4eHi4ygivCZ+H3RnSRKVIzR1pnWlhXUpT1GQ32tGYo5suiZY8RLRQGPe
+         go5/dDza7D5ulXf49lENNBTOoZLS6aI2ScbjYp01/K7scrsH9Bvo3tfTo+CGYinpdWUd
+         238axNdzMy1DSJTudCUfa5oJN63Xy2BUhNAOE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=sI4KHeJmJJitIJprqm3skr6oFmAjI0sQMaj0NB/vNz4=;
+        b=dVSyGX5Dj11aj9hKegMSS83GwBGiMnyT8go2o9XISt9AjTvJjW7vGH9RaQHY1tDyic
+         l7aFAso+RHBFnqf+88ikcWZsCi4uxZvIfJmNUQrhzUYDwx+XANZLRBbLmQdo6Z2H8wLt
+         RZeNLUe+GWrt/rrasIDabQYFN7w0Dn2SU+rW+XspR4zBTkN5jOWEniMdCZorfdSl4/A6
+         J325cngLiTSAkoaMoUJ0POfgU3pH6WTkXQx3JPbZXBN0r+KJsutTnnGyKIoY/6XvuY5m
+         EQO3GOV77YjNxbtAbnhj1/yoUGXZzMGknKF6ujKamTSIHFI+FMTTEmEoTP1Byzhpi8Yq
+         T6eQ==
+X-Gm-Message-State: ALQs6tA/thz11XYWlbXKDrdVCq8gFlNEkwGaTojAn8hJ+LJgfz7q9oQS
+        mmNAE9+LK5gl3U5uwiN6fx9liA==
+X-Google-Smtp-Source: AIpwx49EafV2fO+PQtFnQgSQaZcgL0XvLrGmJz6Z3DWiFUpMb36ftFYRgIWe4nRxUswnqkLnZa70iw==
+X-Received: by 2002:a19:1754:: with SMTP id n81-v6mr6912435lfi.113.1523615066125;
+        Fri, 13 Apr 2018 03:24:26 -0700 (PDT)
+Received: from genomnajs.payandsurf.com ([192.36.80.8])
+        by smtp.gmail.com with ESMTPSA id c4sm915360lja.97.2018.04.13.03.24.24
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 13 Apr 2018 03:24:25 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     linux-gpio@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
+Subject: [PATCH 1/3] gpio: loongson: Use right include
+Date:   Fri, 13 Apr 2018 12:24:19 +0200
+Message-Id: <20180413102421.23939-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.14.3
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63519
+X-archive-position: 63520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,52 +62,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-dtc recently (v1.4.4-8-g756ffc4f52f6) added PCI bus checks. Fix the
-warnings now emitted:
+The driver includes <linux/gpio.h> which is wrong, rely on
+<linux/gpio/driver.h> and remove to call to gpio_set_value() in
+favor of calling the internal function. Move functions around to
+avoid forward declarations.
 
-arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@10000000:
-missing bus-range for PCI bridge
-arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@12000000:
-missing bus-range for PCI bridge
-arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@14000000:
-missing bus-range for PCI bridge
-
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
+ drivers/gpio/gpio-loongson.c | 66 ++++++++++++++++++++++----------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
- arch/mips/boot/dts/img/boston.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
-index 2cd49b60e030..f7aad80c69ab 100644
---- a/arch/mips/boot/dts/img/boston.dts
-+++ b/arch/mips/boot/dts/img/boston.dts
-@@ -51,6 +51,8 @@
- 		ranges = <0x02000000 0 0x40000000
- 			  0x40000000 0 0x40000000>;
+diff --git a/drivers/gpio/gpio-loongson.c b/drivers/gpio/gpio-loongson.c
+index 92c4fe7b2677..973d82a29442 100644
+--- a/drivers/gpio/gpio-loongson.c
++++ b/drivers/gpio/gpio-loongson.c
+@@ -17,9 +17,9 @@
+ #include <linux/module.h>
+ #include <linux/spinlock.h>
+ #include <linux/err.h>
++#include <linux/gpio/driver.h>
+ #include <asm/types.h>
+ #include <loongson.h>
+-#include <linux/gpio.h>
  
-+		bus-range = <0x00 0xff>;
-+
- 		interrupt-map-mask = <0 0 0 7>;
- 		interrupt-map = <0 0 0 1 &pci0_intc 1>,
- 				<0 0 0 2 &pci0_intc 2>,
-@@ -79,6 +81,8 @@
- 		ranges = <0x02000000 0 0x20000000
- 			  0x20000000 0 0x20000000>;
+ #define STLS2F_N_GPIO		4
+ #define STLS3A_N_GPIO		16
+@@ -34,38 +34,6 @@
  
-+		bus-range = <0x00 0xff>;
-+
- 		interrupt-map-mask = <0 0 0 7>;
- 		interrupt-map = <0 0 0 1 &pci1_intc 1>,
- 				<0 0 0 2 &pci1_intc 2>,
-@@ -107,6 +111,8 @@
- 		ranges = <0x02000000 0 0x16000000
- 			  0x16000000 0 0x100000>;
+ static DEFINE_SPINLOCK(gpio_lock);
  
-+		bus-range = <0x00 0xff>;
+-static int loongson_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
+-{
+-	u32 temp;
+-	u32 mask;
+-
+-	spin_lock(&gpio_lock);
+-	mask = 1 << gpio;
+-	temp = LOONGSON_GPIOIE;
+-	temp |= mask;
+-	LOONGSON_GPIOIE = temp;
+-	spin_unlock(&gpio_lock);
+-
+-	return 0;
+-}
+-
+-static int loongson_gpio_direction_output(struct gpio_chip *chip,
+-		unsigned gpio, int level)
+-{
+-	u32 temp;
+-	u32 mask;
+-
+-	gpio_set_value(gpio, level);
+-	spin_lock(&gpio_lock);
+-	mask = 1 << gpio;
+-	temp = LOONGSON_GPIOIE;
+-	temp &= (~mask);
+-	LOONGSON_GPIOIE = temp;
+-	spin_unlock(&gpio_lock);
+-
+-	return 0;
+-}
+-
+ static int loongson_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+ {
+ 	u32 val;
+@@ -97,6 +65,38 @@ static void loongson_gpio_set_value(struct gpio_chip *chip,
+ 	spin_unlock(&gpio_lock);
+ }
+ 
++static int loongson_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
++{
++	u32 temp;
++	u32 mask;
 +
- 		interrupt-map-mask = <0 0 0 7>;
- 		interrupt-map = <0 0 0 1 &pci2_intc 1>,
- 				<0 0 0 2 &pci2_intc 2>,
++	spin_lock(&gpio_lock);
++	mask = 1 << gpio;
++	temp = LOONGSON_GPIOIE;
++	temp |= mask;
++	LOONGSON_GPIOIE = temp;
++	spin_unlock(&gpio_lock);
++
++	return 0;
++}
++
++static int loongson_gpio_direction_output(struct gpio_chip *chip,
++		unsigned gpio, int level)
++{
++	u32 temp;
++	u32 mask;
++
++	loongson_gpio_set_value(chip, gpio, level);
++	spin_lock(&gpio_lock);
++	mask = 1 << gpio;
++	temp = LOONGSON_GPIOIE;
++	temp &= (~mask);
++	LOONGSON_GPIOIE = temp;
++	spin_unlock(&gpio_lock);
++
++	return 0;
++}
++
+ static struct gpio_chip loongson_chip = {
+ 	.label                  = "Loongson-gpio-chip",
+ 	.direction_input        = loongson_gpio_direction_input,
 -- 
-2.7.4
+2.14.3

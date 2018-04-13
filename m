@@ -1,65 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jun 2018 13:33:01 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:57192 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993928AbeFQLcuF1wWV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Jun 2018 13:32:50 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 71DB020863;
-        Sun, 17 Jun 2018 11:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1529235164;
-        bh=n/b3vMPJAvQoqImcWd9T2i+PEALfh6JjA2XC/041GwA=;
-        h=Subject:To:Cc:From:Date:From;
-        b=zWdkazRjHJ3vQF75A2uuwKvzICniKXXCZgCV5sKKIouuxkfFY4/BOz58+v3updv24
-         L2q9RkLTT+2fNn1nHYSeUN/jvfYhdGwr/EZ4UVueNt6rvXXL6oiA7fFrTnlf/xIJHU
-         5dTMi96iippYlYssDocO4dUyqxyAEv/eRVmHlZR8=
-Subject: Patch "MIPS: dts: Boston: Fix PCI bus dtc warnings:" has been added to the 4.14-stable tree
-To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
-        jhogan@kernel.org, linux-mips@linux-mips.org, mark.rutland@arm.com,
-        matt.redfearn@mips.com, paul.burton@mips.com, ralf@linux-mips.org,
-        robh+dt@kernel.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 17 Jun 2018 13:23:25 +0200
-Message-ID: <152923460518774@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=nXdS=JD=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64331
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Matt Redfearn <matt.redfearn@mips.com>
+Date: Fri, 13 Apr 2018 09:50:44 +0100
+Subject: MIPS: dts: Boston: Fix PCI bus dtc warnings:
+Message-ID: <20180413085044.hbOmbllA-b__NS0Ur2IsHQbdHgkr6sjTvKcKISWE8sU@z>
+
+From: Matt Redfearn <matt.redfearn@mips.com>
+
+[ Upstream commit 2c2bf522ed8cbfaac666f7dc65cfd38de2b89f0f ]
+
+dtc recently (v1.4.4-8-g756ffc4f52f6) added PCI bus checks. Fix the
+warnings now emitted:
+
+arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@10000000: missing bus-range for PCI bridge
+arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@12000000: missing bus-range for PCI bridge
+arch/mips/boot/dts/img/boston.dtb: Warning (pci_bridge): /pci@14000000: missing bus-range for PCI bridge
+
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/19070/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/boot/dts/img/boston.dts |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/arch/mips/boot/dts/img/boston.dts
++++ b/arch/mips/boot/dts/img/boston.dts
+@@ -51,6 +51,8 @@
+ 		ranges = <0x02000000 0 0x40000000
+ 			  0x40000000 0 0x40000000>;
+ 
++		bus-range = <0x00 0xff>;
++
+ 		interrupt-map-mask = <0 0 0 7>;
+ 		interrupt-map = <0 0 0 1 &pci0_intc 1>,
+ 				<0 0 0 2 &pci0_intc 2>,
+@@ -79,6 +81,8 @@
+ 		ranges = <0x02000000 0 0x20000000
+ 			  0x20000000 0 0x20000000>;
+ 
++		bus-range = <0x00 0xff>;
++
+ 		interrupt-map-mask = <0 0 0 7>;
+ 		interrupt-map = <0 0 0 1 &pci1_intc 1>,
+ 				<0 0 0 2 &pci1_intc 2>,
+@@ -107,6 +111,8 @@
+ 		ranges = <0x02000000 0 0x16000000
+ 			  0x16000000 0 0x100000>;
+ 
++		bus-range = <0x00 0xff>;
++
+ 		interrupt-map-mask = <0 0 0 7>;
+ 		interrupt-map = <0 0 0 1 &pci2_intc 1>,
+ 				<0 0 0 2 &pci2_intc 2>,
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from matt.redfearn@mips.com are
 
-    MIPS: dts: Boston: Fix PCI bus dtc warnings:
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-dts-boston-fix-pci-bus-dtc-warnings.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.14/mips-dts-boston-fix-pci-bus-dtc-warnings.patch

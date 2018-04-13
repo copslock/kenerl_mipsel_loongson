@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2018 04:31:07 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:43048 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2018 04:31:21 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:43148 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991307AbeDMCa7aLhzj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2018 04:30:59 +0200
+        with ESMTP id S23991359AbeDMCbBsxh4j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2018 04:31:01 +0200
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B9AA660817; Fri, 13 Apr 2018 02:30:52 +0000 (UTC)
+        id A30FF60F91; Fri, 13 Apr 2018 02:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523586652;
-        bh=gt/baHg+YOtYxbcPB+ga2CKKrno8z+c2HwxNKeRapjE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=BflMDgOP1ZK+jkVnrrmjJQFyvfzLgXOMnZlIbxZSvDybIlsY3P6615beHx17+GBeW
-         RqkN0+/5d7rQVJEFNjzMQDZmS5dVWXPgXmu3sa6Vobl7ms6YGB38DKnQXIG8/B8yAE
-         OcR4+a0pc2Y84zAL+OBmqBi862NjN2djOBJaK8Yw=
+        s=default; t=1523586655;
+        bh=t7N6LdVpv1RaLrRpUUOgrcCQX5nXKSJeeziLYcKPskA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=HaIIPYXaUmQbCROBXj6GV9OJUC17KIZCZeYUoGYv5eflHmjB3gSW8vZIf4/y+GPLp
+         Ubs9ZsgkMFcoEpLnwmeRq0ewVBkI2E2h4GElp5kWu0u0FWz4/gYgECdlZiFwNSDcOm
+         ZQWKuFWdTzy6tB9aFF8ChFk+rhfxfm8N99I5mBU8=
 Received: from drakthul.qualcomm.com (global_nat1_iad_fw.qualcomm.com [129.46.232.65])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: okaya@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 10B7960F8D;
-        Fri, 13 Apr 2018 02:30:50 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BDDE160F8D;
+        Fri, 13 Apr 2018 02:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1523586652;
-        bh=gt/baHg+YOtYxbcPB+ga2CKKrno8z+c2HwxNKeRapjE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=BflMDgOP1ZK+jkVnrrmjJQFyvfzLgXOMnZlIbxZSvDybIlsY3P6615beHx17+GBeW
-         RqkN0+/5d7rQVJEFNjzMQDZmS5dVWXPgXmu3sa6Vobl7ms6YGB38DKnQXIG8/B8yAE
-         OcR4+a0pc2Y84zAL+OBmqBi862NjN2djOBJaK8Yw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 10B7960F8D
+        s=default; t=1523586654;
+        bh=t7N6LdVpv1RaLrRpUUOgrcCQX5nXKSJeeziLYcKPskA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Z0ivTOXr1gP3C1UIzzFAKFW1aHUnN3XdlwMVXUoGDbfe4yi9vWtPXTcBhalVD3COc
+         gRkFlwH8VES5F7fpJRORFUFQjBxIinx85Myq8U06uphOwIAL/0LvK4z64OMAmwk7lw
+         ceG0jnXUa67617jV2eG75elshrQSlINdytHyxcLc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BDDE160F8D
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=okaya@codeaurora.org
 From:   Sinan Kaya <okaya@codeaurora.org>
@@ -38,17 +38,19 @@ Cc:     linux-arm-msm@vger.kernel.org,
         James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 1/2] MIPS: io: prevent compiler reordering on the default writeX() implementation
-Date:   Thu, 12 Apr 2018 22:30:43 -0400
-Message-Id: <1523586646-19630-1-git-send-email-okaya@codeaurora.org>
+Subject: [PATCH v4 2/2] MIPS: io: add a barrier after register read in readX()
+Date:   Thu, 12 Apr 2018 22:30:44 -0400
+Message-Id: <1523586646-19630-2-git-send-email-okaya@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1523586646-19630-1-git-send-email-okaya@codeaurora.org>
+References: <1523586646-19630-1-git-send-email-okaya@codeaurora.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Return-Path: <okaya@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63516
+X-archive-position: 63517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,28 +67,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-writeX() has a strong ordering semantics with respect to memory updates.
-In the abscence of a write barrier or a compiler barrier, commpiler can
-reorder register and memory update instructions. This breaks the writeX()
-API.
+While a barrier is present in writeX() function before the register write,
+a similar barrier is missing in the readX() function after the register
+read. This could allow memory accesses following readX() to observe
+stale data.
 
 Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/io.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/io.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 0cbf3af..fd00ddaf 100644
+index fd00ddaf..d96af41 100644
 --- a/arch/mips/include/asm/io.h
 +++ b/arch/mips/include/asm/io.h
-@@ -307,7 +307,7 @@ static inline void iounmap(const volatile void __iomem *addr)
- #if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
- #define war_io_reorder_wmb()		wmb()
- #else
--#define war_io_reorder_wmb()		do { } while (0)
-+#define war_io_reorder_wmb()		barrier()
- #endif
+@@ -377,6 +377,8 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
+ 		BUG();							\
+ 	}								\
+ 									\
++	/* prevent prefetching of coherent DMA dma prematurely */	\
++	rmb();								\
+ 	return pfx##ioswab##bwlq(__mem, __val);				\
+ }
  
- #define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
 -- 
 2.7.4

@@ -1,40 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2018 22:22:53 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:50002 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2018 22:35:50 +0200 (CEST)
+Received: from ms.lwn.net ([45.79.88.28]:57838 "EHLO ms.lwn.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994621AbeDPUWqTZaT3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Apr 2018 22:22:46 +0200
-Received: from saruman (jahogan.plus.com [212.159.75.221])
+        id S23994621AbeDPUfnnyfea (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 Apr 2018 22:35:43 +0200
+Received: from lwn.net (localhost [127.0.0.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 732D221789;
-        Mon, 16 Apr 2018 20:22:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 732D221789
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Mon, 16 Apr 2018 21:22:34 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] MIPS: memset.S: EVA & fault support for small_memset
-Message-ID: <20180416202234.GA23881@saruman>
-References: <1522315704-31641-1-git-send-email-matt.redfearn@mips.com>
- <1522315704-31641-2-git-send-email-matt.redfearn@mips.com>
+        by ms.lwn.net (Postfix) with ESMTPSA id DC1262EF;
+        Mon, 16 Apr 2018 20:35:39 +0000 (UTC)
+Date:   Mon, 16 Apr 2018 14:35:38 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH 00/32] docs/vm: convert to ReST format
+Message-ID: <20180416143538.40a40457@lwn.net>
+In-Reply-To: <20180415173655.GB31176@rapoport-lnx>
+References: <1521660168-14372-1-git-send-email-rppt@linux.vnet.ibm.com>
+        <20180329154607.3d8bda75@lwn.net>
+        <20180401063857.GA3357@rapoport-lnx>
+        <20180413135551.0e6d1b12@lwn.net>
+        <20180415173655.GB31176@rapoport-lnx>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="MGYHOYXEY6WxJCY8"
-Content-Disposition: inline
-In-Reply-To: <1522315704-31641-2-git-send-email-matt.redfearn@mips.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Return-Path: <corbet@lwn.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63569
+X-archive-position: 63570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: corbet@lwn.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,51 +60,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sun, 15 Apr 2018 20:36:56 +0300
+Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
 
---MGYHOYXEY6WxJCY8
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> I didn't mean we should keep it as unorganized jumble of stuff and I agree
+> that splitting the documentation by audience is better because developers
+> are already know how to find it :)
+> 
+> I just thought that putting the doc into the place should not be done
+> immediately after mechanical ReST conversion but rather after improving the
+> contents.
 
-On Thu, Mar 29, 2018 at 10:28:23AM +0100, Matt Redfearn wrote:
-> @@ -260,6 +260,11 @@
->  	jr		ra
->  	andi		v1, a2, STORMASK
+OK, this is fine.  I'll go ahead and apply the set, but then I'll be
+watching to see that the other improvements come :)
 
-This patch looks good, well spotted!
+In applying the set, there was a significant set of conflicts with
+vm/hmm.rst; hopefully I've sorted those out properly.
 
-But whats that v1 write about? Any ideas? Seems to go back to the git
-epoch, and $3 isn't in the clobber lists when __bzero* is called.
+Thanks,
 
-Cheers
-James
-
-> =20
-> +.Lsmall_fixup\@:
-> +	PTR_SUBU	a2, t1, a0
-> +	jr		ra
-> +	 PTR_ADDIU	a2, 1
-> +
-
---MGYHOYXEY6WxJCY8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrVBgMACgkQbAtpk944
-dnqvdBAAwBaYV+JZiOrwbkIvv8vAlcGA+5W0c4ZPrnV7TLRJScb8LJxo7DGdEQ1v
-fci8MHYpi+atntziEbiHbhDAhI4qCApDt+AnWyTPq2KVOo8TTU7rltS+8eBeQFAs
-Wqhcke0/uCntBj9vJDjfKmts4i16rG+9egNaxbIvo3iSsS8AnSkhMjMajm5Mvr/Z
-eS6YAMGPLbTVgTSGCRxgs707/23a+uiqq3hGfHan1ktO+124DPGwPSQw7JeW13Nt
-t9PCQI0FEQGAHKGhkCzIFWxPdq6KK1UdytmQApzZ3RZ7w21u9iaWPuxMTXzPADcb
-9GObjHhJ+vedOQsbiw6+For/0pXf/L8iM5YazIKp0xWv7VY8eQ/A1C2e9319Qmi0
-GERR09nWkTY31oG7eg3MyxLKUrxvvUUpNHJVzHtg9TN+b50ratBWEbxgxW3Njwsa
-QYBj9EChn5g9zjBE0tkPS4wShh0yVBi9WxlAyQY4Emf/pjy6yZaayKrTSRpsaqk+
-oCRbIIfr6/b+vA6Xg2YVytz+PfeJuBZCHUDpqMIgZ3W0RNvwnO6NJmoyX5iZKQat
-gbPrXvOXT4cz0L4q4FIPoC0HtAlhy9Dz9NjB3StZ27EChYwulnP7fNBhPOgYlBhG
-kd2mgzaBl92kJFtqG0MdbSJBwv/xWFxLXd/6Jl8u6KtX22Mt71I=
-=wPSw
------END PGP SIGNATURE-----
-
---MGYHOYXEY6WxJCY8--
+jon

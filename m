@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2018 16:49:47 +0200 (CEST)
-Received: from conuserg-10.nifty.com ([210.131.2.77]:30883 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2018 16:50:00 +0200 (CEST)
+Received: from conuserg-10.nifty.com ([210.131.2.77]:31099 "EHLO
         conuserg-10.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994584AbeDPOszSn-VU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2018 16:48:55 +0200
+        by eddie.linux-mips.org with ESMTP id S23993973AbeDPOtCyvofU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2018 16:49:02 +0200
 Received: from grover.sesame (FL1-125-199-20-195.osk.mesh.ad.jp [125.199.20.195]) (authenticated)
-        by conuserg-10.nifty.com with ESMTP id w3GElqto017749;
-        Mon, 16 Apr 2018 23:47:53 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com w3GElqto017749
+        by conuserg-10.nifty.com with ESMTP id w3GElqtu017749;
+        Mon, 16 Apr 2018 23:47:59 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com w3GElqtu017749
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1523890073;
-        bh=u/JyZf4rXJKqtAzOJ/xV5DQ4UOoLf7ue1MAcnhso4LY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qWxZ1sf0UlFUtg6WNwxIDu40vbybWv2GSPifESuC8XgrhZQZXWZobKFpeY9IizFlh
-         vWOPUE02Or/QHapIJkfp2vmI8hT/+cpv4VsVdmDlYPbJiNXtifOL8tJcUBnMiemMWR
-         worrf8FzrCgG5sMq9XR2cXdPX1NDIzoHoJ6lxuLkhWtq40Ug2ohl9rAu1k2QTFTSej
-         ziggZdIJNPO7sKViSkPo4scNG5xroUfXaJ6/ebVmTutcd/fVe7OR+SNPz+mROMGtGi
-         yIa/8x7lzbINB8StN2iaZc/7p58ByCaB6eYnZrWuPxJ4CgieQhquFwiLpssaYdoOo1
-         /OuFLqa4ZT82g==
+        s=dec2015msa; t=1523890079;
+        bh=AL+AYw4+X1BQcUmTpdgvByIJRIFE7yRBsMSNpOqkwEQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=u5BxkN4kzTtJ+DX+AcGYz6ix1UGYTl3pizjODDgPfmJ8BK/zBrYho7kfUHhkJuakf
+         NUfWnzRJIcdVA3sgN7ThdCZVS08hKJwsmihMpIYl15hNi76Uuh8ubfbBL1H7U84065
+         lndyVZ1rLeyYgMwqLmmkuuDMsR3A62a5/SMF/+9LDFswrzcBfEultjSv8HefbCKByt
+         uOCUtoifR1Yyc3Lhnze8zZbkuY8HlkQe9RMurtHDcGv9vux4PAdwM4jTjLC+EZGVeo
+         tu0cIGaIWL9BNfl2mtnHtC2lUha++d/Odyyuo3tMO4zKnK4QvsMyVlSWv46qkwD9nX
+         yqRQC+DbfaeDw==
 X-Nifty-SrcIP: [125.199.20.195]
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -24,15 +24,17 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Paul Burton <paul.burton@mips.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/7] MIPS: boot: fix various problems in arch/mips/boot/Makefile
-Date:   Mon, 16 Apr 2018 23:47:40 +0900
-Message-Id: <1523890067-13641-1-git-send-email-yamada.masahiro@socionext.com>
+Subject: [PATCH 6/7] MIPS: boot: merge build rules of vmlinux.*.itb by using pattern rule
+Date:   Mon, 16 Apr 2018 23:47:46 +0900
+Message-Id: <1523890067-13641-7-git-send-email-yamada.masahiro@socionext.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1523890067-13641-1-git-send-email-yamada.masahiro@socionext.com>
+References: <1523890067-13641-1-git-send-email-yamada.masahiro@socionext.com>
 Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63562
+X-archive-position: 63563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,32 +51,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Merge the build rule of vmlinux.{gz,bz2,lzma,lzo}.itb, and also move
+'targets' close to the related code.
 
-When I was trying to fix commit 0f9da844d877 in a more correct way,
-I found various problems in arch/mips/boot/Makefile.
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
 
-ITS is always rebuilt when you rebuild the kernel without touching
-anything.  Many build rules are wrong.
+ arch/mips/boot/Makefile | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
-If you look at the last patch in this series, you may realize
-supporting ITB building in the kernel can cause nasty problems.
-Personally, I do not like it, but I tried my best to fix the problems.
-
-With this series, ITB is rebuilt only when necessary.
-
-
-
-Masahiro Yamada (7):
-  Revert "MIPS: boot: Define __ASSEMBLY__ for its.S build"
-  MIPS: boot: do not include $(cpp_flags) for preprocessing ITS
-  MIPS: boot: fix build rule of vmlinux.its.S
-  MIPS: boot: correct prerequisite image of vmlinux.*.its
-  MIPS: boot: add missing targets for vmlinux.*.its
-  MIPS: boot: merge build rules of vmlinux.*.itb by using pattern rule
-  MIPS: boot: rebuild ITB when contained DTB is updated
-
- arch/mips/boot/Makefile | 69 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 37 insertions(+), 32 deletions(-)
-
+diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
+index 91d9fe8..d102d53 100644
+--- a/arch/mips/boot/Makefile
++++ b/arch/mips/boot/Makefile
+@@ -105,12 +105,6 @@ $(obj)/uImage: $(obj)/uImage.$(suffix-y)
+ # Flattened Image Tree (.itb) images
+ #
+ 
+-targets += vmlinux.itb
+-targets += vmlinux.gz.itb
+-targets += vmlinux.bz2.itb
+-targets += vmlinux.lzma.itb
+-targets += vmlinux.lzo.itb
+-
+ ifeq ($(ADDR_BITS),32)
+ 	itb_addr_cells = 1
+ endif
+@@ -157,6 +151,12 @@ $(obj)/vmlinux.lzma.its: $(obj)/vmlinux.its.S $(obj)/vmlinux.bin.lzma FORCE
+ $(obj)/vmlinux.lzo.its: $(obj)/vmlinux.its.S $(obj)/vmlinux.bin.lzo FORCE
+ 	$(call if_changed,cpp_its_S,lzo,vmlinux.bin.lzo)
+ 
++targets += vmlinux.itb
++targets += vmlinux.gz.itb
++targets += vmlinux.bz2.itb
++targets += vmlinux.lzma.itb
++targets += vmlinux.lzo.itb
++
+ quiet_cmd_itb-image = ITB     $@
+       cmd_itb-image = \
+ 		env PATH="$(objtree)/scripts/dtc:$(PATH)" \
+@@ -169,14 +169,5 @@ quiet_cmd_itb-image = ITB     $@
+ $(obj)/vmlinux.itb: $(obj)/vmlinux.its $(obj)/vmlinux.bin FORCE
+ 	$(call if_changed,itb-image,$<)
+ 
+-$(obj)/vmlinux.gz.itb: $(obj)/vmlinux.gz.its $(obj)/vmlinux.bin.gz FORCE
+-	$(call if_changed,itb-image,$<)
+-
+-$(obj)/vmlinux.bz2.itb: $(obj)/vmlinux.bz2.its $(obj)/vmlinux.bin.bz2 FORCE
+-	$(call if_changed,itb-image,$<)
+-
+-$(obj)/vmlinux.lzma.itb: $(obj)/vmlinux.lzma.its $(obj)/vmlinux.bin.lzma FORCE
+-	$(call if_changed,itb-image,$<)
+-
+-$(obj)/vmlinux.lzo.itb: $(obj)/vmlinux.lzo.its $(obj)/vmlinux.bin.lzo FORCE
++$(obj)/vmlinux.%.itb: $(obj)/vmlinux.%.its $(obj)/vmlinux.bin.% FORCE
+ 	$(call if_changed,itb-image,$<)
 -- 
 2.7.4

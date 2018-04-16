@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2018 16:50:00 +0200 (CEST)
-Received: from conuserg-10.nifty.com ([210.131.2.77]:31099 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2018 16:50:22 +0200 (CEST)
+Received: from conuserg-10.nifty.com ([210.131.2.77]:31122 "EHLO
         conuserg-10.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993973AbeDPOtCyvofU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2018 16:49:02 +0200
+        by eddie.linux-mips.org with ESMTP id S23994614AbeDPOtDwLyXU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2018 16:49:03 +0200
 Received: from grover.sesame (FL1-125-199-20-195.osk.mesh.ad.jp [125.199.20.195]) (authenticated)
-        by conuserg-10.nifty.com with ESMTP id w3GElqtu017749;
-        Mon, 16 Apr 2018 23:47:59 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com w3GElqtu017749
+        by conuserg-10.nifty.com with ESMTP id w3GElqtp017749;
+        Mon, 16 Apr 2018 23:47:53 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com w3GElqtp017749
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1523890079;
-        bh=AL+AYw4+X1BQcUmTpdgvByIJRIFE7yRBsMSNpOqkwEQ=;
+        s=dec2015msa; t=1523890074;
+        bh=F06LX9b18Des9LUgr8HfK4zymALQVUMW+ZLKK7UOatg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u5BxkN4kzTtJ+DX+AcGYz6ix1UGYTl3pizjODDgPfmJ8BK/zBrYho7kfUHhkJuakf
-         NUfWnzRJIcdVA3sgN7ThdCZVS08hKJwsmihMpIYl15hNi76Uuh8ubfbBL1H7U84065
-         lndyVZ1rLeyYgMwqLmmkuuDMsR3A62a5/SMF/+9LDFswrzcBfEultjSv8HefbCKByt
-         uOCUtoifR1Yyc3Lhnze8zZbkuY8HlkQe9RMurtHDcGv9vux4PAdwM4jTjLC+EZGVeo
-         tu0cIGaIWL9BNfl2mtnHtC2lUha++d/Odyyuo3tMO4zKnK4QvsMyVlSWv46qkwD9nX
-         yqRQC+DbfaeDw==
+        b=wuE00ELCJ4Jq9j2pFOCOyxtIFAEtjz8LQYqBN7fesk5oWkgDk276iZPffCgrtouN/
+         0uhgHTtLVC/Hsfg07ijiOD+0SgGpU02YM/h0zO1Dlq7dhlIhH9w2/Qs5Q842u4i8g+
+         iuOqxvf2Y6jgLdCQnKjpYNynhGlmU4Lj+gByCqbcsvpvDXl7B718Dvx5HOqF6yU91k
+         17KLUnlY37iBF59LiarRkb6w3jGSx1I5n0Sn5PxRRmgsk6w/5QmvHGGvNR/LmrgSwP
+         sromBbh/6QckuHfIyNCW4AFfIsc89IZI8yJ5Y1g5ryDK6p7O6zN99TqOZWyRpofR6L
+         TyokVcnWCG3AA==
 X-Nifty-SrcIP: [125.199.20.195]
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -24,9 +24,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Paul Burton <paul.burton@mips.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 6/7] MIPS: boot: merge build rules of vmlinux.*.itb by using pattern rule
-Date:   Mon, 16 Apr 2018 23:47:46 +0900
-Message-Id: <1523890067-13641-7-git-send-email-yamada.masahiro@socionext.com>
+Subject: [PATCH 1/7] Revert "MIPS: boot: Define __ASSEMBLY__ for its.S build"
+Date:   Mon, 16 Apr 2018 23:47:41 +0900
+Message-Id: <1523890067-13641-2-git-send-email-yamada.masahiro@socionext.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1523890067-13641-1-git-send-email-yamada.masahiro@socionext.com>
 References: <1523890067-13641-1-git-send-email-yamada.masahiro@socionext.com>
@@ -34,7 +34,7 @@ Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63563
+X-archive-position: 63564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,60 +51,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Merge the build rule of vmlinux.{gz,bz2,lzma,lzo}.itb, and also move
-'targets' close to the related code.
+This reverts commit 0f9da844d87796ac31b04e81ee95e155e9043132.
+
+It is true that commit 0f9da844d877 ("MIPS: boot: Define __ASSEMBLY__
+for its.S build") fixed the build error, but it should not have
+defined __ASSEMBLY__ just for textual substitution in arbitrary data.
+The file is image tree source in this case, but the purpose of using
+CPP is to replace some macros.
+
+I merged a better solution, commit a95b37e20db9 ("kbuild: get
+<linux/compiler_types.h> out of <linux/kconfig.h>").  The original
+fix-up is no longer needed.
 
 Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
 
- arch/mips/boot/Makefile | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ arch/mips/boot/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
-index 91d9fe8..d102d53 100644
+index c22da16..1bd5c4f 100644
 --- a/arch/mips/boot/Makefile
 +++ b/arch/mips/boot/Makefile
-@@ -105,12 +105,6 @@ $(obj)/uImage: $(obj)/uImage.$(suffix-y)
- # Flattened Image Tree (.itb) images
- #
+@@ -126,7 +126,6 @@ $(obj)/vmlinux.its.S: $(addprefix $(srctree)/arch/mips/$(PLATFORM)/,$(ITS_INPUTS
  
--targets += vmlinux.itb
--targets += vmlinux.gz.itb
--targets += vmlinux.bz2.itb
--targets += vmlinux.lzma.itb
--targets += vmlinux.lzo.itb
--
- ifeq ($(ADDR_BITS),32)
- 	itb_addr_cells = 1
- endif
-@@ -157,6 +151,12 @@ $(obj)/vmlinux.lzma.its: $(obj)/vmlinux.its.S $(obj)/vmlinux.bin.lzma FORCE
- $(obj)/vmlinux.lzo.its: $(obj)/vmlinux.its.S $(obj)/vmlinux.bin.lzo FORCE
- 	$(call if_changed,cpp_its_S,lzo,vmlinux.bin.lzo)
- 
-+targets += vmlinux.itb
-+targets += vmlinux.gz.itb
-+targets += vmlinux.bz2.itb
-+targets += vmlinux.lzma.itb
-+targets += vmlinux.lzo.itb
-+
- quiet_cmd_itb-image = ITB     $@
-       cmd_itb-image = \
- 		env PATH="$(objtree)/scripts/dtc:$(PATH)" \
-@@ -169,14 +169,5 @@ quiet_cmd_itb-image = ITB     $@
- $(obj)/vmlinux.itb: $(obj)/vmlinux.its $(obj)/vmlinux.bin FORCE
- 	$(call if_changed,itb-image,$<)
- 
--$(obj)/vmlinux.gz.itb: $(obj)/vmlinux.gz.its $(obj)/vmlinux.bin.gz FORCE
--	$(call if_changed,itb-image,$<)
--
--$(obj)/vmlinux.bz2.itb: $(obj)/vmlinux.bz2.its $(obj)/vmlinux.bin.bz2 FORCE
--	$(call if_changed,itb-image,$<)
--
--$(obj)/vmlinux.lzma.itb: $(obj)/vmlinux.lzma.its $(obj)/vmlinux.bin.lzma FORCE
--	$(call if_changed,itb-image,$<)
--
--$(obj)/vmlinux.lzo.itb: $(obj)/vmlinux.lzo.its $(obj)/vmlinux.bin.lzo FORCE
-+$(obj)/vmlinux.%.itb: $(obj)/vmlinux.%.its $(obj)/vmlinux.bin.% FORCE
- 	$(call if_changed,itb-image,$<)
+ quiet_cmd_cpp_its_S = ITS     $@
+       cmd_cpp_its_S = $(CPP) $(cpp_flags) -P -C -o $@ $< \
+-			-D__ASSEMBLY__ \
+ 		        -DKERNEL_NAME="\"Linux $(KERNELRELEASE)\"" \
+ 			-DVMLINUX_BINARY="\"$(3)\"" \
+ 			-DVMLINUX_COMPRESSION="\"$(2)\"" \
 -- 
 2.7.4

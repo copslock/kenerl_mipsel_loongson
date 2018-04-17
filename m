@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2018 17:41:28 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:51795 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2018 17:41:46 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:47622 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994626AbeDQPlPORP5w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2018 17:41:15 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 17 Apr 2018 15:41:08 +0000
+        by eddie.linux-mips.org with ESMTP id S23994584AbeDQPl03w4iw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2018 17:41:26 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Tue, 17 Apr 2018 15:41:18 +0000
 Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Tue, 17 Apr 2018 08:41:07 -0700
+ 14.3.361.1; Tue, 17 Apr 2018 08:41:35 -0700
 From:   Matt Redfearn <matt.redfearn@mips.com>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 3/4] MIPS: memset.S: Reinstate delay slot indentation
-Date:   Tue, 17 Apr 2018 16:40:02 +0100
-Message-ID: <1523979603-492-3-git-send-email-matt.redfearn@mips.com>
+Subject: [PATCH v2 4/4] MIPS: memset.S: Add comments to fault fixup handlers
+Date:   Tue, 17 Apr 2018 16:40:03 +0100
+Message-ID: <1523979603-492-4-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1523979603-492-1-git-send-email-matt.redfearn@mips.com>
 References: <1523979603-492-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1523979613-637140-28836-247121-7
+X-BESS-ID: 1523979677-637139-30405-48655-1
 X-BESS-VER: 2018.4-r1804121647
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -36,7 +36,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63588
+X-archive-position: 63589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,146 +53,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Assembly language within the MIPS kernel conventionally indents
-instructions which are in a branch delay slot to make them easier to
-see. Commit 8483b14aaa81 ("MIPS: lib: memset: Whitespace fixes") rather
-inexplicably removed all of these indentations from memset.S. Reinstate
-the convention for all instructions in a branch delay slot. This
-effectively reverts the above commit, plus other locations introduced
-with MIPSR6 support.
+It is not immediately obvious what the expected inputs to these fault
+handlers is and how they calculate the number of unset bytes. Having
+stared deeply at this in order to fix some corner cases, add some
+comments to addist those who follow.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
 
 Changes in v2:
-- Rebase delay slot indentation on v3 of "MIPS: memset.S: Fix return of
-  __clear_user from Lpartial_fixup"
+- Add comments to fault handlers in new, separate, patch.
 
- arch/mips/lib/memset.S | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/mips/lib/memset.S | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
-index f7327979a8f8..1cc306520a55 100644
+index 1cc306520a55..a06dabe99d4b 100644
 --- a/arch/mips/lib/memset.S
 +++ b/arch/mips/lib/memset.S
-@@ -95,7 +95,7 @@
+@@ -231,16 +231,25 @@
  
- 	sltiu		t0, a2, STORSIZE	/* very small region? */
- 	bnez		t0, .Lsmall_memset\@
--	andi		t0, a0, STORMASK	/* aligned? */
-+	 andi		t0, a0, STORMASK	/* aligned? */
- 
- #ifdef CONFIG_CPU_MICROMIPS
- 	move		t8, a1			/* used by 'swp' instruction */
-@@ -103,12 +103,12 @@
- #endif
- #ifndef CONFIG_CPU_DADDI_WORKAROUNDS
- 	beqz		t0, 1f
--	PTR_SUBU	t0, STORSIZE		/* alignment in bytes */
-+	 PTR_SUBU	t0, STORSIZE		/* alignment in bytes */
- #else
- 	.set		noat
- 	li		AT, STORSIZE
- 	beqz		t0, 1f
--	PTR_SUBU	t0, AT			/* alignment in bytes */
-+	 PTR_SUBU	t0, AT			/* alignment in bytes */
- 	.set		at
- #endif
- 
-@@ -149,7 +149,7 @@
- 1:	ori		t1, a2, 0x3f		/* # of full blocks */
- 	xori		t1, 0x3f
- 	beqz		t1, .Lmemset_partial\@	/* no block to fill */
--	andi		t0, a2, 0x40-STORSIZE
-+	 andi		t0, a2, 0x40-STORSIZE
- 
- 	PTR_ADDU	t1, a0			/* end address */
- 	.set		reorder
-@@ -174,7 +174,7 @@
- 	.set		at
- #endif
- 	jr		t1
--	PTR_ADDU	a0, t0			/* dest ptr */
-+	 PTR_ADDU	a0, t0			/* dest ptr */
- 
- 	.set		push
- 	.set		noreorder
-@@ -186,7 +186,7 @@
- 
- 	beqz		a2, 1f
- #ifndef CONFIG_CPU_MIPSR6
--	PTR_ADDU	a0, a2			/* What's left */
-+	 PTR_ADDU	a0, a2			/* What's left */
- 	R10KCBARRIER(0(ra))
- #ifdef __MIPSEB__
- 	EX(LONG_S_R, a1, -1(a0), .Llast_fixup\@)
-@@ -194,7 +194,7 @@
- 	EX(LONG_S_L, a1, -1(a0), .Llast_fixup\@)
- #endif
- #else
--	PTR_SUBU	t0, $0, a2
-+	 PTR_SUBU	t0, $0, a2
- 	PTR_ADDIU	t0, 1
- 	STORE_BYTE(0)
- 	STORE_BYTE(1)
-@@ -210,11 +210,11 @@
- 0:
- #endif
- 1:	jr		ra
--	move		a2, zero
-+	 move		a2, zero
- 
- .Lsmall_memset\@:
- 	beqz		a2, 2f
--	PTR_ADDU	t1, a0, a2
-+	 PTR_ADDU	t1, a0, a2
- 
- 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
- 	R10KCBARRIER(0(ra))
-@@ -222,7 +222,7 @@
- 	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
- 
- 2:	jr		ra			/* done */
--	move		a2, zero
-+	 move		a2, zero
- 	.if __memset == 1
- 	END(memset)
- 	.set __memset, 0
-@@ -238,7 +238,7 @@
+ #ifdef CONFIG_CPU_MIPSR6
+ .Lbyte_fixup\@:
++	/*
++	 * unset_bytes = current_addr + 1
++	 *      a2     =      t0      + 1
++	 */
+ 	PTR_SUBU	a2, $0, t0
+ 	jr		ra
+ 	 PTR_ADDIU	a2, 1
+ #endif /* CONFIG_CPU_MIPSR6 */
  
  .Lfirst_fixup\@:
++	/* unset_bytes already in a2 */
  	jr	ra
--	nop
-+	 nop
+ 	 nop
  
  .Lfwd_fixup\@:
++	/*
++	 * unset_bytes = partial_start_addr +  #bytes   -     fault_addr
++	 *      a2     =         t1         + (a2 & 3f) - $28->task->BUADDR
++	 */
  	PTR_L		t0, TI_TASK($28)
-@@ -246,7 +246,7 @@
+ 	andi		a2, 0x3f
  	LONG_L		t0, THREAD_BUADDR(t0)
- 	LONG_ADDU	a2, t1
- 	jr		ra
--	LONG_SUBU	a2, t0
-+	 LONG_SUBU	a2, t0
+@@ -249,6 +258,10 @@
+ 	 LONG_SUBU	a2, t0
  
  .Lpartial_fixup\@:
++	/*
++	 * unset_bytes = partial_end_addr +      #bytes     -     fault_addr
++	 *      a2     =       a0         + (a2 & STORMASK) - $28->task->BUADDR
++	 */
  	PTR_L		t0, TI_TASK($28)
-@@ -254,7 +254,7 @@
+ 	andi		a2, STORMASK
  	LONG_L		t0, THREAD_BUADDR(t0)
- 	LONG_ADDU	a2, a0
- 	jr		ra
--	LONG_SUBU	a2, t0
-+	 LONG_SUBU	a2, t0
+@@ -257,10 +270,15 @@
+ 	 LONG_SUBU	a2, t0
  
  .Llast_fixup\@:
++	/* unset_bytes already in a2 */
  	jr		ra
-@@ -278,7 +278,7 @@
- LEAF(memset)
- EXPORT_SYMBOL(memset)
- 	beqz		a1, 1f
--	move		v0, a0			/* result */
-+	 move		v0, a0			/* result */
+ 	 nop
  
- 	andi		a1, 0xff		/* spread fillword */
- 	LONG_SLL		t1, a1, 8
+ .Lsmall_fixup\@:
++	/*
++	 * unset_bytes = end_addr - current_addr + 1
++	 *      a2     =    t1    -      a0      + 1
++	 */
+ 	PTR_SUBU	a2, t1, a0
+ 	jr		ra
+ 	 PTR_ADDIU	a2, 1
 -- 
 2.7.4

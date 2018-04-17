@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2018 23:04:39 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:57292 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2018 23:37:57 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:59550 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994652AbeDQVEbg5v0s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Apr 2018 23:04:31 +0200
+        id S23994657AbeDQVhuDmeYU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Apr 2018 23:37:50 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3CB12178F;
-        Tue, 17 Apr 2018 21:04:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org C3CB12178F
+        by mail.kernel.org (Postfix) with ESMTPSA id 7238321789;
+        Tue, 17 Apr 2018 21:37:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 7238321789
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Tue, 17 Apr 2018 22:04:18 +0100
+Date:   Tue, 17 Apr 2018 22:37:36 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     kbuild test robot <lkp@intel.com>
-Cc:     kbuild-all@01.org, linux-mips@linux-mips.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v3 2/3] compiler.h: Allow arch-specific overrides
-Message-ID: <20180417210416.GB21386@saruman>
-References: <cbf1a73e1c751fc8db124f974e268bab0d9727a5.1523959603.git-series.jhogan@kernel.org>
- <201804180342.6jrQJ6v3%fengguang.wu@intel.com>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Paul Cercueil <paul@crapouillou.net>,
+        devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Harvey Hunt <harvey.hunt@imgtec.com>
+Subject: Re: [PATCH] MIPS: dts: avoid unneeded built-in.a creation in vendor
+ DTS directories
+Message-ID: <20180417213736.GC21386@saruman>
+References: <1523893290-7958-1-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rJwd6BRFiFCcLxzm"
+        protocol="application/pgp-signature"; boundary="jousvV0MzM2p6OtC"
 Content-Disposition: inline
-In-Reply-To: <201804180342.6jrQJ6v3%fengguang.wu@intel.com>
+In-Reply-To: <1523893290-7958-1-git-send-email-yamada.masahiro@socionext.com>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63593
+X-archive-position: 63594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,47 +59,73 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---rJwd6BRFiFCcLxzm
+--jousvV0MzM2p6OtC
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hi kbuild test robot,
+On Tue, Apr 17, 2018 at 12:41:30AM +0900, Masahiro Yamada wrote:
+> arch/mips/boot/dts/Makefile collects objects from sub-directories
+> into built-in.a only when CONFIG_BUILTIN_DTB is enabled.  Reflect
+> it also to the sub-directory Makefiles.  This suppresses unneeded
+> built-in.a creation in arch/mips/boot/dts/*/ directories.
+>=20
+> While I am here, I replaced $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+> with $(addsuffix .o, $(dtb-y)) to simplify the code a little bit.
+>=20
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+>=20
+>  arch/mips/boot/dts/brcm/Makefile          | 2 +-
+>  arch/mips/boot/dts/cavium-octeon/Makefile | 2 +-
+>  arch/mips/boot/dts/ingenic/Makefile       | 2 +-
+>  arch/mips/boot/dts/lantiq/Makefile        | 2 +-
+>  arch/mips/boot/dts/mscc/Makefile          | 2 +-
+>  arch/mips/boot/dts/mti/Makefile           | 2 +-
+>  arch/mips/boot/dts/netlogic/Makefile      | 2 +-
+>  arch/mips/boot/dts/pic32/Makefile         | 2 +-
+>  arch/mips/boot/dts/ralink/Makefile        | 2 +-
+>  arch/mips/boot/dts/xilfpga/Makefile       | 2 +-
+>  10 files changed, 10 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/M=
+akefile
+> index d8787c9..d85f446 100644
+> --- a/arch/mips/boot/dts/brcm/Makefile
+> +++ b/arch/mips/boot/dts/brcm/Makefile
+> @@ -34,4 +34,4 @@ dtb-$(CONFIG_DT_NONE) +=3D \
+>  	bcm97425svmb.dtb \
+>  	bcm97435svmb.dtb
+> =20
+> -obj-y				+=3D $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+> +obj-$(CONFIG_BUILTIN_DTB)	+=3D $(addsuffix .o, $(dtb-y))
 
-On Wed, Apr 18, 2018 at 03:19:47AM +0800, kbuild test robot wrote:
->    In file included from ./arch/x86/include/generated/asm/compiler.h:1:0,
->                     from include/linux/compiler_types.h:58,
->                     from <command-line>:0:
-> >> include/asm-generic/compiler.h:2:2: error: #error "Please don't include <asm/compiler.h> directly, include <linux/compiler.h> instead."
->     #error "Please don't include <asm/compiler.h> directly, include <linux/compiler.h> instead."
+I like this. I had also spotted the .o files being unnecessarily
+generated when building the dtbs target with bmips and CONFIG_DT_NONE=3Dy.
+I'll apply for 4.18.
 
-Whoops, I love your bug report.
-
-I'll change asm-generic/compiler.h to look for __LINUX_COMPILER_TYPES_H
-instead of __LINUX_COMPILER_H and resend soon.
-
-Thanks!
+Thanks
 James
 
-
---rJwd6BRFiFCcLxzm
+--jousvV0MzM2p6OtC
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrWYVAACgkQbAtpk944
-dnpItBAAufXUFwYhH2lz7N2GEw1Z23twrtCeSRcrq65r2wEcMizH6taYASGvNoww
-tmaKoXz+9oQQqvK1/4MSXMotkNYkVSe+MoGXnXU4x+v3dLsAiKG433SJKi65g97S
-jsEr+nWlGJMBFyD/zbLjYpCwKcx4fAqyR02VVQs87ChO1uaHE33LrK5pYpqLCqud
-1/tkeoP61zIE42fhEsXvS7Mw+5VDIGksPWuiMfpsxpsOek/tOhfDF2dDLFWK3gz6
-OUnL33pma+ocv+MP3+g1lI3PGqPSB+k4D3BYpLM7sQUNcFrr0qI/5gC8cc7QRuo8
-bGj36DXnYO6pqkWbHoiZC+PkelL+CcBj/aYlM/pKUr/84J9A1QX+6slsmgbtcQQT
-wUnsPtSrRnZw0/BbilsGPE9BakF8epbnB5u+mu7Fp4VAMgiKd/b1VKZ2M740dpqM
-UODP5v/CxSE4YGVHTx8TDutciODzbOcJu7mvogRw+QufVHX6GKvcdl/CU6ezGZuM
-LXzT+W7YRlLZ8X0/0JopD0mcDMc8Oglr3W3ilkG/pYa09vFHwW6KmeeFqBw4XSOT
-gxdk0QUahi7wo2+to2zxAfky0FT06Vzxx0tXP3x+nXTL52D+CMQtGacZPEpDnTn6
-+gnkisuFdngBdb0YB0UGDzY8zoLfjzdA7X38v9U91vLHizWxgWU=
-=ROKm
+iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrWaSAACgkQbAtpk944
+dnpdnw//YD2A/1lEIzZxj8CEUQ2ujJJrxQouFF1sJi9IXcJbCLSImNRiuI9qsoc3
+h9T4YeQAAHCkXjIfwwQ2HL3wkCH+KK3xnF/Hq6h6wSMFcFHvoDRNrDwLP6XQx/xL
+4cEtVo5DD2IltrFqx1aKI2LFZ9t3kFvaDPQx8rmpLQy/eeExvOG7x0B9MnI49wrT
+5wChz2eKWFj3ngy5PSkMD1KaOfjT8aL5gzgLMKGvl6byo5nuiMSG3waSe8K0izJu
+KPuwgmL5bJp/hEJOCmc9IiG9HzYlBLzC5wXnkkZ+AGx7wj8N6J6A8fgboziQqvND
+CM9LdLwETacwHijTRpRZb66/OjjBgD4gg0Q3Djd6rdkpJJ/g632wZiZm0z8dP722
+BxEfunGnDtUl02fTfcPwLlnMQPDXdQ3ZwyRdl5gbPhGHK6jp5aYVU9bXTcDmimOm
+/SxylcFCf625dBWeqa0JdxR+UvsOnq6B5iTPhQQ2NYG6E6FPZy+tcFGuuYPzYXld
+Lm/SVcoGlfWQpUMm4QMWq8QCISzGQ4bH+c53JzgBpNQ+Hgif+TZGh9SWZFiNfDXw
+vQj2DBxAysPkje/ZFNQ+poAwQqvG1WApk9BUvDsojLcP/8TmV8jQuFwdez4n/P64
+HA5fXyD8gVVezoGESjXOdmVQOBpZS+siBHrvSBOootQH1zyHgUA=
+=wV2M
 -----END PGP SIGNATURE-----
 
---rJwd6BRFiFCcLxzm--
+--jousvV0MzM2p6OtC--

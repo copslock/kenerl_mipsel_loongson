@@ -1,55 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 11:20:17 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44594 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993145AbeDVJTJys5N9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 11:19:09 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 62D81CF2;
-        Sun, 22 Apr 2018 09:19:02 +0000 (UTC)
-Subject: Patch "MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup" has been added to the 4.4-stable tree
-To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, matt.redfearn@mips.com,
-        ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 22 Apr 2018 11:16:59 +0200
-Message-ID: <152438861916946@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63664
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Matt Redfearn <matt.redfearn@mips.com>
+Date: Tue, 17 Apr 2018 15:52:21 +0100
+Subject: MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
+Message-ID: <20180417145221.66Hi5iCcqVYaD_qqebslqDpfTiMX5PyhYPOfNi1gOUE@z>
+
+From: Matt Redfearn <matt.redfearn@mips.com>
+
+commit daf70d89f80c6e1772233da9e020114b1254e7e0 upstream.
+
+The __clear_user function is defined to return the number of bytes that
+could not be cleared. From the underlying memset / bzero implementation
+this means setting register a2 to that number on return. Currently if a
+page fault is triggered within the memset_partial block, the value
+loaded into a2 on return is meaningless.
+
+The label .Lpartial_fixup\@ is jumped to on page fault. In order to work
+out how many bytes failed to copy, the exception handler should find how
+many bytes left in the partial block (andi a2, STORMASK), add that to
+the partial block end address (a2), and subtract the faulting address to
+get the remainder. Currently it incorrectly subtracts the partial block
+start address (t1), which has additionally been clobbered to generate a
+jump target in memset_partial. Fix this by adding the block end address
+instead.
+
+This issue was found with the following test code:
+      int j, k;
+      for (j = 0; j < 512; j++) {
+        if ((k = clear_user(NULL, j)) != j) {
+           pr_err("clear_user (NULL %d) returned %d\n", j, k);
+        }
+      }
+Which now passes on Creator Ci40 (MIPS32) and Cavium Octeon II (MIPS64).
+
+Suggested-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/19108/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/lib/memset.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -249,7 +249,7 @@
+ 	PTR_L		t0, TI_TASK($28)
+ 	andi		a2, STORMASK
+ 	LONG_L		t0, THREAD_BUADDR(t0)
+-	LONG_ADDU	a2, t1
++	LONG_ADDU	a2, a0
+ 	jr		ra
+ 	LONG_SUBU	a2, t0
+ 
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from matt.redfearn@mips.com are
 
-    MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
-
-to the 4.4-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-memset.s-fix-return-of-__clear_user-from-lpartial_fixup.patch
-and it can be found in the queue-4.4 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.4/mips-uaccess-add-micromips-clobbers-to-bzero-invocation.patch
+queue-4.4/mips-memset.s-fix-return-of-__clear_user-from-lpartial_fixup.patch
+queue-4.4/mips-memset.s-eva-fault-support-for-small_memset.patch
+queue-4.4/mips-memset.s-fix-clobber-of-v1-in-last_fixup.patch

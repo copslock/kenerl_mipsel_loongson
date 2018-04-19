@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Apr 2018 16:41:01 +0200 (CEST)
-Received: from mout.kundenserver.de ([217.72.192.74]:60871 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Apr 2018 16:41:14 +0200 (CEST)
+Received: from mout.kundenserver.de ([217.72.192.73]:36455 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994664AbeDSOjDC2MmB (ORCPT
+        with ESMTP id S23994666AbeDSOjDC2MmB (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 19 Apr 2018 16:39:03 +0200
 Received: from wuerfel.lan ([95.208.111.237]) by mrelayeu.kundenserver.de
  (mreue101 [212.227.15.145]) with ESMTPA (Nemesis) id
- 0MDgWE-1fD0AE2Zuo-00H7Jv; Thu, 19 Apr 2018 16:37:48 +0200
+ 0Mbyf0-1etIVT05wc-00JJ9z; Thu, 19 Apr 2018 16:38:01 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     y2038@lists.linaro.org, linux-kernel@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>, linux-api@vger.kernel.org,
@@ -17,33 +17,33 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, linux-api@vger.kernel.org,
         will.deacon@arm.com, linux-mips@linux-mips.org, jhogan@kernel.org,
         ralf@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH v3 01/17] y2038: asm-generic: Extend sysvipc data structures
-Date:   Thu, 19 Apr 2018 16:37:21 +0200
-Message-Id: <20180419143737.606138-2-arnd@arndb.de>
+Subject: [PATCH v3 16/17] y2038: ipc: Redirect ipc(SEMTIMEDOP, ...) to compat_ksys_semtimedop
+Date:   Thu, 19 Apr 2018 16:37:36 +0200
+Message-Id: <20180419143737.606138-17-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
 In-Reply-To: <20180419143737.606138-1-arnd@arndb.de>
 References: <20180419143737.606138-1-arnd@arndb.de>
-X-Provags-ID: V03:K1:4xrHhOyONM1SnmBBiZZBn0APMxEIEhx+LVcWRJQt3EynvbndZbu
- VoTF7eU1WYMeEVku+X1x4Ei59LCYcejFN+wsErGymyEg6/UXriB9xf+2QohCuwjj1B9iVXT
- XUF1bifhVrEdYUlXhR9AwSTeEo/yvte+S6H//XZNmBqm44lEsx5Vg0w3ITXdh36QhogKpZj
- EGhaSVXJJeFCLJML/FSAw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:o/U3HjYUbjg=:BYXFOB+tOwYJRCHYWLv/hV
- z3jY7I/RvQykLGWQgsrckLNeqa27VqrPTt6tJDckPkJAhhsfBHzCLHi3woigmMkFcZ5o3Lnjn
- QAaBYhLcGo8xB3kAAjzbat0e2tt+VAcXPx4JuPu3rPqX9aoEKNns61G/rDVwb74+NQuIoJqFe
- uA9vC2xZQY7x8wrqDxNO8k6D0zMF8rPqztZ/Unn5ikilMCX0NU3YFt+1lyWzi8rLhx8YGF+GH
- HZIUwtKRX8CP7otx/jy6oylVAE+FHyWm7fj1QHnn+rb5Os6PO0PsXrZihWKVpAc2WurzIRU4Y
- oFTXgqhBxOnDiyUDDK8eRvQW0LswEl2THEVCRPgHH7rFy0Oo9AvZDJSncoOyiA3fvMIONJNy4
- Ei2s0I+zXkmZKSj8rUU9Zu35e4kYPNINZRZLUN8uz0HUvS23lgL6b5hM0gWZgcyGS3nTGTxQg
- My18eFqo2MWAiDZ6Qw4Lcsra0Db05zf7I3gcgAaO3s/o58t5siERfNV1sY51MLXLbwmA+AhUm
- hIThMZoVs9Djl9GQHkojI4TVpayPk9h/xso+JTmzRUvNRSI4zW16PvkM8Aj2VyT/j/fv9WvgL
- 09XIxpbqU+hTnLf/NRjJ+jUmXI6VkdCyizBAMX4vukNFzArBMiF33EkXlrzBcQKdcfyAYS9En
- bTNNVd7olgCErO2f+CbFSSo8gDOHoHsmx70+9T7g8kQw9XPDwd/N6hWGN6U9SYzrXKx+VxbFz
- biKQuqKIepOBHAkbFiwADd27N6MxecU/nBQNRg==
+X-Provags-ID: V03:K1:taoylyHn9hPzLr8FvCdtoSclzmM7wtpNeibvAXK4GS65SL861VQ
+ GVWSy7pErm1JOGiMO0VOzhm9fNOISb9xqito4CfsTGt3DzOCBp6R/kK0uODsoMyEV4y2VDf
+ jBp3PyV98WDwgoZGFYXP7HUNuMJAGGiG3XyQpFUCHs0S0TESX0JweLqM8+ejD010uTrK9fL
+ yCTQgNsVmi/xIwMSkzJTg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:wQXGZSTpe0U=:a/xBmS8XT/fFtn9/F9/ipp
+ Y6bU55DSx34IJD2DR9vhY8W4gBLt1pQBF4swNmKRid5DyoGpkQkSSBuq3clFURdvSdreXTHPd
+ o5cp4UrAdU8UHRZa4ePr04Igj1dJodu1ZjeIyfdREmGyTw66ND8BTVcEDQETzxEdn5ro8nIn1
+ urhbE7cqq1GADF5lprGO1TV6azwqVdKM9Vtt6+A38DWb1jGMGx3baOHN+qsJaP4r2L6xqAPcd
+ rJ6BaIhL1mzeg7nmWfzcyghexZB0H6+XAEuH3AMu9jqEjnLql9HCBGi1+YUnBKj1jzQYPObFp
+ EJV2ERi/VPG+uB3/Mw/deLcTw/+wFdb+QFs8NnJTamZSeBa25aVEf8jfHoW7Lg51QBUQ1Eu+S
+ rUrkiQJnrC8TVvrORGJFg/IdRu1LaYVQ2vcbrYy9f33278zFJ2/VGSWwg+koCfW+jRL2JiO7Q
+ 7weOL93sEVrqIZKYKxQ4QLTovcEfPT8P+Yh6yVqQnhguSKpPmQ2VPgNkEqHHzrvD2Ob7QbilG
+ 0uUK91A3w24KSn+Z9kAviq+nMVKe+2JXfhg7p42OqZY/utJ1OBuwrpxglMNYYiPmN6rjc4jiY
+ pZ6JKIRt/BiMOpTA+ggj6mQKha71uNHr+zBMh8vBa6/vQ08oHxAsnyEnk+ozKocaL2RbGBuvF
+ aQskQF2J3Kb0E3/esu5wGPlYsSAezYR29Wkc7Gy1WjESEzub8U8lx1qqZzu9wRvanhw5B/Fae
+ DHMfIVamC4m3HSXx9c+8SZeh+uq64aLi7u3E8g==
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63613
+X-archive-position: 63614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,149 +60,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Most architectures now use the asm-generic copy of the sysvipc data
-structures (msqid64_ds, semid64_ds, shmid64_ds), which use 32-bit
-__kernel_time_t on 32-bit architectures but have padding behind them to
-allow extending the type to 64-bit.
+32-bit architectures implementing 64BIT_TIME and COMPAT_32BIT_TIME
+need to have the traditional semtimedop() behavior with 32-bit timestamps
+for sys_ipc() by calling compat_ksys_semtimedop(), while those that
+are not yet converted need to keep using ksys_semtimedop() like
+64-bit architectures do.
 
-Unfortunately, that fails on all big-endian architectures, which have the
-padding on the wrong side. As so many of them get it wrong, we decided to
-not bother even trying to fix it up when we introduced the asm-generic
-copy. Instead we always use the padding word now to provide the upper
-32 bits of the seconds value, regardless of the endianess.
+Note that I chose to not implement a new SEMTIMEDOP64 function that
+corresponds to the new sys_semtimedop() with 64-bit timeouts. The reason
+here is that sys_ipc() should no longer be used for new system calls,
+and libc should just call the semtimedop syscall directly.
 
-A libc implementation on a typical big-endian system can deal with
-this by providing its own copy of the structure definition to user
-space, and swapping the two 32-bit words before returning from the
-semctl/shmctl/msgctl system calls.
-
-ARM64 and s/390 are architectures that use these generic headers and
-also provide support for compat mode on 64-bit kernels, so we adapt
-their copies here as well.
+One open question remain to whether we want to completely avoid the
+sys_ipc() system call for architectures that do not yet have all the
+individual calls as they get converted to 64-bit time_t. Doing that
+would require adding several extra system calls on m68k, mips, powerpc,
+s390, sh, sparc, and x86-32.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- include/uapi/asm-generic/msgbuf.h | 17 ++++++++---------
- include/uapi/asm-generic/sembuf.h | 26 ++++++++++++++++----------
- include/uapi/asm-generic/shmbuf.h | 17 ++++++++---------
- 3 files changed, 32 insertions(+), 28 deletions(-)
+ ipc/syscall.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/uapi/asm-generic/msgbuf.h b/include/uapi/asm-generic/msgbuf.h
-index fb306ebdb36f..d2169cae93b8 100644
---- a/include/uapi/asm-generic/msgbuf.h
-+++ b/include/uapi/asm-generic/msgbuf.h
-@@ -18,23 +18,22 @@
-  * On big-endian systems, the padding is in the wrong place.
-  *
-  * Pad space is left for:
-- * - 64-bit time_t to solve y2038 problem
-  * - 2 miscellaneous 32-bit values
-  */
+diff --git a/ipc/syscall.c b/ipc/syscall.c
+index 77a883ef2eca..65d405f1ba0c 100644
+--- a/ipc/syscall.c
++++ b/ipc/syscall.c
+@@ -30,9 +30,14 @@ SYSCALL_DEFINE6(ipc, unsigned int, call, int, first, unsigned long, second,
+ 		return ksys_semtimedop(first, (struct sembuf __user *)ptr,
+ 				       second, NULL);
+ 	case SEMTIMEDOP:
+-		return ksys_semtimedop(first, (struct sembuf __user *)ptr,
+-				       second,
+-				       (const struct timespec __user *)fifth);
++		if (IS_ENABLED(CONFIG_64BIT) || !IS_ENABLED(CONFIG_64BIT_TIME))
++			return ksys_semtimedop(first, ptr, second,
++			        (const struct __kernel_timespec __user *)fifth);
++		else if (IS_ENABLED(CONFIG_COMPAT_32BIT_TIME))
++			return compat_ksys_semtimedop(first, ptr, second,
++			        (const struct compat_timespec __user *)fifth);
++		else
++			return -ENOSYS;
  
- struct msqid64_ds {
- 	struct ipc64_perm msg_perm;
-+#if __BITS_PER_LONG == 64
- 	__kernel_time_t msg_stime;	/* last msgsnd time */
--#if __BITS_PER_LONG != 64
--	unsigned long	__unused1;
--#endif
- 	__kernel_time_t msg_rtime;	/* last msgrcv time */
--#if __BITS_PER_LONG != 64
--	unsigned long	__unused2;
--#endif
- 	__kernel_time_t msg_ctime;	/* last change time */
--#if __BITS_PER_LONG != 64
--	unsigned long	__unused3;
-+#else
-+	unsigned long	msg_stime;	/* last msgsnd time */
-+	unsigned long	msg_stime_high;
-+	unsigned long	msg_rtime;	/* last msgrcv time */
-+	unsigned long	msg_rtime_high;
-+	unsigned long	msg_ctime;	/* last change time */
-+	unsigned long	msg_ctime_high;
- #endif
- 	__kernel_ulong_t msg_cbytes;	/* current number of bytes on queue */
- 	__kernel_ulong_t msg_qnum;	/* number of messages in queue */
-diff --git a/include/uapi/asm-generic/sembuf.h b/include/uapi/asm-generic/sembuf.h
-index cbf9cfe977d6..0bae010f1b64 100644
---- a/include/uapi/asm-generic/sembuf.h
-+++ b/include/uapi/asm-generic/sembuf.h
-@@ -13,23 +13,29 @@
-  * everyone just ended up making identical copies without specific
-  * optimizations, so we may just as well all use the same one.
-  *
-- * 64 bit architectures typically define a 64 bit __kernel_time_t,
-+ * 64 bit architectures use a 64-bit __kernel_time_t here, while
-+ * 32 bit architectures have a pair of unsigned long values.
-  * so they do not need the first two padding words.
-- * On big-endian systems, the padding is in the wrong place.
-  *
-- * Pad space is left for:
-- * - 64-bit time_t to solve y2038 problem
-- * - 2 miscellaneous 32-bit values
-+ * On big-endian systems, the padding is in the wrong place for
-+ * historic reasons, so user space has to reconstruct a time_t
-+ * value using
-+ *
-+ * user_semid_ds.sem_otime = kernel_semid64_ds.sem_otime +
-+ *		((long long)kernel_semid64_ds.sem_otime_high << 32)
-+ *
-+ * Pad space is left for 2 miscellaneous 32-bit values
-  */
- struct semid64_ds {
- 	struct ipc64_perm sem_perm;	/* permissions .. see ipc.h */
-+#if __BITS_PER_LONG == 64
- 	__kernel_time_t	sem_otime;	/* last semop time */
--#if __BITS_PER_LONG != 64
--	unsigned long	__unused1;
--#endif
- 	__kernel_time_t	sem_ctime;	/* last change time */
--#if __BITS_PER_LONG != 64
--	unsigned long	__unused2;
-+#else
-+	unsigned long	sem_otime;	/* last semop time */
-+	unsigned long	sem_otime_high;
-+	unsigned long	sem_ctime;	/* last change time */
-+	unsigned long	sem_ctime_high;
- #endif
- 	unsigned long	sem_nsems;	/* no. of semaphores in array */
- 	unsigned long	__unused3;
-diff --git a/include/uapi/asm-generic/shmbuf.h b/include/uapi/asm-generic/shmbuf.h
-index 2b6c3bb97f97..602f1b5b462b 100644
---- a/include/uapi/asm-generic/shmbuf.h
-+++ b/include/uapi/asm-generic/shmbuf.h
-@@ -19,24 +19,23 @@
-  *
-  *
-  * Pad space is left for:
-- * - 64-bit time_t to solve y2038 problem
-  * - 2 miscellaneous 32-bit values
-  */
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
- 	size_t			shm_segsz;	/* size of segment (bytes) */
-+#if __BITS_PER_LONG == 64
- 	__kernel_time_t		shm_atime;	/* last attach time */
--#if __BITS_PER_LONG != 64
--	unsigned long		__unused1;
--#endif
- 	__kernel_time_t		shm_dtime;	/* last detach time */
--#if __BITS_PER_LONG != 64
--	unsigned long		__unused2;
--#endif
- 	__kernel_time_t		shm_ctime;	/* last change time */
--#if __BITS_PER_LONG != 64
--	unsigned long		__unused3;
-+#else
-+	unsigned long		shm_atime;	/* last attach time */
-+	unsigned long		shm_atime_high;
-+	unsigned long		shm_dtime;	/* last detach time */
-+	unsigned long		shm_dtime_high;
-+	unsigned long		shm_ctime;	/* last change time */
-+	unsigned long		shm_ctime_high;
- #endif
- 	__kernel_pid_t		shm_cpid;	/* pid of creator */
- 	__kernel_pid_t		shm_lpid;	/* pid of last operator */
+ 	case SEMGET:
+ 		return ksys_semget(first, second, third);
+@@ -130,6 +135,8 @@ COMPAT_SYSCALL_DEFINE6(ipc, u32, call, int, first, int, second,
+ 		/* struct sembuf is the same on 32 and 64bit :)) */
+ 		return ksys_semtimedop(first, compat_ptr(ptr), second, NULL);
+ 	case SEMTIMEDOP:
++		if (!IS_ENABLED(CONFIG_COMPAT_32BIT_TIME))
++			return -ENOSYS;
+ 		return compat_ksys_semtimedop(first, compat_ptr(ptr), second,
+ 						compat_ptr(fifth));
+ 	case SEMGET:
 -- 
 2.9.0

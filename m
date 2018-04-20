@@ -1,57 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 12:29:03 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:58632 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990493AbeDTK24rzCh1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 12:28:56 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 20 Apr 2018 10:28:35 +0000
-Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
- MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Fri, 20 Apr 2018 03:24:28 -0700
-From:   Matt Redfearn <matt.redfearn@mips.com>
-To:     James Hogan <jhogan@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 15:06:09 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.131]:60027 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990474AbeDTNGCQbhRI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 15:06:02 +0200
+Received: from wuerfel.lan ([95.208.111.237]) by mrelayeu.kundenserver.de
+ (mreue001 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 0LdQZe-1ejUbv3VkQ-00ij3Q; Fri, 20 Apr 2018 15:03:58 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>
+Cc:     ebiederm@xmission.com, y2038 Mailman List <y2038@lists.linaro.org>,
+        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, libc-alpha@sourceware.org,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Albert ARIBAUD <albert.aribaud@3adev.fr>,
+        linux-s390@vger.kernel.org, schwidefsky@de.ibm.com,
+        Catalin Marinas <catalin.marinas@arm.com>, will.deacon@arm.com,
+        linux-mips@linux-mips.org, jhogan@kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        "Maciej W. Rozycki" <macro@mips.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Paul Burton" <paul.burton@mips.com>,
-        Robert Richter <rric@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
-        <oprofile-list@lists.sf.net>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: [PATCH v3 2/7] MIPS: perf: More robustly probe for the presence of per-tc counters
-Date:   Fri, 20 Apr 2018 11:23:04 +0100
-Message-ID: <1524219789-31241-3-git-send-email-matt.redfearn@mips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
-References: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1524219945-321457-10557-42113-7
-X-BESS-VER: 2018.5-r1804181636
-X-BESS-Apparent-Source-IP: 12.201.5.28
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.192194
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Jeffrey Walton <noloader@gmail.com>,
+        Daniel Schepler <dschepler@gmail.com>,
+        "H . J . Lu" <hjl.tools@gmail.com>,
+        Adam Borowski <kilobyte@angband.pl>, tg@mirbsd.de,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH] x86: ipc: fix x32 version of shmid64_ds and msqid64_ds
+Date:   Fri, 20 Apr 2018 15:03:29 +0200
+Message-Id: <20180420130346.3178914-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+In-Reply-To: <CAK8P3a3qAoR1afmTTK1CAp1L81dzwtBL+SKj=QMqD=dBr_8oRQ@mail.gmail.com>
+References: <CAK8P3a3qAoR1afmTTK1CAp1L81dzwtBL+SKj=QMqD=dBr_8oRQ@mail.gmail.com>
+X-Provags-ID: V03:K1:s4pXsIJyLTMXyL6KgDWw8XcyU9mNufw2Dpp+Cebn4jG13dUGY1C
+ kn25mDG58Ah63DpYCMjhtr8DYRnDjCfrvfn5jaKQMUHjw1tpPHOJoGc8dZsjw4nAbEt+pif
+ yrYJo7Zl6AzsSODDBse03XbXGmH+jIYec0rD1Smc2TO5xWlh3yUKiBil7oCpMcQtlMxFaTB
+ SaAS2zRvYqvXwE4IKVchQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:ZdrNTAdpv9E=:toj5rfEn+T28bZ7LpkA/HI
+ cNYVyEd8cQ+9S5H4Gy20PQeDPjv3Cb2Y5eJN2flMvk5PNzUz0xsFUnmFX9SgYpIk/X5UJD8vd
+ JMa9EBEHiFW1rWMFCSvBD3NJ7aHps9vbPlX9FUn8v0+6RCkujkg8QW3FKDX7TFB5CWyobkDxC
+ T6t8sgGkY04OilcPlQRpoWaKXy4gHM4LD4bqo5HdePlT3fdJAjVnrBqayamHtWChxcn7EWiH5
+ lbwfrUanuhRMNJi9BI3IxE94tQLZhFSgAPRrSH3P3xn7rHSGo1touSNrPehKhF1WRgqvSzd3U
+ N5LtsxWvT5AKozDqUaEgNS0aV+1xU9R9vx9Xf6cVgljDR/5y2QySg9a1mWaDekGztuBGDg7ZN
+ rW5QpWNMlt4Uimic2l1Shp1O09Bz8ZFSmeKWa+DwCaLknI0M9Bxy4l6p7RfcfT2NVydqW177b
+ fHktiY4rJb9MV6B+mXRFFRAB23/Hz2BndmJX7bkZkgFcPB/riPq0b2Ezic6yImJAM7vZSwav6
+ s49+/3ihU8y1P6ycpG0L/JmuacuSWFTHaPQNQdnNUVLwQx7adRnhMJY9ZVIgW/pQdQLq7kgMf
+ qQru3sXaBJddqmAmmF4Az5i9+y3pQp+MCocilev/2IeESmgbRfYZTdAtBL29jU7ngHGki8A+o
+ gjINkRAmxFnZHPvaZyNSLrxP93r+9QrzYXBaYgjkp/ba+FGqBeeoJtIpo2nbbTB0vHTJQmBAb
+ +FVCERHJJI7o9C4KYnyQ/noDwNW6dHcDlJ+7dA==
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63640
+X-archive-position: 63641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,83 +71,120 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The presence of per TC performance counters is now detected by
-cpu-probe.c and indicated by MIPS_CPU_MT_PER_TC_PERF_COUNTERS in
-cpu_data. Switch detection of the feature to use this new flag rather
-than blindly testing the implementation specific config7 register with a
-magic number.
+A bugfix broke the x32 shmid64_ds and msqid64_ds data structure layout
+(as seen from user space)  a few years ago: Originally, __BITS_PER_LONG
+was defined as 64 on x32, so we did not have padding after the 64-bit
+__kernel_time_t fields, After __BITS_PER_LONG got changed to 32,
+applications would observe extra padding.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+In other parts of the uapi headers we seem to have a mix of those
+expecting either 32 or 64 on x32 applications, so we can't easily revert
+the path that broke these two structures.
+
+Instead, this patch decouples x32 from the other architectures and moves
+it back into arch specific headers, partially reverting the even older
+commit 73a2d096fdf2 ("x86: remove all now-duplicate header files").
+
+It's not clear whether this ever made any difference, since at least
+glibc carries its own (correct) copy of both of these header files,
+so possibly no application has ever observed the definitions here.
+
+There are other UAPI interfaces that depend on __BITS_PER_LONG and
+that might suffer from the same problem on x32, but I have not tried to
+analyse them in enough detail to be sure. If anyone still cares about x32,
+that may be a useful thing to do.
+
+Fixes: f4b4aae18288 ("x86/headers/uapi: Fix __BITS_PER_LONG value for x32 builds")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
+This came out of the y2038 ipc syscall series but can be applied
+and backported independently.
+---
+ arch/x86/include/uapi/asm/msgbuf.h | 29 +++++++++++++++++++++++++++
+ arch/x86/include/uapi/asm/shmbuf.h | 40 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+)
 
-Changes in v3:
-Use flag in cpu_data set by cpu_probe.c to indicate feature presence.
-
-Changes in v2: None
-
- arch/mips/include/asm/cpu-features.h | 7 +++++++
- arch/mips/kernel/perf_event_mipsxx.c | 3 ---
- arch/mips/oprofile/op_model_mipsxx.c | 2 --
- 3 files changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 721b698bfe3c..69755d900c69 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -534,6 +534,13 @@
- # define cpu_has_shared_ftlb_entries 0
- #endif
- 
-+#ifdef CONFIG_MIPS_MT_SMP
-+# define cpu_has_mipsmt_pertccounters \
-+	(cpu_data[0].options & MIPS_CPU_MT_PER_TC_PERF_COUNTERS)
-+#else
-+# define cpu_has_mipsmt_pertccounters 0
-+#endif /* CONFIG_MIPS_MT_SMP */
+diff --git a/arch/x86/include/uapi/asm/msgbuf.h b/arch/x86/include/uapi/asm/msgbuf.h
+index 809134c644a6..5f1604961e6d 100644
+--- a/arch/x86/include/uapi/asm/msgbuf.h
++++ b/arch/x86/include/uapi/asm/msgbuf.h
+@@ -1 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef __ASM_X64_MSGBUF_H
++#define __ASM_X64_MSGBUF_H
 +
- /*
-  * Guest capabilities
-  */
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 6668f67a61c3..0595a974bc81 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -129,8 +129,6 @@ static struct mips_pmu mipspmu;
- 
- 
- #ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
--static int cpu_has_mipsmt_pertccounters;
--
- static DEFINE_RWLOCK(pmuint_rwlock);
- 
- #if defined(CONFIG_CPU_BMIPS5000)
-@@ -1723,7 +1721,6 @@ init_hw_perf_events(void)
- 	}
- 
- #ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
--	cpu_has_mipsmt_pertccounters = read_c0_config7() & (1<<19);
- 	if (!cpu_has_mipsmt_pertccounters)
- 		counters = counters_total_to_per_cpu(counters);
- #endif
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index c3e4c18ef8d4..7c04b17f4a48 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -36,7 +36,6 @@ static int perfcount_irq;
- #endif
- 
- #ifdef CONFIG_MIPS_MT_SMP
--static int cpu_has_mipsmt_pertccounters;
- #define WHAT		(MIPS_PERFCTRL_MT_EN_VPE | \
- 			 M_PERFCTL_VPEID(cpu_vpe_id(&current_cpu_data)))
- #define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
-@@ -326,7 +325,6 @@ static int __init mipsxx_init(void)
- 	}
- 
- #ifdef CONFIG_MIPS_MT_SMP
--	cpu_has_mipsmt_pertccounters = read_c0_config7() & (1<<19);
- 	if (!cpu_has_mipsmt_pertccounters)
- 		counters = counters_total_to_per_cpu(counters);
- #endif
++#if !defined(__x86_64__) || !defined(__ilp32__)
+ #include <asm-generic/msgbuf.h>
++#else
++/*
++ * The msqid64_ds structure for x86 architecture with x32 ABI.
++ *
++ * On x86-32 and x86-64 we can just use the generic definition, but
++ * x32 uses the same binary layout as x86_64, which is differnet
++ * from other 32-bit architectures.
++ */
++
++struct msqid64_ds {
++	struct ipc64_perm msg_perm;
++	__kernel_time_t msg_stime;	/* last msgsnd time */
++	__kernel_time_t msg_rtime;	/* last msgrcv time */
++	__kernel_time_t msg_ctime;	/* last change time */
++	__kernel_ulong_t msg_cbytes;	/* current number of bytes on queue */
++	__kernel_ulong_t msg_qnum;	/* number of messages in queue */
++	__kernel_ulong_t msg_qbytes;	/* max number of bytes on queue */
++	__kernel_pid_t msg_lspid;	/* pid of last msgsnd */
++	__kernel_pid_t msg_lrpid;	/* last receive pid */
++	__kernel_ulong_t __unused4;
++	__kernel_ulong_t __unused5;
++};
++
++#endif /* __ASM_GENERIC_MSGBUF_H */
+diff --git a/arch/x86/include/uapi/asm/shmbuf.h b/arch/x86/include/uapi/asm/shmbuf.h
+index 83c05fc2de38..cdd7eec878fa 100644
+--- a/arch/x86/include/uapi/asm/shmbuf.h
++++ b/arch/x86/include/uapi/asm/shmbuf.h
+@@ -1 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef __ASM_X86_SHMBUF_H
++#define __ASM_X86_SHMBUF_H
++
++#if !defined(__x86_64__) || !defined(__ilp32__)
+ #include <asm-generic/shmbuf.h>
++#else
++/*
++ * The shmid64_ds structure for x86 architecture with x32 ABI.
++ *
++ * On x86-32 and x86-64 we can just use the generic definition, but
++ * x32 uses the same binary layout as x86_64, which is differnet
++ * from other 32-bit architectures.
++ */
++
++struct shmid64_ds {
++	struct ipc64_perm	shm_perm;	/* operation perms */
++	size_t			shm_segsz;	/* size of segment (bytes) */
++	__kernel_time_t		shm_atime;	/* last attach time */
++	__kernel_time_t		shm_dtime;	/* last detach time */
++	__kernel_time_t		shm_ctime;	/* last change time */
++	__kernel_pid_t		shm_cpid;	/* pid of creator */
++	__kernel_pid_t		shm_lpid;	/* pid of last operator */
++	__kernel_ulong_t	shm_nattch;	/* no. of current attaches */
++	__kernel_ulong_t	__unused4;
++	__kernel_ulong_t	__unused5;
++};
++
++struct shminfo64 {
++	__kernel_ulong_t	shmmax;
++	__kernel_ulong_t	shmmin;
++	__kernel_ulong_t	shmmni;
++	__kernel_ulong_t	shmseg;
++	__kernel_ulong_t	shmall;
++	__kernel_ulong_t	__unused1;
++	__kernel_ulong_t	__unused2;
++	__kernel_ulong_t	__unused3;
++	__kernel_ulong_t	__unused4;
++};
++
++#endif /* __ASM_X86_SHMBUF_H */
 -- 
-2.7.4
+2.9.0

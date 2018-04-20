@@ -1,36 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 16:22:03 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:39070 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990480AbeDTOV5XEGfw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Apr 2018 16:21:57 +0200
-Received: from saruman (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D7B342178F;
-        Fri, 20 Apr 2018 14:21:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D7B342178F
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Fri, 20 Apr 2018 15:21:46 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [GIT PULL] MIPS fixes for 4.17-rc2
-Message-ID: <20180420142145.GA1521@saruman>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 16:38:43 +0200 (CEST)
+Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:35553
+        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990480AbeDTOigZA1iP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 16:38:36 +0200
+Received: by mail-qt0-x242.google.com with SMTP id s2-v6so9777466qti.2;
+        Fri, 20 Apr 2018 07:38:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=98OyFl144wVGX53G/lcneDRh2auqmhwtC1rmf0wkfGU=;
+        b=jsDjPzCNvCPr9B92sx7kqPHuh4WLas5moPFKKazo8Cbqr927nRegV/cdnGIgRhO79Z
+         2mmwrVXiF1y4XScWOF6ANe8u5JUMtxy+8lmn1o0cTAdN8hvRClyeYDfGGS3B9eJImc3S
+         Ece9CJaS3SgSfY0W0vxm50Z41VlMCiF8UkRWRwHGuzGeqTWmoA5OTOQZFsIhpxr30f4q
+         XRsrKpEJgeuGcZ7zCXFsnDbcW1dtqkzZKCx3yqzaT86zO5LgU++og16DTiGYZdk/TTaV
+         WgEaYR+QhOivJqhUx1OG8y+9rfHvxjS/C92P+dh+i3m98Ha6K2l+X7WgQca/BfoLkuSI
+         Hhvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=98OyFl144wVGX53G/lcneDRh2auqmhwtC1rmf0wkfGU=;
+        b=IDrlYao8WRIHoXDjAfSExLrSh23SbKpJnB7y23tq0KgVRGizu62AMyndjwz6jt9cMI
+         75leu3h38C6CSTiJoWzPgoNjwIekd0Z8A+yQCMRQGkRgiw8zNaG6dqBN5c17dmPMJfHi
+         6Rw22gYGkYeus1UGrwfcaI/5AQb80ACyEUc+mfEtlUxpCdrXVeOC8eSSgyG/3/u2zIlF
+         bBOfztvjAA57Vf7uxcS7dX/0Z1GBT7UsmkZKA4NTSmuIuyALClZ0oEYW170TmSSNst2h
+         jhAtL8PWBALCE/pQzlyHlOM4nIiDbTcntbSFWW8ar+NkBe99SPVnc3SCb6+zsE53lAPF
+         gj+A==
+X-Gm-Message-State: ALQs6tDOT13/nYhCOImJeVLlMufb8zHNOU4ao3M+ZF+TvobZZxZ6IJoV
+        PIsu66wMU/L0a52zwbotLAPWwKJ2+hYc31UtmFs=
+X-Google-Smtp-Source: AIpwx4/7TBwTVjIOe5IqMxQe3h3pFx3pXqcdGLqT5XTu3uywcswchrGOHDONgbkDy8+mck1Xqs5Eymfa1gY2aZ+X2uM=
+X-Received: by 10.55.33.169 with SMTP id f41mr10833525qki.174.1524235110074;
+ Fri, 20 Apr 2018 07:38:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PEIAKu/WMn1b1Hv9"
-Content-Disposition: inline
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <jhogan@kernel.org>
+Received: by 10.12.185.25 with HTTP; Fri, 20 Apr 2018 07:38:29 -0700 (PDT)
+In-Reply-To: <CAH8yC8mnfNnG86kgjnfwiZJ0=qN+w=5PVcLcxddaJdDtYbSanA@mail.gmail.com>
+References: <CAK8P3a3qAoR1afmTTK1CAp1L81dzwtBL+SKj=QMqD=dBr_8oRQ@mail.gmail.com>
+ <20180420130346.3178914-1-arnd@arndb.de> <CAH8yC8mnfNnG86kgjnfwiZJ0=qN+w=5PVcLcxddaJdDtYbSanA@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 20 Apr 2018 16:38:29 +0200
+X-Google-Sender-Auth: J-Jrsq7jwkqvvWVW0-6W9coGyEE
+Message-ID: <CAK8P3a0nL4B+t6BMRhr36RrZ_jDgwnY1BviNPD+cFzsUGeppmA@mail.gmail.com>
+Subject: Re: [PATCH] x86: ipc: fix x32 version of shmid64_ds and msqid64_ds
+To:     Jeffrey Walton <noloader@gmail.com>
+Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Albert ARIBAUD <albert.aribaud@3adev.fr>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Daniel Schepler <dschepler@gmail.com>,
+        "H . J . Lu" <hjl.tools@gmail.com>,
+        Adam Borowski <kilobyte@angband.pl>, tg@mirbsd.de,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "# 3.4.x" <stable@vger.kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63643
+X-archive-position: 63644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,78 +93,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, Apr 20, 2018 at 3:53 PM, Jeffrey Walton <noloader@gmail.com> wrote:
+>> +#if !defined(__x86_64__) || !defined(__ilp32__)
+>>  #include <asm-generic/msgbuf.h>
+>> +#else
+>
+> I understand there's some progress having Clang compile the kernel.
+> Clang treats __ILP32__ and friends differently than GCC. I believe
+> ILP32 shows up just about everywhere there are 32-bit ints, longs and
+> pointers. You might find it on Aarch64 or you might find it on MIPS64
+> when using Clang.
+>
+> I think that means this may be a little suspicious:
+>
+>     > +#if !defined(__x86_64__) || !defined(__ilp32__)
+>
+> I kind of felt LLVM was wandering away from the x32 ABI, but the LLVM
+> devs insisted they were within their purview. Also see
+> https://lists.llvm.org/pipermail/cfe-dev/2015-December/046300.html.
+>
+> Sorry about the top-post. I just wanted to pick out that one piece.
 
---PEIAKu/WMn1b1Hv9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+It seems I made a typo and it needs to be __ILP32__ rather than
+__ilp32__ (corrected that locally, will resend once we have resolved
+this).
 
-Hi Linus,
+Aside from that, the #if check seems to be correct to me: this
+is an x86-specific header, so it won't ever be seen on other
+architectures. On x86-32, __x86_64__ isn't set, so we don't care
+about whether __ilp32__ is set or not, and on x86-64 (lp64),
+__ilp32__ is never set, so we still get the asm-generic header.
 
-Please pull the following MIPS fixes.
-
-Thanks
-James
-
-The following changes since commit a5075e6226c42a8e64ea1b862eec7747dc46cb32:
-
-  MIPS: BCM47XX: Use standard reset button for Luxul XWR-1750 (2018-04-07 00:10:48 +0100)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_fixes_4.17_1
-
-for you to fetch changes up to b3d7e55c3f886493235bfee08e1e5a4a27cbcce8:
-
-  MIPS: uaccess: Add micromips clobbers to bzero invocation (2018-04-18 22:02:29 +0100)
-
-----------------------------------------------------------------
-MIPS fixes for 4.17-rc2
-
-Some MIPS fixes for 4.17:
-
- - io: Add barriers to read*() & write*()
-
- - dts: Fix boston PCI bus DTC warnings (4.17)
-
- - memset: Several corner case fixes (one 3.10, others longer)
-
-----------------------------------------------------------------
-Matt Redfearn (5):
-      MIPS: dts: Boston: Fix PCI bus dtc warnings:
-      MIPS: memset.S: EVA & fault support for small_memset
-      MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
-      MIPS: memset.S: Fix clobber of v1 in last_fixup
-      MIPS: uaccess: Add micromips clobbers to bzero invocation
-
-Sinan Kaya (2):
-      MIPS: io: Prevent compiler reordering writeX()
-      MIPS: io: Add barrier after register read in readX()
-
- arch/mips/boot/dts/img/boston.dts |  6 ++++++
- arch/mips/include/asm/io.h        |  4 +++-
- arch/mips/include/asm/uaccess.h   | 11 +++++++++--
- arch/mips/lib/memset.S            | 11 ++++++++---
- 4 files changed, 26 insertions(+), 6 deletions(-)
-
---PEIAKu/WMn1b1Hv9
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlrZ93kACgkQbAtpk944
-dnr1fg//cScKSpDyfrVmdRtj28q63ukxQqmRCPHXyBEeEvRZlkZcqAHyjdPY+z1t
-MXsQnftbdgo2beLMR1+M9FtQJKqp3gopex5YIytT0GPpxvAO5yJKHnnCSU184qrR
-hrb1yzKJbPIRSxXkXFWVxpdTEItLoS2zsQGGrPpMEBTydRVFv01LclmJC2nWYlkx
-KvCMfoKoQw0SeMTxxbEC5mgjrOqq//K0R66aMgAv+7oAHhfR/jkR5YIXsgHig3A+
-R8KTP7yrf+X298z4533uZJaJ1ROKuyjmauCffAv3Ey1nIWerfWBz5mBPll6+xefh
-l8qAz9XsVvta89DVWORnIVcH0FkfX0w4dKfaCM10xPofwwgjAf4rHMdJOarKq64C
-c5ieZE4QKvfriJLrrfPWrrH1idma3dZiCnSLRh4XA8c/czzOzCiGXn38GdIk3k46
-c6QUfnpZl1+aITxHarnAPAJVxNBuchRUX+++Uemz6ZZo/gHT0elTjFxqoo1oHrwG
-6E2U8hwRCwwsux9RiQNzaGi91ATYIDTOsCqpo7CJG78WRF4XRRWJP7z/S9m55k5v
-Ln9agMrF9ohhafn0e9ZP6u+BiykMoUGjZn/RWEO3mU+CdJGgGnCBPZQPhlg6500L
-pPPtwcBMq+8Zn9F58ElyqTVch5DMVZzFWh4Fgj5lNtbnmSsDDRk=
-=rrQU
------END PGP SIGNATURE-----
-
---PEIAKu/WMn1b1Hv9--
+      Arnd

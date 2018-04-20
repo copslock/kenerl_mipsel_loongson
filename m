@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 12:28:39 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:48918 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 12:29:03 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:58632 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbeDTK2cLUkY1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 12:28:32 +0200
-Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 20 Apr 2018 10:27:23 +0000
+        by eddie.linux-mips.org with ESMTP id S23990493AbeDTK24rzCh1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 12:28:56 +0200
+Received: from MIPSMAIL01.mipstec.com (mailrelay.mips.com [12.201.5.28]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO); Fri, 20 Apr 2018 10:28:35 +0000
 Received: from mredfearn-linux.mipstec.com (192.168.155.41) by
  MIPSMAIL01.mipstec.com (10.20.43.31) with Microsoft SMTP Server (TLS) id
- 14.3.361.1; Fri, 20 Apr 2018 03:25:16 -0700
+ 14.3.361.1; Fri, 20 Apr 2018 03:24:28 -0700
 From:   Matt Redfearn <matt.redfearn@mips.com>
 To:     James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -18,19 +18,21 @@ CC:     <linux-mips@linux-mips.org>,
         Peter Zijlstra <peterz@infradead.org>,
         <linux-kernel@vger.kernel.org>,
         "Paul Burton" <paul.burton@mips.com>,
+        Robert Richter <rric@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
+        <oprofile-list@lists.sf.net>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: [PATCH v3 7/7] MIPS: perf: Fix BMIPS5000 system mode counting
-Date:   Fri, 20 Apr 2018 11:23:09 +0100
-Message-ID: <1524219789-31241-8-git-send-email-matt.redfearn@mips.com>
+Subject: [PATCH v3 2/7] MIPS: perf: More robustly probe for the presence of per-tc counters
+Date:   Fri, 20 Apr 2018 11:23:04 +0100
+Message-ID: <1524219789-31241-3-git-send-email-matt.redfearn@mips.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
 References: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.155.41]
-X-BESS-ID: 1524219945-321457-10557-42113-6
+X-BESS-ID: 1524219945-321457-10557-42113-7
 X-BESS-VER: 2018.5-r1804181636
 X-BESS-Apparent-Source-IP: 12.201.5.28
 X-BESS-Outbound-Spam-Score: 0.00
@@ -45,7 +47,7 @@ Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63639
+X-archive-position: 63640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,84 +64,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When perf is used in system mode, i.e. specifying a set of CPUs to
-count (perf -a -C cpu), event->cpu is set to the CPU number on which
-events should be counted. The current BMIPS500 variation of
-mipsxx_pmu_enable_event only over sets the counter to count the current
-CPU, so system mode does not work.
-
-Fix this by removing this BMIPS5000 specific path and integrating it
-with the generic one. Since BMIPS5000 uses specific extensions to the
-perf control register, different fields must be set up to count the
-relevant CPU.
+The presence of per TC performance counters is now detected by
+cpu-probe.c and indicated by MIPS_CPU_MT_PER_TC_PERF_COUNTERS in
+cpu_data. Switch detection of the feature to use this new flag rather
+than blindly testing the implementation specific config7 register with a
+magic number.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 ---
 
-Changes in v3: None
-Changes in v2:
-New patch to fix BMIPS5000 system mode perf.
+Changes in v3:
+Use flag in cpu_data set by cpu_probe.c to indicate feature presence.
 
-Florian, I don't have access to a BMIPS5000 board, but from code
-inspection only I suspect this patch is necessary to have system mode
-work. If someone could test that would be appreciated.
+Changes in v2: None
 
----
- arch/mips/include/asm/mipsregs.h     |  1 +
- arch/mips/kernel/perf_event_mipsxx.c | 17 ++++++-----------
- 2 files changed, 7 insertions(+), 11 deletions(-)
+ arch/mips/include/asm/cpu-features.h | 7 +++++++
+ arch/mips/kernel/perf_event_mipsxx.c | 3 ---
+ arch/mips/oprofile/op_model_mipsxx.c | 2 --
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index a4baaaa02bc8..3e1fbb7aaa2a 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -735,6 +735,7 @@
- #define MIPS_PERFCTRL_MT_EN_TC	(_ULCAST_(2) << 20)
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 721b698bfe3c..69755d900c69 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -534,6 +534,13 @@
+ # define cpu_has_shared_ftlb_entries 0
+ #endif
  
- /* PerfCnt control register MT extensions used by BMIPS5000 */
-+#define BRCM_PERFCTRL_VPEID(v)	(_ULCAST_(1) << (12 + v))
- #define BRCM_PERFCTRL_TC	(_ULCAST_(1) << 30)
- 
- /* PerfCnt control register MT extensions used by Netlogic XLR */
++#ifdef CONFIG_MIPS_MT_SMP
++# define cpu_has_mipsmt_pertccounters \
++	(cpu_data[0].options & MIPS_CPU_MT_PER_TC_PERF_COUNTERS)
++#else
++# define cpu_has_mipsmt_pertccounters 0
++#endif /* CONFIG_MIPS_MT_SMP */
++
+ /*
+  * Guest capabilities
+  */
 diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 5b8811643e60..77d7167e303b 100644
+index 6668f67a61c3..0595a974bc81 100644
 --- a/arch/mips/kernel/perf_event_mipsxx.c
 +++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -364,16 +364,7 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
- 		/* Make sure interrupt enabled. */
- 		MIPS_PERFCTRL_IE;
+@@ -129,8 +129,6 @@ static struct mips_pmu mipspmu;
  
--#ifdef CONFIG_CPU_BMIPS5000
--	{
--		/* enable the counter for the calling thread */
--		unsigned int vpe_id;
+ 
+ #ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
+-static int cpu_has_mipsmt_pertccounters;
 -
--		vpe_id = smp_processor_id() & MIPS_CPUID_TO_COUNTER_MASK;
--		cpuc->saved_ctrl[idx] |= BIT(12 + vpe_id) | BRCM_PERFCTRL_TC;
--	}
--#else
--#ifdef CONFIG_MIPS_MT_SMP
-+#if defined(CONFIG_MIPS_MT_SMP) && !defined(CONFIG_CPU_BMIPS5000)
- 	if (range > V) {
- 		/* The counter is processor wide. Set it up to count all TCs. */
- 		pr_debug("Enabling perf counter for all TCs\n");
-@@ -390,12 +381,16 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
- 		 */
- 		cpu = (event->cpu >= 0) ? event->cpu : smp_processor_id();
+ static DEFINE_RWLOCK(pmuint_rwlock);
  
-+#if defined(CONFIG_CPU_BMIPS5000)
-+		ctrl = BRCM_PERFCTRL_VPEID(cpu & MIPS_CPUID_TO_COUNTER_MASK);
-+		ctrl |= BRCM_PERFCTRL_TC;
-+#else
- 		ctrl = M_PERFCTL_VPEID(cpu_vpe_id(&cpu_data[cpu]));
- 		ctrl |= M_TC_EN_VPE;
-+#endif
- 		cpuc->saved_ctrl[idx] |= ctrl;
- 		pr_debug("Enabling perf counter for CPU%d\n", cpu);
+ #if defined(CONFIG_CPU_BMIPS5000)
+@@ -1723,7 +1721,6 @@ init_hw_perf_events(void)
  	}
--#endif /* CONFIG_CPU_BMIPS5000 */
- 	/*
- 	 * We do not actually let the counter run. Leave it until start().
- 	 */
+ 
+ #ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
+-	cpu_has_mipsmt_pertccounters = read_c0_config7() & (1<<19);
+ 	if (!cpu_has_mipsmt_pertccounters)
+ 		counters = counters_total_to_per_cpu(counters);
+ #endif
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index c3e4c18ef8d4..7c04b17f4a48 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -36,7 +36,6 @@ static int perfcount_irq;
+ #endif
+ 
+ #ifdef CONFIG_MIPS_MT_SMP
+-static int cpu_has_mipsmt_pertccounters;
+ #define WHAT		(MIPS_PERFCTRL_MT_EN_VPE | \
+ 			 M_PERFCTL_VPEID(cpu_vpe_id(&current_cpu_data)))
+ #define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
+@@ -326,7 +325,6 @@ static int __init mipsxx_init(void)
+ 	}
+ 
+ #ifdef CONFIG_MIPS_MT_SMP
+-	cpu_has_mipsmt_pertccounters = read_c0_config7() & (1<<19);
+ 	if (!cpu_has_mipsmt_pertccounters)
+ 		counters = counters_total_to_per_cpu(counters);
+ #endif
 -- 
 2.7.4

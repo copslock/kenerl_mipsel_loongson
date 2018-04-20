@@ -1,45 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 16:41:03 +0200 (CEST)
-Received: from out02.mta.xmission.com ([166.70.13.232]:60951 "EHLO
-        out02.mta.xmission.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992404AbeDTOkybgDEP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 16:40:54 +0200
-Received: from in02.mta.xmission.com ([166.70.13.52])
-        by out02.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1f9XDT-0007Wo-WB; Fri, 20 Apr 2018 08:40:48 -0600
-Received: from [97.119.174.25] (helo=x220.int.ebiederm.org)
-        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1f9XDS-0006Ha-E2; Fri, 20 Apr 2018 08:40:47 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     linux-arch@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
-Date:   Fri, 20 Apr 2018 09:37:57 -0500
-Message-Id: <20180420143811.9994-8-ebiederm@xmission.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <87604mhrnb.fsf@xmission.com>
-References: <87604mhrnb.fsf@xmission.com>
-X-XM-SPF: eid=1f9XDS-0006Ha-E2;;;mid=<20180420143811.9994-8-ebiederm@xmission.com>;;;hst=in02.mta.xmission.com;;;ip=97.119.174.25;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX1+5sRO94VmF1h3VehRh4SlfoAgy3OUrY6M=
-X-SA-Exim-Connect-IP: 97.119.174.25
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-Subject: [REVIEW][PATCH 08/22] signal/mips: Use force_sig_fault where appropriate
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
-Return-Path: <ebiederm@xmission.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 17:26:23 +0200 (CEST)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:39134
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994609AbeDTP0PppFIW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 17:26:15 +0200
+Received: by mail-qt0-x244.google.com with SMTP id l8-v6so10087613qtp.6;
+        Fri, 20 Apr 2018 08:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=CyP1EJqXjqmFw/Kh4PH8s6bdg75GcZhLALy945yCAo4=;
+        b=NYy8dM2zVexniYlx/GlUzBMHCoMavGd04aOr5FXgzwlU0nylcjvo/+viWJ+SD24zZs
+         SwgGHEOloEdrLDUFCX8QR9NE5DbRMQm+PQkE2cYfDA9EHp0kTXA1MGHUU+0nYuGR3BBP
+         6nhQoXV4aZs/sS5VdkmaRIesHROTwZqY4W8cvlIbHNGjdFut6rmS9gHXjM8wI2xop8XJ
+         Rf4NWCY5TNq+rcpe9ZtCRBGi9o1lrII5Y7/SDM7yyGNkm0aNhi1SmLuCFU3RwqY551HQ
+         ObXC2DT1BdcWHBqc1usUex8AqieaKZ3fXBxLI9sJjbYXKiB49XtA6qu7tf9Xp9XrtvTJ
+         5E/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=CyP1EJqXjqmFw/Kh4PH8s6bdg75GcZhLALy945yCAo4=;
+        b=hzZHV70d2HRZxBDfirFzpibcG/dprImH5jrK+LQvqHbcsVe/R1BStGbZM0+weEalZU
+         bwr/OT/3gFftvtLrnxDfhzOjbQW1dTaL1r2X654b7o/bph5B03xCU67TJeekE1nS0nBp
+         nizwN9WwKEOeo94gptu5dvgrdnF1a3loM3le8hejHHt+30UNY1cowG9OWpfzBxoTMkvs
+         p9ETwXYR8D4Iira96gUfLu0BRxFwuvJTFwhVjUsvMtwuv8NzuRgsG7YnGCbH7cYAiJdR
+         eBdJgQ5dmgNNxJMchv+v7Q7CGW22aA+JuRcAh+8PnVmQQdk5CJ9Xl18G98neHVCeG+gG
+         SF5g==
+X-Gm-Message-State: ALQs6tDxcUaABw6R5bD5IDie936zUHcQStEcoD80EjeXB4hKuLbxD4Hn
+        CWR8YBOSsZKVhWnDpo3wKxXBBnAO7zheeY8QP7S3Dvpj
+X-Google-Smtp-Source: AB8JxZrRS4DLIo+Y9v4t59ugQ8j9fAkVk+8ILL2m9H75am3diu4sY9hClhB1YWEoNZvL2m2C3xYz2MgzI9nSiqKoNlY=
+X-Received: by 2002:ac8:1c12:: with SMTP id a18-v6mr11789078qtk.280.1524237969665;
+ Fri, 20 Apr 2018 08:26:09 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.12.185.25 with HTTP; Fri, 20 Apr 2018 08:26:09 -0700 (PDT)
+In-Reply-To: <0b52cfd4def5dd0287a1fd48c632a32e7cc3117b.1524122311.git.baolin.wang@linaro.org>
+References: <0b52cfd4def5dd0287a1fd48c632a32e7cc3117b.1524122311.git.baolin.wang@linaro.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 20 Apr 2018 17:26:09 +0200
+X-Google-Sender-Auth: N8YcutgJ7sNr94zJbIXwkDoM4Q8
+Message-ID: <CAK8P3a0BFJK-byNXC8jzxNHyPAC4s1oop06KhrXkr25Dund1Uw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: sni: Remove the read_persistent_clock()
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Mark Brown <broonie@kernel.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63645
+X-archive-position: 63646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ebiederm@xmission.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,238 +73,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Filling in struct siginfo before calling force_sig_info a tedious and
-error prone process, where once in a great while the wrong fields
-are filled out, and siginfo has been inconsistently cleared.
+On Thu, Apr 19, 2018 at 9:21 AM, Baolin Wang <baolin.wang@linaro.org> wrote:
+> The dummy read_persistent_clock() uses a timespec, which is not year 2038
+> safe on 32bit systems. Thus remove this obsolete interface.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 
-Simplify this process by using the helper force_sig_fault.  Which
-takes as a parameters all of the information it needs, ensures
-all of the fiddly bits of filling in struct siginfo are done properly
-and then calls force_sig_info.
+Looks good to me. I have a larger but incomplete patch for arch/mips
+handling of  read_persistent_clock(), but yours is a good start.
 
-In short about a 5 line reduction in code for every time force_sig_info
-is called, which makes the calling function clearer.
-
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
----
- arch/mips/kernel/traps.c | 65 ++++++++++++++----------------------------------
- arch/mips/mm/fault.c     | 19 ++++----------
- 2 files changed, 23 insertions(+), 61 deletions(-)
-
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 967e9e4e795e..66ec4b0b484d 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -699,17 +699,11 @@ static int simulate_sync(struct pt_regs *regs, unsigned int opcode)
- asmlinkage void do_ov(struct pt_regs *regs)
- {
- 	enum ctx_state prev_state;
--	siginfo_t info;
--
--	clear_siginfo(&info);
--	info.si_signo = SIGFPE;
--	info.si_code = FPE_INTOVF;
--	info.si_addr = (void __user *)regs->cp0_epc;
- 
- 	prev_state = exception_enter();
- 	die_if_kernel("Integer overflow", regs);
- 
--	force_sig_info(SIGFPE, &info, current);
-+	force_sig_fault(SIGFPE, FPE_INTOVF, (void __user *)regs->cp0_epc, current);
- 	exception_exit(prev_state);
- }
- 
-@@ -722,32 +716,27 @@ asmlinkage void do_ov(struct pt_regs *regs)
- void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
- 		     struct task_struct *tsk)
- {
--	struct siginfo si;
--
--	clear_siginfo(&si);
--	si.si_addr = fault_addr;
--	si.si_signo = SIGFPE;
-+	int si_code;
- 
- 	if (fcr31 & FPU_CSR_INV_X)
--		si.si_code = FPE_FLTINV;
-+		si_code = FPE_FLTINV;
- 	else if (fcr31 & FPU_CSR_DIV_X)
--		si.si_code = FPE_FLTDIV;
-+		si_code = FPE_FLTDIV;
- 	else if (fcr31 & FPU_CSR_OVF_X)
--		si.si_code = FPE_FLTOVF;
-+		si_code = FPE_FLTOVF;
- 	else if (fcr31 & FPU_CSR_UDF_X)
--		si.si_code = FPE_FLTUND;
-+		si_code = FPE_FLTUND;
- 	else if (fcr31 & FPU_CSR_INE_X)
--		si.si_code = FPE_FLTRES;
-+		si_code = FPE_FLTRES;
- 
--	force_sig_info(SIGFPE, &si, tsk);
-+	force_sig_fault(SIGFPE, si_code, fault_addr, tsk);
- }
- 
- int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
- {
--	struct siginfo si;
-+	int si_code;
- 	struct vm_area_struct *vma;
- 
--	clear_siginfo(&si);
- 	switch (sig) {
- 	case 0:
- 		return 0;
-@@ -757,23 +746,18 @@ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
- 		return 1;
- 
- 	case SIGBUS:
--		si.si_addr = fault_addr;
--		si.si_signo = sig;
--		si.si_code = BUS_ADRERR;
--		force_sig_info(sig, &si, current);
-+		force_sig_fault(SIGBUS, BUS_ADRERR, fault_addr, current);
- 		return 1;
- 
- 	case SIGSEGV:
--		si.si_addr = fault_addr;
--		si.si_signo = sig;
- 		down_read(&current->mm->mmap_sem);
- 		vma = find_vma(current->mm, (unsigned long)fault_addr);
- 		if (vma && (vma->vm_start <= (unsigned long)fault_addr))
--			si.si_code = SEGV_ACCERR;
-+			si_code = SEGV_ACCERR;
- 		else
--			si.si_code = SEGV_MAPERR;
-+			si_code = SEGV_MAPERR;
- 		up_read(&current->mm->mmap_sem);
--		force_sig_info(sig, &si, current);
-+		force_sig_fault(SIGSEGV, si_code, fault_addr, current);
- 		return 1;
- 
- 	default:
-@@ -896,10 +880,8 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
- void do_trap_or_bp(struct pt_regs *regs, unsigned int code, int si_code,
- 	const char *str)
- {
--	siginfo_t info;
- 	char b[40];
- 
--	clear_siginfo(&info);
- #ifdef CONFIG_KGDB_LOW_LEVEL_TRAP
- 	if (kgdb_ll_trap(DIE_TRAP, str, regs, code, current->thread.trap_nr,
- 			 SIGTRAP) == NOTIFY_STOP)
-@@ -921,13 +903,9 @@ void do_trap_or_bp(struct pt_regs *regs, unsigned int code, int si_code,
- 	case BRK_DIVZERO:
- 		scnprintf(b, sizeof(b), "%s instruction in kernel code", str);
- 		die_if_kernel(b, regs);
--		if (code == BRK_DIVZERO)
--			info.si_code = FPE_INTDIV;
--		else
--			info.si_code = FPE_INTOVF;
--		info.si_signo = SIGFPE;
--		info.si_addr = (void __user *) regs->cp0_epc;
--		force_sig_info(SIGFPE, &info, current);
-+		force_sig_fault(SIGFPE,
-+				code == BRK_DIVZERO ? FPE_INTDIV : FPE_INTOVF,
-+				(void __user *) regs->cp0_epc, current);
- 		break;
- 	case BRK_BUG:
- 		die_if_kernel("Kernel bug detected", regs);
-@@ -952,9 +930,7 @@ void do_trap_or_bp(struct pt_regs *regs, unsigned int code, int si_code,
- 		scnprintf(b, sizeof(b), "%s instruction in kernel code", str);
- 		die_if_kernel(b, regs);
- 		if (si_code) {
--			info.si_signo = SIGTRAP;
--			info.si_code = si_code;
--			force_sig_info(SIGTRAP, &info, current);
-+			force_sig_fault(SIGTRAP, si_code, NULL,	current);
- 		} else {
- 			force_sig(SIGTRAP, current);
- 		}
-@@ -1506,13 +1482,8 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
-  */
- asmlinkage void do_watch(struct pt_regs *regs)
- {
--	siginfo_t info;
- 	enum ctx_state prev_state;
- 
--	clear_siginfo(&info);
--	info.si_signo = SIGTRAP;
--	info.si_code = TRAP_HWBKPT;
--
- 	prev_state = exception_enter();
- 	/*
- 	 * Clear WP (bit 22) bit of cause register so we don't loop
-@@ -1528,7 +1499,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
- 	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
- 		mips_read_watch_registers();
- 		local_irq_enable();
--		force_sig_info(SIGTRAP, &info, current);
-+		force_sig_fault(SIGTRAP, TRAP_HWBKPT, NULL, current);
- 	} else {
- 		mips_clear_watch_registers();
- 		local_irq_enable();
-diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-index 75392becd933..5f71f2b903b7 100644
---- a/arch/mips/mm/fault.c
-+++ b/arch/mips/mm/fault.c
-@@ -42,7 +42,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
- 	struct task_struct *tsk = current;
- 	struct mm_struct *mm = tsk->mm;
- 	const int field = sizeof(unsigned long) * 2;
--	siginfo_t info;
-+	int si_code;
- 	int fault;
- 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
- 
-@@ -63,8 +63,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
- 		return;
- #endif
- 
--	clear_siginfo(&info);
--	info.si_code = SEGV_MAPERR;
-+	si_code = SEGV_MAPERR;
- 
- 	/*
- 	 * We fault-in kernel-space virtual memory on-demand. The
-@@ -113,7 +112,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
-  * we can handle it..
-  */
- good_area:
--	info.si_code = SEGV_ACCERR;
-+	si_code = SEGV_ACCERR;
- 
- 	if (write) {
- 		if (!(vma->vm_flags & VM_WRITE))
-@@ -224,11 +223,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
- 			pr_cont("\n");
- 		}
- 		current->thread.trap_nr = (regs->cp0_cause >> 2) & 0x1f;
--		info.si_signo = SIGSEGV;
--		info.si_errno = 0;
--		/* info.si_code has been set above */
--		info.si_addr = (void __user *) address;
--		force_sig_info(SIGSEGV, &info, tsk);
-+		force_sig_fault(SIGSEGV, si_code, (void __user *)address, tsk);
- 		return;
- 	}
- 
-@@ -284,11 +279,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
- #endif
- 	current->thread.trap_nr = (regs->cp0_cause >> 2) & 0x1f;
- 	tsk->thread.cp0_badvaddr = address;
--	info.si_signo = SIGBUS;
--	info.si_errno = 0;
--	info.si_code = BUS_ADRERR;
--	info.si_addr = (void __user *) address;
--	force_sig_info(SIGBUS, &info, tsk);
-+	force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address, tsk);
- 
- 	return;
- #ifndef CONFIG_64BIT
--- 
-2.14.1
+Acked-by: Arnd Bergmann <arnd@arndb.de>

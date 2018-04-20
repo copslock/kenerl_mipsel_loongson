@@ -1,78 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 09:58:40 +0200 (CEST)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:40169
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbeDTH6cC5fgU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 09:58:32 +0200
-Received: by mail-qk0-x244.google.com with SMTP id o64so8051658qkl.7;
-        Fri, 20 Apr 2018 00:58:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 10:05:36 +0200 (CEST)
+Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:33857
+        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994588AbeDTIF1L5gvU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 10:05:27 +0200
+Received: by mail-wr0-x242.google.com with SMTP id p18-v6so1320425wrm.1
+        for <linux-mips@linux-mips.org>; Fri, 20 Apr 2018 01:05:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=wp4ZumWAO4S4m00Wxjc05/8zWx7MRQmaV8jT3x+PC3M=;
-        b=k37mhGlX3t9RDGBgioIzM7TBA1IpdSS6bzxZrZ9uzScwGSOmxVmxie+KxfjdZcXj6l
-         UY9f7rwBrN3Oham0GerA9slTDv8t+HpG5e55eJcRMESrh6MsRVMZx1PpeHi6vH1InNcH
-         cIuG8RQhAK11CG/zKY8x26/bzM1crlP8vOGTaZ1GFaewYRn6ehadWs/ZgXYvxL6jenEd
-         j0JgnlyigtaflWLkIxklZPFvYr17zvUtKvgMPhG3fOR/nTqgSsexM4BdI+rgbmSrM+fh
-         AxuHRj3VHX5j+VKINjHG9f68IbNhwR/W3xbKG/zMvBu3b37YQyvFPBCiH9GDjqz6cEgf
-         rmxg==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=LQaHYo34cmhrKVhL/tgxE4PmLNvezLMY8FOdLe3YElA=;
+        b=fIe7BxY2hAuGvYKKI9EusA3nvJk9R1QENX6besE4asnDl4XfvTwHQH35EsXzGmGjBU
+         Vq8KYvHLRP0qCO7wkSXhioLc2HaaiGqJ6MXtTciJ36/nb75HHc0CGUBlTo6Ki9O4lBgX
+         nCZlq4DSLJJcL8IZ85zNUaUxAcYKt+TL9gDUs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=wp4ZumWAO4S4m00Wxjc05/8zWx7MRQmaV8jT3x+PC3M=;
-        b=pP051JTRDiG1kUXG5WLf0vsphRz2ErBwqupDbRzWRVq5LM/DRHFOjHeyBZk9OuFRye
-         vjhjvVu4CRae8NWRSQSlOwZ4BMEJL0uox/lt/ArM8mqRHiNR+3VkUN4GBP6azvUr44lA
-         meoeqhR8MSc53l4KqSdX/1K3P9oprYZZWgVNEnNgeUdoSPSXbOSqgTycF0xjmXDvsoJm
-         X3q9X1EzU2l8TCk+LTWHChpW7a0Ct7Qg7oNn3wv03U3wEB/PSAs4bJ3zMdP2fcr7AcVI
-         w2AsL+t52EDn18/sTplckHxVKtc9B1PwTlO+jJUHrAtr+X1Q8MPVkalZWb8V0nuM6zRJ
-         9/5Q==
-X-Gm-Message-State: ALQs6tAuIVTD/cyBe+srJauNM0B8cY/HlXrBG8v3Cy+IVw5LwMhoOfNG
-        fjEMTHg9pqwnZcTH3aGSXRfudEwU5rHzB92zAV0=
-X-Google-Smtp-Source: AB8JxZrRyZ6k002QS9Q1occohyKgpunn2fXCxVeCrcoLr1KtLtdkKWSVfze8QRo+8GFnEBnHRVkLV04/b5K3sp7pNkM=
-X-Received: by 10.55.76.146 with SMTP id z140mr9967865qka.224.1524211104879;
- Fri, 20 Apr 2018 00:58:24 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.12.185.25 with HTTP; Fri, 20 Apr 2018 00:58:24 -0700 (PDT)
-In-Reply-To: <20180420075407.GA7119@osiris>
-References: <20180419143737.606138-1-arnd@arndb.de> <20180419143737.606138-5-arnd@arndb.de>
- <20180420075407.GA7119@osiris>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 20 Apr 2018 09:58:24 +0200
-X-Google-Sender-Auth: eVOYssfyI36gGjjuqQplKA-NT7Y
-Message-ID: <CAK8P3a1_TLs=QZuMVbbAGMEct+SBg2wZ663Kq2RJN5mgU1ZCtw@mail.gmail.com>
-Subject: Re: [PATCH v3 04/17] y2038: s390: Remove unneeded ipc uapi header files
-To:     Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        GNU C Library <libc-alpha@sourceware.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Albert ARIBAUD <albert.aribaud@3adev.fr>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=LQaHYo34cmhrKVhL/tgxE4PmLNvezLMY8FOdLe3YElA=;
+        b=LlGD2dVSPD52sykW/gQcyZJuQZXLHZ5/NHwYmFOa84WymzpA5lgUubp2epeu9r/mMp
+         hyhWhRpNctHFRWn6Nt1iq5A1u0FWJw48+wRwB2hfaJxuiTr78pCzutmaF1NsS00d2WdH
+         LBocT+/jf/JrVMlf71jsUeV4ZyYaKlTo7EJJ9ZQ7nzZxYhnxNLWice0/jJdATtWQpRWN
+         IgKg072jiITPORlVdahiWa1euFfDndfZoIfSixiJkx3dToik6Y/KPTYsg6gqSWCoFJeh
+         gf8NfaoGy6y978KVkNZWu8zZJzBzTg1BPc/rDg2FGD0JTdBNlsN7i28cqc9Xx1pvyXPi
+         KLog==
+X-Gm-Message-State: ALQs6tCvG+tBbf1+yft48sHNXRmFjNmkTJ50R+00eVPUH0ovTuIuZsbx
+        Sz7JkpdSFGcUT0ac1SCqxCl7ow==
+X-Google-Smtp-Source: AIpwx49OWKRkJ1YoBOZk0/BVE7Y6wECmCESDxwwpRzdCQAK/wqioSM3qqDl3/+gp2XuarFAd0jP8jA==
+X-Received: by 10.28.89.68 with SMTP id n65mr1067064wmb.96.1524211521188;
+        Fri, 20 Apr 2018 01:05:21 -0700 (PDT)
+Received: from dell ([2.27.167.70])
+        by smtp.gmail.com with ESMTPSA id q21-v6sm4802752wra.24.2018.04.20.01.05.17
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 20 Apr 2018 01:05:20 -0700 (PDT)
+Date:   Fri, 20 Apr 2018 09:05:16 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Wolfram Sang <wsa@the-dreams.de>
+Cc:     linux-i2c@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Sergey Lapin <slapin@ossfans.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+        James Hogan <jhogan@kernel.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH 1/7] i2c: i2c-gpio: move header to platform_data
+Message-ID: <20180420080516.hoa2wlubrnpnkl5z@dell>
+References: <20180419200015.15095-1-wsa@the-dreams.de>
+ <20180419200015.15095-2-wsa@the-dreams.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20180419200015.15095-2-wsa@the-dreams.de>
+User-Agent: NeoMutt/20170609 (1.8.3)
+Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63630
+X-archive-position: 63631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: lee.jones@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,39 +85,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 20, 2018 at 9:54 AM, Heiko Carstens
-<heiko.carstens@de.ibm.com> wrote:
-> On Thu, Apr 19, 2018 at 04:37:24PM +0200, Arnd Bergmann wrote:
->> The s390 msgbuf/sembuf/shmbuf header files are all identical to the
->> version from asm-generic.
->>
->> This patch removes the files and replaces them with 'generic-y'
->> statements, to avoid having to modify each copy when we extend sysvipc
->> to deal with 64-bit time_t in 32-bit user space.
->>
->> Note that unlike alpha and ia64, the ipcbuf.h header file is slightly
->> different here, so I'm leaving the private copy.
->>
->> To deal with 32-bit compat tasks, we also have to adapt the definitions
->> of compat_{shm,sem,msg}id_ds to match the changes to the respective
->> asm-generic files.
->>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->>  arch/s390/include/asm/compat.h      | 32 ++++++++++++------------
->>  arch/s390/include/uapi/asm/Kbuild   |  3 +++
->>  arch/s390/include/uapi/asm/msgbuf.h | 38 ----------------------------
->>  arch/s390/include/uapi/asm/sembuf.h | 30 -----------------------
->>  arch/s390/include/uapi/asm/shmbuf.h | 49 -------------------------------------
->>  5 files changed, 19 insertions(+), 133 deletions(-)
->>  delete mode 100644 arch/s390/include/uapi/asm/msgbuf.h
->>  delete mode 100644 arch/s390/include/uapi/asm/sembuf.h
->>  delete mode 100644 arch/s390/include/uapi/asm/shmbuf.h
->
-> FWIW,
->
-> Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+On Thu, 19 Apr 2018, Wolfram Sang wrote:
 
-Thanks, added to the patch.
+> This header only contains platform_data. Move it to the proper directory.
+> 
+> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+> ---
+>  MAINTAINERS                                      | 2 +-
+>  arch/arm/mach-ks8695/board-acs5k.c               | 2 +-
+>  arch/arm/mach-omap1/board-htcherald.c            | 2 +-
+>  arch/arm/mach-pxa/palmz72.c                      | 2 +-
+>  arch/arm/mach-pxa/viper.c                        | 2 +-
+>  arch/arm/mach-sa1100/simpad.c                    | 2 +-
+>  arch/mips/alchemy/board-gpr.c                    | 2 +-
+>  drivers/i2c/busses/i2c-gpio.c                    | 2 +-
+>  drivers/media/platform/marvell-ccic/mmp-driver.c | 2 +-
+>  drivers/mfd/sm501.c                              | 2 +-
+>  include/linux/{ => platform_data}/i2c-gpio.h     | 0
+>  11 files changed, 10 insertions(+), 10 deletions(-)
+>  rename include/linux/{ => platform_data}/i2c-gpio.h (100%)
 
-     Arnd
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

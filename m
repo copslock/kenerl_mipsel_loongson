@@ -1,66 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 17:26:23 +0200 (CEST)
-Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:39134
-        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994609AbeDTP0PppFIW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2018 17:26:15 +0200
-Received: by mail-qt0-x244.google.com with SMTP id l8-v6so10087613qtp.6;
-        Fri, 20 Apr 2018 08:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=CyP1EJqXjqmFw/Kh4PH8s6bdg75GcZhLALy945yCAo4=;
-        b=NYy8dM2zVexniYlx/GlUzBMHCoMavGd04aOr5FXgzwlU0nylcjvo/+viWJ+SD24zZs
-         SwgGHEOloEdrLDUFCX8QR9NE5DbRMQm+PQkE2cYfDA9EHp0kTXA1MGHUU+0nYuGR3BBP
-         6nhQoXV4aZs/sS5VdkmaRIesHROTwZqY4W8cvlIbHNGjdFut6rmS9gHXjM8wI2xop8XJ
-         Rf4NWCY5TNq+rcpe9ZtCRBGi9o1lrII5Y7/SDM7yyGNkm0aNhi1SmLuCFU3RwqY551HQ
-         ObXC2DT1BdcWHBqc1usUex8AqieaKZ3fXBxLI9sJjbYXKiB49XtA6qu7tf9Xp9XrtvTJ
-         5E/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=CyP1EJqXjqmFw/Kh4PH8s6bdg75GcZhLALy945yCAo4=;
-        b=hzZHV70d2HRZxBDfirFzpibcG/dprImH5jrK+LQvqHbcsVe/R1BStGbZM0+weEalZU
-         bwr/OT/3gFftvtLrnxDfhzOjbQW1dTaL1r2X654b7o/bph5B03xCU67TJeekE1nS0nBp
-         nizwN9WwKEOeo94gptu5dvgrdnF1a3loM3le8hejHHt+30UNY1cowG9OWpfzBxoTMkvs
-         p9ETwXYR8D4Iira96gUfLu0BRxFwuvJTFwhVjUsvMtwuv8NzuRgsG7YnGCbH7cYAiJdR
-         eBdJgQ5dmgNNxJMchv+v7Q7CGW22aA+JuRcAh+8PnVmQQdk5CJ9Xl18G98neHVCeG+gG
-         SF5g==
-X-Gm-Message-State: ALQs6tDxcUaABw6R5bD5IDie936zUHcQStEcoD80EjeXB4hKuLbxD4Hn
-        CWR8YBOSsZKVhWnDpo3wKxXBBnAO7zheeY8QP7S3Dvpj
-X-Google-Smtp-Source: AB8JxZrRS4DLIo+Y9v4t59ugQ8j9fAkVk+8ILL2m9H75am3diu4sY9hClhB1YWEoNZvL2m2C3xYz2MgzI9nSiqKoNlY=
-X-Received: by 2002:ac8:1c12:: with SMTP id a18-v6mr11789078qtk.280.1524237969665;
- Fri, 20 Apr 2018 08:26:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2018 20:42:30 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:39260 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990418AbeDTSmXCzaZv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Apr 2018 20:42:23 +0200
+Received: from localhost (50-81-22-222.client.mchsi.com [50.81.22.222])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 136B9217AE;
+        Fri, 20 Apr 2018 18:42:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 136B9217AE
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=helgaas@kernel.org
+Date:   Fri, 20 Apr 2018 13:42:14 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        iommu@lists.linux-foundation.org, x86@kernel.org,
+        linux-block@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-mm@kvack.org, linux-ide@vger.kernel.org,
+        linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 09/12] PCI: remove CONFIG_PCI_BUS_ADDR_T_64BIT
+Message-ID: <20180420184214.GT28657@bhelgaas-glaptop.roam.corp.google.com>
+References: <20180415145947.1248-1-hch@lst.de>
+ <20180415145947.1248-10-hch@lst.de>
 MIME-Version: 1.0
-Received: by 10.12.185.25 with HTTP; Fri, 20 Apr 2018 08:26:09 -0700 (PDT)
-In-Reply-To: <0b52cfd4def5dd0287a1fd48c632a32e7cc3117b.1524122311.git.baolin.wang@linaro.org>
-References: <0b52cfd4def5dd0287a1fd48c632a32e7cc3117b.1524122311.git.baolin.wang@linaro.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 20 Apr 2018 17:26:09 +0200
-X-Google-Sender-Auth: N8YcutgJ7sNr94zJbIXwkDoM4Q8
-Message-ID: <CAK8P3a0BFJK-byNXC8jzxNHyPAC4s1oop06KhrXkr25Dund1Uw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: sni: Remove the read_persistent_clock()
-To:     Baolin Wang <baolin.wang@linaro.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Mark Brown <broonie@kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180415145947.1248-10-hch@lst.de>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63646
+X-archive-position: 63647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: helgaas@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,13 +50,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 19, 2018 at 9:21 AM, Baolin Wang <baolin.wang@linaro.org> wrote:
-> The dummy read_persistent_clock() uses a timespec, which is not year 2038
-> safe on 32bit systems. Thus remove this obsolete interface.
->
-> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+On Sun, Apr 15, 2018 at 04:59:44PM +0200, Christoph Hellwig wrote:
+> This symbol is now always identical to CONFIG_ARCH_DMA_ADDR_T_64BIT, so
+> remove it.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Looks good to me. I have a larger but incomplete patch for arch/mips
-handling of  read_persistent_clock(), but yours is a good start.
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Please merge this along with the rest of the series; let me know if you
+need anything more from me.
+
+> ---
+>  drivers/pci/Kconfig | 4 ----
+>  drivers/pci/bus.c   | 4 ++--
+>  include/linux/pci.h | 2 +-
+>  3 files changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 34b56a8f8480..29a487f31dae 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -5,10 +5,6 @@
+>  
+>  source "drivers/pci/pcie/Kconfig"
+>  
+> -config PCI_BUS_ADDR_T_64BIT
+> -	def_bool y if (ARCH_DMA_ADDR_T_64BIT || 64BIT)
+> -	depends on PCI
+> -
+>  config PCI_MSI
+>  	bool "Message Signaled Interrupts (MSI and MSI-X)"
+>  	depends on PCI
+> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+> index bc2ded4c451f..35b7fc87eac5 100644
+> --- a/drivers/pci/bus.c
+> +++ b/drivers/pci/bus.c
+> @@ -120,7 +120,7 @@ int devm_request_pci_bus_resources(struct device *dev,
+>  EXPORT_SYMBOL_GPL(devm_request_pci_bus_resources);
+>  
+>  static struct pci_bus_region pci_32_bit = {0, 0xffffffffULL};
+> -#ifdef CONFIG_PCI_BUS_ADDR_T_64BIT
+> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+>  static struct pci_bus_region pci_64_bit = {0,
+>  				(pci_bus_addr_t) 0xffffffffffffffffULL};
+>  static struct pci_bus_region pci_high = {(pci_bus_addr_t) 0x100000000ULL,
+> @@ -230,7 +230,7 @@ int pci_bus_alloc_resource(struct pci_bus *bus, struct resource *res,
+>  					  resource_size_t),
+>  		void *alignf_data)
+>  {
+> -#ifdef CONFIG_PCI_BUS_ADDR_T_64BIT
+> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+>  	int rc;
+>  
+>  	if (res->flags & IORESOURCE_MEM_64) {
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 73178a2fcee0..55371cb827ad 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -670,7 +670,7 @@ int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
+>  int raw_pci_write(unsigned int domain, unsigned int bus, unsigned int devfn,
+>  		  int reg, int len, u32 val);
+>  
+> -#ifdef CONFIG_PCI_BUS_ADDR_T_64BIT
+> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+>  typedef u64 pci_bus_addr_t;
+>  #else
+>  typedef u32 pci_bus_addr_t;
+> -- 
+> 2.17.0
+> 

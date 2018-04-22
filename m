@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:02:20 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34884 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:02:36 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34898 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993251AbeDVOCNNKbCl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:02:13 +0200
+        by eddie.linux-mips.org with ESMTP id S23993448AbeDVOCPOeORl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:02:15 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 31214941;
-        Sun, 22 Apr 2018 14:02:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D4476C9B;
+        Sun, 22 Apr 2018 14:02:08 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        stable@vger.kernel.org, Chuanhua Lei <chuanhua.lei@intel.com>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.16 173/196] MIPS: uaccess: Add micromips clobbers to bzero invocation
-Date:   Sun, 22 Apr 2018 15:53:13 +0200
-Message-Id: <20180422135113.201192144@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.16 174/196] MIPS: memset.S: EVA & fault support for small_memset
+Date:   Sun, 22 Apr 2018 15:53:14 +0200
+Message-Id: <20180422135113.252054528@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180422135104.278511750@linuxfoundation.org>
 References: <20180422135104.278511750@linuxfoundation.org>
@@ -26,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63670
+X-archive-position: 63671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,56 +50,61 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@mips.com>
 
-commit b3d7e55c3f886493235bfee08e1e5a4a27cbcce8 upstream.
+commit 8a8158c85e1e774a44fbe81106fa41138580dfd1 upstream.
 
-The micromips implementation of bzero additionally clobbers registers t7
-& t8. Specify this in the clobbers list when invoking bzero.
+The MIPS kernel memset / bzero implementation includes a small_memset
+branch which is used when the region to be set is smaller than a long (4
+bytes on 32bit, 8 bytes on 64bit). The current small_memset
+implementation uses a simple store byte loop to write the destination.
+There are 2 issues with this implementation:
 
-Fixes: 26c5e07d1478 ("MIPS: microMIPS: Optimise 'memset' core library function.")
-Reported-by: James Hogan <jhogan@kernel.org>
+1. When EVA mode is active, user and kernel address spaces may overlap.
+Currently the use of the sb instruction means kernel mode addressing is
+always used and an intended write to userspace may actually overwrite
+some critical kernel data.
+
+2. If the write triggers a page fault, for example by calling
+__clear_user(NULL, 2), instead of gracefully handling the fault, an OOPS
+is triggered.
+
+Fix these issues by replacing the sb instruction with the EX() macro,
+which will emit EVA compatible instuctions as required. Additionally
+implement a fault fixup for small_memset which sets a2 to the number of
+bytes that could not be cleared (as defined by __clear_user).
+
+Reported-by: Chuanhua Lei <chuanhua.lei@intel.com>
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.10+
-Patchwork: https://patchwork.linux-mips.org/patch/19110/
+Cc: stable@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/18975/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/uaccess.h |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/mips/lib/memset.S |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -654,6 +654,13 @@ __clear_user(void __user *addr, __kernel
- {
- 	__kernel_size_t res;
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -219,7 +219,7 @@
+ 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
+ 	R10KCBARRIER(0(ra))
+ 	bne		t1, a0, 1b
+-	sb		a1, -1(a0)
++	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
  
-+#ifdef CONFIG_CPU_MICROMIPS
-+/* micromips memset / bzero also clobbers t7 & t8 */
-+#define bzero_clobbers "$4", "$5", "$6", __UA_t0, __UA_t1, "$15", "$24", "$31"
-+#else
-+#define bzero_clobbers "$4", "$5", "$6", __UA_t0, __UA_t1, "$31"
-+#endif /* CONFIG_CPU_MICROMIPS */
+ 2:	jr		ra			/* done */
+ 	move		a2, zero
+@@ -260,6 +260,11 @@
+ 	jr		ra
+ 	andi		v1, a2, STORMASK
+ 
++.Lsmall_fixup\@:
++	PTR_SUBU	a2, t1, a0
++	jr		ra
++	 PTR_ADDIU	a2, 1
 +
- 	if (eva_kernel_access()) {
- 		__asm__ __volatile__(
- 			"move\t$4, %1\n\t"
-@@ -663,7 +670,7 @@ __clear_user(void __user *addr, __kernel
- 			"move\t%0, $6"
- 			: "=r" (res)
- 			: "r" (addr), "r" (size)
--			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
-+			: bzero_clobbers);
- 	} else {
- 		might_fault();
- 		__asm__ __volatile__(
-@@ -674,7 +681,7 @@ __clear_user(void __user *addr, __kernel
- 			"move\t%0, $6"
- 			: "=r" (res)
- 			: "r" (addr), "r" (size)
--			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
-+			: bzero_clobbers);
- 	}
+ 	.endm
  
- 	return res;
+ /*

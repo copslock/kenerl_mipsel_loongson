@@ -1,84 +1,55 @@
-From: Matt Redfearn <matt.redfearn@mips.com>
-Date: Tue, 17 Apr 2018 16:40:00 +0100
-Subject: MIPS: memset.S: Fix clobber of v1 in last_fixup
-Message-ID: <20180417154000.uPLlzbfBtY6oTATmq-RQKwi8MhIzgJNKOOz7vvAZMqY@z>
-
-From: Matt Redfearn <matt.redfearn@mips.com>
-
-commit c96eebf07692e53bf4dd5987510d8b550e793598 upstream.
-
-The label .Llast_fixup\@ is jumped to on page fault within the final
-byte set loop of memset (on < MIPSR6 architectures). For some reason, in
-this fault handler, the v1 register is randomly set to a2 & STORMASK.
-This clobbers v1 for the calling function. This can be observed with the
-following test code:
-
-static int __init __attribute__((optimize("O0"))) test_clear_user(void)
-{
-  register int t asm("v1");
-  char *test;
-  int j, k;
-
-  pr_info("\n\n\nTesting clear_user\n");
-  test = vmalloc(PAGE_SIZE);
-
-  for (j = 256; j < 512; j++) {
-    t = 0xa5a5a5a5;
-    if ((k = clear_user(test + PAGE_SIZE - 256, j)) != j - 256) {
-        pr_err("clear_user (%px %d) returned %d\n", test + PAGE_SIZE - 256, j, k);
-    }
-    if (t != 0xa5a5a5a5) {
-       pr_err("v1 was clobbered to 0x%x!\n", t);
-    }
-  }
-
-  return 0;
-}
-late_initcall(test_clear_user);
-
-Which demonstrates that v1 is indeed clobbered (MIPS64):
-
-Testing clear_user
-v1 was clobbered to 0x1!
-v1 was clobbered to 0x2!
-v1 was clobbered to 0x3!
-v1 was clobbered to 0x4!
-v1 was clobbered to 0x5!
-v1 was clobbered to 0x6!
-v1 was clobbered to 0x7!
-
-Since the number of bytes that could not be set is already contained in
-a2, the andi placing a value in v1 is not necessary and actively
-harmful in clobbering v1.
-
-Reported-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/19109/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/lib/memset.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/memset.S
-@@ -210,7 +210,7 @@
- 
- .Llast_fixup\@:
- 	jr		ra
--	andi		v1, a2, STORMASK
-+	 nop
- 
- .Lsmall_fixup\@:
- 	PTR_SUBU	a2, t1, a0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 11:17:01 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43134 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991359AbeDVJQW4jJg9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 11:16:22 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 99077BD1;
+        Sun, 22 Apr 2018 09:16:16 +0000 (UTC)
+Subject: Patch "MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup" has been added to the 3.18-stable tree
+To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
+        linux-mips@linux-mips.org, matt.redfearn@mips.com,
+        ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 22 Apr 2018 11:15:58 +0200
+Message-ID: <1524388558249197@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63652
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from matt.redfearn@mips.com are
+This is a note to let you know that I've just added the patch titled
 
-queue-3.18/mips-memset.s-fix-return-of-__clear_user-from-lpartial_fixup.patch
-queue-3.18/mips-memset.s-eva-fault-support-for-small_memset.patch
-queue-3.18/mips-memset.s-fix-clobber-of-v1-in-last_fixup.patch
+    MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
+
+to the 3.18-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-memset.s-fix-return-of-__clear_user-from-lpartial_fixup.patch
+and it can be found in the queue-3.18 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

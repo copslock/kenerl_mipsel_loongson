@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:10:07 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39904 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:10:27 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40126 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993124AbeDVOJtt4Vml (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:09:49 +0200
+        by eddie.linux-mips.org with ESMTP id S23994691AbeDVOKNrfgLl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:10:13 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7216FBFF;
-        Sun, 22 Apr 2018 14:09:43 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 654CEBFF;
+        Sun, 22 Apr 2018 14:10:07 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Chuanhua Lei <chuanhua.lei@intel.com>,
+        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 142/164] MIPS: memset.S: EVA & fault support for small_memset
-Date:   Sun, 22 Apr 2018 15:53:29 +0200
-Message-Id: <20180422135141.281569775@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.14 144/164] MIPS: memset.S: Fix clobber of v1 in last_fixup
+Date:   Sun, 22 Apr 2018 15:53:31 +0200
+Message-Id: <20180422135141.371839514@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180422135135.400265110@linuxfoundation.org>
 References: <20180422135135.400265110@linuxfoundation.org>
@@ -27,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63675
+X-archive-position: 63676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,61 +49,73 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@mips.com>
 
-commit 8a8158c85e1e774a44fbe81106fa41138580dfd1 upstream.
+commit c96eebf07692e53bf4dd5987510d8b550e793598 upstream.
 
-The MIPS kernel memset / bzero implementation includes a small_memset
-branch which is used when the region to be set is smaller than a long (4
-bytes on 32bit, 8 bytes on 64bit). The current small_memset
-implementation uses a simple store byte loop to write the destination.
-There are 2 issues with this implementation:
+The label .Llast_fixup\@ is jumped to on page fault within the final
+byte set loop of memset (on < MIPSR6 architectures). For some reason, in
+this fault handler, the v1 register is randomly set to a2 & STORMASK.
+This clobbers v1 for the calling function. This can be observed with the
+following test code:
 
-1. When EVA mode is active, user and kernel address spaces may overlap.
-Currently the use of the sb instruction means kernel mode addressing is
-always used and an intended write to userspace may actually overwrite
-some critical kernel data.
+static int __init __attribute__((optimize("O0"))) test_clear_user(void)
+{
+  register int t asm("v1");
+  char *test;
+  int j, k;
 
-2. If the write triggers a page fault, for example by calling
-__clear_user(NULL, 2), instead of gracefully handling the fault, an OOPS
-is triggered.
+  pr_info("\n\n\nTesting clear_user\n");
+  test = vmalloc(PAGE_SIZE);
 
-Fix these issues by replacing the sb instruction with the EX() macro,
-which will emit EVA compatible instuctions as required. Additionally
-implement a fault fixup for small_memset which sets a2 to the number of
-bytes that could not be cleared (as defined by __clear_user).
+  for (j = 256; j < 512; j++) {
+    t = 0xa5a5a5a5;
+    if ((k = clear_user(test + PAGE_SIZE - 256, j)) != j - 256) {
+        pr_err("clear_user (%px %d) returned %d\n", test + PAGE_SIZE - 256, j, k);
+    }
+    if (t != 0xa5a5a5a5) {
+       pr_err("v1 was clobbered to 0x%x!\n", t);
+    }
+  }
 
-Reported-by: Chuanhua Lei <chuanhua.lei@intel.com>
+  return 0;
+}
+late_initcall(test_clear_user);
+
+Which demonstrates that v1 is indeed clobbered (MIPS64):
+
+Testing clear_user
+v1 was clobbered to 0x1!
+v1 was clobbered to 0x2!
+v1 was clobbered to 0x3!
+v1 was clobbered to 0x4!
+v1 was clobbered to 0x5!
+v1 was clobbered to 0x6!
+v1 was clobbered to 0x7!
+
+Since the number of bytes that could not be set is already contained in
+a2, the andi placing a value in v1 is not necessary and actively
+harmful in clobbering v1.
+
+Reported-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/18975/
+Patchwork: https://patchwork.linux-mips.org/patch/19109/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lib/memset.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/lib/memset.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/arch/mips/lib/memset.S
 +++ b/arch/mips/lib/memset.S
-@@ -219,7 +219,7 @@
- 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
- 	R10KCBARRIER(0(ra))
- 	bne		t1, a0, 1b
--	sb		a1, -1(a0)
-+	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
+@@ -258,7 +258,7 @@
  
- 2:	jr		ra			/* done */
- 	move		a2, zero
-@@ -260,6 +260,11 @@
+ .Llast_fixup\@:
  	jr		ra
- 	andi		v1, a2, STORMASK
+-	andi		v1, a2, STORMASK
++	 nop
  
-+.Lsmall_fixup\@:
-+	PTR_SUBU	a2, t1, a0
-+	jr		ra
-+	 PTR_ADDIU	a2, 1
-+
- 	.endm
- 
- /*
+ .Lsmall_fixup\@:
+ 	PTR_SUBU	a2, t1, a0

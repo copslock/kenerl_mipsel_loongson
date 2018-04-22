@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:14:50 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42954 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:15:04 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42972 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993124AbeDVOO2Vceql (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:14:28 +0200
+        by eddie.linux-mips.org with ESMTP id S23994706AbeDVOObESGFl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:14:31 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F24F712;
-        Sun, 22 Apr 2018 14:14:21 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AB0775AD;
+        Sun, 22 Apr 2018 14:14:24 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Chuanhua Lei <chuanhua.lei@intel.com>,
+        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.9 80/95] MIPS: memset.S: EVA & fault support for small_memset
-Date:   Sun, 22 Apr 2018 15:53:49 +0200
-Message-Id: <20180422135213.698474662@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.9 81/95] MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
+Date:   Sun, 22 Apr 2018 15:53:50 +0200
+Message-Id: <20180422135213.740637068@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180422135210.432103639@linuxfoundation.org>
 References: <20180422135210.432103639@linuxfoundation.org>
@@ -27,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63679
+X-archive-position: 63680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,61 +49,53 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@mips.com>
 
-commit 8a8158c85e1e774a44fbe81106fa41138580dfd1 upstream.
+commit daf70d89f80c6e1772233da9e020114b1254e7e0 upstream.
 
-The MIPS kernel memset / bzero implementation includes a small_memset
-branch which is used when the region to be set is smaller than a long (4
-bytes on 32bit, 8 bytes on 64bit). The current small_memset
-implementation uses a simple store byte loop to write the destination.
-There are 2 issues with this implementation:
+The __clear_user function is defined to return the number of bytes that
+could not be cleared. From the underlying memset / bzero implementation
+this means setting register a2 to that number on return. Currently if a
+page fault is triggered within the memset_partial block, the value
+loaded into a2 on return is meaningless.
 
-1. When EVA mode is active, user and kernel address spaces may overlap.
-Currently the use of the sb instruction means kernel mode addressing is
-always used and an intended write to userspace may actually overwrite
-some critical kernel data.
+The label .Lpartial_fixup\@ is jumped to on page fault. In order to work
+out how many bytes failed to copy, the exception handler should find how
+many bytes left in the partial block (andi a2, STORMASK), add that to
+the partial block end address (a2), and subtract the faulting address to
+get the remainder. Currently it incorrectly subtracts the partial block
+start address (t1), which has additionally been clobbered to generate a
+jump target in memset_partial. Fix this by adding the block end address
+instead.
 
-2. If the write triggers a page fault, for example by calling
-__clear_user(NULL, 2), instead of gracefully handling the fault, an OOPS
-is triggered.
+This issue was found with the following test code:
+      int j, k;
+      for (j = 0; j < 512; j++) {
+        if ((k = clear_user(NULL, j)) != j) {
+           pr_err("clear_user (NULL %d) returned %d\n", j, k);
+        }
+      }
+Which now passes on Creator Ci40 (MIPS32) and Cavium Octeon II (MIPS64).
 
-Fix these issues by replacing the sb instruction with the EX() macro,
-which will emit EVA compatible instuctions as required. Additionally
-implement a fault fixup for small_memset which sets a2 to the number of
-bytes that could not be cleared (as defined by __clear_user).
-
-Reported-by: Chuanhua Lei <chuanhua.lei@intel.com>
+Suggested-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/18975/
+Patchwork: https://patchwork.linux-mips.org/patch/19108/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lib/memset.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/lib/memset.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/arch/mips/lib/memset.S
 +++ b/arch/mips/lib/memset.S
-@@ -218,7 +218,7 @@
- 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
- 	R10KCBARRIER(0(ra))
- 	bne		t1, a0, 1b
--	sb		a1, -1(a0)
-+	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
- 
- 2:	jr		ra			/* done */
- 	move		a2, zero
-@@ -259,6 +259,11 @@
+@@ -251,7 +251,7 @@
+ 	PTR_L		t0, TI_TASK($28)
+ 	andi		a2, STORMASK
+ 	LONG_L		t0, THREAD_BUADDR(t0)
+-	LONG_ADDU	a2, t1
++	LONG_ADDU	a2, a0
  	jr		ra
- 	andi		v1, a2, STORMASK
+ 	LONG_SUBU	a2, t0
  
-+.Lsmall_fixup\@:
-+	PTR_SUBU	a2, t1, a0
-+	jr		ra
-+	 PTR_ADDIU	a2, 1
-+
- 	.endm
- 
- /*

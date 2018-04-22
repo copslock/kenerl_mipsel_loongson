@@ -1,68 +1,55 @@
-From: Matt Redfearn <matt.redfearn@mips.com>
-Date: Tue, 17 Apr 2018 16:40:01 +0100
-Subject: MIPS: uaccess: Add micromips clobbers to bzero invocation
-Message-ID: <20180417154001.aXPBnSCikIsQ3VKTdUMY91mhW58_e2-z09MOuvBJSRc@z>
-
-From: Matt Redfearn <matt.redfearn@mips.com>
-
-commit b3d7e55c3f886493235bfee08e1e5a4a27cbcce8 upstream.
-
-The micromips implementation of bzero additionally clobbers registers t7
-& t8. Specify this in the clobbers list when invoking bzero.
-
-Fixes: 26c5e07d1478 ("MIPS: microMIPS: Optimise 'memset' core library function.")
-Reported-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.10+
-Patchwork: https://patchwork.linux-mips.org/patch/19110/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/include/asm/uaccess.h |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -1238,6 +1238,13 @@ __clear_user(void __user *addr, __kernel
- {
- 	__kernel_size_t res;
- 
-+#ifdef CONFIG_CPU_MICROMIPS
-+/* micromips memset / bzero also clobbers t7 & t8 */
-+#define bzero_clobbers "$4", "$5", "$6", __UA_t0, __UA_t1, "$15", "$24", "$31"
-+#else
-+#define bzero_clobbers "$4", "$5", "$6", __UA_t0, __UA_t1, "$31"
-+#endif /* CONFIG_CPU_MICROMIPS */
-+
- 	if (eva_kernel_access()) {
- 		__asm__ __volatile__(
- 			"move\t$4, %1\n\t"
-@@ -1247,7 +1254,7 @@ __clear_user(void __user *addr, __kernel
- 			"move\t%0, $6"
- 			: "=r" (res)
- 			: "r" (addr), "r" (size)
--			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
-+			: bzero_clobbers);
- 	} else {
- 		might_fault();
- 		__asm__ __volatile__(
-@@ -1258,7 +1265,7 @@ __clear_user(void __user *addr, __kernel
- 			"move\t%0, $6"
- 			: "=r" (res)
- 			: "r" (addr), "r" (size)
--			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
-+			: bzero_clobbers);
- 	}
- 
- 	return res;
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 11:20:17 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44594 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993145AbeDVJTJys5N9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 11:19:09 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 62D81CF2;
+        Sun, 22 Apr 2018 09:19:02 +0000 (UTC)
+Subject: Patch "MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup" has been added to the 4.4-stable tree
+To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
+        linux-mips@linux-mips.org, matt.redfearn@mips.com,
+        ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 22 Apr 2018 11:16:59 +0200
+Message-ID: <152438861916946@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63664
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from matt.redfearn@mips.com are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.4/mips-uaccess-add-micromips-clobbers-to-bzero-invocation.patch
-queue-4.4/mips-memset.s-fix-return-of-__clear_user-from-lpartial_fixup.patch
-queue-4.4/mips-memset.s-eva-fault-support-for-small_memset.patch
-queue-4.4/mips-memset.s-fix-clobber-of-v1-in-last_fixup.patch
+    MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
+
+to the 4.4-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-memset.s-fix-return-of-__clear_user-from-lpartial_fixup.patch
+and it can be found in the queue-4.4 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

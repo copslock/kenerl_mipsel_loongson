@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:15:04 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42972 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Apr 2018 16:15:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42984 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994706AbeDVOObESGFl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:14:31 +0200
+        by eddie.linux-mips.org with ESMTP id S23994708AbeDVOOdoGUBl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Apr 2018 16:14:33 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AB0775AD;
-        Sun, 22 Apr 2018 14:14:24 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 575E484B;
+        Sun, 22 Apr 2018 14:14:27 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.9 81/95] MIPS: memset.S: Fix return of __clear_user from Lpartial_fixup
-Date:   Sun, 22 Apr 2018 15:53:50 +0200
-Message-Id: <20180422135213.740637068@linuxfoundation.org>
+Subject: [PATCH 4.9 82/95] MIPS: memset.S: Fix clobber of v1 in last_fixup
+Date:   Sun, 22 Apr 2018 15:53:51 +0200
+Message-Id: <20180422135213.782881483@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180422135210.432103639@linuxfoundation.org>
 References: <20180422135210.432103639@linuxfoundation.org>
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63680
+X-archive-position: 63681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,38 +49,58 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@mips.com>
 
-commit daf70d89f80c6e1772233da9e020114b1254e7e0 upstream.
+commit c96eebf07692e53bf4dd5987510d8b550e793598 upstream.
 
-The __clear_user function is defined to return the number of bytes that
-could not be cleared. From the underlying memset / bzero implementation
-this means setting register a2 to that number on return. Currently if a
-page fault is triggered within the memset_partial block, the value
-loaded into a2 on return is meaningless.
+The label .Llast_fixup\@ is jumped to on page fault within the final
+byte set loop of memset (on < MIPSR6 architectures). For some reason, in
+this fault handler, the v1 register is randomly set to a2 & STORMASK.
+This clobbers v1 for the calling function. This can be observed with the
+following test code:
 
-The label .Lpartial_fixup\@ is jumped to on page fault. In order to work
-out how many bytes failed to copy, the exception handler should find how
-many bytes left in the partial block (andi a2, STORMASK), add that to
-the partial block end address (a2), and subtract the faulting address to
-get the remainder. Currently it incorrectly subtracts the partial block
-start address (t1), which has additionally been clobbered to generate a
-jump target in memset_partial. Fix this by adding the block end address
-instead.
+static int __init __attribute__((optimize("O0"))) test_clear_user(void)
+{
+  register int t asm("v1");
+  char *test;
+  int j, k;
 
-This issue was found with the following test code:
-      int j, k;
-      for (j = 0; j < 512; j++) {
-        if ((k = clear_user(NULL, j)) != j) {
-           pr_err("clear_user (NULL %d) returned %d\n", j, k);
-        }
-      }
-Which now passes on Creator Ci40 (MIPS32) and Cavium Octeon II (MIPS64).
+  pr_info("\n\n\nTesting clear_user\n");
+  test = vmalloc(PAGE_SIZE);
 
-Suggested-by: James Hogan <jhogan@kernel.org>
+  for (j = 256; j < 512; j++) {
+    t = 0xa5a5a5a5;
+    if ((k = clear_user(test + PAGE_SIZE - 256, j)) != j - 256) {
+        pr_err("clear_user (%px %d) returned %d\n", test + PAGE_SIZE - 256, j, k);
+    }
+    if (t != 0xa5a5a5a5) {
+       pr_err("v1 was clobbered to 0x%x!\n", t);
+    }
+  }
+
+  return 0;
+}
+late_initcall(test_clear_user);
+
+Which demonstrates that v1 is indeed clobbered (MIPS64):
+
+Testing clear_user
+v1 was clobbered to 0x1!
+v1 was clobbered to 0x2!
+v1 was clobbered to 0x3!
+v1 was clobbered to 0x4!
+v1 was clobbered to 0x5!
+v1 was clobbered to 0x6!
+v1 was clobbered to 0x7!
+
+Since the number of bytes that could not be set is already contained in
+a2, the andi placing a value in v1 is not necessary and actively
+harmful in clobbering v1.
+
+Reported-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/19108/
+Patchwork: https://patchwork.linux-mips.org/patch/19109/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
@@ -90,12 +110,12 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/lib/memset.S
 +++ b/arch/mips/lib/memset.S
-@@ -251,7 +251,7 @@
- 	PTR_L		t0, TI_TASK($28)
- 	andi		a2, STORMASK
- 	LONG_L		t0, THREAD_BUADDR(t0)
--	LONG_ADDU	a2, t1
-+	LONG_ADDU	a2, a0
- 	jr		ra
- 	LONG_SUBU	a2, t0
+@@ -257,7 +257,7 @@
  
+ .Llast_fixup\@:
+ 	jr		ra
+-	andi		v1, a2, STORMASK
++	 nop
+ 
+ .Lsmall_fixup\@:
+ 	PTR_SUBU	a2, t1, a0

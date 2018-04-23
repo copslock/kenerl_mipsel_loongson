@@ -1,62 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 06:51:48 +0200 (CEST)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:33394
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991416AbeDWEvmMQzCx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Apr 2018 06:51:42 +0200
-Received: by mail-wr0-x241.google.com with SMTP id z73-v6so37353272wrb.0;
-        Sun, 22 Apr 2018 21:51:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 06:52:14 +0200 (CEST)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:41530
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992363AbeDWEwFu8iTx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 06:52:05 +0200
+Received: by mail-io0-x244.google.com with SMTP id o7-v6so15110032iob.8;
+        Sun, 22 Apr 2018 21:52:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=FZzbnIfmEocSgPlmvl6hPpRbV7o9w/ayXyBPE99Ql/c=;
-        b=SrSLUg4PZjPyNpxOMNnk1HP/qNwaPf3JtepGuVMg+2knBgEFO5zEsOMwXEl7lUvuTA
-         B4o7fIF2tZhKcizeW+nQ6Jy3b29M61gawpSmmhXz7HrblC9OHPvsZLfz1NxdEoSKRXzV
-         dR03plC+w0A2QYc/7UzGf4K+A2o/VwH29puM8Zl6LIXH3LUqTI9IsHNuRFKfY3bN0P1l
-         AQsABJNcUS9QRYy49H8ChFFKsd47FEuY32hToPTpXlhtJd4YsxhxTBx2u46EKHR4OEk0
-         qKPlus6l4PzsH/ir8sB9c+VMbJVuIDE25y3QfmticFUpuLa19t6bgnL+wzLwGnJ50H8r
-         RzGw==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=m7F/mxLFWZLNeab/gwm+kLOOAryW4hgve+rWdfNrj9Y=;
+        b=N9ZcCNxftVAYNvecD3g9Q/2hVuIrmM0Q70STuytvJqQNmomgxbAHzTVK+U9iWmVJ7Z
+         fgRDmzZV1zyEowPR2uLt6Fh1zq2p2CJ2cW1y9z04O1N1/sVh0z2+EaXq63aEIkRz/0j7
+         7AOjONuWluDZekWxrsaU4dNdo/isN6UBXFDcPolUhPggkB6DdqKTLTYc39yyUEgY97/o
+         PUEAR1tWLHTs2mCJ1Q/PnTThvHUnVY6qZO2fYx4g5e4J2Vsn2xF4EfJJC9PBgB49mCcx
+         ZT6cdb6hUEF44S18fXx2M5JfEaeRqhfnkN31Wv77Y0xo/BOU9vsM9BbeBW0ffmg+BodM
+         Jg/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=FZzbnIfmEocSgPlmvl6hPpRbV7o9w/ayXyBPE99Ql/c=;
-        b=KL4RiTECxp3APj1OAJlirVYTDkH6UamF0ZpbdcQEMRFKXw0cfibhgk9Q7/R3R76Klo
-         wRYE0UQ07cUWdp53q6eZWpvZzQP+z27wOVwtGJArt4FEaQBbBIYsemNAbBVeC8COPTdA
-         Xez0nB5d33Jcn7bWIJWUbXwF08zLNCzz6Ze2yPzQzq8HgENYrVZqT8yfj456yXvEBghw
-         bF19gIEpBIQChSLvFj2NSxZaO3OZCHejYE8iUQfsUcv9IujaMmL6sJYS7HGKawQJNScM
-         5yo2emmZ8EidFL1K0Yn4w9FlyZVk5nfdL3RENGNCzt0W2zWUlvAB94Lhl8colRM4R/VP
-         nVPg==
-X-Gm-Message-State: ALQs6tCJMZfADyfbSctsdgWhpcy690KQWdOJgLsS8n2HWMTvd4N29m2V
-        +U9WJzypcyaTrim89LhszwVRLuW7UXX1pehlDXc=
-X-Google-Smtp-Source: AIpwx4+Kh9GOiaDmvDcV/hICFhyXTIpZrLpTxXq6BVjkWsPBdEN7t6WvZ/xdZ0EUxAM2aqr2jUdyCFQsz2yqKg+gprU=
-X-Received: by 10.28.213.198 with SMTP id m189mr7991869wmg.28.1524459096410;
- Sun, 22 Apr 2018 21:51:36 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=m7F/mxLFWZLNeab/gwm+kLOOAryW4hgve+rWdfNrj9Y=;
+        b=PwJIflLIARPM3AkuYsxOKoq+w+s3cBdsw2D+quWAE5sEMrzdhTbO9+B9biwlUVvjJ8
+         I9vYyYPG/mZgIwYErfq6ZNx1W8+uUa/rGuo9TK1k12CuFzfNh+bpYgb0Rg3kql5SVSGf
+         MaGg0KOGyMaKrJio+J0mhyUCVnvj05RhdY4qH9kFnPwV//pTNvapH2Ao+aL/2J7hB76E
+         BXbT3sFRPdAcOZrWUx+zIuwb7Em7yqHWFCnQgWRp/vNRSlPS8pehghkaCtYybR5p8Y7y
+         5r2JdLuli1NfRnbiv3Pw2W+61hN7p5MgRHPQJCKTPYq+tCgFJSBepNc8ytcPBjVbCqeD
+         9hwQ==
+X-Gm-Message-State: ALQs6tCvCl4ukCDpe1J5t2JBj2xLDZYtBxL0Dd7fyUCPfiuEXVAOzRbs
+        MYDISfaqgk30xqXaUq8CJ9tfuuMnqagzJj8DEEo=
+X-Google-Smtp-Source: AB8JxZrL2KXx+5uN43O7suarItclC3hgqRzyz/uVN3ksNiDBpFJ3/MrhqJmlTsvtS3i+s81UEPiHs3Dy9Mfxj0FUZWA=
+X-Received: by 2002:a6b:8168:: with SMTP id c101-v6mr20302562iod.54.1524459119586;
+ Sun, 22 Apr 2018 21:51:59 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.223.181.1 with HTTP; Sun, 22 Apr 2018 21:51:35 -0700 (PDT)
-In-Reply-To: <20180323225807.13386-1-zajec5@gmail.com>
-References: <20180323225807.13386-1-zajec5@gmail.com>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Mon, 23 Apr 2018 06:51:35 +0200
-Message-ID: <CACna6ryoYs75Pt7qXSuozZsEt27YMyJAhvF21QRLQVuryn_dZA@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: BCM47XX: Use __initdata for the bcm47xx_leds_pdata
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>, James Hogan <jhogan@kernel.org>,
-        Dan Haab <riproute@gmail.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+Received: by 10.107.23.67 with HTTP; Sun, 22 Apr 2018 21:51:58 -0700 (PDT)
+In-Reply-To: <c5a26d6f1e6ba35a4d45450adfa36aa3@codeaurora.org>
+References: <1524455600-30384-1-git-send-email-chenhc@lemote.com> <c5a26d6f1e6ba35a4d45450adfa36aa3@codeaurora.org>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Mon, 23 Apr 2018 12:51:58 +0800
+X-Google-Sender-Auth: sVj-cS-WR5tiPlpZOVqbhk6Bso8
+Message-ID: <CAAhV-H6R8=59WLEOHRNhMHvNsrZXUZnShr94BfCY2xhgZZj7+Q@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: io: Add barrier after register read in inX()
+To:     Sinan Kaya <okaya@codeaurora.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63694
+X-archive-position: 63695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,13 +70,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23 March 2018 at 23:58, Rafał Miłecki <zajec5@gmail.com> wrote:
-> From: Rafał Miłecki <rafal@milecki.pl>
->
-> This struct variable is used during init only. It gets passed to the
-> gpio_led_register_device() which creates its own data copy. That allows
-> using __initdata and saving some minimal amount of memory.
->
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Your patch add rmb() before read in readX(), why inX() need rmb() after read?
 
-James, would you care to take this trivial patch?
+Huacai
+
+On Mon, Apr 23, 2018 at 12:31 PM,  <okaya@codeaurora.org> wrote:
+> On 2018-04-22 23:53, Huacai Chen wrote:
+>>
+>> While a barrier is present in the outX() functions before the register
+>> write, a similar barrier is missing in the inX() functions after the
+>> register read. This could allow memory accesses following inX() to
+>> observe stale data.
+>>
+>> This patch is very similar to commit a1cc7034e33d12dc1 ("MIPS: io: Add
+>> barrier after register read in readX()"). Because war_io_reorder_wmb()
+>> is both used by writeX() and outX(), if readX() need a barrier then so
+>> does inX().
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>> ---
+>>  arch/mips/include/asm/io.h | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+>> index a7d0b83..cea8ad8 100644
+>> --- a/arch/mips/include/asm/io.h
+>> +++ b/arch/mips/include/asm/io.h
+>> @@ -414,6 +414,8 @@ static inline type pfx##in##bwlq##p(unsigned long
+>> port)                     \
+>>         __val = *__addr;                                                \
+>>         slow;                                                           \
+>>                                                                         \
+>> +       /* prevent prefetching of coherent DMA data prematurely */      \
+>> +       rmb();                                                          \
+>>         return pfx##ioswab##bwlq(__addr, __val);                        \
+>>  }
+>
+>
+> Typically read barrier is applied after register read.

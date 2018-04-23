@@ -1,46 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 19:07:46 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50160 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994676AbeDWRFhdzx7e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 19:05:37 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=wWeeMK/OGPFNhg62rEG7YNxHCRAWoCl5VpvwITCHOhY=; b=lMTbpKh54JkbzDBB9Ga/Z2ogp
-        jkuYNXqj4Jf+jaSSMrq7ZDBH3XW+dug6R5jPzQmPXC5PcuC4jhcEVFM294DwbZjC99GQycwharcd0
-        b2rO7b6WhFMuxdGsBXcV+JmPtZq18aFdEEHoapJaKZFy2fFfV88Iydo8pCF0aaxVLa/pcreKSw9jH
-        6QKEIi3pi3OB7Q35EBbriyYgKaQ+QCiUKZ7O+VQOhUFC9BXqv2FqCw4NaN3A/kUO8al4ccWv55NWl
-        OnoZrdaTNPhLQwzgP2eWjtPaXDkGUQn6LCI42uBSCv9bvEw8T3wEtgc6PMu6wStRprNptH0uUV4qo
-        Wi34itcFA==;
-Received: from 089144198044.atnat0007.highway.a1.net ([89.144.198.44] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fAeti-0000KK-8a; Mon, 23 Apr 2018 17:05:02 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        iommu@lists.linux-foundation.org
-Cc:     x86@kernel.org, linux-block@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-mm@kvack.org,
-        linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 12/12] swiotlb: remove the CONFIG_DMA_DIRECT_OPS ifdefs
-Date:   Mon, 23 Apr 2018 19:04:19 +0200
-Message-Id: <20180423170419.20330-13-hch@lst.de>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180423170419.20330-1-hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 22:09:54 +0200 (CEST)
+Received: from aserp2120.oracle.com ([141.146.126.78]:60788 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993488AbeDWUJrdWeEw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 22:09:47 +0200
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w3NK5m26139152;
+        Mon, 23 Apr 2018 20:09:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2017-10-26;
+ bh=htCMpyP057FQjzTc/17kXiwl/89OsvhoSnSV6Sj5Kjc=;
+ b=FSE6D3W/+65C/Iq08kqY8q55UKF/TudKxxivoRRMdfe1UIRJPJ9zdnIEwA+zQkzth9hL
+ //T6q1RauxqHp5b23kImOIMvqsRRMAY6D/OGpsLlzPO5rvXhVBfs0FOV7YoqoNpWzj2D
+ k1ctIpEWrhzrUWgnNEFSlZvbHCenNTQIgQRP8DN5HAgE/DcJbs5M2JS6RS0eMKDg15zi
+ vKwyd3whf1YX+yBAAxNid+a91uXRTdkWq05vvhl6owKBw9dwmF/y04gyb1sg7ggQQoi7
+ O8262rJMtQXWQN7Qny1I7632L6qxRl6hJaNXgqGWx7KKItK9JSJftUvILk3U8zK3WZkG WA== 
+Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
+        by aserp2120.oracle.com with ESMTP id 2hfw9a71ux-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 Apr 2018 20:09:37 +0000
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userv0022.oracle.com (8.14.4/8.14.4) with ESMTP id w3NK9Ys6006127
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 Apr 2018 20:09:35 GMT
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id w3NK9W5l005945;
+        Mon, 23 Apr 2018 20:09:34 GMT
+Received: from char.us.oracle.com (/10.137.176.158)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 23 Apr 2018 13:09:32 -0700
+Received: by char.us.oracle.com (Postfix, from userid 1000)
+        id 0823D6A0057; Mon, 23 Apr 2018 16:09:30 -0400 (EDT)
+Date:   Mon, 23 Apr 2018 16:09:30 -0400
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     Christoph Hellwig <hch@lst.de>, sstabellini@kernel.org
+Cc:     iommu@lists.linux-foundation.org, x86@kernel.org,
+        linux-block@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-mm@kvack.org, linux-mips@linux-mips.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 10/12] arm: don't build swiotlb by default
+Message-ID: <20180423200930.GB5215@char.us.oracle.com>
 References: <20180423170419.20330-1-hch@lst.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+de39c3f36ce265885e0e+5356+infradead.org+hch@bombadil.srs.infradead.org>
+ <20180423170419.20330-11-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180423170419.20330-11-hch@lst.de>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=8872 signatures=668698
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=787
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1711220000 definitions=main-1804230200
+Return-Path: <konrad.wilk@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63713
+X-archive-position: 63714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: konrad.wilk@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,46 +73,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-swiotlb now selects the DMA_DIRECT_OPS config symbol, so this will
-always be true.
+On Mon, Apr 23, 2018 at 07:04:17PM +0200, Christoph Hellwig wrote:
+> swiotlb is only used as a library of helper for xen-swiotlb if Xen support
+> is enabled on arm, so don't build it by default.
+> 
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- lib/swiotlb.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-index fece57566d45..6954f7ad200a 100644
---- a/lib/swiotlb.c
-+++ b/lib/swiotlb.c
-@@ -692,7 +692,6 @@ void swiotlb_tbl_sync_single(struct device *hwdev, phys_addr_t tlb_addr,
- 	}
- }
- 
--#ifdef CONFIG_DMA_DIRECT_OPS
- static inline bool dma_coherent_ok(struct device *dev, dma_addr_t addr,
- 		size_t size)
- {
-@@ -764,7 +763,6 @@ static bool swiotlb_free_buffer(struct device *dev, size_t size,
- 				 DMA_ATTR_SKIP_CPU_SYNC);
- 	return true;
- }
--#endif
- 
- static void
- swiotlb_full(struct device *dev, size_t size, enum dma_data_direction dir,
-@@ -1045,7 +1043,6 @@ swiotlb_dma_supported(struct device *hwdev, u64 mask)
- 	return __phys_to_dma(hwdev, io_tlb_end - 1) <= mask;
- }
- 
--#ifdef CONFIG_DMA_DIRECT_OPS
- void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 		gfp_t gfp, unsigned long attrs)
- {
-@@ -1089,4 +1086,3 @@ const struct dma_map_ops swiotlb_dma_ops = {
- 	.unmap_page		= swiotlb_unmap_page,
- 	.dma_supported		= dma_direct_supported,
- };
--#endif /* CONFIG_DMA_DIRECT_OPS */
--- 
-2.17.0
+CCing Stefano
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/arm/Kconfig | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index aa1c187d756d..90b81a3a28a7 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -1774,7 +1774,7 @@ config SECCOMP
+>  	  defined by each seccomp mode.
+>  
+>  config SWIOTLB
+> -	def_bool y
+> +	bool
+>  
+>  config PARAVIRT
+>  	bool "Enable paravirtualization code"
+> @@ -1807,6 +1807,7 @@ config XEN
+>  	depends on MMU
+>  	select ARCH_DMA_ADDR_T_64BIT
+>  	select ARM_PSCI
+> +	select SWIOTLB
+>  	select SWIOTLB_XEN
+>  	select PARAVIRT
+>  	help
+> -- 
+> 2.17.0
+> 

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 19:07:02 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:49946 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 19:07:17 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50036 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994670AbeDWRF0dgtOe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 19:05:26 +0200
+        by eddie.linux-mips.org with ESMTP id S23994668AbeDWRFamzzKe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 19:05:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=oU8JIGTu0FCrVVesU91hmbnZh0eg/G+NkLWkYufH7Ls=; b=WEORsOt9sCQnqlXcHAplS/VXv
-        gzuiCU2oV5vDCP8YwTsq7gt6k6X4wdh01+FFIUgK8tyz8n1bz9ahN+n+Gikrp8zyrxyeD+YsvlOQY
-        QAx5FinxNEUpIRbUelgiBrjOUaYnM4cv5QKA9g89Y1fdCjfKN3VSHZe3ecs2JxALx15MT1XPzXW4w
-        qeh7pWG0US+1p9bjGI9KqZI1IVUVZvufJbh3Nf9AOej9eaqr0izVY6aTrovUvvLb0IQSxpbK3xNFz
-        XRWvrG1wnCFwznGp2oODYiLV/RpLvU1ra3aJ5+sqTFGi3AZD49R03g+kspZfEeoWpX9/I31Yguh9z
-        NgRsH34Dg==;
+         bh=NAs2y534DKewT+11nT4zOSJYQfr+O+EG5z0A94KFJYg=; b=TEMpY5xS5CPPKutbrTL7lKZ9z
+        hzlHkcF5Xri1rY6ODJl2TtbyBf3H9GotxFTJF121GVTNnsiywcfs+PohgNdMN8aYsG8HvDYBarxUg
+        q+ApMhoBojBtJ0aADWCfikt4hgYlcTGFN8odxhU6QJzSRK2ED83yhhI25iY+uy7q+P/ohnQuqcFon
+        +vDOnm/Bmi+PrRq9gAJl3iIR0eLKkxlPcixx7Ufw1/fu5ZpyOV97/UFO0ZJxPqMOkFbOEb1W0Z+iu
+        A2AWHT6iTf13Uboh3uk3AEaE1NMt6cYdAs+fe5Yxf4ZbB6XSvmdYcq+0ptfAVJXJBHfsHwKDqtnAf
+        vksEcUYmA==;
 Received: from 089144198044.atnat0007.highway.a1.net ([89.144.198.44] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fAetY-0000D7-7E; Mon, 23 Apr 2018 17:04:52 +0000
+        id 1fAetb-0000GF-Ha; Mon, 23 Apr 2018 17:04:56 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
         iommu@lists.linux-foundation.org
@@ -25,9 +25,9 @@ Cc:     x86@kernel.org, linux-block@vger.kernel.org,
         linux-pci@vger.kernel.org, linux-mm@kvack.org,
         linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 09/12] PCI: remove CONFIG_PCI_BUS_ADDR_T_64BIT
-Date:   Mon, 23 Apr 2018 19:04:16 +0200
-Message-Id: <20180423170419.20330-10-hch@lst.de>
+Subject: [PATCH 10/12] arm: don't build swiotlb by default
+Date:   Mon, 23 Apr 2018 19:04:17 +0200
+Message-Id: <20180423170419.20330-11-hch@lst.de>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180423170419.20330-1-hch@lst.de>
 References: <20180423170419.20330-1-hch@lst.de>
@@ -36,7 +36,7 @@ Return-Path: <BATV+de39c3f36ce265885e0e+5356+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63710
+X-archive-position: 63711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,66 +53,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This symbol is now always identical to CONFIG_ARCH_DMA_ADDR_T_64BIT, so
-remove it.
+swiotlb is only used as a library of helper for xen-swiotlb if Xen support
+is enabled on arm, so don't build it by default.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- drivers/pci/Kconfig | 4 ----
- drivers/pci/bus.c   | 4 ++--
- include/linux/pci.h | 2 +-
- 3 files changed, 3 insertions(+), 7 deletions(-)
+ arch/arm/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 34b56a8f8480..29a487f31dae 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -5,10 +5,6 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index aa1c187d756d..90b81a3a28a7 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1774,7 +1774,7 @@ config SECCOMP
+ 	  defined by each seccomp mode.
  
- source "drivers/pci/pcie/Kconfig"
+ config SWIOTLB
+-	def_bool y
++	bool
  
--config PCI_BUS_ADDR_T_64BIT
--	def_bool y if (ARCH_DMA_ADDR_T_64BIT || 64BIT)
--	depends on PCI
--
- config PCI_MSI
- 	bool "Message Signaled Interrupts (MSI and MSI-X)"
- 	depends on PCI
-diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-index bc2ded4c451f..35b7fc87eac5 100644
---- a/drivers/pci/bus.c
-+++ b/drivers/pci/bus.c
-@@ -120,7 +120,7 @@ int devm_request_pci_bus_resources(struct device *dev,
- EXPORT_SYMBOL_GPL(devm_request_pci_bus_resources);
- 
- static struct pci_bus_region pci_32_bit = {0, 0xffffffffULL};
--#ifdef CONFIG_PCI_BUS_ADDR_T_64BIT
-+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
- static struct pci_bus_region pci_64_bit = {0,
- 				(pci_bus_addr_t) 0xffffffffffffffffULL};
- static struct pci_bus_region pci_high = {(pci_bus_addr_t) 0x100000000ULL,
-@@ -230,7 +230,7 @@ int pci_bus_alloc_resource(struct pci_bus *bus, struct resource *res,
- 					  resource_size_t),
- 		void *alignf_data)
- {
--#ifdef CONFIG_PCI_BUS_ADDR_T_64BIT
-+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
- 	int rc;
- 
- 	if (res->flags & IORESOURCE_MEM_64) {
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 73178a2fcee0..55371cb827ad 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -670,7 +670,7 @@ int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
- int raw_pci_write(unsigned int domain, unsigned int bus, unsigned int devfn,
- 		  int reg, int len, u32 val);
- 
--#ifdef CONFIG_PCI_BUS_ADDR_T_64BIT
-+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
- typedef u64 pci_bus_addr_t;
- #else
- typedef u32 pci_bus_addr_t;
+ config PARAVIRT
+ 	bool "Enable paravirtualization code"
+@@ -1807,6 +1807,7 @@ config XEN
+ 	depends on MMU
+ 	select ARCH_DMA_ADDR_T_64BIT
+ 	select ARM_PSCI
++	select SWIOTLB
+ 	select SWIOTLB_XEN
+ 	select PARAVIRT
+ 	help
 -- 
 2.17.0

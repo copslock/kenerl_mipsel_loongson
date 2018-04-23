@@ -1,62 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 09:17:02 +0200 (CEST)
-Received: from mail-lf0-x243.google.com ([IPv6:2a00:1450:4010:c07::243]:42562
-        "EHLO mail-lf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992363AbeDWHQwsX0f5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 09:16:52 +0200
-Received: by mail-lf0-x243.google.com with SMTP id u21-v6so11739123lfu.9
-        for <linux-mips@linux-mips.org>; Mon, 23 Apr 2018 00:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=OxcB+U7Nu7VUyKy8Jx2ejNTyzsrnM1k4NJeL/yKHQm8=;
-        b=ZfQJ3esLWrHCuwCibpWoOc4NrXH0CYNa4B9nDtfoAK+9Y6E9QuTt7G6D0nP4CHUKWb
-         hOIOwGt+39oc7MKJr0w826AMXMcaMYoLERFUiZZZjFUD7WP1liN6pcRU8WMess7uPLz/
-         D2JRnkZ8uV55rur1OCVDo8v+VpUm86zNhp4Nf2w0QZSUgMEALqVwxGFaXQPX3FyVeRa6
-         E7DM6kDfh7LOERnR47eCWg+wXs9I12IRHdPC0ncF6c8RT0c1Ftmu/RcvdYVx9LIdJnGk
-         IhwFbipkpzjjyiwiAagzzDIvEDRqlXkIVJnG+uJVbif/fIjRXFDXZIDJuiw+/pFZvKFZ
-         M5tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=OxcB+U7Nu7VUyKy8Jx2ejNTyzsrnM1k4NJeL/yKHQm8=;
-        b=ZpZ/LToMJeZYNv4OF5YBZC+0duYLSUXQ0HcZrGJOY4iEIrwnZ9XZrtilymGhviP7s1
-         yd6kwSx9er0NoCPicFWj5FG15jFnBoUWw5K/pIM+vm8xBKE4Icjh69ybfsnnNJMP3l5y
-         azBwZXAV0jKW1DcN/eIvVo4ceqopONGItESx/97R7Uq7U0Snj/uAajQAHG5kXtICtz/a
-         E+NLZIo0kwSUsbO3CV3E8iVwwOBQMh4/G/cJdBsrDW5fG1Nf3nLFM7GolZmRz26pCajL
-         z06QMBXQPygR1gtelvQCyqQXccMAo+qeh+ZEpwNaN5CCMhzI5YKvjsEr3E6i2FxFpy+i
-         /FaQ==
-X-Gm-Message-State: ALQs6tDbXEHE+LOhkoJFmhyHPnD59whGAg1MlEz2HrsA365xYR5S3CYi
-        CjFxzQuZ2ht1jVcFC883RE7cRobVYUU+wnopdEhfAg==
-X-Google-Smtp-Source: AB8JxZrrXkZRyLosBX30biaYd9FY0vTXl6yqJReaiAE2UX/+PCsY0pOhOX3bLAvg7nZXRjA8E74njU/xIZrf6H5KLS0=
-X-Received: by 2002:a19:7013:: with SMTP id h19-v6mr7766199lfc.73.1524467805999;
- Mon, 23 Apr 2018 00:16:45 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a19:94c2:0:0:0:0:0 with HTTP; Mon, 23 Apr 2018 00:16:45
- -0700 (PDT)
-X-Originating-IP: [172.247.34.138]
-In-Reply-To: <20180422135317.436671003@linuxfoundation.org>
-References: <20180422135315.254787616@linuxfoundation.org> <20180422135317.436671003@linuxfoundation.org>
-From:   Heiher <r@hev.cc>
-Date:   Mon, 23 Apr 2018 15:16:45 +0800
-Message-ID: <CAHirt9jOibozCFgm8-5bXukSvRBwvxz7ctZYvugQuxnfLFCeLQ@mail.gmail.com>
-Subject: Re: [PATCH 3.18 45/52] MIPS: memset.S: Fix clobber of v1 in last_fixup
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 11:36:31 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:54800 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992917AbeDWJgWs4JbM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 11:36:22 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1404.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 23 Apr 2018 09:36:08 +0000
+Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 23
+ Apr 2018 02:36:27 -0700
+Subject: Re: [PATCH 3.18 45/52] MIPS: memset.S: Fix clobber of v1 in
+ last_fixup
+To:     Heiher <r@hev.cc>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
         James Hogan <jhogan@kernel.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <r@hev.cc>
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+References: <20180422135315.254787616@linuxfoundation.org>
+ <20180422135317.436671003@linuxfoundation.org>
+ <CAHirt9jOibozCFgm8-5bXukSvRBwvxz7ctZYvugQuxnfLFCeLQ@mail.gmail.com>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <8293aba6-81fa-6552-529e-030cc41c705f@mips.com>
+Date:   Mon, 23 Apr 2018 10:36:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <CAHirt9jOibozCFgm8-5bXukSvRBwvxz7ctZYvugQuxnfLFCeLQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.155.41]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1524476168-382908-3433-257490-1
+X-BESS-VER: 2018.5-r1804181636
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.192283
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63696
+X-archive-position: 63697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r@hev.cc
+X-original-sender: matt.redfearn@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,99 +62,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-
-IIRC, The v1 is a temporary register, value is not preserved across
-function calls.
-
-I don't see any functions that generated by compiler to restore values
-of v1 after clobbered it.
-
-On Sun, Apr 22, 2018 at 9:54 PM, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> 3.18-stable review patch.  If anyone has any objections, please let me know.
->
-> ------------------
->
-> From: Matt Redfearn <matt.redfearn@mips.com>
->
-> commit c96eebf07692e53bf4dd5987510d8b550e793598 upstream.
->
-> The label .Llast_fixup\@ is jumped to on page fault within the final
-> byte set loop of memset (on < MIPSR6 architectures). For some reason, in
-> this fault handler, the v1 register is randomly set to a2 & STORMASK.
-> This clobbers v1 for the calling function. This can be observed with the
-> following test code:
->
-> static int __init __attribute__((optimize("O0"))) test_clear_user(void)
-> {
->   register int t asm("v1");
->   char *test;
->   int j, k;
->
->   pr_info("\n\n\nTesting clear_user\n");
->   test = vmalloc(PAGE_SIZE);
->
->   for (j = 256; j < 512; j++) {
->     t = 0xa5a5a5a5;
->     if ((k = clear_user(test + PAGE_SIZE - 256, j)) != j - 256) {
->         pr_err("clear_user (%px %d) returned %d\n", test + PAGE_SIZE - 256, j, k);
->     }
->     if (t != 0xa5a5a5a5) {
->        pr_err("v1 was clobbered to 0x%x!\n", t);
->     }
->   }
->
->   return 0;
-> }
-> late_initcall(test_clear_user);
->
-> Which demonstrates that v1 is indeed clobbered (MIPS64):
->
-> Testing clear_user
-> v1 was clobbered to 0x1!
-> v1 was clobbered to 0x2!
-> v1 was clobbered to 0x3!
-> v1 was clobbered to 0x4!
-> v1 was clobbered to 0x5!
-> v1 was clobbered to 0x6!
-> v1 was clobbered to 0x7!
->
-> Since the number of bytes that could not be set is already contained in
-> a2, the andi placing a value in v1 is not necessary and actively
-> harmful in clobbering v1.
->
-> Reported-by: James Hogan <jhogan@kernel.org>
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: stable@vger.kernel.org
-> Patchwork: https://patchwork.linux-mips.org/patch/19109/
-> Signed-off-by: James Hogan <jhogan@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
-> ---
->  arch/mips/lib/memset.S |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> --- a/arch/mips/lib/memset.S
-> +++ b/arch/mips/lib/memset.S
-> @@ -210,7 +210,7 @@
->
->  .Llast_fixup\@:
->         jr              ra
-> -       andi            v1, a2, STORMASK
-> +        nop
->
->  .Lsmall_fixup\@:
->         PTR_SUBU        a2, t1, a0
->
->
->
 
 
+On 23/04/18 08:16, Heiher wrote:
+> Hi,
+> 
+> IIRC, The v1 is a temporary register, value is not preserved across
+> function calls.
 
--- 
-Best regards!
-Hev
-https://hev.cc
+v1 is conventionally used for a function return value and as such can be 
+changed by called functions. However, bzero is called from inline 
+assembly and v1 is not in the clobbers list
+https://elixir.bootlin.com/linux/v4.17-rc1/source/arch/mips/include/asm/uaccess.h#L652
+So the calling function does not expect that register to have been used 
+and can legitimately expect its value to remain after the function call, 
+which without this patch, it does not - as demonstrated by the test code.
+
+Thanks,
+Matt
+
+> 
+> I don't see any functions that generated by compiler to restore values
+> of v1 after clobbered it.
+> 
+> On Sun, Apr 22, 2018 at 9:54 PM, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>> 3.18-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> ------------------
+>>
+>> From: Matt Redfearn <matt.redfearn@mips.com>
+>>
+>> commit c96eebf07692e53bf4dd5987510d8b550e793598 upstream.
+>>
+>> The label .Llast_fixup\@ is jumped to on page fault within the final
+>> byte set loop of memset (on < MIPSR6 architectures). For some reason, in
+>> this fault handler, the v1 register is randomly set to a2 & STORMASK.
+>> This clobbers v1 for the calling function. This can be observed with the
+>> following test code:
+>>
+>> static int __init __attribute__((optimize("O0"))) test_clear_user(void)
+>> {
+>>    register int t asm("v1");
+>>    char *test;
+>>    int j, k;
+>>
+>>    pr_info("\n\n\nTesting clear_user\n");
+>>    test = vmalloc(PAGE_SIZE);
+>>
+>>    for (j = 256; j < 512; j++) {
+>>      t = 0xa5a5a5a5;
+>>      if ((k = clear_user(test + PAGE_SIZE - 256, j)) != j - 256) {
+>>          pr_err("clear_user (%px %d) returned %d\n", test + PAGE_SIZE - 256, j, k);
+>>      }
+>>      if (t != 0xa5a5a5a5) {
+>>         pr_err("v1 was clobbered to 0x%x!\n", t);
+>>      }
+>>    }
+>>
+>>    return 0;
+>> }
+>> late_initcall(test_clear_user);
+>>
+>> Which demonstrates that v1 is indeed clobbered (MIPS64):
+>>
+>> Testing clear_user
+>> v1 was clobbered to 0x1!
+>> v1 was clobbered to 0x2!
+>> v1 was clobbered to 0x3!
+>> v1 was clobbered to 0x4!
+>> v1 was clobbered to 0x5!
+>> v1 was clobbered to 0x6!
+>> v1 was clobbered to 0x7!
+>>
+>> Since the number of bytes that could not be set is already contained in
+>> a2, the andi placing a value in v1 is not necessary and actively
+>> harmful in clobbering v1.
+>>
+>> Reported-by: James Hogan <jhogan@kernel.org>
+>> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Cc: linux-mips@linux-mips.org
+>> Cc: stable@vger.kernel.org
+>> Patchwork: https://patchwork.linux-mips.org/patch/19109/
+>> Signed-off-by: James Hogan <jhogan@kernel.org>
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>
+>> ---
+>>   arch/mips/lib/memset.S |    2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> --- a/arch/mips/lib/memset.S
+>> +++ b/arch/mips/lib/memset.S
+>> @@ -210,7 +210,7 @@
+>>
+>>   .Llast_fixup\@:
+>>          jr              ra
+>> -       andi            v1, a2, STORMASK
+>> +        nop
+>>
+>>   .Lsmall_fixup\@:
+>>          PTR_SUBU        a2, t1, a0
+>>
+>>
+>>
+> 
+> 
+> 

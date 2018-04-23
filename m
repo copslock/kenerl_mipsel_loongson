@@ -1,63 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 11:45:43 +0200 (CEST)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:34867
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992917AbeDWJpewCU8M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 11:45:34 +0200
-Received: by mail-lf0-x244.google.com with SMTP id r125-v6so13977498lfe.2
-        for <linux-mips@linux-mips.org>; Mon, 23 Apr 2018 02:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=t7DTZPv8cWgnRte7OHnI6lYKlO7thziQzD/+GfyHM6Y=;
-        b=rVOyY3QD4QvfJxGTcYigv9H7Nu4C54EkU0Lp8oSIJuxj3eHJwwr9cUyfQRCujsZIL/
-         TmAU7Q5fjSoHBO5hk1g4D7ag8h3cGiO2sTlD6zGW+vmsordbg/n3T9F5bBsmPAYuNZaX
-         fZFR1CStwLa4tl26OT/wYxNC0BN3AyFh/CwbJrrRmc/601ee0lYyO8XOcCNorqkE9N74
-         CrcZpWQK8alb1zmv8t9hJZorDx7KLtoj7pEiw51VJK7rK0EAFU/p/tpoTQ9j0YyflBWA
-         BE5Iadr7564l9k1pOPqoo9mZ84xSks82q+iVlCIB7rFXQ2/VlfXvn63dCvhQ7axZAE8l
-         wpqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=t7DTZPv8cWgnRte7OHnI6lYKlO7thziQzD/+GfyHM6Y=;
-        b=tTtm3s49oKZspPRO4El6CAoLXqU4p6uNYNnxTWGATRtLmi1NkC+AsfBG/RNZHud3FP
-         OOwplXXY+4aHccIDL49+1GE0IUfo6vFHYAYaWwRoLWXqz2Nb960RinEz7LZuUV20sUew
-         opECkN8vVwAeSrl3NOnv31ocqvj9LwmlchbO6HEcTkPD4qfdE591fmYGDUiGhA1ptubv
-         pQ3sYvj5UYbhTPaNqtFSpCw96njxACsZs+t4bovNnkLFZc/qc8mkf14evJ0br8wXc0ji
-         wQUXNIDkyrbPmFKqe5W5rrYXYoWBIuvicyjLQXDnb2mFPWspcVSouQ4mY0kIl/r8Lx6U
-         CNyw==
-X-Gm-Message-State: ALQs6tDLLNzlkdoXC00/2LqFk/h81woNGwNh6fYsOFcnTGmTJsreGOzU
-        utEObqJ7s26LtnC5/mUr1e/6oyd4E20xccN6CyIxIA==
-X-Google-Smtp-Source: AIpwx4+EeNgHmbJO79fqCjdyaXL8BPNHesglrTwRdfbugtAkr90sMADPMGFJHSlLFsWHOkOXdbix99KMISeOilCe1lk=
-X-Received: by 10.46.145.213 with SMTP id u21mr6450471ljg.0.1524476729183;
- Mon, 23 Apr 2018 02:45:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2018 13:58:55 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:44060 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993070AbeDWL6sAaOAK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2018 13:58:48 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 048B360FF9; Mon, 23 Apr 2018 11:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1524484721;
+        bh=ocaL3N+TbssSwNzIk35QuAlR9EBDeJEFn450nQVQNhA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ZSs37GQDcujuKGTEho/PNfCQQpONM9EsXpt+oWDAYJGE5bOeM4gJ9ZCZuFPg2zTLL
+         VM/ys/cKk/Qe/xAv0sGLFvkYjnCOpE4M9fZkyNcPfv4127Zj49LQDyq1IdwoR4TybX
+         kK1YWh9QGWsMZ5ttm5f0cTU5b+kuqNLTBrFM3wDU=
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id C62D960FFA;
+        Mon, 23 Apr 2018 11:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1524484719;
+        bh=ocaL3N+TbssSwNzIk35QuAlR9EBDeJEFn450nQVQNhA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=lvov2jVfMQeCvIU75NxlpmdPaIp3ULI3Mcj7psUeLrM+GkaajEplI0mj4eaFJfVV0
+         +y8RhvYSD5VHsRD2EuzoBvMFJSTC30rrdjE4C8e4GpuzonvNgBHfrZy1sGpUe6Faiy
+         hqJ3BkyX43ObFqCDlDUMJpGenKm1UXNhuQyxZeqA=
 MIME-Version: 1.0
-Received: by 2002:a19:94c2:0:0:0:0:0 with HTTP; Mon, 23 Apr 2018 02:45:28
- -0700 (PDT)
-X-Originating-IP: [172.247.34.138]
-In-Reply-To: <8293aba6-81fa-6552-529e-030cc41c705f@mips.com>
-References: <20180422135315.254787616@linuxfoundation.org> <20180422135317.436671003@linuxfoundation.org>
- <CAHirt9jOibozCFgm8-5bXukSvRBwvxz7ctZYvugQuxnfLFCeLQ@mail.gmail.com> <8293aba6-81fa-6552-529e-030cc41c705f@mips.com>
-From:   Heiher <r@hev.cc>
-Date:   Mon, 23 Apr 2018 17:45:28 +0800
-Message-ID: <CAHirt9jWrkBk3btjxe1VVW_XSZYkGJMpc0vM3_OP5ugqrR2G=w@mail.gmail.com>
-Subject: Re: [PATCH 3.18 45/52] MIPS: memset.S: Fix clobber of v1 in last_fixup
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <r@hev.cc>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 23 Apr 2018 07:58:39 -0400
+From:   okaya@codeaurora.org
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>, chenhuacai@gmail.com
+Subject: Re: [PATCH] MIPS: io: Add barrier after register read in inX()
+In-Reply-To: <CAAhV-H6R8=59WLEOHRNhMHvNsrZXUZnShr94BfCY2xhgZZj7+Q@mail.gmail.com>
+References: <1524455600-30384-1-git-send-email-chenhc@lemote.com>
+ <c5a26d6f1e6ba35a4d45450adfa36aa3@codeaurora.org>
+ <CAAhV-H6R8=59WLEOHRNhMHvNsrZXUZnShr94BfCY2xhgZZj7+Q@mail.gmail.com>
+Message-ID: <80ba8c398092f2570dee009504faafed@codeaurora.org>
+X-Sender: okaya@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
+Return-Path: <okaya@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63698
+X-archive-position: 63699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r@hev.cc
+X-original-sender: okaya@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,129 +64,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On 2018-04-23 00:51, Huacai Chen wrote:
+> Your patch add rmb() before read in readX(), why inX() need rmb() after 
+> read?
+> 
 
-Now I understand, thank you explain.
+I had to double check what ioswab macro does.
 
-On Mon, Apr 23, 2018 at 5:36 PM, Matt Redfearn <matt.redfearn@mips.com> wrote:
->
->
-> On 23/04/18 08:16, Heiher wrote:
->>
->> Hi,
->>
->> IIRC, The v1 is a temporary register, value is not preserved across
->> function calls.
->
->
-> v1 is conventionally used for a function return value and as such can be
-> changed by called functions. However, bzero is called from inline assembly
-> and v1 is not in the clobbers list
-> https://elixir.bootlin.com/linux/v4.17-rc1/source/arch/mips/include/asm/uaccess.h#L652
-> So the calling function does not expect that register to have been used and
-> can legitimately expect its value to remain after the function call, which
-> without this patch, it does not - as demonstrated by the test code.
->
-> Thanks,
-> Matt
->
->
->>
->> I don't see any functions that generated by compiler to restore values
->> of v1 after clobbered it.
->>
->> On Sun, Apr 22, 2018 at 9:54 PM, Greg Kroah-Hartman
->> <gregkh@linuxfoundation.org> wrote:
->>>
->>> 3.18-stable review patch.  If anyone has any objections, please let me
->>> know.
->>>
->>> ------------------
->>>
->>> From: Matt Redfearn <matt.redfearn@mips.com>
->>>
->>> commit c96eebf07692e53bf4dd5987510d8b550e793598 upstream.
->>>
->>> The label .Llast_fixup\@ is jumped to on page fault within the final
->>> byte set loop of memset (on < MIPSR6 architectures). For some reason, in
->>> this fault handler, the v1 register is randomly set to a2 & STORMASK.
->>> This clobbers v1 for the calling function. This can be observed with the
->>> following test code:
->>>
->>> static int __init __attribute__((optimize("O0"))) test_clear_user(void)
->>> {
->>>    register int t asm("v1");
->>>    char *test;
->>>    int j, k;
->>>
->>>    pr_info("\n\n\nTesting clear_user\n");
->>>    test = vmalloc(PAGE_SIZE);
->>>
->>>    for (j = 256; j < 512; j++) {
->>>      t = 0xa5a5a5a5;
->>>      if ((k = clear_user(test + PAGE_SIZE - 256, j)) != j - 256) {
->>>          pr_err("clear_user (%px %d) returned %d\n", test + PAGE_SIZE -
->>> 256, j, k);
->>>      }
->>>      if (t != 0xa5a5a5a5) {
->>>         pr_err("v1 was clobbered to 0x%x!\n", t);
->>>      }
->>>    }
->>>
->>>    return 0;
->>> }
->>> late_initcall(test_clear_user);
->>>
->>> Which demonstrates that v1 is indeed clobbered (MIPS64):
->>>
->>> Testing clear_user
->>> v1 was clobbered to 0x1!
->>> v1 was clobbered to 0x2!
->>> v1 was clobbered to 0x3!
->>> v1 was clobbered to 0x4!
->>> v1 was clobbered to 0x5!
->>> v1 was clobbered to 0x6!
->>> v1 was clobbered to 0x7!
->>>
->>> Since the number of bytes that could not be set is already contained in
->>> a2, the andi placing a value in v1 is not necessary and actively
->>> harmful in clobbering v1.
->>>
->>> Reported-by: James Hogan <jhogan@kernel.org>
->>> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
->>> Cc: Ralf Baechle <ralf@linux-mips.org>
->>> Cc: linux-mips@linux-mips.org
+/*
+  * Raw operations are never swapped in software.  OTOH values that raw
+  * operations are working on may or may not have been swapped by the bus
+  * hardware.  An example use would be for flash memory that's used for
+  * execute in place.
+  */
+# define __raw_ioswabb(a, x)	(x)
+# define __raw_ioswabw(a, x)	(x)
+# define __raw_ioswabl(a, x)	(x)
+# define __raw_ioswabq(a, x)	(x)
+# define ____raw_ioswabq(a, x)	(x)
+
+/* ioswab[bwlq], __mem_ioswab[bwlq] are defined in mangle-port.h */
+
+So, neither my patch nor yours places rmb before read.
+
+Both are placing it after read and it is the right thing.
+
+ioswab is just an endianness conversion macro.
+
+> Huacai
+> 
+> On Mon, Apr 23, 2018 at 12:31 PM,  <okaya@codeaurora.org> wrote:
+>> On 2018-04-22 23:53, Huacai Chen wrote:
+>>> 
+>>> While a barrier is present in the outX() functions before the 
+>>> register
+>>> write, a similar barrier is missing in the inX() functions after the
+>>> register read. This could allow memory accesses following inX() to
+>>> observe stale data.
+>>> 
+>>> This patch is very similar to commit a1cc7034e33d12dc1 ("MIPS: io: 
+>>> Add
+>>> barrier after register read in readX()"). Because 
+>>> war_io_reorder_wmb()
+>>> is both used by writeX() and outX(), if readX() need a barrier then 
+>>> so
+>>> does inX().
+>>> 
 >>> Cc: stable@vger.kernel.org
->>> Patchwork: https://patchwork.linux-mips.org/patch/19109/
->>> Signed-off-by: James Hogan <jhogan@kernel.org>
->>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>
+>>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 >>> ---
->>>   arch/mips/lib/memset.S |    2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> --- a/arch/mips/lib/memset.S
->>> +++ b/arch/mips/lib/memset.S
->>> @@ -210,7 +210,7 @@
->>>
->>>   .Llast_fixup\@:
->>>          jr              ra
->>> -       andi            v1, a2, STORMASK
->>> +        nop
->>>
->>>   .Lsmall_fixup\@:
->>>          PTR_SUBU        a2, t1, a0
->>>
->>>
->>>
->>
->>
->>
->
-
-
-
--- 
-Best regards!
-Hev
-https://hev.cc
+>>>  arch/mips/include/asm/io.h | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>> 
+>>> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+>>> index a7d0b83..cea8ad8 100644
+>>> --- a/arch/mips/include/asm/io.h
+>>> +++ b/arch/mips/include/asm/io.h
+>>> @@ -414,6 +414,8 @@ static inline type pfx##in##bwlq##p(unsigned long
+>>> port)                     \
+>>>         __val = *__addr;                                              
+>>>   \
+>>>         slow;                                                         
+>>>   \
+>>>                                                                       
+>>>   \
+>>> +       /* prevent prefetching of coherent DMA data prematurely */    
+>>>   \
+>>> +       rmb();                                                        
+>>>   \
+>>>         return pfx##ioswab##bwlq(__addr, __val);                      
+>>>   \
+>>>  }
+>> 
+>> 
+>> Typically read barrier is applied after register read.

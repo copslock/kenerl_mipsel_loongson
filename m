@@ -1,56 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2018 15:16:10 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:54068 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993885AbeDXNQD2R1qw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2018 15:16:03 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 24 Apr 2018 13:15:41 +0000
-Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 24
- Apr 2018 06:15:59 -0700
-Subject: Re: [RFC PATCH] MIPS: Oprofile: Drop support
-To:     James Hogan <jhogan@kernel.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2018 15:59:12 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:46024 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992971AbeDXN7DUJQKM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2018 15:59:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=4LgEwGaj1xK9/ebv559nZWzN+ETYzTjj0S6pMvWEt1o=; b=gQ6wjBTj/nZ9ip3rfQxYw6szE
+        Sw/A0KONhnRSihNU5hlJowwFvBfTdc+Af56VxQ+nW2aKcA9ySg3ognZB7kuECP3PH8qIxpEmR0znu
+        N9HtSZnw6TDFtENjEjU/9Ahn4xYy0I61ATp89JZ4VntoiEyhEkuLSBrlsbxWyHBAx2lC+ayzPJvpK
+        kCpPCnAmA1U3AYEnQPdbyvw8eemi8f53ekXoE8Pb8t061G6Kxhbkwf5R0NsB2PdvHnQ+FZsVyOeJv
+        3ssASYx79FXkhy1RTEdfxlHcnn7Lb4iDsIKF8iEz52poHD46XHl34PEfLtLxOpcQ/lUPjvk9CUdOa
+        +yF2YET5A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1fAyTE-0003xa-HP; Tue, 24 Apr 2018 13:59:00 +0000
+Date:   Tue, 24 Apr 2018 06:59:00 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Huacai Chen <chenhc@lemote.com>, linux-kernel@vger.kernel.org,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Robert Richter <rric@kernel.org>, <oprofile-list@lists.sf.net>
+        Robert Richter <rric@kernel.org>, oprofile-list@lists.sf.net,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [RFC PATCH] MIPS: Oprofile: Drop support
+Message-ID: <20180424135900.GA11224@infradead.org>
 References: <1524574554-7451-1-git-send-email-matt.redfearn@mips.com>
- <20180424130511.GB28813@saruman>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <5e464a40-4e4d-dde4-b5b5-ceb637dc5f38@mips.com>
-Date:   Tue, 24 Apr 2018 14:15:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
 MIME-Version: 1.0
-In-Reply-To: <20180424130511.GB28813@saruman>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.155.41]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1524575740-637137-13540-10775-1
-X-BESS-VER: 2018.5-r1804232011
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.192328
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1524574554-7451-1-git-send-email-matt.redfearn@mips.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+433ba6cfe36175bf6d33+5357+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63728
+X-archive-position: 63729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: hch@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,37 +57,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Tue, Apr 24, 2018 at 01:55:54PM +0100, Matt Redfearn wrote:
+> The core oprofile code in drivers/oprofile/ has not seeen significant
+> maintenance other than fixes to changes in other parts of the tree for
+> the last 5 years at least. It looks as through the perf tool has
+> more or less superceeded it's functionality.
+> Additionally the MIPS architecture support has bitrotted to an extent
+> meaning it is not currently functional.
 
+I wonder if time has come to drop oprofile support entirely.
 
-On 24/04/18 14:05, James Hogan wrote:
-> On Tue, Apr 24, 2018 at 01:55:54PM +0100, Matt Redfearn wrote:
->> Since it appears that MIPS oprofile support is currently broken, core
->> oprofile is not getting many updates and not as many architectures
->> implement support for it compared to perf, remove the MIPS support.
-> 
-> That sounds reasonable to me. Any idea how long its been broken?
-
-Sorry, not yet. I haven't yet looked into where/how it's broken that 
-would narrow that down...
-
-The other thing to bear in mind is that the userspace tools have not 
-seen any MIPS additions since 2010, the last commit being to add 1004K 
-and 34K support:
-https://sourceforge.net/p/oprofile/oprofile/ci/master/tree/events/mips/
-
-Though I'm not sure if anyone is maintaining a vendor specific fork 
-containing further support.
-
-> 
-> I'll let it sit on the list for a bit in case anybody does object and
-> wants to fix it instead.
-
-Cool, sounds good.
-
-Thanks,
-Matt
-
-> 
-> Thanks
-> James
-> 
+(in addition to your patch which seems more urgent)

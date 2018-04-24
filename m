@@ -1,51 +1,54 @@
-From: James Hogan <jhogan@kernel.org>
-Date: Fri, 2 Feb 2018 22:14:09 +0000
-Subject: MIPS: generic: Fix machine compatible matching
-Message-ID: <20180202221409.XyNNP5BfRCHmAZLhHzY5Ec5SGLpUj7mHX_WxVkhL3vM@z>
-
-From: James Hogan <jhogan@kernel.org>
-
-
-[ Upstream commit 9a9ab3078e2744a1a55163cfaec73a5798aae33e ]
-
-We now have a platform (Ranchu) in the "generic" platform which matches
-based on the FDT compatible string using mips_machine_is_compatible(),
-however that function doesn't stop at a blank struct
-of_device_id::compatible as that is an array in the struct, not a
-pointer to a string.
-
-Fix the loop completion to check the first byte of the compatible array
-rather than the address of the compatible array in the struct.
-
-Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18580/
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/include/asm/machine.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/include/asm/machine.h
-+++ b/arch/mips/include/asm/machine.h
-@@ -52,7 +52,7 @@ mips_machine_is_compatible(const struct
- 	if (!mach->matches)
- 		return NULL;
- 
--	for (match = mach->matches; match->compatible; match++) {
-+	for (match = mach->matches; match->compatible[0]; match++) {
- 		if (fdt_node_check_compatible(fdt, 0, match->compatible) == 0)
- 			return match;
- 	}
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2018 17:05:08 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33866 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991668AbeDXPEjZUm5E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2018 17:04:39 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B783B504;
+        Tue, 24 Apr 2018 15:04:30 +0000 (UTC)
+Subject: Patch "MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}" has been added to the 4.14-stable tree
+To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
+        jhogan@kernel.org, linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Tue, 24 Apr 2018 17:01:06 +0200
+Message-ID: <152458206665215@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63731
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from jhogan@kernel.org are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.14/mips-generic-support-gic-in-eic-mode.patch
-queue-4.14/mips-txx9-use-is_builtin-for-config_leds_class.patch
-queue-4.14/mips-generic-fix-machine-compatible-matching.patch
-queue-4.14/mips-fix-clean-of-vmlinuz.-32-ecoff-bin-srec.patch
+    MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}
+
+to the 4.14-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-fix-clean-of-vmlinuz.-32-ecoff-bin-srec.patch
+and it can be found in the queue-4.14 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

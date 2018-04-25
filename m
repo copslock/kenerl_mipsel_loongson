@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 07:15:57 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:60440 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 07:16:14 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:60408 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990427AbeDYFPutRm0p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 07:15:50 +0200
+        by eddie.linux-mips.org with ESMTP id S23990392AbeDYFPwJOMap (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 07:15:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=oyi/6ta6fJATt/FjJawfDmMOLHahWxSDQVuW8DKxYds=; b=sYIDU44aAzztSoUlIs/vlljBZ
-        Ml5sNg41KcT1K9z3QsXvbsCNPA2TzR8Uc/2esF2Mcct2IiqIv+kVYq1soEmVrYbxRp+Gbkrg6H32w
-        BScnUuPM52zE19Q0zCBGbF7acpYo2ryVv/XSXh2rRf8xJa5Odz/KMDDB7sMVklTcboYSw97QCbTuI
-        WNWPw7CXRgyMj1RXx+vp4AWMIPzHP5fjwpb7ADRvM4mQQpWt4k4YXvTLuPrAbBuVHpvj8eaB8+5L2
-        6YO5IwyNcSfJmzOqEtl0SaOiAEQDjppu3xOUHazRbC/P+qrmdziOcAbvyQC8IFZ8pz997tbZLew9N
-        ypiu2wg2Q==;
+         bh=KE9nmR8I/4nBMSv3QU3/qguCBWhqYUBfDkJUnxhweig=; b=Oo4oq1OjTwrqkjt05sTMEXT7D
+        iCXI75ghWEJrQ7EY7WABCTpCV802bpdxa7OTsD2nWSeAQOgHuvO1U3bXElC7LsrSOJ0pGA/FecwPH
+        n1WKBtQwjOkTuGjvNGQkZSmjMdEtUaKychPNhZnLyf8B1Ul0KwuHtUCMZwnN3EvvGupt5XwllvkHE
+        +t/v0hJ23phKrA3BTPqUzmO+8gbc/2q51lQ0ysnfwuP8vOPpnMDZzbO7eEYl3m2TQbQ67V2llprzM
+        hxucs4aPZPCDNEU+2xpf8IYuIr0DRi/J/uFBe82S33OgkYRKehVqhtNz9WWPJzLyHv9eiPTTJxnYW
+        DiBZu7zIA==;
 Received: from [93.83.86.253] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fBCmP-00052z-Dg; Wed, 25 Apr 2018 05:15:45 +0000
+        id 1fBCmM-00051v-HH; Wed, 25 Apr 2018 05:15:42 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
         iommu@lists.linux-foundation.org
 Cc:     sstabellini@kernel.org, x86@kernel.org, linux-pci@vger.kernel.org,
         linux-mm@kvack.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 01/13] iommu-common: move to arch/sparc
-Date:   Wed, 25 Apr 2018 07:15:27 +0200
-Message-Id: <20180425051539.1989-2-hch@lst.de>
+Subject: centralize SWIOTLB config symbol and misc other cleanups V3
+Date:   Wed, 25 Apr 2018 07:15:26 +0200
+Message-Id: <20180425051539.1989-1-hch@lst.de>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180425051539.1989-1-hch@lst.de>
-References: <20180425051539.1989-1-hch@lst.de>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Return-Path: <BATV+8b59ddf2a3dd4691ec7e+5358+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63741
+X-archive-position: 63742
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,144 +50,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This code is only used by sparc, and all new iommu drivers should use the
-drivers/iommu/ framework.  Also remove the unused exports.
+Hi all,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
----
- {include/linux => arch/sparc/include/asm}/iommu-common.h | 0
- arch/sparc/include/asm/iommu_64.h                        | 2 +-
- arch/sparc/kernel/Makefile                               | 2 +-
- {lib => arch/sparc/kernel}/iommu-common.c                | 5 +----
- arch/sparc/kernel/iommu.c                                | 2 +-
- arch/sparc/kernel/ldc.c                                  | 2 +-
- arch/sparc/kernel/pci_sun4v.c                            | 2 +-
- lib/Makefile                                             | 2 +-
- 8 files changed, 7 insertions(+), 10 deletions(-)
- rename {include/linux => arch/sparc/include/asm}/iommu-common.h (100%)
- rename {lib => arch/sparc/kernel}/iommu-common.c (98%)
+this seris aims for a single defintion of the Kconfig symbol.  To get
+there various cleanups, mostly about config symbols are included as well.
 
-diff --git a/include/linux/iommu-common.h b/arch/sparc/include/asm/iommu-common.h
-similarity index 100%
-rename from include/linux/iommu-common.h
-rename to arch/sparc/include/asm/iommu-common.h
-diff --git a/arch/sparc/include/asm/iommu_64.h b/arch/sparc/include/asm/iommu_64.h
-index 9ed6b54caa4b..0ef6dedf747e 100644
---- a/arch/sparc/include/asm/iommu_64.h
-+++ b/arch/sparc/include/asm/iommu_64.h
-@@ -17,7 +17,7 @@
- #define IOPTE_WRITE   0x0000000000000002UL
- 
- #define IOMMU_NUM_CTXS	4096
--#include <linux/iommu-common.h>
-+#include <asm/iommu-common.h>
- 
- struct iommu_arena {
- 	unsigned long	*map;
-diff --git a/arch/sparc/kernel/Makefile b/arch/sparc/kernel/Makefile
-index 76cb57750dda..a284662b0e4c 100644
---- a/arch/sparc/kernel/Makefile
-+++ b/arch/sparc/kernel/Makefile
-@@ -59,7 +59,7 @@ obj-$(CONFIG_SPARC32)   += leon_pmc.o
- 
- obj-$(CONFIG_SPARC64)   += reboot.o
- obj-$(CONFIG_SPARC64)   += sysfs.o
--obj-$(CONFIG_SPARC64)   += iommu.o
-+obj-$(CONFIG_SPARC64)   += iommu.o iommu-common.o
- obj-$(CONFIG_SPARC64)   += central.o
- obj-$(CONFIG_SPARC64)   += starfire.o
- obj-$(CONFIG_SPARC64)   += power.o
-diff --git a/lib/iommu-common.c b/arch/sparc/kernel/iommu-common.c
-similarity index 98%
-rename from lib/iommu-common.c
-rename to arch/sparc/kernel/iommu-common.c
-index 55b00de106b5..59cb16691322 100644
---- a/lib/iommu-common.c
-+++ b/arch/sparc/kernel/iommu-common.c
-@@ -8,9 +8,9 @@
- #include <linux/bitmap.h>
- #include <linux/bug.h>
- #include <linux/iommu-helper.h>
--#include <linux/iommu-common.h>
- #include <linux/dma-mapping.h>
- #include <linux/hash.h>
-+#include <asm/iommu-common.h>
- 
- static unsigned long iommu_large_alloc = 15;
- 
-@@ -93,7 +93,6 @@ void iommu_tbl_pool_init(struct iommu_map_table *iommu,
- 	p->hint = p->start;
- 	p->end = num_entries;
- }
--EXPORT_SYMBOL(iommu_tbl_pool_init);
- 
- unsigned long iommu_tbl_range_alloc(struct device *dev,
- 				struct iommu_map_table *iommu,
-@@ -224,7 +223,6 @@ unsigned long iommu_tbl_range_alloc(struct device *dev,
- 
- 	return n;
- }
--EXPORT_SYMBOL(iommu_tbl_range_alloc);
- 
- static struct iommu_pool *get_pool(struct iommu_map_table *tbl,
- 				   unsigned long entry)
-@@ -264,4 +262,3 @@ void iommu_tbl_range_free(struct iommu_map_table *iommu, u64 dma_addr,
- 	bitmap_clear(iommu->map, entry, npages);
- 	spin_unlock_irqrestore(&(pool->lock), flags);
- }
--EXPORT_SYMBOL(iommu_tbl_range_free);
-diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
-index b08dc3416f06..40d008b0bd3e 100644
---- a/arch/sparc/kernel/iommu.c
-+++ b/arch/sparc/kernel/iommu.c
-@@ -14,7 +14,7 @@
- #include <linux/errno.h>
- #include <linux/iommu-helper.h>
- #include <linux/bitmap.h>
--#include <linux/iommu-common.h>
-+#include <asm/iommu-common.h>
- 
- #ifdef CONFIG_PCI
- #include <linux/pci.h>
-diff --git a/arch/sparc/kernel/ldc.c b/arch/sparc/kernel/ldc.c
-index 86b625f9d8dc..c0fa3ef6cf01 100644
---- a/arch/sparc/kernel/ldc.c
-+++ b/arch/sparc/kernel/ldc.c
-@@ -16,7 +16,7 @@
- #include <linux/list.h>
- #include <linux/init.h>
- #include <linux/bitmap.h>
--#include <linux/iommu-common.h>
-+#include <asm/iommu-common.h>
- 
- #include <asm/hypervisor.h>
- #include <asm/iommu.h>
-diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
-index 249367228c33..565d9ac883d0 100644
---- a/arch/sparc/kernel/pci_sun4v.c
-+++ b/arch/sparc/kernel/pci_sun4v.c
-@@ -16,7 +16,7 @@
- #include <linux/export.h>
- #include <linux/log2.h>
- #include <linux/of_device.h>
--#include <linux/iommu-common.h>
-+#include <asm/iommu-common.h>
- 
- #include <asm/iommu.h>
- #include <asm/irq.h>
-diff --git a/lib/Makefile b/lib/Makefile
-index ce20696d5a92..94203b5eecd4 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -147,7 +147,7 @@ obj-$(CONFIG_AUDIT_GENERIC) += audit.o
- obj-$(CONFIG_AUDIT_COMPAT_GENERIC) += compat_audit.o
- 
- obj-$(CONFIG_SWIOTLB) += swiotlb.o
--obj-$(CONFIG_IOMMU_HELPER) += iommu-helper.o iommu-common.o
-+obj-$(CONFIG_IOMMU_HELPER) += iommu-helper.o
- obj-$(CONFIG_FAULT_INJECTION) += fault-inject.o
- obj-$(CONFIG_NOTIFIER_ERROR_INJECTION) += notifier-error-inject.o
- obj-$(CONFIG_PM_NOTIFIER_ERROR_INJECT) += pm-notifier-error-inject.o
--- 
-2.17.0
+Changes since V2:
+ - swiotlb doesn't need the dma_length field by itself, so don't select it
+ - don't offer a user visible SWIOTLB choice
+
+Chages since V1:
+ - fixed a incorrect Reviewed-by that should be a Signed-off-by.

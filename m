@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 00:02:38 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:60892 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 00:08:52 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:33572 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994611AbeDYWCbmqTDn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Apr 2018 00:02:31 +0200
+        id S23994666AbeDYWIpm9fjn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Apr 2018 00:08:45 +0200
 Received: from saruman (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 612DD21748;
-        Wed, 25 Apr 2018 22:02:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 612DD21748
+        by mail.kernel.org (Postfix) with ESMTPSA id 4D6AF21745;
+        Wed, 25 Apr 2018 22:08:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4D6AF21745
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=jhogan@kernel.org
-Date:   Wed, 25 Apr 2018 23:02:21 +0100
+Date:   Wed, 25 Apr 2018 23:08:34 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     alexander.levin@microsoft.com, linux-mips@linux-mips.org,
-        matt.redfearn@mips.com, paul.burton@mips.com, ralf@linux-mips.org,
-        stable-commits@vger.kernel.org
-Subject: Re: Patch "MIPS: generic: Fix machine compatible matching" has been
- added to the 4.14-stable tree
-Message-ID: <20180425220221.GB25917@saruman>
-References: <1524582066147140@kroah.com>
+To:     NeilBrown <neil@brown.name>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: c-r4k: fix data corruption related to cache
+ coherence.
+Message-ID: <20180425220834.GC25917@saruman>
+References: <87sh7klyhc.fsf@notabene.neil.brown.name>
+ <20180425214650.GA25917@saruman>
+ <87h8nzlzf1.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8GpibOaaTibBMecb"
+        protocol="application/pgp-signature"; boundary="0lnxQi9hkpPO77W3"
 Content-Disposition: inline
-In-Reply-To: <1524582066147140@kroah.com>
+In-Reply-To: <87h8nzlzf1.fsf@notabene.neil.brown.name>
 User-Agent: Mutt/1.7.2 (2016-11-26)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63790
+X-archive-position: 63791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,42 +51,44 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---8GpibOaaTibBMecb
+--0lnxQi9hkpPO77W3
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 24, 2018 at 05:01:06PM +0200, gregkh@linuxfoundation.org wrote:
-> We now have a platform (Ranchu) in the "generic" platform which matches
+On Thu, Apr 26, 2018 at 08:00:18AM +1000, NeilBrown wrote:
+> On Wed, Apr 25 2018, James Hogan wrote:
+> > So I'm thinking "!mips_cm_present()" should probably be replaced with
+> > "!r4k_op_needs_ipi(R4K_INDEX)" (and the comment updated to mention that
+> > IPI calls aren't implemented here).
+>=20
+> That makes sense.  I tried ipi calls at one stage.  Synchronous ones
+> cannot be used because this code is called with interrupts disabled, and
+> async ones cannot provide the required guarantees.
 
-The reason I didn't tag stable was because Ranchu was added in 4.16 ...
+Okay. I thought something like that might be the case.
 
->  	if (!mach->matches)
->  		return NULL;
+>=20
+> I'll update the patch, test that it still works, and resend, in the next
+> day or so.
 
-=2E.. so mach->matches will always be NULL before 4.16 ...
-
-> =20
-> -	for (match =3D mach->matches; match->compatible; match++) {
-> +	for (match =3D mach->matches; match->compatible[0]; match++) {
-
-=2E.. so this can't get hit.
-
-Feel free to drop, otherwise it does no harm, its dead code.
+Thanks. It wouldn't hurt to also mention why IPIs can't be used in the
+code comments, if its fresh in your mind, just for the benefit of next
+person to attempt it.
 
 Cheers
 James
 
---8GpibOaaTibBMecb
+--0lnxQi9hkpPO77W3
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWuD67QAKCRA1zuSGKxAj
-8sjoAQCFqYkF5eNlKg0sR93RTtJSkCaO+eV6yhZ/tRgONsOwNwEApiJh1GxMKJIA
-OkTaSFoxYZZvYqkNY9MxNHxWCaIKsgI=
-=b5O0
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWuD8YQAKCRA1zuSGKxAj
+8qhiAQDy4PgqTJQrBqDyhppFRJRq1oCRGDz9EGtqFs51hCP9TgEArA/K9cg3Wszh
+ckssoKrrkL4uvnpylKDNzb9aP+4GAQM=
+=9Wdc
 -----END PGP SIGNATURE-----
 
---8GpibOaaTibBMecb--
+--0lnxQi9hkpPO77W3--

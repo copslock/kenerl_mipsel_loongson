@@ -1,45 +1,55 @@
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Date: Wed, 23 Nov 2016 14:43:49 +0100
-Subject: MIPS: fix mem=X@Y commandline processing
-Message-ID: <20161123134349.HfD-cDEcS_QZAIJD_Gkz6zfyRLrcBrBEZMuQXuj6JuI@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 18:02:32 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42382 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993997AbeDYQBzbDkNB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 18:01:55 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2E78A941;
+        Wed, 25 Apr 2018 16:01:49 +0000 (UTC)
+Subject: Patch "MIPS: Generic: Fix big endian CPUs on generic machine" has been added to the 4.9-stable tree
+To:     amit.pundir@linaro.org, gregkh@linuxfoundation.org,
+        linux-mips@linux-mips.org, matt.redfearn@imgtec.com,
+        ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 25 Apr 2018 18:01:26 +0200
+Message-ID: <15246720861612@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63780
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-commit 73fbc1eba7ffa3bf0ad12486232a8a1edb4e4411 upstream.
+This is a note to let you know that I've just added the patch titled
 
-When a memory offset is specified through the commandline, add the
-memory in range PHYS_OFFSET:Y as reserved memory area.
-Otherwise the bootmem allocator is initialised with low page equal to
-min_low_pfn = PHYS_OFFSET, and in free_all_bootmem will process pages
-starting from min_low_pfn instead of PFN(Y).
+    MIPS: Generic: Fix big endian CPUs on generic machine
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14613/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+to the 4.9-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
----
- arch/mips/kernel/setup.c |    4 ++++
- 1 file changed, 4 insertions(+)
+The filename of the patch is:
+     mips-generic-fix-big-endian-cpus-on-generic-machine.patch
+and it can be found in the queue-4.9 subdirectory.
 
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -661,6 +661,10 @@ static int __init early_parse_mem(char *
- 		start = memparse(p + 1, &p);
- 
- 	add_memory_region(start, size, BOOT_MEM_RAM);
-+
-+	if (start && start > PHYS_OFFSET)
-+		add_memory_region(PHYS_OFFSET, start - PHYS_OFFSET,
-+				BOOT_MEM_RESERVED);
- 	return 0;
- }
- early_param("mem", early_parse_mem);
-
-
-Patches currently in stable-queue which might be from marcin.nowakowski@imgtec.com are
-
-queue-4.9/irqchip-mips-gic-fix-local-interrupts.patch
-queue-4.9/mips-fix-mem-x-y-commandline-processing.patch
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

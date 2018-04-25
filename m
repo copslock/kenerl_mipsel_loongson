@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 17:09:18 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.133]:49367 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 17:09:37 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.131]:37881 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994669AbeDYPH0ZhkRC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 17:07:26 +0200
+        with ESMTP id S23994670AbeDYPH1Af3NC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 17:07:27 +0200
 Received: from wuerfel.lan ([95.208.111.237]) by mrelayeu.kundenserver.de
  (mreue002 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0M3rTW-1eL2b425uk-00rVbx; Wed, 25 Apr 2018 17:06:32 +0200
+ 0Lkocf-1edOgq2Zrp-00aoN8; Wed, 25 Apr 2018 17:06:21 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     y2038@lists.linaro.org, linux-kernel@vger.kernel.org
 Cc:     linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
@@ -17,33 +17,33 @@ Cc:     linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-mips@linux-mips.org, jhogan@kernel.org, ralf@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         zackw@panix.com, noloader@gmail.com, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v4 16/16] y2038: ipc: Redirect ipc(SEMTIMEDOP, ...) to compat_ksys_semtimedop
-Date:   Wed, 25 Apr 2018 17:06:06 +0200
-Message-Id: <20180425150606.954771-16-arnd@arndb.de>
+Subject: [PATCH v4 02/16] y2038: x86: Extend sysvipc data structures
+Date:   Wed, 25 Apr 2018 17:05:52 +0200
+Message-Id: <20180425150606.954771-2-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
 In-Reply-To: <20180425132242.1500539-1-arnd@arndb.de>
 References: <20180425132242.1500539-1-arnd@arndb.de>
-X-Provags-ID: V03:K1:Mlabpj+luf20+BILETO7JbXl11x+S63/lDeB9I8xRdnCyML+2y2
- SEv4/EcskLmyzHqtorUKLjUzHaKIwF3Ds0JuyIVnUSiBRzGFwo4mfePbv/NjOJUH7+wbjgP
- lmNVVsYy/PzzGz5xplirZQQTSika5eJxOseY0UxWAdqlH+uiS/Q2ThdtOzEu8I7kUv5JvvK
- 72vyib/moYdduZzTS/ckg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:SqN+npyaZdU=:2iB9BZauhQXqPesFdfkWfK
- vCbG8Vgy9eKVJKuVzfB9K58T37/tMsSYEdG8+iCyMd15rkm5zdQlv62xWWqATm1JnamavSIrR
- dOIBdlGpcbYB4xH9Mife2fCp7OBJUH3fVTNw2V7ifw/08z4c/Q0kJqO0g3f1lO0QZaGLYiNBP
- ylTKkLgcQSoOLgoDIi5sXktp/Jm3z99JasrSdmPovzve8flXC5KzbkHAR733KaU2ECqObcoHb
- meEIjmuEZdgLNXT80vCxhv7U+vkPOyxO7bVv2yvkkFYKxFUZCqELNcKwQSrbjJ+7ihgT3FlRf
- YcR6DDqEuDIA/2lfvZSyPPc9fS0BhmVvIdNNZhTo8xgwxByxHSStmnsV8I4lu7boEPgxLJFCH
- BhhoAwnIYKFA7VJSoD/4At0rDW2ZqHODq0bKsw9DF9KJXXS5Uu/QyFiQayyFT0H09/lawzzhs
- InT5i4GoJlQ7sbmeSXkFJ88kG2DnxEiJrUDyiVrBe4TaBtn4RUGT4VTCseE1lYIYT7CwYriMX
- AGT9xePhRrwJvDom+Z4537rZjggZWKyX66M0PuTgsJnTJhwekmiFkBtjlI7QzjtBMNVa7OIR4
- W4Jl92RwlQKgE0omplLfF7UPjdp4MFGW2JPNpMl5udI/k6mXxmq1YyXpYXE1eFwfFJBir05R9
- stWRpssw1H+8rGSMKvynbFlVuAPL0Rfsppk30AIFUKlYX/4rXvMuReQesL/csKce2Ewll5K9z
- ENLb1unuxr5CX6vSUO1teYurJEtv+ALHyMGYCg==
+X-Provags-ID: V03:K1:9M4OIQPEi5yzqZ0O/d7f/sTPBFWbwKIJIxL1cS7FymAPahP+/PZ
+ fCENTLpok6HumSyjM4fkgb05zQM4d5SEeRJmZ5GLvZiCt4vc2pZYX+F3bnYm534yg0Qi6xp
+ A4ivRIFHrY2iOqX5J5faBuvwk/Xma6NreSw26uwJbQf6aiwkasMqKNa0NlNMcwOHVyrChpD
+ mZSzp/p2l3Ts5TPvkS4LQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:0Td6jEn/6kk=:Io2npe3+BCzZPd1rBwwJz5
+ i4e0YrozGCqkH6NOck6RGlipii1e0qfkFvTINUqi4LusfB9BRcXgGE4U6GNmIQO777JPUTUW1
+ eV9HN8hsQqHX7rytFkZtf6qs2FRu0jubK24HXT60/eZnQgZuQQoDbK5YbBhUjqADTAnpYj7Hy
+ /ntWuezVNb832KbbSLyqVtBWPjMnqST28136Svr2OjgrM6t8GkV9n/XULuGOiMWoIcr9o7zup
+ P22ZWSj6Nmh72zJHocLxjVMNYrPifBncvumAk6y0w7T7LQsBmBzzuyTdUxA2MHkhp5r9YDv+N
+ kdLy0IiymTEcQnmVkEH71kiSvxecdy8FXNOTEMG38OzkQMdM0pQX8Mp2KWg+Mp+ch8lYF2jtH
+ +euXRMGE66teCMuRFxE4uSmVCNXYw1ca/FxsDt17p4gCKpOcGJRgtKfYTw4PkRbr7LluF5O35
+ c2ST6xx1cEIPu0pwp0fc7aCrJ3ELyiWFEo5RA4pRqAuxnvaq3Gn4EWibmqs5rhs7eJygee5PA
+ O5t9zqMEPW7C34j4plnS/ZHA1uQxwI4bDMV8YKeA/J9BXQvJRxEo3koBMu3oCAXgt4POgJSX6
+ c/btpd+Ip2uojMlqfDdBp4FMdXHWbJZ9hMDKqYQTXP1W0qpnXnYgVWaAtI+AsbsqeJPezYmFA
+ IOOEqgiNYZmOu8BBynm6BxelZMTJHyn2MCPWDIED7emgwRdeznUEY90G9sVGxC6Gt4oe5BogN
+ A9FIvXDyw7/t2LFgl3Wj+2/SRllgg02bKHRxZA==
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63770
+X-archive-position: 63771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,58 +60,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-32-bit architectures implementing 64BIT_TIME and COMPAT_32BIT_TIME
-need to have the traditional semtimedop() behavior with 32-bit timestamps
-for sys_ipc() by calling compat_ksys_semtimedop(), while those that
-are not yet converted need to keep using ksys_semtimedop() like
-64-bit architectures do.
+This extends the x86 copy of the sysvipc data structures to deal with
+32-bit user space that has 64-bit time_t and wants to see timestamps
+beyond 2038.
 
-Note that I chose to not implement a new SEMTIMEDOP64 function that
-corresponds to the new sys_semtimedop() with 64-bit timeouts. The reason
-here is that sys_ipc() should no longer be used for new system calls,
-and libc should just call the semtimedop syscall directly.
+Fortunately, x86 has padding for this purpose in all the data structures,
+so we can just add extra fields. With msgid64_ds and shmid64_ds, the
+data structure is identical to the asm-generic version, which we have
+already extended.
 
-One open question remain to whether we want to completely avoid the
-sys_ipc() system call for architectures that do not yet have all the
-individual calls as they get converted to 64-bit time_t. Doing that
-would require adding several extra system calls on m68k, mips, powerpc,
-s390, sh, sparc, and x86-32.
+For some reason however, the 64-bit version of semid64_ds ended up with
+extra padding, so I'm implementing the same approach as the asm-generic
+version here, by using separate fields for the upper and lower halves
+of the two timestamps.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- ipc/syscall.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/compat.h      | 32 ++++++++++++++++----------------
+ arch/x86/include/uapi/asm/sembuf.h | 11 ++++++++++-
+ 2 files changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/ipc/syscall.c b/ipc/syscall.c
-index 77a883ef2eca..65d405f1ba0c 100644
---- a/ipc/syscall.c
-+++ b/ipc/syscall.c
-@@ -30,9 +30,14 @@ SYSCALL_DEFINE6(ipc, unsigned int, call, int, first, unsigned long, second,
- 		return ksys_semtimedop(first, (struct sembuf __user *)ptr,
- 				       second, NULL);
- 	case SEMTIMEDOP:
--		return ksys_semtimedop(first, (struct sembuf __user *)ptr,
--				       second,
--				       (const struct timespec __user *)fifth);
-+		if (IS_ENABLED(CONFIG_64BIT) || !IS_ENABLED(CONFIG_64BIT_TIME))
-+			return ksys_semtimedop(first, ptr, second,
-+			        (const struct __kernel_timespec __user *)fifth);
-+		else if (IS_ENABLED(CONFIG_COMPAT_32BIT_TIME))
-+			return compat_ksys_semtimedop(first, ptr, second,
-+			        (const struct compat_timespec __user *)fifth);
-+		else
-+			return -ENOSYS;
+diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
+index 7cd314b71c51..fb97cf7c4137 100644
+--- a/arch/x86/include/asm/compat.h
++++ b/arch/x86/include/asm/compat.h
+@@ -134,10 +134,10 @@ struct compat_ipc64_perm {
  
- 	case SEMGET:
- 		return ksys_semget(first, second, third);
-@@ -130,6 +135,8 @@ COMPAT_SYSCALL_DEFINE6(ipc, u32, call, int, first, int, second,
- 		/* struct sembuf is the same on 32 and 64bit :)) */
- 		return ksys_semtimedop(first, compat_ptr(ptr), second, NULL);
- 	case SEMTIMEDOP:
-+		if (!IS_ENABLED(CONFIG_COMPAT_32BIT_TIME))
-+			return -ENOSYS;
- 		return compat_ksys_semtimedop(first, compat_ptr(ptr), second,
- 						compat_ptr(fifth));
- 	case SEMGET:
+ struct compat_semid64_ds {
+ 	struct compat_ipc64_perm sem_perm;
+-	compat_time_t  sem_otime;
+-	compat_ulong_t __unused1;
+-	compat_time_t  sem_ctime;
+-	compat_ulong_t __unused2;
++	compat_ulong_t sem_otime;
++	compat_ulong_t sem_otime_high;
++	compat_ulong_t sem_ctime;
++	compat_ulong_t sem_ctime_high;
+ 	compat_ulong_t sem_nsems;
+ 	compat_ulong_t __unused3;
+ 	compat_ulong_t __unused4;
+@@ -145,12 +145,12 @@ struct compat_semid64_ds {
+ 
+ struct compat_msqid64_ds {
+ 	struct compat_ipc64_perm msg_perm;
+-	compat_time_t  msg_stime;
+-	compat_ulong_t __unused1;
+-	compat_time_t  msg_rtime;
+-	compat_ulong_t __unused2;
+-	compat_time_t  msg_ctime;
+-	compat_ulong_t __unused3;
++	compat_ulong_t msg_stime;
++	compat_ulong_t msg_stime_high;
++	compat_ulong_t msg_rtime;
++	compat_ulong_t msg_rtime_high;
++	compat_ulong_t msg_ctime;
++	compat_ulong_t msg_ctime_high;
+ 	compat_ulong_t msg_cbytes;
+ 	compat_ulong_t msg_qnum;
+ 	compat_ulong_t msg_qbytes;
+@@ -163,12 +163,12 @@ struct compat_msqid64_ds {
+ struct compat_shmid64_ds {
+ 	struct compat_ipc64_perm shm_perm;
+ 	compat_size_t  shm_segsz;
+-	compat_time_t  shm_atime;
+-	compat_ulong_t __unused1;
+-	compat_time_t  shm_dtime;
+-	compat_ulong_t __unused2;
+-	compat_time_t  shm_ctime;
+-	compat_ulong_t __unused3;
++	compat_ulong_t shm_atime;
++	compat_ulong_t shm_atime_high;
++	compat_ulong_t shm_dtime;
++	compat_ulong_t shm_dtime_high;
++	compat_ulong_t shm_ctime;
++	compat_ulong_t shm_ctime_high;
+ 	compat_pid_t   shm_cpid;
+ 	compat_pid_t   shm_lpid;
+ 	compat_ulong_t shm_nattch;
+diff --git a/arch/x86/include/uapi/asm/sembuf.h b/arch/x86/include/uapi/asm/sembuf.h
+index cabd7476bd6c..89de6cd9f0a7 100644
+--- a/arch/x86/include/uapi/asm/sembuf.h
++++ b/arch/x86/include/uapi/asm/sembuf.h
+@@ -8,15 +8,24 @@
+  * between kernel and user space.
+  *
+  * Pad space is left for:
+- * - 64-bit time_t to solve y2038 problem
+  * - 2 miscellaneous 32-bit values
++ *
++ * x86_64 and x32 incorrectly added padding here, so the structures
++ * are still incompatible with the padding on x86.
+  */
+ struct semid64_ds {
+ 	struct ipc64_perm sem_perm;	/* permissions .. see ipc.h */
++#ifdef __i386__
++	unsigned long	sem_otime;	/* last semop time */
++	unsigned long	sem_otime_high;
++	unsigned long	sem_ctime;	/* last change time */
++	unsigned long	sem_ctime_high;
++#else
+ 	__kernel_time_t	sem_otime;	/* last semop time */
+ 	__kernel_ulong_t __unused1;
+ 	__kernel_time_t	sem_ctime;	/* last change time */
+ 	__kernel_ulong_t __unused2;
++#endif
+ 	__kernel_ulong_t sem_nsems;	/* no. of semaphores in array */
+ 	__kernel_ulong_t __unused3;
+ 	__kernel_ulong_t __unused4;
 -- 
 2.9.0

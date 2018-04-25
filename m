@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 17:10:03 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.133]:54387 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 17:10:17 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.187]:36363 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994672AbeDYPH3GZS-C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 17:07:29 +0200
+        with ESMTP id S23994676AbeDYPHfNP-KC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 17:07:35 +0200
 Received: from wuerfel.lan ([95.208.111.237]) by mrelayeu.kundenserver.de
  (mreue002 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0LiKia-1efJZ53rFk-00cj7L; Wed, 25 Apr 2018 17:06:24 +0200
+ 0M6JFz-1eRt9R0ksF-00yMJA; Wed, 25 Apr 2018 17:06:30 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     y2038@lists.linaro.org, linux-kernel@vger.kernel.org
 Cc:     linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
@@ -17,33 +17,33 @@ Cc:     linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-mips@linux-mips.org, jhogan@kernel.org, ralf@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         zackw@panix.com, noloader@gmail.com, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v4 05/16] y2038: s390: Remove unneeded ipc uapi header files
-Date:   Wed, 25 Apr 2018 17:05:55 +0200
-Message-Id: <20180425150606.954771-5-arnd@arndb.de>
+Subject: [PATCH v4 13/16] y2038: ipc: Report long times to user space
+Date:   Wed, 25 Apr 2018 17:06:03 +0200
+Message-Id: <20180425150606.954771-13-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
 In-Reply-To: <20180425132242.1500539-1-arnd@arndb.de>
 References: <20180425132242.1500539-1-arnd@arndb.de>
-X-Provags-ID: V03:K1:CbZ/SvN+g6Gd2QKi56UPeGr9vFRU83X9kKAjsgi53KWnI72+IUW
- 4ucN2R5vio5ReIOdy8p4HCB/q4EbE7Tx9buAScZ1T3Ml39X72Uz+BiWKVjW24MYDC6j31Ag
- 2G51J14q8CaFWv+TZNAn9wsN37QMhO/Ra/CjlDrhhidlxmFphaBUVM2oZwV/3p0b2eZD00m
- tKcGY2HYdYgc7Ead6c6Lg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:n7TcznSx4k0=:6AEqmGrBvP/yvabW5Xy1pU
- 0X48GMa7a2VgL5zI2rn97FSRAr8jNxkAezgm0rCkioeww1737mAj/7hHYOcNRYpMqPFNMqygN
- Jg4inrzGR47IBRrJHusSjdW7bTL9CKM/lW32ZRtGmeGJTw++X4EQhreCXBwQLSXEuEeuiVrVy
- 6WdSIlrqZiLdbiDcA1N2y02m5ZyiJ8VuOYkTGtMEiG/fBsLfwBZeBXLz5yoVA8eleEY6gyyvS
- abjF5gF3hnEsQO1z+ekWmMZnTlx90HU/xZghh3m1IeTiGM+bjts1Js9zWExrCTZM2nynReNVE
- A9ae5ZynfaDA2HsSKy9kBQGmbmGojcP2sHej9QjEKw1MhGRXz4d8zV+kH0eojGM6o1Y/W4uQR
- qnMQcqAc3PRrjFQOaRqf9ppwwaAgOj7GgInhdVt6qEnEhujPKQHtEzPMUWD5z60ho4v4QMb7X
- 1OFl5LAtchURPKlw+tjzenjwnzp+2A24OVoJx9kw0KGPadGnd9k5AkozEvgr7BNnvpSwkREDa
- pOFLLxt0vCRdS3aIwYXkwXsxFJ2I69pZy/GCSZXqsxuAhLnIANLyZb9Zwr3U1Weam+7Rp5E6V
- tmd/0le3SJDGEyJ421d4+Xcc3vl34JjBGI1f9dAmXVmwpu3Su7UxVo4yAdenRswqmdBa+QgEy
- 0MjXS/tQqLe/d8rT7X5jMSYc9FamnStbOyUc6tvapyzhcjhmR/kn/wbpn/krMdjMo5DEM+KI3
- ajO1oH4N9YgsVxH0A5xVJiKp8TJOoUb0njjiAQ==
+X-Provags-ID: V03:K1:U4bZ56OkJwX121pfYf1OxCU+WQTpWhsRjZP3Yu2XsWUfTW4h9F7
+ 8M4ApLronLL42j70AlJ8L8nE/NF8G8eKAKgVn92L7MO0AlU6Crh4yjcIFayeBvLAHGhT6yV
+ C/dklrPQjCp2qttgopbz8xAmNr5kZo8/Lhep6OFY3zHd2ls0y5MZb4OJK2IZ2inOeiETZW5
+ jwNdzMGeqrBSY5CMvq4Eg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:v1ELBJjk/7o=:a1dd3vJ6Iso1u9JooSEz+7
+ bB3CFBWaYtL1A3h+wW63eO5Dm1qZW7pvgsNb87u3xmcWsnC+rjhCpujcmU2NvnPPrO2xeDI7Z
+ k0cfz3sU4QZqO8bg54FUK4wABNrrD5aYcDi4F5r4Tqx4ZrLcGaIDG7WcI1242K6UK5FvY4ZYu
+ 8uay4InHjbk7plAVl0c0x105+21vfFe9I/Sn4MZQsqhGVsO05ywgKgRXmqkH/5JtCF6Rektl0
+ k9IhDd6mRrY+tKagUtdu1WN2TMn93oVht69HHt1ITAJQ44HijwnDEs8fBxQvxzJzdMw0Yj/1K
+ ztq1mScq0oE/onlHHhNNHnmWMG6rdQgRpLyHF3zmrKgIYgD7PWrypzMAnh8ujfms2+w1zzib2
+ KZTMYR6mP58dHt2Oyv8yxOwcQ7VFxbdga2Y1f9gd/sIFzRVC8ay/6YV1TCQh9UsDk08OppjSk
+ YOp3qqGl0w0XrETtSo9FB5b4kfhkztWJhssOJEgXfNiYYh9ksqk0lGFfeDymrmqiGXEQ06fRe
+ wj6+jpIXU6aXvRCxZx/PXociCuT0CGp1xknA1aOqpWzXA+wyoqywK0VJbdIvOCVwqT/PJaTLM
+ 8bKkU1vxssQiMSG0nKLRBfHLm+fK2Q6BKzuxrfQAR4UJ9drftHOufTXOxI0t7x+SBfp0tmtZM
+ zz9MFIv8qzqXjAvwty7QswsRYPeKMOG9mdjuVU8ssXhsWEv2jmXBVqvU7mVg5pHCKDHaG6C+B
+ 2PfPGXDIJzl50llRpP7mHqpbpZAZ82fQiulDag==
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63773
+X-archive-position: 63774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,241 +60,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The s390 msgbuf/sembuf/shmbuf header files are all identical to the
-version from asm-generic.
+The shmid64_ds/semid64_ds/msqid64_ds data structures have been extended
+to contain extra fields for storing the upper bits of the time stamps,
+this patch does the other half of the job and and fills the new fields on
+32-bit architectures as well as 32-bit tasks running on a 64-bit kernel
+in compat mode.
 
-This patch removes the files and replaces them with 'generic-y'
-statements, to avoid having to modify each copy when we extend sysvipc
-to deal with 64-bit time_t in 32-bit user space.
+There should be no change for native 64-bit tasks.
 
-Note that unlike alpha and ia64, the ipcbuf.h header file is slightly
-different here, so I'm leaving the private copy.
-
-To deal with 32-bit compat tasks, we also have to adapt the definitions
-of compat_{shm,sem,msg}id_ds to match the changes to the respective
-asm-generic files.
-
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/s390/include/asm/compat.h      | 32 ++++++++++++------------
- arch/s390/include/uapi/asm/Kbuild   |  3 +++
- arch/s390/include/uapi/asm/msgbuf.h | 38 ----------------------------
- arch/s390/include/uapi/asm/sembuf.h | 30 -----------------------
- arch/s390/include/uapi/asm/shmbuf.h | 49 -------------------------------------
- 5 files changed, 19 insertions(+), 133 deletions(-)
- delete mode 100644 arch/s390/include/uapi/asm/msgbuf.h
- delete mode 100644 arch/s390/include/uapi/asm/sembuf.h
- delete mode 100644 arch/s390/include/uapi/asm/shmbuf.h
+ ipc/msg.c | 14 +++++++++++---
+ ipc/sem.c | 14 +++++++++++---
+ ipc/shm.c | 14 +++++++++++---
+ 3 files changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
-index 501aaff85304..97db2fba546a 100644
---- a/arch/s390/include/asm/compat.h
-+++ b/arch/s390/include/asm/compat.h
-@@ -232,10 +232,10 @@ struct compat_ipc64_perm {
+diff --git a/ipc/msg.c b/ipc/msg.c
+index 574f76c9a2ff..3b6545302598 100644
+--- a/ipc/msg.c
++++ b/ipc/msg.c
+@@ -537,6 +537,11 @@ static int msgctl_stat(struct ipc_namespace *ns, int msqid,
+ 	p->msg_stime  = msq->q_stime;
+ 	p->msg_rtime  = msq->q_rtime;
+ 	p->msg_ctime  = msq->q_ctime;
++#ifndef CONFIG_64BIT
++	p->msg_stime_high = msq->q_stime >> 32;
++	p->msg_rtime_high = msq->q_rtime >> 32;
++	p->msg_ctime_high = msq->q_ctime >> 32;
++#endif
+ 	p->msg_cbytes = msq->q_cbytes;
+ 	p->msg_qnum   = msq->q_qnum;
+ 	p->msg_qbytes = msq->q_qbytes;
+@@ -646,9 +651,12 @@ static int copy_compat_msqid_to_user(void __user *buf, struct msqid64_ds *in,
+ 		struct compat_msqid64_ds v;
+ 		memset(&v, 0, sizeof(v));
+ 		to_compat_ipc64_perm(&v.msg_perm, &in->msg_perm);
+-		v.msg_stime = in->msg_stime;
+-		v.msg_rtime = in->msg_rtime;
+-		v.msg_ctime = in->msg_ctime;
++		v.msg_stime	 = lower_32_bits(in->msg_stime);
++		v.msg_stime_high = upper_32_bits(in->msg_stime);
++		v.msg_rtime	 = lower_32_bits(in->msg_rtime);
++		v.msg_rtime_high = upper_32_bits(in->msg_rtime);
++		v.msg_ctime	 = lower_32_bits(in->msg_ctime);
++		v.msg_ctime_high = upper_32_bits(in->msg_ctime);
+ 		v.msg_cbytes = in->msg_cbytes;
+ 		v.msg_qnum = in->msg_qnum;
+ 		v.msg_qbytes = in->msg_qbytes;
+diff --git a/ipc/sem.c b/ipc/sem.c
+index c6a8a971769d..8935cd8cf166 100644
+--- a/ipc/sem.c
++++ b/ipc/sem.c
+@@ -1214,6 +1214,7 @@ static int semctl_stat(struct ipc_namespace *ns, int semid,
+ 			 int cmd, struct semid64_ds *semid64)
+ {
+ 	struct sem_array *sma;
++	time64_t semotime;
+ 	int id = 0;
+ 	int err;
  
- struct compat_semid64_ds {
- 	struct compat_ipc64_perm sem_perm;
--	compat_time_t  sem_otime;
--	compat_ulong_t __pad1;
--	compat_time_t  sem_ctime;
--	compat_ulong_t __pad2;
-+	compat_ulong_t sem_otime;
-+	compat_ulong_t sem_otime_high;
-+	compat_ulong_t sem_ctime;
-+	compat_ulong_t sem_ctime_high;
- 	compat_ulong_t sem_nsems;
- 	compat_ulong_t __unused1;
- 	compat_ulong_t __unused2;
-@@ -243,12 +243,12 @@ struct compat_semid64_ds {
+@@ -1257,8 +1258,13 @@ static int semctl_stat(struct ipc_namespace *ns, int semid,
+ 	}
  
- struct compat_msqid64_ds {
- 	struct compat_ipc64_perm msg_perm;
--	compat_time_t   msg_stime;
--	compat_ulong_t __pad1;
--	compat_time_t   msg_rtime;
--	compat_ulong_t __pad2;
--	compat_time_t   msg_ctime;
--	compat_ulong_t __pad3;
-+	compat_ulong_t msg_stime;
-+	compat_ulong_t msg_stime_high;
-+	compat_ulong_t msg_rtime;
-+	compat_ulong_t msg_rtime_high;
-+	compat_ulong_t msg_ctime;
-+	compat_ulong_t msg_ctime_high;
- 	compat_ulong_t msg_cbytes;
- 	compat_ulong_t msg_qnum;
- 	compat_ulong_t msg_qbytes;
-@@ -261,12 +261,12 @@ struct compat_msqid64_ds {
- struct compat_shmid64_ds {
- 	struct compat_ipc64_perm shm_perm;
- 	compat_size_t  shm_segsz;
--	compat_time_t  shm_atime;
--	compat_ulong_t __pad1;
--	compat_time_t  shm_dtime;
--	compat_ulong_t __pad2;
--	compat_time_t  shm_ctime;
--	compat_ulong_t __pad3;
-+	compat_ulong_t shm_atime;
-+	compat_ulong_t shm_atime_high;
-+	compat_ulong_t shm_dtime;
-+	compat_ulong_t shm_dtime_high;
-+	compat_ulong_t shm_ctime;
-+	compat_ulong_t shm_ctime_high;
- 	compat_pid_t   shm_cpid;
- 	compat_pid_t   shm_lpid;
- 	compat_ulong_t shm_nattch;
-diff --git a/arch/s390/include/uapi/asm/Kbuild b/arch/s390/include/uapi/asm/Kbuild
-index faef3f7e8353..e364873e0d10 100644
---- a/arch/s390/include/uapi/asm/Kbuild
-+++ b/arch/s390/include/uapi/asm/Kbuild
-@@ -9,9 +9,12 @@ generic-y += errno.h
- generic-y += fcntl.h
- generic-y += ioctl.h
- generic-y += mman.h
-+generic-y += msgbuf.h
- generic-y += param.h
- generic-y += poll.h
- generic-y += resource.h
-+generic-y += sembuf.h
-+generic-y += shmbuf.h
- generic-y += sockios.h
- generic-y += swab.h
- generic-y += termbits.h
-diff --git a/arch/s390/include/uapi/asm/msgbuf.h b/arch/s390/include/uapi/asm/msgbuf.h
-deleted file mode 100644
-index 604f847cd68c..000000000000
---- a/arch/s390/include/uapi/asm/msgbuf.h
-+++ /dev/null
-@@ -1,38 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _S390_MSGBUF_H
--#define _S390_MSGBUF_H
--
--/* 
-- * The msqid64_ds structure for S/390 architecture.
-- * Note extra padding because this structure is passed back and forth
-- * between kernel and user space.
-- *
-- * Pad space is left for:
-- * - 64-bit time_t to solve y2038 problem
-- * - 2 miscellaneous 32-bit values
-- */
--
--struct msqid64_ds {
--	struct ipc64_perm msg_perm;
--	__kernel_time_t msg_stime;	/* last msgsnd time */
--#ifndef __s390x__
--	unsigned long	__unused1;
--#endif /* ! __s390x__ */
--	__kernel_time_t msg_rtime;	/* last msgrcv time */
--#ifndef __s390x__
--	unsigned long	__unused2;
--#endif /* ! __s390x__ */
--	__kernel_time_t msg_ctime;	/* last change time */
--#ifndef __s390x__
--	unsigned long	__unused3;
--#endif /* ! __s390x__ */
--	unsigned long  msg_cbytes;	/* current number of bytes on queue */
--	unsigned long  msg_qnum;	/* number of messages in queue */
--	unsigned long  msg_qbytes;	/* max number of bytes on queue */
--	__kernel_pid_t msg_lspid;	/* pid of last msgsnd */
--	__kernel_pid_t msg_lrpid;	/* last receive pid */
--	unsigned long  __unused4;
--	unsigned long  __unused5;
--};
--
--#endif /* _S390_MSGBUF_H */
-diff --git a/arch/s390/include/uapi/asm/sembuf.h b/arch/s390/include/uapi/asm/sembuf.h
-deleted file mode 100644
-index 3e917697b668..000000000000
---- a/arch/s390/include/uapi/asm/sembuf.h
-+++ /dev/null
-@@ -1,30 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _S390_SEMBUF_H
--#define _S390_SEMBUF_H
--
--/* 
-- * The semid64_ds structure for S/390 architecture.
-- * Note extra padding because this structure is passed back and forth
-- * between kernel and user space.
-- *
-- * Pad space is left for:
-- * - 64-bit time_t to solve y2038 problem (for !__s390x__)
-- * - 2 miscellaneous 32-bit values
-- */
--
--struct semid64_ds {
--	struct ipc64_perm sem_perm;		/* permissions .. see ipc.h */
--	__kernel_time_t	sem_otime;		/* last semop time */
--#ifndef __s390x__
--	unsigned long	__unused1;
--#endif /* ! __s390x__ */
--	__kernel_time_t	sem_ctime;		/* last change time */
--#ifndef __s390x__
--	unsigned long	__unused2;
--#endif /* ! __s390x__ */
--	unsigned long	sem_nsems;		/* no. of semaphores in array */
--	unsigned long	__unused3;
--	unsigned long	__unused4;
--};
--
--#endif /* _S390_SEMBUF_H */
-diff --git a/arch/s390/include/uapi/asm/shmbuf.h b/arch/s390/include/uapi/asm/shmbuf.h
-deleted file mode 100644
-index 9cdce8d7ce60..000000000000
---- a/arch/s390/include/uapi/asm/shmbuf.h
-+++ /dev/null
-@@ -1,49 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _S390_SHMBUF_H
--#define _S390_SHMBUF_H
--
--/* 
-- * The shmid64_ds structure for S/390 architecture.
-- * Note extra padding because this structure is passed back and forth
-- * between kernel and user space.
-- *
-- * Pad space is left for:
-- * - 64-bit time_t to solve y2038 problem (for !__s390x__)
-- * - 2 miscellaneous 32-bit values
-- */
--
--struct shmid64_ds {
--	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
--	__kernel_time_t		shm_atime;	/* last attach time */
--#ifndef __s390x__
--	unsigned long		__unused1;
--#endif /* ! __s390x__ */
--	__kernel_time_t		shm_dtime;	/* last detach time */
--#ifndef __s390x__
--	unsigned long		__unused2;
--#endif /* ! __s390x__ */
--	__kernel_time_t		shm_ctime;	/* last change time */
--#ifndef __s390x__
--	unsigned long		__unused3;
--#endif /* ! __s390x__ */
--	__kernel_pid_t		shm_cpid;	/* pid of creator */
--	__kernel_pid_t		shm_lpid;	/* pid of last operator */
--	unsigned long		shm_nattch;	/* no. of current attaches */
--	unsigned long		__unused4;
--	unsigned long		__unused5;
--};
--
--struct shminfo64 {
--	unsigned long	shmmax;
--	unsigned long	shmmin;
--	unsigned long	shmmni;
--	unsigned long	shmseg;
--	unsigned long	shmall;
--	unsigned long	__unused1;
--	unsigned long	__unused2;
--	unsigned long	__unused3;
--	unsigned long	__unused4;
--};
--
--#endif /* _S390_SHMBUF_H */
+ 	kernel_to_ipc64_perm(&sma->sem_perm, &semid64->sem_perm);
+-	semid64->sem_otime = get_semotime(sma);
++	semotime = get_semotime(sma);
++	semid64->sem_otime = semotime;
+ 	semid64->sem_ctime = sma->sem_ctime;
++#ifndef CONFIG_64BIT
++	semid64->sem_otime_high = semotime >> 32;
++	semid64->sem_ctime_high = sma->sem_ctime >> 32;
++#endif
+ 	semid64->sem_nsems = sma->sem_nsems;
+ 
+ 	ipc_unlock_object(&sma->sem_perm);
+@@ -1704,8 +1710,10 @@ static int copy_compat_semid_to_user(void __user *buf, struct semid64_ds *in,
+ 		struct compat_semid64_ds v;
+ 		memset(&v, 0, sizeof(v));
+ 		to_compat_ipc64_perm(&v.sem_perm, &in->sem_perm);
+-		v.sem_otime = in->sem_otime;
+-		v.sem_ctime = in->sem_ctime;
++		v.sem_otime	 = lower_32_bits(in->sem_otime);
++		v.sem_otime_high = upper_32_bits(in->sem_otime);
++		v.sem_ctime	 = lower_32_bits(in->sem_ctime);
++		v.sem_ctime_high = upper_32_bits(in->sem_ctime);
+ 		v.sem_nsems = in->sem_nsems;
+ 		return copy_to_user(buf, &v, sizeof(v));
+ 	} else {
+diff --git a/ipc/shm.c b/ipc/shm.c
+index 3cf48988d68c..0075990338f4 100644
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -1002,6 +1002,11 @@ static int shmctl_stat(struct ipc_namespace *ns, int shmid,
+ 	tbuf->shm_atime	= shp->shm_atim;
+ 	tbuf->shm_dtime	= shp->shm_dtim;
+ 	tbuf->shm_ctime	= shp->shm_ctim;
++#ifndef CONFIG_64BIT
++	tbuf->shm_atime_high = shp->shm_atim >> 32;
++	tbuf->shm_dtime_high = shp->shm_dtim >> 32;
++	tbuf->shm_ctime_high = shp->shm_ctim >> 32;
++#endif
+ 	tbuf->shm_cpid	= pid_vnr(shp->shm_cprid);
+ 	tbuf->shm_lpid	= pid_vnr(shp->shm_lprid);
+ 	tbuf->shm_nattch = shp->shm_nattch;
+@@ -1233,9 +1238,12 @@ static int copy_compat_shmid_to_user(void __user *buf, struct shmid64_ds *in,
+ 		struct compat_shmid64_ds v;
+ 		memset(&v, 0, sizeof(v));
+ 		to_compat_ipc64_perm(&v.shm_perm, &in->shm_perm);
+-		v.shm_atime = in->shm_atime;
+-		v.shm_dtime = in->shm_dtime;
+-		v.shm_ctime = in->shm_ctime;
++		v.shm_atime	 = lower_32_bits(in->shm_atime);
++		v.shm_atime_high = upper_32_bits(in->shm_atime);
++		v.shm_dtime	 = lower_32_bits(in->shm_dtime);
++		v.shm_dtime_high = upper_32_bits(in->shm_dtime);
++		v.shm_ctime	 = lower_32_bits(in->shm_ctime);
++		v.shm_ctime_high = upper_32_bits(in->shm_ctime);
+ 		v.shm_segsz = in->shm_segsz;
+ 		v.shm_nattch = in->shm_nattch;
+ 		v.shm_cpid = in->shm_cpid;
 -- 
 2.9.0

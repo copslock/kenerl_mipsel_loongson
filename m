@@ -1,91 +1,55 @@
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Date: Wed, 25 Jan 2017 15:08:25 +0100
-Subject: irqchip/mips-gic: Fix local interrupts
-Message-ID: <20170125140825.GkHFUnBNGdQmZJ5flzWWIoY9J-_h3eaL_YJhXEt_8uw@z>
-
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-
-commit 4cfffcfa5106492f5785924ce2e9af49f075999b upstream.
-
-Some local interrupts are not initialised properly at the moment and
-cannot be used since the domain's alloc method is never called for them.
-
-This has been observed earlier and partially fixed in commit
-e875bd66dfb ("irqchip/mips-gic: Fix local interrupts"), but that change
-still relied on the interrupt to be requested by an external driver (eg.
-drivers/clocksource/mips-gic-timer.c).
-
-This does however not solve the issue for interrupts that are not
-referenced by any driver through the device tree and results in
-request_irq() calls returning -ENOSYS. It can be observed when attempting
-to use perf tool to access hardware performance counters.
-
-Fix this by explicitly calling irq_create_fwspec_mapping() for local
-interrupts.
-
-Fixes: e875bd66dfb ("irqchip/mips-gic: Fix local interrupts")
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/irqchip/irq-mips-gic.c |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -969,6 +969,34 @@ static struct irq_domain_ops gic_ipi_dom
- 	.match = gic_ipi_domain_match,
- };
- 
-+static void __init gic_map_single_int(struct device_node *node,
-+				      unsigned int irq)
-+{
-+	unsigned int linux_irq;
-+	struct irq_fwspec local_int_fwspec = {
-+		.fwnode         = &node->fwnode,
-+		.param_count    = 3,
-+		.param          = {
-+			[0]     = GIC_LOCAL,
-+			[1]     = irq,
-+			[2]     = IRQ_TYPE_NONE,
-+		},
-+	};
-+
-+	if (!gic_local_irq_is_routable(irq))
-+		return;
-+
-+	linux_irq = irq_create_fwspec_mapping(&local_int_fwspec);
-+	WARN_ON(!linux_irq);
-+}
-+
-+static void __init gic_map_interrupts(struct device_node *node)
-+{
-+	gic_map_single_int(node, GIC_LOCAL_INT_TIMER);
-+	gic_map_single_int(node, GIC_LOCAL_INT_PERFCTR);
-+	gic_map_single_int(node, GIC_LOCAL_INT_FDC);
-+}
-+
- static void __init __gic_init(unsigned long gic_base_addr,
- 			      unsigned long gic_addrspace_size,
- 			      unsigned int cpu_vec, unsigned int irqbase,
-@@ -1069,6 +1097,7 @@ static void __init __gic_init(unsigned l
- 
- 	bitmap_copy(ipi_available, ipi_resrv, GIC_MAX_INTRS);
- 	gic_basic_init();
-+	gic_map_interrupts(node);
- }
- 
- void __init gic_init(unsigned long gic_base_addr,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 18:02:11 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42370 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993973AbeDYQBwi2llB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 18:01:52 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 50D1E93E;
+        Wed, 25 Apr 2018 16:01:46 +0000 (UTC)
+Subject: Patch "MIPS: fix mem=X@Y commandline processing" has been added to the 4.9-stable tree
+To:     amit.pundir@linaro.org, gregkh@linuxfoundation.org,
+        linux-mips@linux-mips.org, marcin.nowakowski@imgtec.com,
+        ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 25 Apr 2018 18:01:26 +0200
+Message-ID: <15246720861733@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63779
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from marcin.nowakowski@imgtec.com are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.9/irqchip-mips-gic-fix-local-interrupts.patch
-queue-4.9/mips-fix-mem-x-y-commandline-processing.patch
+    MIPS: fix mem=X@Y commandline processing
+
+to the 4.9-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-fix-mem-x-y-commandline-processing.patch
+and it can be found in the queue-4.9 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

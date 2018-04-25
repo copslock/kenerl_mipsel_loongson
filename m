@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 07:18:42 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:34226 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 07:18:57 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:34072 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994687AbeDYFQuSwXHp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 07:16:50 +0200
+        by eddie.linux-mips.org with ESMTP id S23994684AbeDYFQrGtupp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 07:16:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=wWeeMK/OGPFNhg62rEG7YNxHCRAWoCl5VpvwITCHOhY=; b=bqhbwX8Iw2BFkrPvQsD0G1khO
-        yBQ638vSzpGxbcJK2bP/pBM5EuGiudG1yHv/0mdGnahPKW6nyxt5jupBPfB2lvDYlMH+oe2ou/G5T
-        qxaxPA5saJ1m4+Rl7FNjy3R5M8UicC1y8K1LOgIdz+Jd+HrzsnLXbsPz7M3JbqZ4kY+h9CTISn+8p
-        5GFdfKBHCtdmxK/R4x+2r5j6ilPhP/y0ydjn0/aTQvvyEFKZf3ndNvXzBZcaG2/tO7mZf6sUlgCXc
-        dDtwWiZDTv3StOmuc49jBKR/Mdh8NqwJPBQ7F+vu/405LtDZ5QSd3u97ZSdc8zXhMKnLROJxMii3m
-        sPheJy7Vg==;
+         bh=6WwaejUOU61TxEhlpk/5OaNVRJuy50sBBJXT6h5b7KA=; b=ZIEZ8zDG4INT9SiebbiO7K5x0
+        VipetctMtytQT/LGWGf9ZVloKOMbWpqWSAZGYUBUlZkK7SbSqDNt3kgl9TkEosaFs9sT4J5THefLX
+        B2ZaKZ9agaG1FOmumeSE0DZ/3mo6r4AGQcq4rPjLk3gJ/I4wjs70pwxezVmyWl2uZYtOYcKsLVdXY
+        DswaXImrGVqLuUE5rexBu1ei3Sow161rmX/lW5UCEGarJ4Pxc6MPRwwpbVEk4Q7eNJdoeg4nJCgsL
+        PLD/RDhkqDPUR2mPxdPoO3qFAqAtu+G81MTLRc4TktjhwrCF4Hm0rPrBaYNt08UQITNt7BY1xONzH
+        fUO9HGi1w==;
 Received: from [93.83.86.253] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fBCn5-0005MH-7w; Wed, 25 Apr 2018 05:16:27 +0000
+        id 1fBCmx-0005JW-RB; Wed, 25 Apr 2018 05:16:20 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
         iommu@lists.linux-foundation.org
 Cc:     sstabellini@kernel.org, x86@kernel.org, linux-pci@vger.kernel.org,
         linux-mm@kvack.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 13/13] swiotlb: remove the CONFIG_DMA_DIRECT_OPS ifdefs
-Date:   Wed, 25 Apr 2018 07:15:39 +0200
-Message-Id: <20180425051539.1989-14-hch@lst.de>
+Subject: [PATCH 11/13] mips,unicore32: swiotlb doesn't need sg->dma_length
+Date:   Wed, 25 Apr 2018 07:15:37 +0200
+Message-Id: <20180425051539.1989-12-hch@lst.de>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180425051539.1989-1-hch@lst.de>
 References: <20180425051539.1989-1-hch@lst.de>
@@ -35,7 +35,7 @@ Return-Path: <BATV+8b59ddf2a3dd4691ec7e+5358+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63752
+X-archive-position: 63753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,46 +52,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-swiotlb now selects the DMA_DIRECT_OPS config symbol, so this will
-always be true.
+Only mips and unicore32 select CONFIG_NEED_SG_DMA_LENGTH when building
+swiotlb.  swiotlb itself never merges segements and doesn't accesses the
+dma_length field directly, so drop the dependency.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- lib/swiotlb.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/mips/cavium-octeon/Kconfig | 1 -
+ arch/mips/loongson64/Kconfig    | 1 -
+ arch/unicore32/mm/Kconfig       | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/lib/swiotlb.c b/lib/swiotlb.c
-index fece57566d45..6954f7ad200a 100644
---- a/lib/swiotlb.c
-+++ b/lib/swiotlb.c
-@@ -692,7 +692,6 @@ void swiotlb_tbl_sync_single(struct device *hwdev, phys_addr_t tlb_addr,
- 	}
- }
+diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+index 5d73041547a7..eb5faeed4f66 100644
+--- a/arch/mips/cavium-octeon/Kconfig
++++ b/arch/mips/cavium-octeon/Kconfig
+@@ -70,7 +70,6 @@ config CAVIUM_OCTEON_LOCK_L2_MEMCPY
+ config SWIOTLB
+ 	def_bool y
+ 	select DMA_DIRECT_OPS
+-	select NEED_SG_DMA_LENGTH
  
--#ifdef CONFIG_DMA_DIRECT_OPS
- static inline bool dma_coherent_ok(struct device *dev, dma_addr_t addr,
- 		size_t size)
- {
-@@ -764,7 +763,6 @@ static bool swiotlb_free_buffer(struct device *dev, size_t size,
- 				 DMA_ATTR_SKIP_CPU_SYNC);
- 	return true;
- }
--#endif
+ config OCTEON_ILM
+ 	tristate "Module to measure interrupt latency using Octeon CIU Timer"
+diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+index 641a1477031e..2a4fb91adbb6 100644
+--- a/arch/mips/loongson64/Kconfig
++++ b/arch/mips/loongson64/Kconfig
+@@ -135,7 +135,6 @@ config SWIOTLB
+ 	default y
+ 	depends on CPU_LOONGSON3
+ 	select DMA_DIRECT_OPS
+-	select NEED_SG_DMA_LENGTH
+ 	select NEED_DMA_MAP_STATE
  
- static void
- swiotlb_full(struct device *dev, size_t size, enum dma_data_direction dir,
-@@ -1045,7 +1043,6 @@ swiotlb_dma_supported(struct device *hwdev, u64 mask)
- 	return __phys_to_dma(hwdev, io_tlb_end - 1) <= mask;
- }
- 
--#ifdef CONFIG_DMA_DIRECT_OPS
- void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 		gfp_t gfp, unsigned long attrs)
- {
-@@ -1089,4 +1086,3 @@ const struct dma_map_ops swiotlb_dma_ops = {
- 	.unmap_page		= swiotlb_unmap_page,
- 	.dma_supported		= dma_direct_supported,
- };
--#endif /* CONFIG_DMA_DIRECT_OPS */
+ config PHYS48_TO_HT40
+diff --git a/arch/unicore32/mm/Kconfig b/arch/unicore32/mm/Kconfig
+index 1d9fed0ada71..45b7f769375e 100644
+--- a/arch/unicore32/mm/Kconfig
++++ b/arch/unicore32/mm/Kconfig
+@@ -43,4 +43,3 @@ config CPU_TLB_SINGLE_ENTRY_DISABLE
+ config SWIOTLB
+ 	def_bool y
+ 	select DMA_DIRECT_OPS
+-	select NEED_SG_DMA_LENGTH
 -- 
 2.17.0

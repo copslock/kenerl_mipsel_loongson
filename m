@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 23:11:17 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:51557 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 23:16:30 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:51612 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993997AbeDYVK5Uldev (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Apr 2018 23:10:57 +0200
+        id S23993973AbeDYVQYLhoKv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Apr 2018 23:16:24 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id A5EA3206A0; Wed, 25 Apr 2018 23:10:51 +0200 (CEST)
+        id 6A2AB207CC; Wed, 25 Apr 2018 23:16:18 +0200 (CEST)
 Received: from localhost (unknown [88.191.26.124])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 799E02038E;
-        Wed, 25 Apr 2018 23:10:41 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 3973E200FB;
+        Wed, 25 Apr 2018 23:16:08 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
+Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 2/2] mips: xilfpga: actually include FDT in fitImage
-Date:   Wed, 25 Apr 2018 23:10:36 +0200
-Message-Id: <20180425211036.28509-2-alexandre.belloni@bootlin.com>
+Subject: [PATCH 1/2] mips: mscc: build FIT image for Ocelot
+Date:   Wed, 25 Apr 2018 23:16:06 +0200
+Message-Id: <20180425211607.2645-1-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180425211036.28509-1-alexandre.belloni@bootlin.com>
-References: <20180425211036.28509-1-alexandre.belloni@bootlin.com>
 Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63784
+X-archive-position: 63785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,23 +39,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit b35565bb16a5 ("MIPS: generic: Add support for MIPSfpga") added and
-its.S file for xilfpga but forgot to add it to arch/mips/generic/Platform
-so it is never used.
+Ocelot now has a u-boot port, allow building FIT images instead of relying
+on the legacy detection and builtin DTB.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- arch/mips/generic/Platform | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/boot/dts/mscc/Makefile            |  2 +-
+ arch/mips/generic/Kconfig                   | 12 +++++++++--
+ arch/mips/generic/Platform                  |  1 +
+ arch/mips/generic/board-ocelot_pcb123.its.S | 23 +++++++++++++++++++++
+ 4 files changed, 35 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/generic/board-ocelot_pcb123.its.S
 
+diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/Makefile
+index c51164537c02..8982b19504a3 100644
+--- a/arch/mips/boot/dts/mscc/Makefile
++++ b/arch/mips/boot/dts/mscc/Makefile
+@@ -1,3 +1,3 @@
+-dtb-$(CONFIG_LEGACY_BOARD_OCELOT)	+= ocelot_pcb123.dtb
++dtb-$(CONFIG_MSCC_OCELOT)	+= ocelot_pcb123.dtb
+ 
+ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
+index ba9b2c8cce68..6564f18b2012 100644
+--- a/arch/mips/generic/Kconfig
++++ b/arch/mips/generic/Kconfig
+@@ -35,13 +35,13 @@ config LEGACY_BOARD_OCELOT
+ 	depends on LEGACY_BOARD_SEAD3=n
+ 	select LEGACY_BOARDS
+ 	select MSCC_OCELOT
++	select SYS_HAS_EARLY_PRINTK
++	select USE_GENERIC_EARLY_PRINTK_8250
+ 
+ config MSCC_OCELOT
+ 	bool
+ 	select GPIOLIB
+ 	select MSCC_OCELOT_IRQ
+-	select SYS_HAS_EARLY_PRINTK
+-	select USE_GENERIC_EARLY_PRINTK_8250
+ 
+ comment "FIT/UHI Boards"
+ 
+@@ -65,6 +65,14 @@ config FIT_IMAGE_FDT_XILFPGA
+ 	  Enable this to include the FDT for the MIPSfpga platform
+ 	  from Imagination Technologies in the FIT kernel image.
+ 
++config FIT_IMAGE_FDT_OCELOT_PCB123
++	bool "Include FDT for Microsemi Ocelot PCB123"
++	select MSCC_OCELOT
++	help
++	  Enable this to include the FDT for the Ocelot PCB123 platform
++	  from Microsemi in the FIT kernel image.
++	  This require u-boot on the platform.
++
+ config VIRT_BOARD_RANCHU
+ 	bool "Support Ranchu platform for Android emulator"
+ 	help
 diff --git a/arch/mips/generic/Platform b/arch/mips/generic/Platform
-index b51432dd10b6..0dd0d5d460a5 100644
+index 0dd0d5d460a5..879cb80396c8 100644
 --- a/arch/mips/generic/Platform
 +++ b/arch/mips/generic/Platform
-@@ -16,3 +16,4 @@ all-$(CONFIG_MIPS_GENERIC)	:= vmlinux.gz.itb
+@@ -16,4 +16,5 @@ all-$(CONFIG_MIPS_GENERIC)	:= vmlinux.gz.itb
  its-y					:= vmlinux.its.S
  its-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+= board-boston.its.S
  its-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= board-ni169445.its.S
-+its-$(CONFIG_FIT_IMAGE_FDT_XILFPGA)	+= board-xilfpga.its.S
++its-$(CONFIG_FIT_IMAGE_FDT_OCELOT_PCB123) += board-ocelot_pcb123.its.S
+ its-$(CONFIG_FIT_IMAGE_FDT_XILFPGA)	+= board-xilfpga.its.S
+diff --git a/arch/mips/generic/board-ocelot_pcb123.its.S b/arch/mips/generic/board-ocelot_pcb123.its.S
+new file mode 100644
+index 000000000000..f6f54ff6d64c
+--- /dev/null
++++ b/arch/mips/generic/board-ocelot_pcb123.its.S
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
++/ {
++	images {
++		fdt@ocelot_pcb123 {
++			description = "MSCC Ocelot PCB123 Device Tree";
++			data = /incbin/("boot/dts/mscc/ocelot_pcb123.dtb");
++			type = "flat_dt";
++			arch = "mips";
++			compression = "none";
++			hash@0 {
++				algo = "sha1";
++			};
++		};
++	};
++
++	configurations {
++		conf@ocelot_pcb123 {
++			description = "Ocelot Linux kernel";
++			kernel = "kernel@0";
++			fdt = "fdt@ocelot_pcb123";
++		};
++	};
++};
 -- 
 2.17.0

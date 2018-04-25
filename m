@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 12:42:57 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39302 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 12:43:11 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39338 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994673AbeDYKmuGvqFi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 12:42:50 +0200
+        by eddie.linux-mips.org with ESMTP id S23994666AbeDYKmzRLafi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 12:42:55 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9D370272;
-        Wed, 25 Apr 2018 10:42:43 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F139449F;
+        Wed, 25 Apr 2018 10:42:48 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@mips.com>,
+        James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 134/183] MIPS: generic: Fix machine compatible matching
-Date:   Wed, 25 Apr 2018 12:35:54 +0200
-Message-Id: <20180425103247.804488864@linuxfoundation.org>
+Subject: [PATCH 4.14 135/183] MIPS: TXx9: use IS_BUILTIN() for CONFIG_LEDS_CLASS
+Date:   Wed, 25 Apr 2018 12:35:55 +0200
+Message-Id: <20180425103247.845731114@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180425103242.532713678@linuxfoundation.org>
 References: <20180425103242.532713678@linuxfoundation.org>
@@ -28,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63757
+X-archive-position: 63758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,41 +48,59 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <jhogan@kernel.org>
+From: Matt Redfearn <matt.redfearn@mips.com>
 
 
-[ Upstream commit 9a9ab3078e2744a1a55163cfaec73a5798aae33e ]
+[ Upstream commit 0cde5b44a30f1daaef1c34e08191239dc63271c4 ]
 
-We now have a platform (Ranchu) in the "generic" platform which matches
-based on the FDT compatible string using mips_machine_is_compatible(),
-however that function doesn't stop at a blank struct
-of_device_id::compatible as that is an array in the struct, not a
-pointer to a string.
+When commit b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
+added board support for the RBTX4939, it added a call to
+led_classdev_register even if the LED class is built as a module.
+Built-in arch code cannot call module code directly like this. Commit
+b33b44073734 ("MIPS: TXX9: use IS_ENABLED() macro") subsequently
+changed the inclusion of this code to a single check that
+CONFIG_LEDS_CLASS is either builtin or a module, but the same issue
+remains.
 
-Fix the loop completion to check the first byte of the compatible array
-rather than the address of the compatible array in the struct.
+This leads to MIPS allmodconfig builds failing when CONFIG_MACH_TX49XX=y
+is set:
 
-Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
+arch/mips/txx9/rbtx4939/setup.o: In function `rbtx4939_led_probe':
+setup.c:(.init.text+0xc0): undefined reference to `of_led_classdev_register'
+make: *** [Makefile:999: vmlinux] Error 1
+
+Fix this by using the IS_BUILTIN() macro instead.
+
+Fixes: b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Reviewed-by: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18580/
+Patchwork: https://patchwork.linux-mips.org/patch/18544/
+Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/machine.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/txx9/rbtx4939/setup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/machine.h
-+++ b/arch/mips/include/asm/machine.h
-@@ -52,7 +52,7 @@ mips_machine_is_compatible(const struct
- 	if (!mach->matches)
- 		return NULL;
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -186,7 +186,7 @@ static void __init rbtx4939_update_ioc_p
  
--	for (match = mach->matches; match->compatible; match++) {
-+	for (match = mach->matches; match->compatible[0]; match++) {
- 		if (fdt_node_check_compatible(fdt, 0, match->compatible) == 0)
- 			return match;
- 	}
+ #define RBTX4939_MAX_7SEGLEDS	8
+ 
+-#if IS_ENABLED(CONFIG_LEDS_CLASS)
++#if IS_BUILTIN(CONFIG_LEDS_CLASS)
+ static u8 led_val[RBTX4939_MAX_7SEGLEDS];
+ struct rbtx4939_led_data {
+ 	struct led_classdev cdev;
+@@ -261,7 +261,7 @@ static inline void rbtx4939_led_setup(vo
+ 
+ static void __rbtx4939_7segled_putc(unsigned int pos, unsigned char val)
+ {
+-#if IS_ENABLED(CONFIG_LEDS_CLASS)
++#if IS_BUILTIN(CONFIG_LEDS_CLASS)
+ 	unsigned long flags;
+ 	local_irq_save(flags);
+ 	/* bit7: reserved for LED class */

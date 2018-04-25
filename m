@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 12:39:24 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38354 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 12:42:57 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39302 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993997AbeDYKjQNEQyi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 12:39:16 +0200
+        by eddie.linux-mips.org with ESMTP id S23994673AbeDYKmuGvqFi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 12:42:50 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 402BE266;
-        Wed, 25 Apr 2018 10:39:09 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9D370272;
+        Wed, 25 Apr 2018 10:42:43 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 055/183] MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}
-Date:   Wed, 25 Apr 2018 12:34:35 +0200
-Message-Id: <20180425103244.760450636@linuxfoundation.org>
+Subject: [PATCH 4.14 134/183] MIPS: generic: Fix machine compatible matching
+Date:   Wed, 25 Apr 2018 12:35:54 +0200
+Message-Id: <20180425103247.804488864@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180425103242.532713678@linuxfoundation.org>
 References: <20180425103242.532713678@linuxfoundation.org>
@@ -26,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63756
+X-archive-position: 63757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,32 +52,38 @@ X-list: linux-mips
 From: James Hogan <jhogan@kernel.org>
 
 
-[ Upstream commit 5f2483eb2423152445b39f2db59d372f523e664e ]
+[ Upstream commit 9a9ab3078e2744a1a55163cfaec73a5798aae33e ]
 
-Make doesn't expand shell style "vmlinuz.{32,ecoff,bin,srec}" to the 4
-separate files, so none of these files get cleaned up by make clean.
-List the files separately instead.
+We now have a platform (Ranchu) in the "generic" platform which matches
+based on the FDT compatible string using mips_machine_is_compatible(),
+however that function doesn't stop at a blank struct
+of_device_id::compatible as that is an array in the struct, not a
+pointer to a string.
 
-Fixes: ec3352925b74 ("MIPS: Remove all generated vmlinuz* files on "make clean"")
+Fix the loop completion to check the first byte of the compatible array
+rather than the address of the compatible array in the struct.
+
+Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Reviewed-by: Paul Burton <paul.burton@mips.com>
+Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18491/
+Patchwork: https://patchwork.linux-mips.org/patch/18580/
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/compressed/Makefile |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/machine.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -133,4 +133,8 @@ vmlinuz.srec: vmlinuz
- uzImage.bin: vmlinuz.bin FORCE
- 	$(call if_changed,uimage,none)
+--- a/arch/mips/include/asm/machine.h
++++ b/arch/mips/include/asm/machine.h
+@@ -52,7 +52,7 @@ mips_machine_is_compatible(const struct
+ 	if (!mach->matches)
+ 		return NULL;
  
--clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec}
-+clean-files += $(objtree)/vmlinuz
-+clean-files += $(objtree)/vmlinuz.32
-+clean-files += $(objtree)/vmlinuz.ecoff
-+clean-files += $(objtree)/vmlinuz.bin
-+clean-files += $(objtree)/vmlinuz.srec
+-	for (match = mach->matches; match->compatible; match++) {
++	for (match = mach->matches; match->compatible[0]; match++) {
+ 		if (fdt_node_check_compatible(fdt, 0, match->compatible) == 0)
+ 			return match;
+ 	}

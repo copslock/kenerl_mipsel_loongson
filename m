@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 08:55:43 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57206 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 08:57:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57230 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990410AbeDZGzgg8HRh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Apr 2018 08:55:36 +0200
+        by eddie.linux-mips.org with ESMTP id S23990410AbeDZG5QdH0Rh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Apr 2018 08:57:16 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 64320407;
-        Thu, 26 Apr 2018 06:55:29 +0000 (UTC)
-Date:   Thu, 26 Apr 2018 08:55:21 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     alexander.levin@microsoft.com, linux-mips@linux-mips.org,
-        matt.redfearn@mips.com, paul.burton@mips.com, ralf@linux-mips.org,
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A67EF3C1;
+        Thu, 26 Apr 2018 06:57:09 +0000 (UTC)
+Date:   Thu, 26 Apr 2018 08:57:01 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     amit.pundir@linaro.org, Linux-MIPS <linux-mips@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         stable-commits@vger.kernel.org
-Subject: Re: Patch "MIPS: generic: Fix machine compatible matching" has been
- added to the 4.14-stable tree
-Message-ID: <20180426065521.GA14025@kroah.com>
-References: <1524582066147140@kroah.com>
- <20180425220221.GB25917@saruman>
+Subject: Re: Patch "MIPS: fix mem=X@Y commandline processing" has been added
+ to the 4.9-stable tree
+Message-ID: <20180426065701.GB14025@kroah.com>
+References: <15246720861733@kroah.com>
+ <CA+7wUszxmW8Lsq-aEovy5QYmq3GABOQf6O1cz=AqcH2mcBBPoA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180425220221.GB25917@saruman>
+In-Reply-To: <CA+7wUszxmW8Lsq-aEovy5QYmq3GABOQf6O1cz=AqcH2mcBBPoA@mail.gmail.com>
 User-Agent: Mutt/1.9.5 (2018-04-13)
 Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63792
+X-archive-position: 63793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,25 +44,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Apr 25, 2018 at 11:02:21PM +0100, James Hogan wrote:
-> On Tue, Apr 24, 2018 at 05:01:06PM +0200, gregkh@linuxfoundation.org wrote:
-> > We now have a platform (Ranchu) in the "generic" platform which matches
+On Wed, Apr 25, 2018 at 08:51:16PM +0200, Mathieu Malaterre wrote:
+> Hi Greg,
 > 
-> The reason I didn't tag stable was because Ranchu was added in 4.16 ...
+> Why is this patch coming back ? This was discussed previously at:
 > 
-> >  	if (!mach->matches)
-> >  		return NULL;
-> 
-> ... so mach->matches will always be NULL before 4.16 ...
-> 
-> >  
-> > -	for (match = mach->matches; match->compatible; match++) {
-> > +	for (match = mach->matches; match->compatible[0]; match++) {
-> 
-> ... so this can't get hit.
-> 
-> Feel free to drop, otherwise it does no harm, its dead code.
+> https://www.spinics.net/lists/kernel/msg2617572.html
 
-Now dropped, thanks for letting me know.
+Sorry, I found an old list of patches taht Amit had dug up and grabbed
+it from there.
+
+> The correct fix is rather 67a3ba25aa955.
+
+And as that only goes to 4.11+, I'll leave things alone now.
+
+Patch is now dropped, sorry for the noise.
 
 greg k-h

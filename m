@@ -1,84 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 16:29:31 +0200 (CEST)
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:39043 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994621AbeDZO2xRPXP0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Apr 2018 16:28:53 +0200
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 7704121A99;
-        Thu, 26 Apr 2018 10:28:52 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Thu, 26 Apr 2018 10:28:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=cc
-        :date:from:in-reply-to:message-id:references:subject:to
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=Vs6h/FXwmC/ZemDkg
-        6BllSD/iPIPYBxFm6GunQ/1FCI=; b=tbbKn+qfrR6XErFy7CWHrU36RjD3gECJO
-        Jh3COntEsySGV5tHBtcpR7nvugmfnECRoftz8QYpurkeBEArKAlWlgMc13y/5W7b
-        k3uFSnbBSySvGvDfrA1pLMJmcdMKxD15MnYxfVqQPI/FCPqHLTEa7SEl/5RKdKIm
-        hCgU2wvHniN7h+rwehdZyLfkUlmiUCw6PD0Q2tLVZ6CzSH+P43IOCsKdFDrepnL9
-        toAnA6Df5Flg7qkdQ3HT77ub252vbKdPQkE3rKgptwXZ/E+eDE6NwvcdVljmHPYi
-        5RfmKJiClVAucVxLTq1qTYvSOsCwlK1GeWweidi5LYXzRhU6RpPgg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:date:from:in-reply-to:message-id
-        :references:subject:to:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; bh=Vs6h/FXwmC/ZemDkg6BllSD/iPIPYBxFm6GunQ/1FCI=; b=TvaKzvrF
-        kyPOnVvyvUdCmovli7HN8cONCHg2HIuNsDmflKAaJh/M4skEEVRslxbslLjs3c7x
-        6UmiMfoDaTdjHDuLhix/lQ5XPjvcpvE8aRJ0Kf9y7u9VeDxDUBk40TceNpAlr5eN
-        IQZx8qGuX8pnl6h3QU2SikDCM6nqcMH54jucBPT/nLotkdx1/7kzLrFS47ayYTm6
-        yWi1BgqD+/VR/Kd/JdbW/3d/9qP+sAyLb/wPZ+EGMmmKyouZzifOPuwjqKvSRHiD
-        AQf0oOMKh6pFreo/6yb2q2My7/9iX0rPFH9w7FU6+lNSugdy74AyRKvD+Z6TWjyj
-        saZffdehosTHwA==
-X-ME-Sender: <xms:JOLhWq576HYkWazpmbfdS8CFEsZ3t5wOq2g9Yva_dMVKn1_WnZ_txg>
-Received: from tenansix.rutgers.edu (pool-165-230-225-59.nat.rutgers.edu [165.230.225.59])
-        by mail.messagingengine.com (Postfix) with ESMTPA id BE27FE4120;
-        Thu, 26 Apr 2018 10:28:51 -0400 (EDT)
-From:   Zi Yan <zi.yan@sent.com>
-To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc:     Zi Yan <zi.yan@cs.rutgers.edu>, Vineet Gupta <vgupta@synopsys.com>,
-        linux-snps-arc@lists.infradead.org,
-        Russell King <linux@armlinux.org.uk>,
-        Christoffer Dall <christoffer.dall@linaro.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Steve Capper <steve.capper@arm.com>,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Ram Pai <linuxram@us.ibm.com>,
-        Balbir Singh <bsingharora@gmail.com>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Janosch Frank <frankja@linux.vnet.ibm.com>,
-        linux-s390@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, "Huang, Ying" <ying.huang@intel.com>
-Subject: [RFC PATCH 9/9] mm: migrate: enable thp migration for all possible architectures.
-Date:   Thu, 26 Apr 2018 10:28:04 -0400
-Message-Id: <20180426142804.180152-10-zi.yan@sent.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 21:59:49 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:36827 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994626AbeDZT7mlGx68 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Apr 2018 21:59:42 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id B9682207BF; Thu, 26 Apr 2018 21:59:36 +0200 (CEST)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 88C3920775;
+        Thu, 26 Apr 2018 21:59:36 +0200 (CEST)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     "David S . Miller" <davem@davemloft.net>
+Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        razvan.stefanescu@nxp.com, po.liu@nxp.com,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH net-next v2 0/7] Microsemi Ocelot Ethernet switch support
+Date:   Thu, 26 Apr 2018 21:59:24 +0200
+Message-Id: <20180426195931.5393-1-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180426142804.180152-1-zi.yan@sent.com>
-References: <20180426142804.180152-1-zi.yan@sent.com>
-Return-Path: <zi.yan@sent.com>
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63798
+X-archive-position: 63799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zi.yan@sent.com
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,385 +44,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Zi Yan <zi.yan@cs.rutgers.edu>
+Hi,
 
-Remove CONFIG_ARCH_ENABLE_THP_MIGRATION. thp migration is enabled along
-with transparent hugepage and can be toggled via
-/sys/kernel/mm/transparent_hugepage/enable_thp_migration.
+This series adds initial support for the Microsemi Ethernet switch
+present on Ocelot SoCs.
 
-Signed-off-by: Zi Yan <zi.yan@cs.rutgers.edu>
-Cc: linux-mm@kvack.org
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Christoffer Dall <christoffer.dall@linaro.org>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Steve Capper <steve.capper@arm.com>
-Cc: Kristina Martsenko <kristina.martsenko@arm.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: x86@kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
+This only has bridging (and STP) support for now and it uses the
+switchdev framework.
+Coming features are VLAN filtering, link aggregation, IGMP snooping.
+
+The switch can also be connected to an external CPU using PCIe.
+
+Also, support for integration on other SoCs will be submitted.
+
+The ocelot dts changes are here for reference and should probably go
+through the MIPS tree once the bindings are accepted.
+
+Changes in v2:
+ - Dropped Microsemi Ocelot PHY support
+ * MIIM driver:
+   - Documented interrupts bindings
+   - Moved the driver to drivers/net/phy/
+   - Removed unused mutex
+   - Removed MDIO bus scanning
+ * Switchdev driver:
+   - Changed compatible to mscc,vsc7514-switch
+   - Removed unused header inclusion
+   - Factorized MAC table selection in ocelot_mact_select()
+   - Disable the port in ocelot_port_stop()
+   - Fixed the smatch endianness warnings
+   - int to unsinged int where necessary
+   - Removed VID handling for the FDB it has been reworked anyway and will be
+     submitted with VLAN support
+   - Fixed up unused cases in ocelot_port_attr_set()
+   - Added a loop to register all the IO register spaces
+   - the ports are now in an ethernet-ports node
+
+I've tried switching to NAPI but this is not working well, mainly because the
+only way to disable interrupts is to actually mask them in the interrupt
+controller (it is not possible to tell the switch to stop generating
+interrupts).
+
 Cc: James Hogan <jhogan@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: linux-mips@linux-mips.org
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>
-Cc: Ram Pai <linuxram@us.ibm.com>
-Cc: Balbir Singh <bsingharora@gmail.com>
-Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Janosch Frank <frankja@linux.vnet.ibm.com>
-Cc: linux-s390@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: "Huang, Ying" <ying.huang@intel.com>
----
- arch/x86/Kconfig               |  4 ----
- arch/x86/include/asm/pgtable.h |  2 --
- fs/proc/task_mmu.c             |  2 --
- include/asm-generic/pgtable.h  | 21 ++-------------------
- include/linux/huge_mm.h        |  9 ++++-----
- include/linux/swapops.h        |  4 +---
- mm/Kconfig                     |  3 ---
- mm/huge_memory.c               | 27 ++++++++++++++++++---------
- mm/migrate.c                   |  6 ++----
- mm/rmap.c                      |  5 ++---
- 10 files changed, 29 insertions(+), 54 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 0fa71a78ec99..e73954e3eef7 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2423,10 +2423,6 @@ config ARCH_ENABLE_HUGEPAGE_MIGRATION
- 	def_bool y
- 	depends on X86_64 && HUGETLB_PAGE && MIGRATION
- 
--config ARCH_ENABLE_THP_MIGRATION
--	def_bool y
--	depends on X86_64 && TRANSPARENT_HUGEPAGE
--
- menu "Power management and ACPI options"
- 
- config ARCH_HIBERNATION_HEADER
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index b444d83cfc95..f9f54d9b39e3 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1193,7 +1193,6 @@ static inline pte_t pte_swp_clear_soft_dirty(pte_t pte)
- 	return pte_clear_flags(pte, _PAGE_SWP_SOFT_DIRTY);
- }
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
- {
- 	return pmd_set_flags(pmd, _PAGE_SWP_SOFT_DIRTY);
-@@ -1209,7 +1208,6 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- 	return pmd_clear_flags(pmd, _PAGE_SWP_SOFT_DIRTY);
- }
- #endif
--#endif
- 
- #define PKRU_AD_BIT 0x1
- #define PKRU_WD_BIT 0x2
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index dd1b2aeb01e8..07a2f028d29a 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1326,7 +1326,6 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 				frame = pmd_pfn(pmd) +
- 					((addr & ~PMD_MASK) >> PAGE_SHIFT);
- 		}
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 		else if (is_swap_pmd(pmd)) {
- 			swp_entry_t entry = pmd_to_swp_entry(pmd);
- 			unsigned long offset = swp_offset(entry);
-@@ -1340,7 +1339,6 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 			VM_BUG_ON(!is_pmd_migration_entry(pmd));
- 			page = migration_entry_to_page(entry);
- 		}
--#endif
- 
- 		if (page && page_mapcount(page) == 1)
- 			flags |= PM_MMAP_EXCLUSIVE;
-diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-index f59639afaa39..9dacdd203131 100644
---- a/include/asm-generic/pgtable.h
-+++ b/include/asm-generic/pgtable.h
-@@ -674,24 +674,7 @@ static inline void ptep_modify_prot_commit(struct mm_struct *mm,
- #define arch_start_context_switch(prev)	do {} while (0)
- #endif
- 
--#ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
--#ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
--static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
--{
--	return pmd;
--}
--
--static inline int pmd_swp_soft_dirty(pmd_t pmd)
--{
--	return 0;
--}
--
--static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
--{
--	return pmd;
--}
--#endif
--#else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
-+#ifndef CONFIG_HAVE_ARCH_SOFT_DIRTY
- static inline int pte_soft_dirty(pte_t pte)
- {
- 	return 0;
-@@ -946,7 +929,7 @@ static inline int pmd_none_or_trans_huge_or_clear_bad(pmd_t *pmd)
- 	 * redundant with !pmd_present().
- 	 */
- 	if (pmd_none(pmdval) || pmd_trans_huge(pmdval) ||
--		(IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION) && !pmd_present(pmdval)))
-+		(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && !pmd_present(pmdval)))
- 		return 1;
- 	if (unlikely(pmd_bad(pmdval))) {
- 		pmd_clear_bad(pmd);
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index a8a126259bc4..dc3144bdb7e5 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -59,6 +59,7 @@ enum transparent_hugepage_flag {
- 	TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
- 	TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG,
- 	TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG,
-+	TRANSPARENT_HUGEPAGE_MIGRATION_FLAG,
- #ifdef CONFIG_DEBUG_VM
- 	TRANSPARENT_HUGEPAGE_DEBUG_COW_FLAG,
- #endif
-@@ -126,6 +127,9 @@ static inline bool transparent_hugepage_enabled(struct vm_area_struct *vma)
- #else /* CONFIG_DEBUG_VM */
- #define transparent_hugepage_debug_cow() 0
- #endif /* CONFIG_DEBUG_VM */
-+#define thp_migration_supported()				\
-+	(transparent_hugepage_flags &					\
-+	 (1<<TRANSPARENT_HUGEPAGE_MIGRATION_FLAG))
- 
- extern unsigned long thp_get_unmapped_area(struct file *filp,
- 		unsigned long addr, unsigned long len, unsigned long pgoff,
-@@ -240,11 +244,6 @@ void mm_put_huge_zero_page(struct mm_struct *mm);
- 
- #define mk_huge_pmd(page, prot) pmd_mkhuge(mk_pmd(page, prot))
- 
--static inline bool thp_migration_supported(void)
--{
--	return IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION);
--}
--
- #else /* CONFIG_TRANSPARENT_HUGEPAGE */
- #define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
- #define HPAGE_PMD_MASK ({ BUILD_BUG(); 0; })
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 1d3877c39a00..1b723685f887 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -260,7 +260,7 @@ static inline int is_write_migration_entry(swp_entry_t entry)
- 
- struct page_vma_mapped_walk;
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- extern void set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page);
- 
-@@ -295,13 +295,11 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
- static inline void set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page)
- {
--	BUILD_BUG();
- }
- 
- static inline void remove_migration_pmd(struct page_vma_mapped_walk *pvmw,
- 		struct page *new)
- {
--	BUILD_BUG();
- }
- 
- static inline void pmd_migration_entry_wait(struct mm_struct *m, pmd_t *p) { }
-diff --git a/mm/Kconfig b/mm/Kconfig
-index c782e8fb7235..7f29c5c2a8f6 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -262,9 +262,6 @@ config MIGRATION
- config ARCH_ENABLE_HUGEPAGE_MIGRATION
- 	bool
- 
--config ARCH_ENABLE_THP_MIGRATION
--	bool
--
- config PHYS_ADDR_T_64BIT
- 	def_bool 64BIT || ARCH_PHYS_ADDR_T_64BIT
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index a3a1815f8e11..80240bec2e11 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -55,7 +55,8 @@ unsigned long transparent_hugepage_flags __read_mostly =
- #endif
- 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
- 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
--	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
-+	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG)|
-+	(1<<TRANSPARENT_HUGEPAGE_MIGRATION_FLAG);
- 
- static struct shrinker deferred_split_shrinker;
- 
-@@ -288,6 +289,21 @@ static ssize_t use_zero_page_store(struct kobject *kobj,
- static struct kobj_attribute use_zero_page_attr =
- 	__ATTR(use_zero_page, 0644, use_zero_page_show, use_zero_page_store);
- 
-+static ssize_t thp_migration_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	return single_hugepage_flag_show(kobj, attr, buf,
-+				TRANSPARENT_HUGEPAGE_MIGRATION_FLAG);
-+}
-+static ssize_t thp_migration_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	return single_hugepage_flag_store(kobj, attr, buf, count,
-+				 TRANSPARENT_HUGEPAGE_MIGRATION_FLAG);
-+}
-+static struct kobj_attribute thp_migration_attr =
-+	__ATTR(enable_thp_migration, 0644, thp_migration_show, thp_migration_store);
-+
- static ssize_t hpage_pmd_size_show(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
- {
-@@ -319,6 +335,7 @@ static struct attribute *hugepage_attr[] = {
- 	&defrag_attr.attr,
- 	&use_zero_page_attr.attr,
- 	&hpage_pmd_size_attr.attr,
-+	&thp_migration_attr.attr,
- #if defined(CONFIG_SHMEM) && defined(CONFIG_TRANSPARENT_HUGE_PAGECACHE)
- 	&shmem_enabled_attr.attr,
- #endif
-@@ -924,7 +941,6 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	ret = -EAGAIN;
- 	pmd = *src_pmd;
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 	if (unlikely(is_swap_pmd(pmd))) {
- 		swp_entry_t entry = pmd_to_swp_entry(pmd);
- 
-@@ -943,7 +959,6 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		ret = 0;
- 		goto out_unlock;
- 	}
--#endif
- 
- 	if (unlikely(!pmd_trans_huge(pmd))) {
- 		pte_free(dst_mm, pgtable);
-@@ -1857,7 +1872,6 @@ int change_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 	preserve_write = prot_numa && pmd_write(*pmd);
- 	ret = 1;
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 	if (is_swap_pmd(*pmd)) {
- 		swp_entry_t entry = pmd_to_swp_entry(*pmd);
- 
-@@ -1876,7 +1890,6 @@ int change_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 		}
- 		goto unlock;
- 	}
--#endif
- 
- 	/*
- 	 * Avoid trapping faults against the zero page. The read-only
-@@ -2128,7 +2141,6 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 	 */
- 	old_pmd = pmdp_invalidate(vma, haddr, pmd);
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 	pmd_migration = is_pmd_migration_entry(old_pmd);
- 	if (pmd_migration) {
- 		swp_entry_t entry;
-@@ -2136,7 +2148,6 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		entry = pmd_to_swp_entry(old_pmd);
- 		page = pfn_to_page(swp_offset(entry));
- 	} else
--#endif
- 		page = pmd_page(old_pmd);
- 	VM_BUG_ON_PAGE(!page_count(page), page);
- 	page_ref_add(page, HPAGE_PMD_NR - 1);
-@@ -2870,7 +2881,6 @@ static int __init split_huge_pages_debugfs(void)
- late_initcall(split_huge_pages_debugfs);
- #endif
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- void set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page)
- {
-@@ -2934,4 +2944,3 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 		mlock_vma_page(new);
- 	update_mmu_cache_pmd(vma, address, pvmw->pmd);
- }
--#endif
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 507cf9ba21bf..cb9c3af32614 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -220,14 +220,12 @@ static bool remove_migration_pte(struct page *page, struct vm_area_struct *vma,
- 			new = page - pvmw.page->index +
- 				linear_page_index(vma, pvmw.address);
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 		/* PMD-mapped THP migration entry */
--		if (!pvmw.pte) {
-+		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && !pvmw.pte) {
- 			VM_BUG_ON_PAGE(PageHuge(page) || !PageTransCompound(page), page);
- 			remove_migration_pmd(&pvmw, new);
- 			continue;
- 		}
--#endif
- 
- 		get_page(new);
- 		pte = pte_mkold(mk_pte(new, READ_ONCE(vma->vm_page_prot)));
-@@ -353,7 +351,7 @@ void migration_entry_wait_huge(struct vm_area_struct *vma,
- 	__migration_entry_wait(mm, pte, ptl);
- }
- 
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
- {
- 	spinlock_t *ptl;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 8d5337fed37b..f5434f4f3e06 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1369,15 +1369,14 @@ static bool try_to_unmap_one(struct page *page, struct vm_area_struct *vma,
- 	mmu_notifier_invalidate_range_start(vma->vm_mm, start, end);
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
--#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 		/* PMD-mapped THP migration entry */
--		if (!pvmw.pte && (flags & TTU_MIGRATION)) {
-+		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-+			!pvmw.pte && (flags & TTU_MIGRATION)) {
- 			VM_BUG_ON_PAGE(PageHuge(page) || !PageTransCompound(page), page);
- 
- 			set_pmd_migration_entry(&pvmw, page);
- 			continue;
- 		}
--#endif
- 
- 		/*
- 		 * If the page is mlock()d, we cannot swap it out.
+Alexandre Belloni (7):
+  dt-bindings: net: add DT bindings for Microsemi MIIM
+  net: mscc: Add MDIO driver
+  dt-bindings: net: add DT bindings for Microsemi Ocelot Switch
+  net: mscc: Add initial Ocelot switch support
+  MIPS: mscc: Add switch to ocelot
+  MIPS: mscc: connect phys to ports on ocelot_pcb123
+  MAINTAINERS: Add entry for Microsemi Ethernet switches
+
+ .../devicetree/bindings/net/mscc-miim.txt     |   26 +
+ .../devicetree/bindings/net/mscc-ocelot.txt   |   82 +
+ MAINTAINERS                                   |    6 +
+ arch/mips/boot/dts/mscc/ocelot.dtsi           |   88 ++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts     |   20 +
+ drivers/net/ethernet/Kconfig                  |    1 +
+ drivers/net/ethernet/Makefile                 |    1 +
+ drivers/net/ethernet/mscc/Kconfig             |   29 +
+ drivers/net/ethernet/mscc/Makefile            |    5 +
+ drivers/net/ethernet/mscc/ocelot.c            | 1316 +++++++++++++++++
+ drivers/net/ethernet/mscc/ocelot.h            |  554 +++++++
+ drivers/net/ethernet/mscc/ocelot_ana.h        |  625 ++++++++
+ drivers/net/ethernet/mscc/ocelot_board.c      |  313 ++++
+ drivers/net/ethernet/mscc/ocelot_dev.h        |  275 ++++
+ drivers/net/ethernet/mscc/ocelot_dev_gmii.h   |  154 ++
+ drivers/net/ethernet/mscc/ocelot_hsio.h       |  785 ++++++++++
+ drivers/net/ethernet/mscc/ocelot_io.c         |  116 ++
+ drivers/net/ethernet/mscc/ocelot_qs.h         |   78 +
+ drivers/net/ethernet/mscc/ocelot_qsys.h       |  270 ++++
+ drivers/net/ethernet/mscc/ocelot_regs.c       |  399 +++++
+ drivers/net/ethernet/mscc/ocelot_rew.h        |   81 +
+ drivers/net/ethernet/mscc/ocelot_sys.h        |  140 ++
+ drivers/net/phy/Kconfig                       |    7 +
+ drivers/net/phy/Makefile                      |    1 +
+ drivers/net/phy/mdio-mscc-miim.c              |  197 +++
+ 25 files changed, 5569 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/mscc-miim.txt
+ create mode 100644 Documentation/devicetree/bindings/net/mscc-ocelot.txt
+ create mode 100644 drivers/net/ethernet/mscc/Kconfig
+ create mode 100644 drivers/net/ethernet/mscc/Makefile
+ create mode 100644 drivers/net/ethernet/mscc/ocelot.c
+ create mode 100644 drivers/net/ethernet/mscc/ocelot.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_ana.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_board.c
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_dev.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_dev_gmii.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_hsio.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_io.c
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_qs.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_qsys.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_regs.c
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_rew.h
+ create mode 100644 drivers/net/ethernet/mscc/ocelot_sys.h
+ create mode 100644 drivers/net/phy/mdio-mscc-miim.c
+
 -- 
 2.17.0

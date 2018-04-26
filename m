@@ -1,54 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 16:29:00 +0200 (CEST)
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:34121 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2018 16:29:14 +0200 (CEST)
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:49541 "EHLO
         out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994614AbeDZO2v5DhL0 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23990502AbeDZO2v4sca0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 26 Apr 2018 16:28:51 +0200
 Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 4A84721A88;
-        Thu, 26 Apr 2018 10:28:51 -0400 (EDT)
+        by mailout.nyi.internal (Postfix) with ESMTP id BE320218C7;
+        Thu, 26 Apr 2018 10:28:50 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Thu, 26 Apr 2018 10:28:51 -0400
+  by compute3.internal (MEProxy); Thu, 26 Apr 2018 10:28:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=cc
-        :date:from:in-reply-to:message-id:references:subject:to
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=XcEW6lLgIsV9uYmPm
-        83pZLnTxHnFIePUrOwoz4QodvQ=; b=PC3Sjo7F15uLYnIAX1jgIKHDuL/olK1WA
-        N1dc6qgLvHOdW1yjKlA/OGyzBTcC95UB2WH465v3uEG9oXePAqPkYA+LKTrrshlY
-        Eei+SIK8rbsyE78pKGmL0Baa3fuspEkLxzEqK/DfyCugKYrgwbXKYxDWHrri6wTv
-        n9C+BF8vp4mLn3/2SlT2qBkO8vr6u3FqK1Q3ua7AI8kwKovJmHiP9JIbM6189+Hb
-        x+LO/umdmj9aopq03vryz2RSI3xOfrA+IDsSGb03BVFF42KezlJna2KL2yfSlI9J
-        QC0K+t/+LjtRDgQH2dneJJxvkL4JW45daqpsSPJ1Eyei2B/W+4/DA==
+        :date:from:message-id:subject:to:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=E3PNGaPY3F0M0e8EkFenEXv92XVCiiZdXpeNhL1n9
+        G0=; b=G3elfgiAVIAQADB3Holant1pjyQ0HgJAuXhfbp3RGMNt3jMbTLj74Gp5h
+        SAY0YFHwxlHKX4lX33f/V1gwDZmjoI3QaowuG5sxvxJFXfpvmcpWe7l631GilvD9
+        0Pdo8SQx0zdUYHn+udcBAjfu9e2Bvo+jKIDtliQlZe63W8iy88nEpwbib9DftQ9d
+        tKMNABXcwcJvLjnO8U6Vb/xMlkOB2T+9XaEnX7Gpg9IBLfthfT1lKwTSnmwnIkJR
+        LJxGiq8yYtrb+poUNKulgOFAz28/lyIADdBMNpa7nsfamIE4lutSXqU3Z35Li/1x
+        htuV2yvgCJDKkCS/9YCzzmDZrG5xQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:date:from:in-reply-to:message-id
-        :references:subject:to:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; bh=XcEW6lLgIsV9uYmPm83pZLnTxHnFIePUrOwoz4QodvQ=; b=itNEjpMy
-        uLEuhjptpjSFudP1gdXPKhhAFiqTQvodfkVAm/p9khXD8bn4orWHPLDeGwIRrxxq
-        u1QUlaPfHs9jCA4A+puH8xoeAVOG3ruR0l4Ih+SNE+vyxR4xKH2O/JtOtJ/oETnr
-        MONiwYxjl0WX3u5skuaEXJS6qbaCHd457eT6nsbVyf6GZSbC05NK0V3fcBlsEtcp
-        xVFNxYOl+szX8CGmqkASyPzRnkEUmmqg9ji5Vr0Ex4cuMpgq013Uqs3XlT3XfYn8
-        1m5qrdR2/Xm5wKgX8FZk27nWmzztFWWprsUdBADW0y6BMO5WwqBRRe0VstueTlnw
-        2XN9AdzZFP582w==
-X-ME-Sender: <xms:I-LhWro0Mex3PjAzcPqCfaNlr1Ff2YFIBeiTTDpWt9ioOllyBIFILw>
+        messagingengine.com; h=cc:date:from:message-id:subject:to
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=E3PNGaPY3F0M0e8Ek
+        FenEXv92XVCiiZdXpeNhL1n9G0=; b=OytRFPk8rOxxkB++nXDW3NokaFEl8FUP6
+        jiyQLwhpB8ilytZ7tQURo10iTrDSB+ZjU+Cgz6u2St3QWCHyZLaq0Bk9jfPJl6If
+        il1JmId59kLXWBoSnWpjDCo2EieFzSGPOpSUQmtnPEdE/FwVQH/vsibNLJ30Hoh9
+        jVH82CCMhQROxZdW+B2GQI6ytiLauGGs7ebBbolmgTxN/QKkZV8nPB9ursnlslYe
+        iqpWtakGarexifNBQO/PexJ5cRS1PyVycBxp+xxsK/Xp6QOOgbr/PYvFLrzCDjEu
+        4bUSwja1/4FvNvSNMhUZ4AsZiIQPvpUa9VWT3tl1O6/diAahF6i2g==
+X-ME-Sender: <xms:IuLhWrPShpjiFfcdkekIxBtJULBqWa2UjgStwi1WtFhi0B8ib_qajA>
 Received: from tenansix.rutgers.edu (pool-165-230-225-59.nat.rutgers.edu [165.230.225.59])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 04E96E47A0;
-        Thu, 26 Apr 2018 10:28:51 -0400 (EDT)
+        by mail.messagingengine.com (Postfix) with ESMTPA id E9CB7E47A0;
+        Thu, 26 Apr 2018 10:28:49 -0400 (EDT)
 From:   Zi Yan <zi.yan@sent.com>
 To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc:     Zi Yan <zi.yan@cs.rutgers.edu>, Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Zi Yan <zi.yan@cs.rutgers.edu>, Vineet Gupta <vgupta@synopsys.com>,
+        linux-snps-arc@lists.infradead.org,
+        Russell King <linux@armlinux.org.uk>,
+        Christoffer Dall <christoffer.dall@linaro.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Steve Capper <steve.capper@arm.com>,
+        Kristina Martsenko <kristina.martsenko@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        x86@kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org
-Subject: [RFC PATCH 5/9] mips: mm: migrate: add pmd swap entry to support thp migration.
-Date:   Thu, 26 Apr 2018 10:28:00 -0400
-Message-Id: <20180426142804.180152-6-zi.yan@sent.com>
+        Michal Hocko <mhocko@suse.com>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Ram Pai <linuxram@us.ibm.com>,
+        Balbir Singh <bsingharora@gmail.com>,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Janosch Frank <frankja@linux.vnet.ibm.com>,
+        linux-s390@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, "Huang, Ying" <ying.huang@intel.com>
+Subject: [RFC PATCH 0/9] Enable THP migration for all possible architectures
+Date:   Thu, 26 Apr 2018 10:27:55 -0400
+Message-Id: <20180426142804.180152-1-zi.yan@sent.com>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180426142804.180152-1-zi.yan@sent.com>
-References: <20180426142804.180152-1-zi.yan@sent.com>
 Return-Path: <zi.yan@sent.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63796
+X-archive-position: 63797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,30 +90,106 @@ X-list: linux-mips
 
 From: Zi Yan <zi.yan@cs.rutgers.edu>
 
-Signed-off-by: Zi Yan <zi.yan@cs.rutgers.edu>
+Hi all,
+
+THP migration is only enabled on x86_64 with a special
+ARCH_ENABLE_THP_MIGRATION macro. This patchset enables THP migration for
+all architectures that uses transparent hugepage, so that special macro can
+be dropped. Instead, THP migration is enabled/disabled via
+/sys/kernel/mm/transparent_hugepage/enable_thp_migration.
+
+I grepped for TRANSPARENT_HUGEPAGE in arch folder and got 9 architectures that
+are supporting transparent hugepage. I mechanically add __pmd_to_swp_entry() and
+__swp_entry_to_pmd() based on existing __pte_to_swp_entry() and
+__swp_entry_to_pte() for all these architectures, except tile which is going to
+be dropped.
+
+I have successfully compiled all these architectures, but have NOT tested them
+due to lack of real hardware. I appreciate your help, if the maintainers of
+these architectures can do a quick test with the code from
+https://github.com/x-y-z/thp-migration-bench . Please apply patch 9 as well
+to enable THP migration.
+
+By enabling THP migration, migrating a 2MB THP on x86_64 machines takes only 1/3
+time of migrating equivalent 512 4KB pages.
+
+Hi Naoya, I also add soft dirty support for powerpc and s390. It would be great
+if you can take a look at patch 6 & 7.
+
+Feel free to give comments. Thanks.
+
+Cc: linux-mm@kvack.org
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Christoffer Dall <christoffer.dall@linaro.org>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Steve Capper <steve.capper@arm.com>
+Cc: Kristina Martsenko <kristina.martsenko@arm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: x86@kernel.org
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Michal Hocko <mhocko@suse.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-mm@kvack.org
----
- arch/mips/include/asm/pgtable-64.h | 2 ++
- 1 file changed, 2 insertions(+)
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>
+Cc: Ram Pai <linuxram@us.ibm.com>
+Cc: Balbir Singh <bsingharora@gmail.com>
+Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: Janosch Frank <frankja@linux.vnet.ibm.com>
+Cc: linux-s390@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Cc: "Huang, Ying" <ying.huang@intel.com>
 
-diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-index 0036ea0c7173..ec72e5b12965 100644
---- a/arch/mips/include/asm/pgtable-64.h
-+++ b/arch/mips/include/asm/pgtable-64.h
-@@ -366,6 +366,8 @@ static inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
- #define __swp_offset(x)		((x).val >> 24)
- #define __swp_entry(type, offset) ((swp_entry_t) { pte_val(mk_swap_pte((type), (offset))) })
- #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
-+#define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
- #define __swp_entry_to_pte(x)	((pte_t) { (x).val })
-+#define __swp_entry_to_pmd(x)	((pmd_t) { (x).val })
- 
- #endif /* _ASM_PGTABLE_64_H */
+
+Zi Yan (9):
+  arc: mm: migrate: add pmd swap entry to support thp migration.
+  arm: mm: migrate: add pmd swap entry to support thp migration.
+  arm64: mm: migrate: add pmd swap entry to support thp migration.
+  i386: mm: migrate: add pmd swap entry to support thp migration.
+  mips: mm: migrate: add pmd swap entry to support thp migration.
+  powerpc: mm: migrate: add pmd swap entry to support thp migration.
+  s390: mm: migrate: add pmd swap entry to support thp migration.
+  sparc: mm: migrate: add pmd swap entry to support thp migration.
+  mm: migrate: enable thp migration for all possible architectures.
+
+ arch/arc/include/asm/pgtable.h               |  2 ++
+ arch/arm/include/asm/pgtable.h               |  2 ++
+ arch/arm64/include/asm/pgtable.h             |  2 ++
+ arch/mips/include/asm/pgtable-64.h           |  2 ++
+ arch/powerpc/include/asm/book3s/32/pgtable.h |  2 ++
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 17 ++++++++++++
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  2 ++
+ arch/powerpc/include/asm/nohash/64/pgtable.h |  2 ++
+ arch/s390/include/asm/pgtable.h              |  5 ++++
+ arch/sparc/include/asm/pgtable_32.h          |  2 ++
+ arch/sparc/include/asm/pgtable_64.h          |  2 ++
+ arch/x86/Kconfig                             |  4 ---
+ arch/x86/include/asm/pgtable-2level.h        |  2 ++
+ arch/x86/include/asm/pgtable-3level.h        |  2 ++
+ arch/x86/include/asm/pgtable.h               |  2 --
+ fs/proc/task_mmu.c                           |  2 --
+ include/asm-generic/pgtable.h                | 21 ++-------------
+ include/linux/huge_mm.h                      |  9 +++----
+ include/linux/swapops.h                      |  4 +--
+ mm/Kconfig                                   |  3 ---
+ mm/huge_memory.c                             | 27 +++++++++++++-------
+ mm/migrate.c                                 |  6 ++---
+ mm/rmap.c                                    |  5 ++--
+ 23 files changed, 73 insertions(+), 54 deletions(-)
+
 -- 
 2.17.0

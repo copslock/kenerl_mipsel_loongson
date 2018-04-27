@@ -1,43 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2018 15:44:13 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:36229 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2018 16:03:06 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:44934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990401AbeD0NoHLIYmV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Apr 2018 15:44:07 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 5200B20720; Fri, 27 Apr 2018 15:44:01 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 28CC9206A0;
-        Fri, 27 Apr 2018 15:44:01 +0200 (CEST)
-Date:   Fri, 27 Apr 2018 15:44:00 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        razvan.stefanescu@nxp.com, po.liu@nxp.com,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH net-next v2 4/7] net: mscc: Add initial Ocelot switch
- support
-Message-ID: <20180427134400.GA4813@piout.net>
-References: <20180426195931.5393-1-alexandre.belloni@bootlin.com>
- <20180426195931.5393-5-alexandre.belloni@bootlin.com>
- <20180426210915.GE23481@lunn.ch>
+        id S23991172AbeD0OC7No0pV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Apr 2018 16:02:59 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E013A2189D;
+        Fri, 27 Apr 2018 14:02:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E013A2189D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: mail.kernel.org; spf=fail smtp.mailfrom=gregkh@linuxfoundation.org
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 4.9 11/74] MIPS: Generic: Fix big endian CPUs on generic machine
+Date:   Fri, 27 Apr 2018 15:58:01 +0200
+Message-Id: <20180427135710.365986182@linuxfoundation.org>
+X-Mailer: git-send-email 2.17.0
+In-Reply-To: <20180427135709.899303463@linuxfoundation.org>
+References: <20180427135709.899303463@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180426210915.GE23481@lunn.ch>
-User-Agent: Mutt/1.9.5 (2018-04-13)
-Return-Path: <alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <SRS0=4/0d=HQ=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63812
+X-archive-position: 63813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,33 +48,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26/04/2018 23:09:15+0200, Andrew Lunn wrote:
-> > +/* Checks if the net_device instance given to us originate from our driver. */
-> > +static bool ocelot_netdevice_dev_check(const struct net_device *dev)
-> > +{
-> > +	return dev->netdev_ops == &ocelot_port_netdev_ops;
-> > +}
-> 
-> This is probably O.K. now, but when you add support for controlling
-> the switch over PCIe, i think it breaks. A board could have two
-> switches...
-> 
-> It might be possible to do something with dev->parent. All ports of a
-> switch should have the same parent.
-> 
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
-Actually, that is fine because it simply ensures netdev_priv(dev); is a
-struct ocelot_port.
+------------------
 
-Later on, we get ocelot_port->ocelot and do the right thing.
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-The only thing that would not be working when having multiple of those
-switches on the same platform would be having interfaces from different
-switches in the same bridge. Anyway, this is definitively not something
-we want because of the limited bandwidth of the CPU port.
+commit a3078e593b74fe196e69f122f03ff0b32f652c53 upstream.
 
+Big endian CPUs require SWAP_IO_SPACE enabled to swap accesses to little
+endian peripherals.
 
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Without this patch, big endian kernels fail to communicate with little
+endian periperals, such as PCI devices, on QEMU and FPGA based
+platforms.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15105/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -95,6 +95,7 @@ config MIPS_GENERIC
+ 	select PCI_DRIVERS_GENERIC
+ 	select PINCTRL
+ 	select SMP_UP if SMP
++	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_MIPS32_R1
+ 	select SYS_HAS_CPU_MIPS32_R2
+ 	select SYS_HAS_CPU_MIPS32_R6

@@ -1,63 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2018 12:25:28 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:52320 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993928AbeEZKYWBaNdC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 26 May 2018 12:24:22 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F0712086C;
-        Sat, 26 May 2018 10:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527330255;
-        bh=TocwoX7ZstPI3Lu+Zbj/Ua/6f142zCkl620iHJbxWZw=;
-        h=Subject:To:Cc:From:Date:From;
-        b=iWEOJYpmxuthfUyIdeyQkmK5VF7tCe30aLXuVV2TbmQfutyXm/n1iDVoXOfZh5ukQ
-         fsKMDvr5THsPYRs8xEPs7DwtdwE6hy7729R0KhWKyy6dOxOTAR14biGus2/DeF2fr4
-         GvpulgUG8djH6b13/SDzdyRfekx4pbMhuIsYx3Yo=
-Subject: Patch "MIPS: ptrace: Expose FIR register through FP regset" has been added to the 4.14-stable tree
-To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, macro@mips.com, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 26 May 2018 12:23:31 +0200
-Message-ID: <15273302115352@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=Dqjb=IN=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64048
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: "Maciej W. Rozycki" <macro@mips.com>
+Date: Mon, 30 Apr 2018 15:56:47 +0100
+Subject: MIPS: ptrace: Expose FIR register through FP regset
+Message-ID: <20180430145647.9dzGKqihbzvkQM3s3ZTKVwC5qR0jpXlVf0zBCkTBzyg@z>
+
+From: Maciej W. Rozycki <macro@mips.com>
+
+commit 71e909c0cdad28a1df1fa14442929e68615dee45 upstream.
+
+Correct commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+and expose the FIR register using the unused 4 bytes at the end of the
+NT_PRFPREG regset.  Without that register included clients cannot use
+the PTRACE_GETREGSET request to retrieve the complete FPU register set
+and have to resort to one of the older interfaces, either PTRACE_PEEKUSR
+or PTRACE_GETFPREGS, to retrieve the missing piece of data.  Also the
+register is irreversibly missing from core dumps.
+
+This register is architecturally hardwired and read-only so the write
+path does not matter.  Ignore data supplied on writes then.
+
+Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 3.13+
+Patchwork: https://patchwork.linux-mips.org/patch/19273/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/ptrace.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -454,7 +454,7 @@ static int fpr_get_msa(struct task_struc
+ /*
+  * Copy the floating-point context to the supplied NT_PRFPREG buffer.
+  * Choose the appropriate helper for general registers, and then copy
+- * the FCSR register separately.
++ * the FCSR and FIR registers separately.
+  */
+ static int fpr_get(struct task_struct *target,
+ 		   const struct user_regset *regset,
+@@ -462,6 +462,7 @@ static int fpr_get(struct task_struct *t
+ 		   void *kbuf, void __user *ubuf)
+ {
+ 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
++	const int fir_pos = fcr31_pos + sizeof(u32);
+ 	int err;
+ 
+ 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
+@@ -474,6 +475,12 @@ static int fpr_get(struct task_struct *t
+ 	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+ 				  &target->thread.fpu.fcr31,
+ 				  fcr31_pos, fcr31_pos + sizeof(u32));
++	if (err)
++		return err;
++
++	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
++				  &boot_cpu_data.fpu_id,
++				  fir_pos, fir_pos + sizeof(u32));
+ 
+ 	return err;
+ }
+@@ -522,7 +529,8 @@ static int fpr_set_msa(struct task_struc
+ /*
+  * Copy the supplied NT_PRFPREG buffer to the floating-point context.
+  * Choose the appropriate helper for general registers, and then copy
+- * the FCSR register separately.
++ * the FCSR register separately.  Ignore the incoming FIR register
++ * contents though, as the register is read-only.
+  *
+  * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
+  * which is supposed to have been guaranteed by the kernel before
+@@ -536,6 +544,7 @@ static int fpr_set(struct task_struct *t
+ 		   const void *kbuf, const void __user *ubuf)
+ {
+ 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
++	const int fir_pos = fcr31_pos + sizeof(u32);
+ 	u32 fcr31;
+ 	int err;
+ 
+@@ -563,6 +572,11 @@ static int fpr_set(struct task_struct *t
+ 		ptrace_setfcr31(target, fcr31);
+ 	}
+ 
++	if (count > 0)
++		err = user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
++						fir_pos,
++						fir_pos + sizeof(u32));
++
+ 	return err;
+ }
+ 
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from macro@mips.com are
 
-    MIPS: ptrace: Expose FIR register through FP regset
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-ptrace-expose-fir-register-through-fp-regset.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.14/mips-ptrace-expose-fir-register-through-fp-regset.patch
+queue-4.14/mips-fix-ptrace-2-ptrace_peekusr-and-ptrace_pokeusr-accesses-to-o32-fgrs.patch

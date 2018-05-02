@@ -1,75 +1,76 @@
-From: Joe Perches <joe@perches.com>
-Date: Tue, 5 Dec 2017 23:04:58 -0800
-Subject: MIPS: Octeon: Fix logging messages with spurious periods after newlines
-Message-ID: <20171206070458.bctJ5KuLpvoUPXUSK2-jYjP7Eu9FOk8L2qp2_i1zAUc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2018 04:38:48 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:38864 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990393AbeEBCikQXaV2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 May 2018 04:38:40 +0200
+Received: from mail-qt0-f178.google.com (mail-qt0-f178.google.com [209.85.216.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6CEF12376A;
+        Wed,  2 May 2018 02:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1525228713;
+        bh=jrSMXAllj1OIJVopA2yYtw9H2oTCAvcbpc+FhKteNkg=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=VNm1sTTtRoJxjvFvPPTU4r/JuzguCk23HgQYSDgRtduRIgJLuKK6TswACsyztjjOJ
+         1HM8Fav5/hX4yB1BALYAxOuKRHUds177HV5MH5m5c/mqyFWd4m7qGOBYnc/zV9sl/Q
+         HR10g2FAmqwJcM2ICxsLSfnrT7p3qk+sqMU0GaQQ=
+Received: by mail-qt0-f178.google.com with SMTP id f5-v6so3331644qth.2;
+        Tue, 01 May 2018 19:38:33 -0700 (PDT)
+X-Gm-Message-State: ALQs6tBDNvMz1zudu7yYMmGeTWd/zyVS92ttydnfZACy8WLMd1HigHKE
+        kj5Ni5x5WWyp4hdbPQ13iS5Yh/sV/T5cB+FMwA==
+X-Google-Smtp-Source: AB8JxZq+3zAUWKrOSw3HYEEtatBUT6qMrX5hINk2NHLVjTCfHcB3DfaP/3MdyQPvAKmC+Aq4ls/rAtZdNbnAQhuw3nQ=
+X-Received: by 2002:a0c:b351:: with SMTP id a17-v6mr14918615qvf.27.1525228712636;
+ Tue, 01 May 2018 19:38:32 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.12.155.2 with HTTP; Tue, 1 May 2018 19:38:12 -0700 (PDT)
+In-Reply-To: <20180328011435.29776-1-robh@kernel.org>
+References: <20180328011435.29776-1-robh@kernel.org>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 1 May 2018 21:38:12 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJmiUKGRGnc4SfifW4rt7Pb6Mkyku4Y3UAAxQUa1uazAw@mail.gmail.com>
+Message-ID: <CAL_JsqJmiUKGRGnc4SfifW4rt7Pb6Mkyku4Y3UAAxQUa1uazAw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: ralink: use memblock instead of rescanning the FDT
+To:     James Hogan <jhogan@kernel.org>
+Cc:     John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh@kernel.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63837
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: robh@kernel.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Joe Perches <joe@perches.com>
+On Tue, Mar 27, 2018 at 8:14 PM, Rob Herring <robh@kernel.org> wrote:
+> There's no need to scan /memory nodes twice. The DT core code scans
+> nodes and adds memblocks already, so we can just use
+> memblock_phys_mem_size() to see if we have any memory already setup.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> Cc: John Crispin <john@phrozen.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: linux-mips@linux-mips.org
+> ---
+>  arch/mips/ralink/of.c | 21 +++++----------------
+>  1 file changed, 5 insertions(+), 16 deletions(-)
 
-[ Upstream commit db6775ca6e0353d2618ca7d5e210fc36ad43bbd4 ]
+Ping. Can MIPS maintainers please pick this up.
 
-Using a period after a newline causes bad output.
-
-Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
-Signed-off-by: Joe Perches <joe@perches.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17886/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/cavium-octeon/octeon-irq.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -2271,7 +2271,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	parent_irq = irq_of_parse_and_map(ciu_node, 0);
- 	if (!parent_irq) {
--		pr_err("ERROR: Couldn't acquire parent_irq for %s\n.",
-+		pr_err("ERROR: Couldn't acquire parent_irq for %s\n",
- 			ciu_node->name);
- 		return -EINVAL;
- 	}
-@@ -2283,7 +2283,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	addr = of_get_address(ciu_node, 0, NULL, NULL);
- 	if (!addr) {
--		pr_err("ERROR: Couldn't acquire reg(0) %s\n.", ciu_node->name);
-+		pr_err("ERROR: Couldn't acquire reg(0) %s\n", ciu_node->name);
- 		return -EINVAL;
- 	}
- 	host_data->raw_reg = (u64)phys_to_virt(
-@@ -2291,7 +2291,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	addr = of_get_address(ciu_node, 1, NULL, NULL);
- 	if (!addr) {
--		pr_err("ERROR: Couldn't acquire reg(1) %s\n.", ciu_node->name);
-+		pr_err("ERROR: Couldn't acquire reg(1) %s\n", ciu_node->name);
- 		return -EINVAL;
- 	}
- 	host_data->en_reg = (u64)phys_to_virt(
-@@ -2299,7 +2299,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	r = of_property_read_u32(ciu_node, "cavium,max-bits", &val);
- 	if (r) {
--		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n.",
-+		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n",
- 			ciu_node->name);
- 		return r;
- 	}
-@@ -2309,7 +2309,7 @@ static int __init octeon_irq_init_cib(st
- 					   &octeon_irq_domain_cib_ops,
- 					   host_data);
- 	if (!cib_domain) {
--		pr_err("ERROR: Couldn't irq_domain_add_linear()\n.");
-+		pr_err("ERROR: Couldn't irq_domain_add_linear()\n");
- 		return -ENOMEM;
- 	}
- 
-
-
-Patches currently in stable-queue which might be from joe@perches.com are
-
-queue-4.14/mips-octeon-fix-logging-messages-with-spurious-periods-after-newlines.patch
+Rob

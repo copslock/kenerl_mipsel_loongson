@@ -1,50 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2018 04:38:48 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:38864 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990393AbeEBCikQXaV2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 May 2018 04:38:40 +0200
-Received: from mail-qt0-f178.google.com (mail-qt0-f178.google.com [209.85.216.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6CEF12376A;
-        Wed,  2 May 2018 02:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1525228713;
-        bh=jrSMXAllj1OIJVopA2yYtw9H2oTCAvcbpc+FhKteNkg=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=VNm1sTTtRoJxjvFvPPTU4r/JuzguCk23HgQYSDgRtduRIgJLuKK6TswACsyztjjOJ
-         1HM8Fav5/hX4yB1BALYAxOuKRHUds177HV5MH5m5c/mqyFWd4m7qGOBYnc/zV9sl/Q
-         HR10g2FAmqwJcM2ICxsLSfnrT7p3qk+sqMU0GaQQ=
-Received: by mail-qt0-f178.google.com with SMTP id f5-v6so3331644qth.2;
-        Tue, 01 May 2018 19:38:33 -0700 (PDT)
-X-Gm-Message-State: ALQs6tBDNvMz1zudu7yYMmGeTWd/zyVS92ttydnfZACy8WLMd1HigHKE
-        kj5Ni5x5WWyp4hdbPQ13iS5Yh/sV/T5cB+FMwA==
-X-Google-Smtp-Source: AB8JxZq+3zAUWKrOSw3HYEEtatBUT6qMrX5hINk2NHLVjTCfHcB3DfaP/3MdyQPvAKmC+Aq4ls/rAtZdNbnAQhuw3nQ=
-X-Received: by 2002:a0c:b351:: with SMTP id a17-v6mr14918615qvf.27.1525228712636;
- Tue, 01 May 2018 19:38:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2018 14:46:28 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:49248 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992521AbeEBMqW1cYY9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 May 2018 14:46:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=ub+lf3MEQrp13uhIMbv3Uzwn2AMVnK7UcD1pgs6ypeE=; b=kgkUQ3G9RVw9Pr88AvB9H4TX1
+        pq8XpFRRtRjKKH81udIsifg2F7p/t9lkn/eQMWzRl0y+/8O5wb/cER4sfzgU/1zRnwYqXedWZA21m
+        8MhuuivLxoZ2sMihzbwFhKb+pzOh+csMrAUiFlSZZ3Y2uk1DTHWl75Dysf+Kj63LI6nzjUd7b6dtd
+        SsDDC4aKK54o/ViF92uB1Fi1NfJO08kTIo/Gatn0HFY5iCyzwplnZb1AKYV0hDgJEnmBjboi9rBOm
+        MmiJIxVc9H7lHHGzylVYchgp8GDC6iF8hx6lsqJ4sYyKWNgjFpB9q3CHNqNAmXqKTl/WtUwMeM1T5
+        N30Xlq8ng==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1fDr9F-00071x-W9; Wed, 02 May 2018 12:46:18 +0000
+Date:   Wed, 2 May 2018 05:46:17 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
+        sstabellini@kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-mm@kvack.org, sparclinux@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: centralize SWIOTLB config symbol and misc other cleanups V3
+Message-ID: <20180502124617.GA22001@infradead.org>
+References: <20180425051539.1989-1-hch@lst.de>
 MIME-Version: 1.0
-Received: by 10.12.155.2 with HTTP; Tue, 1 May 2018 19:38:12 -0700 (PDT)
-In-Reply-To: <20180328011435.29776-1-robh@kernel.org>
-References: <20180328011435.29776-1-robh@kernel.org>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 1 May 2018 21:38:12 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJmiUKGRGnc4SfifW4rt7Pb6Mkyku4Y3UAAxQUa1uazAw@mail.gmail.com>
-Message-ID: <CAL_JsqJmiUKGRGnc4SfifW4rt7Pb6Mkyku4Y3UAAxQUa1uazAw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: ralink: use memblock instead of rescanning the FDT
-To:     James Hogan <jhogan@kernel.org>
-Cc:     John Crispin <john@phrozen.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180425051539.1989-1-hch@lst.de>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+f4aaa1fcd02e82e68825+5365+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63837
+X-archive-position: 63838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: hch@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,20 +55,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 27, 2018 at 8:14 PM, Rob Herring <robh@kernel.org> wrote:
-> There's no need to scan /memory nodes twice. The DT core code scans
-> nodes and adds memblocks already, so we can just use
-> memblock_phys_mem_size() to see if we have any memory already setup.
->
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> Cc: John Crispin <john@phrozen.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: linux-mips@linux-mips.org
-> ---
->  arch/mips/ralink/of.c | 21 +++++----------------
->  1 file changed, 5 insertions(+), 16 deletions(-)
+Any more comments?  Especially from the x86, mips and powerpc arch
+maintainers?  I'd like to merge this in a few days as various other
+patches depend on it.
 
-Ping. Can MIPS maintainers please pick this up.
-
-Rob
+On Wed, Apr 25, 2018 at 07:15:26AM +0200, Christoph Hellwig wrote:
+> Hi all,
+> 
+> this seris aims for a single defintion of the Kconfig symbol.  To get
+> there various cleanups, mostly about config symbols are included as well.
+> 
+> Changes since V2:
+>  - swiotlb doesn't need the dma_length field by itself, so don't select it
+>  - don't offer a user visible SWIOTLB choice
+> 
+> Chages since V1:
+>  - fixed a incorrect Reviewed-by that should be a Signed-off-by.
+> _______________________________________________
+> iommu mailing list
+> iommu@lists.linux-foundation.org
+> https://lists.linuxfoundation.org/mailman/listinfo/iommu
+---end quoted text---

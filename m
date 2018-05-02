@@ -1,48 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2018 14:46:28 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:49248 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992521AbeEBMqW1cYY9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 May 2018 14:46:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=ub+lf3MEQrp13uhIMbv3Uzwn2AMVnK7UcD1pgs6ypeE=; b=kgkUQ3G9RVw9Pr88AvB9H4TX1
-        pq8XpFRRtRjKKH81udIsifg2F7p/t9lkn/eQMWzRl0y+/8O5wb/cER4sfzgU/1zRnwYqXedWZA21m
-        8MhuuivLxoZ2sMihzbwFhKb+pzOh+csMrAUiFlSZZ3Y2uk1DTHWl75Dysf+Kj63LI6nzjUd7b6dtd
-        SsDDC4aKK54o/ViF92uB1Fi1NfJO08kTIo/Gatn0HFY5iCyzwplnZb1AKYV0hDgJEnmBjboi9rBOm
-        MmiJIxVc9H7lHHGzylVYchgp8GDC6iF8hx6lsqJ4sYyKWNgjFpB9q3CHNqNAmXqKTl/WtUwMeM1T5
-        N30Xlq8ng==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fDr9F-00071x-W9; Wed, 02 May 2018 12:46:18 +0000
-Date:   Wed, 2 May 2018 05:46:17 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org,
-        sstabellini@kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-mm@kvack.org, sparclinux@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: centralize SWIOTLB config symbol and misc other cleanups V3
-Message-ID: <20180502124617.GA22001@infradead.org>
-References: <20180425051539.1989-1-hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2018 20:25:52 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:46428 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992678AbeEBSZoqooOo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 May 2018 20:25:44 +0200
+Received: from localhost (unknown [104.132.1.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 404872397A;
+        Wed,  2 May 2018 18:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1525285538;
+        bh=+cJPwIW/fQ9LSonAOYBNk5DsGe5mgdNBO7+LaqVcswU=;
+        h=Subject:To:Cc:From:Date:From;
+        b=hbZFo7kKDG+KpJQqtbzgCPCRdhtxRK8OASXZYdyL6mZ6utX2B6T5FELmHDKIrNrqq
+         6TPnTgq9XehUuu8/YlqzzNrK/flFTlhvpc1p8U7wUm8Ty7PohEBr1GQpn4rxR+Rxio
+         qORJJpZ14zqV5LiYswg0p7Dn2tBx9AJd5nGepgFs=
+Subject: Patch "MIPS: generic: Fix machine compatible matching" has been added to the 4.9-stable tree
+To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
+        jhogan@kernel.org, linux-mips@linux-mips.org,
+        matt.redfearn@mips.com, paul.burton@mips.com, ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 02 May 2018 11:16:41 -0700
+Message-ID: <1525285001239180@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180425051539.1989-1-hch@lst.de>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+f4aaa1fcd02e82e68825+5365+infradead.org+hch@bombadil.srs.infradead.org>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <SRS0=nwvz=HV=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63838
+X-archive-position: 63839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@infradead.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,24 +48,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Any more comments?  Especially from the x86, mips and powerpc arch
-maintainers?  I'd like to merge this in a few days as various other
-patches depend on it.
 
-On Wed, Apr 25, 2018 at 07:15:26AM +0200, Christoph Hellwig wrote:
-> Hi all,
-> 
-> this seris aims for a single defintion of the Kconfig symbol.  To get
-> there various cleanups, mostly about config symbols are included as well.
-> 
-> Changes since V2:
->  - swiotlb doesn't need the dma_length field by itself, so don't select it
->  - don't offer a user visible SWIOTLB choice
-> 
-> Chages since V1:
->  - fixed a incorrect Reviewed-by that should be a Signed-off-by.
-> _______________________________________________
-> iommu mailing list
-> iommu@lists.linux-foundation.org
-> https://lists.linuxfoundation.org/mailman/listinfo/iommu
----end quoted text---
+This is a note to let you know that I've just added the patch titled
+
+    MIPS: generic: Fix machine compatible matching
+
+to the 4.9-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-generic-fix-machine-compatible-matching.patch
+and it can be found in the queue-4.9 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

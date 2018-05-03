@@ -1,68 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2018 00:31:42 +0200 (CEST)
-Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:35430
-        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990465AbeECWbf3RHOv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2018 00:31:35 +0200
-Received: by mail-qt0-x243.google.com with SMTP id f5-v6so11735871qth.2;
-        Thu, 03 May 2018 15:31:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2018 00:40:21 +0200 (CEST)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:36439
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990468AbeECWkO1P02v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2018 00:40:14 +0200
+Received: by mail-qt0-x244.google.com with SMTP id q6-v6so25104869qtn.3;
+        Thu, 03 May 2018 15:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=m5rk9vTTU41Y0eqMpzeo3pDtUzA9CWj3UspDYvs6hRQ=;
-        b=J7vVvaRP6ug1hU9ppWII8OAWQItSPYg/AC3ftmX/eMobHWKkQzjmtIrCpPNgo+CbN0
-         NCpmeTpKW0xx2dDQ2Q02zNRht0hRs7YhZDwKTb2Mk6v5JTfdZ4zxgpu9szFRhJ/h9ItJ
-         a8OmNd4rydCSOVWl/3XXaYu1dH5+S9lyToZo+X/a0hofb91No7vTTsOtQiH6/1FMAUR1
-         A9FxVkm5eiGCHdNUtZfU6u2R6qxZjdwQebTbP8X3WwMRZaiCfQWqYCPqM0Ww+wz6/o5M
-         vGWtmIZe+Qw9EagYI90FLw6FraweMa2Tm2HVRNVLfKugdmHyI9iFvMbf4iv/v0F0WHS/
-         sVyw==
+        bh=PKnXhs05Z/cvp+tdY8NqgifaWSZch/rtjwbGXZNtkFw=;
+        b=r087GcyMbxDpe2Bg+MzpaXIA0nfXHpbGt2zViOtgJl+mhM8GViuSKDVpoHFxM5iDNO
+         ti9eTsVc9FciW4cSNJGRk465SZRkG29cN8O4ULaoeoM9l+2tebRE7s5MuZhlBM5ehVx9
+         ZoPxsfDt1PAiiQB2wXHWv4kWXrrcP41Oikaz7jgQQ12IBFlHPDgMeWfR970yKrhg2cgY
+         5kf3psK8b3n96/85kaJABPEKpT8ORFfvIOvfIFCPfsr35R4PrfQq3tfb0V+Za7iuyJ/r
+         +MFezGgKeskWdoTnK6sPheyC/aA1jLekLoAMEZwmKM3ho/ln2ZeBLLgj882TqICydlAH
+         +6jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=m5rk9vTTU41Y0eqMpzeo3pDtUzA9CWj3UspDYvs6hRQ=;
-        b=aNrwZzp4fVYmvHtDbp4pVwFGBy7oBw3QU599b2CTYIPuzhWZGEUBBn08SdOHVSD/8n
-         ySEcBLP/pKnL5ThtmTV82EiL54GxhEuwkqlFRnNEXxwCNvIqO9vpVXUcVNa1m10fOHog
-         jeszWx0xvnEpqIAZipNWnv0JFvF5juDPCFrlUq6TT/aC5/ZMAzVtOmBqlyT7uOHKKick
-         6jOrHWG7W9gaxFYWb4QjJXFACNP308Pul6tMYjMMvXDmV1IjoX8znGCdsinHWqmVSamj
-         7TxTIDNF3tbFs0n2gcVVAVaKKvXR8sS8xQ1PDnjDNAz9Tkd/OV9KtV2V2qrrxRBOnyaZ
-         zl1g==
-X-Gm-Message-State: ALQs6tA5Q1SpucsMNL8bOHx0fdvBjsocxbgc7mVhzquN1NEC4Aw5g6ne
-        k6v6XZLuZfJKhDR+Ht+GO/HkBPFvJc1hsXse1WU=
-X-Google-Smtp-Source: AB8JxZrOjKPgiVbQN5BN3iWX7B+ZBRnNiW74v49MC/AnCtB1rDfspA3iB4k6Q8zo9F/saVucxiN78dScw0XLyRVNjj8=
-X-Received: by 2002:ac8:64a:: with SMTP id e10-v6mr11290866qth.163.1525386689288;
- Thu, 03 May 2018 15:31:29 -0700 (PDT)
+        bh=PKnXhs05Z/cvp+tdY8NqgifaWSZch/rtjwbGXZNtkFw=;
+        b=A2YY4k/n53mUreOmk0PnGFduWbXAK7oBIA73rPtsCOunfanMiIuA6AYJjCWpc0w3uB
+         TPb5nKylvBtWGYo17pv3iWA2bEuy8EfRyoC6MPFpVbzSDcfUzaiDzYekfHpL1K+IQATB
+         YRl1LNA4fEHTPvkj+ZsOjCMqmnduFZgSgUNhoOdlDknfocNt05lGOLpDx3/UPsc644qM
+         klIBUSelBPFeW7qOZazvmKdVbhLuA6us91zsxpE+uwW0MYMWAmVNZAiLHyYDL6J41oGz
+         7evmxguSS6eCWKGkF3a1QnPymjb6+Zkq7fpbPQGt4tquAfxcU6FEQ1hrJz9ekmWFDSFh
+         kGvA==
+X-Gm-Message-State: ALQs6tDcugbae6QRou8haDoeTz10/JjR//SA9atmhuH/ZmeFi/n3UHDa
+        4ad59bV1xABieuF9+Am/aYjj3w7qMA6kmBNqOEs=
+X-Google-Smtp-Source: AB8JxZpwC/dbzbv3DiguOedF1ndr0K3sl6t/LOnYqxFG2v7dTrICbkzY6CLxVxE575Yui8Y1C38uyo5LbEeiTOIP4DU=
+X-Received: by 2002:ac8:1c12:: with SMTP id a18-v6mr22314023qtk.280.1525387208210;
+ Thu, 03 May 2018 15:40:08 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.12.185.3 with HTTP; Thu, 3 May 2018 15:31:28 -0700 (PDT)
-In-Reply-To: <e8ddeeea84626e43dcac4f0731992cbad932ce7a.1525262725.git.baolin.wang@linaro.org>
-References: <c26982955db16b8f790e7f5f2a5b63e42bc78192.1525262725.git.baolin.wang@linaro.org>
- <e8ddeeea84626e43dcac4f0731992cbad932ce7a.1525262725.git.baolin.wang@linaro.org>
+Received: by 10.12.185.3 with HTTP; Thu, 3 May 2018 15:40:07 -0700 (PDT)
+In-Reply-To: <20180502215107.GA9884@saruman>
+References: <20180502215107.GA9884@saruman>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 3 May 2018 18:31:28 -0400
-X-Google-Sender-Auth: W2IBI1tieqmu0oFICq5qaf0B3Cg
-Message-ID: <CAK8P3a3TJ-5+22_CSYjdtL3pXEVHC7t_KzaOX6PG4X_1R1bMxQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Convert update_persistent_clock() to update_persistent_clock64()
-To:     Baolin Wang <baolin.wang@linaro.org>
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, chenhc@lemote.com,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Mark Brown <broonie@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+Date:   Thu, 3 May 2018 18:40:07 -0400
+X-Google-Sender-Auth: zGWEe4vkoxJ789wYH7_oUbrkXyI
+Message-ID: <CAK8P3a2y2EA1g099DXOHkfevQb=6zuWmVOq9C_wVTQ8zrAMx8w@mail.gmail.com>
+Subject: Re: Introducing a nanoMIPS port for Linux
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Marcin Nowakowski <marcin.nowakowski@mips.com>,
+        Matthew Fortune <Matthew.Fortune@mips.com>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63857
+X-archive-position: 63858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -79,54 +72,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 2, 2018 at 10:53 PM, Baolin Wang <baolin.wang@linaro.org> wrote:
-> diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
-> index 17d4cd2..c4e2a1a 100644
-> --- a/arch/mips/include/asm/time.h
-> +++ b/arch/mips/include/asm/time.h
-> @@ -27,8 +27,8 @@
->   *     rtc_mips_set_mmss - similar to rtc_set_time, but only min and sec need
->   *                     to be set.  Used by RTC sync-up.
->   */
-> -extern int rtc_mips_set_time(unsigned long);
-> -extern int rtc_mips_set_mmss(unsigned long);
-> +extern int rtc_mips_set_time(time64_t);
-> +extern int rtc_mips_set_mmss(time64_t);
+On Wed, May 2, 2018 at 5:51 PM, James Hogan <jhogan@kernel.org> wrote:
+
+> Due to the binary incompatibility between previous MIPS architecture
+> generations and nanoMIPS, and the significantly revamped compiler ABI,
+> where for the first time, a single Linux kernel would not be expected to
+> handle both old and new ABIs, we have decided to also take the
+> opportunity to modernise the Linux user ABI for nanoMIPS, making as much
+> use of generic interfaces as possible and modernising the true
+> architecture specific parts.
 >
+> This is similar to what a whole new kernel architecture would be
+> expected to adopt, but has been done within the existing MIPS
+> architecture port to allow reuse of the existing MIPS code, most of
+> which does not depend on these ABI specifics. Details of the proposed
+> Linux user ABI changes for nanoMIPS can be found here:
 
-I think these should just get removed, and each implementation replaced
-with a direct update_persistent_clock64() function.
+While I haven't looked at the individual changes, I wonder whether
+it would be useful to make this new ABI use 64-bit time_t from
+the start, using the new system calls that Deepa and I have been
+posting recently. There are still a few things to be worked out:
+only the first of four sets of syscall patches is merged so far,
+and we have a couple of areas that will require further ABI changes
+(sound, sockets, media and maybe a couple of smaller drivers),
+so it depends on the overall timing. If you would otherwise merge
+the patches quickly, then it may be better to just follow the existing
+32-bit architectures and add the 64-bit entry points when we do it
+for everyone.
 
-> -int update_persistent_clock(struct timespec now)
-> +int update_persistent_clock64(struct timespec64 now)
->  {
->         return rtc_mips_set_mmss(now.tv_sec);
->  }
-
-And this one also removed
-
-> @@ -69,7 +69,7 @@ int proc_dolasatrtc(struct ctl_table *table, int write,
->                 if (rtctmp < 0)
->                         rtctmp = 0;
->         }
-> -       r = proc_dointvec(table, write, buffer, lenp, ppos);
-> +       r = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
->         if (r)
->                 return r;
->
-> @@ -224,7 +224,7 @@ int proc_lasat_prid(struct ctl_table *table, int write,
->         {
->                 .procname       = "rtc",
->                 .data           = &rtctmp,
-> -               .maxlen         = sizeof(int),
-> +               .maxlen         = sizeof(time64_t),
->                 .mode           = 0644,
->                 .proc_handler   = proc_dolasatrtc,
->         },
-
-Something seems wrong here: time64_t is not the same as 'unsigned long',
-and the 'rtctmp' variable is still 'unsigned int'. Not sure what the right fix
-would be (we don't seem to have a sysctl helper for s64), but the change
-here makes it worse.
-
-       Arnd
+         Arnd

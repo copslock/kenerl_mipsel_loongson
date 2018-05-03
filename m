@@ -1,65 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2018 00:40:21 +0200 (CEST)
-Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:36439
-        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990468AbeECWkO1P02v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2018 00:40:14 +0200
-Received: by mail-qt0-x244.google.com with SMTP id q6-v6so25104869qtn.3;
-        Thu, 03 May 2018 15:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=PKnXhs05Z/cvp+tdY8NqgifaWSZch/rtjwbGXZNtkFw=;
-        b=r087GcyMbxDpe2Bg+MzpaXIA0nfXHpbGt2zViOtgJl+mhM8GViuSKDVpoHFxM5iDNO
-         ti9eTsVc9FciW4cSNJGRk465SZRkG29cN8O4ULaoeoM9l+2tebRE7s5MuZhlBM5ehVx9
-         ZoPxsfDt1PAiiQB2wXHWv4kWXrrcP41Oikaz7jgQQ12IBFlHPDgMeWfR970yKrhg2cgY
-         5kf3psK8b3n96/85kaJABPEKpT8ORFfvIOvfIFCPfsr35R4PrfQq3tfb0V+Za7iuyJ/r
-         +MFezGgKeskWdoTnK6sPheyC/aA1jLekLoAMEZwmKM3ho/ln2ZeBLLgj882TqICydlAH
-         +6jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=PKnXhs05Z/cvp+tdY8NqgifaWSZch/rtjwbGXZNtkFw=;
-        b=A2YY4k/n53mUreOmk0PnGFduWbXAK7oBIA73rPtsCOunfanMiIuA6AYJjCWpc0w3uB
-         TPb5nKylvBtWGYo17pv3iWA2bEuy8EfRyoC6MPFpVbzSDcfUzaiDzYekfHpL1K+IQATB
-         YRl1LNA4fEHTPvkj+ZsOjCMqmnduFZgSgUNhoOdlDknfocNt05lGOLpDx3/UPsc644qM
-         klIBUSelBPFeW7qOZazvmKdVbhLuA6us91zsxpE+uwW0MYMWAmVNZAiLHyYDL6J41oGz
-         7evmxguSS6eCWKGkF3a1QnPymjb6+Zkq7fpbPQGt4tquAfxcU6FEQ1hrJz9ekmWFDSFh
-         kGvA==
-X-Gm-Message-State: ALQs6tDcugbae6QRou8haDoeTz10/JjR//SA9atmhuH/ZmeFi/n3UHDa
-        4ad59bV1xABieuF9+Am/aYjj3w7qMA6kmBNqOEs=
-X-Google-Smtp-Source: AB8JxZpwC/dbzbv3DiguOedF1ndr0K3sl6t/LOnYqxFG2v7dTrICbkzY6CLxVxE575Yui8Y1C38uyo5LbEeiTOIP4DU=
-X-Received: by 2002:ac8:1c12:: with SMTP id a18-v6mr22314023qtk.280.1525387208210;
- Thu, 03 May 2018 15:40:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2018 01:27:10 +0200 (CEST)
+Received: from resqmta-ch2-03v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:35]:40876
+        "EHLO resqmta-ch2-03v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990467AbeECX1DwSahA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2018 01:27:03 +0200
+Received: from resomta-ch2-04v.sys.comcast.net ([69.252.207.100])
+        by resqmta-ch2-03v.sys.comcast.net with ESMTP
+        id EM3GfBcuywsonENaSfrRN1; Thu, 03 May 2018 23:24:32 +0000
+Received: from [192.168.1.13] ([76.100.35.246])
+        by resomta-ch2-04v.sys.comcast.net with ESMTPA
+        id ENaOfOUseqLFkENaPfW8Jd; Thu, 03 May 2018 23:24:32 +0000
+To:     Linux/MIPS <linux-mips@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: Git repo status?
+Openpgp: preference=signencrypt
+Autocrypt: addr=kumba@gentoo.org; prefer-encrypt=mutual; keydata=
+ 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
+ yOmDIA==
+Message-ID: <d87d4d71-c77d-71bd-e5e3-a66518a6e969@gentoo.org>
+Date:   Thu, 3 May 2018 19:24:27 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Received: by 10.12.185.3 with HTTP; Thu, 3 May 2018 15:40:07 -0700 (PDT)
-In-Reply-To: <20180502215107.GA9884@saruman>
-References: <20180502215107.GA9884@saruman>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 3 May 2018 18:40:07 -0400
-X-Google-Sender-Auth: zGWEe4vkoxJ789wYH7_oUbrkXyI
-Message-ID: <CAK8P3a2y2EA1g099DXOHkfevQb=6zuWmVOq9C_wVTQ8zrAMx8w@mail.gmail.com>
-Subject: Re: Introducing a nanoMIPS port for Linux
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Marcin Nowakowski <marcin.nowakowski@mips.com>,
-        Matthew Fortune <Matthew.Fortune@mips.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfGvjND5Rtsq86X11No6flnnVJhinW48w7HZV3XwftrjZepqtWVP9SWQC2RIIgOgdYlfdbqPOdijynwfq9G7ha32FkmxEcg1koNCB9W39HgxFUEYMGmgK
+ jbuSL0esGKSgGKPjaPjVZrVi/VzED3De1bC6l6lVz12QDo5mMGotbw7z8U9AikblK+/1lSfc1m2GNA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63858
+X-archive-position: 63859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,32 +122,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 2, 2018 at 5:51 PM, James Hogan <jhogan@kernel.org> wrote:
 
-> Due to the binary incompatibility between previous MIPS architecture
-> generations and nanoMIPS, and the significantly revamped compiler ABI,
-> where for the first time, a single Linux kernel would not be expected to
-> handle both old and new ABIs, we have decided to also take the
-> opportunity to modernise the Linux user ABI for nanoMIPS, making as much
-> use of generic interfaces as possible and modernising the true
-> architecture specific parts.
->
-> This is similar to what a whole new kernel architecture would be
-> expected to adopt, but has been done within the existing MIPS
-> architecture port to allow reuse of the existing MIPS code, most of
-> which does not depend on these ABI specifics. Details of the proposed
-> Linux user ABI changes for nanoMIPS can be found here:
+Any one know when linux-4.16 might be sync'ed to the linux-mips.org main git
+repo?  Or is there an alternate official repo I can clone to mess around with?
 
-While I haven't looked at the individual changes, I wonder whether
-it would be useful to make this new ABI use 64-bit time_t from
-the start, using the new system calls that Deepa and I have been
-posting recently. There are still a few things to be worked out:
-only the first of four sets of syscall patches is merged so far,
-and we have a couple of areas that will require further ABI changes
-(sound, sockets, media and maybe a couple of smaller drivers),
-so it depends on the overall timing. If you would otherwise merge
-the patches quickly, then it may be better to just follow the existing
-32-bit architectures and add the 64-bit entry points when we do it
-for everyone.
+Thanks!
 
-         Arnd
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+rsa6144/5C63F4E3F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

@@ -1,65 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2018 08:23:26 +0200 (CEST)
-Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:45711
-        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990424AbeEDGXTwuOJe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2018 08:23:19 +0200
-Received: by mail-oi0-x243.google.com with SMTP id b130-v6so18221785oif.12
-        for <linux-mips@linux-mips.org>; Thu, 03 May 2018 23:23:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2018 09:09:09 +0200 (CEST)
+Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:39603
+        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990427AbeEDHI7hrFY7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2018 09:08:59 +0200
+Received: by mail-pf0-x243.google.com with SMTP id a22so2631635pfn.6
+        for <linux-mips@linux-mips.org>; Fri, 04 May 2018 00:08:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=tpDAjOk4CfkAwXnsVkyXW8Y7XibRYdiqMPiH5aZEV5g=;
-        b=XScgim0YheMkMVyHG+jXQxBfu+LqhkmvVlvMfIx5z7RRFqunrcqzVw1CAPuiS+pIwJ
-         Cs+5bpDEnqcW7VVJMXyFkXvwhtwmMl0SBNmZEkOIMwPkccojwv5TAclgE4rrPzoBH9+M
-         SskjOPgKpI45PKBRkum51d9wa+rwYAzIasPy4=
+        h=from:to:cc:subject:date:message-id;
+        bh=3aiI3kiE6HByxIoW7A57wa5Bds4Ky7Z3/xIJUax8Rdk=;
+        b=GwLK/2F4O0Wk9YSlLxUTfk9gTskEk9t6ueGIG/HN4Zclv04W9DWfBJz7gjoJOEwZEZ
+         IgDvpsPguqGqSTIaPS1qhkLsTr0pyyvDsvgLWKm8+NhZcD52iXxWr8VMgeojyYXgdW50
+         B2lefU8L7Le8VOFHcH6Q/KkXw+vHQvVOybmgo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=tpDAjOk4CfkAwXnsVkyXW8Y7XibRYdiqMPiH5aZEV5g=;
-        b=ml3/fNOQN4Ti5OpYAiyqZ5/Vr+Dn9w4suBX/aas7REWPHPG2+9eYsUGCp2uDiVCKC5
-         NKrJ3oVdZ9cpUtikOrZZTrAgi9OWua6QUCQlURoS//1v79USzU/Vr7pIJOtKCVOkhiBS
-         32LepWmQlkWTW9ns2t+7+ZAUz4Fo8DT4zlXYfVAw9Ijcc+0KMvUaobOe4oagBif0FD+K
-         ltEJ6yQtGn+KZ7oG8NllDjydjbHt6PKEzZOV7Wwdz8Bat9iuLVSU0lmg6bHgUTmETUsb
-         jxFD7u309gKUV1SFi+LrbXhty/8EHzCDhyJouhO8UfiAnFQ/Uvwu0cmWIkOOU1+Mct0b
-         JcPg==
-X-Gm-Message-State: ALQs6tBy4mFHCxCgOzqEWh3vF/sN9Jox/5Lm9AmIgsKNETdaBm14rqNa
-        AU4rTftZ6m9JmLFplWWBUbr383DSwCZjbhdekSFHuQ==
-X-Google-Smtp-Source: AB8JxZqXJ8L3zu7BbNR7vYwbEG91NzZk7ME8z3daH/yZHi1we1+JMujzGFN2lZ8gmQ+oGKjY3+V36nsJwFkfHseSiKM=
-X-Received: by 2002:aca:5e86:: with SMTP id s128-v6mr9009442oib.68.1525414993485;
- Thu, 03 May 2018 23:23:13 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a9d:2d77:0:0:0:0:0 with HTTP; Thu, 3 May 2018 23:23:13 -0700 (PDT)
-In-Reply-To: <CAK8P3a3TJ-5+22_CSYjdtL3pXEVHC7t_KzaOX6PG4X_1R1bMxQ@mail.gmail.com>
-References: <c26982955db16b8f790e7f5f2a5b63e42bc78192.1525262725.git.baolin.wang@linaro.org>
- <e8ddeeea84626e43dcac4f0731992cbad932ce7a.1525262725.git.baolin.wang@linaro.org>
- <CAK8P3a3TJ-5+22_CSYjdtL3pXEVHC7t_KzaOX6PG4X_1R1bMxQ@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=3aiI3kiE6HByxIoW7A57wa5Bds4Ky7Z3/xIJUax8Rdk=;
+        b=qNTUW4yzLm9WRyqZmkEmjn0Jx2RX/C2J1L/D7RkZuo7hmN2pKRIPbzaaKIRiHlrrLp
+         TqG7DTskwoOB/CNL8TVPAyheDhCRlWNEesU6386J+8yxv9/lt3jJsRvvLNc9HzCOYNbM
+         w+LXuT373TfNylxVslU04Bx85yBF71yMA8ZbfGgeilxB4jrDHMGocF4dMxvXLo/EnHnA
+         LdTA7PBPhfr2mCf3aWdR46vK9qg26l2x8KJvQ8PUBXh/a7VSLBl6v+pHvTrvUE6FO2ft
+         L0hQOIMJo6DEsQlWE5Vt35ocN6YOk0sFmfZ1Izo1DAdzcDW/HFxcEHb+8jiVxcqJ/EUJ
+         pXlA==
+X-Gm-Message-State: ALQs6tDgJstzLkArFQnbffxaslc+oBi9Og13l2+KZVUaqyGRd7VOS6yw
+        XhJ9UZx+ACAvorjtnoN8PebP0w==
+X-Google-Smtp-Source: AB8JxZrF1hLVhXKPACndQwm2/aQ85kkTaIP/LYhutjG7PVXYs6Mon5ZKVBxWSRUx6PKeCOBGQvmNVw==
+X-Received: by 10.98.86.16 with SMTP id k16mr25714784pfb.19.1525417732943;
+        Fri, 04 May 2018 00:08:52 -0700 (PDT)
+Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
+        by smtp.gmail.com with ESMTPSA id u188sm25718148pfb.84.2018.05.04.00.08.47
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 04 May 2018 00:08:52 -0700 (PDT)
 From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Fri, 4 May 2018 14:23:13 +0800
-Message-ID: <CAMz4ku+WbtBGGcmsYmMexxcBTJONHF3J-T8Sxo7wgHoZZCVt1w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Convert update_persistent_clock() to update_persistent_clock64()
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, chenhc@lemote.com,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Mark Brown <broonie@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     macro@linux-mips.org, ralf@linux-mips.org, jhogan@kernel.org,
+        chenhc@lemote.com
+Cc:     kstewart@linuxfoundation.org, gregkh@linuxfoundation.org,
+        tglx@linutronix.de, pombredanne@nexb.com, arnd@arndb.de,
+        broonie@kernel.org, paul.burton@mips.com, heiko@sntech.de,
+        daniel.lezcano@linaro.org, viresh.kumar@linaro.org,
+        baolin.wang@linaro.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] MIPS: Convert read_persistent_clock() to read_persistent_clock64()
+Date:   Fri,  4 May 2018 15:07:47 +0800
+Message-Id: <c26982955db16b8f790e7f5f2a5b63e42bc78192.1525417306.git.baolin.wang@linaro.org>
+X-Mailer: git-send-email 1.7.9.5
 Return-Path: <baolin.wang@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63860
+X-archive-position: 63861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,67 +65,190 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 4 May 2018 at 06:31, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Wed, May 2, 2018 at 10:53 PM, Baolin Wang <baolin.wang@linaro.org> wrote:
->> diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
->> index 17d4cd2..c4e2a1a 100644
->> --- a/arch/mips/include/asm/time.h
->> +++ b/arch/mips/include/asm/time.h
->> @@ -27,8 +27,8 @@
->>   *     rtc_mips_set_mmss - similar to rtc_set_time, but only min and sec need
->>   *                     to be set.  Used by RTC sync-up.
->>   */
->> -extern int rtc_mips_set_time(unsigned long);
->> -extern int rtc_mips_set_mmss(unsigned long);
->> +extern int rtc_mips_set_time(time64_t);
->> +extern int rtc_mips_set_mmss(time64_t);
->>
->
-> I think these should just get removed, and each implementation replaced
-> with a direct update_persistent_clock64() function.
+Since struct timespec is not y2038 safe on 32bit machines, this patch
+converts read_persistent_clock() to read_persistent_clock64() using
+struct timespec64, as well as converting mktime() to mktime64().
 
-I thought this was one minor modification that will reduce the risk of
-introducing other issues, but as you suggested we can do some complete
-cleanup by removing set_mmss/set_time. OK, I will do that.
+Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+---
+Changes since v1:
+ - No updates.
+---
+ arch/mips/dec/time.c                   |    4 ++--
+ arch/mips/include/asm/mc146818-time.h  |    4 ++--
+ arch/mips/lasat/ds1603.c               |    2 +-
+ arch/mips/loongson64/common/time.c     |    2 +-
+ arch/mips/mti-malta/malta-time.c       |    2 +-
+ arch/mips/sibyte/swarm/rtc_m41t81.c    |    4 ++--
+ arch/mips/sibyte/swarm/rtc_xicor1241.c |    4 ++--
+ arch/mips/sibyte/swarm/setup.c         |   10 +++++-----
+ 8 files changed, 16 insertions(+), 16 deletions(-)
 
->
->> -int update_persistent_clock(struct timespec now)
->> +int update_persistent_clock64(struct timespec64 now)
->>  {
->>         return rtc_mips_set_mmss(now.tv_sec);
->>  }
->
-> And this one also removed
-
-Sure.
-
->
->> @@ -69,7 +69,7 @@ int proc_dolasatrtc(struct ctl_table *table, int write,
->>                 if (rtctmp < 0)
->>                         rtctmp = 0;
->>         }
->> -       r = proc_dointvec(table, write, buffer, lenp, ppos);
->> +       r = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
->>         if (r)
->>                 return r;
->>
->> @@ -224,7 +224,7 @@ int proc_lasat_prid(struct ctl_table *table, int write,
->>         {
->>                 .procname       = "rtc",
->>                 .data           = &rtctmp,
->> -               .maxlen         = sizeof(int),
->> +               .maxlen         = sizeof(time64_t),
->>                 .mode           = 0644,
->>                 .proc_handler   = proc_dolasatrtc,
->>         },
->
-> Something seems wrong here: time64_t is not the same as 'unsigned long',
-> and the 'rtctmp' variable is still 'unsigned int'. Not sure what the right fix
-> would be (we don't seem to have a sysctl helper for s64), but the change
-> here makes it worse.
-
-After checking again, I agree with you. So I will keep the original code here.
-
+diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
+index a2a150e..9e992cf 100644
+--- a/arch/mips/dec/time.c
++++ b/arch/mips/dec/time.c
+@@ -19,7 +19,7 @@
+ #include <asm/dec/ioasic.h>
+ #include <asm/dec/machtype.h>
+ 
+-void read_persistent_clock(struct timespec *ts)
++void read_persistent_clock64(struct timespec64 *ts)
+ {
+ 	unsigned int year, mon, day, hour, min, sec, real_year;
+ 	unsigned long flags;
+@@ -54,7 +54,7 @@ void read_persistent_clock(struct timespec *ts)
+ 
+ 	year += real_year - 72 + 2000;
+ 
+-	ts->tv_sec = mktime(year, mon, day, hour, min, sec);
++	ts->tv_sec = mktime64(year, mon, day, hour, min, sec);
+ 	ts->tv_nsec = 0;
+ }
+ 
+diff --git a/arch/mips/include/asm/mc146818-time.h b/arch/mips/include/asm/mc146818-time.h
+index 9e1ad26..cbf5cec 100644
+--- a/arch/mips/include/asm/mc146818-time.h
++++ b/arch/mips/include/asm/mc146818-time.h
+@@ -86,7 +86,7 @@ static inline int mc146818_set_rtc_mmss(unsigned long nowtime)
+ 	return retval;
+ }
+ 
+-static inline unsigned long mc146818_get_cmos_time(void)
++static inline time64_t mc146818_get_cmos_time(void)
+ {
+ 	unsigned int year, mon, day, hour, min, sec;
+ 	unsigned long flags;
+@@ -113,7 +113,7 @@ static inline unsigned long mc146818_get_cmos_time(void)
+ 	spin_unlock_irqrestore(&rtc_lock, flags);
+ 	year = mc146818_decode_year(year);
+ 
+-	return mktime(year, mon, day, hour, min, sec);
++	return mktime64(year, mon, day, hour, min, sec);
+ }
+ 
+ #endif /* __ASM_MC146818_TIME_H */
+diff --git a/arch/mips/lasat/ds1603.c b/arch/mips/lasat/ds1603.c
+index 8bd5cf8..d75c887 100644
+--- a/arch/mips/lasat/ds1603.c
++++ b/arch/mips/lasat/ds1603.c
+@@ -136,7 +136,7 @@ static void rtc_end_op(void)
+ 	lasat_ndelay(1000);
+ }
+ 
+-void read_persistent_clock(struct timespec *ts)
++void read_persistent_clock64(struct timespec64 *ts)
+ {
+ 	unsigned long word;
+ 	unsigned long flags;
+diff --git a/arch/mips/loongson64/common/time.c b/arch/mips/loongson64/common/time.c
+index e1a5382a..0ba53c5 100644
+--- a/arch/mips/loongson64/common/time.c
++++ b/arch/mips/loongson64/common/time.c
+@@ -29,7 +29,7 @@ void __init plat_time_init(void)
+ #endif
+ }
+ 
+-void read_persistent_clock(struct timespec *ts)
++void read_persistent_clock64(struct timespec64 *ts)
+ {
+ 	ts->tv_sec = mc146818_get_cmos_time();
+ 	ts->tv_nsec = 0;
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index 66c8667..d22b7ed 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -134,7 +134,7 @@ static void __init estimate_frequencies(void)
+ 	}
+ }
+ 
+-void read_persistent_clock(struct timespec *ts)
++void read_persistent_clock64(struct timespec64 *ts)
+ {
+ 	ts->tv_sec = mc146818_get_cmos_time();
+ 	ts->tv_nsec = 0;
+diff --git a/arch/mips/sibyte/swarm/rtc_m41t81.c b/arch/mips/sibyte/swarm/rtc_m41t81.c
+index e624664..aa27a22 100644
+--- a/arch/mips/sibyte/swarm/rtc_m41t81.c
++++ b/arch/mips/sibyte/swarm/rtc_m41t81.c
+@@ -188,7 +188,7 @@ int m41t81_set_time(unsigned long t)
+ 	return 0;
+ }
+ 
+-unsigned long m41t81_get_time(void)
++time64_t m41t81_get_time(void)
+ {
+ 	unsigned int year, mon, day, hour, min, sec;
+ 	unsigned long flags;
+@@ -218,7 +218,7 @@ unsigned long m41t81_get_time(void)
+ 
+ 	year += 2000;
+ 
+-	return mktime(year, mon, day, hour, min, sec);
++	return mktime64(year, mon, day, hour, min, sec);
+ }
+ 
+ int m41t81_probe(void)
+diff --git a/arch/mips/sibyte/swarm/rtc_xicor1241.c b/arch/mips/sibyte/swarm/rtc_xicor1241.c
+index 50a82c4..a2121c1 100644
+--- a/arch/mips/sibyte/swarm/rtc_xicor1241.c
++++ b/arch/mips/sibyte/swarm/rtc_xicor1241.c
+@@ -168,7 +168,7 @@ int xicor_set_time(unsigned long t)
+ 	return 0;
+ }
+ 
+-unsigned long xicor_get_time(void)
++time64_t xicor_get_time(void)
+ {
+ 	unsigned int year, mon, day, hour, min, sec, y2k;
+ 	unsigned long flags;
+@@ -201,7 +201,7 @@ unsigned long xicor_get_time(void)
+ 
+ 	year += (y2k * 100);
+ 
+-	return mktime(year, mon, day, hour, min, sec);
++	return mktime64(year, mon, day, hour, min, sec);
+ }
+ 
+ int xicor_probe(void)
+diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
+index 494fb0a..7073940 100644
+--- a/arch/mips/sibyte/swarm/setup.c
++++ b/arch/mips/sibyte/swarm/setup.c
+@@ -58,11 +58,11 @@
+ 
+ extern int xicor_probe(void);
+ extern int xicor_set_time(unsigned long);
+-extern unsigned long xicor_get_time(void);
++extern time64_t xicor_get_time(void);
+ 
+ extern int m41t81_probe(void);
+ extern int m41t81_set_time(unsigned long);
+-extern unsigned long m41t81_get_time(void);
++extern time64_t m41t81_get_time(void);
+ 
+ const char *get_system_type(void)
+ {
+@@ -87,9 +87,9 @@ enum swarm_rtc_type {
+ 
+ enum swarm_rtc_type swarm_rtc_type;
+ 
+-void read_persistent_clock(struct timespec *ts)
++void read_persistent_clock64(struct timespec64 *ts)
+ {
+-	unsigned long sec;
++	time64_t sec;
+ 
+ 	switch (swarm_rtc_type) {
+ 	case RTC_XICOR:
+@@ -102,7 +102,7 @@ void read_persistent_clock(struct timespec *ts)
+ 
+ 	case RTC_NONE:
+ 	default:
+-		sec = mktime(2000, 1, 1, 0, 0, 0);
++		sec = mktime64(2000, 1, 1, 0, 0, 0);
+ 		break;
+ 	}
+ 	ts->tv_sec = sec;
 -- 
-Baolin.wang
-Best Regards
+1.7.9.5

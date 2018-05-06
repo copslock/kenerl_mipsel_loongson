@@ -1,60 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 May 2018 15:27:12 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:33322 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990432AbeEEN1EVffKw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 May 2018 15:27:04 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
-        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Tj/+5VFlHp1jcAyjamNFFwAeQ8FVAiY5/nhY+VN8Zwg=; b=NgY7u2hAkyFvMCKAQlkEXv4p2
-        7C5xBchqsdxZlb/AUv3Lrtzf16Qdi44G+hgt11J9IYZTsn1n4fga9zxYjXEtWC459R0LODgCEU8JU
-        +yLbU/PbUSFemvpoDHWJ6m+0voO1cOXdxhdTFJe2/nO4uD7fmhHSYRtgYFjJg+tDd+HHnPfmEllvX
-        kQye53qudX5AN53pWH4xKOTRwgWSZpKk8gGW5MlGjJxZdTh3nvn0M/FFMCdwQ76RYYrAIaV5JjEJu
-        f9Grv3GYEPR6ghqaYUNnGKqYdixHQvzV4jShZYujSL5akIEMk5GKgBHDyrTFGEXXuvL5N0v3z2KUa
-        6/eriASLQ==;
-Received: from [177.159.250.117] (helo=vento.lan)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fExD2-0008UR-0M; Sat, 05 May 2018 13:26:44 +0000
-Date:   Sat, 5 May 2018 10:26:37 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     linux-i2c@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Sergey Lapin <slapin@ossfans.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH 1/7] i2c: i2c-gpio: move header to platform_data
-Message-ID: <20180505102637.76ab7c41@vento.lan>
-In-Reply-To: <20180419200015.15095-2-wsa@the-dreams.de>
-References: <20180419200015.15095-1-wsa@the-dreams.de>
-        <20180419200015.15095-2-wsa@the-dreams.de>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 May 2018 05:04:32 +0200 (CEST)
+Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:43449
+        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990396AbeEFDEZDytdL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 May 2018 05:04:25 +0200
+Received: by mail-qt0-x243.google.com with SMTP id f13-v6so22458139qtp.10;
+        Sat, 05 May 2018 20:04:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=ZaLxQ/yP9Tn1dHEFitr4GXCdTEDWcl6RdFI6jXRG61k=;
+        b=QWABn7r9paNawwvjSsbf0ag1xu32x0r6acGzvEMgZieAWEMJFso5JziebtlvEsZXR3
+         WBk891fe0fLZG8tkNtTfMc7pJaadBrJndBInfAqgmMWppvxtf3018Mmr1omeRPymU5Bi
+         ZRJV2H0S1doCSQk0pf0Bl2Pthc0QFRrTVI4nUqRm8Ppib07HEwC6FsO197ZhH90iyxXH
+         o0MBizHlsBzaLdigUfrwQbjtTt+ci2aClv5hH73i0bG5gxvtK2ikdzaE2hioKOCrSCg5
+         NCwzZBRoLcVKx7dtvp28bey2vGaa5AwOXHnCU+4r6BGBTSWO3UpLnmuqxwCy6C1Kg+VY
+         qw5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=ZaLxQ/yP9Tn1dHEFitr4GXCdTEDWcl6RdFI6jXRG61k=;
+        b=X8HhfqImS0RYDARdqIqQsHCO08/7i7BqM2vXLzniCkJHhXHCwPA1UnuzjwrTq1M6B5
+         cFWJ7tiJlIQ05T4WtJinkQFFf4gTvw+3kN8TMAEgrhqpwbo3MKMKph24DsBut5nRj7x5
+         S0WGeqheSVLYfWtRJpAoQjYWnyUDXHa1AZG3XQLzzsdD1GpUAm3iA0KD7ywmriH1nirx
+         /WMEy1ekTQ1JighKGgqfNwesX7kWjomZKgBVjjJiadqfnLnqAlzeYQVl2G6NskX6HxMV
+         rXcYC54ENtaA8z9/XCwzBP4caGclBodDZLSYlba3HmUhVmm187NdH+4payPD4ErUWiAb
+         4KpQ==
+X-Gm-Message-State: ALQs6tB82p2gV4uw+SpPvok00mYADQdWs5arlo+SIl0cZouiXXEXpDfj
+        q+gNb9dhushIhhGmggYe8Egxxqp1++m0L2CRh80=
+X-Google-Smtp-Source: AB8JxZoQZfzWXE3QFmUNcLpqrsPLSDIglqjH1BXmEAq0hLXMj3BgvLEguBYK7FAr+tXq8nvlGvwBc6wYMG68Xk8Ib+M=
+X-Received: by 2002:a0c:bda4:: with SMTP id n36-v6mr26409930qvg.151.1525575858528;
+ Sat, 05 May 2018 20:04:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <mchehab+samsung@kernel.org>
+Received: by 10.12.185.3 with HTTP; Sat, 5 May 2018 20:04:18 -0700 (PDT)
+In-Reply-To: <2d0bcca30f61036e413ba01c686ce6506f187462.1525417306.git.baolin.wang@linaro.org>
+References: <c26982955db16b8f790e7f5f2a5b63e42bc78192.1525417306.git.baolin.wang@linaro.org>
+ <2d0bcca30f61036e413ba01c686ce6506f187462.1525417306.git.baolin.wang@linaro.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Sat, 5 May 2018 23:04:18 -0400
+X-Google-Sender-Auth: 5GLMkONbr88zeF4D7OZDrDugpqY
+Message-ID: <CAK8P3a2eXo6MkLLkzQVDtk_W+2x+68iphsX3MXAtzpTYDaREiQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] MIPS: Convert update_persistent_clock() to update_persistent_clock64()
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, chenhc@lemote.com,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Mark Brown <broonie@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63875
+X-archive-position: 63876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mchehab+samsung@kernel.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,166 +79,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Em Thu, 19 Apr 2018 22:00:07 +0200
-Wolfram Sang <wsa@the-dreams.de> escreveu:
+On Fri, May 4, 2018 at 3:07 AM, Baolin Wang <baolin.wang@linaro.org> wrote:
+> Since struct timespec is not y2038 safe on 32bit machines, this patch
+> converts update_persistent_clock() to update_persistent_clock64() using
+> struct timespec64.
+>
+> The rtc_mips_set_time() and rtc_mips_set_mmss() interfaces were using
+> 'unsigned long' type that is not y2038 safe on 32bit machines, moreover
+> there is only one platform implementing rtc_mips_set_time() and two
+> platforms implementing rtc_mips_set_mmss(), so we can just make them each
+> implement update_persistent_clock64() directly, to get that helper out
+> of the common mips code by removing rtc_mips_set_time() and
+> rtc_mips_set_mmss() interfaces.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 
-> This header only contains platform_data. Move it to the proper directory.
-> 
-> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-> ---
->  MAINTAINERS                                      | 2 +-
->  arch/arm/mach-ks8695/board-acs5k.c               | 2 +-
->  arch/arm/mach-omap1/board-htcherald.c            | 2 +-
->  arch/arm/mach-pxa/palmz72.c                      | 2 +-
->  arch/arm/mach-pxa/viper.c                        | 2 +-
->  arch/arm/mach-sa1100/simpad.c                    | 2 +-
->  arch/mips/alchemy/board-gpr.c                    | 2 +-
->  drivers/i2c/busses/i2c-gpio.c                    | 2 +-
+Looks good overall, but I still found a bug and one minor issue. With
+those fixed,
 
->  drivers/media/platform/marvell-ccic/mmp-driver.c | 2 +-
-Acked-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
->  drivers/mfd/sm501.c                              | 2 +-
->  include/linux/{ => platform_data}/i2c-gpio.h     | 0
->  11 files changed, 10 insertions(+), 10 deletions(-)
->  rename include/linux/{ => platform_data}/i2c-gpio.h (100%)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0a1410d5a621..7aad64b62102 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5872,7 +5872,7 @@ GENERIC GPIO I2C DRIVER
->  M:	Haavard Skinnemoen <hskinnemoen@gmail.com>
->  S:	Supported
->  F:	drivers/i2c/busses/i2c-gpio.c
-> -F:	include/linux/i2c-gpio.h
-> +F:	include/linux/platform_data/i2c-gpio.h
->  
->  GENERIC GPIO I2C MULTIPLEXER DRIVER
->  M:	Peter Korsgaard <peter.korsgaard@barco.com>
-> diff --git a/arch/arm/mach-ks8695/board-acs5k.c b/arch/arm/mach-ks8695/board-acs5k.c
-> index 937eb1d47e7b..ef835d82cdb9 100644
-> --- a/arch/arm/mach-ks8695/board-acs5k.c
-> +++ b/arch/arm/mach-ks8695/board-acs5k.c
-> @@ -19,7 +19,7 @@
->  #include <linux/gpio/machine.h>
->  #include <linux/i2c.h>
->  #include <linux/i2c-algo-bit.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/platform_data/pca953x.h>
->  
->  #include <linux/mtd/mtd.h>
-> diff --git a/arch/arm/mach-omap1/board-htcherald.c b/arch/arm/mach-omap1/board-htcherald.c
-> index 67d46690a56e..da8f3fc3180f 100644
-> --- a/arch/arm/mach-omap1/board-htcherald.c
-> +++ b/arch/arm/mach-omap1/board-htcherald.c
-> @@ -31,7 +31,7 @@
->  #include <linux/gpio.h>
->  #include <linux/gpio_keys.h>
->  #include <linux/i2c.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/htcpld.h>
->  #include <linux/leds.h>
->  #include <linux/spi/spi.h>
-> diff --git a/arch/arm/mach-pxa/palmz72.c b/arch/arm/mach-pxa/palmz72.c
-> index 5877e547cecd..c053c8ce1586 100644
-> --- a/arch/arm/mach-pxa/palmz72.c
-> +++ b/arch/arm/mach-pxa/palmz72.c
-> @@ -30,7 +30,7 @@
->  #include <linux/wm97xx.h>
->  #include <linux/power_supply.h>
->  #include <linux/usb/gpio_vbus.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/gpio/machine.h>
->  
->  #include <asm/mach-types.h>
-> diff --git a/arch/arm/mach-pxa/viper.c b/arch/arm/mach-pxa/viper.c
-> index 90d0f277de55..39e05b7008d8 100644
-> --- a/arch/arm/mach-pxa/viper.c
-> +++ b/arch/arm/mach-pxa/viper.c
-> @@ -35,7 +35,7 @@
->  #include <linux/sched.h>
->  #include <linux/gpio.h>
->  #include <linux/jiffies.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/gpio/machine.h>
->  #include <linux/platform_data/i2c-pxa.h>
->  #include <linux/serial_8250.h>
-> diff --git a/arch/arm/mach-sa1100/simpad.c b/arch/arm/mach-sa1100/simpad.c
-> index ace010479eb6..49a61e6f3c5f 100644
-> --- a/arch/arm/mach-sa1100/simpad.c
-> +++ b/arch/arm/mach-sa1100/simpad.c
-> @@ -37,7 +37,7 @@
->  #include <linux/input.h>
->  #include <linux/gpio_keys.h>
->  #include <linux/leds.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  
->  #include "generic.h"
->  
-> diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
-> index 4e79dbd54a33..fa75d75b5ba9 100644
-> --- a/arch/mips/alchemy/board-gpr.c
-> +++ b/arch/mips/alchemy/board-gpr.c
-> @@ -29,7 +29,7 @@
->  #include <linux/leds.h>
->  #include <linux/gpio.h>
->  #include <linux/i2c.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/gpio/machine.h>
->  #include <asm/bootinfo.h>
->  #include <asm/idle.h>
-> diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
-> index 58abb3eced58..005e6e0330c2 100644
-> --- a/drivers/i2c/busses/i2c-gpio.c
-> +++ b/drivers/i2c/busses/i2c-gpio.c
-> @@ -11,7 +11,7 @@
->  #include <linux/delay.h>
->  #include <linux/i2c.h>
->  #include <linux/i2c-algo-bit.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/init.h>
->  #include <linux/module.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/media/platform/marvell-ccic/mmp-driver.c b/drivers/media/platform/marvell-ccic/mmp-driver.c
-> index 816f4b6a7b8e..d9f0dd0d3525 100644
-> --- a/drivers/media/platform/marvell-ccic/mmp-driver.c
-> +++ b/drivers/media/platform/marvell-ccic/mmp-driver.c
-> @@ -12,7 +12,7 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/i2c.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/interrupt.h>
->  #include <linux/spinlock.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
-> index ad774161a22d..66af659b01b2 100644
-> --- a/drivers/mfd/sm501.c
-> +++ b/drivers/mfd/sm501.c
-> @@ -19,7 +19,7 @@
->  #include <linux/device.h>
->  #include <linux/platform_device.h>
->  #include <linux/pci.h>
-> -#include <linux/i2c-gpio.h>
-> +#include <linux/platform_data/i2c-gpio.h>
->  #include <linux/gpio/machine.h>
->  #include <linux/slab.h>
->  
-> diff --git a/include/linux/i2c-gpio.h b/include/linux/platform_data/i2c-gpio.h
-> similarity index 100%
-> rename from include/linux/i2c-gpio.h
-> rename to include/linux/platform_data/i2c-gpio.h
+> diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
+> index 9e992cf..934db6f 100644
+> --- a/arch/mips/dec/time.c
+> +++ b/arch/mips/dec/time.c
+> @@ -59,14 +59,15 @@ void read_persistent_clock64(struct timespec64 *ts)
+>  }
+>
+>  /*
+> - * In order to set the CMOS clock precisely, rtc_mips_set_mmss has to
+> + * In order to set the CMOS clock precisely, update_persistent_clock64 has to
+>   * be called 500 ms after the second nowtime has started, because when
+>   * nowtime is written into the registers of the CMOS clock, it will
+>   * jump to the next second precisely 500 ms later.  Check the Dallas
+>   * DS1287 data sheet for details.
+>   */
+> -int rtc_mips_set_mmss(unsigned long nowtime)
+> +int update_persistent_clock64(struct timespec64 now)
+>  {
+> +       time64_t nowtime = now.tv_sec;
+>         int retval = 0;
+>         int real_seconds, real_minutes, cmos_minutes;
+>         unsigned char save_control, save_freq_select;
 
 
+It looks like you now get an invalid 64-bit division in here,
+you have to change it to either use div_u64_rem() or possibly
+time64_to_tm() or rtc_time64_to_tm() (the latter requires
+CONFIG_RTC_LIB).
 
-Thanks,
-Mauro
+> diff --git a/arch/mips/lasat/ds1603.c b/arch/mips/lasat/ds1603.c
+> index d75c887..061815e 100644
+> --- a/arch/mips/lasat/ds1603.c
+> +++ b/arch/mips/lasat/ds1603.c
+> @@ -98,7 +98,7 @@ static void rtc_write_byte(unsigned int byte)
+>         }
+>  }
+>
+> -static void rtc_write_word(unsigned long word)
+> +static void rtc_write_word(time64_t word)
+>  {
+>         int i;
+>
+
+I would say this function should take a 'u32' argument (or keep the
+unsigned long) to match the name and implementation, but then have a
+type cast in the caller with a comment about the loss of range and overflow
+in y2106.
+
+> diff --git a/arch/mips/lasat/sysctl.c b/arch/mips/lasat/sysctl.c
+> index 6f74224..76f7b62 100644
+> --- a/arch/mips/lasat/sysctl.c
+> +++ b/arch/mips/lasat/sysctl.c
+> @@ -73,8 +73,12 @@ int proc_dolasatrtc(struct ctl_table *table, int write,
+>         if (r)
+>                 return r;
+>
+> -       if (write)
+> -               rtc_mips_set_mmss(rtctmp);
+> +       if (write) {
+> +               ts.tv_sec = rtctmp;
+> +               ts.tv_nsec = 0;
+> +
+> +               update_persistent_clock64(ts);
+> +       }
+>
+... and probably also a comment here to explain that we can't actually use
+the full 64-bit range because of HW limits.
+
+         Arnd

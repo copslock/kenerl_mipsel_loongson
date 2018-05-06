@@ -1,62 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 May 2018 21:33:55 +0200 (CEST)
-Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:40974
-        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993001AbeEFTdrvur9v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 May 2018 21:33:47 +0200
-Received: by mail-io0-x244.google.com with SMTP id e12-v6so31234654iob.8
-        for <linux-mips@linux-mips.org>; Sun, 06 May 2018 12:33:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=omRzlOpKABUbZoIFWBOWZAHJwXr5O5qBQ/hIKYF+bK8=;
-        b=Tq3UYLvkvN+oSqgigDcofD+h/uv+RCAuQrEAJMS6vQ+5xCev4vwDQFpU5X27NBW3NR
-         EHrK1SicZQtzTxQCnfQLQ8BJPG83mUAfIml29qGSVYtedC9MA2G7Lg7upcvKDaO8uINs
-         bvlg3PEc+iFxMvlP8NA54W41dXC5dTr0vjPXg5Fawest58K9oAKKBiQLIhZA2EFKoOY+
-         d7mX79Dk+PmkYw5Ugza6oTDZrgvtDFHZQs2enW8LNZ+NKcO7kmhv7EsQsrLOvO7l7MoN
-         0KBhApVLHaEIi4HCDT/NBpSPT5WDQvQDuaj5lHZcBDTNKR8Z2eWtflR+zucwQJreESFv
-         cUaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=omRzlOpKABUbZoIFWBOWZAHJwXr5O5qBQ/hIKYF+bK8=;
-        b=TLWHgtoomxoJhcE0Fx22ziRG0v/74oDFxKbNBHThW+LydVRol2IBjbwRfbIPCYxspk
-         TYG/3I3DbOXODvbwwHa0UisgIV+M5IsnKcGnxwQjrI/b5HRREz1i692e4gt2S+Xz0gtL
-         6JY4iEK+YKyrNYkMwpvQNfAPBycCClOfaOxZpGAY5Db7c1GALwXrKUrjuK38W+DCFM8R
-         xFnMfR74OjkZ6rt7QdukvLs8s6D2nzTV4HyUZBT86+eTSa9r+iNmzMq1UvWQphYH1SF1
-         oGepCRrwCAdRYNEAhITCDGjCFUMOuKs1rWX0rnnLAGc7ldA2BW4TTOAee5BFzIY+22it
-         w4xw==
-X-Gm-Message-State: ALQs6tBQiKmTla/8yY5Dzr4iTE+aS/qokyltd3OtF+1K4la4ZqwDwh7P
-        FW3qXyAGzkkC9yPOeOItwYclMVO5zDgyOd6esoc=
-X-Google-Smtp-Source: AB8JxZp0jfM3XerOGam55w40DnFCOBBQMPF51rK7N9T4PvjQ8dttenMVmQKjxvHgfdFpveU6RVXxrLSkJF+fKEF/FpI=
-X-Received: by 2002:a6b:1604:: with SMTP id 4-v6mr34161380iow.147.1525635221439;
- Sun, 06 May 2018 12:33:41 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a02:7109:0:0:0:0:0 with HTTP; Sun, 6 May 2018 12:33:21 -0700 (PDT)
-In-Reply-To: <a20761a842efe590da08e835ecc5690a4cf50213.1523959603.git-series.jhogan@kernel.org>
-References: <cover.ebc99f68d5063a817328b9184d747f539800cff0.1523959603.git-series.jhogan@kernel.org>
- <a20761a842efe590da08e835ecc5690a4cf50213.1523959603.git-series.jhogan@kernel.org>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Sun, 6 May 2018 12:33:21 -0700
-Message-ID: <CAEdQ38HfabRWgfLTStuZDOz0yjnfMNRc5beRdVcQhFfMi1SFKg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] alpha: Use OPTIMIZE_INLINING instead of asm/compiler.h
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 May 2018 23:41:14 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:40818 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992869AbeEFVlGnYpt8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 6 May 2018 23:41:06 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 11AF9AC93;
+        Sun,  6 May 2018 21:41:01 +0000 (UTC)
+From:   NeilBrown <neil@brown.name>
 To:     James Hogan <jhogan@kernel.org>
-Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        linux-alpha <linux-alpha@vger.kernel.org>,
-        linux-arch@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <mattst88@gmail.com>
+Date:   Mon, 07 May 2018 07:40:49 +1000
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] MIPS: c-r4k: fix data corruption related to cache coherence.
+In-Reply-To: <87vacdlf8d.fsf@notabene.neil.brown.name>
+References: <87sh7klyhc.fsf@notabene.neil.brown.name> <20180425214650.GA25917@saruman> <87h8nzlzf1.fsf@notabene.neil.brown.name> <20180425220834.GC25917@saruman> <87vacdlf8d.fsf@notabene.neil.brown.name>
+Message-ID: <87lgcwcvj2.fsf@notabene.neil.brown.name>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+Return-Path: <neil@brown.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63877
+X-archive-position: 63878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: neil@brown.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,36 +41,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 17, 2018 at 3:11 AM, James Hogan <jhogan@kernel.org> wrote:
-> Use CONFIG_ARCH_SUPPORTS_OPTIMIZED_INLINING and CONFIG_OPTIMIZE_INLINING
-> instead of undefining the inline macros in the alpha specific
-> asm/compiler.h. This is to allow asm/compiler.h to become a general
-> header that can be used for overriding linux/compiler*.h.
->
-> A build of alpha's defconfig on GCC 7.3 before and after this series
-> (i.e. this commit and "compiler.h: Allow arch-specific overrides" which
-> includes asm/compiler.h from linux/compiler_types.h) results in the
-> following size differences, which appear harmless to me:
->
-> $ ./scripts/bloat-o-meter vmlinux.1 vmlinux.2
-> add/remove: 1/1 grow/shrink: 3/0 up/down: 264/-348 (-84)
-> Function                                     old     new   delta
-> cap_bprm_set_creds                          1496    1664    +168
-> cap_issubset                                   -      68     +68
-> flex_array_put                               328     344     +16
-> cap_capset                                   488     500     +12
-> nonroot_raised_pE.constprop                  348       -    -348
-> Total: Before=5823709, After=5823625, chg -0.00%
->
-> Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: James Hogan <jhogan@kernel.org>
-> Cc: Richard Henderson <rth@twiddle.net>
-> Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-> Cc: Matt Turner <mattst88@gmail.com>
-> Cc: linux-alpha@vger.kernel.org
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Looks fine to me.
 
-Acked-by: Matt Turner <mattst88@gmail.com>
+Hi James,
+ this hasn't appear in linux-next yet, or in any branch
+ of
+   git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
 
-Should I take it through the alpha tree?
+ Should I expect it to?
+
+Thanks,
+NeilBrown
+
+On Fri, Apr 27 2018, NeilBrown wrote:
+
+> When DMA will be performed to a MIPS32 1004K CPS, the
+> L1-cache for the range needs to be flushed and invalidated
+> first.
+> The code currently takes one of two approaches.
+> 1/ If the range is less than the size of the dcache, then
+>    HIT type requests flush/invalidate cache lines for the
+>    particular addresses.  HIT-type requests a globalised
+>    by the CPS so this is safe on SMP.
+>
+> 2/ If the range is larger than the size of dcache, then
+>    INDEX type requests flush/invalidate the whole cache.
+>    INDEX type requests affect the local cache only. CPS
+>    does not propagate them in any way.  So this invalidation
+>    is not safe on SMP CPS systems.
+>
+> Data corruption due to '2' can quite easily be demonstrated by
+> repeatedly "echo 3 > /proc/sys/vm/drop_caches" and then sha1sum
+> a file that is several times the size of available memory.
+> Dropping caches means that large contiguous extents (large than
+> dcache) are more likely.
+>
+> This was not a problem before Linux-4.8 because option 2 was
+> never used if CONFIG_MIPS_CPS was defined.  The commit
+> which removed that apparently didn't appreciate the full
+> consequence of the change.
+>
+> We could, in theory, globalize the INDEX based flush by sending an IPI
+> to other cores.  These cache invalidation routines can be called with
+> interrupts disabled and synchronous IPI require interrupts to be
+> enabled.  Asynchronous IPI may not trigger writeback soon enough.
+> So we cannot use IPI in practice.
+>
+> We can already test is IPI would be needed for an INDEX operation
+> with r4k_op_needs_ipi(R4K_INDEX).  If this is True then we mustn't try
+> the INDEX approach as we cannot use IPI.  If this is False (e.g. when
+> there is only one core and hence one L1 cache) then it is safe to
+> use the INDEX approach without IPI.
+>
+> This patch avoids options 2 if r4k_op_needs_ipi(R4K_INDEX), and so
+> eliminates the corruption.
+>
+> Fixes: c00ab4896ed5 ("MIPS: Remove cpu_has_safe_index_cacheops")
+> Cc: stable@vger.kernel.org # v4.8+
+> Signed-off-by: NeilBrown <neil@brown.name>
+> ---
+>  arch/mips/mm/c-r4k.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index 6f534b209971..e12dfa48b478 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -851,9 +851,12 @@ static void r4k_dma_cache_wback_inv(unsigned long ad=
+dr, unsigned long size)
+>  	/*
+>  	 * Either no secondary cache or the available caches don't have the
+>  	 * subset property so we have to flush the primary caches
+> -	 * explicitly
+> +	 * explicitly.
+> +	 * If we would need IPI to perform an INDEX-type operation, then
+> +	 * we have to use the HIT-type alternative as IPI cannot be used
+> +	 * here due to interrupts possibly being disabled.
+>  	 */
+> -	if (size >=3D dcache_size) {
+> +	if (!r4k_op_needs_ipi(R4K_INDEX) && size >=3D dcache_size) {
+>  		r4k_blast_dcache();
+>  	} else {
+>  		R4600_HIT_CACHEOP_WAR_IMPL;
+> @@ -890,7 +893,7 @@ static void r4k_dma_cache_inv(unsigned long addr, uns=
+igned long size)
+>  		return;
+>  	}
+>=20=20
+> -	if (size >=3D dcache_size) {
+> +	if (!r4k_op_needs_ipi(R4K_INDEX) && size >=3D dcache_size) {
+>  		r4k_blast_dcache();
+>  	} else {
+>  		R4600_HIT_CACHEOP_WAR_IMPL;
+> --=20
+> 2.14.0.rc0.dirty
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlrvdmIACgkQOeye3VZi
+gblfHRAAgf8cjAtiUtHQcthwyvpc+S+TIUiVtf8tCbiLyDfoDHp7zeXK45cyUZfN
+Tlf1VJ2psDZ0GIVhfr0ZBY0Db4bEpDg7aCZ55vs7V7HlDVum9TJW2nRoz4wX1ss7
+EFkIUXlOs7ABC04CfeC/NdfH53DAE4GQDSdK6C/8kweiPksUY0uq8o+hEL/ILxRi
+mnPFuFR2zycNHe9/k6maqNJigNF4Os788EtaopdzupKueqfN9eel+Lfla8y6phkd
+A9NmXBnKEj/52kP8fUfTlPWfBgNq1oy1D0fF1c1ePCVwJ9MtfaR8rdZ0MZ77arRd
+XjY27O5DzG+M+Chdd/Lscyob+Mab7jDA4bULBBBRxDmYJGCAV4Ftw4Ru/DHtQDvd
+YJEg0DkQhoOtdO4XIDI44L73ltZaCYiUwtdoxhESYdMl6tmHkaNjEZR2dmPjFcZm
+MtdAhB59ZeCj/boP5+JijFcqtyVAAOPk47mN7swb3nzO8xCwTQHtZe3mcTBPhHAc
+VoK0kekL8oW5WvsTDdiINSq1c8cM6yGR2NrAdp60j/2SsDWnYa2NWUAn8CWfB+uj
+5je55gZMa63DRRrllop9e+X7aeFH1d++0fY/KpEg7y0bj7EGlrf0CIWroORl61Iq
+u4bHxFyIoSR8gS/+RcukkH2Fk5r3i2AKEOAMUCR3ZLUb0Z2l4bs=
+=Adyd
+-----END PGP SIGNATURE-----
+--=-=-=--

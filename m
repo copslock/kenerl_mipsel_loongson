@@ -1,34 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 May 2018 23:41:14 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:40818 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992869AbeEFVlGnYpt8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 6 May 2018 23:41:06 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 11AF9AC93;
-        Sun,  6 May 2018 21:41:01 +0000 (UTC)
-From:   NeilBrown <neil@brown.name>
-To:     James Hogan <jhogan@kernel.org>
-Date:   Mon, 07 May 2018 07:40:49 +1000
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MIPS: c-r4k: fix data corruption related to cache coherence.
-In-Reply-To: <87vacdlf8d.fsf@notabene.neil.brown.name>
-References: <87sh7klyhc.fsf@notabene.neil.brown.name> <20180425214650.GA25917@saruman> <87h8nzlzf1.fsf@notabene.neil.brown.name> <20180425220834.GC25917@saruman> <87vacdlf8d.fsf@notabene.neil.brown.name>
-Message-ID: <87lgcwcvj2.fsf@notabene.neil.brown.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 09:58:01 +0200 (CEST)
+Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:41979
+        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993256AbeEGH5yFV5tX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 May 2018 09:57:54 +0200
+Received: by mail-oi0-x243.google.com with SMTP id 11-v6so24294224ois.8
+        for <linux-mips@linux-mips.org>; Mon, 07 May 2018 00:57:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=/VzuEq7u+284TbkrLjTHvh+qrVteUcrV4bO1LSCVkAc=;
+        b=kzenOqN4GFagoPS2ESPeEaKhAuUmeouhUK0zGBOf0vyNSe0yByDF+d9P3fWGiJKRNv
+         zNnv329X8SUu57eJcJwwSt5EtPOBs5w/s1dpDx6FdLyFmKmcxidPAx0BxF/N0U8LMMoD
+         OrjbPeOQhwIZ3aQMZ4hrcNuhg4jT+9yGWxIK0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=/VzuEq7u+284TbkrLjTHvh+qrVteUcrV4bO1LSCVkAc=;
+        b=rZnP026NBKIQb741sKQ5UUkVSf/XnOJ0F1YXWDFF+PQRh09zCdF14Q+xWvnCIK+Lkk
+         vOFPhWzhIcNQ2agXwz/NNGGEUZF+z8LyHOImhtrdE1L/yU8pacRoL9c8IBJpeMB3JuLt
+         OiSddg3WGFawBpJxDpGPMfFMiysnRfMNVuQ8HZSY9Ovqail1cDKSSbaAr5G8tVgc0ivI
+         rwO9GygIwd8LDcL+JE33pul0nlE8JMOv7PX8ds8aOTBXhaV2O1et9bOsIFrKpC9gFztH
+         yMLegca/G/xe/pYvqogl7a+BeenK1Zqu2q4wWtmgTtM/RCTUmMhi4cfkV70ZLzg1kG7M
+         jRSA==
+X-Gm-Message-State: ALQs6tBBZMlbFk20s2TczKafR3Wqllk2TypFtMiOZQiN/NF3dukn2+rV
+        dhkI3BBw0Hq6byOC+Szli9RD59WA37ezQzv9ZzkAgw==
+X-Google-Smtp-Source: AB8JxZqNVsHDoBkEq5u8b7yXL9VWFcFhCdc5PeXdzqva5QInZFfFFZJolYRgJQAe+s67zwkC5ZAaymfoJ19JZJnWEUc=
+X-Received: by 2002:aca:accf:: with SMTP id v198-v6mr22903246oie.320.1525679867728;
+ Mon, 07 May 2018 00:57:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-Return-Path: <neil@brown.name>
+Received: by 2002:a9d:2d77:0:0:0:0:0 with HTTP; Mon, 7 May 2018 00:57:47 -0700 (PDT)
+In-Reply-To: <CAK8P3a2eXo6MkLLkzQVDtk_W+2x+68iphsX3MXAtzpTYDaREiQ@mail.gmail.com>
+References: <c26982955db16b8f790e7f5f2a5b63e42bc78192.1525417306.git.baolin.wang@linaro.org>
+ <2d0bcca30f61036e413ba01c686ce6506f187462.1525417306.git.baolin.wang@linaro.org>
+ <CAK8P3a2eXo6MkLLkzQVDtk_W+2x+68iphsX3MXAtzpTYDaREiQ@mail.gmail.com>
+From:   Baolin Wang <baolin.wang@linaro.org>
+Date:   Mon, 7 May 2018 15:57:47 +0800
+Message-ID: <CAMz4kuJBw3MFvdju7MoLxcW8wJuBbhiXe_TQut2dw2_dpAVQZw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] MIPS: Convert update_persistent_clock() to update_persistent_clock64()
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, chenhc@lemote.com,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Mark Brown <broonie@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <baolin.wang@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63878
+X-archive-position: 63879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: neil@brown.name
+X-original-sender: baolin.wang@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,121 +76,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-
-Hi James,
- this hasn't appear in linux-next yet, or in any branch
- of
-   git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
-
- Should I expect it to?
-
-Thanks,
-NeilBrown
-
-On Fri, Apr 27 2018, NeilBrown wrote:
-
-> When DMA will be performed to a MIPS32 1004K CPS, the
-> L1-cache for the range needs to be flushed and invalidated
-> first.
-> The code currently takes one of two approaches.
-> 1/ If the range is less than the size of the dcache, then
->    HIT type requests flush/invalidate cache lines for the
->    particular addresses.  HIT-type requests a globalised
->    by the CPS so this is safe on SMP.
+On 6 May 2018 at 11:04, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Fri, May 4, 2018 at 3:07 AM, Baolin Wang <baolin.wang@linaro.org> wrote:
+>> Since struct timespec is not y2038 safe on 32bit machines, this patch
+>> converts update_persistent_clock() to update_persistent_clock64() using
+>> struct timespec64.
+>>
+>> The rtc_mips_set_time() and rtc_mips_set_mmss() interfaces were using
+>> 'unsigned long' type that is not y2038 safe on 32bit machines, moreover
+>> there is only one platform implementing rtc_mips_set_time() and two
+>> platforms implementing rtc_mips_set_mmss(), so we can just make them each
+>> implement update_persistent_clock64() directly, to get that helper out
+>> of the common mips code by removing rtc_mips_set_time() and
+>> rtc_mips_set_mmss() interfaces.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 >
-> 2/ If the range is larger than the size of dcache, then
->    INDEX type requests flush/invalidate the whole cache.
->    INDEX type requests affect the local cache only. CPS
->    does not propagate them in any way.  So this invalidation
->    is not safe on SMP CPS systems.
+> Looks good overall, but I still found a bug and one minor issue. With
+> those fixed,
 >
-> Data corruption due to '2' can quite easily be demonstrated by
-> repeatedly "echo 3 > /proc/sys/vm/drop_caches" and then sha1sum
-> a file that is several times the size of available memory.
-> Dropping caches means that large contiguous extents (large than
-> dcache) are more likely.
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 >
-> This was not a problem before Linux-4.8 because option 2 was
-> never used if CONFIG_MIPS_CPS was defined.  The commit
-> which removed that apparently didn't appreciate the full
-> consequence of the change.
+>> diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
+>> index 9e992cf..934db6f 100644
+>> --- a/arch/mips/dec/time.c
+>> +++ b/arch/mips/dec/time.c
+>> @@ -59,14 +59,15 @@ void read_persistent_clock64(struct timespec64 *ts)
+>>  }
+>>
+>>  /*
+>> - * In order to set the CMOS clock precisely, rtc_mips_set_mmss has to
+>> + * In order to set the CMOS clock precisely, update_persistent_clock64 has to
+>>   * be called 500 ms after the second nowtime has started, because when
+>>   * nowtime is written into the registers of the CMOS clock, it will
+>>   * jump to the next second precisely 500 ms later.  Check the Dallas
+>>   * DS1287 data sheet for details.
+>>   */
+>> -int rtc_mips_set_mmss(unsigned long nowtime)
+>> +int update_persistent_clock64(struct timespec64 now)
+>>  {
+>> +       time64_t nowtime = now.tv_sec;
+>>         int retval = 0;
+>>         int real_seconds, real_minutes, cmos_minutes;
+>>         unsigned char save_control, save_freq_select;
 >
-> We could, in theory, globalize the INDEX based flush by sending an IPI
-> to other cores.  These cache invalidation routines can be called with
-> interrupts disabled and synchronous IPI require interrupts to be
-> enabled.  Asynchronous IPI may not trigger writeback soon enough.
-> So we cannot use IPI in practice.
 >
-> We can already test is IPI would be needed for an INDEX operation
-> with r4k_op_needs_ipi(R4K_INDEX).  If this is True then we mustn't try
-> the INDEX approach as we cannot use IPI.  If this is False (e.g. when
-> there is only one core and hence one L1 cache) then it is safe to
-> use the INDEX approach without IPI.
->
-> This patch avoids options 2 if r4k_op_needs_ipi(R4K_INDEX), and so
-> eliminates the corruption.
->
-> Fixes: c00ab4896ed5 ("MIPS: Remove cpu_has_safe_index_cacheops")
-> Cc: stable@vger.kernel.org # v4.8+
-> Signed-off-by: NeilBrown <neil@brown.name>
-> ---
->  arch/mips/mm/c-r4k.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 6f534b209971..e12dfa48b478 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -851,9 +851,12 @@ static void r4k_dma_cache_wback_inv(unsigned long ad=
-dr, unsigned long size)
->  	/*
->  	 * Either no secondary cache or the available caches don't have the
->  	 * subset property so we have to flush the primary caches
-> -	 * explicitly
-> +	 * explicitly.
-> +	 * If we would need IPI to perform an INDEX-type operation, then
-> +	 * we have to use the HIT-type alternative as IPI cannot be used
-> +	 * here due to interrupts possibly being disabled.
->  	 */
-> -	if (size >=3D dcache_size) {
-> +	if (!r4k_op_needs_ipi(R4K_INDEX) && size >=3D dcache_size) {
->  		r4k_blast_dcache();
->  	} else {
->  		R4600_HIT_CACHEOP_WAR_IMPL;
-> @@ -890,7 +893,7 @@ static void r4k_dma_cache_inv(unsigned long addr, uns=
-igned long size)
->  		return;
->  	}
->=20=20
-> -	if (size >=3D dcache_size) {
-> +	if (!r4k_op_needs_ipi(R4K_INDEX) && size >=3D dcache_size) {
->  		r4k_blast_dcache();
->  	} else {
->  		R4600_HIT_CACHEOP_WAR_IMPL;
-> --=20
-> 2.14.0.rc0.dirty
+> It looks like you now get an invalid 64-bit division in here,
+> you have to change it to either use div_u64_rem() or possibly
+> time64_to_tm() or rtc_time64_to_tm() (the latter requires
+> CONFIG_RTC_LIB).
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+I will use div_u64_rem() to calculate real_seconds and real_minutes.
 
------BEGIN PGP SIGNATURE-----
+>
+>> diff --git a/arch/mips/lasat/ds1603.c b/arch/mips/lasat/ds1603.c
+>> index d75c887..061815e 100644
+>> --- a/arch/mips/lasat/ds1603.c
+>> +++ b/arch/mips/lasat/ds1603.c
+>> @@ -98,7 +98,7 @@ static void rtc_write_byte(unsigned int byte)
+>>         }
+>>  }
+>>
+>> -static void rtc_write_word(unsigned long word)
+>> +static void rtc_write_word(time64_t word)
+>>  {
+>>         int i;
+>>
+>
+> I would say this function should take a 'u32' argument (or keep the
+> unsigned long) to match the name and implementation, but then have a
+> type cast in the caller with a comment about the loss of range and overflow
+> in y2106.
 
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlrvdmIACgkQOeye3VZi
-gblfHRAAgf8cjAtiUtHQcthwyvpc+S+TIUiVtf8tCbiLyDfoDHp7zeXK45cyUZfN
-Tlf1VJ2psDZ0GIVhfr0ZBY0Db4bEpDg7aCZ55vs7V7HlDVum9TJW2nRoz4wX1ss7
-EFkIUXlOs7ABC04CfeC/NdfH53DAE4GQDSdK6C/8kweiPksUY0uq8o+hEL/ILxRi
-mnPFuFR2zycNHe9/k6maqNJigNF4Os788EtaopdzupKueqfN9eel+Lfla8y6phkd
-A9NmXBnKEj/52kP8fUfTlPWfBgNq1oy1D0fF1c1ePCVwJ9MtfaR8rdZ0MZ77arRd
-XjY27O5DzG+M+Chdd/Lscyob+Mab7jDA4bULBBBRxDmYJGCAV4Ftw4Ru/DHtQDvd
-YJEg0DkQhoOtdO4XIDI44L73ltZaCYiUwtdoxhESYdMl6tmHkaNjEZR2dmPjFcZm
-MtdAhB59ZeCj/boP5+JijFcqtyVAAOPk47mN7swb3nzO8xCwTQHtZe3mcTBPhHAc
-VoK0kekL8oW5WvsTDdiINSq1c8cM6yGR2NrAdp60j/2SsDWnYa2NWUAn8CWfB+uj
-5je55gZMa63DRRrllop9e+X7aeFH1d++0fY/KpEg7y0bj7EGlrf0CIWroORl61Iq
-u4bHxFyIoSR8gS/+RcukkH2Fk5r3i2AKEOAMUCR3ZLUb0Z2l4bs=
-=Adyd
------END PGP SIGNATURE-----
---=-=-=--
+OK.
+
+>
+>> diff --git a/arch/mips/lasat/sysctl.c b/arch/mips/lasat/sysctl.c
+>> index 6f74224..76f7b62 100644
+>> --- a/arch/mips/lasat/sysctl.c
+>> +++ b/arch/mips/lasat/sysctl.c
+>> @@ -73,8 +73,12 @@ int proc_dolasatrtc(struct ctl_table *table, int write,
+>>         if (r)
+>>                 return r;
+>>
+>> -       if (write)
+>> -               rtc_mips_set_mmss(rtctmp);
+>> +       if (write) {
+>> +               ts.tv_sec = rtctmp;
+>> +               ts.tv_nsec = 0;
+>> +
+>> +               update_persistent_clock64(ts);
+>> +       }
+>>
+> ... and probably also a comment here to explain that we can't actually use
+> the full 64-bit range because of HW limits.
+>
+
+OK. Thanks for your comments.
+
+-- 
+Baolin.wang
+Best Regards

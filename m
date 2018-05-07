@@ -1,66 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 15:35:00 +0200 (CEST)
-Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:34359
-        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993997AbeEGNexcWEdm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 May 2018 15:34:53 +0200
-Received: by mail-it0-x244.google.com with SMTP id c5-v6so11087673itj.1
-        for <linux-mips@linux-mips.org>; Mon, 07 May 2018 06:34:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Z3GPSfXBqzWi0eVJlO8QjGJu/msLqL1PxpsfZFZZHPs=;
-        b=ckqNP1JxQ2qeNNjFWICWxsC5Lnq0oZK6BQauOjTnlC72ukIZ5e/qrw2ivCZaznV9VL
-         03NACz044zGBD16K2zp04tKRqIAyqKGGYeDyJGBN4uTunawDNJV7G9jE7Mv1qKhV8X3w
-         M4SbYkSlfsYr4B/5u7GMb9jqNrMlhnfzDf+Ytk8ObJAkBAZT7tBtt23ATp+I0DFLsRCE
-         ugVHGZX/ewj0aH5v7AzVkswGhHrgoWwMN6e64MdpA1lzAFseH52kB3sJFhnnpH68Vzzb
-         UteY+yZvNDOKGjGRi7Ztb0Inz7QM/A5Lt5OviSx5x0FvrMB7cSlFmlDqY2MxqsiLoZ4H
-         JJAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Z3GPSfXBqzWi0eVJlO8QjGJu/msLqL1PxpsfZFZZHPs=;
-        b=V9sdEktYKidRpLwUAYHzDNPAiVFjLbpCRRU8Qge3J6Ews8zVaD6hlLfEUip4zshozB
-         vm8+6G9+5PLJJ/qLDW8Ck34+0aqaC2mTX6ouxeZV0XQ4HWjmipPWQ+IQMOBJR4+VNYw2
-         f+DXrXcsMddwHf88c12pvetJfln3JIILvL/NFD0IWpf8wFhnZnoTv4GctTouFE6uvwY6
-         0fEil7XLdZoDGqtrFUc3KTUuNRenkNRUl5z6it9zASU74DI71dK/0H4j9O+M6kuw4oKP
-         RrQfmJTkTx0TQOkfo5i8Zi4NG7ejiPSq5Iqwdj6Z5jvedVDZ5rV4eXbryhASKKdSIbD6
-         FobQ==
-X-Gm-Message-State: ALQs6tDvfIhw+j7n4Gad/f/KgiRj8+VH7UyWMO50+fKgf1/TT0xUOs0h
-        EaaMlFeLFm6FZ4yJY7gOMxlK6Q==
-X-Google-Smtp-Source: AB8JxZrDUa0T4SpeHVz0t54h0wdphD2stKb20zFgBAj8LDUKpOkOsMkblVcQSpcJPqNuo+LQGjX8jw==
-X-Received: by 2002:a17:902:10c:: with SMTP id 12-v6mr38385407plb.252.1525700086856;
-        Mon, 07 May 2018 06:34:46 -0700 (PDT)
-Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id a6sm40867944pfo.88.2018.05.07.06.34.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 07 May 2018 06:34:45 -0700 (PDT)
-Subject: Re: [PATCH] watchdog: ath79: fix maximum timeout
-To:     John Crispin <john@phrozen.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>
-Cc:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
-References: <20180507131642.11440-1-john@phrozen.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <319719c3-eeec-c75f-68c1-b6d15cf884c5@roeck-us.net>
-Date:   Mon, 7 May 2018 06:34:44 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
-MIME-Version: 1.0
-In-Reply-To: <20180507131642.11440-1-john@phrozen.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <groeck7@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 15:37:38 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:43490 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993997AbeEGNh0Evnfm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 May 2018 15:37:26 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH] irqchip/irq-ath79-intc: add irq cascade driver for QCA9556 SoCs
+Date:   Mon,  7 May 2018 15:37:14 +0200
+Message-Id: <20180507133714.17384-1-john@phrozen.org>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63885
+X-archive-position: 63886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,39 +34,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/07/2018 06:16 AM, John Crispin wrote:
-> If the userland tries to set a timeout higher than the max_timeout,
-> then we should fallback to max_timeout.
-> 
+The QCA ATH79 MIPS target is being converted to pure OF. Right now the
+platform code will setup the IRQ cascade found on the QCA9556 and newer
+SoCs and uses fixed IRQ numbers for the peripherals attached to the
+cascade. This patch adds a proper driver based on the code previously
+located inside arch/mips/ath79/irq.c.
 
-We don't do that for drivers using the watchdog core, so we should not
-do it here either for consistency.
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ drivers/irqchip/Makefile         |   1 +
+ drivers/irqchip/irq-ath79-intc.c | 108 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 109 insertions(+)
+ create mode 100644 drivers/irqchip/irq-ath79-intc.c
 
-Guenter
-
-> Signed-off-by: John Crispin <john@phrozen.org> > ---
->   drivers/watchdog/ath79_wdt.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/watchdog/ath79_wdt.c b/drivers/watchdog/ath79_wdt.c
-> index e2209bf5fa8a..c2fc6c3d0092 100644
-> --- a/drivers/watchdog/ath79_wdt.c
-> +++ b/drivers/watchdog/ath79_wdt.c
-> @@ -115,10 +115,14 @@ static inline void ath79_wdt_disable(void)
->   
->   static int ath79_wdt_set_timeout(int val)
->   {
-> -	if (val < 1 || val > max_timeout)
-> +	if (val < 1)
->   		return -EINVAL;
->   
-> -	timeout = val;
-> +	if (val > max_timeout)
-> +		timeout = max_timeout;
-> +	else
-> +		timeout = val;
-> +
->   	ath79_wdt_keepalive();
->   
->   	return 0;
-> 
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index d27e3e3619e0..f63c94a92e25 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -3,6 +3,7 @@ obj-$(CONFIG_IRQCHIP)			+= irqchip.o
+ 
+ obj-$(CONFIG_ALPINE_MSI)		+= irq-alpine-msi.o
+ obj-$(CONFIG_ATH79)			+= irq-ath79-cpu.o
++obj-$(CONFIG_ATH79)			+= irq-ath79-intc.o
+ obj-$(CONFIG_ATH79)			+= irq-ath79-misc.o
+ obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
+ obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
+diff --git a/drivers/irqchip/irq-ath79-intc.c b/drivers/irqchip/irq-ath79-intc.c
+new file mode 100644
+index 000000000000..ba15b1ac98b3
+--- /dev/null
++++ b/drivers/irqchip/irq-ath79-intc.c
+@@ -0,0 +1,108 @@
++/*
++ *  Atheros QCA955X specific interrupt cascade handling
++ *
++ *  Copyright (C) 2018 John Crispin <john@phrozen.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#include <linux/interrupt.h>
++#include <linux/irqchip.h>
++#include <linux/of.h>
++#include <linux/of_irq.h>
++#include <linux/irqdomain.h>
++
++#include <asm/irq_cpu.h>
++#include <asm/mach-ath79/ath79.h>
++#include <asm/mach-ath79/ar71xx_regs.h>
++
++#define ATH79_MAX_INTC_CASCADE	3
++
++struct ath79_intc {
++	struct irq_chip chip;
++	u32 irq;
++	u32 pending_mask;
++	u32 irq_mask[ATH79_MAX_INTC_CASCADE];
++};
++
++static void ath79_intc_irq_handler(struct irq_desc *desc)
++{
++	struct irq_domain *domain = irq_desc_get_handler_data(desc);
++	struct ath79_intc *intc = domain->host_data;
++	u32 pending;
++
++	pending = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
++	pending &= intc->pending_mask;
++
++	if (pending) {
++		int i;
++
++		for (i = 0; i < domain->hwirq_max; i++)
++			if (pending & intc->irq_mask[i])
++				generic_handle_irq(irq_find_mapping(domain, i));
++	} else {
++		spurious_interrupt();
++	}
++}
++
++static void ath79_intc_irq_unmask(struct irq_data *d)
++{
++}
++
++static void ath79_intc_irq_mask(struct irq_data *d)
++{
++}
++
++static int ath79_intc_map(struct irq_domain *d, unsigned int irq,
++			  irq_hw_number_t hw)
++{
++	struct ath79_intc *intc = d->host_data;
++
++	irq_set_chip_and_handler(irq, &intc->chip, handle_level_irq);
++
++	return 0;
++}
++
++static const struct irq_domain_ops ath79_irq_domain_ops = {
++	.xlate = irq_domain_xlate_onecell,
++	.map = ath79_intc_map,
++};
++
++static int __init qca9556_intc_of_init(
++	struct device_node *node, struct device_node *parent)
++{
++	struct irq_domain *domain;
++	struct ath79_intc *intc;
++	int cnt, i;
++
++	cnt = of_property_count_u32_elems(node, "qcom,pending-bits");
++	if (cnt > ATH79_MAX_INTC_CASCADE)
++		panic("Too many INTC pending bits\n");
++
++	intc = kzalloc(sizeof(*intc), GFP_KERNEL);
++	if (!intc)
++		panic("Failed to allocate INTC memory\n");
++	intc->chip.name = "INTC";
++	intc->chip.irq_unmask = ath79_intc_irq_unmask,
++	intc->chip.irq_mask = ath79_intc_irq_mask,
++
++	of_property_read_u32_array(node, "qcom,pending-bits", intc->irq_mask,
++				   cnt);
++	for (i = 0; i < cnt; i++)
++		intc->pending_mask |= intc->irq_mask[i];
++
++	intc->irq = irq_of_parse_and_map(node, 0);
++	if (!intc->irq)
++		panic("Failed to get INTC IRQ");
++
++	domain = irq_domain_add_linear(node, cnt, &ath79_irq_domain_ops,
++				       intc);
++	irq_set_chained_handler_and_data(intc->irq, ath79_intc_irq_handler,
++					 domain);
++
++	return 0;
++}
++IRQCHIP_DECLARE(qca9556_intc, "qcom,qca9556-intc",
++		qca9556_intc_of_init);
+-- 
+2.11.0

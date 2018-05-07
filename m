@@ -1,23 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 15:37:38 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:43490 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 15:41:05 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:43552 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993997AbeEGNh0Evnfm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 May 2018 15:37:26 +0200
+        id S23994571AbeEGNk6pwMTm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 May 2018 15:40:58 +0200
+Subject: Re: [PATCH] watchdog: ath79: fix maximum timeout
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>
+Cc:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
+References: <20180507131642.11440-1-john@phrozen.org>
+ <319719c3-eeec-c75f-68c1-b6d15cf884c5@roeck-us.net>
 From:   John Crispin <john@phrozen.org>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH] irqchip/irq-ath79-intc: add irq cascade driver for QCA9556 SoCs
-Date:   Mon,  7 May 2018 15:37:14 +0200
-Message-Id: <20180507133714.17384-1-john@phrozen.org>
-X-Mailer: git-send-email 2.11.0
+Message-ID: <3c24c84f-baa1-2eef-4b5c-85d0e5803e7b@phrozen.org>
+Date:   Mon, 7 May 2018 15:40:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
+MIME-Version: 1.0
+In-Reply-To: <319719c3-eeec-c75f-68c1-b6d15cf884c5@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63886
+X-archive-position: 63887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,144 +40,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The QCA ATH79 MIPS target is being converted to pure OF. Right now the
-platform code will setup the IRQ cascade found on the QCA9556 and newer
-SoCs and uses fixed IRQ numbers for the peripherals attached to the
-cascade. This patch adds a proper driver based on the code previously
-located inside arch/mips/ath79/irq.c.
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/irqchip/Makefile         |   1 +
- drivers/irqchip/irq-ath79-intc.c | 108 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 109 insertions(+)
- create mode 100644 drivers/irqchip/irq-ath79-intc.c
 
-diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-index d27e3e3619e0..f63c94a92e25 100644
---- a/drivers/irqchip/Makefile
-+++ b/drivers/irqchip/Makefile
-@@ -3,6 +3,7 @@ obj-$(CONFIG_IRQCHIP)			+= irqchip.o
- 
- obj-$(CONFIG_ALPINE_MSI)		+= irq-alpine-msi.o
- obj-$(CONFIG_ATH79)			+= irq-ath79-cpu.o
-+obj-$(CONFIG_ATH79)			+= irq-ath79-intc.o
- obj-$(CONFIG_ATH79)			+= irq-ath79-misc.o
- obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
- obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
-diff --git a/drivers/irqchip/irq-ath79-intc.c b/drivers/irqchip/irq-ath79-intc.c
-new file mode 100644
-index 000000000000..ba15b1ac98b3
---- /dev/null
-+++ b/drivers/irqchip/irq-ath79-intc.c
-@@ -0,0 +1,108 @@
-+/*
-+ *  Atheros QCA955X specific interrupt cascade handling
-+ *
-+ *  Copyright (C) 2018 John Crispin <john@phrozen.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <linux/interrupt.h>
-+#include <linux/irqchip.h>
-+#include <linux/of.h>
-+#include <linux/of_irq.h>
-+#include <linux/irqdomain.h>
-+
-+#include <asm/irq_cpu.h>
-+#include <asm/mach-ath79/ath79.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+
-+#define ATH79_MAX_INTC_CASCADE	3
-+
-+struct ath79_intc {
-+	struct irq_chip chip;
-+	u32 irq;
-+	u32 pending_mask;
-+	u32 irq_mask[ATH79_MAX_INTC_CASCADE];
-+};
-+
-+static void ath79_intc_irq_handler(struct irq_desc *desc)
-+{
-+	struct irq_domain *domain = irq_desc_get_handler_data(desc);
-+	struct ath79_intc *intc = domain->host_data;
-+	u32 pending;
-+
-+	pending = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
-+	pending &= intc->pending_mask;
-+
-+	if (pending) {
-+		int i;
-+
-+		for (i = 0; i < domain->hwirq_max; i++)
-+			if (pending & intc->irq_mask[i])
-+				generic_handle_irq(irq_find_mapping(domain, i));
-+	} else {
-+		spurious_interrupt();
-+	}
-+}
-+
-+static void ath79_intc_irq_unmask(struct irq_data *d)
-+{
-+}
-+
-+static void ath79_intc_irq_mask(struct irq_data *d)
-+{
-+}
-+
-+static int ath79_intc_map(struct irq_domain *d, unsigned int irq,
-+			  irq_hw_number_t hw)
-+{
-+	struct ath79_intc *intc = d->host_data;
-+
-+	irq_set_chip_and_handler(irq, &intc->chip, handle_level_irq);
-+
-+	return 0;
-+}
-+
-+static const struct irq_domain_ops ath79_irq_domain_ops = {
-+	.xlate = irq_domain_xlate_onecell,
-+	.map = ath79_intc_map,
-+};
-+
-+static int __init qca9556_intc_of_init(
-+	struct device_node *node, struct device_node *parent)
-+{
-+	struct irq_domain *domain;
-+	struct ath79_intc *intc;
-+	int cnt, i;
-+
-+	cnt = of_property_count_u32_elems(node, "qcom,pending-bits");
-+	if (cnt > ATH79_MAX_INTC_CASCADE)
-+		panic("Too many INTC pending bits\n");
-+
-+	intc = kzalloc(sizeof(*intc), GFP_KERNEL);
-+	if (!intc)
-+		panic("Failed to allocate INTC memory\n");
-+	intc->chip.name = "INTC";
-+	intc->chip.irq_unmask = ath79_intc_irq_unmask,
-+	intc->chip.irq_mask = ath79_intc_irq_mask,
-+
-+	of_property_read_u32_array(node, "qcom,pending-bits", intc->irq_mask,
-+				   cnt);
-+	for (i = 0; i < cnt; i++)
-+		intc->pending_mask |= intc->irq_mask[i];
-+
-+	intc->irq = irq_of_parse_and_map(node, 0);
-+	if (!intc->irq)
-+		panic("Failed to get INTC IRQ");
-+
-+	domain = irq_domain_add_linear(node, cnt, &ath79_irq_domain_ops,
-+				       intc);
-+	irq_set_chained_handler_and_data(intc->irq, ath79_intc_irq_handler,
-+					 domain);
-+
-+	return 0;
-+}
-+IRQCHIP_DECLARE(qca9556_intc, "qcom,qca9556-intc",
-+		qca9556_intc_of_init);
--- 
-2.11.0
+On 07/05/18 15:34, Guenter Roeck wrote:
+> On 05/07/2018 06:16 AM, John Crispin wrote:
+>> If the userland tries to set a timeout higher than the max_timeout,
+>> then we should fallback to max_timeout.
+>>
+>
+> We don't do that for drivers using the watchdog core, so we should not
+> do it here either for consistency.
+>
+> Guenter
+
+Hi,
+thanks for the quick feedback. I'll mark the patch as "rejected by 
+upstream due to subsystem consistency" inside OpenWrt.
+     John
+>
+>> Signed-off-by: John Crispin <john@phrozen.org> > ---
+>>   drivers/watchdog/ath79_wdt.c | 8 ++++++--
+>>   1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/watchdog/ath79_wdt.c b/drivers/watchdog/ath79_wdt.c
+>> index e2209bf5fa8a..c2fc6c3d0092 100644
+>> --- a/drivers/watchdog/ath79_wdt.c
+>> +++ b/drivers/watchdog/ath79_wdt.c
+>> @@ -115,10 +115,14 @@ static inline void ath79_wdt_disable(void)
+>>     static int ath79_wdt_set_timeout(int val)
+>>   {
+>> -    if (val < 1 || val > max_timeout)
+>> +    if (val < 1)
+>>           return -EINVAL;
+>>   -    timeout = val;
+>> +    if (val > max_timeout)
+>> +        timeout = max_timeout;
+>> +    else
+>> +        timeout = val;
+>> +
+>>       ath79_wdt_keepalive();
+>>         return 0;
+>>
+>
+>

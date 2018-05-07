@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 15:14:26 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:43100 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 15:16:57 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:43140 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993997AbeEGNORVyM0A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 May 2018 15:14:17 +0200
+        id S23993997AbeEGNQuoFF1A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 May 2018 15:16:50 +0200
 From:   John Crispin <john@phrozen.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>
-Cc:     linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
+To:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
         John Crispin <john@phrozen.org>
-Subject: [PATCH] tty: serial: drop ATH79 specific SoC symbols
-Date:   Mon,  7 May 2018 15:14:07 +0200
-Message-Id: <20180507131407.11312-1-john@phrozen.org>
+Subject: [PATCH] watchdog: ath79: fix maximum timeout
+Date:   Mon,  7 May 2018 15:16:42 +0200
+Message-Id: <20180507131642.11440-1-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63883
+X-archive-position: 63884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,30 +33,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-QCA MIPS support is being converted to pure OF. As part of this we are
-dropping the SOC_AR* symbols. Additionally the SERIAL_AR933X style tty
-is also found on a few SoCs newer that the AR933x.
-
-This patch changes the dependency to ATH79, thus fixing the 2 issues
-described above.
+If the userland tries to set a timeout higher than the max_timeout,
+then we should fallback to max_timeout.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/tty/serial/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/ath79_wdt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-index 3682fd3e960c..c92bd969bbf9 100644
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -1469,7 +1469,7 @@ config SERIAL_XILINX_PS_UART_CONSOLE
+diff --git a/drivers/watchdog/ath79_wdt.c b/drivers/watchdog/ath79_wdt.c
+index e2209bf5fa8a..c2fc6c3d0092 100644
+--- a/drivers/watchdog/ath79_wdt.c
++++ b/drivers/watchdog/ath79_wdt.c
+@@ -115,10 +115,14 @@ static inline void ath79_wdt_disable(void)
  
- config SERIAL_AR933X
- 	tristate "AR933X serial port support"
--	depends on HAVE_CLK && SOC_AR933X
-+	depends on HAVE_CLK && ATH79
- 	select SERIAL_CORE
- 	help
- 	  If you have an Atheros AR933X SOC based board and want to use the
+ static int ath79_wdt_set_timeout(int val)
+ {
+-	if (val < 1 || val > max_timeout)
++	if (val < 1)
+ 		return -EINVAL;
+ 
+-	timeout = val;
++	if (val > max_timeout)
++		timeout = max_timeout;
++	else
++		timeout = val;
++
+ 	ath79_wdt_keepalive();
+ 
+ 	return 0;
 -- 
 2.11.0

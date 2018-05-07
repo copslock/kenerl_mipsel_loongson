@@ -1,63 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 18:04:35 +0200 (CEST)
-Received: from mail-it0-x241.google.com ([IPv6:2607:f8b0:4001:c0b::241]:37200
-        "EHLO mail-it0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994614AbeEGQE0vC2Mu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 May 2018 18:04:26 +0200
-Received: by mail-it0-x241.google.com with SMTP id 70-v6so12434519ity.2
-        for <linux-mips@linux-mips.org>; Mon, 07 May 2018 09:04:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=V8430Yf2cE0D7Zj6Fe/G9AoxLIg45KH53g7C0uu2RgQ=;
-        b=DK/+EfP37oD03rfMG5/+5KNwWe3kz04/Ue2WSkJaTt+sfnRI/zu8c98SMJXsvYdi8C
-         f65/U/WDwK2/Zf0O28RFz38vlsQB23e35lJPJ08seFDNQbjEosHj6la5O9WP3ER7qxBj
-         amYsYhdgUQfRgQmkDjA4aIU9raSTOatmQQC3xhzRdxk7m4h/PkzN9yicjheDaNg26atk
-         0eIoNBD0iTTS65oGv/V2Zddi4KYwd0gxMQx/zFe0j8XckcZxCuQK4UdzCqQi1nYnnxPh
-         m/z8nJMeatekgTDF1zFdxMoj4c4RhCkdn07JH3ocK+UXPxWuRKwNkjXB+eVmM09m6uEb
-         S57Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=V8430Yf2cE0D7Zj6Fe/G9AoxLIg45KH53g7C0uu2RgQ=;
-        b=ZinksXp8oK1MsjBNnskd7U9+YUqsydgVyq5tL7EKtTGlroEMJ0mihCdA2XmfWnSN+i
-         u0+HaP0UPF006lV/mRgNHeLpHlomViq71egt+PviCDyFGQcAXFV+mI8NO2vm3QqC41hB
-         8R7Fu9bELbXLJcS/W4/hPeExWOFHsn9O/m5bVycsT8GE2PqCvo4S3eLn6WNrIbL2sMRe
-         y+yb7Wb/6EpvWqD7+ijaAHtJy9ScBX9O3XRq1TrbbecqOPFMHz3piI147PZ0Uc8znT+i
-         pQIaD4PyPpi2o6otN/DcvRgqf8sVfECHXf2Ty43hO/x5TA1w2wG5dqA4BKA+QnCe2msF
-         qghA==
-X-Gm-Message-State: ALKqPwc/eI+KZtKDbU6yvULyjelZmlNCR3qxPEr5xBLLl9d3ItC5mqTj
-        f59KqhkzjjkRDybnoGKO83kronrNMsKXx8ax3EY=
-X-Google-Smtp-Source: AB8JxZqYi/UBrns3oLnHL98rCdO80uG/BwApkfHRtVERig15PeayzyYpa3wnvswv8p9B6sgIjIwQwubRgzHCFYRFU8w=
-X-Received: by 2002:a24:6d86:: with SMTP id m128-v6mr1881970itc.75.1525709059620;
- Mon, 07 May 2018 09:04:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2018 22:17:14 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:44560 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994626AbeEGURHlcfeu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 May 2018 22:17:07 +0200
+Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B47E9204EE;
+        Mon,  7 May 2018 20:16:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1525724220;
+        bh=DW7HsjpOIhzgI/Um3yfFKC+vKGK22tZeAH82NpHzn2c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RxhaI3WJ4ie5aNfvU5PRZCC7wkLehypz+QIbWFTfTgCiDFl0g7rF5F3zHVVqKniYw
+         YQIkQpZSoPgKYtLkyarJHz2w4zUAYpWYN9OqpEw/uDFNeCsx10Fio0qUYCqmPLey+O
+         u9Dc6qNjLja0dv8/g7mz4+ABERWFuD1xgYDSSAJk=
+Date:   Mon, 7 May 2018 21:16:57 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     NeilBrown <neil@brown.name>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] MIPS: c-r4k: fix data corruption related to cache
+ coherence.
+Message-ID: <20180507201655.GA27369@jamesdev>
+References: <87sh7klyhc.fsf@notabene.neil.brown.name>
+ <20180425214650.GA25917@saruman>
+ <87h8nzlzf1.fsf@notabene.neil.brown.name>
+ <20180425220834.GC25917@saruman>
+ <87vacdlf8d.fsf@notabene.neil.brown.name>
+ <87lgcwcvj2.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
-Received: by 2002:a02:7109:0:0:0:0:0 with HTTP; Mon, 7 May 2018 09:03:58 -0700 (PDT)
-In-Reply-To: <20180507084240.GA26491@jamesdev>
-References: <cover.ebc99f68d5063a817328b9184d747f539800cff0.1523959603.git-series.jhogan@kernel.org>
- <a20761a842efe590da08e835ecc5690a4cf50213.1523959603.git-series.jhogan@kernel.org>
- <CAEdQ38HfabRWgfLTStuZDOz0yjnfMNRc5beRdVcQhFfMi1SFKg@mail.gmail.com> <20180507084240.GA26491@jamesdev>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Mon, 7 May 2018 09:03:58 -0700
-Message-ID: <CAEdQ38FDSqRbikxZZ4uVmyT0JkV1uGOdtiEjwJafbDb9m4vDtw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] alpha: Use OPTIMIZE_INLINING instead of asm/compiler.h
-To:     James Hogan <jhogan@kernel.org>
-Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        linux-alpha <linux-alpha@vger.kernel.org>,
-        linux-arch@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <mattst88@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Qxx1br4bt0+wmkIi"
+Content-Disposition: inline
+In-Reply-To: <87lgcwcvj2.fsf@notabene.neil.brown.name>
+User-Agent: Mutt/1.9.5 (2018-04-13)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63889
+X-archive-position: 63890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,47 +57,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 7, 2018 at 1:42 AM, James Hogan <jhogan@kernel.org> wrote:
-> On Sun, May 06, 2018 at 12:33:21PM -0700, Matt Turner wrote:
->> On Tue, Apr 17, 2018 at 3:11 AM, James Hogan <jhogan@kernel.org> wrote:
->> > Use CONFIG_ARCH_SUPPORTS_OPTIMIZED_INLINING and CONFIG_OPTIMIZE_INLINING
->> > instead of undefining the inline macros in the alpha specific
->> > asm/compiler.h. This is to allow asm/compiler.h to become a general
->> > header that can be used for overriding linux/compiler*.h.
->> >
->> > A build of alpha's defconfig on GCC 7.3 before and after this series
->> > (i.e. this commit and "compiler.h: Allow arch-specific overrides" which
->> > includes asm/compiler.h from linux/compiler_types.h) results in the
->> > following size differences, which appear harmless to me:
->> >
->> > $ ./scripts/bloat-o-meter vmlinux.1 vmlinux.2
->> > add/remove: 1/1 grow/shrink: 3/0 up/down: 264/-348 (-84)
->> > Function                                     old     new   delta
->> > cap_bprm_set_creds                          1496    1664    +168
->> > cap_issubset                                   -      68     +68
->> > flex_array_put                               328     344     +16
->> > cap_capset                                   488     500     +12
->> > nonroot_raised_pE.constprop                  348       -    -348
->> > Total: Before=5823709, After=5823625, chg -0.00%
->> >
->> > Suggested-by: Arnd Bergmann <arnd@arndb.de>
->> > Signed-off-by: James Hogan <jhogan@kernel.org>
->> > Cc: Richard Henderson <rth@twiddle.net>
->> > Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
->> > Cc: Matt Turner <mattst88@gmail.com>
->> > Cc: linux-alpha@vger.kernel.org
->>
->> Looks fine to me.
->>
->> Acked-by: Matt Turner <mattst88@gmail.com>
->
-> Thanks
->
->>
->> Should I take it through the alpha tree?
->
-> I'll take all 3 through the MIPS tree if thats okay with you, as its a
-> prerequisite to allowing MIPS to override stuff in linux/compiler-gcc.h
-> using asm/compiler.h, which is needed to fix build breakage in 4.17.
 
-Thanks. That works for me.
+--Qxx1br4bt0+wmkIi
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, May 07, 2018 at 07:40:49AM +1000, NeilBrown wrote:
+>=20
+> Hi James,
+>  this hasn't appear in linux-next yet, or in any branch
+>  of
+>    git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
+>=20
+>  Should I expect it to?
+
+Sorry Neil, I haven't applied it yet. I'm planning to get a few fixes
+sorted this week, at which point it would land in the mips-fixes branch
+at the above repo.
+
+Cheers
+James
+
+--Qxx1br4bt0+wmkIi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvC0NgAKCRA1zuSGKxAj
+8oKRAPwK7fmohcud0fjIl2pvltDY4gpwo83BsYs92ho1OS55JgEAlVOso4iJX4X5
+7NItreTsvuSUoS9uUB3be8tkG4FGKAk=
+=y4bN
+-----END PGP SIGNATURE-----
+
+--Qxx1br4bt0+wmkIi--

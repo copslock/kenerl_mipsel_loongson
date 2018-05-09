@@ -1,52 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:40:16 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:49168 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990412AbeENGkJEW4kc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2018 08:40:09 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0EB992184C;
-        Fri, 11 May 2018 21:56:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1526075776;
-        bh=4q89doqwTzuIH7mFLKdQMW1Z6hclnYkoq6fOjrO3Wzw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oebdb4uutOn+i+CzS7HpbMA3MpF1Dk1xBSrJdgb55xW+mriUQ6v9VZxn5dVPEqwXy
-         jr0dXgJ1wF9/e/Gst2MqUoZ7fNEyVXNpBkv606ndg+BmYDV8H4sbwFwqe+NJDwAzV9
-         uwTskZAcEEuRjSaNLEZdI0Q2TThZ3K2B1CFrwSV8=
-Date:   Fri, 11 May 2018 22:56:12 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     NeilBrown <neil@brown.name>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:41:07 +0200 (CEST)
+Received: from userp2130.oracle.com ([156.151.31.86]:38004 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990409AbeENGk7ktmfc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 08:40:59 +0200
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w49E1lDg116742;
+        Wed, 9 May 2018 14:01:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2017-10-26;
+ bh=ENy3aB6ke7maKFUKcd+EiGeFThI7TgqOlReo4HAWelQ=;
+ b=o6cvJVvXdHO7xrByj/lozWkUqwkZV1JODcI9EbBULezyQc96XaqgCaEskbw+Pc73lDZD
+ 9Uqmjcpywm1WO8MUBuCViH9c0MwS7I0MpU8leTXhjXC8tBLTbaDjXO8siNas+VX2XkGv
+ +BBGlWS0/2L+HF852rqZVMaCMvYRjPBF1yJzrSfYMpNtGros2vTFt12hk7xu0ln8W3n+
+ fcbs9Z06+8uThr1PLRAZDGHyUEHFijXSE8u5NHZtCzgk3Q3Y/EHR+LmvPezbXOkkxJuo
+ DpK0gOmZmatCXBMy6CPOt6MXYhYRbMAbzGmQSLD1QI4M50Z/KGbU6AyaXbiDQccN0PFa Bg== 
+Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
+        by userp2130.oracle.com with ESMTP id 2hs426nv25-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 May 2018 14:01:48 +0000
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserv0022.oracle.com (8.14.4/8.14.4) with ESMTP id w49E1jGC030468
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 9 May 2018 14:01:45 GMT
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id w49E1i3S003791;
+        Wed, 9 May 2018 14:01:44 GMT
+Received: from mwanda (/197.254.35.146)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 09 May 2018 07:01:43 -0700
+Date:   Wed, 9 May 2018 17:01:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-mips@linux-mips.org,
+        linux-clk@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MIPS: c-r4k: fix data corruption related to cache
- coherence.
-Message-ID: <20180511215611.GB20355@jamesdev>
-References: <87sh7klyhc.fsf@notabene.neil.brown.name>
- <20180425214650.GA25917@saruman>
- <87h8nzlzf1.fsf@notabene.neil.brown.name>
- <20180425220834.GC25917@saruman>
- <87vacdlf8d.fsf@notabene.neil.brown.name>
- <87lgcwcvj2.fsf@notabene.neil.brown.name>
- <20180507201655.GA27369@jamesdev>
- <87o9hraqlf.fsf@notabene.neil.brown.name>
+Subject: Re: [PATCH] clk: boston: fix memory leak of 'onecell' on error
+ return paths
+Message-ID: <20180509140135.4dndt3baomtxups5@mwanda>
+References: <20180509134031.11611-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XOIedfhf+7KOe/yw"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87o9hraqlf.fsf@notabene.neil.brown.name>
-User-Agent: Mutt/1.9.5 (2018-04-13)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180509134031.11611-1-colin.king@canonical.com>
+User-Agent: NeoMutt/20170609 (1.8.3)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=8887 signatures=668698
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1711220000 definitions=main-1805090133
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63918
+X-archive-position: 63919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,44 +72,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, May 09, 2018 at 02:40:31PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are several error return paths that don't free up onecell
+> and hence we have some memory leaks. Add an error exit path that
+> kfree's onecell to fix the leaks.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/clk/imgtec/clk-boston.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clk/imgtec/clk-boston.c b/drivers/clk/imgtec/clk-boston.c
+> index 15af423cc0c9..d6bc468ff551 100644
+> --- a/drivers/clk/imgtec/clk-boston.c
+> +++ b/drivers/clk/imgtec/clk-boston.c
+> @@ -73,27 +73,34 @@ static void __init clk_boston_setup(struct device_node *np)
+>  	hw = clk_hw_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
+>  	if (IS_ERR(hw)) {
+>  		pr_err("failed to register input clock: %ld\n", PTR_ERR(hw));
+> -		return;
+> +		goto error;
 
---XOIedfhf+7KOe/yw
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I hate vague label names like "error" and "out"...
 
-On Tue, May 08, 2018 at 11:22:36AM +1000, NeilBrown wrote:
-> On Mon, May 07 2018, James Hogan wrote:
->=20
-> > On Mon, May 07, 2018 at 07:40:49AM +1000, NeilBrown wrote:
-> >>=20
-> >> Hi James,
-> >>  this hasn't appear in linux-next yet, or in any branch
-> >>  of
-> >>    git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
-> >>=20
-> >>  Should I expect it to?
-> >
-> > Sorry Neil, I haven't applied it yet. I'm planning to get a few fixes
-> > sorted this week, at which point it would land in the mips-fixes branch
-> > at the above repo.
->=20
-> Cool, thanks.  I just wanted to be sure it hadn't got lost somehow.
+There are a bunch of other resources that we should free if we decide
+it's worth freeing things.  Can this even boot without the clk?  When
+the label names says what is freed, then you mentally only have to keep
+track of the most recently allocated resource.  So if
 
-Now pushed.
+	hw = clk_hw_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
 
-Thanks
-James
+succeeds then the next goto is going to "goto free_clk_input;".
 
---XOIedfhf+7KOe/yw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvYRegAKCRA1zuSGKxAj
-8k+cAPwINk3TzhEwI2ihwliaC2od+nT6EC7fExzUTqgV/oRjNwEAxDNL493COhi0
-X1TZWyeMreE6ETF8yPlL5483oyRagQ0=
-=p3I8
------END PGP SIGNATURE-----
-
---XOIedfhf+7KOe/yw--
+regards,
+dan carpenter

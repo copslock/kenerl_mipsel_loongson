@@ -1,50 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:20:27 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:39206 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990404AbeENGURtQn-O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2018 08:20:17 +0200
-Received: from mail-qk0-f182.google.com (mail-qk0-f182.google.com [209.85.220.182])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8DE84217C6;
-        Thu, 10 May 2018 12:55:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1525956946;
-        bh=OmsVtZ4SDuKoPyBgahj2ZpN9Igaypgm9SDjKOYQho/Y=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=GOJZGXUDxe9iQXrKDDqpBQldD99NdMmOat+4/R5KoNoOO3t5EYg0Jd0/b7gNNOHK7
-         PjqgtCA8MeaUkIvK05iRs8z9kMa+nLRTl+nRqSiez8Eg26M4qjSwdAzIVVtgDaF1Bd
-         EiFfULRG0sXrY4fwBQYHOqE+1MTwuSWZQvuJ02EY=
-Received: by mail-qk0-f182.google.com with SMTP id p186-v6so1447729qkd.1;
-        Thu, 10 May 2018 05:55:46 -0700 (PDT)
-X-Gm-Message-State: ALKqPwfGNFvHbH88UdMU41dgkB2fYiGbxq2k636p4ueowC0bD8XlSTGy
-        ohUAIsxdcTYbwLmNquKS72YOVGijvuSLlAEfgA==
-X-Google-Smtp-Source: AB8JxZo9xQhcUj0eV3yHsSzC8ohG53OusWtwvmoJkbbS3qvOhk2H96dvVY7f4KokBkX3Co6T6pAP6Tm+VJzAvgtciWI=
-X-Received: by 2002:a37:4050:: with SMTP id n77-v6mr1046020qka.213.1525956945811;
- Thu, 10 May 2018 05:55:45 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.12.155.2 with HTTP; Thu, 10 May 2018 05:55:25 -0700 (PDT)
-In-Reply-To: <20180508233758.GE14903@jamesdev>
-References: <20180328011435.29776-1-robh@kernel.org> <20180508233758.GE14903@jamesdev>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 10 May 2018 07:55:25 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+MP5+z7BqRSrOkB2XBFgo9r-E5roUKwZoTaV54SiVP8A@mail.gmail.com>
-Message-ID: <CAL_Jsq+MP5+z7BqRSrOkB2XBFgo9r-E5roUKwZoTaV54SiVP8A@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: ralink: use memblock instead of rescanning the FDT
-To:     James Hogan <jhogan@kernel.org>
-Cc:     John Crispin <john@phrozen.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:22:31 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:40534 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990435AbeENGWXeD8IO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 08:22:23 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh@kernel.org>
+        James Hogan <jhogan@kernel.org>
+Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v3 6/8] MIPS: jz4780: dts: Fix watchdog node
+Date:   Thu, 10 May 2018 20:47:49 +0200
+Message-Id: <20180510184751.13416-6-paul@crapouillou.net>
+In-Reply-To: <20180510184751.13416-1-paul@crapouillou.net>
+References: <20180510184751.13416-1-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1525978115; bh=cho6jdLmU1bygSxSTOFRHZE2MnT+tIBVQx8REcN8NuQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=QQlqA2L1oVOBrQjgDFa7Xah1W1Ne4QuMy6fHbuUHyrNrZTpSSzvnomOmajRP9lcDVYDKBZ5rSIIs6qJ16rMGKJ3oJjVJ3TjUgF1ZVFMg7ngJK09PUXfwXHV26Ex7Acs7XUkp+wnWECCzEnrEC0vnzlEo8K36Xhl24u0kirXTBuw=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63907
+X-archive-position: 63908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,16 +41,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, May 8, 2018 at 6:38 PM, James Hogan <jhogan@kernel.org> wrote:
-> On Tue, Mar 27, 2018 at 08:14:35PM -0500, Rob Herring wrote:
->> There's no need to scan /memory nodes twice. The DT core code scans
->> nodes and adds memblocks already, so we can just use
->> memblock_phys_mem_size() to see if we have any memory already setup.
->
-> Hmm, on MIPS, early_init_dt_add_memory_arch() calls add_memory_region(),
-> which just modifies boot_mem_map. memblock isn't notified until after
-> plat_mem_setup() returns, in bootmem_init().
+- The previous node requested a memory area of 0x100 bytes, while the
+  driver only manipulates four registers present in the first 0x10 bytes.
 
-Yes, you're right. I guess first boot_mem_map needs to be converted to memblock.
+- The driver requests for the "rtc" clock, but the previous node did not
+  provide any.
 
-Rob
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Reviewed-by: Mathieu Malaterre <malat@debian.org>
+Acked-by: James Hogan <jhogan@kernel.org>
+---
+ Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt | 7 ++++++-
+ arch/mips/boot/dts/ingenic/jz4780.dtsi                            | 5 ++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+ v2: No change
+ v3: Also fix documentation
+
+diff --git a/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt b/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
+index cb44918f01a8..ce1cb72d5345 100644
+--- a/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
++++ b/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
+@@ -3,10 +3,15 @@ Ingenic Watchdog Timer (WDT) Controller for JZ4740 & JZ4780
+ Required properties:
+ compatible: "ingenic,jz4740-watchdog" or "ingenic,jz4780-watchdog"
+ reg: Register address and length for watchdog registers
++clocks: phandle to the RTC clock
++clock-names: should be "rtc"
+ 
+ Example:
+ 
+ watchdog: jz4740-watchdog@10002000 {
+ 	compatible = "ingenic,jz4740-watchdog";
+-	reg = <0x10002000 0x100>;
++	reg = <0x10002000 0x10>;
++
++	clocks = <&cgu JZ4740_CLK_RTC>;
++	clock-names = "rtc";
+ };
+diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+index 9b5794667aee..a52f59bf58c7 100644
+--- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+@@ -221,7 +221,10 @@
+ 
+ 	watchdog: watchdog@10002000 {
+ 		compatible = "ingenic,jz4780-watchdog";
+-		reg = <0x10002000 0x100>;
++		reg = <0x10002000 0x10>;
++
++		clocks = <&cgu JZ4780_CLK_RTCLK>;
++		clock-names = "rtc";
+ 	};
+ 
+ 	nemc: nemc@13410000 {
+-- 
+2.11.0

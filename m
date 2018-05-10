@@ -1,42 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:25:16 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:41224 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990409AbeENGZI0htFc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2018 08:25:08 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:38:17 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:48800 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990408AbeENGiGaKldc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2018 08:38:06 +0200
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3D4A62184B;
-        Fri, 11 May 2018 22:17:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1526077048;
-        bh=ZrdxgBec1toodlXsSYWrEkkoZ9D01aVukBHdmI2VnQM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cag2zSJghj4rAGY8pBX6uaFyKbg5Rrfv/29JSBgUBo3BiHZBqbCoNxozeZqzyCWMB
-         p6cG2PwzI5jFCRp56GFozQE2R3a9yh4+/9qZAEkV6STevhoIH3CH5KVWcgyLM0vMQL
-         fowCoI9vAbNcIt3Vx0VgvJM0qiUjzgs/dhRSY82U=
-Date:   Fri, 11 May 2018 23:17:24 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: ptrace: expose FIR register through FP regset
-Message-ID: <20180511221723.GC20355@jamesdev>
-References: <alpine.DEB.2.00.1804301510100.11756@tp.orcam.me.uk>
+        by mx1.redhat.com (Postfix) with ESMTPS id 22AC8EFF09;
+        Thu, 10 May 2018 16:42:27 +0000 (UTC)
+Received: from [10.36.116.206] (ovpn-116-206.ams2.redhat.com [10.36.116.206])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 5034510E60DA;
+        Thu, 10 May 2018 16:42:18 +0000 (UTC)
+Subject: Re: [PATCH] kvm: Change return type to vm_fault_t
+To:     Souptick Joarder <jrdr.linux@gmail.com>, jhogan@kernel.org,
+        ralf@linux-mips.org, paulus@ozlabs.org, benh@kernel.crashing.org,
+        mpe@ellerman.id.au, borntraeger@de.ibm.com,
+        frankja@linux.vnet.ibm.com, david@redhat.com, cohuck@redhat.com,
+        schwidefsky@de.ibm.com, tglx@linutronix.de, mingo@redhat.com,
+        christoffer.dall@linaro.org, marc.zyngier@arm.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        willy@infradead.org
+References: <20180418191958.GA25806@jordon-HP-15-Notebook-PC>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <4fb6e990-080b-0612-3fcd-f2082185f8ff@redhat.com>
+Date:   Thu, 10 May 2018 18:42:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vOmOzSkFvhd7u8Ms"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1804301510100.11756@tp.orcam.me.uk>
-User-Agent: Mutt/1.9.5 (2018-04-13)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180418191958.GA25806@jordon-HP-15-Notebook-PC>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.1]); Thu, 10 May 2018 16:42:27 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.1]); Thu, 10 May 2018 16:42:27 +0000 (UTC) for IP:'10.11.54.3' DOMAIN:'int-mx03.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'pbonzini@redhat.com' RCPT:''
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63916
+X-archive-position: 63917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,46 +94,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 18/04/2018 21:19, Souptick Joarder wrote:
+> Use new return type vm_fault_t for fault handler. For
+> now, this is just documenting that the function returns
+> a VM_FAULT value rather than an errno. Once all instances
+> are converted, vm_fault_t will become a distinct type.
+> 
+> commit 1c8f422059ae ("mm: change return type to vm_fault_t")
+> 
+> Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+> Reviewed-by: Matthew Wilcox <mawilcox@microsoft.com>
+> ---
+>  arch/mips/kvm/mips.c       | 2 +-
+>  arch/powerpc/kvm/powerpc.c | 2 +-
+>  arch/s390/kvm/kvm-s390.c   | 2 +-
+>  arch/x86/kvm/x86.c         | 2 +-
+>  include/linux/kvm_host.h   | 2 +-
+>  virt/kvm/arm/arm.c         | 2 +-
+>  virt/kvm/kvm_main.c        | 2 +-
+>  7 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+> index 2549fdd..03e0e0f 100644
+> --- a/arch/mips/kvm/mips.c
+> +++ b/arch/mips/kvm/mips.c
+> @@ -1076,7 +1076,7 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+>  	return -ENOIOCTLCMD;
+>  }
+> 
+> -int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+> +vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>  {
+>  	return VM_FAULT_SIGBUS;
+>  }
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 403e642..3099dee 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -1825,7 +1825,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  	return r;
+>  }
+> 
+> -int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+> +vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>  {
+>  	return VM_FAULT_SIGBUS;
+>  }
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index ba4c709..24af487 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -3941,7 +3941,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  	return r;
+>  }
+> 
+> -int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+> +vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>  {
+>  #ifdef CONFIG_KVM_S390_UCONTROL
+>  	if ((vmf->pgoff == KVM_S390_SIE_PAGE_OFFSET)
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c8a0b54..95d8102 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -3827,7 +3827,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  	return r;
+>  }
+> 
+> -int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+> +vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>  {
+>  	return VM_FAULT_SIGBUS;
+>  }
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index ac0062b..8eeb062 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -736,7 +736,7 @@ long kvm_arch_dev_ioctl(struct file *filp,
+>  			unsigned int ioctl, unsigned long arg);
+>  long kvm_arch_vcpu_ioctl(struct file *filp,
+>  			 unsigned int ioctl, unsigned long arg);
+> -int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf);
+> +vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf);
+> 
+>  int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext);
+> 
+> diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
+> index 86941f6..6c8cc31 100644
+> --- a/virt/kvm/arm/arm.c
+> +++ b/virt/kvm/arm/arm.c
+> @@ -163,7 +163,7 @@ int kvm_arch_create_vcpu_debugfs(struct kvm_vcpu *vcpu)
+>  	return 0;
+>  }
+> 
+> -int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+> +vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>  {
+>  	return VM_FAULT_SIGBUS;
+>  }
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 4501e65..45eb54b 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2341,7 +2341,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+>  }
+>  EXPORT_SYMBOL_GPL(kvm_vcpu_on_spin);
+> 
+> -static int kvm_vcpu_fault(struct vm_fault *vmf)
+> +static vm_fault_t kvm_vcpu_fault(struct vm_fault *vmf)
+>  {
+>  	struct kvm_vcpu *vcpu = vmf->vma->vm_file->private_data;
+>  	struct page *page;
+> --
+> 1.9.1
+> 
 
---vOmOzSkFvhd7u8Ms
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied, thanks.
 
-On Mon, Apr 30, 2018 at 03:56:47PM +0100, Maciej W. Rozycki wrote:
-> Correct commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")=20
-> and expose the FIR register using the unused 4 bytes at the end of the=20
-> NT_PRFPREG regset.  Without that register included clients cannot use=20
-> the PTRACE_GETREGSET request to retrieve the complete FPU register set
-> and have to resort to one of the older interfaces, either PTRACE_PEEKUSR=
-=20
-> or PTRACE_GETFPREGS, to retrieve the missing piece of data.  Also the=20
-> register is irreversibly missing from core dumps.
->=20
-> This register is architecturally hardwired and read-only so the write
-> path does not matter.  Ignore data supplied on writes then.
->=20
-> Cc: stable@vger.kernel.org # v3.13+
-> Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-> Signed-off-by: James Hogan <james.hogan@mips.com>
-> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-
-Looks good, applied for 4.17.
-
-Thanks for cleaning & submitting this :)
-
-Cheers
-James
-
---vOmOzSkFvhd7u8Ms
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvYWcgAKCRA1zuSGKxAj
-8jHbAPwKPV3zZ3xQ8iU8BIT1DKTp2MEF22z1ERxpaHFy4YeIzwEA2mVIMs32Qj6C
-VxMQ3RC2QrdX5zfROPHA+WXa3YrZxwE=
-=j+0l
------END PGP SIGNATURE-----
-
---vOmOzSkFvhd7u8Ms--
+Paolo

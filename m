@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:23:54 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:40552 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:24:07 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:40582 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990466AbeENGWYyFnYO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 08:22:24 +0200
+        with ESMTP id S23990444AbeENGW2rLLEO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 08:22:28 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Guenter Roeck <linux@roeck-us.net>,
         Rob Herring <robh+dt@kernel.org>,
@@ -14,17 +14,15 @@ Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
         linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3 7/8] MIPS: qi_lb60: Enable the jz4740-wdt driver
-Date:   Thu, 10 May 2018 20:47:50 +0200
-Message-Id: <20180510184751.13416-7-paul@crapouillou.net>
-In-Reply-To: <20180510184751.13416-1-paul@crapouillou.net>
-References: <20180510184751.13416-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1525978120; bh=3zzI4GyBwG8mFLlX3pr04xREWNwioGuci8T6qaqzgBk=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=XrVxuiTElqLVPLSppefcklZPXPmW8w4ywITISavIinku5KsuJBpB35X51FXk3mZ/Lj+TuBPHdnd+eAQJCVoCJ+mVkxQ60RTrdu27CB5lxODvzCcbdcm0wpcokEEhNfZjfDbaKBt8gupcKBTieaSMkxOadxjFIVyR9J3XhEH/TyU=
+Subject: [PATCH v3 1/8] watchdog: JZ4740: Disable clock after stopping counter
+Date:   Thu, 10 May 2018 20:47:44 +0200
+Message-Id: <20180510184751.13416-1-paul@crapouillou.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1525978090; bh=1Jh2aRtSugJI0ust70Bl28je/me+OuaTKCbRrDR5MiU=; h=From:To:Cc:Subject:Date:Message-Id; b=nBpXckX4pYSm2NPVBIBRhjpiYrDOHsbBUQNXEzy+eHhqZzYq+Jrs4PjBs2VodgFwrG04nSQsYtaCjB/kOgGIjJRRgzWIvLulHbHV4FMycdyXYRYpAduuP4xAz/IxZBrcqS3K9tiobzcig2g6POOMMm3XsrEvKs/YpmdfTOJL29E=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63914
+X-archive-position: 63915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,35 +39,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The watchdog is an useful piece of hardware, so there's no reason not to
-enable it.
-
-Besides, this is important for restart to work after the change in the
-next commit.
-
-This commit enables the Kconfig option in the qi_lb60 defconfig.
+Previously, the clock was disabled first, which makes the watchdog
+component insensitive to register writes.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: James Hogan <jhogan@kernel.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/mips/configs/qi_lb60_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/watchdog/jz4740_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
  v2: No change
  v3: No change
 
-diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-index 3b02ff9a7c64..d8b7211a7b0f 100644
---- a/arch/mips/configs/qi_lb60_defconfig
-+++ b/arch/mips/configs/qi_lb60_defconfig
-@@ -72,6 +72,8 @@ CONFIG_POWER_SUPPLY=y
- CONFIG_BATTERY_JZ4740=y
- CONFIG_CHARGER_GPIO=y
- # CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_JZ4740_WDT=y
- CONFIG_MFD_JZ4740_ADC=y
- CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
+diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
+index aafbeb96561b..55c9a1f26498 100644
+--- a/drivers/watchdog/jz4740_wdt.c
++++ b/drivers/watchdog/jz4740_wdt.c
+@@ -124,8 +124,8 @@ static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
+ {
+ 	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+ 
+-	jz4740_timer_disable_watchdog();
+ 	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
++	jz4740_timer_disable_watchdog();
+ 
+ 	return 0;
+ }
 -- 
 2.11.0

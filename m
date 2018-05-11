@@ -1,40 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:00:48 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:33722 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 08:05:26 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:34636 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990394AbeENGASRXwsO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2018 08:00:18 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S23990392AbeENGFR6YVcO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2018 08:05:17 +0200
+Received: from localhost.localdomain (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 20831217A5;
-        Fri, 11 May 2018 21:53:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2809221842;
+        Fri, 11 May 2018 21:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1526075635;
-        bh=q8oq6HdPF8xJyeE1IJqy7NlgAs61+92JGaiyQLn9oRc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nuy7U6kkFziw0/HvivD4JijLP5KJk/vy1i9bg2BwT+jXWdF//qEH7bz/1ye272c4j
-         iwDgtBVOkcuXes1n1wPgmI049UQ6mf9l1hCb6/xwK8MV4r/fAoY91PsACzLtt5vVXR
-         Wa66KOHiFDErJ2dgnYWfuUK0mcLzn7WF5xompiQM=
-Date:   Fri, 11 May 2018 22:53:51 +0100
+        s=default; t=1526075251;
+        bh=QK1krVu+vTdNhByG7A3Ta8YeqNRfRs860xg4CmAA6oA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:In-Reply-To:
+         References:From;
+        b=kX6p44IfWOq9/Xdj7vlHZ8l92kYOaAS6Z6RpN1ly2OLUEWLu4gNyMdxACBiFtR109
+         YUoaCYPdddZJHGCvi41BFd60ZAGqVyLP/mY4mc2OMNCJURbiKUVXh3jbcAosos8g45
+         S+6NIjkjZgDGJm9o8jBmL4yorZAkzVv/Xs3D4fhU=
 From:   James Hogan <jhogan@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MIPS: Fix build with DEBUG_ZBOOT and MACH_JZ4770
-Message-ID: <20180511215350.GA20355@jamesdev>
-References: <20180305170704.17073-1-paul@crapouillou.net>
- <20180328153812.2592-1-paul@crapouillou.net>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
-Content-Disposition: inline
-In-Reply-To: <20180328153812.2592-1-paul@crapouillou.net>
-User-Agent: Mutt/1.9.5 (2018-04-13)
+To:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        user-mode-linux-devel@lists.sourceforge.net
+Cc:     James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Matthew Fortune <matthew.fortune@mips.com>,
+        Robert Suchanek <robert.suchanek@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v4 4/4] MIPS: Workaround GCC __builtin_unreachable reordering bug
+Date:   Fri, 11 May 2018 22:47:02 +0100
+Message-Id: <0c24eb463e559aaa379b23196329e995b71faf29.1526074770.git-series.jhogan@kernel.org>
+X-Mailer: git-send-email 2.17.0
+In-Reply-To: <cover.a2e1d7681cb1ff2808945fc00db5f29c2f011783.1526074770.git-series.jhogan@kernel.org>
+References: <cover.a2e1d7681cb1ff2808945fc00db5f29c2f011783.1526074770.git-series.jhogan@kernel.org>
+In-Reply-To: <cover.a2e1d7681cb1ff2808945fc00db5f29c2f011783.1526074770.git-series.jhogan@kernel.org>
+References: <cover.a2e1d7681cb1ff2808945fc00db5f29c2f011783.1526074770.git-series.jhogan@kernel.org>
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63902
+X-archive-position: 63903
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,41 +58,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: Paul Burton <paul.burton@mips.com>
 
---huq684BweRXVnRxX
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Older versions of GCC for the MIPS architecture suffer from a bug which
+can lead to instructions from beyond an unreachable statement being
+incorrectly reordered into earlier branch delay slots if the unreachable
+statement is the only content of a case in a switch statement. This can
+lead to seemingly random behaviour, such as invalid memory accesses from
+incorrectly reordered loads or stores, and link failures on microMIPS
+builds.
 
-On Wed, Mar 28, 2018 at 05:38:12PM +0200, Paul Cercueil wrote:
-> The debug definitions were missing for MACH_JZ4770, resulting in a build
-> failure when DEBUG_ZBOOT was set.
->=20
-> Since the UART addresses are the same across all Ingenic SoCs, we just
-> use a #ifdef CONFIG_MACH_INGENIC instead of checking for individual
-> Ingenic SoCs.
->=20
-> Additionally, I added a #define for the UART0 address in-code and dropped
-> the <asm/mach-jz4740/base.h> include, for the reason that this include
-> file is slowly being phased out as the whole platform is being moved to
-> devicetree.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+See this potential GCC fix for details:
 
-Applied for 4.17 with fixes tag and 4.16 stable tag.
+    https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
 
-Thanks
-James
+This bug can be worked around by placing a volatile asm statement, which
+GCC is prevented from reordering past, prior to the
+__builtin_unreachable call. This was actually done for other reasons by
+commit 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()"), but
+without the MIPS specific .insn, which broke microMIPS builds on newer
+GCC 7.2 toolchains with errors like the following:
 
---huq684BweRXVnRxX
-Content-Type: application/pgp-signature; name="signature.asc"
+    arch/mips/mm/dma-default.s:3265: Error: branch to a symbol in another ISA mode
+    arch/mips/mm/dma-default.s:5027: Error: branch to a symbol in another ISA mode
 
------BEGIN PGP SIGNATURE-----
+The original bug affects at least a maltasmvp_defconfig kernel built
+from the v4.4 tag using GCC 4.9.2 (from a Codescape SDK 2015.06-05
+toolchain), with the result being an address exception taken after log
+messages about the L1 caches (during probe of the L2 cache):
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvYQ6wAKCRA1zuSGKxAj
-8uz0AQC9PKGntccWQ6m5z6EDw5V9yNFMq6qwunv73lq2de7pgQD9H4foYjoxYig3
-4Ayuijs6bzL/RR4lyI88f3pLjNjBOg8=
-=T+SI
------END PGP SIGNATURE-----
+    Initmem setup node 0 [mem 0x0000000080000000-0x000000009fffffff]
+    VPE topology {2,2} total 4
+    Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
+    Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 32 bytes
+    <AdEL exception here>
 
---huq684BweRXVnRxX--
+This is early enough that the kernel exception vectors are not in use,
+so any further output depends upon the bootloader. This is reproducible
+in QEMU where no further output occurs - ie. the system hangs here.
+Given the nature of the bug it may potentially be hit with differing
+symptoms.
+
+Fixes: 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+[jhogan@kernel.org: Forward port and use asm/compiler.h instead of
+ asm/compiler-gcc.h]
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Reviewed-by: Paul Burton <paul.burton@mips.com>
+Cc: Matthew Fortune <matthew.fortune@mips.com>
+Cc: Robert Suchanek <robert.suchanek@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mips@linux-mips.org
+---
+This is an alternative approach to this earlier patch which seems to
+have been rejected:
+
+    https://patchwork.linux-mips.org/patch/12556/
+    https://marc.info/?l=linux-mips&m=145555921408274&w=2
+
+Changes in v3 (James):
+- Forward port to v4.17-rc and update commit message.
+- Drop stable tag for now.
+
+Changes in v2 (Paul):
+- Remove generic-y entry.
+---
+ arch/mips/include/asm/compiler.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/arch/mips/include/asm/compiler.h b/arch/mips/include/asm/compiler.h
+index e081a265f422..ff2a412899d4 100644
+--- a/arch/mips/include/asm/compiler.h
++++ b/arch/mips/include/asm/compiler.h
+@@ -8,6 +8,29 @@
+ #ifndef _ASM_COMPILER_H
+ #define _ASM_COMPILER_H
+ 
++/*
++ * With GCC v4.5 onwards can use __builtin_unreachable to indicate to the
++ * compiler that a particular code path will never be hit. This allows it to be
++ * optimised out of the generated binary.
++ *
++ * Unfortunately GCC from at least v4.9.2 to current head of tree as of May
++ * 2016 suffer from a bug that can lead to instructions from beyond an
++ * unreachable statement being incorrectly reordered into earlier delay slots
++ * if the unreachable statement is the only content of a case in a switch
++ * statement. This can lead to seemingly random behaviour, such as invalid
++ * memory accesses from incorrectly reordered loads or stores. See this
++ * potential GCC fix for details:
++ *
++ *   https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
++ *
++ * We work around this by placing a volatile asm statement, which GCC is
++ * prevented from reordering past, prior to the __builtin_unreachable call. The
++ * .insn statement is required to ensure that any branches to the statement,
++ * which sadly must be kept due to the asm statement, are known to be branches
++ * to code and satisfy linker requirements for microMIPS kernels.
++ */
++#define barrier_before_unreachable() asm volatile(".insn")
++
+ #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+ #define GCC_IMM_ASM() "n"
+ #define GCC_REG_ACCUM "$0"
+-- 
+git-series 0.9.1

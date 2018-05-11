@@ -1,41 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2018 09:39:32 +0200 (CEST)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:57982 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992678AbeEHHjXaTBUK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 May 2018 09:39:23 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 681921529;
-        Tue,  8 May 2018 00:39:16 -0700 (PDT)
-Received: from [10.1.206.75] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 745253F592;
-        Tue,  8 May 2018 00:39:15 -0700 (PDT)
-Subject: Re: [PATCH] irqchip/irq-ath79-intc: add irq cascade driver for
- QCA9556 SoCs
-To:     John Crispin <john@phrozen.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-References: <20180507133714.17384-1-john@phrozen.org>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <ec4da5fd-0ade-e6bb-e779-d70d56c0da55@arm.com>
-Date:   Tue, 8 May 2018 08:39:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 07:41:05 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:60694 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991096AbeENFkzTOFHO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2018 07:40:55 +0200
+Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AA8B921739;
+        Fri, 11 May 2018 20:54:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1526072059;
+        bh=g59I1iNi3KiS8HoQ3FbYmocETVcu3/qSIm4+62vE5pw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NnUgkNgYZ8VaNFyEN1QxUMudIGJv0XgR65qdmoMU74P440daA5rwhhxGnoRck5114
+         8pISbOv1ASfkVucBVNAucJcSvZOeKHIVLHvXzKdEqtMh8bfwOuRrq1lfW0+gQeLPfF
+         tJ5XMhorcRBVYR5+tE8gXBE7fIySyMuqu/0AM8eo=
+Date:   Fri, 11 May 2018 21:54:14 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v3 5/8] MIPS: jz4740: dts: Add bindings for the
+ jz4740-wdt driver
+Message-ID: <20180511205413.GA18694@jamesdev>
+References: <5af5c20f.1c69fb81.e968b.17c0SMTPIN_ADDED_MISSING@mx.google.com>
 MIME-Version: 1.0
-In-Reply-To: <20180507133714.17384-1-john@phrozen.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="UugvWAfsgieZRqgk"
+Content-Disposition: inline
+In-Reply-To: <5af5c20f.1c69fb81.e968b.17c0SMTPIN_ADDED_MISSING@mx.google.com>
+User-Agent: Mutt/1.9.5 (2018-04-13)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63893
+X-archive-position: 63894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,180 +56,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi John,
 
-On 07/05/18 14:37, John Crispin wrote:
-> The QCA ATH79 MIPS target is being converted to pure OF. Right now the
-> platform code will setup the IRQ cascade found on the QCA9556 and newer
-> SoCs and uses fixed IRQ numbers for the peripherals attached to the
-> cascade. This patch adds a proper driver based on the code previously
-> located inside arch/mips/ath79/irq.c.
-> 
-> Signed-off-by: John Crispin <john@phrozen.org>
-> ---
->  drivers/irqchip/Makefile         |   1 +
->  drivers/irqchip/irq-ath79-intc.c | 108 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 109 insertions(+)
->  create mode 100644 drivers/irqchip/irq-ath79-intc.c
-> 
-> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-> index d27e3e3619e0..f63c94a92e25 100644
-> --- a/drivers/irqchip/Makefile
-> +++ b/drivers/irqchip/Makefile
-> @@ -3,6 +3,7 @@ obj-$(CONFIG_IRQCHIP)			+= irqchip.o
->  
->  obj-$(CONFIG_ALPINE_MSI)		+= irq-alpine-msi.o
->  obj-$(CONFIG_ATH79)			+= irq-ath79-cpu.o
-> +obj-$(CONFIG_ATH79)			+= irq-ath79-intc.o
->  obj-$(CONFIG_ATH79)			+= irq-ath79-misc.o
->  obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
->  obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
-> diff --git a/drivers/irqchip/irq-ath79-intc.c b/drivers/irqchip/irq-ath79-intc.c
-> new file mode 100644
-> index 000000000000..ba15b1ac98b3
-> --- /dev/null
-> +++ b/drivers/irqchip/irq-ath79-intc.c
-> @@ -0,0 +1,108 @@
-> +/*
-> + *  Atheros QCA955X specific interrupt cascade handling
-> + *
-> + *  Copyright (C) 2018 John Crispin <john@phrozen.org>
-> + *
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/interrupt.h>
-> +#include <linux/irqchip.h>
-> +#include <linux/of.h>
-> +#include <linux/of_irq.h>
-> +#include <linux/irqdomain.h>
-> +
-> +#include <asm/irq_cpu.h>
-> +#include <asm/mach-ath79/ath79.h>
-> +#include <asm/mach-ath79/ar71xx_regs.h>
-> +
-> +#define ATH79_MAX_INTC_CASCADE	3
+--UugvWAfsgieZRqgk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Why 3? Is that a property of the HW? Or could it be inferred from the DT?
+On Fri, May 11, 2018 at 01:17:04PM -0300, Paul Cercueil wrote:
+> Le 11 mai 2018 11:52, James Hogan <jhogan@kernel.org> a =C3=A9crit :
+> > Otherwise=20
+> > Acked-by: James Hogan <jhogan@kernel.org>=20
+> >
+> > I'm happy to apply for 4.18 with that change if you want it to go=20
+> > through the MIPS tree.=20
+>=20
+> Yes please!
 
-> +
-> +struct ath79_intc {
-> +	struct irq_chip chip;
-> +	u32 irq;
-> +	u32 pending_mask;
-> +	u32 irq_mask[ATH79_MAX_INTC_CASCADE];
-> +};
-> +
-> +static void ath79_intc_irq_handler(struct irq_desc *desc)
-> +{
-> +	struct irq_domain *domain = irq_desc_get_handler_data(desc);
-> +	struct ath79_intc *intc = domain->host_data;
-> +	u32 pending;
-> +
-> +	pending = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
-> +	pending &= intc->pending_mask;
+Done
 
-Isn't this "pending_mask" more of an "enabled"?
+Thanks
+James
 
-> +
-> +	if (pending) {
-> +		int i;
-> +
-> +		for (i = 0; i < domain->hwirq_max; i++)
+--UugvWAfsgieZRqgk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Don't. This is an implementation detail of the irq domain, and you're
-not supposed to access that field.
+-----BEGIN PGP SIGNATURE-----
 
-> +			if (pending & intc->irq_mask[i])
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvYC9AAKCRA1zuSGKxAj
+8phyAQDZoZqOKloD7PM+wLPxstrAw1VWIjKL+v52Gvt1yS1XngD/TnyxIuRbRmnd
+htOP4kysT09dfNSDNBH3WOqrPo2xrAY=
+=3t2e
+-----END PGP SIGNATURE-----
 
-What are you trying to do here? Can't you directly infer the pending
-interrupt from the pending field?
-
-> +				generic_handle_irq(irq_find_mapping(domain, i));
-> +	} else {
-> +		spurious_interrupt();
-> +	}
-
-Missing chained_irq_enter/exit calls.
-
-> +}
-> +
-> +static void ath79_intc_irq_unmask(struct irq_data *d)
-> +{
-> +}
-> +
-> +static void ath79_intc_irq_mask(struct irq_data *d)
-> +{
-> +}
-
-So you cannot mask or unmask an interrupt? What is this thing? An OR gate?
-
-> +
-> +static int ath79_intc_map(struct irq_domain *d, unsigned int irq,
-> +			  irq_hw_number_t hw)
-> +{
-> +	struct ath79_intc *intc = d->host_data;
-> +
-> +	irq_set_chip_and_handler(irq, &intc->chip, handle_level_irq);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct irq_domain_ops ath79_irq_domain_ops = {
-> +	.xlate = irq_domain_xlate_onecell,
-> +	.map = ath79_intc_map,
-> +};
-> +
-> +static int __init qca9556_intc_of_init(
-> +	struct device_node *node, struct device_node *parent)
-> +{
-> +	struct irq_domain *domain;
-> +	struct ath79_intc *intc;
-> +	int cnt, i;
-> +
-> +	cnt = of_property_count_u32_elems(node, "qcom,pending-bits");
-
-Where is this binding documented? What does "pending_bits" even mean if
-it is statically defined?
-
-> +	if (cnt > ATH79_MAX_INTC_CASCADE)
-> +		panic("Too many INTC pending bits\n");
-> +
-> +	intc = kzalloc(sizeof(*intc), GFP_KERNEL);
-> +	if (!intc)
-> +		panic("Failed to allocate INTC memory\n");
-> +	intc->chip.name = "INTC";
-> +	intc->chip.irq_unmask = ath79_intc_irq_unmask,
-> +	intc->chip.irq_mask = ath79_intc_irq_mask,
-> +
-> +	of_property_read_u32_array(node, "qcom,pending-bits", intc->irq_mask,
-> +				   cnt);
-> +	for (i = 0; i < cnt; i++)
-> +		intc->pending_mask |= intc->irq_mask[i];
-> +
-> +	intc->irq = irq_of_parse_and_map(node, 0);
-> +	if (!intc->irq)
-> +		panic("Failed to get INTC IRQ");
-
-Do you really need the panics in this function? That seem a bit of a
-harsh treatment for something that is not necessarily fatal.
-
-> +
-> +	domain = irq_domain_add_linear(node, cnt, &ath79_irq_domain_ops,
-> +				       intc);
-> +	irq_set_chained_handler_and_data(intc->irq, ath79_intc_irq_handler,
-> +					 domain);
-> +
-> +	return 0;
-> +}
-> +IRQCHIP_DECLARE(qca9556_intc, "qcom,qca9556-intc",
-> +		qca9556_intc_of_init);
-> 
-
-Thanks,
-
-	M.
--- 
-Jazz is not dead. It just smells funny...
+--UugvWAfsgieZRqgk--

@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 22:52:20 +0200 (CEST)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:40586
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992670AbeENUwMtrT8Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 22:52:12 +0200
-Received: by mail-wm0-x242.google.com with SMTP id j5-v6so17629768wme.5
-        for <linux-mips@linux-mips.org>; Mon, 14 May 2018 13:52:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 22:53:24 +0200 (CEST)
+Received: from mail-wm0-x22e.google.com ([IPv6:2a00:1450:400c:c09::22e]:38741
+        "EHLO mail-wm0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992692AbeENUxQTwVWZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 22:53:16 +0200
+Received: by mail-wm0-x22e.google.com with SMTP id m129-v6so17572263wmb.3
+        for <linux-mips@linux-mips.org>; Mon, 14 May 2018 13:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=o6oKlTV0ZSFdN1HSa1jb+7Vcc9kymBVzW2eicFTjQV4=;
-        b=hBfNVd3aJGxvme+zJ1aSLCylm4N1ZVzzJW8VXWE7QnPUKMKrmpKOKJRVDmgZOEQY2Q
-         jflvvfGv5NXvQrd/l4jeKOr577Ino9poudAzQbh/sNhzUuXb+rVg1e+HF5vDf22x+jG0
-         Wbu1A+QwI1kRhursf51mkjYESsumzcrPTevto6OniXZkajhn3pL2RkwmayaZ89TdG0X6
-         oaRoBo4o0O2Qsr2aHOa0/hb5pTVGACl+PHTIFwRzrvSUlD+I1bwWR/Y9Jg7oHGhBtVJE
-         3v5SwV8K2XBa7MlJsPSdIuYiFYrFiNPKnp8B3+XfK8ZXt9YhEwBTOMeBk0o7x1+WRftB
-         B2mQ==
+        bh=gdcU6PJ1oALTOOEaVaphdGQwKtp47M5GzPcgTRfgxMs=;
+        b=qPwEFxxSWtMbs4hLnFILX5xzBPIxZiuayEFaQQBZ142+fcdIesjfSbTTdal/Pr9Wa6
+         62BoAmWSI2iQY1ZvlTN6VaW3FhVcuKOMiGo4plk1O0npNziPxOj4yOT4YPQcc4Khwt65
+         x+IOcDj/cCvzVQQRm++cQ+OSvMVllVS3gJLSWyM14Wk6CtWF1CoZ8+SA/9J5/eQnvMLi
+         +WyFHDV6+cEVysTKjAQmuM2sfEy5ypLKCVhEUm5m3w0T68AYgA841jPo9+dpuEE+E66l
+         fNbjFDDO46wrauwoiS/Nj5dIn3PbEblGY64TmLnca5IXgBpapCBLfoOVrwhynd73IaW9
+         ZVWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=o6oKlTV0ZSFdN1HSa1jb+7Vcc9kymBVzW2eicFTjQV4=;
-        b=fxfvbkkXQUnV7mgmmKrQyOX/jgyrFoiGK02Sxp8QZuDPLz9ihxBPFkAaJ8Tz3LRT+r
-         IZPfouMpHk6A34wKTPSqX2RL0zHFiiAJL85E8xzFgQNBELGvB/Ywc4OXPtr4BCp5R3yu
-         9xFiANkW/rgdYwDOdi/Ur5byPymA/LLWvHT5icHrkd/hCPy1TFodt0Kyr+gQcuEdASFu
-         Mc0yZz64Bmb4hs3IljEF1tXfjnqI1E5WR1Pm+/bAqsojH/z5hRz+LzUxfuQ/7/eDTP5i
-         dvo1l3F0wKkT6nImn8K+GzUcPFCjWYPOiKN3qCyXJ6zD2WTrFiBTjYCFxUg97uSntaVS
-         LOXg==
-X-Gm-Message-State: ALKqPweCofc8tZlDxwIGZac2f7GP0nYB+PXB7q5Uby61xc+z/HJSs8dT
-        hjKR8YlclMHwNeWKKUGmzsi/71Ez
-X-Google-Smtp-Source: AB8JxZoaueQ7uOnS01CMuM6gOCj302mEabuUzxuyGwj9tsRwid7FpMp3sNfaheayXOS7agKALI9HNA==
-X-Received: by 2002:aa7:c6d0:: with SMTP id b16-v6mr14261044eds.302.1526331127178;
-        Mon, 14 May 2018 13:52:07 -0700 (PDT)
+        bh=gdcU6PJ1oALTOOEaVaphdGQwKtp47M5GzPcgTRfgxMs=;
+        b=FwqUOaWLQxaUg5P5ZuIcUtr13tDgiVFjGve9YxIvC9hmqjdcy81LhWTCB38BLipioZ
+         DOzGtvhyNnggBleeTeQiRLjA+sWn/QoBsSwsuklKtyYzVpIUjuz3Z+pwA2MrwtOxENKD
+         QzqehT5gdXg2l6qOJZd9MnGZyGdod52q+IH1Z1IBvYVAyG9bEOkRNCq2L18viVPpIIoe
+         Z0izuRfh0ywDrMN/BrTQfudW3dZQn3JK8agDYgVPvOcDpdRRp+RY9kxtcy2KMSSenLx/
+         dBQGT92RcgnDaIejK2WsBirFv9oCtKeJuGLASeCUH7JQHXNShh9qeEAF/lem3gtpsj6X
+         y45w==
+X-Gm-Message-State: ALKqPwe2sFOoDB/205mzjzQFTOGlY0yf0Lkw7yEPFRO/dklTSQ/YHPH8
+        DlYzSN87i2V7AnsfbS6/5F5UxWO3
+X-Google-Smtp-Source: AB8JxZreH9uwHBabsK2WHr/rQoltOPiFquzdjHDu3y4WPrKXdwaM4FFwkKqrArI7k0+UEB4bqnw59A==
+X-Received: by 2002:aa7:c1c8:: with SMTP id d8-v6mr14130039edp.203.1526331188964;
+        Mon, 14 May 2018 13:53:08 -0700 (PDT)
 Received: from [10.69.41.93] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id h51-v6sm5522208eda.88.2018.05.14.13.52.03
+        by smtp.googlemail.com with ESMTPSA id y14-v6sm5360541ede.56.2018.05.14.13.53.05
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 14 May 2018 13:52:06 -0700 (PDT)
-Subject: Re: [PATCH net-next v3 2/7] net: phy: mscc-miim: Add MDIO driver
+        Mon, 14 May 2018 13:53:08 -0700 (PDT)
+Subject: Re: [PATCH net-next v3 3/7] dt-bindings: net: add DT bindings for
+ Microsemi Ocelot Switch
 To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
@@ -47,7 +48,7 @@ Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
         Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
 References: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
- <20180514200500.2953-3-alexandre.belloni@bootlin.com>
+ <20180514200500.2953-4-alexandre.belloni@bootlin.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
@@ -83,12 +84,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
  X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
  HGuUuzv+GKZ6nsysJw==
-Message-ID: <ffa13558-8ca0-00e5-9603-db8ee25a483e@gmail.com>
-Date:   Mon, 14 May 2018 13:52:01 -0700
+Message-ID: <cfbd952f-6255-5542-089b-34278e36525d@gmail.com>
+Date:   Mon, 14 May 2018 13:53:01 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.7.0
 MIME-Version: 1.0
-In-Reply-To: <20180514200500.2953-3-alexandre.belloni@bootlin.com>
+In-Reply-To: <20180514200500.2953-4-alexandre.belloni@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -96,7 +97,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63947
+X-archive-position: 63948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -114,81 +115,11 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 05/14/2018 01:04 PM, Alexandre Belloni wrote:
-> Add a driver for the Microsemi MII Management controller (MIIM) found on
-> Microsemi SoCs.
-> On Ocelot, there are two controllers, one is connected to the internal
-> PHYs, the other one can communicate with external PHYs.
+> DT bindings for the Ethernet switch found on Microsemi Ocelot platforms.
 > 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-Nothing critical, so:
-
 Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-
-[snip]
-
-> +static int mscc_miim_reset(struct mii_bus *bus)
-> +{
-> +	struct mscc_miim_dev *miim = bus->priv;
-> +
-> +	if (miim->phy_regs) {
-> +		writel(0, miim->phy_regs + MSCC_PHY_REG_PHY_CFG);
-> +		writel(0x1ff, miim->phy_regs + MSCC_PHY_REG_PHY_CFG);
-> +		mdelay(500);
-
-Can this become an msleep() in the future?
-
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int mscc_miim_probe(struct platform_device *pdev)
-> +{
-> +	struct resource *res;
-> +	struct mii_bus *bus;
-> +	struct mscc_miim_dev *dev;
-> +	int ret;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res)
-> +		return -ENODEV;
-> +
-> +	bus = devm_mdiobus_alloc_size(&pdev->dev, sizeof(*dev));
-> +	if (!bus)
-> +		return -ENOMEM;
-> +
-> +	bus->name = "mscc_miim";
-> +	bus->read = mscc_miim_read;
-> +	bus->write = mscc_miim_write;
-> +	bus->reset = mscc_miim_reset;
-> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mii", dev_name(&pdev->dev));
-> +	bus->parent = &pdev->dev;
-> +
-> +	dev = bus->priv;
-> +	dev->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	if (IS_ERR(dev->regs)) {
-> +		dev_err(&pdev->dev, "Unable to map MIIM registers\n");
-> +		return PTR_ERR(dev->regs);
-> +	}
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> +	if (res) {
-> +		dev->phy_regs = devm_ioremap_resource(&pdev->dev, res);
-> +		if (IS_ERR(dev->phy_regs)) {
-> +			dev_err(&pdev->dev, "Unable to map internal phy registers\n");
-> +			return PTR_ERR(dev->phy_regs);
-> +		}
-> +	}
-> +
-> +	if (pdev->dev.of_node)
-> +		ret = of_mdiobus_register(bus, pdev->dev.of_node);
-> +	else
-> +		ret = mdiobus_register(bus);
-
-There are other drivers doing that, we should probably make that the
-standard behavior of of_mdiobus_register(), like before, candidate for
-another patch.
 -- 
 Florian

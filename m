@@ -1,44 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 00:37:34 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:36454 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992684AbeENWh0xTJNU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 May 2018 00:37:26 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3E9BB21723;
-        Mon, 14 May 2018 22:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1526337440;
-        bh=CI6DZF33lBYIVAFSXy9A44er/xLU/P2oRM7sMW8iz0w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0ZaiXcWD3F8OUUDpRMDPAF58CJhhPOyKvGy75jZixpeBXCnnd3kpwit7AnFhf/qIP
-         yo8yDfgRZFLb6KrRD+AdEmbVnsHxkAi5/BGW4jr8eXZ4p2KrrBiPSzG/e7uMfU07Ox
-         +AbR6FR9dAy1i6UM9fLEev1nHJ+lbEFMZ3Ek4c7c=
-Date:   Mon, 14 May 2018 23:37:16 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Fix ptrace(2) PTRACE_PEEKUSR and PTRACE_POKEUSR
- accesses to o32 FGRs
-Message-ID: <20180514223715.GE29541@jamesdev>
-References: <alpine.DEB.2.00.1805141537210.10896@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 00:56:24 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:52089 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992684AbeENW4R4ohOU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 00:56:17 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 14 May 2018 22:56:11 +0000
+Received: from [10.20.78.96] (10.20.78.96) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 14
+ May 2018 15:56:38 -0700
+Date:   Mon, 14 May 2018 23:56:01 +0100
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     Matt Redfearn <matt.redfearn@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] MIPS: memset.S: EVA & fault support for
+ small_memset
+In-Reply-To: <20180416202234.GA23881@saruman>
+Message-ID: <alpine.DEB.2.00.1805142329120.10896@tp.orcam.me.uk>
+References: <1522315704-31641-1-git-send-email-matt.redfearn@mips.com> <1522315704-31641-2-git-send-email-matt.redfearn@mips.com> <20180416202234.GA23881@saruman>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BQPnanjtCNWHyqYD"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1805141537210.10896@tp.orcam.me.uk>
-User-Agent: Mutt/1.9.5 (2018-04-13)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.96]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1526338571-853316-30635-1409-1
+X-BESS-VER: 2018.6-r1805102334
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.192989
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63958
+X-archive-position: 63959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,60 +58,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Mon, 16 Apr 2018, James Hogan wrote:
 
---BQPnanjtCNWHyqYD
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > @@ -260,6 +260,11 @@
+> >  	jr		ra
+> >  	andi		v1, a2, STORMASK
+> 
+> This patch looks good, well spotted!
+> 
+> But whats that v1 write about? Any ideas? Seems to go back to the git
+> epoch, and $3 isn't in the clobber lists when __bzero* is called.
 
-On Mon, May 14, 2018 at 04:49:43PM +0100, Maciej W. Rozycki wrote:
-> Check the TIF_32BIT_FPREGS task setting of the tracee rather than the=20
-> tracer in determining the layout of floating-point general registers in=
-=20
-> the floating-point context, correcting access to odd-numbered registers=
-=20
-> for o32 tracees where the setting disagrees between the two processes.
->=20
-> Cc: stable@vger.kernel.org # 3.14+
-> Fixes: 597ce1723e0f ("MIPS: Support for 64-bit FP with O32 binaries")
-> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-> ---
-> Hi,
->=20
->  These are not the usual requests used by GDB to access the floating-poin=
-t=20
-> context, which is likely why it went unnoticed so long.  They are only=20
-> used as a fallback in the case where PTRACE_GETFPREGS and PTRACE_SETFPREG=
-S=20
-> requests are not supported, i.e. with ancient kernels.
->=20
->  However to verify an unrelated GDB bug fix I have tweaked GDB to always=
-=20
-> use PTRACE_PEEKUSR and PTRACE_POKEUSR, and then discovered this issue in=
-=20
-> native GDB regression testing, as it showed regressions from corrupt FGR=
-=20
-> contents across numerous tests compared to the usual results.  This fix=
-=20
-> removed those regressions then.
->=20
->  Not being typically used does not mean we ought to keep the interface=20
-> broken.  Therefore please apply.
+ You need to dive deeper, that is beyond the secret commit 66f0a432564b 
+("Add resource managment."), to find what's happened before the epoch. ;)
 
-Looks good. Applied to fixes branch for 4.17.
+ Anyway, there isn't anything special here, the thing has been here since 
+the inception of memset.S with commit 2e0f55e79c49 (no shortlog available 
+for that one).  And it is clearly a bug, possibly just a leftover from a 
+WIP implementation or whatever.
 
-Thanks
-James
+ And I can see Matt has already fixed that, thanks!
 
---BQPnanjtCNWHyqYD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvoPmgAKCRA1zuSGKxAj
-8vHgAQCWxOnS4xlCHH+ctDoJS88qeXWE6ojQ4iM0LlzCyfNKrAEAo6VvdB1DEWg1
-tBq1rCXSUbUnkg+qpV7h9T1CG5N1Cgc=
-=df5g
------END PGP SIGNATURE-----
-
---BQPnanjtCNWHyqYD--
+  Maciej

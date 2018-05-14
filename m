@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 22:07:32 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:47592 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 22:48:20 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:36251 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992781AbeENUFdRjU5- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2018 22:05:33 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id E7F4D208BC; Mon, 14 May 2018 22:05:22 +0200 (CEST)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.bootlin.com (Postfix) with ESMTPSA id C12C620794;
-        Mon, 14 May 2018 22:05:22 +0200 (CEST)
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     "David S . Miller" <davem@davemloft.net>
-Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        id S23992684AbeENUsIyvf5Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2018 22:48:08 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=I/1TuD14kBPhFB0QyKzoKUjbivXjtSUnagq8DyenynY=;
+        b=umk9aOoknQwbTHXfc4meMzNEiO45VzDo9uwN7eO7Genbj1r/VjhMdedyvx4WOLFyrQDxUroYNJ9d7qtrmdXdaIa4KDVUe88ff6btBs7htdSd8+VD33gMJrzH25YYWP6JLqTUKu+CxZRp04vq7ZJOfMoIfUPqvANwW2he0CRmHGk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1fIKNu-00022k-57; Mon, 14 May 2018 22:47:54 +0200
+Date:   Mon, 14 May 2018 22:47:54 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Allan Nielsen <Allan.Nielsen@microsemi.com>,
         razvan.stefanescu@nxp.com, po.liu@nxp.com,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>,
         Florian Fainelli <f.fainelli@gmail.com>,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH net-next v3 6/7] MIPS: mscc: connect phys to ports on ocelot_pcb123
-Date:   Mon, 14 May 2018 22:04:59 +0200
-Message-Id: <20180514200500.2953-7-alexandre.belloni@bootlin.com>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH net-next v3 1/7] dt-bindings: net: add DT bindings for
+ Microsemi MIIM
+Message-ID: <20180514204754.GA1057@lunn.ch>
 References: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
-Return-Path: <alexandre.belloni@bootlin.com>
+ <20180514200500.2953-2-alexandre.belloni@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180514200500.2953-2-alexandre.belloni@bootlin.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63941
+X-archive-position: 63942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,41 +50,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add phy to switch port connections for PCB123 for internal PHYs.
+On Mon, May 14, 2018 at 10:04:54PM +0200, Alexandre Belloni wrote:
+> DT bindings for the Microsemi MII Management Controller found on Microsemi
+> SoCs
+> 
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-Cc: James Hogan <jhogan@kernel.org>
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
----
- arch/mips/boot/dts/mscc/ocelot_pcb123.dts | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-diff --git a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-index 29d6414f8886..4ccd65379059 100644
---- a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-+++ b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-@@ -25,3 +25,23 @@
- &uart2 {
- 	status = "okay";
- };
-+
-+&mdio0 {
-+	status = "okay";
-+};
-+
-+&port0 {
-+	phy-handle = <&phy0>;
-+};
-+
-+&port1 {
-+	phy-handle = <&phy1>;
-+};
-+
-+&port2 {
-+	phy-handle = <&phy2>;
-+};
-+
-+&port3 {
-+	phy-handle = <&phy3>;
-+};
--- 
-2.17.0
+    Andrew

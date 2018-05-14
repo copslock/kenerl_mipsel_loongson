@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 00:56:24 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:52089 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992684AbeENW4R4ohOU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 00:56:17 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 14 May 2018 22:56:11 +0000
-Received: from [10.20.78.96] (10.20.78.96) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 14
- May 2018 15:56:38 -0700
-Date:   Mon, 14 May 2018 23:56:01 +0100
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     James Hogan <jhogan@kernel.org>
-CC:     Matt Redfearn <matt.redfearn@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 01:04:16 +0200 (CEST)
+Received: from icp-osb-irony-out5.external.iinet.net.au ([203.59.1.221]:21213
+        "EHLO icp-osb-irony-out5.external.iinet.net.au" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992684AbeENXEH4KP9U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 01:04:07 +0200
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2DcAABmFPpa/6SIBjoNTxsBAQEBAwEBA?=
+ =?us-ascii?q?QkBAQGFR5k1BoEHIYEPlSqEdwKDMjgUAQIBAQEBAQEChjwBAQEBAgE4QQULCw0?=
+ =?us-ascii?q?BCi5XBgEMBgIBAYMfgXQFqxuDCRqEPoNugieJMYEHgTIMglyKRwKYNgmOS4dxh?=
+ =?us-ascii?q?QQrkV0zgXMzGggoCIJ+kGBdkQgBAQ?=
+X-IPAS-Result: =?us-ascii?q?A2DcAABmFPpa/6SIBjoNTxsBAQEBAwEBAQkBAQGFR5k1BoE?=
+ =?us-ascii?q?HIYEPlSqEdwKDMjgUAQIBAQEBAQEChjwBAQEBAgE4QQULCw0BCi5XBgEMBgIBA?=
+ =?us-ascii?q?YMfgXQFqxuDCRqEPoNugieJMYEHgTIMglyKRwKYNgmOS4dxhQQrkV0zgXMzGgg?=
+ =?us-ascii?q?oCIJ+kGBdkQgBAQ?=
+X-IronPort-AV: E=Sophos;i="5.49,402,1520870400"; 
+   d="scan'208";a="133423000"
+Received: from unknown (HELO [192.168.0.106]) ([58.6.136.164])
+  by icp-osb-irony-out5.iinet.net.au with ESMTP; 15 May 2018 07:03:11 +0800
+Subject: Re: [PATCH 1/7] i2c: i2c-gpio: move header to platform_data
+To:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Sergey Lapin <slapin@ossfans.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
         Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] MIPS: memset.S: EVA & fault support for
- small_memset
-In-Reply-To: <20180416202234.GA23881@saruman>
-Message-ID: <alpine.DEB.2.00.1805142329120.10896@tp.orcam.me.uk>
-References: <1522315704-31641-1-git-send-email-matt.redfearn@mips.com> <1522315704-31641-2-git-send-email-matt.redfearn@mips.com> <20180416202234.GA23881@saruman>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        James Hogan <jhogan@kernel.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-media@vger.kernel.org
+References: <20180419200015.15095-1-wsa@the-dreams.de>
+ <20180419200015.15095-2-wsa@the-dreams.de>
+ <20180514213719.o6ceftp2quem3s7f@ninjato>
+From:   Greg Ungerer <gerg@uclinux.org>
+Message-ID: <40bb677a-e6e1-7906-28fe-9e74cdfbefd7@uclinux.org>
+Date:   Tue, 15 May 2018 09:03:08 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.96]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1526338571-853316-30635-1409-1
-X-BESS-VER: 2018.6-r1805102334
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.192989
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Maciej.Rozycki@mips.com>
+In-Reply-To: <20180514213719.o6ceftp2quem3s7f@ninjato>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <gerg@uclinux.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63959
+X-archive-position: 63960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: gerg@uclinux.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,25 +67,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 16 Apr 2018, James Hogan wrote:
 
-> > @@ -260,6 +260,11 @@
-> >  	jr		ra
-> >  	andi		v1, a2, STORMASK
+Hi Wolfram,
+
+On 15/05/18 07:37, Wolfram Sang wrote:
+>>   arch/arm/mach-ks8695/board-acs5k.c               | 2 +-
+>>   arch/arm/mach-sa1100/simpad.c                    | 2 +-
+>>   arch/mips/alchemy/board-gpr.c                    | 2 +-
 > 
-> This patch looks good, well spotted!
+> Those still need acks...
 > 
-> But whats that v1 write about? Any ideas? Seems to go back to the git
-> epoch, and $3 isn't in the clobber lists when __bzero* is called.
+>> diff --git a/arch/arm/mach-ks8695/board-acs5k.c b/arch/arm/mach-ks8695/board-acs5k.c
+>> index 937eb1d47e7b..ef835d82cdb9 100644
+>> --- a/arch/arm/mach-ks8695/board-acs5k.c
+>> +++ b/arch/arm/mach-ks8695/board-acs5k.c
+>> @@ -19,7 +19,7 @@
+>>   #include <linux/gpio/machine.h>
+>>   #include <linux/i2c.h>
+>>   #include <linux/i2c-algo-bit.h>
+>> -#include <linux/i2c-gpio.h>
+>> +#include <linux/platform_data/i2c-gpio.h>
+>>   #include <linux/platform_data/pca953x.h>
+>>   
+>>   #include <linux/mtd/mtd.h>
+> 
+> ...
+> 
+>> diff --git a/arch/arm/mach-sa1100/simpad.c b/arch/arm/mach-sa1100/simpad.c
+>> index ace010479eb6..49a61e6f3c5f 100644
+>> --- a/arch/arm/mach-sa1100/simpad.c
+>> +++ b/arch/arm/mach-sa1100/simpad.c
+>> @@ -37,7 +37,7 @@
+>>   #include <linux/input.h>
+>>   #include <linux/gpio_keys.h>
+>>   #include <linux/leds.h>
+>> -#include <linux/i2c-gpio.h>
+>> +#include <linux/platform_data/i2c-gpio.h>
+>>   
+>>   #include "generic.h"
+>>   
+>> diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
+>> index 4e79dbd54a33..fa75d75b5ba9 100644
+>> --- a/arch/mips/alchemy/board-gpr.c
+>> +++ b/arch/mips/alchemy/board-gpr.c
+>> @@ -29,7 +29,7 @@
+>>   #include <linux/leds.h>
+>>   #include <linux/gpio.h>
+>>   #include <linux/i2c.h>
+>> -#include <linux/i2c-gpio.h>
+>> +#include <linux/platform_data/i2c-gpio.h>
+>>   #include <linux/gpio/machine.h>
+>>   #include <asm/bootinfo.h>
+>>   #include <asm/idle.h>
+> 
+> ... and this was the shortened diff for those.
+> 
+> Greg, Russell, Ralf, James? Is it okay if I take this via my tree?
 
- You need to dive deeper, that is beyond the secret commit 66f0a432564b 
-("Add resource managment."), to find what's happened before the epoch. ;)
+Yes, I have no problem with that for the ks8695 part.
 
- Anyway, there isn't anything special here, the thing has been here since 
-the inception of memset.S with commit 2e0f55e79c49 (no shortlog available 
-for that one).  And it is clearly a bug, possibly just a leftover from a 
-WIP implementation or whatever.
+Acked-by: Greg Ungerer <gerg@uclinux.org>
 
- And I can see Matt has already fixed that, thanks!
+Thanks
+Greg
 
-  Maciej
+
+> Thanks,
+> 
+>     Wolfram
+> 

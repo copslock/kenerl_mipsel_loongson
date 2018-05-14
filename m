@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 22:54:22 +0200 (CEST)
-Received: from mail-wm0-x22d.google.com ([IPv6:2a00:1450:400c:c09::22d]:56202
-        "EHLO mail-wm0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992670AbeENUyKjXfaZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 22:54:10 +0200
-Received: by mail-wm0-x22d.google.com with SMTP id a8-v6so15806012wmg.5
-        for <linux-mips@linux-mips.org>; Mon, 14 May 2018 13:54:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 22:54:46 +0200 (CEST)
+Received: from mail-wm0-x233.google.com ([IPv6:2a00:1450:400c:c09::233]:39277
+        "EHLO mail-wm0-x233.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992670AbeENUyecZPBZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 22:54:34 +0200
+Received: by mail-wm0-x233.google.com with SMTP id f8-v6so17651550wmc.4
+        for <linux-mips@linux-mips.org>; Mon, 14 May 2018 13:54:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=eLvLQWg3vYFz9mP9vLjvtbM5vEfH4V2AYt+WXD7QKW8=;
-        b=q/5VFhEaqcMyalM23kD/3TdqqDd3Mx1N6S8d1l/+xHisDDXWij1Gj8FknSI6uv6oEp
-         3UfgXe3joo3ApkbQnlDd3QS8JbYtlaGPAi7uLrs1cBcJWIhAwYREZ1vbgDTYTM+Qb7qJ
-         05Jtp+HWysHwOC/UvQiTAiSa/cOSrYgQuwAEhjYis/+3YnN3lty/CfEoBIlRBydpz/Ah
-         rcSgz0aodI+p8IrnpbzDFRAsZNH6yppgTZKp1WPT0zRKyrBNqivmstg5BKQUvjIrNmDl
-         2tWQdt/fowqccCvwUeraatudP/LD28A18+rhhPXwWoPg16No/PJtf+l0AGWlcDxYqpDf
-         CRHA==
+        bh=mjUtYD86Wwzy1O3WkiblxYP3UqKhiweo5vwykxZ+/tU=;
+        b=kaE9FomQbegJNFYFBmE70/fq/8L1O3KLdXQ2r2OwGSyApEkMrVWOIsto8Gsst1cFmb
+         t0e/E2j1gFy9khgJ6OonFa880WuyhixpxH6LRbE1bwlo7EghtIrKVfIWUlBaSIMrfqUM
+         nMsD462czYBd5Ojijz3ZUmvpPqWCv24jJtfAg2nntXvcesMhXZSra5igxd2KeORD1F5S
+         +AjaV/SmGUo/R4zi3gQHJJL+qU40ALOnWBp7F36mxsdxSjkAMptjjnuZCHUS+OchGMKM
+         UKEKqQgtweMlHkojIyrM8l4GAznLGQZLdPUrt78mbKM6DeKzA1oJQF2kpjUice6RlZQ/
+         pisA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=eLvLQWg3vYFz9mP9vLjvtbM5vEfH4V2AYt+WXD7QKW8=;
-        b=hSVhehcnXln54LkrfHbb+9sO8zq3VnzicGjWilEfd/U9fuwN7MEXcKircNBYJoprkC
-         Olg64phviD4zioL+sTKs1zXk/KWgMu4TMsJR6eAIKpToKzkZoXHy2QmgcXzE+Lx6RNaK
-         Be3ZdOsr1hRIa3bHK/cXQTmUZMpHreUMHNLpB4UEHHZqmZA7jlj1O4cBpyY+2OrvcQZW
-         bxAV8eA8HiDU4dpVcWsgrNKV9qSoQdZerNwdpetUcHbTdDF84CTVM8PWdKWJvUD6gUxA
-         PyZKMuypHbaILgfugxskEj4F5q22Ka3fIp3/WLadVcha1l2NZJyZItlGMR9VsHRbn051
-         1DyA==
-X-Gm-Message-State: ALKqPwdOWMw8za7ifQTOjN2am8+2rL2g+Ur/mmNRdrZqGGTCDcpHZCRZ
-        S3A4E8HcsOf42JfHjTaqUa4=
-X-Google-Smtp-Source: AB8JxZrgjUzK+2LGwO0CzuLMT9pDvihHkNejm5lNJzmLoNkifpTRmMFhorq6AC+1GIaN1YebigfUrA==
-X-Received: by 2002:a50:a926:: with SMTP id l35-v6mr14751409edc.106.1526331245363;
-        Mon, 14 May 2018 13:54:05 -0700 (PDT)
+        bh=mjUtYD86Wwzy1O3WkiblxYP3UqKhiweo5vwykxZ+/tU=;
+        b=jEz5fvnateUPIUKf6Hd2C5qm1351QnitogNukLAXLB6e6tbL70ZkOyiUEIG1bQCMmY
+         3uFkIPCyZ7yOBMhG3yruDUgVhZPGmcJ9Kc2p6K6rPjCbcJsHPWnmfwFpfG+4AqxsCGrC
+         SmEvVjcL+XxsGt7Kr6WP7/GFAPQUaJPhXLA5ALM2/O+jv7XBAhJhwHjvRcA6WHSBUh+8
+         A3/PNrouvYoxDyyEOVM/1Ztc3wHE+VYkSYtOd6Zraz76LprOXqAKF8CoU1qoFAGVaeYP
+         B7Yvhn/26V2jYmzMYezT/D2LHGoXh7RqLGs2PTLLCS0BrFLmrdvW8YDa1yiu+leixXyP
+         Ka2w==
+X-Gm-Message-State: ALKqPwfoLmMI3QfSp79wEwl0u81jMAr54npbYg4Bb0EKP0/RfkIgGqyT
+        /bXkOyBEDvXD1uFX9tVg374=
+X-Google-Smtp-Source: AB8JxZrRmsz0XHIqaLnV/UWUh56Dkkli/1x4fcrjKg0XudW43QNH6TSC8bp1LmVyv3kfoJEdoPEQUg==
+X-Received: by 2002:a50:9a44:: with SMTP id o62-v6mr14629664edb.311.1526331269243;
+        Mon, 14 May 2018 13:54:29 -0700 (PDT)
 Received: from [10.69.41.93] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id j5-v6sm5348690edd.37.2018.05.14.13.54.01
+        by smtp.googlemail.com with ESMTPSA id y7-v6sm5198213edq.8.2018.05.14.13.54.18
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 14 May 2018 13:54:04 -0700 (PDT)
-Subject: Re: [PATCH net-next v3 6/7] MIPS: mscc: connect phys to ports on
- ocelot_pcb123
+        Mon, 14 May 2018 13:54:28 -0700 (PDT)
+Subject: Re: [PATCH net-next v3 5/7] MIPS: mscc: Add switch to ocelot
 To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
@@ -49,7 +48,7 @@ Cc:     Allan Nielsen <Allan.Nielsen@microsemi.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
 References: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
- <20180514200500.2953-7-alexandre.belloni@bootlin.com>
+ <20180514200500.2953-6-alexandre.belloni@bootlin.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
@@ -85,12 +84,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
  X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
  HGuUuzv+GKZ6nsysJw==
-Message-ID: <609ac546-55ad-15e3-0927-f4192bb8b774@gmail.com>
-Date:   Mon, 14 May 2018 13:54:00 -0700
+Message-ID: <764797c2-3422-8d16-6593-4b21d54fa496@gmail.com>
+Date:   Mon, 14 May 2018 13:54:16 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.7.0
 MIME-Version: 1.0
-In-Reply-To: <20180514200500.2953-7-alexandre.belloni@bootlin.com>
+In-Reply-To: <20180514200500.2953-6-alexandre.belloni@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -98,7 +97,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63949
+X-archive-position: 63950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -116,7 +115,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 05/14/2018 01:04 PM, Alexandre Belloni wrote:
-> Add phy to switch port connections for PCB123 for internal PHYs.
+> Ocelot has an integrated switch, add support for it.
 > 
 > Cc: James Hogan <jhogan@kernel.org>
 > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>

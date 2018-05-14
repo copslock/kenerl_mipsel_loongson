@@ -1,65 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 14:49:45 +0200 (CEST)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:40381
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992604AbeENMthRiRM5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 14:49:37 +0200
-Received: by mail-wm0-x241.google.com with SMTP id j5-v6so14984260wme.5
-        for <linux-mips@linux-mips.org>; Mon, 14 May 2018 05:49:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=psJoXSxQlxnT27PiR/P8+dANre+mkQyv7iV1A4jGqaQ=;
-        b=Bdp8peGOKehtkTER19FpkV86hRfgzCroO28xLiUetrTNSuPpCsjtz872O1ah9XJwOO
-         Vg2SYrgwwXq/4M6o1SvFdb77YAX/fnWLN3MHl2taadrP/mtjdjXT8iEotrOxUvilBsGU
-         Dn+9+OBaBhi9TRfPZl9fOOwnuCDONyujl9cb4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=psJoXSxQlxnT27PiR/P8+dANre+mkQyv7iV1A4jGqaQ=;
-        b=XUbnRzVD3ukUxq0KxmHMCop/9PX/MI5WK/BbabJ2okdmZoqd+yN+ioH3RTFLyZ6gTv
-         ekzwBoI8/wM5gm0qnFSCeUk28zIu6p/hdB4sAPQ2HyePq2rX0QGsfNr5RRIZmLaYo2ic
-         OlR7t9lUZH86KRFtSGgy8iFWWrv5LeBhy/ioPxekwLuKGNeuiQkjoV56BnZOsgewNnqp
-         VhtgdvpVWoQLvFVxoocCO1IT7m22FnSDnYQkwwc1TlVrOX2jBrPtIldDriEsvr3i9D2E
-         hujJX+zUP0i7DdRkDOzDZh5JlERLT0d2KZzTslCi8Evp6VnW1ugJQCP/IvOKRi5fBcAA
-         X3MA==
-X-Gm-Message-State: ALKqPwf4vsEmYdff9DgcHn/Dwv61Kov3n5t37uaG/mgNTJMoC+2j/t0x
-        uTa+Z4j2W7XaUw7I9Yr4l5Wt0A==
-X-Google-Smtp-Source: AB8JxZrJq8In87Jkej02APHbR5/qtTv6YQR+Nogx5iNajnJDxG1IajDh3fuIQ4m7Tg09+gmlALRuog==
-X-Received: by 2002:a1c:8583:: with SMTP id h125-v6mr4874220wmd.98.1526302171786;
-        Mon, 14 May 2018 05:49:31 -0700 (PDT)
-Received: from mai (lft31-1-88-121-166-205.fbx.proxad.net. [88.121.166.205])
-        by smtp.gmail.com with ESMTPSA id 141-v6sm9431493wmf.35.2018.05.14.05.49.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 14 May 2018 05:49:31 -0700 (PDT)
-Date:   Mon, 14 May 2018 14:49:28 +0200
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     Matt Redfearn <matt.redfearn@mips.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] clocksource/drivers/mips-gic-timer: Add pr_fmt and
- reword pr_* messages
-Message-ID: <20180514124928.GF29062@mai>
-References: <1513781406-27292-1-git-send-email-matt.redfearn@mips.com>
- <1522316943-2542-1-git-send-email-matt.redfearn@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2018 17:50:04 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:34716 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992521AbeENPt4nrwro (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2018 17:49:56 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 14 May 2018 15:49:51 +0000
+Received: from [10.20.78.96] (10.20.78.96) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 14
+ May 2018 08:50:19 -0700
+Date:   Mon, 14 May 2018 16:49:43 +0100
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <james.hogan@mips.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: Fix ptrace(2) PTRACE_PEEKUSR and PTRACE_POKEUSR accesses
+ to o32 FGRs
+Message-ID: <alpine.DEB.2.00.1805141537210.10896@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1522316943-2542-1-git-send-email-matt.redfearn@mips.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.96]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1526312991-321457-24569-35339-1
+X-BESS-VER: 2018.6-r1805102334
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.192979
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63931
+X-archive-position: 63932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,23 +55,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 29, 2018 at 10:49:03AM +0100, Matt Redfearn wrote:
-> Several messages from the MIPS GIC driver include the text "GIC", "GIC
-> timer", etc, but the format is not standard. Add a pr_fmt of
-> "mips-gic-timer: " and reword the messages now that they will be
-> prefixed with the driver name.
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> ---
+Check the TIF_32BIT_FPREGS task setting of the tracee rather than the 
+tracer in determining the layout of floating-point general registers in 
+the floating-point context, correcting access to odd-numbered registers 
+for o32 tracees where the setting disagrees between the two processes.
 
-Applied, thanks for the head up.
+Cc: stable@vger.kernel.org # 3.14+
+Fixes: 597ce1723e0f ("MIPS: Support for 64-bit FP with O32 binaries")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+---
+Hi,
 
-  -- Daniel
+ These are not the usual requests used by GDB to access the floating-point 
+context, which is likely why it went unnoticed so long.  They are only 
+used as a fallback in the case where PTRACE_GETFPREGS and PTRACE_SETFPREGS 
+requests are not supported, i.e. with ancient kernels.
 
--- 
+ However to verify an unrelated GDB bug fix I have tweaked GDB to always 
+use PTRACE_PEEKUSR and PTRACE_POKEUSR, and then discovered this issue in 
+native GDB regression testing, as it showed regressions from corrupt FGR 
+contents across numerous tests compared to the usual results.  This fix 
+removed those regressions then.
 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+ Not being typically used does not mean we ought to keep the interface 
+broken.  Therefore please apply.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+  Maciej
+---
+ arch/mips/kernel/ptrace.c   |    4 ++--
+ arch/mips/kernel/ptrace32.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+linux-mips-ptrace-test-thread-flag.diff
+Index: linux/arch/mips/kernel/ptrace.c
+===================================================================
+--- linux.orig/arch/mips/kernel/ptrace.c	2018-05-12 22:52:19.000000000 +0100
++++ linux/arch/mips/kernel/ptrace.c	2018-05-12 22:56:07.893993000 +0100
+@@ -1059,7 +1059,7 @@ long arch_ptrace(struct task_struct *chi
+ 			fregs = get_fpu_regs(child);
+ 
+ #ifdef CONFIG_32BIT
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even
+@@ -1154,7 +1154,7 @@ long arch_ptrace(struct task_struct *chi
+ 
+ 			init_fp_ctx(child);
+ #ifdef CONFIG_32BIT
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even
+Index: linux-mipsswbrd038/arch/mips/kernel/ptrace32.c
+===================================================================
+--- linux-mipsswbrd038.orig/arch/mips/kernel/ptrace32.c	2018-05-12 22:52:19.000000000 +0100
++++ linux-mipsswbrd038/arch/mips/kernel/ptrace32.c	2018-05-12 22:55:20.906637000 +0100
+@@ -99,7 +99,7 @@ long compat_arch_ptrace(struct task_stru
+ 				break;
+ 			}
+ 			fregs = get_fpu_regs(child);
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even
+@@ -212,7 +212,7 @@ long compat_arch_ptrace(struct task_stru
+ 				       sizeof(child->thread.fpu));
+ 				child->thread.fpu.fcr31 = 0;
+ 			}
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even

@@ -1,55 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 15:32:49 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49858 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993047AbeICNcZDVWVP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 15:32:25 +0200
-Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 72599CD5;
-        Mon,  3 Sep 2018 13:32:18 +0000 (UTC)
-Subject: Patch "MIPS: Correct the 64-bit DSP accumulator register size" has been added to the 4.14-stable tree
-To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, macro@mips.com, paul.burton@mips.com,
-        ralf@linux-mips.org, viro@zeniv.linux.org.uk
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Sep 2018 15:31:50 +0200
-Message-ID: <153598151054177@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65885
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: "Maciej W. Rozycki" <macro@mips.com>
+Date: Tue, 15 May 2018 23:33:26 +0100
+Subject: MIPS: Correct the 64-bit DSP accumulator register size
+Message-ID: <20180515223326.p_1_5Imis2hsQMh2TwgWq0CTnLzutVETiZrAy5LPVEU@z>
+
+From: Maciej W. Rozycki <macro@mips.com>
+
+commit f5958b4cf4fc38ed4583ab83fb7c4cd1ab05f47b upstream.
+
+Use the `unsigned long' rather than `__u32' type for DSP accumulator
+registers, like with the regular MIPS multiply/divide accumulator and
+general-purpose registers, as all are 64-bit in 64-bit implementations
+and using a 32-bit data type leads to contents truncation on context
+saving.
+
+Update `arch_ptrace' and `compat_arch_ptrace' accordingly, removing
+casts that are similarly not used with multiply/divide accumulator or
+general-purpose register accesses.
+
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Patchwork: https://patchwork.linux-mips.org/patch/19329/
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # 2.6.15+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/include/asm/processor.h |    2 +-
+ arch/mips/kernel/ptrace.c         |    2 +-
+ arch/mips/kernel/ptrace32.c       |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -141,7 +141,7 @@ struct mips_fpu_struct {
+ 
+ #define NUM_DSP_REGS   6
+ 
+-typedef __u32 dspreg_t;
++typedef unsigned long dspreg_t;
+ 
+ struct mips_dsp_state {
+ 	dspreg_t	dspr[NUM_DSP_REGS];
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -847,7 +847,7 @@ long arch_ptrace(struct task_struct *chi
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -141,7 +141,7 @@ long compat_arch_ptrace(struct task_stru
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from macro@mips.com are
 
-    MIPS: Correct the 64-bit DSP accumulator register size
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-correct-the-64-bit-dsp-accumulator-register-size.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.14/mips-correct-the-64-bit-dsp-accumulator-register-size.patch
